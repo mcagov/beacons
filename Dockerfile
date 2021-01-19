@@ -19,6 +19,8 @@ CMD ["npm", "run", "dev"]
 # NextJS production application
 FROM node:${node_version} AS nextjs-app
 
+ENV NODE_ENV=production
+
 WORKDIR /usr/app
 
 COPY --from=base /usr/app/.next ./.next

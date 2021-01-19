@@ -1,7 +1,8 @@
 .next/
 node_modules/
 Dockerfile
+.dockerignore
 docker-compose.yml
-.git
+.git/
 .gitignore
 README.md
