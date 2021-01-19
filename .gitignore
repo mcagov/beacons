@@ -1,0 +1,9 @@
+# IntelliJ
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+
+# MacOS
+**/.DS_Store
+
+node_modules/
+.next/
