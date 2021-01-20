@@ -14,7 +14,7 @@ FROM base AS nextjs-dev-app
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+ENTRYPOINT [ "npm", "run", "dev" ]
 
 # NextJS production application
 FROM node:${node_version} AS nextjs-app
@@ -31,4 +31,4 @@ USER node
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+ENTRYPOINT [ "npm", "start" ]
