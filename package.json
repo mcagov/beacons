@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write '**/*.{js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
+    "format:check": "prettier --check '**/*.{js,jsx,json,ts,tsx,yml,md,html,scss,css}'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "dependencies": {
     "next": "10.0.5",
@@ -15,6 +22,12 @@
   },
   "devDependencies": {
     "eslint": "^7.18.0",
-    "eslint-plugin-react": "^7.22.0"
+    "eslint-plugin-react": "^7.22.0",
+    "husky": "^4.3.8",
+    "prettier": "2.2.1",
+    "pretty-quick": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=12.20.x"
   }
 }
