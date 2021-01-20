@@ -1,7 +1,7 @@
 // See: https://jestjs.io/docs/en/configuration for a full list of configuration options
 module.exports = {
   roots: ["<rootDir>"],
-  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
+  setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"],
   transform: {
     ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform",
     "^.+\\.(ts|tsx|js|jsx)?$": "babel-jest",
