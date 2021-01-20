@@ -1,12 +1,9 @@
 version: "3.8"
+
 services:
-  client:
-    stdin_open: true
+  webapp:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      target: nextjs-dev-app
     ports:
-    - "3000:3000"
-    volumes:
-    - "/app/node_modules"
-    - "./:/app"
+      - "3000:3000"
