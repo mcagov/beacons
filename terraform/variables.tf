@@ -15,8 +15,10 @@ variable "ecs_auto_scale_role_name" {
 
 variable "az_count" {
   description = "Number of AZs to cover in a given region"
-  default     = "1"
+  default     = "2"
 }
+
+#  TODO get updated task docker image from registry of choice. 
 
 # variable "app_image" {
 #   description = "Docker image to run in the ECS cluster"
