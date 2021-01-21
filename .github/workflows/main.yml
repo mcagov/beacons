@@ -69,7 +69,7 @@ jobs:
           path: "**/node_modules"
           key: will-work
 
-      - name: Run tests
+      - name: Run linter
         run: npm run lint
 
   prettier_check:
@@ -92,5 +92,5 @@ jobs:
           path: "**/node_modules"
           key: will-work
 
-      - name: Run tests
+      - name: Run prettier
         run: npm run format:check
