@@ -6,7 +6,7 @@ on:
 
 jobs:
   install_dependencies:
-    name: Npm install dependencies
+    name: Install dependencies
 
     runs-on: ubuntu-latest
 
@@ -26,10 +26,10 @@ jobs:
           path: "**/node_modules"
           key: will-work
 
-  run_tests:
+  unit_tests:
     needs: install_dependencies
 
-    name: Run tests
+    name: Unit tests
 
     runs-on: ubuntu-latest
 
@@ -49,10 +49,10 @@ jobs:
       - name: Run tests
         run: npm run test
 
-  run_linting:
+  lint_check:
     needs: install_dependencies
 
-    name: Run linter
+    name: Lint check
 
     runs-on: ubuntu-latest
 
@@ -71,3 +71,26 @@ jobs:
 
       - name: Run tests
         run: npm run lint
+
+  prettier_check:
+    needs: install_dependencies
+
+    name: Prettier check
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: will-work
+
+      - name: Run tests
+        run: npm run format:check
