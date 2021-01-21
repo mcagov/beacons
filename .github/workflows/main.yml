@@ -26,29 +26,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.npm
-          key: will-this-work
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-  run_tests:
-    needs: build
-
-    name: Run tests
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up node
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - name: Restore cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: will-this-work
-
-      - name: Tun tests
+      - name: Run tests
         run: npm run test
