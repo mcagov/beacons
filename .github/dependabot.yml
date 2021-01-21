@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Check package.json for updates
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+
+  # Check Dockerfile for updates
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
