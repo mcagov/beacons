@@ -1,7 +1,7 @@
 ARG node_version=14.15.4-alpine3.12
 
 # Base Docker image for multi-stage build
-FROM node:${node_version} AS base
+FROM node AS base
 
 WORKDIR /usr/app
 
@@ -17,7 +17,7 @@ EXPOSE 3000
 ENTRYPOINT [ "npm", "run", "dev" ]
 
 # NextJS production application
-FROM node:${node_version} AS nextjs-app
+FROM node AS nextjs-app
 
 ENV NODE_ENV=production
 
