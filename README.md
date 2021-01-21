@@ -4,3 +4,16 @@ This project is the intgration project for the MCA Beacons Registration Applicat
 
 - [Beacons Registration Webapp](https://github.com/madetech/mca-beacons-webapp)
 - [Beacons Registration Service](https://github.com/madetech/mca-beacons-service)
+
+# Getting setup locally
+
+# Installing AWS CLI (MAC/LINUX)
+
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+
+sudo installer -pkg AWSCLIV2.pkg -target /
+
+# Configuring AWS 
+
+- https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html
+
