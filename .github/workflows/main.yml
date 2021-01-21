@@ -5,17 +5,15 @@ on:
       - github-actions
 
 jobs:
-  build:
+  install_dependencies:
     name: Npm install dependencies
 
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Set up node
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: "14"
 
@@ -29,18 +27,16 @@ jobs:
           key: will-work
 
   run_tests:
-    needs: build
+    needs: install_dependencies
 
     name: Run tests
 
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Set up node
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: "14"
 
@@ -52,3 +48,26 @@ jobs:
 
       - name: Run tests
         run: npm run test
+
+  run_linting:
+    needs: install_dependencies
+
+    name: Run linter
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: will-work
+
+      - name: Run tests
+        run: npm run lint
