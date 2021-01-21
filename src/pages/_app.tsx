@@ -3,7 +3,6 @@ import type { AppProps } from "next/app";
 import "../styles/globals.css";
 
 const MyApp: FunctionComponent<AppProps> = ({
-
   Component,
   pageProps,
 }: AppProps) => {
