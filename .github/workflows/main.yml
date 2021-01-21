@@ -75,3 +75,12 @@ jobs:
           key: will-work
       - name: Run prettier
         run: npm run format:check
+
+  docker_lint:
+    name: Docker lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker lint
+        uses: brpaz/hadolint-action@v1.2.1
