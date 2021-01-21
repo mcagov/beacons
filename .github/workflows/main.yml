@@ -1,0 +1,13 @@
+name: Main CI/CD pipeline for MCA webapp
+on:
+  push:
+    branches:
+      - github-actions
+
+jobs:
+  npm_install:
+    name: Npm install dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print hello
+        run: echo 'hello world'
