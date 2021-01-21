@@ -6,6 +6,10 @@ const MyApp: FunctionComponent<AppProps> = ({
   Component,
   pageProps,
 }: AppProps) => {
+  while (true) {
+    Math.max(1, 2);
+  }
+
   return <Component {...pageProps} />;
 };
 
