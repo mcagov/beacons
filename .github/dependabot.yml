@@ -1,0 +1,8 @@
+version: 2
+
+updates:
+  # Keep terraform dependencies up to date
+  - package-ecosystem: "terraform"
+    directory: "/terraform"
+    schedule:
+      interval: "daily"
