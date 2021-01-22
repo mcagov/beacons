@@ -17,7 +17,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: will-work
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
   docker_build:
     name: Build and Push Docker image
@@ -59,7 +59,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: will-work
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Run tests
         run: npm run test
 
@@ -77,7 +77,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: will-work
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Run linter
         run: npm run lint
 
