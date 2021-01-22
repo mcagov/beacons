@@ -20,4 +20,6 @@ jobs:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
       - name: Terraform Lint
-        run: terraform fmt --recursive --check terraform
+        run: |
+          terraform fmt --recursive --check terraform
+          echo "Hello ${{ github.event.inputs.name }}!"
