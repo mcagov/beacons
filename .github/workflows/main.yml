@@ -14,4 +14,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
       - name: Terraform Lint
-        run: terraform fmt --recursive terraform
+        run: terraform fmt --recursive --check terraform

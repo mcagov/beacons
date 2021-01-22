@@ -4,3 +4,5 @@
 .terraform.tfstate.lock.info
 # Module directory
 .terraform/
+
+.DS_Store
