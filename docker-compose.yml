@@ -4,6 +4,6 @@ services:
   webapp:
     build:
       context: .
-      target: nextjs-dev-app
+      target: nextjs-app
     ports:
       - "3000:3000"
