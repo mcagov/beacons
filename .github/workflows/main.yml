@@ -93,7 +93,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: "**/node_modules"
-          key: will-work
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Run prettier
         run: npm run format:check
 
