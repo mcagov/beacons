@@ -9,13 +9,13 @@ resource "aws_ecs_task_definition" "webapp" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.webapp_fargate_cpu
   memory                   = var.webapp_fargate_memory
-  container_definitions    = jsonencode([{
-    "name": "beacons-webapp",
-    "image": var.webapp_image ,
-    "portMappings": [
+  container_definitions = jsonencode([{
+    "name" : "beacons-webapp",
+    "image" : var.webapp_image,
+    "portMappings" : [
       {
-        "containerPort": var.webapp_port
-        "hostPort": var.webapp_port
+        "containerPort" : var.webapp_port
+        "hostPort" : var.webapp_port
       }
     ]
   }])
@@ -50,13 +50,13 @@ resource "aws_ecs_task_definition" "service" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.service_fargate_cpu
   memory                   = var.service_fargate_memory
-  container_definitions    = jsonencode([{
-    "name": "beacons-service",
-    "image": var.service_image,
-    "portMappings": [
+  container_definitions = jsonencode([{
+    "name" : "beacons-service",
+    "image" : var.service_image,
+    "portMappings" : [
       {
-        "containerPort": var.service_port
-        "hostPort": var.service_port
+        "containerPort" : var.service_port
+        "hostPort" : var.service_port
       }
     ]
   }])
@@ -76,7 +76,7 @@ resource "aws_ecs_service" "service" {
   }
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.webapp.id
+    target_group_arn = aws_alb_target_group.service.id
     container_name   = "beacons-service"
     container_port   = var.service_port
   }

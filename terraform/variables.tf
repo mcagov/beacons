@@ -39,9 +39,9 @@ variable "webapp_count" {
   default     = 1
 }
 variable "health_check_path" {
-  type    = string
+  type        = string
   description = "Health check path used by the Application Load Balancer for the Beacons Webapp"
-  default = "/"
+  default     = "/"
 }
 variable "webapp_fargate_cpu" {
   type        = number
@@ -70,9 +70,9 @@ variable "service_count" {
   default     = 1
 }
 variable "service_health_check_path" {
-  type    = string
+  type        = string
   description = "Health check path used by the Application Load Balancer for the Beacons Service"
-  default = "/"
+  default     = "/"
 }
 variable "service_fargate_cpu" {
   type        = number
@@ -83,4 +83,14 @@ variable "service_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Beacons Service"
   default     = 2048
+}
+variable "create_webapp_ecr" {
+  type        = bool
+  description = "Determines if the webapp ECR should be created"
+  default     = false
+}
+variable "create_service_ecr" {
+  type        = bool
+  description = "Determines if the service ECR should be created"
+  default     = false
 }
