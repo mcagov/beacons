@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "main" {
-  name = "cb-cluster"
+  name = "mca-beacons-cluster"
 }
 
 # Using a data source for our container definition. 
@@ -42,7 +42,7 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.app.id
-    container_name   = "cb-app"
+    container_name   = "beacons-webapp"
     container_port   = var.app_port
   }
 
