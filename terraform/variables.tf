@@ -38,7 +38,7 @@ variable "webapp_count" {
   description = "Number of docker containers to run for the Beacons Webapp"
   default     = 1
 }
-variable "health_check_path" {
+variable "webapp_health_check_path" {
   type        = string
   description = "Health check path used by the Application Load Balancer for the Beacons Webapp"
   default     = "/"
@@ -72,7 +72,7 @@ variable "service_count" {
 variable "service_health_check_path" {
   type        = string
   description = "Health check path used by the Application Load Balancer for the Beacons Service"
-  default     = "/"
+  default     = "/actuator/health"
 }
 variable "service_fargate_cpu" {
   type        = number
