@@ -5,7 +5,7 @@ resource "aws_alb" "main" {
 }
 
 # listening to traffic on port 80, change to 443 in production
-resource "aws_alb_target_group" "app" {
+resource "aws_alb_target_group" "webapp" {
   name        = "cb-target-group"
   port        = 80
   protocol    = "HTTP"
@@ -26,11 +26,11 @@ resource "aws_alb_target_group" "app" {
 # Redirect all traffic from the ALB to the target group
 resource "aws_alb_listener" "front_end" {
   load_balancer_arn = aws_alb.main.id
-  port              = var.app_port
+  port              = var.webapp_port
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_alb_target_group.app.id
+    target_group_arn = aws_alb_target_group.webapp.id
     type             = "forward"
   }
 }
