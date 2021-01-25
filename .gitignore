@@ -4,3 +4,6 @@
 .terraform.tfstate.lock.info
 # Module directory
 .terraform/
+
+# MacOS
+**/.DS_Store
