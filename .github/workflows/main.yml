@@ -15,12 +15,12 @@ jobs:
 
   terraform_apply:
     if: github.ref == 'refs/heads/main'
-    name: Terraform Apply
+    name: Terraform Deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-      - name: Terraform Apply
+      - name: Terraform Deploy
         run: |
           cd terraform
           terraform init
