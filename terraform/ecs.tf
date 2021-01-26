@@ -17,7 +17,15 @@ resource "aws_ecs_task_definition" "webapp" {
         "containerPort" : var.webapp_port
         "hostPort" : var.webapp_port
       }
-    ]
+    ],
+    "logConfiguration" : {
+      "logDriver" : "awslogs",
+      "options" : {
+        "awslogs-group" : aws_cloudwatch_log_group.log_group.name,
+        "awslogs-region" : var.aws_region,
+        "awslogs-stream-prefix" : "webapp"
+      }
+    }
   }])
 }
 
@@ -58,7 +66,15 @@ resource "aws_ecs_task_definition" "service" {
         "containerPort" : var.service_port
         "hostPort" : var.service_port
       }
-    ]
+    ],
+    "logConfiguration" : {
+      "logDriver" : "awslogs",
+      "options" : {
+        "awslogs-group" : aws_cloudwatch_log_group.log_group.name,
+        "awslogs-region" : var.aws_region,
+        "awslogs-stream-prefix" : "service"
+      }
+    }
   }])
 }
 
