@@ -5,15 +5,10 @@ This project is the intgration project for the MCA Beacons Registration Applicat
 - [Beacons Registration Webapp](https://github.com/madetech/mca-beacons-webapp)
 - [Beacons Registration Service](https://github.com/madetech/mca-beacons-service)
 
-# Getting setup locally
+## Infrastructure-as-code
 
-# Installing AWS CLI (MAC/LINUX)
+The [Terraform](./terraform) directory contains the Terraform code for managing the infrastructure for the Beacons Registration Application.
 
-curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+## Installing AWS CLI
 
-sudo installer -pkg AWSCLIV2.pkg -target /
-
-# Configuring AWS 
-
-- https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html
-
+Please see the [AWS installation guide](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) and [configuration guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) for configuring the AWS CLI required for Terraform when managing the infrastructure
