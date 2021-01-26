@@ -6,6 +6,12 @@ terraform {
     }
   }
 
+  backend "s3" {
+    bucket = "mca-beacons-state"
+    key    = "state"
+    region = "eu-west-2"
+  }
+
   required_version = "~> 0.14"
 }
 
