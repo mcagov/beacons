@@ -16,6 +16,30 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
+## Project structure
+
+We separate the frontend in to three building blocks:
+
+1.  **Components**. The individual components, most likely derived from the [GOV.UK Design System](https://design-system.service.gov.uk/components/).
+2.  **Pages**. A page or view as it is displayed to the user, comprising several components.
+3.  **Functions**. The logical functionality used by components and pages, most likely expressed in vanilla TypeScript.
+
+```
+├── node_modules
+|   └── ...
+├── public
+│   └── assets
+├── src
+│   ├── components // Components go here
+│   ├── lib // Functions go here
+│   ├── pages // Pages go here
+│   └── styles
+└── test
+    ├── components
+    ├── lib
+    └── pages
+```
+
 ## Testing
 
 Our approach to testing:
@@ -37,11 +61,10 @@ To add a new component:
 
 1.  Create a new test in `test/components`.
 2.  Create an empty component in `src/components`.
-3.  Transpose the HTML from your chosen example on the GOV.UK Design System into the component, resolving any HTML to TSX conversion issues e.g. `class -> className`.
-4.  Decide the properties you want to make configurable e.g. `phase` in `PhaseBanner` and extract these to the `props` object.
-5.  Check the component renders properly by comparing it with the GOV.UK Design System example.
-6.  If all is well, run the tests to take a snapshot of the component. Future component rendering will be tested against this snapshot, with regressions causing test failures.
-7.  Use the new component as you choose.
+3.  Transpose the HTML from your chosen example on the GOV.UK Design System into the component, resolving any HTML to TSX conversion issues e.g. `class -> className`. 4. Decide the properties you want to make configurable e.g. `phase` in `PhaseBanner` and extract these to the `props` object.
+4.  Check the component renders properly by comparing it with the GOV.UK Design System example.
+5.  If all is well, run the tests to take a snapshot of the component. Future component rendering will be tested against this snapshot, with regressions causing test failures.
+6.  Use the new component as you choose.
 
 ### Updating test snapshots
 
