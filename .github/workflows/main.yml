@@ -14,6 +14,7 @@ jobs:
         run: terraform fmt --recursive --check terraform
 
   terraform_apply:
+    needs: [terraform_lint]
     if: github.ref == 'refs/heads/main'
     name: Terraform Deploy
     runs-on: ubuntu-latest
