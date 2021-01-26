@@ -35,5 +35,5 @@ jobs:
         run: terraform init
       - name: Terraform Validate
         run: terraform validate
-      # - name: Terraform Deploy
-      #   run: terraform apply -auto-approve
+      - name: Terraform Deploy
+        run: terraform apply -auto-approve
