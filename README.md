@@ -5,7 +5,7 @@ This project is the intgration project for the MCA Beacons Registration Applicat
 - [Beacons Registration Webapp](https://github.com/madetech/mca-beacons-webapp)
 - [Beacons Registration Service](https://github.com/madetech/mca-beacons-service)
 
-## Infrastructure-as-code
+## Infrastructure-as-code
 
 The [Terraform](./terraform) directory contains the Terraform code for managing the infrastructure for the Beacons Registration Application.
 
