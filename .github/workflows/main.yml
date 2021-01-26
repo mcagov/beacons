@@ -6,24 +6,34 @@ jobs:
   terraform_lint:
     name: Terraform Lint
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
 
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
       - name: Terraform Lint
-        run: terraform fmt --recursive --check terraform
+        run: terraform fmt --recursive --check
 
-  terraform_apply:
+  terraform_deploy:
     needs: [terraform_lint]
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     name: Terraform Deploy
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-      - name: Terraform Deploy
-        run: |
-          cd terraform
-          terraform init
-          terraform plan
-          terraform apply -auto-approve
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform Validate
+        run: terraform validate
+      # - name: Terraform Deploy
+      #   run: terraform apply -auto-approve
