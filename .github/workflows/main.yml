@@ -58,5 +58,4 @@ jobs:
         env:
           SERVICE_IMAGE_TAG: ${{needs.get_docker_image_tags.outputs.service_commit_hash}}
           WEBAPP_IMAGE_TAG: ${{needs.get_docker_image_tags.outputs.webapp_commit_hash}}
-        run: echo ${SERVICE_IMAGE_TAG} ${WEBAPP_IMAGE_TAG}
-#       run: terraform apply -auto-approve -var 'service_image_tag=${SERVICE_IMAGE_TAG}' -var 'webapp_image_tag=${WEBAPP_IMAGE_TAG}'
+        run: terraform apply -auto-approve -var 'service_image_tag="${SERVICE_IMAGE_TAG}"' -var 'webapp_image_tag="${WEBAPP_IMAGE_TAG}"'
