@@ -1,3 +1,7 @@
-@import "node_modules/@csstools/normalize.css/opinionated";
+@import "~@csstools/normalize.css";
 
-@import "node_modules/govuk-frontend/govuk/all";
+@import "~govuk-frontend/govuk/all";
+
+body {
+  margin: 0;
+}
