@@ -16,8 +16,28 @@ jobs:
       - name: Terraform Lint
         run: terraform fmt --recursive --check
 
+  get_docker_image_tags:
+    name: Get Docker image tags
+    runs-on: ubuntu-latest
+    outputs:
+      webapp_commit_hash: ${{ steps.get_webapp_commit_hash.outputs.webapp_commit_hash }}
+      service_commit_hash: ${{ steps.get_service_commit_hash.outputs.service_commit_hash }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: 'madetech/mca-beacons-webapp'
+      - id: get_webapp_commit_hash
+        name: Get commit hash from Webapp repo
+        run: echo "::set-output name=webapp_commit_hash::$(git rev-parse HEAD)"
+      - uses: actions/checkout@v2
+        with:
+          repository: 'madetech/mca-beacons-service'
+      - id: get_service_commit_hash
+        name: Get commit hash from Service repo
+        run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
+
   terraform_deploy:
-    needs: [terraform_lint]
+    needs: [terraform_lint, get_docker_image_tags]
     if: github.ref == 'refs/heads/main'
     name: Terraform Deploy
     runs-on: ubuntu-latest
@@ -27,7 +47,6 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
@@ -36,4 +55,7 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
       - name: Terraform Deploy
-        run: terraform apply -auto-approve
+        env:
+          SERVICE_IMAGE_TAG: ${{needs.get_docker_image_tags.outputs.service_commit_hash}}
+          WEBAPP_IMAGE_TAG: ${{needs.get_docker_image_tags.outputs.webapp_commit_hash}}
+        run: terraform apply -auto-approve -var 'service_image_tag=${SERVICE_IMAGE_TAG}' -var 'webapp_image_tag=${WEBAPP_IMAGE_TAG}'
