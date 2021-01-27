@@ -11,7 +11,7 @@ resource "aws_ecs_task_definition" "webapp" {
   memory                   = var.webapp_fargate_memory
   container_definitions = jsonencode([{
     "name" : "beacons-webapp",
-    "image" : var.webapp_image,
+    "image" : "${var.webapp_image}:${var.webapp_image_tag}",
     "portMappings" : [
       {
         "containerPort" : var.webapp_port
@@ -60,7 +60,7 @@ resource "aws_ecs_task_definition" "service" {
   memory                   = var.service_fargate_memory
   container_definitions = jsonencode([{
     "name" : "beacons-service",
-    "image" : var.service_image,
+    "image" : "${var.service_image}:${var.service_image_tag}",
     "portMappings" : [
       {
         "containerPort" : var.service_port
