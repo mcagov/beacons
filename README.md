@@ -16,21 +16,23 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Testing
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Our approach to testing:
 
-## Learn More
+- **Testing the rendering of React components**. We use [Jest's snapshot testing](https://jestjs.io/docs/en/snapshot-testing) to ensure our components render as they should do.
+- **Testing logic**. We segregate frontend logic from components by defining reusable TypeScript functions in `src/lib/`. Unit tests for these functions using Jest are in `test/lib`.
+- **End-to-end testing**. _TBC, likely to be Cypress._
 
-To learn more about Next.js, take a look at the following resources:
+### Running tests
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `npm run test` -- Runs all tests in the `test/` directory
+- `npm run test:watch` -- Runs tests in watch mode
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Updating test snapshots
 
-## Deploy on Vercel
+To update all test snapshots, run: `npm run test:update-all`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To update a specific snapshot, run: `npm run test:update [INSERT TEST NAME PATTERN HERE]`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+For example: `npm run test:update Header`
