@@ -38,7 +38,7 @@ jobs:
 
   terraform_deploy:
     needs: [terraform_lint, get_docker_image_tags]
-#    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     name: Terraform Deploy
     runs-on: ubuntu-latest
     defaults:
