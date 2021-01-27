@@ -29,7 +29,7 @@ variable "webapp_image" {
   default     = "261219435789.dkr.ecr.eu-west-2.amazonaws.com/mca-beacons-webapp"
 }
 variable "webapp_image_tag" {
-  type = string
+  type        = string
   description = "Hash of the relevant commit to the mca-beacons-webapp repo"
 }
 variable "webapp_port" {
@@ -63,7 +63,7 @@ variable "service_image" {
   default     = "261219435789.dkr.ecr.eu-west-2.amazonaws.com/mca-beacons-service"
 }
 variable "service_image_tag" {
-  type = string
+  type        = string
   description = "Hash of the relevant commit to the mca-beacons-service repo"
 }
 variable "service_port" {
