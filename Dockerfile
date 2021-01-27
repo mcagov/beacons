@@ -33,7 +33,8 @@ WORKDIR /usr/app
 
 COPY --from=build /usr/app/.next ./.next
 COPY --from=production-deps /usr/app/node_modules ./node_modules
-COPY public package.json ./
+COPY public ./public
+COPY package.json ./
 
 USER node
 
