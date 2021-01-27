@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       webapp_commit_hash: ${{ steps.get_webapp_commit_hash.outputs.webapp_commit_hash }}
+      service_commit_hash: ${{ steps.get_service_commit_hash.outputs.service_commit_hash }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -28,12 +29,19 @@ jobs:
       - id: get_webapp_commit_hash
         name: Get commit hash from Webapp repo
         run: echo "::set-output name=webapp_commit_hash::$(git rev-parse HEAD)"
+      - uses: actions/checkout@v2
+        with:
+          repository: 'madetech/mca-beacons-service'
+      - id: get_service_commit_hash
+        name: Get commit hash from Service repo
+        run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
 
   print_output_from_get_docker_image_tags_job:
     runs-on: ubuntu-latest
     needs: [get_docker_image_tags]
     steps:
       - run: echo ${{needs.get_docker_image_tags.outputs.webapp_commit_hash}}
+      - run: echo ${{needs.get_docker_image_tags.outputs.service_commit_hash}}
 
   terraform_deploy:
     needs: [terraform_lint]
