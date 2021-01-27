@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PhaseBanner with snapshots renders the Phase Banner correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="govuk-phase-banner"
+  >
+    <p
+      class="govuk-phase-banner__content"
+    >
+      <strong
+        class="govuk-tag govuk-phase-banner__content__tag"
+      >
+        BETA
+      </strong>
+      <span
+        class="govuk-phase-banner__text"
+      >
+        Hello 
+        <a
+          href="#"
+        >
+           World 
+        </a>
+      </span>
+    </p>
+  </div>
+</DocumentFragment>
+`;
