@@ -12,7 +12,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "npm run adr && pretty-quick --staged"
     }
   },
   "repository": {
@@ -30,5 +30,9 @@
     "madr": "^2.1.2",
     "prettier": "2.2.1",
     "pretty-quick": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=12.20.x <=14.15.x",
+    "npm": "6.14.x"
   }
 }
