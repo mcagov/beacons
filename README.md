@@ -1,20 +1,49 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+![CI/CD pipeline](https://github.com/madetech/mca-beacons-webapp/workflows/CI/CD%20pipeline/badge.svg)
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Beacons Registration Webapp
 
-## Getting Started
+The frontend application for the Beacons Registration service enables:
 
-First, run the development server:
+- [406Mhz beacon](https://www.gov.uk/maritime-safety-weather-and-navigation/register-406-mhz-beacons) owners to register their details with the Maritime & Coastguard Agency
+- Search and rescue [Mission Control Centres](<https://en.wikipedia.org/wiki/Mission_control_centre_(Cospas-Sarsat)>) to retrieve information about beacons during distress signal activations
+
+This repository contains the frontend application of the service. It is built using [NextJS](https://nextjs.org/) and based on the [GOV.UK Design System](https://design-system.service.gov.uk/).
+
+This application depends on the [Beacons Registration API](https://github.com/madetech/mca-beacons-service).
+
+## Getting started
+
+### Dependencies
+
+To develop locally, you'll need:
+
+- [Node.JS](https://nodejs.org/en/)
+- [Docker](https://www.docker.com/)
+
+### Running the application
+
+First, install dependencies:
+
+```bash
+npm install
+```
+
+Then, start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Running in Docker
+
+To run the application in a production-like environment:
+
+```bash
+docker-compose up
+```
 
 ## Testing
 
@@ -36,3 +65,18 @@ To update all test snapshots, run: `npm run test:update-all`
 To update a specific snapshot, run: `npm run test:update [INSERT TEST NAME PATTERN HERE]`
 
 For example: `npm run test:update Header`
+
+## Deployment
+
+Continuous integration and deployment to the AWS environment is managed by the [integration project](https://github.com/madetech/mca-beacons-integration).
+
+To deploy changes to production:
+
+1.  Develop on a branch (e.g. `feature/foo` or `bugfix/bar`)
+2.  Push changes to origin and open a pull request tagging at least one other member of the development team
+3.  When approved, merge to `main`
+4.  Merging into the `main` branch will trigger a [GitHub Actions workflow](.github/workflows/main.yml) and deploy changes to production
+
+## Licence
+
+TBC
