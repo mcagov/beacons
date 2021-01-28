@@ -30,4 +30,4 @@ Technical choices are outlined in the table:
 ## Supporting Documentation
 
 - [Trello - Technical Project Plan](https://trello.com/c/hSq6AxWa/138-technical-project-plan)
-- [2020-01-11 - Technical Options Presentation](https://mcga.sharepoint.com/:b:/r/sites/TheBeaconRegistryProject/Shared%20Documents/Beta/Meetings/2021-01-11%20-%20Technical%20Options/2021-01-11%20-%20Technical%20Options.pdf?csf=1&web=1&e=gRW42f)
+- [2021-01-11 - Technical Options Presentation](https://mcga.sharepoint.com/:b:/r/sites/TheBeaconRegistryProject/Shared%20Documents/Beta/Meetings/2021-01-11%20-%20Technical%20Options/2021-01-11%20-%20Technical%20Options.pdf?csf=1&web=1&e=gRW42f)
