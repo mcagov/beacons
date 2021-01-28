@@ -1,0 +1,34 @@
+{
+  "name": "mca-beacons-integration",
+  "version": "1.0.0",
+  "description": "Beacons Integration Project",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "adr": "adr-log -d docs/adr -i",
+    "format": "prettier --write '**/*.{json,md}'",
+    "format:check": "prettier --check '**/*.{json,md}'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madetech/mca-beacons-integration.git"
+  },
+  "author": "MCA",
+  "bugs": {
+    "url": "https://github.com/madetech/mca-beacons-integration/issues"
+  },
+  "homepage": "https://github.com/madetech/mca-beacons-integration#readme",
+  "devDependencies": {
+    "adr-log": "^2.2.0",
+    "husky": "^4.3.8",
+    "madr": "^2.1.2",
+    "prettier": "2.2.1",
+    "pretty-quick": "^3.1.0"
+  }
+}
