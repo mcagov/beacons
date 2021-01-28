@@ -1,6 +1,6 @@
 # ADR template by Michael Nygard
 
-This is the template in [Documenting architecture decisions - Michael Nygard](https://github.com/joelparkerhenderson/architecture_decision_record/blob/master/adr_template_by_michael_nygard.md).
+This template is adapted from [Documenting architecture decisions template by Michael Nygard](https://github.com/joelparkerhenderson/architecture_decision_record/blob/master/adr_template_by_michael_nygard.md).
 
 In each ADR file, write these sections:
 
@@ -21,3 +21,7 @@ What is the change that we're proposing and/or doing?
 ## Consequences
 
 What becomes easier or more difficult to do because of this change?
+
+## Related Trello Cards
+
+- Links to related trello cards
