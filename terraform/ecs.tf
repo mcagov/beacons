@@ -38,7 +38,7 @@ resource "aws_ecs_service" "webapp" {
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
-    subnets         = aws_subnet.private.*.id
+    subnets         = aws_subnet.app.*.id
   }
 
   load_balancer {
@@ -86,7 +86,7 @@ resource "aws_ecs_service" "service" {
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
-    subnets         = aws_subnet.private.*.id
+    subnets         = aws_subnet.app.*.id
   }
 
   load_balancer {

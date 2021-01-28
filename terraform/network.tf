@@ -9,19 +9,30 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 }
 
-resource "aws_subnet" "private" {
-  count             = var.az_count
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index)
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-}
-
 resource "aws_subnet" "public" {
   count                   = var.az_count
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, var.az_count + count.index)
+  cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index)
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
+}
+
+resource "aws_subnet" "app" {
+  count             = var.az_count
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, var.az_count + count.index)
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+}
+
+resource "aws_subnet" "db" {
+  count             = var.az_count
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, (2 * var.az_count) + count.index)
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+}
+
+resource "aws_db_subnet_group" "db" {
+  subnet_ids = aws_subnet.db.*.id
 }
 
 resource "aws_route" "internet_access" {
@@ -36,7 +47,6 @@ resource "aws_eip" "gw" {
   depends_on = [aws_internet_gateway.gw]
 }
 
-# TODO: Confirm if this should be public/private
 resource "aws_nat_gateway" "gw" {
   count         = var.az_count
   subnet_id     = element(aws_subnet.public.*.id, count.index)
@@ -54,9 +64,14 @@ resource "aws_route_table" "private" {
   }
 }
 
-# Explicitly associate the newly created route tables to the private subnets (so they don't default to the main route table)
-resource "aws_route_table_association" "private" {
+resource "aws_route_table_association" "app" {
   count          = var.az_count
-  subnet_id      = element(aws_subnet.private.*.id, count.index)
+  subnet_id      = element(aws_subnet.app.*.id, count.index)
+  route_table_id = element(aws_route_table.private.*.id, count.index)
+}
+
+resource "aws_route_table_association" "db" {
+  count          = var.az_count
+  subnet_id      = element(aws_subnet.db.*.id, count.index)
   route_table_id = element(aws_route_table.private.*.id, count.index)
 }
