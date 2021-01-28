@@ -23,11 +23,7 @@ class GovUKTemplate extends Document {
     return (
       // TODO: https://github.com/madetech/mca-beacons-webapp/issues/25
       <Html className={"govuk-template "} lang={"en"}>
-        <Head>
-          <title>
-            Maritime & Coastguard Agency - Beacons registration service
-          </title>
-        </Head>
+        <Head />
         <body className={"govuk-template__body"}>
           <Header serviceName={"Beacon registration service"} homeLink={"#"} />
           <PhaseBanner
