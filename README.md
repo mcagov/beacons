@@ -1,11 +1,16 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+![CI/CD pipeline](https://github.com/madetech/mca-beacons-webapp/workflows/CI/CD%20pipeline/badge.svg)
 
-A private beta service for:
+# Beacons Registration Webapp
+
+The frontend application for the Beacons Registration service enables:
 
 - [406Mhz beacon](https://www.gov.uk/maritime-safety-weather-and-navigation/register-406-mhz-beacons) owners to register their details with the Maritime & Coastguard Agency
 - Search and rescue [Mission Control Centres](<https://en.wikipedia.org/wiki/Mission_control_centre_(Cospas-Sarsat)>) to retrieve information about beacons during distress signal activations
 
 This repository contains the frontend application of the service. It is built using [NextJS](https://nextjs.org/) and based on the [GOV.UK Design System](https://design-system.service.gov.uk/).
+
+This application depends on the [Beacons Registration API](https://github.com/madetech/mca-beacons-service).
 
 ## Getting started
 
@@ -63,9 +68,15 @@ For example: `npm run test:update Header`
 
 ## Deployment
 
+Continuous integration and deployment to the AWS environment is managed by the [integration project](https://github.com/madetech/mca-beacons-integration).
+
 To deploy changes to production:
 
 1.  Develop on a branch (e.g. `feature/foo` or `bugfix/bar`)
 2.  Push changes to origin and open a pull request tagging at least one other member of the development team
 3.  When approved, merge to `main`
 4.  Merging into the `main` branch will trigger a [GitHub Actions workflow](.github/workflows/main.yml) and deploy changes to production
+
+## Licence
+
+TBC
