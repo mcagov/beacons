@@ -1,4 +1,4 @@
-# Maritime and Coastguard Agency (MCA) Integration Project
+# Beacons Registration Integration Project
 
 This project is the intgration project for the MCA Beacons Registration Application. This integration project manages the deplyoment of the following:
 
@@ -8,6 +8,22 @@ This project is the intgration project for the MCA Beacons Registration Applicat
 ## Infrastructure-as-code
 
 The [Terraform](./terraform) directory contains the Terraform code for managing the infrastructure for the Beacons Registration Application.
+
+## Deployment
+
+### Development Environment
+
+A [Continuous Integration and Deployment (CI/CD) pipeline](./.github/workflows/main.yml) is configured, using [GitHub Actions](https://docs.github.com/en/actions), to deploy a release to the development environment on any changes to the `main` branches of the Webapp, Service, and Integration project repositories.
+
+The pipeline provisions the infrastructure, according to the Terraform definition files, and deploys the latest versions of the Docker images for the Webapp and Service.
+
+### UAT Environment
+
+_TODO_
+
+### Production Environment
+
+_TODO_
 
 ## Installing AWS CLI
 
