@@ -12,13 +12,6 @@ FROM base AS build
 
 RUN npm ci && npm run build
 
-# NextJS development application
-FROM build AS nextjs-dev-app
-
-EXPOSE 3000
-
-ENTRYPOINT [ "npm", "run", "dev" ]
-
 # Installs production dependencies
 FROM base AS production-deps
 
