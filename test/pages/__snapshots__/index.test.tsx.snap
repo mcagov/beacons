@@ -61,6 +61,22 @@ exports[`Home Page renders correctly 1`] = `
            as we currently understand it
         </li>
       </ul>
+      <div
+        class="govuk-panel govuk-panel--confirmation"
+      >
+        <h1
+          class="govuk-panel__title"
+        >
+          Thank you for coming to our
+          <br />
+          Show and Tell
+        </h1>
+        <div
+          class="govuk-panel__body"
+        >
+          🤗
+        </div>
+      </div>
     </main>
   </div>
 </DocumentFragment>
