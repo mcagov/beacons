@@ -34,7 +34,6 @@ exports[`Header renders correctly 1`] = `
                 fill="currentColor"
                 fill-rule="evenodd"
               />
-              // TODO: https://github.com/madetech/mca-beacons-webapp/issues/26
             </svg>
             <span
               class="govuk-header__logotype-text"
