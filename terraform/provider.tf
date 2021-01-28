@@ -6,6 +6,7 @@ terraform {
     }
   }
 
+  # Requires bucket/Dynamo DB to be configured, please see README.md
   backend "s3" {
     bucket = "mca-beacons-state"
     key    = "state"
