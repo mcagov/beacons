@@ -12,7 +12,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run adr && pretty-quick --staged"
+      "pre-commit": "npm run adr && git add . && pretty-quick --staged"
     }
   },
   "repository": {
@@ -27,7 +27,6 @@
   "devDependencies": {
     "adr-log": "^2.2.0",
     "husky": "^4.3.8",
-    "madr": "^2.1.2",
     "prettier": "2.2.1",
     "pretty-quick": "^3.1.0"
   },

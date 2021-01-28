@@ -5,7 +5,7 @@ This log lists the architectural decisions for the Beacons Registration Project.
 <!-- adrlog -- Regenerate the adr contents by running "npm run adr". -->
 
 - [ADR-0000](0000-use-markdown-architectural-decision-records.md) - Use Markdown Architectural Decision Records
-- [ADR-1](template.md) - [short title of solved problem and solution]
+- [ADR-1](template.md) - ADR template by Michael Nygard
 
 <!-- adrlogstop -->
 
