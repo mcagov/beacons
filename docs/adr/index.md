@@ -4,7 +4,7 @@ This log lists the architectural decisions for the Beacons Registration Project.
 
 <!-- adrlog -- Regenerate the adr contents by running "npm run adr". -->
 
-- [ADR-0000](0000-frontend-framework.md) - Technology Choices
+- [ADR-0000-2021-01-28](0000-2021-01-28-frontend-framework.md) - Technology Choices
 
 <!-- adrlogstop -->
 

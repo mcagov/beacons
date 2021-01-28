@@ -2,6 +2,8 @@
 
 This template is adapted from [Documenting architecture decisions template by Michael Nygard](https://github.com/joelparkerhenderson/architecture_decision_record/blob/master/adr_template_by_michael_nygard.md).
 
+The format of each ADR file should be `NNNN-YYYY-MM-DD-title-with-dashes.md`, where `NNNN` indicates then next number in the sequence.
+
 In each ADR file, write these sections:
 
 # Title
