@@ -50,12 +50,12 @@ variable "webapp_health_check_path" {
 variable "webapp_fargate_cpu" {
   type        = number
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the Beacons Webapp"
-  default     = 1024
+  default     = 256
 }
 variable "webapp_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Beacons Webapp"
-  default     = 2048
+  default     = 512
 }
 variable "service_image" {
   type        = string
@@ -84,12 +84,12 @@ variable "service_health_check_path" {
 variable "service_fargate_cpu" {
   type        = number
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) Beacons Service"
-  default     = 1024
+  default     = 256
 }
 variable "service_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Beacons Service"
-  default     = 2048
+  default     = 512
 }
 variable "create_webapp_ecr" {
   type        = bool
