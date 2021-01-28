@@ -7,6 +7,9 @@ import Document, {
   DocumentContext,
 } from "next/document";
 import { DocumentInitialProps } from "next/dist/next-server/lib/utils";
+import { Header } from "../components/Header";
+import { PhaseBanner } from "../components/PhaseBanner";
+import { Footer } from "../components/Footer";
 
 class GovUKTemplate extends Document {
   static async getInitialProps(
@@ -26,7 +29,21 @@ class GovUKTemplate extends Document {
           </title>
         </Head>
         <body className={"govuk-template__body"}>
+          <Header serviceName={"Beacon registration service"} homeLink={"#"} />
+          <PhaseBanner
+            phase={"BETA"}
+            bannerHtml={
+              <>
+                This is a new MCA Show and Tell on 29 January 2021 – your{" "}
+                <a className="govuk-link" href="#">
+                  feedback
+                </a>{" "}
+                will help us to improve it.
+              </>
+            }
+          />
           <Main />
+          <Footer />
           <NextScript />
         </body>
       </Html>
