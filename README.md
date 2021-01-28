@@ -28,3 +28,7 @@ _TODO_
 ## Installing AWS CLI
 
 Please see the [AWS installation guide](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) and [configuration guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) for configuring the AWS CLI required for Terraform when managing the infrastructure
+
+## License
+
+_TODO_
