@@ -3,7 +3,7 @@
 exports[`PhaseBanner with snapshots renders the Phase Banner correctly 1`] = `
 <DocumentFragment>
   <div
-    class="govuk-phase-banner"
+    class="govuk-phase-banner govuk-width-container"
   >
     <p
       class="govuk-phase-banner__content"
