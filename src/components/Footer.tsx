@@ -20,7 +20,7 @@ export const Footer: React.FC = () => (
             />
           </svg>
           <span className="govuk-footer__licence-description">
-            All content is available under the
+            All content is available under the &nbsp;
             <a
               className="govuk-footer__link"
               href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
