@@ -29,7 +29,7 @@ _TODO_
 
 ## Architectural Decision Records (ADRs)
 
-We use ADRs to document design choices that address functional and non-functional requirements that are architecturally significant to the Beacons Registration project. Please see the [template](./docs/adr/adr.template) for how to document ADRs for the project.
+We use [ADRs](./docs/adr) to document design choices that address functional and non-functional requirements that are architecturally significant to the Beacons Registration project. Please see the [template](./docs/adr/adr.template) for how to document ADRs for the project.
 
 ## Installing AWS CLI
 
