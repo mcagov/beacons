@@ -69,9 +69,3 @@ To deploy changes to production:
 2.  Push changes to origin and open a pull request tagging at least one other member of the development team
 3.  When approved, merge to `main`
 4.  Merging into the `main` branch will trigger a [GitHub Actions workflow](.github/workflows/main.yml) and deploy changes to production
-
-## License
-
-Unless stated otherwise, the codebase is released under the [MIT Licence](LICENCE). This covers both the codebase and any sample code in the documentation.
-
-The documentation is [© Crown copyright](http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/) and available under the terms of the [Open Government 3.0 licence](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/).
