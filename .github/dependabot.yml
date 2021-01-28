@@ -9,6 +9,14 @@ updates:
     pull-request-branch-name:
       separator: "-"
 
+  # Maintain package.json dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    pull-request-branch-name:
+      separator: "-"
+
   # Maintain GitHub Actions dependencies
   - package-ecosystem: "github-actions"
     directory: "/"

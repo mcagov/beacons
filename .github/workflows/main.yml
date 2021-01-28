@@ -51,7 +51,7 @@ jobs:
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
 
   terraform_deploy:
-    needs: [terraform_lint, get_docker_image_tags]
+    needs: [terraform_lint, get_docker_image_tags, prettier_check]
     if: github.ref == 'refs/heads/main'
     name: Terraform Deploy
     runs-on: ubuntu-latest
