@@ -1,0 +1,30 @@
+# ADR template by Michael Nygard
+
+This template is adapted from [Documenting architecture decisions template by Michael Nygard](https://github.com/joelparkerhenderson/architecture_decision_record/blob/master/adr_template_by_michael_nygard.md), and [original blog post](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions).
+
+The format of each ADR file should be `NNNN-YYYY-MM-DD-title-with-dashes.md`, where `NNNN` indicates then next number in the sequence.
+
+In each ADR file, document these sections:
+
+# Title
+
+## Status
+
+What is the status, such as proposed, accepted, rejected, deprecated, superseded, etc.?
+
+## Context
+
+What is the issue that we're seeing that is motivating this decision or change?
+
+## Decision
+
+What is the change that we're proposing and/or doing?
+
+## Consequences
+
+What becomes easier or more difficult to do because of this change?
+
+## Supporting Documentation
+
+- Links to related trello cards
+- Links to resources in SharePoint

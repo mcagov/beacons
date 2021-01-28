@@ -1,4 +1,5 @@
 ![CI/CD Pipeline](https://github.com/madetech/mca-beacons-integration/workflows/CI/CD%20Pipeline/badge.svg)
+
 # Beacons Registration Integration Project
 
 This project is the integration project for the MCA Beacons Registration Application. This integration project manages the deployment of the following:
@@ -25,6 +26,10 @@ _TODO_
 ### Production Environment
 
 _TODO_
+
+## Architectural Decision Records (ADRs)
+
+We use ADRs to document design choices that address functional and non-functional requirements that are architecturally significant to the Beacons Registration project. Please see the [template](./docs/adr/adr.template) for how to document ADRs for the project.
 
 ## Installing AWS CLI
 
