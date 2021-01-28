@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
+    "test:staged": "jest -o",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:update": "jest --updateSnapshot --testNamePattern",
@@ -19,7 +20,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged ; npm run test:staged"
     }
   },
   "dependencies": {
