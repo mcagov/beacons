@@ -1,3 +1,5 @@
+![CI/CD Pipeline](https://github.com/madetech/mca-beacons-integration/workflows/CI/CD%20Pipeline/badge.svg)
+
 # Beacons Registration Integration Project
 
 This project is the integration project for the MCA Beacons Registration Application. This integration project manages the deployment of the following:
