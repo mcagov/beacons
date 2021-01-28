@@ -4,7 +4,7 @@ This template is adapted from [Documenting architecture decisions template by Mi
 
 The format of each ADR file should be `NNNN-YYYY-MM-DD-title-with-dashes.md`, where `NNNN` indicates then next number in the sequence.
 
-In each ADR file, write these sections:
+In each ADR file, document these sections:
 
 # Title
 
