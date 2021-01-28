@@ -24,26 +24,26 @@ exports[`Home Page renders correctly 1`] = `
         <li>
           <a
             href="https://github.com/madetech/mca-beacons-webapp/actions"
+            rel="noreferrer"
+            target="_blank"
           >
             showcase
           </a>
            your 
           <a
-            href="https://github.com/madetech/mca-beacons-integration"
+            href="https://github.com/madetech/mca-beacons-integration/actions"
+            rel="noreferrer"
+            target="_blank"
           >
-            continuous integration
-          </a>
-           and 
-          <a
-            href="https://console.aws.amazon.com"
-          >
-            deployment pipeline
+            continuous integration and deployment pipeline
           </a>
         </li>
         <li>
           talk about reusable 
           <a
             href="https://design-system.service.gov.uk/"
+            rel="noreferrer"
+            target="_blank"
           >
             GOV.UK design system
           </a>
@@ -53,6 +53,8 @@ exports[`Home Page renders correctly 1`] = `
           outline the 
           <a
             href="https://miro.com/app/board/o9J_lZRBWY4=/"
+            rel="noreferrer"
+            target="_blank"
           >
             data model
           </a>

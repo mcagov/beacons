@@ -10,26 +10,44 @@ const Home: FunctionComponent = () => {
 
         <ul className="govuk-list govuk-list--bullet">
           <li>
-            <a href={"https://github.com/madetech/mca-beacons-webapp/actions"}>
+            <a
+              href={"https://github.com/madetech/mca-beacons-webapp/actions"}
+              target={"_blank"}
+              rel={"noreferrer"}
+            >
               showcase
             </a>{" "}
             your{" "}
-            <a href={"https://github.com/madetech/mca-beacons-integration"}>
-              continuous integration
-            </a>{" "}
-            and{" "}
-            <a href={"https://console.aws.amazon.com"}>deployment pipeline</a>
+            <a
+              href={
+                "https://github.com/madetech/mca-beacons-integration/actions"
+              }
+              target={"_blank"}
+              rel={"noreferrer"}
+            >
+              continuous integration and deployment pipeline
+            </a>
           </li>
           <li>
             talk about reusable{" "}
-            <a href={"https://design-system.service.gov.uk/"}>
+            <a
+              href={"https://design-system.service.gov.uk/"}
+              target={"_blank"}
+              rel={"noreferrer"}
+            >
               GOV.UK design system
             </a>{" "}
             components that will speed up future sprints
           </li>
           <li>
             outline the{" "}
-            <a href={"https://miro.com/app/board/o9J_lZRBWY4=/"}>data model</a>{" "}
+            <a
+              href={"https://miro.com/app/board/o9J_lZRBWY4=/"}
+              target={"_blank"}
+              rel={"noreferrer"}
+            >
+              data model
+            </a>{" "}
             as we currently understand it
           </li>
         </ul>
