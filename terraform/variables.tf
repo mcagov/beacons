@@ -61,12 +61,10 @@ variable "webapp_fargate_memory" {
 variable "service_image" {
   type        = string
   description = "Docker image to run in the ECS cluster"
-  default     = "261219435789.dkr.ecr.eu-west-2.amazonaws.com/mca-beacons-service"
 }
 variable "service_image_tag" {
   type        = string
   description = "Hash of the relevant commit to the mca-beacons-service repo"
-  default     = "11be4013b9f980735a42478094d32a4a95b5ec89"
 }
 variable "service_port" {
   type        = number
