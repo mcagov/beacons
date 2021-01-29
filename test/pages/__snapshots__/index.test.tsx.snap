@@ -5,63 +5,59 @@ exports[`Home Page renders correctly 1`] = `
   <div
     class="govuk-width-container"
   >
-    <main
-      class="govuk-main-wrapper"
+    <h1
+      class="govuk-heading-l"
     >
-      <h1
-        class="govuk-heading-l"
-      >
-        Beacon registration service
-      </h1>
-      <p
-        class="govuk-body"
-      >
-        Use this service to:
-      </p>
-      <ul
-        class="govuk-list govuk-list--bullet"
-      >
-        <li>
-          <a
-            href="https://github.com/madetech/mca-beacons-webapp/actions"
-            rel="noreferrer"
-            target="_blank"
-          >
-            showcase
-          </a>
-           your 
-          <a
-            href="https://github.com/madetech/mca-beacons-integration/actions"
-            rel="noreferrer"
-            target="_blank"
-          >
-            continuous integration and deployment pipeline
-          </a>
-        </li>
-        <li>
-          talk about reusable 
-          <a
-            href="https://design-system.service.gov.uk/"
-            rel="noreferrer"
-            target="_blank"
-          >
-            GOV.UK design system
-          </a>
-           components that will speed up future sprints
-        </li>
-        <li>
-          outline the 
-          <a
-            href="https://miro.com/app/board/o9J_lZRBWY4=/"
-            rel="noreferrer"
-            target="_blank"
-          >
-            data model
-          </a>
-           as we currently understand it
-        </li>
-      </ul>
-    </main>
+      Beacon registration service
+    </h1>
+    <p
+      class="govuk-body"
+    >
+      Use this service to:
+    </p>
+    <ul
+      class="govuk-list govuk-list--bullet"
+    >
+      <li>
+        <a
+          href="https://github.com/madetech/mca-beacons-webapp/actions"
+          rel="noreferrer"
+          target="_blank"
+        >
+          showcase
+        </a>
+         your 
+        <a
+          href="https://github.com/madetech/mca-beacons-integration/actions"
+          rel="noreferrer"
+          target="_blank"
+        >
+          continuous integration and deployment pipeline
+        </a>
+      </li>
+      <li>
+        talk about reusable 
+        <a
+          href="https://design-system.service.gov.uk/"
+          rel="noreferrer"
+          target="_blank"
+        >
+          GOV.UK design system
+        </a>
+         components that will speed up future sprints
+      </li>
+      <li>
+        outline the 
+        <a
+          href="https://miro.com/app/board/o9J_lZRBWY4=/"
+          rel="noreferrer"
+          target="_blank"
+        >
+          data model
+        </a>
+         as we currently understand it
+      </li>
+    </ul>
   </div>
 </DocumentFragment>
 `;

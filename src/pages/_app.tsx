@@ -66,7 +66,7 @@ const MyApp: FunctionComponent<AppProps> = ({
           content="/assets/images/govuk-opengraph-image.png"
         />
       </Head>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </>
   );
 };
