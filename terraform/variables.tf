@@ -60,6 +60,7 @@ variable "webapp_fargate_memory" {
 variable "service_image" {
   type        = string
   description = "Docker image to run in the ECS cluster"
+  default     = "261219435789.dkr.ecr.eu-west-2.amazonaws.com/mca-beacons-service"
 }
 variable "service_image_tag" {
   type        = string
