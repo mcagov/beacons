@@ -25,6 +25,9 @@ class GovUKTemplate extends Document {
       <Html className={"govuk-template "} lang={"en"}>
         <Head />
         <body className={"govuk-template__body"}>
+          <a href="#main-content" className="govuk-skip-link">
+            Skip to main content
+          </a>
           <Header serviceName={"Beacon registration service"} homeLink={"#"} />
           <PhaseBanner
             phase={"BETA"}
@@ -38,7 +41,9 @@ class GovUKTemplate extends Document {
               </>
             }
           />
-          <Main />
+          <main id="main-content" className="govuk-main-wrapper">
+            <Main />
+          </main>
           <Footer />
           <NextScript />
         </body>
