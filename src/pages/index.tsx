@@ -51,6 +51,14 @@ const Home: FunctionComponent = () => {
             as we currently understand it
           </li>
         </ul>
+        <div className="govuk-panel govuk-panel--confirmation">
+          <h1 className="govuk-panel__title">
+            Thank you for coming to our
+            <br />
+            Show and Tell
+          </h1>
+          <div className="govuk-panel__body">🤗</div>
+        </div>
       </main>
     </div>
   );
