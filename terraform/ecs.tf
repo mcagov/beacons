@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "webapp" {
         "containerPort" : var.webapp_port
         "hostPort" : var.webapp_port
       }
-    ]
+    ],
     "logConfiguration" : {
       "logDriver" : "awslogs",
       "options" : {
