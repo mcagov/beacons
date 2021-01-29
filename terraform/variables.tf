@@ -31,7 +31,6 @@ variable "webapp_image" {
 variable "webapp_image_tag" {
   type        = string
   description = "Hash of the relevant commit to the mca-beacons-webapp repo"
-  default     = "93267b2fd61a38be272f9037aa223fdd5a47fe63"
 }
 variable "webapp_port" {
   type        = number
