@@ -73,7 +73,7 @@ resource "aws_ecs_task_definition" "service" {
     "environment" : [
       {
         "name" : "SPRING_DATASOURCE_URL",
-        "value" : "jdbc:postgresql://${aws_db_instance.postgres.endpoint}/${var.db_name}?sslmode=verify-full"
+        "value" : "jdbc:postgresql://${aws_db_instance.postgres.endpoint}/${var.db_name}?sslmode=require"
       },
       {
         "name" : "SPRING_DATASOURCE_USER",
