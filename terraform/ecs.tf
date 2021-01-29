@@ -78,6 +78,10 @@ resource "aws_ecs_task_definition" "service" {
       {
         "name" : "SPRING_DATASOURCE_USER",
         "value" : var.db_username
+      },
+      {
+        "name" : "SPRING_DATASOURCE_PASSWORD",
+        "value" : random_password.db_password.result
       }
     ],
     "logConfiguration" : {

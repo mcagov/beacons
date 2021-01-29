@@ -130,7 +130,6 @@ variable "db_username" {
 variable "db_password" {
   type        = string
   description = "The password used for the master database user"
-  default     = "password"
   sensitive   = true
 }
 variable "db_instance_class" {
@@ -143,4 +142,14 @@ variable "db_storage_encrypted" {
   type        = bool
   description = "Specifies whether the database instances data is encrypted"
   default     = false
+}
+variable "db_logs_exported" {
+  type        = list(string)
+  description = "Set of logs types to enable for exporting to CloudWatch logs. If empty, no logs will be exported"
+  default     = ["postgresql", "upgrade"]
+
+  validation {
+    condition     = length(var.db_logs_exported) >= 0 && length(var.db_logs_exported) <= 2
+    error_message = "Exported log options are either: postgresql or upgrade."
+  }
 }

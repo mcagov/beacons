@@ -10,4 +10,6 @@ resource "aws_db_instance" "postgres" {
   password               = var.db_password
   instance_class         = var.db_instance_class
   storage_encrypted      = var.db_storage_encrypted
+
+  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
 }
