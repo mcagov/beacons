@@ -17,12 +17,6 @@ resource "aws_ecs_task_definition" "webapp" {
         "containerPort" : var.webapp_port
         "hostPort" : var.webapp_port
       }
-    ],
-    "environment" : [
-      {
-        "name" : "SPRING_DATASOURCE_URL",
-        "value" : "jdbc:postgresql://${aws_db_instance.postgres.address}/${var.db_name}"
-      }
     ]
     "logConfiguration" : {
       "logDriver" : "awslogs",
@@ -74,6 +68,16 @@ resource "aws_ecs_task_definition" "service" {
       {
         "containerPort" : var.service_port
         "hostPort" : var.service_port
+      }
+    ],
+    "environment" : [
+      {
+        "name" : "SPRING_DATASOURCE_URL",
+        "value" : "jdbc:postgresql://${aws_db_instance.postgres.endpoint}/${var.db_name}?sslmode=verify-full"
+      },
+      {
+        "name" : "SPRING_DATASOURCE_USER",
+        "value" : var.db_username
       }
     ],
     "logConfiguration" : {

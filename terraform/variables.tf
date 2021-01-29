@@ -31,6 +31,7 @@ variable "webapp_image" {
 variable "webapp_image_tag" {
   type        = string
   description = "Hash of the relevant commit to the mca-beacons-webapp repo"
+  default     = "93267b2fd61a38be272f9037aa223fdd5a47fe63"
 }
 variable "webapp_port" {
   type        = number
@@ -65,6 +66,7 @@ variable "service_image" {
 variable "service_image_tag" {
   type        = string
   description = "Hash of the relevant commit to the mca-beacons-service repo"
+  default     = "11be4013b9f980735a42478094d32a4a95b5ec89"
 }
 variable "service_port" {
   type        = number
@@ -124,7 +126,7 @@ variable "db_name" {
 variable "db_username" {
   type        = string
   description = "The username for the master database user"
-  default     = "beacons-service"
+  default     = "beacons_service"
   sensitive   = true
 }
 variable "db_password" {
