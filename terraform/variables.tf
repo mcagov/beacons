@@ -136,7 +136,7 @@ variable "db_password" {
 variable "db_instance_class" {
   type        = string
   description = "The database instance class"
-  defualt     = "db.t2.micro"
+  default     = "db.t2.micro"
 }
 # See: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html#Overview.Encryption.Availability for storage tiers that support encryption
 variable "db_storage_encrypted" {
