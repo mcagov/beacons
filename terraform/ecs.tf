@@ -18,6 +18,12 @@ resource "aws_ecs_task_definition" "webapp" {
         "hostPort" : var.webapp_port
       }
     ],
+    "environment" : [
+      {
+        "name" : "SPRING_DATASOURCE_URL",
+        "value" : "jdbc:postgresql://${aws_db_instance.postgres.address}/${var.db_name}"
+      }
+    ]
     "logConfiguration" : {
       "logDriver" : "awslogs",
       "options" : {
@@ -45,6 +51,10 @@ resource "aws_ecs_service" "webapp" {
     target_group_arn = aws_alb_target_group.webapp.id
     container_name   = "beacons-webapp"
     container_port   = var.webapp_port
+  }
+
+  service_registries {
+    registry_arn = aws_service_discovery_service.webapp.arn
   }
 
   depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs_task_execution_role]
@@ -93,6 +103,10 @@ resource "aws_ecs_service" "service" {
     target_group_arn = aws_alb_target_group.service.id
     container_name   = "beacons-service"
     container_port   = var.service_port
+  }
+
+  service_registries {
+    registry_arn = aws_service_discovery_service.service.arn
   }
 
   depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs_task_execution_role]

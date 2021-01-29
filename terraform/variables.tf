@@ -125,10 +125,12 @@ variable "db_username" {
   type        = string
   description = "The username for the master database user"
   default     = "beacons-service"
+  sensitive   = true
 }
 variable "db_password" {
   type        = string
   description = "The password used for the master database user"
+  default     = "password"
   sensitive   = true
 }
 variable "db_instance_class" {
