@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import type { AppProps } from "next/app";
 import "../styles/globals.scss";
-import Head from "next/Head";
+import Head from "next/head";
 
 const MyApp: FunctionComponent<AppProps> = ({
   Component,

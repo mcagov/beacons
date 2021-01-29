@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import Head from "next/Head";
+import Head from "next/head";
 
 const Home: FunctionComponent = () => {
   return (
