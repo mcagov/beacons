@@ -1,5 +1,5 @@
 resource "aws_alb" "main" {
-  name            = "cb-load-balancer"
+  name            = "beacons"
   subnets         = aws_subnet.public.*.id
   security_groups = [aws_security_group.lb.id]
 }

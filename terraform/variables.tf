@@ -79,7 +79,7 @@ variable "service_count" {
 variable "service_health_check_path" {
   type        = string
   description = "Health check path used by the Application Load Balancer for the Beacons Service"
-  default     = "/actuator/health"
+  default     = "/api/actuator/health"
 }
 variable "service_fargate_cpu" {
   type        = number
@@ -100,4 +100,56 @@ variable "create_service_ecr" {
   type        = bool
   description = "Determines if the service ECR should be created"
   default     = false
+}
+variable "db_storage" {
+  type        = number
+  description = "Allocated storage, in GB, for the PostgreSQL instance"
+  default     = 20
+}
+variable "db_max_storage" {
+  type        = number
+  description = "The upper limit, in GB, to which PostgreSQL can automatically scale the storage of the DB"
+  default     = 20
+}
+variable "db_delete_protection" {
+  type        = bool
+  description = "Determines if the DB can be delted. If true, the database cannot be deleted"
+  default     = false
+}
+variable "db_name" {
+  type        = string
+  description = "The name of the database to create when the db instance is created"
+  default     = "beacons"
+}
+variable "db_username" {
+  type        = string
+  description = "The username for the master database user"
+  default     = "beacons_service"
+  sensitive   = true
+}
+variable "db_password" {
+  type        = string
+  description = "The password used for the master database user"
+  sensitive   = true
+}
+variable "db_instance_class" {
+  type        = string
+  description = "The database instance class"
+  default     = "db.t2.micro"
+}
+# See: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html#Overview.Encryption.Availability for storage tiers that support encryption
+variable "db_storage_encrypted" {
+  type        = bool
+  description = "Specifies whether the database instances data is encrypted"
+  default     = false
+}
+variable "db_logs_exported" {
+  type        = list(string)
+  description = "Set of logs types to enable for exporting to CloudWatch logs. If empty, no logs will be exported"
+  default     = ["postgresql", "upgrade"]
+
+  validation {
+    condition     = length(var.db_logs_exported) >= 0 && length(var.db_logs_exported) <= 2
+    error_message = "Exported log options are either: postgresql or upgrade."
+  }
 }

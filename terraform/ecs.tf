@@ -38,13 +38,17 @@ resource "aws_ecs_service" "webapp" {
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
-    subnets         = aws_subnet.private.*.id
+    subnets         = aws_subnet.app.*.id
   }
 
   load_balancer {
     target_group_arn = aws_alb_target_group.webapp.id
     container_name   = "beacons-webapp"
     container_port   = var.webapp_port
+  }
+
+  service_registries {
+    registry_arn = aws_service_discovery_service.webapp.arn
   }
 
   depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs_task_execution_role]
@@ -64,6 +68,20 @@ resource "aws_ecs_task_definition" "service" {
       {
         "containerPort" : var.service_port
         "hostPort" : var.service_port
+      }
+    ],
+    "environment" : [
+      {
+        "name" : "SPRING_DATASOURCE_URL",
+        "value" : "jdbc:postgresql://${aws_db_instance.postgres.endpoint}/${var.db_name}?sslmode=require"
+      },
+      {
+        "name" : "SPRING_DATASOURCE_USER",
+        "value" : var.db_username
+      },
+      {
+        "name" : "SPRING_DATASOURCE_PASSWORD",
+        "value" : var.db_password
       }
     ],
     "logConfiguration" : {
@@ -86,13 +104,17 @@ resource "aws_ecs_service" "service" {
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
-    subnets         = aws_subnet.private.*.id
+    subnets         = aws_subnet.app.*.id
   }
 
   load_balancer {
     target_group_arn = aws_alb_target_group.service.id
     container_name   = "beacons-service"
     container_port   = var.service_port
+  }
+
+  service_registries {
+    registry_arn = aws_service_discovery_service.service.arn
   }
 
   depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs_task_execution_role]
