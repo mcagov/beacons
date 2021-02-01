@@ -41,9 +41,11 @@ class GovUKTemplate extends Document {
               </>
             }
           />
-          <main id="main-content" className="govuk-main-wrapper">
-            <Main />
-          </main>
+          <div className="govuk-width-container ">
+            <main id="main-content" className="govuk-main-wrapper">
+              <Main />
+            </main>
+          </div>
           <Footer />
           <NextScript />
         </body>
