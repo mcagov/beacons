@@ -2,6 +2,9 @@ import React, { FunctionComponent, useEffect } from "react";
 import type { AppProps } from "next/app";
 import "../styles/globals.scss";
 import Head from "next/head";
+import { Header } from "../components/Header";
+import { PhaseBanner } from "../components/PhaseBanner";
+import { Footer } from "../components/Footer";
 
 const MyApp: FunctionComponent<AppProps> = ({
   Component,
@@ -66,7 +69,28 @@ const MyApp: FunctionComponent<AppProps> = ({
           content="/assets/images/govuk-opengraph-image.png"
         />
       </Head>
-      <Component {...pageProps} />
+      <a href="#main-content" className="govuk-skip-link" role="main">
+        Skip to main content
+      </a>
+      <Header serviceName={"Beacon registration service"} homeLink={"#"} />
+      <PhaseBanner
+        phase={"BETA"}
+        bannerHtml={
+          <>
+            This is a new MCA Show and Tell on 29 January 2021 – your{" "}
+            <a className="govuk-link" href="#">
+              feedback
+            </a>{" "}
+            will help us to improve it.
+          </>
+        }
+      />
+      <div className="govuk-width-container ">
+        <main id="main-content" className="govuk-main-wrapper">
+          <Component {...pageProps} />
+        </main>
+      </div>
+      <Footer />
     </>
   );
 };
