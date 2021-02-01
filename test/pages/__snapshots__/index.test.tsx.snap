@@ -2,58 +2,82 @@
 
 exports[`Home Page renders correctly 1`] = `
 <DocumentFragment>
-  <h1
-    class="govuk-heading-l"
+  <div
+    class="govuk-width-container"
   >
-    Beacon registration service
-  </h1>
-  <p
-    class="govuk-body"
-  >
-    Use this service to:
-  </p>
-  <ul
-    class="govuk-list govuk-list--bullet"
-  >
-    <li>
-      <a
-        href="https://github.com/madetech/mca-beacons-webapp/actions"
-        rel="noreferrer"
-        target="_blank"
+    <main
+      class="govuk-main-wrapper"
+    >
+      <h1
+        class="govuk-heading-l"
       >
-        showcase
-      </a>
-       your 
-      <a
-        href="https://github.com/madetech/mca-beacons-integration/actions"
-        rel="noreferrer"
-        target="_blank"
+        Beacon registration service
+      </h1>
+      <p
+        class="govuk-body"
       >
-        continuous integration and deployment pipeline
-      </a>
-    </li>
-    <li>
-      talk about reusable 
-      <a
-        href="https://design-system.service.gov.uk/"
-        rel="noreferrer"
-        target="_blank"
+        Use this service to:
+      </p>
+      <ul
+        class="govuk-list govuk-list--bullet"
       >
-        GOV.UK design system
-      </a>
-       components that will speed up future sprints
-    </li>
-    <li>
-      outline the 
-      <a
-        href="https://miro.com/app/board/o9J_lZRBWY4=/"
-        rel="noreferrer"
-        target="_blank"
+        <li>
+          <a
+            href="https://github.com/madetech/mca-beacons-webapp/actions"
+            rel="noreferrer"
+            target="_blank"
+          >
+            showcase
+          </a>
+           your 
+          <a
+            href="https://github.com/madetech/mca-beacons-integration/actions"
+            rel="noreferrer"
+            target="_blank"
+          >
+            continuous integration and deployment pipeline
+          </a>
+        </li>
+        <li>
+          talk about reusable 
+          <a
+            href="https://design-system.service.gov.uk/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            GOV.UK design system
+          </a>
+           components that will speed up future sprints
+        </li>
+        <li>
+          outline the 
+          <a
+            href="https://miro.com/app/board/o9J_lZRBWY4=/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            data model
+          </a>
+           as we currently understand it
+        </li>
+      </ul>
+      <div
+        class="govuk-panel govuk-panel--confirmation"
       >
-        data model
-      </a>
-       as we currently understand it
-    </li>
-  </ul>
+        <h1
+          class="govuk-panel__title"
+        >
+          Thank you for coming to our
+          <br />
+          Show and Tell
+        </h1>
+        <div
+          class="govuk-panel__body"
+        >
+          🤗
+        </div>
+      </div>
+    </main>
+  </div>
 </DocumentFragment>
 `;
