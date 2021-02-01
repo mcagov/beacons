@@ -38,7 +38,7 @@ exports[`Header renders correctly 1`] = `
             <span
               class="govuk-header__logotype-text"
             >
-              GOV.UK
+               GOV.UK
             </span>
           </span>
         </a>

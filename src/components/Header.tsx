@@ -40,7 +40,7 @@ export const Header: React.FC<HeaderProps> = ({
               {/*  height="32"*/}
               {/*/>*/}
             </svg>
-            <span className="govuk-header__logotype-text">GOV.UK</span>
+            <span className="govuk-header__logotype-text"> GOV.UK</span>
           </span>
         </a>
       </div>
