@@ -18,7 +18,6 @@ class GovUKTemplate extends Document {
 
   render(): React.ReactElement {
     return (
-      // TODO: https://github.com/madetech/mca-beacons-webapp/issues/25
       <Html className="govuk-template " lang="en">
         <Head />
         <body className="govuk-template__body">
