@@ -6,7 +6,7 @@ import { Header } from "../components/Header";
 import { PhaseBanner } from "../components/PhaseBanner";
 import { Footer } from "../components/Footer";
 
-const MyApp: FunctionComponent<AppProps> = ({
+const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
   Component,
   pageProps,
 }: AppProps) => {
@@ -95,4 +95,4 @@ const MyApp: FunctionComponent<AppProps> = ({
   );
 };
 
-export default MyApp;
+export default BeaconRegistrationApp;
