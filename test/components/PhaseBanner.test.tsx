@@ -4,14 +4,11 @@ import React from "react";
 describe("PhaseBanner with snapshots", () => {
   it("renders the Phase Banner correctly", () => {
     const { asFragment } = render(
-      <PhaseBanner
-        phase={"BETA"}
-        bannerHtml={
-          <>
-            Hello <a href={"#"}> World </a>
-          </>
-        }
-      />
+      <PhaseBanner phase={"BETA"}>
+        <>
+          Hello <a href={"#"}> World </a>
+        </>
+      </PhaseBanner>
     );
 
     expect(asFragment()).toMatchSnapshot();

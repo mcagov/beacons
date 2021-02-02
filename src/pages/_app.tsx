@@ -73,18 +73,13 @@ const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
         Skip to main content
       </a>
       <Header serviceName={"Beacon registration service"} homeLink={"#"} />
-      <PhaseBanner
-        phase={"BETA"}
-        bannerHtml={
-          <>
-            This is a new MCA Show and Tell on 29 January 2021 – your{" "}
-            <a className="govuk-link" href="#">
-              feedback
-            </a>{" "}
-            will help us to improve it.
-          </>
-        }
-      />
+      <PhaseBanner phase={"BETA"}>
+        This is a new MCA Show and Tell on 29 January 2021 – your{" "}
+        <a className="govuk-link" href="#">
+          feedback
+        </a>{" "}
+        will help us to improve it.
+      </PhaseBanner>
       <div className="govuk-width-container ">
         <main id="main-content" className="govuk-main-wrapper">
           <Component {...pageProps} />
