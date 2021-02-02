@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from "react";
-import styles from "../styles/Header.module.scss";
 
 interface HeaderProps {
   serviceName: string;
@@ -10,11 +9,7 @@ export const Header: FunctionComponent<HeaderProps> = ({
   serviceName,
   homeLink,
 }: HeaderProps): JSX.Element => (
-  <header
-    className={`govuk-header ${styles.header}`}
-    role="banner"
-    data-module="govuk-header"
-  >
+  <header className="govuk-header " role="banner" data-module="govuk-header">
     <div className="govuk-header__container govuk-width-container">
       <HeaderLogo homeLink={homeLink} />
       <div className="govuk-header__content">

@@ -3,7 +3,7 @@
 exports[`Header renders correctly 1`] = `
 <DocumentFragment>
   <header
-    class="govuk-header header"
+    class="govuk-header "
     data-module="govuk-header"
     role="banner"
   >
