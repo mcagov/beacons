@@ -29,7 +29,7 @@ export const StartButton: FunctionComponent<StartButtonProps> = ({
       className="govuk-button govuk-button--start"
       data-module="govuk-button"
     >
-      Start now
+      {buttonText}
       <svg
         className="govuk-button__start-icon"
         xmlns="http://www.w3.org/2000/svg"

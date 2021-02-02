@@ -48,7 +48,7 @@ exports[`Button components Start Button renders correctly with the text specifie
     href="#"
     role="button"
   >
-    Start now
+    START NOW
     <svg
       aria-hidden="true"
       class="govuk-button__start-icon"
