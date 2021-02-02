@@ -17,10 +17,20 @@ exports[`Home Page renders correctly 1`] = `
   >
     How long it takes
   </h2>
+  <p
+    class="govuk-body"
+  >
+    TO UPDATE: It takes up to xxx weeks to register your beacon online.
+  </p>
   <h2
     class="govuk-heading-m"
   >
     Before you start
   </h2>
+  <p
+    class="govuk-body"
+  >
+    TO UPDATE: : You'll need certain information before you start.
+  </p>
 </DocumentFragment>
 `;
