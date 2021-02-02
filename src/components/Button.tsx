@@ -12,8 +12,6 @@ const Button: FunctionComponent<ButtonProps> = ({
   </button>
 );
 
-export default Button;
-
 interface StartButtonProps {
   buttonText?: string;
 }
@@ -44,3 +42,5 @@ export const StartButton: FunctionComponent<StartButtonProps> = ({
     </a>
   </>
 );
+
+export default Button;

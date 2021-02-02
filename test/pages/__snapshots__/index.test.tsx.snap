@@ -55,5 +55,15 @@ exports[`Home Page renders correctly 1`] = `
       />
     </svg>
   </a>
+  <h2
+    class="govuk-heading-m"
+  >
+    Other ways to apply
+  </h2>
+  <p
+    class="govuk-body"
+  >
+    TO UPDATE: You can request postal forms by emailing.
+  </p>
 </DocumentFragment>
 `;
