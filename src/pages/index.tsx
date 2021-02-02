@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import Head from "next/head";
+import { StartButton } from "../components/Button";
 
 const ServiceStartPage: FunctionComponent = () => (
   <>
@@ -43,5 +44,7 @@ const BeforeYouStart: FunctionComponent = () => (
     <p className="govuk-body">
       TO UPDATE: You will need certain information before you start.
     </p>
+
+    <StartButton />
   </>
 );

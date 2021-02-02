@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button components Button renders correctly 1`] = `
+<DocumentFragment>
+  <button
+    class="govuk-button"
+    data-module="govuk-button"
+  >
+    Save and continue
+  </button>
+</DocumentFragment>
+`;
+
+exports[`Button components Start Button renders correctly 1`] = `
+<DocumentFragment>
+  <a
+    class="govuk-button govuk-button--start"
+    data-module="govuk-button"
+    draggable="false"
+    href="#"
+    role="button"
+  >
+    Start now
+    <svg
+      aria-hidden="true"
+      class="govuk-button__start-icon"
+      focusable="false"
+      height="19"
+      viewBox="0 0 33 40"
+      width="17.5"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0 0h13l20 20-20 20H0l20-20z"
+        fill="currentColor"
+      />
+    </svg>
+  </a>
+</DocumentFragment>
+`;
+
+exports[`Button components Start Button renders correctly with no button text specified 1`] = `
+<DocumentFragment>
+  <a
+    class="govuk-button govuk-button--start"
+    data-module="govuk-button"
+    draggable="false"
+    href="#"
+    role="button"
+  >
+    Start now
+    <svg
+      aria-hidden="true"
+      class="govuk-button__start-icon"
+      focusable="false"
+      height="19"
+      viewBox="0 0 33 40"
+      width="17.5"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0 0h13l20 20-20 20H0l20-20z"
+        fill="currentColor"
+      />
+    </svg>
+  </a>
+</DocumentFragment>
+`;
