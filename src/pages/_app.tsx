@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import "../styles/globals.scss";
 import Head from "next/head";
 import { Header } from "../components/Header";
-import { PhaseBanner } from "../components/PhaseBanner";
+import PhaseBanner from "../components/PhaseBanner";
 import { Footer } from "../components/Footer";
 
 const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
@@ -24,13 +24,16 @@ const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
   return (
     <>
       <Head>
-        <GovUkMetadata />
+        <GovUKMetadata />
       </Head>
       <a href="#main-content" className="govuk-skip-link" role="main">
         Skip to main content
       </a>
-      <Header serviceName={"Beacon registration service"} homeLink={"#"} />
-      <PhaseBanner phase={"BETA"}>
+      <Header
+        serviceName={"Maritime and Coastguard Agency: Register a beacon"}
+        homeLink={"#"}
+      />
+      <PhaseBanner phase="BETA">
         This is a new service – your{" "}
         <a className="govuk-link" href="#">
           feedback
@@ -47,7 +50,7 @@ const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
   );
 };
 
-const GovUkMetadata: FunctionComponent = () => (
+const GovUKMetadata: FunctionComponent = () => (
   <>
     <meta
       name="viewport"

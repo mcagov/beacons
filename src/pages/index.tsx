@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import Head from "next/head";
+import Aside from "../components/Aside";
 import { StartButton } from "../components/Button";
 
 const ServiceStartPage: FunctionComponent = () => (
@@ -10,21 +11,40 @@ const ServiceStartPage: FunctionComponent = () => (
       </title>
     </Head>
 
-    <AboutTheService />
+    <Header />
 
-    <StartButton />
-
-    <OtherWaysToAccessTheService />
+    <Body />
   </>
 );
-export default ServiceStartPage;
+
+const Header: FunctionComponent = () => (
+  <div className="govuk-grid-row">
+    <div className="govuk-grid-column-two-thirds">
+      <h1 className="govuk-heading-l">Register a UK 406 MHz beacon</h1>
+    </div>
+  </div>
+);
+
+const Body: FunctionComponent = () => (
+  <div className="govuk-grid-row">
+    <div className="govuk-grid-column-two-thirds">
+      <AboutTheService />
+
+      <StartButton />
+
+      <OtherWaysToAccessTheService />
+    </div>
+
+    <div className="govuk-grid-column-one-third">
+      <Aside title="Related content">
+        <RelatedContent />
+      </Aside>
+    </div>
+  </div>
+);
 
 const AboutTheService: FunctionComponent = () => (
   <>
-    <h1 className="govuk-heading-l">
-      Register or update a 406 MHz distress beacon
-    </h1>
-
     <p className="govuk-body">
       Use this service to register or update an existing 406MHz distress beacon.
     </p>
@@ -52,3 +72,22 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
     </p>
   </>
 );
+
+const RelatedContent: FunctionComponent = () => (
+  <>
+    <ul className="govuk-list govuk-!-font-size-16">
+      <li>
+        <a className="govuk-link" href="#">
+          Related link
+        </a>
+      </li>
+      <li>
+        <a className="govuk-link govuk-!-font-size-16" href="#">
+          Related link
+        </a>
+      </li>
+    </ul>
+  </>
+);
+
+export default ServiceStartPage;
