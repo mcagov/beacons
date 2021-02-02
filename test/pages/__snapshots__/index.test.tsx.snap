@@ -5,12 +5,22 @@ exports[`Home Page renders correctly 1`] = `
   <h1
     class="govuk-heading-l"
   >
-    Header goes here
+    Register or update a 406 MHz beacon
   </h1>
   <p
     class="govuk-body"
   >
-    Service start page to go here!
+    Use this service to register or update an existing 406MHz distress beacon.
   </p>
+  <h2
+    class="govuk-heading-m"
+  >
+    How long it takes
+  </h2>
+  <h2
+    class="govuk-heading-m"
+  >
+    Before you start
+  </h2>
 </DocumentFragment>
 `;
