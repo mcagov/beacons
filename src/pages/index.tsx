@@ -5,7 +5,9 @@ import { StartButton } from "../components/Button";
 const ServiceStartPage: FunctionComponent = () => (
   <>
     <Head>
-      <title>Beacon Registration Service - Register a new beacon</title>
+      <title>
+        Beacon Registration Service - Register a new 406 MHz distress beacon
+      </title>
     </Head>
 
     <AboutTheService />
@@ -19,7 +21,9 @@ export default ServiceStartPage;
 
 const AboutTheService: FunctionComponent = () => (
   <>
-    <h1 className="govuk-heading-l">Register or update a 406 MHz beacon</h1>
+    <h1 className="govuk-heading-l">
+      Register or update a 406 MHz distress beacon
+    </h1>
 
     <p className="govuk-body">
       Use this service to register or update an existing 406MHz distress beacon.
