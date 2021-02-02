@@ -7,9 +7,6 @@ import Document, {
   DocumentContext,
 } from "next/document";
 import { DocumentInitialProps } from "next/dist/next-server/lib/utils";
-import { Header } from "../components/Header";
-import { PhaseBanner } from "../components/PhaseBanner";
-import { Footer } from "../components/Footer";
 
 class GovUKTemplate extends Document {
   static async getInitialProps(
@@ -21,29 +18,10 @@ class GovUKTemplate extends Document {
 
   render(): React.ReactElement {
     return (
-      // TODO: https://github.com/madetech/mca-beacons-webapp/issues/25
-      <Html className={"govuk-template "}>
-        <Head>
-          <title>
-            Maritime & Coastguard Agency - Beacons registration service
-          </title>
-        </Head>
-        <body className={"govuk-template__body"}>
-          <Header serviceName={"Beacon registration service"} homeLink={"#"} />
-          <PhaseBanner
-            phase={"BETA"}
-            bannerHtml={
-              <>
-                This is a new MCA Show and Tell on 29 January 2021 – your{" "}
-                <a className="govuk-link" href="#">
-                  feedback
-                </a>{" "}
-                will help us to improve it.
-              </>
-            }
-          />
+      <Html className="govuk-template " lang="en">
+        <Head />
+        <body className="govuk-template__body">
           <Main />
-          <Footer />
           <NextScript />
         </body>
       </Html>
