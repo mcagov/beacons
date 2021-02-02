@@ -12,7 +12,7 @@ describe("Button components", () => {
   });
 
   describe("Start Button", () => {
-    it("renders correctly", () => {
+    it("renders correctly with the text specified", () => {
       const { asFragment } = render(<StartButton buttonText="START NOW" />);
 
       expect(asFragment()).toMatchSnapshot();

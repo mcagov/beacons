@@ -11,7 +11,7 @@ exports[`Button components Button renders correctly 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Button components Start Button renders correctly 1`] = `
+exports[`Button components Start Button renders correctly with no button text specified 1`] = `
 <DocumentFragment>
   <a
     class="govuk-button govuk-button--start"
@@ -39,7 +39,7 @@ exports[`Button components Start Button renders correctly 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Button components Start Button renders correctly with no button text specified 1`] = `
+exports[`Button components Start Button renders correctly with the text specified 1`] = `
 <DocumentFragment>
   <a
     class="govuk-button govuk-button--start"
