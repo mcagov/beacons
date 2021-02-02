@@ -30,7 +30,7 @@ exports[`Home Page renders correctly 1`] = `
   <p
     class="govuk-body"
   >
-    TO UPDATE: : You'll need certain information before you start.
+    TO UPDATE: You will need certain information before you start.
   </p>
 </DocumentFragment>
 `;

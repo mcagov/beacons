@@ -14,7 +14,6 @@ const ServiceStartPage: FunctionComponent = () => (
     <BeforeYouStart />
   </>
 );
-
 export default ServiceStartPage;
 
 const AboutTheService: FunctionComponent = () => (
@@ -42,7 +41,7 @@ const BeforeYouStart: FunctionComponent = () => (
     <h2 className="govuk-heading-m">Before you start</h2>
 
     <p className="govuk-body">
-      TO UPDATE: : You'll need certain information before you start.
+      TO UPDATE: You will need certain information before you start.
     </p>
   </>
 );
