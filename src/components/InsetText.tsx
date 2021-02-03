@@ -7,5 +7,5 @@ interface InsetTextProps {
 export const InsetText: FunctionComponent<InsetTextProps> = ({
   children,
 }: InsetTextProps): JSX.Element => (
-  <div className="govuk-inset-text">{children}</div>
+  <p className="govuk-inset-text">{children}</p>
 );

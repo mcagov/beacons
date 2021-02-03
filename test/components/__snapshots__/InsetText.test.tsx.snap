@@ -2,10 +2,10 @@
 
 exports[`InsetText renders correctly 1`] = `
 <DocumentFragment>
-  <div
+  <p
     class="govuk-inset-text"
   >
     This is an InsetText component
-  </div>
+  </p>
 </DocumentFragment>
 `;

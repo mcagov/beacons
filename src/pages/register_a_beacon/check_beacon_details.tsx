@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import Head from "next/head";
 import { Grid } from "../../components/Grid";
+import { InsetText } from "../../components/InsetText";
 
 const CheckBeaconDetails: FunctionComponent = () => (
   <>
@@ -14,6 +15,10 @@ const CheckBeaconDetails: FunctionComponent = () => (
       mainContent={
         <>
           <PageHeading />
+          <InsetText>
+            The details of your beacon must be checked to ensure they have a UK
+            encoding and if they are already registered with this service.
+          </InsetText>
         </>
       }
       aside={null}
