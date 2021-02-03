@@ -1,0 +1,205 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Intent Page renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-two-thirds"
+    >
+      <h1
+        class="govuk-heading-l"
+      >
+        Register a UK 406 MHz beacon
+      </h1>
+      <h2
+        class="govuk-heading-m"
+      >
+        Data protection regulations
+      </h2>
+      <p
+        class="govuk-body"
+      >
+        The Maritime and Coastguard Agency (MCA) collect and retain the personal information provided when you register a UK coded 406 MHz beacon. Processing your information allows the MCA to exercise its official duty and to identify persons in distress and helps save lives.
+      </p>
+      <p
+        class="govuk-body"
+      >
+        We will retain your information until we are advised that the beacon is no longer active, for example it has been removed from the vessel, replaced or destroyed.
+      </p>
+      <p
+        class="govuk-body"
+      >
+        We will share your information with Global Search & Rescue authorities and those delegated authorities, such as RNLI Lifeboats, Police or Rescue Helicopter crew, that are directly involved with investigations relating to a beacon activation.
+      </p>
+      <p
+        class="govuk-body"
+      >
+        Further details on Beacon Registration’s privacy policy can be found at  
+        <a
+          class="govuk-link"
+          href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice"
+        >
+          https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice
+        </a>
+      </p>
+      <p
+        class="govuk-body"
+      >
+        To find out more about how the MCA looks after personal data, your rights, and how to contact our data protection officer, please go to  
+        <a
+          class="govuk-link"
+          href="https://www.gov.uk/government/organisations/maritime-and-coastguard-agency/about/personal-information-charter"
+        >
+          www.gov.uk/mca/privacy-policy
+        </a>
+      </p>
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          aria-describedby="waste-hint"
+          class="govuk-fieldset"
+        >
+          <legend
+            class="govuk-fieldset__legend govuk-fieldset__legend--m"
+          >
+            <h2
+              class="govuk-fieldset__heading"
+            >
+              What you would like to do?
+            </h2>
+          </legend>
+          <div
+            class="govuk-hint"
+            id="waste-hint"
+          >
+            Select all that apply.
+          </div>
+          <div
+            class="govuk-radios"
+          >
+            <div
+              class="govuk-radios__item"
+            >
+              <input
+                class="govuk-radios__input"
+                id="create_beacon"
+                name="create_beacon"
+                type="radio"
+                value="create_beacon"
+              />
+              <label
+                class="govuk-label govuk-radios__label"
+                for="create_beacon"
+              >
+                Register a new beacon
+              </label>
+            </div>
+            <div
+              class="govuk-radios__item"
+            >
+              <input
+                class="govuk-radios__input"
+                disabled=""
+                id="change_beacon"
+                name="change_beacon"
+                type="radio"
+                value="change_beacon"
+              />
+              <label
+                class="govuk-label govuk-radios__label"
+                for="change_beacon"
+              >
+                Update details for existing beacon(s) you have already registered
+              </label>
+            </div>
+            <div
+              class="govuk-radios__item"
+            >
+              <input
+                class="govuk-radios__input"
+                disabled=""
+                id="ownership"
+                name="ownership"
+                type="radio"
+                value="ownership"
+              />
+              <label
+                class="govuk-label govuk-radios__label"
+                for="ownership"
+              >
+                Change beacon ownership
+              </label>
+            </div>
+            <div
+              class="govuk-radios__item"
+            >
+              <input
+                class="govuk-radios__input"
+                disabled=""
+                id="withdraw"
+                name="withdraw"
+                type="radio"
+                value="withdraw"
+              />
+              <label
+                class="govuk-label govuk-radios__label"
+                for="withdraw"
+              >
+                Withdraw a beacon
+              </label>
+            </div>
+            <div
+              class="govuk-radios__item"
+            >
+              <input
+                class="govuk-radios__input"
+                disabled=""
+                id="other"
+                name="other"
+                type="radio"
+                value="other"
+              />
+              <label
+                class="govuk-label govuk-radios__label"
+                for="other"
+              >
+                Other
+              </label>
+            </div>
+          </div>
+          <br />
+          <h2
+            class="govuk-heading-m"
+          >
+            <label
+              for="event-name"
+            >
+              If you selected 'Other' please specify your request
+            </label>
+          </h2>
+          <input
+            class="govuk-input govuk-input-disabled"
+            id="other-intent"
+            name="other-intent"
+            type="text"
+          />
+          <br />
+          <br />
+          <button
+            class="govuk-button"
+            data-module="govuk-button"
+          >
+            Continue
+          </button>
+        </fieldset>
+      </div>
+    </div>
+    <div
+      class="govuk-grid-column-one-third"
+    />
+  </div>
+</DocumentFragment>
+`;

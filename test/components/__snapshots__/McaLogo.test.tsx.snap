@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`McaLogo component Logo renders correctly 1`] = `
+<DocumentFragment>
+  <a
+    href="https://gov.uk/mca"
+  >
+    <img
+      alt="mca logo"
+      src="../assets/images/mca-logo.png"
+    />
+  </a>
+  <br />
+  <br />
+</DocumentFragment>
+`;
