@@ -4,6 +4,7 @@ import Aside from "../components/Aside";
 import { StartButton } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
+import { McaLogo } from "../components/McaLogo";
 
 const ServiceStartPage: FunctionComponent = () => (
   <>
@@ -28,6 +29,10 @@ const ServiceStartPage: FunctionComponent = () => (
 
 const RelatedContent: FunctionComponent = () => (
   <>
+    <Aside title="">
+      <McaLogo />
+    </Aside>
+
     <Aside title="Related content">
       <ul className="govuk-list govuk-!-font-size-16">
         <li>
