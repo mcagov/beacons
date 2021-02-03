@@ -12,18 +12,36 @@ const ServiceStartPage: FunctionComponent = () => (
       </title>
     </Head>
 
-    <Grid mainContent={<MainBody />} aside={<RelatedContent />} />
+    <Grid
+      mainContent={
+        <>
+          <PageHeading />
+          <AboutTheService />
+          <StartButton />
+          <OtherWaysToAccessTheService />
+        </>
+      }
+      aside={<RelatedContent />}
+    />
   </>
 );
 
-const MainBody: FunctionComponent = () => (
+const RelatedContent: FunctionComponent = () => (
   <>
-    <PageHeading />
-    <AboutTheService />
-
-    <StartButton />
-
-    <OtherWaysToAccessTheService />
+    <Aside title="Related content">
+      <ul className="govuk-list govuk-!-font-size-16">
+        <li>
+          <a className="govuk-link" href="#">
+            Related link
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link govuk-!-font-size-16" href="#">
+            Related link
+          </a>
+        </li>
+      </ul>
+    </Aside>
   </>
 );
 
@@ -58,25 +76,6 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
     <p className="govuk-body">
       TO UPDATE: You can request postal forms by emailing.
     </p>
-  </>
-);
-
-const RelatedContent: FunctionComponent = () => (
-  <>
-    <Aside title="Related content">
-      <ul className="govuk-list govuk-!-font-size-16">
-        <li>
-          <a className="govuk-link" href="#">
-            Related link
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link govuk-!-font-size-16" href="#">
-            Related link
-          </a>
-        </li>
-      </ul>
-    </Aside>
   </>
 );
 
