@@ -5,7 +5,7 @@ interface PhaseBannerProps {
   children: ReactNode;
 }
 
-const PhaseBanner: FunctionComponent<PhaseBannerProps> = ({
+export const PhaseBanner: FunctionComponent<PhaseBannerProps> = ({
   phase,
   children,
 }: PhaseBannerProps): JSX.Element => (
@@ -18,5 +18,3 @@ const PhaseBanner: FunctionComponent<PhaseBannerProps> = ({
     </p>
   </div>
 );
-
-export default PhaseBanner;

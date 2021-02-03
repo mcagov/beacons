@@ -13,14 +13,6 @@ exports[`Home Page renders correctly 1`] = `
       >
         Register a UK 406 MHz beacon
       </h1>
-    </div>
-  </div>
-  <div
-    class="govuk-grid-row"
-  >
-    <div
-      class="govuk-grid-column-two-thirds"
-    >
       <p
         class="govuk-body"
       >

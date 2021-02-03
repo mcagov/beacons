@@ -4,7 +4,7 @@ interface ButtonProps {
   buttonText: string;
 }
 
-const Button: FunctionComponent<ButtonProps> = ({
+export const Button: FunctionComponent<ButtonProps> = ({
   buttonText,
 }: ButtonProps): JSX.Element => (
   <button className="govuk-button" data-module="govuk-button">
@@ -18,7 +18,7 @@ interface StartButtonProps {
 
 export const StartButton: FunctionComponent<StartButtonProps> = ({
   buttonText = "Start now",
-}: StartButtonProps) => (
+}: StartButtonProps): JSX.Element => (
   <>
     <a
       href="#"
@@ -42,5 +42,3 @@ export const StartButton: FunctionComponent<StartButtonProps> = ({
     </a>
   </>
 );
-
-export default Button;

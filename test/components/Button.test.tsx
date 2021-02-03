@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import React from "react";
-import Button, { StartButton } from "../../src/components/Button";
+import { Button, StartButton } from "../../src/components/Button";
 
 describe("Button components", () => {
   describe("Button", () => {

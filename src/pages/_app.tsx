@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import "../styles/globals.scss";
 import Head from "next/head";
 import { Header } from "../components/Header";
-import PhaseBanner from "../components/PhaseBanner";
+import { PhaseBanner } from "../components/PhaseBanner";
 import { Footer } from "../components/Footer";
 
 const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
