@@ -1,10 +1,10 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Home from "../../src/pages/index";
+import ServiceStartPage from "../../src/pages/index";
 
 describe("Home Page", () => {
   it("renders correctly", () => {
-    const { asFragment } = render(<Home />, {});
+    const { asFragment } = render(<ServiceStartPage />, {});
 
     expect(asFragment()).toMatchSnapshot();
   });

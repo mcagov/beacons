@@ -24,14 +24,17 @@ const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
   return (
     <>
       <Head>
-        <GovUkMetadata />
+        <GovUKMetadata />
       </Head>
       <a href="#main-content" className="govuk-skip-link" role="main">
         Skip to main content
       </a>
-      <Header serviceName={"Beacon registration service"} homeLink={"#"} />
-      <PhaseBanner phase={"BETA"}>
-        This is a new MCA Show and Tell on 29 January 2021 – your{" "}
+      <Header
+        serviceName={"Maritime and Coastguard Agency: Register a beacon"}
+        homeLink={"#"}
+      />
+      <PhaseBanner phase="BETA">
+        This is a new service – your{" "}
         <a className="govuk-link" href="#">
           feedback
         </a>{" "}
@@ -47,7 +50,7 @@ const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
   );
 };
 
-const GovUkMetadata: FunctionComponent = () => (
+const GovUKMetadata: FunctionComponent = () => (
   <>
     <meta
       name="viewport"

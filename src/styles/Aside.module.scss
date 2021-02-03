@@ -1,0 +1,9 @@
+@import "../styles/variables";
+
+$aside-padding-top: 0.75em;
+$aside-border-top: 2px;
+
+.related_items {
+  padding-top: $aside-padding-top;
+  border-top: $aside-border-top solid $govuk-brand-colour;
+}
