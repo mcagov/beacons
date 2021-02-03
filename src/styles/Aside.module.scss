@@ -1,6 +1,6 @@
 @import "../styles/variables";
 
 .related_items {
-  padding-top: 0.75em;
-  border-top: $aside-border-top-px solid $govuk-brand-colour;
+  padding-top: $aside-padding-top;
+  border-top: $aside-border-top solid $govuk-brand-colour;
 }

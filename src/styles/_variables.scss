@@ -1,4 +1,5 @@
 // Re-export brand colour variables/functions for easier re-use within components
 @import "node_modules/govuk-frontend/govuk/settings/colours-applied";
 
-$aside-border-top-px: 2px;
+$aside-padding-top: 0.75em;
+$aside-border-top: 2px;
