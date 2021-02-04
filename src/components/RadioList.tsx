@@ -47,7 +47,7 @@ export const RadioListItemHint: FunctionComponent<RadioListItemHintProps> = ({
   value,
   text,
   hintText,
-}): JSX.Element => (
+}: RadioListItemHintProps): JSX.Element => (
   <div className="govuk-radios__item">
     <input
       className="govuk-radios__input"
