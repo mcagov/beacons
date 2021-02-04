@@ -34,7 +34,7 @@ describe("Form components", () => {
   });
 });
 
-const Input = ({ id }) => (
+const Input = ({ id }: { id: string }) => (
   <input id={id} aria-describedby={`${id}-hint`} type="text"></input>
 );
 
