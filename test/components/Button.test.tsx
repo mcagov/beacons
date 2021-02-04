@@ -13,13 +13,15 @@ describe("Button components", () => {
 
   describe("Start Button", () => {
     it("renders correctly with the text specified", () => {
-      const { asFragment } = render(<StartButton buttonText="START NOW" />);
+      const { asFragment } = render(
+        <StartButton buttonText="START NOW" href="#" />
+      );
 
       expect(asFragment()).toMatchSnapshot();
     });
 
     it("renders correctly with no button text specified", () => {
-      const { asFragment } = render(<StartButton />);
+      const { asFragment } = render(<StartButton href="#" />);
 
       expect(asFragment()).toMatchSnapshot();
     });

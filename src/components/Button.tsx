@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import Link from "next/link";
 
 interface ButtonProps {
   buttonText: string;
@@ -14,14 +15,15 @@ export const Button: FunctionComponent<ButtonProps> = ({
 
 interface StartButtonProps {
   buttonText?: string;
+  href: string;
 }
 
 export const StartButton: FunctionComponent<StartButtonProps> = ({
   buttonText = "Start now",
+  href,
 }: StartButtonProps): JSX.Element => (
-  <>
+  <Link href={href}>
     <a
-      href="#"
       role="button"
       draggable="false"
       className="govuk-button govuk-button--start"
@@ -40,5 +42,5 @@ export const StartButton: FunctionComponent<StartButtonProps> = ({
         <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
       </svg>
     </a>
-  </>
+  </Link>
 );

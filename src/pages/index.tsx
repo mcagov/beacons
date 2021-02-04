@@ -1,4 +1,4 @@
-import React, { FunctionComponent, FunctionComponentElement } from "react";
+import React, { FunctionComponent } from "react";
 import Head from "next/head";
 import Aside from "../components/Aside";
 import { StartButton } from "../components/Button";
@@ -17,7 +17,7 @@ const ServiceStartPage: FunctionComponent = () => (
         <>
           <PageHeading />
           <AboutTheService />
-          <StartButton />
+          <StartButton href="/register-a-beacon/check-beacon-details" />
           <OtherWaysToAccessTheService />
         </>
       }

@@ -42,7 +42,7 @@ exports[`Home Page renders correctly 1`] = `
         class="govuk-button govuk-button--start"
         data-module="govuk-button"
         draggable="false"
-        href="#"
+        href="/register-a-beacon/check-beacon-details"
         role="button"
       >
         Start now
