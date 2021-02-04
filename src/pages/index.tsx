@@ -5,6 +5,7 @@ import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
 import { Layout } from "../components/Layout";
 import { BreadcrumbList, BreadcrumListItem } from "../components/Breadcrumb";
+import { McaLogo } from "../components/McaLogo";
 
 const ServiceStartPage: FunctionComponent = () => (
   <>
@@ -15,6 +16,7 @@ const ServiceStartPage: FunctionComponent = () => (
             <PageHeading />
             <AboutTheService />
             <OtherWaysToAccessTheService />
+            <DataProtection />
           </>
         }
         aside={<RelatedContent />}
@@ -29,6 +31,96 @@ const Breadcrumbs: FunctionComponent = () => (
     <BreadcrumListItem>Section</BreadcrumListItem>
     <BreadcrumListItem>Subsection</BreadcrumListItem>
   </BreadcrumbList>
+);
+
+const DataProtection: FunctionComponent = () => (
+  <>
+    <h2 className="govuk-heading-m">Data protection regulations</h2>
+
+    <p className="govuk-body">
+      The Maritime and Coastguard Agency (MCA) collect and retain the personal
+      information provided when you register a UK coded 406 MHz beacon.
+      Processing your information allows the MCA to exercise its official duty
+      and to identify persons in distress and helps save lives.
+    </p>
+
+    <p className="govuk-body">
+      We will retain your information until we are advised that the beacon is no
+      longer active, for example it has been removed from the vessel, replaced
+      or destroyed.
+    </p>
+
+    <p className="govuk-body">
+      We will share your information with Global Search &amp; Rescue authorities
+      and those delegated authorities, such as RNLI Lifeboats, Police or Rescue
+      Helicopter crew, that are directly involved with investigations relating
+      to a beacon activation.
+    </p>
+
+    <p className="govuk-body">
+      Further details on Beacon Registration’s privacy policy can be found at{" "}
+      <a
+        className="govuk-link"
+        href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice"
+      >
+        https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice
+      </a>
+    </p>
+
+    <p className="govuk-body">
+      To find out more about how the MCA looks after personal data, your rights,
+      and how to contact our data protection officer, please go to{" "}
+      <a
+        className="govuk-link"
+        href="https://www.gov.uk/government/organisations/maritime-and-coastguard-agency/about/personal-information-charter"
+      >
+        www.gov.uk/mca/privacy-policy
+      </a>
+    </p>
+  </>
+);
+
+const RelatedContent: FunctionComponent = () => (
+  <>
+    <Aside title="">
+      <McaLogo />
+    </Aside>
+
+    <Aside title="Related content">
+      <ul className="govuk-list govuk-!-font-size-16">
+        <li>
+          <a className="govuk-link" href="#">
+            Find your beacons HEX ID
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link" href="#">
+            Emergency and life-saving equipment on ships
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link" href="#">
+            UK Ship Register
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link" href="#">
+            Aircraft registrations (G-INFO)
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link" href="#">
+            Non 406MHz beacons
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link" href="#">
+            Non UK encoded beacons
+          </a>
+        </li>
+      </ul>
+    </Aside>
+  </>
 );
 
 const PageHeading: FunctionComponent = () => (
@@ -78,7 +170,7 @@ const AboutTheService: FunctionComponent = () => (
       </li>
     </ul>
 
-    <StartButton />
+    <StartButton href="/intent" />
   </>
 );
 
@@ -120,45 +212,6 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
         </ul>
       </>
     </InsetText>
-  </>
-);
-
-const RelatedContent: FunctionComponent = () => (
-  <>
-    <Aside title="Related content">
-      <ul className="govuk-list govuk-!-font-size-16">
-        <li>
-          <a className="govuk-link" href="#">
-            Find your beacons HEX ID
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Emergency and life-saving equipment on ships
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            UK Ship Register
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Aircraft registrations (G-INFO)
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Non 406MHz beacons
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Non UK encoded beacons
-          </a>
-        </li>
-      </ul>
-    </Aside>
   </>
 );
 

@@ -6,6 +6,7 @@ interface ButtonProps {
 
 interface StartButtonProps {
   buttonText?: string;
+  href: string;
 }
 
 export const Button: FunctionComponent<ButtonProps> = ({
@@ -18,10 +19,11 @@ export const Button: FunctionComponent<ButtonProps> = ({
 
 export const StartButton: FunctionComponent<StartButtonProps> = ({
   buttonText = "Start now",
+  href = "#",
 }: StartButtonProps): JSX.Element => (
   <>
     <a
-      href="#"
+      href={href}
       role="button"
       draggable="false"
       className="govuk-button govuk-button--start"
