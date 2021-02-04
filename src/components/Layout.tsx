@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { FunctionComponent, ReactNode } from "react";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -5,14 +6,18 @@ import { PhaseBanner } from "./PhaseBanner";
 
 interface LayoutProps {
   children: ReactNode;
+  head?: ReactNode;
   breadcrumbs?: ReactNode;
 }
 
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
-  breadcrumbs,
+  head = <BeaconRegistrationHead />,
+  breadcrumbs = null,
 }: LayoutProps): JSX.Element => (
   <>
+    {head}
+
     <a href="#main-content" className="govuk-skip-link" role="main">
       Skip to main content
     </a>
@@ -38,4 +43,12 @@ export const Layout: FunctionComponent<LayoutProps> = ({
 
     <Footer />
   </>
+);
+
+const BeaconRegistrationHead: FunctionComponent = () => (
+  <Head>
+    <title>
+      Beacon Registration Service - Register a new 406 MHz distress beacon
+    </title>
+  </Head>
 );

@@ -9,12 +9,6 @@ import { BreadcrumbList, BreadcrumListItem } from "../components/Breadcrumb";
 
 const ServiceStartPage: FunctionComponent = () => (
   <>
-    <Head>
-      <title>
-        Beacon Registration Service - Register a new 406 MHz distress beacon
-      </title>
-    </Head>
-
     <Layout breadcrumbs={<Breadcrumbs />}>
       <Grid
         mainContent={
