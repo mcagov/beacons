@@ -14,8 +14,7 @@ const CheckBeaconDetails: FunctionComponent = () => (
     <Grid
       mainContent={
         <>
-          {/*TODO: Form submit handler*/}
-          <form action={null} method="POST" noValidate>
+          <form action="/register-a-beacon/check-beacon-summary" method="POST">
             <fieldset className="govuk-fieldset">
               <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h1 className="govuk-fieldset__heading">
@@ -35,7 +34,7 @@ const CheckBeaconDetails: FunctionComponent = () => (
                 <select
                   className="govuk-select"
                   id="beacon-manufacturer"
-                  name="sort"
+                  name="beacon-manufacturer"
                 >
                   <option value="manufacturer_1">Raleigh</option>
                   <option value="manufacturer_2">Giant</option>
@@ -47,7 +46,11 @@ const CheckBeaconDetails: FunctionComponent = () => (
                 <label className="govuk-label" htmlFor="beacon-model">
                   Beacon model
                 </label>
-                <select className="govuk-select" id="beacon-model" name="sort">
+                <select
+                  className="govuk-select"
+                  id="beacon-model"
+                  name="beacon-manufacturer"
+                >
                   <option value="model_1">Chopper</option>
                   <option value="model_2">TCR</option>
                   <option value="model_3">Madone</option>
@@ -67,6 +70,7 @@ const CheckBeaconDetails: FunctionComponent = () => (
                 />
               </div>
             </fieldset>
+            <button>Submit</button>
           </form>
         </>
       }
