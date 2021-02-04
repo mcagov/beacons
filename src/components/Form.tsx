@@ -45,7 +45,7 @@ export const Form: FunctionComponent<FormProps> = ({
 export const FormFieldset: FunctionComponent<FormFieldsetProps> = ({
   ariaDescribedBy = null,
   children,
-}: PropsWithChildren<FormFieldsetProps>) => (
+}: PropsWithChildren<FormFieldsetProps>): JSX.Element => (
   <fieldset className="govuk-fieldset" aria-describedby={ariaDescribedBy}>
     {children}
   </fieldset>
@@ -79,7 +79,7 @@ export const FormHint: FunctionComponent<FormHintProps> = ({
   id,
   className = "",
   children,
-}: FormHintProps) => (
+}: FormHintProps): JSX.Element => (
   <div id={`${id}-hint`} className={`govuk-hint ${className}`}>
     {children}
   </div>

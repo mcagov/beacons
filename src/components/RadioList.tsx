@@ -11,7 +11,14 @@ interface RadioListItemProps {
   name: string;
   value: string;
   text: string;
-  hintText?: string;
+}
+
+interface RadioListItemHintProps {
+  id: string;
+  name: string;
+  value: string;
+  text: string;
+  hintText: string;
 }
 
 export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
@@ -19,8 +26,28 @@ export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
   name,
   value,
   text,
-  hintText = null,
 }: RadioListItemProps): JSX.Element => (
+  <div className="govuk-radios__item">
+    <input
+      className="govuk-radios__input"
+      id={id}
+      name={name}
+      type="radio"
+      value={value}
+    />
+    <FormLabel className="govuk-radios__label" htmlFor={id}>
+      {text}
+    </FormLabel>
+  </div>
+);
+
+export const RadioListItemHint: FunctionComponent<RadioListItemHintProps> = ({
+  id,
+  name,
+  value,
+  text,
+  hintText,
+}): JSX.Element => (
   <div className="govuk-radios__item">
     <input
       className="govuk-radios__input"
@@ -34,11 +61,9 @@ export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
       {text}
     </FormLabel>
 
-    {hintText !== null && (
-      <FormHint id={id} className="govuk-radios__hint">
-        {hintText}
-      </FormHint>
-    )}
+    <FormHint id={id} className="govuk-radios__hint">
+      {hintText}
+    </FormHint>
   </div>
 );
 
