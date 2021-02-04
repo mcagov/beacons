@@ -1,12 +1,10 @@
-import React from "react";
 import { render } from "@testing-library/react";
+import React from "react";
 import { InsetText } from "../../src/components/InsetText";
 
-describe("InsetText", () => {
+describe("InsetText component", () => {
   it("renders correctly", () => {
-    const { asFragment } = render(
-      <InsetText>This is an InsetText component</InsetText>
-    );
+    const { asFragment } = render(<InsetText>Text in the inset</InsetText>);
 
     expect(asFragment()).toMatchSnapshot();
   });

@@ -2,9 +2,6 @@ import React, { FunctionComponent, useEffect } from "react";
 import type { AppProps } from "next/app";
 import "../styles/globals.scss";
 import Head from "next/head";
-import { Header } from "../components/Header";
-import { PhaseBanner } from "../components/PhaseBanner";
-import { Footer } from "../components/Footer";
 
 const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
   Component,
@@ -26,26 +23,8 @@ const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
       <Head>
         <GovUKMetadata />
       </Head>
-      <a href="#main-content" className="govuk-skip-link" role="main">
-        Skip to main content
-      </a>
-      <Header
-        serviceName={"Maritime and Coastguard Agency: Register a beacon"}
-        homeLink={"#"}
-      />
-      <PhaseBanner phase="BETA">
-        This is a new service – your{" "}
-        <a className="govuk-link" href="#">
-          feedback
-        </a>{" "}
-        will help us to improve it.
-      </PhaseBanner>
-      <div className="govuk-width-container ">
-        <main id="main-content" className="govuk-main-wrapper">
-          <Component {...pageProps} />
-        </main>
-      </div>
-      <Footer />
+
+      <Component {...pageProps} />
     </>
   );
 };

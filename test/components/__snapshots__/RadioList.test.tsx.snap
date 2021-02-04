@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Radio List component renders correctly with div inside 1`] = `
+<DocumentFragment>
+  <div
+    class="govuk-form-group"
+  >
+    <fieldset
+      class="govuk-fieldset"
+    >
+      <legend
+        class="govuk-fieldset__legend govuk-fieldset__legend--m"
+      >
+        <h2
+          class="govuk-fieldset__heading"
+        />
+      </legend>
+      <div
+        class="govuk-hint"
+        id="beacon-intent-hint"
+      />
+      <div
+        class="govuk-radios govuk-!-margin-bottom-3"
+      >
+        <div>
+          Test content
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Radio List component renders correctly with radio list item inside 1`] = `
+<DocumentFragment>
+  <div
+    class="govuk-form-group"
+  >
+    <fieldset
+      class="govuk-fieldset"
+    >
+      <legend
+        class="govuk-fieldset__legend govuk-fieldset__legend--m"
+      >
+        <h2
+          class="govuk-fieldset__heading"
+        />
+      </legend>
+      <div
+        class="govuk-hint"
+        id="beacon-intent-hint"
+      />
+      <div
+        class="govuk-radios govuk-!-margin-bottom-3"
+      >
+        <div
+          class="govuk-radios__item"
+        >
+          <input
+            aria-describedby="test001-hint"
+            class="govuk-radios__input"
+            id="test001"
+            name="test001"
+            type="radio"
+            value="test001"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="test001"
+          >
+            test001
+          </label>
+          <div
+            class="govuk-hint govuk-radios__hint"
+            id="test001-hint"
+          />
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</DocumentFragment>
+`;

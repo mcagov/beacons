@@ -5,6 +5,11 @@ interface ButtonProps {
   buttonText: string;
 }
 
+interface StartButtonProps {
+  buttonText?: string;
+  href: string;
+}
+
 export const Button: FunctionComponent<ButtonProps> = ({
   buttonText,
 }: ButtonProps): JSX.Element => (
@@ -12,11 +17,6 @@ export const Button: FunctionComponent<ButtonProps> = ({
     {buttonText}
   </button>
 );
-
-interface StartButtonProps {
-  buttonText?: string;
-  href: string;
-}
 
 export const StartButton: FunctionComponent<StartButtonProps> = ({
   buttonText = "Start now",
