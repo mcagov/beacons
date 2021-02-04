@@ -1,6 +1,6 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
-export const Footer: React.FC = () => (
+export const Footer: FunctionComponent = () => (
   <footer className="govuk-footer " role="contentinfo">
     <div className="govuk-width-container ">
       <div className="govuk-footer__meta">

@@ -1,6 +1,17 @@
 import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
 import Link from "next/link";
 
+interface BreadcrumListItemProps {
+  children: ReactNode;
+  link?: string;
+  nextJSLink?: boolean;
+}
+
+interface AnchorProps {
+  children: ReactNode;
+  link?: string;
+}
+
 export const BreadcrumbList: FunctionComponent = ({
   children,
 }: PropsWithChildren<Record<string, string>>) => (
@@ -8,12 +19,6 @@ export const BreadcrumbList: FunctionComponent = ({
     <ol className="govuk-breadcrumbs__list">{children}</ol>
   </div>
 );
-
-interface BreadcrumListItemProps {
-  children: ReactNode;
-  link?: string;
-  nextJSLink?: boolean;
-}
 
 export const BreadcrumListItem: FunctionComponent<BreadcrumListItemProps> = ({
   children,
@@ -28,11 +33,6 @@ export const BreadcrumListItem: FunctionComponent<BreadcrumListItemProps> = ({
 
   return <li className="govuk-breadcrumbs__list-item">{anchorElement}</li>;
 };
-
-interface AnchorProps {
-  children: ReactNode;
-  link?: string;
-}
 
 const NextJSLink: FunctionComponent<AnchorProps> = ({
   children,
