@@ -1,11 +1,6 @@
 import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
 import { HttpMethod } from "../lib/types";
 
-export enum FormLegendSize {
-  LARGE,
-  MEDIUM,
-}
-
 interface FormProps {
   url: string;
   method?: HttpMethod;
@@ -34,7 +29,6 @@ interface FormHintProps {
 }
 
 interface FormLegendProps {
-  legendSize?: FormLegendSize;
   children: ReactNode;
 }
 
