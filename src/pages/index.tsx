@@ -4,6 +4,8 @@ import Aside from "../components/Aside";
 import { StartButton } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
+import { Layout } from "../components/Layout";
+import { BreadcrumbList, BreadcrumListItem } from "../components/Breadcrumb";
 
 const ServiceStartPage: FunctionComponent = () => (
   <>
@@ -13,17 +15,27 @@ const ServiceStartPage: FunctionComponent = () => (
       </title>
     </Head>
 
-    <Grid
-      mainContent={
-        <>
-          <PageHeading />
-          <AboutTheService />
-          <OtherWaysToAccessTheService />
-        </>
-      }
-      aside={<RelatedContent />}
-    />
+    <Layout breadcrumbs={<Breadcrumbs />}>
+      <Grid
+        mainContent={
+          <>
+            <PageHeading />
+            <AboutTheService />
+            <OtherWaysToAccessTheService />
+          </>
+        }
+        aside={<RelatedContent />}
+      />
+    </Layout>
   </>
+);
+
+const Breadcrumbs: FunctionComponent = () => (
+  <BreadcrumbList>
+    <BreadcrumListItem>Home</BreadcrumListItem>
+    <BreadcrumListItem>Section</BreadcrumListItem>
+    <BreadcrumListItem>Subsection</BreadcrumListItem>
+  </BreadcrumbList>
 );
 
 const RelatedContent: FunctionComponent = () => (

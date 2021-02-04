@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const BreadcrumbList: FunctionComponent = ({
   children,
-}: PropsWithChildren<{}>) => (
+}: PropsWithChildren<Record<string, string>>) => (
   <div className="govuk-breadcrumbs ">
     <ol className="govuk-breadcrumbs__list">{children}</ol>
   </div>
@@ -26,7 +26,7 @@ export const BreadcrumListItem: FunctionComponent<BreadcrumListItemProps> = ({
     <AnchorLink link={link}>{children}</AnchorLink>
   );
 
-  return <li className="govuk-breadcrumbs__list_item">{anchorElement}</li>;
+  return <li className="govuk-breadcrumbs__list-item">{anchorElement}</li>;
 };
 
 interface AnchorProps {
