@@ -3,13 +3,7 @@ import { Button } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";
 import { RadioList, RadioListItem } from "../components/RadioList";
-import {
-  Form,
-  FormFieldset,
-  FormGroup,
-  FormHint,
-  FormLegend,
-} from "../components/Form";
+import { Form, FormFieldset, FormGroup, FormLegend } from "../components/Form";
 import { BeaconIntent } from "../lib/types";
 
 const IntentPage: FunctionComponent = () => (
