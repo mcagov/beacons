@@ -111,149 +111,153 @@ exports[`Intent Page renders correctly 1`] = `
             action="/"
             method="POST"
           >
-            <fieldset
-              class="govuk-fieldset"
+            <div
+              class="govuk-form-group"
             >
-              <legend
-                class="govuk-fieldset__legend govuk-fieldset__legend--l"
+              <fieldset
+                class="govuk-fieldset"
               >
-                <h1
-                  class="govuk-fieldset__heading"
+                <legend
+                  class="govuk-fieldset__legend govuk-fieldset__legend--l"
                 >
-                  What would you like to do?
-                </h1>
-              </legend>
-              <div
-                class="govuk-radios govuk-!-margin-bottom-3"
-              >
+                  <h1
+                    class="govuk-fieldset__heading"
+                  >
+                    What would you like to do?
+                  </h1>
+                </legend>
                 <div
-                  class="govuk-radios__item"
+                  class="govuk-radios govuk-!-margin-bottom-3"
                 >
-                  <input
-                    aria-describedby="create-beacon-hint"
-                    class="govuk-radios__input"
-                    id="create-beacon"
-                    name="beaconIntent"
-                    type="radio"
-                    value="CREATE"
-                  />
-                  <label
-                    class="govuk-label govuk-radios__label"
-                    for="create-beacon"
-                  >
-                    Register a new beacon
-                  </label>
                   <div
-                    class="govuk-hint govuk-radios__hint"
-                    id="create-beacon-hint"
+                    class="govuk-radios__item"
                   >
-                    Choose this option to register one or multiple new beacons
+                    <input
+                      aria-describedby="create-beacon-hint"
+                      class="govuk-radios__input"
+                      id="create-beacon"
+                      name="beacon-intent"
+                      type="radio"
+                      value="CREATE"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                      for="create-beacon"
+                    >
+                      Register a new beacon
+                    </label>
+                    <div
+                      class="govuk-hint govuk-radios__hint"
+                      id="create-beacon-hint"
+                    >
+                      Choose this option to register one or multiple new beacons
+                    </div>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      aria-describedby="change-beacon-hint"
+                      class="govuk-radios__input"
+                      id="change-beacon"
+                      name="beacon-intent"
+                      type="radio"
+                      value="UPDATE"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                      for="change-beacon"
+                    >
+                      Update details for existing beacon(s) you've already registered
+                    </label>
+                    <div
+                      class="govuk-hint govuk-radios__hint"
+                      id="change-beacon-hint"
+                    >
+                      Choose this option to change existing beacon details, vessel and aircraft details, owner details and emergency contact information
+                    </div>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      aria-describedby="ownership-hint"
+                      class="govuk-radios__input"
+                      id="ownership"
+                      name="beacon-intent"
+                      type="radio"
+                      value="CHANGE_OWNERSHIP"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                      for="ownership"
+                    >
+                      Change beacon ownership
+                    </label>
+                    <div
+                      class="govuk-hint govuk-radios__hint"
+                      id="ownership-hint"
+                    >
+                      Choose this option if you have acquired a beacon from another owner, or are no longer a beacon owner
+                    </div>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      aria-describedby="withdraw-hint"
+                      class="govuk-radios__input"
+                      id="withdraw"
+                      name="beacon-intent"
+                      type="radio"
+                      value="WITHDRAW"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                      for="withdraw"
+                    >
+                      Withdraw a beacon
+                    </label>
+                    <div
+                      class="govuk-hint govuk-radios__hint"
+                      id="withdraw-hint"
+                    >
+                      Choose this option to inform us your beacon has been destroyed or withdrawn from use
+                    </div>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      aria-describedby="other-hint"
+                      class="govuk-radios__input"
+                      id="other"
+                      name="beacon-intent"
+                      type="radio"
+                      value="OTHER"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                      for="other"
+                    >
+                      Ask the Beacon Registry team a question
+                    </label>
+                    <div
+                      class="govuk-hint govuk-radios__hint"
+                      id="other-hint"
+                    >
+                      Choose this option if you have a specific question for the Beacon Registry
+                    </div>
                   </div>
                 </div>
-                <div
-                  class="govuk-radios__item"
+                <button
+                  class="govuk-button"
+                  data-module="govuk-button"
                 >
-                  <input
-                    aria-describedby="change-beacon-hint"
-                    class="govuk-radios__input"
-                    id="change-beacon"
-                    name="beaconIntent"
-                    type="radio"
-                    value="UPDATE"
-                  />
-                  <label
-                    class="govuk-label govuk-radios__label"
-                    for="change-beacon"
-                  >
-                    Update details for existing beacon(s) you've already registered
-                  </label>
-                  <div
-                    class="govuk-hint govuk-radios__hint"
-                    id="change-beacon-hint"
-                  >
-                    Choose this option to change existing beacon details, vessel and aircraft details, owner details and emergency contact information
-                  </div>
-                </div>
-                <div
-                  class="govuk-radios__item"
-                >
-                  <input
-                    aria-describedby="ownership-hint"
-                    class="govuk-radios__input"
-                    id="ownership"
-                    name="beaconIntent"
-                    type="radio"
-                    value="CHANGE_OWNERSHIP"
-                  />
-                  <label
-                    class="govuk-label govuk-radios__label"
-                    for="ownership"
-                  >
-                    Change beacon ownership
-                  </label>
-                  <div
-                    class="govuk-hint govuk-radios__hint"
-                    id="ownership-hint"
-                  >
-                    Choose this option if you have acquired a beacon from another owner, or are no longer a beacon owner
-                  </div>
-                </div>
-                <div
-                  class="govuk-radios__item"
-                >
-                  <input
-                    aria-describedby="withdraw-hint"
-                    class="govuk-radios__input"
-                    id="withdraw"
-                    name="beaconIntent"
-                    type="radio"
-                    value="WITHDRAW"
-                  />
-                  <label
-                    class="govuk-label govuk-radios__label"
-                    for="withdraw"
-                  >
-                    Withdraw a beacon
-                  </label>
-                  <div
-                    class="govuk-hint govuk-radios__hint"
-                    id="withdraw-hint"
-                  >
-                    Choose this option to inform us your beacon has been destroyed or withdrawn from use
-                  </div>
-                </div>
-                <div
-                  class="govuk-radios__item"
-                >
-                  <input
-                    aria-describedby="other-hint"
-                    class="govuk-radios__input"
-                    id="other"
-                    name="beaconIntent"
-                    type="radio"
-                    value="OTHER"
-                  />
-                  <label
-                    class="govuk-label govuk-radios__label"
-                    for="other"
-                  >
-                    Ask the Beacon Registry team a question
-                  </label>
-                  <div
-                    class="govuk-hint govuk-radios__hint"
-                    id="other-hint"
-                  >
-                    Choose this option if you have a specific question for the Beacon Registry
-                  </div>
-                </div>
-              </div>
-              <button
-                class="govuk-button"
-                data-module="govuk-button"
-              >
-                Continue
-              </button>
-            </fieldset>
+                  Continue
+                </button>
+              </fieldset>
+            </div>
           </form>
         </div>
         <div

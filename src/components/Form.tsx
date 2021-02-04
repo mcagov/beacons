@@ -48,10 +48,10 @@ export const Form: FunctionComponent<FormProps> = ({
   </form>
 );
 
-export const FormFieldset: FunctionComponent = ({
+export const FormFieldset: FunctionComponent<FormFieldsetProps> = ({
   ariaDescribedBy = null,
   children,
-}: PropsWithChildren<Record<string, string>>) => (
+}: PropsWithChildren<FormFieldsetProps>) => (
   <fieldset className="govuk-fieldset" aria-describedby={ariaDescribedBy}>
     {children}
   </fieldset>

@@ -32,10 +32,6 @@ exports[`Radio List component renders correctly with radio list item inside 1`] 
       >
         test001
       </label>
-      <div
-        class="govuk-hint govuk-radios__hint"
-        id="test001-hint"
-      />
     </div>
   </div>
 </DocumentFragment>
