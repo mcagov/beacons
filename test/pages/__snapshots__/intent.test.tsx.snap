@@ -36,7 +36,7 @@ exports[`Intent Page renders correctly 1`] = `
       <p
         class="govuk-body"
       >
-        Further details on Beacon Registration’s privacy policy can be found at  
+        Further details on Beacon Registration’s privacy policy can be found at 
         <a
           class="govuk-link"
           href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice"
@@ -47,7 +47,7 @@ exports[`Intent Page renders correctly 1`] = `
       <p
         class="govuk-body"
       >
-        To find out more about how the MCA looks after personal data, your rights, and how to contact our data protection officer, please go to  
+        To find out more about how the MCA looks after personal data, your rights, and how to contact our data protection officer, please go to 
         <a
           class="govuk-link"
           href="https://www.gov.uk/government/organisations/maritime-and-coastguard-agency/about/personal-information-charter"
@@ -59,7 +59,6 @@ exports[`Intent Page renders correctly 1`] = `
         class="govuk-form-group"
       >
         <fieldset
-          aria-describedby="waste-hint"
           class="govuk-fieldset"
         >
           <legend
@@ -68,25 +67,24 @@ exports[`Intent Page renders correctly 1`] = `
             <h2
               class="govuk-fieldset__heading"
             >
-              What you would like to do?
+              What would you like to do?
             </h2>
           </legend>
           <div
             class="govuk-hint"
-            id="waste-hint"
-          >
-            Select all that apply.
-          </div>
+            id="beacon-intent-hint"
+          />
           <div
-            class="govuk-radios"
+            class="govuk-radios govuk-!-margin-bottom-3"
           >
             <div
               class="govuk-radios__item"
             >
               <input
+                aria-describedby="create_beacon-hint"
                 class="govuk-radios__input"
                 id="create_beacon"
-                name="create_beacon"
+                name="beacon_intent"
                 type="radio"
                 value="create_beacon"
               />
@@ -96,15 +94,21 @@ exports[`Intent Page renders correctly 1`] = `
               >
                 Register a new beacon
               </label>
+              <div
+                class="govuk-hint govuk-radios__hint"
+                id="create_beacon-hint"
+              >
+                Choose this option to register one or multiple new beacons
+              </div>
             </div>
             <div
               class="govuk-radios__item"
             >
               <input
+                aria-describedby="change_beacon-hint"
                 class="govuk-radios__input"
-                disabled=""
                 id="change_beacon"
-                name="change_beacon"
+                name="beacon_intent"
                 type="radio"
                 value="change_beacon"
               />
@@ -112,17 +116,23 @@ exports[`Intent Page renders correctly 1`] = `
                 class="govuk-label govuk-radios__label"
                 for="change_beacon"
               >
-                Update details for existing beacon(s) you have already registered
+                Update details for existing beacon(s) you've already registered
               </label>
+              <div
+                class="govuk-hint govuk-radios__hint"
+                id="change_beacon-hint"
+              >
+                Choose this option to change existing beacon details, vessel and aircraft details, owner details and emergency contact information
+              </div>
             </div>
             <div
               class="govuk-radios__item"
             >
               <input
+                aria-describedby="ownership-hint"
                 class="govuk-radios__input"
-                disabled=""
                 id="ownership"
-                name="ownership"
+                name="beacon_intent"
                 type="radio"
                 value="ownership"
               />
@@ -132,15 +142,21 @@ exports[`Intent Page renders correctly 1`] = `
               >
                 Change beacon ownership
               </label>
+              <div
+                class="govuk-hint govuk-radios__hint"
+                id="ownership-hint"
+              >
+                Choose this option if you have acquired a beacon from another owner, or are no longer a beacon owner
+              </div>
             </div>
             <div
               class="govuk-radios__item"
             >
               <input
+                aria-describedby="withdraw-hint"
                 class="govuk-radios__input"
-                disabled=""
                 id="withdraw"
-                name="withdraw"
+                name="beacon_intent"
                 type="radio"
                 value="withdraw"
               />
@@ -150,15 +166,21 @@ exports[`Intent Page renders correctly 1`] = `
               >
                 Withdraw a beacon
               </label>
+              <div
+                class="govuk-hint govuk-radios__hint"
+                id="withdraw-hint"
+              >
+                Choose this option to inform us your beacon has been destroyed or withdrawn from use
+              </div>
             </div>
             <div
               class="govuk-radios__item"
             >
               <input
+                aria-describedby="other-hint"
                 class="govuk-radios__input"
-                disabled=""
                 id="other"
-                name="other"
+                name="beacon_intent"
                 type="radio"
                 value="other"
               />
@@ -166,36 +188,24 @@ exports[`Intent Page renders correctly 1`] = `
                 class="govuk-label govuk-radios__label"
                 for="other"
               >
-                Other
+                Ask the Beacon Registry team a question
               </label>
+              <div
+                class="govuk-hint govuk-radios__hint"
+                id="other-hint"
+              >
+                Choose this option if you have a specific question for the Beacon Registry
+              </div>
             </div>
           </div>
-          <br />
-          <h2
-            class="govuk-heading-m"
-          >
-            <label
-              for="event-name"
-            >
-              If you selected 'Other' please specify your request
-            </label>
-          </h2>
-          <input
-            class="govuk-input govuk-input-disabled"
-            id="other-intent"
-            name="other-intent"
-            type="text"
-          />
-          <br />
-          <br />
-          <button
-            class="govuk-button"
-            data-module="govuk-button"
-          >
-            Continue
-          </button>
         </fieldset>
       </div>
+      <button
+        class="govuk-button"
+        data-module="govuk-button"
+      >
+        Continue
+      </button>
     </div>
     <div
       class="govuk-grid-column-one-third"

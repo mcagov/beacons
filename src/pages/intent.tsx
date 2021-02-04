@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Button } from "../components/Button";
 import { Grid } from "../components/Grid";
+import { RadioList, RadioListItem } from "../components/RadioList";
 
 const IntentPage: FunctionComponent = () => (
   <>
@@ -44,8 +45,7 @@ export const IntentPageContent: FunctionComponent = () => (
     </p>
 
     <p className="govuk-body">
-      Further details on Beacon Registration’s privacy policy can be found at
-      &nbsp;
+      Further details on Beacon Registration’s privacy policy can be found at{" "}
       <a
         className="govuk-link"
         href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice"
@@ -56,7 +56,7 @@ export const IntentPageContent: FunctionComponent = () => (
 
     <p className="govuk-body">
       To find out more about how the MCA looks after personal data, your rights,
-      and how to contact our data protection officer, please go to &nbsp;
+      and how to contact our data protection officer, please go to{" "}
       <a
         className="govuk-link"
         href="https://www.gov.uk/government/organisations/maritime-and-coastguard-agency/about/personal-information-charter"
@@ -65,117 +65,45 @@ export const IntentPageContent: FunctionComponent = () => (
       </a>
     </p>
 
-    <div className="govuk-form-group">
-      <fieldset className="govuk-fieldset" aria-describedby="waste-hint">
-        <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
-          <h2 className="govuk-fieldset__heading">
-            What you would like to do?
-          </h2>
-        </legend>
+    <RadioList radioListTitleText="What would you like to do?">
+      <RadioListItem
+        id="create_beacon"
+        name="beacon_intent"
+        value="create_beacon"
+        text="Register a new beacon"
+        hintText="Choose this option to register one or multiple new beacons"
+      />
+      <RadioListItem
+        id="change_beacon"
+        name="beacon_intent"
+        value="change_beacon"
+        text="Update details for existing beacon(s) you've already registered"
+        hintText="Choose this option to change existing beacon details, vessel and aircraft details, owner details and emergency contact information"
+      />
+      <RadioListItem
+        id="ownership"
+        name="beacon_intent"
+        value="ownership"
+        text="Change beacon ownership"
+        hintText="Choose this option if you have acquired a beacon from another owner, or are no longer a beacon owner"
+      />
+      <RadioListItem
+        id="withdraw"
+        name="beacon_intent"
+        value="withdraw"
+        text="Withdraw a beacon"
+        hintText="Choose this option to inform us your beacon has been destroyed or withdrawn from use"
+      />
+      <RadioListItem
+        id="other"
+        name="beacon_intent"
+        value="other"
+        text="Ask the Beacon Registry team a question"
+        hintText="Choose this option if you have a specific question for the Beacon Registry"
+      />
+    </RadioList>
 
-        <div id="waste-hint" className="govuk-hint">
-          Select all that apply.
-        </div>
-
-        <div className="govuk-radios">
-          <div className="govuk-radios__item">
-            <input
-              className="govuk-radios__input"
-              id="create_beacon"
-              name="create_beacon"
-              type="radio"
-              value="create_beacon"
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="create_beacon"
-            >
-              Register a new beacon
-            </label>
-          </div>
-          <div className="govuk-radios__item">
-            <input
-              className="govuk-radios__input"
-              id="change_beacon"
-              name="change_beacon"
-              type="radio"
-              value="change_beacon"
-              disabled
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="change_beacon"
-            >
-              Update details for existing beacon(s) you have already registered
-            </label>
-          </div>
-          <div className="govuk-radios__item">
-            <input
-              className="govuk-radios__input"
-              id="ownership"
-              name="ownership"
-              type="radio"
-              value="ownership"
-              disabled
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="ownership"
-            >
-              Change beacon ownership
-            </label>
-          </div>
-          <div className="govuk-radios__item">
-            <input
-              className="govuk-radios__input"
-              id="withdraw"
-              name="withdraw"
-              type="radio"
-              value="withdraw"
-              disabled
-            />
-            <label
-              className="govuk-label govuk-radios__label"
-              htmlFor="withdraw"
-            >
-              Withdraw a beacon
-            </label>
-          </div>
-          <div className="govuk-radios__item">
-            <input
-              className="govuk-radios__input"
-              id="other"
-              name="other"
-              type="radio"
-              value="other"
-              disabled
-            />
-            <label className="govuk-label govuk-radios__label" htmlFor="other">
-              Other
-            </label>
-          </div>
-        </div>
-
-        <br />
-
-        <h2 className="govuk-heading-m">
-          <label htmlFor="event-name">
-            If you selected &apos;Other&apos; please specify your request
-          </label>
-        </h2>
-        <input
-          className="govuk-input govuk-input-disabled"
-          id="other-intent"
-          name="other-intent"
-          type="text"
-        ></input>
-
-        <br />
-        <br />
-
-        <Button buttonText="Continue" />
-      </fieldset>
-    </div>
+    <Button buttonText="Continue" />
   </>
 );
 

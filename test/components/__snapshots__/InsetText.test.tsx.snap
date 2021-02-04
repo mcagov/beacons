@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InsetText component Inset Text renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="govuk-inset-text"
+  >
+    Text in the inset
+  </div>
+</DocumentFragment>
+`;

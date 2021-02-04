@@ -164,6 +164,7 @@ exports[`Home Page renders correctly 1`] = `
           role="navigation"
         >
           <a
+            class="govuk-body govuk-!-margin-bottom-3"
             href="https://gov.uk/mca"
           >
             <img
@@ -171,8 +172,6 @@ exports[`Home Page renders correctly 1`] = `
               src="../assets/images/mca-logo.png"
             />
           </a>
-          <br />
-          <br />
         </nav>
       </aside>
       <aside
