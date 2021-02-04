@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Breadcrumb should render correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="govuk-breadcrumbs "
+  >
+    <ol
+      class="govuk-breadcrumbs__list"
+    />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Breadcrumb should render the breadcrumb with a NextJS breadcrumb list item 1`] = `
+<DocumentFragment>
+  <div
+    class="govuk-breadcrumbs "
+  >
+    <ol
+      class="govuk-breadcrumbs__list"
+    >
+      <li
+        class="govuk-breadcrumbs__list-item"
+      >
+        <a
+          class="govuk-breadcrumbs__link"
+          href="/home"
+        >
+          Home 
+        </a>
+      </li>
+    </ol>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Breadcrumb should render the breadcrumb with a non-NextJS breadcrumb list item 1`] = `
+<DocumentFragment>
+  <div
+    class="govuk-breadcrumbs "
+  >
+    <ol
+      class="govuk-breadcrumbs__list"
+    >
+      <li
+        class="govuk-breadcrumbs__list-item"
+      >
+        <a
+          class="govuk-breadcrumbs__link"
+          href="/home"
+        >
+          Home
+        </a>
+      </li>
+    </ol>
+  </div>
+</DocumentFragment>
+`;
