@@ -17,7 +17,6 @@ export const Layout: FunctionComponent<LayoutProps> = ({
 }: LayoutProps): JSX.Element => (
   <>
     {head}
-
     <a href="#main-content" className="govuk-skip-link" role="main">
       Skip to main content
     </a>
