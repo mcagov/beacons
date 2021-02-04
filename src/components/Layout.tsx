@@ -1,5 +1,5 @@
-import Head from "next/head";
 import React, { FunctionComponent, ReactNode } from "react";
+import Head from "next/head";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { PhaseBanner } from "./PhaseBanner";

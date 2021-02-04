@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from "react";
-import Head from "next/head";
 import Aside from "../components/Aside";
 import { StartButton } from "../components/Button";
 import { Grid } from "../components/Grid";
