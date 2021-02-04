@@ -110,7 +110,7 @@ exports[`Home Page renders correctly 1`] = `
             class="govuk-breadcrumbs__link"
             href="/#"
           >
-            Home 
+            Home
           </a>
         </li>
         <li
@@ -120,7 +120,7 @@ exports[`Home Page renders correctly 1`] = `
             class="govuk-breadcrumbs__link"
             href="/#"
           >
-            Section 
+            Section
           </a>
         </li>
         <li
@@ -130,7 +130,7 @@ exports[`Home Page renders correctly 1`] = `
             class="govuk-breadcrumbs__link"
             href="/#"
           >
-            Subsection 
+            Subsection
           </a>
         </li>
       </ol>

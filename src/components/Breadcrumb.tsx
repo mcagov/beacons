@@ -26,7 +26,7 @@ export const BreadcrumListItem: FunctionComponent<BreadcrumListItemProps> = ({
   nextJSLink = true,
 }: BreadcrumListItemProps): JSX.Element => {
   const anchorElement: JSX.Element = nextJSLink ? (
-    <NextJSLink link={link}>{children} </NextJSLink>
+    <NextJSLink link={link}>{children}</NextJSLink>
   ) : (
     <AnchorLink link={link}>{children}</AnchorLink>
   );

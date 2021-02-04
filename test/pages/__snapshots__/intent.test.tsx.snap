@@ -107,25 +107,22 @@ exports[`Intent Page renders correctly 1`] = `
         <div
           class="govuk-grid-column-two-thirds"
         >
-          <div
-            class="govuk-form-group"
+          <form
+            action="/"
+            method="POST"
           >
             <fieldset
               class="govuk-fieldset"
             >
               <legend
-                class="govuk-fieldset__legend govuk-fieldset__legend--m"
+                class="govuk-fieldset__legend govuk-fieldset__legend--l"
               >
-                <h2
+                <h1
                   class="govuk-fieldset__heading"
                 >
                   What would you like to do?
-                </h2>
+                </h1>
               </legend>
-              <div
-                class="govuk-hint"
-                id="beacon-intent-hint"
-              />
               <div
                 class="govuk-radios govuk-!-margin-bottom-3"
               >
@@ -133,22 +130,22 @@ exports[`Intent Page renders correctly 1`] = `
                   class="govuk-radios__item"
                 >
                   <input
-                    aria-describedby="create_beacon-hint"
+                    aria-describedby="create-beacon-hint"
                     class="govuk-radios__input"
-                    id="create_beacon"
-                    name="beacon_intent"
+                    id="create-beacon"
+                    name="beaconIntent"
                     type="radio"
-                    value="create_beacon"
+                    value="CREATE"
                   />
                   <label
                     class="govuk-label govuk-radios__label"
-                    for="create_beacon"
+                    for="create-beacon"
                   >
                     Register a new beacon
                   </label>
                   <div
                     class="govuk-hint govuk-radios__hint"
-                    id="create_beacon-hint"
+                    id="create-beacon-hint"
                   >
                     Choose this option to register one or multiple new beacons
                   </div>
@@ -157,22 +154,22 @@ exports[`Intent Page renders correctly 1`] = `
                   class="govuk-radios__item"
                 >
                   <input
-                    aria-describedby="change_beacon-hint"
+                    aria-describedby="change-beacon-hint"
                     class="govuk-radios__input"
-                    id="change_beacon"
-                    name="beacon_intent"
+                    id="change-beacon"
+                    name="beaconIntent"
                     type="radio"
-                    value="change_beacon"
+                    value="UPDATE"
                   />
                   <label
                     class="govuk-label govuk-radios__label"
-                    for="change_beacon"
+                    for="change-beacon"
                   >
                     Update details for existing beacon(s) you've already registered
                   </label>
                   <div
                     class="govuk-hint govuk-radios__hint"
-                    id="change_beacon-hint"
+                    id="change-beacon-hint"
                   >
                     Choose this option to change existing beacon details, vessel and aircraft details, owner details and emergency contact information
                   </div>
@@ -184,9 +181,9 @@ exports[`Intent Page renders correctly 1`] = `
                     aria-describedby="ownership-hint"
                     class="govuk-radios__input"
                     id="ownership"
-                    name="beacon_intent"
+                    name="beaconIntent"
                     type="radio"
-                    value="ownership"
+                    value="CHANGE_OWNERSHIP"
                   />
                   <label
                     class="govuk-label govuk-radios__label"
@@ -208,9 +205,9 @@ exports[`Intent Page renders correctly 1`] = `
                     aria-describedby="withdraw-hint"
                     class="govuk-radios__input"
                     id="withdraw"
-                    name="beacon_intent"
+                    name="beaconIntent"
                     type="radio"
-                    value="withdraw"
+                    value="WITHDRAW"
                   />
                   <label
                     class="govuk-label govuk-radios__label"
@@ -232,9 +229,9 @@ exports[`Intent Page renders correctly 1`] = `
                     aria-describedby="other-hint"
                     class="govuk-radios__input"
                     id="other"
-                    name="beacon_intent"
+                    name="beaconIntent"
                     type="radio"
-                    value="other"
+                    value="OTHER"
                   />
                   <label
                     class="govuk-label govuk-radios__label"
@@ -250,14 +247,14 @@ exports[`Intent Page renders correctly 1`] = `
                   </div>
                 </div>
               </div>
+              <button
+                class="govuk-button"
+                data-module="govuk-button"
+              >
+                Continue
+              </button>
             </fieldset>
-          </div>
-          <button
-            class="govuk-button"
-            data-module="govuk-button"
-          >
-            Continue
-          </button>
+          </form>
         </div>
         <div
           class="govuk-grid-column-one-third"
