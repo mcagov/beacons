@@ -42,6 +42,12 @@ export const Form: FunctionComponent<FormProps> = ({
   </form>
 );
 
+export const FormGroup: FunctionComponent<FormGroupProps> = ({
+  children,
+}: FormGroupProps): JSX.Element => (
+  <div className="govuk-form-group">{children}</div>
+);
+
 export const FormFieldset: FunctionComponent<FormFieldsetProps> = ({
   ariaDescribedBy = null,
   children,
@@ -51,10 +57,12 @@ export const FormFieldset: FunctionComponent<FormFieldsetProps> = ({
   </fieldset>
 );
 
-export const FormGroup: FunctionComponent<FormGroupProps> = ({
+export const FormLegend: FunctionComponent<FormLegendProps> = ({
   children,
-}: FormGroupProps): JSX.Element => (
-  <div className="govuk-form-group">{children}</div>
+}: FormLegendProps): JSX.Element => (
+  <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+    <h1 className="govuk-fieldset__heading">{children}</h1>
+  </legend>
 );
 
 export const FormLabel: FunctionComponent<FormLabelProps> = ({
@@ -65,14 +73,6 @@ export const FormLabel: FunctionComponent<FormLabelProps> = ({
   <label className={`govuk-label ${className}`} htmlFor={htmlFor}>
     {children}
   </label>
-);
-
-export const FormLegend: FunctionComponent<FormLegendProps> = ({
-  children,
-}: FormLegendProps): JSX.Element => (
-  <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-    <h1 className="govuk-fieldset__heading">{children}</h1>
-  </legend>
 );
 
 export const FormHint: FunctionComponent<FormHintProps> = ({
