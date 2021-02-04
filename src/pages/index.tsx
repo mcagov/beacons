@@ -82,7 +82,7 @@ const DataProtection: FunctionComponent = () => (
 
 const RelatedContent: FunctionComponent = () => (
   <>
-    <Aside title="">
+    <Aside>
       <McaLogo />
     </Aside>
 

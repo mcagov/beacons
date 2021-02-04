@@ -348,10 +348,6 @@ exports[`Home Page renders correctly 1`] = `
             class="related_items"
             role="complementary"
           >
-            <h2
-              class="govuk-heading-m"
-              id="subsection-title"
-            />
             <nav
               aria-labelledby="subsection-title"
               role="navigation"
