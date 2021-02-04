@@ -171,6 +171,11 @@ exports[`Home Page renders correctly 1`] = `
               Inform us of a beacon disposal
             </li>
           </ul>
+          <p
+            class="govuk-body"
+          >
+            Registering takes around 5 minutes.
+          </p>
           <div
             class="govuk-inset-text"
           >
@@ -183,11 +188,6 @@ exports[`Home Page renders correctly 1`] = `
             </a>
              if you are not sure if your beacon is 406MHz or not.
           </div>
-          <p
-            class="govuk-body"
-          >
-            Registering takes around 5 minutes.
-          </p>
           <h2
             class="govuk-heading-m"
           >

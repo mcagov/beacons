@@ -45,6 +45,9 @@ const AboutTheService: FunctionComponent = () => (
       <li>Tell us about a change in beacon ownership</li>
       <li>Inform us of a beacon disposal</li>
     </ul>
+
+    <p className="govuk-body">Registering takes around 5 minutes.</p>
+
     <InsetText>
       <>
         This service is only for UK encoded 406MHz beacons. You can{" "}
@@ -54,8 +57,6 @@ const AboutTheService: FunctionComponent = () => (
         if you are not sure if your beacon is 406MHz or not.
       </>
     </InsetText>
-
-    <p className="govuk-body">Registering takes around 5 minutes.</p>
 
     <h2 className="govuk-heading-m">Before you start</h2>
 
