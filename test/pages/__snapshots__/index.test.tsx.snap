@@ -183,6 +183,11 @@ exports[`Home Page renders correctly 1`] = `
             </a>
              if you are not sure if your beacon is 406MHz or not.
           </div>
+          <p
+            class="govuk-body"
+          >
+            Registering takes around 5 minutes.
+          </p>
           <h2
             class="govuk-heading-m"
           >
@@ -268,11 +273,20 @@ exports[`Home Page renders correctly 1`] = `
                   ukbeacons@mcga.gov.uk
                 </a>
               </li>
-              <li>
+              <li
+                class="govuk-!-font-weight-bold"
+              >
                 Telephone: 01326 211569
               </li>
-              <li>
+              <li
+                class="govuk-!-font-weight-bold"
+              >
                 Fax: 01326 319264
+              </li>
+              <li
+                class="govuk-!-font-weight-bold"
+              >
+                Monday to Friday, 9am to 5pm (except public holidays)
               </li>
               <li>
                 <a

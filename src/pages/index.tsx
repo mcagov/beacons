@@ -31,45 +31,6 @@ const Breadcrumbs: FunctionComponent = () => (
   </BreadcrumbList>
 );
 
-const RelatedContent: FunctionComponent = () => (
-  <>
-    <Aside title="Related content">
-      <ul className="govuk-list govuk-!-font-size-16">
-        <li>
-          <a className="govuk-link" href="#">
-            Find your beacons HEX ID
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Emergency and life-saving equipment on ships
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            UK Ship Register
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Aircraft registrations (G-INFO)
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Non 406MHz beacons
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Non UK encoded beacons
-          </a>
-        </li>
-      </ul>
-    </Aside>
-  </>
-);
-
 const PageHeading: FunctionComponent = () => (
   <h1 className="govuk-heading-l">Register a UK 406 MHz beacon</h1>
 );
@@ -93,6 +54,8 @@ const AboutTheService: FunctionComponent = () => (
         if you are not sure if your beacon is 406MHz or not.
       </>
     </InsetText>
+
+    <p className="govuk-body">Registering takes around 5 minutes.</p>
 
     <h2 className="govuk-heading-m">Before you start</h2>
 
@@ -143,8 +106,11 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
               ukbeacons@mcga.gov.uk
             </a>
           </li>
-          <li>Telephone: 01326 211569</li>
-          <li>Fax: 01326 319264</li>
+          <li className="govuk-!-font-weight-bold">Telephone: 01326 211569</li>
+          <li className="govuk-!-font-weight-bold">Fax: 01326 319264</li>
+          <li className="govuk-!-font-weight-bold">
+            Monday to Friday, 9am to 5pm (except public holidays)
+          </li>
           <li>
             <a className="govuk-link" href="#">
               Find out about call charges
@@ -153,6 +119,45 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
         </ul>
       </>
     </InsetText>
+  </>
+);
+
+const RelatedContent: FunctionComponent = () => (
+  <>
+    <Aside title="Related content">
+      <ul className="govuk-list govuk-!-font-size-16">
+        <li>
+          <a className="govuk-link" href="#">
+            Find your beacons HEX ID
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link" href="#">
+            Emergency and life-saving equipment on ships
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link" href="#">
+            UK Ship Register
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link" href="#">
+            Aircraft registrations (G-INFO)
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link" href="#">
+            Non 406MHz beacons
+          </a>
+        </li>
+        <li>
+          <a className="govuk-link" href="#">
+            Non UK encoded beacons
+          </a>
+        </li>
+      </ul>
+    </Aside>
   </>
 );
 
