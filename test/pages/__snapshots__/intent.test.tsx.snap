@@ -107,6 +107,12 @@ exports[`Intent Page renders correctly 1`] = `
         <div
           class="govuk-grid-column-two-thirds"
         >
+          <a
+            class="govuk-back-link"
+            href="/"
+          >
+            Back
+          </a>
           <div
             class="govuk-form-group"
           >
