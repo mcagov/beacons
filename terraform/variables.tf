@@ -22,7 +22,6 @@ variable "app_name" {
   description = "Name of the application"
   default     = "Beacons Registation Application"
 }
-# TODO: get updated task docker image from registry of choice. 
 variable "webapp_image" {
   type        = string
   description = "Docker image to run in the ECS cluster for the Beacons Webapp"
