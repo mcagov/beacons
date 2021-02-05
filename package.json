@@ -27,7 +27,8 @@
     "govuk-frontend": "^3.10.2",
     "next": "10.0.6",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "urlencoded-body-parser": "^3.0.0"
   },
   "devDependencies": {
     "@jest/types": "^26.6.2",
