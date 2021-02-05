@@ -1,5 +1,4 @@
 import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
-import { Interface } from "readline";
 import { HttpMethod } from "../lib/types";
 
 interface FormProps {
@@ -109,7 +108,7 @@ export const Input: FunctionComponent<InputProps> = ({
   name,
   type = "text",
   spellCheck = true,
-}): JSX.Element => (
+}: InputProps): JSX.Element => (
   <FormGroup>
     {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
     <input
@@ -125,7 +124,7 @@ export const Select: FunctionComponent<SelectProps> = ({
   label,
   name,
   children,
-}): JSX.Element => (
+}: SelectProps): JSX.Element => (
   <FormGroup>
     {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
     <select className="govuk-select" name={name}>
@@ -137,4 +136,4 @@ export const Select: FunctionComponent<SelectProps> = ({
 export const SelectOption: FunctionComponent<SelectOptionProps> = ({
   value,
   children,
-}): JSX.Element => <option value={value}>{children}</option>;
+}: SelectOptionProps): JSX.Element => <option value={value}>{children}</option>;
