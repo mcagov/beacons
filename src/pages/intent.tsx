@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Button } from "../components/Button";
+import { BackButton, Button } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";
 import { RadioList, RadioListItemHint } from "../components/RadioList";
@@ -12,6 +12,7 @@ const IntentPage: FunctionComponent = () => (
       <Grid
         mainContent={
           <>
+            <BackButton href="/" />
             <IntentPageContent />
           </>
         }
