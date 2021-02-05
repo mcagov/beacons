@@ -8,7 +8,7 @@ import { BeaconIntent } from "../lib/types";
 
 const IntentPage: FunctionComponent = () => (
   <>
-    <Layout breadcrumbs={<BackButton href="/" />}>
+    <Layout navigation={<BackButton href="/" />}>
       <Grid
         mainContent={
           <>

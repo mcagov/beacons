@@ -9,7 +9,7 @@ import { McaLogo } from "../components/McaLogo";
 
 const ServiceStartPage: FunctionComponent = () => (
   <>
-    <Layout breadcrumbs={<Breadcrumbs />}>
+    <Layout navigation={<Breadcrumbs />}>
       <Grid
         mainContent={
           <>

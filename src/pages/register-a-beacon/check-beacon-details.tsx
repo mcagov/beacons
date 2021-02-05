@@ -14,7 +14,7 @@ import {
 
 const CheckBeaconDetails: FunctionComponent = () => (
   <>
-    <Layout breadcrumbs={<BackButton href="/intent" />}>
+    <Layout navigation={<BackButton href="/intent" />}>
       <Grid
         mainContent={
           <>

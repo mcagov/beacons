@@ -32,7 +32,7 @@ const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
   return (
     <>
       <Layout
-        breadcrumbs={
+        navigation={
           <BackButton href="/register-a-beacon/check-beacon-details" />
         }
       >

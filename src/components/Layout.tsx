@@ -7,13 +7,13 @@ import { PhaseBanner } from "./PhaseBanner";
 interface LayoutProps {
   children: ReactNode;
   head?: ReactNode;
-  breadcrumbs?: ReactNode;
+  navigation?: ReactNode;
 }
 
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
   head = <BeaconRegistrationHead />,
-  breadcrumbs = null,
+  navigation: breadcrumbs = null,
 }: LayoutProps): JSX.Element => (
   <>
     {head}

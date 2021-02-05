@@ -15,7 +15,7 @@ describe("Layout", () => {
 
   it("should render correctly with the provided breadcrumbs", () => {
     const { asFragment } = render(
-      <Layout breadcrumbs={<Breadcrumbs />}>
+      <Layout navigation={<Breadcrumbs />}>
         <Body />
       </Layout>
     );
@@ -33,7 +33,7 @@ describe("Layout", () => {
 
   it("should render correctly with the provided breadcrumbs and head", () => {
     const { asFragment } = render(
-      <Layout breadcrumbs={<Breadcrumbs />} head={<Header />}>
+      <Layout navigation={<Breadcrumbs />} head={<Header />}>
         <Body />
       </Layout>
     );
