@@ -3,19 +3,15 @@ import Head from "next/head";
 import { Grid } from "../../components/Grid";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
-import {
-  BreadcrumbList,
-  BreadcrumbListItem,
-} from "../../components/Breadcrumb";
 
-const CheckBeaconDetails: FunctionComponent = () => (
+const CheckBeaconDetailsPage: FunctionComponent = () => (
   <>
     <Head>
       <title>
         Beacon Registration Service - Register a new 406 MHz distress beacon
       </title>
     </Head>
-    <Layout breadcrumbs={<Breadcrumbs />}>
+    <Layout>
       <Grid
         mainContent={
           <>
@@ -87,12 +83,4 @@ const CheckBeaconDetails: FunctionComponent = () => (
   </>
 );
 
-const Breadcrumbs: FunctionComponent = () => (
-  <BreadcrumbList>
-    <BreadcrumbListItem>Home</BreadcrumbListItem>
-    <BreadcrumbListItem>Section</BreadcrumbListItem>
-    <BreadcrumbListItem>Subsection</BreadcrumbListItem>
-  </BreadcrumbList>
-);
-
-export default CheckBeaconDetails;
+export default CheckBeaconDetailsPage;
