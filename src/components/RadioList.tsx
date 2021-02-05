@@ -1,17 +1,9 @@
 import React, { FunctionComponent, ReactNode } from "react";
+import { FormHint, FormLabel } from "./Form";
 
 interface RadioListProps {
-  radioListTitleText?: string;
-  radioListSubTitleText?: string;
+  className?: string;
   children: ReactNode;
-}
-
-interface RadioListTitleProps {
-  titleText?: string;
-}
-
-interface RadioListSubTitleProps {
-  subTitleText?: string;
 }
 
 interface RadioListItemProps {
@@ -19,31 +11,21 @@ interface RadioListItemProps {
   name: string;
   value: string;
   text: string;
-  hintText?: string;
 }
 
-const RadioListTitle: FunctionComponent<RadioListTitleProps> = ({
-  titleText,
-}: RadioListTitleProps): JSX.Element => (
-  <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
-    <h2 className="govuk-fieldset__heading">{titleText}</h2>
-  </legend>
-);
-
-const RadioListSubTitle: FunctionComponent<RadioListSubTitleProps> = ({
-  subTitleText,
-}: RadioListSubTitleProps): JSX.Element => (
-  <div id="beacon-intent-hint" className="govuk-hint">
-    {subTitleText}
-  </div>
-);
+interface RadioListItemHintProps {
+  id: string;
+  name: string;
+  value: string;
+  text: string;
+  hintText: string;
+}
 
 export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
   id,
   name,
   value,
   text,
-  hintText,
 }: RadioListItemProps): JSX.Element => (
   <div className="govuk-radios__item">
     <input
@@ -52,29 +34,42 @@ export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
       name={name}
       type="radio"
       value={value}
-      aria-describedby={id + `-hint`}
     />
-    <label className="govuk-label govuk-radios__label" htmlFor={id}>
+    <FormLabel className="govuk-radios__label" htmlFor={id}>
       {text}
-    </label>
-    <div id={id + `-hint`} className="govuk-hint govuk-radios__hint">
+    </FormLabel>
+  </div>
+);
+
+export const RadioListItemHint: FunctionComponent<RadioListItemHintProps> = ({
+  id,
+  name,
+  value,
+  text,
+  hintText,
+}: RadioListItemHintProps): JSX.Element => (
+  <div className="govuk-radios__item">
+    <input
+      className="govuk-radios__input"
+      id={id}
+      name={name}
+      type="radio"
+      value={value}
+      aria-describedby={`${id}-hint`}
+    />
+    <FormLabel className="govuk-radios__label" htmlFor={id}>
+      {text}
+    </FormLabel>
+
+    <FormHint id={id} className="govuk-radios__hint">
       {hintText}
-    </div>
+    </FormHint>
   </div>
 );
 
 export const RadioList: FunctionComponent<RadioListProps> = ({
-  radioListTitleText,
-  radioListSubTitleText,
+  className = "",
   children,
 }: RadioListProps): JSX.Element => (
-  <div className="govuk-form-group">
-    <fieldset className="govuk-fieldset">
-      <RadioListTitle titleText={radioListTitleText} />
-
-      <RadioListSubTitle subTitleText={radioListSubTitleText} />
-
-      <div className="govuk-radios govuk-!-margin-bottom-3">{children}</div>
-    </fieldset>
-  </div>
+  <div className={`govuk-radios ${className}`}>{children}</div>
 );

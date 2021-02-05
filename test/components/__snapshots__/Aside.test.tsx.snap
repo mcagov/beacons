@@ -23,3 +23,21 @@ exports[`Aside renders correctly 1`] = `
   </aside>
 </DocumentFragment>
 `;
+
+exports[`Aside renders without a title 1`] = `
+<DocumentFragment>
+  <aside
+    class="related_items"
+    role="complementary"
+  >
+    <nav
+      aria-labelledby="subsection-title"
+      role="navigation"
+    >
+      <h1>
+        Beacons Registration
+      </h1>
+    </nav>
+  </aside>
+</DocumentFragment>
+`;

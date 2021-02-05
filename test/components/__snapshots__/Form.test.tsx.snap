@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form components should render a complete form 1`] = `
+<DocumentFragment>
+  <form
+    action="/"
+    method="POST"
+  >
+    <div
+      class="govuk-form-group"
+    >
+      <legend
+        class="govuk-fieldset__legend govuk-fieldset__legend--l"
+      >
+        <h1
+          class="govuk-fieldset__heading"
+        >
+          Select your beacon type
+        </h1>
+      </legend>
+      <label
+        class="govuk-label "
+        for="id"
+      >
+        Beacon type
+      </label>
+      <input
+        aria-describedby="id-hint"
+        id="id"
+        type="text"
+      />
+      <div
+        class="govuk-hint "
+        id="id-hint"
+      >
+        Beacon type can be: PLB, EPIRB, or ELT
+      </div>
+      <button>
+        submit
+      </button>
+    </div>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`Form components should render the form component 1`] = `
+<DocumentFragment>
+  <form
+    action="/"
+    method="POST"
+  >
+    Beacons form
+  </form>
+</DocumentFragment>
+`;

@@ -27,7 +27,7 @@ exports[`Breadcrumb should render the breadcrumb with a NextJS breadcrumb list i
           class="govuk-breadcrumbs__link"
           href="/home"
         >
-          Home 
+          Home
         </a>
       </li>
     </ol>

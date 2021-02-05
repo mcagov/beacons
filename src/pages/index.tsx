@@ -4,7 +4,7 @@ import { StartButton } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
 import { Layout } from "../components/Layout";
-import { BreadcrumbList, BreadcrumListItem } from "../components/Breadcrumb";
+import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
 import { McaLogo } from "../components/McaLogo";
 
 const ServiceStartPage: FunctionComponent = () => (
@@ -27,9 +27,9 @@ const ServiceStartPage: FunctionComponent = () => (
 
 const Breadcrumbs: FunctionComponent = () => (
   <BreadcrumbList>
-    <BreadcrumListItem>Home</BreadcrumListItem>
-    <BreadcrumListItem>Section</BreadcrumListItem>
-    <BreadcrumListItem>Subsection</BreadcrumListItem>
+    <BreadcrumbListItem>Home</BreadcrumbListItem>
+    <BreadcrumbListItem>Section</BreadcrumbListItem>
+    <BreadcrumbListItem>Subsection</BreadcrumbListItem>
   </BreadcrumbList>
 );
 
@@ -82,7 +82,7 @@ const DataProtection: FunctionComponent = () => (
 
 const RelatedContent: FunctionComponent = () => (
   <>
-    <Aside title="">
+    <Aside>
       <McaLogo />
     </Aside>
 

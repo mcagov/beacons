@@ -12,6 +12,16 @@ describe("Aside", () => {
 
     expect(asFragment()).toMatchSnapshot();
   });
+
+  it("renders without a title", () => {
+    const { asFragment } = render(
+      <Aside>
+        <MyComponent />
+      </Aside>
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
 
 const MyComponent = () => <h1>Beacons Registration</h1>;
