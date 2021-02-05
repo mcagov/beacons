@@ -141,12 +141,20 @@ exports[`Check beacon details page renders correctly 1`] = `
                   class="govuk-label "
                   for="beaconManufacturer"
                 >
-                  Beacon manufacturer
+                  Select your beacon manufacturer
                 </label>
                 <select
                   class="govuk-select"
                   name="beaconManufacturer"
                 >
+                  <option
+                    disabled=""
+                    hidden=""
+                    selected=""
+                    value="default"
+                  >
+                    Beacon manufacturer
+                  </option>
                   <option
                     value="Raleigh"
                   >
@@ -171,12 +179,20 @@ exports[`Check beacon details page renders correctly 1`] = `
                   class="govuk-label "
                   for="beaconModel"
                 >
-                  Beacon model
+                  Select your beacon model
                 </label>
                 <select
                   class="govuk-select"
                   name="beaconModel"
                 >
+                  <option
+                    disabled=""
+                    hidden=""
+                    selected=""
+                    value="default"
+                  >
+                    Beacon model
+                  </option>
                   <option
                     value="Chopper"
                   >
@@ -201,14 +217,41 @@ exports[`Check beacon details page renders correctly 1`] = `
                   class="govuk-label "
                   for="beaconHexId"
                 >
-                  15 digit beacon HEX ID
+                  Enter the 15 digit beacon HEX ID
                 </label>
+                <div
+                  class="govuk-hint "
+                  id="beaconHexId-hint"
+                >
+                  This will be on your beacon. It must be 15 characters long and use characters 0-9, A-F
+                </div>
                 <input
                   class="govuk-input"
                   name="beaconHexId"
                   spellcheck="false"
                   type="text"
                 />
+                <br />
+                <br />
+                <details
+                  class="govuk-details"
+                  data-module="govuk-details"
+                >
+                  <summary
+                    class="govuk-details__summary"
+                  >
+                    <span
+                      class="govuk-details__summary-text"
+                    >
+                      What does the 15 digit beacon HEX ID look like?
+                    </span>
+                  </summary>
+                  <div
+                    class="govuk-details__text"
+                  >
+                    TODO: Image of a beacon showing hex ID
+                  </div>
+                </details>
               </div>
             </fieldset>
             <button
@@ -218,6 +261,54 @@ exports[`Check beacon details page renders correctly 1`] = `
               Submit
             </button>
           </form>
+          <details
+            class="govuk-details"
+            data-module="govuk-details"
+          >
+            <summary
+              class="govuk-details__summary"
+            >
+              <span
+                class="govuk-details__summary-text"
+              >
+                If you need help completing this form
+              </span>
+            </summary>
+            <div
+              class="govuk-details__text"
+            >
+              <p>
+                <b>
+                  The UK Beacon Registry
+                </b>
+                <br />
+                <a
+                  class="govuk-link"
+                  href="mailto:ukbeacons@mcga.gov.uk"
+                >
+                  ukbeacons@mcga.gov.uk
+                </a>
+                <br />
+                Telephone: 01326 211569 
+                <br />
+                Fax: 01326 319264 
+                <br />
+                Monday to Friday, 9am to 5pm (except public holidays)
+                <br />
+              </p>
+              <p>
+                <a
+                  class="govuk-link"
+                  href="https://www.gov.uk/call-charges"
+                >
+                  Find out about call charges
+                </a>
+              </p>
+              <p>
+                In an emergency in the UK, dial 999 and ask for the Coastguard. If you are at sea, use GMDSS systems to make a distress or urgency alert:Emergency Contact - Dial 999 and ask for the Coastguard
+              </p>
+            </div>
+          </details>
         </div>
       </div>
     </main>
