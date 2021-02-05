@@ -115,6 +115,7 @@ const WhatNext: FunctionComponent = () => (
 // TODO: Encapsulate the state caching function
 export const getServerSideProps: GetServerSideProps = async (context) => {
   if (context.req.method === "POST") {
+    // TODO: Investigate more widely used library for parse()
     const previousFormPageData: BeaconDetailsProps = await parse(context.req);
 
     const state: IFormCache = FormCacheFactory.getState();
