@@ -1,7 +1,7 @@
 import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
 import Link from "next/link";
 
-interface BreadcrumListItemProps {
+interface BreadcrumbListItemProps {
   children: ReactNode;
   link?: string;
   nextJSLink?: boolean;
@@ -20,13 +20,13 @@ export const BreadcrumbList: FunctionComponent = ({
   </div>
 );
 
-export const BreadcrumListItem: FunctionComponent<BreadcrumListItemProps> = ({
+export const BreadcrumbListItem: FunctionComponent<BreadcrumbListItemProps> = ({
   children,
   link = "#",
   nextJSLink = true,
-}: BreadcrumListItemProps): JSX.Element => {
+}: BreadcrumbListItemProps): JSX.Element => {
   const anchorElement: JSX.Element = nextJSLink ? (
-    <NextJSLink link={link}>{children} </NextJSLink>
+    <NextJSLink link={link}>{children}</NextJSLink>
   ) : (
     <AnchorLink link={link}>{children}</AnchorLink>
   );

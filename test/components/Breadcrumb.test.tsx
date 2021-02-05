@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import {
   BreadcrumbList,
-  BreadcrumListItem,
+  BreadcrumbListItem,
 } from "../../src/components/Breadcrumb";
 
 describe("Breadcrumb", () => {
@@ -14,7 +14,7 @@ describe("Breadcrumb", () => {
   it("should render the breadcrumb with a NextJS breadcrumb list item", () => {
     const { asFragment } = render(
       <BreadcrumbList>
-        <BreadcrumListItem link="/home">Home</BreadcrumListItem>
+        <BreadcrumbListItem link="/home">Home</BreadcrumbListItem>
       </BreadcrumbList>
     );
     expect(asFragment()).toMatchSnapshot();
@@ -23,9 +23,9 @@ describe("Breadcrumb", () => {
   it("should render the breadcrumb with a non-NextJS breadcrumb list item", () => {
     const { asFragment } = render(
       <BreadcrumbList>
-        <BreadcrumListItem link="/home" nextJSLink={false}>
+        <BreadcrumbListItem link="/home" nextJSLink={false}>
           Home
-        </BreadcrumListItem>
+        </BreadcrumbListItem>
       </BreadcrumbList>
     );
     expect(asFragment()).toMatchSnapshot();
