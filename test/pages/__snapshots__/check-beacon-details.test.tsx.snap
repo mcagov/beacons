@@ -97,6 +97,12 @@ exports[`Check beacon details page renders correctly 1`] = `
   <div
     class="govuk-width-container"
   >
+    <a
+      class="govuk-back-link"
+      href="/intent"
+    >
+      Back
+    </a>
     <main
       class="govuk-main-wrapper"
       id="main-content"

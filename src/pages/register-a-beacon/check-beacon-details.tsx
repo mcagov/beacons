@@ -3,15 +3,11 @@ import Head from "next/head";
 import { Grid } from "../../components/Grid";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
+import { BackButton } from "../../components/Button";
 
-const CheckBeaconDetailsPage: FunctionComponent = () => (
+const CheckBeaconDetails: FunctionComponent = () => (
   <>
-    <Head>
-      <title>
-        Beacon Registration Service - Register a new 406 MHz distress beacon
-      </title>
-    </Head>
-    <Layout>
+    <Layout breadcrumbs={<BackButton href="/intent" />}>
       <Grid
         mainContent={
           <>
@@ -83,4 +79,4 @@ const CheckBeaconDetailsPage: FunctionComponent = () => (
   </>
 );
 
-export default CheckBeaconDetailsPage;
+export default CheckBeaconDetails;
