@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Notification Banner component renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    aria-labelledby="govuk-notification-banner-title"
+    class="govuk-notification-banner"
+    data-module="govuk-notification-banner"
+    role="region"
+  >
+    <div
+      class="govuk-notification-banner__header"
+    >
+      <h2
+        class="govuk-notification-banner__title"
+        id="govuk-notification-banner-title"
+      >
+        test001
+      </h2>
+    </div>
+    <div
+      class="govuk-notification-banner__content"
+    >
+      <div
+        class="govuk-notification-banner__heading"
+      >
+        Inner message
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
