@@ -21,10 +21,10 @@ describe("Typography", () => {
 
     it("renders with DOM nodes as children", () => {
       const children = (
-        <>
+        <div>
           <p>This is some text that needs to be linked from</p>
-          <button>And here's a button</button>
-        </>
+          <button>And here is a button</button>
+        </div>
       );
 
       const { asFragment } = render(<A href="#">{children}</A>);

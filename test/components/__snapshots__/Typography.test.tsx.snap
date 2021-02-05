@@ -17,12 +17,14 @@ exports[`Typography A renders with DOM nodes as children 1`] = `
     class="govuk-link"
     href="#"
   >
-    <p>
-      This is some text that needs to be linked from
-    </p>
-    <button>
-      And here's a button
-    </button>
+    <div>
+      <p>
+        This is some text that needs to be linked from
+      </p>
+      <button>
+        And here is a button
+      </button>
+    </div>
   </a>
 </DocumentFragment>
 `;

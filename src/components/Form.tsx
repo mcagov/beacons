@@ -34,15 +34,14 @@ interface FormLegendProps {
 
 interface InputProps {
   name: string;
-  label?: string;
   type?: string;
   spellCheck?: boolean;
 }
 
 interface SelectProps {
   name: string;
+  defaultValue: string;
   children: ReactNode;
-  label?: string;
 }
 
 interface SelectOptionProps {
@@ -104,33 +103,26 @@ export const FormHint: FunctionComponent<FormHintProps> = ({
 );
 
 export const Input: FunctionComponent<InputProps> = ({
-  label,
   name,
   type = "text",
   spellCheck = true,
 }: InputProps): JSX.Element => (
-  <FormGroup>
-    {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
-    <input
-      className="govuk-input"
-      name={name}
-      type={type}
-      spellCheck={spellCheck}
-    />
-  </FormGroup>
+  <input
+    className="govuk-input"
+    name={name}
+    type={type}
+    spellCheck={spellCheck}
+  />
 );
 
 export const Select: FunctionComponent<SelectProps> = ({
-  label,
   name,
+  defaultValue,
   children,
 }: SelectProps): JSX.Element => (
-  <FormGroup>
-    {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
-    <select className="govuk-select" name={name}>
-      {children}
-    </select>
-  </FormGroup>
+  <select className="govuk-select" name={name} defaultValue={defaultValue}>
+    {children}
+  </select>
 );
 
 export const SelectOption: FunctionComponent<SelectOptionProps> = ({
