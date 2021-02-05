@@ -128,24 +128,23 @@ exports[`Check beacon details page renders correctly 1`] = `
                 >
                   Check beacon details
                 </h1>
-                <div
-                  class="govuk-inset-text"
-                >
-                  The details of your beacon must be checked to ensure they have a UK encoding and if they are already registered with this service.
-                </div>
               </legend>
+              <div
+                class="govuk-inset-text"
+              >
+                The details of your beacon must be checked to ensure they have a UK encoding and if they are already registered with this service.
+              </div>
               <div
                 class="govuk-form-group"
               >
                 <label
-                  class="govuk-label"
+                  class="govuk-label "
                   for="beaconManufacturer"
                 >
                   Beacon manufacturer
                 </label>
                 <select
                   class="govuk-select"
-                  id="beaconManufacturer"
                   name="beaconManufacturer"
                 >
                   <option
@@ -169,14 +168,13 @@ exports[`Check beacon details page renders correctly 1`] = `
                 class="govuk-form-group"
               >
                 <label
-                  class="govuk-label"
+                  class="govuk-label "
                   for="beaconModel"
                 >
                   Beacon model
                 </label>
                 <select
                   class="govuk-select"
-                  id="beaconModel"
                   name="beaconModel"
                 >
                   <option
@@ -200,21 +198,23 @@ exports[`Check beacon details page renders correctly 1`] = `
                 class="govuk-form-group"
               >
                 <label
-                  class="govuk-label"
+                  class="govuk-label "
                   for="beaconHexId"
                 >
                   15 digit beacon HEX ID
                 </label>
                 <input
                   class="govuk-input"
-                  id="beaconHexId"
                   name="beaconHexId"
                   spellcheck="false"
                   type="text"
                 />
               </div>
             </fieldset>
-            <button>
+            <button
+              class="govuk-button"
+              data-module="govuk-button"
+            >
               Submit
             </button>
           </form>

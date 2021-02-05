@@ -1,4 +1,5 @@
 import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
+import { Interface } from "readline";
 import { HttpMethod } from "../lib/types";
 
 interface FormProps {
@@ -29,6 +30,24 @@ interface FormHintProps {
 }
 
 interface FormLegendProps {
+  children: ReactNode;
+}
+
+interface InputProps {
+  name: string;
+  label?: string;
+  type?: string;
+  spellCheck?: boolean;
+}
+
+interface SelectProps {
+  name: string;
+  children: ReactNode;
+  label?: string;
+}
+
+interface SelectOptionProps {
+  value: string;
   children: ReactNode;
 }
 
@@ -84,3 +103,38 @@ export const FormHint: FunctionComponent<FormHintProps> = ({
     {children}
   </div>
 );
+
+export const Input: FunctionComponent<InputProps> = ({
+  label,
+  name,
+  type = "text",
+  spellCheck = true,
+}): JSX.Element => (
+  <FormGroup>
+    {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
+    <input
+      className="govuk-input"
+      name={name}
+      type={type}
+      spellCheck={spellCheck}
+    />
+  </FormGroup>
+);
+
+export const Select: FunctionComponent<SelectProps> = ({
+  label,
+  name,
+  children,
+}): JSX.Element => (
+  <FormGroup>
+    {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
+    <select className="govuk-select" name={name}>
+      {children}
+    </select>
+  </FormGroup>
+);
+
+export const SelectOption: FunctionComponent<SelectOptionProps> = ({
+  value,
+  children,
+}): JSX.Element => <option value={value}>{children}</option>;
