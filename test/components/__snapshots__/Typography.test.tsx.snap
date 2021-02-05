@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Typography A renders correctly 1`] = `
+<DocumentFragment>
+  <a
+    class="govuk-link"
+    href="#"
+  >
+    Link text goes here
+  </a>
+</DocumentFragment>
+`;
+
+exports[`Typography A renders with DOM nodes as children 1`] = `
+<DocumentFragment>
+  <a
+    class="govuk-link"
+    href="#"
+  >
+    <p>
+      This is some text that needs to be linked from
+    </p>
+    <button>
+      And here's a button
+    </button>
+  </a>
+</DocumentFragment>
+`;
