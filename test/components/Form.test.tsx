@@ -10,14 +10,14 @@ import {
 
 describe("Form components", () => {
   it("should render the form component", () => {
-    const { asFragment } = render(<Form url="/">Beacons form</Form>);
+    const { asFragment } = render(<Form action="/">Beacons form</Form>);
 
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render a complete form", () => {
     const { asFragment } = render(
-      <Form url="/">
+      <Form action="/">
         <FormGroup>
           <FormLegend>Select your beacon type</FormLegend>
 

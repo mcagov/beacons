@@ -2,7 +2,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
 import { HttpMethod } from "../lib/types";
 
 interface FormProps {
-  url: string;
+  action: string;
   method?: HttpMethod;
   children: ReactNode;
 }
@@ -33,11 +33,11 @@ interface FormLegendProps {
 }
 
 export const Form: FunctionComponent<FormProps> = ({
-  url,
+  action,
   method = HttpMethod.POST,
   children,
 }: FormProps): JSX.Element => (
-  <form action={url} method={method}>
+  <form action={action} method={method}>
     {children}
   </form>
 );
