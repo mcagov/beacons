@@ -22,7 +22,7 @@ const IntentPage: FunctionComponent = () => (
 );
 
 const IntentPageContent: FunctionComponent = () => (
-  <Form url="/">
+  <Form url="/register-a-beacon/check-beacon-details">
     <FormGroup>
       <FormFieldset>
         <FormLegend>What would you like to do?</FormLegend>

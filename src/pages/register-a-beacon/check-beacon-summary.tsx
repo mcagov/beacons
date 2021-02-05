@@ -1,10 +1,14 @@
 import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
-import { BreadcrumbList, BreadcrumListItem } from "../../components/Breadcrumb";
+import {
+  BreadcrumbList,
+  BreadcrumbListItem,
+} from "../../components/Breadcrumb";
 
 import parse from "urlencoded-body-parser";
 import { GetServerSideProps } from "next";
+import { IFormCache, FormCacheFactory } from "../../lib/form-cache";
 
 interface CheckBeaconDetailsProps {
   beaconManufacturer: string;
@@ -36,18 +40,29 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
 
 const Breadcrumbs: FunctionComponent = () => (
   <BreadcrumbList>
-    <BreadcrumListItem>Home</BreadcrumListItem>
-    <BreadcrumListItem>Section</BreadcrumListItem>
-    <BreadcrumListItem>Subsection</BreadcrumListItem>
+    <BreadcrumbListItem>Home</BreadcrumbListItem>
+    <BreadcrumbListItem>Section</BreadcrumbListItem>
+    <BreadcrumbListItem>Subsection</BreadcrumbListItem>
   </BreadcrumbList>
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   if (context.req.method === "POST") {
-    const previousFormPageData = await parse(context.req);
+    const previousFormPageData: CheckBeaconDetailsProps = await parse(
+      context.req
+    );
+
+    const state: IFormCache = FormCacheFactory.getState();
+    state.set("id", previousFormPageData);
+
     return {
       props: previousFormPageData,
     };
+  } else if (context.req.method === "GET") {
+    const state: IFormCache = FormCacheFactory.getState();
+    const existingState = state.get("id");
+
+    return { props: existingState };
   }
 
   return {

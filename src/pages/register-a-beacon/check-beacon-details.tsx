@@ -3,7 +3,10 @@ import Head from "next/head";
 import { Grid } from "../../components/Grid";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
-import { BreadcrumbList, BreadcrumListItem } from "../../components/Breadcrumb";
+import {
+  BreadcrumbList,
+  BreadcrumbListItem,
+} from "../../components/Breadcrumb";
 
 const CheckBeaconDetails: FunctionComponent = () => (
   <>
@@ -86,9 +89,9 @@ const CheckBeaconDetails: FunctionComponent = () => (
 
 const Breadcrumbs: FunctionComponent = () => (
   <BreadcrumbList>
-    <BreadcrumListItem>Home</BreadcrumListItem>
-    <BreadcrumListItem>Section</BreadcrumListItem>
-    <BreadcrumListItem>Subsection</BreadcrumListItem>
+    <BreadcrumbListItem>Home</BreadcrumbListItem>
+    <BreadcrumbListItem>Section</BreadcrumbListItem>
+    <BreadcrumbListItem>Subsection</BreadcrumbListItem>
   </BreadcrumbList>
 );
 
