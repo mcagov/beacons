@@ -97,6 +97,12 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
   <div
     class="govuk-width-container"
   >
+    <a
+      class="govuk-back-link"
+      href="/check-beacon-details"
+    >
+      Back
+    </a>
     <main
       class="govuk-main-wrapper"
       id="main-content"
@@ -107,12 +113,6 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
         <div
           class="govuk-grid-column-two-thirds"
         >
-          <a
-            class="govuk-back-link"
-            href="/check-beacon-details"
-          >
-            Back
-          </a>
           <div
             aria-labelledby="govuk-notification-banner-title"
             class="govuk-notification-banner"
@@ -167,7 +167,7 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
               <dd
                 class="govuk-summary-list__value"
               >
-                Name of a manufacturer
+                Raleigh
               </dd>
               <dd
                 class="govuk-summary-list__actions"
@@ -195,7 +195,7 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
               <dd
                 class="govuk-summary-list__value"
               >
-                Model name
+                Chopper
               </dd>
               <dd
                 class="govuk-summary-list__actions"
@@ -223,7 +223,7 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
               <dd
                 class="govuk-summary-list__value"
               >
-                AF67 BB81 23CD 451
+                00FF00
               </dd>
               <dd
                 class="govuk-summary-list__actions"
@@ -360,9 +360,6 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
             </svg>
           </a>
         </div>
-        <div
-          class="govuk-grid-column-one-third"
-        />
       </div>
     </main>
   </div>
