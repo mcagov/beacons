@@ -31,7 +31,11 @@ const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
 ): JSX.Element => {
   return (
     <>
-      <Layout breadcrumbs={<BackButton href="/check-beacon-details" />}>
+      <Layout
+        breadcrumbs={
+          <BackButton href="/register-a-beacon/check-beacon-details" />
+        }
+      >
         <Grid
           mainContent={
             <>

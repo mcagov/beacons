@@ -99,7 +99,7 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
   >
     <a
       class="govuk-back-link"
-      href="/check-beacon-details"
+      href="/register-a-beacon/check-beacon-details"
     >
       Back
     </a>
