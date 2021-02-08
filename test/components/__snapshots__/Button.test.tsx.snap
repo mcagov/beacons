@@ -11,6 +11,20 @@ exports[`Button components Button renders correctly 1`] = `
 </DocumentFragment>
 `;
 
+exports[`Button components Link Button renders correctly with the text specified 1`] = `
+<DocumentFragment>
+  <a
+    class="govuk-button"
+    data-module="govuk-button"
+    draggable="false"
+    href="/#"
+    role="button"
+  >
+    Continue
+  </a>
+</DocumentFragment>
+`;
+
 exports[`Button components Start Button renders correctly with no button text specified 1`] = `
 <DocumentFragment>
   <a
