@@ -6,7 +6,10 @@ import parse from "urlencoded-body-parser";
 import { GetServerSideProps } from "next";
 import { IFormCache, FormCacheFactory } from "../../lib/form-cache";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
-import { NotificationBanner } from "../../components/NotificationBanner";
+import {
+  NotificationBanner,
+  NotificationBannerSuccess,
+} from "../../components/NotificationBanner";
 import {
   Form,
   FormFieldset,
@@ -45,6 +48,27 @@ const BeaconAlreadyRegisteredView: FunctionComponent<BeaconDetailsProps> = (
   );
 };
 
+const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
+  props
+) => {
+  return (
+    <>
+      <NotificationBannerSuccess title="Beacon details checked">
+        <div>
+          This beacon is a valid 406MHz UK encoded beacon that hasn't been
+          registered before.
+        </div>
+        <div>
+          You can now enter the remaining beacon information necessary to
+          register.
+        </div>
+      </NotificationBannerSuccess>
+      <BeaconSummary {...props} />
+      <StartButton buttonText="Continue" href="/beacon-information" />
+    </>
+  );
+};
+
 const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
   props
 ): JSX.Element => {
@@ -57,7 +81,7 @@ const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
           <BackButton href="/register-a-beacon/check-beacon-details" />
         }
       >
-        <Grid mainContent={component} />
+        <Grid mainContent={<BeaconNotRegisteredView {...props} />} />
       </Layout>
     </>
   );

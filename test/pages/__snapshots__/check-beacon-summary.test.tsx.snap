@@ -115,9 +115,9 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
         >
           <div
             aria-labelledby="govuk-notification-banner-title"
-            class="govuk-notification-banner"
+            class="govuk-notification-banner govuk-notification-banner--success"
             data-module="govuk-notification-banner"
-            role="region"
+            role="alert"
           >
             <div
               class="govuk-notification-banner__header"
@@ -126,30 +126,17 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
                 class="govuk-notification-banner__title"
                 id="govuk-notification-banner-title"
               >
-                This beacon is already registered
+                Beacon details checked
               </h2>
             </div>
             <div
               class="govuk-notification-banner__content"
             >
-              <div
-                class="govuk-notification-banner__heading"
-              >
-                <div
-                  class="govuk-body"
-                >
-                  There maybe a few reasons why this beacon is already registered, including:
-                </div>
-                <ul
-                  class="govuk-list govuk-list--bullet"
-                >
-                  <li>
-                    It has already been registered by yourself or someone else (e.g. if you bought it second hand)
-                  </li>
-                  <li>
-                    The manufacturer may have incorrectly reused the HEX ID
-                  </li>
-                </ul>
+              <div>
+                This beacon is a valid 406MHz UK encoded beacon that hasn't been registered before.
+              </div>
+              <div>
+                You can now enter the remaining beacon information necessary to register.
               </div>
             </div>
           </div>
@@ -274,69 +261,6 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
               </dd>
             </div>
           </dl>
-          <form
-            action="/"
-            method="POST"
-          >
-            <div
-              class="govuk-form-group"
-            >
-              <fieldset
-                class="govuk-fieldset"
-              >
-                <legend
-                  class="govuk-fieldset__legend"
-                >
-                  What would you like to do next?
-                </legend>
-                <div
-                  class="govuk-radios "
-                >
-                  <div
-                    class="govuk-radios__item"
-                  >
-                    <input
-                      class="govuk-radios__input"
-                      id="try-again"
-                      name="do-next"
-                      type="radio"
-                      value="try-again"
-                    />
-                    <label
-                      class="govuk-label govuk-radios__label"
-                      for="try-again"
-                    >
-                      Try again or register a different beacon
-                    </label>
-                  </div>
-                  <div
-                    class="govuk-radios__item"
-                  >
-                    <input
-                      aria-describedby="continue-anyway-hint"
-                      class="govuk-radios__input"
-                      id="continue-anyway"
-                      name="do-next"
-                      type="radio"
-                      value="continue-anyway"
-                    />
-                    <label
-                      class="govuk-label govuk-radios__label"
-                      for="continue-anyway"
-                    >
-                      Continue anyway - I've entered the beacons details correctly. I think this is a manufacturer fault or want to update the owner details
-                    </label>
-                    <div
-                      class="govuk-hint govuk-radios__hint"
-                      id="continue-anyway-hint"
-                    >
-                      We will contact the beacon manufacturer to rectify this. In the meantime, you can still use your beacon and Search & Rescue will still be able to locate you.
-                    </div>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-          </form>
           <a
             class="govuk-button govuk-button--start"
             data-module="govuk-button"
