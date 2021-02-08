@@ -14,6 +14,11 @@ interface BackButtonProps {
   href: string;
 }
 
+interface LinkButtonProps {
+  buttonText: string;
+  href: string;
+}
+
 export const Button: FunctionComponent<ButtonProps> = ({
   buttonText,
 }: ButtonProps): JSX.Element => (
@@ -55,4 +60,20 @@ export const BackButton: FunctionComponent<BackButtonProps> = ({
   <a href={href} className="govuk-back-link">
     Back
   </a>
+);
+
+export const LinkButton: FunctionComponent<LinkButtonProps> = ({
+  buttonText,
+  href,
+}: LinkButtonProps): JSX.Element => (
+  <Link href={href}>
+    <a
+      role="button"
+      draggable="false"
+      className="govuk-button"
+      data-module="govuk-button"
+    >
+      {buttonText}
+    </a>
+  </Link>
 );

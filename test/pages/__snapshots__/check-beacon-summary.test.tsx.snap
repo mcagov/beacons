@@ -262,27 +262,13 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
             </div>
           </dl>
           <a
-            class="govuk-button govuk-button--start"
+            class="govuk-button"
             data-module="govuk-button"
             draggable="false"
             href="/beacon-information"
             role="button"
           >
             Continue
-            <svg
-              aria-hidden="true"
-              class="govuk-button__start-icon"
-              focusable="false"
-              height="19"
-              viewBox="0 0 33 40"
-              width="17.5"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M0 0h13l20 20-20 20H0l20-20z"
-                fill="currentColor"
-              />
-            </svg>
           </a>
           <details
             class="govuk-details null"
