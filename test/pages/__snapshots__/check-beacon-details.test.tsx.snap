@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Intent Page renders correctly 1`] = `
+exports[`Check beacon details page renders correctly 1`] = `
 <DocumentFragment>
   <a
     class="govuk-skip-link"
@@ -99,7 +99,7 @@ exports[`Intent Page renders correctly 1`] = `
   >
     <a
       class="govuk-back-link"
-      href="/"
+      href="/intent"
     >
       Back
     </a>
@@ -114,157 +114,212 @@ exports[`Intent Page renders correctly 1`] = `
           class="govuk-grid-column-two-thirds"
         >
           <form
-            action="/register-a-beacon/check-beacon-details"
+            action="/register-a-beacon/check-beacon-summary"
             method="POST"
           >
-            <div
-              class="govuk-form-group"
+            <fieldset
+              class="govuk-fieldset"
             >
-              <fieldset
-                class="govuk-fieldset"
+              <legend
+                class="govuk-fieldset__legend govuk-fieldset__legend--l"
               >
-                <legend
-                  class="govuk-fieldset__legend govuk-fieldset__legend--l"
+                <h1
+                  class="govuk-fieldset__heading"
                 >
-                  <h1
-                    class="govuk-fieldset__heading"
+                  Check beacon details
+                </h1>
+              </legend>
+              <div
+                class="govuk-inset-text"
+              >
+                The details of your beacon must be checked to ensure they have a UK encoding and if they are already registered with this service.
+              </div>
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label "
+                  for="beaconManufacturer"
+                >
+                  Select your beacon manufacturer
+                </label>
+                <select
+                  class="govuk-select"
+                  name="beaconManufacturer"
+                >
+                  <option
+                    disabled=""
+                    hidden=""
+                    selected=""
+                    value="default"
                   >
-                    What would you like to do?
-                  </h1>
-                </legend>
+                    Beacon manufacturer
+                  </option>
+                  <option
+                    value="Raleigh"
+                  >
+                    Raleigh
+                  </option>
+                  <option
+                    value="Giant"
+                  >
+                    Giant
+                  </option>
+                  <option
+                    value="Trek"
+                  >
+                    Trek
+                  </option>
+                </select>
+              </div>
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label "
+                  for="beaconModel"
+                >
+                  Select your beacon model
+                </label>
+                <select
+                  class="govuk-select"
+                  id="beaconModel"
+                  name="beaconModel"
+                >
+                  <option
+                    disabled=""
+                    hidden=""
+                    selected=""
+                    value="default"
+                  >
+                    Beacon model
+                  </option>
+                  <option
+                    value="Chopper"
+                  >
+                    Chopper
+                  </option>
+                  <option
+                    value="TCR"
+                  >
+                    TCR
+                  </option>
+                  <option
+                    value="Madone"
+                  >
+                    Madone
+                  </option>
+                </select>
+              </div>
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label "
+                  for="beaconHexId"
+                >
+                  Enter the 15 digit beacon HEX ID
+                </label>
                 <div
-                  class="govuk-radios govuk-!-margin-bottom-3"
+                  class="govuk-hint "
+                  id="beaconHexId-hint"
                 >
-                  <div
-                    class="govuk-radios__item"
-                  >
-                    <input
-                      aria-describedby="create-beacon-hint"
-                      class="govuk-radios__input"
-                      id="create-beacon"
-                      name="beacon-intent"
-                      type="radio"
-                      value="CREATE"
-                    />
-                    <label
-                      class="govuk-label govuk-radios__label"
-                      for="create-beacon"
-                    >
-                      Register a new beacon
-                    </label>
-                    <div
-                      class="govuk-hint govuk-radios__hint"
-                      id="create-beacon-hint"
-                    >
-                      Choose this option to register one or multiple new beacons
-                    </div>
-                  </div>
-                  <div
-                    class="govuk-radios__item"
-                  >
-                    <input
-                      aria-describedby="change-beacon-hint"
-                      class="govuk-radios__input"
-                      id="change-beacon"
-                      name="beacon-intent"
-                      type="radio"
-                      value="UPDATE"
-                    />
-                    <label
-                      class="govuk-label govuk-radios__label"
-                      for="change-beacon"
-                    >
-                      Update details for existing beacon(s) you've already registered
-                    </label>
-                    <div
-                      class="govuk-hint govuk-radios__hint"
-                      id="change-beacon-hint"
-                    >
-                      Choose this option to change existing beacon details, vessel and aircraft details, owner details and emergency contact information
-                    </div>
-                  </div>
-                  <div
-                    class="govuk-radios__item"
-                  >
-                    <input
-                      aria-describedby="ownership-hint"
-                      class="govuk-radios__input"
-                      id="ownership"
-                      name="beacon-intent"
-                      type="radio"
-                      value="CHANGE_OWNERSHIP"
-                    />
-                    <label
-                      class="govuk-label govuk-radios__label"
-                      for="ownership"
-                    >
-                      Change beacon ownership
-                    </label>
-                    <div
-                      class="govuk-hint govuk-radios__hint"
-                      id="ownership-hint"
-                    >
-                      Choose this option if you have acquired a beacon from another owner, or are no longer a beacon owner
-                    </div>
-                  </div>
-                  <div
-                    class="govuk-radios__item"
-                  >
-                    <input
-                      aria-describedby="withdraw-hint"
-                      class="govuk-radios__input"
-                      id="withdraw"
-                      name="beacon-intent"
-                      type="radio"
-                      value="WITHDRAW"
-                    />
-                    <label
-                      class="govuk-label govuk-radios__label"
-                      for="withdraw"
-                    >
-                      Withdraw a beacon
-                    </label>
-                    <div
-                      class="govuk-hint govuk-radios__hint"
-                      id="withdraw-hint"
-                    >
-                      Choose this option to inform us your beacon has been destroyed or withdrawn from use
-                    </div>
-                  </div>
-                  <div
-                    class="govuk-radios__item"
-                  >
-                    <input
-                      aria-describedby="other-hint"
-                      class="govuk-radios__input"
-                      id="other"
-                      name="beacon-intent"
-                      type="radio"
-                      value="OTHER"
-                    />
-                    <label
-                      class="govuk-label govuk-radios__label"
-                      for="other"
-                    >
-                      Ask the Beacon Registry team a question
-                    </label>
-                    <div
-                      class="govuk-hint govuk-radios__hint"
-                      id="other-hint"
-                    >
-                      Choose this option if you have a specific question for the Beacon Registry
-                    </div>
-                  </div>
+                  This will be on your beacon. It must be 15 characters long and use characters 0-9, A-F
                 </div>
-                <button
-                  class="govuk-button"
-                  data-module="govuk-button"
+                <input
+                  class="govuk-input"
+                  id="beaconHexId"
+                  name="beaconHexId"
+                  spellcheck="false"
+                  type="text"
+                />
+                <details
+                  class="govuk-details govuk-!-padding-top-2"
+                  data-module="govuk-details"
                 >
-                  Continue
-                </button>
-              </fieldset>
-            </div>
+                  <summary
+                    class="govuk-details__summary"
+                  >
+                    <span
+                      class="govuk-details__summary-text"
+                    >
+                      What does the 15 digit beacon HEX ID look like?
+                    </span>
+                  </summary>
+                  <div
+                    class="govuk-details__text"
+                  >
+                    TODO: Image of a beacon showing hex ID
+                  </div>
+                </details>
+              </div>
+            </fieldset>
+            <button
+              class="govuk-button"
+              data-module="govuk-button"
+            >
+              Submit
+            </button>
           </form>
+          <details
+            class="govuk-details null"
+            data-module="govuk-details"
+          >
+            <summary
+              class="govuk-details__summary"
+            >
+              <span
+                class="govuk-details__summary-text"
+              >
+                If you need help completing this form
+              </span>
+            </summary>
+            <div
+              class="govuk-details__text"
+            >
+              <ul
+                class="govuk-list"
+              >
+                <li>
+                  <b>
+                    The UK Beacon Registry
+                  </b>
+                </li>
+                <li>
+                  <a
+                    class="govuk-link"
+                    href="mailto:ukbeacons@mcga.gov.uk"
+                  >
+                    ukbeacons@mcga.gov.uk
+                  </a>
+                </li>
+                <li>
+                  Telephone: 01326 211569
+                </li>
+                <li>
+                  Fax: 01326 319264
+                </li>
+                <li>
+                  Monday to Friday, 9am to 5pm (except public holidays)
+                </li>
+                <li
+                  class="govuk-!-margin-top-5"
+                >
+                  <a
+                    class="govuk-link"
+                    href="https://www.gov.uk/call-charges"
+                  >
+                    Find out about call charges
+                  </a>
+                </li>
+                <li
+                  class="govuk-!-margin-top-5"
+                >
+                  In an emergency in the UK, dial 999 and ask for the Coastguard. If you are at sea, use GMDSS systems to make a distress or urgency alert:Emergency Contact - Dial 999 and ask for the Coastguard
+                </li>
+              </ul>
+            </div>
+          </details>
         </div>
       </div>
     </main>

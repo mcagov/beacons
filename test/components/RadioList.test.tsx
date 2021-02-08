@@ -10,7 +10,7 @@ describe("Radio List component", () => {
   it("renders correctly with div inside", () => {
     const { asFragment } = render(
       <RadioList>
-        <div></div>
+        <div>Test content</div>
       </RadioList>
     );
 

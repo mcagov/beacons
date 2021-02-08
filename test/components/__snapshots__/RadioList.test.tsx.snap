@@ -5,7 +5,9 @@ exports[`Radio List component renders correctly with div inside 1`] = `
   <div
     class="govuk-radios "
   >
-    <div />
+    <div>
+      Test content
+    </div>
   </div>
 </DocumentFragment>
 `;

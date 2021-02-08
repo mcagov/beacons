@@ -12,6 +12,6 @@ export const Grid: FunctionComponent<GridProps> = ({
   <div className="govuk-grid-row">
     <div className="govuk-grid-column-two-thirds">{mainContent}</div>
 
-    <div className="govuk-grid-column-one-third">{aside}</div>
+    {aside && <div className="govuk-grid-column-one-third">{aside}</div>}
   </div>
 );

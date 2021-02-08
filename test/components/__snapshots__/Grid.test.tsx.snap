@@ -35,9 +35,6 @@ exports[`Grid should render correctly with main content but without an side 1`] 
         Beacons Service
       </h1>
     </div>
-    <div
-      class="govuk-grid-column-one-third"
-    />
   </div>
 </DocumentFragment>
 `;
