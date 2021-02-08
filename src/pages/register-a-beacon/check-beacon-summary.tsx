@@ -22,6 +22,7 @@ import {
   RadioListItemHint,
 } from "../../components/RadioList";
 import { BackButton, StartButton } from "../../components/Button";
+import { IfYouNeedHelp } from "../../components/Mca";
 
 interface BeaconDetailsProps {
   beaconManufacturer: string;
@@ -44,6 +45,7 @@ const BeaconAlreadyRegisteredView: FunctionComponent<BeaconDetailsProps> = (
       <BeaconSummary {...props} />
       <WhatNext />
       <StartButton buttonText="Continue" href="/beacon-information" />
+      <IfYouNeedHelp />
     </>
   );
 };
@@ -65,6 +67,7 @@ const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
       </NotificationBannerSuccess>
       <BeaconSummary {...props} />
       <StartButton buttonText="Continue" href="/beacon-information" />
+      <IfYouNeedHelp />
     </>
   );
 };
