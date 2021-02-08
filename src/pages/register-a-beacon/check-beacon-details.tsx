@@ -53,7 +53,11 @@ const BeaconManufacturerSelect: FunctionComponent = (): JSX.Element => (
     <FormLabel htmlFor="beaconManufacturer">
       Select your beacon manufacturer
     </FormLabel>
-    <Select name="beaconManufacturer" defaultValue="default">
+    <Select
+      name="beaconManufacturer"
+      id="beaconManufactuere"
+      defaultValue="default"
+    >
       <option hidden disabled value="default">
         Beacon manufacturer
       </option>
@@ -67,7 +71,7 @@ const BeaconManufacturerSelect: FunctionComponent = (): JSX.Element => (
 const BeaconModelSelect: FunctionComponent = (): JSX.Element => (
   <FormGroup>
     <FormLabel htmlFor="beaconModel">Select your beacon model</FormLabel>
-    <Select name="beaconModel" defaultValue="default">
+    <Select name="beaconModel" id="beaconModel" defaultValue="default">
       <option hidden disabled value="default">
         Beacon model
       </option>

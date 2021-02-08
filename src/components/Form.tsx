@@ -40,6 +40,7 @@ interface InputProps {
 }
 
 interface SelectProps {
+  id: string;
   name: string;
   defaultValue: string;
   children: ReactNode;
@@ -119,11 +120,17 @@ export const Input: FunctionComponent<InputProps> = ({
 );
 
 export const Select: FunctionComponent<SelectProps> = ({
+  id,
   name,
   defaultValue,
   children,
 }: SelectProps): JSX.Element => (
-  <select className="govuk-select" name={name} defaultValue={defaultValue}>
+  <select
+    className="govuk-select"
+    id={id}
+    name={name}
+    defaultValue={defaultValue}
+  >
     {children}
   </select>
 );

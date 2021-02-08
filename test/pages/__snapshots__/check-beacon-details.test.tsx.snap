@@ -145,6 +145,7 @@ exports[`Check beacon details page renders correctly 1`] = `
                 </label>
                 <select
                   class="govuk-select"
+                  id="beaconManufactuere"
                   name="beaconManufacturer"
                 >
                   <option
@@ -183,6 +184,7 @@ exports[`Check beacon details page renders correctly 1`] = `
                 </label>
                 <select
                   class="govuk-select"
+                  id="beaconModel"
                   name="beaconModel"
                 >
                   <option
