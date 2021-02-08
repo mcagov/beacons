@@ -6,6 +6,7 @@ import {
   FormHint,
   FormLabel,
   FormLegend,
+  Input,
 } from "../../src/components/Form";
 
 describe("Form components", () => {
@@ -22,7 +23,7 @@ describe("Form components", () => {
           <FormLegend>Select your beacon type</FormLegend>
 
           <FormLabel htmlFor="id">Beacon type</FormLabel>
-          <Input id="id" />
+          <Input id="beaconType" name="beaconType" />
           <FormHint id="id">Beacon type can be: PLB, EPIRB, or ELT</FormHint>
 
           <Button />
@@ -33,9 +34,5 @@ describe("Form components", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 });
-
-const Input = ({ id }: { id: string }) => (
-  <input id={id} aria-describedby={`${id}-hint`} type="text"></input>
-);
 
 const Button = () => <button>submit</button>;

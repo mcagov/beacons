@@ -227,6 +227,7 @@ exports[`Check beacon details page renders correctly 1`] = `
                 </div>
                 <input
                   class="govuk-input"
+                  id="beaconHexId"
                   name="beaconHexId"
                   spellcheck="false"
                   type="text"

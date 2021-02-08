@@ -33,6 +33,7 @@ interface FormLegendProps {
 }
 
 interface InputProps {
+  id: string;
   name: string;
   type?: string;
   spellCheck?: boolean;
@@ -103,12 +104,14 @@ export const FormHint: FunctionComponent<FormHintProps> = ({
 );
 
 export const Input: FunctionComponent<InputProps> = ({
+  id,
   name,
   type = "text",
   spellCheck = true,
 }: InputProps): JSX.Element => (
   <input
     className="govuk-input"
+    id={id}
     name={name}
     type={type}
     spellCheck={spellCheck}
