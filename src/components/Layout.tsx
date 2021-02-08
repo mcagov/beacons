@@ -13,7 +13,7 @@ interface LayoutProps {
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
   head = <BeaconRegistrationHead />,
-  navigation: breadcrumbs = null,
+  navigation = null,
 }: LayoutProps): JSX.Element => (
   <>
     {head}
@@ -33,7 +33,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
     </PhaseBanner>
 
     <div className="govuk-width-container">
-      {breadcrumbs}
+      {navigation}
 
       <main id="main-content" className="govuk-main-wrapper">
         {children}
