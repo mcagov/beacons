@@ -2,6 +2,7 @@ import React, { FunctionComponent, ReactNode } from "react";
 
 interface NotificationBannerProps {
   title: string;
+  heading: string;
   children: ReactNode;
 }
 
@@ -12,6 +13,7 @@ interface NotificationBannerSuccessProps {
 
 export const NotificationBanner: FunctionComponent<NotificationBannerProps> = ({
   title,
+  heading,
   children,
 }: NotificationBannerProps): JSX.Element => (
   <div
@@ -29,7 +31,8 @@ export const NotificationBanner: FunctionComponent<NotificationBannerProps> = ({
       </h2>
     </div>
     <div className="govuk-notification-banner__content">
-      <div className="govuk-notification-banner__heading">{children}</div>
+      <p className="govuk-notification-banner__heading">{heading}</p>
+      {children}
     </div>
   </div>
 );
