@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Warning Text component renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="govuk-warning-text"
+  >
+    <span
+      aria-hidden="true"
+      class="govuk-warning-text__icon"
+    >
+      !
+    </span>
+    <strong
+      class="govuk-warning-text__text"
+    >
+      <span
+        class="govuk-warning-text__assistive"
+      >
+        Warning
+      </span>
+      Test Warning
+    </strong>
+  </div>
+</DocumentFragment>
+`;
