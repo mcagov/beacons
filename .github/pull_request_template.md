@@ -10,7 +10,7 @@
 
 <!-- How could someone else check this work? Which parts do you want more feedback on? -->
 
-## Link to Trell0 card
+## Link to Trello card
 
 <!-- https://trello.com/b/p2XQo8jN/beacons-beta-private -->
 
