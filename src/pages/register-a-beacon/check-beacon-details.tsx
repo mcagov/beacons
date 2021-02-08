@@ -53,11 +53,7 @@ const BeaconManufacturerSelect: FunctionComponent = (): JSX.Element => (
     <FormLabel htmlFor="beaconManufacturer">
       Select your beacon manufacturer
     </FormLabel>
-    <Select
-      name="beaconManufacturer"
-      id="beaconManufactuere"
-      defaultValue="default"
-    >
+    <Select name="beaconManufacturer" id={null} defaultValue="default">
       <option hidden disabled value="default">
         Beacon manufacturer
       </option>
@@ -92,9 +88,10 @@ const BeaconHexIdInput: FunctionComponent = (): JSX.Element => (
       characters 0-9, A-F
     </FormHint>
     <Input name="beaconHexId" id="beaconHexId" spellCheck={false} />
-    <br />
-    <br />
-    <Details summaryText="What does the 15 digit beacon HEX ID look like?">
+    <Details
+      summaryText="What does the 15 digit beacon HEX ID look like?"
+      className="govuk-!-padding-top-2"
+    >
       TODO: Image of a beacon showing hex ID
     </Details>
   </FormGroup>
@@ -102,24 +99,31 @@ const BeaconHexIdInput: FunctionComponent = (): JSX.Element => (
 
 const IfYouNeedHelp: FunctionComponent = (): JSX.Element => (
   <Details summaryText="If you need help completing this form">
-    <p>
-      <b>The UK Beacon Registry</b>
-      <br />
-      <A href="mailto:ukbeacons@mcga.gov.uk">ukbeacons@mcga.gov.uk</A>
-      <br />
-      Telephone: 01326 211569 <br />
-      Fax: 01326 319264 <br />
-      Monday to Friday, 9am to 5pm (except public holidays)
-      <br />
-    </p>
-    <p>
-      <A href="https://www.gov.uk/call-charges">Find out about call charges</A>
-    </p>
-    <p>
-      In an emergency in the UK, dial 999 and ask for the Coastguard. If you are
-      at sea, use GMDSS systems to make a distress or urgency alert:Emergency
-      Contact - Dial 999 and ask for the Coastguard
-    </p>
+    <ul className="govuk-list">
+      <li>
+        <b>The UK Beacon Registry</b>
+      </li>
+
+      <li>
+        <A href="mailto:ukbeacons@mcga.gov.uk">ukbeacons@mcga.gov.uk</A>
+      </li>
+
+      <li>Telephone: 01326 211569</li>
+      <li>Fax: 01326 319264</li>
+      <li>Monday to Friday, 9am to 5pm (except public holidays)</li>
+
+      <li className="govuk-!-margin-top-5">
+        <A href="https://www.gov.uk/call-charges">
+          Find out about call charges
+        </A>
+      </li>
+
+      <li className="govuk-!-margin-top-5">
+        In an emergency in the UK, dial 999 and ask for the Coastguard. If you
+        are at sea, use GMDSS systems to make a distress or urgency
+        alert:Emergency Contact - Dial 999 and ask for the Coastguard
+      </li>
+    </ul>
   </Details>
 );
 

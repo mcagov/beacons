@@ -33,17 +33,17 @@ interface FormLegendProps {
 }
 
 interface InputProps {
-  id: string;
   name: string;
+  id?: string;
   type?: string;
   spellCheck?: boolean;
 }
 
 interface SelectProps {
-  id: string;
   name: string;
   defaultValue: string;
   children: ReactNode;
+  id?: string;
 }
 
 interface SelectOptionProps {
@@ -105,7 +105,7 @@ export const FormHint: FunctionComponent<FormHintProps> = ({
 );
 
 export const Input: FunctionComponent<InputProps> = ({
-  id,
+  id = null,
   name,
   type = "text",
   spellCheck = true,
@@ -120,7 +120,7 @@ export const Input: FunctionComponent<InputProps> = ({
 );
 
 export const Select: FunctionComponent<SelectProps> = ({
-  id,
+  id = null,
   name,
   defaultValue,
   children,

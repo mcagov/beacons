@@ -145,7 +145,6 @@ exports[`Check beacon details page renders correctly 1`] = `
                 </label>
                 <select
                   class="govuk-select"
-                  id="beaconManufactuere"
                   name="beaconManufacturer"
                 >
                   <option
@@ -234,10 +233,8 @@ exports[`Check beacon details page renders correctly 1`] = `
                   spellcheck="false"
                   type="text"
                 />
-                <br />
-                <br />
                 <details
-                  class="govuk-details"
+                  class="govuk-details govuk-!-padding-top-2"
                   data-module="govuk-details"
                 >
                   <summary
@@ -265,7 +262,7 @@ exports[`Check beacon details page renders correctly 1`] = `
             </button>
           </form>
           <details
-            class="govuk-details"
+            class="govuk-details null"
             data-module="govuk-details"
           >
             <summary
@@ -280,36 +277,47 @@ exports[`Check beacon details page renders correctly 1`] = `
             <div
               class="govuk-details__text"
             >
-              <p>
-                <b>
-                  The UK Beacon Registry
-                </b>
-                <br />
-                <a
-                  class="govuk-link"
-                  href="mailto:ukbeacons@mcga.gov.uk"
+              <ul
+                class="govuk-list"
+              >
+                <li>
+                  <b>
+                    The UK Beacon Registry
+                  </b>
+                </li>
+                <li>
+                  <a
+                    class="govuk-link"
+                    href="mailto:ukbeacons@mcga.gov.uk"
+                  >
+                    ukbeacons@mcga.gov.uk
+                  </a>
+                </li>
+                <li>
+                  Telephone: 01326 211569
+                </li>
+                <li>
+                  Fax: 01326 319264
+                </li>
+                <li>
+                  Monday to Friday, 9am to 5pm (except public holidays)
+                </li>
+                <li
+                  class="govuk-!-margin-top-5"
                 >
-                  ukbeacons@mcga.gov.uk
-                </a>
-                <br />
-                Telephone: 01326 211569 
-                <br />
-                Fax: 01326 319264 
-                <br />
-                Monday to Friday, 9am to 5pm (except public holidays)
-                <br />
-              </p>
-              <p>
-                <a
-                  class="govuk-link"
-                  href="https://www.gov.uk/call-charges"
+                  <a
+                    class="govuk-link"
+                    href="https://www.gov.uk/call-charges"
+                  >
+                    Find out about call charges
+                  </a>
+                </li>
+                <li
+                  class="govuk-!-margin-top-5"
                 >
-                  Find out about call charges
-                </a>
-              </p>
-              <p>
-                In an emergency in the UK, dial 999 and ask for the Coastguard. If you are at sea, use GMDSS systems to make a distress or urgency alert:Emergency Contact - Dial 999 and ask for the Coastguard
-              </p>
+                  In an emergency in the UK, dial 999 and ask for the Coastguard. If you are at sea, use GMDSS systems to make a distress or urgency alert:Emergency Contact - Dial 999 and ask for the Coastguard
+                </li>
+              </ul>
             </div>
           </details>
         </div>

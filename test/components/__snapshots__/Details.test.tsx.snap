@@ -3,7 +3,7 @@
 exports[`Details renders correctly 1`] = `
 <DocumentFragment>
   <details
-    class="govuk-details"
+    class="govuk-details null"
     data-module="govuk-details"
   >
     <summary
