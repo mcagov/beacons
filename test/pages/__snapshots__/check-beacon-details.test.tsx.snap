@@ -230,7 +230,6 @@ exports[`Check beacon details page renders correctly 1`] = `
                   class="govuk-input"
                   id="beaconHexId"
                   name="beaconHexId"
-                  spellcheck="false"
                   type="text"
                 />
                 <details
