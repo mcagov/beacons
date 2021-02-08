@@ -26,9 +26,30 @@ interface BeaconDetailsProps {
   beaconHexId: string;
 }
 
+enum PageView {
+  BEACON_ALREADY_REGISTERED,
+  BEACON_NOT_REGISTERED,
+  BEACON_CANNOT_BE_REGISTERED,
+}
+
+const BeaconAlreadyRegisteredView: FunctionComponent<BeaconDetailsProps> = (
+  props
+) => {
+  return (
+    <>
+      <BeaconAlreadyRegistered />
+      <BeaconSummary {...props} />
+      <WhatNext />
+      <StartButton buttonText="Continue" href="/beacon-information" />
+    </>
+  );
+};
+
 const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
   props
 ): JSX.Element => {
+  const component: JSX.Element = <BeaconAlreadyRegisteredView {...props} />;
+
   return (
     <>
       <Layout
@@ -36,16 +57,7 @@ const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
           <BackButton href="/register-a-beacon/check-beacon-details" />
         }
       >
-        <Grid
-          mainContent={
-            <>
-              <BeaconAlreadyRegistered />
-              <BeaconSummary {...props} />
-              <WhatNext />
-              <StartButton buttonText="Continue" href="/beacon-information" />
-            </>
-          }
-        />
+        <Grid mainContent={component} />
       </Layout>
     </>
   );
@@ -56,19 +68,22 @@ const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
   beaconModel,
   beaconHexId,
 }: BeaconDetailsProps): JSX.Element => (
-  <SummaryList>
-    <SummaryListItem
-      labelText="Beacon manufacturer"
-      valueText={beaconManufacturer}
-    />
-    <SummaryListItem labelText="Beacon model" valueText={beaconModel} />
-    <SummaryListItem labelText="Beacon HEX ID" valueText={beaconHexId} />
-    <SummaryListItem
-      labelText="Date registered"
-      // TODO: Lookup for date registered if beacon already in system
-      valueText="19 September 2016"
-    />
-  </SummaryList>
+  <>
+    <h1 className="govuk-heading-l">Check beacon summary</h1>
+    <SummaryList>
+      <SummaryListItem
+        labelText="Beacon manufacturer"
+        valueText={beaconManufacturer}
+      />
+      <SummaryListItem labelText="Beacon model" valueText={beaconModel} />
+      <SummaryListItem labelText="Beacon HEX ID" valueText={beaconHexId} />
+      <SummaryListItem
+        labelText="Date registered"
+        // TODO: Lookup for date registered if beacon already in system
+        valueText="19 September 2016"
+      />
+    </SummaryList>
+  </>
 );
 
 const BeaconAlreadyRegistered: FunctionComponent = () => (

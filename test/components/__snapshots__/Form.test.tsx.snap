@@ -10,13 +10,9 @@ exports[`Form components should render a complete form 1`] = `
       class="govuk-form-group"
     >
       <legend
-        class="govuk-fieldset__legend govuk-fieldset__legend--l"
+        class="govuk-fieldset__legend"
       >
-        <h1
-          class="govuk-fieldset__heading"
-        >
-          Select your beacon type
-        </h1>
+        Select your beacon type
       </legend>
       <label
         class="govuk-label "

@@ -153,6 +153,11 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
               </div>
             </div>
           </div>
+          <h1
+            class="govuk-heading-l"
+          >
+            Check beacon summary
+          </h1>
           <dl
             class="govuk-summary-list"
           >
@@ -280,13 +285,9 @@ exports[`Check Beacon Summary Page renders correctly 1`] = `
                 class="govuk-fieldset"
               >
                 <legend
-                  class="govuk-fieldset__legend govuk-fieldset__legend--l"
+                  class="govuk-fieldset__legend"
                 >
-                  <h1
-                    class="govuk-fieldset__heading"
-                  >
-                    What would you like to do next?
-                  </h1>
+                  What would you like to do next?
                 </legend>
                 <div
                   class="govuk-radios "

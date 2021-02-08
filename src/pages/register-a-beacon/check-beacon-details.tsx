@@ -7,7 +7,7 @@ import {
   Form,
   FormFieldset,
   Input,
-  FormLegend,
+  FormLegendPageHeading,
   FormLabel,
   FormGroup,
   Select,
@@ -25,7 +25,9 @@ const CheckBeaconDetails: FunctionComponent = () => (
           <>
             <Form action="/register-a-beacon/check-beacon-summary">
               <FormFieldset>
-                <FormLegend>Check beacon details</FormLegend>
+                <FormLegendPageHeading>
+                  Check beacon details
+                </FormLegendPageHeading>
                 <InsetText>
                   The details of your beacon must be checked to ensure they have
                   a UK encoding and if they are already registered with this
