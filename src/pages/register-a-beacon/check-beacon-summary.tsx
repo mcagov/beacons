@@ -22,7 +22,13 @@ import {
   RadioListItemHint,
 } from "../../components/RadioList";
 import { BackButton, LinkButton, StartButton } from "../../components/Button";
-import { IfYouNeedHelp } from "../../components/Mca";
+import { BeaconRegistryContactInfo, IfYouNeedHelp } from "../../components/Mca";
+import {
+  AnchorLink,
+  GovUKBody,
+  GovUKBulletedList,
+} from "../../components/Typography";
+import { InsetText } from "../../components/InsetText";
 
 interface BeaconDetailsProps {
   beaconManufacturer: string;
@@ -35,6 +41,24 @@ enum PageView {
   BEACON_NOT_REGISTERED,
   BEACON_CANNOT_BE_REGISTERED,
 }
+
+const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
+  props
+): JSX.Element => {
+  const component: JSX.Element = <BeaconAlreadyRegisteredView {...props} />;
+
+  return (
+    <>
+      <Layout
+        navigation={
+          <BackButton href="/register-a-beacon/check-beacon-details" />
+        }
+      >
+        <Grid mainContent={<BeaconCannotBeRegisteredView {...props} />} />
+      </Layout>
+    </>
+  );
+};
 
 const BeaconAlreadyRegisteredView: FunctionComponent<BeaconDetailsProps> = (
   props
@@ -73,23 +97,74 @@ const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
   );
 };
 
-const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
-  props
-): JSX.Element => {
-  const component: JSX.Element = <BeaconAlreadyRegisteredView {...props} />;
+const BeaconCannotBeRegisteredView: FunctionComponent<BeaconDetailsProps> = () => (
+  <>
+    <NotificationBanner
+      title="Beacon not 406Mhz or UK encoded"
+      heading="This beacon is not a UK encoded 406MHz beacon"
+    >
+      <GovUKBody>
+        Unfortunately this beacon cannot be registered with the Maritime &
+        Coastguard Agency.
+      </GovUKBody>
+      <GovUKBody>
+        <AnchorLink href={"/"}>
+          Try again or register a different beacon
+        </AnchorLink>{" "}
+        if you think the details entered were a mistake.
+      </GovUKBody>
+    </NotificationBanner>
+    <BeaconCannotBeRegisteredNextSteps />
+    <ContactTheUKBeaconRegistry />
+  </>
+);
 
-  return (
-    <>
-      <Layout
-        navigation={
-          <BackButton href="/register-a-beacon/check-beacon-details" />
-        }
-      >
-        <Grid mainContent={<BeaconNotRegisteredView {...props} />} />
-      </Layout>
-    </>
-  );
-};
+const ContactTheUKBeaconRegistry: FunctionComponent = () => (
+  <>
+    <h2 className="govuk-heading-m">Contact the UK Beacon Registry</h2>
+    <GovUKBody>
+      If you need additional advice regarding your beacon, you can contact the
+      UK Beacon Registry for help.
+    </GovUKBody>
+    <InsetText>
+      <BeaconRegistryContactInfo />
+    </InsetText>
+  </>
+);
+
+const BeaconCannotBeRegisteredNextSteps: FunctionComponent = () => (
+  <>
+    <h1 className="govuk-heading-l">Suggested next steps</h1>
+    <GovUKBody>
+      Because this beacon is not covered by the Maritime & Coastguard Agency, we
+      urge you to check the following before setting off on any journey with
+      your beacon:
+    </GovUKBody>
+
+    <GovUKBulletedList>
+      <li>
+        Read the instructions that came with your beacon. It should include
+        details of how to register it and with whom
+      </li>
+      <li>
+        Contact your beacon manufacturer or supplier for details on how to
+        register your beacon and what happens if you need to use it in an
+        emergency (eg who will receive your distress signal and alert the
+        authorities)
+      </li>
+      <li>
+        If you acquired a beacon without the original box and instructions, you
+        should contact the person(s) you acquired the beacon from to understand
+        how to register the beacon properly
+      </li>
+      <li>
+        Alternatively, you may want to consider purchasing a 406MHz UK encoded
+        beacon as that can be registered with the Maritime & Coastguard Agency
+        and, ensuring that you will be located in an emergency situation.
+      </li>
+    </GovUKBulletedList>
+  </>
+);
 
 const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
   beaconManufacturer,
@@ -115,7 +190,11 @@ const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
 );
 
 const BeaconAlreadyRegistered: FunctionComponent = () => (
-  <NotificationBanner title="This beacon is already registered">
+  <NotificationBanner
+    title="This beacon is already registered"
+    heading="There maybe a few reasons why this beacon is already registered,
+      including:"
+  >
     <div className="govuk-body">
       There maybe a few reasons why this beacon is already registered,
       including:
