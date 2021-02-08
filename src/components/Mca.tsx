@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Details } from "./Details";
-import { A } from "./Typography";
+import { AnchorLink, GovUKList } from "./Typography";
 
 export const McaLogo: FunctionComponent = (): JSX.Element => (
   <>
@@ -12,30 +12,30 @@ export const McaLogo: FunctionComponent = (): JSX.Element => (
 
 export const IfYouNeedHelp: FunctionComponent = (): JSX.Element => (
   <Details summaryText="If you need help completing this form">
-    <ul className="govuk-list">
-      <li>
-        <b>The UK Beacon Registry</b>
-      </li>
-
-      <li>
-        <A href="mailto:ukbeacons@mcga.gov.uk">ukbeacons@mcga.gov.uk</A>
-      </li>
-
-      <li>Telephone: 01326 211569</li>
-      <li>Fax: 01326 319264</li>
-      <li>Monday to Friday, 9am to 5pm (except public holidays)</li>
-
-      <li className="govuk-!-margin-top-5">
-        <A href="https://www.gov.uk/call-charges">
-          Find out about call charges
-        </A>
-      </li>
-
-      <li className="govuk-!-margin-top-5">
-        In an emergency in the UK, dial 999 and ask for the Coastguard. If you
-        are at sea, use GMDSS systems to make a distress or urgency
-        alert:Emergency Contact - Dial 999 and ask for the Coastguard
-      </li>
-    </ul>
+    <BeaconRegistryContactInfo />
+    <p className="govuk-!-margin-top-5">
+      In an emergency in the UK, dial 999 and ask for the Coastguard. If you are
+      at sea, use GMDSS systems to make a distress or urgency alert:Emergency
+      Contact - Dial 999 and ask for the Coastguard
+    </p>
   </Details>
+);
+
+export const BeaconRegistryContactInfo: FunctionComponent = (): JSX.Element => (
+  <GovUKList>
+    <li className="govuk-!-font-weight-bold">The UK Beacon Registry</li>
+    <li>
+      <a className="govuk-link" href="mailto:ukbeacons@mcga.gov.uk">
+        ukbeacons@mcga.gov.uk
+      </a>
+    </li>
+    <li>Telephone: 01326 211569</li>
+    <li>Fax: 01326 319264</li>
+    <li>Monday to Friday, 9am to 5pm (except public holidays)</li>
+    <li>
+      <AnchorLink href="https://www.gov.uk/call-charges">
+        Find out about call charges
+      </AnchorLink>
+    </li>
+  </GovUKList>
 );
