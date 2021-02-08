@@ -5,6 +5,11 @@ interface NotificationBannerProps {
   children: ReactNode;
 }
 
+interface NotificationBannerSuccessProps {
+  title: string;
+  children: ReactNode;
+}
+
 export const NotificationBanner: FunctionComponent<NotificationBannerProps> = ({
   title,
   children,
@@ -29,10 +34,10 @@ export const NotificationBanner: FunctionComponent<NotificationBannerProps> = ({
   </div>
 );
 
-export const NotificationBannerSuccess: FunctionComponent<NotificationBannerProps> = ({
+export const NotificationBannerSuccess: FunctionComponent<NotificationBannerSuccessProps> = ({
   title,
   children,
-}): JSX.Element => (
+}: NotificationBannerSuccessProps): JSX.Element => (
   <div
     className="govuk-notification-banner govuk-notification-banner--success"
     role="alert"

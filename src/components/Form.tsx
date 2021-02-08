@@ -38,6 +38,10 @@ interface FormLegendProps {
   children: ReactNode;
 }
 
+interface FormLegendPageHeadingProps {
+  children: ReactNode;
+}
+
 interface InputProps {
   name: string;
   id?: string;
@@ -89,9 +93,9 @@ export const FormLegend: FunctionComponent<FormLegendProps> = ({
   <legend className="govuk-fieldset__legend">{children}</legend>
 );
 
-export const FormLegendPageHeading: FunctionComponent<FormLegendProps> = ({
+export const FormLegendPageHeading: FunctionComponent<FormLegendPageHeadingProps> = ({
   children,
-}) => (
+}: FormLegendPageHeadingProps) => (
   <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
     <h1 className="govuk-fieldset__heading">{children}</h1>
   </legend>

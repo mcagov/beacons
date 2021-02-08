@@ -58,7 +58,7 @@ const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
     <>
       <NotificationBannerSuccess title="Beacon details checked">
         <div>
-          This beacon is a valid 406MHz UK encoded beacon that hasn't been
+          This beacon is a valid 406MHz UK encoded beacon that has not been
           registered before.
         </div>
         <div>
