@@ -1,11 +1,7 @@
 @import "../styles/variables";
 
-$aside-padding-top: 0.75em;
-$aside-padding-bottom: 1.5em;
 $aside-border-top: 2px;
 
 .related_items {
-  padding-top: $aside-padding-top;
-  padding-bottom: $aside-padding-bottom;
   border-top: $aside-border-top solid $govuk-brand-colour;
 }

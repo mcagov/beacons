@@ -3,7 +3,7 @@
 exports[`Aside renders correctly 1`] = `
 <DocumentFragment>
   <aside
-    class="related_items"
+    class="related_items govuk-!-padding-top-3 govuk-!-padding-bottom-4"
     role="complementary"
   >
     <h2
@@ -27,7 +27,7 @@ exports[`Aside renders correctly 1`] = `
 exports[`Aside renders without a title 1`] = `
 <DocumentFragment>
   <aside
-    class="related_items"
+    class="related_items govuk-!-padding-top-3 govuk-!-padding-bottom-4"
     role="complementary"
   >
     <nav

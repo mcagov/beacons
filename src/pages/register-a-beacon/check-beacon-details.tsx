@@ -87,7 +87,11 @@ const BeaconHexIdInput: FunctionComponent = (): JSX.Element => (
       This will be on your beacon. It must be 15 characters long and use
       characters 0-9, A-F
     </FormHint>
-    <Input name="beaconHexId" id="beaconHexId" spellCheck={false} />
+    <Input
+      name="beaconHexId"
+      id="beaconHexId"
+      htmlAttributes={{ spellCheck: false }}
+    />
     <Details
       summaryText="What does the 15 digit beacon HEX ID look like?"
       className="govuk-!-padding-top-2"

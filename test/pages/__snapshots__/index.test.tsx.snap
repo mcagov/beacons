@@ -345,7 +345,7 @@ exports[`Home Page renders correctly 1`] = `
           class="govuk-grid-column-one-third"
         >
           <aside
-            class="related_items"
+            class="related_items govuk-!-padding-top-3 govuk-!-padding-bottom-4"
             role="complementary"
           >
             <nav
@@ -364,7 +364,7 @@ exports[`Home Page renders correctly 1`] = `
             </nav>
           </aside>
           <aside
-            class="related_items"
+            class="related_items govuk-!-padding-top-3 govuk-!-padding-bottom-4"
             role="complementary"
           >
             <h2

@@ -28,7 +28,6 @@ exports[`Form components should render a complete form 1`] = `
         class="govuk-input"
         id="beaconType"
         name="beaconType"
-        spellcheck="true"
         type="text"
       />
       <div

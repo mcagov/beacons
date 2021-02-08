@@ -1,4 +1,10 @@
-import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
+import React, {
+  FunctionComponent,
+  InputHTMLAttributes,
+  PropsWithChildren,
+  ReactNode,
+  SelectHTMLAttributes,
+} from "react";
 import { HttpMethod } from "../lib/types";
 
 interface FormProps {
@@ -36,7 +42,7 @@ interface InputProps {
   name: string;
   id?: string;
   type?: string;
-  spellCheck?: boolean;
+  htmlAttributes?: InputHTMLAttributes<Element>;
 }
 
 interface SelectProps {
@@ -44,6 +50,7 @@ interface SelectProps {
   defaultValue: string;
   children: ReactNode;
   id?: string;
+  htmlAttributes?: SelectHTMLAttributes<Element>;
 }
 
 interface SelectOptionProps {
@@ -108,14 +115,14 @@ export const Input: FunctionComponent<InputProps> = ({
   id = null,
   name,
   type = "text",
-  spellCheck = true,
+  htmlAttributes = {},
 }: InputProps): JSX.Element => (
   <input
     className="govuk-input"
     id={id}
     name={name}
     type={type}
-    spellCheck={spellCheck}
+    {...htmlAttributes}
   />
 );
 
@@ -124,12 +131,14 @@ export const Select: FunctionComponent<SelectProps> = ({
   name,
   defaultValue,
   children,
+  htmlAttributes = {},
 }: SelectProps): JSX.Element => (
   <select
     className="govuk-select"
     id={id}
     name={name}
     defaultValue={defaultValue}
+    {...htmlAttributes}
   >
     {children}
   </select>
