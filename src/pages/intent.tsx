@@ -8,11 +8,10 @@ import { BeaconIntent } from "../lib/types";
 
 const IntentPage: FunctionComponent = () => (
   <>
-    <Layout>
+    <Layout navigation={<BackButton href="/" />}>
       <Grid
         mainContent={
           <>
-            <BackButton href="/" />
             <IntentPageContent />
           </>
         }
@@ -22,7 +21,7 @@ const IntentPage: FunctionComponent = () => (
 );
 
 const IntentPageContent: FunctionComponent = () => (
-  <Form url="/">
+  <Form action="/register-a-beacon/check-beacon-details">
     <FormGroup>
       <FormFieldset>
         <FormLegend>What would you like to do?</FormLegend>

@@ -11,7 +11,10 @@ const Aside: FunctionComponent<AsideProps> = ({
   children,
 }: AsideProps): JSX.Element => (
   <>
-    <aside className={styles.related_items} role="complementary">
+    <aside
+      className={`${styles.related_items} govuk-!-padding-top-3 govuk-!-padding-bottom-4`}
+      role="complementary"
+    >
       {title !== null && (
         <h2 className="govuk-heading-m" id="subsection-title">
           {title}
