@@ -3,7 +3,12 @@ import { BackButton, Button } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";
 import { RadioList, RadioListItemHint } from "../components/RadioList";
-import { Form, FormFieldset, FormGroup, FormLegend } from "../components/Form";
+import {
+  Form,
+  FormFieldset,
+  FormGroup,
+  FormLegendPageHeading,
+} from "../components/Form";
 import { BeaconIntent } from "../lib/types";
 
 const IntentPage: FunctionComponent = () => (
@@ -24,7 +29,9 @@ const IntentPageContent: FunctionComponent = () => (
   <Form action="/register-a-beacon/check-beacon-details">
     <FormGroup>
       <FormFieldset>
-        <FormLegend>What would you like to do?</FormLegend>
+        <FormLegendPageHeading>
+          What would you like to do?
+        </FormLegendPageHeading>
         <RadioList className="govuk-!-margin-bottom-3">
           <RadioListItemHint
             id="create-beacon"
