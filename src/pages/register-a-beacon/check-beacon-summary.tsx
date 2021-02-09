@@ -9,7 +9,7 @@ import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 
 import { BackButton, LinkButton } from "../../components/Button";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { cookieRedirect } from "../../lib/middleware";
+import { cookieRedirect, updateFormCache } from "../../lib/middleware";
 import { GetServerSidePropsContext } from "next";
 
 interface BeaconDetailsProps {
@@ -85,10 +85,9 @@ export const getServerSideProps = async (
 
   if (context.req.method === "POST") {
     // TODO: Investigate more widely used library for parse()
-    const previousFormPageData: BeaconDetailsProps = await parse(context.req);
-
-    const state: IFormCache = FormCacheFactory.getCache();
-    state.update("id", previousFormPageData);
+    const previousFormPageData: BeaconDetailsProps = await updateFormCache(
+      context
+    );
 
     return {
       props: previousFormPageData,

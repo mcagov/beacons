@@ -1,15 +1,24 @@
+import { FormCacheFactory } from "../../src/lib/form-cache";
 import {
   cookieRedirect,
   setCookieSubmissionId,
+  updateFormCache,
 } from "../../src/lib/middleware";
-import { formSubmissionCookieId as submissionCookieId } from "../../src/lib/types";
+import {
+  formSubmissionCookieId,
+  formSubmissionCookieId as submissionCookieId,
+} from "../../src/lib/types";
 
 jest.mock("uuid", () => ({
   v4: () => "1",
 }));
 
+jest.mock("urlencoded-body-parser", () =>
+  jest.fn(() => Promise.resolve({ beaconModel: "ASOS" }))
+);
+
 describe("Middleware Functions", () => {
-  describe("cookeRedirect", () => {
+  describe("cookeRedirect()", () => {
     let context;
     let writeHeadFunction;
     let endFunction;
@@ -73,7 +82,7 @@ describe("Middleware Functions", () => {
     });
   });
 
-  describe("setCookieSession", () => {
+  describe("setCookieSession()", () => {
     let context;
 
     beforeEach(() => {
@@ -112,6 +121,29 @@ describe("Middleware Functions", () => {
       context.req.cookies = { [submissionCookieId]: "2" };
 
       expect(context.res.setHeader).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("updateFormCache()", () => {
+    let context;
+
+    beforeEach(() => {
+      context = {
+        req: { cookies: { [formSubmissionCookieId]: "1" } },
+      };
+    });
+
+    it("should update the form cache with the parsed form data", async () => {
+      const formData = await updateFormCache(context);
+
+      expect(formData).toStrictEqual({ beaconModel: "ASOS" });
+    });
+
+    it("should update the cache entry with the form data", async () => {
+      const formData = await updateFormCache(context);
+      const cache = FormCacheFactory.getCache();
+
+      expect(cache.get("1")).toStrictEqual({ beaconModel: "ASOS" });
     });
   });
 });

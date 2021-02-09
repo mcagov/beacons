@@ -15,26 +15,6 @@ export const cookieRedirect = (context: GetServerSidePropsContext): void => {
   }
 };
 
-export async function updateFormCache<T>(
-  context: GetServerSidePropsContext
-): Promise<T> {
-  const previousFormPageData: T = await parse(context.req);
-  const submissionId: string = getSubmissionCookieId(context);
-
-  const state: IFormCache = FormCacheFactory.getCache();
-  state.update(submissionId, previousFormPageData);
-
-  return previousFormPageData;
-}
-
-const getSubmissionCookieId = (context: GetServerSidePropsContext): string => {
-  const cookies: NextApiRequestCookies = context.req.cookies;
-
-  return cookies && cookies[formSubmissionCookieId]
-    ? cookies[formSubmissionCookieId]
-    : null;
-};
-
 export const setCookieSubmissionId = (
   context: GetServerSidePropsContext
 ): void => {
@@ -62,3 +42,15 @@ const setCookieHeader = (id: string, res: ServerResponse): void => {
 
   res.setHeader("Set-Cookie", serialize(formSubmissionCookieId, id, options));
 };
+
+export async function updateFormCache<T>(
+  context: GetServerSidePropsContext
+): Promise<T> {
+  const formData: T = await parse(context.req);
+  const submissionId: string = context.req.cookies[formSubmissionCookieId];
+
+  const state: IFormCache = FormCacheFactory.getCache();
+  state.update(submissionId, formData);
+
+  return formData;
+}
