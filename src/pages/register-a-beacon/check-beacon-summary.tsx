@@ -5,19 +5,10 @@ import { Layout } from "../../components/Layout";
 import parse from "urlencoded-body-parser";
 import { IFormCache, FormCacheFactory } from "../../lib/form-cache";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
-import { NotificationBanner } from "../../components/NotificationBanner";
-import {
-  Form,
-  FormFieldset,
-  FormGroup,
-  FormLegend,
-} from "../../components/Form";
-import {
-  RadioList,
-  RadioListItem,
-  RadioListItemHint,
-} from "../../components/RadioList";
-import { BackButton, StartButton } from "../../components/Button";
+import { NotificationBannerSuccess } from "../../components/NotificationBanner";
+
+import { BackButton, LinkButton } from "../../components/Button";
+import { IfYouNeedHelp } from "../../components/Mca";
 import { cookieRedirect } from "../../lib/middleware";
 
 interface BeaconDetailsProps {
@@ -28,25 +19,37 @@ interface BeaconDetailsProps {
 
 const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
   props
-): JSX.Element => {
+): JSX.Element => (
+  <>
+    <Layout
+      navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
+    >
+      <Grid mainContent={<BeaconNotRegisteredView {...props} />} />
+    </Layout>
+  </>
+);
+
+const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
+  props
+) => {
   return (
     <>
-      <Layout
-        navigation={
-          <BackButton href="/register-a-beacon/check-beacon-details" />
-        }
-      >
-        <Grid
-          mainContent={
-            <>
-              <BeaconAlreadyRegistered />
-              <BeaconSummary {...props} />
-              <WhatNext />
-              <StartButton buttonText="Continue" href="/beacon-information" />
-            </>
-          }
-        />
-      </Layout>
+      <NotificationBannerSuccess title="Beacon details checked">
+        <div>
+          This beacon is a valid 406MHz UK encoded beacon that has not been
+          registered before.
+        </div>
+        <div>
+          You can now enter the remaining beacon information necessary to
+          register.
+        </div>
+      </NotificationBannerSuccess>
+      <BeaconSummary {...props} />
+      <LinkButton
+        buttonText={"Continue"}
+        href={"/register-a-beacon/check-your-answers"}
+      />
+      <IfYouNeedHelp />
     </>
   );
 };
@@ -56,60 +59,22 @@ const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
   beaconModel,
   beaconHexId,
 }: BeaconDetailsProps): JSX.Element => (
-  <SummaryList>
-    <SummaryListItem
-      labelText="Beacon manufacturer"
-      valueText={beaconManufacturer}
-    />
-    <SummaryListItem labelText="Beacon model" valueText={beaconModel} />
-    <SummaryListItem labelText="Beacon HEX ID" valueText={beaconHexId} />
-    <SummaryListItem
-      labelText="Date registered"
-      // TODO: Lookup for date registered if beacon already in system
-      valueText="19 September 2016"
-    />
-  </SummaryList>
-);
-
-const BeaconAlreadyRegistered: FunctionComponent = () => (
-  <NotificationBanner title="This beacon is already registered">
-    <div className="govuk-body">
-      There maybe a few reasons why this beacon is already registered,
-      including:
-    </div>
-    <ul className="govuk-list govuk-list--bullet">
-      <li>
-        It has already been registered by yourself or someone else (e.g. if you
-        bought it second hand)
-      </li>
-      <li>The manufacturer may have incorrectly reused the HEX ID</li>
-    </ul>
-  </NotificationBanner>
-);
-
-const WhatNext: FunctionComponent = () => (
-  <Form action="/">
-    <FormGroup>
-      <FormFieldset>
-        <FormLegend>What would you like to do next?</FormLegend>
-        <RadioList>
-          <RadioListItem
-            id="try-again"
-            name="do-next"
-            value="try-again"
-            text="Try again or register a different beacon"
-          />
-          <RadioListItemHint
-            id="continue-anyway"
-            name="do-next"
-            value="continue-anyway"
-            text="Continue anyway - I've entered the beacons details correctly. I think this is a manufacturer fault or want to update the owner details"
-            hintText="We will contact the beacon manufacturer to rectify this. In the meantime, you can still use your beacon and Search & Rescue will still be able to locate you."
-          />
-        </RadioList>
-      </FormFieldset>
-    </FormGroup>
-  </Form>
+  <>
+    <h1 className="govuk-heading-l">Check beacon summary</h1>
+    <SummaryList>
+      <SummaryListItem
+        labelText="Beacon manufacturer"
+        valueText={beaconManufacturer}
+      />
+      <SummaryListItem labelText="Beacon model" valueText={beaconModel} />
+      <SummaryListItem labelText="Beacon HEX ID" valueText={beaconHexId} />
+      <SummaryListItem
+        labelText="Date registered"
+        // TODO: Lookup for date registered if beacon already in system
+        valueText="Not yet registered"
+      />
+    </SummaryList>
+  </>
 );
 
 // TODO: Encapsulate the state caching function

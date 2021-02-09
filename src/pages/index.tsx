@@ -5,7 +5,7 @@ import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
 import { Layout } from "../components/Layout";
 import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
-import { McaLogo } from "../components/McaLogo";
+import { McaLogo } from "../components/Mca";
 
 const ServiceStartPage: FunctionComponent = () => (
   <>
