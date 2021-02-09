@@ -2,12 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 
-import parse from "urlencoded-body-parser";
-import {
-  IFormCache,
-  FormCacheFactory,
-  BeaconCacheEntry,
-} from "../../lib/form-cache";
+import { BeaconCacheEntry } from "../../lib/form-cache";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 
@@ -18,7 +13,7 @@ import {
   getCache,
   updateFormCache,
 } from "../../lib/middleware";
-import { GetServerSidePropsContext } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 interface BeaconDetailsProps {
   beaconManufacturer: string;
@@ -86,7 +81,7 @@ const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
   </>
 );
 
-export const getServerSideProps = async (
+export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   cookieRedirect(context);

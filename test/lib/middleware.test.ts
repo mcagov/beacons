@@ -141,7 +141,7 @@ describe("Middleware Functions", () => {
     });
 
     it("should update the cache entry with the form data", async () => {
-      const formData = await updateFormCache(context);
+      await updateFormCache(context);
       const cache = FormCacheFactory.getCache();
 
       expect(cache.get("1")).toStrictEqual({ beaconModel: "ASOS" });
