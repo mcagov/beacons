@@ -11,4 +11,4 @@ export enum BeaconIntent {
   OTHER = "OTHER",
 }
 
-export const cookieSessionId = "sessionId";
+export const formSubmissionCookieId = "submissionId";

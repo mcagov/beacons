@@ -7,7 +7,7 @@ import { Layout } from "../components/Layout";
 import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
 import { McaLogo } from "../components/Mca";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { setCookieSession } from "../lib/middleware";
+import { setCookieSubmissionSession } from "../lib/middleware";
 
 const ServiceStartPage: FunctionComponent = () => (
   <>
@@ -220,7 +220,7 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  setCookieSession(context);
+  setCookieSubmissionSession(context);
 
   return { props: {} };
 };

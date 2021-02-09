@@ -3,21 +3,23 @@ import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
 import { FormCacheFactory, IFormCache } from "./form-cache";
 import { v4 as uuidv4 } from "uuid";
 import { CookieSerializeOptions, serialize } from "cookie";
-import { cookieSessionId } from "./types";
+import { formSubmissionCookieId } from "./types";
 import { ServerResponse } from "http";
 
 export const cookieRedirect = (context: GetServerSidePropsContext): void => {
   const cookies: NextApiRequestCookies = context.req.cookies;
 
-  if (!cookies || !cookies[cookieSessionId]) {
+  if (!cookies || !cookies[formSubmissionCookieId]) {
     context.res.writeHead(307, { Location: "/" }).end();
   }
 };
 
-export const setCookieSession = (context: GetServerSidePropsContext): void => {
+export const setCookieSubmissionSession = (
+  context: GetServerSidePropsContext
+): void => {
   const cookies: NextApiRequestCookies = context.req.cookies;
 
-  if (!cookies || !cookies[cookieSessionId]) {
+  if (!cookies || !cookies[formSubmissionCookieId]) {
     const id: string = uuidv4();
 
     updateCache(id);
@@ -31,7 +33,11 @@ const updateCache = (id: string): void => {
 };
 
 const setCookieHeader = (id: string, res: ServerResponse): void => {
-  const options: CookieSerializeOptions = { path: "/", httpOnly: true };
+  const options: CookieSerializeOptions = {
+    path: "/",
+    httpOnly: true,
+    sameSite: true,
+  };
 
-  res.setHeader("Set-Cookie", serialize(cookieSessionId, id, options));
+  res.setHeader("Set-Cookie", serialize(formSubmissionCookieId, id, options));
 };
