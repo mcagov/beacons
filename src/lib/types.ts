@@ -10,3 +10,12 @@ export enum BeaconIntent {
   WITHDRAW = "WITHDRAW",
   OTHER = "OTHER",
 }
+
+export interface Beacon {
+  manufacturer: string;
+  model: string;
+  hexId: string;
+  manufacturerSerialNumber: string;
+  batteryExpiryDate: string;
+  lastServicedDate: string;
+}
