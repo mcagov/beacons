@@ -2,7 +2,7 @@ import { FormCacheFactory } from "../../src/lib/form-cache";
 import {
   cookieRedirect,
   getCache,
-  setCookieSubmissionId,
+  setFormSubmissionCookie,
   updateFormCache,
 } from "../../src/lib/middleware";
 import {
@@ -83,7 +83,7 @@ describe("Middleware Functions", () => {
     });
   });
 
-  describe("setCookieSession()", () => {
+  describe("setFormSubmissionCookie()", () => {
     let context;
 
     beforeEach(() => {
@@ -96,7 +96,7 @@ describe("Middleware Functions", () => {
     });
 
     const assertCookieSet = () => {
-      setCookieSubmissionId(context);
+      setFormSubmissionCookie(context);
 
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
@@ -104,21 +104,21 @@ describe("Middleware Functions", () => {
       );
     };
 
-    it("should set the submission cookie header if there are no cookies", () => {
+    it("should set the form submission cookie if there are no cookies", () => {
       assertCookieSet();
     });
 
-    it("should set the submission cookie value if it is set to null", () => {
+    it("should set the form submission cookie value if it is set to null", () => {
       context.req.cookies = { [submissionCookieId]: null };
       assertCookieSet();
     });
 
-    it("should set the submission cookie value if it is set to undefined", () => {
+    it("should set the form submission cookie value if it is set to undefined", () => {
       context.req.cookies = { [submissionCookieId]: void 0 };
       assertCookieSet();
     });
 
-    it("should not set the submission cookie header if one is set", () => {
+    it("should not set the form submission cookie header if one is set", () => {
       context.req.cookies = { [submissionCookieId]: "2" };
 
       expect(context.res.setHeader).not.toHaveBeenCalled();
