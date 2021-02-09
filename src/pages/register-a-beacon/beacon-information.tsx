@@ -36,7 +36,7 @@ const BeaconInformationPage: FunctionComponent = () => (
 
                 <BeaconCHKCode />
 
-                <BeaconExpiryDate />
+                <BeaconBatteryExpiryDate />
 
                 <BeaconLastServicedDate />
 
@@ -93,7 +93,7 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
   </FormGroup>
 );
 
-const BeaconExpiryDate: FunctionComponent = (): JSX.Element => (
+const BeaconBatteryExpiryDate: FunctionComponent = (): JSX.Element => (
   <FormGroup>
     <FormLabel htmlFor="beaconBatteryExpiryDate">
       Enter your beacon battery expiry date (optional)
