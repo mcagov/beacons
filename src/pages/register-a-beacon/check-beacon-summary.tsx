@@ -45,7 +45,10 @@ const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
         </div>
       </NotificationBannerSuccess>
       <BeaconSummary {...props} />
-      <LinkButton buttonText={"Continue"} href={"/beacon-information"} />
+      <LinkButton
+        buttonText={"Continue"}
+        href={"/register-a-beacon/check-your-answers"}
+      />
       <IfYouNeedHelp />
     </>
   );
