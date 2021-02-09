@@ -1,5 +1,9 @@
 import React, { FunctionComponent, ReactNode } from "react";
 
+interface PageHeadingProps {
+  children: ReactNode;
+}
+
 interface AnchorLinkProps {
   href: string;
   children: ReactNode;
@@ -12,6 +16,10 @@ interface GovUKBodyProps {
 interface GovUKListProps {
   children: ReactNode;
 }
+
+export const PageHeading: FunctionComponent = ({
+  children,
+}: PageHeadingProps) => <h1 className="govuk-heading-l">{children}</h1>;
 
 export const AnchorLink: FunctionComponent<AnchorLinkProps> = ({
   href,
