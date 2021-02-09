@@ -29,7 +29,7 @@ interface FormLabelProps {
 }
 
 interface FormHintProps {
-  id: string;
+  forId: string;
   className?: string;
   children: ReactNode;
 }
@@ -112,11 +112,11 @@ export const FormLabel: FunctionComponent<FormLabelProps> = ({
 );
 
 export const FormHint: FunctionComponent<FormHintProps> = ({
-  id,
+  forId,
   className = "",
   children,
 }: FormHintProps): JSX.Element => (
-  <div id={`${id}-hint`} className={`govuk-hint ${className}`}>
+  <div id={`${forId}-hint`} className={`govuk-hint ${className}`}>
     {children}
   </div>
 );

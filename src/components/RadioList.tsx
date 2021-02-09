@@ -61,7 +61,7 @@ export const RadioListItemHint: FunctionComponent<RadioListItemHintProps> = ({
       {text}
     </FormLabel>
 
-    <FormHint id={id} className="govuk-radios__hint">
+    <FormHint forId={id} className="govuk-radios__hint">
       {hintText}
     </FormHint>
   </div>
