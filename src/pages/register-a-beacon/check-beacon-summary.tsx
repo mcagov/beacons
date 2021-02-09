@@ -118,14 +118,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     // TODO: Investigate more widely used library for parse()
     const previousFormPageData: BeaconDetailsProps = await parse(context.req);
 
-    const state: IFormCache = FormCacheFactory.getState();
-    state.set("id", previousFormPageData);
+    const state: IFormCache = FormCacheFactory.getCache();
+    state.update("id", previousFormPageData);
 
     return {
       props: previousFormPageData,
     };
   } else if (context.req.method === "GET") {
-    const state: IFormCache = FormCacheFactory.getState();
+    const state: IFormCache = FormCacheFactory.getCache();
     const existingState = state.get("id");
 
     return { props: existingState };
