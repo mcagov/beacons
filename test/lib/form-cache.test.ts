@@ -14,6 +14,11 @@ describe("FormCache", () => {
     id = uuidv4();
   });
 
+  it("should return a singleton instance of the form cache", () => {
+    const secondInstance: IFormCache = FormCacheFactory.getCache();
+    expect(cache).toBe(secondInstance);
+  });
+
   it("should return an empty object for an unknown cache entry", () => {
     expect(cache.get(uuidv4())).toStrictEqual({});
   });

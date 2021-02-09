@@ -10,3 +10,5 @@ export enum BeaconIntent {
   WITHDRAW = "WITHDRAW",
   OTHER = "OTHER",
 }
+
+export const cookieSessionId = "sessionId";

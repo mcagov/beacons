@@ -3,7 +3,6 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 
 import parse from "urlencoded-body-parser";
-import { GetServerSideProps } from "next";
 import { IFormCache, FormCacheFactory } from "../../lib/form-cache";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { NotificationBanner } from "../../components/NotificationBanner";
@@ -19,6 +18,7 @@ import {
   RadioListItemHint,
 } from "../../components/RadioList";
 import { BackButton, StartButton } from "../../components/Button";
+import { cookieRedirect } from "../../lib/middleware";
 
 interface BeaconDetailsProps {
   beaconManufacturer: string;
@@ -113,7 +113,9 @@ const WhatNext: FunctionComponent = () => (
 );
 
 // TODO: Encapsulate the state caching function
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = async (context) => {
+  cookieRedirect(context);
+
   if (context.req.method === "POST") {
     // TODO: Investigate more widely used library for parse()
     const previousFormPageData: BeaconDetailsProps = await parse(context.req);
