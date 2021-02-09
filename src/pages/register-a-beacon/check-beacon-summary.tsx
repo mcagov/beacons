@@ -10,6 +10,7 @@ import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 import { BackButton, LinkButton } from "../../components/Button";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { cookieRedirect } from "../../lib/middleware";
+import { GetServerSidePropsContext } from "next";
 
 interface BeaconDetailsProps {
   beaconManufacturer: string;
@@ -77,8 +78,9 @@ const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
   </>
 );
 
-// TODO: Encapsulate the state caching function
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   cookieRedirect(context);
 
   if (context.req.method === "POST") {

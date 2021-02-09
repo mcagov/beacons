@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { CookieSerializeOptions, serialize } from "cookie";
 import { formSubmissionCookieId } from "./types";
 import { ServerResponse } from "http";
+import parse from "urlencoded-body-parser";
 
 export const cookieRedirect = (context: GetServerSidePropsContext): void => {
   const cookies: NextApiRequestCookies = context.req.cookies;
@@ -12,6 +13,26 @@ export const cookieRedirect = (context: GetServerSidePropsContext): void => {
   if (!cookies || !cookies[formSubmissionCookieId]) {
     context.res.writeHead(307, { Location: "/" }).end();
   }
+};
+
+export async function updateFormCache<T>(
+  context: GetServerSidePropsContext
+): Promise<T> {
+  const previousFormPageData: T = await parse(context.req);
+  const submissionId: string = getSubmissionCookieId(context);
+
+  const state: IFormCache = FormCacheFactory.getCache();
+  state.update(submissionId, previousFormPageData);
+
+  return previousFormPageData;
+}
+
+const getSubmissionCookieId = (context: GetServerSidePropsContext): string => {
+  const cookies: NextApiRequestCookies = context.req.cookies;
+
+  return cookies && cookies[formSubmissionCookieId]
+    ? cookies[formSubmissionCookieId]
+    : null;
 };
 
 export const setCookieSubmissionId = (
