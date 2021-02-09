@@ -8,7 +8,7 @@ export interface Beacon {
 export type BeaconCacheEntry = Partial<Beacon>;
 
 export interface IFormCache {
-  update(id: string, formData: BeaconCacheEntry): void;
+  update(id: string, formData?: BeaconCacheEntry): void;
 
   get(id: string): BeaconCacheEntry;
 }
@@ -28,7 +28,7 @@ export class FormCacheFactory {
 class FormCache implements IFormCache {
   private _byId: Record<string, BeaconCacheEntry> = {};
 
-  public update(id: string, formData: BeaconCacheEntry): void {
+  public update(id: string, formData: BeaconCacheEntry = {}): void {
     this._byId[id] = this._byId[id] || {};
     Object.assign(this._byId[id], formData);
   }
