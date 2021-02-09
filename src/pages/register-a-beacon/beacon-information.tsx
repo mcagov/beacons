@@ -74,8 +74,7 @@ const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element =
 const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
   <FormGroup>
     <FormLabel htmlFor="beaconCHKCode">Beacon CHK code (optional)</FormLabel>
-    {/*TODO: change FormHint prop from `id` to `forId` or `for`*/}
-    <FormHint id="beaconCHKCode">
+    <FormHint forId="beaconCHKCode">
       This might be on the registration card you received when you bought the
       beacon
     </FormHint>
@@ -99,8 +98,7 @@ const BeaconExpiryDate: FunctionComponent = (): JSX.Element => (
     <FormLabel htmlFor="beaconBatteryExpiryDate">
       Enter your beacon battery expiry date (optional)
     </FormLabel>
-    <FormHint id="beaconBatteryExpiryDate">
-      {/*TODO: change FormHint prop from `id` to `forId` or `for`*/}
+    <FormHint forId="beaconBatteryExpiryDate">
       For example, you can enter this as dd/mm/yy or &quot;December 2021&quot;.
     </FormHint>
     <Input name="beaconBatteryExpiryDate" id="beaconBatteryExpiryDate" />
@@ -112,8 +110,7 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
     <FormLabel htmlFor="beaconLastServicedDate">
       When was your beacon last serviced?
     </FormLabel>
-    <FormHint id="beaconLastServicedDate">
-      {/*TODO: change FormHint prop from `id` to `forId` or `for`*/}
+    <FormHint forId="beaconLastServicedDate">
       For example, you can enter this as dd/mm/yy or &quot;December 2021&quot;.
     </FormHint>
     <Input
