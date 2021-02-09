@@ -1,11 +1,11 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactNode } from "react";
 
 interface WarningTextProps {
-  text: string;
+  children: ReactNode;
 }
 
 export const WarningText: FunctionComponent<WarningTextProps> = ({
-  text,
+  children,
 }: WarningTextProps): JSX.Element => (
   <div className="govuk-warning-text">
     <span className="govuk-warning-text__icon" aria-hidden="true">
@@ -13,7 +13,7 @@ export const WarningText: FunctionComponent<WarningTextProps> = ({
     </span>
     <strong className="govuk-warning-text__text">
       <span className="govuk-warning-text__assistive">Warning</span>
-      {text}
+      {children}
     </strong>
   </div>
 );

@@ -14,7 +14,17 @@ const ApplicationCompletePage: FunctionComponent = () => (
               We have sent you a confirmation email.
             </Panel>
             <ApplicationCompleteWhatNext />
-            <WarningText text="You can still use your beacon. Search &amp; Rescue will still be able to locate you even though your beacon is not registered yet." />
+            <WarningText>
+              <p className="govuk-body govuk-!-font-weight-bold">
+                You can still use your beacon. Search and Rescue will be able to
+                identify and locate you.
+              </p>
+              <p className="govuk-body govuk-!-font-weight-bold">
+                Remember your beacon should only be used in an emergency. If
+                needed, you can also contact HM Coastguard 24/7 on Tel: 020 381
+                72630.
+              </p>
+            </WarningText>
           </>
         }
       />
