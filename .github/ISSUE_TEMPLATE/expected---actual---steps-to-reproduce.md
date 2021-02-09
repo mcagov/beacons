@@ -1,6 +1,6 @@
 ---
 name: Expected / Actual / Steps to reproduce
-about: Issue template to cover bugs, feature requests and 'not to selves' for future
+about: Issue template to cover bugs, feature requests and 'note to selves' for future
   sprints
 title: ''
 labels: ''
