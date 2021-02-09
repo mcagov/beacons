@@ -3,13 +3,21 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 
 import parse from "urlencoded-body-parser";
-import { IFormCache, FormCacheFactory } from "../../lib/form-cache";
+import {
+  IFormCache,
+  FormCacheFactory,
+  BeaconCacheEntry,
+} from "../../lib/form-cache";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 
 import { BackButton, LinkButton } from "../../components/Button";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { cookieRedirect, updateFormCache } from "../../lib/middleware";
+import {
+  cookieRedirect,
+  getCache,
+  updateFormCache,
+} from "../../lib/middleware";
 import { GetServerSidePropsContext } from "next";
 
 interface BeaconDetailsProps {
@@ -93,8 +101,7 @@ export const getServerSideProps = async (
       props: previousFormPageData,
     };
   } else if (context.req.method === "GET") {
-    const state: IFormCache = FormCacheFactory.getCache();
-    const existingState = state.get("id");
+    const existingState: BeaconCacheEntry = getCache(context);
 
     return { props: existingState };
   }

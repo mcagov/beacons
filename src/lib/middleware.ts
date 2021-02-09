@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
-import { FormCacheFactory, IFormCache } from "./form-cache";
+import { BeaconCacheEntry, FormCacheFactory, IFormCache } from "./form-cache";
 import { v4 as uuidv4 } from "uuid";
 import { CookieSerializeOptions, serialize } from "cookie";
 import { formSubmissionCookieId } from "./types";
@@ -23,12 +23,12 @@ export const setCookieSubmissionId = (
   if (!cookies || !cookies[formSubmissionCookieId]) {
     const id: string = uuidv4();
 
-    updateCache(id);
+    seedCache(id);
     setCookieHeader(id, context.res);
   }
 };
 
-const updateCache = (id: string): void => {
+const seedCache = (id: string): void => {
   const cache: IFormCache = FormCacheFactory.getCache();
   cache.update(id);
 };
@@ -54,3 +54,12 @@ export async function updateFormCache<T>(
 
   return formData;
 }
+
+export const getCache = (
+  context: GetServerSidePropsContext
+): BeaconCacheEntry => {
+  const submissionId: string = context.req.cookies[formSubmissionCookieId];
+  const state: IFormCache = FormCacheFactory.getCache();
+
+  return state.get(submissionId);
+};
