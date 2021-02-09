@@ -48,25 +48,25 @@ describe("Middleware Functions", () => {
       assertRedirected();
     });
 
-    it("should not redirect if the cookie id is set ", () => {
+    it("should not redirect if form submission cookie header is set ", () => {
       context.req.cookies = { [formSubmissionCookieId]: "1" };
 
       assertNotRedirected();
     });
 
-    it("should redirect if the cookie session id is not set", () => {
+    it("should redirect if the form submission cookie header is not set", () => {
       context.req.cookies = { "beacons-session": "1" };
 
       assertRedirected();
     });
 
-    it("should redirect if the cookie session id is set to null", () => {
+    it("should redirect if the form submission cookie header is set to null", () => {
       context.req.cookies = { [formSubmissionCookieId]: null };
 
       assertRedirected();
     });
 
-    it("should redirect if the cookie session id is set to undefined", () => {
+    it("should redirect if the form submission cookie header is set to undefined", () => {
       context.req.cookies = { [formSubmissionCookieId]: void 0 };
 
       assertRedirected();
@@ -98,12 +98,12 @@ describe("Middleware Functions", () => {
       assertCookieSet();
     });
 
-    it("should set the form submission cookie value if it is null", () => {
+    it("should set the form submission cookie value if it is set to null", () => {
       context.req.cookies = { [formSubmissionCookieId]: null };
       assertCookieSet();
     });
 
-    it("should set the form submission cookie value if it is undefined", () => {
+    it("should set the form submission cookie value if it is set to undefined", () => {
       context.req.cookies = { [formSubmissionCookieId]: void 0 };
       assertCookieSet();
     });
