@@ -68,7 +68,7 @@ const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
       <SummaryListItem
         labelText="Date registered"
         // TODO: Lookup for date registered if beacon already in system
-        valueText="19 September 2016"
+        valueText="Not yet registered"
       />
     </SummaryList>
   </>
