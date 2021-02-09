@@ -1,9 +1,8 @@
 import React, { FunctionComponent } from "react";
-import { Grid } from "../components/Grid";
-import { Layout } from "../components/Layout";
-import { Panel } from "../components/Panel";
-import { SummaryList, SummaryListItem } from "../components/SummaryList";
-import { WarningText } from "../components/WarningText";
+import { Grid } from "../../components/Grid";
+import { Layout } from "../../components/Layout";
+import { Panel } from "../../components/Panel";
+import { WarningText } from "../../components/WarningText";
 
 const ApplicationCompletePage: FunctionComponent = () => (
   <>
@@ -11,10 +10,9 @@ const ApplicationCompletePage: FunctionComponent = () => (
       <Grid
         mainContent={
           <>
-            <Panel title="Application Complete"></Panel>
-            <div className="govuk-body">
+            <Panel title="Application Complete">
               We have sent you a confirmation email.
-            </div>
+            </Panel>
             <ApplicationCompleteWhatNext />
             <WarningText text="You can still use your beacon. Search &amp; Rescue will still be able to locate you even though your beacon is not registered yet." />
           </>
