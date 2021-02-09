@@ -1,8 +1,8 @@
 import {
   cookieRedirect,
-  setCookieSubmissionSession,
+  setCookieSubmissionId,
 } from "../../src/lib/middleware";
-import { formSubmissionCookieId } from "../../src/lib/types";
+import { formSubmissionCookieId as submissionCookieId } from "../../src/lib/types";
 
 jest.mock("uuid", () => ({
   v4: () => "1",
@@ -48,26 +48,26 @@ describe("Middleware Functions", () => {
       assertRedirected();
     });
 
-    it("should not redirect if form submission cookie header is set ", () => {
-      context.req.cookies = { [formSubmissionCookieId]: "1" };
+    it("should not redirect if submission cookie header is set ", () => {
+      context.req.cookies = { [submissionCookieId]: "1" };
 
       assertNotRedirected();
     });
 
-    it("should redirect if the form submission cookie header is not set", () => {
+    it("should redirect if the submission cookie header is not set", () => {
       context.req.cookies = { "beacons-session": "1" };
 
       assertRedirected();
     });
 
-    it("should redirect if the form submission cookie header is set to null", () => {
-      context.req.cookies = { [formSubmissionCookieId]: null };
+    it("should redirect if the submission cookie header is set to null", () => {
+      context.req.cookies = { [submissionCookieId]: null };
 
       assertRedirected();
     });
 
-    it("should redirect if the form submission cookie header is set to undefined", () => {
-      context.req.cookies = { [formSubmissionCookieId]: void 0 };
+    it("should redirect if the submission cookie header is set to undefined", () => {
+      context.req.cookies = { [submissionCookieId]: void 0 };
 
       assertRedirected();
     });
@@ -86,7 +86,7 @@ describe("Middleware Functions", () => {
     });
 
     const assertCookieSet = () => {
-      setCookieSubmissionSession(context);
+      setCookieSubmissionId(context);
 
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
@@ -94,22 +94,22 @@ describe("Middleware Functions", () => {
       );
     };
 
-    it("should set the form submission cookie header if there are no cookies", () => {
+    it("should set the submission cookie header if there are no cookies", () => {
       assertCookieSet();
     });
 
-    it("should set the form submission cookie value if it is set to null", () => {
-      context.req.cookies = { [formSubmissionCookieId]: null };
+    it("should set the submission cookie value if it is set to null", () => {
+      context.req.cookies = { [submissionCookieId]: null };
       assertCookieSet();
     });
 
-    it("should set the form submission cookie value if it is set to undefined", () => {
-      context.req.cookies = { [formSubmissionCookieId]: void 0 };
+    it("should set the submission cookie value if it is set to undefined", () => {
+      context.req.cookies = { [submissionCookieId]: void 0 };
       assertCookieSet();
     });
 
-    it("should not set the form submission cookie header if one is set", () => {
-      context.req.cookies = { [formSubmissionCookieId]: "2" };
+    it("should not set the submission cookie header if one is set", () => {
+      context.req.cookies = { [submissionCookieId]: "2" };
 
       expect(context.res.setHeader).not.toHaveBeenCalled();
     });

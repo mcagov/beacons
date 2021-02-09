@@ -14,7 +14,7 @@ export const cookieRedirect = (context: GetServerSidePropsContext): void => {
   }
 };
 
-export const setCookieSubmissionSession = (
+export const setCookieSubmissionId = (
   context: GetServerSidePropsContext
 ): void => {
   const cookies: NextApiRequestCookies = context.req.cookies;
