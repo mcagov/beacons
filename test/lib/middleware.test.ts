@@ -1,6 +1,7 @@
 import { FormCacheFactory } from "../../src/lib/form-cache";
 import {
   cookieRedirect,
+  getCache,
   setCookieSubmissionId,
   updateFormCache,
 } from "../../src/lib/middleware";
@@ -144,6 +145,31 @@ describe("Middleware Functions", () => {
       const cache = FormCacheFactory.getCache();
 
       expect(cache.get("1")).toStrictEqual({ beaconModel: "ASOS" });
+    });
+  });
+
+  describe("getCache()", () => {
+    let context;
+    const formData = { beaconModel: "ASOS" };
+    const id = "1";
+
+    beforeEach(() => {
+      context = {
+        req: { cookies: { [formSubmissionCookieId]: id } },
+      };
+    });
+
+    it("should return the form data stored within the cache for a given submission id", () => {
+      const cache = FormCacheFactory.getCache();
+      cache.update(id, formData);
+
+      expect(getCache(context)).toStrictEqual(formData);
+    });
+
+    it("should return empty form data if the id is not found", () => {
+      context.req.cookies = { [formSubmissionCookieId]: "not-in-the-cache" };
+
+      expect(getCache(context)).toStrictEqual({});
     });
   });
 });
