@@ -6,6 +6,8 @@ import { InsetText } from "../components/InsetText";
 import { Layout } from "../components/Layout";
 import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
 import { McaLogo } from "../components/Mca";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { setFormSubmissionCookie } from "../lib/middleware";
 import { PageHeading } from "../components/Typography";
 
 const ServiceStartPage: FunctionComponent = () => (
@@ -211,5 +213,13 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
     </InsetText>
   </>
 );
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  setFormSubmissionCookie(context);
+
+  return { props: {} };
+};
 
 export default ServiceStartPage;

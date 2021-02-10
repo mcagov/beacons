@@ -2,14 +2,18 @@ import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 
-import parse from "urlencoded-body-parser";
-import { GetServerSideProps } from "next";
-import { IFormCache, FormCacheFactory } from "../../lib/form-cache";
+import { BeaconCacheEntry } from "../../lib/form-cache";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 
 import { BackButton, LinkButton } from "../../components/Button";
 import { IfYouNeedHelp } from "../../components/Mca";
+import {
+  cookieRedirect,
+  getCache,
+  updateFormCache,
+} from "../../lib/middleware";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 interface BeaconDetailsProps {
   beaconManufacturer: string;
@@ -77,21 +81,21 @@ const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
   </>
 );
 
-// TODO: Encapsulate the state caching function
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  if (context.req.method === "POST") {
-    // TODO: Investigate more widely used library for parse()
-    const previousFormPageData: BeaconDetailsProps = await parse(context.req);
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  cookieRedirect(context);
 
-    const state: IFormCache = FormCacheFactory.getState();
-    state.set("id", previousFormPageData);
+  if (context.req.method === "POST") {
+    const previousFormPageData: BeaconDetailsProps = await updateFormCache(
+      context
+    );
 
     return {
       props: previousFormPageData,
     };
   } else if (context.req.method === "GET") {
-    const state: IFormCache = FormCacheFactory.getState();
-    const existingState = state.get("id");
+    const existingState: BeaconCacheEntry = getCache(context);
 
     return { props: existingState };
   }
