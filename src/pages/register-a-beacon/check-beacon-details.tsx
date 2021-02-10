@@ -22,15 +22,32 @@ import { updateFormCache } from "../../lib/middleware";
 import { ErrorSummary } from "../../components/ErrorSummary";
 
 interface CheckBeaconDetailsProps {
-  manufacturerError: boolean;
+  manufacturerError?: boolean;
+  modelError?: boolean;
+  hexIdError?: boolean;
 }
 
 interface BeaconManufacturerSelectProps {
   isError: boolean;
 }
 
+interface BeaconModelSelectProps {
+  isError: boolean;
+}
+
+interface BeaconHexIdSelectProps {
+  isError: boolean;
+}
+
+interface ErrorMessageProps {
+  id: string;
+  message: string;
+}
+
 const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
-  manufacturerError,
+  manufacturerError = false,
+  modelError = false,
+  hexIdError = false,
 }: CheckBeaconDetailsProps): JSX.Element => (
   <>
     <Layout navigation={<BackButton href="/intent" />}>
@@ -51,9 +68,9 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
 
                 <BeaconManufacturerSelect isError={manufacturerError} />
 
-                <BeaconModelSelect />
+                <BeaconModelSelect isError={modelError} />
 
-                <BeaconHexIdInput />
+                <BeaconHexIdInput isError={hexIdError} />
               </FormFieldset>
               <Button buttonText="Submit" />
             </Form>
@@ -70,24 +87,37 @@ const ErrorSummaryComponent: FunctionComponent = () => (
     <li>
       <a href="#manufacturer">Please select a beacon manufacturer</a>
     </li>
+    <li>
+      <a href="#model"> Please select a model</a>
+    </li>
+    <li>
+      <a href="#hexId"> Please enter a valid Hex ID</a>
+    </li>
   </ErrorSummary>
 );
 
-const ErrorMessage: FunctionComponent = () => (
-  <span id="intent-error" className="govuk-error-message">
-    <span className="govuk-visually-hidden">Error:</span> Please select an
-    option
+const ErrorMessage: FunctionComponent<ErrorMessageProps> = ({
+  id,
+  message,
+}: ErrorMessageProps) => (
+  <span id={id} className="govuk-error-message">
+    <span className="govuk-visually-hidden">Error:</span> {message}
   </span>
 );
 
 const BeaconManufacturerSelect: FunctionComponent<BeaconManufacturerSelectProps> = ({
   isError,
 }: BeaconManufacturerSelectProps): JSX.Element => (
-  <FormGroup>
+  <FormGroup hasError={isError}>
     <FormLabel htmlFor="manufacturer">
       Select your beacon manufacturer
     </FormLabel>
-    {isError && <ErrorMessage />}
+    {isError && (
+      <ErrorMessage
+        id={"manufacturer"}
+        message={"Please select a manufacturer"}
+      />
+    )}
     <Select name="manufacturer" id="manufacturer" defaultValue="default">
       <option hidden disabled value="default">
         Beacon manufacturer
@@ -99,9 +129,12 @@ const BeaconManufacturerSelect: FunctionComponent<BeaconManufacturerSelectProps>
   </FormGroup>
 );
 
-const BeaconModelSelect: FunctionComponent = (): JSX.Element => (
-  <FormGroup>
+const BeaconModelSelect: FunctionComponent<BeaconModelSelectProps> = ({
+  isError,
+}: BeaconModelSelectProps): JSX.Element => (
+  <FormGroup hasError={isError}>
     <FormLabel htmlFor="model">Select your beacon model</FormLabel>
+    {isError && <ErrorMessage id={"model"} message={"Please select a model"} />}
     <Select name="model" id="model" defaultValue="default">
       <option hidden disabled value="default">
         Beacon model
@@ -113,9 +146,14 @@ const BeaconModelSelect: FunctionComponent = (): JSX.Element => (
   </FormGroup>
 );
 
-const BeaconHexIdInput: FunctionComponent = (): JSX.Element => (
-  <FormGroup>
+const BeaconHexIdInput: FunctionComponent<BeaconHexIdSelectProps> = ({
+  isError,
+}: BeaconHexIdSelectProps): JSX.Element => (
+  <FormGroup hasError={isError}>
     <FormLabel htmlFor="hexId">Enter the 15 digit beacon HEX ID</FormLabel>
+    {isError && (
+      <ErrorMessage id={"hexId"} message={"Please enter a valid Hex ID"} />
+    )}
     <FormHint forId="hexId">
       This will be on your beacon. It must be 15 characters long and use
       characters 0-9, A-F
@@ -136,9 +174,29 @@ export const getServerSideProps: GetServerSideProps = async (
   if (context.req.method === "POST") {
     const formData: BeaconCacheEntry = await updateFormCache(context);
 
+    let manufacturerError = false;
+    let modelError = false;
+    let hexIdError = false;
+
     if (!formData.manufacturer) {
+      manufacturerError = true;
+    }
+
+    if (!formData.model) {
+      modelError = true;
+    }
+
+    if (!formData.hexId) {
+      hexIdError = true;
+    }
+
+    if (manufacturerError || modelError || hexIdError) {
       return {
-        props: { manufacturerError: true },
+        props: {
+          manufacturerError,
+          modelError,
+          hexIdError,
+        },
       };
     } else {
       return {
