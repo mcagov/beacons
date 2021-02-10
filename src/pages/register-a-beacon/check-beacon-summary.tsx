@@ -87,7 +87,6 @@ export const getServerSideProps: GetServerSideProps = async (
   cookieRedirect(context);
 
   if (context.req.method === "POST") {
-    // TODO: Investigate more widely used library for parse()
     const previousFormPageData: BeaconDetailsProps = await updateFormCache(
       context
     );
