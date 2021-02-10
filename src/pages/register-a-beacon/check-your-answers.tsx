@@ -3,7 +3,7 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { GovUKBody, PageHeading } from "../../components/Typography";
 import { BackButton, Button } from "../../components/Button";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Beacon } from "../../lib/types";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 
@@ -97,7 +97,9 @@ const SendYourApplication: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   // TODO: State persistence stuff to go here
 
   const fakeBeacon: Beacon = {

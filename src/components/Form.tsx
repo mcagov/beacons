@@ -19,6 +19,7 @@ interface FormFieldsetProps {
 }
 
 interface FormGroupProps {
+  className?: string;
   children: ReactNode;
 }
 
@@ -73,9 +74,10 @@ export const Form: FunctionComponent<FormProps> = ({
 );
 
 export const FormGroup: FunctionComponent<FormGroupProps> = ({
+  className = "",
   children,
 }: FormGroupProps): JSX.Element => (
-  <div className="govuk-form-group">{children}</div>
+  <div className={`govuk-form-group ${className}`}>{children}</div>
 );
 
 export const FormFieldset: FunctionComponent<FormFieldsetProps> = ({
