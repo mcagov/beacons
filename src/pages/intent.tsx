@@ -12,14 +12,15 @@ import {
 import { BeaconIntent } from "../lib/types";
 import { ErrorSummary } from "../components/ErrorSummary";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import parse from "urlencoded-body-parser";
 import { updateFormCache } from "../lib/middleware";
 import { BeaconCacheEntry } from "../lib/form-cache";
 
 interface IntentProps {
   isError: boolean;
 }
-const IntentPage: FunctionComponent<IntentProps> = (props): JSX.Element => (
+const IntentPage: FunctionComponent<IntentProps> = (
+  props: IntentProps
+): JSX.Element => (
   <>
     <Layout navigation={<BackButton href="/" />}>
       <Grid
@@ -42,7 +43,9 @@ const ErrorSummaryComponent: FunctionComponent = () => (
   </ErrorSummary>
 );
 
-const IntentPageContent: FunctionComponent<IntentProps> = (props) => (
+const IntentPageContent: FunctionComponent<IntentProps> = (
+  props: IntentProps
+) => (
   <Form action="/intent">
     <FormGroup className={props.isError ? "govuk-form-group--error" : ""}>
       <FormFieldset>
