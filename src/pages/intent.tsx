@@ -13,6 +13,8 @@ import { BeaconIntent } from "../lib/types";
 import { ErrorSummary } from "../components/ErrorSummary";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import parse from "urlencoded-body-parser";
+import { updateFormCache } from "../lib/middleware";
+import { BeaconCacheEntry } from "../lib/form-cache";
 
 interface IntentProps {
   isError: boolean;
@@ -81,9 +83,9 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   if (context.req.method === "POST") {
-    let output = await parse(context.req);
+    const formData: BeaconCacheEntry = await updateFormCache(context);
 
-    if (output.beaconIntent) {
+    if (formData.beaconIntent) {
       return {
         redirect: {
           destination: "/register-a-beacon/check-beacon-details",
