@@ -169,7 +169,7 @@ const AboutTheService: FunctionComponent = () => (
       </li>
     </ul>
 
-    <StartButton href="/intent" />
+    <StartButton href="/register-a-beacon/check-beacon-details" />
   </>
 );
 

@@ -16,6 +16,9 @@ import {
 } from "../../components/Form";
 import { Details } from "../../components/Details";
 import { IfYouNeedHelp } from "../../components/Mca";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { BeaconCacheEntry } from "../../lib/form-cache";
+import { updateFormCache } from "../../lib/middleware";
 
 const CheckBeaconDetails: FunctionComponent = () => (
   <>
@@ -23,7 +26,7 @@ const CheckBeaconDetails: FunctionComponent = () => (
       <Grid
         mainContent={
           <>
-            <Form action="/register-a-beacon/check-beacon-summary">
+            <Form action="/register-a-beacon/check-beacon-details">
               <FormFieldset>
                 <FormLegendPageHeading>
                   Check beacon details
@@ -52,10 +55,10 @@ const CheckBeaconDetails: FunctionComponent = () => (
 
 const BeaconManufacturerSelect: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="beaconManufacturer">
+    <FormLabel htmlFor="manufacturer">
       Select your beacon manufacturer
     </FormLabel>
-    <Select name="beaconManufacturer" id={null} defaultValue="default">
+    <Select name="manufacturer" id={null} defaultValue="default">
       <option hidden disabled value="default">
         Beacon manufacturer
       </option>
@@ -68,8 +71,8 @@ const BeaconManufacturerSelect: FunctionComponent = (): JSX.Element => (
 
 const BeaconModelSelect: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="beaconModel">Select your beacon model</FormLabel>
-    <Select name="beaconModel" id="beaconModel" defaultValue="default">
+    <FormLabel htmlFor="model">Select your beacon model</FormLabel>
+    <Select name="model" id="model" defaultValue="default">
       <option hidden disabled value="default">
         Beacon model
       </option>
@@ -82,18 +85,12 @@ const BeaconModelSelect: FunctionComponent = (): JSX.Element => (
 
 const BeaconHexIdInput: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="beaconHexId">
-      Enter the 15 digit beacon HEX ID
-    </FormLabel>
-    <FormHint forId="beaconHexId">
+    <FormLabel htmlFor="hexId">Enter the 15 digit beacon HEX ID</FormLabel>
+    <FormHint forId="hexId">
       This will be on your beacon. It must be 15 characters long and use
       characters 0-9, A-F
     </FormHint>
-    <Input
-      name="beaconHexId"
-      id="beaconHexId"
-      htmlAttributes={{ spellCheck: false }}
-    />
+    <Input name="hexId" id="hexId" htmlAttributes={{ spellCheck: false }} />
     <Details
       summaryText="What does the 15 digit beacon HEX ID look like?"
       className="govuk-!-padding-top-2"
@@ -102,5 +99,24 @@ const BeaconHexIdInput: FunctionComponent = (): JSX.Element => (
     </Details>
   </FormGroup>
 );
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  if (context.req.method === "POST") {
+    const formData: BeaconCacheEntry = await updateFormCache(context);
+
+    return {
+      redirect: {
+        destination: "/register-a-beacon/check-beacon-summary",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 export default CheckBeaconDetails;
