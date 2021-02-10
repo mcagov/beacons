@@ -24,16 +24,19 @@
     }
   },
   "dependencies": {
+    "cookie": "^0.4.1",
     "govuk-frontend": "^3.11.0",
     "next": "10.0.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "urlencoded-body-parser": "^3.0.0"
+    "urlencoded-body-parser": "^3.0.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@jest/types": "^26.6.2",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
+    "@types/cookie": "^0.4.0",
     "@types/node": "^14.14.25",
     "@types/react": "^17.0.1",
     "@types/react-dom": "^17.0.0",

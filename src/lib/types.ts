@@ -19,3 +19,5 @@ export interface Beacon {
   batteryExpiryDate: string;
   lastServicedDate: string;
 }
+
+export const formSubmissionCookieId = "submissionId";
