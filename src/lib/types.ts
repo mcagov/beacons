@@ -11,4 +11,13 @@ export enum BeaconIntent {
   OTHER = "OTHER",
 }
 
+export interface Beacon {
+  manufacturer: string;
+  model: string;
+  hexId: string;
+  manufacturerSerialNumber: string;
+  batteryExpiryDate: string;
+  lastServicedDate: string;
+}
+
 export const formSubmissionCookieId = "submissionId";

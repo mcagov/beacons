@@ -85,7 +85,7 @@ const BeaconHexIdInput: FunctionComponent = (): JSX.Element => (
     <FormLabel htmlFor="beaconHexId">
       Enter the 15 digit beacon HEX ID
     </FormLabel>
-    <FormHint id="beaconHexId">
+    <FormHint forId="beaconHexId">
       This will be on your beacon. It must be 15 characters long and use
       characters 0-9, A-F
     </FormHint>

@@ -8,6 +8,7 @@ import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
 import { McaLogo } from "../components/Mca";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { setFormSubmissionCookie } from "../lib/middleware";
+import { PageHeading } from "../components/Typography";
 
 const ServiceStartPage: FunctionComponent = () => (
   <>
@@ -15,7 +16,7 @@ const ServiceStartPage: FunctionComponent = () => (
       <Grid
         mainContent={
           <>
-            <PageHeading />
+            <PageHeading>Register a UK 406 MHz beacon</PageHeading>
             <AboutTheService />
             <OtherWaysToAccessTheService />
             <DataProtection />
@@ -123,10 +124,6 @@ const RelatedContent: FunctionComponent = () => (
       </ul>
     </Aside>
   </>
-);
-
-const PageHeading: FunctionComponent = () => (
-  <h1 className="govuk-heading-l">Register a UK 406 MHz beacon</h1>
 );
 
 const AboutTheService: FunctionComponent = () => (

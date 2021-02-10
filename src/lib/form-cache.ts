@@ -1,8 +1,4 @@
-export interface Beacon {
-  beaconManufacturer: string;
-  beaconModel: string;
-  beaconHexId: string;
-}
+import { Beacon } from "./types";
 
 // Convenience type
 export type BeaconCacheEntry = Partial<Beacon>;

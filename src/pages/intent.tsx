@@ -41,27 +41,6 @@ const IntentPageContent: FunctionComponent = () => (
             hintText="Choose this option to register one or multiple new beacons"
           />
           <RadioListItemHint
-            id="change-beacon"
-            name="beacon-intent"
-            value={BeaconIntent.UPDATE}
-            text="Update details for existing beacon(s) you've already registered"
-            hintText="Choose this option to change existing beacon details, vessel and aircraft details, owner details and emergency contact information"
-          />
-          <RadioListItemHint
-            id="ownership"
-            name="beacon-intent"
-            value={BeaconIntent.CHANGE_OWNERSHIP}
-            text="Change beacon ownership"
-            hintText="Choose this option if you have acquired a beacon from another owner, or are no longer a beacon owner"
-          />
-          <RadioListItemHint
-            id="withdraw"
-            name="beacon-intent"
-            value={BeaconIntent.WITHDRAW}
-            text="Withdraw a beacon"
-            hintText="Choose this option to inform us your beacon has been destroyed or withdrawn from use"
-          />
-          <RadioListItemHint
             id="other"
             name="beacon-intent"
             value={BeaconIntent.OTHER}
