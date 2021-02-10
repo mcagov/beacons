@@ -19,13 +19,25 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { BeaconCacheEntry } from "../../lib/form-cache";
 import { updateFormCache } from "../../lib/middleware";
+import { ErrorSummary } from "../../components/ErrorSummary";
 
-const CheckBeaconDetails: FunctionComponent = () => (
+interface CheckBeaconDetailsProps {
+  manufacturerError: boolean;
+}
+
+interface BeaconManufacturerSelectProps {
+  isError: boolean;
+}
+
+const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
+  manufacturerError,
+}: CheckBeaconDetailsProps): JSX.Element => (
   <>
     <Layout navigation={<BackButton href="/intent" />}>
       <Grid
         mainContent={
           <>
+            {manufacturerError && <ErrorSummaryComponent />}
             <Form action="/register-a-beacon/check-beacon-details">
               <FormFieldset>
                 <FormLegendPageHeading>
@@ -37,7 +49,7 @@ const CheckBeaconDetails: FunctionComponent = () => (
                   service.
                 </InsetText>
 
-                <BeaconManufacturerSelect />
+                <BeaconManufacturerSelect isError={manufacturerError} />
 
                 <BeaconModelSelect />
 
@@ -53,12 +65,30 @@ const CheckBeaconDetails: FunctionComponent = () => (
   </>
 );
 
-const BeaconManufacturerSelect: FunctionComponent = (): JSX.Element => (
+const ErrorSummaryComponent: FunctionComponent = () => (
+  <ErrorSummary>
+    <li>
+      <a href="#manufacturer">Please select a beacon manufacturer</a>
+    </li>
+  </ErrorSummary>
+);
+
+const ErrorMessage: FunctionComponent = () => (
+  <span id="intent-error" className="govuk-error-message">
+    <span className="govuk-visually-hidden">Error:</span> Please select an
+    option
+  </span>
+);
+
+const BeaconManufacturerSelect: FunctionComponent<BeaconManufacturerSelectProps> = ({
+  isError,
+}: BeaconManufacturerSelectProps): JSX.Element => (
   <FormGroup>
     <FormLabel htmlFor="manufacturer">
       Select your beacon manufacturer
     </FormLabel>
-    <Select name="manufacturer" id={null} defaultValue="default">
+    {isError && <ErrorMessage />}
+    <Select name="manufacturer" id="manufacturer" defaultValue="default">
       <option hidden disabled value="default">
         Beacon manufacturer
       </option>
@@ -106,12 +136,18 @@ export const getServerSideProps: GetServerSideProps = async (
   if (context.req.method === "POST") {
     const formData: BeaconCacheEntry = await updateFormCache(context);
 
-    return {
-      redirect: {
-        destination: "/register-a-beacon/check-beacon-summary",
-        permanent: false,
-      },
-    };
+    if (!formData.manufacturer) {
+      return {
+        props: { manufacturerError: true },
+      };
+    } else {
+      return {
+        redirect: {
+          destination: "/register-a-beacon/check-beacon-summary",
+          permanent: false,
+        },
+      };
+    }
   }
 
   return {
