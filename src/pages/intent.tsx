@@ -47,7 +47,7 @@ const IntentPageContent: FunctionComponent<IntentProps> = (
   props: IntentProps
 ) => (
   <Form action="/intent">
-    <FormGroup className={props.isError ? "govuk-form-group--error" : ""}>
+    <FormGroup>
       <FormFieldset>
         <FormLegendPageHeading>
           What would you like to do?
