@@ -11,7 +11,7 @@ import {
 } from "../components/Form";
 import { BeaconIntent } from "../lib/types";
 import { ErrorSummary } from "../components/ErrorSummary";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import parse from "urlencoded-body-parser";
 
 interface IntentProps {
@@ -77,26 +77,24 @@ const ErrorMessage: FunctionComponent = () => (
   </span>
 );
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   if (context.req.method === "POST") {
     let output = await parse(context.req);
-    console.log(output);
+
     if (output.beaconIntent) {
       return {
-        props: { isError: false },
+        redirect: {
+          destination: "/register-a-beacon/check-beacon-details",
+          permanent: false,
+        },
       };
-      console.log("1");
     } else {
       return {
         props: { isError: true },
       };
-      console.log("2");
     }
-  } else if (context.req.method === "GET") {
-    console.log("GET");
-    return {
-      props: { isError: false },
-    };
   }
   return {
     props: {},
