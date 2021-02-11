@@ -45,10 +45,9 @@ const BeaconInformationPage: FunctionComponent = () => (
                 <BeaconBatteryExpiryDate />
 
                 <BeaconLastServicedDate />
-
-                <IfYouNeedHelp />
               </FormFieldset>
               <Button buttonText="Continue" />
+              <IfYouNeedHelp />
             </Form>
           </>
         }
@@ -65,7 +64,7 @@ const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element =
     <Input
       name="beaconManufacturerSerialNumber"
       id="beaconManufacturerSerialNumber"
-      htmlAttributes={{ spellCheck: false, required: true }}
+      htmlAttributes={{ spellCheck: false }}
     />
     <Details
       className="govuk-!-padding-top-2"
@@ -94,7 +93,8 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
       className="govuk-!-padding-top-2"
       summaryText="What is the beacon CHK code?"
     >
-      TODO: What is the beacon CHK code?
+      TODO: Copy text explaining what a CHK code is and where the user can find
+      it.
     </Details>
   </FormGroup>
 );
@@ -143,7 +143,6 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
       // TODO: Implement final date input format/UX once decided
       // See https://miro.com/app/board/o9J_lZuM9qs=/?openComment=3074457354280329719
       type="date"
-      htmlAttributes={{ required: true }}
     />
   </DateListInput>
 );
