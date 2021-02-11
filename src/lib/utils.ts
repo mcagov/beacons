@@ -5,6 +5,6 @@
  * @returns         {T[]}    An array of the provided values
  */
 export function toArray<T>(toConvert: T | T[]): T[] {
-  const toArray = toConvert instanceof Array ? toConvert : [toConvert];
-  return toArray.filter((value: T) => !!value);
+  const toReturn = toConvert instanceof Array ? toConvert : [toConvert];
+  return toReturn.filter((value: T) => !!value);
 }
