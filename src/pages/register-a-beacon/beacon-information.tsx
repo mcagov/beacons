@@ -20,6 +20,7 @@ import {
   DateListItem,
   DateType,
 } from "../../components/DateInput";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 const BeaconInformationPage: FunctionComponent = () => (
   <>
@@ -192,5 +193,13 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
     </DateListItem>
   </DateListInput>
 );
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  return {
+    props: {},
+  };
+};
 
 export default BeaconInformationPage;
