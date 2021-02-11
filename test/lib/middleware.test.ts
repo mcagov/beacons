@@ -15,7 +15,7 @@ jest.mock("uuid", () => ({
 }));
 
 jest.mock("urlencoded-body-parser", () =>
-  jest.fn(() => Promise.resolve({ beaconModel: "ASOS" }))
+  jest.fn(() => Promise.resolve({ model: "ASOS" }))
 );
 
 describe("Middleware Functions", () => {
@@ -137,20 +137,20 @@ describe("Middleware Functions", () => {
     it("should update the form cache with the parsed form data", async () => {
       const formData = await updateFormCache(context);
 
-      expect(formData).toStrictEqual({ beaconModel: "ASOS" });
+      expect(formData).toStrictEqual({ model: "ASOS" });
     });
 
     it("should update the cache entry with the form data", async () => {
       await updateFormCache(context);
       const cache = FormCacheFactory.getCache();
 
-      expect(cache.get("1")).toStrictEqual({ beaconModel: "ASOS" });
+      expect(cache.get("1")).toStrictEqual({ model: "ASOS" });
     });
   });
 
   describe("getCache()", () => {
     let context;
-    const formData = { beaconModel: "ASOS" };
+    const formData = { model: "ASOS" };
     const id = "1";
 
     beforeEach(() => {
