@@ -27,11 +27,11 @@ interface CheckBeaconDetailsProps {
   hexIdError?: boolean;
 }
 
-interface BeaconManufacturerSelectProps {
+interface BeaconManufacturerInputProps {
   isError: boolean;
 }
 
-interface BeaconModelSelectProps {
+interface BeaconModelInputProps {
   isError: boolean;
 }
 
@@ -66,9 +66,9 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
                   service.
                 </InsetText>
 
-                <BeaconManufacturerSelect isError={manufacturerError} />
+                <BeaconManufacturerInput isError={manufacturerError} />
 
-                <BeaconModelSelect isError={modelError} />
+                <BeaconModelInput isError={modelError} />
 
                 <BeaconHexIdInput isError={hexIdError} />
               </FormFieldset>
@@ -105,44 +105,30 @@ const ErrorMessage: FunctionComponent<ErrorMessageProps> = ({
   </span>
 );
 
-const BeaconManufacturerSelect: FunctionComponent<BeaconManufacturerSelectProps> = ({
+const BeaconManufacturerInput: FunctionComponent<BeaconManufacturerInputProps> = ({
   isError,
-}: BeaconManufacturerSelectProps): JSX.Element => (
+}: BeaconManufacturerInputProps): JSX.Element => (
   <FormGroup hasError={isError}>
-    <FormLabel htmlFor="manufacturer">
-      Select your beacon manufacturer
-    </FormLabel>
+    <FormLabel htmlFor="manufacturer">Enter your beacon manufacturer</FormLabel>
     {isError && (
       <ErrorMessage
         id={"manufacturer"}
-        message={"Please select a manufacturer"}
+        message={"Please enter a manufacturer"}
       />
     )}
-    <Select name="manufacturer" id="manufacturer" defaultValue="default">
-      <option hidden disabled value="default">
-        Beacon manufacturer
-      </option>
-      <SelectOption value="Raleigh">Raleigh</SelectOption>
-      <SelectOption value="Giant">Giant</SelectOption>
-      <SelectOption value="Trek">Trek</SelectOption>
-    </Select>
+    <Input name="manufacturer" id="manufacturer" />
   </FormGroup>
 );
 
-const BeaconModelSelect: FunctionComponent<BeaconModelSelectProps> = ({
+const BeaconModelInput: FunctionComponent<BeaconModelInputProps> = ({
   isError,
-}: BeaconModelSelectProps): JSX.Element => (
+}: BeaconModelInputProps): JSX.Element => (
   <FormGroup hasError={isError}>
-    <FormLabel htmlFor="model">Select your beacon model</FormLabel>
-    {isError && <ErrorMessage id={"model"} message={"Please select a model"} />}
-    <Select name="model" id="model" defaultValue="default">
-      <option hidden disabled value="default">
-        Beacon model
-      </option>
-      <SelectOption value="Chopper">Chopper</SelectOption>
-      <SelectOption value="TCR">TCR</SelectOption>
-      <SelectOption value="Madone">Madone</SelectOption>
-    </Select>
+    <FormLabel htmlFor="model">Enter your beacon model</FormLabel>
+    {isError && (
+      <ErrorMessage id={"model"} message={"Please enter your beacon model"} />
+    )}
+    <Input name="model" id="model" />
   </FormGroup>
 );
 
