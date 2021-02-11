@@ -39,10 +39,9 @@ const BeaconInformationPage: FunctionComponent = () => (
                 <BeaconBatteryExpiryDate />
 
                 <BeaconLastServicedDate />
-
-                <IfYouNeedHelp />
               </FormFieldset>
               <Button buttonText="Continue" />
+              <IfYouNeedHelp />
             </Form>
           </>
         }
