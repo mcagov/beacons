@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 
-import { BeaconCacheEntry } from "../../lib/form-cache";
+import { BeaconCacheEntry } from "../../lib/formCache";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 
