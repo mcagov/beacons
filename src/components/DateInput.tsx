@@ -13,7 +13,6 @@ interface DateInputProps {
   id: string;
   name: string;
   dateType: DateType;
-  children: ReactNode;
   className?: string;
 }
 
@@ -42,11 +41,12 @@ export const DateInput: FunctionComponent<DateInputProps> = ({
   id,
   name,
   dateType,
-  children,
   className = "",
 }: DateInputProps) => {
   const dateTypeClass: string =
-    "govuk-input--" + (dateType === DateType.YEAR) ? "width-4" : "width-2";
+    dateType === DateType.YEAR
+      ? "govuk-input--width-4"
+      : "govuk-input--width-2";
 
   return (
     <input
@@ -56,8 +56,6 @@ export const DateInput: FunctionComponent<DateInputProps> = ({
       type="text"
       pattern="[0-9]*"
       inputMode="numeric"
-    >
-      {children}
-    </input>
+    />
   );
 };

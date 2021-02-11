@@ -100,7 +100,7 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
 );
 
 const BeaconBatteryExpiryDate: FunctionComponent = (): JSX.Element => (
-  <FormGroup>
+  <DateListInput id="beaconBatteryExpiryDate">
     <FormLabel
       htmlFor="beaconBatteryExpiryDate"
       className="govuk-date-input__label"
@@ -110,24 +110,42 @@ const BeaconBatteryExpiryDate: FunctionComponent = (): JSX.Element => (
     <FormHint forId="beaconBatteryExpiryDate">
       You only need to enter the month and year, for example 11 2009
     </FormHint>
-    <Input name="beaconBatteryExpiryDate" id="beaconBatteryExpiryDate" />
-  </FormGroup>
+    <DateListItem>
+      <FormGroup>
+        <FormLabel
+          htmlFor="beaconBatteryExpiryDateMonth"
+          className="govuk-date-input__label"
+        >
+          Month
+        </FormLabel>
+        <DateInput
+          id="beaconBatteryExpiryDateMonth"
+          name="beaconBatteryExpiryDateonth"
+          dateType={DateType.MONTH}
+        ></DateInput>
+      </FormGroup>
+    </DateListItem>
+
+    <DateListItem>
+      <FormGroup>
+        <FormLabel
+          htmlFor="beaconBatteryExpiryDateYear"
+          className="govuk-date-input__label"
+        >
+          Year
+        </FormLabel>
+        <DateInput
+          id="beaconBatteryExpiryDateYear"
+          name="beaconBatteryExpiryDateYear"
+          dateType={DateType.YEAR}
+        ></DateInput>
+      </FormGroup>
+    </DateListItem>
+  </DateListInput>
 );
 
 const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
   <DateListInput id="beaconLastServicedDate">
-    <DateListItem>
-      <FormGroup>
-        <FormLabel htmlFor="beaconLastServicedDateMonth">Month</FormLabel>
-        <DateInput
-          id="beaconLastServicedDateMonth"
-          name="beaconLastServicedDateMonth"
-          dateType={DateType.MONTH}
-        >
-          Month
-        </DateInput>
-      </FormGroup>
-    </DateListItem>
     <FormLabel
       htmlFor="beaconLastServicedDate"
       className="govuk-date-input__label"
@@ -137,13 +155,37 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
     <FormHint forId="beaconLastServicedDate">
       You only need to enter the month and year, for example 11 2009
     </FormHint>
-    <Input
-      name="beaconLastServicedDate"
-      id="beaconLastServicedDate"
-      // TODO: Implement final date input format/UX once decided
-      // See https://miro.com/app/board/o9J_lZuM9qs=/?openComment=3074457354280329719
-      type="date"
-    />
+    <DateListItem>
+      <FormGroup>
+        <FormLabel
+          htmlFor="beaconLastServicedDateMonth"
+          className="govuk-date-input__label"
+        >
+          Month
+        </FormLabel>
+        <DateInput
+          id="beaconLastServicedDateMonth"
+          name="beaconLastServicedDateMonth"
+          dateType={DateType.MONTH}
+        ></DateInput>
+      </FormGroup>
+    </DateListItem>
+
+    <DateListItem>
+      <FormGroup>
+        <FormLabel
+          htmlFor="beaconLastServicedDateYear"
+          className="govuk-date-input__label"
+        >
+          Year
+        </FormLabel>
+        <DateInput
+          id="beaconLastServicedDateYear"
+          name="beaconLastServicedDateYear"
+          dateType={DateType.YEAR}
+        ></DateInput>
+      </FormGroup>
+    </DateListItem>
   </DateListInput>
 );
 
