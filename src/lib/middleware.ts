@@ -4,8 +4,9 @@ import { BeaconCacheEntry, FormCacheFactory, IFormCache } from "./form-cache";
 import { v4 as uuidv4 } from "uuid";
 import { CookieSerializeOptions, serialize } from "cookie";
 import { formSubmissionCookieId } from "./types";
-import { ServerResponse } from "http";
+import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from "http";
 import parse from "urlencoded-body-parser";
+import { toArray } from "./utils";
 
 export const cookieRedirect = (context: GetServerSidePropsContext): void => {
   const cookies: NextApiRequestCookies = context.req.cookies;
@@ -26,6 +27,18 @@ export const setFormSubmissionCookie = (
     seedCache(id);
     setCookieHeader(id, context.res);
   }
+};
+
+export const checkHeaderContains = (
+  request: IncomingMessage,
+  header: keyof IncomingHttpHeaders,
+  value: string
+): boolean => {
+  const headerValues: string[] = toArray(request.headers[header]);
+  return (
+    headerValues.length > 0 &&
+    !!headerValues.find((headerValue) => headerValue.includes(value))
+  );
 };
 
 const seedCache = (id: string): void => {

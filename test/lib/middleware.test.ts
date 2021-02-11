@@ -2,6 +2,7 @@ import { FormCacheFactory } from "../../src/lib/form-cache";
 import {
   cookieRedirect,
   getCache,
+  checkHeaderContains,
   setFormSubmissionCookie,
   updateFormCache,
 } from "../../src/lib/middleware";
@@ -122,6 +123,63 @@ describe("Middleware Functions", () => {
       context.req.cookies = { [submissionCookieId]: "2" };
 
       expect(context.res.setHeader).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("refererHeaderContains()", () => {
+    let request;
+
+    beforeEach(() => {
+      request = {
+        headers: {
+          referer: "http://localhost/intent",
+        },
+      };
+    });
+
+    it("should return true if the header contains the provided value", () => {
+      expect(checkHeaderContains(request, "referer", "/intent")).toBe(true);
+    });
+
+    it("should return false if the header does not contain the provided value", () => {
+      expect(
+        checkHeaderContains(request, "referer", "/register-a-beacon")
+      ).toBe(false);
+    });
+
+    it("should return false if there is no referer header", () => {
+      request.headers = {};
+      expect(checkHeaderContains(request, "referer", "/intent")).toBe(false);
+    });
+
+    it("should return false if the header is not in the request", () => {
+      expect(checkHeaderContains(request, "accept-language", "eng")).toBe(
+        false
+      );
+    });
+
+    it("should return true if header contains full path of the referer header", () => {
+      request.headers.referer =
+        "http://localhost/register-a-beacon/check-beacon-details";
+      expect(
+        checkHeaderContains(
+          request,
+          "referer",
+          "register-a-beacon/check-beacon-details"
+        )
+      ).toBe(true);
+    });
+
+    it("should return false if only the first path of the url matches", () => {
+      request.headers.referer =
+        "http://localhost/register-a-beacon/check-beacon-details";
+      expect(
+        checkHeaderContains(
+          request,
+          "referer",
+          "register-a-beacon/check-beacon-summary"
+        )
+      ).toBe(false);
     });
   });
 
