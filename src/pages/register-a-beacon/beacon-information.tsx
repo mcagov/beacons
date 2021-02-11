@@ -23,7 +23,9 @@ import {
 
 const BeaconInformationPage: FunctionComponent = () => (
   <>
-    <Layout navigation={<BackButton href="/intent" />}>
+    <Layout
+      navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
+    >
       <Grid
         mainContent={
           <>
@@ -59,7 +61,7 @@ const BeaconInformationPage: FunctionComponent = () => (
 const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element => (
   <FormGroup>
     <FormLabel htmlFor="beaconManufacturerSerialNumber">
-      Manufacturer serial number
+      Enter beacon manufacturer serial number
     </FormLabel>
     <Input
       name="beaconManufacturerSerialNumber"
@@ -71,14 +73,16 @@ const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element =
       summaryText="Where can I find the manufacturer serial number?"
     >
       TODO: Details text for where the user can find the manufacturer serial
-      number
+      number.
     </Details>
   </FormGroup>
 );
 
 const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="beaconCHKCode">Beacon CHK code (optional)</FormLabel>
+    <FormLabel htmlFor="beaconCHKCode">
+      Enter the beacon CHK code (optional)
+    </FormLabel>
     <FormHint forId="beaconCHKCode">
       This might be on the registration card you received when you bought the
       beacon
@@ -93,8 +97,8 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
       className="govuk-!-padding-top-2"
       summaryText="What is the beacon CHK code?"
     >
-      TODO: Copy text explaining what a CHK code is and where the user can find
-      it.
+      TODO: Details text explaining what a CHK code is and where the user can
+      find it.
     </Details>
   </FormGroup>
 );
