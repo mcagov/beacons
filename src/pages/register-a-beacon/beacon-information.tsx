@@ -14,6 +14,12 @@ import {
 } from "../../components/Form";
 import { Details } from "../../components/Details";
 import { IfYouNeedHelp } from "../../components/Mca";
+import {
+  DateInput,
+  DateListInput,
+  DateListItem,
+  DateType,
+} from "../../components/DateInput";
 
 const BeaconInformationPage: FunctionComponent = () => (
   <>
@@ -22,7 +28,7 @@ const BeaconInformationPage: FunctionComponent = () => (
         mainContent={
           <>
             {/*TODO: Update link to next step in service flow*/}
-            <Form action="/register-a-beacon/primary-use">
+            <Form action="/register-a-beacon/beacon-information">
               <FormFieldset>
                 <FormLegendPageHeading>
                   Beacon information
@@ -95,23 +101,41 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
 
 const BeaconBatteryExpiryDate: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="beaconBatteryExpiryDate">
+    <FormLabel
+      htmlFor="beaconBatteryExpiryDate"
+      className="govuk-date-input__label"
+    >
       Enter your beacon battery expiry date (optional)
     </FormLabel>
     <FormHint forId="beaconBatteryExpiryDate">
-      For example, you can enter this as dd/mm/yy or &quot;December 2021&quot;.
+      You only need to enter the month and year, for example 11 2009
     </FormHint>
     <Input name="beaconBatteryExpiryDate" id="beaconBatteryExpiryDate" />
   </FormGroup>
 );
 
 const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
-  <FormGroup>
-    <FormLabel htmlFor="beaconLastServicedDate">
-      When was your beacon last serviced?
+  <DateListInput id="beaconLastServicedDate">
+    <DateListItem>
+      <FormGroup>
+        <FormLabel htmlFor="beaconLastServicedDateMonth">Month</FormLabel>
+        <DateInput
+          id="beaconLastServicedDateMonth"
+          name="beaconLastServicedDateMonth"
+          dateType={DateType.MONTH}
+        >
+          Month
+        </DateInput>
+      </FormGroup>
+    </DateListItem>
+    <FormLabel
+      htmlFor="beaconLastServicedDate"
+      className="govuk-date-input__label"
+    >
+      When was your beacon last serviced? (optional)
     </FormLabel>
     <FormHint forId="beaconLastServicedDate">
-      For example, you can enter this as dd/mm/yy or &quot;December 2021&quot;.
+      You only need to enter the month and year, for example 11 2009
     </FormHint>
     <Input
       name="beaconLastServicedDate"
@@ -121,7 +145,7 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
       type="date"
       htmlAttributes={{ required: true }}
     />
-  </FormGroup>
+  </DateListInput>
 );
 
 export default BeaconInformationPage;
