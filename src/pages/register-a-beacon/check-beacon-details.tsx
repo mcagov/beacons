@@ -201,7 +201,7 @@ export const getServerSideProps: GetServerSideProps = async (
     } else {
       return {
         redirect: {
-          destination: "/register-a-beacon/check-beacon-summary",
+          destination: "/register-a-beacon/beacon-information",
           permanent: false,
         },
       };
