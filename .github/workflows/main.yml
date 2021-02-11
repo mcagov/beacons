@@ -43,7 +43,7 @@ jobs:
           push: true
           tags: ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ github.sha }}
           build-args: |
-            git_hash=${ github.sha }
+            git_hash=${{ github.sha }}
 
   unit_tests:
     name: Unit tests
