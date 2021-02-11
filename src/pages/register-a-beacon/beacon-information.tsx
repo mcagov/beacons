@@ -88,7 +88,8 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
       className="govuk-!-padding-top-2"
       summaryText="What is the beacon CHK code?"
     >
-      TODO: What is the beacon CHK code?
+      TODO: Copy text explaining what a CHK code is and where the user can find
+      it.
     </Details>
   </FormGroup>
 );
