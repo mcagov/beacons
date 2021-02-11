@@ -126,7 +126,7 @@ describe("Middleware Functions", () => {
     });
   });
 
-  describe("refererHeaderContains()", () => {
+  describe("checkHeaderContains()", () => {
     let request;
 
     beforeEach(() => {
