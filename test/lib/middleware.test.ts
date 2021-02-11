@@ -2,6 +2,7 @@ import { FormCacheFactory } from "../../src/lib/form-cache";
 import {
   cookieRedirect,
   getCache,
+  checkHeaderContains,
   setFormSubmissionCookie,
   updateFormCache,
 } from "../../src/lib/middleware";
@@ -15,7 +16,7 @@ jest.mock("uuid", () => ({
 }));
 
 jest.mock("urlencoded-body-parser", () =>
-  jest.fn(() => Promise.resolve({ beaconModel: "ASOS" }))
+  jest.fn(() => Promise.resolve({ model: "ASOS" }))
 );
 
 describe("Middleware Functions", () => {
@@ -125,6 +126,63 @@ describe("Middleware Functions", () => {
     });
   });
 
+  describe("checkHeaderContains()", () => {
+    let request;
+
+    beforeEach(() => {
+      request = {
+        headers: {
+          referer: "http://localhost/intent",
+        },
+      };
+    });
+
+    it("should return true if the header contains the provided value", () => {
+      expect(checkHeaderContains(request, "referer", "/intent")).toBe(true);
+    });
+
+    it("should return false if the header does not contain the provided value", () => {
+      expect(
+        checkHeaderContains(request, "referer", "/register-a-beacon")
+      ).toBe(false);
+    });
+
+    it("should return false if there is no referer header", () => {
+      request.headers = {};
+      expect(checkHeaderContains(request, "referer", "/intent")).toBe(false);
+    });
+
+    it("should return false if the header is not in the request", () => {
+      expect(checkHeaderContains(request, "accept-language", "eng")).toBe(
+        false
+      );
+    });
+
+    it("should return true if header contains full path of the referer header", () => {
+      request.headers.referer =
+        "http://localhost/register-a-beacon/check-beacon-details";
+      expect(
+        checkHeaderContains(
+          request,
+          "referer",
+          "register-a-beacon/check-beacon-details"
+        )
+      ).toBe(true);
+    });
+
+    it("should return false if only the first path of the url matches", () => {
+      request.headers.referer =
+        "http://localhost/register-a-beacon/check-beacon-details";
+      expect(
+        checkHeaderContains(
+          request,
+          "referer",
+          "register-a-beacon/check-beacon-summary"
+        )
+      ).toBe(false);
+    });
+  });
+
   describe("updateFormCache()", () => {
     let context;
 
@@ -137,20 +195,20 @@ describe("Middleware Functions", () => {
     it("should update the form cache with the parsed form data", async () => {
       const formData = await updateFormCache(context);
 
-      expect(formData).toStrictEqual({ beaconModel: "ASOS" });
+      expect(formData).toStrictEqual({ model: "ASOS" });
     });
 
     it("should update the cache entry with the form data", async () => {
       await updateFormCache(context);
       const cache = FormCacheFactory.getCache();
 
-      expect(cache.get("1")).toStrictEqual({ beaconModel: "ASOS" });
+      expect(cache.get("1")).toStrictEqual({ model: "ASOS" });
     });
   });
 
   describe("getCache()", () => {
     let context;
-    const formData = { beaconModel: "ASOS" };
+    const formData = { model: "ASOS" };
     const id = "1";
 
     beforeEach(() => {

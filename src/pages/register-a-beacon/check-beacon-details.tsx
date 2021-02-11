@@ -50,7 +50,7 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   hexIdError = false,
 }: CheckBeaconDetailsProps): JSX.Element => (
   <>
-    <Layout navigation={<BackButton href="/intent" />}>
+    <Layout navigation={<BackButton href="/" />}>
       <Grid
         mainContent={
           <>
