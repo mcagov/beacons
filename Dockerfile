@@ -10,6 +10,9 @@ COPY package.json package-lock.json tsconfig.json src public ./
 # Builds NextJS application
 FROM base AS build
 
+ARG git_hash
+ENV GIT_HASH ${git_hash}
+
 RUN npm ci && npm run build
 
 # Installs production dependencies
