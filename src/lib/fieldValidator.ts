@@ -10,8 +10,8 @@ export class FieldValidator {
   private _value: string;
   private _rules: FieldRule[];
 
-  constructor(name: string) {
-    this._fieldId = name;
+  constructor(fieldId: string) {
+    this._fieldId = fieldId;
     this._rules = [];
   }
 
@@ -19,8 +19,12 @@ export class FieldValidator {
     return this._value;
   }
 
-  set value(value) {
+  set value(value: string) {
     this._value = value;
+  }
+
+  get fieldId(): string {
+    return this._fieldId;
   }
 
   hasError(): boolean {
@@ -52,7 +56,7 @@ export class FieldValidator {
     return this;
   }
 
-  withErrorMessage(message): FieldValidator {
+  withErrorMessage(message: string): FieldValidator {
     this._rules[this._rules.length - 1].errorMessage = message;
     return this;
   }

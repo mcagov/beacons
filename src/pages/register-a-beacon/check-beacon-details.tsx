@@ -75,7 +75,13 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
         <Grid
           mainContent={
             <>
-              {/*{manufacturerError && <ErrorSummaryComponent />}*/}
+              {(manufacturerField.hasError() ||
+                modelField.hasError() ||
+                hexIdField.hasError()) && (
+                <ErrorSummaryComponent
+                  validators={[manufacturerField, modelField, hexIdField]}
+                />
+              )}
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>
@@ -116,18 +122,29 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   );
 };
 
-const ErrorSummaryComponent: FunctionComponent = () => (
-  <ErrorSummary>
-    <li>
-      <a href="#manufacturer">Please select a beacon manufacturer</a>
-    </li>
-    <li>
-      <a href="#model"> Please select a model</a>
-    </li>
-    <li>
-      <a href="#hexId"> Please enter a valid Hex ID</a>
-    </li>
-  </ErrorSummary>
+interface ErrorSummaryComponentProps {
+  validators: FieldValidator[];
+}
+
+const ErrorSummaryComponent: FunctionComponent<ErrorSummaryComponentProps> = ({
+  validators,
+}: ErrorSummaryComponentProps) => (
+  <>
+    {validators && (
+      <ErrorSummary>
+        {validators.map((validator, validatorIndex) => {
+          return validator.errorMessages().map((errorMessage, errorIndex) => {
+            return (
+              <li key={`${validator.fieldId}-${validatorIndex}-${errorIndex}`}>
+                {/*TODO: href should go to the component error message, e.g. `hexId-error-0`*/}
+                <a href={`#${validator.fieldId}`}>{errorMessage}</a>
+              </li>
+            );
+          });
+        })}
+      </ErrorSummary>
+    )}
+  </>
 );
 
 const ErrorMessage: FunctionComponent<ErrorMessageProps> = ({
