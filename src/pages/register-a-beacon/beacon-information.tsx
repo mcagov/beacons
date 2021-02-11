@@ -59,7 +59,7 @@ const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element =
     <Input
       name="beaconManufacturerSerialNumber"
       id="beaconManufacturerSerialNumber"
-      htmlAttributes={{ spellCheck: false, required: true }}
+      htmlAttributes={{ spellCheck: false }}
     />
     <Details
       className="govuk-!-padding-top-2"
@@ -119,7 +119,6 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
       // TODO: Implement final date input format/UX once decided
       // See https://miro.com/app/board/o9J_lZuM9qs=/?openComment=3074457354280329719
       type="date"
-      htmlAttributes={{ required: true }}
     />
   </FormGroup>
 );
