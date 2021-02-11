@@ -6,10 +6,15 @@ import { BackButton, Button } from "../../components/Button";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Beacon } from "../../lib/types";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
+import getConfig from "next/config";
+import { Form } from "../../components/Form";
+import axios from "axios";
 
 interface CheckYourAnswersProps {
   beacon: Beacon;
 }
+
+const { serverRuntimeConfig } = getConfig();
 
 const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   beacon,
@@ -26,7 +31,9 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
             </PageHeading>
             <BeaconInformation {...beacon} />
             <SendYourApplication />
-            <Button buttonText="Accept and send" />
+            <Form action="/register-a-beacon/check-your-answers">
+              <Button buttonText="Accept and send" />
+            </Form>
           </>
         }
       />
@@ -101,6 +108,20 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   // TODO: State persistence stuff to go here
+  if (context.req.method === "POST") {
+    await axios
+      .post(`${serverRuntimeConfig.apiUrl}/beacons`, { beaconStatus: "idk" })
+      .then((response) => {
+        console.log(response);
+      });
+
+    return {
+      redirect: {
+        destination: "/register-a-beacon/application-complete",
+        permanent: false,
+      },
+    };
+  }
 
   const fakeBeacon: Beacon = {
     manufacturer: "Raleigh",

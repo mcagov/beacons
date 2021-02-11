@@ -13,6 +13,9 @@ FROM base AS build
 ARG git_hash
 ENV GIT_HASH ${git_hash}
 
+ARG api_url
+ENV API_URL ${api_url}
+
 RUN npm ci && npm run build
 
 # Installs production dependencies
