@@ -18,23 +18,19 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import { updateFormCache } from "../../lib/middleware";
 import { ErrorSummary } from "../../components/ErrorSummary";
+import { FieldValidator } from "../../lib/fieldValidator";
 
 interface CheckBeaconDetailsProps {
-  manufacturerError?: boolean;
-  modelError?: boolean;
-  hexIdError?: boolean;
+  manufacturer: string;
+  model: string;
+  hexId: string;
+  needsValidation: boolean;
 }
 
-interface BeaconManufacturerInputProps {
+interface FormInputProps {
+  value: string;
   isError: boolean;
-}
-
-interface BeaconModelInputProps {
-  isError: boolean;
-}
-
-interface BeaconHexIdSelectProps {
-  isError: boolean;
+  errorMessages: Array<string>;
 }
 
 interface ErrorMessageProps {
@@ -42,43 +38,83 @@ interface ErrorMessageProps {
   message: string;
 }
 
+const manufacturerField = new FieldValidator("manufacturer");
+
+manufacturerField
+  .should()
+  .containANonEmptyString()
+  .withErrorMessage("Manufacturer should not be empty");
+
+const modelField = new FieldValidator("model");
+
+modelField
+  .should()
+  .containANonEmptyString()
+  .withErrorMessage("Model should not be empty");
+
+const hexIdField = new FieldValidator("hexId");
+
+hexIdField
+  .should()
+  .containANonEmptyString()
+  .withErrorMessage("Hex ID should not be empty");
+
 const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
-  manufacturerError = false,
-  modelError = false,
-  hexIdError = false,
-}: CheckBeaconDetailsProps): JSX.Element => (
-  <>
-    <Layout navigation={<BackButton href="/" />}>
-      <Grid
-        mainContent={
-          <>
-            {manufacturerError && <ErrorSummaryComponent />}
-            <Form action="/register-a-beacon/check-beacon-details">
-              <FormFieldset>
-                <FormLegendPageHeading>
-                  Check beacon details
-                </FormLegendPageHeading>
-                <InsetText>
-                  The details of your beacon must be checked to ensure they have
-                  a UK encoding and if they are already registered with this
-                  service.
-                </InsetText>
+  manufacturer,
+  model,
+  hexId,
+  needsValidation = false,
+}: CheckBeaconDetailsProps): JSX.Element => {
+  manufacturerField.value = manufacturer;
+  modelField.value = model;
+  hexIdField.value = hexId;
 
-                <BeaconManufacturerInput isError={manufacturerError} />
+  return (
+    <>
+      <Layout navigation={<BackButton href="/" />}>
+        <Grid
+          mainContent={
+            <>
+              {/*{manufacturerError && <ErrorSummaryComponent />}*/}
+              <Form action="/register-a-beacon/check-beacon-details">
+                <FormFieldset>
+                  <FormLegendPageHeading>
+                    Check beacon details
+                  </FormLegendPageHeading>
+                  <InsetText>
+                    The details of your beacon must be checked to ensure they
+                    have a UK encoding and if they are already registered with
+                    this service.
+                  </InsetText>
 
-                <BeaconModelInput isError={modelError} />
+                  <BeaconManufacturerInput
+                    value={manufacturer}
+                    isError={needsValidation && manufacturerField.hasError()}
+                    errorMessages={manufacturerField.errorMessages()}
+                  />
 
-                <BeaconHexIdInput isError={hexIdError} />
-              </FormFieldset>
-              <Button buttonText="Submit" />
-            </Form>
-            <IfYouNeedHelp />
-          </>
-        }
-      />
-    </Layout>
-  </>
-);
+                  <BeaconModelInput
+                    value={model}
+                    isError={needsValidation && modelField.hasError()}
+                    errorMessages={modelField.errorMessages()}
+                  />
+
+                  <BeaconHexIdInput
+                    value={hexId}
+                    isError={needsValidation && hexIdField.hasError()}
+                    errorMessages={hexIdField.errorMessages()}
+                  />
+                </FormFieldset>
+                <Button buttonText="Submit" />
+              </Form>
+              <IfYouNeedHelp />
+            </>
+          }
+        />
+      </Layout>
+    </>
+  );
+};
 
 const ErrorSummaryComponent: FunctionComponent = () => (
   <ErrorSummary>
@@ -103,46 +139,69 @@ const ErrorMessage: FunctionComponent<ErrorMessageProps> = ({
   </span>
 );
 
-const BeaconManufacturerInput: FunctionComponent<BeaconManufacturerInputProps> = ({
+const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
+  value = "",
   isError,
-}: BeaconManufacturerInputProps): JSX.Element => (
+  errorMessages,
+}: FormInputProps): JSX.Element => (
   <FormGroup hasError={isError}>
     <FormLabel htmlFor="manufacturer">Enter your beacon manufacturer</FormLabel>
-    {isError && (
-      <ErrorMessage
-        id={"manufacturer"}
-        message={"Please enter a manufacturer"}
-      />
-    )}
-    <Input name="manufacturer" id="manufacturer" />
+    {isError &&
+      errorMessages.map((message, index) => (
+        <ErrorMessage
+          id={`manufacturer-error-${index}`}
+          key={`manufacturer-error-${index}`}
+          message={message}
+        />
+      ))}
+    <Input name="manufacturer" id="manufacturer" defaultValue={value} />
   </FormGroup>
 );
 
-const BeaconModelInput: FunctionComponent<BeaconModelInputProps> = ({
+const BeaconModelInput: FunctionComponent<FormInputProps> = ({
+  value = "",
   isError,
-}: BeaconModelInputProps): JSX.Element => (
+  errorMessages,
+}: FormInputProps): JSX.Element => (
   <FormGroup hasError={isError}>
     <FormLabel htmlFor="model">Enter your beacon model</FormLabel>
-    {isError && (
-      <ErrorMessage id={"model"} message={"Please enter your beacon model"} />
-    )}
-    <Input name="model" id="model" />
+    {isError &&
+      errorMessages.map((message, index) => (
+        <ErrorMessage
+          id={`model-error-${index}`}
+          key={`model-error-${index}`}
+          message={message}
+        />
+      ))}
+    <Input name="model" id="model" defaultValue={value} />
   </FormGroup>
 );
 
-const BeaconHexIdInput: FunctionComponent<BeaconHexIdSelectProps> = ({
+const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
+  value = "",
   isError,
-}: BeaconHexIdSelectProps): JSX.Element => (
+  errorMessages,
+}: FormInputProps): JSX.Element => (
   <FormGroup hasError={isError}>
     <FormLabel htmlFor="hexId">Enter the 15 digit beacon HEX ID</FormLabel>
-    {isError && (
-      <ErrorMessage id={"hexId"} message={"Please enter a valid Hex ID"} />
-    )}
+    {isError &&
+      errorMessages.map((message, index) => (
+        <ErrorMessage
+          id={`hexId-error-${index}`}
+          key={`hexId-error-${index}`}
+          message={message}
+        />
+      ))}
     <FormHint forId="hexId">
       This will be on your beacon. It must be 15 characters long and use
       characters 0-9, A-F
     </FormHint>
-    <Input name="hexId" id="hexId" htmlAttributes={{ spellCheck: false }} />
+    <Input
+      name="hexId"
+      id="hexId"
+      htmlAttributes={{ spellCheck: false }}
+      defaultValue={value}
+    />
     <Details
       summaryText="What does the 15 digit beacon HEX ID look like?"
       className="govuk-!-padding-top-2"
@@ -158,28 +217,21 @@ export const getServerSideProps: GetServerSideProps = async (
   if (context.req.method === "POST") {
     const formData: BeaconCacheEntry = await updateFormCache(context);
 
-    let manufacturerError = false;
-    let modelError = false;
-    let hexIdError = false;
+    manufacturerField.value = formData.manufacturer;
+    modelField.value = formData.model;
+    hexIdField.value = formData.hexId;
 
-    if (!formData.manufacturer) {
-      manufacturerError = true;
-    }
-
-    if (!formData.model) {
-      modelError = true;
-    }
-
-    if (!formData.hexId) {
-      hexIdError = true;
-    }
-
-    if (manufacturerError || modelError || hexIdError) {
+    if (
+      manufacturerField.hasError() ||
+      modelField.hasError() ||
+      hexIdField.hasError()
+    ) {
       return {
         props: {
-          manufacturerError,
-          modelError,
-          hexIdError,
+          needsValidation: true,
+          manufacturer: formData.manufacturer,
+          model: formData.model,
+          hexId: formData.hexId,
         },
       };
     } else {

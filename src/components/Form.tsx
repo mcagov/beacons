@@ -48,6 +48,7 @@ interface InputProps {
   id?: string;
   type?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
+  defaultValue: string;
 }
 
 interface SelectProps {
@@ -132,12 +133,14 @@ export const Input: FunctionComponent<InputProps> = ({
   name,
   type = "text",
   htmlAttributes = {},
+  defaultValue = "",
 }: InputProps): JSX.Element => (
   <input
     className="govuk-input"
     id={id}
     name={name}
     type={type}
+    defaultValue={defaultValue}
     {...htmlAttributes}
   />
 );
