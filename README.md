@@ -49,22 +49,14 @@ docker-compose up
 
 Our approach to testing:
 
-- **Testing the rendering of React components**. We use [Jest's snapshot testing](https://jestjs.io/docs/en/snapshot-testing) to ensure our components render as they should do.
+- **Testing the rendering of React components**. We use [React testing library](https://testing-library.com/docs/react-testing-library/intro/) to ensure the rednered pages are what the user expects to see.
 - **Testing logic**. We segregate frontend logic from components by defining reusable TypeScript functions in `src/lib/`. Unit tests for these functions using Jest are in `test/lib`.
-- **End-to-end testing**. _TBC, likely to be Cypress._
+- **End-to-end testing**. _TBC, likely to be Cypress and managed in the [integration](https://github.com/madetech/mca-beacons-integration) project_.
 
 ### Running tests
 
 - `npm run test` -- Runs all tests in the `test/` directory
 - `npm run test:watch` -- Runs tests in watch mode
-
-### Updating test snapshots
-
-To update all test snapshots, run: `npm run test:update-all`
-
-To update a specific snapshot, run: `npm run test:update [INSERT TEST NAME PATTERN HERE]`
-
-For example: `npm run test:update Header`
 
 ## Deployment
 

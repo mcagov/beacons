@@ -14,15 +14,24 @@ import {
 } from "../../components/Form";
 import { Details } from "../../components/Details";
 import { IfYouNeedHelp } from "../../components/Mca";
+import {
+  DateInput,
+  DateListInput,
+  DateListItem,
+  DateType,
+} from "../../components/DateInput";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 const BeaconInformationPage: FunctionComponent = () => (
   <>
-    <Layout navigation={<BackButton href="/intent" />}>
+    <Layout
+      navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
+    >
       <Grid
         mainContent={
           <>
             {/*TODO: Update link to next step in service flow*/}
-            <Form action="/register-a-beacon/primary-use">
+            <Form action="/register-a-beacon/beacon-information">
               <FormFieldset>
                 <FormLegendPageHeading>
                   Beacon information
@@ -53,7 +62,7 @@ const BeaconInformationPage: FunctionComponent = () => (
 const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element => (
   <FormGroup>
     <FormLabel htmlFor="beaconManufacturerSerialNumber">
-      Manufacturer serial number
+      Enter beacon manufacturer serial number
     </FormLabel>
     <Input
       name="beaconManufacturerSerialNumber"
@@ -65,14 +74,16 @@ const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element =
       summaryText="Where can I find the manufacturer serial number?"
     >
       TODO: Details text for where the user can find the manufacturer serial
-      number
+      number.
     </Details>
   </FormGroup>
 );
 
 const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="beaconCHKCode">Beacon CHK code (optional)</FormLabel>
+    <FormLabel htmlFor="beaconCHKCode">
+      Enter the beacon CHK code (optional)
+    </FormLabel>
     <FormHint forId="beaconCHKCode">
       This might be on the registration card you received when you bought the
       beacon
@@ -87,40 +98,108 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
       className="govuk-!-padding-top-2"
       summaryText="What is the beacon CHK code?"
     >
-      TODO: Copy text explaining what a CHK code is and where the user can find
-      it.
+      TODO: Details text explaining what a CHK code is and where the user can
+      find it.
     </Details>
   </FormGroup>
 );
 
 const BeaconBatteryExpiryDate: FunctionComponent = (): JSX.Element => (
-  <FormGroup>
-    <FormLabel htmlFor="beaconBatteryExpiryDate">
+  <DateListInput id="beaconBatteryExpiryDate">
+    <FormLabel
+      htmlFor="beaconBatteryExpiryDate"
+      className="govuk-date-input__label"
+    >
       Enter your beacon battery expiry date (optional)
     </FormLabel>
     <FormHint forId="beaconBatteryExpiryDate">
-      For example, you can enter this as dd/mm/yy or &quot;December 2021&quot;.
+      You only need to enter the month and year, for example 11 2009
     </FormHint>
-    <Input name="beaconBatteryExpiryDate" id="beaconBatteryExpiryDate" />
-  </FormGroup>
+    <DateListItem>
+      <FormGroup>
+        <FormLabel
+          htmlFor="beaconBatteryExpiryDateMonth"
+          className="govuk-date-input__label"
+        >
+          Month
+        </FormLabel>
+        <DateInput
+          id="beaconBatteryExpiryDateMonth"
+          name="beaconBatteryExpiryDateonth"
+          dateType={DateType.MONTH}
+        ></DateInput>
+      </FormGroup>
+    </DateListItem>
+
+    <DateListItem>
+      <FormGroup>
+        <FormLabel
+          htmlFor="beaconBatteryExpiryDateYear"
+          className="govuk-date-input__label"
+        >
+          Year
+        </FormLabel>
+        <DateInput
+          id="beaconBatteryExpiryDateYear"
+          name="beaconBatteryExpiryDateYear"
+          dateType={DateType.YEAR}
+        ></DateInput>
+      </FormGroup>
+    </DateListItem>
+  </DateListInput>
 );
 
 const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
-  <FormGroup>
-    <FormLabel htmlFor="beaconLastServicedDate">
-      When was your beacon last serviced?
+  <DateListInput id="beaconLastServicedDate">
+    <FormLabel
+      htmlFor="beaconLastServicedDate"
+      className="govuk-date-input__label"
+    >
+      When was your beacon last serviced? (optional)
     </FormLabel>
     <FormHint forId="beaconLastServicedDate">
-      For example, you can enter this as dd/mm/yy or &quot;December 2021&quot;.
+      You only need to enter the month and year, for example 11 2009
     </FormHint>
-    <Input
-      name="beaconLastServicedDate"
-      id="beaconLastServicedDate"
-      // TODO: Implement final date input format/UX once decided
-      // See https://miro.com/app/board/o9J_lZuM9qs=/?openComment=3074457354280329719
-      type="date"
-    />
-  </FormGroup>
+    <DateListItem>
+      <FormGroup>
+        <FormLabel
+          htmlFor="beaconLastServicedDateMonth"
+          className="govuk-date-input__label"
+        >
+          Month
+        </FormLabel>
+        <DateInput
+          id="beaconLastServicedDateMonth"
+          name="beaconLastServicedDateMonth"
+          dateType={DateType.MONTH}
+        ></DateInput>
+      </FormGroup>
+    </DateListItem>
+
+    <DateListItem>
+      <FormGroup>
+        <FormLabel
+          htmlFor="beaconLastServicedDateYear"
+          className="govuk-date-input__label"
+        >
+          Year
+        </FormLabel>
+        <DateInput
+          id="beaconLastServicedDateYear"
+          name="beaconLastServicedDateYear"
+          dateType={DateType.YEAR}
+        ></DateInput>
+      </FormGroup>
+    </DateListItem>
+  </DateListInput>
 );
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  return {
+    props: {},
+  };
+};
 
 export default BeaconInformationPage;
