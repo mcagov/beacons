@@ -16,7 +16,7 @@ import { Details } from "../../components/Details";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { BeaconCacheEntry } from "../../lib/formCache";
-import { updateFormCache } from "../../lib/middleware";
+import { getCache, updateFormCache } from "../../lib/middleware";
 import { ErrorSummary } from "../../components/ErrorSummary";
 import { FieldValidator } from "../../lib/fieldValidator";
 
@@ -62,7 +62,7 @@ hexIdField
 hexIdField
   .should()
   .beExactly15Characters()
-  .withErrorMessage("Hex ID should be 15 characters long");
+  .withErrorMessage("HEX ID should be 15 characters long");
 
 const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   manufacturer,
@@ -229,7 +229,7 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
       summaryText="What does the 15 digit beacon HEX ID look like?"
       className="govuk-!-padding-top-2"
     >
-      TODO: Image of a beacon showing hex ID
+      TODO: Explain to users how to find their beacon HEX ID
     </Details>
   </FormGroup>
 );
@@ -267,8 +267,13 @@ export const getServerSideProps: GetServerSideProps = async (
     }
   }
 
+  const formData: BeaconCacheEntry = getCache(context);
+
   return {
-    props: {},
+    props: {
+      needsValidation: false,
+      ...formData,
+    },
   };
 };
 
