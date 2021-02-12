@@ -2,7 +2,7 @@ import {
   BeaconCacheEntry,
   FormCacheFactory,
   IFormCache,
-} from "../../src/lib/form-cache";
+} from "../../src/lib/formCache";
 import { v4 as uuidv4 } from "uuid";
 
 describe("FormCache", () => {

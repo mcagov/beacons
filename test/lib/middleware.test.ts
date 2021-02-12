@@ -1,4 +1,4 @@
-import { FormCacheFactory } from "../../src/lib/form-cache";
+import { FormCacheFactory } from "../../src/lib/formCache";
 import {
   cookieRedirect,
   getCache,
