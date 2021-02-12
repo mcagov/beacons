@@ -4,7 +4,6 @@ export interface ValidatorFunction {
 
 export const emptyRequiredField: ValidatorFunction = (value) => !value;
 
-export const containsNonHexChar: ValidatorFunction = (value) => {
-  const regex = /[0-9A-Fa-f]/g;
-  return regex.test(value);
+export const isNot15CharactersLong: ValidatorFunction = (value) => {
+  return !value || value.length !== 15;
 };

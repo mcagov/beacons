@@ -1,4 +1,8 @@
-import { ValidatorFunction, emptyRequiredField } from "./validatorFunctions";
+import {
+  ValidatorFunction,
+  emptyRequiredField,
+  isNot15CharactersLong,
+} from "./validatorFunctions";
 
 interface FieldRule {
   validatorFunction: ValidatorFunction;
@@ -50,6 +54,15 @@ export class FieldValidator {
   containANonEmptyString(): FieldValidator {
     const rule = {
       validatorFunction: emptyRequiredField,
+      errorMessage: "",
+    };
+    this._rules.push(rule);
+    return this;
+  }
+
+  beExactly15Characters(): FieldValidator {
+    const rule = {
+      validatorFunction: isNot15CharactersLong,
       errorMessage: "",
     };
     this._rules.push(rule);

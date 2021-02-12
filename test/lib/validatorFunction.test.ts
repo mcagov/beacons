@@ -1,6 +1,6 @@
 import {
   emptyRequiredField,
-  containsNonHexChar,
+  isNot15CharactersLong,
 } from "../../src/lib/validatorFunctions";
 
 describe("emptyRequiredField", () => {
@@ -26,10 +26,20 @@ describe("emptyRequiredField", () => {
   });
 });
 
-describe("containsNonHexCharacter", () => {
-  it("should return true when field contains a valid hexadecimal character", () => {
-    expect(containsNonHexChar("0")).toBe(true);
-    expect(containsNonHexChar("1")).toBe(true);
-    expect(containsNonHexChar("f")).toBe(true);
+describe("isNot15CharactersLong", () => {
+  it("should return false when field is 15 characters long", () => {
+    expect(isNot15CharactersLong("123456789012345")).toBe(false);
+    expect(isNot15CharactersLong("abcdefghijklmno")).toBe(false);
+  });
+
+  it("should return true when field is not 15 characters long", () => {
+    expect(isNot15CharactersLong("abc")).toBe(true);
+    expect(isNot15CharactersLong("abcdefghijklmnoasdkjahskjdhad")).toBe(true);
+  });
+
+  it("should return true when field is falsy", () => {
+    expect(isNot15CharactersLong("")).toBe(true);
+    expect(isNot15CharactersLong(undefined)).toBe(true);
+    expect(isNot15CharactersLong(null)).toBe(true);
   });
 });
