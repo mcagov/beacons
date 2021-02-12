@@ -57,7 +57,12 @@ const hexIdField = new FieldValidator("hexId");
 hexIdField
   .should()
   .containANonEmptyString()
-  .withErrorMessage("Hex ID should not be empty");
+  .withErrorMessage("HEX ID should not be empty");
+
+hexIdField
+  .should()
+  .beExactly15Characters()
+  .withErrorMessage("Hex ID should be 15 characters long");
 
 const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   manufacturer,
