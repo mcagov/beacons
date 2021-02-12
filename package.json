@@ -10,8 +10,6 @@
     "test:staged": "jest -o",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:update": "jest --updateSnapshot --testNamePattern",
-    "test:update-all": "jest --updateSnapshot",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write '**/*.{js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
