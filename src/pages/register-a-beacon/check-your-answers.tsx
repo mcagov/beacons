@@ -111,6 +111,9 @@ export const getServerSideProps: GetServerSideProps = async (
     lastServicedDate: "13 October 2020",
   };
 
+  // Temporary, to make linting warning go away
+  context;
+
   return {
     props: { beacon: fakeBeacon },
   };

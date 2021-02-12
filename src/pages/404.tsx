@@ -1,10 +1,9 @@
 import React from "react";
-import Link from "next/link";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";
 import { BeaconRegistryContactInfo } from "../components/Mca";
 
-const FourOhFour = () => {
+const FourOhFour = (): JSX.Element => {
   return (
     <Layout>
       <Grid

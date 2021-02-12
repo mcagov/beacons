@@ -50,11 +50,11 @@ describe("FieldValidator", () => {
       expect(errorMessages).toStrictEqual([errorMessage]);
     });
 
-    xit("should return false when its only validator function says the field is valid", () => {
+    it("should return false when its only validator function says the field is valid", () => {
       const value = "This is a valid form field input value";
       const fieldShouldContainText = new FieldValidator("formFieldId");
-
       fieldShouldContainText.should().containANonEmptyString();
+      fieldShouldContainText.value = value;
 
       const hasError = fieldShouldContainText.hasError();
 
