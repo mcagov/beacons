@@ -48,7 +48,7 @@ interface InputProps {
   id?: string;
   type?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
-  defaultValue: string;
+  defaultValue?: string;
 }
 
 interface SelectProps {
