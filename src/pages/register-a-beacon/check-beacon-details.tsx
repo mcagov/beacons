@@ -75,13 +75,14 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
         <Grid
           mainContent={
             <>
-              {(manufacturerField.hasError() ||
-                modelField.hasError() ||
-                hexIdField.hasError()) && (
-                <ErrorSummaryComponent
-                  validators={[manufacturerField, modelField, hexIdField]}
-                />
-              )}
+              {needsValidation &&
+                (manufacturerField.hasError() ||
+                  modelField.hasError() ||
+                  hexIdField.hasError()) && (
+                  <ErrorSummaryComponent
+                    validators={[manufacturerField, modelField, hexIdField]}
+                  />
+                )}
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>
