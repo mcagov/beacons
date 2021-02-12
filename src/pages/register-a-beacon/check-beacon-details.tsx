@@ -10,8 +10,6 @@ import {
   FormLegendPageHeading,
   FormLabel,
   FormGroup,
-  Select,
-  SelectOption,
   FormHint,
 } from "../../components/Form";
 import { Details } from "../../components/Details";
