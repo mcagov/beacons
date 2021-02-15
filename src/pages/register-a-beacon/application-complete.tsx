@@ -1,8 +1,10 @@
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
 import { WarningText } from "../../components/WarningText";
+import { withCookieRedirect } from "../../lib/middleware";
 
 const ApplicationCompletePage: FunctionComponent = () => (
   <>
@@ -44,6 +46,14 @@ const ApplicationCompleteWhatNext: FunctionComponent = () => (
       more information.
     </div>
   </>
+);
+
+export const getServerSideProps: GetServerSideProps = withCookieRedirect(
+  async (context: GetServerSidePropsContext) => {
+    return {
+      props: {},
+    };
+  }
 );
 
 export default ApplicationCompletePage;
