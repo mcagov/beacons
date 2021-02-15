@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
 import { BeaconCacheEntry, FormCacheFactory, IFormCache } from "./formCache";
 import { v4 as uuidv4 } from "uuid";
@@ -8,12 +8,21 @@ import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from "http";
 import parse from "urlencoded-body-parser";
 import { toArray } from "./utils";
 
-export const cookieRedirect = (context: GetServerSidePropsContext): void => {
+export const withCookieRedirect = (callback: GetServerSideProps) => async (
+  context: GetServerSidePropsContext
+) => {
   const cookies: NextApiRequestCookies = context.req.cookies;
 
   if (!cookies || !cookies[formSubmissionCookieId]) {
-    context.res.writeHead(307, { Location: "/" }).end();
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
   }
+
+  return callback(context);
 };
 
 export const setFormSubmissionCookie = (

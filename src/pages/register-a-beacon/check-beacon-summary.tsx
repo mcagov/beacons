@@ -9,7 +9,7 @@ import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 import { BackButton, LinkButton } from "../../components/Button";
 import { IfYouNeedHelp } from "../../components/Mca";
 import {
-  cookieRedirect,
+  withCookieRedirect,
   getCache,
   updateFormCache,
 } from "../../lib/middleware";
@@ -81,28 +81,26 @@ const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  cookieRedirect(context);
+export const getServerSideProps: GetServerSideProps = withCookieRedirect(
+  async (context: GetServerSidePropsContext) => {
+    if (context.req.method === "POST") {
+      const previousFormPageData: BeaconDetailsProps = await updateFormCache(
+        context
+      );
 
-  if (context.req.method === "POST") {
-    const previousFormPageData: BeaconDetailsProps = await updateFormCache(
-      context
-    );
+      return {
+        props: previousFormPageData,
+      };
+    } else if (context.req.method === "GET") {
+      const existingState: BeaconCacheEntry = getCache(context);
+
+      return { props: existingState };
+    }
 
     return {
-      props: previousFormPageData,
+      props: {},
     };
-  } else if (context.req.method === "GET") {
-    const existingState: BeaconCacheEntry = getCache(context);
-
-    return { props: existingState };
   }
-
-  return {
-    props: {},
-  };
-};
+);
 
 export default CheckBeaconSummaryPage;
