@@ -9,16 +9,16 @@ import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 import { BackButton, LinkButton } from "../../components/Button";
 import { IfYouNeedHelp } from "../../components/Mca";
 import {
-  cookieRedirect,
+  withCookieRedirect,
   getCache,
   updateFormCache,
 } from "../../lib/middleware";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 interface BeaconDetailsProps {
-  beaconManufacturer: string;
-  beaconModel: string;
-  beaconHexId: string;
+  manufacturer: string;
+  model: string;
+  hexId: string;
 }
 
 const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
@@ -59,19 +59,19 @@ const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
 };
 
 const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
-  beaconManufacturer,
-  beaconModel,
-  beaconHexId,
+  manufacturer,
+  model,
+  hexId,
 }: BeaconDetailsProps): JSX.Element => (
   <>
     <h1 className="govuk-heading-l">Check beacon summary</h1>
     <SummaryList>
       <SummaryListItem
         labelText="Beacon manufacturer"
-        valueText={beaconManufacturer}
+        valueText={manufacturer}
       />
-      <SummaryListItem labelText="Beacon model" valueText={beaconModel} />
-      <SummaryListItem labelText="Beacon HEX ID" valueText={beaconHexId} />
+      <SummaryListItem labelText="Beacon model" valueText={model} />
+      <SummaryListItem labelText="Beacon HEX ID" valueText={hexId} />
       <SummaryListItem
         labelText="Date registered"
         // TODO: Lookup for date registered if beacon already in system
@@ -81,28 +81,26 @@ const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  cookieRedirect(context);
+export const getServerSideProps: GetServerSideProps = withCookieRedirect(
+  async (context: GetServerSidePropsContext) => {
+    if (context.req.method === "POST") {
+      const previousFormPageData: BeaconCacheEntry = await updateFormCache(
+        context
+      );
 
-  if (context.req.method === "POST") {
-    const previousFormPageData: BeaconDetailsProps = await updateFormCache(
-      context
-    );
+      return {
+        props: { ...previousFormPageData },
+      };
+    } else if (context.req.method === "GET") {
+      const existingState: BeaconCacheEntry = getCache(context);
+
+      return { props: { ...existingState } };
+    }
 
     return {
-      props: previousFormPageData,
+      props: {},
     };
-  } else if (context.req.method === "GET") {
-    const existingState: BeaconCacheEntry = getCache(context);
-
-    return { props: existingState };
   }
-
-  return {
-    props: {},
-  };
-};
+);
 
 export default CheckBeaconSummaryPage;

@@ -1,6 +1,6 @@
 import { FormCacheFactory } from "../../src/lib/formCache";
 import {
-  cookieRedirect,
+  withCookieRedirect,
   getCache,
   checkHeaderContains,
   setFormSubmissionCookie,
@@ -20,42 +20,39 @@ jest.mock("urlencoded-body-parser", () =>
 );
 
 describe("Middleware Functions", () => {
-  describe("cookeRedirect()", () => {
+  describe("withCookeRedirect()", () => {
     let context;
-    let writeHeadFunction;
-    let endFunction;
+    let callback;
 
     beforeEach(() => {
-      writeHeadFunction = jest.fn();
-      endFunction = jest.fn();
+      callback = jest.fn();
 
       context = {
-        res: {
-          writeHead: writeHeadFunction,
-        },
         req: { cookies: {} },
       };
-
-      context.res.writeHead.mockReturnValueOnce({ end: endFunction });
     });
 
-    const assertRedirected = () => {
-      cookieRedirect(context);
+    const assertRedirected = async () => {
+      const result = await withCookieRedirect(callback)(context);
 
-      expect(writeHeadFunction).toHaveBeenCalledWith(307, {
-        Location: "/",
+      expect(result).toStrictEqual({
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
       });
-      expect(endFunction).toHaveBeenCalledTimes(1);
+      expect(callback).not.toHaveBeenCalled();
     };
 
-    const assertNotRedirected = () => {
-      cookieRedirect(context);
+    const assertNotRedirected = async () => {
+      await withCookieRedirect(callback)(context);
 
-      expect(writeHeadFunction).not.toHaveBeenCalled();
-      expect(endFunction).not.toHaveBeenCalled();
+      expect(callback).toHaveBeenCalledTimes(1);
     };
 
     it("should redirect if there are no cookies", () => {
+      delete context.req.cookies;
+
       assertRedirected();
     });
 
