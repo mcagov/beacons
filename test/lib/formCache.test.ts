@@ -34,42 +34,42 @@ describe("FormCache", () => {
   });
 
   it("should set the cache for the given id", () => {
-    const formData: BeaconCacheEntry = { beaconManufacturer: "ASOS" };
+    const formData: BeaconCacheEntry = { manufacturer: "ASOS" };
     cache.update(id, formData);
 
     expect(cache.get(id)).toStrictEqual(formData);
   });
 
   it("should update the cache object with the provided updated value", () => {
-    const formData: BeaconCacheEntry = { beaconManufacturer: "ASOS" };
+    const formData: BeaconCacheEntry = { manufacturer: "ASOS" };
     cache.update(id, formData);
 
-    const updatedFormData: BeaconCacheEntry = { beaconManufacturer: "TOPSHOP" };
+    const updatedFormData: BeaconCacheEntry = { manufacturer: "TOPSHOP" };
     cache.update(id, updatedFormData);
 
     expect(cache.get(id)).toStrictEqual(updatedFormData);
   });
 
   it("should only update the provided form fields", () => {
-    const formData: BeaconCacheEntry = { beaconManufacturer: "ASOS" };
+    const formData: BeaconCacheEntry = { manufacturer: "ASOS" };
     cache.update(id, formData);
 
-    const updatedFormData: BeaconCacheEntry = { beaconModel: "TROUSERS" };
+    const updatedFormData: BeaconCacheEntry = { model: "TROUSERS" };
     cache.update(id, updatedFormData);
 
     expect(cache.get(id)).toStrictEqual({
-      beaconManufacturer: "ASOS",
-      beaconModel: "TROUSERS",
+      manufacturer: "ASOS",
+      model: "TROUSERS",
     });
   });
 
   it("should update the overriding form field and add additional fields", () => {
-    const formData: BeaconCacheEntry = { beaconManufacturer: "ASOS" };
+    const formData: BeaconCacheEntry = { manufacturer: "ASOS" };
     cache.update(id, formData);
 
     const updatedFormData: BeaconCacheEntry = {
-      beaconManufacturer: "TOPSHOP",
-      beaconModel: "TROUSERS",
+      manufacturer: "TOPSHOP",
+      model: "TROUSERS",
     };
     cache.update(id, updatedFormData);
 
