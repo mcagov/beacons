@@ -3,7 +3,7 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { GovUKBody, PageHeading } from "../../components/Typography";
 import { BackButton, Button } from "../../components/Button";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import { Beacon } from "../../lib/types";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { withCookieRedirect } from "../../lib/middleware";
@@ -99,7 +99,7 @@ const SendYourApplication: FunctionComponent = (): JSX.Element => (
 );
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
+  async () => {
     // TODO: State persistence stuff to go here
 
     const fakeBeacon: Beacon = {
@@ -110,9 +110,6 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
       batteryExpiryDate: "17 November 2024",
       lastServicedDate: "13 October 2020",
     };
-
-    // Temporary, to make linting warning go away
-    context;
 
     return {
       props: { beacon: fakeBeacon },

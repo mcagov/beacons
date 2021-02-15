@@ -20,7 +20,7 @@ import {
   DateListItem,
   DateType,
 } from "../../components/DateInput";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import { withCookieRedirect } from "../../lib/middleware";
 
 const BeaconInformationPage: FunctionComponent = () => (
@@ -196,7 +196,7 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
 );
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
+  async () => {
     return {
       props: {},
     };
