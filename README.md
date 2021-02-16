@@ -32,6 +32,10 @@ _TODO_
 
 We use [ADRs](./docs/adr) to document design choices that address functional and non-functional requirements that are architecturally significant to the Beacons Registration project. Please see the [template](./docs/adr/adr.template) for how to document ADRs for the project.
 
+### Generating ADR index page
+
+There is a pre-commit hook in the [package.json](./package.json) which will regenerate the ADR index page. This requires [Node.JS](https://nodejs.org/en/) to be installed and for you to run `npm i` for the hook to work.
+
 ## Installing AWS CLI
 
 Please see the [AWS installation guide](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) and [configuration guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) for configuring the AWS CLI required for Terraform when managing the infrastructure
