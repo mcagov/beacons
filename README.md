@@ -34,7 +34,7 @@ We use [ADRs](./docs/adr) to document design choices that address functional and
 
 ### Generating ADR index page
 
-There is a pre-commit hook in the [package.json](./package.json) which will regenerate the ADR index page. This requires [Node.JS](https://nodejs.org/en/) to be installed and for you to run `npm i` for the hook to work.
+There is a pre-commit hook in the [package.json](./package.json) which will regenerate the ADR index page. This requires [Node.JS](https://nodejs.org/en/) to be installed and for you to run `npm install` for the hook to work.
 
 ## Installing AWS CLI
 
