@@ -10,22 +10,29 @@ interface RadioListItemProps {
   id: string;
   name: string;
   value: string;
-  text: string;
+  children: ReactNode;
 }
 
 interface RadioListItemHintProps {
   id: string;
   name: string;
   value: string;
-  text: string;
+  children: ReactNode;
   hintText: string;
 }
+
+export const RadioList: FunctionComponent<RadioListProps> = ({
+  className = "",
+  children,
+}: RadioListProps): JSX.Element => (
+  <div className={`govuk-radios ${className}`}>{children}</div>
+);
 
 export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
   id,
   name,
   value,
-  text,
+  children,
 }: RadioListItemProps): JSX.Element => (
   <div className="govuk-radios__item">
     <input
@@ -36,7 +43,7 @@ export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
       value={value}
     />
     <FormLabel className="govuk-radios__label" htmlFor={id}>
-      {text}
+      {children}
     </FormLabel>
   </div>
 );
@@ -45,7 +52,7 @@ export const RadioListItemHint: FunctionComponent<RadioListItemHintProps> = ({
   id,
   name,
   value,
-  text,
+  children,
   hintText,
 }: RadioListItemHintProps): JSX.Element => (
   <div className="govuk-radios__item">
@@ -58,18 +65,11 @@ export const RadioListItemHint: FunctionComponent<RadioListItemHintProps> = ({
       aria-describedby={`${id}-hint`}
     />
     <FormLabel className="govuk-radios__label" htmlFor={id}>
-      {text}
+      {children}
     </FormLabel>
 
     <FormHint forId={id} className="govuk-radios__hint">
       {hintText}
     </FormHint>
   </div>
-);
-
-export const RadioList: FunctionComponent<RadioListProps> = ({
-  className = "",
-  children,
-}: RadioListProps): JSX.Element => (
-  <div className={`govuk-radios ${className}`}>{children}</div>
 );
