@@ -8,7 +8,13 @@ import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
 import { McaLogo } from "../components/Mca";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { setFormSubmissionCookie } from "../lib/middleware";
-import { PageHeading } from "../components/Typography";
+import {
+  AnchorLink,
+  GovUKBody,
+  GovUKBulletedList,
+  GovUKList,
+  PageHeading,
+} from "../components/Typography";
 import { WarningText } from "../components/WarningText";
 
 const ServiceStartPage: FunctionComponent = () => (
@@ -44,36 +50,33 @@ const AboutTheService: FunctionComponent = () => (
   <>
     <p className="govuk-body">Use this service to:</p>
 
-    <ul className="govuk-list govuk-list--bullet">
+    <GovUKBulletedList>
       <li>
         Register a single new 406 Megahertz (MHz) Personal Locator Beacon (PLB)
         for use on maritime vessels
       </li>
-    </ul>
+    </GovUKBulletedList>
 
-    <p className="govuk-body">Registering takes around 10 minutes.</p>
+    <GovUKBody>Registering takes around 10 minutes.</GovUKBody>
 
-    <p className="govuk-body">
+    <GovUKBody>
       This service is only for UK programmed 406MHz beacons. You can contact the
       UK Beacon Registry if you aren{"'"}t sure if your beacon is 406MHz or not.
-    </p>
+    </GovUKBody>
 
     <WarningText>
       <>
         You cannot register a beacon for non-maritime use through this service.
         You can use another service to{" "}
-        <a
-          className="govuk-link"
-          href="https://forms.dft.gov.uk/mca-sar-epirb/"
-        >
+        <AnchorLink href="https://forms.dft.gov.uk/mca-sar-epirb/">
           register a beacon for aircraft or land-based use.
-        </a>
+        </AnchorLink>
       </>
     </WarningText>
 
     <h2 className="govuk-heading-m">Before you start</h2>
 
-    <ul className="govuk-list govuk-list--bullet">
+    <GovUKBulletedList>
       <li>
         You will need to know the beacon HEX ID, manufacturer serial number and
         model
@@ -85,7 +88,7 @@ const AboutTheService: FunctionComponent = () => (
       <li>
         You will also need emergency contact details for Search and Rescue
       </li>
-    </ul>
+    </GovUKBulletedList>
 
     <StartButton href="/register-a-beacon/check-beacon-details" />
   </>
@@ -103,29 +106,27 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
   <>
     <h2 className="govuk-heading-m">Other ways to apply</h2>
 
-    <p className="govuk-body">
+    <GovUKBody>
       If you need help with registering online or would like to register by
       post, contact the UK Beacon Registry team.
-    </p>
+    </GovUKBody>
 
     <InsetText>
       <>
-        <ul className="govuk-list">
+        <GovUKList>
           <li className="govuk-!-font-weight-bold">The UK Beacon Registry</li>
           <li>
-            <a className="govuk-link" href="mailto:ukbeacons@mcga.gov.uk">
+            <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
               ukbeacons@mcga.gov.uk
-            </a>
+            </AnchorLink>
           </li>
           <li>Telephone: +44 (0)20 3817 2006</li>
           <li>Fax: 01326 319264</li>
           <li>Monday to Friday, 9am to 5pm (except public holidays)</li>
           <li>
-            <a className="govuk-link" href="#">
-              Find out about call charges
-            </a>
+            <AnchorLink href="#">Find out about call charges</AnchorLink>
           </li>
-        </ul>
+        </GovUKList>
       </>
     </InsetText>
   </>
@@ -135,43 +136,40 @@ const DataProtection: FunctionComponent = () => (
   <>
     <h2 className="govuk-heading-m">Data protection regulations</h2>
 
-    <p className="govuk-body">
+    <GovUKBody>
       Agency (MCA) collect and retain the personal information provided when you
       register a UK programmed 406 MHz beacon. Processing your information
       allows the MCA to exercise its official duty and to identify persons in
       distress and helps save lives.
-    </p>
+    </GovUKBody>
 
-    <p className="govuk-body">
+    <GovUKBody>
       We will retain your information until we are advised that the beacon is no
       longer active, for example it has been removed from the vessel, replaced
       or destroyed.
-    </p>
+    </GovUKBody>
 
-    <p className="govuk-body">
+    <GovUKBody>
       We will share your information with global Search {"&"} Rescue authorities
       and those delegated authorities, such as RNLI, Police or Rescue helicopter
       crew, that are directly involved with investigations relating to a beacon
       activation.
-    </p>
+    </GovUKBody>
 
-    <p className="govuk-body">
+    <GovUKBody>
       Further details on Beacon Registration’s privacy policy can be found at{" "}
-      <a
-        className="govuk-link"
-        href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice"
-      >
+      <AnchorLink href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice">
         https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice
-      </a>
-    </p>
+      </AnchorLink>
+    </GovUKBody>
 
-    <p className="govuk-body">
+    <GovUKBody>
       To find out more about how the MCA looks after personal data, your rights,
       and how to contact our data protection officer, please go to{" "}
-      <a className="govuk-link" href="https://www.gov.uk/mca/privacy-policy">
+      <AnchorLink href="https://www.gov.uk/mca/privacy-policy">
         www.gov.uk/mca/privacy-policy
-      </a>
-    </p>
+      </AnchorLink>
+    </GovUKBody>
   </>
 );
 
