@@ -5,9 +5,7 @@ services:
     build:
       context: .
       target: nextjs-app
-      args:
-        git_hash: git_hash
-        api_url: http://localhost:8080/api
-
     ports:
       - "3000:3000"
+    environment:
+      API_URL: $API_URL

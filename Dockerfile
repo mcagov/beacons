@@ -13,9 +13,6 @@ FROM base AS build
 ARG git_hash
 ENV GIT_HASH ${git_hash}
 
-ARG api_url
-ENV API_URL ${api_url}
-
 RUN npm ci && npm run build
 
 # Installs production dependencies
@@ -34,6 +31,7 @@ COPY --from=build /usr/app/.next ./.next
 COPY --from=production-deps /usr/app/node_modules ./node_modules
 COPY public ./public
 COPY package.json ./
+COPY next.config.js ./
 
 USER node
 

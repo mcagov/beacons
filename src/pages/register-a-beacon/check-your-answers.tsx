@@ -14,8 +14,6 @@ interface CheckYourAnswersProps {
   beacon: Beacon;
 }
 
-const { serverRuntimeConfig } = getConfig();
-
 const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   beacon,
 }: CheckYourAnswersProps): JSX.Element => (
@@ -109,6 +107,8 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   // TODO: State persistence stuff to go here
   if (context.req.method === "POST") {
+    const { serverRuntimeConfig } = getConfig();
+
     await axios
       .post(`${serverRuntimeConfig.apiUrl}/beacons`, { beaconStatus: "idk" })
       .then((response) => {
