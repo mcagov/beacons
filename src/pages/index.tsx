@@ -55,7 +55,7 @@ const AboutTheService: FunctionComponent = () => (
 
     <p className="govuk-body">
       This service is only for UK programmed 406MHz beacons. You can contact the
-      UK Beacon Registry if you aren't sure if your beacon is 406MHz or not.
+      UK Beacon Registry if you aren{"'"}t sure if your beacon is 406MHz or not.
     </p>
 
     <WarningText>
