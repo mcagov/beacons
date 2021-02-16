@@ -1,4 +1,3 @@
-// See: https://nextjs.org/docs/api-reference/next.config.js/introduction
 module.exports = {
   serverRuntimeConfig: {
     apiUrl: process.env.API_URL,
