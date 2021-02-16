@@ -18,7 +18,8 @@ const ServiceStartPage: FunctionComponent = () => (
         mainContent={
           <>
             <PageHeading>
-              Register a UK 406 MHz beacon for maritime use
+              Register a single UK 406MHz Personal Locator Beacon (PLB) for
+              maritime use
             </PageHeading>
             <AboutTheService />
             <OtherWaysToAccessTheService />
@@ -45,12 +46,17 @@ const AboutTheService: FunctionComponent = () => (
 
     <ul className="govuk-list govuk-list--bullet">
       <li>
-        Register a new 406 Megahertz (MHz) beacon for use on maritime
-        vessels/craft
+        Register a single new 406 Megahertz (MHz) Personal Locator Beacon (PLB)
+        for use on maritime vessels
       </li>
     </ul>
 
     <p className="govuk-body">Registering takes around 10 minutes.</p>
+
+    <p className="govuk-body">
+      This service is only for UK programmed 406MHz beacons. You can contact the
+      UK Beacon Registry if you aren't sure if your beacon is 406MHz or not.
+    </p>
 
     <WarningText>
       <>
@@ -61,7 +67,7 @@ const AboutTheService: FunctionComponent = () => (
           href="https://forms.dft.gov.uk/mca-sar-epirb/"
         >
           register a beacon for aircraft or land-based use.
-        </a>{" "}
+        </a>
       </>
     </WarningText>
 
@@ -73,8 +79,8 @@ const AboutTheService: FunctionComponent = () => (
         model
       </li>
       <li>
-        If you have a vessel, you will need your vessel name, number, call sign
-        and MMSI number
+        If you have a vessel, you will need your vessel name, number, radio
+        communications, call sign and MMSI number
       </li>
       <li>
         You will also need emergency contact details for Search and Rescue
@@ -90,41 +96,6 @@ const RelatedContent: FunctionComponent = () => (
     <Aside>
       <McaLogo />
     </Aside>
-
-    <Aside title="Related content">
-      <ul className="govuk-list govuk-!-font-size-16">
-        <li>
-          <a className="govuk-link" href="#">
-            Find your beacons HEX ID
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Emergency and life-saving equipment on ships
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            UK Ship Register
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Aircraft registrations (G-INFO)
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Non 406MHz beacons
-          </a>
-        </li>
-        <li>
-          <a className="govuk-link" href="#">
-            Non UK encoded beacons
-          </a>
-        </li>
-      </ul>
-    </Aside>
   </>
 );
 
@@ -133,15 +104,8 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
     <h2 className="govuk-heading-m">Other ways to apply</h2>
 
     <p className="govuk-body">
-      You can also{" "}
-      <a className="govuk-link" href="#">
-        register by post
-      </a>
-      .
-    </p>
-
-    <p className="govuk-body">
-      Or contact the UK Beacon Registry for help with registering.
+      If you need help with registering online or would like to register by
+      post, contact the UK Beacon Registry team.
     </p>
 
     <InsetText>
@@ -153,11 +117,9 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
               ukbeacons@mcga.gov.uk
             </a>
           </li>
-          <li className="govuk-!-font-weight-bold">Telephone: 01326 211569</li>
-          <li className="govuk-!-font-weight-bold">Fax: 01326 319264</li>
-          <li className="govuk-!-font-weight-bold">
-            Monday to Friday, 9am to 5pm (except public holidays)
-          </li>
+          <li>Telephone: +44 (0)20 3817 2006</li>
+          <li>Fax: 01326 319264</li>
+          <li>Monday to Friday, 9am to 5pm (except public holidays)</li>
           <li>
             <a className="govuk-link" href="#">
               Find out about call charges
@@ -174,10 +136,10 @@ const DataProtection: FunctionComponent = () => (
     <h2 className="govuk-heading-m">Data protection regulations</h2>
 
     <p className="govuk-body">
-      The Maritime and Coastguard Agency (MCA) collect and retain the personal
-      information provided when you register a UK coded 406 MHz beacon.
-      Processing your information allows the MCA to exercise its official duty
-      and to identify persons in distress and helps save lives.
+      Agency (MCA) collect and retain the personal information provided when you
+      register a UK programmed 406 MHz beacon. Processing your information
+      allows the MCA to exercise its official duty and to identify persons in
+      distress and helps save lives.
     </p>
 
     <p className="govuk-body">
@@ -187,10 +149,10 @@ const DataProtection: FunctionComponent = () => (
     </p>
 
     <p className="govuk-body">
-      We will share your information with Global Search &amp; Rescue authorities
-      and those delegated authorities, such as RNLI Lifeboats, Police or Rescue
-      Helicopter crew, that are directly involved with investigations relating
-      to a beacon activation.
+      We will share your information with global Search {"&"} Rescue authorities
+      and those delegated authorities, such as RNLI, Police or Rescue helicopter
+      crew, that are directly involved with investigations relating to a beacon
+      activation.
     </p>
 
     <p className="govuk-body">
@@ -206,10 +168,7 @@ const DataProtection: FunctionComponent = () => (
     <p className="govuk-body">
       To find out more about how the MCA looks after personal data, your rights,
       and how to contact our data protection officer, please go to{" "}
-      <a
-        className="govuk-link"
-        href="https://www.gov.uk/government/organisations/maritime-and-coastguard-agency/about/personal-information-charter"
-      >
+      <a className="govuk-link" href="https://www.gov.uk/mca/privacy-policy">
         www.gov.uk/mca/privacy-policy
       </a>
     </p>
