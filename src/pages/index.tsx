@@ -127,7 +127,9 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
           <li>Fax: 01326 319264</li>
           <li>Monday to Friday, 9am to 5pm (except public holidays)</li>
           <li>
-            <AnchorLink href="#">Find out about call charges</AnchorLink>
+            <AnchorLink href="https://www.gov.uk/call-charges">
+              Find out about call charges
+            </AnchorLink>
           </li>
         </GovUKList>
       </>
