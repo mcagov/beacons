@@ -49,6 +49,7 @@ interface InputProps {
   type?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   defaultValue?: string;
+  numOfChars?: 2 | 3 | 4 | 5 | 10 | 20;
 }
 
 interface SelectProps {
@@ -134,16 +135,22 @@ export const Input: FunctionComponent<InputProps> = ({
   type = "text",
   htmlAttributes = {},
   defaultValue = "",
-}: InputProps): JSX.Element => (
-  <input
-    className="govuk-input"
-    id={id}
-    name={name}
-    type={type}
-    defaultValue={defaultValue}
-    {...htmlAttributes}
-  />
-);
+  numOfChars = null,
+}: InputProps): JSX.Element => {
+  const inputWidthClass: string =
+    numOfChars && `govuk-input--width-${numOfChars}`;
+
+  return (
+    <input
+      className={`govuk-input ${inputWidthClass}`}
+      id={id}
+      name={name}
+      type={type}
+      defaultValue={defaultValue}
+      {...htmlAttributes}
+    />
+  );
+};
 
 export const Select: FunctionComponent<SelectProps> = ({
   id = null,
