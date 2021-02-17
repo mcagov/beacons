@@ -77,7 +77,14 @@ const BeaconUseForm: FunctionComponent = () => (
       >
         Small unpowered vessel
       </RadioListItemHint>
-      <RadioListItem id="other-pleasure-vessel" name="use" value="">
+      <RadioListItem
+        id="other-pleasure-vessel"
+        name="use"
+        value=""
+        inputHtmlAttributes={{
+          "data-aria-controls": "conditional-other-pleasure-vessel",
+        }}
+      >
         Other pleasure vessel
       </RadioListItem>
       <RadioListItemConditional id="conditional-other-pleasure-vessel">

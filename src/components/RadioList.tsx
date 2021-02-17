@@ -11,6 +11,7 @@ interface RadioListItemProps {
   name: string;
   value: string;
   children: ReactNode;
+  inputHtmlAttributes?: Record<string, string>;
 }
 
 interface RadioListItemHintProps {
@@ -19,6 +20,7 @@ interface RadioListItemHintProps {
   value: string;
   children: ReactNode;
   hintText: string;
+  inputHtmlAttributes?: Record<string, string>;
 }
 
 interface RadioListItemConditionalProps {
@@ -38,6 +40,7 @@ export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
   name,
   value,
   children,
+  inputHtmlAttributes = {},
 }: RadioListItemProps): JSX.Element => (
   <div className="govuk-radios__item">
     <input
@@ -46,6 +49,7 @@ export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
       name={name}
       type="radio"
       value={value}
+      {...inputHtmlAttributes}
     />
     <FormLabel className="govuk-radios__label" htmlFor={id}>
       {children}
@@ -59,6 +63,7 @@ export const RadioListItemHint: FunctionComponent<RadioListItemHintProps> = ({
   value,
   children,
   hintText,
+  inputHtmlAttributes = {},
 }: RadioListItemHintProps): JSX.Element => (
   <div className="govuk-radios__item">
     <input
@@ -68,6 +73,7 @@ export const RadioListItemHint: FunctionComponent<RadioListItemHintProps> = ({
       type="radio"
       value={value}
       aria-describedby={`${id}-hint`}
+      {...inputHtmlAttributes}
     />
     <FormLabel className="govuk-radios__label" htmlFor={id}>
       {children}
