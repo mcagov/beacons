@@ -6,6 +6,11 @@ interface RadioListProps {
   children: ReactNode;
 }
 
+interface RadioListConditionalProps {
+  className?: string;
+  children: ReactNode;
+}
+
 interface RadioListItemProps {
   id: string;
   name: string;
@@ -33,6 +38,18 @@ export const RadioList: FunctionComponent<RadioListProps> = ({
   children,
 }: RadioListProps): JSX.Element => (
   <div className={`govuk-radios ${className}`}>{children}</div>
+);
+
+export const RadioListConditional: FunctionComponent<RadioListConditionalProps> = ({
+  className = "",
+  children,
+}: RadioListProps): JSX.Element => (
+  <div
+    className={`govuk-radios govuk-radios--conditional ${className}`}
+    data-module="govuk-radios"
+  >
+    {children}
+  </div>
 );
 
 export const RadioListItem: FunctionComponent<RadioListItemProps> = ({

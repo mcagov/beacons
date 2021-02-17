@@ -17,6 +17,7 @@ import {
   RadioListItemConditional,
   RadioListItem,
   RadioListItemHint,
+  RadioListConditional,
 } from "../../components/RadioList";
 import { withCookieRedirect } from "../../lib/middleware";
 
@@ -44,7 +45,7 @@ const BeaconUseForm: FunctionComponent = () => (
         on?
       </FormLegendPageHeading>
     </FormFieldset>
-    <RadioList>
+    <RadioListConditional>
       <RadioListItemHint
         id="motor-vessel"
         name="use"
@@ -98,7 +99,7 @@ const BeaconUseForm: FunctionComponent = () => (
           ></Input>
         </FormGroup>
       </RadioListItemConditional>
-    </RadioList>
+    </RadioListConditional>
 
     <Button buttonText="Continue" />
   </Form>
