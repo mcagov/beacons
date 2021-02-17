@@ -57,7 +57,7 @@ const BeaconUseForm: FunctionComponent = () => (
       <RadioListItemHint
         id="sailing-vessel"
         name="maritimePleasureVesselUse"
-        value=""
+        value={MaritimePleasureVessel.SAILING}
         hintText="E.g. Skiff, Dinghy, Yacht, Catamaran"
       >
         Sailing vessel
@@ -65,7 +65,7 @@ const BeaconUseForm: FunctionComponent = () => (
       <RadioListItemHint
         id="rowing-vessel"
         name="maritimePleasureVesselUse"
-        value={MaritimePleasureVessel.SAILING}
+        value={MaritimePleasureVessel.ROWING}
         hintText="E.g. Single person rowing boat, Cornish Gig, Multi-person rowing boat"
       >
         Rowing vessel
