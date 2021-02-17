@@ -5,13 +5,10 @@ FROM node:${node_version} AS base
 
 WORKDIR /usr/app
 
-COPY package.json package-lock.json tsconfig.json src public ./
+COPY next.config.js package.json package-lock.json tsconfig.json src public ./
 
 # Builds NextJS application
 FROM base AS build
-
-ARG git_hash
-ENV GIT_HASH ${git_hash}
 
 RUN npm ci && npm run build
 
