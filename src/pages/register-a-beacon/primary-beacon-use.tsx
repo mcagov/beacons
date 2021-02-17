@@ -19,7 +19,7 @@ import {
   RadioListConditional,
 } from "../../components/RadioList";
 import { withCookieRedirect } from "../../lib/middleware";
-import { MaritimeVessel } from "../../lib/types";
+import { MaritimePleasureVessel } from "../../lib/types";
 
 const PrimaryBeaconUse: FunctionComponent = () => (
   <Layout
@@ -48,15 +48,15 @@ const BeaconUseForm: FunctionComponent = () => (
     <RadioListConditional>
       <RadioListItemHint
         id="motor-vessel"
-        name="use"
-        value={MaritimeVessel.MOTOR}
+        name="maritimePleasureVesselUse"
+        value={MaritimePleasureVessel.MOTOR}
         hintText="E.g. Speedboat, RIB"
       >
         Motor vessel
       </RadioListItemHint>
       <RadioListItemHint
         id="sailing-vessel"
-        name="use"
+        name="maritimePleasureVesselUse"
         value=""
         hintText="E.g. Skiff, Dinghy, Yacht, Catamaran"
       >
@@ -64,24 +64,24 @@ const BeaconUseForm: FunctionComponent = () => (
       </RadioListItemHint>
       <RadioListItemHint
         id="rowing-vessel"
-        name="use"
-        value={MaritimeVessel.SAILING}
+        name="maritimePleasureVesselUse"
+        value={MaritimePleasureVessel.SAILING}
         hintText="E.g. Single person rowing boat, Cornish Gig, Multi-person rowing boat"
       >
         Rowing vessel
       </RadioListItemHint>
       <RadioListItemHint
         id="small-unpowered-vessel"
-        name="use"
-        value={MaritimeVessel.SMALL_UNPOWERED}
-        hintText="E.g. Surfboard, Kitesurfing,  Canoe, Kayak"
+        name="maritimePleasureVesselUse"
+        value={MaritimePleasureVessel.SMALL_UNPOWERED}
+        hintText="E.g. Canoe, Kayak"
       >
         Small unpowered vessel
       </RadioListItemHint>
       <RadioListItem
         id="other-pleasure-vessel"
-        name="use"
-        value={MaritimeVessel.OTHER}
+        name="maritimePleasureVesselUse"
+        value={MaritimePleasureVessel.OTHER}
         inputHtmlAttributes={{
           "data-aria-controls": "conditional-other-pleasure-vessel",
         }}

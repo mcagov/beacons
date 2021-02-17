@@ -11,7 +11,7 @@ export enum BeaconIntent {
   OTHER = "OTHER",
 }
 
-export enum MaritimeVessel {
+export enum MaritimePleasureVessel {
   MOTOR = "MOTOR",
   SAILING = "SAILING",
   ROWING = "ROWING",
