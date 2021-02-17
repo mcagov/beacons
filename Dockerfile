@@ -5,7 +5,7 @@ FROM node:${node_version} AS base
 
 WORKDIR /usr/app
 
-COPY package.json package-lock.json tsconfig.json src public ./
+COPY next.config.js package.json package-lock.json tsconfig.json src public ./
 
 # Builds NextJS application
 FROM base AS build
@@ -28,6 +28,7 @@ COPY --from=build /usr/app/.next ./.next
 COPY --from=production-deps /usr/app/node_modules ./node_modules
 COPY public ./public
 COPY package.json ./
+COPY next.config.js ./
 
 USER node
 
