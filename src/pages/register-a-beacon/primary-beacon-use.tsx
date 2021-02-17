@@ -19,6 +19,7 @@ import {
   RadioListConditional,
 } from "../../components/RadioList";
 import { withCookieRedirect } from "../../lib/middleware";
+import { MaritimeVessel } from "../../lib/types";
 
 const PrimaryBeaconUse: FunctionComponent = () => (
   <Layout
@@ -48,7 +49,7 @@ const BeaconUseForm: FunctionComponent = () => (
       <RadioListItemHint
         id="motor-vessel"
         name="use"
-        value=""
+        value={MaritimeVessel.MOTOR}
         hintText="E.g. Speedboat, RIB"
       >
         Motor vessel
@@ -64,7 +65,7 @@ const BeaconUseForm: FunctionComponent = () => (
       <RadioListItemHint
         id="rowing-vessel"
         name="use"
-        value=""
+        value={MaritimeVessel.SAILING}
         hintText="E.g. Single person rowing boat, Cornish Gig, Multi-person rowing boat"
       >
         Rowing vessel
@@ -72,7 +73,7 @@ const BeaconUseForm: FunctionComponent = () => (
       <RadioListItemHint
         id="small-unpowered-vessel"
         name="use"
-        value=""
+        value={MaritimeVessel.SMALL_UNPOWERED}
         hintText="E.g. Surfboard, Kitesurfing,  Canoe, Kayak"
       >
         Small unpowered vessel
@@ -80,7 +81,7 @@ const BeaconUseForm: FunctionComponent = () => (
       <RadioListItem
         id="other-pleasure-vessel"
         name="use"
-        value=""
+        value={MaritimeVessel.OTHER}
         inputHtmlAttributes={{
           "data-aria-controls": "conditional-other-pleasure-vessel",
         }}
