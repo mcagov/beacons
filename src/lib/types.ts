@@ -11,6 +11,14 @@ export enum BeaconIntent {
   OTHER = "OTHER",
 }
 
+export enum MaritimePleasureVessel {
+  MOTOR = "MOTOR",
+  SAILING = "SAILING",
+  ROWING = "ROWING",
+  SMALL_UNPOWERED = "SMALL_UNPOWERED",
+  OTHER = "OTHER",
+}
+
 export interface Beacon {
   manufacturer: string;
   model: string;
