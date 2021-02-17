@@ -21,6 +21,11 @@ interface RadioListItemHintProps {
   hintText: string;
 }
 
+interface RadioListItemConditionalProps {
+  id: string;
+  children: ReactNode;
+}
+
 export const RadioList: FunctionComponent<RadioListProps> = ({
   className = "",
   children,
@@ -71,5 +76,17 @@ export const RadioListItemHint: FunctionComponent<RadioListItemHintProps> = ({
     <FormHint forId={id} className="govuk-radios__hint">
       {hintText}
     </FormHint>
+  </div>
+);
+
+export const RadioListItemConditional: FunctionComponent<RadioListItemConditionalProps> = ({
+  id,
+  children,
+}: RadioListItemConditionalProps): JSX.Element => (
+  <div
+    className="govuk-radios__conditional govuk-radios__conditional--hidden"
+    id={id}
+  >
+    {children}
   </div>
 );

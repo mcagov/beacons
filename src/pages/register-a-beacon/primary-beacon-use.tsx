@@ -4,12 +4,20 @@ import { BackButton, Button } from "../../components/Button";
 import {
   Form,
   FormFieldset,
+  FormGroup,
+  FormLabel,
   FormLegendPageHeading,
+  Input,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { RadioList, RadioListItemHint } from "../../components/RadioList";
+import {
+  RadioList,
+  RadioListItemConditional,
+  RadioListItem,
+  RadioListItemHint,
+} from "../../components/RadioList";
 import { withCookieRedirect } from "../../lib/middleware";
 
 const PrimaryBeaconUse: FunctionComponent = () => (
@@ -36,7 +44,6 @@ const BeaconUseForm: FunctionComponent = () => (
         on?
       </FormLegendPageHeading>
     </FormFieldset>
-
     <RadioList>
       <RadioListItemHint
         id="motor-vessel"
@@ -46,7 +53,6 @@ const BeaconUseForm: FunctionComponent = () => (
       >
         Motor vessel
       </RadioListItemHint>
-
       <RadioListItemHint
         id="sailing-vessel"
         name="use"
@@ -55,7 +61,6 @@ const BeaconUseForm: FunctionComponent = () => (
       >
         Sailing vessel
       </RadioListItemHint>
-
       <RadioListItemHint
         id="rowing-vessel"
         name="use"
@@ -64,15 +69,28 @@ const BeaconUseForm: FunctionComponent = () => (
       >
         Rowing vessel
       </RadioListItemHint>
-
       <RadioListItemHint
-        id="other-pleasure-vessel"
+        id="small-unpowered-vessel"
         name="use"
         value=""
         hintText="E.g. Surfboard, Kitesurfing,  Canoe, Kayak"
       >
         Small unpowered vessel
       </RadioListItemHint>
+      <RadioListItem id="other-pleasure-vessel" name="use" value="">
+        Other pleasure vessel
+      </RadioListItem>
+      <RadioListItemConditional id="conditional-other-pleasure-vessel">
+        <FormGroup>
+          <FormLabel htmlFor="other-pleasure-vessel-text">
+            What sort of vessel is it?
+          </FormLabel>
+          <Input
+            id="other-pleasure-vessel-text"
+            name="other-pleasure-vessel-text"
+          ></Input>
+        </FormGroup>
+      </RadioListItemConditional>
     </RadioList>
 
     <Button buttonText="Continue" />
