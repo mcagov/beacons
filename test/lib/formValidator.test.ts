@@ -9,6 +9,7 @@ describe("FormValidator", () => {
           return {
             value: formData.testFieldId,
             valid: true,
+            invalid: false,
             errors: [],
           };
         }),
@@ -26,6 +27,7 @@ describe("FormValidator", () => {
         testFieldId: {
           value: "valid value",
           valid: true,
+          invalid: false,
           errors: [],
         },
       });
@@ -38,6 +40,7 @@ describe("FormValidator", () => {
           return {
             value: formData.anotherTestFieldId,
             valid: false,
+            invalid: true,
             errors: ["TooLong"],
           };
         }),
@@ -55,7 +58,7 @@ describe("FormValidator", () => {
         anotherTestFieldId: {
           value: "invalid value",
           valid: false,
-          // Should we create our own FormError classes to communicate errors? (Not error messages)
+          invalid: true,
           errors: ["TooLong"],
         },
       });
@@ -71,6 +74,7 @@ describe("FormValidator", () => {
           return {
             value: formData.firstTestFieldId,
             valid: false,
+            invalid: true,
             errors: ["Required"],
           };
         }),
@@ -80,6 +84,7 @@ describe("FormValidator", () => {
           return {
             value: formData.secondTestFieldId,
             valid: true,
+            invalid: false,
             errors: [],
           };
         }),
@@ -98,42 +103,14 @@ describe("FormValidator", () => {
         firstTestFieldId: {
           value: formData.firstTestFieldId,
           valid: false,
-          // Should we create our own FormError classes to communicate errors? (Not error messages)
+          invalid: true,
           errors: ["Required"],
         },
         secondTestFieldId: {
           value: formData.secondTestFieldId,
           valid: true,
+          invalid: false,
           errors: [],
-        },
-      });
-    });
-
-    xit("when given an empty form data object missing required fields, returns an 'invalid' response", () => {
-      const formData = {};
-      const mockRequiredFieldValidator = {
-        validate: jest.fn(() => {
-          return {
-            value: "",
-            valid: false,
-            errors: ["Required"],
-          };
-        }),
-      };
-      const fieldValidatorDictionary = {
-        requiredFieldId: mockRequiredFieldValidator,
-      };
-
-      const validationResponse = FormValidator.validate(
-        formData,
-        fieldValidatorDictionary
-      );
-
-      expect(validationResponse).toEqual({
-        firstTestFieldId: {
-          value: "",
-          valid: false,
-          errors: ["Required"],
         },
       });
     });
@@ -149,6 +126,7 @@ describe("FormValidator", () => {
           return {
             value: formData.validFieldId,
             valid: true,
+            invalid: false,
             errors: [],
           };
         }),
@@ -174,6 +152,7 @@ describe("FormValidator", () => {
           return {
             value: formData.invalidFieldId,
             valid: false,
+            invalid: true,
             errors: ["TooLong"],
           };
         }),
@@ -203,6 +182,7 @@ describe("FormValidator", () => {
           return {
             value: "invalid value",
             valid: false,
+            invalid: false,
             errors: ["TooLong"],
           };
         }),
@@ -212,6 +192,7 @@ describe("FormValidator", () => {
           return {
             value: "valid value",
             valid: true,
+            invalid: false,
             errors: [],
           };
         }),
