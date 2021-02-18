@@ -17,7 +17,10 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
-import { FormErrorSummary } from "../../components/ErrorSummary";
+import {
+  FormErrorSummary,
+  FieldErrorList,
+} from "../../components/ErrorSummary";
 
 import { FormValidator } from "../../lib/formValidator";
 import { Beacon } from "../../lib/types";
@@ -31,11 +34,6 @@ interface FormInputProps {
   value: string;
   errorMessages: string[];
   showErrors: boolean;
-}
-
-interface ErrorMessageProps {
-  id: string;
-  message: string;
 }
 
 const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
@@ -95,15 +93,6 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   );
 };
 
-const ErrorMessage: FunctionComponent<ErrorMessageProps> = ({
-  id,
-  message,
-}: ErrorMessageProps) => (
-  <span id={id} className="govuk-error-message">
-    <span className="govuk-visually-hidden">Error:</span> {message}
-  </span>
-);
-
 const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
   value = "",
   showErrors,
@@ -111,15 +100,9 @@ const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
 }: FormInputProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
     <FormLabel htmlFor="manufacturer">Enter your beacon manufacturer</FormLabel>
-    {/* TODO: Extract <ErrorMessageList>*/}
-    {showErrors &&
-      errorMessages.map((message, index) => (
-        <ErrorMessage
-          id={`manufacturer-error-${index}`}
-          key={`manufacturer-error-${index}`}
-          message={message}
-        />
-      ))}
+    {showErrors && (
+      <FieldErrorList href="#manufacturer" errorMessages={errorMessages} />
+    )}
     <Input name="manufacturer" id="manufacturer" defaultValue={value} />
   </FormGroup>
 );
@@ -131,14 +114,9 @@ const BeaconModelInput: FunctionComponent<FormInputProps> = ({
 }: FormInputProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
     <FormLabel htmlFor="model">Enter your beacon model</FormLabel>
-    {showErrors &&
-      errorMessages.map((message, index) => (
-        <ErrorMessage
-          id={`model-error-${index}`}
-          key={`model-error-${index}`}
-          message={message}
-        />
-      ))}
+    {showErrors && (
+      <FieldErrorList href="#model" errorMessages={errorMessages} />
+    )}
     <Input name="model" id="model" defaultValue={value} />
   </FormGroup>
 );
@@ -150,14 +128,9 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 }: FormInputProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
     <FormLabel htmlFor="hexId">Enter the 15 digit beacon HEX ID</FormLabel>
-    {showErrors &&
-      errorMessages.map((message, index) => (
-        <ErrorMessage
-          id={`hexId-error-${index}`}
-          key={`hexId-error-${index}`}
-          message={message}
-        />
-      ))}
+    {showErrors && (
+      <FieldErrorList href="#hexId" errorMessages={errorMessages} />
+    )}
     <FormHint forId="hexId">
       This will be on your beacon. It must be 15 characters long and use
       characters 0-9, A-F
