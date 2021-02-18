@@ -12,7 +12,7 @@ import {
   FormHint,
 } from "../../components/Form";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import { withCookieRedirect } from "../../lib/middleware";
 import { TextAreaCharacterCount } from "../../components/TextArea";
 
@@ -109,7 +109,7 @@ const HomeportInput: FunctionComponent = (): JSX.Element => (
 const AreaOfOperationTextArea: FunctionComponent = (): JSX.Element => (
   <TextAreaCharacterCount
     name="areaOfOperation"
-    id={"areaOfOperation"}
+    id="areaOfOperation"
     maxCharacters={250}
     rows={4}
   >
@@ -129,7 +129,7 @@ const AreaOfOperationTextArea: FunctionComponent = (): JSX.Element => (
 const BeaconLocationInput: FunctionComponent = (): JSX.Element => (
   <TextAreaCharacterCount
     name="beaconLocation"
-    id={"beaconLocation"}
+    id="beaconLocation"
     maxCharacters={100}
     rows={3}
   >
@@ -146,7 +146,7 @@ const BeaconLocationInput: FunctionComponent = (): JSX.Element => (
 );
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
+  async () => {
     return {
       props: {},
     };
