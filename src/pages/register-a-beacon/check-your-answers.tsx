@@ -1,12 +1,12 @@
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
+import { BackButton, Button } from "../../components/Button";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
-import { GovUKBody, PageHeading } from "../../components/Typography";
-import { BackButton, Button } from "../../components/Button";
-import { GetServerSideProps } from "next";
-import { Beacon } from "../../lib/types";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
+import { GovUKBody, PageHeading } from "../../components/Typography";
 import { withCookieRedirect } from "../../lib/middleware";
+import { Beacon } from "../../lib/types";
 
 interface CheckYourAnswersProps {
   beacon: Beacon;

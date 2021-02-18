@@ -1,7 +1,7 @@
 import {
-  ValidatorFunction,
   emptyRequiredField,
   isNot15CharactersLong,
+  ValidatorFunction,
 } from "./validatorFunctions";
 
 interface FieldRule {

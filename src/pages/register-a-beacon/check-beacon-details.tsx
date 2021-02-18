@@ -1,28 +1,28 @@
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
-import { Grid } from "../../components/Grid";
-import { InsetText } from "../../components/InsetText";
-import { Layout } from "../../components/Layout";
-import { Button, BackButton } from "../../components/Button";
+import { BackButton, Button } from "../../components/Button";
+import { Details } from "../../components/Details";
+import { ErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
-  Input,
-  FormLegendPageHeading,
-  FormLabel,
   FormGroup,
   FormHint,
+  FormLabel,
+  FormLegendPageHeading,
+  Input,
 } from "../../components/Form";
-import { Details } from "../../components/Details";
+import { Grid } from "../../components/Grid";
+import { InsetText } from "../../components/InsetText";
+import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { FieldValidator } from "../../lib/fieldValidator";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import {
   getCache,
   updateFormCache,
   withCookieRedirect,
 } from "../../lib/middleware";
-import { ErrorSummary } from "../../components/ErrorSummary";
-import { FieldValidator } from "../../lib/fieldValidator";
 
 interface CheckBeaconDetailsProps {
   manufacturer: string;

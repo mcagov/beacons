@@ -1,9 +1,9 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
+import React from "react";
+import { formSubmissionCookieId } from "../../../src/lib/types";
 import AboutTheVessel, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/about-the-vessel";
-import { formSubmissionCookieId } from "../../../src/lib/types";
 
 describe("AboutTheVessel", () => {
   it("should have a back button which directs the user to the primary beacon use page", () => {
