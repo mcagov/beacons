@@ -1,10 +1,14 @@
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
+import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
 import {
   Form,
   FormFieldset,
+  FormGroup,
   FormHint,
+  FormLabel,
   FormLegendPageHeading,
+  Input,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
@@ -18,34 +22,89 @@ const VesselCommunications: FunctionComponent = (): JSX.Element => (
     <Grid
       mainContent={
         <>
-          <Form action="/register-a-beacon/vessel-communications">
-            <FormFieldset ariaDescribedBy="vessel-hint">
-              <FormLegendPageHeading>
-                What types of communications are on board the vessel?
-              </FormLegendPageHeading>
-
-              <FormHint forId="vessel-hint">
-                Details about the onboard communications will be critical for
-                Search {"&"} Rescue when trying to contact you in an emergency.
-              </FormHint>
-
-              <FormHint forId="vessel-hint">
-                If you have a radio license and have a VHF and/or VHF/DSC radio,
-                you can{" "}
-                <AnchorLink href="https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio">
-                  look up your call sign and MMSI number on the OFCOM website.
-                </AnchorLink>
-              </FormHint>
-            </FormFieldset>
-
-            <Button buttonText="Continue" />
-          </Form>
+          <VesselCommunicationsForm />
 
           <IfYouNeedHelp />
         </>
       }
     ></Grid>
   </Layout>
+);
+
+export const VesselCommunicationsForm: FunctionComponent = () => (
+  <Form action="/register-a-beacon/vessel-communications">
+    <FormFieldset ariaDescribedBy="vessel-hint">
+      <FormLegendPageHeading>
+        What types of communications are on board the vessel?
+      </FormLegendPageHeading>
+
+      <FormHint forId="vessel-hint">
+        Details about the onboard communications will be critical for Search{" "}
+        {"&"} Rescue when trying to contact you in an emergency.
+      </FormHint>
+
+      <FormHint forId="vessel-hint">
+        If you have a radio license and have a VHF and/or VHF/DSC radio, you can{" "}
+        <AnchorLink href="https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio">
+          look up your call sign and MMSI number on the OFCOM website.
+        </AnchorLink>
+      </FormHint>
+    </FormFieldset>
+
+    <CallSign />
+
+    <TypesOfCommunication />
+
+    <Button buttonText="Continue" />
+  </Form>
+);
+
+const CallSign: FunctionComponent = () => (
+  <>
+    <FormGroup className="govuk-!-margin-top-4">
+      <FormLabel htmlFor="vesselCallSign">
+        Vessel call sign (optional)
+      </FormLabel>
+      <FormHint forId="vesselCallSign">
+        This is the unique call sign associated to this vessel
+      </FormHint>
+      <Input id="vesselCallSign" name="vesselCallSign" numOfChars={20} />
+    </FormGroup>
+  </>
+);
+
+const TypesOfCommunication: FunctionComponent = () => (
+  <FormGroup>
+    <FormLabel htmlFor="typesOfCommunication">
+      Types of communication devices onboard
+    </FormLabel>
+
+    <FormHint forId="typesOfCommunication">
+      Tick all that apply and provide as much detail as you can
+    </FormHint>
+
+    <CheckboxList>
+      <CheckboxListItem id="vhfRadio" name="vhfRadio" value="">
+        VHF Radio
+      </CheckboxListItem>
+      <CheckboxListItem id="fixedVhfRadio" name="fixedVhfRadio" value="">
+        Fixed VHF/DSC Radio
+      </CheckboxListItem>
+      <CheckboxListItem id="portableVhfRadio" name="portableVhfRadio" value="">
+        Portable VHF/DSC Radio
+      </CheckboxListItem>
+      <CheckboxListItem
+        id="satelliteTelephone"
+        name="satelliteTelephone"
+        value=""
+      >
+        Satellite Telephone
+      </CheckboxListItem>
+      <CheckboxListItem id="mobileTelephone" name="mobileTelephone" value="">
+        Mobile Telephone(s)
+      </CheckboxListItem>
+    </CheckboxList>
+  </FormGroup>
 );
 
 export default VesselCommunications;

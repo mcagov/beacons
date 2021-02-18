@@ -20,6 +20,7 @@ interface FormFieldsetProps {
 
 interface FormGroupProps {
   children: ReactNode;
+  className?: string;
   hasError?: boolean;
 }
 
@@ -36,6 +37,7 @@ interface FormHintProps {
 }
 
 interface FormLegendProps {
+  className?: string;
   children: ReactNode;
 }
 
@@ -77,14 +79,17 @@ export const Form: FunctionComponent<FormProps> = ({
 
 export const FormGroup: FunctionComponent<FormGroupProps> = ({
   children,
+  className = "",
   hasError = false,
-}: FormGroupProps): JSX.Element => (
-  <div
-    className={`govuk-form-group ${hasError ? "govuk-form-group--error" : ""}`}
-  >
-    {children}
-  </div>
-);
+}: FormGroupProps): JSX.Element => {
+  const errorClassName: string = hasError ? "govuk-form-group--error" : "";
+
+  return (
+    <div className={`govuk-form-group ${className} ${errorClassName}`}>
+      {children}
+    </div>
+  );
+};
 
 export const FormFieldset: FunctionComponent<FormFieldsetProps> = ({
   ariaDescribedBy = null,
@@ -96,9 +101,10 @@ export const FormFieldset: FunctionComponent<FormFieldsetProps> = ({
 );
 
 export const FormLegend: FunctionComponent<FormLegendProps> = ({
+  className = "",
   children,
 }: FormLegendProps): JSX.Element => (
-  <legend className="govuk-fieldset__legend">{children}</legend>
+  <legend className={`govuk-fieldset__legend ${className}`}>{children}</legend>
 );
 
 export const FormLegendPageHeading: FunctionComponent<FormLegendPageHeadingProps> = ({
