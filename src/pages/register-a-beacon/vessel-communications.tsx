@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { BackButton } from "../../components/Button";
+import { BackButton, Button } from "../../components/Button";
 import {
   Form,
   FormFieldset,
@@ -36,6 +36,8 @@ const VesselCommunications: FunctionComponent = (): JSX.Element => (
                 </AnchorLink>
               </FormHint>
             </FormFieldset>
+
+            <Button buttonText="Continue" />
           </Form>
         </>
       }
