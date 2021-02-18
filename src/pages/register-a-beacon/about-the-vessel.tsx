@@ -16,7 +16,7 @@ import { GetServerSideProps } from "next";
 import { withCookieRedirect } from "../../lib/middleware";
 import { TextAreaCharacterCount } from "../../components/TextArea";
 
-const CheckBeaconDetails: FunctionComponent = (): JSX.Element => {
+const AboutTheVessel: FunctionComponent = (): JSX.Element => {
   return (
     <>
       <Layout
@@ -153,4 +153,4 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   }
 );
 
-export default CheckBeaconDetails;
+export default AboutTheVessel;
