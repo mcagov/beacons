@@ -1,8 +1,39 @@
 import React, { FunctionComponent, ReactNode } from "react";
+import { IFormError } from "../lib/formValidator";
 
 interface ErrorSummaryProps {
   children: ReactNode;
 }
+
+interface FormErrorSummaryProps {
+  errors: IFormError[];
+}
+
+interface ErrorListItemProps {
+  key: string;
+  href: string;
+  errorMessage: string;
+}
+
+export const FormErrorSummary: FunctionComponent<FormErrorSummaryProps> = ({
+  errors,
+}: FormErrorSummaryProps) => (
+  <>
+    {errors && errors.length > 0 && (
+      <ErrorSummary>
+        {errors.map((field) =>
+          field.errors.map((error, index) => (
+            <ErrorListItem
+              key={`${field.fieldId}-${index}`}
+              href={`#${field.fieldId}`}
+              errorMessage={error}
+            />
+          ))
+        )}
+      </ErrorSummary>
+    )}
+  </>
+);
 
 export const ErrorSummary: FunctionComponent<ErrorSummaryProps> = ({
   children,
@@ -21,4 +52,14 @@ export const ErrorSummary: FunctionComponent<ErrorSummaryProps> = ({
       <ul className="govuk-list govuk-error-summary__list">{children}</ul>
     </div>
   </div>
+);
+
+const ErrorListItem: FunctionComponent<ErrorListItemProps> = ({
+  key,
+  href,
+  errorMessage,
+}: ErrorListItemProps) => (
+  <li key={`${key}`}>
+    <a href={`#${href}`}>{errorMessage}</a>
+  </li>
 );
