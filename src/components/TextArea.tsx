@@ -6,7 +6,7 @@ import React, {
 
 interface TextAreaProps {
   name: string;
-  id?: string;
+  id: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   rows?: number;
 }
@@ -21,7 +21,7 @@ interface TextAreaCharacterCountProps {
 }
 
 export const TextArea: FunctionComponent<TextAreaProps> = ({
-  id = null,
+  id,
   name,
   htmlAttributes = {},
   rows = 3,
@@ -56,7 +56,7 @@ export const TextAreaCharacterCount: FunctionComponent<TextAreaCharacterCountPro
       : "govuk-textarea govuk-js-character-count govuk-textarea--error";
   };
 
-  const textAreaErrorAria = !withinCharacterLimit && `${id}-error`;
+  const textAreaErrorAria = withinCharacterLimit ? "" : `${id}-error`;
 
   const characterCountClass = () => {
     return withinCharacterLimit

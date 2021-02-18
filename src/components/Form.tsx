@@ -45,7 +45,7 @@ interface FormLegendPageHeadingProps {
 
 interface InputProps {
   name: string;
-  id?: string;
+  id: string;
   type?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   defaultValue?: string;
@@ -56,7 +56,7 @@ interface SelectProps {
   name: string;
   defaultValue: string;
   children: ReactNode;
-  id?: string;
+  id: string;
   htmlAttributes?: SelectHTMLAttributes<Element>;
 }
 
@@ -130,15 +130,16 @@ export const FormHint: FunctionComponent<FormHintProps> = ({
 );
 
 export const Input: FunctionComponent<InputProps> = ({
-  id = null,
+  id,
   name,
   type = "text",
   htmlAttributes = {},
   defaultValue = "",
   numOfChars = null,
 }: InputProps): JSX.Element => {
-  const inputWidthClass: string =
-    numOfChars && `govuk-input--width-${numOfChars}`;
+  const inputWidthClass: string = numOfChars
+    ? `govuk-input--width-${numOfChars}`
+    : "";
 
   return (
     <input
@@ -153,7 +154,7 @@ export const Input: FunctionComponent<InputProps> = ({
 };
 
 export const Select: FunctionComponent<SelectProps> = ({
-  id = null,
+  id,
   name,
   defaultValue,
   children,
