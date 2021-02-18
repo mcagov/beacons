@@ -60,6 +60,6 @@ const ErrorListItem: FunctionComponent<ErrorListItemProps> = ({
   errorMessage,
 }: ErrorListItemProps) => (
   <li key={`${key}`}>
-    <a href={`#${href}`}>{errorMessage}</a>
+    <a href={`${href}`}>{errorMessage}</a>
   </li>
 );

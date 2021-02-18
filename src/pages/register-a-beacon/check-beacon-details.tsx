@@ -16,17 +16,9 @@ import { Details } from "../../components/Details";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { BeaconCacheEntry } from "../../lib/formCache";
-import {
-  getCache,
-  updateFormCache,
-  withCookieRedirect,
-} from "../../lib/middleware";
+import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
 import { FormErrorSummary } from "../../components/ErrorSummary";
-import {
-  BeaconHexIdValidator,
-  BeaconManufacturerValidator,
-  BeaconModelValidator,
-} from "../../lib/fieldValidators";
+
 import { FormValidator } from "../../lib/formValidator";
 import { Beacon } from "../../lib/types";
 
@@ -50,6 +42,8 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   formData,
   needsValidation = false,
 }: CheckBeaconDetailsProps): JSX.Element => {
+  ensureFormDataHasKeys(formData, "manufacturer", "model", "hexId");
+
   const errors = FormValidator.errorSummary(formData);
 
   const { manufacturer, model, hexId } = FormValidator.validate(formData);
@@ -203,11 +197,21 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
 
     return {
       props: {
-        formData: formData,
-        needsValidation: userDidSubmitForm,
+        formData,
+        needsValidation: false,
       },
     };
   }
 );
+
+const ensureFormDataHasKeys = (formData, ...keys) => {
+  keys.forEach((key: string) => {
+    if (!formData[key]) {
+      formData[key] = "";
+    }
+  });
+
+  return formData;
+};
 
 export default CheckBeaconDetails;
