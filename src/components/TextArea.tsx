@@ -46,33 +46,6 @@ export const TextAreaCharacterCount: FunctionComponent<TextAreaCharacterCountPro
   rows,
   children,
 }: TextAreaCharacterCountProps): JSX.Element => {
-  const [count] = React.useState(0);
-
-  const withinCharacterLimit = count <= maxCharacters;
-
-  const textAreaClass = () => {
-    return withinCharacterLimit
-      ? "govuk-textarea govuk-js-character-count"
-      : "govuk-textarea govuk-js-character-count govuk-textarea--error";
-  };
-
-  const textAreaErrorAria = withinCharacterLimit ? "" : `${id}-error`;
-
-  const characterCountClass = () => {
-    return withinCharacterLimit
-      ? "govuk-hint govuk-character-count__message"
-      : "govuk-error-message govuk-character-count__message";
-  };
-  const characterCountMessage = () => {
-    if (count === 0) {
-      return `You can enter up to ${maxCharacters} characters`;
-    } else {
-      return withinCharacterLimit
-        ? `You have ${maxCharacters - count} characters remaining`
-        : `You have ${count - maxCharacters} characters too many`;
-    }
-  };
-
   return (
     <div
       className="govuk-character-count"
@@ -81,19 +54,19 @@ export const TextAreaCharacterCount: FunctionComponent<TextAreaCharacterCountPro
     >
       {children}
       <textarea
-        className={textAreaClass()}
+        className="govuk-textarea govuk-js-character-count"
         id={id}
         name={name}
         rows={rows}
-        aria-describedby={`${id}-hint ${id}-info ${textAreaErrorAria}`}
+        aria-describedby={`${id}-hint ${id}-info`}
         {...htmlAttributes}
       />
       <div
         id={`${id}-info`}
-        className={characterCountClass()}
+        className="govuk-hint govuk-character-count__message"
         aria-live="polite"
       >
-        {characterCountMessage()}
+        You can enter up to {maxCharacters} characters
       </div>
     </div>
   );
