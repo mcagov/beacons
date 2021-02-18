@@ -14,7 +14,6 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import {
   RadioListItemConditional,
-  RadioListItem,
   RadioListItemHint,
   RadioListConditional,
 } from "../../components/RadioList";
@@ -97,7 +96,7 @@ const BeaconUseForm: FunctionComponent = () => (
           <Input
             id="other-pleasure-vessel-text"
             name="other-pleasure-vessel-text"
-          ></Input>
+          />
         </FormGroup>
       </RadioListItemConditional>
     </RadioListConditional>
