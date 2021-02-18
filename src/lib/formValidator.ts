@@ -24,6 +24,12 @@ export class FormValidator {
   ): IFormValidationResponse {
     const fields = Object.entries(formData);
 
+    // const fields = Object.keys(fieldValidatorDictionary).reduce((formData, field) => {
+    //   if (formData.hasOwnProperty(field) {
+    //
+    //   }
+    // }, {})
+
     return fields.reduce((validatorResponse, [fieldId, value]) => {
       validatorResponse[fieldId] = {
         value: value,
@@ -47,5 +53,12 @@ export class FormValidator {
       .map(([id, field]) => {
         return { fieldId: id, errors: field.errors };
       });
+  }
+
+  hasErrors(
+    fieldValidatorDictionary: IFieldValidatorDictionary,
+    formData: IFormData
+  ): boolean {
+    return this.errorSummary(fieldValidatorDictionary, formData).length > 0;
   }
 }

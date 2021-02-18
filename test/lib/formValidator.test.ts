@@ -111,6 +111,36 @@ describe("FormValidator", () => {
         },
       });
     });
+
+    xit("when given an empty form data object missing required fields, returns an 'invalid' response", () => {
+      const formData = {};
+      const mockRequiredFieldValidator = {
+        validate: jest.fn(() => {
+          return {
+            value: "",
+            valid: false,
+            errors: ["Required"],
+          };
+        }),
+      };
+      const fieldValidatorDictionary = {
+        requiredFieldId: mockRequiredFieldValidator,
+      };
+      const testFormValidator = new FormValidator();
+
+      const validationResponse = testFormValidator.validate(
+        fieldValidatorDictionary,
+        formData
+      );
+
+      expect(validationResponse).toEqual({
+        firstTestFieldId: {
+          value: "",
+          valid: false,
+          errors: ["Required"],
+        },
+      });
+    });
   });
 
   describe("errorSummary", () => {
