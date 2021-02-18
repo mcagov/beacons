@@ -8,6 +8,7 @@ import {
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
+import { IfYouNeedHelp } from "../../components/Mca";
 import { AnchorLink } from "../../components/Typography";
 
 const VesselCommunications: FunctionComponent = (): JSX.Element => (
@@ -39,6 +40,8 @@ const VesselCommunications: FunctionComponent = (): JSX.Element => (
 
             <Button buttonText="Continue" />
           </Form>
+
+          <IfYouNeedHelp />
         </>
       }
     ></Grid>
