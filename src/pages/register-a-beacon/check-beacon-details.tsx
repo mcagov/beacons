@@ -159,10 +159,9 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
 
     if (userDidSubmitForm && formIsValid) {
       return {
-        // TODO Make this a GET request with status code 30X
         redirect: {
+          statusCode: 303,
           destination: "/register-a-beacon/beacon-information",
-          permanent: false,
         },
       };
     }
