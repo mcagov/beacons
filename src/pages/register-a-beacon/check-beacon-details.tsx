@@ -24,6 +24,7 @@ import {
 
 import { FormValidator } from "../../lib/formValidator";
 import { Beacon } from "../../lib/types";
+import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface CheckBeaconDetailsProps {
   formData: Partial<Beacon>;
@@ -174,15 +175,5 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
     };
   }
 );
-
-const ensureFormDataHasKeys = (formData, ...keys) => {
-  keys.forEach((key: string) => {
-    if (!formData[key]) {
-      formData[key] = "";
-    }
-  });
-
-  return formData;
-};
 
 export default CheckBeaconDetails;
