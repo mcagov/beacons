@@ -41,7 +41,7 @@ const AboutTheVessel: FunctionComponent = (): JSX.Element => {
 
                   <BeaconLocationInput />
                 </FormFieldset>
-                <Button buttonText="Submit" />
+                <Button buttonText="Continue" />
               </Form>
               <IfYouNeedHelp />
             </>
@@ -67,7 +67,6 @@ const MaxCapacityInput: FunctionComponent = (): JSX.Element => (
       id="maxCapacity"
       numOfChars={5}
       htmlAttributes={{
-        spellCheck: "false",
         "aria-describedby": "maxCapacity-hint",
         pattern: "[0-9]*",
         inputMode: "numeric",
@@ -81,11 +80,7 @@ const VesselNameInput: FunctionComponent = (): JSX.Element => (
     <FormLabel htmlFor="vesselName">
       Enter your vessel name (optional)
     </FormLabel>
-    <Input
-      name="vesselName"
-      id="vesselName"
-      htmlAttributes={{ spellCheck: false }}
-    />
+    <Input name="vesselName" id="vesselName" />
   </FormGroup>
 );
 
@@ -98,11 +93,7 @@ const HomeportInput: FunctionComponent = (): JSX.Element => (
       This is the name of the port where your vessel is registered and primarily
       operates from
     </FormHint>
-    <Input
-      name="homeport"
-      id="homeport"
-      htmlAttributes={{ spellCheck: false }}
-    />
+    <Input name="homeport" id="homeport" />
   </FormGroup>
 );
 
