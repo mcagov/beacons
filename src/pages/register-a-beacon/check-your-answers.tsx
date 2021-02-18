@@ -14,26 +14,31 @@ interface CheckYourAnswersProps {
 
 const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   beacon,
-}: CheckYourAnswersProps): JSX.Element => (
-  <>
-    <Layout
-      navigation={<BackButton href="/register-a-beacon/beacon-information" />}
-    >
-      <Grid
-        mainContent={
-          <>
-            <PageHeading>
-              Check your answers before sending in your registration
-            </PageHeading>
-            <BeaconInformation {...beacon} />
-            <SendYourApplication />
-            <Button buttonText="Accept and send" />
-          </>
-        }
-      />
-    </Layout>
-  </>
-);
+}: CheckYourAnswersProps): JSX.Element => {
+  const pageHeading = "Check your answers before sending in your registration";
+
+  return (
+    <>
+      <Layout
+        navigation={<BackButton href="/register-a-beacon/beacon-information" />}
+        title={pageHeading}
+      >
+        <Grid
+          mainContent={
+            <>
+              <PageHeading>
+                Check your answers before sending in your registration
+              </PageHeading>
+              <BeaconInformation {...beacon} />
+              <SendYourApplication />
+              <Button buttonText="Accept and send" />
+            </>
+          }
+        />
+      </Layout>
+    </>
+  );
+};
 
 const BeaconInformation: FunctionComponent<Beacon> = ({
   manufacturer,

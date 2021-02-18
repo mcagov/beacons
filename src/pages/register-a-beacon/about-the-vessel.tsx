@@ -15,19 +15,20 @@ import { TextareaCharacterCount } from "../../components/Textarea";
 import { withCookieRedirect } from "../../lib/middleware";
 
 const AboutTheVessel: FunctionComponent = (): JSX.Element => {
+  const pageHeading = "About the pleasure vessel";
+
   return (
     <>
       <Layout
         navigation={<BackButton href="/register-a-beacon/primary-beacon-use" />}
+        title={pageHeading}
       >
         <Grid
           mainContent={
             <>
               <Form action="/register-a-beacon/about-the-vessel">
                 <FormFieldset>
-                  <FormLegendPageHeading>
-                    About the pleasure vessel
-                  </FormLegendPageHeading>
+                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <MaxCapacityInput />
 
