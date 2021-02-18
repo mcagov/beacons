@@ -12,6 +12,11 @@ export interface IFormValidationResponse {
   [key: string]: IFieldValidationResponse;
 }
 
+export interface IFormError {
+  fieldId: string;
+  errors: string[];
+}
+
 export class FormValidator {
   validate(
     fieldValidatorDictionary: IFieldValidatorDictionary,
@@ -27,5 +32,20 @@ export class FormValidator {
 
       return validatorResponse;
     }, {});
+  }
+
+  errorSummary(
+    fieldValidatorDictionary: IFieldValidatorDictionary,
+    formData: IFormData
+  ): IFormError[] {
+    const validatedFields = Object.entries(
+      this.validate(fieldValidatorDictionary, formData)
+    );
+
+    return validatedFields
+      .filter(([, field]) => !field.valid)
+      .map(([id, field]) => {
+        return { fieldId: id, errors: field.errors };
+      });
   }
 }
