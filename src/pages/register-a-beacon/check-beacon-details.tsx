@@ -21,14 +21,13 @@ import {
   updateFormCache,
   withCookieRedirect,
 } from "../../lib/middleware";
-import { ErrorSummary, FormErrorSummary } from "../../components/ErrorSummary";
+import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   BeaconHexIdValidator,
   BeaconManufacturerValidator,
   BeaconModelValidator,
-  FieldValidators,
 } from "../../lib/fieldValidators";
-import { FormValidator, IFormError } from "../../lib/formValidator";
+import { FormValidator } from "../../lib/formValidator";
 import { Beacon } from "../../lib/types";
 
 interface CheckBeaconDetailsProps {
@@ -39,7 +38,7 @@ interface CheckBeaconDetailsProps {
 interface FormInputProps {
   value: string;
   valid: boolean;
-  errorMessages: Array<string>;
+  errorMessages: string[];
 }
 
 interface ErrorMessageProps {
@@ -47,28 +46,13 @@ interface ErrorMessageProps {
   message: string;
 }
 
-// TODO: Encapsulate `new`s into a factory function/functions
-const formValidator = new FormValidator();
-
-const beaconDetailsFormDictionary = {
-  manufacturer: new BeaconManufacturerValidator(),
-  model: new BeaconModelValidator(),
-  hexId: new BeaconHexIdValidator(),
-};
-
 const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   formData,
   needsValidation = false,
 }: CheckBeaconDetailsProps): JSX.Element => {
-  const errors = formValidator.errorSummary(
-    beaconDetailsFormDictionary,
-    formData
-  );
+  const errors = FormValidator.errorSummary(formData);
 
-  const { manufacturer, model, hexId } = formValidator.validate(
-    beaconDetailsFormDictionary,
-    formData
-  );
+  const { manufacturer, model, hexId } = FormValidator.validate(formData);
 
   return (
     <>
@@ -203,13 +187,10 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
     const formData: BeaconCacheEntry = await updateFormCache(context);
 
     const userDidSubmitForm = context.req.method === "POST";
-    const formIsValid = formValidator.hasErrors(
-      beaconDetailsFormDictionary,
-      formData
-    );
+    const formIsValid = FormValidator.hasErrors(formData);
 
     if (userDidSubmitForm && formIsValid) {
-      if (formValidator.hasErrors(beaconDetailsFormDictionary, formData)) {
+      if (FormValidator.hasErrors(formData)) {
         return {
           // TODO Make this a GET request with status code 30X
           redirect: {

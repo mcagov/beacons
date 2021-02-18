@@ -16,11 +16,10 @@ describe("FormValidator", () => {
       const fieldValidatorDictionary = {
         testFieldId: mockFieldValidator,
       };
-      const testFormValidator = new FormValidator();
 
-      const validationResponse = testFormValidator.validate(
-        fieldValidatorDictionary,
-        formData
+      const validationResponse = FormValidator.validate(
+        formData,
+        fieldValidatorDictionary
       );
 
       expect(validationResponse).toEqual({
@@ -46,11 +45,10 @@ describe("FormValidator", () => {
       const fieldValidatorDictionary = {
         anotherTestFieldId: mockFieldValidator,
       };
-      const testFormValidator = new FormValidator();
 
-      const validationResponse = testFormValidator.validate(
-        fieldValidatorDictionary,
-        formData
+      const validationResponse = FormValidator.validate(
+        formData,
+        fieldValidatorDictionary
       );
 
       expect(validationResponse).toEqual({
@@ -90,11 +88,10 @@ describe("FormValidator", () => {
         firstTestFieldId: mockFirstTestFieldValidator,
         secondTestFieldId: mockSecondTestFieldValidator,
       };
-      const testFormValidator = new FormValidator();
 
-      const validationResponse = testFormValidator.validate(
-        fieldValidatorDictionary,
-        formData
+      const validationResponse = FormValidator.validate(
+        formData,
+        fieldValidatorDictionary
       );
 
       expect(validationResponse).toEqual({
@@ -126,11 +123,10 @@ describe("FormValidator", () => {
       const fieldValidatorDictionary = {
         requiredFieldId: mockRequiredFieldValidator,
       };
-      const testFormValidator = new FormValidator();
 
-      const validationResponse = testFormValidator.validate(
-        fieldValidatorDictionary,
-        formData
+      const validationResponse = FormValidator.validate(
+        formData,
+        fieldValidatorDictionary
       );
 
       expect(validationResponse).toEqual({
@@ -160,11 +156,10 @@ describe("FormValidator", () => {
       const fieldValidatorDictionary = {
         validFieldId: mockValidFieldValidator,
       };
-      const formValidator = new FormValidator();
 
-      const errorSummary = formValidator.errorSummary(
-        fieldValidatorDictionary,
-        formData
+      const errorSummary = FormValidator.errorSummary(
+        formData,
+        fieldValidatorDictionary
       );
 
       expect(errorSummary).toEqual([]);
@@ -186,11 +181,10 @@ describe("FormValidator", () => {
       const fieldValidatorDictionary = {
         invalidFieldId: mockInvalidFieldValidator,
       };
-      const formValidator = new FormValidator();
 
-      const errorSummary = formValidator.errorSummary(
-        fieldValidatorDictionary,
-        formData
+      const errorSummary = FormValidator.errorSummary(
+        formData,
+        fieldValidatorDictionary
       );
 
       expect(errorSummary).toEqual([
@@ -227,11 +221,10 @@ describe("FormValidator", () => {
         invalidFieldId2: mockInvalidFieldValidator,
         validFieldId: mockValidFieldValidator,
       };
-      const formValidator = new FormValidator();
 
-      const errorSummary = formValidator.errorSummary(
-        fieldValidatorDictionary,
-        formData
+      const errorSummary = FormValidator.errorSummary(
+        formData,
+        fieldValidatorDictionary
       );
 
       expect(errorSummary).toEqual([

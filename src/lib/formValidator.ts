@@ -1,10 +1,14 @@
-import { IFieldValidator, IFieldValidationResponse } from "./fieldValidators";
+import {
+  IFieldValidator,
+  IFieldValidationResponse,
+  fieldValidatorLookup,
+} from "./fieldValidators";
 
 export interface IFormData {
   [key: string]: string;
 }
 
-export interface IFieldValidatorDictionary {
+export interface IFieldValidatorLookup {
   [key: string]: IFieldValidator;
 }
 
@@ -18,34 +22,28 @@ export interface IFormError {
 }
 
 export class FormValidator {
-  validate(
-    fieldValidatorDictionary: IFieldValidatorDictionary,
-    formData: IFormData
+  public static validate(
+    formData: IFormData,
+    validatorLookup: IFieldValidatorLookup = fieldValidatorLookup
   ): IFormValidationResponse {
     const fields = Object.entries(formData);
-
-    // const fields = Object.keys(fieldValidatorDictionary).reduce((formData, field) => {
-    //   if (formData.hasOwnProperty(field) {
-    //
-    //   }
-    // }, {})
 
     return fields.reduce((validatorResponse, [fieldId, value]) => {
       validatorResponse[fieldId] = {
         value: value,
-        ...fieldValidatorDictionary[fieldId].validate(value),
+        ...validatorLookup[fieldId].validate(value),
       };
 
       return validatorResponse;
     }, {});
   }
 
-  errorSummary(
-    fieldValidatorDictionary: IFieldValidatorDictionary,
-    formData: IFormData
+  public static errorSummary(
+    formData: IFormData,
+    validatorLookup: IFieldValidatorLookup = fieldValidatorLookup
   ): IFormError[] {
     const validatedFields = Object.entries(
-      this.validate(fieldValidatorDictionary, formData)
+      this.validate(formData, validatorLookup)
     );
 
     return validatedFields
@@ -55,10 +53,14 @@ export class FormValidator {
       });
   }
 
-  hasErrors(
-    fieldValidatorDictionary: IFieldValidatorDictionary,
-    formData: IFormData
+  public static hasErrors(
+    formData: IFormData,
+    validatorLookup: IFieldValidatorLookup = fieldValidatorLookup
   ): boolean {
-    return this.errorSummary(fieldValidatorDictionary, formData).length > 0;
+    return this.errorSummary(formData, validatorLookup).length > 0;
+  }
+
+  private FormValidator() {
+    // Prevent external instantiation.
   }
 }
