@@ -29,8 +29,8 @@ interface CheckBeaconDetailsProps {
 
 interface FormInputProps {
   value: string;
-  valid: boolean;
   errorMessages: string[];
+  showErrors: boolean;
 }
 
 interface ErrorMessageProps {
@@ -68,23 +68,23 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
 
                   <BeaconManufacturerInput
                     value={manufacturer.value}
-                    valid={needsValidation && manufacturer.valid}
+                    showErrors={needsValidation && manufacturer.invalid}
                     errorMessages={manufacturer.errors}
                   />
 
                   <BeaconModelInput
                     value={model.value}
-                    valid={needsValidation && model.valid}
+                    showErrors={needsValidation && model.invalid}
                     errorMessages={model.errors}
                   />
 
                   <BeaconHexIdInput
                     value={hexId.value}
-                    valid={needsValidation && hexId.valid}
+                    showErrors={needsValidation && hexId.invalid}
                     errorMessages={hexId.errors}
                   />
                 </FormFieldset>
-                <Button buttonText="Submit" />
+                <Button buttonText="Continue" />
               </Form>
               <IfYouNeedHelp />
             </>
@@ -106,12 +106,13 @@ const ErrorMessage: FunctionComponent<ErrorMessageProps> = ({
 
 const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  valid,
+  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup hasError={!valid}>
+  <FormGroup showErrors={showErrors}>
     <FormLabel htmlFor="manufacturer">Enter your beacon manufacturer</FormLabel>
-    {!valid &&
+    {/* TODO: Extract <ErrorMessageList>*/}
+    {showErrors &&
       errorMessages.map((message, index) => (
         <ErrorMessage
           id={`manufacturer-error-${index}`}
@@ -125,12 +126,12 @@ const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
 
 const BeaconModelInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  valid,
+  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup hasError={!valid}>
+  <FormGroup showErrors={showErrors}>
     <FormLabel htmlFor="model">Enter your beacon model</FormLabel>
-    {!valid &&
+    {showErrors &&
       errorMessages.map((message, index) => (
         <ErrorMessage
           id={`model-error-${index}`}
@@ -144,12 +145,12 @@ const BeaconModelInput: FunctionComponent<FormInputProps> = ({
 
 const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  valid,
+  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup hasError={!valid}>
+  <FormGroup showErrors={showErrors}>
     <FormLabel htmlFor="hexId">Enter the 15 digit beacon HEX ID</FormLabel>
-    {!valid &&
+    {showErrors &&
       errorMessages.map((message, index) => (
         <ErrorMessage
           id={`hexId-error-${index}`}
@@ -181,24 +182,22 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
     const formData: BeaconCacheEntry = await updateFormCache(context);
 
     const userDidSubmitForm = context.req.method === "POST";
-    const formIsValid = FormValidator.hasErrors(formData);
+    const formIsValid = !FormValidator.hasErrors(formData);
 
     if (userDidSubmitForm && formIsValid) {
-      if (FormValidator.hasErrors(formData)) {
-        return {
-          // TODO Make this a GET request with status code 30X
-          redirect: {
-            destination: "/register-a-beacon/beacon-information",
-            permanent: false,
-          },
-        };
-      }
+      return {
+        // TODO Make this a GET request with status code 30X
+        redirect: {
+          destination: "/register-a-beacon/beacon-information",
+          permanent: false,
+        },
+      };
     }
 
     return {
       props: {
         formData,
-        needsValidation: false,
+        needsValidation: userDidSubmitForm,
       },
     };
   }

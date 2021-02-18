@@ -4,8 +4,9 @@ export interface IFieldValidator {
 
 export interface IFieldValidationResponse {
   value: string;
-  valid: boolean;
   errors: string[];
+  valid: boolean;
+  invalid: boolean;
 }
 
 export interface FieldRule {
@@ -20,6 +21,7 @@ export abstract class FieldValidator implements IFieldValidator {
     return {
       value: value,
       valid: this.isValid(value),
+      invalid: !this.isValid(value),
       errors: this.errors(value),
     };
   }
