@@ -5,6 +5,11 @@ interface CheckboxListProps {
   children: ReactNode;
 }
 
+interface CheckboxListConditionalProps {
+  className?: string;
+  children: ReactNode;
+}
+
 interface CheckboxListItemProps {
   id: string;
   name: string;
@@ -20,10 +25,27 @@ interface CheckboxListItemHintProps {
   children: ReactNode;
 }
 
+interface CheckboxListItemConditionalProps {
+  id: string;
+  children: ReactNode;
+}
+
 export const CheckboxList: FunctionComponent<CheckboxListProps> = ({
   children,
 }: CheckboxListProps): JSX.Element => (
   <div className="govuk-checkboxes">{children}</div>
+);
+
+export const CheckboxListConditional: FunctionComponent<CheckboxListConditionalProps> = ({
+  className = "",
+  children,
+}: CheckboxListConditionalProps): JSX.Element => (
+  <div
+    className={`govuk-checkboxes__conditional govuk-radios--conditional ${className}`}
+    data-module="govuk-checkboxes"
+  >
+    {children}
+  </div>
 );
 
 export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
@@ -69,5 +91,17 @@ export const CheckboxListItemHint: FunctionComponent<CheckboxListItemHintProps> 
     <FormLabel className="govuk-checkboxes__label" htmlFor={id}>
       {children}
     </FormLabel>
+  </div>
+);
+
+export const CheckboxListItemConditional: FunctionComponent<CheckboxListItemConditionalProps> = ({
+  id,
+  children,
+}: CheckboxListItemConditionalProps): JSX.Element => (
+  <div
+    className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
+    id={id}
+  >
+    {children}
   </div>
 );
