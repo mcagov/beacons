@@ -1,12 +1,22 @@
 export interface IFieldValidator {
-  validate(value: string): { valid: boolean; errors: string[] };
+  validate(value: string): IFieldValidationResponse;
+}
+
+export interface IFieldValidationResponse {
+  value: string;
+  valid: boolean;
+  errors: string[];
 }
 
 class FieldValidator implements IFieldValidator {
   _rules;
 
-  validate(value: string): { valid: boolean; errors: string[] } {
-    return { valid: this.isValid(value), errors: this.errors(value) };
+  validate(value: string): IFieldValidationResponse {
+    return {
+      value: value,
+      valid: this.isValid(value),
+      errors: this.errors(value),
+    };
   }
 
   static valueViolatesRule(
