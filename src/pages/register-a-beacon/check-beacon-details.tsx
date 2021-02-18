@@ -41,7 +41,7 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   formData,
   needsValidation = false,
 }: CheckBeaconDetailsProps): JSX.Element => {
-  ensureFormDataHasKeys(formData, "manufacturer", "model", "hexId");
+  formData = ensureFormDataHasKeys(formData, "manufacturer", "model", "hexId");
 
   const errors = FormValidator.errorSummary(formData);
 

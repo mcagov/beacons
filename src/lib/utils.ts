@@ -13,11 +13,12 @@ export const ensureFormDataHasKeys = (
   formData: Record<string, string>,
   ...keys: string[]
 ): Record<string, string> => {
+  const newFormData = { ...formData };
   keys.forEach((key: string) => {
-    if (!formData[key]) {
-      formData[key] = "";
+    if (!newFormData[key]) {
+      newFormData[key] = "";
     }
   });
 
-  return formData;
+  return newFormData;
 };

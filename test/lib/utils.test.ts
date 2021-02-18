@@ -1,4 +1,4 @@
-import { toArray } from "../../src/lib/utils";
+import { ensureFormDataHasKeys, toArray } from "../../src/lib/utils";
 
 describe("toArray()", () => {
   it("should convert a number to an array", () => {
@@ -25,5 +25,29 @@ describe("toArray()", () => {
       "beacon",
       "beacon-2",
     ]);
+  });
+});
+
+describe("ensureFormDataHasKeys()", () => {
+  describe("when given an incomplete Record", () => {
+    it("should return a new Record with the missing keys as blank strings", () => {
+      const input = { a: "a", b: "b" };
+      const requiredKeys = ["a", "b", "missing"];
+      const expectedOutput = { a: "a", b: "b", missing: "" };
+
+      const output = ensureFormDataHasKeys(input, ...requiredKeys);
+
+      expect(output).toEqual(expectedOutput);
+    });
+
+    it("should not mutate the input parameter", () => {
+      const input = { a: "a", b: "b" };
+      const requiredKeys = ["a", "b", "missing"];
+      const expectedInput = { a: "a", b: "b" };
+
+      ensureFormDataHasKeys(input, ...requiredKeys);
+
+      expect(input).toEqual(expectedInput);
+    });
   });
 });
