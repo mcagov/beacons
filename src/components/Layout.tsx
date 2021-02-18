@@ -8,11 +8,17 @@ interface LayoutProps {
   children: ReactNode;
   head?: ReactNode;
   navigation?: ReactNode;
+  title?: string;
+}
+
+interface BeaconRegistrationHeadProps {
+  title?: string;
 }
 
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
-  head = <BeaconRegistrationHead />,
+  title = "",
+  head = <BeaconRegistrationHead title={title} />,
   navigation = null,
 }: LayoutProps): JSX.Element => (
   <>
@@ -22,7 +28,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
     </a>
     <Header
       serviceName={"Maritime and Coastguard Agency: Register a beacon"}
-      homeLink={"#"}
+      homeLink={"/"}
     />
     <PhaseBanner phase="BETA">
       This is a new service – your{" "}
@@ -44,10 +50,15 @@ export const Layout: FunctionComponent<LayoutProps> = ({
   </>
 );
 
-const BeaconRegistrationHead: FunctionComponent = () => (
-  <Head>
-    <title>
-      Beacon Registration Service - Register a new 406 MHz distress beacon
-    </title>
-  </Head>
-);
+const BeaconRegistrationHead: FunctionComponent<BeaconRegistrationHeadProps> = ({
+  title,
+}: BeaconRegistrationHeadProps) => {
+  const headTitle = title
+    ? `${title} - Beacon Registration Service`
+    : "Beacon Registration Service - Register a new 406 MHz distress beacon";
+  return (
+    <Head>
+      <title>{headTitle}</title>
+    </Head>
+  );
+};
