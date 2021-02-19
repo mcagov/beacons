@@ -66,19 +66,19 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
                   </InsetText>
 
                   <BeaconManufacturerInput
-                    value={manufacturer.value}
+                    value={formData.manufacturer}
                     showErrors={needsValidation && manufacturer.invalid}
                     errorMessages={manufacturer.errors}
                   />
 
                   <BeaconModelInput
-                    value={model.value}
+                    value={formData.model}
                     showErrors={needsValidation && model.invalid}
                     errorMessages={model.errors}
                   />
 
                   <BeaconHexIdInput
-                    value={hexId.value}
+                    value={formData.hexId}
                     showErrors={needsValidation && hexId.invalid}
                     errorMessages={hexId.errors}
                   />

@@ -6,7 +6,7 @@ import {
 
 describe("BeaconModelValidator", () => {
   describe("validate", () => {
-    it("returns 'invalid' response if value is empty string", () => {
+    it("should return an 'invalid' response if value is empty string", () => {
       const beaconModelValidator = new BeaconModelValidator();
       const invalidValue = "";
 
@@ -16,7 +16,7 @@ describe("BeaconModelValidator", () => {
       expect(validationResponse.errors.length).toBe(1);
     });
 
-    it("returns 'valid' response otherwise", () => {
+    it("should return 'valid' response otherwise", () => {
       const beaconModelValidator = new BeaconModelValidator();
       const validValue = "not an empty string";
 
@@ -30,7 +30,7 @@ describe("BeaconModelValidator", () => {
 
 describe("BeaconManufacturerValidator", () => {
   describe("validate", () => {
-    it("returns false if value is empty string", () => {
+    it("should return false if value is empty string", () => {
       const beaconManufacturerValidator = new BeaconManufacturerValidator();
       const invalidValue = "";
 
@@ -42,7 +42,7 @@ describe("BeaconManufacturerValidator", () => {
       expect(validationResponse.errors.length).toBe(1);
     });
 
-    it("returns true otherwise", () => {
+    it("should return true otherwise", () => {
       const beaconManufacturerValidator = new BeaconManufacturerValidator();
       const validValue = "not an empty string";
 
@@ -58,7 +58,7 @@ describe("BeaconManufacturerValidator", () => {
 
 describe("BeaconHexIdValidator", () => {
   describe("validate", () => {
-    it("returns false if value is empty string", () => {
+    it("should return false if value is empty string", () => {
       const beaconHexIdValidator = new BeaconHexIdValidator();
       const invalidValue = "";
 
@@ -68,7 +68,7 @@ describe("BeaconHexIdValidator", () => {
       expect(validationResponse.errors.length).toBe(1);
     });
 
-    it("returns false if value is shorter than 15 characters", () => {
+    it("should return false if value is shorter than 15 characters", () => {
       const beaconHexIdValidator = new BeaconHexIdValidator();
       const invalidValue = "notquite15char";
 
@@ -78,7 +78,7 @@ describe("BeaconHexIdValidator", () => {
       expect(validationResponse.errors.length).toBe(1);
     });
 
-    it("returns false if value is longer than 15 characters", () => {
+    it("should return false if value is longer than 15 characters", () => {
       const beaconHexIdValidator = new BeaconHexIdValidator();
       const invalidValue = "bitlongerthanfifteencharacters";
 
@@ -88,7 +88,7 @@ describe("BeaconHexIdValidator", () => {
       expect(validationResponse.errors.length).toBe(1);
     });
 
-    it("returns true otherwise", () => {
+    it("should return true otherwise", () => {
       const beaconHexIdValidator = new BeaconHexIdValidator();
       const validValue = "exactly15charac";
 

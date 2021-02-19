@@ -27,7 +27,7 @@ const mockInvalidFieldValidator = (errors): IFieldValidator => {
 
 describe("FormValidator", () => {
   describe("validate", () => {
-    it("when given a form data object with a valid field, returns a 'valid' response", () => {
+    it("should return a 'valid' response when the only field is valid", () => {
       const formData = { testFieldId: "valid value" };
       const fieldValidatorLookup = {
         testFieldId: mockValidFieldValidator(),
@@ -47,7 +47,7 @@ describe("FormValidator", () => {
       });
     });
 
-    it("when given a form data object with an invalid field, returns an 'invalid' response", () => {
+    it("should return an 'invalid' response when the only field is invalid", () => {
       const formData = { anotherTestFieldId: "invalid value" };
       const fieldValidatorLookup = {
         anotherTestFieldId: mockInvalidFieldValidator(["TooLong"]),
@@ -67,7 +67,7 @@ describe("FormValidator", () => {
       });
     });
 
-    it("when given a form data object with one valid and one invalid field, returns an 'invalid' response", () => {
+    it("should return an 'invalid' response when one of two fields is invalid", () => {
       const formData = {
         firstTestFieldId: "invalid value",
         secondTestFieldId: "valid value",
@@ -98,7 +98,7 @@ describe("FormValidator", () => {
   });
 
   describe("errorSummary", () => {
-    it("when given a form data object with a valid field, returns a blank error summary", () => {
+    it("should return a blank error summary when the only field is valid", () => {
       const formData = {
         validFieldId: "valid value",
       };
@@ -114,7 +114,7 @@ describe("FormValidator", () => {
       expect(errorSummary).toEqual([]);
     });
 
-    it("when given a form data object with an invalid field, returns an error summary with one error", () => {
+    it("should return a summary of one error when the only field is invalid", () => {
       const formData = {
         invalidFieldId: "invalid value",
       };
@@ -132,7 +132,7 @@ describe("FormValidator", () => {
       ]);
     });
 
-    it("when given a form data object with some invalid fields, returns an error summary with only the errors", () => {
+    it("should return a summary of two errors when two fields are invalid", () => {
       const formData = {
         invalidFieldId1: "invalid value",
         invalidFieldId2: "invalid value",
