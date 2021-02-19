@@ -5,14 +5,14 @@ import React, {
 } from "react";
 import { FormGroup, FormHint, FormLabel } from "./Form";
 
-interface TextAreaProps {
+interface TextareaProps {
   id: string;
   name?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   rows?: number;
 }
 
-interface TextAreaCharacterCountProps {
+interface TextareaCharacterCountProps {
   id: string;
   maxCharacters: number;
   label: string;
@@ -22,12 +22,12 @@ interface TextAreaCharacterCountProps {
   htmlAttributes?: InputHTMLAttributes<Element>;
 }
 
-export const TextArea: FunctionComponent<TextAreaProps> = ({
+export const Textarea: FunctionComponent<TextareaProps> = ({
   id,
   name = null,
   htmlAttributes = {},
   rows = 3,
-}: TextAreaProps): JSX.Element => {
+}: TextareaProps): JSX.Element => {
   name = name ? name : id;
 
   return (
@@ -42,7 +42,7 @@ export const TextArea: FunctionComponent<TextAreaProps> = ({
   );
 };
 
-export const TextAreaCharacterCount: FunctionComponent<TextAreaCharacterCountProps> = ({
+export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountProps> = ({
   id,
   maxCharacters,
   rows,
@@ -50,7 +50,7 @@ export const TextAreaCharacterCount: FunctionComponent<TextAreaCharacterCountPro
   htmlAttributes = {},
   name = null,
   hintText = null,
-}: TextAreaCharacterCountProps): JSX.Element => {
+}: TextareaCharacterCountProps): JSX.Element => {
   name = name ? name : id;
 
   let hintComponent: ReactNode;

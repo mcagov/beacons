@@ -11,7 +11,7 @@ import { Grid } from "../../components/Grid";
 import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { TextAreaCharacterCount } from "../../components/TextArea";
+import { TextareaCharacterCount } from "../../components/Textarea";
 import { withCookieRedirect } from "../../lib/middleware";
 
 const AboutTheVessel: FunctionComponent = (): JSX.Element => {
@@ -86,7 +86,7 @@ const HomeportInput: FunctionComponent = (): JSX.Element => (
 );
 
 const AreaOfOperationTextArea: FunctionComponent = (): JSX.Element => (
-  <TextAreaCharacterCount
+  <TextareaCharacterCount
     id="areaOfOperation"
     label="Tell us about the typical area of operation (optional)"
     hintText='Typical areas of operation for the vessel is very helpful in assisting
@@ -98,7 +98,7 @@ const AreaOfOperationTextArea: FunctionComponent = (): JSX.Element => (
 );
 
 const BeaconLocationInput: FunctionComponent = (): JSX.Element => (
-  <TextAreaCharacterCount
+  <TextareaCharacterCount
     id="beaconLocation"
     label="Tell us about the typical area of operation (optional)"
     hintText="E.g. will the beacon be attached to a life jacket, stowed inside the

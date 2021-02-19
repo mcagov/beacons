@@ -13,7 +13,7 @@ describe("Input", () => {
     hintText = "Please enter a value Hex ID";
   });
 
-  it("should render the input with the correct label without the hint text", () => {
+  it("should render the correct label without the hint text", () => {
     render(<Input id={id} label={label} />);
 
     expect(screen.getByLabelText(label)).toBeDefined();
