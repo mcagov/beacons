@@ -8,17 +8,20 @@ interface LayoutProps {
   children: ReactNode;
   head?: ReactNode;
   navigation?: ReactNode;
-  title?: string;
+  title: string;
+  pageHasErrors?: boolean;
 }
 
 interface BeaconRegistrationHeadProps {
-  title?: string;
+  title: string;
+  pageHasErrors?: boolean;
 }
 
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
-  title = "",
-  head = <BeaconRegistrationHead title={title} />,
+  title,
+  pageHasErrors = false,
+  head = <BeaconRegistrationHead title={title} pageHasErrors={pageHasErrors} />,
   navigation = null,
 }: LayoutProps): JSX.Element => (
   <>
@@ -52,13 +55,13 @@ export const Layout: FunctionComponent<LayoutProps> = ({
 
 const BeaconRegistrationHead: FunctionComponent<BeaconRegistrationHeadProps> = ({
   title,
+  pageHasErrors = false,
 }: BeaconRegistrationHeadProps) => {
-  const headTitle = title
-    ? `${title} - Beacon Registration Service`
-    : "Beacon Registration Service - Register a new 406 MHz distress beacon";
+  const headTitle = pageHasErrors ? `Error: ${title}` : `${title}`;
+
   return (
     <Head>
-      <title>{headTitle}</title>
+      <title>{`${headTitle} - Beacon Registration Service - GOV.UK`}</title>
     </Head>
   );
 };

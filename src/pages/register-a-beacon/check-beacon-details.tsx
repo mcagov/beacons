@@ -45,9 +45,15 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
 
   const pageHeading = "Check beacon details";
 
+  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
+
   return (
     <>
-      <Layout navigation={<BackButton href="/" />} title={pageHeading}>
+      <Layout
+        navigation={<BackButton href="/" />}
+        title={pageHeading}
+        pageHasErrors={pageHasErrors}
+      >
         <Grid
           mainContent={
             <>
