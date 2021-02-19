@@ -95,6 +95,20 @@ describe("FormValidator", () => {
         },
       });
     });
+
+    it("should raise an exception if field not found in validatorlookup", () => {
+      const formData = { unknownTestFieldId: "value" };
+      const fieldValidatorLookup = {
+        anUnrelatedValue: mockValidFieldValidator(),
+      };
+
+      const tryFindingMissingFieldOnValidatorLookup = () =>
+        FormValidator.validate(formData, fieldValidatorLookup);
+
+      expect(tryFindingMissingFieldOnValidatorLookup).toThrowError(
+        ReferenceError
+      );
+    });
   });
 
   describe("errorSummary", () => {
