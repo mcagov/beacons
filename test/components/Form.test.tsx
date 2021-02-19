@@ -6,8 +6,8 @@ import { FormLabel } from "../../src/components/Form";
 describe("Form Components", () => {
   describe("FormLabel", () => {
     it("should render the label with the correct text", () => {
-      let label = "Beacon HexId";
-      let id = "hex-id";
+      const label = "Beacon HexId";
+      const id = "hex-id";
 
       render(
         <>
