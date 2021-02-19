@@ -13,6 +13,7 @@ import {
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
+import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
@@ -20,7 +21,6 @@ import { BeaconCacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
 import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
 import { ensureFormDataHasKeys } from "../../lib/utils";
-import { Input } from "../../components/Input";
 
 interface CheckBeaconDetailsProps {
   formData: BeaconCacheEntry;

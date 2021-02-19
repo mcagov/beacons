@@ -17,11 +17,11 @@ import {
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
+import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { withCookieRedirect } from "../../lib/middleware";
-import { Input } from "../../components/Input";
 
 const BeaconInformationPage: FunctionComponent = () => (
   <>
