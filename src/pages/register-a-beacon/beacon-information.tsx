@@ -6,7 +6,6 @@ import { Button, BackButton } from "../../components/Button";
 import {
   Form,
   FormFieldset,
-  Input,
   FormLabel,
   FormGroup,
   FormHint,
@@ -22,6 +21,7 @@ import {
 } from "../../components/DateInput";
 import { GetServerSideProps } from "next";
 import { withCookieRedirect } from "../../lib/middleware";
+import { Input } from "../../components/Input";
 
 const BeaconInformationPage: FunctionComponent = () => (
   <>
@@ -62,12 +62,9 @@ const BeaconInformationPage: FunctionComponent = () => (
 
 const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="beaconManufacturerSerialNumber">
-      Enter beacon manufacturer serial number
-    </FormLabel>
     <Input
-      name="beaconManufacturerSerialNumber"
       id="beaconManufacturerSerialNumber"
+      label="Enter beacon manufacturer serial number"
       htmlAttributes={{ spellCheck: false }}
     />
     <Details
@@ -82,16 +79,11 @@ const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element =
 
 const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="beaconCHKCode">
-      Enter the beacon CHK code (optional)
-    </FormLabel>
-    <FormHint forId="beaconCHKCode">
-      This might be on the registration card you received when you bought the
-      beacon
-    </FormHint>
     <Input
-      name="beaconCHKCode"
       id="beaconCHKCode"
+      label="Enter the beacon CHK code (optional)"
+      hintText="This might be on the registration card you received when you bought the
+      beacon"
       htmlAttributes={{ spellCheck: false }}
     />
     <Details
