@@ -1,5 +1,5 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
+import React from "react";
 import CheckBeaconDetails from "../../../src/pages/register-a-beacon/check-beacon-details";
 
 describe("CheckBeaconDetails", () => {

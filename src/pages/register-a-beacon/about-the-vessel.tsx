@@ -1,7 +1,6 @@
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { Grid } from "../../components/Grid";
-import { Layout } from "../../components/Layout";
-import { Button, BackButton } from "../../components/Button";
+import { BackButton, Button } from "../../components/Button";
 import {
   Form,
   FormFieldset,
@@ -10,11 +9,12 @@ import {
   FormGroup,
   FormHint,
 } from "../../components/Form";
+import { Grid } from "../../components/Grid";
+import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { GetServerSideProps } from "next";
-import { withCookieRedirect } from "../../lib/middleware";
 import { TextAreaCharacterCount } from "../../components/TextArea";
 import { Input } from "../../components/Input";
+import { withCookieRedirect } from "../../lib/middleware";
 
 const AboutTheVessel: FunctionComponent = (): JSX.Element => {
   return (

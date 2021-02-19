@@ -1,13 +1,12 @@
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import Aside from "../components/Aside";
+import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
 import { StartButton } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
 import { Layout } from "../components/Layout";
-import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
 import { McaLogo } from "../components/Mca";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { setFormSubmissionCookie } from "../lib/middleware";
 import {
   AnchorLink,
   GovUKBody,
@@ -16,6 +15,7 @@ import {
   PageHeading,
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
+import { setFormSubmissionCookie } from "../lib/middleware";
 
 const ServiceStartPage: FunctionComponent = () => (
   <>

@@ -1,10 +1,10 @@
 import { FormCacheFactory } from "../../src/lib/formCache";
 import {
-  withCookieRedirect,
-  getCache,
   checkHeaderContains,
+  getCache,
   setFormSubmissionCookie,
   updateFormCache,
+  withCookieRedirect,
 } from "../../src/lib/middleware";
 import {
   formSubmissionCookieId,

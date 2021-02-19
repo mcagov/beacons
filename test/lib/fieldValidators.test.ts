@@ -1,7 +1,7 @@
 import {
-  BeaconModelValidator,
-  BeaconManufacturerValidator,
   BeaconHexIdValidator,
+  BeaconManufacturerValidator,
+  BeaconModelValidator,
 } from "../../src/lib/fieldValidators";
 
 describe("BeaconModelValidator", () => {

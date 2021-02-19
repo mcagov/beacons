@@ -1,15 +1,15 @@
+import { CookieSerializeOptions, serialize } from "cookie";
+import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from "http";
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next";
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
-import { BeaconCacheEntry, FormCacheFactory, IFormCache } from "./formCache";
-import { v4 as uuidv4 } from "uuid";
-import { CookieSerializeOptions, serialize } from "cookie";
-import { formSubmissionCookieId } from "./types";
-import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from "http";
 import parse from "urlencoded-body-parser";
+import { v4 as uuidv4 } from "uuid";
+import { BeaconCacheEntry, FormCacheFactory, IFormCache } from "./formCache";
+import { formSubmissionCookieId } from "./types";
 import { toArray } from "./utils";
 
 export function withCookieRedirect<T>(callback: GetServerSideProps<T>) {

@@ -1,7 +1,7 @@
 import {
-  IFieldValidator,
-  IFieldValidationResponse,
   fieldValidatorLookup,
+  IFieldValidationResponse,
+  IFieldValidator,
 } from "./fieldValidators";
 
 export interface IFormError {
