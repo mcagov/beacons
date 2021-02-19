@@ -14,7 +14,7 @@ interface FormFieldsetProps {
 
 interface FormGroupProps {
   children: ReactNode;
-  hasError?: boolean;
+  showErrors?: boolean;
 }
 
 interface FormLabelProps {
@@ -49,10 +49,12 @@ export const Form: FunctionComponent<FormProps> = ({
 
 export const FormGroup: FunctionComponent<FormGroupProps> = ({
   children,
-  hasError = false,
+  showErrors = false,
 }: FormGroupProps): JSX.Element => (
   <div
-    className={`govuk-form-group ${hasError ? "govuk-form-group--error" : ""}`}
+    className={`govuk-form-group ${
+      showErrors ? "govuk-form-group--error" : ""
+    }`}
   >
     {children}
   </div>
