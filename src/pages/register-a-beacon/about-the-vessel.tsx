@@ -5,8 +5,6 @@ import {
   Form,
   FormFieldset,
   FormGroup,
-  FormHint,
-  FormLabel,
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
@@ -89,41 +87,25 @@ const HomeportInput: FunctionComponent = (): JSX.Element => (
 
 const AreaOfOperationTextArea: FunctionComponent = (): JSX.Element => (
   <TextAreaCharacterCount
-    name="areaOfOperation"
     id="areaOfOperation"
+    label="Tell us about the typical area of operation (optional)"
+    hintText='Typical areas of operation for the vessel is very helpful in assisting
+    Search & Rescue. For example "Whitesands Bay, St Davids,
+    Pembrokeshire"'
     maxCharacters={250}
     rows={4}
-  >
-    <FormGroup>
-      <FormLabel htmlFor="areaOfOperation">
-        Tell us about the typical area of operation (optional)
-      </FormLabel>
-      <FormHint forId="areaOfOperation">
-        Typical areas of operation for the vessel is very helpful in assisting
-        Search & Rescue. For example &quot;Whitesands Bay, St Davids,
-        Pembrokeshire&quot;
-      </FormHint>
-    </FormGroup>
-  </TextAreaCharacterCount>
+  />
 );
 
 const BeaconLocationInput: FunctionComponent = (): JSX.Element => (
   <TextAreaCharacterCount
-    name="beaconLocation"
     id="beaconLocation"
+    label="Tell us about the typical area of operation (optional)"
+    hintText="E.g. will the beacon be attached to a life jacket, stowed inside the
+    cabin, in a grab bag etc?"
     maxCharacters={100}
     rows={3}
-  >
-    <FormGroup>
-      <FormLabel htmlFor="beaconLocation">
-        Tell us about the typical area of operation (optional)
-      </FormLabel>
-      <FormHint forId="beaconLocation">
-        E.g. will the beacon be attached to a life jacket, stowed inside the
-        cabin, in a grab bag etc?
-      </FormHint>
-    </FormGroup>
-  </TextAreaCharacterCount>
+  />
 );
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(

@@ -3,29 +3,33 @@ import React, {
   InputHTMLAttributes,
   ReactNode,
 } from "react";
+import { FormGroup, FormHint, FormLabel } from "./Form";
 
 interface TextAreaProps {
-  name: string;
   id: string;
+  name?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   rows?: number;
 }
 
 interface TextAreaCharacterCountProps {
-  name: string;
   id: string;
   maxCharacters: number;
+  label: string;
+  hintText?: string;
+  name?: string;
   rows?: number;
   htmlAttributes?: InputHTMLAttributes<Element>;
-  children: ReactNode;
 }
 
 export const TextArea: FunctionComponent<TextAreaProps> = ({
   id,
-  name,
+  name = null,
   htmlAttributes = {},
   rows = 3,
 }: TextAreaProps): JSX.Element => {
+  name = name ? name : id;
+
   return (
     <textarea
       className="govuk-textarea"
@@ -39,20 +43,31 @@ export const TextArea: FunctionComponent<TextAreaProps> = ({
 };
 
 export const TextAreaCharacterCount: FunctionComponent<TextAreaCharacterCountProps> = ({
-  name,
   id,
   maxCharacters,
-  htmlAttributes,
   rows,
-  children,
+  label,
+  htmlAttributes = {},
+  name = null,
+  hintText = null,
 }: TextAreaCharacterCountProps): JSX.Element => {
+  name = name ? name : id;
+
+  let hintComponent: ReactNode;
+  if (hintText) {
+    hintComponent = <FormHint forId={id}>{hintText}</FormHint>;
+  }
+
   return (
     <div
       className="govuk-character-count"
       data-module="govuk-character-count"
       data-maxlength={maxCharacters}
     >
-      {children}
+      <FormGroup>
+        <FormLabel htmlFor={id}>{label}</FormLabel>
+        {hintComponent}
+      </FormGroup>
       <textarea
         className="govuk-textarea govuk-js-character-count"
         id={id}
