@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { TextareaCharacterCount } from "../../src/components/TextArea";
+import { TextareaCharacterCount } from "../../src/components/Textarea";
 
 describe("Textarea Components", () => {
   describe("TextareaCharacterCount", () => {
