@@ -6,7 +6,10 @@ Accepted
 
 ## Context
 
-The problem domain requires validation of beacon data prior to a) the user progressing through a multi-stage form b) submitting the data to the backend service.
+The problem domain requires validation of beacon data prior to:
+
+- the user progressing through a multi-stage form;
+- submitting the data to the backend service.
 
 With potentially many pages allowing the user to enter data, we needed a reusable pattern to validate form submissions in a similar way on each page and before submission to the backend service.
 
