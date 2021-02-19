@@ -77,8 +77,21 @@ export class BeaconHexIdValidator extends FieldValidator {
   }
 }
 
+export class MoreVesselDetailsValidator extends FieldValidator {
+  constructor() {
+    super();
+    this._rules = [
+      {
+        errorMessage: "Vessel details is a required field",
+        predicateFn: (value) => value.length === 0,
+      },
+    ];
+  }
+}
+
 export const fieldValidatorLookup = {
   manufacturer: new BeaconManufacturerValidator(),
   model: new BeaconModelValidator(),
   hexId: new BeaconHexIdValidator(),
+  moreVesselDetails: new MoreVesselDetailsValidator(),
 };
