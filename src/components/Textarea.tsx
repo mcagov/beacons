@@ -15,7 +15,7 @@ interface TextareaProps {
 interface TextareaCharacterCountProps {
   id: string;
   maxCharacters: number;
-  label: string;
+  label?: string;
   value?: string;
   hintText?: string;
   name?: string;
@@ -46,7 +46,7 @@ export const Textarea: FunctionComponent<TextareaProps> = ({
 export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountProps> = ({
   id,
   maxCharacters,
-  label,
+  label = null,
   value = "",
   hintText = null,
   name = null,
@@ -54,6 +54,11 @@ export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountPro
   htmlAttributes = {},
 }: TextareaCharacterCountProps): JSX.Element => {
   name = name ? name : id;
+
+  let labelComponent: ReactNode;
+  if (label) {
+    labelComponent = <FormLabel htmlFor={id}>{label}</FormLabel>;
+  }
 
   let hintComponent: ReactNode;
   if (hintText) {
@@ -67,7 +72,7 @@ export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountPro
       data-maxlength={maxCharacters}
     >
       <FormGroup>
-        <FormLabel htmlFor={id}>{label}</FormLabel>
+        {labelComponent}
         {hintComponent}
       </FormGroup>
       <textarea

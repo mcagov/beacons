@@ -9,13 +9,12 @@ import {
   Form,
   FormFieldset,
   FormGroup,
-  FormHint,
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { TextAreaCharacterCount } from "../../components/TextArea";
+import { TextareaCharacterCount } from "../../components/Textarea";
 import { VesselCacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
 import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
@@ -82,21 +81,17 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
   errorMessages,
 }: MoreVesselDetailsTextAreaProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
-    <TextAreaCharacterCount
-      name="moreVesselDetails"
+    <TextareaCharacterCount
       id="moreVesselDetails"
+      hintText="Describe the vessel's appearance (such as the length, colour, if it
+        has sails or not etc) and any vessel tracking details (e.g. RYA SafeTrx
+        or Web) if you have them. This information is very helpful to Search
+        &amp; Rescue when trying to locate you."
       maxCharacters={250}
       rows={4}
       value={value}
-    >
-      <FormHint forId="moreVesselDetails">
-        Describe the vessel&apos;s appearance (such as the length, colour, if it
-        has sails or not etc) and any vessel tracking details (e.g. RYA SafeTrx
-        or Web) if you have them. This information is very helpful to Search
-        &amp; Rescue when trying to locate you.
-      </FormHint>
-      {showErrors && <FieldErrorList errorMessages={errorMessages} />}
-    </TextAreaCharacterCount>
+    />
+    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
   </FormGroup>
 );
 

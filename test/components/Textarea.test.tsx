@@ -16,7 +16,12 @@ describe("Textarea Components", () => {
       maxCharacters = 250;
     });
 
-    it("should render the component with the correct character count", () => {
+    it("should not render a label if not specified", () => {
+      render(<TextareaCharacterCount id={id} maxCharacters={maxCharacters} />);
+      expect(screen.queryByLabelText(label)).toBeNull();
+    });
+
+    it("should render with the correct character count", () => {
       render(
         <TextareaCharacterCount
           id={id}
