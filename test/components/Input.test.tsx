@@ -10,7 +10,7 @@ describe("Input", () => {
   beforeEach(() => {
     id = "hexId";
     label = "Beacon Hex ID";
-    hintText = "Please enter a value Hex ID";
+    hintText = "Please enter a valid Hex ID";
   });
 
   it("should render the correct label without the hint text", () => {

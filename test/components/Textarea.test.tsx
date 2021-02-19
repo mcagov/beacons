@@ -12,7 +12,7 @@ describe("Textarea Components", () => {
     beforeEach(() => {
       id = "hexId";
       label = "Beacon Hex ID";
-      hintText = "Please enter a value Hex ID";
+      hintText = "Please enter a valid Hex ID";
       maxCharacters = 250;
     });
 
