@@ -1,26 +1,26 @@
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { Grid } from "../../components/Grid";
-import { InsetText } from "../../components/InsetText";
-import { Layout } from "../../components/Layout";
-import { Button, BackButton } from "../../components/Button";
-import {
-  Form,
-  FormFieldset,
-  Input,
-  FormLabel,
-  FormGroup,
-  FormHint,
-  FormLegendPageHeading,
-} from "../../components/Form";
-import { Details } from "../../components/Details";
-import { IfYouNeedHelp } from "../../components/Mca";
+import { BackButton, Button } from "../../components/Button";
 import {
   DateInput,
   DateListInput,
   DateListItem,
   DateType,
 } from "../../components/DateInput";
-import { GetServerSideProps } from "next";
+import { Details } from "../../components/Details";
+import {
+  Form,
+  FormFieldset,
+  FormGroup,
+  FormHint,
+  FormLabel,
+  FormLegendPageHeading,
+  Input,
+} from "../../components/Form";
+import { Grid } from "../../components/Grid";
+import { InsetText } from "../../components/InsetText";
+import { Layout } from "../../components/Layout";
+import { IfYouNeedHelp } from "../../components/Mca";
 import { withCookieRedirect } from "../../lib/middleware";
 
 const BeaconInformationPage: FunctionComponent = () => (
