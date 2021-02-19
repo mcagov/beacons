@@ -30,7 +30,6 @@ export class FormValidator {
 
     return fields.reduce((validatorResponse, [fieldId, value]) => {
       validatorResponse[fieldId] = {
-        value: value,
         ...validatorLookup[fieldId].validate(value),
       };
 

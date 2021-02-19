@@ -1,11 +1,10 @@
 import { FormValidator } from "../../src/lib/formValidator";
 import { IFieldValidator } from "../../src/lib/fieldValidators";
 
-const mockValidFieldValidator = (value): IFieldValidator => {
+const mockValidFieldValidator = (): IFieldValidator => {
   return {
     validate: jest.fn(() => {
       return {
-        value: value,
         valid: true,
         invalid: false,
         errors: [],
@@ -14,11 +13,10 @@ const mockValidFieldValidator = (value): IFieldValidator => {
   };
 };
 
-const mockInvalidFieldValidator = (value, errors): IFieldValidator => {
+const mockInvalidFieldValidator = (errors): IFieldValidator => {
   return {
     validate: jest.fn(() => {
       return {
-        value: value,
         valid: false,
         invalid: true,
         errors: errors,
@@ -31,9 +29,8 @@ describe("FormValidator", () => {
   describe("validate", () => {
     it("when given a form data object with a valid field, returns a 'valid' response", () => {
       const formData = { testFieldId: "valid value" };
-      const fieldValidator = mockValidFieldValidator("valid value");
       const fieldValidatorLookup = {
-        testFieldId: fieldValidator,
+        testFieldId: mockValidFieldValidator(),
       };
 
       const validationResponse = FormValidator.validate(
@@ -43,7 +40,6 @@ describe("FormValidator", () => {
 
       expect(validationResponse).toEqual({
         testFieldId: {
-          value: "valid value",
           valid: true,
           invalid: false,
           errors: [],
@@ -53,11 +49,8 @@ describe("FormValidator", () => {
 
     it("when given a form data object with an invalid field, returns an 'invalid' response", () => {
       const formData = { anotherTestFieldId: "invalid value" };
-      const fieldValidator = mockInvalidFieldValidator("invalid value", [
-        "TooLong",
-      ]);
       const fieldValidatorLookup = {
-        anotherTestFieldId: fieldValidator,
+        anotherTestFieldId: mockInvalidFieldValidator(["TooLong"]),
       };
 
       const validationResponse = FormValidator.validate(
@@ -67,7 +60,6 @@ describe("FormValidator", () => {
 
       expect(validationResponse).toEqual({
         anotherTestFieldId: {
-          value: "invalid value",
           valid: false,
           invalid: true,
           errors: ["TooLong"],
@@ -80,13 +72,9 @@ describe("FormValidator", () => {
         firstTestFieldId: "invalid value",
         secondTestFieldId: "valid value",
       };
-      const fieldValidator1 = mockInvalidFieldValidator("invalid value", [
-        "Required",
-      ]);
-      const fieldValidator2 = mockValidFieldValidator("valid value");
       const fieldValidatorLookup = {
-        firstTestFieldId: fieldValidator1,
-        secondTestFieldId: fieldValidator2,
+        firstTestFieldId: mockInvalidFieldValidator(["Required"]),
+        secondTestFieldId: mockValidFieldValidator(),
       };
 
       const validationResponse = FormValidator.validate(
@@ -96,13 +84,11 @@ describe("FormValidator", () => {
 
       expect(validationResponse).toEqual({
         firstTestFieldId: {
-          value: formData.firstTestFieldId,
           valid: false,
           invalid: true,
           errors: ["Required"],
         },
         secondTestFieldId: {
-          value: formData.secondTestFieldId,
           valid: true,
           invalid: false,
           errors: [],
@@ -116,9 +102,8 @@ describe("FormValidator", () => {
       const formData = {
         validFieldId: "valid value",
       };
-      const fieldValidator = mockValidFieldValidator("valid value");
       const fieldValidatorLookup = {
-        validFieldId: fieldValidator,
+        validFieldId: mockValidFieldValidator(),
       };
 
       const errorSummary = FormValidator.errorSummary(
@@ -133,11 +118,8 @@ describe("FormValidator", () => {
       const formData = {
         invalidFieldId: "invalid value",
       };
-      const fieldValidator = mockInvalidFieldValidator("invalid value", [
-        "TooLong",
-      ]);
       const fieldValidatorLookup = {
-        invalidFieldId: fieldValidator,
+        invalidFieldId: mockInvalidFieldValidator(["TooLong"]),
       };
 
       const errorSummary = FormValidator.errorSummary(
@@ -156,14 +138,10 @@ describe("FormValidator", () => {
         invalidFieldId2: "invalid value",
         validFieldId: "valid value",
       };
-      const fieldValidator1 = mockInvalidFieldValidator("invalid value", [
-        "TooLong",
-      ]);
-      const fieldValidator2 = mockValidFieldValidator("valid value");
       const fieldValidatorLookup = {
-        invalidFieldId1: fieldValidator1,
-        invalidFieldId2: fieldValidator1,
-        validFieldId: fieldValidator2,
+        invalidFieldId1: mockInvalidFieldValidator(["TooLong"]),
+        invalidFieldId2: mockInvalidFieldValidator(["TooLong"]),
+        validFieldId: mockValidFieldValidator(),
       };
 
       const errorSummary = FormValidator.errorSummary(
