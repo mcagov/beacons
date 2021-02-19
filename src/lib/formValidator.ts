@@ -34,7 +34,7 @@ export class FormValidator {
     );
 
     return validatedFields
-      .filter(([, field]) => !field.valid)
+      .filter(([, field]) => field.invalid)
       .map(([id, field]) => {
         return { fieldId: id, errorMessages: field.errorMessages };
       });
