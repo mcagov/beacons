@@ -24,7 +24,6 @@ describe("Textarea Components", () => {
           maxCharacters={maxCharacters}
         />
       );
-
       expect(
         screen.getByText(`You can enter up to ${maxCharacters} characters`)
       ).toBeDefined();
@@ -34,7 +33,6 @@ describe("Textarea Components", () => {
       render(
         <TextareaCharacterCount id={id} label={label} maxCharacters={150} />
       );
-
       expect(screen.getByLabelText(label)).toBeDefined();
       expect(screen.queryByText(hintText)).toBeNull();
     });
@@ -48,7 +46,6 @@ describe("Textarea Components", () => {
           hintText={hintText}
         />
       );
-
       expect(screen.getByText(hintText)).toBeDefined();
     });
   });

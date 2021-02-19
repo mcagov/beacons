@@ -15,14 +15,12 @@ describe("Input", () => {
 
   it("should render the correct label without the hint text", () => {
     render(<Input id={id} label={label} />);
-
     expect(screen.getByLabelText(label)).toBeDefined();
     expect(screen.queryByText(hintText)).toBeNull();
   });
 
   it("should render the hint text if provided", () => {
     render(<Input id={id} label={label} hintText={hintText} />);
-
     expect(screen.getByText(hintText)).toBeDefined();
   });
 });
