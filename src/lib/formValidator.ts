@@ -1,7 +1,7 @@
 import {
-  IFieldValidator,
-  IFieldValidationResponse,
   fieldValidatorLookup,
+  IFieldValidationResponse,
+  IFieldValidator,
 } from "./fieldValidators";
 
 export interface IFormError {
@@ -34,7 +34,7 @@ export class FormValidator {
     );
 
     return validatedFields
-      .filter(([, field]) => !field.valid)
+      .filter(([, field]) => field.invalid)
       .map(([id, field]) => {
         return { fieldId: id, errorMessages: field.errorMessages };
       });
