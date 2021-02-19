@@ -13,7 +13,7 @@ describe("BeaconModelValidator", () => {
       const validationResponse = beaconModelValidator.validate(invalidValue);
 
       expect(validationResponse.valid).toBe(false);
-      expect(validationResponse.errors.length).toBe(1);
+      expect(validationResponse.errorMessages.length).toBe(1);
     });
 
     it("should return 'valid' response otherwise", () => {
@@ -23,7 +23,7 @@ describe("BeaconModelValidator", () => {
       const validationResponse = beaconModelValidator.validate(validValue);
 
       expect(validationResponse.valid).toBe(true);
-      expect(validationResponse.errors.length).toBe(0);
+      expect(validationResponse.errorMessages.length).toBe(0);
     });
   });
 });
@@ -39,7 +39,7 @@ describe("BeaconManufacturerValidator", () => {
       );
 
       expect(validationResponse.valid).toBe(false);
-      expect(validationResponse.errors.length).toBe(1);
+      expect(validationResponse.errorMessages.length).toBe(1);
     });
 
     it("should return true otherwise", () => {
@@ -51,7 +51,7 @@ describe("BeaconManufacturerValidator", () => {
       );
 
       expect(validationResponse.valid).toBe(true);
-      expect(validationResponse.errors.length).toBe(0);
+      expect(validationResponse.errorMessages.length).toBe(0);
     });
   });
 });
@@ -65,7 +65,7 @@ describe("BeaconHexIdValidator", () => {
       const validationResponse = beaconHexIdValidator.validate(invalidValue);
 
       expect(validationResponse.valid).toBe(false);
-      expect(validationResponse.errors.length).toBe(1);
+      expect(validationResponse.errorMessages.length).toBe(1);
     });
 
     it("should return false if value is shorter than 15 characters", () => {
@@ -75,7 +75,7 @@ describe("BeaconHexIdValidator", () => {
       const validationResponse = beaconHexIdValidator.validate(invalidValue);
 
       expect(validationResponse.valid).toBe(false);
-      expect(validationResponse.errors.length).toBe(1);
+      expect(validationResponse.errorMessages.length).toBe(1);
     });
 
     it("should return false if value is longer than 15 characters", () => {
@@ -85,7 +85,7 @@ describe("BeaconHexIdValidator", () => {
       const validationResponse = beaconHexIdValidator.validate(invalidValue);
 
       expect(validationResponse.valid).toBe(false);
-      expect(validationResponse.errors.length).toBe(1);
+      expect(validationResponse.errorMessages.length).toBe(1);
     });
 
     it("should return true otherwise", () => {
@@ -95,7 +95,7 @@ describe("BeaconHexIdValidator", () => {
       const validationResponse = beaconHexIdValidator.validate(validValue);
 
       expect(validationResponse.valid).toBe(true);
-      expect(validationResponse.errors.length).toBe(0);
+      expect(validationResponse.errorMessages.length).toBe(0);
     });
   });
 });

@@ -7,7 +7,7 @@ const mockValidFieldValidator = (): IFieldValidator => {
       return {
         valid: true,
         invalid: false,
-        errors: [],
+        errorMessages: [],
       };
     }),
   };
@@ -19,7 +19,7 @@ const mockInvalidFieldValidator = (errors): IFieldValidator => {
       return {
         valid: false,
         invalid: true,
-        errors: errors,
+        errorMessages: errors,
       };
     }),
   };
@@ -42,7 +42,7 @@ describe("FormValidator", () => {
         testFieldId: {
           valid: true,
           invalid: false,
-          errors: [],
+          errorMessages: [],
         },
       });
     });
@@ -62,7 +62,7 @@ describe("FormValidator", () => {
         anotherTestFieldId: {
           valid: false,
           invalid: true,
-          errors: ["TooLong"],
+          errorMessages: ["TooLong"],
         },
       });
     });
@@ -86,12 +86,12 @@ describe("FormValidator", () => {
         firstTestFieldId: {
           valid: false,
           invalid: true,
-          errors: ["Required"],
+          errorMessages: ["Required"],
         },
         secondTestFieldId: {
           valid: true,
           invalid: false,
-          errors: [],
+          errorMessages: [],
         },
       });
     });

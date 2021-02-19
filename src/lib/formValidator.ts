@@ -36,7 +36,7 @@ export class FormValidator {
     return validatedFields
       .filter(([, field]) => !field.valid)
       .map(([id, field]) => {
-        return { fieldId: id, errorMessages: field.errors };
+        return { fieldId: id, errorMessages: field.errorMessages };
       });
   }
 

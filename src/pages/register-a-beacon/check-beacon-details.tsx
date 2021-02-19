@@ -68,19 +68,19 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
                   <BeaconManufacturerInput
                     value={formData.manufacturer}
                     showErrors={needsValidation && manufacturer.invalid}
-                    errorMessages={manufacturer.errors}
+                    errorMessages={manufacturer.errorMessages}
                   />
 
                   <BeaconModelInput
                     value={formData.model}
                     showErrors={needsValidation && model.invalid}
-                    errorMessages={model.errors}
+                    errorMessages={model.errorMessages}
                   />
 
                   <BeaconHexIdInput
                     value={formData.hexId}
                     showErrors={needsValidation && hexId.invalid}
-                    errorMessages={hexId.errors}
+                    errorMessages={hexId.errorMessages}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />

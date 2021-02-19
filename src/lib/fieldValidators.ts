@@ -3,7 +3,7 @@ export interface IFieldValidator {
 }
 
 export interface IFieldValidationResponse {
-  errors: string[];
+  errorMessages: string[];
   valid: boolean;
   invalid: boolean;
 }
@@ -20,7 +20,7 @@ export abstract class FieldValidator implements IFieldValidator {
     return {
       valid: this.isValid(value),
       invalid: !this.isValid(value),
-      errors: this.errors(value),
+      errorMessages: this.errorMessages(value),
     };
   }
 
@@ -34,7 +34,7 @@ export abstract class FieldValidator implements IFieldValidator {
     );
   }
 
-  private errors(value: string): string[] {
+  private errorMessages(value: string): string[] {
     return this._rules
       .filter((rule) => FieldValidator.valueViolatesRule(value, rule))
       .map((rule) => rule.errorMessage);

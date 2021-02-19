@@ -34,7 +34,7 @@ export const FormErrorSummary: FunctionComponent<FormErrorSummaryProps> = ({
             <FormErrorSummaryLink
               key={`${field.fieldId}-${index}`}
               href={`#${field.fieldId}`}
-              errorMessage={error}
+              errorMessage={errorMessage}
             />
           ))
         )}
@@ -80,7 +80,7 @@ const ErrorSummary: FunctionComponent<ErrorSummaryProps> = ({
     aria-labelledby="error-summary-title"
     role="alert"
     tabIndex={-1}
-    data-module="govuk-errorMessage-summary"
+    data-module="govuk-error-summary"
   >
     <h2 className="govuk-error-summary__title" id="error-summary-title">
       There is a problem
