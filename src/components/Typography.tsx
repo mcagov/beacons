@@ -11,6 +11,7 @@ interface AnchorLinkProps {
 
 interface GovUKBodyProps {
   children: ReactNode;
+  className?: string;
 }
 
 interface GovUKListProps {
@@ -32,7 +33,10 @@ export const AnchorLink: FunctionComponent<AnchorLinkProps> = ({
 
 export const GovUKBody: FunctionComponent<GovUKBodyProps> = ({
   children,
-}: GovUKBodyProps): JSX.Element => <p className="govuk-body">{children}</p>;
+  className = "",
+}: GovUKBodyProps): JSX.Element => (
+  <p className={`govuk-body ${className}`}>{children}</p>
+);
 
 export const GovUKList: FunctionComponent<GovUKListProps> = ({
   children,

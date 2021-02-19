@@ -23,7 +23,7 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { withCookieRedirect } from "../../lib/middleware";
 
-const BeaconInformationPage: FunctionComponent = () => (
+const BeaconInformationPage: FunctionComponent = (): JSX.Element => (
   <>
     <Layout
       navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}

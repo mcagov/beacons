@@ -19,7 +19,7 @@ import {
 import { withCookieRedirect } from "../../lib/middleware";
 import { MaritimePleasureVessel } from "../../lib/types";
 
-const PrimaryBeaconUse: FunctionComponent = () => (
+const PrimaryBeaconUse: FunctionComponent = (): JSX.Element => (
   <Layout
     navigation={<BackButton href="/register-a-beacon/beacon-information" />}
   >
@@ -35,7 +35,7 @@ const PrimaryBeaconUse: FunctionComponent = () => (
   </Layout>
 );
 
-const BeaconUseForm: FunctionComponent = () => (
+const BeaconUseForm: FunctionComponent = (): JSX.Element => (
   <Form action="/register-a-beacon/primary-beacon-use">
     <FormFieldset>
       <FormLegendPageHeading>
