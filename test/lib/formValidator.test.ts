@@ -98,7 +98,7 @@ describe("FormValidator", () => {
   });
 
   describe("errorSummary", () => {
-    it("should return a blank error summary when the only field is valid", () => {
+    it("should return a blank errorMessage summary when the only field is valid", () => {
       const formData = {
         validFieldId: "valid value",
       };
@@ -114,7 +114,7 @@ describe("FormValidator", () => {
       expect(errorSummary).toEqual([]);
     });
 
-    it("should return a summary of one error when the only field is invalid", () => {
+    it("should return a summary of one errorMessage when the only field is invalid", () => {
       const formData = {
         invalidFieldId: "invalid value",
       };
@@ -128,11 +128,11 @@ describe("FormValidator", () => {
       );
 
       expect(errorSummary).toEqual([
-        { fieldId: "invalidFieldId", errors: ["TooLong"] },
+        { fieldId: "invalidFieldId", errorMessages: ["TooLong"] },
       ]);
     });
 
-    it("should return a summary of two errors when two fields are invalid", () => {
+    it("should return a summary of two errorMessages when two fields are invalid", () => {
       const formData = {
         invalidFieldId1: "invalid value",
         invalidFieldId2: "invalid value",
@@ -150,8 +150,8 @@ describe("FormValidator", () => {
       );
 
       expect(errorSummary).toEqual([
-        { fieldId: "invalidFieldId1", errors: ["TooLong"] },
-        { fieldId: "invalidFieldId2", errors: ["TooLong"] },
+        { fieldId: "invalidFieldId1", errorMessages: ["TooLong"] },
+        { fieldId: "invalidFieldId2", errorMessages: ["TooLong"] },
       ]);
     });
   });

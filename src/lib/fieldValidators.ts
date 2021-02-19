@@ -9,7 +9,7 @@ export interface IFieldValidationResponse {
 }
 
 export interface FieldRule {
-  error: string;
+  errorMessage: string;
   predicateFn: (valueToValidate: string) => boolean;
 }
 
@@ -37,7 +37,7 @@ export abstract class FieldValidator implements IFieldValidator {
   private errors(value: string): string[] {
     return this._rules
       .filter((rule) => FieldValidator.valueViolatesRule(value, rule))
-      .map((rule) => rule.error);
+      .map((rule) => rule.errorMessage);
   }
 }
 
@@ -46,7 +46,7 @@ export class BeaconModelValidator extends FieldValidator {
     super();
     this._rules = [
       {
-        error: "Beacon model is a required field",
+        errorMessage: "Beacon model is a required field",
         predicateFn: (value) => value.length === 0,
       },
     ];
@@ -58,7 +58,7 @@ export class BeaconManufacturerValidator extends FieldValidator {
     super();
     this._rules = [
       {
-        error: "Beacon manufacturer is a required field",
+        errorMessage: "Beacon manufacturer is a required field",
         predicateFn: (value) => value.length === 0,
       },
     ];
@@ -70,7 +70,7 @@ export class BeaconHexIdValidator extends FieldValidator {
     super();
     this._rules = [
       {
-        error: "Beacon HEX ID must be exactly 15 characters",
+        errorMessage: "Beacon HEX ID must be exactly 15 characters",
         predicateFn: (value) => value.length !== 15,
       },
     ];

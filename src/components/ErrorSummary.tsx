@@ -30,7 +30,7 @@ export const FormErrorSummary: FunctionComponent<FormErrorSummaryProps> = ({
     {errors && errors.length > 0 && (
       <ErrorSummary>
         {errors.map((field) =>
-          field.errors.map((error, index) => (
+          field.errorMessages.map((errorMessage, index) => (
             <FormErrorSummaryLink
               key={`${field.fieldId}-${index}`}
               href={`#${field.fieldId}`}
@@ -80,7 +80,7 @@ const ErrorSummary: FunctionComponent<ErrorSummaryProps> = ({
     aria-labelledby="error-summary-title"
     role="alert"
     tabIndex={-1}
-    data-module="govuk-error-summary"
+    data-module="govuk-errorMessage-summary"
   >
     <h2 className="govuk-error-summary__title" id="error-summary-title">
       There is a problem
