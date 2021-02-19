@@ -11,7 +11,6 @@ import { Grid } from "../../components/Grid";
 import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { TextareaCharacterCount } from "../../components/Textarea";
 import { withCookieRedirect } from "../../lib/middleware";
 
 const AboutTheVessel: FunctionComponent = (): JSX.Element => {

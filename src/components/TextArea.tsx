@@ -45,11 +45,11 @@ export const Textarea: FunctionComponent<TextareaProps> = ({
 export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountProps> = ({
   id,
   maxCharacters,
-  rows,
   label,
-  htmlAttributes = {},
-  name = null,
   hintText = null,
+  name = null,
+  rows = 3,
+  htmlAttributes = {},
 }: TextareaCharacterCountProps): JSX.Element => {
   name = name ? name : id;
 

@@ -18,8 +18,8 @@ interface InputProps {
 
 export const Input: FunctionComponent<InputProps> = ({
   id,
-  name,
   label,
+  name = null,
   hintText = null,
   type = "text",
   htmlAttributes = {},
