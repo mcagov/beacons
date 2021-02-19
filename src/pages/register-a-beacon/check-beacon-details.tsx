@@ -23,11 +23,10 @@ import {
 } from "../../components/ErrorSummary";
 
 import { FormValidator } from "../../lib/formValidator";
-import { Beacon } from "../../lib/types";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface CheckBeaconDetailsProps {
-  formData: Partial<Beacon>;
+  formData: BeaconCacheEntry;
   needsValidation: boolean;
 }
 
