@@ -1,5 +1,5 @@
-import { FormValidator } from "../../src/lib/formValidator";
 import { IFieldValidator } from "../../src/lib/fieldValidators";
+import { FormValidator } from "../../src/lib/formValidator";
 
 const mockValidFieldValidator = (): IFieldValidator => {
   return {
