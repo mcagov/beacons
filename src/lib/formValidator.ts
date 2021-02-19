@@ -17,6 +17,11 @@ export class FormValidator {
     const fields = Object.entries(formData);
 
     return fields.reduce((validatorResponse, [fieldId, value]) => {
+      if (!(fieldId in validatorLookup))
+        throw new ReferenceError(
+          `${fieldId} not found in validatorLookup.  Create a new validator key/value pair for this field?`
+        );
+
       validatorResponse[fieldId] = {
         ...validatorLookup[fieldId].validate(value),
       };

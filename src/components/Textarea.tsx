@@ -16,6 +16,7 @@ interface TextareaCharacterCountProps {
   id: string;
   maxCharacters: number;
   label: string;
+  value?: string;
   hintText?: string;
   name?: string;
   rows?: number;
@@ -46,6 +47,7 @@ export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountPro
   id,
   maxCharacters,
   label,
+  value = "",
   hintText = null,
   name = null,
   rows = 3,
@@ -75,6 +77,7 @@ export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountPro
         rows={rows}
         aria-describedby={`${id}-hint ${id}-info`}
         {...htmlAttributes}
+        defaultValue={value}
       />
       <div
         id={`${id}-info`}

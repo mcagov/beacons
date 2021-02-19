@@ -11,7 +11,6 @@ interface FormErrorSummaryLinkProps {
 }
 
 interface FieldErrorListProps {
-  href: string;
   errorMessages: string[];
 }
 
@@ -53,12 +52,11 @@ const FormErrorSummaryLink: FunctionComponent<FormErrorSummaryLinkProps> = ({
 );
 
 export const FieldErrorList: FunctionComponent<FieldErrorListProps> = ({
-  href,
   errorMessages,
 }: FieldErrorListProps): JSX.Element => (
   <>
     {errorMessages.map((message, index) => (
-      <FieldErrorMessage errorMessage={message} key={`${href}-${index}`} />
+      <FieldErrorMessage errorMessage={message} key={`${index}`} />
     ))}
   </>
 );

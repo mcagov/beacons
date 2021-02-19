@@ -96,9 +96,7 @@ const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
   errorMessages,
 }: FormInputProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
-    {showErrors && (
-      <FieldErrorList href="#manufacturer" errorMessages={errorMessages} />
-    )}
+    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
     <Input
       id="manufacturer"
       label="Enter your beacon manufacturer"
@@ -113,9 +111,7 @@ const BeaconModelInput: FunctionComponent<FormInputProps> = ({
   errorMessages,
 }: FormInputProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
-    {showErrors && (
-      <FieldErrorList href="#model" errorMessages={errorMessages} />
-    )}
+    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
     <Input id="model" label="Enter your beacon model" defaultValue={value} />
   </FormGroup>
 );
@@ -126,9 +122,7 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   errorMessages,
 }: FormInputProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
-    {showErrors && (
-      <FieldErrorList href="#hexId" errorMessages={errorMessages} />
-    )}
+    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
     <Input
       id="hexId"
       label="Enter the 15 digit beacon HEX ID"
