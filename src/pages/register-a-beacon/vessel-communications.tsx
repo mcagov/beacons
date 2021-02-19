@@ -1,6 +1,10 @@
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
-import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
+import {
+  CheckboxListConditional,
+  CheckboxListItem,
+  CheckboxListItemConditional,
+} from "../../components/Checkbox";
 import {
   Form,
   FormFieldset,
@@ -8,9 +12,9 @@ import {
   FormHint,
   FormLabel,
   FormLegendPageHeading,
-  Input,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
+import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { AnchorLink } from "../../components/Typography";
@@ -83,13 +87,22 @@ const TypesOfCommunication: FunctionComponent = () => (
       Tick all that apply and provide as much detail as you can
     </FormHint>
 
-    <CheckboxList>
+    <CheckboxListConditional>
       <CheckboxListItem id="vhfRadio" name="vhfRadio" value="">
         VHF Radio
       </CheckboxListItem>
-      <CheckboxListItem id="fixedVhfRadio" name="fixedVhfRadio" value="">
-        Fixed VHF/DSC Radio
-      </CheckboxListItem>
+      <CheckboxListItemConditional
+        id="fixedVhfRadio"
+        name="fixedVhfRadio"
+        checkboxLabel="Fixed VHF/DSC Radio"
+      >
+        <Input
+          id="fixedVhfRadioInput"
+          label="Fixed MMSI number (optional)"
+          hintText="This is the unique MMSI number associated to the vessel, it is 9
+          digits long"
+        />
+      </CheckboxListItemConditional>
       <CheckboxListItem id="portableVhfRadio" name="portableVhfRadio" value="">
         Portable VHF/DSC Radio
       </CheckboxListItem>
@@ -103,7 +116,7 @@ const TypesOfCommunication: FunctionComponent = () => (
       <CheckboxListItem id="mobileTelephone" name="mobileTelephone" value="">
         Mobile Telephone(s)
       </CheckboxListItem>
-    </CheckboxList>
+    </CheckboxListConditional>
   </FormGroup>
 );
 
