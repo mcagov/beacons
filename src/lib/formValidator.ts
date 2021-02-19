@@ -4,18 +4,6 @@ import {
   fieldValidatorLookup,
 } from "./fieldValidators";
 
-export interface IFormData {
-  [key: string]: string;
-}
-
-export interface IFieldValidatorLookup {
-  [key: string]: IFieldValidator;
-}
-
-export interface IFormValidationResponse {
-  [key: string]: IFieldValidationResponse;
-}
-
 export interface IFormError {
   fieldId: string;
   errors: string[];
@@ -23,9 +11,9 @@ export interface IFormError {
 
 export class FormValidator {
   public static validate(
-    formData: IFormData,
-    validatorLookup: IFieldValidatorLookup = fieldValidatorLookup
-  ): IFormValidationResponse {
+    formData: Record<string, string>,
+    validatorLookup: Record<string, IFieldValidator> = fieldValidatorLookup
+  ): Record<string, IFieldValidationResponse> {
     const fields = Object.entries(formData);
 
     return fields.reduce((validatorResponse, [fieldId, value]) => {
@@ -38,8 +26,8 @@ export class FormValidator {
   }
 
   public static errorSummary(
-    formData: IFormData,
-    validatorLookup: IFieldValidatorLookup = fieldValidatorLookup
+    formData: Record<string, string>,
+    validatorLookup: Record<string, IFieldValidator> = fieldValidatorLookup
   ): IFormError[] {
     const validatedFields = Object.entries(
       this.validate(formData, validatorLookup)
@@ -53,8 +41,8 @@ export class FormValidator {
   }
 
   public static hasErrors(
-    formData: IFormData,
-    validatorLookup: IFieldValidatorLookup = fieldValidatorLookup
+    formData: Record<string, string>,
+    validatorLookup: Record<string, IFieldValidator> = fieldValidatorLookup
   ): boolean {
     return this.errorSummary(formData, validatorLookup).length > 0;
   }
