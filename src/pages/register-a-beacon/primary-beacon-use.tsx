@@ -7,9 +7,9 @@ import {
   FormGroup,
   FormLabel,
   FormLegendPageHeading,
-  Input,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
+import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import {
@@ -90,12 +90,10 @@ const BeaconUseForm: FunctionComponent = () => (
       </RadioListItemHint>
       <RadioListItemConditional id="conditional-other-pleasure-vessel">
         <FormGroup>
-          <FormLabel htmlFor="other-pleasure-vessel-text">
-            What sort of vessel is it?
-          </FormLabel>
           <Input
             id="other-pleasure-vessel-text"
-            name="other-pleasure-vessel-text"
+            name="otherPleasureVesselText"
+            label="What sort of vessel is it?"
           />
         </FormGroup>
       </RadioListItemConditional>

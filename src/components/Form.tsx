@@ -1,10 +1,4 @@
-import React, {
-  FunctionComponent,
-  InputHTMLAttributes,
-  PropsWithChildren,
-  ReactNode,
-  SelectHTMLAttributes,
-} from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
 import { HttpMethod } from "../lib/types";
 
 interface FormProps {
@@ -40,28 +34,6 @@ interface FormLegendProps {
 }
 
 interface FormLegendPageHeadingProps {
-  children: ReactNode;
-}
-
-interface InputProps {
-  name: string;
-  id: string;
-  type?: string;
-  htmlAttributes?: InputHTMLAttributes<Element>;
-  defaultValue?: string;
-  numOfChars?: 2 | 3 | 4 | 5 | 10 | 20;
-}
-
-interface SelectProps {
-  name: string;
-  defaultValue: string;
-  children: ReactNode;
-  id: string;
-  htmlAttributes?: SelectHTMLAttributes<Element>;
-}
-
-interface SelectOptionProps {
-  value: string;
   children: ReactNode;
 }
 
@@ -128,50 +100,3 @@ export const FormHint: FunctionComponent<FormHintProps> = ({
     {children}
   </div>
 );
-
-export const Input: FunctionComponent<InputProps> = ({
-  id,
-  name,
-  type = "text",
-  htmlAttributes = {},
-  defaultValue = "",
-  numOfChars = null,
-}: InputProps): JSX.Element => {
-  const inputWidthClass: string = numOfChars
-    ? `govuk-input--width-${numOfChars}`
-    : "";
-
-  return (
-    <input
-      className={`govuk-input ${inputWidthClass}`}
-      id={id}
-      name={name}
-      type={type}
-      defaultValue={defaultValue}
-      {...htmlAttributes}
-    />
-  );
-};
-
-export const Select: FunctionComponent<SelectProps> = ({
-  id,
-  name,
-  defaultValue,
-  children,
-  htmlAttributes = {},
-}: SelectProps): JSX.Element => (
-  <select
-    className="govuk-select"
-    id={id}
-    name={name}
-    defaultValue={defaultValue}
-    {...htmlAttributes}
-  >
-    {children}
-  </select>
-);
-
-export const SelectOption: FunctionComponent<SelectOptionProps> = ({
-  value,
-  children,
-}: SelectOptionProps): JSX.Element => <option value={value}>{children}</option>;
