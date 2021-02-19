@@ -5,7 +5,6 @@ import { Button, BackButton } from "../../components/Button";
 import {
   Form,
   FormFieldset,
-  Input,
   FormLegendPageHeading,
   FormLabel,
   FormGroup,
@@ -15,6 +14,7 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { GetServerSideProps } from "next";
 import { withCookieRedirect } from "../../lib/middleware";
 import { TextAreaCharacterCount } from "../../components/TextArea";
+import { Input } from "../../components/Input";
 
 const AboutTheVessel: FunctionComponent = (): JSX.Element => {
   return (
@@ -54,17 +54,12 @@ const AboutTheVessel: FunctionComponent = (): JSX.Element => {
 
 const MaxCapacityInput: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="maxCapacity">
-      Enter the maximum number of persons aboard
-    </FormLabel>
-    <FormHint forId="maxCapacity">
-      Knowing the maximum number of persons likely to be onboard the vessel
-      helps Search & Rescue know how many people to look for and what resources
-      to send
-    </FormHint>
     <Input
-      name="maxCapacity"
       id="maxCapacity"
+      label="Enter the maximum number of persons aboard"
+      hintText="Knowing the maximum number of persons likely to be onboard the vessel
+      helps Search & Rescue know how many people to look for and what resources
+      to send"
       numOfChars={5}
       htmlAttributes={{
         "aria-describedby": "maxCapacity-hint",
@@ -77,23 +72,18 @@ const MaxCapacityInput: FunctionComponent = (): JSX.Element => (
 
 const VesselNameInput: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="vesselName">
-      Enter your vessel name (optional)
-    </FormLabel>
-    <Input name="vesselName" id="vesselName" />
+    <Input id="vesselName" label="Enter your vessel name (optional)" />
   </FormGroup>
 );
 
 const HomeportInput: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="homeport">
-      Enter the Homeport for the vessel (optional)
-    </FormLabel>
-    <FormHint forId="homeport">
-      This is the name of the port where your vessel is registered and primarily
-      operates from
-    </FormHint>
-    <Input name="homeport" id="homeport" />
+    <Input
+      id="homeport"
+      label="Enter the Homeport for the vessel (optional)"
+      hintText="This is the name of the port where your vessel is registered and primarily
+      operates from"
+    />
   </FormGroup>
 );
 
