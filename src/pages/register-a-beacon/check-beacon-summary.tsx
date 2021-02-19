@@ -1,19 +1,17 @@
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
+import { BackButton, LinkButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
-
-import { BeaconCacheEntry } from "../../lib/formCache";
-import { SummaryList, SummaryListItem } from "../../components/SummaryList";
-import { NotificationBannerSuccess } from "../../components/NotificationBanner";
-
-import { BackButton, LinkButton } from "../../components/Button";
 import { IfYouNeedHelp } from "../../components/Mca";
+import { NotificationBannerSuccess } from "../../components/NotificationBanner";
+import { SummaryList, SummaryListItem } from "../../components/SummaryList";
+import { BeaconCacheEntry } from "../../lib/formCache";
 import {
-  withCookieRedirect,
   getCache,
   updateFormCache,
+  withCookieRedirect,
 } from "../../lib/middleware";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 interface BeaconDetailsProps {
   manufacturer: string;

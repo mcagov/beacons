@@ -1,12 +1,12 @@
-import React from "react";
+import { DocumentInitialProps } from "next/dist/next-server/lib/utils";
 import Document, {
-  Html,
+  DocumentContext,
   Head,
+  Html,
   Main,
   NextScript,
-  DocumentContext,
 } from "next/document";
-import { DocumentInitialProps } from "next/dist/next-server/lib/utils";
+import React from "react";
 
 class GovUKTemplate extends Document {
   static async getInitialProps(
