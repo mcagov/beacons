@@ -1,36 +1,40 @@
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
-import { Grid } from "../../components/Grid";
-import { Layout } from "../../components/Layout";
-import { Button, BackButton } from "../../components/Button";
+import { BackButton, Button } from "../../components/Button";
+import {
+  FieldErrorList,
+  FormErrorSummary,
+} from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
-  FormLegendPageHeading,
   FormGroup,
   FormHint,
+  FormLegendPageHeading,
 } from "../../components/Form";
+import { Grid } from "../../components/Grid";
+import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { GetServerSideProps } from "next";
-import { withCookieRedirect } from "../../lib/middleware";
-import { FieldValidator } from "../../lib/fieldValidator";
 import { TextAreaCharacterCount } from "../../components/TextArea";
+import { VesselCacheEntry } from "../../lib/formCache";
+import { FormValidator } from "../../lib/formValidator";
+import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
+import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface MoreVesselDetailsProps {
-  moreVesselDetails: string;
+  formData: VesselCacheEntry;
   needsValidation: boolean;
 }
 
-const moreVesselDetailsField = new FieldValidator("moreVesselDetails");
-
-moreVesselDetailsField
-  .should()
-  .containANonEmptyString()
-  .withErrorMessage("More vessel details should not be empty");
-
 const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
-  moreVesselDetails,
+  formData,
+  needsValidation = false,
 }: MoreVesselDetailsProps): JSX.Element => {
-  moreVesselDetailsField.value = moreVesselDetails;
+  formData = ensureFormDataHasKeys(formData, "moreVesselDetails");
+
+  const errors = FormValidator.errorSummary(formData);
+
+  const { moreVesselDetails } = FormValidator.validate(formData);
 
   return (
     <>
@@ -42,13 +46,18 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
         <Grid
           mainContent={
             <>
+              {needsValidation && <FormErrorSummary errors={errors} />}
               <Form action="/register-a-beacon/more-vessel-details">
                 <FormFieldset>
                   <FormLegendPageHeading>
                     Tell us more about the vessel
                   </FormLegendPageHeading>
 
-                  <MoreVesselDetailsTextArea />
+                  <MoreVesselDetailsTextArea
+                    value={formData.moreVesselDetails}
+                    showErrors={needsValidation && moreVesselDetails.invalid}
+                    errorMessages={moreVesselDetails.errorMessages}
+                  />
                 </FormFieldset>
                 <Button buttonText="Continue" />
               </Form>
@@ -61,28 +70,57 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
   );
 };
 
-const MoreVesselDetailsTextArea: FunctionComponent = (): JSX.Element => (
-  <TextAreaCharacterCount
-    name="moreVesselDetails"
-    id="moreVesselDetails"
-    maxCharacters={250}
-    rows={4}
-  >
-    <FormGroup>
+interface MoreVesselDetailsTextAreaProps {
+  value?: string;
+  showErrors: boolean;
+  errorMessages: string[];
+}
+
+const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProps> = ({
+  value = "",
+  showErrors,
+  errorMessages,
+}: MoreVesselDetailsTextAreaProps): JSX.Element => (
+  <FormGroup showErrors={showErrors}>
+    <TextAreaCharacterCount
+      name="moreVesselDetails"
+      id="moreVesselDetails"
+      maxCharacters={250}
+      rows={4}
+      value={value}
+    >
       <FormHint forId="moreVesselDetails">
         Describe the vessel&apos;s appearance (such as the length, colour, if it
         has sails or not etc) and any vessel tracking details (e.g. RYA SafeTrx
         or Web) if you have them. This information is very helpful to Search
         &amp; Rescue when trying to locate you.
       </FormHint>
-    </FormGroup>
-  </TextAreaCharacterCount>
+      {showErrors && <FieldErrorList errorMessages={errorMessages} />}
+    </TextAreaCharacterCount>
+  </FormGroup>
 );
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async () => {
+  async (context: GetServerSidePropsContext) => {
+    const formData: VesselCacheEntry = await updateFormCache(context);
+
+    const userDidSubmitForm = context.req.method === "POST";
+    const formIsValid = !FormValidator.hasErrors(formData);
+
+    if (userDidSubmitForm && formIsValid) {
+      return {
+        redirect: {
+          statusCode: 303,
+          destination: "/register-a-beacon/beacon-information",
+        },
+      };
+    }
+
     return {
-      props: {},
+      props: {
+        formData,
+        needsValidation: userDidSubmitForm,
+      },
     };
   }
 );
