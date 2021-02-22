@@ -37,5 +37,31 @@ describe("Checkbox Components", () => {
       );
       expect(screen.getByText(hintText)).toBeDefined();
     });
+
+    it("should render the conditional element if the conditional property is set", () => {
+      const conditionalText = "Hello Beacons World!";
+
+      render(
+        <CheckboxList>
+          <CheckboxListItem id={id} value="" label={label} conditional={true}>
+            {conditionalText}
+          </CheckboxListItem>
+        </CheckboxList>
+      );
+      expect(screen.getByText(conditionalText)).toBeDefined();
+    });
+
+    it("should not render the conditional element if the conditional property is not set", () => {
+      const conditionalText = "Hello Beacons World!";
+
+      render(
+        <CheckboxList>
+          <CheckboxListItem id={id} value="" label={label}>
+            {conditionalText}
+          </CheckboxListItem>
+        </CheckboxList>
+      );
+      expect(screen.queryByText(conditionalText)).toBeNull();
+    });
   });
 });
