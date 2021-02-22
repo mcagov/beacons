@@ -17,7 +17,7 @@ import {
 import { WarningText } from "../components/WarningText";
 import { setFormSubmissionCookie } from "../lib/middleware";
 
-const ServiceStartPage: FunctionComponent = () => (
+const ServiceStartPage: FunctionComponent = (): JSX.Element => (
   <>
     <Layout navigation={<Breadcrumbs />}>
       <Grid
@@ -38,7 +38,7 @@ const ServiceStartPage: FunctionComponent = () => (
   </>
 );
 
-const Breadcrumbs: FunctionComponent = () => (
+const Breadcrumbs: FunctionComponent = (): JSX.Element => (
   <BreadcrumbList>
     <BreadcrumbListItem>Home</BreadcrumbListItem>
     <BreadcrumbListItem>Section</BreadcrumbListItem>
@@ -46,7 +46,7 @@ const Breadcrumbs: FunctionComponent = () => (
   </BreadcrumbList>
 );
 
-const AboutTheService: FunctionComponent = () => (
+const AboutTheService: FunctionComponent = (): JSX.Element => (
   <>
     <GovUKBody>Use this service to:</GovUKBody>
 
@@ -97,7 +97,7 @@ const AboutTheService: FunctionComponent = () => (
   </>
 );
 
-const RelatedContent: FunctionComponent = () => (
+const RelatedContent: FunctionComponent = (): JSX.Element => (
   <>
     <Aside>
       <McaLogo />
@@ -105,7 +105,7 @@ const RelatedContent: FunctionComponent = () => (
   </>
 );
 
-const OtherWaysToAccessTheService: FunctionComponent = () => (
+const OtherWaysToAccessTheService: FunctionComponent = (): JSX.Element => (
   <>
     <h2 className="govuk-heading-m">Other ways to apply</h2>
 
@@ -137,7 +137,7 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
   </>
 );
 
-const DataProtection: FunctionComponent = () => (
+const DataProtection: FunctionComponent = (): JSX.Element => (
   <>
     <h2 className="govuk-heading-m">Data protection regulations</h2>
 

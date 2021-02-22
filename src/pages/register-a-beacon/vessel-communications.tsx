@@ -66,13 +66,12 @@ export const VesselCommunicationsForm: FunctionComponent = () => (
 const CallSign: FunctionComponent = () => (
   <>
     <FormGroup className="govuk-!-margin-top-4">
-      <FormLabel htmlFor="vesselCallSign">
-        Vessel call sign (optional)
-      </FormLabel>
-      <FormHint forId="vesselCallSign">
-        This is the unique call sign associated to this vessel
-      </FormHint>
-      <Input id="vesselCallSign" name="vesselCallSign" numOfChars={20} />
+      <Input
+        id="vesselCallSign"
+        label="Vessel call sign (optional)"
+        hintText="This is the unique call sign associated to this vessel"
+        numOfChars={20}
+      />
     </FormGroup>
   </>
 );

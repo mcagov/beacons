@@ -10,8 +10,8 @@ interface AnchorLinkProps {
 }
 
 interface GovUKBodyProps {
-  className?: string;
   children: ReactNode;
+  className?: string;
 }
 
 interface GovUKListProps {

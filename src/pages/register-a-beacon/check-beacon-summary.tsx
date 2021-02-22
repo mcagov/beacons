@@ -33,7 +33,7 @@ const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
 
 const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
   props
-) => {
+): JSX.Element => {
   return (
     <>
       <NotificationBannerSuccess title="Beacon details checked">

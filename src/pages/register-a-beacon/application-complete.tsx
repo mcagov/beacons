@@ -7,7 +7,7 @@ import { GovUKBody } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
 import { withCookieRedirect } from "../../lib/middleware";
 
-const ApplicationCompletePage: FunctionComponent = () => (
+const ApplicationCompletePage: FunctionComponent = (): JSX.Element => (
   <>
     <Layout>
       <Grid
@@ -35,7 +35,7 @@ const ApplicationCompletePage: FunctionComponent = () => (
   </>
 );
 
-const ApplicationCompleteWhatNext: FunctionComponent = () => (
+const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
   <>
     <h2 className="govuk-heading-m">What happens next</h2>
     <GovUKBody>
