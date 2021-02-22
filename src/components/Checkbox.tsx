@@ -3,11 +3,7 @@ import { FormGroup, FormHint, FormLabel } from "./Form";
 
 interface CheckboxListProps {
   children: ReactNode;
-}
-
-interface CheckboxListConditionalProps {
-  className?: string;
-  children: ReactNode;
+  conditional?: boolean;
 }
 
 interface CheckboxListItemProps {
@@ -27,22 +23,17 @@ interface CheckboxListItemConditionalProps {
 }
 
 export const CheckboxList: FunctionComponent<CheckboxListProps> = ({
+  conditional = false,
   children,
-}: CheckboxListProps): JSX.Element => (
-  <div className="govuk-checkboxes">{children}</div>
-);
+}: CheckboxListProps): JSX.Element => {
+  const attributes = conditional ? { "data-module": "govuk-checkboxes" } : {};
 
-export const CheckboxListConditional: FunctionComponent<CheckboxListConditionalProps> = ({
-  className = "",
-  children,
-}: CheckboxListConditionalProps): JSX.Element => (
-  <div
-    className={`govuk-checkboxes ${className}`}
-    data-module="govuk-checkboxes"
-  >
-    {children}
-  </div>
-);
+  return (
+    <div className="govuk-checkboxes" {...attributes}>
+      {children}
+    </div>
+  );
+};
 
 export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
   id,

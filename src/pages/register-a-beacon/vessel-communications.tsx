@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import {
-  CheckboxListConditional,
+  CheckboxList,
   CheckboxListItem,
   CheckboxListItemConditional,
 } from "../../components/Checkbox";
@@ -93,7 +93,7 @@ const TypesOfCommunication: FunctionComponent = () => (
     </FormLegend>
 
     <FormGroup>
-      <CheckboxListConditional>
+      <CheckboxList conditional={true}>
         <CheckboxListItem id="vhfRadio" value="" label="VHF Radio" />
 
         <CheckboxListItemConditional
@@ -123,7 +123,7 @@ const TypesOfCommunication: FunctionComponent = () => (
           value=""
           label="Mobile Telephone(s)"
         ></CheckboxListItem>
-      </CheckboxListConditional>
+      </CheckboxList>
     </FormGroup>
   </FormFieldset>
 );
