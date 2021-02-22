@@ -37,6 +37,7 @@ export const Input: FunctionComponent<InputProps> = ({
   let hintComponent: ReactNode;
   if (hintText) {
     hintComponent = <FormHint forId={id}>{hintText}</FormHint>;
+    htmlAttributes = { ...htmlAttributes, "aria-describedby": `${id}-hint` };
   }
 
   return (

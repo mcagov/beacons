@@ -60,7 +60,6 @@ const MaxCapacityInput: FunctionComponent = (): JSX.Element => (
       to send"
       numOfChars={5}
       htmlAttributes={{
-        "aria-describedby": "maxCapacity-hint",
         pattern: "[0-9]*",
         inputMode: "numeric",
       }}
