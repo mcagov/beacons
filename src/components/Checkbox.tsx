@@ -19,14 +19,6 @@ interface CheckboxListItemProps {
   inputHtmlAttributes?: Record<string, string>;
 }
 
-interface CheckboxListItemHintProps {
-  id: string;
-  name: string;
-  value: string;
-  hintText: string;
-  children: ReactNode;
-}
-
 interface CheckboxListItemConditionalProps {
   id: string;
   name: string;
@@ -95,7 +87,7 @@ export const CheckboxListItemConditional: FunctionComponent<CheckboxListItemCond
   checkboxLabel,
   children,
 }: CheckboxListItemConditionalProps): JSX.Element => {
-  const dataAriaControlId: string = `${id}-control`;
+  const dataAriaControlId = `${id}-control`;
 
   return (
     <>
