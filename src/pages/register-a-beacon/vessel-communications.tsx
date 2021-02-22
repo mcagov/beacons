@@ -121,12 +121,30 @@ const TypesOfCommunication: FunctionComponent = () => (
           id="satelliteTelephone"
           value=""
           label="Satellite Telephone"
-        />
+          conditional={true}
+        >
+          <Input
+            id="satelliteTelephoneInput"
+            label="Enter phone number (optional)"
+            hintText="Iridium usually start: +8707, Thuraya usually start: +8821, Globalstar usually start: +3364)"
+          />
+        </CheckboxListItem>
         <CheckboxListItem
           id="mobileTelephone"
           value=""
           label="Mobile Telephone(s)"
-        ></CheckboxListItem>
+          conditional={true}
+        >
+          <Input
+            id="mobileTelephoneInput1"
+            label="Mobile number 1 (optional)"
+            inputClassName="govuk-!-margin-bottom-4"
+          />
+          <Input
+            id="mobileTelephoneInput2"
+            label="Mobile number 2 (optional)"
+          />
+        </CheckboxListItem>
       </CheckboxList>
     </FormGroup>
   </FormFieldset>
