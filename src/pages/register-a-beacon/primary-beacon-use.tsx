@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import {
@@ -16,7 +16,9 @@ import {
   RadioListItemConditional,
   RadioListItemHint,
 } from "../../components/RadioList";
-import { withCookieRedirect } from "../../lib/middleware";
+import { BeaconCacheEntry } from "../../lib/formCache";
+import { FormValidator } from "../../lib/formValidator";
+import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
 import { MaritimePleasureVessel } from "../../lib/types";
 
 const PrimaryBeaconUse: FunctionComponent = (): JSX.Element => (
@@ -103,9 +105,26 @@ const BeaconUseForm: FunctionComponent = (): JSX.Element => (
 );
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async () => {
+  async (context: GetServerSidePropsContext) => {
+    const formData: BeaconCacheEntry = await updateFormCache(context);
+
+    const userDidSubmitForm = context.req.method === "POST";
+    const formIsValid = !FormValidator.hasErrors(formData);
+
+    if (userDidSubmitForm && formIsValid) {
+      return {
+        redirect: {
+          statusCode: 303,
+          destination: "/register-a-beacon/about-the-vessel",
+        },
+      };
+    }
+
     return {
-      props: {},
+      props: {
+        formData,
+        needsValidation: userDidSubmitForm,
+      },
     };
   }
 );
