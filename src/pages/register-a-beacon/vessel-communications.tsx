@@ -74,7 +74,7 @@ const CallSign: FunctionComponent = () => (
     <FormGroup className="govuk-!-margin-top-4">
       <Input
         id="vesselCallSign"
-        labelClass="govuk-label--s"
+        labelClassName="govuk-label--s"
         label="Vessel call sign (optional)"
         hintText="This is the unique call sign associated to this vessel"
         numOfChars={20}
@@ -94,13 +94,12 @@ const TypesOfCommunication: FunctionComponent = () => (
 
     <FormGroup>
       <CheckboxListConditional>
-        <CheckboxListItem id="vhfRadio" name="vhfRadio" value="">
-          VHF Radio
-        </CheckboxListItem>
+        <CheckboxListItem id="vhfRadio" value="" label="VHF Radio" />
+
         <CheckboxListItemConditional
           id="fixedVhfRadio"
           name="fixedVhfRadio"
-          checkboxLabel="Fixed VHF/DSC Radio"
+          label="Fixed VHF/DSC Radio"
         >
           <Input
             id="fixedVhfRadioInput"
@@ -111,21 +110,19 @@ const TypesOfCommunication: FunctionComponent = () => (
         </CheckboxListItemConditional>
         <CheckboxListItem
           id="portableVhfRadio"
-          name="portableVhfRadio"
           value=""
-        >
-          Portable VHF/DSC Radio
-        </CheckboxListItem>
+          label="Portable VHF/DSC Radio"
+        />
         <CheckboxListItem
           id="satelliteTelephone"
-          name="satelliteTelephone"
           value=""
-        >
-          Satellite Telephone
-        </CheckboxListItem>
-        <CheckboxListItem id="mobileTelephone" name="mobileTelephone" value="">
-          Mobile Telephone(s)
-        </CheckboxListItem>
+          label="Satellite Telephone"
+        />
+        <CheckboxListItem
+          id="mobileTelephone"
+          value=""
+          label="Mobile Telephone(s)"
+        ></CheckboxListItem>
       </CheckboxListConditional>
     </FormGroup>
   </FormFieldset>

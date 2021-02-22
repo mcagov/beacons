@@ -13,7 +13,7 @@ interface CheckboxListConditionalProps {
 interface CheckboxListItemProps {
   id: string;
   value: string;
-  children: ReactNode;
+  label: string;
   name?: string;
   hintText?: string;
   inputHtmlAttributes?: Record<string, string>;
@@ -22,7 +22,7 @@ interface CheckboxListItemProps {
 interface CheckboxListItemConditionalProps {
   id: string;
   name: string;
-  checkboxLabel: string;
+  label: string;
   children: ReactNode;
 }
 
@@ -47,7 +47,7 @@ export const CheckboxListConditional: FunctionComponent<CheckboxListConditionalP
 export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
   id,
   value,
-  children,
+  label,
   name = null,
   hintText = null,
   inputHtmlAttributes = {},
@@ -74,7 +74,7 @@ export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
         {...inputHtmlAttributes}
       />
       <FormLabel className="govuk-checkboxes__label" htmlFor={id}>
-        {children}
+        {label}
       </FormLabel>
       {hintComponent}
     </div>
@@ -84,7 +84,7 @@ export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
 export const CheckboxListItemConditional: FunctionComponent<CheckboxListItemConditionalProps> = ({
   id,
   name,
-  checkboxLabel,
+  label,
   children,
 }: CheckboxListItemConditionalProps): JSX.Element => {
   const dataAriaControlId = `${id}-control`;
@@ -95,10 +95,9 @@ export const CheckboxListItemConditional: FunctionComponent<CheckboxListItemCond
         id={id}
         name={name}
         value=""
+        label={label}
         inputHtmlAttributes={{ "data-aria-controls": dataAriaControlId }}
-      >
-        {checkboxLabel}
-      </CheckboxListItem>
+      />
 
       <div
         className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"

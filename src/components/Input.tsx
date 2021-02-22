@@ -11,7 +11,8 @@ interface InputProps {
   name?: string;
   hintText?: string;
   type?: string;
-  labelClass?: string;
+  labelClassName?: string;
+  inputClassName?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   defaultValue?: string;
   numOfChars?: 2 | 3 | 4 | 5 | 10 | 20;
@@ -24,7 +25,8 @@ export const Input: FunctionComponent<InputProps> = ({
   hintText = null,
   type = "text",
   htmlAttributes = {},
-  labelClass = "",
+  labelClassName = "",
+  inputClassName = "",
   defaultValue = "",
   numOfChars = null,
 }: InputProps): JSX.Element => {
@@ -42,13 +44,13 @@ export const Input: FunctionComponent<InputProps> = ({
 
   return (
     <>
-      <FormLabel className={labelClass} htmlFor={id}>
+      <FormLabel className={labelClassName} htmlFor={id}>
         {label}
       </FormLabel>
       {hintComponent}
 
       <input
-        className={`govuk-input ${inputWidthClass}`}
+        className={`govuk-input ${inputClassName} ${inputWidthClass}`}
         id={id}
         name={name}
         type={type}
