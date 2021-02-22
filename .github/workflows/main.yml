@@ -39,13 +39,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: "madetech/mca-beacons-webapp"
+          repository: "mcagov/beacons-webapp"
       - id: get_webapp_commit_hash
         name: Get commit hash from Webapp repo
         run: echo "::set-output name=webapp_commit_hash::$(git rev-parse HEAD)"
       - uses: actions/checkout@v2
         with:
-          repository: "madetech/mca-beacons-service"
+          repository: "mcagov/beacons-service"
       - id: get_service_commit_hash
         name: Get commit hash from Service repo
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"

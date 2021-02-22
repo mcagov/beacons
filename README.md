@@ -5,8 +5,8 @@
 
 This project is the integration project for the MCA Beacons Registration Application. This integration project manages the deployment of the following:
 
-- [Beacons Registration Webapp](https://github.com/madetech/mca-beacons-webapp)
-- [Beacons Registration Service](https://github.com/madetech/mca-beacons-service)
+- [Beacons Registration Webapp](https://github.com/mcagov/beacons-webapp)
+- [Beacons Registration Service](https://github.com/mcagov/beacons-service)
 
 ## Infrastructure-as-code
 
