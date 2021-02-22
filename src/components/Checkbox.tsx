@@ -43,7 +43,7 @@ export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
   name = name ? name : id;
 
   let hintComponent: ReactNode;
-  if (hintComponent) {
+  if (hintText) {
     hintComponent = (
       <FormHint className="govuk-checkboxes__hint" forId={id}>
         {hintText}
