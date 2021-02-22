@@ -10,16 +10,11 @@ interface CheckboxListItemProps {
   id: string;
   value: string;
   label: string;
+  children?: ReactNode;
+  conditional?: boolean;
   name?: string;
   hintText?: string;
   inputHtmlAttributes?: Record<string, string>;
-}
-
-interface CheckboxListItemConditionalProps {
-  id: string;
-  name: string;
-  label: string;
-  children: ReactNode;
 }
 
 export const CheckboxList: FunctionComponent<CheckboxListProps> = ({
@@ -39,6 +34,8 @@ export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
   id,
   value,
   label,
+  children = null,
+  conditional = false,
   name = null,
   hintText = null,
   inputHtmlAttributes = {},
@@ -54,48 +51,42 @@ export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
     );
   }
 
-  return (
-    <div className="govuk-checkboxes__item">
-      <input
-        className="govuk-checkboxes__input"
-        id={id}
-        name={name}
-        type="checkbox"
-        value={value}
-        {...inputHtmlAttributes}
-      />
-      <FormLabel className="govuk-checkboxes__label" htmlFor={id}>
-        {label}
-      </FormLabel>
-      {hintComponent}
-    </div>
-  );
-};
+  let conditionalListItemComponent: ReactNode;
+  if (conditional) {
+    const dataAriaControlId = `${id}-control`;
+    inputHtmlAttributes = {
+      ...inputHtmlAttributes,
+      "data-aria-controls": dataAriaControlId,
+    };
 
-export const CheckboxListItemConditional: FunctionComponent<CheckboxListItemConditionalProps> = ({
-  id,
-  name,
-  label,
-  children,
-}: CheckboxListItemConditionalProps): JSX.Element => {
-  const dataAriaControlId = `${id}-control`;
-
-  return (
-    <>
-      <CheckboxListItem
-        id={id}
-        name={name}
-        value=""
-        label={label}
-        inputHtmlAttributes={{ "data-aria-controls": dataAriaControlId }}
-      />
-
+    conditionalListItemComponent = (
       <div
         className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
         id={dataAriaControlId}
       >
         <FormGroup>{children}</FormGroup>
       </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="govuk-checkboxes__item">
+        <input
+          className="govuk-checkboxes__input"
+          id={id}
+          name={name}
+          type="checkbox"
+          value={value}
+          {...inputHtmlAttributes}
+        />
+        <FormLabel className="govuk-checkboxes__label" htmlFor={id}>
+          {label}
+        </FormLabel>
+        {hintComponent}
+      </div>
+
+      {conditionalListItemComponent}
     </>
   );
 };

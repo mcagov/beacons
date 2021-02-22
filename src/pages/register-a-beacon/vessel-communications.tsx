@@ -1,10 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
-import {
-  CheckboxList,
-  CheckboxListItem,
-  CheckboxListItemConditional,
-} from "../../components/Checkbox";
+import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
 import {
   Form,
   FormFieldset,
@@ -96,10 +92,11 @@ const TypesOfCommunication: FunctionComponent = () => (
       <CheckboxList conditional={true}>
         <CheckboxListItem id="vhfRadio" value="" label="VHF Radio" />
 
-        <CheckboxListItemConditional
+        <CheckboxListItem
           id="fixedVhfRadio"
-          name="fixedVhfRadio"
           label="Fixed VHF/DSC Radio"
+          value=""
+          conditional={true}
         >
           <Input
             id="fixedVhfRadioInput"
@@ -107,12 +104,19 @@ const TypesOfCommunication: FunctionComponent = () => (
             hintText="This is the unique MMSI number associated to the vessel, it is 9
           digits long"
           />
-        </CheckboxListItemConditional>
+        </CheckboxListItem>
         <CheckboxListItem
           id="portableVhfRadio"
           value=""
           label="Portable VHF/DSC Radio"
-        />
+          conditional={true}
+        >
+          <Input
+            id="portableVhfRadioInput"
+            label="Portable MMSI number (optional)"
+            hintText="This is the unique MMSI number associated to the portable radio and is 9 numbers long. E.g. starts with 2359xxxxx"
+          />
+        </CheckboxListItem>
         <CheckboxListItem
           id="satelliteTelephone"
           value=""
