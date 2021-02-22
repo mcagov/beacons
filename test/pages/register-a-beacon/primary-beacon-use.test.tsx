@@ -1,24 +1,26 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { FormValidator } from "../../../src/lib/formValidator";
-import {
-  updateFormCache,
-  withCookieRedirect,
-} from "../../../src/lib/middleware";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import PrimaryBeaconUse, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/primary-beacon-use";
 
+// Mock module dependencies in getServerSideProps
 jest.mock("../../../src/lib/middleware", () => ({
-  // updateFormCache: jest.fn(),
-  withCookieRedirect: jest
-    .fn()
-    .mockImplementation((callback) => async () => callback({})),
+  __esModule: true,
+  updateFormCache: jest.fn().mockReturnValue({}),
+  withCookieRedirect: jest.fn().mockImplementation((callback) => {
+    return async (context) => {
+      return callback(context);
+    };
+  }),
 }));
-
-const mockUpdateFormCache = updateFormCache as jest.Mock;
-const mockWithCookieRedirect = withCookieRedirect as jest.Mock;
+jest.mock("../../../src/lib/formValidator", () => ({
+  __esModule: true,
+  FormValidator: {
+    hasErrors: jest.fn().mockReturnValue(false),
+  },
+}));
 
 describe("PrimaryBeaconUse", () => {
   it("should have a back button which directs the user to the beacon information page", () => {
@@ -40,38 +42,14 @@ describe("PrimaryBeaconUse", () => {
   });
 
   it("should redirect to about-the-vessel page on valid form submission", async () => {
-    jest.mock("../../../src/lib/formValidator");
-
-    FormValidator.hasErrors = jest.fn().mockReturnValue(false);
-
-    // TODO: Don't use require() syntax
-    const MockReq = require("mock-req");
-    const req = new MockReq({
-      method: "POST",
-    });
-
-    const mockUserSubmittedFormContext = () => {
-      return {
-        req: req,
-        cookies: {
-          [formSubmissionCookieId]: "1",
-        },
-      };
+    const mockUserSubmittedFormContext = {
+      req: {
+        method: "POST",
+      },
     };
 
-    // mockWithCookieRedirect.mockReturnValue("a value");
-
-    // mockWithCookieRedirect.mockImplementation((callback) => {
-    //   return "a value";
-    //   // async () => callback(mockUserSubmittedFormContext());
-    // });
-
-    // mockUpdateFormCache.mockReturnValue({});
-
-    console.log(getServerSideProps);
-
     const response = await getServerSideProps(
-      mockUserSubmittedFormContext() as any
+      mockUserSubmittedFormContext as any
     );
 
     expect(response).toStrictEqual({
