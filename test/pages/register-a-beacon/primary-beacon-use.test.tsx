@@ -15,6 +15,17 @@ describe("PrimaryBeaconUse", () => {
     );
   });
 
+  it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
+    const result = render(<PrimaryBeaconUse />);
+    const ownPath = "/register-a-beacon/primary-beacon-use";
+
+    const form = result.container.querySelector("form");
+
+    expect(form).toHaveAttribute("action", ownPath);
+  });
+
+  it("should redirect to about-the-vessel page on successful form submission", () => {});
+
   describe("getServerSideProps()", () => {
     let context;
     beforeEach(() => {
