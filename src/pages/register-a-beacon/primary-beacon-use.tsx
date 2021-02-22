@@ -5,11 +5,10 @@ import {
   Form,
   FormFieldset,
   FormGroup,
-  FormLabel,
   FormLegendPageHeading,
-  Input,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
+import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import {
@@ -20,7 +19,7 @@ import {
 import { withCookieRedirect } from "../../lib/middleware";
 import { MaritimePleasureVessel } from "../../lib/types";
 
-const PrimaryBeaconUse: FunctionComponent = () => (
+const PrimaryBeaconUse: FunctionComponent = (): JSX.Element => (
   <Layout
     navigation={<BackButton href="/register-a-beacon/beacon-information" />}
   >
@@ -36,7 +35,7 @@ const PrimaryBeaconUse: FunctionComponent = () => (
   </Layout>
 );
 
-const BeaconUseForm: FunctionComponent = () => (
+const BeaconUseForm: FunctionComponent = (): JSX.Element => (
   <Form action="/register-a-beacon/primary-beacon-use">
     <FormFieldset>
       <FormLegendPageHeading>
@@ -90,12 +89,10 @@ const BeaconUseForm: FunctionComponent = () => (
       </RadioListItemHint>
       <RadioListItemConditional id="conditional-other-pleasure-vessel">
         <FormGroup>
-          <FormLabel htmlFor="other-pleasure-vessel-text">
-            What sort of vessel is it?
-          </FormLabel>
           <Input
             id="other-pleasure-vessel-text"
-            name="other-pleasure-vessel-text"
+            name="otherPleasureVesselText"
+            label="What sort of vessel is it?"
           />
         </FormGroup>
       </RadioListItemConditional>

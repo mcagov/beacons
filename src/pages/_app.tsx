@@ -6,7 +6,7 @@ import "../styles/globals.scss";
 const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
   Component,
   pageProps,
-}: AppProps) => {
+}: AppProps): JSX.Element => {
   useEffect(() => {
     document.body.className = document.body.className
       ? document.body.className + " js-enabled"

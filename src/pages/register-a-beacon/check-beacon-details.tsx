@@ -10,12 +10,10 @@ import {
   Form,
   FormFieldset,
   FormGroup,
-  FormHint,
-  FormLabel,
   FormLegendPageHeading,
-  Input,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
+import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
@@ -98,9 +96,12 @@ const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
   errorMessages,
 }: FormInputProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
-    <FormLabel htmlFor="manufacturer">Enter your beacon manufacturer</FormLabel>
     {showErrors && <FieldErrorList errorMessages={errorMessages} />}
-    <Input name="manufacturer" id="manufacturer" defaultValue={value} />
+    <Input
+      id="manufacturer"
+      label="Enter your beacon manufacturer"
+      defaultValue={value}
+    />
   </FormGroup>
 );
 
@@ -110,9 +111,8 @@ const BeaconModelInput: FunctionComponent<FormInputProps> = ({
   errorMessages,
 }: FormInputProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
-    <FormLabel htmlFor="model">Enter your beacon model</FormLabel>
     {showErrors && <FieldErrorList errorMessages={errorMessages} />}
-    <Input name="model" id="model" defaultValue={value} />
+    <Input id="model" label="Enter your beacon model" defaultValue={value} />
   </FormGroup>
 );
 
@@ -122,15 +122,12 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   errorMessages,
 }: FormInputProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
-    <FormLabel htmlFor="hexId">Enter the 15 digit beacon HEX ID</FormLabel>
     {showErrors && <FieldErrorList errorMessages={errorMessages} />}
-    <FormHint forId="hexId">
-      This will be on your beacon. It must be 15 characters long and use
-      characters 0-9, A-F
-    </FormHint>
     <Input
-      name="hexId"
       id="hexId"
+      label="Enter the 15 digit beacon HEX ID"
+      hintText="This will be on your beacon. It must be 15 characters long and use
+      characters 0-9, A-F"
       htmlAttributes={{ spellCheck: false }}
       defaultValue={value}
     />

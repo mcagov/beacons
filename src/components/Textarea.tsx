@@ -3,30 +3,34 @@ import React, {
   InputHTMLAttributes,
   ReactNode,
 } from "react";
+import { FormGroup, FormHint, FormLabel } from "./Form";
 
-interface TextAreaProps {
-  name: string;
+interface TextareaProps {
   id: string;
+  name?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   rows?: number;
 }
 
-interface TextAreaCharacterCountProps {
-  name: string;
+interface TextareaCharacterCountProps {
   id: string;
   maxCharacters: number;
+  label?: string;
   value?: string;
+  hintText?: string;
+  name?: string;
   rows?: number;
   htmlAttributes?: InputHTMLAttributes<Element>;
-  children: ReactNode;
 }
 
-export const TextArea: FunctionComponent<TextAreaProps> = ({
+export const Textarea: FunctionComponent<TextareaProps> = ({
   id,
-  name,
+  name = null,
   htmlAttributes = {},
   rows = 3,
-}: TextAreaProps): JSX.Element => {
+}: TextareaProps): JSX.Element => {
+  name = name ? name : id;
+
   return (
     <textarea
       className="govuk-textarea"
@@ -39,22 +43,38 @@ export const TextArea: FunctionComponent<TextAreaProps> = ({
   );
 };
 
-export const TextAreaCharacterCount: FunctionComponent<TextAreaCharacterCountProps> = ({
-  value = "",
-  name,
+export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountProps> = ({
   id,
   maxCharacters,
-  htmlAttributes,
-  rows,
-  children,
-}: TextAreaCharacterCountProps): JSX.Element => {
+  label = null,
+  value = "",
+  hintText = null,
+  name = null,
+  rows = 3,
+  htmlAttributes = {},
+}: TextareaCharacterCountProps): JSX.Element => {
+  name = name ? name : id;
+
+  let labelComponent: ReactNode;
+  if (label) {
+    labelComponent = <FormLabel htmlFor={id}>{label}</FormLabel>;
+  }
+
+  let hintComponent: ReactNode;
+  if (hintText) {
+    hintComponent = <FormHint forId={id}>{hintText}</FormHint>;
+  }
+
   return (
     <div
       className="govuk-character-count"
       data-module="govuk-character-count"
       data-maxlength={maxCharacters}
     >
-      {children}
+      <FormGroup>
+        {labelComponent}
+        {hintComponent}
+      </FormGroup>
       <textarea
         className="govuk-textarea govuk-js-character-count"
         id={id}

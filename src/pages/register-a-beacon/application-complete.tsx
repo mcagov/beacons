@@ -3,10 +3,11 @@ import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
+import { GovUKBody } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
 import { withCookieRedirect } from "../../lib/middleware";
 
-const ApplicationCompletePage: FunctionComponent = () => (
+const ApplicationCompletePage: FunctionComponent = (): JSX.Element => (
   <>
     <Layout>
       <Grid
@@ -17,15 +18,15 @@ const ApplicationCompletePage: FunctionComponent = () => (
             </Panel>
             <ApplicationCompleteWhatNext />
             <WarningText>
-              <p className="govuk-body govuk-!-font-weight-bold">
+              <GovUKBody className="govuk-!-font-weight-bold">
                 You can still use your beacon. Search and Rescue will be able to
                 identify and locate you.
-              </p>
-              <p className="govuk-body govuk-!-font-weight-bold">
+              </GovUKBody>
+              <GovUKBody className="govuk-!-font-weight-bold">
                 Remember your beacon should only be used in an emergency. If
                 needed, you can also contact HM Coastguard 24/7 on Tel: 020 381
                 72630.
-              </p>
+              </GovUKBody>
             </WarningText>
           </>
         }
@@ -34,17 +35,17 @@ const ApplicationCompletePage: FunctionComponent = () => (
   </>
 );
 
-const ApplicationCompleteWhatNext: FunctionComponent = () => (
+const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
   <>
     <h2 className="govuk-heading-m">What happens next</h2>
-    <div className="govuk-body">
+    <GovUKBody>
       We&apos;ve sent your application to register a UK encoded 406MHz beacon to
       The Maritime and Coastguard Beacon Registry office.
-    </div>
-    <div className="govuk-body">
+    </GovUKBody>
+    <GovUKBody>
       They will contact you either to confirm your registration, or to ask for
       more information.
-    </div>
+    </GovUKBody>
   </>
 );
 
