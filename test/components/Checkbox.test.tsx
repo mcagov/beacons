@@ -7,7 +7,6 @@ describe("Checkbox Components", () => {
     let id: string;
     let label: string;
     let hintText: string;
-
     beforeEach(() => {
       id = "mobile-number";
       label = "Enter your mobile number";
