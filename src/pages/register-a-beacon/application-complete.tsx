@@ -7,33 +7,37 @@ import { GovUKBody } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
 import { withCookieRedirect } from "../../lib/middleware";
 
-const ApplicationCompletePage: FunctionComponent = (): JSX.Element => (
-  <>
-    <Layout>
-      <Grid
-        mainContent={
-          <>
-            <Panel title="Application Complete">
-              We have sent you a confirmation email.
-            </Panel>
-            <ApplicationCompleteWhatNext />
-            <WarningText>
-              <GovUKBody className="govuk-!-font-weight-bold">
-                You can still use your beacon. Search and Rescue will be able to
-                identify and locate you.
-              </GovUKBody>
-              <GovUKBody className="govuk-!-font-weight-bold">
-                Remember your beacon should only be used in an emergency. If
-                needed, you can also contact HM Coastguard 24/7 on Tel: 020 381
-                72630.
-              </GovUKBody>
-            </WarningText>
-          </>
-        }
-      />
-    </Layout>
-  </>
-);
+const ApplicationCompletePage: FunctionComponent = (): JSX.Element => {
+  const pageHeading = "Application Complete";
+
+  return (
+    <>
+      <Layout title={pageHeading}>
+        <Grid
+          mainContent={
+            <>
+              <Panel title={pageHeading}>
+                We have sent you a confirmation email.
+              </Panel>
+              <ApplicationCompleteWhatNext />
+              <WarningText>
+                <GovUKBody className="govuk-!-font-weight-bold">
+                  You can still use your beacon. Search and Rescue will be able
+                  to identify and locate you.
+                </GovUKBody>
+                <GovUKBody className="govuk-!-font-weight-bold">
+                  Remember your beacon should only be used in an emergency. If
+                  needed, you can also contact HM Coastguard 24/7 on Tel: 020
+                  381 72630.
+                </GovUKBody>
+              </WarningText>
+            </>
+          }
+        />
+      </Layout>
+    </>
+  );
+};
 
 const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
   <>

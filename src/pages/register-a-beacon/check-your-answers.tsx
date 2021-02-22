@@ -26,9 +26,7 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
         <Grid
           mainContent={
             <>
-              <PageHeading>
-                Check your answers before sending in your registration
-              </PageHeading>
+              <PageHeading>{pageHeading}</PageHeading>
               <BeaconInformation {...beacon} />
               <SendYourApplication />
               <Button buttonText="Accept and send" />

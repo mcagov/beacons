@@ -35,12 +35,15 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
 
   const { moreVesselDetails } = FormValidator.validate(formData);
 
+  const pageHeading = "Tell us more about the vessel";
+
   return (
     <>
       <Layout
         navigation={
           <BackButton href="/register-a-beacon/vessel-communication-details" />
         }
+        title={pageHeading}
       >
         <Grid
           mainContent={
@@ -48,9 +51,7 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
               {needsValidation && <FormErrorSummary errors={errors} />}
               <Form action="/register-a-beacon/more-vessel-details">
                 <FormFieldset>
-                  <FormLegendPageHeading>
-                    Tell us more about the vessel
-                  </FormLegendPageHeading>
+                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <MoreVesselDetailsTextArea
                     value={formData.moreVesselDetails}

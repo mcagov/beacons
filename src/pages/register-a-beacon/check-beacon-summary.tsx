@@ -19,19 +19,34 @@ interface BeaconDetailsProps {
   hexId: string;
 }
 
+interface BeaconDetailsSummaryProps extends BeaconDetailsProps {
+  heading: string;
+}
+
 const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
   props
-): JSX.Element => (
-  <>
-    <Layout
-      navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
-    >
-      <Grid mainContent={<BeaconNotRegisteredView {...props} />} />
-    </Layout>
-  </>
-);
+): JSX.Element => {
+  const pageHeading = "Beacon details checked";
 
-const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
+  return (
+    <>
+      <Layout
+        navigation={
+          <BackButton href="/register-a-beacon/check-beacon-details" />
+        }
+        title={pageHeading}
+      >
+        <Grid
+          mainContent={
+            <BeaconNotRegisteredView {...props} heading={pageHeading} />
+          }
+        />
+      </Layout>
+    </>
+  );
+};
+
+const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsSummaryProps> = (
   props
 ): JSX.Element => {
   return (
@@ -56,13 +71,14 @@ const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
   );
 };
 
-const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
+const BeaconSummary: FunctionComponent<BeaconDetailsSummaryProps> = ({
   manufacturer,
   model,
   hexId,
-}: BeaconDetailsProps): JSX.Element => (
+  heading,
+}: BeaconDetailsSummaryProps): JSX.Element => (
   <>
-    <h1 className="govuk-heading-l">Check beacon summary</h1>
+    <h1 className="govuk-heading-l">{heading}</h1>
     <SummaryList>
       <SummaryListItem
         labelText="Beacon manufacturer"
