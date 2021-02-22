@@ -10,14 +10,17 @@ import {
   FormFieldset,
   FormGroup,
   FormHint,
-  FormLabel,
-  FormLegendPageHeading,
+  FormLegend,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
 import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { AnchorLink } from "../../components/Typography";
+import {
+  AnchorLink,
+  GovUKBody,
+  PageHeading,
+} from "../../components/Typography";
 
 const VesselCommunications: FunctionComponent = (): JSX.Element => (
   <Layout
@@ -26,8 +29,8 @@ const VesselCommunications: FunctionComponent = (): JSX.Element => (
     <Grid
       mainContent={
         <>
+          <PageHeadingInfo />
           <VesselCommunicationsForm />
-
           <IfYouNeedHelp />
         </>
       }
@@ -35,26 +38,29 @@ const VesselCommunications: FunctionComponent = (): JSX.Element => (
   </Layout>
 );
 
-export const VesselCommunicationsForm: FunctionComponent = () => (
+const PageHeadingInfo: FunctionComponent = () => (
+  <>
+    <PageHeading>
+      What types of communications are on board the vessel?
+    </PageHeading>
+
+    <GovUKBody>
+      Details about the onboard communications will be critical for Search and
+      Rescue when trying to contact you in an emergency.
+    </GovUKBody>
+    <GovUKBody>
+      If you have a radio license and have a Very High Frequency (VHF) and/or
+      Very High Frequency (VHF) / Digital Selective Calling (DSC) radio, you can
+      <AnchorLink href="https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio">
+        find up your Call Sign and Maritime Mobile Service Identity (MMSI)
+        number on the OFCOM website.
+      </AnchorLink>
+    </GovUKBody>
+  </>
+);
+
+const VesselCommunicationsForm: FunctionComponent = () => (
   <Form action="/register-a-beacon/vessel-communications">
-    <FormFieldset ariaDescribedBy="vessel-hint">
-      <FormLegendPageHeading>
-        What types of communications are on board the vessel?
-      </FormLegendPageHeading>
-
-      <FormHint forId="vessel-hint">
-        Details about the onboard communications will be critical for Search{" "}
-        {"&"} Rescue when trying to contact you in an emergency.
-      </FormHint>
-
-      <FormHint forId="vessel-hint">
-        If you have a radio license and have a VHF and/or VHF/DSC radio, you can{" "}
-        <AnchorLink href="https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio">
-          look up your call sign and MMSI number on the OFCOM website.
-        </AnchorLink>
-      </FormHint>
-    </FormFieldset>
-
     <CallSign />
 
     <TypesOfCommunication />
@@ -68,6 +74,7 @@ const CallSign: FunctionComponent = () => (
     <FormGroup className="govuk-!-margin-top-4">
       <Input
         id="vesselCallSign"
+        labelClass="govuk-label--s"
         label="Vessel call sign (optional)"
         hintText="This is the unique call sign associated to this vessel"
         numOfChars={20}
@@ -77,46 +84,51 @@ const CallSign: FunctionComponent = () => (
 );
 
 const TypesOfCommunication: FunctionComponent = () => (
-  <FormGroup>
-    <FormLabel htmlFor="typesOfCommunication">
+  <FormFieldset>
+    <FormLegend className="govuk-fieldset__legend--s">
       Types of communication devices onboard
-    </FormLabel>
+      <FormHint forId="typesOfCommunication">
+        Tick all that apply and provide as much detail as you can
+      </FormHint>
+    </FormLegend>
 
-    <FormHint forId="typesOfCommunication">
-      Tick all that apply and provide as much detail as you can
-    </FormHint>
-
-    <CheckboxListConditional>
-      <CheckboxListItem id="vhfRadio" name="vhfRadio" value="">
-        VHF Radio
-      </CheckboxListItem>
-      <CheckboxListItemConditional
-        id="fixedVhfRadio"
-        name="fixedVhfRadio"
-        checkboxLabel="Fixed VHF/DSC Radio"
-      >
-        <Input
-          id="fixedVhfRadioInput"
-          label="Fixed MMSI number (optional)"
-          hintText="This is the unique MMSI number associated to the vessel, it is 9
+    <FormGroup>
+      <CheckboxListConditional>
+        <CheckboxListItem id="vhfRadio" name="vhfRadio" value="">
+          VHF Radio
+        </CheckboxListItem>
+        <CheckboxListItemConditional
+          id="fixedVhfRadio"
+          name="fixedVhfRadio"
+          checkboxLabel="Fixed VHF/DSC Radio"
+        >
+          <Input
+            id="fixedVhfRadioInput"
+            label="Fixed MMSI number (optional)"
+            hintText="This is the unique MMSI number associated to the vessel, it is 9
           digits long"
-        />
-      </CheckboxListItemConditional>
-      <CheckboxListItem id="portableVhfRadio" name="portableVhfRadio" value="">
-        Portable VHF/DSC Radio
-      </CheckboxListItem>
-      <CheckboxListItem
-        id="satelliteTelephone"
-        name="satelliteTelephone"
-        value=""
-      >
-        Satellite Telephone
-      </CheckboxListItem>
-      <CheckboxListItem id="mobileTelephone" name="mobileTelephone" value="">
-        Mobile Telephone(s)
-      </CheckboxListItem>
-    </CheckboxListConditional>
-  </FormGroup>
+          />
+        </CheckboxListItemConditional>
+        <CheckboxListItem
+          id="portableVhfRadio"
+          name="portableVhfRadio"
+          value=""
+        >
+          Portable VHF/DSC Radio
+        </CheckboxListItem>
+        <CheckboxListItem
+          id="satelliteTelephone"
+          name="satelliteTelephone"
+          value=""
+        >
+          Satellite Telephone
+        </CheckboxListItem>
+        <CheckboxListItem id="mobileTelephone" name="mobileTelephone" value="">
+          Mobile Telephone(s)
+        </CheckboxListItem>
+      </CheckboxListConditional>
+    </FormGroup>
+  </FormFieldset>
 );
 
 export default VesselCommunications;

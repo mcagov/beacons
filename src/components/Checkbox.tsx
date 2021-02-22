@@ -12,9 +12,10 @@ interface CheckboxListConditionalProps {
 
 interface CheckboxListItemProps {
   id: string;
-  name: string;
   value: string;
   children: ReactNode;
+  name?: string;
+  hintText?: string;
   inputHtmlAttributes?: Record<string, string>;
 }
 
@@ -53,51 +54,40 @@ export const CheckboxListConditional: FunctionComponent<CheckboxListConditionalP
 
 export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
   id,
-  name,
   value,
   children,
+  name = null,
+  hintText = null,
   inputHtmlAttributes = {},
-}: CheckboxListItemProps): JSX.Element => (
-  <div className="govuk-checkboxes__item">
-    <input
-      className="govuk-checkboxes__input"
-      id={id}
-      name={name}
-      type="checkbox"
-      value={value}
-      {...inputHtmlAttributes}
-    />
-    <FormLabel className="govuk-checkboxes__label" htmlFor={id}>
-      {children}
-    </FormLabel>
-  </div>
-);
+}: CheckboxListItemProps): JSX.Element => {
+  name = name ? name : id;
 
-export const CheckboxListItemHint: FunctionComponent<CheckboxListItemHintProps> = ({
-  id,
-  name,
-  value,
-  hintText,
-  children,
-}: CheckboxListItemHintProps): JSX.Element => (
-  <div className="govuk-checkboxes__item">
-    <input
-      className="govuk-checkboxes__input"
-      id={id}
-      name={name}
-      type="checkbox"
-      value={value}
-      aria-describedby={`${id}-hint`}
-    />
-    <FormLabel className="govuk-checkboxes__label" htmlFor={id}>
-      {children}
-    </FormLabel>
+  let hintComponent: ReactNode;
+  if (hintComponent) {
+    hintComponent = (
+      <FormHint className="govuk-checkboxes__hint" forId={id}>
+        {hintText}
+      </FormHint>
+    );
+  }
 
-    <FormHint className="govuk-checkboxes__hint" forId={id}>
-      {hintText}
-    </FormHint>
-  </div>
-);
+  return (
+    <div className="govuk-checkboxes__item">
+      <input
+        className="govuk-checkboxes__input"
+        id={id}
+        name={name}
+        type="checkbox"
+        value={value}
+        {...inputHtmlAttributes}
+      />
+      <FormLabel className="govuk-checkboxes__label" htmlFor={id}>
+        {children}
+      </FormLabel>
+      {hintComponent}
+    </div>
+  );
+};
 
 export const CheckboxListItemConditional: FunctionComponent<CheckboxListItemConditionalProps> = ({
   id,
