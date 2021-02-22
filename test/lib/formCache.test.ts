@@ -1,9 +1,9 @@
+import { v4 as uuidv4 } from "uuid";
 import {
   BeaconCacheEntry,
   FormCacheFactory,
   IFormCache,
 } from "../../src/lib/formCache";
-import { v4 as uuidv4 } from "uuid";
 
 describe("FormCache", () => {
   let cache: IFormCache;

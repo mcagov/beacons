@@ -8,3 +8,17 @@ export function toArray<T>(toConvert: T | T[]): T[] {
   const toReturn = toConvert instanceof Array ? toConvert : [toConvert];
   return toReturn.filter((value: T) => !!value);
 }
+
+export const ensureFormDataHasKeys = (
+  formData: Record<string, string>,
+  ...keys: string[]
+): Record<string, string> => {
+  const newFormData = { ...formData };
+  keys.forEach((key: string) => {
+    if (!newFormData[key]) {
+      newFormData[key] = "";
+    }
+  });
+
+  return newFormData;
+};

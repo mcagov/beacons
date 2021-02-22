@@ -28,4 +28,8 @@ export interface Beacon {
   lastServicedDate: string;
 }
 
+export interface Vessel {
+  moreVesselDetails: string;
+}
+
 export const formSubmissionCookieId = "submissionId";

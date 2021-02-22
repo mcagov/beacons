@@ -15,6 +15,7 @@ interface TextAreaCharacterCountProps {
   name: string;
   id: string;
   maxCharacters: number;
+  value?: string;
   rows?: number;
   htmlAttributes?: InputHTMLAttributes<Element>;
   children: ReactNode;
@@ -39,6 +40,7 @@ export const TextArea: FunctionComponent<TextAreaProps> = ({
 };
 
 export const TextAreaCharacterCount: FunctionComponent<TextAreaCharacterCountProps> = ({
+  value = "",
   name,
   id,
   maxCharacters,
@@ -60,6 +62,7 @@ export const TextAreaCharacterCount: FunctionComponent<TextAreaCharacterCountPro
         rows={rows}
         aria-describedby={`${id}-hint ${id}-info`}
         {...htmlAttributes}
+        defaultValue={value}
       />
       <div
         id={`${id}-info`}

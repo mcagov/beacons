@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from "react";
-
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";
 import { BeaconRegistryContactInfo } from "../components/Mca";

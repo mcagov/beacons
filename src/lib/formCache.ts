@@ -1,9 +1,11 @@
-import { Beacon, BeaconIntent } from "./types";
+import { Beacon, BeaconIntent, Vessel } from "./types";
 
 // Convenience type
 export type BeaconCacheEntry = Partial<Beacon> & {
   beaconIntent?: BeaconIntent;
 };
+
+export type VesselCacheEntry = Partial<Vessel>;
 
 export interface IFormCache {
   update(id: string, formData?: BeaconCacheEntry): void;
