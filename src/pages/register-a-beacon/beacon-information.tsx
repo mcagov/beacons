@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import {
@@ -21,7 +21,8 @@ import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { withCookieRedirect } from "../../lib/middleware";
+import { BeaconCacheEntry } from "../../lib/formCache";
+import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
 
 const BeaconInformationPage: FunctionComponent = (): JSX.Element => (
   <>
@@ -120,7 +121,7 @@ const BeaconBatteryExpiryDate: FunctionComponent = (): JSX.Element => (
           id="beaconBatteryExpiryDateMonth"
           name="beaconBatteryExpiryDateonth"
           dateType={DateType.MONTH}
-        ></DateInput>
+        />
       </FormGroup>
     </DateListItem>
 
@@ -136,7 +137,7 @@ const BeaconBatteryExpiryDate: FunctionComponent = (): JSX.Element => (
           id="beaconBatteryExpiryDateYear"
           name="beaconBatteryExpiryDateYear"
           dateType={DateType.YEAR}
-        ></DateInput>
+        />
       </FormGroup>
     </DateListItem>
   </DateListInput>
@@ -165,7 +166,7 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
           id="beaconLastServicedDateMonth"
           name="beaconLastServicedDateMonth"
           dateType={DateType.MONTH}
-        ></DateInput>
+        />
       </FormGroup>
     </DateListItem>
 
@@ -181,16 +182,35 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
           id="beaconLastServicedDateYear"
           name="beaconLastServicedDateYear"
           dateType={DateType.YEAR}
-        ></DateInput>
+        />
       </FormGroup>
     </DateListItem>
   </DateListInput>
 );
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async () => {
+  async (context: GetServerSidePropsContext) => {
+    const formData: BeaconCacheEntry = await updateFormCache(context);
+
+    const userDidSubmitForm = context.req.method === "POST";
+    // TODO: Add form validation to this page
+    // const formIsValid = !FormValidator.hasErrors(formData);
+    const formIsValid = true;
+
+    if (userDidSubmitForm && formIsValid) {
+      return {
+        redirect: {
+          statusCode: 303,
+          destination: "/register-a-beacon/primary-beacon-use",
+        },
+      };
+    }
+
     return {
-      props: {},
+      props: {
+        formData,
+        needsValidation: userDidSubmitForm,
+      },
     };
   }
 );
