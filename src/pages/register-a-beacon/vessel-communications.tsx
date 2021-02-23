@@ -71,8 +71,8 @@ const CallSign: FunctionComponent = () => (
       <Input
         id="vesselCallSign"
         labelClassName="govuk-label--s"
-        label="Vessel call sign (optional)"
-        hintText="This is the unique call sign associated to this vessel"
+        label="Vessel Call Sign (optional)"
+        hintText="This is the unique Call Sign associated to this vessel"
         numOfChars={20}
       />
     </FormGroup>
