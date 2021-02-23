@@ -42,7 +42,7 @@ const BeaconInformationPage: FunctionComponent = (): JSX.Element => {
               <FormFieldset>
                 <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                 <InsetText>
-                  Further information about your beacon is useful for Search &
+                  Further information about your beacon is useful for Search and
                   Rescue. Provide as much information you can find.
                 </InsetText>
 
@@ -95,8 +95,9 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
       className="govuk-!-padding-top-2"
       summaryText="What is the beacon CHK code?"
     >
-      TODO: Details text explaining what a CHK code is and where the user can
-      find it.
+      If the beacon manufacturer uses a CHK code, it will be written on the
+      manufacturers card underneath the Hex ID or UIN and serial number. An
+      example is: CHK: 9480B
     </Details>
   </FormGroup>
 );
