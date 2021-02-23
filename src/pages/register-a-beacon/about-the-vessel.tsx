@@ -89,7 +89,7 @@ const AreaOfOperationTextArea: FunctionComponent = (): JSX.Element => (
   <TextareaCharacterCount
     id="areaOfOperation"
     label="Tell us about the typical area of operation (optional)"
-    hintText="Typical areas of operation for the vessel is very helpful in assisting Search & Rescue. For example 'Whitesands Bay, St Davids, Pembrokeshire'"
+    hintText="Typical areas of operation for the vessel is very helpful in assisting Search and Rescue. For example 'Whitesands Bay, St Davids, Pembrokeshire'"
     maxCharacters={250}
     rows={4}
   />
