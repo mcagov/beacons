@@ -3,6 +3,7 @@ import {
   BeaconManufacturerValidator,
   BeaconModelValidator,
   MaritimePleasureVesselUseValidator,
+  OtherPleasureVesselTextValidator,
 } from "../../src/lib/fieldValidators";
 
 describe("BeaconModelValidator", () => {
@@ -127,6 +128,22 @@ describe("MaritimePleasureVesselUseValidator", () => {
         expect(validationResponse.valid).toBe(false);
         expect(validationResponse.errorMessages.length).toBe(1);
       });
+    });
+  });
+});
+
+describe("OtherPleasureVesselTextValidator", () => {
+  describe("validate", () => {
+    it("should return false if value is an empty string", () => {
+      const otherPleasureVesselTextValidator = new OtherPleasureVesselTextValidator();
+      const invalidValue = "";
+
+      const validationResponse = otherPleasureVesselTextValidator.validate(
+        invalidValue
+      );
+
+      expect(validationResponse.valid).toBe(false);
+      expect(validationResponse.errorMessages.length).toBe(1);
     });
   });
 });

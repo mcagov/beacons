@@ -38,6 +38,10 @@ describe("handlePageRequest()", () => {
     });
   });
 
+  xit("should return a props object with errors on invalid form submission", () => {
+    // TODO
+  });
+
   it("should return a props object when receives a GET request", async () => {
     const mockUserAccessedPageWithGETRequest = {
       req: {

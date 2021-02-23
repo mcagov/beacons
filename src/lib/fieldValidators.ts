@@ -112,10 +112,23 @@ export class MaritimePleasureVesselUseValidator extends FieldValidator {
   }
 }
 
+export class OtherPleasureVesselTextValidator extends FieldValidator {
+  constructor() {
+    super();
+    this._rules = [
+      {
+        errorMessage: "Other pleasure vessel text is a required field",
+        predicateFn: (value) => value.length === 0,
+      },
+    ];
+  }
+}
+
 export const fieldValidatorLookup = {
   manufacturer: new BeaconManufacturerValidator(),
   model: new BeaconModelValidator(),
   hexId: new BeaconHexIdValidator(),
   moreVesselDetails: new MoreVesselDetailsValidator(),
   maritimePleasureVesselUse: new MaritimePleasureVesselUseValidator(),
+  otherPleasureVesselText: new OtherPleasureVesselTextValidator(),
 };
