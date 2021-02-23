@@ -64,11 +64,11 @@ describe("BeaconHexIdValidator", () => {
       beaconHexIdValidator = new BeaconHexIdValidator();
     });
 
-    const assertHasErrors = (value: string): void => {
+    const assertHasErrors = (value: string, numberOfErrors: number): void => {
       const validationResponse = beaconHexIdValidator.validate(value);
 
       expect(validationResponse.valid).toBe(false);
-      expect(validationResponse.errorMessages.length).toBe(1);
+      expect(validationResponse.errorMessages.length).toBe(numberOfErrors);
     };
 
     const assertNoErrors = (value: string): void => {
@@ -78,20 +78,20 @@ describe("BeaconHexIdValidator", () => {
       expect(validationResponse.errorMessages.length).toBe(0);
     };
 
-    it("should have an error if no value provided", () => {
-      assertHasErrors("");
+    it("should have errors if no value provided", () => {
+      assertHasErrors("", 2);
     });
 
     it("should have an error if the value is shorter than 15 characters", () => {
-      assertHasErrors("123456879");
+      assertHasErrors("123456879", 1);
     });
 
     it("should have an error if the value contains non hex characters but is 15 characters long", () => {
-      assertHasErrors("0a1b2c3d4e5fa6x");
+      assertHasErrors("0a1b2c3d4e5fa6x", 1);
     });
 
     it("should have an error if the value is longer than 15 characters", () => {
-      assertHasErrors("0123456789123456789");
+      assertHasErrors("0123456789123456789", 1);
     });
 
     it("should return true if only 15 numbers", () => {
