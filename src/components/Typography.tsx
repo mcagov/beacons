@@ -32,8 +32,8 @@ export const AnchorLink: FunctionComponent<AnchorLinkProps> = ({
 );
 
 export const GovUKBody: FunctionComponent<GovUKBodyProps> = ({
-  children,
   className = "",
+  children,
 }: GovUKBodyProps): JSX.Element => (
   <p className={`govuk-body ${className}`}>{children}</p>
 );

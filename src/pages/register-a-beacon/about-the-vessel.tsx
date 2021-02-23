@@ -58,7 +58,6 @@ const MaxCapacityInput: FunctionComponent = (): JSX.Element => (
       hintText="Knowing the maximum number of persons likely to be onboard the vessel helps Search and Rescue know how many people to look for and what resources to send"
       numOfChars={5}
       htmlAttributes={{
-        "aria-describedby": "maxCapacity-hint",
         pattern: "[0-9]*",
         inputMode: "numeric",
       }}
