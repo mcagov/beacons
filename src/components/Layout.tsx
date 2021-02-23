@@ -57,7 +57,7 @@ const BeaconRegistrationHead: FunctionComponent<BeaconRegistrationHeadProps> = (
   title,
   pageHasErrors = false,
 }: BeaconRegistrationHeadProps) => {
-  const headTitle = pageHasErrors ? `Error: ${title}` : `${title}`;
+  const headTitle = pageHasErrors ? `Error: ${title}` : title;
 
   return (
     <Head>

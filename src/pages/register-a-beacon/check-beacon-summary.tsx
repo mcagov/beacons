@@ -6,6 +6,7 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
+import { PageHeading } from "../../components/Typography";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import {
   getCache,
@@ -78,7 +79,7 @@ const BeaconSummary: FunctionComponent<BeaconDetailsSummaryProps> = ({
   heading,
 }: BeaconDetailsSummaryProps): JSX.Element => (
   <>
-    <h1 className="govuk-heading-l">{heading}</h1>
+    <PageHeading>{heading}</PageHeading>
     <SummaryList>
       <SummaryListItem
         labelText="Beacon manufacturer"
