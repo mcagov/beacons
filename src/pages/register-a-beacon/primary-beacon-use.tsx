@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
+import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
@@ -46,6 +47,7 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
       <Grid
         mainContent={
           <>
+            {needsValidation && <FormErrorSummary errors={errors} />}
             <BeaconUseForm checkedValue={formData.maritimePleasureVesselUse} />
 
             <IfYouNeedHelp />
