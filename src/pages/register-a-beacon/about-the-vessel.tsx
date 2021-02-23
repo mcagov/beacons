@@ -55,9 +55,7 @@ const MaxCapacityInput: FunctionComponent = (): JSX.Element => (
     <Input
       id="maxCapacity"
       label="Enter the maximum number of persons aboard"
-      hintText="Knowing the maximum number of persons likely to be onboard the vessel
-      helps Search & Rescue know how many people to look for and what resources
-      to send"
+      hintText="Knowing the maximum number of persons likely to be onboard the vessel helps Search and Rescue know how many people to look for and what resources to send"
       numOfChars={5}
       htmlAttributes={{
         "aria-describedby": "maxCapacity-hint",
@@ -79,8 +77,7 @@ const HomeportInput: FunctionComponent = (): JSX.Element => (
     <Input
       id="homeport"
       label="Enter the Homeport for the vessel (optional)"
-      hintText="This is the name of the port where your vessel is registered and primarily
-      operates from"
+      hintText="This is the name of the port where your vessel is registered and primarily operates from"
     />
   </FormGroup>
 );
@@ -89,9 +86,7 @@ const AreaOfOperationTextArea: FunctionComponent = (): JSX.Element => (
   <TextareaCharacterCount
     id="areaOfOperation"
     label="Tell us about the typical area of operation (optional)"
-    hintText='Typical areas of operation for the vessel is very helpful in assisting
-    Search & Rescue. For example "Whitesands Bay, St Davids,
-    Pembrokeshire"'
+    hintText="Typical areas of operation for the vessel is very helpful in assisting Search & Rescue. For example 'Whitesands Bay, St Davids, Pembrokeshire'"
     maxCharacters={250}
     rows={4}
   />
