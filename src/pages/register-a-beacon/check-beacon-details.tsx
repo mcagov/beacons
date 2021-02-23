@@ -56,9 +56,8 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
                     Check beacon details
                   </FormLegendPageHeading>
                   <InsetText>
-                    The details of your beacon must be checked to ensure they
-                    have a UK encoding and if they are already registered with
-                    this service.
+                    The details of your beacon must be checked to ensure it is
+                    programmed for UK registration.
                   </InsetText>
 
                   <BeaconManufacturerInput
@@ -125,14 +124,14 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
     {showErrors && <FieldErrorList errorMessages={errorMessages} />}
     <Input
       id="hexId"
-      label="Enter the 15 digit beacon HEX ID"
+      label="Enter the 15 character beacon HEX ID or UIN number"
       hintText="This will be on your beacon. It must be 15 characters long and use
-      characters 0-9, A-F"
+      characters 0 to 9 and letters A to F"
       htmlAttributes={{ spellCheck: false }}
       defaultValue={value}
     />
     <Details
-      summaryText="What does the 15 digit beacon HEX ID look like?"
+      summaryText="What does the 15 character beacon HEX ID or UIN look like?"
       className="govuk-!-padding-top-2"
     >
       TODO: Explain to users how to find their beacon HEX ID
