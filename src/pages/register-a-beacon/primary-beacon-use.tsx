@@ -2,6 +2,10 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import {
+  FieldErrorList,
+  FormErrorSummary,
+} from "../../components/ErrorSummary";
+import {
   Form,
   FormFieldset,
   FormGroup,
@@ -19,6 +23,7 @@ import {
 import { VesselCacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
 import { handlePageRequest } from "../../lib/handlePageRequest";
+import { updateFormCache } from "../../lib/middleware";
 import { MaritimePleasureVessel } from "../../lib/types";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
@@ -46,7 +51,16 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
       <Grid
         mainContent={
           <>
-            <BeaconUseForm checkedValue={formData.maritimePleasureVesselUse} />
+            {needsValidation && <FormErrorSummary errors={errors} />}
+            <BeaconUseForm
+              checkedValue={formData.maritimePleasureVesselUse}
+              formData={formData}
+              showErrors={needsValidation && FormValidator.hasErrors(formData)}
+              errorMessages={
+                FormValidator.validate(formData).maritimePleasureVesselUse
+                  .errorMessages
+              }
+            />
 
             <IfYouNeedHelp />
           </>
@@ -57,11 +71,17 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
 };
 
 interface BeaconUseFormProps {
+  formData: VesselCacheEntry;
   checkedValue: string | null;
+  showErrors: boolean;
+  errorMessages: string[];
 }
 
 const BeaconUseForm: FunctionComponent<BeaconUseFormProps> = ({
+  formData,
   checkedValue = null,
+  showErrors,
+  errorMessages,
 }: BeaconUseFormProps): JSX.Element => {
   const setCheckedIfUserSelected = (userSelectedValue, componentValue) => {
     return {
@@ -71,96 +91,102 @@ const BeaconUseForm: FunctionComponent<BeaconUseFormProps> = ({
 
   return (
     <Form action="/register-a-beacon/primary-beacon-use">
-      <FormFieldset>
-        <FormLegendPageHeading>
-          What type of maritime pleasure vessel will you mostly use this beacon
-          on?
-        </FormLegendPageHeading>
-      </FormFieldset>
-      <RadioListConditional>
-        <RadioListItemHint
-          id="motor-vessel"
-          name="maritimePleasureVesselUse"
-          value={MaritimePleasureVessel.MOTOR}
-          hintText="E.g. Speedboat, RIB"
-          inputHtmlAttributes={setCheckedIfUserSelected(
-            checkedValue,
-            MaritimePleasureVessel.MOTOR
-          )}
-        >
-          Motor vessel
-        </RadioListItemHint>
-        <RadioListItemHint
-          id="sailing-vessel"
-          name="maritimePleasureVesselUse"
-          value={MaritimePleasureVessel.SAILING}
-          hintText="E.g. Skiff, Dinghy, Yacht, Catamaran"
-          inputHtmlAttributes={setCheckedIfUserSelected(
-            checkedValue,
-            MaritimePleasureVessel.SAILING
-          )}
-        >
-          Sailing vessel
-        </RadioListItemHint>
-        <RadioListItemHint
-          id="rowing-vessel"
-          name="maritimePleasureVesselUse"
-          value={MaritimePleasureVessel.ROWING}
-          hintText="E.g. Single person rowing boat, Cornish Gig, Multi-person rowing boat"
-          inputHtmlAttributes={setCheckedIfUserSelected(
-            checkedValue,
-            MaritimePleasureVessel.ROWING
-          )}
-        >
-          Rowing vessel
-        </RadioListItemHint>
-        <RadioListItemHint
-          id="small-unpowered-vessel"
-          name="maritimePleasureVesselUse"
-          value={MaritimePleasureVessel.SMALL_UNPOWERED}
-          hintText="E.g. Canoe, Kayak"
-          inputHtmlAttributes={setCheckedIfUserSelected(
-            checkedValue,
-            MaritimePleasureVessel.SMALL_UNPOWERED
-          )}
-        >
-          Small unpowered vessel
-        </RadioListItemHint>
-        <RadioListItemHint
-          id="other-pleasure-vessel"
-          name="maritimePleasureVesselUse"
-          value={MaritimePleasureVessel.OTHER}
-          hintText="E.g. Surfboard, Kitesurfing"
-          inputHtmlAttributes={{
-            ...{
-              "data-aria-controls": "conditional-other-pleasure-vessel",
-            },
-            ...setCheckedIfUserSelected(
+      <FormGroup showErrors={showErrors}>
+        <FormFieldset>
+          <FormLegendPageHeading>
+            What type of maritime pleasure vessel will you mostly use this
+            beacon on?
+          </FormLegendPageHeading>
+        </FormFieldset>
+        {showErrors && <FieldErrorList errorMessages={errorMessages} />}
+        <RadioListConditional>
+          <RadioListItemHint
+            id="motor-vessel"
+            name="maritimePleasureVesselUse"
+            value={MaritimePleasureVessel.MOTOR}
+            hintText="E.g. Speedboat, RIB"
+            inputHtmlAttributes={setCheckedIfUserSelected(
               checkedValue,
-              MaritimePleasureVessel.OTHER
-            ),
-          }}
-        >
-          Other pleasure vessel
-        </RadioListItemHint>
-        <RadioListItemConditional id="conditional-other-pleasure-vessel">
-          <FormGroup>
-            <Input
-              id="other-pleasure-vessel-text"
-              name="otherPleasureVesselText"
-              label="What sort of vessel is it?"
-            />
-          </FormGroup>
-        </RadioListItemConditional>
-      </RadioListConditional>
+              MaritimePleasureVessel.MOTOR
+            )}
+          >
+            Motor vessel
+          </RadioListItemHint>
+          <RadioListItemHint
+            id="sailing-vessel"
+            name="maritimePleasureVesselUse"
+            value={MaritimePleasureVessel.SAILING}
+            hintText="E.g. Skiff, Dinghy, Yacht, Catamaran"
+            inputHtmlAttributes={setCheckedIfUserSelected(
+              checkedValue,
+              MaritimePleasureVessel.SAILING
+            )}
+          >
+            Sailing vessel
+          </RadioListItemHint>
+          <RadioListItemHint
+            id="rowing-vessel"
+            name="maritimePleasureVesselUse"
+            value={MaritimePleasureVessel.ROWING}
+            hintText="E.g. Single person rowing boat, Cornish Gig, Multi-person rowing boat"
+            inputHtmlAttributes={setCheckedIfUserSelected(
+              checkedValue,
+              MaritimePleasureVessel.ROWING
+            )}
+          >
+            Rowing vessel
+          </RadioListItemHint>
+          <RadioListItemHint
+            id="small-unpowered-vessel"
+            name="maritimePleasureVesselUse"
+            value={MaritimePleasureVessel.SMALL_UNPOWERED}
+            hintText="E.g. Canoe, Kayak"
+            inputHtmlAttributes={setCheckedIfUserSelected(
+              checkedValue,
+              MaritimePleasureVessel.SMALL_UNPOWERED
+            )}
+          >
+            Small unpowered vessel
+          </RadioListItemHint>
+          <RadioListItemHint
+            id="other-pleasure-vessel"
+            name="maritimePleasureVesselUse"
+            value={MaritimePleasureVessel.OTHER}
+            hintText="E.g. Surfboard, Kitesurfing"
+            inputHtmlAttributes={{
+              ...{
+                "data-aria-controls": "conditional-other-pleasure-vessel",
+              },
+              ...setCheckedIfUserSelected(
+                checkedValue,
+                MaritimePleasureVessel.OTHER
+              ),
+            }}
+          >
+            Other pleasure vessel
+          </RadioListItemHint>
+          <RadioListItemConditional id="conditional-other-pleasure-vessel">
+            <FormGroup>
+              <Input
+                id="other-pleasure-vessel-text"
+                name="otherPleasureVesselText"
+                label="What sort of vessel is it?"
+                defaultValue={formData.otherPleasureVesselText}
+              />
+            </FormGroup>
+          </RadioListItemConditional>
+        </RadioListConditional>
+      </FormGroup>
 
       <Button buttonText="Continue" />
     </Form>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/about-the-vessel"
-);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const formData = await updateFormCache(context);
+
+  return handlePageRequest("/register-a-beacon/about-the-vessel")(context);
+};
 
 export default PrimaryBeaconUse;
