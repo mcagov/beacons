@@ -1,26 +1,4 @@
-import { GetServerSidePropsContext } from "next";
-import {
-  ensureFormDataHasKeys,
-  handleFormSubmission,
-  toArray,
-} from "../../src/lib/utils";
-
-// Mock module dependencies in getServerSideProps for testing handleFormSubmission()
-jest.mock("../../src/lib/middleware", () => ({
-  __esModule: true,
-  updateFormCache: jest.fn().mockReturnValue({}),
-  withCookieRedirect: jest.fn().mockImplementation((callback) => {
-    return async (context) => {
-      return callback(context);
-    };
-  }),
-}));
-jest.mock("../../src/lib/formValidator", () => ({
-  __esModule: true,
-  FormValidator: {
-    hasErrors: jest.fn().mockReturnValue(false),
-  },
-}));
+import { ensureFormDataHasKeys, toArray } from "../../src/lib/utils";
 
 describe("toArray()", () => {
   it("should convert a number to an array", () => {
@@ -69,45 +47,5 @@ describe("ensureFormDataHasKeys()", () => {
     ensureFormDataHasKeys(input, ...requiredKeys);
 
     expect(input).toEqual(expectedInput);
-  });
-});
-
-describe("handleFormSubmission()", () => {
-  it("should redirect user to given next page on valid form submission", async () => {
-    const mockUserSubmittedFormContext = {
-      req: {
-        method: "POST",
-      },
-    };
-    const nextPagePath = "/page-to-redirect-to-if-form-data-is-valid";
-    const response = await handleFormSubmission(nextPagePath)(
-      mockUserSubmittedFormContext as GetServerSidePropsContext
-    );
-
-    expect(response).toStrictEqual({
-      redirect: {
-        statusCode: 303,
-        destination: nextPagePath,
-      },
-    });
-  });
-
-  it("should return a props object when receives a GET request", async () => {
-    const mockUserAccessedPageWithGETRequest = {
-      req: {
-        method: "GET",
-      },
-    };
-    const nextPagePath = "/irrelevant";
-    const response = await handleFormSubmission(nextPagePath)(
-      mockUserAccessedPageWithGETRequest as GetServerSidePropsContext
-    );
-
-    expect(response).toStrictEqual({
-      props: {
-        formData: {},
-        needsValidation: false,
-      },
-    });
   });
 });

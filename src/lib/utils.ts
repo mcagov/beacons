@@ -1,8 +1,3 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { BeaconCacheEntry } from "./formCache";
-import { FormValidator } from "./formValidator";
-import { updateFormCache, withCookieRedirect } from "./middleware";
-
 /**
  * Convenience function for converting a single or array of a given type into an array with nullish values removed.
  *
@@ -27,29 +22,3 @@ export const ensureFormDataHasKeys = (
 
   return newFormData;
 };
-
-export const handleFormSubmission = (
-  destinationIfValid: string
-): GetServerSideProps =>
-  withCookieRedirect(async (context: GetServerSidePropsContext) => {
-    const formData: BeaconCacheEntry = await updateFormCache(context);
-
-    const userDidSubmitForm = context.req.method === "POST";
-    const formIsValid = !FormValidator.hasErrors(formData);
-
-    if (userDidSubmitForm && formIsValid) {
-      return {
-        redirect: {
-          statusCode: 303,
-          destination: destinationIfValid,
-        },
-      };
-    }
-
-    return {
-      props: {
-        formData,
-        needsValidation: userDidSubmitForm,
-      },
-    };
-  });

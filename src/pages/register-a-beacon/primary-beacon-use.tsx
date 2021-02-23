@@ -16,8 +16,8 @@ import {
   RadioListItemConditional,
   RadioListItemHint,
 } from "../../components/RadioList";
+import { handlePageRequest } from "../../lib/handlePageRequest";
 import { MaritimePleasureVessel } from "../../lib/types";
-import { handleFormSubmission } from "../../lib/utils";
 
 const PrimaryBeaconUse: FunctionComponent = (): JSX.Element => (
   <Layout
@@ -102,7 +102,7 @@ const BeaconUseForm: FunctionComponent = (): JSX.Element => (
   </Form>
 );
 
-export const getServerSideProps: GetServerSideProps = handleFormSubmission(
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/about-the-vessel"
 );
 

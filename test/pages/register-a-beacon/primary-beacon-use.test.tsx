@@ -1,14 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import { GetServerSidePropsContext } from "next";
 import React from "react";
-import { handleFormSubmission } from "../../../src/lib/utils";
+import { handlePageRequest } from "../../../src/lib/handlePageRequest";
 import PrimaryBeaconUse, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/primary-beacon-use";
 
-jest.mock("../../../src/lib/utils", () => ({
+jest.mock("../../../src/lib/handlePageRequest", () => ({
   __esModule: true,
-  handleFormSubmission: jest.fn().mockImplementation(() => jest.fn()),
+  handlePageRequest: jest.fn().mockImplementation(() => jest.fn()),
 }));
 
 describe("PrimaryBeaconUse", () => {
@@ -34,7 +34,7 @@ describe("PrimaryBeaconUse", () => {
     const dummyContext = {};
     await getServerSideProps(dummyContext as GetServerSidePropsContext);
 
-    expect(handleFormSubmission).toHaveBeenCalledWith(
+    expect(handlePageRequest).toHaveBeenCalledWith(
       "/register-a-beacon/about-the-vessel"
     );
   });
