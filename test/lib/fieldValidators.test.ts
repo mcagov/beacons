@@ -64,14 +64,17 @@ describe("BeaconHexIdValidator", () => {
       beaconHexIdValidator = new BeaconHexIdValidator();
     });
 
-    const assertHasErrors = (value: string, numberOfErrors: number): void => {
+    const assertHasErrorsForValue = (
+      value: string,
+      numberOfErrors: number
+    ): void => {
       const validationResponse = beaconHexIdValidator.validate(value);
 
       expect(validationResponse.valid).toBe(false);
       expect(validationResponse.errorMessages.length).toBe(numberOfErrors);
     };
 
-    const assertNoErrors = (value: string): void => {
+    const assertNoErrorsForValue = (value: string): void => {
       const validationResponse = beaconHexIdValidator.validate(value);
 
       expect(validationResponse.valid).toBe(true);
@@ -79,39 +82,39 @@ describe("BeaconHexIdValidator", () => {
     };
 
     it("should have errors if no value provided", () => {
-      assertHasErrors("", 2);
+      assertHasErrorsForValue("", 2);
     });
 
     it("should have errors if not hexidecmal and not 15 characters in length", () => {
-      assertHasErrors("AR2", 2);
+      assertHasErrorsForValue("AR2", 2);
     });
 
     it("should have an error if the value is shorter than 15 characters", () => {
-      assertHasErrors("123456879", 1);
+      assertHasErrorsForValue("123456879", 1);
     });
 
     it("should have an error if the value contains non hex characters but is 15 characters long", () => {
-      assertHasErrors("0a1b2c3d4e5fa6x", 1);
+      assertHasErrorsForValue("0a1b2c3d4e5fa6x", 1);
     });
 
     it("should have an error if the value is longer than 15 characters", () => {
-      assertHasErrors("0123456789123456789", 1);
+      assertHasErrorsForValue("0123456789123456789", 1);
     });
 
     it("should return true if only 15 numbers", () => {
-      assertNoErrors("123456789123456");
+      assertNoErrorsForValue("123456789123456");
     });
 
     it("should not have any errors if it is only non-number 15 hex characters", () => {
-      assertNoErrors("abcdefabcdefabc");
+      assertNoErrorsForValue("abcdefabcdefabc");
     });
 
     it("should not have any errors if 15 hex characters", () => {
-      assertNoErrors("0a1b2c3d4e5fa6b");
+      assertNoErrorsForValue("0a1b2c3d4e5fa6b");
     });
 
     it("should ignore casing of hex characters", () => {
-      assertNoErrors("ABCDeFabCDefABc");
+      assertNoErrorsForValue("ABCDeFabCDefABc");
     });
   });
 });
