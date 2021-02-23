@@ -81,8 +81,8 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
 
     <GovUKBulletedList>
       <li>
-        You'll need to know the beacon Hexadecimal Identification (HEX ID) or
-        Unique Identifying Number (UIN), manufacturer serial number and model
+        You{"'"}ll need to know the beacon Hexadecimal Identification (HEX ID)
+        or Unique Identifying Number (UIN), manufacturer serial number and model
       </li>
       <li>
         If you have a vessel, you will need your vessel name, number, radio
