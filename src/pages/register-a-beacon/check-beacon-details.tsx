@@ -43,18 +43,24 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
 
   const { manufacturer, model, hexId } = FormValidator.validate(formData);
 
+  const pageHeading = "Check beacon details";
+
+  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
+
   return (
     <>
-      <Layout navigation={<BackButton href="/" />}>
+      <Layout
+        navigation={<BackButton href="/" />}
+        title={pageHeading}
+        pageHasErrors={pageHasErrors}
+      >
         <Grid
           mainContent={
             <>
               {needsValidation && <FormErrorSummary errors={errors} />}
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
-                  <FormLegendPageHeading>
-                    Check beacon details
-                  </FormLegendPageHeading>
+                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   <InsetText>
                     The details of your beacon must be checked to ensure it is
                     programmed for UK registration.

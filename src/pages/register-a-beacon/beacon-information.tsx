@@ -23,20 +23,24 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { withCookieRedirect } from "../../lib/middleware";
 
-const BeaconInformationPage: FunctionComponent = (): JSX.Element => (
-  <>
+const BeaconInformationPage: FunctionComponent = (): JSX.Element => {
+  const pageHeading = "Beacon information";
+
+  // TODO: Use form validation to set this
+  const pageHasErrors = false;
+
+  return (
     <Layout
       navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
+      title={pageHeading}
+      pageHasErrors={pageHasErrors}
     >
       <Grid
         mainContent={
           <>
-            {/*TODO: Update link to next step in service flow*/}
             <Form action="/register-a-beacon/beacon-information">
               <FormFieldset>
-                <FormLegendPageHeading>
-                  Beacon information
-                </FormLegendPageHeading>
+                <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                 <InsetText>
                   Further information about your beacon is useful for Search &
                   Rescue. Provide as much information you can find.
@@ -57,8 +61,8 @@ const BeaconInformationPage: FunctionComponent = (): JSX.Element => (
         }
       />
     </Layout>
-  </>
-);
+  );
+};
 
 const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element => (
   <FormGroup>

@@ -8,11 +8,20 @@ interface LayoutProps {
   children: ReactNode;
   head?: ReactNode;
   navigation?: ReactNode;
+  title: string;
+  pageHasErrors: boolean;
+}
+
+interface BeaconRegistrationHeadProps {
+  title: string;
+  pageHasErrors: boolean;
 }
 
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
-  head = <BeaconRegistrationHead />,
+  title,
+  pageHasErrors,
+  head = <BeaconRegistrationHead title={title} pageHasErrors={pageHasErrors} />,
   navigation = null,
 }: LayoutProps): JSX.Element => (
   <>
@@ -22,7 +31,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
     </a>
     <Header
       serviceName={"Maritime and Coastguard Agency: Register a beacon"}
-      homeLink={"#"}
+      homeLink={"/"}
     />
     <PhaseBanner phase="BETA">
       This is a new service – your{" "}
@@ -44,10 +53,15 @@ export const Layout: FunctionComponent<LayoutProps> = ({
   </>
 );
 
-const BeaconRegistrationHead: FunctionComponent = () => (
-  <Head>
-    <title>
-      Beacon Registration Service - Register a new 406 MHz distress beacon
-    </title>
-  </Head>
-);
+const BeaconRegistrationHead: FunctionComponent<BeaconRegistrationHeadProps> = ({
+  title,
+  pageHasErrors,
+}: BeaconRegistrationHeadProps) => {
+  const headTitle = pageHasErrors ? `Error: ${title}` : title;
+
+  return (
+    <Head>
+      <title>{`${headTitle} - Beacon Registration Service - GOV.UK`}</title>
+    </Head>
+  );
+};

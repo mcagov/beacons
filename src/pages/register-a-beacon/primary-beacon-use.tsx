@@ -19,29 +19,42 @@ import {
 import { withCookieRedirect } from "../../lib/middleware";
 import { MaritimePleasureVessel } from "../../lib/types";
 
-const PrimaryBeaconUse: FunctionComponent = (): JSX.Element => (
-  <Layout
-    navigation={<BackButton href="/register-a-beacon/beacon-information" />}
-  >
-    <Grid
-      mainContent={
-        <>
-          <BeaconUseForm />
+interface BeaconUseFormProps {
+  heading: string;
+}
 
-          <IfYouNeedHelp />
-        </>
-      }
-    />
-  </Layout>
-);
+const PrimaryBeaconUse: FunctionComponent = (): JSX.Element => {
+  const pageHeading =
+    "What type of maritime pleasure vessel will you mostly use this beacon on?";
 
-const BeaconUseForm: FunctionComponent = (): JSX.Element => (
+  // TODO: Use form validation to set this
+  const pageHasErrors = false;
+
+  return (
+    <Layout
+      navigation={<BackButton href="/register-a-beacon/beacon-information" />}
+      title={pageHeading}
+      pageHasErrors={pageHasErrors}
+    >
+      <Grid
+        mainContent={
+          <>
+            <BeaconUseForm heading={pageHeading} />
+
+            <IfYouNeedHelp />
+          </>
+        }
+      />
+    </Layout>
+  );
+};
+
+const BeaconUseForm: FunctionComponent<BeaconUseFormProps> = ({
+  heading,
+}: BeaconUseFormProps) => (
   <Form action="/register-a-beacon/primary-beacon-use">
     <FormFieldset>
-      <FormLegendPageHeading>
-        What type of maritime pleasure vessel will you mostly use this beacon
-        on?
-      </FormLegendPageHeading>
+      <FormLegendPageHeading>{heading}</FormLegendPageHeading>
     </FormFieldset>
     <RadioListConditional>
       <RadioListItemHint

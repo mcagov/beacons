@@ -17,26 +17,32 @@ import {
 import { WarningText } from "../components/WarningText";
 import { setFormSubmissionCookie } from "../lib/middleware";
 
-const ServiceStartPage: FunctionComponent = (): JSX.Element => (
-  <>
-    <Layout navigation={<Breadcrumbs />}>
-      <Grid
-        mainContent={
-          <>
-            <PageHeading>
-              Register a single UK 406MHz Personal Locator Beacon (PLB) for
-              maritime use
-            </PageHeading>
-            <AboutTheService />
-            <OtherWaysToAccessTheService />
-            <DataProtection />
-          </>
-        }
-        aside={<RelatedContent />}
-      />
-    </Layout>
-  </>
-);
+const ServiceStartPage: FunctionComponent = (): JSX.Element => {
+  const pageHeading =
+    "Register a single UK 406MHz Personal Locator Beacon (PLB) for maritime use";
+
+  return (
+    <>
+      <Layout
+        navigation={<Breadcrumbs />}
+        title={pageHeading}
+        pageHasErrors={false}
+      >
+        <Grid
+          mainContent={
+            <>
+              <PageHeading>{pageHeading}</PageHeading>
+              <AboutTheService />
+              <OtherWaysToAccessTheService />
+              <DataProtection />
+            </>
+          }
+          aside={<RelatedContent />}
+        />
+      </Layout>
+    </>
+  );
+};
 
 const Breadcrumbs: FunctionComponent = (): JSX.Element => (
   <BreadcrumbList>
