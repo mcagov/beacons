@@ -72,7 +72,7 @@ export class BeaconHexIdValidator extends FieldValidator {
       {
         errorMessage:
           "Beacon HEX ID or UIN must be 15 characters long and use numbers 0 to 9 and letters A to F",
-        predicateFn: (value) => value.length !== 15,
+        predicateFn: (value) => value.match(/^[a-f0-9]{15}$/i) === null,
       },
     ];
   }
