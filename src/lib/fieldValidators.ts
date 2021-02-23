@@ -14,7 +14,7 @@ export interface FieldRule {
 }
 
 export abstract class FieldValidator implements IFieldValidator {
-  protected _rules: FieldRule[] = [];
+  protected _rules: FieldRule[];
 
   validate(value: string): IFieldValidationResponse {
     return {

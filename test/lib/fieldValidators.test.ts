@@ -82,6 +82,10 @@ describe("BeaconHexIdValidator", () => {
       assertHasErrors("", 2);
     });
 
+    it("should have errors if not hexidecmal and not 15 characters in length", () => {
+      assertHasErrors("AR2", 2);
+    });
+
     it("should have an error if the value is shorter than 15 characters", () => {
       assertHasErrors("123456879", 1);
     });
