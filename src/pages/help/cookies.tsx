@@ -1,0 +1,58 @@
+import React, { FunctionComponent } from "react";
+import { Grid } from "../../components/Grid";
+import { Layout } from "../../components/Layout";
+import { PageHeading } from "../../components/Typography";
+
+const MoreVesselDetails: FunctionComponent = (): JSX.Element => {
+  return (
+    <>
+      <Layout>
+        <Grid
+          mainContent={
+            <>
+              <PageHeading>
+                Cookies on Maritime and Coastguard Agency
+              </PageHeading>
+              <CookieInformation />
+              <EssentialCookies />
+            </>
+          }
+        />
+      </Layout>
+    </>
+  );
+};
+
+const CookieInformation: FunctionComponent = (): JSX.Element => (
+  <>
+    <div className="govuk-body">
+      Cookies are files saved on your phone, tablet or computer when you visit a
+      website.
+    </div>
+    <div className="govuk-body">
+      We use cookies to store information about how you use the MCA website,
+      such as the beacon registration form data.
+    </div>
+    <div className="govuk-heading-m">Cookie settings</div>
+    <div className="govuk-body">We only use 1 type of cookie.</div>
+  </>
+);
+
+const EssentialCookies: FunctionComponent = (): JSX.Element => (
+  <>
+    <div className="govuk-heading-m">Strictly necessary cookies</div>
+    <div className="govuk-body">
+      These essential cookies do things like remember your progress through a
+      form (for example a beacon registration)
+    </div>
+    <div className="govuk-body">They always need to be on.</div>
+    <a
+      className="govuk-link govuk-body"
+      href="https://www.gov.uk/help/cookie-details"
+    >
+      Find out more about cookies on GOV.UK
+    </a>
+  </>
+);
+
+export default MoreVesselDetails;

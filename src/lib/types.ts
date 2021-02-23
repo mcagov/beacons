@@ -33,3 +33,4 @@ export interface Vessel {
 }
 
 export const formSubmissionCookieId = "submissionId";
+export const acceptRejectCookieId = "acceptRejectId";

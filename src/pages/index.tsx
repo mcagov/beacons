@@ -16,9 +16,18 @@ import {
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
 import { setFormSubmissionCookie } from "../lib/middleware";
+import { CookieBanner } from "../components/CookieBanner";
+import { acceptRejectCookieId } from "../lib/types";
 
-const ServiceStartPage: FunctionComponent = () => (
+interface StartPageProps {
+  acceptRejectCookiesBeenSet: boolean;
+}
+
+const ServiceStartPage: FunctionComponent<StartPageProps> = ({
+  acceptRejectCookiesBeenSet,
+}: StartPageProps) => (
   <>
+    <CookieBanner acceptRejectCookiesState={acceptRejectCookiesBeenSet} />
     <Layout navigation={<Breadcrumbs />}>
       <Grid
         mainContent={
@@ -183,7 +192,10 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   setFormSubmissionCookie(context);
 
-  return { props: {} };
+  // Accept/Reject cookies state
+  const acceptRejectState = !!context.req.cookies[acceptRejectCookieId];
+
+  return { props: { acceptRejectCookiesBeenSet: acceptRejectState } };
 };
 
 export default ServiceStartPage;
