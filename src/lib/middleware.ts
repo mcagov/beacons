@@ -18,8 +18,6 @@ export function withCookieRedirect<T>(callback: GetServerSideProps<T>) {
   ): Promise<GetServerSidePropsResult<T>> => {
     const cookies: NextApiRequestCookies = context.req.cookies;
 
-    console.log("the real withCookieRedirect was called");
-
     if (!cookies || !cookies[formSubmissionCookieId]) {
       return {
         redirect: {

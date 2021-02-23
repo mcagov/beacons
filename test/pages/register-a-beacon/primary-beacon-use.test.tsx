@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import PrimaryBeaconUse, {
@@ -49,7 +50,7 @@ describe("PrimaryBeaconUse", () => {
     };
 
     const response = await getServerSideProps(
-      mockUserSubmittedFormContext as any
+      mockUserSubmittedFormContext as GetServerSidePropsContext
     );
 
     expect(response).toStrictEqual({

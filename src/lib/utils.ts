@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { BeaconCacheEntry } from "./formCache";
 import { FormValidator } from "./formValidator";
 import { updateFormCache, withCookieRedirect } from "./middleware";
@@ -28,7 +28,9 @@ export const ensureFormDataHasKeys = (
   return newFormData;
 };
 
-export const handleFormSubmission = (destinationIfValid: string) =>
+export const handleFormSubmission = (
+  destinationIfValid: string
+): GetServerSideProps =>
   withCookieRedirect(async (context: GetServerSidePropsContext) => {
     const formData: BeaconCacheEntry = await updateFormCache(context);
 
