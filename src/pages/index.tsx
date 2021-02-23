@@ -16,19 +16,17 @@ import {
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
 import { setFormSubmissionCookie } from "../lib/middleware";
-import { CookieBanner } from "../components/CookieBanner";
 import { acceptRejectCookieId } from "../lib/types";
 
 interface StartPageProps {
-  acceptRejectCookiesBeenSet: boolean;
+  showCookieBanner: boolean;
 }
 
 const ServiceStartPage: FunctionComponent<StartPageProps> = ({
-  acceptRejectCookiesBeenSet,
+  showCookieBanner,
 }: StartPageProps) => (
   <>
-    <CookieBanner acceptRejectCookiesState={acceptRejectCookiesBeenSet} />
-    <Layout navigation={<Breadcrumbs />}>
+    <Layout navigation={<Breadcrumbs />} showCookieBanner={showCookieBanner}>
       <Grid
         mainContent={
           <>
@@ -192,10 +190,10 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   setFormSubmissionCookie(context);
 
-  // Accept/Reject cookies state
-  const acceptRejectState = !!context.req.cookies[acceptRejectCookieId];
+  // Accept/Reject cookies state TODO Needs to be put on all pages / in zacks new function for this!
+  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
 
-  return { props: { acceptRejectCookiesBeenSet: acceptRejectState } };
+  return { props: { showCookieBanner } };
 };
 
 export default ServiceStartPage;

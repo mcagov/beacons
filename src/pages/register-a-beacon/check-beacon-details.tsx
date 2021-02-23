@@ -1,7 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
-import { CookieBanner } from "../../components/CookieBanner";
 import { Details } from "../../components/Details";
 import {
   FieldErrorList,
@@ -22,18 +21,12 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
-import {
-  setAcceptRejectCookie,
-  updateFormCache,
-  withCookieRedirect,
-} from "../../lib/middleware";
-import { acceptRejectCookieId } from "../../lib/types";
+import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface CheckBeaconDetailsProps {
   formData: BeaconCacheEntry;
   needsValidation: boolean;
-  acceptRejectCookiesBeenSet: boolean;
 }
 
 interface FormInputProps {
@@ -45,7 +38,6 @@ interface FormInputProps {
 const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   formData,
   needsValidation = false,
-  acceptRejectCookiesBeenSet = false,
 }: CheckBeaconDetailsProps): JSX.Element => {
   formData = ensureFormDataHasKeys(formData, "manufacturer", "model", "hexId");
 
@@ -55,7 +47,6 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
 
   return (
     <>
-      <CookieBanner acceptRejectCookiesState={acceptRejectCookiesBeenSet} />
       <Layout navigation={<BackButton href="/" />}>
         <Grid
           mainContent={
@@ -168,14 +159,10 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
       };
     }
 
-    // Accept/Reject cookies state
-    const acceptRejectState = !!context.req.cookies[acceptRejectCookieId];
-
     return {
       props: {
         formData,
         needsValidation: userDidSubmitForm,
-        acceptRejectCookiesBeenSet: acceptRejectState,
       },
     };
   }
