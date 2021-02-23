@@ -1,3 +1,5 @@
+import { MaritimePleasureVessel } from "./types";
+
 export interface IFieldValidator {
   validate(value: string): IFieldValidationResponse;
 }
@@ -89,9 +91,31 @@ export class MoreVesselDetailsValidator extends FieldValidator {
   }
 }
 
+export class MaritimePleasureVesselUseValidator extends FieldValidator {
+  constructor() {
+    super();
+    this._rules = [
+      {
+        errorMessage: "Maritime pleasure use is a required field",
+        predicateFn: (value) => value.length === 0,
+      },
+      {
+        errorMessage:
+          "Value is not a recognised type of maritime pleasure vessel",
+        predicateFn: (value) =>
+          value.length !== 0 &&
+          !Object.values(MaritimePleasureVessel).includes(
+            value as MaritimePleasureVessel
+          ),
+      },
+    ];
+  }
+}
+
 export const fieldValidatorLookup = {
   manufacturer: new BeaconManufacturerValidator(),
   model: new BeaconModelValidator(),
   hexId: new BeaconHexIdValidator(),
   moreVesselDetails: new MoreVesselDetailsValidator(),
+  maritimePleasureVesselUse: new MaritimePleasureVesselUseValidator(),
 };
