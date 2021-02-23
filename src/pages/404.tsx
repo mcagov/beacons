@@ -8,7 +8,7 @@ const FourOhFour: FunctionComponent = (): JSX.Element => {
   const pageHeading = "Page not found";
 
   return (
-    <Layout title={pageHeading}>
+    <Layout title={pageHeading} pageHasErrors={false}>
       <Grid
         mainContent={
           <>

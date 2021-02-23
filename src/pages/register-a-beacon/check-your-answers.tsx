@@ -22,6 +22,7 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
       <Layout
         navigation={<BackButton href="/register-a-beacon/beacon-information" />}
         title={pageHeading}
+        pageHasErrors={false}
       >
         <Grid
           mainContent={

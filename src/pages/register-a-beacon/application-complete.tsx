@@ -12,7 +12,7 @@ const ApplicationCompletePage: FunctionComponent = (): JSX.Element => {
 
   return (
     <>
-      <Layout title={pageHeading}>
+      <Layout title={pageHeading} pageHasErrors={false}>
         <Grid
           mainContent={
             <>

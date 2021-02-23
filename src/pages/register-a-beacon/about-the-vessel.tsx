@@ -17,11 +17,14 @@ import { withCookieRedirect } from "../../lib/middleware";
 const AboutTheVessel: FunctionComponent = (): JSX.Element => {
   const pageHeading = "About the pleasure vessel";
 
+  // TODO: Use form validation to set this
+  const pageHasErrors = false;
   return (
     <>
       <Layout
         navigation={<BackButton href="/register-a-beacon/primary-beacon-use" />}
         title={pageHeading}
+        pageHasErrors={pageHasErrors}
       >
         <Grid
           mainContent={

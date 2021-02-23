@@ -18,27 +18,40 @@ import {
   PageHeading,
 } from "../../components/Typography";
 
-const VesselCommunications: FunctionComponent = (): JSX.Element => (
-  <Layout
-    navigation={<BackButton href="/register-a-beacon/about-the-vessel" />}
-  >
-    <Grid
-      mainContent={
-        <>
-          <PageHeadingInfo />
-          <VesselCommunicationsForm />
-          <IfYouNeedHelp />
-        </>
-      }
-    ></Grid>
-  </Layout>
-);
+interface PageHeadingInfoProps {
+  heading: string;
+}
 
-const PageHeadingInfo: FunctionComponent = () => (
+const VesselCommunications: FunctionComponent = (): JSX.Element => {
+  const pageHeading = "Check beacon details";
+
+  // TODO: Use form validation to set this
+  const pageHasErrors = false;
+
+  return (
+    <Layout
+      navigation={<BackButton href="/register-a-beacon/about-the-vessel" />}
+      title={pageHeading}
+      pageHasErrors={pageHasErrors}
+    >
+      <Grid
+        mainContent={
+          <>
+            <PageHeadingInfo heading={pageHeading} />
+            <VesselCommunicationsForm />
+            <IfYouNeedHelp />
+          </>
+        }
+      ></Grid>
+    </Layout>
+  );
+};
+
+const PageHeadingInfo: FunctionComponent<PageHeadingInfoProps> = ({
+  heading,
+}: PageHeadingInfoProps) => (
   <>
-    <PageHeading>
-      What types of communications are on board the vessel?
-    </PageHeading>
+    <PageHeading>{heading}</PageHeading>
 
     <GovUKBody>
       Details about the onboard communications will be critical for Search and

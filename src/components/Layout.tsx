@@ -9,18 +9,18 @@ interface LayoutProps {
   head?: ReactNode;
   navigation?: ReactNode;
   title: string;
-  pageHasErrors?: boolean;
+  pageHasErrors: boolean;
 }
 
 interface BeaconRegistrationHeadProps {
   title: string;
-  pageHasErrors?: boolean;
+  pageHasErrors: boolean;
 }
 
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
   title,
-  pageHasErrors = false,
+  pageHasErrors,
   head = <BeaconRegistrationHead title={title} pageHasErrors={pageHasErrors} />,
   navigation = null,
 }: LayoutProps): JSX.Element => (
@@ -55,7 +55,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
 
 const BeaconRegistrationHead: FunctionComponent<BeaconRegistrationHeadProps> = ({
   title,
-  pageHasErrors = false,
+  pageHasErrors,
 }: BeaconRegistrationHeadProps) => {
   const headTitle = pageHasErrors ? `Error: ${title}` : title;
 

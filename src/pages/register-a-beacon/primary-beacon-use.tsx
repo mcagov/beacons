@@ -27,10 +27,14 @@ const PrimaryBeaconUse: FunctionComponent = (): JSX.Element => {
   const pageHeading =
     "What type of maritime pleasure vessel will you mostly use this beacon on?";
 
+  // TODO: Use form validation to set this
+  const pageHasErrors = false;
+
   return (
     <Layout
       navigation={<BackButton href="/register-a-beacon/beacon-information" />}
       title={pageHeading}
+      pageHasErrors={pageHasErrors}
     >
       <Grid
         mainContent={

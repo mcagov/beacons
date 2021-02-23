@@ -37,6 +37,8 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
 
   const pageHeading = "Tell us more about the vessel";
 
+  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
+
   return (
     <>
       <Layout
@@ -44,6 +46,7 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
           <BackButton href="/register-a-beacon/vessel-communication-details" />
         }
         title={pageHeading}
+        pageHasErrors={pageHasErrors}
       >
         <Grid
           mainContent={

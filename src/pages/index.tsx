@@ -23,7 +23,11 @@ const ServiceStartPage: FunctionComponent = (): JSX.Element => {
 
   return (
     <>
-      <Layout navigation={<Breadcrumbs />} title={pageHeading}>
+      <Layout
+        navigation={<Breadcrumbs />}
+        title={pageHeading}
+        pageHasErrors={false}
+      >
         <Grid
           mainContent={
             <>

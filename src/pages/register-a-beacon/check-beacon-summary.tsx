@@ -36,6 +36,7 @@ const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
           <BackButton href="/register-a-beacon/check-beacon-details" />
         }
         title={pageHeading}
+        pageHasErrors={false}
       >
         <Grid
           mainContent={
