@@ -11,19 +11,17 @@ describe("Grid Components", () => {
     asideText = "Maritime and Coastguard Agency (MCA)";
   });
 
+  const MainContent = () => <h1>{mainContentText}</h1>;
+  const Aside = () => <p>{asideText}</p>;
+
   it("should render the grid without the aside", () => {
-    render(<Grid mainContent={<h1>{mainContentText}</h1>} />);
+    render(<Grid mainContent={<MainContent />} />);
     expect(screen.getByText(mainContentText)).toBeDefined();
     expect(screen.queryByText(asideText)).toBeNull();
   });
 
   it("should render the grid with the provided aside", () => {
-    render(
-      <Grid
-        mainContent={<h1>{mainContentText}</h1>}
-        aside={<p>{asideText}</p>}
-      />
-    );
+    render(<Grid mainContent={<MainContent />} aside={<Aside />} />);
     expect(screen.getByText(mainContentText)).toBeDefined();
     expect(screen.getByText(asideText)).toBeDefined();
   });
