@@ -7,10 +7,7 @@ import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { Details } from "../../components/Details";
-import {
-  FieldErrorList,
-  FormErrorSummary,
-} from "../../components/ErrorSummary";
+import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
@@ -110,8 +107,7 @@ const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
   showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors}>
-    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
     <Input
       id="manufacturer"
       label="Enter your beacon manufacturer"
@@ -125,8 +121,7 @@ const BeaconModelInput: FunctionComponent<FormInputProps> = ({
   showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors}>
-    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
     <Input id="model" label="Enter your beacon model" defaultValue={value} />
   </FormGroup>
 );
@@ -136,8 +131,7 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors}>
-    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
     <Input
       id="hexId"
       label="Enter the 15 character beacon HEX ID or UIN number"
