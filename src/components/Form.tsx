@@ -1,5 +1,6 @@
 import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
 import { HttpMethod } from "../lib/types";
+import { FieldErrorList } from "./ErrorSummary";
 
 interface FormProps {
   action: string;
@@ -16,6 +17,7 @@ interface FormGroupProps {
   children: ReactNode;
   className?: string;
   showErrors?: boolean;
+  errorMessages?: string[];
 }
 
 interface FormLabelProps {
@@ -53,11 +55,18 @@ export const FormGroup: FunctionComponent<FormGroupProps> = ({
   children,
   className = "",
   showErrors = false,
+  errorMessages = [],
 }: FormGroupProps): JSX.Element => {
   const errorClassName: string = showErrors ? "govuk-form-group--error" : "";
 
+  let errorsComponent: ReactNode;
+  if (showErrors) {
+    errorsComponent = <FieldErrorList errorMessages={errorMessages} />;
+  }
+
   return (
     <div className={`govuk-form-group ${className} ${errorClassName}`}>
+      {errorsComponent}
       {children}
     </div>
   );
