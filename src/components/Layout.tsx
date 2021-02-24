@@ -53,7 +53,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
   </>
 );
 
-const BeaconRegistrationHead: FunctionComponent<BeaconRegistrationHeadProps> = ({
+export const BeaconRegistrationHead: FunctionComponent<BeaconRegistrationHeadProps> = ({
   title,
   pageHasErrors,
 }: BeaconRegistrationHeadProps) => {
