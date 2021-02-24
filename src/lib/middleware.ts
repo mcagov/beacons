@@ -89,6 +89,5 @@ export const getCache = (
   cache: IFormCache = FormCacheFactory.getCache()
 ): BeaconCacheEntry => {
   const submissionId: string = cookies[formSubmissionCookieId];
-
   return cache.get(submissionId);
 };
