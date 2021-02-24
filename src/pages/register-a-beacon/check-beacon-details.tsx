@@ -1,4 +1,9 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+} from "next";
+import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { Details } from "../../components/Details";
@@ -20,6 +25,7 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
 import {
+  getCache,
   parseFormData,
   updateFormCache,
   withCookieRedirect,
@@ -28,7 +34,7 @@ import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface CheckBeaconDetailsProps {
   formData: BeaconCacheEntry;
-  needsValidation: boolean;
+  needsValidation?: boolean;
 }
 
 interface FormInputProps {
@@ -151,28 +157,52 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
-    const formData: BeaconCacheEntry = await parseFormData(context.req);
-    updateFormCache(context.req.cookies, formData);
-
-    const userDidSubmitForm = context.req.method === "POST";
-    const formIsValid = !FormValidator.hasErrors(formData);
-
-    if (userDidSubmitForm && formIsValid) {
-      return {
-        redirect: {
-          statusCode: 303,
-          destination: "/register-a-beacon/beacon-information",
-        },
-      };
+    if (context.req.method === "POST") {
+      return handlePostRequest(context);
+    } else {
+      return handleGetRequest(context.req.cookies);
     }
+  }
+);
 
+const handlePostRequest = async (
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<CheckBeaconDetailsProps>> => {
+  const rawFormData: BeaconCacheEntry = await parseFormData(context.req);
+  const formData: BeaconCacheEntry = {
+    ...rawFormData,
+    hexId: (rawFormData["hexId"] || "").toUpperCase(),
+  };
+
+  updateFormCache(context.req.cookies, formData);
+
+  const formIsValid = !FormValidator.hasErrors(formData);
+
+  if (formIsValid) {
     return {
-      props: {
-        formData: formData,
-        needsValidation: userDidSubmitForm,
+      redirect: {
+        statusCode: 303,
+        destination: "/register-a-beacon/beacon-information",
       },
     };
   }
-);
+
+  return {
+    props: {
+      formData: formData,
+      needsValidation: true,
+    },
+  };
+};
+
+const handleGetRequest = (
+  cookies: NextApiRequestCookies
+): GetServerSidePropsResult<CheckBeaconDetailsProps> => {
+  return {
+    props: {
+      formData: getCache(cookies),
+    },
+  };
+};
 
 export default CheckBeaconDetails;
