@@ -46,7 +46,7 @@ export const Form: FunctionComponent<FormProps> = ({
   method = HttpMethod.POST,
   children,
 }: FormProps): JSX.Element => (
-  <form action={action} method={method}>
+  <form action={action} method={method} noValidate={true}>
     {children}
   </form>
 );
