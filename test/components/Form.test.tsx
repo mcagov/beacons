@@ -33,7 +33,6 @@ describe("Form Components", () => {
           <p>Hello world!</p>
         </FormGroup>
       );
-
       expect(screen.getByText(errorMessage)).toBeDefined();
     });
 
@@ -43,7 +42,6 @@ describe("Form Components", () => {
           <p>Hello world!</p>
         </FormGroup>
       );
-
       expect(screen.queryByText(errorMessage)).toBeNull();
     });
   });
