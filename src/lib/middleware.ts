@@ -71,23 +71,24 @@ const setCookieHeader = (id: string, res: ServerResponse): void => {
   res.setHeader("Set-Cookie", serialize(formSubmissionCookieId, id, options));
 };
 
-export async function updateFormCache<T>(
-  context: GetServerSidePropsContext
-): Promise<T> {
-  const formData: T = await parse(context.req);
-  const submissionId: string = context.req.cookies[formSubmissionCookieId];
+export function updateFormCache<T>(
+  cookies: NextApiRequestCookies,
+  formData: T,
+  cache: IFormCache = FormCacheFactory.getCache()
+): void {
+  const submissionId: string = cookies[formSubmissionCookieId];
+  cache.update(submissionId, formData);
+}
 
-  const state: IFormCache = FormCacheFactory.getCache();
-  state.update(submissionId, formData);
-
-  return formData;
+export async function parseFormData<T>(request: IncomingMessage): Promise<T> {
+  return await parse(request);
 }
 
 export const getCache = (
-  context: GetServerSidePropsContext
+  cookies: NextApiRequestCookies,
+  cache: IFormCache = FormCacheFactory.getCache()
 ): BeaconCacheEntry => {
-  const submissionId: string = context.req.cookies[formSubmissionCookieId];
-  const state: IFormCache = FormCacheFactory.getCache();
+  const submissionId: string = cookies[formSubmissionCookieId];
 
-  return state.get(submissionId);
+  return cache.get(submissionId);
 };

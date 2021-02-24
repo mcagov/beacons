@@ -19,7 +19,11 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
-import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
+import {
+  parseFormData,
+  updateFormCache,
+  withCookieRedirect,
+} from "../../lib/middleware";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface CheckBeaconDetailsProps {
@@ -147,7 +151,8 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
-    const formData: BeaconCacheEntry = await updateFormCache(context);
+    const formData: BeaconCacheEntry = await parseFormData(context.req);
+    updateFormCache(context, formData);
 
     const userDidSubmitForm = context.req.method === "POST";
     const formIsValid = !FormValidator.hasErrors(formData);
@@ -163,7 +168,7 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
 
     return {
       props: {
-        formData,
+        formData: formData,
         needsValidation: userDidSubmitForm,
       },
     };

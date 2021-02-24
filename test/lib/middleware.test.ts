@@ -1,4 +1,4 @@
-import { FormCacheFactory } from "../../src/lib/formCache";
+import { IFormCache } from "../../src/lib/formCache";
 import {
   checkHeaderContains,
   getCache,
@@ -10,6 +10,7 @@ import {
   formSubmissionCookieId,
   formSubmissionCookieId as submissionCookieId,
 } from "../../src/lib/types";
+import { getCacheMock } from "../mocks";
 
 jest.mock("uuid", () => ({
   v4: () => "1",
@@ -181,50 +182,39 @@ describe("Middleware Functions", () => {
   });
 
   describe("updateFormCache()", () => {
-    let context;
+    let id;
+    let cookies;
+    let cacheMock: jest.Mocked<IFormCache>;
 
     beforeEach(() => {
-      context = {
-        req: { cookies: { [formSubmissionCookieId]: "1" } },
-      };
+      id = "1";
+      cookies = { [formSubmissionCookieId]: id };
+      cacheMock = getCacheMock();
     });
 
-    it("should update the form cache with the parsed form data", async () => {
-      const formData = await updateFormCache(context);
+    it("should update the form cache with the parsed form data", () => {
+      updateFormCache(cookies, { model: "ASOS" }, cacheMock);
 
-      expect(formData).toStrictEqual({ model: "ASOS" });
-    });
-
-    it("should update the cache entry with the form data", async () => {
-      await updateFormCache(context);
-      const cache = FormCacheFactory.getCache();
-
-      expect(cache.get("1")).toStrictEqual({ model: "ASOS" });
+      expect(cacheMock.update).toHaveBeenCalledWith("1", { model: "ASOS" });
     });
   });
 
   describe("getCache()", () => {
-    let context;
-    const formData = { model: "ASOS" };
-    const id = "1";
+    let id;
+    let cookies;
+    let cacheMock: jest.Mocked<IFormCache>;
 
     beforeEach(() => {
-      context = {
-        req: { cookies: { [formSubmissionCookieId]: id } },
-      };
+      id = "1";
+      cookies = { [formSubmissionCookieId]: id };
+      cacheMock = getCacheMock();
     });
 
-    it("should return the form data stored within the cache for a given submission id", () => {
-      const cache = FormCacheFactory.getCache();
-      cache.update(id, formData);
+    it("should call the cache with the correct id", () => {
+      cacheMock.get.mockReturnValue({});
 
-      expect(getCache(context)).toStrictEqual(formData);
-    });
-
-    it("should return empty form data if the id is not found", () => {
-      context.req.cookies = { [formSubmissionCookieId]: "not-in-the-cache" };
-
-      expect(getCache(context)).toStrictEqual({});
+      expect(getCache(cookies, cacheMock)).toStrictEqual({});
+      expect(cacheMock.get).toHaveBeenCalledWith(id);
     });
   });
 });
