@@ -122,10 +122,10 @@ export class OtherPleasureVesselTextValidator extends FieldValidator {
     super();
     this._rules = [
       // TODO Conditional rule: if OtherPleasureVessel is selected, field is required
-      {
-        errorMessage: "Other pleasure vessel text is a required field",
-        predicateFn: (value) => value.length === 0,
-      },
+      // {
+      //   errorMessage: "Other pleasure vessel text is a required field",
+      //   predicateFn: (value) => value.length === 0,
+      // },
     ];
   }
 }

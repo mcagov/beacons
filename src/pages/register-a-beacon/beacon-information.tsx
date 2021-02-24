@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import {
@@ -21,8 +21,7 @@ import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { BeaconCacheEntry } from "../../lib/formCache";
-import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
+import { handlePageRequest } from "../../lib/handlePageRequest";
 
 const BeaconInformationPage: FunctionComponent = (): JSX.Element => {
   const pageHeading = "Beacon information";
@@ -193,31 +192,8 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
   </DateListInput>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
-    const formData: BeaconCacheEntry = await updateFormCache(context);
-
-    const userDidSubmitForm = context.req.method === "POST";
-    // TODO: Add form validation to this page
-    // const formIsValid = !FormValidator.hasErrors(formData);
-    const formIsValid = true;
-
-    if (userDidSubmitForm && formIsValid) {
-      return {
-        redirect: {
-          statusCode: 303,
-          destination: "/register-a-beacon/primary-beacon-use",
-        },
-      };
-    }
-
-    return {
-      props: {
-        formData,
-        needsValidation: userDidSubmitForm,
-      },
-    };
-  }
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
+  "/register-a-beacon/primary-beacon-use"
 );
 
 export default BeaconInformationPage;
