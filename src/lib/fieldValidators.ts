@@ -66,13 +66,17 @@ export class BeaconManufacturerValidator extends FieldValidator {
 }
 
 export class BeaconHexIdValidator extends FieldValidator {
+  private readonly errorMessagePrefix: string = "Beacon HEX ID or UIN must";
   constructor() {
     super();
     this._rules = [
       {
-        errorMessage:
-          "Beacon HEX ID or UIN must be 15 characters long and use numbers 0 to 9 and letters A to F",
+        errorMessage: `${this.errorMessagePrefix} be 15 characters long`,
         predicateFn: (value) => value.length !== 15,
+      },
+      {
+        errorMessage: `${this.errorMessagePrefix} use numbers 0 to 9 and letters A to F`,
+        predicateFn: (value) => value.match(/^[a-f0-9]+$/i) === null,
       },
     ];
   }
