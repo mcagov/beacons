@@ -152,7 +152,7 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
     const formData: BeaconCacheEntry = await parseFormData(context.req);
-    updateFormCache(context, formData);
+    updateFormCache(context.req.cookies, formData);
 
     const userDidSubmitForm = context.req.method === "POST";
     const formIsValid = !FormValidator.hasErrors(formData);

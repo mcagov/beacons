@@ -17,7 +17,11 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { VesselCacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
-import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
+import {
+  parseFormData,
+  updateFormCache,
+  withCookieRedirect,
+} from "../../lib/middleware";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface MoreVesselDetailsProps {
@@ -101,7 +105,8 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
-    const formData: VesselCacheEntry = await updateFormCache(context);
+    const formData: VesselCacheEntry = await parseFormData(context.req);
+    updateFormCache(context.req.cookies, formData);
 
     const userDidSubmitForm = context.req.method === "POST";
     const formIsValid = !FormValidator.hasErrors(formData);

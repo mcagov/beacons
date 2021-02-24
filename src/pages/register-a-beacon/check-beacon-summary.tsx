@@ -10,6 +10,7 @@ import { PageHeading } from "../../components/Typography";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import {
   getCache,
+  parseFormData,
   updateFormCache,
   withCookieRedirect,
 } from "../../lib/middleware";
@@ -100,15 +101,14 @@ const BeaconSummary: FunctionComponent<BeaconDetailsSummaryProps> = ({
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
     if (context.req.method === "POST") {
-      const previousFormPageData: BeaconCacheEntry = await updateFormCache(
-        context
-      );
+      const formData: BeaconCacheEntry = await parseFormData(context.req);
+      updateFormCache(context.req.cookies, formData);
 
       return {
-        props: { ...previousFormPageData },
+        props: { ...formData },
       };
     } else if (context.req.method === "GET") {
-      const existingState: BeaconCacheEntry = getCache(context);
+      const existingState: BeaconCacheEntry = getCache(context.req.cookies);
 
       return { props: { ...existingState } };
     }
