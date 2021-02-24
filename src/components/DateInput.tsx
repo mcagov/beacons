@@ -56,7 +56,7 @@ export const DateInput: FunctionComponent<DateInputProps> = ({
       id={id}
       name={name}
       type="text"
-      pattern="[0-9]*"
+      pattern={`[0-9]{${maxLength}}`}
       inputMode="numeric"
       {...{ maxLength }}
     />
