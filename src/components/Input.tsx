@@ -11,6 +11,8 @@ interface InputProps {
   name?: string;
   hintText?: string;
   type?: string;
+  labelClassName?: string;
+  inputClassName?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   defaultValue?: string;
   numOfChars?: 2 | 3 | 4 | 5 | 10 | 20;
@@ -23,6 +25,8 @@ export const Input: FunctionComponent<InputProps> = ({
   hintText = null,
   type = "text",
   htmlAttributes = {},
+  labelClassName = "",
+  inputClassName = "",
   defaultValue = "",
   numOfChars = null,
 }: InputProps): JSX.Element => {
@@ -35,15 +39,18 @@ export const Input: FunctionComponent<InputProps> = ({
   let hintComponent: ReactNode;
   if (hintText) {
     hintComponent = <FormHint forId={id}>{hintText}</FormHint>;
+    htmlAttributes = { ...htmlAttributes, "aria-describedby": `${id}-hint` };
   }
 
   return (
     <>
-      <FormLabel htmlFor={id}>{label}</FormLabel>
+      <FormLabel className={labelClassName} htmlFor={id}>
+        {label}
+      </FormLabel>
       {hintComponent}
 
       <input
-        className={`govuk-input ${inputWidthClass}`}
+        className={`govuk-input ${inputClassName} ${inputWidthClass}`}
         id={id}
         name={name}
         type={type}

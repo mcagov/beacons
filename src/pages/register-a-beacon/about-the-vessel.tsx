@@ -15,19 +15,23 @@ import { TextareaCharacterCount } from "../../components/Textarea";
 import { withCookieRedirect } from "../../lib/middleware";
 
 const AboutTheVessel: FunctionComponent = (): JSX.Element => {
+  const pageHeading = "About the pleasure vessel";
+
+  // TODO: Use form validation to set this
+  const pageHasErrors = false;
   return (
     <>
       <Layout
         navigation={<BackButton href="/register-a-beacon/primary-beacon-use" />}
+        title={pageHeading}
+        pageHasErrors={pageHasErrors}
       >
         <Grid
           mainContent={
             <>
               <Form action="/register-a-beacon/about-the-vessel">
                 <FormFieldset>
-                  <FormLegendPageHeading>
-                    About the pleasure vessel
-                  </FormLegendPageHeading>
+                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <MaxCapacityInput />
 
@@ -55,12 +59,9 @@ const MaxCapacityInput: FunctionComponent = (): JSX.Element => (
     <Input
       id="maxCapacity"
       label="Enter the maximum number of persons aboard"
-      hintText="Knowing the maximum number of persons likely to be onboard the vessel
-      helps Search & Rescue know how many people to look for and what resources
-      to send"
+      hintText="Knowing the maximum number of persons likely to be onboard the vessel helps Search and Rescue know how many people to look for and what resources to send"
       numOfChars={5}
       htmlAttributes={{
-        "aria-describedby": "maxCapacity-hint",
         pattern: "[0-9]*",
         inputMode: "numeric",
       }}
@@ -79,8 +80,7 @@ const HomeportInput: FunctionComponent = (): JSX.Element => (
     <Input
       id="homeport"
       label="Enter the Homeport for the vessel (optional)"
-      hintText="This is the name of the port where your vessel is registered and primarily
-      operates from"
+      hintText="This is the name of the port where your vessel is registered and primarily operates from"
     />
   </FormGroup>
 );
@@ -89,9 +89,7 @@ const AreaOfOperationTextArea: FunctionComponent = (): JSX.Element => (
   <TextareaCharacterCount
     id="areaOfOperation"
     label="Tell us about the typical area of operation (optional)"
-    hintText='Typical areas of operation for the vessel is very helpful in assisting
-    Search & Rescue. For example "Whitesands Bay, St Davids,
-    Pembrokeshire"'
+    hintText="Typical areas of operation for the vessel is very helpful in assisting Search and Rescue. For example 'Whitesands Bay, St Davids, Pembrokeshire'"
     maxCharacters={250}
     rows={4}
   />

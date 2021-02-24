@@ -6,9 +6,11 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
+import { PageHeading } from "../../components/Typography";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import {
   getCache,
+  parseFormData,
   updateFormCache,
   withCookieRedirect,
 } from "../../lib/middleware";
@@ -19,19 +21,35 @@ interface BeaconDetailsProps {
   hexId: string;
 }
 
+interface BeaconDetailsSummaryProps extends BeaconDetailsProps {
+  heading: string;
+}
+
 const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
   props
-): JSX.Element => (
-  <>
-    <Layout
-      navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
-    >
-      <Grid mainContent={<BeaconNotRegisteredView {...props} />} />
-    </Layout>
-  </>
-);
+): JSX.Element => {
+  const pageHeading = "Beacon details checked";
 
-const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
+  return (
+    <>
+      <Layout
+        navigation={
+          <BackButton href="/register-a-beacon/check-beacon-details" />
+        }
+        title={pageHeading}
+        pageHasErrors={false}
+      >
+        <Grid
+          mainContent={
+            <BeaconNotRegisteredView {...props} heading={pageHeading} />
+          }
+        />
+      </Layout>
+    </>
+  );
+};
+
+const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsSummaryProps> = (
   props
 ): JSX.Element => {
   return (
@@ -56,13 +74,14 @@ const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsProps> = (
   );
 };
 
-const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
+const BeaconSummary: FunctionComponent<BeaconDetailsSummaryProps> = ({
   manufacturer,
   model,
   hexId,
-}: BeaconDetailsProps): JSX.Element => (
+  heading,
+}: BeaconDetailsSummaryProps): JSX.Element => (
   <>
-    <h1 className="govuk-heading-l">Check beacon summary</h1>
+    <PageHeading>{heading}</PageHeading>
     <SummaryList>
       <SummaryListItem
         labelText="Beacon manufacturer"
@@ -82,15 +101,14 @@ const BeaconSummary: FunctionComponent<BeaconDetailsProps> = ({
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
     if (context.req.method === "POST") {
-      const previousFormPageData: BeaconCacheEntry = await updateFormCache(
-        context
-      );
+      const formData: BeaconCacheEntry = await parseFormData(context.req);
+      updateFormCache(context.req.cookies, formData);
 
       return {
-        props: { ...previousFormPageData },
+        props: { ...formData },
       };
     } else if (context.req.method === "GET") {
-      const existingState: BeaconCacheEntry = getCache(context);
+      const existingState: BeaconCacheEntry = getCache(context.req.cookies);
 
       return { props: { ...existingState } };
     }

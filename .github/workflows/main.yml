@@ -136,4 +136,4 @@ jobs:
       - name: Trigger Integration Pipeline
         run: |
           curl -X POST  -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.MCA_GITHUB_TOKEN }}" \
-            https://api.github.com/repos/madetech/mca-beacons-integration/actions/workflows/main.yml/dispatches -d '{"ref":"main"}'
+            https://api.github.com/repos/mcagov/beacons-integration/actions/workflows/main.yml/dispatches -d '{"ref":"main"}'

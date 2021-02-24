@@ -60,44 +60,63 @@ describe("BeaconManufacturerValidator", () => {
 
 describe("BeaconHexIdValidator", () => {
   describe("validate", () => {
-    it("should return false if value is empty string", () => {
-      const beaconHexIdValidator = new BeaconHexIdValidator();
-      const invalidValue = "";
+    let beaconHexIdValidator;
 
-      const validationResponse = beaconHexIdValidator.validate(invalidValue);
-
-      expect(validationResponse.valid).toBe(false);
-      expect(validationResponse.errorMessages.length).toBe(1);
+    beforeEach(() => {
+      beaconHexIdValidator = new BeaconHexIdValidator();
     });
 
-    it("should return false if value is shorter than 15 characters", () => {
-      const beaconHexIdValidator = new BeaconHexIdValidator();
-      const invalidValue = "notquite15char";
-
-      const validationResponse = beaconHexIdValidator.validate(invalidValue);
-
-      expect(validationResponse.valid).toBe(false);
-      expect(validationResponse.errorMessages.length).toBe(1);
-    });
-
-    it("should return false if value is longer than 15 characters", () => {
-      const beaconHexIdValidator = new BeaconHexIdValidator();
-      const invalidValue = "bitlongerthanfifteencharacters";
-
-      const validationResponse = beaconHexIdValidator.validate(invalidValue);
+    const assertHasErrorsForValue = (
+      value: string,
+      numberOfErrors: number
+    ): void => {
+      const validationResponse = beaconHexIdValidator.validate(value);
 
       expect(validationResponse.valid).toBe(false);
-      expect(validationResponse.errorMessages.length).toBe(1);
-    });
+      expect(validationResponse.errorMessages.length).toBe(numberOfErrors);
+    };
 
-    it("should return true otherwise", () => {
-      const beaconHexIdValidator = new BeaconHexIdValidator();
-      const validValue = "exactly15charac";
-
-      const validationResponse = beaconHexIdValidator.validate(validValue);
+    const assertNoErrorsForValue = (value: string): void => {
+      const validationResponse = beaconHexIdValidator.validate(value);
 
       expect(validationResponse.valid).toBe(true);
       expect(validationResponse.errorMessages.length).toBe(0);
+    };
+
+    it("should have errors if no value provided", () => {
+      assertHasErrorsForValue("", 2);
+    });
+
+    it("should have errors if not hexidecmal and not 15 characters in length", () => {
+      assertHasErrorsForValue("AR2", 2);
+    });
+
+    it("should have an error if the value is shorter than 15 characters", () => {
+      assertHasErrorsForValue("123456879", 1);
+    });
+
+    it("should have an error if the value contains non hex characters but is 15 characters long", () => {
+      assertHasErrorsForValue("0a1b2c3d4e5fa6x", 1);
+    });
+
+    it("should have an error if the value is longer than 15 characters", () => {
+      assertHasErrorsForValue("0123456789123456789", 1);
+    });
+
+    it("should return true if only 15 numbers", () => {
+      assertNoErrorsForValue("123456789123456");
+    });
+
+    it("should not have any errors if it is only non-number 15 hex characters", () => {
+      assertNoErrorsForValue("abcdefabcdefabc");
+    });
+
+    it("should not have any errors if 15 hex characters", () => {
+      assertNoErrorsForValue("0a1b2c3d4e5fa6b");
+    });
+
+    it("should ignore casing of hex characters", () => {
+      assertNoErrorsForValue("ABCDeFabCDefABc");
     });
   });
 });

@@ -24,22 +24,26 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
 
-const BeaconInformationPage: FunctionComponent = (): JSX.Element => (
-  <>
+const BeaconInformationPage: FunctionComponent = (): JSX.Element => {
+  const pageHeading = "Beacon information";
+
+  // TODO: Use form validation to set this
+  const pageHasErrors = false;
+
+  return (
     <Layout
       navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
+      title={pageHeading}
+      pageHasErrors={pageHasErrors}
     >
       <Grid
         mainContent={
           <>
-            {/*TODO: Update link to next step in service flow*/}
             <Form action="/register-a-beacon/beacon-information">
               <FormFieldset>
-                <FormLegendPageHeading>
-                  Beacon information
-                </FormLegendPageHeading>
+                <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                 <InsetText>
-                  Further information about your beacon is useful for Search &
+                  Further information about your beacon is useful for Search and
                   Rescue. Provide as much information you can find.
                 </InsetText>
 
@@ -58,8 +62,8 @@ const BeaconInformationPage: FunctionComponent = (): JSX.Element => (
         }
       />
     </Layout>
-  </>
-);
+  );
+};
 
 const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element => (
   <FormGroup>
@@ -92,8 +96,9 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
       className="govuk-!-padding-top-2"
       summaryText="What is the beacon CHK code?"
     >
-      TODO: Details text explaining what a CHK code is and where the user can
-      find it.
+      If the beacon manufacturer uses a CHK code, it will be written on the
+      manufacturers card underneath the Hex ID or UIN and serial number. An
+      example is: CHK: 9480B
     </Details>
   </FormGroup>
 );
