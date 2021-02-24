@@ -4,7 +4,9 @@ import { handlePageRequest } from "../../src/lib/handlePageRequest";
 
 jest.mock("../../src/lib/middleware", () => ({
   __esModule: true,
-  updateFormCache: jest.fn().mockReturnValue({}),
+  parseFormData: jest.fn().mockReturnValue({}),
+  updateFormCache: jest.fn(),
+  getCache: jest.fn().mockReturnValue({}),
   withCookieRedirect: jest.fn().mockImplementation((callback) => {
     return async (context) => {
       return callback(context);
@@ -38,10 +40,6 @@ describe("handlePageRequest()", () => {
     });
   });
 
-  xit("should return a props object with errors on invalid form submission", () => {
-    // TODO
-  });
-
   it("should return a props object when receives a GET request", async () => {
     const mockUserAccessedPageWithGETRequest = {
       req: {
@@ -59,5 +57,9 @@ describe("handlePageRequest()", () => {
         needsValidation: false,
       },
     });
+  });
+
+  xit("should return a props object with errors on invalid form submission", () => {
+    // TODO
   });
 });

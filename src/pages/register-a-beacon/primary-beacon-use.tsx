@@ -194,7 +194,7 @@ const ensureMaritimePleasureVesselUseIsSubmitted = (formData) => {
 };
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/beacon-information",
+  "/register-a-beacon/about-the-vessel",
   ensureMaritimePleasureVesselUseIsSubmitted
 );
 
