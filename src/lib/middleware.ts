@@ -8,7 +8,7 @@ import {
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
 import parse from "urlencoded-body-parser";
 import { v4 as uuidv4 } from "uuid";
-import { BeaconCacheEntry, FormCacheFactory, IFormCache } from "./formCache";
+import { CacheEntry, FormCacheFactory, IFormCache } from "./formCache";
 import { formSubmissionCookieId } from "./types";
 import { toArray } from "./utils";
 
@@ -87,7 +87,7 @@ export async function parseFormData<T>(request: IncomingMessage): Promise<T> {
 export const getCache = (
   cookies: NextApiRequestCookies,
   cache: IFormCache = FormCacheFactory.getCache()
-): BeaconCacheEntry => {
+): CacheEntry => {
   const submissionId: string = cookies[formSubmissionCookieId];
   return cache.get(submissionId);
 };

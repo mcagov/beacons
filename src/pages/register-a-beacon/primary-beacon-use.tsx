@@ -20,16 +20,22 @@ import {
   RadioListItemConditional,
   RadioListItemHint,
 } from "../../components/RadioList";
-import { VesselCacheEntry } from "../../lib/formCache";
+import { CacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
 import { handlePageRequest } from "../../lib/handlePageRequest";
-import { updateFormCache } from "../../lib/middleware";
 import { MaritimePleasureVessel } from "../../lib/types";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface PrimaryBeaconUseProps {
-  formData: VesselCacheEntry;
+  formData: CacheEntry;
   needsValidation: boolean;
+}
+
+interface BeaconUseFormProps {
+  formData: CacheEntry;
+  checkedValue: string | null;
+  showErrors: boolean;
+  errorMessages: string[];
 }
 
 const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
@@ -46,7 +52,11 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
 
   return (
     <Layout
+      title={
+        "What type of maritime pleasure vessel will you mostly use this beacon on?"
+      }
       navigation={<BackButton href="/register-a-beacon/beacon-information" />}
+      pageHasErrors={errors.length > 0 && needsValidation}
     >
       <Grid
         mainContent={
@@ -69,13 +79,6 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
     </Layout>
   );
 };
-
-interface BeaconUseFormProps {
-  formData: VesselCacheEntry;
-  checkedValue: string | null;
-  showErrors: boolean;
-  errorMessages: string[];
-}
 
 const BeaconUseForm: FunctionComponent<BeaconUseFormProps> = ({
   formData,
@@ -183,10 +186,16 @@ const BeaconUseForm: FunctionComponent<BeaconUseFormProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const formData = await updateFormCache(context);
-
-  return handlePageRequest("/register-a-beacon/about-the-vessel")(context);
+const ensureMaritimePleasureVesselUseIsSubmitted = (formData) => {
+  return {
+    ...formData,
+    maritimePleasureVesselUse: formData["maritimePleasureVesselUse"] || "",
+  };
 };
+
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
+  "/register-a-beacon/beacon-information",
+  ensureMaritimePleasureVesselUseIsSubmitted
+);
 
 export default PrimaryBeaconUse;
