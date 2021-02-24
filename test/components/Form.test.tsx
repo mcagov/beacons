@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { FormLabel } from "../../src/components/Form";
+import { FormGroup, FormLabel } from "../../src/components/Form";
 
 describe("Form Components", () => {
   describe("FormLabel", () => {
@@ -15,6 +15,36 @@ describe("Form Components", () => {
         </>
       );
       expect(screen.getByLabelText(label)).toBeDefined();
+    });
+  });
+
+  describe("FormGroup", () => {
+    let errorMessage;
+    let errorMessages: string[];
+
+    beforeEach(() => {
+      errorMessage = "A Hex ID should be 15 characters long";
+      errorMessages = [errorMessage];
+    });
+
+    it("should display the error messages if errors and showErrors is true", () => {
+      render(
+        <FormGroup showErrors={true} errorMessages={errorMessages}>
+          <p>Hello world!</p>
+        </FormGroup>
+      );
+
+      expect(screen.getByText(errorMessage)).toBeDefined();
+    });
+
+    it("should not display the error messages if errors but showErrors is false", () => {
+      render(
+        <FormGroup showErrors={false} errorMessages={errorMessages}>
+          <p>Hello world!</p>
+        </FormGroup>
+      );
+
+      expect(screen.queryByText(errorMessage)).toBeNull();
     });
   });
 });
