@@ -40,7 +40,7 @@ const VesselCommunications: FunctionComponent<VesselCommunicationsProps> = ({
 }: VesselCommunicationsProps): JSX.Element => {
   ensureFormDataHasKeys(
     formData,
-    "allSign",
+    "callSign",
     "vhfRadio",
     "fixedVhfRadio",
     "fixedVhfRadioInput",
@@ -139,7 +139,12 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
 
     <FormGroup>
       <CheckboxList conditional={true}>
-        <CheckboxListItem id="vhfRadio" value="" label="VHF Radio" />
+        <CheckboxListItem
+          id="vhfRadio"
+          value={VesselCommunication.VHF_RADIO}
+          defaultChecked={formData.vhfRadio === VesselCommunication.VHF_RADIO}
+          label="VHF Radio"
+        />
 
         <CheckboxListItem
           id="fixedVhfRadio"

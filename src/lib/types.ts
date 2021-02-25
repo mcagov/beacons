@@ -20,6 +20,7 @@ export enum MaritimePleasureVessel {
 }
 
 export enum VesselCommunication {
+  VHF_RADIO = "VHF_RADIO",
   FIXED_VHF_RADIO = "FIXED_VHF_RADIO",
   PORTABLE_VHF_RADIO = "PORTABLE_VHF_RADIO",
   SATELLITE_TELEPHONE = "SATELLITE_TELEPHONE",
