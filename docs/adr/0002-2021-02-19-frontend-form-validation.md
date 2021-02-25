@@ -39,7 +39,7 @@ const validationResponse = (FormValidator.validate(formData) = {
   hexId: {
     valid: false,
     invalid: true,
-    errorMessages: ["Required],
+    errorMessages: ["Required"],
   },
 });
 ```
