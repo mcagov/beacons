@@ -19,7 +19,7 @@ import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { BeaconCacheEntry } from "../../lib/formCache";
+import { CacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
 import {
   getCache,
@@ -30,7 +30,7 @@ import {
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface CheckBeaconDetailsProps {
-  formData: BeaconCacheEntry;
+  formData: CacheEntry;
   needsValidation?: boolean;
 }
 
@@ -64,7 +64,10 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
         <Grid
           mainContent={
             <>
-              {needsValidation && <FormErrorSummary errors={errors} />}
+              <FormErrorSummary
+                errors={errors}
+                needsValidation={needsValidation}
+              />
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
@@ -162,8 +165,8 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
 const handlePostRequest = async (
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<CheckBeaconDetailsProps>> => {
-  const rawFormData: BeaconCacheEntry = await parseFormData(context.req);
-  const formData: BeaconCacheEntry = {
+  const rawFormData: CacheEntry = await parseFormData(context.req);
+  const formData: CacheEntry = {
     ...rawFormData,
     hexId: (rawFormData["hexId"] || "").toUpperCase(),
   };

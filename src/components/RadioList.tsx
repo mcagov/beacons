@@ -25,7 +25,7 @@ interface RadioListItemHintProps {
   value: string;
   children: ReactNode;
   hintText: string;
-  inputHtmlAttributes?: Record<string, string>;
+  inputHtmlAttributes?: Record<string, string | boolean>;
 }
 
 interface RadioListItemConditionalProps {
