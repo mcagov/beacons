@@ -2,25 +2,24 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import {
-  DateInput,
   DateListInput,
   DateListItem,
   DateType,
 } from "../../components/DateInput";
 import { Details } from "../../components/Details";
+import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
   FormGroup,
-  FormHint,
-  FormLabel,
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
-import { Input } from "../../components/Input";
+import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
+import { FormValidator } from "../../lib/formValidator";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
@@ -31,14 +30,18 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
   formData = ensureFormDataHasKeys(
     formData,
     "manufacturerSerialNumber",
-    "chkCode",
     "batteryExpiryDateMonth"
   );
 
-  const pageHeading = "Beacon information";
+  const errors = FormValidator.errorSummary(formData);
 
-  // TODO: Use form validation to set this
-  const pageHasErrors = false;
+  const { manufacturerSerialNumber, model, hexId } = FormValidator.validate(
+    formData
+  );
+
+  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
+
+  const pageHeading = "Beacon information";
 
   return (
     <Layout
@@ -49,6 +52,10 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
       <Grid
         mainContent={
           <>
+            <FormErrorSummary
+              errors={errors}
+              showErrorSummary={needsValidation}
+            />
             <Form action="/register-a-beacon/beacon-information">
               <FormFieldset>
                 <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
@@ -57,13 +64,19 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
                   Rescue. Provide as much information you can find.
                 </InsetText>
 
-                <BeaconManufacturerSerialNumberInput />
+                <ManufacturerSerialNumberInput
+                  value={formData.manufacturerSerialNumber}
+                  showErrors={
+                    needsValidation && manufacturerSerialNumber.invalid
+                  }
+                  errorMessages={manufacturerSerialNumber.errorMessages}
+                />
 
-                <BeaconCHKCode />
+                <CHKCode value={formData.chkCode} />
 
-                <BeaconBatteryExpiryDate />
+                <BatteryExpiryDate />
 
-                <BeaconLastServicedDate />
+                <LastServicedDate />
               </FormFieldset>
               <Button buttonText="Continue" />
               <IfYouNeedHelp />
@@ -75,12 +88,17 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element => (
-  <FormGroup>
+const ManufacturerSerialNumberInput: FunctionComponent<FormInputProps> = ({
+  value,
+  errorMessages,
+  showErrors = false,
+}: FormInputProps): JSX.Element => (
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
     <Input
       id="manufacturerSerialNumber"
       label="Enter beacon manufacturer serial number"
       htmlAttributes={{ spellCheck: false }}
+      defaultValue={value}
     />
     <Details
       className="govuk-!-padding-top-2"
@@ -92,13 +110,16 @@ const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element =
   </FormGroup>
 );
 
-const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
+const CHKCode: FunctionComponent<FormInputProps> = ({
+  value,
+}: FormInputProps): JSX.Element => (
   <FormGroup>
     <Input
       id="chkCode"
       label="Enter the beacon CHK code (optional)"
       hintText="This might be on the registration card you received when you bought the
       beacon"
+      defaultValue={value}
       htmlAttributes={{ spellCheck: false }}
     />
     <Details
@@ -113,75 +134,43 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
   </FormGroup>
 );
 
-const BeaconBatteryExpiryDate: FunctionComponent = (): JSX.Element => (
-  <DateListInput id="batteryExpiryDate">
-    <FormLabel htmlFor="batteryExpiryDate" className="govuk-date-input__label">
-      Enter your beacon battery expiry date (optional)
-    </FormLabel>
-    <FormHint forId="batteryExpiryDate">
-      You only need to enter the month and year, for example 11 2009
-    </FormHint>
-    <DateListItem>
-      <FormGroup>
-        <FormLabel
-          htmlFor="batteryExpiryDateMonth"
-          className="govuk-date-input__label"
-        >
-          Month
-        </FormLabel>
-        <DateInput
-          id="batteryExpiryDateMonth"
-          name="beaconBatteryExpiryDateonth"
-          dateType={DateType.MONTH}
-        />
-      </FormGroup>
-    </DateListItem>
+const BatteryExpiryDate: FunctionComponent = (): JSX.Element => (
+  <DateListInput
+    id="batteryExpiryDate"
+    label="Enter your beacon battery expiry date (optional)"
+    hintText="You only need to enter the month and year, for example 11 2009"
+  >
+    <DateListItem
+      id="batteryExpiryDateMonth"
+      label="Month"
+      dateType={DateType.MONTH}
+    />
 
-    <DateListItem>
-      <FormGroup>
-        <FormLabel
-          htmlFor="batteryExpiryDateYear"
-          className="govuk-date-input__label"
-        >
-          Year
-        </FormLabel>
-        <DateInput id="batteryExpiryDateYear" dateType={DateType.YEAR} />
-      </FormGroup>
-    </DateListItem>
+    <DateListItem
+      id="batteryExpiryDateYear"
+      label="Year"
+      dateType={DateType.YEAR}
+    />
   </DateListInput>
 );
 
-const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
-  <DateListInput id="lastServicedDate">
-    <FormLabel htmlFor="lastServicedDate" className="govuk-date-input__label">
-      When was your beacon last serviced? (optional)
-    </FormLabel>
-    <FormHint forId="lastServicedDate">
-      You only need to enter the month and year, for example 11 2009
-    </FormHint>
-    <DateListItem>
-      <FormGroup>
-        <FormLabel
-          htmlFor="lastServicedDateMonth"
-          className="govuk-date-input__label"
-        >
-          Month
-        </FormLabel>
-        <DateInput id="lastServicedDateMonth" dateType={DateType.MONTH} />
-      </FormGroup>
-    </DateListItem>
+const LastServicedDate: FunctionComponent = (): JSX.Element => (
+  <DateListInput
+    id="lastServicedDate"
+    label="When was your beacon last serviced? (optional)"
+    hintText="You only need to enter the month and year, for example 11 2009"
+  >
+    <DateListItem
+      id="lastServicedDateMonth"
+      label="Month"
+      dateType={DateType.MONTH}
+    />
 
-    <DateListItem>
-      <FormGroup>
-        <FormLabel
-          htmlFor="lastServicedDateYear"
-          className="govuk-date-input__label"
-        >
-          Year
-        </FormLabel>
-        <DateInput id="lastServicedDateYear" dateType={DateType.YEAR} />
-      </FormGroup>
-    </DateListItem>
+    <DateListItem
+      id="lastServicedDateYear"
+      label="Year"
+      dateType={DateType.YEAR}
+    />
   </DateListInput>
 );
 

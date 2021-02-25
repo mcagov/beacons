@@ -1,18 +1,27 @@
 import React, { FunctionComponent, ReactNode } from "react";
+import { FormGroup, FormHint, FormLabel } from "./Form";
 
 interface DateListInputProps {
   id: string;
+  label: string;
+  hintText?: string;
   children: ReactNode;
 }
 
 interface DateListItemInputProps {
-  children: ReactNode;
+  id: string;
+  label: string;
+  dateType: DateType;
+  name?: string;
+  defaultValue?: string;
+  className?: string;
 }
 
 interface DateInputProps {
   id: string;
   dateType: DateType;
   name?: string;
+  defaultValue?: string;
   className?: string;
 }
 
@@ -24,23 +33,57 @@ export enum DateType {
 
 export const DateListInput: FunctionComponent<DateListInputProps> = ({
   id,
+  label,
+  hintText = "",
   children,
-}: DateListInputProps): JSX.Element => (
-  <div className="govuk-date-input" id={id}>
-    {children}
-  </div>
-);
+}: DateListInputProps): JSX.Element => {
+  let hintComponent: ReactNode;
+  if (hintText) {
+    hintComponent = <FormHint forId={id}>{hintText}</FormHint>;
+  }
+
+  return (
+    <div className="govuk-date-input" id={id}>
+      <FormLabel htmlFor={id} className="govuk-date-input__label">
+        {label}
+      </FormLabel>
+      {hintComponent}
+      {children}
+    </div>
+  );
+};
 
 export const DateListItem: FunctionComponent<DateListItemInputProps> = ({
-  children,
-}: DateListItemInputProps): JSX.Element => (
-  <div className="govuk-date-input__item">{children}</div>
-);
+  id,
+  label,
+  dateType,
+  name = "",
+  defaultValue = "",
+  className = "",
+}: DateListItemInputProps): JSX.Element => {
+  return (
+    <div className="govuk-date-input__item">
+      <FormGroup>
+        <FormLabel htmlFor={id} className="govuk-date-input__label">
+          {label}
+        </FormLabel>
 
-export const DateInput: FunctionComponent<DateInputProps> = ({
+        <DateInput
+          id={id}
+          name={name}
+          defaultValue={defaultValue}
+          dateType={dateType}
+        />
+      </FormGroup>
+    </div>
+  );
+};
+
+const DateInput: FunctionComponent<DateInputProps> = ({
   id,
   dateType,
   name = null,
+  defaultValue = "",
   className = "",
 }: DateInputProps) => {
   const dateTypeClass: string =
@@ -60,6 +103,7 @@ export const DateInput: FunctionComponent<DateInputProps> = ({
       type="text"
       pattern={`[0-9]{${maxLength}}`}
       inputMode="numeric"
+      defaultValue={defaultValue}
       {...{ maxLength }}
     />
   );

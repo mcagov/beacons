@@ -1,12 +1,17 @@
 import {
   Beacon,
+  BeaconInformation,
   BeaconIntent,
   Owner,
   Vessel,
   VesselCommunications,
 } from "./types";
 
-type BeaconModel = Beacon & Owner & Vessel & VesselCommunications;
+type BeaconModel = Beacon &
+  BeaconInformation &
+  Owner &
+  Vessel &
+  VesselCommunications;
 
 // Convenience type
 export type CacheEntry = Partial<BeaconModel> & {
