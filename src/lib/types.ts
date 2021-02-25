@@ -49,14 +49,14 @@ export interface Vessel {
 
 export interface VesselCommunications {
   callSign: string;
-  vhfRadio: string;
+  vhfRadio: VesselCommunication;
   fixedVhfRadio: string;
   fixedVhfRadioInput: string;
-  portableVhfRadio: string;
+  portableVhfRadio: VesselCommunication;
   portableVhfRadioInput: string;
-  satelliteTelephone: string;
+  satelliteTelephone: VesselCommunication;
   satelliteTelephoneInput: string;
-  mobileTelephone: string;
+  mobileTelephone: VesselCommunication;
   mobileTelephoneInput1: string;
   mobileTelephoneInput2: string;
 }

@@ -1,9 +1,9 @@
 import { Beacon, BeaconIntent, Vessel, VesselCommunications } from "./types";
 
-type BeaconIntersection = Beacon & Vessel & VesselCommunications;
+type BeaconModel = Beacon & Vessel & VesselCommunications;
 
 // Convenience type
-export type CacheEntry = Partial<BeaconIntersection> & {
+export type CacheEntry = Partial<BeaconModel> & {
   beaconIntent?: BeaconIntent;
 };
 
