@@ -15,8 +15,8 @@ export const IfYouNeedHelp: FunctionComponent = (): JSX.Element => (
     <BeaconRegistryContactInfo />
     <p className="govuk-!-margin-top-5">
       In an emergency in the UK, dial 999 and ask for the Coastguard. If you are
-      at sea, use GMDSS systems to make a distress or urgency alert:Emergency
-      Contact - Dial 999 and ask for the Coastguard
+      at sea and have GMDSS systems, use them to make a distress or urgency
+      alert.
     </p>
   </Details>
 );
