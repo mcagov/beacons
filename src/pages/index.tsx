@@ -6,12 +6,11 @@ import { StartButton } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
 import { Layout } from "../components/Layout";
-import { McaLogo } from "../components/Mca";
+import { BeaconRegistryContactInfo, McaLogo } from "../components/Mca";
 import {
   AnchorLink,
   GovUKBody,
   GovUKBulletedList,
-  GovUKList,
   PageHeading,
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
@@ -122,24 +121,7 @@ const OtherWaysToAccessTheService: FunctionComponent = (): JSX.Element => (
     </GovUKBody>
 
     <InsetText>
-      <>
-        <GovUKList>
-          <li className="govuk-!-font-weight-bold">The UK Beacon Registry</li>
-          <li>
-            <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
-              ukbeacons@mcga.gov.uk
-            </AnchorLink>
-          </li>
-          <li>Telephone: +44 (0)20 3817 2006</li>
-          <li>Fax: 01326 319264</li>
-          <li>Monday to Friday, 9am to 5pm (except public holidays)</li>
-          <li>
-            <AnchorLink href="https://www.gov.uk/call-charges">
-              Find out about call charges
-            </AnchorLink>
-          </li>
-        </GovUKList>
-      </>
+      <BeaconRegistryContactInfo />
     </InsetText>
   </>
 );
