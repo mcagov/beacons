@@ -100,7 +100,7 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
         & Rescue when trying to locate you."
       maxCharacters={250}
       rows={4}
-      value={value}
+      defaultValue={value}
     />
     {showErrors && <FieldErrorList errorMessages={errorMessages} />}
   </FormGroup>
