@@ -71,7 +71,7 @@ const PageHeadingInfo: FunctionComponent<PageHeadingInfoProps> = ({
       Rescue when trying to contact you in an emergency.
     </GovUKBody>
     <GovUKBody>
-      If you have a radio license and have a Very High Frequency (VHF) and/or
+      If you have a radio licence and have a Very High Frequency (VHF) and/or
       Very High Frequency (VHF) / Digital Selective Calling (DSC) radio, you can{" "}
       <AnchorLink href="https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio">
         find up your Call Sign and Maritime Mobile Service Identity (MMSI)
