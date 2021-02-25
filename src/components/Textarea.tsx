@@ -8,6 +8,7 @@ import { FormGroup, FormHint, FormLabel } from "./Form";
 interface TextareaProps {
   id: string;
   name?: string;
+  defaultValue?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   rows?: number;
 }
@@ -16,7 +17,7 @@ interface TextareaCharacterCountProps {
   id: string;
   maxCharacters: number;
   label?: string;
-  value?: string;
+  defaultValue?: string;
   hintText?: string;
   name?: string;
   rows?: number;
@@ -26,6 +27,7 @@ interface TextareaCharacterCountProps {
 export const Textarea: FunctionComponent<TextareaProps> = ({
   id,
   name = null,
+  defaultValue = "",
   htmlAttributes = {},
   rows = 3,
 }: TextareaProps): JSX.Element => {
@@ -36,6 +38,7 @@ export const Textarea: FunctionComponent<TextareaProps> = ({
       className="govuk-textarea"
       id={id}
       name={name}
+      defaultValue={defaultValue}
       rows={rows}
       aria-describedby={`${id}-hint`}
       {...htmlAttributes}
@@ -47,7 +50,7 @@ export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountPro
   id,
   maxCharacters,
   label = null,
-  value = "",
+  defaultValue = "",
   hintText = null,
   name = null,
   rows = 3,
@@ -82,7 +85,7 @@ export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountPro
         rows={rows}
         aria-describedby={`${id}-hint ${id}-info`}
         {...htmlAttributes}
-        defaultValue={value}
+        defaultValue={defaultValue}
       />
       <div
         id={`${id}-info`}
