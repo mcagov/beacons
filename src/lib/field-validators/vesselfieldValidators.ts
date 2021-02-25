@@ -1,4 +1,4 @@
-import { FieldValidator } from "../fieldValidators";
+import { FieldValidator } from "../fieldValidator";
 
 export class VesselMaxCapacityValidator extends FieldValidator {
   constructor() {
@@ -41,7 +41,7 @@ export class VesselBeaconLocationValidator extends FieldValidator {
   }
 }
 
-export const fieldValidatorLookup = {
+export const vesselFieldValidatorLookup = {
   maxCapacity: new VesselMaxCapacityValidator(),
   areaOfOperation: new VesselAreaOfOperationValidator(),
   beaconLocation: new VesselBeaconLocationValidator(),
