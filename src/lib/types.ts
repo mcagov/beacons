@@ -44,6 +44,7 @@ export interface Owner {
   beaconOwnerAddressLine2?: string;
   beaconOwnerTownOrCity: string;
   beaconOwnerCounty?: string;
+  beaconOwnerPostcode: string;
 }
 
 export const formSubmissionCookieId = "submissionId";

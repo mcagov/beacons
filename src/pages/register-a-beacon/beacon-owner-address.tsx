@@ -33,13 +33,15 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
     "beaconOwnerAddressLine1",
     "beaconOwnerAddressLine2",
     "beaconOwnerTownOrCity",
-    "beaconOwnerCounty"
+    "beaconOwnerCounty",
+    "beaconOwnerPostcode"
   );
   const pageHeading = "What is the beacon owner's address?";
   const errors = FormValidator.errorSummary(formData);
   const {
     beaconOwnerAddressLine1,
     beaconOwnerTownOrCity,
+    beaconOwnerPostcode,
   } = FormValidator.validate(formData);
   const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
 
@@ -66,15 +68,20 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
                 <BuildingNumberAndStreetInput
                   valueLine1={formData.beaconOwnerAddressLine1}
                   valueLine2={formData.beaconOwnerAddressLine2}
-                  showErrors={pageHasErrors}
+                  showErrors={pageHasErrors && beaconOwnerAddressLine1.invalid}
                   errorMessages={beaconOwnerAddressLine1.errorMessages}
                 />
                 <TownOrCityInput
                   value={formData.beaconOwnerTownOrCity}
-                  showErrors={pageHasErrors}
+                  showErrors={pageHasErrors && beaconOwnerTownOrCity.invalid}
                   errorMessages={beaconOwnerTownOrCity.errorMessages}
                 />
                 <CountyInput value={formData.beaconOwnerCounty} />
+                <PostcodeInput
+                  value={formData.beaconOwnerPostcode}
+                  showErrors={pageHasErrors && beaconOwnerPostcode.invalid}
+                  errorMessages={beaconOwnerPostcode.errorMessages}
+                />
               </FormFieldset>
 
               <Button buttonText="Continue" />
@@ -130,6 +137,16 @@ const CountyInput: FunctionComponent<FormInputProps> = ({
       label="County (optional)"
       defaultValue={value}
     />
+  </FormGroup>
+);
+
+const PostcodeInput: FunctionComponent<FormInputProps> = ({
+  value = "",
+  showErrors,
+  errorMessages,
+}: FormInputProps): JSX.Element => (
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+    <Input id="beaconOwnerPostcode" label="Postcode" defaultValue={value} />
   </FormGroup>
 );
 
