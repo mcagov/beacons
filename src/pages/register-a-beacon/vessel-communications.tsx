@@ -37,7 +37,7 @@ interface FormInputProps {
 const VesselCommunications: FunctionComponent<VesselCommunicationsProps> = ({
   formData,
 }: VesselCommunicationsProps): JSX.Element => {
-  const pageHeading = "Check beacon details";
+  const pageHeading = "What types of communications are on board the vessel?";
 
   const pageHasErrors = false;
 
