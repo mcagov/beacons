@@ -2,7 +2,7 @@ import {
   VesselAreaOfOperationValidator,
   VesselBeaconLocationValidator,
   VesselMaxCapacityValidator,
-} from "../../../src/lib/field-validators/vesselfieldValidators";
+} from "../../../src/lib/field-validators/vesselFieldValidators";
 
 describe("VesselMaxCapacityValidator", () => {
   describe("validate", () => {

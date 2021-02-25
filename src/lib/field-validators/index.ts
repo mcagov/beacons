@@ -1,7 +1,7 @@
 import { FieldValidator } from "../fieldValidator";
 import { MaritimePleasureVessel } from "../types";
 import { beaconFieldValidatorLookup } from "./beaconFieldValidators";
-import { vesselFieldValidatorLookup } from "./vesselfieldValidators";
+import { vesselFieldValidatorLookup } from "./vesselFieldValidators";
 
 export class MoreVesselDetailsValidator extends FieldValidator {
   constructor() {
