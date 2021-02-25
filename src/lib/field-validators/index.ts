@@ -1,6 +1,7 @@
 import { FieldValidator } from "../fieldValidator";
 import { MaritimePleasureVessel } from "../types";
 import { beaconFieldValidatorLookup } from "./beaconFieldValidators";
+import { emergencyContactFieldValidatorLookup } from "./emergencyContactFieldValidators";
 import { ownerFieldValidatorLookup } from "./ownerFieldValidators";
 import { vesselFieldValidatorLookup } from "./vesselFieldValidators";
 
@@ -57,4 +58,5 @@ export const fieldValidatorLookup = {
   otherPleasureVesselText: new OtherPleasureVesselTextValidator(),
   ...vesselFieldValidatorLookup,
   ...ownerFieldValidatorLookup,
+  ...emergencyContactFieldValidatorLookup,
 };
