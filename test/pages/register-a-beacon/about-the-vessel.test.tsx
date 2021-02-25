@@ -7,7 +7,7 @@ import AboutTheVessel, {
 
 describe("AboutTheVessel", () => {
   it("should have a back button which directs the user to the primary beacon use page", () => {
-    render(<AboutTheVessel />);
+    render(<AboutTheVessel formData={{}} needsValidation={false} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
