@@ -15,7 +15,7 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
-import { VesselCacheEntry } from "../../lib/formCache";
+import { CacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
 import {
   parseFormData,
@@ -25,7 +25,7 @@ import {
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface MoreVesselDetailsProps {
-  formData: VesselCacheEntry;
+  formData: CacheEntry;
   needsValidation: boolean;
 }
 
@@ -47,7 +47,7 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
     <>
       <Layout
         navigation={
-          <BackButton href="/register-a-beacon/vessel-communication-details" />
+          <BackButton href="/register-a-beacon/vessel-communications" />
         }
         title={pageHeading}
         pageHasErrors={pageHasErrors}
@@ -55,7 +55,10 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
         <Grid
           mainContent={
             <>
-              {needsValidation && <FormErrorSummary errors={errors} />}
+              <FormErrorSummary
+                errors={errors}
+                showErrorSummary={needsValidation}
+              />
               <Form action="/register-a-beacon/more-vessel-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
@@ -97,7 +100,7 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
         & Rescue when trying to locate you."
       maxCharacters={250}
       rows={4}
-      value={value}
+      defaultValue={value}
     />
     {showErrors && <FieldErrorList errorMessages={errorMessages} />}
   </FormGroup>
@@ -105,7 +108,7 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
-    const formData: VesselCacheEntry = await parseFormData(context.req);
+    const formData: CacheEntry = await parseFormData(context.req);
     updateFormCache(context.req.cookies, formData);
 
     const userDidSubmitForm = context.req.method === "POST";

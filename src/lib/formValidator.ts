@@ -1,8 +1,5 @@
-import {
-  fieldValidatorLookup,
-  IFieldValidationResponse,
-  IFieldValidator,
-} from "./fieldValidators";
+import { fieldValidatorLookup } from "./field-validators";
+import { IFieldValidationResponse, IFieldValidator } from "./fieldValidator";
 
 export interface IFormError {
   fieldId: string;
@@ -17,15 +14,11 @@ export class FormValidator {
     const fields = Object.entries(formData);
 
     return fields.reduce((validatorResponse, [fieldId, value]) => {
-      if (!(fieldId in validatorLookup))
-        throw new ReferenceError(
-          `${fieldId} not found in validatorLookup.  Create a new validator key/value pair for this field?`
-        );
-
-      validatorResponse[fieldId] = {
-        ...validatorLookup[fieldId].validate(value),
-      };
-
+      if (fieldId in validatorLookup) {
+        validatorResponse[fieldId] = {
+          ...validatorLookup[fieldId].validate(value),
+        };
+      }
       return validatorResponse;
     }, {});
   }

@@ -29,8 +29,8 @@ export const BeaconRegistryContactInfo: FunctionComponent = (): JSX.Element => (
         ukbeacons@mcga.gov.uk
       </a>
     </li>
-    <li>Telephone: 01326 211569</li>
-    <li>Fax: 01326 319264</li>
+    <li>Telephone: +44 (0)20 3817 2006</li>
+    <li>Fax: +44 (0)1326 319264</li>
     <li>Monday to Friday, 9am to 5pm (except public holidays)</li>
     <li>
       <AnchorLink href="https://www.gov.uk/call-charges">

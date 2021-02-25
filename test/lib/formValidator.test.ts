@@ -1,4 +1,4 @@
-import { IFieldValidator } from "../../src/lib/fieldValidators";
+import { IFieldValidator } from "../../src/lib/fieldValidator";
 import { FormValidator } from "../../src/lib/formValidator";
 
 const mockValidFieldValidator = (): IFieldValidator => {
@@ -94,20 +94,6 @@ describe("FormValidator", () => {
           errorMessages: [],
         },
       });
-    });
-
-    it("should raise an exception if field not found in validatorlookup", () => {
-      const formData = { unknownTestFieldId: "value" };
-      const fieldValidatorLookup = {
-        anUnrelatedValue: mockValidFieldValidator(),
-      };
-
-      const tryFindingMissingFieldOnValidatorLookup = () =>
-        FormValidator.validate(formData, fieldValidatorLookup);
-
-      expect(tryFindingMissingFieldOnValidatorLookup).toThrowError(
-        ReferenceError
-      );
     });
   });
 

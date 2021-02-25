@@ -19,6 +19,14 @@ export enum MaritimePleasureVessel {
   OTHER = "OTHER",
 }
 
+export enum VesselCommunication {
+  VHF_RADIO = "VHF_RADIO",
+  FIXED_VHF_RADIO = "FIXED_VHF_RADIO",
+  PORTABLE_VHF_RADIO = "PORTABLE_VHF_RADIO",
+  SATELLITE_TELEPHONE = "SATELLITE_TELEPHONE",
+  MOBILE_TELEPHONE = "MOBILE_TELEPHONE",
+}
+
 export interface Beacon {
   manufacturer: string;
   model: string;
@@ -29,7 +37,36 @@ export interface Beacon {
 }
 
 export interface Vessel {
+  maxCapacity: string;
+  vesselName: string;
+  homeport: string;
+  areaOfOperation: string;
+  beaconLocation: string;
   moreVesselDetails: string;
+  maritimePleasureVesselUse: string;
+  otherPleasureVesselText: string;
+}
+
+export interface Owner {
+  beaconOwnerAddressLine1: string;
+  beaconOwnerAddressLine2?: string;
+  beaconOwnerTownOrCity: string;
+  beaconOwnerCounty?: string;
+  beaconOwnerPostcode: string;
+}
+
+export interface VesselCommunications {
+  callSign: string;
+  vhfRadio: VesselCommunication;
+  fixedVhfRadio: string;
+  fixedVhfRadioInput: string;
+  portableVhfRadio: VesselCommunication;
+  portableVhfRadioInput: string;
+  satelliteTelephone: VesselCommunication;
+  satelliteTelephoneInput: string;
+  mobileTelephone: VesselCommunication;
+  mobileTelephoneInput1: string;
+  mobileTelephoneInput2: string;
 }
 
 export const formSubmissionCookieId = "submissionId";

@@ -7,7 +7,7 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { NotificationBannerSuccess } from "../../components/NotificationBanner";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { PageHeading } from "../../components/Typography";
-import { BeaconCacheEntry } from "../../lib/formCache";
+import { CacheEntry } from "../../lib/formCache";
 import {
   getCache,
   parseFormData,
@@ -101,14 +101,14 @@ const BeaconSummary: FunctionComponent<BeaconDetailsSummaryProps> = ({
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
     if (context.req.method === "POST") {
-      const formData: BeaconCacheEntry = await parseFormData(context.req);
+      const formData: CacheEntry = await parseFormData(context.req);
       updateFormCache(context.req.cookies, formData);
 
       return {
         props: { ...formData },
       };
     } else if (context.req.method === "GET") {
-      const existingState: BeaconCacheEntry = getCache(context.req.cookies);
+      const existingState: CacheEntry = getCache(context.req.cookies);
 
       return { props: { ...existingState } };
     }
