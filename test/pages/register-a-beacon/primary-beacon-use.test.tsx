@@ -22,19 +22,19 @@ describe("PrimaryBeaconUse", () => {
   });
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
-    const result = render(
+    const { container } = render(
       <PrimaryBeaconUse formData={{}} needsValidation={false} />
     );
     const ownPath = "/register-a-beacon/primary-beacon-use";
 
-    const form = result.container.querySelector("form");
+    const form = container.querySelector("form");
 
     expect(form).toHaveAttribute("action", ownPath);
   });
 
   it("should redirect to about-the-vessel page on valid form submission", async () => {
-    const dummyContext = {};
-    await getServerSideProps(dummyContext as GetServerSidePropsContext);
+    const context = {};
+    await getServerSideProps(context as GetServerSidePropsContext);
 
     expect(handlePageRequest).toHaveBeenCalledWith(
       "/register-a-beacon/about-the-vessel",

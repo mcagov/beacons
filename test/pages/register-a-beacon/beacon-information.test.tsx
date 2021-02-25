@@ -13,10 +13,10 @@ describe("BeaconInformationPage", () => {
   });
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
-    const result = render(<BeaconInformationPage />);
+    const { container } = render(<BeaconInformationPage />);
     const ownPath = "/register-a-beacon/beacon-information";
 
-    const form = result.container.querySelector("form");
+    const form = container.querySelector("form");
 
     expect(form).toHaveAttribute("action", ownPath);
   });
