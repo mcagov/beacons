@@ -8,7 +8,7 @@ describe("MoreVesselDetails page", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/vessel-communication-details"
+      "/register-a-beacon/vessel-communications"
     );
   });
 });

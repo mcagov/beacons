@@ -47,7 +47,7 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
     <>
       <Layout
         navigation={
-          <BackButton href="/register-a-beacon/vessel-communication-details" />
+          <BackButton href="/register-a-beacon/vessel-communications" />
         }
         title={pageHeading}
         pageHasErrors={pageHasErrors}
