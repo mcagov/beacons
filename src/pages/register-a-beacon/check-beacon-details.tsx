@@ -60,7 +60,7 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
             <>
               <FormErrorSummary
                 errors={errors}
-                needsValidation={needsValidation}
+                showErrorSummary={needsValidation}
               />
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>

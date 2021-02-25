@@ -60,7 +60,7 @@ const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
             <>
               <FormErrorSummary
                 errors={errors}
-                needsValidation={needsValidation}
+                showErrorSummary={needsValidation}
               />
               <Form action="/register-a-beacon/about-the-vessel">
                 <FormFieldset>

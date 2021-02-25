@@ -57,7 +57,7 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
             <Form action="/register-a-beacon/beacon-owner-address">
               <FormFieldset>
                 <FormErrorSummary
-                  needsValidation={needsValidation}
+                  showErrorSummary={needsValidation}
                   errors={errors}
                 />
                 <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>

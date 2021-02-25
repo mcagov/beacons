@@ -60,7 +60,7 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
           <>
             <FormErrorSummary
               errors={errors}
-              needsValidation={needsValidation}
+              showErrorSummary={needsValidation}
             />
             <BeaconUseForm
               checkedValue={formData.maritimePleasureVesselUse}
