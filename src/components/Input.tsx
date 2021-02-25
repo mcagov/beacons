@@ -5,6 +5,12 @@ import React, {
 } from "react";
 import { FormHint, FormLabel } from "./Form";
 
+export interface FormInputProps {
+  value: string;
+  errorMessages?: string[];
+  showErrors?: boolean;
+}
+
 interface InputProps {
   id: string;
   label: string;
