@@ -34,4 +34,9 @@ export interface Vessel {
   otherPleasureVesselText: string;
 }
 
+export interface Owner {
+  beaconOwnerAddressLine1: string;
+  beaconOwnerAddressLine2: string;
+}
+
 export const formSubmissionCookieId = "submissionId";

@@ -1,7 +1,7 @@
-import { Beacon, BeaconIntent, Vessel } from "./types";
+import { Beacon, BeaconIntent, Owner, Vessel } from "./types";
 
 // Convenience type
-export type CacheEntry = Partial<Beacon & Vessel> & {
+export type CacheEntry = Partial<Beacon & Vessel & Owner> & {
   beaconIntent?: BeaconIntent;
 };
 
