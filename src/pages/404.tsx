@@ -5,12 +5,14 @@ import { BeaconRegistryContactInfo } from "../components/Mca";
 import { GovUKBody } from "../components/Typography";
 
 const FourOhFour: FunctionComponent = (): JSX.Element => {
+  const pageHeading = "Page not found";
+
   return (
-    <Layout>
+    <Layout title={pageHeading} pageHasErrors={false}>
       <Grid
         mainContent={
           <>
-            <h1 className="govuk-heading-l">Page not found</h1>
+            <h1 className="govuk-heading-l">{pageHeading}</h1>
             <GovUKBody>
               If you typed the web address, check it is correct.
             </GovUKBody>

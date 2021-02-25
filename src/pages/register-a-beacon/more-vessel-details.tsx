@@ -9,16 +9,19 @@ import {
   Form,
   FormFieldset,
   FormGroup,
-  FormHint,
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { TextAreaCharacterCount } from "../../components/TextArea";
+import { TextareaCharacterCount } from "../../components/Textarea";
 import { VesselCacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
-import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
+import {
+  parseFormData,
+  updateFormCache,
+  withCookieRedirect,
+} from "../../lib/middleware";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface MoreVesselDetailsProps {
@@ -36,12 +39,18 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
 
   const { moreVesselDetails } = FormValidator.validate(formData);
 
+  const pageHeading = "Tell us more about the vessel";
+
+  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
+
   return (
     <>
       <Layout
         navigation={
           <BackButton href="/register-a-beacon/vessel-communication-details" />
         }
+        title={pageHeading}
+        pageHasErrors={pageHasErrors}
       >
         <Grid
           mainContent={
@@ -49,9 +58,7 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
               {needsValidation && <FormErrorSummary errors={errors} />}
               <Form action="/register-a-beacon/more-vessel-details">
                 <FormFieldset>
-                  <FormLegendPageHeading>
-                    Tell us more about the vessel
-                  </FormLegendPageHeading>
+                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <MoreVesselDetailsTextArea
                     value={formData.moreVesselDetails}
@@ -82,27 +89,24 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
   errorMessages,
 }: MoreVesselDetailsTextAreaProps): JSX.Element => (
   <FormGroup showErrors={showErrors}>
-    <TextAreaCharacterCount
-      name="moreVesselDetails"
+    <TextareaCharacterCount
       id="moreVesselDetails"
+      hintText="Describe the vessel's appearance (such as the length, colour, if it
+        has sails or not etc) and any vessel tracking details (e.g. RYA SafeTrx
+        or Web) if you have them. This information is very helpful to Search
+        & Rescue when trying to locate you."
       maxCharacters={250}
       rows={4}
       value={value}
-    >
-      <FormHint forId="moreVesselDetails">
-        Describe the vessel&apos;s appearance (such as the length, colour, if it
-        has sails or not etc) and any vessel tracking details (e.g. RYA SafeTrx
-        or Web) if you have them. This information is very helpful to Search
-        &amp; Rescue when trying to locate you.
-      </FormHint>
-      {showErrors && <FieldErrorList errorMessages={errorMessages} />}
-    </TextAreaCharacterCount>
+    />
+    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
   </FormGroup>
 );
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
-    const formData: VesselCacheEntry = await updateFormCache(context);
+    const formData: VesselCacheEntry = await parseFormData(context.req);
+    updateFormCache(context.req.cookies, formData);
 
     const userDidSubmitForm = context.req.method === "POST";
     const formIsValid = !FormValidator.hasErrors(formData);

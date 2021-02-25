@@ -15,30 +15,34 @@ import {
   FormHint,
   FormLabel,
   FormLegendPageHeading,
-  Input,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
+import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { withCookieRedirect } from "../../lib/middleware";
 
-const BeaconInformationPage: FunctionComponent = () => (
-  <>
+const BeaconInformationPage: FunctionComponent = (): JSX.Element => {
+  const pageHeading = "Beacon information";
+
+  // TODO: Use form validation to set this
+  const pageHasErrors = false;
+
+  return (
     <Layout
       navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
+      title={pageHeading}
+      pageHasErrors={pageHasErrors}
     >
       <Grid
         mainContent={
           <>
-            {/*TODO: Update link to next step in service flow*/}
             <Form action="/register-a-beacon/beacon-information">
               <FormFieldset>
-                <FormLegendPageHeading>
-                  Beacon information
-                </FormLegendPageHeading>
+                <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                 <InsetText>
-                  Further information about your beacon is useful for Search &
+                  Further information about your beacon is useful for Search and
                   Rescue. Provide as much information you can find.
                 </InsetText>
 
@@ -57,17 +61,14 @@ const BeaconInformationPage: FunctionComponent = () => (
         }
       />
     </Layout>
-  </>
-);
+  );
+};
 
 const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="beaconManufacturerSerialNumber">
-      Enter beacon manufacturer serial number
-    </FormLabel>
     <Input
-      name="beaconManufacturerSerialNumber"
       id="beaconManufacturerSerialNumber"
+      label="Enter beacon manufacturer serial number"
       htmlAttributes={{ spellCheck: false }}
     />
     <Details
@@ -82,16 +83,11 @@ const BeaconManufacturerSerialNumberInput: FunctionComponent = (): JSX.Element =
 
 const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
   <FormGroup>
-    <FormLabel htmlFor="beaconCHKCode">
-      Enter the beacon CHK code (optional)
-    </FormLabel>
-    <FormHint forId="beaconCHKCode">
-      This might be on the registration card you received when you bought the
-      beacon
-    </FormHint>
     <Input
-      name="beaconCHKCode"
       id="beaconCHKCode"
+      label="Enter the beacon CHK code (optional)"
+      hintText="This might be on the registration card you received when you bought the
+      beacon"
       htmlAttributes={{ spellCheck: false }}
     />
     <Details
@@ -99,8 +95,9 @@ const BeaconCHKCode: FunctionComponent = (): JSX.Element => (
       className="govuk-!-padding-top-2"
       summaryText="What is the beacon CHK code?"
     >
-      TODO: Details text explaining what a CHK code is and where the user can
-      find it.
+      If the beacon manufacturer uses a CHK code, it will be written on the
+      manufacturers card underneath the Hex ID or UIN and serial number. An
+      example is: CHK: 9480B
     </Details>
   </FormGroup>
 );

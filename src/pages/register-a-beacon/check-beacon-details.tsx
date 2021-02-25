@@ -1,32 +1,37 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+} from "next";
+import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { Details } from "../../components/Details";
-import {
-  FieldErrorList,
-  FormErrorSummary,
-} from "../../components/ErrorSummary";
+import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
   FormGroup,
-  FormHint,
-  FormLabel,
   FormLegendPageHeading,
-  Input,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
+import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { BeaconCacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
-import { updateFormCache, withCookieRedirect } from "../../lib/middleware";
+import {
+  getCache,
+  parseFormData,
+  updateFormCache,
+  withCookieRedirect,
+} from "../../lib/middleware";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface CheckBeaconDetailsProps {
   formData: BeaconCacheEntry;
-  needsValidation: boolean;
+  needsValidation?: boolean;
 }
 
 interface FormInputProps {
@@ -45,22 +50,27 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
 
   const { manufacturer, model, hexId } = FormValidator.validate(formData);
 
+  const pageHeading = "Check beacon details";
+
+  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
+
   return (
     <>
-      <Layout navigation={<BackButton href="/" />}>
+      <Layout
+        navigation={<BackButton href="/" />}
+        title={pageHeading}
+        pageHasErrors={pageHasErrors}
+      >
         <Grid
           mainContent={
             <>
               {needsValidation && <FormErrorSummary errors={errors} />}
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
-                  <FormLegendPageHeading>
-                    Check beacon details
-                  </FormLegendPageHeading>
+                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   <InsetText>
-                    The details of your beacon must be checked to ensure they
-                    have a UK encoding and if they are already registered with
-                    this service.
+                    The details of your beacon must be checked to ensure it is
+                    programmed for UK registration.
                   </InsetText>
 
                   <BeaconManufacturerInput
@@ -97,10 +107,12 @@ const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
   showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors}>
-    <FormLabel htmlFor="manufacturer">Enter your beacon manufacturer</FormLabel>
-    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
-    <Input name="manufacturer" id="manufacturer" defaultValue={value} />
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+    <Input
+      id="manufacturer"
+      label="Enter your beacon manufacturer"
+      defaultValue={value}
+    />
   </FormGroup>
 );
 
@@ -109,10 +121,8 @@ const BeaconModelInput: FunctionComponent<FormInputProps> = ({
   showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors}>
-    <FormLabel htmlFor="model">Enter your beacon model</FormLabel>
-    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
-    <Input name="model" id="model" defaultValue={value} />
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+    <Input id="model" label="Enter your beacon model" defaultValue={value} />
   </FormGroup>
 );
 
@@ -121,21 +131,17 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors}>
-    <FormLabel htmlFor="hexId">Enter the 15 digit beacon HEX ID</FormLabel>
-    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
-    <FormHint forId="hexId">
-      This will be on your beacon. It must be 15 characters long and use
-      characters 0-9, A-F
-    </FormHint>
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
     <Input
-      name="hexId"
       id="hexId"
+      label="Enter the 15 character beacon HEX ID or UIN number"
+      hintText="This will be on your beacon. It must be 15 characters long and use
+      characters 0 to 9 and letters A to F"
       htmlAttributes={{ spellCheck: false }}
       defaultValue={value}
     />
     <Details
-      summaryText="What does the 15 digit beacon HEX ID look like?"
+      summaryText="What does the 15 character beacon HEX ID or UIN look like?"
       className="govuk-!-padding-top-2"
     >
       TODO: Explain to users how to find their beacon HEX ID
@@ -145,27 +151,52 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
-    const formData: BeaconCacheEntry = await updateFormCache(context);
-
-    const userDidSubmitForm = context.req.method === "POST";
-    const formIsValid = !FormValidator.hasErrors(formData);
-
-    if (userDidSubmitForm && formIsValid) {
-      return {
-        redirect: {
-          statusCode: 303,
-          destination: "/register-a-beacon/beacon-information",
-        },
-      };
+    if (context.req.method === "POST") {
+      return handlePostRequest(context);
+    } else {
+      return handleGetRequest(context.req.cookies);
     }
+  }
+);
 
+const handlePostRequest = async (
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<CheckBeaconDetailsProps>> => {
+  const rawFormData: BeaconCacheEntry = await parseFormData(context.req);
+  const formData: BeaconCacheEntry = {
+    ...rawFormData,
+    hexId: (rawFormData["hexId"] || "").toUpperCase(),
+  };
+
+  updateFormCache(context.req.cookies, formData);
+
+  const formIsValid = !FormValidator.hasErrors(formData);
+
+  if (formIsValid) {
     return {
-      props: {
-        formData,
-        needsValidation: userDidSubmitForm,
+      redirect: {
+        statusCode: 303,
+        destination: "/register-a-beacon/beacon-information",
       },
     };
   }
-);
+
+  return {
+    props: {
+      formData: formData,
+      needsValidation: true,
+    },
+  };
+};
+
+const handleGetRequest = (
+  cookies: NextApiRequestCookies
+): GetServerSidePropsResult<CheckBeaconDetailsProps> => {
+  return {
+    props: {
+      formData: getCache(cookies),
+    },
+  };
+};
 
 export default CheckBeaconDetails;

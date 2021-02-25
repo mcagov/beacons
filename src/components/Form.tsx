@@ -1,11 +1,6 @@
-import React, {
-  FunctionComponent,
-  InputHTMLAttributes,
-  PropsWithChildren,
-  ReactNode,
-  SelectHTMLAttributes,
-} from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
 import { HttpMethod } from "../lib/types";
+import { FieldErrorList } from "./ErrorSummary";
 
 interface FormProps {
   action: string;
@@ -20,7 +15,9 @@ interface FormFieldsetProps {
 
 interface FormGroupProps {
   children: ReactNode;
+  className?: string;
   showErrors?: boolean;
+  errorMessages?: string[];
 }
 
 interface FormLabelProps {
@@ -36,32 +33,11 @@ interface FormHintProps {
 }
 
 interface FormLegendProps {
+  className?: string;
   children: ReactNode;
 }
 
 interface FormLegendPageHeadingProps {
-  children: ReactNode;
-}
-
-interface InputProps {
-  name: string;
-  id: string;
-  type?: string;
-  htmlAttributes?: InputHTMLAttributes<Element>;
-  defaultValue?: string;
-  numOfChars?: 2 | 3 | 4 | 5 | 10 | 20;
-}
-
-interface SelectProps {
-  name: string;
-  defaultValue: string;
-  children: ReactNode;
-  id: string;
-  htmlAttributes?: SelectHTMLAttributes<Element>;
-}
-
-interface SelectOptionProps {
-  value: string;
   children: ReactNode;
 }
 
@@ -70,23 +46,31 @@ export const Form: FunctionComponent<FormProps> = ({
   method = HttpMethod.POST,
   children,
 }: FormProps): JSX.Element => (
-  <form action={action} method={method}>
+  <form action={action} method={method} noValidate={true}>
     {children}
   </form>
 );
 
 export const FormGroup: FunctionComponent<FormGroupProps> = ({
   children,
+  className = "",
   showErrors = false,
-}: FormGroupProps): JSX.Element => (
-  <div
-    className={`govuk-form-group ${
-      showErrors ? "govuk-form-group--error" : ""
-    }`}
-  >
-    {children}
-  </div>
-);
+  errorMessages = [],
+}: FormGroupProps): JSX.Element => {
+  const errorClassName: string = showErrors ? "govuk-form-group--error" : "";
+
+  let errorsComponent: ReactNode;
+  if (showErrors) {
+    errorsComponent = <FieldErrorList errorMessages={errorMessages} />;
+  }
+
+  return (
+    <div className={`govuk-form-group ${className} ${errorClassName}`}>
+      {errorsComponent}
+      {children}
+    </div>
+  );
+};
 
 export const FormFieldset: FunctionComponent<FormFieldsetProps> = ({
   ariaDescribedBy = null,
@@ -98,9 +82,10 @@ export const FormFieldset: FunctionComponent<FormFieldsetProps> = ({
 );
 
 export const FormLegend: FunctionComponent<FormLegendProps> = ({
+  className = "",
   children,
 }: FormLegendProps): JSX.Element => (
-  <legend className="govuk-fieldset__legend">{children}</legend>
+  <legend className={`govuk-fieldset__legend ${className}`}>{children}</legend>
 );
 
 export const FormLegendPageHeading: FunctionComponent<FormLegendPageHeadingProps> = ({
@@ -130,50 +115,3 @@ export const FormHint: FunctionComponent<FormHintProps> = ({
     {children}
   </div>
 );
-
-export const Input: FunctionComponent<InputProps> = ({
-  id,
-  name,
-  type = "text",
-  htmlAttributes = {},
-  defaultValue = "",
-  numOfChars = null,
-}: InputProps): JSX.Element => {
-  const inputWidthClass: string = numOfChars
-    ? `govuk-input--width-${numOfChars}`
-    : "";
-
-  return (
-    <input
-      className={`govuk-input ${inputWidthClass}`}
-      id={id}
-      name={name}
-      type={type}
-      defaultValue={defaultValue}
-      {...htmlAttributes}
-    />
-  );
-};
-
-export const Select: FunctionComponent<SelectProps> = ({
-  id,
-  name,
-  defaultValue,
-  children,
-  htmlAttributes = {},
-}: SelectProps): JSX.Element => (
-  <select
-    className="govuk-select"
-    id={id}
-    name={name}
-    defaultValue={defaultValue}
-    {...htmlAttributes}
-  >
-    {children}
-  </select>
-);
-
-export const SelectOption: FunctionComponent<SelectOptionProps> = ({
-  value,
-  children,
-}: SelectOptionProps): JSX.Element => <option value={value}>{children}</option>;

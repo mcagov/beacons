@@ -10,13 +10,22 @@ interface LayoutProps {
   showCookieBanner: boolean;
   head?: ReactNode;
   navigation?: ReactNode;
+  title: string;
+  pageHasErrors: boolean;
+}
+
+interface BeaconRegistrationHeadProps {
+  title: string;
+  pageHasErrors: boolean;
 }
 
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
-  showCookieBanner,
-  head = <BeaconRegistrationHead />,
+  title,
+  pageHasErrors,
+  head = <BeaconRegistrationHead title={title} pageHasErrors={pageHasErrors} />,
   navigation = null,
+  showCookieBanner = true,
 }: LayoutProps): JSX.Element => {
   let cookieBanner: ReactNode;
   if (showCookieBanner) {
@@ -31,7 +40,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
       </a>
       <Header
         serviceName={"Maritime and Coastguard Agency: Register a beacon"}
-        homeLink={"#"}
+        homeLink={"/"}
       />
       <PhaseBanner phase="BETA">
         This is a new service – your{" "}
@@ -54,10 +63,15 @@ export const Layout: FunctionComponent<LayoutProps> = ({
   );
 };
 
-const BeaconRegistrationHead: FunctionComponent = () => (
-  <Head>
-    <title>
-      Beacon Registration Service - Register a new 406 MHz distress beacon
-    </title>
-  </Head>
-);
+export const BeaconRegistrationHead: FunctionComponent<BeaconRegistrationHeadProps> = ({
+  title,
+  pageHasErrors,
+}: BeaconRegistrationHeadProps) => {
+  const headTitle = pageHasErrors ? `Error: ${title}` : title;
+
+  return (
+    <Head>
+      <title>{`${headTitle} - Beacon Registration Service - GOV.UK`}</title>
+    </Head>
+  );
+};

@@ -18,34 +18,34 @@ import { WarningText } from "../components/WarningText";
 import { setFormSubmissionCookie } from "../lib/middleware";
 import { acceptRejectCookieId } from "../lib/types";
 
-interface StartPageProps {
-  showCookieBanner: boolean;
-}
+const ServiceStartPage: FunctionComponent = (): JSX.Element => {
+  const pageHeading =
+    "Register a single UK 406MHz Personal Locator Beacon (PLB) for maritime use";
 
-const ServiceStartPage: FunctionComponent<StartPageProps> = ({
-  showCookieBanner,
-}: StartPageProps) => (
-  <>
-    <Layout navigation={<Breadcrumbs />} showCookieBanner={showCookieBanner}>
-      <Grid
-        mainContent={
-          <>
-            <PageHeading>
-              Register a single UK 406MHz Personal Locator Beacon (PLB) for
-              maritime use
-            </PageHeading>
-            <AboutTheService />
-            <OtherWaysToAccessTheService />
-            <DataProtection />
-          </>
-        }
-        aside={<RelatedContent />}
-      />
-    </Layout>
-  </>
-);
+  return (
+    <>
+      <Layout
+        navigation={<Breadcrumbs />}
+        title={pageHeading}
+        pageHasErrors={false}
+      >
+        <Grid
+          mainContent={
+            <>
+              <PageHeading>{pageHeading}</PageHeading>
+              <AboutTheService />
+              <OtherWaysToAccessTheService />
+              <DataProtection />
+            </>
+          }
+          aside={<RelatedContent />}
+        />
+      </Layout>
+    </>
+  );
+};
 
-const Breadcrumbs: FunctionComponent = () => (
+const Breadcrumbs: FunctionComponent = (): JSX.Element => (
   <BreadcrumbList>
     <BreadcrumbListItem>Home</BreadcrumbListItem>
     <BreadcrumbListItem>Section</BreadcrumbListItem>
@@ -53,7 +53,7 @@ const Breadcrumbs: FunctionComponent = () => (
   </BreadcrumbList>
 );
 
-const AboutTheService: FunctionComponent = () => (
+const AboutTheService: FunctionComponent = (): JSX.Element => (
   <>
     <GovUKBody>Use this service to:</GovUKBody>
 
@@ -88,15 +88,16 @@ const AboutTheService: FunctionComponent = () => (
 
     <GovUKBulletedList>
       <li>
-        You will need to know the beacon HEX ID, manufacturer serial number and
-        model
+        You{"'"}ll need to know the beacon Hexadecimal Identification (HEX ID)
+        or Unique Identifying Number (UIN), manufacturer serial number and model
       </li>
       <li>
         If you have a vessel, you will need your vessel name, number, radio
-        communications, call sign and MMSI number
+        communications, Call Sign and Maritime Mobile Service Identity (MMSI)
+        number
       </li>
       <li>
-        You will also need emergency contact details for Search and Rescue
+        You will also need at least one emergency contact for Search and Rescue
       </li>
     </GovUKBulletedList>
 
@@ -104,7 +105,7 @@ const AboutTheService: FunctionComponent = () => (
   </>
 );
 
-const RelatedContent: FunctionComponent = () => (
+const RelatedContent: FunctionComponent = (): JSX.Element => (
   <>
     <Aside>
       <McaLogo />
@@ -112,7 +113,7 @@ const RelatedContent: FunctionComponent = () => (
   </>
 );
 
-const OtherWaysToAccessTheService: FunctionComponent = () => (
+const OtherWaysToAccessTheService: FunctionComponent = (): JSX.Element => (
   <>
     <h2 className="govuk-heading-m">Other ways to apply</h2>
 
@@ -144,15 +145,15 @@ const OtherWaysToAccessTheService: FunctionComponent = () => (
   </>
 );
 
-const DataProtection: FunctionComponent = () => (
+const DataProtection: FunctionComponent = (): JSX.Element => (
   <>
     <h2 className="govuk-heading-m">Data protection regulations</h2>
 
     <GovUKBody>
-      Agency (MCA) collect and retain the personal information provided when you
-      register a UK programmed 406 MHz beacon. Processing your information
-      allows the MCA to exercise its official duty and to identify persons in
-      distress and helps save lives.
+      The Maritime {"&"} Coastguard Agency (MCA) collect and retain the personal
+      information provided when you register a UK programmed 406 MHz beacon.
+      Processing your information allows the MCA to exercise its official duty
+      and to identify persons in distress and helps save lives.
     </GovUKBody>
 
     <GovUKBody>
@@ -162,14 +163,14 @@ const DataProtection: FunctionComponent = () => (
     </GovUKBody>
 
     <GovUKBody>
-      We will share your information with global Search {"&"} Rescue authorities
+      We will share your information with global Search and Rescue authorities
       and those delegated authorities, such as RNLI, Police or Rescue helicopter
       crew, that are directly involved with investigations relating to a beacon
       activation.
     </GovUKBody>
 
     <GovUKBody>
-      Further details on Beacon Registration’s privacy policy can be found at{" "}
+      Further details on Beacon Registration privacy policy can be found at{" "}
       <AnchorLink href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice">
         https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice
       </AnchorLink>

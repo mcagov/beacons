@@ -48,14 +48,17 @@ export const DateInput: FunctionComponent<DateInputProps> = ({
       ? "govuk-input--width-4"
       : "govuk-input--width-2";
 
+  const maxLength = dateType === DateType.YEAR ? 4 : 2;
+
   return (
     <input
       className={`govuk-input govuk-date-input__input ${dateTypeClass} ${className}`}
       id={id}
       name={name}
       type="text"
-      pattern="[0-9]*"
+      pattern={`[0-9]{${maxLength}}`}
       inputMode="numeric"
+      {...{ maxLength }}
     />
   );
 };
