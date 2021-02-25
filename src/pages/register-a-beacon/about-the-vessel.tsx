@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { FormErrorSummary } from "../../components/ErrorSummary";
@@ -13,17 +13,13 @@ import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
-import { VesselCacheEntry } from "../../lib/formCache";
+import { CacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
-import {
-  parseFormData,
-  updateFormCache,
-  withCookieRedirect,
-} from "../../lib/middleware";
+import { handlePageRequest } from "../../lib/handlePageRequest";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface AboutTheVesselProps {
-  formData: VesselCacheEntry;
+  formData: CacheEntry;
   needsValidation?: boolean;
 }
 
@@ -68,7 +64,10 @@ const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
         <Grid
           mainContent={
             <>
-              {needsValidation && <FormErrorSummary errors={errors} />}
+              <FormErrorSummary
+                errors={errors}
+                needsValidation={needsValidation}
+              />
               <Form action="/register-a-beacon/about-the-vessel">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
@@ -186,30 +185,8 @@ const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
-    const formData: VesselCacheEntry = await parseFormData(context.req);
-    updateFormCache(context.req.cookies, formData);
-
-    const userDidSubmitForm = context.req.method === "POST";
-    const formIsValid = !FormValidator.hasErrors(formData);
-
-    if (userDidSubmitForm && formIsValid) {
-      return {
-        redirect: {
-          statusCode: 303,
-          destination: "/register-a-beacon/vessel-communications",
-        },
-      };
-    }
-
-    return {
-      props: {
-        formData,
-        needsValidation: userDidSubmitForm,
-      },
-    };
-  }
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
+  "/register-a-beacon/vessel-communications"
 );
 
 export default AboutTheVessel;
