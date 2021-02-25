@@ -5,7 +5,19 @@ export class AddressLine1Validator extends FieldValidator {
     super();
     this._rules = [
       {
-        errorMessage: "Address line 1 is a required field",
+        errorMessage: "Building number and street is a required field",
+        predicateFn: (value) => value.length === 0,
+      },
+    ];
+  }
+}
+
+export class TownOrCityValidator extends FieldValidator {
+  constructor() {
+    super();
+    this._rules = [
+      {
+        errorMessage: "Town or city is a required field",
         predicateFn: (value) => value.length === 0,
       },
     ];
@@ -14,4 +26,5 @@ export class AddressLine1Validator extends FieldValidator {
 
 export const ownerFieldValidatorLookup = {
   beaconOwnerAddressLine1: new AddressLine1Validator(),
+  beaconOwnerTownOrCity: new TownOrCityValidator(),
 };

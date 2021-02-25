@@ -42,6 +42,7 @@ export interface Vessel {
 export interface Owner {
   beaconOwnerAddressLine1: string;
   beaconOwnerAddressLine2: string;
+  beaconOwnerTownOrCity: string;
 }
 
 export const formSubmissionCookieId = "submissionId";

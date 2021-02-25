@@ -9,13 +9,20 @@ import {
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
-import { Input } from "../../components/Input";
+import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { GovUKBody } from "../../components/Typography";
 import { FormValidator } from "../../lib/formValidator";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { ensureFormDataHasKeys } from "../../lib/utils";
+
+interface BuildingNumberAndStreetInputProps {
+  valueLine1: string;
+  valueLine2: string;
+  showErrors: boolean;
+  errorMessages: string[];
+}
 
 const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
   formData,
@@ -24,13 +31,14 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
   formData = ensureFormDataHasKeys(
     formData,
     "beaconOwnerAddressLine1",
-    "beaconOwnerAddressLine2"
+    "beaconOwnerAddressLine2",
+    "beaconOwnerTownOrCity"
   );
   const pageHeading = "What is the beacon owner's address?";
   const errors = FormValidator.errorSummary(formData);
   const {
     beaconOwnerAddressLine1,
-    beaconOwnerAddressLine2,
+    beaconOwnerTownOrCity,
   } = FormValidator.validate(formData);
   const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
 
@@ -58,7 +66,12 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
                   valueLine1={formData.beaconOwnerAddressLine1}
                   valueLine2={formData.beaconOwnerAddressLine2}
                   showErrors={pageHasErrors}
-                  errorMessages={[...beaconOwnerAddressLine1.errorMessages]}
+                  errorMessages={beaconOwnerAddressLine1.errorMessages}
+                />
+                <TownOrCityInput
+                  value={formData.beaconOwnerTownOrCity}
+                  showErrors={pageHasErrors}
+                  errorMessages={beaconOwnerTownOrCity.errorMessages}
                 />
               </FormFieldset>
 
@@ -71,13 +84,6 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
     </Layout>
   );
 };
-
-interface BuildingNumberAndStreetInputProps {
-  valueLine1: string;
-  valueLine2: string;
-  showErrors: boolean;
-  errorMessages: string[];
-}
 
 const BuildingNumberAndStreetInput: FunctionComponent<BuildingNumberAndStreetInputProps> = ({
   valueLine1 = "",
@@ -95,6 +101,20 @@ const BuildingNumberAndStreetInput: FunctionComponent<BuildingNumberAndStreetInp
       id="beaconOwnerAddressLine2"
       label={null}
       defaultValue={valueLine2}
+    />
+  </FormGroup>
+);
+
+const TownOrCityInput: FunctionComponent<FormInputProps> = ({
+  value = "",
+  showErrors,
+  errorMessages,
+}: FormInputProps): JSX.Element => (
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+    <Input
+      id="beaconOwnerTownOrCity"
+      label="Town or city"
+      defaultValue={value}
     />
   </FormGroup>
 );
