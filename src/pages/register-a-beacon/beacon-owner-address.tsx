@@ -14,13 +14,18 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { GovUKBody } from "../../components/Typography";
 import { FormValidator } from "../../lib/formValidator";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { ensureFormDataHasKeys } from "../../lib/utils";
 
 const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
 }: FormPageProps): JSX.Element => {
+  formData = ensureFormDataHasKeys(
+    formData,
+    "beaconOwnerAddressLine1",
+    "beaconOwnerAddressLine2"
+  );
   const pageHeading = "What is the beacon owner's address?";
-
   const errors = FormValidator.errorSummary(formData);
   const {
     beaconOwnerAddressLine1,
@@ -45,10 +50,10 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
                   labels to stick to the beacon will be sent to this address
                 </GovUKBody>
                 <BuildingNumberAndStreetInput
-                  errorMessages={[]}
-                  showErrors={pageHasErrors}
                   valueLine1={formData.beaconOwnerAddressLine1}
                   valueLine2={formData.beaconOwnerAddressLine2}
+                  showErrors={pageHasErrors}
+                  errorMessages={[...beaconOwnerAddressLine1.errorMessages]}
                 />
               </FormFieldset>
 
