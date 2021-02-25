@@ -24,6 +24,18 @@ export class TownOrCityValidator extends FieldValidator {
   }
 }
 
+export class FullNameValidator extends FieldValidator {
+  constructor() {
+    super();
+    this._rules = [
+      {
+        errorMessage: "Full name is a required field",
+        predicateFn: (value) => value.length === 0,
+      },
+    ];
+  }
+}
+
 export class PostcodeValidator extends FieldValidator {
   constructor() {
     super();
@@ -48,8 +60,27 @@ const isPostcodeValid = (postcode) => {
   return postcode.match(postcodeRegex);
 };
 
+export class EmailValidator extends FieldValidator {
+  constructor() {
+    super();
+    this._rules = [
+      {
+        errorMessage: "Email must be valid",
+        predicateFn: (value) => value.length > 0 && !isEmailValid(value),
+      },
+    ];
+  }
+}
+
+const isEmailValid = (email) => {
+  const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+  return email.match(emailRegex);
+};
+
 export const ownerFieldValidatorLookup = {
   beaconOwnerAddressLine1: new AddressLine1Validator(),
   beaconOwnerTownOrCity: new TownOrCityValidator(),
   beaconOwnerPostcode: new PostcodeValidator(),
+  beaconOwnerEmail: new EmailValidator(),
+  beaconOwnerFullName: new FullNameValidator(),
 };
