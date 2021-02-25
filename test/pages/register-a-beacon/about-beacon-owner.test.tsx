@@ -27,9 +27,11 @@ describe("AboutBeaconOwner", () => {
       };
     });
 
-    it("should return an empty props object", async () => {
+    it("should return a largely empty props object", async () => {
       const expectedProps = await getServerSideProps(context);
-      expect(expectedProps).toStrictEqual({ props: {} });
+      expect(expectedProps).toStrictEqual({
+        props: { formData: {}, needsValidation: false },
+      });
     });
   });
 });
