@@ -37,6 +37,15 @@ export interface Vessel {
 export interface VesselCommunications {
   callSign: string;
   vhfRadio: string;
+  fixedVhfRadio: string;
+  fixedVhfRadioInput: string;
+  portableVhfRadio: string;
+  portableVhfRadioInput: string;
+  satelliteTelephone: string;
+  satelliteTelephoneInput: string;
+  mobileTelephone: string;
+  mobileTelephoneInput1: string;
+  mobileTelephoneInput2: string;
 }
 
 export const formSubmissionCookieId = "submissionId";

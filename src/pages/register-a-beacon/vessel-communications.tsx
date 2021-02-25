@@ -50,7 +50,7 @@ const VesselCommunications: FunctionComponent<VesselCommunicationsProps> = ({
         mainContent={
           <>
             <PageHeadingInfo heading={pageHeading} />
-            <VesselCommunicationsForm />
+            <VesselCommunicationsForm formData={formData} />
             <IfYouNeedHelp />
           </>
         }
@@ -84,7 +84,7 @@ const VesselCommunicationsForm: FunctionComponent<VesselCommunicationsProps> = (
   formData,
 }: VesselCommunicationsProps) => (
   <Form action="/register-a-beacon/vessel-communications">
-    <CallSign />
+    <CallSign value={formData.callSign} />
 
     <TypesOfCommunication formData={formData} />
 
@@ -92,7 +92,9 @@ const VesselCommunicationsForm: FunctionComponent<VesselCommunicationsProps> = (
   </Form>
 );
 
-const CallSign: FunctionComponent = () => (
+const CallSign: FunctionComponent<FormInputProps> = ({
+  value,
+}: FormInputProps) => (
   <>
     <FormGroup className="govuk-!-margin-top-4">
       <Input
@@ -100,6 +102,7 @@ const CallSign: FunctionComponent = () => (
         labelClassName="govuk-label--s"
         label="Vessel Call Sign (optional)"
         hintText="This is the unique Call Sign associated to this vessel"
+        defaultValue={value}
         numOfChars={20}
       />
     </FormGroup>
