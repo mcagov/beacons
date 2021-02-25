@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
+import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
@@ -44,6 +45,10 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
           <>
             <Form action="/register-a-beacon/beacon-owner-address">
               <FormFieldset>
+                <FormErrorSummary
+                  needsValidation={needsValidation}
+                  errors={errors}
+                />
                 <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                 <GovUKBody>
                   The beacon registration certificate and proof of registration
