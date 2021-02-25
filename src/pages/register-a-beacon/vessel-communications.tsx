@@ -42,7 +42,7 @@ const VesselCommunications: FunctionComponent = (): JSX.Element => {
             <IfYouNeedHelp />
           </>
         }
-      ></Grid>
+      />
     </Layout>
   );
 };

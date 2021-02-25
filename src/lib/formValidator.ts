@@ -22,7 +22,6 @@ export class FormValidator {
           ...validatorLookup[fieldId].validate(value),
         };
       }
-
       return validatorResponse;
     }, {});
   }

@@ -35,6 +35,8 @@ export interface Vessel {
   areaOfOperation: string;
   beaconLocation: string;
   moreVesselDetails: string;
+  maritimePleasureVesselUse: string;
+  otherPleasureVesselText: string;
 }
 
 export const formSubmissionCookieId = "submissionId";

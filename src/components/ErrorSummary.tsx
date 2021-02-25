@@ -2,6 +2,7 @@ import React, { FunctionComponent, ReactNode } from "react";
 import { IFormError } from "../lib/formValidator";
 
 interface FormErrorSummaryProps {
+  needsValidation: boolean;
   errors: IFormError[];
 }
 
@@ -23,10 +24,11 @@ interface ErrorSummaryProps {
 }
 
 export const FormErrorSummary: FunctionComponent<FormErrorSummaryProps> = ({
+  needsValidation,
   errors,
 }: FormErrorSummaryProps) => (
   <>
-    {errors && errors.length > 0 && (
+    {needsValidation && errors && errors.length > 0 && (
       <ErrorSummary>
         {errors.map((field) =>
           field.errorMessages.map((errorMessage, index) => (
