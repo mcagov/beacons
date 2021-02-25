@@ -118,7 +118,7 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
       return {
         redirect: {
           statusCode: 303,
-          destination: "/register-a-beacon/beacon-information",
+          destination: "/register-a-beacon/about-beacon-owner",
         },
       };
     }
