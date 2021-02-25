@@ -107,7 +107,7 @@ const MaxCapacityInput: FunctionComponent<FormInputProps> = ({
   <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
     <Input
       id="maxCapacity"
-      label="Enter the maximum number of persons aboard"
+      label="Enter the maximum number of persons onboard"
       hintText="Knowing the maximum number of persons likely to be onboard the vessel helps Search and Rescue know how many people to look for and what resources to send"
       defaultValue={value}
       numOfChars={5}
