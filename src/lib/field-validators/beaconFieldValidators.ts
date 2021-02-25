@@ -41,8 +41,22 @@ export class BeaconHexIdValidator extends FieldValidator {
   }
 }
 
+export class BeaconManufacturerSerialNumberValidator extends FieldValidator {
+  constructor() {
+    super();
+    this._rules = [
+      {
+        errorMessage:
+          "Beacon manufacturer serialise number is a required field",
+        predicateFn: (value) => value.length === 0,
+      },
+    ];
+  }
+}
+
 export const beaconFieldValidatorLookup = {
   manufacturer: new BeaconManufacturerValidator(),
   model: new BeaconModelValidator(),
   hexId: new BeaconHexIdValidator(),
+  manufacturerSerialNumber: new BeaconManufacturerSerialNumberValidator(),
 };

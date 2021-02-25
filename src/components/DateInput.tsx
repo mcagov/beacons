@@ -11,8 +11,8 @@ interface DateListItemInputProps {
 
 interface DateInputProps {
   id: string;
-  name: string;
   dateType: DateType;
+  name?: string;
   className?: string;
 }
 
@@ -39,8 +39,8 @@ export const DateListItem: FunctionComponent<DateListItemInputProps> = ({
 
 export const DateInput: FunctionComponent<DateInputProps> = ({
   id,
-  name,
   dateType,
+  name = null,
   className = "",
 }: DateInputProps) => {
   const dateTypeClass: string =
@@ -49,6 +49,8 @@ export const DateInput: FunctionComponent<DateInputProps> = ({
       : "govuk-input--width-2";
 
   const maxLength = dateType === DateType.YEAR ? 4 : 2;
+
+  name = name ? name : id;
 
   return (
     <input

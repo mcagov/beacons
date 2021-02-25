@@ -36,6 +36,12 @@ export interface Beacon {
   lastServicedDate: string;
 }
 
+export interface BeaconInformation {
+  manufacturerSerialNumber: string;
+  chkCode: string;
+  batteryExpiryDateMonth: string;
+}
+
 export interface Vessel {
   maxCapacity: string;
   vesselName: string;
