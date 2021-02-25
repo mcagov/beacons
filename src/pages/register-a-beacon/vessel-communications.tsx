@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
@@ -17,15 +18,26 @@ import {
   GovUKBody,
   PageHeading,
 } from "../../components/Typography";
+import { CacheEntry } from "../../lib/formCache";
+import { handlePageRequest } from "../../lib/handlePageRequest";
+
+interface VesselCommunicationsProps {
+  formData: CacheEntry;
+}
 
 interface PageHeadingInfoProps {
   heading: string;
 }
 
-const VesselCommunications: FunctionComponent = (): JSX.Element => {
+interface FormInputProps {
+  value: string;
+}
+
+const VesselCommunications: FunctionComponent<VesselCommunicationsProps> = ({
+  formData,
+}: VesselCommunicationsProps): JSX.Element => {
   const pageHeading = "Check beacon details";
 
-  // TODO: Use form validation to set this
   const pageHasErrors = false;
 
   return (
@@ -68,11 +80,13 @@ const PageHeadingInfo: FunctionComponent<PageHeadingInfoProps> = ({
   </>
 );
 
-const VesselCommunicationsForm: FunctionComponent = () => (
+const VesselCommunicationsForm: FunctionComponent<VesselCommunicationsProps> = ({
+  formData,
+}: VesselCommunicationsProps) => (
   <Form action="/register-a-beacon/vessel-communications">
     <CallSign />
 
-    <TypesOfCommunication />
+    <TypesOfCommunication formData={formData} />
 
     <Button buttonText="Continue" />
   </Form>
@@ -82,7 +96,7 @@ const CallSign: FunctionComponent = () => (
   <>
     <FormGroup className="govuk-!-margin-top-4">
       <Input
-        id="vesselCallSign"
+        id="callSign"
         labelClassName="govuk-label--s"
         label="Vessel Call Sign (optional)"
         hintText="This is the unique Call Sign associated to this vessel"
@@ -92,7 +106,9 @@ const CallSign: FunctionComponent = () => (
   </>
 );
 
-const TypesOfCommunication: FunctionComponent = () => (
+const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
+  formData,
+}: VesselCommunicationsProps) => (
   <FormFieldset>
     <FormLegend className="govuk-fieldset__legend--s">
       Types of communication devices onboard
@@ -116,6 +132,7 @@ const TypesOfCommunication: FunctionComponent = () => (
             label="Fixed MMSI number (optional)"
             hintText="This is the unique MMSI number associated to the vessel, it is 9
           digits long"
+            defaultValue={formData.fixedVhfRadioInput}
           />
         </CheckboxListItem>
         <CheckboxListItem
@@ -161,6 +178,10 @@ const TypesOfCommunication: FunctionComponent = () => (
       </CheckboxList>
     </FormGroup>
   </FormFieldset>
+);
+
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
+  "/register-a-beacon/more-vessel-details"
 );
 
 export default VesselCommunications;

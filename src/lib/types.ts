@@ -34,4 +34,9 @@ export interface Vessel {
   otherPleasureVesselText: string;
 }
 
+export interface VesselCommunications {
+  callSign: string;
+  vhfRadio: string;
+}
+
 export const formSubmissionCookieId = "submissionId";
