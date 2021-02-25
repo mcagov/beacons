@@ -7,8 +7,8 @@ import { FormHint, FormLabel } from "./Form";
 
 export interface FormInputProps {
   value: string;
-  errorMessages: string[];
-  showErrors: boolean;
+  errorMessages?: string[];
+  showErrors?: boolean;
 }
 
 interface InputProps {

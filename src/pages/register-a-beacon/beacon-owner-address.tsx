@@ -32,7 +32,8 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
     formData,
     "beaconOwnerAddressLine1",
     "beaconOwnerAddressLine2",
-    "beaconOwnerTownOrCity"
+    "beaconOwnerTownOrCity",
+    "beaconOwnerCounty"
   );
   const pageHeading = "What is the beacon owner's address?";
   const errors = FormValidator.errorSummary(formData);
@@ -73,6 +74,7 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
                   showErrors={pageHasErrors}
                   errorMessages={beaconOwnerTownOrCity.errorMessages}
                 />
+                <CountyInput value={formData.beaconOwnerCounty} />
               </FormFieldset>
 
               <Button buttonText="Continue" />
@@ -114,6 +116,18 @@ const TownOrCityInput: FunctionComponent<FormInputProps> = ({
     <Input
       id="beaconOwnerTownOrCity"
       label="Town or city"
+      defaultValue={value}
+    />
+  </FormGroup>
+);
+
+const CountyInput: FunctionComponent<FormInputProps> = ({
+  value = "",
+}: FormInputProps): JSX.Element => (
+  <FormGroup showErrors={null} errorMessages={null}>
+    <Input
+      id="beaconOwnerCounty"
+      label="County (optional)"
       defaultValue={value}
     />
   </FormGroup>
