@@ -61,7 +61,10 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
       <Grid
         mainContent={
           <>
-            {needsValidation && <FormErrorSummary errors={errors} />}
+            <FormErrorSummary
+              errors={errors}
+              needsValidation={needsValidation}
+            />
             <BeaconUseForm
               checkedValue={formData.maritimePleasureVesselUse}
               formData={formData}

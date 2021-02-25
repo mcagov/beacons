@@ -64,7 +64,10 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
         <Grid
           mainContent={
             <>
-              {needsValidation && <FormErrorSummary errors={errors} />}
+              <FormErrorSummary
+                errors={errors}
+                needsValidation={needsValidation}
+              />
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
