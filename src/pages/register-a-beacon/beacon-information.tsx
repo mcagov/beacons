@@ -21,7 +21,7 @@ import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { withCookieRedirect } from "../../lib/middleware";
+import { handlePageRequest } from "../../lib/handlePageRequest";
 
 const BeaconInformationPage: FunctionComponent = (): JSX.Element => {
   const pageHeading = "Beacon information";
@@ -125,7 +125,7 @@ const BeaconBatteryExpiryDate: FunctionComponent = (): JSX.Element => (
           id="beaconBatteryExpiryDateMonth"
           name="beaconBatteryExpiryDateonth"
           dateType={DateType.MONTH}
-        ></DateInput>
+        />
       </FormGroup>
     </DateListItem>
 
@@ -141,7 +141,7 @@ const BeaconBatteryExpiryDate: FunctionComponent = (): JSX.Element => (
           id="beaconBatteryExpiryDateYear"
           name="beaconBatteryExpiryDateYear"
           dateType={DateType.YEAR}
-        ></DateInput>
+        />
       </FormGroup>
     </DateListItem>
   </DateListInput>
@@ -170,7 +170,7 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
           id="beaconLastServicedDateMonth"
           name="beaconLastServicedDateMonth"
           dateType={DateType.MONTH}
-        ></DateInput>
+        />
       </FormGroup>
     </DateListItem>
 
@@ -186,18 +186,14 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
           id="beaconLastServicedDateYear"
           name="beaconLastServicedDateYear"
           dateType={DateType.YEAR}
-        ></DateInput>
+        />
       </FormGroup>
     </DateListItem>
   </DateListInput>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async () => {
-    return {
-      props: {},
-    };
-  }
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
+  "/register-a-beacon/primary-beacon-use"
 );
 
 export default BeaconInformationPage;

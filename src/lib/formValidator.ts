@@ -19,7 +19,7 @@ export class FormValidator {
     return fields.reduce((validatorResponse, [fieldId, value]) => {
       if (!(fieldId in validatorLookup))
         throw new ReferenceError(
-          `${fieldId} not found in validatorLookup.  Create a new validator key/value pair for this field?`
+          `${fieldId} not found in fieldValidatorLookup.  Create a new validator key/value pair for this field?`
         );
 
       validatorResponse[fieldId] = {

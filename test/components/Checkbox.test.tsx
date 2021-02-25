@@ -17,7 +17,7 @@ describe("Checkbox Components", () => {
     it("should have the correct label for the checkbox without the hint text", () => {
       render(
         <CheckboxList>
-          <CheckboxListItem id={id} value="" label={label}></CheckboxListItem>
+          <CheckboxListItem id={id} value="" label={label} />
         </CheckboxList>
       );
       expect(screen.getByLabelText(label)).toBeDefined();
@@ -32,7 +32,7 @@ describe("Checkbox Components", () => {
             value=""
             label={label}
             hintText={hintText}
-          ></CheckboxListItem>
+          />
         </CheckboxList>
       );
       expect(screen.getByText(hintText)).toBeDefined();
