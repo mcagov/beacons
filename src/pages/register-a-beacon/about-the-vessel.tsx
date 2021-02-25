@@ -9,7 +9,7 @@ import {
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
-import { Input } from "../../components/Input";
+import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
@@ -21,12 +21,6 @@ import { ensureFormDataHasKeys } from "../../lib/utils";
 interface AboutTheVesselProps {
   formData: CacheEntry;
   needsValidation?: boolean;
-}
-
-interface FormInputProps {
-  value: string;
-  errorMessages?: string[];
-  showErrors?: boolean;
 }
 
 const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
@@ -66,7 +60,7 @@ const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
             <>
               <FormErrorSummary
                 errors={errors}
-                needsValidation={needsValidation}
+                showErrorSummary={needsValidation}
               />
               <Form action="/register-a-beacon/about-the-vessel">
                 <FormFieldset>
@@ -175,7 +169,7 @@ const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
   <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
     <TextareaCharacterCount
       id="beaconLocation"
-      label="Tell us about the typical area of operation (optional)"
+      label="Tell us where this beacon will be kept (optional)"
       hintText="E.g. will the beacon be attached to a life jacket, stowed inside the
     cabin, in a grab bag etc?"
       defaultValue={value}

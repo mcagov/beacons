@@ -15,7 +15,7 @@ import {
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
-import { Input } from "../../components/Input";
+import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
@@ -32,12 +32,6 @@ import { ensureFormDataHasKeys } from "../../lib/utils";
 interface CheckBeaconDetailsProps {
   formData: CacheEntry;
   needsValidation?: boolean;
-}
-
-interface FormInputProps {
-  value: string;
-  errorMessages: string[];
-  showErrors: boolean;
 }
 
 const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
@@ -66,7 +60,7 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
             <>
               <FormErrorSummary
                 errors={errors}
-                needsValidation={needsValidation}
+                showErrorSummary={needsValidation}
               />
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>

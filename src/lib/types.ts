@@ -47,6 +47,14 @@ export interface Vessel {
   otherPleasureVesselText: string;
 }
 
+export interface Owner {
+  beaconOwnerAddressLine1: string;
+  beaconOwnerAddressLine2?: string;
+  beaconOwnerTownOrCity: string;
+  beaconOwnerCounty?: string;
+  beaconOwnerPostcode: string;
+}
+
 export interface VesselCommunications {
   callSign: string;
   vhfRadio: VesselCommunication;

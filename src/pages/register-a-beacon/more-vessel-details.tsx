@@ -57,7 +57,7 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
             <>
               <FormErrorSummary
                 errors={errors}
-                needsValidation={needsValidation}
+                showErrorSummary={needsValidation}
               />
               <Form action="/register-a-beacon/more-vessel-details">
                 <FormFieldset>

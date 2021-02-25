@@ -15,7 +15,7 @@ import {
 
 type TransformFunction = (formData: CacheEntry) => CacheEntry;
 
-interface FormPageProps {
+export interface FormPageProps {
   formData: CacheEntry;
   needsValidation: boolean;
 }
