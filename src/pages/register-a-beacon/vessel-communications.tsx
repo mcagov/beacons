@@ -20,6 +20,8 @@ import {
 } from "../../components/Typography";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
+import { VesselCommunication } from "../../lib/types";
+import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface VesselCommunicationsProps {
   formData: CacheEntry;
@@ -36,6 +38,21 @@ interface FormInputProps {
 const VesselCommunications: FunctionComponent<VesselCommunicationsProps> = ({
   formData,
 }: VesselCommunicationsProps): JSX.Element => {
+  ensureFormDataHasKeys(
+    formData,
+    "allSign",
+    "vhfRadio",
+    "fixedVhfRadio",
+    "fixedVhfRadioInput",
+    "portableVhfRadio",
+    "portableVhfRadioInput",
+    "satelliteTelephone",
+    "satelliteTelephoneInput",
+    "mobileTelephone",
+    "mobileTelephoneInput1",
+    "mobileTelephoneInput2"
+  );
+
   const pageHeading = "Check beacon details";
 
   const pageHasErrors = false;
@@ -127,7 +144,10 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
         <CheckboxListItem
           id="fixedVhfRadio"
           label="Fixed VHF/DSC Radio"
-          value=""
+          value={VesselCommunication.FIXED_VHF_RADIO}
+          defaultChecked={
+            formData.fixedVhfRadio === VesselCommunication.FIXED_VHF_RADIO
+          }
           conditional={true}
         >
           <Input
@@ -140,7 +160,10 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="portableVhfRadio"
-          value=""
+          value={VesselCommunication.PORTABLE_VHF_RADIO}
+          defaultChecked={
+            formData.portableVhfRadio === VesselCommunication.PORTABLE_VHF_RADIO
+          }
           label="Portable VHF/DSC Radio"
           conditional={true}
         >
@@ -153,7 +176,11 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="satelliteTelephone"
-          value=""
+          value={VesselCommunication.SATELLITE_TELEPHONE}
+          defaultChecked={
+            formData.satelliteTelephone ===
+            VesselCommunication.SATELLITE_TELEPHONE
+          }
           label="Satellite Telephone"
           conditional={true}
         >
@@ -166,7 +193,10 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="mobileTelephone"
-          value=""
+          value={VesselCommunication.MOBILE_TELEPHONE}
+          defaultChecked={
+            formData.mobileTelephone === VesselCommunication.MOBILE_TELEPHONE
+          }
           label="Mobile Telephone(s)"
           conditional={true}
         >

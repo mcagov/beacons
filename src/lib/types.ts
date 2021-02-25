@@ -19,6 +19,13 @@ export enum MaritimePleasureVessel {
   OTHER = "OTHER",
 }
 
+export enum VesselCommunication {
+  FIXED_VHF_RADIO = "FIXED_VHF_RADIO",
+  PORTABLE_VHF_RADIO = "PORTABLE_VHF_RADIO",
+  SATELLITE_TELEPHONE = "SATELLITE_TELEPHONE",
+  MOBILE_TELEPHONE = "MOBILE_TELEPHONE",
+}
+
 export interface Beacon {
   manufacturer: string;
   model: string;
