@@ -21,7 +21,6 @@ import {
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 import { VesselCommunication } from "../../lib/types";
-import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface VesselCommunicationsProps {
   formData: CacheEntry;
@@ -38,21 +37,6 @@ interface FormInputProps {
 const VesselCommunications: FunctionComponent<VesselCommunicationsProps> = ({
   formData,
 }: VesselCommunicationsProps): JSX.Element => {
-  ensureFormDataHasKeys(
-    formData,
-    "callSign",
-    "vhfRadio",
-    "fixedVhfRadio",
-    "fixedVhfRadioInput",
-    "portableVhfRadio",
-    "portableVhfRadioInput",
-    "satelliteTelephone",
-    "satelliteTelephoneInput",
-    "mobileTelephone",
-    "mobileTelephoneInput1",
-    "mobileTelephoneInput2"
-  );
-
   const pageHeading = "Check beacon details";
 
   const pageHasErrors = false;
