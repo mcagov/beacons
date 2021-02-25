@@ -4,7 +4,7 @@ import VesselCommunications from "../../../src/pages/register-a-beacon/vessel-co
 
 describe("VesselCommunications", () => {
   it("should have a back button which directs the user to the about the vessel page", () => {
-    render(<VesselCommunications />);
+    render(<VesselCommunications formData={{}} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",

@@ -148,6 +148,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
             id="portableVhfRadioInput"
             label="Portable MMSI number (optional)"
             hintText="This is the unique MMSI number associated to the portable radio and is 9 numbers long. E.g. starts with 2359xxxxx"
+            defaultValue={formData.portableVhfRadioInput}
           />
         </CheckboxListItem>
         <CheckboxListItem
@@ -160,6 +161,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
             id="satelliteTelephoneInput"
             label="Enter phone number (optional)"
             hintText="Iridium usually start: +8707, Thuraya usually start: +8821, Globalstar usually start: +3364)"
+            defaultValue={formData.satelliteTelephoneInput}
           />
         </CheckboxListItem>
         <CheckboxListItem
@@ -172,10 +174,12 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
             id="mobileTelephoneInput1"
             label="Mobile number 1 (optional)"
             inputClassName="govuk-!-margin-bottom-4"
+            defaultValue={formData.mobileTelephoneInput1}
           />
           <Input
             id="mobileTelephoneInput2"
             label="Mobile number 2 (optional)"
+            defaultValue={formData.mobileTelephoneInput2}
           />
         </CheckboxListItem>
       </CheckboxList>

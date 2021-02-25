@@ -10,11 +10,12 @@ interface CheckboxListItemProps {
   id: string;
   value: string;
   label: string;
+  checked?: boolean;
   children?: ReactNode;
   conditional?: boolean;
   name?: string;
   hintText?: string;
-  inputHtmlAttributes?: Record<string, string>;
+  inputHtmlAttributes?: Record<string, string | boolean>;
 }
 
 export const CheckboxList: FunctionComponent<CheckboxListProps> = ({
@@ -34,6 +35,7 @@ export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
   id,
   value,
   label,
+  checked = false,
   children = null,
   conditional = false,
   name = null,
@@ -68,6 +70,11 @@ export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
       </div>
     );
   }
+
+  inputHtmlAttributes = {
+    ...inputHtmlAttributes,
+    checked,
+  };
 
   return (
     <>
