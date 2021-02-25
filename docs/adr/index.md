@@ -17,6 +17,7 @@ More information on MADR is available at <https://adr.github.io/madr/>.
 
 General information about architectural decision records:
 
+- [ADR template](docs/adr/0000-2021-01-28-adr-template.md)
 - <https://adr.github.io/>
 - <https://engineering.atspotify.com/2020/04/14/when-should-i-write-an-architecture-decision-record/>
 - <https://understandlegacycode.com/blog/earn-maintainers-esteem-with-adrs/>
