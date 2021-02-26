@@ -21,7 +21,6 @@ import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 
 interface BeaconInformationProps {

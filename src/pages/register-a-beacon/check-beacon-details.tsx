@@ -1,9 +1,4 @@
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-} from "next";
-import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { Details } from "../../components/Details";
@@ -19,15 +14,8 @@ import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { CacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
-import {
-  getCache,
-  parseFormData,
-  updateFormCache,
-  withCookieRedirect,
-} from "../../lib/middleware";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
