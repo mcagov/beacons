@@ -1,36 +1,39 @@
 import React, { FunctionComponent } from "react";
-import { Button } from "./Button";
+import { Button, ButtonGroup } from "./Button";
 import { Form } from "./Form";
+import { Grid } from "./Grid";
+import { AnchorLink, GovUKBody } from "./Typography";
 
 export type CookiesCacheEntry = { accepted: boolean };
 
 export const CookieBanner: FunctionComponent = (): JSX.Element => (
   <>
-    <Form action={"/api/check-cookie-state"}>
+    <Form action="/api/check-cookie-state">
       <div
         className="govuk-cookie-banner "
         role="region"
         aria-label="Cookies on Maritime and Coastguard Agency"
       >
         <div className="govuk-cookie-banner__message govuk-width-container">
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-two-thirds">
-              <h2 className="govuk-cookie-banner__heading govuk-heading-m">
-                Cookies on Maritime and Coastguard Agency
-              </h2>
-              <div className="govuk-cookie-banner__content">
-                <p className="govuk-body">
-                  We use some essential cookies to make this service work.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="govuk-button-group">
-            <a className="govuk-link" href="/help/cookies">
-              View cookies
-            </a>
+          <Grid
+            mainContent={
+              <>
+                <h2 className="govuk-cookie-banner__heading govuk-heading-m">
+                  Cookies on Maritime and Coastguard Agency
+                </h2>
+                <div className="govuk-cookie-banner__content">
+                  <GovUKBody>
+                    We use some essential cookies to make this service work.
+                  </GovUKBody>
+                </div>
+              </>
+            }
+          />
+
+          <ButtonGroup>
+            <AnchorLink href="/help/cookies">View cookies</AnchorLink>
             <Button buttonText="Hide this message" />
-          </div>
+          </ButtonGroup>
         </div>
       </div>
     </Form>

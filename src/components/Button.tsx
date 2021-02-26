@@ -19,6 +19,10 @@ interface LinkButtonProps {
   href: string;
 }
 
+export const ButtonGroup: FunctionComponent = ({ children }): JSX.Element => (
+  <div className="govuk-button-group">{children}</div>
+);
+
 export const Button: FunctionComponent<ButtonProps> = ({
   buttonText,
 }: ButtonProps): JSX.Element => (
