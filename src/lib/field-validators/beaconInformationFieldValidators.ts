@@ -19,7 +19,11 @@ export class MonthValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: `${this.errorMessagePrefix} must be a whole number`,
-        predicateFn: (value) => value.match(/\D{2}/) !== null,
+        predicateFn: (value) => value.match(/\D+/) !== null,
+      },
+      {
+        errorMessage: `${this.errorMessagePrefix} must be 2 numbers long`,
+        predicateFn: (value) => value.length !== 2 && value !== "",
       },
     ];
   }
@@ -31,7 +35,11 @@ export class YearValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: `${this.errorMessagePrefix} must be a whole number`,
-        predicateFn: (value) => value.match(/\D{4}/) !== null,
+        predicateFn: (value) => value.match(/\D+}/) !== null,
+      },
+      {
+        errorMessage: `${this.errorMessagePrefix} must be 4 numbers long`,
+        predicateFn: (value) => value.length !== 4 && value !== "",
       },
     ];
   }
