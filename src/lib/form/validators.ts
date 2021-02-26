@@ -98,6 +98,23 @@ export class Validators {
     return { errorMessage, hasErrorFn };
   }
 
+  public static conditionalOnValue(
+    errorMessage: string,
+    key: string,
+    value: any,
+    hasErrorCallback: ValidatorFn
+  ): ValidationRule {
+    const hasErrorFn: ValidatorFn = (control) => {
+      const conditionIsMet = control.parent.controls[key].value === value;
+      if (conditionIsMet) {
+        console.log(control.value);
+        return hasErrorCallback(control);
+      }
+      return false;
+    };
+    return { errorMessage, hasErrorFn };
+  }
+
   private constructor() {
     // Prevent external instantiation.
   }

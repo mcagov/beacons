@@ -41,7 +41,14 @@ const getFormGroup = ({
     maritimePleasureVesselUse: new FormControl(maritimePleasureVesselUse, [
       Validators.required("Manufacturer is a required field"),
     ]),
-    otherPleasureVesselText: new FormControl(otherPleasureVesselText),
+    otherPleasureVesselText: new FormControl(otherPleasureVesselText, [
+      Validators.conditionalOnValue(
+        "Other pleasure vessel must not be empty",
+        "maritimePleasureVesselUse",
+        MaritimePleasureVessel.OTHER,
+        Validators.required("").hasErrorFn
+      ),
+    ]),
   });
 };
 
