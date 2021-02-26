@@ -21,9 +21,16 @@ import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
+import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 
-const BeaconInformationPage: FunctionComponent = (): JSX.Element => {
+interface BeaconInformationProps {
+  showCookieBanner: boolean;
+}
+
+const BeaconInformationPage: FunctionComponent<BeaconInformationProps> = ({
+  showCookieBanner = true,
+}: BeaconInformationProps): JSX.Element => {
   const pageHeading = "Beacon information";
 
   // TODO: Use form validation to set this
@@ -34,6 +41,7 @@ const BeaconInformationPage: FunctionComponent = (): JSX.Element => {
       navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
       title={pageHeading}
       pageHasErrors={pageHasErrors}
+      showCookieBanner={showCookieBanner}
     >
       <Grid
         mainContent={

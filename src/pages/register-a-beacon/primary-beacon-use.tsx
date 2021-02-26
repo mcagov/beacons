@@ -19,14 +19,9 @@ import {
 } from "../../components/RadioList";
 import { CacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
-import { handlePageRequest } from "../../lib/handlePageRequest";
+import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { MaritimePleasureVessel } from "../../lib/types";
 import { ensureFormDataHasKeys } from "../../lib/utils";
-
-interface PrimaryBeaconUseProps {
-  formData: CacheEntry;
-  needsValidation: boolean;
-}
 
 interface BeaconUseFormProps {
   formData: CacheEntry;
@@ -35,10 +30,11 @@ interface BeaconUseFormProps {
   errorMessages: string[];
 }
 
-const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
+const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
   formData,
-  needsValidation = false,
-}: PrimaryBeaconUseProps): JSX.Element => {
+  needsValidation,
+  showCookieBanner,
+}: FormPageProps): JSX.Element => {
   formData = ensureFormDataHasKeys(
     formData,
     "maritimePleasureVesselUse",
@@ -54,6 +50,7 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
       }
       navigation={<BackButton href="/register-a-beacon/beacon-information" />}
       pageHasErrors={errors.length > 0 && needsValidation}
+      showCookieBanner={showCookieBanner}
     >
       <Grid
         mainContent={

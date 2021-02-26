@@ -18,13 +18,8 @@ import {
   GovUKBody,
   PageHeading,
 } from "../../components/Typography";
-import { CacheEntry } from "../../lib/formCache";
-import { handlePageRequest } from "../../lib/handlePageRequest";
+import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { VesselCommunication } from "../../lib/types";
-
-interface VesselCommunicationsProps {
-  formData: CacheEntry;
-}
 
 interface PageHeadingInfoProps {
   heading: string;
@@ -34,9 +29,11 @@ interface FormInputProps {
   value: string;
 }
 
-const VesselCommunications: FunctionComponent<VesselCommunicationsProps> = ({
+const VesselCommunications: FunctionComponent<FormPageProps> = ({
   formData,
-}: VesselCommunicationsProps): JSX.Element => {
+  needsValidation,
+  showCookieBanner,
+}: FormPageProps): JSX.Element => {
   const pageHeading = "What types of communications are on board the vessel?";
 
   const pageHasErrors = false;
@@ -46,12 +43,17 @@ const VesselCommunications: FunctionComponent<VesselCommunicationsProps> = ({
       navigation={<BackButton href="/register-a-beacon/about-the-vessel" />}
       title={pageHeading}
       pageHasErrors={pageHasErrors}
+      showCookieBanner={showCookieBanner}
     >
       <Grid
         mainContent={
           <>
             <PageHeadingInfo heading={pageHeading} />
-            <VesselCommunicationsForm formData={formData} />
+            <VesselCommunicationsForm
+              formData={formData}
+              showCookieBanner={showCookieBanner}
+              needsValidation={needsValidation}
+            />
             <IfYouNeedHelp />
           </>
         }
@@ -81,13 +83,19 @@ const PageHeadingInfo: FunctionComponent<PageHeadingInfoProps> = ({
   </>
 );
 
-const VesselCommunicationsForm: FunctionComponent<VesselCommunicationsProps> = ({
+const VesselCommunicationsForm: FunctionComponent<FormPageProps> = ({
   formData,
-}: VesselCommunicationsProps) => (
+  needsValidation,
+  showCookieBanner,
+}: FormPageProps) => (
   <Form action="/register-a-beacon/vessel-communications">
     <CallSign value={formData.callSign} />
 
-    <TypesOfCommunication formData={formData} />
+    <TypesOfCommunication
+      formData={formData}
+      needsValidation={needsValidation}
+      showCookieBanner={showCookieBanner}
+    />
 
     <Button buttonText="Continue" />
   </Form>
@@ -110,9 +118,9 @@ const CallSign: FunctionComponent<FormInputProps> = ({
   </>
 );
 
-const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
+const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
   formData,
-}: VesselCommunicationsProps) => (
+}: FormPageProps) => (
   <FormFieldset>
     <FormLegend className="govuk-fieldset__legend--s">
       Types of communication devices onboard

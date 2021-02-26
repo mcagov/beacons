@@ -13,20 +13,15 @@ import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
-import { CacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
-import { handlePageRequest } from "../../lib/handlePageRequest";
+import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
-interface AboutTheVesselProps {
-  formData: CacheEntry;
-  needsValidation?: boolean;
-}
-
-const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
+const AboutTheVessel: FunctionComponent<FormPageProps> = ({
   formData,
-  needsValidation = false,
-}: AboutTheVesselProps): JSX.Element => {
+  needsValidation,
+  showCookieBanner,
+}: FormPageProps): JSX.Element => {
   formData = ensureFormDataHasKeys(
     formData,
     "maxCapacity",
@@ -54,6 +49,7 @@ const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
         navigation={<BackButton href="/register-a-beacon/primary-beacon-use" />}
         title={pageHeading}
         pageHasErrors={pageHasErrors}
+        showCookieBanner={showCookieBanner}
       >
         <Grid
           mainContent={

@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import Aside from "../components/Aside";
 import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
@@ -14,10 +14,13 @@ import {
   PageHeading,
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
-import { setFormSubmissionCookie } from "../lib/middleware";
-import { acceptRejectCookieId } from "../lib/types";
+import { FormPageProps, handlePageRequest } from "../lib/handlePageRequest";
 
-const ServiceStartPage: FunctionComponent = (): JSX.Element => {
+const ServiceStartPage: FunctionComponent<FormPageProps> = ({
+  formData,
+  needsValidation,
+  showCookieBanner,
+}: FormPageProps): JSX.Element => {
   const pageHeading =
     "Register a single UK 406MHz Personal Locator Beacon (PLB) for maritime use";
 
@@ -27,6 +30,7 @@ const ServiceStartPage: FunctionComponent = (): JSX.Element => {
         navigation={<Breadcrumbs />}
         title={pageHeading}
         pageHasErrors={false}
+        showCookieBanner={showCookieBanner}
       >
         <Grid
           mainContent={
@@ -168,15 +172,6 @@ const DataProtection: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  setFormSubmissionCookie(context);
-
-  // Accept/Reject cookies state TODO Needs to be put on all pages / in zacks new function for this!
-  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
-
-  return { props: { showCookieBanner } };
-};
+export const getServerSideProps: GetServerSideProps = handlePageRequest("/");
 
 export default ServiceStartPage;
