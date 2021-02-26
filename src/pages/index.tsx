@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import Aside from "../components/Aside";
 import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
@@ -14,13 +14,16 @@ import {
   PageHeading,
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
-import { FormPageProps, handlePageRequest } from "../lib/handlePageRequest";
+import { setFormSubmissionCookie } from "../lib/middleware";
+import { acceptRejectCookieId } from "../lib/types";
 
-const ServiceStartPage: FunctionComponent<FormPageProps> = ({
-  formData,
-  needsValidation,
+interface ServiceStartPageProps {
+  showCookieBanner: boolean;
+}
+
+const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   showCookieBanner,
-}: FormPageProps): JSX.Element => {
+}: ServiceStartPageProps): JSX.Element => {
   const pageHeading =
     "Register a single UK 406MHz Personal Locator Beacon (PLB) for maritime use";
 
@@ -172,6 +175,13 @@ const DataProtection: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest("/");
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  setFormSubmissionCookie(context);
+  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
+
+  return { props: { showCookieBanner } };
+};
 
 export default ServiceStartPage;

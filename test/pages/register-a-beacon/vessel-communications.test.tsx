@@ -13,7 +13,13 @@ jest.mock("../../../src/lib/handlePageRequest", () => ({
 
 describe("VesselCommunications", () => {
   it("should have a back button which directs the user to the about the vessel page", () => {
-    render(<VesselCommunications formData={{}} />);
+    render(
+      <VesselCommunications
+        formData={{}}
+        showCookieBanner={false}
+        needsValidation={false}
+      />
+    );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -22,7 +28,13 @@ describe("VesselCommunications", () => {
   });
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
-    const { container } = render(<VesselCommunications formData={{}} />);
+    const { container } = render(
+      <VesselCommunications
+        formData={{}}
+        showCookieBanner={false}
+        needsValidation={false}
+      />
+    );
     const ownPath = "/register-a-beacon/vessel-communications";
 
     const form = container.querySelector("form");
