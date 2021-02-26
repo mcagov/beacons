@@ -13,7 +13,7 @@ export interface FormInputProps {
 
 interface InputProps {
   id: string;
-  label: string;
+  label?: string;
   name?: string;
   hintText?: string;
   type?: string;
@@ -26,7 +26,7 @@ interface InputProps {
 
 export const Input: FunctionComponent<InputProps> = ({
   id,
-  label,
+  label = null,
   name = null,
   hintText = null,
   type = "text",
@@ -42,6 +42,15 @@ export const Input: FunctionComponent<InputProps> = ({
 
   name = name ? name : id;
 
+  let labelComponent: ReactNode;
+  if (label) {
+    labelComponent = (
+      <FormLabel className={labelClassName} htmlFor={id}>
+        {label}
+      </FormLabel>
+    );
+  }
+
   let hintComponent: ReactNode;
   if (hintText) {
     hintComponent = <FormHint forId={id}>{hintText}</FormHint>;
@@ -50,9 +59,7 @@ export const Input: FunctionComponent<InputProps> = ({
 
   return (
     <>
-      <FormLabel className={labelClassName} htmlFor={id}>
-        {label}
-      </FormLabel>
+      {labelComponent}
       {hintComponent}
 
       <input
