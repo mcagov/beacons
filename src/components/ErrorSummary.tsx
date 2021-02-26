@@ -29,19 +29,19 @@ export const FormErrorSummary: FunctionComponent<FormErrorSummaryProps> = ({
   let errorSummaryComponent: ReactNode;
 
   if (formGroup.hasErrors()) {
+    const formGroupErrorSummaries = formGroup.errorSummary();
+
     errorsComponent = (
       <>
-        {formGroup
-          .errorSummary()
-          .map(({ field, errorMessages }) =>
-            errorMessages.map((errorMessage, index) => (
-              <FormErrorSummaryLink
-                key={`${field}-${index}`}
-                href={`#${field}`}
-                errorMessage={errorMessage}
-              />
-            ))
-          )}
+        {formGroupErrorSummaries.map(({ field, errorMessages }) =>
+          errorMessages.map((errorMessage, index) => (
+            <FormErrorSummaryLink
+              key={`${field}-${index}`}
+              href={`#${field}`}
+              errorMessage={errorMessage}
+            />
+          ))
+        )}
       </>
     );
 
