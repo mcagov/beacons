@@ -1,9 +1,21 @@
+import { AbstractControl } from "../../../src/lib/form/abstractControl";
 import { ValidatorFn, Validators } from "../../../src/lib/form/validators";
 
 describe("Form Validators", () => {
   const expectedErrorMessage = "Hex ID is a validated field";
   let errorMessage: string;
   let hasErrorFn: ValidatorFn;
+
+  class ControlWithValue extends AbstractControl {
+    constructor(value: string) {
+      super(value, []);
+    }
+    public get value() {
+      return this._value;
+    }
+  }
+
+  const controlWithValue = (value) => new ControlWithValue(value);
 
   describe("required", () => {
     beforeEach(() => {
@@ -13,19 +25,23 @@ describe("Form Validators", () => {
     });
 
     it("should have an error if the value is an empty string", () => {
-      expect(hasErrorFn("")).toBe(true);
+      const control = controlWithValue("");
+      expect(hasErrorFn(control)).toBe(true);
     });
 
     it("should have an error if the value is null", () => {
-      expect(hasErrorFn(null)).toBe(true);
+      const control = controlWithValue(null);
+      expect(hasErrorFn(control)).toBe(true);
     });
 
     it("should have an error if the value is undefined", () => {
-      expect(hasErrorFn(undefined)).toBe(true);
+      const control = controlWithValue(undefined);
+      expect(hasErrorFn(control)).toBe(true);
     });
 
     it("should not have an error if the value is non-empty", () => {
-      expect(hasErrorFn("Hex ID!")).toBe(false);
+      const control = controlWithValue("Hex ID!");
+      expect(hasErrorFn(control)).toBe(false);
     });
 
     it("should return the expected error message", () => {
@@ -39,15 +55,18 @@ describe("Form Validators", () => {
     });
 
     it("should not have an error if the value is less than the max length", () => {
-      expect(hasErrorFn("")).toBe(false);
+      const control = controlWithValue("");
+      expect(hasErrorFn(control)).toBe(false);
     });
 
     it("should not have an error if the value is equal to the max length", () => {
-      expect(hasErrorFn("a".repeat(10))).toBe(false);
+      const control = controlWithValue("a".repeat(10));
+      expect(hasErrorFn(control)).toBe(false);
     });
 
     it("should have an error if the value is greater than the max length", () => {
-      expect(hasErrorFn("a".repeat(11))).toBe(true);
+      const control = controlWithValue("a".repeat(11));
+      expect(hasErrorFn(control)).toBe(true);
     });
 
     it("should return the expected error message", () => {
@@ -64,15 +83,18 @@ describe("Form Validators", () => {
     });
 
     it("should have an error if the value is less than the required length", () => {
-      expect(hasErrorFn("a")).toBe(true);
+      const control = controlWithValue("a");
+      expect(hasErrorFn(control)).toBe(true);
     });
 
     it("should not have an error if the value is equal to the required length", () => {
-      expect(hasErrorFn("a".repeat(10))).toBe(false);
+      const control = controlWithValue("a".repeat(10));
+      expect(hasErrorFn(control)).toBe(false);
     });
 
     it("should have an error if the value is greater than the max length", () => {
-      expect(hasErrorFn("a".repeat(11))).toBe(true);
+      const control = controlWithValue("a".repeat(11));
+      expect(hasErrorFn(control)).toBe(true);
     });
 
     it("should return the expected error message", () => {
@@ -86,27 +108,33 @@ describe("Form Validators", () => {
     });
 
     it("should have an error if no value is provided", () => {
-      expect(hasErrorFn("")).toBe(false);
+      const control = controlWithValue("a");
+      expect(hasErrorFn(control)).toBe(false);
     });
 
-    it("should return true if the value is not hexadecimal characters", () => {
-      expect(hasErrorFn("AR2")).toBe(true);
-    });
-
-    it("should have an error if the value does not contain hexadecimal characters", () => {
-      expect(hasErrorFn("AR2")).toBe(true);
+    it("should return true if the value does not contain hexadecimal characters", () => {
+      const control = controlWithValue("AR2");
+      expect(hasErrorFn(control)).toBe(true);
     });
 
     it("should not have an error if the value only contains characters A-F", () => {
-      expect(hasErrorFn("ABCDEF")).toBe(false);
+      const control = controlWithValue("ABCDEF");
+      expect(hasErrorFn(control)).toBe(false);
     });
 
     it("should not have an error if the value only contains characters a-f", () => {
-      expect(hasErrorFn("abcdef")).toBe(false);
+      const control = controlWithValue("abcdef");
+      expect(hasErrorFn(control)).toBe(false);
     });
 
     it("should not have an error if the value only contains characters 0-9", () => {
-      expect(hasErrorFn("0123456789")).toBe(false);
+      const control = controlWithValue("0123456789");
+      expect(hasErrorFn(control)).toBe(false);
+    });
+
+    it("should not have an error if the value only contains contains characters 0-9, A-F", () => {
+      const control = controlWithValue("0123456789abcdED");
+      expect(hasErrorFn(control)).toBe(false);
     });
   });
 

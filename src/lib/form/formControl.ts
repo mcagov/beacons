@@ -1,27 +1,12 @@
-import { FieldRule } from "./validators";
+import { AbstractControl } from "./abstractControl";
+import { ValidationRule } from "./validators";
 
-export class FormControl {
-  private readonly _value: string;
+export class FormControl extends AbstractControl {
+  public readonly value: string;
 
-  private pristine = true;
-
-  /**
-   * Initialise the form control.
-   *
-   * @param value      {string}        The default value for the field
-   * @param validators {FieldRule[]}   An array of validators for this form field
-   */
-  constructor(value: string, public readonly validators: FieldRule[] = []) {
-    this._value = value ? value : "";
-  }
-
-  /**
-   * Public getter for the form control value.
-   *
-   * @requires {string}  The value within the form control
-   */
-  public get value(): string {
-    return this._value;
+  constructor(value: any, validators: ValidationRule[] = []) {
+    super(value, validators);
+    this.value = value ? value : "";
   }
 
   public markAsDirty(): void {
@@ -31,8 +16,8 @@ export class FormControl {
   public errorMessages(): string[] {
     const validators = this.pristine ? [] : this.validators;
     return validators
-      .filter((rule: FieldRule) => rule.hasErrorFn(this._value))
-      .map((rule: FieldRule) => rule.errorMessage);
+      .filter((rule: ValidationRule) => rule.hasErrorFn(this))
+      .map((rule: ValidationRule) => rule.errorMessage);
   }
 
   public hasErrors(): boolean {
@@ -40,8 +25,8 @@ export class FormControl {
       return false;
     }
 
-    return this.validators.some((rule: FieldRule) =>
-      rule.hasErrorFn(this._value)
+    return this.validators.some((rule: ValidationRule) =>
+      rule.hasErrorFn(this)
     );
   }
 }

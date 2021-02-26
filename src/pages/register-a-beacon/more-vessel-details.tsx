@@ -13,7 +13,7 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
-import { FormValidator } from "../../lib/form/formValidator";
+import { FormValidator } from "../../lib/formValidator";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 

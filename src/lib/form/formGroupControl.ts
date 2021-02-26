@@ -1,14 +1,28 @@
 import { Callback } from "../utils";
+import { AbstractControl } from "./abstractControl";
 import { FormControl } from "./formControl";
+import { ValidationRule } from "./validators";
 
-export class FormGroupControl {
-  private pristine = true;
+export class FormGroupControl extends AbstractControl {
+  constructor(
+    public readonly controls: { [key: string]: FormControl },
+    validators: ValidationRule[] = []
+  ) {
+    super(controls, validators);
+    this.setupFormControls();
+  }
 
-  constructor(public controls: { [key: string]: FormControl }) {}
+  private setupFormControls(): void {
+    this.forEachControl((control) => control.setParent(this));
+  }
 
   public markAsDirty(): void {
     this.pristine = false;
-    this.forEach((control) => control.markAsDirty());
+    this.forEachControl((control) => control.markAsDirty());
+  }
+
+  public get value(): any {
+    return this.controls;
   }
 
   public errorSummary(): { field: string; errorMessages: string[] }[] {
@@ -33,7 +47,7 @@ export class FormGroupControl {
     );
   }
 
-  private forEach(cb: Callback<FormControl>): void {
+  private forEachControl(cb: Callback<FormControl>): void {
     Object.keys(this.controls).forEach((control) => cb(this.controls[control]));
   }
 }

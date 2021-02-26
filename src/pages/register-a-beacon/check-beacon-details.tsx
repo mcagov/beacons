@@ -50,12 +50,11 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   formData,
   needsValidation = false,
 }: CheckBeaconDetailsProps): JSX.Element => {
-  const group = getFormGroup(formData);
+  const formGroup = getFormGroup(formData);
   if (needsValidation) {
-    group.markAsDirty();
+    formGroup.markAsDirty();
   }
-
-  const controls = group.controls;
+  const controls = formGroup.controls;
 
   const pageHeading = "Check beacon details";
 
@@ -64,12 +63,12 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
       <Layout
         navigation={<BackButton href="/" />}
         title={pageHeading}
-        pageHasErrors={group.hasErrors()}
+        pageHasErrors={formGroup.hasErrors()}
       >
         <Grid
           mainContent={
             <>
-              <FormErrorSummary formGroup={group} />
+              <FormErrorSummary formGroup={formGroup} />
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
