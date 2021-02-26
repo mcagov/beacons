@@ -3,7 +3,7 @@ import { FieldRule } from "./validators";
 export class FormControl {
   private readonly _value: string;
 
-  private pristine: boolean = true;
+  private pristine = true;
 
   /**
    * Initialise the form control.

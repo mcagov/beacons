@@ -2,7 +2,7 @@ import { Callback } from "../utils";
 import { FormControl } from "./formControl";
 
 export class FormGroupControl {
-  private pristine: boolean = true;
+  private pristine = true;
 
   constructor(public controls: { [key: string]: FormControl }) {}
 

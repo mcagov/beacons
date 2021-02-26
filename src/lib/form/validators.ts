@@ -63,7 +63,7 @@ export class Validators {
    * @returns           {FieldRule}   A validator instance
    */
   public static hexId(erroMessage: string): FieldRule {
-    const hexIdRegex: RegExp = /^[a-f0-9]+$/i;
+    const hexIdRegex = /^[a-f0-9]+$/i;
     return Validators.pattern(erroMessage, hexIdRegex);
   }
 
@@ -74,7 +74,7 @@ export class Validators {
    * @returns            {FieldRule}   A validator instance
    */
   public static email(errorMessage: string): FieldRule {
-    const emailRegex: RegExp = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+    const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
     return Validators.pattern(errorMessage, emailRegex);
   }
 
