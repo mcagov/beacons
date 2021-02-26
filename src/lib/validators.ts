@@ -1,4 +1,18 @@
-import { IFieldValidator } from "./fieldValidator";
+import { FieldValidator, IFieldValidator } from "./fieldValidator";
+import { ValidatorFunction } from "./validatorFunctions";
+
+/**
+ * Type definition for a function that validates a form value and returns true if the value violates the rule.
+ *
+ * @param valueToValidate {string}    The form value to validate
+ * @returns               {boolean}   True if the value violates the rule
+ */
+export type ValidatorFn = (valueToValidate: string) => boolean;
+
+export interface FieldRule {
+  errorMessage: string;
+  hasErrorFn: ValidatorFn;
+}
 
 /**
  * Provides a set of validators that can be used within the {@link FormValidator}.
@@ -11,7 +25,8 @@ export class Validators {
    * @returns            {IFieldValidator}   The field validator instance
    */
   public static required(errorMessage: string): IFieldValidator {
-    return null;
+    const validatorFn: ValidatorFunction = (value) => !value;
+    return new FieldValidator();
   }
 
   /**
