@@ -57,8 +57,12 @@ export interface Vessel {
 }
 
 export interface Owner {
+  beaconOwnerFullName: string;
+  beaconOwnerEmail?: string;
+  beaconOwnerTelephoneNumber?: string;
+  beaconOwnerAlternativeTelephoneNumber?: string;
   beaconOwnerAddressLine1: string;
-  beaconOwnerAddressLine2?: string;
+  beaconOwnerAddressLine2: string;
   beaconOwnerTownOrCity: string;
   beaconOwnerCounty?: string;
   beaconOwnerPostcode: string;
@@ -76,6 +80,18 @@ export interface VesselCommunications {
   mobileTelephone: VesselCommunication;
   mobileTelephoneInput1: string;
   mobileTelephoneInput2: string;
+}
+
+export interface EmergencyContacts {
+  emergencyContact1FullName: string;
+  emergencyContact1TelephoneNumber: string;
+  emergencyContact1AlternativeTelephoneNumber: string;
+  emergencyContact2FullName: string;
+  emergencyContact2TelephoneNumber: string;
+  emergencyContact2AlternativeTelephoneNumber: string;
+  emergencyContact3FullName: string;
+  emergencyContact3TelephoneNumber: string;
+  emergencyContact3AlternativeTelephoneNumber: string;
 }
 
 export const formSubmissionCookieId = "submissionId";
