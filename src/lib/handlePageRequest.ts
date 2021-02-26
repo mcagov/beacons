@@ -4,7 +4,7 @@ import {
   GetServerSidePropsResult,
 } from "next";
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
-import { FormValidator } from "./form/formValidator";
+import { GetFormGroup } from "../pages/register-a-beacon/check-beacon-details";
 import { CacheEntry } from "./formCache";
 import {
   getCache,
@@ -22,13 +22,19 @@ export interface FormPageProps {
 
 export const handlePageRequest = (
   destinationIfValid: string,
+  getFormGroup: GetFormGroup,
   transformFunction: TransformFunction = (formData) => formData
 ): GetServerSideProps =>
   withCookieRedirect(async (context: GetServerSidePropsContext) => {
     const userDidSubmitForm = context.req.method === "POST";
 
     if (userDidSubmitForm) {
-      return handlePostRequest(context, destinationIfValid, transformFunction);
+      return handlePostRequest(
+        context,
+        getFormGroup,
+        destinationIfValid,
+        transformFunction
+      );
     }
 
     return handleGetRequest(context.req.cookies);
@@ -47,16 +53,17 @@ const handleGetRequest = (
 
 export const handlePostRequest = async (
   context: GetServerSidePropsContext,
+  getFormGroup: GetFormGroup,
   destinationIfValid: string,
   transformFunction: TransformFunction = (formData) => formData
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
   const transformedFormData = transformFunction(
     await parseFormData(context.req)
   );
-
   updateFormCache(context.req.cookies, transformedFormData);
 
-  const formIsValid = !FormValidator.hasErrors(transformedFormData);
+  const formGroup = getFormGroup(transformedFormData);
+  const formIsValid = !formGroup.hasErrors();
 
   if (formIsValid) {
     return {

@@ -29,14 +29,19 @@ import {
   updateFormCache,
   withCookieRedirect,
 } from "../../lib/middleware";
-import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface CheckBeaconDetailsProps {
   formData: CacheEntry;
   needsValidation?: boolean;
 }
 
-const formGroup = (manufacturer, model, hexId): FormGroupControl => {
+export type GetFormGroup = (formData: CacheEntry) => FormGroupControl;
+
+const formGroup = ({
+  manufacturer,
+  model,
+  hexId,
+}: CacheEntry): FormGroupControl => {
   return new FormGroupControl({
     manufacturer: new FormControl(manufacturer, [
       Validators.required("Manufacturer is a required field"),
@@ -57,22 +62,23 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   formData,
   needsValidation = false,
 }: CheckBeaconDetailsProps): JSX.Element => {
-  formData = ensureFormDataHasKeys(formData, "manufacturer", "model", "hexId");
+  const group = formGroup(formData);
+  if (needsValidation) {
+    group.markAsDirty();
+  }
 
-  const errors = FormValidator.errorSummary(formData);
+  const controls = group.controls;
 
-  const { manufacturer, model, hexId } = FormValidator.validate(formData);
+  const errors = group.errorSummary();
 
   const pageHeading = "Check beacon details";
-
-  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
 
   return (
     <>
       <Layout
         navigation={<BackButton href="/" />}
         title={pageHeading}
-        pageHasErrors={pageHasErrors}
+        pageHasErrors={group.hasErrors()}
       >
         <Grid
           mainContent={
@@ -90,20 +96,22 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
                   </InsetText>
 
                   <BeaconManufacturerInput
-                    value={formData.manufacturer}
-                    showErrors={needsValidation && manufacturer.invalid}
+                    value={controls.manufacturer.value}
+                    showErrors={
+                      needsValidation && controls.manufacturer.invalid
+                    }
                     errorMessages={manufacturer.errorMessages}
                   />
 
                   <BeaconModelInput
-                    value={formData.model}
-                    showErrors={needsValidation && model.invalid}
+                    value={controls.model.value}
+                    showErrors={needsValidation && controls.model.invalid}
                     errorMessages={model.errorMessages}
                   />
 
                   <BeaconHexIdInput
-                    value={formData.hexId}
-                    showErrors={needsValidation && hexId.invalid}
+                    value={controls.hexId.value}
+                    showErrors={needsValidation && controls.hexId.invalid}
                     errorMessages={hexId.errorMessages}
                   />
                 </FormFieldset>

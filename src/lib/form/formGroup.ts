@@ -1,7 +1,17 @@
 import { FieldRule } from "../fieldValidator";
 
 export class FormGroupControl {
+  private pristine: boolean = true;
+
   constructor(public controls: { [key: string]: FormControl }) {}
+
+  public markAsDirty(): void {
+    this.pristine = false;
+  }
+
+  public errorSummary(): string[] {
+    return null;
+  }
 
   public hasErrors(): boolean {
     return true;
