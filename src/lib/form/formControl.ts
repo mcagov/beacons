@@ -4,7 +4,7 @@ import { ValidationRule } from "./validators";
 export class FormControl extends AbstractControl {
   public readonly value: string;
 
-  constructor(value: any, validators: ValidationRule[] = []) {
+  constructor(value: string, validators: ValidationRule[] = []) {
     super(value, validators);
     this.value = value ? value : "";
   }
