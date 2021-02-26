@@ -1,6 +1,7 @@
 import { FieldValidator } from "../fieldValidator";
 import { MaritimePleasureVessel } from "../types";
 import { beaconFieldValidatorLookup } from "./beaconFieldValidators";
+import { emergencyContactFieldValidatorLookup } from "./emergencyContactFieldValidators";
 import { ownerFieldValidatorLookup } from "./ownerFieldValidators";
 import { vesselFieldValidatorLookup } from "./vesselFieldValidators";
 
@@ -11,6 +12,10 @@ export class MoreVesselDetailsValidator extends FieldValidator {
       {
         errorMessage: "Vessel details is a required field",
         predicateFn: (value) => value.length === 0,
+      },
+      {
+        errorMessage: "Vessel details must be less than 250 characters",
+        predicateFn: (value) => value.length > 250,
       },
     ];
   }
@@ -57,4 +62,5 @@ export const fieldValidatorLookup = {
   otherPleasureVesselText: new OtherPleasureVesselTextValidator(),
   ...vesselFieldValidatorLookup,
   ...ownerFieldValidatorLookup,
+  ...emergencyContactFieldValidatorLookup,
 };

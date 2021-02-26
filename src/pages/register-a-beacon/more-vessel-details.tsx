@@ -1,10 +1,7 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
-import {
-  FieldErrorList,
-  FormErrorSummary,
-} from "../../components/ErrorSummary";
+import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
@@ -17,11 +14,7 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { CacheEntry } from "../../lib/formCache";
 import { FormValidator } from "../../lib/formValidator";
-import {
-  parseFormData,
-  updateFormCache,
-  withCookieRedirect,
-} from "../../lib/middleware";
+import { handlePageRequest } from "../../lib/handlePageRequest";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface MoreVesselDetailsProps {
@@ -91,7 +84,7 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
   showErrors,
   errorMessages,
 }: MoreVesselDetailsTextAreaProps): JSX.Element => (
-  <FormGroup showErrors={showErrors}>
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
     <TextareaCharacterCount
       id="moreVesselDetails"
       hintText="Describe the vessel's appearance (such as the length, colour, if it
@@ -102,34 +95,11 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
       rows={4}
       defaultValue={value}
     />
-    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
-    const formData: CacheEntry = await parseFormData(context.req);
-    updateFormCache(context.req.cookies, formData);
-
-    const userDidSubmitForm = context.req.method === "POST";
-    const formIsValid = !FormValidator.hasErrors(formData);
-
-    if (userDidSubmitForm && formIsValid) {
-      return {
-        redirect: {
-          statusCode: 303,
-          destination: "/register-a-beacon/beacon-information",
-        },
-      };
-    }
-
-    return {
-      props: {
-        formData,
-        needsValidation: userDidSubmitForm,
-      },
-    };
-  }
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
+  "/register-a-beacon/about-beacon-owner"
 );
 
 export default MoreVesselDetails;

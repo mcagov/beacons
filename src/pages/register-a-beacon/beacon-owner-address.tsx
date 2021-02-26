@@ -105,12 +105,9 @@ const BuildingNumberAndStreetInput: FunctionComponent<BuildingNumberAndStreetInp
       id="beaconOwnerAddressLine1"
       label="Building number and street"
       defaultValue={valueLine1}
+      inputClassName="govuk-!-margin-bottom-2"
     />
-    <Input
-      id="beaconOwnerAddressLine2"
-      label={null}
-      defaultValue={valueLine2}
-    />
+    <Input id="beaconOwnerAddressLine2" defaultValue={valueLine2} />
   </FormGroup>
 );
 

@@ -23,4 +23,9 @@ describe("Input", () => {
     render(<Input id={id} label={label} hintText={hintText} />);
     expect(screen.getByText(hintText)).toBeDefined();
   });
+
+  it("should not render the label if not provided", () => {
+    render(<Input id={id} hintText={hintText} />);
+    expect(screen.queryByLabelText(label)).toBeNull();
+  });
 });
