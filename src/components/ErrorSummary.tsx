@@ -25,23 +25,27 @@ interface ErrorSummaryProps {
 export const FormErrorSummary: FunctionComponent<FormErrorSummaryProps> = ({
   formGroup,
 }: FormErrorSummaryProps): JSX.Element => {
+  let errorsComponent: ReactNode;
   let errorSummaryComponent: ReactNode;
 
   if (formGroup.hasErrors()) {
-    console.log(formGroup.errorSummary());
-    errorSummaryComponent = (
-      <ErrorSummary>
-        {formGroup.errorSummary().map(({ field, errorMessages }) => {
-          errorMessages.map((errorMessage, index) => {
-            <FormErrorSummaryLink
-              key={`${field}-${index}`}
-              href={`#${field}`}
-              errorMessage={errorMessage}
-            />;
-          });
-        })}
-      </ErrorSummary>
+    errorsComponent = (
+      <>
+        {formGroup
+          .errorSummary()
+          .map(({ field, errorMessages }) =>
+            errorMessages.map((errorMessage, index) => (
+              <FormErrorSummaryLink
+                key={`${field}-${index}`}
+                href={`#${field}`}
+                errorMessage={errorMessage}
+              />
+            ))
+          )}
+      </>
     );
+
+    errorSummaryComponent = <ErrorSummary>{errorsComponent}</ErrorSummary>;
   }
 
   return <>{errorSummaryComponent}</>;
