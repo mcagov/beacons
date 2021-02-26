@@ -69,7 +69,7 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
                   />
 
                   <EmailAddress
-                    value={formData.beaconOwnerTownOrCity}
+                    value={formData.beaconOwnerEmail}
                     showErrors={pageHasErrors && beaconOwnerEmail.invalid}
                     errorMessages={beaconOwnerEmail.errorMessages}
                   />
