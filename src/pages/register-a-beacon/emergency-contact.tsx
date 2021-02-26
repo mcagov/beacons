@@ -6,6 +6,7 @@ import {
   Form,
   FormFieldset,
   FormGroup,
+  FormLegend,
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
@@ -148,10 +149,10 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
   telephoneNumberErrorMessages,
 }: EmergencyContactGroupProps): JSX.Element => (
   <>
-    <legend className="govuk-heading-m">
+    <FormLegend className="govuk-fieldset__legend--m">
       Emergency contact {index}
       {index == "1" ? "" : " (optional)"}
-    </legend>
+    </FormLegend>
     <FormGroup
       showErrors={fullNameErrors}
       errorMessages={fullNameErrorMessages}

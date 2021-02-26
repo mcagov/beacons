@@ -1,10 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
-import {
-  FieldErrorList,
-  FormErrorSummary,
-} from "../../components/ErrorSummary";
+import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
@@ -91,7 +88,7 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
   showErrors,
   errorMessages,
 }: MoreVesselDetailsTextAreaProps): JSX.Element => (
-  <FormGroup showErrors={showErrors}>
+  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
     <TextareaCharacterCount
       id="moreVesselDetails"
       hintText="Describe the vessel's appearance (such as the length, colour, if it
@@ -102,7 +99,6 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
       rows={4}
       defaultValue={value}
     />
-    {showErrors && <FieldErrorList errorMessages={errorMessages} />}
   </FormGroup>
 );
 

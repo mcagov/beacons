@@ -13,6 +13,10 @@ export class MoreVesselDetailsValidator extends FieldValidator {
         errorMessage: "Vessel details is a required field",
         predicateFn: (value) => value.length === 0,
       },
+      {
+        errorMessage: "Vessel details must be less than 250 characters",
+        predicateFn: (value) => value.length > 250,
+      },
     ];
   }
 }
