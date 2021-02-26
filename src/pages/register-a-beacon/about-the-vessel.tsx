@@ -34,6 +34,9 @@ const getFormGroup = ({
   return new FormGroupControl({
     maxCapacity: new FormControl(maxCapacity, [
       Validators.required("Manufacturer is a required field"),
+      Validators.wholeNumber(
+        "Maximum number of persons onboard must be a whole number"
+      ),
     ]),
     vesselName: new FormControl(vesselName),
     homeport: new FormControl(homeport),

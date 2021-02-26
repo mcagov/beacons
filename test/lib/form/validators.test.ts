@@ -138,6 +138,29 @@ describe("Form Validators", () => {
     });
   });
 
+  describe("wholeNumber", () => {
+    beforeEach(() => {
+      ({ errorMessage, hasErrorFn } = Validators.wholeNumber(
+        expectedErrorMessage
+      ));
+    });
+
+    it("should have an error if no value is provided", () => {
+      const control = controlWithValue("");
+      expect(hasErrorFn(control)).toBe(true);
+    });
+
+    it("should not have an error if the value is a number", () => {
+      const control = controlWithValue("12");
+      expect(hasErrorFn(control)).toBe(false);
+    });
+
+    it("should have an error if the value is a number and characters", () => {
+      const control = controlWithValue("12abc");
+      expect(hasErrorFn(control)).toBe(true);
+    });
+  });
+
   xdescribe("email", () => {
     // TODO
   });

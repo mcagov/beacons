@@ -72,6 +72,17 @@ export class Validators {
   }
 
   /**
+   * Validator that requires the value to be a number; proxies through to the {@link Validators.pattern()}.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static wholeNumber(errorMessage: string): ValidationRule {
+    const wholeNumberRegex = /^[0-9]+$/;
+    return Validators.pattern(errorMessage, wholeNumberRegex);
+  }
+
+  /**
    * Validator that requires the value to be a valid email; proxies through to the {@link Validators.pattern()}.
    *
    * @param errorMessage {string}           An error message if the rule is violated
