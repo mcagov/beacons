@@ -1,18 +1,26 @@
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { PageHeading } from "../../components/Typography";
+import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
-const MoreVesselDetails: FunctionComponent = (): JSX.Element => {
+const CookiePage: FunctionComponent<FormPageProps> = ({
+  needsValidation,
+  showCookieBanner,
+}: FormPageProps): JSX.Element => {
+  const pageHeading = "Cookies on Maritime and Coastguard Agency";
   return (
     <>
-      <Layout>
+      <Layout
+        title={pageHeading}
+        pageHasErrors={needsValidation}
+        showCookieBanner={showCookieBanner}
+      >
         <Grid
           mainContent={
             <>
-              <PageHeading>
-                Cookies on Maritime and Coastguard Agency
-              </PageHeading>
+              <PageHeading>{pageHeading}</PageHeading>
               <CookieInformation />
               <EssentialCookies />
             </>
@@ -55,4 +63,6 @@ const EssentialCookies: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export default MoreVesselDetails;
+export const getServerSideProps: GetServerSideProps = handlePageRequest("/");
+
+export default CookiePage;
