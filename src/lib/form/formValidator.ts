@@ -1,5 +1,5 @@
-import { fieldValidatorLookup } from "./field-validators";
-import { IFieldValidationResponse, IFieldValidator } from "./fieldValidator";
+import { fieldValidatorLookup } from "../field-validators";
+import { IFieldValidationResponse, IFieldValidator } from "../fieldValidator";
 
 export interface IFormError {
   fieldId: string;

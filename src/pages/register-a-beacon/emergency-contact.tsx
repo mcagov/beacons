@@ -15,7 +15,7 @@ import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { WarningText } from "../../components/WarningText";
-import { FormValidator } from "../../lib/formValidator";
+import { FormValidator } from "../../lib/form/formValidator";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 

@@ -4,8 +4,8 @@ import {
   GetServerSidePropsResult,
 } from "next";
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
+import { FormValidator } from "./form/formValidator";
 import { CacheEntry } from "./formCache";
-import { FormValidator } from "./formValidator";
 import {
   getCache,
   parseFormData,

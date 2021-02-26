@@ -19,8 +19,10 @@ import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
+import { FormControl, FormGroupControl } from "../../lib/form/formGroup";
+import { FormValidator } from "../../lib/form/formValidator";
+import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
-import { FormValidator } from "../../lib/formValidator";
 import {
   getCache,
   parseFormData,
@@ -33,6 +35,23 @@ interface CheckBeaconDetailsProps {
   formData: CacheEntry;
   needsValidation?: boolean;
 }
+
+const formGroup = (manufacturer, model, hexId): FormGroupControl => {
+  return new FormGroupControl({
+    manufacturer: new FormControl(manufacturer, [
+      Validators.required("Manufacturer is a required field"),
+    ]),
+    model: new FormControl(model, [
+      Validators.required("Model is a required field"),
+    ]),
+    hexId: new FormControl(hexId, [
+      Validators.isSize("Beacon HEX ID or UIN must by 15 characters long", 15),
+      Validators.hexId(
+        "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
+      ),
+    ]),
+  });
+};
 
 const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   formData,

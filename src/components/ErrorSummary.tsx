@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactNode } from "react";
-import { IFormError } from "../lib/formValidator";
+import { IFormError } from "../lib/form/formValidator";
 
 interface FormErrorSummaryProps {
   showErrorSummary: boolean;

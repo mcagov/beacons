@@ -12,7 +12,7 @@ import { Grid } from "../../components/Grid";
 import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { FormValidator } from "../../lib/formValidator";
+import { FormValidator } from "../../lib/form/formValidator";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { ensureFormDataHasKeys } from "../../lib/utils";
 

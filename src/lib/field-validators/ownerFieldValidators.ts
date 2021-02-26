@@ -73,7 +73,7 @@ export class EmailValidator extends FieldValidator {
 }
 
 const isEmailValid = (email) => {
-  const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+  const emailRegex: RegExp = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
   return email.match(emailRegex);
 };
 
