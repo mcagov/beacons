@@ -150,6 +150,8 @@ const PostcodeInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest("/");
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
+  "/register-a-beacon/emergency-contact"
+);
 
 export default BeaconOwnerAddressPage;
