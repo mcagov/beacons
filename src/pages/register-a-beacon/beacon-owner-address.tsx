@@ -27,6 +27,7 @@ interface BuildingNumberAndStreetInputProps {
 const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
+  showCookieBanner,
 }: FormPageProps): JSX.Element => {
   formData = ensureFormDataHasKeys(
     formData,
@@ -50,6 +51,7 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
       navigation={<BackButton href="/register-a-beacon/about-beacon-owner" />}
       title={pageHeading}
       pageHasErrors={pageHasErrors}
+      showCookieBanner={showCookieBanner}
     >
       <Grid
         mainContent={

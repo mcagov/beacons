@@ -19,6 +19,7 @@ import { ensureFormDataHasKeys } from "../../lib/utils";
 const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
+  showCookieBanner,
 }: FormPageProps): JSX.Element => {
   formData = ensureFormDataHasKeys(
     formData,
@@ -42,6 +43,7 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
         }
         title={pageHeading}
         pageHasErrors={pageHasErrors}
+        showCookieBanner={showCookieBanner}
       >
         <Grid
           mainContent={

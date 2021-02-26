@@ -33,6 +33,7 @@ export interface EmergencyContactGroupProps {
 const EmergencyContact: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
+  showCookieBanner,
 }: FormPageProps): JSX.Element => {
   formData = ensureFormDataHasKeys(
     formData,
@@ -62,6 +63,7 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
         }
         title={pageHeading}
         pageHasErrors={pageHasErrors}
+        showCookieBanner={showCookieBanner}
       >
         <Grid
           mainContent={

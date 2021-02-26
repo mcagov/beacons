@@ -13,7 +13,13 @@ jest.mock("../../../src/lib/handlePageRequest", () => ({
 
 describe("PrimaryBeaconUse", () => {
   it("should have a back button which directs the user to the beacon information page", () => {
-    render(<PrimaryBeaconUse formData={{}} needsValidation={false} />);
+    render(
+      <PrimaryBeaconUse
+        formData={{}}
+        needsValidation={false}
+        showCookieBanner={false}
+      />
+    );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -23,7 +29,11 @@ describe("PrimaryBeaconUse", () => {
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <PrimaryBeaconUse formData={{}} needsValidation={false} />
+      <PrimaryBeaconUse
+        formData={{}}
+        needsValidation={false}
+        showCookieBanner={false}
+      />
     );
     const ownPath = "/register-a-beacon/primary-beacon-use";
 
