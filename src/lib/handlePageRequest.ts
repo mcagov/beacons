@@ -4,7 +4,7 @@ import {
   GetServerSidePropsResult,
 } from "next";
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
-import { GetFormGroup } from "../pages/register-a-beacon/check-beacon-details";
+import { FormGroupControl } from "./form/model";
 import { CacheEntry } from "./formCache";
 import {
   getCache,
@@ -14,6 +14,8 @@ import {
 } from "./middleware";
 
 type TransformFunction = (formData: CacheEntry) => CacheEntry;
+
+export type GetFormGroup = (formData: CacheEntry) => FormGroupControl;
 
 export interface FormPageProps {
   formData: CacheEntry;
@@ -31,8 +33,8 @@ export const handlePageRequest = (
     if (userDidSubmitForm) {
       return handlePostRequest(
         context,
-        getFormGroup,
         destinationIfValid,
+        getFormGroup,
         transformFunction
       );
     }
@@ -53,8 +55,8 @@ const handleGetRequest = (
 
 export const handlePostRequest = async (
   context: GetServerSidePropsContext,
-  getFormGroup: GetFormGroup,
   destinationIfValid: string,
+  getFormGroup: GetFormGroup,
   transformFunction: TransformFunction = (formData) => formData
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
   const transformedFormData = transformFunction(

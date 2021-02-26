@@ -12,7 +12,7 @@ export interface FieldRule {
 }
 
 /**
- * Provides a set of validators that can be used within the {@link FormValidator}.
+ * Provides a set of validators that can be used within the {@link FormControl}.
  */
 export class Validators {
   /**
@@ -38,7 +38,7 @@ export class Validators {
    * @returns            {FieldRule}   A field rule
    */
   public static max(errorMessage: string, max: number): FieldRule {
-    const hasErrorFn: ValidatorFn = (value) => value.length <= 250;
+    const hasErrorFn: ValidatorFn = (value) => value.length > max;
 
     return { errorMessage, hasErrorFn };
   }
@@ -51,23 +51,20 @@ export class Validators {
    * @returns            {FieldRule}   A field rule
    */
   public static isSize(errorMessage: string, length: number): FieldRule {
-    const hasErrorFn: ValidatorFn = (value) => value.length === length;
+    const hasErrorFn: ValidatorFn = (value) => value.length !== length;
 
     return { errorMessage, hasErrorFn };
   }
 
   /**
-   * Validator that requires the value to match a regular expression pattern provided.
+   * Validator that requires the value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
    *
-   * @param errorMessage {string}      An error message if the rule is violated
-   * @param pattern      {RegExp}      A regular expression to be used to test the value
-   * @returns            {FieldRule}   A field rule
+   * @param erroMessage {string}      An error message if the rule is violated
+   * @returns           {FieldRule}   A validator instance
    */
-  public static pattern(errorMessage: string, pattern: RegExp): FieldRule {
-    const hasErrorFn: ValidatorFn = (value) => {
-      return value.match(pattern) !== null;
-    };
-    return { errorMessage, hasErrorFn };
+  public static hexId(erroMessage: string): FieldRule {
+    const hexIdRegex: RegExp = /^[a-f0-9]+$/i;
+    return Validators.pattern(erroMessage, hexIdRegex);
   }
 
   /**
@@ -82,14 +79,16 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
+   * Convenience static method to return a validator that requires the value to match a regular expression pattern provided.
    *
-   * @param erroMessage {string}      An error message if the rule is violated
-   * @returns           {FieldRule}   A validator instance
+   * @param errorMessage {string}      An error message if the rule is violated
+   * @param pattern      {RegExp}      A regular expression to be used to test the value
+   * @returns            {FieldRule}   A field rule
    */
-  public static hexId(erroMessage: string): FieldRule {
-    const hexIdRegex: RegExp = /^[a-f0-9]+$/i;
-    return Validators.pattern(erroMessage, hexIdRegex);
+  private static pattern(errorMessage: string, pattern: RegExp): FieldRule {
+    const hasErrorFn: ValidatorFn = (value) => !pattern.test(value);
+
+    return { errorMessage, hasErrorFn };
   }
 
   private constructor() {

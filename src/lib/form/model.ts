@@ -1,4 +1,5 @@
-import { FieldRule } from "../fieldValidator";
+import { Callback } from "../utils";
+import { FieldRule } from "./validators";
 
 export class FormGroupControl {
   private pristine: boolean = true;
@@ -7,6 +8,7 @@ export class FormGroupControl {
 
   public markAsDirty(): void {
     this.pristine = false;
+    this.forEach((control) => control.markAsDirty());
   }
 
   public errorSummary(): string[] {
@@ -16,10 +18,16 @@ export class FormGroupControl {
   public hasErrors(): boolean {
     return true;
   }
+
+  private forEach(cb: Callback<FormControl>): void {
+    Object.keys(this.controls).forEach((control) => cb(this.controls[control]));
+  }
 }
 
 export class FormControl {
   private readonly _value: string;
+
+  private pristine: boolean = true;
 
   /**
    * Initialise the form control.
@@ -31,17 +39,31 @@ export class FormControl {
     this._value = value ? value : "";
   }
 
+  /**
+   * Public getter for the form control value.
+   *
+   * @requires {string}  The value within the form control
+   */
   public get value(): string {
     return this._value;
   }
 
-  public errorSummary(): string[] {
-    return this.validators
+  public markAsDirty(): void {
+    this.pristine = false;
+  }
+
+  public errorMessages(): string[] {
+    const validators = this.pristine ? [] : this.validators;
+    return validators
       .filter((rule: FieldRule) => rule.hasErrorFn(this._value))
       .map((rule: FieldRule) => rule.errorMessage);
   }
 
   public hasErrors(): boolean {
+    if (this.pristine) {
+      return false;
+    }
+
     return this.validators.some((rule: FieldRule) =>
       rule.hasErrorFn(this._value)
     );

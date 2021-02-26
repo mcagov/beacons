@@ -22,3 +22,5 @@ export const ensureFormDataHasKeys = (
 
   return newFormData;
 };
+
+export type Callback<T> = (t: T) => void;

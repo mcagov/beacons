@@ -1,13 +1,7 @@
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-} from "next";
-import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { Details } from "../../components/Details";
-import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
@@ -19,25 +13,17 @@ import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { FormControl, FormGroupControl } from "../../lib/form/formGroup";
-import { FormValidator } from "../../lib/form/formValidator";
+import { FormControl, FormGroupControl } from "../../lib/form/model";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
-import {
-  getCache,
-  parseFormData,
-  updateFormCache,
-  withCookieRedirect,
-} from "../../lib/middleware";
+import { handlePageRequest } from "../../lib/handlePageRequest";
 
 interface CheckBeaconDetailsProps {
   formData: CacheEntry;
   needsValidation?: boolean;
 }
 
-export type GetFormGroup = (formData: CacheEntry) => FormGroupControl;
-
-const formGroup = ({
+const getFormGroup = ({
   manufacturer,
   model,
   hexId,
@@ -62,11 +48,10 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   formData,
   needsValidation = false,
 }: CheckBeaconDetailsProps): JSX.Element => {
-  const group = formGroup(formData);
+  const group = getFormGroup(formData);
   if (needsValidation) {
     group.markAsDirty();
   }
-
   const controls = group.controls;
 
   const errors = group.errorSummary();
@@ -83,10 +68,10 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
         <Grid
           mainContent={
             <>
-              <FormErrorSummary
+              {/* <FormErrorSummary
                 errors={errors}
                 showErrorSummary={needsValidation}
-              />
+              /> */}
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
@@ -97,22 +82,17 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
 
                   <BeaconManufacturerInput
                     value={controls.manufacturer.value}
-                    showErrors={
-                      needsValidation && controls.manufacturer.invalid
-                    }
-                    errorMessages={manufacturer.errorMessages}
+                    errorMessages={controls.manufacturer.errorMessages()}
                   />
 
                   <BeaconModelInput
                     value={controls.model.value}
-                    showErrors={needsValidation && controls.model.invalid}
-                    errorMessages={model.errorMessages}
+                    errorMessages={controls.model.errorMessages()}
                   />
 
                   <BeaconHexIdInput
                     value={controls.hexId.value}
-                    showErrors={needsValidation && controls.hexId.invalid}
-                    errorMessages={hexId.errorMessages}
+                    errorMessages={controls.hexId.errorMessages()}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -128,10 +108,9 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
 
 const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input
       id="manufacturer"
       label="Enter your beacon manufacturer"
@@ -142,20 +121,18 @@ const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
 
 const BeaconModelInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input id="model" label="Enter your beacon model" defaultValue={value} />
   </FormGroup>
 );
 
 const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input
       id="hexId"
       label="Enter the 15 character beacon HEX ID or UIN number"
@@ -173,54 +150,9 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
-    if (context.req.method === "POST") {
-      return handlePostRequest(context);
-    } else {
-      return handleGetRequest(context.req.cookies);
-    }
-  }
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
+  "/register-a-beacon/beacon-information",
+  getFormGroup
 );
-
-const handlePostRequest = async (
-  context: GetServerSidePropsContext
-): Promise<GetServerSidePropsResult<CheckBeaconDetailsProps>> => {
-  const rawFormData: CacheEntry = await parseFormData(context.req);
-  const formData: CacheEntry = {
-    ...rawFormData,
-    hexId: (rawFormData["hexId"] || "").toUpperCase(),
-  };
-
-  updateFormCache(context.req.cookies, formData);
-
-  const formIsValid = !FormValidator.hasErrors(formData);
-
-  if (formIsValid) {
-    return {
-      redirect: {
-        statusCode: 303,
-        destination: "/register-a-beacon/beacon-information",
-      },
-    };
-  }
-
-  return {
-    props: {
-      formData: formData,
-      needsValidation: true,
-    },
-  };
-};
-
-const handleGetRequest = (
-  cookies: NextApiRequestCookies
-): GetServerSidePropsResult<CheckBeaconDetailsProps> => {
-  return {
-    props: {
-      formData: getCache(cookies),
-    },
-  };
-};
 
 export default CheckBeaconDetails;

@@ -24,11 +24,10 @@ interface ErrorSummaryProps {
 }
 
 export const FormErrorSummary: FunctionComponent<FormErrorSummaryProps> = ({
-  showErrorSummary,
   errors,
 }: FormErrorSummaryProps) => (
   <>
-    {showErrorSummary && errors && errors.length > 0 && (
+    {errors && errors.length > 0 && (
       <ErrorSummary>
         {errors.map((field) =>
           field.errorMessages.map((errorMessage, index) => (
