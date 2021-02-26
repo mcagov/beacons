@@ -13,6 +13,7 @@ jest.mock("../../src/lib/middleware", () => ({
     };
   }),
 }));
+
 jest.mock("../../src/lib/formValidator", () => ({
   __esModule: true,
   FormValidator: {
@@ -25,6 +26,7 @@ describe("handlePageRequest()", () => {
     const mockUserSubmittedFormContext = {
       req: {
         method: "POST",
+        cookies: {},
       },
     };
     const nextPagePath = "/page-to-redirect-to-if-form-data-is-valid";
@@ -44,8 +46,9 @@ describe("handlePageRequest()", () => {
     const mockUserAccessedPageWithGETRequest = {
       req: {
         method: "GET",
+        cookies: {},
       },
-    };
+    } as GetServerSidePropsContext;
     const nextPagePath = "/irrelevant";
     const response = await handlePageRequest(nextPagePath)(
       mockUserAccessedPageWithGETRequest as GetServerSidePropsContext
@@ -55,6 +58,7 @@ describe("handlePageRequest()", () => {
       props: {
         formData: {},
         needsValidation: false,
+        showCookieBanner: true,
       },
     });
   });
