@@ -32,13 +32,13 @@ describe("BeaconOwnerAddressPage", () => {
     expect(form).toHaveAttribute("action", ownPath);
   });
 
-  it("should redirect to emergency contact page on valid form submission", async () => {
+  it("should redirect to the start page on valid form submission", async () => {
     const context = {};
     await getServerSideProps(context as GetServerSidePropsContext);
 
     // TODO update emergency contact page URL if different when page created
-    const emergencyContactPageURL = "/register-a-beacon/emergency-contact";
+    const startURL = "/";
 
-    expect(handlePageRequest).toHaveBeenCalledWith(emergencyContactPageURL);
+    expect(handlePageRequest).toHaveBeenCalledWith(startURL);
   });
 });

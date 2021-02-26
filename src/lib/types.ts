@@ -48,8 +48,12 @@ export interface Vessel {
 }
 
 export interface Owner {
+  beaconOwnerFullName: string;
+  beaconOwnerEmail?: string;
+  beaconOwnerTelephoneNumber?: string;
+  beaconOwnerAlternativeTelephoneNumber?: string;
   beaconOwnerAddressLine1: string;
-  beaconOwnerAddressLine2?: string;
+  beaconOwnerAddressLine2: string;
   beaconOwnerTownOrCity: string;
   beaconOwnerCounty?: string;
   beaconOwnerPostcode: string;
