@@ -80,10 +80,6 @@ describe("Form Validators", () => {
     });
   });
 
-  xdescribe("email", () => {
-    // TODO
-  });
-
   describe("hexId", () => {
     beforeEach(() => {
       ({ errorMessage, hasErrorFn } = Validators.hexId(expectedErrorMessage));
@@ -112,5 +108,9 @@ describe("Form Validators", () => {
     it("should not have an error if the value only contains characters 0-9", () => {
       expect(hasErrorFn("0123456789")).toBe(false);
     });
+  });
+
+  xdescribe("email", () => {
+    // TODO
   });
 });

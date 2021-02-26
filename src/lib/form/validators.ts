@@ -1,10 +1,10 @@
 /**
  * Type definition for a function that validates a form value and returns true if the value violates the rule.
  *
- * @param valueToValidate {string}    The form value to validate
- * @returns               {boolean}   True if the value violates the rule
+ * @param value {string}    The form value to validate
+ * @returns     {boolean}   True if the value violates the rule
  */
-export type ValidatorFn = (valueToValidate: string) => boolean;
+export type ValidatorFn = (value: string) => boolean;
 
 export interface FieldRule {
   errorMessage: string;

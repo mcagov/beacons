@@ -1,28 +1,4 @@
-import { Callback } from "../utils";
 import { FieldRule } from "./validators";
-
-export class FormGroupControl {
-  private pristine: boolean = true;
-
-  constructor(public controls: { [key: string]: FormControl }) {}
-
-  public markAsDirty(): void {
-    this.pristine = false;
-    this.forEach((control) => control.markAsDirty());
-  }
-
-  public errorSummary(): string[] {
-    return null;
-  }
-
-  public hasErrors(): boolean {
-    return true;
-  }
-
-  private forEach(cb: Callback<FormControl>): void {
-    Object.keys(this.controls).forEach((control) => cb(this.controls[control]));
-  }
-}
 
 export class FormControl {
   private readonly _value: string;

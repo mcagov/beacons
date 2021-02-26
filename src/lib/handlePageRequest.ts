@@ -4,7 +4,7 @@ import {
   GetServerSidePropsResult,
 } from "next";
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
-import { FormGroupControl } from "./form/model";
+import { FormGroupControl } from "./form/formGroupControl";
 import { CacheEntry } from "./formCache";
 import {
   getCache,
@@ -65,6 +65,7 @@ export const handlePostRequest = async (
   updateFormCache(context.req.cookies, transformedFormData);
 
   const formGroup = getFormGroup(transformedFormData);
+  formGroup.markAsDirty();
   const formIsValid = !formGroup.hasErrors();
 
   if (formIsValid) {

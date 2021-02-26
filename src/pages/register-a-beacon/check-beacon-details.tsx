@@ -2,6 +2,7 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { Details } from "../../components/Details";
+import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
@@ -13,7 +14,8 @@ import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { FormControl, FormGroupControl } from "../../lib/form/model";
+import { FormControl } from "../../lib/form/formControl";
+import { FormGroupControl } from "../../lib/form/formGroupControl";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
@@ -52,9 +54,8 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   if (needsValidation) {
     group.markAsDirty();
   }
-  const controls = group.controls;
 
-  const errors = group.errorSummary();
+  const controls = group.controls;
 
   const pageHeading = "Check beacon details";
 
@@ -68,10 +69,7 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
         <Grid
           mainContent={
             <>
-              {/* <FormErrorSummary
-                errors={errors}
-                showErrorSummary={needsValidation}
-              /> */}
+              <FormErrorSummary formGroup={group} />
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
