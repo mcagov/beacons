@@ -6,7 +6,7 @@ export class BeaconModelValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Beacon model is a required field",
-        predicateFn: (value) => value.length === 0,
+        hasErrorFn: (value) => value.length === 0,
       },
     ];
   }
@@ -18,7 +18,7 @@ export class BeaconManufacturerValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Beacon manufacturer is a required field",
-        predicateFn: (value) => value.length === 0,
+        hasErrorFn: (value) => value.length === 0,
       },
     ];
   }
@@ -31,11 +31,11 @@ export class BeaconHexIdValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: `${this.errorMessagePrefix} be 15 characters long`,
-        predicateFn: (value) => value.length !== 15,
+        hasErrorFn: (value) => value.length !== 15,
       },
       {
         errorMessage: `${this.errorMessagePrefix} use numbers 0 to 9 and letters A to F`,
-        predicateFn: (value) => value.match(/^[a-f0-9]+$/i) === null,
+        hasErrorFn: (value) => value.match(/^[a-f0-9]+$/i) === null,
       },
     ];
   }

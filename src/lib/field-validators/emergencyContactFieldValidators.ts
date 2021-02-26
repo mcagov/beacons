@@ -6,7 +6,7 @@ export class FullNameValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Emergency Contact Full name is a required field",
-        predicateFn: (value) => value.length === 0,
+        hasErrorFn: (value) => value.length === 0,
       },
     ];
   }
@@ -18,7 +18,7 @@ export class TelephoneValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Emergency Contact Telephone is a required field",
-        predicateFn: (value) => value.length === 0,
+        hasErrorFn: (value) => value.length === 0,
       },
     ];
   }

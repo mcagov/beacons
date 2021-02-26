@@ -8,12 +8,20 @@ export interface IFieldValidationResponse {
   invalid: boolean;
 }
 
+/**
+ * Type definition for a function that validates a form value and returns true if the value violates the rule.
+ *
+ * @param valueToValidate {string}    The form value to validate
+ * @returns               {boolean}   True if the value violates the rule
+ */
+export type ValidatorFn = (valueToValidate: string) => boolean;
+
 export interface FieldRule {
   errorMessage: string;
-  predicateFn: (valueToValidate: string) => boolean;
+  hasErrorFn: ValidatorFn;
 }
 
-export abstract class FieldValidator implements IFieldValidator {
+export class FieldValidator implements IFieldValidator {
   protected _rules: FieldRule[];
 
   validate(value: string): IFieldValidationResponse {
@@ -25,7 +33,7 @@ export abstract class FieldValidator implements IFieldValidator {
   }
 
   static valueViolatesRule(value: string, rule: FieldRule): boolean {
-    return rule.predicateFn(value);
+    return rule.hasErrorFn(value);
   }
 
   private isValid(value: string): boolean {

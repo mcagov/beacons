@@ -11,11 +11,11 @@ export class MoreVesselDetailsValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Vessel details is a required field",
-        predicateFn: (value) => value.length === 0,
+        hasErrorFn: (value) => value.length === 0,
       },
       {
         errorMessage: "Vessel details must be less than 250 characters",
-        predicateFn: (value) => value.length > 250,
+        hasErrorFn: (value) => value.length > 250,
       },
     ];
   }
@@ -27,12 +27,12 @@ export class MaritimePleasureVesselUseValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Maritime pleasure use is a required field",
-        predicateFn: (value) => value.length === 0,
+        hasErrorFn: (value) => value.length === 0,
       },
       {
         errorMessage:
           "Value is not a recognised type of maritime pleasure vessel",
-        predicateFn: (value) =>
+        hasErrorFn: (value) =>
           value.length !== 0 &&
           !Object.values(MaritimePleasureVessel).includes(
             value as MaritimePleasureVessel

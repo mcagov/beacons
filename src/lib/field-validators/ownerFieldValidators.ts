@@ -6,7 +6,7 @@ export class AddressLine1Validator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Building number and street is a required field",
-        predicateFn: (value) => value.length === 0,
+        hasErrorFn: (value) => value.length === 0,
       },
     ];
   }
@@ -18,7 +18,7 @@ export class TownOrCityValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Town or city is a required field",
-        predicateFn: (value) => value.length === 0,
+        hasErrorFn: (value) => value.length === 0,
       },
     ];
   }
@@ -30,7 +30,7 @@ export class FullNameValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Full name is a required field",
-        predicateFn: (value) => value.length === 0,
+        hasErrorFn: (value) => value.length === 0,
       },
     ];
   }
@@ -42,11 +42,11 @@ export class PostcodeValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Postcode is required",
-        predicateFn: (value) => value.length === 0,
+        hasErrorFn: (value) => value.length === 0,
       },
       {
         errorMessage: "Postcode must be a valid UK postcode",
-        predicateFn: (value) => value.length > 0 && !isPostcodeValid(value),
+        hasErrorFn: (value) => value.length > 0 && !isPostcodeValid(value),
       },
     ];
   }
@@ -66,7 +66,7 @@ export class EmailValidator extends FieldValidator {
     this._rules = [
       {
         errorMessage: "Email must be valid",
-        predicateFn: (value) => value.length > 0 && !isEmailValid(value),
+        hasErrorFn: (value) => value.length > 0 && !isEmailValid(value),
       },
     ];
   }
