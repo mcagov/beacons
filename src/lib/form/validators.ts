@@ -116,13 +116,14 @@ export class Validators {
     hasErrorCallback: ValidatorFn
   ): ValidationRule {
     const hasErrorFn: ValidatorFn = (control) => {
-      const conditionIsMet = control.parent.controls[key].value === value;
+      const parentControl: AbstractControl = control.parent.controls[key];
+      const conditionIsMet = parentControl.value === value;
       if (conditionIsMet) {
-        console.log(control.value);
         return hasErrorCallback(control);
       }
       return false;
     };
+
     return { errorMessage, hasErrorFn };
   }
 
