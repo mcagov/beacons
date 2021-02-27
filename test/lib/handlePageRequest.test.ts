@@ -1,5 +1,4 @@
 // Mock module dependencies in getServerSideProps for testing handlePageRequest()
-import { GetServerSidePropsContext } from "next";
 import { handlePageRequest } from "../../src/lib/handlePageRequest";
 
 jest.mock("../../src/lib/middleware", () => ({
@@ -16,6 +15,7 @@ jest.mock("../../src/lib/middleware", () => ({
 
 describe("handlePageRequest()", () => {
   let getFormGroup;
+  let context;
 
   beforeEach(() => {
     getFormGroup = () => {
@@ -24,19 +24,20 @@ describe("handlePageRequest()", () => {
         hasErrors: jest.fn(),
       };
     };
-  });
 
-  it("should redirect user to given next page on valid form submission", async () => {
-    const mockUserSubmittedFormContext = {
+    context = {
       req: {
         method: "POST",
       },
     };
+  });
+
+  it("should redirect user to given next page on valid form submission", async () => {
     const nextPagePath = "/page-to-redirect-to-if-form-data-is-valid";
     const response = await handlePageRequest(
       nextPagePath,
       getFormGroup
-    )(mockUserSubmittedFormContext as GetServerSidePropsContext);
+    )(context);
 
     expect(response).toStrictEqual({
       redirect: {
@@ -47,16 +48,12 @@ describe("handlePageRequest()", () => {
   });
 
   it("should return a props object when receives a GET request", async () => {
-    const mockUserAccessedPageWithGETRequest = {
-      req: {
-        method: "GET",
-      },
-    };
+    context.req.method = "GET";
     const nextPagePath = "/irrelevant";
     const response = await handlePageRequest(
       nextPagePath,
       getFormGroup
-    )(mockUserAccessedPageWithGETRequest as GetServerSidePropsContext);
+    )(context);
 
     expect(response).toStrictEqual({
       props: {
