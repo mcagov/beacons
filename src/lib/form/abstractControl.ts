@@ -50,6 +50,7 @@ export abstract class AbstractControl {
    */
   public errorMessages(): string[] {
     const validators = this.pristine ? [] : this.validators;
+
     return validators
       .filter((rule: ValidationRule) => rule.hasErrorFn(this))
       .map((rule: ValidationRule) => rule.errorMessage);

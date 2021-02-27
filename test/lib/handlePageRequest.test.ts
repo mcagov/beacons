@@ -13,14 +13,19 @@ jest.mock("../../src/lib/middleware", () => ({
     };
   }),
 }));
-jest.mock("../../src/lib/formValidator", () => ({
-  __esModule: true,
-  FormValidator: {
-    hasErrors: jest.fn().mockReturnValue(false),
-  },
-}));
 
 describe("handlePageRequest()", () => {
+  let getFormGroup;
+
+  beforeEach(() => {
+    getFormGroup = () => {
+      return {
+        markAsDirty: jest.fn(),
+        hasErrors: jest.fn(),
+      };
+    };
+  });
+
   it("should redirect user to given next page on valid form submission", async () => {
     const mockUserSubmittedFormContext = {
       req: {
@@ -28,9 +33,10 @@ describe("handlePageRequest()", () => {
       },
     };
     const nextPagePath = "/page-to-redirect-to-if-form-data-is-valid";
-    const response = await handlePageRequest(nextPagePath)(
-      mockUserSubmittedFormContext as GetServerSidePropsContext
-    );
+    const response = await handlePageRequest(
+      nextPagePath,
+      getFormGroup
+    )(mockUserSubmittedFormContext as GetServerSidePropsContext);
 
     expect(response).toStrictEqual({
       redirect: {
@@ -47,9 +53,10 @@ describe("handlePageRequest()", () => {
       },
     };
     const nextPagePath = "/irrelevant";
-    const response = await handlePageRequest(nextPagePath)(
-      mockUserAccessedPageWithGETRequest as GetServerSidePropsContext
-    );
+    const response = await handlePageRequest(
+      nextPagePath,
+      getFormGroup
+    )(mockUserAccessedPageWithGETRequest as GetServerSidePropsContext);
 
     expect(response).toStrictEqual({
       props: {
