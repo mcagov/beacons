@@ -34,12 +34,16 @@ const getFormGroup = ({
 }: CacheEntry): FormGroupControl => {
   return new FormGroupControl({
     beaconOwnerAddressLine1: new FormControl(beaconOwnerAddressLine1, [
-      Validators.required("Full name is a required field"),
+      Validators.required("Building number and street is a required field"),
     ]),
     beaconOwnerAddressLine2: new FormControl(beaconOwnerAddressLine2),
-    beaconOwnerTownOrCity: new FormControl(beaconOwnerTownOrCity),
+    beaconOwnerTownOrCity: new FormControl(beaconOwnerTownOrCity, [
+      Validators.required("Town or city is a required field"),
+    ]),
     beaconOwnerCounty: new FormControl(beaconOwnerCounty),
-    beaconOwnerPostcode: new FormControl(beaconOwnerPostcode),
+    beaconOwnerPostcode: new FormControl(beaconOwnerPostcode, [
+      Validators.required("Postcode is required"),
+    ]),
   });
 };
 

@@ -41,10 +41,16 @@ const getFormGroup = ({
     vesselName: new FormControl(vesselName),
     homeport: new FormControl(homeport),
     areaOfOperation: new FormControl(areaOfOperation, [
-      Validators.max("Typical area of operation has too many characters", 250),
+      Validators.maxLength(
+        "Typical area of operation has too many characters",
+        250
+      ),
     ]),
     beaconLocation: new FormControl(beaconLocation, [
-      Validators.max("Where the beacon is kept has too many characters", 250),
+      Validators.maxLength(
+        "Where the beacon is kept has too many characters",
+        250
+      ),
     ]),
   });
 };

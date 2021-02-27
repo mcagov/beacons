@@ -15,9 +15,12 @@ import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { WarningText } from "../../components/WarningText";
+import { FormControl } from "../../lib/form/formControl";
+import { FormGroupControl } from "../../lib/form/formGroupControl";
 import { FormValidator } from "../../lib/form/formValidator";
+import { Validators } from "../../lib/form/validators";
+import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
-import { ensureFormDataHasKeys } from "../../lib/utils";
 
 export interface EmergencyContactGroupProps {
   index: string;
@@ -29,6 +32,33 @@ export interface EmergencyContactGroupProps {
   telephoneNumberErrorMessages?: string[];
   telephoneNumberErrors?: boolean;
 }
+
+const getFormGroup = ({
+  emergencyContact1FullName,
+  emergencyContact1TelephoneNumber,
+  emergencyContact1AlternativeTelephoneNumber,
+  emergencyContact2FullName,
+  emergencyContact2TelephoneNumber,
+  emergencyContact2AlternativeTelephoneNumber,
+  emergencyContact3FullName,
+  emergencyContact3TelephoneNumber,
+  emergencyContact3AlternativeTelephoneNumber,
+}: CacheEntry): FormGroupControl => {
+  return new FormGroupControl({
+    emergencyContact1FullName: new FormControl(emergencyContact1FullName, [
+      Validators.required("Emergency contact full name is a required field"),
+    ]),
+    emergencyContact1TelephoneNumber: new FormControl(
+      emergencyContact1TelephoneNumber
+    ),
+    emergencyContact1AlternativeTelephoneNumber: new FormControl(
+      emergencyContact1AlternativeTelephoneNumber
+    ),
+    emergencyContact2FullName: new FormControl(emergencyContact2FullName, [
+      Validators.email("Email address must be valid"),
+    ]),
+  });
+};
 
 const EmergencyContact: FunctionComponent<FormPageProps> = ({
   formData,

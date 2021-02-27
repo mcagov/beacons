@@ -32,7 +32,10 @@ const getFormGroup = ({ moreVesselDetails }: CacheEntry): FormGroupControl => {
   return new FormGroupControl({
     moreVesselDetails: new FormControl(moreVesselDetails, [
       Validators.required("Vessel details is a required fied"),
-      Validators.max("Vessel details must be less than 250 characters", 250),
+      Validators.maxLength(
+        "Vessel details must be less than 250 characters",
+        250
+      ),
     ]),
   });
 };

@@ -38,7 +38,10 @@ const getFormGroup = ({
       Validators.required("Model is a required field"),
     ]),
     hexId: new FormControl(hexId, [
-      Validators.isSize("Beacon HEX ID or UIN must by 15 characters long", 15),
+      Validators.isLength(
+        "Beacon HEX ID or UIN must by 15 characters long",
+        15
+      ),
       Validators.hexId(
         "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
       ),

@@ -40,7 +40,7 @@ export class Validators {
    * @param max          {number}           The max number of characters allowed
    * @returns            {ValidationRule}   A validation rule
    */
-  public static max(errorMessage: string, max: number): ValidationRule {
+  public static maxLength(errorMessage: string, max: number): ValidationRule {
     const hasErrorFn: ValidatorFn = (control) => control.value.length > max;
 
     return { errorMessage, hasErrorFn };
@@ -53,7 +53,7 @@ export class Validators {
    * @param length       {string}           The length the value should be
    * @returns            {ValidationRule}   A validation rule
    */
-  public static isSize(errorMessage: string, length: number): ValidationRule {
+  public static isLength(errorMessage: string, length: number): ValidationRule {
     const hasErrorFn: ValidatorFn = (control) =>
       control.value.length !== length;
 
@@ -90,6 +90,17 @@ export class Validators {
    */
   public static email(errorMessage: string): ValidationRule {
     const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+    return Validators.pattern(errorMessage, emailRegex);
+  }
+
+  /**
+   * Validator that requires the value to be a valid postcode; proxies through to the {@link Validators.pattern()}.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static postcode(errorMessage: string): ValidationRule {
+    const emailRegex = /^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$/;
     return Validators.pattern(errorMessage, emailRegex);
   }
 

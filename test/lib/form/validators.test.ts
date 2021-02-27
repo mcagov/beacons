@@ -13,6 +13,9 @@ describe("Form Validators", () => {
     public get value() {
       return this._value;
     }
+    public hasErrors(): boolean {
+      return false;
+    }
   }
 
   const controlWithValue = (value) => new ControlWithValue(value);
@@ -49,9 +52,12 @@ describe("Form Validators", () => {
     });
   });
 
-  describe("max", () => {
+  describe("maxLength", () => {
     beforeEach(() => {
-      ({ errorMessage, hasErrorFn } = Validators.max(expectedErrorMessage, 10));
+      ({ errorMessage, hasErrorFn } = Validators.maxLength(
+        expectedErrorMessage,
+        10
+      ));
     });
 
     it("should not have an error if the value is less than the max length", () => {
@@ -74,9 +80,9 @@ describe("Form Validators", () => {
     });
   });
 
-  describe("isSize", () => {
+  describe("isLength", () => {
     beforeEach(() => {
-      ({ errorMessage, hasErrorFn } = Validators.isSize(
+      ({ errorMessage, hasErrorFn } = Validators.isLength(
         expectedErrorMessage,
         10
       ));
