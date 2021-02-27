@@ -43,6 +43,7 @@ const getFormGroup = ({
     beaconOwnerCounty: new FormControl(beaconOwnerCounty),
     beaconOwnerPostcode: new FormControl(beaconOwnerPostcode, [
       Validators.required("Postcode is required"),
+      Validators.postcode("Postcode must be a valid UK postcode"),
     ]),
   });
 };
