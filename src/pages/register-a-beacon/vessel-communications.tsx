@@ -18,6 +18,8 @@ import {
   GovUKBody,
   PageHeading,
 } from "../../components/Typography";
+import { FormControl } from "../../lib/form/formControl";
+import { FormGroupControl } from "../../lib/form/formGroupControl";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 import { VesselCommunication } from "../../lib/types";
@@ -33,6 +35,24 @@ interface PageHeadingInfoProps {
 interface FormInputProps {
   value: string;
 }
+
+const getFormGroup = ({
+  callSign,
+  vhfRadio,
+  fixedVhfRadio,
+  portableVhfRadio,
+  satelliteTelephone,
+  mobileTelephone,
+}: CacheEntry): FormGroupControl => {
+  return new FormGroupControl({
+    callSign: new FormControl(callSign),
+    vhfRadio: new FormControl(vhfRadio),
+    fixedVhfRadio: new FormControl(fixedVhfRadio),
+    portableVhfRadio: new FormControl(portableVhfRadio),
+    satelliteTelephone: new FormControl(satelliteTelephone),
+    mobileTelephone: new FormControl(mobileTelephone),
+  });
+};
 
 const VesselCommunications: FunctionComponent<VesselCommunicationsProps> = ({
   formData,
@@ -207,7 +227,8 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/more-vessel-details"
+  "/register-a-beacon/more-vessel-details",
+  getFormGroup
 );
 
 export default VesselCommunications;
