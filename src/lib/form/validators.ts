@@ -78,7 +78,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static wholeNumber(errorMessage: string): ValidationRule {
-    const wholeNumberRegex = /^[0-9]+$/;
+    const wholeNumberRegex = /^$|[0-9]+/;
     return Validators.pattern(errorMessage, wholeNumberRegex);
   }
 
@@ -89,7 +89,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static email(errorMessage: string): ValidationRule {
-    const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+    const emailRegex = /^$|[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}/;
     return Validators.pattern(errorMessage, emailRegex);
   }
 
@@ -100,7 +100,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static postcode(errorMessage: string): ValidationRule {
-    const emailRegex = /^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$/;
+    const emailRegex = /^$|([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})/;
     return Validators.pattern(errorMessage, emailRegex);
   }
 
