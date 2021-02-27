@@ -129,7 +129,7 @@ const TownOrCityInput: FunctionComponent<FormInputProps> = ({
 const CountyInput: FunctionComponent<FormInputProps> = ({
   value = "",
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={null} errorMessages={null}>
+  <FormGroup>
     <Input
       id="beaconOwnerCounty"
       label="County (optional)"

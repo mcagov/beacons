@@ -39,6 +39,6 @@ describe("BeaconOwnerAddressPage", () => {
     // TODO update emergency contact page URL if different when page created
     const startURL = "/register-a-beacon/emergency-contact";
 
-    expect(handlePageRequest).toHaveBeenCalledWith(startURL);
+    expect(handlePageRequest).toHaveBeenCalledWith(startURL, expect.anything());
   });
 });
