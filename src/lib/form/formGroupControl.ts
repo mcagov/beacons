@@ -1,11 +1,9 @@
-import { Callback } from "../utils";
 import { AbstractControl } from "./abstractControl";
-import { FormControl } from "./formControl";
 import { ValidationRule } from "./validators";
 
 export class FormGroupControl extends AbstractControl {
   constructor(
-    public readonly controls: { [key: string]: FormControl },
+    public readonly controls: { [key: string]: AbstractControl },
     validators: ValidationRule[] = []
   ) {
     super(controls, validators);
@@ -16,11 +14,18 @@ export class FormGroupControl extends AbstractControl {
     this.forEachControl((control) => control.setParent(this));
   }
 
+  /**
+   * Sets this form group and all descendant controls as dirty.
+   * @override
+   */
   public markAsDirty(): void {
-    this.pristine = false;
-    this.forEachControl((control) => control.markAsDirty());
+    super.markAsDirty();
+    this.forEachControl((control: AbstractControl) => control.markAsDirty());
   }
 
+  /**
+   * Returns the group of controls that the form group manages.
+   */
   public get value(): any {
     return this.controls;
   }
@@ -42,12 +47,18 @@ export class FormGroupControl extends AbstractControl {
       return false;
     }
 
-    return Object.keys(this.controls).some((control) =>
-      this.controls[control].hasErrors()
-    );
+    return Object.keys(this.controls).some((key: string) => {
+      const control: AbstractControl = this.controls[key];
+      return control.hasErrors();
+    });
   }
 
-  private forEachControl(cb: Callback<FormControl>): void {
-    Object.keys(this.controls).forEach((control) => cb(this.controls[control]));
+  private forEachControl(
+    cb: (control: AbstractControl, key: string) => void
+  ): void {
+    Object.keys(this.controls).forEach((key: string) => {
+      const control: AbstractControl = this.controls[key];
+      return cb(control, key);
+    });
   }
 }

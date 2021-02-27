@@ -9,17 +9,6 @@ export class FormControl extends AbstractControl {
     this.value = value ? value : "";
   }
 
-  public markAsDirty(): void {
-    this.pristine = false;
-  }
-
-  public errorMessages(): string[] {
-    const validators = this.pristine ? [] : this.validators;
-    return validators
-      .filter((rule: ValidationRule) => rule.hasErrorFn(this))
-      .map((rule: ValidationRule) => rule.errorMessage);
-  }
-
   public hasErrors(): boolean {
     if (this.pristine) {
       return false;
