@@ -151,9 +151,9 @@ describe("Form Validators", () => {
       ));
     });
 
-    it("should have an error if no value is provided", () => {
+    it("should not have an error if no value is provided", () => {
       const control = controlWithValue("");
-      expect(hasErrorFn(control)).toBe(true);
+      expect(hasErrorFn(control)).toBe(false);
     });
 
     it("should not have an error if the value is a number", () => {

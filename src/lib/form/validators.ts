@@ -78,7 +78,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static wholeNumber(errorMessage: string): ValidationRule {
-    const wholeNumberRegex = /^$|[0-9]+/;
+    const wholeNumberRegex = /^$|^[0-9]+$/;
     return Validators.pattern(errorMessage, wholeNumberRegex);
   }
 
