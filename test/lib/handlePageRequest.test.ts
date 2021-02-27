@@ -21,7 +21,7 @@ describe("handlePageRequest()", () => {
     getFormGroup = () => {
       return {
         markAsDirty: jest.fn(),
-        hasErrors: jest.fn(),
+        hasErrors: jest.fn().mockReturnValue(false),
       };
     };
 
@@ -47,6 +47,30 @@ describe("handlePageRequest()", () => {
     });
   });
 
+  it("should return the transformed data on invalid form submission", async () => {
+    getFormGroup = () => {
+      return {
+        markAsDirty: jest.fn(),
+        hasErrors: jest.fn().mockReturnValue(true),
+      };
+    };
+
+    const formData = { hexId: "1234" };
+
+    const response = await handlePageRequest(
+      "/",
+      getFormGroup,
+      () => formData
+    )(context);
+
+    expect(response).toStrictEqual({
+      props: {
+        formData,
+        needsValidation: true,
+      },
+    });
+  });
+
   it("should return a props object when receives a GET request", async () => {
     context.req.method = "GET";
     const nextPagePath = "/irrelevant";
@@ -61,9 +85,5 @@ describe("handlePageRequest()", () => {
         needsValidation: false,
       },
     });
-  });
-
-  xit("should return a props object with errors on invalid form submission", () => {
-    // TODO
   });
 });
