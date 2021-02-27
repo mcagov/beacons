@@ -106,7 +106,7 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async () => {
     // TODO: State persistence stuff to go here
 
-    const fakeBeacon: Beacon = {
+    const fakeBeacon = {
       manufacturer: "Raleigh",
       model: "Chopper",
       hexId: "34D17AE391BC3",

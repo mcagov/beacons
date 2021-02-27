@@ -35,7 +35,8 @@ describe("VesselCommunications", () => {
     await getServerSideProps(context as GetServerSidePropsContext);
 
     expect(handlePageRequest).toHaveBeenCalledWith(
-      "/register-a-beacon/more-vessel-details"
+      "/register-a-beacon/more-vessel-details",
+      expect.anything()
     );
   });
 });
