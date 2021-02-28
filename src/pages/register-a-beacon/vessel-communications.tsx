@@ -18,10 +18,8 @@ import {
   GovUKBody,
   PageHeading,
 } from "../../components/Typography";
-import { FormControl } from "../../lib/form/formControl";
-import { FormGroupControl } from "../../lib/form/formGroupControl";
 import { CacheEntry } from "../../lib/formCache";
-import { handlePageRequest } from "../../lib/handlePageRequest";
+import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { VesselCommunication } from "../../lib/types";
 
 interface VesselCommunicationsProps {
@@ -36,27 +34,45 @@ interface FormInputProps {
   value: string;
 }
 
-const getFormGroup = ({
-  callSign,
-  vhfRadio,
-  fixedVhfRadio,
-  portableVhfRadio,
-  satelliteTelephone,
-  mobileTelephone,
-}: CacheEntry): FormGroupControl => {
-  return new FormGroupControl({
-    callSign: new FormControl(callSign),
-    vhfRadio: new FormControl(vhfRadio),
-    fixedVhfRadio: new FormControl(fixedVhfRadio),
-    portableVhfRadio: new FormControl(portableVhfRadio),
-    satelliteTelephone: new FormControl(satelliteTelephone),
-    mobileTelephone: new FormControl(mobileTelephone),
-  });
-};
+// const getFormGroup = ({
+//   callSign,
+//   vhfRadio,
+//   fixedVhfRadio,
+//   fixedVhfRadioInput,
+//   portableVhfRadio,
+//   portableVhfRadioInput,
+//   satelliteTelephone,
+//   satelliteTelephoneInput,
+//   mobileTelephone,
+//   mobileTelephoneInput1,
+//   mobileTelephoneInput2,
+// }: CacheEntry): FormGroupControl => {
+//   return new FormGroupControl({
+//     callSign: new FormControl(callSign),
+//     vhfRadio: new FormControl(vhfRadio),
+//     fixedVhfRadio: new FormControl(fixedVhfRadio),
+//     fixedVhfRadioInput: new FormControl(fixedVhfRadioInput, [
+//       Validators.conditionalOnValue(
+//         "Other pleasure vessel must not be empty",
+//         "maritimePleasureVesselUse",
+//         MaritimePleasureVessel.OTHER,
+//         Validators.required("").hasErrorFn
+//       ),
+//     ]),
+//     portableVhfRadio: new FormControl(portableVhfRadio),
+//     portableVhfRadioInput: new FormControl(portableVhfRadioInput),
+//     satelliteTelephone: new FormControl(satelliteTelephone),
+//     satelliteTelephoneInput: new FormControl(satelliteTelephoneInput),
+//     mobileTelephone: new FormControl(mobileTelephone),
+//     mobileTelephoneInput1: new FormControl(mobileTelephoneInput1),
+//     mobileTelephoneInput2: new FormControl(mobileTelephoneInput2),
+//   });
+// };
 
-const VesselCommunications: FunctionComponent<VesselCommunicationsProps> = ({
+const VesselCommunications: FunctionComponent<FormPageProps> = ({
   formData,
-}: VesselCommunicationsProps): JSX.Element => {
+  needsValidation,
+}: FormPageProps): JSX.Element => {
   const pageHeading = "What types of communications are on board the vessel?";
 
   const pageHasErrors = false;

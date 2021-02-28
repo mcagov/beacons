@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormGroupControl } from "./formGroupControl";
 import { ValidationRule } from "./validators";
 
-export type ControlValue = string | Record<string, AbstractControl>;
+type ControlValue = string | Record<string, AbstractControl>;
 
 /**
  * This is the base class for `FormControl`, and `FormGroupControl`.  It represents a node in the Abstract Syntax Tree (AST) of form controls.
@@ -9,7 +10,7 @@ export type ControlValue = string | Record<string, AbstractControl>;
  * It provides shared behaviour, like running validators and calculating status.
  */
 export abstract class AbstractControl {
-  protected _value: ControlValue;
+  protected _value: any;
 
   /**
    * A control is `pristine` if the user has not edited the form.
@@ -61,12 +62,7 @@ export abstract class AbstractControl {
       .map((rule: ValidationRule) => rule.errorMessage);
   }
 
-  /**
-   * Abstract method that overriding controls must implement.
-   *
-   * @returns {ControlValue}   The string value or form controls
-   */
-  public abstract get value(): ControlValue;
+  public abstract get value(): any;
 
   /**
    * Determines if the control has any errors.
