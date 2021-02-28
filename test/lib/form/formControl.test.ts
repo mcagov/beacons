@@ -4,7 +4,7 @@ describe("FormControl", () => {
   let value;
   let formControl: FormControl;
 
-  const validationRule = (shouldError: boolean, errorMessage: string = "") => {
+  const validationRule = (shouldError: boolean, errorMessage = "") => {
     return {
       errorMessage,
       hasErrorFn: () => shouldError,
