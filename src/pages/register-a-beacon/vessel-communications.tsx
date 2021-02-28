@@ -2,6 +2,7 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
+import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
@@ -18,6 +19,7 @@ import {
   GovUKBody,
   PageHeading,
 } from "../../components/Typography";
+import { AbstractControl } from "../../lib/form/abstractControl";
 import { FormControl } from "../../lib/form/formControl";
 import { FormGroupControl } from "../../lib/form/formGroupControl";
 import { Validators } from "../../lib/form/validators";
@@ -26,11 +28,12 @@ import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { VesselCommunication } from "../../lib/types";
 
 interface VesselCommunicationsProps {
-  formData: CacheEntry;
+  controls: Record<string, AbstractControl>;
 }
 
 interface PageHeadingInfoProps {
   heading: string;
+  formGroup: FormGroupControl;
 }
 
 interface FormInputProps {
@@ -58,7 +61,7 @@ const getFormGroup = ({
       Validators.conditionalOnValue(
         "Fixed VHF radio must not be empty",
         "fixedVhfRadio",
-        VesselCommunication.VHF_RADIO,
+        VesselCommunication.FIXED_VHF_RADIO,
         Validators.required("").hasErrorFn
       ),
     ]),
@@ -101,7 +104,6 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
   if (needsValidation) {
     formGroup.markAsDirty();
   }
-  const controls = formGroup.controls;
   const pageHeading = "What types of communications are on board the vessel?";
 
   return (
@@ -113,8 +115,8 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
       <Grid
         mainContent={
           <>
-            <PageHeadingInfo heading={pageHeading} />
-            <VesselCommunicationsForm formData={formData} />
+            <PageHeadingInfo heading={pageHeading} formGroup={formGroup} />
+            <VesselCommunicationsForm controls={formGroup.controls} />
             <IfYouNeedHelp />
           </>
         }
@@ -125,10 +127,11 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
 
 const PageHeadingInfo: FunctionComponent<PageHeadingInfoProps> = ({
   heading,
+  formGroup,
 }: PageHeadingInfoProps) => (
   <>
     <PageHeading>{heading}</PageHeading>
-
+    <FormErrorSummary formGroup={formGroup} />
     <GovUKBody>
       Details about the onboard communications will be critical for Search and
       Rescue when trying to contact you in an emergency.
@@ -145,12 +148,12 @@ const PageHeadingInfo: FunctionComponent<PageHeadingInfoProps> = ({
 );
 
 const VesselCommunicationsForm: FunctionComponent<VesselCommunicationsProps> = ({
-  formData,
+  controls,
 }: VesselCommunicationsProps) => (
   <Form action="/register-a-beacon/vessel-communications">
-    <CallSign value={formData.callSign} />
+    <CallSign value={controls.callSign.value} />
 
-    <TypesOfCommunication formData={formData} />
+    <TypesOfCommunication controls={controls} />
 
     <Button buttonText="Continue" />
   </Form>
@@ -174,7 +177,7 @@ const CallSign: FunctionComponent<FormInputProps> = ({
 );
 
 const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
-  formData,
+  controls,
 }: VesselCommunicationsProps) => (
   <FormFieldset>
     <FormLegend className="govuk-fieldset__legend--s">
@@ -189,7 +192,9 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
         <CheckboxListItem
           id="vhfRadio"
           value={VesselCommunication.VHF_RADIO}
-          defaultChecked={formData.vhfRadio === VesselCommunication.VHF_RADIO}
+          defaultChecked={
+            controls.vhfRadio.value === VesselCommunication.VHF_RADIO
+          }
           label="VHF Radio"
         />
 
@@ -198,70 +203,89 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           label="Fixed VHF/DSC Radio"
           value={VesselCommunication.FIXED_VHF_RADIO}
           defaultChecked={
-            formData.fixedVhfRadio === VesselCommunication.FIXED_VHF_RADIO
+            controls.fixedVhfRadio.value === VesselCommunication.FIXED_VHF_RADIO
           }
           conditional={true}
         >
-          <Input
-            id="fixedVhfRadioInput"
-            label="Fixed MMSI number (optional)"
-            hintText="This is the unique MMSI number associated to the vessel, it is 9
+          <FormGroup
+            errorMessages={controls.fixedVhfRadioInput.errorMessages()}
+          >
+            <Input
+              id="fixedVhfRadioInput"
+              label="Fixed MMSI number (optional)"
+              hintText="This is the unique MMSI number associated to the vessel, it is 9
           digits long"
-            defaultValue={formData.fixedVhfRadioInput}
-          />
+              defaultValue={controls.fixedVhfRadioInput.value}
+            />
+          </FormGroup>
         </CheckboxListItem>
         <CheckboxListItem
           id="portableVhfRadio"
           value={VesselCommunication.PORTABLE_VHF_RADIO}
           defaultChecked={
-            formData.portableVhfRadio === VesselCommunication.PORTABLE_VHF_RADIO
+            controls.portableVhfRadio.value ===
+            VesselCommunication.PORTABLE_VHF_RADIO
           }
           label="Portable VHF/DSC Radio"
           conditional={true}
         >
-          <Input
-            id="portableVhfRadioInput"
-            label="Portable MMSI number (optional)"
-            hintText="This is the unique MMSI number associated to the portable radio and is 9 numbers long. E.g. starts with 2359xxxxx"
-            defaultValue={formData.portableVhfRadioInput}
-          />
+          <FormGroup
+            errorMessages={controls.portableVhfRadioInput.errorMessages()}
+          >
+            <Input
+              id="portableVhfRadioInput"
+              label="Portable MMSI number (optional)"
+              hintText="This is the unique MMSI number associated to the portable radio and is 9 numbers long. E.g. starts with 2359xxxxx"
+              defaultValue={controls.portableVhfRadioInput.value}
+            />
+          </FormGroup>
         </CheckboxListItem>
         <CheckboxListItem
           id="satelliteTelephone"
           value={VesselCommunication.SATELLITE_TELEPHONE}
           defaultChecked={
-            formData.satelliteTelephone ===
+            controls.satelliteTelephone.value ===
             VesselCommunication.SATELLITE_TELEPHONE
           }
           label="Satellite Telephone"
           conditional={true}
         >
-          <Input
-            id="satelliteTelephoneInput"
-            label="Enter phone number (optional)"
-            hintText="Iridium usually start: +8707, Thuraya usually start: +8821, Globalstar usually start: +3364)"
-            defaultValue={formData.satelliteTelephoneInput}
-          />
+          <FormGroup
+            errorMessages={controls.satelliteTelephoneInput.errorMessages()}
+          >
+            <Input
+              id="satelliteTelephoneInput"
+              label="Enter phone number (optional)"
+              hintText="Iridium usually start: +8707, Thuraya usually start: +8821, Globalstar usually start: +3364)"
+              defaultValue={controls.satelliteTelephoneInput.value}
+            />
+          </FormGroup>
         </CheckboxListItem>
         <CheckboxListItem
           id="mobileTelephone"
           value={VesselCommunication.MOBILE_TELEPHONE}
           defaultChecked={
-            formData.mobileTelephone === VesselCommunication.MOBILE_TELEPHONE
+            controls.mobileTelephone.value ===
+            VesselCommunication.MOBILE_TELEPHONE
           }
           label="Mobile Telephone(s)"
           conditional={true}
         >
-          <Input
-            id="mobileTelephoneInput1"
-            label="Mobile number 1 (optional)"
-            inputClassName="govuk-!-margin-bottom-4"
-            defaultValue={formData.mobileTelephoneInput1}
-          />
+          <FormGroup
+            errorMessages={controls.mobileTelephoneInput1.errorMessages()}
+          >
+            <Input
+              id="mobileTelephoneInput1"
+              label="Mobile number 1 (optional)"
+              inputClassName="govuk-!-margin-bottom-4"
+              defaultValue={controls.mobileTelephoneInput1.value}
+            />
+          </FormGroup>
+
           <Input
             id="mobileTelephoneInput2"
             label="Mobile number 2 (optional)"
-            defaultValue={formData.mobileTelephoneInput2}
+            defaultValue={controls.mobileTelephoneInput2.value}
           />
         </CheckboxListItem>
       </CheckboxList>
