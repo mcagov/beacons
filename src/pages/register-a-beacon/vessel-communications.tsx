@@ -18,6 +18,9 @@ import {
   GovUKBody,
   PageHeading,
 } from "../../components/Typography";
+import { FormControl } from "../../lib/form/formControl";
+import { FormGroupControl } from "../../lib/form/formGroupControl";
+import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { VesselCommunication } from "../../lib/types";
@@ -34,54 +37,78 @@ interface FormInputProps {
   value: string;
 }
 
-// const getFormGroup = ({
-//   callSign,
-//   vhfRadio,
-//   fixedVhfRadio,
-//   fixedVhfRadioInput,
-//   portableVhfRadio,
-//   portableVhfRadioInput,
-//   satelliteTelephone,
-//   satelliteTelephoneInput,
-//   mobileTelephone,
-//   mobileTelephoneInput1,
-//   mobileTelephoneInput2,
-// }: CacheEntry): FormGroupControl => {
-//   return new FormGroupControl({
-//     callSign: new FormControl(callSign),
-//     vhfRadio: new FormControl(vhfRadio),
-//     fixedVhfRadio: new FormControl(fixedVhfRadio),
-//     fixedVhfRadioInput: new FormControl(fixedVhfRadioInput, [
-//       Validators.conditionalOnValue(
-//         "Other pleasure vessel must not be empty",
-//         "maritimePleasureVesselUse",
-//         MaritimePleasureVessel.OTHER,
-//         Validators.required("").hasErrorFn
-//       ),
-//     ]),
-//     portableVhfRadio: new FormControl(portableVhfRadio),
-//     portableVhfRadioInput: new FormControl(portableVhfRadioInput),
-//     satelliteTelephone: new FormControl(satelliteTelephone),
-//     satelliteTelephoneInput: new FormControl(satelliteTelephoneInput),
-//     mobileTelephone: new FormControl(mobileTelephone),
-//     mobileTelephoneInput1: new FormControl(mobileTelephoneInput1),
-//     mobileTelephoneInput2: new FormControl(mobileTelephoneInput2),
-//   });
-// };
+const getFormGroup = ({
+  callSign,
+  vhfRadio,
+  fixedVhfRadio,
+  fixedVhfRadioInput,
+  portableVhfRadio,
+  portableVhfRadioInput,
+  satelliteTelephone,
+  satelliteTelephoneInput,
+  mobileTelephone,
+  mobileTelephoneInput1,
+  mobileTelephoneInput2,
+}: CacheEntry): FormGroupControl => {
+  return new FormGroupControl({
+    callSign: new FormControl(callSign),
+    vhfRadio: new FormControl(vhfRadio),
+    fixedVhfRadio: new FormControl(fixedVhfRadio),
+    fixedVhfRadioInput: new FormControl(fixedVhfRadioInput, [
+      Validators.conditionalOnValue(
+        "Fixed VHF radio must not be empty",
+        "fixedVhfRadio",
+        VesselCommunication.VHF_RADIO,
+        Validators.required("").hasErrorFn
+      ),
+    ]),
+    portableVhfRadio: new FormControl(portableVhfRadio),
+    portableVhfRadioInput: new FormControl(portableVhfRadioInput, [
+      Validators.conditionalOnValue(
+        "Portable VHF radio must not be empty",
+        "portableVhfRadio",
+        VesselCommunication.PORTABLE_VHF_RADIO,
+        Validators.required("").hasErrorFn
+      ),
+    ]),
+    satelliteTelephone: new FormControl(satelliteTelephone),
+    satelliteTelephoneInput: new FormControl(satelliteTelephoneInput, [
+      Validators.conditionalOnValue(
+        "Satellite telephone must not be empty",
+        "satelliteTelephone",
+        VesselCommunication.SATELLITE_TELEPHONE,
+        Validators.required("").hasErrorFn
+      ),
+    ]),
+    mobileTelephone: new FormControl(mobileTelephone),
+    mobileTelephoneInput1: new FormControl(mobileTelephoneInput1, [
+      Validators.conditionalOnValue(
+        "Mobile telephone must not be empty",
+        "mobileTelephone",
+        VesselCommunication.MOBILE_TELEPHONE,
+        Validators.required("").hasErrorFn
+      ),
+    ]),
+    mobileTelephoneInput2: new FormControl(mobileTelephoneInput2),
+  });
+};
 
 const VesselCommunications: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
 }: FormPageProps): JSX.Element => {
+  const formGroup = getFormGroup(formData);
+  if (needsValidation) {
+    formGroup.markAsDirty();
+  }
+  const controls = formGroup.controls;
   const pageHeading = "What types of communications are on board the vessel?";
-
-  const pageHasErrors = false;
 
   return (
     <Layout
       navigation={<BackButton href="/register-a-beacon/about-the-vessel" />}
       title={pageHeading}
-      pageHasErrors={pageHasErrors}
+      pageHasErrors={formGroup.hasErrors()}
     >
       <Grid
         mainContent={
