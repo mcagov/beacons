@@ -212,7 +212,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           >
             <Input
               id="fixedVhfRadioInput"
-              label="Fixed MMSI number (optional)"
+              label="Fixed MMSI number"
               hintText="This is the unique MMSI number associated to the vessel, it is 9
           digits long"
               defaultValue={controls.fixedVhfRadioInput.value}
@@ -234,7 +234,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           >
             <Input
               id="portableVhfRadioInput"
-              label="Portable MMSI number (optional)"
+              label="Portable MMSI number"
               hintText="This is the unique MMSI number associated to the portable radio and is 9 numbers long. E.g. starts with 2359xxxxx"
               defaultValue={controls.portableVhfRadioInput.value}
             />
@@ -255,7 +255,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           >
             <Input
               id="satelliteTelephoneInput"
-              label="Enter phone number (optional)"
+              label="Enter phone number"
               hintText="Iridium usually start: +8707, Thuraya usually start: +8821, Globalstar usually start: +3364)"
               defaultValue={controls.satelliteTelephoneInput.value}
             />
@@ -276,7 +276,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           >
             <Input
               id="mobileTelephoneInput1"
-              label="Mobile number 1 (optional)"
+              label="Mobile number 1"
               inputClassName="govuk-!-margin-bottom-4"
               defaultValue={controls.mobileTelephoneInput1.value}
             />

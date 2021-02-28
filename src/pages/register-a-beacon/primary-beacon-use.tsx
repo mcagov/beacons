@@ -39,7 +39,7 @@ const getFormGroup = ({
 }: CacheEntry): FormGroupControl => {
   return new FormGroupControl({
     maritimePleasureVesselUse: new FormControl(maritimePleasureVesselUse, [
-      Validators.required("Manufacturer is a required field"),
+      Validators.required("Maritime pleasure use is a required field"),
     ]),
     otherPleasureVesselText: new FormControl(otherPleasureVesselText, [
       Validators.conditionalOnValue(
