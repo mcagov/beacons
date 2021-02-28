@@ -1,7 +1,7 @@
 import { AbstractControl } from "./abstractControl";
 
 /**
- * Type definition for a function that validates a form value and returns true if the value violates the rule.
+ * Type definition for a function that validates a form control and returns true if the value violates the rule.
  *
  * @param control {AbstractControl}   The form control to validate
  * @returns       {boolean}           True if the value violates the rule
@@ -18,7 +18,7 @@ export interface ValidationRule {
  */
 export class Validators {
   /**
-   * Validator that requires the value to be non-empty.
+   * Validator that requires the form controls value to be non-empty.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @returns            {ValidationRule}   A validation rule
@@ -34,7 +34,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the value to be less than or equal to the provided number.
+   * Validator that requires the form controls value to be less than or equal to the provided number.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @param max          {number}           The max number of characters allowed
@@ -47,7 +47,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the value to be strictly the length provided.
+   * Validator that requires the form controls value to be strictly the length provided.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @param length       {string}           The length the value should be
@@ -61,7 +61,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
+   * Validator that requires the form controls value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
    *
    * @param erroMessage {string}           An error message if the rule is violated
    * @returns           {ValidationRule}   A validation rule
@@ -72,7 +72,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the value to be a number; proxies through to the {@link Validators.pattern()}.
+   * Validator that requires the form controls value to be a number; proxies through to the {@link Validators.pattern()}.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @returns            {ValidationRule}   A validation rule
@@ -83,7 +83,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the value to be a valid email; proxies through to the {@link Validators.pattern()}.
+   * Validator that requires the form controls value to be a valid email; proxies through to the {@link Validators.pattern()}.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @returns            {ValidationRule}   A validation rule
@@ -94,7 +94,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the value to be a valid postcode; proxies through to the {@link Validators.pattern()}.
+   * Validator that requires the form controls value to be a valid postcode; proxies through to the {@link Validators.pattern()}.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @returns            {ValidationRule}   A validation rule
@@ -115,15 +115,24 @@ export class Validators {
     errorMessage: string,
     pattern: RegExp
   ): ValidationRule {
-    const hasErrorFn: ValidatorFn = (control) => !pattern.test(control.value);
+    const hasErrorFn: ValidatorFn = (control) =>
+      !pattern.test(control.value as string);
 
     return { errorMessage, hasErrorFn };
   }
 
+  /**
+   * Conditional validator that is applied based on a siblings form control value.
+   *
+   * @param errorMessage     {string}         An error message if the rule is violated
+   * @param key              {string}         The dependent controls key
+   * @param value            {string}         The value the dependent controls value must match
+   * @param hasErrorCallback {ValidationFn}   The validator function to apply to the controls value
+   */
   public static conditionalOnValue(
     errorMessage: string,
     key: string,
-    value: any,
+    value: string,
     hasErrorCallback: ValidatorFn
   ): ValidationRule {
     const hasErrorFn: ValidatorFn = (control) => {

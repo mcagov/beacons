@@ -1,13 +1,15 @@
 import { FormGroupControl } from "./formGroupControl";
 import { ValidationRule } from "./validators";
 
+export type ControlValue = string | Record<string, AbstractControl>;
+
 /**
- * This is the base class for `FormControl`, and `FormGroupControl`.
+ * This is the base class for `FormControl`, and `FormGroupControl`.  It represents a node in the Abstract Syntax Tree (AST) of form controls.
  *
  * It provides shared behaviour, like running validators and calculating status.
  */
 export abstract class AbstractControl {
-  protected _value: any;
+  protected _value: ControlValue;
 
   /**
    * A control is `pristine` if the user has not edited the form.
@@ -18,7 +20,10 @@ export abstract class AbstractControl {
 
   private _parent: FormGroupControl = null;
 
-  constructor(value: any, public readonly validators: ValidationRule[]) {
+  constructor(
+    value: ControlValue,
+    public readonly validators: ValidationRule[]
+  ) {
     this._value = value;
   }
 
@@ -56,10 +61,23 @@ export abstract class AbstractControl {
       .map((rule: ValidationRule) => rule.errorMessage);
   }
 
-  public abstract get value(): any;
+  /**
+   * Abstract method that overriding controls must implement.
+   *
+   * @returns {ControlValue}   The string value or form controls
+   */
+  public abstract get value(): ControlValue;
 
   /**
    * Determines if the control has any errors.
    */
-  public abstract hasErrors(): boolean;
+  public hasErrors(): boolean {
+    if (this.pristine) {
+      return false;
+    }
+
+    return this.validators.some((rule: ValidationRule) =>
+      rule.hasErrorFn(this)
+    );
+  }
 }

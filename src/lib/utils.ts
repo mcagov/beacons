@@ -8,3 +8,5 @@ export function toArray<T>(toConvert: T | T[]): T[] {
   const toReturn = toConvert instanceof Array ? toConvert : [toConvert];
   return toReturn.filter((value: T) => !!value);
 }
+
+export type Callback<T> = (t: T) => void;

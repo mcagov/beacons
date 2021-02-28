@@ -2,20 +2,16 @@ import { AbstractControl } from "./abstractControl";
 import { ValidationRule } from "./validators";
 
 export class FormControl extends AbstractControl {
-  public readonly value: string;
-
   constructor(value: string, validators: ValidationRule[] = []) {
+    value = value ? value : "";
     super(value, validators);
-    this.value = value ? value : "";
   }
 
-  public hasErrors(): boolean {
-    if (this.pristine) {
-      return false;
-    }
-
-    return this.validators.some((rule: ValidationRule) =>
-      rule.hasErrorFn(this)
-    );
+  /**
+   * Public getter for the value this form control manages.
+   * @override
+   */
+  public get value(): string {
+    return this._value as string;
   }
 }
