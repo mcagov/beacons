@@ -36,7 +36,6 @@ describe("BeaconOwnerAddressPage", () => {
     const context = {};
     await getServerSideProps(context as GetServerSidePropsContext);
 
-    // TODO update emergency contact page URL if different when page created
     const startURL = "/register-a-beacon/emergency-contact";
 
     expect(handlePageRequest).toHaveBeenCalledWith(startURL, expect.anything());

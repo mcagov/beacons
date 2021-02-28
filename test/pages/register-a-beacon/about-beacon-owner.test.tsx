@@ -21,15 +21,23 @@ describe("AboutBeaconOwner", () => {
     );
   });
 
-  describe("getServerSideProps()", () => {
-    it("should return a largely empty props object", async () => {
-      const context = {};
-      await getServerSideProps(context as GetServerSidePropsContext);
+  it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
+    const { container } = render(
+      <AboutBeaconOwner formData={{}} needsValidation={false} />
+    );
+    const ownPath = "/register-a-beacon/about-beacon-owner";
 
-      expect(handlePageRequest).toHaveBeenCalledWith(
-        "/register-a-beacon/beacon-owner-address",
-        expect.anything()
-      );
-    });
+    const form = container.querySelector("form");
+
+    expect(form).toHaveAttribute("action", ownPath);
+  });
+
+  it("should redirect to the beacon-owner-address page on valid form submission", async () => {
+    const context = {};
+    await getServerSideProps(context as GetServerSidePropsContext);
+
+    const startURL = "/register-a-beacon/beacon-owner-address";
+
+    expect(handlePageRequest).toHaveBeenCalledWith(startURL, expect.anything());
   });
 });
