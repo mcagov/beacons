@@ -20,6 +20,11 @@ describe("FormControl", () => {
     expect(formControl.value).toBe(value);
   });
 
+  it("should return null for the parent reference", () => {
+    formControl = new FormControl(value);
+    expect(formControl.parent).toBeNull();
+  });
+
   describe("errorMessages()", () => {
     it("should return an empty arrray if the form is `pristine`", () => {
       formControl = new FormControl(value, [validationRule(true)]);
