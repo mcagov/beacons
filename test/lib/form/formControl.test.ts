@@ -20,6 +20,16 @@ describe("FormControl", () => {
     expect(formControl.value).toBe(value);
   });
 
+  it("should set the value to an empty string if the value passed in is null", () => {
+    formControl = new FormControl(null);
+    expect(formControl.value).toBe("");
+  });
+
+  it("should set the value to an empty string if the value passed in is undefined", () => {
+    formControl = new FormControl(undefined);
+    expect(formControl.value).toBe("");
+  });
+
   it("should return null for the parent reference", () => {
     formControl = new FormControl(value);
     expect(formControl.parent).toBeNull();

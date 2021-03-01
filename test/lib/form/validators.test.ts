@@ -1,4 +1,5 @@
 import { AbstractControl } from "../../../src/lib/form/abstractControl";
+import { FormGroupControl } from "../../../src/lib/form/formGroupControl";
 import { ValidatorFn, Validators } from "../../../src/lib/form/validators";
 
 describe("Form Validators", () => {
@@ -164,6 +165,57 @@ describe("Form Validators", () => {
     it("should have an error if the value is a number and characters", () => {
       const control = controlWithValue("12abc");
       expect(hasErrorFn(control)).toBe(true);
+    });
+  });
+
+  describe("conditionalOnValue", () => {
+    let control1;
+    let control1Value;
+    let control2;
+    let control2Value;
+    let formGroup;
+
+    beforeEach(() => {
+      control1Value = "hex id";
+      control1 = new ControlWithValue(control1Value);
+
+      control2 = new ControlWithValue(control2Value);
+      control2Value = "beacon model";
+
+      formGroup = new FormGroupControl({
+        key1: control1,
+        key2: control2,
+      });
+    });
+
+    it("should not have an error if the siblings control does not meet the criteria", () => {
+      ({ hasErrorFn } = Validators.conditionalOnValue(
+        errorMessage,
+        "key1",
+        "some other value",
+        () => true
+      ));
+      expect(hasErrorFn(control1)).toBe(false);
+    });
+
+    it("should not have an error if the siblings control meets the criteria but the validation rule does not error", () => {
+      ({ hasErrorFn } = Validators.conditionalOnValue(
+        errorMessage,
+        "key1",
+        control1Value,
+        () => false
+      ));
+      expect(hasErrorFn(control1)).toBe(false);
+    });
+
+    it("should have an error if the siblings control meets the criteria and the validation rule applies", () => {
+      ({ hasErrorFn } = Validators.conditionalOnValue(
+        errorMessage,
+        "key1",
+        control1Value,
+        () => true
+      ));
+      expect(hasErrorFn(control1)).toBe(true);
     });
   });
 

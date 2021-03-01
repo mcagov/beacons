@@ -14,7 +14,7 @@ export interface ValidationRule {
 }
 
 /**
- * Provides a set of validators that can be used within the {@link FormControl}.
+ * Provides a set of validators that can be applied to an {@link AbstractControl}.
  */
 export class Validators {
   /**
