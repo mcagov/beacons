@@ -95,7 +95,7 @@ describe("FormGroupControl", () => {
 
       expect(formGroupControl.errorSummary()).toStrictEqual([
         {
-          field: "hexId",
+          fieldId: "hexId",
           errorMessages: ["error!"],
         },
       ]);
@@ -116,11 +116,11 @@ describe("FormGroupControl", () => {
 
       expect(formGroupControl.errorSummary()).toStrictEqual([
         {
-          field: "hexId",
+          fieldId: "hexId",
           errorMessages: ["error hex1", "error hex2"],
         },
         {
-          field: "model",
+          fieldId: "model",
           errorMessages: ["error model"],
         },
       ]);
