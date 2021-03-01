@@ -32,10 +32,10 @@ const getFormGroup = ({
 }: CacheEntry): FormGroupControl => {
   return new FormGroupControl({
     manufacturer: new FormControl(manufacturer, [
-      Validators.required("Manufacturer is a required field"),
+      Validators.required("Beacon manufacturer is a required field"),
     ]),
     model: new FormControl(model, [
-      Validators.required("Model is a required field"),
+      Validators.required("Beacon model is a required field"),
     ]),
     hexId: new FormControl(hexId, [
       Validators.isLength(

@@ -23,7 +23,6 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { FormControl } from "../../lib/form/formControl";
 import { FormGroupControl } from "../../lib/form/formGroupControl";
-import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 
@@ -36,9 +35,7 @@ const getFormGroup = ({
   lastServicedDateYear,
 }: CacheEntry): FormGroupControl => {
   return new FormGroupControl({
-    manufacturerSerialNumber: new FormControl(manufacturerSerialNumber, [
-      Validators.required("Manufacturer Serial Number is a required field"),
-    ]),
+    manufacturerSerialNumber: new FormControl(manufacturerSerialNumber),
     beaconCHKCode: new FormControl(beaconCHKCode),
     beaconBatteryExpiryDateMonth: new FormControl(beaconBatteryExpiryDateMonth),
     beaconBatteryExpiryDateYear: new FormControl(beaconBatteryExpiryDateYear),

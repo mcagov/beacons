@@ -33,7 +33,9 @@ const getFormGroup = ({
 }: CacheEntry): FormGroupControl => {
   return new FormGroupControl({
     maxCapacity: new FormControl(maxCapacity, [
-      Validators.required("Maximum number of persons is a required field"),
+      Validators.required(
+        "Maximum number of persons onboard is a required field"
+      ),
       Validators.wholeNumber(
         "Maximum number of persons onboard must be a whole number"
       ),
