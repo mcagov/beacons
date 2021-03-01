@@ -96,7 +96,7 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
             <>
               <Form action="/register-a-beacon/emergency-contact">
                 <FormFieldset>
-                  <FormErrorSummary formGroup={formGroup} />
+                  <FormErrorSummary formErrors={formGroup.errorSummary()} />
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   <InsetText>
                     Your emergency contact information is vital for Search and

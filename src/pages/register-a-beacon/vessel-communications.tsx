@@ -131,7 +131,7 @@ const PageHeadingInfo: FunctionComponent<PageHeadingInfoProps> = ({
 }: PageHeadingInfoProps) => (
   <>
     <PageHeading>{heading}</PageHeading>
-    <FormErrorSummary formGroup={formGroup} />
+    <FormErrorSummary formErrors={formGroup.errorSummary()} />
     <GovUKBody>
       Details about the onboard communications will be critical for Search and
       Rescue when trying to contact you in an emergency.

@@ -71,7 +71,7 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
         <Grid
           mainContent={
             <>
-              <FormErrorSummary formGroup={formGroup} />
+              <FormErrorSummary formErrors={formGroup.errorSummary()} />
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>

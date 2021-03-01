@@ -2,6 +2,8 @@ import { Callback } from "../utils";
 import { AbstractControl } from "./abstractControl";
 import { ValidationRule } from "./validators";
 
+export type FormError = { fieldId: string; errorMessages: string[] };
+
 /**
  * Represents a parent node in the AST of form controls.
  *
@@ -42,13 +44,13 @@ export class FormGroupControl extends AbstractControl {
   /**
    * Generates the error summary based on this form groups controls.
    */
-  public errorSummary(): { field: string; errorMessages: string[] }[] {
+  public errorSummary(): FormError[] {
     return Object.keys(this.controls)
       .filter((control) => this.controls[control].hasErrors())
-      .map((field) => {
-        const formControl = this.controls[field];
+      .map((fieldId) => {
+        const formControl = this.controls[fieldId];
         return {
-          field,
+          fieldId,
           errorMessages: formControl.errorMessages(),
         };
       });

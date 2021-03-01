@@ -1,8 +1,8 @@
 import React, { FunctionComponent, ReactNode } from "react";
-import { FormGroupControl } from "../lib/form/formGroupControl";
+import { FormError } from "../lib/form/formGroupControl";
 
 interface FormErrorSummaryProps {
-  formGroup: FormGroupControl;
+  formErrors: FormError[];
 }
 
 interface FormErrorSummaryLinkProps {
@@ -23,21 +23,19 @@ interface ErrorSummaryProps {
 }
 
 export const FormErrorSummary: FunctionComponent<FormErrorSummaryProps> = ({
-  formGroup,
+  formErrors,
 }: FormErrorSummaryProps): JSX.Element => {
   let errorsComponent: ReactNode;
   let errorSummaryComponent: ReactNode;
 
-  if (formGroup.hasErrors()) {
-    const formGroupErrorSummaries = formGroup.errorSummary();
-
+  if (formErrors.length > 0) {
     errorsComponent = (
       <>
-        {formGroupErrorSummaries.map(({ field, errorMessages }) =>
+        {formErrors.map(({ fieldId, errorMessages }) =>
           errorMessages.map((errorMessage, index) => (
             <FormErrorSummaryLink
-              key={`${field}-${index}`}
-              href={`#${field}`}
+              key={`${fieldId}-${index}`}
+              href={`#${fieldId}`}
               errorMessage={errorMessage}
             />
           ))

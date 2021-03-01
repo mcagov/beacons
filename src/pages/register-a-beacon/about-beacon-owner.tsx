@@ -63,7 +63,7 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
             <>
               <Form action="/register-a-beacon/about-beacon-owner">
                 <FormFieldset>
-                  <FormErrorSummary formGroup={formGroup} />
+                  <FormErrorSummary formErrors={formGroup.errorSummary()} />
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <FullName

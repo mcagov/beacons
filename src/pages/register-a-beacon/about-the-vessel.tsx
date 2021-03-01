@@ -79,7 +79,7 @@ const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
         <Grid
           mainContent={
             <>
-              <FormErrorSummary formGroup={formGroup} />
+              <FormErrorSummary formErrors={formGroup.errorSummary()} />
               <Form action="/register-a-beacon/about-the-vessel">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>

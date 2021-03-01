@@ -72,7 +72,7 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
       <Grid
         mainContent={
           <>
-            <FormErrorSummary formGroup={formGroup} />
+            <FormErrorSummary formErrors={formGroup.errorSummary()} />
             <BeaconUseForm formGroup={formGroup} />
 
             <IfYouNeedHelp />

@@ -70,7 +70,7 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
           <>
             <Form action="/register-a-beacon/beacon-owner-address">
               <FormFieldset>
-                <FormErrorSummary formGroup={formGroup} />
+                <FormErrorSummary formErrors={formGroup.errorSummary()} />
                 <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                 <GovUKBody>
                   The beacon registration certificate and proof of registration
