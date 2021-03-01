@@ -124,10 +124,10 @@ export class Validators {
   /**
    * Conditional validator that is applied based on a siblings form control value.
    *
-   * @param errorMessage     {string}         An error message if the rule is violated
-   * @param key              {string}         The dependent controls key
-   * @param value            {string}         The value the dependent controls value must match
-   * @param hasErrorCallback {ValidationFn}   The validator function to apply to the controls value
+   * @param errorMessage     {string}        An error message if the rule is violated
+   * @param key              {string}        The dependent controls key
+   * @param value            {string}        The value the dependent controls value must match
+   * @param hasErrorCallback {ValidatorFn}   The validator function to apply to the controls value
    */
   public static conditionalOnValue(
     errorMessage: string,
