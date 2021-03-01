@@ -65,5 +65,65 @@ describe("FormGroupControl", () => {
 
       expect(formGroupControl.hasErrors()).toBe(true);
     });
+
+    it("should have errors for nested form groups", () => {
+      formGroupControl = new FormGroupControl({
+        address: new FormGroupControl({
+          line: new FormControl("", [validationRule(true)]),
+        }),
+      });
+      formGroupControl.markAsDirty();
+
+      expect(formGroupControl.hasErrors()).toBe(true);
+    });
+  });
+
+  describe("errorSummary()", () => {
+    it("should return the an empty array if the form is `pristine`", () => {
+      formGroupControl = new FormGroupControl({
+        hexId: new FormControl(value, [validationRule(true, "error!")]),
+      });
+
+      expect(formGroupControl.errorSummary()).toStrictEqual([]);
+    });
+
+    it("should return the error summary for the hex id", () => {
+      formGroupControl = new FormGroupControl({
+        hexId: new FormControl(value, [validationRule(true, "error!")]),
+      });
+      formGroupControl.markAsDirty();
+
+      expect(formGroupControl.errorSummary()).toStrictEqual([
+        {
+          field: "hexId",
+          errorMessages: ["error!"],
+        },
+      ]);
+    });
+
+    it("should return the error summary for the multiple control errors", () => {
+      formGroupControl = new FormGroupControl({
+        hexId: new FormControl(value, [
+          validationRule(true, "error hex1"),
+          validationRule(true, "error hex2"),
+        ]),
+        model: new FormControl(value, [
+          validationRule(true, "error model"),
+          validationRule(false),
+        ]),
+      });
+      formGroupControl.markAsDirty();
+
+      expect(formGroupControl.errorSummary()).toStrictEqual([
+        {
+          field: "hexId",
+          errorMessages: ["error hex1", "error hex2"],
+        },
+        {
+          field: "model",
+          errorMessages: ["error model"],
+        },
+      ]);
+    });
   });
 });
