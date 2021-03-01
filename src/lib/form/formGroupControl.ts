@@ -2,6 +2,11 @@ import { Callback } from "../utils";
 import { AbstractControl } from "./abstractControl";
 import { ValidationRule } from "./validators";
 
+/**
+ * Represents a parent node in the AST of form controls.
+ *
+ * It is reponsible for managing other child {@link AbstractControl} and checking validity of the overall form.
+ */
 export class FormGroupControl extends AbstractControl {
   constructor(
     public readonly controls: Record<string, AbstractControl>,

@@ -173,7 +173,6 @@ describe("Form Validators", () => {
     let control1Value;
     let control2;
     let control2Value;
-    let formGroup;
 
     beforeEach(() => {
       control1Value = "hex id";
@@ -182,7 +181,7 @@ describe("Form Validators", () => {
       control2 = new ControlWithValue(control2Value);
       control2Value = "beacon model";
 
-      formGroup = new FormGroupControl({
+      new FormGroupControl({
         key1: control1,
         key2: control2,
       });
