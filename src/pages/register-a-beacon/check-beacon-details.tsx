@@ -25,7 +25,7 @@ interface CheckBeaconDetailsProps {
   needsValidation?: boolean;
 }
 
-const getFormGroup = ({
+const getFieldManager = ({
   manufacturer,
   model,
   hexId,
@@ -53,11 +53,11 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   formData,
   needsValidation = false,
 }: CheckBeaconDetailsProps): JSX.Element => {
-  const formGroup = getFormGroup(formData);
+  const fieldManager = getFieldManager(formData);
   if (needsValidation) {
-    formGroup.markAsDirty();
+    fieldManager.markAsDirty();
   }
-  const controls = formGroup.controls;
+  const fields = fieldManager.fields;
 
   const pageHeading = "Check beacon details";
 
@@ -66,12 +66,12 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
       <Layout
         navigation={<BackButton href="/" />}
         title={pageHeading}
-        pageHasErrors={formGroup.hasErrors()}
+        pageHasErrors={fieldManager.hasErrors()}
       >
         <Grid
           mainContent={
             <>
-              <FormErrorSummary formErrors={formGroup.errorSummary()} />
+              <FormErrorSummary formErrors={fieldManager.errorSummary()} />
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
@@ -81,18 +81,18 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
                   </InsetText>
 
                   <BeaconManufacturerInput
-                    value={controls.manufacturer.value}
-                    errorMessages={controls.manufacturer.errorMessages()}
+                    value={fields.manufacturer.value}
+                    errorMessages={fields.manufacturer.errorMessages()}
                   />
 
                   <BeaconModelInput
-                    value={controls.model.value}
-                    errorMessages={controls.model.errorMessages()}
+                    value={fields.model.value}
+                    errorMessages={fields.model.errorMessages()}
                   />
 
                   <BeaconHexIdInput
-                    value={controls.hexId.value}
-                    errorMessages={controls.hexId.errorMessages()}
+                    value={fields.hexId.value}
+                    errorMessages={fields.hexId.errorMessages()}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -152,7 +152,7 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/beacon-information",
-  getFormGroup
+  getFieldManager
 );
 
 export default CheckBeaconDetails;

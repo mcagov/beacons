@@ -26,7 +26,7 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 
-const getFormGroup = ({
+const getFieldManager = ({
   manufacturerSerialNumber,
   beaconCHKCode,
   beaconBatteryExpiryDateMonth,
@@ -215,7 +215,7 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/primary-beacon-use",
-  getFormGroup
+  getFieldManager
 );
 
 export default BeaconInformationPage;

@@ -136,7 +136,7 @@ export class Validators {
     hasErrorCallback: ValidatorFn
   ): ValidationRule {
     const hasErrorFn: ValidatorFn = (control) => {
-      const parentControl: AbstractControl = control.parent.controls[key];
+      const parentControl: AbstractControl = control.parent.fields[key];
       const conditionIsMet = parentControl.value === value;
       if (conditionIsMet) {
         return hasErrorCallback(control);

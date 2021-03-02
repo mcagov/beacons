@@ -32,7 +32,7 @@ export interface EmergencyContactGroupProps {
   telephoneNumberErrors?: boolean;
 }
 
-const getFormGroup = ({
+const getFieldManager = ({
   emergencyContact1FullName,
   emergencyContact1TelephoneNumber,
   emergencyContact1AlternativeTelephoneNumber,
@@ -75,11 +75,11 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
 }: FormPageProps): JSX.Element => {
-  const formGroup = getFormGroup(formData);
+  const fieldManager = getFieldManager(formData);
   if (needsValidation) {
-    formGroup.markAsDirty();
+    fieldManager.markAsDirty();
   }
-  const controls = formGroup.controls;
+  const fields = fieldManager.fields;
   const pageHeading = "Add emergency contact information for up to 3 people";
 
   return (
@@ -89,14 +89,14 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
           <BackButton href="/register-a-beacon/beacon-owner-address" />
         }
         title={pageHeading}
-        pageHasErrors={formGroup.hasErrors()}
+        pageHasErrors={fieldManager.hasErrors()}
       >
         <Grid
           mainContent={
             <>
               <Form action="/register-a-beacon/emergency-contact">
                 <FormFieldset>
-                  <FormErrorSummary formErrors={formGroup.errorSummary()} />
+                  <FormErrorSummary formErrors={fieldManager.errorSummary()} />
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   <InsetText>
                     Your emergency contact information is vital for Search and
@@ -115,36 +115,36 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
 
                   <EmergencyContactGroup
                     index="1"
-                    fullName={controls.emergencyContact1FullName.value}
+                    fullName={fields.emergencyContact1FullName.value}
                     telephoneNumber={
-                      controls.emergencyContact1TelephoneNumber.value
+                      fields.emergencyContact1TelephoneNumber.value
                     }
                     alternativeTelephoneNumber={
-                      controls.emergencyContact1AlternativeTelephoneNumber.value
+                      fields.emergencyContact1AlternativeTelephoneNumber.value
                     }
-                    fullNameErrorMessages={controls.emergencyContact1FullName.errorMessages()}
-                    telephoneNumberErrorMessages={controls.emergencyContact1TelephoneNumber.errorMessages()}
+                    fullNameErrorMessages={fields.emergencyContact1FullName.errorMessages()}
+                    telephoneNumberErrorMessages={fields.emergencyContact1TelephoneNumber.errorMessages()}
                   />
 
                   <EmergencyContactGroup
                     index="2"
-                    fullName={controls.emergencyContact2FullName.value}
+                    fullName={fields.emergencyContact2FullName.value}
                     telephoneNumber={
-                      controls.emergencyContact2TelephoneNumber.value
+                      fields.emergencyContact2TelephoneNumber.value
                     }
                     alternativeTelephoneNumber={
-                      controls.emergencyContact2AlternativeTelephoneNumber.value
+                      fields.emergencyContact2AlternativeTelephoneNumber.value
                     }
                   />
 
                   <EmergencyContactGroup
                     index="3"
-                    fullName={controls.emergencyContact3FullName.value}
+                    fullName={fields.emergencyContact3FullName.value}
                     telephoneNumber={
-                      controls.emergencyContact3TelephoneNumber.value
+                      fields.emergencyContact3TelephoneNumber.value
                     }
                     alternativeTelephoneNumber={
-                      controls.emergencyContact3AlternativeTelephoneNumber.value
+                      fields.emergencyContact3AlternativeTelephoneNumber.value
                     }
                   />
                 </FormFieldset>
@@ -203,7 +203,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/",
-  getFormGroup
+  getFieldManager
 );
 
 export default EmergencyContact;

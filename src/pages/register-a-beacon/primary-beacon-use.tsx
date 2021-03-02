@@ -33,7 +33,7 @@ interface BeaconUseFormProps {
   formGroup: FieldManager;
 }
 
-const getFormGroup = ({
+const getFieldManager = ({
   maritimePleasureVesselUse,
   otherPleasureVesselText,
 }: CacheEntry): FieldManager => {
@@ -56,9 +56,9 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
   formData,
   needsValidation = false,
 }: PrimaryBeaconUseProps): JSX.Element => {
-  const formGroup = getFormGroup(formData);
+  const fieldManager = getFieldManager(formData);
   if (needsValidation) {
-    formGroup.markAsDirty();
+    fieldManager.markAsDirty();
   }
 
   return (
@@ -67,13 +67,13 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
         "What type of maritime pleasure vessel will you mostly use this beacon on?"
       }
       navigation={<BackButton href="/register-a-beacon/beacon-information" />}
-      pageHasErrors={formGroup.hasErrors()}
+      pageHasErrors={fieldManager.hasErrors()}
     >
       <Grid
         mainContent={
           <>
-            <FormErrorSummary formErrors={formGroup.errorSummary()} />
-            <BeaconUseForm formGroup={formGroup} />
+            <FormErrorSummary formErrors={fieldManager.errorSummary()} />
+            <BeaconUseForm formGroup={fieldManager} />
 
             <IfYouNeedHelp />
           </>
@@ -91,7 +91,7 @@ const BeaconUseForm: FunctionComponent<BeaconUseFormProps> = ({
       defaultChecked: userSelectedValue === componentValue,
     };
   };
-  const controls = formGroup.controls;
+  const controls = formGroup.fields;
   const checkedValue = controls.maritimePleasureVesselUse.value;
 
   return (
@@ -197,7 +197,7 @@ const ensureMaritimePleasureVesselUseIsSubmitted = (formData) => {
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/about-the-vessel",
-  getFormGroup,
+  getFieldManager,
   ensureMaritimePleasureVesselUseIsSubmitted
 );
 

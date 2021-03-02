@@ -28,7 +28,7 @@ interface MoreVesselDetailsTextAreaProps {
   errorMessages: string[];
 }
 
-const getFormGroup = ({ moreVesselDetails }: CacheEntry): FieldManager => {
+const getFieldManager = ({ moreVesselDetails }: CacheEntry): FieldManager => {
   return new FieldManager({
     moreVesselDetails: new FieldInput(moreVesselDetails, [
       Validators.required("Vessel details is a required fied"),
@@ -44,11 +44,11 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
   formData,
   needsValidation = false,
 }: MoreVesselDetailsProps): JSX.Element => {
-  const formGroup = getFormGroup(formData);
+  const fieldManager = getFieldManager(formData);
   if (needsValidation) {
-    formGroup.markAsDirty();
+    fieldManager.markAsDirty();
   }
-  const controls = formGroup.controls;
+  const fields = fieldManager.fields;
   const pageHeading = "Tell us more about the vessel";
 
   return (
@@ -58,19 +58,19 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
           <BackButton href="/register-a-beacon/vessel-communications" />
         }
         title={pageHeading}
-        pageHasErrors={formGroup.hasErrors()}
+        pageHasErrors={fieldManager.hasErrors()}
       >
         <Grid
           mainContent={
             <>
-              <FormErrorSummary formErrors={formGroup.errorSummary()} />
+              <FormErrorSummary formErrors={fieldManager.errorSummary()} />
               <Form action="/register-a-beacon/more-vessel-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <MoreVesselDetailsTextArea
-                    value={controls.moreVesselDetails.value}
-                    errorMessages={controls.moreVesselDetails.errorMessages()}
+                    value={fields.moreVesselDetails.value}
+                    errorMessages={fields.moreVesselDetails.errorMessages()}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -104,7 +104,7 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/about-beacon-owner",
-  getFormGroup
+  getFieldManager
 );
 
 export default MoreVesselDetails;

@@ -19,7 +19,6 @@ import {
   GovUKBody,
   PageHeading,
 } from "../../components/Typography";
-import { AbstractControl } from "../../lib/form/abstractControl";
 import { FieldInput } from "../../lib/form/fieldInput";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { Validators } from "../../lib/form/validators";
@@ -28,19 +27,19 @@ import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { VesselCommunication } from "../../lib/types";
 
 interface VesselCommunicationsProps {
-  controls: Record<string, AbstractControl>;
+  fields: Record<string, FieldInput>;
 }
 
 interface PageHeadingInfoProps {
   heading: string;
-  formGroup: FieldManager;
+  fieldManager: FieldManager;
 }
 
 interface FormInputProps {
   value: string;
 }
 
-const getFormGroup = ({
+const getFieldManager = ({
   callSign,
   vhfRadio,
   fixedVhfRadio,
@@ -100,9 +99,9 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
 }: FormPageProps): JSX.Element => {
-  const formGroup = getFormGroup(formData);
+  const fieldManager = getFieldManager(formData);
   if (needsValidation) {
-    formGroup.markAsDirty();
+    fieldManager.markAsDirty();
   }
   const pageHeading = "What types of communications are on board the vessel?";
 
@@ -110,13 +109,16 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
     <Layout
       navigation={<BackButton href="/register-a-beacon/about-the-vessel" />}
       title={pageHeading}
-      pageHasErrors={formGroup.hasErrors()}
+      pageHasErrors={fieldManager.hasErrors()}
     >
       <Grid
         mainContent={
           <>
-            <PageHeadingInfo heading={pageHeading} formGroup={formGroup} />
-            <VesselCommunicationsForm controls={formGroup.controls} />
+            <PageHeadingInfo
+              heading={pageHeading}
+              fieldManager={fieldManager}
+            />
+            <VesselCommunicationsForm fields={fieldManager.fields} />
             <IfYouNeedHelp />
           </>
         }
@@ -127,7 +129,7 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
 
 const PageHeadingInfo: FunctionComponent<PageHeadingInfoProps> = ({
   heading,
-  formGroup,
+  fieldManager: formGroup,
 }: PageHeadingInfoProps) => (
   <>
     <PageHeading>{heading}</PageHeading>
@@ -148,12 +150,12 @@ const PageHeadingInfo: FunctionComponent<PageHeadingInfoProps> = ({
 );
 
 const VesselCommunicationsForm: FunctionComponent<VesselCommunicationsProps> = ({
-  controls,
+  fields,
 }: VesselCommunicationsProps) => (
   <Form action="/register-a-beacon/vessel-communications">
-    <CallSign value={controls.callSign.value} />
+    <CallSign value={fields.callSign.value} />
 
-    <TypesOfCommunication controls={controls} />
+    <TypesOfCommunication fields={fields} />
 
     <Button buttonText="Continue" />
   </Form>
@@ -177,7 +179,7 @@ const CallSign: FunctionComponent<FormInputProps> = ({
 );
 
 const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
-  controls,
+  fields,
 }: VesselCommunicationsProps) => (
   <FormFieldset>
     <FormLegend className="govuk-fieldset__legend--s">
@@ -193,7 +195,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           id="vhfRadio"
           value={VesselCommunication.VHF_RADIO}
           defaultChecked={
-            controls.vhfRadio.value === VesselCommunication.VHF_RADIO
+            fields.vhfRadio.value === VesselCommunication.VHF_RADIO
           }
           label="VHF Radio"
         />
@@ -203,19 +205,17 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           label="Fixed VHF/DSC Radio"
           value={VesselCommunication.FIXED_VHF_RADIO}
           defaultChecked={
-            controls.fixedVhfRadio.value === VesselCommunication.FIXED_VHF_RADIO
+            fields.fixedVhfRadio.value === VesselCommunication.FIXED_VHF_RADIO
           }
           conditional={true}
         >
-          <FormGroup
-            errorMessages={controls.fixedVhfRadioInput.errorMessages()}
-          >
+          <FormGroup errorMessages={fields.fixedVhfRadioInput.errorMessages()}>
             <Input
               id="fixedVhfRadioInput"
               label="Fixed MMSI number"
               hintText="This is the unique MMSI number associated to the vessel, it is 9
           digits long"
-              defaultValue={controls.fixedVhfRadioInput.value}
+              defaultValue={fields.fixedVhfRadioInput.value}
             />
           </FormGroup>
         </CheckboxListItem>
@@ -223,20 +223,20 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           id="portableVhfRadio"
           value={VesselCommunication.PORTABLE_VHF_RADIO}
           defaultChecked={
-            controls.portableVhfRadio.value ===
+            fields.portableVhfRadio.value ===
             VesselCommunication.PORTABLE_VHF_RADIO
           }
           label="Portable VHF/DSC Radio"
           conditional={true}
         >
           <FormGroup
-            errorMessages={controls.portableVhfRadioInput.errorMessages()}
+            errorMessages={fields.portableVhfRadioInput.errorMessages()}
           >
             <Input
               id="portableVhfRadioInput"
               label="Portable MMSI number"
               hintText="This is the unique MMSI number associated to the portable radio and is 9 numbers long. E.g. starts with 2359xxxxx"
-              defaultValue={controls.portableVhfRadioInput.value}
+              defaultValue={fields.portableVhfRadioInput.value}
             />
           </FormGroup>
         </CheckboxListItem>
@@ -244,20 +244,20 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           id="satelliteTelephone"
           value={VesselCommunication.SATELLITE_TELEPHONE}
           defaultChecked={
-            controls.satelliteTelephone.value ===
+            fields.satelliteTelephone.value ===
             VesselCommunication.SATELLITE_TELEPHONE
           }
           label="Satellite Telephone"
           conditional={true}
         >
           <FormGroup
-            errorMessages={controls.satelliteTelephoneInput.errorMessages()}
+            errorMessages={fields.satelliteTelephoneInput.errorMessages()}
           >
             <Input
               id="satelliteTelephoneInput"
               label="Enter phone number"
               hintText="Iridium usually start: +8707, Thuraya usually start: +8821, Globalstar usually start: +3364)"
-              defaultValue={controls.satelliteTelephoneInput.value}
+              defaultValue={fields.satelliteTelephoneInput.value}
             />
           </FormGroup>
         </CheckboxListItem>
@@ -265,27 +265,27 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           id="mobileTelephone"
           value={VesselCommunication.MOBILE_TELEPHONE}
           defaultChecked={
-            controls.mobileTelephone.value ===
+            fields.mobileTelephone.value ===
             VesselCommunication.MOBILE_TELEPHONE
           }
           label="Mobile Telephone(s)"
           conditional={true}
         >
           <FormGroup
-            errorMessages={controls.mobileTelephoneInput1.errorMessages()}
+            errorMessages={fields.mobileTelephoneInput1.errorMessages()}
           >
             <Input
               id="mobileTelephoneInput1"
               label="Mobile number 1"
               inputClassName="govuk-!-margin-bottom-4"
-              defaultValue={controls.mobileTelephoneInput1.value}
+              defaultValue={fields.mobileTelephoneInput1.value}
             />
           </FormGroup>
 
           <Input
             id="mobileTelephoneInput2"
             label="Mobile number 2 (optional)"
-            defaultValue={controls.mobileTelephoneInput2.value}
+            defaultValue={fields.mobileTelephoneInput2.value}
           />
         </CheckboxListItem>
       </CheckboxList>
@@ -295,7 +295,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/more-vessel-details",
-  getFormGroup
+  getFieldManager
 );
 
 export default VesselCommunications;

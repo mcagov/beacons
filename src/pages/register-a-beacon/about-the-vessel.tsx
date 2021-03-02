@@ -24,7 +24,7 @@ interface AboutTheVesselProps {
   needsValidation?: boolean;
 }
 
-const getFormGroup = ({
+const getFieldManager = ({
   maxCapacity,
   vesselName,
   homeport,
@@ -61,11 +61,11 @@ const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
   formData,
   needsValidation = false,
 }: AboutTheVesselProps): JSX.Element => {
-  const formGroup = getFormGroup(formData);
+  const fieldManager = getFieldManager(formData);
   if (needsValidation) {
-    formGroup.markAsDirty();
+    fieldManager.markAsDirty();
   }
-  const controls = formGroup.controls;
+  const fields = fieldManager.fields;
 
   const pageHeading = "About the pleasure vessel";
 
@@ -74,33 +74,33 @@ const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
       <Layout
         navigation={<BackButton href="/register-a-beacon/primary-beacon-use" />}
         title={pageHeading}
-        pageHasErrors={formGroup.hasErrors()}
+        pageHasErrors={fieldManager.hasErrors()}
       >
         <Grid
           mainContent={
             <>
-              <FormErrorSummary formErrors={formGroup.errorSummary()} />
+              <FormErrorSummary formErrors={fieldManager.errorSummary()} />
               <Form action="/register-a-beacon/about-the-vessel">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <MaxCapacityInput
-                    value={controls.maxCapacity.value}
-                    errorMessages={controls.maxCapacity.errorMessages()}
+                    value={fields.maxCapacity.value}
+                    errorMessages={fields.maxCapacity.errorMessages()}
                   />
 
-                  <VesselNameInput value={controls.vesselName.value} />
+                  <VesselNameInput value={fields.vesselName.value} />
 
-                  <HomeportInput value={controls.homeport.value} />
+                  <HomeportInput value={fields.homeport.value} />
 
                   <AreaOfOperationTextArea
-                    value={controls.areaOfOperation.value}
-                    errorMessages={controls.areaOfOperation.errorMessages()}
+                    value={fields.areaOfOperation.value}
+                    errorMessages={fields.areaOfOperation.errorMessages()}
                   />
 
                   <BeaconLocationInput
-                    value={controls.beaconLocation.value}
-                    errorMessages={controls.beaconLocation.errorMessages()}
+                    value={fields.beaconLocation.value}
+                    errorMessages={fields.beaconLocation.errorMessages()}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -193,7 +193,7 @@ const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/vessel-communications",
-  getFormGroup
+  getFieldManager
 );
 
 export default AboutTheVessel;

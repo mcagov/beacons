@@ -56,7 +56,7 @@ const handleGetRequest = (
 export const handlePostRequest = async (
   context: GetServerSidePropsContext,
   destinationIfValid: string,
-  getFormGroup: GetFieldManager,
+  getFieldManager: GetFieldManager,
   transformFunction: TransformFunction = (formData) => formData
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
   const transformedFormData = transformFunction(
@@ -64,7 +64,7 @@ export const handlePostRequest = async (
   );
   updateFormCache(context.req.cookies, transformedFormData);
 
-  const fieldManager = getFormGroup(transformedFormData);
+  const fieldManager = getFieldManager(transformedFormData);
   fieldManager.markAsDirty();
   const formIsValid = !fieldManager.hasErrors();
 

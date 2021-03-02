@@ -53,29 +53,6 @@ describe("FieldManager", () => {
 
       expect(fieldManager.hasErrors()).toBe(false);
     });
-
-    it("should not have errors if the conrtols do not have any errors but the form group does ", () => {
-      fieldManager = new FieldManager(
-        {
-          hexId: new FieldInput(value, [validationRule(false)]),
-        },
-        [validationRule(true)]
-      );
-      fieldManager.markAsDirty();
-
-      expect(fieldManager.hasErrors()).toBe(true);
-    });
-
-    it("should have errors for nested form groups", () => {
-      fieldManager = new FieldManager({
-        address: new FieldManager({
-          line: new FieldInput("", [validationRule(true)]),
-        }),
-      });
-      fieldManager.markAsDirty();
-
-      expect(fieldManager.hasErrors()).toBe(true);
-    });
   });
 
   describe("errorSummary()", () => {
