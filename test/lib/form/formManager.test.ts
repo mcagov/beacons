@@ -103,4 +103,30 @@ describe("FormManager", () => {
       ]);
     });
   });
+
+  describe("serialise form", () => {
+    it("should serialise a form with no fields", () => {
+      formManager = new FormManager({});
+      const formJson = formManager.serialise();
+
+      expect(formJson).toStrictEqual({ hasErrors: false, fields: {} });
+    });
+
+    it("should serialise a form with 1 field and no errors", () => {
+      formManager = new FormManager({
+        hexId: new FieldManager(value),
+      });
+      const formJson = formManager.serialise();
+
+      expect(formJson).toStrictEqual({
+        hasErrors: false,
+        fields: {
+          hexId: {
+            value,
+            errorMessages: [],
+          },
+        },
+      });
+    });
+  });
 });

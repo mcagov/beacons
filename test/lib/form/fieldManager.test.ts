@@ -169,4 +169,8 @@ describe("FieldManager", () => {
       expect(action).toThrow(ReferenceError);
     });
   });
+
+  describe("serialise form field", () => {
+    it("should serialise an input that has errors", () => {});
+  });
 });

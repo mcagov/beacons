@@ -77,4 +77,20 @@ export class FormManager extends AbstractFormNode {
       return cb(field);
     });
   }
+
+  public serialise(): any {
+    const hasErrors = this.hasErrors();
+    const fields = Object.keys(this.fields).reduce(
+      (serialisedFields, currentField) => {
+        const fieldManager: FieldManager = this.fields[currentField];
+
+        serialisedFields[currentField] = fieldManager.serialise();
+
+        return serialisedFields;
+      },
+      {}
+    );
+
+    return { hasErrors, fields };
+  }
 }
