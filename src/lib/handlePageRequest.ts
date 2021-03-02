@@ -15,7 +15,7 @@ import {
 
 type TransformFunction = (formData: CacheEntry) => CacheEntry;
 
-export type GetFormGroup = (formData: CacheEntry) => FieldManager;
+export type GetFieldManager = (formData: CacheEntry) => FieldManager;
 
 export interface FormPageProps {
   formData: CacheEntry;
@@ -24,7 +24,7 @@ export interface FormPageProps {
 
 export const handlePageRequest = (
   destinationIfValid: string,
-  getFormGroup: GetFormGroup,
+  getFieldManager: GetFieldManager,
   transformFunction: TransformFunction = (formData) => formData
 ): GetServerSideProps =>
   withCookieRedirect(async (context: GetServerSidePropsContext) => {
@@ -34,7 +34,7 @@ export const handlePageRequest = (
       return handlePostRequest(
         context,
         destinationIfValid,
-        getFormGroup,
+        getFieldManager,
         transformFunction
       );
     }
@@ -56,7 +56,7 @@ const handleGetRequest = (
 export const handlePostRequest = async (
   context: GetServerSidePropsContext,
   destinationIfValid: string,
-  getFormGroup: GetFormGroup,
+  getFormGroup: GetFieldManager,
   transformFunction: TransformFunction = (formData) => formData
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
   const transformedFormData = transformFunction(
@@ -64,9 +64,9 @@ export const handlePostRequest = async (
   );
   updateFormCache(context.req.cookies, transformedFormData);
 
-  const formGroup = getFormGroup(transformedFormData);
-  formGroup.markAsDirty();
-  const formIsValid = !formGroup.hasErrors();
+  const fieldManager = getFormGroup(transformedFormData);
+  fieldManager.markAsDirty();
+  const formIsValid = !fieldManager.hasErrors();
 
   if (formIsValid) {
     return {
