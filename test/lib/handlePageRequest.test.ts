@@ -66,7 +66,7 @@ describe("handlePageRequest()", () => {
 
     expect(response).toStrictEqual({
       props: {
-        formJSON: expectedFormJSON,
+        form: expectedFormJSON,
       },
     });
   });
@@ -91,7 +91,7 @@ describe("handlePageRequest()", () => {
 
     expect(response).toStrictEqual({
       props: {
-        formJSON: expectedFormJSON,
+        form: expectedFormJSON,
       },
     });
   });
