@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { GetServerSidePropsContext } from "next";
 import React from "react";
+import { FormJSON } from "../../../src/lib/form/formManager";
 import { handlePageRequest } from "../../../src/lib/handlePageRequest";
 import AboutBeaconOwner, {
   getServerSideProps,
@@ -12,8 +13,31 @@ jest.mock("../../../src/lib/handlePageRequest", () => ({
 }));
 
 describe("AboutBeaconOwner", () => {
+  const emptyAboutBeaconOwnerForm: FormJSON = {
+    hasErrors: false,
+    errorSummary: [],
+    fields: {
+      beaconOwnerFullName: {
+        value: "",
+        errorMessages: [],
+      },
+      beaconOwnerTelephoneNumber: {
+        value: "",
+        errorMessages: [],
+      },
+      beaconOwnerAlternativeTelephoneNumber: {
+        value: "",
+        errorMessages: [],
+      },
+      beaconOwnerEmail: {
+        value: "",
+        errorMessages: [],
+      },
+    },
+  };
+
   it("should have a back button which directs the user to the primary beacon use page", () => {
-    render(<AboutBeaconOwner formData={{}} needsValidation={false} />);
+    render(<AboutBeaconOwner form={emptyAboutBeaconOwnerForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -23,7 +47,7 @@ describe("AboutBeaconOwner", () => {
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <AboutBeaconOwner formData={{}} needsValidation={false} />
+      <AboutBeaconOwner form={emptyAboutBeaconOwnerForm} />
     );
     const ownPath = "/register-a-beacon/about-beacon-owner";
 

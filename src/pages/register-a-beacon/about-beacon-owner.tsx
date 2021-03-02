@@ -18,7 +18,7 @@ import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
-const getFormManager = ({
+const defineFormRules = ({
   beaconOwnerFullName,
   beaconOwnerTelephoneNumber,
   beaconOwnerAlternativeTelephoneNumber,
@@ -39,14 +39,8 @@ const getFormManager = ({
 };
 
 const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
-  formData,
-  needsValidation,
+  form,
 }: FormPageProps): JSX.Element => {
-  const formManager = getFormManager(formData);
-  if (needsValidation) {
-    formManager.markAsDirty();
-  }
-  const fields = formManager.fields;
   const pageHeading = "About the beacon owner";
 
   return (
@@ -56,32 +50,36 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
           <BackButton href="/register-a-beacon/more-vessel-details" />
         }
         title={pageHeading}
-        pageHasErrors={formManager.hasErrors()}
+        pageHasErrors={form.hasErrors}
       >
         <Grid
           mainContent={
             <>
               <Form action="/register-a-beacon/about-beacon-owner">
                 <FormFieldset>
-                  <FormErrorSummary formErrors={formManager.errorSummary()} />
+                  <FormErrorSummary formErrors={form.errorSummary} />
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <FullName
-                    value={fields.beaconOwnerFullName.value}
-                    errorMessages={fields.beaconOwnerFullName.errorMessages()}
+                    value={form.fields.beaconOwnerFullName.value}
+                    errorMessages={
+                      form.fields.beaconOwnerFullName.errorMessages
+                    }
                   />
 
                   <TelephoneNumber
-                    value={fields.beaconOwnerTelephoneNumber.value}
+                    value={form.fields.beaconOwnerTelephoneNumber.value}
                   />
 
                   <AlternativeTelephoneNumber
-                    value={fields.beaconOwnerAlternativeTelephoneNumber.value}
+                    value={
+                      form.fields.beaconOwnerAlternativeTelephoneNumber.value
+                    }
                   />
 
                   <EmailAddress
-                    value={fields.beaconOwnerEmail.value}
-                    errorMessages={fields.beaconOwnerEmail.errorMessages()}
+                    value={form.fields.beaconOwnerEmail.value}
+                    errorMessages={form.fields.beaconOwnerEmail.errorMessages}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -149,7 +147,7 @@ const EmailAddress: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/beacon-owner-address",
-  getFormManager
+  defineFormRules
 );
 
 export default AboutBeaconOwner;
