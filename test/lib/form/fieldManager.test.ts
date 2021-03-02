@@ -1,6 +1,7 @@
 import { FieldManager } from "../../../src/lib/form/fieldManager";
+import { FormManager } from "../../../src/lib/form/formManager";
 
-describe("FieldManage", () => {
+describe("FieldManager", () => {
   let value;
   let fieldManager: FieldManager;
 
@@ -96,6 +97,33 @@ describe("FieldManage", () => {
       ]);
       fieldManager.markAsDirty();
       expect(fieldManager.hasErrors()).toBe(true);
+    });
+  });
+
+  describe("conditional validation", () => {
+    it("should only have errors if field is invalid and the dependent condition is met", () => {
+      const conditions = [
+        {
+          dependsOn: "radioButton",
+          meetingCondition: (value) => value === "OTHER",
+        },
+      ];
+      const formManager = new FormManager({
+        radioButton: new FieldManager(
+          "A value that doesn't meet the OtherTextInput's condition",
+          [validationRule(false)]
+        ),
+        OtherTextInput: new FieldManager(
+          "",
+          [validationRule(true)],
+          conditions
+        ),
+      });
+      formManager.markAsDirty();
+
+      const hasErrors = formManager.hasErrors();
+
+      expect(hasErrors).toBe(false);
     });
   });
 });

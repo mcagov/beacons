@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormManager } from "./formManager";
-import { ValidationRule } from "./validators";
 
 type ControlValue = string | Record<string, AbstractFormNode>;
 
@@ -19,10 +18,7 @@ export abstract class AbstractFormNode {
 
   private _parent: FormManager = null;
 
-  constructor(
-    value: ControlValue,
-    public readonly validators: ValidationRule[]
-  ) {
+  constructor(value: ControlValue) {
     this._value = value;
   }
 

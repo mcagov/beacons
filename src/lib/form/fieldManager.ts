@@ -1,13 +1,22 @@
 import { AbstractFormNode } from "./abstractFormNode";
 import { ValidationRule } from "./validators";
 
+export type ValidationCondition = {
+  dependsOn: string;
+  meetingCondition: (value: string) => boolean;
+};
+
 /**
  * This class is responsible for managing the value of a form input and can run validation rules, and calculate status of the field input.
  */
 export class FieldManager extends AbstractFormNode {
-  constructor(value: string, validators: ValidationRule[] = []) {
-    value = value ? value : "";
-    super(value, validators);
+  constructor(
+    value: string,
+    public readonly validators: ValidationRule[] = [],
+    public readonly conditions: ValidationCondition[] = []
+  ) {
+    super(value);
+    this._value = value ? value : "";
   }
 
   /**
@@ -39,8 +48,21 @@ export class FieldManager extends AbstractFormNode {
       return false;
     }
 
+    if (!this.shouldValidate()) {
+      return false;
+    }
+
     return this.validators.some((rule: ValidationRule) =>
       rule.applies(this.value)
     );
+  }
+
+  private shouldValidate(): boolean {
+    return this.conditions.every((validationCondition) => {
+      const dependsOnField = this.parent.fields[validationCondition.dependsOn];
+      const meetsCondition = validationCondition.meetingCondition;
+
+      return meetsCondition(dependsOnField.value);
+    });
   }
 }

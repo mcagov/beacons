@@ -1,7 +1,6 @@
 import { Callback } from "../utils";
 import { AbstractFormNode } from "./abstractFormNode";
 import { FieldManager } from "./fieldManager";
-import { ValidationRule } from "./validators";
 
 export type FormError = { fieldId: string; errorMessages: string[] };
 
@@ -9,11 +8,8 @@ export type FormError = { fieldId: string; errorMessages: string[] };
  * A class representing the parent for the the {@link FieldManager}.
  */
 export class FormManager extends AbstractFormNode {
-  constructor(
-    public readonly fields: Record<string, FieldManager>,
-    validators: ValidationRule[] = []
-  ) {
-    super(fields, validators);
+  constructor(public readonly fields: Record<string, FieldManager>) {
+    super(fields);
     this.setupFormControls();
   }
 
