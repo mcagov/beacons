@@ -1,9 +1,8 @@
 import React, { FunctionComponent, ReactNode } from "react";
-import { IFormError } from "../lib/formValidator";
+import { FormError } from "../lib/form/formManager";
 
 interface FormErrorSummaryProps {
-  showErrorSummary: boolean;
-  errors: IFormError[];
+  formErrors: FormError[];
 }
 
 interface FormErrorSummaryLinkProps {
@@ -24,25 +23,31 @@ interface ErrorSummaryProps {
 }
 
 export const FormErrorSummary: FunctionComponent<FormErrorSummaryProps> = ({
-  showErrorSummary,
-  errors,
-}: FormErrorSummaryProps) => (
-  <>
-    {showErrorSummary && errors && errors.length > 0 && (
-      <ErrorSummary>
-        {errors.map((field) =>
-          field.errorMessages.map((errorMessage, index) => (
+  formErrors,
+}: FormErrorSummaryProps): JSX.Element => {
+  let errorsComponent: ReactNode;
+  let errorSummaryComponent: ReactNode;
+
+  if (formErrors.length > 0) {
+    errorsComponent = (
+      <>
+        {formErrors.map(({ fieldId, errorMessages }) =>
+          errorMessages.map((errorMessage, index) => (
             <FormErrorSummaryLink
-              key={`${field.fieldId}-${index}`}
-              href={`#${field.fieldId}`}
+              key={`${fieldId}-${index}`}
+              href={`#${fieldId}`}
               errorMessage={errorMessage}
             />
           ))
         )}
-      </ErrorSummary>
-    )}
-  </>
-);
+      </>
+    );
+
+    errorSummaryComponent = <ErrorSummary>{errorsComponent}</ErrorSummary>;
+  }
+
+  return <>{errorSummaryComponent}</>;
+};
 
 const FormErrorSummaryLink: FunctionComponent<FormErrorSummaryLinkProps> = ({
   href,

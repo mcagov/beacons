@@ -38,6 +38,6 @@ describe("BeaconOwnerAddressPage", () => {
 
     const startURL = "/register-a-beacon/emergency-contact";
 
-    expect(handlePageRequest).toHaveBeenCalledWith(startURL);
+    expect(handlePageRequest).toHaveBeenCalledWith(startURL, expect.anything());
   });
 });

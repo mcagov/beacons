@@ -36,6 +36,6 @@ describe("EmergencyContact", () => {
     const context = {};
     await getServerSideProps(context as GetServerSidePropsContext);
 
-    expect(handlePageRequest).toHaveBeenCalledWith("/");
+    expect(handlePageRequest).toHaveBeenCalledWith("/", expect.anything());
   });
 });

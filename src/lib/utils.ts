@@ -9,16 +9,4 @@ export function toArray<T>(toConvert: T | T[]): T[] {
   return toReturn.filter((value: T) => !!value);
 }
 
-export const ensureFormDataHasKeys = (
-  formData: Record<string, string>,
-  ...keys: string[]
-): Record<string, string> => {
-  const newFormData = { ...formData };
-  keys.forEach((key: string) => {
-    if (!newFormData[key]) {
-      newFormData[key] = "";
-    }
-  });
-
-  return newFormData;
-};
+export type Callback<T> = (t: T) => void;

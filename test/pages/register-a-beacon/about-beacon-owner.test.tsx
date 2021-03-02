@@ -38,6 +38,6 @@ describe("AboutBeaconOwner", () => {
 
     const startURL = "/register-a-beacon/beacon-owner-address";
 
-    expect(handlePageRequest).toHaveBeenCalledWith(startURL);
+    expect(handlePageRequest).toHaveBeenCalledWith(startURL, expect.anything());
   });
 });

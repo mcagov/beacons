@@ -38,6 +38,7 @@ describe("PrimaryBeaconUse", () => {
 
     expect(handlePageRequest).toHaveBeenCalledWith(
       "/register-a-beacon/about-the-vessel",
+      expect.anything(),
       expect.anything()
     );
   });

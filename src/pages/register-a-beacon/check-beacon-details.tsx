@@ -1,9 +1,4 @@
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-} from "next";
-import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { Details } from "../../components/Details";
@@ -19,49 +14,64 @@ import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
+import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
+import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
-import { FormValidator } from "../../lib/formValidator";
-import {
-  getCache,
-  parseFormData,
-  updateFormCache,
-  withCookieRedirect,
-} from "../../lib/middleware";
-import { ensureFormDataHasKeys } from "../../lib/utils";
+import { handlePageRequest } from "../../lib/handlePageRequest";
 
 interface CheckBeaconDetailsProps {
   formData: CacheEntry;
   needsValidation?: boolean;
 }
 
+const getFormManager = ({
+  manufacturer,
+  model,
+  hexId,
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    manufacturer: new FieldManager(manufacturer, [
+      Validators.required("Beacon manufacturer is a required field"),
+    ]),
+    model: new FieldManager(model, [
+      Validators.required("Beacon model is a required field"),
+    ]),
+    hexId: new FieldManager(hexId, [
+      Validators.isLength(
+        "Beacon HEX ID or UIN must by 15 characters long",
+        15
+      ),
+      Validators.hexId(
+        "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
+      ),
+    ]),
+  });
+};
+
 const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
   formData,
   needsValidation = false,
 }: CheckBeaconDetailsProps): JSX.Element => {
-  formData = ensureFormDataHasKeys(formData, "manufacturer", "model", "hexId");
-
-  const errors = FormValidator.errorSummary(formData);
-
-  const { manufacturer, model, hexId } = FormValidator.validate(formData);
+  const formManager = getFormManager(formData);
+  if (needsValidation) {
+    formManager.markAsDirty();
+  }
+  const fields = formManager.fields;
 
   const pageHeading = "Check beacon details";
-
-  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
 
   return (
     <>
       <Layout
         navigation={<BackButton href="/" />}
         title={pageHeading}
-        pageHasErrors={pageHasErrors}
+        pageHasErrors={formManager.hasErrors()}
       >
         <Grid
           mainContent={
             <>
-              <FormErrorSummary
-                errors={errors}
-                showErrorSummary={needsValidation}
-              />
+              <FormErrorSummary formErrors={formManager.errorSummary()} />
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
@@ -71,21 +81,18 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
                   </InsetText>
 
                   <BeaconManufacturerInput
-                    value={formData.manufacturer}
-                    showErrors={needsValidation && manufacturer.invalid}
-                    errorMessages={manufacturer.errorMessages}
+                    value={fields.manufacturer.value}
+                    errorMessages={fields.manufacturer.errorMessages()}
                   />
 
                   <BeaconModelInput
-                    value={formData.model}
-                    showErrors={needsValidation && model.invalid}
-                    errorMessages={model.errorMessages}
+                    value={fields.model.value}
+                    errorMessages={fields.model.errorMessages()}
                   />
 
                   <BeaconHexIdInput
-                    value={formData.hexId}
-                    showErrors={needsValidation && hexId.invalid}
-                    errorMessages={hexId.errorMessages}
+                    value={fields.hexId.value}
+                    errorMessages={fields.hexId.errorMessages()}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -101,10 +108,9 @@ const CheckBeaconDetails: FunctionComponent<CheckBeaconDetailsProps> = ({
 
 const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input
       id="manufacturer"
       label="Enter your beacon manufacturer"
@@ -115,20 +121,18 @@ const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
 
 const BeaconModelInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input id="model" label="Enter your beacon model" defaultValue={value} />
   </FormGroup>
 );
 
 const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input
       id="hexId"
       label="Enter the 15 character beacon HEX ID or UIN number"
@@ -146,54 +150,9 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
-    if (context.req.method === "POST") {
-      return handlePostRequest(context);
-    } else {
-      return handleGetRequest(context.req.cookies);
-    }
-  }
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
+  "/register-a-beacon/beacon-information",
+  getFormManager
 );
-
-const handlePostRequest = async (
-  context: GetServerSidePropsContext
-): Promise<GetServerSidePropsResult<CheckBeaconDetailsProps>> => {
-  const rawFormData: CacheEntry = await parseFormData(context.req);
-  const formData: CacheEntry = {
-    ...rawFormData,
-    hexId: (rawFormData["hexId"] || "").toUpperCase(),
-  };
-
-  updateFormCache(context.req.cookies, formData);
-
-  const formIsValid = !FormValidator.hasErrors(formData);
-
-  if (formIsValid) {
-    return {
-      redirect: {
-        statusCode: 303,
-        destination: "/register-a-beacon/beacon-information",
-      },
-    };
-  }
-
-  return {
-    props: {
-      formData: formData,
-      needsValidation: true,
-    },
-  };
-};
-
-const handleGetRequest = (
-  cookies: NextApiRequestCookies
-): GetServerSidePropsResult<CheckBeaconDetailsProps> => {
-  return {
-    props: {
-      formData: getCache(cookies),
-    },
-  };
-};
 
 export default CheckBeaconDetails;

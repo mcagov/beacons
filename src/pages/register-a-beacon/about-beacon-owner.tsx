@@ -12,27 +12,42 @@ import { Grid } from "../../components/Grid";
 import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { FormValidator } from "../../lib/formValidator";
+import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
+import { Validators } from "../../lib/form/validators";
+import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
-import { ensureFormDataHasKeys } from "../../lib/utils";
+
+const getFormManager = ({
+  beaconOwnerFullName,
+  beaconOwnerTelephoneNumber,
+  beaconOwnerAlternativeTelephoneNumber,
+  beaconOwnerEmail,
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    beaconOwnerFullName: new FieldManager(beaconOwnerFullName, [
+      Validators.required("Full name is a required field"),
+    ]),
+    beaconOwnerTelephoneNumber: new FieldManager(beaconOwnerTelephoneNumber),
+    beaconOwnerAlternativeTelephoneNumber: new FieldManager(
+      beaconOwnerAlternativeTelephoneNumber
+    ),
+    beaconOwnerEmail: new FieldManager(beaconOwnerEmail, [
+      Validators.email("Email address must be valid"),
+    ]),
+  });
+};
 
 const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
 }: FormPageProps): JSX.Element => {
-  formData = ensureFormDataHasKeys(
-    formData,
-    "beaconOwnerFullName",
-    "beaconOwnerTelephoneNumber",
-    "beaconOwnerAlternativeTelephoneNumber",
-    "beaconOwnerEmail"
-  );
+  const formManager = getFormManager(formData);
+  if (needsValidation) {
+    formManager.markAsDirty();
+  }
+  const fields = formManager.fields;
   const pageHeading = "About the beacon owner";
-  const errors = FormValidator.errorSummary(formData);
-  const { beaconOwnerFullName, beaconOwnerEmail } = FormValidator.validate(
-    formData
-  );
-  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
 
   return (
     <>
@@ -41,37 +56,32 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
           <BackButton href="/register-a-beacon/more-vessel-details" />
         }
         title={pageHeading}
-        pageHasErrors={pageHasErrors}
+        pageHasErrors={formManager.hasErrors()}
       >
         <Grid
           mainContent={
             <>
               <Form action="/register-a-beacon/about-beacon-owner">
                 <FormFieldset>
-                  <FormErrorSummary
-                    showErrorSummary={needsValidation}
-                    errors={errors}
-                  />
+                  <FormErrorSummary formErrors={formManager.errorSummary()} />
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <FullName
-                    value={formData.beaconOwnerFullName}
-                    showErrors={pageHasErrors && beaconOwnerFullName.invalid}
-                    errorMessages={beaconOwnerFullName.errorMessages}
+                    value={fields.beaconOwnerFullName.value}
+                    errorMessages={fields.beaconOwnerFullName.errorMessages()}
                   />
 
                   <TelephoneNumber
-                    value={formData.beaconOwnerTelephoneNumber}
+                    value={fields.beaconOwnerTelephoneNumber.value}
                   />
 
                   <AlternativeTelephoneNumber
-                    value={formData.beaconOwnerAlternativeTelephoneNumber}
+                    value={fields.beaconOwnerAlternativeTelephoneNumber.value}
                   />
 
                   <EmailAddress
-                    value={formData.beaconOwnerEmail}
-                    showErrors={pageHasErrors && beaconOwnerEmail.invalid}
-                    errorMessages={beaconOwnerEmail.errorMessages}
+                    value={fields.beaconOwnerEmail.value}
+                    errorMessages={fields.beaconOwnerEmail.errorMessages()}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -87,20 +97,18 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
 
 const FullName: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input id="beaconOwnerFullName" label="Full name" defaultValue={value} />
   </FormGroup>
 );
 
 const TelephoneNumber: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input
       id="beaconOwnerTelephoneNumber"
       label="Telephone number (optional)"
@@ -112,10 +120,9 @@ const TelephoneNumber: FunctionComponent<FormInputProps> = ({
 
 const AlternativeTelephoneNumber: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input
       id="beaconOwnerAlternativeTelephoneNumber"
       label="Additional telephone number (optional)"
@@ -127,10 +134,9 @@ const AlternativeTelephoneNumber: FunctionComponent<FormInputProps> = ({
 
 const EmailAddress: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input
       id="beaconOwnerEmail"
       label="Email address (optional)"
@@ -142,7 +148,8 @@ const EmailAddress: FunctionComponent<FormInputProps> = ({
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/beacon-owner-address"
+  "/register-a-beacon/beacon-owner-address",
+  getFormManager
 );
 
 export default AboutBeaconOwner;

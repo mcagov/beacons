@@ -27,18 +27,18 @@ describe("Form Components", () => {
       errorMessages = [errorMessage];
     });
 
-    it("should display the error messages if errors and showErrors is true", () => {
+    it("should display the error messages if error messages is not empty", () => {
       render(
-        <FormGroup showErrors={true} errorMessages={errorMessages}>
+        <FormGroup errorMessages={errorMessages}>
           <p>Hello world!</p>
         </FormGroup>
       );
       expect(screen.getByText(errorMessage)).toBeDefined();
     });
 
-    it("should not display the error messages if errors but showErrors is false", () => {
+    it("should not display the error messages if the error messages are empty", () => {
       render(
-        <FormGroup showErrors={false} errorMessages={errorMessages}>
+        <FormGroup errorMessages={[]}>
           <p>Hello world!</p>
         </FormGroup>
       );

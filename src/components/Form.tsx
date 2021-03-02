@@ -54,9 +54,9 @@ export const Form: FunctionComponent<FormProps> = ({
 export const FormGroup: FunctionComponent<FormGroupProps> = ({
   children,
   className = "",
-  showErrors = false,
   errorMessages = [],
 }: FormGroupProps): JSX.Element => {
+  const showErrors = errorMessages.length > 0;
   const errorClassName: string = showErrors ? "govuk-form-group--error" : "";
 
   let errorsComponent: ReactNode;

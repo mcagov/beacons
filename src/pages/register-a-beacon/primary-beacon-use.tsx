@@ -17,11 +17,12 @@ import {
   RadioListItemConditional,
   RadioListItemHint,
 } from "../../components/RadioList";
+import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
+import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
-import { FormValidator } from "../../lib/formValidator";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 import { MaritimePleasureVessel } from "../../lib/types";
-import { ensureFormDataHasKeys } from "../../lib/utils";
 
 interface PrimaryBeaconUseProps {
   formData: CacheEntry;
@@ -29,23 +30,38 @@ interface PrimaryBeaconUseProps {
 }
 
 interface BeaconUseFormProps {
-  formData: CacheEntry;
-  checkedValue: string | null;
-  showErrors: boolean;
-  errorMessages: string[];
+  formManager: FormManager;
 }
+
+const getFormManager = ({
+  maritimePleasureVesselUse,
+  otherPleasureVesselText,
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    maritimePleasureVesselUse: new FieldManager(maritimePleasureVesselUse, [
+      Validators.required("Maritime pleasure use is a required field"),
+    ]),
+    otherPleasureVesselText: new FieldManager(
+      otherPleasureVesselText,
+      [Validators.required("Other pleasure vessel text is a required field")],
+      [
+        {
+          dependsOn: "maritimePleasureVesselUse",
+          meetingCondition: (value) => value === MaritimePleasureVessel.OTHER,
+        },
+      ]
+    ),
+  });
+};
 
 const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
   formData,
   needsValidation = false,
 }: PrimaryBeaconUseProps): JSX.Element => {
-  formData = ensureFormDataHasKeys(
-    formData,
-    "maritimePleasureVesselUse",
-    "otherPleasureVesselText"
-  );
-
-  const errors = FormValidator.errorSummary(formData);
+  const formManager = getFormManager(formData);
+  if (needsValidation) {
+    formManager.markAsDirty();
+  }
 
   return (
     <Layout
@@ -53,24 +69,13 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
         "What type of maritime pleasure vessel will you mostly use this beacon on?"
       }
       navigation={<BackButton href="/register-a-beacon/beacon-information" />}
-      pageHasErrors={errors.length > 0 && needsValidation}
+      pageHasErrors={formManager.hasErrors()}
     >
       <Grid
         mainContent={
           <>
-            <FormErrorSummary
-              errors={errors}
-              showErrorSummary={needsValidation}
-            />
-            <BeaconUseForm
-              checkedValue={formData.maritimePleasureVesselUse}
-              formData={formData}
-              showErrors={needsValidation && FormValidator.hasErrors(formData)}
-              errorMessages={
-                FormValidator.validate(formData).maritimePleasureVesselUse
-                  .errorMessages
-              }
-            />
+            <FormErrorSummary formErrors={formManager.errorSummary()} />
+            <BeaconUseForm formManager={formManager} />
 
             <IfYouNeedHelp />
           </>
@@ -81,20 +86,21 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
 };
 
 const BeaconUseForm: FunctionComponent<BeaconUseFormProps> = ({
-  formData,
-  checkedValue = null,
-  showErrors,
-  errorMessages,
+  formManager,
 }: BeaconUseFormProps): JSX.Element => {
   const setCheckedIfUserSelected = (userSelectedValue, componentValue) => {
     return {
       defaultChecked: userSelectedValue === componentValue,
     };
   };
+  const controls = formManager.fields;
+  const checkedValue = controls.maritimePleasureVesselUse.value;
 
   return (
     <Form action="/register-a-beacon/primary-beacon-use">
-      <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+      <FormGroup
+        errorMessages={controls.maritimePleasureVesselUse.errorMessages()}
+      >
         <FormFieldset>
           <FormLegendPageHeading>
             What type of maritime pleasure vessel will you mostly use this
@@ -168,12 +174,13 @@ const BeaconUseForm: FunctionComponent<BeaconUseFormProps> = ({
             Other pleasure vessel
           </RadioListItemHint>
           <RadioListItemConditional id="conditional-other-pleasure-vessel">
-            <FormGroup>
+            <FormGroup
+              errorMessages={controls.otherPleasureVesselText.errorMessages()}
+            >
               <Input
-                id="other-pleasure-vessel-text"
-                name="otherPleasureVesselText"
+                id="otherPleasureVesselText"
                 label="What sort of vessel is it?"
-                defaultValue={formData.otherPleasureVesselText}
+                defaultValue={controls.otherPleasureVesselText.value}
               />
             </FormGroup>
           </RadioListItemConditional>
@@ -194,6 +201,7 @@ const ensureMaritimePleasureVesselUseIsSubmitted = (formData) => {
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/about-the-vessel",
+  getFormManager,
   ensureMaritimePleasureVesselUseIsSubmitted
 );
 

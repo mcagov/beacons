@@ -21,7 +21,30 @@ import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
+import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
+import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
+
+const getFormManager = ({
+  manufacturerSerialNumber,
+  beaconCHKCode,
+  beaconBatteryExpiryDateMonth,
+  beaconBatteryExpiryDateYear,
+  lastServicedDateMonth,
+  lastServicedDateYear,
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber),
+    beaconCHKCode: new FieldManager(beaconCHKCode),
+    beaconBatteryExpiryDateMonth: new FieldManager(
+      beaconBatteryExpiryDateMonth
+    ),
+    beaconBatteryExpiryDateYear: new FieldManager(beaconBatteryExpiryDateYear),
+    lastServicedDateMonth: new FieldManager(lastServicedDateMonth),
+    lastServicedDateYear: new FieldManager(lastServicedDateYear),
+  });
+};
 
 const BeaconInformationPage: FunctionComponent = (): JSX.Element => {
   const pageHeading = "Beacon information";
@@ -193,7 +216,8 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/primary-beacon-use"
+  "/register-a-beacon/primary-beacon-use",
+  getFormManager
 );
 
 export default BeaconInformationPage;
