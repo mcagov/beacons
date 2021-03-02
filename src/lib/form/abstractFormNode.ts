@@ -27,14 +27,14 @@ export abstract class AbstractFormNode {
   }
 
   /**
-   * @param parent {FieldManager}   Sets the parent form group control
+   * @param parent {FieldManager}   Sets the parent form maanger
    */
   setParent(parent: FieldManager): void {
     this._parent = parent;
   }
 
   /**
-   * Getter for the parent control.
+   * Getter for the field manager.
    */
   public get parent(): FieldManager {
     return this._parent;
