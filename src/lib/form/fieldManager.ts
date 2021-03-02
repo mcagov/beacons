@@ -18,14 +18,14 @@ export class FieldManager extends AbstractFormNode {
   }
 
   /**
-   * Sets all the child controls `parent` reference to this form group.
+   * Sets all the child fields `parent` reference to this form group.
    */
   private setupFormControls(): void {
     this.forEachControl((control) => control.setParent(this));
   }
 
   /**
-   * Sets this form group and all descendant controls as dirty.
+   * Sets this form manager and all descendant fields as dirty.
    * @override
    */
   public markAsDirty(): void {
@@ -34,14 +34,14 @@ export class FieldManager extends AbstractFormNode {
   }
 
   /**
-   * Returns the group of controls that the form group manages.
+   * Returns the fields that the form manager manages.
    */
   public get value(): Record<string, FieldInput> {
     return this.fields;
   }
 
   /**
-   * Generates the error summary based on the fields it manager.
+   * Generates the error summary based on the fields it manages.
    */
   public errorSummary(): FormError[] {
     return Object.keys(this.fields)
