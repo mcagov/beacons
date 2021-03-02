@@ -19,26 +19,26 @@ import {
   GovUKBody,
   PageHeading,
 } from "../../components/Typography";
-import { FieldInput } from "../../lib/form/fieldInput";
 import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { VesselCommunication } from "../../lib/types";
 
 interface VesselCommunicationsProps {
-  fields: Record<string, FieldInput>;
+  fields: Record<string, FieldManager>;
 }
 
 interface PageHeadingInfoProps {
   heading: string;
-  fieldManager: FieldManager;
+  fieldManager: FormManager;
 }
 
 interface FormInputProps {
   value: string;
 }
 
-const getFieldManager = ({
+const getFormManager = ({
   callSign,
   vhfRadio,
   fixedVhfRadio,
@@ -50,19 +50,19 @@ const getFieldManager = ({
   mobileTelephone,
   mobileTelephoneInput1,
   mobileTelephoneInput2,
-}: CacheEntry): FieldManager => {
-  return new FieldManager({
-    callSign: new FieldInput(callSign),
-    vhfRadio: new FieldInput(vhfRadio),
-    fixedVhfRadio: new FieldInput(fixedVhfRadio),
-    fixedVhfRadioInput: new FieldInput(fixedVhfRadioInput),
-    portableVhfRadio: new FieldInput(portableVhfRadio),
-    portableVhfRadioInput: new FieldInput(portableVhfRadioInput),
-    satelliteTelephone: new FieldInput(satelliteTelephone),
-    satelliteTelephoneInput: new FieldInput(satelliteTelephoneInput),
-    mobileTelephone: new FieldInput(mobileTelephone),
-    mobileTelephoneInput1: new FieldInput(mobileTelephoneInput1),
-    mobileTelephoneInput2: new FieldInput(mobileTelephoneInput2),
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    callSign: new FieldManager(callSign),
+    vhfRadio: new FieldManager(vhfRadio),
+    fixedVhfRadio: new FieldManager(fixedVhfRadio),
+    fixedVhfRadioInput: new FieldManager(fixedVhfRadioInput),
+    portableVhfRadio: new FieldManager(portableVhfRadio),
+    portableVhfRadioInput: new FieldManager(portableVhfRadioInput),
+    satelliteTelephone: new FieldManager(satelliteTelephone),
+    satelliteTelephoneInput: new FieldManager(satelliteTelephoneInput),
+    mobileTelephone: new FieldManager(mobileTelephone),
+    mobileTelephoneInput1: new FieldManager(mobileTelephoneInput1),
+    mobileTelephoneInput2: new FieldManager(mobileTelephoneInput2),
   });
 };
 
@@ -70,9 +70,9 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
 }: FormPageProps): JSX.Element => {
-  const fieldManager = getFieldManager(formData);
+  const formManager = getFormManager(formData);
   if (needsValidation) {
-    fieldManager.markAsDirty();
+    formManager.markAsDirty();
   }
   const pageHeading = "What types of communications are on board the vessel?";
 
@@ -80,16 +80,13 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
     <Layout
       navigation={<BackButton href="/register-a-beacon/about-the-vessel" />}
       title={pageHeading}
-      pageHasErrors={fieldManager.hasErrors()}
+      pageHasErrors={formManager.hasErrors()}
     >
       <Grid
         mainContent={
           <>
-            <PageHeadingInfo
-              heading={pageHeading}
-              fieldManager={fieldManager}
-            />
-            <VesselCommunicationsForm fields={fieldManager.fields} />
+            <PageHeadingInfo heading={pageHeading} fieldManager={formManager} />
+            <VesselCommunicationsForm fields={formManager.fields} />
             <IfYouNeedHelp />
           </>
         }
@@ -266,7 +263,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/more-vessel-details",
-  getFieldManager
+  getFormManager
 );
 
 export default VesselCommunications;

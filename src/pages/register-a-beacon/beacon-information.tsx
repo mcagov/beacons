@@ -21,26 +21,28 @@ import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { FieldInput } from "../../lib/form/fieldInput";
 import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 
-const getFieldManager = ({
+const getFormManager = ({
   manufacturerSerialNumber,
   beaconCHKCode,
   beaconBatteryExpiryDateMonth,
   beaconBatteryExpiryDateYear,
   lastServicedDateMonth,
   lastServicedDateYear,
-}: CacheEntry): FieldManager => {
-  return new FieldManager({
-    manufacturerSerialNumber: new FieldInput(manufacturerSerialNumber),
-    beaconCHKCode: new FieldInput(beaconCHKCode),
-    beaconBatteryExpiryDateMonth: new FieldInput(beaconBatteryExpiryDateMonth),
-    beaconBatteryExpiryDateYear: new FieldInput(beaconBatteryExpiryDateYear),
-    lastServicedDateMonth: new FieldInput(lastServicedDateMonth),
-    lastServicedDateYear: new FieldInput(lastServicedDateYear),
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber),
+    beaconCHKCode: new FieldManager(beaconCHKCode),
+    beaconBatteryExpiryDateMonth: new FieldManager(
+      beaconBatteryExpiryDateMonth
+    ),
+    beaconBatteryExpiryDateYear: new FieldManager(beaconBatteryExpiryDateYear),
+    lastServicedDateMonth: new FieldManager(lastServicedDateMonth),
+    lastServicedDateYear: new FieldManager(lastServicedDateYear),
   });
 };
 
@@ -215,7 +217,7 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/primary-beacon-use",
-  getFieldManager
+  getFormManager
 );
 
 export default BeaconInformationPage;

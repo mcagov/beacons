@@ -12,8 +12,8 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
-import { FieldInput } from "../../lib/form/fieldInput";
 import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
@@ -28,9 +28,9 @@ interface MoreVesselDetailsTextAreaProps {
   errorMessages: string[];
 }
 
-const getFieldManager = ({ moreVesselDetails }: CacheEntry): FieldManager => {
-  return new FieldManager({
-    moreVesselDetails: new FieldInput(moreVesselDetails, [
+const getFormManager = ({ moreVesselDetails }: CacheEntry): FormManager => {
+  return new FormManager({
+    moreVesselDetails: new FieldManager(moreVesselDetails, [
       Validators.required("Vessel details is a required fied"),
       Validators.maxLength(
         "Vessel details must be less than 250 characters",
@@ -44,11 +44,11 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
   formData,
   needsValidation = false,
 }: MoreVesselDetailsProps): JSX.Element => {
-  const fieldManager = getFieldManager(formData);
+  const formManager = getFormManager(formData);
   if (needsValidation) {
-    fieldManager.markAsDirty();
+    formManager.markAsDirty();
   }
-  const fields = fieldManager.fields;
+  const fields = formManager.fields;
   const pageHeading = "Tell us more about the vessel";
 
   return (
@@ -58,12 +58,12 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
           <BackButton href="/register-a-beacon/vessel-communications" />
         }
         title={pageHeading}
-        pageHasErrors={fieldManager.hasErrors()}
+        pageHasErrors={formManager.hasErrors()}
       >
         <Grid
           mainContent={
             <>
-              <FormErrorSummary formErrors={fieldManager.errorSummary()} />
+              <FormErrorSummary formErrors={formManager.errorSummary()} />
               <Form action="/register-a-beacon/more-vessel-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
@@ -104,7 +104,7 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/about-beacon-owner",
-  getFieldManager
+  getFormManager
 );
 
 export default MoreVesselDetails;

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FieldManager } from "./fieldManager";
+import { FormManager } from "./formManager";
 import { ValidationRule } from "./validators";
 
 type ControlValue = string | Record<string, AbstractFormNode>;
@@ -17,7 +17,7 @@ export abstract class AbstractFormNode {
    */
   protected pristine = true;
 
-  private _parent: FieldManager = null;
+  private _parent: FormManager = null;
 
   constructor(
     value: ControlValue,
@@ -27,16 +27,16 @@ export abstract class AbstractFormNode {
   }
 
   /**
-   * @param parent {FieldManager}   Sets the parent form maanger
+   * @param parent {FormManager}   Sets the parent form maanger
    */
-  setParent(parent: FieldManager): void {
+  setParent(parent: FormManager): void {
     this._parent = parent;
   }
 
   /**
    * Getter for the field manager.
    */
-  public get parent(): FieldManager {
+  public get parent(): FormManager {
     return this._parent;
   }
 

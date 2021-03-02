@@ -17,8 +17,8 @@ import {
   RadioListItemConditional,
   RadioListItemHint,
 } from "../../components/RadioList";
-import { FieldInput } from "../../lib/form/fieldInput";
 import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
@@ -30,18 +30,18 @@ interface PrimaryBeaconUseProps {
 }
 
 interface BeaconUseFormProps {
-  formGroup: FieldManager;
+  formGroup: FormManager;
 }
 
-const getFieldManager = ({
+const getFormManager = ({
   maritimePleasureVesselUse,
   otherPleasureVesselText,
-}: CacheEntry): FieldManager => {
-  return new FieldManager({
-    maritimePleasureVesselUse: new FieldInput(maritimePleasureVesselUse, [
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    maritimePleasureVesselUse: new FieldManager(maritimePleasureVesselUse, [
       Validators.required("Maritime pleasure use is a required field"),
     ]),
-    otherPleasureVesselText: new FieldInput(otherPleasureVesselText, []),
+    otherPleasureVesselText: new FieldManager(otherPleasureVesselText, []),
   });
 };
 
@@ -49,9 +49,9 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
   formData,
   needsValidation = false,
 }: PrimaryBeaconUseProps): JSX.Element => {
-  const fieldManager = getFieldManager(formData);
+  const formManager = getFormManager(formData);
   if (needsValidation) {
-    fieldManager.markAsDirty();
+    formManager.markAsDirty();
   }
 
   return (
@@ -60,13 +60,13 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
         "What type of maritime pleasure vessel will you mostly use this beacon on?"
       }
       navigation={<BackButton href="/register-a-beacon/beacon-information" />}
-      pageHasErrors={fieldManager.hasErrors()}
+      pageHasErrors={formManager.hasErrors()}
     >
       <Grid
         mainContent={
           <>
-            <FormErrorSummary formErrors={fieldManager.errorSummary()} />
-            <BeaconUseForm formGroup={fieldManager} />
+            <FormErrorSummary formErrors={formManager.errorSummary()} />
+            <BeaconUseForm formGroup={formManager} />
 
             <IfYouNeedHelp />
           </>
@@ -190,7 +190,7 @@ const ensureMaritimePleasureVesselUseIsSubmitted = (formData) => {
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/about-the-vessel",
-  getFieldManager,
+  getFormManager,
   ensureMaritimePleasureVesselUseIsSubmitted
 );
 

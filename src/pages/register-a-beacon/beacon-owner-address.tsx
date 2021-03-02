@@ -13,8 +13,8 @@ import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { GovUKBody } from "../../components/Typography";
-import { FieldInput } from "../../lib/form/fieldInput";
 import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
@@ -25,23 +25,23 @@ interface BuildingNumberAndStreetInputProps {
   errorMessages: string[];
 }
 
-const getFieldManager = ({
+const getFormManager = ({
   beaconOwnerAddressLine1,
   beaconOwnerAddressLine2,
   beaconOwnerTownOrCity,
   beaconOwnerCounty,
   beaconOwnerPostcode,
-}: CacheEntry): FieldManager => {
-  return new FieldManager({
-    beaconOwnerAddressLine1: new FieldInput(beaconOwnerAddressLine1, [
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    beaconOwnerAddressLine1: new FieldManager(beaconOwnerAddressLine1, [
       Validators.required("Building number and street is a required field"),
     ]),
-    beaconOwnerAddressLine2: new FieldInput(beaconOwnerAddressLine2),
-    beaconOwnerTownOrCity: new FieldInput(beaconOwnerTownOrCity, [
+    beaconOwnerAddressLine2: new FieldManager(beaconOwnerAddressLine2),
+    beaconOwnerTownOrCity: new FieldManager(beaconOwnerTownOrCity, [
       Validators.required("Town or city is a required field"),
     ]),
-    beaconOwnerCounty: new FieldInput(beaconOwnerCounty),
-    beaconOwnerPostcode: new FieldInput(beaconOwnerPostcode, [
+    beaconOwnerCounty: new FieldManager(beaconOwnerCounty),
+    beaconOwnerPostcode: new FieldManager(beaconOwnerPostcode, [
       Validators.required("Postcode is a required field"),
       Validators.postcode("Postcode must be a valid UK postcode"),
     ]),
@@ -52,25 +52,25 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
 }: FormPageProps): JSX.Element => {
-  const formGroup = getFieldManager(formData);
+  const formManager = getFormManager(formData);
   if (needsValidation) {
-    formGroup.markAsDirty();
+    formManager.markAsDirty();
   }
-  const fields = formGroup.fields;
+  const fields = formManager.fields;
   const pageHeading = "What is the beacon owner's address?";
 
   return (
     <Layout
       navigation={<BackButton href="/register-a-beacon/about-beacon-owner" />}
       title={pageHeading}
-      pageHasErrors={formGroup.hasErrors()}
+      pageHasErrors={formManager.hasErrors()}
     >
       <Grid
         mainContent={
           <>
             <Form action="/register-a-beacon/beacon-owner-address">
               <FormFieldset>
-                <FormErrorSummary formErrors={formGroup.errorSummary()} />
+                <FormErrorSummary formErrors={formManager.errorSummary()} />
                 <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                 <GovUKBody>
                   The beacon registration certificate and proof of registration
@@ -154,7 +154,7 @@ const PostcodeInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/emergency-contact",
-  getFieldManager
+  getFormManager
 );
 
 export default BeaconOwnerAddressPage;

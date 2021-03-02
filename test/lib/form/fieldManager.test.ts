@@ -1,10 +1,10 @@
-import { FieldInput } from "../../../src/lib/form/fieldInput";
 import { FieldManager } from "../../../src/lib/form/fieldManager";
+import { FormManager } from "../../../src/lib/form/formManager";
 
 describe("FieldManager", () => {
   let value;
-  let fieldInput: FieldInput;
-  let fieldManager: FieldManager;
+  let fieldInput: FieldManager;
+  let fieldManager: FormManager;
 
   const validationRule = (shouldError: boolean, errorMessage = "") => {
     return {
@@ -15,8 +15,8 @@ describe("FieldManager", () => {
 
   beforeEach(() => {
     value = "hex id";
-    fieldInput = new FieldInput(value);
-    fieldManager = new FieldManager({ hexId: fieldInput });
+    fieldInput = new FieldManager(value);
+    fieldManager = new FormManager({ hexId: fieldInput });
   });
 
   it("should set the parent reference on the controls", () => {
@@ -29,16 +29,16 @@ describe("FieldManager", () => {
 
   describe("hasErrors()", () => {
     it("should not have errors if the form is `pristine`", () => {
-      fieldManager = new FieldManager({
-        hexId: new FieldInput(value, [validationRule(true)]),
+      fieldManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(true)]),
       });
 
       expect(fieldManager.hasErrors()).toBe(false);
     });
 
     it("should have errors if the form has errors and is dirty ", () => {
-      fieldManager = new FieldManager({
-        hexId: new FieldInput(value, [validationRule(true)]),
+      fieldManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(true)]),
       });
       fieldManager.markAsDirty();
 
@@ -46,8 +46,8 @@ describe("FieldManager", () => {
     });
 
     it("should not have errors if the form does not have errors and is dirty ", () => {
-      fieldManager = new FieldManager({
-        hexId: new FieldInput(value, [validationRule(false)]),
+      fieldManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(false)]),
       });
       fieldManager.markAsDirty();
 
@@ -57,16 +57,16 @@ describe("FieldManager", () => {
 
   describe("errorSummary()", () => {
     it("should return the an empty array if the form is `pristine`", () => {
-      fieldManager = new FieldManager({
-        hexId: new FieldInput(value, [validationRule(true, "error!")]),
+      fieldManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(true, "error!")]),
       });
 
       expect(fieldManager.errorSummary()).toStrictEqual([]);
     });
 
     it("should return the error summary for the hex id", () => {
-      fieldManager = new FieldManager({
-        hexId: new FieldInput(value, [validationRule(true, "error!")]),
+      fieldManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(true, "error!")]),
       });
       fieldManager.markAsDirty();
 
@@ -79,12 +79,12 @@ describe("FieldManager", () => {
     });
 
     it("should return the error summary for the multiple control errors", () => {
-      fieldManager = new FieldManager({
-        hexId: new FieldInput(value, [
+      fieldManager = new FormManager({
+        hexId: new FieldManager(value, [
           validationRule(true, "error hex1"),
           validationRule(true, "error hex2"),
         ]),
-        model: new FieldInput(value, [
+        model: new FieldManager(value, [
           validationRule(true, "error model"),
           validationRule(false),
         ]),

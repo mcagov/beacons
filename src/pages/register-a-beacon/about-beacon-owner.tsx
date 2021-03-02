@@ -12,27 +12,27 @@ import { Grid } from "../../components/Grid";
 import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { FieldInput } from "../../lib/form/fieldInput";
 import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
-const getFieldManager = ({
+const getFormManager = ({
   beaconOwnerFullName,
   beaconOwnerTelephoneNumber,
   beaconOwnerAlternativeTelephoneNumber,
   beaconOwnerEmail,
-}: CacheEntry): FieldManager => {
-  return new FieldManager({
-    beaconOwnerFullName: new FieldInput(beaconOwnerFullName, [
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    beaconOwnerFullName: new FieldManager(beaconOwnerFullName, [
       Validators.required("Full name is a required field"),
     ]),
-    beaconOwnerTelephoneNumber: new FieldInput(beaconOwnerTelephoneNumber),
-    beaconOwnerAlternativeTelephoneNumber: new FieldInput(
+    beaconOwnerTelephoneNumber: new FieldManager(beaconOwnerTelephoneNumber),
+    beaconOwnerAlternativeTelephoneNumber: new FieldManager(
       beaconOwnerAlternativeTelephoneNumber
     ),
-    beaconOwnerEmail: new FieldInput(beaconOwnerEmail, [
+    beaconOwnerEmail: new FieldManager(beaconOwnerEmail, [
       Validators.email("Email address must be valid"),
     ]),
   });
@@ -42,11 +42,11 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
   formData,
   needsValidation,
 }: FormPageProps): JSX.Element => {
-  const fieldManager = getFieldManager(formData);
+  const formManager = getFormManager(formData);
   if (needsValidation) {
-    fieldManager.markAsDirty();
+    formManager.markAsDirty();
   }
-  const fields = fieldManager.fields;
+  const fields = formManager.fields;
   const pageHeading = "About the beacon owner";
 
   return (
@@ -56,14 +56,14 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
           <BackButton href="/register-a-beacon/more-vessel-details" />
         }
         title={pageHeading}
-        pageHasErrors={fieldManager.hasErrors()}
+        pageHasErrors={formManager.hasErrors()}
       >
         <Grid
           mainContent={
             <>
               <Form action="/register-a-beacon/about-beacon-owner">
                 <FormFieldset>
-                  <FormErrorSummary formErrors={fieldManager.errorSummary()} />
+                  <FormErrorSummary formErrors={formManager.errorSummary()} />
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <FullName
@@ -149,7 +149,7 @@ const EmailAddress: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/beacon-owner-address",
-  getFieldManager
+  getFormManager
 );
 
 export default AboutBeaconOwner;
