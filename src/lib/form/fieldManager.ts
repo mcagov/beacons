@@ -60,6 +60,11 @@ export class FieldManager extends AbstractFormNode {
   private shouldValidate(): boolean {
     return this.conditions.every((validationCondition) => {
       const dependsOnField = this.parent.fields[validationCondition.dependsOn];
+      if (dependsOnField === undefined) {
+        throw ReferenceError(
+          `${validationCondition.dependsOn} not found in parent form.  Is the form name correct?`
+        );
+      }
       const meetsCondition = validationCondition.meetingCondition;
 
       return meetsCondition(dependsOnField.value);

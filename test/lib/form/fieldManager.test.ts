@@ -125,7 +125,7 @@ describe("FieldManager", () => {
       expect(hasErrors).toBe(false);
     });
 
-    it("should errors because the dependent condition is met", () => {
+    it("should error because the dependent condition is met", () => {
       const conditions = [
         {
           dependsOn: "radioButton",
@@ -145,6 +145,28 @@ describe("FieldManager", () => {
       const hasErrors = formManager.hasErrors();
 
       expect(hasErrors).toBe(true);
+    });
+
+    it("should give a suitable error message if dependent field is not found", () => {
+      const conditions = [
+        {
+          dependsOn: "nonexistentField",
+          meetingCondition: () => true,
+        },
+      ];
+      const formManager = new FormManager({
+        radioButton: new FieldManager("OTHER"),
+        otherTextInput: new FieldManager(
+          "",
+          [validationRule(true)],
+          conditions
+        ),
+      });
+      formManager.markAsDirty();
+
+      const action = () => formManager.hasErrors();
+
+      expect(action).toThrow(ReferenceError);
     });
   });
 });
