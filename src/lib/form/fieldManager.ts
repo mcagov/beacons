@@ -1,5 +1,5 @@
 import { Callback } from "../utils";
-import { AbstractControl } from "./abstractControl";
+import { AbstractFormNode } from "./abstractControl";
 import { FieldInput } from "./fieldInput";
 import { ValidationRule } from "./validators";
 
@@ -8,7 +8,7 @@ export type FormError = { fieldId: string; errorMessages: string[] };
 /**
  * A class representing the parent for the the {@link FieldInput}.
  */
-export class FieldManager extends AbstractControl {
+export class FieldManager extends AbstractFormNode {
   constructor(
     public readonly fields: Record<string, FieldInput>,
     validators: ValidationRule[] = []
@@ -30,13 +30,13 @@ export class FieldManager extends AbstractControl {
    */
   public markAsDirty(): void {
     super.markAsDirty();
-    this.forEachControl((control: AbstractControl) => control.markAsDirty());
+    this.forEachControl((control: AbstractFormNode) => control.markAsDirty());
   }
 
   /**
    * Returns the group of controls that the form group manages.
    */
-  public get value(): Record<string, AbstractControl> {
+  public get value(): Record<string, AbstractFormNode> {
     return this.fields;
   }
 
@@ -65,7 +65,7 @@ export class FieldManager extends AbstractControl {
     }
 
     return Object.keys(this.fields).some((key: string) => {
-      const control: AbstractControl = this.fields[key];
+      const control: AbstractFormNode = this.fields[key];
       return control.hasErrors();
     });
   }
@@ -73,11 +73,11 @@ export class FieldManager extends AbstractControl {
   /**
    * Convenience method for iterating over this field managers field inputs and calling the provided callback function.
    *
-   * @param cb {Callback<AbstractControl>}   The callback function
+   * @param cb {Callback<AbstractFormNode>}   The callback function
    */
-  private forEachControl(cb: Callback<AbstractControl>): void {
+  private forEachControl(cb: Callback<AbstractFormNode>): void {
     Object.keys(this.fields).forEach((key: string) => {
-      const control: AbstractControl = this.fields[key];
+      const control: AbstractFormNode = this.fields[key];
       return cb(control);
     });
   }

@@ -61,7 +61,7 @@ const getFieldManager = ({
         "Fixed VHF radio must not be empty",
         "fixedVhfRadio",
         VesselCommunication.FIXED_VHF_RADIO,
-        Validators.required("").hasErrorFn
+        Validators.required("").applies
       ),
     ]),
     portableVhfRadio: new FieldInput(portableVhfRadio),
@@ -70,7 +70,7 @@ const getFieldManager = ({
         "Portable VHF radio must not be empty",
         "portableVhfRadio",
         VesselCommunication.PORTABLE_VHF_RADIO,
-        Validators.required("").hasErrorFn
+        Validators.required("").applies
       ),
     ]),
     satelliteTelephone: new FieldInput(satelliteTelephone),
@@ -79,7 +79,7 @@ const getFieldManager = ({
         "Satellite telephone must not be empty",
         "satelliteTelephone",
         VesselCommunication.SATELLITE_TELEPHONE,
-        Validators.required("").hasErrorFn
+        Validators.required("").applies
       ),
     ]),
     mobileTelephone: new FieldInput(mobileTelephone),
@@ -88,7 +88,7 @@ const getFieldManager = ({
         "Mobile telephone must not be empty",
         "mobileTelephone",
         VesselCommunication.MOBILE_TELEPHONE,
-        Validators.required("").hasErrorFn
+        Validators.required("").applies
       ),
     ]),
     mobileTelephoneInput2: new FieldInput(mobileTelephoneInput2),

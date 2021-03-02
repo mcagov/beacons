@@ -9,7 +9,7 @@ describe("FieldManager", () => {
   const validationRule = (shouldError: boolean, errorMessage = "") => {
     return {
       errorMessage,
-      hasErrorFn: () => shouldError,
+      applies: () => shouldError,
     };
   };
 

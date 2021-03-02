@@ -1,67 +1,65 @@
-import { AbstractControl } from "./abstractControl";
+import { AbstractFormNode } from "./abstractControl";
 
 /**
- * Type definition for a function that validates a form control and returns true if the value violates the rule.
+ * Type definition for a function that validates a form node and returns true if the value violates the rule.
  *
- * @param control {AbstractControl}   The form control to validate
- * @returns       {boolean}           True if the value violates the rule
+ * @param control {AbstractFormNode}   The form control to validate
+ * @returns       {boolean}            True if the value violates the rule
  */
-export type ValidatorFn = (control: AbstractControl) => boolean;
+export type ValidatorFn = (control: AbstractFormNode) => boolean;
 
 export interface ValidationRule {
   errorMessage: string;
-  hasErrorFn: ValidatorFn;
+  applies: ValidatorFn;
 }
 
 /**
- * Provides a set of validators that can be applied to an {@link AbstractControl}.
+ * Provides a set of validators that can be applied to an {@link AbstractFormNode}.
  */
 export class Validators {
   /**
-   * Validator that requires the form controls value to be non-empty.
+   * Validator that requires the form input value to be non-empty.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @returns            {ValidationRule}   A validation rule
    */
   public static required(errorMessage: string): ValidationRule {
-    const hasErrorFn: ValidatorFn = (control: AbstractControl) =>
-      !control.value;
+    const applies: ValidatorFn = (control: AbstractFormNode) => !control.value;
 
     return {
       errorMessage,
-      hasErrorFn,
+      applies,
     };
   }
 
   /**
-   * Validator that requires the form controls value to be less than or equal to the provided number.
+   * Validator that requires the form input value to be less than or equal to the provided number.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @param max          {number}           The max number of characters allowed
    * @returns            {ValidationRule}   A validation rule
    */
   public static maxLength(errorMessage: string, max: number): ValidationRule {
-    const hasErrorFn: ValidatorFn = (control) => control.value.length > max;
+    const applies: ValidatorFn = (control) => control.value.length > max;
 
-    return { errorMessage, hasErrorFn };
+    return { errorMessage, applies };
   }
 
   /**
-   * Validator that requires the form controls value to be strictly the length provided.
+   * Validator that requires the form input value to be strictly the length provided.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @param length       {string}           The length the value should be
    * @returns            {ValidationRule}   A validation rule
    */
   public static isLength(errorMessage: string, length: number): ValidationRule {
-    const hasErrorFn: ValidatorFn = (control) =>
-      control.value.length !== length;
+    const applies: ValidatorFn = (control) => control.value.length !== length;
 
-    return { errorMessage, hasErrorFn };
+    return { errorMessage, applies };
   }
 
   /**
-   * Validator that requires the form controls value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
+   * Validator that requires the form input value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
    *
    * @param erroMessage {string}           An error message if the rule is violated
    * @returns           {ValidationRule}   A validation rule
@@ -72,7 +70,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the form controls value to be a number; proxies through to the {@link Validators.pattern()}.
+   * Validator that requires the form input value to be a number; proxies through to the {@link Validators.pattern()}.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @returns            {ValidationRule}   A validation rule
@@ -83,7 +81,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the form controls value to be a valid email; proxies through to the {@link Validators.pattern()}.
+   * Validator that requires the form input value to be a valid email; proxies through to the {@link Validators.pattern()}.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @returns            {ValidationRule}   A validation rule
@@ -94,7 +92,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the form controls value to be a valid postcode; proxies through to the {@link Validators.pattern()}.
+   * Validator that requires the form input value to be a valid postcode; proxies through to the {@link Validators.pattern()}.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @returns            {ValidationRule}   A validation rule
@@ -115,10 +113,10 @@ export class Validators {
     errorMessage: string,
     pattern: RegExp
   ): ValidationRule {
-    const hasErrorFn: ValidatorFn = (control) =>
+    const applies: ValidatorFn = (control) =>
       !pattern.test(control.value as string);
 
-    return { errorMessage, hasErrorFn };
+    return { errorMessage, applies };
   }
 
   /**
@@ -135,8 +133,8 @@ export class Validators {
     value: string,
     hasErrorCallback: ValidatorFn
   ): ValidationRule {
-    const hasErrorFn: ValidatorFn = (control) => {
-      const parentControl: AbstractControl = control.parent.fields[key];
+    const applies: ValidatorFn = (control) => {
+      const parentControl: AbstractFormNode = control.parent.fields[key];
       const conditionIsMet = parentControl.value === value;
       if (conditionIsMet) {
         return hasErrorCallback(control);
@@ -144,7 +142,7 @@ export class Validators {
       return false;
     };
 
-    return { errorMessage, hasErrorFn };
+    return { errorMessage, applies };
   }
 
   private constructor() {

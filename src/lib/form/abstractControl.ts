@@ -2,14 +2,14 @@
 import { FieldManager } from "./fieldManager";
 import { ValidationRule } from "./validators";
 
-type ControlValue = string | Record<string, AbstractControl>;
+type ControlValue = string | Record<string, AbstractFormNode>;
 
 /**
- * This is the base class for `FormControl`, and `FormGroupControl`.
+ * This is the base class for `FieldInput`, and `FieldManager`.  It represents a node in the form tree.
  *
  * It provides shared behaviour, like running validators and calculating status.
  */
-export abstract class AbstractControl {
+export abstract class AbstractFormNode {
   protected _value: any;
 
   /**
@@ -58,7 +58,7 @@ export abstract class AbstractControl {
     const validators = this.pristine ? [] : this.validators;
 
     return validators
-      .filter((rule: ValidationRule) => rule.hasErrorFn(this))
+      .filter((rule: ValidationRule) => rule.applies(this))
       .map((rule: ValidationRule) => rule.errorMessage);
   }
 
@@ -72,8 +72,6 @@ export abstract class AbstractControl {
       return false;
     }
 
-    return this.validators.some((rule: ValidationRule) =>
-      rule.hasErrorFn(this)
-    );
+    return this.validators.some((rule: ValidationRule) => rule.applies(this));
   }
 }

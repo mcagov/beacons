@@ -46,7 +46,7 @@ const getFieldManager = ({
         "Other pleasure vessel must not be empty",
         "maritimePleasureVesselUse",
         MaritimePleasureVessel.OTHER,
-        Validators.required("").hasErrorFn
+        Validators.required("").applies
       ),
     ]),
   });

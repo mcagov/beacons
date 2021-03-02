@@ -7,7 +7,7 @@ describe("FieldInput", () => {
   const validationRule = (shouldError: boolean, errorMessage = "") => {
     return {
       errorMessage,
-      hasErrorFn: () => shouldError,
+      applies: () => shouldError,
     };
   };
 

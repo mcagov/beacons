@@ -1,4 +1,4 @@
-import { AbstractControl } from "../../../src/lib/form/abstractControl";
+import { AbstractFormNode } from "../../../src/lib/form/abstractControl";
 import { FieldManager } from "../../../src/lib/form/fieldManager";
 import { ValidatorFn, Validators } from "../../../src/lib/form/validators";
 
@@ -7,7 +7,7 @@ describe("Form Validators", () => {
   let errorMessage: string;
   let hasErrorFn: ValidatorFn;
 
-  class FieldInput extends AbstractControl {
+  class FieldInput extends AbstractFormNode {
     constructor(value: string) {
       super(value, []);
     }
@@ -23,7 +23,7 @@ describe("Form Validators", () => {
 
   describe("required", () => {
     beforeEach(() => {
-      ({ errorMessage, hasErrorFn } = Validators.required(
+      ({ errorMessage, applies: hasErrorFn } = Validators.required(
         expectedErrorMessage
       ));
     });
@@ -55,7 +55,7 @@ describe("Form Validators", () => {
 
   describe("maxLength", () => {
     beforeEach(() => {
-      ({ errorMessage, hasErrorFn } = Validators.maxLength(
+      ({ errorMessage, applies: hasErrorFn } = Validators.maxLength(
         expectedErrorMessage,
         10
       ));
@@ -83,7 +83,7 @@ describe("Form Validators", () => {
 
   describe("isLength", () => {
     beforeEach(() => {
-      ({ errorMessage, hasErrorFn } = Validators.isLength(
+      ({ errorMessage, applies: hasErrorFn } = Validators.isLength(
         expectedErrorMessage,
         10
       ));
@@ -111,7 +111,9 @@ describe("Form Validators", () => {
 
   describe("hexId", () => {
     beforeEach(() => {
-      ({ errorMessage, hasErrorFn } = Validators.hexId(expectedErrorMessage));
+      ({ errorMessage, applies: hasErrorFn } = Validators.hexId(
+        expectedErrorMessage
+      ));
     });
 
     it("should have an error if no value is provided", () => {
@@ -147,7 +149,7 @@ describe("Form Validators", () => {
 
   describe("wholeNumber", () => {
     beforeEach(() => {
-      ({ errorMessage, hasErrorFn } = Validators.wholeNumber(
+      ({ errorMessage, applies: hasErrorFn } = Validators.wholeNumber(
         expectedErrorMessage
       ));
     });
@@ -188,7 +190,7 @@ describe("Form Validators", () => {
     });
 
     it("should not have an error if the siblings field does not meet the criteria", () => {
-      ({ hasErrorFn } = Validators.conditionalOnValue(
+      ({ applies: hasErrorFn } = Validators.conditionalOnValue(
         errorMessage,
         "key1",
         "some other value",
@@ -198,7 +200,7 @@ describe("Form Validators", () => {
     });
 
     it("should not have an error if the siblings field meets the criteria but the validation rule does not error", () => {
-      ({ hasErrorFn } = Validators.conditionalOnValue(
+      ({ applies: hasErrorFn } = Validators.conditionalOnValue(
         errorMessage,
         "key1",
         field1Value,
@@ -208,7 +210,7 @@ describe("Form Validators", () => {
     });
 
     it("should have an error if the siblings field meets the criteria and the validation rule applies", () => {
-      ({ hasErrorFn } = Validators.conditionalOnValue(
+      ({ applies: hasErrorFn } = Validators.conditionalOnValue(
         errorMessage,
         "key1",
         field1Value,
