@@ -61,6 +61,27 @@ jobs:
       - name: Run tests
         run: npm run test
 
+  cypress_tests:
+    name: Cypress tests
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - name: Restore cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run dev
+          wait-on: "http://localhost:3000"
+
   lint_check:
     name: Lint check
     runs-on: ubuntu-latest
@@ -126,6 +147,7 @@ jobs:
         install_dependencies,
         docker_build,
         unit_tests,
+        cypress_tests,
         lint_check,
         prettier_check,
         docker_lint,
