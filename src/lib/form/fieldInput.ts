@@ -19,7 +19,7 @@ export class FieldInput extends AbstractFormNode {
   }
 
   /**
-   * Validates this control against the validation rules.
+   * Validates this field input against the validation rules.
    *
    * @returns {string[]}   The array of error messages
    */
@@ -32,7 +32,7 @@ export class FieldInput extends AbstractFormNode {
   }
 
   /**
-   * Determines if the control has any errors.
+   * Determines if the input has any errors.
    */
   public hasErrors(): boolean {
     if (this.pristine) {
