@@ -101,7 +101,7 @@ describe("FieldManager", () => {
   });
 
   describe("conditional validation", () => {
-    it("should only have errors if field is invalid and the dependent condition is met", () => {
+    it("should not have errors because the dependent condition is not met", () => {
       const conditions = [
         {
           dependsOn: "radioButton",
@@ -110,8 +110,7 @@ describe("FieldManager", () => {
       ];
       const formManager = new FormManager({
         radioButton: new FieldManager(
-          "A value that doesn't meet the OtherTextInput's condition",
-          [validationRule(false)]
+          "A value that doesn't meet the OtherTextInput's condition"
         ),
         OtherTextInput: new FieldManager(
           "",
@@ -124,6 +123,28 @@ describe("FieldManager", () => {
       const hasErrors = formManager.hasErrors();
 
       expect(hasErrors).toBe(false);
+    });
+
+    it("should errors because the dependent condition is met", () => {
+      const conditions = [
+        {
+          dependsOn: "radioButton",
+          meetingCondition: (value) => value === "OTHER",
+        },
+      ];
+      const formManager = new FormManager({
+        radioButton: new FieldManager("OTHER"),
+        OtherTextInput: new FieldManager(
+          "",
+          [validationRule(true)],
+          conditions
+        ),
+      });
+      formManager.markAsDirty();
+
+      const hasErrors = formManager.hasErrors();
+
+      expect(hasErrors).toBe(true);
     });
   });
 });
