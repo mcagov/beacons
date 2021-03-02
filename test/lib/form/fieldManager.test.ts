@@ -1,10 +1,8 @@
 import { FieldManager } from "../../../src/lib/form/fieldManager";
-import { FormManager } from "../../../src/lib/form/formManager";
 
-describe("FieldManager", () => {
+describe("FieldManage", () => {
   let value;
-  let fieldInput: FieldManager;
-  let fieldManager: FormManager;
+  let fieldManager: FieldManager;
 
   const validationRule = (shouldError: boolean, errorMessage = "") => {
     return {
@@ -14,93 +12,90 @@ describe("FieldManager", () => {
   };
 
   beforeEach(() => {
-    value = "hex id";
-    fieldInput = new FieldManager(value);
-    fieldManager = new FormManager({ hexId: fieldInput });
+    value = "Hex ID is 0-9 and A-F characters";
   });
 
-  it("should set the parent reference on the controls", () => {
-    expect(fieldInput.parent).toBe(fieldManager);
+  it("should return the value managed by the form control", () => {
+    fieldManager = new FieldManager(value);
+    expect(fieldManager.value).toBe(value);
   });
 
-  it("should return the controls from the value `getter`", () => {
-    expect(fieldManager.value).toStrictEqual({ hexId: fieldInput });
+  it("should set the value to an empty string if the value passed in is null", () => {
+    fieldManager = new FieldManager(null);
+    expect(fieldManager.value).toBe("");
+  });
+
+  it("should set the value to an empty string if the value passed in is undefined", () => {
+    fieldManager = new FieldManager(undefined);
+    expect(fieldManager.value).toBe("");
+  });
+
+  it("should return null for the parent reference", () => {
+    fieldManager = new FieldManager(value);
+    expect(fieldManager.parent).toBeNull();
+  });
+
+  describe("errorMessages()", () => {
+    it("should return an empty arrray if the form is `pristine`", () => {
+      fieldManager = new FieldManager(value, [validationRule(true)]);
+      expect(fieldManager.errorMessages()).toStrictEqual([]);
+    });
+
+    it("should return the error message from the rule if violated and the form is dirty", () => {
+      fieldManager = new FieldManager(value, [
+        validationRule(true, "hexID error"),
+      ]);
+      fieldManager.markAsDirty();
+      expect(fieldManager.errorMessages()).toStrictEqual(["hexID error"]);
+    });
+
+    it("should return an empty array if no rules violated and the form is dirty", () => {
+      fieldManager = new FieldManager(value, [
+        validationRule(false, "hexID error"),
+      ]);
+      fieldManager.markAsDirty();
+      expect(fieldManager.errorMessages()).toStrictEqual([]);
+    });
+
+    it("should return all error messages that are violated if the form is dirty", () => {
+      fieldManager = new FieldManager(value, [
+        validationRule(true, "hexID error"),
+        validationRule(false, "another hexID error"),
+        validationRule(true, "hex error"),
+      ]);
+      fieldManager.markAsDirty();
+      expect(fieldManager.errorMessages()).toStrictEqual([
+        "hexID error",
+        "hex error",
+      ]);
+    });
   });
 
   describe("hasErrors()", () => {
     it("should not have errors if the form is `pristine`", () => {
-      fieldManager = new FormManager({
-        hexId: new FieldManager(value, [validationRule(true)]),
-      });
-
+      fieldManager = new FieldManager(value, [validationRule(true)]);
       expect(fieldManager.hasErrors()).toBe(false);
     });
 
-    it("should have errors if the form has errors and is dirty ", () => {
-      fieldManager = new FormManager({
-        hexId: new FieldManager(value, [validationRule(true)]),
-      });
+    it("should return an error if the form has validation errors and is dirty", () => {
+      fieldManager = new FieldManager(value, [validationRule(true)]);
       fieldManager.markAsDirty();
-
       expect(fieldManager.hasErrors()).toBe(true);
     });
 
-    it("should not have errors if the form does not have errors and is dirty ", () => {
-      fieldManager = new FormManager({
-        hexId: new FieldManager(value, [validationRule(false)]),
-      });
+    it("should not have any errors if no rules are violated and the form is dirty", () => {
+      fieldManager = new FieldManager(value, [validationRule(false)]);
       fieldManager.markAsDirty();
-
       expect(fieldManager.hasErrors()).toBe(false);
     });
-  });
 
-  describe("errorSummary()", () => {
-    it("should return the an empty array if the form is `pristine`", () => {
-      fieldManager = new FormManager({
-        hexId: new FieldManager(value, [validationRule(true, "error!")]),
-      });
-
-      expect(fieldManager.errorSummary()).toStrictEqual([]);
-    });
-
-    it("should return the error summary for the hex id", () => {
-      fieldManager = new FormManager({
-        hexId: new FieldManager(value, [validationRule(true, "error!")]),
-      });
-      fieldManager.markAsDirty();
-
-      expect(fieldManager.errorSummary()).toStrictEqual([
-        {
-          fieldId: "hexId",
-          errorMessages: ["error!"],
-        },
+    it("should return an error any of the rules are violated and the form is dirty", () => {
+      fieldManager = new FieldManager(value, [
+        validationRule(true),
+        validationRule(false),
       ]);
-    });
-
-    it("should return the error summary for the multiple control errors", () => {
-      fieldManager = new FormManager({
-        hexId: new FieldManager(value, [
-          validationRule(true, "error hex1"),
-          validationRule(true, "error hex2"),
-        ]),
-        model: new FieldManager(value, [
-          validationRule(true, "error model"),
-          validationRule(false),
-        ]),
-      });
       fieldManager.markAsDirty();
-
-      expect(fieldManager.errorSummary()).toStrictEqual([
-        {
-          fieldId: "hexId",
-          errorMessages: ["error hex1", "error hex2"],
-        },
-        {
-          fieldId: "model",
-          errorMessages: ["error model"],
-        },
-      ]);
+      expect(fieldManager.hasErrors()).toBe(true);
     });
   });
 });
