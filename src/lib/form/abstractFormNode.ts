@@ -5,7 +5,7 @@ import { ValidationRule } from "./validators";
 type ControlValue = string | Record<string, AbstractFormNode>;
 
 /**
- * This is the base class for `FieldInput`, and `FieldManager`.  It represents a node in the form tree of depth 1.
+ * This is the base class for `FieldManager`, and `FieldManager`.  It represents a node in the form tree of depth 1.
  */
 export abstract class AbstractFormNode {
   protected _value: any;
