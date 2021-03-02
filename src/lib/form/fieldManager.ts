@@ -6,6 +6,11 @@ export type ValidationCondition = {
   meetingCondition: (value: string) => boolean;
 };
 
+export type FieldJSON = {
+  value: string;
+  errorMessages: string[];
+};
+
 /**
  * This class is responsible for managing the value of a form input and can run validation rules, and calculate status of the field input.
  */
@@ -71,7 +76,7 @@ export class FieldManager extends AbstractFormNode {
     });
   }
 
-  public serialise(): any {
+  public serialise(): FieldJSON {
     const value = this._value;
     const errorMessages = this.errorMessages();
 

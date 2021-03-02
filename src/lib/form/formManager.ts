@@ -1,8 +1,14 @@
 import { Callback } from "../utils";
 import { AbstractFormNode } from "./abstractFormNode";
-import { FieldManager } from "./fieldManager";
+import { FieldJSON, FieldManager } from "./fieldManager";
 
 export type FormError = { fieldId: string; errorMessages: string[] };
+
+export type FormJSON = {
+  hasErrors: boolean;
+  fields: Record<string, FieldJSON>;
+  errorSummary: FormError[];
+};
 
 /**
  * A class representing the parent for the the {@link FieldManager}.
@@ -63,7 +69,7 @@ export class FormManager extends AbstractFormNode {
     });
   }
 
-  public serialise(): any {
+  public serialise(): FormJSON {
     const hasErrors = this.hasErrors();
     const fields = this.serialiseFields();
     const errorSummary = this.errorSummary();
@@ -71,7 +77,7 @@ export class FormManager extends AbstractFormNode {
     return { hasErrors, fields, errorSummary };
   }
 
-  private serialiseFields(): any {
+  private serialiseFields(): Record<string, FieldJSON> {
     return Object.keys(this.fields).reduce((serialisedFields, currentField) => {
       const fieldManager: FieldManager = this.fields[currentField];
 
