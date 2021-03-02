@@ -4,7 +4,7 @@ import { FormManager } from "./formManager";
 type ControlValue = string | Record<string, AbstractFormNode>;
 
 /**
- * This is the base class for `FieldManager`, and `FieldManager`.  It represents a node in the form tree of depth 1.
+ * This is the base class for `FormManager`, and `FieldManager`.  It represents a node in the form tree of depth 1.
  */
 export abstract class AbstractFormNode {
   protected _value: any;
@@ -23,7 +23,7 @@ export abstract class AbstractFormNode {
   }
 
   /**
-   * @param parent {FormManager}   Sets the parent form maanger
+   * @param parent {FormManager}   Sets the reference to the parent form manager
    */
   setParent(parent: FormManager): void {
     this._parent = parent;

@@ -30,7 +30,7 @@ interface PrimaryBeaconUseProps {
 }
 
 interface BeaconUseFormProps {
-  formGroup: FormManager;
+  formManager: FormManager;
 }
 
 const getFormManager = ({
@@ -41,7 +41,16 @@ const getFormManager = ({
     maritimePleasureVesselUse: new FieldManager(maritimePleasureVesselUse, [
       Validators.required("Maritime pleasure use is a required field"),
     ]),
-    otherPleasureVesselText: new FieldManager(otherPleasureVesselText, []),
+    otherPleasureVesselText: new FieldManager(
+      otherPleasureVesselText,
+      [Validators.required("Other pleasure vessel text is a required field")],
+      [
+        {
+          dependsOn: "maritimePleasureVesselUse",
+          meetingCondition: (value) => value === MaritimePleasureVessel.OTHER,
+        },
+      ]
+    ),
   });
 };
 
@@ -66,7 +75,7 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
         mainContent={
           <>
             <FormErrorSummary formErrors={formManager.errorSummary()} />
-            <BeaconUseForm formGroup={formManager} />
+            <BeaconUseForm formManager={formManager} />
 
             <IfYouNeedHelp />
           </>
@@ -77,14 +86,14 @@ const PrimaryBeaconUse: FunctionComponent<PrimaryBeaconUseProps> = ({
 };
 
 const BeaconUseForm: FunctionComponent<BeaconUseFormProps> = ({
-  formGroup,
+  formManager,
 }: BeaconUseFormProps): JSX.Element => {
   const setCheckedIfUserSelected = (userSelectedValue, componentValue) => {
     return {
       defaultChecked: userSelectedValue === componentValue,
     };
   };
-  const controls = formGroup.fields;
+  const controls = formManager.fields;
   const checkedValue = controls.maritimePleasureVesselUse.value;
 
   return (
@@ -165,7 +174,9 @@ const BeaconUseForm: FunctionComponent<BeaconUseFormProps> = ({
             Other pleasure vessel
           </RadioListItemHint>
           <RadioListItemConditional id="conditional-other-pleasure-vessel">
-            <FormGroup>
+            <FormGroup
+              errorMessages={controls.otherPleasureVesselText.errorMessages()}
+            >
               <Input
                 id="otherPleasureVesselText"
                 label="What sort of vessel is it?"
