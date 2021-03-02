@@ -170,7 +170,7 @@ describe("FieldManager", () => {
     });
   });
 
-  describe("serialise form field", () => {
+  xdescribe("serialise form field", () => {
     it("should serialise an input that has errors", () => {});
   });
 });

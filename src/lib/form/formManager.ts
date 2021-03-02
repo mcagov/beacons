@@ -84,7 +84,7 @@ export class FormManager extends AbstractFormNode {
   /**
    * Generates the error summary based on the fields it manages.
    */
-  public errorSummary(): FormError[] {
+  private errorSummary(): FormError[] {
     return Object.keys(this.fields)
       .filter((control) => this.fields[control].hasErrors())
       .map((fieldId) => {

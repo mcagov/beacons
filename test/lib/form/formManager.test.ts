@@ -55,55 +55,6 @@ describe("FormManager", () => {
     });
   });
 
-  describe("errorSummary()", () => {
-    it("should return the an empty array if the form is `pristine`", () => {
-      formManager = new FormManager({
-        hexId: new FieldManager(value, [validationRule(true, "error!")]),
-      });
-
-      expect(formManager.errorSummary()).toStrictEqual([]);
-    });
-
-    it("should return the error summary for the hex id", () => {
-      formManager = new FormManager({
-        hexId: new FieldManager(value, [validationRule(true, "error!")]),
-      });
-      formManager.markAsDirty();
-
-      expect(formManager.errorSummary()).toStrictEqual([
-        {
-          fieldId: "hexId",
-          errorMessages: ["error!"],
-        },
-      ]);
-    });
-
-    it("should return the error summary for the multiple control errors", () => {
-      formManager = new FormManager({
-        hexId: new FieldManager(value, [
-          validationRule(true, "error hex1"),
-          validationRule(true, "error hex2"),
-        ]),
-        model: new FieldManager(value, [
-          validationRule(true, "error model"),
-          validationRule(false),
-        ]),
-      });
-      formManager.markAsDirty();
-
-      expect(formManager.errorSummary()).toStrictEqual([
-        {
-          fieldId: "hexId",
-          errorMessages: ["error hex1", "error hex2"],
-        },
-        {
-          fieldId: "model",
-          errorMessages: ["error model"],
-        },
-      ]);
-    });
-  });
-
   describe("serialise form", () => {
     it("should serialise a form with no fields", () => {
       formManager = new FormManager({});
