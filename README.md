@@ -51,12 +51,18 @@ Our approach to testing:
 
 - **Testing the rendering of React components**. We use [React testing library](https://testing-library.com/docs/react-testing-library/intro/) to ensure the rednered pages are what the user expects to see.
 - **Testing logic**. We segregate frontend logic from components by defining reusable TypeScript functions in `src/lib/`. Unit tests for these functions using Jest are in `test/lib`.
-- **End-to-end testing**. _TBC, likely to be Cypress and managed in the [integration](https://github.com/mcagov/beacons-integration) project_.
+- **End-to-end testing**. We use [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) to ensure the logic of the frontend matches the requirements.
 
 ### Running tests
 
 - `npm run test` -- Runs all tests in the `test/` directory
 - `npm run test:watch` -- Runs tests in watch mode
+
+### Running Cypress tests
+
+- `npm run dev` -- Start the app if it's not already running
+- `npm run cypress:open` -- Run Cypress tests in the `cypress/integration` directory with the [Cypress Test Runner](https://docs.cypress.io/guides/core-concepts/test-runner.html#Overview)
+- `npm run cypress:run` -- Run Cypress tests in the `cypress/integration` directory in the [command line](https://docs.cypress.io/guides/guides/command-line.html#cypress-run)
 
 ## Deployment
 
