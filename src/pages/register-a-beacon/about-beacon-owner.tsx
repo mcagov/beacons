@@ -12,8 +12,8 @@ import { Grid } from "../../components/Grid";
 import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { FormControl } from "../../lib/form/formControl";
-import { FormGroupControl } from "../../lib/form/formGroupControl";
+import { FieldInput } from "../../lib/form/fieldInput";
+import { FieldManager } from "../../lib/form/fieldManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
@@ -23,16 +23,16 @@ const getFormGroup = ({
   beaconOwnerTelephoneNumber,
   beaconOwnerAlternativeTelephoneNumber,
   beaconOwnerEmail,
-}: CacheEntry): FormGroupControl => {
-  return new FormGroupControl({
-    beaconOwnerFullName: new FormControl(beaconOwnerFullName, [
+}: CacheEntry): FieldManager => {
+  return new FieldManager({
+    beaconOwnerFullName: new FieldInput(beaconOwnerFullName, [
       Validators.required("Full name is a required field"),
     ]),
-    beaconOwnerTelephoneNumber: new FormControl(beaconOwnerTelephoneNumber),
-    beaconOwnerAlternativeTelephoneNumber: new FormControl(
+    beaconOwnerTelephoneNumber: new FieldInput(beaconOwnerTelephoneNumber),
+    beaconOwnerAlternativeTelephoneNumber: new FieldInput(
       beaconOwnerAlternativeTelephoneNumber
     ),
-    beaconOwnerEmail: new FormControl(beaconOwnerEmail, [
+    beaconOwnerEmail: new FieldInput(beaconOwnerEmail, [
       Validators.email("Email address must be valid"),
     ]),
   });

@@ -12,8 +12,8 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
-import { FormControl } from "../../lib/form/formControl";
-import { FormGroupControl } from "../../lib/form/formGroupControl";
+import { FieldInput } from "../../lib/form/fieldInput";
+import { FieldManager } from "../../lib/form/fieldManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
@@ -28,9 +28,9 @@ interface MoreVesselDetailsTextAreaProps {
   errorMessages: string[];
 }
 
-const getFormGroup = ({ moreVesselDetails }: CacheEntry): FormGroupControl => {
-  return new FormGroupControl({
-    moreVesselDetails: new FormControl(moreVesselDetails, [
+const getFormGroup = ({ moreVesselDetails }: CacheEntry): FieldManager => {
+  return new FieldManager({
+    moreVesselDetails: new FieldInput(moreVesselDetails, [
       Validators.required("Vessel details is a required fied"),
       Validators.maxLength(
         "Vessel details must be less than 250 characters",

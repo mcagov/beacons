@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormGroupControl } from "./formGroupControl";
+import { FieldManager } from "./fieldManager";
 import { ValidationRule } from "./validators";
 
 type ControlValue = string | Record<string, AbstractControl>;
 
 /**
- * This is the base class for `FormControl`, and `FormGroupControl`.  It represents a node in the Abstract Syntax Tree (AST) of form controls.
+ * This is the base class for `FormControl`, and `FormGroupControl`.
  *
  * It provides shared behaviour, like running validators and calculating status.
  */
@@ -19,7 +19,7 @@ export abstract class AbstractControl {
    */
   protected pristine = true;
 
-  private _parent: FormGroupControl = null;
+  private _parent: FieldManager = null;
 
   constructor(
     value: ControlValue,
@@ -29,16 +29,16 @@ export abstract class AbstractControl {
   }
 
   /**
-   * @param parent {FormGroupControl}   Sets the parent form group control
+   * @param parent {FieldManager}   Sets the parent form group control
    */
-  setParent(parent: FormGroupControl): void {
+  setParent(parent: FieldManager): void {
     this._parent = parent;
   }
 
   /**
    * Getter for the parent control.
    */
-  public get parent(): FormGroupControl {
+  public get parent(): FieldManager {
     return this._parent;
   }
 

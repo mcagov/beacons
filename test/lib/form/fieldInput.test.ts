@@ -1,8 +1,8 @@
-import { FormControl } from "../../../src/lib/form/formControl";
+import { FieldInput } from "../../../src/lib/form/fieldInput";
 
-describe("FormControl", () => {
+describe("FieldInput", () => {
   let value;
-  let formControl: FormControl;
+  let fieldInput: FieldInput;
 
   const validationRule = (shouldError: boolean, errorMessage = "") => {
     return {
@@ -16,55 +16,53 @@ describe("FormControl", () => {
   });
 
   it("should return the value managed by the form control", () => {
-    formControl = new FormControl(value);
-    expect(formControl.value).toBe(value);
+    fieldInput = new FieldInput(value);
+    expect(fieldInput.value).toBe(value);
   });
 
   it("should set the value to an empty string if the value passed in is null", () => {
-    formControl = new FormControl(null);
-    expect(formControl.value).toBe("");
+    fieldInput = new FieldInput(null);
+    expect(fieldInput.value).toBe("");
   });
 
   it("should set the value to an empty string if the value passed in is undefined", () => {
-    formControl = new FormControl(undefined);
-    expect(formControl.value).toBe("");
+    fieldInput = new FieldInput(undefined);
+    expect(fieldInput.value).toBe("");
   });
 
   it("should return null for the parent reference", () => {
-    formControl = new FormControl(value);
-    expect(formControl.parent).toBeNull();
+    fieldInput = new FieldInput(value);
+    expect(fieldInput.parent).toBeNull();
   });
 
   describe("errorMessages()", () => {
     it("should return an empty arrray if the form is `pristine`", () => {
-      formControl = new FormControl(value, [validationRule(true)]);
-      expect(formControl.errorMessages()).toStrictEqual([]);
+      fieldInput = new FieldInput(value, [validationRule(true)]);
+      expect(fieldInput.errorMessages()).toStrictEqual([]);
     });
 
     it("should return the error message from the rule if violated and the form is dirty", () => {
-      formControl = new FormControl(value, [
-        validationRule(true, "hexID error"),
-      ]);
-      formControl.markAsDirty();
-      expect(formControl.errorMessages()).toStrictEqual(["hexID error"]);
+      fieldInput = new FieldInput(value, [validationRule(true, "hexID error")]);
+      fieldInput.markAsDirty();
+      expect(fieldInput.errorMessages()).toStrictEqual(["hexID error"]);
     });
 
     it("should return an empty array if no rules violated and the form is dirty", () => {
-      formControl = new FormControl(value, [
+      fieldInput = new FieldInput(value, [
         validationRule(false, "hexID error"),
       ]);
-      formControl.markAsDirty();
-      expect(formControl.errorMessages()).toStrictEqual([]);
+      fieldInput.markAsDirty();
+      expect(fieldInput.errorMessages()).toStrictEqual([]);
     });
 
     it("should return all error messages that are violated if the form is dirty", () => {
-      formControl = new FormControl(value, [
+      fieldInput = new FieldInput(value, [
         validationRule(true, "hexID error"),
         validationRule(false, "another hexID error"),
         validationRule(true, "hex error"),
       ]);
-      formControl.markAsDirty();
-      expect(formControl.errorMessages()).toStrictEqual([
+      fieldInput.markAsDirty();
+      expect(fieldInput.errorMessages()).toStrictEqual([
         "hexID error",
         "hex error",
       ]);
@@ -73,29 +71,29 @@ describe("FormControl", () => {
 
   describe("hasErrors()", () => {
     it("should not have errors if the form is `pristine`", () => {
-      formControl = new FormControl(value, [validationRule(true)]);
-      expect(formControl.hasErrors()).toBe(false);
+      fieldInput = new FieldInput(value, [validationRule(true)]);
+      expect(fieldInput.hasErrors()).toBe(false);
     });
 
     it("should return an error if the form has validation errors and is dirty", () => {
-      formControl = new FormControl(value, [validationRule(true)]);
-      formControl.markAsDirty();
-      expect(formControl.hasErrors()).toBe(true);
+      fieldInput = new FieldInput(value, [validationRule(true)]);
+      fieldInput.markAsDirty();
+      expect(fieldInput.hasErrors()).toBe(true);
     });
 
     it("should not have any errors if no rules are violated and the form is dirty", () => {
-      formControl = new FormControl(value, [validationRule(false)]);
-      formControl.markAsDirty();
-      expect(formControl.hasErrors()).toBe(false);
+      fieldInput = new FieldInput(value, [validationRule(false)]);
+      fieldInput.markAsDirty();
+      expect(fieldInput.hasErrors()).toBe(false);
     });
 
     it("should return an error any of the rules are violated and the form is dirty", () => {
-      formControl = new FormControl(value, [
+      fieldInput = new FieldInput(value, [
         validationRule(true),
         validationRule(false),
       ]);
-      formControl.markAsDirty();
-      expect(formControl.hasErrors()).toBe(true);
+      fieldInput.markAsDirty();
+      expect(fieldInput.hasErrors()).toBe(true);
     });
   });
 });

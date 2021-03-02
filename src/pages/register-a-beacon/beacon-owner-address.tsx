@@ -13,8 +13,8 @@ import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { GovUKBody } from "../../components/Typography";
-import { FormControl } from "../../lib/form/formControl";
-import { FormGroupControl } from "../../lib/form/formGroupControl";
+import { FieldInput } from "../../lib/form/fieldInput";
+import { FieldManager } from "../../lib/form/fieldManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
@@ -31,17 +31,17 @@ const getFormGroup = ({
   beaconOwnerTownOrCity,
   beaconOwnerCounty,
   beaconOwnerPostcode,
-}: CacheEntry): FormGroupControl => {
-  return new FormGroupControl({
-    beaconOwnerAddressLine1: new FormControl(beaconOwnerAddressLine1, [
+}: CacheEntry): FieldManager => {
+  return new FieldManager({
+    beaconOwnerAddressLine1: new FieldInput(beaconOwnerAddressLine1, [
       Validators.required("Building number and street is a required field"),
     ]),
-    beaconOwnerAddressLine2: new FormControl(beaconOwnerAddressLine2),
-    beaconOwnerTownOrCity: new FormControl(beaconOwnerTownOrCity, [
+    beaconOwnerAddressLine2: new FieldInput(beaconOwnerAddressLine2),
+    beaconOwnerTownOrCity: new FieldInput(beaconOwnerTownOrCity, [
       Validators.required("Town or city is a required field"),
     ]),
-    beaconOwnerCounty: new FormControl(beaconOwnerCounty),
-    beaconOwnerPostcode: new FormControl(beaconOwnerPostcode, [
+    beaconOwnerCounty: new FieldInput(beaconOwnerCounty),
+    beaconOwnerPostcode: new FieldInput(beaconOwnerPostcode, [
       Validators.required("Postcode is a required field"),
       Validators.postcode("Postcode must be a valid UK postcode"),
     ]),

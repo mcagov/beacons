@@ -13,8 +13,8 @@ import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
-import { FormControl } from "../../lib/form/formControl";
-import { FormGroupControl } from "../../lib/form/formGroupControl";
+import { FieldInput } from "../../lib/form/fieldInput";
+import { FieldManager } from "../../lib/form/fieldManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
@@ -30,9 +30,9 @@ const getFormGroup = ({
   homeport,
   areaOfOperation,
   beaconLocation,
-}: CacheEntry): FormGroupControl => {
-  return new FormGroupControl({
-    maxCapacity: new FormControl(maxCapacity, [
+}: CacheEntry): FieldManager => {
+  return new FieldManager({
+    maxCapacity: new FieldInput(maxCapacity, [
       Validators.required(
         "Maximum number of persons onboard is a required field"
       ),
@@ -40,15 +40,15 @@ const getFormGroup = ({
         "Maximum number of persons onboard must be a whole number"
       ),
     ]),
-    vesselName: new FormControl(vesselName),
-    homeport: new FormControl(homeport),
-    areaOfOperation: new FormControl(areaOfOperation, [
+    vesselName: new FieldInput(vesselName),
+    homeport: new FieldInput(homeport),
+    areaOfOperation: new FieldInput(areaOfOperation, [
       Validators.maxLength(
         "Typical area of operation has too many characters",
         250
       ),
     ]),
-    beaconLocation: new FormControl(beaconLocation, [
+    beaconLocation: new FieldInput(beaconLocation, [
       Validators.maxLength(
         "Where the beacon is kept has too many characters",
         250

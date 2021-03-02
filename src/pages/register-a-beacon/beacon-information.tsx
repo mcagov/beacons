@@ -21,8 +21,8 @@ import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { FormControl } from "../../lib/form/formControl";
-import { FormGroupControl } from "../../lib/form/formGroupControl";
+import { FieldInput } from "../../lib/form/fieldInput";
+import { FieldManager } from "../../lib/form/fieldManager";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 
@@ -33,14 +33,14 @@ const getFormGroup = ({
   beaconBatteryExpiryDateYear,
   lastServicedDateMonth,
   lastServicedDateYear,
-}: CacheEntry): FormGroupControl => {
-  return new FormGroupControl({
-    manufacturerSerialNumber: new FormControl(manufacturerSerialNumber),
-    beaconCHKCode: new FormControl(beaconCHKCode),
-    beaconBatteryExpiryDateMonth: new FormControl(beaconBatteryExpiryDateMonth),
-    beaconBatteryExpiryDateYear: new FormControl(beaconBatteryExpiryDateYear),
-    lastServicedDateMonth: new FormControl(lastServicedDateMonth),
-    lastServicedDateYear: new FormControl(lastServicedDateYear),
+}: CacheEntry): FieldManager => {
+  return new FieldManager({
+    manufacturerSerialNumber: new FieldInput(manufacturerSerialNumber),
+    beaconCHKCode: new FieldInput(beaconCHKCode),
+    beaconBatteryExpiryDateMonth: new FieldInput(beaconBatteryExpiryDateMonth),
+    beaconBatteryExpiryDateYear: new FieldInput(beaconBatteryExpiryDateYear),
+    lastServicedDateMonth: new FieldInput(lastServicedDateMonth),
+    lastServicedDateYear: new FieldInput(lastServicedDateYear),
   });
 };
 

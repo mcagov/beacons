@@ -15,8 +15,8 @@ import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { WarningText } from "../../components/WarningText";
-import { FormControl } from "../../lib/form/formControl";
-import { FormGroupControl } from "../../lib/form/formGroupControl";
+import { FieldInput } from "../../lib/form/fieldInput";
+import { FieldManager } from "../../lib/form/fieldManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
@@ -42,30 +42,30 @@ const getFormGroup = ({
   emergencyContact3FullName,
   emergencyContact3TelephoneNumber,
   emergencyContact3AlternativeTelephoneNumber,
-}: CacheEntry): FormGroupControl => {
-  return new FormGroupControl({
-    emergencyContact1FullName: new FormControl(emergencyContact1FullName, [
+}: CacheEntry): FieldManager => {
+  return new FieldManager({
+    emergencyContact1FullName: new FieldInput(emergencyContact1FullName, [
       Validators.required("Emergency Contact Full name is a required field"),
     ]),
-    emergencyContact1TelephoneNumber: new FormControl(
+    emergencyContact1TelephoneNumber: new FieldInput(
       emergencyContact1TelephoneNumber,
       [Validators.required("Emergency Contact Telephone is a required field")]
     ),
-    emergencyContact1AlternativeTelephoneNumber: new FormControl(
+    emergencyContact1AlternativeTelephoneNumber: new FieldInput(
       emergencyContact1AlternativeTelephoneNumber
     ),
-    emergencyContact2FullName: new FormControl(emergencyContact2FullName),
-    emergencyContact2TelephoneNumber: new FormControl(
+    emergencyContact2FullName: new FieldInput(emergencyContact2FullName),
+    emergencyContact2TelephoneNumber: new FieldInput(
       emergencyContact2TelephoneNumber
     ),
-    emergencyContact2AlternativeTelephoneNumber: new FormControl(
+    emergencyContact2AlternativeTelephoneNumber: new FieldInput(
       emergencyContact2AlternativeTelephoneNumber
     ),
-    emergencyContact3FullName: new FormControl(emergencyContact3FullName),
-    emergencyContact3TelephoneNumber: new FormControl(
+    emergencyContact3FullName: new FieldInput(emergencyContact3FullName),
+    emergencyContact3TelephoneNumber: new FieldInput(
       emergencyContact3TelephoneNumber
     ),
-    emergencyContact3AlternativeTelephoneNumber: new FormControl(
+    emergencyContact3AlternativeTelephoneNumber: new FieldInput(
       emergencyContact3AlternativeTelephoneNumber
     ),
   });

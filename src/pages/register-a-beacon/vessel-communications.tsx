@@ -20,8 +20,8 @@ import {
   PageHeading,
 } from "../../components/Typography";
 import { AbstractControl } from "../../lib/form/abstractControl";
-import { FormControl } from "../../lib/form/formControl";
-import { FormGroupControl } from "../../lib/form/formGroupControl";
+import { FieldInput } from "../../lib/form/fieldInput";
+import { FieldManager } from "../../lib/form/fieldManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
@@ -33,7 +33,7 @@ interface VesselCommunicationsProps {
 
 interface PageHeadingInfoProps {
   heading: string;
-  formGroup: FormGroupControl;
+  formGroup: FieldManager;
 }
 
 interface FormInputProps {
@@ -52,12 +52,12 @@ const getFormGroup = ({
   mobileTelephone,
   mobileTelephoneInput1,
   mobileTelephoneInput2,
-}: CacheEntry): FormGroupControl => {
-  return new FormGroupControl({
-    callSign: new FormControl(callSign),
-    vhfRadio: new FormControl(vhfRadio),
-    fixedVhfRadio: new FormControl(fixedVhfRadio),
-    fixedVhfRadioInput: new FormControl(fixedVhfRadioInput, [
+}: CacheEntry): FieldManager => {
+  return new FieldManager({
+    callSign: new FieldInput(callSign),
+    vhfRadio: new FieldInput(vhfRadio),
+    fixedVhfRadio: new FieldInput(fixedVhfRadio),
+    fixedVhfRadioInput: new FieldInput(fixedVhfRadioInput, [
       Validators.conditionalOnValue(
         "Fixed VHF radio must not be empty",
         "fixedVhfRadio",
@@ -65,8 +65,8 @@ const getFormGroup = ({
         Validators.required("").hasErrorFn
       ),
     ]),
-    portableVhfRadio: new FormControl(portableVhfRadio),
-    portableVhfRadioInput: new FormControl(portableVhfRadioInput, [
+    portableVhfRadio: new FieldInput(portableVhfRadio),
+    portableVhfRadioInput: new FieldInput(portableVhfRadioInput, [
       Validators.conditionalOnValue(
         "Portable VHF radio must not be empty",
         "portableVhfRadio",
@@ -74,8 +74,8 @@ const getFormGroup = ({
         Validators.required("").hasErrorFn
       ),
     ]),
-    satelliteTelephone: new FormControl(satelliteTelephone),
-    satelliteTelephoneInput: new FormControl(satelliteTelephoneInput, [
+    satelliteTelephone: new FieldInput(satelliteTelephone),
+    satelliteTelephoneInput: new FieldInput(satelliteTelephoneInput, [
       Validators.conditionalOnValue(
         "Satellite telephone must not be empty",
         "satelliteTelephone",
@@ -83,8 +83,8 @@ const getFormGroup = ({
         Validators.required("").hasErrorFn
       ),
     ]),
-    mobileTelephone: new FormControl(mobileTelephone),
-    mobileTelephoneInput1: new FormControl(mobileTelephoneInput1, [
+    mobileTelephone: new FieldInput(mobileTelephone),
+    mobileTelephoneInput1: new FieldInput(mobileTelephoneInput1, [
       Validators.conditionalOnValue(
         "Mobile telephone must not be empty",
         "mobileTelephone",
@@ -92,7 +92,7 @@ const getFormGroup = ({
         Validators.required("").hasErrorFn
       ),
     ]),
-    mobileTelephoneInput2: new FormControl(mobileTelephoneInput2),
+    mobileTelephoneInput2: new FieldInput(mobileTelephoneInput2),
   });
 };
 

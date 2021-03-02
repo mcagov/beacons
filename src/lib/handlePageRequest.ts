@@ -4,7 +4,7 @@ import {
   GetServerSidePropsResult,
 } from "next";
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
-import { FormGroupControl } from "./form/formGroupControl";
+import { FieldManager } from "./form/fieldManager";
 import { CacheEntry } from "./formCache";
 import {
   getCache,
@@ -15,7 +15,7 @@ import {
 
 type TransformFunction = (formData: CacheEntry) => CacheEntry;
 
-export type GetFormGroup = (formData: CacheEntry) => FormGroupControl;
+export type GetFormGroup = (formData: CacheEntry) => FieldManager;
 
 export interface FormPageProps {
   formData: CacheEntry;

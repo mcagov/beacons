@@ -9,7 +9,7 @@ export type FormError = { fieldId: string; errorMessages: string[] };
  *
  * It is reponsible for managing other child {@link AbstractControl} and checking validity of the overall form.
  */
-export class FormGroupControl extends AbstractControl {
+export class FieldManager extends AbstractControl {
   constructor(
     public readonly controls: Record<string, AbstractControl>,
     validators: ValidationRule[] = []

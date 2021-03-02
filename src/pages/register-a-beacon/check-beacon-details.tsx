@@ -14,8 +14,8 @@ import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { FormControl } from "../../lib/form/formControl";
-import { FormGroupControl } from "../../lib/form/formGroupControl";
+import { FieldInput } from "../../lib/form/fieldInput";
+import { FieldManager } from "../../lib/form/fieldManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
@@ -29,15 +29,15 @@ const getFormGroup = ({
   manufacturer,
   model,
   hexId,
-}: CacheEntry): FormGroupControl => {
-  return new FormGroupControl({
-    manufacturer: new FormControl(manufacturer, [
+}: CacheEntry): FieldManager => {
+  return new FieldManager({
+    manufacturer: new FieldInput(manufacturer, [
       Validators.required("Beacon manufacturer is a required field"),
     ]),
-    model: new FormControl(model, [
+    model: new FieldInput(model, [
       Validators.required("Beacon model is a required field"),
     ]),
-    hexId: new FormControl(hexId, [
+    hexId: new FieldInput(hexId, [
       Validators.isLength(
         "Beacon HEX ID or UIN must by 15 characters long",
         15

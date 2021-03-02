@@ -17,8 +17,8 @@ import {
   RadioListItemConditional,
   RadioListItemHint,
 } from "../../components/RadioList";
-import { FormControl } from "../../lib/form/formControl";
-import { FormGroupControl } from "../../lib/form/formGroupControl";
+import { FieldInput } from "../../lib/form/fieldInput";
+import { FieldManager } from "../../lib/form/fieldManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
@@ -30,18 +30,18 @@ interface PrimaryBeaconUseProps {
 }
 
 interface BeaconUseFormProps {
-  formGroup: FormGroupControl;
+  formGroup: FieldManager;
 }
 
 const getFormGroup = ({
   maritimePleasureVesselUse,
   otherPleasureVesselText,
-}: CacheEntry): FormGroupControl => {
-  return new FormGroupControl({
-    maritimePleasureVesselUse: new FormControl(maritimePleasureVesselUse, [
+}: CacheEntry): FieldManager => {
+  return new FieldManager({
+    maritimePleasureVesselUse: new FieldInput(maritimePleasureVesselUse, [
       Validators.required("Maritime pleasure use is a required field"),
     ]),
-    otherPleasureVesselText: new FormControl(otherPleasureVesselText, [
+    otherPleasureVesselText: new FieldInput(otherPleasureVesselText, [
       Validators.conditionalOnValue(
         "Other pleasure vessel must not be empty",
         "maritimePleasureVesselUse",

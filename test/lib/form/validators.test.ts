@@ -1,5 +1,5 @@
 import { AbstractControl } from "../../../src/lib/form/abstractControl";
-import { FormGroupControl } from "../../../src/lib/form/formGroupControl";
+import { FieldManager } from "../../../src/lib/form/fieldManager";
 import { ValidatorFn, Validators } from "../../../src/lib/form/validators";
 
 describe("Form Validators", () => {
@@ -7,7 +7,7 @@ describe("Form Validators", () => {
   let errorMessage: string;
   let hasErrorFn: ValidatorFn;
 
-  class ControlWithValue extends AbstractControl {
+  class FieldInput extends AbstractControl {
     constructor(value: string) {
       super(value, []);
     }
@@ -19,7 +19,7 @@ describe("Form Validators", () => {
     }
   }
 
-  const controlWithValue = (value) => new ControlWithValue(value);
+  const fieldWithValue = (value) => new FieldInput(value);
 
   describe("required", () => {
     beforeEach(() => {
@@ -29,23 +29,23 @@ describe("Form Validators", () => {
     });
 
     it("should have an error if the value is an empty string", () => {
-      const control = controlWithValue("");
-      expect(hasErrorFn(control)).toBe(true);
+      const field = fieldWithValue("");
+      expect(hasErrorFn(field)).toBe(true);
     });
 
     it("should have an error if the value is null", () => {
-      const control = controlWithValue(null);
-      expect(hasErrorFn(control)).toBe(true);
+      const field = fieldWithValue(null);
+      expect(hasErrorFn(field)).toBe(true);
     });
 
     it("should have an error if the value is undefined", () => {
-      const control = controlWithValue(undefined);
-      expect(hasErrorFn(control)).toBe(true);
+      const field = fieldWithValue(undefined);
+      expect(hasErrorFn(field)).toBe(true);
     });
 
     it("should not have an error if the value is non-empty", () => {
-      const control = controlWithValue("Hex ID!");
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("Hex ID!");
+      expect(hasErrorFn(field)).toBe(false);
     });
 
     it("should return the expected error message", () => {
@@ -62,18 +62,18 @@ describe("Form Validators", () => {
     });
 
     it("should not have an error if the value is less than the max length", () => {
-      const control = controlWithValue("");
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("");
+      expect(hasErrorFn(field)).toBe(false);
     });
 
     it("should not have an error if the value is equal to the max length", () => {
-      const control = controlWithValue("a".repeat(10));
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("a".repeat(10));
+      expect(hasErrorFn(field)).toBe(false);
     });
 
     it("should have an error if the value is greater than the max length", () => {
-      const control = controlWithValue("a".repeat(11));
-      expect(hasErrorFn(control)).toBe(true);
+      const field = fieldWithValue("a".repeat(11));
+      expect(hasErrorFn(field)).toBe(true);
     });
 
     it("should return the expected error message", () => {
@@ -90,18 +90,18 @@ describe("Form Validators", () => {
     });
 
     it("should have an error if the value is less than the required length", () => {
-      const control = controlWithValue("a");
-      expect(hasErrorFn(control)).toBe(true);
+      const field = fieldWithValue("a");
+      expect(hasErrorFn(field)).toBe(true);
     });
 
     it("should not have an error if the value is equal to the required length", () => {
-      const control = controlWithValue("a".repeat(10));
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("a".repeat(10));
+      expect(hasErrorFn(field)).toBe(false);
     });
 
     it("should have an error if the value is greater than the max length", () => {
-      const control = controlWithValue("a".repeat(11));
-      expect(hasErrorFn(control)).toBe(true);
+      const field = fieldWithValue("a".repeat(11));
+      expect(hasErrorFn(field)).toBe(true);
     });
 
     it("should return the expected error message", () => {
@@ -115,33 +115,33 @@ describe("Form Validators", () => {
     });
 
     it("should have an error if no value is provided", () => {
-      const control = controlWithValue("a");
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("a");
+      expect(hasErrorFn(field)).toBe(false);
     });
 
     it("should return true if the value does not contain hexadecimal characters", () => {
-      const control = controlWithValue("AR2");
-      expect(hasErrorFn(control)).toBe(true);
+      const field = fieldWithValue("AR2");
+      expect(hasErrorFn(field)).toBe(true);
     });
 
     it("should not have an error if the value only contains characters A-F", () => {
-      const control = controlWithValue("ABCDEF");
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("ABCDEF");
+      expect(hasErrorFn(field)).toBe(false);
     });
 
     it("should not have an error if the value only contains characters a-f", () => {
-      const control = controlWithValue("abcdef");
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("abcdef");
+      expect(hasErrorFn(field)).toBe(false);
     });
 
     it("should not have an error if the value only contains characters 0-9", () => {
-      const control = controlWithValue("0123456789");
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("0123456789");
+      expect(hasErrorFn(field)).toBe(false);
     });
 
     it("should not have an error if the value only contains contains characters 0-9, A-F", () => {
-      const control = controlWithValue("0123456789abcdED");
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("0123456789abcdED");
+      expect(hasErrorFn(field)).toBe(false);
     });
   });
 
@@ -153,68 +153,68 @@ describe("Form Validators", () => {
     });
 
     it("should not have an error if no value is provided", () => {
-      const control = controlWithValue("");
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("");
+      expect(hasErrorFn(field)).toBe(false);
     });
 
     it("should not have an error if the value is a number", () => {
-      const control = controlWithValue("12");
-      expect(hasErrorFn(control)).toBe(false);
+      const field = fieldWithValue("12");
+      expect(hasErrorFn(field)).toBe(false);
     });
 
     it("should have an error if the value is a number and characters", () => {
-      const control = controlWithValue("12abc");
-      expect(hasErrorFn(control)).toBe(true);
+      const field = fieldWithValue("12abc");
+      expect(hasErrorFn(field)).toBe(true);
     });
   });
 
   describe("conditionalOnValue", () => {
-    let control1;
-    let control1Value;
-    let control2;
-    let control2Value;
+    let field1;
+    let field1Value;
+    let field2;
+    let field2Value;
 
     beforeEach(() => {
-      control1Value = "hex id";
-      control1 = new ControlWithValue(control1Value);
+      field1Value = "hex id";
+      field1 = new FieldInput(field1Value);
 
-      control2 = new ControlWithValue(control2Value);
-      control2Value = "beacon model";
+      field2 = new FieldInput(field2Value);
+      field2Value = "beacon model";
 
-      new FormGroupControl({
-        key1: control1,
-        key2: control2,
+      new FieldManager({
+        key1: field1,
+        key2: field2,
       });
     });
 
-    it("should not have an error if the siblings control does not meet the criteria", () => {
+    it("should not have an error if the siblings field does not meet the criteria", () => {
       ({ hasErrorFn } = Validators.conditionalOnValue(
         errorMessage,
         "key1",
         "some other value",
         () => true
       ));
-      expect(hasErrorFn(control1)).toBe(false);
+      expect(hasErrorFn(field1)).toBe(false);
     });
 
-    it("should not have an error if the siblings control meets the criteria but the validation rule does not error", () => {
+    it("should not have an error if the siblings field meets the criteria but the validation rule does not error", () => {
       ({ hasErrorFn } = Validators.conditionalOnValue(
         errorMessage,
         "key1",
-        control1Value,
+        field1Value,
         () => false
       ));
-      expect(hasErrorFn(control1)).toBe(false);
+      expect(hasErrorFn(field1)).toBe(false);
     });
 
-    it("should have an error if the siblings control meets the criteria and the validation rule applies", () => {
+    it("should have an error if the siblings field meets the criteria and the validation rule applies", () => {
       ({ hasErrorFn } = Validators.conditionalOnValue(
         errorMessage,
         "key1",
-        control1Value,
+        field1Value,
         () => true
       ));
-      expect(hasErrorFn(control1)).toBe(true);
+      expect(hasErrorFn(field1)).toBe(true);
     });
   });
 
