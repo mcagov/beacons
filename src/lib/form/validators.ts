@@ -1,12 +1,10 @@
-import { AbstractFormNode } from "./abstractControl";
-
 /**
- * Type definition for a function that validates a form node and returns true if the value violates the rule.
+ * Type definition for a function that validates a form input and returns true if the value violates the rule.
  *
- * @param control {AbstractFormNode}   The form control to validate
- * @returns       {boolean}            True if the value violates the rule
+ * @param formNode {string}    The form value to validate
+ * @returns        {boolean}   True if the value violates the rule
  */
-export type ValidatorFn = (control: AbstractFormNode) => boolean;
+export type ValidatorFn = (value: string) => boolean;
 
 export interface ValidationRule {
   errorMessage: string;
@@ -24,7 +22,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static required(errorMessage: string): ValidationRule {
-    const applies: ValidatorFn = (control: AbstractFormNode) => !control.value;
+    const applies: ValidatorFn = (value: string) => !value;
 
     return {
       errorMessage,
@@ -40,7 +38,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static maxLength(errorMessage: string, max: number): ValidationRule {
-    const applies: ValidatorFn = (control) => control.value.length > max;
+    const applies: ValidatorFn = (value: string) => value.length > max;
 
     return { errorMessage, applies };
   }
@@ -53,7 +51,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static isLength(errorMessage: string, length: number): ValidationRule {
-    const applies: ValidatorFn = (control) => control.value.length !== length;
+    const applies: ValidatorFn = (value: string) => value.length !== length;
 
     return { errorMessage, applies };
   }
@@ -113,34 +111,7 @@ export class Validators {
     errorMessage: string,
     pattern: RegExp
   ): ValidationRule {
-    const applies: ValidatorFn = (control) =>
-      !pattern.test(control.value as string);
-
-    return { errorMessage, applies };
-  }
-
-  /**
-   * Conditional validator that is applied based on a siblings form control value.
-   *
-   * @param errorMessage     {string}        An error message if the rule is violated
-   * @param key              {string}        The dependent controls key
-   * @param value            {string}        The value the dependent controls value must match
-   * @param hasErrorCallback {ValidatorFn}   The validator function to apply to the controls value
-   */
-  public static conditionalOnValue(
-    errorMessage: string,
-    key: string,
-    value: string,
-    hasErrorCallback: ValidatorFn
-  ): ValidationRule {
-    const applies: ValidatorFn = (control) => {
-      const parentControl: AbstractFormNode = control.parent.fields[key];
-      const conditionIsMet = parentControl.value === value;
-      if (conditionIsMet) {
-        return hasErrorCallback(control);
-      }
-      return false;
-    };
+    const applies: ValidatorFn = (value: string) => !pattern.test(value);
 
     return { errorMessage, applies };
   }

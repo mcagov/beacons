@@ -1,5 +1,5 @@
 import { Callback } from "../utils";
-import { AbstractFormNode } from "./abstractControl";
+import { AbstractFormNode } from "./abstractFormNode";
 import { FieldInput } from "./fieldInput";
 import { ValidationRule } from "./validators";
 

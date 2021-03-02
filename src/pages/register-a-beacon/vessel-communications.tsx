@@ -21,7 +21,6 @@ import {
 } from "../../components/Typography";
 import { FieldInput } from "../../lib/form/fieldInput";
 import { FieldManager } from "../../lib/form/fieldManager";
-import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { VesselCommunication } from "../../lib/types";
@@ -56,41 +55,13 @@ const getFieldManager = ({
     callSign: new FieldInput(callSign),
     vhfRadio: new FieldInput(vhfRadio),
     fixedVhfRadio: new FieldInput(fixedVhfRadio),
-    fixedVhfRadioInput: new FieldInput(fixedVhfRadioInput, [
-      Validators.conditionalOnValue(
-        "Fixed VHF radio must not be empty",
-        "fixedVhfRadio",
-        VesselCommunication.FIXED_VHF_RADIO,
-        Validators.required("").applies
-      ),
-    ]),
+    fixedVhfRadioInput: new FieldInput(fixedVhfRadioInput),
     portableVhfRadio: new FieldInput(portableVhfRadio),
-    portableVhfRadioInput: new FieldInput(portableVhfRadioInput, [
-      Validators.conditionalOnValue(
-        "Portable VHF radio must not be empty",
-        "portableVhfRadio",
-        VesselCommunication.PORTABLE_VHF_RADIO,
-        Validators.required("").applies
-      ),
-    ]),
+    portableVhfRadioInput: new FieldInput(portableVhfRadioInput),
     satelliteTelephone: new FieldInput(satelliteTelephone),
-    satelliteTelephoneInput: new FieldInput(satelliteTelephoneInput, [
-      Validators.conditionalOnValue(
-        "Satellite telephone must not be empty",
-        "satelliteTelephone",
-        VesselCommunication.SATELLITE_TELEPHONE,
-        Validators.required("").applies
-      ),
-    ]),
+    satelliteTelephoneInput: new FieldInput(satelliteTelephoneInput),
     mobileTelephone: new FieldInput(mobileTelephone),
-    mobileTelephoneInput1: new FieldInput(mobileTelephoneInput1, [
-      Validators.conditionalOnValue(
-        "Mobile telephone must not be empty",
-        "mobileTelephone",
-        VesselCommunication.MOBILE_TELEPHONE,
-        Validators.required("").applies
-      ),
-    ]),
+    mobileTelephoneInput1: new FieldInput(mobileTelephoneInput1),
     mobileTelephoneInput2: new FieldInput(mobileTelephoneInput2),
   });
 };

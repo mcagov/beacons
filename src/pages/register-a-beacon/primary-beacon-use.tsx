@@ -41,14 +41,7 @@ const getFieldManager = ({
     maritimePleasureVesselUse: new FieldInput(maritimePleasureVesselUse, [
       Validators.required("Maritime pleasure use is a required field"),
     ]),
-    otherPleasureVesselText: new FieldInput(otherPleasureVesselText, [
-      Validators.conditionalOnValue(
-        "Other pleasure vessel must not be empty",
-        "maritimePleasureVesselUse",
-        MaritimePleasureVessel.OTHER,
-        Validators.required("").applies
-      ),
-    ]),
+    otherPleasureVesselText: new FieldInput(otherPleasureVesselText, []),
   });
 };
 

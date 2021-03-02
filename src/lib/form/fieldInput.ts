@@ -1,4 +1,4 @@
-import { AbstractFormNode } from "./abstractControl";
+import { AbstractFormNode } from "./abstractFormNode";
 import { ValidationRule } from "./validators";
 
 /**
@@ -16,5 +16,29 @@ export class FieldInput extends AbstractFormNode {
    */
   public get value(): string {
     return this._value as string;
+  }
+
+  /**
+   * Validates this control against the validation rules.
+   *
+   * @returns {string[]}   The array of error messages
+   */
+  public errorMessages(): string[] {
+    const validators = this.pristine ? [] : this.validators;
+
+    return validators
+      .filter((rule: ValidationRule) => rule.applies(this))
+      .map((rule: ValidationRule) => rule.errorMessage);
+  }
+
+  /**
+   * Determines if the control has any errors.
+   */
+  public hasErrors(): boolean {
+    if (this.pristine) {
+      return false;
+    }
+
+    return this.validators.some((rule: ValidationRule) => rule.applies(this));
   }
 }
