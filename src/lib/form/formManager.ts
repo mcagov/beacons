@@ -6,7 +6,7 @@ import { ValidationRule } from "./validators";
 export type FormError = { fieldId: string; errorMessages: string[] };
 
 /**
- * A class representing the parent for the the {@link FieldInput}.
+ * A class representing the parent for the the {@link FieldManager}.
  */
 export class FormManager extends AbstractFormNode {
   constructor(
