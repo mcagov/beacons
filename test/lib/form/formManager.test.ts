@@ -183,5 +183,66 @@ describe("FormManager", () => {
         ],
       });
     });
+
+    it("should serialise a form with some errors", () => {
+      const errorMessage = "Hex ID is required";
+      formManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(true, errorMessage)]),
+        model: new FieldManager("Beacon model", [
+          validationRule(false, errorMessage),
+        ]),
+      });
+      formManager.markAsDirty();
+      const formJson = formManager.serialise();
+
+      expect(formJson).toStrictEqual({
+        hasErrors: true,
+        fields: {
+          hexId: {
+            value,
+            errorMessages: [errorMessage],
+          },
+          model: {
+            value: "Beacon model",
+            errorMessages: [],
+          },
+        },
+        errorSummary: [{ fieldId: "hexId", errorMessages: [errorMessage] }],
+      });
+    });
+
+    it("should serialise a form without errors if conditional validation rules not met", () => {
+      const errorMessage = "Hex ID is required";
+      formManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(false, errorMessage)]),
+        model: new FieldManager(
+          "Beacon model",
+          [validationRule(true, errorMessage)],
+          [
+            {
+              dependsOn: "hexId",
+              meetingCondition: () => false,
+            },
+          ]
+        ),
+      });
+      formManager.markAsDirty();
+      const formJson = formManager.serialise();
+
+      expect(formJson).toStrictEqual({
+        hasErrors: false,
+        fields: {
+          hexId: {
+            value,
+            errorMessages: [],
+          },
+          model: {
+            value: "Beacon model",
+            errorMessages: [],
+          },
+        },
+        errorSummary: [],
+      });
+    });
   });
 });

@@ -33,7 +33,7 @@ export class FieldManager extends AbstractFormNode {
    * @returns {string[]}   The array of error messages
    */
   public errorMessages(): string[] {
-    const validators = this.pristine ? [] : this.validators;
+    const validators = this.hasErrors() ? this.validators : [];
 
     return validators
       .filter((rule: ValidationRule) => rule.applies(this.value))
