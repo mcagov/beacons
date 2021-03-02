@@ -30,13 +30,13 @@ export class FieldManager extends AbstractFormNode {
    */
   public markAsDirty(): void {
     super.markAsDirty();
-    this.forEachControl((control: AbstractFormNode) => control.markAsDirty());
+    this.forEachControl((control: FieldInput) => control.markAsDirty());
   }
 
   /**
    * Returns the group of controls that the form group manages.
    */
-  public get value(): Record<string, AbstractFormNode> {
+  public get value(): Record<string, FieldInput> {
     return this.fields;
   }
 
@@ -65,20 +65,20 @@ export class FieldManager extends AbstractFormNode {
     }
 
     return Object.keys(this.fields).some((key: string) => {
-      const control: AbstractFormNode = this.fields[key];
-      return control.hasErrors();
+      const field: FieldInput = this.fields[key];
+      return field.hasErrors();
     });
   }
 
   /**
    * Convenience method for iterating over this field managers field inputs and calling the provided callback function.
    *
-   * @param cb {Callback<AbstractFormNode>}   The callback function
+   * @param cb {Callback<FieldInput>}   The callback function
    */
-  private forEachControl(cb: Callback<AbstractFormNode>): void {
+  private forEachControl(cb: Callback<FieldInput>): void {
     Object.keys(this.fields).forEach((key: string) => {
-      const control: AbstractFormNode = this.fields[key];
-      return cb(control);
+      const field: FieldInput = this.fields[key];
+      return cb(field);
     });
   }
 }

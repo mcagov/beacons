@@ -27,7 +27,7 @@ export class FieldInput extends AbstractFormNode {
     const validators = this.pristine ? [] : this.validators;
 
     return validators
-      .filter((rule: ValidationRule) => rule.applies(this))
+      .filter((rule: ValidationRule) => rule.applies(this.value))
       .map((rule: ValidationRule) => rule.errorMessage);
   }
 
@@ -39,6 +39,8 @@ export class FieldInput extends AbstractFormNode {
       return false;
     }
 
-    return this.validators.some((rule: ValidationRule) => rule.applies(this));
+    return this.validators.some((rule: ValidationRule) =>
+      rule.applies(this.value)
+    );
   }
 }
