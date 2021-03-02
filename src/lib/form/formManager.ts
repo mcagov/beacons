@@ -37,21 +37,6 @@ export class FormManager extends AbstractFormNode {
   }
 
   /**
-   * Generates the error summary based on the fields it manages.
-   */
-  public errorSummary(): FormError[] {
-    return Object.keys(this.fields)
-      .filter((control) => this.fields[control].hasErrors())
-      .map((fieldId) => {
-        const fieldInput = this.fields[fieldId];
-        return {
-          fieldId,
-          errorMessages: fieldInput.errorMessages(),
-        };
-      });
-  }
-
-  /**
    * Determines if any of the fields it manages have any errors.
    * @override
    */
@@ -80,17 +65,34 @@ export class FormManager extends AbstractFormNode {
 
   public serialise(): any {
     const hasErrors = this.hasErrors();
-    const fields = Object.keys(this.fields).reduce(
-      (serialisedFields, currentField) => {
-        const fieldManager: FieldManager = this.fields[currentField];
+    const fields = this.serialiseFields();
+    const errorSummary = this.errorSummary();
 
-        serialisedFields[currentField] = fieldManager.serialise();
+    return { hasErrors, fields, errorSummary };
+  }
 
-        return serialisedFields;
-      },
-      {}
-    );
+  private serialiseFields(): any {
+    return Object.keys(this.fields).reduce((serialisedFields, currentField) => {
+      const fieldManager: FieldManager = this.fields[currentField];
 
-    return { hasErrors, fields };
+      serialisedFields[currentField] = fieldManager.serialise();
+
+      return serialisedFields;
+    }, {});
+  }
+
+  /**
+   * Generates the error summary based on the fields it manages.
+   */
+  public errorSummary(): FormError[] {
+    return Object.keys(this.fields)
+      .filter((control) => this.fields[control].hasErrors())
+      .map((fieldId) => {
+        const fieldInput = this.fields[fieldId];
+        return {
+          fieldId,
+          errorMessages: fieldInput.errorMessages(),
+        };
+      });
   }
 }

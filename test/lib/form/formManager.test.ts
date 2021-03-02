@@ -109,7 +109,11 @@ describe("FormManager", () => {
       formManager = new FormManager({});
       const formJson = formManager.serialise();
 
-      expect(formJson).toStrictEqual({ hasErrors: false, fields: {} });
+      expect(formJson).toStrictEqual({
+        hasErrors: false,
+        fields: {},
+        errorSummary: [],
+      });
     });
 
     it("should serialise a form with 1 field and no errors", () => {
@@ -126,6 +130,57 @@ describe("FormManager", () => {
             errorMessages: [],
           },
         },
+        errorSummary: [],
+      });
+    });
+
+    it("should serialise a form with 1 field with errors", () => {
+      const errorMessage = "Hex ID is required";
+      formManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(true, errorMessage)]),
+      });
+      formManager.markAsDirty();
+      const formJson = formManager.serialise();
+
+      expect(formJson).toStrictEqual({
+        hasErrors: true,
+        fields: {
+          hexId: {
+            value,
+            errorMessages: [errorMessage],
+          },
+        },
+        errorSummary: [{ fieldId: "hexId", errorMessages: [errorMessage] }],
+      });
+    });
+
+    it("should serialise a form with multiple errors", () => {
+      const errorMessage = "Hex ID is required";
+      formManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(true, errorMessage)]),
+        model: new FieldManager("Beacon model", [
+          validationRule(true, errorMessage),
+        ]),
+      });
+      formManager.markAsDirty();
+      const formJson = formManager.serialise();
+
+      expect(formJson).toStrictEqual({
+        hasErrors: true,
+        fields: {
+          hexId: {
+            value,
+            errorMessages: [errorMessage],
+          },
+          model: {
+            value: "Beacon model",
+            errorMessages: [errorMessage],
+          },
+        },
+        errorSummary: [
+          { fieldId: "hexId", errorMessages: [errorMessage] },
+          { fieldId: "model", errorMessages: [errorMessage] },
+        ],
       });
     });
   });

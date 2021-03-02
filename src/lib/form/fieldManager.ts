@@ -72,6 +72,9 @@ export class FieldManager extends AbstractFormNode {
   }
 
   public serialise(): any {
-    return { value: "hex id", errorMessages: [] };
+    const value = this._value;
+    const errorMessages = this.errorMessages();
+
+    return { value, errorMessages };
   }
 }
