@@ -25,7 +25,7 @@ interface BuildingNumberAndStreetInputProps {
   errorMessages: string[];
 }
 
-const getFormManager = ({
+const definePageForm = ({
   beaconOwnerAddressLine1,
   beaconOwnerAddressLine2,
   beaconOwnerTownOrCity,
@@ -49,46 +49,44 @@ const getFormManager = ({
 };
 
 const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
-  formData,
-  needsValidation,
+  form,
 }: FormPageProps): JSX.Element => {
-  const formManager = getFormManager(formData);
-  if (needsValidation) {
-    formManager.markAsDirty();
-  }
-  const fields = formManager.fields;
   const pageHeading = "What is the beacon owner's address?";
 
   return (
     <Layout
       navigation={<BackButton href="/register-a-beacon/about-beacon-owner" />}
       title={pageHeading}
-      pageHasErrors={formManager.hasErrors()}
+      pageHasErrors={form.hasErrors}
     >
       <Grid
         mainContent={
           <>
             <Form action="/register-a-beacon/beacon-owner-address">
               <FormFieldset>
-                <FormErrorSummary formErrors={formManager.errorSummary()} />
+                <FormErrorSummary formErrors={form.errorSummary} />
                 <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                 <GovUKBody>
                   The beacon registration certificate and proof of registration
                   labels to stick to the beacon will be sent to this address
                 </GovUKBody>
                 <BuildingNumberAndStreetInput
-                  valueLine1={fields.beaconOwnerAddressLine1.value}
-                  valueLine2={fields.beaconOwnerAddressLine2.value}
-                  errorMessages={fields.beaconOwnerAddressLine1.errorMessages()}
+                  valueLine1={form.fields.beaconOwnerAddressLine1.value}
+                  valueLine2={form.fields.beaconOwnerAddressLine2.value}
+                  errorMessages={
+                    form.fields.beaconOwnerAddressLine1.errorMessages
+                  }
                 />
                 <TownOrCityInput
-                  value={fields.beaconOwnerTownOrCity.value}
-                  errorMessages={fields.beaconOwnerTownOrCity.errorMessages()}
+                  value={form.fields.beaconOwnerTownOrCity.value}
+                  errorMessages={
+                    form.fields.beaconOwnerTownOrCity.errorMessages
+                  }
                 />
-                <CountyInput value={fields.beaconOwnerCounty.value} />
+                <CountyInput value={form.fields.beaconOwnerCounty.value} />
                 <PostcodeInput
-                  value={fields.beaconOwnerPostcode.value}
-                  errorMessages={fields.beaconOwnerPostcode.errorMessages()}
+                  value={form.fields.beaconOwnerPostcode.value}
+                  errorMessages={form.fields.beaconOwnerPostcode.errorMessages}
                 />
               </FormFieldset>
 
@@ -154,7 +152,7 @@ const PostcodeInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/emergency-contact",
-  getFormManager
+  definePageForm
 );
 
 export default BeaconOwnerAddressPage;

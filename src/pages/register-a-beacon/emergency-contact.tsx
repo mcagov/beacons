@@ -32,7 +32,7 @@ export interface EmergencyContactGroupProps {
   telephoneNumberErrors?: boolean;
 }
 
-const getFormManager = ({
+const definePageForm = ({
   emergencyContact1FullName,
   emergencyContact1TelephoneNumber,
   emergencyContact1AlternativeTelephoneNumber,
@@ -72,14 +72,8 @@ const getFormManager = ({
 };
 
 const EmergencyContact: FunctionComponent<FormPageProps> = ({
-  formData,
-  needsValidation,
+  form,
 }: FormPageProps): JSX.Element => {
-  const formManager = getFormManager(formData);
-  if (needsValidation) {
-    formManager.markAsDirty();
-  }
-  const fields = formManager.fields;
   const pageHeading = "Add emergency contact information for up to 3 people";
 
   return (
@@ -89,14 +83,14 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
           <BackButton href="/register-a-beacon/beacon-owner-address" />
         }
         title={pageHeading}
-        pageHasErrors={formManager.hasErrors()}
+        pageHasErrors={form.hasErrors}
       >
         <Grid
           mainContent={
             <>
               <Form action="/register-a-beacon/emergency-contact">
                 <FormFieldset>
-                  <FormErrorSummary formErrors={formManager.errorSummary()} />
+                  <FormErrorSummary formErrors={form.errorSummary} />
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   <InsetText>
                     Your emergency contact information is vital for Search and
@@ -115,36 +109,43 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
 
                   <EmergencyContactGroup
                     index="1"
-                    fullName={fields.emergencyContact1FullName.value}
+                    fullName={form.fields.emergencyContact1FullName.value}
                     telephoneNumber={
-                      fields.emergencyContact1TelephoneNumber.value
+                      form.fields.emergencyContact1TelephoneNumber.value
                     }
                     alternativeTelephoneNumber={
-                      fields.emergencyContact1AlternativeTelephoneNumber.value
+                      form.fields.emergencyContact1AlternativeTelephoneNumber
+                        .value
                     }
-                    fullNameErrorMessages={fields.emergencyContact1FullName.errorMessages()}
-                    telephoneNumberErrorMessages={fields.emergencyContact1TelephoneNumber.errorMessages()}
+                    fullNameErrorMessages={
+                      form.fields.emergencyContact1FullName.errorMessages
+                    }
+                    telephoneNumberErrorMessages={
+                      form.fields.emergencyContact1TelephoneNumber.errorMessages
+                    }
                   />
 
                   <EmergencyContactGroup
                     index="2"
-                    fullName={fields.emergencyContact2FullName.value}
+                    fullName={form.fields.emergencyContact2FullName.value}
                     telephoneNumber={
-                      fields.emergencyContact2TelephoneNumber.value
+                      form.fields.emergencyContact2TelephoneNumber.value
                     }
                     alternativeTelephoneNumber={
-                      fields.emergencyContact2AlternativeTelephoneNumber.value
+                      form.fields.emergencyContact2AlternativeTelephoneNumber
+                        .value
                     }
                   />
 
                   <EmergencyContactGroup
                     index="3"
-                    fullName={fields.emergencyContact3FullName.value}
+                    fullName={form.fields.emergencyContact3FullName.value}
                     telephoneNumber={
-                      fields.emergencyContact3TelephoneNumber.value
+                      form.fields.emergencyContact3TelephoneNumber.value
                     }
                     alternativeTelephoneNumber={
-                      fields.emergencyContact3AlternativeTelephoneNumber.value
+                      form.fields.emergencyContact3AlternativeTelephoneNumber
+                        .value
                     }
                   />
                 </FormFieldset>
@@ -203,7 +204,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/",
-  getFormManager
+  definePageForm
 );
 
 export default EmergencyContact;

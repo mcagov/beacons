@@ -6,6 +6,11 @@ export type ValidationCondition = {
   meetingCondition: (value: string) => boolean;
 };
 
+export type FieldJSON = {
+  value: string;
+  errorMessages: string[];
+};
+
 /**
  * This class is responsible for managing the value of a form input and can run validation rules, and calculate status of the field input.
  */
@@ -33,7 +38,7 @@ export class FieldManager extends AbstractFormNode {
    * @returns {string[]}   The array of error messages
    */
   public errorMessages(): string[] {
-    const validators = this.pristine ? [] : this.validators;
+    const validators = this.hasErrors() ? this.validators : [];
 
     return validators
       .filter((rule: ValidationRule) => rule.applies(this.value))
@@ -62,12 +67,19 @@ export class FieldManager extends AbstractFormNode {
       const dependsOnField = this.parent.fields[validationCondition.dependsOn];
       if (dependsOnField === undefined) {
         throw ReferenceError(
-          `${validationCondition.dependsOn} not found in parent form.  Is the form name correct?`
+          `${validationCondition.dependsOn} not found in parent form.  Is the field name correct?`
         );
       }
       const meetsCondition = validationCondition.meetingCondition;
 
       return meetsCondition(dependsOnField.value);
     });
+  }
+
+  public serialise(): FieldJSON {
+    const value = this._value;
+    const errorMessages = this.errorMessages();
+
+    return { value, errorMessages };
   }
 }

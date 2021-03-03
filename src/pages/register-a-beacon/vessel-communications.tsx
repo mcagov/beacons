@@ -25,20 +25,11 @@ import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { VesselCommunication } from "../../lib/types";
 
-interface VesselCommunicationsProps {
-  fields: Record<string, FieldManager>;
-}
-
-interface PageHeadingInfoProps {
-  heading: string;
-  fieldManager: FormManager;
-}
-
 interface FormInputProps {
   value: string;
 }
 
-const getFormManager = ({
+const definePageForm = ({
   callSign,
   vhfRadio,
   fixedVhfRadio,
@@ -67,26 +58,41 @@ const getFormManager = ({
 };
 
 const VesselCommunications: FunctionComponent<FormPageProps> = ({
-  formData,
-  needsValidation,
+  form,
 }: FormPageProps): JSX.Element => {
-  const formManager = getFormManager(formData);
-  if (needsValidation) {
-    formManager.markAsDirty();
-  }
   const pageHeading = "What types of communications are on board the vessel?";
 
   return (
     <Layout
       navigation={<BackButton href="/register-a-beacon/about-the-vessel" />}
       title={pageHeading}
-      pageHasErrors={formManager.hasErrors()}
+      pageHasErrors={form.hasErrors}
     >
       <Grid
         mainContent={
           <>
-            <PageHeadingInfo heading={pageHeading} fieldManager={formManager} />
-            <VesselCommunicationsForm fields={formManager.fields} />
+            <PageHeading>{pageHeading}</PageHeading>
+            <FormErrorSummary formErrors={form.errorSummary} />
+            <GovUKBody>
+              Details about the onboard communications will be critical for
+              Search and Rescue when trying to contact you in an emergency.
+            </GovUKBody>
+            <GovUKBody>
+              If you have a radio licence and have a Very High Frequency (VHF)
+              and/or Very High Frequency (VHF) / Digital Selective Calling (DSC)
+              radio, you can{" "}
+              <AnchorLink href="https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio">
+                find up your Call Sign and Maritime Mobile Service Identity
+                (MMSI) number on the OFCOM website.
+              </AnchorLink>
+            </GovUKBody>
+            <Form action="/register-a-beacon/vessel-communications">
+              <CallSign value={form.fields.callSign.value} />
+
+              <TypesOfCommunication form={form} />
+
+              <Button buttonText="Continue" />
+            </Form>
             <IfYouNeedHelp />
           </>
         }
@@ -94,40 +100,6 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
     </Layout>
   );
 };
-
-const PageHeadingInfo: FunctionComponent<PageHeadingInfoProps> = ({
-  heading,
-  fieldManager: formGroup,
-}: PageHeadingInfoProps) => (
-  <>
-    <PageHeading>{heading}</PageHeading>
-    <FormErrorSummary formErrors={formGroup.errorSummary()} />
-    <GovUKBody>
-      Details about the onboard communications will be critical for Search and
-      Rescue when trying to contact you in an emergency.
-    </GovUKBody>
-    <GovUKBody>
-      If you have a radio licence and have a Very High Frequency (VHF) and/or
-      Very High Frequency (VHF) / Digital Selective Calling (DSC) radio, you can{" "}
-      <AnchorLink href="https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio">
-        find up your Call Sign and Maritime Mobile Service Identity (MMSI)
-        number on the OFCOM website.
-      </AnchorLink>
-    </GovUKBody>
-  </>
-);
-
-const VesselCommunicationsForm: FunctionComponent<VesselCommunicationsProps> = ({
-  fields,
-}: VesselCommunicationsProps) => (
-  <Form action="/register-a-beacon/vessel-communications">
-    <CallSign value={fields.callSign.value} />
-
-    <TypesOfCommunication fields={fields} />
-
-    <Button buttonText="Continue" />
-  </Form>
-);
 
 const CallSign: FunctionComponent<FormInputProps> = ({
   value,
@@ -146,9 +118,9 @@ const CallSign: FunctionComponent<FormInputProps> = ({
   </>
 );
 
-const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
-  fields,
-}: VesselCommunicationsProps) => (
+const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
+  form,
+}: FormPageProps) => (
   <FormFieldset>
     <FormLegend className="govuk-fieldset__legend--s">
       Types of communication devices onboard
@@ -163,7 +135,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           id="vhfRadio"
           value={VesselCommunication.VHF_RADIO}
           defaultChecked={
-            fields.vhfRadio.value === VesselCommunication.VHF_RADIO
+            form.fields.vhfRadio.value === VesselCommunication.VHF_RADIO
           }
           label="VHF Radio"
         />
@@ -173,17 +145,20 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           label="Fixed VHF/DSC Radio"
           value={VesselCommunication.FIXED_VHF_RADIO}
           defaultChecked={
-            fields.fixedVhfRadio.value === VesselCommunication.FIXED_VHF_RADIO
+            form.fields.fixedVhfRadio.value ===
+            VesselCommunication.FIXED_VHF_RADIO
           }
           conditional={true}
         >
-          <FormGroup errorMessages={fields.fixedVhfRadioInput.errorMessages()}>
+          <FormGroup
+            errorMessages={form.fields.fixedVhfRadioInput.errorMessages}
+          >
             <Input
               id="fixedVhfRadioInput"
               label="Fixed MMSI number"
               hintText="This is the unique MMSI number associated to the vessel, it is 9
           digits long"
-              defaultValue={fields.fixedVhfRadioInput.value}
+              defaultValue={form.fields.fixedVhfRadioInput.value}
             />
           </FormGroup>
         </CheckboxListItem>
@@ -191,20 +166,20 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           id="portableVhfRadio"
           value={VesselCommunication.PORTABLE_VHF_RADIO}
           defaultChecked={
-            fields.portableVhfRadio.value ===
+            form.fields.portableVhfRadio.value ===
             VesselCommunication.PORTABLE_VHF_RADIO
           }
           label="Portable VHF/DSC Radio"
           conditional={true}
         >
           <FormGroup
-            errorMessages={fields.portableVhfRadioInput.errorMessages()}
+            errorMessages={form.fields.portableVhfRadioInput.errorMessages}
           >
             <Input
               id="portableVhfRadioInput"
               label="Portable MMSI number"
               hintText="This is the unique MMSI number associated to the portable radio and is 9 numbers long. E.g. starts with 2359xxxxx"
-              defaultValue={fields.portableVhfRadioInput.value}
+              defaultValue={form.fields.portableVhfRadioInput.value}
             />
           </FormGroup>
         </CheckboxListItem>
@@ -212,20 +187,20 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           id="satelliteTelephone"
           value={VesselCommunication.SATELLITE_TELEPHONE}
           defaultChecked={
-            fields.satelliteTelephone.value ===
+            form.fields.satelliteTelephone.value ===
             VesselCommunication.SATELLITE_TELEPHONE
           }
           label="Satellite Telephone"
           conditional={true}
         >
           <FormGroup
-            errorMessages={fields.satelliteTelephoneInput.errorMessages()}
+            errorMessages={form.fields.satelliteTelephoneInput.errorMessages}
           >
             <Input
               id="satelliteTelephoneInput"
               label="Enter phone number"
               hintText="Iridium usually start: +8707, Thuraya usually start: +8821, Globalstar usually start: +3364)"
-              defaultValue={fields.satelliteTelephoneInput.value}
+              defaultValue={form.fields.satelliteTelephoneInput.value}
             />
           </FormGroup>
         </CheckboxListItem>
@@ -233,27 +208,27 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
           id="mobileTelephone"
           value={VesselCommunication.MOBILE_TELEPHONE}
           defaultChecked={
-            fields.mobileTelephone.value ===
+            form.fields.mobileTelephone.value ===
             VesselCommunication.MOBILE_TELEPHONE
           }
           label="Mobile Telephone(s)"
           conditional={true}
         >
           <FormGroup
-            errorMessages={fields.mobileTelephoneInput1.errorMessages()}
+            errorMessages={form.fields.mobileTelephoneInput1.errorMessages}
           >
             <Input
               id="mobileTelephoneInput1"
               label="Mobile number 1"
               inputClassName="govuk-!-margin-bottom-4"
-              defaultValue={fields.mobileTelephoneInput1.value}
+              defaultValue={form.fields.mobileTelephoneInput1.value}
             />
           </FormGroup>
 
           <Input
             id="mobileTelephoneInput2"
             label="Mobile number 2 (optional)"
-            defaultValue={fields.mobileTelephoneInput2.value}
+            defaultValue={form.fields.mobileTelephoneInput2.value}
           />
         </CheckboxListItem>
       </CheckboxList>
@@ -263,7 +238,7 @@ const TypesOfCommunication: FunctionComponent<VesselCommunicationsProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/more-vessel-details",
-  getFormManager
+  definePageForm
 );
 
 export default VesselCommunications;

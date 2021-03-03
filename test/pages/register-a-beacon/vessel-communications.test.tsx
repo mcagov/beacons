@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { GetServerSidePropsContext } from "next";
 import React from "react";
+import { FormJSON } from "../../../src/lib/form/formManager";
 import { handlePageRequest } from "../../../src/lib/handlePageRequest";
 import VesselCommunications, {
   getServerSideProps,
@@ -12,8 +13,59 @@ jest.mock("../../../src/lib/handlePageRequest", () => ({
 }));
 
 describe("VesselCommunications", () => {
+  const emptyVesselCommunicationsForm: FormJSON = {
+    hasErrors: false,
+    errorSummary: [],
+    fields: {
+      callSign: {
+        value: "",
+        errorMessages: [],
+      },
+      vhfRadio: {
+        value: "",
+        errorMessages: [],
+      },
+      fixedVhfRadio: {
+        value: "",
+        errorMessages: [],
+      },
+      fixedVhfRadioInput: {
+        value: "",
+        errorMessages: [],
+      },
+      portableVhfRadio: {
+        value: "",
+        errorMessages: [],
+      },
+      portableVhfRadioInput: {
+        value: "",
+        errorMessages: [],
+      },
+      satelliteTelephone: {
+        value: "",
+        errorMessages: [],
+      },
+      satelliteTelephoneInput: {
+        value: "",
+        errorMessages: [],
+      },
+      mobileTelephone: {
+        value: "",
+        errorMessages: [],
+      },
+      mobileTelephoneInput1: {
+        value: "",
+        errorMessages: [],
+      },
+      mobileTelephoneInput2: {
+        value: "",
+        errorMessages: [],
+      },
+    },
+  };
+
   it("should have a back button which directs the user to the about the vessel page", () => {
-    render(<VesselCommunications formData={{}} />);
+    render(<VesselCommunications form={emptyVesselCommunicationsForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -22,7 +74,9 @@ describe("VesselCommunications", () => {
   });
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
-    const { container } = render(<VesselCommunications formData={{}} />);
+    const { container } = render(
+      <VesselCommunications form={emptyVesselCommunicationsForm} />
+    );
     const ownPath = "/register-a-beacon/vessel-communications";
 
     const form = container.querySelector("form");

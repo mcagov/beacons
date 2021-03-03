@@ -26,7 +26,7 @@ import { FormManager } from "../../lib/form/formManager";
 import { CacheEntry } from "../../lib/formCache";
 import { handlePageRequest } from "../../lib/handlePageRequest";
 
-const getFormManager = ({
+const definePageForm = ({
   manufacturerSerialNumber,
   beaconCHKCode,
   beaconBatteryExpiryDateMonth,
@@ -217,7 +217,7 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/primary-beacon-use",
-  getFormManager
+  definePageForm
 );
 
 export default BeaconInformationPage;
