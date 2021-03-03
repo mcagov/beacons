@@ -57,19 +57,32 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the form input number to be greater than the number provided.
+   * Validator that requires the form input less than or equal to the number provided.
    *
    * @param errorMessage {string}           An error message if the rule is violated
-   * @param greaterThan  {number}           The number the value should be greater than
+   * @param maxLength    {number}           The number the value should be greater than
    * @returns            {ValidationRule}   A validation rule
    */
-  public static numberIsGreaterThan(
-    errorMessage: string,
-    greaterThan: number
-  ): ValidationRule {
+  public static max(errorMessage: string, maxLength: number): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
-      const number = parseInt(value);
-      return number && number < greaterThan;
+      const valueAsNumber = parseInt(value);
+      return valueAsNumber && valueAsNumber > maxLength;
+    };
+
+    return { errorMessage, applies };
+  }
+
+  /**
+   * Validator that requires the form input number to be greater than or equal to the number provided.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @param minLength    {number}           The number the value should be greater than
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static min(errorMessage: string, minLength: number): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      const valueAsNumber = parseInt(value);
+      return valueAsNumber && valueAsNumber < minLength;
     };
 
     return { errorMessage, applies };
