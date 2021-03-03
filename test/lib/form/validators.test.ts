@@ -92,8 +92,16 @@ describe("Form Validators", () => {
         expect(applies("1")).toBe(true);
       });
 
+      it("should have an error if the number is prefixed with zeros and is less than the required length", () => {
+        expect(applies("0001")).toBe(true);
+      });
+
       it("should not have an error if the value provided is not a number", () => {
         expect(applies("a")).toBe(false);
+      });
+
+      it("should not have an error if the value provided is not a combination of a number and a string", () => {
+        expect(applies("a10")).toBe(false);
       });
 
       it("should not have an error if the value provided is greater than the required length", () => {
