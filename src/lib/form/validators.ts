@@ -11,6 +11,10 @@ export interface ValidationRule {
   applies: ValidatorFn;
 }
 
+function isEmptyInputValue(value: string): boolean {
+  return value == null || value.length === 0;
+}
+
 /**
  * Provides a set of validators that can be applied to a value.
  */
@@ -31,7 +35,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the form input value to be less than or equal to the provided number.
+   * Validator that requires the form input value to be less than or equal to the provided length.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @param max          {number}           The max number of characters allowed
@@ -51,13 +55,14 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static isLength(errorMessage: string, length: number): ValidationRule {
-    const applies: ValidatorFn = (value: string) => value.length !== length;
+    const applies: ValidatorFn = (value: string) =>
+      !isEmptyInputValue(value) && value.length !== length;
 
     return { errorMessage, applies };
   }
 
   /**
-   * Validator that requires the form input less than or equal to the number provided.
+   * Validator that requires the form input less than or equal to the provided number.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @param maxLength    {number}           The number the value should be greater than
@@ -73,7 +78,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the form input number to be greater than or equal to the number provided.
+   * Validator that requires the form input number to be greater than or equal to the provided number.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @param minLength    {number}           The number the value should be greater than

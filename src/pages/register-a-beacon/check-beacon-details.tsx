@@ -33,6 +33,7 @@ const definePageForm = ({
       Validators.required("Beacon model is a required field"),
     ]),
     hexId: new FieldManager(hexId, [
+      Validators.required("Beacon HEX ID or UIN is a required field"),
       Validators.isLength(
         "Beacon HEX ID or UIN must by 15 characters long",
         15
