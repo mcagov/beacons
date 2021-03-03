@@ -12,7 +12,7 @@ export interface ValidationRule {
 }
 
 /**
- * Provides a set of validators that can be applied to an {@link AbstractFormNode}.
+ * Provides a set of validators that can be applied to a value.
  */
 export class Validators {
   /**
@@ -52,6 +52,25 @@ export class Validators {
    */
   public static isLength(errorMessage: string, length: number): ValidationRule {
     const applies: ValidatorFn = (value: string) => value.length !== length;
+
+    return { errorMessage, applies };
+  }
+
+  /**
+   * Validator that requires the form input number to be greater than the number provided.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @param greaterThan  {number}           The number the value should be greater than
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static numberIsGreaterThan(
+    errorMessage: string,
+    greaterThan: number
+  ): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      const number = parseInt(value);
+      return number && number < greaterThan;
+    };
 
     return { errorMessage, applies };
   }

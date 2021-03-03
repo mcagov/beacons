@@ -12,15 +12,15 @@ describe("BeaconInformationPage", () => {
         value: "",
         errorMessages: [],
       },
-      beaconCHKCode: {
+      chkCode: {
         value: "",
         errorMessages: [],
       },
-      beaconBatteryExpiryDateMonth: {
+      batteryExpiryDateMonth: {
         value: "",
         errorMessages: [],
       },
-      beaconBatteryExpiryDateYear: {
+      batteryExpiryDateYear: {
         value: "",
         errorMessages: [],
       },

@@ -46,6 +46,10 @@ const definePageForm = ({
     chkCode: new FieldManager(chkCode),
     batteryExpiryDateMonth: new FieldManager(batteryExpiryDateMonth, [
       Validators.wholeNumber("Battery expiry month must be a whole number"),
+      Validators.numberIsGreaterThan(
+        "Battery expiry month must be greater than 1",
+        1
+      ),
     ]),
     batteryExpiryDateYear: new FieldManager(batteryExpiryDateYear, [
       Validators.wholeNumber("Battery expiry year must be a whole number"),

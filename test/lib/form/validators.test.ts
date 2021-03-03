@@ -81,6 +81,27 @@ describe("Form Validators", () => {
     });
   });
 
+  describe("numberIsGreaterThan", () => {
+    beforeEach(() => {
+      ({ errorMessage, applies } = Validators.numberIsGreaterThan(
+        expectedErrorMessage,
+        10
+      ));
+
+      it("should have an error if the number is less than the required length", () => {
+        expect(applies("1")).toBe(true);
+      });
+
+      it("should not have an error if the value provided is not a number", () => {
+        expect(applies("a")).toBe(false);
+      });
+
+      it("should not have an error if the value provided is greater than the required length", () => {
+        expect(applies("11")).toBe(false);
+      });
+    });
+  });
+
   describe("hexId", () => {
     beforeEach(() => {
       ({ errorMessage, applies } = Validators.hexId(expectedErrorMessage));
