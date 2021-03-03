@@ -20,7 +20,7 @@ import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
-const defineFormRules = ({
+const definePageForm = ({
   manufacturer,
   model,
   hexId,
@@ -140,7 +140,7 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/beacon-information",
-  defineFormRules
+  definePageForm
 );
 
 export default CheckBeaconDetails;

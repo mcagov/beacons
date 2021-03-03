@@ -23,7 +23,7 @@ interface MoreVesselDetailsTextAreaProps {
   errorMessages: string[];
 }
 
-const defineFormRules = ({ moreVesselDetails }: CacheEntry): FormManager => {
+const definePageForm = ({ moreVesselDetails }: CacheEntry): FormManager => {
   return new FormManager({
     moreVesselDetails: new FieldManager(moreVesselDetails, [
       Validators.required("Vessel details is a required fied"),
@@ -93,7 +93,7 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/about-beacon-owner",
-  defineFormRules
+  definePageForm
 );
 
 export default MoreVesselDetails;

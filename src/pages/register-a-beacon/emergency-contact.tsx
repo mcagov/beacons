@@ -32,7 +32,7 @@ export interface EmergencyContactGroupProps {
   telephoneNumberErrors?: boolean;
 }
 
-const defineFormRules = ({
+const definePageForm = ({
   emergencyContact1FullName,
   emergencyContact1TelephoneNumber,
   emergencyContact1AlternativeTelephoneNumber,
@@ -204,7 +204,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/",
-  defineFormRules
+  definePageForm
 );
 
 export default EmergencyContact;

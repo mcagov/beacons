@@ -19,7 +19,7 @@ import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
-const defineFormRules = ({
+const definePageForm = ({
   maxCapacity,
   vesselName,
   homeport,
@@ -184,7 +184,7 @@ const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/vessel-communications",
-  defineFormRules
+  definePageForm
 );
 
 export default AboutTheVessel;

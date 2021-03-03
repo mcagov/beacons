@@ -25,7 +25,7 @@ interface BuildingNumberAndStreetInputProps {
   errorMessages: string[];
 }
 
-const defineFormRules = ({
+const definePageForm = ({
   beaconOwnerAddressLine1,
   beaconOwnerAddressLine2,
   beaconOwnerTownOrCity,
@@ -152,7 +152,7 @@ const PostcodeInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/emergency-contact",
-  defineFormRules
+  definePageForm
 );
 
 export default BeaconOwnerAddressPage;

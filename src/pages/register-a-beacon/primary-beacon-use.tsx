@@ -24,7 +24,7 @@ import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { MaritimePleasureVessel } from "../../lib/types";
 
-const defineFormRules = ({
+const definePageForm = ({
   maritimePleasureVesselUse,
   otherPleasureVesselText,
 }: CacheEntry): FormManager => {
@@ -174,7 +174,7 @@ const setCheckedIfUserSelected = (userSelectedValue, componentValue) => {
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/about-the-vessel",
-  defineFormRules
+  definePageForm
 );
 
 export default PrimaryBeaconUse;
