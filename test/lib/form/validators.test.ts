@@ -89,72 +89,20 @@ describe("Form Validators", () => {
     });
   });
 
-  describe("max", () => {
-    beforeEach(() => {
-      ({ errorMessage, applies } = Validators.max(expectedErrorMessage, 10));
-    });
-
-    it("should have an error if the number is greater than the max length", () => {
-      expect(applies("11")).toBe(true);
-    });
-
-    it("should not have an error if the number is prefixed with zeros and is less than the required length", () => {
-      expect(applies("0001")).toBe(false);
-    });
-
-    it("should not have an error if the number is equal to the max length", () => {
-      expect(applies("10")).toBe(false);
-    });
-
-    it("should not have an error if the value provided is not a number", () => {
-      expect(applies("a")).toBe(false);
-    });
-
-    it("should not have an error if the value provided is not a combination of a number and a string", () => {
-      expect(applies("a10")).toBe(false);
-    });
-  });
-
-  describe("min", () => {
-    beforeEach(() => {
-      ({ errorMessage, applies } = Validators.min(expectedErrorMessage, 10));
-    });
-
-    it("should have an error if the number is less than the required length", () => {
-      expect(applies("1")).toBe(true);
-    });
-
-    it("should have an error if the number is prefixed with zeros and is less than the required length", () => {
-      expect(applies("0001")).toBe(true);
-    });
-
-    it("should not have an error if the value provided is not a number", () => {
-      expect(applies("a")).toBe(false);
-    });
-
-    it("should not have an error if the value provided is a combination of a number and a string", () => {
-      expect(applies("a10")).toBe(false);
-    });
-
-    it("should not have an error if the value provided is greater than the required length", () => {
-      expect(applies("11")).toBe(false);
-    });
-
-    it("should not have an error if the value provided is equal to the minimum length required", () => {
-      expect(applies("11")).toBe(false);
-    });
-  });
-
   describe("hexId", () => {
     beforeEach(() => {
       ({ errorMessage, applies } = Validators.hexId(expectedErrorMessage));
     });
 
-    it("should have an error if no value is provided", () => {
+    it("should not have an error if no value is provided", () => {
+      expect(applies("")).toBe(false);
+    });
+
+    it("should not have an error if the letter is hexadecimal", () => {
       expect(applies("a")).toBe(false);
     });
 
-    it("should return true if the value does not contain hexadecimal characters", () => {
+    it("should have an error if the value does not contain hexadecimal characters", () => {
       expect(applies("AR2")).toBe(true);
     });
 

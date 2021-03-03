@@ -62,38 +62,6 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the form input less than or equal to the provided number.
-   *
-   * @param errorMessage {string}           An error message if the rule is violated
-   * @param maxLength    {number}           The number the value should be greater than
-   * @returns            {ValidationRule}   A validation rule
-   */
-  public static max(errorMessage: string, maxLength: number): ValidationRule {
-    const applies: ValidatorFn = (value: string) => {
-      const valueAsNumber = parseInt(value);
-      return !isNaN(valueAsNumber) && valueAsNumber > maxLength;
-    };
-
-    return { errorMessage, applies };
-  }
-
-  /**
-   * Validator that requires the form input number to be greater than or equal to the provided number.
-   *
-   * @param errorMessage {string}           An error message if the rule is violated
-   * @param minLength    {number}           The number the value should be greater than
-   * @returns            {ValidationRule}   A validation rule
-   */
-  public static min(errorMessage: string, minLength: number): ValidationRule {
-    const applies: ValidatorFn = (value: string) => {
-      const valueAsNumber = parseInt(value);
-      return !isNaN(valueAsNumber) && valueAsNumber < minLength;
-    };
-
-    return { errorMessage, applies };
-  }
-
-  /**
    * Validator that requires the form input value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
    *
    * @param erroMessage {string}           An error message if the rule is violated
@@ -111,7 +79,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static wholeNumber(errorMessage: string): ValidationRule {
-    const wholeNumberRegex = /^$|^[0-9]+$/;
+    const wholeNumberRegex = /^[0-9]+$/;
     return Validators.pattern(errorMessage, wholeNumberRegex);
   }
 
@@ -122,7 +90,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static email(errorMessage: string): ValidationRule {
-    const emailRegex = /^$|[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}/;
+    const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
     return Validators.pattern(errorMessage, emailRegex);
   }
 
@@ -133,7 +101,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static postcode(errorMessage: string): ValidationRule {
-    const emailRegex = /^$|([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})/;
+    const emailRegex = /^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$/;
     return Validators.pattern(errorMessage, emailRegex);
   }
 
@@ -148,7 +116,8 @@ export class Validators {
     errorMessage: string,
     pattern: RegExp
   ): ValidationRule {
-    const applies: ValidatorFn = (value: string) => !pattern.test(value);
+    const applies: ValidatorFn = (value: string) =>
+      !isEmptyInputValue(value) && !pattern.test(value);
 
     return { errorMessage, applies };
   }
