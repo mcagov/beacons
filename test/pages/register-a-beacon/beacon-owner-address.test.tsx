@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { GetServerSidePropsContext } from "next";
 import React from "react";
+import { FormJSON } from "../../../src/lib/form/formManager";
 import { handlePageRequest } from "../../../src/lib/handlePageRequest";
 import BeaconOwnerAddressPage, {
   getServerSideProps,
@@ -12,8 +13,35 @@ jest.mock("../../../src/lib/handlePageRequest", () => ({
 }));
 
 describe("BeaconOwnerAddressPage", () => {
+  const emptyBeaconOwnerAddressForm: FormJSON = {
+    hasErrors: false,
+    fields: {
+      beaconOwnerAddressLine1: {
+        value: "",
+        errorMessages: [],
+      },
+      beaconOwnerAddressLine2: {
+        value: "",
+        errorMessages: [],
+      },
+      beaconOwnerTownOrCity: {
+        value: "",
+        errorMessages: [],
+      },
+      beaconOwnerCounty: {
+        value: "",
+        errorMessages: [],
+      },
+      beaconOwnerPostcode: {
+        value: "",
+        errorMessages: [],
+      },
+    },
+    errorSummary: [],
+  };
+
   it("should have a back button which directs the user to the about beacon owner page", () => {
-    render(<BeaconOwnerAddressPage formData={{}} needsValidation={false} />);
+    render(<BeaconOwnerAddressPage form={emptyBeaconOwnerAddressForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -23,7 +51,7 @@ describe("BeaconOwnerAddressPage", () => {
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <BeaconOwnerAddressPage formData={{}} needsValidation={false} />
+      <BeaconOwnerAddressPage form={emptyBeaconOwnerAddressForm} />
     );
     const ownPath = "/register-a-beacon/beacon-owner-address";
 
@@ -36,9 +64,8 @@ describe("BeaconOwnerAddressPage", () => {
     const context = {};
     await getServerSideProps(context as GetServerSidePropsContext);
 
-    // TODO update emergency contact page URL if different when page created
     const startURL = "/register-a-beacon/emergency-contact";
 
-    expect(handlePageRequest).toHaveBeenCalledWith(startURL);
+    expect(handlePageRequest).toHaveBeenCalledWith(startURL, expect.anything());
   });
 });

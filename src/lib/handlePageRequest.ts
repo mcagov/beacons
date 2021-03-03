@@ -4,8 +4,8 @@ import {
   GetServerSidePropsResult,
 } from "next";
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
+import { FormJSON, FormManager } from "./form/formManager";
 import { CacheEntry } from "./formCache";
-import { FormValidator } from "./formValidator";
 import {
   getCache,
   parseFormData,
@@ -13,34 +13,43 @@ import {
   withCookieRedirect,
 } from "./middleware";
 
-type TransformFunction = (formData: CacheEntry) => CacheEntry;
+type TransformCallback = (formData: CacheEntry) => CacheEntry;
+
+export type FormManagerFactory = (formData: CacheEntry) => FormManager;
 
 export interface FormPageProps {
-  formData: CacheEntry;
-  needsValidation: boolean;
+  form: FormJSON;
 }
 
 export const handlePageRequest = (
   destinationIfValid: string,
-  transformFunction: TransformFunction = (formData) => formData
+  formManagerFactory: FormManagerFactory,
+  transformCallback: TransformCallback = (formData) => formData
 ): GetServerSideProps =>
   withCookieRedirect(async (context: GetServerSidePropsContext) => {
     const userDidSubmitForm = context.req.method === "POST";
 
     if (userDidSubmitForm) {
-      return handlePostRequest(context, destinationIfValid, transformFunction);
+      return handlePostRequest(
+        context,
+        destinationIfValid,
+        formManagerFactory,
+        transformCallback
+      );
     }
 
-    return handleGetRequest(context.req.cookies);
+    return handleGetRequest(context.req.cookies, formManagerFactory);
   });
 
 const handleGetRequest = (
-  cookies: NextApiRequestCookies
+  cookies: NextApiRequestCookies,
+  defineFormRulesCallback: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
+  const formManager = defineFormRulesCallback(getCache(cookies));
+
   return {
     props: {
-      formData: getCache(cookies),
-      needsValidation: false,
+      form: formManager.serialise(),
     },
   };
 };
@@ -48,15 +57,17 @@ const handleGetRequest = (
 export const handlePostRequest = async (
   context: GetServerSidePropsContext,
   destinationIfValid: string,
-  transformFunction: TransformFunction = (formData) => formData
+  formManagerFactory: FormManagerFactory,
+  transformCallback: TransformCallback = (formData) => formData
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
-  const transformedFormData = transformFunction(
+  const transformedFormData = transformCallback(
     await parseFormData(context.req)
   );
-
   updateFormCache(context.req.cookies, transformedFormData);
 
-  const formIsValid = !FormValidator.hasErrors(transformedFormData);
+  const formManager = formManagerFactory(transformedFormData);
+  formManager.markAsDirty();
+  const formIsValid = !formManager.hasErrors();
 
   if (formIsValid) {
     return {
@@ -69,8 +80,7 @@ export const handlePostRequest = async (
 
   return {
     props: {
-      formData: transformedFormData,
-      needsValidation: true,
+      form: formManager.serialise(),
     },
   };
 };

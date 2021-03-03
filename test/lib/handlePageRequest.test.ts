@@ -1,5 +1,5 @@
 // Mock module dependencies in getServerSideProps for testing handlePageRequest()
-import { GetServerSidePropsContext } from "next";
+import { FormJSON } from "../../src/lib/form/formManager";
 import { handlePageRequest } from "../../src/lib/handlePageRequest";
 
 jest.mock("../../src/lib/middleware", () => ({
@@ -13,24 +13,32 @@ jest.mock("../../src/lib/middleware", () => ({
     };
   }),
 }));
-jest.mock("../../src/lib/formValidator", () => ({
-  __esModule: true,
-  FormValidator: {
-    hasErrors: jest.fn().mockReturnValue(false),
-  },
-}));
 
 describe("handlePageRequest()", () => {
-  it("should redirect user to given next page on valid form submission", async () => {
-    const mockUserSubmittedFormContext = {
+  let getFormGroup;
+  let context;
+
+  beforeEach(() => {
+    getFormGroup = () => {
+      return {
+        markAsDirty: jest.fn(),
+        hasErrors: jest.fn().mockReturnValue(false),
+      };
+    };
+
+    context = {
       req: {
         method: "POST",
       },
     };
+  });
+
+  it("should redirect user to given next page on valid form submission", async () => {
     const nextPagePath = "/page-to-redirect-to-if-form-data-is-valid";
-    const response = await handlePageRequest(nextPagePath)(
-      mockUserSubmittedFormContext as GetServerSidePropsContext
-    );
+    const response = await handlePageRequest(
+      nextPagePath,
+      getFormGroup
+    )(context);
 
     expect(response).toStrictEqual({
       redirect: {
@@ -40,26 +48,51 @@ describe("handlePageRequest()", () => {
     });
   });
 
-  it("should return a props object when receives a GET request", async () => {
-    const mockUserAccessedPageWithGETRequest = {
-      req: {
-        method: "GET",
-      },
+  it("should return the serialized form data on invalid form submission", async () => {
+    const expectedFormJSON: FormJSON = {
+      hasErrors: false,
+      errorSummary: [],
+      fields: { hexId: { value: "1234", errorMessages: [] } },
     };
-    const nextPagePath = "/irrelevant";
-    const response = await handlePageRequest(nextPagePath)(
-      mockUserAccessedPageWithGETRequest as GetServerSidePropsContext
-    );
+    getFormGroup = () => {
+      return {
+        markAsDirty: jest.fn(),
+        hasErrors: jest.fn().mockReturnValue(true),
+        serialise: jest.fn().mockReturnValue(expectedFormJSON),
+      };
+    };
+
+    const response = await handlePageRequest("/", getFormGroup)(context);
 
     expect(response).toStrictEqual({
       props: {
-        formData: {},
-        needsValidation: false,
+        form: expectedFormJSON,
       },
     });
   });
 
-  xit("should return a props object with errors on invalid form submission", () => {
-    // TODO
+  it("should return the cached formJSON when it receives a GET request", async () => {
+    const expectedFormJSON: FormJSON = {
+      hasErrors: false,
+      errorSummary: [],
+      fields: { hexId: { value: "1234", errorMessages: [] } },
+    };
+    context.req.method = "GET";
+    const nextPagePath = "/irrelevant";
+    getFormGroup = () => {
+      return {
+        serialise: jest.fn().mockReturnValue(expectedFormJSON),
+      };
+    };
+    const response = await handlePageRequest(
+      nextPagePath,
+      getFormGroup
+    )(context);
+
+    expect(response).toStrictEqual({
+      props: {
+        form: expectedFormJSON,
+      },
+    });
   });
 });

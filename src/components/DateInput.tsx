@@ -14,7 +14,7 @@ interface DateListItemInputProps {
   dateType: DateType;
   name?: string;
   defaultValue?: string;
-  className?: string;
+  errorMessages?: string[];
 }
 
 interface DateInputProps {
@@ -59,11 +59,11 @@ export const DateListItem: FunctionComponent<DateListItemInputProps> = ({
   dateType,
   name = "",
   defaultValue = "",
-  className = "",
+  errorMessages = [],
 }: DateListItemInputProps): JSX.Element => {
   return (
     <div className="govuk-date-input__item">
-      <FormGroup>
+      <FormGroup errorMessages={errorMessages}>
         <FormLabel htmlFor={id} className="govuk-date-input__label">
           {label}
         </FormLabel>

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { GetServerSidePropsContext } from "next";
 import React from "react";
+import { FormJSON } from "../../../src/lib/form/formManager";
 import { handlePageRequest } from "../../../src/lib/handlePageRequest";
 import AboutTheVessel, {
   getServerSideProps,
@@ -12,8 +13,35 @@ jest.mock("../../../src/lib/handlePageRequest", () => ({
 }));
 
 describe("AboutTheVessel", () => {
+  const emptyPrimaryBeaconUseForm: FormJSON = {
+    hasErrors: false,
+    errorSummary: [],
+    fields: {
+      maxCapacity: {
+        value: "",
+        errorMessages: [],
+      },
+      vesselName: {
+        value: "",
+        errorMessages: [],
+      },
+      homeport: {
+        value: "",
+        errorMessages: [],
+      },
+      areaOfOperation: {
+        value: "",
+        errorMessages: [],
+      },
+      beaconLocation: {
+        value: "",
+        errorMessages: [],
+      },
+    },
+  };
+
   it("should have a back button which directs the user to the primary beacon use page", () => {
-    render(<AboutTheVessel formData={{}} needsValidation={false} />);
+    render(<AboutTheVessel form={emptyPrimaryBeaconUseForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -23,7 +51,7 @@ describe("AboutTheVessel", () => {
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <AboutTheVessel formData={{}} needsValidation={false} />
+      <AboutTheVessel form={emptyPrimaryBeaconUseForm} />
     );
     const ownPath = "/register-a-beacon/about-the-vessel";
 
@@ -37,7 +65,8 @@ describe("AboutTheVessel", () => {
     await getServerSideProps(context as GetServerSidePropsContext);
 
     expect(handlePageRequest).toHaveBeenCalledWith(
-      "/register-a-beacon/vessel-communications"
+      "/register-a-beacon/vessel-communications",
+      expect.anything()
     );
   });
 });

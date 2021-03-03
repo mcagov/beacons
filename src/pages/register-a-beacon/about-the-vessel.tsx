@@ -13,79 +13,85 @@ import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
+import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
+import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
-import { FormValidator } from "../../lib/formValidator";
-import { handlePageRequest } from "../../lib/handlePageRequest";
-import { ensureFormDataHasKeys } from "../../lib/utils";
+import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
-interface AboutTheVesselProps {
-  formData: CacheEntry;
-  needsValidation?: boolean;
-}
+const definePageForm = ({
+  maxCapacity,
+  vesselName,
+  homeport,
+  areaOfOperation,
+  beaconLocation,
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    maxCapacity: new FieldManager(maxCapacity, [
+      Validators.required(
+        "Maximum number of persons onboard is a required field"
+      ),
+      Validators.wholeNumber(
+        "Maximum number of persons onboard must be a whole number"
+      ),
+    ]),
+    vesselName: new FieldManager(vesselName),
+    homeport: new FieldManager(homeport),
+    areaOfOperation: new FieldManager(areaOfOperation, [
+      Validators.maxLength(
+        "Typical area of operation has too many characters",
+        250
+      ),
+    ]),
+    beaconLocation: new FieldManager(beaconLocation, [
+      Validators.maxLength(
+        "Where the beacon is kept has too many characters",
+        250
+      ),
+    ]),
+  });
+};
 
-const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
-  formData,
-  needsValidation = false,
-}: AboutTheVesselProps): JSX.Element => {
-  formData = ensureFormDataHasKeys(
-    formData,
-    "maxCapacity",
-    "vesselName",
-    "homeport",
-    "areaOfOperation",
-    "beaconLocation"
-  );
-
-  const errors = FormValidator.errorSummary(formData);
-
-  const {
-    maxCapacity,
-    areaOfOperation,
-    beaconLocation,
-  } = FormValidator.validate(formData);
-
+const AboutTheVessel: FunctionComponent<FormPageProps> = ({
+  form,
+}: FormPageProps): JSX.Element => {
   const pageHeading = "About the pleasure vessel";
-
-  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
 
   return (
     <>
       <Layout
         navigation={<BackButton href="/register-a-beacon/primary-beacon-use" />}
         title={pageHeading}
-        pageHasErrors={pageHasErrors}
+        pageHasErrors={form.hasErrors}
       >
         <Grid
           mainContent={
             <>
-              <FormErrorSummary
-                errors={errors}
-                showErrorSummary={needsValidation}
-              />
+              <FormErrorSummary formErrors={form.errorSummary} />
               <Form action="/register-a-beacon/about-the-vessel">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <MaxCapacityInput
-                    value={formData.maxCapacity}
-                    showErrors={needsValidation && maxCapacity.invalid}
-                    errorMessages={maxCapacity.errorMessages}
+                    value={form.fields.maxCapacity.value}
+                    errorMessages={form.fields.maxCapacity.errorMessages}
                   />
 
-                  <VesselNameInput value={formData.vesselName} />
+                  <VesselNameInput value={form.fields.vesselName.value} />
 
-                  <HomeportInput value={formData.homeport} />
+                  <HomeportInput
+                    value={form.fields.homeport.value}
+                    errorMessages={form.fields.areaOfOperation.errorMessages}
+                  />
 
                   <AreaOfOperationTextArea
-                    value={formData.areaOfOperation}
-                    showErrors={needsValidation && areaOfOperation.invalid}
-                    errorMessages={areaOfOperation.errorMessages}
+                    value={form.fields.areaOfOperation.value}
+                    errorMessages={form.fields.areaOfOperation.errorMessages}
                   />
 
                   <BeaconLocationInput
-                    value={formData.beaconLocation}
-                    showErrors={needsValidation && beaconLocation.invalid}
-                    errorMessages={beaconLocation.errorMessages}
+                    value={form.fields.beaconLocation.value}
+                    errorMessages={form.fields.beaconLocation.errorMessages}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -101,10 +107,9 @@ const AboutTheVessel: FunctionComponent<AboutTheVesselProps> = ({
 
 const MaxCapacityInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input
       id="maxCapacity"
       label="Enter the maximum number of persons onboard"
@@ -146,10 +151,9 @@ const HomeportInput: FunctionComponent<FormInputProps> = ({
 
 const AreaOfOperationTextArea: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <TextareaCharacterCount
       id="areaOfOperation"
       label="Tell us about the typical area of operation (optional)"
@@ -163,10 +167,9 @@ const AreaOfOperationTextArea: FunctionComponent<FormInputProps> = ({
 
 const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <TextareaCharacterCount
       id="beaconLocation"
       label="Tell us where this beacon will be kept (optional)"
@@ -180,7 +183,8 @@ const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/vessel-communications"
+  "/register-a-beacon/vessel-communications",
+  definePageForm
 );
 
 export default AboutTheVessel;
