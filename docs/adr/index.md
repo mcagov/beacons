@@ -8,6 +8,7 @@ This log lists the Architectural Decision Records (ADRs) for the Beacons Registr
 - [ADR-0001-2021-01-28](0001-2021-01-28-technology-choices.md) - Technology Choices
 - [ADR-0002-2021-02-19](0002-2021-02-19-frontend-form-validation.md) - Frontend form validation
 - [ADR-0003-2021-02-24](0003-2021-02-24-when-to-adr.md) - When to create an ADR
+- [ADR-0004-2021-03-03](0004-2021-03-03-frontend-e2e-tests.md) - Fontend end-to-end testing
 
 <!-- adrlogstop -->
 
