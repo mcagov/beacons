@@ -27,9 +27,8 @@ import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
 interface DateInputProps {
   monthValue: string;
-  monthErrorMessages: string[];
   yearValue: string;
-  yearErrorMessages: string[];
+  errorMessages: string[];
 }
 
 const definePageForm = ({
@@ -45,10 +44,18 @@ const definePageForm = ({
       Validators.required("Beacon manufacturer is a required field"),
     ]),
     chkCode: new FieldManager(chkCode),
-    batteryExpiryDateMonth: new FieldManager(batteryExpiryDateMonth),
-    batteryExpiryDateYear: new FieldManager(batteryExpiryDateYear),
-    lastServicedDateMonth: new FieldManager(lastServicedDateMonth),
-    lastServicedDateYear: new FieldManager(lastServicedDateYear),
+    batteryExpiryDateMonth: new FieldManager(batteryExpiryDateMonth, [
+      Validators.wholeNumber("Battery expiry month must be a whole number"),
+    ]),
+    batteryExpiryDateYear: new FieldManager(batteryExpiryDateYear, [
+      Validators.wholeNumber("Battery expiry year must be a whole number"),
+    ]),
+    lastServicedDateMonth: new FieldManager(lastServicedDateMonth, [
+      Validators.wholeNumber("Last serviced date month must be a whole number"),
+    ]),
+    lastServicedDateYear: new FieldManager(lastServicedDateYear, [
+      Validators.wholeNumber("Last serviced date year must be a whole number"),
+    ]),
   });
 };
 
@@ -56,6 +63,16 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
   form,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "Beacon information";
+
+  const batteryExpiryDateErrorMessage = [
+    ...form.fields.batteryExpiryDateMonth.errorMessages,
+    ...form.fields.batteryExpiryDateYear.errorMessages,
+  ];
+
+  const lastServicedDateErrorMessages = [
+    ...form.fields.lastServicedDateMonth.errorMessages,
+    ...form.fields.lastServicedDateYear.errorMessages,
+  ];
 
   return (
     <Layout
@@ -86,24 +103,14 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
 
                 <BatteryExpiryDate
                   monthValue={form.fields.batteryExpiryDateMonth.value}
-                  monthErrorMessages={
-                    form.fields.batteryExpiryDateMonth.errorMessages
-                  }
                   yearValue={form.fields.batteryExpiryDateYear.value}
-                  yearErrorMessages={
-                    form.fields.batteryExpiryDateYear.errorMessages
-                  }
+                  errorMessages={batteryExpiryDateErrorMessage}
                 />
 
                 <LastServicedDate
                   monthValue={form.fields.lastServicedDateMonth.value}
-                  monthErrorMessages={
-                    form.fields.lastServicedDateMonth.errorMessages
-                  }
                   yearValue={form.fields.lastServicedDateYear.value}
-                  yearErrorMessages={
-                    form.fields.lastServicedDateYear.errorMessages
-                  }
+                  errorMessages={lastServicedDateErrorMessages}
                 />
               </FormFieldset>
               <Button buttonText="Continue" />
@@ -163,20 +170,19 @@ const CHKCode: FunctionComponent<FormInputProps> = ({
 
 const BatteryExpiryDate: FunctionComponent<DateInputProps> = ({
   monthValue,
-  monthErrorMessages,
   yearValue,
-  yearErrorMessages,
+  errorMessages,
 }: DateInputProps): JSX.Element => (
   <DateListInput
     id="batteryExpiryDate"
     label="Enter your beacon battery expiry date (optional)"
     hintText="You only need to enter the month and year, for example 11 2009"
+    errorMessages={errorMessages}
   >
     <DateListItem
       id="batteryExpiryDateMonth"
       label="Month"
       defaultValue={monthValue}
-      errorMessages={monthErrorMessages}
       dateType={DateType.MONTH}
     />
 
@@ -184,7 +190,6 @@ const BatteryExpiryDate: FunctionComponent<DateInputProps> = ({
       id="batteryExpiryDateYear"
       label="Year"
       defaultValue={yearValue}
-      errorMessages={yearErrorMessages}
       dateType={DateType.YEAR}
     />
   </DateListInput>
@@ -192,20 +197,19 @@ const BatteryExpiryDate: FunctionComponent<DateInputProps> = ({
 
 const LastServicedDate: FunctionComponent<DateInputProps> = ({
   monthValue,
-  monthErrorMessages,
   yearValue,
-  yearErrorMessages,
+  errorMessages,
 }: DateInputProps): JSX.Element => (
   <DateListInput
     id="lastServicedDate"
     label="When was your beacon last serviced? (optional)"
     hintText="You only need to enter the month and year, for example 11 2009"
+    errorMessages={errorMessages}
   >
     <DateListItem
       id="lastServicedDateMonth"
       label="Month"
       defaultValue={monthValue}
-      errorMessages={monthErrorMessages}
       dateType={DateType.MONTH}
     />
 
@@ -213,7 +217,6 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
       id="lastServicedDateYear"
       label="Year"
       defaultValue={yearValue}
-      errorMessages={yearErrorMessages}
       dateType={DateType.YEAR}
     />
   </DateListInput>

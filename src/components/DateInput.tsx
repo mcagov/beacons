@@ -6,6 +6,7 @@ interface DateListInputProps {
   label: string;
   hintText?: string;
   children: ReactNode;
+  errorMessages?: string[];
 }
 
 interface DateListItemInputProps {
@@ -36,6 +37,7 @@ export const DateListInput: FunctionComponent<DateListInputProps> = ({
   label,
   hintText = "",
   children,
+  errorMessages = [],
 }: DateListInputProps): JSX.Element => {
   let hintComponent: ReactNode;
   if (hintText) {
@@ -43,13 +45,15 @@ export const DateListInput: FunctionComponent<DateListInputProps> = ({
   }
 
   return (
-    <div className="govuk-date-input" id={id}>
-      <FormLabel htmlFor={id} className="govuk-date-input__label">
-        {label}
-      </FormLabel>
-      {hintComponent}
-      {children}
-    </div>
+    <FormGroup errorMessages={errorMessages}>
+      <div className="govuk-date-input" id={id}>
+        <FormLabel htmlFor={id} className="govuk-date-input__label">
+          {label}
+        </FormLabel>
+        {hintComponent}
+        {children}
+      </div>
+    </FormGroup>
   );
 };
 
