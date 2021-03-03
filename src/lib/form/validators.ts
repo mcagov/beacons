@@ -66,7 +66,7 @@ export class Validators {
   public static max(errorMessage: string, maxLength: number): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       const valueAsNumber = parseInt(value);
-      return valueAsNumber && valueAsNumber > maxLength;
+      return !isNaN(valueAsNumber) && valueAsNumber > maxLength;
     };
 
     return { errorMessage, applies };
@@ -82,7 +82,7 @@ export class Validators {
   public static min(errorMessage: string, minLength: number): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       const valueAsNumber = parseInt(value);
-      return valueAsNumber && valueAsNumber < minLength;
+      return !isNaN(valueAsNumber) && valueAsNumber < minLength;
     };
 
     return { errorMessage, applies };

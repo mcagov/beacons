@@ -84,52 +84,56 @@ describe("Form Validators", () => {
   describe("max", () => {
     beforeEach(() => {
       ({ errorMessage, applies } = Validators.max(expectedErrorMessage, 10));
+    });
 
-      it("should have an error if the number is greater than the max length", () => {
-        expect(applies("11")).toBe(true);
-      });
+    it("should have an error if the number is greater than the max length", () => {
+      expect(applies("11")).toBe(true);
+    });
 
-      it("should not have an error if the number is prefixed with zeros and is less than the required length", () => {
-        expect(applies("0001")).toBe(false);
-      });
+    it("should not have an error if the number is prefixed with zeros and is less than the required length", () => {
+      expect(applies("0001")).toBe(false);
+    });
 
-      it("should not have an error if the value provided is not a number", () => {
-        expect(applies("a")).toBe(false);
-      });
+    it("should not have an error if the number is equal to the max length", () => {
+      expect(applies("10")).toBe(false);
+    });
 
-      it("should not have an error if the value provided is not a combination of a number and a string", () => {
-        expect(applies("a10")).toBe(false);
-      });
+    it("should not have an error if the value provided is not a number", () => {
+      expect(applies("a")).toBe(false);
+    });
 
-      it("should have an error if the value provided is greater than the max length", () => {
-        expect(applies("11")).toBe(true);
-      });
+    it("should not have an error if the value provided is not a combination of a number and a string", () => {
+      expect(applies("a10")).toBe(false);
     });
   });
 
   describe("min", () => {
     beforeEach(() => {
       ({ errorMessage, applies } = Validators.min(expectedErrorMessage, 10));
+    });
 
-      it("should have an error if the number is less than the required length", () => {
-        expect(applies("1")).toBe(true);
-      });
+    it("should have an error if the number is less than the required length", () => {
+      expect(applies("1")).toBe(true);
+    });
 
-      it("should have an error if the number is prefixed with zeros and is less than the required length", () => {
-        expect(applies("0001")).toBe(true);
-      });
+    it("should have an error if the number is prefixed with zeros and is less than the required length", () => {
+      expect(applies("0001")).toBe(true);
+    });
 
-      it("should not have an error if the value provided is not a number", () => {
-        expect(applies("a")).toBe(false);
-      });
+    it("should not have an error if the value provided is not a number", () => {
+      expect(applies("a")).toBe(false);
+    });
 
-      it("should not have an error if the value provided is not a combination of a number and a string", () => {
-        expect(applies("a10")).toBe(false);
-      });
+    it("should not have an error if the value provided is a combination of a number and a string", () => {
+      expect(applies("a10")).toBe(false);
+    });
 
-      it("should not have an error if the value provided is greater than the required length", () => {
-        expect(applies("11")).toBeUndefined();
-      });
+    it("should not have an error if the value provided is greater than the required length", () => {
+      expect(applies("11")).toBe(false);
+    });
+
+    it("should not have an error if the value provided is equal to the minimum length required", () => {
+      expect(applies("11")).toBe(false);
     });
   });
 
