@@ -15,7 +15,7 @@ import {
 
 type TransformCallback = (formData: CacheEntry) => CacheEntry;
 
-export type DefineFormRulesCallback = (formData: CacheEntry) => FormManager;
+export type FormManagerFactory = (formData: CacheEntry) => FormManager;
 
 export interface FormPageProps {
   form: FormJSON;
@@ -23,7 +23,7 @@ export interface FormPageProps {
 
 export const handlePageRequest = (
   destinationIfValid: string,
-  defineFormRulesCallback: DefineFormRulesCallback,
+  formManagerFactory: FormManagerFactory,
   transformCallback: TransformCallback = (formData) => formData
 ): GetServerSideProps =>
   withCookieRedirect(async (context: GetServerSidePropsContext) => {
@@ -33,17 +33,17 @@ export const handlePageRequest = (
       return handlePostRequest(
         context,
         destinationIfValid,
-        defineFormRulesCallback,
+        formManagerFactory,
         transformCallback
       );
     }
 
-    return handleGetRequest(context.req.cookies, defineFormRulesCallback);
+    return handleGetRequest(context.req.cookies, formManagerFactory);
   });
 
 const handleGetRequest = (
   cookies: NextApiRequestCookies,
-  defineFormRulesCallback: DefineFormRulesCallback
+  defineFormRulesCallback: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
   const formManager = defineFormRulesCallback(getCache(cookies));
 
@@ -57,7 +57,7 @@ const handleGetRequest = (
 export const handlePostRequest = async (
   context: GetServerSidePropsContext,
   destinationIfValid: string,
-  defineFormRulesCallback: DefineFormRulesCallback,
+  formManagerFactory: FormManagerFactory,
   transformCallback: TransformCallback = (formData) => formData
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
   const transformedFormData = transformCallback(
@@ -65,7 +65,7 @@ export const handlePostRequest = async (
   );
   updateFormCache(context.req.cookies, transformedFormData);
 
-  const formManager = defineFormRulesCallback(transformedFormData);
+  const formManager = formManagerFactory(transformedFormData);
   formManager.markAsDirty();
   const formIsValid = !formManager.hasErrors();
 
