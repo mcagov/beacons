@@ -137,6 +137,31 @@ describe("Form Validators", () => {
     });
   });
 
+  describe("minDate", () => {
+    beforeEach(() => {
+      ({ errorMessage, applies } = Validators.minDate(
+        expectedErrorMessage,
+        2000
+      ));
+    });
+
+    it("should not have an error if the value is null", () => {
+      expect(applies(null)).toBe(false);
+    });
+
+    it("should not have an error if the not a date string", () => {
+      expect(applies("beacon information")).toBe(false);
+    });
+
+    it("should not have an error if the date is greater than the minimum year", () => {
+      expect(applies(new Date().toISOString())).toBe(false);
+    });
+
+    it("should have an error if the date is before the minimum year", () => {
+      expect(applies(new Date(1999, 0, 0).toISOString())).toBe(true);
+    });
+  });
+
   describe("hexId", () => {
     beforeEach(() => {
       ({ errorMessage, applies } = Validators.hexId(expectedErrorMessage));

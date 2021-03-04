@@ -83,7 +83,25 @@ export class Validators {
       const dateNow = Date.now();
       const dateToCompare = Date.parse(value);
 
-      return !isNaN(dateToCompare) && dateNow < dateToCompare;
+      return !isNaN(dateToCompare) && dateToCompare > dateNow;
+    };
+
+    return { errorMessage, applies };
+  }
+
+  /**
+   * Validator that requires the input value date to be greater than or equal to the provided year.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @param year         {number}           The year the date must be greater than or equal to
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static minDate(errorMessage: string, year: number): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      const dateLowerBound = new Date(year, 0, 0).getTime();
+      const dateToCompare = Date.parse(value);
+
+      return !isNaN(dateToCompare) && dateToCompare < dateLowerBound;
     };
 
     return { errorMessage, applies };

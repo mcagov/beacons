@@ -61,7 +61,10 @@ const definePageForm = ({
     chkCode: new FieldManager(chkCode),
     batteryExpiryDate: new FieldManager(
       batteryExpiryDate,
-      [Validators.isValidDate("Enter a complete battery expiry date")],
+      [
+        Validators.isValidDate("Enter a complete battery expiry date"),
+        Validators.minDate("Battery expiry date must be after 1980", 1980),
+      ],
       [
         {
           dependsOn: "batteryExpiryDate",
@@ -77,6 +80,7 @@ const definePageForm = ({
       [
         Validators.isValidDate("Enter a complete last serviced date"),
         Validators.isInThePast("Enter a last serviced date in the past"),
+        Validators.minDate("Last serviced date must be after 1980", 1980),
       ],
       [
         {
