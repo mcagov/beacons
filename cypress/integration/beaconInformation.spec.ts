@@ -56,8 +56,9 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
 
   it("displays errors if the last serviced date in the future", () => {
     const date = new Date();
-    whenIType(`${date.getMonth() + 1}`, "lastServicedDateMonth");
-    whenIType(`${date.getFullYear()}`, "lastServicedDateYear");
+    const futureYear = date.getFullYear() + 1;
+    whenIType(`${date.getMonth()}`, "lastServicedDateMonth");
+    whenIType(`${futureYear}`, "lastServicedDateYear");
     whenIClickContinue();
 
     thenIShouldSeeAnErrorMessageThatContains(dateInThePastErrorMessage);
