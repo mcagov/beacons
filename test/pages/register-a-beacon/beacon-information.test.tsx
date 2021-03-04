@@ -16,6 +16,7 @@ describe("BeaconInformationPage", () => {
         value: "",
         errorMessages: [],
       },
+      batteryExpiryDate: { value: "", errorMessages: [] },
       batteryExpiryDateMonth: {
         value: "",
         errorMessages: [],
@@ -24,6 +25,7 @@ describe("BeaconInformationPage", () => {
         value: "",
         errorMessages: [],
       },
+      lastServicedDate: { value: "", errorMessages: [] },
       lastServicedDateMonth: {
         value: "",
         errorMessages: [],

@@ -19,6 +19,7 @@ import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { toUpperCase } from "../../lib/utils";
 
 const definePageForm = ({
   manufacturer,
@@ -139,7 +140,7 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 );
 
 const transformFormData = (formData: CacheEntry): CacheEntry => {
-  const hexId = (formData["hexId"] || "").toUpperCase();
+  const hexId = toUpperCase(formData["hexId"]);
   formData = { ...formData, hexId };
 
   return formData;

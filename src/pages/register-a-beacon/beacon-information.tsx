@@ -24,6 +24,7 @@ import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { padNumberWithLeadingZero } from "../../lib/utils";
 
 interface DateInputProps {
   monthValue: string;
@@ -255,14 +256,23 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 );
 
 const transformFormData = (formData: CacheEntry): CacheEntry => {
-  formData["batteryExpiryDate"] = getISODate(
-    formData.batteryExpiryDateYear,
-    formData.batteryExpiryDateMonth
-  );
-  formData["lastServicedDate"] = getISODate(
-    formData.lastServicedDateYear,
-    formData.lastServicedDateMonth
-  );
+  formData = {
+    ...formData,
+    batteryExpiryDate: getISODate(
+      formData.batteryExpiryDateYear,
+      formData.batteryExpiryDateMonth
+    ),
+    lastServicedDate: getISODate(
+      formData.lastServicedDateYear,
+      formData.lastServicedDateMonth
+    ),
+    batteryExpiryDateMonth: padNumberWithLeadingZero(
+      formData.batteryExpiryDateMonth
+    ),
+    lastServicedDateMonth: padNumberWithLeadingZero(
+      formData.lastServicedDateMonth
+    ),
+  };
 
   return formData;
 };
