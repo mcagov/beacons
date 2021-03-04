@@ -1,3 +1,5 @@
+import {} from "cypress";
+
 describe("Service start page", () => {
   it("Vists the service start page", () => {
     cy.visit("/");
