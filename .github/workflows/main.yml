@@ -67,6 +67,7 @@ jobs:
     strategy:
       matrix:
         browser: [chrome, firefox]
+        containers: [1, 2]
 
     steps:
       - uses: actions/checkout@v2
@@ -76,6 +77,8 @@ jobs:
           start: npm run start
           build: npm run build
           headless: true
+          record: true
+          parallel: true
           wait-on: "http://localhost:3000"
           browser: ${{ matrix.browser }}
 
