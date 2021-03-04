@@ -135,9 +135,9 @@ describe("Form Validators", () => {
     });
   });
 
-  describe("minDate", () => {
+  describe("minDateYear", () => {
     beforeEach(() => {
-      ({ errorMessage, applies } = Validators.minDate(
+      ({ errorMessage, applies } = Validators.minDateYear(
         expectedErrorMessage,
         2000
       ));

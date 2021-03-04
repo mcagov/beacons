@@ -96,7 +96,10 @@ export class Validators {
    * @param year         {number}           The year the date must be greater than or equal to
    * @returns            {ValidationRule}   A validation rule
    */
-  public static minDate(errorMessage: string, year: number): ValidationRule {
+  public static minDateYear(
+    errorMessage: string,
+    year: number
+  ): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       const dateLowerBound = new Date(year, 0, 0).getTime();
       const dateToCompare = Date.parse(value);
