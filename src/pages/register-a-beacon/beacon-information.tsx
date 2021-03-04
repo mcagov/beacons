@@ -42,36 +42,58 @@ function getISODate(year: string, month: string): string {
 const definePageForm = ({
   manufacturerSerialNumber,
   chkCode,
+  batteryExpiryDate,
   batteryExpiryDateMonth,
   batteryExpiryDateYear,
+  lastServicedDate,
   lastServicedDateMonth,
   lastServicedDateYear,
 }: CacheEntry): FormManager => {
-  const batteryExpiryDate = getISODate(
-    batteryExpiryDateYear,
-    batteryExpiryDateMonth
-  );
-  const lastServicedDate = getISODate(
-    lastServicedDateYear,
-    lastServicedDateMonth
-  );
-
   return new FormManager({
     manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber, [
       Validators.required("Beacon manufacturer is a required field"),
     ]),
     chkCode: new FieldManager(chkCode),
-    batteryExpiryDate: new FieldManager(batteryExpiryDate, [
-      {
-        errorMessage: "Enter a complete battery expiry date",
-        applies: (value) =>
-          (!!batteryExpiryDateMonth || !!batteryExpiryDateYear) &&
-          value !== null,
-      },
-    ]),
+    batteryExpiryDate: new FieldManager(
+      batteryExpiryDate,
+      [
+        {
+          errorMessage: "Enter a complete battery expiry date",
+          applies: (value) => value !== null,
+        },
+      ],
+      [
+        {
+          dependsOn: "batteryExpiryDateMonth",
+          meetingCondition: (value) => !value,
+        },
+        {
+          dependsOn: "batteryExpiryDateYear",
+          meetingCondition: (value) => !value,
+        },
+      ]
+    ),
     batteryExpiryDateMonth: new FieldManager(batteryExpiryDateMonth),
     batteryExpiryDateYear: new FieldManager(batteryExpiryDateYear),
-    lastServicedDate: new FieldManager(lastServicedDate),
+    lastServicedDate: new FieldManager(
+      lastServicedDate,
+      [
+        {
+          errorMessage: "Enter a complete last serviced date",
+          applies: (value) => value !== null,
+        },
+      ],
+      [
+        {
+          dependsOn: "lastServicedDateMonth",
+          meetingCondition: (value) => !!value,
+        },
+        {
+          dependsOn: "lastServicedDateYear",
+          meetingCondition: (value) => !!value,
+        },
+      ]
+    ),
     lastServicedDateMonth: new FieldManager(lastServicedDateMonth),
     lastServicedDateYear: new FieldManager(lastServicedDateYear),
   });
@@ -118,7 +140,7 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
                 <LastServicedDate
                   monthValue={form.fields.lastServicedDateMonth.value}
                   yearValue={form.fields.lastServicedDateYear.value}
-                  errorMessages={[]}
+                  errorMessages={form.fields.lastServicedDate.errorMessages}
                 />
               </FormFieldset>
               <Button buttonText="Continue" />
@@ -232,9 +254,23 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
   </DateListInput>
 );
 
+const transformFormData = (formData: CacheEntry): CacheEntry => {
+  formData["batteryExpiryDate"] = getISODate(
+    formData.batteryExpiryDateYear,
+    formData.batteryExpiryDateMonth
+  );
+  formData["lastServicedDate"] = getISODate(
+    formData.lastServicedDateYear,
+    formData.lastServicedDateMonth
+  );
+
+  return formData;
+};
+
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/primary-beacon-use",
-  definePageForm
+  definePageForm,
+  transformFormData
 );
 
 export default BeaconInformationPage;

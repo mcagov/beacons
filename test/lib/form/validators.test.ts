@@ -64,12 +64,8 @@ describe("Form Validators", () => {
       ));
     });
 
-    it("should not have an error if the value is an empty string", () => {
-      expect(applies("")).toBe(false);
-    });
-
-    it("should not have an error if the value is null", () => {
-      expect(applies(null)).toBe(false);
+    it("should have an error if the value is empty", () => {
+      expect(applies("")).toBe(true);
     });
 
     it("should have an error if the value is less than the required length", () => {

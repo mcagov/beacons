@@ -65,8 +65,6 @@ export const handlePostRequest = async (
   );
   updateFormCache(context.req.cookies, transformedFormData);
 
-  console.log(transformedFormData);
-
   const formManager = formManagerFactory(transformedFormData);
   formManager.markAsDirty();
   const formIsValid = !formManager.hasErrors();
