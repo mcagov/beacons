@@ -24,7 +24,7 @@ export function toUpperCase(value: string): string {
  *
  * @param value        {string}   The number as a string
  * @param targetLength {number}   The length of the resulting string once the provided value has been padded
- * @returns            {string}   The string value with
+ * @returns            {string}   The string value with leading zeros prefixed
  */
 export function padNumberWithLeadingZeros(
   value: string,
