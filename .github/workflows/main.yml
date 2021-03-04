@@ -16,9 +16,7 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v2.1.4
         with:
-          path: |
-            "**/node_modules"
-            "~/.cache/Cypress"
+          path: "**/node_modules"
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
   docker_build:
