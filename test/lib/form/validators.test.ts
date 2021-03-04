@@ -124,9 +124,7 @@ describe("Form Validators", () => {
       expect(applies(new Date().toISOString())).toBe(false);
     });
 
-    it("should have an error if the date is in the past", () => {
-      const date = new Date();
-      date.setDate(date.getDate() - 1);
+    it("should not have an error if the date is in the past", () => {
       expect(applies(new Date().toISOString())).toBe(false);
     });
 
