@@ -138,9 +138,17 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
+const transformFormData = (formData: CacheEntry): CacheEntry => {
+  const hexId = (formData["hexId"] || "").toUpperCase();
+  formData = { ...formData, hexId };
+
+  return formData;
+};
+
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/beacon-information",
-  definePageForm
+  definePageForm,
+  transformFormData
 );
 
 export default CheckBeaconDetails;
