@@ -202,7 +202,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/",
+  "/register-a-beacon/check-your-answers",
   getFormManager
 );
 
