@@ -1,4 +1,4 @@
-# Fontend end-to-end testing
+# Frontend integration testing
 
 ## Status
 
@@ -6,15 +6,15 @@ Accepted
 
 ## Context
 
-The [frontend application](https://github.com/mcagov/beacons-webapp) currently does not have end-to-end tests, and we feel that adding them would help development of the app.
+The [frontend application](https://github.com/mcagov/beacons-webapp) currently does not have integration tests, and we feel that adding them would help development of the app.
 
 ## Decision
 
-We will use [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html#In-a-nutshell) to write end-to-end tests for the frontend app in the [frontend repository](https://github.com/mcagov/beacons-webapp).
+We will use [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html#In-a-nutshell) to write integration tests for the frontend app in the [frontend repository](https://github.com/mcagov/beacons-webapp).
 
 These tests will be used to check the functionality of the application and its pages.
 
-These tests are `end-to-end` within the frontend app - we would mock any API calls from the frontend.
+These `integration` tests are within the frontend app - we would mock any API calls from the frontend.
 
 We will also continue to use unit tests to test other (lower level?) logic that Cypress tests will not cover.
 
@@ -22,6 +22,12 @@ For example:
 
 - Testing that the `back` button on a page will take you to the previous page - Cypress test
 - Testing that the `handlePageRequest` function works as expected - unit test
+
+Following a discussion around the different types of tests and their definitions, we see them as:
+
+- Unit tests - isolated units tested in both the webapp and API repositories
+- Integration tests - tests between system boundaries. API = API service and Database, Webapp = user/browser and webapp
+- End-to-End tests - Testing end-to-end flow = webapp, service, database
 
 ## Key Benefits
 
@@ -36,7 +42,7 @@ For example:
 
 ## Alternatives
 
-We could continue not having end-to-end tests:
+We could continue not having integration tests:
 
 - We would always need manual testing as we make changes
 - This is time-consuming and possibly not as thorough as automated tests based on Acceptance Criteria
