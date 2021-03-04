@@ -33,11 +33,15 @@ interface DateInputProps {
 }
 
 function getISODate(year: string, month: string): string {
-  try {
-    return new Date(`${year}-${month}`).toISOString();
-  } catch {
-    return null;
+  if (year !== "" && month !== "") {
+    try {
+      return new Date(`${year}-${month}`).toISOString();
+    } catch {
+      return null;
+    }
   }
+
+  return null;
 }
 
 const definePageForm = ({
@@ -62,7 +66,7 @@ const definePageForm = ({
         {
           dependsOn: "batteryExpiryDate",
           meetingCondition: () =>
-            batteryExpiryDateMonth !== "" || batteryExpiryDateYear !== "",
+            batteryExpiryDateYear !== "" || batteryExpiryDateMonth !== "",
         },
       ]
     ),

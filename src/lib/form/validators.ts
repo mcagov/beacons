@@ -60,12 +60,24 @@ export class Validators {
     return { errorMessage, applies };
   }
 
+  /**
+   * Validator that requires the input value to be a valid date.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns            {ValidationRule}   A validation rule
+   */
   public static isValidDate(errorMessage: string): ValidationRule {
     const applies: ValidatorFn = (value: string) => isNaN(Date.parse(value));
 
     return { errorMessage, applies };
   }
 
+  /**
+   * Validator that requires the input value date to be in the past.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns            {ValidationRule}   A validation rule
+   */
   public static isInThePast(errorMessage: string): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       const dateNow = Date.now();
