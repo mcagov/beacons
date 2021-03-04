@@ -82,6 +82,7 @@ jobs:
         with:
           start: npm run start
           build: npm run build
+          install: false
           wait-on: "http://localhost:3000"
 
   lint_check:
