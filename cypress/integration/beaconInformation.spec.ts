@@ -20,7 +20,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   });
 
   it("displays errors if the battery expiry date is invalid", () => {
-    whenIType("beacon", "batteryExpiryDateMonth");
+    whenIType("01", "batteryExpiryDateMonth");
     whenIType("beacon", "batteryExpiryDateYear");
     whenIClickContinue();
 
@@ -36,7 +36,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   });
 
   it("displays errors if the last serviced date is invalid", () => {
-    whenIType("beacon", "lastServicedDateMonth");
+    whenIType("01", "lastServicedDateMonth");
     whenIType("beacon", "lastServicedDateYear");
     whenIClickContinue();
 
