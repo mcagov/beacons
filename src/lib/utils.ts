@@ -9,4 +9,14 @@ export function toArray<T>(toConvert: T | T[]): T[] {
   return toReturn.filter((value: T) => !!value);
 }
 
+/**
+ * Convencience function for uppercase a string that could be nullish.
+ *
+ * @param value {string}   The string value; could be null
+ * @returns     {string}   The string value uppercased
+ */
+export function toUpperCase(value: string): string {
+  return (value || "").toUpperCase();
+}
+
 export type Callback<T> = (t: T) => void;

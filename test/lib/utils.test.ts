@@ -1,4 +1,4 @@
-import { toArray } from "../../src/lib/utils";
+import { toArray, toUpperCase } from "../../src/lib/utils";
 
 describe("toArray()", () => {
   it("should convert a number to an array", () => {
@@ -25,5 +25,27 @@ describe("toArray()", () => {
       "beacon",
       "beacon-2",
     ]);
+  });
+});
+
+describe("toUpperCase()", () => {
+  it("should return an empty string if the value is null", () => {
+    expect(toUpperCase(null)).toBe("");
+  });
+
+  it("should return an empty string if the value is undefined", () => {
+    expect(toUpperCase(undefined)).toBe("");
+  });
+
+  it("should convert the string to uppercase", () => {
+    expect(toUpperCase("beacon")).toBe("BEACON");
+  });
+
+  it("should uppercase a mix of characters and numbers", () => {
+    expect(toUpperCase("abc123")).toBe("ABC123");
+  });
+
+  it("should handle only numbers", () => {
+    expect(toUpperCase("123")).toBe("123");
   });
 });
