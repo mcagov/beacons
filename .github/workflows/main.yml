@@ -82,8 +82,6 @@ jobs:
             "**/node_modules"
             "~/.cache/Cypress"
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      - name: Install Dependencies
-        run: npm install
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
         with:
