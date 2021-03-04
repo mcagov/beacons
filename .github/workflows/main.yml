@@ -16,7 +16,9 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v2.1.4
         with:
-          path: "**/node_modules"
+          path: |
+            "**/node_modules"
+            '~/.cache/Cypress'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
   docker_build:
@@ -73,7 +75,9 @@ jobs:
       - name: Restore cache
         uses: actions/cache@v2.1.4
         with:
-          path: "**/node_modules"
+          path: |
+            "**/node_modules"
+            '~/.cache/Cypress'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
         run: npm install
