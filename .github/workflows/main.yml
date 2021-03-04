@@ -75,9 +75,9 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      - name: Build application
+      - name: Build NextJS application
         run: |
-          npm install
+          npm ci
           npm run build
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
