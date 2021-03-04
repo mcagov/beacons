@@ -26,9 +26,9 @@ export function toUpperCase(value: string): string {
  * @param targetLength {number}   The length of the resulting string once the provided value has been padded
  * @returns            {string}   The string value with
  */
-export function padNumberWithLeadingZero(
+export function padNumberWithLeadingZeros(
   value: string,
-  targetLength: number = 2
+  targetLength = 2
 ): string {
   const valueAsNumber = parseInt(value);
   if (isNaN(valueAsNumber)) {

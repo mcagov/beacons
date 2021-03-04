@@ -60,6 +60,23 @@ export class Validators {
     return { errorMessage, applies };
   }
 
+  public static isValidDate(errorMessage: string): ValidationRule {
+    const applies: ValidatorFn = (value: string) => isNaN(Date.parse(value));
+
+    return { errorMessage, applies };
+  }
+
+  public static isInThePast(errorMessage: string): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      const dateNow = Date.now();
+      const dateToCompare = Date.parse(value);
+
+      return !isNaN(dateToCompare) && dateNow < dateToCompare;
+    };
+
+    return { errorMessage, applies };
+  }
+
   /**
    * Validator that requires the form input value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
    *

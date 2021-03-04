@@ -24,7 +24,7 @@ import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
-import { padNumberWithLeadingZero } from "../../lib/utils";
+import { padNumberWithLeadingZeros } from "../../lib/utils";
 
 interface DateInputProps {
   monthValue: string;
@@ -57,20 +57,12 @@ const definePageForm = ({
     chkCode: new FieldManager(chkCode),
     batteryExpiryDate: new FieldManager(
       batteryExpiryDate,
+      [Validators.isValidDate("Enter a complete battery expiry date")],
       [
         {
-          errorMessage: "Enter a complete battery expiry date",
-          applies: (value) => value !== null,
-        },
-      ],
-      [
-        {
-          dependsOn: "batteryExpiryDateMonth",
-          meetingCondition: (value) => !value,
-        },
-        {
-          dependsOn: "batteryExpiryDateYear",
-          meetingCondition: (value) => !value,
+          dependsOn: "batteryExpiryDate",
+          meetingCondition: () =>
+            batteryExpiryDateMonth !== "" || batteryExpiryDateYear !== "",
         },
       ]
     ),
@@ -79,19 +71,14 @@ const definePageForm = ({
     lastServicedDate: new FieldManager(
       lastServicedDate,
       [
-        {
-          errorMessage: "Enter a complete last serviced date",
-          applies: (value) => value !== null,
-        },
+        Validators.isValidDate("Enter a complete last serviced date"),
+        Validators.isInThePast("Enter a last serviced date in the past"),
       ],
       [
         {
-          dependsOn: "lastServicedDateMonth",
-          meetingCondition: (value) => !!value,
-        },
-        {
-          dependsOn: "lastServicedDateYear",
-          meetingCondition: (value) => !!value,
+          dependsOn: "lastServicedDate",
+          meetingCondition: () =>
+            lastServicedDateYear !== "" || lastServicedDateMonth !== "",
         },
       ]
     ),
@@ -205,14 +192,13 @@ const BatteryExpiryDate: FunctionComponent<DateInputProps> = ({
   errorMessages,
 }: DateInputProps): JSX.Element => (
   <DateListInput
-    id="battery-expiry-date"
+    id="batteryExpiryDate"
     label="Enter your beacon battery expiry date (optional)"
     hintText="You only need to enter the month and year, for example 11 2009"
     errorMessages={errorMessages}
   >
     <DateListItem
-      id="batteryExpiryDate"
-      name="batteryExpiryDateMonth"
+      id="batteryExpiryDateMonth"
       label="Month"
       defaultValue={monthValue}
       dateType={DateType.MONTH}
@@ -233,14 +219,13 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
   errorMessages,
 }: DateInputProps): JSX.Element => (
   <DateListInput
-    id="last-serviced-date"
+    id="lastServicedDate"
     label="When was your beacon last serviced? (optional)"
     hintText="You only need to enter the month and year, for example 11 2009"
     errorMessages={errorMessages}
   >
     <DateListItem
-      id="lastServicedDate"
-      name="lastServicedDateMonth"
+      id="lastServicedDateMonth"
       label="Month"
       defaultValue={monthValue}
       dateType={DateType.MONTH}
@@ -266,10 +251,10 @@ const transformFormData = (formData: CacheEntry): CacheEntry => {
       formData.lastServicedDateYear,
       formData.lastServicedDateMonth
     ),
-    batteryExpiryDateMonth: padNumberWithLeadingZero(
+    batteryExpiryDateMonth: padNumberWithLeadingZeros(
       formData.batteryExpiryDateMonth
     ),
-    lastServicedDateMonth: padNumberWithLeadingZero(
+    lastServicedDateMonth: padNumberWithLeadingZeros(
       formData.lastServicedDateMonth
     ),
   };

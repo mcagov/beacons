@@ -1,5 +1,5 @@
 import {
-  padNumberWithLeadingZero,
+  padNumberWithLeadingZeros,
   toArray,
   toUpperCase,
 } from "../../src/lib/utils";
@@ -54,35 +54,38 @@ describe("toUpperCase()", () => {
   });
 });
 
-describe("padNumberWithLeadingZero()", () => {
+describe("padNumberWithLeadingZeros()", () => {
   it("should not pad an empty string", () => {
-    expect(padNumberWithLeadingZero("")).toBe("");
+    expect(padNumberWithLeadingZeros("")).toBe("");
   });
 
   it("should pad a number with a leading zero", () => {
-    expect(padNumberWithLeadingZero("0")).toBe("00");
+    expect(padNumberWithLeadingZeros("0")).toBe("00");
   });
 
   it("should pad all numbers from 0-9 with a leading zero", () => {
     for (let i = 0; i < 10; ++i) {
-      const valueAsString = `${i}`;
-      expect(padNumberWithLeadingZero(valueAsString)).toBe(`0${valueAsString}`);
+      const numberAsString = `${i}`;
+      const leadingZero = "0";
+      expect(padNumberWithLeadingZeros(numberAsString)).toBe(
+        `${leadingZero}${numberAsString}`
+      );
     }
   });
 
   it("should not pad the number if the length is equal to the padding length", () => {
-    expect(padNumberWithLeadingZero("10")).toBe("10");
+    expect(padNumberWithLeadingZeros("10")).toBe("10");
   });
 
   it("should not pad the number if the length is greater than the padding length", () => {
-    expect(padNumberWithLeadingZero("100")).toBe("100");
+    expect(padNumberWithLeadingZeros("100")).toBe("100");
   });
 
   it("should pad the number with the specified padding", () => {
-    expect(padNumberWithLeadingZero("7", 3)).toBe("007");
+    expect(padNumberWithLeadingZeros("7", 3)).toBe("007");
   });
 
   it("should not pad a word", () => {
-    expect(padNumberWithLeadingZero("beacon")).toBe("beacon");
+    expect(padNumberWithLeadingZeros("beacon")).toBe("beacon");
   });
 });

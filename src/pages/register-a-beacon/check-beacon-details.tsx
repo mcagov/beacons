@@ -140,8 +140,7 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 );
 
 const transformFormData = (formData: CacheEntry): CacheEntry => {
-  const hexId = toUpperCase(formData["hexId"]);
-  formData = { ...formData, hexId };
+  formData = { ...formData, hexId: toUpperCase(formData.hexId) };
 
   return formData;
 };
