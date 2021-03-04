@@ -77,6 +77,7 @@ jobs:
         with:
           start: npm run start
           build: npm run build
+          headless: true
           wait-on: "http://localhost:3000"
           browser: ${{ matrix.browser }}
 
