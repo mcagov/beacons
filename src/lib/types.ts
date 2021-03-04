@@ -32,20 +32,15 @@ export interface Beacon {
   model: string;
   hexId: string;
   manufacturerSerialNumber: string;
-  batteryExpiryDate: string;
-  lastServicedDate: string;
-  beaconCHKCode: string;
-  beaconBatteryExpiryDateMonth: string;
-  beaconBatteryExpiryDateYear: string;
-  lastServicedDateMonth: string;
-  lastServicedDateYear: string;
 }
 
 export interface BeaconInformation {
   manufacturerSerialNumber: string;
   chkCode: string;
+  batteryExpiryDate: string;
   batteryExpiryDateMonth: string;
   batteryExpiryDateYear: string;
+  lastServicedDate: string;
   lastServicedDateMonth: string;
   lastServicedDateYear: string;
 }
