@@ -85,6 +85,58 @@ describe("Form Validators", () => {
     });
   });
 
+  describe("isValidDate", () => {
+    beforeEach(() => {
+      ({ errorMessage, applies } = Validators.isValidDate(
+        expectedErrorMessage
+      ));
+    });
+
+    it("should have an error if the value is null", () => {
+      expect(applies(null)).toBe(true);
+    });
+
+    it("should have an error if the not a date string", () => {
+      expect(applies("beacon information")).toBe(true);
+    });
+
+    it("should not have an error if the value is a valid date string", () => {
+      expect(applies(new Date().toISOString())).toBe(false);
+    });
+  });
+
+  describe("isInThePast", () => {
+    beforeEach(() => {
+      ({ errorMessage, applies } = Validators.isInThePast(
+        expectedErrorMessage
+      ));
+    });
+
+    it("should not have an error if the value is null", () => {
+      expect(applies(null)).toBe(false);
+    });
+
+    it("should not have an error if the not a date string", () => {
+      expect(applies("beacon information")).toBe(false);
+    });
+
+    it("should not have an error if the date is now", () => {
+      expect(applies(new Date().toISOString())).toBe(false);
+    });
+
+    it("should have an error if the date is in the past", () => {
+      const date = new Date();
+      date.setDate(date.getDate() - 1);
+      expect(applies(new Date().toISOString())).toBe(false);
+    });
+
+    it("should have an error if the date is in the future", () => {
+      const date = new Date();
+      date.setDate(date.getDate() + 1);
+      expect(applies(date.toISOString())).toBe(true);
+    });
+  });
+
   describe("hexId", () => {
     beforeEach(() => {
       ({ errorMessage, applies } = Validators.hexId(expectedErrorMessage));
