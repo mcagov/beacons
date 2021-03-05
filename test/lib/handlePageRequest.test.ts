@@ -68,6 +68,7 @@ describe("handlePageRequest()", () => {
     expect(response).toStrictEqual({
       props: {
         form: expectedFormJSON,
+        showCookieBanner: true,
       },
     });
   });
@@ -93,6 +94,7 @@ describe("handlePageRequest()", () => {
     expect(response).toStrictEqual({
       props: {
         form: expectedFormJSON,
+        showCookieBanner: true,
       },
     });
   });

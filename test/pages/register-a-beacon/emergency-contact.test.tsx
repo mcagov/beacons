@@ -71,7 +71,7 @@ describe("EmergencyContact", () => {
     );
     const ownPath = "/register-a-beacon/emergency-contact";
 
-    const form = container.querySelector("form");
+    const form = container.querySelectorAll("form")[1];
 
     expect(form).toHaveAttribute("action", ownPath);
   });

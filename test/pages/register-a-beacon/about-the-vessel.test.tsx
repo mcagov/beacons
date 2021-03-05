@@ -55,7 +55,7 @@ describe("AboutTheVessel", () => {
     );
     const ownPath = "/register-a-beacon/about-the-vessel";
 
-    const form = container.querySelector("form");
+    const form = container.querySelectorAll("form")[1];
 
     expect(form).toHaveAttribute("action", ownPath);
   });
