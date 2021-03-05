@@ -1,10 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, LinkButton } from "../../components/Button";
+import { BackButton } from "../../components/Button";
 import { Layout } from "../../components/Layout";
-import { IfYouNeedHelp } from "../../components/Mca";
-import { NotificationBannerSuccess } from "../../components/NotificationBanner";
-import { FormJSON } from "../../lib/form/formManager";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps } from "../../lib/handlePageRequest";
 import {
@@ -14,13 +11,7 @@ import {
   withCookieRedirect,
 } from "../../lib/middleware";
 
-interface BeaconDetailsSummaryProps {
-  form: FormJSON;
-  heading: string;
-}
-
 const CheckBeaconSummaryPage: FunctionComponent<FormPageProps> = ({
-  form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "Beacon details checked";
@@ -34,33 +25,8 @@ const CheckBeaconSummaryPage: FunctionComponent<FormPageProps> = ({
         title={pageHeading}
         showCookieBanner={showCookieBanner}
       >
-        TODO: will be updated in Stuart Mindt's PR
+        TODO: will be removed in Check Answers Summary PR
       </Layout>
-    </>
-  );
-};
-
-const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsSummaryProps> = (
-  props
-): JSX.Element => {
-  return (
-    <>
-      <NotificationBannerSuccess title="Beacon details checked">
-        <div>
-          This beacon is a valid 406MHz UK encoded beacon that has not been
-          registered before.
-        </div>
-        <div>
-          You can now enter the remaining beacon information necessary to
-          register.
-        </div>
-      </NotificationBannerSuccess>
-
-      <LinkButton
-        buttonText={"Continue"}
-        href={"/register-a-beacon/check-your-answers"}
-      />
-      <IfYouNeedHelp />
     </>
   );
 };
