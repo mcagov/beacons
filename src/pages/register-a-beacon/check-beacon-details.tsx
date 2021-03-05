@@ -14,40 +14,54 @@ import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { FormValidator } from "../../lib/formValidator";
+import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
+import { Validators } from "../../lib/form/validators";
+import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
-import { ensureFormDataHasKeys } from "../../lib/utils";
+
+const definePageForm = ({
+  manufacturer,
+  model,
+  hexId,
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    manufacturer: new FieldManager(manufacturer, [
+      Validators.required("Beacon manufacturer is a required field"),
+    ]),
+    model: new FieldManager(model, [
+      Validators.required("Beacon model is a required field"),
+    ]),
+    hexId: new FieldManager(hexId, [
+      Validators.isLength(
+        "Beacon HEX ID or UIN must be 15 characters long",
+        15
+      ),
+      Validators.hexId(
+        "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
+      ),
+    ]),
+  });
+};
 
 const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
-  formData,
-  needsValidation,
+  form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
-  formData = ensureFormDataHasKeys(formData, "manufacturer", "model", "hexId");
-
-  const errors = FormValidator.errorSummary(formData);
-
-  const { manufacturer, model, hexId } = FormValidator.validate(formData);
-
   const pageHeading = "Check beacon details";
-
-  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
 
   return (
     <>
       <Layout
         navigation={<BackButton href="/" />}
         title={pageHeading}
-        pageHasErrors={pageHasErrors}
+        pageHasErrors={form.hasErrors}
         showCookieBanner={showCookieBanner}
       >
         <Grid
           mainContent={
             <>
-              <FormErrorSummary
-                errors={errors}
-                showErrorSummary={needsValidation}
-              />
+              <FormErrorSummary formErrors={form.errorSummary} />
               <Form action="/register-a-beacon/check-beacon-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
@@ -57,21 +71,18 @@ const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
                   </InsetText>
 
                   <BeaconManufacturerInput
-                    value={formData.manufacturer}
-                    showErrors={needsValidation && manufacturer.invalid}
-                    errorMessages={manufacturer.errorMessages}
+                    value={form.fields.manufacturer.value}
+                    errorMessages={form.fields.manufacturer.errorMessages}
                   />
 
                   <BeaconModelInput
-                    value={formData.model}
-                    showErrors={needsValidation && model.invalid}
-                    errorMessages={model.errorMessages}
+                    value={form.fields.model.value}
+                    errorMessages={form.fields.model.errorMessages}
                   />
 
                   <BeaconHexIdInput
-                    value={formData.hexId}
-                    showErrors={needsValidation && hexId.invalid}
-                    errorMessages={hexId.errorMessages}
+                    value={form.fields.hexId.value}
+                    errorMessages={form.fields.hexId.errorMessages}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -87,10 +98,9 @@ const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
 
 const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input
       id="manufacturer"
       label="Enter your beacon manufacturer"
@@ -101,20 +111,18 @@ const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
 
 const BeaconModelInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input id="model" label="Enter your beacon model" defaultValue={value} />
   </FormGroup>
 );
 
 const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <Input
       id="hexId"
       label="Enter the 15 character beacon HEX ID or UIN number"
@@ -132,16 +140,17 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-const uppercaseHexId = (formData) => {
-  return {
-    ...formData,
-    hexId: (formData["hexId"] || "").toUpperCase(),
-  };
+const transformFormData = (formData: CacheEntry): CacheEntry => {
+  const hexId = (formData["hexId"] || "").toUpperCase();
+  formData = { ...formData, hexId };
+
+  return formData;
 };
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/beacon-information",
-  uppercaseHexId
+  definePageForm,
+  transformFormData
 );
 
 export default CheckBeaconDetails;

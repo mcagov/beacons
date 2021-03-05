@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { GetServerSidePropsContext } from "next";
 import React from "react";
+import { FormJSON } from "../../../src/lib/form/formManager";
 import { handlePageRequest } from "../../../src/lib/handlePageRequest";
 import EmergencyContact, {
   getServerSideProps,
@@ -12,14 +13,51 @@ jest.mock("../../../src/lib/handlePageRequest", () => ({
 }));
 
 describe("EmergencyContact", () => {
+  const emptyEmergencyContactForm: FormJSON = {
+    hasErrors: false,
+    fields: {
+      emergencyContact1FullName: {
+        value: "",
+        errorMessages: [],
+      },
+      emergencyContact1TelephoneNumber: {
+        value: "",
+        errorMessages: [],
+      },
+      emergencyContact1AlternativeTelephoneNumber: {
+        value: "",
+        errorMessages: [],
+      },
+      emergencyContact2FullName: {
+        value: "",
+        errorMessages: [],
+      },
+      emergencyContact2TelephoneNumber: {
+        value: "",
+        errorMessages: [],
+      },
+      emergencyContact2AlternativeTelephoneNumber: {
+        value: "",
+        errorMessages: [],
+      },
+      emergencyContact3FullName: {
+        value: "",
+        errorMessages: [],
+      },
+      emergencyContact3TelephoneNumber: {
+        value: "",
+        errorMessages: [],
+      },
+      emergencyContact3AlternativeTelephoneNumber: {
+        value: "",
+        errorMessages: [],
+      },
+    },
+    errorSummary: [],
+  };
+
   it("should have a back button which directs the user to the primary beacon use page", () => {
-    render(
-      <EmergencyContact
-        formData={{}}
-        needsValidation={false}
-        showCookieBanner={false}
-      />
-    );
+    render(<EmergencyContact form={emptyEmergencyContactForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -29,11 +67,7 @@ describe("EmergencyContact", () => {
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <EmergencyContact
-        formData={{}}
-        needsValidation={false}
-        showCookieBanner={false}
-      />
+      <EmergencyContact form={emptyEmergencyContactForm} />
     );
     const ownPath = "/register-a-beacon/emergency-contact";
 
@@ -46,6 +80,6 @@ describe("EmergencyContact", () => {
     const context = {};
     await getServerSideProps(context as GetServerSidePropsContext);
 
-    expect(handlePageRequest).toHaveBeenCalledWith("/");
+    expect(handlePageRequest).toHaveBeenCalledWith("/", expect.anything());
   });
 });

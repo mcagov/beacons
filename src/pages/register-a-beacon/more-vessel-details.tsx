@@ -12,29 +12,33 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
+import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
+import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
-import { FormValidator } from "../../lib/formValidator";
-import { handlePageRequest } from "../../lib/handlePageRequest";
-import { ensureFormDataHasKeys } from "../../lib/utils";
+import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
-interface MoreVesselDetailsProps {
-  formData: CacheEntry;
-  needsValidation: boolean;
+interface MoreVesselDetailsTextAreaProps {
+  value?: string;
+  errorMessages: string[];
 }
 
-const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
-  formData,
-  needsValidation = false,
-}: MoreVesselDetailsProps): JSX.Element => {
-  formData = ensureFormDataHasKeys(formData, "moreVesselDetails");
+const definePageForm = ({ moreVesselDetails }: CacheEntry): FormManager => {
+  return new FormManager({
+    moreVesselDetails: new FieldManager(moreVesselDetails, [
+      Validators.required("Vessel details is a required fied"),
+      Validators.maxLength(
+        "Vessel details must be less than 250 characters",
+        250
+      ),
+    ]),
+  });
+};
 
-  const errors = FormValidator.errorSummary(formData);
-
-  const { moreVesselDetails } = FormValidator.validate(formData);
-
+const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
+  form,
+}: FormPageProps): JSX.Element => {
   const pageHeading = "Tell us more about the vessel";
-
-  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
 
   return (
     <>
@@ -43,23 +47,19 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
           <BackButton href="/register-a-beacon/vessel-communications" />
         }
         title={pageHeading}
-        pageHasErrors={pageHasErrors}
+        pageHasErrors={form.hasErrors}
       >
         <Grid
           mainContent={
             <>
-              <FormErrorSummary
-                errors={errors}
-                showErrorSummary={needsValidation}
-              />
+              <FormErrorSummary formErrors={form.errorSummary} />
               <Form action="/register-a-beacon/more-vessel-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <MoreVesselDetailsTextArea
-                    value={formData.moreVesselDetails}
-                    showErrors={needsValidation && moreVesselDetails.invalid}
-                    errorMessages={moreVesselDetails.errorMessages}
+                    value={form.fields.moreVesselDetails.value}
+                    errorMessages={form.fields.moreVesselDetails.errorMessages}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -73,18 +73,11 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
   );
 };
 
-interface MoreVesselDetailsTextAreaProps {
-  value?: string;
-  showErrors: boolean;
-  errorMessages: string[];
-}
-
 const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProps> = ({
   value = "",
-  showErrors,
   errorMessages,
 }: MoreVesselDetailsTextAreaProps): JSX.Element => (
-  <FormGroup showErrors={showErrors} errorMessages={errorMessages}>
+  <FormGroup errorMessages={errorMessages}>
     <TextareaCharacterCount
       id="moreVesselDetails"
       hintText="Describe the vessel's appearance (such as the length, colour, if it
@@ -99,7 +92,8 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/about-beacon-owner"
+  "/register-a-beacon/about-beacon-owner",
+  definePageForm
 );
 
 export default MoreVesselDetails;

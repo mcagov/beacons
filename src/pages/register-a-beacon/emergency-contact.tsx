@@ -15,9 +15,11 @@ import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { WarningText } from "../../components/WarningText";
-import { FormValidator } from "../../lib/formValidator";
+import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
+import { Validators } from "../../lib/form/validators";
+import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
-import { ensureFormDataHasKeys } from "../../lib/utils";
 
 export interface EmergencyContactGroupProps {
   index: string;
@@ -30,30 +32,50 @@ export interface EmergencyContactGroupProps {
   telephoneNumberErrors?: boolean;
 }
 
+const definePageForm = ({
+  emergencyContact1FullName,
+  emergencyContact1TelephoneNumber,
+  emergencyContact1AlternativeTelephoneNumber,
+  emergencyContact2FullName,
+  emergencyContact2TelephoneNumber,
+  emergencyContact2AlternativeTelephoneNumber,
+  emergencyContact3FullName,
+  emergencyContact3TelephoneNumber,
+  emergencyContact3AlternativeTelephoneNumber,
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    emergencyContact1FullName: new FieldManager(emergencyContact1FullName, [
+      Validators.required("Emergency Contact Full name is a required field"),
+    ]),
+    emergencyContact1TelephoneNumber: new FieldManager(
+      emergencyContact1TelephoneNumber,
+      [Validators.required("Emergency Contact Telephone is a required field")]
+    ),
+    emergencyContact1AlternativeTelephoneNumber: new FieldManager(
+      emergencyContact1AlternativeTelephoneNumber
+    ),
+    emergencyContact2FullName: new FieldManager(emergencyContact2FullName),
+    emergencyContact2TelephoneNumber: new FieldManager(
+      emergencyContact2TelephoneNumber
+    ),
+    emergencyContact2AlternativeTelephoneNumber: new FieldManager(
+      emergencyContact2AlternativeTelephoneNumber
+    ),
+    emergencyContact3FullName: new FieldManager(emergencyContact3FullName),
+    emergencyContact3TelephoneNumber: new FieldManager(
+      emergencyContact3TelephoneNumber
+    ),
+    emergencyContact3AlternativeTelephoneNumber: new FieldManager(
+      emergencyContact3AlternativeTelephoneNumber
+    ),
+  });
+};
+
 const EmergencyContact: FunctionComponent<FormPageProps> = ({
-  formData,
-  needsValidation,
+  form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
-  formData = ensureFormDataHasKeys(
-    formData,
-    "emergencyContact1FullName",
-    "emergencyContact1TelephoneNumber",
-    "emergencyContact1AlternativeTelephoneNumber",
-    "emergencyContact2FullName",
-    "emergencyContact2TelephoneNumber",
-    "emergencyContact2AlternativeTelephoneNumber",
-    "emergencyContact3FullName",
-    "emergencyContact3TelephoneNumber",
-    "emergencyContact3AlternativeTelephoneNumber"
-  );
   const pageHeading = "Add emergency contact information for up to 3 people";
-  const errors = FormValidator.errorSummary(formData);
-  const {
-    emergencyContact1FullName,
-    emergencyContact1TelephoneNumber,
-  } = FormValidator.validate(formData);
-  const pageHasErrors = needsValidation && FormValidator.hasErrors(formData);
 
   return (
     <>
@@ -62,7 +84,7 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
           <BackButton href="/register-a-beacon/beacon-owner-address" />
         }
         title={pageHeading}
-        pageHasErrors={pageHasErrors}
+        pageHasErrors={form.hasErrors}
         showCookieBanner={showCookieBanner}
       >
         <Grid
@@ -70,10 +92,7 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
             <>
               <Form action="/register-a-beacon/emergency-contact">
                 <FormFieldset>
-                  <FormErrorSummary
-                    showErrorSummary={needsValidation}
-                    errors={errors}
-                  />
+                  <FormErrorSummary formErrors={form.errorSummary} />
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   <InsetText>
                     Your emergency contact information is vital for Search and
@@ -92,40 +111,43 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
 
                   <EmergencyContactGroup
                     index="1"
-                    fullName={formData.emergencyContact1FullName}
-                    telephoneNumber={formData.emergencyContact1TelephoneNumber}
-                    alternativeTelephoneNumber={
-                      formData.emergencyContact1AlternativeTelephoneNumber
+                    fullName={form.fields.emergencyContact1FullName.value}
+                    telephoneNumber={
+                      form.fields.emergencyContact1TelephoneNumber.value
                     }
-                    fullNameErrors={
-                      pageHasErrors && emergencyContact1FullName.invalid
+                    alternativeTelephoneNumber={
+                      form.fields.emergencyContact1AlternativeTelephoneNumber
+                        .value
                     }
                     fullNameErrorMessages={
-                      emergencyContact1FullName.errorMessages
-                    }
-                    telephoneNumberErrors={
-                      pageHasErrors && emergencyContact1TelephoneNumber.invalid
+                      form.fields.emergencyContact1FullName.errorMessages
                     }
                     telephoneNumberErrorMessages={
-                      emergencyContact1TelephoneNumber.errorMessages
+                      form.fields.emergencyContact1TelephoneNumber.errorMessages
                     }
                   />
 
                   <EmergencyContactGroup
                     index="2"
-                    fullName={formData.emergencyContact1FullName}
-                    telephoneNumber={formData.emergencyContact1TelephoneNumber}
+                    fullName={form.fields.emergencyContact2FullName.value}
+                    telephoneNumber={
+                      form.fields.emergencyContact2TelephoneNumber.value
+                    }
                     alternativeTelephoneNumber={
-                      formData.emergencyContact1AlternativeTelephoneNumber
+                      form.fields.emergencyContact2AlternativeTelephoneNumber
+                        .value
                     }
                   />
 
                   <EmergencyContactGroup
                     index="3"
-                    fullName={formData.emergencyContact1FullName}
-                    telephoneNumber={formData.emergencyContact1TelephoneNumber}
+                    fullName={form.fields.emergencyContact3FullName.value}
+                    telephoneNumber={
+                      form.fields.emergencyContact3TelephoneNumber.value
+                    }
                     alternativeTelephoneNumber={
-                      formData.emergencyContact1AlternativeTelephoneNumber
+                      form.fields.emergencyContact3AlternativeTelephoneNumber
+                        .value
                     }
                   />
                 </FormFieldset>
@@ -145,9 +167,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
   fullName = "",
   telephoneNumber = "",
   alternativeTelephoneNumber = "",
-  fullNameErrors,
   fullNameErrorMessages,
-  telephoneNumberErrors,
   telephoneNumberErrorMessages,
 }: EmergencyContactGroupProps): JSX.Element => (
   <>
@@ -155,10 +175,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
       Emergency contact {index}
       {index == "1" ? "" : " (optional)"}
     </FormLegend>
-    <FormGroup
-      showErrors={fullNameErrors}
-      errorMessages={fullNameErrorMessages}
-    >
+    <FormGroup errorMessages={fullNameErrorMessages}>
       <Input
         id={"emergencyContact" + index + "FullName"}
         label={
@@ -167,10 +184,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
         defaultValue={fullName}
       />
     </FormGroup>
-    <FormGroup
-      showErrors={telephoneNumberErrors}
-      errorMessages={telephoneNumberErrorMessages}
-    >
+    <FormGroup errorMessages={telephoneNumberErrorMessages}>
       <Input
         id={"emergencyContact" + index + "TelephoneNumber"}
         label={
@@ -190,6 +204,9 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest("/");
+export const getServerSideProps: GetServerSideProps = handlePageRequest(
+  "/",
+  definePageForm
+);
 
 export default EmergencyContact;

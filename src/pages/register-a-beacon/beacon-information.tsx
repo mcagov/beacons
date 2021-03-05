@@ -21,15 +21,34 @@ import { Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import { handlePageRequest } from "../../lib/handlePageRequest";
+import { FieldManager } from "../../lib/form/fieldManager";
+import { FormManager } from "../../lib/form/formManager";
+import { CacheEntry } from "../../lib/formCache";
+import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
-interface BeaconInformationProps {
-  showCookieBanner: boolean;
-}
+const definePageForm = ({
+  manufacturerSerialNumber,
+  beaconCHKCode,
+  beaconBatteryExpiryDateMonth,
+  beaconBatteryExpiryDateYear,
+  lastServicedDateMonth,
+  lastServicedDateYear,
+}: CacheEntry): FormManager => {
+  return new FormManager({
+    manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber),
+    beaconCHKCode: new FieldManager(beaconCHKCode),
+    beaconBatteryExpiryDateMonth: new FieldManager(
+      beaconBatteryExpiryDateMonth
+    ),
+    beaconBatteryExpiryDateYear: new FieldManager(beaconBatteryExpiryDateYear),
+    lastServicedDateMonth: new FieldManager(lastServicedDateMonth),
+    lastServicedDateYear: new FieldManager(lastServicedDateYear),
+  });
+};
 
-const BeaconInformationPage: FunctionComponent<BeaconInformationProps> = ({
-  showCookieBanner = true,
-}: BeaconInformationProps): JSX.Element => {
+const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
+  showCookieBanner,
+}: FormPageProps): JSX.Element => {
   const pageHeading = "Beacon information";
 
   // TODO: Use form validation to set this
@@ -200,7 +219,8 @@ const BeaconLastServicedDate: FunctionComponent = (): JSX.Element => (
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/primary-beacon-use"
+  "/register-a-beacon/primary-beacon-use",
+  definePageForm
 );
 
 export default BeaconInformationPage;

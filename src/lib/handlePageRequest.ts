@@ -4,8 +4,8 @@ import {
   GetServerSidePropsResult,
 } from "next";
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
+import { FormJSON, FormManager } from "./form/formManager";
 import { CacheEntry } from "./formCache";
-import { FormValidator } from "./formValidator";
 import {
   getCache,
   parseFormData,
@@ -14,38 +14,46 @@ import {
 } from "./middleware";
 import { acceptRejectCookieId } from "./types";
 
-type TransformFunction = (formData: CacheEntry) => CacheEntry;
+type TransformCallback = (formData: CacheEntry) => CacheEntry;
+
+export type FormManagerFactory = (formData: CacheEntry) => FormManager;
 
 export interface FormPageProps {
-  formData: CacheEntry;
-  needsValidation: boolean;
-  showCookieBanner: boolean;
+  form: FormJSON;
+  showCookieBanner?: boolean;
 }
 
 export const handlePageRequest = (
   destinationIfValid: string,
-  transformFunction: TransformFunction = (formData) => formData
+  formManagerFactory: FormManagerFactory,
+  transformCallback: TransformCallback = (formData) => formData
 ): GetServerSideProps =>
   withCookieRedirect(async (context: GetServerSidePropsContext) => {
     const userDidSubmitForm = context.req.method === "POST";
 
     if (userDidSubmitForm) {
-      return handlePostRequest(context, destinationIfValid, transformFunction);
+      return handlePostRequest(
+        context,
+        destinationIfValid,
+        formManagerFactory,
+        transformCallback
+      );
     }
 
-    return handleGetRequest(context.req.cookies);
+    return handleGetRequest(context.req.cookies, formManagerFactory);
   });
 
 const handleGetRequest = (
-  cookies: NextApiRequestCookies
+  cookies: NextApiRequestCookies,
+  defineFormRulesCallback: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
-  // Accept/Reject cookies state
+  const formManager = defineFormRulesCallback(getCache(cookies));
   const showCookieBanner = !cookies[acceptRejectCookieId];
+
   return {
     props: {
-      formData: getCache(cookies),
-      needsValidation: false,
-      showCookieBanner: showCookieBanner,
+      form: formManager.serialise(),
+      showCookieBanner,
     },
   };
 };
@@ -53,17 +61,17 @@ const handleGetRequest = (
 export const handlePostRequest = async (
   context: GetServerSidePropsContext,
   destinationIfValid: string,
-  transformFunction: TransformFunction = (formData) => formData
+  formManagerFactory: FormManagerFactory,
+  transformCallback: TransformCallback = (formData) => formData
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
-  // Accept/Reject cookies state
-  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
-  const transformedFormData = transformFunction(
+  const transformedFormData = transformCallback(
     await parseFormData(context.req)
   );
-
   updateFormCache(context.req.cookies, transformedFormData);
 
-  const formIsValid = !FormValidator.hasErrors(transformedFormData);
+  const formManager = formManagerFactory(transformedFormData);
+  formManager.markAsDirty();
+  const formIsValid = !formManager.hasErrors();
 
   if (formIsValid) {
     return {
@@ -74,11 +82,12 @@ export const handlePostRequest = async (
     };
   }
 
+  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
+
   return {
     props: {
-      formData: transformedFormData,
-      needsValidation: true,
-      showCookieBanner: showCookieBanner,
+      form: formManager.serialise(),
+      showCookieBanner,
     },
   };
 };

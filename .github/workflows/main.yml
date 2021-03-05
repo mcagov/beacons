@@ -61,6 +61,25 @@ jobs:
       - name: Run tests
         run: npm run test
 
+  cypress_tests:
+    name: Cypress tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run start
+          build: npm run build
+          headless: true
+          wait-on: "http://localhost:3000"
+          browser: ${{ matrix.browser }}
+
   lint_check:
     name: Lint check
     runs-on: ubuntu-latest
@@ -126,6 +145,7 @@ jobs:
         install_dependencies,
         docker_build,
         unit_tests,
+        cypress_tests,
         lint_check,
         prettier_check,
         docker_lint,
