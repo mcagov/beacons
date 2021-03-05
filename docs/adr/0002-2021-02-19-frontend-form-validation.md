@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Deprecated - we've refactored form validation in [this PR](https://github.com/mcagov/beacons-webapp/pull/123).
 
 ## Context
 
@@ -39,7 +39,7 @@ const validationResponse = (FormValidator.validate(formData) = {
   hexId: {
     valid: false,
     invalid: true,
-    errorMessages: ["Required],
+    errorMessages: ["Required"],
   },
 });
 ```

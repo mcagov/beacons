@@ -30,7 +30,7 @@ _TODO_
 
 ## Architectural Decision Records (ADRs)
 
-We use [ADRs](./docs/adr) to document design choices that address functional and non-functional requirements that are architecturally significant to the Beacons Registration project. Please see the [template](./docs/adr/adr.template) for how to document ADRs for the project.
+We use [ADRs](./docs/adr) to document design choices that address functional and non-functional requirements that are architecturally significant to the Beacons Registration project. Please see this [record](docs/adr/0003-2021-02-24-when-to-adr.md) for how and when to document ADRs for the project.
 
 ### Generating ADR index page
 
@@ -42,4 +42,12 @@ Please see the [AWS installation guide](https://docs.aws.amazon.com/cli/latest/u
 
 ## License
 
-_TODO_
+Unless stated otherwise, the codebase is released under [the MIT License][mit].
+This covers both the codebase and any sample code in the documentation.
+
+The documentation is [&copy; Crown copyright][copyright] and available under the terms
+of the [Open Government 3.0][ogl] licence.
+
+[mit]: LICENCE
+[copyright]: http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/
+[ogl]: http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
