@@ -51,7 +51,7 @@ const CookieInformation: FunctionComponent = (): JSX.Element => (
 
 const EssentialCookies: FunctionComponent = (): JSX.Element => (
   <>
-    <div className="govuk-heading-m">Strictly necessary cookies</div>
+    <h2 className="govuk-heading-m">Strictly necessary cookies</h2>
     <GovUKBody>
       These essential cookies do things like remember your progress through a
       form (for example a beacon registration)
