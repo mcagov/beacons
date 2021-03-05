@@ -44,7 +44,7 @@ const CookieInformation: FunctionComponent = (): JSX.Element => (
       We use cookies to store information about how you use the MCA website,
       such as the beacon registration form data.
     </GovUKBody>
-    <div className="govuk-heading-m">Cookie settings</div>
+    <h2 className="govuk-heading-m">Cookie settings</h2>
     <GovUKBody>We only use 1 type of cookie.</GovUKBody>
   </>
 );

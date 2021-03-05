@@ -20,7 +20,9 @@ interface GovUKListProps {
 
 export const PageHeading: FunctionComponent = ({
   children,
-}: PageHeadingProps) => <h1 className="govuk-heading-l">{children}</h1>;
+}: PageHeadingProps): JSX.Element => (
+  <h1 className="govuk-heading-l">{children}</h1>
+);
 
 export const AnchorLink: FunctionComponent<AnchorLinkProps> = ({
   href,
