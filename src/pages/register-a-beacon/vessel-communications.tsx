@@ -51,7 +51,7 @@ const definePageForm = ({
       fixedVhfRadioInput,
       [
         Validators.required(
-          "We need your MMSI number if you have a fixed VHF radio"
+          "We need your MMSI number if you have a fixed VHF/DSC radio"
         ),
       ],
       [
@@ -67,7 +67,7 @@ const definePageForm = ({
       portableVhfRadioInput,
       [
         Validators.required(
-          "We need your MMSI number if you have a portable VHF/DSC radio"
+          "We need your portable MMSI number if you have a portable VHF/DSC radio"
         ),
       ],
       [
