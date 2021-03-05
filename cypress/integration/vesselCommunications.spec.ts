@@ -1,4 +1,4 @@
-import { whenIClickContinue } from "./common";
+import { whenIClickContinue } from "./common.spec";
 
 describe("As a beacon owner, I want to register my communication details so SAR can contact me in an emergency", () => {
   const pageUrl = "/register-a-beacon/vessel-communications";

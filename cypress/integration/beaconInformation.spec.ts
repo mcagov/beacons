@@ -5,7 +5,7 @@ import {
   thenTheUrlShouldContain,
   whenIClickContinue,
   whenIType,
-} from "./common";
+} from "./common.spec";
 
 describe("As a beacon owner, I want to submit information about my beacon", () => {
   const pageLocation = "/register-a-beacon/beacon-information";

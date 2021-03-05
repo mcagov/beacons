@@ -5,7 +5,7 @@ import {
   thenTheUrlShouldContain,
   whenIClickContinue,
   whenIType,
-} from "./common";
+} from "./common.spec";
 
 describe("As a beacon owner, I want to enter my initial beacon information", () => {
   const validHexId = "ABCDE0123456789";
