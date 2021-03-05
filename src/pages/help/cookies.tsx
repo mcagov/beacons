@@ -2,7 +2,11 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
-import { PageHeading } from "../../components/Typography";
+import {
+  AnchorLink,
+  GovUKBody,
+  PageHeading,
+} from "../../components/Typography";
 import { FormPageProps } from "../../lib/handlePageRequest";
 import { withCookieRedirect } from "../../lib/middleware";
 
@@ -33,33 +37,32 @@ const CookiePage: FunctionComponent<FormPageProps> = ({
 
 const CookieInformation: FunctionComponent = (): JSX.Element => (
   <>
-    <div className="govuk-body">
+    <GovUKBody>
       Cookies are files saved on your phone, tablet or computer when you visit a
       website.
-    </div>
-    <div className="govuk-body">
+    </GovUKBody>
+    <GovUKBody>
       We use cookies to store information about how you use the MCA website,
       such as the beacon registration form data.
-    </div>
+    </GovUKBody>
     <div className="govuk-heading-m">Cookie settings</div>
-    <div className="govuk-body">We only use 1 type of cookie.</div>
+    <GovUKBody>We only use 1 type of cookie.</GovUKBody>
   </>
 );
 
 const EssentialCookies: FunctionComponent = (): JSX.Element => (
   <>
     <div className="govuk-heading-m">Strictly necessary cookies</div>
-    <div className="govuk-body">
+    <GovUKBody>
       These essential cookies do things like remember your progress through a
       form (for example a beacon registration)
-    </div>
-    <div className="govuk-body">They always need to be on.</div>
-    <a
-      className="govuk-link govuk-body"
-      href="https://www.gov.uk/help/cookie-details"
-    >
-      Find out more about cookies on GOV.UK
-    </a>
+    </GovUKBody>
+    <GovUKBody>They always need to be on.</GovUKBody>
+    <GovUKBody>
+      <AnchorLink href="https://www.gov.uk/help/cookie-details">
+        Find out more about cookies on GOV.UK
+      </AnchorLink>
+    </GovUKBody>
   </>
 );
 
