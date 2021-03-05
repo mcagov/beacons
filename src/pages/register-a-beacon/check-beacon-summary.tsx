@@ -1,13 +1,12 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, LinkButton } from "../../components/Button";
-import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { NotificationBannerSuccess } from "../../components/NotificationBanner";
-import { SummaryList, SummaryListItem } from "../../components/SummaryList";
-import { PageHeading } from "../../components/Typography";
+import { FormJSON } from "../../lib/form/formManager";
 import { CacheEntry } from "../../lib/formCache";
+import { FormPageProps } from "../../lib/handlePageRequest";
 import {
   getCache,
   parseFormData,
@@ -15,19 +14,15 @@ import {
   withCookieRedirect,
 } from "../../lib/middleware";
 
-interface BeaconDetailsProps {
-  manufacturer: string;
-  model: string;
-  hexId: string;
-}
-
-interface BeaconDetailsSummaryProps extends BeaconDetailsProps {
+interface BeaconDetailsSummaryProps {
+  form: FormJSON;
   heading: string;
 }
 
-const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
-  props
-): JSX.Element => {
+const CheckBeaconSummaryPage: FunctionComponent<FormPageProps> = ({
+  form,
+  showCookieBanner,
+}: FormPageProps): JSX.Element => {
   const pageHeading = "Beacon details checked";
 
   return (
@@ -37,13 +32,9 @@ const CheckBeaconSummaryPage: FunctionComponent<BeaconDetailsProps> = (
           <BackButton href="/register-a-beacon/check-beacon-details" />
         }
         title={pageHeading}
-        pageHasErrors={false}
+        showCookieBanner={showCookieBanner}
       >
-        <Grid
-          mainContent={
-            <BeaconNotRegisteredView {...props} heading={pageHeading} />
-          }
-        />
+        TODO: will be updated in Stuart Mindt's PR
       </Layout>
     </>
   );
@@ -64,7 +55,7 @@ const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsSummaryProps> = (
           register.
         </div>
       </NotificationBannerSuccess>
-      <BeaconSummary {...props} />
+
       <LinkButton
         buttonText={"Continue"}
         href={"/register-a-beacon/check-your-answers"}
@@ -73,30 +64,6 @@ const BeaconNotRegisteredView: FunctionComponent<BeaconDetailsSummaryProps> = (
     </>
   );
 };
-
-const BeaconSummary: FunctionComponent<BeaconDetailsSummaryProps> = ({
-  manufacturer,
-  model,
-  hexId,
-  heading,
-}: BeaconDetailsSummaryProps): JSX.Element => (
-  <>
-    <PageHeading>{heading}</PageHeading>
-    <SummaryList>
-      <SummaryListItem
-        labelText="Beacon manufacturer"
-        valueText={manufacturer}
-      />
-      <SummaryListItem labelText="Beacon model" valueText={model} />
-      <SummaryListItem labelText="Beacon HEX ID" valueText={hexId} />
-      <SummaryListItem
-        labelText="Date registered"
-        // TODO: Lookup for date registered if beacon already in system
-        valueText="Not yet registered"
-      />
-    </SummaryList>
-  </>
-);
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {

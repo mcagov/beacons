@@ -7,11 +7,11 @@ import { PhaseBanner } from "./PhaseBanner";
 
 interface LayoutProps {
   children: ReactNode;
-  showCookieBanner: boolean;
+  showCookieBanner?: boolean;
   head?: ReactNode;
   navigation?: ReactNode;
   title: string;
-  pageHasErrors: boolean;
+  pageHasErrors?: boolean;
 }
 
 interface BeaconRegistrationHeadProps {
@@ -22,7 +22,7 @@ interface BeaconRegistrationHeadProps {
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
   title,
-  pageHasErrors,
+  pageHasErrors = false,
   head = <BeaconRegistrationHead title={title} pageHasErrors={pageHasErrors} />,
   navigation = null,
   showCookieBanner = true,

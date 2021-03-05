@@ -1,30 +1,18 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";
 import { BeaconRegistryContactInfo } from "../components/Mca";
-import { GovUKBody } from "../components/Typography";
-import { acceptRejectCookieId } from "../lib/types";
+import { GovUKBody, PageHeading } from "../components/Typography";
 
-interface FourOhFourProps {
-  showCookieBanner: boolean;
-}
-
-const FourOhFour: FunctionComponent<FourOhFourProps> = ({
-  showCookieBanner,
-}: FourOhFourProps): JSX.Element => {
+const FourOhFour: FunctionComponent = (): JSX.Element => {
   const pageHeading = "Page not found";
 
   return (
-    <Layout
-      title={pageHeading}
-      pageHasErrors={false}
-      showCookieBanner={showCookieBanner}
-    >
+    <Layout title={pageHeading} pageHasErrors={false}>
       <Grid
         mainContent={
           <>
-            <h1 className="govuk-heading-l">{pageHeading}</h1>
+            <PageHeading>{pageHeading}</PageHeading>
             <GovUKBody>
               If you typed the web address, check it is correct.
             </GovUKBody>
@@ -44,18 +32,6 @@ const FourOhFour: FunctionComponent<FourOhFourProps> = ({
       />
     </Layout>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
-
-  return {
-    props: {
-      showCookieBanner,
-    },
-  };
 };
 
 export default FourOhFour;

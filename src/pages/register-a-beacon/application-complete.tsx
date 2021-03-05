@@ -5,13 +5,15 @@ import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
 import { GovUKBody } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { withCookieRedirect } from "../../lib/middleware";
 
-const ApplicationCompletePage: FunctionComponent<FormPageProps> = ({
-  formData,
-  needsValidation,
+interface ApplicationCompletePageProps {
+  showCookieBanner: boolean;
+}
+
+const ApplicationCompletePage: FunctionComponent<ApplicationCompletePageProps> = ({
   showCookieBanner,
-}: FormPageProps): JSX.Element => {
+}: ApplicationCompletePageProps): JSX.Element => {
   const pageHeading = "Application Complete";
 
   return (
@@ -61,6 +63,12 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest("/");
+export const getServerSideProps: GetServerSideProps = withCookieRedirect(
+  async () => {
+    return {
+      props: {},
+    };
+  }
+);
 
 export default ApplicationCompletePage;
