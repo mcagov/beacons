@@ -35,7 +35,7 @@ interface DateInputProps {
 function getISODate(year: string, month: string): string {
   if (year !== "" && month !== "") {
     try {
-      return new Date(parseInt(year), parseInt(month) - 1).toISOString();
+      return new Date(Number(year), Number(month) - 1).toISOString();
     } catch {
       return null;
     }
