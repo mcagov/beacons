@@ -1,3 +1,4 @@
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
@@ -6,19 +7,19 @@ import {
   GovUKBody,
   PageHeading,
 } from "../../components/Typography";
-import { FormPageProps } from "../../lib/handlePageRequest";
+import { acceptRejectCookieId } from "../../lib/types";
 
-const CookiePage: FunctionComponent<FormPageProps> = ({
+interface CookiePageProps {
+  showCookieBanner: boolean;
+}
+
+const CookiePage: FunctionComponent<CookiePageProps> = ({
   showCookieBanner,
-}: FormPageProps): JSX.Element => {
+}: CookiePageProps): JSX.Element => {
   const pageHeading = "Cookies on Maritime and Coastguard Agency";
   return (
     <>
-      <Layout
-        title={pageHeading}
-        pageHasErrors={false}
-        showCookieBanner={showCookieBanner}
-      >
+      <Layout title={pageHeading} showCookieBanner={showCookieBanner}>
         <Grid
           mainContent={
             <>
@@ -64,4 +65,15 @@ const EssentialCookies: FunctionComponent = (): JSX.Element => (
   </>
 );
 
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
+
+  return {
+    props: {
+      showCookieBanner,
+    },
+  };
+};
 export default CookiePage;
