@@ -116,7 +116,7 @@ describe("Form Validators", () => {
       expect(applies(null)).toBe(false);
     });
 
-    it("should not have an error if the not a date string", () => {
+    it("should not have an error if the value is not a date string", () => {
       expect(applies("beacon information")).toBe(false);
     });
 
