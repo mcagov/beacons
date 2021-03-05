@@ -1,5 +1,6 @@
 import {
   Beacon,
+  BeaconInformation,
   BeaconIntent,
   EmergencyContacts,
   Owner,
@@ -8,6 +9,7 @@ import {
 } from "./types";
 
 type BeaconModel = Beacon &
+  BeaconInformation &
   Owner &
   Vessel &
   VesselCommunications &

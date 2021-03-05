@@ -11,8 +11,12 @@ export interface ValidationRule {
   applies: ValidatorFn;
 }
 
+function isEmptyInputValue(value: string): boolean {
+  return value == null || value.length === 0;
+}
+
 /**
- * Provides a set of validators that can be applied to an {@link AbstractFormNode}.
+ * Provides a set of validators that can be applied to a value.
  */
 export class Validators {
   /**
@@ -31,7 +35,7 @@ export class Validators {
   }
 
   /**
-   * Validator that requires the form input value to be less than or equal to the provided number.
+   * Validator that requires the form input value to be less than or equal to the provided length.
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @param max          {number}           The max number of characters allowed
@@ -57,6 +61,56 @@ export class Validators {
   }
 
   /**
+   * Validator that requires the input value to be a valid date.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static isValidDate(errorMessage: string): ValidationRule {
+    const applies: ValidatorFn = (value: string) => isNaN(Date.parse(value));
+
+    return { errorMessage, applies };
+  }
+
+  /**
+   * Validator that requires the input value date to be in the past.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static isInThePast(errorMessage: string): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      const dateNow = Date.now();
+      const dateToCompare = Date.parse(value);
+
+      return !isNaN(dateToCompare) && dateToCompare > dateNow;
+    };
+
+    return { errorMessage, applies };
+  }
+
+  /**
+   * Validator that requires the input value date to be greater than or equal to the provided year.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @param year         {number}           The year the date must be greater than or equal to
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static minDateYear(
+    errorMessage: string,
+    year: number
+  ): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      const dateLowerBound = new Date(year, 0, 0).getTime();
+      const dateToCompare = Date.parse(value);
+
+      return !isNaN(dateToCompare) && dateToCompare < dateLowerBound;
+    };
+
+    return { errorMessage, applies };
+  }
+
+  /**
    * Validator that requires the form input value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
    *
    * @param erroMessage {string}           An error message if the rule is violated
@@ -74,7 +128,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static wholeNumber(errorMessage: string): ValidationRule {
-    const wholeNumberRegex = /^$|^[0-9]+$/;
+    const wholeNumberRegex = /^[0-9]+$/;
     return Validators.pattern(errorMessage, wholeNumberRegex);
   }
 
@@ -85,7 +139,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static email(errorMessage: string): ValidationRule {
-    const emailRegex = /^$|[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}/;
+    const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
     return Validators.pattern(errorMessage, emailRegex);
   }
 
@@ -96,7 +150,7 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static postcode(errorMessage: string): ValidationRule {
-    const emailRegex = /^$|([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})/;
+    const emailRegex = /^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$/;
     return Validators.pattern(errorMessage, emailRegex);
   }
 
@@ -111,7 +165,8 @@ export class Validators {
     errorMessage: string,
     pattern: RegExp
   ): ValidationRule {
-    const applies: ValidatorFn = (value: string) => !pattern.test(value);
+    const applies: ValidatorFn = (value: string) =>
+      !isEmptyInputValue(value) && !pattern.test(value);
 
     return { errorMessage, applies };
   }

@@ -4,7 +4,6 @@ import { FormJSON } from "../../../src/lib/form/formManager";
 import BeaconInformationPage from "../../../src/pages/register-a-beacon/beacon-information";
 
 describe("BeaconInformationPage", () => {
-  // Ready for when validation is added to BeaconInformationPage
   const emptyBeaconInformationPageForm: FormJSON = {
     hasErrors: false,
     errorSummary: [],
@@ -13,18 +12,20 @@ describe("BeaconInformationPage", () => {
         value: "",
         errorMessages: [],
       },
-      beaconCHKCode: {
+      chkCode: {
         value: "",
         errorMessages: [],
       },
-      beaconBatteryExpiryDateMonth: {
+      batteryExpiryDate: { value: "", errorMessages: [] },
+      batteryExpiryDateMonth: {
         value: "",
         errorMessages: [],
       },
-      beaconBatteryExpiryDateYear: {
+      batteryExpiryDateYear: {
         value: "",
         errorMessages: [],
       },
+      lastServicedDate: { value: "", errorMessages: [] },
       lastServicedDateMonth: {
         value: "",
         errorMessages: [],
@@ -37,7 +38,12 @@ describe("BeaconInformationPage", () => {
   };
 
   it("should have a back button which directs the user to the check beacon details page", () => {
-    render(<BeaconInformationPage showCookieBanner={false} />);
+    render(
+      <BeaconInformationPage
+        form={emptyBeaconInformationPageForm}
+        showCookieBanner={false}
+      />
+    );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -47,7 +53,10 @@ describe("BeaconInformationPage", () => {
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <BeaconInformationPage showCookieBanner={false} />
+      <BeaconInformationPage
+        form={emptyBeaconInformationPageForm}
+        showCookieBanner={false}
+      />
     );
     const ownPath = "/register-a-beacon/beacon-information";
 
