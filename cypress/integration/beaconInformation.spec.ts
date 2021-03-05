@@ -1,6 +1,14 @@
+import {
+  requiredFieldErrorMessage,
+  thenIShouldSeeAnErrorMessageThatContains,
+  thenTheInputShouldContain,
+  thenTheUrlShouldContain,
+  whenIClickContinue,
+  whenIType,
+} from "./common.spec";
+
 describe("As a beacon owner, I want to submit information about my beacon", () => {
   const pageLocation = "/register-a-beacon/beacon-information";
-  const requiredFieldErrorMessage = "required field";
   const mustBeAfter1980ErrorMessage = "must be after 1980";
   const dateInThePastErrorMessage = "date in the past";
 
@@ -74,27 +82,5 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   const givenIAmOnTheBeaconInformationPage = () => {
     cy.visit("/");
     cy.visit(pageLocation);
-  };
-
-  const whenIType = (value: string, inputName: string) => {
-    cy.get(`input[name="${inputName}"]`).type(value);
-  };
-
-  const whenIClickContinue = () =>
-    cy.get("button").contains("Continue").click();
-
-  const thenIShouldSeeAnErrorMessageThatContains = (errorMessage: string) => {
-    cy.get("a").should("contain", errorMessage);
-  };
-
-  const thenTheInputShouldContain = (
-    expectedValue: string,
-    inputName: string
-  ) => {
-    cy.get(`input[name="${inputName}"]`).should("contain.value", expectedValue);
-  };
-
-  const thenTheUrlShouldContain = (urlPath: string) => {
-    cy.url().should("include", urlPath);
   };
 });
