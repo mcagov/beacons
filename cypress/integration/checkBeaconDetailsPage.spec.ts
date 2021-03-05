@@ -1,5 +1,5 @@
 import {
-  andICanUseTheBackLinkToGoToPreviousPage,
+  andICanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenTheUrlShouldContain,
@@ -19,7 +19,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
 
   it("displays the Check beacon details page", () => {
     iCanSeeTheCheckBeaconDetailsPage();
-    andICanUseTheBackLinkToGoToPreviousPage("/");
+    andICanClickTheBackLinkToGoToPreviousPage("/");
   });
 
   it("routes to the next page if there are no errors with the form submission", () => {

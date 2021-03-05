@@ -1,11 +1,10 @@
 export const requiredFieldErrorMessage = "required field";
 
-export const andICanUseTheBackLinkToGoToPreviousPage = (
+export const andICanClickTheBackLinkToGoToPreviousPage = (
   previousPageURL: string
 ) => {
-  cy.get(".govuk-back-link")
-    .should("have.attr", "href", previousPageURL)
-    .contains("Back");
+  cy.get(".govuk-back-link").click();
+  thenTheUrlShouldContain(previousPageURL);
 };
 
 export const whenIClickContinue = () =>
