@@ -26,7 +26,7 @@ resource "aws_lb_listener_rule" "service" {
 
   condition {
     path_pattern {
-      values = ["/api/*"]
+      values = ["/spring-api/*"]
     }
   }
 }

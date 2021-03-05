@@ -78,7 +78,7 @@ variable "service_count" {
 variable "service_health_check_path" {
   type        = string
   description = "Health check path used by the Application Load Balancer for the Beacons Service"
-  default     = "/api/actuator/health"
+  default     = "/spring-api/actuator/health"
 }
 variable "service_fargate_cpu" {
   type        = number
