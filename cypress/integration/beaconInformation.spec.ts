@@ -8,6 +8,13 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     givenIAmOnTheBeaconInformationPage();
   });
 
+  it("routes to the next page if there are no errors with the form submission", () => {
+    whenIType("ASOS", "manufacturerSerialNumber");
+    whenIClickContinue();
+
+    thenTheUrlShouldContain("/register-a-beacon/primary-beacon-use");
+  });
+
   it("displays errors if no manufacturer serial number is submitted", () => {
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
@@ -85,5 +92,9 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     inputName: string
   ) => {
     cy.get(`input[name="${inputName}"]`).should("contain.value", expectedValue);
+  };
+
+  const thenTheUrlShouldContain = (urlPath: string) => {
+    cy.url().should("include", urlPath);
   };
 });
