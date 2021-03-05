@@ -3,10 +3,10 @@ import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { PageHeading } from "../../components/Typography";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { FormPageProps } from "../../lib/handlePageRequest";
+import { withCookieRedirect } from "../../lib/middleware";
 
 const CookiePage: FunctionComponent<FormPageProps> = ({
-  needsValidation,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "Cookies on Maritime and Coastguard Agency";
@@ -14,7 +14,7 @@ const CookiePage: FunctionComponent<FormPageProps> = ({
     <>
       <Layout
         title={pageHeading}
-        pageHasErrors={needsValidation}
+        pageHasErrors={false}
         showCookieBanner={showCookieBanner}
       >
         <Grid
@@ -63,6 +63,12 @@ const EssentialCookies: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest("/");
+export const getServerSideProps: GetServerSideProps = withCookieRedirect(
+  async () => {
+    return {
+      props: {},
+    };
+  }
+);
 
 export default CookiePage;
