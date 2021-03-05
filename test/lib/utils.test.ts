@@ -1,4 +1,8 @@
-import { toArray } from "../../src/lib/utils";
+import {
+  padNumberWithLeadingZeros,
+  toArray,
+  toUpperCase,
+} from "../../src/lib/utils";
 
 describe("toArray()", () => {
   it("should convert a number to an array", () => {
@@ -25,5 +29,63 @@ describe("toArray()", () => {
       "beacon",
       "beacon-2",
     ]);
+  });
+});
+
+describe("toUpperCase()", () => {
+  it("should return an empty string if the value is null", () => {
+    expect(toUpperCase(null)).toBe("");
+  });
+
+  it("should return an empty string if the value is undefined", () => {
+    expect(toUpperCase(undefined)).toBe("");
+  });
+
+  it("should convert the string to uppercase", () => {
+    expect(toUpperCase("beacon")).toBe("BEACON");
+  });
+
+  it("should uppercase a mix of characters and numbers", () => {
+    expect(toUpperCase("abc123")).toBe("ABC123");
+  });
+
+  it("should handle only numbers", () => {
+    expect(toUpperCase("123")).toBe("123");
+  });
+});
+
+describe("padNumberWithLeadingZeros()", () => {
+  it("should not pad an empty string", () => {
+    expect(padNumberWithLeadingZeros("")).toBe("");
+  });
+
+  it("should pad a number with a leading zero", () => {
+    expect(padNumberWithLeadingZeros("0")).toBe("00");
+  });
+
+  it("should pad all numbers from 0-9 with a leading zero", () => {
+    for (let i = 0; i < 10; ++i) {
+      const numberAsString = `${i}`;
+      const leadingZero = "0";
+      expect(padNumberWithLeadingZeros(numberAsString)).toBe(
+        `${leadingZero}${numberAsString}`
+      );
+    }
+  });
+
+  it("should not pad the number if the length is equal to the padding length", () => {
+    expect(padNumberWithLeadingZeros("10")).toBe("10");
+  });
+
+  it("should not pad the number if the length is greater than the padding length", () => {
+    expect(padNumberWithLeadingZeros("100")).toBe("100");
+  });
+
+  it("should pad the number with the specified padding", () => {
+    expect(padNumberWithLeadingZeros("7", 3)).toBe("007");
+  });
+
+  it("should not pad a word", () => {
+    expect(padNumberWithLeadingZeros("beacon")).toBe("beacon");
   });
 });

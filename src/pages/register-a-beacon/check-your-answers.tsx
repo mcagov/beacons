@@ -5,11 +5,11 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { GovUKBody, PageHeading } from "../../components/Typography";
+import { CacheEntry } from "../../lib/formCache";
 import { withCookieRedirect } from "../../lib/middleware";
-import { Beacon } from "../../lib/types";
 
 interface CheckYourAnswersProps {
-  beacon: Beacon;
+  beacon: CacheEntry;
 }
 
 const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
@@ -39,14 +39,14 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   );
 };
 
-const BeaconInformation: FunctionComponent<Beacon> = ({
+const BeaconInformation: FunctionComponent<CacheEntry> = ({
   manufacturer,
   model,
   hexId,
   manufacturerSerialNumber,
   batteryExpiryDate,
   lastServicedDate,
-}: Beacon): JSX.Element => (
+}: CacheEntry): JSX.Element => (
   <>
     <h2 className="govuk-heading-m">Beacon information</h2>
 

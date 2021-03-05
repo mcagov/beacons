@@ -24,7 +24,7 @@ export interface FormPageProps {
 export const handlePageRequest = (
   destinationIfValid: string,
   formManagerFactory: FormManagerFactory,
-  transformCallback: TransformCallback = (formData) => formData
+  transformCallback: TransformCallback = (formData: CacheEntry) => formData
 ): GetServerSideProps =>
   withCookieRedirect(async (context: GetServerSidePropsContext) => {
     const userDidSubmitForm = context.req.method === "POST";
