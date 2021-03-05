@@ -4,8 +4,6 @@ import { Form } from "./Form";
 import { Grid } from "./Grid";
 import { AnchorLink, GovUKBody } from "./Typography";
 
-export type CookiesCacheEntry = { accepted: boolean };
-
 export const CookieBanner: FunctionComponent = (): JSX.Element => (
   <>
     <Form action="/api/check-cookie-state">
