@@ -32,7 +32,6 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
       <Layout
         navigation={<Breadcrumbs />}
         title={pageHeading}
-        pageHasErrors={false}
         showCookieBanner={showCookieBanner}
       >
         <Grid
