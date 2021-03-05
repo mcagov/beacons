@@ -1,4 +1,3 @@
-import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
@@ -8,7 +7,6 @@ import {
   PageHeading,
 } from "../../components/Typography";
 import { FormPageProps } from "../../lib/handlePageRequest";
-import { withCookieRedirect } from "../../lib/middleware";
 
 const CookiePage: FunctionComponent<FormPageProps> = ({
   showCookieBanner,
@@ -64,14 +62,6 @@ const EssentialCookies: FunctionComponent = (): JSX.Element => (
       </AnchorLink>
     </GovUKBody>
   </>
-);
-
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async () => {
-    return {
-      props: {},
-    };
-  }
 );
 
 export default CookiePage;
