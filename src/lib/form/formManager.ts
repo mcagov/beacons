@@ -1,8 +1,14 @@
 import { Callback } from "../utils";
 import { AbstractFormNode } from "./abstractFormNode";
-import { FieldManager } from "./fieldManager";
+import { FieldJSON, FieldManager } from "./fieldManager";
 
 export type FormError = { fieldId: string; errorMessages: string[] };
+
+export type FormJSON = {
+  hasErrors: boolean;
+  fields: Record<string, FieldJSON>;
+  errorSummary: FormError[];
+};
 
 /**
  * A class representing the parent for the the {@link FieldManager}.
@@ -37,21 +43,6 @@ export class FormManager extends AbstractFormNode {
   }
 
   /**
-   * Generates the error summary based on the fields it manages.
-   */
-  public errorSummary(): FormError[] {
-    return Object.keys(this.fields)
-      .filter((control) => this.fields[control].hasErrors())
-      .map((fieldId) => {
-        const fieldInput = this.fields[fieldId];
-        return {
-          fieldId,
-          errorMessages: fieldInput.errorMessages(),
-        };
-      });
-  }
-
-  /**
    * Determines if any of the fields it manages have any errors.
    * @override
    */
@@ -76,5 +67,38 @@ export class FormManager extends AbstractFormNode {
       const field: FieldManager = this.fields[key];
       return cb(field);
     });
+  }
+
+  public serialise(): FormJSON {
+    const hasErrors = this.hasErrors();
+    const fields = this.serialiseFields();
+    const errorSummary = this.errorSummary();
+
+    return { hasErrors, fields, errorSummary };
+  }
+
+  private serialiseFields(): Record<string, FieldJSON> {
+    return Object.keys(this.fields).reduce((serialisedFields, currentField) => {
+      const fieldManager: FieldManager = this.fields[currentField];
+
+      serialisedFields[currentField] = fieldManager.serialise();
+
+      return serialisedFields;
+    }, {});
+  }
+
+  /**
+   * Generates the error summary based on the fields it manages.
+   */
+  private errorSummary(): FormError[] {
+    return Object.keys(this.fields)
+      .filter((control) => this.fields[control].hasErrors())
+      .map((fieldId) => {
+        const fieldInput = this.fields[fieldId];
+        return {
+          fieldId,
+          errorMessages: fieldInput.errorMessages(),
+        };
+      });
   }
 }

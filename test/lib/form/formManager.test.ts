@@ -55,52 +55,145 @@ describe("FormManager", () => {
     });
   });
 
-  describe("errorSummary()", () => {
-    it("should return the an empty array if the form is `pristine`", () => {
-      formManager = new FormManager({
-        hexId: new FieldManager(value, [validationRule(true, "error!")]),
-      });
+  describe("serialise form", () => {
+    it("should serialise a form with no fields", () => {
+      formManager = new FormManager({});
+      const formJson = formManager.serialise();
 
-      expect(formManager.errorSummary()).toStrictEqual([]);
+      expect(formJson).toStrictEqual({
+        hasErrors: false,
+        fields: {},
+        errorSummary: [],
+      });
     });
 
-    it("should return the error summary for the hex id", () => {
+    it("should serialise a form with 1 field and no errors", () => {
       formManager = new FormManager({
-        hexId: new FieldManager(value, [validationRule(true, "error!")]),
+        hexId: new FieldManager(value),
       });
-      formManager.markAsDirty();
+      const formJson = formManager.serialise();
 
-      expect(formManager.errorSummary()).toStrictEqual([
-        {
-          fieldId: "hexId",
-          errorMessages: ["error!"],
+      expect(formJson).toStrictEqual({
+        hasErrors: false,
+        fields: {
+          hexId: {
+            value,
+            errorMessages: [],
+          },
         },
-      ]);
+        errorSummary: [],
+      });
     });
 
-    it("should return the error summary for the multiple control errors", () => {
+    it("should serialise a form with 1 field with errors", () => {
+      const errorMessage = "Hex ID is required";
       formManager = new FormManager({
-        hexId: new FieldManager(value, [
-          validationRule(true, "error hex1"),
-          validationRule(true, "error hex2"),
-        ]),
-        model: new FieldManager(value, [
-          validationRule(true, "error model"),
-          validationRule(false),
+        hexId: new FieldManager(value, [validationRule(true, errorMessage)]),
+      });
+      formManager.markAsDirty();
+      const formJson = formManager.serialise();
+
+      expect(formJson).toStrictEqual({
+        hasErrors: true,
+        fields: {
+          hexId: {
+            value,
+            errorMessages: [errorMessage],
+          },
+        },
+        errorSummary: [{ fieldId: "hexId", errorMessages: [errorMessage] }],
+      });
+    });
+
+    it("should serialise a form with multiple errors", () => {
+      const errorMessage = "Hex ID is required";
+      formManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(true, errorMessage)]),
+        model: new FieldManager("Beacon model", [
+          validationRule(true, errorMessage),
         ]),
       });
       formManager.markAsDirty();
+      const formJson = formManager.serialise();
 
-      expect(formManager.errorSummary()).toStrictEqual([
-        {
-          fieldId: "hexId",
-          errorMessages: ["error hex1", "error hex2"],
+      expect(formJson).toStrictEqual({
+        hasErrors: true,
+        fields: {
+          hexId: {
+            value,
+            errorMessages: [errorMessage],
+          },
+          model: {
+            value: "Beacon model",
+            errorMessages: [errorMessage],
+          },
         },
-        {
-          fieldId: "model",
-          errorMessages: ["error model"],
+        errorSummary: [
+          { fieldId: "hexId", errorMessages: [errorMessage] },
+          { fieldId: "model", errorMessages: [errorMessage] },
+        ],
+      });
+    });
+
+    it("should serialise a form with some errors", () => {
+      const errorMessage = "Hex ID is required";
+      formManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(true, errorMessage)]),
+        model: new FieldManager("Beacon model", [
+          validationRule(false, errorMessage),
+        ]),
+      });
+      formManager.markAsDirty();
+      const formJson = formManager.serialise();
+
+      expect(formJson).toStrictEqual({
+        hasErrors: true,
+        fields: {
+          hexId: {
+            value,
+            errorMessages: [errorMessage],
+          },
+          model: {
+            value: "Beacon model",
+            errorMessages: [],
+          },
         },
-      ]);
+        errorSummary: [{ fieldId: "hexId", errorMessages: [errorMessage] }],
+      });
+    });
+
+    it("should serialise a form without errors if conditional validation rules not met", () => {
+      const errorMessage = "Hex ID is required";
+      formManager = new FormManager({
+        hexId: new FieldManager(value, [validationRule(false, errorMessage)]),
+        model: new FieldManager(
+          "Beacon model",
+          [validationRule(true, errorMessage)],
+          [
+            {
+              dependsOn: "hexId",
+              meetingCondition: () => false,
+            },
+          ]
+        ),
+      });
+      formManager.markAsDirty();
+      const formJson = formManager.serialise();
+
+      expect(formJson).toStrictEqual({
+        hasErrors: false,
+        fields: {
+          hexId: {
+            value,
+            errorMessages: [],
+          },
+          model: {
+            value: "Beacon model",
+            errorMessages: [],
+          },
+        },
+        errorSummary: [],
+      });
     });
   });
 });

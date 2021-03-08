@@ -42,4 +42,6 @@ export abstract class AbstractFormNode {
   public markAsDirty(): void {
     this.pristine = false;
   }
+
+  public abstract serialise(): any;
 }

@@ -1,4 +1,5 @@
 // Mock module dependencies in getServerSideProps for testing handlePageRequest()
+import { FormJSON } from "../../src/lib/form/formManager";
 import { handlePageRequest } from "../../src/lib/handlePageRequest";
 
 jest.mock("../../src/lib/middleware", () => ({
@@ -47,33 +48,42 @@ describe("handlePageRequest()", () => {
     });
   });
 
-  it("should return the transformed data on invalid form submission", async () => {
+  it("should return the serialized form data on invalid form submission", async () => {
+    const expectedFormJSON: FormJSON = {
+      hasErrors: false,
+      errorSummary: [],
+      fields: { hexId: { value: "1234", errorMessages: [] } },
+    };
     getFormGroup = () => {
       return {
         markAsDirty: jest.fn(),
         hasErrors: jest.fn().mockReturnValue(true),
+        serialise: jest.fn().mockReturnValue(expectedFormJSON),
       };
     };
 
-    const formData = { hexId: "1234" };
-
-    const response = await handlePageRequest(
-      "/",
-      getFormGroup,
-      () => formData
-    )(context);
+    const response = await handlePageRequest("/", getFormGroup)(context);
 
     expect(response).toStrictEqual({
       props: {
-        formData,
-        needsValidation: true,
+        form: expectedFormJSON,
       },
     });
   });
 
-  it("should return a props object when receives a GET request", async () => {
+  it("should return the cached formJSON when it receives a GET request", async () => {
+    const expectedFormJSON: FormJSON = {
+      hasErrors: false,
+      errorSummary: [],
+      fields: { hexId: { value: "1234", errorMessages: [] } },
+    };
     context.req.method = "GET";
     const nextPagePath = "/irrelevant";
+    getFormGroup = () => {
+      return {
+        serialise: jest.fn().mockReturnValue(expectedFormJSON),
+      };
+    };
     const response = await handlePageRequest(
       nextPagePath,
       getFormGroup
@@ -81,8 +91,7 @@ describe("handlePageRequest()", () => {
 
     expect(response).toStrictEqual({
       props: {
-        formData: {},
-        needsValidation: false,
+        form: expectedFormJSON,
       },
     });
   });

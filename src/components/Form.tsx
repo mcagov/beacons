@@ -16,7 +16,6 @@ interface FormFieldsetProps {
 interface FormGroupProps {
   children: ReactNode;
   className?: string;
-  showErrors?: boolean;
   errorMessages?: string[];
 }
 

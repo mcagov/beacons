@@ -63,8 +63,10 @@ const BeaconInformationSection: FunctionComponent<CacheEntry> = ({
   hexId,
   manufacturerSerialNumber,
   beaconCHKCode,
-  beaconBatteryExpiryDateMonth,
-  lastServicedDate,
+  batteryExpiryDateMonth,
+  batteryExpiryDateYear,
+  lastServicedDateMonth,
+  lastServicedDateYear,
 }: Beacon): JSX.Element => (
   <>
     <h2 className="govuk-heading-m">Beacon information</h2>
@@ -110,14 +112,14 @@ const BeaconInformationSection: FunctionComponent<CacheEntry> = ({
         href="/register-a-beacon/beacon-information"
         actionText="Change"
       >
-        {beaconBatteryExpiryDateMonth}
+        {batteryExpiryDateMonth}, {batteryExpiryDateYear}
       </SummaryListItem>
       <SummaryListItem
         labelText="Beacon service date"
         href="/register-a-beacon/beacon-information"
         actionText="Change"
       >
-        {lastServicedDate}
+        {lastServicedDateMonth}, {lastServicedDateYear}
       </SummaryListItem>
     </SummaryList>
   </>

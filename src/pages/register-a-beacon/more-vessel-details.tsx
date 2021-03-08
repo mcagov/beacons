@@ -16,19 +16,14 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
-import { handlePageRequest } from "../../lib/handlePageRequest";
-
-interface MoreVesselDetailsProps {
-  formData: CacheEntry;
-  needsValidation: boolean;
-}
+import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
 interface MoreVesselDetailsTextAreaProps {
   value?: string;
   errorMessages: string[];
 }
 
-const getFormManager = ({ moreVesselDetails }: CacheEntry): FormManager => {
+const definePageForm = ({ moreVesselDetails }: CacheEntry): FormManager => {
   return new FormManager({
     moreVesselDetails: new FieldManager(moreVesselDetails, [
       Validators.required("Vessel details is a required fied"),
@@ -40,15 +35,9 @@ const getFormManager = ({ moreVesselDetails }: CacheEntry): FormManager => {
   });
 };
 
-const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
-  formData,
-  needsValidation = false,
-}: MoreVesselDetailsProps): JSX.Element => {
-  const formManager = getFormManager(formData);
-  if (needsValidation) {
-    formManager.markAsDirty();
-  }
-  const fields = formManager.fields;
+const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
+  form,
+}: FormPageProps): JSX.Element => {
   const pageHeading = "Tell us more about the vessel";
 
   return (
@@ -58,19 +47,19 @@ const MoreVesselDetails: FunctionComponent<MoreVesselDetailsProps> = ({
           <BackButton href="/register-a-beacon/vessel-communications" />
         }
         title={pageHeading}
-        pageHasErrors={formManager.hasErrors()}
+        pageHasErrors={form.hasErrors}
       >
         <Grid
           mainContent={
             <>
-              <FormErrorSummary formErrors={formManager.errorSummary()} />
+              <FormErrorSummary formErrors={form.errorSummary} />
               <Form action="/register-a-beacon/more-vessel-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <MoreVesselDetailsTextArea
-                    value={fields.moreVesselDetails.value}
-                    errorMessages={fields.moreVesselDetails.errorMessages()}
+                    value={form.fields.moreVesselDetails.value}
+                    errorMessages={form.fields.moreVesselDetails.errorMessages}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -104,7 +93,7 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/about-beacon-owner",
-  getFormManager
+  definePageForm
 );
 
 export default MoreVesselDetails;
