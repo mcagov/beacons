@@ -420,6 +420,7 @@ const BeaconOwnerAddressSection: FunctionComponent<CacheEntry> = ({
   beaconOwnerAddressLine2,
   beaconOwnerTownOrCity,
   beaconOwnerCounty,
+  beaconOwnerPostcode,
 }: Owner): JSX.Element => {
   const addressText: ReactNode = (
     <GovUKList>
@@ -427,17 +428,18 @@ const BeaconOwnerAddressSection: FunctionComponent<CacheEntry> = ({
       <li>{beaconOwnerAddressLine2}</li>
       <li>{beaconOwnerTownOrCity}</li>
       {beaconOwnerCounty ? <li>{beaconOwnerCounty}</li> : ""}
+      <li>{beaconOwnerPostcode}</li>
     </GovUKList>
   );
 
   return (
     <>
-      <h2 className="govuk-heading-m">About the beacon owner</h2>
+      <h2 className="govuk-heading-m">Beacon owner address</h2>
 
       <SummaryList>
         <SummaryListItem
           labelText="Address"
-          href="/register-a-beacon/about-beacon-owner"
+          href="/register-a-beacon/beacon-owner-address"
           actionText="Change"
         >
           {addressText}
