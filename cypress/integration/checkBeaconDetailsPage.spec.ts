@@ -8,10 +8,12 @@ import {
 } from "./common.spec";
 
 describe("As a beacon owner, I want to enter my initial beacon information", () => {
-  const validHexId = "ABCDE0123456789";
+  const validUkEncodedHexId = "1D0EA08C52FFBFF";
+  const validOtherCountryEncodedHexId = "C00F429578002C1";
   const invalidHexId = "ABCDEFGHIJKLMNO";
   const mustBe15CharactersLong = "must be 15 characters long";
   const mustUseHexCharacters = "must use numbers 0 to 9 and letters A to F";
+  const mustBeUkEncoded = "UK-encoded";
 
   beforeEach(() => {
     givenIAmOnTheCheckBeaconDetailsPage();
@@ -25,7 +27,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
   it("routes to the next page if there are no errors with the form submission", () => {
     whenIType("Test Manufacturer", "manufacturer");
     whenIType("Test Model", "model");
-    whenIType(validHexId, "hexId");
+    whenIType(validUkEncodedHexId, "hexId");
 
     whenIClickContinue();
 
@@ -34,14 +36,14 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
 
   it("displays an error if no manufacturer is submitted", () => {
     whenIType("Test Model", "model");
-    whenIType(validHexId, "hexId");
+    whenIType(validUkEncodedHexId, "hexId");
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
   });
 
   it("displays an error if no model is submitted", () => {
     whenIType("Test Manufacturer", "manufacturer");
-    whenIType(validHexId, "hexId");
+    whenIType(validUkEncodedHexId, "hexId");
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
   });
@@ -59,6 +61,14 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     whenIType(invalidHexId, "hexId");
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(mustUseHexCharacters);
+  });
+
+  it("displays an error if a valid but non-UK encoded beacon is submitted for hexId", () => {
+    whenIType("Test Model", "model");
+    whenIType("Test Manufacturer", "manufacturer");
+    whenIType(validOtherCountryEncodedHexId, "hexId");
+    whenIClickContinue();
+    thenIShouldSeeAnErrorMessageThatContains(mustBeUkEncoded);
   });
 });
 

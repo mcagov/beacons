@@ -41,6 +41,9 @@ const definePageForm = ({
       Validators.hexadecimalString(
         "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
       ),
+      Validators.ukEncodedBeacon(
+        "Your beacon must be UK-encoded to use this service"
+      ),
     ]),
   });
 };
