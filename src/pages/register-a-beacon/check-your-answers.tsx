@@ -1,6 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent, ReactNode } from "react";
-import { BackButton, Button } from "../../components/Button";
+import { BackButton, StartButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
@@ -50,7 +50,10 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
               <BeaconOwnerEmergencyContact2Section {...formData} />
               <BeaconOwnerEmergencyContact3Section {...formData} />
               <SendYourApplication />
-              <Button buttonText="Accept and send" />
+              <StartButton
+                buttonText="Accept and send"
+                href="/register-a-beacon/application-complete"
+              />
             </>
           }
         />
