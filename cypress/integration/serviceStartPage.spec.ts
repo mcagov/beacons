@@ -1,3 +1,5 @@
+import {} from "cypress";
+
 describe("Service start page", () => {
   const submissionCookieId = "submissionId";
   it("Vists the service start page", () => {

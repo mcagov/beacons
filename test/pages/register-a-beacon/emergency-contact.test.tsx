@@ -76,10 +76,13 @@ describe("EmergencyContact", () => {
     expect(form).toHaveAttribute("action", ownPath);
   });
 
-  it("should redirect to the start page page on valid form submission", async () => {
+  it("should redirect to the check answers page on valid form submission", async () => {
     const context = {};
     await getServerSideProps(context as GetServerSidePropsContext);
 
-    expect(handlePageRequest).toHaveBeenCalledWith("/", expect.anything());
+    expect(handlePageRequest).toHaveBeenCalledWith(
+      "/register-a-beacon/check-your-answers",
+      expect.anything()
+    );
   });
 });
