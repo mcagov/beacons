@@ -9,6 +9,7 @@ import { CacheEntry } from "../../lib/formCache";
 import { getCache, withCookieRedirect } from "../../lib/middleware";
 import {
   Beacon,
+  BeaconInformation,
   EmergencyContacts,
   MaritimePleasureVessel,
   Owner,
@@ -37,6 +38,7 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
           mainContent={
             <>
               <PageHeading>{pageHeading}</PageHeading>
+              <BeaconDetailsSection {...formData} />
               <BeaconInformationSection {...formData} />
               <BeaconUseSection {...formData} />
               <AboutTheVesselSection {...formData} />
@@ -57,19 +59,13 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   );
 };
 
-const BeaconInformationSection: FunctionComponent<CacheEntry> = ({
+const BeaconDetailsSection: FunctionComponent<CacheEntry> = ({
   manufacturer,
   model,
   hexId,
-  manufacturerSerialNumber,
-  beaconCHKCode,
-  batteryExpiryDateMonth,
-  batteryExpiryDateYear,
-  lastServicedDateMonth,
-  lastServicedDateYear,
 }: Beacon): JSX.Element => (
   <>
-    <h2 className="govuk-heading-m">Beacon information</h2>
+    <h2 className="govuk-heading-m">Beacon details</h2>
 
     <SummaryList>
       <SummaryListItem
@@ -93,6 +89,22 @@ const BeaconInformationSection: FunctionComponent<CacheEntry> = ({
       >
         {hexId}
       </SummaryListItem>
+    </SummaryList>
+  </>
+);
+
+const BeaconInformationSection: FunctionComponent<CacheEntry> = ({
+  manufacturerSerialNumber,
+  chkCode,
+  batteryExpiryDateMonth,
+  batteryExpiryDateYear,
+  lastServicedDateMonth,
+  lastServicedDateYear,
+}: BeaconInformation): JSX.Element => (
+  <>
+    <h2 className="govuk-heading-m">Beacon information</h2>
+
+    <SummaryList>
       <SummaryListItem
         labelText="Manufacturer serial number"
         href="/register-a-beacon/beacon-information"
@@ -105,7 +117,7 @@ const BeaconInformationSection: FunctionComponent<CacheEntry> = ({
         href="/register-a-beacon/beacon-information"
         actionText="Change"
       >
-        {beaconCHKCode}
+        {chkCode}
       </SummaryListItem>
       <SummaryListItem
         labelText="Battery expiry date"
