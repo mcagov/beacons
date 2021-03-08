@@ -1,15 +1,20 @@
 import { HexIdParser } from "../../src/lib/hexIdParser";
 
 describe("HexIdParser", () => {
-  it("should parse the registration country from a 15-digit hexId", () => {
-    const hexId = "DABFE0F83E0F83C";
-    const expectedCountryCode = 725;
-    const expectedCountryName = "Chile";
+  it("should parse the registration country code from a 15-digit hexId", () => {
+    const expectations = [
+      { hexId: "DABFE0F83E0F83C", countryCode: 725 },
+      { hexId: "ADCD0228C500401", countryCode: 366 },
+      { hexId: "ADC268F8E0D3730", countryCode: 366 },
+      { hexId: "ADC268F8E0D3780", countryCode: 366 },
+      { hexId: "ADCD0228C500401", countryCode: 366 },
+      { hexId: "C00F429578002C1", countryCode: 512 },
+    ];
 
-    const countryCode = HexIdParser.countryCode(hexId);
-    const countryName = HexIdParser.countryName(hexId);
+    expectations.forEach((expectation) => {
+      const countryCode = HexIdParser.countryCode(expectation.hexId);
 
-    expect(countryCode).toBe(expectedCountryCode);
-    expect(countryName).toEqual(expectedCountryName);
+      expect(countryCode).toBe(expectation.countryCode);
+    });
   });
 });
