@@ -196,6 +196,28 @@ describe("Form Validators", () => {
     });
   });
 
+  describe("ukEncodedBeacon", () => {
+    beforeEach(() => {
+      ({ errorMessage, applies } = Validators.ukEncodedBeacon(
+        expectedErrorMessage
+      ));
+    });
+
+    it("should not have an error if no value is provided", () => {
+      expect(applies("")).toBe(false);
+    });
+
+    it("should not have an error if a valid UK-encoded beacon is provided", () => {
+      const validUkEncodedHexId = "1D0EA08C52FFBFF";
+      expect(applies(validUkEncodedHexId)).toBe(false);
+    });
+
+    it("should not have an error if a valid UK-encoded beacon is provided", () => {
+      const validOtherCountryEncodedHexId = "C00F429578002C1";
+      expect(applies(validOtherCountryEncodedHexId)).toBe(true);
+    });
+  });
+
   describe("wholeNumber", () => {
     beforeEach(() => {
       ({ errorMessage, applies } = Validators.wholeNumber(

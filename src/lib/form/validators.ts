@@ -4,6 +4,8 @@
  * @param formNode {string}    The form value to validate
  * @returns        {boolean}   True if the value violates the rule
  */
+import { HexIdParser } from "../hexIdParser";
+
 export type ValidatorFn = (value: string) => boolean;
 
 export interface ValidationRule {
@@ -119,6 +121,33 @@ export class Validators {
   public static hexadecimalString(erroMessage: string): ValidationRule {
     const hexIdRegex = /^[a-f0-9]+$/i;
     return Validators.pattern(erroMessage, hexIdRegex);
+  }
+
+  /**
+   * Validator that requires the form input value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
+   *
+   * Cospas-Sarsat uses Maritime Identification Digits to encode beacons by
+   * the country that "owns" them.  See:
+   * http://www.cospas-sarsat.int/images/stories/SystemDocs/Current/cs_g005_oct_2013.pdf
+   * https://www.itu.int/en/ITU-R/terrestrial/fmd/Pages/mid.aspx
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns           {ValidationRule}   A validation rule
+   */
+  public static ukEncodedBeacon(errorMessage: string): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      if (value === "") return false;
+
+      const ukCountryCodes = [232, 233, 234, 235];
+      const beaconCountryCode = HexIdParser.countryCode(value);
+
+      return !ukCountryCodes.includes(beaconCountryCode);
+    };
+
+    return {
+      errorMessage,
+      applies,
+    };
   }
 
   /**
