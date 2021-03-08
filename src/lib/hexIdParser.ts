@@ -11,9 +11,6 @@
  * # Country code:
  */
 export class HexIdParser {
-  /**
-   * Sets all the child fields `parent` reference to this form group.
-   */
   public static countryCode(hexId: string): number {
     const [countryStartBit, countryEndBit] = [27, 36];
     return this.toDecimal(
@@ -22,7 +19,7 @@ export class HexIdParser {
   }
 
   private static toBits(hexId: string): string[] {
-    return parseInt(hexId, 16).toString(2).split("");
+    return parseInt(hexId, 16).toString(2).padStart(60, "0").split("");
   }
 
   private static toDecimal(binaryString: string): number {
