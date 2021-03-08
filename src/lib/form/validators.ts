@@ -116,7 +116,7 @@ export class Validators {
    * @param erroMessage {string}           An error message if the rule is violated
    * @returns           {ValidationRule}   A validation rule
    */
-  public static hexId(erroMessage: string): ValidationRule {
+  public static hexadecimalString(erroMessage: string): ValidationRule {
     const hexIdRegex = /^[a-f0-9]+$/i;
     return Validators.pattern(erroMessage, hexIdRegex);
   }

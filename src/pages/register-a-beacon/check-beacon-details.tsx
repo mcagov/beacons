@@ -38,7 +38,7 @@ const definePageForm = ({
         "Beacon HEX ID or UIN must be 15 characters long",
         15
       ),
-      Validators.hexId(
+      Validators.hexadecimalString(
         "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
       ),
     ]),

@@ -160,9 +160,11 @@ describe("Form Validators", () => {
     });
   });
 
-  describe("hexId", () => {
+  describe("hexadecimalString", () => {
     beforeEach(() => {
-      ({ errorMessage, applies } = Validators.hexId(expectedErrorMessage));
+      ({ errorMessage, applies } = Validators.hexadecimalString(
+        expectedErrorMessage
+      ));
     });
 
     it("should not have an error if no value is provided", () => {
