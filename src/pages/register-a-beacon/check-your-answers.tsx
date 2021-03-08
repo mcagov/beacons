@@ -127,14 +127,16 @@ const BeaconInformationSection: FunctionComponent<CacheEntry> = ({
         href="/register-a-beacon/beacon-information"
         actionText="Change"
       >
-        {batteryExpiryDateMonth}, {batteryExpiryDateYear}
+        {batteryExpiryDateMonth}
+        {batteryExpiryDateMonth ? "," : ""} {batteryExpiryDateYear}
       </SummaryListItem>
       <SummaryListItem
         labelText="Beacon service date"
         href="/register-a-beacon/beacon-information"
         actionText="Change"
       >
-        {lastServicedDateMonth}, {lastServicedDateYear}
+        {lastServicedDateMonth}
+        {lastServicedDateMonth ? "," : ""} {lastServicedDateYear}
       </SummaryListItem>
     </SummaryList>
   </>
