@@ -7,7 +7,7 @@ import {
   whenIType,
 } from "./common.spec";
 
-describe("As a beacon owner, I want to submit my primary beacon use", () => {
+describe("As a beacon owner, I want to submit the primary use for my beacon", () => {
   const pageLocation = "/register-a-beacon/primary-beacon-use";
 
   beforeEach(() => {
