@@ -129,8 +129,8 @@ export class Validators {
    * UK-encoded hexId.
    *
    * @remarks
-   * Cospas-Sarsat uses Maritime Identification Digits to encode beacons by
-   * the country that "owns" them.  See:
+   * Cospas-Sarsat uses Maritime Identification Digits encoded into the hexId to
+   * identify the country responsible for registering a given beacon.  See:
    * http://www.cospas-sarsat.int/images/stories/SystemDocs/Current/cs_g005_oct_2013.pdf
    * https://www.itu.int/en/ITU-R/terrestrial/fmd/Pages/mid.aspx
    *
