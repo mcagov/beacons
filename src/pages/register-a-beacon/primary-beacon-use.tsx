@@ -148,7 +148,8 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                       }
                     >
                       <Input
-                        id="otherPleasureVesselText"
+                        id="other-pleasure-vessel-text"
+                        name="otherPleasureVesselText"
                         label="What sort of vessel is it?"
                         defaultValue={form.fields.otherPleasureVesselText.value}
                       />
