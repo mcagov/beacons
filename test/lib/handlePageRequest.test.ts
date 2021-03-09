@@ -1,6 +1,6 @@
 // Mock module dependencies in getServerSideProps for testing handlePageRequest()
-import { FormJSON } from "../../src/lib/form/formManager";
 import { handlePageRequest } from "../../src/lib/handlePageRequest";
+import { acceptRejectCookieId } from "../../src/lib/types";
 
 jest.mock("../../src/lib/middleware", () => ({
   __esModule: true,
@@ -17,6 +17,7 @@ jest.mock("../../src/lib/middleware", () => ({
 describe("handlePageRequest()", () => {
   let getFormGroup;
   let context;
+  let formJSON;
 
   beforeEach(() => {
     getFormGroup = () => {
@@ -26,11 +27,37 @@ describe("handlePageRequest()", () => {
       };
     };
 
+    formJSON = {
+      hasErrors: false,
+      errorSummary: [],
+      fields: { hexId: { value: "1234", errorMessages: [] } },
+    };
+
     context = {
       req: {
         method: "POST",
+        cookies: {},
       },
     };
+  });
+
+  it("should should set the showCookieBanner to false if the user has accepted the cookie policy", async () => {
+    context.req.method = "GET";
+    context.req.cookies[acceptRejectCookieId] = "I have accepted!";
+    getFormGroup = () => {
+      return {
+        serialise: jest.fn().mockReturnValue(formJSON),
+      };
+    };
+
+    const response = await handlePageRequest("/", getFormGroup)(context);
+
+    expect(response).toStrictEqual({
+      props: {
+        form: formJSON,
+        showCookieBanner: false,
+      },
+    });
   });
 
   it("should redirect user to given next page on valid form submission", async () => {
@@ -49,16 +76,11 @@ describe("handlePageRequest()", () => {
   });
 
   it("should return the serialized form data on invalid form submission", async () => {
-    const expectedFormJSON: FormJSON = {
-      hasErrors: false,
-      errorSummary: [],
-      fields: { hexId: { value: "1234", errorMessages: [] } },
-    };
     getFormGroup = () => {
       return {
         markAsDirty: jest.fn(),
         hasErrors: jest.fn().mockReturnValue(true),
-        serialise: jest.fn().mockReturnValue(expectedFormJSON),
+        serialise: jest.fn().mockReturnValue(formJSON),
       };
     };
 
@@ -66,22 +88,18 @@ describe("handlePageRequest()", () => {
 
     expect(response).toStrictEqual({
       props: {
-        form: expectedFormJSON,
+        form: formJSON,
+        showCookieBanner: true,
       },
     });
   });
 
   it("should return the cached formJSON when it receives a GET request", async () => {
-    const expectedFormJSON: FormJSON = {
-      hasErrors: false,
-      errorSummary: [],
-      fields: { hexId: { value: "1234", errorMessages: [] } },
-    };
     context.req.method = "GET";
     const nextPagePath = "/irrelevant";
     getFormGroup = () => {
       return {
-        serialise: jest.fn().mockReturnValue(expectedFormJSON),
+        serialise: jest.fn().mockReturnValue(formJSON),
       };
     };
     const response = await handlePageRequest(
@@ -91,7 +109,8 @@ describe("handlePageRequest()", () => {
 
     expect(response).toStrictEqual({
       props: {
-        form: expectedFormJSON,
+        form: formJSON,
+        showCookieBanner: true,
       },
     });
   });

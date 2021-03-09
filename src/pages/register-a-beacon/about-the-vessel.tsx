@@ -54,6 +54,7 @@ const definePageForm = ({
 
 const AboutTheVessel: FunctionComponent<FormPageProps> = ({
   form,
+  showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "About the pleasure vessel";
 
@@ -63,6 +64,7 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
         navigation={<BackButton href="/register-a-beacon/primary-beacon-use" />}
         title={pageHeading}
         pageHasErrors={form.hasErrors}
+        showCookieBanner={showCookieBanner}
       >
         <Grid
           mainContent={

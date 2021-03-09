@@ -1,5 +1,9 @@
 import Link from "next/link";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactNode } from "react";
+
+interface ButtonGroupProps {
+  children: ReactNode;
+}
 
 interface ButtonProps {
   buttonText: string;
@@ -18,6 +22,12 @@ interface LinkButtonProps {
   buttonText: string;
   href: string;
 }
+
+export const ButtonGroup: FunctionComponent<ButtonGroupProps> = ({
+  children,
+}: ButtonGroupProps): JSX.Element => (
+  <div className="govuk-button-group">{children}</div>
+);
 
 export const Button: FunctionComponent<ButtonProps> = ({
   buttonText,

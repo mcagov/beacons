@@ -7,12 +7,22 @@ import { GovUKBody } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
 import { withCookieRedirect } from "../../lib/middleware";
 
-const ApplicationCompletePage: FunctionComponent = (): JSX.Element => {
+interface ApplicationCompletePageProps {
+  showCookieBanner: boolean;
+}
+
+const ApplicationCompletePage: FunctionComponent<ApplicationCompletePageProps> = ({
+  showCookieBanner,
+}: ApplicationCompletePageProps): JSX.Element => {
   const pageHeading = "Application Complete";
 
   return (
     <>
-      <Layout title={pageHeading} pageHasErrors={false}>
+      <Layout
+        title={pageHeading}
+        pageHasErrors={false}
+        showCookieBanner={showCookieBanner}
+      >
         <Grid
           mainContent={
             <>

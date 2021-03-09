@@ -12,6 +12,7 @@ import {
   updateFormCache,
   withCookieRedirect,
 } from "./middleware";
+import { acceptRejectCookieId } from "./types";
 
 type TransformCallback = (formData: CacheEntry) => CacheEntry;
 
@@ -19,6 +20,7 @@ export type FormManagerFactory = (formData: CacheEntry) => FormManager;
 
 export interface FormPageProps {
   form: FormJSON;
+  showCookieBanner?: boolean;
 }
 
 export const handlePageRequest = (
@@ -46,10 +48,12 @@ const handleGetRequest = (
   defineFormRulesCallback: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
   const formManager = defineFormRulesCallback(getCache(cookies));
+  const showCookieBanner = !cookies[acceptRejectCookieId];
 
   return {
     props: {
       form: formManager.serialise(),
+      showCookieBanner,
     },
   };
 };
@@ -78,9 +82,12 @@ export const handlePostRequest = async (
     };
   }
 
+  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
+
   return {
     props: {
       form: formManager.serialise(),
+      showCookieBanner,
     },
   };
 };

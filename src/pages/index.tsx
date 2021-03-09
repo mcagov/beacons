@@ -15,8 +15,15 @@ import {
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
 import { setFormSubmissionCookie } from "../lib/middleware";
+import { acceptRejectCookieId } from "../lib/types";
 
-const ServiceStartPage: FunctionComponent = (): JSX.Element => {
+interface ServiceStartPageProps {
+  showCookieBanner: boolean;
+}
+
+const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
+  showCookieBanner,
+}: ServiceStartPageProps): JSX.Element => {
   const pageHeading =
     "Register a single UK 406MHz Personal Locator Beacon (PLB) for maritime use";
 
@@ -25,7 +32,7 @@ const ServiceStartPage: FunctionComponent = (): JSX.Element => {
       <Layout
         navigation={<Breadcrumbs />}
         title={pageHeading}
-        pageHasErrors={false}
+        showCookieBanner={showCookieBanner}
       >
         <Grid
           mainContent={
@@ -171,8 +178,9 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   setFormSubmissionCookie(context);
+  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
 
-  return { props: {} };
+  return { props: { showCookieBanner } };
 };
 
 export default ServiceStartPage;

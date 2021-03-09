@@ -4,6 +4,6 @@ import ApplicationCompletePage from "../../../src/pages/register-a-beacon/applic
 
 describe("ApplicationCompletePage", () => {
   it("should render correctly", () => {
-    render(<ApplicationCompletePage />);
+    render(<ApplicationCompletePage showCookieBanner={false} />);
   });
 });

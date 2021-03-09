@@ -5,6 +5,23 @@ export const Footer: FunctionComponent = () => (
     <div className="govuk-width-container ">
       <div className="govuk-footer__meta">
         <div className="govuk-footer__meta-item govuk-footer__meta-item--grow">
+          <div>
+            <h2 className="govuk-visually-hidden">Support links</h2>
+            <ul className="govuk-footer__inline-list">
+              <li className="govuk-footer__inline-list-item">
+                <a className="govuk-footer__link" href="/help/cookies">
+                  Cookies
+                </a>
+              </li>
+              <li className="govuk-footer__inline-list-item">
+                Built by the&nbsp;
+                <a className="govuk-footer__link" href="/help/cookies">
+                  Government Digital Service
+                </a>
+              </li>
+            </ul>
+          </div>
+
           <svg
             aria-hidden="true"
             focusable="false"

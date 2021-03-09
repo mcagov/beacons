@@ -73,6 +73,7 @@ const definePageForm = ({
 
 const EmergencyContact: FunctionComponent<FormPageProps> = ({
   form,
+  showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "Add emergency contact information for up to 3 people";
 
@@ -84,6 +85,7 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
         }
         title={pageHeading}
         pageHasErrors={form.hasErrors}
+        showCookieBanner={showCookieBanner}
       >
         <Grid
           mainContent={

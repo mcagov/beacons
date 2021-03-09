@@ -43,7 +43,7 @@ describe("PrimaryBeaconUse", () => {
     );
     const ownPath = "/register-a-beacon/primary-beacon-use";
 
-    const form = container.querySelector("form");
+    const form = container.querySelectorAll("form")[1];
 
     expect(form).toHaveAttribute("action", ownPath);
   });

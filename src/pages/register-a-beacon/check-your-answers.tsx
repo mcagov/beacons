@@ -27,12 +27,14 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
 }: CheckYourAnswersProps): JSX.Element => {
   const pageHeading = "Check your answers before sending in your registration";
 
+  // TODO: This page is removed in PR check your answers.
   return (
     <>
       <Layout
         navigation={<BackButton href="/register-a-beacon/emergency-contact" />}
         title={pageHeading}
         pageHasErrors={false}
+        showCookieBanner={false}
       >
         <Grid
           mainContent={
