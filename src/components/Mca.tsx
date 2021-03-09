@@ -5,7 +5,10 @@ import { AnchorLink, GovUKList } from "./Typography";
 export const McaLogo: FunctionComponent = (): JSX.Element => (
   <>
     <a className="govuk-body govuk-!-margin-bottom-3" href="https://gov.uk/mca">
-      <img src="../assets/images/mca-logo.png" alt="mca logo" />
+      <img
+        src="/assets/mca_images/mca-logo.png"
+        alt="Maritime & Coastguard Agency logo"
+      />
     </a>
   </>
 );
