@@ -7,11 +7,11 @@ on:
         description: "Must be one of: development, staging, production"
         required: true
         default: "development"
-      image-tag:
-        description: The Docker image tag to update (optional)
+      git-hash:
+        description: The git hash of the Docker image to update (optional)
         required: false
       target:
-        description: "The target service image to update.  Must be one of: webapp, service (optional)"
+        description: "The target service to update.  Must be one of: webapp, service (optional)"
         required: false
   push:
 
