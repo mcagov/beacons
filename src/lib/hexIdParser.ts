@@ -1,54 +1,71 @@
 /**
- * A class that parses information from a given 406Mhz beacon hex id.
+ * Parses encoded information from a given 406Mhz beacon hex id.
  *
- * The 15-digit hex code contains information represented as a string of 15
- * characters translating to a sequence of bits.  For example: ADCD0228C500401
- * represents the bit sequence: 1010 1101 1100 1101 0000 0010 0010 1000 1100
- * 0101 0000 0000 0100 0000 0001.
+ * @remarks
+ * The 15-digit hexId serves two functions:
  *
- * The fields we care about are:
+ *      1) uniquely identify a beacon
  *
- * # Country code:
+ *      2) communicate information about the beacon, such as the country to
+ *      which it is registered.
+ *
+ * To access the data, the hexId must be converted into binary and then sliced
+ * according to the bit positions defined in C/S G.005 (see
+ * http://www.cospas-sarsat.int/images/stories/SystemDocs/Current/cs_g005_oct_2013.pdf)
+ *
+ * For example, to get the country code from hexId ADCD0228C500401, you would:
+ *
+ * 1. Convert the hexId to binary:
+ *
+ *      ADCD0228C500401 in hexadecimal becomes ->
+ *      101011011100110100000010001010001100010100000000010000000001
+ *      in binary
+ *
+ * 2.  Extract the binary data fields by slicing based on position in the
+ * 60-digit binary string:
+ *
+ *      P|Country ||   Other data depending on encoding protocol   |
+ *      101011011100110100000010001010001100010100000000010000000001
+ *
+ *      (P = protocol flag)
+ *
+ * For all hexIds regardless of encoding protocol, the country code is at index
+ * positions 1 to 11 (on a zero-based index).  The countryCode for the example
+ * hexId is therefore:
+ *
+ *      Country code: 0101101110
+ *
+ * 4.  Convert the extracted field to decimal:
+ *
+ * Country code in decimal: 366
+ *
  */
 export class HexIdParser {
-  public static countryCode(hexId: string): number {
-    const [countryStartBit, countryEndBit] = [27, 36];
-    return this.toDecimal(
-      this.sliceBits(hexId, countryStartBit, countryEndBit).join("")
-    );
-  }
-
-  private static toBits(hexId: string): string[] {
-    return parseInt(hexId, 16).toString(2).padStart(60, "0").split("");
-  }
-
-  private static toDecimal(binaryString: string): number {
-    return parseInt(binaryString, 2);
-  }
-
   /**
-   * Cospas-Sarsat documentation refers to the hexId's bits by their place in
-   * the message sent from beacons to the satellite system.
+   * Parses the country code from a hexId.
    *
-   * See
-   * http://www.cospas-sarsat.int/images/stories/SystemDocs/Current/cs_g005_oct_2013.pdf
-   * section 3.2.3.4
+   * @remarks See worked example of extracting a country code from a hexId in
+   * the top-level documentation for this class.  Cospas-Sarsat uses Maritime
+   * Identification Digits (MIDs) from the ITU to represent countries in hexIds.
    *
-   * For convenience, this constant allows HexIdParser to mirror the language
-   * used in the Cospas-Sarsat documentation when referring to fields in the
-   * Hex ID.  For example, the Cospas-Sarsat documentation refers to the country
-   * code as existing in bits 27 to 36 of the *message*, which equate to bits 2
-   * to 11 in the hexId.  HexIdParser is consistent with the C-S documentation.
+   * See C/S G.005 and https://www.itu.int/en/ITU-R/terrestrial/fmd/Pages/mid.aspx.
+   *
+   * @param hexId - The hexId string
+   * @returns The three-digit integer MID country code encoded in the hexId
+   *
    */
-  private static sliceBits(
-    hexId: string,
-    start: number,
-    finish: number
-  ): string[] {
-    const hexIdStartBit = 26;
-    return this.toBits(hexId).slice(
-      start - hexIdStartBit,
-      finish - hexIdStartBit + 1
+  public static countryCode(hexId: string): number {
+    const countryCodeBitRange = [1, 11];
+    return this.binaryToDecimal(
+      this.hexToBinary(hexId).slice(...countryCodeBitRange)
     );
+  }
+
+  private static hexToBinary(hexId: string): string {
+    return parseInt(hexId, 16).toString(2).padStart(60, "0");
+  }
+
+  private static binaryToDecimal(binaryString: string): number {
+    return parseInt(binaryString, 2);
   }
 }
