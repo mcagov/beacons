@@ -8,10 +8,10 @@ on:
         required: true
         default: "development"
       image-tag:
-        description: The Docker image tag to update
+        description: The Docker image tag to update (optional)
         required: false
       target:
-        description: "The target service image to update.  Must be one of: webapp, service"
+        description: "The target service image to update.  Must be one of: webapp, service (optional)"
         required: false
   push:
 
