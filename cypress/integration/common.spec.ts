@@ -1,4 +1,6 @@
 export const requiredFieldErrorMessage = "required field";
+export const tooManyCharactersErrorMessage = "too many characters";
+export const mustBeAnIntegerErrorMessage = "must be a whole number";
 
 export const andICanClickTheBackLinkToGoToPreviousPage = (
   previousPageURL: string
@@ -29,5 +31,9 @@ export const thenIShouldSeeAnErrorMessageThatContains = (
 };
 
 export const whenIType = (value: string, inputName: string): void => {
-  cy.get(`input[name="${inputName}"]`).type(value);
+  cy.get(`[name="${inputName}"]`).type(value);
+};
+
+export const givenIHaveSelected = (optionId: string): void => {
+  cy.get(optionId).click();
 };

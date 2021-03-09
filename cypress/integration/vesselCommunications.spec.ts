@@ -1,4 +1,4 @@
-import { whenIClickContinue } from "./common.spec";
+import { givenIHaveSelected, whenIClickContinue } from "./common.spec";
 
 describe("As a beacon owner, I want to register my communication details so SAR can contact me in an emergency", () => {
   const pageUrl = "/register-a-beacon/vessel-communications";
@@ -8,7 +8,7 @@ describe("As a beacon owner, I want to register my communication details so SAR 
   });
 
   it("requires an MMSI number if the fixed VHF checkbox is selected", () => {
-    givenIHaveSelectedTheFixedVhfRadioOption();
+    givenIHaveSelected("#fixedVhfRadio");
     andIHaveLeftTheRelevantTextInputBlank();
 
     whenIClickContinue();
@@ -17,7 +17,7 @@ describe("As a beacon owner, I want to register my communication details so SAR 
   });
 
   it("requires an MMSI number if the portable VHF checkbox is selected", () => {
-    givenIHaveSelectedThePortableVhfRadioOption();
+    givenIHaveSelected("#portableVhfRadio");
     andIHaveLeftTheRelevantTextInputBlank();
 
     whenIClickContinue();
@@ -26,7 +26,7 @@ describe("As a beacon owner, I want to register my communication details so SAR 
   });
 
   it("requires a phone number if the satellite telephone checkbox is selected", () => {
-    givenIHaveSelectedTheSatelliteTelephoneOption();
+    givenIHaveSelected("#satelliteTelephone");
     andIHaveLeftTheRelevantTextInputBlank();
 
     whenIClickContinue();
@@ -34,8 +34,8 @@ describe("As a beacon owner, I want to register my communication details so SAR 
     thenISeeAnError();
   });
 
-  it("requires a phone number if the satellite telephone checkbox is selected", () => {
-    givenIHaveSelectedTheMobileTelephoneOption();
+  it("requires a phone number if the mobile telephone checkbox is selected", () => {
+    givenIHaveSelected("#mobileTelephone");
     andIHaveLeftTheRelevantTextInputBlank();
 
     whenIClickContinue();
@@ -46,19 +46,6 @@ describe("As a beacon owner, I want to register my communication details so SAR 
   const givenIAmOnTheVesselCommunicationsPage = () => {
     cy.visit("/"); // Sets cookie
     cy.visit(pageUrl);
-  };
-
-  const givenIHaveSelectedTheFixedVhfRadioOption = () =>
-    cy.get("#fixedVhfRadio").click();
-
-  const givenIHaveSelectedThePortableVhfRadioOption = () =>
-    cy.get("#portableVhfRadio").click();
-
-  const givenIHaveSelectedTheSatelliteTelephoneOption = () =>
-    cy.get("#satelliteTelephone").click();
-
-  const givenIHaveSelectedTheMobileTelephoneOption = () => {
-    cy.get("#mobileTelephone").click();
   };
 
   const andIHaveLeftTheRelevantTextInputBlank = () => null;
