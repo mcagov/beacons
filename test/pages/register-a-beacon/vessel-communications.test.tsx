@@ -213,4 +213,44 @@ describe("VesselCommunications form validation", () => {
       );
     });
   });
+
+  describe("when the Satellite Telephone checkbox is selected", () => {
+    it("the relevant text input is required", () => {
+      const fieldValues = {
+        ...emptyFieldValues,
+        satelliteTelephone: VesselCommunication.SATELLITE_TELEPHONE,
+        satelliteTelephoneInput: "",
+      };
+      const expectedErrors = [expect.stringContaining("We need your")];
+      const formManager = definePageForm(fieldValues);
+      formManager.markAsDirty();
+
+      const validationResult = formManager.serialise();
+
+      expectFormErrors(
+        validationResult,
+        expectedErrors,
+        "satelliteTelephoneInput"
+      );
+    });
+
+    it("requires a valid phone number", () => {
+      const fieldValues = {
+        ...emptyFieldValues,
+        satelliteTelephone: VesselCommunication.SATELLITE_TELEPHONE,
+        satelliteTelephoneInput: "not a valid phone number",
+      };
+      const expectedErrors = [expect.stringContaining("correct format")];
+      const formManager = definePageForm(fieldValues);
+      formManager.markAsDirty();
+
+      const validationResult = formManager.serialise();
+
+      expectFormErrors(
+        validationResult,
+        expectedErrors,
+        "satelliteTelephoneInput"
+      );
+    });
+  });
 });

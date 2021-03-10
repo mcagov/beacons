@@ -99,6 +99,9 @@ export const definePageForm = ({
         Validators.required(
           "We need your phone number if you have a satellite telephone"
         ),
+        Validators.phoneNumber(
+          "Enter a satellite telephone number in the correct format"
+        ),
       ],
       [
         {
