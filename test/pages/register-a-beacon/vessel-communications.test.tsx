@@ -154,4 +154,63 @@ describe("VesselCommunications form validation", () => {
       expectFormErrors(validationResult, expectedErrors, "fixedVhfRadioInput");
     });
   });
+
+  describe("when the Portable VHF/DSC radio checkbox is selected", () => {
+    it("the relevant text input is required", () => {
+      const fieldValues = {
+        ...emptyFieldValues,
+        portableVhfRadio: VesselCommunication.PORTABLE_VHF_RADIO,
+        portableVhfRadioInput: "",
+      };
+      const expectedErrors = [expect.stringContaining("We need your")];
+      const formManager = definePageForm(fieldValues);
+      formManager.markAsDirty();
+
+      const validationResult = formManager.serialise();
+
+      expectFormErrors(
+        validationResult,
+        expectedErrors,
+        "portableVhfRadioInput"
+      );
+    });
+
+    it("the relevant text input should be numbers 0 to 9 only", () => {
+      const fieldValues = {
+        ...emptyFieldValues,
+        portableVhfRadio: VesselCommunication.PORTABLE_VHF_RADIO,
+        portableVhfRadioInput: "abcdefghi",
+      };
+      const expectedErrors = [expect.stringContaining("numbers")];
+      const formManager = definePageForm(fieldValues);
+      formManager.markAsDirty();
+
+      const validationResult = formManager.serialise();
+
+      expectFormErrors(
+        validationResult,
+        expectedErrors,
+        "portableVhfRadioInput"
+      );
+    });
+
+    it("the relevant text input should be exactly nine digits long", () => {
+      const fieldValues = {
+        ...emptyFieldValues,
+        portableVhfRadio: VesselCommunication.PORTABLE_VHF_RADIO,
+        portableVhfRadioInput: "0123",
+      };
+      const expectedErrors = [expect.stringContaining("long")];
+      const formManager = definePageForm(fieldValues);
+      formManager.markAsDirty();
+
+      const validationResult = formManager.serialise();
+
+      expectFormErrors(
+        validationResult,
+        expectedErrors,
+        "portableVhfRadioInput"
+      );
+    });
+  });
 });

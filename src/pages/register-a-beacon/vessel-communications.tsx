@@ -76,6 +76,13 @@ export const definePageForm = ({
         Validators.required(
           "We need your portable MMSI number if you have a portable VHF/DSC radio"
         ),
+        Validators.wholeNumber(
+          "Your MMSI number must only include numbers 0 to 9, with no letters or other characters"
+        ),
+        Validators.isLength(
+          "Your MMSI number must be exactly nine digits long",
+          9
+        ),
       ],
       [
         {
