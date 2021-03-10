@@ -116,12 +116,12 @@ export class Validators {
    * Validator that requires the form input value to be a hexadecimal
    * string; proxies through to the {@link Validators.pattern()}.
    *
-   * @param erroMessage {string}           An error message if the rule is violated
+   * @param errorMessage {string}           An error message if the rule is violated
    * @returns           {ValidationRule}   A validation rule
    */
-  public static hexadecimalString(erroMessage: string): ValidationRule {
+  public static hexadecimalString(errorMessage: string): ValidationRule {
     const hexIdRegex = /^[a-f0-9]+$/i;
-    return Validators.pattern(erroMessage, hexIdRegex);
+    return Validators.pattern(errorMessage, hexIdRegex);
   }
 
   /**
