@@ -28,7 +28,8 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static required(errorMessage: string): ValidationRule {
-    const applies: ValidatorFn = (value: string) => !value;
+    const applies: ValidatorFn = (value: string) =>
+      value ? !value.trim() : !value;
 
     return {
       errorMessage,

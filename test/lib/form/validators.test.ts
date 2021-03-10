@@ -22,6 +22,10 @@ describe("Form Validators", () => {
       expect(applies(undefined)).toBe(true);
     });
 
+    it("should have an error if the value is just whitespace", () => {
+      expect(applies(" ")).toBe(true);
+    });
+
     it("should not have an error if the value is non-empty", () => {
       expect(applies("Hex ID!")).toBe(false);
     });
