@@ -1,9 +1,9 @@
 resource "aws_ecs_cluster" "main" {
-  name = "mca-beacons-cluster"
+  name = "${var.env}-mca-beacons-cluster"
 }
 
 resource "aws_ecs_task_definition" "webapp" {
-  family                   = "beacons-webapp-task"
+  family                   = "${var.env}-beacons-webapp-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -30,7 +30,7 @@ resource "aws_ecs_task_definition" "webapp" {
 }
 
 resource "aws_ecs_service" "webapp" {
-  name            = "beacons-webapp"
+  name            = "${var.env}-beacons-webapp"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.webapp.arn
   desired_count   = var.webapp_count
@@ -55,7 +55,7 @@ resource "aws_ecs_service" "webapp" {
 }
 
 resource "aws_ecs_task_definition" "service" {
-  family                   = "beacons-service-task"
+  family                   = "${var.env}-beacons-service-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -96,7 +96,7 @@ resource "aws_ecs_task_definition" "service" {
 }
 
 resource "aws_ecs_service" "service" {
-  name            = "beacons-service"
+  name            = "${var.env}-beacons-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.service.arn
   desired_count   = var.service_count

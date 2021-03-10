@@ -1,6 +1,6 @@
 # ALB Security Group: Edit to restrict access to the application
 resource "aws_security_group" "lb" {
-  name        = "beacons-load-balancer-security-group"
+  name        = "beacons-load-balancer-security-group-${var.env}"
   description = "Allows inbound traffice to the ALB"
   vpc_id      = aws_vpc.main.id
 
@@ -28,7 +28,7 @@ resource "aws_security_group" "lb" {
 
 # Traffic to the ECS cluster should only come from the ALB
 resource "aws_security_group" "ecs_tasks" {
-  name        = "beacons-ecs-tasks-security-group"
+  name        = "${var.env}-beacons-ecs-tasks-security-group"
   description = "Allows inbound access from the ALB only"
   vpc_id      = aws_vpc.main.id
 
@@ -55,7 +55,7 @@ resource "aws_security_group" "ecs_tasks" {
 }
 
 resource "aws_security_group" "db" {
-  name        = "beacons-rds-security-group"
+  name        = "${var.env}-beacons-rds-security-group"
   description = "Allows inbound access from the ECS tasks only"
   vpc_id      = aws_vpc.main.id
 
