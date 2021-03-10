@@ -1,7 +1,7 @@
 # ALB Security Group: Edit to restrict access to the application
 resource "aws_security_group" "lb" {
-  name        = "beacons-load-balancer-security-group-${var.env}"
-  description = "Allows inbound traffice to the ALB"
+  name        = "${var.env}-beacons-load-balancer-security-group"
+  description = "Allows inbound traffic to the ALB"
   vpc_id      = aws_vpc.main.id
 
   ingress {

@@ -7,16 +7,6 @@ variable "aws_region" {
   description = "The AWS region resources are created in"
   default     = "eu-west-2"
 }
-variable "ecs_task_execution_role_name" {
-  type        = string
-  description = "ECS task execution role name"
-  default     = "McaEcsTaskExecutionRole"
-}
-variable "ecs_auto_scale_role_name" {
-  type        = string
-  description = "ECS auto scale role Name"
-  default     = "McaEcsAutoScaleRole"
-}
 variable "az_count" {
   description = "Number of AZs to cover in a given region"
   default     = "2"
@@ -24,8 +14,9 @@ variable "az_count" {
 variable "app_name" {
   type        = string
   description = "Name of the application"
-  default     = "Beacons Registation Application"
+  default     = "Beacons Registration Application"
 }
+// TODO: Create ECR for webapp in MCA aws and update this to use that value
 variable "webapp_image" {
   type        = string
   description = "Docker image to run in the ECS cluster for the Beacons Webapp"
@@ -60,6 +51,7 @@ variable "webapp_fargate_memory" {
   description = "Fargate instance memory to provision (in MiB) for the Beacons Webapp"
   default     = 512
 }
+// TODO: Create ECR for service in MCA aws and update this to use that value
 variable "service_image" {
   type        = string
   description = "Docker image to run in the ECS cluster"
@@ -116,7 +108,7 @@ variable "db_max_storage" {
 }
 variable "db_delete_protection" {
   type        = bool
-  description = "Determines if the DB can be delted. If true, the database cannot be deleted"
+  description = "Determines if the DB can be deleted. If true, the database cannot be deleted"
   default     = false
 }
 variable "db_name" {
