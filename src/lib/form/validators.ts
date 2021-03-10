@@ -55,7 +55,8 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static isLength(errorMessage: string, length: number): ValidationRule {
-    const applies: ValidatorFn = (value: string) => value.length !== length;
+    const applies: ValidatorFn = (value: string) =>
+      value !== "" && value.length !== length;
 
     return { errorMessage, applies };
   }
