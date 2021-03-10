@@ -17,7 +17,7 @@ jobs:
         run: terraform fmt --recursive --check
 
   terraform_plan:
-    name: Terraform Lint
+    name: Terraform Plan
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -26,6 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
+      - run: terraform init
       - id: plan
         run: terraform plan -no-color
       - run: echo ${{ steps.plan.outputs.stdout }}
