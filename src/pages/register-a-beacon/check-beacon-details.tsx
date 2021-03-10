@@ -21,7 +21,7 @@ import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { toUpperCase } from "../../lib/utils";
 
-const definePageForm = ({
+export const definePageForm = ({
   manufacturer,
   model,
   hexId,
@@ -34,6 +34,7 @@ const definePageForm = ({
       Validators.required("Beacon model is a required field"),
     ]),
     hexId: new FieldManager(hexId, [
+      Validators.required("Beacon HEX ID is a required field"),
       Validators.isLength(
         "Beacon HEX ID or UIN must be 15 characters long",
         15

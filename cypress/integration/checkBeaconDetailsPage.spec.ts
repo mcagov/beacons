@@ -52,7 +52,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     whenIType("Test Model", "model");
     whenIType("Test Manufacturer", "manufacturer");
     whenIClickContinue();
-    thenIShouldSeeAnErrorMessageThatContains(mustBe15CharactersLong);
+    thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
   });
 
   it("displays an error if non-hex characters are submitted for hexId", () => {

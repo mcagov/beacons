@@ -57,7 +57,8 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static isLength(errorMessage: string, length: number): ValidationRule {
-    const applies: ValidatorFn = (value: string) => value.length !== length;
+    const applies: ValidatorFn = (value: string) =>
+      !!value && value.length !== length;
 
     return { errorMessage, applies };
   }
@@ -144,6 +145,7 @@ export class Validators {
   public static ukEncodedBeacon(errorMessage: string): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       if (isEmptyInputValue(value)) return false;
+      if (value.length !== 15) return false;
 
       const ukCountryCodes = [232, 233, 234, 235];
       const beaconCountryCode = HexIdParser.countryCode(value);
