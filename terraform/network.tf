@@ -3,7 +3,7 @@ data "aws_availability_zones" "available" {
 
 resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
-  enable_dns_hostnames = false
+  enable_dns_hostnames = true
   enable_dns_support   = true
 }
 
@@ -42,3 +42,83 @@ resource "aws_route" "internet_access" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.gw.id
 }
+
+# resource "aws_vpc_endpoint" "ecr_api" {
+#   vpc_id       = aws_vpc.main.id
+#   service_name = "com.amazonaws.${var.aws_region}.ecr.api"
+#   vpc_endpoint_type = "Interface"
+
+#   subnet_ids = aws_subnet.app[*].id
+
+#   security_group_ids = [
+#     aws_security_group.vpc_endpoints.id,
+#   ]
+# }
+
+resource "aws_vpc_endpoint" "ecr_dkr" {
+  vpc_id       = aws_vpc.main.id
+  service_name = "com.amazonaws.${var.aws_region}.ecr.dkr"
+  vpc_endpoint_type = "Interface"
+
+  subnet_ids = aws_subnet.app[*].id
+
+  security_group_ids = [
+    aws_security_group.vpc_endpoints.id,
+  ]
+
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id       = aws_vpc.main.id
+  service_name = "com.amazonaws.${var.aws_region}.s3"
+  vpc_endpoint_type = "Gateway"
+}
+
+resource "aws_vpc_endpoint" "cloud_watch_logs" {
+  vpc_id       = aws_vpc.main.id
+  service_name = "com.amazonaws.${var.aws_region}.logs"
+  vpc_endpoint_type = "Interface"
+
+  subnet_ids = aws_subnet.app[*].id
+
+  security_group_ids = [
+    aws_security_group.vpc_endpoints.id,
+  ]
+}
+
+# resource "aws_vpc_endpoint" "ecs_agent" {
+#   vpc_id       = aws_vpc.main.id
+#   service_name = "com.amazonaws.${var.aws_region}.ecs-agent"
+#   vpc_endpoint_type = "Interface"
+
+#   subnet_ids = aws_subnet.app[*].id
+
+#   security_group_ids = [
+#     aws_security_group.vpc_endpoints.id,
+#   ]
+# }
+
+# resource "aws_vpc_endpoint" "ecs_telemetry" {
+#   vpc_id       = aws_vpc.main.id
+#   service_name = "com.amazonaws.${var.aws_region}.ecs-telemetry"
+#   vpc_endpoint_type = "Interface"
+
+#   subnet_ids = aws_subnet.app[*].id
+
+#   security_group_ids = [
+#     aws_security_group.vpc_endpoints.id,
+#   ]
+# }
+
+# resource "aws_vpc_endpoint" "ecs" {
+#   vpc_id       = aws_vpc.main.id
+#   service_name = "com.amazonaws.${var.aws_region}.ecs"
+#   vpc_endpoint_type = "Interface"
+
+#   subnet_ids = aws_subnet.app[*].id
+
+#   security_group_ids = [
+#     aws_security_group.vpc_endpoints.id,
+#   ]
+# }

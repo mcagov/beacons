@@ -73,3 +73,24 @@ resource "aws_security_group" "db" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+# Allows traffic from the ECS cluster to VPC endpoints for ECR images
+resource "aws_security_group" "vpc_endpoints" {
+  name        = "${var.env}-beacons-ecr-vpc-endpoints-security-group"
+  description = "Allows inbound access from the ECS tasks"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = 443
+    to_port         = 443
+    security_groups = [aws_security_group.ecs_tasks.id]
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
