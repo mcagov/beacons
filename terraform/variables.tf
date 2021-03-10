@@ -148,3 +148,9 @@ variable "db_logs_exported" {
     error_message = "Exported log options are either: postgresql or upgrade."
   }
 }
+
+variable "db_skip_final_snapshot" {
+  type        = bool
+  description = "Determines whether a final DB snapshot is created before the DB instance is deleted"
+  default     = true
+}

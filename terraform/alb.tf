@@ -32,7 +32,7 @@ resource "aws_lb_listener_rule" "service" {
 }
 
 resource "aws_alb_target_group" "webapp" {
-  name        = "webapp-target-group"
+  name        = "${var.env}-webapp-target-group"
   port        = var.webapp_port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
@@ -54,7 +54,7 @@ resource "aws_alb_target_group" "webapp" {
 }
 
 resource "aws_alb_target_group" "service" {
-  name        = "service-target-group"
+  name        = "${var.env}-service-target-group"
   port        = var.service_port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
