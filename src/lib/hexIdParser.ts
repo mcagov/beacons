@@ -11,7 +11,8 @@
  *
  * To access the data, the hexId must be converted into binary and then sliced
  * according to the bit positions defined in C/S G.005 (see
- * http://www.cospas-sarsat.int/images/stories/SystemDocs/Current/cs_g005_oct_2013.pdf)
+ * http://www.cospas-sarsat.int/images/stories/SystemDocs/Current/cs_g005_oct_2013.pdf
+ * section 3.2.3)
  *
  * For example, to get the country code from hexId ADCD0228C500401, you would:
  *

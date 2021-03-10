@@ -132,6 +132,7 @@ export class Validators {
    * Cospas-Sarsat uses Maritime Identification Digits encoded into the hexId to
    * identify the country responsible for registering a given beacon.  See:
    * http://www.cospas-sarsat.int/images/stories/SystemDocs/Current/cs_g005_oct_2013.pdf
+   * (section 3.2.3.2) and
    * https://www.itu.int/en/ITU-R/terrestrial/fmd/Pages/mid.aspx
    *
    * If the country code of a hexId is not one of the UK MID country codes, it
