@@ -1,4 +1,4 @@
-name: Staging Deployment
+name: Deploy Staging
 
 on: workflow_dispatch
 
@@ -9,4 +9,4 @@ jobs:
 
     steps:
       - name: Terraform plan
-        run: echo "TODO Terraform plan"
+        run: echo "TODO Terraform plan.  Pipeline will deploy to from dev -> staging"
