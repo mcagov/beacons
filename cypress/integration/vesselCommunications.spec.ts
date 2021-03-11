@@ -1,10 +1,14 @@
-import { givenIHaveSelected, whenIClickContinue } from "./common.spec";
+import {
+  givenIAmAt,
+  givenIHaveSelected,
+  whenIClickContinue,
+} from "./common.spec";
 
 describe("As a beacon owner, I want to register my communication details so SAR can contact me in an emergency", () => {
   const pageUrl = "/register-a-beacon/vessel-communications";
 
   beforeEach(() => {
-    givenIAmOnTheVesselCommunicationsPage();
+    givenIAmAt(pageUrl);
   });
 
   it("requires an MMSI number if the fixed VHF checkbox is selected", () => {
@@ -42,11 +46,6 @@ describe("As a beacon owner, I want to register my communication details so SAR 
 
     thenISeeAnError();
   });
-
-  const givenIAmOnTheVesselCommunicationsPage = () => {
-    cy.visit("/"); // Sets cookie
-    cy.visit(pageUrl);
-  };
 
   const andIHaveLeftTheRelevantTextInputBlank = () => null;
 

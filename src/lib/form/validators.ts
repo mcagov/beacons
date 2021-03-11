@@ -1,10 +1,12 @@
+import { PhoneNumberUtil } from "google-libphonenumber";
+import { HexIdParser } from "../hexIdParser";
+
 /**
  * Type definition for a function that validates a form input and returns true if the value violates the rule.
  *
  * @param formNode {string}    The form value to validate
  * @returns        {boolean}   True if the value violates the rule
  */
-import { HexIdParser } from "../hexIdParser";
 
 export type ValidatorFn = (value: string) => boolean;
 
@@ -190,6 +192,22 @@ export class Validators {
   public static postcode(errorMessage: string): ValidationRule {
     const emailRegex = /^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$/;
     return Validators.pattern(errorMessage, emailRegex);
+  }
+
+  public static phoneNumber(errorMessage: string): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      if (Validators.required("").applies(value)) return false;
+
+      try {
+        const phoneValidator = PhoneNumberUtil.getInstance();
+        return !phoneValidator.isValidNumber(phoneValidator.parse(value, "GB"));
+      } catch (error) {
+        // Phone number could not be parsed, i.e. is invalid
+        return true;
+      }
+    };
+
+    return { errorMessage, applies };
   }
 
   /**
