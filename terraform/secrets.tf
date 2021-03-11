@@ -1,5 +1,5 @@
 resource "aws_secretsmanager_secret" "db_password" {
-  name = "db_password"
+  name = "${var.env}-db_password"
 }
 
 resource "aws_secretsmanager_secret_version" "db_password" {
