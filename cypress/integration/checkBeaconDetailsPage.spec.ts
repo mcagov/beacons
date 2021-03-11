@@ -1,66 +1,101 @@
 import {
-  requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyCursorMovesTo,
   thenTheUrlShouldContain,
   whenIClickContinue,
-  whenIClickOnFirstErrorSummaryLinkContainingText,
+  whenIClickOnTheErrorSummaryLinkContainingText,
   whenIType,
 } from "./common.spec";
 
 describe("As a beacon owner, I want to enter my initial beacon information", () => {
+  const pageUrl = "/register-a-beacon/check-beacon-details";
   const validUkEncodedHexId = "1D0EA08C52FFBFF";
 
-  before(() => {
-    givenIAmAt("/register-a-beacon/check-beacon-details");
-  });
-
   beforeEach(() => {
-    Cypress.Cookies.preserveOnce("submissionId");
+    givenIAmAt(pageUrl);
   });
 
-  it("displays the Check beacon details page", () => {
+  it("shows me the page title", () => {
     iCanSeeTheCheckBeaconDetailsPage();
   });
 
-  it("displays errors with the manufacturer field", () => {
-    whenIType("Test Model", "model");
-    whenIType(validUkEncodedHexId, "hexId");
+  it("errors if I submit a blank manufacturer field", () => {
     whenIType(" ", "manufacturer");
 
     whenIClickContinue();
-    thenIShouldSeeAnErrorSummaryLinkThatContains(requiredFieldErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
+    thenIShouldSeeAnErrorSummaryLinkThatContains("manufacturer", "required");
+    thenIShouldSeeAnErrorMessageThatContains("manufacturer", "required");
 
-    whenIClickOnFirstErrorSummaryLinkContainingText(requiredFieldErrorMessage);
+    whenIClickOnTheErrorSummaryLinkContainingText("manufacturer", "required");
     thenMyCursorMovesTo("manufacturer");
   });
 
-  it("displays errors with the model field", () => {
+  it("errors if I submit a blank model field", () => {
     whenIType(" ", "model");
-    whenIType(validUkEncodedHexId, "hexId");
-    whenIType("Test Manufacturer", "manufacturer");
 
     whenIClickContinue();
-    thenIShouldSeeAnErrorSummaryLinkThatContains(requiredFieldErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
+    thenIShouldSeeAnErrorSummaryLinkThatContains("model", "required");
+    thenIShouldSeeAnErrorMessageThatContains("model", "required");
 
-    whenIClickOnFirstErrorSummaryLinkContainingText(requiredFieldErrorMessage);
+    whenIClickOnTheErrorSummaryLinkContainingText("model", "required");
     thenMyCursorMovesTo("model");
   });
 
-  it("displays errors with the hexId field", () => {
-    whenIType("Test Model", "model");
-    whenIType("Test Manufacturer", "manufacturer");
-    whenIType(" ", "hexId");
+  describe("the HEX ID field", () => {
+    const hexIdField = "hexId";
 
-    whenIClickContinue();
-    thenIShouldSeeAnErrorSummaryLinkThatContains(requiredFieldErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
+    it("errors if I submit a blank string", () => {
+      const expectedErrorMessage = ["HEX ID", "required"];
 
-    whenIClickOnFirstErrorSummaryLinkContainingText(requiredFieldErrorMessage);
-    thenMyCursorMovesTo("hexId");
+      whenIType(" ", "hexId");
+      whenIClickContinue();
+
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+
+      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
+      thenMyCursorMovesTo(hexIdField);
+    });
+
+    it("errors if I submit a non-hexadecimal string", () => {
+      const expectedErrorMessage = ["HEX ID", "0 to 9", "A to F"];
+
+      whenIType("0123456789ABCDX", "hexId");
+
+      whenIClickContinue();
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+
+      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
+      thenMyCursorMovesTo(hexIdField);
+    });
+
+    it("errors if I submit a string not exactly 15 characters long", () => {
+      const expectedErrorMessage = ["15 characters"];
+
+      whenIType("0123456789ABCDEF", "hexId");
+
+      whenIClickContinue();
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+
+      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
+      thenMyCursorMovesTo(hexIdField);
+    });
+
+    it("errors if I submit a valid but non-UK HEX ID", () => {
+      const expectedErrorMessage = ["UK-encoded"];
+
+      whenIType("C00F429578002C1", "hexId");
+
+      whenIClickContinue();
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+
+      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
+      thenMyCursorMovesTo(hexIdField);
+    });
   });
 
   it("routes to the next page if there are no errors with the form submission", () => {
@@ -74,12 +109,12 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
   });
 });
 
-const givenIAmAt = (url) => {
+const givenIAmAt = (url): void => {
   cy.setCookie("submissionId", "testForm");
-  cy.visit(url);
+  if (cy.url().toString() !== url) cy.visit(url);
 };
 
-const iCanSeeTheCheckBeaconDetailsPage = () => {
+const iCanSeeTheCheckBeaconDetailsPage = (): void => {
   cy.url().should("include", "/register-a-beacon/check-beacon-details");
   cy.get("h1").contains("Check beacon details");
 };

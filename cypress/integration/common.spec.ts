@@ -10,12 +10,12 @@ export const andICanClickTheBackLinkToGoToPreviousPage = (
 export const whenIClickContinue = (): void =>
   cy.get("button").contains("Continue").click();
 
-export const whenIClickOnFirstErrorSummaryLinkContainingText = (
-  text: string
+export const whenIClickOnTheErrorSummaryLinkContainingText = (
+  ...strings: string[]
 ): void => {
-  cy.get(".govuk-error-summary__list").within(() => {
-    cy.contains(text).click();
-  });
+  let link = cy.get(".govuk-error-summary__list");
+  strings.forEach((string) => (link = link.contains(string)));
+  link.click();
 };
 
 export const whenIType = (value: string, inputName: string): void => {
@@ -34,17 +34,19 @@ export const thenTheInputShouldContain = (
 };
 
 export const thenIShouldSeeAnErrorSummaryLinkThatContains = (
-  errorMessage: string
+  ...strings: string[]
 ): void => {
   cy.get(".govuk-error-summary__list").within(() => {
-    cy.get("a").should("contain", errorMessage);
+    strings.every((string) => cy.get("a").should("contain", string));
   });
 };
 
 export const thenIShouldSeeAnErrorMessageThatContains = (
-  errorMessage: string
+  ...strings: string[]
 ): void => {
-  cy.get(".govuk-error-message").should("contain", errorMessage);
+  strings.every((string) =>
+    cy.get(".govuk-error-message").should("contain", string)
+  );
 };
 
 export const thenMyCursorMovesTo = (elementId: string): void => {
