@@ -1,0 +1,13 @@
+name: Deploy Staging
+
+on: workflow_dispatch
+
+jobs:
+  terraform_plan:
+    name: Terraform plan
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Terraform plan
+        run: echo "TODO Terraform plan.  Pipeline will deploy to from dev -> staging"
