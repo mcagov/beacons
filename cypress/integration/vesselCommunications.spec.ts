@@ -1,51 +1,46 @@
-import { whenIClickContinue } from "./common.spec";
+import { uncheckAllCheckboxes, whenIClickContinue } from "./common.spec";
 
 describe("As a beacon owner, I want to register my communication details so SAR can contact me in an emergency", () => {
-  const pageUrl = "/register-a-beacon/vessel-communications";
+  before(() => {
+    givenIAmAt("/register-a-beacon/vessel-communications");
+  });
 
   beforeEach(() => {
-    givenIAmOnTheVesselCommunicationsPage();
+    Cypress.Cookies.preserveOnce("submissionId");
+    uncheckAllCheckboxes();
   });
 
   it("requires an MMSI number if the fixed VHF/DSC checkbox is selected", () => {
     givenIHaveSelectedTheFixedVhfRadioOption();
     andIHaveLeftTheRelevantTextInputBlank();
-
     whenIClickContinue();
-
     thenISeeAnError();
   });
 
   it("requires a portable MMSI number if the portable VHF/DSC checkbox is selected", () => {
     givenIHaveSelectedThePortableVhfRadioOption();
     andIHaveLeftTheRelevantTextInputBlank();
-
     whenIClickContinue();
-
     thenISeeAnError();
   });
 
   it("requires a phone number if the satellite telephone checkbox is selected", () => {
     givenIHaveSelectedTheSatelliteTelephoneOption();
     andIHaveLeftTheRelevantTextInputBlank();
-
     whenIClickContinue();
-
     thenISeeAnError();
   });
 
   it("requires a phone number if the mobile telephone checkbox is selected", () => {
     givenIHaveSelectedTheMobileTelephoneOption();
     andIHaveLeftTheRelevantTextInputBlank();
-
     whenIClickContinue();
-
     thenISeeAnError();
   });
 
-  const givenIAmOnTheVesselCommunicationsPage = () => {
-    cy.visit("/"); // Sets cookie
-    cy.visit(pageUrl);
+  const givenIAmAt = (url: string): void => {
+    cy.setCookie("submissionId", "testCookie");
+    cy.visit(url);
   };
 
   const givenIHaveSelectedTheFixedVhfRadioOption = () =>
