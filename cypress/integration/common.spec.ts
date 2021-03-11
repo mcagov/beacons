@@ -1,4 +1,6 @@
 export const requiredFieldErrorMessage = "required field";
+export const tooManyCharactersErrorMessage = "too many characters";
+export const mustBeAnIntegerErrorMessage = "must be a whole number";
 
 export const andICanClickTheBackLinkToGoToPreviousPage = (
   previousPageURL: string
@@ -25,21 +27,13 @@ export const thenTheInputShouldContain = (
 export const thenIShouldSeeAnErrorMessageThatContains = (
   errorMessage: string
 ): void => {
-  cy.get(".govuk-error-message").should("contain", errorMessage);
-};
-
-export const thenIShouldSeeAnErrorSummaryLinkThatContains = (
-  errorMessage: string
-): void => {
-  cy.get(".govuk-error-summary__list").within(() => {
-    cy.get("a").should("contain", errorMessage);
-  });
+  cy.get("a").should("contain", errorMessage);
 };
 
 export const whenIType = (value: string, inputName: string): void => {
-  cy.get(`input[name="${inputName}"]`).clear().type(value);
+  cy.get(`[name="${inputName}"]`).type(value);
 };
 
-export const uncheckAllCheckboxes = (): void => {
-  cy.get('[type="checkbox"]').uncheck();
+export const givenIHaveSelected = (optionId: string): void => {
+  cy.get(optionId).click();
 };

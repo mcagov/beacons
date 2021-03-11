@@ -1,59 +1,51 @@
-import { uncheckAllCheckboxes, whenIClickContinue } from "./common.spec";
+import { givenIHaveSelected, whenIClickContinue } from "./common.spec";
 
 describe("As a beacon owner, I want to register my communication details so SAR can contact me in an emergency", () => {
-  before(() => {
-    givenIAmAt("/register-a-beacon/vessel-communications");
-  });
+  const pageUrl = "/register-a-beacon/vessel-communications";
 
   beforeEach(() => {
-    Cypress.Cookies.preserveOnce("submissionId");
-    uncheckAllCheckboxes();
+    givenIAmOnTheVesselCommunicationsPage();
   });
 
-  it("requires an MMSI number if the fixed VHF/DSC checkbox is selected", () => {
-    givenIHaveSelectedTheFixedVhfRadioOption();
+  it("requires an MMSI number if the fixed VHF checkbox is selected", () => {
+    givenIHaveSelected("#fixedVhfRadio");
     andIHaveLeftTheRelevantTextInputBlank();
+
     whenIClickContinue();
+
     thenISeeAnError();
   });
 
-  it("requires a portable MMSI number if the portable VHF/DSC checkbox is selected", () => {
-    givenIHaveSelectedThePortableVhfRadioOption();
+  it("requires an MMSI number if the portable VHF checkbox is selected", () => {
+    givenIHaveSelected("#portableVhfRadio");
     andIHaveLeftTheRelevantTextInputBlank();
+
     whenIClickContinue();
+
     thenISeeAnError();
   });
 
   it("requires a phone number if the satellite telephone checkbox is selected", () => {
-    givenIHaveSelectedTheSatelliteTelephoneOption();
+    givenIHaveSelected("#satelliteTelephone");
     andIHaveLeftTheRelevantTextInputBlank();
+
     whenIClickContinue();
+
     thenISeeAnError();
   });
 
   it("requires a phone number if the mobile telephone checkbox is selected", () => {
-    givenIHaveSelectedTheMobileTelephoneOption();
+    givenIHaveSelected("#mobileTelephone");
     andIHaveLeftTheRelevantTextInputBlank();
+
     whenIClickContinue();
+
     thenISeeAnError();
   });
 
-  const givenIAmAt = (url: string): void => {
-    cy.setCookie("submissionId", "testCookie");
-    cy.visit(url);
-  };
-
-  const givenIHaveSelectedTheFixedVhfRadioOption = () =>
-    cy.get("#fixedVhfRadio").click();
-
-  const givenIHaveSelectedThePortableVhfRadioOption = () =>
-    cy.get("#portableVhfRadio").click();
-
-  const givenIHaveSelectedTheSatelliteTelephoneOption = () =>
-    cy.get("#satelliteTelephone").click();
-
-  const givenIHaveSelectedTheMobileTelephoneOption = () => {
-    cy.get("#mobileTelephone").click();
+  const givenIAmOnTheVesselCommunicationsPage = () => {
+    cy.visit("/"); // Sets cookie
+    cy.visit(pageUrl);
   };
 
   const andIHaveLeftTheRelevantTextInputBlank = () => null;
