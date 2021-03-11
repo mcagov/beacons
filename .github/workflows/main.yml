@@ -52,7 +52,6 @@ jobs:
 
   terraform_deploy:
     needs: [terraform_lint, get_docker_image_tags, prettier_check]
-    if: github.ref == 'refs/heads/main'
     name: Terraform Deploy
     runs-on: ubuntu-latest
     defaults:
@@ -61,7 +60,7 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      TF_WORKSPACE: dev
+      TF_WORKSPACE: ninamma-test
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
@@ -74,4 +73,4 @@ jobs:
           TF_VAR_service_image_tag: ${{ needs.get_docker_image_tags.outputs.service_commit_hash }}
           TF_VAR_webapp_image_tag: ${{ needs.get_docker_image_tags.outputs.webapp_commit_hash }}
           TF_VAR_db_password: ${{ secrets.DEV_DB_PASSWORD }}
-        run: terraform apply -auto-approve -var-file=dev.tfvars
+        run: terraform workspace list
