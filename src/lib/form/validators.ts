@@ -4,15 +4,13 @@
  * @param formNode {string}    The form value to validate
  * @returns        {boolean}   True if the value violates the rule
  */
+import { HexIdParser } from "../hexIdParser";
+
 export type ValidatorFn = (value: string) => boolean;
 
 export interface ValidationRule {
   errorMessage: string;
   applies: ValidatorFn;
-}
-
-function isEmptyInputValue(value: string): boolean {
-  return value == null || value.length === 0;
 }
 
 /**
@@ -26,7 +24,8 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static required(errorMessage: string): ValidationRule {
-    const applies: ValidatorFn = (value: string) => !value;
+    const applies: ValidatorFn = (value: string) =>
+      value ? !value.trim() : !value;
 
     return {
       errorMessage,
@@ -55,7 +54,10 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static isLength(errorMessage: string, length: number): ValidationRule {
-    const applies: ValidatorFn = (value: string) => value.length !== length;
+    const applies: ValidatorFn = (value: string) => {
+      if (Validators.required("").applies(value)) return false;
+      return value.length !== length;
+    };
 
     return { errorMessage, applies };
   }
@@ -80,10 +82,8 @@ export class Validators {
    */
   public static isInThePast(errorMessage: string): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
-      const dateNow = Date.now();
-      const dateToCompare = Date.parse(value);
-
-      return !isNaN(dateToCompare) && dateToCompare > dateNow;
+      if (Validators.isValidDate("").applies(value)) return false;
+      return Date.parse(value) > Date.now();
     };
 
     return { errorMessage, applies };
@@ -101,24 +101,62 @@ export class Validators {
     year: number
   ): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
+      if (Validators.isValidDate("").applies(value)) return false;
+
       const dateLowerBound = new Date(year, 0, 0).getTime();
       const dateToCompare = Date.parse(value);
 
-      return !isNaN(dateToCompare) && dateToCompare < dateLowerBound;
+      return dateToCompare < dateLowerBound;
     };
 
     return { errorMessage, applies };
   }
 
   /**
-   * Validator that requires the form input value to be a valid hex id; proxies through to the {@link Validators.pattern()}.
+   * Validator that requires the form input value to be a hexadecimal
+   * string; proxies through to the {@link Validators.pattern()}.
    *
-   * @param erroMessage {string}           An error message if the rule is violated
+   * @param errorMessage {string}           An error message if the rule is violated
    * @returns           {ValidationRule}   A validation rule
    */
-  public static hexId(erroMessage: string): ValidationRule {
-    const hexIdRegex = /^[a-f0-9]+$/i;
-    return Validators.pattern(erroMessage, hexIdRegex);
+  public static hexadecimalString(errorMessage: string): ValidationRule {
+    const hexRegex = /^[a-f0-9]+$/i;
+    return Validators.pattern(errorMessage, hexRegex);
+  }
+
+  /**
+   * Validator that requires the form input value to match the pattern of a
+   * UK-encoded hexId.
+   *
+   * @remarks
+   * Cospas-Sarsat uses Maritime Identification Digits encoded into the hexId to
+   * identify the country responsible for registering a given beacon.  See:
+   * http://www.cospas-sarsat.int/images/stories/SystemDocs/Current/cs_g005_oct_2013.pdf
+   * (section 3.2.3.2) and
+   * https://www.itu.int/en/ITU-R/terrestrial/fmd/Pages/mid.aspx
+   *
+   * If the country code of a hexId is not one of the UK MID country codes, it
+   * is not a UK-encoded beacon.
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns           {ValidationRule}   A validation rule
+   */
+  public static ukEncodedBeacon(errorMessage: string): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      if (Validators.required("").applies(value)) return false;
+      if (Validators.isLength("", 15).applies(value)) return false;
+      if (Validators.hexadecimalString("").applies(value)) return false;
+
+      const ukCountryCodes = [232, 233, 234, 235];
+      const beaconCountryCode = HexIdParser.countryCode(value);
+
+      return !ukCountryCodes.includes(beaconCountryCode);
+    };
+
+    return {
+      errorMessage,
+      applies,
+    };
   }
 
   /**
@@ -165,8 +203,10 @@ export class Validators {
     errorMessage: string,
     pattern: RegExp
   ): ValidationRule {
-    const applies: ValidatorFn = (value: string) =>
-      !isEmptyInputValue(value) && !pattern.test(value);
+    const applies: ValidatorFn = (value: string) => {
+      if (Validators.required("").applies(value)) return false;
+      return !pattern.test(value);
+    };
 
     return { errorMessage, applies };
   }

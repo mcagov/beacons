@@ -22,7 +22,7 @@ import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { toUpperCase } from "../../lib/utils";
 
-const definePageForm = ({
+export const definePageForm = ({
   manufacturer,
   model,
   hexId,
@@ -35,12 +35,16 @@ const definePageForm = ({
       Validators.required("Beacon model is a required field"),
     ]),
     hexId: new FieldManager(hexId, [
+      Validators.required("Beacon HEX ID is a required field"),
       Validators.isLength(
         "Beacon HEX ID or UIN must be 15 characters long",
         15
       ),
-      Validators.hexId(
+      Validators.hexadecimalString(
         "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
+      ),
+      Validators.ukEncodedBeacon(
+        "Your beacon must be UK-encoded to use this service"
       ),
     ]),
   });

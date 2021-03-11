@@ -1,6 +1,6 @@
 import {
   requiredFieldErrorMessage,
-  thenIShouldSeeAnErrorMessageThatContains,
+  thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenTheInputShouldContain,
   thenTheUrlShouldContain,
   whenIClickContinue,
@@ -25,7 +25,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
 
   it("displays errors if no manufacturer serial number is submitted", () => {
     whenIClickContinue();
-    thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
+    thenIShouldSeeAnErrorSummaryLinkThatContains(requiredFieldErrorMessage);
   });
 
   it("adds a leading zero to the battery expiry and last serviced month", () => {
@@ -42,7 +42,9 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIType("202n", "batteryExpiryDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorMessageThatContains("complete battery expiry date");
+    thenIShouldSeeAnErrorSummaryLinkThatContains(
+      "complete battery expiry date"
+    );
   });
 
   it("displays errors if the battery expiry date is a valid date but before 1980", () => {
@@ -50,7 +52,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIType("1979", "batteryExpiryDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorMessageThatContains(mustBeAfter1980ErrorMessage);
+    thenIShouldSeeAnErrorSummaryLinkThatContains(mustBeAfter1980ErrorMessage);
   });
 
   it("displays errors if the last serviced date is invalid", () => {
@@ -58,7 +60,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIType("202n", "lastServicedDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorMessageThatContains("complete last serviced date");
+    thenIShouldSeeAnErrorSummaryLinkThatContains("complete last serviced date");
   });
 
   it("displays errors if the last serviced date is a valid date but before 1980", () => {
@@ -66,7 +68,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIType("1979", "lastServicedDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorMessageThatContains(mustBeAfter1980ErrorMessage);
+    thenIShouldSeeAnErrorSummaryLinkThatContains(mustBeAfter1980ErrorMessage);
   });
 
   it("displays errors if the last serviced date in the future", () => {
@@ -76,7 +78,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIType(`${futureYear}`, "lastServicedDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorMessageThatContains(dateInThePastErrorMessage);
+    thenIShouldSeeAnErrorSummaryLinkThatContains(dateInThePastErrorMessage);
   });
 
   const givenIAmOnTheBeaconInformationPage = () => {

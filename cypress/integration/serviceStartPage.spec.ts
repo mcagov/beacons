@@ -1,5 +1,3 @@
-import {} from "cypress";
-
 describe("Service start page", () => {
   const submissionCookieId = "submissionId";
   const acceptRejectCookieId = "acceptRejectId";
