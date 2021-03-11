@@ -13,10 +13,6 @@ export interface ValidationRule {
   applies: ValidatorFn;
 }
 
-function isEmptyInputValue(value: string): boolean {
-  return value == null || value.length === 0;
-}
-
 /**
  * Provides a set of validators that can be applied to a value.
  */
@@ -58,8 +54,10 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static isLength(errorMessage: string, length: number): ValidationRule {
-    const applies: ValidatorFn = (value: string) =>
-      !!value && value.length !== length;
+    const applies: ValidatorFn = (value: string) => {
+      if (Validators.required("").applies(value)) return false;
+      return value.length !== length;
+    };
 
     return { errorMessage, applies };
   }
@@ -84,10 +82,8 @@ export class Validators {
    */
   public static isInThePast(errorMessage: string): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
-      const dateNow = Date.now();
-      const dateToCompare = Date.parse(value);
-
-      return !isNaN(dateToCompare) && dateToCompare > dateNow;
+      if (Validators.isValidDate("").applies(value)) return false;
+      return Date.parse(value) > Date.now();
     };
 
     return { errorMessage, applies };
@@ -105,10 +101,12 @@ export class Validators {
     year: number
   ): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
+      if (Validators.isValidDate("").applies(value)) return false;
+
       const dateLowerBound = new Date(year, 0, 0).getTime();
       const dateToCompare = Date.parse(value);
 
-      return !isNaN(dateToCompare) && dateToCompare < dateLowerBound;
+      return dateToCompare < dateLowerBound;
     };
 
     return { errorMessage, applies };
@@ -145,8 +143,9 @@ export class Validators {
    */
   public static ukEncodedBeacon(errorMessage: string): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
-      if (isEmptyInputValue(value)) return false;
-      if (value.length !== 15) return false;
+      if (Validators.required("").applies(value)) return false;
+      if (Validators.isLength("", 15).applies(value)) return false;
+      if (Validators.hexadecimalString("").applies(value)) return false;
 
       const ukCountryCodes = [232, 233, 234, 235];
       const beaconCountryCode = HexIdParser.countryCode(value);
@@ -204,8 +203,10 @@ export class Validators {
     errorMessage: string,
     pattern: RegExp
   ): ValidationRule {
-    const applies: ValidatorFn = (value: string) =>
-      !isEmptyInputValue(value) && !pattern.test(value);
+    const applies: ValidatorFn = (value: string) => {
+      if (Validators.required("").applies(value)) return false;
+      return !pattern.test(value);
+    };
 
     return { errorMessage, applies };
   }

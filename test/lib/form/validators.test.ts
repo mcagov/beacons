@@ -70,6 +70,7 @@ describe("Form Validators", () => {
 
     it("should not have an error if the value is empty, as empty values are covered by Validators.required", () => {
       expect(applies("")).toBe(false);
+      expect(applies("   ")).toBe(false);
     });
 
     it("should have an error if the value is less than the required length", () => {
@@ -173,6 +174,7 @@ describe("Form Validators", () => {
 
     it("should not have an error if no value is provided", () => {
       expect(applies("")).toBe(false);
+      expect(applies("  ")).toBe(false);
     });
 
     it("should not have an error if the letter is hexadecimal", () => {
@@ -209,6 +211,12 @@ describe("Form Validators", () => {
 
     it("should not have an error if no value is provided", () => {
       expect(applies("")).toBe(false);
+      expect(applies(" ")).toBe(false);
+    });
+
+    it("should not error if the value does not look like a beacon hex Id", () => {
+      expect(applies("not hexadecimal")).toBe(false);
+      expect(applies("ABCDEF012")).toBe(false); // Hexadecimal but not 15 characters
     });
 
     it("should not have an error if a valid UK-encoded beacon is provided", () => {
@@ -216,7 +224,7 @@ describe("Form Validators", () => {
       expect(applies(validUkEncodedHexId)).toBe(false);
     });
 
-    it("should not have an error if a valid UK-encoded beacon is provided", () => {
+    it("should error if a valid but not UK-encoded beacon is provided", () => {
       const validOtherCountryEncodedHexId = "C00F429578002C1";
       expect(applies(validOtherCountryEncodedHexId)).toBe(true);
     });
@@ -231,6 +239,7 @@ describe("Form Validators", () => {
 
     it("should not have an error if no value is provided", () => {
       expect(applies("")).toBe(false);
+      expect(applies("   ")).toBe(false);
     });
 
     it("should not have an error if the value is a number", () => {
