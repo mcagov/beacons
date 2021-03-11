@@ -55,15 +55,25 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   private_dns_enabled = true
 }
 
-resource "aws_vpc_endpoint_route_table_association" "s3_vpc_route_table" {
-  route_table_id  = aws_vpc.main.main_route_table_id
-  vpc_endpoint_id = aws_vpc_endpoint.s3.id
-}
-
 resource "aws_vpc_endpoint" "s3" {
   vpc_id            = aws_vpc.main.id
   service_name      = "com.amazonaws.${var.aws_region}.s3"
   vpc_endpoint_type = "Gateway"
+}
+
+resource "aws_route_table" "vpc_endpoint" {
+  vpc_id = aws_vpc.main.id
+}
+
+resource "aws_vpc_endpoint_route_table_association" "vpc_endpoint" {
+  route_table_id  = aws_route_table.vpc_endpoint.id
+  vpc_endpoint_id = aws_vpc_endpoint.s3.id
+}
+
+resource "aws_route_table_association" "vpc_endpoints" {
+  count          = var.az_count
+  subnet_id      = element(aws_subnet.app[*].id, count.index)
+  route_table_id = aws_route_table.vpc_endpoint.id
 }
 
 resource "aws_vpc_endpoint" "cloud_watch_logs" {
