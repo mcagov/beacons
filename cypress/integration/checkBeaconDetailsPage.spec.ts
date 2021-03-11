@@ -1,5 +1,4 @@
 import {
-  andICanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -13,23 +12,16 @@ import {
 describe("As a beacon owner, I want to enter my initial beacon information", () => {
   const validUkEncodedHexId = "1D0EA08C52FFBFF";
 
+  before(() => {
+    givenIAmAt("/register-a-beacon/check-beacon-details");
+  });
+
   beforeEach(() => {
-    givenIAmOnTheCheckBeaconDetailsPage();
+    Cypress.Cookies.preserveOnce("submissionId");
   });
 
   it("displays the Check beacon details page", () => {
     iCanSeeTheCheckBeaconDetailsPage();
-    andICanClickTheBackLinkToGoToPreviousPage("/");
-  });
-
-  it("routes to the next page if there are no errors with the form submission", () => {
-    whenIType("Test Manufacturer", "manufacturer");
-    whenIType("Test Model", "model");
-    whenIType(validUkEncodedHexId, "hexId");
-
-    whenIClickContinue();
-
-    thenTheUrlShouldContain("/register-a-beacon/beacon-information");
   });
 
   it("displays errors with the manufacturer field", () => {
@@ -70,11 +62,21 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     whenIClickOnFirstErrorSummaryLinkContainingText(requiredFieldErrorMessage);
     thenMyCursorMovesTo("hexId");
   });
+
+  it("routes to the next page if there are no errors with the form submission", () => {
+    whenIType("Test Manufacturer", "manufacturer");
+    whenIType("Test Model", "model");
+    whenIType(validUkEncodedHexId, "hexId");
+
+    whenIClickContinue();
+
+    thenTheUrlShouldContain("/register-a-beacon/beacon-information");
+  });
 });
 
-const givenIAmOnTheCheckBeaconDetailsPage = () => {
-  cy.visit("/");
-  cy.contains("Start now").click();
+const givenIAmAt = (url) => {
+  cy.setCookie("submissionId", "testForm");
+  cy.visit(url);
 };
 
 const iCanSeeTheCheckBeaconDetailsPage = () => {

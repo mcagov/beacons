@@ -19,7 +19,7 @@ export const whenIClickOnFirstErrorSummaryLinkContainingText = (
 };
 
 export const whenIType = (value: string, inputName: string): void => {
-  cy.get(`input[name="${inputName}"]`).type(value);
+  cy.get(`input[name="${inputName}"]`).clear().type(value);
 };
 
 export const thenTheUrlShouldContain = (urlPath: string): void => {
