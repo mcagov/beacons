@@ -5,16 +5,10 @@ variable "env" {
 variable "aws_region" {
   type        = string
   description = "The AWS region resources are created in"
-  default     = "eu-west-2"
 }
 variable "az_count" {
+  type        = number
   description = "Number of AZs to cover in a given region"
-  default     = "2"
-}
-variable "app_name" {
-  type        = string
-  description = "Name of the application"
-  default     = "Beacons Registration Application"
 }
 // TODO: Create ECR for webapp in MCA aws and update this to use that value
 variable "webapp_image" {
@@ -34,7 +28,6 @@ variable "webapp_port" {
 variable "webapp_count" {
   type        = number
   description = "Number of docker containers to run for the Beacons Webapp"
-  default     = 1
 }
 variable "webapp_health_check_path" {
   type        = string
@@ -44,12 +37,10 @@ variable "webapp_health_check_path" {
 variable "webapp_fargate_cpu" {
   type        = number
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the Beacons Webapp"
-  default     = 256
 }
 variable "webapp_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Beacons Webapp"
-  default     = 512
 }
 // TODO: Create ECR for service in MCA aws and update this to use that value
 variable "service_image" {
@@ -69,7 +60,6 @@ variable "service_port" {
 variable "service_count" {
   type        = number
   description = "Number of docker containers to run for the Beacons Service"
-  default     = 1
 }
 variable "service_health_check_path" {
   type        = string
@@ -79,37 +69,22 @@ variable "service_health_check_path" {
 variable "service_fargate_cpu" {
   type        = number
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) Beacons Service"
-  default     = 256
 }
 variable "service_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Beacons Service"
-  default     = 512
-}
-variable "create_webapp_ecr" {
-  type        = bool
-  description = "Determines if the webapp ECR should be created"
-  default     = false
-}
-variable "create_service_ecr" {
-  type        = bool
-  description = "Determines if the service ECR should be created"
-  default     = false
 }
 variable "db_storage" {
   type        = number
   description = "Allocated storage, in GB, for the PostgreSQL instance"
-  default     = 20
 }
 variable "db_max_storage" {
   type        = number
   description = "The upper limit, in GB, to which PostgreSQL can automatically scale the storage of the DB"
-  default     = 20
 }
 variable "db_delete_protection" {
   type        = bool
   description = "Determines if the DB can be deleted. If true, the database cannot be deleted"
-  default     = false
 }
 variable "db_name" {
   type        = string
@@ -130,13 +105,11 @@ variable "db_password" {
 variable "db_instance_class" {
   type        = string
   description = "The database instance class"
-  default     = "db.t2.micro"
 }
 # See: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html#Overview.Encryption.Availability for storage tiers that support encryption
 variable "db_storage_encrypted" {
   type        = bool
   description = "Specifies whether the database instances data is encrypted"
-  default     = false
 }
 variable "db_logs_exported" {
   type        = list(string)
@@ -148,9 +121,7 @@ variable "db_logs_exported" {
     error_message = "Exported log options are either: postgresql or upgrade."
   }
 }
-
 variable "db_skip_final_snapshot" {
   type        = bool
   description = "Determines whether a final DB snapshot is created before the DB instance is deleted"
-  default     = true
 }
