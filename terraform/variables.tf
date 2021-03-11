@@ -10,11 +10,10 @@ variable "az_count" {
   type        = number
   description = "Number of AZs to cover in a given region"
 }
-// TODO: Create ECR for webapp in MCA aws and update this to use that value
 variable "webapp_image" {
   type        = string
   description = "Docker image to run in the ECS cluster for the Beacons Webapp"
-  default     = "261219435789.dkr.ecr.eu-west-2.amazonaws.com/mca-beacons-webapp"
+  default     = "mca-beacons-webapp"
 }
 variable "webapp_image_tag" {
   type        = string
@@ -42,11 +41,10 @@ variable "webapp_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Beacons Webapp"
 }
-// TODO: Create ECR for service in MCA aws and update this to use that value
 variable "service_image" {
   type        = string
   description = "Docker image to run in the ECS cluster"
-  default     = "261219435789.dkr.ecr.eu-west-2.amazonaws.com/mca-beacons-service"
+  default     = "mca-beacons-service"
 }
 variable "service_image_tag" {
   type        = string

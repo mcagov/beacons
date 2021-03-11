@@ -1,3 +1,11 @@
+data "aws_ecr_repository" "webapp" {
+  name = "${var.webapp_image}"
+}
+
+data "aws_ecr_repository" "service" {
+  name = "${var.service_image}"
+}
+
 resource "aws_ecs_cluster" "main" {
   name = "${var.env}-mca-beacons-cluster"
 }
@@ -11,7 +19,7 @@ resource "aws_ecs_task_definition" "webapp" {
   memory                   = var.webapp_fargate_memory
   container_definitions = jsonencode([{
     "name" : "beacons-webapp",
-    "image" : "${var.webapp_image}:${var.webapp_image_tag}",
+    "image" : "${data.aws_ecr_repository.webapp.repository_url}:${var.webapp_image_tag}",
     "portMappings" : [
       {
         "containerPort" : var.webapp_port
@@ -63,7 +71,7 @@ resource "aws_ecs_task_definition" "service" {
   memory                   = var.service_fargate_memory
   container_definitions = jsonencode([{
     "name" : "beacons-service",
-    "image" : "${var.service_image}:${var.service_image_tag}",
+    "image" : "${data.aws_ecr_repository.service.repository_url}:${var.service_image_tag}",
     "portMappings" : [
       {
         "containerPort" : var.service_port
