@@ -18,15 +18,15 @@ resource "aws_ecs_task_definition" "webapp" {
   cpu                      = var.webapp_fargate_cpu
   memory                   = var.webapp_fargate_memory
   container_definitions = jsonencode([{
-    "name" : "beacons-webapp",
-    "image" : "${data.aws_ecr_repository.webapp.repository_url}:${var.webapp_image_tag}",
-    "portMappings" : [
+    name : "beacons-webapp",
+    image : "${data.aws_ecr_repository.webapp.repository_url}:${var.webapp_image_tag}",
+    portMappings : [
       {
-        "containerPort" : var.webapp_port
-        "hostPort" : var.webapp_port
+        containerPort : var.webapp_port
+        hostPort : var.webapp_port
       }
     ],
-    "logConfiguration" : {
+    logConfiguration : {
       "logDriver" : "awslogs",
       "options" : {
         "awslogs-group" : aws_cloudwatch_log_group.log_group.name,
@@ -70,36 +70,37 @@ resource "aws_ecs_task_definition" "service" {
   cpu                      = var.service_fargate_cpu
   memory                   = var.service_fargate_memory
   container_definitions = jsonencode([{
-    "name" : "beacons-service",
-    "image" : "${data.aws_ecr_repository.service.repository_url}:${var.service_image_tag}",
-    "portMappings" : [
+    name : "beacons-service",
+    image : "${data.aws_ecr_repository.service.repository_url}:${var.service_image_tag}",
+    portMappings : [
       {
-        "containerPort" : var.service_port
-        "hostPort" : var.service_port
+        containerPort : var.service_port
+        hostPort : var.service_port
       }
     ],
-    "environment" : [
+    environment : [
       {
-        "name" : "SPRING_DATASOURCE_URL",
-        "value" : "jdbc:postgresql://${aws_db_instance.postgres.endpoint}/${var.db_name}?sslmode=require"
+        name : "SPRING_DATASOURCE_URL",
+        value : "jdbc:postgresql://${aws_db_instance.postgres.endpoint}/${var.db_name}?sslmode=require"
       },
       {
-        "name" : "SPRING_DATASOURCE_USER",
-        "value" : var.db_username
-      },
-      {
-        "name" : "SPRING_DATASOURCE_PASSWORD",
-        "value" : var.db_password
+        name : "SPRING_DATASOURCE_USER",
+        value : var.db_username
       }
     ],
-    "logConfiguration" : {
+    logConfiguration : {
       "logDriver" : "awslogs",
       "options" : {
         "awslogs-group" : aws_cloudwatch_log_group.log_group.name,
         "awslogs-region" : var.aws_region,
         "awslogs-stream-prefix" : "service"
       }
-    }
+    },
+    secrets : [
+      {
+        name : "SPRING_DATASOURCE_PASSWORD",
+        valueFrom : aws_secretsmanager_secret.db_password.arn
+    }]
   }])
 }
 
