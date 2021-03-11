@@ -95,3 +95,4 @@ export interface EmergencyContacts {
 }
 
 export const formSubmissionCookieId = "submissionId";
+export const acceptRejectCookieId = "acceptRejectId";

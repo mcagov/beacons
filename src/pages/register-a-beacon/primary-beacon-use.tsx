@@ -47,6 +47,7 @@ const definePageForm = ({
 
 const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
   form,
+  showCookieBanner,
 }: FormPageProps): JSX.Element => {
   return (
     <Layout
@@ -55,6 +56,7 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
       }
       navigation={<BackButton href="/register-a-beacon/beacon-information" />}
       pageHasErrors={form.hasErrors}
+      showCookieBanner={showCookieBanner}
     >
       <Grid
         mainContent={

@@ -1,4 +1,6 @@
 export const requiredFieldErrorMessage = "required field";
+export const tooManyCharactersErrorMessage = "too many characters";
+export const mustBeAnIntegerErrorMessage = "must be a whole number";
 
 export const andICanClickTheBackLinkToGoToPreviousPage = (
   previousPageURL: string
@@ -7,8 +9,9 @@ export const andICanClickTheBackLinkToGoToPreviousPage = (
   thenTheUrlShouldContain(previousPageURL);
 };
 
-export const whenIClickContinue = (): void =>
+export const whenIClickContinue = (): void => {
   cy.get("button").contains("Continue").click();
+};
 
 export const whenIClickOnTheErrorSummaryLinkContainingText = (
   ...strings: string[]
@@ -51,4 +54,8 @@ export const thenIShouldSeeAnErrorMessageThatContains = (
 
 export const thenMyFocusMovesTo = (elementId: string): void => {
   cy.focused().should("have.attr", "id", elementId);
+};
+
+export const givenIHaveSelected = (optionId: string): void => {
+  cy.get(optionId).click();
 };

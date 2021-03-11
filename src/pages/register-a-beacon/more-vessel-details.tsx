@@ -37,6 +37,7 @@ const definePageForm = ({ moreVesselDetails }: CacheEntry): FormManager => {
 
 const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
   form,
+  showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "Tell us more about the vessel";
 
@@ -48,6 +49,7 @@ const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
         }
         title={pageHeading}
         pageHasErrors={form.hasErrors}
+        showCookieBanner={showCookieBanner}
       >
         <Grid
           mainContent={

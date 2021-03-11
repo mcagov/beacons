@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import {
@@ -97,6 +98,7 @@ const definePageForm = ({
 
 const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
   form,
+  showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "Beacon information";
 
@@ -105,6 +107,7 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
       navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
       title={pageHeading}
       pageHasErrors={form.hasErrors}
+      showCookieBanner={showCookieBanner}
     >
       <Grid
         mainContent={
@@ -164,8 +167,12 @@ const ManufacturerSerialNumberInput: FunctionComponent<FormInputProps> = ({
       className="govuk-!-padding-top-2"
       summaryText="Where can I find the manufacturer serial number?"
     >
-      TODO: Details text for where the user can find the manufacturer serial
-      number.
+      <Image
+        src="/assets/mca_images/beacon_serial_number.png"
+        alt="Where to find your beacon's manufacturer serial number"
+        height={640}
+        width={960}
+      />
     </Details>
   </FormGroup>
 );

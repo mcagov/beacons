@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";
 import { BeaconRegistryContactInfo } from "../components/Mca";
-import { GovUKBody } from "../components/Typography";
+import { GovUKBody, PageHeading } from "../components/Typography";
 
 const FourOhFour: FunctionComponent = (): JSX.Element => {
   const pageHeading = "Page not found";
@@ -12,7 +12,7 @@ const FourOhFour: FunctionComponent = (): JSX.Element => {
       <Grid
         mainContent={
           <>
-            <h1 className="govuk-heading-l">{pageHeading}</h1>
+            <PageHeading>{pageHeading}</PageHeading>
             <GovUKBody>
               If you typed the web address, check it is correct.
             </GovUKBody>

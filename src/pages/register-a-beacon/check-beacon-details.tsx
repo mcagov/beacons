@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../components/Button";
 import { Details } from "../../components/Details";
@@ -51,6 +52,7 @@ export const definePageForm = ({
 
 const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
   form,
+  showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "Check beacon details";
 
@@ -60,6 +62,7 @@ const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
         navigation={<BackButton href="/" />}
         title={pageHeading}
         pageHasErrors={form.hasErrors}
+        showCookieBanner={showCookieBanner}
       >
         <Grid
           mainContent={
@@ -138,7 +141,12 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
       summaryText="What does the 15 character beacon HEX ID or UIN look like?"
       className="govuk-!-padding-top-2"
     >
-      TODO: Explain to users how to find their beacon HEX ID
+      <Image
+        src="/assets/mca_images/beacon_hex_id.png"
+        alt="Where to find your beacon's hexadecimal ID or UIN"
+        height={640}
+        width={960}
+      />
     </Details>
   </FormGroup>
 );

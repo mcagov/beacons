@@ -79,7 +79,7 @@ describe("VesselCommunications", () => {
     );
     const ownPath = "/register-a-beacon/vessel-communications";
 
-    const form = container.querySelector("form");
+    const form = container.querySelectorAll("form")[1];
 
     expect(form).toHaveAttribute("action", ownPath);
   });

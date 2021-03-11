@@ -3,7 +3,7 @@ import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
 import { handlePageRequest } from "../../../src/lib/handlePageRequest";
-import AboutTheVessel, {
+import EmergencyContact, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/emergency-contact";
 
@@ -57,7 +57,7 @@ describe("EmergencyContact", () => {
   };
 
   it("should have a back button which directs the user to the primary beacon use page", () => {
-    render(<AboutTheVessel form={emptyEmergencyContactForm} />);
+    render(<EmergencyContact form={emptyEmergencyContactForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -67,11 +67,11 @@ describe("EmergencyContact", () => {
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <AboutTheVessel form={emptyEmergencyContactForm} />
+      <EmergencyContact form={emptyEmergencyContactForm} />
     );
     const ownPath = "/register-a-beacon/emergency-contact";
 
-    const form = container.querySelector("form");
+    const form = container.querySelectorAll("form")[1];
 
     expect(form).toHaveAttribute("action", ownPath);
   });
