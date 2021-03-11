@@ -49,6 +49,6 @@ export const thenIShouldSeeAnErrorMessageThatContains = (
   );
 };
 
-export const thenMyCursorMovesTo = (elementId: string): void => {
+export const thenMyFocusMovesTo = (elementId: string): void => {
   cy.focused().should("have.attr", "id", elementId);
 };

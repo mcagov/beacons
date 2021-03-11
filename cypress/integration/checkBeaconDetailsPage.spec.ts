@@ -1,7 +1,7 @@
 import {
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
-  thenMyCursorMovesTo,
+  thenMyFocusMovesTo,
   thenTheUrlShouldContain,
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContainingText,
@@ -20,7 +20,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     iCanSeeTheCheckBeaconDetailsPage();
   });
 
-  it("errors if I submit a blank manufacturer field", () => {
+  it("errors if I submit just whitespace in the manufacturer field", () => {
     whenIType(" ", "manufacturer");
 
     whenIClickContinue();
@@ -28,10 +28,10 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     thenIShouldSeeAnErrorMessageThatContains("manufacturer", "required");
 
     whenIClickOnTheErrorSummaryLinkContainingText("manufacturer", "required");
-    thenMyCursorMovesTo("manufacturer");
+    thenMyFocusMovesTo("manufacturer");
   });
 
-  it("errors if I submit a blank model field", () => {
+  it("errors if I submit just whitespace in the model field", () => {
     whenIType(" ", "model");
 
     whenIClickContinue();
@@ -39,13 +39,13 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     thenIShouldSeeAnErrorMessageThatContains("model", "required");
 
     whenIClickOnTheErrorSummaryLinkContainingText("model", "required");
-    thenMyCursorMovesTo("model");
+    thenMyFocusMovesTo("model");
   });
 
   describe("the HEX ID field", () => {
     const hexIdField = "hexId";
 
-    it("errors if I submit a blank string", () => {
+    it("errors if I submit just whitespace string", () => {
       const expectedErrorMessage = ["HEX ID", "required"];
 
       whenIType(" ", "hexId");
@@ -55,7 +55,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
 
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyCursorMovesTo(hexIdField);
+      thenMyFocusMovesTo(hexIdField);
     });
 
     it("errors if I submit a non-hexadecimal string", () => {
@@ -68,7 +68,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
 
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyCursorMovesTo(hexIdField);
+      thenMyFocusMovesTo(hexIdField);
     });
 
     it("errors if I submit a string not exactly 15 characters long", () => {
@@ -81,7 +81,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
 
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyCursorMovesTo(hexIdField);
+      thenMyFocusMovesTo(hexIdField);
     });
 
     it("errors if I submit a valid but non-UK HEX ID", () => {
@@ -94,7 +94,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
 
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyCursorMovesTo(hexIdField);
+      thenMyFocusMovesTo(hexIdField);
     });
   });
 

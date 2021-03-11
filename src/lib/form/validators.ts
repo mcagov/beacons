@@ -120,8 +120,8 @@ export class Validators {
    * @returns           {ValidationRule}   A validation rule
    */
   public static hexadecimalString(errorMessage: string): ValidationRule {
-    const hexIdRegex = /^[a-f0-9]+$/i;
-    return Validators.pattern(errorMessage, hexIdRegex);
+    const hexRegex = /^[a-f0-9]+$/i;
+    return Validators.pattern(errorMessage, hexRegex);
   }
 
   /**
