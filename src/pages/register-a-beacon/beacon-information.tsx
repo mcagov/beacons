@@ -34,9 +34,13 @@ interface DateInputProps {
 }
 
 function getISODate(year: string, month: string): string {
-  if (year !== "" && month !== "") {
+  const monthAsNumber = Number(month);
+  const yearAsNumber = Number(year);
+  const isValidMonth = monthAsNumber > 0 && monthAsNumber < 13;
+
+  if (yearAsNumber && isValidMonth) {
     try {
-      return new Date(Number(year), Number(month) - 1).toISOString();
+      return new Date(yearAsNumber, monthAsNumber - 1).toISOString();
     } catch {
       return null;
     }

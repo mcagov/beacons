@@ -37,7 +37,17 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     thenTheInputShouldContain("01", "lastServicedDateMonth");
   });
 
-  it("displays errors if the battery expiry date is invalid", () => {
+  it("displays errors if the battery expiry month is invalid", () => {
+    whenIType("00", "batteryExpiryDateMonth");
+    whenIType("2021", "batteryExpiryDateYear");
+    whenIClickContinue();
+
+    thenIShouldSeeAnErrorSummaryLinkThatContains(
+      "complete battery expiry date"
+    );
+  });
+
+  it("displays errors if the battery expiry year is invalid", () => {
     whenIType("01", "batteryExpiryDateMonth");
     whenIType("202n", "batteryExpiryDateYear");
     whenIClickContinue();
@@ -55,7 +65,15 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     thenIShouldSeeAnErrorSummaryLinkThatContains(mustBeAfter1980ErrorMessage);
   });
 
-  it("displays errors if the last serviced date is invalid", () => {
+  it("displays errors if the last serviced month is invalid", () => {
+    whenIType("00", "lastServicedDateMonth");
+    whenIType("2021", "lastServicedDateYear");
+    whenIClickContinue();
+
+    thenIShouldSeeAnErrorSummaryLinkThatContains("complete last serviced date");
+  });
+
+  it("displays errors if the last serviced year is invalid", () => {
     whenIType("01", "lastServicedDateMonth");
     whenIType("202n", "lastServicedDateYear");
     whenIClickContinue();
