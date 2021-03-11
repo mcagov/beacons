@@ -1,9 +1,9 @@
 data "aws_ecr_repository" "webapp" {
-  name = "${var.webapp_image}"
+  name = var.webapp_image
 }
 
 data "aws_ecr_repository" "service" {
-  name = "${var.service_image}"
+  name = var.service_image
 }
 
 resource "aws_ecs_cluster" "main" {
