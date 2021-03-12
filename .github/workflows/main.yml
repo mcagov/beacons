@@ -60,8 +60,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "Update image tags used in dev environment [skip ci]"
-          git push
+          git commit -m "Update image tags used in dev environment [skip ci]" & git push
 
   terraform_deploy:
     needs: [terraform_lint, get_and_save_docker_image_tags, prettier_check]
