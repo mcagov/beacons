@@ -51,7 +51,7 @@ jobs:
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
 
   save_git_hashes:
-    nees: [get_docker_image_tags]
+    needs: [get_docker_image_tags]
     name: Save image tags for dev environment
     runs-on: ubuntu-latest
     steps:
