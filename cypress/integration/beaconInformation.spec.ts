@@ -42,17 +42,13 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIType("2021", "batteryExpiryDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(
-      "complete battery expiry date"
-    );
+    thenIShouldSeeAnErrorSummaryLinkThatContains("correct battery expiry date");
 
     whenIType("13", "batteryExpiryDateMonth");
     whenIType("2021", "batteryExpiryDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(
-      "complete battery expiry date"
-    );
+    thenIShouldSeeAnErrorSummaryLinkThatContains("correct battery expiry date");
   });
 
   it("displays errors if the battery expiry year is invalid", () => {
@@ -60,9 +56,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIType("202n", "batteryExpiryDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(
-      "complete battery expiry date"
-    );
+    thenIShouldSeeAnErrorSummaryLinkThatContains("correct battery expiry date");
   });
 
   it("displays errors if the battery expiry date is a valid date but before 1980", () => {
@@ -78,13 +72,13 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIType("2021", "lastServicedDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains("complete last serviced date");
+    thenIShouldSeeAnErrorSummaryLinkThatContains("correct last serviced date");
 
     whenIType("13", "lastServicedDateMonth");
     whenIType("2021", "lastServicedDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains("complete last serviced date");
+    thenIShouldSeeAnErrorSummaryLinkThatContains("correct last serviced date");
   });
 
   it("displays errors if the last serviced year is invalid", () => {
@@ -92,7 +86,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIType("202n", "lastServicedDateYear");
     whenIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains("complete last serviced date");
+    thenIShouldSeeAnErrorSummaryLinkThatContains("correct last serviced date");
   });
 
   it("displays errors if the last serviced date is a valid date but before 1980", () => {
