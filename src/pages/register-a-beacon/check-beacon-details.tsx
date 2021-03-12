@@ -22,7 +22,7 @@ import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { toUpperCase } from "../../lib/utils";
 
-export const definePageForm = ({
+const definePageForm = ({
   manufacturer,
   model,
   hexId,
