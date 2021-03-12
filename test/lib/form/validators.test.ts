@@ -174,6 +174,7 @@ describe("Form Validators", () => {
 
     it("should not have an error if no value is provided", () => {
       expect(applies("")).toBe(false);
+      expect(applies("  ")).toBe(false);
     });
 
     it("should not have an error if the letter is hexadecimal", () => {
@@ -238,6 +239,7 @@ describe("Form Validators", () => {
 
     it("should not have an error if no value is provided", () => {
       expect(applies("")).toBe(false);
+      expect(applies("   ")).toBe(false);
     });
 
     it("should not have an error if the value is a number", () => {
@@ -246,6 +248,35 @@ describe("Form Validators", () => {
 
     it("should have an error if the value is a number and characters", () => {
       expect(applies("12abc")).toBe(true);
+    });
+  });
+
+  describe("shouldNotContain", () => {
+    it("should error if value contains something it shouldn't", () => {
+      ({ errorMessage, applies } = Validators.shouldNotContain(
+        expectedErrorMessage,
+        "O"
+      ));
+
+      expect(applies("contains an O")).toBe(true);
+    });
+
+    it("should error if value contains something else it shouldn't", () => {
+      ({ errorMessage, applies } = Validators.shouldNotContain(
+        expectedErrorMessage,
+        "XXX"
+      ));
+
+      expect(applies("contains XXX")).toBe(true);
+    });
+
+    it("should error if value contains something else it shouldn't", () => {
+      ({ errorMessage, applies } = Validators.shouldNotContain(
+        expectedErrorMessage,
+        "verboten string"
+      ));
+
+      expect(applies("verboten string is a great restaurant")).toBe(true);
     });
   });
 

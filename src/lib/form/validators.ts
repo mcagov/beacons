@@ -193,6 +193,16 @@ export class Validators {
     return Validators.pattern(errorMessage, emailRegex);
   }
 
+  public static shouldNotContain(
+    errorMessage: string,
+    forbiddenValue: string
+  ): ValidationRule {
+    const applies: ValidatorFn = (value: string) =>
+      value.includes(forbiddenValue);
+
+    return { errorMessage, applies };
+  }
+
   public static phoneNumber(errorMessage: string): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       if (Validators.required("").applies(value)) return false;

@@ -34,9 +34,13 @@ interface DateInputProps {
 }
 
 function getISODate(year: string, month: string): string {
-  if (year !== "" && month !== "") {
+  const monthAsNumber = Number(month);
+  const yearAsNumber = Number(year);
+  const isValidMonth = monthAsNumber > 0 && monthAsNumber < 13;
+
+  if (yearAsNumber && isValidMonth) {
     try {
-      return new Date(Number(year), Number(month) - 1).toISOString();
+      return new Date(yearAsNumber, monthAsNumber - 1).toISOString();
     } catch {
       return null;
     }
@@ -63,7 +67,7 @@ const definePageForm = ({
     batteryExpiryDate: new FieldManager(
       batteryExpiryDate,
       [
-        Validators.isValidDate("Enter a complete battery expiry date"),
+        Validators.isValidDate("Enter a correct battery expiry date"),
         Validators.minDateYear("Battery expiry date must be after 1980", 1980),
       ],
       [
@@ -79,7 +83,7 @@ const definePageForm = ({
     lastServicedDate: new FieldManager(
       lastServicedDate,
       [
-        Validators.isValidDate("Enter a complete last serviced date"),
+        Validators.isValidDate("Enter a correct last serviced date"),
         Validators.isInThePast("Enter a last serviced date in the past"),
         Validators.minDateYear("Last serviced date must be after 1980", 1980),
       ],
