@@ -3,6 +3,19 @@ name: Deploy Staging
 on: workflow_dispatch
 
 jobs:
+  save_git_hashes_for_staging:
+    name: Copy and save image tags for staging environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          cp dev.images.tfvars staging.images.tfvars
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Copy and save image tags for use in staging environment [skip ci]"
+          git push
+
   terraform_plan:
     name: Terraform plan
     runs-on: ubuntu-latest
