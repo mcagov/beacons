@@ -82,6 +82,8 @@ jobs:
       - uses: hashicorp/setup-terraform@v1
       - name: Terraform Init
         run: terraform init
+      - name: Terraform format
+        run: terraform fmt
       - name: Terraform Validate
         run: terraform validate
       - name: Terraform Deploy
