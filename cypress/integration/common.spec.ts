@@ -9,7 +9,7 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
 
 export const givenIAmAt = (url: string): void => {
   cy.setCookie("submissionId", "testForm");
-  if (cy.url().toString() !== url) cy.visit(url);
+  cy.visit(url);
 };
 
 export const whenIClickContinue = (): void => {

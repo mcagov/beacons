@@ -1,7 +1,5 @@
 import {
   andIClickContinue,
-  finallyIClear,
-  finallyIUncheck,
   givenIAmAt,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
@@ -32,9 +30,6 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo("fixedVhfRadioInput");
-
-      finallyIClear("#fixedVhfRadioInput");
-      finallyIUncheck("#fixedVhfRadio");
     });
 
     it("requires the fixed MMSI number to be 9 characters long", () => {
@@ -48,9 +43,6 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo("fixedVhfRadioInput");
-
-      finallyIClear("#fixedVhfRadioInput");
-      finallyIUncheck("#fixedVhfRadio");
     });
 
     it("requires the fixed MMSI number to be numbers 0 to 9 only", () => {
@@ -64,9 +56,6 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo("fixedVhfRadioInput");
-
-      finallyIClear("#fixedVhfRadioInput");
-      finallyIUncheck("#fixedVhfRadio");
     });
   });
 
@@ -82,9 +71,6 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo("portableVhfRadioInput");
-
-      finallyIClear("#portableVhfRadioInput");
-      finallyIUncheck("#portableVhfRadio");
     });
 
     it("requires the portable MMSI number to be 9 characters long", () => {
@@ -102,9 +88,6 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo("portableVhfRadioInput");
-
-      finallyIClear("#portableVhfRadioInput");
-      finallyIUncheck("#portableVhfRadio");
     });
 
     it("requires the portable MMSI number to be numbers 0 to 9 only", () => {
@@ -122,9 +105,6 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo("portableVhfRadioInput");
-
-      finallyIClear("#portableVhfRadioInput");
-      finallyIUncheck("#portableVhfRadio");
     });
   });
 
@@ -141,9 +121,6 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo("satelliteTelephoneInput");
-
-      finallyIClear("#satelliteTelephoneInput");
-      finallyIUncheck("#satelliteTelephone");
     });
 
     it("requires the satellite phone number to be valid", () => {
@@ -162,9 +139,6 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo("satelliteTelephoneInput");
-
-      finallyIClear("#satelliteTelephoneInput");
-      finallyIUncheck("#satelliteTelephone");
     });
   });
 
@@ -181,9 +155,6 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo("mobileTelephoneInput1");
-
-      finallyIClear("#mobileTelephoneInput1");
-      finallyIUncheck("#mobileTelephone");
     });
 
     it("requires the mobile phone number to be valid", () => {
@@ -199,9 +170,6 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo("mobileTelephoneInput1");
-
-      finallyIClear("#mobileTelephoneInput1");
-      finallyIUncheck("#mobileTelephone");
     });
   });
 
