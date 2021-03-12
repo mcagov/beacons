@@ -54,10 +54,10 @@ export const definePageForm = ({
           "We need your MMSI number if you have a fixed VHF/DSC radio"
         ),
         Validators.wholeNumber(
-          "Your MMSI number must only include numbers 0 to 9, with no letters or other characters"
+          "Your fixed MMSI number must only include numbers 0 to 9, with no letters or other characters"
         ),
         Validators.isLength(
-          "Your MMSI number must be exactly nine digits long",
+          "Your fixed MMSI number must be exactly nine digits long",
           9
         ),
       ],
@@ -77,10 +77,10 @@ export const definePageForm = ({
           "We need your portable MMSI number if you have a portable VHF/DSC radio"
         ),
         Validators.wholeNumber(
-          "Your MMSI number must only include numbers 0 to 9, with no letters or other characters"
+          "Your portable MMSI number must only include numbers 0 to 9, with no letters or other characters"
         ),
         Validators.isLength(
-          "Your MMSI number must be exactly nine digits long",
+          "Your portable MMSI number must be exactly nine digits long",
           9
         ),
       ],
@@ -100,7 +100,7 @@ export const definePageForm = ({
           "We need your phone number if you have a satellite telephone"
         ),
         Validators.phoneNumber(
-          "Enter a satellite telephone number in the correct format"
+          "Enter your satellite telephone number in the correct format"
         ),
       ],
       [
@@ -117,6 +117,9 @@ export const definePageForm = ({
       [
         Validators.required(
           "We need your telephone number if you have a mobile telephone"
+        ),
+        Validators.phoneNumber(
+          "Enter a mobile telephone number, like 07700 982736 or +447700912738"
         ),
       ],
       [
