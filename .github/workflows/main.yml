@@ -30,7 +30,7 @@ jobs:
           npm ci
           npm run format:check
 
-  get_docker_image_tags:
+  get_and_save_docker_image_tags:
     name: Get Docker image tags
     runs-on: ubuntu-latest
     outputs:
@@ -49,17 +49,14 @@ jobs:
       - id: get_service_commit_hash
         name: Get commit hash from Service repo
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
-
-  save_git_hashes_for_dev:
-    needs: [get_docker_image_tags]
-    name: Save image tags for dev environment
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v2
-      - run: |
+      - uses: hashicorp/setup-terraform@v1
+        name: Save image tags for dev environment
+        run: |
           cd terraform
-          echo "service_image_tag = \"${{ needs.get_docker_image_tags.outputs.service_commit_hash }}\"" > dev.images.tfvars
-          echo "webapp_image_tag = \"${{ needs.get_docker_image_tags.outputs.webapp_commit_hash }}\"" >> dev.images.tfvars
+          echo "webapp_image_tag = \"${{ steps.get_webapp_commit_hash.outputs.webapp_commit_hash }}\"" > dev.images.tfvars
+          echo "service_image_tag = \"${{ steps.get_service_commit_hash.outputs.service_commit_hash }}\"" >> dev.images.tfvars
+          terraform fmt
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .

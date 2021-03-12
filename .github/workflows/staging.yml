@@ -32,5 +32,3 @@ jobs:
     steps:
       - name: Terraform plan
         run: echo "TODO Terraform plan"
-      - name: Terraform format
-        run: echo "TODO terraform fmt"
