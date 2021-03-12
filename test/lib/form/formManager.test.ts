@@ -1,5 +1,5 @@
 import { FieldManager } from "../../../src/lib/form/fieldManager";
-import { FormJSON, FormManager } from "../../../src/lib/form/formManager";
+import { FormManager } from "../../../src/lib/form/formManager";
 
 describe("FormManager", () => {
   let value;
@@ -197,20 +197,3 @@ describe("FormManager", () => {
     });
   });
 });
-
-export const expectFormErrors = (
-  validationResult: FormJSON,
-  expectedErrors: jest.Expect[],
-  fieldName: string = null
-): void => {
-  expect(validationResult.hasErrors).toBe(true);
-  expect(validationResult.errorSummary.length).toBe(expectedErrors.length);
-  if (fieldName) {
-    expect(validationResult.fields[fieldName].errorMessages.length).toBe(
-      expectedErrors.length
-    );
-    expect(validationResult.fields[fieldName].errorMessages).toEqual(
-      expect.arrayContaining(expectedErrors)
-    );
-  }
-};
