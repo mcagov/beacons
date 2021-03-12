@@ -193,6 +193,13 @@ export class Validators {
     return Validators.pattern(errorMessage, emailRegex);
   }
 
+  /**
+   * Validator that requires the form input value NOT to contain the forbiddenValue
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @param forbiddenValue {string}         A string that should not appear in the input string
+   * @returns            {ValidationRule}   A validation rule
+   */
   public static shouldNotContain(
     errorMessage: string,
     forbiddenValue: string
@@ -203,6 +210,12 @@ export class Validators {
     return { errorMessage, applies };
   }
 
+  /**
+   * Validator that requires the form input value to be a valid phone number
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns            {ValidationRule}   A validation rule
+   */
   public static phoneNumber(errorMessage: string): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       if (Validators.required("").applies(value)) return false;
