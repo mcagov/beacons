@@ -96,6 +96,19 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
       whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
       thenMyFocusMovesTo(hexIdField);
     });
+
+    it("reminds me to check for mixed up 'O's and '0's", () => {
+      const expectedErrorMessage = ["O", "Did you mean", "zero"];
+      const almostValidHexIdButWithOhInsteadOfZero = "1DOEAO8C52FFBFF";
+
+      whenIType(almostValidHexIdButWithOhInsteadOfZero, "hexId");
+      whenIClickContinue();
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+
+      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
+      thenMyFocusMovesTo(hexIdField);
+    });
   });
 
   it("routes to the next page if there are no errors with the form submission", () => {

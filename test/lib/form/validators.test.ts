@@ -251,7 +251,32 @@ describe("Form Validators", () => {
     });
   });
 
-  xdescribe("email", () => {
-    // TODO
+  describe("shouldNotContain", () => {
+    it("should error if value contains something it shouldn't", () => {
+      ({ errorMessage, applies } = Validators.shouldNotContain(
+        expectedErrorMessage,
+        "O"
+      ));
+
+      expect(applies("contains an O")).toBe(true);
+    });
+
+    it("should error if value contains something else it shouldn't", () => {
+      ({ errorMessage, applies } = Validators.shouldNotContain(
+        expectedErrorMessage,
+        "XXX"
+      ));
+
+      expect(applies("contains XXX")).toBe(true);
+    });
+
+    it("should error if value contains something else it shouldn't", () => {
+      ({ errorMessage, applies } = Validators.shouldNotContain(
+        expectedErrorMessage,
+        "verboten string"
+      ));
+
+      expect(applies("verboten string is a great restaurant")).toBe(true);
+    });
   });
 });

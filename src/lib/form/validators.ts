@@ -192,6 +192,16 @@ export class Validators {
     return Validators.pattern(errorMessage, emailRegex);
   }
 
+  public static shouldNotContain(
+    errorMessage: string,
+    forbiddenValue: string
+  ): ValidationRule {
+    const applies: ValidatorFn = (value: string) =>
+      value.includes(forbiddenValue);
+
+    return { errorMessage, applies };
+  }
+
   /**
    * Convenience static method to return a validator that requires the value to match a regular expression pattern provided.
    *

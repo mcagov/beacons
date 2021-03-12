@@ -46,6 +46,10 @@ export const definePageForm = ({
       Validators.ukEncodedBeacon(
         "Your beacon must be UK-encoded to use this service"
       ),
+      Validators.shouldNotContain(
+        'Your HEX ID should not contain the letter "O".  Did you mean the number zero?',
+        "O"
+      ),
     ]),
   });
 };
