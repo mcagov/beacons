@@ -30,7 +30,7 @@ interface FormInputProps {
   value: string;
 }
 
-export const definePageForm = ({
+const definePageForm = ({
   callSign,
   vhfRadio,
   fixedVhfRadio,
