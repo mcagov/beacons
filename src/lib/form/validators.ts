@@ -7,7 +7,6 @@ import { HexIdParser } from "../hexIdParser";
  * @param formNode {string}    The form value to validate
  * @returns        {boolean}   True if the value violates the rule
  */
-
 export type ValidatorFn = (value: string) => boolean;
 
 export interface ValidationRule {
