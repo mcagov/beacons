@@ -51,7 +51,7 @@ jobs:
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-        name: Save image tags for dev environment
+      - name: Save image tags for dev environment
         run: |
           cd terraform
           echo "webapp_image_tag = \"${{ steps.get_webapp_commit_hash.outputs.webapp_commit_hash }}\"" > dev.images.tfvars
