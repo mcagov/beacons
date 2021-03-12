@@ -50,6 +50,20 @@ jobs:
         name: Get commit hash from Service repo
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
 
+  save_git_hashes:
+    name: Save image tags for dev environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          echo "service_image_tag = ${{ needs.get_docker_image_tags.outputs.service_commit_hash }}" > dev.images.tfvars
+          echo "service_image_tag = ${{ needs.get_docker_image_tags.outputs.webapp_commit_hash }}" >> dev.images.tfvars
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Update image tags used in dev environment [skip ci]"
+          git push
+
   terraform_deploy:
     needs: [terraform_lint, get_docker_image_tags, prettier_check]
     if: github.ref == 'refs/heads/main'
