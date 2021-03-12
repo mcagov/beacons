@@ -1,14 +1,22 @@
 name: Deploy Staging
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      deployMain:
+        description: "Deploy main? true/false"
+        required: false
+        default: "true"
 
 jobs:
   save_git_hashes_for_staging:
+    if: github.event.inputs.deployMain == "true"
     name: Copy and save image tags for staging environment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: |
+          cd terraform
           cp dev.images.tfvars staging.images.tfvars
           git config user.name github-actions
           git config user.email github-actions@github.com
