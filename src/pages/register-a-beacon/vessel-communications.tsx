@@ -301,6 +301,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
               label="Mobile number 1"
               inputClassName="govuk-!-margin-bottom-4"
               defaultValue={form.fields.mobileTelephoneInput1.value}
+              htmlAttributes={{ autoComplete: "tel" }}
             />
           </FormGroup>
 
@@ -308,6 +309,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
             id="mobileTelephoneInput2"
             label="Mobile number 2 (optional)"
             defaultValue={form.fields.mobileTelephoneInput2.value}
+            htmlAttributes={{ autoComplete: "tel" }}
           />
         </CheckboxListItem>
       </CheckboxList>
