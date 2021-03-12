@@ -1,11 +1,12 @@
+import { PhoneNumberUtil } from "google-libphonenumber";
+import { HexIdParser } from "../hexIdParser";
+
 /**
  * Type definition for a function that validates a form input and returns true if the value violates the rule.
  *
  * @param formNode {string}    The form value to validate
  * @returns        {boolean}   True if the value violates the rule
  */
-import { HexIdParser } from "../hexIdParser";
-
 export type ValidatorFn = (value: string) => boolean;
 
 export interface ValidationRule {
@@ -192,12 +193,41 @@ export class Validators {
     return Validators.pattern(errorMessage, emailRegex);
   }
 
+  /**
+   * Validator that requires the form input value NOT to contain the forbiddenValue
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @param forbiddenValue {string}         A string that should not appear in the input string
+   * @returns            {ValidationRule}   A validation rule
+   */
   public static shouldNotContain(
     errorMessage: string,
     forbiddenValue: string
   ): ValidationRule {
     const applies: ValidatorFn = (value: string) =>
       value.includes(forbiddenValue);
+
+    return { errorMessage, applies };
+  }
+
+  /**
+   * Validator that requires the form input value to be a valid phone number
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static phoneNumber(errorMessage: string): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      if (Validators.required("").applies(value)) return false;
+
+      try {
+        const phoneValidator = PhoneNumberUtil.getInstance();
+        return !phoneValidator.isValidNumber(phoneValidator.parse(value, "GB"));
+      } catch (error) {
+        // Phone number could not be parsed, i.e. is invalid
+        return true;
+      }
+    };
 
     return { errorMessage, applies };
   }

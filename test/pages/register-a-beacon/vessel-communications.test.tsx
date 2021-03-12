@@ -93,4 +93,30 @@ describe("VesselCommunications", () => {
       expect.anything()
     );
   });
+
+  it("should have an autocomplete attribute on the mobile telephone number field", () => {
+    const { container } = render(
+      <VesselCommunications form={emptyVesselCommunicationsForm} />
+    );
+
+    const mobilePhoneInput1 = container.querySelector("#mobileTelephoneInput1");
+    const mobilePhoneInput2 = container.querySelector("#mobileTelephoneInput2");
+
+    expect(mobilePhoneInput1).toHaveAttribute("autocomplete", "tel");
+    expect(mobilePhoneInput2).toHaveAttribute("autocomplete", "tel");
+  });
+
+  it("should not have an autocomplete attribute on the satellite telephone number field", () => {
+    // Because this is likely to result in users' mobile and other more commonly used
+    // numbers being autocompleted into the satellite number field.  We don't want this.
+    const { container } = render(
+      <VesselCommunications form={emptyVesselCommunicationsForm} />
+    );
+
+    const satelliteTelephoneNumberInput = container.querySelector(
+      "#satelliteTelephoneInput"
+    );
+
+    expect(satelliteTelephoneNumberInput).not.toHaveAttribute("autocomplete");
+  });
 });

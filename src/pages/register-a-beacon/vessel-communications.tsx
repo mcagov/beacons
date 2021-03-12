@@ -53,6 +53,13 @@ const definePageForm = ({
         Validators.required(
           "We need your MMSI number if you have a fixed VHF/DSC radio"
         ),
+        Validators.wholeNumber(
+          "Your fixed MMSI number must only include numbers 0 to 9, with no letters or other characters"
+        ),
+        Validators.isLength(
+          "Your fixed MMSI number must be exactly nine digits long",
+          9
+        ),
       ],
       [
         {
@@ -68,6 +75,13 @@ const definePageForm = ({
       [
         Validators.required(
           "We need your portable MMSI number if you have a portable VHF/DSC radio"
+        ),
+        Validators.wholeNumber(
+          "Your portable MMSI number must only include numbers 0 to 9, with no letters or other characters"
+        ),
+        Validators.isLength(
+          "Your portable MMSI number must be exactly nine digits long",
+          9
         ),
       ],
       [
@@ -85,6 +99,9 @@ const definePageForm = ({
         Validators.required(
           "We need your phone number if you have a satellite telephone"
         ),
+        Validators.phoneNumber(
+          "Enter your satellite telephone number in the correct format"
+        ),
       ],
       [
         {
@@ -100,6 +117,9 @@ const definePageForm = ({
       [
         Validators.required(
           "We need your telephone number if you have a mobile telephone"
+        ),
+        Validators.phoneNumber(
+          "Enter a mobile telephone number, like 07700 982736 or +447700912738"
         ),
       ],
       [
@@ -281,6 +301,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
               label="Mobile number 1"
               inputClassName="govuk-!-margin-bottom-4"
               defaultValue={form.fields.mobileTelephoneInput1.value}
+              htmlAttributes={{ autoComplete: "tel" }}
             />
           </FormGroup>
 
@@ -288,6 +309,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
             id="mobileTelephoneInput2"
             label="Mobile number 2 (optional)"
             defaultValue={form.fields.mobileTelephoneInput2.value}
+            htmlAttributes={{ autoComplete: "tel" }}
           />
         </CheckboxListItem>
       </CheckboxList>
