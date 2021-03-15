@@ -20,7 +20,7 @@ A [Continuous Integration and Deployment (CI/CD) pipeline](./.github/workflows/m
 
 The pipeline provisions the infrastructure, according to the Terraform definition files, and deploys the latest versions of the Docker images for the Webapp and Service.
 
-### UAT Environment
+### Staging Environment
 
 _TODO_
 
