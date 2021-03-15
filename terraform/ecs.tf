@@ -38,11 +38,12 @@ resource "aws_ecs_task_definition" "webapp" {
 }
 
 resource "aws_ecs_service" "webapp" {
-  name            = "${var.env}-beacons-webapp"
-  cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.webapp.arn
-  desired_count   = var.webapp_count
-  launch_type     = "FARGATE"
+  name             = "${var.env}-beacons-webapp"
+  cluster          = aws_ecs_cluster.main.id
+  task_definition  = aws_ecs_task_definition.webapp.arn
+  desired_count    = var.webapp_count
+  launch_type      = "FARGATE"
+  platform_version = "1.3.0"
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
@@ -67,6 +68,7 @@ resource "aws_ecs_task_definition" "service" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
+  platform_version         = "1.3.0"
   cpu                      = var.service_fargate_cpu
   memory                   = var.service_fargate_memory
   container_definitions = jsonencode([{
