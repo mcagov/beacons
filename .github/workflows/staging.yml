@@ -25,6 +25,7 @@ jobs:
           git push
 
   terraform_deploy_staging:
+    needs: [save_git_hashes_for_staging]
     name: Terraform Deploy
     runs-on: ubuntu-latest
     environment: staging
