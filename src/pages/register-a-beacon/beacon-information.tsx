@@ -61,7 +61,9 @@ const definePageForm = ({
 }: CacheEntry): FormManager => {
   return new FormManager({
     manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber, [
-      Validators.required("Beacon manufacturer is a required field"),
+      Validators.required(
+        "Beacon manufacturer serial number is a required field"
+      ),
     ]),
     chkCode: new FieldManager(chkCode),
     batteryExpiryDate: new FieldManager(
