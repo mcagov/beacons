@@ -87,4 +87,4 @@ jobs:
       - name: Terraform Deploy
         env:
           TF_VAR_db_password: ${{ secrets.DEV_DB_PASSWORD }}
-        run: terraform apply -auto-approve -var-file=dev.tfvars
+        run: terraform apply -auto-approve -var-file=dev.tfvars -var-file=dev.images.tfvars
