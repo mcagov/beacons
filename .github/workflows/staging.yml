@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Save image tags for staging environment
-      - run: |
+        run: |
           cd terraform
           cp dev.images.tfvars staging.images.tfvars
           git config user.name github-actions
