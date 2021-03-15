@@ -1,5 +1,6 @@
 import {
   givenIAmAt,
+  iCanSeeAHeadingThatContains,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
@@ -11,41 +12,41 @@ import {
 
 describe("As a beacon owner, I want to enter my initial beacon information", () => {
   const pageUrl = "/register-a-beacon/check-beacon-details";
-  const validUkEncodedHexId = "1D0EA08C52FFBFF";
+  const manufacturerFieldSelector = "#manufacturer";
+  const modelFieldSelector = "#model";
+  const hexIdFieldSelector = "#hexId";
 
   beforeEach(() => {
     givenIAmAt(pageUrl);
   });
 
   it("shows me the page title", () => {
-    iCanSeeTheCheckBeaconDetailsPage();
+    iCanSeeAHeadingThatContains("Check beacon details");
   });
 
   it("errors if I submit just whitespace in the manufacturer field", () => {
-    whenIType(" ", "#manufacturer");
+    whenIType(" ", manufacturerFieldSelector);
 
     whenIClickContinue();
     thenIShouldSeeAnErrorSummaryLinkThatContains("manufacturer", "required");
     thenIShouldSeeAnErrorMessageThatContains("manufacturer", "required");
 
     whenIClickOnTheErrorSummaryLinkContaining("manufacturer", "required");
-    thenMyFocusMovesTo("#manufacturer");
+    thenMyFocusMovesTo(manufacturerFieldSelector);
   });
 
   it("errors if I submit just whitespace in the model field", () => {
-    whenIType(" ", "#model");
+    whenIType(" ", modelFieldSelector);
 
     whenIClickContinue();
     thenIShouldSeeAnErrorSummaryLinkThatContains("model", "required");
     thenIShouldSeeAnErrorMessageThatContains("model", "required");
 
     whenIClickOnTheErrorSummaryLinkContaining("model", "required");
-    thenMyFocusMovesTo("#model");
+    thenMyFocusMovesTo(modelFieldSelector);
   });
 
   describe("the HEX ID field", () => {
-    const hexIdFieldSelector = "#hexId";
-
     it("errors if I submit just whitespace string", () => {
       const expectedErrorMessage = ["HEX ID", "required"];
 
@@ -113,6 +114,8 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
   });
 
   it("routes to the next page if there are no errors with the form submission", () => {
+    const validUkEncodedHexId = "1D0EA08C52FFBFF";
+
     whenIType("Test Manufacturer", "#manufacturer");
     whenIType("Test Model", "#model");
     whenIType(validUkEncodedHexId, "#hexId");
@@ -122,8 +125,3 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     thenTheUrlShouldContain("/register-a-beacon/beacon-information");
   });
 });
-
-const iCanSeeTheCheckBeaconDetailsPage = (): void => {
-  cy.url().should("include", "/register-a-beacon/check-beacon-details");
-  cy.get("h1").contains("Check beacon details");
-};
