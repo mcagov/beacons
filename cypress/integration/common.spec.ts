@@ -1,10 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 
 export const requiredFieldErrorMessage = "required field";
-export const tooManyCharactersErrorMessage = "too many characters";
-export const mustBeAnIntegerErrorMessage = "must be a whole number";
 
-export const andICanClickTheBackLinkToGoToPreviousPage = (
+export const iCanClickTheBackLinkToGoToPreviousPage = (
   previousPageURL: string
 ): void => {
   cy.get(".govuk-back-link").click();
@@ -19,6 +17,8 @@ export const givenIAmAt = (url: string): void => {
 export const whenIClickContinue = (): void => {
   cy.get("button").contains("Continue").click();
 };
+
+export const andIClickContinue = whenIClickContinue;
 
 export const whenIClickOnTheErrorSummaryLinkContainingText = (
   ...strings: string[]
@@ -64,5 +64,13 @@ export const thenMyFocusMovesTo = (elementId: string): void => {
 };
 
 export const givenIHaveSelected = (optionId: string): void => {
-  cy.get(optionId).click();
+  cy.get(optionId).check();
+};
+
+export const finallyIClear = (textInputSelector: string): void => {
+  cy.get(textInputSelector).clear();
+};
+
+export const finallyIUncheck = (checkboxSelector: string): void => {
+  cy.get(checkboxSelector).uncheck();
 };
