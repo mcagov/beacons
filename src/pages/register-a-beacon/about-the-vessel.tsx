@@ -46,7 +46,7 @@ const definePageForm = ({
     beaconLocation: new FieldManager(beaconLocation, [
       Validators.maxLength(
         "Where the beacon is kept has too many characters",
-        250
+        100
       ),
     ]),
   });

@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 
 export const requiredFieldErrorMessage = "required field";
+export const tooManyCharactersErrorMessage = "too many characters";
 
 export const iCanClickTheBackLinkToGoToPreviousPage = (
   previousPageURL: string
@@ -35,6 +36,8 @@ export const whenIClickOnTheErrorSummaryLinkContaining = (
 export const whenIType = (value: string, selector: string): void => {
   cy.get(selector).clear().type(value);
 };
+
+export const givenIHaveTyped = whenIType;
 
 export const thenTheUrlShouldContain = (urlPath: string): void => {
   cy.url().should("include", urlPath);
