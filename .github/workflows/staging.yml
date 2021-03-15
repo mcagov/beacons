@@ -25,7 +25,6 @@ jobs:
           git push
 
   terraform_deploy_staging:
-    if: github.ref == 'refs/heads/staging-deployment-through-ci'
     name: Terraform Deploy
     runs-on: ubuntu-latest
     environment: staging
