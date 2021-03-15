@@ -9,12 +9,13 @@ on:
         default: "true"
 
 jobs:
-  save_git_hashes_for_staging:
+  save_docker_image_tags_staging:
     if: github.event.inputs.deployMain == 'true'
     name: Copy and save image tags for staging environment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Save image tags for staging environment
       - run: |
           cd terraform
           cp dev.images.tfvars staging.images.tfvars
@@ -24,7 +25,8 @@ jobs:
           git commit -m "Copy and save image tags for use in staging environment [skip ci]" & git push
 
   terraform_deploy_staging:
-    needs: [save_git_hashes_for_staging]
+    if: always()
+    needs: [save_docker_image_tags_staging]
     name: Terraform Deploy
     runs-on: ubuntu-latest
     environment: staging
