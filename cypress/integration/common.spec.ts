@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 export const requiredFieldErrorMessage = "required field";
 export const tooManyCharactersErrorMessage = "too many characters";
 export const mustBeAnIntegerErrorMessage = "must be a whole number";
@@ -10,8 +12,8 @@ export const andICanClickTheBackLinkToGoToPreviousPage = (
 };
 
 export const givenIAmAt = (url: string): void => {
-  cy.setCookie("submissionId", "testForm");
-  if (cy.url().toString() !== url) cy.visit(url);
+  cy.setCookie("submissionId", uuidv4());
+  cy.visit(url);
 };
 
 export const whenIClickContinue = (): void => {
