@@ -20,7 +20,7 @@ export const whenIClickContinue = (): void => {
 
 export const andIClickContinue = whenIClickContinue;
 
-export const whenIClickOnTheErrorSummaryLinkContainingText = (
+export const whenIClickOnTheErrorSummaryLinkContaining = (
   ...strings: string[]
 ): void => {
   let link = cy.get(".govuk-error-summary__list");
@@ -28,8 +28,8 @@ export const whenIClickOnTheErrorSummaryLinkContainingText = (
   link.click();
 };
 
-export const whenIType = (value: string, inputName: string): void => {
-  cy.get(`input[name="${inputName}"]`).clear().type(value);
+export const whenIType = (value: string, selector: string): void => {
+  cy.get(selector).clear().type(value);
 };
 
 export const thenTheUrlShouldContain = (urlPath: string): void => {
@@ -38,9 +38,9 @@ export const thenTheUrlShouldContain = (urlPath: string): void => {
 
 export const thenTheInputShouldContain = (
   expectedValue: string,
-  inputName: string
+  selector: string
 ): void => {
-  cy.get(`input[name="${inputName}"]`).should("contain.value", expectedValue);
+  cy.get(selector).should("contain.value", expectedValue);
 };
 
 export const thenIShouldSeeAnErrorSummaryLinkThatContains = (
@@ -59,18 +59,10 @@ export const thenIShouldSeeAnErrorMessageThatContains = (
   );
 };
 
-export const thenMyFocusMovesTo = (elementId: string): void => {
-  cy.focused().should("have.attr", "id", elementId);
+export const thenMyFocusMovesTo = (selector: string): void => {
+  cy.get(selector).should("be.focused");
 };
 
-export const givenIHaveSelected = (optionId: string): void => {
-  cy.get(optionId).check();
-};
-
-export const finallyIClear = (textInputSelector: string): void => {
-  cy.get(textInputSelector).clear();
-};
-
-export const finallyIUncheck = (checkboxSelector: string): void => {
-  cy.get(checkboxSelector).uncheck();
+export const givenIHaveSelected = (selector: string): void => {
+  cy.get(selector).check();
 };

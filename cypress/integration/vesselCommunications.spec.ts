@@ -8,12 +8,20 @@ import {
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
   whenIClickContinue,
-  whenIClickOnTheErrorSummaryLinkContainingText,
+  whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
 } from "./common.spec";
 
 describe("As a beacon owner and maritime pleasure vessel user", () => {
   const pageUrl = "/register-a-beacon/vessel-communications";
+  const fixedVhfDscRadioCheckboxSelector = "#fixedVhfRadio";
+  const fixedVhfDscRadioInputSelector = "#fixedVhfRadioInput";
+  const portableVhfDscRadioCheckboxSelector = "#portableVhfRadio";
+  const portableVhfDscRadioInputSelector = "#portableVhfRadioInput";
+  const satelliteTelephoneCheckboxSelector = "#satelliteTelephone";
+  const satelliteTelephoneInputSelector = "#satelliteTelephoneInput";
+  const mobileTelephoneCheckboxSelector = "#mobileTelephone";
+  const mobileTelephoneInputSelector = "#mobileTelephoneInput1";
 
   beforeEach(() => {
     givenIAmAt(pageUrl);
@@ -22,55 +30,55 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
   describe("the Fixed VHF/DSC radio option", () => {
     it("requires an MMSI number if the fixed VHF/DSC radio checkbox is selected", () => {
       const expectedErrorMessage = ["We need", "fixed VHF"];
-      givenIHaveSelected("#fixedVhfRadio");
+      givenIHaveSelected(fixedVhfDscRadioCheckboxSelector);
 
-      whenIType(" ", "fixedVhfRadioInput");
+      whenIType(" ", fixedVhfDscRadioInputSelector);
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
-      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyFocusMovesTo("fixedVhfRadioInput");
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(fixedVhfDscRadioInputSelector);
     });
 
     it("requires the fixed MMSI number to be 9 characters long", () => {
       const expectedErrorMessage = ["MMSI number", "nine digits long"];
-      givenIHaveSelected("#fixedVhfRadio");
+      givenIHaveSelected(fixedVhfDscRadioCheckboxSelector);
 
-      whenIType("012345678910", "fixedVhfRadioInput");
+      whenIType("012345678910", fixedVhfDscRadioInputSelector);
       andIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
-      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyFocusMovesTo("fixedVhfRadioInput");
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(fixedVhfDscRadioInputSelector);
     });
 
     it("requires the fixed MMSI number to be numbers 0 to 9 only", () => {
       const expectedErrorMessage = ["MMSI number", "numbers", "0 to 9"];
-      givenIHaveSelected("#fixedVhfRadio");
+      givenIHaveSelected(fixedVhfDscRadioCheckboxSelector);
 
-      whenIType("9charslng", "fixedVhfRadioInput");
+      whenIType("9charslng", fixedVhfDscRadioInputSelector);
       andIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
-      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyFocusMovesTo("fixedVhfRadioInput");
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(fixedVhfDscRadioInputSelector);
     });
   });
 
   describe("the Portable VHF/DSC radio option", () => {
     it("requires an MMSI number if the portable VHF checkbox is selected", () => {
       const expectedErrorMessage = ["We need", "portable VHF"];
-      givenIHaveSelected("#portableVhfRadio");
+      givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
 
-      whenIType(" ", "portableVhfRadioInput");
+      whenIType(" ", portableVhfDscRadioInputSelector);
       whenIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
-      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyFocusMovesTo("portableVhfRadioInput");
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(portableVhfDscRadioInputSelector);
     });
 
     it("requires the portable MMSI number to be 9 characters long", () => {
@@ -79,15 +87,15 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
         "MMSI number",
         "nine digits long",
       ];
-      givenIHaveSelected("#portableVhfRadio");
+      givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
 
-      whenIType("012345678910", "portableVhfRadioInput");
+      whenIType("012345678910", portableVhfDscRadioInputSelector);
       andIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
-      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyFocusMovesTo("portableVhfRadioInput");
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(portableVhfDscRadioInputSelector);
     });
 
     it("requires the portable MMSI number to be numbers 0 to 9 only", () => {
@@ -97,14 +105,14 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
         "numbers",
         "0 to 9",
       ];
-      givenIHaveSelected("#portableVhfRadio");
+      givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
 
-      whenIType("9charslng", "portableVhfRadioInput");
+      whenIType("9charslng", portableVhfDscRadioInputSelector);
       andIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
-      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyFocusMovesTo("portableVhfRadioInput");
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(portableVhfDscRadioInputSelector);
     });
   });
 
@@ -112,15 +120,15 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     it("requires a phone number if the satellite telephone checkbox is selected", () => {
       const expectedErrorMessage = ["We need", "satellite telephone"];
 
-      givenIHaveSelected("#satelliteTelephone");
+      givenIHaveSelected(satelliteTelephoneCheckboxSelector);
 
-      whenIType(" ", "satelliteTelephoneInput");
+      whenIType(" ", satelliteTelephoneInputSelector);
       andIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
-      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyFocusMovesTo("satelliteTelephoneInput");
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(satelliteTelephoneInputSelector);
     });
 
     it("requires the satellite phone number to be valid", () => {
@@ -130,15 +138,15 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
         "correct format",
       ];
 
-      givenIHaveSelected("#satelliteTelephone");
+      givenIHaveSelected(satelliteTelephoneCheckboxSelector);
 
-      whenIType(invalidSatelliteNumber, "satelliteTelephoneInput");
+      whenIType(invalidSatelliteNumber, satelliteTelephoneInputSelector);
       andIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
-      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyFocusMovesTo("satelliteTelephoneInput");
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(satelliteTelephoneInputSelector);
     });
   });
 
@@ -146,30 +154,30 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     it("requires a phone number if the mobile telephone checkbox is selected", () => {
       const expectedErrorMessage = ["We need", "mobile telephone"];
 
-      givenIHaveSelected("#mobileTelephone");
+      givenIHaveSelected(mobileTelephoneCheckboxSelector);
 
-      whenIType(" ", "mobileTelephoneInput1");
+      whenIType(" ", mobileTelephoneInputSelector);
       andIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
-      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyFocusMovesTo("mobileTelephoneInput1");
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(mobileTelephoneInputSelector);
     });
 
     it("requires the mobile phone number to be valid", () => {
       const tooLongMobileNumber = "+44 71234567891";
       const expectedErrorMessage = ["mobile telephone", "like"];
 
-      givenIHaveSelected("#mobileTelephone");
+      givenIHaveSelected(mobileTelephoneCheckboxSelector);
 
-      whenIType(tooLongMobileNumber, "mobileTelephoneInput1");
+      whenIType(tooLongMobileNumber, mobileTelephoneInputSelector);
       andIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
-      whenIClickOnTheErrorSummaryLinkContainingText(...expectedErrorMessage);
-      thenMyFocusMovesTo("mobileTelephoneInput1");
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(mobileTelephoneInputSelector);
     });
   });
 
@@ -177,15 +185,15 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     const validMMSI = "123456789";
     const validPhoneNumber = "07887662534";
 
-    givenIHaveSelected("#fixedVhfRadio");
-    givenIHaveSelected("#portableVhfRadio");
-    givenIHaveSelected("#satelliteTelephone");
-    givenIHaveSelected("#mobileTelephone");
+    givenIHaveSelected(fixedVhfDscRadioCheckboxSelector);
+    givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
+    givenIHaveSelected(satelliteTelephoneCheckboxSelector);
+    givenIHaveSelected(mobileTelephoneCheckboxSelector);
 
-    whenIType(validMMSI, "fixedVhfRadioInput");
-    whenIType(validMMSI, "portableVhfRadioInput");
-    whenIType(validPhoneNumber, "satelliteTelephoneInput");
-    whenIType(validPhoneNumber, "mobileTelephoneInput1");
+    whenIType(validMMSI, fixedVhfDscRadioInputSelector);
+    whenIType(validMMSI, portableVhfDscRadioInputSelector);
+    whenIType(validPhoneNumber, satelliteTelephoneInputSelector);
+    whenIType(validPhoneNumber, mobileTelephoneInputSelector);
     andIClickContinue();
 
     thenTheUrlShouldContain("/register-a-beacon/more-vessel-details");

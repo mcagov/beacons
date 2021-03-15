@@ -34,7 +34,7 @@ describe("As a beacon owner, I want to submit the primary use for my beacon", ()
 
   it("routes to the next page if there are no errors with Other pleasure vessel selected", () => {
     givenIHaveSelected("#other-pleasure-vessel");
-    whenIType("Surfboard", "otherPleasureVesselText");
+    whenIType("Surfboard", "#otherPleasureVesselText");
     whenIClickContinue();
 
     thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");
