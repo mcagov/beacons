@@ -68,7 +68,6 @@ resource "aws_ecs_task_definition" "service" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  platform_version         = "1.3.0"
   cpu                      = var.service_fargate_cpu
   memory                   = var.service_fargate_memory
   container_definitions = jsonencode([{
@@ -107,11 +106,12 @@ resource "aws_ecs_task_definition" "service" {
 }
 
 resource "aws_ecs_service" "service" {
-  name            = "${var.env}-beacons-service"
-  cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.service.arn
-  desired_count   = var.service_count
-  launch_type     = "FARGATE"
+  name             = "${var.env}-beacons-service"
+  cluster          = aws_ecs_cluster.main.id
+  task_definition  = aws_ecs_task_definition.service.arn
+  desired_count    = var.service_count
+  launch_type      = "FARGATE"
+  platform_version = "1.3.0"
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
