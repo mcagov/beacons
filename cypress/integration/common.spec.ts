@@ -14,6 +14,10 @@ export const givenIAmAt = (url: string): void => {
   cy.visit(url);
 };
 
+export const iCanSeeAHeadingThatContains = (text: string): void => {
+  cy.get("h1").contains(text);
+};
+
 export const whenIClickContinue = (): void => {
   cy.get("button").contains("Continue").click();
 };
