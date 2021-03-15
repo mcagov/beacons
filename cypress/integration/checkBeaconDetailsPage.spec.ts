@@ -1,4 +1,5 @@
 import {
+  givenIAmAt,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
@@ -121,11 +122,6 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     thenTheUrlShouldContain("/register-a-beacon/beacon-information");
   });
 });
-
-const givenIAmAt = (url): void => {
-  cy.setCookie("submissionId", "testForm");
-  if (cy.url().toString() !== url) cy.visit(url);
-};
 
 const iCanSeeTheCheckBeaconDetailsPage = (): void => {
   cy.url().should("include", "/register-a-beacon/check-beacon-details");

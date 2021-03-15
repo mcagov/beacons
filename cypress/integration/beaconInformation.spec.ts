@@ -1,4 +1,5 @@
 import {
+  givenIAmAt,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenTheInputShouldContain,
@@ -8,12 +9,12 @@ import {
 } from "./common.spec";
 
 describe("As a beacon owner, I want to submit information about my beacon", () => {
-  const pageLocation = "/register-a-beacon/beacon-information";
+  const pageUrl = "/register-a-beacon/beacon-information";
   const mustBeAfter1980ErrorMessage = "must be after 1980";
   const dateInThePastErrorMessage = "date in the past";
 
   beforeEach(() => {
-    givenIAmOnTheBeaconInformationPage();
+    givenIAmAt(pageUrl);
   });
 
   it("routes to the next page if there are no errors with the form submission", () => {
@@ -106,9 +107,4 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
 
     thenIShouldSeeAnErrorSummaryLinkThatContains(dateInThePastErrorMessage);
   });
-
-  const givenIAmOnTheBeaconInformationPage = () => {
-    cy.visit("/");
-    cy.visit(pageLocation);
-  };
 });

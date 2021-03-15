@@ -9,6 +9,11 @@ export const andICanClickTheBackLinkToGoToPreviousPage = (
   thenTheUrlShouldContain(previousPageURL);
 };
 
+export const givenIAmAt = (url: string): void => {
+  cy.setCookie("submissionId", "testForm");
+  if (cy.url().toString() !== url) cy.visit(url);
+};
+
 export const whenIClickContinue = (): void => {
   cy.get("button").contains("Continue").click();
 };
