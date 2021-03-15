@@ -99,7 +99,7 @@ resource "aws_ecs_task_definition" "service" {
     secrets : [
       {
         name : "SPRING_DATASOURCE_PASSWORD",
-        valueFrom : "aws_secretsmanager_secret.${var.env}_db_password.arn"
+        valueFrom : aws_secretsmanager_secret.db_password.arn
     }]
   }])
 }
