@@ -62,11 +62,12 @@ jobs:
           git add .
           git commit -m "Update image tags used in dev environment [skip ci]" & git push
 
-  terraform_deploy:
+  terraform_deploy_dev:
     needs: [terraform_lint, get_and_save_docker_image_tags, prettier_check]
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/refactor/deployment-through-ci'
     name: Terraform Deploy
     runs-on: ubuntu-latest
+    environment: development
     defaults:
       run:
         working-directory: terraform
@@ -85,7 +86,5 @@ jobs:
         run: terraform validate
       - name: Terraform Deploy
         env:
-          TF_VAR_service_image_tag: ${{ needs.get_docker_image_tags.outputs.service_commit_hash }}
-          TF_VAR_webapp_image_tag: ${{ needs.get_docker_image_tags.outputs.webapp_commit_hash }}
           TF_VAR_db_password: ${{ secrets.DEV_DB_PASSWORD }}
         run: terraform apply -auto-approve -var-file=dev.tfvars
