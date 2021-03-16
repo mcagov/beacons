@@ -85,7 +85,7 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
       hintText="Describe the vessel's appearance (such as the length, colour, if it
         has sails or not etc) and any vessel tracking details (e.g. RYA SafeTrx
         or Web) if you have them. This information is very helpful to Search
-        & Rescue when trying to locate you."
+        and Rescue when trying to locate you."
       maxCharacters={250}
       rows={4}
       defaultValue={value}
