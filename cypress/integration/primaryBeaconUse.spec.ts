@@ -1,6 +1,7 @@
 import {
   givenIAmAt,
   givenIHaveSelected,
+  iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -12,10 +13,15 @@ import {
 } from "./common.spec";
 
 describe("As a beacon owner, I want to submit the primary use for my beacon", () => {
-  const pageUrl = "/register-a-beacon/primary-beacon-use";
+  const thisPageUrl = "/register-a-beacon/primary-beacon-use";
+  const previousPageUrl = "/register-a-beacon/beacon-information";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIAmAt(thisPageUrl);
+  });
+
+  it("allows me to go back a page by following the 'back' button", () => {
+    iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
   });
 
   it("displays an error if no primary beacon use is selected", () => {
@@ -40,11 +46,21 @@ describe("As a beacon owner, I want to submit the primary use for my beacon", ()
     thenMyFocusMovesTo("#motor-vessel");
   });
 
-  it("routes to the next page if there are no errors with the selected primary beacon use", () => {
-    givenIHaveSelected("#motor-vessel");
-    whenIClickContinue();
+  describe("conditional routing", () => {
+    it("routes to the commercial-or-pleasure page if maritime use is selected", () => {
+      givenIHaveSelected("#maritimeUse");
+      whenIClickContinue();
 
-    thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");
+      thenTheUrlShouldContain(
+        "/register-a-beacon/maritime/commercial-or-pleasure"
+      );
+    });
+  });
+
+  describe("more than one beacon use", () => {
+    xit("plays back to me the number of the use I am entering ('primary', 'secondary' etc.)", () => {
+      return null;
+    });
   });
 
   it("displays an error if 'Other pleasure vessel' is selected, but no text is provided", () => {
