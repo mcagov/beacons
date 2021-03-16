@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
+import { telNumberNoExampleErrorMessage } from "../../../cypress/integration/common.spec";
 import { BackButton, Button } from "../../components/Button";
 import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
@@ -45,11 +46,16 @@ const definePageForm = ({
 }: CacheEntry): FormManager => {
   return new FormManager({
     emergencyContact1FullName: new FieldManager(emergencyContact1FullName, [
-      Validators.required("Emergency Contact Full name is a required field"),
+      Validators.required("Emergency contact full name is a required field"),
     ]),
     emergencyContact1TelephoneNumber: new FieldManager(
       emergencyContact1TelephoneNumber,
-      [Validators.required("Emergency Contact Telephone is a required field")]
+      [
+        Validators.required(
+          "Emergency contact telephone number is a required field"
+        ),
+        Validators.phoneNumber(telNumberNoExampleErrorMessage),
+      ]
     ),
     emergencyContact1AlternativeTelephoneNumber: new FieldManager(
       emergencyContact1AlternativeTelephoneNumber

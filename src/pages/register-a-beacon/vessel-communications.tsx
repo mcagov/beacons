@@ -100,7 +100,7 @@ const definePageForm = ({
           "We need your phone number if you have a satellite telephone"
         ),
         Validators.phoneNumber(
-          "Enter your satellite telephone number in the correct format"
+          "Enter a satellite telephone number in the correct format"
         ),
       ],
       [
