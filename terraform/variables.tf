@@ -123,8 +123,3 @@ variable "db_skip_final_snapshot" {
   type        = bool
   description = "Determines whether a final DB snapshot is created before the DB instance is deleted"
 }
-variable "dynamodb_state_table" {
-  type        = string
-  description = "The Dynamo DB table that is used by terraform to manage state locking"
-  default     = "mca-beacons-state"
-}

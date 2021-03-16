@@ -10,7 +10,7 @@ terraform {
   backend "s3" {
     bucket         = "mca-beacons-state"
     encrypt        = true
-    dynamodb_table = var.dynamodb_state_table
+    dynamodb_table = "mca-beacons-state"
     key            = "state"
     region         = "eu-west-2"
   }
