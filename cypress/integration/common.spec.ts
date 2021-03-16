@@ -1,11 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 } from "uuid";
 
 export const requiredFieldErrorMessage = "required field";
 export const tooManyCharactersErrorMessage = "too many characters";
-export const telNumberNoExampleErrorMessage =
-  "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192";
-export const telNumberWithExampleErrorMessage =
-  "Enter a telephone number in the correct format";
 
 export const iCanClickTheBackLinkToGoToPreviousPage = (
   previousPageURL: string
@@ -15,7 +11,7 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
 };
 
 export const givenIAmAt = (url: string): void => {
-  cy.setCookie("submissionId", uuidv4());
+  cy.setCookie("submissionId", v4());
   cy.visit(url);
 };
 

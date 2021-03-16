@@ -2,7 +2,6 @@ import {
   givenIAmAt,
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
-  telNumberNoExampleErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
@@ -52,7 +51,9 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   });
 
   it("displays errors if the Emergency contact 1 phone number is invalid", () => {
-    const errorMessage = [telNumberNoExampleErrorMessage];
+    const errorMessage = [
+      "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192",
+    ];
 
     whenIType("01283 7392018232123123", emergencyContact1TelephoneNumber);
     whenIClickContinue();
