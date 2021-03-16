@@ -43,24 +43,23 @@ jobs:
       webapp_commit_hash: ${{ steps.get_webapp_commit_hash.outputs.webapp_commit_hash }}
       service_commit_hash: ${{ steps.get_service_commit_hash.outputs.service_commit_hash }}
     steps:
-      - name: Get commit hash from Webapp repo
-        if: github.event.inputs.updateImageTags == 'true'
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
           repository: "mcagov/beacons-webapp"
-        id: get_webapp_commit_hash
-        run: echo "::set-output name=webapp_commit_hash::$(git rev-parse HEAD)"
-      - name: Get commit hash from Service repo
+      - id: get_webapp_commit_hash
+        name: Get commit hash from Webapp repo
         if: github.event.inputs.updateImageTags == 'true'
-        uses: actions/checkout@v2
+        run: echo "::set-output name=webapp_commit_hash::$(git rev-parse HEAD)"
+      - uses: actions/checkout@v2
         with:
           repository: "mcagov/beacons-service"
-        id: get_service_commit_hash
-        run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
-      - name: Save image tags for dev environment
+      - id: get_service_commit_hash
+        name: Get commit hash from Service repo
         if: github.event.inputs.updateImageTags == 'true'
+        run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
+      - name: Save image tags for dev environment
         if: github.event.inputs.updateImageTags == 'true'
         run: |
           cd terraform
