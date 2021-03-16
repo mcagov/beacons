@@ -73,4 +73,6 @@ jobs:
           TF_VAR_service_image_tag: ${{ needs.get_docker_image_tags.outputs.service_commit_hash }}
           TF_VAR_webapp_image_tag: ${{ needs.get_docker_image_tags.outputs.webapp_commit_hash }}
           TF_VAR_db_password: ${{ secrets.DEV_DB_PASSWORD }}
-        run: terraform apply -auto-approve
+        run: |
+          echo "Update image tags: ${{ github.event.client_payload.update_image_tags }}"
+          terraform apply -auto-approve
