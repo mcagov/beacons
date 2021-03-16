@@ -151,4 +151,4 @@ jobs:
         run: |
           curl -X POST  -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.MCA_GITHUB_TOKEN }}" \
             https://api.github.com/repos/mcagov/beacons-integration/actions/workflows/main.yml/dispatches \
-            -d '{"ref":"main", "event_type":"update_webapp_image_tag", "client_payload": { "update_image_tags": "true"}}}'
+            -d '{"ref":"main", "inputs": { "update_image_tags": "true"}}}'
