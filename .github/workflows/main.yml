@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       updateImageTags:
-        description: "Placeholder to be used for deployment refactor"
+        description: "If true, the get_and_save_docker_image_tags job will run"
         required: false
 
 jobs:
@@ -37,6 +37,7 @@ jobs:
           npm run format:check
 
   get_and_save_docker_image_tags:
+    if: github.event.inputs.updateImageTags == 'true'
     name: Get Docker image tags
     runs-on: ubuntu-latest
     outputs:
@@ -66,11 +67,12 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "Update image tags used in dev environment [skip ci]" & git push
+          git commit -m "Update image tags used in dev environment [skip ci]"
+          git push
 
   terraform_deploy_dev:
     needs: [terraform_lint, get_and_save_docker_image_tags, prettier_check]
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/refactor/deployment-through-ci' && always()
     name: Terraform Deploy
     runs-on: ubuntu-latest
     environment: development
