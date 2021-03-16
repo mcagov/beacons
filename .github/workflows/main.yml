@@ -37,7 +37,6 @@ jobs:
           npm run format:check
 
   get_and_save_docker_image_tags:
-    if: github.event.inputs.updateImageTags == 'true'
     name: Get Docker image tags
     runs-on: ubuntu-latest
     outputs:
@@ -49,16 +48,19 @@ jobs:
           repository: "mcagov/beacons-webapp"
       - id: get_webapp_commit_hash
         name: Get commit hash from Webapp repo
+        if: github.event.inputs.updateImageTags == 'true'
         run: echo "::set-output name=webapp_commit_hash::$(git rev-parse HEAD)"
       - uses: actions/checkout@v2
         with:
           repository: "mcagov/beacons-service"
       - id: get_service_commit_hash
         name: Get commit hash from Service repo
+        if: github.event.inputs.updateImageTags == 'true'
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
       - name: Save image tags for dev environment
+        if: github.event.inputs.updateImageTags == 'true'
         run: |
           cd terraform
           echo "webapp_image_tag = \"${{ steps.get_webapp_commit_hash.outputs.webapp_commit_hash }}\"" > dev.images.tfvars
@@ -72,7 +74,7 @@ jobs:
 
   terraform_deploy_dev:
     needs: [terraform_lint, get_and_save_docker_image_tags, prettier_check]
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/refactor/deployment-through-ci'
     name: Terraform Deploy
     runs-on: ubuntu-latest
     environment: development
