@@ -1,6 +1,13 @@
 name: CI/CD Pipeline
 
-on: [workflow_dispatch, push]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      updateImageTags:
+        description: "Whether the get_docker_image_tags job should run (true/false)"
+        required: false
+        default: "false"
 
 jobs:
   terraform_lint:
