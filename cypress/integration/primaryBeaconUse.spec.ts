@@ -46,21 +46,11 @@ describe("As a beacon owner, I want to submit the primary use for my beacon", ()
     thenMyFocusMovesTo("#motor-vessel");
   });
 
-  describe("conditional routing", () => {
-    it("routes to the commercial-or-pleasure page if maritime use is selected", () => {
-      givenIHaveSelected("#maritimeUse");
-      whenIClickContinue();
+  it("routes to the next page if there are no errors with the selected primary beacon use", () => {
+    givenIHaveSelected("#motor-vessel");
+    whenIClickContinue();
 
-      thenTheUrlShouldContain(
-        "/register-a-beacon/maritime/commercial-or-pleasure"
-      );
-    });
-  });
-
-  describe("more than one beacon use", () => {
-    xit("plays back to me the number of the use I am entering ('primary', 'secondary' etc.)", () => {
-      return null;
-    });
+    thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");
   });
 
   it("displays an error if 'Other pleasure vessel' is selected, but no text is provided", () => {
