@@ -72,7 +72,7 @@ jobs:
 
   terraform_deploy_dev:
     needs: [terraform_lint, get_and_save_docker_image_tags, prettier_check]
-    if: github.ref == 'refs/heads/refactor/deployment-through-ci' && always()
+    if: github.ref == 'refs/heads/main' && always()
     name: Terraform Deploy
     runs-on: ubuntu-latest
     environment: development
