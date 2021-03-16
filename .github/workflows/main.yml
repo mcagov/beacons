@@ -59,7 +59,7 @@ jobs:
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
       - uses: actions/checkout@v2
         with:
-          - token: ${{ secrets.MCA_GITHUB_TOKEN }}
+          token: ${{ secrets.MCA_GITHUB_TOKEN }}
       - uses: hashicorp/setup-terraform@v1
       - name: Save image tags for dev environment
         if: github.event.inputs.updateImageTags == 'true'
