@@ -8,9 +8,11 @@ terraform {
 
   # Requires S3 bucket & Dynamo DB to be configured, please see README.md
   backend "s3" {
-    bucket = "mca-beacons-state"
-    key    = "state"
-    region = "eu-west-2"
+    bucket         = "mca-beacons-state"
+    encrypt        = true
+    dynamodb_table = var.dynamodb_state_table
+    key            = "state"
+    region         = "eu-west-2"
   }
 
   required_version = "~> 0.14"
