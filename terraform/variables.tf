@@ -13,7 +13,7 @@ variable "az_count" {
 variable "webapp_image" {
   type        = string
   description = "Docker image to run in the ECS cluster for the Beacons Webapp"
-  default     = "mca-beacons-webapp"
+  default     = "beacons-webapp"
 }
 variable "webapp_image_tag" {
   type        = string
@@ -44,7 +44,7 @@ variable "webapp_fargate_memory" {
 variable "service_image" {
   type        = string
   description = "Docker image to run in the ECS cluster"
-  default     = "mca-beacons-service"
+  default     = "beacons-service"
 }
 variable "service_image_tag" {
   type        = string
