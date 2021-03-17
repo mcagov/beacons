@@ -48,14 +48,12 @@ jobs:
           repository: "mcagov/beacons-webapp"
       - id: get_webapp_commit_hash
         name: Get commit hash from Webapp repo
-        if: github.event.inputs.updateImageTags == 'true'
         run: echo "::set-output name=webapp_commit_hash::$(git rev-parse HEAD)"
       - uses: actions/checkout@v2
         with:
           repository: "mcagov/beacons-service"
       - id: get_service_commit_hash
         name: Get commit hash from Service repo
-        if: github.event.inputs.updateImageTags == 'true'
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
       - uses: actions/checkout@v2
         with:
