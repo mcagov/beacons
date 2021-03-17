@@ -73,7 +73,7 @@ jobs:
           git push
 
   terraform_deploy_dev:
-    needs: [terraform_lint, get_and_save_docker_image_tags, prettier_check]
+    needs: [terraform_lint, update_dev_docker_images, prettier_check]
     if: github.ref == 'refs/heads/main'
     name: Terraform Deploy
     runs-on: ubuntu-latest
