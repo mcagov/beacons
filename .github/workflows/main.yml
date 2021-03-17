@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       updateImageTags:
-        description: "If true, the get_and_save_docker_image_tags job will run"
+        description: "If true, the Docker image tags for the webapp/service are updated to the latest versions from their main branch"
         required: false
 
 jobs:
@@ -36,8 +36,8 @@ jobs:
           npm ci
           npm run format:check
 
-  get_and_save_docker_image_tags:
-    name: Get Docker image tags
+  update_dev_docker_images:
+    name: Updates dev Docker image tags to latest versions
     runs-on: ubuntu-latest
     outputs:
       webapp_commit_hash: ${{ steps.get_webapp_commit_hash.outputs.webapp_commit_hash }}
