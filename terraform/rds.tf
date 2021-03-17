@@ -13,4 +13,5 @@ resource "aws_db_instance" "postgres" {
   storage_encrypted               = var.db_storage_encrypted
   skip_final_snapshot             = var.db_skip_final_snapshot
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
+  allow_major_version_upgrade     = true
 }
