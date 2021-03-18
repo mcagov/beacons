@@ -3,7 +3,7 @@ name: Deploy Staging
 on:
   workflow_dispatch:
     inputs:
-      deployDevToStaging:
+      deployDevOntoStaging:
         description: "Deploy dev onto staging? (true/false)"
         required: false
         default: "true"
@@ -24,7 +24,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "Copy and save image tags for use in staging environment [skip ci]" & git push
+          git commit -m "Update staging environment to use dev Docker image versions [skip ci]" & git push
 
   terraform_deploy_staging:
     if: github.ref == 'refs/heads/main' && always()
