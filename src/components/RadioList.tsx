@@ -6,11 +6,6 @@ interface RadioListProps {
   conditional?: boolean;
 }
 
-interface RadioListConditionalProps {
-  className?: string;
-  children: ReactNode;
-}
-
 interface RadioListItemProps {
   id: string;
   value: string;
