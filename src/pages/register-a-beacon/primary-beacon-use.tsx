@@ -48,6 +48,8 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
+  const maritimePleasureVesselName = "maritimePleasureVesselUse";
+
   return (
     <Layout
       title={
@@ -75,7 +77,8 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                 </FormFieldset>
                 <RadioListConditional>
                   <RadioListItem
-                    id="maritimePleasureVesselUse"
+                    id="motor-vessel"
+                    name={maritimePleasureVesselName}
                     value={MaritimePleasureVessel.MOTOR}
                     label="Motor vessel"
                     hintText="E.g. Speedboat, RIB"
@@ -86,7 +89,8 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                   />
 
                   <RadioListItem
-                    id="maritimePleasureVesselUse"
+                    id="sailing-vessel"
+                    name={maritimePleasureVesselName}
                     value={MaritimePleasureVessel.SAILING}
                     label="Sailing vessel"
                     hintText="E.g. Skiff, Dinghy, Yacht, Catamaran"
@@ -96,7 +100,8 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                     }
                   />
                   <RadioListItem
-                    id="maritimePleasureVesselUse"
+                    id="rowing-vessel"
+                    name={maritimePleasureVesselName}
                     value={MaritimePleasureVessel.ROWING}
                     label="Rowing vessel"
                     hintText="E.g. Single person rowing boat, Cornish Gig, Multi-person rowing boat"
@@ -116,7 +121,8 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                     }
                   />
                   <RadioListItem
-                    id="maritimePleasureVesselUse"
+                    id="other-pleasure-vessel"
+                    name={maritimePleasureVesselName}
                     value={MaritimePleasureVessel.OTHER}
                     label="Other pleasure vessel"
                     hintText="E.g. Surfboard, Kitesurfing"
@@ -124,6 +130,7 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                       form.fields.maritimePleasureVesselUse.value ===
                       MaritimePleasureVessel.OTHER
                     }
+                    conditional={true}
                   >
                     <FormGroup
                       errorMessages={
