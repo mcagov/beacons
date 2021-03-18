@@ -27,8 +27,8 @@ jobs:
           git commit -m "Copy and save image tags for use in staging environment [skip ci]" & git push
 
   terraform_deploy_staging:
-    if: always()
-    needs: [save_docker_image_tags_staging]
+    if: github.ref == 'refs/heads/main' && always()
+    needs: [update_staging_docker_images]
     name: Terraform Deploy
     runs-on: ubuntu-latest
     environment: staging
