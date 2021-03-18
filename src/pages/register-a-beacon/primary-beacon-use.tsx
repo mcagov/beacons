@@ -12,10 +12,7 @@ import { Grid } from "../../components/Grid";
 import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
-import {
-  RadioListConditional,
-  RadioListItem,
-} from "../../components/RadioList";
+import { RadioList, RadioListItem } from "../../components/RadioList";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -75,7 +72,7 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                     this beacon on?
                   </FormLegendPageHeading>
                 </FormFieldset>
-                <RadioListConditional>
+                <RadioList conditional={true}>
                   <RadioListItem
                     id="motor-vessel"
                     name={maritimePleasureVesselName}
@@ -87,7 +84,6 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                       MaritimePleasureVessel.MOTOR
                     }
                   />
-
                   <RadioListItem
                     id="sailing-vessel"
                     name={maritimePleasureVesselName}
@@ -144,7 +140,7 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                       />
                     </FormGroup>
                   </RadioListItem>
-                </RadioListConditional>
+                </RadioList>
               </FormGroup>
 
               <Button buttonText="Continue" />
