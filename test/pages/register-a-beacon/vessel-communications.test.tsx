@@ -84,12 +84,12 @@ describe("VesselCommunications", () => {
     expect(form).toHaveAttribute("action", ownPath);
   });
 
-  it("should redirect to more-vessel-details page on valid form submission", async () => {
+  it("should redirect to more-details page on valid form submission", async () => {
     const context = {};
     await getServerSideProps(context as GetServerSidePropsContext);
 
     expect(handlePageRequest).toHaveBeenCalledWith(
-      "/register-a-beacon/more-vessel-details",
+      "/register-a-beacon/more-details",
       expect.anything()
     );
   });

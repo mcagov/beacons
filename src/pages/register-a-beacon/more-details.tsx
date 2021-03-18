@@ -39,7 +39,7 @@ const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
-  const pageHeading = "Tell us more about the vessel";
+  const pageHeading = "Provide more details that could help in a search";
 
   return (
     <>
@@ -55,10 +55,28 @@ const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
           mainContent={
             <>
               <FormErrorSummary formErrors={form.errorSummary} />
-              <Form action="/register-a-beacon/more-vessel-details">
+              <Form action="/register-a-beacon/more-details">
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-
+                  <div className="govuk-details">
+                    <p className="">
+                      Please provide a description of any vessel, aircraft,
+                      vehicle or anything else associated with this beacon.
+                    </p>
+                    <p className="">
+                      This might include defining features such as the length,
+                      colour etc) and any tracking details (e.g. RYA SafeTrx or
+                      Web) if you have them.
+                    </p>
+                    <p className="govuk-!-font-weight-bold">
+                      Please do not provide medical details as we cannot store
+                      these.
+                    </p>
+                    <p className="">
+                      This information is very helpful to Search and Rescue when
+                      trying to locate you
+                    </p>
+                  </div>
                   <MoreVesselDetailsTextArea
                     value={form.fields.moreVesselDetails.value}
                     errorMessages={form.fields.moreVesselDetails.errorMessages}
@@ -82,10 +100,6 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
   <FormGroup errorMessages={errorMessages}>
     <TextareaCharacterCount
       id="moreVesselDetails"
-      hintText="Describe the vessel's appearance (such as the length, colour, if it
-        has sails or not etc) and any vessel tracking details (e.g. RYA SafeTrx
-        or Web) if you have them. This information is very helpful to Search
-        and Rescue when trying to locate you."
       maxCharacters={250}
       rows={4}
       defaultValue={value}

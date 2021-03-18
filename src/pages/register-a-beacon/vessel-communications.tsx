@@ -318,7 +318,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/more-vessel-details",
+  "/register-a-beacon/more-details",
   definePageForm
 );
 

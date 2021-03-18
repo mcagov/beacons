@@ -47,9 +47,7 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
   return (
     <>
       <Layout
-        navigation={
-          <BackButton href="/register-a-beacon/more-vessel-details" />
-        }
+        navigation={<BackButton href="/register-a-beacon/more-details" />}
         title={pageHeading}
         pageHasErrors={form.hasErrors}
         showCookieBanner={showCookieBanner}

@@ -196,7 +196,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     whenIType(validPhoneNumber, mobileTelephoneInputSelector);
     andIClickContinue();
 
-    thenTheUrlShouldContain("/register-a-beacon/more-vessel-details");
+    thenTheUrlShouldContain("/register-a-beacon/more-details");
   });
 
   it("sends me to the previous page when I click the back link", () => {

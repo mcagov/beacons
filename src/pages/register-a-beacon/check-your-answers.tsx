@@ -366,7 +366,7 @@ const MoreVesselDetailsSection: FunctionComponent<CacheEntry> = ({
     <SummaryList>
       <SummaryListItem
         labelText="Vessel description"
-        href="/register-a-beacon/more-vessel-details"
+        href="/register-a-beacon/more-details"
         actionText="Change"
       >
         {moreVesselDetails}

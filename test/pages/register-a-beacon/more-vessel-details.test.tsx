@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
-import MoreVesselDetails from "../../../src/pages/register-a-beacon/more-vessel-details";
+import MoreVesselDetails from "../../../src/pages/register-a-beacon/more-details";
 
 describe("MoreVesselDetails page", () => {
   const emptyMoreVesselDetailsForm: FormJSON = {

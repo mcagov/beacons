@@ -41,7 +41,7 @@ describe("AboutBeaconOwner", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/more-vessel-details"
+      "/register-a-beacon/more-details"
     );
   });
 

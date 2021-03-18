@@ -12,7 +12,7 @@ import {
 } from "./common.spec";
 
 describe("As a beacon owner and maritime pleasure vessel user", () => {
-  const thisPageUrl = "/register-a-beacon/more-vessel-details";
+  const thisPageUrl = "/register-a-beacon/more-details";
   const nextPageUrl = "/register-a-beacon/about-beacon-owner";
   const previousPageUrl = "/register-a-beacon/vessel-communications";
 
