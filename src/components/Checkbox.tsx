@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactNode } from "react";
-import { FormGroup, FormHint, FormLabel } from "./Form";
+import { FormHint, FormLabel } from "./Form";
 
 interface CheckboxListProps {
   children: ReactNode;
@@ -66,7 +66,7 @@ export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
         className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
         id={dataAriaControlId}
       >
-        <FormGroup>{children}</FormGroup>
+        {children}
       </div>
     );
   }

@@ -13,10 +13,14 @@ interface RadioListConditionalProps {
 
 interface RadioListItemProps {
   id: string;
-  name: string;
   value: string;
-  children: ReactNode;
-  inputHtmlAttributes?: Record<string, string>;
+  label: string;
+  name?: string;
+  children?: ReactNode;
+  conditional?: boolean;
+  hintText?: string;
+  defaultChecked?: boolean;
+  inputHtmlAttributes?: Record<string, string | boolean>;
 }
 
 interface RadioListItemHintProps {
@@ -54,25 +58,75 @@ export const RadioListConditional: FunctionComponent<RadioListConditionalProps> 
 
 export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
   id,
-  name,
   value,
-  children,
+  label,
+  name = null,
+  children = null,
+  conditional = false,
+  hintText = null,
+  defaultChecked = false,
   inputHtmlAttributes = {},
-}: RadioListItemProps): JSX.Element => (
-  <div className="govuk-radios__item">
-    <input
-      className="govuk-radios__input"
-      id={id}
-      name={name}
-      type="radio"
-      value={value}
-      {...inputHtmlAttributes}
-    />
-    <FormLabel className="govuk-radios__label" htmlFor={id}>
-      {children}
-    </FormLabel>
-  </div>
-);
+}: RadioListItemProps): JSX.Element => {
+  name = name ? name : id;
+
+  let hintComponent: ReactNode;
+  if (hintText) {
+    const ariaDescribedByHint = `${id}-hint`;
+    inputHtmlAttributes = {
+      ...inputHtmlAttributes,
+      "aria-describedby": ariaDescribedByHint,
+    };
+
+    hintComponent = (
+      <FormHint className="govuk-radios__hint" forId={id}>
+        {hintText}
+      </FormHint>
+    );
+  }
+
+  let conditionalListItemComponent: ReactNode;
+  if (conditional) {
+    const dataAriaControlId = `${id}-control`;
+    inputHtmlAttributes = {
+      ...inputHtmlAttributes,
+      "data-aria-controls": dataAriaControlId,
+    };
+
+    conditionalListItemComponent = (
+      <div
+        className="govuk-radios__conditional govuk-radios__conditional--hidden"
+        id={dataAriaControlId}
+      >
+        {children}
+      </div>
+    );
+  }
+
+  inputHtmlAttributes = {
+    ...inputHtmlAttributes,
+    defaultChecked,
+  };
+
+  return (
+    <>
+      <div className="govuk-radios__item">
+        <input
+          className="govuk-radios__input"
+          id={id}
+          name={name}
+          type="radio"
+          value={value}
+          {...inputHtmlAttributes}
+        />
+        <FormLabel className="govuk-radios__label" htmlFor={id}>
+          {label}
+        </FormLabel>
+        {hintComponent}
+      </div>
+      {conditionalListItemComponent}
+    </>
+  );
+};
 
 export const RadioListItemHint: FunctionComponent<RadioListItemHintProps> = ({
   id,

@@ -14,8 +14,7 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import {
   RadioListConditional,
-  RadioListItemConditional,
-  RadioListItemHint,
+  RadioListItem,
 } from "../../components/RadioList";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
@@ -75,73 +74,57 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                   </FormLegendPageHeading>
                 </FormFieldset>
                 <RadioListConditional>
-                  <RadioListItemHint
-                    id="motor-vessel"
-                    name="maritimePleasureVesselUse"
+                  <RadioListItem
+                    id="maritimePleasureVesselUse"
                     value={MaritimePleasureVessel.MOTOR}
+                    label="Motor vessel"
                     hintText="E.g. Speedboat, RIB"
-                    inputHtmlAttributes={setCheckedIfUserSelected(
-                      form.fields.maritimePleasureVesselUse.value,
+                    defaultChecked={
+                      form.fields.maritimePleasureVesselUse.value ===
                       MaritimePleasureVessel.MOTOR
-                    )}
-                  >
-                    Motor vessel
-                  </RadioListItemHint>
-                  <RadioListItemHint
-                    id="sailing-vessel"
-                    name="maritimePleasureVesselUse"
+                    }
+                  />
+
+                  <RadioListItem
+                    id="maritimePleasureVesselUse"
                     value={MaritimePleasureVessel.SAILING}
+                    label="Sailing vessel"
                     hintText="E.g. Skiff, Dinghy, Yacht, Catamaran"
-                    inputHtmlAttributes={setCheckedIfUserSelected(
-                      form.fields.maritimePleasureVesselUse.value,
+                    defaultChecked={
+                      form.fields.maritimePleasureVesselUse.value ===
                       MaritimePleasureVessel.SAILING
-                    )}
-                  >
-                    Sailing vessel
-                  </RadioListItemHint>
-                  <RadioListItemHint
-                    id="rowing-vessel"
-                    name="maritimePleasureVesselUse"
+                    }
+                  />
+                  <RadioListItem
+                    id="maritimePleasureVesselUse"
                     value={MaritimePleasureVessel.ROWING}
+                    label="Rowing vessel"
                     hintText="E.g. Single person rowing boat, Cornish Gig, Multi-person rowing boat"
-                    inputHtmlAttributes={setCheckedIfUserSelected(
-                      form.fields.maritimePleasureVesselUse.value,
+                    defaultChecked={
+                      form.fields.maritimePleasureVesselUse.value ===
                       MaritimePleasureVessel.ROWING
-                    )}
-                  >
-                    Rowing vessel
-                  </RadioListItemHint>
-                  <RadioListItemHint
-                    id="small-unpowered-vessel"
-                    name="maritimePleasureVesselUse"
+                    }
+                  />
+                  <RadioListItem
+                    id="maritimePleasureVesselUse"
                     value={MaritimePleasureVessel.SMALL_UNPOWERED}
+                    label="Small unpowered vessel"
                     hintText="E.g. Canoe, Kayak"
-                    inputHtmlAttributes={setCheckedIfUserSelected(
-                      form.fields.maritimePleasureVesselUse.value,
+                    defaultChecked={
+                      form.fields.maritimePleasureVesselUse.value ===
                       MaritimePleasureVessel.SMALL_UNPOWERED
-                    )}
-                  >
-                    Small unpowered vessel
-                  </RadioListItemHint>
-                  <RadioListItemHint
-                    id="other-pleasure-vessel"
-                    name="maritimePleasureVesselUse"
+                    }
+                  />
+                  <RadioListItem
+                    id="maritimePleasureVesselUse"
                     value={MaritimePleasureVessel.OTHER}
+                    label="Other pleasure vessel"
                     hintText="E.g. Surfboard, Kitesurfing"
-                    inputHtmlAttributes={{
-                      ...{
-                        "data-aria-controls":
-                          "conditional-other-pleasure-vessel",
-                      },
-                      ...setCheckedIfUserSelected(
-                        form.fields.maritimePleasureVesselUse.value,
-                        MaritimePleasureVessel.OTHER
-                      ),
-                    }}
+                    defaultChecked={
+                      form.fields.maritimePleasureVesselUse.value ===
+                      MaritimePleasureVessel.OTHER
+                    }
                   >
-                    Other pleasure vessel
-                  </RadioListItemHint>
-                  <RadioListItemConditional id="conditional-other-pleasure-vessel">
                     <FormGroup
                       errorMessages={
                         form.fields.otherPleasureVesselText.errorMessages
@@ -153,7 +136,7 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
                         defaultValue={form.fields.otherPleasureVesselText.value}
                       />
                     </FormGroup>
-                  </RadioListItemConditional>
+                  </RadioListItem>
                 </RadioListConditional>
               </FormGroup>
 
@@ -166,12 +149,6 @@ const PrimaryBeaconUse: FunctionComponent<FormPageProps> = ({
       />
     </Layout>
   );
-};
-
-const setCheckedIfUserSelected = (userSelectedValue, componentValue) => {
-  return {
-    defaultChecked: userSelectedValue === componentValue,
-  };
 };
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
