@@ -22,7 +22,21 @@ The pipeline provisions the infrastructure, according to the Terraform definitio
 
 ### Staging Environment
 
-_TODO_
+Staging deployment is a workflow that is manually run from the `Actions` tab of the Integration repo:
+
+![image](https://user-images.githubusercontent.com/32230328/111634312-4ab0d080-87ee-11eb-969f-ffb16be24c20.png)
+
+- `Deploy dev onto staging` is an input for the workflow, which defaults to `true`
+
+  - When `true`, the Docker image versions used in the `dev` environment are promoted to the `staging` environment
+
+    - This is done by copying the Docker image versions in `dev.images.tfvars` and updating `staging.images.tfvars`
+
+  - When `false`, the Docker image versions are taken from the existing `staging.images.tfvars`
+
+    - This allows us to choose specific Docker image versions to be used in `staging` by manually editing `staging.images.tfvars`
+
+    - We would use this to apply any hotfixes or rollbacks
 
 ### Production Environment
 

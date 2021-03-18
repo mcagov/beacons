@@ -1,6 +1,6 @@
 # Infrastructure-as-code
 
-The terraform files within this directory represents the infratsructure-as-code for the Beacons Registration Project.
+The terraform files within this directory represents the infrastructure-as-code for the Beacons Registration Project.
 
 ## Required Setup
 
