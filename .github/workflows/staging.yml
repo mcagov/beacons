@@ -3,14 +3,14 @@ name: Deploy Staging
 on:
   workflow_dispatch:
     inputs:
-      deployMain:
-        description: "Deploy main? true/false"
+      deployDevToStaging:
+        description: "Deploy dev onto staging? (true/false)"
         required: false
         default: "true"
 
 jobs:
-  save_docker_image_tags_staging:
-    if: github.event.inputs.deployMain == 'true'
+  update_staging_docker_images:
+    if: github.event.inputs.deployDevToStaging == 'true'
     name: Copy and save image tags for staging environment
     runs-on: ubuntu-latest
     steps:
