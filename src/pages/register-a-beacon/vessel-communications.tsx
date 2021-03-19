@@ -201,7 +201,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
   form,
 }: FormPageProps) => (
   <FormFieldset>
-    <FormLegend className="govuk-fieldset__legend--s">
+    <FormLegend size="small">
       Types of communication devices onboard
       <FormHint forId="typesOfCommunication">
         Tick all that apply and provide as much detail as you can

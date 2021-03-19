@@ -33,6 +33,7 @@ interface FormHintProps {
 
 interface FormLegendProps {
   className?: string;
+  size?: "small" | "medium";
   children: ReactNode;
 }
 
@@ -81,11 +82,24 @@ export const FormFieldset: FunctionComponent<FormFieldsetProps> = ({
 );
 
 export const FormLegend: FunctionComponent<FormLegendProps> = ({
-  className = "",
   children,
-}: FormLegendProps): JSX.Element => (
-  <legend className={`govuk-fieldset__legend ${className}`}>{children}</legend>
-);
+  size = null,
+}: FormLegendProps): JSX.Element => {
+  let sizeClassName = "";
+
+  if (size) {
+    sizeClassName =
+      size === "medium"
+        ? "govuk-fieldset__legend--m"
+        : "govuk-fieldset__legend--s";
+  }
+
+  return (
+    <legend className={`govuk-fieldset__legend ${sizeClassName}`}>
+      {children}
+    </legend>
+  );
+};
 
 export const FormLegendPageHeading: FunctionComponent<FormLegendPageHeadingProps> = ({
   children,

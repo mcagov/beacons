@@ -178,7 +178,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
   telephoneNumberErrorMessages,
 }: EmergencyContactGroupProps): JSX.Element => (
   <>
-    <FormLegend className="govuk-fieldset__legend--m">
+    <FormLegend size="medium">
       Emergency contact {index}
       {index == "1" ? "" : " (optional)"}
     </FormLegend>

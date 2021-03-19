@@ -4,6 +4,7 @@ import { FormHint, FormLabel } from "./Form";
 interface RadioListProps {
   children: ReactNode;
   conditional?: boolean;
+  small?: boolean;
 }
 
 interface RadioListItemProps {
@@ -21,12 +22,17 @@ interface RadioListItemProps {
 export const RadioList: FunctionComponent<RadioListProps> = ({
   children,
   conditional = false,
+  small = false,
 }: RadioListProps): JSX.Element => {
   const attributes = conditional ? { "data-module": "govuk-radios" } : {};
   const conditionalClassName = conditional ? "govuk-radios--conditional" : "";
+  const smallClassName = small ? "govuk-radios--small" : "";
 
   return (
-    <div className={`govuk-radios ${conditionalClassName}`} {...attributes}>
+    <div
+      className={`govuk-radios ${conditionalClassName} ${smallClassName}`}
+      {...attributes}
+    >
       {children}
     </div>
   );

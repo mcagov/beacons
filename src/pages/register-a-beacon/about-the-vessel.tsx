@@ -155,33 +155,31 @@ const AreaOfOperationTextArea: FunctionComponent<FormInputProps> = ({
   value = "",
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <TextareaCharacterCount
-      id="areaOfOperation"
-      label="Tell us about the typical area of operation (optional)"
-      hintText="Typical areas of operation for the vessel is very helpful in assisting Search and Rescue. For example 'Whitesands Bay, St Davids, Pembrokeshire'"
-      defaultValue={value}
-      maxCharacters={250}
-      rows={4}
-    />
-  </FormGroup>
+  <TextareaCharacterCount
+    id="areaOfOperation"
+    label="Tell us about the typical area of operation (optional)"
+    hintText="Typical areas of operation for the vessel is very helpful in assisting Search and Rescue. For example 'Whitesands Bay, St Davids, Pembrokeshire'"
+    defaultValue={value}
+    errorMessages={errorMessages}
+    maxCharacters={250}
+    rows={4}
+  />
 );
 
 const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
   value = "",
   errorMessages,
 }: FormInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <TextareaCharacterCount
-      id="beaconLocation"
-      label="Tell us where this beacon will be kept (optional)"
-      hintText="E.g. will the beacon be attached to a life jacket, stowed inside the
+  <TextareaCharacterCount
+    id="beaconLocation"
+    label="Tell us where this beacon will be kept (optional)"
+    hintText="E.g. will the beacon be attached to a life jacket, stowed inside the
     cabin, in a grab bag etc?"
-      defaultValue={value}
-      maxCharacters={100}
-      rows={3}
-    />
-  </FormGroup>
+    defaultValue={value}
+    errorMessages={errorMessages}
+    maxCharacters={100}
+    rows={3}
+  />
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(

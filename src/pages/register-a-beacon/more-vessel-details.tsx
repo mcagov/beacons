@@ -5,7 +5,6 @@ import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
-  FormGroup,
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
@@ -79,18 +78,17 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
   value = "",
   errorMessages,
 }: MoreVesselDetailsTextAreaProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <TextareaCharacterCount
-      id="moreVesselDetails"
-      hintText="Describe the vessel's appearance (such as the length, colour, if it
+  <TextareaCharacterCount
+    id="moreVesselDetails"
+    hintText="Describe the vessel's appearance (such as the length, colour, if it
         has sails or not etc) and any vessel tracking details (e.g. RYA SafeTrx
         or Web) if you have them. This information is very helpful to Search
         and Rescue when trying to locate you."
-      maxCharacters={250}
-      rows={4}
-      defaultValue={value}
-    />
-  </FormGroup>
+    maxCharacters={250}
+    rows={4}
+    defaultValue={value}
+    errorMessages={errorMessages}
+  />
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(

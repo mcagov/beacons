@@ -53,5 +53,19 @@ describe("Textarea Components", () => {
       );
       expect(screen.getByText(hintText)).toBeDefined();
     });
+
+    it("should render the error messages if provided", () => {
+      const errorMessage =
+        "Where the beacon is positioned must be less than 100 characters";
+      render(
+        <TextareaCharacterCount
+          id={id}
+          label={label}
+          maxCharacters={100}
+          errorMessages={[errorMessage]}
+        />
+      );
+      expect(screen.getByText(errorMessage)).toBeDefined();
+    });
   });
 });
