@@ -1,12 +1,52 @@
-name: Staging Deployment
+name: Deploy Staging
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      deployDevOntoStaging:
+        description: "Deploy dev onto staging? (true/false)"
+        required: false
+        default: "true"
 
 jobs:
-  terraform_plan:
-    name: Terraform plan
+  update_staging_docker_images:
+    if: github.event.inputs.deployDevToStaging == 'true'
+    name: Copy and save image tags for staging environment
     runs-on: ubuntu-latest
-
     steps:
-      - name: Terraform plan
-        run: echo "TODO Terraform plan"
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.MCA_GITHUB_TOKEN }}
+      - name: Save image tags for staging environment
+        run: |
+          cd terraform
+          cp dev.images.tfvars staging.images.tfvars
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Update staging environment to use dev Docker image versions [skip ci]" & git push
+
+  terraform_deploy_staging:
+    if: github.ref == 'refs/heads/main' && always()
+    needs: [update_staging_docker_images]
+    name: Terraform Deploy
+    runs-on: ubuntu-latest
+    environment: staging
+    defaults:
+      run:
+        working-directory: terraform
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      TF_WORKSPACE: staging
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform Validate
+        run: terraform validate
+      - name: Terraform Deploy
+        env:
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+        run: terraform apply -auto-approve -var-file=staging.tfvars -var-file=staging.images.tfvars

@@ -1,6 +1,6 @@
 # Infrastructure-as-code
 
-The terraform files within this directory represents the infratsructure-as-code for the Beacons Registration Project.
+The terraform files within this directory represents the infrastructure-as-code for the Beacons Registration Project.
 
 ## Required Setup
 
@@ -12,3 +12,4 @@ Before the pipeline can be trigger to deploy to AWS, the following setup is requ
 - Ensure that the terraform workspaces for all environments exist
   - `terraform workspace new ${env_name}` where env_name is `dev`, `staging` or `prod`
   -  `terraform workspace list` allows you to view existing workspaces
+- Ensure that the terraform variables file (e.g. `dev.tfvars`, `staging.tfvars`) for each environment exists
