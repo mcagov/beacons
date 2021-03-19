@@ -10,7 +10,7 @@ on:
 
 jobs:
   update_staging_docker_images:
-    if: github.event.inputs.deployDevToStaging == 'true'
+    if: github.event.inputs.deployDevOntoStaging == 'true'
     name: Copy and save image tags for staging environment
     runs-on: ubuntu-latest
     steps:
