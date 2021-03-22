@@ -18,13 +18,14 @@ import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
 interface MoreDetailsTextAreaProps {
+  id: string;
   value?: string;
   errorMessages: string[];
 }
 
-const definePageForm = ({ moreVesselDetails }: CacheEntry): FormManager => {
+const definePageForm = ({ moreDetails }: CacheEntry): FormManager => {
   return new FormManager({
-    moreDetails: new FieldManager(moreVesselDetails, [
+    moreDetails: new FieldManager(moreDetails, [
       Validators.required("More details is a required field"),
       Validators.maxLength(
         "More details must be less than 250 characters",
@@ -77,6 +78,7 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
                     </p>
                   </div>
                   <MoreDetailsTextArea
+                    id="moreDetails"
                     value={form.fields.moreDetails.value}
                     errorMessages={form.fields.moreDetails.errorMessages}
                   />
@@ -93,11 +95,12 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
 };
 
 const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
+  id,
   value = "",
   errorMessages,
 }: MoreDetailsTextAreaProps): JSX.Element => (
   <TextareaCharacterCount
-    id="moreVesselDetails"
+    id={id}
     maxCharacters={250}
     rows={4}
     defaultValue={value}

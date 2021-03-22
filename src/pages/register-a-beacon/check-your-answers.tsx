@@ -358,7 +358,7 @@ const VesselCommunicationsSection: FunctionComponent<CacheEntry> = ({
 };
 
 const MoreDetailsSection: FunctionComponent<CacheEntry> = ({
-  moreVesselDetails,
+  moreDetails,
 }: Vessel): JSX.Element => (
   <>
     <h2 className="govuk-heading-m">More about the use</h2>

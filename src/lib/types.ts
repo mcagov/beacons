@@ -51,7 +51,7 @@ export interface Vessel {
   homeport: string;
   areaOfOperation: string;
   beaconLocation: string;
-  moreVesselDetails: string;
+  moreDetails: string;
   maritimePleasureVesselUse: string;
   otherPleasureVesselText: string;
 }
