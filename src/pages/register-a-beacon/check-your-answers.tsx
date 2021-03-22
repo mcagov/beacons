@@ -369,7 +369,7 @@ const MoreDetailsSection: FunctionComponent<CacheEntry> = ({
         href="/register-a-beacon/more-details"
         actionText="Change"
       >
-        {moreVesselDetails}
+        {moreDetails}
       </SummaryListItem>
     </SummaryList>
   </>
