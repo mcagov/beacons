@@ -27,6 +27,11 @@ export enum VesselCommunication {
   MOBILE_TELEPHONE = "MOBILE_TELEPHONE",
 }
 
+export enum Purpose {
+  PLEASURE = "PLEASURE",
+  COMMERCIAL = "COMMERCIAL",
+}
+
 export interface Beacon {
   manufacturer: string;
   model: string;
@@ -104,6 +109,12 @@ export interface EmergencyContacts {
   emergencyContact3FullName: string;
   emergencyContact3TelephoneNumber: string;
   emergencyContact3AlternativeTelephoneNumber: string;
+}
+
+export interface BeaconUse {
+  environment: string;
+  purpose: string;
+  activity: string;
 }
 
 export const formSubmissionCookieId = "submissionId";
