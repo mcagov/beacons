@@ -25,7 +25,7 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   showCookieBanner,
 }: ServiceStartPageProps): JSX.Element => {
   const pageHeading =
-    "Register a single UK 406MHz Personal Locator Beacon (PLB) for maritime use";
+    "Register a UK 406MHz Beacon for commercial or pleasure use";
 
   return (
     <>
@@ -60,19 +60,53 @@ const Breadcrumbs: FunctionComponent = (): JSX.Element => (
 
 const AboutTheService: FunctionComponent = (): JSX.Element => (
   <>
-    <GovUKBody>Use this service to:</GovUKBody>
+    <GovUKBody>
+      You can use this service to register any of the following types of UK 406
+      Megahertz (MHz) emergency beacons:
+    </GovUKBody>
+
+    <GovUKBulletedList>
+      <li>a Personal Locator Beacon (PLB) for any use</li>
+      <li>
+        an Emergency Position Indicating Radio Beacon (EPIRB) for maritime use
+      </li>
+      <li>an Emergency Locator Transmitter (ELT) for aircraft use</li>
+      <li>a Beacon dongle for aircraft use</li>
+    </GovUKBulletedList>
+
+    <GovUKBody>Registering takes around 15 minutes.</GovUKBody>
+
+    <InsetText>
+      If you want to register multiple beacons (i.e. more than 5),&nbsp;
+      <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
+        contact the UK Beacon Registry
+      </AnchorLink>{" "}
+      who will provide you with a spreadsheet template
+    </InsetText>
+
+    <h2 className="govuk-heading-m">Before you start</h2>
 
     <GovUKBulletedList>
       <li>
-        Register a single new 406 Megahertz (MHz) Personal Locator Beacon (PLB)
-        for use on maritime vessels
+        You&apos;ll need to know the beacon Hexadecimal Identification (HEX ID)
+        or Unique Identifying Number (UIN), manufacturer serial number and model
+      </li>
+      <li>
+        If you have a vessel, you will need your vessel name, number(s), radio
+        communications, Call Sign and Maritime Mobile Service Identity (MMSI)
+        number
+      </li>
+      <li>
+        If you have an aircraft, you will need your aircraft make and model,
+        aircraft number(s), radio communcations, Call Sign and Aircraft Radio ID
+      </li>
+      <li>
+        You will also need at least one emergency contact for Search and Rescue
       </li>
     </GovUKBulletedList>
 
-    <GovUKBody>Registering takes around 10 minutes.</GovUKBody>
-
     <GovUKBody>
-      This service is only for UK programmed 406MHz beacons. You can{" "}
+      You can{" "}
       <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
         contact the UK Beacon Registry
       </AnchorLink>{" "}
@@ -81,30 +115,13 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
 
     <WarningText>
       <>
-        You cannot register a beacon for non-maritime use through this service.
-        You can use another service to{" "}
-        <AnchorLink href="https://forms.dft.gov.uk/mca-sar-epirb/">
-          register a beacon for aircraft or land-based use.
+        This service is only for UK programmed 406MHz beacons.&nbsp;
+        <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
+          Contact the UK Beacon Registry
         </AnchorLink>
+        &nbsp;if you aren&apos;t sure if your beacon is 406MHz or not.
       </>
     </WarningText>
-
-    <h2 className="govuk-heading-m">Before you start</h2>
-
-    <GovUKBulletedList>
-      <li>
-        You{"'"}ll need to know the beacon Hexadecimal Identification (HEX ID)
-        or Unique Identifying Number (UIN), manufacturer serial number and model
-      </li>
-      <li>
-        If you have a vessel, you will need your vessel name, number, radio
-        communications, Call Sign and Maritime Mobile Service Identity (MMSI)
-        number
-      </li>
-      <li>
-        You will also need at least one emergency contact for Search and Rescue
-      </li>
-    </GovUKBulletedList>
 
     <StartButton href="/register-a-beacon/check-beacon-details" />
   </>
@@ -123,8 +140,9 @@ const OtherWaysToAccessTheService: FunctionComponent = (): JSX.Element => (
     <h2 className="govuk-heading-m">Other ways to apply</h2>
 
     <GovUKBody>
-      If you need help with registering online or would like to register by
-      post, contact the UK Beacon Registry team.
+      If you need help with registering online, want to register multiple
+      beacons at once or would like to register by post, contact the UK Beacon
+      Registry team.
     </GovUKBody>
 
     <InsetText>
