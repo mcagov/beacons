@@ -25,9 +25,9 @@ interface MoreVesselDetailsTextAreaProps {
 const definePageForm = ({ moreVesselDetails }: CacheEntry): FormManager => {
   return new FormManager({
     moreVesselDetails: new FieldManager(moreVesselDetails, [
-      Validators.required("Vessel details is a required field"),
+      Validators.required("More details is a required field"),
       Validators.maxLength(
-        "Vessel details must be less than 250 characters",
+        "More details must be less than 250 characters",
         250
       ),
     ]),

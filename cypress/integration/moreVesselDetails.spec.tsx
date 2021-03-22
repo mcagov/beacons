@@ -22,8 +22,8 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     givenIAmAt(thisPageUrl);
   });
 
-  it("requires at least one character in the More vessel details field", () => {
-    const expectedErrorMessage = ["Vessel details", requiredFieldErrorMessage];
+  it("requires at least one character in the More details field", () => {
+    const expectedErrorMessage = ["More details", requiredFieldErrorMessage];
 
     whenIType(" ", moreVesselDetailsTextareaSelector);
     andIClickContinue();
@@ -35,8 +35,8 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     thenMyFocusMovesTo(moreVesselDetailsTextareaSelector);
   });
 
-  it("errors if there are more than 250 characters in the More vessel details field", () => {
-    const expectedErrorMessage = ["Vessel details", "250 characters"];
+  it("errors if there are more than 250 characters in the More details field", () => {
+    const expectedErrorMessage = ["More details", "250 characters"];
 
     whenIType("z".repeat(251), moreVesselDetailsTextareaSelector);
     andIClickContinue();
@@ -48,7 +48,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     thenMyFocusMovesTo(moreVesselDetailsTextareaSelector);
   });
 
-  it("doesn't error if there are 250 or fewer characters in the More vessel details field", () => {
+  it("doesn't error if there are 250 or fewer characters in the More details field", () => {
     whenIType("z".repeat(250), moreVesselDetailsTextareaSelector);
     andIClickContinue();
     thenTheUrlShouldContain(nextPageUrl);
