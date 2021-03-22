@@ -38,4 +38,23 @@ export function padNumberWithLeadingZeros(
   return value.padStart(targetLength, "0");
 }
 
+export function referenceNumber(chars: string, length: number): string {
+  let mask = '';
+  if (chars.indexOf('a') > -1) mask += 'abcdefghijklmnopqrstuvwxyz';
+  if (chars.indexOf('A') > -1) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if (chars.indexOf('#') > -1) mask += '0123456789';
+  if (chars.indexOf('!') > -1) mask += '~`!@#$%^&*()_+-={}[]:";\'<>?,./|\\';
+  let result = '';
+  for (let i = length; i > 0; --i) result += mask[Math.floor(Math.random() * mask.length)];
+  return result;
+}
+
+export function joinStrings(strings: Array<string>): string {
+  const output = [];
+  for(let i=0; i<strings.length; i++) {
+    if(strings[i]) output.push(strings[i]);
+  }
+  return output.join(", ");
+}
+
 export type Callback<T> = (t: T) => void;
