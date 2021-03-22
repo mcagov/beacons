@@ -1,5 +1,5 @@
 import { PhoneNumberUtil } from "google-libphonenumber";
-import { HexIdParser } from "../hexIdParser";
+import { HexIdParser } from "../hexIdParser/hexIdParser";
 
 /**
  * Type definition for a function that validates a form input and returns true if the value violates the rule.

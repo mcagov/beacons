@@ -1,3 +1,5 @@
+import midCodes from "./midCodes.json";
+
 /**
  * Parses encoded information from a given 406Mhz beacon hex id.
  *
@@ -60,6 +62,10 @@ export class HexIdParser {
     return this.binaryToDecimal(
       this.hexToBinary(hexId).slice(...countryCodeBitRange)
     );
+  }
+
+  public static countryName(hexId: string): string {
+    return midCodes[this.countryCode(hexId).toString()][3];
   }
 
   private static hexToBinary(hexId: string): string {
