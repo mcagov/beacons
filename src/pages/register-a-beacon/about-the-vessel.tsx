@@ -13,6 +13,7 @@ import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
+import { SectionHeading } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -81,6 +82,13 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
 
                   <VesselNameInput value={form.fields.vesselName.value} />
 
+                  <BeaconLocationInput
+                    value={form.fields.beaconLocation.value}
+                    errorMessages={form.fields.beaconLocation.errorMessages}
+                  />
+
+                  <SectionHeading>Vessel information</SectionHeading>
+
                   <HomeportInput
                     value={form.fields.homeport.value}
                     errorMessages={form.fields.areaOfOperation.errorMessages}
@@ -89,11 +97,6 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
                   <AreaOfOperationTextArea
                     value={form.fields.areaOfOperation.value}
                     errorMessages={form.fields.areaOfOperation.errorMessages}
-                  />
-
-                  <BeaconLocationInput
-                    value={form.fields.beaconLocation.value}
-                    errorMessages={form.fields.beaconLocation.errorMessages}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
