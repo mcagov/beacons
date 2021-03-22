@@ -44,7 +44,7 @@ const definePageForm = ({
         "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
       ),
       Validators.ukEncodedBeacon(
-        "Your beacon must be UK-encoded to use this service"
+        "You entered a beacon encoded with a Hex ID from %HEX_ID_COUNTRY%.  Your beacon must be UK-encoded to use this service."
       ),
       Validators.shouldNotContain(
         'Your HEX ID should not contain the letter "O".  Did you mean the number zero?',

@@ -87,9 +87,10 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     });
 
     it("errors if I submit a valid but non-UK HEX ID", () => {
-      const expectedErrorMessage = ["UK-encoded"];
+      const newZealandBeaconHexId = "C00F429578002C1";
+      const expectedErrorMessage = ["UK-encoded", "New Zealand"];
 
-      whenIType("C00F429578002C1", "#hexId");
+      whenIType(newZealandBeaconHexId, "#hexId");
 
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
