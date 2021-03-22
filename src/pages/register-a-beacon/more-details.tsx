@@ -17,7 +17,7 @@ import { Validators } from "../../lib/form/validators";
 import { CacheEntry } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
-interface MoreVesselDetailsTextAreaProps {
+interface MoreDetailsTextAreaProps {
   value?: string;
   errorMessages: string[];
 }
@@ -34,7 +34,7 @@ const definePageForm = ({ moreVesselDetails }: CacheEntry): FormManager => {
   });
 };
 
-const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
+const MoreDetails: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
@@ -76,7 +76,7 @@ const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
                       trying to locate you
                     </p>
                   </div>
-                  <MoreVesselDetailsTextArea
+                  <MoreDetailsTextArea
                     value={form.fields.moreVesselDetails.value}
                     errorMessages={form.fields.moreVesselDetails.errorMessages}
                   />
@@ -92,10 +92,10 @@ const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProps> = ({
+const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
   value = "",
   errorMessages,
-}: MoreVesselDetailsTextAreaProps): JSX.Element => (
+}: MoreDetailsTextAreaProps): JSX.Element => (
   <TextareaCharacterCount
     id="moreVesselDetails"
     maxCharacters={250}
@@ -110,4 +110,4 @@ export const getServerSideProps: GetServerSideProps = handlePageRequest(
   definePageForm
 );
 
-export default MoreVesselDetails;
+export default MoreDetails;
