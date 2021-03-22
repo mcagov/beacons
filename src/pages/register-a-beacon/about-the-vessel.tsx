@@ -10,6 +10,7 @@ import {
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
 import { FormInputProps, Input } from "../../components/Input";
+import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
@@ -23,9 +24,14 @@ import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 const definePageForm = ({
   maxCapacity,
   vesselName,
+  beaconLocation,
+  pln,
   homeport,
   areaOfOperation,
-  beaconLocation,
+  imoNumber,
+  ssrNumber,
+  officialNumber,
+  rigPlatformLocation,
 }: CacheEntry): FormManager => {
   return new FormManager({
     maxCapacity: new FieldManager(maxCapacity, [
@@ -37,6 +43,13 @@ const definePageForm = ({
       ),
     ]),
     vesselName: new FieldManager(vesselName),
+    beaconLocation: new FieldManager(beaconLocation, [
+      Validators.maxLength(
+        "Where the beacon is kept has too many characters",
+        100
+      ),
+    ]),
+    pln: new FieldManager(pln),
     homeport: new FieldManager(homeport),
     areaOfOperation: new FieldManager(areaOfOperation, [
       Validators.maxLength(
@@ -44,12 +57,10 @@ const definePageForm = ({
         250
       ),
     ]),
-    beaconLocation: new FieldManager(beaconLocation, [
-      Validators.maxLength(
-        "Where the beacon is kept has too many characters",
-        100
-      ),
-    ]),
+    imoNumber: new FieldManager(imoNumber),
+    ssrNumber: new FieldManager(ssrNumber),
+    officialNumber: new FieldManager(officialNumber),
+    rigPlatformLocation: new FieldManager(rigPlatformLocation),
   });
 };
 
@@ -75,6 +86,12 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
+                  <InsetText>
+                    Leave anything that isn't relevant blank. Any information
+                    you do provide may help save lives in a Search & Rescue
+                    scenario.
+                  </InsetText>
+
                   <MaxCapacityInput
                     value={form.fields.maxCapacity.value}
                     errorMessages={form.fields.maxCapacity.errorMessages}
@@ -89,14 +106,29 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
 
                   <SectionHeading>Vessel information</SectionHeading>
 
-                  <HomeportInput
-                    value={form.fields.homeport.value}
-                    errorMessages={form.fields.areaOfOperation.errorMessages}
-                  />
+                  <PlnInput value={form.fields.pln.value} />
+
+                  <HomeportInput value={form.fields.homeport.value} />
 
                   <AreaOfOperationTextArea
                     value={form.fields.areaOfOperation.value}
                     errorMessages={form.fields.areaOfOperation.errorMessages}
+                  />
+
+                  <ImoNumberInput value={form.fields.imoNumber.value} />
+
+                  <SsrNumberInput value={form.fields.ssrNumber.value} />
+
+                  <OfficialNumberInput
+                    value={form.fields.officialNumber.value}
+                  />
+
+                  <SectionHeading>
+                    Windfarm, rig or platform information
+                  </SectionHeading>
+
+                  <RigPlatformLocationInput
+                    value={form.fields.rigPlatformLocation.value}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -141,6 +173,19 @@ const VesselNameInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
+const PlnInput: FunctionComponent<FormInputProps> = ({
+  value = "",
+}: FormInputProps): JSX.Element => (
+  <FormGroup>
+    <Input
+      id="pln"
+      label="If you have one, enter the Port Letter & Number or PLN (optional)"
+      hintText="This is a code identifying fishing vessels, usually printed on the boat. The format is XYZ123"
+      defaultValue={value}
+    />
+  </FormGroup>
+);
+
 const HomeportInput: FunctionComponent<FormInputProps> = ({
   value = "",
 }: FormInputProps): JSX.Element => (
@@ -167,6 +212,59 @@ const AreaOfOperationTextArea: FunctionComponent<FormInputProps> = ({
     maxCharacters={250}
     rows={4}
   />
+);
+
+const ImoNumberInput: FunctionComponent<FormInputProps> = ({
+  value = "",
+}: FormInputProps): JSX.Element => (
+  <FormGroup>
+    <Input
+      id="imoNumber"
+      label="If you have one, enter the IMO number (optional)"
+      hintText="An IMO number is made of the three letters 'IMO' followed by a seven-digit number."
+      defaultValue={value}
+    />
+  </FormGroup>
+);
+
+const SsrNumberInput: FunctionComponent<FormInputProps> = ({
+  value = "",
+}: FormInputProps): JSX.Element => (
+  <FormGroup>
+    <Input
+      id="ssrNumber"
+      label="If you have one, enter the UK Small Ships Register (SSR)  number (optional)"
+      /*TODO update with SSR number format*/
+      hintText="Hint text for format"
+      defaultValue={value}
+    />
+  </FormGroup>
+);
+
+const OfficialNumberInput: FunctionComponent<FormInputProps> = ({
+  value = "",
+}: FormInputProps): JSX.Element => (
+  <FormGroup>
+    <Input
+      id="officialNumber"
+      label="If you have one, enter vessel's official number (optional)"
+      hintText="Official numbers are ship identifier numbers assigned to merchant ships by their country or registration."
+      defaultValue={value}
+    />
+  </FormGroup>
+);
+
+const RigPlatformLocationInput: FunctionComponent<FormInputProps> = ({
+  value = "",
+}: FormInputProps): JSX.Element => (
+  <FormGroup>
+    <Input
+      id="rigPlatformLocation"
+      label="Where is the rig or platform located? (optional)"
+      hintText="You can enter a place or area name, area or latitude/longitude co-ordinates"
+      defaultValue={value}
+    />
+  </FormGroup>
 );
 
 const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
