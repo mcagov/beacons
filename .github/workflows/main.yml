@@ -13,6 +13,8 @@ jobs:
           node-version: "14"
       - name: Install npm dependencies
         run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0
       - name: Cache dependencies
         uses: actions/cache@v2.1.4
         with:

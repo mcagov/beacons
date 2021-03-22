@@ -16,6 +16,7 @@ interface TextareaProps {
 interface TextareaCharacterCountProps {
   id: string;
   maxCharacters: number;
+  errorMessages?: string[];
   label?: string;
   defaultValue?: string;
   hintText?: string;
@@ -49,6 +50,7 @@ export const Textarea: FunctionComponent<TextareaProps> = ({
 export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountProps> = ({
   id,
   maxCharacters,
+  errorMessages = [],
   label = null,
   defaultValue = "",
   hintText = null,
@@ -74,19 +76,19 @@ export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountPro
       data-module="govuk-character-count"
       data-maxlength={maxCharacters}
     >
-      <FormGroup>
+      <FormGroup errorMessages={errorMessages}>
         {labelComponent}
         {hintComponent}
+        <textarea
+          className="govuk-textarea govuk-js-character-count"
+          id={id}
+          name={name}
+          rows={rows}
+          aria-describedby={`${id}-hint ${id}-info`}
+          {...htmlAttributes}
+          defaultValue={defaultValue}
+        />
       </FormGroup>
-      <textarea
-        className="govuk-textarea govuk-js-character-count"
-        id={id}
-        name={name}
-        rows={rows}
-        aria-describedby={`${id}-hint ${id}-info`}
-        {...htmlAttributes}
-        defaultValue={defaultValue}
-      />
       <div
         id={`${id}-info`}
         className="govuk-hint govuk-character-count__message"

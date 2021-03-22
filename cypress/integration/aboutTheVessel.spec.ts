@@ -40,10 +40,6 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
         requiredFieldErrorMessage
       );
 
-      thenIShouldSeeAnErrorSummaryLinkThatContains(
-        "Maximum number of persons",
-        requiredFieldErrorMessage
-      );
       thenIShouldSeeAnErrorMessageThatContains(
         "Maximum number of persons",
         requiredFieldErrorMessage
@@ -67,9 +63,6 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
         ...mustBeAWholeNumberErrorMessageContains
       );
 
-      thenIShouldSeeAnErrorSummaryLinkThatContains(
-        ...mustBeAWholeNumberErrorMessageContains
-      );
       thenIShouldSeeAnErrorMessageThatContains(
         ...mustBeAWholeNumberErrorMessageContains
       );
@@ -93,9 +86,6 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
         ...tooLongErrorMessageContains
       );
 
-      thenIShouldSeeAnErrorSummaryLinkThatContains(
-        ...tooLongErrorMessageContains
-      );
       thenIShouldSeeAnErrorMessageThatContains(...tooLongErrorMessageContains);
 
       whenIClickOnTheErrorSummaryLinkContaining(...tooLongErrorMessageContains);
@@ -124,9 +114,6 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
         ...tooLongErrorMessageContains
       );
 
-      thenIShouldSeeAnErrorSummaryLinkThatContains(
-        ...tooLongErrorMessageContains
-      );
       thenIShouldSeeAnErrorMessageThatContains(...tooLongErrorMessageContains);
 
       whenIClickOnTheErrorSummaryLinkContaining(...tooLongErrorMessageContains);

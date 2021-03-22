@@ -5,7 +5,6 @@ import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
-  FormGroup,
   FormLegendPageHeading,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
@@ -97,14 +96,13 @@ const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProp
   value = "",
   errorMessages,
 }: MoreVesselDetailsTextAreaProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <TextareaCharacterCount
-      id="moreVesselDetails"
-      maxCharacters={250}
-      rows={4}
-      defaultValue={value}
-    />
-  </FormGroup>
+  <TextareaCharacterCount
+    id="moreVesselDetails"
+    maxCharacters={250}
+    rows={4}
+    defaultValue={value}
+    errorMessages={errorMessages}
+  />
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(

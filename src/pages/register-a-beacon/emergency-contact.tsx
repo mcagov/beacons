@@ -1,6 +1,5 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { telNumberNoExampleErrorMessage } from "../../../cypress/integration/common.spec";
 import { BackButton, Button } from "../../components/Button";
 import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
@@ -54,7 +53,9 @@ const definePageForm = ({
         Validators.required(
           "Emergency contact telephone number is a required field"
         ),
-        Validators.phoneNumber(telNumberNoExampleErrorMessage),
+        Validators.phoneNumber(
+          "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
+        ),
       ]
     ),
     emergencyContact1AlternativeTelephoneNumber: new FieldManager(
@@ -177,7 +178,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
   telephoneNumberErrorMessages,
 }: EmergencyContactGroupProps): JSX.Element => (
   <>
-    <FormLegend className="govuk-fieldset__legend--m">
+    <FormLegend size="medium">
       Emergency contact {index}
       {index == "1" ? "" : " (optional)"}
     </FormLegend>

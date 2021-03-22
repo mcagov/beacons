@@ -1,6 +1,7 @@
 import {
   givenIAmAt,
   givenIHaveSelected,
+  iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -12,10 +13,15 @@ import {
 } from "./common.spec";
 
 describe("As a beacon owner, I want to submit the primary use for my beacon", () => {
-  const pageUrl = "/register-a-beacon/primary-beacon-use";
+  const thisPageUrl = "/register-a-beacon/primary-beacon-use";
+  const previousPageUrl = "/register-a-beacon/beacon-information";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIAmAt(thisPageUrl);
+  });
+
+  it("allows me to go back a page by following the 'back' button", () => {
+    iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
   });
 
   it("displays an error if no primary beacon use is selected", () => {

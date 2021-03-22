@@ -10,7 +10,7 @@ COPY next.config.js package.json package-lock.json tsconfig.json src public ./
 # Builds NextJS application
 FROM base AS build
 
-RUN npm ci && npm run build
+RUN CYPRESS_INSTALL_BINARY=0 npm ci && npm run build
 
 # Installs production dependencies
 FROM base AS production-deps

@@ -13,7 +13,7 @@ jest.mock("../../../src/lib/handlePageRequest", () => ({
 }));
 
 describe("AboutTheVessel", () => {
-  const emptyPrimaryBeaconUseForm: FormJSON = {
+  const aboutTheVesselForm: FormJSON = {
     hasErrors: false,
     errorSummary: [],
     fields: {
@@ -40,8 +40,8 @@ describe("AboutTheVessel", () => {
     },
   };
 
-  it("should have a back button which directs the user to the primary beacon use page", () => {
-    render(<AboutTheVessel form={emptyPrimaryBeaconUseForm} />);
+  it("should have a back button which directs the user to the about the vessel page", () => {
+    render(<AboutTheVessel form={aboutTheVesselForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -50,9 +50,7 @@ describe("AboutTheVessel", () => {
   });
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
-    const { container } = render(
-      <AboutTheVessel form={emptyPrimaryBeaconUseForm} />
-    );
+    const { container } = render(<AboutTheVessel form={aboutTheVesselForm} />);
     const ownPath = "/register-a-beacon/about-the-vessel";
 
     const form = container.querySelectorAll("form")[1];
