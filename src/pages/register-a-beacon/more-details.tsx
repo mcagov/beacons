@@ -24,7 +24,7 @@ interface MoreDetailsTextAreaProps {
 
 const definePageForm = ({ moreVesselDetails }: CacheEntry): FormManager => {
   return new FormManager({
-    moreVesselDetails: new FieldManager(moreVesselDetails, [
+    moreDetails: new FieldManager(moreVesselDetails, [
       Validators.required("More details is a required field"),
       Validators.maxLength(
         "More details must be less than 250 characters",
@@ -77,8 +77,8 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
                     </p>
                   </div>
                   <MoreDetailsTextArea
-                    value={form.fields.moreVesselDetails.value}
-                    errorMessages={form.fields.moreVesselDetails.errorMessages}
+                    value={form.fields.moreDetails.value}
+                    errorMessages={form.fields.moreDetails.errorMessages}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
