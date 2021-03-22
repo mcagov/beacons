@@ -56,7 +56,7 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
-  const pageHeading = "About the pleasure vessel";
+  const pageHeading = "About the vessel, windfarm or rig/platform";
 
   return (
     <>
@@ -115,7 +115,7 @@ const MaxCapacityInput: FunctionComponent<FormInputProps> = ({
     <Input
       id="maxCapacity"
       label="Enter the maximum number of persons onboard"
-      hintText="Knowing the maximum number of persons likely to be onboard the vessel helps Search and Rescue know how many people to look for and what resources to send"
+      hintText="This helps Search and Rescue know how many people to look for and what resources to send"
       defaultValue={value}
       numOfChars={5}
       htmlAttributes={{
@@ -132,7 +132,7 @@ const VesselNameInput: FunctionComponent<FormInputProps> = ({
   <FormGroup>
     <Input
       id="vesselName"
-      label="Enter your vessel name (optional)"
+      label="Enter your vessel, windfarm or rig/platform name (optional)"
       defaultValue={value}
     />
   </FormGroup>
@@ -158,7 +158,7 @@ const AreaOfOperationTextArea: FunctionComponent<FormInputProps> = ({
   <TextareaCharacterCount
     id="areaOfOperation"
     label="Tell us about the typical area of operation (optional)"
-    hintText="Typical areas of operation for the vessel is very helpful in assisting Search and Rescue. For example 'Whitesands Bay, St Davids, Pembrokeshire'"
+    hintText="This is very helpful in assisting Search & Rescue. For example 'Whitesands Bay, St Davids, Pembrokeshire'"
     defaultValue={value}
     errorMessages={errorMessages}
     maxCharacters={250}
