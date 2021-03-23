@@ -87,9 +87,9 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 
                   <InsetText>
-                    Leave anything that isn't relevant blank. Any information
-                    you do provide may help save lives in a Search & Rescue
-                    scenario.
+                    Leave anything that isn&apos;t relevant blank. Any
+                    information you do provide may help save lives in a Search &
+                    Rescue scenario.
                   </InsetText>
 
                   <MaxCapacityInput

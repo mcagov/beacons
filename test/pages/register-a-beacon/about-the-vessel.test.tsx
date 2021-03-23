@@ -25,6 +25,14 @@ describe("AboutTheVessel", () => {
         value: "",
         errorMessages: [],
       },
+      beaconLocation: {
+        value: "",
+        errorMessages: [],
+      },
+      pln: {
+        value: "",
+        errorMessages: [],
+      },
       homeport: {
         value: "",
         errorMessages: [],
@@ -33,7 +41,19 @@ describe("AboutTheVessel", () => {
         value: "",
         errorMessages: [],
       },
-      beaconLocation: {
+      imoNumber: {
+        value: "",
+        errorMessages: [],
+      },
+      ssrNumber: {
+        value: "",
+        errorMessages: [],
+      },
+      officialNumber: {
+        value: "",
+        errorMessages: [],
+      },
+      rigPlatformLocation: {
         value: "",
         errorMessages: [],
       },
