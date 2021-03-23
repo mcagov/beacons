@@ -30,8 +30,8 @@
     "google-libphonenumber": "^3.2.18",
     "govuk-frontend": "^3.11.0",
     "next": "10.0.9",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "urlencoded-body-parser": "^3.0.0",
     "uuid": "^8.3.2"
   },
