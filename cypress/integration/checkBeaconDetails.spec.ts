@@ -100,6 +100,20 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
       thenMyFocusMovesTo(hexIdFieldSelector);
     });
 
+    it("errors if I submit a valid but a hexadecimal number that has an unknown country encoding", () => {
+      const newZealandBeaconHexId = "12345678910ABCD";
+      const expectedErrorMessage = "an unknown country";
+
+      whenIType(newZealandBeaconHexId, "#hexId");
+
+      whenIClickContinue();
+      thenIShouldSeeAnErrorSummaryLinkThatContains(expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(expectedErrorMessage);
+
+      whenIClickOnTheErrorSummaryLinkContaining(expectedErrorMessage);
+      thenMyFocusMovesTo(hexIdFieldSelector);
+    });
+
     it("reminds me to check for mixed up 'O's and '0's", () => {
       const expectedErrorMessage = ["O", "Did you mean", "zero"];
       const almostValidHexIdButWithOhInsteadOfZero = "1DOEAO8C52FFBFF";
