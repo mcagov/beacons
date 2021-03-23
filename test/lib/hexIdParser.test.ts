@@ -29,6 +29,7 @@ describe("HexIdParser", () => {
         hexId: "1D0EA08C52FFBFF",
         countryName: "United Kingdom",
       },
+      { hexId: "Unknown Hex Id", countryName: "Unknown country" },
     ];
 
     expectations.forEach((expectation) => {

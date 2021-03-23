@@ -44,6 +44,8 @@ import midCodes from "./midCodes.json";
  *
  */
 export class HexIdParser {
+  private static readonly UNKNOWN_COUNTRY_CODE_NAME: string = "Unknown country";
+
   /**
    * Parses the country code from a hexId.
    *
@@ -81,7 +83,9 @@ export class HexIdParser {
    *
    */
   public static countryName(hexId: string): string {
-    return midCodes[this.countryCode(hexId).toString()][3];
+    const countryCode = this.countryCode(hexId).toString();
+    const midCode = midCodes[countryCode];
+    return midCode ? midCode[3] : HexIdParser.UNKNOWN_COUNTRY_CODE_NAME;
   }
 
   private static hexToBinary(hexId: string): string {
