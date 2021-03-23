@@ -44,7 +44,8 @@ import midCodes from "./midCodes.json";
  *
  */
 export class HexIdParser {
-  private static readonly UNKNOWN_COUNTRY_CODE_NAME: string = "Unknown country";
+  private static readonly UNKNOWN_COUNTRY_CODE_NAME: string =
+    "an unknown country";
 
   /**
    * Parses the country code from a hexId.
