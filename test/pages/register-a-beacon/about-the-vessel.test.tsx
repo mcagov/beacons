@@ -29,7 +29,7 @@ describe("AboutTheVessel", () => {
         value: "",
         errorMessages: [],
       },
-      pln: {
+      portLetterNumber: {
         value: "",
         errorMessages: [],
       },

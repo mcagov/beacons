@@ -49,7 +49,7 @@ export interface Vessel {
   maxCapacity: string;
   vesselName: string;
   beaconLocation: string;
-  pln: string;
+  portLetterNumber: string;
   homeport: string;
   areaOfOperation: string;
   imoNumber: string;

@@ -25,7 +25,7 @@ const definePageForm = ({
   maxCapacity,
   vesselName,
   beaconLocation,
-  pln,
+  portLetterNumber,
   homeport,
   areaOfOperation,
   imoNumber,
@@ -49,7 +49,7 @@ const definePageForm = ({
         100
       ),
     ]),
-    pln: new FieldManager(pln),
+    portLetterNumber: new FieldManager(portLetterNumber),
     homeport: new FieldManager(homeport),
     areaOfOperation: new FieldManager(areaOfOperation, [
       Validators.maxLength(
@@ -106,7 +106,9 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
 
                   <SectionHeading>Vessel information</SectionHeading>
 
-                  <PlnInput value={form.fields.pln.value} />
+                  <PortLetterNumberInput
+                    value={form.fields.portLetterNumber.value}
+                  />
 
                   <HomeportInput value={form.fields.homeport.value} />
 
@@ -173,12 +175,12 @@ const VesselNameInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-const PlnInput: FunctionComponent<FormInputProps> = ({
+const PortLetterNumberInput: FunctionComponent<FormInputProps> = ({
   value = "",
 }: FormInputProps): JSX.Element => (
   <FormGroup>
     <Input
-      id="pln"
+      id="portLetterNumber"
       label="If you have one, enter the Port Letter & Number or PLN (optional)"
       hintText="This is a code identifying fishing vessels, usually printed on the boat. The format is XYZ123"
       defaultValue={value}
