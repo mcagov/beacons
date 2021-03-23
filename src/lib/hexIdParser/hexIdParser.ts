@@ -1,3 +1,5 @@
+import midCodes from "./midCodes.json";
+
 /**
  * Parses encoded information from a given 406Mhz beacon hex id.
  *
@@ -60,6 +62,26 @@ export class HexIdParser {
     return this.binaryToDecimal(
       this.hexToBinary(hexId).slice(...countryCodeBitRange)
     );
+  }
+
+  /**
+   * Translates a country code (MID) into the corresponding country name.
+   *
+   * @remarks Maritime Identification Digits (MIDs) are an international
+   * standard maintained by the International Telecommunications Union in the
+   * public domain.  The lookup table is defined in midCodes.json, borrowed from
+   * https://github.com/michaeljfazio/MIDs/blob/master/mids.json for
+   * convenience.
+   *
+   * The authoritative source for MID codes is
+   * https://www.itu.int/en/ITU-R/terrestrial/fmd/Pages/mid.aspx).
+   *
+   * @param hexId - The hexId string
+   * @returns A string of the country name encoded in the hexId
+   *
+   */
+  public static countryName(hexId: string): string {
+    return midCodes[this.countryCode(hexId).toString()][3];
   }
 
   private static hexToBinary(hexId: string): string {

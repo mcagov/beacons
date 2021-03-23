@@ -72,6 +72,38 @@ describe("FieldManager", () => {
     });
   });
 
+  describe("keyword replacement in error messages", () => {
+    it("should replace a valid %KEYWORD% if found in the error message", () => {
+      const newZealandEncodedHexId = "C00F429578002C1";
+      fieldManager = new FieldManager(newZealandEncodedHexId, [
+        validationRule(
+          true,
+          "You entered a beacon encoded with a Hex ID from %HEX_ID_COUNTRY%."
+        ),
+      ]);
+      fieldManager.markAsDirty();
+
+      expect(fieldManager.errorMessages()).toStrictEqual([
+        "You entered a beacon encoded with a Hex ID from New Zealand.",
+      ]);
+    });
+
+    it("should make many replacements of keywords", () => {
+      const newZealandEncodedHexId = "C00F429578002C1";
+      fieldManager = new FieldManager(newZealandEncodedHexId, [
+        validationRule(
+          true,
+          "Your %HEX_ID_COUNTRY% beacon is invalid because it is from %HEX_ID_COUNTRY%."
+        ),
+      ]);
+      fieldManager.markAsDirty();
+
+      expect(fieldManager.errorMessages()).toStrictEqual([
+        "Your New Zealand beacon is invalid because it is from New Zealand.",
+      ]);
+    });
+  });
+
   describe("hasErrors()", () => {
     it("should not have errors if the form is `pristine`", () => {
       fieldManager = new FieldManager(value, [validationRule(true)]);

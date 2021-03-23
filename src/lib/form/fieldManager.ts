@@ -1,3 +1,4 @@
+import { HexIdParser } from "../hexIdParser/hexIdParser";
 import { AbstractFormNode } from "./abstractFormNode";
 import { ValidationRule } from "./validators";
 
@@ -15,6 +16,10 @@ export type FieldJSON = {
  * This class is responsible for managing the value of a form input and can run validation rules, and calculate status of the field input.
  */
 export class FieldManager extends AbstractFormNode {
+  private _keywordMap = {
+    HEX_ID_COUNTRY: (hexId) => HexIdParser.countryName(hexId),
+  };
+
   constructor(
     value: string,
     public readonly validators: ValidationRule[] = [],
@@ -42,7 +47,8 @@ export class FieldManager extends AbstractFormNode {
 
     return validators
       .filter((rule: ValidationRule) => rule.applies(this.value))
-      .map((rule: ValidationRule) => rule.errorMessage);
+      .map((rule: ValidationRule) => rule.errorMessage)
+      .map((errorMessage) => this.replaceKeywords(errorMessage));
   }
 
   /**
@@ -62,6 +68,13 @@ export class FieldManager extends AbstractFormNode {
     );
   }
 
+  public serialise(): FieldJSON {
+    const value = this._value;
+    const errorMessages = this.errorMessages();
+
+    return { value, errorMessages };
+  }
+
   private shouldValidate(): boolean {
     return this.conditions.every((validationCondition) => {
       const dependsOnField = this.parent.fields[validationCondition.dependsOn];
@@ -76,10 +89,19 @@ export class FieldManager extends AbstractFormNode {
     });
   }
 
-  public serialise(): FieldJSON {
-    const value = this._value;
-    const errorMessages = this.errorMessages();
+  private replaceKeywords(errorMessage: string): string {
+    const keywords = Object.keys(this._keywordMap);
 
-    return { value, errorMessages };
+    return keywords.reduce((errorMessage, keyword) => {
+      const keywordRegex = new RegExp("%" + keyword + "%", "g");
+
+      if (keywordRegex.test(errorMessage))
+        return errorMessage.replace(
+          keywordRegex,
+          this._keywordMap[keyword](this.value)
+        );
+
+      return errorMessage;
+    }, errorMessage);
   }
 }
