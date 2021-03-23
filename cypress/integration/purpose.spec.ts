@@ -5,8 +5,10 @@ import {
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
+  thenMyFocusMovesTo,
   thenTheUrlShouldContain,
   whenIClickContinue,
+  whenIClickOnTheErrorSummaryLinkContaining,
 } from "./common.spec";
 
 describe("As a beacon owner, I want to submit the purpose for my beacon", () => {
@@ -21,13 +23,19 @@ describe("As a beacon owner, I want to submit the purpose for my beacon", () => 
     iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
   });
 
-  it("displays an error if no beacon use purpose is selected", () => {
+  xit("displays an error if no beacon use purpose is selected", () => {
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
     thenIShouldSeeAnErrorSummaryLinkThatContains(
       "purpose",
       requiredFieldErrorMessage
     );
+
+    whenIClickOnTheErrorSummaryLinkContaining(
+      "purpose",
+      requiredFieldErrorMessage
+    );
+    thenMyFocusMovesTo("#pleasure");
   });
 
   xit("routes to the next page if there are no errors with the selected primary beacon use", () => {
