@@ -21,4 +21,8 @@ describe("wholeNumber validator", () => {
   it("should have an error if the value is a number and characters", () => {
     expect(applies("12abc")).toBe(true);
   });
+
+  it("should return the expected error message", () => {
+    expect(expectedErrorMessage).toBe(errorMessage);
+  });
 });

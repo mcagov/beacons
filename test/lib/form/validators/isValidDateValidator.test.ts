@@ -20,4 +20,8 @@ describe("isValidDate validator", () => {
   it("should not have an error if the value is a valid date string", () => {
     expect(applies(new Date().toISOString())).toBe(false);
   });
+
+  it("should return the expected error message", () => {
+    expect(expectedErrorMessage).toBe(errorMessage);
+  });
 });

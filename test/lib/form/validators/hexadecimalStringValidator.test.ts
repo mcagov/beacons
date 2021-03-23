@@ -39,4 +39,8 @@ describe("hexadecimalString validator", () => {
   it("should not have an error if the value only contains contains characters 0-9, A-F", () => {
     expect(applies("0123456789abcdED")).toBe(false);
   });
+
+  it("should return the expected error message", () => {
+    expect(expectedErrorMessage).toBe(errorMessage);
+  });
 });

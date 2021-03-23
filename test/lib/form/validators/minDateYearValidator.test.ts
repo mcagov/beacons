@@ -27,4 +27,8 @@ describe("minDateYear validator", () => {
   it("should have an error if the date is before the minimum year", () => {
     expect(applies(new Date(1999, 0, 0).toISOString())).toBe(true);
   });
+
+  it("should return the expected error message", () => {
+    expect(expectedErrorMessage).toBe(errorMessage);
+  });
 });

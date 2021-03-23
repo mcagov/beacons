@@ -52,4 +52,8 @@ describe("phoneNumber validator", () => {
     expect(applies("00447712345678")).toBe(false);
     expect(applies("008816-12345678")).toBe(false);
   });
+
+  it("should return the expected error message", () => {
+    expect(expectedErrorMessage).toBe(errorMessage);
+  });
 });

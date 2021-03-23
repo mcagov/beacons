@@ -31,4 +31,8 @@ describe("shouldNotContain validator", () => {
 
     expect(applies("verboten string is a great restaurant")).toBe(true);
   });
+
+  it("should return the expected error message", () => {
+    expect(expectedErrorMessage).toBe(errorMessage);
+  });
 });

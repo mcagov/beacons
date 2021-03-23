@@ -30,4 +30,8 @@ describe("isInThePast validator", () => {
     date.setDate(date.getDate() + 1);
     expect(applies(date.toISOString())).toBe(true);
   });
+
+  it("should return the expected error message", () => {
+    expect(expectedErrorMessage).toBe(errorMessage);
+  });
 });

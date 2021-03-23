@@ -30,4 +30,8 @@ describe("ukEncodedBeacon validator", () => {
     const validOtherCountryEncodedHexId = "C00F429578002C1";
     expect(applies(validOtherCountryEncodedHexId)).toBe(true);
   });
+
+  it("should return the expected error message", () => {
+    expect(expectedErrorMessage).toBe(errorMessage);
+  });
 });
