@@ -4,7 +4,6 @@ import {
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
-  thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
   whenIClickContinue,
@@ -26,11 +25,6 @@ describe("As a beacon owner, I want to submit the purpose for my beacon", () => 
   xit("displays an error if no beacon use purpose is selected", () => {
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
-    thenIShouldSeeAnErrorSummaryLinkThatContains(
-      "purpose",
-      requiredFieldErrorMessage
-    );
-
     whenIClickOnTheErrorSummaryLinkContaining(
       "purpose",
       requiredFieldErrorMessage
