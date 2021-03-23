@@ -53,9 +53,14 @@ export interface BeaconInformation {
 export interface Vessel {
   maxCapacity: string;
   vesselName: string;
+  beaconLocation: string;
+  portLetterNumber: string;
   homeport: string;
   areaOfOperation: string;
-  beaconLocation: string;
+  imoNumber: string;
+  ssrNumber: string;
+  officialNumber: string;
+  rigPlatformLocation: string;
   moreDetails: string;
   maritimePleasureVesselUse: string;
   otherPleasureVesselText: string;
