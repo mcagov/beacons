@@ -4,6 +4,10 @@ interface PageHeadingProps {
   children: ReactNode;
 }
 
+interface SectionHeadingProps {
+  children: ReactNode;
+}
+
 interface AnchorLinkProps {
   href: string;
   children: ReactNode;
@@ -22,6 +26,12 @@ export const PageHeading: FunctionComponent = ({
   children,
 }: PageHeadingProps): JSX.Element => (
   <h1 className="govuk-heading-l">{children}</h1>
+);
+
+export const SectionHeading: FunctionComponent = ({
+  children,
+}: SectionHeadingProps): JSX.Element => (
+  <h2 className="govuk-heading-m">{children}</h2>
 );
 
 export const AnchorLink: FunctionComponent<AnchorLinkProps> = ({
