@@ -12,6 +12,7 @@ import {
   GovUKBody,
   GovUKBulletedList,
   PageHeading,
+  SectionHeading,
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
 import { setFormSubmissionCookie } from "../lib/middleware";
@@ -84,7 +85,7 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
       who will provide you with a spreadsheet template
     </InsetText>
 
-    <h2 className="govuk-heading-m">Before you start</h2>
+    <SectionHeading>Before you start</SectionHeading>
 
     <GovUKBulletedList>
       <li>
@@ -137,7 +138,7 @@ const RelatedContent: FunctionComponent = (): JSX.Element => (
 
 const OtherWaysToAccessTheService: FunctionComponent = (): JSX.Element => (
   <>
-    <h2 className="govuk-heading-m">Other ways to apply</h2>
+    <SectionHeading>Other ways to apply</SectionHeading>
 
     <GovUKBody>
       If you need help with registering online, want to register multiple
@@ -153,7 +154,7 @@ const OtherWaysToAccessTheService: FunctionComponent = (): JSX.Element => (
 
 const DataProtection: FunctionComponent = (): JSX.Element => (
   <>
-    <h2 className="govuk-heading-m">Data protection regulations</h2>
+    <SectionHeading>Data protection regulations</SectionHeading>
 
     <GovUKBody>
       The Maritime {"&"} Coastguard Agency (MCA) collect and retain the personal
