@@ -99,7 +99,7 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
       </li>
       <li>
         If you have an aircraft, you will need your aircraft make and model,
-        aircraft number(s), radio communcations, Call Sign and Aircraft Radio ID
+        Aircraft Registration Mark, aircraft number(s), radio communcations
       </li>
       <li>
         You will also need at least one emergency contact for Search and Rescue
