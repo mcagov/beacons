@@ -61,13 +61,13 @@ resource "aws_alb_target_group" "service" {
   target_type = "ip"
 
   health_check {
-    healthy_threshold   = "3"
+    healthy_threshold   = "6"
     interval            = "30"
     protocol            = "HTTP"
     matcher             = "200"
-    timeout             = "8"
+    timeout             = "10"
     path                = var.service_health_check_path
-    unhealthy_threshold = "3"
+    unhealthy_threshold = "6"
   }
 
   lifecycle {
