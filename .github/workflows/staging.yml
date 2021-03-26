@@ -41,6 +41,8 @@ jobs:
       TF_WORKSPACE: staging
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: main
       - uses: hashicorp/setup-terraform@v1
       - name: Terraform Init
         run: terraform init
