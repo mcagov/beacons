@@ -9,3 +9,6 @@ node_modules/
 .next/
 .idea/
 .eslintcache
+
+# Cypress
+screenshots
