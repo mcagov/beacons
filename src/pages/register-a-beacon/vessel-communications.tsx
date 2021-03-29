@@ -336,7 +336,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
           conditional={true}
         >
           <FormGroup
-            errorMessages={form.fields.otherCommunication.errorMessages}
+            errorMessages={form.fields.otherCommunicationInput.errorMessages}
           >
             <TextareaCharacterCount
               id="otherCommunicationInput"
