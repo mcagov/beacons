@@ -27,6 +27,13 @@ export enum VesselCommunication {
   MOBILE_TELEPHONE = "MOBILE_TELEPHONE",
 }
 
+export enum Environment {
+  MARITIME = "MARITIME",
+  AVIATION = "AVIATION",
+  LAND = "LAND",
+  OTHER = "OTHER",
+}
+
 export enum Purpose {
   PLEASURE = "PLEASURE",
   COMMERCIAL = "COMMERCIAL",
@@ -62,8 +69,6 @@ export interface Vessel {
   officialNumber: string;
   rigPlatformLocation: string;
   moreDetails: string;
-  maritimePleasureVesselUse: string;
-  otherPleasureVesselText: string;
 }
 
 export interface Aircraft {
@@ -120,6 +125,7 @@ export interface BeaconUse {
   environment: string;
   purpose: string;
   activity: string;
+  otherActivityText: string;
 }
 
 export const formSubmissionCookieId = "submissionId";

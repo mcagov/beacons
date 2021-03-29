@@ -17,11 +17,11 @@ describe("Activity", () => {
     hasErrors: false,
     errorSummary: [],
     fields: {
-      maritimePleasureVesselUse: {
+      activity: {
         value: "",
         errorMessages: [],
       },
-      otherPleasureVesselText: {
+      otherActivityText: {
         value: "",
         errorMessages: [],
       },

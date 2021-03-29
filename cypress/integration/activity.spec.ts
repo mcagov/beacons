@@ -64,12 +64,12 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       "Other pleasure vessel",
       requiredFieldErrorMessage
     );
-    thenMyFocusMovesTo("#otherPleasureVesselText");
+    thenMyFocusMovesTo("#otherActivityText");
   });
 
   it("routes to the next page if there are no errors with Other pleasure vessel selected", () => {
     givenIHaveSelected("#other-pleasure-vessel");
-    whenIType("Surfboard", "#otherPleasureVesselText");
+    whenIType("Surfboard", "#otherActivityText");
     whenIClickContinue();
 
     thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");

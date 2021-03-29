@@ -145,11 +145,11 @@ const BeaconInformationSection: FunctionComponent<CacheEntry> = ({
 );
 
 const BeaconUseSection: FunctionComponent<CacheEntry> = ({
-  maritimePleasureVesselUse,
-  otherPleasureVesselText,
+  activity,
+  otherActivityText,
 }: any): JSX.Element => {
   let level3UseText = "";
-  switch (maritimePleasureVesselUse) {
+  switch (activity) {
     case MaritimePleasureVessel.MOTOR:
       level3UseText = "Motor vessel";
       break;
@@ -163,7 +163,7 @@ const BeaconUseSection: FunctionComponent<CacheEntry> = ({
       level3UseText = "Small unpowered vessel";
       break;
     case MaritimePleasureVessel.OTHER:
-      level3UseText = otherPleasureVesselText;
+      level3UseText = otherActivityText;
       break;
   }
 
