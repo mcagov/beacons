@@ -93,7 +93,7 @@ describe("BeaconsForm Component", () => {
       </BeaconsForm>
     );
 
-    expect(screen.queryByText("This is an error")).toBeDefined();
+    expect(screen.queryByText("This is an error")).not.toBeNull();
   });
 
   it("should not render an error messages if not provided", () => {
