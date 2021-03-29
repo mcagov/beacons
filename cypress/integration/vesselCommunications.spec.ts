@@ -22,6 +22,8 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
   const satelliteTelephoneInputSelector = "#satelliteTelephoneInput";
   const mobileTelephoneCheckboxSelector = "#mobileTelephone";
   const mobileTelephoneInputSelector = "#mobileTelephoneInput1";
+  const otherCommunicationSelector = "#otherCommunication";
+  const otherCommunicationInputSelector = "#otherCommunicationInput";
 
   beforeEach(() => {
     givenIAmAt(pageUrl);
@@ -181,6 +183,35 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     });
   });
 
+  describe("the Other communications option", () => {
+    it("requires other communication if the other checkbox is selected", () => {
+      const expectedErrorMessage = ["We need", "other"];
+
+      givenIHaveSelected(otherCommunicationSelector);
+
+      andIClickContinue();
+
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(otherCommunicationInputSelector);
+    });
+
+    it("requires other communication to be less than a certain number of characters if the other checkbox is selected", () => {
+      const expectedErrorMessage = ["Other communication", "too many"];
+
+      givenIHaveSelected(otherCommunicationSelector);
+
+      whenIType("a".repeat(251), otherCommunicationInputSelector);
+      andIClickContinue();
+
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(otherCommunicationInputSelector);
+    });
+  });
+
   it("submits the form if all fields are valid", () => {
     const validMMSI = "123456789";
     const validPhoneNumber = "07887662534";
@@ -189,11 +220,13 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
     givenIHaveSelected(satelliteTelephoneCheckboxSelector);
     givenIHaveSelected(mobileTelephoneCheckboxSelector);
+    givenIHaveSelected(otherCommunicationSelector);
 
     whenIType(validMMSI, fixedVhfDscRadioInputSelector);
     whenIType(validMMSI, portableVhfDscRadioInputSelector);
     whenIType(validPhoneNumber, satelliteTelephoneInputSelector);
     whenIType(validPhoneNumber, mobileTelephoneInputSelector);
+    whenIType("Other comms", otherCommunicationInputSelector);
     andIClickContinue();
 
     thenTheUrlShouldContain("/register-a-beacon/more-details");

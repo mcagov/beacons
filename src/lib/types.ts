@@ -33,6 +33,7 @@ export enum VesselCommunication {
   PORTABLE_VHF_RADIO = "PORTABLE_VHF_RADIO",
   SATELLITE_TELEPHONE = "SATELLITE_TELEPHONE",
   MOBILE_TELEPHONE = "MOBILE_TELEPHONE",
+  OTHER = "OTHER",
 }
 
 export enum Environment {
