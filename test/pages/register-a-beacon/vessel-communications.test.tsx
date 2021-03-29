@@ -61,6 +61,14 @@ describe("VesselCommunications", () => {
         value: "",
         errorMessages: [],
       },
+      otherCommunication: {
+        value: "",
+        errorMessages: [],
+      },
+      otherCommunicationInput: {
+        value: "",
+        errorMessages: [],
+      },
     },
   };
 
