@@ -56,7 +56,7 @@ describe("EmergencyContact", () => {
     errorSummary: [],
   };
 
-  it("should have a back button which directs the user to the primary beacon use page", () => {
+  it("should have a back button which directs the user to the beacon owner page", () => {
     render(<EmergencyContact form={emptyEmergencyContactForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(

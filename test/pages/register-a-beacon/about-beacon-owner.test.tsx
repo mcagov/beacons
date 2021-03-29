@@ -36,7 +36,7 @@ describe("AboutBeaconOwner", () => {
     },
   };
 
-  it("should have a back button which directs the user to the primary beacon use page", () => {
+  it("should have a back button which directs the user to the more details page", () => {
     render(<AboutBeaconOwner form={emptyAboutBeaconOwnerForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(

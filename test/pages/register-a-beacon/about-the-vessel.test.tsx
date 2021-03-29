@@ -65,7 +65,7 @@ describe("AboutTheVessel", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/primary-beacon-use"
+      "/register-a-beacon/activity"
     );
   });
 

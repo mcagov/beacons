@@ -40,7 +40,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIType("ASOS", manufacturerSerialNumberFieldSelector);
     whenIClickContinue();
 
-    thenTheUrlShouldContain("/register-a-beacon/primary-beacon-use");
+    thenTheUrlShouldContain("/register-a-beacon/activity");
   });
 
   describe("the manufacturer serial number field", () => {

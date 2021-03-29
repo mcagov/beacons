@@ -284,7 +284,7 @@ const transformFormData = (formData: CacheEntry): CacheEntry => {
 };
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/primary-beacon-use",
+  "/register-a-beacon/activity",
   definePageForm,
   transformFormData
 );

@@ -12,8 +12,8 @@ import {
   whenIType,
 } from "./common.spec";
 
-describe("As a beacon owner, I want to submit the primary use for my beacon", () => {
-  const thisPageUrl = "/register-a-beacon/primary-beacon-use";
+describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
+  const thisPageUrl = "/register-a-beacon/activity";
   const previousPageUrl = "/register-a-beacon/beacon-information";
 
   beforeEach(() => {
@@ -24,7 +24,7 @@ describe("As a beacon owner, I want to submit the primary use for my beacon", ()
     iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
   });
 
-  it("displays an error if no primary beacon use is selected", () => {
+  it("displays an error if no activity is selected", () => {
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
     thenIShouldSeeAnErrorSummaryLinkThatContains(
@@ -46,7 +46,7 @@ describe("As a beacon owner, I want to submit the primary use for my beacon", ()
     thenMyFocusMovesTo("#motor-vessel");
   });
 
-  it("routes to the next page if there are no errors with the selected primary beacon use", () => {
+  it("routes to the next page if there are no errors with the selected activity", () => {
     givenIHaveSelected("#motor-vessel");
     whenIClickContinue();
 
