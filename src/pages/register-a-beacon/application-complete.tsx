@@ -5,71 +5,24 @@ import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
 import { GovUKBody } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
-import { GovNotifyGateway } from "../../gateways/gov-notify-api-gateway";
-import { CacheEntry } from "../../lib/formCache";
-import { getCache, withCookieRedirect } from "../../lib/middleware";
-import { joinStrings, referenceNumber } from "../../lib/utils";
+import { GovNotifyGateway } from "../../gateways/govNotifyApiGateway";
+import {
+  decorateGetServerSidePropsContext,
+  withCookieRedirect,
+} from "../../lib/middleware";
+import { referenceNumber } from "../../lib/utils";
+import { SendGovNotifyEmail } from "../../useCases/sendGovNotifyEmail";
 
 interface ApplicationCompleteProps {
-  formData: CacheEntry;
+  reference: string;
+  pageSubHeading: string;
 }
 
 const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
-  formData,
+  reference,
+  pageSubHeading,
 }: ApplicationCompleteProps): JSX.Element => {
   const pageHeading = "Application Complete";
-  let pageSubHeading =
-    process.env.NEXT_PUBLIC_GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE;
-  if (process.env.NEXT_PUBLIC_GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE) {
-    const govNotifyGateway = new GovNotifyGateway();
-
-    govNotifyGateway.sendEmail(
-      process.env.NEXT_PUBLIC_GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE,
-      formData.beaconOwnerEmail,
-      {
-        owner_name: formData.beaconOwnerFullName,
-        reference: referenceNumber("A#", 7),
-        beacon_information: joinStrings([
-          formData.manufacturer,
-          formData.model,
-          formData.hexId,
-        ]),
-        owner_details: joinStrings([
-          formData.beaconOwnerFullName,
-          formData.beaconOwnerTelephoneNumber,
-          formData.beaconOwnerAlternativeTelephoneNumber,
-          formData.beaconOwnerEmail,
-        ]),
-        owner_address: joinStrings([
-          formData.beaconOwnerAddressLine1,
-          formData.beaconOwnerAddressLine2,
-          formData.beaconOwnerTownOrCity,
-          formData.beaconOwnerPostcode,
-        ]),
-        emergency_contact_1_name: formData.emergencyContact1FullName,
-        emergency_contact_1_telephone_number:
-          formData.emergencyContact1TelephoneNumber,
-        emergency_contact_1_alternative_telephone_number:
-          formData.emergencyContact1AlternativeTelephoneNumber,
-        emergency_contact_2_name: formData.emergencyContact2FullName,
-        emergency_contact_2_telephone_number:
-          formData.emergencyContact2TelephoneNumber,
-        emergency_contact_2_alternative_telephone_number:
-          formData.emergencyContact2AlternativeTelephoneNumber,
-        emergency_contact_3_name: formData.emergencyContact3FullName,
-        emergency_contact_3_telephone_number:
-          formData.emergencyContact3TelephoneNumber,
-        emergency_contact_3_alternative_telephone_number:
-          formData.emergencyContact3AlternativeTelephoneNumber,
-      }
-    );
-
-    pageSubHeading = "We have sent you a confirmation email.";
-  }
-
-  if (!pageSubHeading) {
-    //pageSubHeading += "We could not send you a confirmation email.";
-  }
 
   return (
     <>
@@ -81,7 +34,9 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
         <Grid
           mainContent={
             <>
-              <Panel title={pageHeading}>{pageSubHeading}</Panel>
+              <Panel title={pageHeading} reference={reference}>
+                {pageSubHeading}
+              </Panel>
               <ApplicationCompleteWhatNext />
               <WarningText>
                 <GovUKBody className="govuk-!-font-weight-bold">
@@ -118,11 +73,27 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
-    const formData: CacheEntry = getCache(context.req.cookies);
-    // TODO: State persistence stuff to go her
+    const decoratedContext = await decorateGetServerSidePropsContext(context);
+    const registration = decoratedContext.registration.registration;
+
+    let pageSubHeading;
+
+    if (!registration.reference) {
+      registration.reference = referenceNumber("A#", 7);
+
+      const govNotifyGateway = new GovNotifyGateway();
+      const sendGovNotifyEmailUseCase = new SendGovNotifyEmail(
+        govNotifyGateway
+      );
+      sendGovNotifyEmailUseCase.execute(registration);
+
+      pageSubHeading = "We have sent you a confirmation email.";
+    } else {
+      pageSubHeading = "We could not send you a confirmation email.";
+    }
 
     return {
-      props: { formData },
+      props: { reference: registration.reference, pageSubHeading },
     };
   }
 );
