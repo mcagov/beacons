@@ -23,6 +23,6 @@ provider "aws" {
 }
 
 locals {
-  dns_sub_domain         = "beacons.${var.env}.local"
+  dns_sub_domain         = "${var.env}.beacons.local"
   service_local_endpoint = "service.${local.dns_sub_domain}:${var.service_port}"
 }
