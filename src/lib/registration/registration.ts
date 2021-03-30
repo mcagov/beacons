@@ -60,7 +60,7 @@ export class Registration {
     });
   }
 
-  private _parseUseIndex(useIndex: number = 0): number {
+  private _parseUseIndex(useIndex = 0): number {
     useIndex = useIndex || 0;
     const beaconUseLength = this.registration.uses.length - 1;
     return Math.min(useIndex, beaconUseLength);

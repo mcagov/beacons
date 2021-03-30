@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { FieldManager } from "../../lib/form/fieldManager";
@@ -27,7 +27,7 @@ const definePageForm = ({
 const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
-}): JSX.Element => {
+}: FormPageProps): JSX.Element => {
   const previousPageUrl = "/register-a-beacon/more-details";
   const pageHeading = "Do you have other additional uses for this beacon?";
   const additionalBeaconName = "additionalBeaconUse";
