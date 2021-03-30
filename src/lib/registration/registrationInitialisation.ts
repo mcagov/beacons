@@ -11,6 +11,8 @@ export const initBeacon = (): IRegistration => {
     model: "",
     hexId: "",
 
+    reference: "",
+
     manufacturerSerialNumber: "",
     chkCode: "",
     batteryExpiryDate: "",

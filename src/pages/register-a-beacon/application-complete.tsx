@@ -1,19 +1,27 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
 import { GovUKBody } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
-import { withCookieRedirect } from "../../lib/middleware";
+import { GovNotifyGateway } from "../../gateways/govNotifyApiGateway";
+import {
+  decorateGetServerSidePropsContext,
+  withCookieRedirect,
+} from "../../lib/middleware";
+import { referenceNumber } from "../../lib/utils";
+import { SendGovNotifyEmail } from "../../useCases/sendGovNotifyEmail";
 
-interface ApplicationCompletePageProps {
-  showCookieBanner: boolean;
+interface ApplicationCompleteProps {
+  reference: string;
+  pageSubHeading: string;
 }
 
-const ApplicationCompletePage: FunctionComponent<ApplicationCompletePageProps> = ({
-  showCookieBanner,
-}: ApplicationCompletePageProps): JSX.Element => {
+const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
+  reference,
+  pageSubHeading,
+}: ApplicationCompleteProps): JSX.Element => {
   const pageHeading = "Application Complete";
 
   return (
@@ -21,13 +29,13 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompletePageProps> =
       <Layout
         title={pageHeading}
         pageHasErrors={false}
-        showCookieBanner={showCookieBanner}
+        showCookieBanner={false}
       >
         <Grid
           mainContent={
             <>
-              <Panel title={pageHeading}>
-                We have sent you a confirmation email.
+              <Panel title={pageHeading} reference={reference}>
+                {pageSubHeading}
               </Panel>
               <ApplicationCompleteWhatNext />
               <WarningText>
@@ -64,9 +72,28 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
 );
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async () => {
+  async (context: GetServerSidePropsContext) => {
+    const decoratedContext = await decorateGetServerSidePropsContext(context);
+    const registration = decoratedContext.registration.registration;
+
+    let pageSubHeading;
+
+    if (!registration.reference) {
+      registration.reference = referenceNumber("A#", 7);
+
+      const govNotifyGateway = new GovNotifyGateway();
+      const sendGovNotifyEmailUseCase = new SendGovNotifyEmail(
+        govNotifyGateway
+      );
+      sendGovNotifyEmailUseCase.execute(registration);
+
+      pageSubHeading = "We have sent you a confirmation email.";
+    } else {
+      pageSubHeading = "We could not send you a confirmation email.";
+    }
+
     return {
-      props: {},
+      props: { reference: registration.reference, pageSubHeading },
     };
   }
 );
