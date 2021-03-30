@@ -591,7 +591,7 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
     const decoratedContext = await decorateGetServerSidePropsContext(context);
 
     return {
-      props: { registration: decoratedContext.registration },
+      props: { registration: decoratedContext.registration.registration },
     };
   }
 );
