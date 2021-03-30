@@ -2,6 +2,7 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
+import { Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
@@ -13,13 +14,25 @@ import {
 } from "../../lib/handlePageRequest";
 import { Environment } from "../../lib/registration/types";
 
-const getPageForm = ({ environment }) => {
+const getPageForm = ({ environment, environmentOtherInput }) => {
   return new FormManager({
     environment: new FieldManager(environment, [
-      Validators.required(
-        "Which enviornment the beacon will be used is required"
-      ),
+      Validators.required("Where the beacon will be used is required"),
     ]),
+    environmentOtherInput: new FieldManager(
+      environmentOtherInput,
+      [
+        Validators.required(
+          "We need to know where this beacon will be used in if you have selected other use"
+        ),
+      ],
+      [
+        {
+          dependsOn: "environment",
+          meetingCondition: (value) => value === Environment.OTHER,
+        },
+      ]
+    ),
   });
 };
 
@@ -42,7 +55,7 @@ const BeaconUse: FunctionComponent<FormPageProps> = ({
     later in the form"
     >
       <FormGroup errorMessages={form.fields.environment.errorMessages}>
-        <RadioList>
+        <RadioList conditional={true}>
           <RadioListItem
             id="maritime"
             name={environmentFieldName}
@@ -80,7 +93,18 @@ const BeaconUse: FunctionComponent<FormPageProps> = ({
             label="Other"
             value={Environment.OTHER}
             defaultChecked={form.fields.environment.value === Environment.OTHER}
-          />
+            conditional={true}
+          >
+            <FormGroup
+              errorMessages={form.fields.environmentOtherInput.errorMessages}
+            >
+              <Input
+                id="environmentOtherInput"
+                label="Please describe your use"
+                defaultValue={form.fields.environmentOtherInput.value}
+              />
+            </FormGroup>
+          </RadioListItem>
         </RadioList>
       </FormGroup>
     </BeaconsForm>

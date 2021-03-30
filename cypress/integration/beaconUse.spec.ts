@@ -3,8 +3,13 @@ import {
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   iCanSeeAHeadingThatContains,
+  thenIShouldSeeAnErrorMessageThatContains,
+  thenIShouldSeeAnErrorSummaryLinkThatContains,
+  thenMyFocusMovesTo,
   thenTheUrlShouldContain,
   whenIClickContinue,
+  whenIClickOnTheErrorSummaryLinkContaining,
+  whenIType,
 } from "./common.spec";
 
 describe("As a beacon owner, I want to submit uses for my beacon", () => {
@@ -12,6 +17,8 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
   const pageUrl = "/register-a-beacon/beacon-use";
   const purposeUrl = "/register-a-beacon/purpose";
   const activityUrl = "/register-a-beacon/activity";
+  const otherCheckboxSelector = "#other";
+  const otherInput = "#environmentOtherInput";
 
   beforeEach(() => {
     givenIAmAt(pageUrl);
@@ -44,10 +51,24 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
     thenTheUrlShouldContain(activityUrl);
   });
 
-  it("should route to the activity page if other is selected", () => {
-    givenIHaveSelected("#other");
-    whenIClickContinue();
+  describe("the Other use option", () => {
+    it("should route to the activity page if other is selected and a value is provided", () => {
+      givenIHaveSelected(otherCheckboxSelector);
+      whenIType("In the sea", otherInput);
+      whenIClickContinue();
 
-    thenTheUrlShouldContain(activityUrl);
+      thenTheUrlShouldContain(activityUrl);
+    });
+
+    it("should display errors if I have not submitted information for my use", () => {
+      const expectedErrorMessage = ["We need", "selected other"];
+      givenIHaveSelected(otherCheckboxSelector);
+      whenIClickContinue();
+
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(otherInput);
+    });
   });
 });
