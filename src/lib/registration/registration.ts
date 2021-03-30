@@ -1,5 +1,5 @@
 import { FormSubmission } from "../formCache";
-import { initBeacon } from "./registrationInitialisation";
+import { initBeacon, initBeaconUse } from "./registrationInitialisation";
 import { IRegistration } from "./types";
 
 type Indexes = {
@@ -24,6 +24,13 @@ export class Registration {
     flattenedRegistration = { ...flattenedRegistration, ...use };
 
     return flattenedRegistration;
+  }
+
+  public createUse(): void {
+    const use = initBeaconUse();
+    const useIndex = this.registration.uses.length - 1;
+
+    this.registration.uses.splice(useIndex, 0, use);
   }
 
   public update(formData: FormSubmission): void {
@@ -55,7 +62,7 @@ export class Registration {
     });
   }
 
-  private _parseUseIndex(useIndex: number): number {
+  private _parseUseIndex(useIndex: number = 0): number {
     useIndex = useIndex || 0;
     const beaconUseLength = this.registration.uses.length - 1;
     return Math.min(useIndex, beaconUseLength);

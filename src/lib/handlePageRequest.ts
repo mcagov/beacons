@@ -51,7 +51,7 @@ export const handlePageRequest = (
     return handleGetRequest(beaconsContext, formManagerFactory);
   });
 
-export const handleGetRequest = (
+const handleGetRequest = (
   context: BeaconsContext,
   formManagerFactory: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
@@ -70,7 +70,7 @@ export const handleGetRequest = (
   };
 };
 
-export const handlePostRequest = async (
+const handlePostRequest = async (
   context: BeaconsContext,
   formManagerFactory: FormManagerFactory,
   transformCallback: TransformCallback = (formData) => formData,

@@ -1,13 +1,17 @@
 import {
   givenIAmAt,
+  givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   thenIShouldSeeFormErrors,
+  thenTheUrlShouldContain,
   whenIClickContinue,
 } from "./common.spec";
 
 describe("As a beacon owner, I want to register multiple uses for my beacon", () => {
   const pageUrl = "/register-a-beacon/additional-beacon-use";
   const previousPageUrl = "/register-a-beacon/more-details";
+  const additionalBeaconUseUrl = "/register-a-beacon/beacon-use";
+  const beaconOwnerUrl = "/register-a-beacon/about-beacon-owner";
 
   beforeEach(() => {
     givenIAmAt(pageUrl);
@@ -18,9 +22,23 @@ describe("As a beacon owner, I want to register multiple uses for my beacon", ()
   });
 
   it("should display errors if the user has not selected an answer", () => {
-    const expectedErrorMessage = ["Additional use", "required"];
+    const expectedErrorMessages = ["Additional beacon use", "required"];
     whenIClickContinue();
 
-    thenIShouldSeeFormErrors();
+    thenIShouldSeeFormErrors(...expectedErrorMessages);
+  });
+
+  it("should route to register an additional beacon if yes is selected", () => {
+    givenIHaveSelected("#yes");
+    whenIClickContinue();
+
+    thenTheUrlShouldContain(additionalBeaconUseUrl);
+  });
+
+  it("should route to adding beacon owner details if no is selected", () => {
+    givenIHaveSelected("#no");
+    whenIClickContinue();
+
+    thenTheUrlShouldContain(beaconOwnerUrl);
   });
 });
