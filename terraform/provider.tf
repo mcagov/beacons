@@ -20,9 +20,9 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
+}
 
-  locals {
-    dns_sub_domain         = "beacons.${var.env}.local"
-    service_local_endpoint = "service.${local.dns_sub_domain}:${var.service_port}"
-  }
+locals {
+  dns_sub_domain         = "beacons.${var.env}.local"
+  service_local_endpoint = "service.${local.dns_sub_domain}:${var.service_port}"
 }
