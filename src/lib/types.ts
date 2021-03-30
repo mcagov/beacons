@@ -116,6 +116,8 @@ export interface VesselCommunications {
   mobileTelephone: VesselCommunication;
   mobileTelephoneInput1: string;
   mobileTelephoneInput2: string;
+  otherCommunication: VesselCommunication;
+  otherCommunicationInput: string;
 }
 
 export interface EmergencyContacts {
