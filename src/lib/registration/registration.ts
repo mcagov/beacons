@@ -28,9 +28,7 @@ export class Registration {
 
   public createUse(): void {
     const use = initBeaconUse();
-    const useIndex = this.registration.uses.length - 1;
-
-    this.registration.uses.splice(useIndex, 0, use);
+    this.registration.uses.push(use);
   }
 
   public update(formData: FormSubmission): void {

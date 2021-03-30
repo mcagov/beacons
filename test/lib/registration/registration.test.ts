@@ -51,6 +51,23 @@ describe("Registration", () => {
     });
   });
 
+  describe("creating beacon uses", () => {
+    it("should create an additional beacon use", () => {
+      registration.createUse();
+      expect(registration.registration.uses.length).toBe(2);
+    });
+
+    it("should not alter the existing beacon use", () => {
+      const formData = { environment: Environment.MARITIME };
+      registration.update(formData);
+      registration.createUse();
+
+      expect(registration.registration.uses[0].environment).toBe(
+        Environment.MARITIME
+      );
+    });
+  });
+
   describe("updating beacon uses", () => {
     it("should update a beacon use with the values provided at the given index", () => {
       const formData = { useIndex: 0, environment: Environment.MARITIME };
