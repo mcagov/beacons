@@ -1,5 +1,5 @@
 resource "aws_service_discovery_private_dns_namespace" "private_dns" {
-  name        = "${local.dns_sub_domain}"
+  name        = local.dns_sub_domain
   description = "Private DNS namespace for all Beacons services"
   vpc         = aws_vpc.main.id
 }
