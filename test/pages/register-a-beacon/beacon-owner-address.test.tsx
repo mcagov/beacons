@@ -16,23 +16,23 @@ describe("BeaconOwnerAddressPage", () => {
   const emptyBeaconOwnerAddressForm: FormJSON = {
     hasErrors: false,
     fields: {
-      beaconOwnerAddressLine1: {
+      ownerAddressLine1: {
         value: "",
         errorMessages: [],
       },
-      beaconOwnerAddressLine2: {
+      ownerAddressLine2: {
         value: "",
         errorMessages: [],
       },
-      beaconOwnerTownOrCity: {
+      ownerTownOrCity: {
         value: "",
         errorMessages: [],
       },
-      beaconOwnerCounty: {
+      ownerCounty: {
         value: "",
         errorMessages: [],
       },
-      beaconOwnerPostcode: {
+      ownerPostcode: {
         value: "",
         errorMessages: [],
       },

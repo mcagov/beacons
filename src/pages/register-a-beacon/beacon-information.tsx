@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import React, { FunctionComponent } from "react";
-import { BackButton, Button } from "../../components/Button";
+import { BackButtonRouterIndexes, Button } from "../../components/Button";
 import {
   DateListInput,
   DateListItem,
@@ -23,7 +23,7 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { padNumberWithLeadingZeros } from "../../lib/utils";
 
@@ -58,7 +58,7 @@ const definePageForm = ({
   lastServicedDate,
   lastServicedDateMonth,
   lastServicedDateYear,
-}: CacheEntry): FormManager => {
+}: FormSubmission): FormManager => {
   return new FormManager({
     manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber, [
       Validators.required(
@@ -110,7 +110,9 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
 
   return (
     <Layout
-      navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
+      navigation={
+        <BackButtonRouterIndexes href="/register-a-beacon/check-beacon-details" />
+      }
       title={pageHeading}
       pageHasErrors={form.hasErrors}
       showCookieBanner={showCookieBanner}
@@ -119,7 +121,7 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
         mainContent={
           <>
             <FormErrorSummary formErrors={form.errorSummary} />
-            <Form action="/register-a-beacon/beacon-information">
+            <Form>
               <FormFieldset>
                 <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                 <InsetText>
@@ -261,7 +263,7 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
   </DateListInput>
 );
 
-const transformFormData = (formData: CacheEntry): CacheEntry => {
+const transformFormData = (formData: FormSubmission): FormSubmission => {
   formData = {
     ...formData,
     batteryExpiryDate: getISODate(
@@ -284,7 +286,7 @@ const transformFormData = (formData: CacheEntry): CacheEntry => {
 };
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/activity",
+  "/register-a-beacon/beacon-use",
   definePageForm,
   transformFormData
 );

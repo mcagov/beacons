@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Convenience function for converting a single or array of a given type into an array with nullish values removed.
  *
@@ -36,6 +37,23 @@ export function padNumberWithLeadingZeros(
   }
 
   return value.padStart(targetLength, "0");
+}
+
+export function formatUrlQueryParams(
+  url: string,
+  queryParamMap: Record<string, any>
+): string {
+  const formatUrl = (queryParam, value) => {
+    const queryStringCombiner = url.includes("?") ? "&" : "?";
+    url = `${url}${queryStringCombiner}${queryParam}=${value}`;
+  };
+
+  Object.keys(queryParamMap).forEach((queryParam) => {
+    const value = queryParamMap[queryParam];
+    formatUrl(queryParam, value);
+  });
+
+  return url;
 }
 
 export type Callback<T> = (t: T) => void;

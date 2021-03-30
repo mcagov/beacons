@@ -17,7 +17,7 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
   const thisPageUrl = "/register-a-beacon/about-the-aircraft";
   const nextPageUrl = "/register-a-beacon/aircraft-communications";
 
-  const aircraftMaxCapacitySelector = "#aircraftMaxCapacity";
+  const aircraftMaxCapacitySelector = "#maxCapacity";
   const beaconPositionSelector = "#beaconPosition";
 
   beforeEach(() => {

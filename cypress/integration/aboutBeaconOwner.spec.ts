@@ -17,8 +17,8 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
   const nextPageUrl = "/register-a-beacon/beacon-owner-address";
   const previousPageUrl = "/register-a-beacon/more-details";
 
-  const fullNameInputFieldSelector = "#beaconOwnerFullName";
-  const emailInputFieldSelector = "#beaconOwnerEmail";
+  const fullNameInputFieldSelector = "#ownerFullName";
+  const emailInputFieldSelector = "#ownerEmail";
 
   beforeEach(() => {
     givenIAmAt(thisPageUrl);

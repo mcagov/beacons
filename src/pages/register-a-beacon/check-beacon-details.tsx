@@ -18,7 +18,7 @@ import { IfYouNeedHelp } from "../../components/Mca";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { toUpperCase } from "../../lib/utils";
 
@@ -26,7 +26,7 @@ const definePageForm = ({
   manufacturer,
   model,
   hexId,
-}: CacheEntry): FormManager => {
+}: FormSubmission): FormManager => {
   return new FormManager({
     manufacturer: new FieldManager(manufacturer, [
       Validators.required("Beacon manufacturer is a required field"),
@@ -155,7 +155,7 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-const transformFormData = (formData: CacheEntry): CacheEntry => {
+const transformFormData = (formData: FormSubmission): FormSubmission => {
   formData = { ...formData, hexId: toUpperCase(formData.hexId) };
 
   return formData;

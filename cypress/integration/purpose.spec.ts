@@ -12,7 +12,7 @@ import {
 
 describe("As a beacon owner, I want to submit the purpose for my beacon", () => {
   const thisPageUrl = "/register-a-beacon/purpose";
-  const previousPageUrl = "/register-a-beacon/envionment";
+  const previousPageUrl = "/register-a-beacon/beacon-use";
 
   beforeEach(() => {
     givenIAmAt(thisPageUrl);

@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent } from "react";
-import { BackButton, Button } from "../../components/Button";
+import React, { FunctionComponent, ReactNode } from "react";
+import { BackButtonRouterIndexes, Button } from "../../components/Button";
 import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
@@ -18,7 +18,7 @@ import { SectionHeading } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
 const definePageForm = ({
@@ -32,7 +32,7 @@ const definePageForm = ({
   ssrNumber,
   officialNumber,
   rigPlatformLocation,
-}: CacheEntry): FormManager => {
+}: FormSubmission): FormManager => {
   return new FormManager({
     maxCapacity: new FieldManager(maxCapacity, [
       Validators.required(
@@ -70,10 +70,14 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
 }: FormPageProps): JSX.Element => {
   const pageHeading = "About the vessel, windfarm or rig/platform";
 
+  const backButton: ReactNode = (
+    <BackButtonRouterIndexes href="/register-a-beacon/activity" />
+  );
+
   return (
     <>
       <Layout
-        navigation={<BackButton href="/register-a-beacon/activity" />}
+        navigation={backButton}
         title={pageHeading}
         pageHasErrors={form.hasErrors}
         showCookieBanner={showCookieBanner}

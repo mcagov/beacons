@@ -33,7 +33,7 @@ describe("Activity", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/beacon-information"
+      "/register-a-beacon/beacon-information?useIndex=0"
     );
   });
 

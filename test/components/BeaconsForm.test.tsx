@@ -2,12 +2,17 @@ import { render, screen } from "@testing-library/react";
 import React from "react";
 import { BeaconsForm } from "../../src/components/BeaconsForm";
 
+jest.mock("next/router", () => ({
+  useRouter: jest.fn().mockImplementation(() => ({
+    query: { useIndex: 1 },
+  })),
+}));
+
 describe("BeaconsForm Component", () => {
   let children;
   let previousPageUrl;
   let pageHeading;
   let showCookieBanner;
-  let formErrors;
   let errorMessages;
   let insetText;
 
@@ -16,7 +21,6 @@ describe("BeaconsForm Component", () => {
     previousPageUrl = "/register-a-beacon/previous-life";
     pageHeading = "A day in the beacon life";
     showCookieBanner = true;
-    formErrors = [];
     errorMessages = ["This is an error"];
     insetText = "Once upon a time a person with a beacon walked the seas";
   });
@@ -35,12 +39,31 @@ describe("BeaconsForm Component", () => {
     expect(screen.getByText("Beacons for life")).toBeDefined();
   });
 
-  it("should render previous page url", () => {
+  it("should render previous page url with the use index query param", () => {
     render(
       <BeaconsForm
         previousPageUrl={previousPageUrl}
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
+        includeUseIndex={true}
+      >
+        {children}
+      </BeaconsForm>
+    );
+
+    expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
+      "href",
+      `${previousPageUrl}?useIndex=1`
+    );
+  });
+
+  it("should render previous page url without the use index query param", () => {
+    render(
+      <BeaconsForm
+        previousPageUrl={previousPageUrl}
+        pageHeading={pageHeading}
+        showCookieBanner={showCookieBanner}
+        includeUseIndex={false}
       >
         {children}
       </BeaconsForm>

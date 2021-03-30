@@ -16,7 +16,7 @@ import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
 interface BuildingNumberAndStreetInputProps {
@@ -26,22 +26,22 @@ interface BuildingNumberAndStreetInputProps {
 }
 
 const definePageForm = ({
-  beaconOwnerAddressLine1,
-  beaconOwnerAddressLine2,
-  beaconOwnerTownOrCity,
-  beaconOwnerCounty,
-  beaconOwnerPostcode,
-}: CacheEntry): FormManager => {
+  ownerAddressLine1,
+  ownerAddressLine2,
+  ownerTownOrCity,
+  ownerCounty,
+  ownerPostcode,
+}: FormSubmission): FormManager => {
   return new FormManager({
-    beaconOwnerAddressLine1: new FieldManager(beaconOwnerAddressLine1, [
+    ownerAddressLine1: new FieldManager(ownerAddressLine1, [
       Validators.required("Building number and street is a required field"),
     ]),
-    beaconOwnerAddressLine2: new FieldManager(beaconOwnerAddressLine2),
-    beaconOwnerTownOrCity: new FieldManager(beaconOwnerTownOrCity, [
+    ownerAddressLine2: new FieldManager(ownerAddressLine2),
+    ownerTownOrCity: new FieldManager(ownerTownOrCity, [
       Validators.required("Town or city is a required field"),
     ]),
-    beaconOwnerCounty: new FieldManager(beaconOwnerCounty),
-    beaconOwnerPostcode: new FieldManager(beaconOwnerPostcode, [
+    ownerCounty: new FieldManager(ownerCounty),
+    ownerPostcode: new FieldManager(ownerPostcode, [
       Validators.required("Postcode is a required field"),
       Validators.postcode("Postcode must be a valid UK postcode"),
     ]),
@@ -73,22 +73,18 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
                   labels to stick to the beacon will be sent to this address
                 </GovUKBody>
                 <BuildingNumberAndStreetInput
-                  valueLine1={form.fields.beaconOwnerAddressLine1.value}
-                  valueLine2={form.fields.beaconOwnerAddressLine2.value}
-                  errorMessages={
-                    form.fields.beaconOwnerAddressLine1.errorMessages
-                  }
+                  valueLine1={form.fields.ownerAddressLine1.value}
+                  valueLine2={form.fields.ownerAddressLine2.value}
+                  errorMessages={form.fields.ownerAddressLine1.errorMessages}
                 />
                 <TownOrCityInput
-                  value={form.fields.beaconOwnerTownOrCity.value}
-                  errorMessages={
-                    form.fields.beaconOwnerTownOrCity.errorMessages
-                  }
+                  value={form.fields.ownerTownOrCity.value}
+                  errorMessages={form.fields.ownerTownOrCity.errorMessages}
                 />
-                <CountyInput value={form.fields.beaconOwnerCounty.value} />
+                <CountyInput value={form.fields.ownerCounty.value} />
                 <PostcodeInput
-                  value={form.fields.beaconOwnerPostcode.value}
-                  errorMessages={form.fields.beaconOwnerPostcode.errorMessages}
+                  value={form.fields.ownerPostcode.value}
+                  errorMessages={form.fields.ownerPostcode.errorMessages}
                 />
               </FormFieldset>
 
@@ -109,12 +105,12 @@ const BuildingNumberAndStreetInput: FunctionComponent<BuildingNumberAndStreetInp
 }: BuildingNumberAndStreetInputProps): JSX.Element => (
   <FormGroup errorMessages={errorMessages}>
     <Input
-      id="beaconOwnerAddressLine1"
+      id="ownerAddressLine1"
       label="Building number and street"
       defaultValue={valueLine1}
       inputClassName="govuk-!-margin-bottom-2"
     />
-    <Input id="beaconOwnerAddressLine2" defaultValue={valueLine2} />
+    <Input id="ownerAddressLine2" defaultValue={valueLine2} />
   </FormGroup>
 );
 
@@ -123,11 +119,7 @@ const TownOrCityInput: FunctionComponent<FormInputProps> = ({
   errorMessages,
 }: FormInputProps): JSX.Element => (
   <FormGroup errorMessages={errorMessages}>
-    <Input
-      id="beaconOwnerTownOrCity"
-      label="Town or city"
-      defaultValue={value}
-    />
+    <Input id="ownerTownOrCity" label="Town or city" defaultValue={value} />
   </FormGroup>
 );
 
@@ -135,11 +127,7 @@ const CountyInput: FunctionComponent<FormInputProps> = ({
   value = "",
 }: FormInputProps): JSX.Element => (
   <FormGroup>
-    <Input
-      id="beaconOwnerCounty"
-      label="County (optional)"
-      defaultValue={value}
-    />
+    <Input id="ownerCounty" label="County (optional)" defaultValue={value} />
   </FormGroup>
 );
 
@@ -148,7 +136,7 @@ const PostcodeInput: FunctionComponent<FormInputProps> = ({
   errorMessages,
 }: FormInputProps): JSX.Element => (
   <FormGroup errorMessages={errorMessages}>
-    <Input id="beaconOwnerPostcode" label="Postcode" defaultValue={value} />
+    <Input id="ownerPostcode" label="Postcode" defaultValue={value} />
   </FormGroup>
 );
 

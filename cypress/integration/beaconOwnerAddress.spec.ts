@@ -18,9 +18,9 @@ describe("As a beacon owner I can enter my address so I will receive physical ev
   const nextPageUrl = "/register-a-beacon/emergency-contact";
   const previousPageUrl = "/register-a-beacon/about-beacon-owner";
 
-  const beaconOwnerAddressLine1Selector = "#beaconOwnerAddressLine1";
-  const beaconOwnerTownOrCitySelector = "#beaconOwnerTownOrCity";
-  const beaconOwnerPostcodeSelector = "#beaconOwnerPostcode";
+  const beaconOwnerAddressLine1Selector = "#ownerAddressLine1";
+  const beaconOwnerTownOrCitySelector = "#ownerTownOrCity";
+  const beaconOwnerPostcodeSelector = "#ownerPostcode";
 
   beforeEach(() => {
     givenIAmAt(thisPageUrl);

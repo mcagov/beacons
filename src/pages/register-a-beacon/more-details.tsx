@@ -14,7 +14,7 @@ import { TextareaCharacterCount } from "../../components/Textarea";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
 interface MoreDetailsTextAreaProps {
@@ -23,7 +23,7 @@ interface MoreDetailsTextAreaProps {
   errorMessages: string[];
 }
 
-const definePageForm = ({ moreDetails }: CacheEntry): FormManager => {
+const definePageForm = ({ moreDetails }: FormSubmission): FormManager => {
   return new FormManager({
     moreDetails: new FieldManager(moreDetails, [
       Validators.required("More details is a required field"),
