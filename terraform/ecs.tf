@@ -26,6 +26,12 @@ resource "aws_ecs_task_definition" "webapp" {
         hostPort : var.webapp_port
       }
     ],
+    environment : [
+      {
+        name : "API_URL",
+        value : "${local.service_local_endpoint}"
+      }
+    ],
     logConfiguration : {
       "logDriver" : "awslogs",
       "options" : {
