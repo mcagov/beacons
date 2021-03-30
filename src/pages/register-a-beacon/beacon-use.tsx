@@ -11,7 +11,7 @@ import {
   FormPageProps,
   handlePageRequest,
 } from "../../lib/handlePageRequest";
-import { BeaconEnvionment } from "../../lib/registration/types";
+import { Environment } from "../../lib/registration/types";
 
 const getPageForm = ({ environment }) => {
   return new FormManager({
@@ -48,9 +48,9 @@ const BeaconUse: FunctionComponent<FormPageProps> = ({
             name={environmentFieldName}
             label="Maritime"
             hintText="This might include commercial or pleasure sailing / motor vessels or unpowered craft. It could also include sea-based windfarms and rigs/platforms."
-            value={BeaconEnvionment.MARITIME}
+            value={Environment.MARITIME}
             defaultChecked={
-              form.fields.environment.value === BeaconEnvionment.MARITIME
+              form.fields.environment.value === Environment.MARITIME
             }
           />
 
@@ -59,9 +59,9 @@ const BeaconUse: FunctionComponent<FormPageProps> = ({
             name={environmentFieldName}
             label="Aviation"
             hintText="This might include commercial or pleasure aircraft"
-            value={BeaconEnvionment.AVIATION}
+            value={Environment.AVIATION}
             defaultChecked={
-              form.fields.environment.value === BeaconEnvionment.AVIATION
+              form.fields.environment.value === Environment.AVIATION
             }
           />
 
@@ -70,20 +70,16 @@ const BeaconUse: FunctionComponent<FormPageProps> = ({
             name={environmentFieldName}
             label="Land-based"
             hintText="This could include vehicle or other overland uses. It could also include land-based windfarms."
-            value={BeaconEnvionment.LAND}
-            defaultChecked={
-              form.fields.environment.value === BeaconEnvionment.LAND
-            }
+            value={Environment.LAND}
+            defaultChecked={form.fields.environment.value === Environment.LAND}
           />
 
           <RadioListItem
             id="other"
             name={environmentFieldName}
             label="Other"
-            value={BeaconEnvionment.OTHER}
-            defaultChecked={
-              form.fields.environment.value === BeaconEnvionment.OTHER
-            }
+            value={Environment.OTHER}
+            defaultChecked={form.fields.environment.value === Environment.OTHER}
           />
         </RadioList>
       </FormGroup>
@@ -93,8 +89,8 @@ const BeaconUse: FunctionComponent<FormPageProps> = ({
 
 const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
   switch (context.formData.environment) {
-    case BeaconEnvionment.MARITIME:
-    case BeaconEnvionment.AVIATION:
+    case Environment.MARITIME:
+    case Environment.AVIATION:
       return "/register-a-beacon/purpose";
 
     default:

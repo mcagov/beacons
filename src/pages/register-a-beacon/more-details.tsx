@@ -55,7 +55,7 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
           mainContent={
             <>
               <FormErrorSummary formErrors={form.errorSummary} />
-              <Form action="/register-a-beacon/more-details">
+              <Form>
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   <div className="govuk-details">

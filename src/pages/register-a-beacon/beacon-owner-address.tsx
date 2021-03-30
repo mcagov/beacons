@@ -64,7 +64,7 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
       <Grid
         mainContent={
           <>
-            <Form action="/register-a-beacon/beacon-owner-address">
+            <Form>
               <FormFieldset>
                 <FormErrorSummary formErrors={form.errorSummary} />
                 <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>

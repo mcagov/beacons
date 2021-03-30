@@ -81,19 +81,16 @@ export interface BeaconUse {
   moreDetails: string;
 }
 
-export enum BeaconEnvionment {
+export enum Environment {
   MARITIME = "MARITIME",
   AVIATION = "AVIATION",
   LAND = "LAND",
   OTHER = "OTHER",
 }
 
-export enum VesselCommunication {
-  VHF_RADIO = "VHF_RADIO",
-  FIXED_VHF_RADIO = "FIXED_VHF_RADIO",
-  PORTABLE_VHF_RADIO = "PORTABLE_VHF_RADIO",
-  SATELLITE_TELEPHONE = "SATELLITE_TELEPHONE",
-  MOBILE_TELEPHONE = "MOBILE_TELEPHONE",
+export enum Purpose {
+  PLEASURE = "PLEASURE",
+  COMMERCIAL = "COMMERCIAL",
 }
 
 export enum Activity {
@@ -110,4 +107,13 @@ export enum Activity {
   FLOATING_PLATFORM = "FLOATING_PLATFORM",
   OFFSHORE_WINDFARM = "OFFSHORE_WINDFARM",
   OFFSHORE_RIG_PLATFORM = "OFFSHORE_RIG_PLATFORM",
+}
+
+export enum Communication {
+  VHF_RADIO = "VHF_RADIO",
+  FIXED_VHF_RADIO = "FIXED_VHF_RADIO",
+  PORTABLE_VHF_RADIO = "PORTABLE_VHF_RADIO",
+  SATELLITE_TELEPHONE = "SATELLITE_TELEPHONE",
+  MOBILE_TELEPHONE = "MOBILE_TELEPHONE",
+  OTHER = "OTHER",
 }

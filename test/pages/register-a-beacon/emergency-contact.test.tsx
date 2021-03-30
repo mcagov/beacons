@@ -69,11 +69,10 @@ describe("EmergencyContact", () => {
     const { container } = render(
       <EmergencyContact form={emptyEmergencyContactForm} />
     );
-    const ownPath = "/register-a-beacon/emergency-contact";
 
     const form = container.querySelectorAll("form")[1];
 
-    expect(form).toHaveAttribute("action", ownPath);
+    expect(form).toHaveAttribute("action", "");
   });
 
   it("should redirect to the check answers page on valid form submission", async () => {

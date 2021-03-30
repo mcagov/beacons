@@ -8,8 +8,7 @@ import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
-import { BeaconEnvionment } from "../../lib/registration/types";
-import { Purpose } from "../../lib/types";
+import { Environment, Purpose } from "../../lib/registration/types";
 
 const definePageForm = ({ purpose }: FormSubmission): FormManager => {
   return new FormManager({
@@ -25,7 +24,7 @@ const PurposePage: FunctionComponent<FormPageProps> = ({
   flattenedRegistration,
 }: FormPageProps): JSX.Element => {
   const environmentChoice =
-    flattenedRegistration.environment === BeaconEnvionment.MARITIME
+    flattenedRegistration.environment === Environment.MARITIME
       ? "maritime"
       : "aviation";
   const pageHeading = `Is your ${environmentChoice} use of this beacon mainly for pleasure or commercial reasons?`;

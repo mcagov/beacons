@@ -71,11 +71,10 @@ describe("AboutTheVessel", () => {
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(<AboutTheVessel form={aboutTheVesselForm} />);
-    const ownPath = "/register-a-beacon/about-the-vessel";
 
     const form = container.querySelectorAll("form")[1];
 
-    expect(form).toHaveAttribute("action", ownPath);
+    expect(form).toHaveAttribute("action", "");
   });
 
   it("should redirect to vessel-communications page on valid form submission", async () => {

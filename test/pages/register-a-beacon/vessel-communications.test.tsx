@@ -85,11 +85,10 @@ describe("VesselCommunications", () => {
     const { container } = render(
       <VesselCommunications form={emptyVesselCommunicationsForm} />
     );
-    const ownPath = "/register-a-beacon/vessel-communications";
 
     const form = container.querySelectorAll("form")[1];
 
-    expect(form).toHaveAttribute("action", ownPath);
+    expect(form).toHaveAttribute("action", "");
   });
 
   it("should redirect to more-details page on valid form submission", async () => {

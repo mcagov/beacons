@@ -57,6 +57,7 @@ export const initBeaconUse = (): BeaconUse => {
     activity: "",
     otherActivityText: "",
 
+    // Communications
     callSign: "",
     vhfRadio: "",
     fixedVhfRadio: "",
@@ -69,6 +70,7 @@ export const initBeaconUse = (): BeaconUse => {
     mobileTelephoneInput1: "",
     mobileTelephoneInput2: "",
 
+    // Vessel info
     maxCapacity: "",
     vesselName: "",
     vesselUse: "",
@@ -82,6 +84,7 @@ export const initBeaconUse = (): BeaconUse => {
     officialNumber: "",
     rigPlatformLocation: "",
 
+    // Aircraft info
     aircraftManufacturer: "",
     principalAirport: "",
     secondaryAirport: "",

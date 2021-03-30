@@ -97,7 +97,7 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
         <Grid
           mainContent={
             <>
-              <Form action="/register-a-beacon/emergency-contact">
+              <Form>
                 <FormFieldset>
                   <FormErrorSummary formErrors={form.errorSummary} />
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>

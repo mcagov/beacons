@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, Button } from "../../components/Button";
+import { BackButtonRouterIndexes, Button } from "../../components/Button";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
 import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
@@ -14,30 +14,16 @@ import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
-import {
-  AnchorLink,
-  GovUKBody,
-  PageHeading,
-} from "../../components/Typography";
+import { GovUKBody, PageHeading } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { Communication } from "../../lib/registration/types";
-import { ofcomLicenseUrl } from "../../lib/urls";
-
-interface FormInputProps {
-  value: string;
-}
 
 const definePageForm = ({
-  callSign,
   vhfRadio,
-  fixedVhfRadio,
-  fixedVhfRadioInput,
-  portableVhfRadio,
-  portableVhfRadioInput,
   satelliteTelephone,
   satelliteTelephoneInput,
   mobileTelephone,
@@ -47,53 +33,7 @@ const definePageForm = ({
   otherCommunicationInput,
 }: FormSubmission): FormManager => {
   return new FormManager({
-    callSign: new FieldManager(callSign),
     vhfRadio: new FieldManager(vhfRadio),
-    fixedVhfRadio: new FieldManager(fixedVhfRadio),
-    fixedVhfRadioInput: new FieldManager(
-      fixedVhfRadioInput,
-      [
-        Validators.required(
-          "We need your MMSI number if you have a fixed VHF/DSC radio"
-        ),
-        Validators.wholeNumber(
-          "Your fixed MMSI number must only include numbers 0 to 9, with no letters or other characters"
-        ),
-        Validators.isLength(
-          "Your fixed MMSI number must be exactly nine digits long",
-          9
-        ),
-      ],
-      [
-        {
-          dependsOn: "fixedVhfRadio",
-          meetingCondition: (value) => value === Communication.FIXED_VHF_RADIO,
-        },
-      ]
-    ),
-    portableVhfRadio: new FieldManager(portableVhfRadio),
-    portableVhfRadioInput: new FieldManager(
-      portableVhfRadioInput,
-      [
-        Validators.required(
-          "We need your portable MMSI number if you have a portable VHF/DSC radio"
-        ),
-        Validators.wholeNumber(
-          "Your portable MMSI number must only include numbers 0 to 9, with no letters or other characters"
-        ),
-        Validators.isLength(
-          "Your portable MMSI number must be exactly nine digits long",
-          9
-        ),
-      ],
-      [
-        {
-          dependsOn: "portableVhfRadio",
-          meetingCondition: (value) =>
-            value === Communication.PORTABLE_VHF_RADIO,
-        },
-      ]
-    ),
     satelliteTelephone: new FieldManager(satelliteTelephone),
     satelliteTelephoneInput: new FieldManager(
       satelliteTelephoneInput,
@@ -152,16 +92,17 @@ const definePageForm = ({
   });
 };
 
-const VesselCommunications: FunctionComponent<FormPageProps> = ({
+const AircraftCommunications: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
-  const pageHeading =
-    "How can we communicate with you, when on this vessel, rig or windfarm?";
+  const pageHeading = "How can we communicate with you, when on this aircraft?";
 
   return (
     <Layout
-      navigation={<BackButton href="/register-a-beacon/about-the-vessel" />}
+      navigation={
+        <BackButtonRouterIndexes href="/register-a-beacon/about-the-aircraft" />
+      }
       title={pageHeading}
       pageHasErrors={form.hasErrors}
       showCookieBanner={showCookieBanner}
@@ -174,16 +115,8 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
             <GovUKBody>
               This will be critical for Search and Rescue in an emergency.
             </GovUKBody>
-            <GovUKBody>
-              If you have a radio license, VHF and/or VHF/DSC radio, you can{" "}
-              <AnchorLink href={ofcomLicenseUrl}>
-                find up your Call Sign and Maritime Mobile Service Identity
-                (MMSI) number on the OFCOM website.
-              </AnchorLink>
-            </GovUKBody>
-            <Form>
-              <CallSign value={form.fields.callSign.value} />
 
+            <Form>
               <TypesOfCommunication form={form} />
 
               <Button buttonText="Continue" />
@@ -195,23 +128,6 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
     </Layout>
   );
 };
-
-const CallSign: FunctionComponent<FormInputProps> = ({
-  value,
-}: FormInputProps) => (
-  <>
-    <FormGroup className="govuk-!-margin-top-4">
-      <Input
-        id="callSign"
-        labelClassName="govuk-label--s"
-        label="Vessel Call Sign (optional)"
-        hintText="This is the unique Call Sign associated to this vessel"
-        defaultValue={value}
-        numOfChars={20}
-      />
-    </FormGroup>
-  </>
-);
 
 const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
   form,
@@ -227,53 +143,10 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
           id="vhfRadio"
           value={Communication.VHF_RADIO}
           defaultChecked={
-            form.fields.vhfRadio.value === Communication.VHF_RADIO
+            form.fields.satelliteTelephone.value === Communication.VHF_RADIO
           }
           label="VHF Radio"
         />
-
-        <CheckboxListItem
-          id="fixedVhfRadio"
-          label="VHF/DSC Radio"
-          value={Communication.FIXED_VHF_RADIO}
-          defaultChecked={
-            form.fields.fixedVhfRadio.value === Communication.FIXED_VHF_RADIO
-          }
-          conditional={true}
-        >
-          <FormGroup
-            errorMessages={form.fields.fixedVhfRadioInput.errorMessages}
-          >
-            <Input
-              id="fixedVhfRadioInput"
-              label="Fixed MMSI number"
-              hintText="This is the unique MMSI number associated to the vessel, it is 9
-          digits long"
-              defaultValue={form.fields.fixedVhfRadioInput.value}
-            />
-          </FormGroup>
-        </CheckboxListItem>
-        <CheckboxListItem
-          id="portableVhfRadio"
-          value={Communication.PORTABLE_VHF_RADIO}
-          defaultChecked={
-            form.fields.portableVhfRadio.value ===
-            Communication.PORTABLE_VHF_RADIO
-          }
-          label="Portable VHF/DSC Radio"
-          conditional={true}
-        >
-          <FormGroup
-            errorMessages={form.fields.portableVhfRadioInput.errorMessages}
-          >
-            <Input
-              id="portableVhfRadioInput"
-              label="Portable MMSI number"
-              hintText="This is the unique MMSI number associated to the portable radio and is 9 numbers long. E.g. starts with 2359xxxxx"
-              defaultValue={form.fields.portableVhfRadioInput.value}
-            />
-          </FormGroup>
-        </CheckboxListItem>
         <CheckboxListItem
           id="satelliteTelephone"
           value={Communication.SATELLITE_TELEPHONE}
@@ -290,7 +163,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
             <Input
               id="satelliteTelephoneInput"
               label="Enter phone number"
-              hintText="Iridium usually start: +8707, Thuraya usually start: +8821, Globalstar usually start: +3364)"
+              hintText="Iridium start: +8816, Inmarsat (ISAT, FLEET, BGAN) start +870, Thuraya start: +8821, Globalstar start: +3364"
               defaultValue={form.fields.satelliteTelephoneInput.value}
             />
           </FormGroup>
@@ -353,4 +226,4 @@ export const getServerSideProps: GetServerSideProps = handlePageRequest(
   definePageForm
 );
 
-export default VesselCommunications;
+export default AircraftCommunications;

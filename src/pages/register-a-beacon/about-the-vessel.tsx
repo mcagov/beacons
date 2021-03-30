@@ -86,7 +86,7 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
           mainContent={
             <>
               <FormErrorSummary formErrors={form.errorSummary} />
-              <Form action="/register-a-beacon/about-the-vessel">
+              <Form>
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
 

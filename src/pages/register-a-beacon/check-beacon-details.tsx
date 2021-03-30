@@ -1,20 +1,10 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import React, { FunctionComponent } from "react";
-import { BackButton, Button } from "../../components/Button";
+import { BeaconsForm } from "../../components/BeaconsForm";
 import { Details } from "../../components/Details";
-import { FormErrorSummary } from "../../components/ErrorSummary";
-import {
-  Form,
-  FormFieldset,
-  FormGroup,
-  FormLegendPageHeading,
-} from "../../components/Form";
-import { Grid } from "../../components/Grid";
+import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
-import { InsetText } from "../../components/InsetText";
-import { Layout } from "../../components/Layout";
-import { IfYouNeedHelp } from "../../components/Mca";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -61,48 +51,28 @@ const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
   const pageHeading = "Check beacon details";
 
   return (
-    <>
-      <Layout
-        navigation={<BackButton href="/" />}
-        title={pageHeading}
-        pageHasErrors={form.hasErrors}
-        showCookieBanner={showCookieBanner}
-      >
-        <Grid
-          mainContent={
-            <>
-              <FormErrorSummary formErrors={form.errorSummary} />
-              <Form action="/register-a-beacon/check-beacon-details">
-                <FormFieldset>
-                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                  <InsetText>
-                    The details of your beacon must be checked to ensure it is
-                    programmed for UK registration.
-                  </InsetText>
-
-                  <BeaconManufacturerInput
-                    value={form.fields.manufacturer.value}
-                    errorMessages={form.fields.manufacturer.errorMessages}
-                  />
-
-                  <BeaconModelInput
-                    value={form.fields.model.value}
-                    errorMessages={form.fields.model.errorMessages}
-                  />
-
-                  <BeaconHexIdInput
-                    value={form.fields.hexId.value}
-                    errorMessages={form.fields.hexId.errorMessages}
-                  />
-                </FormFieldset>
-                <Button buttonText="Continue" />
-              </Form>
-              <IfYouNeedHelp />
-            </>
-          }
-        />
-      </Layout>
-    </>
+    <BeaconsForm
+      formErrors={form.errorSummary}
+      previousPageUrl="/"
+      includeUseIndex={false}
+      pageHeading={pageHeading}
+      showCookieBanner={showCookieBanner}
+      insetText="The details of your beacon must be checked to ensure it is
+      programmed for UK registration."
+    >
+      <BeaconManufacturerInput
+        value={form.fields.manufacturer.value}
+        errorMessages={form.fields.manufacturer.errorMessages}
+      />
+      <BeaconModelInput
+        value={form.fields.model.value}
+        errorMessages={form.fields.model.errorMessages}
+      />
+      <BeaconHexIdInput
+        value={form.fields.hexId.value}
+        errorMessages={form.fields.hexId.errorMessages}
+      />
+    </BeaconsForm>
   );
 };
 

@@ -18,9 +18,9 @@ import {
 import {
   Activity,
   BeaconUse,
+  Communication,
   IRegistration,
 } from "../../lib/registration/types";
-import { VesselCommunication } from "../../lib/types";
 
 interface CheckYourAnswersProps {
   registration: IRegistration;
@@ -256,10 +256,10 @@ const VesselCommunicationsSection: FunctionComponent<BeaconUse> = ({
   mobileTelephoneInput2,
 }: BeaconUse): JSX.Element => {
   let vhfRadioText = "";
-  if (vhfRadio == VesselCommunication.VHF_RADIO) vhfRadioText += "YES";
+  if (vhfRadio == Communication.VHF_RADIO) vhfRadioText += "YES";
 
   let vesselMMSINumberText: ReactNode = "";
-  if (fixedVhfRadio == VesselCommunication.FIXED_VHF_RADIO) {
+  if (fixedVhfRadio == Communication.FIXED_VHF_RADIO) {
     vesselMMSINumberText = (
       <GovUKList>
         <li>YES</li>
@@ -268,7 +268,7 @@ const VesselCommunicationsSection: FunctionComponent<BeaconUse> = ({
   }
 
   let portableMMSIText: ReactNode = "";
-  if (portableVhfRadio == VesselCommunication.PORTABLE_VHF_RADIO) {
+  if (portableVhfRadio == Communication.PORTABLE_VHF_RADIO) {
     portableMMSIText = (
       <GovUKList>
         <li>YES</li>
@@ -277,7 +277,7 @@ const VesselCommunicationsSection: FunctionComponent<BeaconUse> = ({
   }
 
   let satelliteTelephoneText: ReactNode = "";
-  if (satelliteTelephone == VesselCommunication.SATELLITE_TELEPHONE) {
+  if (satelliteTelephone == Communication.SATELLITE_TELEPHONE) {
     satelliteTelephoneText = (
       <GovUKList>
         <li>{satelliteTelephoneInput}</li>

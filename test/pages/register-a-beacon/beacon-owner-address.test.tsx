@@ -53,11 +53,10 @@ describe("BeaconOwnerAddressPage", () => {
     const { container } = render(
       <BeaconOwnerAddressPage form={emptyBeaconOwnerAddressForm} />
     );
-    const ownPath = "/register-a-beacon/beacon-owner-address";
 
     const form = container.querySelectorAll("form")[1];
 
-    expect(form).toHaveAttribute("action", ownPath);
+    expect(form).toHaveAttribute("action", "");
   });
 
   it("should redirect to the start page on valid form submission", async () => {
