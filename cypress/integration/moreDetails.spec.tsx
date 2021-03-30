@@ -11,9 +11,9 @@ import {
   whenIType,
 } from "./common.spec";
 
-describe("As a beacon owner and maritime pleasure vessel user", () => {
+describe("As a beacon owner I want to submit more information about my beacon", () => {
   const thisPageUrl = "/register-a-beacon/more-details";
-  const nextPageUrl = "/register-a-beacon/about-beacon-owner";
+  const nextPageUrl = "/register-a-beacon/additional-beacon-use";
   const previousPageUrl = "/register-a-beacon/vessel-communications";
 
   const moreDetailsTextareaSelector = "#moreDetails";

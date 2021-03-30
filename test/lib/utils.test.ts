@@ -122,9 +122,9 @@ describe("formatUrlQueryParams()", () => {
 
   it("should not overwrite query params already in the url", () => {
     url += "?useIndex=0";
-    queryParamMap = { useIndex: 0 };
+    queryParamMap = { useIndex: 0, beaconIndex: 0 };
     expect(formatUrlQueryParams(url, queryParamMap)).toBe(
-      "/beacons?useIndex=0"
+      "/beacons?useIndex=0&beaconIndex=0"
     );
   });
 });

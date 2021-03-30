@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Convenience function for converting a single or array of a given type into an array with nullish values removed.
  *
