@@ -4,7 +4,7 @@ import { Layout } from "../components/Layout";
 import { BeaconRegistryContactInfo } from "../components/Mca";
 import { GovUKBody, PageHeading } from "../components/Typography";
 
-const FourOhFour: FunctionComponent = (): JSX.Element => {
+const Custom404: FunctionComponent = (): JSX.Element => {
   const pageHeading = "Page not found";
 
   return (
@@ -34,4 +34,4 @@ const FourOhFour: FunctionComponent = (): JSX.Element => {
   );
 };
 
-export default FourOhFour;
+export default Custom404;
