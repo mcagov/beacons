@@ -61,7 +61,7 @@ describe("EmergencyContact", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/beacon-owner-address"
+      "/register-a-beacon/beacon-owner-address?useIndex=0"
     );
   });
 

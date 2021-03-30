@@ -124,11 +124,10 @@ const setCookieHeader = (id: string, res: ServerResponse): void => {
 };
 
 export function updateFormCache(
-  cookies: NextApiRequestCookies,
+  submissionId: string,
   formData: FormSubmission,
   cache: IFormCache = FormCacheFactory.getCache()
 ): void {
-  const submissionId: string = cookies[formSubmissionCookieId];
   cache.update(submissionId, formData);
 }
 

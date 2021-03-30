@@ -241,17 +241,15 @@ describe("Middleware Functions", () => {
 
   describe("updateFormCache()", () => {
     let id;
-    let cookies;
     let cacheMock: jest.Mocked<IFormCache>;
 
     beforeEach(() => {
       id = "1";
-      cookies = { [formSubmissionCookieId]: id };
       cacheMock = getCacheMock();
     });
 
     it("should update the form cache with the parsed form data", () => {
-      updateFormCache(cookies, { model: "ASOS" }, cacheMock);
+      updateFormCache(id, { model: "ASOS" }, cacheMock);
 
       expect(cacheMock.update).toHaveBeenCalledWith("1", { model: "ASOS" });
     });

@@ -77,7 +77,7 @@ describe("VesselCommunications", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/about-the-vessel"
+      "/register-a-beacon/about-the-vessel?useIndex=0"
     );
   });
 

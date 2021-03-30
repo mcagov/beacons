@@ -108,7 +108,7 @@ const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/about-beacon-owner",
+  "/register-a-beacon/additional-beacon-use",
   definePageForm
 );
 

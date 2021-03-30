@@ -33,6 +33,7 @@ export interface IRegistration {
   emergencyContact3TelephoneNumber: string;
   emergencyContact3AlternativeTelephoneNumber: string;
 
+  additionalBeaconUse: string;
   uses: BeaconUse[];
 }
 

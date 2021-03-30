@@ -67,6 +67,11 @@ export const thenIShouldSeeAnErrorMessageThatContains = (
   );
 };
 
+export const thenIShouldSeeFormErrors = (...errorMessages: string[]): void => {
+  thenIShouldSeeAnErrorSummaryLinkThatContains(...errorMessages);
+  thenIShouldSeeAnErrorMessageThatContains(...errorMessages);
+};
+
 export const thenMyFocusMovesTo = (selector: string): void => {
   cy.get(selector).should("be.focused");
 };

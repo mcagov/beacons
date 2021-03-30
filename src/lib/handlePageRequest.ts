@@ -51,7 +51,7 @@ export const handlePageRequest = (
     return handleGetRequest(beaconsContext, formManagerFactory);
   });
 
-const handleGetRequest = (
+export const handleGetRequest = (
   context: BeaconsContext,
   formManagerFactory: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
@@ -70,14 +70,14 @@ const handleGetRequest = (
   };
 };
 
-const handlePostRequest = async (
+export const handlePostRequest = async (
   context: BeaconsContext,
   formManagerFactory: FormManagerFactory,
   transformCallback: TransformCallback = (formData) => formData,
   onSuccessfulFormPostCallback
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
   const transformedFormData = transformCallback(context.formData);
-  updateFormCache(context.req.cookies, transformedFormData);
+  updateFormCache(context.submissionId, transformedFormData);
 
   const formManager = formManagerFactory(transformedFormData);
   formManager.markAsDirty();
