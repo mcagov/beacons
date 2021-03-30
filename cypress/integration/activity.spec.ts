@@ -15,7 +15,7 @@ import {
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
   const thisPageUrl = "/register-a-beacon/activity";
-  const previousPageUrl = "/register-a-beacon/beacon-information";
+  const previousPageUrl = "/register-a-beacon/beacon-use";
   const otherActivitySelector = "#other-activity";
 
   beforeEach(() => {
