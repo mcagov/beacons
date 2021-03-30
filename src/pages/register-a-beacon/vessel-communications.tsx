@@ -7,13 +7,13 @@ import {
   Form,
   FormFieldset,
   FormGroup,
-  FormHint,
   FormLegend,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
 import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
+import { TextareaCharacterCount } from "../../components/Textarea";
 import {
   AnchorLink,
   GovUKBody,
@@ -22,9 +22,10 @@ import {
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
-import { VesselCommunication } from "../../lib/types";
+import { Communication } from "../../lib/registration/types";
+import { ofcomLicenseUrl } from "../../lib/urls";
 
 interface FormInputProps {
   value: string;
@@ -42,7 +43,9 @@ const definePageForm = ({
   mobileTelephone,
   mobileTelephoneInput1,
   mobileTelephoneInput2,
-}: CacheEntry): FormManager => {
+  otherCommunication,
+  otherCommunicationInput,
+}: FormSubmission): FormManager => {
   return new FormManager({
     callSign: new FieldManager(callSign),
     vhfRadio: new FieldManager(vhfRadio),
@@ -64,8 +67,7 @@ const definePageForm = ({
       [
         {
           dependsOn: "fixedVhfRadio",
-          meetingCondition: (value) =>
-            value === VesselCommunication.FIXED_VHF_RADIO,
+          meetingCondition: (value) => value === Communication.FIXED_VHF_RADIO,
         },
       ]
     ),
@@ -88,7 +90,7 @@ const definePageForm = ({
         {
           dependsOn: "portableVhfRadio",
           meetingCondition: (value) =>
-            value === VesselCommunication.PORTABLE_VHF_RADIO,
+            value === Communication.PORTABLE_VHF_RADIO,
         },
       ]
     ),
@@ -107,7 +109,7 @@ const definePageForm = ({
         {
           dependsOn: "satelliteTelephone",
           meetingCondition: (value) =>
-            value === VesselCommunication.SATELLITE_TELEPHONE,
+            value === Communication.SATELLITE_TELEPHONE,
         },
       ]
     ),
@@ -125,12 +127,28 @@ const definePageForm = ({
       [
         {
           dependsOn: "mobileTelephone",
-          meetingCondition: (value) =>
-            value === VesselCommunication.MOBILE_TELEPHONE,
+          meetingCondition: (value) => value === Communication.MOBILE_TELEPHONE,
         },
       ]
     ),
     mobileTelephoneInput2: new FieldManager(mobileTelephoneInput2),
+    otherCommunication: new FieldManager(otherCommunication),
+    otherCommunicationInput: new FieldManager(
+      otherCommunicationInput,
+      [
+        Validators.required("We need your other communication"),
+        Validators.maxLength(
+          "Other communication has too many characters",
+          250
+        ),
+      ],
+      [
+        {
+          dependsOn: "otherCommunication",
+          meetingCondition: (value) => value === Communication.OTHER,
+        },
+      ]
+    ),
   });
 };
 
@@ -138,7 +156,8 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
-  const pageHeading = "What types of communications are on board the vessel?";
+  const pageHeading =
+    "How can we communicate with you, when on this vessel, rig or windfarm?";
 
   return (
     <Layout
@@ -153,19 +172,16 @@ const VesselCommunications: FunctionComponent<FormPageProps> = ({
             <PageHeading>{pageHeading}</PageHeading>
             <FormErrorSummary formErrors={form.errorSummary} />
             <GovUKBody>
-              Details about the onboard communications will be critical for
-              Search and Rescue when trying to contact you in an emergency.
+              This will be critical for Search and Rescue in an emergency.
             </GovUKBody>
             <GovUKBody>
-              If you have a radio licence and have a Very High Frequency (VHF)
-              and/or Very High Frequency (VHF) / Digital Selective Calling (DSC)
-              radio, you can{" "}
-              <AnchorLink href="https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio">
+              If you have a radio license, VHF and/or VHF/DSC radio, you can{" "}
+              <AnchorLink href={ofcomLicenseUrl}>
                 find up your Call Sign and Maritime Mobile Service Identity
                 (MMSI) number on the OFCOM website.
               </AnchorLink>
             </GovUKBody>
-            <Form action="/register-a-beacon/vessel-communications">
+            <Form>
               <CallSign value={form.fields.callSign.value} />
 
               <TypesOfCommunication form={form} />
@@ -202,30 +218,26 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
 }: FormPageProps) => (
   <FormFieldset>
     <FormLegend size="small">
-      Types of communication devices onboard
-      <FormHint forId="typesOfCommunication">
-        Tick all that apply and provide as much detail as you can
-      </FormHint>
+      Tick all that apply and provide as much detail as you can
     </FormLegend>
 
     <FormGroup>
       <CheckboxList conditional={true}>
         <CheckboxListItem
           id="vhfRadio"
-          value={VesselCommunication.VHF_RADIO}
+          value={Communication.VHF_RADIO}
           defaultChecked={
-            form.fields.vhfRadio.value === VesselCommunication.VHF_RADIO
+            form.fields.vhfRadio.value === Communication.VHF_RADIO
           }
           label="VHF Radio"
         />
 
         <CheckboxListItem
           id="fixedVhfRadio"
-          label="Fixed VHF/DSC Radio"
-          value={VesselCommunication.FIXED_VHF_RADIO}
+          label="VHF/DSC Radio"
+          value={Communication.FIXED_VHF_RADIO}
           defaultChecked={
-            form.fields.fixedVhfRadio.value ===
-            VesselCommunication.FIXED_VHF_RADIO
+            form.fields.fixedVhfRadio.value === Communication.FIXED_VHF_RADIO
           }
           conditional={true}
         >
@@ -243,10 +255,10 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="portableVhfRadio"
-          value={VesselCommunication.PORTABLE_VHF_RADIO}
+          value={Communication.PORTABLE_VHF_RADIO}
           defaultChecked={
             form.fields.portableVhfRadio.value ===
-            VesselCommunication.PORTABLE_VHF_RADIO
+            Communication.PORTABLE_VHF_RADIO
           }
           label="Portable VHF/DSC Radio"
           conditional={true}
@@ -264,10 +276,10 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="satelliteTelephone"
-          value={VesselCommunication.SATELLITE_TELEPHONE}
+          value={Communication.SATELLITE_TELEPHONE}
           defaultChecked={
             form.fields.satelliteTelephone.value ===
-            VesselCommunication.SATELLITE_TELEPHONE
+            Communication.SATELLITE_TELEPHONE
           }
           label="Satellite Telephone"
           conditional={true}
@@ -285,10 +297,9 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="mobileTelephone"
-          value={VesselCommunication.MOBILE_TELEPHONE}
+          value={Communication.MOBILE_TELEPHONE}
           defaultChecked={
-            form.fields.mobileTelephone.value ===
-            VesselCommunication.MOBILE_TELEPHONE
+            form.fields.mobileTelephone.value === Communication.MOBILE_TELEPHONE
           }
           label="Mobile Telephone(s)"
           conditional={true}
@@ -312,13 +323,33 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
             htmlAttributes={{ autoComplete: "tel" }}
           />
         </CheckboxListItem>
+        <CheckboxListItem
+          id="otherCommunication"
+          value={Communication.OTHER}
+          defaultChecked={
+            form.fields.otherCommunication.value === Communication.OTHER
+          }
+          label="Other"
+          conditional={true}
+        >
+          <FormGroup
+            errorMessages={form.fields.otherCommunicationInput.errorMessages}
+          >
+            <TextareaCharacterCount
+              id="otherCommunicationInput"
+              label="Please provide details of how we can contact you"
+              defaultValue={form.fields.otherCommunicationInput.value}
+              maxCharacters={250}
+            />
+          </FormGroup>
+        </CheckboxListItem>
       </CheckboxList>
     </FormGroup>
   </FormFieldset>
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/more-vessel-details",
+  "/register-a-beacon/more-details",
   definePageForm
 );
 

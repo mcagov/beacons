@@ -15,16 +15,16 @@ import {
 describe("As a beacon owner and maritime pleasure vessel user", () => {
   const thisPageUrl = "/register-a-beacon/about-beacon-owner";
   const nextPageUrl = "/register-a-beacon/beacon-owner-address";
-  const previousPageUrl = "/register-a-beacon/more-vessel-details";
+  const previousPageUrl = "/register-a-beacon/more-details";
 
-  const fullNameInputFieldSelector = "#beaconOwnerFullName";
-  const emailInputFieldSelector = "#beaconOwnerEmail";
+  const fullNameInputFieldSelector = "#ownerFullName";
+  const emailInputFieldSelector = "#ownerEmail";
 
   beforeEach(() => {
     givenIAmAt(thisPageUrl);
   });
 
-  it("requires at least one character in the More vessel details field", () => {
+  it("requires at least one character in the More details field", () => {
     const expectedErrorMessage = ["Full name", requiredFieldErrorMessage];
 
     whenIType(" ", fullNameInputFieldSelector);

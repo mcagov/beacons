@@ -1,38 +1,29 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, Button } from "../../components/Button";
-import { FormErrorSummary } from "../../components/ErrorSummary";
-import {
-  Form,
-  FormFieldset,
-  FormGroup,
-  FormLegendPageHeading,
-} from "../../components/Form";
-import { Grid } from "../../components/Grid";
+import { BeaconsForm } from "../../components/BeaconsForm";
+import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
-import { Layout } from "../../components/Layout";
-import { IfYouNeedHelp } from "../../components/Mca";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
 const definePageForm = ({
-  beaconOwnerFullName,
-  beaconOwnerTelephoneNumber,
-  beaconOwnerAlternativeTelephoneNumber,
-  beaconOwnerEmail,
-}: CacheEntry): FormManager => {
+  ownerFullName,
+  ownerTelephoneNumber,
+  ownerAlternativeTelephoneNumber,
+  ownerEmail,
+}: FormSubmission): FormManager => {
   return new FormManager({
-    beaconOwnerFullName: new FieldManager(beaconOwnerFullName, [
+    ownerFullName: new FieldManager(ownerFullName, [
       Validators.required("Full name is a required field"),
     ]),
-    beaconOwnerTelephoneNumber: new FieldManager(beaconOwnerTelephoneNumber),
-    beaconOwnerAlternativeTelephoneNumber: new FieldManager(
-      beaconOwnerAlternativeTelephoneNumber
+    ownerTelephoneNumber: new FieldManager(ownerTelephoneNumber),
+    ownerAlternativeTelephoneNumber: new FieldManager(
+      ownerAlternativeTelephoneNumber
     ),
-    beaconOwnerEmail: new FieldManager(beaconOwnerEmail, [
+    ownerEmail: new FieldManager(ownerEmail, [
       Validators.email("Email address must be valid"),
     ]),
   });
@@ -45,53 +36,28 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
   const pageHeading = "About the beacon owner";
 
   return (
-    <>
-      <Layout
-        navigation={
-          <BackButton href="/register-a-beacon/more-vessel-details" />
-        }
-        title={pageHeading}
-        pageHasErrors={form.hasErrors}
-        showCookieBanner={showCookieBanner}
-      >
-        <Grid
-          mainContent={
-            <>
-              <Form action="/register-a-beacon/about-beacon-owner">
-                <FormFieldset>
-                  <FormErrorSummary formErrors={form.errorSummary} />
-                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
+    <BeaconsForm
+      pageHeading={pageHeading}
+      formErrors={form.errorSummary}
+      previousPageUrl="/register-a-beacon/more-details"
+      showCookieBanner={showCookieBanner}
+    >
+      <FullName
+        value={form.fields.ownerFullName.value}
+        errorMessages={form.fields.ownerFullName.errorMessages}
+      />
 
-                  <FullName
-                    value={form.fields.beaconOwnerFullName.value}
-                    errorMessages={
-                      form.fields.beaconOwnerFullName.errorMessages
-                    }
-                  />
+      <TelephoneNumber value={form.fields.ownerTelephoneNumber.value} />
 
-                  <TelephoneNumber
-                    value={form.fields.beaconOwnerTelephoneNumber.value}
-                  />
+      <AlternativeTelephoneNumber
+        value={form.fields.ownerAlternativeTelephoneNumber.value}
+      />
 
-                  <AlternativeTelephoneNumber
-                    value={
-                      form.fields.beaconOwnerAlternativeTelephoneNumber.value
-                    }
-                  />
-
-                  <EmailAddress
-                    value={form.fields.beaconOwnerEmail.value}
-                    errorMessages={form.fields.beaconOwnerEmail.errorMessages}
-                  />
-                </FormFieldset>
-                <Button buttonText="Continue" />
-              </Form>
-              <IfYouNeedHelp />
-            </>
-          }
-        />
-      </Layout>
-    </>
+      <EmailAddress
+        value={form.fields.ownerEmail.value}
+        errorMessages={form.fields.ownerEmail.errorMessages}
+      />
+    </BeaconsForm>
   );
 };
 
@@ -100,7 +66,7 @@ const FullName: FunctionComponent<FormInputProps> = ({
   errorMessages,
 }: FormInputProps): JSX.Element => (
   <FormGroup errorMessages={errorMessages}>
-    <Input id="beaconOwnerFullName" label="Full name" defaultValue={value} />
+    <Input id="ownerFullName" label="Full name" defaultValue={value} />
   </FormGroup>
 );
 
@@ -110,7 +76,7 @@ const TelephoneNumber: FunctionComponent<FormInputProps> = ({
 }: FormInputProps): JSX.Element => (
   <FormGroup errorMessages={errorMessages}>
     <Input
-      id="beaconOwnerTelephoneNumber"
+      id="ownerTelephoneNumber"
       label="Telephone number (optional)"
       hintText="This can be a mobile or landline. For international numbers include the country code."
       defaultValue={value}
@@ -124,7 +90,7 @@ const AlternativeTelephoneNumber: FunctionComponent<FormInputProps> = ({
 }: FormInputProps): JSX.Element => (
   <FormGroup errorMessages={errorMessages}>
     <Input
-      id="beaconOwnerAlternativeTelephoneNumber"
+      id="ownerAlternativeTelephoneNumber"
       label="Additional telephone number (optional)"
       hintText="This can be a mobile or landline. For international numbers include the country code."
       defaultValue={value}
@@ -138,7 +104,7 @@ const EmailAddress: FunctionComponent<FormInputProps> = ({
 }: FormInputProps): JSX.Element => (
   <FormGroup errorMessages={errorMessages}>
     <Input
-      id="beaconOwnerEmail"
+      id="ownerEmail"
       label="Email address (optional)"
       hintText="You will receive an email confirming your beacon registration application, including a reference
         number if you need to get in touch with the beacons registry team."

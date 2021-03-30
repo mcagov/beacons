@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CookieSerializeOptions, serialize } from "cookie";
 import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from "http";
 import {
@@ -8,13 +9,22 @@ import {
 import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
 import parse from "urlencoded-body-parser";
 import { v4 as uuidv4 } from "uuid";
-import { CacheEntry, FormCacheFactory, IFormCache } from "./formCache";
-import { formSubmissionCookieId } from "./types";
+import { FormCacheFactory, FormSubmission, IFormCache } from "./formCache";
+import { Registration } from "./registration/registration";
+import { acceptRejectCookieId, formSubmissionCookieId } from "./types";
 import { toArray } from "./utils";
+
+export type BeaconsContext = GetServerSidePropsContext & {
+  showCookieBanner: boolean;
+  submissionId?: string;
+  formData: FormSubmission;
+  registration?: Registration;
+  useIndex: number;
+};
 
 export function withCookieRedirect<T>(callback: GetServerSideProps<T>) {
   return async (
-    context: GetServerSidePropsContext
+    context: BeaconsContext
   ): Promise<GetServerSidePropsResult<T>> => {
     const cookies: NextApiRequestCookies = context.req.cookies;
 
@@ -29,6 +39,48 @@ export function withCookieRedirect<T>(callback: GetServerSideProps<T>) {
 
     return callback(context);
   };
+}
+
+/**
+ * Decorator function to add beacons specific information to the `getServerSideProps` context.
+ *
+ * @param context {GetServerSidePropsContext}   The NextJS application context
+ * @returns       {Promise<BeaconsContext>}     A promise resolving to the decorated context containing application specific data
+ */
+export async function decorateGetServerSidePropsContext(
+  context: GetServerSidePropsContext
+): Promise<BeaconsContext> {
+  const decoratedContext: BeaconsContext = context as BeaconsContext;
+
+  addCookieBannerAcceptance(decoratedContext);
+  addCache(decoratedContext);
+  await addFormData(decoratedContext);
+  addRegistrationIndexes(decoratedContext);
+
+  return decoratedContext;
+}
+
+function addCookieBannerAcceptance(context: BeaconsContext): void {
+  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
+  context.showCookieBanner = showCookieBanner;
+}
+
+function addCache(context: BeaconsContext): void {
+  const submissionId: string = context.req.cookies[formSubmissionCookieId];
+  const registration: Registration = getCache(submissionId);
+
+  context.submissionId = submissionId;
+  context.registration = registration;
+}
+
+async function addFormData(context: BeaconsContext): Promise<void> {
+  const formData = await parseFormData(context.req);
+  context.formData = formData;
+}
+
+function addRegistrationIndexes(context: BeaconsContext): void {
+  const useIndex = parseInt(context.query.useIndex as string) || 0;
+  context.useIndex = useIndex;
 }
 
 export const setFormSubmissionCookie = (
@@ -71,23 +123,24 @@ const setCookieHeader = (id: string, res: ServerResponse): void => {
   res.setHeader("Set-Cookie", serialize(formSubmissionCookieId, id, options));
 };
 
-export function updateFormCache<T>(
+export function updateFormCache(
   cookies: NextApiRequestCookies,
-  formData: T,
+  formData: FormSubmission,
   cache: IFormCache = FormCacheFactory.getCache()
 ): void {
   const submissionId: string = cookies[formSubmissionCookieId];
   cache.update(submissionId, formData);
 }
 
-export async function parseFormData<T>(request: IncomingMessage): Promise<T> {
+export async function parseFormData(
+  request: IncomingMessage
+): Promise<Record<string, any>> {
   return await parse(request);
 }
 
 export const getCache = (
-  cookies: NextApiRequestCookies,
+  id: string,
   cache: IFormCache = FormCacheFactory.getCache()
-): CacheEntry => {
-  const submissionId: string = cookies[formSubmissionCookieId];
-  return cache.get(submissionId);
+): Registration => {
+  return cache.get(id);
 };

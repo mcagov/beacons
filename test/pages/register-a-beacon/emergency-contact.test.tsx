@@ -56,7 +56,7 @@ describe("EmergencyContact", () => {
     errorSummary: [],
   };
 
-  it("should have a back button which directs the user to the primary beacon use page", () => {
+  it("should have a back button which directs the user to the beacon owner page", () => {
     render(<EmergencyContact form={emptyEmergencyContactForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
@@ -69,11 +69,10 @@ describe("EmergencyContact", () => {
     const { container } = render(
       <EmergencyContact form={emptyEmergencyContactForm} />
     );
-    const ownPath = "/register-a-beacon/emergency-contact";
 
     const form = container.querySelectorAll("form")[1];
 
-    expect(form).toHaveAttribute("action", ownPath);
+    expect(form).toHaveAttribute("action", "");
   });
 
   it("should redirect to the check answers page on valid form submission", async () => {

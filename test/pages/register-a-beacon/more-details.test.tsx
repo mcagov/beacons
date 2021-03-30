@@ -1,14 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
-import MoreVesselDetails from "../../../src/pages/register-a-beacon/more-vessel-details";
+import MoreDetails from "../../../src/pages/register-a-beacon/more-details";
 
-describe("MoreVesselDetails page", () => {
-  const emptyMoreVesselDetailsForm: FormJSON = {
+describe("MoreDetails page", () => {
+  const emptyMoreDetailsForm: FormJSON = {
     hasErrors: false,
     errorSummary: [],
     fields: {
-      moreVesselDetails: {
+      moreDetails: {
         value: "",
         errorMessages: [],
       },
@@ -16,7 +16,7 @@ describe("MoreVesselDetails page", () => {
   };
 
   it("should have a back button which directs the user to the previous form page", () => {
-    render(<MoreVesselDetails form={emptyMoreVesselDetailsForm} />);
+    render(<MoreDetails form={emptyMoreDetailsForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",

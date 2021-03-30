@@ -17,31 +17,31 @@ describe("AboutBeaconOwner", () => {
     hasErrors: false,
     errorSummary: [],
     fields: {
-      beaconOwnerFullName: {
+      ownerFullName: {
         value: "",
         errorMessages: [],
       },
-      beaconOwnerTelephoneNumber: {
+      ownerTelephoneNumber: {
         value: "",
         errorMessages: [],
       },
-      beaconOwnerAlternativeTelephoneNumber: {
+      ownerAlternativeTelephoneNumber: {
         value: "",
         errorMessages: [],
       },
-      beaconOwnerEmail: {
+      ownerEmail: {
         value: "",
         errorMessages: [],
       },
     },
   };
 
-  it("should have a back button which directs the user to the primary beacon use page", () => {
+  it("should have a back button which directs the user to the more details page", () => {
     render(<AboutBeaconOwner form={emptyAboutBeaconOwnerForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/more-vessel-details"
+      "/register-a-beacon/more-details?useIndex=0"
     );
   });
 
@@ -49,7 +49,7 @@ describe("AboutBeaconOwner", () => {
     const { container } = render(
       <AboutBeaconOwner form={emptyAboutBeaconOwnerForm} />
     );
-    const ownPath = "/register-a-beacon/about-beacon-owner";
+    const ownPath = "";
 
     const form = container.querySelectorAll("form")[1];
 

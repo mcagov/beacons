@@ -61,6 +61,14 @@ describe("VesselCommunications", () => {
         value: "",
         errorMessages: [],
       },
+      otherCommunication: {
+        value: "",
+        errorMessages: [],
+      },
+      otherCommunicationInput: {
+        value: "",
+        errorMessages: [],
+      },
     },
   };
 
@@ -77,19 +85,18 @@ describe("VesselCommunications", () => {
     const { container } = render(
       <VesselCommunications form={emptyVesselCommunicationsForm} />
     );
-    const ownPath = "/register-a-beacon/vessel-communications";
 
     const form = container.querySelectorAll("form")[1];
 
-    expect(form).toHaveAttribute("action", ownPath);
+    expect(form).toHaveAttribute("action", "");
   });
 
-  it("should redirect to more-vessel-details page on valid form submission", async () => {
+  it("should redirect to more-details page on valid form submission", async () => {
     const context = {};
     await getServerSideProps(context as GetServerSidePropsContext);
 
     expect(handlePageRequest).toHaveBeenCalledWith(
-      "/register-a-beacon/more-vessel-details",
+      "/register-a-beacon/more-details",
       expect.anything()
     );
   });

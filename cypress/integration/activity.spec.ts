@@ -2,6 +2,7 @@ import {
   givenIAmAt,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
+  iCanSeeAHeadingThatContains,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -12,9 +13,10 @@ import {
   whenIType,
 } from "./common.spec";
 
-describe("As a beacon owner, I want to submit the primary use for my beacon", () => {
-  const thisPageUrl = "/register-a-beacon/primary-beacon-use";
+describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
+  const thisPageUrl = "/register-a-beacon/activity";
   const previousPageUrl = "/register-a-beacon/beacon-information";
+  const otherActivitySelector = "#other-activity";
 
   beforeEach(() => {
     givenIAmAt(thisPageUrl);
@@ -24,11 +26,16 @@ describe("As a beacon owner, I want to submit the primary use for my beacon", ()
     iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
   });
 
-  it("displays an error if no primary beacon use is selected", () => {
+  //TODO: Once caching is in place, this could be more dynamic and not just hardcoded
+  it("displays the environment and purpose of my beacon", () => {
+    iCanSeeAHeadingThatContains("pleasure maritime");
+  });
+
+  it("displays an error if no activity is selected", () => {
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
     thenIShouldSeeAnErrorSummaryLinkThatContains(
-      "Maritime pleasure use",
+      "Activity",
       requiredFieldErrorMessage
     );
   });
@@ -46,30 +53,30 @@ describe("As a beacon owner, I want to submit the primary use for my beacon", ()
     thenMyFocusMovesTo("#motor-vessel");
   });
 
-  it("routes to the next page if there are no errors with the selected primary beacon use", () => {
+  it("routes to the next page if there are no errors with the selected activity", () => {
     givenIHaveSelected("#motor-vessel");
     whenIClickContinue();
 
     thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");
   });
 
-  it("displays an error if 'Other pleasure vessel' is selected, but no text is provided", () => {
-    givenIHaveSelected("#other-pleasure-vessel");
+  it("displays an error if 'Other activity' is selected, but no text is provided", () => {
+    givenIHaveSelected(otherActivitySelector);
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(
-      "Other pleasure vessel",
+      "Other activity",
       requiredFieldErrorMessage
     );
     whenIClickOnTheErrorSummaryLinkContaining(
-      "Other pleasure vessel",
+      "Other activity",
       requiredFieldErrorMessage
     );
-    thenMyFocusMovesTo("#otherPleasureVesselText");
+    thenMyFocusMovesTo("#otherActivityText");
   });
 
   it("routes to the next page if there are no errors with Other pleasure vessel selected", () => {
-    givenIHaveSelected("#other-pleasure-vessel");
-    whenIType("Surfboard", "#otherPleasureVesselText");
+    givenIHaveSelected(otherActivitySelector);
+    whenIType("Surfboard", "#otherActivityText");
     whenIClickContinue();
 
     thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");

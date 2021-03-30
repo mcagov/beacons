@@ -8,7 +8,7 @@ describe("AboutTheAircraft", () => {
     hasErrors: false,
     errorSummary: [],
     fields: {
-      aircraftMaxCapacity: {
+      maxCapacity: {
         value: "",
         errorMessages: [],
       },

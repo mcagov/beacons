@@ -87,15 +87,30 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     });
 
     it("errors if I submit a valid but non-UK HEX ID", () => {
-      const expectedErrorMessage = ["UK-encoded"];
+      const newZealandBeaconHexId = "C00F429578002C1";
+      const expectedErrorMessage = ["UK-encoded", "New Zealand"];
 
-      whenIType("C00F429578002C1", "#hexId");
+      whenIType(newZealandBeaconHexId, "#hexId");
 
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
       thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
 
       whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(hexIdFieldSelector);
+    });
+
+    it("errors if I submit a valid but a hexadecimal number that has an unknown country encoding", () => {
+      const newZealandBeaconHexId = "12345678910ABCD";
+      const expectedErrorMessage = "an unknown country";
+
+      whenIType(newZealandBeaconHexId, "#hexId");
+
+      whenIClickContinue();
+      thenIShouldSeeAnErrorSummaryLinkThatContains(expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(expectedErrorMessage);
+
+      whenIClickOnTheErrorSummaryLinkContaining(expectedErrorMessage);
       thenMyFocusMovesTo(hexIdFieldSelector);
     });
 

@@ -3,7 +3,7 @@ import { HttpMethod } from "../lib/types";
 import { FieldErrorList } from "./ErrorSummary";
 
 interface FormProps {
-  action: string;
+  action?: string;
   method?: HttpMethod;
   children: ReactNode;
 }
@@ -42,7 +42,7 @@ interface FormLegendPageHeadingProps {
 }
 
 export const Form: FunctionComponent<FormProps> = ({
-  action,
+  action = "",
   method = HttpMethod.POST,
   children,
 }: FormProps): JSX.Element => (

@@ -3,70 +3,80 @@ import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next";
-import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
 import { FormJSON, FormManager } from "./form/formManager";
-import { CacheEntry } from "./formCache";
+import { FormSubmission } from "./formCache";
 import {
-  getCache,
-  parseFormData,
+  BeaconsContext,
+  decorateGetServerSidePropsContext,
   updateFormCache,
   withCookieRedirect,
 } from "./middleware";
-import { acceptRejectCookieId } from "./types";
+import { Registration } from "./registration/registration";
+import { formatUrlQueryParams } from "./utils";
 
-type TransformCallback = (formData: CacheEntry) => CacheEntry;
+type TransformCallback = (formData: FormSubmission) => FormSubmission;
 
-export type FormManagerFactory = (formData: CacheEntry) => FormManager;
+export type DestinationIfValidCallback = (context: BeaconsContext) => string;
+
+export type FormManagerFactory = (formData: FormSubmission) => FormManager;
 
 export interface FormPageProps {
   form: FormJSON;
   showCookieBanner?: boolean;
+  flattenedRegistration?: FormSubmission;
 }
 
 export const handlePageRequest = (
   destinationIfValid: string,
   formManagerFactory: FormManagerFactory,
-  transformCallback: TransformCallback = (formData: CacheEntry) => formData
+  transformCallback: TransformCallback = (formData: FormSubmission) => formData,
+  destinationIfValidCallback: DestinationIfValidCallback = () =>
+    destinationIfValid
 ): GetServerSideProps =>
   withCookieRedirect(async (context: GetServerSidePropsContext) => {
-    const userDidSubmitForm = context.req.method === "POST";
+    const beaconsContext: BeaconsContext = await decorateGetServerSidePropsContext(
+      context
+    );
+    const userDidSubmitForm = beaconsContext.req.method === "POST";
 
     if (userDidSubmitForm) {
       return handlePostRequest(
-        context,
-        destinationIfValid,
+        beaconsContext,
         formManagerFactory,
-        transformCallback
+        transformCallback,
+        destinationIfValidCallback
       );
     }
 
-    return handleGetRequest(context.req.cookies, formManagerFactory);
+    return handleGetRequest(beaconsContext, formManagerFactory);
   });
 
 const handleGetRequest = (
-  cookies: NextApiRequestCookies,
-  defineFormRulesCallback: FormManagerFactory
+  context: BeaconsContext,
+  formManagerFactory: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
-  const formManager = defineFormRulesCallback(getCache(cookies));
-  const showCookieBanner = !cookies[acceptRejectCookieId];
+  const registration: Registration = context.registration;
+  const flattenedRegistration = registration.getFlattenedRegistration({
+    useIndex: context.useIndex,
+  });
+  const formManager = formManagerFactory(flattenedRegistration);
 
   return {
     props: {
       form: formManager.serialise(),
-      showCookieBanner,
+      showCookieBanner: context.showCookieBanner,
+      flattenedRegistration,
     },
   };
 };
 
-export const handlePostRequest = async (
-  context: GetServerSidePropsContext,
-  destinationIfValid: string,
+const handlePostRequest = async (
+  context: BeaconsContext,
   formManagerFactory: FormManagerFactory,
-  transformCallback: TransformCallback = (formData) => formData
+  transformCallback: TransformCallback = (formData) => formData,
+  onSuccessfulFormPostCallback
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
-  const transformedFormData = transformCallback(
-    await parseFormData(context.req)
-  );
+  const transformedFormData = transformCallback(context.formData);
   updateFormCache(context.req.cookies, transformedFormData);
 
   const formManager = formManagerFactory(transformedFormData);
@@ -74,20 +84,27 @@ export const handlePostRequest = async (
   const formIsValid = !formManager.hasErrors();
 
   if (formIsValid) {
+    let destination = onSuccessfulFormPostCallback(context);
+    destination = formatUrlQueryParams(destination, {
+      useIndex: context.useIndex,
+    });
     return {
       redirect: {
         statusCode: 303,
-        destination: destinationIfValid,
+        destination,
       },
     };
   }
 
-  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
+  const flattenedRegistration = context.registration.getFlattenedRegistration({
+    useIndex: context.useIndex,
+  });
 
   return {
     props: {
       form: formManager.serialise(),
-      showCookieBanner,
+      showCookieBanner: context.showCookieBanner,
+      flattenedRegistration,
     },
   };
 };

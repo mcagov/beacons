@@ -13,11 +13,11 @@ import {
 } from "./common.spec";
 
 describe("As a beacon owner, I want to submit information about my aircraft", () => {
-  const previousPageUrl = "/register-a-beacon/primary-beacon-use";
+  const previousPageUrl = "/register-a-beacon/activity";
   const thisPageUrl = "/register-a-beacon/about-the-aircraft";
   const nextPageUrl = "/register-a-beacon/aircraft-communications";
 
-  const aircraftMaxCapacitySelector = "#aircraftMaxCapacity";
+  const aircraftMaxCapacitySelector = "#maxCapacity";
   const beaconPositionSelector = "#beaconPosition";
 
   beforeEach(() => {

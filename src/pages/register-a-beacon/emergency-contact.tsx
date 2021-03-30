@@ -18,7 +18,7 @@ import { WarningText } from "../../components/WarningText";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
 export interface EmergencyContactGroupProps {
@@ -42,7 +42,7 @@ const definePageForm = ({
   emergencyContact3FullName,
   emergencyContact3TelephoneNumber,
   emergencyContact3AlternativeTelephoneNumber,
-}: CacheEntry): FormManager => {
+}: FormSubmission): FormManager => {
   return new FormManager({
     emergencyContact1FullName: new FieldManager(emergencyContact1FullName, [
       Validators.required("Emergency contact full name is a required field"),
@@ -97,7 +97,7 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
         <Grid
           mainContent={
             <>
-              <Form action="/register-a-beacon/emergency-contact">
+              <Form>
                 <FormFieldset>
                   <FormErrorSummary formErrors={form.errorSummary} />
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>

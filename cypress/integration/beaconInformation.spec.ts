@@ -1,5 +1,6 @@
 import {
   givenIAmAt,
+  iCanClickTheBackLinkToGoToPreviousPage,
   iCanSeeAHeadingThatContains,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -13,6 +14,7 @@ import {
 } from "./common.spec";
 
 describe("As a beacon owner, I want to submit information about my beacon", () => {
+  const previousPageUrl = "/register-a-beacon/check-beacon-detail";
   const pageUrl = "/register-a-beacon/beacon-information";
   const manufacturerSerialNumberFieldSelector = "#manufacturerSerialNumber";
   const batteryExpiryDateMonthFieldSelector = "#batteryExpiryDateMonth";
@@ -36,11 +38,15 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     iCanSeeAHeadingThatContains("Beacon information");
   });
 
+  it("should route to the previous page when I click the back button", () => {
+    iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
+  });
+
   it("routes to the next page if there are no errors with the form submission", () => {
     whenIType("ASOS", manufacturerSerialNumberFieldSelector);
     whenIClickContinue();
 
-    thenTheUrlShouldContain("/register-a-beacon/primary-beacon-use");
+    thenTheUrlShouldContain("/register-a-beacon/beacon-use");
   });
 
   describe("the manufacturer serial number field", () => {

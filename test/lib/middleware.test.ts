@@ -1,12 +1,15 @@
 import { IFormCache } from "../../src/lib/formCache";
 import {
   checkHeaderContains,
+  decorateGetServerSidePropsContext,
   getCache,
   setFormSubmissionCookie,
   updateFormCache,
   withCookieRedirect,
 } from "../../src/lib/middleware";
+import { Registration } from "../../src/lib/registration/registration";
 import {
+  acceptRejectCookieId,
   formSubmissionCookieId,
   formSubmissionCookieId as submissionCookieId,
 } from "../../src/lib/types";
@@ -79,6 +82,61 @@ describe("Middleware Functions", () => {
       context.req.cookies = { [submissionCookieId]: void 0 };
 
       assertRedirected();
+    });
+  });
+
+  describe("decorateGetServerSidePropsContext()", () => {
+    let context;
+
+    beforeEach(() => {
+      context = { req: { cookies: {} }, query: {} };
+    });
+
+    it("should decorate the context with false if the user has accepted the cookie policy", async () => {
+      context.req.cookies[acceptRejectCookieId] = true;
+      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      expect(decoratedContext.showCookieBanner).toBe(false);
+    });
+
+    it("should decorate the context with true if the user has not accepted the cookie policy", async () => {
+      context.req.cookies[acceptRejectCookieId] = false;
+      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      expect(decoratedContext.showCookieBanner).toBe(true);
+    });
+
+    it("should add the users submission cookie id onto the context", async () => {
+      context.req.cookies[formSubmissionCookieId] = "id";
+      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      expect(decoratedContext.submissionId).toBe("id");
+    });
+
+    it("should add the users registration onto the context", async () => {
+      context.req.cookies[formSubmissionCookieId] = "id";
+      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      expect(decoratedContext.registration).toBeDefined();
+      expect(decoratedContext.registration).toBeInstanceOf(Registration);
+    });
+
+    it("should parse the form data and add onto the context", async () => {
+      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      expect(decoratedContext.formData).toStrictEqual({ model: "ASOS" });
+    });
+
+    it("should set the useIndex to 0 on the context if the useIndex is not set", async () => {
+      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      expect(decoratedContext.useIndex).toStrictEqual(0);
+    });
+
+    it("should set the useIndex to 0 if useIndex is null", async () => {
+      context.query.useIndex = null;
+      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      expect(decoratedContext.useIndex).toStrictEqual(0);
+    });
+
+    it("should set the useIndex on the query param", async () => {
+      context.query.useIndex = 1;
+      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      expect(decoratedContext.useIndex).toStrictEqual(1);
     });
   });
 
@@ -201,19 +259,17 @@ describe("Middleware Functions", () => {
 
   describe("getCache()", () => {
     let id;
-    let cookies;
     let cacheMock: jest.Mocked<IFormCache>;
 
     beforeEach(() => {
       id = "1";
-      cookies = { [formSubmissionCookieId]: id };
       cacheMock = getCacheMock();
     });
 
     it("should call the cache with the correct id", () => {
       cacheMock.get.mockReturnValue({});
 
-      expect(getCache(cookies, cacheMock)).toStrictEqual({});
+      expect(getCache(id, cacheMock)).toStrictEqual({});
       expect(cacheMock.get).toHaveBeenCalledWith(id);
     });
   });

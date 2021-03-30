@@ -1,29 +1,23 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, Button } from "../../components/Button";
-import { FormErrorSummary } from "../../components/ErrorSummary";
+import { BeaconsForm } from "../../components/BeaconsForm";
 import {
-  Form,
   FormFieldset,
   FormGroup,
   FormHint,
   FormLegend,
-  FormLegendPageHeading,
 } from "../../components/Form";
-import { Grid } from "../../components/Grid";
 import { FormInputProps, Input } from "../../components/Input";
-import { Layout } from "../../components/Layout";
-import { IfYouNeedHelp } from "../../components/Mca";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
 const definePageForm = ({
-  aircraftMaxCapacity,
+  maxCapacity,
   aircraftManufacturer,
   principalAirport,
   secondaryAirport,
@@ -32,9 +26,9 @@ const definePageForm = ({
   cnOrMsnNumber,
   dongle,
   beaconPosition,
-}: CacheEntry): FormManager => {
+}: FormSubmission): FormManager => {
   return new FormManager({
-    aircraftMaxCapacity: new FieldManager(aircraftMaxCapacity, [
+    maxCapacity: new FieldManager(maxCapacity, [
       Validators.required(
         "Maximum number of persons onboard is a required field"
       ),
@@ -65,65 +59,38 @@ const AboutTheAircraft: FunctionComponent<FormPageProps> = ({
   const pageHeading = "About the aircraft";
 
   return (
-    <>
-      <Layout
-        navigation={<BackButton href="/register-a-beacon/primary-beacon-use" />}
-        title={pageHeading}
-        pageHasErrors={form.hasErrors}
-        showCookieBanner={showCookieBanner}
-      >
-        <Grid
-          mainContent={
-            <>
-              <FormErrorSummary formErrors={form.errorSummary} />
-              <Form action="/register-a-beacon/about-the-aircraft">
-                <FormFieldset>
-                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
+    <BeaconsForm
+      previousPageUrl="/register-a-beacon/activity"
+      pageHeading={pageHeading}
+      showCookieBanner={showCookieBanner}
+      formErrors={form.errorSummary}
+    >
+      <MaxCapacityInput
+        value={form.fields.maxCapacity.value}
+        errorMessages={form.fields.maxCapacity.errorMessages}
+      />
 
-                  <MaxCapacityInput
-                    value={form.fields.aircraftMaxCapacity.value}
-                    errorMessages={
-                      form.fields.aircraftMaxCapacity.errorMessages
-                    }
-                  />
+      <Manufacturer value={form.fields.aircraftManufacturer.value} />
 
-                  <Manufacturer
-                    value={form.fields.aircraftManufacturer.value}
-                  />
+      <PrincipalAirport value={form.fields.principalAirport.value} />
 
-                  <PrincipalAirport
-                    value={form.fields.principalAirport.value}
-                  />
+      <SecondaryAirport value={form.fields.secondaryAirport.value} />
 
-                  <SecondaryAirport
-                    value={form.fields.secondaryAirport.value}
-                  />
+      <RegistrationMark value={form.fields.registrationMark.value} />
 
-                  <RegistrationMark
-                    value={form.fields.registrationMark.value}
-                  />
+      <HexAddress value={form.fields.hexAddress.value} />
 
-                  <HexAddress value={form.fields.hexAddress.value} />
+      <CoreNumberOrManufacturerSerialNumber
+        value={form.fields.cnOrMsnNumber.value}
+      />
 
-                  <CoreNumberOrManufacturerSerialNumber
-                    value={form.fields.cnOrMsnNumber.value}
-                  />
+      <Dongle value={form.fields.dongle.value} />
 
-                  <Dongle value={form.fields.dongle.value} />
-
-                  <BeaconPosition
-                    value={form.fields.beaconPosition.value}
-                    errorMessages={form.fields.beaconPosition.errorMessages}
-                  />
-                </FormFieldset>
-                <Button buttonText="Continue" />
-              </Form>
-              <IfYouNeedHelp />
-            </>
-          }
-        />
-      </Layout>
-    </>
+      <BeaconPosition
+        value={form.fields.beaconPosition.value}
+        errorMessages={form.fields.beaconPosition.errorMessages}
+      />
+    </BeaconsForm>
   );
 };
 
@@ -133,7 +100,7 @@ const MaxCapacityInput: FunctionComponent<FormInputProps> = ({
 }: FormInputProps): JSX.Element => (
   <FormGroup errorMessages={errorMessages}>
     <Input
-      id="aircraftMaxCapacity"
+      id="maxCapacity"
       label="Enter the maximum number of persons onboard"
       hintText="Knowing the maximum number of persons likely to be onboard the aircraft helps Search and Rescue know how many people to look for and what resources to send"
       defaultValue={value}

@@ -14,31 +14,32 @@ import { TextareaCharacterCount } from "../../components/Textarea";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
-interface MoreVesselDetailsTextAreaProps {
+interface MoreDetailsTextAreaProps {
+  id: string;
   value?: string;
   errorMessages: string[];
 }
 
-const definePageForm = ({ moreVesselDetails }: CacheEntry): FormManager => {
+const definePageForm = ({ moreDetails }: FormSubmission): FormManager => {
   return new FormManager({
-    moreVesselDetails: new FieldManager(moreVesselDetails, [
-      Validators.required("Vessel details is a required field"),
+    moreDetails: new FieldManager(moreDetails, [
+      Validators.required("More details is a required field"),
       Validators.maxLength(
-        "Vessel details must be less than 250 characters",
+        "More details must be less than 250 characters",
         250
       ),
     ]),
   });
 };
 
-const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
+const MoreDetails: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
-  const pageHeading = "Tell us more about the vessel";
+  const pageHeading = "Provide more details that could help in a search";
 
   return (
     <>
@@ -54,13 +55,32 @@ const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
           mainContent={
             <>
               <FormErrorSummary formErrors={form.errorSummary} />
-              <Form action="/register-a-beacon/more-vessel-details">
+              <Form>
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-
-                  <MoreVesselDetailsTextArea
-                    value={form.fields.moreVesselDetails.value}
-                    errorMessages={form.fields.moreVesselDetails.errorMessages}
+                  <div className="govuk-details">
+                    <p className="">
+                      Please provide a description of any vessel, aircraft,
+                      vehicle or anything else associated with this beacon.
+                    </p>
+                    <p className="">
+                      This might include defining features such as the length,
+                      colour etc) and any tracking details (e.g. RYA SafeTrx or
+                      Web) if you have them.
+                    </p>
+                    <p className="govuk-!-font-weight-bold">
+                      Please do not provide medical details as we cannot store
+                      these.
+                    </p>
+                    <p className="">
+                      This information is very helpful to Search and Rescue when
+                      trying to locate you
+                    </p>
+                  </div>
+                  <MoreDetailsTextArea
+                    id="moreDetails"
+                    value={form.fields.moreDetails.value}
+                    errorMessages={form.fields.moreDetails.errorMessages}
                   />
                 </FormFieldset>
                 <Button buttonText="Continue" />
@@ -74,16 +94,13 @@ const MoreVesselDetails: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const MoreVesselDetailsTextArea: FunctionComponent<MoreVesselDetailsTextAreaProps> = ({
+const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
+  id,
   value = "",
   errorMessages,
-}: MoreVesselDetailsTextAreaProps): JSX.Element => (
+}: MoreDetailsTextAreaProps): JSX.Element => (
   <TextareaCharacterCount
-    id="moreVesselDetails"
-    hintText="Describe the vessel's appearance (such as the length, colour, if it
-        has sails or not etc) and any vessel tracking details (e.g. RYA SafeTrx
-        or Web) if you have them. This information is very helpful to Search
-        and Rescue when trying to locate you."
+    id={id}
     maxCharacters={250}
     rows={4}
     defaultValue={value}
@@ -96,4 +113,4 @@ export const getServerSideProps: GetServerSideProps = handlePageRequest(
   definePageForm
 );
 
-export default MoreVesselDetails;
+export default MoreDetails;

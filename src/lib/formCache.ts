@@ -1,31 +1,13 @@
-import {
-  Aircraft,
-  Beacon,
-  BeaconInformation,
-  BeaconIntent,
-  EmergencyContacts,
-  Owner,
-  Vessel,
-  VesselCommunications,
-} from "./types";
-
-type BeaconModel = Beacon &
-  BeaconInformation &
-  Owner &
-  Vessel &
-  VesselCommunications &
-  Aircraft &
-  EmergencyContacts;
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Registration } from "./registration/registration";
 
 // Convenience type
-export type CacheEntry = Partial<BeaconModel> & {
-  beaconIntent?: BeaconIntent;
-};
+export type FormSubmission = Record<string, any>;
 
 export interface IFormCache {
-  update(id: string, formData?: CacheEntry): void;
+  update(id: string, formData?: FormSubmission): void;
 
-  get(id: string): CacheEntry;
+  get(id: string): Registration;
 }
 
 export class FormCacheFactory {
@@ -41,14 +23,21 @@ export class FormCacheFactory {
 }
 
 class FormCache implements IFormCache {
-  private _byId: Record<string, CacheEntry> = {};
+  private _byIdToRegistration: Record<string, Registration> = {};
 
-  public update(id: string, formData: CacheEntry = {}): void {
-    this._byId[id] = this._byId[id] || {};
-    Object.assign(this._byId[id], formData);
+  public update(id: string, formData: FormSubmission = {}): void {
+    const registration: Registration = this._safeGetRegistration(id);
+    registration.update(formData);
   }
 
-  public get(id: string): CacheEntry {
-    return this._byId[id] || {};
+  public get(id: string): Registration {
+    return this._safeGetRegistration(id);
+  }
+
+  private _safeGetRegistration(id: string): Registration {
+    this._byIdToRegistration[id] =
+      this._byIdToRegistration[id] || new Registration();
+
+    return this._byIdToRegistration[id];
   }
 }

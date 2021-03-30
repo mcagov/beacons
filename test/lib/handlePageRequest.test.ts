@@ -1,17 +1,30 @@
 // Mock module dependencies in getServerSideProps for testing handlePageRequest()
 import { handlePageRequest } from "../../src/lib/handlePageRequest";
-import { acceptRejectCookieId } from "../../src/lib/types";
 
 jest.mock("../../src/lib/middleware", () => ({
   __esModule: true,
   parseFormData: jest.fn().mockReturnValue({}),
   updateFormCache: jest.fn(),
-  getCache: jest.fn().mockReturnValue({}),
   withCookieRedirect: jest.fn().mockImplementation((callback) => {
     return async (context) => {
       return callback(context);
     };
   }),
+  decorateGetServerSidePropsContext: jest.fn().mockImplementation((context) => {
+    context.submissionId = "id";
+    context.registration = {
+      getFlattenedRegistration: () => ({ model: "ASOS" }),
+    };
+    context.useIndex = 1;
+
+    return context;
+  }),
+}));
+
+jest.mock("../../src/lib/utils", () => ({
+  formatUrlQueryParams: jest
+    .fn()
+    .mockImplementation((dest) => `${dest}?useIndex=1`),
 }));
 
 describe("handlePageRequest()", () => {
@@ -38,12 +51,13 @@ describe("handlePageRequest()", () => {
         method: "POST",
         cookies: {},
       },
+      query: {},
     };
   });
 
-  it("should should set the showCookieBanner to false if the user has accepted the cookie policy", async () => {
+  it("should should set the showCookieBanner to false if this is the value on the context object", async () => {
     context.req.method = "GET";
-    context.req.cookies[acceptRejectCookieId] = "I have accepted!";
+    context.showCookieBanner = false;
     getFormGroup = () => {
       return {
         serialise: jest.fn().mockReturnValue(formJSON),
@@ -56,6 +70,7 @@ describe("handlePageRequest()", () => {
       props: {
         form: formJSON,
         showCookieBanner: false,
+        flattenedRegistration: { model: "ASOS" },
       },
     });
   });
@@ -70,12 +85,13 @@ describe("handlePageRequest()", () => {
     expect(response).toStrictEqual({
       redirect: {
         statusCode: 303,
-        destination: nextPagePath,
+        destination: `${nextPagePath}?useIndex=1`,
       },
     });
   });
 
   it("should return the serialized form data on invalid form submission", async () => {
+    context.showCookieBanner = true;
     getFormGroup = () => {
       return {
         markAsDirty: jest.fn(),
@@ -90,6 +106,7 @@ describe("handlePageRequest()", () => {
       props: {
         form: formJSON,
         showCookieBanner: true,
+        flattenedRegistration: { model: "ASOS" },
       },
     });
   });
@@ -97,6 +114,7 @@ describe("handlePageRequest()", () => {
   it("should return the cached formJSON when it receives a GET request", async () => {
     context.req.method = "GET";
     const nextPagePath = "/irrelevant";
+    context.showCookieBanner = true;
     getFormGroup = () => {
       return {
         serialise: jest.fn().mockReturnValue(formJSON),
@@ -111,6 +129,7 @@ describe("handlePageRequest()", () => {
       props: {
         form: formJSON,
         showCookieBanner: true,
+        flattenedRegistration: { model: "ASOS" },
       },
     });
   });

@@ -1,29 +1,19 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import React, { FunctionComponent } from "react";
-import { BackButton, Button } from "../../components/Button";
+import { BeaconsForm } from "../../components/BeaconsForm";
 import {
   DateListInput,
   DateListItem,
   DateType,
 } from "../../components/DateInput";
 import { Details } from "../../components/Details";
-import { FormErrorSummary } from "../../components/ErrorSummary";
-import {
-  Form,
-  FormFieldset,
-  FormGroup,
-  FormLegendPageHeading,
-} from "../../components/Form";
-import { Grid } from "../../components/Grid";
+import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
-import { InsetText } from "../../components/InsetText";
-import { Layout } from "../../components/Layout";
-import { IfYouNeedHelp } from "../../components/Mca";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { CacheEntry } from "../../lib/formCache";
+import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 import { padNumberWithLeadingZeros } from "../../lib/utils";
 
@@ -58,7 +48,7 @@ const definePageForm = ({
   lastServicedDate,
   lastServicedDateMonth,
   lastServicedDateYear,
-}: CacheEntry): FormManager => {
+}: FormSubmission): FormManager => {
   return new FormManager({
     manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber, [
       Validators.required(
@@ -109,52 +99,30 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
   const pageHeading = "Beacon information";
 
   return (
-    <Layout
-      navigation={<BackButton href="/register-a-beacon/check-beacon-details" />}
-      title={pageHeading}
-      pageHasErrors={form.hasErrors}
+    <BeaconsForm
+      previousPageUrl="/register-a-beacon/check-beacon-details"
+      pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
+      formErrors={form.errorSummary}
+      insetText="Further information about your beacon is useful for Search and
+      Rescue. Provide as much information you can find."
     >
-      <Grid
-        mainContent={
-          <>
-            <FormErrorSummary formErrors={form.errorSummary} />
-            <Form action="/register-a-beacon/beacon-information">
-              <FormFieldset>
-                <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                <InsetText>
-                  Further information about your beacon is useful for Search and
-                  Rescue. Provide as much information you can find.
-                </InsetText>
-
-                <ManufacturerSerialNumberInput
-                  value={form.fields.manufacturerSerialNumber.value}
-                  errorMessages={
-                    form.fields.manufacturerSerialNumber.errorMessages
-                  }
-                />
-
-                <CHKCode value={form.fields.chkCode.value} />
-
-                <BatteryExpiryDate
-                  monthValue={form.fields.batteryExpiryDateMonth.value}
-                  yearValue={form.fields.batteryExpiryDateYear.value}
-                  errorMessages={form.fields.batteryExpiryDate.errorMessages}
-                />
-
-                <LastServicedDate
-                  monthValue={form.fields.lastServicedDateMonth.value}
-                  yearValue={form.fields.lastServicedDateYear.value}
-                  errorMessages={form.fields.lastServicedDate.errorMessages}
-                />
-              </FormFieldset>
-              <Button buttonText="Continue" />
-              <IfYouNeedHelp />
-            </Form>
-          </>
-        }
+      <ManufacturerSerialNumberInput
+        value={form.fields.manufacturerSerialNumber.value}
+        errorMessages={form.fields.manufacturerSerialNumber.errorMessages}
       />
-    </Layout>
+      <CHKCode value={form.fields.chkCode.value} />
+      <BatteryExpiryDate
+        monthValue={form.fields.batteryExpiryDateMonth.value}
+        yearValue={form.fields.batteryExpiryDateYear.value}
+        errorMessages={form.fields.batteryExpiryDate.errorMessages}
+      />
+      <LastServicedDate
+        monthValue={form.fields.lastServicedDateMonth.value}
+        yearValue={form.fields.lastServicedDateYear.value}
+        errorMessages={form.fields.lastServicedDate.errorMessages}
+      />
+    </BeaconsForm>
   );
 };
 
@@ -261,7 +229,7 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
   </DateListInput>
 );
 
-const transformFormData = (formData: CacheEntry): CacheEntry => {
+const transformFormData = (formData: FormSubmission): FormSubmission => {
   formData = {
     ...formData,
     batteryExpiryDate: getISODate(
@@ -284,7 +252,7 @@ const transformFormData = (formData: CacheEntry): CacheEntry => {
 };
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/primary-beacon-use",
+  "/register-a-beacon/beacon-use",
   definePageForm,
   transformFormData
 );
