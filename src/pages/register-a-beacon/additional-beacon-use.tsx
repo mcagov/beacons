@@ -12,6 +12,7 @@ import {
   handlePageRequest,
 } from "../../lib/handlePageRequest";
 import { BeaconsContext } from "../../lib/middleware";
+import { formatUrlQueryParams } from "../../lib/utils";
 
 const definePageForm = ({
   additionalBeaconUse,
@@ -66,7 +67,9 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = (
     context.formData.additionalBeaconUse === "true";
   if (shouldCreateAdditionalUse) {
     context.registration.createUse();
-    return "/register-a-beacon/beacon-use";
+    const useIndex = context.useIndex + 1;
+
+    return formatUrlQueryParams("/register-a-beacon/beacon-use", { useIndex });
   } else {
     return "/register-a-beacon/about-beacon-owner";
   }

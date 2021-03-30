@@ -32,7 +32,7 @@ describe("As a beacon owner, I want to register multiple uses for my beacon", ()
     givenIHaveSelected("#yes");
     whenIClickContinue();
 
-    thenTheUrlShouldContain(additionalBeaconUseUrl);
+    thenTheUrlShouldContain(`${additionalBeaconUseUrl}?useIndex=1`);
   });
 
   it("should route to adding beacon owner details if no is selected", () => {

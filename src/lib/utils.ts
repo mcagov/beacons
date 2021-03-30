@@ -63,8 +63,10 @@ export function formatUrlQueryParams(
   queryParamMap: Record<string, any>
 ): string {
   const formatUrl = (queryParam, value) => {
-    const queryStringCombiner = url.includes("?") ? "&" : "?";
-    url = `${url}${queryStringCombiner}${queryParam}=${value}`;
+    if (!url.includes(queryParam)) {
+      const queryStringCombiner = url.includes("?") ? "&" : "?";
+      url = `${url}${queryStringCombiner}${queryParam}=${value}`;
+    }
   };
 
   Object.keys(queryParamMap).forEach((queryParam) => {
