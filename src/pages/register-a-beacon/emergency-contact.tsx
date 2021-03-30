@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, Button } from "../../components/Button";
+import { BackButtonRouterIndexes, Button } from "../../components/Button";
 import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
@@ -88,7 +88,7 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
     <>
       <Layout
         navigation={
-          <BackButton href="/register-a-beacon/beacon-owner-address" />
+          <BackButtonRouterIndexes href="/register-a-beacon/beacon-owner-address" />
         }
         title={pageHeading}
         pageHasErrors={form.hasErrors}
