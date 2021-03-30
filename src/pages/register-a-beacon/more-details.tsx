@@ -11,6 +11,7 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
+import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -58,25 +59,23 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
               <Form>
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                  <div className="govuk-details">
-                    <p className="">
-                      Please provide a description of any vessel, aircraft,
-                      vehicle or anything else associated with this beacon.
-                    </p>
-                    <p className="">
-                      This might include defining features such as the length,
-                      colour etc) and any tracking details (e.g. RYA SafeTrx or
-                      Web) if you have them.
-                    </p>
-                    <p className="govuk-!-font-weight-bold">
-                      Please do not provide medical details as we cannot store
-                      these.
-                    </p>
-                    <p className="">
-                      This information is very helpful to Search and Rescue when
-                      trying to locate you
-                    </p>
-                  </div>
+                  <GovUKBody>
+                    Please provide a description of any vessel, aircraft,
+                    vehicle or anything else associated with this beacon.
+                  </GovUKBody>
+                  <GovUKBody>
+                    This might include defining features such as the length,
+                    colour etc) and any tracking details (e.g. RYA SafeTrx or
+                    Web) if you have them.
+                  </GovUKBody>
+                  <GovUKBody className="govuk-!-font-weight-bold">
+                    Please do not provide medical details as we cannot store
+                    these.
+                  </GovUKBody>
+                  <GovUKBody>
+                    This information is very helpful to Search and Rescue when
+                    trying to locate you
+                  </GovUKBody>
                   <MoreDetailsTextArea
                     id="moreDetails"
                     value={form.fields.moreDetails.value}
