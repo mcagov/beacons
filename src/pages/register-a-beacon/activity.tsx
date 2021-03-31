@@ -9,7 +9,11 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import {
+  DestinationIfValidCallback,
+  FormPageProps,
+  handlePageRequest,
+} from "../../lib/handlePageRequest";
 import { Activity, Environment, Purpose } from "../../lib/registration/types";
 
 interface OptionsProps {
@@ -91,16 +95,18 @@ export const ActivityOptions: FunctionComponent<ActivityOptionsProps> = ({
   form,
   listItemName,
 }: ActivityOptionsProps): JSX.Element => {
-  if (environment === Environment.MARITIME && purpose === Purpose.PLEASURE) {
+  if (environment === Environment.MARITIME && purpose === Purpose.PLEASURE)
     return <MaritimePleasureOptions form={form} listItemName={listItemName} />;
-  } else if (
-    environment === Environment.MARITIME &&
-    purpose === Purpose.COMMERCIAL
-  ) {
+  if (environment === Environment.MARITIME && purpose === Purpose.COMMERCIAL)
     return (
       <MaritimeCommercialOptions form={form} listItemName={listItemName} />
     );
-  }
+  if (environment === Environment.AVIATION && purpose === Purpose.PLEASURE)
+    return <AviationPleasureOptions form={form} listItemName={listItemName} />;
+  if (environment === Environment.AVIATION && purpose === Purpose.COMMERCIAL)
+    return (
+      <AviationCommercialOptions form={form} listItemName={listItemName} />
+    );
 };
 
 const MaritimePleasureOptions: FunctionComponent<OptionsProps> = ({
@@ -388,9 +394,27 @@ const AviationCommercialOptions: FunctionComponent<OptionsProps> = ({
   );
 };
 
+const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
+  const flattenedRegistration = context.registration.getFlattenedRegistration({
+    useIndex: context.useIndex,
+  });
+  const environment = flattenedRegistration.environment;
+
+  switch (environment) {
+    case Environment.MARITIME:
+      return "/register-a-beacon/about-the-vessel";
+    case Environment.AVIATION:
+      return "/register-a-beacon/about-the-aircraft";
+    default:
+      throw new Error(`Error: unrecognised environment ${environment}`);
+  }
+};
+
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "/register-a-beacon/about-the-vessel",
-  definePageForm
+  definePageForm,
+  (formData) => formData,
+  onSuccessfulFormCallback
 );
 
 export default ActivityPage;
