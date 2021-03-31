@@ -31,6 +31,8 @@ const definePageForm = ({
   workingRemotelyLocation,
   workingRemotelyPeopleCount,
   windfarm,
+  windfarmLocation,
+  windfarmPeopleCount,
   otherUse,
   otherUseDescription,
   otherUseLocation,
@@ -60,7 +62,7 @@ const definePageForm = ({
           "Enter how many people tend to be with you when you work remotely"
         ),
         Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you"
+          "Enter a whole number for the typical/maximum number of people that tend to be with you when you work remotely"
         ),
       ],
       [
@@ -72,7 +74,7 @@ const definePageForm = ({
     ),
     windfarm: new FieldManager(windfarm),
     windfarmLocation: new FieldManager(
-      workingRemotelyLocation,
+      windfarmLocation,
       [Validators.required("Enter the location of the windfarm")],
       [
         {
@@ -82,10 +84,13 @@ const definePageForm = ({
       ]
     ),
     windfarmPeopleCount: new FieldManager(
-      workingRemotelyPeopleCount,
+      windfarmPeopleCount,
       [
         Validators.required(
           "Enter how many people tend to be with you when you work at a windfarm"
+        ),
+        Validators.wholeNumber(
+          "Enter a whole number for the typical/maximum number of people that tend to be with you are at the windfarm"
         ),
       ],
       [
@@ -206,6 +211,31 @@ const LandOtherUses: FunctionComponent<FormPageProps> = ({
               id="workingRemotelyPeopleCount"
               label="What is the typical/maximum number of people with you?"
               defaultValue={form.fields.workingRemotelyPeopleCount.value}
+            />
+          </FormGroup>
+        </CheckboxListItem>
+        <CheckboxListItem
+          id="windfarm"
+          value={Activity.WINDFARM}
+          defaultChecked={form.fields.windfarm.value === Activity.WINDFARM}
+          label="Working on a windfarm"
+          conditional={true}
+        >
+          <FormGroup errorMessages={form.fields.windfarmLocation.errorMessages}>
+            <Input
+              id="windfarmLocation"
+              label="Where will you be using the beacon?"
+              hintText="You can enter a place name, area, or latitude and longitude"
+              defaultValue={form.fields.windfarmLocation.value}
+            />
+          </FormGroup>
+          <FormGroup
+            errorMessages={form.fields.windfarmPeopleCount.errorMessages}
+          >
+            <Input
+              id="windfarmPeopleCount"
+              label="What is the typical/maximum number of people with you?"
+              defaultValue={form.fields.windfarmPeopleCount.value}
             />
           </FormGroup>
         </CheckboxListItem>

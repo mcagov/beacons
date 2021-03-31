@@ -20,6 +20,9 @@ describe("As a beacon owner, I want to register how I use my beacon in the land/
   const workingRemotelySelector = "#workingRemotely";
   const workingRemotelyLocationSelector = "#workingRemotelyLocation";
   const workingRemotelyPeopleCountSelector = "#workingRemotelyPeopleCount";
+  const windfarmSelector = "#windfarm";
+  const windfarmLocationSelector = "#windfarmLocation";
+  const windfarmPeopleCountSelector = "#windfarmPeopleCount";
 
   beforeEach(() => {
     givenIAmAt(thisPageUrl);
@@ -51,8 +54,16 @@ describe("As a beacon owner, I want to register how I use my beacon in the land/
     });
 
     it("requires a people count if the working remotely checkbox is selected", () => {
-      const requiredFieldErrorMessage = ["Enter how many", "people"];
-      const mustBeANumberErrormessage = ["Enter a whole number", "people"];
+      const requiredFieldErrorMessage = [
+        "Enter how many",
+        "people",
+        "work remotely",
+      ];
+      const mustBeANumberErrormessage = [
+        "Enter a whole number",
+        "people",
+        "work remotely",
+      ];
 
       givenIHaveSelected(workingRemotelySelector);
 
@@ -67,6 +78,46 @@ describe("As a beacon owner, I want to register how I use my beacon in the land/
       thenIShouldSeeAnErrorMessageThatContains(...mustBeANumberErrormessage);
       whenIClickOnTheErrorSummaryLinkContaining(...mustBeANumberErrormessage);
       thenMyFocusMovesTo(workingRemotelyPeopleCountSelector);
+    });
+  });
+
+  describe("the Windfarm option", () => {
+    it("requires a location if the Windfarm checkbox is selected", () => {
+      const expectedErrorMessage = ["Enter the location", "windfarm"];
+
+      givenIHaveSelected(windfarmSelector);
+      whenIType(" ", windfarmLocationSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(windfarmLocationSelector);
+    });
+
+    it("requires a people count if the Windfarm checkbox is selected", () => {
+      const requiredFieldErrorMessage = [
+        "Enter how many",
+        "people",
+        "windfarm",
+      ];
+      const mustBeANumberErrormessage = [
+        "Enter a whole number",
+        "people",
+        "windfarm",
+      ];
+
+      givenIHaveSelected(windfarmSelector);
+
+      whenIType(" ", windfarmPeopleCountSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(...requiredFieldErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...requiredFieldErrorMessage);
+      thenMyFocusMovesTo(windfarmPeopleCountSelector);
+
+      whenIType("not a number", windfarmPeopleCountSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(...mustBeANumberErrormessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...mustBeANumberErrormessage);
+      thenMyFocusMovesTo(windfarmPeopleCountSelector);
     });
   });
 });
