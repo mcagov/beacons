@@ -79,3 +79,7 @@ export const thenMyFocusMovesTo = (selector: string): void => {
 export const givenIHaveSelected = (selector: string): void => {
   cy.get(selector).check();
 };
+
+export const whenIClickBack = (): void => {
+  cy.get(".govuk-back-link").click();
+};
