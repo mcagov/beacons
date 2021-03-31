@@ -141,7 +141,7 @@ const definePageForm = ({
   });
 };
 
-const LandOther: FunctionComponent<FormPageProps> = ({
+const LandOtherActivity: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
@@ -302,4 +302,4 @@ export const getServerSideProps: GetServerSideProps = handlePageRequest(
   definePageForm
 );
 
-export default LandOther;
+export default LandOtherActivity;

@@ -17,6 +17,7 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
   const pageUrl = "/register-a-beacon/beacon-use";
   const purposeUrl = "/register-a-beacon/purpose";
   const activityUrl = "/register-a-beacon/activity";
+  const landOrOtherActivityUrl = "/register-a-beacon/land-other-activity";
   const otherCheckboxSelector = "#other";
   const otherInput = "#environmentOtherInput";
 
@@ -48,16 +49,16 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
     givenIHaveSelected("#land");
     whenIClickContinue();
 
-    thenTheUrlShouldContain(activityUrl);
+    thenTheUrlShouldContain(landOrOtherActivityUrl);
   });
 
   describe("the Other use option", () => {
-    it("should route to the activity page if other is selected and a value is provided", () => {
+    it("should route to the land and other activity page if other is selected and a value is provided", () => {
       givenIHaveSelected(otherCheckboxSelector);
       whenIType("In the sea", otherInput);
       whenIClickContinue();
 
-      thenTheUrlShouldContain(activityUrl);
+      thenTheUrlShouldContain(landOrOtherActivityUrl);
     });
 
     it("should display errors if I have not submitted information for my use", () => {

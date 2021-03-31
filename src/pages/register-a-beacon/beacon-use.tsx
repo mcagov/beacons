@@ -118,7 +118,7 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
       return "/register-a-beacon/purpose";
 
     default:
-      return "/register-a-beacon/activity";
+      return "/register-a-beacon/land-other-activity";
   }
 };
 
