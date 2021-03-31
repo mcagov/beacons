@@ -33,10 +33,10 @@ const definePageForm = ({
   windfarm,
   windfarmLocation,
   windfarmPeopleCount,
-  otherUse,
-  otherUseDescription,
-  otherUseLocation,
-  otherUsePeopleCount,
+  otherActivity,
+  otherActivityDescription,
+  otherActivityLocation,
+  otherActivityPeopleCount,
 }: FormSubmission): FormManager => {
   return new FormManager({
     driving: new FieldManager(driving),
@@ -100,23 +100,40 @@ const definePageForm = ({
         },
       ]
     ),
-    otherUse: new FieldManager(otherUse),
-    otherUseDescription: new FieldManager(
-      otherUseDescription,
-      [Validators.required("Enter the location of the windfarm")],
+    otherActivity: new FieldManager(otherActivity),
+    otherActivityDescription: new FieldManager(
+      otherActivityDescription,
+      [Validators.required("Enter a description for your activity")],
       [
         {
-          dependsOn: "otherUse",
+          dependsOn: "otherActivity",
           meetingCondition: (value) => value === Activity.OTHER,
         },
       ]
     ),
-    otherUseLocation: new FieldManager(
-      otherUseLocation,
+    otherActivityLocation: new FieldManager(
+      otherActivityLocation,
       [Validators.required("Enter where you use your beacon")],
       [
         {
-          dependsOn: "otherUse",
+          dependsOn: "otherActivity",
+          meetingCondition: (value) => value === Activity.OTHER,
+        },
+      ]
+    ),
+    otherActivityPeopleCount: new FieldManager(
+      otherActivityPeopleCount,
+      [
+        Validators.required(
+          "Enter how many people tend to be with you when you use your beacon"
+        ),
+        Validators.wholeNumber(
+          "Enter a whole number for the typical/maximum number of people that tend to be with you when you use your beacon"
+        ),
+      ],
+      [
+        {
+          dependsOn: "otherActivity",
           meetingCondition: (value) => value === Activity.OTHER,
         },
       ]
@@ -236,6 +253,42 @@ const LandOtherUses: FunctionComponent<FormPageProps> = ({
               id="windfarmPeopleCount"
               label="What is the typical/maximum number of people with you?"
               defaultValue={form.fields.windfarmPeopleCount.value}
+            />
+          </FormGroup>
+        </CheckboxListItem>
+        <CheckboxListItem
+          id="otherActivity"
+          value={Activity.OTHER}
+          defaultChecked={form.fields.otherActivity.value === Activity.OTHER}
+          label="Working on a windfarm"
+          conditional={true}
+        >
+          <FormGroup
+            errorMessages={form.fields.otherActivityDescription.errorMessages}
+          >
+            <Input
+              id="otherActivityDescription"
+              label="Please describe your use"
+              defaultValue={form.fields.otherActivityDescription.value}
+            />
+          </FormGroup>
+          <FormGroup
+            errorMessages={form.fields.otherActivityLocation.errorMessages}
+          >
+            <Input
+              id="otherActivityLocation"
+              label="Where will you be using your beacon?"
+              hintText="You can enter a place name, area or latitude and longitude"
+              defaultValue={form.fields.otherActivityLocation.value}
+            />
+          </FormGroup>
+          <FormGroup
+            errorMessages={form.fields.otherActivityPeopleCount.errorMessages}
+          >
+            <Input
+              id="otherActivityPeopleCount"
+              label="What is the typical/max number of people with you?"
+              defaultValue={form.fields.otherActivityPeopleCount.value}
             />
           </FormGroup>
         </CheckboxListItem>

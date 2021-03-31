@@ -23,6 +23,10 @@ describe("As a beacon owner, I want to register how I use my beacon in the land/
   const windfarmSelector = "#windfarm";
   const windfarmLocationSelector = "#windfarmLocation";
   const windfarmPeopleCountSelector = "#windfarmPeopleCount";
+  const otherActivitySelector = "#otherActivity";
+  const otherActivityDescriptionSelector = "#otherActivityDescription";
+  const otherActivityLocationSelector = "#otherActivityLocation";
+  const otherActivityPeopleCountSelector = "#otherActivityPeopleCount";
 
   beforeEach(() => {
     givenIAmAt(thisPageUrl);
@@ -118,6 +122,53 @@ describe("As a beacon owner, I want to register how I use my beacon in the land/
       thenIShouldSeeAnErrorMessageThatContains(...mustBeANumberErrormessage);
       whenIClickOnTheErrorSummaryLinkContaining(...mustBeANumberErrormessage);
       thenMyFocusMovesTo(windfarmPeopleCountSelector);
+    });
+  });
+
+  describe("the Other option", () => {
+    it("requires an activity description if the Other checkbox is selected", () => {
+      const expectedErrorMessage = ["Enter a description", "activity"];
+
+      givenIHaveSelected(otherActivitySelector);
+      whenIType(" ", otherActivityDescriptionSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(otherActivityDescriptionSelector);
+    });
+
+    it("requires an activity location if the Other checkbox is selected", () => {
+      const expectedErrorMessage = ["Enter where", "you use"];
+
+      givenIHaveSelected(otherActivitySelector);
+      whenIType(" ", otherActivityLocationSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(otherActivityLocationSelector);
+    });
+
+    it("requires a people count if the Other checkbox is selected", () => {
+      const requiredFieldErrorMessage = ["Enter how many", "people", "you use"];
+      const mustBeANumberErrormessage = [
+        "Enter a whole number",
+        "people",
+        "you use",
+      ];
+
+      givenIHaveSelected(otherActivitySelector);
+
+      whenIType(" ", otherActivityPeopleCountSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(...requiredFieldErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...requiredFieldErrorMessage);
+      thenMyFocusMovesTo(otherActivityPeopleCountSelector);
+
+      whenIType("not a number", otherActivityPeopleCountSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(...mustBeANumberErrormessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...mustBeANumberErrormessage);
+      thenMyFocusMovesTo(otherActivityPeopleCountSelector);
     });
   });
 });
