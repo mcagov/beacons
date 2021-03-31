@@ -1,13 +1,25 @@
-import { FormJSON } from "../../src/lib/form/formManager";
 import {
+  andIClickContinue,
   givenIAmAt,
+  givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
+  thenIShouldSeeAnErrorMessageThatContains,
+  thenMyFocusMovesTo,
+  thenTheUrlShouldContain,
+  whenIClickOnTheErrorSummaryLinkContaining,
+  whenIType,
 } from "./common.spec";
 
 describe("As a beacon owner, I want to register how I use my beacon in the land/other environment", () => {
   const thisPageUrl = "/register-a-beacon/land-other";
   const previousPageUrl = "/register-a-beacon/beacon-use";
-  const nextPageUrl = "";
+  const nextPageUrl = "/register-a-beacon/land-other-communication";
+
+  const drivingSelector = "#driving";
+  const cyclingSelector = "#cycling";
+  const workingRemotelySelector = "#workingRemotely";
+  const workingRemotelyLocationSelector = "#workingRemotelyLocation";
+  const workingRemotelyPeopleCountSelector = "#workingRemotelyPeopleCount";
 
   beforeEach(() => {
     givenIAmAt(thisPageUrl);
@@ -17,72 +29,44 @@ describe("As a beacon owner, I want to register how I use my beacon in the land/
     iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
   });
 
-  xit("submits the form if all fields are valid", () => {});
-});
+  it("submits the form if all fields are valid", () => {
+    givenIHaveSelected(drivingSelector);
+    givenIHaveSelected(cyclingSelector);
 
-const emptyLandOtherForm: FormJSON = {
-  hasErrors: false,
-  errorSummary: [],
-  fields: {
-    driving: {
-      value: "",
-      errorMessages: [],
-    },
-    cycling: {
-      value: "",
-      errorMessages: [],
-    },
-    climbingMountaineering: {
-      value: "",
-      errorMessages: [],
-    },
-    skiing: {
-      value: "",
-      errorMessages: [],
-    },
-    walkingHiking: {
-      value: "",
-      errorMessages: [],
-    },
-    workingRemotely: {
-      value: "",
-      errorMessages: [],
-    },
-    workingRemotelyLocation: {
-      value: "",
-      errorMessages: [],
-    },
-    workingRemotelyPeopleCount: {
-      value: "",
-      errorMessages: [],
-    },
-    windfarm: {
-      value: "",
-      errorMessages: [],
-    },
-    windfarmLocation: {
-      value: "",
-      errorMessages: [],
-    },
-    windfarmPeopleCount: {
-      value: "",
-      errorMessages: [],
-    },
-    otherUse: {
-      value: "",
-      errorMessages: [],
-    },
-    otherUseDescription: {
-      value: "",
-      errorMessages: [],
-    },
-    otherUseLocation: {
-      value: "",
-      errorMessages: [],
-    },
-    otherUsePeopleCount: {
-      value: "",
-      errorMessages: [],
-    },
-  },
-};
+    andIClickContinue();
+
+    thenTheUrlShouldContain(nextPageUrl);
+  });
+
+  describe("the Working remotely option", () => {
+    it("requires a location if the working remotely checkbox is selected", () => {
+      const expectedErrorMessage = ["Enter the location", "work remotely"];
+
+      givenIHaveSelected(workingRemotelySelector);
+      whenIType(" ", workingRemotelyLocationSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(workingRemotelyLocationSelector);
+    });
+
+    it("requires a people count if the working remotely checkbox is selected", () => {
+      const requiredFieldErrorMessage = ["Enter how many", "people"];
+      const mustBeANumberErrormessage = ["Enter a whole number", "people"];
+
+      givenIHaveSelected(workingRemotelySelector);
+
+      whenIType(" ", workingRemotelyPeopleCountSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(...requiredFieldErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...requiredFieldErrorMessage);
+      thenMyFocusMovesTo(workingRemotelyPeopleCountSelector);
+
+      whenIType("not a number", workingRemotelyPeopleCountSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(...mustBeANumberErrormessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...mustBeANumberErrormessage);
+      thenMyFocusMovesTo(workingRemotelyPeopleCountSelector);
+    });
+  });
+});

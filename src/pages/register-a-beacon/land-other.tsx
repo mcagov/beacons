@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButtonRouterIndexes, Button } from "../../components/Button";
+import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
 import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
@@ -9,6 +10,7 @@ import {
   FormLegend,
 } from "../../components/Form";
 import { Grid } from "../../components/Grid";
+import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { GovUKBody, PageHeading } from "../../components/Typography";
@@ -56,6 +58,9 @@ const definePageForm = ({
       [
         Validators.required(
           "Enter how many people tend to be with you when you work remotely"
+        ),
+        Validators.wholeNumber(
+          "Enter a whole number for the typical/maximum number of people that tend to be with you"
         ),
       ],
       [
@@ -157,16 +162,60 @@ const LandOtherUses: FunctionComponent<FormPageProps> = ({
   form,
 }: FormPageProps) => (
   <FormFieldset>
-    <FormLegend size="small">
-      Tick all that apply and provide as much detail as you can
-    </FormLegend>
-
-    <FormGroup>sdf</FormGroup>
+    <FormGroup>
+      <FormLegend size="small">
+        Tick all that apply and provide as much detail as you can
+      </FormLegend>
+      <CheckboxList conditional={true}>
+        <CheckboxListItem
+          id="driving"
+          value={Activity.DRIVING}
+          defaultChecked={form.fields.driving.value === Activity.DRIVING}
+          label="Driving"
+        />
+        <CheckboxListItem
+          id="cycling"
+          value={Activity.CYCLING}
+          defaultChecked={form.fields.cycling.value === Activity.CYCLING}
+          label="Cycling"
+        />
+        <CheckboxListItem
+          id="workingRemotely"
+          value={Activity.WORKING_REMOTELY}
+          defaultChecked={
+            form.fields.workingRemotely.value === Activity.WORKING_REMOTELY
+          }
+          label="Working remotely"
+          hintText="E.g. forestry worker, estate manager, tree surgeon, engineer, council worker"
+          conditional={true}
+        >
+          <FormGroup
+            errorMessages={form.fields.workingRemotelyLocation.errorMessages}
+          >
+            <Input
+              id="workingRemotelyLocation"
+              label="Where will you be using the beacon?"
+              hintText="You can enter a place name, area, or latitude and longitude"
+              defaultValue={form.fields.workingRemotelyLocation.value}
+            />
+          </FormGroup>
+          <FormGroup
+            errorMessages={form.fields.workingRemotelyPeopleCount.errorMessages}
+          >
+            <Input
+              id="workingRemotelyPeopleCount"
+              label="What is the typical/maximum number of people with you?"
+              defaultValue={form.fields.workingRemotelyPeopleCount.value}
+            />
+          </FormGroup>
+        </CheckboxListItem>
+      </CheckboxList>
+    </FormGroup>
   </FormFieldset>
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/more-details",
+  "/register-a-beacon/land-other-communication",
   definePageForm
 );
 
