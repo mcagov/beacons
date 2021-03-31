@@ -46,7 +46,7 @@ describe("As a beacon owner in the maritime environment,", () => {
       iCanSeeAHeadingThatContains("maritime");
       iCanSeeAHeadingThatContains("commercial");
 
-      givenIHaveSelected("#sailing");
+      givenIHaveSelected("#fishing-vessel");
       andIClickContinue();
       thenTheUrlShouldContain(aboutTheVesselUrl);
       iCanSeeAHeadingThatContains("vessel");

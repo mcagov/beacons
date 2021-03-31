@@ -46,10 +46,11 @@ const definePageForm = ({
 const ActivityPage: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
+  flattenedRegistration,
 }: FormPageProps): JSX.Element => {
   // TODO: These values will be taken from the cache once that's available
-  const environment = "MARITIME";
-  const purpose = "PLEASURE";
+  const environment = flattenedRegistration.environment;
+  const purpose = flattenedRegistration.purpose;
   const pageHeading = `Please select the ${purpose.toLowerCase()} ${environment.toLowerCase()} activity that best describes how the beacon will be used`;
   const insetText = (
     <>
