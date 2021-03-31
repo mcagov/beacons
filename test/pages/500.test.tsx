@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react";
 import React from "react";
-import Custom404 from "../../src/pages/404";
+import Custom500 from "../../src/pages/500";
 
-describe("Custom 404 Page", () => {
+describe("Custom 500 page", () => {
   it("should render the page", () => {
-    render(<Custom404 />);
+    render(<Custom500 />);
   });
 });

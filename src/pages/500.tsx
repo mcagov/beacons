@@ -8,8 +8,8 @@ import {
   SectionHeading,
 } from "../components/Typography";
 
-const Custom404: FunctionComponent = (): JSX.Element => {
-  const pageHeading = "Page not found";
+const Custom500: FunctionComponent = () => {
+  const pageHeading = "Sorry, there is a problem with the service";
 
   return (
     <Layout title={pageHeading} showCookieBanner={false}>
@@ -38,4 +38,4 @@ const Custom404: FunctionComponent = (): JSX.Element => {
   );
 };
 
-export default Custom404;
+export default Custom500;
