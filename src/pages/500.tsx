@@ -12,7 +12,7 @@ const Custom500: FunctionComponent = () => {
   const pageHeading = "Sorry, there is a problem with the service";
 
   return (
-    <Layout title={pageHeading} pageHasErrors={false} showCookieBanner={false}>
+    <Layout title={pageHeading} showCookieBanner={false}>
       <Grid
         mainContent={
           <>

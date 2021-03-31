@@ -2,13 +2,17 @@ import React, { FunctionComponent } from "react";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";
 import { BeaconRegistryContactInfo } from "../components/Mca";
-import { GovUKBody, PageHeading } from "../components/Typography";
+import {
+  GovUKBody,
+  PageHeading,
+  SectionHeading,
+} from "../components/Typography";
 
 const Custom404: FunctionComponent = (): JSX.Element => {
   const pageHeading = "Page not found";
 
   return (
-    <Layout title={pageHeading} pageHasErrors={false} showCookieBanner={false}>
+    <Layout title={pageHeading} showCookieBanner={false}>
       <Grid
         mainContent={
           <>
@@ -25,7 +29,7 @@ const Custom404: FunctionComponent = (): JSX.Element => {
               use the details below if you need to speak to someone about your
               beacon.
             </GovUKBody>
-            <h2 className="govuk-heading-m">Contact the UK Beacon Registry</h2>
+            <SectionHeading>Contact the UK Beacon Registry</SectionHeading>
             <BeaconRegistryContactInfo />
           </>
         }
