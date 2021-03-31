@@ -80,8 +80,6 @@ export interface BeaconUse {
   dongle: string;
   beaconPosition: string;
 
-  // Land or other uses
-
   // Generic more details on use of beacon
   moreDetails: string;
 }
@@ -99,11 +97,11 @@ export enum Purpose {
 }
 
 export enum Activity {
-  MOTOR = "MOTOR",
+  // Maritime
   SAILING = "SAILING",
+  MOTOR = "MOTOR",
   ROWING = "ROWING",
   SMALL_UNPOWERED = "SMALL_UNPOWERED",
-
   FISHING_VESSEL = "FISHING_VESSEL",
   MERCHANT_VESSEL = "MERCHANT_VESSEL",
   COMMERCIAL_SAILING_VESSEL = "COMMERCIAL_SAILING_VESSEL",
@@ -112,6 +110,16 @@ export enum Activity {
   OFFSHORE_WINDFARM = "OFFSHORE_WINDFARM",
   OFFSHORE_RIG_PLATFORM = "OFFSHORE_RIG_PLATFORM",
 
+  // Aviation
+  JET_AIRCRAFT = "JET_AIRCRAFT",
+  LIGHT_AIRCRAFT = "LIGHT_AIRCRAFT",
+  GLIDER = "GLIDER",
+  HOT_AIR_BALLON = "HOT_AIR_BALLON",
+  ROTOR_CRAFT = "ROTOR_CRAFT",
+  PASSENGER_PLANE = "PASSENGER_PLANE",
+  CARGO_AIRPLANE = "CARGO_AIRPLANE",
+
+  // Land/other activities
   DRIVING = "DRIVING",
   CYCLING = "CYCLING",
   CLIMBING_MOUNTAINEERING = "CLIMBING_MOUNTAINEERING",

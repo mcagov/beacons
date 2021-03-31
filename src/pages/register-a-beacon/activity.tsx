@@ -4,6 +4,7 @@ import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
+import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -52,13 +53,13 @@ const ActivityPage: FunctionComponent<FormPageProps> = ({
   const pageHeading = `Please select the ${purpose.toLowerCase()} ${environment.toLowerCase()} activity that best describes how the beacon will be used`;
   const insetText = (
     <>
-      <p>
+      <GovUKBody>
         This information will help us plan any Search and Rescue response that
         may be required in future.
-      </p>
-      <p>
+      </GovUKBody>
+      <GovUKBody>
         We will ask you for a full description of any vessels later in the form
-      </p>
+      </GovUKBody>
     </>
   );
 
@@ -183,25 +184,20 @@ const MaritimeCommercialOptions: FunctionComponent<OptionsProps> = ({
         defaultChecked={form.fields.activity.value === Activity.MERCHANT_VESSEL}
       />
       <RadioListItem
-        id="commercial-sailing-vessel"
+        id="sailing-vessel"
         name={listItemName}
-        value={Activity.COMMERCIAL_SAILING_VESSEL}
+        value={Activity.SAILING}
         label="Commercial sailing vessel"
         hintText="E.g. Sail training, Hire or Charter vessel, Delivery Skipper etc"
-        defaultChecked={
-          form.fields.activity.value === Activity.COMMERCIAL_SAILING_VESSEL
-        }
+        defaultChecked={form.fields.activity.value === Activity.SAILING}
       />
       <RadioListItem
-        id="commercial-motor-pleasure-vessel"
+        id="motor-vessel"
         name={listItemName}
-        value={Activity.COMMERCIAL_MOTOR_PLEASURE_VESSEL}
+        value={Activity.MOTOR}
         label="Commercial motor pleasure vessel"
         hintText="E.g. Dive boat, Hire or charter vessel, Delivery skipper etc"
-        defaultChecked={
-          form.fields.activity.value ===
-          Activity.COMMERCIAL_MOTOR_PLEASURE_VESSEL
-        }
+        defaultChecked={form.fields.activity.value === Activity.MOTOR}
       />
       <RadioListItem
         id="floating-platform"
@@ -238,6 +234,144 @@ const MaritimeCommercialOptions: FunctionComponent<OptionsProps> = ({
         name={listItemName}
         value={Activity.OTHER}
         label="Other"
+        defaultChecked={form.fields.activity.value === Activity.OTHER}
+        conditional={true}
+      >
+        <FormGroup errorMessages={form.fields.otherActivityText.errorMessages}>
+          <Input
+            id="otherActivityText"
+            label="Please describe your use"
+            defaultValue={form.fields.otherActivityText.value}
+          />
+        </FormGroup>
+      </RadioListItem>
+    </>
+  );
+};
+
+const AviationPleasureOptions: FunctionComponent<OptionsProps> = ({
+  form,
+  listItemName,
+}: OptionsProps): JSX.Element => {
+  return (
+    <>
+      <RadioListItem
+        id="jet-aircraft"
+        name={listItemName}
+        value={Activity.JET_AIRCRAFT}
+        label="Jet Aircraft vessel"
+        hintText="E.g. very light jet, light business jet, medium or heavy business jet"
+        defaultChecked={form.fields.activity.value === Activity.JET_AIRCRAFT}
+      />
+      <RadioListItem
+        id="light-aircraft"
+        name={listItemName}
+        value={Activity.LIGHT_AIRCRAFT}
+        label="Light aircraft"
+        hintText="E.g. single engine, twin turboprop, aerobatic"
+        defaultChecked={form.fields.activity.value === Activity.LIGHT_AIRCRAFT}
+      />
+      <RadioListItem
+        id="rotor-craft"
+        name={listItemName}
+        value={Activity.ROTOR_CRAFT}
+        label="Rotor craft"
+        hintText="E.g. helicopter, gyrocopter"
+        defaultChecked={form.fields.activity.value === Activity.ROTOR_CRAFT}
+      />
+      <RadioListItem
+        id="glider"
+        name={listItemName}
+        value={Activity.GLIDER}
+        label="Glider"
+        hintText="E.g. microlight, glider, hang glider"
+        defaultChecked={form.fields.activity.value === Activity.GLIDER}
+      />
+      <RadioListItem
+        id="hot-air-ballon"
+        name={listItemName}
+        value={Activity.HOT_AIR_BALLON}
+        label="Hot air ballon"
+        defaultChecked={form.fields.activity.value === Activity.HOT_AIR_BALLON}
+      />
+      <RadioListItem
+        id="other-activity"
+        name={listItemName}
+        value={Activity.OTHER}
+        label="Other"
+        defaultChecked={form.fields.activity.value === Activity.OTHER}
+        conditional={true}
+      >
+        <FormGroup errorMessages={form.fields.otherActivityText.errorMessages}>
+          <Input
+            id="otherActivityText"
+            label="Please describe your use"
+            defaultValue={form.fields.otherActivityText.value}
+          />
+        </FormGroup>
+      </RadioListItem>
+    </>
+  );
+};
+
+const AviationCommercialOptions: FunctionComponent<OptionsProps> = ({
+  form,
+  listItemName,
+}: OptionsProps): JSX.Element => {
+  return (
+    <>
+      <RadioListItem
+        id="passenger-plane"
+        name={listItemName}
+        value={Activity.PASSENGER_PLANE}
+        label="Passenger airplane"
+        hintText="E.g. jumbo passenger jet, mid size passenger jet, light passenger jet, turbopop passenger plan"
+        defaultChecked={form.fields.activity.value === Activity.PASSENGER_PLANE}
+      />
+      <RadioListItem
+        id="jet-aircraft"
+        name={listItemName}
+        value={Activity.JET_AIRCRAFT}
+        label="Jet aircraft"
+        hintText="E.g. very light jet, light business jet, medium or heavy business jet"
+        defaultChecked={form.fields.activity.value === Activity.JET_AIRCRAFT}
+      />
+      <RadioListItem
+        id="cargo-airplane"
+        name={listItemName}
+        value={Activity.CARGO_AIRPLANE}
+        label="Cargo airplane"
+        defaultChecked={form.fields.activity.value === Activity.CARGO_AIRPLANE}
+      />
+      <RadioListItem
+        id="light-aircraft"
+        name={listItemName}
+        value={Activity.LIGHT_AIRCRAFT}
+        label="Light aircraft"
+        hintText="E.g. microlight, glider, hang glider"
+        defaultChecked={form.fields.activity.value === Activity.GLIDER}
+      />
+      <RadioListItem
+        id="glider"
+        name={listItemName}
+        value={Activity.GLIDER}
+        label="Glider"
+        hintText="E.g. microlight, glider, hang glider"
+        defaultChecked={form.fields.activity.value === Activity.GLIDER}
+      />
+      <RadioListItem
+        id="hot-air-ballon"
+        name={listItemName}
+        value={Activity.HOT_AIR_BALLON}
+        label="Hot air ballon"
+        defaultChecked={form.fields.activity.value === Activity.HOT_AIR_BALLON}
+      />
+      <RadioListItem
+        id="other-activity"
+        name={listItemName}
+        value={Activity.OTHER}
+        label="Other"
+        hintText="E.g. paragliding"
         defaultChecked={form.fields.activity.value === Activity.OTHER}
         conditional={true}
       >

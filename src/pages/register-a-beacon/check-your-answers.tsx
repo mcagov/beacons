@@ -1,12 +1,11 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent } from "react";
 import { BackButton, StartButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import {
   GovUKBody,
-  GovUKList,
   PageHeading,
   SectionHeading,
 } from "../../components/Typography";
@@ -16,9 +15,8 @@ import {
   withCookieRedirect,
 } from "../../lib/middleware";
 import {
-  Activity,
   BeaconUse,
-  Communication,
+  Environment,
   IRegistration,
 } from "../../lib/registration/types";
 
@@ -26,12 +24,30 @@ interface CheckYourAnswersProps {
   registration: IRegistration;
 }
 
+interface CheckYourAnswersDataRowItemProps {
+  label?: string;
+  value?: string;
+}
+
+interface CheckYourAnswersBeaconUseSectionProps {
+  index: number;
+  use: BeaconUse;
+  href?: string;
+}
+
+const noData = "no data";
+
 const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   registration,
 }: CheckYourAnswersProps): JSX.Element => {
-  const pageHeading = "Check your answers before sending in your registration";
-  // TODO: Update to iterate over all beacon uses - upcoming in Sprint 7 please remove afterwards.
-  const use: BeaconUse = registration.uses[0];
+  const pageHeading = "Check your answers";
+  const useSections = [];
+  for (const [index, use] of registration.uses.entries()) {
+    // TODO push index when we know how to convert index to first, second, third (helper class?)
+    useSections.push(
+      <BeaconUseSection index={index} use={use} key={`row${index}`} />
+    );
+  }
 
   return (
     <>
@@ -44,17 +60,16 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
           mainContent={
             <>
               <PageHeading>{pageHeading}</PageHeading>
+              <GovUKBody>
+                Please check you answer before sending in your registration
+                application
+              </GovUKBody>
               <BeaconDetailsSection {...registration} />
               <BeaconInformationSection {...registration} />
-              <BeaconUseSection {...use} />
-              <AboutTheVesselSection {...use} />
-              <VesselCommunicationsSection {...use} />
-              <MoreDetailsSection {...use} />
+              {useSections}
               <BeaconOwnerSection {...registration} />
               <BeaconOwnerAddressSection {...registration} />
-              <BeaconOwnerEmergencyContact1Section {...registration} />
-              <BeaconOwnerEmergencyContact2Section {...registration} />
-              <BeaconOwnerEmergencyContact3Section {...registration} />
+              <BeaconOwnerEmergencyContactsSection {...registration} />
               <SendYourApplication />
               <StartButton
                 buttonText="Accept and send"
@@ -68,35 +83,34 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   );
 };
 
+const CheckYourAnswersDataRowItem: FunctionComponent<CheckYourAnswersDataRowItemProps> = ({
+  label,
+  value,
+}: CheckYourAnswersDataRowItemProps): JSX.Element => (
+  <>
+    {label ? label + ": " : ""}
+    {value ? value : noData}
+    <br />
+  </>
+);
+
 const BeaconDetailsSection: FunctionComponent<IRegistration> = ({
   manufacturer,
   model,
   hexId,
 }: IRegistration): JSX.Element => (
   <>
-    <SectionHeading>Beacon details</SectionHeading>
+    <SectionHeading>About the beacon being registered</SectionHeading>
 
     <SummaryList>
       <SummaryListItem
-        labelText="Beacon manufacturer"
+        labelText="Beacon information"
         href="/register-a-beacon/check-beacon-details"
         actionText="Change"
       >
-        {manufacturer}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Beacon model"
-        href="/register-a-beacon/check-beacon-details"
-        actionText="Change"
-      >
-        {model}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Beacon HEX ID"
-        href="/register-a-beacon/check-beacon-details"
-        actionText="Change"
-      >
-        {hexId}
+        <CheckYourAnswersDataRowItem value={manufacturer} />
+        <CheckYourAnswersDataRowItem value={model} />
+        <CheckYourAnswersDataRowItem label="Hex ID/UIN" value={hexId} />
       </SummaryListItem>
     </SummaryList>
   </>
@@ -111,273 +125,275 @@ const BeaconInformationSection: FunctionComponent<IRegistration> = ({
   lastServicedDateYear,
 }: IRegistration): JSX.Element => (
   <>
-    <SectionHeading>Beacon information</SectionHeading>
-
     <SummaryList>
       <SummaryListItem
-        labelText="Manufacturer serial number"
+        labelText="Additional beacon information"
         href="/register-a-beacon/beacon-information"
         actionText="Change"
       >
-        {manufacturerSerialNumber}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Beacon CHK code"
-        href="/register-a-beacon/beacon-information"
-        actionText="Change"
-      >
-        {chkCode}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Battery expiry date"
-        href="/register-a-beacon/beacon-information"
-        actionText="Change"
-      >
-        {batteryExpiryDateMonth}
-        {batteryExpiryDateMonth ? "," : ""} {batteryExpiryDateYear}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Beacon service date"
-        href="/register-a-beacon/beacon-information"
-        actionText="Change"
-      >
-        {lastServicedDateMonth}
-        {lastServicedDateMonth ? "," : ""} {lastServicedDateYear}
+        <CheckYourAnswersDataRowItem
+          label="Serial number"
+          value={manufacturerSerialNumber}
+        />
+        <CheckYourAnswersDataRowItem label="CHK code" value={chkCode} />
+        <CheckYourAnswersDataRowItem
+          label="Battery expiry"
+          value={
+            batteryExpiryDateMonth
+              ? batteryExpiryDateMonth + ", " + batteryExpiryDateYear
+              : batteryExpiryDateYear
+          }
+        />
+        <CheckYourAnswersDataRowItem
+          label="Beacon service date"
+          value={
+            lastServicedDateMonth
+              ? lastServicedDateMonth + ", " + lastServicedDateYear
+              : lastServicedDateYear
+          }
+        />
       </SummaryListItem>
     </SummaryList>
   </>
 );
 
-const BeaconUseSection: FunctionComponent<BeaconUse> = ({
-  activity,
-  otherActivityText,
-}: BeaconUse): JSX.Element => {
-  let level3UseText = "";
-  switch (activity) {
-    case Activity.MOTOR:
-      level3UseText = "Motor vessel";
+const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps> = ({
+  index,
+  use,
+}: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
+  const href = `/register-a-beacon/envionment?useIndex=${index}"`;
+  let aboutTheSection = <></>;
+  let commsSection = <></>;
+  switch (use.environment) {
+    case Environment.MARITIME:
+      aboutTheSection = <AboutTheVesselSubSection index={index} use={use} />;
+      commsSection = (
+        <CommunicationsSubSection
+          index={index}
+          use={use}
+          href={"/register-a-beacon/vessel-communications"}
+        />
+      );
       break;
-    case Activity.ROWING:
-      level3UseText = "Rowing vessel";
+    case Environment.AVIATION:
+      aboutTheSection = <AboutTheAircraftSubSection index={index} use={use} />;
+      commsSection = (
+        <CommunicationsSubSection
+          index={index}
+          use={use}
+          href={"/register-a-beacon/aircraft-communications"}
+        />
+      );
       break;
-    case Activity.SAILING:
-      level3UseText = "Sailing vessel";
+    case Environment.LAND:
+      commsSection = (
+        <CommunicationsSubSection
+          index={index}
+          use={use}
+          href={"/register-a-beacon/land-other-communications"}
+        />
+      );
       break;
-    case Activity.SMALL_UNPOWERED:
-      level3UseText = "Small unpowered vessel";
-      break;
-    case Activity.OTHER:
-      level3UseText = otherActivityText;
+    case Environment.OTHER:
+      commsSection = (
+        <CommunicationsSubSection
+          index={index}
+          use={use}
+          href={"/register-a-beacon/land-other-communications"}
+        />
+      );
       break;
   }
-
   return (
     <>
-      <SectionHeading>Beacon use</SectionHeading>
+      <SectionHeading>Use {index + 1} for the beacon </SectionHeading>
 
       <SummaryList>
+        <SummaryListItem labelText="Beacon use" href={href} actionText="Change">
+          <CheckYourAnswersDataRowItem value={use.environment} />
+          <CheckYourAnswersDataRowItem value={use.purpose} />
+          <CheckYourAnswersDataRowItem value={use.activity} />
+        </SummaryListItem>
+      </SummaryList>
+      {aboutTheSection}
+      {commsSection}
+      <MoreDetailsSubSection index={index} use={use} />
+    </>
+  );
+};
+
+const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps> = ({
+  index,
+  use,
+}: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
+  const href = `/register-a-beacon/about-the-vessel?useIndex=${index}"`;
+  return (
+    <>
+      <SummaryList>
         <SummaryListItem
-          labelText="Primary beacon activity"
-          href="/register-a-beacon/activity"
+          labelText="About the vessel, rig or windfarm"
+          href={href}
           actionText="Change"
         >
-          {"Maritime"}
-          <br />
-          {"Pleasure"}
-          <br />
-          {level3UseText}
+          <CheckYourAnswersDataRowItem
+            label="Max persons onboard"
+            value={use.maxCapacity}
+          />
+          <CheckYourAnswersDataRowItem
+            label="vessel name"
+            value={use.vesselName}
+          />
+          <CheckYourAnswersDataRowItem label="Homeport" value={use.homeport} />
+          <CheckYourAnswersDataRowItem
+            label="Area of operation"
+            value={use.areaOfOperation}
+          />
+          <CheckYourAnswersDataRowItem
+            label="Beacon position"
+            value={use.beaconLocation}
+          />
         </SummaryListItem>
       </SummaryList>
     </>
   );
 };
 
-const AboutTheVesselSection: FunctionComponent<BeaconUse> = ({
-  maxCapacity,
-  vesselName,
-  homeport,
-  areaOfOperation,
-  beaconLocation,
-}: BeaconUse): JSX.Element => (
-  <>
-    <SectionHeading>About the vessel</SectionHeading>
-
-    <SummaryList>
-      <SummaryListItem
-        labelText="Max number of persons onboard"
-        href="/register-a-beacon/about-the-vessel"
-        actionText="Change"
-      >
-        {maxCapacity}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Vessel name"
-        href="/register-a-beacon/about-the-vessel"
-        actionText="Change"
-      >
-        {vesselName}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Homeport"
-        href="/register-a-beacon/about-the-vessel"
-        actionText="Change"
-      >
-        {homeport}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Area of operation"
-        href="/register-a-beacon/about-the-vessel"
-        actionText="Change"
-      >
-        {areaOfOperation}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="How beacon will be used"
-        href="/register-a-beacon/about-the-vessel"
-        actionText="Change"
-      >
-        {beaconLocation}
-      </SummaryListItem>
-    </SummaryList>
-  </>
-);
-
-const VesselCommunicationsSection: FunctionComponent<BeaconUse> = ({
-  callSign,
-  vhfRadio,
-  fixedVhfRadio,
-  fixedVhfRadioInput,
-  portableVhfRadio,
-  portableVhfRadioInput,
-  satelliteTelephone,
-  satelliteTelephoneInput,
-  mobileTelephone,
-  mobileTelephoneInput1,
-  mobileTelephoneInput2,
-}: BeaconUse): JSX.Element => {
-  let vhfRadioText = "";
-  if (vhfRadio == Communication.VHF_RADIO) vhfRadioText += "YES";
-
-  let vesselMMSINumberText: ReactNode = "";
-  if (fixedVhfRadio == Communication.FIXED_VHF_RADIO) {
-    vesselMMSINumberText = (
-      <GovUKList>
-        <li>YES</li>
-      </GovUKList>
-    );
-  }
-
-  let portableMMSIText: ReactNode = "";
-  if (portableVhfRadio == Communication.PORTABLE_VHF_RADIO) {
-    portableMMSIText = (
-      <GovUKList>
-        <li>YES</li>
-      </GovUKList>
-    );
-  }
-
-  let satelliteTelephoneText: ReactNode = "";
-  if (satelliteTelephone == Communication.SATELLITE_TELEPHONE) {
-    satelliteTelephoneText = (
-      <GovUKList>
-        <li>{satelliteTelephoneInput}</li>
-      </GovUKList>
-    );
-  }
-
-  let mobileTelephoneText: ReactNode = "";
-  if (mobileTelephone) {
-    mobileTelephoneText = (
-      <GovUKList>
-        <li>{mobileTelephoneInput1}</li>
-        <li>{mobileTelephoneInput2}</li>
-      </GovUKList>
-    );
-  }
+const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps> = ({
+  index,
+  use,
+}: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
+  const href = `/register-a-beacon/about-the-aircraft?useIndex=${index}"`;
 
   return (
     <>
-      <SectionHeading>Vessel communications</SectionHeading>
-
       <SummaryList>
         <SummaryListItem
-          labelText="Call sign"
-          href="/register-a-beacon/vessel-communications"
+          labelText="About the aircraft"
+          href={href}
           actionText="Change"
         >
-          {callSign}
-        </SummaryListItem>
-        <SummaryListItem
-          labelText="VHF Radio"
-          href="/register-a-beacon/vessel-communications"
-          actionText="Change"
-        >
-          {vhfRadioText}
-        </SummaryListItem>
-        <SummaryListItem
-          labelText="Fixed VHF/DSC Radio"
-          href="/register-a-beacon/vessel-communications"
-          actionText="Change"
-        >
-          {vesselMMSINumberText}
-        </SummaryListItem>
-        <SummaryListItem
-          labelText="Fixed MMSI number"
-          href="/register-a-beacon/vessel-communications"
-          actionText="Change"
-        >
-          {fixedVhfRadioInput}
-        </SummaryListItem>
-        <SummaryListItem
-          labelText="Portable VHF/DSC Radio"
-          href="/register-a-beacon/vessel-communications"
-          actionText="Change"
-        >
-          {portableMMSIText}
-        </SummaryListItem>
-        <SummaryListItem
-          labelText="Portable MMSI number"
-          href="/register-a-beacon/vessel-communications"
-          actionText="Change"
-        >
-          {portableVhfRadioInput}
-        </SummaryListItem>
-        <SummaryListItem
-          labelText="Satellite Telephone"
-          href="/register-a-beacon/vessel-communications"
-          actionText="Change"
-        >
-          {satelliteTelephoneText}
-        </SummaryListItem>
-        <SummaryListItem
-          labelText="Mobile Telephone(s)"
-          href="/register-a-beacon/vessel-communications"
-          actionText="Change"
-        >
-          {mobileTelephoneText}
+          <CheckYourAnswersDataRowItem
+            label="Max persons onboard"
+            value={use.maxCapacity}
+          />
+          <CheckYourAnswersDataRowItem
+            label="Manufacture and model: "
+            value={use.aircraftManufacturer}
+          />
+          <CheckYourAnswersDataRowItem
+            label="Principle Airport"
+            value={use.principalAirport}
+          />
+          <CheckYourAnswersDataRowItem
+            label="Registration mark"
+            value={use.registrationMark}
+          />
+          <CheckYourAnswersDataRowItem
+            label="24-bit HEX"
+            value={use.hexAddress}
+          />
+          <CheckYourAnswersDataRowItem
+            label="CORE/Serial number"
+            value={use.cnOrMsnNumber}
+          />
+          <CheckYourAnswersDataRowItem
+            label="Is this a dongle"
+            value={use.dongle}
+          />
+          <CheckYourAnswersDataRowItem
+            label="Beacon position"
+            value={use.beaconPosition}
+          />
         </SummaryListItem>
       </SummaryList>
     </>
   );
 };
 
-const MoreDetailsSection: FunctionComponent<BeaconUse> = ({
-  moreDetails,
-}: BeaconUse): JSX.Element => (
-  <>
-    <SectionHeading>More about the use</SectionHeading>
+const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps> = ({
+  index,
+  use,
+  href,
+}: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
+  href = `${href}?useIndex=${index}`;
 
-    <SummaryList>
-      <SummaryListItem
-        labelText="Use description"
-        href="/register-a-beacon/more-details"
-        actionText="Change"
-      >
-        {moreDetails}
-      </SummaryListItem>
-    </SummaryList>
-  </>
-);
+  return (
+    <>
+      <SummaryList>
+        <SummaryListItem
+          labelText="Communications"
+          href={href}
+          actionText="Change"
+        >
+          <CheckYourAnswersDataRowItem label="Callsign" value={use.callSign} />
+          {use.fixedVhfRadio ? "Fixed VHF/DSC" : ""}
+          {use.fixedVhfRadioInput ? (
+            <CheckYourAnswersDataRowItem
+              label="MMSI"
+              value={use.fixedVhfRadioInput}
+            />
+          ) : (
+            ""
+          )}
+          {use.vhfRadio ? "VHF Radio" : ""}
+          {use.portableVhfRadio ? "Portable VHF/DSC" : ""}
+          {use.portableVhfRadioInput ? (
+            <CheckYourAnswersDataRowItem
+              label="Portable MMSI"
+              value={use.portableVhfRadioInput}
+            />
+          ) : (
+            ""
+          )}
+          {use.mobileTelephone ? (
+            <CheckYourAnswersDataRowItem
+              label="Mobile telephone (1)"
+              value={use.mobileTelephoneInput1}
+            />
+          ) : (
+            ""
+          )}
+          {use.mobileTelephone ? (
+            <CheckYourAnswersDataRowItem
+              label="Mobile telephone (2)"
+              value={use.mobileTelephoneInput2}
+            />
+          ) : (
+            ""
+          )}
+          {use.satelliteTelephone ? (
+            <CheckYourAnswersDataRowItem
+              label="Satellite telephone"
+              value={use.satelliteTelephoneInput}
+            />
+          ) : (
+            ""
+          )}
+        </SummaryListItem>
+      </SummaryList>
+    </>
+  );
+};
+
+const MoreDetailsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps> = ({
+  index,
+  use,
+}: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
+  const href = `/register-a-beacon/more-details?useIndex=${index}`;
+  return (
+    <>
+      <SummaryList>
+        <SummaryListItem
+          labelText="More details"
+          href={href}
+          actionText="Change"
+        >
+          <CheckYourAnswersDataRowItem value={use.moreDetails} />
+        </SummaryListItem>
+      </SummaryList>
+    </>
+  );
+};
 
 const BeaconOwnerSection: FunctionComponent<IRegistration> = ({
   ownerFullName,
@@ -390,32 +406,14 @@ const BeaconOwnerSection: FunctionComponent<IRegistration> = ({
 
     <SummaryList>
       <SummaryListItem
-        labelText="Name"
+        labelText="Owner details"
         href="/register-a-beacon/about-beacon-owner"
         actionText="Change"
       >
-        {ownerFullName}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Telephone number"
-        href="/register-a-beacon/about-beacon-owner"
-        actionText="Change"
-      >
-        {ownerTelephoneNumber}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Additional telephone number"
-        href="/register-a-beacon/about-beacon-owner"
-        actionText="Change"
-      >
-        {ownerAlternativeTelephoneNumber}
-      </SummaryListItem>
-      <SummaryListItem
-        labelText="Email address"
-        href="/register-a-beacon/about-beacon-owner"
-        actionText="Change"
-      >
-        {ownerEmail}
+        <CheckYourAnswersDataRowItem value={ownerFullName} />
+        <CheckYourAnswersDataRowItem value={ownerTelephoneNumber} />
+        <CheckYourAnswersDataRowItem value={ownerAlternativeTelephoneNumber} />
+        <CheckYourAnswersDataRowItem value={ownerEmail} />
       </SummaryListItem>
     </SummaryList>
   </>
@@ -428,147 +426,83 @@ const BeaconOwnerAddressSection: FunctionComponent<IRegistration> = ({
   ownerCounty,
   ownerPostcode,
 }: IRegistration): JSX.Element => {
-  const addressText: ReactNode = (
-    <GovUKList>
-      <li>{ownerAddressLine1}</li>
-      <li>{ownerAddressLine2}</li>
-      <li>{ownerTownOrCity}</li>
-      {ownerCounty ? <li>{ownerCounty}</li> : ""}
-      <li>{ownerPostcode}</li>
-    </GovUKList>
-  );
-
   return (
     <>
-      <SectionHeading>Beacon owner address</SectionHeading>
-
       <SummaryList>
         <SummaryListItem
           labelText="Address"
           href="/register-a-beacon/beacon-owner-address"
           actionText="Change"
         >
-          {addressText}
+          <CheckYourAnswersDataRowItem value={ownerAddressLine1} />
+          <CheckYourAnswersDataRowItem value={ownerAddressLine2} />
+          <CheckYourAnswersDataRowItem value={ownerTownOrCity} />
+          {ownerCounty ? (
+            <CheckYourAnswersDataRowItem value={ownerCounty} />
+          ) : (
+            ""
+          )}
+          <CheckYourAnswersDataRowItem value={ownerPostcode} />
         </SummaryListItem>
       </SummaryList>
     </>
   );
 };
 
-const BeaconOwnerEmergencyContact1Section: FunctionComponent<FormSubmission> = ({
+const BeaconOwnerEmergencyContactsSection: FunctionComponent<FormSubmission> = ({
   emergencyContact1FullName,
   emergencyContact1TelephoneNumber,
   emergencyContact1AlternativeTelephoneNumber,
-}: FormSubmission): JSX.Element => {
-  const contactDetails: ReactNode = (
-    <GovUKList>
-      <li>{emergencyContact1TelephoneNumber}</li>
-      {emergencyContact1AlternativeTelephoneNumber ? (
-        <li>{emergencyContact1AlternativeTelephoneNumber}</li>
-      ) : (
-        ""
-      )}
-    </GovUKList>
-  );
-
-  return (
-    <>
-      <SectionHeading>Emergency contact 1</SectionHeading>
-
-      <SummaryList>
-        <SummaryListItem
-          labelText="Name"
-          href="/register-a-beacon/emergency-contact"
-          actionText="Change"
-        >
-          {emergencyContact1FullName}
-        </SummaryListItem>
-        <SummaryListItem
-          labelText="Contact details"
-          href="/register-a-beacon/emergency-contact"
-          actionText="Change"
-        >
-          {contactDetails}
-        </SummaryListItem>
-      </SummaryList>
-    </>
-  );
-};
-
-const BeaconOwnerEmergencyContact2Section: FunctionComponent<IRegistration> = ({
   emergencyContact2FullName,
   emergencyContact2TelephoneNumber,
   emergencyContact2AlternativeTelephoneNumber,
-}: IRegistration): JSX.Element => {
-  const contactDetails: ReactNode = (
-    <GovUKList>
-      <li>{emergencyContact2TelephoneNumber}</li>
-      {emergencyContact2AlternativeTelephoneNumber ? (
-        <li>{emergencyContact2AlternativeTelephoneNumber}</li>
-      ) : (
-        ""
-      )}
-    </GovUKList>
-  );
-
-  return (
-    <>
-      <SectionHeading>Emergency contact 2</SectionHeading>
-
-      <SummaryList>
-        <SummaryListItem
-          labelText="Name"
-          href="/register-a-beacon/emergency-contact"
-          actionText="Change"
-        >
-          {emergencyContact2FullName}
-        </SummaryListItem>
-        <SummaryListItem
-          labelText="Contact details"
-          href="/register-a-beacon/emergency-contact"
-          actionText="Change"
-        >
-          {contactDetails}
-        </SummaryListItem>
-      </SummaryList>
-    </>
-  );
-};
-
-const BeaconOwnerEmergencyContact3Section: FunctionComponent<IRegistration> = ({
   emergencyContact3FullName,
   emergencyContact3TelephoneNumber,
   emergencyContact3AlternativeTelephoneNumber,
-}: IRegistration): JSX.Element => {
-  const contactDetails: ReactNode = (
-    <GovUKList>
-      <li>{emergencyContact3TelephoneNumber}</li>
-      {emergencyContact3AlternativeTelephoneNumber ? (
-        <li>{emergencyContact3AlternativeTelephoneNumber}</li>
-      ) : (
-        ""
-      )}
-    </GovUKList>
-  );
-
+}: FormSubmission): JSX.Element => {
   return (
     <>
-      <SectionHeading>Emergency contact 3</SectionHeading>
+      <SectionHeading>Emergency contacts</SectionHeading>
 
       <SummaryList>
         <SummaryListItem
-          labelText="Name"
+          labelText="Contact 1"
           href="/register-a-beacon/emergency-contact"
           actionText="Change"
         >
-          {emergencyContact3FullName}
+          <CheckYourAnswersDataRowItem value={emergencyContact1FullName} />
+          <CheckYourAnswersDataRowItem
+            value={emergencyContact1TelephoneNumber}
+          />
+          <CheckYourAnswersDataRowItem
+            value={emergencyContact1AlternativeTelephoneNumber}
+          />
         </SummaryListItem>
         <SummaryListItem
-          labelText="Contact details"
+          labelText="Contact 2"
           href="/register-a-beacon/emergency-contact"
           actionText="Change"
         >
-          {contactDetails}
+          <CheckYourAnswersDataRowItem value={emergencyContact2FullName} />
+          <CheckYourAnswersDataRowItem
+            value={emergencyContact2TelephoneNumber}
+          />
+          <CheckYourAnswersDataRowItem
+            value={emergencyContact2AlternativeTelephoneNumber}
+          />
+        </SummaryListItem>
+        <SummaryListItem
+          labelText="Contact 3"
+          href="/register-a-beacon/emergency-contact"
+          actionText="Change"
+        >
+          <CheckYourAnswersDataRowItem value={emergencyContact3FullName} />
+          <CheckYourAnswersDataRowItem
+            value={emergencyContact3TelephoneNumber}
+          />
+          <CheckYourAnswersDataRowItem
+            value={emergencyContact3AlternativeTelephoneNumber}
+          />
         </SummaryListItem>
       </SummaryList>
     </>
