@@ -38,11 +38,6 @@ const definePageForm = ({ moreDetails }: FormSubmission): FormManager => {
   });
 };
 
-// check-your-answers
-// Use 1
-// More details --- update (click)
-// --> /register-a-beacon/more-details?useIndex=X
-
 const MoreDetails: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
@@ -61,7 +56,7 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
   return (
     <>
       <Layout
-        navigation={<BackButton href={previousPageUrlMap[environment]} />}
+        navigation={<BackButton href={previousPageUrlMap[environment] || ""} />}
         title={pageHeading}
         pageHasErrors={form.hasErrors}
         showCookieBanner={showCookieBanner}
