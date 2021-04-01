@@ -17,6 +17,8 @@ import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { Environment } from "../../lib/registration/types";
+import { PageURLs } from "../../lib/urls";
 
 interface MoreDetailsTextAreaProps {
   id: string;
@@ -39,15 +41,22 @@ const definePageForm = ({ moreDetails }: FormSubmission): FormManager => {
 const MoreDetails: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
+  flattenedRegistration,
 }: FormPageProps): JSX.Element => {
+  const environment = flattenedRegistration.environment;
+  const previousPageUrlMap = {
+    [Environment.MARITIME]: PageURLs.vessel_communications,
+    [Environment.AVIATION]: PageURLs.aircraft_communications,
+    [Environment.LAND]: PageURLs.land_other_communications,
+    [Environment.OTHER]: PageURLs.land_other_communications,
+  };
+
   const pageHeading = "Provide more details that could help in a search";
 
   return (
     <>
       <Layout
-        navigation={
-          <BackButton href="/register-a-beacon/vessel-communications" />
-        }
+        navigation={<BackButton href={previousPageUrlMap[environment]} />}
         title={pageHeading}
         pageHasErrors={form.hasErrors}
         showCookieBanner={showCookieBanner}
