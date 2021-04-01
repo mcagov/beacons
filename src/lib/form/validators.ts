@@ -57,7 +57,7 @@ export class Validators {
   public static isLength(errorMessage: string, length: number): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       if (Validators.required("").applies(value)) return false;
-      return value.length !== length;
+      return value.replace(/\s+/g, "").length !== length;
     };
 
     return { errorMessage, applies };
