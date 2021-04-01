@@ -44,6 +44,40 @@ describe("As a beacon owner in the maritime environment,", () => {
       givenIHaveTyped("15", "#maxCapacity");
       andIClickContinue();
       thenTheUrlShouldContain(vesselCommunicationsUrl);
+
+      thenTheUrlShouldContain(vesselCommunicationsUrl);
+      givenIHaveSelected("#vhfRadio");
+      givenIHaveSelected("#satelliteTelephone");
+      givenIHaveTyped("+881612345678", "#satelliteTelephoneInput");
+      givenIHaveSelected("#mobileTelephone");
+      givenIHaveTyped("07826372833", "#mobileTelephoneInput1");
+      givenIHaveSelected("#otherCommunication");
+      givenIHaveTyped(
+        "You can reach me by smoke signal, carrier pigeon or cup-and-string",
+        "#otherCommunicationInput"
+      );
+      andIClickContinue();
+
+      thenTheUrlShouldContain(moreDetailsUrl);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(vesselCommunicationsUrl);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(aboutTheVesselUrl);
+      iCanSeeAHeadingThatContains("vessel");
+      whenIClickBack();
+
+      thenTheUrlShouldContain(activityUrl);
+      iCanSeeAHeadingThatContains("maritime");
+      iCanSeeAHeadingThatContains("pleasure");
+      whenIClickBack();
+
+      thenTheUrlShouldContain(purposeUrl);
+      iCanSeeAHeadingThatContains("maritime");
+      whenIClickBack();
+
+      thenTheUrlShouldContain(environmentUrl);
     });
 
     it("Maritime environment -> Commercial purpose", () => {
