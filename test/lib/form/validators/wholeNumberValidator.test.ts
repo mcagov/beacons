@@ -22,6 +22,10 @@ describe("wholeNumber validator", () => {
     expect(applies("12abc")).toBe(true);
   });
 
+  it("should not have an error if the number has whitespace", () => {
+    expect(applies("235    7620001")).toBe(false);
+  });
+
   it("should return the expected error message", () => {
     expect(expectedErrorMessage).toBe(errorMessage);
   });

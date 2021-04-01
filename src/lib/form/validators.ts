@@ -162,12 +162,13 @@ export class Validators {
 
   /**
    * Validator that requires the form input value to be a number; proxies through to the {@link Validators.pattern()}.
+   * Does not error if number contains whitespace, e.g. "123 456".
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @returns            {ValidationRule}   A validation rule
    */
   public static wholeNumber(errorMessage: string): ValidationRule {
-    const wholeNumberRegex = /^[0-9]+$/;
+    const wholeNumberRegex = /^[0-9\s]+$/;
     return Validators.pattern(errorMessage, wholeNumberRegex);
   }
 
