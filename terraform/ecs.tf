@@ -39,7 +39,15 @@ resource "aws_ecs_task_definition" "webapp" {
         "awslogs-region" : var.aws_region,
         "awslogs-stream-prefix" : "webapp"
       }
-    }
+    },
+    secrets: [
+      {
+        name : "GOV_NOTIFY_API_KEY",
+        valueFrom : aws_secretsmanager_secret.gov_notify_api_key.arn
+      },{
+        name : "GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE",
+        valueFrom : aws_secretsmanager_secret.gov_notify_customer_email_template.arn
+    }]
   }])
 }
 

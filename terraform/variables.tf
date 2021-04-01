@@ -100,6 +100,16 @@ variable "db_password" {
   description = "The password used for the master database user"
   sensitive   = true
 }
+variable "gov_notify_api_key" {
+  type        = string
+  description = "The API key for Gov Notify"
+  sensitive   = true
+}
+variable "gov_notify_customer_email_template" {
+  type        = string
+  description = "The template ID for the customer confirmation email"
+  sensitive   = true
+}
 variable "db_instance_class" {
   type        = string
   description = "The database instance class"
