@@ -11,7 +11,7 @@ import {
 } from "./common.spec";
 
 describe("As a beacon owner, I want to register how I use my beacon in the land/other environment", () => {
-  const thisPageUrl = "/register-a-beacon/land-other";
+  const thisPageUrl = "/register-a-beacon/land-other-activity";
   const previousPageUrl = "/register-a-beacon/beacon-use";
   const nextPageUrl = "/register-a-beacon/land-other-communication";
 
