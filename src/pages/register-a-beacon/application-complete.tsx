@@ -85,9 +85,13 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
       const sendGovNotifyEmailUseCase = new SendGovNotifyEmail(
         govNotifyGateway
       );
-      sendGovNotifyEmailUseCase.execute(registration);
-
-      pageSubHeading = "We have sent you a confirmation email.";
+      if (sendGovNotifyEmailUseCase.execute(registration)) {
+        pageSubHeading = "We have sent you a confirmation email.";
+      } else {
+        pageSubHeading =
+          "We could not send you a confirmation email. " +
+          process.env.GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE.length;
+      }
     } else {
       pageSubHeading = "We could not send you a confirmation email.";
     }
