@@ -298,7 +298,7 @@ const LandOtherUses: FunctionComponent<FormPageProps> = ({
 );
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/land-other-communication",
+  "/register-a-beacon/land-other-communications",
   definePageForm
 );
 

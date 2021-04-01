@@ -50,10 +50,10 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
 }: FormPageProps): JSX.Element => {
   const environment = flattenedRegistration.environment;
   const previousPageUrlMap = {
-    [Environment.MARITIME]: PageURLs.vessel_communications,
-    [Environment.AVIATION]: PageURLs.aircraft_communications,
-    [Environment.LAND]: PageURLs.land_other_communications,
-    [Environment.OTHER]: PageURLs.land_other_communications,
+    [Environment.MARITIME]: PageURLs.vesselCommunications,
+    [Environment.AVIATION]: PageURLs.aircraftCommunications,
+    [Environment.LAND]: PageURLs.landOtherCommunications,
+    [Environment.OTHER]: PageURLs.landOtherCommunications,
   };
 
   const pageHeading = "Provide more details that could help in a search";

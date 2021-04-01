@@ -1,5 +1,7 @@
+import { PageURLs } from "../../../src/lib/urls";
 import {
   andIClickContinue,
+  andIType,
   givenIAmAt,
   givenIHaveSelected,
   givenIHaveTyped,
@@ -243,6 +245,32 @@ describe("As a beacon owner in the maritime environment,", () => {
 
       thenTheUrlShouldContain(purposeUrl);
       iCanSeeAHeadingThatContains("aviation");
+      whenIClickBack();
+
+      thenTheUrlShouldContain(environmentUrl);
+    });
+
+    it("Land environment", () => {
+      givenIAmAt(PageURLs.environment);
+      givenIHaveSelected("#land");
+      andIClickContinue();
+
+      thenTheUrlShouldContain(PageURLs.landOtherActivity);
+      givenIHaveSelected("#cycling");
+      andIClickContinue();
+
+      thenTheUrlShouldContain(PageURLs.landOtherCommunications);
+      givenIHaveSelected("#portableVhfRadio");
+      andIType("235 762000", "#portableVhfRadioInput");
+      andIClickContinue();
+
+      thenTheUrlShouldContain(PageURLs.moreDetails);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(PageURLs.landOtherCommunications);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(PageURLs.landOtherActivity);
       whenIClickBack();
 
       thenTheUrlShouldContain(environmentUrl);
