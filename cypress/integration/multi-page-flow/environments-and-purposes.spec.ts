@@ -6,104 +6,91 @@ import {
   givenIHaveSelected,
   givenIHaveTyped,
   iCanSeeAHeadingThatContains,
+  thenTheCheckboxShouldBeChecked,
+  thenTheInputShouldContain,
+  thenTheRadioButtonShouldBeSelected,
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../common.spec";
 
 describe("As a beacon owner in the maritime environment,", () => {
-  const environmentUrl = "/register-a-beacon/beacon-use";
-  const purposeUrl = "/register-a-beacon/purpose";
-  const activityUrl = "/register-a-beacon/activity";
-
-  const aboutTheVesselUrl = "/register-a-beacon/about-the-vessel";
-  const aboutTheAircraftUrl = "/register-a-beacon/about-the-aircraft";
-
-  const vesselCommunicationsUrl = "/register-a-beacon/vessel-communications";
-  const aircraftCommunicationsUrl =
-    "/register-a-beacon/aircraft-communications";
-
-  const moreDetailsUrl = "/register-a-beacon/more-details";
-
   describe("adding a beacon use directs me along a page flow relevant to me", () => {
     it("Maritime environment -> Pleasure purpose", () => {
-      givenIAmAt(environmentUrl);
+      givenIAmAt(PageURLs.environment);
       givenIHaveSelected("#maritime");
       andIClickContinue();
-      thenTheUrlShouldContain(purposeUrl);
-      iCanSeeAHeadingThatContains("maritime");
 
+      thenTheUrlShouldContain(PageURLs.purpose);
+      iCanSeeAHeadingThatContains("maritime");
       givenIHaveSelected("#pleasure");
       andIClickContinue();
-      thenTheUrlShouldContain(activityUrl);
+
+      thenTheUrlShouldContain(PageURLs.activity);
       iCanSeeAHeadingThatContains("maritime");
       iCanSeeAHeadingThatContains("pleasure");
-
       givenIHaveSelected("#rowing-vessel");
       andIClickContinue();
-      thenTheUrlShouldContain(aboutTheVesselUrl);
-      iCanSeeAHeadingThatContains("vessel");
 
+      thenTheUrlShouldContain(PageURLs.aboutTheVessel);
+      iCanSeeAHeadingThatContains("vessel");
       givenIHaveTyped("15", "#maxCapacity");
       andIClickContinue();
-      thenTheUrlShouldContain(vesselCommunicationsUrl);
 
-      thenTheUrlShouldContain(vesselCommunicationsUrl);
-      givenIHaveSelected("#vhfRadio");
+      thenTheUrlShouldContain(PageURLs.vesselCommunications);
       givenIHaveSelected("#satelliteTelephone");
       givenIHaveTyped("+881612345678", "#satelliteTelephoneInput");
-      givenIHaveSelected("#mobileTelephone");
-      givenIHaveTyped("07826372833", "#mobileTelephoneInput1");
-      givenIHaveSelected("#otherCommunication");
-      givenIHaveTyped(
-        "You can reach me by smoke signal, carrier pigeon or cup-and-string",
-        "#otherCommunicationInput"
-      );
       andIClickContinue();
 
-      thenTheUrlShouldContain(moreDetailsUrl);
+      thenTheUrlShouldContain(PageURLs.moreDetails);
       whenIClickBack();
 
-      thenTheUrlShouldContain(vesselCommunicationsUrl);
+      thenTheUrlShouldContain(PageURLs.vesselCommunications);
+      thenTheCheckboxShouldBeChecked("#satelliteTelephone");
+      thenTheInputShouldContain("+881612345678", "#satelliteTelephoneInput");
       whenIClickBack();
 
-      thenTheUrlShouldContain(aboutTheVesselUrl);
+      thenTheUrlShouldContain(PageURLs.aboutTheVessel);
       iCanSeeAHeadingThatContains("vessel");
+      thenTheInputShouldContain("15", "#maxCapacity");
       whenIClickBack();
 
-      thenTheUrlShouldContain(activityUrl);
+      thenTheUrlShouldContain(PageURLs.activity);
       iCanSeeAHeadingThatContains("maritime");
       iCanSeeAHeadingThatContains("pleasure");
+      thenTheRadioButtonShouldBeSelected("#rowing-vessel");
       whenIClickBack();
 
-      thenTheUrlShouldContain(purposeUrl);
+      thenTheUrlShouldContain(PageURLs.purpose);
       iCanSeeAHeadingThatContains("maritime");
+      thenTheRadioButtonShouldBeSelected("#pleasure");
       whenIClickBack();
 
-      thenTheUrlShouldContain(environmentUrl);
+      thenTheUrlShouldContain(PageURLs.environment);
+      thenTheRadioButtonShouldBeSelected("#maritime");
     });
 
     it("Maritime environment -> Commercial purpose", () => {
-      givenIAmAt(environmentUrl);
+      givenIAmAt(PageURLs.environment);
       givenIHaveSelected("#maritime");
       andIClickContinue();
-      thenTheUrlShouldContain(purposeUrl);
+      thenTheUrlShouldContain(PageURLs.purpose);
       iCanSeeAHeadingThatContains("maritime");
 
       givenIHaveSelected("#commercial");
       andIClickContinue();
-      thenTheUrlShouldContain(activityUrl);
+      thenTheUrlShouldContain(PageURLs.activity);
       iCanSeeAHeadingThatContains("maritime");
       iCanSeeAHeadingThatContains("commercial");
 
       givenIHaveSelected("#fishing-vessel");
       andIClickContinue();
-      thenTheUrlShouldContain(aboutTheVesselUrl);
+      thenTheUrlShouldContain(PageURLs.aboutTheVessel);
       iCanSeeAHeadingThatContains("vessel");
 
       givenIHaveTyped("15", "#maxCapacity");
       andIClickContinue();
 
-      thenTheUrlShouldContain(vesselCommunicationsUrl);
+      thenTheUrlShouldContain(PageURLs.vesselCommunications);
       givenIHaveSelected("#vhfRadio");
       givenIHaveSelected("#satelliteTelephone");
       givenIHaveTyped("+881612345678", "#satelliteTelephoneInput");
@@ -116,50 +103,50 @@ describe("As a beacon owner in the maritime environment,", () => {
       );
       andIClickContinue();
 
-      thenTheUrlShouldContain(moreDetailsUrl);
+      thenTheUrlShouldContain(PageURLs.moreDetails);
       whenIClickBack();
 
-      thenTheUrlShouldContain(vesselCommunicationsUrl);
+      thenTheUrlShouldContain(PageURLs.vesselCommunications);
       whenIClickBack();
 
-      thenTheUrlShouldContain(aboutTheVesselUrl);
+      thenTheUrlShouldContain(PageURLs.aboutTheVessel);
       iCanSeeAHeadingThatContains("vessel");
       whenIClickBack();
 
-      thenTheUrlShouldContain(activityUrl);
+      thenTheUrlShouldContain(PageURLs.activity);
       iCanSeeAHeadingThatContains("maritime");
       iCanSeeAHeadingThatContains("commercial");
       whenIClickBack();
 
-      thenTheUrlShouldContain(purposeUrl);
+      thenTheUrlShouldContain(PageURLs.purpose);
       iCanSeeAHeadingThatContains("maritime");
       whenIClickBack();
 
-      thenTheUrlShouldContain(environmentUrl);
+      thenTheUrlShouldContain(PageURLs.environment);
     });
 
     it("Aviation environment -> Pleasure purpose", () => {
-      givenIAmAt(environmentUrl);
+      givenIAmAt(PageURLs.environment);
       givenIHaveSelected("#aviation");
       andIClickContinue();
 
-      thenTheUrlShouldContain(purposeUrl);
+      thenTheUrlShouldContain(PageURLs.purpose);
       iCanSeeAHeadingThatContains("aviation");
       givenIHaveSelected("#pleasure");
       andIClickContinue();
 
-      thenTheUrlShouldContain(activityUrl);
+      thenTheUrlShouldContain(PageURLs.activity);
       iCanSeeAHeadingThatContains("aviation");
       iCanSeeAHeadingThatContains("pleasure");
       givenIHaveSelected("#jet-aircraft");
       andIClickContinue();
 
-      thenTheUrlShouldContain(aboutTheAircraftUrl);
+      thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
       iCanSeeAHeadingThatContains("aircraft");
       givenIHaveTyped("15", "#maxCapacity");
       andIClickContinue();
 
-      thenTheUrlShouldContain(aircraftCommunicationsUrl);
+      thenTheUrlShouldContain(PageURLs.aircraftCommunications);
       givenIHaveSelected("#vhfRadio");
       givenIHaveSelected("#satelliteTelephone");
       givenIHaveTyped("+881612345678", "#satelliteTelephoneInput");
@@ -172,50 +159,50 @@ describe("As a beacon owner in the maritime environment,", () => {
       );
       andIClickContinue();
 
-      thenTheUrlShouldContain(moreDetailsUrl);
+      thenTheUrlShouldContain(PageURLs.moreDetails);
       whenIClickBack();
 
-      thenTheUrlShouldContain(aircraftCommunicationsUrl);
+      thenTheUrlShouldContain(PageURLs.aircraftCommunications);
       whenIClickBack();
 
-      thenTheUrlShouldContain(aboutTheAircraftUrl);
+      thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
       iCanSeeAHeadingThatContains("aircraft");
       whenIClickBack();
 
-      thenTheUrlShouldContain(activityUrl);
+      thenTheUrlShouldContain(PageURLs.activity);
       iCanSeeAHeadingThatContains("aviation");
       iCanSeeAHeadingThatContains("pleasure");
       whenIClickBack();
 
-      thenTheUrlShouldContain(purposeUrl);
+      thenTheUrlShouldContain(PageURLs.purpose);
       iCanSeeAHeadingThatContains("aviation");
       whenIClickBack();
 
-      thenTheUrlShouldContain(environmentUrl);
+      thenTheUrlShouldContain(PageURLs.environment);
     });
 
     it("Aviation environment -> Commercial purpose", () => {
-      givenIAmAt(environmentUrl);
+      givenIAmAt(PageURLs.environment);
       givenIHaveSelected("#aviation");
       andIClickContinue();
 
-      thenTheUrlShouldContain(purposeUrl);
+      thenTheUrlShouldContain(PageURLs.purpose);
       iCanSeeAHeadingThatContains("aviation");
       givenIHaveSelected("#commercial");
       andIClickContinue();
 
-      thenTheUrlShouldContain(activityUrl);
+      thenTheUrlShouldContain(PageURLs.activity);
       iCanSeeAHeadingThatContains("aviation");
       iCanSeeAHeadingThatContains("commercial");
       givenIHaveSelected("#passenger-plane");
       andIClickContinue();
 
-      thenTheUrlShouldContain(aboutTheAircraftUrl);
+      thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
       iCanSeeAHeadingThatContains("aircraft");
       givenIHaveTyped("15", "#maxCapacity");
       andIClickContinue();
 
-      thenTheUrlShouldContain(aircraftCommunicationsUrl);
+      thenTheUrlShouldContain(PageURLs.aircraftCommunications);
       givenIHaveSelected("#vhfRadio");
       givenIHaveSelected("#satelliteTelephone");
       givenIHaveTyped("+881612345678", "#satelliteTelephoneInput");
@@ -228,26 +215,26 @@ describe("As a beacon owner in the maritime environment,", () => {
       );
       andIClickContinue();
 
-      thenTheUrlShouldContain(moreDetailsUrl);
+      thenTheUrlShouldContain(PageURLs.moreDetails);
       whenIClickBack();
 
-      thenTheUrlShouldContain(aircraftCommunicationsUrl);
+      thenTheUrlShouldContain(PageURLs.aircraftCommunications);
       whenIClickBack();
 
-      thenTheUrlShouldContain(aboutTheAircraftUrl);
+      thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
       iCanSeeAHeadingThatContains("aircraft");
       whenIClickBack();
 
-      thenTheUrlShouldContain(activityUrl);
+      thenTheUrlShouldContain(PageURLs.activity);
       iCanSeeAHeadingThatContains("aviation");
       iCanSeeAHeadingThatContains("commercial");
       whenIClickBack();
 
-      thenTheUrlShouldContain(purposeUrl);
+      thenTheUrlShouldContain(PageURLs.purpose);
       iCanSeeAHeadingThatContains("aviation");
       whenIClickBack();
 
-      thenTheUrlShouldContain(environmentUrl);
+      thenTheUrlShouldContain(PageURLs.environment);
     });
 
     it("Land environment", () => {
@@ -273,7 +260,7 @@ describe("As a beacon owner in the maritime environment,", () => {
       thenTheUrlShouldContain(PageURLs.landOtherActivity);
       whenIClickBack();
 
-      thenTheUrlShouldContain(environmentUrl);
+      thenTheUrlShouldContain(PageURLs.environment);
     });
 
     it("Other environment", () => {
@@ -300,7 +287,7 @@ describe("As a beacon owner in the maritime environment,", () => {
       thenTheUrlShouldContain(PageURLs.landOtherActivity);
       whenIClickBack();
 
-      thenTheUrlShouldContain(environmentUrl);
+      thenTheUrlShouldContain(PageURLs.environment);
     });
   });
 });

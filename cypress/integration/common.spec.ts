@@ -83,3 +83,9 @@ export const givenIHaveSelected = (selector: string): void => {
 export const whenIClickBack = (): void => {
   cy.get(".govuk-back-link").click();
 };
+
+export const thenTheCheckboxShouldBeChecked = (selector: string): void => {
+  cy.get(selector).should("be.checked");
+};
+
+export const thenTheRadioButtonShouldBeSelected = thenTheCheckboxShouldBeChecked;
