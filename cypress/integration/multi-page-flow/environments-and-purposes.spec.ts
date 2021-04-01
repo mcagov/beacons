@@ -275,5 +275,32 @@ describe("As a beacon owner in the maritime environment,", () => {
 
       thenTheUrlShouldContain(environmentUrl);
     });
+
+    it("Other environment", () => {
+      givenIAmAt(PageURLs.environment);
+      givenIHaveSelected("#other");
+      andIType("My spaceship, the Heart of Gold", "#environmentOtherInput");
+      andIClickContinue();
+
+      thenTheUrlShouldContain(PageURLs.landOtherActivity);
+      givenIHaveSelected("#cycling");
+      andIClickContinue();
+
+      thenTheUrlShouldContain(PageURLs.landOtherCommunications);
+      givenIHaveSelected("#portableVhfRadio");
+      andIType("235 762000", "#portableVhfRadioInput");
+      andIClickContinue();
+
+      thenTheUrlShouldContain(PageURLs.moreDetails);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(PageURLs.landOtherCommunications);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(PageURLs.landOtherActivity);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(environmentUrl);
+    });
   });
 });
