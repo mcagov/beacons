@@ -23,7 +23,7 @@ describe("As a beacon owner in the maritime environment,", () => {
   const moreDetailsUrl = "/register-a-beacon/more-details";
 
   describe("adding a beacon use directs me along a page flow relevant to me", () => {
-    it("Maritime environment -> Pleasure purpose -> Rowing activity", () => {
+    it("Maritime environment -> Pleasure purpose", () => {
       givenIAmAt(environmentUrl);
       givenIHaveSelected("#maritime");
       andIClickContinue();
@@ -46,7 +46,7 @@ describe("As a beacon owner in the maritime environment,", () => {
       thenTheUrlShouldContain(vesselCommunicationsUrl);
     });
 
-    it("Maritime environment -> Commercial purpose -> Fishing activity", () => {
+    it("Maritime environment -> Commercial purpose", () => {
       givenIAmAt(environmentUrl);
       givenIHaveSelected("#maritime");
       andIClickContinue();
@@ -66,33 +66,99 @@ describe("As a beacon owner in the maritime environment,", () => {
 
       givenIHaveTyped("15", "#maxCapacity");
       andIClickContinue();
+
       thenTheUrlShouldContain(vesselCommunicationsUrl);
+      givenIHaveSelected("#vhfRadio");
+      givenIHaveSelected("#satelliteTelephone");
+      givenIHaveTyped("+881612345678", "#satelliteTelephoneInput");
+      givenIHaveSelected("#mobileTelephone");
+      givenIHaveTyped("07826372833", "#mobileTelephoneInput1");
+      givenIHaveSelected("#otherCommunication");
+      givenIHaveTyped(
+        "You can reach me by smoke signal, carrier pigeon or cup-and-string",
+        "#otherCommunicationInput"
+      );
+      andIClickContinue();
+
+      thenTheUrlShouldContain(moreDetailsUrl);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(vesselCommunicationsUrl);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(aboutTheVesselUrl);
+      iCanSeeAHeadingThatContains("vessel");
+      whenIClickBack();
+
+      thenTheUrlShouldContain(activityUrl);
+      iCanSeeAHeadingThatContains("maritime");
+      iCanSeeAHeadingThatContains("commercial");
+      whenIClickBack();
+
+      thenTheUrlShouldContain(purposeUrl);
+      iCanSeeAHeadingThatContains("maritime");
+      whenIClickBack();
+
+      thenTheUrlShouldContain(environmentUrl);
     });
 
-    it("Aviation environment -> Pleasure purpose -> Jet aircraft activity", () => {
+    it("Aviation environment -> Pleasure purpose", () => {
       givenIAmAt(environmentUrl);
       givenIHaveSelected("#aviation");
       andIClickContinue();
+
       thenTheUrlShouldContain(purposeUrl);
       iCanSeeAHeadingThatContains("aviation");
-
       givenIHaveSelected("#pleasure");
       andIClickContinue();
+
       thenTheUrlShouldContain(activityUrl);
       iCanSeeAHeadingThatContains("aviation");
       iCanSeeAHeadingThatContains("pleasure");
-
       givenIHaveSelected("#jet-aircraft");
       andIClickContinue();
+
       thenTheUrlShouldContain(aboutTheAircraftUrl);
       iCanSeeAHeadingThatContains("aircraft");
-
       givenIHaveTyped("15", "#maxCapacity");
       andIClickContinue();
+
       thenTheUrlShouldContain(aircraftCommunicationsUrl);
+      givenIHaveSelected("#vhfRadio");
+      givenIHaveSelected("#satelliteTelephone");
+      givenIHaveTyped("+881612345678", "#satelliteTelephoneInput");
+      givenIHaveSelected("#mobileTelephone");
+      givenIHaveTyped("07826372833", "#mobileTelephoneInput1");
+      givenIHaveSelected("#otherCommunication");
+      givenIHaveTyped(
+        "You can reach me by smoke signal, carrier pigeon or cup-and-string",
+        "#otherCommunicationInput"
+      );
+      andIClickContinue();
+
+      thenTheUrlShouldContain(moreDetailsUrl);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(aircraftCommunicationsUrl);
+      whenIClickBack();
+
+      thenTheUrlShouldContain(aboutTheAircraftUrl);
+      iCanSeeAHeadingThatContains("aircraft");
+      whenIClickBack();
+
+      thenTheUrlShouldContain(activityUrl);
+      iCanSeeAHeadingThatContains("aviation");
+      iCanSeeAHeadingThatContains("pleasure");
+      whenIClickBack();
+
+      thenTheUrlShouldContain(purposeUrl);
+      iCanSeeAHeadingThatContains("aviation");
+      whenIClickBack();
+
+      thenTheUrlShouldContain(environmentUrl);
     });
 
-    it("Aviation environment -> Commercial purpose -> Passenger plane activity", () => {
+    it("Aviation environment -> Commercial purpose", () => {
       givenIAmAt(environmentUrl);
       givenIHaveSelected("#aviation");
       andIClickContinue();
