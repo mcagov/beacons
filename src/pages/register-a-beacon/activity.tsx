@@ -54,6 +54,7 @@ const ActivityPage: FunctionComponent<FormPageProps> = ({
 }: FormPageProps): JSX.Element => {
   const environment = flattenedRegistration.environment;
   const purpose = flattenedRegistration.purpose;
+
   const pageHeading = `Please select the ${purpose.toLowerCase()} ${environment.toLowerCase()} activity that best describes how the beacon will be used`;
   const insetText = (
     <>
@@ -106,6 +107,10 @@ export const ActivityOptions: FunctionComponent<ActivityOptionsProps> = ({
     return (
       <AviationCommercialOptions form={form} listItemName={listItemName} />
     );
+
+  throw new Error(
+    "Environment or purpose not found.  User needs to enter evironment and purpose on previous pages."
+  );
 };
 
 const MaritimePleasureOptions: FunctionComponent<OptionsProps> = ({
@@ -404,6 +409,8 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
       return "/register-a-beacon/about-the-vessel";
     case Environment.AVIATION:
       return "/register-a-beacon/about-the-aircraft";
+    case null:
+      return "/register-a-beacon/beacon-use";
     default:
       throw new Error(`Error: unrecognised environment ${environment}`);
   }
