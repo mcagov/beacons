@@ -26,12 +26,6 @@ describe("isLength validator", () => {
     expect(applies("a".repeat(11))).toBe(true);
   });
 
-  it("should disregard whitespace", () => {
-    expect(applies("235 7620001")).toBe(false);
-    expect(applies("235    7620001")).toBe(false);
-    expect(applies("2357 620  00 1")).toBe(false);
-  });
-
   it("should return the expected error message", () => {
     expect(expectedErrorMessage).toBe(errorMessage);
   });

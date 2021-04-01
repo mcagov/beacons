@@ -57,7 +57,7 @@ export class Validators {
   public static isLength(errorMessage: string, length: number): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       if (Validators.required("").applies(value)) return false;
-      return value.replace(/\s+/g, "").length !== length;
+      return value.length !== length;
     };
 
     return { errorMessage, applies };
@@ -162,13 +162,12 @@ export class Validators {
 
   /**
    * Validator that requires the form input value to be a number; proxies through to the {@link Validators.pattern()}.
-   * Does not error if number contains whitespace, e.g. "123 456".
    *
    * @param errorMessage {string}           An error message if the rule is violated
    * @returns            {ValidationRule}   A validation rule
    */
   public static wholeNumber(errorMessage: string): ValidationRule {
-    const wholeNumberRegex = /^[0-9\s]+$/;
+    const wholeNumberRegex = /^[0-9]+$/;
     return Validators.pattern(errorMessage, wholeNumberRegex);
   }
 
@@ -228,6 +227,26 @@ export class Validators {
         // Phone number could not be parsed, i.e. is invalid
         return true;
       }
+    };
+
+    return { errorMessage, applies };
+  }
+
+  /**
+   * Validator that requires the form input value to be a correctly formatted MMSI number
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static mmsiNumber(errorMessage: string): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      if (Validators.required("").applies(value)) return false;
+      const valueWithoutWhitespace = value.replace(/\s+/g, "");
+
+      return [
+        Validators.wholeNumber("").applies(valueWithoutWhitespace),
+        Validators.isLength("", 9).applies(valueWithoutWhitespace),
+      ].some((value) => value === true);
     };
 
     return { errorMessage, applies };
