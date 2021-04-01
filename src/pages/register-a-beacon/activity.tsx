@@ -52,7 +52,6 @@ const ActivityPage: FunctionComponent<FormPageProps> = ({
   showCookieBanner,
   flattenedRegistration,
 }: FormPageProps): JSX.Element => {
-  // TODO: These values will be taken from the cache once that's available
   const environment = flattenedRegistration.environment;
   const purpose = flattenedRegistration.purpose;
   const pageHeading = `Please select the ${purpose.toLowerCase()} ${environment.toLowerCase()} activity that best describes how the beacon will be used`;
