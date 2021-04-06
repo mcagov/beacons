@@ -49,7 +49,7 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
     [Environment.AVIATION]: PageURLs.aircraftCommunications,
     [Environment.LAND]: PageURLs.landOtherCommunications,
     [Environment.OTHER]: PageURLs.landOtherCommunications,
-    undefined: PageURLs.start,
+    "": PageURLs.start,
   };
 
   const pageHeading = "Provide more details that could help in a search";
