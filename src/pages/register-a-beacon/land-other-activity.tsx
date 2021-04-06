@@ -260,7 +260,7 @@ const LandOtherUses: FunctionComponent<FormPageProps> = ({
           id="otherActivity"
           value={Activity.OTHER}
           defaultChecked={form.fields.otherActivity.value === Activity.OTHER}
-          label="Working on a windfarm"
+          label="Other"
           conditional={true}
         >
           <FormGroup
