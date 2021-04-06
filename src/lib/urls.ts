@@ -2,6 +2,7 @@ export const ofcomLicenseUrl =
   "https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio";
 
 export enum PageURLs {
+  start = "/",
   environment = "/register-a-beacon/beacon-use",
   purpose = "/register-a-beacon/purpose",
   activity = "/register-a-beacon/activity",
