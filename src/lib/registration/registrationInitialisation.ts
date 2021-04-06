@@ -98,6 +98,23 @@ export const initBeaconUse = (): BeaconUse => {
     dongle: "",
     beaconPosition: "",
 
+    // Land environment
+    driving: "",
+    cycling: "",
+    climbingMountaineering: "",
+    skiing: "",
+    walkingHiking: "",
+    workingRemotely: "",
+    workingRemotelyLocation: "",
+    workingRemotelyPeopleCount: "",
+    windfarm: "",
+    windfarmLocation: "",
+    windfarmPeopleCount: "",
+    otherActivity: "",
+    otherActivityDescription: "",
+    otherActivityLocation: "",
+    otherActivityPeopleCount: "",
+
     moreDetails: "",
   };
 };

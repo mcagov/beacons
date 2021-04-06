@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveTyped,
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
@@ -10,7 +10,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to submit information about my aircraft", () => {
   const previousPageUrl = "/register-a-beacon/activity";
@@ -21,7 +21,7 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
   const beaconPositionSelector = "#beaconPosition";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("should route to the next page if there are no errors with the form submission", () => {

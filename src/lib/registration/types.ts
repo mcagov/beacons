@@ -80,6 +80,23 @@ export interface BeaconUse {
   dongle: string;
   beaconPosition: string;
 
+  // Land environment
+  driving: string;
+  cycling: string;
+  climbingMountaineering: string;
+  skiing: string;
+  walkingHiking: string;
+  workingRemotely: string;
+  workingRemotelyLocation: string;
+  workingRemotelyPeopleCount: string;
+  windfarm: string;
+  windfarmLocation: string;
+  windfarmPeopleCount: string;
+  otherActivity: string;
+  otherActivityDescription: string;
+  otherActivityLocation: string;
+  otherActivityPeopleCount: string;
+
   // Generic more details on use of beacon
   moreDetails: string;
 }

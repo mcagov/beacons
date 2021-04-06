@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   iCanClickTheBackLinkToGoToPreviousPage,
   iCanSeeAHeadingThatContains,
   requiredFieldErrorMessage,
@@ -11,7 +11,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to submit information about my beacon", () => {
   const previousPageUrl = "/register-a-beacon/check-beacon-detail";
@@ -31,7 +31,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   const validMonth = "12";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
   it("shows me the page title", () => {

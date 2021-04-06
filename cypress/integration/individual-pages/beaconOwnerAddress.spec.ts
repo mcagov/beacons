@@ -1,7 +1,7 @@
 import {
   andIClickContinue,
   andIType,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -11,7 +11,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner I can enter my address so I will receive physical evidence of my registration", () => {
   const thisPageUrl = "/register-a-beacon/beacon-owner-address";
@@ -23,7 +23,7 @@ describe("As a beacon owner I can enter my address so I will receive physical ev
   const beaconOwnerPostcodeSelector = "#ownerPostcode";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("requires at least one character in the Building number and street field", () => {

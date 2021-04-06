@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -9,7 +9,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to submit information about my beacon", () => {
   const thisPageUrl = "/register-a-beacon/emergency-contact";
@@ -20,7 +20,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   const emergencyContact1TelephoneNumber = "#emergencyContact1TelephoneNumber";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("displays errors if no Emergency contact 1 full name is submitted", () => {

@@ -1,24 +1,20 @@
 import { render, screen } from "@testing-library/react";
-import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
-import { handlePageRequest } from "../../../src/lib/handlePageRequest";
-import Activity, {
-  getServerSideProps,
-} from "../../../src/pages/register-a-beacon/activity";
-
-jest.mock("../../../src/lib/handlePageRequest", () => ({
-  __esModule: true,
-  handlePageRequest: jest.fn().mockImplementation(() => jest.fn()),
-}));
+import {
+  Activity,
+  Environment,
+  Purpose,
+} from "../../../src/lib/registration/types";
+import ActivityPage from "../../../src/pages/register-a-beacon/activity";
 
 describe("Activity", () => {
-  const activityForm: FormJSON = {
+  const activityFormTestData: FormJSON = {
     hasErrors: false,
     errorSummary: [],
     fields: {
       activity: {
-        value: "",
+        value: Activity.ROWING,
         errorMessages: [],
       },
       otherActivityText: {
@@ -28,22 +24,17 @@ describe("Activity", () => {
     },
   };
 
-  it("should have a back button which directs the user to the beacon information page", () => {
-    render(<Activity form={activityForm} />);
-
-    expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
-      "href",
-      "/register-a-beacon/beacon-use?useIndex=0"
+  it("should render the page", () => {
+    render(
+      <ActivityPage
+        form={activityFormTestData}
+        flattenedRegistration={{
+          environment: Environment.MARITIME,
+          purpose: Purpose.PLEASURE,
+        }}
+      />
     );
-  });
 
-  it("should redirect to about-the-vessel page on valid form submission", async () => {
-    const context = {};
-    await getServerSideProps(context as GetServerSidePropsContext);
-
-    expect(handlePageRequest).toHaveBeenCalledWith(
-      "/register-a-beacon/about-the-vessel",
-      expect.anything()
-    );
+    expect(screen.getByLabelText(/rowing/i)).toBeChecked();
   });
 });

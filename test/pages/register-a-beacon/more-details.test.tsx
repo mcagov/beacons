@@ -4,23 +4,25 @@ import { FormJSON } from "../../../src/lib/form/formManager";
 import MoreDetails from "../../../src/pages/register-a-beacon/more-details";
 
 describe("MoreDetails page", () => {
-  const emptyMoreDetailsForm: FormJSON = {
+  const moreDetailsFormTestData: FormJSON = {
     hasErrors: false,
     errorSummary: [],
     fields: {
       moreDetails: {
-        value: "",
+        value: "test value",
         errorMessages: [],
       },
     },
   };
 
-  it("should have a back button which directs the user to the previous form page", () => {
-    render(<MoreDetails form={emptyMoreDetailsForm} />);
-
-    expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
-      "href",
-      "/register-a-beacon/vessel-communications"
+  it("should render the page", () => {
+    render(
+      <MoreDetails
+        form={moreDetailsFormTestData}
+        flattenedRegistration={{ environment: "MARITIME" }}
+      />
     );
+
+    expect(screen.getByRole("textbox")).toHaveTextContent("test value");
   });
 });

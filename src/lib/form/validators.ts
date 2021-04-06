@@ -233,6 +233,26 @@ export class Validators {
   }
 
   /**
+   * Validator that requires the form input value to be a correctly formatted MMSI number
+   *
+   * @param errorMessage {string}           An error message if the rule is violated
+   * @returns            {ValidationRule}   A validation rule
+   */
+  public static mmsiNumber(errorMessage: string): ValidationRule {
+    const applies: ValidatorFn = (value: string) => {
+      if (Validators.required("").applies(value)) return false;
+      const valueWithoutWhitespace = value.replace(/\s+/g, "");
+
+      return [
+        Validators.wholeNumber("").applies(valueWithoutWhitespace),
+        Validators.isLength("", 9).applies(valueWithoutWhitespace),
+      ].some((value) => value === true);
+    };
+
+    return { errorMessage, applies };
+  }
+
+  /**
    * Convenience static method to return a validator that requires the value to match a regular expression pattern provided.
    *
    * @param errorMessage {string}           An error message if the rule is violated
