@@ -87,8 +87,9 @@ export const thenMyFocusMovesTo = (selector: string): void => {
 export const givenIHaveSelected = (selector: string): void => {
   cy.get(selector).check();
 };
-
 export const andIHaveSelected = givenIHaveSelected;
+
+export const andIHaveEnteredNoInformation = (): void => null;
 
 export const whenIClickBack = (): void => {
   cy.get(".govuk-back-link").click();

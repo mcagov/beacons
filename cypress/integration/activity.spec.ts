@@ -2,9 +2,9 @@ import { PageURLs } from "../../src/lib/urls";
 import {
   andIAmAt,
   andIClickContinue,
+  andIHaveEnteredNoInformation,
   andIHaveSelected,
   givenIHaveACookieSetAndIVisit,
-  givenIHaveSelected,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -17,20 +17,11 @@ import {
 } from "./common.spec";
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
-  const thisPageUrl = "/register-a-beacon/activity";
-  const previousPageUrl = "/register-a-beacon/purpose";
   const otherActivitySelector = "#other-activity";
 
-  beforeEach(() => {
-    givenIHaveACookieSetAndIVisit(PageURLs.environment);
-    andIHaveSelected("#maritime");
-    andIClickContinue();
-    andIHaveSelected("#pleasure");
-    andIClickContinue();
-    andIAmAt(thisPageUrl);
-  });
-
   it("displays an error if no activity is selected", () => {
+    givenIAmAMaritimePleasureUser();
+    andIHaveEnteredNoInformation();
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
     thenIShouldSeeAnErrorSummaryLinkThatContains(
@@ -53,8 +44,8 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
   });
 
   it("displays an error if 'Other activity' is selected, but no text is provided", () => {
-    givenIHaveACookieSetAndIVisit(thisPageUrl);
-    givenIHaveSelected(otherActivitySelector);
+    givenIAmAMaritimePleasureUser();
+    andIHaveSelected(otherActivitySelector);
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(
       "Other activity",
@@ -68,20 +59,27 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
   });
 
   it("does not show errors if valid input is given to Other activity", () => {
-    givenIHaveACookieSetAndIVisit(thisPageUrl);
-    givenIHaveSelected(otherActivitySelector);
+    givenIAmAMaritimePleasureUser();
+    andIHaveSelected(otherActivitySelector);
     whenIType("Surfboard", "#otherActivityText");
     whenIClickContinue();
-
     thenThereAreNoErrors();
   });
 
   it("routes to the next page if there are no errors with Other pleasure vessel selected", () => {
-    givenIHaveACookieSetAndIVisit(thisPageUrl);
-    givenIHaveSelected(otherActivitySelector);
+    givenIAmAMaritimePleasureUser();
+    andIHaveSelected(otherActivitySelector);
     whenIType("Surfboard", "#otherActivityText");
     whenIClickContinue();
-
     thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");
   });
 });
+
+const givenIAmAMaritimePleasureUser = () => {
+  givenIHaveACookieSetAndIVisit(PageURLs.environment);
+  andIHaveSelected("#maritime");
+  andIClickContinue();
+  andIHaveSelected("#pleasure");
+  andIClickContinue();
+  andIAmAt(PageURLs.activity);
+};
