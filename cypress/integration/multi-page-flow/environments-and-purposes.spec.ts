@@ -2,7 +2,7 @@ import { PageURLs } from "../../../src/lib/urls";
 import {
   andIClickContinue,
   andIType,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   givenIHaveTyped,
   iCanSeeAHeadingThatContains,
@@ -15,7 +15,7 @@ import {
 
 describe("Adding a beacon use directs user along the relevant page flow", () => {
   it("Maritime environment -> Pleasure purpose", () => {
-    givenIAmAt(PageURLs.environment);
+    givenIHaveACookieSetAndIVisit(PageURLs.environment);
     givenIHaveSelected("#maritime");
     andIClickContinue();
 
@@ -69,7 +69,7 @@ describe("Adding a beacon use directs user along the relevant page flow", () => 
   });
 
   it("Maritime environment -> Commercial purpose", () => {
-    givenIAmAt(PageURLs.environment);
+    givenIHaveACookieSetAndIVisit(PageURLs.environment);
     givenIHaveSelected("#maritime");
     andIClickContinue();
     thenTheUrlShouldContain(PageURLs.purpose);
@@ -123,7 +123,7 @@ describe("Adding a beacon use directs user along the relevant page flow", () => 
   });
 
   it("Aviation environment -> Pleasure purpose", () => {
-    givenIAmAt(PageURLs.environment);
+    givenIHaveACookieSetAndIVisit(PageURLs.environment);
     givenIHaveSelected("#aviation");
     andIClickContinue();
 
@@ -177,7 +177,7 @@ describe("Adding a beacon use directs user along the relevant page flow", () => 
   });
 
   it("Aviation environment -> Commercial purpose", () => {
-    givenIAmAt(PageURLs.environment);
+    givenIHaveACookieSetAndIVisit(PageURLs.environment);
     givenIHaveSelected("#aviation");
     andIClickContinue();
 
@@ -231,7 +231,7 @@ describe("Adding a beacon use directs user along the relevant page flow", () => 
   });
 
   it("Land environment", () => {
-    givenIAmAt(PageURLs.environment);
+    givenIHaveACookieSetAndIVisit(PageURLs.environment);
     givenIHaveSelected("#land");
     andIClickContinue();
 
@@ -261,7 +261,7 @@ describe("Adding a beacon use directs user along the relevant page flow", () => 
   });
 
   it("Other environment", () => {
-    givenIAmAt(PageURLs.environment);
+    givenIHaveACookieSetAndIVisit(PageURLs.environment);
     givenIHaveSelected("#other");
     andIType("My spaceship, the Heart of Gold", "#environmentOtherInput");
     andIClickContinue();

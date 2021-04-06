@@ -1,12 +1,15 @@
+import { PageURLs } from "../../src/lib/urls";
 import {
-  givenIAmAt,
+  andIAmAt,
+  andIClickContinue,
+  andIHaveSelected,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
-  iCanClickTheBackLinkToGoToPreviousPage,
-  iCanSeeAHeadingThatContains,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
+  thenThereAreNoErrors,
   thenTheUrlShouldContain,
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
@@ -15,20 +18,16 @@ import {
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
   const thisPageUrl = "/register-a-beacon/activity";
-  const previousPageUrl = "/register-a-beacon/beacon-use";
+  const previousPageUrl = "/register-a-beacon/purpose";
   const otherActivitySelector = "#other-activity";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
-  });
-
-  it("allows me to go back a page by following the 'back' button", () => {
-    iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
-  });
-
-  //TODO: Once caching is in place, this could be more dynamic and not just hardcoded
-  it("displays the environment and purpose of my beacon", () => {
-    iCanSeeAHeadingThatContains("pleasure maritime");
+    givenIHaveACookieSetAndIVisit(PageURLs.environment);
+    andIHaveSelected("#maritime");
+    andIClickContinue();
+    andIHaveSelected("#pleasure");
+    andIClickContinue();
+    andIAmAt(thisPageUrl);
   });
 
   it("displays an error if no activity is selected", () => {
@@ -53,14 +52,8 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
     thenMyFocusMovesTo("#motor-vessel");
   });
 
-  it("routes to the next page if there are no errors with the selected activity", () => {
-    givenIHaveSelected("#motor-vessel");
-    whenIClickContinue();
-
-    thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");
-  });
-
   it("displays an error if 'Other activity' is selected, but no text is provided", () => {
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
     givenIHaveSelected(otherActivitySelector);
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(
@@ -74,7 +67,17 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
     thenMyFocusMovesTo("#otherActivityText");
   });
 
+  it("does not show errors if valid input is given to Other activity", () => {
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
+    givenIHaveSelected(otherActivitySelector);
+    whenIType("Surfboard", "#otherActivityText");
+    whenIClickContinue();
+
+    thenThereAreNoErrors();
+  });
+
   it("routes to the next page if there are no errors with Other pleasure vessel selected", () => {
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
     givenIHaveSelected(otherActivitySelector);
     whenIType("Surfboard", "#otherActivityText");
     whenIClickContinue();

@@ -1,6 +1,6 @@
 import {
   andIClickContinue,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -29,7 +29,7 @@ describe("As a beacon owner, I want to register how I use my beacon in the land/
   const otherActivityPeopleCountSelector = "#otherActivityPeopleCount";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("sends me to the previous page when I click the back link", () => {

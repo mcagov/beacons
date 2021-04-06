@@ -1,6 +1,6 @@
 import {
   andIClickContinue,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -19,7 +19,7 @@ describe("As a beacon owner I want to submit more information about my beacon", 
   const moreDetailsTextareaSelector = "#moreDetails";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("requires at least one character in the More details field", () => {

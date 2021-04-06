@@ -1,6 +1,6 @@
 import {
   andIClickContinue,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -26,7 +26,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
   const otherCommunicationInputSelector = "#otherCommunicationInput";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
   describe("the Fixed VHF/DSC radio option", () => {

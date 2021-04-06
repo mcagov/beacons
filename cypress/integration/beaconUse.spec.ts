@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   iCanSeeAHeadingThatContains,
@@ -22,7 +22,7 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
   const otherInput = "#environmentOtherInput";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
   it("should route to the previous page", () => {

@@ -1,6 +1,6 @@
 import {
   andIClickContinue,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -23,7 +23,7 @@ describe("As a beacon owner, I want to register details about the aircraft commu
   const otherCommunicationInputSelector = "#otherCommunicationInput";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
   it("sends me to the previous page when I click the back link", () => {

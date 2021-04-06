@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
@@ -15,7 +15,7 @@ describe("As a beacon owner, I want to submit the purpose for my beacon", () => 
   const previousPageUrl = "/register-a-beacon/beacon-use";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   xit("allows me to go back a page by following the 'back' button", () => {

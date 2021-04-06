@@ -1,6 +1,6 @@
 import {
   andIClickContinue,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -24,7 +24,7 @@ describe("As a beacon owner and land or other use user", () => {
   const otherCommunicationInputSelector = "#otherCommunicationInput";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
   describe("the Portable VHF/DSC radio option", () => {

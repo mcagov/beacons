@@ -1,6 +1,6 @@
 import {
   andIClickContinue,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -21,7 +21,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
   const emailInputFieldSelector = "#ownerEmail";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("requires at least one character in the More details field", () => {

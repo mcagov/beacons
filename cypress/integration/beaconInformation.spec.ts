@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   iCanClickTheBackLinkToGoToPreviousPage,
   iCanSeeAHeadingThatContains,
   requiredFieldErrorMessage,
@@ -31,7 +31,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   const validMonth = "12";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
   it("shows me the page title", () => {

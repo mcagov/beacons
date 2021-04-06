@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   iCanSeeAHeadingThatContains,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -17,7 +17,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
   const hexIdFieldSelector = "#hexId";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
   it("shows me the page title", () => {

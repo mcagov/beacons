@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveTyped,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -21,7 +21,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   const beaconLocationFieldSelector = "#beaconLocation";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("routes to the next page if there are no errors with the form submission", () => {

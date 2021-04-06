@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveTyped,
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
@@ -21,7 +21,7 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
   const beaconPositionSelector = "#beaconPosition";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("should route to the next page if there are no errors with the form submission", () => {
