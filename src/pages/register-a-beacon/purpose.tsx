@@ -48,7 +48,7 @@ const PurposePage: FunctionComponent<FormPageProps> = ({
             hintText="Choose this if you mainly use the beacon for leisure, or personal trips. If you hire out pleasure craft choose 'commercial-use' instead"
           />
           <RadioListItem
-            id="commerical"
+            id="commercial"
             name={beaconUsePurposeFieldName}
             value={Purpose.COMMERCIAL}
             defaultChecked={form.fields.purpose.value === Purpose.COMMERCIAL}

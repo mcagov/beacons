@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   iCanSeeAHeadingThatContains,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -8,7 +8,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to enter my initial beacon information", () => {
   const pageUrl = "/register-a-beacon/check-beacon-details";
@@ -17,7 +17,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
   const hexIdFieldSelector = "#hexId";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
   it("shows me the page title", () => {

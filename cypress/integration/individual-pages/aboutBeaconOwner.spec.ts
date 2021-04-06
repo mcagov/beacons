@@ -1,6 +1,6 @@
 import {
   andIClickContinue,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -10,7 +10,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner and maritime pleasure vessel user", () => {
   const thisPageUrl = "/register-a-beacon/about-beacon-owner";
@@ -21,7 +21,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
   const emailInputFieldSelector = "#ownerEmail";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("requires at least one character in the More details field", () => {

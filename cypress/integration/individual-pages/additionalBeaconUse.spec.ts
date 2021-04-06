@@ -1,11 +1,11 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   thenIShouldSeeFormErrors,
   thenTheUrlShouldContain,
   whenIClickContinue,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to register multiple uses for my beacon", () => {
   const pageUrl = "/register-a-beacon/additional-beacon-use";
@@ -14,7 +14,7 @@ describe("As a beacon owner, I want to register multiple uses for my beacon", ()
   const beaconOwnerUrl = "/register-a-beacon/about-beacon-owner";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
   it("should navigate back to the more details page", () => {

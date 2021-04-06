@@ -1,7 +1,6 @@
 import {
   andIClickContinue,
-  givenIAmAt,
-  iCanClickTheBackLinkToGoToPreviousPage,
+  givenIHaveACookieSetAndIVisit,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -9,17 +8,16 @@ import {
   thenTheUrlShouldContain,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner I want to submit more information about my beacon", () => {
   const thisPageUrl = "/register-a-beacon/more-details";
   const nextPageUrl = "/register-a-beacon/additional-beacon-use";
-  const previousPageUrl = "/register-a-beacon/vessel-communications";
 
   const moreDetailsTextareaSelector = "#moreDetails";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("requires at least one character in the More details field", () => {
@@ -58,9 +56,5 @@ describe("As a beacon owner I want to submit more information about my beacon", 
     whenIType("My ship is blue with red sails", moreDetailsTextareaSelector);
     andIClickContinue();
     thenTheUrlShouldContain(nextPageUrl);
-  });
-
-  it("sends me to the previous page when I click the back link", () => {
-    iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
   });
 });

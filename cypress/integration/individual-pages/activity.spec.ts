@@ -1,37 +1,24 @@
+import { PageURLs } from "../../../src/lib/urls";
 import {
-  givenIAmAt,
-  givenIHaveSelected,
-  iCanClickTheBackLinkToGoToPreviousPage,
-  iCanSeeAHeadingThatContains,
+  andIAmAt,
+  andIClickContinue,
+  andIHaveEnteredNoInformation,
+  andIHaveSelected,
+  givenIHaveACookieSetAndIVisit,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
-  thenTheUrlShouldContain,
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
-  whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
-  const thisPageUrl = "/register-a-beacon/activity";
-  const previousPageUrl = "/register-a-beacon/beacon-use";
   const otherActivitySelector = "#other-activity";
 
-  beforeEach(() => {
-    givenIAmAt(thisPageUrl);
-  });
-
-  it("allows me to go back a page by following the 'back' button", () => {
-    iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
-  });
-
-  //TODO: Once caching is in place, this could be more dynamic and not just hardcoded
-  it("displays the environment and purpose of my beacon", () => {
-    iCanSeeAHeadingThatContains("pleasure maritime");
-  });
-
   it("displays an error if no activity is selected", () => {
+    givenIAmAMaritimePleasureUser();
+    andIHaveEnteredNoInformation();
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
     thenIShouldSeeAnErrorSummaryLinkThatContains(
@@ -53,15 +40,9 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
     thenMyFocusMovesTo("#motor-vessel");
   });
 
-  it("routes to the next page if there are no errors with the selected activity", () => {
-    givenIHaveSelected("#motor-vessel");
-    whenIClickContinue();
-
-    thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");
-  });
-
   it("displays an error if 'Other activity' is selected, but no text is provided", () => {
-    givenIHaveSelected(otherActivitySelector);
+    givenIAmAMaritimePleasureUser();
+    andIHaveSelected(otherActivitySelector);
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(
       "Other activity",
@@ -73,12 +54,13 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
     );
     thenMyFocusMovesTo("#otherActivityText");
   });
-
-  it("routes to the next page if there are no errors with Other pleasure vessel selected", () => {
-    givenIHaveSelected(otherActivitySelector);
-    whenIType("Surfboard", "#otherActivityText");
-    whenIClickContinue();
-
-    thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");
-  });
 });
+
+const givenIAmAMaritimePleasureUser = () => {
+  givenIHaveACookieSetAndIVisit(PageURLs.environment);
+  andIHaveSelected("#maritime");
+  andIClickContinue();
+  andIHaveSelected("#pleasure");
+  andIClickContinue();
+  andIAmAt(PageURLs.activity);
+};

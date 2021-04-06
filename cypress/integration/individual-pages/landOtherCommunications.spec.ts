@@ -1,49 +1,79 @@
 import {
   andIClickContinue,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
+  whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
-describe("As a beacon owner, I want to register details about the aircraft communications", () => {
-  const pageUrl = "/register-a-beacon/aircraft-communications";
-  const previousPageUrl = "/register-a-beacon/about-the-aircraft";
-  const vhfRadioCheckboxSelector = "#vhfRadio";
+describe("As a beacon owner and land or other use user", () => {
+  const pageUrl = "/register-a-beacon/land-other-communications";
+  const portableVhfDscRadioCheckboxSelector = "#portableVhfRadio";
+  const portableVhfDscRadioInputSelector = "#portableVhfRadioInput";
   const satelliteTelephoneCheckboxSelector = "#satelliteTelephone";
   const satelliteTelephoneInputSelector = "#satelliteTelephoneInput";
   const mobileTelephoneCheckboxSelector = "#mobileTelephone";
   const mobileTelephoneInputSelector = "#mobileTelephoneInput1";
-  const otherCommunicationCheckboxSelector = "#otherCommunication";
+  const otherCommunicationSelector = "#otherCommunication";
   const otherCommunicationInputSelector = "#otherCommunicationInput";
 
   beforeEach(() => {
-    givenIAmAt(pageUrl);
+    givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
-  it("sends me to the previous page when I click the back link", () => {
-    iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
-  });
+  describe("the Portable VHF/DSC radio option", () => {
+    it("requires an MMSI number if the portable VHF checkbox is selected", () => {
+      const expectedErrorMessage = ["We need", "portable VHF"];
+      givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
 
-  it("submits the form if all fields are valid", () => {
-    const validPhoneNumber = "07887662534";
+      whenIType(" ", portableVhfDscRadioInputSelector);
+      whenIClickContinue();
 
-    givenIHaveSelected(vhfRadioCheckboxSelector);
-    givenIHaveSelected(satelliteTelephoneCheckboxSelector);
-    givenIHaveSelected(mobileTelephoneCheckboxSelector);
-    givenIHaveSelected(otherCommunicationCheckboxSelector);
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(portableVhfDscRadioInputSelector);
+    });
 
-    whenIType(validPhoneNumber, satelliteTelephoneInputSelector);
-    whenIType(validPhoneNumber, mobileTelephoneInputSelector);
-    whenIType("Other comms", otherCommunicationInputSelector);
-    andIClickContinue();
+    it("requires the portable MMSI number to be 9 characters long", () => {
+      const expectedErrorMessage = [
+        "portable",
+        "MMSI number",
+        "nine digits long",
+      ];
+      givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
 
-    thenTheUrlShouldContain("/register-a-beacon/more-details");
+      whenIType("012345678910", portableVhfDscRadioInputSelector);
+      andIClickContinue();
+
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(portableVhfDscRadioInputSelector);
+    });
+
+    it("requires the portable MMSI number to be numbers 0 to 9 only", () => {
+      const expectedErrorMessage = [
+        "portable",
+        "MMSI number",
+        "numbers",
+        "0 to 9",
+      ];
+      givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
+
+      whenIType("9charslng", portableVhfDscRadioInputSelector);
+      andIClickContinue();
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(portableVhfDscRadioInputSelector);
+    });
   });
 
   describe("the Satellite telephone option", () => {
@@ -115,7 +145,7 @@ describe("As a beacon owner, I want to register details about the aircraft commu
     it("requires other communication if the other checkbox is selected", () => {
       const expectedErrorMessage = ["We need", "other"];
 
-      givenIHaveSelected(otherCommunicationCheckboxSelector);
+      givenIHaveSelected(otherCommunicationSelector);
 
       andIClickContinue();
 
@@ -128,7 +158,7 @@ describe("As a beacon owner, I want to register details about the aircraft commu
     it("requires other communication to be less than a certain number of characters if the other checkbox is selected", () => {
       const expectedErrorMessage = ["Other communication", "too many"];
 
-      givenIHaveSelected(otherCommunicationCheckboxSelector);
+      givenIHaveSelected(otherCommunicationSelector);
 
       whenIType("a".repeat(251), otherCommunicationInputSelector);
       andIClickContinue();
@@ -138,5 +168,29 @@ describe("As a beacon owner, I want to register details about the aircraft commu
       whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
       thenMyFocusMovesTo(otherCommunicationInputSelector);
     });
+  });
+
+  it("submits the form if all fields are valid", () => {
+    const validMMSI = "123456789";
+    const validPhoneNumber = "07887662534";
+
+    givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
+    givenIHaveSelected(satelliteTelephoneCheckboxSelector);
+    givenIHaveSelected(mobileTelephoneCheckboxSelector);
+    givenIHaveSelected(otherCommunicationSelector);
+
+    whenIType(validMMSI, portableVhfDscRadioInputSelector);
+    whenIType(validPhoneNumber, satelliteTelephoneInputSelector);
+    whenIType(validPhoneNumber, mobileTelephoneInputSelector);
+    whenIType("Other comms", otherCommunicationInputSelector);
+    andIClickContinue();
+
+    thenTheUrlShouldContain("/register-a-beacon/more-details");
+  });
+
+  it("sends me to the previous page when I click the back link", () => {
+    iCanClickTheBackLinkToGoToPreviousPage(
+      "/register-a-beacon/land-other-activity"
+    );
   });
 });

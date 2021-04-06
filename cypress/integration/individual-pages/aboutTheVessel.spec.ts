@@ -1,5 +1,5 @@
 import {
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveTyped,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -10,7 +10,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to submit information about my beacon", () => {
   const thisPageUrl = "/register-a-beacon/about-the-vessel";
@@ -21,7 +21,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   const beaconLocationFieldSelector = "#beaconLocation";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("routes to the next page if there are no errors with the form submission", () => {

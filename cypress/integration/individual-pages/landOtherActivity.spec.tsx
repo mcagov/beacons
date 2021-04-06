@@ -1,6 +1,6 @@
 import {
   andIClickContinue,
-  givenIAmAt,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -8,7 +8,7 @@ import {
   thenTheUrlShouldContain,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to register how I use my beacon in the land/other environment", () => {
   const thisPageUrl = "/register-a-beacon/land-other-activity";
@@ -29,7 +29,7 @@ describe("As a beacon owner, I want to register how I use my beacon in the land/
   const otherActivityPeopleCountSelector = "#otherActivityPeopleCount";
 
   beforeEach(() => {
-    givenIAmAt(thisPageUrl);
+    givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
   it("sends me to the previous page when I click the back link", () => {
