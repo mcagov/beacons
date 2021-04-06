@@ -1,7 +1,6 @@
 import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
-  iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -14,7 +13,6 @@ import {
 describe("As a beacon owner I want to submit more information about my beacon", () => {
   const thisPageUrl = "/register-a-beacon/more-details";
   const nextPageUrl = "/register-a-beacon/additional-beacon-use";
-  const previousPageUrl = "/register-a-beacon/vessel-communications";
 
   const moreDetailsTextareaSelector = "#moreDetails";
 
@@ -58,9 +56,5 @@ describe("As a beacon owner I want to submit more information about my beacon", 
     whenIType("My ship is blue with red sails", moreDetailsTextareaSelector);
     andIClickContinue();
     thenTheUrlShouldContain(nextPageUrl);
-  });
-
-  it("sends me to the previous page when I click the back link", () => {
-    iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
   });
 });
