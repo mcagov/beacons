@@ -11,7 +11,7 @@ import {
   thenTheRadioButtonShouldBeSelected,
   thenTheUrlShouldContain,
   whenIClickBack,
-} from "../common.spec";
+} from "../selectors-and-assertions.spec";
 
 describe("Adding a beacon use directs user along the relevant page flow", () => {
   it("Maritime environment -> Pleasure purpose", () => {

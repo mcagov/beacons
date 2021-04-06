@@ -8,7 +8,7 @@ import {
   thenTheUrlShouldContain,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "../common.spec";
+} from "../selectors-and-assertions.spec";
 
 describe("As a beacon owner I want to submit more information about my beacon", () => {
   const thisPageUrl = "/register-a-beacon/more-details";

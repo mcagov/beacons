@@ -1,7 +1,7 @@
 import {
   givenIHaveACookieSetAndIVisit,
   iCanSeeAHeadingThatContains,
-} from "../common.spec";
+} from "../selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to check the details that were submitted", () => {
   const pageUrl = "/register-a-beacon/check-your-answers";

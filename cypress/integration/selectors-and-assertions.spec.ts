@@ -27,11 +27,20 @@ export const iCanSeeAHeadingThatContains = (text: string): void => {
   cy.get("h1").contains(text);
 };
 
+export const givenIHaveClickedTheButtonContaining = (text: string): void => {
+  cy.get("button").contains(text).click();
+};
+
 export const whenIClickContinue = (): void => {
-  cy.get("button").contains("Continue").click();
+  givenIHaveClickedTheButtonContaining("Continue");
 };
 
 export const andIClickContinue = whenIClickContinue;
+export const givenIHaveClickedContinue = whenIClickContinue;
+
+export const givenIHaveClicked = (selector: string): void => {
+  cy.get(selector).click();
+};
 
 export const whenIClickOnTheErrorSummaryLinkContaining = (
   ...strings: string[]

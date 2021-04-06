@@ -1,13 +1,10 @@
-import { PageURLs } from "../../../src/lib/urls";
 import {
-  andIClickContinue,
   andIHaveEnteredNoInformation,
-  andIHaveSelected,
-  givenIHaveACookieSetAndIVisit,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   whenIClickContinue,
-} from "../common.spec";
+} from "../selectors-and-assertions.spec";
+import { givenIAmAnAviationBeaconOwner } from "../user-journey-steps.spec";
 
 describe("As a beacon owner, I want to submit the purpose for my beacon", () => {
   it("displays an error if no beacon use purpose is selected", () => {
@@ -25,9 +22,3 @@ describe("As a beacon owner, I want to submit the purpose for my beacon", () => 
     // thenMyFocusMovesTo("#pleasure");
   });
 });
-
-const givenIAmAnAviationBeaconOwner = () => {
-  givenIHaveACookieSetAndIVisit(PageURLs.environment);
-  andIHaveSelected("#aviation");
-  andIClickContinue();
-};

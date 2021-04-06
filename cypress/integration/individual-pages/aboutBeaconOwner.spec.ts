@@ -10,7 +10,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "../common.spec";
+} from "../selectors-and-assertions.spec";
 
 describe("As a beacon owner and maritime pleasure vessel user", () => {
   const thisPageUrl = "/register-a-beacon/about-beacon-owner";

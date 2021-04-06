@@ -1,17 +1,14 @@
-import { PageURLs } from "../../../src/lib/urls";
 import {
-  andIAmAt,
-  andIClickContinue,
   andIHaveEnteredNoInformation,
   andIHaveSelected,
-  givenIHaveACookieSetAndIVisit,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
-} from "../common.spec";
+} from "../selectors-and-assertions.spec";
+import { givenIAmAMaritimePleasureUser } from "../user-journey-steps.spec";
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
   const otherActivitySelector = "#other-activity";
@@ -55,12 +52,3 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
     thenMyFocusMovesTo("#otherActivityText");
   });
 });
-
-const givenIAmAMaritimePleasureUser = () => {
-  givenIHaveACookieSetAndIVisit(PageURLs.environment);
-  andIHaveSelected("#maritime");
-  andIClickContinue();
-  andIHaveSelected("#pleasure");
-  andIClickContinue();
-  andIAmAt(PageURLs.activity);
-};

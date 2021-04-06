@@ -11,7 +11,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "../common.spec";
+} from "../selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to submit information about my beacon", () => {
   const previousPageUrl = "/register-a-beacon/check-beacon-detail";
