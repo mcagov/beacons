@@ -5,7 +5,7 @@ import {
   thenIShouldSeeFormErrors,
   thenTheUrlShouldContain,
   whenIClickContinue,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to register multiple uses for my beacon", () => {
   const pageUrl = "/register-a-beacon/additional-beacon-use";

@@ -10,10 +10,12 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
-describe("As a beacon owner and land or other use user", () => {
-  const pageUrl = "/register-a-beacon/land-other-communications";
+describe("As a beacon owner and maritime pleasure vessel user", () => {
+  const pageUrl = "/register-a-beacon/vessel-communications";
+  const fixedVhfDscRadioCheckboxSelector = "#fixedVhfRadio";
+  const fixedVhfDscRadioInputSelector = "#fixedVhfRadioInput";
   const portableVhfDscRadioCheckboxSelector = "#portableVhfRadio";
   const portableVhfDscRadioInputSelector = "#portableVhfRadioInput";
   const satelliteTelephoneCheckboxSelector = "#satelliteTelephone";
@@ -25,6 +27,46 @@ describe("As a beacon owner and land or other use user", () => {
 
   beforeEach(() => {
     givenIHaveACookieSetAndIVisit(pageUrl);
+  });
+
+  describe("the Fixed VHF/DSC radio option", () => {
+    it("requires an MMSI number if the fixed VHF/DSC radio checkbox is selected", () => {
+      const expectedErrorMessage = ["We need", "fixed VHF"];
+      givenIHaveSelected(fixedVhfDscRadioCheckboxSelector);
+
+      whenIType(" ", fixedVhfDscRadioInputSelector);
+      whenIClickContinue();
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(fixedVhfDscRadioInputSelector);
+    });
+
+    it("requires the fixed MMSI number to be 9 characters long", () => {
+      const expectedErrorMessage = ["MMSI number", "nine digits long"];
+      givenIHaveSelected(fixedVhfDscRadioCheckboxSelector);
+
+      whenIType("012345678910", fixedVhfDscRadioInputSelector);
+      andIClickContinue();
+
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(fixedVhfDscRadioInputSelector);
+    });
+
+    it("requires the fixed MMSI number to be numbers 0 to 9 only", () => {
+      const expectedErrorMessage = ["MMSI number", "numbers", "0 to 9"];
+      givenIHaveSelected(fixedVhfDscRadioCheckboxSelector);
+
+      whenIType("9charslng", fixedVhfDscRadioInputSelector);
+      andIClickContinue();
+
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(fixedVhfDscRadioInputSelector);
+    });
   });
 
   describe("the Portable VHF/DSC radio option", () => {
@@ -174,11 +216,13 @@ describe("As a beacon owner and land or other use user", () => {
     const validMMSI = "123456789";
     const validPhoneNumber = "07887662534";
 
+    givenIHaveSelected(fixedVhfDscRadioCheckboxSelector);
     givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
     givenIHaveSelected(satelliteTelephoneCheckboxSelector);
     givenIHaveSelected(mobileTelephoneCheckboxSelector);
     givenIHaveSelected(otherCommunicationSelector);
 
+    whenIType(validMMSI, fixedVhfDscRadioInputSelector);
     whenIType(validMMSI, portableVhfDscRadioInputSelector);
     whenIType(validPhoneNumber, satelliteTelephoneInputSelector);
     whenIType(validPhoneNumber, mobileTelephoneInputSelector);
@@ -190,7 +234,7 @@ describe("As a beacon owner and land or other use user", () => {
 
   it("sends me to the previous page when I click the back link", () => {
     iCanClickTheBackLinkToGoToPreviousPage(
-      "/register-a-beacon/land-other-activity"
+      "/register-a-beacon/about-the-vessel"
     );
   });
 });

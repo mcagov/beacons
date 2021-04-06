@@ -8,7 +8,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to enter my initial beacon information", () => {
   const pageUrl = "/register-a-beacon/check-beacon-details";

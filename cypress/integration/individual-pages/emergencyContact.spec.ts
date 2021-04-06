@@ -9,7 +9,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to submit information about my beacon", () => {
   const thisPageUrl = "/register-a-beacon/emergency-contact";

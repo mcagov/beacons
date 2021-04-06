@@ -1,4 +1,4 @@
-import { PageURLs } from "../../src/lib/urls";
+import { PageURLs } from "../../../src/lib/urls";
 import {
   andIAmAt,
   andIClickContinue,
@@ -14,7 +14,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
   const otherActivitySelector = "#other-activity";

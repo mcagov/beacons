@@ -10,13 +10,12 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "./common.spec";
+} from "../common.spec";
 
 describe("As a beacon owner, I want to submit uses for my beacon", () => {
   const previousPageUrl = "register-a-beacon/beacon-information";
   const pageUrl = "/register-a-beacon/beacon-use";
   const purposeUrl = "/register-a-beacon/purpose";
-  const activityUrl = "/register-a-beacon/activity";
   const landOrOtherActivityUrl = "/register-a-beacon/land-other-activity";
   const otherCheckboxSelector = "#other";
   const otherInput = "#environmentOtherInput";
