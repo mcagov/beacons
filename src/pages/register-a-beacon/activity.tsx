@@ -299,11 +299,11 @@ const AviationPleasureOptions: FunctionComponent<OptionsProps> = ({
         defaultChecked={form.fields.activity.value === Activity.GLIDER}
       />
       <RadioListItem
-        id="hot-air-ballon"
+        id="hot-air-balloon"
         name={listItemName}
-        value={Activity.HOT_AIR_BALLON}
-        label="Hot air ballon"
-        defaultChecked={form.fields.activity.value === Activity.HOT_AIR_BALLON}
+        value={Activity.HOT_AIR_BALLOON}
+        label="Hot air balloon"
+        defaultChecked={form.fields.activity.value === Activity.HOT_AIR_BALLOON}
       />
       <RadioListItem
         id="other-activity"
@@ -371,11 +371,11 @@ const AviationCommercialOptions: FunctionComponent<OptionsProps> = ({
         defaultChecked={form.fields.activity.value === Activity.GLIDER}
       />
       <RadioListItem
-        id="hot-air-ballon"
+        id="hot-air-balloon"
         name={listItemName}
-        value={Activity.HOT_AIR_BALLON}
-        label="Hot air ballon"
-        defaultChecked={form.fields.activity.value === Activity.HOT_AIR_BALLON}
+        value={Activity.HOT_AIR_BALLOON}
+        label="Hot air balloon"
+        defaultChecked={form.fields.activity.value === Activity.HOT_AIR_BALLOON}
       />
       <RadioListItem
         id="other-activity"
