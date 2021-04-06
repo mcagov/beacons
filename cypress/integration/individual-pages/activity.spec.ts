@@ -9,11 +9,8 @@ import {
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
-  thenThereAreNoErrors,
-  thenTheUrlShouldContain,
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
-  whenIType,
 } from "../common.spec";
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
@@ -56,22 +53,6 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       requiredFieldErrorMessage
     );
     thenMyFocusMovesTo("#otherActivityText");
-  });
-
-  it("does not show errors if valid input is given to Other activity", () => {
-    givenIAmAMaritimePleasureUser();
-    andIHaveSelected(otherActivitySelector);
-    whenIType("Surfboard", "#otherActivityText");
-    whenIClickContinue();
-    thenThereAreNoErrors();
-  });
-
-  it("routes to the next page if there are no errors with Other pleasure vessel selected", () => {
-    givenIAmAMaritimePleasureUser();
-    andIHaveSelected(otherActivitySelector);
-    whenIType("Surfboard", "#otherActivityText");
-    whenIClickContinue();
-    thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");
   });
 });
 
