@@ -9,6 +9,8 @@ export const testData = {
     manufacturer: "Ocean Signal",
     model: "EPIRB1",
     hexId: "1D0E9B07CEFFBFF",
+  },
+  additionalBeaconInformation: {
     serialNumber: "42",
     chkCode: "9480B",
     batteryExpiryMonth: "12",
@@ -16,11 +18,13 @@ export const testData = {
     lastServicedMonth: "6",
     lastServicedYear: "2019",
   },
-  owner: {
+  ownerDetails: {
     fullName: "Steve Stevington",
     telephoneNumber: "0303 123 7300",
     alternativeTelephoneNumber: "0303 123 7301",
     email: "steve@royal.uk",
+  },
+  ownerAddress: {
     addressLine1: "Buckingham Palace",
     addressLine2: "Westminster",
     townOrCity: "London",

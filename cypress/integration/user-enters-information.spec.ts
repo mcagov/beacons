@@ -21,24 +21,24 @@ export const givenIHaveEnteredMyBeaconDetails = (): void => {
   givenIHaveClickedContinue();
   thenTheUrlShouldContain(PageURLs.beaconInformation);
   givenIHaveTyped(
-    testData.beaconDetails.serialNumber,
+    testData.additionalBeaconInformation.serialNumber,
     "#manufacturerSerialNumber"
   );
-  givenIHaveTyped(testData.beaconDetails.chkCode, "#chkCode");
+  givenIHaveTyped(testData.additionalBeaconInformation.chkCode, "#chkCode");
   givenIHaveTyped(
-    testData.beaconDetails.batteryExpiryMonth,
+    testData.additionalBeaconInformation.batteryExpiryMonth,
     "#batteryExpiryDateMonth"
   );
   givenIHaveTyped(
-    testData.beaconDetails.batteryExpiryYear,
+    testData.additionalBeaconInformation.batteryExpiryYear,
     "#batteryExpiryDateYear"
   );
   givenIHaveTyped(
-    testData.beaconDetails.lastServicedMonth,
+    testData.additionalBeaconInformation.lastServicedMonth,
     "#lastServicedDateMonth"
   );
   givenIHaveTyped(
-    testData.beaconDetails.lastServicedYear,
+    testData.additionalBeaconInformation.lastServicedYear,
     "#lastServicedDateYear"
   );
   givenIHaveClickedContinue();
@@ -46,22 +46,25 @@ export const givenIHaveEnteredMyBeaconDetails = (): void => {
 
 export const givenIHaveEnteredMyPersonalDetails = (): void => {
   givenIAmAt(PageURLs.aboutBeaconOwner);
-  givenIHaveTyped(testData.owner.fullName, "#ownerFullName");
-  givenIHaveTyped(testData.owner.telephoneNumber, "#ownerTelephoneNumber");
+  givenIHaveTyped(testData.ownerDetails.fullName, "#ownerFullName");
   givenIHaveTyped(
-    testData.owner.alternativeTelephoneNumber,
+    testData.ownerDetails.telephoneNumber,
+    "#ownerTelephoneNumber"
+  );
+  givenIHaveTyped(
+    testData.ownerDetails.alternativeTelephoneNumber,
     "#ownerAlternativeTelephoneNumber"
   );
-  givenIHaveTyped(testData.owner.email, "#ownerEmail");
+  givenIHaveTyped(testData.ownerDetails.email, "#ownerEmail");
   givenIHaveClickedContinue();
 };
 
 export const givenIHaveEnteredMyAddressDetails = (): void => {
   givenIAmAt(PageURLs.beaconOwnerAddress);
-  givenIHaveTyped(testData.owner.addressLine1, "#ownerAddressLine1");
-  givenIHaveTyped(testData.owner.addressLine2, "#ownerAddressLine2");
-  givenIHaveTyped(testData.owner.townOrCity, "#ownerTownOrCity");
-  givenIHaveTyped(testData.owner.postcode, "#ownerPostcode");
+  givenIHaveTyped(testData.ownerAddress.addressLine1, "#ownerAddressLine1");
+  givenIHaveTyped(testData.ownerAddress.addressLine2, "#ownerAddressLine2");
+  givenIHaveTyped(testData.ownerAddress.townOrCity, "#ownerTownOrCity");
+  givenIHaveTyped(testData.ownerAddress.postcode, "#ownerPostcode");
   givenIHaveClickedContinue();
 };
 
@@ -153,6 +156,12 @@ export const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
     testAviationPleasureUse.otherCommunication,
     "#otherCommunicationInput"
   );
+};
+
+export const andIHaveNoFurtherUses = (): void => {
+  thenTheUrlShouldContain(PageURLs.additionalUse);
+  givenIHaveSelected("#no");
+  andIClickContinue();
 };
 
 export const asAMaritimeBeaconOwner = (): void => {

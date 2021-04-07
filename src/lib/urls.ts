@@ -3,6 +3,7 @@ export const ofcomLicenseUrl =
 
 export enum PageURLs {
   start = "/",
+  checkBeaconDetails = "/register-a-beacon/check-beacon-details",
   beaconInformation = "/register-a-beacon/beacon-information",
   environment = "/register-a-beacon/beacon-use",
   purpose = "/register-a-beacon/purpose",
