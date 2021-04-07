@@ -19,18 +19,22 @@ export const givenIHaveEnteredMyBeaconDetails = (): void => {
   givenIHaveClickedContinue();
 };
 
-export const givenIAmAMaritimePleasureUser = (): void => {
+export const asAMaritimeBeaconOwner = (): void => {
   givenIHaveEnteredMyBeaconDetails();
 
   andIHaveSelected("#maritime");
   andIClickContinue();
-  andIHaveSelected("#pleasure");
-  andIClickContinue();
 };
 
-export const givenIAmAnAviationBeaconOwner = (): void => {
+export const asAnAviationBeaconOwner = (): void => {
   givenIHaveEnteredMyBeaconDetails();
 
   andIHaveSelected("#aviation");
+  andIClickContinue();
+};
+
+export const asAMaritimePleasureBeaconOwner = (): void => {
+  asAMaritimeBeaconOwner();
+  andIHaveSelected("#pleasure");
   andIClickContinue();
 };
