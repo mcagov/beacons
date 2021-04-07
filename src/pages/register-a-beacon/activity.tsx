@@ -270,7 +270,7 @@ const AviationPleasureOptions: FunctionComponent<OptionsProps> = ({
         id="jet-aircraft"
         name={listItemName}
         value={Activity.JET_AIRCRAFT}
-        label="Jet Aircraft vessel"
+        label="Jet aircraft"
         hintText="E.g. very light jet, light business jet, medium or heavy business jet"
         defaultChecked={form.fields.activity.value === Activity.JET_AIRCRAFT}
       />
@@ -299,10 +299,10 @@ const AviationPleasureOptions: FunctionComponent<OptionsProps> = ({
         defaultChecked={form.fields.activity.value === Activity.GLIDER}
       />
       <RadioListItem
-        id="hot-air-ballon"
+        id="hot-air-balloon"
         name={listItemName}
         value={Activity.HOT_AIR_BALLOON}
-        label="Hot air ballon"
+        label="Hot air balloon"
         defaultChecked={form.fields.activity.value === Activity.HOT_AIR_BALLOON}
       />
       <RadioListItem
@@ -371,10 +371,10 @@ const AviationCommercialOptions: FunctionComponent<OptionsProps> = ({
         defaultChecked={form.fields.activity.value === Activity.GLIDER}
       />
       <RadioListItem
-        id="hot-air-ballon"
+        id="hot-air-balloon"
         name={listItemName}
         value={Activity.HOT_AIR_BALLOON}
-        label="Hot air ballon"
+        label="Hot air balloon"
         defaultChecked={form.fields.activity.value === Activity.HOT_AIR_BALLOON}
       />
       <RadioListItem
