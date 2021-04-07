@@ -8,7 +8,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
 } from "../selectors-and-assertions.spec";
-import { asAMaritimePleasureBeaconOwner } from "../user-journey-steps.spec";
+import { asAMaritimePleasureBeaconOwner } from "../user-enters-information.spec";
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
   const otherActivitySelector = "#other-activity";

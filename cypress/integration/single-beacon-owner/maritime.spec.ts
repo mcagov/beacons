@@ -10,7 +10,7 @@ import {
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
-import { givenIHaveEnteredMyBeaconDetails } from "../user-journey-steps.spec";
+import { givenIHaveEnteredMyBeaconDetails } from "../user-enters-information.spec";
 
 describe("As a maritime beacon owner,", () => {
   it("I can register my beacon for pleasure purposes", () => {

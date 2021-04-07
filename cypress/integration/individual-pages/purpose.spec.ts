@@ -4,7 +4,7 @@ import {
   thenIShouldSeeAnErrorMessageThatContains,
   whenIClickContinue,
 } from "../selectors-and-assertions.spec";
-import { asAnAviationBeaconOwner } from "../user-journey-steps.spec";
+import { asAnAviationBeaconOwner } from "../user-enters-information.spec";
 
 describe("As a beacon owner, I want to submit the purpose for my beacon", () => {
   it("displays an error if no beacon use purpose is selected", () => {

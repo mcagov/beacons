@@ -1,4 +1,5 @@
 import { PageURLs } from "../../../src/lib/urls";
+import { testAviationPleasureUse } from "../happy-path-test-data.spec";
 import {
   andIClickContinue,
   givenIHaveSelected,
@@ -10,7 +11,18 @@ import {
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
-import { givenIHaveEnteredMyBeaconDetails } from "../user-journey-steps.spec";
+import {
+  givenIHaveEnteredInformationAboutMyAircraft,
+  givenIHaveEnteredMyAddressDetails,
+  givenIHaveEnteredMyAircraftCommunicationDetails,
+  givenIHaveEnteredMyBeaconDetails,
+  givenIHaveEnteredMyEmergencyContactDetails,
+  givenIHaveEnteredMyPersonalDetails,
+} from "../user-enters-information.spec";
+import {
+  iCanSeeMyAviationPleasureUse,
+  iCanSeeMyBeaconInformation,
+} from "../user-sees-previously-entered-information.spec";
 
 describe("As an aviation beacon owner,", () => {
   it("I can register my beacon for pleasure purposes", () => {
@@ -28,45 +40,68 @@ describe("As an aviation beacon owner,", () => {
     thenTheUrlShouldContain(PageURLs.activity);
     iCanSeeAHeadingThatContains("aviation");
     iCanSeeAHeadingThatContains("pleasure");
-    givenIHaveSelected("#jet-aircraft");
+    givenIHaveSelected("#" + testAviationPleasureUse.activity.toLowerCase());
     andIClickContinue();
 
     thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
     iCanSeeAHeadingThatContains("aircraft");
-    givenIHaveTyped("15", "#maxCapacity");
+    givenIHaveEnteredInformationAboutMyAircraft();
     andIClickContinue();
 
     thenTheUrlShouldContain(PageURLs.aircraftCommunications);
-    givenIHaveSelected("#satelliteTelephone");
-    givenIHaveTyped("+881612345678", "#satelliteTelephoneInput");
+    givenIHaveEnteredMyAircraftCommunicationDetails();
     andIClickContinue();
 
     thenTheUrlShouldContain(PageURLs.moreDetails);
+    givenIHaveTyped("X", "#moreDetails");
+    andIClickContinue();
+
+    thenTheUrlShouldContain(PageURLs.additionalUse);
+    givenIHaveSelected("#no");
+    andIClickContinue();
+
+    thenTheUrlShouldContain(PageURLs.aboutBeaconOwner);
+    givenIHaveEnteredMyPersonalDetails();
+
+    thenTheUrlShouldContain(PageURLs.beaconOwnerAddress);
+    givenIHaveEnteredMyAddressDetails();
+
+    thenTheUrlShouldContain(PageURLs.emergencyContact);
+    givenIHaveEnteredMyEmergencyContactDetails();
+
+    thenTheUrlShouldContain(PageURLs.checkYourAnswers);
+    iCanSeeMyBeaconInformation();
+    iCanSeeMyAviationPleasureUse();
+
     whenIClickBack();
 
-    thenTheUrlShouldContain(PageURLs.aircraftCommunications);
-    thenTheCheckboxShouldBeChecked("#satelliteTelephone");
-    thenTheInputShouldContain("+881612345678", "#satelliteTelephoneInput");
-    whenIClickBack();
-
-    thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
-    iCanSeeAHeadingThatContains("aircraft");
-    thenTheInputShouldContain("15", "#maxCapacity");
-    whenIClickBack();
-
-    thenTheUrlShouldContain(PageURLs.activity);
-    iCanSeeAHeadingThatContains("aviation");
-    iCanSeeAHeadingThatContains("pleasure");
-    thenTheRadioButtonShouldBeSelected("#jet-aircraft");
-    whenIClickBack();
-
-    thenTheUrlShouldContain(PageURLs.purpose);
-    iCanSeeAHeadingThatContains("aviation");
-    thenTheCheckboxShouldBeChecked("#pleasure");
-    whenIClickBack();
-
-    thenTheUrlShouldContain(PageURLs.environment);
-    thenTheRadioButtonShouldBeSelected("#aviation");
+    // thenTheUrlShouldContain(PageURLs.emergencyContact);
+    // iCanSeeMyEmergencyContactDetails();
+    // whenIClickBack();
+    //
+    // thenTheUrlShouldContain(PageURLs.aircraftCommunications);
+    // thenTheCheckboxShouldBeChecked("#satelliteTelephone");
+    // thenTheInputShouldContain("+881612345678", "#satelliteTelephoneInput");
+    // whenIClickBack();
+    //
+    // thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
+    // iCanSeeAHeadingThatContains("aircraft");
+    // thenTheInputShouldContain("15", "#maxCapacity");
+    // whenIClickBack();
+    //
+    // thenTheUrlShouldContain(PageURLs.activity);
+    // iCanSeeAHeadingThatContains("aviation");
+    // iCanSeeAHeadingThatContains("pleasure");
+    // thenTheRadioButtonShouldBeSelected("#jet-aircraft");
+    // whenIClickBack();
+    //
+    // thenTheUrlShouldContain(PageURLs.purpose);
+    // iCanSeeAHeadingThatContains("aviation");
+    // thenTheCheckboxShouldBeChecked("#pleasure");
+    // whenIClickBack();
+    //
+    // thenTheUrlShouldContain(PageURLs.environment);
+    // thenTheRadioButtonShouldBeSelected("#aviation");
   });
 
   it("I can register my beacon for commercial purposes", () => {

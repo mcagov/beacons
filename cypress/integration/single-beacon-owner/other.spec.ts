@@ -9,7 +9,7 @@ import {
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
-import { givenIHaveEnteredMyBeaconDetails } from "../user-journey-steps.spec";
+import { givenIHaveEnteredMyBeaconDetails } from "../user-enters-information.spec";
 
 describe("As a beacon owner in an environment other than land, aviation or maritime,", () => {
   it("I can register my beacon", () => {
