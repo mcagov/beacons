@@ -202,6 +202,29 @@ const LandOtherUses: FunctionComponent<FormPageProps> = ({
           label="Cycling"
         />
         <CheckboxListItem
+          id="climbingMountaineering"
+          value={Activity.CLIMBING_MOUNTAINEERING}
+          defaultChecked={
+            form.fields.climbingMountaineering.value ===
+            Activity.CLIMBING_MOUNTAINEERING
+          }
+          label="Climbing or mountaineering"
+        />
+        <CheckboxListItem
+          id="skiing"
+          value={Activity.SKIING}
+          defaultChecked={form.fields.skiing.value === Activity.SKIING}
+          label="Skiing"
+        />
+        <CheckboxListItem
+          id="walkingHiking"
+          value={Activity.WALKING_HIKING}
+          defaultChecked={
+            form.fields.walkingHiking.value === Activity.WALKING_HIKING
+          }
+          label="Walking or hiking"
+        />
+        <CheckboxListItem
           id="workingRemotely"
           value={Activity.WORKING_REMOTELY}
           defaultChecked={

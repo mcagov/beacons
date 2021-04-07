@@ -27,6 +27,7 @@ export const givenIAmAMaritimePleasureUser = (): void => {
   andIHaveSelected("#pleasure");
   andIClickContinue();
 };
+
 export const givenIAmAnAviationBeaconOwner = (): void => {
   givenIHaveEnteredMyBeaconDetails();
 
