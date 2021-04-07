@@ -270,7 +270,7 @@ const AviationPleasureOptions: FunctionComponent<OptionsProps> = ({
         id="jet-aircraft"
         name={listItemName}
         value={Activity.JET_AIRCRAFT}
-        label="Jet Aircraft vessel"
+        label="Jet aircraft"
         hintText="E.g. very light jet, light business jet, medium or heavy business jet"
         defaultChecked={form.fields.activity.value === Activity.JET_AIRCRAFT}
       />
