@@ -64,3 +64,9 @@ resource "aws_route_table" "private" {
     nat_gateway_id = element(aws_nat_gateway.gw.*.id, count.index)
   }
 }
+
+resource "aws_route_table_association" "app" {
+  count          = var.az_count
+  subnet_id      = element(aws_subnet.app.*.id, count.index)
+  route_table_id = element(aws_route_table.private.*.id, count.index)
+}
