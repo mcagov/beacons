@@ -15,7 +15,7 @@ export const testData = {
     chkCode: "9480B",
     batteryExpiryMonth: "12",
     batteryExpiryYear: "2025",
-    lastServicedMonth: "6",
+    lastServicedMonth: "06",
     lastServicedYear: "2019",
   },
   ownerDetails: {
@@ -44,19 +44,32 @@ export const testData = {
 };
 
 export const testAviationPleasureUse = {
-  environment: Environment.AVIATION,
-  purpose: Purpose.PLEASURE,
-  activity: Activity.GLIDER,
-  maxCapacity: "15",
-  manufacturer: "Cessna 162 Skycatcher",
-  principalAirport: "Bristol",
-  secondaryAirport: "Heathrow",
-  registrationMark: "G-AAAA",
-  hexAddress: "AC82EC",
-  cnOrMsnNumber: "M-ZYXW",
-  beaconPosition: "Cockpit",
-  satelliteTelephone: "+881677722191",
-  mobileTelephone1: "07162 738293",
-  mobileTelephone2: "01728 392012",
-  otherCommunication: "Carrier pigeon, goes by the name of Keith",
+  type: {
+    environment: Environment.AVIATION,
+    purpose: Purpose.PLEASURE,
+    activity: Activity.GLIDER,
+  },
+  aircraft: {
+    maxCapacity: "15",
+    manufacturer: "Cessna 162 Skycatcher",
+    principalAirport: "Bristol",
+    secondaryAirport: "Heathrow",
+    registrationMark: "G-AAAA",
+    hexAddress: "AC82EC",
+    cnOrMsnNumber: "M-ZYXW",
+    beaconPosition: "Cockpit",
+  },
+  communications: {
+    checkedFields: [
+      "vhfRadio",
+      "satelliteTelephone",
+      "mobileTelephone",
+      "otherCommunication",
+    ],
+    satelliteTelephone: "+881677722191",
+    mobileTelephone1: "07162 738293",
+    mobileTelephone2: "01728 392012",
+    otherCommunication: "Carrier pigeon, goes by the name of Keith",
+  },
+  moreDetails: "My aircraft is neon pink",
 };

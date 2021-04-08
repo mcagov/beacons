@@ -111,27 +111,33 @@ export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
 
 export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   givenIAmAt(PageURLs.aboutTheAircraft);
-  givenIHaveTyped(testAviationPleasureUse.maxCapacity, "#maxCapacity");
+  givenIHaveTyped(testAviationPleasureUse.aircraft.maxCapacity, "#maxCapacity");
   givenIHaveTyped(
-    testAviationPleasureUse.manufacturer,
+    testAviationPleasureUse.aircraft.manufacturer,
     "#aircraftManufacturer"
   );
   givenIHaveTyped(
-    testAviationPleasureUse.principalAirport,
+    testAviationPleasureUse.aircraft.principalAirport,
     "#principalAirport"
   );
   givenIHaveTyped(
-    testAviationPleasureUse.secondaryAirport,
+    testAviationPleasureUse.aircraft.secondaryAirport,
     "#secondaryAirport"
   );
   givenIHaveTyped(
-    testAviationPleasureUse.registrationMark,
+    testAviationPleasureUse.aircraft.registrationMark,
     "#registrationMark"
   );
-  givenIHaveTyped(testAviationPleasureUse.hexAddress, "#hexAddress");
-  givenIHaveTyped(testAviationPleasureUse.cnOrMsnNumber, "#cnOrMsnNumber");
+  givenIHaveTyped(testAviationPleasureUse.aircraft.hexAddress, "#hexAddress");
+  givenIHaveTyped(
+    testAviationPleasureUse.aircraft.cnOrMsnNumber,
+    "#cnOrMsnNumber"
+  );
   givenIHaveSelected("#dongle-yes");
-  givenIHaveTyped(testAviationPleasureUse.beaconPosition, "#beaconPosition");
+  givenIHaveTyped(
+    testAviationPleasureUse.aircraft.beaconPosition,
+    "#beaconPosition"
+  );
 };
 
 export const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
@@ -139,23 +145,28 @@ export const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#satelliteTelephone");
   givenIHaveTyped(
-    testAviationPleasureUse.satelliteTelephone,
+    testAviationPleasureUse.communications.satelliteTelephone,
     "#satelliteTelephoneInput"
   );
   givenIHaveSelected("#mobileTelephone");
   givenIHaveTyped(
-    testAviationPleasureUse.mobileTelephone1,
+    testAviationPleasureUse.communications.mobileTelephone1,
     "#mobileTelephoneInput1"
   );
   givenIHaveTyped(
-    testAviationPleasureUse.mobileTelephone2,
+    testAviationPleasureUse.communications.mobileTelephone2,
     "#mobileTelephoneInput2"
   );
   givenIHaveSelected("#otherCommunication");
   givenIHaveTyped(
-    testAviationPleasureUse.otherCommunication,
+    testAviationPleasureUse.communications.otherCommunication,
     "#otherCommunicationInput"
   );
+};
+
+export const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
+  givenIAmAt(PageURLs.moreDetails);
+  givenIHaveTyped(testAviationPleasureUse.moreDetails, "#moreDetails");
 };
 
 export const andIHaveNoFurtherUses = (): void => {

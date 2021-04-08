@@ -1,4 +1,3 @@
-import { PageURLs } from "../../src/lib/urls";
 import { testAviationPleasureUse, testData } from "./happy-path-test-data.spec";
 
 export const iCanSeeMyBeaconDetails = (): void =>
@@ -10,9 +9,27 @@ export const iCanSeeMyAdditionalBeaconInformation = (): void =>
   );
 
 export const iCanSeeMyAviationPleasureUse = (): void => {
-  Object.entries(testAviationPleasureUse).forEach(([, value]) => {
+  Object.values(testAviationPleasureUse.type).forEach((value) => {
     cy.get("main").contains(value);
   });
+  Object.values(testAviationPleasureUse.aircraft).forEach((value) => {
+    cy.get("main").contains(value);
+  });
+  cy.get("main").contains(
+    testAviationPleasureUse.communications.satelliteTelephone
+  );
+  cy.get("main").contains(
+    testAviationPleasureUse.communications.mobileTelephone1
+  );
+  cy.get("main").contains(
+    testAviationPleasureUse.communications.mobileTelephone2
+  );
+  cy.get("main").contains(
+    testAviationPleasureUse.communications.otherCommunication
+  );
+  cy.get("main").contains(testAviationPleasureUse.moreDetails);
+  // TODO: Test that user's dongle choice is played back on check-your-answers
+  // cy.get("main").contains("Dongle")
 };
 
 export const iCanSeeMyPersonalDetails = (): void =>
@@ -26,27 +43,6 @@ export const iCanSeeMyAddressDetails = (): void =>
   );
 
 export const iCanSeeMyEmergencyContactDetails = (): void =>
-  Object.entries(testData.emergencyContacts).forEach(([, value]) =>
+  Object.values(testData.emergencyContacts).forEach((value) =>
     cy.get("main").contains(value)
   );
-
-export const iCanClickChangeLinksToEditMyRegistration = (): void => {
-  cy.get("a.govuk-link")
-    .contains("Change")
-    .click()
-    .each((link) => {
-      link.click();
-      cy.url().then((url_string) => {
-        const url = new URL(url_string);
-        pageToDataMap[url.pathname]();
-      });
-    });
-};
-
-const pageToDataMap = {
-  [PageURLs.aboutBeaconOwner]: iCanSeeMyPersonalDetails,
-  [PageURLs.beaconOwnerAddress]: iCanSeeMyAddressDetails,
-  [PageURLs.emergencyContact]: iCanSeeMyEmergencyContactDetails,
-  [PageURLs.beaconInformation]: iCanSeeMyBeaconDetails,
-  [PageURLs.checkBeaconDetails]: iCanSeeMyAdditionalBeaconInformation,
-};

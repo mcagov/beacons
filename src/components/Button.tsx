@@ -84,9 +84,11 @@ export const BackButtonRouterIndexes: FunctionComponent<BackButtonProps> = ({
   href = formatUrlQueryParams(href, { useIndex });
 
   return (
-    <Link href={href}>
-      <a className="govuk-back-link">Back</a>
-    </Link>
+    // <Link href={href}>
+    <a href={href} className="govuk-back-link">
+      Back
+    </a>
+    // </Link>
   );
 };
 

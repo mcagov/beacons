@@ -1,6 +1,14 @@
 import { PageURLs } from "../../../src/lib/urls";
 import { testAviationPleasureUse } from "../happy-path-test-data.spec";
 import {
+  iCanClickChangeLinksToEditMyRegistration,
+  iCanSeeMyAddressDetails,
+  iCanSeeMyAviationPleasureUse,
+  iCanSeeMyBeaconDetails,
+  iCanSeeMyEmergencyContactDetails,
+  iCanSeeMyPersonalDetails,
+} from "../i-can-see-previously-entered-information.spec";
+import {
   andIClickContinue,
   givenIHaveSelected,
   givenIHaveTyped,
@@ -13,20 +21,13 @@ import {
 } from "../selectors-and-assertions.spec";
 import {
   givenIHaveEnteredInformationAboutMyAircraft,
+  givenIHaveEnteredMoreDetailsAboutMyAircraft,
   givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyAircraftCommunicationDetails,
   givenIHaveEnteredMyBeaconDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
 } from "../user-enters-information.spec";
-import {
-  iCanClickChangeLinksToEditMyRegistration,
-  iCanSeeMyAddressDetails,
-  iCanSeeMyAviationPleasureUse,
-  iCanSeeMyBeaconDetails,
-  iCanSeeMyEmergencyContactDetails,
-  iCanSeeMyPersonalDetails,
-} from "../user-sees-previously-entered-information.spec";
 
 describe("As a beacon owner with a completed form,", () => {
   it("I can go back and change my responses before final submission", () => {
@@ -44,7 +45,9 @@ describe("As a beacon owner with a completed form,", () => {
     thenTheUrlShouldContain(PageURLs.activity);
     iCanSeeAHeadingThatContains("aviation");
     iCanSeeAHeadingThatContains("pleasure");
-    givenIHaveSelected("#" + testAviationPleasureUse.activity.toLowerCase());
+    givenIHaveSelected(
+      "#" + testAviationPleasureUse.type.activity.toLowerCase()
+    );
     andIClickContinue();
 
     thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
@@ -57,7 +60,7 @@ describe("As a beacon owner with a completed form,", () => {
     andIClickContinue();
 
     thenTheUrlShouldContain(PageURLs.moreDetails);
-    givenIHaveTyped("X", "#moreDetails");
+    givenIHaveEnteredMoreDetailsAboutMyAircraft();
     andIClickContinue();
 
     thenTheUrlShouldContain(PageURLs.additionalUse);

@@ -22,6 +22,7 @@ export const givenIAmAt = (url: string): void => {
 export const givenIHaveBeenTo = givenIAmAt;
 export const andIHaveBeenTo = givenIAmAt;
 export const andIAmAt = givenIAmAt;
+export const iAmAt = givenIAmAt;
 
 export const iCanSeeAHeadingThatContains = (text: string): void => {
   cy.get("h1").contains(text);

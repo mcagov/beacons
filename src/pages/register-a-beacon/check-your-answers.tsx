@@ -373,7 +373,14 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
           ) : (
             ""
           )}
-          {use}
+          {use.otherCommunication ? (
+            <CheckYourAnswersDataRowItem
+              label="Other communication"
+              value={use.otherCommunicationInput}
+            />
+          ) : (
+            ""
+          )}
         </SummaryListItem>
       </SummaryList>
     </>

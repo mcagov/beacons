@@ -1,9 +1,30 @@
 import { PageURLs } from "../../../src/lib/urls";
 import { testAviationPleasureUse } from "../happy-path-test-data.spec";
 import {
+  iCanEditMyActivity,
+  iCanEditMyAdditionalBeaconInformation,
+  iCanEditMyAdditionalUseInformation,
+  iCanEditMyAddressDetails,
+  iCanEditMyAircraftCommunications,
+  iCanEditMyAircraftDetails,
+  iCanEditMyBeaconDetails,
+  iCanEditMyEmergencyContactDetails,
+  iCanEditMyEnvironment,
+  iCanEditMyPersonalDetails,
+  iCanEditMyPurpose,
+} from "../i-can-edit-previously-entered-information.spec";
+import {
+  iCanSeeMyAddressDetails,
+  iCanSeeMyAviationPleasureUse,
+  iCanSeeMyBeaconDetails,
+  iCanSeeMyEmergencyContactDetails,
+  iCanSeeMyPersonalDetails,
+} from "../i-can-see-previously-entered-information.spec";
+import {
   andIClickContinue,
   givenIHaveSelected,
   givenIHaveTyped,
+  iAmAt,
   iCanSeeAHeadingThatContains,
   thenTheCheckboxShouldBeChecked,
   thenTheInputShouldContain,
@@ -14,19 +35,13 @@ import {
 import {
   andIHaveNoFurtherUses,
   givenIHaveEnteredInformationAboutMyAircraft,
+  givenIHaveEnteredMoreDetailsAboutMyAircraft,
   givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyAircraftCommunicationDetails,
   givenIHaveEnteredMyBeaconDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
 } from "../user-enters-information.spec";
-import {
-  iCanSeeMyAddressDetails,
-  iCanSeeMyAviationPleasureUse,
-  iCanSeeMyBeaconDetails,
-  iCanSeeMyEmergencyContactDetails,
-  iCanSeeMyPersonalDetails,
-} from "../user-sees-previously-entered-information.spec";
 
 describe("As an aviation beacon owner,", () => {
   it("I can register my beacon for pleasure purposes", () => {
@@ -44,18 +59,31 @@ describe("As an aviation beacon owner,", () => {
     iCanSeeMyPersonalDetails();
     iCanSeeMyAddressDetails();
     iCanSeeMyEmergencyContactDetails();
-    cy.contains("Heathrow");
 
     whenIClickBack();
-    iCanSeeMyEmergencyContactDetails();
+    iCanEditMyEmergencyContactDetails();
     whenIClickBack();
-    iCanSeeMyAddressDetails();
+    iCanEditMyAddressDetails();
     whenIClickBack();
-    iCanSeeMyPersonalDetails();
+    iCanEditMyPersonalDetails();
     whenIClickBack();
-    iCanSeeMyAviationPleasureUse();
+    iCanEditMyAdditionalUseInformation();
     whenIClickBack();
-    iCanSeeMyBeaconDetails();
+    iCanEditMyAircraftCommunications();
+    whenIClickBack();
+    iCanEditMyAircraftDetails();
+    whenIClickBack();
+    iCanEditMyActivity();
+    whenIClickBack();
+    iCanEditMyPurpose();
+    whenIClickBack();
+    iCanEditMyEnvironment();
+    whenIClickBack();
+    iCanEditMyAdditionalBeaconInformation();
+    whenIClickBack();
+    iCanEditMyBeaconDetails();
+    whenIClickBack();
+    iAmAt(PageURLs.start);
   });
 
   it("I can register my beacon for commercial purposes", () => {
@@ -128,7 +156,7 @@ export const givenIHaveEnteredMyAviationPleasureUse = (): void => {
   thenTheUrlShouldContain(PageURLs.activity);
   iCanSeeAHeadingThatContains("aviation");
   iCanSeeAHeadingThatContains("pleasure");
-  givenIHaveSelected("#" + testAviationPleasureUse.activity.toLowerCase());
+  givenIHaveSelected("#" + testAviationPleasureUse.type.activity.toLowerCase());
   andIClickContinue();
 
   thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
@@ -141,6 +169,6 @@ export const givenIHaveEnteredMyAviationPleasureUse = (): void => {
   andIClickContinue();
 
   thenTheUrlShouldContain(PageURLs.moreDetails);
-  givenIHaveTyped("X", "#moreDetails");
+  givenIHaveEnteredMoreDetailsAboutMyAircraft();
   andIClickContinue();
 };
