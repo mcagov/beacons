@@ -3,7 +3,7 @@ data "aws_availability_zones" "available" {
 
 resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
-  enable_dns_hostnames = false
+  enable_dns_hostnames = true
   enable_dns_support   = true
 }
 
@@ -55,7 +55,6 @@ resource "aws_nat_gateway" "gw" {
   allocation_id = element(aws_eip.gw.*.id, count.index)
 }
 
-# Create a new route table for the private subnets, make it route non-local traffic through the NAT gateway to the internet
 resource "aws_route_table" "private" {
   count  = var.az_count
   vpc_id = aws_vpc.main.id
@@ -76,6 +75,39 @@ resource "aws_route_table_association" "db" {
   count          = var.az_count
   subnet_id      = element(aws_subnet.db.*.id, count.index)
   route_table_id = element(aws_route_table.private.*.id, count.index)
+}
+
+resource "aws_vpc_endpoint" "ecr_dkr" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.aws_region}.ecr.dkr"
+  vpc_endpoint_type = "Interface"
+
+  subnet_ids = aws_subnet.app[*].id
+
+  security_group_ids = aws_security_group.vpc_endpoints[*].id
+
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.aws_region}.s3"
+  vpc_endpoint_type = "Gateway"
+}
+
+resource "aws_route_table" "vpc_endpoint" {
+  vpc_id = aws_vpc.main.id
+}
+
+resource "aws_vpc_endpoint_route_table_association" "vpc_endpoint" {
+  route_table_id  = aws_route_table.vpc_endpoint.id
+  vpc_endpoint_id = aws_vpc_endpoint.s3.id
+}
+
+resource "aws_route_table_association" "vpc_endpoints" {
+  count          = var.az_count
+  subnet_id      = element(aws_subnet.app[*].id, count.index)
+  route_table_id = aws_route_table.vpc_endpoint.id
 }
 
 resource "aws_vpc_endpoint" "cloud_watch_logs" {
