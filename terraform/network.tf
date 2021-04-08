@@ -65,18 +65,6 @@ resource "aws_route_table" "private" {
   }
 }
 
-resource "aws_route_table_association" "app" {
-  count          = var.az_count
-  subnet_id      = element(aws_subnet.app.*.id, count.index)
-  route_table_id = element(aws_route_table.private.*.id, count.index)
-}
-
-resource "aws_route_table_association" "db" {
-  count          = var.az_count
-  subnet_id      = element(aws_subnet.db.*.id, count.index)
-  route_table_id = element(aws_route_table.private.*.id, count.index)
-}
-
 resource "aws_vpc_endpoint" "ecr_dkr" {
   vpc_id            = aws_vpc.main.id
   service_name      = "com.amazonaws.${var.aws_region}.ecr.dkr"
