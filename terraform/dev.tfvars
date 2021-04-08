@@ -1,6 +1,6 @@
 env                    = "dev"
 aws_region             = "eu-west-2"
-az_count               = 2
+az_count               = 1
 webapp_count           = 1
 webapp_fargate_cpu     = 256
 webapp_fargate_memory  = 512
