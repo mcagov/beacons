@@ -281,8 +281,12 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
             value={use.aircraftManufacturer}
           />
           <CheckYourAnswersDataRowItem
-            label="Principle Airport"
+            label="Principal airport"
             value={use.principalAirport}
+          />
+          <CheckYourAnswersDataRowItem
+            label="Secondary airport"
+            value={use.secondaryAirport}
           />
           <CheckYourAnswersDataRowItem
             label="Registration mark"
@@ -369,6 +373,7 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
           ) : (
             ""
           )}
+          {use}
         </SummaryListItem>
       </SummaryList>
     </>
