@@ -86,3 +86,53 @@ export const testAviationCommercialUse = {
     activity: Activity.GLIDER,
   },
 };
+
+export const testMaritimeUse = {
+  vessel: {
+    maxCapacity: "42",
+    name: "Ever Given",
+    beaconPosition: "Captain's cabin",
+    pln: "XYZ123",
+    homePort: "Avonmouth",
+    typicalAO: "Suez Canal",
+    imoNumber: "9811000",
+    ssrNumber: "1664",
+    officialNumber: "1313",
+    rigPlatformLocation: "Suez Canal",
+  },
+  communications: {
+    checkedFields: [
+      "vhfRadio",
+      "fixedVhfRadio",
+      "portableVhfRadio",
+      "satelliteTelephone",
+      "mobileTelephone",
+      "otherCommunication",
+    ],
+    fixedMMSI: "353136000",
+    portableMMSI: "235107771",
+    satelliteTelephone: "+881677722191",
+    mobileTelephone1: "07162 738293",
+    mobileTelephone2: "01728 392012",
+    otherCommunication: "Carrier pigeon, goes by the name of Birdseye",
+  },
+  moreDetails: "My vessel is stuck",
+};
+
+export const testMaritimePleasureUse = {
+  ...testAviationUse,
+  type: {
+    environment: Environment.MARITIME,
+    purpose: Purpose.PLEASURE,
+    activity: Activity.MOTOR,
+  },
+};
+
+export const testMaritimeCommercialUse = {
+  ...testAviationUse,
+  type: {
+    environment: Environment.MARITIME,
+    purpose: Purpose.COMMERCIAL,
+    activity: Activity.MOTOR,
+  },
+};

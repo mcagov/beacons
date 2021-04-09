@@ -1,5 +1,5 @@
 import { PageURLs } from "../../src/lib/urls";
-import { testAviationPleasureUse, testData } from "./happy-path-test-data.spec";
+import { testData } from "./happy-path-test-data.spec";
 import {
   andIClickContinue,
   andIHaveSelected,
@@ -107,66 +107,6 @@ export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
     "#emergencyContact3AlternativeTelephoneNumber"
   );
   givenIHaveClickedContinue();
-};
-
-export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
-  givenIAmAt(PageURLs.aboutTheAircraft);
-  givenIHaveTyped(testAviationPleasureUse.aircraft.maxCapacity, "#maxCapacity");
-  givenIHaveTyped(
-    testAviationPleasureUse.aircraft.manufacturer,
-    "#aircraftManufacturer"
-  );
-  givenIHaveTyped(
-    testAviationPleasureUse.aircraft.principalAirport,
-    "#principalAirport"
-  );
-  givenIHaveTyped(
-    testAviationPleasureUse.aircraft.secondaryAirport,
-    "#secondaryAirport"
-  );
-  givenIHaveTyped(
-    testAviationPleasureUse.aircraft.registrationMark,
-    "#registrationMark"
-  );
-  givenIHaveTyped(testAviationPleasureUse.aircraft.hexAddress, "#hexAddress");
-  givenIHaveTyped(
-    testAviationPleasureUse.aircraft.cnOrMsnNumber,
-    "#cnOrMsnNumber"
-  );
-  givenIHaveSelected("#dongle-yes");
-  givenIHaveTyped(
-    testAviationPleasureUse.aircraft.beaconPosition,
-    "#beaconPosition"
-  );
-};
-
-export const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
-  givenIAmAt(PageURLs.aircraftCommunications);
-  givenIHaveSelected("#vhfRadio");
-  givenIHaveSelected("#satelliteTelephone");
-  givenIHaveTyped(
-    testAviationPleasureUse.communications.satelliteTelephone,
-    "#satelliteTelephoneInput"
-  );
-  givenIHaveSelected("#mobileTelephone");
-  givenIHaveTyped(
-    testAviationPleasureUse.communications.mobileTelephone1,
-    "#mobileTelephoneInput1"
-  );
-  givenIHaveTyped(
-    testAviationPleasureUse.communications.mobileTelephone2,
-    "#mobileTelephoneInput2"
-  );
-  givenIHaveSelected("#otherCommunication");
-  givenIHaveTyped(
-    testAviationPleasureUse.communications.otherCommunication,
-    "#otherCommunicationInput"
-  );
-};
-
-export const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
-  givenIAmAt(PageURLs.moreDetails);
-  givenIHaveTyped(testAviationPleasureUse.moreDetails, "#moreDetails");
 };
 
 export const andIHaveNoFurtherUses = (): void => {

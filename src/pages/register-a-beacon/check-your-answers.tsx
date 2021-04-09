@@ -235,23 +235,61 @@ const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
           href={href}
           actionText="Change"
         >
+          {use.vesselName && (
+            <CheckYourAnswersDataRowItem label="Name" value={use.vesselName} />
+          )}
           <CheckYourAnswersDataRowItem
             label="Max persons onboard"
             value={use.maxCapacity}
           />
-          <CheckYourAnswersDataRowItem
-            label="vessel name"
-            value={use.vesselName}
-          />
-          <CheckYourAnswersDataRowItem label="Homeport" value={use.homeport} />
-          <CheckYourAnswersDataRowItem
-            label="Area of operation"
-            value={use.areaOfOperation}
-          />
-          <CheckYourAnswersDataRowItem
-            label="Beacon position"
-            value={use.beaconLocation}
-          />
+          {use.beaconLocation && (
+            <CheckYourAnswersDataRowItem
+              label="Beacon position"
+              value={use.beaconLocation}
+            />
+          )}
+          {use.homeport && (
+            <CheckYourAnswersDataRowItem
+              label="Homeport"
+              value={use.homeport}
+            />
+          )}
+          {use.areaOfOperation && (
+            <CheckYourAnswersDataRowItem
+              label="Area of operation"
+              value={use.areaOfOperation}
+            />
+          )}
+          {use.portLetterNumber && (
+            <CheckYourAnswersDataRowItem
+              label="Port letter number"
+              value={use.portLetterNumber}
+            />
+          )}
+          {use.imoNumber && (
+            <CheckYourAnswersDataRowItem
+              label="IMO number"
+              value={use.imoNumber}
+            />
+          )}
+          {use.officialNumber && (
+            <CheckYourAnswersDataRowItem
+              label="Official number"
+              value={use.officialNumber}
+            />
+          )}
+          {use.ssrNumber && (
+            <CheckYourAnswersDataRowItem
+              label="Small Ships Register number"
+              value={use.ssrNumber}
+            />
+          )}
+          {use.rigPlatformLocation && (
+            <CheckYourAnswersDataRowItem
+              label="Windfarm, rig or platform location"
+              value={use.rigPlatformLocation}
+            />
+          )}
         </SummaryListItem>
       </SummaryList>
     </>

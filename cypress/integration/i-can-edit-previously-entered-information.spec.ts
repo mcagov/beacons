@@ -1,4 +1,5 @@
-import { testAviationPleasureUse, testData } from "./happy-path-test-data.spec";
+import { Environment } from "../../src/lib/registration/types";
+import { testData } from "./happy-path-test-data.spec";
 
 export const iCanEditMyBeaconDetails = (): void =>
   Object.values(testData.beaconDetails).forEach((value) =>
@@ -25,6 +26,6 @@ export const iCanEditMyEmergencyContactDetails = (): void =>
     cy.get(`input[value="${value}"]`)
   );
 
-export const iCanEditMyAdditionalUseInformation = (): void => {
-  cy.get("textarea").contains(testAviationPleasureUse.moreDetails);
+export const iCanEditMyEnvironment = (environment: Environment): void => {
+  cy.get(`input[value="${environment}"]`).should("be.checked");
 };

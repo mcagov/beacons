@@ -7,18 +7,15 @@ import {
 } from "../happy-path-test-data.spec";
 import {
   iCanEditMyAdditionalBeaconInformation,
-  iCanEditMyAdditionalUseInformation,
   iCanEditMyAddressDetails,
   iCanEditMyBeaconDetails,
   iCanEditMyEmergencyContactDetails,
+  iCanEditMyEnvironment,
   iCanEditMyPersonalDetails,
 } from "../i-can-edit-previously-entered-information.spec";
 import {
   andIHaveNoFurtherUses,
-  givenIHaveEnteredInformationAboutMyAircraft,
-  givenIHaveEnteredMoreDetailsAboutMyAircraft,
   givenIHaveEnteredMyAddressDetails,
-  givenIHaveEnteredMyAircraftCommunicationDetails,
   givenIHaveEnteredMyBeaconDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
@@ -34,6 +31,7 @@ import {
   andIClickContinue,
   givenIAmAt,
   givenIHaveSelected,
+  givenIHaveTyped,
   iAmAt,
   iCanSeeAHeadingThatContains,
   thenTheUrlShouldContain,
@@ -80,7 +78,7 @@ describe("As an aviation beacon owner,", () => {
   });
 });
 
-export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
+const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   thenTheUrlShouldContain(PageURLs.environment);
   givenIHaveSelected("#aviation");
   andIClickContinue();
@@ -121,7 +119,7 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   andIClickContinue();
 };
 
-export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
+const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   givenIAmAt(PageURLs.checkYourAnswers);
   whenIClickBack();
   iCanEditMyEmergencyContactDetails();
@@ -130,7 +128,7 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyPersonalDetails();
   whenIClickBack();
-  iCanEditMyAdditionalUseInformation();
+  iCanEditMyAdditionalAviationUseInformation();
   whenIClickBack();
   iCanEditMyAircraftCommunications();
   whenIClickBack();
@@ -150,7 +148,7 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
 };
 
 export const iCanEditMyAircraftCommunications = (): void => {
-  const comms = testAviationPleasureUse.communications;
+  const comms = testAviationUse.communications;
   comms.checkedFields.forEach((field) =>
     cy.get(`#${field}`).should("be.checked")
   );
@@ -164,14 +162,13 @@ export const iCanEditMyAircraftCommunications = (): void => {
 };
 
 export const iCanEditMyAircraftDetails = (): void => {
-  const aircraft = testAviationPleasureUse.aircraft;
+  const aircraft = testAviationUse.aircraft;
   cy.get("#maxCapacity").should("have.value", aircraft.maxCapacity);
   cy.get("#aircraftManufacturer").should("have.value", aircraft.manufacturer);
   cy.get("#principalAirport").should("have.value", aircraft.principalAirport);
   cy.get("#secondaryAirport").should("have.value", aircraft.secondaryAirport);
   cy.get("#registrationMark").should("have.value", aircraft.registrationMark);
   cy.get("#hexAddress").should("have.value", aircraft.hexAddress);
-  cy.get("#cnOrMsnNumber").should("have.value", aircraft.cnOrMsnNumber);
   cy.get("#cnOrMsnNumber").should("have.value", aircraft.cnOrMsnNumber);
   cy.get("#dongle-yes").should("be.checked");
   cy.get("#beaconPosition").contains(aircraft.beaconPosition);
@@ -181,6 +178,10 @@ export const iCanEditMyActivity = (): void => {
   cy.get(`input[value="${testAviationPleasureUse.type.activity}"]`).should(
     "be.checked"
   );
+};
+
+const iCanEditMyAdditionalAviationUseInformation = (): void => {
+  cy.get("textarea").contains(testAviationUse.moreDetails);
 };
 
 export const iCanEditMyPurpose = (purpose: Purpose): void => {
@@ -198,11 +199,7 @@ export const iCanEditMyPurpose = (purpose: Purpose): void => {
   }
 };
 
-export const iCanEditMyEnvironment = (environment: Environment): void => {
-  cy.get(`input[value="${environment}"]`).should("be.checked");
-};
-
-export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
+const iCanSeeMyAviationUse = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
       Object.values(testAviationCommercialUse.type).forEach((value) => {
@@ -224,4 +221,64 @@ export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
   cy.get("main").contains(testAviationUse.communications.otherCommunication);
   cy.get("main").contains(testAviationUse.moreDetails);
   cy.get("main").contains("dongle");
+};
+
+const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
+  givenIAmAt(PageURLs.aboutTheAircraft);
+  givenIHaveTyped(testAviationPleasureUse.aircraft.maxCapacity, "#maxCapacity");
+  givenIHaveTyped(
+    testAviationPleasureUse.aircraft.manufacturer,
+    "#aircraftManufacturer"
+  );
+  givenIHaveTyped(
+    testAviationPleasureUse.aircraft.principalAirport,
+    "#principalAirport"
+  );
+  givenIHaveTyped(
+    testAviationPleasureUse.aircraft.secondaryAirport,
+    "#secondaryAirport"
+  );
+  givenIHaveTyped(
+    testAviationPleasureUse.aircraft.registrationMark,
+    "#registrationMark"
+  );
+  givenIHaveTyped(testAviationPleasureUse.aircraft.hexAddress, "#hexAddress");
+  givenIHaveTyped(
+    testAviationPleasureUse.aircraft.cnOrMsnNumber,
+    "#cnOrMsnNumber"
+  );
+  givenIHaveSelected("#dongle-yes");
+  givenIHaveTyped(
+    testAviationPleasureUse.aircraft.beaconPosition,
+    "#beaconPosition"
+  );
+};
+
+const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
+  givenIAmAt(PageURLs.aircraftCommunications);
+  givenIHaveSelected("#vhfRadio");
+  givenIHaveSelected("#satelliteTelephone");
+  givenIHaveTyped(
+    testAviationUse.communications.satelliteTelephone,
+    "#satelliteTelephoneInput"
+  );
+  givenIHaveSelected("#mobileTelephone");
+  givenIHaveTyped(
+    testAviationUse.communications.mobileTelephone1,
+    "#mobileTelephoneInput1"
+  );
+  givenIHaveTyped(
+    testAviationUse.communications.mobileTelephone2,
+    "#mobileTelephoneInput2"
+  );
+  givenIHaveSelected("#otherCommunication");
+  givenIHaveTyped(
+    testAviationUse.communications.otherCommunication,
+    "#otherCommunicationInput"
+  );
+};
+
+const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
+  givenIAmAt(PageURLs.moreDetails);
+  givenIHaveTyped(testAviationUse.moreDetails, "#moreDetails");
 };
