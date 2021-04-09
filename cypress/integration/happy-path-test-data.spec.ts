@@ -43,12 +43,7 @@ export const testData = {
   },
 };
 
-export const testAviationPleasureUse = {
-  type: {
-    environment: Environment.AVIATION,
-    purpose: Purpose.PLEASURE,
-    activity: Activity.GLIDER,
-  },
+export const testAviationUse = {
   aircraft: {
     maxCapacity: "15",
     manufacturer: "Cessna 162 Skycatcher",
@@ -72,4 +67,22 @@ export const testAviationPleasureUse = {
     otherCommunication: "Carrier pigeon, goes by the name of Keith",
   },
   moreDetails: "My aircraft is neon pink",
+};
+
+export const testAviationPleasureUse = {
+  ...testAviationUse,
+  type: {
+    environment: Environment.AVIATION,
+    purpose: Purpose.PLEASURE,
+    activity: Activity.GLIDER,
+  },
+};
+
+export const testAviationCommercialUse = {
+  ...testAviationUse,
+  type: {
+    environment: Environment.AVIATION,
+    purpose: Purpose.COMMERCIAL,
+    activity: Activity.GLIDER,
+  },
 };
