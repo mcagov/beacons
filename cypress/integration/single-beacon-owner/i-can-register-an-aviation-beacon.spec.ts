@@ -14,6 +14,16 @@ import {
   iCanEditMyPersonalDetails,
 } from "../i-can-edit-previously-entered-information.spec";
 import {
+  andIHaveNoFurtherUses,
+  givenIHaveEnteredInformationAboutMyAircraft,
+  givenIHaveEnteredMoreDetailsAboutMyAircraft,
+  givenIHaveEnteredMyAddressDetails,
+  givenIHaveEnteredMyAircraftCommunicationDetails,
+  givenIHaveEnteredMyBeaconDetails,
+  givenIHaveEnteredMyEmergencyContactDetails,
+  givenIHaveEnteredMyPersonalDetails,
+} from "../i-can-enter-information";
+import {
   iCanSeeMyAdditionalBeaconInformation,
   iCanSeeMyAddressDetails,
   iCanSeeMyBeaconDetails,
@@ -29,16 +39,6 @@ import {
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
-import {
-  andIHaveNoFurtherUses,
-  givenIHaveEnteredInformationAboutMyAircraft,
-  givenIHaveEnteredMoreDetailsAboutMyAircraft,
-  givenIHaveEnteredMyAddressDetails,
-  givenIHaveEnteredMyAircraftCommunicationDetails,
-  givenIHaveEnteredMyBeaconDetails,
-  givenIHaveEnteredMyEmergencyContactDetails,
-  givenIHaveEnteredMyPersonalDetails,
-} from "../user-enters-information.spec";
 
 describe("As an aviation beacon owner,", () => {
   it("I can register my beacon for pleasure purposes", () => {

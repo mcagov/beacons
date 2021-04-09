@@ -1,4 +1,5 @@
 import { PageURLs } from "../../../src/lib/urls";
+import { givenIHaveEnteredMyBeaconDetails } from "../i-can-enter-information";
 import {
   andIClickContinue,
   andIType,
@@ -9,7 +10,6 @@ import {
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
-import { givenIHaveEnteredMyBeaconDetails } from "../user-enters-information.spec";
 
 describe("As a beacon owner in an environment other than land, aviation or maritime,", () => {
   it("I can register my beacon", () => {
