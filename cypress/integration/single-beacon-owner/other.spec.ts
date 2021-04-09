@@ -43,5 +43,7 @@ describe("As a beacon owner in an environment other than land, aviation or marit
 
     thenTheUrlShouldContain(PageURLs.environment);
     thenTheRadioButtonShouldBeSelected("#other");
+
+    // TODO: Expand testing of this journey to match scope of aviation test file
   });
 });

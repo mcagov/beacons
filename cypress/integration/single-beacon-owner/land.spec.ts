@@ -43,6 +43,8 @@ describe("As a land beacon owner,", () => {
 
     thenTheUrlShouldContain(PageURLs.environment);
     thenTheRadioButtonShouldBeSelected("#land");
+
+    // TODO: Expand testing of this journey to match scope of aviation test file
   });
 
   it("Other environment", () => {
@@ -74,5 +76,7 @@ describe("As a land beacon owner,", () => {
 
     thenTheUrlShouldContain(PageURLs.environment);
     thenTheRadioButtonShouldBeSelected("#other");
+
+    // TODO: Expand testing of this journey to match scope of aviation test file
   });
 });

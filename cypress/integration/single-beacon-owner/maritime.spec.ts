@@ -67,6 +67,8 @@ describe("As a maritime beacon owner,", () => {
 
     thenTheUrlShouldContain(PageURLs.environment);
     thenTheRadioButtonShouldBeSelected("#maritime");
+
+    // TODO: Expand testing of this journey to match scope of aviation test file
   });
 
   it("I can register my beacon for commercial purposes", () => {
@@ -124,5 +126,7 @@ describe("As a maritime beacon owner,", () => {
 
     thenTheUrlShouldContain(PageURLs.environment);
     thenTheRadioButtonShouldBeSelected("#maritime");
+
+    // TODO: Expand testing of this journey to match scope of aviation test file
   });
 });
