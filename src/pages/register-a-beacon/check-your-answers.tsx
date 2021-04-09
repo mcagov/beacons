@@ -300,10 +300,12 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
             label="CORE/Serial number"
             value={use.cnOrMsnNumber}
           />
-          <CheckYourAnswersDataRowItem
-            label="Is this a dongle"
-            value={use.dongle}
-          />
+          {use.dongle && (
+            <CheckYourAnswersDataRowItem
+              label="Is this a dongle?"
+              value="Yes"
+            />
+          )}
           <CheckYourAnswersDataRowItem
             label="Beacon position"
             value={use.beaconPosition}
