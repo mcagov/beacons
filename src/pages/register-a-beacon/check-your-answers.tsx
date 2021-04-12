@@ -370,56 +370,44 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
           actionText="Change"
         >
           <CheckYourAnswersDataRowItem label="Callsign" value={use.callSign} />
-          {use.fixedVhfRadio ? "Fixed VHF/DSC" : ""}
-          {use.fixedVhfRadioInput ? (
+          {use.fixedVhfRadio && "Fixed VHF/DSC"}
+          {use.fixedVhfRadioInput && (
             <CheckYourAnswersDataRowItem
               label="MMSI"
               value={use.fixedVhfRadioInput}
             />
-          ) : (
-            ""
           )}
-          {use.vhfRadio ? "VHF Radio" : ""}
-          {use.portableVhfRadio ? "Portable VHF/DSC" : ""}
-          {use.portableVhfRadioInput ? (
+          {use.vhfRadio && "VHF Radio"}
+          {use.portableVhfRadio && "Portable VHF/DSC"}
+          {use.portableVhfRadioInput && (
             <CheckYourAnswersDataRowItem
               label="Portable MMSI"
               value={use.portableVhfRadioInput}
             />
-          ) : (
-            ""
           )}
-          {use.mobileTelephone ? (
+          {use.mobileTelephone && (
             <CheckYourAnswersDataRowItem
               label="Mobile telephone (1)"
               value={use.mobileTelephoneInput1}
             />
-          ) : (
-            ""
           )}
-          {use.mobileTelephone ? (
+          {use.mobileTelephone && (
             <CheckYourAnswersDataRowItem
               label="Mobile telephone (2)"
               value={use.mobileTelephoneInput2}
             />
-          ) : (
-            ""
           )}
-          {use.satelliteTelephone ? (
+          {use.satelliteTelephone && (
             <CheckYourAnswersDataRowItem
               label="Satellite telephone"
               value={use.satelliteTelephoneInput}
             />
-          ) : (
-            ""
           )}
-          {use.otherCommunication ? (
+          {use.otherCommunication && (
             <CheckYourAnswersDataRowItem
               label="Other communication"
               value={use.otherCommunicationInput}
             />
-          ) : (
-            ""
           )}
         </SummaryListItem>
       </SummaryList>
@@ -489,11 +477,7 @@ const BeaconOwnerAddressSection: FunctionComponent<IRegistration> = ({
           <CheckYourAnswersDataRowItem value={ownerAddressLine1} />
           <CheckYourAnswersDataRowItem value={ownerAddressLine2} />
           <CheckYourAnswersDataRowItem value={ownerTownOrCity} />
-          {ownerCounty ? (
-            <CheckYourAnswersDataRowItem value={ownerCounty} />
-          ) : (
-            ""
-          )}
+          {ownerCounty && <CheckYourAnswersDataRowItem value={ownerCounty} />}
           <CheckYourAnswersDataRowItem value={ownerPostcode} />
         </SummaryListItem>
       </SummaryList>
