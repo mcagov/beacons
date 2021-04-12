@@ -68,14 +68,16 @@ Our approach to testing:
 
 ## Deployment
 
-Continuous integration and deployment to the AWS environment is managed by the [integration project](https://github.com/mcagov/beacons-integration).
+A Continuous Integration and Deployment (CI/CD) pipeline is configured to deploy to our development environment on merges into the `main` branch.
 
-To deploy changes to production:
+Please see the [Beacons Integration](https://github.com/mcagov/beacons-integration) project which manages the infrastructure-as-code and deployments for the application.
+
+To deploy changes:
 
 1.  Develop on a branch (e.g. `feature/foo` or `bugfix/bar`)
 2.  Push changes to origin and open a pull request tagging at least one other member of the development team
 3.  When approved, merge to `main`
-4.  Merging into the `main` branch will trigger a [GitHub Actions workflow](.github/workflows/main.yml) and deploy changes to production
+4.  Merging into the `main` branch will trigger a [GitHub Actions workflow](.github/workflows/main.yml) and deploy changes to the development environment
 
 ## Licence
 
