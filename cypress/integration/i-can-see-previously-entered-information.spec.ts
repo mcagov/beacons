@@ -1,24 +1,26 @@
-import { testData } from "./happy-path-test-data.spec";
+import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 
 export const iCanSeeMyBeaconDetails = (): void =>
-  Object.values(testData.beaconDetails).forEach((value) => cy.contains(value));
-
-export const iCanSeeMyAdditionalBeaconInformation = (): void =>
-  Object.values(testData.additionalBeaconInformation).forEach((value) =>
+  Object.values(testBeaconAndOwnerData.beaconDetails).forEach((value) =>
     cy.contains(value)
   );
 
+export const iCanSeeMyAdditionalBeaconInformation = (): void =>
+  Object.values(
+    testBeaconAndOwnerData.additionalBeaconInformation
+  ).forEach((value) => cy.contains(value));
+
 export const iCanSeeMyPersonalDetails = (): void =>
-  Object.values(testData.ownerDetails).forEach((value) =>
+  Object.values(testBeaconAndOwnerData.ownerDetails).forEach((value) =>
     cy.get("main").contains(value)
   );
 
 export const iCanSeeMyAddressDetails = (): void =>
-  Object.values(testData.ownerAddress).forEach((value) =>
+  Object.values(testBeaconAndOwnerData.ownerAddress).forEach((value) =>
     cy.get("main").contains(value)
   );
 
 export const iCanSeeMyEmergencyContactDetails = (): void =>
-  Object.values(testData.emergencyContacts).forEach((value) =>
+  Object.values(testBeaconAndOwnerData.emergencyContacts).forEach((value) =>
     cy.get("main").contains(value)
   );

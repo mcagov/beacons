@@ -1,5 +1,5 @@
 import { PageURLs } from "../../src/lib/urls";
-import { testData } from "./happy-path-test-data.spec";
+import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
   andIClickContinue,
   andIHaveSelected,
@@ -20,14 +20,17 @@ export const givenIHaveEnteredMyBeaconDetails = (): void => {
 export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
   givenIHaveBeenTo(PageURLs.start);
   givenIHaveClicked(".govuk-button--start");
-  givenIHaveTyped(testData.beaconDetails.manufacturer, "#manufacturer");
-  givenIHaveTyped(testData.beaconDetails.model, "#model");
-  givenIHaveTyped(testData.beaconDetails.hexId, "#hexId");
+  givenIHaveTyped(
+    testBeaconAndOwnerData.beaconDetails.manufacturer,
+    "#manufacturer"
+  );
+  givenIHaveTyped(testBeaconAndOwnerData.beaconDetails.model, "#model");
+  givenIHaveTyped(testBeaconAndOwnerData.beaconDetails.hexId, "#hexId");
   givenIHaveClickedContinue();
 };
 
 export const givenIHaveFilledInBeaconInformationPage = (): void => {
-  const beaconInfo = testData.additionalBeaconInformation;
+  const beaconInfo = testBeaconAndOwnerData.additionalBeaconInformation;
   thenTheUrlShouldContain(PageURLs.beaconInformation);
   givenIHaveTyped(beaconInfo.serialNumber, "#manufacturerSerialNumber");
   givenIHaveTyped(beaconInfo.chkCode, "#chkCode");
@@ -40,64 +43,82 @@ export const givenIHaveFilledInBeaconInformationPage = (): void => {
 
 export const givenIHaveEnteredMyPersonalDetails = (): void => {
   givenIAmAt(PageURLs.aboutBeaconOwner);
-  givenIHaveTyped(testData.ownerDetails.fullName, "#ownerFullName");
   givenIHaveTyped(
-    testData.ownerDetails.telephoneNumber,
+    testBeaconAndOwnerData.ownerDetails.fullName,
+    "#ownerFullName"
+  );
+  givenIHaveTyped(
+    testBeaconAndOwnerData.ownerDetails.telephoneNumber,
     "#ownerTelephoneNumber"
   );
   givenIHaveTyped(
-    testData.ownerDetails.alternativeTelephoneNumber,
+    testBeaconAndOwnerData.ownerDetails.alternativeTelephoneNumber,
     "#ownerAlternativeTelephoneNumber"
   );
-  givenIHaveTyped(testData.ownerDetails.email, "#ownerEmail");
+  givenIHaveTyped(testBeaconAndOwnerData.ownerDetails.email, "#ownerEmail");
   givenIHaveClickedContinue();
 };
 
 export const givenIHaveEnteredMyAddressDetails = (): void => {
   givenIAmAt(PageURLs.beaconOwnerAddress);
-  givenIHaveTyped(testData.ownerAddress.addressLine1, "#ownerAddressLine1");
-  givenIHaveTyped(testData.ownerAddress.addressLine2, "#ownerAddressLine2");
-  givenIHaveTyped(testData.ownerAddress.townOrCity, "#ownerTownOrCity");
-  givenIHaveTyped(testData.ownerAddress.postcode, "#ownerPostcode");
+  givenIHaveTyped(
+    testBeaconAndOwnerData.ownerAddress.addressLine1,
+    "#ownerAddressLine1"
+  );
+  givenIHaveTyped(
+    testBeaconAndOwnerData.ownerAddress.addressLine2,
+    "#ownerAddressLine2"
+  );
+  givenIHaveTyped(
+    testBeaconAndOwnerData.ownerAddress.townOrCity,
+    "#ownerTownOrCity"
+  );
+  givenIHaveTyped(
+    testBeaconAndOwnerData.ownerAddress.postcode,
+    "#ownerPostcode"
+  );
   givenIHaveClickedContinue();
 };
 
 export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
   givenIAmAt(PageURLs.emergencyContact);
   givenIHaveTyped(
-    testData.emergencyContacts.emergencyContact1FullName,
+    testBeaconAndOwnerData.emergencyContacts.emergencyContact1FullName,
     "#emergencyContact1FullName"
   );
   givenIHaveTyped(
-    testData.emergencyContacts.emergencyContact1TelephoneNumber,
+    testBeaconAndOwnerData.emergencyContacts.emergencyContact1TelephoneNumber,
     "#emergencyContact1TelephoneNumber"
   );
   givenIHaveTyped(
-    testData.emergencyContacts.emergencyContact1AlternativeTelephoneNumber,
+    testBeaconAndOwnerData.emergencyContacts
+      .emergencyContact1AlternativeTelephoneNumber,
     "#emergencyContact1AlternativeTelephoneNumber"
   );
   givenIHaveTyped(
-    testData.emergencyContacts.emergencyContact2FullName,
+    testBeaconAndOwnerData.emergencyContacts.emergencyContact2FullName,
     "#emergencyContact2FullName"
   );
   givenIHaveTyped(
-    testData.emergencyContacts.emergencyContact2TelephoneNumber,
+    testBeaconAndOwnerData.emergencyContacts.emergencyContact2TelephoneNumber,
     "#emergencyContact2TelephoneNumber"
   );
   givenIHaveTyped(
-    testData.emergencyContacts.emergencyContact2AlternativeTelephoneNumber,
+    testBeaconAndOwnerData.emergencyContacts
+      .emergencyContact2AlternativeTelephoneNumber,
     "#emergencyContact2AlternativeTelephoneNumber"
   );
   givenIHaveTyped(
-    testData.emergencyContacts.emergencyContact3FullName,
+    testBeaconAndOwnerData.emergencyContacts.emergencyContact3FullName,
     "#emergencyContact3FullName"
   );
   givenIHaveTyped(
-    testData.emergencyContacts.emergencyContact3TelephoneNumber,
+    testBeaconAndOwnerData.emergencyContacts.emergencyContact3TelephoneNumber,
     "#emergencyContact3TelephoneNumber"
   );
   givenIHaveTyped(
-    testData.emergencyContacts.emergencyContact3AlternativeTelephoneNumber,
+    testBeaconAndOwnerData.emergencyContacts
+      .emergencyContact3AlternativeTelephoneNumber,
     "#emergencyContact3AlternativeTelephoneNumber"
   );
   givenIHaveClickedContinue();

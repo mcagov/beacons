@@ -1,9 +1,9 @@
 import { Environment, Purpose } from "../../../src/lib/registration/types";
 import { PageURLs } from "../../../src/lib/urls";
 import {
-  testAviationCommercialUse,
-  testAviationPleasureUse,
-  testAviationUse,
+  testAviationCommercialUseData,
+  testAviationPleasureUseData,
+  testAviationUseData,
 } from "../happy-path-test-data.spec";
 import {
   iCanEditMyAdditionalBeaconInformation,
@@ -94,12 +94,12 @@ const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
       givenIHaveSelected(
-        "#" + testAviationCommercialUse.type.activity.toLowerCase()
+        "#" + testAviationCommercialUseData.type.activity.toLowerCase()
       );
       break;
     case Purpose.PLEASURE:
       givenIHaveSelected(
-        "#" + testAviationPleasureUse.type.activity.toLowerCase()
+        "#" + testAviationPleasureUseData.type.activity.toLowerCase()
       );
       break;
   }
@@ -148,7 +148,7 @@ const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
 };
 
 export const iCanEditMyAircraftCommunications = (): void => {
-  const comms = testAviationUse.communications;
+  const comms = testAviationUseData.communications;
   comms.checkedFields.forEach((field) =>
     cy.get(`#${field}`).should("be.checked")
   );
@@ -162,7 +162,7 @@ export const iCanEditMyAircraftCommunications = (): void => {
 };
 
 export const iCanEditMyAircraftDetails = (): void => {
-  const aircraft = testAviationUse.aircraft;
+  const aircraft = testAviationUseData.aircraft;
   cy.get("#maxCapacity").should("have.value", aircraft.maxCapacity);
   cy.get("#aircraftManufacturer").should("have.value", aircraft.manufacturer);
   cy.get("#principalAirport").should("have.value", aircraft.principalAirport);
@@ -175,26 +175,26 @@ export const iCanEditMyAircraftDetails = (): void => {
 };
 
 export const iCanEditMyActivity = (): void => {
-  cy.get(`input[value="${testAviationPleasureUse.type.activity}"]`).should(
+  cy.get(`input[value="${testAviationPleasureUseData.type.activity}"]`).should(
     "be.checked"
   );
 };
 
 const iCanEditMyAdditionalAviationUseInformation = (): void => {
-  cy.get("textarea").contains(testAviationUse.moreDetails);
+  cy.get("textarea").contains(testAviationUseData.moreDetails);
 };
 
 export const iCanEditMyPurpose = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
-      cy.get(`input[value="${testAviationCommercialUse.type.purpose}"]`).should(
-        "be.checked"
-      );
+      cy.get(
+        `input[value="${testAviationCommercialUseData.type.purpose}"]`
+      ).should("be.checked");
       break;
     case Purpose.PLEASURE:
-      cy.get(`input[value="${testAviationPleasureUse.type.purpose}"]`).should(
-        "be.checked"
-      );
+      cy.get(
+        `input[value="${testAviationPleasureUseData.type.purpose}"]`
+      ).should("be.checked");
       break;
   }
 };
@@ -202,54 +202,64 @@ export const iCanEditMyPurpose = (purpose: Purpose): void => {
 const iCanSeeMyAviationUse = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
-      Object.values(testAviationCommercialUse.type).forEach((value) => {
+      Object.values(testAviationCommercialUseData.type).forEach((value) => {
         cy.get("main").contains(value);
       });
       break;
     case Purpose.PLEASURE:
-      Object.values(testAviationPleasureUse.type).forEach((value) => {
+      Object.values(testAviationPleasureUseData.type).forEach((value) => {
         cy.get("main").contains(value);
       });
       break;
   }
-  Object.values(testAviationUse.aircraft).forEach((value) => {
+  Object.values(testAviationUseData.aircraft).forEach((value) => {
     cy.get("main").contains(value);
   });
-  cy.get("main").contains(testAviationUse.communications.satelliteTelephone);
-  cy.get("main").contains(testAviationUse.communications.mobileTelephone1);
-  cy.get("main").contains(testAviationUse.communications.mobileTelephone2);
-  cy.get("main").contains(testAviationUse.communications.otherCommunication);
-  cy.get("main").contains(testAviationUse.moreDetails);
+  cy.get("main").contains(
+    testAviationUseData.communications.satelliteTelephone
+  );
+  cy.get("main").contains(testAviationUseData.communications.mobileTelephone1);
+  cy.get("main").contains(testAviationUseData.communications.mobileTelephone2);
+  cy.get("main").contains(
+    testAviationUseData.communications.otherCommunication
+  );
+  cy.get("main").contains(testAviationUseData.moreDetails);
   cy.get("main").contains("dongle");
 };
 
 const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   givenIAmAt(PageURLs.aboutTheAircraft);
-  givenIHaveTyped(testAviationPleasureUse.aircraft.maxCapacity, "#maxCapacity");
   givenIHaveTyped(
-    testAviationPleasureUse.aircraft.manufacturer,
+    testAviationPleasureUseData.aircraft.maxCapacity,
+    "#maxCapacity"
+  );
+  givenIHaveTyped(
+    testAviationPleasureUseData.aircraft.manufacturer,
     "#aircraftManufacturer"
   );
   givenIHaveTyped(
-    testAviationPleasureUse.aircraft.principalAirport,
+    testAviationPleasureUseData.aircraft.principalAirport,
     "#principalAirport"
   );
   givenIHaveTyped(
-    testAviationPleasureUse.aircraft.secondaryAirport,
+    testAviationPleasureUseData.aircraft.secondaryAirport,
     "#secondaryAirport"
   );
   givenIHaveTyped(
-    testAviationPleasureUse.aircraft.registrationMark,
+    testAviationPleasureUseData.aircraft.registrationMark,
     "#registrationMark"
   );
-  givenIHaveTyped(testAviationPleasureUse.aircraft.hexAddress, "#hexAddress");
   givenIHaveTyped(
-    testAviationPleasureUse.aircraft.cnOrMsnNumber,
+    testAviationPleasureUseData.aircraft.hexAddress,
+    "#hexAddress"
+  );
+  givenIHaveTyped(
+    testAviationPleasureUseData.aircraft.cnOrMsnNumber,
     "#cnOrMsnNumber"
   );
   givenIHaveSelected("#dongle-yes");
   givenIHaveTyped(
-    testAviationPleasureUse.aircraft.beaconPosition,
+    testAviationPleasureUseData.aircraft.beaconPosition,
     "#beaconPosition"
   );
 };
@@ -259,26 +269,26 @@ const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#satelliteTelephone");
   givenIHaveTyped(
-    testAviationUse.communications.satelliteTelephone,
+    testAviationUseData.communications.satelliteTelephone,
     "#satelliteTelephoneInput"
   );
   givenIHaveSelected("#mobileTelephone");
   givenIHaveTyped(
-    testAviationUse.communications.mobileTelephone1,
+    testAviationUseData.communications.mobileTelephone1,
     "#mobileTelephoneInput1"
   );
   givenIHaveTyped(
-    testAviationUse.communications.mobileTelephone2,
+    testAviationUseData.communications.mobileTelephone2,
     "#mobileTelephoneInput2"
   );
   givenIHaveSelected("#otherCommunication");
   givenIHaveTyped(
-    testAviationUse.communications.otherCommunication,
+    testAviationUseData.communications.otherCommunication,
     "#otherCommunicationInput"
   );
 };
 
 const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
   givenIAmAt(PageURLs.moreDetails);
-  givenIHaveTyped(testAviationUse.moreDetails, "#moreDetails");
+  givenIHaveTyped(testAviationUseData.moreDetails, "#moreDetails");
 };

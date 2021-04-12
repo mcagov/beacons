@@ -1,9 +1,9 @@
 import { Environment, Purpose } from "../../../src/lib/registration/types";
 import { PageURLs } from "../../../src/lib/urls";
 import {
-  testMaritimeCommercialUse,
-  testMaritimePleasureUse,
-  testMaritimeUse,
+  testMaritimeCommercialUseData,
+  testMaritimePleasureUseData,
+  testMaritimeUseData,
 } from "../happy-path-test-data.spec";
 import {
   iCanEditMyAdditionalBeaconInformation,
@@ -118,26 +118,30 @@ const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
 export const iCanSeeMyMaritimeUse = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
-      Object.values(testMaritimeCommercialUse.type).forEach((value) => {
+      Object.values(testMaritimeCommercialUseData.type).forEach((value) => {
         cy.get("main").contains(value);
       });
       break;
     case Purpose.PLEASURE:
-      Object.values(testMaritimePleasureUse.type).forEach((value) => {
+      Object.values(testMaritimePleasureUseData.type).forEach((value) => {
         cy.get("main").contains(value);
       });
       break;
   }
-  Object.values(testMaritimeUse.vessel).forEach((value) => {
+  Object.values(testMaritimeUseData.vessel).forEach((value) => {
     cy.get("main").contains(value);
   });
-  cy.get("main").contains(testMaritimeUse.communications.fixedMMSI);
-  cy.get("main").contains(testMaritimeUse.communications.portableMMSI);
-  cy.get("main").contains(testMaritimeUse.communications.satelliteTelephone);
-  cy.get("main").contains(testMaritimeUse.communications.mobileTelephone1);
-  cy.get("main").contains(testMaritimeUse.communications.mobileTelephone2);
-  cy.get("main").contains(testMaritimeUse.communications.otherCommunication);
-  cy.get("main").contains(testMaritimeUse.moreDetails);
+  cy.get("main").contains(testMaritimeUseData.communications.fixedMMSI);
+  cy.get("main").contains(testMaritimeUseData.communications.portableMMSI);
+  cy.get("main").contains(
+    testMaritimeUseData.communications.satelliteTelephone
+  );
+  cy.get("main").contains(testMaritimeUseData.communications.mobileTelephone1);
+  cy.get("main").contains(testMaritimeUseData.communications.mobileTelephone2);
+  cy.get("main").contains(
+    testMaritimeUseData.communications.otherCommunication
+  );
+  cy.get("main").contains(testMaritimeUseData.moreDetails);
 };
 
 export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
@@ -169,7 +173,7 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
 };
 
 export const iCanEditMyVesselCommunications = (): void => {
-  const comms = testMaritimeUse.communications;
+  const comms = testMaritimeUseData.communications;
   comms.checkedFields.forEach((field) =>
     cy.get(`#${field}`).should("be.checked")
   );
@@ -185,7 +189,7 @@ export const iCanEditMyVesselCommunications = (): void => {
 };
 
 export const iCanEditMyVesselDetails = (): void => {
-  const vessel = testMaritimeUse.vessel;
+  const vessel = testMaritimeUseData.vessel;
   cy.get("#maxCapacity").should("have.value", vessel.maxCapacity);
   cy.get("#vesselName").should("have.value", vessel.name);
   cy.get("#beaconLocation").should("have.value", vessel.beaconPosition);
@@ -202,28 +206,28 @@ export const iCanEditMyVesselDetails = (): void => {
 };
 
 export const iCanEditMyActivity = (): void => {
-  cy.get(`input[value="${testMaritimeCommercialUse.type.activity}"]`).should(
-    "be.checked"
-  );
+  cy.get(
+    `input[value="${testMaritimeCommercialUseData.type.activity}"]`
+  ).should("be.checked");
 };
 
 const iCanEditMyPurpose = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
-      cy.get(`input[value="${testMaritimeCommercialUse.type.purpose}"]`).should(
-        "be.checked"
-      );
+      cy.get(
+        `input[value="${testMaritimeCommercialUseData.type.purpose}"]`
+      ).should("be.checked");
       break;
     case Purpose.PLEASURE:
-      cy.get(`input[value="${testMaritimePleasureUse.type.purpose}"]`).should(
-        "be.checked"
-      );
+      cy.get(
+        `input[value="${testMaritimePleasureUseData.type.purpose}"]`
+      ).should("be.checked");
       break;
   }
 };
 
 const givenIHaveEnteredInformationAboutMyVessel = (): void => {
-  const vessel = testMaritimeUse.vessel;
+  const vessel = testMaritimeUseData.vessel;
   givenIAmAt(PageURLs.aboutTheVessel);
   givenIHaveTyped(vessel.maxCapacity, "#maxCapacity");
   givenIHaveTyped(vessel.name, "#vesselName");
@@ -238,7 +242,7 @@ const givenIHaveEnteredInformationAboutMyVessel = (): void => {
 };
 
 const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {
-  const comms = testMaritimeUse.communications;
+  const comms = testMaritimeUseData.communications;
   givenIAmAt(PageURLs.vesselCommunications);
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#fixedVhfRadio");
@@ -256,9 +260,9 @@ const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {
 
 const givenIHaveEnteredMoreDetailsAboutMyVessel = (): void => {
   givenIAmAt(PageURLs.moreDetails);
-  givenIHaveTyped(testMaritimeUse.moreDetails, "#moreDetails");
+  givenIHaveTyped(testMaritimeUseData.moreDetails, "#moreDetails");
 };
 
 const iCanEditMyAdditionalMaritimeUseInformation = (): void => {
-  cy.get("textarea").contains(testMaritimeUse.moreDetails);
+  cy.get("textarea").contains(testMaritimeUseData.moreDetails);
 };

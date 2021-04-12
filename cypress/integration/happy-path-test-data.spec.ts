@@ -4,7 +4,7 @@ import {
   Purpose,
 } from "../../src/lib/registration/types";
 
-export const testData = {
+export const testBeaconAndOwnerData = {
   beaconDetails: {
     manufacturer: "Ocean Signal",
     model: "EPIRB1",
@@ -43,7 +43,7 @@ export const testData = {
   },
 };
 
-export const testAviationUse = {
+export const testAviationUseData = {
   aircraft: {
     maxCapacity: "15",
     manufacturer: "Cessna 162 Skycatcher",
@@ -69,8 +69,8 @@ export const testAviationUse = {
   moreDetails: "My aircraft is neon pink",
 };
 
-export const testAviationPleasureUse = {
-  ...testAviationUse,
+export const testAviationPleasureUseData = {
+  ...testAviationUseData,
   type: {
     environment: Environment.AVIATION,
     purpose: Purpose.PLEASURE,
@@ -78,8 +78,8 @@ export const testAviationPleasureUse = {
   },
 };
 
-export const testAviationCommercialUse = {
-  ...testAviationUse,
+export const testAviationCommercialUseData = {
+  ...testAviationUseData,
   type: {
     environment: Environment.AVIATION,
     purpose: Purpose.COMMERCIAL,
@@ -87,7 +87,7 @@ export const testAviationCommercialUse = {
   },
 };
 
-export const testMaritimeUse = {
+export const testMaritimeUseData = {
   vessel: {
     maxCapacity: "42",
     name: "Ever Given",
@@ -119,8 +119,8 @@ export const testMaritimeUse = {
   moreDetails: "My vessel is stuck",
 };
 
-export const testMaritimePleasureUse = {
-  ...testAviationUse,
+export const testMaritimePleasureUseData = {
+  ...testAviationUseData,
   type: {
     environment: Environment.MARITIME,
     purpose: Purpose.PLEASURE,
@@ -128,8 +128,8 @@ export const testMaritimePleasureUse = {
   },
 };
 
-export const testMaritimeCommercialUse = {
-  ...testAviationUse,
+export const testMaritimeCommercialUseData = {
+  ...testAviationUseData,
   type: {
     environment: Environment.MARITIME,
     purpose: Purpose.COMMERCIAL,
