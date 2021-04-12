@@ -13,34 +13,28 @@ import {
 } from "./selectors-and-assertions.spec";
 
 export const givenIHaveEnteredMyBeaconDetails = (): void => {
+  givenIHaveFilledInCheckBeaconDetailsPage();
+  givenIHaveFilledInBeaconInformationPage();
+};
+
+export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
   givenIHaveBeenTo(PageURLs.start);
   givenIHaveClicked(".govuk-button--start");
   givenIHaveTyped(testData.beaconDetails.manufacturer, "#manufacturer");
   givenIHaveTyped(testData.beaconDetails.model, "#model");
   givenIHaveTyped(testData.beaconDetails.hexId, "#hexId");
   givenIHaveClickedContinue();
+};
+
+export const givenIHaveFilledInBeaconInformationPage = (): void => {
+  const beaconInfo = testData.additionalBeaconInformation;
   thenTheUrlShouldContain(PageURLs.beaconInformation);
-  givenIHaveTyped(
-    testData.additionalBeaconInformation.serialNumber,
-    "#manufacturerSerialNumber"
-  );
-  givenIHaveTyped(testData.additionalBeaconInformation.chkCode, "#chkCode");
-  givenIHaveTyped(
-    testData.additionalBeaconInformation.batteryExpiryMonth,
-    "#batteryExpiryDateMonth"
-  );
-  givenIHaveTyped(
-    testData.additionalBeaconInformation.batteryExpiryYear,
-    "#batteryExpiryDateYear"
-  );
-  givenIHaveTyped(
-    testData.additionalBeaconInformation.lastServicedMonth,
-    "#lastServicedDateMonth"
-  );
-  givenIHaveTyped(
-    testData.additionalBeaconInformation.lastServicedYear,
-    "#lastServicedDateYear"
-  );
+  givenIHaveTyped(beaconInfo.serialNumber, "#manufacturerSerialNumber");
+  givenIHaveTyped(beaconInfo.chkCode, "#chkCode");
+  givenIHaveTyped(beaconInfo.batteryExpiryMonth, "#batteryExpiryDateMonth");
+  givenIHaveTyped(beaconInfo.batteryExpiryYear, "#batteryExpiryDateYear");
+  givenIHaveTyped(beaconInfo.lastServicedMonth, "#lastServicedDateMonth");
+  givenIHaveTyped(beaconInfo.lastServicedYear, "#lastServicedDateYear");
   givenIHaveClickedContinue();
 };
 
