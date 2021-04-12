@@ -20,12 +20,12 @@ describe("Button Components", () => {
 
     it("should have the correct href attribute", () => {
       render(<BackButton href="#" />);
-      expect(screen.getByText("Back")).toHaveAttribute("href", "/#");
+      expect(screen.getByText("Back")).toHaveAttribute("href", "#");
     });
 
     it("should have the correct href attribute if the use index", () => {
       render(<BackButtonRouterIndexes href="#" />);
-      expect(screen.getByText("Back")).toHaveAttribute("href", "/#?useIndex=1");
+      expect(screen.getByText("Back")).toHaveAttribute("href", "#?useIndex=1");
     });
   });
 });

@@ -143,7 +143,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
           id="vhfRadio"
           value={Communication.VHF_RADIO}
           defaultChecked={
-            form.fields.satelliteTelephone.value === Communication.VHF_RADIO
+            form.fields.vhfRadio.value === Communication.VHF_RADIO
           }
           label="VHF Radio"
         />

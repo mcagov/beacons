@@ -70,9 +70,9 @@ export const BackButton: FunctionComponent<BackButtonProps> = ({
   href,
 }: BackButtonProps): JSX.Element => {
   return (
-    <Link href={href}>
-      <a className="govuk-back-link">Back</a>
-    </Link>
+    <a href={href} className="govuk-back-link">
+      Back
+    </a>
   );
 };
 
@@ -84,9 +84,9 @@ export const BackButtonRouterIndexes: FunctionComponent<BackButtonProps> = ({
   href = formatUrlQueryParams(href, { useIndex });
 
   return (
-    <Link href={href}>
-      <a className="govuk-back-link">Back</a>
-    </Link>
+    <a href={href} className="govuk-back-link">
+      Back
+    </a>
   );
 };
 

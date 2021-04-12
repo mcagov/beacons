@@ -1,3 +1,4 @@
+import { asAMaritimePleasureBeaconOwner } from "../i-can-enter-information";
 import {
   andIHaveEnteredNoInformation,
   andIHaveSelected,
@@ -8,13 +9,12 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
 } from "../selectors-and-assertions.spec";
-import { givenIAmAMaritimePleasureUser } from "../user-journey-steps.spec";
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
   const otherActivitySelector = "#other-activity";
 
   it("displays an error if no activity is selected", () => {
-    givenIAmAMaritimePleasureUser();
+    asAMaritimePleasureBeaconOwner();
     andIHaveEnteredNoInformation();
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
@@ -38,7 +38,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
   });
 
   it("displays an error if 'Other activity' is selected, but no text is provided", () => {
-    givenIAmAMaritimePleasureUser();
+    asAMaritimePleasureBeaconOwner();
     andIHaveSelected(otherActivitySelector);
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(

@@ -235,23 +235,61 @@ const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
           href={href}
           actionText="Change"
         >
+          {use.vesselName && (
+            <CheckYourAnswersDataRowItem label="Name" value={use.vesselName} />
+          )}
           <CheckYourAnswersDataRowItem
             label="Max persons onboard"
             value={use.maxCapacity}
           />
-          <CheckYourAnswersDataRowItem
-            label="vessel name"
-            value={use.vesselName}
-          />
-          <CheckYourAnswersDataRowItem label="Homeport" value={use.homeport} />
-          <CheckYourAnswersDataRowItem
-            label="Area of operation"
-            value={use.areaOfOperation}
-          />
-          <CheckYourAnswersDataRowItem
-            label="Beacon position"
-            value={use.beaconLocation}
-          />
+          {use.beaconLocation && (
+            <CheckYourAnswersDataRowItem
+              label="Beacon position"
+              value={use.beaconLocation}
+            />
+          )}
+          {use.homeport && (
+            <CheckYourAnswersDataRowItem
+              label="Homeport"
+              value={use.homeport}
+            />
+          )}
+          {use.areaOfOperation && (
+            <CheckYourAnswersDataRowItem
+              label="Area of operation"
+              value={use.areaOfOperation}
+            />
+          )}
+          {use.portLetterNumber && (
+            <CheckYourAnswersDataRowItem
+              label="Port letter number"
+              value={use.portLetterNumber}
+            />
+          )}
+          {use.imoNumber && (
+            <CheckYourAnswersDataRowItem
+              label="IMO number"
+              value={use.imoNumber}
+            />
+          )}
+          {use.officialNumber && (
+            <CheckYourAnswersDataRowItem
+              label="Official number"
+              value={use.officialNumber}
+            />
+          )}
+          {use.ssrNumber && (
+            <CheckYourAnswersDataRowItem
+              label="Small Ships Register number"
+              value={use.ssrNumber}
+            />
+          )}
+          {use.rigPlatformLocation && (
+            <CheckYourAnswersDataRowItem
+              label="Windfarm, rig or platform location"
+              value={use.rigPlatformLocation}
+            />
+          )}
         </SummaryListItem>
       </SummaryList>
     </>
@@ -281,8 +319,12 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
             value={use.aircraftManufacturer}
           />
           <CheckYourAnswersDataRowItem
-            label="Principle Airport"
+            label="Principal airport"
             value={use.principalAirport}
+          />
+          <CheckYourAnswersDataRowItem
+            label="Secondary airport"
+            value={use.secondaryAirport}
           />
           <CheckYourAnswersDataRowItem
             label="Registration mark"
@@ -296,10 +338,12 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
             label="CORE/Serial number"
             value={use.cnOrMsnNumber}
           />
-          <CheckYourAnswersDataRowItem
-            label="Is this a dongle"
-            value={use.dongle}
-          />
+          {use.dongle && (
+            <CheckYourAnswersDataRowItem
+              label="Is this a dongle?"
+              value="Yes"
+            />
+          )}
           <CheckYourAnswersDataRowItem
             label="Beacon position"
             value={use.beaconPosition}
@@ -326,48 +370,44 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
           actionText="Change"
         >
           <CheckYourAnswersDataRowItem label="Callsign" value={use.callSign} />
-          {use.fixedVhfRadio ? "Fixed VHF/DSC" : ""}
-          {use.fixedVhfRadioInput ? (
+          {use.fixedVhfRadio && "Fixed VHF/DSC"}
+          {use.fixedVhfRadioInput && (
             <CheckYourAnswersDataRowItem
               label="MMSI"
               value={use.fixedVhfRadioInput}
             />
-          ) : (
-            ""
           )}
-          {use.vhfRadio ? "VHF Radio" : ""}
-          {use.portableVhfRadio ? "Portable VHF/DSC" : ""}
-          {use.portableVhfRadioInput ? (
+          {use.vhfRadio && "VHF Radio"}
+          {use.portableVhfRadio && "Portable VHF/DSC"}
+          {use.portableVhfRadioInput && (
             <CheckYourAnswersDataRowItem
               label="Portable MMSI"
               value={use.portableVhfRadioInput}
             />
-          ) : (
-            ""
           )}
-          {use.mobileTelephone ? (
+          {use.mobileTelephone && (
             <CheckYourAnswersDataRowItem
               label="Mobile telephone (1)"
               value={use.mobileTelephoneInput1}
             />
-          ) : (
-            ""
           )}
-          {use.mobileTelephone ? (
+          {use.mobileTelephone && (
             <CheckYourAnswersDataRowItem
               label="Mobile telephone (2)"
               value={use.mobileTelephoneInput2}
             />
-          ) : (
-            ""
           )}
-          {use.satelliteTelephone ? (
+          {use.satelliteTelephone && (
             <CheckYourAnswersDataRowItem
               label="Satellite telephone"
               value={use.satelliteTelephoneInput}
             />
-          ) : (
-            ""
+          )}
+          {use.otherCommunication && (
+            <CheckYourAnswersDataRowItem
+              label="Other communication"
+              value={use.otherCommunicationInput}
+            />
           )}
         </SummaryListItem>
       </SummaryList>
@@ -437,11 +477,7 @@ const BeaconOwnerAddressSection: FunctionComponent<IRegistration> = ({
           <CheckYourAnswersDataRowItem value={ownerAddressLine1} />
           <CheckYourAnswersDataRowItem value={ownerAddressLine2} />
           <CheckYourAnswersDataRowItem value={ownerTownOrCity} />
-          {ownerCounty ? (
-            <CheckYourAnswersDataRowItem value={ownerCounty} />
-          ) : (
-            ""
-          )}
+          {ownerCounty && <CheckYourAnswersDataRowItem value={ownerCounty} />}
           <CheckYourAnswersDataRowItem value={ownerPostcode} />
         </SummaryListItem>
       </SummaryList>
