@@ -164,8 +164,6 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
   const href = `/register-a-beacon/beacon-use?useIndex=${index}`;
   let aboutTheSection = <></>;
   let commsSection = <></>;
-  console.log("index: ", index);
-  console.log("use: ", use);
   switch (use.environment) {
     case Environment.MARITIME:
       aboutTheSection = <AboutTheVesselSubSection index={index} use={use} />;
