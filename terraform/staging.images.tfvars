@@ -1,2 +1,2 @@
-webapp_image_tag  = "ef1f16f8e01ce47436392fc4214cc6b187e494f5"
-service_image_tag = "2480299cf26e25dc497334f1c01393a376eb9c4c"
+webapp_image_tag  = "e5f7fb19c8424f99eca4c3006509f342d658117b"
+service_image_tag = "d1dda9db706c046f0498ea7be669f8c008ebcb64"
