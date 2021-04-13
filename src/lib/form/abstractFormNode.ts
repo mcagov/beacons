@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormManager } from "./formManager";
 
 type ControlValue = string | Record<string, AbstractFormNode>;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Registration } from "../../../src/lib/registration/registration";
 import {
   initBeacon,
