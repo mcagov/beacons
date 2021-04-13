@@ -9,8 +9,15 @@ import {
 export const iCanEditMyEnvironment = (environment: Environment): void => {
   cy.get(`input[value="${environment}"]`).should("be.checked");
 };
+
 export const andIHaveNoFurtherUses = (): void => {
   thenTheUrlShouldContain(PageURLs.additionalUse);
   givenIHaveSelected("#no");
+  andIClickContinue();
+};
+
+export const andIHaveAnotherUse = (): void => {
+  thenTheUrlShouldContain(PageURLs.additionalUse);
+  givenIHaveSelected("#yes");
   andIClickContinue();
 };

@@ -161,9 +161,11 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
   index,
   use,
 }: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
-  const href = `/register-a-beacon/envionment?useIndex=${index}"`;
+  const href = `/register-a-beacon/beacon-use?useIndex=${index}`;
   let aboutTheSection = <></>;
   let commsSection = <></>;
+  console.log("index: ", index);
+  console.log("use: ", use);
   switch (use.environment) {
     case Environment.MARITIME:
       aboutTheSection = <AboutTheVesselSubSection index={index} use={use} />;
@@ -226,7 +228,7 @@ const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
   index,
   use,
 }: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
-  const href = `/register-a-beacon/about-the-vessel?useIndex=${index}"`;
+  const href = `/register-a-beacon/about-the-vessel?useIndex=${index}`;
   return (
     <>
       <SummaryList>
@@ -300,7 +302,7 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
   index,
   use,
 }: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
-  const href = `/register-a-beacon/about-the-aircraft?useIndex=${index}"`;
+  const href = `/register-a-beacon/about-the-aircraft?useIndex=${index}`;
 
   return (
     <>
