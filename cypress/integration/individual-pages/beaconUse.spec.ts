@@ -10,7 +10,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "../selectors-and-assertions.spec";
+} from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to submit uses for my beacon", () => {
   const previousPageUrl = "register-a-beacon/beacon-information";

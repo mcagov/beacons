@@ -1,45 +1,10 @@
-import { PageURLs } from "../../src/lib/urls";
+import { PageURLs } from "../../../src/lib/urls";
 import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
-  andIClickContinue,
-  andIHaveSelected,
   givenIAmAt,
-  givenIHaveBeenTo,
-  givenIHaveClicked,
   givenIHaveClickedContinue,
-  givenIHaveSelected,
   givenIHaveTyped,
-  thenTheUrlShouldContain,
 } from "./selectors-and-assertions.spec";
-
-export const givenIHaveEnteredMyBeaconDetails = (): void => {
-  givenIHaveFilledInCheckBeaconDetailsPage();
-  givenIHaveFilledInBeaconInformationPage();
-};
-
-export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
-  givenIHaveBeenTo(PageURLs.start);
-  givenIHaveClicked(".govuk-button--start");
-  givenIHaveTyped(
-    testBeaconAndOwnerData.beaconDetails.manufacturer,
-    "#manufacturer"
-  );
-  givenIHaveTyped(testBeaconAndOwnerData.beaconDetails.model, "#model");
-  givenIHaveTyped(testBeaconAndOwnerData.beaconDetails.hexId, "#hexId");
-  givenIHaveClickedContinue();
-};
-
-export const givenIHaveFilledInBeaconInformationPage = (): void => {
-  const beaconInfo = testBeaconAndOwnerData.additionalBeaconInformation;
-  thenTheUrlShouldContain(PageURLs.beaconInformation);
-  givenIHaveTyped(beaconInfo.serialNumber, "#manufacturerSerialNumber");
-  givenIHaveTyped(beaconInfo.chkCode, "#chkCode");
-  givenIHaveTyped(beaconInfo.batteryExpiryMonth, "#batteryExpiryDateMonth");
-  givenIHaveTyped(beaconInfo.batteryExpiryYear, "#batteryExpiryDateYear");
-  givenIHaveTyped(beaconInfo.lastServicedMonth, "#lastServicedDateMonth");
-  givenIHaveTyped(beaconInfo.lastServicedYear, "#lastServicedDateYear");
-  givenIHaveClickedContinue();
-};
 
 export const givenIHaveEnteredMyPersonalDetails = (): void => {
   givenIAmAt(PageURLs.aboutBeaconOwner);
@@ -58,7 +23,6 @@ export const givenIHaveEnteredMyPersonalDetails = (): void => {
   givenIHaveTyped(testBeaconAndOwnerData.ownerDetails.email, "#ownerEmail");
   givenIHaveClickedContinue();
 };
-
 export const givenIHaveEnteredMyAddressDetails = (): void => {
   givenIAmAt(PageURLs.beaconOwnerAddress);
   givenIHaveTyped(
@@ -79,7 +43,6 @@ export const givenIHaveEnteredMyAddressDetails = (): void => {
   );
   givenIHaveClickedContinue();
 };
-
 export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
   givenIAmAt(PageURLs.emergencyContact);
   givenIHaveTyped(
@@ -123,29 +86,27 @@ export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
   );
   givenIHaveClickedContinue();
 };
-
-export const andIHaveNoFurtherUses = (): void => {
-  thenTheUrlShouldContain(PageURLs.additionalUse);
-  givenIHaveSelected("#no");
-  andIClickContinue();
-};
-
-export const asAMaritimeBeaconOwner = (): void => {
-  givenIHaveEnteredMyBeaconDetails();
-
-  andIHaveSelected("#maritime");
-  andIClickContinue();
-};
-
-export const asAnAviationBeaconOwner = (): void => {
-  givenIHaveEnteredMyBeaconDetails();
-
-  andIHaveSelected("#aviation");
-  andIClickContinue();
-};
-
-export const asAMaritimePleasureBeaconOwner = (): void => {
-  asAMaritimeBeaconOwner();
-  andIHaveSelected("#pleasure");
-  andIClickContinue();
-};
+export const iCanEditMyPersonalDetails = (): void =>
+  Object.values(testBeaconAndOwnerData.ownerDetails).forEach((value) =>
+    cy.get(`input[value="${value}"]`)
+  );
+export const iCanEditMyAddressDetails = (): void =>
+  Object.values(testBeaconAndOwnerData.ownerAddress).forEach((value) =>
+    cy.get(`input[value="${value}"]`)
+  );
+export const iCanEditMyEmergencyContactDetails = (): void =>
+  Object.values(testBeaconAndOwnerData.emergencyContacts).forEach((value) =>
+    cy.get(`input[value="${value}"]`)
+  );
+export const iCanSeeMyPersonalDetails = (): void =>
+  Object.values(testBeaconAndOwnerData.ownerDetails).forEach((value) =>
+    cy.get("main").contains(value)
+  );
+export const iCanSeeMyAddressDetails = (): void =>
+  Object.values(testBeaconAndOwnerData.ownerAddress).forEach((value) =>
+    cy.get("main").contains(value)
+  );
+export const iCanSeeMyEmergencyContactDetails = (): void =>
+  Object.values(testBeaconAndOwnerData.emergencyContacts).forEach((value) =>
+    cy.get("main").contains(value)
+  );

@@ -2,7 +2,7 @@ import {
   Activity,
   Environment,
   Purpose,
-} from "../../src/lib/registration/types";
+} from "../../../src/lib/registration/types";
 
 export const testBeaconAndOwnerData = {
   beaconDetails: {

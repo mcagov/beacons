@@ -1,4 +1,4 @@
-import { asAMaritimePleasureBeaconOwner } from "../i-can-enter-information";
+import { asAMaritimePleasureBeaconOwner } from "../common/i-can-enter-beacon-information.spec";
 import {
   andIHaveEnteredNoInformation,
   andIHaveSelected,
@@ -8,7 +8,7 @@ import {
   thenMyFocusMovesTo,
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
-} from "../selectors-and-assertions.spec";
+} from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
   const otherActivitySelector = "#other-activity";

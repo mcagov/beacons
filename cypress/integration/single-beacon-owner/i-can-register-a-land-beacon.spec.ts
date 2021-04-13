@@ -1,5 +1,5 @@
 import { PageURLs } from "../../../src/lib/urls";
-import { givenIHaveEnteredMyBeaconDetails } from "../i-can-enter-information";
+import { givenIHaveEnteredMyBeaconDetails } from "../common/i-can-enter-beacon-information.spec";
 import {
   andIClickContinue,
   andIType,
@@ -10,7 +10,7 @@ import {
   thenTheRadioButtonShouldBeSelected,
   thenTheUrlShouldContain,
   whenIClickBack,
-} from "../selectors-and-assertions.spec";
+} from "../common/selectors-and-assertions.spec";
 
 describe("As a land beacon owner,", () => {
   it("I can register my beacon", () => {
