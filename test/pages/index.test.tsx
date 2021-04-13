@@ -9,6 +9,7 @@ jest.mock("../../src/lib/middleware", () => {
     setFormSubmissionCookie: jest.fn(),
   };
 });
+jest.mock("../../src/gateways/basicAuthGateway");
 
 describe("ServiceStartPage", () => {
   it("should have a start now button which directs the user to check your beacon details page", () => {
