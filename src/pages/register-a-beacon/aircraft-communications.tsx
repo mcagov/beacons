@@ -1,20 +1,10 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButtonRouterIndexes, Button } from "../../components/Button";
+import { BeaconsForm } from "../../components/BeaconsForm";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
-import { FormErrorSummary } from "../../components/ErrorSummary";
-import {
-  Form,
-  FormFieldset,
-  FormGroup,
-  FormLegend,
-} from "../../components/Form";
-import { Grid } from "../../components/Grid";
+import { FormFieldset, FormGroup, FormLegend } from "../../components/Form";
 import { Input } from "../../components/Input";
-import { Layout } from "../../components/Layout";
-import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
-import { GovUKBody, PageHeading } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -99,33 +89,15 @@ const AircraftCommunications: FunctionComponent<FormPageProps> = ({
   const pageHeading = "How can we communicate with you, when on this aircraft?";
 
   return (
-    <Layout
-      navigation={
-        <BackButtonRouterIndexes href="/register-a-beacon/about-the-aircraft" />
-      }
-      title={pageHeading}
-      pageHasErrors={form.hasErrors}
+    <BeaconsForm
+      previousPageUrl="/register-a-beacon/about-the-aircraft"
+      pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
+      formErrors={form.errorSummary}
+      insetText="This will be critical for Search and Rescue in an emergency."
     >
-      <Grid
-        mainContent={
-          <>
-            <PageHeading>{pageHeading}</PageHeading>
-            <FormErrorSummary formErrors={form.errorSummary} />
-            <GovUKBody>
-              This will be critical for Search and Rescue in an emergency.
-            </GovUKBody>
-
-            <Form>
-              <TypesOfCommunication form={form} />
-
-              <Button buttonText="Continue" />
-            </Form>
-            <IfYouNeedHelp />
-          </>
-        }
-      />
-    </Layout>
+      <TypesOfCommunication form={form} />
+    </BeaconsForm>
   );
 };
 

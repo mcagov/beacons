@@ -58,7 +58,7 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
                 </FormFieldset>
                 {insetComponent}
                 {children}
-                <HiddenInput />
+                <HiddenFormMetadata />
               </FormGroup>
               <Button buttonText="Continue" />
             </Form>
@@ -70,7 +70,7 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   );
 };
 
-const HiddenInput: FunctionComponent = () => {
+const HiddenFormMetadata: FunctionComponent = () => {
   const router = useRouter();
   const useIndexValue = router?.query.useIndex || 0;
 

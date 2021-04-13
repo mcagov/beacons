@@ -16,7 +16,6 @@ import {
 } from "../i-can-enter-owner-information.spec";
 import {
   andIClickContinue,
-  givenIAmAt,
   givenIHaveSelected,
   givenIHaveTyped,
   iAmAt,
@@ -67,7 +66,6 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   andIClickContinue();
 };
 export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
-  givenIAmAt(PageURLs.checkYourAnswers);
   whenIClickBack();
   iCanEditMyEmergencyContactDetails();
   whenIClickBack();
@@ -168,7 +166,6 @@ export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
   cy.get("main").contains("dongle");
 };
 const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
-  givenIAmAt(PageURLs.aboutTheAircraft);
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.maxCapacity,
     "#maxCapacity"
@@ -204,7 +201,6 @@ const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   );
 };
 const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
-  givenIAmAt(PageURLs.aircraftCommunications);
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#satelliteTelephone");
   givenIHaveTyped(
@@ -227,6 +223,5 @@ const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
   );
 };
 const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
-  givenIAmAt(PageURLs.moreDetails);
   givenIHaveTyped(testAviationUseData.moreDetails, "#moreDetails");
 };

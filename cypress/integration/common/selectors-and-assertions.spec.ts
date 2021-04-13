@@ -52,7 +52,7 @@ export const whenIClickOnTheErrorSummaryLinkContaining = (
 };
 
 export const whenIType = (value: string, selector: string): void => {
-  cy.get(selector).clear().type(value);
+  cy.get(selector).should("be.empty").type(value);
 };
 
 export const givenIHaveTyped = whenIType;
@@ -95,7 +95,7 @@ export const thenMyFocusMovesTo = (selector: string): void => {
 };
 
 export const givenIHaveSelected = (selector: string): void => {
-  cy.get(selector).check();
+  cy.get(selector).should("not.be.checked").check();
 };
 export const andIHaveSelected = givenIHaveSelected;
 

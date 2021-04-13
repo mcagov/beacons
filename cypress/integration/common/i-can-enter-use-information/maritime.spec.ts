@@ -16,7 +16,6 @@ import {
 } from "../i-can-enter-owner-information.spec";
 import {
   andIClickContinue,
-  givenIAmAt,
   givenIHaveSelected,
   givenIHaveTyped,
   iAmAt,
@@ -91,7 +90,6 @@ export const iCanSeeMyMaritimeUse = (purpose: Purpose): void => {
   cy.get("main").contains(testMaritimeUseData.moreDetails);
 };
 export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
-  givenIAmAt(PageURLs.checkYourAnswers);
   whenIClickBack();
   iCanEditMyEmergencyContactDetails();
   whenIClickBack();
@@ -169,7 +167,6 @@ const iCanEditMyPurpose = (purpose: Purpose): void => {
 };
 const givenIHaveEnteredInformationAboutMyVessel = (): void => {
   const vessel = testMaritimeUseData.vessel;
-  givenIAmAt(PageURLs.aboutTheVessel);
   givenIHaveTyped(vessel.maxCapacity, "#maxCapacity");
   givenIHaveTyped(vessel.name, "#vesselName");
   givenIHaveTyped(vessel.beaconPosition, "#beaconLocation");
@@ -183,7 +180,6 @@ const givenIHaveEnteredInformationAboutMyVessel = (): void => {
 };
 const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {
   const comms = testMaritimeUseData.communications;
-  givenIAmAt(PageURLs.vesselCommunications);
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#fixedVhfRadio");
   givenIHaveTyped(comms.fixedMMSI, "#fixedVhfRadioInput");
@@ -198,7 +194,6 @@ const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {
   givenIHaveTyped(comms.otherCommunication, "#otherCommunicationInput");
 };
 const givenIHaveEnteredMoreDetailsAboutMyVessel = (): void => {
-  givenIAmAt(PageURLs.moreDetails);
   givenIHaveTyped(testMaritimeUseData.moreDetails, "#moreDetails");
 };
 const iCanEditMyAdditionalMaritimeUseInformation = (): void => {

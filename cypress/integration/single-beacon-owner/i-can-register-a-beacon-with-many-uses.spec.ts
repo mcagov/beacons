@@ -17,7 +17,10 @@ import {
   givenIHaveEnteredMyAviationUse,
   iCanSeeMyAviationUse,
 } from "../common/i-can-enter-use-information/aviation.spec";
-import { andIHaveAnotherUse } from "../common/i-can-enter-use-information/generic.spec";
+import {
+  andIHaveAnotherUse,
+  andIHaveNoFurtherUses,
+} from "../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyMaritimeUse,
   iCanSeeMyMaritimeUse,
@@ -30,6 +33,7 @@ describe("As a single beacon owner with many uses,", () => {
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
     andIHaveAnotherUse();
     givenIHaveEnteredMyAviationUse(Purpose.PLEASURE);
+    andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
     givenIHaveEnteredMyAddressDetails();
