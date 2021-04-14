@@ -1,4 +1,8 @@
-import { Environment, Purpose } from "../../../src/lib/registration/types";
+import {
+  AdditionalUses,
+  Environment,
+  Purpose,
+} from "../../../src/lib/registration/types";
 import { PageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyBeaconDetails,
@@ -23,18 +27,23 @@ import {
   iCanEditMyAdditionalAviationUseInformation,
   iCanEditMyAircraftCommunications,
   iCanEditMyAircraftDetails,
+  iCanEditMyAviationActivity,
   iCanEditMyAviationEnvironment,
+  iCanEditMyAviationPurpose,
   iCanGoBackAndEditMyAviationUse,
   iCanSeeMyAviationUse,
 } from "../common/i-can-enter-use-information/aviation.spec";
 import {
   andIHaveAnotherUse,
   andIHaveNoFurtherUses,
+  iCanEditMyEnvironment,
 } from "../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyMaritimeUse,
   iCanEditMyAdditionalMaritimeUseInformation,
+  iCanEditMyMaritimeActivity,
   iCanEditMyMaritimeEnvironment,
+  iCanEditMyMaritimePurpose,
   iCanEditMyVesselCommunications,
   iCanEditMyVesselDetails,
   iCanGoBackAndEditMyMaritimeUse,
@@ -42,7 +51,10 @@ import {
 } from "../common/i-can-enter-use-information/maritime.spec";
 import {
   givenIAmAt,
+  iAmAt,
+  thenTheRadioButtonShouldBeSelected,
   thenTheUrlShouldContain,
+  whenIClickBack,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a single beacon owner with many uses,", () => {
@@ -65,14 +77,66 @@ describe("As a single beacon owner with many uses,", () => {
     iCanSeeMyPersonalDetails();
     iCanSeeMyAddressDetails();
     iCanSeeMyEmergencyContactDetails();
-    // iCanUseTheBackButtonToEditTheLastUseIEntered(
-    //   Environment.AVIATION,
-    //   Purpose.PLEASURE
-    // );
-    // TODO: Cycle through uses on back button flow, not default to most recently entered use only
+
+    iCanGoBackThroughTheFormInReverse();
     iCanClickEveryChangeButtonToEditMyRegistration();
   });
 });
+
+const iCanGoBackThroughTheFormInReverse = () => {
+  whenIClickBack();
+  iCanEditMyEmergencyContactDetails();
+  whenIClickBack();
+  iCanEditMyAddressDetails();
+  whenIClickBack();
+  iCanEditMyPersonalDetails();
+  whenIClickBack();
+  iCanEditMyAdditionalUsesChoice(AdditionalUses.NO);
+  whenIClickBack();
+  iCanEditMyAdditionalAviationUseInformation();
+  whenIClickBack();
+  iCanEditMyAircraftCommunications();
+  whenIClickBack();
+  iCanEditMyAircraftDetails();
+  whenIClickBack();
+  iCanEditMyAviationActivity();
+  whenIClickBack();
+  iCanEditMyAviationPurpose(Purpose.PLEASURE);
+  whenIClickBack();
+  iCanEditMyAdditionalUsesChoice(AdditionalUses.YES);
+  whenIClickBack();
+  iCanEditMyEnvironment(Environment.AVIATION);
+  whenIClickBack();
+  iCanEditMyAdditionalUsesChoice(AdditionalUses.YES);
+  whenIClickBack();
+  iCanEditMyAdditionalMaritimeUseInformation();
+  whenIClickBack();
+  iCanEditMyVesselCommunications();
+  whenIClickBack();
+  iCanEditMyVesselDetails();
+  whenIClickBack();
+  iCanEditMyMaritimeActivity();
+  whenIClickBack();
+  iCanEditMyMaritimePurpose(Purpose.PLEASURE);
+  whenIClickBack();
+  iCanEditMyEnvironment(Environment.MARITIME);
+  whenIClickBack();
+  iCanEditMyAdditionalBeaconInformation();
+  whenIClickBack();
+  iCanEditMyBeaconDetails();
+  whenIClickBack();
+  iAmAt(PageURLs.start);
+};
+
+const iCanEditMyAdditionalUsesChoice = (additionalChoices: AdditionalUses) => {
+  switch (additionalChoices) {
+    case AdditionalUses.YES:
+      thenTheRadioButtonShouldBeSelected("#yes");
+      break;
+    case AdditionalUses.NO:
+      thenTheRadioButtonShouldBeSelected("#no");
+  }
+};
 
 const iCanUseTheBackButtonToEditTheLastUseIEntered = (
   environment: Environment,

@@ -156,3 +156,8 @@ export enum Communication {
   MOBILE_TELEPHONE = "MOBILE_TELEPHONE",
   OTHER = "OTHER",
 }
+
+export enum AdditionalUses {
+  YES = "true",
+  NO = "false",
+}

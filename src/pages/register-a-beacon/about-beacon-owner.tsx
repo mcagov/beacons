@@ -39,8 +39,9 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
     <BeaconsForm
       pageHeading={pageHeading}
       formErrors={form.errorSummary}
-      previousPageUrl="/register-a-beacon/more-details"
+      previousPageUrl="/register-a-beacon/additional-beacon-use"
       showCookieBanner={showCookieBanner}
+      includeUseIndex={true}
     >
       <FullName
         value={form.fields.ownerFullName.value}
