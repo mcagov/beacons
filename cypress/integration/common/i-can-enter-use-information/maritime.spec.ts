@@ -1,5 +1,6 @@
 import { Environment, Purpose } from "../../../../src/lib/registration/types";
 import { PageURLs } from "../../../../src/lib/urls";
+import { makeEnumValueUserFriendly } from "../../../../src/lib/utils";
 import {
   testMaritimeCommercialUseData,
   testMaritimePleasureUseData,
@@ -66,12 +67,12 @@ export const iCanSeeMyMaritimeUse = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
       Object.values(testMaritimeCommercialUseData.type).forEach((value) => {
-        cy.get("main").contains(value);
+        cy.get("main").contains(makeEnumValueUserFriendly(value));
       });
       break;
     case Purpose.PLEASURE:
       Object.values(testMaritimePleasureUseData.type).forEach((value) => {
-        cy.get("main").contains(value);
+        cy.get("main").contains(makeEnumValueUserFriendly(value));
       });
       break;
   }

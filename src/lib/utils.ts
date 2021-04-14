@@ -20,6 +20,20 @@ export function toUpperCase(value: string): string {
 }
 
 /**
+ * Convenience function for making an enum value, that could be nullish, user friendly i.e. underscores removed and sentence-cased.
+ *
+ * @param value {string}   The string value; could be null
+ * @returns     {string}   The string value made user friendly
+ */
+export function makeEnumValueUserFriendly(value: string): string {
+  if (value) {
+    value = value.replace(/_/g, " ");
+    return value[0] + value.slice(1).toLowerCase();
+  }
+  return value;
+}
+
+/**
  * Given the provided string is a number, pads the value with zeros until it reaches the target length.
  *
  * @param value        {string}   The number as a string
