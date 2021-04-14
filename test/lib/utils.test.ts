@@ -1,5 +1,6 @@
 import {
   formatUrlQueryParams,
+  makeEnumValueUserFriendly,
   padNumberWithLeadingZeros,
   toArray,
   toUpperCase,
@@ -52,6 +53,20 @@ describe("toUpperCase()", () => {
 
   it("should handle only numbers", () => {
     expect(toUpperCase("123")).toBe("123");
+  });
+});
+
+describe("makeEnumValueUserFriendly()", () => {
+  it("should return the value unchanged if the value is null", () => {
+    expect(makeEnumValueUserFriendly(null)).toBe(null);
+  });
+
+  it("should return the value title-cased", () => {
+    expect(makeEnumValueUserFriendly("UPPERCASE")).toBe("Uppercase");
+  });
+
+  it("should replace underscores with spaces and return the value title-cased", () => {
+    expect(makeEnumValueUserFriendly("UPPER_CASE")).toBe("Upper case");
   });
 });
 
