@@ -15,8 +15,10 @@ import {
   SectionHeading,
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
+import { BasicAuthGateway } from "../gateways/basicAuthGateway";
 import { setFormSubmissionCookie } from "../lib/middleware";
 import { acceptRejectCookieId } from "../lib/types";
+import { AuthenticateUser } from "../useCases/authenticateUser";
 
 interface ServiceStartPageProps {
   showCookieBanner: boolean;
@@ -196,6 +198,10 @@ const DataProtection: FunctionComponent = (): JSX.Element => (
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
+  const authGateway = new BasicAuthGateway();
+  const authUseCase = new AuthenticateUser(authGateway);
+  await authUseCase.execute(context);
+
   setFormSubmissionCookie(context);
   const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
 

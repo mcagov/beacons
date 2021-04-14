@@ -26,6 +26,7 @@ jest.mock("../../src/lib/utils", () => ({
     .fn()
     .mockImplementation((dest) => `${dest}?useIndex=1`),
 }));
+jest.mock("../../src/gateways/basicAuthGateway");
 
 describe("handlePageRequest()", () => {
   let getFormGroup;
