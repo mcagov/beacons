@@ -26,6 +26,10 @@ export class Registration {
     return flattenedRegistration;
   }
 
+  public getRegistration = (): IRegistration => {
+    return this.registration;
+  };
+
   public createUse(): void {
     const use = initBeaconUse();
     this.registration.uses.push(use);
