@@ -58,18 +58,22 @@ export const asAMaritimePleasureBeaconOwner = (): void => {
   andIHaveSelected("#pleasure");
   andIClickContinue();
 };
+
 export const iCanEditMyBeaconDetails = (): void =>
   Object.values(testBeaconAndOwnerData.beaconDetails).forEach((value) =>
     cy.get(`input[value="${value}"]`)
   );
+
 export const iCanEditMyAdditionalBeaconInformation = (): void =>
   Object.values(
     testBeaconAndOwnerData.additionalBeaconInformation
   ).forEach((value) => cy.get(`input[value="${value}"]`));
+
 export const iCanSeeMyBeaconDetails = (): void =>
   Object.values(testBeaconAndOwnerData.beaconDetails).forEach((value) =>
     cy.contains(value)
   );
+
 export const iCanSeeMyAdditionalBeaconInformation = (): void =>
   Object.values(
     testBeaconAndOwnerData.additionalBeaconInformation

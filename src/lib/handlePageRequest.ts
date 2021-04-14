@@ -37,6 +37,15 @@ export const handlePageRequest = (
     const beaconsContext: BeaconsContext = await decorateGetServerSidePropsContext(
       context
     );
+    // console.log("request: ", context.req.method, context.req.url);
+    // console.log("context (param) says use index is: ", context.query.useIndex);
+    // console.log("beaconsContext says use index is: ", beaconsContext.useIndex);
+    // console.log(
+    //   context.query.useIndex?.toString() === beaconsContext.useIndex?.toString()
+    //     ? "💚 useIndex matches"
+    //     : "💔 useIndex doesn't match"
+    // );
+    // console.log("---");
     const userDidSubmitForm = beaconsContext.req.method === "POST";
 
     if (userDidSubmitForm) {

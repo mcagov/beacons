@@ -79,11 +79,7 @@ async function addFormData(context: BeaconsContext): Promise<void> {
 }
 
 function addRegistrationIndexes(context: BeaconsContext): void {
-  const submissionId: string = context.req.cookies[formSubmissionCookieId];
-  const registration: Registration = getCache(submissionId);
-
-  const useIndex =
-    parseInt(context.query.useIndex as string) || registration.usesCount() - 1;
+  const useIndex = parseInt(context.query.useIndex as string) || 0;
   context.useIndex = useIndex;
 }
 

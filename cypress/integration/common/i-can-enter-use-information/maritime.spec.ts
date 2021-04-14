@@ -61,6 +61,7 @@ export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
   givenIHaveEnteredMoreDetailsAboutMyVessel();
   andIClickContinue();
 };
+
 export const iCanSeeMyMaritimeUse = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
@@ -89,6 +90,7 @@ export const iCanSeeMyMaritimeUse = (purpose: Purpose): void => {
   );
   cy.get("main").contains(testMaritimeUseData.moreDetails);
 };
+
 export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyEmergencyContactDetails();
@@ -103,9 +105,9 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyVesselDetails();
   whenIClickBack();
-  iCanEditMyActivity();
+  iCanEditMyMaritimeActivity();
   whenIClickBack();
-  iCanEditMyPurpose(purpose);
+  iCanEditMyMaritimePurpose(purpose);
   whenIClickBack();
   iCanEditMyEnvironment(Environment.MARITIME);
   whenIClickBack();
@@ -115,6 +117,7 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   whenIClickBack();
   iAmAt(PageURLs.start);
 };
+
 export const iCanEditMyVesselCommunications = (): void => {
   const comms = testMaritimeUseData.communications;
   comms.checkedFields.forEach((field) =>
@@ -130,6 +133,7 @@ export const iCanEditMyVesselCommunications = (): void => {
   cy.get("#mobileTelephoneInput2").should("have.value", comms.mobileTelephone2);
   cy.get("#otherCommunicationInput").contains(comms.otherCommunication);
 };
+
 export const iCanEditMyVesselDetails = (): void => {
   const vessel = testMaritimeUseData.vessel;
   cy.get("#maxCapacity").should("have.value", vessel.maxCapacity);
@@ -146,12 +150,14 @@ export const iCanEditMyVesselDetails = (): void => {
     vessel.rigPlatformLocation
   );
 };
-export const iCanEditMyActivity = (): void => {
+
+export const iCanEditMyMaritimeActivity = (): void => {
   cy.get(
     `input[value="${testMaritimeCommercialUseData.type.activity}"]`
   ).should("be.checked");
 };
-const iCanEditMyPurpose = (purpose: Purpose): void => {
+
+export const iCanEditMyMaritimePurpose = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
       cy.get(
@@ -165,7 +171,8 @@ const iCanEditMyPurpose = (purpose: Purpose): void => {
       break;
   }
 };
-const givenIHaveEnteredInformationAboutMyVessel = (): void => {
+
+export const givenIHaveEnteredInformationAboutMyVessel = (): void => {
   const vessel = testMaritimeUseData.vessel;
   givenIHaveTyped(vessel.maxCapacity, "#maxCapacity");
   givenIHaveTyped(vessel.name, "#vesselName");
@@ -178,7 +185,8 @@ const givenIHaveEnteredInformationAboutMyVessel = (): void => {
   givenIHaveTyped(vessel.officialNumber, "#officialNumber");
   givenIHaveTyped(vessel.rigPlatformLocation, "#rigPlatformLocation");
 };
-const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {
+
+export const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {
   const comms = testMaritimeUseData.communications;
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#fixedVhfRadio");
@@ -193,9 +201,14 @@ const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {
   givenIHaveSelected("#otherCommunication");
   givenIHaveTyped(comms.otherCommunication, "#otherCommunicationInput");
 };
-const givenIHaveEnteredMoreDetailsAboutMyVessel = (): void => {
+
+export const givenIHaveEnteredMoreDetailsAboutMyVessel = (): void => {
   givenIHaveTyped(testMaritimeUseData.moreDetails, "#moreDetails");
 };
-const iCanEditMyAdditionalMaritimeUseInformation = (): void => {
+
+export const iCanEditMyAdditionalMaritimeUseInformation = (): void => {
   cy.get("textarea").contains(testMaritimeUseData.moreDetails);
 };
+
+export const iCanEditMyMaritimeEnvironment = (): void =>
+  iCanEditMyEnvironment(Environment.MARITIME);

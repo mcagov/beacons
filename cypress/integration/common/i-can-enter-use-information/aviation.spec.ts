@@ -65,6 +65,7 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   givenIHaveEnteredMoreDetailsAboutMyAircraft();
   andIClickContinue();
 };
+
 export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyEmergencyContactDetails();
@@ -79,9 +80,9 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyAircraftDetails();
   whenIClickBack();
-  iCanEditMyActivity();
+  iCanEditMyAviationActivity();
   whenIClickBack();
-  iCanEditMyPurpose(purpose);
+  iCanEditMyAviationPurpose(purpose);
   whenIClickBack();
   iCanEditMyEnvironment(Environment.AVIATION);
   whenIClickBack();
@@ -91,6 +92,7 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   whenIClickBack();
   iAmAt(PageURLs.start);
 };
+
 export const iCanEditMyAircraftCommunications = (): void => {
   const comms = testAviationUseData.communications;
   comms.checkedFields.forEach((field) =>
@@ -104,6 +106,7 @@ export const iCanEditMyAircraftCommunications = (): void => {
   cy.get("#mobileTelephoneInput2").should("have.value", comms.mobileTelephone2);
   cy.get("#otherCommunicationInput").contains(comms.otherCommunication);
 };
+
 export const iCanEditMyAircraftDetails = (): void => {
   const aircraft = testAviationUseData.aircraft;
   cy.get("#maxCapacity").should("have.value", aircraft.maxCapacity);
@@ -116,15 +119,18 @@ export const iCanEditMyAircraftDetails = (): void => {
   cy.get("#dongle-yes").should("be.checked");
   cy.get("#beaconPosition").contains(aircraft.beaconPosition);
 };
-export const iCanEditMyActivity = (): void => {
+
+export const iCanEditMyAviationActivity = (): void => {
   cy.get(`input[value="${testAviationPleasureUseData.type.activity}"]`).should(
     "be.checked"
   );
 };
-const iCanEditMyAdditionalAviationUseInformation = (): void => {
+
+export const iCanEditMyAdditionalAviationUseInformation = (): void => {
   cy.get("textarea").contains(testAviationUseData.moreDetails);
 };
-export const iCanEditMyPurpose = (purpose: Purpose): void => {
+
+export const iCanEditMyAviationPurpose = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
       cy.get(
@@ -138,6 +144,7 @@ export const iCanEditMyPurpose = (purpose: Purpose): void => {
       break;
   }
 };
+
 export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
@@ -165,6 +172,7 @@ export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
   cy.get("main").contains(testAviationUseData.moreDetails);
   cy.get("main").contains("dongle");
 };
+
 const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.maxCapacity,
@@ -200,6 +208,7 @@ const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
     "#beaconPosition"
   );
 };
+
 const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#satelliteTelephone");
@@ -222,6 +231,10 @@ const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
     "#otherCommunicationInput"
   );
 };
+
 const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
   givenIHaveTyped(testAviationUseData.moreDetails, "#moreDetails");
 };
+
+export const iCanEditMyAviationEnvironment = (): void =>
+  iCanEditMyEnvironment(Environment.AVIATION);
