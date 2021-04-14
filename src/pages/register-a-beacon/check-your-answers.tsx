@@ -161,7 +161,7 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
   index,
   use,
 }: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
-  const href = `/register-a-beacon/envionment?useIndex=${index}"`;
+  const href = `/register-a-beacon/beacon-use?useIndex=${index}`;
   let aboutTheSection = <></>;
   let commsSection = <></>;
   switch (use.environment) {
