@@ -109,7 +109,7 @@ export const ActivityOptions: FunctionComponent<ActivityOptionsProps> = ({
     );
 
   throw new Error(
-    "Environment or purpose not found.  User needs to enter evironment and purpose on previous pages."
+    "Environment or purpose not found.  User needs to enter environment and purpose on previous pages."
   );
 };
 
