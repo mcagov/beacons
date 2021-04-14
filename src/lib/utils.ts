@@ -20,7 +20,7 @@ export function toUpperCase(value: string): string {
 }
 
 /**
- * Convenience function for making an enum value, that could be nullish, user friendly i.e. underscores removed and title-cased.
+ * Convenience function for making an enum value, that could be nullish, user friendly i.e. underscores removed and sentence-cased.
  *
  * @param value {string}   The string value; could be null
  * @returns     {string}   The string value made user friendly

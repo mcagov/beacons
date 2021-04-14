@@ -61,11 +61,11 @@ describe("makeEnumValueUserFriendly()", () => {
     expect(makeEnumValueUserFriendly(null)).toBe(null);
   });
 
-  it("should return the value title-cased", () => {
+  it("should return the value sentence-cased", () => {
     expect(makeEnumValueUserFriendly("UPPERCASE")).toBe("Uppercase");
   });
 
-  it("should replace underscores with spaces and return the value title-cased", () => {
+  it("should replace underscores with spaces and return the value sentence-cased", () => {
     expect(makeEnumValueUserFriendly("UPPER_CASE")).toBe("Upper case");
   });
 });
