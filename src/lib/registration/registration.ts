@@ -37,13 +37,16 @@ export class Registration {
     this._updateUse(formData);
   }
 
+  public usesCount(): number {
+    return this.registration.uses.length;
+  }
+
   private _updateBeacon(formData: FormSubmission): void {
     Object.keys(formData)
       .filter((key: string) => !(key === Registration.USES_KEY))
       .forEach((key: string) => {
         if (key in this.registration) {
-          const value = formData[key];
-          this.registration[key] = value;
+          this.registration[key] = formData[key];
         }
       });
   }
@@ -54,8 +57,7 @@ export class Registration {
 
     Object.keys(formData).forEach((key: string) => {
       if (key in use) {
-        const value = formData[key];
-        use[key] = value;
+        use[key] = formData[key];
       }
     });
   }

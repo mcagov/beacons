@@ -1,4 +1,4 @@
-import { Purpose } from "../../../src/lib/registration/types";
+import { Environment, Purpose } from "../../../src/lib/registration/types";
 import { PageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyBeaconDetails,
@@ -15,6 +15,7 @@ import {
 } from "../common/i-can-enter-owner-information.spec";
 import {
   givenIHaveEnteredMyAviationUse,
+  iCanGoBackAndEditMyAviationUse,
   iCanSeeMyAviationUse,
 } from "../common/i-can-enter-use-information/aviation.spec";
 import {
@@ -23,6 +24,7 @@ import {
 } from "../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyMaritimeUse,
+  iCanGoBackAndEditMyMaritimeUse,
   iCanSeeMyMaritimeUse,
 } from "../common/i-can-enter-use-information/maritime.spec";
 import { thenTheUrlShouldContain } from "../common/selectors-and-assertions.spec";
@@ -47,6 +49,23 @@ describe("As a single beacon owner with many uses,", () => {
     iCanSeeMyPersonalDetails();
     iCanSeeMyAddressDetails();
     iCanSeeMyEmergencyContactDetails();
-    // iCanGoBackAndEditMyMaritimeUse(Purpose.PLEASURE);
+    iCanUseTheBackButtonToEditTheLastUseIEntered(
+      Environment.AVIATION,
+      Purpose.PLEASURE
+    );
   });
 });
+
+const iCanUseTheBackButtonToEditTheLastUseIEntered = (
+  environment: Environment,
+  purpose: Purpose
+) => {
+  switch (environment) {
+    case Environment.AVIATION:
+      iCanGoBackAndEditMyAviationUse(purpose);
+      break;
+    case Environment.MARITIME:
+      iCanGoBackAndEditMyMaritimeUse(purpose);
+      break;
+  }
+};
