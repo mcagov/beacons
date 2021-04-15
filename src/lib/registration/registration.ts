@@ -41,10 +41,6 @@ export class Registration {
     this._updateUse(formData);
   }
 
-  public usesCount(): number {
-    return this.registration.uses.length;
-  }
-
   private _updateBeacon(formData: FormSubmission): void {
     Object.keys(formData)
       .filter((key: string) => !(key === Registration.USES_KEY))
