@@ -5,6 +5,7 @@ import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
 import { FormFieldset, FormGroup, FormLegend } from "../../components/Form";
 import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
+import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -87,6 +88,11 @@ const AircraftCommunications: FunctionComponent<FormPageProps> = ({
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "How can we communicate with you, when on this aircraft?";
+  const pageText = (
+    <GovUKBody>
+      {"This will be critical for Search and Rescue in an emergency."}
+    </GovUKBody>
+  );
 
   return (
     <BeaconsForm
@@ -94,7 +100,7 @@ const AircraftCommunications: FunctionComponent<FormPageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      insetText="This will be critical for Search and Rescue in an emergency."
+      pageText={pageText}
     >
       <TypesOfCommunication form={form} />
     </BeaconsForm>

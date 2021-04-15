@@ -4,6 +4,7 @@ import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
+import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -43,6 +44,13 @@ const BeaconUse: FunctionComponent<FormPageProps> = ({
   useIndex,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "What is the primary use for this beacon?";
+  const pageText = (
+    <GovUKBody>
+      {
+        "If you have multiple uses for this beacon, tell us about the main one first. You will be able to tell us about other uses later in the form"
+      }
+    </GovUKBody>
+  );
 
   const environmentFieldName = "environment";
 
@@ -56,9 +64,7 @@ const BeaconUse: FunctionComponent<FormPageProps> = ({
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      insetText="If you have multiple uses for this beacon, tell us about the
-    main one first. You will be able to tell us about other uses
-    later in the form"
+      pageText={pageText}
     >
       <FormGroup errorMessages={form.fields.environment.errorMessages}>
         <RadioList conditional={true}>

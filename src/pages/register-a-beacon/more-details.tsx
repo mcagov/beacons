@@ -44,7 +44,7 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
   };
 
   const pageHeading = "Provide more details that could help in a search";
-  const pageCopy = (
+  const pageText = (
     <>
       <GovUKBody>
         Please provide a description of any vessel, aircraft, vehicle or
@@ -70,7 +70,7 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      insetText={pageCopy}
+      pageText={pageText}
     >
       <MoreDetailsTextArea
         id="moreDetails"
