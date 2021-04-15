@@ -10,6 +10,7 @@ import {
 import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
+import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -97,6 +98,13 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "Beacon information";
+  const pageText = (
+    <GovUKBody>
+      {
+        "Further information about your beacon is useful for Search and Rescue. Provide as much information you can find."
+      }
+    </GovUKBody>
+  );
 
   return (
     <BeaconsForm
@@ -104,8 +112,7 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      insetText="Further information about your beacon is useful for Search and
-      Rescue. Provide as much information you can find."
+      pageText={pageText}
     >
       <ManufacturerSerialNumberInput
         value={form.fields.manufacturerSerialNumber.value}

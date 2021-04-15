@@ -1,7 +1,7 @@
 import {
   givenIHaveACookieSetAndIVisit,
   iCanClickTheBackLinkToGoToPreviousPage,
-  iCanSeeAHeadingThatContains,
+  iCanSeeAPageHeadingThatContains,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -35,7 +35,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   });
 
   it("shows me the page title", () => {
-    iCanSeeAHeadingThatContains("Beacon information");
+    iCanSeeAPageHeadingThatContains("Beacon information");
   });
 
   it("should route to the previous page when I click the back button", () => {

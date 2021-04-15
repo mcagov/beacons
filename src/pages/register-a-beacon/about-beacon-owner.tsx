@@ -32,6 +32,7 @@ const definePageForm = ({
 const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
+  registration,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "About the beacon owner";
 
@@ -39,8 +40,11 @@ const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
     <BeaconsForm
       pageHeading={pageHeading}
       formErrors={form.errorSummary}
-      previousPageUrl="/register-a-beacon/more-details"
+      previousPageUrl={`/register-a-beacon/additional-beacon-use?useIndex=${
+        registration.uses.length - 1
+      }`}
       showCookieBanner={showCookieBanner}
+      includeUseIndex={true}
     >
       <FullName
         value={form.fields.ownerFullName.value}

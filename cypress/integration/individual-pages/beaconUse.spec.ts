@@ -2,7 +2,7 @@ import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   iCanClickTheBackLinkToGoToPreviousPage,
-  iCanSeeAHeadingThatContains,
+  iCanSeeAPageHeadingThatContains,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
@@ -32,7 +32,7 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
     givenIHaveSelected("#maritime");
     whenIClickContinue();
 
-    iCanSeeAHeadingThatContains("maritime use");
+    iCanSeeAPageHeadingThatContains("maritime use");
     thenTheUrlShouldContain(purposeUrl);
   });
 
@@ -40,7 +40,7 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
     givenIHaveSelected("#aviation");
     whenIClickContinue();
 
-    iCanSeeAHeadingThatContains("aviation use");
+    iCanSeeAPageHeadingThatContains("aviation use");
     thenTheUrlShouldContain(purposeUrl);
   });
 

@@ -12,6 +12,7 @@ import {
   handlePageRequest,
 } from "../../lib/handlePageRequest";
 import { BeaconsContext } from "../../lib/middleware";
+import { AdditionalUses } from "../../lib/registration/types";
 import { formatUrlQueryParams } from "../../lib/utils";
 
 const definePageForm = ({
@@ -44,16 +45,22 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
         <RadioListItem
           id="yes"
           name={additionalBeaconName}
-          value="true"
+          value={AdditionalUses.YES}
           label="Yes"
           hintText="We'll ask you to tell us about these in the next step"
+          defaultChecked={
+            form.fields.additionalBeaconUse.value === AdditionalUses.YES
+          }
         />
 
         <RadioListItem
           id="no"
           name={additionalBeaconName}
-          value="false"
+          value={AdditionalUses.NO}
           label="No"
+          defaultChecked={
+            form.fields.additionalBeaconUse.value === AdditionalUses.NO
+          }
         />
       </RadioList>
     </BeaconsForm>

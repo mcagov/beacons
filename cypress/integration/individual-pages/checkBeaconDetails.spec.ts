@@ -1,6 +1,6 @@
 import {
   givenIHaveACookieSetAndIVisit,
-  iCanSeeAHeadingThatContains,
+  iCanSeeAPageHeadingThatContains,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
@@ -21,7 +21,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
   });
 
   it("shows me the page title", () => {
-    iCanSeeAHeadingThatContains("Check beacon details");
+    iCanSeeAPageHeadingThatContains("Check beacon details");
   });
 
   it("errors if I submit just whitespace in the manufacturer field", () => {

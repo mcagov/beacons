@@ -49,6 +49,8 @@ const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "Check beacon details";
+  const pageText =
+    "The details of your beacon must be checked to ensure it is programmed for UK registration.";
 
   return (
     <BeaconsForm
@@ -57,8 +59,7 @@ const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
       includeUseIndex={false}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      insetText="The details of your beacon must be checked to ensure it is
-      programmed for UK registration."
+      pageText={pageText}
     >
       <BeaconManufacturerInput
         value={form.fields.manufacturer.value}

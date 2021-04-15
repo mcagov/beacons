@@ -26,6 +26,10 @@ export class Registration {
     return flattenedRegistration;
   }
 
+  public getRegistration = (): IRegistration => {
+    return this.registration;
+  };
+
   public createUse(): void {
     const use = initBeaconUse();
     this.registration.uses.push(use);
@@ -42,8 +46,7 @@ export class Registration {
       .filter((key: string) => !(key === Registration.USES_KEY))
       .forEach((key: string) => {
         if (key in this.registration) {
-          const value = formData[key];
-          this.registration[key] = value;
+          this.registration[key] = formData[key];
         }
       });
   }
@@ -54,8 +57,7 @@ export class Registration {
 
     Object.keys(formData).forEach((key: string) => {
       if (key in use) {
-        const value = formData[key];
-        use[key] = value;
+        use[key] = formData[key];
       }
     });
   }

@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from "next";
 import { BasicAuthGateway } from "../gateways/basicAuthGateway";
 
 export class AuthenticateUser {
@@ -6,7 +7,7 @@ export class AuthenticateUser {
     this.gateway = BasicAuthGateway;
   }
 
-  async execute(context): Promise<void> {
+  async execute(context: GetServerSidePropsContext): Promise<void> {
     await this.gateway.authenticate(context.req, context.res);
   }
 }

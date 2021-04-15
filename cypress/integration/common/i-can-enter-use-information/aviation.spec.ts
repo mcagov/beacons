@@ -1,4 +1,8 @@
-import { Environment, Purpose } from "../../../../src/lib/registration/types";
+import {
+  AdditionalUses,
+  Environment,
+  Purpose,
+} from "../../../../src/lib/registration/types";
 import { PageURLs } from "../../../../src/lib/urls";
 import { makeEnumValueUserFriendly } from "../../../../src/lib/utils";
 import {
@@ -17,15 +21,17 @@ import {
 } from "../i-can-enter-owner-information.spec";
 import {
   andIClickContinue,
-  givenIAmAt,
   givenIHaveSelected,
   givenIHaveTyped,
   iAmAt,
-  iCanSeeAHeadingThatContains,
+  iCanSeeAPageHeadingThatContains,
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
-import { iCanEditMyEnvironment } from "./generic.spec";
+import {
+  iCanEditMyAdditionalUsesChoice,
+  iCanEditMyEnvironment,
+} from "./generic.spec";
 
 export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   thenTheUrlShouldContain(PageURLs.environment);
@@ -33,13 +39,13 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   andIClickContinue();
 
   thenTheUrlShouldContain(PageURLs.purpose);
-  iCanSeeAHeadingThatContains("aviation");
+  iCanSeeAPageHeadingThatContains("aviation");
   givenIHaveSelected(`#${purpose.toLowerCase()}`);
   andIClickContinue();
 
   thenTheUrlShouldContain(PageURLs.activity);
-  iCanSeeAHeadingThatContains("aviation");
-  iCanSeeAHeadingThatContains(purpose.toLowerCase());
+  iCanSeeAPageHeadingThatContains("aviation");
+  iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
     case Purpose.COMMERCIAL:
       givenIHaveSelected(
@@ -55,7 +61,7 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   andIClickContinue();
 
   thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
-  iCanSeeAHeadingThatContains("aircraft");
+  iCanSeeAPageHeadingThatContains("aircraft");
   givenIHaveEnteredInformationAboutMyAircraft();
   andIClickContinue();
 
@@ -67,8 +73,8 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   givenIHaveEnteredMoreDetailsAboutMyAircraft();
   andIClickContinue();
 };
+
 export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
-  givenIAmAt(PageURLs.checkYourAnswers);
   whenIClickBack();
   iCanEditMyEmergencyContactDetails();
   whenIClickBack();
@@ -76,15 +82,17 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyPersonalDetails();
   whenIClickBack();
+  iCanEditMyAdditionalUsesChoice(AdditionalUses.NO);
+  whenIClickBack();
   iCanEditMyAdditionalAviationUseInformation();
   whenIClickBack();
   iCanEditMyAircraftCommunications();
   whenIClickBack();
   iCanEditMyAircraftDetails();
   whenIClickBack();
-  iCanEditMyActivity();
+  iCanEditMyAviationActivity();
   whenIClickBack();
-  iCanEditMyPurpose(purpose);
+  iCanEditMyAviationPurpose(purpose);
   whenIClickBack();
   iCanEditMyEnvironment(Environment.AVIATION);
   whenIClickBack();
@@ -94,6 +102,7 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   whenIClickBack();
   iAmAt(PageURLs.start);
 };
+
 export const iCanEditMyAircraftCommunications = (): void => {
   const comms = testAviationUseData.communications;
   comms.checkedFields.forEach((field) =>
@@ -107,6 +116,7 @@ export const iCanEditMyAircraftCommunications = (): void => {
   cy.get("#mobileTelephoneInput2").should("have.value", comms.mobileTelephone2);
   cy.get("#otherCommunicationInput").contains(comms.otherCommunication);
 };
+
 export const iCanEditMyAircraftDetails = (): void => {
   const aircraft = testAviationUseData.aircraft;
   cy.get("#maxCapacity").should("have.value", aircraft.maxCapacity);
@@ -119,15 +129,18 @@ export const iCanEditMyAircraftDetails = (): void => {
   cy.get("#dongle-yes").should("be.checked");
   cy.get("#beaconPosition").contains(aircraft.beaconPosition);
 };
-export const iCanEditMyActivity = (): void => {
+
+export const iCanEditMyAviationActivity = (): void => {
   cy.get(`input[value="${testAviationPleasureUseData.type.activity}"]`).should(
     "be.checked"
   );
 };
-const iCanEditMyAdditionalAviationUseInformation = (): void => {
+
+export const iCanEditMyAdditionalAviationUseInformation = (): void => {
   cy.get("textarea").contains(testAviationUseData.moreDetails);
 };
-export const iCanEditMyPurpose = (purpose: Purpose): void => {
+
+export const iCanEditMyAviationPurpose = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
       cy.get(
@@ -141,6 +154,7 @@ export const iCanEditMyPurpose = (purpose: Purpose): void => {
       break;
   }
 };
+
 export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
@@ -168,8 +182,8 @@ export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
   cy.get("main").contains(testAviationUseData.moreDetails);
   cy.get("main").contains("dongle");
 };
+
 const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
-  givenIAmAt(PageURLs.aboutTheAircraft);
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.maxCapacity,
     "#maxCapacity"
@@ -204,8 +218,8 @@ const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
     "#beaconPosition"
   );
 };
+
 const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
-  givenIAmAt(PageURLs.aircraftCommunications);
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#satelliteTelephone");
   givenIHaveTyped(
@@ -227,7 +241,10 @@ const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
     "#otherCommunicationInput"
   );
 };
+
 const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
-  givenIAmAt(PageURLs.moreDetails);
   givenIHaveTyped(testAviationUseData.moreDetails, "#moreDetails");
 };
+
+export const iCanEditMyAviationEnvironment = (): void =>
+  iCanEditMyEnvironment(Environment.AVIATION);

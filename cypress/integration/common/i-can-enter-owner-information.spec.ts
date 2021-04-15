@@ -7,7 +7,6 @@ import {
 } from "./selectors-and-assertions.spec";
 
 export const givenIHaveEnteredMyPersonalDetails = (): void => {
-  givenIAmAt(PageURLs.aboutBeaconOwner);
   givenIHaveTyped(
     testBeaconAndOwnerData.ownerDetails.fullName,
     "#ownerFullName"
@@ -24,7 +23,6 @@ export const givenIHaveEnteredMyPersonalDetails = (): void => {
   givenIHaveClickedContinue();
 };
 export const givenIHaveEnteredMyAddressDetails = (): void => {
-  givenIAmAt(PageURLs.beaconOwnerAddress);
   givenIHaveTyped(
     testBeaconAndOwnerData.ownerAddress.addressLine1,
     "#ownerAddressLine1"
