@@ -12,6 +12,7 @@ import {
   withCookieRedirect,
 } from "./middleware";
 import { Registration } from "./registration/registration";
+import { IRegistration } from "./registration/types";
 import { formatUrlQueryParams } from "./utils";
 
 type TransformCallback = (formData: FormSubmission) => FormSubmission;
@@ -23,7 +24,9 @@ export type FormManagerFactory = (formData: FormSubmission) => FormManager;
 export interface FormPageProps {
   form: FormJSON;
   showCookieBanner?: boolean;
+  registration?: IRegistration;
   flattenedRegistration?: FormSubmission;
+  useIndex?: number;
 }
 
 export const handlePageRequest = (
@@ -74,7 +77,9 @@ const handleGetRequest = (
     props: {
       form: formManager.serialise(),
       showCookieBanner: context.showCookieBanner,
+      registration: registration.getRegistration(),
       flattenedRegistration,
+      useIndex: context.useIndex,
     },
   };
 };

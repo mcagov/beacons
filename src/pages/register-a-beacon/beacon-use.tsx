@@ -13,6 +13,7 @@ import {
   handlePageRequest,
 } from "../../lib/handlePageRequest";
 import { Environment } from "../../lib/registration/types";
+import { PageURLs } from "../../lib/urls";
 
 const getPageForm = ({ environment, environmentOtherInput }) => {
   return new FormManager({
@@ -39,6 +40,7 @@ const getPageForm = ({ environment, environmentOtherInput }) => {
 const BeaconUse: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
+  useIndex,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "What is the primary use for this beacon?";
 
@@ -47,7 +49,11 @@ const BeaconUse: FunctionComponent<FormPageProps> = ({
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
-      previousPageUrl="/register-a-beacon/beacon-information"
+      previousPageUrl={
+        useIndex === 0
+          ? PageURLs.beaconInformation
+          : PageURLs.additionalUse + `?useIndex=${useIndex - 1}`
+      }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       insetText="If you have multiple uses for this beacon, tell us about the

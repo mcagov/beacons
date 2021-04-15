@@ -33,7 +33,6 @@ export interface IRegistration {
   emergencyContact3TelephoneNumber: string;
   emergencyContact3AlternativeTelephoneNumber: string;
 
-  additionalBeaconUse: string;
   uses: BeaconUse[];
 }
 
@@ -101,6 +100,8 @@ export interface BeaconUse {
 
   // Generic more details on use of beacon
   moreDetails: string;
+
+  additionalBeaconUse: string;
 }
 
 export enum Environment {

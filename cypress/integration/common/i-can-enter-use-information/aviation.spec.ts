@@ -1,4 +1,8 @@
-import { Environment, Purpose } from "../../../../src/lib/registration/types";
+import {
+  AdditionalUses,
+  Environment,
+  Purpose,
+} from "../../../../src/lib/registration/types";
 import { PageURLs } from "../../../../src/lib/urls";
 import {
   testAviationCommercialUseData,
@@ -23,7 +27,10 @@ import {
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
-import { iCanEditMyEnvironment } from "./generic.spec";
+import {
+  iCanEditMyAdditionalUsesChoice,
+  iCanEditMyEnvironment,
+} from "./generic.spec";
 
 export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   thenTheUrlShouldContain(PageURLs.environment);
@@ -73,6 +80,8 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   iCanEditMyAddressDetails();
   whenIClickBack();
   iCanEditMyPersonalDetails();
+  whenIClickBack();
+  iCanEditMyAdditionalUsesChoice(AdditionalUses.NO);
   whenIClickBack();
   iCanEditMyAdditionalAviationUseInformation();
   whenIClickBack();

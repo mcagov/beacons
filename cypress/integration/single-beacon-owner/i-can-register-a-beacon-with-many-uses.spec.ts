@@ -30,12 +30,12 @@ import {
   iCanEditMyAviationActivity,
   iCanEditMyAviationEnvironment,
   iCanEditMyAviationPurpose,
-  iCanGoBackAndEditMyAviationUse,
   iCanSeeMyAviationUse,
 } from "../common/i-can-enter-use-information/aviation.spec";
 import {
   andIHaveAnotherUse,
   andIHaveNoFurtherUses,
+  iCanEditMyAdditionalUsesChoice,
   iCanEditMyEnvironment,
 } from "../common/i-can-enter-use-information/generic.spec";
 import {
@@ -46,13 +46,11 @@ import {
   iCanEditMyMaritimePurpose,
   iCanEditMyVesselCommunications,
   iCanEditMyVesselDetails,
-  iCanGoBackAndEditMyMaritimeUse,
   iCanSeeMyMaritimeUse,
 } from "../common/i-can-enter-use-information/maritime.spec";
 import {
   givenIAmAt,
   iAmAt,
-  thenTheRadioButtonShouldBeSelected,
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../common/selectors-and-assertions.spec";
@@ -103,8 +101,6 @@ const iCanGoBackThroughTheFormInReverse = () => {
   whenIClickBack();
   iCanEditMyAviationPurpose(Purpose.PLEASURE);
   whenIClickBack();
-  iCanEditMyAdditionalUsesChoice(AdditionalUses.YES);
-  whenIClickBack();
   iCanEditMyEnvironment(Environment.AVIATION);
   whenIClickBack();
   iCanEditMyAdditionalUsesChoice(AdditionalUses.YES);
@@ -126,30 +122,6 @@ const iCanGoBackThroughTheFormInReverse = () => {
   iCanEditMyBeaconDetails();
   whenIClickBack();
   iAmAt(PageURLs.start);
-};
-
-const iCanEditMyAdditionalUsesChoice = (additionalChoices: AdditionalUses) => {
-  switch (additionalChoices) {
-    case AdditionalUses.YES:
-      thenTheRadioButtonShouldBeSelected("#yes");
-      break;
-    case AdditionalUses.NO:
-      thenTheRadioButtonShouldBeSelected("#no");
-  }
-};
-
-const iCanUseTheBackButtonToEditTheLastUseIEntered = (
-  environment: Environment,
-  purpose: Purpose
-) => {
-  switch (environment) {
-    case Environment.AVIATION:
-      iCanGoBackAndEditMyAviationUse(purpose);
-      break;
-    case Environment.MARITIME:
-      iCanGoBackAndEditMyMaritimeUse(purpose);
-      break;
-  }
 };
 
 const iCanClickEveryChangeButtonToEditMyRegistration = () => {
