@@ -73,7 +73,7 @@ export function joinStrings(strings: Array<string>): string {
 }
 
 export function sentenceCase(string: string): string {
-  return string[0] + string.slice(1).toLowerCase();
+  return string[0].toUpperCase() + string.slice(1).toLowerCase();
 }
 
 export function formatUrlQueryParams(

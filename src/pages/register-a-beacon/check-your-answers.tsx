@@ -313,7 +313,7 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
   index,
   use,
 }: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
-  const href = `/register-a-beacon/about-the-aircraft?useIndex=${index}"`;
+  const href = `/register-a-beacon/about-the-aircraft?useIndex=${index}`;
 
   return (
     <>
