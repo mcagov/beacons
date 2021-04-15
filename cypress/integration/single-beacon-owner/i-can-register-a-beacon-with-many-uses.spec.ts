@@ -51,6 +51,8 @@ import {
 import {
   givenIAmAt,
   iAmAt,
+  iCanSeeAPageHeadingThatContains,
+  iCanSeeASectionHeadingThatContains,
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../common/selectors-and-assertions.spec";
@@ -58,8 +60,10 @@ import {
 describe("As a single beacon owner with many uses,", () => {
   it("I can register my beacon for a maritime and an aviation use", () => {
     givenIHaveEnteredMyBeaconDetails();
+    iCanSeeAPageHeadingThatContains("main use");
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
     andIHaveAnotherUse();
+    iCanSeeAPageHeadingThatContains("second use");
     givenIHaveEnteredMyAviationUse(Purpose.PLEASURE);
     andIHaveNoFurtherUses();
 
@@ -70,9 +74,9 @@ describe("As a single beacon owner with many uses,", () => {
     thenTheUrlShouldContain(PageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
-    iCanSeeMyMainUseHeading();
+    iCanSeeASectionHeadingThatContains("Main use");
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
-    iCanSeeMySecondUseHeading();
+    iCanSeeASectionHeadingThatContains("Second use");
     iCanSeeMyAviationUse(Purpose.PLEASURE);
     iCanSeeMyPersonalDetails();
     iCanSeeMyAddressDetails();
@@ -104,6 +108,7 @@ const iCanGoBackThroughTheFormInReverse = () => {
   iCanEditMyAviationPurpose(Purpose.PLEASURE);
   whenIClickBack();
   iCanEditMyEnvironment(Environment.AVIATION);
+  iCanSeeAPageHeadingThatContains("second use");
   whenIClickBack();
   iCanEditMyAdditionalUsesChoice(AdditionalUses.YES);
   whenIClickBack();
@@ -118,6 +123,7 @@ const iCanGoBackThroughTheFormInReverse = () => {
   iCanEditMyMaritimePurpose(Purpose.PLEASURE);
   whenIClickBack();
   iCanEditMyEnvironment(Environment.MARITIME);
+  iCanSeeAPageHeadingThatContains("main use");
   whenIClickBack();
   iCanEditMyAdditionalBeaconInformation();
   whenIClickBack();
@@ -164,6 +170,3 @@ const iCanClickEveryChangeButtonToEditMyRegistration = () => {
     cy.visit(PageURLs.checkYourAnswers);
   });
 };
-
-const iCanSeeMyMainUseHeading = () => cy.get("h2").contains("Main use");
-const iCanSeeMySecondUseHeading = () => cy.get("h2").contains("Second use");

@@ -31,8 +31,12 @@ export const andIHaveBeenTo = givenIAmAt;
 export const andIAmAt = givenIAmAt;
 export const iAmAt = givenIAmAt;
 
-export const iCanSeeAHeadingThatContains = (text: string): void => {
+export const iCanSeeAPageHeadingThatContains = (text: string): void => {
   cy.get("h1").contains(text);
+};
+
+export const iCanSeeASectionHeadingThatContains = (text: string): void => {
+  cy.get("h2").contains(text);
 };
 
 export const givenIHaveClickedTheButtonContaining = (text: string): void => {

@@ -24,7 +24,7 @@ import {
   givenIHaveSelected,
   givenIHaveTyped,
   iAmAt,
-  iCanSeeAHeadingThatContains,
+  iCanSeeAPageHeadingThatContains,
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
@@ -39,13 +39,13 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   andIClickContinue();
 
   thenTheUrlShouldContain(PageURLs.purpose);
-  iCanSeeAHeadingThatContains("aviation");
+  iCanSeeAPageHeadingThatContains("aviation");
   givenIHaveSelected(`#${purpose.toLowerCase()}`);
   andIClickContinue();
 
   thenTheUrlShouldContain(PageURLs.activity);
-  iCanSeeAHeadingThatContains("aviation");
-  iCanSeeAHeadingThatContains(purpose.toLowerCase());
+  iCanSeeAPageHeadingThatContains("aviation");
+  iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
     case Purpose.COMMERCIAL:
       givenIHaveSelected(
@@ -61,7 +61,7 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   andIClickContinue();
 
   thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
-  iCanSeeAHeadingThatContains("aircraft");
+  iCanSeeAPageHeadingThatContains("aircraft");
   givenIHaveEnteredInformationAboutMyAircraft();
   andIClickContinue();
 
