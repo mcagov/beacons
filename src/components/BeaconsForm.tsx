@@ -5,7 +5,6 @@ import { BackButton, BackButtonRouterIndexes, Button } from "./Button";
 import { FormErrorSummary } from "./ErrorSummary";
 import { Form, FormFieldset, FormGroup, FormLegendPageHeading } from "./Form";
 import { Grid } from "./Grid";
-import { InsetText } from "./InsetText";
 import { Layout } from "./Layout";
 import { IfYouNeedHelp } from "./Mca";
 
@@ -16,7 +15,7 @@ interface BeaconsFormProps {
   showCookieBanner: boolean;
   formErrors?: FormError[];
   errorMessages?: string[];
-  insetText?: ReactNode;
+  pageText?: ReactNode;
   includeUseIndex?: boolean;
 }
 
@@ -27,14 +26,9 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   showCookieBanner,
   formErrors = [],
   errorMessages = [],
-  insetText = null,
+  pageText = null,
   includeUseIndex = true,
 }: BeaconsFormProps): JSX.Element => {
-  let insetComponent: ReactNode;
-  if (insetText) {
-    insetComponent = <InsetText>{insetText}</InsetText>;
-  }
-
   const backButton: ReactNode = includeUseIndex ? (
     <BackButtonRouterIndexes href={previousPageUrl} />
   ) : (
@@ -55,8 +49,8 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
               <FormGroup errorMessages={errorMessages}>
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
+                  {pageText}
                 </FormFieldset>
-                {insetComponent}
                 {children}
                 <HiddenFormMetadata />
               </FormGroup>
