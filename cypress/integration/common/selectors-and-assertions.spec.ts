@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { PageURLs } from "../../../src/lib/urls";
 
 export const requiredFieldErrorMessage = "required field";
 export const tooManyCharactersErrorMessage = "too many characters";
@@ -8,6 +9,12 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
 ): void => {
   cy.get(".govuk-back-link").click();
   thenTheUrlShouldContain(previousPageURL);
+};
+
+export const givenIHaveBeenToTheStartPageAndClickedStartNow = (): void => {
+  // Creates an empty Registration object linked to the user's session
+  givenIHaveBeenTo(PageURLs.start);
+  givenIHaveClicked(".govuk-button--start");
 };
 
 export const givenIHaveACookieSetAndIVisit = (url: string): void => {

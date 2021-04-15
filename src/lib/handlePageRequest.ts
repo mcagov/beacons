@@ -40,15 +40,6 @@ export const handlePageRequest = (
     const beaconsContext: BeaconsContext = await decorateGetServerSidePropsContext(
       context
     );
-    // console.log("request: ", context.req.method, context.req.url);
-    // console.log("context (param) says use index is: ", context.query.useIndex);
-    // console.log("beaconsContext says use index is: ", beaconsContext.useIndex);
-    // console.log(
-    //   context.query.useIndex?.toString() === beaconsContext.useIndex?.toString()
-    //     ? "💚 useIndex matches"
-    //     : "💔 useIndex doesn't match"
-    // );
-    // console.log("---");
     const userDidSubmitForm = beaconsContext.req.method === "POST";
 
     if (userDidSubmitForm) {
@@ -68,6 +59,7 @@ const handleGetRequest = (
   formManagerFactory: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
   const registration: Registration = context.registration;
+
   const flattenedRegistration = registration.getFlattenedRegistration({
     useIndex: context.useIndex,
   });
@@ -90,6 +82,7 @@ const handlePostRequest = async (
   transformCallback: TransformCallback = (formData) => formData,
   onSuccessfulFormPostCallback
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
+  const registration: Registration = context.registration;
   const transformedFormData = transformCallback(context.formData);
   updateFormCache(context.submissionId, transformedFormData);
 
@@ -118,6 +111,7 @@ const handlePostRequest = async (
     props: {
       form: formManager.serialise(),
       showCookieBanner: context.showCookieBanner,
+      registration: registration.getRegistration(),
       flattenedRegistration,
     },
   };
