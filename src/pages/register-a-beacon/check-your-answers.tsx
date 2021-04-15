@@ -19,7 +19,11 @@ import {
   Environment,
   IRegistration,
 } from "../../lib/registration/types";
-import { makeEnumValueUserFriendly, useRankString } from "../../lib/utils";
+import {
+  makeEnumValueUserFriendly,
+  sentenceCase,
+  useRankString,
+} from "../../lib/utils";
 
 interface CheckYourAnswersProps {
   registration: IRegistration;
@@ -208,7 +212,7 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
   return (
     <>
       <SectionHeading>
-        {useRankString(index + 1)} use for the beacon
+        {sentenceCase(useRankString(index + 1))} use for the beacon
       </SectionHeading>
 
       <SummaryList>

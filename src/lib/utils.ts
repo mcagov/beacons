@@ -28,7 +28,7 @@ export function toUpperCase(value: string): string {
 export function makeEnumValueUserFriendly(value: string): string {
   if (value) {
     value = value.replace(/_/g, " ");
-    return value[0] + value.slice(1).toLowerCase();
+    return sentenceCase(value);
   }
   return value;
 }
@@ -70,6 +70,10 @@ export function joinStrings(strings: Array<string>): string {
     if (strings[i]) output.push(strings[i]);
   }
   return output.join(", ");
+}
+
+export function sentenceCase(string: string): string {
+  return string[0] + string.slice(1).toLowerCase();
 }
 
 export function formatUrlQueryParams(
