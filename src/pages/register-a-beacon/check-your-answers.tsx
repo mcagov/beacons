@@ -19,7 +19,7 @@ import {
   Environment,
   IRegistration,
 } from "../../lib/registration/types";
-import { useRankString } from "../../lib/utils";
+import { makeEnumValueUserFriendly, useRankString } from "../../lib/utils";
 
 interface CheckYourAnswersProps {
   registration: IRegistration;
@@ -213,9 +213,15 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
 
       <SummaryList>
         <SummaryListItem labelText="Beacon use" href={href} actionText="Change">
-          <CheckYourAnswersDataRowItem value={use.environment} />
-          <CheckYourAnswersDataRowItem value={use.purpose} />
-          <CheckYourAnswersDataRowItem value={use.activity} />
+          <CheckYourAnswersDataRowItem
+            value={makeEnumValueUserFriendly(use.environment)}
+          />
+          <CheckYourAnswersDataRowItem
+            value={makeEnumValueUserFriendly(use.purpose)}
+          />
+          <CheckYourAnswersDataRowItem
+            value={makeEnumValueUserFriendly(use.activity)}
+          />
         </SummaryListItem>
       </SummaryList>
       {aboutTheSection}
@@ -303,7 +309,7 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
   index,
   use,
 }: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
-  const href = `/register-a-beacon/about-the-aircraft?useIndex=${index}`;
+  const href = `/register-a-beacon/about-the-aircraft?useIndex=${index}"`;
 
   return (
     <>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CookieSerializeOptions, serialize } from "cookie";
 import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from "http";
 import {

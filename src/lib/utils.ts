@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Convenience function for converting a single or array of a given type into an array with nullish values removed.
  *
@@ -18,6 +17,20 @@ export function toArray<T>(toConvert: T | T[]): T[] {
  */
 export function toUpperCase(value: string): string {
   return (value || "").toUpperCase();
+}
+
+/**
+ * Convenience function for making an enum value, that could be nullish, user friendly i.e. underscores removed and sentence-cased.
+ *
+ * @param value {string}   The string value; could be null
+ * @returns     {string}   The string value made user friendly
+ */
+export function makeEnumValueUserFriendly(value: string): string {
+  if (value) {
+    value = value.replace(/_/g, " ");
+    return value[0] + value.slice(1).toLowerCase();
+  }
+  return value;
 }
 
 /**

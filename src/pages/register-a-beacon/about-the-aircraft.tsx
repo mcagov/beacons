@@ -207,14 +207,14 @@ const Dongle: FunctionComponent<FormInputProps> = ({
           id="dongle-no"
           name="dongle"
           value="false"
-          label="no"
+          label="No"
           defaultChecked={value === "false"}
         />
         <RadioListItem
           id="dongle-yes"
           name="dongle"
           value="true"
-          label="yes"
+          label="Yes"
           defaultChecked={value === "true"}
         />
       </RadioList>

@@ -3,6 +3,8 @@ import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next";
+import { BasicAuthGateway } from "../gateways/basicAuthGateway";
+import { AuthenticateUser } from "../useCases/authenticateUser";
 import { FormJSON, FormManager } from "./form/formManager";
 import { FormSubmission } from "./formCache";
 import {
@@ -37,6 +39,10 @@ export const handlePageRequest = (
     destinationIfValid
 ): GetServerSideProps =>
   withCookieRedirect(async (context: GetServerSidePropsContext) => {
+    const authGateway = new BasicAuthGateway();
+    const authUseCase = new AuthenticateUser(authGateway);
+    await authUseCase.execute(context);
+
     const beaconsContext: BeaconsContext = await decorateGetServerSidePropsContext(
       context
     );
