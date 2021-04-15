@@ -70,7 +70,9 @@ describe("As a single beacon owner with many uses,", () => {
     thenTheUrlShouldContain(PageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
+    iCanSeeMyMainUseHeading();
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
+    iCanSeeMySecondUseHeading();
     iCanSeeMyAviationUse(Purpose.PLEASURE);
     iCanSeeMyPersonalDetails();
     iCanSeeMyAddressDetails();
@@ -162,3 +164,6 @@ const iCanClickEveryChangeButtonToEditMyRegistration = () => {
     cy.visit(PageURLs.checkYourAnswers);
   });
 };
+
+const iCanSeeMyMainUseHeading = () => cy.get("h2").contains("Main use");
+const iCanSeeMySecondUseHeading = () => cy.get("h2").contains("Second use");

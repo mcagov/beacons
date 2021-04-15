@@ -19,6 +19,7 @@ import {
   Environment,
   IRegistration,
 } from "../../lib/registration/types";
+import { useRankString } from "../../lib/utils";
 
 interface CheckYourAnswersProps {
   registration: IRegistration;
@@ -206,7 +207,9 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
   }
   return (
     <>
-      <SectionHeading>Use {index + 1} for the beacon </SectionHeading>
+      <SectionHeading>
+        {useRankString(index + 1)} use for the beacon
+      </SectionHeading>
 
       <SummaryList>
         <SummaryListItem labelText="Beacon use" href={href} actionText="Change">
