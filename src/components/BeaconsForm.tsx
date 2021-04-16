@@ -36,6 +36,9 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
     <BackButton href={previousPageUrl} />
   );
 
+  const pageTextComponent: ReactNode =
+    typeof pageText === "string" ? <GovUKBody>{pageText}</GovUKBody> : pageText;
+
   return (
     <Layout
       navigation={backButton}
@@ -50,11 +53,7 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
               <FormGroup errorMessages={errorMessages}>
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                  {typeof pageText === "string" ? (
-                    <GovUKBody>{pageText}</GovUKBody>
-                  ) : (
-                    pageText
-                  )}
+                  {pageTextComponent}
                 </FormFieldset>
                 {children}
                 <HiddenFormMetadata />
