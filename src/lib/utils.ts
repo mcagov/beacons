@@ -28,7 +28,7 @@ export function toUpperCase(value: string): string {
 export function makeEnumValueUserFriendly(value: string): string {
   if (value) {
     value = value.replace(/_/g, " ");
-    return value[0] + value.slice(1).toLowerCase();
+    return sentenceCase(value);
   }
   return value;
 }
@@ -72,6 +72,10 @@ export function joinStrings(strings: Array<string>): string {
   return output.join(", ");
 }
 
+export function sentenceCase(string: string): string {
+  return string[0].toUpperCase() + string.slice(1).toLowerCase();
+}
+
 export function formatUrlQueryParams(
   url: string,
   queryParamMap: Record<string, any>
@@ -89,6 +93,18 @@ export function formatUrlQueryParams(
   });
 
   return url;
+}
+
+export function useRankString(number: number): string {
+  const map = {
+    1: "main",
+    2: "second",
+    3: "third",
+    4: "fourth",
+    5: "fifth",
+  };
+
+  return map[number];
 }
 
 export type Callback<T> = (t: T) => void;

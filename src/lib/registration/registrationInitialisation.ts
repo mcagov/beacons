@@ -42,7 +42,6 @@ export const initBeacon = (): IRegistration => {
     emergencyContact3TelephoneNumber: "",
     emergencyContact3AlternativeTelephoneNumber: "",
 
-    additionalBeaconUse: "false",
     uses: [initBeaconUse()],
   };
 };
@@ -118,5 +117,6 @@ export const initBeaconUse = (): BeaconUse => {
     otherActivityPeopleCount: "",
 
     moreDetails: "",
+    additionalBeaconUse: "",
   };
 };

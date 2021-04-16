@@ -3,8 +3,7 @@ import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
   andIClickContinue,
   andIHaveSelected,
-  givenIHaveBeenTo,
-  givenIHaveClicked,
+  givenIHaveBeenToTheStartPageAndClickedStartNow,
   givenIHaveClickedContinue,
   givenIHaveTyped,
   thenTheUrlShouldContain,
@@ -16,8 +15,7 @@ export const givenIHaveEnteredMyBeaconDetails = (): void => {
 };
 
 export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
-  givenIHaveBeenTo(PageURLs.start);
-  givenIHaveClicked(".govuk-button--start");
+  givenIHaveBeenToTheStartPageAndClickedStartNow();
   givenIHaveTyped(
     testBeaconAndOwnerData.beaconDetails.manufacturer,
     "#manufacturer"
@@ -58,18 +56,22 @@ export const asAMaritimePleasureBeaconOwner = (): void => {
   andIHaveSelected("#pleasure");
   andIClickContinue();
 };
+
 export const iCanEditMyBeaconDetails = (): void =>
   Object.values(testBeaconAndOwnerData.beaconDetails).forEach((value) =>
     cy.get(`input[value="${value}"]`)
   );
+
 export const iCanEditMyAdditionalBeaconInformation = (): void =>
   Object.values(
     testBeaconAndOwnerData.additionalBeaconInformation
   ).forEach((value) => cy.get(`input[value="${value}"]`));
+
 export const iCanSeeMyBeaconDetails = (): void =>
   Object.values(testBeaconAndOwnerData.beaconDetails).forEach((value) =>
     cy.contains(value)
   );
+
 export const iCanSeeMyAdditionalBeaconInformation = (): void =>
   Object.values(
     testBeaconAndOwnerData.additionalBeaconInformation

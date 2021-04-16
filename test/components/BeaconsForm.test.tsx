@@ -75,13 +75,13 @@ describe("BeaconsForm Component", () => {
     );
   });
 
-  it("should render the inset text if provided", () => {
+  it("should render the page text if provided", () => {
     render(
       <BeaconsForm
         previousPageUrl={previousPageUrl}
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
-        insetText={pageText}
+        pageText={pageText}
       >
         {children}
       </BeaconsForm>
@@ -90,7 +90,7 @@ describe("BeaconsForm Component", () => {
     expect(screen.getByText(pageText)).toBeDefined();
   });
 
-  it("should not render the inset text if it is not provided", () => {
+  it("should not render the page text if it is not provided", () => {
     render(
       <BeaconsForm
         previousPageUrl={previousPageUrl}

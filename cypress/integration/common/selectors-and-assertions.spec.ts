@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { PageURLs } from "../../../src/lib/urls";
 
 export const requiredFieldErrorMessage = "required field";
 export const tooManyCharactersErrorMessage = "too many characters";
@@ -8,6 +9,12 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
 ): void => {
   cy.get(".govuk-back-link").click();
   thenTheUrlShouldContain(previousPageURL);
+};
+
+export const givenIHaveBeenToTheStartPageAndClickedStartNow = (): void => {
+  // Creates an empty Registration object linked to the user's session
+  givenIHaveBeenTo(PageURLs.start);
+  givenIHaveClicked(".govuk-button--start");
 };
 
 export const givenIHaveACookieSetAndIVisit = (url: string): void => {
@@ -24,8 +31,12 @@ export const andIHaveBeenTo = givenIAmAt;
 export const andIAmAt = givenIAmAt;
 export const iAmAt = givenIAmAt;
 
-export const iCanSeeAHeadingThatContains = (text: string): void => {
+export const iCanSeeAPageHeadingThatContains = (text: string): void => {
   cy.get("h1").contains(text);
+};
+
+export const iCanSeeASectionHeadingThatContains = (text: string): void => {
+  cy.get("h2").contains(text);
 };
 
 export const givenIHaveClickedTheButtonContaining = (text: string): void => {
@@ -52,7 +63,7 @@ export const whenIClickOnTheErrorSummaryLinkContaining = (
 };
 
 export const whenIType = (value: string, selector: string): void => {
-  cy.get(selector).clear().type(value);
+  cy.get(selector).should("be.empty").type(value);
 };
 
 export const givenIHaveTyped = whenIType;
@@ -95,7 +106,7 @@ export const thenMyFocusMovesTo = (selector: string): void => {
 };
 
 export const givenIHaveSelected = (selector: string): void => {
-  cy.get(selector).check();
+  cy.get(selector).should("not.be.checked").check();
 };
 export const andIHaveSelected = givenIHaveSelected;
 

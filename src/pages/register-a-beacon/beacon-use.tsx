@@ -4,6 +4,7 @@ import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
+import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -13,6 +14,8 @@ import {
   handlePageRequest,
 } from "../../lib/handlePageRequest";
 import { Environment } from "../../lib/registration/types";
+import { PageURLs } from "../../lib/urls";
+import { useRankString } from "../../lib/utils";
 
 const getPageForm = ({ environment, environmentOtherInput }) => {
   return new FormManager({
@@ -36,23 +39,42 @@ const getPageForm = ({ environment, environmentOtherInput }) => {
   });
 };
 
-const BeaconUse: FunctionComponent<FormPageProps> = ({
+export const BeaconUse: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
+  useIndex,
 }: FormPageProps): JSX.Element => {
-  const pageHeading = "What is the primary use for this beacon?";
+  const pageHeading = `What is the ${useRankString(
+    useIndex + 1
+  )} use for this beacon?`;
+  const pageText = (
+    <>
+      {useIndex === 0 && (
+        <GovUKBody>
+          {
+            "If you have multiple uses for this beacon, tell us about the main one first."
+          }
+        </GovUKBody>
+      )}
+      <GovUKBody>
+        {"You will be able to tell us about other uses later in the form"}
+      </GovUKBody>
+    </>
+  );
 
   const environmentFieldName = "environment";
 
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
-      previousPageUrl="/register-a-beacon/beacon-information"
+      previousPageUrl={
+        useIndex === 0
+          ? PageURLs.beaconInformation
+          : PageURLs.additionalUse + `?useIndex=${useIndex - 1}`
+      }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      insetText="If you have multiple uses for this beacon, tell us about the
-    main one first. You will be able to tell us about other uses
-    later in the form"
+      pageText={pageText}
     >
       <FormGroup errorMessages={form.fields.environment.errorMessages}>
         <RadioList conditional={true}>

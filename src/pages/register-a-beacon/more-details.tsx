@@ -1,15 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButtonRouterIndexes, Button } from "../../components/Button";
-import { FormErrorSummary } from "../../components/ErrorSummary";
-import {
-  Form,
-  FormFieldset,
-  FormLegendPageHeading,
-} from "../../components/Form";
-import { Grid } from "../../components/Grid";
-import { Layout } from "../../components/Layout";
-import { IfYouNeedHelp } from "../../components/Mca";
+import { BeaconsForm } from "../../components/BeaconsForm";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
@@ -53,55 +44,40 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
   };
 
   const pageHeading = "Provide more details that could help in a search";
+  const pageText = (
+    <>
+      <GovUKBody>
+        Please provide a description of any vessel, aircraft, vehicle or
+        anything else associated with this beacon.
+      </GovUKBody>
+      <GovUKBody>
+        This might include defining features such as the length, colour etc) and
+        any tracking details (e.g. RYA SafeTrx or Web) if you have them.
+      </GovUKBody>
+      <GovUKBody className="govuk-!-font-weight-bold">
+        Please do not provide medical details as we cannot store these.
+      </GovUKBody>
+      <GovUKBody>
+        This information is very helpful to Search and Rescue when trying to
+        locate you
+      </GovUKBody>
+    </>
+  );
 
   return (
-    <>
-      <Layout
-        navigation={
-          <BackButtonRouterIndexes href={previousPageUrlMap[environment]} />
-        }
-        title={pageHeading}
-        pageHasErrors={form.hasErrors}
-        showCookieBanner={showCookieBanner}
-      >
-        <Grid
-          mainContent={
-            <>
-              <FormErrorSummary formErrors={form.errorSummary} />
-              <Form>
-                <FormFieldset>
-                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                  <GovUKBody>
-                    Please provide a description of any vessel, aircraft,
-                    vehicle or anything else associated with this beacon.
-                  </GovUKBody>
-                  <GovUKBody>
-                    This might include defining features such as the length,
-                    colour etc) and any tracking details (e.g. RYA SafeTrx or
-                    Web) if you have them.
-                  </GovUKBody>
-                  <GovUKBody className="govuk-!-font-weight-bold">
-                    Please do not provide medical details as we cannot store
-                    these.
-                  </GovUKBody>
-                  <GovUKBody>
-                    This information is very helpful to Search and Rescue when
-                    trying to locate you
-                  </GovUKBody>
-                  <MoreDetailsTextArea
-                    id="moreDetails"
-                    value={form.fields.moreDetails.value}
-                    errorMessages={form.fields.moreDetails.errorMessages}
-                  />
-                </FormFieldset>
-                <Button buttonText="Continue" />
-              </Form>
-              <IfYouNeedHelp />
-            </>
-          }
-        />
-      </Layout>
-    </>
+    <BeaconsForm
+      previousPageUrl={previousPageUrlMap[environment]}
+      pageHeading={pageHeading}
+      showCookieBanner={showCookieBanner}
+      formErrors={form.errorSummary}
+      pageText={pageText}
+    >
+      <MoreDetailsTextArea
+        id="moreDetails"
+        value={form.fields.moreDetails.value}
+        errorMessages={form.fields.moreDetails.errorMessages}
+      />
+    </BeaconsForm>
   );
 };
 

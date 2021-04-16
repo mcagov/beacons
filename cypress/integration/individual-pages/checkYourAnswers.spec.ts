@@ -1,6 +1,6 @@
 import {
   givenIHaveACookieSetAndIVisit,
-  iCanSeeAHeadingThatContains,
+  iCanSeeAPageHeadingThatContains,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to check the details that were submitted", () => {
@@ -11,6 +11,6 @@ describe("As a beacon owner, I want to check the details that were submitted", (
   });
 
   it("should display the page title", () => {
-    iCanSeeAHeadingThatContains("Check your answers");
+    iCanSeeAPageHeadingThatContains("Check your answers");
   });
 });

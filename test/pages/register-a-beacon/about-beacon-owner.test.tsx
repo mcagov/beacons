@@ -1,8 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
 import { handlePageRequest } from "../../../src/lib/handlePageRequest";
+import { initBeacon } from "../../../src/lib/registration/registrationInitialisation";
 import AboutBeaconOwner, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/about-beacon-owner";
@@ -36,18 +37,12 @@ describe("AboutBeaconOwner", () => {
     },
   };
 
-  it("should have a back button which directs the user to the more details page", () => {
-    render(<AboutBeaconOwner form={emptyAboutBeaconOwnerForm} />);
-
-    expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
-      "href",
-      "/register-a-beacon/more-details?useIndex=0"
-    );
-  });
-
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <AboutBeaconOwner form={emptyAboutBeaconOwnerForm} />
+      <AboutBeaconOwner
+        form={emptyAboutBeaconOwnerForm}
+        registration={initBeacon()}
+      />
     );
     const ownPath = "";
 

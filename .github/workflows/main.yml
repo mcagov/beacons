@@ -119,7 +119,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Docker lint
-        uses: brpaz/hadolint-action@v1.3.1
+        uses: brpaz/hadolint-action@v1.4.0
 
   codeql_check:
     name: CodeQL check
