@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { BeaconsForm } from "../../src/components/BeaconsForm";
+import { InsetText } from "../../src/components/InsetText";
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn().mockImplementation(() => ({
@@ -102,6 +103,40 @@ describe("BeaconsForm Component", () => {
     );
 
     expect(screen.queryByText(pageText)).toBeNull();
+  });
+
+  it("should apply govuk-body class to pageText if not already wrapped in a React component", () => {
+    render(
+      <BeaconsForm
+        previousPageUrl={previousPageUrl}
+        pageHeading={pageHeading}
+        showCookieBanner={showCookieBanner}
+        pageText={pageText}
+      >
+        {children}
+      </BeaconsForm>
+    );
+
+    expect(screen.queryByText(pageText).classList.contains("govuk-body")).toBe(
+      true
+    );
+  });
+
+  it("should not apply govuk-body class to pageText if already wrapped in a React component", () => {
+    render(
+      <BeaconsForm
+        previousPageUrl={previousPageUrl}
+        pageHeading={pageHeading}
+        showCookieBanner={showCookieBanner}
+        pageText={<InsetText>{pageText}</InsetText>}
+      >
+        {children}
+      </BeaconsForm>
+    );
+
+    expect(screen.queryByText(pageText).classList.contains("govuk-body")).toBe(
+      false
+    );
   });
 
   it("should render the error messages if provided", () => {
