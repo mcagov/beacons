@@ -14,7 +14,7 @@ describe("BeaconsForm Component", () => {
   let pageHeading;
   let showCookieBanner;
   let errorMessages;
-  let insetText;
+  let pageText;
 
   beforeEach(() => {
     children = <h1>Beacons for life</h1>;
@@ -22,7 +22,7 @@ describe("BeaconsForm Component", () => {
     pageHeading = "A day in the beacon life";
     showCookieBanner = true;
     errorMessages = ["This is an error"];
-    insetText = "Once upon a time a person with a beacon walked the seas";
+    pageText = "Once upon a time a person with a beacon walked the seas";
   });
 
   it("should render the beacons form component", () => {
@@ -81,13 +81,13 @@ describe("BeaconsForm Component", () => {
         previousPageUrl={previousPageUrl}
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
-        insetText={insetText}
+        insetText={pageText}
       >
         {children}
       </BeaconsForm>
     );
 
-    expect(screen.getByText(insetText)).toBeDefined();
+    expect(screen.getByText(pageText)).toBeDefined();
   });
 
   it("should not render the inset text if it is not provided", () => {
@@ -101,7 +101,24 @@ describe("BeaconsForm Component", () => {
       </BeaconsForm>
     );
 
-    expect(screen.queryByText(insetText)).toBeNull();
+    expect(screen.queryByText(pageText)).toBeNull();
+  });
+
+  it("should apply govuk-body class to pageText if not already wrapped in a React component", () => {
+    render(
+      <BeaconsForm
+        previousPageUrl={previousPageUrl}
+        pageHeading={pageHeading}
+        showCookieBanner={showCookieBanner}
+        pageText={pageText}
+      >
+        {children}
+      </BeaconsForm>
+    );
+
+    expect(screen.queryByText(pageText).classList.contains("govuk-body")).toBe(
+      true
+    );
   });
 
   it("should render the error messages if provided", () => {
