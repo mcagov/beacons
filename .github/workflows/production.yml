@@ -1,0 +1,56 @@
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployStagingOntoProd:
+        description: "Deploy staging onto prod? (true/false)"
+        required: false
+        default: "true"
+
+jobs:
+  update_prod_docker_images:
+    if: github.event.inputs.deployStagingOntoProd == 'true'
+    name: Copy and save image tags for prod environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.MCA_GITHUB_TOKEN }}
+      - name: Save image tags for prod environment
+        run: |
+          cd terraform
+          cp staging.images.tfvars prod.images.tfvars
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Update production environment to use staging Docker image versions [skip ci]" & git push
+
+  terraform_deploy_prod:
+    if: github.ref == 'refs/heads/main' && always()
+    needs: [update_prod_docker_images]
+    name: Terraform Deploy
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: terraform
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      TF_WORKSPACE: prod
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
+      - uses: hashicorp/setup-terraform@v1
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform Validate
+        run: terraform validate
+      - name: Terraform Deploy
+        env:
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_gov_notify_api_key: ${{ secrets.GOV_NOTIFY_API_KEY }}
+          TF_VAR_gov_notify_customer_email_template: ${{ secrets.GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE }}
+        run: terraform apply -auto-approve -var-file=production.tfvars -var-file=production.images.tfvars
