@@ -6,7 +6,7 @@ import {
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
-  thenTheInputShouldContain,
+  thenTheInputShouldOnlyContain,
   thenTheUrlShouldContain,
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
@@ -75,7 +75,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     it("adds a leading zero to the battery expiry and last serviced month", () => {
       whenIType("1", batteryExpiryDateMonthFieldSelector);
       whenIClickContinue();
-      thenTheInputShouldContain("01", batteryExpiryDateMonthFieldSelector);
+      thenTheInputShouldOnlyContain("01", batteryExpiryDateMonthFieldSelector);
     });
 
     it("displays errors if the battery expiry month is invalid", () => {
@@ -145,7 +145,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     it("adds a leading zero to the battery expiry and last serviced month", () => {
       whenIType("1", lastServicedDateMonthFieldSelector);
       whenIClickContinue();
-      thenTheInputShouldContain("01", lastServicedDateMonthFieldSelector);
+      thenTheInputShouldOnlyContain("01", lastServicedDateMonthFieldSelector);
     });
 
     it("displays errors if the last serviced month is invalid", () => {

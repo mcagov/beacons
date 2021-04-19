@@ -73,13 +73,6 @@ export const thenTheUrlShouldContain = (urlPath: string): void => {
   cy.url().should("include", urlPath);
 };
 
-export const thenTheInputShouldContain = (
-  expectedValue: string,
-  selector: string
-): void => {
-  cy.get(selector).should("contain.value", expectedValue);
-};
-
 export const thenTheInputShouldOnlyContain = (
   expectedValue: string,
   selector: string
