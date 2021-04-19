@@ -8,28 +8,31 @@ import {
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to check the details that were submitted", () => {
-  const pageUrl = "/register-a-beacon/check-your-answers";
+  const checkYourAnswerspageUrl = "/register-a-beacon/check-your-answers";
+  const beaconInformationPageUrl = "/register-a-beacon/beacon-information";
+  const applicationCompletePageUrl = "/register-a-beacon/application-complete";
+
+  const acceptAndSendButtonSelector = ".govuk-button--start";
+  const homePageLinkSelector = ".govuk-header__link--homepage";
+  const startButtonSelector = ".govuk-button--start";
   const manufacturerFieldSelector = "#manufacturer";
   const modelFieldSelector = "#model";
   const hexIdFieldSelector = "#hexId";
 
-  beforeEach(() => {
-    givenIHaveACookieSetAndIVisit(pageUrl);
-  });
-
   it("should display the page title", () => {
+    givenIHaveACookieSetAndIVisit(checkYourAnswerspageUrl);
     iCanSeeAPageHeadingThatContains("Check your answers");
   });
 
-  it("should clear the Submission ID and cache when I click Accept and Send", () => {
-    givenIHaveACookieSetAndIVisit("/register-a-beacon/beacon-information");
+  it("should clear the form when I click Accept and Send", () => {
+    givenIHaveACookieSetAndIVisit(beaconInformationPageUrl);
     givenIHaveFilledInCheckBeaconDetailsPage();
-    andIAmAt(pageUrl);
-    givenIHaveClicked(".govuk-button--start");
-    andIAmAt("/register-a-beacon/application-complete");
-    givenIHaveClicked(".govuk-header__link--homepage");
+    andIAmAt(checkYourAnswerspageUrl);
+    givenIHaveClicked(acceptAndSendButtonSelector);
+    andIAmAt(applicationCompletePageUrl);
+    givenIHaveClicked(homePageLinkSelector);
     andIAmAt("/");
-    givenIHaveClicked(".govuk-button--start");
+    givenIHaveClicked(startButtonSelector);
     thenTheInputShouldOnlyContain("", manufacturerFieldSelector);
     thenTheInputShouldOnlyContain("", modelFieldSelector);
     thenTheInputShouldOnlyContain("", hexIdFieldSelector);
