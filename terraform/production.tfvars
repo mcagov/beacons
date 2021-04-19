@@ -1,4 +1,4 @@
-env                    = "prod"
+env                    = "production"
 aws_region             = "eu-west-2"
 az_count               = 2
 webapp_count           = 1
