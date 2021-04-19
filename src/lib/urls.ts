@@ -20,4 +20,5 @@ export enum PageURLs {
   beaconOwnerAddress = "/register-a-beacon/beacon-owner-address",
   emergencyContact = "/register-a-beacon/emergency-contact",
   checkYourAnswers = "/register-a-beacon/check-your-answers",
+  applicationComplete = "/register-a-beacon/application-complete",
 }
