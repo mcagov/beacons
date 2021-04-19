@@ -10,6 +10,6 @@ service_fargate_memory = 512
 db_storage             = 20
 db_max_storage         = 20
 db_delete_protection   = true
-db_instance_class      = "db.t2.micro"
+db_instance_class      = "db.t3.micro"
 db_storage_encrypted   = true
 db_skip_final_snapshot = false
