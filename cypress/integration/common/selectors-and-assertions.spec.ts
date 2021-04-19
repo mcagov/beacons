@@ -80,6 +80,13 @@ export const thenTheInputShouldContain = (
   cy.get(selector).should("contain.value", expectedValue);
 };
 
+export const thenTheInputShouldOnlyContain = (
+  expectedValue: string,
+  selector: string
+): void => {
+  cy.get(selector).should("have.value", expectedValue);
+};
+
 export const thenIShouldSeeAnErrorSummaryLinkThatContains = (
   ...strings: string[]
 ): void => {

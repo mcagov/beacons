@@ -7,9 +7,12 @@ import { GovUKBody } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
 import { GovNotifyGateway } from "../../gateways/govNotifyApiGateway";
 import {
+  clearFormCache,
+  clearFormSubmissionCookie,
   decorateGetServerSidePropsContext,
   withCookieRedirect,
 } from "../../lib/middleware";
+import { formSubmissionCookieId } from "../../lib/types";
 import { referenceNumber } from "../../lib/utils";
 import { SendGovNotifyEmail } from "../../useCases/sendGovNotifyEmail";
 
@@ -93,6 +96,9 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
     } else {
       pageSubHeading = "We could not send you a confirmation email.";
     }
+
+    clearFormCache(context.req.cookies[formSubmissionCookieId]);
+    clearFormSubmissionCookie(context);
 
     return {
       props: { reference: registration.reference, pageSubHeading },
