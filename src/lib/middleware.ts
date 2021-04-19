@@ -133,11 +133,13 @@ export function updateFormCache(
 export function clearFormCache(
   submissionId: string,
   cache: IFormCache = FormCacheFactory.getCache()
-) {
+): void {
   cache.clear(submissionId);
 }
 
-export function clearFormSubmissionCookie(context: GetServerSidePropsContext) {
+export function clearFormSubmissionCookie(
+  context: GetServerSidePropsContext
+): void {
   const res = context.res;
   const options: CookieSerializeOptions = {
     path: "/",
