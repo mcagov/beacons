@@ -1,6 +1,8 @@
 import { IFormCache } from "../../src/lib/formCache";
 import {
   checkHeaderContains,
+  clearFormCache,
+  clearFormSubmissionCookie,
   decorateGetServerSidePropsContext,
   getCache,
   setFormSubmissionCookie,
@@ -182,6 +184,32 @@ describe("Middleware Functions", () => {
     });
   });
 
+  describe("clearFormSubmissionCookie()", () => {
+    let context;
+
+    beforeEach(() => {
+      context = {
+        res: {
+          setHeader: jest.fn(),
+        },
+        req: { cookies: { formSubmissionCookieId: 1 } },
+      };
+    });
+
+    const assertCookieCleared = () => {
+      clearFormSubmissionCookie(context);
+
+      expect(context.res.setHeader).toHaveBeenCalledWith(
+        "Set-Cookie",
+        "submissionId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict"
+      );
+    };
+
+    it("should clear the form submission cookie if it is set", () => {
+      assertCookieCleared();
+    });
+  });
+
   describe("checkHeaderContains()", () => {
     let request;
 
@@ -269,6 +297,21 @@ describe("Middleware Functions", () => {
 
       expect(getCache(id, cacheMock)).toStrictEqual({});
       expect(cacheMock.get).toHaveBeenCalledWith(id);
+    });
+  });
+
+  describe("clearFormCache()", () => {
+    let id;
+    let cacheMock: jest.Mocked<IFormCache>;
+
+    beforeEach(() => {
+      id = "1";
+      cacheMock = getCacheMock();
+    });
+
+    it("should clear the cache for the id provided", () => {
+      clearFormCache(id, cacheMock);
+      expect(cacheMock.clear).toHaveBeenCalledWith(id);
     });
   });
 });
