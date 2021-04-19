@@ -7,6 +7,7 @@ import { Form, FormFieldset, FormGroup, FormLegendPageHeading } from "./Form";
 import { Grid } from "./Grid";
 import { Layout } from "./Layout";
 import { IfYouNeedHelp } from "./Mca";
+import { GovUKBody } from "./Typography";
 
 interface BeaconsFormProps {
   children: ReactNode;
@@ -15,7 +16,7 @@ interface BeaconsFormProps {
   showCookieBanner: boolean;
   formErrors?: FormError[];
   errorMessages?: string[];
-  pageText?: ReactNode;
+  pageText?: string | ReactNode;
   includeUseIndex?: boolean;
 }
 
@@ -35,6 +36,9 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
     <BackButton href={previousPageUrl} />
   );
 
+  const pageTextComponent: ReactNode =
+    typeof pageText === "string" ? <GovUKBody>{pageText}</GovUKBody> : pageText;
+
   return (
     <Layout
       navigation={backButton}
@@ -49,7 +53,7 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
               <FormGroup errorMessages={errorMessages}>
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                  {pageText}
+                  {pageTextComponent}
                 </FormFieldset>
                 {children}
                 <HiddenFormMetadata />
