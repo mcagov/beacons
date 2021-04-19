@@ -179,7 +179,7 @@ describe("Middleware Functions", () => {
 
     it("should not set the form submission cookie header if one is set", () => {
       context.req.cookies = { [submissionCookieId]: "2" };
-
+      setFormSubmissionCookie(context);
       expect(context.res.setHeader).not.toHaveBeenCalled();
     });
   });
@@ -293,9 +293,10 @@ describe("Middleware Functions", () => {
     });
 
     it("should call the cache with the correct id", () => {
-      cacheMock.get.mockReturnValue({});
+      const registration = new Registration();
+      cacheMock.get.mockReturnValue(registration);
 
-      expect(getCache(id, cacheMock)).toStrictEqual({});
+      expect(getCache(id, cacheMock)).toStrictEqual(registration);
       expect(cacheMock.get).toHaveBeenCalledWith(id);
     });
   });
