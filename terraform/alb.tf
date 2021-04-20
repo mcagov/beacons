@@ -1,5 +1,5 @@
 resource "aws_alb" "main" {
-  name            = "${var.env}-beacons"
+  name            = "${terraform.workspace}-beacons"
   tags            = module.beacons_label.tags
   subnets         = aws_subnet.public.*.id
   security_groups = [aws_security_group.lb.id]
@@ -34,7 +34,7 @@ resource "aws_lb_listener_rule" "service" {
 
 resource "aws_alb_target_group" "webapp" {
   tags        = module.beacons_label.tags
-  name        = "${var.env}-webapp-target-group"
+  name        = "${terraform.workspace}-webapp-target-group"
   port        = var.webapp_port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
@@ -57,7 +57,7 @@ resource "aws_alb_target_group" "webapp" {
 
 resource "aws_alb_target_group" "service" {
   tags        = module.beacons_label.tags
-  name        = "${var.env}-service-target-group"
+  name        = "${terraform.workspace}-service-target-group"
   port        = var.service_port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id

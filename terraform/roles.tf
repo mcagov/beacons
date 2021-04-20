@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role" {
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "${var.env}-ecs-execution-role"
+  name               = "${terraform.workspace}-ecs-execution-role"
   tags               = module.beacons_label.tags
   assume_role_policy = data.aws_iam_policy_document.ecs_task_execution_role.json
 }
@@ -24,7 +24,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
 }
 
 resource "aws_iam_policy" "secret_manager_access" {
-  name   = "${var.env}-secret-manager-access"
+  name   = "${terraform.workspace}-secret-manager-access"
   policy = <<EOF
 {
   "Version": "2012-10-17",
