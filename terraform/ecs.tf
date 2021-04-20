@@ -8,9 +8,11 @@ data "aws_ecr_repository" "service" {
 
 resource "aws_ecs_cluster" "main" {
   name = "${var.env}-mca-beacons-cluster"
+  tags = module.beacons_label.tags
 }
 
 resource "aws_ecs_task_definition" "webapp" {
+  tags = module.beacons_label.tags
   family                   = "${var.env}-beacons-webapp-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
@@ -52,6 +54,7 @@ resource "aws_ecs_task_definition" "webapp" {
 }
 
 resource "aws_ecs_service" "webapp" {
+  tags = module.beacons_label.tags
   name             = "${var.env}-beacons-webapp"
   cluster          = aws_ecs_cluster.main.id
   task_definition  = aws_ecs_task_definition.webapp.arn
@@ -78,6 +81,7 @@ resource "aws_ecs_service" "webapp" {
 }
 
 resource "aws_ecs_task_definition" "service" {
+  tags = module.beacons_label.tags
   family                   = "${var.env}-beacons-service-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
@@ -120,6 +124,7 @@ resource "aws_ecs_task_definition" "service" {
 }
 
 resource "aws_ecs_service" "service" {
+  tags = module.beacons_label.tags
   name             = "${var.env}-beacons-service"
   cluster          = aws_ecs_cluster.main.id
   task_definition  = aws_ecs_task_definition.service.arn
