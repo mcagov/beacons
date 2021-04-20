@@ -34,6 +34,6 @@ USER node
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD curl --fail http://localhost:80/ || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD curl --fail http://localhost:80/api/health/ || exit 1
 
 ENTRYPOINT [ "npm", "start" ]
