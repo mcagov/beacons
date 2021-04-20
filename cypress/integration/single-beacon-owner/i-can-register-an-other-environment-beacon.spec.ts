@@ -5,7 +5,7 @@ import {
   andIType,
   givenIHaveSelected,
   thenTheCheckboxShouldBeChecked,
-  thenTheInputShouldContain,
+  thenTheInputShouldOnlyContain,
   thenTheRadioButtonShouldBeSelected,
   thenTheUrlShouldContain,
   whenIClickBack,
@@ -34,7 +34,7 @@ describe("As a beacon owner in an environment other than land, aviation or marit
 
     thenTheUrlShouldContain(PageURLs.landOtherCommunications);
     thenTheCheckboxShouldBeChecked("#portableVhfRadio");
-    thenTheInputShouldContain("235 762000", "#portableVhfRadioInput");
+    thenTheInputShouldOnlyContain("235 762000", "#portableVhfRadioInput");
     whenIClickBack();
 
     thenTheUrlShouldContain(PageURLs.landOtherActivity);

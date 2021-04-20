@@ -6,7 +6,7 @@ import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   thenTheCheckboxShouldBeChecked,
-  thenTheInputShouldContain,
+  thenTheInputShouldOnlyContain,
   thenTheRadioButtonShouldBeSelected,
   thenTheUrlShouldContain,
   whenIClickBack,
@@ -34,7 +34,7 @@ describe("As a land beacon owner,", () => {
 
     thenTheUrlShouldContain(PageURLs.landOtherCommunications);
     thenTheCheckboxShouldBeChecked("#portableVhfRadio");
-    thenTheInputShouldContain("235 762000", "#portableVhfRadioInput");
+    thenTheInputShouldOnlyContain("235 762000", "#portableVhfRadioInput");
     whenIClickBack();
 
     thenTheUrlShouldContain(PageURLs.landOtherActivity);
@@ -67,7 +67,7 @@ describe("As a land beacon owner,", () => {
 
     thenTheUrlShouldContain(PageURLs.landOtherCommunications);
     thenTheCheckboxShouldBeChecked("#portableVhfRadio");
-    thenTheInputShouldContain("235 762000", "#portableVhfRadioInput");
+    thenTheInputShouldOnlyContain("235 762000", "#portableVhfRadioInput");
     whenIClickBack();
 
     thenTheUrlShouldContain(PageURLs.landOtherActivity);

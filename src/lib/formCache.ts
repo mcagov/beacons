@@ -7,6 +7,8 @@ export interface IFormCache {
   update(id: string, formData?: FormSubmission): void;
 
   get(id: string): Registration;
+
+  clear(id: string): void;
 }
 
 export class FormCacheFactory {
@@ -31,6 +33,10 @@ class FormCache implements IFormCache {
 
   public get(id: string): Registration {
     return this._safeGetRegistration(id);
+  }
+
+  public clear(id: string): void {
+    delete this._byIdToRegistration[id];
   }
 
   private _safeGetRegistration(id: string): Registration {

@@ -49,18 +49,18 @@ docker-compose up
 
 Our approach to testing:
 
-- **Testing the rendering of React components**. We use [React testing library](https://testing-library.com/docs/react-testing-library/intro/) to ensure the rednered pages are what the user expects to see.
+- **Testing the rendering of React components**. We use [React testing library](https://testing-library.com/docs/react-testing-library/intro/) with Jest to ensure the rednered pages are what the user expects to see.
 - **Testing logic**. We segregate frontend logic from components by defining reusable TypeScript functions in `src/lib/`. Unit tests for these functions using Jest are in `test/lib`.
 - **End-to-end testing**. We use [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) to ensure the logic of the frontend matches the requirements.
 
-### Running tests
+### Running unit tests
 
-- `npm run test` -- Runs all tests in the `test/` directory
-- `npm run test:watch` -- Runs tests in watch mode
+- `npm run test` -- Runs all unit tests in the `test/` directory
+- `npm run test:watch` -- Runs unit tests in watch mode
 
 ### Running Cypress tests
 
-- `npm run dev` -- Start the app if it's not already running
+- `npm run build && npm run start` -- Start the app in production mode. (Due to server-side caching, Cypress tests will not operate when the server is run in `dev` mode.)
 - `npm run cypress:open` -- Run Cypress tests in the `cypress/integration` directory with the [Cypress Test Runner](https://docs.cypress.io/guides/core-concepts/test-runner.html#Overview)
 - `npm run cypress:watch` -- Run Cypress tests with the Test Runner, with Cypress watching test files for changes
 - `npm run cypress:run` -- Run Cypress tests in the `cypress/integration` directory in the [command line](https://docs.cypress.io/guides/guides/command-line.html#cypress-run)

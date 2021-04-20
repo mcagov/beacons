@@ -25,4 +25,21 @@ describe("FormCache", () => {
     cache.update(id, { hexId: "Beacon life" });
     expect(cache.get(id)).toBe(registration);
   });
+
+  describe("clear", () => {
+    it("deletes the Registration for a given id", () => {
+      const firstRegistration = cache.get(id);
+      cache.clear(id);
+      const secondRegistrations = cache.get(id);
+      expect(firstRegistration).not.toBe(secondRegistrations);
+    });
+
+    it("deletes the Registration for a given id and doesn't delete other registrations", () => {
+      cache.get(id);
+      const secondId = uuidv4();
+      const secondRegistrations = cache.get(secondId);
+      cache.clear(id);
+      expect(cache.get(secondId)).toBe(secondRegistrations);
+    });
+  });
 });
