@@ -110,6 +110,11 @@ variable "gov_notify_customer_email_template" {
   description = "The template ID for the customer confirmation email"
   sensitive   = true
 }
+variable "basic_auth" {
+  type        = string
+  description = "A JSON object describing the auth. An array with objects inside containing user and password"
+  sensitive   = true
+}
 variable "db_instance_class" {
   type        = string
   description = "The database instance class"
