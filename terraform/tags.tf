@@ -6,6 +6,6 @@ module "beacons_label" {
 
   tags = {
     Owner = "BeaconRegistry@mcga.onmicrosoft.com"
-    Service = "Beacons"
+    GovtServiceName = "Beacons"
   }
 }
