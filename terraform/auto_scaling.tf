@@ -50,7 +50,7 @@ resource "aws_appautoscaling_policy" "down" {
 
 # CloudWatch alarm that triggers the autoscaling up policy
 resource "aws_cloudwatch_metric_alarm" "service_cpu_high" {
-  tags = module.beacons_label.tags
+  tags                = module.beacons_label.tags
   alarm_name          = "cb_cpu_utilization_high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
@@ -70,7 +70,7 @@ resource "aws_cloudwatch_metric_alarm" "service_cpu_high" {
 
 # CloudWatch alarm that triggers the autoscaling down policy
 resource "aws_cloudwatch_metric_alarm" "service_cpu_low" {
-  tags = module.beacons_label.tags
+  tags                = module.beacons_label.tags
   alarm_name          = "cb_cpu_utilization_low"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "2"
