@@ -53,5 +53,5 @@ jobs:
           TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
           TF_VAR_gov_notify_api_key: ${{ secrets.GOV_NOTIFY_API_KEY }}
           TF_VAR_gov_notify_customer_email_template: ${{ secrets.GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE }}
-          TF_VAR_basic_auth: ${{ secrets.BASIC_AUTH }}
+          TF_VAR_basic_auth: ${{ secrets.BASIC_AUTH_CREDENTIALS }}
         run: terraform apply -auto-approve -var-file=staging.tfvars -var-file=staging.images.tfvars

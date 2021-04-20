@@ -108,7 +108,7 @@ variable "gov_notify_customer_email_template" {
 }
 variable "basic_auth" {
   type        = string
-  description = "A JSON object describing the auth. An array with objects inside containing user and password"
+  description = "A | separated list of username:passwords describing basic auth credentials"
   sensitive   = true
 }
 variable "db_instance_class" {
