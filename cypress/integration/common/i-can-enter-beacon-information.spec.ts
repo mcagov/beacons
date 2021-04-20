@@ -14,6 +14,11 @@ export const givenIHaveEnteredMyBeaconDetails = (): void => {
   givenIHaveFilledInBeaconInformationPage();
 };
 
+export const givenIHaveEnteredMyRequiredBeaconDetails = (): void => {
+  givenIHaveFilledInCheckBeaconDetailsPage();
+  givenIHaveFilledInRequiredBeaconInformationPage();
+};
+
 export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
   givenIHaveBeenToTheStartPageAndClickedStartNow();
   givenIHaveTyped(
@@ -34,6 +39,13 @@ export const givenIHaveFilledInBeaconInformationPage = (): void => {
   givenIHaveTyped(beaconInfo.batteryExpiryYear, "#batteryExpiryDateYear");
   givenIHaveTyped(beaconInfo.lastServicedMonth, "#lastServicedDateMonth");
   givenIHaveTyped(beaconInfo.lastServicedYear, "#lastServicedDateYear");
+  givenIHaveClickedContinue();
+};
+
+export const givenIHaveFilledInRequiredBeaconInformationPage = (): void => {
+  const beaconInfo = testBeaconAndOwnerData.additionalBeaconInformation;
+  thenTheUrlShouldContain(PageURLs.beaconInformation);
+  givenIHaveTyped(beaconInfo.serialNumber, "#manufacturerSerialNumber");
   givenIHaveClickedContinue();
 };
 
@@ -76,3 +88,12 @@ export const iCanSeeMyAdditionalBeaconInformation = (): void =>
   Object.values(
     testBeaconAndOwnerData.additionalBeaconInformation
   ).forEach((value) => cy.contains(value));
+
+export const iCanSeeMyRequiredAdditionalBeaconInformationOrDash = (): void =>
+  Object.values(testBeaconAndOwnerData.additionalBeaconInformation).forEach(
+    (value) => {
+      cy.contains("Additional beacon information")
+        .parent()
+        .contains(new RegExp(value + "|-"));
+    }
+  );

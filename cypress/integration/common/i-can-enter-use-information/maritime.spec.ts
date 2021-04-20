@@ -70,6 +70,44 @@ export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
   andIClickContinue();
 };
 
+export const givenIHaveEnteredMyRequiredMaritimeUse = (
+  purpose: Purpose
+): void => {
+  thenTheUrlShouldContain(PageURLs.environment);
+  givenIHaveSelected("#maritime");
+  andIClickContinue();
+
+  thenTheUrlShouldContain(PageURLs.purpose);
+  iCanSeeAPageHeadingThatContains("maritime");
+  givenIHaveSelected(`#${purpose.toLowerCase()}`);
+  andIClickContinue();
+
+  thenTheUrlShouldContain(PageURLs.activity);
+  iCanSeeAPageHeadingThatContains("maritime");
+  iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
+  switch (purpose) {
+    case Purpose.COMMERCIAL:
+      givenIHaveSelected("#motor-vessel");
+      break;
+    case Purpose.PLEASURE:
+      givenIHaveSelected("#motor-vessel");
+      break;
+  }
+  andIClickContinue();
+
+  thenTheUrlShouldContain(PageURLs.aboutTheVessel);
+  iCanSeeAPageHeadingThatContains("vessel");
+  givenIHaveEnteredRequiredInformationAboutMyVessel();
+  andIClickContinue();
+
+  thenTheUrlShouldContain(PageURLs.vesselCommunications);
+  andIClickContinue();
+
+  thenTheUrlShouldContain(PageURLs.moreDetails);
+  givenIHaveEnteredMoreDetailsAboutMyVessel();
+  andIClickContinue();
+};
+
 export const iCanSeeMyMaritimeUse = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
@@ -96,6 +134,25 @@ export const iCanSeeMyMaritimeUse = (purpose: Purpose): void => {
   cy.get("main").contains(
     testMaritimeUseData.communications.otherCommunication
   );
+  cy.get("main").contains(testMaritimeUseData.moreDetails);
+};
+
+export const iCanSeeMyRequiredMaritimeUse = (purpose: Purpose): void => {
+  switch (purpose) {
+    case Purpose.COMMERCIAL:
+      Object.values(testMaritimeCommercialUseData.type).forEach((value) => {
+        cy.get("main").contains(makeEnumValueUserFriendly(value));
+      });
+      break;
+    case Purpose.PLEASURE:
+      Object.values(testMaritimePleasureUseData.type).forEach((value) => {
+        cy.get("main").contains(makeEnumValueUserFriendly(value));
+      });
+      break;
+  }
+  Object.values(testMaritimeUseData.vessel).forEach((value) => {
+    cy.get("main").contains(new RegExp(value + "|-"));
+  });
   cy.get("main").contains(testMaritimeUseData.moreDetails);
 };
 
@@ -194,6 +251,11 @@ export const givenIHaveEnteredInformationAboutMyVessel = (): void => {
   givenIHaveTyped(vessel.ssrNumber, "#ssrNumber");
   givenIHaveTyped(vessel.officialNumber, "#officialNumber");
   givenIHaveTyped(vessel.rigPlatformLocation, "#rigPlatformLocation");
+};
+
+export const givenIHaveEnteredRequiredInformationAboutMyVessel = (): void => {
+  const vessel = testMaritimeUseData.vessel;
+  givenIHaveTyped(vessel.maxCapacity, "#maxCapacity");
 };
 
 export const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {

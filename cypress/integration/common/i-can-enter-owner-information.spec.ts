@@ -22,6 +22,13 @@ export const givenIHaveEnteredMyPersonalDetails = (): void => {
   givenIHaveTyped(testBeaconAndOwnerData.ownerDetails.email, "#ownerEmail");
   givenIHaveClickedContinue();
 };
+export const givenIHaveEnteredMyRequiredPersonalDetails = (): void => {
+  givenIHaveTyped(
+    testBeaconAndOwnerData.ownerDetails.fullName,
+    "#ownerFullName"
+  );
+  givenIHaveClickedContinue();
+};
 export const givenIHaveEnteredMyAddressDetails = (): void => {
   givenIHaveTyped(
     testBeaconAndOwnerData.ownerAddress.addressLine1,
@@ -84,6 +91,18 @@ export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
   );
   givenIHaveClickedContinue();
 };
+export const givenIHaveEnteredMyRequiredEmergencyContactDetails = (): void => {
+  givenIAmAt(PageURLs.emergencyContact);
+  givenIHaveTyped(
+    testBeaconAndOwnerData.emergencyContacts.emergencyContact1FullName,
+    "#emergencyContact1FullName"
+  );
+  givenIHaveTyped(
+    testBeaconAndOwnerData.emergencyContacts.emergencyContact1TelephoneNumber,
+    "#emergencyContact1TelephoneNumber"
+  );
+  givenIHaveClickedContinue();
+};
 export const iCanEditMyPersonalDetails = (): void =>
   Object.values(testBeaconAndOwnerData.ownerDetails).forEach((value) =>
     cy.get(`input[value="${value}"]`)
@@ -100,11 +119,32 @@ export const iCanSeeMyPersonalDetails = (): void =>
   Object.values(testBeaconAndOwnerData.ownerDetails).forEach((value) =>
     cy.get("main").contains(value)
   );
+export const iCanSeeMyRequiredPersonalDetails = (): void =>
+  Object.values(testBeaconAndOwnerData.ownerDetails).forEach((value) =>
+    cy
+      .contains("Owner details")
+      .parent()
+      .contains(new RegExp(value + "|-"))
+  );
 export const iCanSeeMyAddressDetails = (): void =>
   Object.values(testBeaconAndOwnerData.ownerAddress).forEach((value) =>
     cy.get("main").contains(value)
   );
+export const iCanSeeMyRequiredAddressDetails = (): void =>
+  Object.values(testBeaconAndOwnerData.ownerAddress).forEach((value) =>
+    cy
+      .contains("Address")
+      .parent()
+      .contains(new RegExp(value + "|-"))
+  );
 export const iCanSeeMyEmergencyContactDetails = (): void =>
   Object.values(testBeaconAndOwnerData.emergencyContacts).forEach((value) =>
     cy.get("main").contains(value)
+  );
+export const iCanSeeMyRequiredEmergencyContactDetails = (): void =>
+  Object.values(testBeaconAndOwnerData.emergencyContacts).forEach((value) =>
+    cy
+      .contains("Emergency contacts")
+      .next()
+      .contains(new RegExp(value + "|-"))
   );
