@@ -12,3 +12,6 @@ node_modules/
 
 # Cypress
 screenshots
+
+# Jest
+coverage
