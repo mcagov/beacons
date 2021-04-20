@@ -1,7 +1,3 @@
-variable "env" {
-  type        = string
-  description = "The environment the resources are deployed into"
-}
 variable "aws_region" {
   type        = string
   description = "The AWS region resources are created in"

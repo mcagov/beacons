@@ -1,5 +1,6 @@
 resource "aws_secretsmanager_secret" "db_password" {
-  name = "${var.env}_db_password"
+  name = "${terraform.workspace}_db_password"
+  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "db_password" {
@@ -8,7 +9,8 @@ resource "aws_secretsmanager_secret_version" "db_password" {
 }
 
 resource "aws_secretsmanager_secret" "gov_notify_api_key" {
-  name = "${var.env}_gov_notify_api_key"
+  name = "${terraform.workspace}_gov_notify_api_key"
+  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "gov_notify_api_key" {
@@ -17,7 +19,8 @@ resource "aws_secretsmanager_secret_version" "gov_notify_api_key" {
 }
 
 resource "aws_secretsmanager_secret" "gov_notify_customer_email_template" {
-  name = "${var.env}_gov_notify_customer_email_template"
+  name = "${terraform.workspace}_gov_notify_customer_email_template"
+  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "gov_notify_customer_email_template" {
@@ -26,7 +29,7 @@ resource "aws_secretsmanager_secret_version" "gov_notify_customer_email_template
 }
 
 resource "aws_secretsmanager_secret" "basic_auth" {
-  name = "${var.env}_basic_auth"
+  name = "${terraform.workspace}_basic_auth"
 }
 
 resource "aws_secretsmanager_secret_version" "basic_auth" {
