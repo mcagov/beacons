@@ -293,10 +293,9 @@ describe("Middleware Functions", () => {
     });
 
     it("should call the cache with the correct id", () => {
-      const registration = new Registration();
-      cacheMock.get.mockReturnValue(registration);
+      cacheMock.get.mockReturnValue({} as Registration);
 
-      expect(getCache(id, cacheMock)).toStrictEqual(registration);
+      expect(getCache(id, cacheMock)).toStrictEqual({});
       expect(cacheMock.get).toHaveBeenCalledWith(id);
     });
   });
