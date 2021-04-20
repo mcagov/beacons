@@ -28,7 +28,7 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   showCookieBanner,
 }: ServiceStartPageProps): JSX.Element => {
   const pageHeading =
-    "Register a UK 406MHz Beacon for commercial or pleasure use";
+    "Register a UK 406 MHz Beacon for commercial or pleasure use";
 
   return (
     <>
@@ -97,11 +97,11 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
       <li>
         If you have a vessel, you will need your vessel name, number(s), radio
         communications, Call Sign and Maritime Mobile Service Identity (MMSI)
-        number
+        number, if applicable
       </li>
       <li>
         If you have an aircraft, you will need your aircraft make and model,
-        Aircraft Registration Mark, aircraft number(s), radio communcations
+        Aircraft Registration Mark, aircraft number(s), radio communications
       </li>
       <li>
         You will also need at least one emergency contact for Search and Rescue
@@ -113,16 +113,16 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
       <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
         contact the UK Beacon Registry
       </AnchorLink>{" "}
-      if you aren{"'"}t sure if your beacon is 406MHz or not.
+      if you aren{"'"}t sure if your beacon is 406 MHz or not.
     </GovUKBody>
 
     <WarningText>
       <>
-        This service is only for UK programmed 406MHz beacons.&nbsp;
+        This service is only for UK programmed 406 MHz beacons.&nbsp;
         <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
           Contact the UK Beacon Registry
         </AnchorLink>
-        &nbsp;if you aren&apos;t sure if your beacon is 406MHz or not.
+        &nbsp;if you aren&apos;t sure if your beacon is 406 MHz or not.
       </>
     </WarningText>
 

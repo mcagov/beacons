@@ -130,6 +130,26 @@ export function updateFormCache(
   cache.update(submissionId, formData);
 }
 
+export function clearFormCache(
+  submissionId: string,
+  cache: IFormCache = FormCacheFactory.getCache()
+): void {
+  cache.clear(submissionId);
+}
+
+export function clearFormSubmissionCookie(
+  context: GetServerSidePropsContext
+): void {
+  const res = context.res;
+  const options: CookieSerializeOptions = {
+    path: "/",
+    httpOnly: true,
+    sameSite: true,
+    expires: new Date(0),
+  };
+  res.setHeader("Set-Cookie", serialize(formSubmissionCookieId, "", options));
+}
+
 export async function parseFormData(
   request: IncomingMessage
 ): Promise<Record<string, any>> {
