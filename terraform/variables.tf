@@ -27,7 +27,7 @@ variable "webapp_count" {
 variable "webapp_health_check_path" {
   type        = string
   description = "Health check path used by the Application Load Balancer for the Beacons Webapp"
-  default     = "/"
+  default     = "/api/health"
 }
 variable "webapp_fargate_cpu" {
   type        = number
