@@ -41,10 +41,9 @@ resource "aws_alb_target_group" "webapp" {
   health_check {
     healthy_threshold   = "3"
     interval            = "30"
-    protocol            = "HTTP"
-    matcher             = "200"
+    protocol            = "TCP"
     timeout             = "3"
-    path                = var.webapp_health_check_path
+    port                = "3000"
     unhealthy_threshold = "2"
   }
 
