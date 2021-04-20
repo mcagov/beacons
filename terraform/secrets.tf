@@ -24,3 +24,12 @@ resource "aws_secretsmanager_secret_version" "gov_notify_customer_email_template
   secret_id     = aws_secretsmanager_secret.gov_notify_customer_email_template.id
   secret_string = var.gov_notify_customer_email_template
 }
+
+resource "aws_secretsmanager_secret" "basic_auth" {
+  name = "${var.env}_basic_auth"
+}
+
+resource "aws_secretsmanager_secret_version" "basic_auth" {
+  secret_id     = aws_secretsmanager_secret.basic_auth.id
+  secret_string = var.basic_auth
+}

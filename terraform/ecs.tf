@@ -47,7 +47,10 @@ resource "aws_ecs_task_definition" "webapp" {
         }, {
         name : "GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE",
         valueFrom : aws_secretsmanager_secret.gov_notify_customer_email_template.arn
-    }]
+    }, {
+        name : "BASIC_AUTH",
+        valueFrom : aws_secretsmanager_secret.basic_auth.arn
+      }]
   }])
 }
 
