@@ -5,6 +5,7 @@ module "beacons_label" {
   name       = "beacons"
 
   tags = {
-    Owner = "@mcga.sharepoint.com"
+    Owner = "BeaconRegistry@mcga.onmicrosoft.com"
+    Service = "Beacons"
   }
 }
