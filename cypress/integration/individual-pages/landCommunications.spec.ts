@@ -1,8 +1,9 @@
+import { PageURLs } from "../../../src/lib/urls";
+import { testLandUseData } from "../common/happy-path-test-data.spec";
 import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
-  iCanClickTheBackLinkToGoToPreviousPage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
@@ -13,7 +14,6 @@ import {
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner and land or other use user", () => {
-  const pageUrl = "/register-a-beacon/land-other-communications";
   const portableVhfDscRadioCheckboxSelector = "#portableVhfRadio";
   const portableVhfDscRadioInputSelector = "#portableVhfRadioInput";
   const satelliteTelephoneCheckboxSelector = "#satelliteTelephone";
@@ -24,7 +24,7 @@ describe("As a beacon owner and land or other use user", () => {
   const otherCommunicationInputSelector = "#otherCommunicationInput";
 
   beforeEach(() => {
-    givenIHaveACookieSetAndIVisit(pageUrl);
+    givenIHaveACookieSetAndIVisit(PageURLs.landCommunications);
   });
 
   describe("the Portable VHF/DSC radio option", () => {
@@ -171,26 +171,29 @@ describe("As a beacon owner and land or other use user", () => {
   });
 
   it("submits the form if all fields are valid", () => {
-    const validMMSI = "123456789";
-    const validPhoneNumber = "07887662534";
-
     givenIHaveSelected(portableVhfDscRadioCheckboxSelector);
     givenIHaveSelected(satelliteTelephoneCheckboxSelector);
     givenIHaveSelected(mobileTelephoneCheckboxSelector);
     givenIHaveSelected(otherCommunicationSelector);
 
-    whenIType(validMMSI, portableVhfDscRadioInputSelector);
-    whenIType(validPhoneNumber, satelliteTelephoneInputSelector);
-    whenIType(validPhoneNumber, mobileTelephoneInputSelector);
-    whenIType("Other comms", otherCommunicationInputSelector);
+    whenIType(
+      testLandUseData.communications.portableMMSI,
+      portableVhfDscRadioInputSelector
+    );
+    whenIType(
+      testLandUseData.communications.satelliteTelephone,
+      satelliteTelephoneInputSelector
+    );
+    whenIType(
+      testLandUseData.communications.mobileTelephone1,
+      mobileTelephoneInputSelector
+    );
+    whenIType(
+      testLandUseData.communications.otherCommunication,
+      otherCommunicationInputSelector
+    );
     andIClickContinue();
 
     thenTheUrlShouldContain("/register-a-beacon/more-details");
-  });
-
-  it("sends me to the previous page when I click the back link", () => {
-    iCanClickTheBackLinkToGoToPreviousPage(
-      "/register-a-beacon/land-other-activity"
-    );
   });
 });

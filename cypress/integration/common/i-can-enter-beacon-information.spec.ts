@@ -69,6 +69,13 @@ export const asAMaritimePleasureBeaconOwner = (): void => {
   andIClickContinue();
 };
 
+export const asALandBeaconOwner = (): void => {
+  givenIHaveEnteredMyBeaconDetails();
+
+  andIHaveSelected("#land");
+  andIClickContinue();
+};
+
 export const iCanEditMyBeaconDetails = (): void =>
   Object.values(testBeaconAndOwnerData.beaconDetails).forEach((value) =>
     cy.get(`input[value="${value}"]`)

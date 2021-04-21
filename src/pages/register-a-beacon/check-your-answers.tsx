@@ -19,6 +19,7 @@ import {
   Environment,
   IRegistration,
 } from "../../lib/registration/types";
+import { PageURLs } from "../../lib/urls";
 import {
   makeEnumValueUserFriendly,
   sentenceCase,
@@ -48,7 +49,6 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   const pageHeading = "Check your answers";
   const useSections = [];
   for (const [index, use] of registration.uses.entries()) {
-    // TODO push index when we know how to convert index to first, second, third (helper class?)
     useSections.push(
       <BeaconUseSection index={index} use={use} key={`row${index}`} />
     );
@@ -57,7 +57,7 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   return (
     <>
       <Layout
-        navigation={<BackButton href="/register-a-beacon/emergency-contact" />}
+        navigation={<BackButton href={PageURLs.emergencyContact} />}
         title={pageHeading}
         showCookieBanner={false}
       >
@@ -78,7 +78,7 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
               <SendYourApplication />
               <StartButton
                 buttonText="Accept and send"
-                href="/register-a-beacon/application-complete"
+                href={PageURLs.applicationComplete}
               />
             </>
           }
@@ -110,11 +110,14 @@ const BeaconDetailsSection: FunctionComponent<IRegistration> = ({
     <SummaryList>
       <SummaryListItem
         labelText="Beacon information"
-        href="/register-a-beacon/check-beacon-details"
+        href={PageURLs.checkBeaconDetails}
         actionText="Change"
       >
-        <CheckYourAnswersDataRowItem value={manufacturer} />
-        <CheckYourAnswersDataRowItem value={model} />
+        <CheckYourAnswersDataRowItem
+          label="Manufacturer"
+          value={manufacturer}
+        />
+        <CheckYourAnswersDataRowItem label="Model" value={model} />
         <CheckYourAnswersDataRowItem label="Hex ID/UIN" value={hexId} />
       </SummaryListItem>
     </SummaryList>
@@ -133,7 +136,7 @@ const BeaconInformationSection: FunctionComponent<IRegistration> = ({
     <SummaryList>
       <SummaryListItem
         labelText="Additional beacon information"
-        href="/register-a-beacon/beacon-information"
+        href={PageURLs.beaconInformation}
         actionText="Change"
       >
         <CheckYourAnswersDataRowItem
@@ -166,7 +169,7 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
   index,
   use,
 }: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
-  const href = `/register-a-beacon/beacon-use?useIndex=${index}`;
+  const href = `${PageURLs.environment}?useIndex=${index}`;
   let aboutTheSection = <></>;
   let commsSection = <></>;
   switch (use.environment) {
@@ -176,7 +179,7 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
         <CommunicationsSubSection
           index={index}
           use={use}
-          href={"/register-a-beacon/vessel-communications"}
+          href={PageURLs.vesselCommunications}
         />
       );
       break;
@@ -186,7 +189,7 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
         <CommunicationsSubSection
           index={index}
           use={use}
-          href={"/register-a-beacon/aircraft-communications"}
+          href={PageURLs.aircraftCommunications}
         />
       );
       break;
@@ -195,16 +198,7 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
         <CommunicationsSubSection
           index={index}
           use={use}
-          href={"/register-a-beacon/land-other-communications"}
-        />
-      );
-      break;
-    case Environment.OTHER:
-      commsSection = (
-        <CommunicationsSubSection
-          index={index}
-          use={use}
-          href={"/register-a-beacon/land-other-communications"}
+          href={PageURLs.landCommunications}
         />
       );
       break;
@@ -220,9 +214,11 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
           <CheckYourAnswersDataRowItem
             value={makeEnumValueUserFriendly(use.environment)}
           />
-          <CheckYourAnswersDataRowItem
-            value={makeEnumValueUserFriendly(use.purpose)}
-          />
+          {use.purpose && (
+            <CheckYourAnswersDataRowItem
+              value={makeEnumValueUserFriendly(use.purpose)}
+            />
+          )}
           <CheckYourAnswersDataRowItem
             value={makeEnumValueUserFriendly(use.activity)}
           />
@@ -239,7 +235,7 @@ const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
   index,
   use,
 }: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
-  const href = `/register-a-beacon/about-the-vessel?useIndex=${index}`;
+  const href = `${PageURLs.aboutTheVessel}?useIndex=${index}`;
   return (
     <>
       <SummaryList>
@@ -313,7 +309,7 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
   index,
   use,
 }: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
-  const href = `/register-a-beacon/about-the-aircraft?useIndex=${index}`;
+  const href = `${PageURLs.aboutTheAircraft}?useIndex=${index}`;
 
   return (
     <>
@@ -432,7 +428,7 @@ const MoreDetailsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSectionP
   index,
   use,
 }: CheckYourAnswersBeaconUseSectionProps): JSX.Element => {
-  const href = `/register-a-beacon/more-details?useIndex=${index}`;
+  const href = `${PageURLs.moreDetails}?useIndex=${index}`;
   return (
     <>
       <SummaryList>
@@ -460,7 +456,7 @@ const BeaconOwnerSection: FunctionComponent<IRegistration> = ({
     <SummaryList>
       <SummaryListItem
         labelText="Owner details"
-        href="/register-a-beacon/about-beacon-owner"
+        href={PageURLs.aboutBeaconOwner}
         actionText="Change"
       >
         <CheckYourAnswersDataRowItem value={ownerFullName} />
@@ -484,7 +480,7 @@ const BeaconOwnerAddressSection: FunctionComponent<IRegistration> = ({
       <SummaryList>
         <SummaryListItem
           labelText="Address"
-          href="/register-a-beacon/beacon-owner-address"
+          href={PageURLs.beaconOwnerAddress}
           actionText="Change"
         >
           <CheckYourAnswersDataRowItem value={ownerAddressLine1} />
@@ -516,7 +512,7 @@ const BeaconOwnerEmergencyContactsSection: FunctionComponent<FormSubmission> = (
       <SummaryList>
         <SummaryListItem
           labelText="Contact 1"
-          href="/register-a-beacon/emergency-contact"
+          href={PageURLs.emergencyContact}
           actionText="Change"
         >
           <CheckYourAnswersDataRowItem value={emergencyContact1FullName} />
@@ -529,7 +525,7 @@ const BeaconOwnerEmergencyContactsSection: FunctionComponent<FormSubmission> = (
         </SummaryListItem>
         <SummaryListItem
           labelText="Contact 2"
-          href="/register-a-beacon/emergency-contact"
+          href={PageURLs.emergencyContact}
           actionText="Change"
         >
           <CheckYourAnswersDataRowItem value={emergencyContact2FullName} />
@@ -542,7 +538,7 @@ const BeaconOwnerEmergencyContactsSection: FunctionComponent<FormSubmission> = (
         </SummaryListItem>
         <SummaryListItem
           labelText="Contact 3"
-          href="/register-a-beacon/emergency-contact"
+          href={PageURLs.emergencyContact}
           actionText="Change"
         >
           <CheckYourAnswersDataRowItem value={emergencyContact3FullName} />

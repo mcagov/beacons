@@ -38,7 +38,6 @@ export interface IRegistration {
 
 export interface BeaconUse {
   environment: string;
-  environmentOtherInput: string;
   purpose: string;
   activity: string;
   otherActivityText: string;
@@ -108,7 +107,6 @@ export enum Environment {
   MARITIME = "MARITIME",
   AVIATION = "AVIATION",
   LAND = "LAND",
-  OTHER = "OTHER",
 }
 
 export enum Purpose {

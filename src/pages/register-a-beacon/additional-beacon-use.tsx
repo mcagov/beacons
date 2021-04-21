@@ -73,8 +73,9 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = (
   const shouldCreateAdditionalUse =
     context.formData.additionalBeaconUse === "true";
   if (shouldCreateAdditionalUse) {
-    context.registration.createUse();
-    const useIndex = context.useIndex + 1;
+    const registration = context.registration;
+    registration.createUse();
+    const useIndex = registration.getRegistration().uses.length - 1;
 
     return formatUrlQueryParams("/register-a-beacon/beacon-use", { useIndex });
   } else {

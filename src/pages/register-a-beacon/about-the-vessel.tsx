@@ -1,18 +1,9 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent, ReactNode } from "react";
-import { BackButtonRouterIndexes, Button } from "../../components/Button";
-import { FormErrorSummary } from "../../components/ErrorSummary";
-import {
-  Form,
-  FormFieldset,
-  FormGroup,
-  FormLegendPageHeading,
-} from "../../components/Form";
-import { Grid } from "../../components/Grid";
+import { BeaconsForm } from "../../components/BeaconsForm";
+import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
-import { Layout } from "../../components/Layout";
-import { IfYouNeedHelp } from "../../components/Mca";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { SectionHeading } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
@@ -20,6 +11,7 @@ import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { PageURLs } from "../../lib/urls";
 
 const definePageForm = ({
   maxCapacity,
@@ -70,81 +62,43 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
 }: FormPageProps): JSX.Element => {
   const pageHeading = "About the vessel, windfarm or rig/platform";
 
-  const backButton: ReactNode = (
-    <BackButtonRouterIndexes href="/register-a-beacon/activity" />
+  const pageText: ReactNode = (
+    <InsetText>
+      Leave anything that isn&apos;t relevant blank. Any information you do
+      provide may help save lives in a Search and Rescue scenario.
+    </InsetText>
   );
 
   return (
-    <>
-      <Layout
-        navigation={backButton}
-        title={pageHeading}
-        pageHasErrors={form.hasErrors}
-        showCookieBanner={showCookieBanner}
-      >
-        <Grid
-          mainContent={
-            <>
-              <FormErrorSummary formErrors={form.errorSummary} />
-              <Form>
-                <FormFieldset>
-                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-
-                  <InsetText>
-                    Leave anything that isn&apos;t relevant blank. Any
-                    information you do provide may help save lives in a Search
-                    and Rescue scenario.
-                  </InsetText>
-
-                  <MaxCapacityInput
-                    value={form.fields.maxCapacity.value}
-                    errorMessages={form.fields.maxCapacity.errorMessages}
-                  />
-
-                  <VesselNameInput value={form.fields.vesselName.value} />
-
-                  <BeaconLocationInput
-                    value={form.fields.beaconLocation.value}
-                    errorMessages={form.fields.beaconLocation.errorMessages}
-                  />
-
-                  <SectionHeading>Vessel information</SectionHeading>
-
-                  <PortLetterNumberInput
-                    value={form.fields.portLetterNumber.value}
-                  />
-
-                  <HomeportInput value={form.fields.homeport.value} />
-
-                  <AreaOfOperationTextArea
-                    value={form.fields.areaOfOperation.value}
-                    errorMessages={form.fields.areaOfOperation.errorMessages}
-                  />
-
-                  <ImoNumberInput value={form.fields.imoNumber.value} />
-
-                  <SsrNumberInput value={form.fields.ssrNumber.value} />
-
-                  <OfficialNumberInput
-                    value={form.fields.officialNumber.value}
-                  />
-
-                  <SectionHeading>
-                    Windfarm, rig or platform information
-                  </SectionHeading>
-
-                  <RigPlatformLocationInput
-                    value={form.fields.rigPlatformLocation.value}
-                  />
-                </FormFieldset>
-                <Button buttonText="Continue" />
-              </Form>
-              <IfYouNeedHelp />
-            </>
-          }
-        />
-      </Layout>
-    </>
+    <BeaconsForm
+      previousPageUrl={PageURLs.activity}
+      pageHeading={pageHeading}
+      showCookieBanner={showCookieBanner}
+      formErrors={form.errorSummary}
+      pageText={pageText}
+    >
+      <MaxCapacityInput
+        value={form.fields.maxCapacity.value}
+        errorMessages={form.fields.maxCapacity.errorMessages}
+      />
+      <VesselNameInput value={form.fields.vesselName.value} />
+      <BeaconLocationInput
+        value={form.fields.beaconLocation.value}
+        errorMessages={form.fields.beaconLocation.errorMessages}
+      />
+      <SectionHeading>Vessel information</SectionHeading>
+      <PortLetterNumberInput value={form.fields.portLetterNumber.value} />
+      <HomeportInput value={form.fields.homeport.value} />
+      <AreaOfOperationTextArea
+        value={form.fields.areaOfOperation.value}
+        errorMessages={form.fields.areaOfOperation.errorMessages}
+      />
+      <ImoNumberInput value={form.fields.imoNumber.value} />
+      <SsrNumberInput value={form.fields.ssrNumber.value} />
+      <OfficialNumberInput value={form.fields.officialNumber.value} />
+      <SectionHeading>Windfarm, rig or platform information</SectionHeading>
+      <RigPlatformLocationInput value={form.fields.rigPlatformLocation.value} />
+    </BeaconsForm>
   );
 };
 

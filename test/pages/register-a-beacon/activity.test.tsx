@@ -21,6 +21,15 @@ describe("Activity", () => {
         value: "",
         errorMessages: [],
       },
+      otherActivityLocation: {
+        value: "",
+        errorMessages: [],
+      },
+      otherActivityPeopleCount: { value: "", errorMessages: [] },
+      workingRemotelyLocation: { value: "", errorMessages: [] },
+      workingRemotelyPeopleCount: { value: "", errorMessages: [] },
+      windfarmLocation: { value: "", errorMessages: [] },
+      windfarmPeopleCount: { value: "", errorMessages: [] },
     },
   };
 
@@ -36,5 +45,65 @@ describe("Activity", () => {
     );
 
     expect(screen.getByLabelText(/rowing/i)).toBeChecked();
+  });
+
+  describe("the page heading", () => {
+    function assertPageHeadingContains(
+      expected: string,
+      environment: Environment,
+      purpose: Purpose
+    ): void {
+      render(
+        <ActivityPage
+          form={activityFormTestData}
+          flattenedRegistration={{
+            environment,
+            purpose,
+          }}
+        />
+      );
+
+      expect(screen.getByText(expected, { exact: false })).toBeDefined();
+    }
+
+    it("should not show the purpose if the environment is land", () => {
+      assertPageHeadingContains(
+        "select the land activity",
+        Environment.LAND,
+        Purpose.PLEASURE
+      );
+    });
+
+    it("should show the correct title for a maritime, pleasure use", () => {
+      assertPageHeadingContains(
+        "select the pleasure maritime activity",
+        Environment.MARITIME,
+        Purpose.PLEASURE
+      );
+    });
+
+    it("should show the correct title for a maritime, commercial use", () => {
+      assertPageHeadingContains(
+        "select the commercial maritime activity",
+        Environment.MARITIME,
+        Purpose.COMMERCIAL
+      );
+    });
+
+    it("should show the correct title for an aviation, pleasure use", () => {
+      assertPageHeadingContains(
+        "select the pleasure aviation activity",
+        Environment.AVIATION,
+        Purpose.PLEASURE
+      );
+    });
+
+    it("should show the correct title for an aviation, commercial use", () => {
+      assertPageHeadingContains(
+        "select the commercial aviation activity",
+        Environment.AVIATION,
+        Purpose.COMMERCIAL
+      );
+    });
   });
 });

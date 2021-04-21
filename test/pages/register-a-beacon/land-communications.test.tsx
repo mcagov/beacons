@@ -3,9 +3,9 @@ import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
 import { handlePageRequest } from "../../../src/lib/handlePageRequest";
-import LandOtherCommunications, {
+import LandCommunications, {
   getServerSideProps,
-} from "../../../src/pages/register-a-beacon/land-other-communications";
+} from "../../../src/pages/register-a-beacon/land-communications";
 
 jest.mock("../../../src/lib/handlePageRequest", () => ({
   __esModule: true,
@@ -57,7 +57,7 @@ describe("LandOtherCommunications", () => {
   };
 
   xit("should have a back button which directs the user to the about the vessel page", () => {
-    render(<LandOtherCommunications form={emptyLandOtherCommunicationsForm} />);
+    render(<LandCommunications form={emptyLandOtherCommunicationsForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -67,7 +67,7 @@ describe("LandOtherCommunications", () => {
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <LandOtherCommunications form={emptyLandOtherCommunicationsForm} />
+      <LandCommunications form={emptyLandOtherCommunicationsForm} />
     );
 
     const form = container.querySelectorAll("form")[1];
@@ -87,7 +87,7 @@ describe("LandOtherCommunications", () => {
 
   it("should have an autocomplete attribute on the mobile telephone number field", () => {
     const { container } = render(
-      <LandOtherCommunications form={emptyLandOtherCommunicationsForm} />
+      <LandCommunications form={emptyLandOtherCommunicationsForm} />
     );
 
     const mobilePhoneInput1 = container.querySelector("#mobileTelephoneInput1");
@@ -101,7 +101,7 @@ describe("LandOtherCommunications", () => {
     // Because this is likely to result in users' mobile and other more commonly used
     // numbers being autocompleted into the satellite number field.  We don't want this.
     const { container } = render(
-      <LandOtherCommunications form={emptyLandOtherCommunicationsForm} />
+      <LandCommunications form={emptyLandOtherCommunicationsForm} />
     );
 
     const satelliteTelephoneNumberInput = container.querySelector(

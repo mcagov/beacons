@@ -11,7 +11,7 @@ export const testBeaconAndOwnerData = {
     hexId: "1D0E9B07CEFFBFF",
   },
   additionalBeaconInformation: {
-    serialNumber: "42",
+    serialNumber: "1234",
     chkCode: "9480B",
     batteryExpiryMonth: "12",
     batteryExpiryYear: "2025",
@@ -61,7 +61,7 @@ export const testAviationUseData = {
       "mobileTelephone",
       "otherCommunication",
     ],
-    satelliteTelephone: "+881677722191",
+    satelliteTelephone: "+881677723191",
     mobileTelephone1: "07162 738293",
     mobileTelephone2: "01728 392012",
     otherCommunication: "Carrier pigeon, goes by the name of Keith",
@@ -94,7 +94,7 @@ export const testMaritimeUseData = {
     beaconPosition: "Captain's cabin",
     pln: "XYZ123",
     homePort: "Avonmouth",
-    typicalAO: "Suez Canal",
+    typicalAO: "Suez Canal AO",
     imoNumber: "9811000",
     ssrNumber: "1664",
     officialNumber: "1313",
@@ -112,8 +112,8 @@ export const testMaritimeUseData = {
     fixedMMSI: "353136000",
     portableMMSI: "235107771",
     satelliteTelephone: "+881677722191",
-    mobileTelephone1: "07162 738293",
-    mobileTelephone2: "01728 392012",
+    mobileTelephone1: "07162 738294",
+    mobileTelephone2: "01728 392022",
     otherCommunication: "Carrier pigeon, goes by the name of Birdseye",
   },
   moreDetails: "My vessel is stuck",
@@ -135,4 +135,25 @@ export const testMaritimeCommercialUseData = {
     purpose: Purpose.COMMERCIAL,
     activity: Activity.MOTOR,
   },
+};
+
+export const testLandUseData = {
+  type: {
+    environment: Environment.LAND,
+    activity: Activity.CYCLING,
+  },
+  communications: {
+    checkedFields: [
+      "portableVhfRadio",
+      "satelliteTelephone",
+      "mobileTelephone",
+      "otherCommunication",
+    ],
+    portableMMSI: "235107781",
+    satelliteTelephone: "+881677722112",
+    mobileTelephone1: "07162 738203",
+    mobileTelephone2: "01728 392022",
+    otherCommunication: "Carrier pigeon, goes by the name of Raleigh",
+  },
+  moreDetails: "My bicycle is blue and red.",
 };

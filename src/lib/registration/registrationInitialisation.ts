@@ -55,7 +55,6 @@ export const initBeaconUse = (): BeaconUse => {
   // TODO: Update type for beacon use once other L2/L3 pages are in
   return {
     environment: "",
-    environmentOtherInput: "",
     purpose: "",
     activity: "",
     otherActivityText: "",

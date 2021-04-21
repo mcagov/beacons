@@ -1,82 +1,86 @@
-import { PageURLs } from "../../../src/lib/urls";
-import { givenIHaveEnteredMyBeaconDetails } from "../common/i-can-enter-beacon-information.spec";
 import {
-  andIClickContinue,
-  andIType,
-  givenIHaveACookieSetAndIVisit,
-  givenIHaveSelected,
-  thenTheCheckboxShouldBeChecked,
-  thenTheInputShouldOnlyContain,
-  thenTheRadioButtonShouldBeSelected,
+  AdditionalUses,
+  Environment,
+} from "../../../src/lib/registration/types";
+import { PageURLs } from "../../../src/lib/urls";
+import {
+  givenIHaveEnteredMyBeaconDetails,
+  iCanEditMyAdditionalBeaconInformation,
+  iCanEditMyBeaconDetails,
+  iCanSeeMyAdditionalBeaconInformation,
+  iCanSeeMyBeaconDetails,
+} from "../common/i-can-enter-beacon-information.spec";
+import {
+  givenIHaveEnteredMyAddressDetails,
+  givenIHaveEnteredMyEmergencyContactDetails,
+  givenIHaveEnteredMyPersonalDetails,
+  iCanEditMyAddressDetails,
+  iCanEditMyEmergencyContactDetails,
+  iCanEditMyPersonalDetails,
+  iCanSeeMyAddressDetails,
+  iCanSeeMyEmergencyContactDetails,
+  iCanSeeMyPersonalDetails,
+} from "../common/i-can-enter-owner-information.spec";
+import {
+  andIHaveNoFurtherUses,
+  iCanEditMyAdditionalUsesChoice,
+  iCanEditMyEnvironment,
+} from "../common/i-can-enter-use-information/generic.spec";
+import {
+  givenIHaveEnteredMyLandUse,
+  iCanEditMyAdditionalLandUseMoreDetails,
+  iCanEditMyLandActivity,
+  iCanEditMyLandCommunications,
+  iCanSeeMyLandUse,
+} from "../common/i-can-enter-use-information/land.spec";
+import {
+  iAmAt,
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../common/selectors-and-assertions.spec";
 
-describe("As a land beacon owner,", () => {
+describe("As a land beacon owner", () => {
   it("I can register my beacon", () => {
     givenIHaveEnteredMyBeaconDetails();
+    givenIHaveEnteredMyLandUse();
+    andIHaveNoFurtherUses();
 
-    thenTheUrlShouldContain(PageURLs.environment);
-    givenIHaveSelected("#land");
-    andIClickContinue();
+    givenIHaveEnteredMyPersonalDetails();
+    givenIHaveEnteredMyAddressDetails();
+    givenIHaveEnteredMyEmergencyContactDetails();
 
-    thenTheUrlShouldContain(PageURLs.landOtherActivity);
-    givenIHaveSelected("#cycling");
-    andIClickContinue();
-
-    thenTheUrlShouldContain(PageURLs.landOtherCommunications);
-    givenIHaveSelected("#portableVhfRadio");
-    andIType("235 762000", "#portableVhfRadioInput");
-    andIClickContinue();
-
-    thenTheUrlShouldContain(PageURLs.moreDetails);
-    whenIClickBack();
-
-    thenTheUrlShouldContain(PageURLs.landOtherCommunications);
-    thenTheCheckboxShouldBeChecked("#portableVhfRadio");
-    thenTheInputShouldOnlyContain("235 762000", "#portableVhfRadioInput");
-    whenIClickBack();
-
-    thenTheUrlShouldContain(PageURLs.landOtherActivity);
-    thenTheCheckboxShouldBeChecked("#cycling");
-    whenIClickBack();
-
-    thenTheUrlShouldContain(PageURLs.environment);
-    thenTheRadioButtonShouldBeSelected("#land");
-
-    // TODO: Expand testing of this journey to match scope of aviation test file
+    thenTheUrlShouldContain(PageURLs.checkYourAnswers);
+    iCanSeeMyBeaconDetails();
+    iCanSeeMyAdditionalBeaconInformation();
+    iCanSeeMyLandUse();
+    iCanSeeMyPersonalDetails();
+    iCanSeeMyAddressDetails();
+    iCanSeeMyEmergencyContactDetails();
+    iCanGoBackAndEditMyLandUse();
   });
 
-  it("Other environment", () => {
-    givenIHaveACookieSetAndIVisit(PageURLs.environment);
-    givenIHaveSelected("#other");
-    andIType("My spaceship, the Heart of Gold", "#environmentOtherInput");
-    andIClickContinue();
-
-    thenTheUrlShouldContain(PageURLs.landOtherActivity);
-    givenIHaveSelected("#cycling");
-    andIClickContinue();
-
-    thenTheUrlShouldContain(PageURLs.landOtherCommunications);
-    givenIHaveSelected("#portableVhfRadio");
-    andIType("235 762000", "#portableVhfRadioInput");
-    andIClickContinue();
-
-    thenTheUrlShouldContain(PageURLs.moreDetails);
+  const iCanGoBackAndEditMyLandUse = (): void => {
     whenIClickBack();
-
-    thenTheUrlShouldContain(PageURLs.landOtherCommunications);
-    thenTheCheckboxShouldBeChecked("#portableVhfRadio");
-    thenTheInputShouldOnlyContain("235 762000", "#portableVhfRadioInput");
+    iCanEditMyEmergencyContactDetails();
     whenIClickBack();
-
-    thenTheUrlShouldContain(PageURLs.landOtherActivity);
-    thenTheCheckboxShouldBeChecked("#cycling");
+    iCanEditMyAddressDetails();
     whenIClickBack();
-
-    thenTheUrlShouldContain(PageURLs.environment);
-    thenTheRadioButtonShouldBeSelected("#other");
-
-    // TODO: Expand testing of this journey to match scope of aviation test file
-  });
+    iCanEditMyPersonalDetails();
+    whenIClickBack();
+    iCanEditMyAdditionalUsesChoice(AdditionalUses.NO);
+    whenIClickBack();
+    iCanEditMyAdditionalLandUseMoreDetails();
+    whenIClickBack();
+    iCanEditMyLandCommunications();
+    whenIClickBack();
+    iCanEditMyLandActivity();
+    whenIClickBack();
+    iCanEditMyEnvironment(Environment.LAND);
+    whenIClickBack();
+    iCanEditMyAdditionalBeaconInformation();
+    whenIClickBack();
+    iCanEditMyBeaconDetails();
+    whenIClickBack();
+    iAmAt(PageURLs.start);
+  };
 });

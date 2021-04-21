@@ -38,8 +38,7 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
   const previousPageUrlMap = {
     [Environment.MARITIME]: PageURLs.vesselCommunications,
     [Environment.AVIATION]: PageURLs.aircraftCommunications,
-    [Environment.LAND]: PageURLs.landOtherCommunications,
-    [Environment.OTHER]: PageURLs.landOtherCommunications,
+    [Environment.LAND]: PageURLs.landCommunications,
     "": PageURLs.start,
   };
 

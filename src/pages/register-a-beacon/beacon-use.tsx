@@ -2,7 +2,6 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
-import { Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
@@ -17,25 +16,11 @@ import { Environment } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
 import { useRankString } from "../../lib/utils";
 
-const getPageForm = ({ environment, environmentOtherInput }) => {
+const getPageForm = ({ environment }) => {
   return new FormManager({
     environment: new FieldManager(environment, [
       Validators.required("Where the beacon will be used is required"),
     ]),
-    environmentOtherInput: new FieldManager(
-      environmentOtherInput,
-      [
-        Validators.required(
-          "We need to know where this beacon will be used in if you have selected other use"
-        ),
-      ],
-      [
-        {
-          dependsOn: "environment",
-          meetingCondition: (value) => value === Environment.OTHER,
-        },
-      ]
-    ),
   });
 };
 
@@ -108,25 +93,6 @@ export const BeaconUse: FunctionComponent<FormPageProps> = ({
             value={Environment.LAND}
             defaultChecked={form.fields.environment.value === Environment.LAND}
           />
-
-          <RadioListItem
-            id="other"
-            name={environmentFieldName}
-            label="Other"
-            value={Environment.OTHER}
-            defaultChecked={form.fields.environment.value === Environment.OTHER}
-            conditional={true}
-          >
-            <FormGroup
-              errorMessages={form.fields.environmentOtherInput.errorMessages}
-            >
-              <Input
-                id="environmentOtherInput"
-                label="Please describe your use"
-                defaultValue={form.fields.environmentOtherInput.value}
-              />
-            </FormGroup>
-          </RadioListItem>
         </RadioList>
       </FormGroup>
     </BeaconsForm>
@@ -137,10 +103,10 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
   switch (context.formData.environment) {
     case Environment.MARITIME:
     case Environment.AVIATION:
-      return "/register-a-beacon/purpose";
+      return PageURLs.purpose;
 
     default:
-      return "/register-a-beacon/land-other-activity";
+      return PageURLs.activity;
   }
 };
 
