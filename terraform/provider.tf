@@ -24,5 +24,5 @@ provider "aws" {
 
 locals {
   dns_sub_domain         = "${terraform.workspace}.beacons.local"
-  service_local_endpoint = "service.${local.dns_sub_domain}/spring-api"
+  service_local_endpoint = "service.${local.dns_sub_domain}:${var.service_port}/spring-api"
 }
