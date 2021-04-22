@@ -11,8 +11,12 @@ import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
-import { Communication } from "../../lib/registration/types";
 import { ofcomLicenseUrl, PageURLs } from "../../lib/urls";
+
+const matchingConditionIsTrueForKey = (key: string) => ({
+  dependsOn: key,
+  meetingCondition: (value) => value === "true",
+});
 
 const definePageForm = ({
   portableVhfRadio,
@@ -37,13 +41,7 @@ const definePageForm = ({
           "Your portable MMSI number must be exactly nine digits long and only include numbers 0 to 9, with no letters or other characters"
         ),
       ],
-      [
-        {
-          dependsOn: "portableVhfRadio",
-          meetingCondition: (value) =>
-            value === Communication.PORTABLE_VHF_RADIO,
-        },
-      ]
+      [matchingConditionIsTrueForKey("portableVhfRadio")]
     ),
     satelliteTelephone: new FieldManager(satelliteTelephone),
     satelliteTelephoneInput: new FieldManager(
@@ -56,13 +54,7 @@ const definePageForm = ({
           "Enter a satellite telephone number in the correct format"
         ),
       ],
-      [
-        {
-          dependsOn: "satelliteTelephone",
-          meetingCondition: (value) =>
-            value === Communication.SATELLITE_TELEPHONE,
-        },
-      ]
+      [matchingConditionIsTrueForKey("satelliteTelephone")]
     ),
     mobileTelephone: new FieldManager(mobileTelephone),
     mobileTelephoneInput1: new FieldManager(
@@ -75,12 +67,7 @@ const definePageForm = ({
           "Enter a mobile telephone number, like 07700 982736 or +447700912738"
         ),
       ],
-      [
-        {
-          dependsOn: "mobileTelephone",
-          meetingCondition: (value) => value === Communication.MOBILE_TELEPHONE,
-        },
-      ]
+      [matchingConditionIsTrueForKey("mobileTelephone")]
     ),
     mobileTelephoneInput2: new FieldManager(mobileTelephoneInput2),
     otherCommunication: new FieldManager(otherCommunication),
@@ -93,12 +80,7 @@ const definePageForm = ({
           250
         ),
       ],
-      [
-        {
-          dependsOn: "otherCommunication",
-          meetingCondition: (value) => value === Communication.OTHER,
-        },
-      ]
+      [matchingConditionIsTrueForKey("otherCommunication")]
     ),
   });
 };
@@ -147,11 +129,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
     <CheckboxList conditional={true}>
       <CheckboxListItem
         id="portableVhfRadio"
-        value={Communication.PORTABLE_VHF_RADIO}
-        defaultChecked={
-          form.fields.portableVhfRadio.value ===
-          Communication.PORTABLE_VHF_RADIO
-        }
+        defaultChecked={form.fields.portableVhfRadio.value === "true"}
         label="Portable VHF/DSC Radio"
         conditional={true}
       >
@@ -168,11 +146,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
       </CheckboxListItem>
       <CheckboxListItem
         id="satelliteTelephone"
-        value={Communication.SATELLITE_TELEPHONE}
-        defaultChecked={
-          form.fields.satelliteTelephone.value ===
-          Communication.SATELLITE_TELEPHONE
-        }
+        defaultChecked={form.fields.satelliteTelephone.value === "true"}
         label="Satellite Telephone"
         conditional={true}
       >
@@ -189,10 +163,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
       </CheckboxListItem>
       <CheckboxListItem
         id="mobileTelephone"
-        value={Communication.MOBILE_TELEPHONE}
-        defaultChecked={
-          form.fields.mobileTelephone.value === Communication.MOBILE_TELEPHONE
-        }
+        defaultChecked={form.fields.mobileTelephone.value === "true"}
         label="Mobile Telephone(s)"
         conditional={true}
       >
@@ -217,10 +188,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
       </CheckboxListItem>
       <CheckboxListItem
         id="otherCommunication"
-        value={Communication.OTHER}
-        defaultChecked={
-          form.fields.otherCommunication.value === Communication.OTHER
-        }
+        defaultChecked={form.fields.otherCommunication.value === "true"}
         label="Other"
         conditional={true}
       >

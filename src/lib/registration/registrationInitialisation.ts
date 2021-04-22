@@ -11,7 +11,7 @@ export const initBeacon = (): IRegistration => {
     model: "",
     hexId: "",
 
-    reference: "",
+    referenceNumber: "",
 
     manufacturerSerialNumber: "",
     chkCode: "",
@@ -52,7 +52,6 @@ export const initBeacon = (): IRegistration => {
  * @returns {BeaconUse}   JSON representation of a beacon use
  */
 export const initBeaconUse = (): BeaconUse => {
-  // TODO: Update type for beacon use once other L2/L3 pages are in
   return {
     environment: "",
     purpose: "",
@@ -77,8 +76,6 @@ export const initBeaconUse = (): BeaconUse => {
     // Vessel info
     maxCapacity: "",
     vesselName: "",
-    vesselUse: "",
-    otherVesselUseText: "",
     portLetterNumber: "",
     homeport: "",
     areaOfOperation: "",
@@ -110,7 +107,6 @@ export const initBeaconUse = (): BeaconUse => {
     windfarm: "",
     windfarmLocation: "",
     windfarmPeopleCount: "",
-    otherActivity: "",
     otherActivityDescription: "",
     otherActivityLocation: "",
     otherActivityPeopleCount: "",

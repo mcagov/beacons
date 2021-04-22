@@ -3,8 +3,9 @@ import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
-import { GovUKBody } from "../../components/Typography";
+import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
+import { BeaconsApiGateway } from "../../gateways/beaconsApiGateway";
 import { GovNotifyGateway } from "../../gateways/govNotifyApiGateway";
 import {
   clearFormCache,
@@ -14,6 +15,7 @@ import {
 } from "../../lib/middleware";
 import { formSubmissionCookieId } from "../../lib/types";
 import { referenceNumber } from "../../lib/utils";
+import { CreateRegistration } from "../../useCases/createRegistration";
 import { SendGovNotifyEmail } from "../../useCases/sendGovNotifyEmail";
 
 interface ApplicationCompleteProps {
@@ -62,7 +64,7 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
 
 const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
   <>
-    <h2 className="govuk-heading-m">What happens next</h2>
+    <SectionHeading>What happens next</SectionHeading>
     <GovUKBody>
       We&apos;ve sent your application to register a UK encoded 406 MHz beacon
       to The Maritime and Coastguard Beacon Registry office.
@@ -77,31 +79,49 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
     const decoratedContext = await decorateGetServerSidePropsContext(context);
+    const registrationClass = decoratedContext.registration;
     const registration = decoratedContext.registration.registration;
 
     let pageSubHeading;
 
-    if (!registration.reference) {
-      registration.reference = referenceNumber("A#", 7);
-
-      const govNotifyGateway = new GovNotifyGateway();
-      const sendGovNotifyEmailUseCase = new SendGovNotifyEmail(
-        govNotifyGateway
+    if (!registration.referenceNumber) {
+      registration.referenceNumber = referenceNumber("A#", 7);
+      const beaconsApiGateway = new BeaconsApiGateway();
+      const createRegistrationUseCase = new CreateRegistration(
+        beaconsApiGateway
       );
-      if (sendGovNotifyEmailUseCase.execute(registration)) {
-        pageSubHeading = "We have sent you a confirmation email.";
+      const success = await createRegistrationUseCase.execute(
+        registrationClass
+      );
+
+      if (success) {
+        const govNotifyGateway = new GovNotifyGateway();
+        const sendGovNotifyEmailUseCase = new SendGovNotifyEmail(
+          govNotifyGateway
+        );
+
+        const emailSuccess = await sendGovNotifyEmailUseCase.execute(
+          registration
+        );
+
+        if (emailSuccess) {
+          pageSubHeading = "We have sent you a confirmation email.";
+        } else {
+          pageSubHeading =
+            "We could not send you a confirmation email. But we have registered your beacon under the following reference id.";
+        }
       } else {
-        pageSubHeading = "We could not send you a confirmation email.";
+        delete registration.referenceNumber;
+        pageSubHeading =
+          "We could not save your registration or send you a confirmation email. Please contact the Beacons Registry team.";
       }
-    } else {
-      pageSubHeading = "We could not send you a confirmation email.";
     }
 
     clearFormCache(context.req.cookies[formSubmissionCookieId]);
     clearFormSubmissionCookie(context);
 
     return {
-      props: { reference: registration.reference, pageSubHeading },
+      props: { reference: registration.referenceNumber, pageSubHeading },
     };
   }
 );

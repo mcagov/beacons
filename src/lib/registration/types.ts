@@ -2,7 +2,7 @@ export interface IRegistration {
   manufacturer: string;
   model: string;
   hexId: string;
-  reference: string;
+  referenceNumber: string;
 
   manufacturerSerialNumber: string;
   chkCode: string;
@@ -59,8 +59,6 @@ export interface BeaconUse {
 
   maxCapacity: string;
   vesselName: string;
-  vesselUse: string;
-  otherVesselUseText: string;
   portLetterNumber: string;
   homeport: string;
   areaOfOperation: string;
@@ -92,14 +90,12 @@ export interface BeaconUse {
   windfarm: string;
   windfarmLocation: string;
   windfarmPeopleCount: string;
-  otherActivity: string;
   otherActivityDescription: string;
   otherActivityLocation: string;
   otherActivityPeopleCount: string;
 
   // Generic more details on use of beacon
   moreDetails: string;
-
   additionalBeaconUse: string;
 }
 
@@ -144,15 +140,6 @@ export enum Activity {
   WORKING_REMOTELY = "WORKING_REMOTELY",
   WINDFARM = "WINDFARM",
 
-  OTHER = "OTHER",
-}
-
-export enum Communication {
-  VHF_RADIO = "VHF_RADIO",
-  FIXED_VHF_RADIO = "FIXED_VHF_RADIO",
-  PORTABLE_VHF_RADIO = "PORTABLE_VHF_RADIO",
-  SATELLITE_TELEPHONE = "SATELLITE_TELEPHONE",
-  MOBILE_TELEPHONE = "MOBILE_TELEPHONE",
   OTHER = "OTHER",
 }
 

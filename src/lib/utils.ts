@@ -95,6 +95,10 @@ export function formatUrlQueryParams(
   return url;
 }
 
+export function stringToBoolean(value: string): boolean {
+  return value ? value.toLocaleLowerCase() === "true" : false;
+}
+
 export function useRankString(number: number): string {
   const map = {
     1: "main",

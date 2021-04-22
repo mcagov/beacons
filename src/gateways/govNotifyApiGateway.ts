@@ -6,17 +6,17 @@ export class GovNotifyGateway {
     this.api = new NotifyClient(process.env.GOV_NOTIFY_API_KEY);
   }
 
-  public sendEmail(
+  public async sendEmail(
     emailTemplateId: string,
     email: string,
     personalisation = {}
-  ): boolean {
+  ): Promise<boolean> {
     for (const key in personalisation) {
       if (typeof personalisation[key] == "undefined") personalisation[key] = "";
     }
 
     try {
-      this.api
+      await this.api
         .sendEmail(emailTemplateId, email, {
           personalisation: personalisation,
           reference: personalisation["reference"],

@@ -2,11 +2,12 @@ import {
   formatUrlQueryParams,
   makeEnumValueUserFriendly,
   padNumberWithLeadingZeros,
+  stringToBoolean,
   toArray,
   toUpperCase,
 } from "../../src/lib/utils";
 
-describe("toArray()", () => {
+describe("to array function", () => {
   it("should convert a number to an array", () => {
     expect(toArray(1)).toStrictEqual([1]);
   });
@@ -34,7 +35,7 @@ describe("toArray()", () => {
   });
 });
 
-describe("toUpperCase()", () => {
+describe("to upper case function", () => {
   it("should return an empty string if the value is null", () => {
     expect(toUpperCase(null)).toBe("");
   });
@@ -56,7 +57,7 @@ describe("toUpperCase()", () => {
   });
 });
 
-describe("makeEnumValueUserFriendly()", () => {
+describe("make enum value user friendly function", () => {
   it("should return the value unchanged if the value is null", () => {
     expect(makeEnumValueUserFriendly(null)).toBe(null);
   });
@@ -70,7 +71,7 @@ describe("makeEnumValueUserFriendly()", () => {
   });
 });
 
-describe("padNumberWithLeadingZeros()", () => {
+describe("pad number with leading zeros function", () => {
   it("should not pad an empty string", () => {
     expect(padNumberWithLeadingZeros("")).toBe("");
   });
@@ -106,7 +107,7 @@ describe("padNumberWithLeadingZeros()", () => {
   });
 });
 
-describe("formatUrlQueryParams()", () => {
+describe("format URL query params function", () => {
   let url;
   let queryParamMap;
 
@@ -141,5 +142,27 @@ describe("formatUrlQueryParams()", () => {
     expect(formatUrlQueryParams(url, queryParamMap)).toBe(
       "/beacons?useIndex=0&beaconIndex=0"
     );
+  });
+});
+
+describe("string to boolean function", () => {
+  it("should return false if null", () => {
+    expect(stringToBoolean(null)).toBe(false);
+  });
+
+  it("should return false if undefined", () => {
+    expect(stringToBoolean(undefined)).toBe(false);
+  });
+
+  it("should return true if the value is TRUE", () => {
+    expect(stringToBoolean("TRUE")).toBe(true);
+  });
+
+  it("should return true if the value is true", () => {
+    expect(stringToBoolean("true")).toBe(true);
+  });
+
+  it("should return false if the value is false", () => {
+    expect(stringToBoolean("false")).toBe(false);
   });
 });

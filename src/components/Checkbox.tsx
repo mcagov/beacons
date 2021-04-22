@@ -8,7 +8,7 @@ interface CheckboxListProps {
 
 interface CheckboxListItemProps {
   id: string;
-  value: string;
+  value?: string;
   label: string;
   defaultChecked?: boolean;
   children?: ReactNode;
@@ -33,8 +33,8 @@ export const CheckboxList: FunctionComponent<CheckboxListProps> = ({
 
 export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
   id,
-  value,
   label,
+  value = "true",
   defaultChecked = false,
   children = null,
   conditional = false,

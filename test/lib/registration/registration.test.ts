@@ -3,7 +3,13 @@ import {
   initBeacon,
   initBeaconUse,
 } from "../../../src/lib/registration/registrationInitialisation";
-import { Environment } from "../../../src/lib/registration/types";
+import { Environment, Purpose } from "../../../src/lib/registration/types";
+import {
+  getMockBeacon,
+  getMockEmergencyContact,
+  getMockOwner,
+  getMockUse,
+} from "../../mocks";
 
 describe("Registration", () => {
   let registration: Registration;
@@ -136,6 +142,112 @@ describe("Registration", () => {
       expect(
         registration.getFlattenedRegistration({ useIndex: 0 }).uses
       ).toBeUndefined();
+    });
+  });
+
+  describe("serialising the registration for the API", () => {
+    let beacon;
+    let use;
+    let owner;
+    let emergencyContact;
+    let formData;
+
+    beforeEach(() => {
+      beacon = getMockBeacon();
+      use = getMockUse();
+      owner = getMockOwner();
+      emergencyContact = getMockEmergencyContact();
+
+      formData = {
+        ...beacon,
+        ...use,
+        fixedVhfRadioInput: use.fixedVhfRadioValue,
+        portableVhfRadioInput: use.portableVhfRadioValue,
+        otherCommunicationInput: use.otherCommunicationValue,
+        satelliteTelephoneInput: use.satelliteTelephoneValue,
+        mobileTelephoneInput1: use.mobileTelephone1,
+        mobileTelephoneInput2: use.mobileTelephone2,
+        otherActivityText: use.otherActivity,
+        ownerFullName: owner.fullName,
+        ownerEmail: owner.email,
+        ownerTelephoneNumber: owner.telephoneNumber,
+        ownerAlternativeTelephoneNumber: owner.alternativeTelephoneNumber,
+        ownerAddressLine1: owner.addressLine1,
+        ownerAddressLine2: owner.addressLine2,
+        ownerTownOrCity: owner.townOrCity,
+        ownerCounty: owner.county,
+        ownerPostcode: owner.postcode,
+        emergencyContact1FullName: emergencyContact.fullName,
+        emergencyContact1TelephoneNumber: emergencyContact.telephoneNumber,
+        emergencyContact1AlternativeTelephoneNumber:
+          emergencyContact.alternativeTelephoneNumber,
+        emergencyContact2FullName: emergencyContact.fullName,
+        emergencyContact2TelephoneNumber: emergencyContact.telephoneNumber,
+        emergencyContact2AlternativeTelephoneNumber:
+          emergencyContact.alternativeTelephoneNumber,
+        emergencyContact3FullName: emergencyContact.fullName,
+        emergencyContact3TelephoneNumber: emergencyContact.telephoneNumber,
+        emergencyContact3AlternativeTelephoneNumber:
+          emergencyContact.alternativeTelephoneNumber,
+      };
+
+      registration.update(formData);
+    });
+
+    it("should serialise the registration for sending to the API", () => {
+      const expected = {
+        beacons: [
+          {
+            ...beacon,
+            uses: [use],
+            owner: { ...owner },
+            emergencyContacts: [
+              emergencyContact,
+              emergencyContact,
+              emergencyContact,
+            ],
+          },
+        ],
+      };
+      const json = registration.serialiseToAPI();
+
+      expect(json).toMatchObject(expected);
+      expect(json.beacons[0].uses.length).toBe(1);
+      expect(json.beacons[0].emergencyContacts.length).toBe(3);
+    });
+
+    it("should serialise a second use", () => {
+      registration.createUse();
+      registration.update({ useIndex: 1, ...formData });
+      const json = registration.serialiseToAPI();
+      use.mainUse = false;
+
+      expect(json.beacons[0].uses.length).toBe(2);
+      expect(json.beacons[0].uses[1]).toStrictEqual(use);
+    });
+
+    it("should serialise the purpose if it is defined", () => {
+      registration.update({ purpose: Purpose.PLEASURE });
+      use["purpose"] = Purpose.PLEASURE;
+      const json = registration.serialiseToAPI();
+
+      expect(json.beacons[0].uses[0]).toStrictEqual(use);
+    });
+
+    it("should not serialise the max capacity if it is not a number", () => {
+      registration.update({ maxCapacity: "not a number" });
+      delete use.maxCapacity;
+      const json = registration.serialiseToAPI();
+
+      expect(json.beacons[0].uses[0]).toStrictEqual(use);
+    });
+
+    it("should not serialise the max capacity if it is not a whole number", () => {
+      registration.update({ maxCapacity: "0.112" });
+      delete use.maxCapacity;
+      const json = registration.serialiseToAPI();
+
+      expect(json.beacons[0].uses[0]).toStrictEqual(use);
     });
   });
 });
