@@ -31,7 +31,7 @@ resource "aws_ecs_task_definition" "webapp" {
     environment : [
       {
         name : "API_URL",
-        value : "http://${local.service_local_endpoint}"
+        value : local.service_local_endpoint
       }
     ],
     logConfiguration : {
