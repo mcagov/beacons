@@ -49,6 +49,10 @@ describe("AboutTheVessel", () => {
         value: "",
         errorMessages: [],
       },
+      rssNumber: {
+        value: "",
+        errorMessages: [],
+      },
       officialNumber: {
         value: "",
         errorMessages: [],

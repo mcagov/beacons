@@ -281,16 +281,22 @@ const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
               value={use.imoNumber}
             />
           )}
-          {use.officialNumber && (
-            <CheckYourAnswersDataRowItem
-              label="Official number"
-              value={use.officialNumber}
-            />
-          )}
           {use.ssrNumber && (
             <CheckYourAnswersDataRowItem
               label="Small Ships Register number"
               value={use.ssrNumber}
+            />
+          )}
+          {use.rssNumber && (
+            <CheckYourAnswersDataRowItem
+              label=" Registry of Shipping and Seamen (RSS) number"
+              value={use.rssNumber}
+            />
+          )}
+          {use.officialNumber && (
+            <CheckYourAnswersDataRowItem
+              label="Official number"
+              value={use.officialNumber}
             />
           )}
           {use.rigPlatformLocation && (

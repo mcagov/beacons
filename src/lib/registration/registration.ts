@@ -193,6 +193,7 @@ export class Registration {
       beaconLocation: use.beaconLocation,
       imoNumber: use.imoNumber,
       ssrNumber: use.ssrNumber,
+      rssNumber: use.rssNumber,
       officialNumber: use.officialNumber,
       rigPlatformLocation: use.rigPlatformLocation,
       mainUse,
