@@ -181,7 +181,7 @@ const ImoNumberInput: FunctionComponent<FormInputProps> = ({
     <Input
       id="imoNumber"
       label="If you have one, enter the IMO number (optional)"
-      hintText="An IMO number is made of the three letters 'IMO' followed by a seven-digit number."
+      hintText='An IMO number, normally for vessels over 500 gross tonnage, so generally Merchant, large passenger carrying, some fishing boats, is made of the three letters "IMO" followed by a seven-digit number.'
       defaultValue={value}
     />
   </FormGroup>
@@ -194,8 +194,7 @@ const SsrNumberInput: FunctionComponent<FormInputProps> = ({
     <Input
       id="ssrNumber"
       label="If you have one, enter the UK Small Ships Register (SSR)  number (optional)"
-      /*TODO update with SSR number format*/
-      hintText="Hint text for format"
+      hintText="E.g. SSR 123456. The Small Ships Register (SSR) provides a simple form of non-title registration for eligible UK residents who own pleasure vessels that are  less than 24 metres in overall length."
       defaultValue={value}
     />
   </FormGroup>
