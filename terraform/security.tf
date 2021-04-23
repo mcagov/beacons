@@ -61,6 +61,7 @@ resource "aws_security_group" "ecs_tasks" {
 # Allow inbound traffic to the API from the webapp in the same subnet
 resource "aws_security_group_rule" "webapp_to_api" {
   type                     = "ingress"
+  protocol                 = "tcp"
   from_port                = var.service_port
   to_port                  = var.service_port
   security_group_id        = aws_security_group.ecs_tasks.id
