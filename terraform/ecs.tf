@@ -63,7 +63,7 @@ resource "aws_ecs_service" "webapp" {
   task_definition  = aws_ecs_task_definition.webapp.arn
   desired_count    = var.webapp_count
   launch_type      = "FARGATE"
-  platform_version = "1.3.0"
+  platform_version = "1.4.0"
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
@@ -133,7 +133,7 @@ resource "aws_ecs_service" "service" {
   task_definition  = aws_ecs_task_definition.service.arn
   desired_count    = var.service_count
   launch_type      = "FARGATE"
-  platform_version = "1.3.0"
+  platform_version = var.ecs_fargate_version
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]

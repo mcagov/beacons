@@ -6,6 +6,11 @@ variable "az_count" {
   type        = number
   description = "Number of AZs to cover in a given region"
 }
+# See docs: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/platform_versions.html
+variable "ecs_fargate_version" {
+  type        = string
+  description = "The version of fargate to run the ECS tasks on"
+}
 variable "webapp_image" {
   type        = string
   description = "Docker image to run in the ECS cluster for the Beacons Webapp"

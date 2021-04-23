@@ -1,5 +1,6 @@
 aws_region             = "eu-west-2"
 az_count               = 2
+ecs_fargate_version    = "1.4.0"
 webapp_count           = 1
 webapp_fargate_cpu     = 256
 webapp_fargate_memory  = 512
