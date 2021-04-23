@@ -65,6 +65,7 @@ export interface BeaconUse {
   beaconLocation: string;
   imoNumber: string;
   ssrNumber: string;
+  rssNumber: string;
   officialNumber: string;
   rigPlatformLocation: string;
 

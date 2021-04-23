@@ -55,6 +55,7 @@ export const getMockUse = (): any => ({
   beaconLocation: "In my carry bag",
   imoNumber: "123456",
   ssrNumber: "123456",
+  rssNumber: "123456",
   officialNumber: "123456",
   rigPlatformLocation: "On the rig",
   mainUse: true,

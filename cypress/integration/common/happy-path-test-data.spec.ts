@@ -97,6 +97,7 @@ export const testMaritimeUseData = {
     typicalAO: "Suez Canal AO",
     imoNumber: "9811000",
     ssrNumber: "1664",
+    rssNumber: "A12345",
     officialNumber: "1313",
     rigPlatformLocation: "Suez Canal",
   },

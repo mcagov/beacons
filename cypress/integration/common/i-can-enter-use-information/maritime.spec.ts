@@ -249,6 +249,7 @@ export const givenIHaveEnteredInformationAboutMyVessel = (): void => {
   givenIHaveTyped(vessel.typicalAO, "#areaOfOperation");
   givenIHaveTyped(vessel.imoNumber, "#imoNumber");
   givenIHaveTyped(vessel.ssrNumber, "#ssrNumber");
+  givenIHaveTyped(vessel.rssNumber, "#rssNumber");
   givenIHaveTyped(vessel.officialNumber, "#officialNumber");
   givenIHaveTyped(vessel.rigPlatformLocation, "#rigPlatformLocation");
 };

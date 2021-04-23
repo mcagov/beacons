@@ -82,6 +82,7 @@ export const initBeaconUse = (): BeaconUse => {
     beaconLocation: "",
     imoNumber: "",
     ssrNumber: "",
+    rssNumber: "",
     officialNumber: "",
     rigPlatformLocation: "",
 

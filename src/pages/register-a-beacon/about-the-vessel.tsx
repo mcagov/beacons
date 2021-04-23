@@ -22,6 +22,7 @@ const definePageForm = ({
   areaOfOperation,
   imoNumber,
   ssrNumber,
+  rssNumber,
   officialNumber,
   rigPlatformLocation,
 }: FormSubmission): FormManager => {
@@ -51,6 +52,7 @@ const definePageForm = ({
     ]),
     imoNumber: new FieldManager(imoNumber),
     ssrNumber: new FieldManager(ssrNumber),
+    rssNumber: new FieldManager(rssNumber),
     officialNumber: new FieldManager(officialNumber),
     rigPlatformLocation: new FieldManager(rigPlatformLocation),
   });
@@ -95,6 +97,7 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
       />
       <ImoNumberInput value={form.fields.imoNumber.value} />
       <SsrNumberInput value={form.fields.ssrNumber.value} />
+      <RssNumberInput value={form.fields.rssNumber.value} />
       <OfficialNumberInput value={form.fields.officialNumber.value} />
       <SectionHeading>Windfarm, rig or platform information</SectionHeading>
       <RigPlatformLocationInput value={form.fields.rigPlatformLocation.value} />
@@ -195,6 +198,19 @@ const SsrNumberInput: FunctionComponent<FormInputProps> = ({
       id="ssrNumber"
       label="If you have one, enter the UK Small Ships Register (SSR)  number (optional)"
       hintText="E.g. SSR 123456. The Small Ships Register (SSR) provides a simple form of non-title registration for eligible UK residents who own pleasure vessels that are  less than 24 metres in overall length."
+      defaultValue={value}
+    />
+  </FormGroup>
+);
+
+const RssNumberInput: FunctionComponent<FormInputProps> = ({
+  value = "",
+}: FormInputProps): JSX.Element => (
+  <FormGroup>
+    <Input
+      id="rssNumber"
+      label="If you own or use a fishing vessel and it’s registered with the Registry of Shipping and Seamen (RSS), please provide your RSS number (optional)"
+      hintText="RSS numbers are usually in the format: 'A', 'B' or 'C' followed by 5 numbers. E.g. A12345."
       defaultValue={value}
     />
   </FormGroup>
