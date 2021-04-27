@@ -51,11 +51,11 @@ resource "aws_security_group" "ecs_tasks" {
   }
 
   ingress {
-    description     = "Allow inbound traffic from the webapp to the API"
-    protocol        = "tcp"
-    from_port       = var.service_port
-    to_port         = var.service_port
-    security_groups = [aws_security_group.ecs_tasks.id]
+    description = "Allow inbound traffic from the webapp to the API"
+    protocol    = "tcp"
+    from_port   = var.service_port
+    to_port     = var.service_port
+    self        = true
   }
 
   egress {
