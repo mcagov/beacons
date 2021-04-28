@@ -5,7 +5,35 @@ resource "aws_alb" "main" {
   security_groups = [aws_security_group.lb.id]
 }
 
-# TODO: Update this listener to redirect all traffic to 443
+resource "aws_lb_listener" "front_end" {
+  load_balancer_arn = aws_alb.main.id
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "front_end" {
+  load_balancer_arn = aws_alb.main.arn
+  port = "443"
+  protocol = "HTTPS"
+  ssl_policy = "ELBSecurityPolicy-2016-08"
+  certificate_arn = "arn:aws:acm:eu-west-2:232705206979:certificate/b75eecc6-fff7-4114-b100-b1f0eb0641d7"
+
+  default_action {
+    target_group_arn = aws_alb_target_group.webapp.id
+    type             = "forward"
+  }
+}
+
 resource "aws_alb_listener" "front_end" {
   load_balancer_arn = aws_alb.main.id
   port              = 80
