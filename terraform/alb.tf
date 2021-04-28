@@ -21,7 +21,7 @@ resource "aws_alb_listener" "front_end" {
   }
 }
 
-resource "aws_alb_listener" "front_end" {
+resource "aws_alb_listener" "front_end_ssl" {
   load_balancer_arn = aws_alb.main.arn
   port              = "443"
   protocol          = "HTTPS"
@@ -35,7 +35,7 @@ resource "aws_alb_listener" "front_end" {
 }
 
 resource "aws_lb_listener_rule" "service" {
-  listener_arn = aws_alb_listener.front_end.arn
+  listener_arn = aws_alb_listener.front_end_ssl.arn
 
   action {
     type             = "forward"
