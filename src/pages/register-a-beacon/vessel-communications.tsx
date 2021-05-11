@@ -200,16 +200,27 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
 
     <FormGroup>
       <CheckboxList conditional={true}>
+        <input
+          id="vhfRadioHidden"
+          type="hidden"
+          name="vhfRadio"
+          value="false"
+        />
         <CheckboxListItem
           id="vhfRadio"
-          defaultChecked={form.fields.vhfRadio.value === "true"}
+          defaultChecked={form.fields.vhfRadio.value.includes("true")}
           label="VHF Radio"
         />
-
+        <input
+          id="fixedVhfRadioHidden"
+          type="hidden"
+          name="fixedVhfRadio"
+          value="false"
+        />
         <CheckboxListItem
           id="fixedVhfRadio"
           label="VHF/DSC Radio"
-          defaultChecked={form.fields.fixedVhfRadio.value === "true"}
+          defaultChecked={form.fields.fixedVhfRadio.value.includes("true")}
           conditional={true}
         >
           <FormGroup
@@ -224,9 +235,15 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
             />
           </FormGroup>
         </CheckboxListItem>
+        <input
+          id="portableVhfRadioHidden"
+          type="hidden"
+          name="portableVhfRadio"
+          value="false"
+        />
         <CheckboxListItem
           id="portableVhfRadio"
-          defaultChecked={form.fields.portableVhfRadio.value === "true"}
+          defaultChecked={form.fields.portableVhfRadio.value.includes("true")}
           label="Portable VHF/DSC Radio"
           conditional={true}
         >
@@ -241,9 +258,15 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
             />
           </FormGroup>
         </CheckboxListItem>
+        <input
+          id="satelliteTelephoneHidden"
+          type="hidden"
+          name="satelliteTelephone"
+          value="false"
+        />
         <CheckboxListItem
           id="satelliteTelephone"
-          defaultChecked={form.fields.satelliteTelephone.value === "true"}
+          defaultChecked={form.fields.satelliteTelephone.value.includes("true")}
           label="Satellite Telephone"
           conditional={true}
         >
@@ -258,9 +281,15 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
             />
           </FormGroup>
         </CheckboxListItem>
+        <input
+          id="mobileTelephoneHidden"
+          type="hidden"
+          name="mobileTelephone"
+          value="false"
+        />
         <CheckboxListItem
           id="mobileTelephone"
-          defaultChecked={form.fields.mobileTelephone.value === "true"}
+          defaultChecked={form.fields.mobileTelephone.value.includes("true")}
           label="Mobile Telephone(s)"
           conditional={true}
         >
@@ -283,9 +312,15 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
             htmlAttributes={{ autoComplete: "tel" }}
           />
         </CheckboxListItem>
+        <input
+          id="otherCommunicationHidden"
+          type="hidden"
+          name="otherCommunication"
+          value="false"
+        />
         <CheckboxListItem
           id="otherCommunication"
-          defaultChecked={form.fields.otherCommunication.value === "true"}
+          defaultChecked={form.fields.otherCommunication.value.includes("true")}
           label="Other"
           conditional={true}
         >
