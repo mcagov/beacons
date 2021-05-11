@@ -20,6 +20,7 @@ import {
   iCanEditMyPersonalDetails,
 } from "../i-can-enter-owner-information.spec";
 import {
+  andIAmAt,
   andIClickContinue,
   givenIHaveSelected,
   givenIHaveTyped,
@@ -193,6 +194,7 @@ export const iCanEditMyVesselCommunications = (): void => {
   andIClickContinue();
   whenIClickBack();
   iCanViewMyChangedVesselCommunications(comms);
+  andIAmAt(PageURLs.vesselCommunications);
 };
 
 export const iCanViewMyVesselCommunications = (comms): void => {
@@ -222,6 +224,15 @@ export const iCanViewMyChangedVesselCommunications = (comms): void => {
   comms.checkedFields.forEach((field) =>
     cy.get(`#${field}`).should("not.be.checked")
   );
+  cy.get("#fixedVhfRadioInput").should("not.be.visible");
+  cy.get("#portableVhfRadioInput").should("not.be.visible");
+  cy.get("#satelliteTelephoneInput").should("not.be.visible");
+  cy.get("#mobileTelephoneInput1").should("not.be.visible");
+  cy.get("#mobileTelephoneInput2").should("not.be.visible");
+  cy.get("#otherCommunicationInput").should("not.be.visible");
+
+  cy.visit(PageURLs.checkYourAnswers);
+  cy.get(".govuk-summary-list__value").should("contain", "Callsign: -");
 };
 
 export const iCanEditMyVesselDetails = (): void => {
