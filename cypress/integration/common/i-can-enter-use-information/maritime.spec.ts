@@ -171,6 +171,10 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   iCanEditMyAdditionalMaritimeUseInformation();
   whenIClickBack();
   iCanEditMyVesselCommunications();
+  iCanChangeMyVesselCommunications();
+  andIClickContinue();
+  whenIClickBack();
+  iCanViewMyChangedVesselCommunications();
   whenIClickBack();
   iCanEditMyVesselDetails();
   whenIClickBack();
@@ -189,22 +193,9 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
 
 export const iCanEditMyVesselCommunications = (): void => {
   const comms = testMaritimeUseData.communications;
-  iCanViewMyVesselCommunications(comms);
-  iCanChangeMyVesselCommunications(comms);
-  andIClickContinue();
-  whenIClickBack();
-  iCanViewMyChangedVesselCommunications(comms);
-  andIAmAt(PageURLs.vesselCommunications);
-};
-
-export const iCanViewMyVesselCommunications = (comms): void => {
   comms.checkedFields.forEach((field) =>
     cy.get(`#${field}`).should("be.checked")
   );
-  andICanViewMyVesselCommunicationsTextInputs(comms);
-};
-
-export const andICanViewMyVesselCommunicationsTextInputs = (comms): void => {
   cy.get("#fixedVhfRadioInput").should("have.value", comms.fixedMMSI);
   cy.get("#portableVhfRadioInput").should("have.value", comms.portableMMSI);
   cy.get("#satelliteTelephoneInput").should(
@@ -216,11 +207,14 @@ export const andICanViewMyVesselCommunicationsTextInputs = (comms): void => {
   cy.get("#otherCommunicationInput").contains(comms.otherCommunication);
 };
 
-export const iCanChangeMyVesselCommunications = (comms): void => {
+export const iCanChangeMyVesselCommunications = (): void => {
+  const comms = testMaritimeUseData.communications;
   comms.checkedFields.forEach((field) => givenIHaveUnselected(`#${field}`));
 };
 
-export const iCanViewMyChangedVesselCommunications = (comms): void => {
+export const iCanViewMyChangedVesselCommunications = (): void => {
+  const comms = testMaritimeUseData.communications;
+
   comms.checkedFields.forEach((field) =>
     cy.get(`#${field}`).should("not.be.checked")
   );
@@ -230,9 +224,14 @@ export const iCanViewMyChangedVesselCommunications = (comms): void => {
   cy.get("#mobileTelephoneInput1").should("not.be.visible");
   cy.get("#mobileTelephoneInput2").should("not.be.visible");
   cy.get("#otherCommunicationInput").should("not.be.visible");
-
+  andIClickContinue();
   cy.visit(PageURLs.checkYourAnswers);
-  cy.get(".govuk-summary-list__value").should("contain", "Callsign: -");
+  Object.values(comms)
+    .filter((value) => typeof value === "string")
+    .forEach((value: string) =>
+      cy.get(".govuk-summary-list__value").should("not.contain", value)
+    );
+  andIAmAt(PageURLs.vesselCommunications + "?useIndex=0");
 };
 
 export const iCanEditMyVesselDetails = (): void => {
