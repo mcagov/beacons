@@ -23,6 +23,7 @@ import {
   andIClickContinue,
   givenIHaveSelected,
   givenIHaveTyped,
+  givenIHaveUnselected,
   iAmAt,
   iCanSeeAPageHeadingThatContains,
   thenTheUrlShouldContain,
@@ -187,9 +188,21 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
 
 export const iCanEditMyVesselCommunications = (): void => {
   const comms = testMaritimeUseData.communications;
+  iCanViewMyVesselCommunications(comms);
+  iCanChangeMyVesselCommunications(comms);
+  andIClickContinue();
+  whenIClickBack();
+  iCanViewMyChangedVesselCommunications(comms);
+};
+
+export const iCanViewMyVesselCommunications = (comms): void => {
   comms.checkedFields.forEach((field) =>
     cy.get(`#${field}`).should("be.checked")
   );
+  andICanViewMyVesselCommunicationsTextInputs(comms);
+};
+
+export const andICanViewMyVesselCommunicationsTextInputs = (comms): void => {
   cy.get("#fixedVhfRadioInput").should("have.value", comms.fixedMMSI);
   cy.get("#portableVhfRadioInput").should("have.value", comms.portableMMSI);
   cy.get("#satelliteTelephoneInput").should(
@@ -199,6 +212,16 @@ export const iCanEditMyVesselCommunications = (): void => {
   cy.get("#mobileTelephoneInput1").should("have.value", comms.mobileTelephone1);
   cy.get("#mobileTelephoneInput2").should("have.value", comms.mobileTelephone2);
   cy.get("#otherCommunicationInput").contains(comms.otherCommunication);
+};
+
+export const iCanChangeMyVesselCommunications = (comms): void => {
+  comms.checkedFields.forEach((field) => givenIHaveUnselected(`#${field}`));
+};
+
+export const iCanViewMyChangedVesselCommunications = (comms): void => {
+  comms.checkedFields.forEach((field) =>
+    cy.get(`#${field}`).should("not.be.checked")
+  );
 };
 
 export const iCanEditMyVesselDetails = (): void => {
