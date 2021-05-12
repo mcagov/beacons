@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2.1.5
         with:
           node-version: "14"
       - name: Install npm dependencies
@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2.1.5
         with:
           node-version: "14"
       - name: Restore cache
@@ -83,7 +83,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2.1.5
         with:
           node-version: "14"
       - name: Restore cache
@@ -101,7 +101,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2.1.5
         with:
           node-version: "14"
       - name: Restore cache
