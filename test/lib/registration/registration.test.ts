@@ -3,7 +3,11 @@ import {
   initBeacon,
   initBeaconUse,
 } from "../../../src/lib/registration/registrationInitialisation";
-import { Environment, Purpose } from "../../../src/lib/registration/types";
+import {
+  Activity,
+  Environment,
+  Purpose,
+} from "../../../src/lib/registration/types";
 import {
   getMockBeacon,
   getMockEmergencyContact,
@@ -246,7 +250,16 @@ describe("Registration", () => {
       use.purpose = Purpose.PLEASURE;
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0].purpose).toStrictEqual(Purpose.PLEASURE);
+      expect(json.beacons[0].uses[0].purpose).toBe(Purpose.PLEASURE);
+    });
+
+    it("should not serialise the other activity text, location or people count if other activity is not selected", () => {
+      registration.update({ activity: Activity.CARGO_AIRPLANE });
+      const json = registration.serialiseToAPI();
+
+      expect(json.beacons[0].uses[0].otherActivity).toBe("");
+      expect(json.beacons[0].uses[0].otherActivityLocation).toBe("");
+      expect(json.beacons[0].uses[0].otherActivityPeopleCount).toBe("");
     });
 
     it("should not serialise the max capacity if it is not a number", () => {

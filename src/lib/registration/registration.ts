@@ -1,7 +1,7 @@
 import { FormSubmission } from "../formCache";
 import { stringToBoolean } from "../utils";
 import { initBeacon, initBeaconUse } from "./registrationInitialisation";
-import { BeaconUse, IRegistration } from "./types";
+import { Activity, BeaconUse, IRegistration } from "./types";
 
 type Indexes = {
   useIndex: number;
@@ -173,7 +173,8 @@ export class Registration {
       environment: use.environment,
       purpose: use.purpose ? use.purpose : null,
       activity: use.activity,
-      otherActivity: use.otherActivityText,
+      otherActivity:
+        use.activity === Activity.OTHER ? use.otherActivityText : "",
       callSign: use.callSign,
       vhfRadio: use.vhfRadio.includes("true"),
       fixedVhfRadio: use.fixedVhfRadio.includes("true"),
@@ -222,8 +223,10 @@ export class Registration {
       workingRemotelyPeopleCount: use.workingRemotelyPeopleCount,
       windfarmLocation: use.windfarmLocation,
       windfarmPeopleCount: use.windfarmPeopleCount,
-      otherActivityLocation: use.otherActivityLocation,
-      otherActivityPeopleCount: use.otherActivityPeopleCount,
+      otherActivityLocation:
+        use.activity === Activity.OTHER ? use.otherActivityLocation : "",
+      otherActivityPeopleCount:
+        use.activity === Activity.OTHER ? use.otherActivityPeopleCount : "",
       moreDetails: use.moreDetails,
     };
 
