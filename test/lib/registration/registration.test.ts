@@ -3,7 +3,11 @@ import {
   initBeacon,
   initBeaconUse,
 } from "../../../src/lib/registration/registrationInitialisation";
-import { Environment, Purpose } from "../../../src/lib/registration/types";
+import {
+  Activity,
+  Environment,
+  Purpose,
+} from "../../../src/lib/registration/types";
 import {
   getMockBeacon,
   getMockEmergencyContact,
@@ -195,11 +199,26 @@ describe("Registration", () => {
     });
 
     it("should serialise the registration for sending to the API", () => {
+      const expectedUse = {
+        ...use,
+        vhfRadio: false,
+        fixedVhfRadio: false,
+        fixedVhfRadioValue: "",
+        portableVhfRadio: false,
+        portableVhfRadioValue: "",
+        satelliteTelephone: false,
+        satelliteTelephoneValue: "",
+        mobileTelephone: false,
+        mobileTelephone1: "",
+        mobileTelephone2: "",
+        otherCommunication: false,
+        otherCommunicationValue: "",
+      };
       const expected = {
         beacons: [
           {
             ...beacon,
-            uses: [use],
+            uses: [expectedUse],
             owner: { ...owner },
             emergencyContacts: [
               emergencyContact,
@@ -209,6 +228,7 @@ describe("Registration", () => {
           },
         ],
       };
+
       const json = registration.serialiseToAPI();
 
       expect(json).toMatchObject(expected);
@@ -223,15 +243,23 @@ describe("Registration", () => {
       use.mainUse = false;
 
       expect(json.beacons[0].uses.length).toBe(2);
-      expect(json.beacons[0].uses[1]).toStrictEqual(use);
     });
 
     it("should serialise the purpose if it is defined", () => {
       registration.update({ purpose: Purpose.PLEASURE });
-      use["purpose"] = Purpose.PLEASURE;
+      use.purpose = Purpose.PLEASURE;
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0]).toStrictEqual(use);
+      expect(json.beacons[0].uses[0].purpose).toBe(Purpose.PLEASURE);
+    });
+
+    it("should not serialise the other activity text, location or people count if other activity is not selected", () => {
+      registration.update({ activity: Activity.CARGO_AIRPLANE });
+      const json = registration.serialiseToAPI();
+
+      expect(json.beacons[0].uses[0].otherActivity).toBe("");
+      expect(json.beacons[0].uses[0].otherActivityLocation).toBe("");
+      expect(json.beacons[0].uses[0].otherActivityPeopleCount).toBe("");
     });
 
     it("should not serialise the max capacity if it is not a number", () => {
@@ -239,7 +267,7 @@ describe("Registration", () => {
       delete use.maxCapacity;
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0]).toStrictEqual(use);
+      expect(json.beacons[0].uses[0]["maxCapacity"]).not.toBeDefined();
     });
 
     it("should not serialise the max capacity if it is not a whole number", () => {
@@ -247,7 +275,33 @@ describe("Registration", () => {
       delete use.maxCapacity;
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0]).toStrictEqual(use);
+      expect(json.beacons[0].uses[0]["maxCapacity"]).not.toBeDefined();
+    });
+
+    it("should serialise all the communication information if selected", () => {
+      registration.update({
+        vhfRadio: ["false", "true"],
+        fixedVhfRadio: ["false", "true"],
+        portableVhfRadio: ["false", "true"],
+        satelliteTelephone: ["false", "true"],
+        mobileTelephone: ["false", "true"],
+        otherCommunication: ["false", "true"],
+      });
+
+      const json = registration.serialiseToAPI();
+      const firstUse = json.beacons[0].uses[0];
+      expect(firstUse.vhfRadio).toBe(true);
+      expect(firstUse.fixedVhfRadio).toBe(true);
+      expect(firstUse.fixedVhfRadioValue).toBe("0117");
+      expect(firstUse.portableVhfRadio).toBe(true);
+      expect(firstUse.portableVhfRadioValue).toBe("0118");
+      expect(firstUse.satelliteTelephone).toBe(true);
+      expect(firstUse.satelliteTelephoneValue).toBe("0119");
+      expect(firstUse.mobileTelephone).toBe(true);
+      expect(firstUse.mobileTelephone1).toBe("01178123456");
+      expect(firstUse.mobileTelephone2).toBe("01178123457");
+      expect(firstUse.otherCommunication).toBe(true);
+      expect(firstUse.otherCommunicationValue).toBe("Via email");
     });
   });
 });

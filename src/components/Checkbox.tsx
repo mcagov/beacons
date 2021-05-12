@@ -79,6 +79,7 @@ export const CheckboxListItem: FunctionComponent<CheckboxListItemProps> = ({
   return (
     <>
       <div className="govuk-checkboxes__item">
+        <input id={`${id}Hidden`} type="hidden" name={name} value="false" />
         <input
           className="govuk-checkboxes__input"
           id={id}

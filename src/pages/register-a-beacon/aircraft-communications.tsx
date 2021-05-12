@@ -12,6 +12,11 @@ import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
 
+const matchingConditionIsTrueForKey = (key: string) => ({
+  dependsOn: key,
+  meetingCondition: (value) => value.includes("true"),
+});
+
 const definePageForm = ({
   vhfRadio,
   satelliteTelephone,
@@ -35,12 +40,7 @@ const definePageForm = ({
           "Enter a satellite telephone number in the correct format"
         ),
       ],
-      [
-        {
-          dependsOn: "satelliteTelephone",
-          meetingCondition: (value) => value === "true",
-        },
-      ]
+      [matchingConditionIsTrueForKey("satelliteTelephone")]
     ),
     mobileTelephone: new FieldManager(mobileTelephone),
     mobileTelephoneInput1: new FieldManager(
@@ -53,12 +53,7 @@ const definePageForm = ({
           "Enter a mobile telephone number, like 07700 982736 or +447700912738"
         ),
       ],
-      [
-        {
-          dependsOn: "mobileTelephone",
-          meetingCondition: (value) => value === "true",
-        },
-      ]
+      [matchingConditionIsTrueForKey("mobileTelephone")]
     ),
     mobileTelephoneInput2: new FieldManager(mobileTelephoneInput2),
     otherCommunication: new FieldManager(otherCommunication),
@@ -71,12 +66,7 @@ const definePageForm = ({
           250
         ),
       ],
-      [
-        {
-          dependsOn: "otherCommunication",
-          meetingCondition: (value) => value === "true",
-        },
-      ]
+      [matchingConditionIsTrueForKey("otherCommunication")]
     ),
   });
 };
@@ -117,12 +107,12 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
       <CheckboxList conditional={true}>
         <CheckboxListItem
           id="vhfRadio"
-          defaultChecked={form.fields.vhfRadio.value === "true"}
+          defaultChecked={form.fields.vhfRadio.value.includes("true")}
           label="VHF Radio"
         />
         <CheckboxListItem
           id="satelliteTelephone"
-          defaultChecked={form.fields.satelliteTelephone.value === "true"}
+          defaultChecked={form.fields.satelliteTelephone.value.includes("true")}
           label="Satellite Telephone"
           conditional={true}
         >
@@ -139,7 +129,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="mobileTelephone"
-          defaultChecked={form.fields.mobileTelephone.value === "true"}
+          defaultChecked={form.fields.mobileTelephone.value.includes("true")}
           label="Mobile Telephone(s)"
           conditional={true}
         >
@@ -164,7 +154,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="otherCommunication"
-          defaultChecked={form.fields.otherCommunication.value === "true"}
+          defaultChecked={form.fields.otherCommunication.value.includes("true")}
           label="Other"
           conditional={true}
         >

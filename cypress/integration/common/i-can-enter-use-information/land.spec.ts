@@ -3,9 +3,11 @@ import { PageURLs } from "../../../../src/lib/urls";
 import { makeEnumValueUserFriendly } from "../../../../src/lib/utils";
 import { testLandUseData } from "../happy-path-test-data.spec";
 import {
+  andIAmAt,
   andIClickContinue,
   givenIHaveSelected,
   givenIHaveTyped,
+  givenIHaveUnselected,
   iCanSeeAPageHeadingThatContains,
   thenTheUrlShouldContain,
 } from "../selectors-and-assertions.spec";
@@ -36,6 +38,7 @@ export const iCanEditMyLandCommunications = (): void => {
   comms.checkedFields.forEach((field) =>
     cy.get(`#${field}`).should("be.checked")
   );
+  cy.get("#portableVhfRadioInput").should("contain.value", comms.portableMMSI);
   cy.get("#satelliteTelephoneInput").should(
     "contain.value",
     comms.satelliteTelephone
@@ -52,6 +55,32 @@ export const iCanEditMyLandCommunications = (): void => {
     "contain.value",
     comms.otherCommunication
   );
+};
+
+export const iCanChangeMyLandCommunications = (): void => {
+  const comms = testLandUseData.communications;
+  comms.checkedFields.forEach((field) => givenIHaveUnselected(`#${field}`));
+};
+
+export const iCanViewMyChangedLandCommunications = (): void => {
+  const comms = testLandUseData.communications;
+  comms.checkedFields.forEach((field) =>
+    cy.get(`#${field}`).should("not.be.checked")
+  );
+  cy.get("#portableVhfRadioInput").should("not.be.visible");
+  cy.get("#satelliteTelephoneInput").should("not.be.visible");
+  cy.get("#mobileTelephoneInput1").should("not.be.visible");
+  cy.get("#mobileTelephoneInput2").should("not.be.visible");
+  cy.get("#otherCommunicationInput").should("not.be.visible");
+  andIClickContinue();
+
+  cy.visit(PageURLs.checkYourAnswers);
+  Object.values(comms)
+    .filter((value) => typeof value === "string")
+    .forEach((value: string) =>
+      cy.get(".govuk-summary-list__value").should("not.contain", value)
+    );
+  andIAmAt(PageURLs.landCommunications + "?useIndex=0");
 };
 
 export const iCanEditMyLandActivity = (): void => {

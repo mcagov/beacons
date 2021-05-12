@@ -20,9 +20,11 @@ import {
   iCanEditMyPersonalDetails,
 } from "../i-can-enter-owner-information.spec";
 import {
+  andIAmAt,
   andIClickContinue,
   givenIHaveSelected,
   givenIHaveTyped,
+  givenIHaveUnselected,
   iAmAt,
   iCanSeeAPageHeadingThatContains,
   thenTheUrlShouldContain,
@@ -87,6 +89,10 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   iCanEditMyAdditionalAviationUseInformation();
   whenIClickBack();
   iCanEditMyAircraftCommunications();
+  iCanChangeMyAircraftCommunications();
+  andIClickContinue();
+  whenIClickBack();
+  iCanViewMyChangedAircraftCommunications();
   whenIClickBack();
   iCanEditMyAircraftDetails();
   whenIClickBack();
@@ -115,6 +121,31 @@ export const iCanEditMyAircraftCommunications = (): void => {
   cy.get("#mobileTelephoneInput1").should("have.value", comms.mobileTelephone1);
   cy.get("#mobileTelephoneInput2").should("have.value", comms.mobileTelephone2);
   cy.get("#otherCommunicationInput").contains(comms.otherCommunication);
+};
+
+export const iCanChangeMyAircraftCommunications = (): void => {
+  const comms = testAviationUseData.communications;
+  comms.checkedFields.forEach((field) => givenIHaveUnselected(`#${field}`));
+};
+
+export const iCanViewMyChangedAircraftCommunications = (): void => {
+  const comms = testAviationUseData.communications;
+
+  comms.checkedFields.forEach((field) =>
+    cy.get(`#${field}`).should("not.be.checked")
+  );
+  cy.get("#satelliteTelephoneInput").should("not.be.visible");
+  cy.get("#mobileTelephoneInput1").should("not.be.visible");
+  cy.get("#mobileTelephoneInput2").should("not.be.visible");
+  cy.get("#otherCommunicationInput").should("not.be.visible");
+  andIClickContinue();
+  cy.visit(PageURLs.checkYourAnswers);
+  Object.values(comms)
+    .filter((value) => typeof value === "string")
+    .forEach((value: string) =>
+      cy.get(".govuk-summary-list__value").should("not.contain", value)
+    );
+  andIAmAt(PageURLs.aircraftCommunications + "?useIndex=0");
 };
 
 export const iCanEditMyAircraftDetails = (): void => {

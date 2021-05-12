@@ -110,6 +110,10 @@ export const givenIHaveSelected = (selector: string): void => {
 };
 export const andIHaveSelected = givenIHaveSelected;
 
+export const givenIHaveUnselected = (selector: string): void => {
+  cy.get(selector).should("be.checked").uncheck();
+};
+
 export const andIHaveEnteredNoInformation = (): void => null;
 
 export const whenIClickBack = (): void => {
