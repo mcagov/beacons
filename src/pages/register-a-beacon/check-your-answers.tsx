@@ -384,7 +384,12 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
           href={href}
           actionText="Change"
         >
-          <CheckYourAnswersDataRowItem label="Callsign" value={use.callSign} />
+          {use.environment === Environment.MARITIME && (
+            <CheckYourAnswersDataRowItem
+              label="Callsign"
+              value={use.callSign}
+            />
+          )}
           {use.fixedVhfRadio.includes("true") && (
             <>
               Fixed VHF/DSC
