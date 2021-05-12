@@ -28,12 +28,15 @@ import {
 } from "../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyLandUse,
+  iCanChangeMyLandCommunications,
   iCanEditMyAdditionalLandUseMoreDetails,
   iCanEditMyLandActivity,
   iCanEditMyLandCommunications,
   iCanSeeMyLandUse,
+  iCanViewMyChangedLandCommunications,
 } from "../common/i-can-enter-use-information/land.spec";
 import {
+  andIClickContinue,
   iAmAt,
   thenTheUrlShouldContain,
   whenIClickBack,
@@ -72,6 +75,10 @@ describe("As a land beacon owner", () => {
     iCanEditMyAdditionalLandUseMoreDetails();
     whenIClickBack();
     iCanEditMyLandCommunications();
+    iCanChangeMyLandCommunications();
+    andIClickContinue();
+    whenIClickBack();
+    iCanViewMyChangedLandCommunications();
     whenIClickBack();
     iCanEditMyLandActivity();
     whenIClickBack();
