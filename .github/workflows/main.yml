@@ -17,7 +17,7 @@ jobs:
         working-directory: terraform
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - uses: hashicorp/setup-terraform@v1
       - name: Terraform Lint
         run: terraform fmt --recursive --check
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
@@ -43,19 +43,19 @@ jobs:
       webapp_commit_hash: ${{ steps.get_webapp_commit_hash.outputs.webapp_commit_hash }}
       service_commit_hash: ${{ steps.get_service_commit_hash.outputs.service_commit_hash }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
         with:
           repository: "mcagov/beacons-webapp"
       - id: get_webapp_commit_hash
         name: Get commit hash from Webapp repo
         run: echo "::set-output name=webapp_commit_hash::$(git rev-parse HEAD)"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
         with:
           repository: "mcagov/beacons-service"
       - id: get_service_commit_hash
         name: Get commit hash from Service repo
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
         with:
           token: ${{ secrets.MCA_GITHUB_TOKEN }}
       - uses: hashicorp/setup-terraform@v1
@@ -85,7 +85,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       TF_WORKSPACE: dev
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
         with:
           ref: main
       - uses: hashicorp/setup-terraform@v1
