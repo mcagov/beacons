@@ -17,6 +17,11 @@ interface FormInputProps {
   value: string;
 }
 
+const matchingConditionIsTrueForKey = (key: string) => ({
+  dependsOn: key,
+  meetingCondition: (value) => value.includes("true"),
+});
+
 const definePageForm = ({
   callSign,
   vhfRadio,
@@ -50,12 +55,7 @@ const definePageForm = ({
           9
         ),
       ],
-      [
-        {
-          dependsOn: "fixedVhfRadio",
-          meetingCondition: (value) => value.includes("true"),
-        },
-      ]
+      [matchingConditionIsTrueForKey("fixedVhfRadio")]
     ),
     portableVhfRadio: new FieldManager(portableVhfRadio),
     portableVhfRadioInput: new FieldManager(
@@ -72,12 +72,7 @@ const definePageForm = ({
           9
         ),
       ],
-      [
-        {
-          dependsOn: "portableVhfRadio",
-          meetingCondition: (value) => value.includes("true"),
-        },
-      ]
+      [matchingConditionIsTrueForKey("portableVhfRadio")]
     ),
     satelliteTelephone: new FieldManager(satelliteTelephone),
     satelliteTelephoneInput: new FieldManager(
@@ -90,12 +85,7 @@ const definePageForm = ({
           "Enter a satellite telephone number in the correct format"
         ),
       ],
-      [
-        {
-          dependsOn: "satelliteTelephone",
-          meetingCondition: (value) => value.includes("true"),
-        },
-      ]
+      [matchingConditionIsTrueForKey("satelliteTelephone")]
     ),
     mobileTelephone: new FieldManager(mobileTelephone),
     mobileTelephoneInput1: new FieldManager(
@@ -108,12 +98,7 @@ const definePageForm = ({
           "Enter a mobile telephone number, like 07700 982736 or +447700912738"
         ),
       ],
-      [
-        {
-          dependsOn: "mobileTelephone",
-          meetingCondition: (value) => value.includes("true"),
-        },
-      ]
+      [matchingConditionIsTrueForKey("mobileTelephone")]
     ),
     mobileTelephoneInput2: new FieldManager(mobileTelephoneInput2),
     otherCommunication: new FieldManager(otherCommunication),
@@ -126,12 +111,7 @@ const definePageForm = ({
           250
         ),
       ],
-      [
-        {
-          dependsOn: "otherCommunication",
-          meetingCondition: (value) => value.includes("true"),
-        },
-      ]
+      [matchingConditionIsTrueForKey("otherCommunication")]
     ),
   });
 };

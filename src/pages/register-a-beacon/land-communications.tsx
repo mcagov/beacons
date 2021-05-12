@@ -15,7 +15,7 @@ import { ofcomLicenseUrl, PageURLs } from "../../lib/urls";
 
 const matchingConditionIsTrueForKey = (key: string) => ({
   dependsOn: key,
-  meetingCondition: (value) => value === "true",
+  meetingCondition: (value) => value.includes("true"),
 });
 
 const definePageForm = ({
@@ -129,7 +129,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
     <CheckboxList conditional={true}>
       <CheckboxListItem
         id="portableVhfRadio"
-        defaultChecked={form.fields.portableVhfRadio.value === "true"}
+        defaultChecked={form.fields.portableVhfRadio.value.includes("true")}
         label="Portable VHF/DSC Radio"
         conditional={true}
       >
@@ -146,7 +146,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
       </CheckboxListItem>
       <CheckboxListItem
         id="satelliteTelephone"
-        defaultChecked={form.fields.satelliteTelephone.value === "true"}
+        defaultChecked={form.fields.satelliteTelephone.value.includes("true")}
         label="Satellite Telephone"
         conditional={true}
       >
@@ -163,7 +163,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
       </CheckboxListItem>
       <CheckboxListItem
         id="mobileTelephone"
-        defaultChecked={form.fields.mobileTelephone.value === "true"}
+        defaultChecked={form.fields.mobileTelephone.value.includes("true")}
         label="Mobile Telephone(s)"
         conditional={true}
       >
@@ -188,7 +188,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
       </CheckboxListItem>
       <CheckboxListItem
         id="otherCommunication"
-        defaultChecked={form.fields.otherCommunication.value === "true"}
+        defaultChecked={form.fields.otherCommunication.value.includes("true")}
         label="Other"
         conditional={true}
       >
