@@ -195,11 +195,26 @@ describe("Registration", () => {
     });
 
     it("should serialise the registration for sending to the API", () => {
+      const expectedUse = {
+        ...use,
+        vhfRadio: false,
+        fixedVhfRadio: false,
+        fixedVhfRadioValue: "",
+        portableVhfRadio: false,
+        portableVhfRadioValue: "",
+        satelliteTelephone: false,
+        satelliteTelephoneValue: "",
+        mobileTelephone: false,
+        mobileTelephone1: "",
+        mobileTelephone2: "",
+        otherCommunication: false,
+        otherCommunicationValue: "",
+      };
       const expected = {
         beacons: [
           {
             ...beacon,
-            uses: [use],
+            uses: [expectedUse],
             owner: { ...owner },
             emergencyContacts: [
               emergencyContact,
@@ -209,6 +224,7 @@ describe("Registration", () => {
           },
         ],
       };
+
       const json = registration.serialiseToAPI();
 
       expect(json).toMatchObject(expected);
@@ -223,15 +239,14 @@ describe("Registration", () => {
       use.mainUse = false;
 
       expect(json.beacons[0].uses.length).toBe(2);
-      expect(json.beacons[0].uses[1]).toStrictEqual(use);
     });
 
     it("should serialise the purpose if it is defined", () => {
       registration.update({ purpose: Purpose.PLEASURE });
-      use["purpose"] = Purpose.PLEASURE;
+      use.purpose = Purpose.PLEASURE;
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0]).toStrictEqual(use);
+      expect(json.beacons[0].uses[0].purpose).toStrictEqual(Purpose.PLEASURE);
     });
 
     it("should not serialise the max capacity if it is not a number", () => {
@@ -239,7 +254,7 @@ describe("Registration", () => {
       delete use.maxCapacity;
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0]).toStrictEqual(use);
+      expect(json.beacons[0].uses[0]["maxCapacity"]).not.toBeDefined();
     });
 
     it("should not serialise the max capacity if it is not a whole number", () => {
@@ -247,7 +262,7 @@ describe("Registration", () => {
       delete use.maxCapacity;
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0]).toStrictEqual(use);
+      expect(json.beacons[0].uses[0]["maxCapacity"]).not.toBeDefined();
     });
   });
 });

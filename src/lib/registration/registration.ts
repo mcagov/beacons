@@ -171,21 +171,34 @@ export class Registration {
   private _serialiseUse(use: BeaconUse, mainUse: boolean) {
     const serialisedUse = {
       environment: use.environment,
+      purpose: use.purpose ? use.purpose : null,
       activity: use.activity,
       otherActivity: use.otherActivityText,
       callSign: use.callSign,
-      vhfRadio: stringToBoolean(use.vhfRadio),
-      fixedVhfRadio: stringToBoolean(use.fixedVhfRadio),
-      fixedVhfRadioValue: use.fixedVhfRadioInput,
-      portableVhfRadio: stringToBoolean(use.portableVhfRadio),
-      portableVhfRadioValue: use.portableVhfRadioInput,
-      satelliteTelephone: stringToBoolean(use.satelliteTelephone),
-      satelliteTelephoneValue: use.satelliteTelephoneInput,
-      mobileTelephone: stringToBoolean(use.mobileTelephone),
-      mobileTelephone1: use.mobileTelephoneInput1,
-      mobileTelephone2: use.mobileTelephoneInput2,
-      otherCommunication: stringToBoolean(use.otherCommunication),
-      otherCommunicationValue: use.otherCommunicationInput,
+      vhfRadio: use.vhfRadio.includes("true"),
+      fixedVhfRadio: use.fixedVhfRadio.includes("true"),
+      fixedVhfRadioValue: use.fixedVhfRadio.includes("true")
+        ? use.fixedVhfRadioInput
+        : "",
+      portableVhfRadio: use.portableVhfRadio.includes("true"),
+      portableVhfRadioValue: use.portableVhfRadio.includes("true")
+        ? use.portableVhfRadioInput
+        : "",
+      satelliteTelephone: use.satelliteTelephone.includes("true"),
+      satelliteTelephoneValue: use.satelliteTelephone.includes("true")
+        ? use.satelliteTelephoneInput
+        : "",
+      mobileTelephone: use.mobileTelephone.includes("true"),
+      mobileTelephone1: use.mobileTelephone.includes("true")
+        ? use.mobileTelephoneInput1
+        : "",
+      mobileTelephone2: use.mobileTelephone.includes("true")
+        ? use.mobileTelephoneInput2
+        : "",
+      otherCommunication: use.otherCommunication.includes("true"),
+      otherCommunicationValue: use.otherCommunication.includes("true")
+        ? use.otherCommunicationInput
+        : "",
       vesselName: use.vesselName,
       portLetterNumber: use.portLetterNumber,
       homeport: use.homeport,
@@ -213,8 +226,6 @@ export class Registration {
       otherActivityPeopleCount: use.otherActivityPeopleCount,
       moreDetails: use.moreDetails,
     };
-
-    if (use.purpose) serialisedUse["purpose"] = use.purpose;
 
     if (Number.isInteger(use.maxCapacity))
       serialisedUse["maxCapacity"] = use.maxCapacity;
