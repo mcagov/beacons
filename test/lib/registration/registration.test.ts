@@ -264,5 +264,31 @@ describe("Registration", () => {
 
       expect(json.beacons[0].uses[0]["maxCapacity"]).not.toBeDefined();
     });
+
+    it("should serialise all the communication information if selected", () => {
+      registration.update({
+        vhfRadio: ["false", "true"],
+        fixedVhfRadio: ["false", "true"],
+        portableVhfRadio: ["false", "true"],
+        satelliteTelephone: ["false", "true"],
+        mobileTelephone: ["false", "true"],
+        otherCommunication: ["false", "true"],
+      });
+
+      const json = registration.serialiseToAPI();
+      const firstUse = json.beacons[0].uses[0];
+      expect(firstUse.vhfRadio).toBe(true);
+      expect(firstUse.fixedVhfRadio).toBe(true);
+      expect(firstUse.fixedVhfRadioValue).toBe("0117");
+      expect(firstUse.portableVhfRadio).toBe(true);
+      expect(firstUse.portableVhfRadioValue).toBe("0118");
+      expect(firstUse.satelliteTelephone).toBe(true);
+      expect(firstUse.satelliteTelephoneValue).toBe("0119");
+      expect(firstUse.mobileTelephone).toBe(true);
+      expect(firstUse.mobileTelephone1).toBe("01178123456");
+      expect(firstUse.mobileTelephone2).toBe("01178123457");
+      expect(firstUse.otherCommunication).toBe(true);
+      expect(firstUse.otherCommunicationValue).toBe("Via email");
+    });
   });
 });
