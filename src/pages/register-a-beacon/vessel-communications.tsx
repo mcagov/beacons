@@ -53,7 +53,7 @@ const definePageForm = ({
       [
         {
           dependsOn: "fixedVhfRadio",
-          meetingCondition: (value) => value === "true",
+          meetingCondition: (value) => value.includes("true"),
         },
       ]
     ),
@@ -75,7 +75,7 @@ const definePageForm = ({
       [
         {
           dependsOn: "portableVhfRadio",
-          meetingCondition: (value) => value === "true",
+          meetingCondition: (value) => value.includes("true"),
         },
       ]
     ),
@@ -93,7 +93,7 @@ const definePageForm = ({
       [
         {
           dependsOn: "satelliteTelephone",
-          meetingCondition: (value) => value === "true",
+          meetingCondition: (value) => value.includes("true"),
         },
       ]
     ),
@@ -111,7 +111,7 @@ const definePageForm = ({
       [
         {
           dependsOn: "mobileTelephone",
-          meetingCondition: (value) => value === "true",
+          meetingCondition: (value) => value.includes("true"),
         },
       ]
     ),
@@ -129,7 +129,7 @@ const definePageForm = ({
       [
         {
           dependsOn: "otherCommunication",
-          meetingCondition: (value) => value === "true",
+          meetingCondition: (value) => value.includes("true"),
         },
       ]
     ),
