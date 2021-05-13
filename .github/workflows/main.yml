@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - uses: actions/setup-node@v2.1.5
         with:
           node-version: "14"
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - name: Extract branch name
         shell: bash
         run: REF=${GITHUB_REF#refs/heads/} && arrREF=(${REF//// }) && echo "##[set-output name=branch;]$(echo ${arrREF[-1]})"
@@ -51,7 +51,7 @@ jobs:
     needs: install_dependencies
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - uses: actions/setup-node@v2.1.5
         with:
           node-version: "14"
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
         with:
@@ -82,7 +82,7 @@ jobs:
     needs: install_dependencies
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - uses: actions/setup-node@v2.1.5
         with:
           node-version: "14"
@@ -100,7 +100,7 @@ jobs:
     needs: install_dependencies
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - uses: actions/setup-node@v2.1.5
         with:
           node-version: "14"
@@ -117,7 +117,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - name: Docker lint
         uses: brpaz/hadolint-action@v1.5.0
 
@@ -126,7 +126,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
       - name: Perform CodeQL Analysis
