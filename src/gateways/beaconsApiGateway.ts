@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IRegistration } from "../lib/registration/types";
 
 export class BeaconsApiGateway {
   private apiUrl: string;
@@ -8,8 +9,9 @@ export class BeaconsApiGateway {
     this.apiUrl = process.env.API_URL;
   }
 
-  // TODO: Update `any` type once domain/form objects are defined
-  public async sendRegistration(json: any): Promise<boolean> {
+  public async sendRegistration(
+    json: Partial<IRegistration>
+  ): Promise<boolean> {
     const url = `${this.apiUrl}/${this.registrationsEndpoint}`;
 
     try {
