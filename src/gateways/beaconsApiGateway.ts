@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IRegistration } from "../lib/registration/types";
+import { IRegistrationRequestBody } from "../lib/registration/iRegistrationRequestBody";
 
 export class BeaconsApiGateway {
   private apiUrl: string;
@@ -10,7 +10,7 @@ export class BeaconsApiGateway {
   }
 
   public async sendRegistration(
-    json: Partial<IRegistration>
+    json: IRegistrationRequestBody
   ): Promise<boolean> {
     const url = `${this.apiUrl}/${this.registrationsEndpoint}`;
 
