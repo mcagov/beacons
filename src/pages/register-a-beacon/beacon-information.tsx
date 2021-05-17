@@ -11,7 +11,7 @@ import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
 import { GovUKBody } from "../../components/Typography";
-import { getISODate } from "../../lib/dateTimeUtils";
+import { isoDateString } from "../../lib/dateTimeUtils";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -224,11 +224,11 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 const transformFormData = (formData: FormSubmission): FormSubmission => {
   formData = {
     ...formData,
-    batteryExpiryDate: getISODate(
+    batteryExpiryDate: isoDateString(
       formData.batteryExpiryDateYear,
       formData.batteryExpiryDateMonth
     ),
-    lastServicedDate: getISODate(
+    lastServicedDate: isoDateString(
       formData.lastServicedDateYear,
       formData.lastServicedDateMonth
     ),
