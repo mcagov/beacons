@@ -1,5 +1,6 @@
 import { FormSubmission } from "../formCache";
 import { stringToBoolean } from "../utils";
+import { IRegistrationRequestBody } from "./iRegistrationRequestBody";
 import { initBeacon, initBeaconUse } from "./registrationInitialisation";
 import { Activity, BeaconUse, IRegistration } from "./types";
 
@@ -69,8 +70,7 @@ export class Registration {
     return Math.min(useIndex, beaconUseLength);
   }
 
-  // TODO: Define return type once domain/form objects have been defined
-  public serialiseToAPI() {
+  public serialiseToAPI(): IRegistrationRequestBody {
     const beacon = this._serialiseBeacon();
     const owner = this._serialiseOwner();
     const emergencyContacts = this._serialiseEmergencyContacts();

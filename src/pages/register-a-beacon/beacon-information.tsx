@@ -11,6 +11,7 @@ import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
 import { GovUKBody } from "../../components/Typography";
+import { isoDateString } from "../../lib/dateTimeUtils";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -22,22 +23,6 @@ interface DateInputProps {
   monthValue: string;
   yearValue: string;
   errorMessages: string[];
-}
-
-function getISODate(year: string, month: string): string {
-  const monthAsNumber = Number(month);
-  const yearAsNumber = Number(year);
-  const isValidMonth = monthAsNumber > 0 && monthAsNumber < 13;
-
-  if (yearAsNumber && isValidMonth) {
-    try {
-      return new Date(yearAsNumber, monthAsNumber - 1).toISOString();
-    } catch {
-      return null;
-    }
-  }
-
-  return null;
 }
 
 const definePageForm = ({
@@ -239,11 +224,11 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 const transformFormData = (formData: FormSubmission): FormSubmission => {
   formData = {
     ...formData,
-    batteryExpiryDate: getISODate(
+    batteryExpiryDate: isoDateString(
       formData.batteryExpiryDateYear,
       formData.batteryExpiryDateMonth
     ),
-    lastServicedDate: getISODate(
+    lastServicedDate: isoDateString(
       formData.lastServicedDateYear,
       formData.lastServicedDateMonth
     ),

@@ -25,7 +25,7 @@ describe("Beacons API Gateway", () => {
       json = { model: "ASOS" };
     });
 
-    it("should return true if it posted the entity successfuly", async () => {
+    it("should return true if it posted the entity successfully", async () => {
       const expected = await gateway.sendRegistration(json);
       expect(expected).toBe(true);
     });
