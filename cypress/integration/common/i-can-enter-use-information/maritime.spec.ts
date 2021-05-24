@@ -28,6 +28,7 @@ import {
   iAmAt,
   iCanSeeAPageHeadingThatContains,
   thenTheUrlShouldContain,
+  whenIClearTheInput,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
 import {
@@ -196,6 +197,7 @@ export const iCanEditMyVesselCommunications = (): void => {
   comms.checkedFields.forEach((field) =>
     cy.get(`#${field}`).should("be.checked")
   );
+  cy.get("#callSign").should("have.value", comms.callSign);
   cy.get("#fixedVhfRadioInput").should("have.value", comms.fixedMMSI);
   cy.get("#portableVhfRadioInput").should("have.value", comms.portableMMSI);
   cy.get("#satelliteTelephoneInput").should(
@@ -209,6 +211,7 @@ export const iCanEditMyVesselCommunications = (): void => {
 
 export const iCanChangeMyVesselCommunications = (): void => {
   const comms = testMaritimeUseData.communications;
+  whenIClearTheInput("#callSign");
   comms.checkedFields.forEach((field) => givenIHaveUnselected(`#${field}`));
 };
 
@@ -294,6 +297,7 @@ export const givenIHaveEnteredRequiredInformationAboutMyVessel = (): void => {
 
 export const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {
   const comms = testMaritimeUseData.communications;
+  givenIHaveTyped(comms.callSign, "#callSign");
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#fixedVhfRadio");
   givenIHaveTyped(comms.fixedMMSI, "#fixedVhfRadioInput");
