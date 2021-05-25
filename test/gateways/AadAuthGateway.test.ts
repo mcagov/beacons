@@ -32,5 +32,14 @@ describe("AadAuthGateway", () => {
 
       expect(accessToken).toEqual(mockAccessToken);
     });
+
+    it.only("throws an error if it can't get an access token", async () => {
+      mockConfidentialClientApplication.acquireTokenByClientCredential = jest
+        .fn()
+        .mockResolvedValue(new Error());
+      jest.spyOn(console, "error").mockReturnValue();
+
+      await expect(gateway.getAccessToken).rejects.toThrowError();
+    });
   });
 });

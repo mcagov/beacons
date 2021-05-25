@@ -20,22 +20,18 @@ export class AadAuthGateway implements IAuthGateway {
   }
 
   public async getAccessToken(): Promise<string> {
-    const accessTokenRequest: ClientCredentialRequest = {
-      scopes: [aadConfig.azureAdApiScopeURI],
-    };
-
-    let accessToken;
-
     try {
+      const accessTokenRequest: ClientCredentialRequest = {
+        scopes: [aadConfig.azureAdApiScopeURI],
+      };
+
       const authResult = await this.confidentialClientApplication.acquireTokenByClientCredential(
         accessTokenRequest
       );
-      accessToken = authResult.accessToken;
+      return authResult.accessToken;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
-
-    return accessToken;
   }
 }
