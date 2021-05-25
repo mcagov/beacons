@@ -4,7 +4,7 @@ import {
   givenIHaveClickedContinue,
   givenIHaveSelected,
   thenIShouldSeeAnErrorMessageThatContains,
-  thenTheUrlShouldContain,
+  thenTheUrlPathShouldBe,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a new user who wants to register a beacon", () => {
@@ -15,7 +15,7 @@ describe("As a new user who wants to register a beacon", () => {
     givenIHaveSelected("#signUp");
     givenIHaveClickedContinue();
     //TODO: Create sign up page and add tests
-    thenTheUrlShouldContain(PageURLs.signUp);
+    thenTheUrlPathShouldBe(PageURLs.signUp);
   });
 
   it("requires me to choose an option", () => {
@@ -36,6 +36,6 @@ describe("As user with an account", () => {
     givenIHaveSelected("#signIn");
     givenIHaveClickedContinue();
     //TODO: Create sign in page and add tests
-    thenTheUrlShouldContain(PageURLs.signIn);
+    thenTheUrlPathShouldBe(PageURLs.signIn);
   });
 });

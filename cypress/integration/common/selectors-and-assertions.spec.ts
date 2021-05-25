@@ -74,6 +74,10 @@ export const thenTheUrlShouldContain = (urlPath: string): void => {
   cy.url().should("include", urlPath);
 };
 
+export const thenTheUrlPathShouldBe = (urlPath: string): void => {
+  cy.url().should("eq", Cypress.config().baseUrl + urlPath);
+};
+
 export const thenTheInputShouldOnlyContain = (
   expectedValue: string,
   selector: string
