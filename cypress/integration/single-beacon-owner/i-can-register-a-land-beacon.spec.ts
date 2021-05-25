@@ -32,7 +32,7 @@ import {
   iCanEditMyAdditionalLandUseMoreDetails,
   iCanEditMyLandActivity,
   iCanEditMyLandCommunications,
-  iCanSeeMyLandUse,
+  iCanSeeMySingleLandUse,
   iCanViewMyChangedLandCommunications,
 } from "../common/i-can-enter-use-information/land.spec";
 import {
@@ -55,7 +55,7 @@ describe("As a land beacon owner", () => {
     thenTheUrlShouldContain(PageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
-    iCanSeeMyLandUse();
+    iCanSeeMySingleLandUse();
     iCanSeeMyPersonalDetails();
     iCanSeeMyAddressDetails();
     iCanSeeMyEmergencyContactDetails();

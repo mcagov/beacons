@@ -102,6 +102,10 @@ export const iCanSeeMyLandUse = (): void => {
   cy.get("main").contains(testLandUseData.communications.mobileTelephone2);
   cy.get("main").contains(testLandUseData.communications.otherCommunication);
   cy.get("main").contains(testLandUseData.moreDetails);
+};
+
+export const iCanSeeMySingleLandUse = (): void => {
+  iCanSeeMyLandUse();
   cy.get("main").should("not.contain", "Callsign");
 };
 
