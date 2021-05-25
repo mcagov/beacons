@@ -42,6 +42,7 @@ export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       pageText={pageText}
+      includeUseIndex={false}
     >
       <FormGroup errorMessages={form.fields.signUpOrSignIn.errorMessages}>
         <RadioList conditional={true}>
