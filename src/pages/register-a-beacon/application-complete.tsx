@@ -5,6 +5,7 @@ import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
 import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
+import { AadAuthGateway } from "../../gateways/AadAuthGateway";
 import { BeaconsApiGateway } from "../../gateways/beaconsApiGateway";
 import { GovNotifyGateway } from "../../gateways/govNotifyApiGateway";
 import {
@@ -86,9 +87,9 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
 
     if (!registration.referenceNumber) {
       registration.referenceNumber = referenceNumber("A#", 7);
-      const beaconsApiGateway = new BeaconsApiGateway();
       const createRegistrationUseCase = new CreateRegistration(
-        beaconsApiGateway
+        new BeaconsApiGateway(),
+        new AadAuthGateway()
       );
       const success = await createRegistrationUseCase.execute(
         registrationClass

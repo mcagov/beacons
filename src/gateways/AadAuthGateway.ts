@@ -2,23 +2,26 @@
 
 import {
   ClientCredentialRequest,
+  ConfidentialClientApplication,
   IConfidentialClientApplication,
 } from "@azure/msal-node";
 import { IAuthGateway } from "./IAuthGateway";
 
-const aadConfig = {
-  auth: {
-    clientId: process.env.AAD_CLIENT_ID,
-    authority: "https://login.microsoftonline.com/ 'TENANT' ",
-    clientSecret: process.env.AAD_CLIENT_SECRET,
-  },
-};
-
 export class AadAuthGateway implements IAuthGateway {
-  private confidentialClientApplication: IConfidentialClientApplication;
+  private readonly confidentialClientApplication: IConfidentialClientApplication;
+  private readonly aadConfig;
 
-  constructor(confidentialClientApplication: IConfidentialClientApplication) {
-    this.confidentialClientApplication = confidentialClientApplication;
+  constructor() {
+    this.aadConfig = {
+      auth: {
+        clientId: process.env.AAD_CLIENT_ID,
+        authority: "https://login.microsoftonline.com/ 'TENANT' ",
+        clientSecret: process.env.AAD_CLIENT_SECRET,
+      },
+    };
+    this.confidentialClientApplication = new ConfidentialClientApplication(
+      this.aadConfig
+    );
   }
 
   public async getAccessToken(): Promise<string> {

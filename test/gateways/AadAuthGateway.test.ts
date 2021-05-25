@@ -18,9 +18,7 @@ describe("AadAuthGateway", () => {
       mockConfidentialClientApplication = {
         acquireTokenByClientCredential: jest.fn(),
       };
-      gateway = new AadAuthGateway(
-        mockConfidentialClientApplication as IConfidentialClientApplication
-      );
+      gateway = new AadAuthGateway();
     });
 
     it("gets an access token", async () => {

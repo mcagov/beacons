@@ -6,3 +6,4 @@ import "@testing-library/jest-dom/extend-expect";
 
 process.env.AAD_CLIENT_ID = "test_client_id";
 process.env.AAD_CLIENT_SECRET = "test_client_secret";
+process.env.API_URL = "http://localhost:8080/spring-api";
