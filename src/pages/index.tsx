@@ -108,14 +108,6 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
       </li>
     </GovUKBulletedList>
 
-    <GovUKBody>
-      You can{" "}
-      <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
-        contact the UK Beacon Registry
-      </AnchorLink>{" "}
-      if you aren{"'"}t sure if your beacon is 406 MHz or not.
-    </GovUKBody>
-
     <WarningText>
       <>
         This service is only for UK programmed 406 MHz beacons.&nbsp;
