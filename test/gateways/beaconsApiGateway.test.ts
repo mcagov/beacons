@@ -1,15 +1,21 @@
 import axios from "axios";
 import { BeaconsApiGateway } from "../../src/gateways/beaconsApiGateway";
+import { IAuthGateway } from "../../src/gateways/IAuthGateway";
+import { IRegistrationRequestBody } from "../../src/lib/registration/iRegistrationRequestBody";
 
 jest.mock("axios");
 
 describe("Beacons API Gateway", () => {
   let gateway: BeaconsApiGateway;
   const apiUrl = "http://localhost:8080/spring-api";
+  let mockAadAuthGateway: IAuthGateway;
 
   beforeEach(() => {
     process.env.API_URL = apiUrl;
-    gateway = new BeaconsApiGateway();
+    mockAadAuthGateway = {
+      getAccessToken: jest.fn(),
+    };
+    gateway = new BeaconsApiGateway(mockAadAuthGateway);
   });
 
   afterEach(() => {
@@ -23,6 +29,12 @@ describe("Beacons API Gateway", () => {
     beforeEach(() => {
       url = "registrations/register";
       json = { model: "ASOS" };
+    });
+
+    it("should query its auth gateway for a token", async () => {
+      await gateway.sendRegistration({} as IRegistrationRequestBody);
+
+      expect(mockAadAuthGateway.getAccessToken).toHaveBeenCalled();
     });
 
     it("should return true if it posted the entity successfully", async () => {
@@ -41,7 +53,11 @@ describe("Beacons API Gateway", () => {
     it("should send the JSON to the correct url", async () => {
       const expectedUrl = `${apiUrl}/${url}`;
       await gateway.sendRegistration(json);
-      expect((axios as any).post).toHaveBeenLastCalledWith(expectedUrl, json);
+      expect((axios as any).post).toHaveBeenLastCalledWith(
+        expectedUrl,
+        json,
+        expect.anything()
+      );
     });
   });
 });

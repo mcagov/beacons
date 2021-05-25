@@ -7,9 +7,11 @@ import {
 import { IAuthGateway } from "./IAuthGateway";
 
 const aadConfig = {
-  azureAdClientId: process.env.AAD_CLIENT_ID,
-  azureAdTenantId: process.env.AAD_TENANT_ID,
-  azureAdApiScopeURI: process.env.AAD_API_SCOPE_URI,
+  auth: {
+    clientId: process.env.AAD_CLIENT_ID,
+    authority: "https://login.microsoftonline.com/ 'TENANT' ",
+    clientSecret: process.env.AAD_CLIENT_SECRET,
+  },
 };
 
 export class AadAuthGateway implements IAuthGateway {
@@ -22,7 +24,7 @@ export class AadAuthGateway implements IAuthGateway {
   public async getAccessToken(): Promise<string> {
     try {
       const accessTokenRequest: ClientCredentialRequest = {
-        scopes: [aadConfig.azureAdApiScopeURI],
+        scopes: ["https://graph.microsoft.com/.default"],
       };
 
       const authResult = await this.confidentialClientApplication.acquireTokenByClientCredential(
@@ -30,7 +32,7 @@ export class AadAuthGateway implements IAuthGateway {
       );
       return authResult.accessToken;
     } catch (error) {
-      console.error(error);
+      console.error(JSON.stringify(error));
       throw error;
     }
   }
