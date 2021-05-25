@@ -3,6 +3,7 @@ import {
   givenIHaveBeenTo,
   givenIHaveClickedContinue,
   givenIHaveSelected,
+  thenIShouldSeeAnErrorMessageThatContains,
   thenTheUrlShouldContain,
 } from "../common/selectors-and-assertions.spec";
 
@@ -15,6 +16,15 @@ describe("As a new user who wants to register a beacon", () => {
     givenIHaveClickedContinue();
     //TODO: Create sign up page and add tests
     thenTheUrlShouldContain(PageURLs.signUp);
+  });
+
+  it("requires me to choose an option", () => {
+    const expectedErrorMessage = "Please select an option";
+    givenIHaveBeenTo(PageURLs.start);
+    //TODO: Replace line below with: givenIHaveClicked(".govuk-button--start");
+    givenIHaveBeenTo(PageURLs.signUpOrSignIn);
+    givenIHaveClickedContinue();
+    thenIShouldSeeAnErrorMessageThatContains(expectedErrorMessage);
   });
 });
 
