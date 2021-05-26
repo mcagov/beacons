@@ -3,7 +3,7 @@ import { IRegistrationRequestBody } from "../lib/registration/iRegistrationReque
 
 export class BeaconsApiGateway {
   private readonly apiUrl: string;
-  private registrationsEndpoint = "registrations/register";
+  private readonly registrationsEndpoint = "registrations/register";
 
   constructor() {
     this.apiUrl = process.env.API_URL;
