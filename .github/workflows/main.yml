@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.AWS_ACCESS_KEY_ID }}
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build and Push
-        uses: docker/build-push-action@v2.4.0
+        uses: docker/build-push-action@v2.5.0
         with:
           push: true
           tags: ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ github.sha }}
