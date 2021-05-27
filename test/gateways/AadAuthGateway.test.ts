@@ -1,5 +1,6 @@
 import {
   AuthenticationResult,
+  ConfidentialClientApplication,
   IConfidentialClientApplication,
 } from "@azure/msal-node";
 import { AadAuthGateway } from "../../src/gateways/AadAuthGateway";
@@ -18,7 +19,9 @@ describe("AadAuthGateway", () => {
       mockConfidentialClientApplication = {
         acquireTokenByClientCredential: jest.fn(),
       };
-      gateway = new AadAuthGateway();
+      gateway = new AadAuthGateway(
+        mockConfidentialClientApplication as ConfidentialClientApplication
+      );
     });
 
     it("gets an access token", async () => {

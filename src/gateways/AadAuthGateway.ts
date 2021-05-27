@@ -16,10 +16,10 @@ export class AadAuthGateway implements IAuthGateway {
     },
   };
 
-  constructor() {
-    this.confidentialClientApplication = new ConfidentialClientApplication(
-      this.aadConfig
-    );
+  constructor(cca?: ConfidentialClientApplication) {
+    this.confidentialClientApplication = cca
+      ? cca
+      : new ConfidentialClientApplication(this.aadConfig);
   }
 
   public async getAccessToken(): Promise<string> {
