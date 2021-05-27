@@ -43,7 +43,7 @@ resource "aws_secretsmanager_secret" "webapp_client_secret" {
   tags = module.beacons_label.tags
 }
 
-resource "aws_secretsmanager_secret_version" "basic_auth" {
+resource "aws_secretsmanager_secret_version" "webapp_client_secret" {
   secret_id     = aws_secretsmanager_secret.webapp_client_secret.id
   secret_string = var.webapp_client_secret
 }
