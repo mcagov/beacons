@@ -67,7 +67,7 @@ resource "aws_ecs_task_definition" "webapp" {
         }, {
         name : "WEBAPP_CLIENT_SECRET",
         valueFrom : aws_secretsmanager_secret.webapp_client_secret.arn
-      }]
+    }]
   }])
 }
 
