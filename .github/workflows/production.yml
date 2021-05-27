@@ -54,4 +54,5 @@ jobs:
           TF_VAR_gov_notify_api_key: ${{ secrets.GOV_NOTIFY_API_KEY }}
           TF_VAR_gov_notify_customer_email_template: ${{ secrets.GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE }}
           TF_VAR_basic_auth: ${{ secrets.BASIC_AUTH_CREDENTIALS }}
+          TF_VAR_webapp_client_secret: ${{ secrets.WEBAPP_CLIENT_SECRET }}
         run: terraform apply -auto-approve -var-file=production.tfvars -var-file=production.images.tfvars

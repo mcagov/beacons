@@ -13,3 +13,6 @@ db_delete_protection   = false
 db_instance_class      = "db.t2.micro"
 db_storage_encrypted   = false
 db_skip_final_snapshot = true
+webapp_client_id       = "1ccbe14d-00e3-43ac-a434-8f7a38e03366"
+service_api_id         = "5cdcbb41-958a-43b6-baa1-bbafd80b4f70"
+mca_azure_ad_tenant_id = "513fb495-9a90-425b-a49a-bc6ebe2a429e"

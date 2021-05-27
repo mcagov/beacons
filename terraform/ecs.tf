@@ -32,6 +32,18 @@ resource "aws_ecs_task_definition" "webapp" {
       {
         name : "API_URL",
         value : "http://${local.service_local_endpoint}"
+      },
+      {
+        name : "AAD_CLIENT_ID",
+        value : var.webapp_client_id
+      },
+      {
+        name : "AAD_API_ID",
+        value : var.service_api_id
+      },
+      {
+        name : "AAD_TENANT_ID",
+        value : var.mca_azure_ad_tenant_id
       }
     ],
     logConfiguration : {
@@ -52,6 +64,9 @@ resource "aws_ecs_task_definition" "webapp" {
         }, {
         name : "BASIC_AUTH_CREDENTIALS",
         valueFrom : aws_secretsmanager_secret.basic_auth.arn
+        }, {
+        name : "WEBAPP_CLIENT_SECRET",
+        valueFrom : aws_secretsmanager_secret.webapp_client_secret.arn
     }]
   }])
 }
