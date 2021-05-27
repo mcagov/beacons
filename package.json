@@ -26,6 +26,7 @@
     }
   },
   "dependencies": {
+    "@azure/msal-node": "^1.1.0",
     "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "google-libphonenumber": "^3.2.20",

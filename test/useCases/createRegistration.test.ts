@@ -1,26 +1,39 @@
 import { CreateRegistration } from "../../src/useCases/createRegistration";
 
 describe("Create Registration Use Case", () => {
-  let gateway;
+  let beaconsGateway;
+  let authGateway;
+  let accessToken;
   let registration;
   let json;
   let useCase;
 
   beforeEach(() => {
     json = { model: "ASOS" };
-    gateway = { sendRegistration: jest.fn() };
+    accessToken = "mock_access_token";
+    beaconsGateway = { sendRegistration: jest.fn() };
+    authGateway = { getAccessToken: jest.fn().mockResolvedValue(accessToken) };
     registration = { serialiseToAPI: jest.fn().mockImplementation(() => json) };
-    useCase = new CreateRegistration(gateway);
+    useCase = new CreateRegistration(beaconsGateway, authGateway);
+  });
+
+  it("should request an access token via the auth gateway", async () => {
+    await useCase.execute(registration);
+
+    expect(authGateway.getAccessToken).toHaveBeenCalled();
   });
 
   it("should post the registration json via the api gateway", async () => {
     await useCase.execute(registration);
 
-    expect(gateway.sendRegistration).toHaveBeenCalledWith(json);
+    expect(beaconsGateway.sendRegistration).toHaveBeenCalledWith(
+      json,
+      accessToken
+    );
   });
 
   it("should return true if the request is successful", async () => {
-    gateway.sendRegistration.mockImplementation(() => {
+    beaconsGateway.sendRegistration.mockImplementation(() => {
       return false;
     });
     const expected = await useCase.execute(registration);
@@ -29,7 +42,7 @@ describe("Create Registration Use Case", () => {
   });
 
   it("should return false if the request is unsuccessful", async () => {
-    gateway.sendRegistration.mockImplementation(() => {
+    beaconsGateway.sendRegistration.mockImplementation(() => {
       return true;
     });
     const expected = await useCase.execute(registration);
