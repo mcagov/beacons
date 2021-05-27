@@ -31,7 +31,7 @@ describe("AadAuthGateway", () => {
       expect(accessToken).toEqual(mockAccessToken);
     });
 
-    it.only("throws an error if it can't get an access token", async () => {
+    it("throws an error if it can't get an access token", async () => {
       mockConfidentialClientApplication.acquireTokenByClientCredential = jest
         .fn()
         .mockResolvedValue(new Error());
