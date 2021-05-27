@@ -41,7 +41,7 @@
   "devDependencies": {
     "@jest/types": "^26.6.2",
     "@testing-library/jest-dom": "^5.12.0",
-    "@testing-library/react": "^11.2.6",
+    "@testing-library/react": "^11.2.7",
     "@types/cookie": "^0.4.0",
     "@types/node": "^15.0.2",
     "@types/react": "^17.0.5",
