@@ -10,9 +10,9 @@ export class AadAuthGateway implements IAuthGateway {
   private readonly confidentialClientApplication: IConfidentialClientApplication;
   private readonly aadConfig: Configuration = {
     auth: {
-      clientId: process.env.AAD_CLIENT_ID,
+      clientId: process.env.WEBAPP_CLIENT_ID,
       authority: `https://login.microsoftonline.com/${process.env.AAD_TENANT_ID}`,
-      clientSecret: process.env.AAD_CLIENT_SECRET,
+      clientSecret: process.env.WEBAPP_CLIENT_SECRET,
     },
   };
 
