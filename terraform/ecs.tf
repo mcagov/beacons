@@ -34,7 +34,7 @@ resource "aws_ecs_task_definition" "webapp" {
         value : "http://${local.service_local_endpoint}"
       },
       {
-        name : "AAD_CLIENT_ID",
+        name : "WEBAPP_CLIENT_ID",
         value : var.webapp_client_id
       },
       {
