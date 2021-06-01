@@ -12,3 +12,8 @@ services:
       GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE: $GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE
       GOV_NOTIFY_API_KEY: $GOV_NOTIFY_API_KEY
       BASIC_AUTH: $BASIC_AUTH
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
