@@ -5,7 +5,7 @@ import { RadioList, RadioListItem } from "../../components/RadioList";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { FormSubmission } from "../../lib/formCache";
+import { FormCacheFactory, FormSubmission } from "../../lib/formCache";
 import {
   DestinationIfValidCallback,
   FormPageProps,
@@ -73,7 +73,9 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = async (
   const shouldCreateAdditionalUse =
     context.formData.additionalBeaconUse === "true";
   if (shouldCreateAdditionalUse) {
-    const registration = context.registration;
+    const registration = await FormCacheFactory.getCache().get(
+      context.submissionId
+    );
     registration.createUse();
     await setFormCache(context.submissionId, registration);
 

@@ -66,7 +66,8 @@ function addCookieBannerAcceptance(context: BeaconsContext): void {
 
 async function addCache(context: BeaconsContext): Promise<void> {
   const submissionId: string = context.req.cookies[formSubmissionCookieId];
-  const registration: Registration = await getCache(submissionId);
+  const registration: Registration = await (async () =>
+    getCache(submissionId))();
 
   context.submissionId = submissionId;
   context.registration = registration;
