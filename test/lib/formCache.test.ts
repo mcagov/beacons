@@ -16,14 +16,8 @@ describe("FormCache", () => {
     expect(cache).toBe(secondInstance);
   });
 
-  it("should return an instance of a registration class for an unknown id", () => {
-    expect(cache.get(uuidv4())).toBeInstanceOf(Registration);
-  });
-
-  it("should return the same instance after it is updated", () => {
-    const registration = cache.get(id);
-    cache.update(id, { hexId: "Beacon life" });
-    expect(cache.get(id)).toBe(registration);
+  it("should return an instance of a registration class for an unknown id", async () => {
+    expect(await cache.get(uuidv4())).toBeInstanceOf(Registration);
   });
 
   describe("clear", () => {
@@ -37,9 +31,9 @@ describe("FormCache", () => {
     it("deletes the Registration for a given id and doesn't delete other registrations", () => {
       cache.get(id);
       const secondId = uuidv4();
-      const secondRegistrations = cache.get(secondId);
+      const secondRegistration = cache.get(secondId);
       cache.clear(id);
-      expect(cache.get(secondId)).toBe(secondRegistrations);
+      expect(cache.get(secondId)).toStrictEqual(secondRegistration);
     });
   });
 });

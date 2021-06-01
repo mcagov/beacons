@@ -1,4 +1,7 @@
+import Redis from "ioredis";
+import JSONCache from "redis-json";
 import { Registration } from "./registration/registration";
+import { IRegistration } from "./registration/types";
 
 // Convenience type
 export type FormSubmission = Record<string, any>;
@@ -6,7 +9,7 @@ export type FormSubmission = Record<string, any>;
 export interface IFormCache {
   update(id: string, formData?: FormSubmission): void;
 
-  get(id: string): Registration;
+  get(id: string): Promise<Registration>;
 
   clear(id: string): void;
 }
@@ -25,24 +28,35 @@ export class FormCacheFactory {
 
 class FormCache implements IFormCache {
   private _byIdToRegistration: Record<string, Registration> = {};
+  private cache = new JSONCache<IRegistration>(new Redis());
 
-  public update(id: string, formData: FormSubmission = {}): void {
-    const registration: Registration = this._safeGetRegistration(id);
+  public async update(
+    id: string,
+    formData: FormSubmission = {}
+  ): Promise<void> {
+    const registration: Registration = await this._safeGetRegistration(id);
     registration.update(formData);
   }
 
-  public get(id: string): Registration {
-    return this._safeGetRegistration(id);
+  public async get(id: string): Promise<Registration> {
+    return await this._safeGetRegistration(id);
   }
 
   public clear(id: string): void {
     delete this._byIdToRegistration[id];
   }
 
-  private _safeGetRegistration(id: string): Registration {
-    this._byIdToRegistration[id] =
-      this._byIdToRegistration[id] || new Registration();
+  private async _safeGetRegistration(id: string): Promise<Registration> {
+    const registrationData: IRegistration = (await this.cache.get(
+      id
+    )) as IRegistration;
 
-    return this._byIdToRegistration[id];
+    if (registrationData) {
+      return new Registration(registrationData);
+    } else {
+      const registration = new Registration();
+      await this.cache.set(id, registration.getRegistration());
+      return registration;
+    }
   }
 }

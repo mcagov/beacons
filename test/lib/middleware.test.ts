@@ -292,10 +292,10 @@ describe("Middleware Functions", () => {
       cacheMock = getCacheMock();
     });
 
-    it("should call the cache with the correct id", () => {
-      cacheMock.get.mockReturnValue({} as Registration);
+    it("should call the cache with the correct id", async () => {
+      cacheMock.get.mockResolvedValue({} as Registration);
 
-      expect(getCache(id, cacheMock)).toStrictEqual({});
+      expect(await getCache(id, cacheMock)).toStrictEqual({});
       expect(cacheMock.get).toHaveBeenCalledWith(id);
     });
   });

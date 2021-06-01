@@ -52,7 +52,7 @@ export async function decorateGetServerSidePropsContext(
   const decoratedContext: BeaconsContext = context as BeaconsContext;
 
   addCookieBannerAcceptance(decoratedContext);
-  addCache(decoratedContext);
+  await addCache(decoratedContext);
   await addFormData(decoratedContext);
   addRegistrationIndexes(decoratedContext);
 
@@ -64,9 +64,9 @@ function addCookieBannerAcceptance(context: BeaconsContext): void {
   context.showCookieBanner = showCookieBanner;
 }
 
-function addCache(context: BeaconsContext): void {
+async function addCache(context: BeaconsContext): Promise<void> {
   const submissionId: string = context.req.cookies[formSubmissionCookieId];
-  const registration: Registration = getCache(submissionId);
+  const registration: Registration = await getCache(submissionId);
 
   context.submissionId = submissionId;
   context.registration = registration;
@@ -156,9 +156,9 @@ export async function parseFormData(
   return await parse(request);
 }
 
-export const getCache = (
+export const getCache = async (
   id: string,
   cache: IFormCache = FormCacheFactory.getCache()
-): Registration => {
-  return cache.get(id);
+): Promise<Registration> => {
+  return await cache.get(id);
 };
