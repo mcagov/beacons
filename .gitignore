@@ -15,3 +15,5 @@ screenshots
 
 # Jest
 coverage
+
+.env.local
