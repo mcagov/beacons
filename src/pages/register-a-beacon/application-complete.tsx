@@ -81,7 +81,7 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   async (context: GetServerSidePropsContext) => {
     const decoratedContext = await decorateGetServerSidePropsContext(context);
     const registrationClass = decoratedContext.registration;
-    const registration = decoratedContext.registration.registration;
+    const registration = decoratedContext.registration.getRegistration();
 
     let pageSubHeading;
 
