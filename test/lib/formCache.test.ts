@@ -21,19 +21,21 @@ describe("FormCache", () => {
   });
 
   describe("clear", () => {
-    it("deletes the Registration for a given id", () => {
-      const firstRegistration = cache.get(id);
+    it("deletes the Registration for a given id", async () => {
+      const firstRegistration = await cache.get(id);
       await cache.clear(id);
-      const secondRegistrations = cache.get(id);
+      const secondRegistrations = await cache.get(id);
       expect(firstRegistration).not.toBe(secondRegistrations);
     });
 
     it("deletes the Registration for a given id and doesn't delete other registrations", async () => {
-      cache.get(id);
+      await cache.get(id);
       const secondId = uuidv4();
-      const secondRegistration = cache.get(secondId);
-      cache.clear(id);
-      expect(cache.get(secondId)).toStrictEqual(secondRegistration);
+      const secondRegistration = await cache.get(secondId);
+      await cache.clear(id);
+      expect((await cache.get(secondId)).getRegistration()).toStrictEqual(
+        secondRegistration.getRegistration()
+      );
     });
   });
 });

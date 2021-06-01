@@ -154,8 +154,8 @@ describe("Middleware Functions", () => {
       };
     });
 
-    const assertCookieSet = () => {
-      setFormSubmissionCookie(context);
+    const assertCookieSet = async () => {
+      await setFormSubmissionCookie(context);
 
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
@@ -163,18 +163,18 @@ describe("Middleware Functions", () => {
       );
     };
 
-    it("should set the form submission cookie if there are no cookies", () => {
-      assertCookieSet();
+    it("should set the form submission cookie if there are no cookies", async () => {
+      await assertCookieSet();
     });
 
-    it("should set the form submission cookie value if it is set to null", () => {
+    it("should set the form submission cookie value if it is set to null", async () => {
       context.req.cookies = { [submissionCookieId]: null };
-      assertCookieSet();
+      await assertCookieSet();
     });
 
-    it("should set the form submission cookie value if it is set to undefined", () => {
+    it("should set the form submission cookie value if it is set to undefined", async () => {
       context.req.cookies = { [submissionCookieId]: void 0 };
-      assertCookieSet();
+      await assertCookieSet();
     });
 
     it("should not set the form submission cookie header if one is set", () => {
