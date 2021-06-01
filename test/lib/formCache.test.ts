@@ -23,12 +23,12 @@ describe("FormCache", () => {
   describe("clear", () => {
     it("deletes the Registration for a given id", () => {
       const firstRegistration = cache.get(id);
-      cache.clear(id);
+      await cache.clear(id);
       const secondRegistrations = cache.get(id);
       expect(firstRegistration).not.toBe(secondRegistrations);
     });
 
-    it("deletes the Registration for a given id and doesn't delete other registrations", () => {
+    it("deletes the Registration for a given id and doesn't delete other registrations", async () => {
       cache.get(id);
       const secondId = uuidv4();
       const secondRegistration = cache.get(secondId);

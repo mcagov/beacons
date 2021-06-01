@@ -36,13 +36,15 @@ class FormCache implements IFormCache {
   ): Promise<void> {
     const registration: Registration = await this._safeGetRegistration(id);
     registration.update(formData);
+    await this.cache.set(id, registration.getRegistration());
   }
 
   public async get(id: string): Promise<Registration> {
     return await this._safeGetRegistration(id);
   }
 
-  public clear(id: string): void {
+  public async clear(id: string): Promise<void> {
+    await this.cache.del(id);
     delete this._byIdToRegistration[id];
   }
 
@@ -50,6 +52,8 @@ class FormCache implements IFormCache {
     const registrationData: IRegistration = (await this.cache.get(
       id
     )) as IRegistration;
+
+    console.log(registrationData);
 
     if (registrationData) {
       return new Registration(registrationData);

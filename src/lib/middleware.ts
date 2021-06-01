@@ -122,19 +122,19 @@ const setCookieHeader = (id: string, res: ServerResponse): void => {
   res.setHeader("Set-Cookie", serialize(formSubmissionCookieId, id, options));
 };
 
-export function updateFormCache(
+export async function updateFormCache(
   submissionId: string,
   formData: FormSubmission,
   cache: IFormCache = FormCacheFactory.getCache()
-): void {
-  cache.update(submissionId, formData);
+): Promise<void> {
+  await cache.update(submissionId, formData);
 }
 
-export function clearFormCache(
+export async function clearFormCache(
   submissionId: string,
   cache: IFormCache = FormCacheFactory.getCache()
-): void {
-  cache.clear(submissionId);
+): Promise<void> {
+  await cache.clear(submissionId);
 }
 
 export function clearFormSubmissionCookie(

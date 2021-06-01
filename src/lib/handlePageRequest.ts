@@ -90,7 +90,7 @@ const handlePostRequest = async (
 ): Promise<GetServerSidePropsResult<FormPageProps>> => {
   const registration: Registration = context.registration;
   const transformedFormData = transformCallback(context.formData);
-  updateFormCache(context.submissionId, transformedFormData);
+  await updateFormCache(context.submissionId, transformedFormData);
 
   const formManager = formManagerFactory(transformedFormData);
   formManager.markAsDirty();
