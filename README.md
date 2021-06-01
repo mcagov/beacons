@@ -21,6 +21,11 @@ To develop locally, you'll need:
 - [Node.JS](https://nodejs.org/en/)
 - [Docker](https://www.docker.com/)
 
+#### Environment variables
+
+Included in the repo is a `.env.example` file containing non-secret environment variables. This file should be copied
+to `.env.local` on first pull and augmented with the secrets contained in 1Password.
+
 ### Running the application
 
 First, install dependencies:

@@ -11,7 +11,7 @@ import {
   FormPageProps,
   handlePageRequest,
 } from "../../lib/handlePageRequest";
-import { BeaconsContext } from "../../lib/middleware";
+import { BeaconsContext, setFormCache } from "../../lib/middleware";
 import { AdditionalUses } from "../../lib/registration/types";
 import { formatUrlQueryParams } from "../../lib/utils";
 
@@ -67,7 +67,7 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = (
+const onSuccessfulFormCallback: DestinationIfValidCallback = async (
   context: BeaconsContext
 ) => {
   const shouldCreateAdditionalUse =
@@ -75,6 +75,8 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = (
   if (shouldCreateAdditionalUse) {
     const registration = context.registration;
     registration.createUse();
+    await setFormCache(context.submissionId, registration);
+
     const useIndex = registration.getRegistration().uses.length - 1;
 
     return formatUrlQueryParams("/register-a-beacon/beacon-use", { useIndex });

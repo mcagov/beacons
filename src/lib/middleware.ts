@@ -82,15 +82,15 @@ function addRegistrationIndexes(context: BeaconsContext): void {
   context.useIndex = useIndex;
 }
 
-export const setFormSubmissionCookie = (
+export const setFormSubmissionCookie = async (
   context: GetServerSidePropsContext
-): void => {
+): Promise<void> => {
   const cookies: NextApiRequestCookies = context.req.cookies;
 
   if (!cookies || !cookies[formSubmissionCookieId]) {
     const id: string = uuidv4();
 
-    seedCache(id);
+    await seedCache(id);
     setCookieHeader(id, context.res);
   }
 };
@@ -107,9 +107,9 @@ export const checkHeaderContains = (
   );
 };
 
-const seedCache = (id: string): void => {
+const seedCache = async (id: string): Promise<void> => {
   const cache: IFormCache = FormCacheFactory.getCache();
-  cache.update(id);
+  await cache.update(id);
 };
 
 const setCookieHeader = (id: string, res: ServerResponse): void => {
@@ -128,6 +128,14 @@ export async function updateFormCache(
   cache: IFormCache = FormCacheFactory.getCache()
 ): Promise<void> {
   await cache.update(submissionId, formData);
+}
+
+export async function setFormCache(
+  submissionId: string,
+  registration: Registration,
+  cache: IFormCache = FormCacheFactory.getCache()
+): Promise<void> {
+  await cache.set(submissionId, registration);
 }
 
 export async function clearFormCache(

@@ -19,7 +19,9 @@ import { formatUrlQueryParams } from "./utils";
 
 type TransformCallback = (formData: FormSubmission) => FormSubmission;
 
-export type DestinationIfValidCallback = (context: BeaconsContext) => string;
+export type DestinationIfValidCallback = (
+  context: BeaconsContext
+) => Promise<string>;
 
 export type FormManagerFactory = (formData: FormSubmission) => FormManager;
 
@@ -35,7 +37,7 @@ export const handlePageRequest = (
   destinationIfValid: string,
   formManagerFactory: FormManagerFactory,
   transformCallback: TransformCallback = (formData: FormSubmission) => formData,
-  destinationIfValidCallback: DestinationIfValidCallback = () =>
+  destinationIfValidCallback: DestinationIfValidCallback = async () =>
     destinationIfValid
 ): GetServerSideProps =>
   withCookieRedirect(async (context: GetServerSidePropsContext) => {
@@ -65,7 +67,6 @@ const handleGetRequest = (
   formManagerFactory: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
   const registration: Registration = context.registration;
-
   const flattenedRegistration = registration.getFlattenedRegistration({
     useIndex: context.useIndex,
   });
@@ -97,7 +98,7 @@ const handlePostRequest = async (
   const formIsValid = !formManager.hasErrors();
 
   if (formIsValid) {
-    let destination = onSuccessfulFormPostCallback(context);
+    let destination = await onSuccessfulFormPostCallback(context);
     destination = formatUrlQueryParams(destination, {
       useIndex: context.useIndex,
     });

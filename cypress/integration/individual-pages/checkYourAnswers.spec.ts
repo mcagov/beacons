@@ -21,7 +21,7 @@ describe("As a beacon owner, I want to check the details that were submitted", (
     iCanSeeAPageHeadingThatContains("Check your answers");
   });
 
-  it.only("should clear the form when I click Accept and Send", () => {
+  it("should clear the form when I click Accept and Send", () => {
     givenIHaveACookieSetAndIVisit(PageURLs.beaconInformation);
     givenIHaveFilledInCheckBeaconDetailsPage();
     andIAmAt(PageURLs.checkYourAnswers);

@@ -7,11 +7,13 @@ import { IRegistration } from "./registration/types";
 export type FormSubmission = Record<string, any>;
 
 export interface IFormCache {
-  update(id: string, formData?: FormSubmission): void;
+  update(id: string, formData?: FormSubmission): Promise<void>;
+
+  set(id: string, registration: Registration): Promise<void>;
 
   get(id: string): Promise<Registration>;
 
-  clear(id: string): void;
+  clear(id: string): Promise<void>;
 }
 
 export class FormCacheFactory {
@@ -48,12 +50,14 @@ class FormCache implements IFormCache {
     delete this._byIdToRegistration[id];
   }
 
+  public async set(id: string, registration: Registration) {
+    await this.cache.set(id, registration.getRegistration());
+  }
+
   private async _safeGetRegistration(id: string): Promise<Registration> {
     const registrationData: IRegistration = (await this.cache.get(
       id
     )) as IRegistration;
-
-    console.log(registrationData);
 
     if (registrationData) {
       return new Registration(registrationData);

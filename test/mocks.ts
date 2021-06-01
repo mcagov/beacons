@@ -2,7 +2,12 @@ import { IFormCache } from "../src/lib/formCache";
 import { Activity, Environment } from "../src/lib/registration/types";
 
 export const getCacheMock = (): jest.Mocked<IFormCache> => {
-  return { get: jest.fn(), update: jest.fn(), clear: jest.fn() };
+  return {
+    get: jest.fn(),
+    update: jest.fn(),
+    clear: jest.fn(),
+    set: jest.fn(),
+  };
 };
 
 // TODO: Update `any` type once domain/form objects are defined
