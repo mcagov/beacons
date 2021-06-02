@@ -69,12 +69,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.3.4
+      - name: Start Redis
+        run: docker compose up redis -d
+      - name: Check running containers
+        run: docker ps -a
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
         with:
           start: npm run start
           build: npm run build
-          wait-on: "http://localhost:3000"
+          wait-on: "http://localhost:3000, redis://localhost:6379"
 
   lint_check:
     name: Lint check
