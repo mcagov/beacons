@@ -186,7 +186,7 @@ variable "mca_azure_b2c_login_flow" {
 variable "mca_azure_b2c_next_auth_jwt_secret" {
   type        = string
   sensitive   = true
-  descriptoin = "The random string used to hash tokens, sign cookies, and generate crytographic keys for Next Auth"
+  descriptoin = "The random string used to hash tokens, sign cookies, and generate crytographic keys for NextAuth"
 }
 variable "redis_port" {
   type        = number
