@@ -28,6 +28,7 @@ resource "aws_security_group" "lb" {
 }
 
 # Traffic to the ECS cluster should only come from the ALB
+// TODO: Separate ecs_tasks into a single security group for each of Webapp, API
 resource "aws_security_group" "ecs_tasks" {
   name        = "${terraform.workspace}-beacons-ecs-tasks-security-group"
   tags        = module.beacons_label.tags

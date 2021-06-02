@@ -162,3 +162,9 @@ variable "mca_azure_ad_tenant_id" {
   type        = string
   description = "The UUID for the Azure AD tenant, provided in Azure AD"
 }
+
+variable "redis_port" {
+  type        = number
+  description = "Port on which to serve Redis"
+  default     = 6379
+}
