@@ -1,6 +1,5 @@
 resource "aws_elasticache_subnet_group" "main" {
   name       = module.beacons_label.name
-  tags       = module.beacons_label.tags
   subnet_ids = aws_subnet.app.*.id
 }
 
