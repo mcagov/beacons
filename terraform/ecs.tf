@@ -44,7 +44,12 @@ resource "aws_ecs_task_definition" "webapp" {
       {
         name : "AAD_TENANT_ID",
         value : var.mca_azure_ad_tenant_id
+      },
+      {
+        name : "REDIS_URI",
+        value : "redis://${aws_elasticache_cluster.main.cache_nodes.*.address}:${var.redis_port}"
       }
+
     ],
     logConfiguration : {
       "logDriver" : "awslogs",

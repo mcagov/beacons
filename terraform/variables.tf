@@ -188,3 +188,8 @@ variable "mca_azure_b2c_auth_jwt_secret" {
   sensitive   = true
   descriptoin = "The random string used to hash tokens, sign cookies, and generate crytographic keys for Next Auth"
 }
+variable "redis_port" {
+  type        = number
+  description = "Port on which to serve Redis"
+  default     = 6379
+}
