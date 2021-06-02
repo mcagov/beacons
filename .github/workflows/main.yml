@@ -70,7 +70,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
       - name: Start Redis
-        run: docker compose up -d redis
+        run: docker-compose up -d redis
       - name: Check running containers
         run: docker ps -a
       - name: Run Cypress tests
