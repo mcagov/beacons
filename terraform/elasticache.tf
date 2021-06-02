@@ -25,7 +25,6 @@ resource "aws_security_group" "elasticache" {
 }
 
 resource "aws_elasticache_cluster" "main" {
-  name                 = module.beacons_label.name
   tags                 = module.beacons_label.tags
   cluster_id           = module.beacons_label.name
   engine               = "redis"
