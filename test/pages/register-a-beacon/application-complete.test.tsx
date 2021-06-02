@@ -40,7 +40,9 @@ jest.mock("../../../src/useCases/createRegistration", () => ({
 
 describe("ApplicationCompletePage", () => {
   it("should render correctly", () => {
-    render(<ApplicationCompletePage showCookieBanner={false} />);
+    render(
+      <ApplicationCompletePage pageSubHeading={"Test"} reference={"Test"} />
+    );
   });
 
   describe("getServerSideProps function", () => {
