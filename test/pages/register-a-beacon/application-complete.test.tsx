@@ -58,7 +58,7 @@ describe("ApplicationCompletePage", () => {
       );
       const result = await getServerSideProps(context);
 
-      expect(result.props.reference).toBeUndefined();
+      expect(result.props.reference).toBe("");
       expect(mockSendGovNotifyExecute).not.toHaveBeenCalled();
     });
 

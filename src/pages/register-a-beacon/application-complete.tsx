@@ -112,6 +112,7 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
             "We could not send you a confirmation email. But we have registered your beacon under the following reference id.";
         }
       } else {
+        registration.referenceNumber = "";
         pageSubHeading =
           "We could not save your registration or send you a confirmation email. Please contact the Beacons Registry team.";
       }
