@@ -159,32 +159,32 @@ variable "mca_azure_ad_tenant_id" {
   description = "The UUID for the Azure AD tenant, provided in Azure AD"
 }
 variable "next_auth_url" {
-  type = string
+  type        = string
   description = "The NEXT AUTH environment variable used by NextAuth"
 }
 variable "mca_azure_b2c_client_id" {
-  type = string
+  type        = string
   description = "The Azure B2C Client ID for the B2C App Registration"
 }
 variable "mca_azure_b2c_client_secret" {
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
   description = "The client secret for the B2C App Registration"
 }
 variable "mca_azure_b2c_tenant_name" {
-  type = string
+  type        = string
   description = "The name of the Azure B2C tenant"
-} 
+}
 variable "mca_azure_b2c_tenant_id" {
-  type = string
+  type        = string
   description = "The UUID for the Azure B2C tenant"
 }
 variable "mca_azure_b2c_login_flow" {
-  type = string
+  type        = string
   description = "The Sign In User Flow defined in Azure B2C"
 }
 variable "mca_azure_b2c_auth_jwt_secret" {
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
   descriptoin = "The random string used to hash tokens, sign cookies, and generate crytographic keys for Next Auth"
 }
