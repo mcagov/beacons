@@ -86,32 +86,36 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
     let pageSubHeading;
 
     if (!registration.referenceNumber) {
-      registration.referenceNumber = referenceNumber("A#", 7);
-      const createRegistrationUseCase = new CreateRegistration(
-        new BeaconsApiGateway(),
-        new AadAuthGateway()
-      );
-      const success = await createRegistrationUseCase.execute(
-        registrationClass
-      );
-
-      if (success) {
-        const govNotifyGateway = new GovNotifyGateway();
-        const sendGovNotifyEmailUseCase = new SendGovNotifyEmail(
-          govNotifyGateway
+      try {
+        registration.referenceNumber = referenceNumber("A#", 7);
+        const createRegistrationUseCase = new CreateRegistration(
+          new BeaconsApiGateway(),
+          new AadAuthGateway()
+        );
+        const success = await createRegistrationUseCase.execute(
+          registrationClass
         );
 
-        const emailSuccess = await sendGovNotifyEmailUseCase.execute(
-          registration
-        );
+        if (success) {
+          const govNotifyGateway = new GovNotifyGateway();
+          const sendGovNotifyEmailUseCase = new SendGovNotifyEmail(
+            govNotifyGateway
+          );
 
-        if (emailSuccess) {
-          pageSubHeading = "We have sent you a confirmation email.";
-        } else {
-          pageSubHeading =
-            "We could not send you a confirmation email. But we have registered your beacon under the following reference id.";
+          const emailSuccess = await sendGovNotifyEmailUseCase.execute(
+            registration
+          );
+
+          if (emailSuccess) {
+            pageSubHeading = "We have sent you a confirmation email.";
+          } else {
+            pageSubHeading =
+              "We could not send you a confirmation email. But we have registered your beacon under the following reference id.";
+          }
         }
-      } else {
+      } catch (e) {
+        // eslint-disable no-console
+        console.error(e);
         registration.referenceNumber = "";
         pageSubHeading =
           "We could not save your registration or send you a confirmation email. Please contact the Beacons Registry team.";
