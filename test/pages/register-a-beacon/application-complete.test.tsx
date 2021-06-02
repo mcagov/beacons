@@ -14,9 +14,9 @@ jest.mock("../../../src/lib/middleware", () => ({
   }),
   decorateGetServerSidePropsContext: jest.fn().mockImplementation(() => ({
     registration: {
-      registration: {
+      getRegistration: jest.fn().mockResolvedValue({
         referenceNumber: "",
-      },
+      }),
     },
   })),
   clearFormCache: jest.fn(),
