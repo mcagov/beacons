@@ -2,6 +2,18 @@ import { v4 as uuidv4 } from "uuid";
 import { FormCacheFactory, IFormCache } from "../../src/lib/formCache";
 import { Registration } from "../../src/lib/registration/registration";
 
+jest.mock(
+  "redis-json",
+  () =>
+    function () {
+      return {
+        set: jest.fn(),
+        get: jest.fn(),
+        del: jest.fn(),
+      };
+    }
+);
+
 describe("FormCache", () => {
   let cache: IFormCache;
   let id: string;
