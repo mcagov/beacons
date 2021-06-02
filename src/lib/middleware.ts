@@ -44,15 +44,17 @@ export function withCookieRedirect<T>(callback: GetServerSideProps<T>) {
  * Decorator function to add beacons specific information to the `getServerSideProps` context.
  *
  * @param context {GetServerSidePropsContext}   The NextJS application context
+ * @param addCacheFn {(context: BeaconsContext) => Promise<void>} (Optional) the function used to add the cache to the context
  * @returns       {Promise<BeaconsContext>}     A promise resolving to the decorated context containing application specific data
  */
 export async function decorateGetServerSidePropsContext(
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
+  addCacheFn: (context: BeaconsContext) => Promise<void> = addCache
 ): Promise<BeaconsContext> {
   const decoratedContext: BeaconsContext = context as BeaconsContext;
 
   addCookieBannerAcceptance(decoratedContext);
-  await addCache(decoratedContext);
+  await addCacheFn(decoratedContext);
   await addFormData(decoratedContext);
   addRegistrationIndexes(decoratedContext);
 
@@ -84,14 +86,15 @@ function addRegistrationIndexes(context: BeaconsContext): void {
 }
 
 export const setFormSubmissionCookie = async (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
+  seedCacheFn: (id: string) => Promise<void> = seedCache
 ): Promise<void> => {
   const cookies: NextApiRequestCookies = context.req.cookies;
 
   if (!cookies || !cookies[formSubmissionCookieId]) {
     const id: string = uuidv4();
 
-    await seedCache(id);
+    await seedCacheFn(id);
     setCookieHeader(id, context.res);
   }
 };

@@ -89,61 +89,91 @@ describe("Middleware Functions", () => {
 
   describe("decorateGetServerSidePropsContext()", () => {
     let context;
+    let mockAddCacheFn;
 
     beforeEach(() => {
       context = { req: { cookies: {} }, query: {} };
+      mockAddCacheFn = jest.fn().mockImplementation((context) => {
+        context.submissionId = context.req.cookies[formSubmissionCookieId];
+        context.registration = new Registration();
+      });
     });
 
     it("should decorate the context with false if the user has accepted the cookie policy", async () => {
       context.req.cookies[acceptRejectCookieId] = true;
-      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      const decoratedContext = await decorateGetServerSidePropsContext(
+        context,
+        mockAddCacheFn
+      );
       expect(decoratedContext.showCookieBanner).toBe(false);
     });
 
     it("should decorate the context with true if the user has not accepted the cookie policy", async () => {
       context.req.cookies[acceptRejectCookieId] = false;
-      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      const decoratedContext = await decorateGetServerSidePropsContext(
+        context,
+        mockAddCacheFn
+      );
       expect(decoratedContext.showCookieBanner).toBe(true);
     });
 
     it("should add the users submission cookie id onto the context", async () => {
       context.req.cookies[formSubmissionCookieId] = "id";
-      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      const decoratedContext = await decorateGetServerSidePropsContext(
+        context,
+        mockAddCacheFn
+      );
       expect(decoratedContext.submissionId).toBe("id");
     });
 
     it("should add the users registration onto the context", async () => {
       context.req.cookies[formSubmissionCookieId] = "id";
-      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      const decoratedContext = await decorateGetServerSidePropsContext(
+        context,
+        mockAddCacheFn
+      );
       expect(decoratedContext.registration).toBeDefined();
       expect(decoratedContext.registration).toBeInstanceOf(Registration);
     });
 
     it("should parse the form data and add onto the context", async () => {
-      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      const decoratedContext = await decorateGetServerSidePropsContext(
+        context,
+        mockAddCacheFn
+      );
       expect(decoratedContext.formData).toStrictEqual({ model: "ASOS" });
     });
 
     it("should set the useIndex to 0 on the context if the useIndex is not set", async () => {
-      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      const decoratedContext = await decorateGetServerSidePropsContext(
+        context,
+        mockAddCacheFn
+      );
       expect(decoratedContext.useIndex).toStrictEqual(0);
     });
 
     it("should set the useIndex to 0 if useIndex is null", async () => {
       context.query.useIndex = null;
-      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      const decoratedContext = await decorateGetServerSidePropsContext(
+        context,
+        mockAddCacheFn
+      );
       expect(decoratedContext.useIndex).toStrictEqual(0);
     });
 
     it("should set the useIndex on the query param", async () => {
       context.query.useIndex = 1;
-      const decoratedContext = await decorateGetServerSidePropsContext(context);
+      const decoratedContext = await decorateGetServerSidePropsContext(
+        context,
+        mockAddCacheFn
+      );
       expect(decoratedContext.useIndex).toStrictEqual(1);
     });
   });
 
   describe("setFormSubmissionCookie()", () => {
     let context;
+    let mockSeedCacheFn;
 
     beforeEach(() => {
       context = {
@@ -152,10 +182,11 @@ describe("Middleware Functions", () => {
         },
         req: { cookies: {} },
       };
+      mockSeedCacheFn = jest.fn();
     });
 
     const assertCookieSet = async () => {
-      await setFormSubmissionCookie(context);
+      await setFormSubmissionCookie(context, mockSeedCacheFn);
 
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
