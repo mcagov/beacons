@@ -30,7 +30,9 @@ export class FormCacheFactory {
 
 class FormCache implements IFormCache {
   private _byIdToRegistration: Record<string, Registration> = {};
-  private cache = new JSONCache<IRegistration>(new Redis());
+  private cache = new JSONCache<IRegistration>(
+    new Redis(process.env.REDIS_URI)
+  );
 
   public async update(
     id: string,
