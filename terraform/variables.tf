@@ -183,7 +183,7 @@ variable "mca_azure_b2c_login_flow" {
   type        = string
   description = "The Sign In User Flow defined in Azure B2C"
 }
-variable "mca_azure_b2c_auth_jwt_secret" {
+variable "mca_azure_b2c_next_auth_jwt_secret" {
   type        = string
   sensitive   = true
   descriptoin = "The random string used to hash tokens, sign cookies, and generate crytographic keys for Next Auth"

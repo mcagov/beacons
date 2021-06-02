@@ -48,14 +48,22 @@ resource "aws_secretsmanager_secret_version" "webapp_client_secret" {
   secret_string = var.webapp_client_secret
 }
 
-// b2c client secret, jwt secret
-
 resource "aws_secretsmanager_secret" "b2c_client_secret" {
-name = "${terraform.workspace}_b2c_client_secret"
-tags = module.beacons_label.tags
+  name = "${terraform.workspace}_b2c_client_secret"
+  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "b2c_client_secret" {
-secret_id = aws_secretsmanager_secret.b2c_client_secret.id
-secret_string = var.mca_azure_b2c_client_secret
+  secret_id     = aws_secretsmanager_secret.b2c_client_secret.id
+  secret_string = var.mca_azure_b2c_client_secret
+}
+
+resource "aws_secretsmanager_secret" "b2c_next_auth_jwt_secret" {
+  name = "${terraform.workspace}_b2c_next_auth_jwt_secret"
+  tags = module.beacons_label.tags
+}
+
+resource "aws_secretsmanager_secret_version" "b2c_next_auth_jwt_secret" {
+  secret_id     = aws_secretsmanager_secret.b2c_next_auth_jwt_secret.id
+  secret_string = var.mca_azure_b2c_next_auth_jwt_secret
 }
