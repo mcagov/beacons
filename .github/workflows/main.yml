@@ -71,6 +71,9 @@ jobs:
         image: redis
         ports:
           - 6379:6379
+    env:
+      WEBAPP_CLIENT_ID: ${{ secrets.WEBAPP_CLIENT_ID }}
+      WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
 
     steps:
       - uses: actions/checkout@v2.3.4
