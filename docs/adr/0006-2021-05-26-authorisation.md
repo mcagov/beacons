@@ -65,8 +65,10 @@ _Summarise the main alternatives that have been considered and the reasons why t
 more than one paragraph per alternative._
 
 1.  **Full OAuth 2.0 delegation model**. The beacon owner / account holder is made a true OAuth 2.0 resource owner that
-    delegates access to the protected resource (beacon records) to the client (consumer-facing Web App). This would be
-    advantageous in that beacon operations would be intrinsically tied to the user that initiated them, rather than
+    delegates access to the protected resource (beacon records) to the client (consumer-facing Web App). The
+    resource owner would authenticate with B2C; the webapp would be delegated privileges to call the API on the
+    resource owner's behalf, so no client credential would be necessary in the webapp. This would be advantageous in
+    that beacon operations would be intrinsically tied to the user that initiated them, rather than
     application code in the Web App having to manage linking an action with a user. An access token would, in
     theory, also only provide access to the beacon owner's beacons, limiting the blast radius of a compromised
     credential. This approach would be disadvantageous in that the Beacons Service would have to manage two
