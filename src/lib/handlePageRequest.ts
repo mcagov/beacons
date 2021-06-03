@@ -15,7 +15,6 @@ import {
 } from "./middleware";
 import { Registration } from "./registration/registration";
 import { IRegistration } from "./registration/types";
-import { PageURLs } from "./urls";
 import { formatUrlQueryParams } from "./utils";
 
 type TransformCallback = (formData: FormSubmission) => FormSubmission;
@@ -99,11 +98,9 @@ const handlePostRequest = async (
 
   if (formIsValid) {
     let destination = onSuccessfulFormPostCallback(context);
-    if (!context.req.headers.referer.includes(PageURLs.signUpOrSignIn)) {
-      destination = formatUrlQueryParams(destination, {
-        useIndex: context.useIndex,
-      });
-    }
+    destination = formatUrlQueryParams(destination, {
+      useIndex: context.useIndex,
+    });
     return {
       redirect: {
         statusCode: 303,

@@ -1,6 +1,5 @@
 // Mock module dependencies in getServerSideProps for testing handlePageRequest()
 import { handlePageRequest } from "../../src/lib/handlePageRequest";
-import { PageURLs } from "../../src/lib/urls";
 
 jest.mock("../../src/lib/middleware", () => ({
   __esModule: true,
@@ -53,7 +52,6 @@ describe("handlePageRequest()", () => {
       req: {
         method: "POST",
         cookies: {},
-        headers: {},
       },
       query: {},
     };
@@ -79,10 +77,8 @@ describe("handlePageRequest()", () => {
     });
   });
 
-  it("should redirect user to given next page on valid form submission, with useIndex query param", async () => {
+  it("should redirect user to given next page on valid form submission", async () => {
     const nextPagePath = "/page-to-redirect-to-if-form-data-is-valid";
-    context.req.headers.referer = "/currentPage";
-
     const response = await handlePageRequest(
       nextPagePath,
       getFormGroup
@@ -92,22 +88,6 @@ describe("handlePageRequest()", () => {
       redirect: {
         statusCode: 303,
         destination: `${nextPagePath}?useIndex=1`,
-      },
-    });
-  });
-  it("should redirect user to given next page on valid form submission without useIndex query param", async () => {
-    const nextPagePath = "/page-to-redirect-to-if-form-data-is-valid";
-    context.req.headers.referer = PageURLs.signUpOrSignIn;
-
-    const response = await handlePageRequest(
-      nextPagePath,
-      getFormGroup
-    )(context);
-
-    expect(response).toMatchObject({
-      redirect: {
-        statusCode: 303,
-        destination: `${nextPagePath}`,
       },
     });
   });
