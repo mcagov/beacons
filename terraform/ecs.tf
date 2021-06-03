@@ -97,11 +97,11 @@ resource "aws_ecs_task_definition" "webapp" {
       },
       {
         name : "AZURE_B2C_CLIENT_SECRET",
-        valueFrom : aws_secretsmanager_secret.b2c_client_secret.arn
+        valueFrom : aws_secretsmanager_secret.webapp_b2c_client_secret.arn
       },
       {
         name : "JWT_SECRET",
-        valueFrom : aws_secretsmanager_secret.b2c_next_auth_jwt_secret.arn
+        valueFrom : aws_secretsmanager_secret.webapp_b2c_next_auth_jwt_secret.arn
       }
     ]
   }])

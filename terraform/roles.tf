@@ -41,8 +41,8 @@ resource "aws_iam_policy" "secret_manager_access" {
         "${aws_secretsmanager_secret.gov_notify_customer_email_template.arn}",
         "${aws_secretsmanager_secret.basic_auth.arn}",
         "${aws_secretsmanager_secret.webapp_client_secret.arn}"
-        "${aws_secretsmanager_secret.b2c_client_secret.arn}"
-        "${aws_secretsmanager_secret.b2c_next_auth_jwt_secret.arn}"
+        "${aws_secretsmanager_secret.webapp_b2c_client_secret.arn}"
+        "${aws_secretsmanager_secret.webapp_b2c_next_auth_jwt_secret.arn}"
       ]
     }
   ]
