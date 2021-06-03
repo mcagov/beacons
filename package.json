@@ -31,6 +31,7 @@
     "cookie": "^0.4.1",
     "google-libphonenumber": "^3.2.20",
     "govuk-frontend": "^3.11.0",
+    "next-auth": "^3.24.1",
     "next": "10.2.3",
     "nextjs-basic-auth-middleware": "^0.2.0",
     "notifications-node-client": "^5.1.0",

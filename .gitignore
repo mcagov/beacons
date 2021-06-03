@@ -9,6 +9,7 @@ node_modules/
 .next/
 .idea/
 .eslintcache
+.env.local
 
 # Cypress
 screenshots
