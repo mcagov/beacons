@@ -55,4 +55,6 @@ jobs:
           TF_VAR_gov_notify_customer_email_template: ${{ secrets.GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE }}
           TF_VAR_basic_auth: ${{ secrets.BASIC_AUTH_CREDENTIALS }}
           TF_VAR_webapp_client_secret: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+          TF_VAR_webapp_azure_b2c_client_secret: ${{ secrets.AZURE_B2C_CLIENT_SECRET }}
+          TF_VAR_webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.JWT_SECRET }}
         run: terraform apply -auto-approve -var-file=staging.tfvars -var-file=staging.images.tfvars

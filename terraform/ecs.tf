@@ -35,21 +35,40 @@ resource "aws_ecs_task_definition" "webapp" {
       },
       {
         name : "WEBAPP_CLIENT_ID",
-        value : var.webapp_client_id
+        value : var.webapp_azure_ad_client_id
       },
       {
         name : "AAD_API_ID",
-        value : var.service_api_id
+        value : var.service_azure_ad_api_id
       },
       {
         name : "AAD_TENANT_ID",
-        value : var.mca_azure_ad_tenant_id
+        value : var.webapp_azure_ad_tenant_id
       },
       {
         name : "REDIS_URI",
         value : "redis://${aws_elasticache_cluster.main.cache_nodes[0].address}:${var.redis_port}"
+      },
+      {
+        name : "NEXTAUTH_URL",
+        value : var.webapp_next_auth_url
+      },
+      {
+        name : "AZURE_B2C_CLIENT_ID",
+        value : var.webapp_azure_b2c_client_id
+      },
+      {
+        name : "AZURE_B2C_TENANT_NAME",
+        value : var.webapp_azure_b2c_tenant_name
+      },
+      {
+        name : "AZURE_B2C_TENANT_ID",
+        value : var.webapp_azure_b2c_tenant_id
+      },
+      {
+        name : "AZURE_B2C_LOGIN_FLOW",
+        value : var.webapp_azure_b2c_login_flow
       }
-
     ],
     logConfiguration : {
       "logDriver" : "awslogs",
@@ -63,16 +82,28 @@ resource "aws_ecs_task_definition" "webapp" {
       {
         name : "GOV_NOTIFY_API_KEY",
         valueFrom : aws_secretsmanager_secret.gov_notify_api_key.arn
-        }, {
+      },
+      {
         name : "GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE",
         valueFrom : aws_secretsmanager_secret.gov_notify_customer_email_template.arn
-        }, {
+      },
+      {
         name : "BASIC_AUTH_CREDENTIALS",
         valueFrom : aws_secretsmanager_secret.basic_auth.arn
-        }, {
+      },
+      {
         name : "WEBAPP_CLIENT_SECRET",
         valueFrom : aws_secretsmanager_secret.webapp_client_secret.arn
-    }]
+      },
+      {
+        name : "AZURE_B2C_CLIENT_SECRET",
+        valueFrom : aws_secretsmanager_secret.webapp_b2c_client_secret.arn
+      },
+      {
+        name : "JWT_SECRET",
+        valueFrom : aws_secretsmanager_secret.webapp_b2c_next_auth_jwt_secret.arn
+      }
+    ]
   }])
 }
 
