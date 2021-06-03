@@ -139,3 +139,32 @@ variable "db_skip_final_snapshot" {
   type        = bool
   description = "Determines whether a final DB snapshot is created before the DB instance is deleted"
 }
+
+variable "webapp_client_secret" {
+  sensitive   = true
+  type        = string
+  description = "The client secret for the consumer-facing web app, provided in Azure AD"
+}
+
+variable "webapp_client_id" {
+  type        = string
+  description = "The client identifier for the consumer-facing web app, provided in Azure AD"
+}
+
+variable "service_api_id" {
+  sensitive   = true
+  type        = string
+  description = "The GUID for the Service API, provided in Azure AD"
+}
+
+variable "mca_azure_ad_tenant_id" {
+  sensitive   = true
+  type        = string
+  description = "The UUID for the Azure AD tenant, provided in Azure AD"
+}
+
+variable "redis_port" {
+  type        = number
+  description = "Port on which to serve Redis"
+  default     = 6379
+}
