@@ -16,7 +16,7 @@ import {
 import {
   givenIHaveEnteredMyAviationUse,
   iCanGoBackAndEditMyAviationUse,
-  iCanSeeMyAviationUse,
+  iCanSeeMySingleAviationUse,
 } from "../common/i-can-enter-use-information/aviation.spec";
 import { andIHaveNoFurtherUses } from "../common/i-can-enter-use-information/generic.spec";
 import { thenTheUrlShouldContain } from "../common/selectors-and-assertions.spec";
@@ -34,7 +34,7 @@ describe("As an aviation beacon owner,", () => {
     thenTheUrlShouldContain(PageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
-    iCanSeeMyAviationUse(Purpose.PLEASURE);
+    iCanSeeMySingleAviationUse(Purpose.PLEASURE);
     iCanSeeMyPersonalDetails();
     iCanSeeMyAddressDetails();
     iCanSeeMyEmergencyContactDetails();
@@ -53,7 +53,7 @@ describe("As an aviation beacon owner,", () => {
     thenTheUrlShouldContain(PageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
-    iCanSeeMyAviationUse(Purpose.COMMERCIAL);
+    iCanSeeMySingleAviationUse(Purpose.COMMERCIAL);
     iCanSeeMyPersonalDetails();
     iCanSeeMyAddressDetails();
     iCanSeeMyEmergencyContactDetails();

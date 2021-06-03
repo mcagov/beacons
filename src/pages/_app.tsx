@@ -1,3 +1,4 @@
+import { Provider as AuthProvider } from "next-auth/client";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import React, { FunctionComponent, useEffect } from "react";
@@ -24,7 +25,9 @@ const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
         <GovUKMetadata />
       </Head>
 
-      <Component {...pageProps} />
+      <AuthProvider session={pageProps.session}>
+        <Component {...pageProps} />
+      </AuthProvider>
     </>
   );
 };

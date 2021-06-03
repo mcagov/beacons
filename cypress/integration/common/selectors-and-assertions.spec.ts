@@ -70,6 +70,10 @@ export const whenIType = (value: string, selector: string): void => {
 export const givenIHaveTyped = whenIType;
 export const andIType = whenIType;
 
+export const whenIClearTheInput = (selector: string): void => {
+  cy.get(selector).clear();
+};
+
 export const thenTheUrlShouldContain = (urlPath: string): void => {
   cy.url().should("include", urlPath);
 };

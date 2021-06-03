@@ -104,6 +104,11 @@ export const iCanSeeMyLandUse = (): void => {
   cy.get("main").contains(testLandUseData.moreDetails);
 };
 
+export const iCanSeeMySingleLandUse = (): void => {
+  iCanSeeMyLandUse();
+  cy.get("main").should("not.contain", "Callsign");
+};
+
 const givenIHaveEnteredMyLandCommunicationDetails = (): void => {
   givenIHaveSelected("#portableVhfRadio");
   givenIHaveTyped(

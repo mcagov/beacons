@@ -9,9 +9,12 @@ node_modules/
 .next/
 .idea/
 .eslintcache
+.env.local
 
 # Cypress
 screenshots
 
 # Jest
 coverage
+
+.env.local

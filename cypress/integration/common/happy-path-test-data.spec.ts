@@ -102,6 +102,7 @@ export const testMaritimeUseData = {
     rigPlatformLocation: "Suez Canal",
   },
   communications: {
+    callSign: "C41151GN",
     checkedFields: [
       "vhfRadio",
       "fixedVhfRadio",

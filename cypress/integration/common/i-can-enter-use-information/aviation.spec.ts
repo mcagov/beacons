@@ -214,6 +214,11 @@ export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
   cy.get("main").contains("dongle");
 };
 
+export const iCanSeeMySingleAviationUse = (purpose: Purpose): void => {
+  iCanSeeMyAviationUse(purpose);
+  cy.get("main").should("not.contain", "Callsign");
+};
+
 const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.maxCapacity,
