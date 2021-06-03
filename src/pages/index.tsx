@@ -18,6 +18,7 @@ import { WarningText } from "../components/WarningText";
 import { BasicAuthGateway } from "../gateways/basicAuthGateway";
 import { setFormSubmissionCookie } from "../lib/middleware";
 import { acceptRejectCookieId } from "../lib/types";
+import { PageURLs } from "../lib/urls";
 import { AuthenticateUser } from "../useCases/authenticateUser";
 
 interface ServiceStartPageProps {
@@ -117,8 +118,8 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
         &nbsp;if you aren&apos;t sure if your beacon is 406 MHz or not.
       </>
     </WarningText>
-
-    <StartButton href="/register-a-beacon/check-beacon-details" />
+    {/*TODO: Make the start button go to sign up or sign in page*/}
+    <StartButton href={PageURLs.checkBeaconDetails} />
   </>
 );
 

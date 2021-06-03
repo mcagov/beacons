@@ -15,6 +15,7 @@ export const givenIHaveBeenToTheStartPageAndClickedStartNow = (): void => {
   // Creates an empty Registration object linked to the user's session
   givenIHaveBeenTo(PageURLs.start);
   givenIHaveClicked(".govuk-button--start");
+  // TODO: when we have sign up/sign in flow set up, update this to sign up/sign in user
 };
 
 export const givenIHaveACookieSetAndIVisit = (url: string): void => {
@@ -75,6 +76,10 @@ export const whenIClearTheInput = (selector: string): void => {
 
 export const thenTheUrlShouldContain = (urlPath: string): void => {
   cy.url().should("include", urlPath);
+};
+
+export const thenTheUrlPathShouldBe = (urlPath: string): void => {
+  cy.url().should("include", Cypress.config().baseUrl + urlPath);
 };
 
 export const thenTheInputShouldOnlyContain = (
