@@ -47,7 +47,7 @@ resource "aws_ecs_task_definition" "webapp" {
       },
       {
         name : "REDIS_URI",
-        value : "redis://${aws_elasticache_cluster.main.cache_nodes.*.address}:${var.redis_port}"
+        value : "redis://${aws_elasticache_cluster.main.cache_nodes[0].address}:${var.redis_port}"
       },
       {
         name : "NEXTAUTH_URL",

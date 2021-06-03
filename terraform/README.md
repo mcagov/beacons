@@ -11,7 +11,7 @@ Before the pipeline can be trigger to deploy to AWS, the following setup is requ
 - Create ECR for the docker images of the webapp and service and update secrets in [webapp](https://github.com/mcagov/beacons-webapp/settings/secrets/actions) and [service](https://github.com/mcagov/beacons-service/settings/secrets/actions) repositories
 - Ensure that the terraform workspaces for all environments exist
   - `terraform workspace new ${env_name}` where env_name is `dev`, `staging` or `production`
-  -  `terraform workspace list` allows you to view existing workspaces
+  - `terraform workspace list` allows you to view existing workspaces
 - Ensure that the terraform variables file (e.g. `dev.tfvars`, `staging.tfvars`) for each environment exists
 
 ## Upgrading terraform modules
