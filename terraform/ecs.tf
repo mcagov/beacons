@@ -35,15 +35,15 @@ resource "aws_ecs_task_definition" "webapp" {
       },
       {
         name : "WEBAPP_CLIENT_ID",
-        value : var.webapp_client_id
+        value : var.webapp_azure_ad_client_id
       },
       {
         name : "AAD_API_ID",
-        value : var.service_api_id
+        value : var.service_azure_ad_api_id
       },
       {
         name : "AAD_TENANT_ID",
-        value : var.mca_azure_ad_tenant_id
+        value : var.webapp_azure_ad_tenant_id
       },
       {
         name : "REDIS_URI",
@@ -51,23 +51,23 @@ resource "aws_ecs_task_definition" "webapp" {
       },
       {
         name : "NEXTAUTH_URL",
-        value : var.next_auth_url
+        value : var.webapp_next_auth_url
       },
       {
         name : "AZURE_B2C_CLIENT_ID",
-        value : var.mca_azure_b2c_client_id
+        value : var.webapp_azure_b2c_client_id
       },
       {
         name : "AZURE_B2C_TENANT_NAME",
-        value : var.mca_azure_b2c_tenant_name
+        value : var.webapp_azure_b2c_tenant_name
       },
       {
         name : "AZURE_B2C_TENANT_ID",
-        value : var.mca_azure_b2c_tenant_id
+        value : var.webapp_azure_b2c_tenant_id
       },
       {
         name : "AZURE_B2C_LOGIN_FLOW",
-        value : var.mca_azure_b2c_login_flow
+        value : var.webapp_azure_b2c_login_flow
       }
     ],
     logConfiguration : {

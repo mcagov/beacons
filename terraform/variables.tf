@@ -42,6 +42,50 @@ variable "webapp_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Beacons Webapp"
 }
+variable "webapp_azure_ad_client_secret" {
+  sensitive   = true
+  type        = string
+  description = "The client secret for the consumer-facing web app, provided in Azure AD"
+}
+variable "webapp_azure_ad_client_id" {
+  type        = string
+  description = "The client identifier for the consumer-facing web app, provided in Azure AD"
+}
+variable "webapp_azure_ad_tenant_id" {
+  sensitive   = true
+  type        = string
+  description = "The UUID for the Azure AD tenant, provided in Azure AD"
+}
+variable "webapp_next_auth_url" {
+  type        = string
+  description = "The NEXT AUTH environment variable used by NextAuth"
+}
+variable "webapp_azure_b2c_client_id" {
+  type        = string
+  description = "The Azure B2C Client ID for the B2C App Registration"
+}
+variable "webapp_azure_b2c_client_secret" {
+  type        = string
+  sensitive   = true
+  description = "The client secret for the B2C App Registration"
+}
+variable "webapp_azure_b2c_tenant_name" {
+  type        = string
+  description = "The name of the Azure B2C tenant"
+}
+variable "webapp_azure_b2c_tenant_id" {
+  type        = string
+  description = "The UUID for the Azure B2C tenant"
+}
+variable "webapp_azure_b2c_login_flow" {
+  type        = string
+  description = "The Sign In User Flow defined in Azure B2C"
+}
+variable "webapp_azure_b2c_next_auth_jwt_secret" {
+  type        = string
+  sensitive   = true
+  description = "The random string used to hash tokens, sign cookies, and generate crytographic keys for NextAuth"
+}
 variable "service_image" {
   type        = string
   description = "Docker image to run in the ECS cluster"
@@ -72,6 +116,11 @@ variable "service_fargate_cpu" {
 variable "service_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Beacons Service"
+}
+variable "service_azure_ad_api_id" {
+  sensitive   = true
+  type        = string
+  description = "The GUID for the Service API, provided in Azure AD"
 }
 variable "db_storage" {
   type        = number
@@ -138,55 +187,6 @@ variable "db_logs_exported" {
 variable "db_skip_final_snapshot" {
   type        = bool
   description = "Determines whether a final DB snapshot is created before the DB instance is deleted"
-}
-variable "webapp_client_secret" {
-  sensitive   = true
-  type        = string
-  description = "The client secret for the consumer-facing web app, provided in Azure AD"
-}
-variable "webapp_client_id" {
-  type        = string
-  description = "The client identifier for the consumer-facing web app, provided in Azure AD"
-}
-variable "service_api_id" {
-  sensitive   = true
-  type        = string
-  description = "The GUID for the Service API, provided in Azure AD"
-}
-variable "mca_azure_ad_tenant_id" {
-  sensitive   = true
-  type        = string
-  description = "The UUID for the Azure AD tenant, provided in Azure AD"
-}
-variable "next_auth_url" {
-  type        = string
-  description = "The NEXT AUTH environment variable used by NextAuth"
-}
-variable "mca_azure_b2c_client_id" {
-  type        = string
-  description = "The Azure B2C Client ID for the B2C App Registration"
-}
-variable "mca_azure_b2c_client_secret" {
-  type        = string
-  sensitive   = true
-  description = "The client secret for the B2C App Registration"
-}
-variable "mca_azure_b2c_tenant_name" {
-  type        = string
-  description = "The name of the Azure B2C tenant"
-}
-variable "mca_azure_b2c_tenant_id" {
-  type        = string
-  description = "The UUID for the Azure B2C tenant"
-}
-variable "mca_azure_b2c_login_flow" {
-  type        = string
-  description = "The Sign In User Flow defined in Azure B2C"
-}
-variable "mca_azure_b2c_next_auth_jwt_secret" {
-  type        = string
-  sensitive   = true
-  description = "The random string used to hash tokens, sign cookies, and generate crytographic keys for NextAuth"
 }
 variable "redis_port" {
   type        = number
