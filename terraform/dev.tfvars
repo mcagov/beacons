@@ -5,6 +5,7 @@ webapp_count                 = 1
 webapp_fargate_cpu           = 256
 webapp_fargate_memory        = 512
 webapp_next_auth_url         = "https://dev.406beacons.com"
+webapp_azure_b2c_tenant_id = "da0cadc6-44c5-4830-bb04-82bddfd2f040"
 webapp_azure_b2c_client_id   = "43557393-7cd2-416e-8bb2-96283dbdbcbc"
 webapp_azure_b2c_tenant_name = "B2CMCGA"
 webapp_azure_b2c_login_flow  = "B2C_1_login_beacons"
