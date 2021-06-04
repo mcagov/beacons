@@ -3,6 +3,8 @@ import {
   givenIHaveBeenTo,
   givenIHaveClickedContinue,
   givenIHaveSelected,
+  iCanSeeAPageHeadingThatContains,
+  thenICanSeeAnInputWithPlaceholder,
   thenIShouldSeeAnErrorMessageThatContains,
   thenTheUrlPathShouldBe,
 } from "../common/selectors-and-assertions.spec";
@@ -15,7 +17,11 @@ describe("As a new user who wants to register a beacon", () => {
     givenIHaveSelected("#signUp");
     givenIHaveClickedContinue();
     //TODO: Create sign up page and add tests
-    thenTheUrlPathShouldBe(PageURLs.signUp);
+    //thenTheUrlPathShouldBe(PageURLs.signUp);
+    iCanSeeAPageHeadingThatContains("Create a Beacon Registry Account");
+    thenICanSeeAnInputWithPlaceholder("Email Address");
+    thenICanSeeAnInputWithPlaceholder("New Password");
+    thenICanSeeAnInputWithPlaceholder("Confirm New Password");
   });
 
   it("requires me to choose an option", () => {

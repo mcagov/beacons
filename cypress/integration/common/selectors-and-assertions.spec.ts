@@ -139,6 +139,10 @@ export const thenICannotSee = (selector: string): void => {
   cy.get(selector).should("not.exist");
 };
 
+export const thenICanSeeAnInputWithPlaceholder = (placeholderText: string): void => {
+  cy.get("input").should("have.attr", "placeholder", placeholderText);
+};
+
 export const thenThereAreNoErrors = (): void => {
   thenICannotSee(".govuk-error-summary");
   thenICannotSee(".govuk-error-message");
