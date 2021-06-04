@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
@@ -43,7 +43,6 @@ export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
       showCookieBanner={showCookieBanner}
       pageText={pageText}
       includeUseIndex={false}
-      onSubmit= {handleFormSubmit}
     >
       <FormGroup errorMessages={form.fields.signUpOrSignIn.errorMessages}>
         <RadioList conditional={true}>
@@ -69,28 +68,22 @@ export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const tenantName = process.env.AZURE_B2C_TENANT_NAME;
-const userFlow = process.env.AZURE_B2C_LOGIN_FLOW;
-const clientId = process.env.AZURE_B2C_CLIENT_ID;
-const redirectUri = process.env.BASE_URL;
 
-const signupUri = `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${userFlow}/oauth2/v2.0/authorize?p=${userFlow}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=openid&response_type=id_token&prompt=login`;
-
-const handleFormSubmit = (context) : void => {
-    switch (context.formData.signUpOrSignIn) {
+const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
+  switch (context.formData.signUpOrSignIn) {
     case "signUp":
-        window.location.assign('https://duckduckgo.com/')
+      return PageURLs.signUp;
     case "signIn":
       //return PageURLs.signIn;
   }
-}
+};
 
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "",
   getPageForm,
   (f) => f,
-  //onSuccessfulFormCallback
+  onSuccessfulFormCallback
 );
 
 export default SignUpOrSignIn;
