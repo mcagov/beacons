@@ -6,7 +6,6 @@ interface FormProps {
   action?: string;
   method?: HttpMethod;
   children: ReactNode;
-  onSubmit: (any)=> void;
 }
 
 interface FormFieldsetProps {
@@ -46,9 +45,8 @@ export const Form: FunctionComponent<FormProps> = ({
   action = "",
   method = HttpMethod.POST,
   children,
-  onSubmit = ()=>{}
 }: FormProps): JSX.Element => (
-  <form action={action} method={method} noValidate={true} onSubmit={onSubmit}>
+  <form action={action} method={method} noValidate={true}>
     {children}
   </form>
 );

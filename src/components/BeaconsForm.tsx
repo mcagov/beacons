@@ -18,7 +18,6 @@ interface BeaconsFormProps {
   errorMessages?: string[];
   pageText?: string | ReactNode;
   includeUseIndex?: boolean;
-  onSubmit?: (context:any)=> void;
 }
 
 export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
@@ -30,7 +29,6 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   errorMessages = [],
   pageText = null,
   includeUseIndex = true,
-  onSubmit = ()=>{},
 }: BeaconsFormProps): JSX.Element => {
   const backButton: ReactNode = includeUseIndex ? (
     <BackButtonRouterIndexes href={previousPageUrl} />
@@ -51,7 +49,7 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
         mainContent={
           <>
             <FormErrorSummary formErrors={formErrors} />
-            <Form onSubmit={onSubmit}>
+            <Form>
               <FormGroup errorMessages={errorMessages}>
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
