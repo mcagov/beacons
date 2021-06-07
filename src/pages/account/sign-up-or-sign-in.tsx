@@ -68,7 +68,9 @@ export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
+const onSuccessfulFormCallback: DestinationIfValidCallback = async (
+  context
+) => {
   switch (context.formData.signUpOrSignIn) {
     case "signUp":
       return PageURLs.signUp;
