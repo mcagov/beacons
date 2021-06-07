@@ -195,7 +195,7 @@ export const getServerSideProps: GetServerSideProps = async (
   const authUseCase = new AuthenticateUser(authGateway);
   await authUseCase.execute(context);
 
-  setFormSubmissionCookie(context);
+  await setFormSubmissionCookie(context);
   const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
 
   return { props: { showCookieBanner } };

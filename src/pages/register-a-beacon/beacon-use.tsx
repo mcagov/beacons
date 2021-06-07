@@ -99,7 +99,9 @@ export const BeaconUse: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
+const onSuccessfulFormCallback: DestinationIfValidCallback = async (
+  context
+) => {
   switch (context.formData.environment) {
     case Environment.MARITIME:
     case Environment.AVIATION:

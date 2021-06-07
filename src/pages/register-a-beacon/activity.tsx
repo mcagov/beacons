@@ -638,7 +638,9 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
+const onSuccessfulFormCallback: DestinationIfValidCallback = async (
+  context
+) => {
   const flattenedRegistration = context.registration.getFlattenedRegistration({
     useIndex: context.useIndex,
   });

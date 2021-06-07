@@ -21,6 +21,11 @@ To develop locally, you'll need:
 - [Node.JS](https://nodejs.org/en/)
 - [Docker](https://www.docker.com/)
 
+#### Environment variables
+
+Included in the repo is a `.env.example` file containing non-secret environment variables. This file should be copied
+to `.env.local` on first pull and augmented with the secrets contained in 1Password.
+
 ### Running the application
 
 First, install dependencies:
@@ -60,7 +65,7 @@ Our approach to testing:
 
 ### Running Cypress tests
 
-- `npm run build && npm run start` -- Start the app in production mode. (Due to server-side caching, Cypress tests will not operate when the server is run in `dev` mode.)
+- `docker compose up` -- Start the app in production mode.
 - `npm run cypress:open` -- Run Cypress tests in the `cypress/integration` directory with the [Cypress Test Runner](https://docs.cypress.io/guides/core-concepts/test-runner.html#Overview)
 - `npm run cypress:watch` -- Run Cypress tests with the Test Runner, with Cypress watching test files for changes
 - `npm run cypress:run` -- Run Cypress tests in the `cypress/integration` directory in the [command line](https://docs.cypress.io/guides/guides/command-line.html#cypress-run)
