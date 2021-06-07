@@ -16,7 +16,7 @@ services:
       AAD_TENANT_ID: $AAD_API_ID
       WEBAPP_CLIENT_ID: $WEBAPP_CLIENT_ID
       WEBAPP_CLIENT_SECRET: $WEBAPP_CLIENT_SECRET
-      REDIS_URI: $REDIS_URI
+      REDIS_URI: redis://redis:6379
 
   redis:
     image: redis:6
