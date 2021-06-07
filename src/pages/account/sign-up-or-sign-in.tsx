@@ -74,7 +74,7 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
     case "signUp":
       return PageURLs.signUp;
     case "signIn":
-      //return PageURLs.signIn;
+      return PageURLs.signIn;
   }
 };
 
