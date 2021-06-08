@@ -34,7 +34,6 @@ describe("As a new user who wants to register a beacon", () => {
     const expectedErrorMessage = "Please select an option";
     givenIHaveBeenTo(PageURLs.start);
     givenIHaveClicked(".govuk-button--start");
-    givenIHaveWaitedForAzureB2C();
     givenIHaveClickedContinue();
     thenIShouldSeeAnErrorMessageThatContains(expectedErrorMessage);
   });
