@@ -4,7 +4,10 @@ import {
   Configuration,
   IConfidentialClientApplication,
 } from "@azure/msal-node";
-import { IAuthGateway } from "./IAuthGateway";
+
+export interface IAuthGateway {
+  getAccessToken: () => Promise<string>;
+}
 
 export class AadAuthGateway implements IAuthGateway {
   private readonly confidentialClientApplication: IConfidentialClientApplication;

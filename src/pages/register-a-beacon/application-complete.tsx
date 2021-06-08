@@ -5,7 +5,7 @@ import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
 import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
-import { AadAuthGateway } from "../../gateways/AadAuthGateway";
+import { AadAuthGateway } from "../../gateways/aadAuthGateway";
 import { BeaconsApiGateway } from "../../gateways/beaconsApiGateway";
 import { GovNotifyGateway } from "../../gateways/govNotifyApiGateway";
 import {

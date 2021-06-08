@@ -3,7 +3,7 @@ import {
   ConfidentialClientApplication,
   IConfidentialClientApplication,
 } from "@azure/msal-node";
-import { AadAuthGateway } from "../../src/gateways/AadAuthGateway";
+import { AadAuthGateway } from "../../src/gateways/aadAuthGateway";
 import { IAuthGateway } from "../../src/gateways/IAuthGateway";
 
 describe("AadAuthGateway", () => {

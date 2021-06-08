@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
+import { IAuthGateway } from "../gateways/aadAuthGateway";
 import { BeaconsApiGateway } from "../gateways/beaconsApiGateway";
-import { IAuthGateway } from "../gateways/IAuthGateway";
 import { Registration } from "../lib/registration/registration";
 
 export class CreateRegistration {
