@@ -8,7 +8,6 @@ interface SignUpPageProps {
 const SignUpPage: FunctionComponent<SignUpPageProps> = ({
   signUpUrl,
 }: SignUpPageProps): JSX.Element => {
-  console.log("cb", signUpUrl);
   useEffect(() => {
     window.location.assign(signUpUrl);
   });
@@ -25,7 +24,6 @@ export const getServerSideProps: GetServerSideProps = async (
 
   const signUpUrl = `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${userFlow}/oauth2/v2.0/authorize?p=${userFlow}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=openid&response_type=id_token&prompt=login`;
 
-  console.log("signUpUrl", signUpUrl);
   return { props: { signUpUrl: signUpUrl } };
 };
 

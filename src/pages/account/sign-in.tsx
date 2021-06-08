@@ -9,7 +9,6 @@ interface SignInPageProps {
 const SignInPage: FunctionComponent<SignInPageProps> = ({
   baseUrl,
 }: SignInPageProps): JSX.Element => {
-  console.log("baseUrl", baseUrl);
   useEffect(() => {
     signIn("azureb2c", { callbackUrl: baseUrl });
   });
@@ -19,7 +18,6 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  console.log("baseUrl", process.env.NEXTAUTH_URL);
   return { props: { baseUrl: process.env.NEXTAUTH_URL } };
 };
 
