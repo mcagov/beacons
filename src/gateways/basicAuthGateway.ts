@@ -9,6 +9,8 @@ export interface IBasicAuthGateway {
 }
 
 export class BasicAuthGateway implements IBasicAuthGateway {
+  constructor() {}
+
   async authenticate(
     request: IncomingMessage,
     response: ServerResponse

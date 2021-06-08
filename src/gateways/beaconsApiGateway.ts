@@ -12,8 +12,8 @@ export class BeaconsApiGateway implements IBeaconsApiGateway {
   private readonly apiUrl: string;
   private readonly registrationsEndpoint = "registrations/register";
 
-  constructor() {
-    this.apiUrl = process.env.API_URL;
+  constructor(apiUrl: string) {
+    this.apiUrl = apiUrl;
   }
 
   public async sendRegistration(
