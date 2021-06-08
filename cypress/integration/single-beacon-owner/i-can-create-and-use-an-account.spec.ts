@@ -20,6 +20,8 @@ describe("As a new user who wants to register a beacon", () => {
     thenTheUrlShouldContain(
       "b2cmcga.b2clogin.com/B2CMCGA.onmicrosoft.com/B2C_1_singup_beacons"
     );
+    givenIHaveWaitedForAzureB2C();
+    iCanSeeAPageHeadingThatContains("Create a Beacon Registry Account");
     thenICanSeeAnInputWithPlaceholder("#email", "Email Address");
     thenICanSeeAnInputWithPlaceholder("#newPassword", "New Password");
     thenICanSeeAnInputWithPlaceholder(
