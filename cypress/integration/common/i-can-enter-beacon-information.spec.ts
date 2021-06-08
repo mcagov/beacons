@@ -3,7 +3,7 @@ import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
   andIClickContinue,
   andIHaveSelected,
-  givenIHaveBeenToTheStartPageAndClickedStartNow,
+  givenIHaveACookieSetAndIVisit,
   givenIHaveClickedContinue,
   givenIHaveTyped,
   thenTheUrlShouldContain,
@@ -20,7 +20,7 @@ export const givenIHaveEnteredMyRequiredBeaconDetails = (): void => {
 };
 
 export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
-  givenIHaveBeenToTheStartPageAndClickedStartNow();
+  givenIHaveACookieSetAndIVisit(PageURLs.checkBeaconDetails);
   givenIHaveTyped(
     testBeaconAndOwnerData.beaconDetails.manufacturer,
     "#manufacturer"

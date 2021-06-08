@@ -2,6 +2,7 @@ import { PageURLs } from "../../../src/lib/urls";
 import { givenIHaveFilledInCheckBeaconDetailsPage } from "../common/i-can-enter-beacon-information.spec";
 import {
   andIAmAt,
+  andIHaveBeenTo,
   givenIHaveACookieSetAndIVisit,
   givenIHaveClicked,
   iCanSeeAPageHeadingThatContains,
@@ -28,8 +29,7 @@ describe("As a beacon owner, I want to check the details that were submitted", (
     givenIHaveClicked(acceptAndSendButtonSelector);
     andIAmAt(PageURLs.applicationComplete);
     givenIHaveClicked(homePageLinkSelector);
-    andIAmAt(PageURLs.start);
-    givenIHaveClicked(startButtonSelector);
+    andIHaveBeenTo(PageURLs.checkBeaconDetails);
     thenTheInputShouldOnlyContain("", manufacturerFieldSelector);
     thenTheInputShouldOnlyContain("", modelFieldSelector);
     thenTheInputShouldOnlyContain("", hexIdFieldSelector);
