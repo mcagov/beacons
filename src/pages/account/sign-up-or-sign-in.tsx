@@ -68,7 +68,6 @@ export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
   );
 };
 
-
 const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
   switch (context.formData.signUpOrSignIn) {
     case "signUp":
@@ -77,7 +76,6 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = (context) => {
       return PageURLs.signIn;
   }
 };
-
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "",

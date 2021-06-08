@@ -139,7 +139,9 @@ export const thenICannotSee = (selector: string): void => {
   cy.get(selector).should("not.exist");
 };
 
-export const thenICanSeeAnInputWithPlaceholder = (placeholderText: string): void => {
+export const thenICanSeeAnInputWithPlaceholder = (
+  placeholderText: string
+): void => {
   cy.get("input").should("have.attr", "placeholder", placeholderText);
 };
 

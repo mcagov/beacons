@@ -15,12 +15,18 @@ describe("As a new user who wants to register a beacon", () => {
     givenIHaveClicked(".govuk-button--start");
     givenIHaveSelected("#signUp");
     givenIHaveClickedContinue();
-    thenTheUrlShouldContain("b2cmcga.b2clogin.com/B2CMCGA.onmicrosoft.com/B2C_1_singup_beacons");
+    thenTheUrlShouldContain(
+      "b2cmcga.b2clogin.com/B2CMCGA.onmicrosoft.com/B2C_1_singup_beacons"
+    );
     cy.wait(1000);
     iCanSeeAPageHeadingThatContains("Create a Beacon Registry Account");
     cy.get("#email").should("have.attr", "placeholder", "Email Address");
     cy.get("#newPassword").should("have.attr", "placeholder", "New Password");
-    cy.get("#reenterPassword").should("have.attr", "placeholder", "Confirm New Password");
+    cy.get("#reenterPassword").should(
+      "have.attr",
+      "placeholder",
+      "Confirm New Password"
+    );
   });
 
   it("requires me to choose an option", () => {
@@ -39,11 +45,12 @@ describe("As user with an account", () => {
     givenIHaveBeenTo(PageURLs.signUpOrSignIn);
     givenIHaveSelected("#signIn");
     givenIHaveClickedContinue();
-    thenTheUrlShouldContain("b2cmcga.b2clogin.com/B2CMCGA.onmicrosoft.com/B2C_1_login_beacons");
+    thenTheUrlShouldContain(
+      "b2cmcga.b2clogin.com/B2CMCGA.onmicrosoft.com/B2C_1_login_beacons"
+    );
     cy.wait(1000);
     iCanSeeAPageHeadingThatContains("Sign In using my Beacon Registry Account");
     cy.get("#email").should("have.attr", "placeholder", "Email Address");
     cy.get("#password").should("have.attr", "placeholder", "Password");
   });
 });
-
