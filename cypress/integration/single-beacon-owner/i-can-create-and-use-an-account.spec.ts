@@ -5,6 +5,7 @@ import {
   givenIHaveClickedContinue,
   givenIHaveSelected,
   givenIHaveWaitedForAzureB2C,
+  iCanSeeAPageHeadingThatContains,
   thenICanSeeAnInputWithPlaceholder,
   thenIShouldSeeAnErrorMessageThatContains,
   thenTheUrlShouldContain,
@@ -46,6 +47,8 @@ describe("As user with an account", () => {
     thenTheUrlShouldContain(
       "b2cmcga.b2clogin.com/B2CMCGA.onmicrosoft.com/B2C_1_login_beacons"
     );
+    givenIHaveWaitedForAzureB2C();
+    iCanSeeAPageHeadingThatContains("Sign In using my Beacon Registry Account");
     thenICanSeeAnInputWithPlaceholder("#email", "Email Address");
     thenICanSeeAnInputWithPlaceholder("#password", "Password");
   });
