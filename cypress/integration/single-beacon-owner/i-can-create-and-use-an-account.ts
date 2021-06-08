@@ -4,7 +4,9 @@ import {
   givenIHaveClicked,
   givenIHaveClickedContinue,
   givenIHaveSelected,
+  givenIHaveWaitedForAzureB2C,
   iCanSeeAPageHeadingThatContains,
+  thenICanSeeAnInputWithPlaceholder,
   thenIShouldSeeAnErrorMessageThatContains,
   thenTheUrlShouldContain,
 } from "../common/selectors-and-assertions.spec";
@@ -18,13 +20,12 @@ describe("As a new user who wants to register a beacon", () => {
     thenTheUrlShouldContain(
       "b2cmcga.b2clogin.com/B2CMCGA.onmicrosoft.com/B2C_1_singup_beacons"
     );
-    cy.wait(1000);
+    givenIHaveWaitedForAzureB2C();
     iCanSeeAPageHeadingThatContains("Create a Beacon Registry Account");
-    cy.get("#email").should("have.attr", "placeholder", "Email Address");
-    cy.get("#newPassword").should("have.attr", "placeholder", "New Password");
-    cy.get("#reenterPassword").should(
-      "have.attr",
-      "placeholder",
+    thenICanSeeAnInputWithPlaceholder("#email", "Email Address");
+    thenICanSeeAnInputWithPlaceholder("#newPassword", "New Password");
+    thenICanSeeAnInputWithPlaceholder(
+      "#reenterPassword",
       "Confirm New Password"
     );
   });
@@ -33,7 +34,7 @@ describe("As a new user who wants to register a beacon", () => {
     const expectedErrorMessage = "Please select an option";
     givenIHaveBeenTo(PageURLs.start);
     givenIHaveClicked(".govuk-button--start");
-    cy.wait(1000);
+    givenIHaveWaitedForAzureB2C();
     givenIHaveClickedContinue();
     thenIShouldSeeAnErrorMessageThatContains(expectedErrorMessage);
   });
@@ -48,9 +49,9 @@ describe("As user with an account", () => {
     thenTheUrlShouldContain(
       "b2cmcga.b2clogin.com/B2CMCGA.onmicrosoft.com/B2C_1_login_beacons"
     );
-    cy.wait(1000);
+    givenIHaveWaitedForAzureB2C();
     iCanSeeAPageHeadingThatContains("Sign In using my Beacon Registry Account");
-    cy.get("#email").should("have.attr", "placeholder", "Email Address");
-    cy.get("#password").should("have.attr", "placeholder", "Password");
+    thenICanSeeAnInputWithPlaceholder("#email", "Email Address");
+    thenICanSeeAnInputWithPlaceholder("#password", "Password");
   });
 });
