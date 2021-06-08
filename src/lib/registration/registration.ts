@@ -13,8 +13,8 @@ export class Registration {
 
   public registration: IRegistration;
 
-  constructor() {
-    this.registration = initBeacon();
+  constructor(registration: IRegistration = initBeacon()) {
+    this.registration = registration;
   }
 
   public getFlattenedRegistration(indexes: Indexes): FormSubmission {

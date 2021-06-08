@@ -14,9 +14,9 @@ jest.mock("../../../src/lib/middleware", () => ({
   }),
   decorateGetServerSidePropsContext: jest.fn().mockImplementation(() => ({
     registration: {
-      registration: {
+      getRegistration: jest.fn().mockResolvedValue({
         referenceNumber: "",
-      },
+      }),
     },
   })),
   clearFormCache: jest.fn(),
@@ -40,7 +40,9 @@ jest.mock("../../../src/useCases/createRegistration", () => ({
 
 describe("ApplicationCompletePage", () => {
   it("should render correctly", () => {
-    render(<ApplicationCompletePage showCookieBanner={false} />);
+    render(
+      <ApplicationCompletePage pageSubHeading={"Test"} reference={"Test"} />
+    );
   });
 
   describe("getServerSideProps function", () => {
@@ -56,7 +58,7 @@ describe("ApplicationCompletePage", () => {
       );
       const result = await getServerSideProps(context);
 
-      expect(result.props.reference).toBeUndefined();
+      expect(result.props.reference).toBe("");
       expect(mockSendGovNotifyExecute).not.toHaveBeenCalled();
     });
 

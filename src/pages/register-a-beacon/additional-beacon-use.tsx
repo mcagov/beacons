@@ -5,13 +5,13 @@ import { RadioList, RadioListItem } from "../../components/RadioList";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { FormSubmission } from "../../lib/formCache";
+import { FormCacheFactory, FormSubmission } from "../../lib/formCache";
 import {
   DestinationIfValidCallback,
   FormPageProps,
   handlePageRequest,
 } from "../../lib/handlePageRequest";
-import { BeaconsContext } from "../../lib/middleware";
+import { BeaconsContext, setFormCache } from "../../lib/middleware";
 import { AdditionalUses } from "../../lib/registration/types";
 import { formatUrlQueryParams } from "../../lib/utils";
 
@@ -67,14 +67,18 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = (
+const onSuccessfulFormCallback: DestinationIfValidCallback = async (
   context: BeaconsContext
 ) => {
   const shouldCreateAdditionalUse =
     context.formData.additionalBeaconUse === "true";
   if (shouldCreateAdditionalUse) {
-    const registration = context.registration;
+    const registration = await FormCacheFactory.getCache().get(
+      context.submissionId
+    );
     registration.createUse();
+    await setFormCache(context.submissionId, registration);
+
     const useIndex = registration.getRegistration().uses.length - 1;
 
     return formatUrlQueryParams("/register-a-beacon/beacon-use", { useIndex });

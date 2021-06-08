@@ -44,15 +44,17 @@ export function withCookieRedirect<T>(callback: GetServerSideProps<T>) {
  * Decorator function to add beacons specific information to the `getServerSideProps` context.
  *
  * @param context {GetServerSidePropsContext}   The NextJS application context
+ * @param addCacheFn {(context: BeaconsContext) => Promise<void>} (Optional) the function used to add the cache to the context
  * @returns       {Promise<BeaconsContext>}     A promise resolving to the decorated context containing application specific data
  */
 export async function decorateGetServerSidePropsContext(
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
+  addCacheFn: (context: BeaconsContext) => Promise<void> = addCache
 ): Promise<BeaconsContext> {
   const decoratedContext: BeaconsContext = context as BeaconsContext;
 
   addCookieBannerAcceptance(decoratedContext);
-  addCache(decoratedContext);
+  await addCacheFn(decoratedContext);
   await addFormData(decoratedContext);
   addRegistrationIndexes(decoratedContext);
 
@@ -64,9 +66,10 @@ function addCookieBannerAcceptance(context: BeaconsContext): void {
   context.showCookieBanner = showCookieBanner;
 }
 
-function addCache(context: BeaconsContext): void {
+async function addCache(context: BeaconsContext): Promise<void> {
   const submissionId: string = context.req.cookies[formSubmissionCookieId];
-  const registration: Registration = getCache(submissionId);
+  const registration: Registration = await (async () =>
+    getCache(submissionId))();
 
   context.submissionId = submissionId;
   context.registration = registration;
@@ -82,15 +85,16 @@ function addRegistrationIndexes(context: BeaconsContext): void {
   context.useIndex = useIndex;
 }
 
-export const setFormSubmissionCookie = (
-  context: GetServerSidePropsContext
-): void => {
+export const setFormSubmissionCookie = async (
+  context: GetServerSidePropsContext,
+  seedCacheFn: (id: string) => Promise<void> = seedCache
+): Promise<void> => {
   const cookies: NextApiRequestCookies = context.req.cookies;
 
   if (!cookies || !cookies[formSubmissionCookieId]) {
     const id: string = uuidv4();
 
-    seedCache(id);
+    await seedCacheFn(id);
     setCookieHeader(id, context.res);
   }
 };
@@ -107,9 +111,9 @@ export const checkHeaderContains = (
   );
 };
 
-const seedCache = (id: string): void => {
+const seedCache = async (id: string): Promise<void> => {
   const cache: IFormCache = FormCacheFactory.getCache();
-  cache.update(id);
+  await cache.update(id);
 };
 
 const setCookieHeader = (id: string, res: ServerResponse): void => {
@@ -122,19 +126,27 @@ const setCookieHeader = (id: string, res: ServerResponse): void => {
   res.setHeader("Set-Cookie", serialize(formSubmissionCookieId, id, options));
 };
 
-export function updateFormCache(
+export async function updateFormCache(
   submissionId: string,
   formData: FormSubmission,
   cache: IFormCache = FormCacheFactory.getCache()
-): void {
-  cache.update(submissionId, formData);
+): Promise<void> {
+  await cache.update(submissionId, formData);
 }
 
-export function clearFormCache(
+export async function setFormCache(
+  submissionId: string,
+  registration: Registration,
+  cache: IFormCache = FormCacheFactory.getCache()
+): Promise<void> {
+  await cache.set(submissionId, registration);
+}
+
+export async function clearFormCache(
   submissionId: string,
   cache: IFormCache = FormCacheFactory.getCache()
-): void {
-  cache.clear(submissionId);
+): Promise<void> {
+  await cache.clear(submissionId);
 }
 
 export function clearFormSubmissionCookie(
@@ -156,9 +168,9 @@ export async function parseFormData(
   return await parse(request);
 }
 
-export const getCache = (
+export const getCache = async (
   id: string,
   cache: IFormCache = FormCacheFactory.getCache()
-): Registration => {
-  return cache.get(id);
+): Promise<Registration> => {
+  return await cache.get(id);
 };
