@@ -9,9 +9,9 @@ export interface IGovNotifyGateway {
 }
 
 export class GovNotifyGateway implements IGovNotifyGateway {
-  api;
-  constructor() {
-    this.api = new NotifyClient(process.env.GOV_NOTIFY_API_KEY);
+  private api;
+  constructor(apiKey: string) {
+    this.api = new NotifyClient(apiKey);
   }
 
   public async sendEmail(

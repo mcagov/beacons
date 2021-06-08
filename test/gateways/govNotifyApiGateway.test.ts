@@ -5,13 +5,15 @@ jest.mock("notifications-node-client");
 
 describe("Gov Notify API Gateway", () => {
   let gateway;
+  let apiKey;
   let emailTemplateId;
   let email;
   let personalisation;
 
   beforeEach(() => {
     NotifyClient.mockClear();
-    gateway = new GovNotifyGateway();
+    apiKey = "1234-5678-9101";
+    gateway = new GovNotifyGateway(apiKey);
     emailTemplateId = "template-id";
     email = "Hello Beacon Person!";
     personalisation = {};
