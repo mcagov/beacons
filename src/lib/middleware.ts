@@ -120,7 +120,7 @@ const setCookieHeader = (id: string, res: ServerResponse): void => {
   const options: CookieSerializeOptions = {
     path: "/",
     httpOnly: true,
-    sameSite: true,
+    sameSite: "lax",
   };
 
   res.setHeader("Set-Cookie", serialize(formSubmissionCookieId, id, options));

@@ -12,7 +12,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
     const options: CookieSerializeOptions = {
       path: "/",
       httpOnly: true,
-      sameSite: true,
+      sameSite: "lax",
       expires: oneYearFromNow,
     };
 

@@ -123,6 +123,10 @@ export const givenIHaveUnselected = (selector: string): void => {
   cy.get(selector).should("be.checked").uncheck();
 };
 
+export const givenIHaveWaitedForAzureB2C = (): void => {
+  cy.wait(1000);
+};
+
 export const andIHaveEnteredNoInformation = (): void => null;
 
 export const whenIClickBack = (): void => {
@@ -137,6 +141,13 @@ export const thenTheRadioButtonShouldBeSelected = thenTheCheckboxShouldBeChecked
 
 export const thenICannotSee = (selector: string): void => {
   cy.get(selector).should("not.exist");
+};
+
+export const thenICanSeeAnInputWithPlaceholder = (
+  inputId: string,
+  placeholderText: string
+): void => {
+  cy.get(inputId).should("have.attr", "placeholder", placeholderText);
 };
 
 export const thenThereAreNoErrors = (): void => {

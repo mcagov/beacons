@@ -45,7 +45,7 @@ export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
       includeUseIndex={false}
     >
       <FormGroup errorMessages={form.fields.signUpOrSignIn.errorMessages}>
-        <RadioList conditional={true}>
+        <RadioList>
           <RadioListItem
             id="signIn"
             name={fieldName}
