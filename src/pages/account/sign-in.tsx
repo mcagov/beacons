@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import { signIn } from "next-auth/client";
 import React, { FunctionComponent, useEffect } from "react";
 
@@ -15,9 +15,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({
   return <></>;
 };
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps: GetServerSideProps = async () => {
   return { props: { baseUrl: process.env.NEXTAUTH_URL } };
 };
 
