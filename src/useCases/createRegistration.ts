@@ -1,14 +1,18 @@
 /* eslint-disable no-console */
 
 import { IAuthGateway } from "../gateways/aadAuthGateway";
-import { BeaconsApiGateway } from "../gateways/beaconsApiGateway";
+import { IBeaconsApiGateway } from "../gateways/beaconsApiGateway";
 import { Registration } from "../lib/registration/registration";
 
-export class CreateRegistration {
-  private apiGateway: BeaconsApiGateway;
+export interface ICreateRegistration {
+  execute: (registration: Registration) => Promise<boolean>;
+}
+
+export class CreateRegistration implements ICreateRegistration {
+  private apiGateway: IBeaconsApiGateway;
   private authGateway: IAuthGateway;
 
-  constructor(apiGateway: BeaconsApiGateway, authGateway: IAuthGateway) {
+  constructor(apiGateway: IBeaconsApiGateway, authGateway: IAuthGateway) {
     this.apiGateway = apiGateway;
     this.authGateway = authGateway;
   }

@@ -1,11 +1,16 @@
-import { GovNotifyGateway } from "../gateways/govNotifyApiGateway";
+import { IGovNotifyGateway } from "../gateways/govNotifyApiGateway";
 import { IRegistration } from "../lib/registration/types";
 import { joinStrings } from "../lib/utils";
 
-export class SendGovNotifyEmail {
-  gateway;
-  constructor(GovNotifyApiGateway: GovNotifyGateway) {
-    this.gateway = GovNotifyApiGateway;
+export interface ISendGovNotifyEmail {
+  execute: (registration: IRegistration) => Promise<boolean>;
+}
+
+export class SendGovNotifyEmail implements ISendGovNotifyEmail {
+  private gateway: IGovNotifyGateway;
+
+  constructor(govNotifyApiGateway: IGovNotifyGateway) {
+    this.gateway = govNotifyApiGateway;
   }
 
   public async execute(registration: IRegistration): Promise<boolean> {

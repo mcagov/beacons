@@ -1,10 +1,15 @@
 import { GetServerSidePropsContext } from "next";
-import { BasicAuthGateway } from "../gateways/basicAuthGateway";
+import { IBasicAuthGateway } from "../gateways/basicAuthGateway";
 
-export class AuthenticateUser {
-  gateway;
-  constructor(BasicAuthGateway: BasicAuthGateway) {
-    this.gateway = BasicAuthGateway;
+export interface IAuthenticateUser {
+  execute: (context: GetServerSidePropsContext) => Promise<void>;
+}
+
+export class AuthenticateUser implements IAuthenticateUser {
+  private gateway: IBasicAuthGateway;
+
+  constructor(basicAuthGateway: IBasicAuthGateway) {
+    this.gateway = basicAuthGateway;
   }
 
   async execute(context: GetServerSidePropsContext): Promise<void> {
