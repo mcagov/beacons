@@ -1,10 +1,29 @@
-import { IAuthGateway } from "../gateways/aadAuthGateway";
-import { IBasicAuthGateway } from "../gateways/basicAuthGateway";
-import { IBeaconsApiGateway } from "../gateways/beaconsApiGateway";
-import { IGovNotifyGateway } from "../gateways/govNotifyApiGateway";
-import { IAuthenticateUser } from "../useCases/authenticateUser";
-import { ICreateRegistration } from "../useCases/createRegistration";
-import { ISendGovNotifyEmail } from "../useCases/sendGovNotifyEmail";
+import { ConfidentialClientApplication, Configuration } from "@azure/msal-node";
+import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
+import {
+  BasicAuthGateway,
+  IBasicAuthGateway,
+} from "../gateways/basicAuthGateway";
+import {
+  BeaconsApiGateway,
+  IBeaconsApiGateway,
+} from "../gateways/beaconsApiGateway";
+import {
+  GovNotifyGateway,
+  IGovNotifyGateway,
+} from "../gateways/govNotifyApiGateway";
+import {
+  AuthenticateUser,
+  IAuthenticateUser,
+} from "../useCases/authenticateUser";
+import {
+  CreateRegistration,
+  ICreateRegistration,
+} from "../useCases/createRegistration";
+import {
+  ISendGovNotifyEmail,
+  SendGovNotifyEmail,
+} from "../useCases/sendGovNotifyEmail";
 
 export interface IAppContainer {
   getAuthenticateUser: () => IAuthenticateUser;
@@ -19,30 +38,43 @@ export interface IAppContainer {
 
 export class AppContainer implements IAppContainer {
   public getAuthenticateUser(): IAuthenticateUser {
-    return null;
+    return new AuthenticateUser(this.getBasicAuthGateway());
   }
 
   public getCreateRegistration(): ICreateRegistration {
-    return null;
+    return new CreateRegistration(
+      this.getBeaconsApiGateway(),
+      this.getAuthGateway()
+    );
   }
 
   public getSendGovNotifyEmail(): ISendGovNotifyEmail {
-    return null;
+    return new SendGovNotifyEmail(this.getGovNotifyGateway());
   }
 
   public getAuthGateway(): IAuthGateway {
-    return null;
+    const aadConfig: Configuration = {
+      auth: {
+        clientId: process.env.WEBAPP_CLIENT_ID,
+        authority: `https://login.microsoftonline.com/${process.env.AAD_TENANT_ID}`,
+        clientSecret: process.env.WEBAPP_CLIENT_SECRET,
+      },
+    };
+    const confidentialClientApplication = new ConfidentialClientApplication(
+      aadConfig
+    );
+    return new AadAuthGateway(confidentialClientApplication);
   }
 
   public getBasicAuthGateway(): IBasicAuthGateway {
-    return null;
+    return new BasicAuthGateway();
   }
 
   public getBeaconsApiGateway(): IBeaconsApiGateway {
-    return null;
+    return new BeaconsApiGateway(process.env.API_URL);
   }
 
   public getGovNotifyGateway(): IGovNotifyGateway {
-    return null;
+    return new GovNotifyGateway(process.env.GOV_NOTIFY_API_KEY);
   }
 }
