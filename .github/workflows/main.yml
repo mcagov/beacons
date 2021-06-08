@@ -85,7 +85,12 @@ jobs:
           start: npm run start
           build: npm run build
           wait-on: "http://localhost:3000"
-          spec: cypress/integration/single-beacon-owner/i-can-create-and-use-an-account.spec.ts
+          spec: cypress/*
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots/
 
   lint_check:
     name: Lint check
