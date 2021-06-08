@@ -124,7 +124,7 @@ export const givenIHaveUnselected = (selector: string): void => {
 };
 
 export const givenIHaveWaitedForAzureB2C = (): void => {
-  cy.wait(10000);
+  cy.wait(60000);
 };
 
 export const andIHaveEnteredNoInformation = (): void => null;
