@@ -118,8 +118,7 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
         &nbsp;if you aren&apos;t sure if your beacon is 406 MHz or not.
       </>
     </WarningText>
-    {/*TODO: Make the start button go to sign up or sign in page*/}
-    <StartButton href={PageURLs.checkBeaconDetails} />
+    <StartButton href={PageURLs.signUpOrSignIn} />
   </>
 );
 
