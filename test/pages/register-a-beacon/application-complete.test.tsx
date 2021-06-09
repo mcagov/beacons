@@ -20,7 +20,7 @@ jest.mock("../../../src/lib/middleware", () => ({
 }));
 
 jest.mock("../../../src/lib/container", () => ({
-  withCookieContainer: jest.fn((callback) => async (context) =>
+  withCookieRedirectContainer: jest.fn((callback) => async (context) =>
     callback(context)
   ),
 }));

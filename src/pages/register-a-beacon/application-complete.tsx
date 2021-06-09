@@ -7,7 +7,7 @@ import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
 import {
   BeaconsGetServerSidePropsContext,
-  withCookieContainer,
+  withCookieRedirectContainer,
 } from "../../lib/container";
 import {
   clearFormCache,
@@ -77,7 +77,7 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieContainer(
+export const getServerSideProps: GetServerSideProps = withCookieRedirectContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
     const decoratedContext = await decorateGetServerSidePropsContext(context);
     const registrationClass = decoratedContext.registration;

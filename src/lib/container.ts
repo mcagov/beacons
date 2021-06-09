@@ -13,6 +13,6 @@ export const withContainer = (callback: GetServerSideProps) => (
   return callback(context);
 };
 
-export const withCookieContainer = (callback: GetServerSideProps) => {
+export const withCookieRedirectContainer = (callback: GetServerSideProps) => {
   return withContainer(withCookieRedirect(callback));
 };
