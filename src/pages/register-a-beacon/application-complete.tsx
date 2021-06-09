@@ -16,6 +16,8 @@ import {
 } from "../../lib/middleware";
 import { formSubmissionCookieId } from "../../lib/types";
 import { referenceNumber } from "../../lib/utils";
+import { ICreateRegistration } from "../../useCases/createRegistration";
+import { ISendGovNotifyEmail } from "../../useCases/sendGovNotifyEmail";
 
 interface ApplicationCompleteProps {
   reference: string;
@@ -86,16 +88,16 @@ export const getServerSideProps: GetServerSideProps = withCookieContainer(
     if (!registration.referenceNumber) {
       try {
         registration.referenceNumber = referenceNumber("A#", 7);
-        const createRegistrationUseCase = context.container.getCreateRegistration();
+        const createRegistrationUseCase: ICreateRegistration = context.container.getCreateRegistration();
 
-        const success = await createRegistrationUseCase.execute(
+        const success: boolean = await createRegistrationUseCase.execute(
           registrationClass
         );
 
         if (success) {
-          const sendGovNotifyEmailUseCase = context.container.getSendGovNotifyEmail();
+          const sendGovNotifyEmailUseCase: ISendGovNotifyEmail = context.container.getSendGovNotifyEmail();
 
-          const emailSuccess = await sendGovNotifyEmailUseCase.execute(
+          const emailSuccess: boolean = await sendGovNotifyEmailUseCase.execute(
             registration
           );
 

@@ -9,11 +9,6 @@ import { getAppContainerMock } from "../../mocks";
 
 jest.mock("../../../src/lib/middleware", () => ({
   _esModule: true,
-  withCookieRedirect: jest.fn().mockImplementation((callback) => {
-    return async (context) => {
-      return callback(context);
-    };
-  }),
   decorateGetServerSidePropsContext: jest.fn().mockImplementation(() => ({
     registration: {
       getRegistration: jest.fn().mockResolvedValue({
