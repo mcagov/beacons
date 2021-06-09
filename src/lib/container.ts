@@ -6,13 +6,15 @@ export type BeaconsGetServerSidePropsContext = GetServerSidePropsContext & {
   container: IAppContainer;
 };
 
-export const withContainer = (callback: GetServerSideProps) => (
-  context: BeaconsGetServerSidePropsContext
-) => {
+export const withContainer = (
+  callback: GetServerSideProps
+): GetServerSideProps => (context: BeaconsGetServerSidePropsContext) => {
   context.container = context.container || new AppContainer();
   return callback(context);
 };
 
-export const withCookieRedirectContainer = (callback: GetServerSideProps) => {
+export const withCookieRedirectContainer = (
+  callback: GetServerSideProps
+): GetServerSideProps => {
   return withContainer(withCookieRedirect(callback));
 };
