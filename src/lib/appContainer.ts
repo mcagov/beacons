@@ -25,7 +25,7 @@ import {
   SendGovNotifyEmail,
 } from "../useCases/sendGovNotifyEmail";
 import {
-  IVerifySubmissionCookieIsSet,
+  IVerifyFormSubmissionCookieIsSet,
   VerifyFormSubmissionCookieIsSet,
 } from "../useCases/verifyFormSubmissionCookieIsSet";
 
@@ -33,7 +33,7 @@ export interface IAppContainer {
   getAuthenticateUser: () => IAuthenticateUser;
   getCreateRegistration: () => ICreateRegistration;
   getSendGovNotifyEmail: () => ISendGovNotifyEmail;
-  getVerifyFormSubmissionCookieIsSet: () => IVerifySubmissionCookieIsSet;
+  getVerifyFormSubmissionCookieIsSet: () => IVerifyFormSubmissionCookieIsSet;
 
   getAuthGateway: () => IAuthGateway;
   getBasicAuthGateway: () => IBasicAuthGateway;
@@ -57,7 +57,7 @@ export class AppContainer implements IAppContainer {
     return new SendGovNotifyEmail(this.getGovNotifyGateway());
   }
 
-  public getVerifyFormSubmissionCookieIsSet(): IVerifySubmissionCookieIsSet {
+  public getVerifyFormSubmissionCookieIsSet(): IVerifyFormSubmissionCookieIsSet {
     return new VerifyFormSubmissionCookieIsSet();
   }
 
