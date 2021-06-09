@@ -8,6 +8,9 @@ on:
         required: false
         default: "true"
 
+env:
+  TERRAFORM_VERSION: 1.0.0
+
 jobs:
   update_staging_docker_images:
     if: github.event.inputs.deployDevOntoStaging == 'true'
@@ -44,6 +47,8 @@ jobs:
         with:
           ref: main
       - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
       - name: Terraform Init
         run: terraform init
       - name: Terraform Validate
