@@ -3,7 +3,7 @@ import { IFormCache } from "../src/lib/formCache";
 import { Activity, Environment } from "../src/lib/registration/types";
 
 export const getAppContainerMock = (
-  mockOverrides: Partial<jest.Mocked<IAppContainer>>
+  mockOverrides?: Partial<jest.Mocked<IAppContainer>>
 ): jest.Mocked<IAppContainer> => ({
   getAuthenticateUser: jest.fn(),
   getCreateRegistration: jest.fn(),

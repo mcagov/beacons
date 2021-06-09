@@ -24,25 +24,8 @@ jest.mock("../../../src/lib/middleware", () => ({
   clearFormCache: jest.fn(),
   clearFormSubmissionCookie: jest.fn(),
 }));
-jest.mock("../../../src/gateways/beaconsApiGateway");
-jest.mock("../../../src/gateways/govNotifyApiGateway");
-
-const mockSendGovNotifyExecute = jest.fn();
-jest.mock("../../../src/useCases/sendGovNotifyEmail", () => ({
-  SendGovNotifyEmail: jest.fn().mockImplementation(() => ({
-    execute: mockSendGovNotifyExecute,
-  })),
-}));
-const mockCreateRegistrationExecute = jest.fn();
-jest.mock("../../../src/useCases/createRegistration", () => ({
-  CreateRegistration: jest.fn().mockImplementation(() => ({
-    execute: mockCreateRegistrationExecute,
-  })),
-}));
 
 describe("ApplicationCompletePage", () => {
-  let mockAppContainer: IAppContainer;
-
   it("should render correctly", () => {
     render(
       <ApplicationCompletePage pageSubHeading={"Test"} reference={"Test"} />
@@ -50,22 +33,22 @@ describe("ApplicationCompletePage", () => {
   });
 
   describe("getServerSideProps function", () => {
+    let mockAppContainer: IAppContainer;
+    let mockCreateRegistration: jest.Mock;
+    let mockSendGovNotifyEmail: jest.Mock;
     let context;
-    let mockGetCreateRegistration;
-    let mockGetSendGovNotifyEmail;
 
     beforeEach(() => {
-      mockGetCreateRegistration = jest.fn(() => ({
-        execute: jest.fn().mockResolvedValue(true),
-      }));
-
-      mockGetSendGovNotifyEmail = jest.fn(() => ({
-        execute: jest.fn(),
-      }));
+      mockCreateRegistration = jest.fn();
+      mockSendGovNotifyEmail = jest.fn();
 
       mockAppContainer = getAppContainerMock({
-        getCreateRegistration: mockGetCreateRegistration,
-        getSendGovNotifyEmail: mockGetSendGovNotifyEmail,
+        getCreateRegistration: jest.fn(() => ({
+          execute: mockCreateRegistration,
+        })),
+        getSendGovNotifyEmail: jest.fn(() => ({
+          execute: mockSendGovNotifyEmail,
+        })),
       });
 
       context = {
@@ -74,40 +57,35 @@ describe("ApplicationCompletePage", () => {
       };
     });
 
-    it.only("should not have a reference number if creating the registration is unsuccessful", async () => {
-      mockGetCreateRegistration = jest.fn(() => ({
-        execute: jest.fn().mockResolvedValue(false),
-      }));
+    it("should not have a reference number if creating the registration is unsuccessful", async () => {
+      mockCreateRegistration.mockResolvedValue(false);
       const result = await getServerSideProps(context);
 
       expect(result.props.reference).toBe("");
-      expect(
-        mockAppContainer.getSendGovNotifyEmail().execute
-      ).toHaveBeenCalled();
+      expect(mockCreateRegistration).toHaveBeenCalled();
+      expect(mockSendGovNotifyEmail).not.toHaveBeenCalled();
     });
 
     it("should create the registration, send the email via gov notify and return the reference number", async () => {
-      mockCreateRegistrationExecute.mockImplementation(() =>
-        Promise.resolve(true)
-      );
-      mockSendGovNotifyExecute.mockImplementation(() => Promise.resolve(true));
+      mockCreateRegistration.mockResolvedValue(true);
+      mockSendGovNotifyEmail.mockResolvedValue(true);
+
       const result = await getServerSideProps(context);
 
       expect(result.props.reference.length).toBe(7);
-      expect(mockCreateRegistrationExecute).toHaveBeenCalled();
-      expect(mockSendGovNotifyExecute).toHaveBeenCalled();
+      expect(mockCreateRegistration).toHaveBeenCalled();
+      expect(mockSendGovNotifyEmail).toHaveBeenCalled();
     });
 
     it("should create the registration, and return the reference number if the email cannot be sent", async () => {
-      mockCreateRegistrationExecute.mockImplementation(() =>
-        Promise.resolve(true)
-      );
-      mockSendGovNotifyExecute.mockImplementation(() => Promise.resolve(false));
+      mockCreateRegistration.mockResolvedValue(true);
+      mockSendGovNotifyEmail.mockResolvedValue(false);
+
       const result = await getServerSideProps(context);
 
       expect(result.props.reference.length).toBe(7);
-      expect(mockCreateRegistrationExecute).toHaveBeenCalled();
-      expect(mockSendGovNotifyExecute).toHaveBeenCalled();
+      expect(mockCreateRegistration).toHaveBeenCalled();
+      expect(mockSendGovNotifyEmail).toHaveBeenCalled();
     });
   });
 });
