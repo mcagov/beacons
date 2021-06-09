@@ -20,6 +20,13 @@ jest.mock("../../../src/lib/middleware", () => ({
   clearFormSubmissionCookie: jest.fn(),
 }));
 
+jest.mock("../../../src/lib/container", () => ({
+  _esModule: true,
+  withCookieContainer: jest.fn((callback) => async (context) =>
+    callback(context)
+  ),
+}));
+
 describe("ApplicationCompletePage", () => {
   it("should render correctly", () => {
     render(
