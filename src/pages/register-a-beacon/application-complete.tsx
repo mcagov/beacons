@@ -1,23 +1,21 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
 import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
-import { AadAuthGateway } from "../../gateways/aadAuthGateway";
-import { BeaconsApiGateway } from "../../gateways/beaconsApiGateway";
-import { GovNotifyGateway } from "../../gateways/govNotifyApiGateway";
+import {
+  BeaconsGetServerSidePropsContext,
+  withCookieContainer,
+} from "../../lib/container";
 import {
   clearFormCache,
   clearFormSubmissionCookie,
   decorateGetServerSidePropsContext,
-  withCookieRedirect,
 } from "../../lib/middleware";
 import { formSubmissionCookieId } from "../../lib/types";
 import { referenceNumber } from "../../lib/utils";
-import { CreateRegistration } from "../../useCases/createRegistration";
-import { SendGovNotifyEmail } from "../../useCases/sendGovNotifyEmail";
 
 interface ApplicationCompleteProps {
   reference: string;
@@ -77,8 +75,8 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = withCookieContainer(
+  async (context: BeaconsGetServerSidePropsContext) => {
     const decoratedContext = await decorateGetServerSidePropsContext(context);
     const registrationClass = decoratedContext.registration;
     const registration = decoratedContext.registration.getRegistration();
@@ -88,19 +86,14 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
     if (!registration.referenceNumber) {
       try {
         registration.referenceNumber = referenceNumber("A#", 7);
-        const createRegistrationUseCase = new CreateRegistration(
-          new BeaconsApiGateway(),
-          new AadAuthGateway()
-        );
+        const createRegistrationUseCase = context.container.getCreateRegistration();
+
         const success = await createRegistrationUseCase.execute(
           registrationClass
         );
 
         if (success) {
-          const govNotifyGateway = new GovNotifyGateway();
-          const sendGovNotifyEmailUseCase = new SendGovNotifyEmail(
-            govNotifyGateway
-          );
+          const sendGovNotifyEmailUseCase = context.container.getSendGovNotifyEmail();
 
           const emailSuccess = await sendGovNotifyEmailUseCase.execute(
             registration
