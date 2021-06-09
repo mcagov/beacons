@@ -8,7 +8,6 @@ import ApplicationCompletePage, {
 import { getAppContainerMock } from "../../mocks";
 
 jest.mock("../../../src/lib/middleware", () => ({
-  _esModule: true,
   decorateGetServerSidePropsContext: jest.fn(() => ({
     registration: {
       getRegistration: jest.fn().mockResolvedValue({
@@ -21,7 +20,6 @@ jest.mock("../../../src/lib/middleware", () => ({
 }));
 
 jest.mock("../../../src/lib/container", () => ({
-  _esModule: true,
   withCookieContainer: jest.fn((callback) => async (context) =>
     callback(context)
   ),
