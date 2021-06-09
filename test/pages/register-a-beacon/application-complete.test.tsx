@@ -1,9 +1,11 @@
 import { render } from "@testing-library/react";
 import React from "react";
+import { IAppContainer } from "../../../src/lib/appContainer";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import ApplicationCompletePage, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/application-complete";
+import { getAppContainerMock } from "../../mocks";
 
 jest.mock("../../../src/lib/middleware", () => ({
   _esModule: true,
@@ -39,6 +41,8 @@ jest.mock("../../../src/useCases/createRegistration", () => ({
 }));
 
 describe("ApplicationCompletePage", () => {
+  let mockAppContainer: IAppContainer;
+
   it("should render correctly", () => {
     render(
       <ApplicationCompletePage pageSubHeading={"Test"} reference={"Test"} />
@@ -47,19 +51,39 @@ describe("ApplicationCompletePage", () => {
 
   describe("getServerSideProps function", () => {
     let context;
+    let mockGetCreateRegistration;
+    let mockGetSendGovNotifyEmail;
 
     beforeEach(() => {
-      context = { req: { cookies: { [formSubmissionCookieId]: "1" } } };
+      mockGetCreateRegistration = jest.fn(() => ({
+        execute: jest.fn().mockResolvedValue(true),
+      }));
+
+      mockGetSendGovNotifyEmail = jest.fn(() => ({
+        execute: jest.fn(),
+      }));
+
+      mockAppContainer = getAppContainerMock({
+        getCreateRegistration: mockGetCreateRegistration,
+        getSendGovNotifyEmail: mockGetSendGovNotifyEmail,
+      });
+
+      context = {
+        req: { cookies: { [formSubmissionCookieId]: "1" } },
+        container: mockAppContainer,
+      };
     });
 
-    it("should not have a reference number if creating the registration is unsuccessful", async () => {
-      mockCreateRegistrationExecute.mockImplementation(() =>
-        Promise.resolve(false)
-      );
+    it.only("should not have a reference number if creating the registration is unsuccessful", async () => {
+      mockGetCreateRegistration = jest.fn(() => ({
+        execute: jest.fn().mockResolvedValue(false),
+      }));
       const result = await getServerSideProps(context);
 
       expect(result.props.reference).toBe("");
-      expect(mockSendGovNotifyExecute).not.toHaveBeenCalled();
+      expect(
+        mockAppContainer.getSendGovNotifyEmail().execute
+      ).toHaveBeenCalled();
     });
 
     it("should create the registration, send the email via gov notify and return the reference number", async () => {

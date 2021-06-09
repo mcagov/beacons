@@ -1,9 +1,9 @@
 import { GetServerSidePropsContext } from "next";
-import { AppContainer } from "./appContainer";
+import { AppContainer, IAppContainer } from "./appContainer";
 import { withCookieRedirect } from "./middleware";
 
 export type BeaconsGetServerSidePropsContext = GetServerSidePropsContext & {
-  container: any;
+  container: IAppContainer;
 };
 
 export const withContainer = (callback) => (
@@ -14,5 +14,5 @@ export const withContainer = (callback) => (
 };
 
 export const withCookieContainer = (callback) => {
-  return withCookieRedirect(withContainer(callback));
+  return withContainer(withCookieRedirect(callback));
 };
