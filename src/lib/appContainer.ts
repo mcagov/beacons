@@ -20,6 +20,7 @@ import {
   CreateRegistration,
   ICreateRegistration,
 } from "../useCases/createRegistration";
+import { IRedirectTo, RedirectTo } from "../useCases/redirectTo";
 import {
   ISendGovNotifyEmail,
   SendGovNotifyEmail,
@@ -34,6 +35,7 @@ export interface IAppContainer {
   getCreateRegistration: () => ICreateRegistration;
   getSendGovNotifyEmail: () => ISendGovNotifyEmail;
   getVerifyFormSubmissionCookieIsSet: () => IVerifyFormSubmissionCookieIsSet;
+  getRedirectTo: () => IRedirectTo;
 
   getAuthGateway: () => IAuthGateway;
   getBasicAuthGateway: () => IBasicAuthGateway;
@@ -59,6 +61,10 @@ export class AppContainer implements IAppContainer {
 
   public getVerifyFormSubmissionCookieIsSet(): IVerifyFormSubmissionCookieIsSet {
     return new VerifyFormSubmissionCookieIsSet();
+  }
+
+  public getRedirectTo(): IRedirectTo {
+    return new RedirectTo();
   }
 
   public getAuthGateway(): IAuthGateway {

@@ -9,6 +9,7 @@ export const getAppContainerMock = (
   getCreateRegistration: jest.fn(),
   getSendGovNotifyEmail: jest.fn(),
   getVerifyFormSubmissionCookieIsSet: jest.fn(),
+  getRedirectTo: jest.fn(),
 
   getAuthGateway: jest.fn(),
   getBasicAuthGateway: jest.fn(),
