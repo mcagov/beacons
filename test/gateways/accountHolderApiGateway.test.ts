@@ -26,7 +26,7 @@ describe("Account Holder API Gateway", () => {
 
     it("should return account holder id", async () => {
       const expectedUrl = `${process.env.API_URL}/${endpoint}/${authId}`;
-      (axios as any).get.mockImplementation((url: string) => {
+      (axios as any).get.mockImplementation(() => {
         return {
           data: {
             id: acountHolderId,
