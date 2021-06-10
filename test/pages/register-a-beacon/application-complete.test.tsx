@@ -8,6 +8,7 @@ import ApplicationCompletePage, {
 import { getAppContainerMock } from "../../mocks";
 
 jest.mock("../../../src/lib/middleware", () => ({
+  _esModule: true,
   decorateGetServerSidePropsContext: jest.fn(() => ({
     registration: {
       getRegistration: jest.fn().mockResolvedValue({
