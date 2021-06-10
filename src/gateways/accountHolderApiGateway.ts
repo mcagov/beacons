@@ -14,7 +14,7 @@ export class AccountHolderApiGateway {
     accessToken: string
   ): Promise<string> {
     const url = `${this.apiUrl}/${this.accountHolderIdEndpoint}/${authId}`;
-    var response = await axios.get<
+    let response = await axios.get<
       any,
       AxiosResponse<IAccountHolderIdResponseBody>
     >(url, {
