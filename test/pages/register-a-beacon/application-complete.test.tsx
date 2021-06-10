@@ -1,7 +1,6 @@
 import { render } from "@testing-library/react";
 import React from "react";
 import { IAppContainer } from "../../../src/lib/appContainer";
-import { formSubmissionCookieId } from "../../../src/lib/types";
 import { PageURLs } from "../../../src/lib/urls";
 import ApplicationCompletePage, {
   getServerSideProps,
@@ -58,7 +57,7 @@ describe("ApplicationCompletePage", () => {
       });
 
       context = {
-        req: { cookies: { [formSubmissionCookieId]: "1" } },
+        req: { cookies: {} },
         container: mockAppContainer,
       };
     });
