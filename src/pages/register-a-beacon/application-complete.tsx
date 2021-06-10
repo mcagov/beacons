@@ -17,8 +17,6 @@ import {
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import { referenceNumber } from "../../lib/utils";
-import { ICreateRegistration } from "../../useCases/createRegistration";
-import { ISendGovNotifyEmail } from "../../useCases/sendGovNotifyEmail";
 
 interface ApplicationCompleteProps {
   reference: string;
@@ -80,14 +78,12 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    const verifyFormSubmissionCookieIsSetUseCase = context.container.getVerifyFormSubmissionCookieIsSet();
-    const formSubmissionCookieIsSet = verifyFormSubmissionCookieIsSetUseCase.execute(
-      context
-    );
+    const formSubmissionCookieIsSet = context.container
+      .getVerifyFormSubmissionCookieIsSet()
+      .execute(context);
 
     if (!formSubmissionCookieIsSet) {
-      const redirectToUseCase = context.container.getRedirectTo();
-      return redirectToUseCase.execute(PageURLs.start);
+      return context.container.getRedirectTo().execute(PageURLs.start);
     }
 
     const decoratedContext = await decorateGetServerSidePropsContext(context);
@@ -99,18 +95,15 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     if (!registration.referenceNumber) {
       try {
         registration.referenceNumber = referenceNumber("A#", 7);
-        const createRegistrationUseCase: ICreateRegistration = context.container.getCreateRegistration();
 
-        const success: boolean = await createRegistrationUseCase.execute(
-          registrationClass
-        );
+        const success: boolean = await context.container
+          .getCreateRegistration()
+          .execute(registrationClass);
 
         if (success) {
-          const sendGovNotifyEmailUseCase: ISendGovNotifyEmail = context.container.getSendGovNotifyEmail();
-
-          const emailSuccess: boolean = await sendGovNotifyEmailUseCase.execute(
-            registration
-          );
+          const emailSuccess: boolean = await context.container
+            .getSendGovNotifyEmail()
+            .execute(registration);
 
           if (emailSuccess) {
             pageSubHeading = "We have sent you a confirmation email.";
