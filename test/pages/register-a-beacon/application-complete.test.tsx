@@ -2,6 +2,7 @@ import { render } from "@testing-library/react";
 import React from "react";
 import { IAppContainer } from "../../../src/lib/appContainer";
 import { formSubmissionCookieId } from "../../../src/lib/types";
+import { PageURLs } from "../../../src/lib/urls";
 import ApplicationCompletePage, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/application-complete";
@@ -20,12 +21,6 @@ jest.mock("../../../src/lib/middleware", () => ({
   clearFormSubmissionCookie: jest.fn(),
 }));
 
-jest.mock("../../../src/lib/container", () => ({
-  withCookieRedirectContainer: jest.fn((callback) => async (context) =>
-    callback(context)
-  ),
-}));
-
 describe("ApplicationCompletePage", () => {
   it("should render correctly", () => {
     render(
@@ -37,11 +32,15 @@ describe("ApplicationCompletePage", () => {
     let mockAppContainer: IAppContainer;
     let mockCreateRegistration: jest.Mock;
     let mockSendGovNotifyEmail: jest.Mock;
+    let mockVerifyFormSubmissionCookieIsSet: jest.Mock;
+    let mockRedirectTo: jest.Mock;
     let context;
 
     beforeEach(() => {
       mockCreateRegistration = jest.fn();
       mockSendGovNotifyEmail = jest.fn();
+      mockVerifyFormSubmissionCookieIsSet = jest.fn();
+      mockRedirectTo = jest.fn();
 
       mockAppContainer = getAppContainerMock({
         getCreateRegistration: jest.fn(() => ({
@@ -49,6 +48,12 @@ describe("ApplicationCompletePage", () => {
         })),
         getSendGovNotifyEmail: jest.fn(() => ({
           execute: mockSendGovNotifyEmail,
+        })),
+        getVerifyFormSubmissionCookieIsSet: jest.fn(() => ({
+          execute: mockVerifyFormSubmissionCookieIsSet,
+        })),
+        getRedirectTo: jest.fn(() => ({
+          execute: mockRedirectTo,
         })),
       });
 
@@ -58,16 +63,28 @@ describe("ApplicationCompletePage", () => {
       };
     });
 
+    it("should redirect the user to the start page if their form submission cookie isn't set", async () => {
+      mockVerifyFormSubmissionCookieIsSet.mockReturnValue(false);
+      await getServerSideProps(context);
+
+      expect(mockVerifyFormSubmissionCookieIsSet).toHaveBeenCalled();
+      expect(mockRedirectTo).toHaveBeenCalledWith(PageURLs.start);
+    });
+
     it("should not have a reference number if creating the registration is unsuccessful", async () => {
+      mockVerifyFormSubmissionCookieIsSet.mockReturnValue(true);
       mockCreateRegistration.mockResolvedValue(false);
       const result = await getServerSideProps(context);
 
       expect(result.props.reference).toBe("");
+      expect(mockVerifyFormSubmissionCookieIsSet).toHaveBeenCalled();
+      expect(mockRedirectTo).not.toHaveBeenCalled();
       expect(mockCreateRegistration).toHaveBeenCalled();
       expect(mockSendGovNotifyEmail).not.toHaveBeenCalled();
     });
 
     it("should create the registration, send the email via gov notify and return the reference number", async () => {
+      mockVerifyFormSubmissionCookieIsSet.mockReturnValue(true);
       mockCreateRegistration.mockResolvedValue(true);
       mockSendGovNotifyEmail.mockResolvedValue(true);
 
@@ -79,6 +96,7 @@ describe("ApplicationCompletePage", () => {
     });
 
     it("should create the registration, and return the reference number if the email cannot be sent", async () => {
+      mockVerifyFormSubmissionCookieIsSet.mockReturnValue(true);
       mockCreateRegistration.mockResolvedValue(true);
       mockSendGovNotifyEmail.mockResolvedValue(false);
 

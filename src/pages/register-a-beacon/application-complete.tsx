@@ -7,7 +7,7 @@ import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
 import {
   BeaconsGetServerSidePropsContext,
-  withCookieRedirectContainer,
+  withContainer,
 } from "../../lib/container";
 import {
   clearFormCache,
@@ -15,6 +15,7 @@ import {
   decorateGetServerSidePropsContext,
 } from "../../lib/middleware";
 import { formSubmissionCookieId } from "../../lib/types";
+import { PageURLs } from "../../lib/urls";
 import { referenceNumber } from "../../lib/utils";
 import { ICreateRegistration } from "../../useCases/createRegistration";
 import { ISendGovNotifyEmail } from "../../useCases/sendGovNotifyEmail";
@@ -77,8 +78,18 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirectContainer(
+export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
+    const verifyFormSubmissionCookieIsSetUseCase = context.container.getVerifyFormSubmissionCookieIsSet();
+    const formSubmissionCookieIsSet = verifyFormSubmissionCookieIsSetUseCase.execute(
+      context
+    );
+
+    if (!formSubmissionCookieIsSet) {
+      const redirectToUseCase = context.container.getRedirectTo();
+      return redirectToUseCase.execute(PageURLs.start);
+    }
+
     const decoratedContext = await decorateGetServerSidePropsContext(context);
     const registrationClass = decoratedContext.registration;
     const registration = decoratedContext.registration.getRegistration();
