@@ -64,6 +64,7 @@ describe("ApplicationCompletePage", () => {
 
     it("should redirect the user to the start page if their form submission cookie isn't set", async () => {
       mockVerifyFormSubmissionCookieIsSet.mockReturnValue(false);
+
       await getServerSideProps(context);
 
       expect(mockVerifyFormSubmissionCookieIsSet).toHaveBeenCalled();
@@ -73,6 +74,7 @@ describe("ApplicationCompletePage", () => {
     it("should not have a reference number if creating the registration is unsuccessful", async () => {
       mockVerifyFormSubmissionCookieIsSet.mockReturnValue(true);
       mockCreateRegistration.mockResolvedValue(false);
+
       const result = await getServerSideProps(context);
 
       expect(result.props.reference).toBe("");
