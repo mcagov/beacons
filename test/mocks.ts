@@ -6,10 +6,10 @@ export const getAppContainerMock = (
   mockOverrides?: Partial<jest.Mocked<IAppContainer>>
 ): jest.Mocked<IAppContainer> => ({
   getAuthenticateUser: jest.fn(),
-  getCreateRegistration: jest.fn(),
+  getSubmitRegistration: jest.fn(),
   getSendGovNotifyEmail: jest.fn(),
   getVerifyFormSubmissionCookieIsSet: jest.fn(),
-  getRedirectTo: jest.fn(),
+  getRedirectUserTo: jest.fn(),
 
   getAuthGateway: jest.fn(),
   getBasicAuthGateway: jest.fn(),

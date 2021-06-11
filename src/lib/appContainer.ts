@@ -17,11 +17,15 @@ import {
   AuthenticateUser,
   IAuthenticateUser,
 } from "../useCases/authenticateUser";
-import { IRedirectUserTo, RedirectUserTo } from "../useCases/redirectUserTo";
+import { redirectUserTo, RedirectUserToFn } from "../useCases/redirectUserTo";
 import {
   CachedRegistrationRetriever,
   retrieveCachedRegistration,
 } from "../useCases/retrieveCachedRegistration";
+import {
+  retrieveUserFormSubmissionId,
+  RetrieveUserFormSubmissionIdFn,
+} from "../useCases/retrieveUserFormSubmissionId";
 import {
   ISendGovNotifyEmail,
   SendGovNotifyEmail,
@@ -31,17 +35,17 @@ import {
   SubmitRegistrationFn,
 } from "../useCases/submitRegistration";
 import {
-  IVerifyFormSubmissionCookieIsSet,
-  VerifyFormSubmissionCookieIsSet,
+  verifyFormSubmissionCookieIsSet,
+  VerifyFormSubmissionCookieIsSetFn,
 } from "../useCases/verifyFormSubmissionCookieIsSet";
 
 export interface IAppContainer {
   getAuthenticateUser: () => IAuthenticateUser;
-  getCreateRegistration: () => SubmitRegistrationFn;
+  getSubmitRegistration: () => SubmitRegistrationFn;
   getSendGovNotifyEmail: () => ISendGovNotifyEmail;
-  getVerifyFormSubmissionCookieIsSet: () => IVerifyFormSubmissionCookieIsSet;
-  getRedirectTo: () => IRedirectUserTo;
-
+  getVerifyFormSubmissionCookieIsSet: () => VerifyFormSubmissionCookieIsSetFn;
+  getRedirectUserTo: () => RedirectUserToFn;
+  getRetrieveUserFormSubmissionId: () => RetrieveUserFormSubmissionIdFn;
   getAuthGateway: () => IAuthGateway;
   getBasicAuthGateway: () => IBasicAuthGateway;
   getBeaconsApiGateway: () => IBeaconsApiGateway;
@@ -54,11 +58,15 @@ export class AppContainer implements IAppContainer {
     return new AuthenticateUser(this.getBasicAuthGateway());
   }
 
+  public getRetrieveUserFormSubmissionId(): RetrieveUserFormSubmissionIdFn {
+    return retrieveUserFormSubmissionId;
+  }
+
   public getRetrieveCachedRegistration(): CachedRegistrationRetriever {
     return retrieveCachedRegistration();
   }
 
-  public getCreateRegistration(): SubmitRegistrationFn {
+  public getSubmitRegistration(): SubmitRegistrationFn {
     return submitRegistration(this);
   }
 
@@ -66,12 +74,12 @@ export class AppContainer implements IAppContainer {
     return new SendGovNotifyEmail(this.getGovNotifyGateway());
   }
 
-  public getVerifyFormSubmissionCookieIsSet(): IVerifyFormSubmissionCookieIsSet {
-    return new VerifyFormSubmissionCookieIsSet();
+  public getVerifyFormSubmissionCookieIsSet(): VerifyFormSubmissionCookieIsSetFn {
+    return verifyFormSubmissionCookieIsSet;
   }
 
-  public getRedirectTo(): IRedirectUserTo {
-    return new RedirectUserTo();
+  public getRedirectUserTo(): RedirectUserToFn {
+    return redirectUserTo;
   }
 
   public getAuthGateway(): IAuthGateway {

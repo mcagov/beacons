@@ -9,14 +9,7 @@ import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
-import {
-  clearFormCache,
-  clearFormSubmissionCookie,
-  decorateGetServerSidePropsContext,
-} from "../../lib/middleware";
-import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
-import { referenceNumber } from "../../lib/utils";
 
 interface ApplicationCompleteProps {
   reference: string;
@@ -78,55 +71,63 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    const formSubmissionCookieIsSet = context.container
-      .getVerifyFormSubmissionCookieIsSet()
-      .execute(context);
+    /* Retrieve injected use cases */
+    const formSubmissionCookieIsSet = context.container.getVerifyFormSubmissionCookieIsSet()(
+      context
+    );
+    const redirectUserTo = context.container.getRedirectUserTo();
+    const submitRegistration = context.container.getSubmitRegistration();
+    const registrationId = context.container.getRetrieveUserFormSubmissionId()(
+      context
+    );
 
-    if (!formSubmissionCookieIsSet) {
-      return context.container.getRedirectTo().execute(PageURLs.start);
-    }
+    /* Page logic */
+    if (!formSubmissionCookieIsSet) return redirectUserTo(PageURLs.start);
 
-    const decoratedContext = await decorateGetServerSidePropsContext(context);
-    const registrationClass = decoratedContext.registration;
-    const registration = decoratedContext.registration.getRegistration();
+    const result = await submitRegistration(registrationId);
 
-    let pageSubHeading;
-
-    if (!registration.referenceNumber) {
-      try {
-        registration.referenceNumber = referenceNumber("A#", 7);
-
-        const success: boolean = await context.container
-          .getCreateRegistration()
-          .execute(registrationClass);
-
-        if (success) {
-          const emailSuccess: boolean = await context.container
-            .getSendGovNotifyEmail()
-            .execute(registration);
-
-          if (emailSuccess) {
-            pageSubHeading = "We have sent you a confirmation email.";
-          } else {
-            pageSubHeading =
-              "We could not send you a confirmation email. But we have registered your beacon under the following reference id.";
-          }
-        } else {
-          registration.referenceNumber = "";
-        }
-      } catch (e) {
-        registration.referenceNumber = "";
-        pageSubHeading =
-          "We could not save your registration or send you a confirmation email. Please contact the Beacons Registry team.";
-      }
-    }
-
-    clearFormCache(context.req.cookies[formSubmissionCookieId]);
-    clearFormSubmissionCookie(context);
-
-    return {
-      props: { reference: registration.referenceNumber, pageSubHeading },
-    };
+    //const decoratedContext = await decorateGetServerSidePropsContext(context);
+    //
+    // const registrationClass = decoratedContext.registration;
+    // const registration = decoratedContext.registration.getRegistration();
+    //
+    // let pageSubHeading;
+    //
+    // if (!registration.referenceNumber) {
+    //   try {
+    //     registration.referenceNumber = referenceNumber("A#", 7);
+    //
+    //     const success: boolean = await context.container
+    //       .getSubmitRegistration()
+    //       .execute(registrationClass);
+    //
+    //     if (success) {
+    //       const emailSuccess: boolean = await context.container
+    //         .getSendGovNotifyEmail()
+    //         .execute(registration);
+    //
+    //       if (emailSuccess) {
+    //         pageSubHeading = "We have sent you a confirmation email.";
+    //       } else {
+    //         pageSubHeading =
+    //           "We could not send you a confirmation email. But we have registered your beacon under the following reference id.";
+    //       }
+    //     } else {
+    //       registration.referenceNumber = "";
+    //     }
+    //   } catch (e) {
+    //     registration.referenceNumber = "";
+    //     pageSubHeading =
+    //       "We could not save your registration or send you a confirmation email. Please contact the Beacons Registry team.";
+    //   }
+    // }
+    //
+    // clearFormCache(context.req.cookies[formSubmissionCookieId]);
+    // clearFormSubmissionCookie(context);
+    //
+    // return {
+    //   props: { reference: registration.referenceNumber, pageSubHeading },
+    // };
   }
 );
 

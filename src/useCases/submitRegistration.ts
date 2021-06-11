@@ -3,9 +3,9 @@ import { referenceNumber } from "../lib/utils";
 
 export type SubmitRegistrationFn = (
   submissionId: string
-) => Promise<SubmitRegistrationResult>;
+) => Promise<ISubmitRegistrationResult>;
 
-interface SubmitRegistrationResult {
+export interface ISubmitRegistrationResult {
   beaconRegistered: boolean;
   confirmationEmailSent: boolean;
   registrationNumber: string;
