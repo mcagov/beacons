@@ -7,6 +7,7 @@ import ApplicationCompletePage, {
 } from "../../../src/pages/register-a-beacon/application-complete";
 import { redirectUserTo } from "../../../src/useCases/redirectUserTo";
 import { retrieveUserFormSubmissionId } from "../../../src/useCases/retrieveUserFormSubmissionId";
+import { ISubmitRegistrationResult } from "../../../src/useCases/submitRegistration";
 import { verifyFormSubmissionCookieIsSet } from "../../../src/useCases/verifyFormSubmissionCookieIsSet";
 
 jest.mock("../../../src/lib/middleware", () => ({
@@ -75,6 +76,91 @@ describe("ApplicationCompletePage", () => {
       await getServerSideProps(context);
 
       expect(mockSubmitRegistration).toHaveBeenCalledWith(userRegistrationId);
+    });
+
+    it("should not return a reference number if creating the registration is unsuccessful", async () => {
+      const unsuccessful: ISubmitRegistrationResult = {
+        beaconRegistered: false,
+        confirmationEmailSent: false,
+        registrationNumber: "",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockResolvedValue(unsuccessful);
+
+      const result = await getServerSideProps(context);
+
+      expect(result.props.reference).toBe("");
+    });
+
+    it("should return a reference number if creating the registration is successul", async () => {
+      const successful: ISubmitRegistrationResult = {
+        beaconRegistered: true,
+        confirmationEmailSent: true,
+        registrationNumber: "ABC123",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockResolvedValue(successful);
+
+      const result = await getServerSideProps(context);
+
+      expect(result.props.reference).toBe("ABC123");
+    });
+
+    it("should have a page heading on success", async () => {
+      const successful: ISubmitRegistrationResult = {
+        beaconRegistered: true,
+        confirmationEmailSent: true,
+        registrationNumber: "ABC123",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockResolvedValue(successful);
+
+      const result = await getServerSideProps(context);
+
+      expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
+    });
+
+    it("should have a page heading on failed confirmation email", async () => {
+      const failedEmail: ISubmitRegistrationResult = {
+        beaconRegistered: true,
+        confirmationEmailSent: false,
+        registrationNumber: "ABC123",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockResolvedValue(failedEmail);
+
+      const result = await getServerSideProps(context);
+
+      expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
+    });
+
+    it("should have a page heading on failed registration and failed confirmation email", async () => {
+      const failedEverything: ISubmitRegistrationResult = {
+        beaconRegistered: false,
+        confirmationEmailSent: false,
+        registrationNumber: "",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockResolvedValue(failedEverything);
+
+      const result = await getServerSideProps(context);
+
+      expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
     });
 
     it("should not throw if there is an error submitting the user's registration", async () => {

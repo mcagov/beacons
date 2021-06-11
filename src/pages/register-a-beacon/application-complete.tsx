@@ -97,7 +97,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       };
 
       return {
-        props: { reference: result.registrationNumber, pageSubHeading },
+        props: {
+          reference: result.registrationNumber,
+          pageSubHeading: pageSubHeading(result),
+        },
       };
     } catch {
       return {
