@@ -14,12 +14,18 @@ export class AccountHolderApiGateway {
     accessToken: string
   ): Promise<string> {
     const url = `${this.apiUrl}/${this.accountHolderIdEndpoint}/${authId}`;
-    let response = await axios.get<
-      any,
-      AxiosResponse<IAccountHolderIdResponseBody>
-    >(url, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    return response.data.id;
+    try {
+      const response = await axios.get<
+        any,
+        AxiosResponse<IAccountHolderIdResponseBody>
+      >(url, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      return response.data.id;
+    } catch (error) {
+      /* eslint-disable no-console */
+      console.error(JSON.stringify(error));
+      throw error;
+    }
   }
 }

@@ -1,9 +1,9 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { v4 } from "uuid";
 import { AccountHolderApiGateway } from "../../src/gateways/accountHolderApiGateway";
-import { IAccountHolderIdResponseBody } from "../../src/lib/accountHolder/accountHolderIdResponseBody";
 
 jest.mock("axios");
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("Account Holder API Gateway", () => {
   let gateway: AccountHolderApiGateway;
@@ -24,22 +24,39 @@ describe("Account Holder API Gateway", () => {
       token = v4();
     });
 
-    it("should return account holder id", async () => {
+    it("should request an accountHolderId from the correct endpoint", async () => {
       const expectedUrl = `${process.env.API_URL}/${endpoint}/${authId}`;
-      (axios as any).get.mockImplementation(() => {
-        return {
-          data: {
-            id: acountHolderId,
-          },
-        } as AxiosResponse<IAccountHolderIdResponseBody>;
+      mockedAxios.get.mockResolvedValue({
+        data: {
+          id: "any id",
+        },
+      });
+
+      await gateway.getAccountHolderId(authId, token);
+
+      expect((axios as any).get).toHaveBeenLastCalledWith(expectedUrl, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    });
+
+    it("should return the obtained accountHolderId from the API", async () => {
+      mockedAxios.get.mockResolvedValue({
+        data: {
+          id: acountHolderId,
+        },
       });
 
       const expected = await gateway.getAccountHolderId(authId, token);
 
       expect(expected).toBe(acountHolderId);
-      expect((axios as any).get).toHaveBeenLastCalledWith(expectedUrl, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+    });
+
+    it("should allow errors to bubble up", async () => {
+      jest.spyOn(console, "error").mockReturnValue();
+      mockedAxios.get.mockImplementationOnce(() => Promise.reject(new Error()));
+      const call = () => gateway.getAccountHolderId(authId, token);
+
+      expect(call).rejects.toThrow();
     });
   });
 });
