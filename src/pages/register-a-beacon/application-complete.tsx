@@ -10,6 +10,7 @@ import {
   withContainer,
 } from "../../lib/container";
 import { PageURLs } from "../../lib/urls";
+import { ISubmitRegistrationResult } from "../../useCases/submitRegistration";
 
 interface ApplicationCompleteProps {
   reference: string;
@@ -84,7 +85,29 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     /* Page logic */
     if (!formSubmissionCookieIsSet) return redirectUserTo(PageURLs.start);
 
-    const result = await submitRegistration(registrationId);
+    try {
+      const result = await submitRegistration(registrationId);
+
+      const pageSubHeading = (result: ISubmitRegistrationResult) => {
+        if (result.beaconRegistered && result.confirmationEmailSent)
+          return "We have sent you a confirmation email.";
+        if (result.beaconRegistered && !result.confirmationEmailSent)
+          return "We could not send you a confirmation email. But we have registered your beacon under the following reference id.";
+        return "We could not save your registration or send you a confirmation email. Please contact the Beacons Registry team.";
+      };
+
+      return {
+        props: { reference: result.registrationNumber, pageSubHeading },
+      };
+    } catch {
+      return {
+        props: {
+          reference: "",
+          pageSubHeading:
+            "There was an error while registering your beacon.  Please contact the Beacons Registry team.",
+        },
+      };
+    }
 
     //const decoratedContext = await decorateGetServerSidePropsContext(context);
     //
