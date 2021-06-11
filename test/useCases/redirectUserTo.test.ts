@@ -1,10 +1,14 @@
-import { RedirectUserTo } from "../../src/useCases/redirectUserTo";
+import { redirectUserTo } from "../../src/useCases/redirectUserTo";
 
-describe("RedirectUserTo", () => {
+describe("redirectUserTo()", () => {
   it("should return a redirect to the provided url", () => {
-    const useCase = new RedirectUserTo();
-    const redirectUrl = "/";
-    const redirect = useCase.execute(redirectUrl);
-    expect(redirect.redirect.destination).toBe(redirectUrl);
+    const result = redirectUserTo("/arbitrary-url");
+
+    expect(result).toStrictEqual({
+      redirect: {
+        destination: "/arbitrary-url",
+        permanent: false,
+      },
+    });
   });
 });
