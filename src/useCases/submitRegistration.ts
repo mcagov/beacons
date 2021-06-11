@@ -13,16 +13,16 @@ export interface ISubmitRegistrationResult {
 
 export const submitRegistration = ({
   getRetrieveCachedRegistration,
-  getSendGovNotifyEmail,
+  getSendConfirmationEmail,
   getBeaconsApiGateway,
-  getAuthGateway,
+  getRetrieveAccessToken,
 }: IAppContainer): SubmitRegistrationFn => async (submissionId) => {
-  const authGateway = getAuthGateway();
+  const retrieveAccessToken = getRetrieveAccessToken();
   const beaconsApiGateway = getBeaconsApiGateway();
   const registration = await getRetrieveCachedRegistration()(submissionId);
-  const sendGovNotifyEmail = getSendGovNotifyEmail().execute;
+  const sendGovNotifyEmail = getSendConfirmationEmail();
 
-  const accessToken = await authGateway.getAccessToken();
+  const accessToken = await retrieveAccessToken();
 
   const beaconRegistered = await beaconsApiGateway.sendRegistration(
     registration.serialiseToAPI(),

@@ -19,6 +19,10 @@ import {
 } from "../useCases/authenticateUser";
 import { redirectUserTo, RedirectUserToFn } from "../useCases/redirectUserTo";
 import {
+  retrieveAuthToken,
+  RetrieveAuthTokenFn,
+} from "../useCases/retrieveAuthToken";
+import {
   CachedRegistrationRetriever,
   retrieveCachedRegistration,
 } from "../useCases/retrieveCachedRegistration";
@@ -27,9 +31,9 @@ import {
   RetrieveUserFormSubmissionIdFn,
 } from "../useCases/retrieveUserFormSubmissionId";
 import {
-  ISendGovNotifyEmail,
-  SendGovNotifyEmail,
-} from "../useCases/sendGovNotifyEmail";
+  sendConfirmationEmail,
+  SendConfirmationEmailFn,
+} from "../useCases/sendConfirmationEmail";
 import {
   submitRegistration,
   SubmitRegistrationFn,
@@ -42,7 +46,7 @@ import {
 export interface IAppContainer {
   getAuthenticateUser: () => IAuthenticateUser;
   getSubmitRegistration: () => SubmitRegistrationFn;
-  getSendGovNotifyEmail: () => ISendGovNotifyEmail;
+  getSendConfirmationEmail: () => SendConfirmationEmailFn;
   getVerifyFormSubmissionCookieIsSet: () => VerifyFormSubmissionCookieIsSetFn;
   getRedirectUserTo: () => RedirectUserToFn;
   getRetrieveUserFormSubmissionId: () => RetrieveUserFormSubmissionIdFn;
@@ -51,9 +55,14 @@ export interface IAppContainer {
   getBeaconsApiGateway: () => IBeaconsApiGateway;
   getGovNotifyGateway: () => IGovNotifyGateway;
   getRetrieveCachedRegistration: () => CachedRegistrationRetriever;
+  getRetrieveAccessToken: () => RetrieveAuthTokenFn;
 }
 
 export class AppContainer implements IAppContainer {
+  public getRetrieveAccessToken(): RetrieveAuthTokenFn {
+    return retrieveAuthToken(this);
+  }
+
   public getAuthenticateUser(): IAuthenticateUser {
     return new AuthenticateUser(this.getBasicAuthGateway());
   }
@@ -70,8 +79,8 @@ export class AppContainer implements IAppContainer {
     return submitRegistration(this);
   }
 
-  public getSendGovNotifyEmail(): ISendGovNotifyEmail {
-    return new SendGovNotifyEmail(this.getGovNotifyGateway());
+  public getSendConfirmationEmail(): SendConfirmationEmailFn {
+    return sendConfirmationEmail(this);
   }
 
   public getVerifyFormSubmissionCookieIsSet(): VerifyFormSubmissionCookieIsSetFn {
