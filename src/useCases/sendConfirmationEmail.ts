@@ -1,23 +1,21 @@
-import { IGovNotifyGateway } from "../gateways/govNotifyApiGateway";
+import { IAppContainer } from "../lib/appContainer";
 import { IRegistration } from "../lib/registration/types";
 import { joinStrings } from "../lib/utils";
 
-export interface ISendGovNotifyEmail {
-  execute: (registration: IRegistration) => Promise<boolean>;
-}
+export type SendConfirmationEmailFn = (
+  registration: IRegistration
+) => Promise<boolean>;
 
-export class SendGovNotifyEmail implements ISendGovNotifyEmail {
-  private gateway: IGovNotifyGateway;
+export const sendConfirmationEmail = ({
+  getGovNotifyGateway,
+}: IAppContainer): SendConfirmationEmailFn => async (registration) => {
+  const templateId = process.env.GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE;
 
-  constructor(govNotifyApiGateway: IGovNotifyGateway) {
-    this.gateway = govNotifyApiGateway;
-  }
-
-  public async execute(registration: IRegistration): Promise<boolean> {
-    const templateId = process.env.GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE;
-
-    if (templateId) {
-      return this.gateway.sendEmail(templateId, registration.ownerEmail, {
+  if (templateId) {
+    return getGovNotifyGateway().sendEmail(
+      templateId,
+      registration.ownerEmail,
+      {
         owner_name: registration.ownerFullName,
         reference: registration.referenceNumber,
         beacon_information: joinStrings([
@@ -52,9 +50,9 @@ export class SendGovNotifyEmail implements ISendGovNotifyEmail {
           registration.emergencyContact3TelephoneNumber,
         emergency_contact_3_alternative_telephone_number:
           registration.emergencyContact3AlternativeTelephoneNumber,
-      });
-    }
-
-    return false;
+      }
+    );
   }
-}
+
+  return false;
+};
