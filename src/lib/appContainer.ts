@@ -1,4 +1,5 @@
-import { ConfidentialClientApplication, Configuration } from "@azure/msal-node";
+import { ConfidentialClientApplication } from "@azure/msal-node";
+import { appConfig } from "../../appConfig";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
 import {
   BasicAuthGateway,
@@ -68,15 +69,8 @@ export class AppContainer implements IAppContainer {
   }
 
   public getAuthGateway(): IAuthGateway {
-    const aadConfig: Configuration = {
-      auth: {
-        clientId: process.env.WEBAPP_CLIENT_ID,
-        authority: `https://login.microsoftonline.com/${process.env.AAD_TENANT_ID}`,
-        clientSecret: process.env.WEBAPP_CLIENT_SECRET,
-      },
-    };
     const confidentialClientApplication = new ConfidentialClientApplication(
-      aadConfig
+      appConfig.aadConfig
     );
     return new AadAuthGateway(confidentialClientApplication);
   }
