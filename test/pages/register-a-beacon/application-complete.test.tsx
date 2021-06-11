@@ -41,7 +41,7 @@ describe("ApplicationCompletePage", () => {
         container: mockContainer,
       };
 
-      const result = await getServerSideProps(context);
+      const result = await getServerSideProps(context as any);
 
       expect(result).toStrictEqual({
         redirect: {
@@ -60,7 +60,7 @@ describe("ApplicationCompletePage", () => {
         container: mockContainer,
       };
 
-      await getServerSideProps(context);
+      await getServerSideProps(context as any);
 
       expect(mockSubmitRegistration).toHaveBeenCalledWith(userRegistrationId);
     });
@@ -77,7 +77,7 @@ describe("ApplicationCompletePage", () => {
       };
       mockSubmitRegistration.mockResolvedValue(unsuccessful);
 
-      const result = await getServerSideProps(context);
+      const result = await getServerSideProps(context as any);
 
       expect(result.props.reference).toBe("");
     });
@@ -94,7 +94,7 @@ describe("ApplicationCompletePage", () => {
       };
       mockSubmitRegistration.mockResolvedValue(successful);
 
-      const result = await getServerSideProps(context);
+      const result = await getServerSideProps(context as any);
 
       expect(result.props.reference).toBe("ABC123");
     });
@@ -111,7 +111,7 @@ describe("ApplicationCompletePage", () => {
       };
       mockSubmitRegistration.mockResolvedValue(successful);
 
-      const result = await getServerSideProps(context);
+      const result = await getServerSideProps(context as any);
 
       expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
     });
@@ -128,7 +128,7 @@ describe("ApplicationCompletePage", () => {
       };
       mockSubmitRegistration.mockResolvedValue(failedEmail);
 
-      const result = await getServerSideProps(context);
+      const result = await getServerSideProps(context as any);
 
       expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
     });
@@ -145,7 +145,7 @@ describe("ApplicationCompletePage", () => {
       };
       mockSubmitRegistration.mockResolvedValue(failedEverything);
 
-      const result = await getServerSideProps(context);
+      const result = await getServerSideProps(context as any);
 
       expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
     });
@@ -162,7 +162,7 @@ describe("ApplicationCompletePage", () => {
         throw new Error();
       });
 
-      const act = async () => await getServerSideProps(context);
+      const act = async () => await getServerSideProps(context as any);
 
       expect(act).not.toThrow();
     });
@@ -179,7 +179,7 @@ describe("ApplicationCompletePage", () => {
         throw new Error();
       });
 
-      const result = await getServerSideProps(context);
+      const result = await getServerSideProps(context as any);
 
       expect(result.props.pageSubHeading).toMatch(/error/i);
     });
