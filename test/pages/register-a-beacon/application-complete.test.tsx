@@ -10,19 +10,6 @@ import { retrieveUserFormSubmissionId } from "../../../src/useCases/retrieveUser
 import { ISubmitRegistrationResult } from "../../../src/useCases/submitRegistration";
 import { verifyFormSubmissionCookieIsSet } from "../../../src/useCases/verifyFormSubmissionCookieIsSet";
 
-jest.mock("../../../src/lib/middleware", () => ({
-  _esModule: true,
-  decorateGetServerSidePropsContext: jest.fn(() => ({
-    registration: {
-      getRegistration: jest.fn().mockResolvedValue({
-        referenceNumber: "",
-      }),
-    },
-  })),
-  clearFormCache: jest.fn(),
-  clearFormSubmissionCookie: jest.fn(),
-}));
-
 describe("ApplicationCompletePage", () => {
   it("should render correctly", () => {
     render(
