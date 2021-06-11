@@ -314,7 +314,7 @@ describe("Middleware Functions", () => {
     });
   });
 
-  describe("getCache()", () => {
+  describe("retrieveCache()", () => {
     let id;
     let cacheMock: jest.Mocked<IFormCache>;
 

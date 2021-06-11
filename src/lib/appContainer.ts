@@ -17,15 +17,19 @@ import {
   AuthenticateUser,
   IAuthenticateUser,
 } from "../useCases/authenticateUser";
-import {
-  CreateRegistration,
-  ICreateRegistration,
-} from "../useCases/createRegistration";
 import { IRedirectUserTo, RedirectUserTo } from "../useCases/redirectUserTo";
+import {
+  CachedRegistrationRetriever,
+  retrieveCachedRegistration,
+} from "../useCases/retrieveCachedRegistration";
 import {
   ISendGovNotifyEmail,
   SendGovNotifyEmail,
 } from "../useCases/sendGovNotifyEmail";
+import {
+  submitRegistration,
+  SubmitRegistrationFn,
+} from "../useCases/submitRegistration";
 import {
   IVerifyFormSubmissionCookieIsSet,
   VerifyFormSubmissionCookieIsSet,
@@ -33,7 +37,7 @@ import {
 
 export interface IAppContainer {
   getAuthenticateUser: () => IAuthenticateUser;
-  getCreateRegistration: () => ICreateRegistration;
+  getCreateRegistration: () => SubmitRegistrationFn;
   getSendGovNotifyEmail: () => ISendGovNotifyEmail;
   getVerifyFormSubmissionCookieIsSet: () => IVerifyFormSubmissionCookieIsSet;
   getRedirectTo: () => IRedirectUserTo;
@@ -42,6 +46,7 @@ export interface IAppContainer {
   getBasicAuthGateway: () => IBasicAuthGateway;
   getBeaconsApiGateway: () => IBeaconsApiGateway;
   getGovNotifyGateway: () => IGovNotifyGateway;
+  getRetrieveCachedRegistration: () => CachedRegistrationRetriever;
 }
 
 export class AppContainer implements IAppContainer {
@@ -49,11 +54,12 @@ export class AppContainer implements IAppContainer {
     return new AuthenticateUser(this.getBasicAuthGateway());
   }
 
-  public getCreateRegistration(): ICreateRegistration {
-    return new CreateRegistration(
-      this.getBeaconsApiGateway(),
-      this.getAuthGateway()
-    );
+  public getRetrieveCachedRegistration(): CachedRegistrationRetriever {
+    return retrieveCachedRegistration();
+  }
+
+  public getCreateRegistration(): SubmitRegistrationFn {
+    return submitRegistration(this);
   }
 
   public getSendGovNotifyEmail(): ISendGovNotifyEmail {
