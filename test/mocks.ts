@@ -1,22 +1,5 @@
-import { IAppContainer } from "../src/lib/appContainer";
 import { IFormCache } from "../src/lib/formCache";
 import { Activity, Environment } from "../src/lib/registration/types";
-
-export const getAppContainerMock = (
-  mockOverrides?: Partial<jest.Mocked<IAppContainer>>
-): jest.Mocked<IAppContainer> => ({
-  getAuthenticateUser: jest.fn(),
-  getCreateRegistration: jest.fn(),
-  getSendGovNotifyEmail: jest.fn(),
-  getVerifyFormSubmissionCookieIsSet: jest.fn(),
-  getRedirectTo: jest.fn(),
-
-  getAuthGateway: jest.fn(),
-  getBasicAuthGateway: jest.fn(),
-  getBeaconsApiGateway: jest.fn(),
-  getGovNotifyGateway: jest.fn(),
-  ...mockOverrides,
-});
 
 export const getCacheMock = (): jest.Mocked<IFormCache> => {
   return {
@@ -26,18 +9,6 @@ export const getCacheMock = (): jest.Mocked<IFormCache> => {
     set: jest.fn(),
   };
 };
-
-// TODO: Update `any` type once domain/form objects are defined
-export const getMockRegistration = (): any => ({
-  beacons: [
-    {
-      ...getMockBeacon(),
-      uses: [getMockUse()],
-      owner: getMockOwner(),
-      emergencyContacts: [getMockEmergencyContact()],
-    },
-  ],
-});
 
 // TODO: Update `any` type once domain/form objects are defined
 export const getMockBeacon = (): any => ({
