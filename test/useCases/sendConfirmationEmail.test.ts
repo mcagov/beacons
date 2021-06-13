@@ -7,9 +7,9 @@ describe("Send Gov Notify Email", () => {
 
   beforeEach(() => {
     context = {
-      getGovNotifyGateway: () => ({
+      govNotifyGateway: {
         sendEmail: mockSendEmail,
-      }),
+      },
     };
     registration = {
       model: "ASOS",

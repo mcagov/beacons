@@ -17,6 +17,10 @@ import {
   authenticateUser,
   AuthenticateUserFn,
 } from "../useCases/authenticateUser";
+import {
+  clearCachedRegistration,
+  ClearCachedRegistration,
+} from "../useCases/clearCachedRegistration";
 import { getAccessToken, GetAccessTokenFn } from "../useCases/getAccessToken";
 import {
   getCachedRegistration,
@@ -49,28 +53,29 @@ export interface IAppContainer {
   redirectUserTo: RedirectUserToFn;
   userFormSubmissionId: UserFormSubmissionIdFn;
   getCachedRegistration: GetCachedRegistrationFn;
+  clearCachedRegistration: ClearCachedRegistration;
   getAccessToken: GetAccessTokenFn;
 
   /* Gateways */
-  getAuthGateway: () => IAuthGateway;
-  getBasicAuthGateway: () => IBasicAuthGateway;
-  getBeaconsApiGateway: () => IBeaconsApiGateway;
-  getGovNotifyGateway: () => IGovNotifyGateway;
+  getAuthGateway: IAuthGateway;
+  basicAuthGateway: IBasicAuthGateway;
+  beaconsApiGateway: IBeaconsApiGateway;
+  govNotifyGateway: IGovNotifyGateway;
 }
 
 export const appContainer: IAppContainer = {
-  /* Use cases */
+  /* Simple use cases */
+  getCachedRegistration: getCachedRegistration,
+  verifyFormSubmissionCookieIsSet: verifyFormSubmissionCookieIsSet,
+  redirectUserTo: redirectUserTo,
+  clearCachedRegistration: clearCachedRegistration,
+
+  /* Composite use cases requiring access to the container */
   get getAccessToken() {
     return getAccessToken(this);
   },
   get authenticateUser() {
     return authenticateUser(this);
-  },
-  get userFormSubmissionId() {
-    return retrieveUserFormSubmissionId;
-  },
-  get getCachedRegistration() {
-    return getCachedRegistration;
   },
   get submitRegistration() {
     return submitRegistration(this);
@@ -78,22 +83,24 @@ export const appContainer: IAppContainer = {
   get sendConfirmationEmail() {
     return sendConfirmationEmail(this);
   },
-  get verifyFormSubmissionCookieIsSet() {
-    return verifyFormSubmissionCookieIsSet;
-  },
-  get redirectUserTo() {
-    return redirectUserTo;
+  get userFormSubmissionId() {
+    return retrieveUserFormSubmissionId;
   },
 
   /* Gateways */
-  getAuthGateway: () => {
+  get getAuthGateway() {
     const confidentialClientApplication = new ConfidentialClientApplication(
       appConfig.aadConfig
     );
     return new AadAuthGateway(confidentialClientApplication);
   },
-  getBasicAuthGateway: () => new BasicAuthGateway(),
-  getBeaconsApiGateway: () => new BeaconsApiGateway(process.env.API_URL),
-  getGovNotifyGateway: () =>
-    new GovNotifyGateway(process.env.GOV_NOTIFY_API_KEY),
+  get basicAuthGateway() {
+    return new BasicAuthGateway();
+  },
+  get beaconsApiGateway() {
+    return new BeaconsApiGateway(process.env.API_URL);
+  },
+  get govNotifyGateway() {
+    return new GovNotifyGateway(process.env.GOV_NOTIFY_API_KEY);
+  },
 };

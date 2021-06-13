@@ -15,13 +15,12 @@ export const submitRegistration = ({
   sendConfirmationEmail,
   getCachedRegistration,
   getAccessToken,
-  getBeaconsApiGateway,
+  beaconsApiGateway,
 }: Partial<IAppContainer>): SubmitRegistrationFn => async (submissionId) => {
-  const { sendRegistration } = getBeaconsApiGateway();
   const registration = await getCachedRegistration(submissionId);
   const accessToken = await getAccessToken();
 
-  const beaconRegistered = await sendRegistration(
+  const beaconRegistered = await beaconsApiGateway.sendRegistration(
     registration.serialiseToAPI(),
     accessToken
   );

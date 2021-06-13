@@ -7,11 +7,11 @@ export type AuthenticateUserFn = (
 ) => Promise<void>;
 
 export const authenticateUser = ({
-  getBasicAuthGateway,
+  basicAuthGateway,
 }: IAppContainer): AuthenticateUserFn => async (
   context: GetServerSidePropsContext
 ): Promise<void> => {
-  await getBasicAuthGateway().authenticate(context.req, context.res);
+  await basicAuthGateway().authenticate(context.req, context.res);
 };
 
 /* Legacy -- delete once un-used */

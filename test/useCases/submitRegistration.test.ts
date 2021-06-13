@@ -10,10 +10,10 @@ describe("submitRegistration()", () => {
         .mockResolvedValue({ serialiseToAPI: jest.fn() }),
       getAccessToken: mockRetrieveAuthToken,
       sendConfirmationEmail: jest.fn(),
-      getBeaconsApiGateway: () => ({
+      beaconsApiGateway: {
         sendRegistration: jest.fn(),
-      }),
-    } as any;
+      },
+    };
 
     await submitRegistration(container)("submissionId");
 
@@ -28,9 +28,9 @@ describe("submitRegistration()", () => {
         .mockResolvedValue({ serialiseToAPI: jest.fn() }),
       getAccessToken: jest.fn(),
       sendConfirmationEmail: jest.fn(),
-      getBeaconsApiGateway: () => ({
+      beaconsApiGateway: {
         sendRegistration: mockSendRegistrationToApi,
-      }),
+      },
     };
 
     await submitRegistration(container)("submissionId");
@@ -47,9 +47,9 @@ describe("submitRegistration()", () => {
       }),
       getAccessToken: jest.fn(),
       sendConfirmationEmail: mockSendConfirmationEmail,
-      getBeaconsApiGateway: () => ({
+      beaconsApiGateway: {
         sendRegistration: jest.fn().mockResolvedValue(true),
-      }),
+      },
     };
 
     await submitRegistration(container)("submissionId");
@@ -65,9 +65,9 @@ describe("submitRegistration()", () => {
       }),
       getAccessToken: jest.fn(),
       sendConfirmationEmail: jest.fn().mockResolvedValue(true),
-      getBeaconsApiGateway: () => ({
+      beaconsApiGateway: {
         sendRegistration: jest.fn().mockResolvedValue(true),
-      }),
+      },
     };
 
     const result = await submitRegistration(container)("submissionId");
@@ -87,9 +87,9 @@ describe("submitRegistration()", () => {
       }),
       getAccessToken: jest.fn(),
       sendConfirmationEmail: jest.fn().mockResolvedValue(false),
-      getBeaconsApiGateway: () => ({
+      beaconsApiGateway: {
         sendRegistration: jest.fn().mockResolvedValue(true),
-      }),
+      },
     };
 
     const result = await submitRegistration(container)("submissionId");
@@ -109,9 +109,9 @@ describe("submitRegistration()", () => {
       }),
       getAccessToken: jest.fn(),
       sendConfirmationEmail: jest.fn().mockResolvedValue(false),
-      getBeaconsApiGateway: () => ({
+      beaconsApiGateway: {
         sendRegistration: jest.fn().mockResolvedValue(true),
-      }),
+      },
     };
 
     const result = await submitRegistration(container)("submissionId");
@@ -127,9 +127,9 @@ describe("submitRegistration()", () => {
       }),
       getAccessToken: jest.fn(),
       sendConfirmationEmail: jest.fn().mockResolvedValue(false),
-      getBeaconsApiGateway: () => ({
+      beaconsApiGateway: {
         sendRegistration: jest.fn().mockResolvedValue(false),
-      }),
+      },
     };
 
     const result = await submitRegistration(container)("submissionId");
