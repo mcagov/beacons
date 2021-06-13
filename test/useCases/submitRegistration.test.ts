@@ -1,44 +1,57 @@
-import { IAppContainer } from "../../src/lib/appContainer";
 import { submitRegistration } from "../../src/useCases/submitRegistration";
 
 describe("submitRegistration()", () => {
-  let container: Partial<IAppContainer>;
-  let mockRegistration;
-  let mockRetrieveCachedRegistration;
-  const mockRetrieveAuthToken = jest.fn();
-  const mockSendConfirmationEmail = jest.fn();
-  const mockSendRegistration = jest.fn();
-
-  beforeEach(() => {
-    mockRegistration = {
-      serialiseToAPI: jest.fn(),
-    };
-
-    mockRetrieveCachedRegistration = jest
-      .fn()
-      .mockResolvedValue(mockRegistration);
-
-    container = {
-      getRetrieveCachedRegistration: () => mockRetrieveCachedRegistration,
+  it("requests an access token from the authGateway", async () => {
+    const mockRetrieveAuthToken = jest.fn();
+    const container: any = {
+      getRetrieveCachedRegistration: () =>
+        jest.fn().mockResolvedValue({ serialiseToAPI: jest.fn() }),
       getRetrieveAccessToken: () => mockRetrieveAuthToken,
-      getSendConfirmationEmail: () => mockSendConfirmationEmail,
+      getSendConfirmationEmail: () => jest.fn(),
       getBeaconsApiGateway: () => ({
-        sendRegistration: mockSendRegistration,
+        sendRegistration: jest.fn(),
       }),
     };
-  });
 
-  afterEach(() => jest.resetAllMocks());
-
-  it("requests an access token from the authGateway", async () => {
-    await submitRegistration(container as IAppContainer)("submissionId");
+    await submitRegistration(container)("submissionId");
 
     expect(mockRetrieveAuthToken).toHaveBeenCalledTimes(1);
   });
 
   it("attempts to send the registration to the beacons API", async () => {
-    await submitRegistration(container as IAppContainer)("submissionId");
+    const mockSendRegistrationToApi = jest.fn();
+    const container: any = {
+      getRetrieveCachedRegistration: () =>
+        jest.fn().mockResolvedValue({ serialiseToAPI: jest.fn() }),
+      getRetrieveAccessToken: () => jest.fn(),
+      getSendConfirmationEmail: () => jest.fn(),
+      getBeaconsApiGateway: () => ({
+        sendRegistration: mockSendRegistrationToApi,
+      }),
+    };
 
-    expect(mockSendRegistration).toHaveBeenCalledTimes(1);
+    await submitRegistration(container)("submissionId");
+
+    expect(mockSendRegistrationToApi).toHaveBeenCalledTimes(1);
+  });
+
+  it("attempts to send a confirmation email if registration was successful", async () => {
+    const sendConfirmationEmail = jest.fn();
+    const container: any = {
+      getRetrieveCachedRegistration: () =>
+        jest.fn().mockResolvedValue({
+          serialiseToAPI: jest.fn(),
+          getRegistration: jest.fn(),
+        }),
+      getRetrieveAccessToken: () => jest.fn(),
+      getSendConfirmationEmail: () => sendConfirmationEmail,
+      getBeaconsApiGateway: () => ({
+        sendRegistration: jest.fn().mockResolvedValue(true),
+      }),
+    };
+
+    await submitRegistration(container)("submissionId");
+
+    await expect(sendConfirmationEmail).toHaveBeenCalledTimes(1);
   });
 });
