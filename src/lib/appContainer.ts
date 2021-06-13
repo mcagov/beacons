@@ -1,5 +1,5 @@
 import { ConfidentialClientApplication } from "@azure/msal-node";
-import { appConfig } from "../../appConfig";
+import { appConfig } from "../appConfig";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
 import {
   BasicAuthGateway,
