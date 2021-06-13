@@ -72,19 +72,20 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    /* Retrieve injected use cases */
-    const formSubmissionCookieIsSet = context.container.verifyFormSubmissionCookieIsSet()(
-      context
-    );
-    const redirectUserTo = context.container.redirectUserTo();
-    const submitRegistration = context.container.submitRegistration();
-    const registrationId = context.container.userFormSubmissionId()(context);
+    /* Retrieve injected use cases, aliasing some for readability */
+    const {
+      verifyFormSubmissionCookieIsSet: formSubmissionCookieIsSet,
+      redirectUserTo,
+      submitRegistration,
+      userFormSubmissionId: registrationId,
+    } = context.container;
 
     /* Page logic */
-    if (!formSubmissionCookieIsSet) return redirectUserTo(PageURLs.start);
+    if (!formSubmissionCookieIsSet(context))
+      return redirectUserTo(PageURLs.start);
 
     try {
-      const result = await submitRegistration(registrationId);
+      const result = await submitRegistration(registrationId(context));
 
       const pageSubHeading = (result: ISubmitRegistrationResult) => {
         if (result.beaconRegistered && result.confirmationEmailSent)
