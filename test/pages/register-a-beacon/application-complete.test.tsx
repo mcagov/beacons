@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
-import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { IAppContainer } from "../../../src/lib/appContainer";
+import { PageURLs } from "../../../src/lib/urls";
 import ApplicationCompletePage, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/application-complete";
@@ -63,32 +63,16 @@ describe("ApplicationCompletePage", () => {
     });
 
     it("should redirect the user to the start page if their form submission cookie isn't set", async () => {
-      const context = {
-        req: { cookies: {} },
-      } as GetServerSidePropsContext;
+      mockVerifyFormSubmissionCookieIsSet.mockReturnValue(false);
+      await getServerSideProps(context);
 
-      const result = await getServerSideProps(context);
-
-      expect(result).toStrictEqual({
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      });
-    });
-
-    it("should not have a reference number if creating the registration is unsuccessful", async () => {
-      const context = {};
-
-      const result = await getServerSideProps(context);
-
-      expect(result.props.reference).toEqual("");
+      expect(mockVerifyFormSubmissionCookieIsSet).toHaveBeenCalled();
+      expect(mockRedirectTo).toHaveBeenCalledWith(PageURLs.start);
     });
 
     it("should not have a reference number if creating the registration is unsuccessful", async () => {
       mockVerifyFormSubmissionCookieIsSet.mockReturnValue(true);
       mockCreateRegistration.mockResolvedValue(false);
-
       const result = await getServerSideProps(context);
 
       expect(result.props.reference).toBe("");
