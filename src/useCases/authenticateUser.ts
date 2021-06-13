@@ -11,10 +11,10 @@ export const authenticateUser = ({
 }: IAppContainer): AuthenticateUserFn => async (
   context: GetServerSidePropsContext
 ): Promise<void> => {
-  await basicAuthGateway().authenticate(context.req, context.res);
+  await basicAuthGateway.authenticate(context.req, context.res);
 };
 
-/* Legacy -- delete once un-used */
+/* Legacy -- delete once not used */
 
 export interface IAuthenticateUser {
   execute: (context: GetServerSidePropsContext) => Promise<void>;
