@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+import { createResponse } from "node-mocks-http";
 import React from "react";
 import { IAppContainer } from "../../../src/lib/appContainer";
 import { formSubmissionCookieId } from "../../../src/lib/types";
@@ -17,7 +18,7 @@ describe("ApplicationCompletePage", () => {
     );
   });
 
-  describe("getServerSideProps function", () => {
+  describe("getServerSideProps()", () => {
     let mockContainer: Partial<IAppContainer>;
     const mockSubmitRegistration = jest.fn().mockResolvedValue({
       beaconRegistered: true,
@@ -37,6 +38,7 @@ describe("ApplicationCompletePage", () => {
     it("should redirect the user to the start page if their form submission cookie isn't set", async () => {
       const context = {
         req: { cookies: {} },
+        res: createResponse(),
         container: mockContainer,
       };
 
@@ -56,6 +58,7 @@ describe("ApplicationCompletePage", () => {
         req: {
           cookies: { [formSubmissionCookieId]: userRegistrationId },
         },
+        res: createResponse(),
         container: mockContainer,
       };
 
@@ -72,6 +75,7 @@ describe("ApplicationCompletePage", () => {
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
         container: mockContainer,
       };
       mockSubmitRegistration.mockResolvedValue(unsuccessful);
@@ -89,11 +93,12 @@ describe("ApplicationCompletePage", () => {
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
         container: mockContainer,
       };
       mockSubmitRegistration.mockResolvedValue(successful);
 
-      const result = await getServerSideProps(context as any);
+      const result = await getServerSideProps(context);
 
       expect(result.props.reference).toBe("ABC123");
     });
@@ -106,6 +111,7 @@ describe("ApplicationCompletePage", () => {
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
         container: mockContainer,
       };
       mockSubmitRegistration.mockResolvedValue(successful);
@@ -123,6 +129,7 @@ describe("ApplicationCompletePage", () => {
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
         container: mockContainer,
       };
       mockSubmitRegistration.mockResolvedValue(failedEmail);
@@ -140,6 +147,7 @@ describe("ApplicationCompletePage", () => {
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
         container: mockContainer,
       };
       mockSubmitRegistration.mockResolvedValue(failedEverything);
@@ -155,6 +163,7 @@ describe("ApplicationCompletePage", () => {
         req: {
           cookies: { [formSubmissionCookieId]: userRegistrationId },
         },
+        res: createResponse(),
         container: mockContainer,
       };
       mockSubmitRegistration.mockImplementation(() => {
@@ -172,6 +181,7 @@ describe("ApplicationCompletePage", () => {
         req: {
           cookies: { [formSubmissionCookieId]: userRegistrationId },
         },
+        res: createResponse(),
         container: mockContainer,
       };
       mockSubmitRegistration.mockImplementation(() => {
