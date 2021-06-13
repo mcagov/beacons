@@ -1,10 +1,9 @@
 import { GetServerSidePropsContext } from "next";
 import { formSubmissionCookieId } from "../lib/types";
 
-export type RetrieveUserFormSubmissionIdFn = (
+export type UserFormSubmissionIdFn = (
   context: GetServerSidePropsContext
 ) => string;
 
-export const retrieveUserFormSubmissionId: RetrieveUserFormSubmissionIdFn = (
-  context
-) => context.req.cookies[formSubmissionCookieId];
+export const retrieveUserFormSubmissionId: UserFormSubmissionIdFn = (context) =>
+  context.req.cookies[formSubmissionCookieId];

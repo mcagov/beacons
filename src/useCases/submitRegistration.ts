@@ -12,25 +12,22 @@ export interface ISubmitRegistrationResult {
 }
 
 export const submitRegistration = ({
-  getRetrieveCachedRegistration,
-  getSendConfirmationEmail,
+  sendConfirmationEmail,
+  getCachedRegistration,
+  getAccessToken,
   getBeaconsApiGateway,
-  getRetrieveAccessToken,
-}: IAppContainer): SubmitRegistrationFn => async (submissionId) => {
-  const retrieveAccessToken = getRetrieveAccessToken();
-  const beaconsApiGateway = getBeaconsApiGateway();
-  const registration = await getRetrieveCachedRegistration()(submissionId);
-  const sendGovNotifyEmail = getSendConfirmationEmail();
+}: Partial<IAppContainer>): SubmitRegistrationFn => async (submissionId) => {
+  const { sendRegistration } = getBeaconsApiGateway();
+  const registration = await getCachedRegistration(submissionId);
+  const accessToken = await getAccessToken();
 
-  const accessToken = await retrieveAccessToken();
-
-  const beaconRegistered = await beaconsApiGateway.sendRegistration(
+  const beaconRegistered = await sendRegistration(
     registration.serialiseToAPI(),
     accessToken
   );
 
   const confirmationEmailSent = beaconRegistered
-    ? await sendGovNotifyEmail(registration.getRegistration())
+    ? await sendConfirmationEmail(registration.getRegistration())
     : false;
 
   const registrationNumber = beaconRegistered ? referenceNumber("A#", 7) : "";

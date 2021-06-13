@@ -27,11 +27,10 @@ describe("ApplicationCompletePage", () => {
 
     beforeEach(() => {
       mockContainer = {
-        getVerifyFormSubmissionCookieIsSet: () =>
-          verifyFormSubmissionCookieIsSet, // Don't mock; pure function
-        getRedirectUserTo: () => redirectUserTo, // Don't mock; pure function
-        getRetrieveUserFormSubmissionId: () => retrieveUserFormSubmissionId, // Don't mock; pure function
-        getSubmitRegistration: () => mockSubmitRegistration, // Do mock; this has side-effects
+        verifyFormSubmissionCookieIsSet: verifyFormSubmissionCookieIsSet, // Don't mock; pure function
+        redirectUserTo: redirectUserTo, // Don't mock; pure function
+        userFormSubmissionId: retrieveUserFormSubmissionId, // Don't mock; pure function
+        submitRegistration: mockSubmitRegistration, // Do mock; has side-effects
       };
     });
 
@@ -82,7 +81,7 @@ describe("ApplicationCompletePage", () => {
       expect(result.props.reference).toBe("");
     });
 
-    it("should return a reference number if creating the registration is successul", async () => {
+    it("should return a reference number if creating the registration is successful", async () => {
       const successful: ISubmitRegistrationResult = {
         beaconRegistered: true,
         confirmationEmailSent: true,

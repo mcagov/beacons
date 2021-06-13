@@ -1,5 +1,20 @@
 import { GetServerSidePropsContext } from "next";
 import { IBasicAuthGateway } from "../gateways/basicAuthGateway";
+import { IAppContainer } from "../lib/appContainer";
+
+export type AuthenticateUserFn = (
+  context: GetServerSidePropsContext
+) => Promise<void>;
+
+export const authenticateUser = ({
+  getBasicAuthGateway,
+}: IAppContainer): AuthenticateUserFn => async (
+  context: GetServerSidePropsContext
+): Promise<void> => {
+  await getBasicAuthGateway().authenticate(context.req, context.res);
+};
+
+/* Legacy -- delete once un-used */
 
 export interface IAuthenticateUser {
   execute: (context: GetServerSidePropsContext) => Promise<void>;

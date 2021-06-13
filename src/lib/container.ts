@@ -1,5 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { AppContainer, IAppContainer } from "./appContainer";
+import { appContainer, IAppContainer } from "./appContainer";
 
 export type BeaconsGetServerSidePropsContext = GetServerSidePropsContext & {
   container: IAppContainer;
@@ -8,6 +8,6 @@ export type BeaconsGetServerSidePropsContext = GetServerSidePropsContext & {
 export const withContainer = (
   callback: GetServerSideProps
 ): GetServerSideProps => (context: BeaconsGetServerSidePropsContext) => {
-  context.container = context.container || new AppContainer();
+  context.container = context.container || appContainer;
   return callback(context);
 };

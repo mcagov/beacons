@@ -1,17 +1,19 @@
+import { IAppContainer } from "../../src/lib/appContainer";
 import { submitRegistration } from "../../src/useCases/submitRegistration";
 
 describe("submitRegistration()", () => {
   it("requests an access token from the authGateway", async () => {
     const mockRetrieveAuthToken = jest.fn();
-    const container: any = {
-      getRetrieveCachedRegistration: () =>
-        jest.fn().mockResolvedValue({ serialiseToAPI: jest.fn() }),
-      getRetrieveAccessToken: () => mockRetrieveAuthToken,
-      getSendConfirmationEmail: () => jest.fn(),
+    const container: Partial<IAppContainer> = {
+      getCachedRegistration: jest
+        .fn()
+        .mockResolvedValue({ serialiseToAPI: jest.fn() }),
+      getAccessToken: mockRetrieveAuthToken,
+      sendConfirmationEmail: jest.fn(),
       getBeaconsApiGateway: () => ({
         sendRegistration: jest.fn(),
       }),
-    };
+    } as any;
 
     await submitRegistration(container)("submissionId");
 
@@ -20,11 +22,12 @@ describe("submitRegistration()", () => {
 
   it("attempts to send the registration to the beacons API", async () => {
     const mockSendRegistrationToApi = jest.fn();
-    const container: any = {
-      getRetrieveCachedRegistration: () =>
-        jest.fn().mockResolvedValue({ serialiseToAPI: jest.fn() }),
-      getRetrieveAccessToken: () => jest.fn(),
-      getSendConfirmationEmail: () => jest.fn(),
+    const container: Partial<IAppContainer> = {
+      getCachedRegistration: jest
+        .fn()
+        .mockResolvedValue({ serialiseToAPI: jest.fn() }),
+      getAccessToken: jest.fn(),
+      sendConfirmationEmail: jest.fn(),
       getBeaconsApiGateway: () => ({
         sendRegistration: mockSendRegistrationToApi,
       }),
@@ -36,15 +39,14 @@ describe("submitRegistration()", () => {
   });
 
   it("attempts to send a confirmation email if registration was successful", async () => {
-    const sendConfirmationEmail = jest.fn();
-    const container: any = {
-      getRetrieveCachedRegistration: () =>
-        jest.fn().mockResolvedValue({
-          serialiseToAPI: jest.fn(),
-          getRegistration: jest.fn(),
-        }),
-      getRetrieveAccessToken: () => jest.fn(),
-      getSendConfirmationEmail: () => sendConfirmationEmail,
+    const mockSendConfirmationEmail = jest.fn();
+    const container: Partial<IAppContainer> = {
+      getCachedRegistration: jest.fn().mockResolvedValue({
+        serialiseToAPI: jest.fn(),
+        getRegistration: jest.fn(),
+      }),
+      getAccessToken: jest.fn(),
+      sendConfirmationEmail: mockSendConfirmationEmail,
       getBeaconsApiGateway: () => ({
         sendRegistration: jest.fn().mockResolvedValue(true),
       }),
@@ -52,18 +54,17 @@ describe("submitRegistration()", () => {
 
     await submitRegistration(container)("submissionId");
 
-    expect(sendConfirmationEmail).toHaveBeenCalledTimes(1);
+    expect(mockSendConfirmationEmail).toHaveBeenCalledTimes(1);
   });
 
   it("returns the result when the registration was a success and the email was sent", async () => {
-    const container: any = {
-      getRetrieveCachedRegistration: () =>
-        jest.fn().mockResolvedValue({
-          serialiseToAPI: jest.fn(),
-          getRegistration: jest.fn(),
-        }),
-      getRetrieveAccessToken: () => jest.fn(),
-      getSendConfirmationEmail: () => jest.fn().mockResolvedValue(true),
+    const container: Partial<IAppContainer> = {
+      getCachedRegistration: jest.fn().mockResolvedValue({
+        serialiseToAPI: jest.fn(),
+        getRegistration: jest.fn(),
+      }),
+      getAccessToken: jest.fn(),
+      sendConfirmationEmail: jest.fn().mockResolvedValue(true),
       getBeaconsApiGateway: () => ({
         sendRegistration: jest.fn().mockResolvedValue(true),
       }),
@@ -79,14 +80,13 @@ describe("submitRegistration()", () => {
   });
 
   it("returns the result when the registration was a success but the email was not sent", async () => {
-    const container: any = {
-      getRetrieveCachedRegistration: () =>
-        jest.fn().mockResolvedValue({
-          serialiseToAPI: jest.fn(),
-          getRegistration: jest.fn(),
-        }),
-      getRetrieveAccessToken: () => jest.fn(),
-      getSendConfirmationEmail: () => jest.fn().mockResolvedValue(false),
+    const container: Partial<IAppContainer> = {
+      getCachedRegistration: jest.fn().mockResolvedValue({
+        serialiseToAPI: jest.fn(),
+        getRegistration: jest.fn(),
+      }),
+      getAccessToken: jest.fn(),
+      sendConfirmationEmail: jest.fn().mockResolvedValue(false),
       getBeaconsApiGateway: () => ({
         sendRegistration: jest.fn().mockResolvedValue(true),
       }),
@@ -102,14 +102,13 @@ describe("submitRegistration()", () => {
   });
 
   it("returns a registration number when the registration was a success", async () => {
-    const container: any = {
-      getRetrieveCachedRegistration: () =>
-        jest.fn().mockResolvedValue({
-          serialiseToAPI: jest.fn(),
-          getRegistration: jest.fn(),
-        }),
-      getRetrieveAccessToken: () => jest.fn(),
-      getSendConfirmationEmail: () => jest.fn().mockResolvedValue(false),
+    const container: Partial<IAppContainer> = {
+      getCachedRegistration: jest.fn().mockResolvedValue({
+        serialiseToAPI: jest.fn(),
+        getRegistration: jest.fn(),
+      }),
+      getAccessToken: jest.fn(),
+      sendConfirmationEmail: jest.fn().mockResolvedValue(false),
       getBeaconsApiGateway: () => ({
         sendRegistration: jest.fn().mockResolvedValue(true),
       }),
@@ -121,14 +120,13 @@ describe("submitRegistration()", () => {
   });
 
   it("returns an empty registration number when the registration failed", async () => {
-    const container: any = {
-      getRetrieveCachedRegistration: () =>
-        jest.fn().mockResolvedValue({
-          serialiseToAPI: jest.fn(),
-          getRegistration: jest.fn(),
-        }),
-      getRetrieveAccessToken: () => jest.fn(),
-      getSendConfirmationEmail: () => jest.fn().mockResolvedValue(false),
+    const container: Partial<IAppContainer> = {
+      getCachedRegistration: jest.fn().mockResolvedValue({
+        serialiseToAPI: jest.fn(),
+        getRegistration: jest.fn(),
+      }),
+      getAccessToken: jest.fn(),
+      sendConfirmationEmail: jest.fn().mockResolvedValue(false),
       getBeaconsApiGateway: () => ({
         sendRegistration: jest.fn().mockResolvedValue(false),
       }),
