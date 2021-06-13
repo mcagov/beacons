@@ -57,7 +57,7 @@ export interface IAppContainer {
   getAccessToken: GetAccessTokenFn;
 
   /* Gateways */
-  getAuthGateway: IAuthGateway;
+  beaconsApiAuthGateway: IAuthGateway;
   basicAuthGateway: IBasicAuthGateway;
   beaconsApiGateway: IBeaconsApiGateway;
   govNotifyGateway: IGovNotifyGateway;
@@ -66,11 +66,11 @@ export interface IAppContainer {
 export const appContainer: IAppContainer = {
   /* Simple use cases */
   getCachedRegistration: getCachedRegistration,
+  clearCachedRegistration: clearCachedRegistration,
   verifyFormSubmissionCookieIsSet: verifyFormSubmissionCookieIsSet,
   redirectUserTo: redirectUserTo,
-  clearCachedRegistration: clearCachedRegistration,
 
-  /* Composite use cases requiring access to the container */
+  /* Composite use cases requiring access to other use cases */
   get getAccessToken() {
     return getAccessToken(this);
   },
@@ -88,7 +88,7 @@ export const appContainer: IAppContainer = {
   },
 
   /* Gateways */
-  get getAuthGateway() {
+  get beaconsApiAuthGateway() {
     const confidentialClientApplication = new ConfidentialClientApplication(
       appConfig.aadConfig
     );

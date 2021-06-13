@@ -9,6 +9,7 @@ import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
+import { clearFormSubmissionCookie } from "../../lib/middleware";
 import { PageURLs } from "../../lib/urls";
 import { ISubmitRegistrationResult } from "../../useCases/submitRegistration";
 
@@ -94,6 +95,8 @@ export const getServerSideProps: GetServerSideProps = withContainer(
           return "We could not send you a confirmation email. But we have registered your beacon under the following reference id.";
         return "We could not save your registration or send you a confirmation email. Please contact the Beacons Registry team.";
       };
+
+      clearFormSubmissionCookie(context);
 
       return {
         props: {

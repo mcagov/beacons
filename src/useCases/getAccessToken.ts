@@ -3,6 +3,6 @@ import { IAppContainer } from "../lib/appContainer";
 export type GetAccessTokenFn = () => Promise<string>;
 
 export const getAccessToken = ({
-  getAuthGateway,
+  beaconsApiAuthGateway,
 }: IAppContainer): GetAccessTokenFn => async () =>
-  await getAuthGateway().getAccessToken();
+  await beaconsApiAuthGateway.getAccessToken();

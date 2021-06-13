@@ -2,7 +2,7 @@ import { IAppContainer } from "../../src/lib/appContainer";
 import { submitRegistration } from "../../src/useCases/submitRegistration";
 
 describe("submitRegistration()", () => {
-  it("requests an access token from the authGateway", async () => {
+  it("requests an access token from the beaconsApiAuthGateway", async () => {
     const mockRetrieveAuthToken = jest.fn();
     const container: Partial<IAppContainer> = {
       getCachedRegistration: jest
