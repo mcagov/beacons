@@ -52,6 +52,90 @@ describe("submitRegistration()", () => {
 
     await submitRegistration(container)("submissionId");
 
-    await expect(sendConfirmationEmail).toHaveBeenCalledTimes(1);
+    expect(sendConfirmationEmail).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns the result when the registration was a success and the email was sent", async () => {
+    const container: any = {
+      getRetrieveCachedRegistration: () =>
+        jest.fn().mockResolvedValue({
+          serialiseToAPI: jest.fn(),
+          getRegistration: jest.fn(),
+        }),
+      getRetrieveAccessToken: () => jest.fn(),
+      getSendConfirmationEmail: () => jest.fn().mockResolvedValue(true),
+      getBeaconsApiGateway: () => ({
+        sendRegistration: jest.fn().mockResolvedValue(true),
+      }),
+    };
+
+    const result = await submitRegistration(container)("submissionId");
+
+    expect(result).toStrictEqual({
+      beaconRegistered: true,
+      confirmationEmailSent: true,
+      registrationNumber: expect.any(String),
+    });
+  });
+
+  it("returns the result when the registration was a success but the email was not sent", async () => {
+    const container: any = {
+      getRetrieveCachedRegistration: () =>
+        jest.fn().mockResolvedValue({
+          serialiseToAPI: jest.fn(),
+          getRegistration: jest.fn(),
+        }),
+      getRetrieveAccessToken: () => jest.fn(),
+      getSendConfirmationEmail: () => jest.fn().mockResolvedValue(false),
+      getBeaconsApiGateway: () => ({
+        sendRegistration: jest.fn().mockResolvedValue(true),
+      }),
+    };
+
+    const result = await submitRegistration(container)("submissionId");
+
+    expect(result).toStrictEqual({
+      beaconRegistered: true,
+      confirmationEmailSent: false,
+      registrationNumber: expect.any(String),
+    });
+  });
+
+  it("returns a registration number when the registration was a success", async () => {
+    const container: any = {
+      getRetrieveCachedRegistration: () =>
+        jest.fn().mockResolvedValue({
+          serialiseToAPI: jest.fn(),
+          getRegistration: jest.fn(),
+        }),
+      getRetrieveAccessToken: () => jest.fn(),
+      getSendConfirmationEmail: () => jest.fn().mockResolvedValue(false),
+      getBeaconsApiGateway: () => ({
+        sendRegistration: jest.fn().mockResolvedValue(true),
+      }),
+    };
+
+    const result = await submitRegistration(container)("submissionId");
+
+    expect(result.registrationNumber.length).toBeGreaterThan(1);
+  });
+
+  it("returns an empty registration number when the registration failed", async () => {
+    const container: any = {
+      getRetrieveCachedRegistration: () =>
+        jest.fn().mockResolvedValue({
+          serialiseToAPI: jest.fn(),
+          getRegistration: jest.fn(),
+        }),
+      getRetrieveAccessToken: () => jest.fn(),
+      getSendConfirmationEmail: () => jest.fn().mockResolvedValue(false),
+      getBeaconsApiGateway: () => ({
+        sendRegistration: jest.fn().mockResolvedValue(false),
+      }),
+    };
+
+    const result = await submitRegistration(container)("submissionId");
+
+    expect(result.registrationNumber).toEqual("");
   });
 });
