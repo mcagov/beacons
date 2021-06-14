@@ -1,4 +1,4 @@
-import { redirectUserTo } from "../../src/useCases/redirectUserTo";
+import { redirectUserTo } from "../../src/lib/redirectUserTo";
 
 describe("redirectUserTo()", () => {
   it("should return a redirect to the provided url", () => {

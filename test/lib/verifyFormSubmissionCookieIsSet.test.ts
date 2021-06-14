@@ -1,5 +1,5 @@
 import { formSubmissionCookieId } from "../../src/lib/types";
-import { verifyFormSubmissionCookieIsSet } from "../../src/useCases/verifyFormSubmissionCookieIsSet";
+import { verifyFormSubmissionCookieIsSet } from "../../src/lib/verifyFormSubmissionCookieIsSet";
 
 describe("VerifyFormSubmissionCookieIsSet", () => {
   it("should return true if the form submission cookie is set", () => {

@@ -10,11 +10,11 @@ import {
   withContainer,
 } from "../../lib/container";
 import { clearFormSubmissionCookie } from "../../lib/middleware";
+import { redirectUserTo } from "../../lib/redirectUserTo";
+import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { PageURLs } from "../../lib/urls";
-import { redirectUserTo } from "../../useCases/redirectUserTo";
-import { retrieveUserFormSubmissionId } from "../../useCases/retrieveUserFormSubmissionId";
+import { verifyFormSubmissionCookieIsSet } from "../../lib/verifyFormSubmissionCookieIsSet";
 import { ISubmitRegistrationResult } from "../../useCases/submitRegistration";
-import { verifyFormSubmissionCookieIsSet } from "../../useCases/verifyFormSubmissionCookieIsSet";
 
 interface ApplicationCompleteProps {
   reference: string;

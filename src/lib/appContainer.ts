@@ -26,11 +26,6 @@ import {
   getCachedRegistration,
   GetCachedRegistrationFn,
 } from "../useCases/getCachedRegistration";
-import { redirectUserTo, RedirectUserToFn } from "../useCases/redirectUserTo";
-import {
-  retrieveUserFormSubmissionId,
-  UserFormSubmissionIdFn,
-} from "../useCases/retrieveUserFormSubmissionId";
 import {
   sendConfirmationEmail,
   SendConfirmationEmailFn,
@@ -39,19 +34,12 @@ import {
   submitRegistration,
   SubmitRegistrationFn,
 } from "../useCases/submitRegistration";
-import {
-  verifyFormSubmissionCookieIsSet,
-  VerifyFormSubmissionCookieIsSetFn,
-} from "../useCases/verifyFormSubmissionCookieIsSet";
 
 export interface IAppContainer {
   /* Use cases */
   authenticateUser: AuthenticateUserFn;
   submitRegistration: SubmitRegistrationFn;
   sendConfirmationEmail: SendConfirmationEmailFn;
-  verifyFormSubmissionCookieIsSet: VerifyFormSubmissionCookieIsSetFn;
-  redirectUserTo: RedirectUserToFn;
-  userFormSubmissionId: UserFormSubmissionIdFn;
   getCachedRegistration: GetCachedRegistrationFn;
   clearCachedRegistration: ClearCachedRegistrationFn;
   getAccessToken: GetAccessTokenFn;
@@ -67,8 +55,6 @@ export const appContainer: IAppContainer = {
   /* Simple use cases */
   getCachedRegistration: getCachedRegistration,
   clearCachedRegistration: clearCachedRegistration,
-  verifyFormSubmissionCookieIsSet: verifyFormSubmissionCookieIsSet,
-  redirectUserTo: redirectUserTo,
 
   /* Composite use cases requiring access to other use cases */
   get getAccessToken() {
@@ -82,9 +68,6 @@ export const appContainer: IAppContainer = {
   },
   get sendConfirmationEmail() {
     return sendConfirmationEmail(this);
-  },
-  get userFormSubmissionId() {
-    return retrieveUserFormSubmissionId;
   },
 
   /* Gateways */
