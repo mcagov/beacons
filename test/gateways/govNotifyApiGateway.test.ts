@@ -42,4 +42,14 @@ describe("Gov Notify API Gateway", () => {
     );
     expect(result).toBe(false);
   });
+
+  it("should fail silently with a console log message if the API key is not set", async () => {
+    const consoleSpy = jest
+      .spyOn(console, "log")
+      .mockImplementationOnce(() => null);
+
+    new GovNotifyGateway(undefined);
+
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+  });
 });
