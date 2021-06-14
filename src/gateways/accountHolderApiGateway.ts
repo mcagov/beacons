@@ -44,7 +44,6 @@ export class AccountHolderApiGateway {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
-      console.log("response", response);
       return response.data;
     } catch (error) {
       /* eslint-disable no-console */
