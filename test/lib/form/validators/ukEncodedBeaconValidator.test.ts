@@ -6,9 +6,8 @@ describe("ukEncodedBeacon validator", () => {
   let applies: ValidatorFn;
 
   beforeEach(() => {
-    ({ errorMessage, applies } = Validators.ukEncodedBeacon(
-      expectedErrorMessage
-    ));
+    ({ errorMessage, applies } =
+      Validators.ukEncodedBeacon(expectedErrorMessage));
   });
 
   it("should not have an error if no value is provided", () => {

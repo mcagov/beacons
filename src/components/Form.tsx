@@ -101,13 +101,12 @@ export const FormLegend: FunctionComponent<FormLegendProps> = ({
   );
 };
 
-export const FormLegendPageHeading: FunctionComponent<FormLegendPageHeadingProps> = ({
-  children,
-}: FormLegendPageHeadingProps) => (
-  <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-    <h1 className="govuk-fieldset__heading">{children}</h1>
-  </legend>
-);
+export const FormLegendPageHeading: FunctionComponent<FormLegendPageHeadingProps> =
+  ({ children }: FormLegendPageHeadingProps) => (
+    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 className="govuk-fieldset__heading">{children}</h1>
+    </legend>
+  );
 
 export const FormLabel: FunctionComponent<FormLabelProps> = ({
   htmlFor,

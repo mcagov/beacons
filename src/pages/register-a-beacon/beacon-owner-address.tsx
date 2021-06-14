@@ -98,21 +98,22 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const BuildingNumberAndStreetInput: FunctionComponent<BuildingNumberAndStreetInputProps> = ({
-  valueLine1 = "",
-  valueLine2 = "",
-  errorMessages,
-}: BuildingNumberAndStreetInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <Input
-      id="ownerAddressLine1"
-      label="Building number and street"
-      defaultValue={valueLine1}
-      inputClassName="govuk-!-margin-bottom-2"
-    />
-    <Input id="ownerAddressLine2" defaultValue={valueLine2} />
-  </FormGroup>
-);
+const BuildingNumberAndStreetInput: FunctionComponent<BuildingNumberAndStreetInputProps> =
+  ({
+    valueLine1 = "",
+    valueLine2 = "",
+    errorMessages,
+  }: BuildingNumberAndStreetInputProps): JSX.Element => (
+    <FormGroup errorMessages={errorMessages}>
+      <Input
+        id="ownerAddressLine1"
+        label="Building number and street"
+        defaultValue={valueLine1}
+        inputClassName="govuk-!-margin-bottom-2"
+      />
+      <Input id="ownerAddressLine2" defaultValue={valueLine2} />
+    </FormGroup>
+  );
 
 const TownOrCityInput: FunctionComponent<FormInputProps> = ({
   value = "",

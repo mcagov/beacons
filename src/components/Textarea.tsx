@@ -47,55 +47,56 @@ export const Textarea: FunctionComponent<TextareaProps> = ({
   );
 };
 
-export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountProps> = ({
-  id,
-  maxCharacters,
-  errorMessages = [],
-  label = null,
-  defaultValue = "",
-  hintText = null,
-  name = null,
-  rows = 3,
-  htmlAttributes = {},
-}: TextareaCharacterCountProps): JSX.Element => {
-  name = name ? name : id;
+export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountProps> =
+  ({
+    id,
+    maxCharacters,
+    errorMessages = [],
+    label = null,
+    defaultValue = "",
+    hintText = null,
+    name = null,
+    rows = 3,
+    htmlAttributes = {},
+  }: TextareaCharacterCountProps): JSX.Element => {
+    name = name ? name : id;
 
-  let labelComponent: ReactNode;
-  if (label) {
-    labelComponent = <FormLabel htmlFor={id}>{label}</FormLabel>;
-  }
+    let labelComponent: ReactNode;
+    if (label) {
+      labelComponent = <FormLabel htmlFor={id}>{label}</FormLabel>;
+    }
 
-  let hintComponent: ReactNode;
-  if (hintText) {
-    hintComponent = <FormHint forId={id}>{hintText}</FormHint>;
-  }
+    let hintComponent: ReactNode;
+    if (hintText) {
+      hintComponent = <FormHint forId={id}>{hintText}</FormHint>;
+    }
 
-  return (
-    <div
-      className="govuk-character-count"
-      data-module="govuk-character-count"
-      data-maxlength={maxCharacters}
-    >
-      <FormGroup errorMessages={errorMessages}>
-        {labelComponent}
-        {hintComponent}
-        <textarea
-          className="govuk-textarea govuk-js-character-count"
-          id={id}
-          name={name}
-          rows={rows}
-          aria-describedby={`${id}-hint ${id}-info`}
-          {...htmlAttributes}
-          defaultValue={defaultValue}
-        />
-      </FormGroup>
+    return (
       <div
-        id={`${id}-info`}
-        className="govuk-hint govuk-character-count__message"
-        aria-live="polite"
+        className="govuk-character-count"
+        data-module="govuk-character-count"
+        data-maxlength={maxCharacters}
       >
-        You can enter up to {maxCharacters} characters
+        <FormGroup errorMessages={errorMessages}>
+          {labelComponent}
+          {hintComponent}
+          <textarea
+            className="govuk-textarea govuk-js-character-count"
+            id={id}
+            name={name}
+            rows={rows}
+            aria-describedby={`${id}-hint ${id}-info`}
+            {...htmlAttributes}
+            defaultValue={defaultValue}
+          />
+        </FormGroup>
+        <div
+          id={`${id}-info`}
+          className="govuk-hint govuk-character-count__message"
+          aria-live="polite"
+        >
+          You can enter up to {maxCharacters} characters
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };

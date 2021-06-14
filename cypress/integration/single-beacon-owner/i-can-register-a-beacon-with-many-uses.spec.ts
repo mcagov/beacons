@@ -161,20 +161,20 @@ const iCanClickEveryChangeButtonToEditMyRegistration = () => {
     [PageURLs.beaconInformation]: iCanEditMyAdditionalBeaconInformation,
     [PageURLs.environment + "?useIndex=0"]: iCanEditMyLandEnvironment,
     [PageURLs.landCommunications + "?useIndex=0"]: iCanEditMyLandCommunications,
-    [PageURLs.moreDetails +
-    "?useIndex=0"]: iCanEditMyAdditionalLandUseMoreDetails,
+    [PageURLs.moreDetails + "?useIndex=0"]:
+      iCanEditMyAdditionalLandUseMoreDetails,
     [PageURLs.environment + "?useIndex=1"]: iCanEditMyMaritimeEnvironment,
     [PageURLs.aboutTheVessel + "?useIndex=1"]: iCanEditMyVesselDetails,
-    [PageURLs.vesselCommunications +
-    "?useIndex=1"]: iCanEditMyVesselCommunications,
-    [PageURLs.moreDetails +
-    "?useIndex=1"]: iCanEditMyAdditionalMaritimeUseInformation,
+    [PageURLs.vesselCommunications + "?useIndex=1"]:
+      iCanEditMyVesselCommunications,
+    [PageURLs.moreDetails + "?useIndex=1"]:
+      iCanEditMyAdditionalMaritimeUseInformation,
     [PageURLs.environment + "?useIndex=2"]: iCanEditMyAviationEnvironment,
     [PageURLs.aboutTheAircraft + "?useIndex=2"]: iCanEditMyAircraftDetails,
-    [PageURLs.aircraftCommunications +
-    "?useIndex=2"]: iCanEditMyAircraftCommunications,
-    [PageURLs.moreDetails +
-    "?useIndex=2"]: iCanEditMyAdditionalAviationUseInformation,
+    [PageURLs.aircraftCommunications + "?useIndex=2"]:
+      iCanEditMyAircraftCommunications,
+    [PageURLs.moreDetails + "?useIndex=2"]:
+      iCanEditMyAdditionalAviationUseInformation,
     [PageURLs.aboutBeaconOwner]: iCanEditMyPersonalDetails,
     [PageURLs.beaconOwnerAddress]: iCanEditMyAddressDetails,
     [PageURLs.emergencyContact]: iCanEditMyEmergencyContactDetails,

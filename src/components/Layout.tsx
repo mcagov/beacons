@@ -63,15 +63,13 @@ export const Layout: FunctionComponent<LayoutProps> = ({
   );
 };
 
-export const BeaconRegistrationHead: FunctionComponent<BeaconRegistrationHeadProps> = ({
-  title,
-  pageHasErrors,
-}: BeaconRegistrationHeadProps) => {
-  const headTitle = pageHasErrors ? `Error: ${title}` : title;
+export const BeaconRegistrationHead: FunctionComponent<BeaconRegistrationHeadProps> =
+  ({ title, pageHasErrors }: BeaconRegistrationHeadProps) => {
+    const headTitle = pageHasErrors ? `Error: ${title}` : title;
 
-  return (
-    <Head>
-      <title>{`${headTitle} - Beacon Registration Service - GOV.UK`}</title>
-    </Head>
-  );
-};
+    return (
+      <Head>
+        <title>{`${headTitle} - Beacon Registration Service - GOV.UK`}</title>
+      </Head>
+    );
+  };
