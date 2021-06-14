@@ -68,6 +68,10 @@ resource "aws_ecs_task_definition" "webapp" {
       {
         name : "AZURE_B2C_LOGIN_FLOW",
         value : var.webapp_azure_b2c_login_flow
+      },
+      {
+        name : "AZURE_B2C_SIGNUP_FLOW",
+        value : var.webapp_azure_b2c_signup_flow
       }
     ],
     logConfiguration : {

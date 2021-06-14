@@ -9,6 +9,7 @@ webapp_azure_b2c_tenant_id   = "da0cadc6-44c5-4830-bb04-82bddfd2f040"
 webapp_azure_b2c_client_id   = "43557393-7cd2-416e-8bb2-96283dbdbcbc"
 webapp_azure_b2c_tenant_name = "B2CMCGA"
 webapp_azure_b2c_login_flow  = "B2C_1_login_beacons"
+webapp_azure_b2c_signup_flow = "B2C_1_signup_beacons"
 webapp_azure_ad_tenant_id    = "513fb495-9a90-425b-a49a-bc6ebe2a429e"
 webapp_azure_ad_client_id    = "1ccbe14d-00e3-43ac-a434-8f7a38e03366"
 service_count                = 1
