@@ -43,6 +43,10 @@ export class Registration {
     this._updateUse(formData);
   }
 
+  public setReferenceNumber(referenceNumber: string): void {
+    this.registration.referenceNumber = referenceNumber;
+  }
+
   private _updateBeacon(formData: FormSubmission): void {
     Object.keys(formData)
       .filter((key: string) => !(key === Registration.USES_KEY))

@@ -8,7 +8,7 @@ export type SubmitRegistrationFn = (
 export interface ISubmitRegistrationResult {
   beaconRegistered: boolean;
   confirmationEmailSent: boolean;
-  registrationNumber: string;
+  referenceNumber: string;
 }
 
 export const submitRegistration = ({
@@ -20,6 +20,8 @@ export const submitRegistration = ({
   const registration = await getCachedRegistration(submissionId);
   const accessToken = await getAccessToken();
 
+  registration.setReferenceNumber(referenceNumber("A#", 7));
+
   const beaconRegistered = await beaconsApiGateway.sendRegistration(
     registration.serialiseToAPI(),
     accessToken
@@ -29,11 +31,11 @@ export const submitRegistration = ({
     ? await sendConfirmationEmail(registration.getRegistration())
     : false;
 
-  const registrationNumber = beaconRegistered ? referenceNumber("A#", 7) : "";
+  if (!beaconRegistered) registration.setReferenceNumber("");
 
   return {
     beaconRegistered,
     confirmationEmailSent,
-    registrationNumber,
+    referenceNumber: registration.getRegistration().referenceNumber || "",
   };
 };

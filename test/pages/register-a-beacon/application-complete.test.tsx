@@ -65,7 +65,7 @@ describe("ApplicationCompletePage", () => {
       const unsuccessful: ISubmitRegistrationResult = {
         beaconRegistered: false,
         confirmationEmailSent: false,
-        registrationNumber: "",
+        referenceNumber: "",
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
@@ -83,7 +83,7 @@ describe("ApplicationCompletePage", () => {
       const successful: ISubmitRegistrationResult = {
         beaconRegistered: true,
         confirmationEmailSent: true,
-        registrationNumber: "ABC123",
+        referenceNumber: "ABC123",
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
@@ -101,7 +101,7 @@ describe("ApplicationCompletePage", () => {
       const successful: ISubmitRegistrationResult = {
         beaconRegistered: true,
         confirmationEmailSent: true,
-        registrationNumber: "ABC123",
+        referenceNumber: "ABC123",
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
@@ -119,7 +119,7 @@ describe("ApplicationCompletePage", () => {
       const failedEmail: ISubmitRegistrationResult = {
         beaconRegistered: true,
         confirmationEmailSent: false,
-        registrationNumber: "ABC123",
+        referenceNumber: "ABC123",
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
@@ -137,7 +137,7 @@ describe("ApplicationCompletePage", () => {
       const failedEverything: ISubmitRegistrationResult = {
         beaconRegistered: false,
         confirmationEmailSent: false,
-        registrationNumber: "",
+        referenceNumber: "",
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },

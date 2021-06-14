@@ -100,7 +100,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
       return {
         props: {
-          reference: result.registrationNumber,
+          reference: result.referenceNumber,
           pageSubHeading: pageSubHeading(result),
         },
       };
