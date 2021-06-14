@@ -190,7 +190,7 @@ describe("Middleware Functions", () => {
 
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
-        "submissionId=1; Path=/; HttpOnly; SameSite=Strict"
+        "submissionId=1; Path=/; HttpOnly; SameSite=Lax"
       );
     };
 
