@@ -5,9 +5,11 @@ jest.mock("axios");
 
 describe("Beacons API Gateway", () => {
   let gateway: BeaconsApiGateway;
+  let apiUrl: string;
 
   beforeEach(() => {
-    gateway = new BeaconsApiGateway();
+    apiUrl = "http://localhost:8080/spring-api";
+    gateway = new BeaconsApiGateway(apiUrl);
   });
 
   describe("Posting an entity", () => {
@@ -35,7 +37,7 @@ describe("Beacons API Gateway", () => {
     });
 
     it("should send the JSON to the correct url", async () => {
-      const expectedUrl = `${process.env.API_URL}/${endpoint}`;
+      const expectedUrl = `${apiUrl}/${endpoint}`;
       await gateway.sendRegistration(json, token);
       expect((axios as any).post).toHaveBeenLastCalledWith(
         expectedUrl,

@@ -1,23 +1,22 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
 import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
-import { AadAuthGateway } from "../../gateways/AadAuthGateway";
-import { BeaconsApiGateway } from "../../gateways/beaconsApiGateway";
-import { GovNotifyGateway } from "../../gateways/govNotifyApiGateway";
+import {
+  BeaconsGetServerSidePropsContext,
+  withContainer,
+} from "../../lib/container";
 import {
   clearFormCache,
   clearFormSubmissionCookie,
   decorateGetServerSidePropsContext,
-  withCookieRedirect,
 } from "../../lib/middleware";
 import { formSubmissionCookieId } from "../../lib/types";
+import { PageURLs } from "../../lib/urls";
 import { referenceNumber } from "../../lib/utils";
-import { CreateRegistration } from "../../useCases/createRegistration";
-import { SendGovNotifyEmail } from "../../useCases/sendGovNotifyEmail";
 
 interface ApplicationCompleteProps {
   reference: string;
@@ -77,8 +76,16 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = withContainer(
+  async (context: BeaconsGetServerSidePropsContext) => {
+    const formSubmissionCookieIsSet = context.container
+      .getVerifyFormSubmissionCookieIsSet()
+      .execute(context);
+
+    if (!formSubmissionCookieIsSet) {
+      return context.container.getRedirectTo().execute(PageURLs.start);
+    }
+
     const decoratedContext = await decorateGetServerSidePropsContext(context);
     const registrationClass = decoratedContext.registration;
     const registration = decoratedContext.registration.getRegistration();
@@ -88,23 +95,15 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
     if (!registration.referenceNumber) {
       try {
         registration.referenceNumber = referenceNumber("A#", 7);
-        const createRegistrationUseCase = new CreateRegistration(
-          new BeaconsApiGateway(),
-          new AadAuthGateway()
-        );
-        const success = await createRegistrationUseCase.execute(
-          registrationClass
-        );
+
+        const success: boolean = await context.container
+          .getCreateRegistration()
+          .execute(registrationClass);
 
         if (success) {
-          const govNotifyGateway = new GovNotifyGateway();
-          const sendGovNotifyEmailUseCase = new SendGovNotifyEmail(
-            govNotifyGateway
-          );
-
-          const emailSuccess = await sendGovNotifyEmailUseCase.execute(
-            registration
-          );
+          const emailSuccess: boolean = await context.container
+            .getSendGovNotifyEmail()
+            .execute(registration);
 
           if (emailSuccess) {
             pageSubHeading = "We have sent you a confirmation email.";

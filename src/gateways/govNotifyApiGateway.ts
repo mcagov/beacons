@@ -1,9 +1,17 @@
 import { NotifyClient } from "notifications-node-client";
 
-export class GovNotifyGateway {
-  api;
-  constructor() {
-    this.api = new NotifyClient(process.env.GOV_NOTIFY_API_KEY);
+export interface IGovNotifyGateway {
+  sendEmail: (
+    emailTemplateId: string,
+    email: string,
+    personalisation?: any
+  ) => Promise<boolean>;
+}
+
+export class GovNotifyGateway implements IGovNotifyGateway {
+  private api;
+  constructor(apiKey: string) {
+    this.api = new NotifyClient(apiKey);
   }
 
   public async sendEmail(
