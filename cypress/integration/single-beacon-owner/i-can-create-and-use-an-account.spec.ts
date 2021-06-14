@@ -18,7 +18,7 @@ describe("As a new user who wants to register a beacon", () => {
     givenIHaveSelected("#signUp");
     givenIHaveClickedContinue();
     thenTheUrlShouldContain(
-      "b2cmcga.b2clogin.com/B2CMCGA.onmicrosoft.com/B2C_1_singup_beacons"
+      "b2cmcga.b2clogin.com/B2CMCGA.onmicrosoft.com/B2C_1_signup_beacons"
     );
     givenIHaveWaitedForAzureB2C();
     iCanSeeAPageHeadingThatContains("Create a Beacon Registry Account");
