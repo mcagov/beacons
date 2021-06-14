@@ -137,7 +137,8 @@ export const thenTheCheckboxShouldBeChecked = (selector: string): void => {
   cy.get(selector).should("be.checked");
 };
 
-export const thenTheRadioButtonShouldBeSelected = thenTheCheckboxShouldBeChecked;
+export const thenTheRadioButtonShouldBeSelected =
+  thenTheCheckboxShouldBeChecked;
 
 export const thenICannotSee = (selector: string): void => {
   cy.get(selector).should("not.exist");

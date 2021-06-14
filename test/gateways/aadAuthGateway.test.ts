@@ -21,9 +21,7 @@ describe("AadAuthGateway", () => {
       mockConfidentialClientApplication = {
         acquireTokenByClientCredential: jest.fn(),
       };
-      gateway = new AadAuthGateway(
-        mockConfidentialClientApplication as ConfidentialClientApplication
-      );
+      gateway = new AadAuthGateway();
     });
 
     it("gets an access token", async () => {
@@ -31,7 +29,9 @@ describe("AadAuthGateway", () => {
         .fn()
         .mockResolvedValue(mockAuthenticationResult);
 
-      const accessToken = await gateway.getAccessToken();
+      const accessToken = await gateway.getAccessToken(
+        mockConfidentialClientApplication as ConfidentialClientApplication
+      );
 
       expect(accessToken).toEqual(mockAccessToken);
     });
@@ -39,10 +39,16 @@ describe("AadAuthGateway", () => {
     it("throws an error if it can't get an access token", async () => {
       mockConfidentialClientApplication.acquireTokenByClientCredential = jest
         .fn()
-        .mockResolvedValue(new Error());
+        .mockImplementation(() => {
+          throw new Error();
+        });
       jest.spyOn(console, "error").mockReturnValue();
 
-      await expect(gateway.getAccessToken).rejects.toThrowError();
+      await expect(
+        gateway.getAccessToken(
+          mockConfidentialClientApplication as ConfidentialClientApplication
+        )
+      ).rejects.toThrowError();
     });
   });
 });

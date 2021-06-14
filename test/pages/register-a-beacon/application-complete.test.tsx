@@ -1,24 +1,12 @@
 import { render } from "@testing-library/react";
+import { createResponse } from "node-mocks-http";
 import React from "react";
 import { IAppContainer } from "../../../src/lib/appContainer";
-import { PageURLs } from "../../../src/lib/urls";
+import { formSubmissionCookieId } from "../../../src/lib/types";
 import ApplicationCompletePage, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/application-complete";
-import { getAppContainerMock } from "../../mocks";
-
-jest.mock("../../../src/lib/middleware", () => ({
-  _esModule: true,
-  decorateGetServerSidePropsContext: jest.fn(() => ({
-    registration: {
-      getRegistration: jest.fn().mockResolvedValue({
-        referenceNumber: "",
-      }),
-    },
-  })),
-  clearFormCache: jest.fn(),
-  clearFormSubmissionCookie: jest.fn(),
-}));
+import { ISubmitRegistrationResult } from "../../../src/useCases/submitRegistration";
 
 describe("ApplicationCompletePage", () => {
   it("should render correctly", () => {
@@ -27,83 +15,176 @@ describe("ApplicationCompletePage", () => {
     );
   });
 
-  describe("getServerSideProps function", () => {
-    let mockAppContainer: IAppContainer;
-    let mockCreateRegistration: jest.Mock;
-    let mockSendGovNotifyEmail: jest.Mock;
-    let mockVerifyFormSubmissionCookieIsSet: jest.Mock;
-    let mockRedirectTo: jest.Mock;
-    let context;
+  describe("getServerSideProps()", () => {
+    let mockContainer: Partial<IAppContainer>;
+    const mockSubmitRegistration = jest.fn().mockResolvedValue({
+      beaconRegistered: true,
+      confirmationEmailSent: true,
+      registrationNumber: "1AXGFB8",
+    });
 
     beforeEach(() => {
-      mockCreateRegistration = jest.fn();
-      mockSendGovNotifyEmail = jest.fn();
-      mockVerifyFormSubmissionCookieIsSet = jest.fn();
-      mockRedirectTo = jest.fn();
-
-      mockAppContainer = getAppContainerMock({
-        getCreateRegistration: jest.fn(() => ({
-          execute: mockCreateRegistration,
-        })),
-        getSendGovNotifyEmail: jest.fn(() => ({
-          execute: mockSendGovNotifyEmail,
-        })),
-        getVerifyFormSubmissionCookieIsSet: jest.fn(() => ({
-          execute: mockVerifyFormSubmissionCookieIsSet,
-        })),
-        getRedirectTo: jest.fn(() => ({
-          execute: mockRedirectTo,
-        })),
-      });
-
-      context = {
-        req: { cookies: {} },
-        container: mockAppContainer,
+      mockContainer = {
+        submitRegistration: mockSubmitRegistration,
       };
     });
 
     it("should redirect the user to the start page if their form submission cookie isn't set", async () => {
-      mockVerifyFormSubmissionCookieIsSet.mockReturnValue(false);
-      await getServerSideProps(context);
+      const context = {
+        req: { cookies: {} },
+        res: createResponse(),
+        container: mockContainer,
+      };
 
-      expect(mockVerifyFormSubmissionCookieIsSet).toHaveBeenCalled();
-      expect(mockRedirectTo).toHaveBeenCalledWith(PageURLs.start);
+      const result = await getServerSideProps(context as any);
+
+      expect(result).toStrictEqual({
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      });
     });
 
-    it("should not have a reference number if creating the registration is unsuccessful", async () => {
-      mockVerifyFormSubmissionCookieIsSet.mockReturnValue(true);
-      mockCreateRegistration.mockResolvedValue(false);
-      const result = await getServerSideProps(context);
+    it("should attempt to submit the user's registration", async () => {
+      const userRegistrationId = "user-form-submission-cookie-id";
+      const context = {
+        req: {
+          cookies: { [formSubmissionCookieId]: userRegistrationId },
+        },
+        res: createResponse(),
+        container: mockContainer,
+      };
+
+      await getServerSideProps(context as any);
+
+      expect(mockSubmitRegistration).toHaveBeenCalledWith(userRegistrationId);
+    });
+
+    it("should not return a reference number if creating the registration is unsuccessful", async () => {
+      const unsuccessful: ISubmitRegistrationResult = {
+        beaconRegistered: false,
+        confirmationEmailSent: false,
+        referenceNumber: "",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockResolvedValue(unsuccessful);
+
+      const result = await getServerSideProps(context as any);
 
       expect(result.props.reference).toBe("");
-      expect(mockVerifyFormSubmissionCookieIsSet).toHaveBeenCalled();
-      expect(mockRedirectTo).not.toHaveBeenCalled();
-      expect(mockCreateRegistration).toHaveBeenCalled();
-      expect(mockSendGovNotifyEmail).not.toHaveBeenCalled();
     });
 
-    it("should create the registration, send the email via gov notify and return the reference number", async () => {
-      mockVerifyFormSubmissionCookieIsSet.mockReturnValue(true);
-      mockCreateRegistration.mockResolvedValue(true);
-      mockSendGovNotifyEmail.mockResolvedValue(true);
+    it("should return a reference number if creating the registration is successful", async () => {
+      const successful: ISubmitRegistrationResult = {
+        beaconRegistered: true,
+        confirmationEmailSent: true,
+        referenceNumber: "ABC123",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockResolvedValue(successful);
 
       const result = await getServerSideProps(context);
 
-      expect(result.props.reference.length).toBe(7);
-      expect(mockCreateRegistration).toHaveBeenCalled();
-      expect(mockSendGovNotifyEmail).toHaveBeenCalled();
+      expect(result.props.reference).toBe("ABC123");
     });
 
-    it("should create the registration, and return the reference number if the email cannot be sent", async () => {
-      mockVerifyFormSubmissionCookieIsSet.mockReturnValue(true);
-      mockCreateRegistration.mockResolvedValue(true);
-      mockSendGovNotifyEmail.mockResolvedValue(false);
+    it("should have a page heading on success", async () => {
+      const successful: ISubmitRegistrationResult = {
+        beaconRegistered: true,
+        confirmationEmailSent: true,
+        referenceNumber: "ABC123",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockResolvedValue(successful);
 
-      const result = await getServerSideProps(context);
+      const result = await getServerSideProps(context as any);
 
-      expect(result.props.reference.length).toBe(7);
-      expect(mockCreateRegistration).toHaveBeenCalled();
-      expect(mockSendGovNotifyEmail).toHaveBeenCalled();
+      expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
+    });
+
+    it("should have a page heading on failed confirmation email", async () => {
+      const failedEmail: ISubmitRegistrationResult = {
+        beaconRegistered: true,
+        confirmationEmailSent: false,
+        referenceNumber: "ABC123",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockResolvedValue(failedEmail);
+
+      const result = await getServerSideProps(context as any);
+
+      expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
+    });
+
+    it("should have a page heading on failed registration and failed confirmation email", async () => {
+      const failedEverything: ISubmitRegistrationResult = {
+        beaconRegistered: false,
+        confirmationEmailSent: false,
+        referenceNumber: "",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockResolvedValue(failedEverything);
+
+      const result = await getServerSideProps(context as any);
+
+      expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
+    });
+
+    it("should not throw if there is an error submitting the user's registration", async () => {
+      const userRegistrationId = "user-form-submission-cookie-id";
+      const context = {
+        req: {
+          cookies: { [formSubmissionCookieId]: userRegistrationId },
+        },
+        res: createResponse(),
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockImplementation(() => {
+        throw new Error();
+      });
+
+      const act = async () => await getServerSideProps(context as any);
+
+      expect(act).not.toThrow();
+    });
+
+    it("should feedback to the user if there is an error submitting the user's registration", async () => {
+      const userRegistrationId = "user-form-submission-cookie-id";
+      const context = {
+        req: {
+          cookies: { [formSubmissionCookieId]: userRegistrationId },
+        },
+        res: createResponse(),
+        container: mockContainer,
+      };
+      mockSubmitRegistration.mockImplementation(() => {
+        throw new Error();
+      });
+
+      const result = await getServerSideProps(context as any);
+
+      expect(result.props.pageSubHeading).toMatch(/error/i);
     });
   });
 });

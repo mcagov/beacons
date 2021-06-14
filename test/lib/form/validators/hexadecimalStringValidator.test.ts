@@ -6,9 +6,8 @@ describe("hexadecimalString validator", () => {
   let applies: ValidatorFn;
 
   beforeEach(() => {
-    ({ errorMessage, applies } = Validators.hexadecimalString(
-      expectedErrorMessage
-    ));
+    ({ errorMessage, applies } =
+      Validators.hexadecimalString(expectedErrorMessage));
   });
 
   it("should not have an error if no value is provided", () => {

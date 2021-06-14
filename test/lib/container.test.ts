@@ -1,4 +1,3 @@
-import { AppContainer } from "../../src/lib/appContainer";
 import { withContainer } from "../../src/lib/container";
 
 describe("Application Container callback", () => {
@@ -9,7 +8,6 @@ describe("Application Container callback", () => {
     withContainerFunction(providedContext);
 
     expect(providedContext.container).toBeDefined();
-    expect(providedContext.container).toBeInstanceOf(AppContainer);
   });
 
   it("should not modify the container if one is already provided to the function", () => {

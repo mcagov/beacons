@@ -1,4 +1,3 @@
-import { ConfidentialClientApplication, Configuration } from "@azure/msal-node";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
 import {
   BasicAuthGateway,
@@ -13,83 +12,73 @@ import {
   IGovNotifyGateway,
 } from "../gateways/govNotifyApiGateway";
 import {
-  AuthenticateUser,
-  IAuthenticateUser,
+  authenticateUser,
+  AuthenticateUserFn,
 } from "../useCases/authenticateUser";
 import {
-  CreateRegistration,
-  ICreateRegistration,
-} from "../useCases/createRegistration";
-import { IRedirectUserTo, RedirectUserTo } from "../useCases/redirectUserTo";
+  clearCachedRegistration,
+  ClearCachedRegistrationFn,
+} from "../useCases/clearCachedRegistration";
+import { getAccessToken, GetAccessTokenFn } from "../useCases/getAccessToken";
 import {
-  ISendGovNotifyEmail,
-  SendGovNotifyEmail,
-} from "../useCases/sendGovNotifyEmail";
+  getCachedRegistration,
+  GetCachedRegistrationFn,
+} from "../useCases/getCachedRegistration";
 import {
-  IVerifyFormSubmissionCookieIsSet,
-  VerifyFormSubmissionCookieIsSet,
-} from "../useCases/verifyFormSubmissionCookieIsSet";
+  sendConfirmationEmail,
+  SendConfirmationEmailFn,
+} from "../useCases/sendConfirmationEmail";
+import {
+  submitRegistration,
+  SubmitRegistrationFn,
+} from "../useCases/submitRegistration";
 
 export interface IAppContainer {
-  getAuthenticateUser: () => IAuthenticateUser;
-  getCreateRegistration: () => ICreateRegistration;
-  getSendGovNotifyEmail: () => ISendGovNotifyEmail;
-  getVerifyFormSubmissionCookieIsSet: () => IVerifyFormSubmissionCookieIsSet;
-  getRedirectTo: () => IRedirectUserTo;
+  /* Use cases */
+  authenticateUser: AuthenticateUserFn;
+  submitRegistration: SubmitRegistrationFn;
+  sendConfirmationEmail: SendConfirmationEmailFn;
+  getCachedRegistration: GetCachedRegistrationFn;
+  clearCachedRegistration: ClearCachedRegistrationFn;
+  getAccessToken: GetAccessTokenFn;
 
-  getAuthGateway: () => IAuthGateway;
-  getBasicAuthGateway: () => IBasicAuthGateway;
-  getBeaconsApiGateway: () => IBeaconsApiGateway;
-  getGovNotifyGateway: () => IGovNotifyGateway;
+  /* Gateways */
+  beaconsApiAuthGateway: IAuthGateway;
+  basicAuthGateway: IBasicAuthGateway;
+  beaconsApiGateway: IBeaconsApiGateway;
+  govNotifyGateway: IGovNotifyGateway;
 }
 
-export class AppContainer implements IAppContainer {
-  public getAuthenticateUser(): IAuthenticateUser {
-    return new AuthenticateUser(this.getBasicAuthGateway());
-  }
+export const appContainer: IAppContainer = {
+  /* Simple use cases */
+  getCachedRegistration: getCachedRegistration,
+  clearCachedRegistration: clearCachedRegistration,
 
-  public getCreateRegistration(): ICreateRegistration {
-    return new CreateRegistration(
-      this.getBeaconsApiGateway(),
-      this.getAuthGateway()
-    );
-  }
+  /* Composite use cases requiring access to other use cases */
+  get getAccessToken() {
+    return getAccessToken(this);
+  },
+  get authenticateUser() {
+    return authenticateUser(this);
+  },
+  get submitRegistration() {
+    return submitRegistration(this);
+  },
+  get sendConfirmationEmail() {
+    return sendConfirmationEmail(this);
+  },
 
-  public getSendGovNotifyEmail(): ISendGovNotifyEmail {
-    return new SendGovNotifyEmail(this.getGovNotifyGateway());
-  }
-
-  public getVerifyFormSubmissionCookieIsSet(): IVerifyFormSubmissionCookieIsSet {
-    return new VerifyFormSubmissionCookieIsSet();
-  }
-
-  public getRedirectTo(): IRedirectUserTo {
-    return new RedirectUserTo();
-  }
-
-  public getAuthGateway(): IAuthGateway {
-    const aadConfig: Configuration = {
-      auth: {
-        clientId: process.env.WEBAPP_CLIENT_ID,
-        authority: `https://login.microsoftonline.com/${process.env.AAD_TENANT_ID}`,
-        clientSecret: process.env.WEBAPP_CLIENT_SECRET,
-      },
-    };
-    const confidentialClientApplication = new ConfidentialClientApplication(
-      aadConfig
-    );
-    return new AadAuthGateway(confidentialClientApplication);
-  }
-
-  public getBasicAuthGateway(): IBasicAuthGateway {
+  /* Gateways */
+  get beaconsApiAuthGateway() {
+    return new AadAuthGateway();
+  },
+  get basicAuthGateway() {
     return new BasicAuthGateway();
-  }
-
-  public getBeaconsApiGateway(): IBeaconsApiGateway {
+  },
+  get beaconsApiGateway() {
     return new BeaconsApiGateway(process.env.API_URL);
-  }
-
-  public getGovNotifyGateway(): IGovNotifyGateway {
+  },
+  get govNotifyGateway() {
     return new GovNotifyGateway(process.env.GOV_NOTIFY_API_KEY);
-  }
-}
+  },
+};

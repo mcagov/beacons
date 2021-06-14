@@ -82,9 +82,9 @@ export const iCanEditMyBeaconDetails = (): void =>
   );
 
 export const iCanEditMyAdditionalBeaconInformation = (): void =>
-  Object.values(
-    testBeaconAndOwnerData.additionalBeaconInformation
-  ).forEach((value) => cy.get(`input[value="${value}"]`));
+  Object.values(testBeaconAndOwnerData.additionalBeaconInformation).forEach(
+    (value) => cy.get(`input[value="${value}"]`)
+  );
 
 export const iCanSeeMyBeaconDetails = (): void =>
   Object.values(testBeaconAndOwnerData.beaconDetails).forEach((value) =>
@@ -92,9 +92,9 @@ export const iCanSeeMyBeaconDetails = (): void =>
   );
 
 export const iCanSeeMyAdditionalBeaconInformation = (): void =>
-  Object.values(
-    testBeaconAndOwnerData.additionalBeaconInformation
-  ).forEach((value) => cy.contains(value));
+  Object.values(testBeaconAndOwnerData.additionalBeaconInformation).forEach(
+    (value) => cy.contains(value)
+  );
 
 export const iCanSeeMyRequiredAdditionalBeaconInformationOrDash = (): void =>
   Object.values(testBeaconAndOwnerData.additionalBeaconInformation).forEach(

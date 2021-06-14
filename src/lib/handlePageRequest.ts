@@ -45,9 +45,8 @@ export const handlePageRequest = (
     const authUseCase = new AuthenticateUser(authGateway);
     await authUseCase.execute(context);
 
-    const beaconsContext: BeaconsContext = await decorateGetServerSidePropsContext(
-      context
-    );
+    const beaconsContext: BeaconsContext =
+      await decorateGetServerSidePropsContext(context);
     const userDidSubmitForm = beaconsContext.req.method === "POST";
 
     if (userDidSubmitForm) {

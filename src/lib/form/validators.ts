@@ -189,7 +189,8 @@ export class Validators {
    * @returns            {ValidationRule}   A validation rule
    */
   public static postcode(errorMessage: string): ValidationRule {
-    const emailRegex = /^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$/;
+    const emailRegex =
+      /^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$/;
     return Validators.pattern(errorMessage, emailRegex);
   }
 
