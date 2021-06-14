@@ -19,7 +19,7 @@ import {
 } from "../useCases/authenticateUser";
 import {
   clearCachedRegistration,
-  ClearCachedRegistration,
+  ClearCachedRegistrationFn,
 } from "../useCases/clearCachedRegistration";
 import { getAccessToken, GetAccessTokenFn } from "../useCases/getAccessToken";
 import {
@@ -53,7 +53,7 @@ export interface IAppContainer {
   redirectUserTo: RedirectUserToFn;
   userFormSubmissionId: UserFormSubmissionIdFn;
   getCachedRegistration: GetCachedRegistrationFn;
-  clearCachedRegistration: ClearCachedRegistration;
+  clearCachedRegistration: ClearCachedRegistrationFn;
   getAccessToken: GetAccessTokenFn;
 
   /* Gateways */
