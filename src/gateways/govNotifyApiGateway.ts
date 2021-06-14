@@ -11,12 +11,14 @@ export interface IGovNotifyGateway {
 export class GovNotifyGateway implements IGovNotifyGateway {
   private api;
   constructor(apiKey: string) {
-    if (!apiKey)
+    if (!apiKey) {
       // eslint-disable-next-line no-console
       console.log(
         "GOV_NOTIFY_API_KEY not set on instantiation of GovNotifyGateway.  I'm not going to send any Gov Notify emails."
       );
-    this.api = new NotifyClient(apiKey);
+    } else {
+      this.api = new NotifyClient(apiKey);
+    }
   }
 
   public async sendEmail(
