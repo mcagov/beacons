@@ -81,6 +81,10 @@ variable "webapp_azure_b2c_login_flow" {
   type        = string
   description = "The Sign In User Flow defined in Azure B2C"
 }
+variable "webapp_azure_b2c_signup_flow" {
+  type        = string
+  description = "The Sign Up User Flow defined in Azure B2C"
+}
 variable "webapp_azure_b2c_next_auth_jwt_secret" {
   type        = string
   sensitive   = true
