@@ -30,6 +30,7 @@ describe("As a beacon owner, I want to check the details that were submitted", (
     givenIHaveClicked(homePageLinkSelector);
     andIAmAt(PageURLs.start);
     givenIHaveClicked(startButtonSelector);
+    andIAmAt(PageURLs.checkBeaconDetails);
     iCanEditMyBeaconDetails();
   });
 });
