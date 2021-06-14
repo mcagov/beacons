@@ -1,5 +1,3 @@
-import { ConfidentialClientApplication } from "@azure/msal-node";
-import { appConfig } from "../appConfig";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
 import {
   BasicAuthGateway,
@@ -72,10 +70,7 @@ export const appContainer: IAppContainer = {
 
   /* Gateways */
   get beaconsApiAuthGateway() {
-    const confidentialClientApplication = new ConfidentialClientApplication(
-      appConfig.aadConfig
-    );
-    return new AadAuthGateway(confidentialClientApplication);
+    return new AadAuthGateway();
   },
   get basicAuthGateway() {
     return new BasicAuthGateway();
