@@ -6,10 +6,7 @@ import { formSubmissionCookieId } from "../../../src/lib/types";
 import ApplicationCompletePage, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/application-complete";
-import { redirectUserTo } from "../../../src/useCases/redirectUserTo";
-import { retrieveUserFormSubmissionId } from "../../../src/useCases/retrieveUserFormSubmissionId";
 import { ISubmitRegistrationResult } from "../../../src/useCases/submitRegistration";
-import { verifyFormSubmissionCookieIsSet } from "../../../src/useCases/verifyFormSubmissionCookieIsSet";
 
 describe("ApplicationCompletePage", () => {
   it("should render correctly", () => {
@@ -28,10 +25,7 @@ describe("ApplicationCompletePage", () => {
 
     beforeEach(() => {
       mockContainer = {
-        verifyFormSubmissionCookieIsSet: verifyFormSubmissionCookieIsSet, // Don't mock; pure function
-        redirectUserTo: redirectUserTo, // Don't mock; pure function
-        userFormSubmissionId: retrieveUserFormSubmissionId, // Don't mock; pure function
-        submitRegistration: mockSubmitRegistration, // Do mock; has side-effects
+        submitRegistration: mockSubmitRegistration,
       };
     });
 
