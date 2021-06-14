@@ -5,21 +5,19 @@ import {
 import { appConfig } from "../appConfig";
 
 export interface IAuthGateway {
-  getAccessToken: () => Promise<string>;
+  getAccessToken: (cca?: ConfidentialClientApplication) => Promise<string>;
 }
 
 export class AadAuthGateway implements IAuthGateway {
-  public async getAccessToken(): Promise<string> {
+  public async getAccessToken(
+    cca = new ConfidentialClientApplication(appConfig.aadConfig)
+  ): Promise<string> {
     try {
-      const confidentialClientApplication = new ConfidentialClientApplication(
-        appConfig.aadConfig
-      );
-
       const accessTokenRequest: ClientCredentialRequest = {
         scopes: [`api://${process.env.AAD_API_ID}/.default`],
       };
 
-      const authResult = await confidentialClientApplication.acquireTokenByClientCredential(
+      const authResult = await cca.acquireTokenByClientCredential(
         accessTokenRequest
       );
       return authResult.accessToken;
