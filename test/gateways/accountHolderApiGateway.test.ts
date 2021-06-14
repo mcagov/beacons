@@ -8,13 +8,11 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("Account Holder API Gateway", () => {
   let gateway: AccountHolderApiGateway;
-  const accountHolderIdEndpoint = "account-holder/auth-id";
-  const accountHolderDetailsEndpoint = "account-holder";
-  let authId;
-  let accountHolderId;
   let token;
 
   describe("Getting an account holder id from an auth id", () => {
+    const accountHolderIdEndpoint = "account-holder/auth-id";
+    let authId;
     beforeEach(() => {
       authId = v4();
       token = v4();
@@ -39,13 +37,13 @@ describe("Account Holder API Gateway", () => {
     it("should return the obtained accountHolderId from the API", async () => {
       mockedAxios.get.mockResolvedValue({
         data: {
-          id: accountHolderId,
+          id: "any-account-holder-id",
         },
       });
 
       const result = await gateway.getAccountHolderId(authId, token);
 
-      expect(result).toBe(accountHolderId);
+      expect(result).toBe("any-account-holder-id");
     });
 
     it("should allow errors to bubble up", async () => {
@@ -58,6 +56,9 @@ describe("Account Holder API Gateway", () => {
   });
 
   describe("Getting an account holder details", () => {
+    const accountHolderDetailsEndpoint = "account-holder";
+    let accountHolderId;
+
     beforeEach(() => {
       accountHolderId = v4();
       token = v4();
@@ -75,7 +76,7 @@ describe("Account Holder API Gateway", () => {
 
     it("should return account holder details", async () => {
       const expected = {
-        id: "number-1",
+        id: accountHolderId,
         fullName: "Bill Gates",
         email: "bill@billynomates.test",
         telephoneNumber: "0788888888",
