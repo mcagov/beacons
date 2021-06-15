@@ -1,5 +1,8 @@
 import axios, { AxiosResponse } from "axios";
-import { IAccountHolderDetailsResponseBody } from "../lib/accountHolder/accountHolderDetailsResponseBody";
+import {
+  IAccountHolderDetails,
+  IAccountHolderDetailsResponseBody,
+} from "../lib/accountHolder/accountHolderDetails";
 import { IAccountHolderIdResponseBody } from "../lib/accountHolder/accountHolderIdResponseBody";
 
 export class AccountHolderApiGateway {
@@ -34,7 +37,7 @@ export class AccountHolderApiGateway {
   public async getAccountHolderDetails(
     accountHolderId: string,
     accessToken: string
-  ): Promise<IAccountHolderDetailsResponseBody> {
+  ): Promise<IAccountHolderDetails> {
     const url = `${this.apiUrl}/${this.accountHolderDetailsEndpoint}/${accountHolderId}`;
     try {
       const response = await axios.get<
@@ -44,7 +47,11 @@ export class AccountHolderApiGateway {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
-      return response.data;
+      console.log(response);
+      return {
+        id: response.data.data.id,
+        ...response.data.data.attributes,
+      };
     } catch (error) {
       /* eslint-disable no-console */
       console.error(JSON.stringify(error));
