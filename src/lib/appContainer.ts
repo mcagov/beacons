@@ -1,3 +1,4 @@
+import { getSession } from "next-auth/client";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
 import {
   BasicAuthGateway,
@@ -24,6 +25,7 @@ import {
   getCachedRegistration,
   GetCachedRegistrationFn,
 } from "../useCases/getCachedRegistration";
+import { GetSessionFn } from "../useCases/getSession";
 import {
   sendConfirmationEmail,
   SendConfirmationEmailFn,
@@ -41,6 +43,7 @@ export interface IAppContainer {
   getCachedRegistration: GetCachedRegistrationFn;
   clearCachedRegistration: ClearCachedRegistrationFn;
   getAccessToken: GetAccessTokenFn;
+  getSession: GetSessionFn;
 
   /* Gateways */
   beaconsApiAuthGateway: IAuthGateway;
@@ -53,6 +56,7 @@ export const appContainer: IAppContainer = {
   /* Simple use cases */
   getCachedRegistration: getCachedRegistration,
   clearCachedRegistration: clearCachedRegistration,
+  getSession: getSession,
 
   /* Composite use cases requiring access to other use cases */
   get getAccessToken() {
