@@ -33,6 +33,10 @@ import {
   getCachedRegistration,
   GetCachedRegistrationFn,
 } from "../useCases/getCachedRegistration";
+import {
+  getOrCreateAccountId,
+  GetOrCreateAccountIdFn,
+} from "../useCases/getOrCreateAccountId";
 import { GetSessionFn } from "../useCases/getSession";
 import {
   sendConfirmationEmail,
@@ -53,6 +57,7 @@ export interface IAppContainer {
   getAccessToken: GetAccessTokenFn;
   getSession: GetSessionFn;
   getAccountDetails: GetAccountDetailsFn;
+  getOrCreateAccountId: GetOrCreateAccountIdFn;
 
   /* Gateways */
   beaconsApiAuthGateway: IAuthGateway;
@@ -83,6 +88,9 @@ export const appContainer: IAppContainer = {
   },
   get getAccountDetails() {
     return getAccountDetails(this);
+  },
+  get getOrCreateAccountId() {
+    return getOrCreateAccountId(this);
   },
 
   /* Gateways */

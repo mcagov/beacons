@@ -8,17 +8,13 @@ export type GetAccountDetailsFn = (
 
 export const getAccountDetails =
   ({
-    getSession,
+    getOrCreateAccountId,
     getAccessToken,
     accountHolderApiGateway,
   }: IAppContainer): GetAccountDetailsFn =>
   async (context: BeaconsGetServerSidePropsContext) => {
-    const session = await getSession(context);
     const accessToken = await getAccessToken();
-    const accountId = await accountHolderApiGateway.getAccountHolderId(
-      session.user["id"],
-      accessToken
-    );
+    const accountId = await getOrCreateAccountId(context);
     const accountHolderDetails =
       await accountHolderApiGateway.getAccountHolderDetails(
         accountId,

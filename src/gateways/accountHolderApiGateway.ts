@@ -1,11 +1,12 @@
 import axios, { AxiosResponse } from "axios";
 import {
   IAccountHolderDetails,
-  IAccountHolderDetailsResponseBody,
+  IAccountHolderDetailsRequestResponseBody,
 } from "../lib/accountHolder/accountHolderDetails";
 import { IAccountHolderIdResponseBody } from "../lib/accountHolder/accountHolderIdResponseBody";
 
 export interface IAccountHolderApiGateway {
+  createAccountHolderId(authId: string, accessToken: string): Promise<string>;
   getAccountHolderId(authId: string, accessToken: string): Promise<string>;
 
   getAccountHolderDetails(
@@ -16,7 +17,7 @@ export interface IAccountHolderApiGateway {
 export class AccountHolderApiGateway implements IAccountHolderApiGateway {
   private readonly apiUrl: string;
   private readonly accountHolderIdEndpoint = "account-holder/auth-id";
-  private readonly accountHolderDetailsEndpoint = "account-holder";
+  private readonly accountHolderEndpoint = "account-holder";
 
   constructor(apiUrl: string) {
     this.apiUrl = apiUrl;
@@ -37,7 +38,30 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
       return response.data.id;
     } catch (error) {
       /* eslint-disable no-console */
-      console.error(JSON.stringify(error));
+      console.error("getAccountHolderId:", JSON.stringify(error));
+      throw error;
+    }
+  }
+
+  public async createAccountHolderId(
+    authId: string,
+    accessToken: string
+  ): Promise<string> {
+    const url = `${this.apiUrl}/${this.accountHolderEndpoint}`;
+    try {
+      const request = {
+        data: { attributes: { authId } },
+      } as IAccountHolderDetailsRequestResponseBody;
+      const response = await axios.post<
+        any,
+        AxiosResponse<IAccountHolderIdResponseBody>
+      >(url, request, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      return response.data.id;
+    } catch (error) {
+      /* eslint-disable no-console */
+      console.error("createAccountHolderId:", JSON.stringify(error));
       throw error;
     }
   }
@@ -46,23 +70,21 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     accountHolderId: string,
     accessToken: string
   ): Promise<IAccountHolderDetails> {
-    const url = `${this.apiUrl}/${this.accountHolderDetailsEndpoint}/${accountHolderId}`;
+    const url = `${this.apiUrl}/${this.accountHolderEndpoint}/${accountHolderId}`;
     try {
       const response = await axios.get<
         any,
-        AxiosResponse<IAccountHolderDetailsResponseBody>
+        AxiosResponse<IAccountHolderDetailsRequestResponseBody>
       >(url, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-
-      console.log(response);
       return {
         id: response.data.data.id,
         ...response.data.data.attributes,
       };
     } catch (error) {
       /* eslint-disable no-console */
-      console.error(JSON.stringify(error));
+      console.error("getAccountHolderDetails:", JSON.stringify(error));
       throw error;
     }
   }

@@ -1,9 +1,10 @@
-export interface IAccountHolderDetailsResponseBody {
+export interface IAccountHolderDetailsRequestResponseBody {
   links: {};
   data: {
     type: string;
     id: string;
     attributes: {
+      authId: string;
       fullName: string;
       email: string;
       telephoneNumber: string;
