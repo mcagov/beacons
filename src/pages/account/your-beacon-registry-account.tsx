@@ -5,10 +5,12 @@ import { Layout } from "../../components/Layout";
 import { BeaconRegistryContactInfo } from "../../components/Mca";
 import { PageHeading, SectionHeading } from "../../components/Typography";
 
-interface YourBeaconRegistyAccountPageProps {}
+interface YourBeaconRegistyAccountPageProps {
+  id?: string;
+}
 
 export const YourBeaconRegistyAccount: FunctionComponent<YourBeaconRegistyAccountPageProps> =
-  ({}: YourBeaconRegistyAccountPageProps): JSX.Element => {
+  (): JSX.Element => {
     const pageHeading = "Your Beacon Registy Account";
 
     return (
