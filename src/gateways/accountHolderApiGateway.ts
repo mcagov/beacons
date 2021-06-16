@@ -5,13 +5,21 @@ import {
 } from "../lib/accountHolder/accountHolderDetails";
 import { IAccountHolderIdResponseBody } from "../lib/accountHolder/accountHolderIdResponseBody";
 
-export class AccountHolderApiGateway {
+export interface IAccountHolderApiGateway {
+  getAccountHolderId(authId: string, accessToken: string): Promise<string>;
+
+  getAccountHolderDetails(
+    accountHolderId: string,
+    accessToken: string
+  ): Promise<IAccountHolderDetails>;
+}
+export class AccountHolderApiGateway implements IAccountHolderApiGateway {
   private readonly apiUrl: string;
   private readonly accountHolderIdEndpoint = "account-holder/auth-id";
   private readonly accountHolderDetailsEndpoint = "account-holder";
 
-  constructor() {
-    this.apiUrl = process.env.API_URL;
+  constructor(apiUrl: string) {
+    this.apiUrl = apiUrl;
   }
 
   public async getAccountHolderId(

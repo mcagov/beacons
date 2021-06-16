@@ -1,6 +1,10 @@
 import { getSession } from "next-auth/client";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
 import {
+  AccountHolderApiGateway,
+  IAccountHolderApiGateway,
+} from "../gateways/accountHolderApiGateway";
+import {
   BasicAuthGateway,
   IBasicAuthGateway,
 } from "../gateways/basicAuthGateway";
@@ -21,6 +25,10 @@ import {
   ClearCachedRegistrationFn,
 } from "../useCases/clearCachedRegistration";
 import { getAccessToken, GetAccessTokenFn } from "../useCases/getAccessToken";
+import {
+  getAccountDetails,
+  GetAccountDetailsFn,
+} from "../useCases/GetAccountDetails";
 import {
   getCachedRegistration,
   GetCachedRegistrationFn,
@@ -44,12 +52,14 @@ export interface IAppContainer {
   clearCachedRegistration: ClearCachedRegistrationFn;
   getAccessToken: GetAccessTokenFn;
   getSession: GetSessionFn;
+  getAccountDetails: GetAccountDetailsFn;
 
   /* Gateways */
   beaconsApiAuthGateway: IAuthGateway;
   basicAuthGateway: IBasicAuthGateway;
   beaconsApiGateway: IBeaconsApiGateway;
   govNotifyGateway: IGovNotifyGateway;
+  accountHolderApiGateway: IAccountHolderApiGateway;
 }
 
 export const appContainer: IAppContainer = {
@@ -71,6 +81,9 @@ export const appContainer: IAppContainer = {
   get sendConfirmationEmail() {
     return sendConfirmationEmail(this);
   },
+  get getAccountDetails() {
+    return getAccountDetails(this);
+  },
 
   /* Gateways */
   get beaconsApiAuthGateway() {
@@ -84,5 +97,8 @@ export const appContainer: IAppContainer = {
   },
   get govNotifyGateway() {
     return new GovNotifyGateway(process.env.GOV_NOTIFY_API_KEY);
+  },
+  get accountHolderApiGateway() {
+    return new AccountHolderApiGateway(process.env.API_URL);
   },
 };
