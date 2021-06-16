@@ -23,9 +23,9 @@ export interface IAccountHolderApiGateway {
 }
 export class AccountHolderApiGateway implements IAccountHolderApiGateway {
   private readonly apiUrl: string;
-  private readonly accountHolderRoute = "account-holder";
+  private readonly accountHolderControllerRoute = "account-holder";
   private readonly accountHolderIdEndpoint = "auth-id";
-  private readonly accountHolderBeaconsEndpoint = "/beacons";
+  private readonly accountHolderBeaconsEndpoint = "beacons";
 
   constructor(apiUrl: string) {
     this.apiUrl = apiUrl;
@@ -35,7 +35,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     authId: string,
     accessToken: string
   ): Promise<string> {
-    const url = `${this.apiUrl}/${this.accountHolderRoute}/${this.accountHolderIdEndpoint}/${authId}`;
+    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${this.accountHolderIdEndpoint}/${authId}`;
     try {
       const response = await axios.get<
         any,
@@ -55,7 +55,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     authId: string,
     accessToken: string
   ): Promise<string> {
-    const url = `${this.apiUrl}/${this.accountHolderRoute}`;
+    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}`;
     try {
       const request = {
         data: { attributes: { authId } },
@@ -78,7 +78,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     accountHolderId: string,
     accessToken: string
   ): Promise<IAccountHolderDetails> {
-    const url = `${this.apiUrl}/${this.accountHolderRoute}/${accountHolderId}/${this.accountHolderBeaconsEndpoint}`;
+    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}/${this.accountHolderBeaconsEndpoint}`;
     try {
       const response = await axios.get<
         any,
@@ -101,7 +101,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     accountHolderId: string,
     accessToken: string
   ): Promise<IAccountBeacon[]> {
-    const url = `${this.apiUrl}/${this.accountHolderRoute}/${accountHolderId}`;
+    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}`;
     try {
       const response = await axios.get<
         any,
