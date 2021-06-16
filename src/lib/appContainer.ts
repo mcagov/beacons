@@ -26,6 +26,10 @@ import {
 } from "../useCases/clearCachedRegistration";
 import { getAccessToken, GetAccessTokenFn } from "../useCases/getAccessToken";
 import {
+  getAccountBeacons,
+  GetAccountBeaconsFn,
+} from "../useCases/getAccountBeacons";
+import {
   getAccountDetails,
   GetAccountDetailsFn,
 } from "../useCases/GetAccountDetails";
@@ -58,6 +62,7 @@ export interface IAppContainer {
   getSession: GetSessionFn;
   getAccountDetails: GetAccountDetailsFn;
   getOrCreateAccountId: GetOrCreateAccountIdFn;
+  getAccountBeacons: GetAccountBeaconsFn;
 
   /* Gateways */
   beaconsApiAuthGateway: IAuthGateway;
@@ -91,6 +96,9 @@ export const appContainer: IAppContainer = {
   },
   get getOrCreateAccountId() {
     return getOrCreateAccountId(this);
+  },
+  get getAccountBeacons() {
+    return getAccountBeacons(this);
   },
 
   /* Gateways */
