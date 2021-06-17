@@ -4,7 +4,7 @@ import { BeaconsGetServerSidePropsContext } from "../../src/lib/container";
 import { getOrCreateAccountId } from "../../src/useCases/getOrCreateAccountId";
 
 describe("The getOrCreateAccountId use case", () => {
-  it("returns the existing account id", async () => {
+  it("returns the existing account id for a given auth id", async () => {
     const testAccountId = "test-account-id";
     const container: Partial<IAppContainer> = {
       getSession: jest.fn().mockResolvedValue({ user: { id: "a-session-id" } }),
@@ -20,15 +20,15 @@ describe("The getOrCreateAccountId use case", () => {
     const functionToTest = await getOrCreateAccountId(
       container as IAppContainer
     );
+
     const result = await functionToTest(
       context as BeaconsGetServerSidePropsContext
     );
-    console.log(result);
+
     expect(result).toEqual(testAccountId);
   });
 
-  it("calling the create account endpoint if an account-id isn't returned for an auth-id", async () => {
-    const testAccountId = "test-account-id";
+  it("creates a new account holder if one is not found for a given auth id", async () => {
     const container: Partial<IAppContainer> = {
       getSession: jest.fn().mockResolvedValue({ user: { id: "a-session-id" } }),
       accountHolderApiGateway: {
@@ -39,15 +39,15 @@ describe("The getOrCreateAccountId use case", () => {
       },
       getAccessToken: jest.fn(),
     };
-
     const context: Partial<GetServerSidePropsContext> = {};
     const functionToTest = await getOrCreateAccountId(
       container as IAppContainer
     );
-    const result = await functionToTest(
-      context as BeaconsGetServerSidePropsContext
-    );
-    console.log(result);
-    expect(result).toEqual(testAccountId);
+
+    await functionToTest(context as BeaconsGetServerSidePropsContext);
+
+    expect(
+      container.accountHolderApiGateway.createAccountHolderId
+    ).toHaveBeenCalledTimes(1);
   });
 });
