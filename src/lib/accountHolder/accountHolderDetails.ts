@@ -1,5 +1,4 @@
 export interface IAccountHolderDetailsRequestResponseBody {
-  links: {};
   data: {
     type: string;
     id: string;
@@ -17,10 +16,7 @@ export interface IAccountHolderDetailsRequestResponseBody {
       county: string;
       postcode: string;
     };
-    relationships: {};
-    links: {};
   };
-  included: {};
 }
 
 export interface IAccountHolderDetails {

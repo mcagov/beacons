@@ -1,5 +1,4 @@
 export interface IAccountHolderBeaconsResponseBody {
-  links: {};
   data: [
     {
       type: string;
@@ -15,11 +14,8 @@ export interface IAccountHolderBeaconsResponseBody {
         batteryExpiryDate: string;
         lastServicedDate: string;
       };
-      relationships: {};
-      links: {};
     }
   ];
-  included: {};
 }
 
 export interface IAccountBeacon {
