@@ -7,6 +7,7 @@ jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("Account Holder API Gateway", () => {
+  let hostName = "a-host";
   let gateway: AccountHolderApiGateway;
   let token;
 
@@ -16,11 +17,11 @@ describe("Account Holder API Gateway", () => {
     beforeEach(() => {
       authId = v4();
       token = v4();
-      gateway = new AccountHolderApiGateway(process.env.API_URL);
+      gateway = new AccountHolderApiGateway(hostName);
     });
 
     it("should request an accountHolderId from the correct endpoint", async () => {
-      const expectedUrl = `${process.env.API_URL}/${accountHolderIdEndpoint}/${authId}`;
+      const expectedUrl = `${hostName}/${accountHolderIdEndpoint}/${authId}`;
       mockedAxios.get.mockResolvedValue({
         data: {
           id: "any id",
@@ -62,11 +63,11 @@ describe("Account Holder API Gateway", () => {
     beforeEach(() => {
       accountHolderId = v4();
       token = v4();
-      gateway = new AccountHolderApiGateway(process.env.API_URL);
+      gateway = new AccountHolderApiGateway(hostName);
     });
 
     it("should request account holder details from the correct endpoint", async () => {
-      const expectedUrl = `${process.env.API_URL}/${accountHolderDetailsEndpoint}/${accountHolderId}`;
+      const expectedUrl = `${hostName}/${accountHolderDetailsEndpoint}/${accountHolderId}`;
       mockedAxios.get.mockResolvedValue({
         data: {
           data: {

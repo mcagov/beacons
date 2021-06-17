@@ -32,7 +32,7 @@ import {
 import {
   getAccountDetails,
   GetAccountDetailsFn,
-} from "../useCases/GetAccountDetails";
+} from "../useCases/getAccountDetails";
 import {
   getCachedRegistration,
   GetCachedRegistrationFn,
