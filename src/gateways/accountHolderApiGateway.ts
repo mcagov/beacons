@@ -45,6 +45,9 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
       });
       return response.data.id;
     } catch (error) {
+      if (error.response && error.response.status === 404) {
+        return null; // 404 is a-ok
+      }
       /* eslint-disable no-console */
       console.error("getAccountHolderId:", JSON.stringify(error));
       throw error;

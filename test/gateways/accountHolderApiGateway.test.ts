@@ -16,7 +16,7 @@ describe("Account Holder API Gateway", () => {
     beforeEach(() => {
       authId = v4();
       token = v4();
-      gateway = new AccountHolderApiGateway();
+      gateway = new AccountHolderApiGateway(process.env.API_URL);
     });
 
     it("should request an accountHolderId from the correct endpoint", async () => {
@@ -62,7 +62,7 @@ describe("Account Holder API Gateway", () => {
     beforeEach(() => {
       accountHolderId = v4();
       token = v4();
-      gateway = new AccountHolderApiGateway();
+      gateway = new AccountHolderApiGateway(process.env.API_URL);
     });
 
     it("should request account holder details from the correct endpoint", async () => {
