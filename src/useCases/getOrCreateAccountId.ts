@@ -39,5 +39,5 @@ export const getOrCreateAccountId =
       return newAccountId;
     };
 
-    return (await getAccountHolderId()) ?? (await createAccountHolderId());
+    return (await getAccountHolderId()) || (await createAccountHolderId());
   };
