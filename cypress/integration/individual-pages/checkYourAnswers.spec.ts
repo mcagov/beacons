@@ -12,7 +12,7 @@ import {
 
 describe("As a beacon owner, I want to check the details that were submitted", () => {
   const acceptAndSendButtonSelector = ".govuk-button--start";
-  const homePageLinkSelector = ".govuk-header__link--homepage";
+  const homePageLinkSelector = ".govuk-header__link--service-name";
   const startButtonSelector = ".govuk-button--start";
 
   it("should display the page title", () => {
