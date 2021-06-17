@@ -78,7 +78,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     accountHolderId: string,
     accessToken: string
   ): Promise<IAccountHolderDetails> {
-    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}/${this.accountHolderBeaconsEndpoint}`;
+    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}`;
     try {
       const response = await axios.get<
         any,
@@ -92,7 +92,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
       };
     } catch (error) {
       /* eslint-disable no-console */
-      console.error("getAccountHolderDetails:", JSON.stringify(error));
+      console.error("getAccountHolderDetails:", error);
       throw error;
     }
   }
@@ -101,7 +101,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     accountHolderId: string,
     accessToken: string
   ): Promise<IAccountBeacon[]> {
-    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}`;
+    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}/${this.accountHolderBeaconsEndpoint}`;
     try {
       const response = await axios.get<
         any,
@@ -117,7 +117,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
       });
     } catch (error) {
       /* eslint-disable no-console */
-      console.error("getAccountHolderDetails:", JSON.stringify(error));
+      console.error("getAccountBeacons:", error);
       throw error;
     }
   }
