@@ -11,7 +11,7 @@ export const Header: FunctionComponent<HeaderProps> = ({
 }: HeaderProps): JSX.Element => (
   <header className="govuk-header " role="banner" data-module="govuk-header">
     <div className="govuk-header__container govuk-width-container">
-      <HeaderLogo homeLink={homeLink} />
+      <HeaderLogo />
       <div className="govuk-header__content">
         <a
           href={homeLink}
@@ -24,17 +24,11 @@ export const Header: FunctionComponent<HeaderProps> = ({
   </header>
 );
 
-interface HomeLink {
-  homeLink: string;
-}
-
-const HeaderLogo: FunctionComponent<HomeLink> = ({
-  homeLink,
-}: HomeLink): JSX.Element => (
+const HeaderLogo: FunctionComponent = (): JSX.Element => (
   <>
     <div className="govuk-header__logo">
       <a
-        href={homeLink}
+        href="https://www.gov.uk/"
         className="govuk-header__link govuk-header__link--homepage"
       >
         <span className="govuk-header__logotype">
