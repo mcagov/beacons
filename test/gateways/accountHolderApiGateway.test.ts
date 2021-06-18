@@ -7,7 +7,7 @@ jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("Account Holder API Gateway", () => {
-  let hostName = "a-host";
+  const hostName = "a-host";
   let gateway: AccountHolderApiGateway;
   let token;
 

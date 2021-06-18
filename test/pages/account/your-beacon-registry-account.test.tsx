@@ -1,6 +1,5 @@
 import { appContainer, IAppContainer } from "../../../src/lib/appContainer";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/container";
-import { getServerSideProps } from "../../../src/pages/account/your-beacon-registry-account";
 import { getMockAccountHolder, getMockBeacon } from "../../mocks";
 
 describe("YourBeaconRegistyAccount", () => {
@@ -28,11 +27,9 @@ describe("YourBeaconRegistyAccount", () => {
         container: container as IAppContainer,
       };
 
-      const result = await getServerSideProps(
-        context as BeaconsGetServerSidePropsContext
-      );
-
-      console.log(result);
+      // const result = await getServerSideProps(
+      //   context as BeaconsGetServerSidePropsContext
+      // );
     });
   });
 });

@@ -65,46 +65,83 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
       <dl className="govuk-summary-list">
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Account holder details</dt>
-          <dd className="govuk-summary-list__value">{fullName}</dd>
-          <dd className="govuk-summary-list__value">{telephoneNumber}</dd>
           <dd className="govuk-summary-list__value">
-            {alternativeTelephoneNumber}
+            {fullName}
+            <br></br>
+            {telephoneNumber}
+            {alternativeTelephoneNumber && (
+              <view>
+                <br></br>
+                {alternativeTelephoneNumber}
+              </view>
+            )}
           </dd>
         </div>
 
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Account holder address</dt>
-          {addressLine1 && (
-            <dd className="govuk-summary-list__value">{addressLine1}</dd>
-          )}
-          {addressLine2 && (
-            <dd className="govuk-summary-list__value">{addressLine2}</dd>
-          )}
-          {addressLine3 && (
-            <dd className="govuk-summary-list__value">{addressLine3}</dd>
-          )}
-          {addressLine4 && (
-            <dd className="govuk-summary-list__value">{addressLine4}</dd>
-          )}
-          {addressLine4 && (
-            <dd className="govuk-summary-list__value">{addressLine4}</dd>
-          )}
-          {addressLine4 && (
-            <dd className="govuk-summary-list__value">{addressLine4}</dd>
-          )}
-          {townOrCity && (
-            <dd className="govuk-summary-list__value">{townOrCity}</dd>
-          )}
-          {county && <dd className="govuk-summary-list__value">{county}</dd>}
-          {postcode && (
-            <dd className="govuk-summary-list__value">{postcode}</dd>
-          )}
+          <dd className="govuk-summary-list__value">
+            <view>{addressLine1}</view>
+            {addressLine2 && (
+              <view>
+                <br></br>
+                {addressLine2}
+              </view>
+            )}
+            {addressLine3 && (
+              <view>
+                <br></br>
+                {addressLine3}
+              </view>
+            )}
+            {addressLine4 && (
+              <view>
+                <br></br>
+                {addressLine4}
+              </view>
+            )}
+            {addressLine4 && (
+              <view>
+                <br></br>
+                {addressLine4}
+              </view>
+            )}
+            {addressLine4 && (
+              <view>
+                <br></br>
+                {addressLine4}
+              </view>
+            )}
+            {townOrCity && (
+              <view>
+                <br></br>
+                {townOrCity}
+              </view>
+            )}
+            {county && (
+              <view>
+                <br></br>
+                {county}
+              </view>
+            )}
+            {postcode && (
+              <view>
+                <br></br>
+                {postcode}
+              </view>
+            )}
+          </dd>
         </div>
 
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Log in details</dt>
-          <dd className="govuk-summary-list__value">{email}</dd>
-          <dd className="govuk-summary-list__value">********</dd>
+          <dd className="govuk-summary-list__value">
+            <view>{email}</view>
+            <view>
+              <br></br>
+              ********
+            </view>
+          </dd>
         </div>
       </dl>
     </>
@@ -119,9 +156,6 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
   beacons,
 }: IYourBeaconsProps): JSX.Element => (
   <>
-    {/* <SectionHeading>
-      You have {beacons ? beacons.length : 0} registered beacons
-    </SectionHeading> */}
     <table className="govuk-table">
       <caption className="govuk-table__caption govuk-table__caption--m">
         You have {beacons ? beacons.length : 0} registered beacons
@@ -193,9 +227,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const getAccountBeacons = context.container.getAccountBeacons;
 
     const accountHolderDetails = await getAccountDetails(context);
-    console.log("acc", accountHolderDetails);
     const beacons = await getAccountBeacons(accountHolderDetails.id);
-    console.log("beacons", beacons);
 
     return {
       props: { accountHolderDetails, beacons },
