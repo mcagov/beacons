@@ -4,7 +4,7 @@ import { IBeacon } from "../entities/beacon";
 import { IAccountHolderDetailsRequest } from "./mappers/accountHolderDetailsRequest";
 import { IAccountHolderIdResponseBody } from "./mappers/accountHolderIdResponseBody";
 import { IBeaconResponse } from "./mappers/beaconResponse";
-import { BeaconResponseMapper } from "./mappers/iBeaconResponseMapper";
+import { BeaconResponseMapper } from "./mappers/beaconResponseMapper";
 
 export interface IAccountHolderApiGateway {
   createAccountHolderId(authId: string, accessToken: string): Promise<string>;
