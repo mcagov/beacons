@@ -4,14 +4,14 @@ import { IEntityLink } from "../../entities/entityLink";
 import { IOwner } from "../../entities/owner";
 import { IUse } from "../../entities/use";
 import { isoDate } from "../../utils/dateTime";
-import { IBeaconDataAttributes, IBeaconResponse } from "./beaconResponse";
+import { IBeaconDataAttributes, IBeaconListResponse } from "./beaconResponse";
 
 export interface IBeaconResponseMapper {
-  map: (beaconApiResponse: IBeaconResponse) => IBeacon[];
+  mapList: (beaconApiResponse: IBeaconListResponse) => IBeacon[];
 }
 
 export class BeaconResponseMapper implements IBeaconResponseMapper {
-  public map(beaconApiResponse: IBeaconResponse): IBeacon[] {
+  public mapList(beaconApiResponse: IBeaconListResponse): IBeacon[] {
     const result = beaconApiResponse.data.map((b) => {
       return {
         id: b.id,
@@ -44,7 +44,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
   }
 
   private mapOwners(
-    beaconApiResponse: IBeaconResponse,
+    beaconApiResponse: IBeaconListResponse,
     beacon: IBeaconDataAttributes
   ): IOwner[] {
     const ownerIds = beacon.relationships.owner.data.map((owner) => owner.id);
@@ -73,7 +73,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
   }
 
   private mapEmergencyContacts(
-    beaconApiResponse: IBeaconResponse,
+    beaconApiResponse: IBeaconListResponse,
     beacon: IBeaconDataAttributes
   ): IEmergencyContact[] {
     const emergencyContactIds = beacon.relationships.emergencyContacts.data.map(
@@ -101,7 +101,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
   }
 
   private mapUses(
-    beaconApiResponse: IBeaconResponse,
+    beaconApiResponse: IBeaconListResponse,
     beacon: IBeaconDataAttributes
   ): IUse[] {
     return beaconApiResponse.included

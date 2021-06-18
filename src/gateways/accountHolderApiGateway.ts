@@ -3,7 +3,7 @@ import { IAccountHolderDetails } from "../entities/accountHolderDetails";
 import { IBeacon } from "../entities/beacon";
 import { IAccountHolderDetailsRequest } from "./mappers/accountHolderDetailsRequest";
 import { IAccountHolderIdResponseBody } from "./mappers/accountHolderIdResponseBody";
-import { IBeaconResponse } from "./mappers/beaconResponse";
+import { IBeaconListResponse } from "./mappers/beaconResponse";
 import { BeaconResponseMapper } from "./mappers/beaconResponseMapper";
 
 export interface IAccountHolderApiGateway {
@@ -103,14 +103,14 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
   ): Promise<IBeacon[]> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}/${this.accountHolderBeaconsEndpoint}`;
     try {
-      const response = await axios.get<any, AxiosResponse<IBeaconResponse>>(
+      const response = await axios.get<any, AxiosResponse<IBeaconListResponse>>(
         url,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
 
-      return new BeaconResponseMapper().map(response.data);
+      return new BeaconResponseMapper().mapList(response.data);
     } catch (error) {
       /* eslint-disable no-console */
       console.error("getAccountBeacons:", error);

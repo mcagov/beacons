@@ -1,6 +1,7 @@
+import { IBeaconListResponse } from "../../src/gateways/mappers/beaconResponse";
 import { deepFreeze } from "../utils/deepFreeze";
 
-export const manyBeaconsApiResponseFixture = deepFreeze({
+export const manyBeaconsApiResponseFixture: IBeaconListResponse = deepFreeze({
   data: [
     {
       type: "beacon",
@@ -36,7 +37,7 @@ export const manyBeaconsApiResponseFixture = deepFreeze({
           {
             fullName: "Lady Hamilton",
             telephoneNumber: "02392 856621",
-            alternativeTelephoneNumber: "02392 856622",
+            alternativeTelephoneNumber: "0    2392 856622",
           },
           {
             fullName: "Neil Hamilton",
