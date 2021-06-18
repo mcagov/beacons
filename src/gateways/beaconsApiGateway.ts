@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IRegistrationRequestBody } from "../lib/registration/iRegistrationRequestBody";
+import { IRegistrationRequestBody } from "../lib/registration/registrationRequestBody";
 
 export interface IBeaconsApiGateway {
   sendRegistration: (
