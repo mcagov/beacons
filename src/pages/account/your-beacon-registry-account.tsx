@@ -4,8 +4,8 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { BeaconRegistryContactInfo } from "../../components/Mca";
 import { PageHeading, SectionHeading } from "../../components/Typography";
-import { IAccountBeacon } from "../../lib/accountHolder/accountBeacons";
-import { IAccountHolderDetails } from "../../lib/accountHolder/accountHolderDetails";
+import { IAccountHolderDetails } from "../../entities/accountHolderDetails";
+import { IBeacon } from "../../entities/beacon";
 import {
   BeaconsGetServerSidePropsContext,
   withContainer,
@@ -14,7 +14,7 @@ import {
 interface YourBeaconRegistyAccountPageProps {
   id?: string;
   accountHolderDetails: IAccountHolderDetails;
-  beacons: IAccountBeacon[];
+  beacons: IBeacon[];
 }
 
 export const YourBeaconRegistyAccount: FunctionComponent<YourBeaconRegistyAccountPageProps> =
@@ -149,7 +149,7 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
 };
 
 interface IYourBeaconsProps {
-  beacons: IAccountBeacon[];
+  beacons: IBeacon[];
 }
 
 const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
@@ -189,7 +189,7 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
 );
 
 interface BeaconRowProps {
-  beacon: IAccountBeacon;
+  beacon: IBeacon;
 }
 
 const BeaconRow: FunctionComponent<BeaconRowProps> = ({
@@ -202,7 +202,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
       </th>
       <td className="govuk-table__cell">beacon owner</td>
       <td className="govuk-table__cell">beacon uses</td>
-      <td className="govuk-table__cell">{beacon.createdDate}</td>
+      <td className="govuk-table__cell">{beacon.registeredDate}</td>
       {/* <td className="govuk-table__cell">{}</td> */}
     </tr>
   </>

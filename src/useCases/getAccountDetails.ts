@@ -1,4 +1,4 @@
-import { IAccountHolderDetails } from "../lib/accountHolder/accountHolderDetails";
+import { IAccountHolderDetails } from "../entities/accountHolderDetails";
 import { IAppContainer } from "../lib/appContainer";
 import { BeaconsGetServerSidePropsContext } from "../lib/container";
 

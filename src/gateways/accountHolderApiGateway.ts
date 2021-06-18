@@ -1,13 +1,10 @@
 import axios, { AxiosResponse } from "axios";
-import {
-  IAccountBeacon,
-  IAccountHolderBeaconsResponseBody,
-} from "../lib/accountHolder/accountBeacons";
-import {
-  IAccountHolderDetails,
-  IAccountHolderDetailsRequestResponseBody,
-} from "../lib/accountHolder/accountHolderDetails";
-import { IAccountHolderIdResponseBody } from "../lib/accountHolder/accountHolderIdResponseBody";
+import { IAccountHolderDetails } from "../entities/accountHolderDetails";
+import { IBeacon } from "../entities/beacon";
+import { IAccountHolderDetailsRequest } from "./mappers/accountHolderDetailsRequest";
+import { IAccountHolderIdResponseBody } from "./mappers/accountHolderIdResponseBody";
+import { IBeaconResponse } from "./mappers/beaconResponse";
+import { BeaconResponseMapper } from "./mappers/beaconResponseMapper";
 
 export interface IAccountHolderApiGateway {
   createAccountHolderId(authId: string, accessToken: string): Promise<string>;
@@ -19,7 +16,7 @@ export interface IAccountHolderApiGateway {
   getAccountBeacons(
     accountHolderId: string,
     accessToken: string
-  ): Promise<IAccountBeacon[]>;
+  ): Promise<IBeacon[]>;
 }
 export class AccountHolderApiGateway implements IAccountHolderApiGateway {
   private readonly apiUrl: string;
@@ -62,7 +59,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     try {
       const request = {
         data: { attributes: { authId } },
-      } as IAccountHolderDetailsRequestResponseBody;
+      } as IAccountHolderDetailsRequest;
       const response = await axios.post<
         any,
         AxiosResponse<IAccountHolderIdResponseBody>
@@ -85,7 +82,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     try {
       const response = await axios.get<
         any,
-        AxiosResponse<IAccountHolderDetailsRequestResponseBody>
+        AxiosResponse<IAccountHolderDetailsRequest>
       >(url, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
@@ -103,21 +100,19 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
   public async getAccountBeacons(
     accountHolderId: string,
     accessToken: string
-  ): Promise<IAccountBeacon[]> {
+  ): Promise<IBeacon[]> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}/${this.accountHolderBeaconsEndpoint}`;
     try {
-      const response = await axios.get<
-        any,
-        AxiosResponse<IAccountHolderBeaconsResponseBody>
-      >(url, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      return response.data.data.map((d) => {
-        return {
-          id: d.id,
-          ...d.attributes,
-        };
-      });
+      const response = await axios.get<any, AxiosResponse<IBeaconResponse>>(
+        url,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+
+      //  return response.data.data.map((d:IBeaconResponse) => {
+      return new BeaconResponseMapper().map(response.data);
+      // });
     } catch (error) {
       /* eslint-disable no-console */
       console.error("getAccountBeacons:", error);

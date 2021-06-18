@@ -1,9 +1,7 @@
-import { IAccountBeacon } from "../lib/accountHolder/accountBeacons";
+import { IBeacon } from "../entities/beacon";
 import { IAppContainer } from "../lib/appContainer";
 
-export type GetAccountBeaconsFn = (
-  accountId: string
-) => Promise<IAccountBeacon[]>;
+export type GetAccountBeaconsFn = (accountId: string) => Promise<IBeacon[]>;
 
 export const getAccountBeacons =
   ({

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { v4 } from "uuid";
+import { IAccountHolderDetails } from "../../src/entities/accountHolderDetails";
 import { AccountHolderApiGateway } from "../../src/gateways/accountHolderApiGateway";
-import { IAccountHolderDetails } from "../../src/lib/accountHolder/accountHolderDetails";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;

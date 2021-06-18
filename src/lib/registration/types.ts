@@ -148,3 +148,7 @@ export enum AdditionalUses {
   YES = "true",
   NO = "false",
 }
+
+export enum BeaconStatus {
+  NEW = "NEW",
+}
