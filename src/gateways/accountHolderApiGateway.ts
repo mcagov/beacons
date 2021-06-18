@@ -110,9 +110,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
         }
       );
 
-      //  return response.data.data.map((d:IBeaconResponse) => {
       return new BeaconResponseMapper().map(response.data);
-      // });
     } catch (error) {
       /* eslint-disable no-console */
       console.error("getAccountBeacons:", error);
