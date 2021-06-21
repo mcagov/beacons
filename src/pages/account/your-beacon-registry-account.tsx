@@ -10,6 +10,7 @@ import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
+import { formatUses } from "../../utils/formatUses";
 
 interface YourBeaconRegistyAccountPageProps {
   id?: string;
@@ -172,7 +173,7 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
             Owner
           </th>
           <th scope="col" className="govuk-table__header">
-            User for
+            Used for
           </th>
           <th scope="col" className="govuk-table__header">
             Registered
@@ -203,8 +204,8 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
       <th scope="row" className="govuk-table__header">
         {beacon.hexId}
       </th>
-      <td className="govuk-table__cell">beacon owner</td>
-      <td className="govuk-table__cell">beacon uses</td>
+      <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
+      <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
       <td className="govuk-table__cell">{beacon.registeredDate}</td>
       {/* <td className="govuk-table__cell">{}</td> */}
     </tr>
