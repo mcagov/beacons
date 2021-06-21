@@ -1,4 +1,9 @@
+import { getSession } from "next-auth/client";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
+import {
+  AccountHolderApiGateway,
+  IAccountHolderApiGateway,
+} from "../gateways/accountHolderApiGateway";
 import {
   BasicAuthGateway,
   IBasicAuthGateway,
@@ -21,9 +26,22 @@ import {
 } from "../useCases/clearCachedRegistration";
 import { getAccessToken, GetAccessTokenFn } from "../useCases/getAccessToken";
 import {
+  getBeaconsByAccountHolderId,
+  GetBeaconsByAccountHolderIdFn,
+} from "../useCases/getAccountBeacons";
+import {
+  getAccountDetails,
+  GetAccountDetailsFn,
+} from "../useCases/getAccountDetails";
+import {
   getCachedRegistration,
   GetCachedRegistrationFn,
 } from "../useCases/getCachedRegistration";
+import {
+  getOrCreateAccountId,
+  GetOrCreateAccountIdFn,
+} from "../useCases/getOrCreateAccountId";
+import { GetSessionFn } from "../useCases/getSession";
 import {
   sendConfirmationEmail,
   SendConfirmationEmailFn,
@@ -41,18 +59,24 @@ export interface IAppContainer {
   getCachedRegistration: GetCachedRegistrationFn;
   clearCachedRegistration: ClearCachedRegistrationFn;
   getAccessToken: GetAccessTokenFn;
+  getSession: GetSessionFn;
+  getAccountDetails: GetAccountDetailsFn;
+  getOrCreateAccountId: GetOrCreateAccountIdFn;
+  getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
 
   /* Gateways */
   beaconsApiAuthGateway: IAuthGateway;
   basicAuthGateway: IBasicAuthGateway;
   beaconsApiGateway: IBeaconsApiGateway;
   govNotifyGateway: IGovNotifyGateway;
+  accountHolderApiGateway: IAccountHolderApiGateway;
 }
 
 export const appContainer: IAppContainer = {
   /* Simple use cases */
   getCachedRegistration: getCachedRegistration,
   clearCachedRegistration: clearCachedRegistration,
+  getSession: getSession,
 
   /* Composite use cases requiring access to other use cases */
   get getAccessToken() {
@@ -67,6 +91,15 @@ export const appContainer: IAppContainer = {
   get sendConfirmationEmail() {
     return sendConfirmationEmail(this);
   },
+  get getAccountDetails() {
+    return getAccountDetails(this);
+  },
+  get getOrCreateAccountId() {
+    return getOrCreateAccountId(this);
+  },
+  get getBeaconsByAccountHolderId() {
+    return getBeaconsByAccountHolderId(this);
+  },
 
   /* Gateways */
   get beaconsApiAuthGateway() {
@@ -80,5 +113,8 @@ export const appContainer: IAppContainer = {
   },
   get govNotifyGateway() {
     return new GovNotifyGateway(process.env.GOV_NOTIFY_API_KEY);
+  },
+  get accountHolderApiGateway() {
+    return new AccountHolderApiGateway(process.env.API_URL);
   },
 };

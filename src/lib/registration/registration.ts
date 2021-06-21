@@ -1,7 +1,7 @@
 import { FormSubmission } from "../formCache";
 import { stringToBoolean } from "../utils";
-import { IRegistrationRequestBody } from "./iRegistrationRequestBody";
 import { initBeacon, initBeaconUse } from "./registrationInitialisation";
+import { IRegistrationRequestBody } from "./registrationRequestBody";
 import { Activity, BeaconUse, IRegistration } from "./types";
 
 type Indexes = {

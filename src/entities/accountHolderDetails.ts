@@ -1,4 +1,4 @@
-export interface IAccountHolderDetailsResponseBody {
+export interface IAccountHolderDetails {
   id: string;
   fullName: string;
   email: string;

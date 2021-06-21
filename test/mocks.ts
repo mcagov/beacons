@@ -70,6 +70,19 @@ export const getMockUse = (): any => ({
 });
 
 // TODO: Update `any` type once domain/form objects are defined
+export const getMockAccountHolder = (): any => ({
+  fullName: "Mrs A. Holder",
+  email: "aholder@mca.gov.uk",
+  telephoneNumber: "0118792136545",
+  alternativeTelephoneNumber: "0118792136545",
+  addressLine1: "8",
+  addressLine2: "Points East",
+  townOrCity: "Yate",
+  county: "Bristol",
+  postcode: "BS37 6YG",
+});
+
+// TODO: Update `any` type once domain/form objects are defined
 export const getMockOwner = (): any => ({
   fullName: "Mrs Martha",
   email: "martha@mca.gov.uk",
