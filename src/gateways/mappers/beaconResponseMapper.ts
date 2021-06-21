@@ -12,7 +12,7 @@ export interface IBeaconResponseMapper {
 
 export class BeaconResponseMapper implements IBeaconResponseMapper {
   public mapList(beaconApiResponse: IBeaconListResponse): IBeacon[] {
-    const result = beaconApiResponse.data.map((b) => {
+    return beaconApiResponse.data.map((b) => {
       return {
         id: b.id,
         hexId: b.attributes.hexId,
@@ -29,12 +29,10 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
         manufacturerSerialNumber: b.attributes.manufacturerSerialNumber || "",
         owners: this.mapOwners(beaconApiResponse, b),
         emergencyContacts: this.mapEmergencyContacts(beaconApiResponse, b),
-        uses: this.mapUses(beaconApiResponse, b),
+        uses: this.mapUses(beaconApiResponse),
         entityLinks: this.mapLinks(b.links),
       };
     });
-
-    return result;
   }
 
   private mapLinks(links: IEntityLink[]): IEntityLink[] {
@@ -100,10 +98,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
     });
   }
 
-  private mapUses(
-    beaconApiResponse: IBeaconListResponse,
-    beacon: IBeaconDataAttributes
-  ): IUse[] {
+  private mapUses(beaconApiResponse: IBeaconListResponse): IUse[] {
     return beaconApiResponse.included
       .filter((entity) => entity !== null)
       .filter((entity) => entity.type === "beaconUse")

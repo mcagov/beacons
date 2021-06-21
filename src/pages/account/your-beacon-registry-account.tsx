@@ -18,7 +18,10 @@ interface YourBeaconRegistyAccountPageProps {
 }
 
 export const YourBeaconRegistyAccount: FunctionComponent<YourBeaconRegistyAccountPageProps> =
-  (props: YourBeaconRegistyAccountPageProps): JSX.Element => {
+  ({
+    accountHolderDetails,
+    beacons,
+  }: YourBeaconRegistyAccountPageProps): JSX.Element => {
     const pageHeading = "Your Beacon Registy Account";
 
     return (
@@ -28,9 +31,9 @@ export const YourBeaconRegistyAccount: FunctionComponent<YourBeaconRegistyAccoun
             <>
               <PageHeading>{pageHeading}</PageHeading>
               <YourDetails
-                accountHolderDetails={props.accountHolderDetails}
+                accountHolderDetails={accountHolderDetails}
               ></YourDetails>
-              <YourBeacons beacons={props.beacons}></YourBeacons>
+              <YourBeacons beacons={beacons}></YourBeacons>
               <RegisterANewBeacon></RegisterANewBeacon>
               <Contact></Contact>
             </>
@@ -224,10 +227,11 @@ const Contact: FunctionComponent = (): JSX.Element => (
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
     const getAccountDetails = context.container.getAccountDetails;
-    const getAccountBeacons = context.container.getAccountBeacons;
+    const getBeaconsByAccountHolderId =
+      context.container.getBeaconsByAccountHolderId;
 
     const accountHolderDetails = await getAccountDetails(context);
-    const beacons = await getAccountBeacons(accountHolderDetails.id);
+    const beacons = await getBeaconsByAccountHolderId(accountHolderDetails.id);
 
     return {
       props: { accountHolderDetails, beacons },

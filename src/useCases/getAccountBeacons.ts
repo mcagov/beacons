@@ -1,13 +1,15 @@
 import { IBeacon } from "../entities/beacon";
 import { IAppContainer } from "../lib/appContainer";
 
-export type GetAccountBeaconsFn = (accountId: string) => Promise<IBeacon[]>;
+export type GetBeaconsByAccountHolderIdFn = (
+  accountId: string
+) => Promise<IBeacon[]>;
 
-export const getAccountBeacons =
+export const getBeaconsByAccountHolderId =
   ({
     getAccessToken,
     accountHolderApiGateway,
-  }: IAppContainer): GetAccountBeaconsFn =>
+  }: IAppContainer): GetBeaconsByAccountHolderIdFn =>
   async (accountId: string) => {
     const accessToken = await getAccessToken();
     const accountHolderDetails =
