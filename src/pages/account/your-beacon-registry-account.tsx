@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
+import { LinkButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { BeaconRegistryContactInfo } from "../../components/Mca";
@@ -10,6 +11,7 @@ import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
+import { PageURLs } from "../../lib/urls";
 import { formatUses } from "../../utils/formatUses";
 
 interface YourBeaconRegistyAccountPageProps {
@@ -215,6 +217,10 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
 const RegisterANewBeacon: FunctionComponent = (): JSX.Element => (
   <>
     <SectionHeading>Register a new beacon</SectionHeading>
+    <LinkButton
+      buttonText="Register a new beacon"
+      href={PageURLs.checkBeaconDetails}
+    />
   </>
 );
 
