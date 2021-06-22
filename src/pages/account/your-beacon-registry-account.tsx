@@ -16,7 +16,7 @@ import { getBeaconsByAccountHolderId } from "../../useCases/getAccountBeacons";
 import { getAccountDetails } from "../../useCases/getAccountDetails";
 import { formatUses } from "../../utils/formatUses";
 
-interface YourBeaconRegistyAccountPageProps {
+export interface YourBeaconRegistyAccountPageProps {
   id?: string;
   accountHolderDetails: IAccountHolderDetails;
   beacons: IBeacon[];
@@ -241,9 +241,11 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const beacons = await getBeaconsByAccountHolderId(context.container)(
       accountHolderDetails.id
     );
-
     return {
-      props: { accountHolderDetails, beacons },
+      props: {
+        accountHolderDetails,
+        beacons,
+      } as YourBeaconRegistyAccountPageProps,
     };
   }
 );
