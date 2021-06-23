@@ -3,6 +3,12 @@ import { appContainer, IAppContainer } from "../../../src/lib/appContainer";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/container";
 import { getServerSideProps } from "../../../src/pages/account/your-beacon-registry-account";
 import { getOrCreateAccountId } from "../../../src/useCases/getOrCreateAccountId";
+import { accountHolderFixture } from "../../fixtures/accountHolder.fixture";
+import {
+  accountDetailsResponseJson,
+  accountIdFromAuthIdResponseJson,
+} from "../../fixtures/accountResponses.fixture";
+import { beaconFixtures } from "../../fixtures/beacons.fixture";
 import { manyBeaconsApiResponseFixture } from "../../fixtures/manyBeaconsApiResponse.fixture";
 
 jest.mock("axios");
@@ -12,24 +18,23 @@ describe("YourBeaconRegistyAccount", () => {
   describe("GetServerSideProps", () => {
     it("should contain correct account details for a given user", async () => {
       mockedAxios.get
-        .mockImplementationOnce(async (url) => {
-          return { data: { id: "xxx" } };
+        .mockImplementationOnce(async () => {
+          return { data: { ...accountIdFromAuthIdResponseJson } };
         })
-        .mockImplementationOnce(async (url) => {
+        .mockImplementationOnce(async () => {
           return {
             data: {
-              data: { id: "xxx", attributes: { fullName: "the full name" } },
+              ...accountDetailsResponseJson,
             },
           };
         })
-        .mockImplementationOnce(async (url) => {
+        .mockImplementationOnce(async () => {
           return {
             data: {
               ...manyBeaconsApiResponseFixture,
             },
           };
         });
-
       const container: Partial<IAppContainer> = {
         accountHolderApiGateway: appContainer.accountHolderApiGateway,
         getAccessToken: jest.fn(),
@@ -40,11 +45,9 @@ describe("YourBeaconRegistyAccount", () => {
           sendEmail: jest.fn(),
         },
       };
-
       container.getOrCreateAccountId = getOrCreateAccountId(
         container as IAppContainer
       );
-
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: container as IAppContainer,
       };
@@ -52,9 +55,11 @@ describe("YourBeaconRegistyAccount", () => {
       const result = await getServerSideProps(
         context as BeaconsGetServerSidePropsContext
       );
-      console.log("res: ", JSON.stringify(result));
 
-      //expect(result["props"]["beacons"]).toBe(expBeacons);
+      expect(result["props"]["accountHolderDetails"]).toEqual(
+        accountHolderFixture
+      );
+      expect(result["props"]["beacons"]).toEqual(beaconFixtures);
     });
   });
 });
