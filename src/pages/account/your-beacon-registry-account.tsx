@@ -12,6 +12,8 @@ import {
   withContainer,
 } from "../../lib/container";
 import { PageURLs } from "../../lib/urls";
+import { getBeaconsByAccountHolderId } from "../../useCases/getAccountBeacons";
+import { getAccountDetails } from "../../useCases/getAccountDetails";
 import { formatUses } from "../../utils/formatUses";
 
 export interface YourBeaconRegistyAccountPageProps {
@@ -180,9 +182,6 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
           <th scope="col" className="govuk-table__header">
             Registered
           </th>
-          {/* <th scope="col" className="govuk-table__header">
-            Actions
-          </th> */}
         </tr>
       </thead>
       <tbody className="govuk-table__body">
@@ -209,7 +208,6 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
       <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
       <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
       <td className="govuk-table__cell">{beacon.registeredDate}</td>
-      {/* <td className="govuk-table__cell">{}</td> */}
     </tr>
   </>
 );
@@ -233,12 +231,12 @@ const Contact: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    const getAccountDetails = context.container.getAccountDetails;
-    const getBeaconsByAccountHolderId =
-      context.container.getBeaconsByAccountHolderId;
-
-    const accountHolderDetails = await getAccountDetails(context);
-    const beacons = await getBeaconsByAccountHolderId(accountHolderDetails.id);
+    const accountHolderDetails = await getAccountDetails(context.container)(
+      context
+    );
+    const beacons = await getBeaconsByAccountHolderId(context.container)(
+      accountHolderDetails.id
+    );
 
     return {
       props: {

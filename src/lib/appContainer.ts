@@ -72,49 +72,54 @@ export interface IAppContainer {
   accountHolderApiGateway: IAccountHolderApiGateway;
 }
 
-export const appContainer: IAppContainer = {
-  /* Simple use cases */
-  getCachedRegistration: getCachedRegistration,
-  clearCachedRegistration: clearCachedRegistration,
-  getSession: getSession,
+export const getAppContainer = (override?: IAppContainer): IAppContainer => {
+  return {
+    /* Simple use cases */
+    getCachedRegistration: getCachedRegistration,
+    clearCachedRegistration: clearCachedRegistration,
+    getSession: getSession,
 
-  /* Composite use cases requiring access to other use cases */
-  get getAccessToken() {
-    return getAccessToken(this);
-  },
-  get authenticateUser() {
-    return authenticateUser(this);
-  },
-  get submitRegistration() {
-    return submitRegistration(this);
-  },
-  get sendConfirmationEmail() {
-    return sendConfirmationEmail(this);
-  },
-  get getAccountDetails() {
-    return getAccountDetails(this);
-  },
-  get getOrCreateAccountId() {
-    return getOrCreateAccountId(this);
-  },
-  get getBeaconsByAccountHolderId() {
-    return getBeaconsByAccountHolderId(this);
-  },
+    /* Composite use cases requiring access to other use cases */
+    get getAccessToken() {
+      return getAccessToken(this);
+    },
+    get authenticateUser() {
+      return authenticateUser(this);
+    },
+    get submitRegistration() {
+      return submitRegistration(this);
+    },
+    get sendConfirmationEmail() {
+      return sendConfirmationEmail(this);
+    },
+    get getAccountDetails() {
+      return getAccountDetails(this);
+    },
+    get getOrCreateAccountId() {
+      return getOrCreateAccountId(this);
+    },
+    get getBeaconsByAccountHolderId() {
+      return getBeaconsByAccountHolderId(this);
+    },
 
-  /* Gateways */
-  get beaconsApiAuthGateway() {
-    return new AadAuthGateway();
-  },
-  get basicAuthGateway() {
-    return new BasicAuthGateway();
-  },
-  get beaconsApiGateway() {
-    return new BeaconsApiGateway(process.env.API_URL);
-  },
-  get govNotifyGateway() {
-    return new GovNotifyGateway(process.env.GOV_NOTIFY_API_KEY);
-  },
-  get accountHolderApiGateway() {
-    return new AccountHolderApiGateway(process.env.API_URL);
-  },
+    /* Gateways */
+    get beaconsApiAuthGateway() {
+      return new AadAuthGateway();
+    },
+    get basicAuthGateway() {
+      return new BasicAuthGateway();
+    },
+    get beaconsApiGateway() {
+      return new BeaconsApiGateway(process.env.API_URL);
+    },
+    get govNotifyGateway() {
+      return new GovNotifyGateway(process.env.GOV_NOTIFY_API_KEY);
+    },
+    get accountHolderApiGateway() {
+      return new AccountHolderApiGateway(process.env.API_URL);
+    },
+    ...override,
+  };
 };
+
+export const appContainer = getAppContainer();
