@@ -11,6 +11,63 @@ describe("Account Holder API Gateway", () => {
   let gateway: AccountHolderApiGateway;
   let token;
 
+  describe("Creating an account holder from a provided auth id", () => {
+    const authId = v4();
+    const accessToken = v4();
+    gateway = new AccountHolderApiGateway(hostName);
+
+    it("should call the endpoint with the correct request and headers", () => {
+      const createAccountHolderEndpoint = "account-holder";
+      const expectedUrl = `${hostName}/${createAccountHolderEndpoint}`;
+      const expectedRequest = {
+        data: { attributes: { authId } },
+      };
+      const expectedHeaders = {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      };
+      mockedAxios.post.mockResolvedValue({
+        data: {
+          data: {
+            id: "test-id",
+          },
+        },
+      });
+
+      gateway.createAccountHolder(authId, accessToken);
+
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        expectedUrl,
+        expectedRequest,
+        expectedHeaders
+      );
+    });
+
+    it("returns the newly created account holder's details", async () => {
+      const tesId = v4();
+      const testFullName = "Adut Akech";
+      const expectedAccountHolder: Partial<IAccountHolderDetails> = {
+        id: tesId,
+        fullName: testFullName,
+      };
+      mockedAxios.post.mockResolvedValue({
+        data: {
+          data: {
+            id: tesId,
+            attributes: {
+              fullName: testFullName,
+            },
+          },
+        },
+      });
+
+      const createdAccountHolder = await gateway.createAccountHolder(
+        authId,
+        accessToken
+      );
+      expect(createdAccountHolder).toEqual(expectedAccountHolder);
+    });
+  });
+
   describe("Getting an account holder id from an auth id", () => {
     const accountHolderIdEndpoint = "account-holder/auth-id";
     let authId;
