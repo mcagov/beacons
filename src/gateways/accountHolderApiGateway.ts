@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { IAccountHolderDetails } from "../entities/accountHolderDetails";
 import { IBeacon } from "../entities/beacon";
-import { IAccountHolderDetailsRequest } from "./mappers/accountHolderDetailsRequest";
+import { IAccountHolderDetailsResponse } from "./mappers/accountHolderDetailsResponse";
 import { IAccountHolderIdResponseBody } from "./mappers/accountHolderIdResponseBody";
 import { IBeaconListResponse } from "./mappers/beaconResponse";
 import { BeaconResponseMapper } from "./mappers/beaconResponseMapper";
@@ -59,7 +59,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     try {
       const request = {
         data: { attributes: { authId } },
-      } as IAccountHolderDetailsRequest;
+      } as IAccountHolderDetailsResponse;
       const response = await axios.post<
         any,
         AxiosResponse<IAccountHolderIdResponseBody>
@@ -82,7 +82,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     try {
       const response = await axios.get<
         any,
-        AxiosResponse<IAccountHolderDetailsRequest>
+        AxiosResponse<IAccountHolderDetailsResponse>
       >(url, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });

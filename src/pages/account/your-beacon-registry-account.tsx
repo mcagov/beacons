@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
+import { LinkButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { BeaconRegistryContactInfo } from "../../components/Mca";
@@ -10,8 +11,10 @@ import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
+import { PageURLs } from "../../lib/urls";
+import { formatUses } from "../../utils/formatUses";
 
-interface YourBeaconRegistyAccountPageProps {
+export interface YourBeaconRegistyAccountPageProps {
   id?: string;
   accountHolderDetails: IAccountHolderDetails;
   beacons: IBeacon[];
@@ -172,7 +175,7 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
             Owner
           </th>
           <th scope="col" className="govuk-table__header">
-            User for
+            Used for
           </th>
           <th scope="col" className="govuk-table__header">
             Registered
@@ -203,8 +206,8 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
       <th scope="row" className="govuk-table__header">
         {beacon.hexId}
       </th>
-      <td className="govuk-table__cell">beacon owner</td>
-      <td className="govuk-table__cell">beacon uses</td>
+      <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
+      <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
       <td className="govuk-table__cell">{beacon.registeredDate}</td>
       {/* <td className="govuk-table__cell">{}</td> */}
     </tr>
@@ -214,6 +217,10 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
 const RegisterANewBeacon: FunctionComponent = (): JSX.Element => (
   <>
     <SectionHeading>Register a new beacon</SectionHeading>
+    <LinkButton
+      buttonText="Register a new beacon"
+      href={PageURLs.checkBeaconDetails}
+    />
   </>
 );
 
@@ -234,7 +241,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const beacons = await getBeaconsByAccountHolderId(accountHolderDetails.id);
 
     return {
-      props: { accountHolderDetails, beacons },
+      props: {
+        accountHolderDetails,
+        beacons,
+      } as YourBeaconRegistyAccountPageProps,
     };
   }
 );

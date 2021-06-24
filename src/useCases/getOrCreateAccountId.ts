@@ -16,8 +16,14 @@ export const getOrCreateAccountId =
     const authId: string = session.user["id"];
     const accessToken = await getAccessToken();
 
-    return (
-      (await accountHolderApiGateway.getAccountHolderId(authId, accessToken)) ||
-      (await accountHolderApiGateway.createAccountHolderId(authId, accessToken))
+    const accountHolderId = await accountHolderApiGateway.getAccountHolderId(
+      authId,
+      accessToken
+    );
+    if (accountHolderId) return accountHolderId;
+
+    return await accountHolderApiGateway.createAccountHolderId(
+      authId,
+      accessToken
     );
   };

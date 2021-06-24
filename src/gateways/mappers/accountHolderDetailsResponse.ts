@@ -1,4 +1,4 @@
-export interface IAccountHolderDetailsRequest {
+export interface IAccountHolderDetailsResponse {
   data: {
     type: string;
     id: string;

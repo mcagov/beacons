@@ -12,25 +12,26 @@ export interface IBeaconResponseMapper {
 
 export class BeaconResponseMapper implements IBeaconResponseMapper {
   public mapList(beaconApiResponse: IBeaconListResponse): IBeacon[] {
-    return beaconApiResponse.data.map((b) => {
+    return beaconApiResponse.data.map((beacon) => {
       return {
-        id: b.id,
-        hexId: b.attributes.hexId,
-        type: b.attributes.type || "",
-        manufacturer: b.attributes.manufacturer || "",
-        model: b.attributes.model || "",
-        status: b.attributes.status || "",
-        registeredDate: isoDate(b.attributes.createdDate || ""),
-        batteryExpiryDate: isoDate(b.attributes.batteryExpiryDate || ""),
-        chkCode: b.attributes.chkCode || "",
-        protocolCode: b.attributes.protocolCode || "",
-        codingMethod: b.attributes.codingMethod || "",
-        lastServicedDate: isoDate(b.attributes.lastServicedDate || ""),
-        manufacturerSerialNumber: b.attributes.manufacturerSerialNumber || "",
-        owners: this.mapOwners(beaconApiResponse, b),
-        emergencyContacts: this.mapEmergencyContacts(beaconApiResponse, b),
-        uses: this.mapUses(beaconApiResponse),
-        entityLinks: this.mapLinks(b.links),
+        id: beacon.id,
+        hexId: beacon.attributes.hexId,
+        type: beacon.attributes.type || "",
+        manufacturer: beacon.attributes.manufacturer || "",
+        model: beacon.attributes.model || "",
+        status: beacon.attributes.status || "",
+        registeredDate: isoDate(beacon.attributes.createdDate || ""),
+        batteryExpiryDate: isoDate(beacon.attributes.batteryExpiryDate || ""),
+        chkCode: beacon.attributes.chkCode || "",
+        protocolCode: beacon.attributes.protocolCode || "",
+        codingMethod: beacon.attributes.codingMethod || "",
+        lastServicedDate: isoDate(beacon.attributes.lastServicedDate || ""),
+        manufacturerSerialNumber:
+          beacon.attributes.manufacturerSerialNumber || "",
+        owners: this.mapOwners(beaconApiResponse, beacon),
+        emergencyContacts: this.mapEmergencyContacts(beaconApiResponse, beacon),
+        uses: this.mapUses(beaconApiResponse, beacon),
+        entityLinks: this.mapLinks(beacon.links),
       };
     });
   }
@@ -98,10 +99,16 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
     });
   }
 
-  private mapUses(beaconApiResponse: IBeaconListResponse): IUse[] {
+  private mapUses(
+    beaconApiResponse: IBeaconListResponse,
+    beacon: IBeaconDataAttributes
+  ): IUse[] {
     return beaconApiResponse.included
       .filter((entity) => entity !== null)
       .filter((entity) => entity.type === "beaconUse")
+      .filter((entity) =>
+        beacon.relationships.uses.data.map((rel) => rel.id).includes(entity.id)
+      )
       .map((use) => ({
         id: use.id,
         environment: use.attributes.environment || "",
