@@ -7,7 +7,10 @@ import { IBeaconListResponse } from "./mappers/beaconResponse";
 import { BeaconResponseMapper } from "./mappers/beaconResponseMapper";
 
 export interface IAccountHolderApiGateway {
-  createAccountHolderId(authId: string, accessToken: string): Promise<string>;
+  createAccountHolder(
+    authId: string,
+    accessToken: string
+  ): Promise<IAccountHolderDetails>;
   getAccountHolderId(authId: string, accessToken: string): Promise<string>;
   getAccountHolderDetails(
     accountHolderId: string,
@@ -51,10 +54,10 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     }
   }
 
-  public async createAccountHolderId(
+  public async createAccountHolder(
     authId: string,
     accessToken: string
-  ): Promise<string> {
+  ): Promise<IAccountHolderDetails> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}`;
     try {
       const request = {
@@ -66,7 +69,10 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
       >(url, request, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      return response.data.data.id;
+      return {
+        id: response.data.data.id,
+        ...response.data.data.attributes,
+      };
     } catch (error) {
       /* eslint-disable no-console */
       console.error("createAccountHolderId:", JSON.stringify(error));
