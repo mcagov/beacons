@@ -67,6 +67,7 @@ export interface IAppContainer {
   accountHolderApiGateway: IAccountHolderApiGateway;
 }
 
+// "override" is spread over the default appContainer at the bottom of this method to enable injecting mocks et al.
 export const getAppContainer = (override?: IAppContainer): IAppContainer => {
   return {
     /* Simple use cases */
