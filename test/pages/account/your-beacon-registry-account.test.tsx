@@ -1,4 +1,5 @@
-import axios from "axios";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 import { getAppContainer, IAppContainer } from "../../../src/lib/appContainer";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/container";
 import { getServerSideProps } from "../../../src/pages/account/your-beacon-registry-account";
@@ -10,30 +11,37 @@ import {
 import { beaconFixtures } from "../../fixtures/beacons.fixture";
 import { manyBeaconsApiResponseFixture } from "../../fixtures/manyBeaconsApiResponse.fixture";
 
-jest.mock("axios");
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const server = setupServer(
+  rest.get(
+    "http://localhost:8080/spring-api/account-holder/auth-id/:authId",
+    (req, res, ctx) => {
+      return res(ctx.json({ ...accountIdFromAuthIdResponseJson }));
+    }
+  ),
+  rest.get(
+    "http://localhost:8080/spring-api/account-holder/:accountId",
+    (req, res, ctx) => {
+      return res(ctx.json({ ...accountDetailsResponseJson }));
+    }
+  ),
+  rest.get(
+    "http://localhost:8080/spring-api/account-holder/:accountId/beacons",
+    (req, res, ctx) => {
+      return res(ctx.json({ ...manyBeaconsApiResponseFixture }));
+    }
+  )
+);
 
 describe("YourBeaconRegistyAccount", () => {
   describe("GetServerSideProps", () => {
+    beforeAll(() => {
+      server.listen();
+    });
+    afterAll(() => {
+      server.close();
+    });
+
     it("should contain correct account details for a given user", async () => {
-      mockedAxios.get
-        .mockImplementationOnce(async () => {
-          return { data: { ...accountIdFromAuthIdResponseJson } };
-        })
-        .mockImplementationOnce(async () => {
-          return {
-            data: {
-              ...accountDetailsResponseJson,
-            },
-          };
-        })
-        .mockImplementationOnce(async () => {
-          return {
-            data: {
-              ...manyBeaconsApiResponseFixture,
-            },
-          };
-        });
       const mocks: Partial<IAppContainer> = {
         getAccessToken: jest.fn(),
         getSession: jest
