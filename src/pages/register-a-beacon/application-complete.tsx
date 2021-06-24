@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
+import { LinkButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
@@ -52,6 +53,7 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
                   381 72630.
                 </GovUKBody>
               </WarningText>
+              <ApplicationCompleteYourBeaconRegistryAccount />
             </>
           }
         />
@@ -73,6 +75,17 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
     </GovUKBody>
   </>
 );
+
+const ApplicationCompleteYourBeaconRegistryAccount: FunctionComponent =
+  (): JSX.Element => (
+    <>
+      <SectionHeading>Your Beacon Registry Account</SectionHeading>
+      <LinkButton
+        buttonText="Return to your Account"
+        href={PageURLs.accountHome}
+      />
+    </>
+  );
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
