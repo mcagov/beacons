@@ -34,9 +34,9 @@ import {
   GetCachedRegistrationFn,
 } from "../useCases/getCachedRegistration";
 import {
-  getOrCreateAccount,
-  GetOrCreateAccountFn,
-} from "../useCases/getOrCreateAccount";
+  getOrCreateAccountHolder,
+  GetOrCreateAccountHolderFn,
+} from "../useCases/getOrCreateAccountHolder";
 import { GetSessionFn } from "../useCases/getSession";
 import {
   sendConfirmationEmail,
@@ -56,7 +56,7 @@ export interface IAppContainer {
   clearCachedRegistration: ClearCachedRegistrationFn;
   getAccessToken: GetAccessTokenFn;
   getSession: GetSessionFn;
-  getOrCreateAccount: GetOrCreateAccountFn;
+  getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
 
   /* Gateways */
@@ -86,8 +86,8 @@ export const appContainer: IAppContainer = {
   get sendConfirmationEmail() {
     return sendConfirmationEmail(this);
   },
-  get getOrCreateAccount() {
-    return getOrCreateAccount(this);
+  get getOrCreateAccountHolder() {
+    return getOrCreateAccountHolder(this);
   },
   get getBeaconsByAccountHolderId() {
     return getBeaconsByAccountHolderId(this);

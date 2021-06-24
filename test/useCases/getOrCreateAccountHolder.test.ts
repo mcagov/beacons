@@ -2,30 +2,32 @@ import { GetServerSidePropsContext } from "next";
 import { IAccountHolderDetails } from "../../src/entities/accountHolderDetails";
 import { IAppContainer } from "../../src/lib/appContainer";
 import { BeaconsGetServerSidePropsContext } from "../../src/lib/container";
-import { getOrCreateAccount } from "../../src/useCases/getOrCreateAccount";
+import { getOrCreateAccountHolder } from "../../src/useCases/getOrCreateAccountHolder";
 
-describe("The getOrCreateAccount use case", () => {
-  it("returns the existing account for a given auth id", async () => {
-    const testAccountId = "test-account-id";
-    const testAccount: Partial<IAccountHolderDetails> = { id: testAccountId };
+describe("The getOrCreateAccountHolder use case", () => {
+  it("returns the existing account holder for a given auth id", async () => {
+    const testId = "test-account-id";
+    const testAccountHolder: Partial<IAccountHolderDetails> = { id: testId };
     const container: Partial<IAppContainer> = {
       getSession: jest.fn().mockResolvedValue({ user: { id: "a-session-id" } }),
       accountHolderApiGateway: {
-        getAccountHolderId: jest.fn().mockResolvedValue(testAccountId),
+        getAccountHolderId: jest.fn().mockResolvedValue(testId),
         createAccountHolder: jest.fn(),
         getAccountBeacons: jest.fn(),
-        getAccountHolderDetails: jest.fn().mockResolvedValue(testAccount),
+        getAccountHolderDetails: jest.fn().mockResolvedValue(testAccountHolder),
       },
       getAccessToken: jest.fn(),
     };
     const context: Partial<GetServerSidePropsContext> = {};
-    const functionToTest = await getOrCreateAccount(container as IAppContainer);
+    const functionToTest = await getOrCreateAccountHolder(
+      container as IAppContainer
+    );
 
     const result = await functionToTest(
       context as BeaconsGetServerSidePropsContext
     );
 
-    expect(result).toEqual(testAccount);
+    expect(result).toEqual(testAccountHolder);
   });
 
   it("creates a new account holder if one is not found for a given auth id", async () => {
@@ -40,7 +42,9 @@ describe("The getOrCreateAccount use case", () => {
       getAccessToken: jest.fn(),
     };
     const context: Partial<GetServerSidePropsContext> = {};
-    const functionToTest = await getOrCreateAccount(container as IAppContainer);
+    const functionToTest = await getOrCreateAccountHolder(
+      container as IAppContainer
+    );
 
     await functionToTest(context as BeaconsGetServerSidePropsContext);
 

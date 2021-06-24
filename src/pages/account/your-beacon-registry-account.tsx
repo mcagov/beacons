@@ -233,7 +233,7 @@ const Contact: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    const getOrCreateAccount = context.container.getOrCreateAccount;
+    const getOrCreateAccount = context.container.getOrCreateAccountHolder;
     const getBeaconsByAccountHolderId =
       context.container.getBeaconsByAccountHolderId;
 
