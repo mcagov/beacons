@@ -62,11 +62,11 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
       } as IAccountHolderDetailsResponse;
       const response = await axios.post<
         any,
-        AxiosResponse<IAccountHolderIdResponseBody>
+        AxiosResponse<IAccountHolderDetailsResponse>
       >(url, request, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      return response.data.id;
+      return response.data.data.id;
     } catch (error) {
       /* eslint-disable no-console */
       console.error("createAccountHolderId:", JSON.stringify(error));
