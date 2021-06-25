@@ -5,6 +5,7 @@ describe("submitRegistration()", () => {
   const mockRegistration = {
     serialiseToAPI: jest.fn().mockReturnValue({ model: "ASOS" }),
     setReferenceNumber: jest.fn(),
+    setAccountHolderId: jest.fn(),
     getRegistration: jest.fn().mockReturnValue({ model: "ASOS" }),
   };
 
