@@ -97,6 +97,7 @@ export class Registration {
       model: registration.model,
       hexId: registration.hexId,
       referenceNumber: registration.referenceNumber,
+      accountHolderId: registration.accountHolderId,
 
       manufacturerSerialNumber: registration.manufacturerSerialNumber,
       chkCode: registration.chkCode,
