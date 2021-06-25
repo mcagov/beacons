@@ -15,11 +15,7 @@ import { redirectUserTo } from "../../lib/redirectUserTo";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { PageURLs } from "../../lib/urls";
 import { verifyFormSubmissionCookieIsSet } from "../../lib/verifyFormSubmissionCookieIsSet";
-import { getAccountHolderId } from "../../useCases/getAccountHolderId";
-import {
-  ISubmitRegistrationResult,
-  submitRegistration,
-} from "../../useCases/submitRegistration";
+import { ISubmitRegistrationResult } from "../../useCases/submitRegistration";
 
 interface ApplicationCompleteProps {
   reference: string;
@@ -93,18 +89,17 @@ const ApplicationCompleteYourBeaconRegistryAccount: FunctionComponent =
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
+    /* Retrieve injected use case(s) */
+    const { submitRegistration, getAccountHolderId } = context.container;
+
     /* Page logic */
     if (!verifyFormSubmissionCookieIsSet(context))
       return redirectUserTo(PageURLs.start);
 
     try {
-      const accountHolderId = await getAccountHolderId(context.container)(
-        context
-      );
-      const registration = retrieveUserFormSubmissionId(context);
-      const result = await submitRegistration(context.container)(
-        registration,
-        accountHolderId
+      const result = await submitRegistration(
+        retrieveUserFormSubmissionId(context),
+        await getAccountHolderId(context)
       );
 
       const pageSubHeading = (result: ISubmitRegistrationResult) => {
