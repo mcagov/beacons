@@ -10,6 +10,7 @@ export const initBeacon = (): IRegistration => {
     manufacturer: "",
     model: "",
     hexId: "",
+    accountHolderId: "",
 
     referenceNumber: "",
 

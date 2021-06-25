@@ -2,7 +2,8 @@ import { IAppContainer } from "../lib/appContainer";
 import { referenceNumber } from "../lib/utils";
 
 export type SubmitRegistrationFn = (
-  submissionId: string
+  submissionId: string,
+  accountHolderId: string
 ) => Promise<ISubmitRegistrationResult>;
 
 export interface ISubmitRegistrationResult {
@@ -18,11 +19,12 @@ export const submitRegistration =
     getAccessToken,
     beaconsApiGateway,
   }: Partial<IAppContainer>): SubmitRegistrationFn =>
-  async (submissionId) => {
+  async (submissionId: string, accountHolderId: string) => {
     const registration = await getCachedRegistration(submissionId);
     const accessToken = await getAccessToken();
 
     registration.setReferenceNumber(referenceNumber("A#", 7));
+    registration.setAccountHolderId(accountHolderId);
 
     const beaconRegistered = await beaconsApiGateway.sendRegistration(
       registration.serialiseToAPI(),
