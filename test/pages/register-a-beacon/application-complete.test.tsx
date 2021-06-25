@@ -92,7 +92,7 @@ describe("ApplicationCompletePage", () => {
       };
       mockSubmitRegistration.mockResolvedValue(successful);
 
-      const result = await getServerSideProps(context);
+      const result = await getServerSideProps(context.container)(context);
 
       expect(result.props.reference).toBe("ABC123");
     });

@@ -3,6 +3,7 @@ export interface IRegistration {
   model: string;
   hexId: string;
   referenceNumber: string;
+  accountHolderId: string;
 
   manufacturerSerialNumber: string;
   chkCode: string;

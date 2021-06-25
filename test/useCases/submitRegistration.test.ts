@@ -19,7 +19,7 @@ describe("submitRegistration()", () => {
       },
     };
 
-    await submitRegistration(container)("submissionId");
+    await submitRegistration(container)("submissionId", "accountHolderId");
 
     expect(mockRetrieveAuthToken).toHaveBeenCalledTimes(1);
   });
@@ -35,7 +35,7 @@ describe("submitRegistration()", () => {
       },
     };
 
-    await submitRegistration(container)("submissionId");
+    await submitRegistration(container)("submissionId", "accountHolderId");
 
     expect(mockSendRegistrationToApi).toHaveBeenCalledTimes(1);
   });
@@ -52,7 +52,39 @@ describe("submitRegistration()", () => {
       },
     };
 
-    await submitRegistration(container)("submissionId");
+    await submitRegistration(container)("submissionId", "accountHolderId");
+
+    expect(mockRegistration.setReferenceNumber).toHaveBeenCalled();
+  });
+
+  it("sets the account holder id before sending to the beacons API", async () => {
+    const mockSendRegistrationToApi = jest.fn();
+    const container: Partial<IAppContainer> = {
+      getCachedRegistration: jest.fn().mockResolvedValue(mockRegistration),
+      getAccessToken: jest.fn(),
+      sendConfirmationEmail: jest.fn(),
+      beaconsApiGateway: {
+        sendRegistration: mockSendRegistrationToApi,
+      },
+    };
+
+    await submitRegistration(container)("submissionId", "accountHolderId");
+
+    expect(mockRegistration.setReferenceNumber).toHaveBeenCalled();
+  });
+
+  it("account holder id accepts null value without throwing", async () => {
+    const mockSendRegistrationToApi = jest.fn();
+    const container: Partial<IAppContainer> = {
+      getCachedRegistration: jest.fn().mockResolvedValue(mockRegistration),
+      getAccessToken: jest.fn(),
+      sendConfirmationEmail: jest.fn(),
+      beaconsApiGateway: {
+        sendRegistration: mockSendRegistrationToApi,
+      },
+    };
+
+    await submitRegistration(container)("submissionId", null);
 
     expect(mockRegistration.setReferenceNumber).toHaveBeenCalled();
   });
@@ -68,7 +100,7 @@ describe("submitRegistration()", () => {
       },
     };
 
-    await submitRegistration(container)("submissionId");
+    await submitRegistration(container)("submissionId", "accountHolderId");
 
     expect(mockSendConfirmationEmail).toHaveBeenCalledTimes(1);
   });
@@ -83,7 +115,10 @@ describe("submitRegistration()", () => {
       },
     };
 
-    const result = await submitRegistration(container)("submissionId");
+    const result = await submitRegistration(container)(
+      "submissionId",
+      "accountHolderId"
+    );
 
     expect(result).toStrictEqual({
       beaconRegistered: true,
@@ -102,7 +137,10 @@ describe("submitRegistration()", () => {
       },
     };
 
-    const result = await submitRegistration(container)("submissionId");
+    const result = await submitRegistration(container)(
+      "submissionId",
+      "accountHolderId"
+    );
 
     expect(result).toStrictEqual({
       beaconRegistered: true,
@@ -124,7 +162,10 @@ describe("submitRegistration()", () => {
       },
     };
 
-    const result = await submitRegistration(container)("submissionId");
+    const result = await submitRegistration(container)(
+      "submissionId",
+      "accountHolderId"
+    );
 
     expect(result.referenceNumber.length).toBeDefined();
   });
@@ -139,7 +180,10 @@ describe("submitRegistration()", () => {
       },
     };
 
-    const result = await submitRegistration(container)("submissionId");
+    const result = await submitRegistration(container)(
+      "submissionId",
+      "accountHolderId"
+    );
 
     expect(result.referenceNumber).toEqual("");
   });
