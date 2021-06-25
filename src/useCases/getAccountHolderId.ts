@@ -1,0 +1,25 @@
+import { IAppContainer } from "../lib/appContainer";
+import { BeaconsGetServerSidePropsContext } from "../lib/container";
+
+export type GetAccountHolderIdFn = (
+  context: BeaconsGetServerSidePropsContext
+) => Promise<string>;
+
+export const getAccountHolderId =
+  ({
+    getSession,
+    getAccessToken,
+    accountHolderApiGateway,
+  }: IAppContainer): GetAccountHolderIdFn =>
+  async (context: BeaconsGetServerSidePropsContext) => {
+    const session = await getSession(context);
+    const authId: string = session.user["id"];
+    const accessToken = await getAccessToken();
+
+    const accountHolderId = await accountHolderApiGateway.getAccountHolderId(
+      authId,
+      accessToken
+    );
+
+    return accountHolderId;
+  };
