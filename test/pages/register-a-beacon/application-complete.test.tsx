@@ -26,6 +26,7 @@ describe("ApplicationCompletePage", () => {
     beforeEach(() => {
       mockContainer = {
         submitRegistration: mockSubmitRegistration,
+        getAccountHolderId: jest.fn().mockResolvedValue("account-holder-id"),
       };
     });
 
@@ -48,6 +49,7 @@ describe("ApplicationCompletePage", () => {
 
     it("should attempt to submit the user's registration", async () => {
       const userRegistrationId = "user-form-submission-cookie-id";
+      const accountHolderId = "account-holder-id";
       const context = {
         req: {
           cookies: { [formSubmissionCookieId]: userRegistrationId },
@@ -58,7 +60,10 @@ describe("ApplicationCompletePage", () => {
 
       await getServerSideProps(context as any);
 
-      expect(mockSubmitRegistration).toHaveBeenCalledWith(userRegistrationId);
+      expect(mockSubmitRegistration).toHaveBeenCalledWith(
+        userRegistrationId,
+        accountHolderId
+      );
     });
 
     it("should not return a reference number if creating the registration is unsuccessful", async () => {
@@ -92,7 +97,7 @@ describe("ApplicationCompletePage", () => {
       };
       mockSubmitRegistration.mockResolvedValue(successful);
 
-      const result = await getServerSideProps(context);
+      const result = await getServerSideProps(context as any);
 
       expect(result.props.reference).toBe("ABC123");
     });

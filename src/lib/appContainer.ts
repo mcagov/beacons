@@ -34,6 +34,10 @@ import {
   GetBeaconsByAccountHolderIdFn,
 } from "../useCases/getAccountBeacons";
 import {
+  getAccountHolderId,
+  GetAccountHolderIdFn,
+} from "../useCases/getAccountHolderId";
+import {
   getCachedRegistration,
   GetCachedRegistrationFn,
 } from "../useCases/getCachedRegistration";
@@ -61,6 +65,7 @@ export interface IAppContainer {
   getAccessToken: GetAccessTokenFn;
   getSession: GetSessionFn;
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
+  getAccountHolderId: GetAccountHolderIdFn;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
 
   /* Gateways */
@@ -95,6 +100,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get getOrCreateAccountHolder() {
       return getOrCreateAccountHolder(this);
+    },
+    get getAccountHolderId() {
+      return getAccountHolderId(this);
     },
     get getBeaconsByAccountHolderId() {
       return getBeaconsByAccountHolderId(this);

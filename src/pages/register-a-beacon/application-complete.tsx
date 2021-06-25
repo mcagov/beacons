@@ -90,7 +90,7 @@ const ApplicationCompleteYourBeaconRegistryAccount: FunctionComponent =
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
     /* Retrieve injected use case(s) */
-    const { submitRegistration } = context.container;
+    const { submitRegistration, getAccountHolderId } = context.container;
 
     /* Page logic */
     if (!verifyFormSubmissionCookieIsSet(context))
@@ -98,7 +98,8 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
     try {
       const result = await submitRegistration(
-        retrieveUserFormSubmissionId(context)
+        retrieveUserFormSubmissionId(context),
+        await getAccountHolderId(context)
       );
 
       const pageSubHeading = (result: ISubmitRegistrationResult) => {

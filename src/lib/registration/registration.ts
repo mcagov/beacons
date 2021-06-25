@@ -47,6 +47,10 @@ export class Registration {
     this.registration.referenceNumber = referenceNumber;
   }
 
+  public setAccountHolderId(accountHolderId: string): void {
+    this.registration.accountHolderId = accountHolderId;
+  }
+
   private _updateBeacon(formData: FormSubmission): void {
     Object.keys(formData)
       .filter((key: string) => !(key === Registration.USES_KEY))
@@ -93,6 +97,7 @@ export class Registration {
       model: registration.model,
       hexId: registration.hexId,
       referenceNumber: registration.referenceNumber,
+      accountHolderId: registration.accountHolderId,
 
       manufacturerSerialNumber: registration.manufacturerSerialNumber,
       chkCode: registration.chkCode,
