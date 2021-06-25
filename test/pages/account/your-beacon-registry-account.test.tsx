@@ -11,20 +11,20 @@ import {
 import { beaconFixtures } from "../../fixtures/beacons.fixture";
 import { manyBeaconsApiResponseFixture } from "../../fixtures/manyBeaconsApiResponse.fixture";
 
-const server = setupServer(
-  rest.get("*/account-holder/auth-id/:authId", (req, res, ctx) => {
-    return res(ctx.json({ ...accountIdFromAuthIdResponseJson }));
-  }),
-  rest.get("*/account-holder/:accountId", (req, res, ctx) => {
-    return res(ctx.json({ ...accountDetailsResponseJson }));
-  }),
-  rest.get("*/account-holder/:accountId/beacons", (req, res, ctx) => {
-    return res(ctx.json({ ...manyBeaconsApiResponseFixture }));
-  })
-);
-
 describe("YourBeaconRegistyAccount", () => {
   describe("GetServerSideProps", () => {
+    const server = setupServer(
+      rest.get("*/account-holder/auth-id/:authId", (req, res, ctx) => {
+        return res(ctx.json({ ...accountIdFromAuthIdResponseJson }));
+      }),
+      rest.get("*/account-holder/:accountId", (req, res, ctx) => {
+        return res(ctx.json({ ...accountDetailsResponseJson }));
+      }),
+      rest.get("*/account-holder/:accountId/beacons", (req, res, ctx) => {
+        return res(ctx.json({ ...manyBeaconsApiResponseFixture }));
+      })
+    );
+
     beforeAll(() => {
       server.listen();
     });
