@@ -1,10 +1,8 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
-import { RadioList, RadioListItem } from "../../components/RadioList";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
 import { FormCacheFactory, FormSubmission } from "../../lib/formCache";
 import {
   DestinationIfValidCallback,
@@ -12,7 +10,6 @@ import {
   handlePageRequest,
 } from "../../lib/handlePageRequest";
 import { BeaconsContext, setFormCache } from "../../lib/middleware";
-import { AdditionalUses } from "../../lib/registration/types";
 import { formatUrlQueryParams } from "../../lib/utils";
 
 const definePageForm = ({
@@ -20,7 +17,7 @@ const definePageForm = ({
 }: FormSubmission): FormManager => {
   return new FormManager({
     additionalBeaconUse: new FieldManager(additionalBeaconUse, [
-      Validators.required("Additional beacon use is a required field"),
+      //Validators.required("Additional beacon use is a required field"),
     ]),
   });
 };
@@ -30,7 +27,7 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const previousPageUrl = "/register-a-beacon/more-details";
-  const pageHeading = "Do you have other additional uses for this beacon?";
+  const pageHeading = "Summary of how you use this beacon";
   const additionalBeaconName = "additionalBeaconUse";
 
   return (
@@ -41,28 +38,7 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
       showCookieBanner={showCookieBanner}
       errorMessages={form.fields.additionalBeaconUse.errorMessages}
     >
-      <RadioList>
-        <RadioListItem
-          id="yes"
-          name={additionalBeaconName}
-          value={AdditionalUses.YES}
-          label="Yes"
-          hintText="We'll ask you to tell us about these in the next step"
-          defaultChecked={
-            form.fields.additionalBeaconUse.value === AdditionalUses.YES
-          }
-        />
-
-        <RadioListItem
-          id="no"
-          name={additionalBeaconName}
-          value={AdditionalUses.NO}
-          label="No"
-          defaultChecked={
-            form.fields.additionalBeaconUse.value === AdditionalUses.NO
-          }
-        />
-      </RadioList>
+      <RegisterAnotherUseForThisBeacon></RegisterAnotherUseForThisBeacon>
     </BeaconsForm>
   );
 };
@@ -70,6 +46,7 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
 const onSuccessfulFormCallback: DestinationIfValidCallback = async (
   context: BeaconsContext
 ) => {
+  console.log(context.formData);
   const shouldCreateAdditionalUse =
     context.formData.additionalBeaconUse === "true";
   if (shouldCreateAdditionalUse) {
@@ -86,6 +63,22 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = async (
     return "/register-a-beacon/about-beacon-owner";
   }
 };
+
+const RegisterAnotherUseForThisBeacon: FunctionComponent = (): JSX.Element => (
+  <>
+    <button
+      role="button"
+      draggable="false"
+      className="govuk-button govuk-button--secondary"
+      data-module="govuk-button"
+      type="submit"
+      name="additionalBeaconUse"
+      value="true"
+    >
+      Add another use for this beacon
+    </button>
+  </>
+);
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "",
