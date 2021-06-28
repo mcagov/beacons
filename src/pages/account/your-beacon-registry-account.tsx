@@ -242,7 +242,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       props: {
         accountHolderDetails,
         beacons,
-      } as YourBeaconRegistyAccountPageProps,
+      },
     };
   }
 );

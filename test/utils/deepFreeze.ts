@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-export const deepFreeze = (object: any) => {
+export const deepFreeze = (object: any): any => {
   const propNames = Object.getOwnPropertyNames(object);
 
   for (const name of propNames) {
