@@ -10,6 +10,7 @@ import {
   handlePageRequest,
 } from "../../lib/handlePageRequest";
 import { BeaconsContext, setFormCache } from "../../lib/middleware";
+import { AdditionalUses } from "../../lib/registration/types";
 import { formatUrlQueryParams } from "../../lib/utils";
 
 const definePageForm = ({
@@ -38,7 +39,17 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
       showCookieBanner={showCookieBanner}
       errorMessages={form.fields.additionalBeaconUse.errorMessages}
     >
-      <RegisterAnotherUseForThisBeacon></RegisterAnotherUseForThisBeacon>
+      <button
+        role="button"
+        draggable="false"
+        className="govuk-button govuk-button--secondary"
+        data-module="govuk-button"
+        type="submit"
+        name={additionalBeaconName}
+        value={AdditionalUses.YES}
+      >
+        Add another use for this beacon
+      </button>
     </BeaconsForm>
   );
 };
@@ -46,7 +57,6 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
 const onSuccessfulFormCallback: DestinationIfValidCallback = async (
   context: BeaconsContext
 ) => {
-  console.log(context.formData);
   const shouldCreateAdditionalUse =
     context.formData.additionalBeaconUse === "true";
   if (shouldCreateAdditionalUse) {
@@ -63,22 +73,6 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = async (
     return "/register-a-beacon/about-beacon-owner";
   }
 };
-
-const RegisterAnotherUseForThisBeacon: FunctionComponent = (): JSX.Element => (
-  <>
-    <button
-      role="button"
-      draggable="false"
-      className="govuk-button govuk-button--secondary"
-      data-module="govuk-button"
-      type="submit"
-      name="additionalBeaconUse"
-      value="true"
-    >
-      Add another use for this beacon
-    </button>
-  </>
-);
 
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "",
