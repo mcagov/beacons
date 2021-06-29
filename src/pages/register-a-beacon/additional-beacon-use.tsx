@@ -1,6 +1,7 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
+import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { FormCacheFactory, FormSubmission } from "../../lib/formCache";
@@ -9,8 +10,12 @@ import {
   FormPageProps,
   handlePageRequest,
 } from "../../lib/handlePageRequest";
-import { BeaconsContext, setFormCache } from "../../lib/middleware";
-import { AdditionalUses } from "../../lib/registration/types";
+import {
+  BeaconsContext,
+  decorateGetServerSidePropsContext,
+  setFormCache,
+} from "../../lib/middleware";
+import { AdditionalUses, BeaconUse } from "../../lib/registration/types";
 import { formatUrlQueryParams } from "../../lib/utils";
 
 const definePageForm = ({
@@ -25,6 +30,7 @@ const definePageForm = ({
 
 const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
   form,
+  registration,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
   const previousPageUrl = "/register-a-beacon/more-details";
@@ -39,6 +45,8 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
       showCookieBanner={showCookieBanner}
       errorMessages={form.fields.additionalBeaconUse.errorMessages}
     >
+      <BeaconUseRow beaconUse={registration.uses[0]} />
+
       <button
         role="button"
         draggable="false"
@@ -74,10 +82,38 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = async (
   }
 };
 
+interface IBeaconUseProps {
+  beaconUse: BeaconUse;
+}
+
+const BeaconUseRow: FunctionComponent<IBeaconUseProps> = ({
+  beaconUse: { maxCapacity, otherCommunicationInput, moreDetails },
+}: IBeaconUseProps): JSX.Element => (
+  <>
+    <SummaryList>
+      <SummaryListItem labelText="Additional beacon information">
+        <p>{maxCapacity}</p>
+      </SummaryListItem>
+      <SummaryListItem labelText="Communications">
+        <p>{otherCommunicationInput}</p>
+      </SummaryListItem>
+      <SummaryListItem labelText="More details">
+        <p>{moreDetails}</p>
+      </SummaryListItem>
+    </SummaryList>
+  </>
+);
+
 export const getServerSideProps: GetServerSideProps = handlePageRequest(
   "",
   definePageForm,
-  (f) => f,
+  async (context: GetServerSidePropsContext) => {
+    const decoratedContext = await decorateGetServerSidePropsContext(context);
+
+    return {
+      props: { registration: decoratedContext.registration.registration },
+    };
+  },
   onSuccessfulFormCallback
 );
 
