@@ -161,7 +161,7 @@ jobs:
         install_dependencies,
         docker_build,
         unit_tests,
-        cypress_tests,
+        end_to_end_tests,
         lint_check,
         prettier_check,
         docker_lint,
