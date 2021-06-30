@@ -93,7 +93,7 @@ jobs:
       - name: Copy webapp env vars
         run: cp webapp/.env.example webapp/.env.local
       - name: Bring up webapp
-        run: cd webapp/ && npm run dev
+        run: cd webapp/ && npm run build && npm run start
       - uses: actions/setup-java@v2
         with:
           distribution: "adopt"
