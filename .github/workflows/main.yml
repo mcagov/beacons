@@ -23,7 +23,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
   docker_build:
-    if: github.ref == 'refs/heads/main'
+    if: true == false
     name: Build and Push Docker image
     runs-on: ubuntu-latest
 
@@ -72,6 +72,24 @@ jobs:
     env:
       WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
 
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: beacons_service
+          POSTGRES_DB: beacons
+        ports:
+          - 5432:5432
+      api:
+        image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-service:57a50d0ac5c0b405294cfa2084b7287c424adab1
+        credentials:
+          username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
+        ports: 8080:8080
+
     steps:
       - name: Checkout webapp
         uses: actions/checkout@v2.3.4
@@ -82,12 +100,6 @@ jobs:
         with:
           repository: mcagov/beacons-service
           path: service
-      - uses: actions/setup-java@v2
-        with:
-          distribution: "adopt"
-          java-version: 11
-      - name: Bring up API and DB
-        run: cd service/ && docker-compose up --build postgres beacons-service
 
   lint_check:
     if: true == false
