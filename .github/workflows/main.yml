@@ -84,7 +84,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - name: Bring up API and DB
-        run: docker-compose --file docker-compose.e2e.yml up
+        run: docker-compose --file docker-compose.e2e.yml up --detach
+      - name: Hit actuator endpoint
+        run: curl http://localhost:8080/spring-api/actuator/health
 
   lint_check:
     if: true == false
