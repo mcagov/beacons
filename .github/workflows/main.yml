@@ -22,6 +22,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
   docker_build:
+    if: github.ref == 'refs/heads/main'
     name: Build and Push Docker image
     runs-on: ubuntu-latest
 
@@ -63,8 +64,8 @@ jobs:
       - name: Run tests
         run: npm run test
 
-  cypress_tests:
-    name: Cypress tests
+  end_to_end_tests:
+    name: End to end tests
     runs-on: ubuntu-latest
     services:
       redis:
@@ -75,21 +76,25 @@ jobs:
       WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
 
     steps:
-      - uses: actions/checkout@v2.3.4
-      - name: Copy env vars
-        run: cp .env.example .env.local
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v2
+      - name: Checkout webapp
+        uses: actions/checkout@v2.3.4
         with:
-          browser: chrome
-          start: npm run start
-          build: npm run build
-          wait-on: "http://localhost:3000"
-      - uses: actions/upload-artifact@v2
-        if: failure()
+          path: webapp
+      - name: Checkout service
+        uses: actions/checkout@v2.3.4
         with:
-          name: cypress-screenshots
-          path: cypress/screenshots/
+          repository: mcagov/beacons-service
+          path: service
+      - name: Copy webapp env vars
+        run: cp webapp/.env.example webapp/.env.local
+      - uses: actions/setup-java@v2
+        with:
+          distribution: "adopt"
+          java-version: 11
+      - name: Bring up API and DB
+        run: |
+          cd service/ \
+          docker-compose up postgres beacons-service
 
   lint_check:
     name: Lint check
