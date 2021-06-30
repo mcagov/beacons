@@ -87,6 +87,7 @@ jobs:
         run: |
           docker-compose --file docker-compose.e2e.yml up --detach
           docker ps
+          docker inspect beacons-webapp_api_1
       - name: Hit actuator endpoint
         run: curl 'http://localhost:8080/spring-api/actuator/health'
       - name: Stop containers
