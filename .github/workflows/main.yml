@@ -68,11 +68,7 @@ jobs:
   end_to_end_tests:
     name: End to end tests
     runs-on: ubuntu-latest
-    services:
-      redis:
-        image: redis:6
-        ports:
-          - 6379:6379
+    needs: install_dependencies
     env:
       WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
 
@@ -86,6 +82,14 @@ jobs:
         with:
           repository: mcagov/beacons-service
           path: service
+      - uses: actions/setup-node@v2.1.5
+        with:
+          node-version: "14"
+      - name: Restore cache
+        uses: actions/cache@v2.1.6
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Copy webapp env vars
         run: cp webapp/.env.example webapp/.env.local
       - name: Bring up webapp
