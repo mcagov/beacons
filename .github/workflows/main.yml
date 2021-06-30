@@ -84,9 +84,11 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - name: Bring up API and DB
-        run: docker-compose --file docker-compose.e2e.yml up --detach
+        run: |
+          docker-compose --file docker-compose.e2e.yml up --detach \
+          curl 'http://localhost:8080/spring-api/actuator/health'
       - name: Hit actuator endpoint
-        run: curl 'http://api:8080/spring-api/actuator/health'
+        run: curl 'http://localhost:8080/spring-api/actuator/health'
       - name: Stop containers
         if: always()
         run: docker-compose --file "docker-compose.e2e.yml" down
