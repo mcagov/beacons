@@ -88,14 +88,14 @@ jobs:
           path: service
       - name: Copy webapp env vars
         run: cp webapp/.env.example webapp/.env.local
+      - name: Bring up webapp
+        run: cd webapp/ && npm run dev
       - uses: actions/setup-java@v2
         with:
           distribution: "adopt"
           java-version: 11
       - name: Bring up API and DB
-        run: |
-          cd service/ \
-          docker-compose up postgres beacons-service
+        run: cd service/ && docker-compose up postgres beacons-service
 
   lint_check:
     if: true == false
