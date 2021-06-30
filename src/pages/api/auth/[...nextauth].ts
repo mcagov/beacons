@@ -56,7 +56,7 @@ const options: NextAuthOptions = {
   ],
   callbacks: {
     session: async (session, profile) => {
-      session.user["id"] = profile.sub;
+      session.user["authId"] = profile.sub;
       return session;
     },
     redirect: async (url, baseUrl) => {
