@@ -86,7 +86,7 @@ jobs:
       - name: Bring up API and DB
         run: docker-compose --file docker-compose.e2e.yml up --detach
       - name: Hit actuator endpoint
-        run: curl 'http://localhost:8080/spring-api/actuator/health'
+        run: curl 'http://api:8080/spring-api/actuator/health'
       - name: Stop containers
         if: always()
         run: docker-compose --file "docker-compose.e2e.yml" down
