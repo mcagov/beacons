@@ -82,17 +82,6 @@ jobs:
         with:
           repository: mcagov/beacons-service
           path: service
-      - uses: actions/setup-node@v2.1.5
-        with:
-          node-version: "14"
-      - name: Install npm dependencies
-        run: cd webapp/ && npm ci
-        env:
-          CYPRESS_INSTALL_BINARY: 0
-      - name: Copy webapp env vars
-        run: cp webapp/.env.example webapp/.env.local
-      - name: Bring up webapp
-        run: cd webapp/ && npm run build && npm run start
       - uses: actions/setup-java@v2
         with:
           distribution: "adopt"
