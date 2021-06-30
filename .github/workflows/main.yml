@@ -66,6 +66,35 @@ jobs:
       - name: Run tests
         run: npm run test
 
+  cypress_tests:
+    if: true == false
+    name: Cypress tests
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+    env:
+      WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Copy env vars
+        run: cp .env.example .env.local
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          start: npm run start
+          build: npm run build
+          wait-on: "http://localhost:3000"
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots/
+
   end_to_end_tests:
     name: End to end tests
     runs-on: ubuntu-latest
