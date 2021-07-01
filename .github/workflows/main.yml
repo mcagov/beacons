@@ -101,6 +101,7 @@ jobs:
     env:
       WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
       CYPRESS_SESSION_TOKEN: ${{ secrets.CYPRESS_SESSION_TOKEN }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
     outputs:
       service_commit_hash: ${{ steps.get_service_commit_hash.outputs.service_commit_hash }}
