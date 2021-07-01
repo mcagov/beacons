@@ -130,14 +130,14 @@ jobs:
         run: cp .env.example .env.local
       - name: Run Cypress end to end tests
         uses: cypress-io/github-action@v2
-        env:
-          CYPRESS_SESSION_TOKEN: ${{ secrets.CYPRESS_SESSION_TOKEN }}
         with:
           spec: cypress/integration/endToEnd/*
           browser: chrome
           start: npm run start
           build: npm run build
           wait-on: "http://localhost:3000"
+        env:
+          CYPRESS_SESSION_TOKEN: ${{ secrets.CYPRESS_SESSION_TOKEN }}
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
