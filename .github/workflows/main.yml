@@ -126,8 +126,22 @@ jobs:
         run: |
           SERVICE_COMMIT_HASH=${{ steps.get_service_commit_hash.outputs.service_commit_hash }} docker-compose --file docker-compose.e2e.yml up --detach
           sleep 20
-      - name: Hit actuator endpoint
-        run: curl 'http://localhost:8080/spring-api/actuator/health'
+      - name: Copy env vars
+        run: cp .env.example .env.local
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v2
+        with:
+          spec: cypress/integration/endToEnd/*
+          browser: chrome
+          env: SESSION_TOKEN={{ secrets.CYPRESS_SESSION_TOKEN }}
+          start: npm run start
+          build: npm run build
+          wait-on: "http://localhost:3000"
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots/
       - name: Stop containers
         if: always()
         run: docker-compose --file "docker-compose.e2e.yml" down

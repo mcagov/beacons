@@ -23,6 +23,16 @@ export const givenIHaveACookieSetAndIVisit = (url: string): void => {
   cy.visit(url);
 };
 
+export const givenIHaveACookieSetAndHaveSignedInIVisit = (
+  url: string
+): void => {
+  cy.setCookie("submissionId", v4());
+  cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
+    log: false,
+  });
+  cy.visit(url);
+};
+
 export const givenIAmAt = (url: string): void => {
   cy.visit(url);
 };
