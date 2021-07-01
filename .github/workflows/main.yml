@@ -128,12 +128,12 @@ jobs:
           sleep 20
       - name: Copy env vars
         run: cp .env.example .env.local
-      - name: Run Cypress tests
+      - name: Run Cypress end to end tests
         uses: cypress-io/github-action@v2
         with:
           spec: cypress/integration/endToEnd/*
           browser: chrome
-          env: SESSION_TOKEN={{ secrets.CYPRESS_SESSION_TOKEN }}
+          env: SESSION_TOKEN=${{ secrets.CYPRESS_SESSION_TOKEN }}
           start: npm run start
           build: npm run build
           wait-on: "http://localhost:3000"
