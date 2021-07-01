@@ -76,8 +76,9 @@ Our approach to testing:
 - To run the Cypress end to end tests locally, the `SESSION_TOKEN` environment variable needs to be set
 
   - This can be done by copying `cypress.env.json.example` to `cypress.env.json` file
-  - The value is in 1Password
-  - TODO: Command for running just end to end test?
+  - The value is in 1Password - the token has been set to expire in 2031
+
+TODO: Command for running just end to end test? - Write about needing to bring up API and DB - What about running locally and DB containing previous test runs' data - make scripts? for brining everything up? and erasing data? - but again same issue with not knowing people's local repo paths
 
 - The end to end tests are also a part of our CI/CD pipeline
   - They required the env vars `SESSION_TOKEN`, `JWT_SECRET` and `WEBAPP_CLIENT_SECRET`
