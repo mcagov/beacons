@@ -100,6 +100,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+      CYPRESS_SESSION_TOKEN: ${{ secrets.CYPRESS_SESSION_TOKEN }}
+
     outputs:
       service_commit_hash: ${{ steps.get_service_commit_hash.outputs.service_commit_hash }}
 
@@ -125,7 +127,6 @@ jobs:
       - name: Bring up API and DB
         run: |
           SERVICE_COMMIT_HASH=${{ steps.get_service_commit_hash.outputs.service_commit_hash }} docker-compose --file docker-compose.e2e.yml up --detach
-          sleep 20
       - name: Copy env vars
         run: cp .env.example .env.local
       - name: Run Cypress end to end tests
@@ -136,8 +137,6 @@ jobs:
           start: npm run start
           build: npm run build
           wait-on: "http://localhost:3000"
-        env:
-          CYPRESS_SESSION_TOKEN: ${{ secrets.CYPRESS_SESSION_TOKEN }}
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
