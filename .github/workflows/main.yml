@@ -100,9 +100,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+    outputs:
+      service_commit_hash: ${{ steps.get_service_commit_hash.outputs.service_commit_hash }}
 
     steps:
       - uses: actions/checkout@v2.3.4
+      - id: get_service_commit_hash
+        name: Get commit hash from Service repo
+        run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -114,14 +119,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - name: Bring up API and DB
         run: |
-          docker-compose --file docker-compose.e2e.yml up --detach
-      - name: Wait for API response
-        uses: nev7n/wait_for_response@v1
-        with:
-          url: "http://localhost:8080/spring-api/actuator/health"
-          responseCode: 200
-          timeout: 20000
-          interval: 500
+          SERVICE_COMMIT_HASH=${{ steps.get_service_commit_hash.outputs.service_commit_hash }} docker-compose --file docker-compose.e2e.yml up --detach
+          sleep 20
       - name: Hit actuator endpoint
         run: curl 'http://localhost:8080/spring-api/actuator/health'
       - name: Stop containers
