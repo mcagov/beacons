@@ -104,13 +104,15 @@ jobs:
       service_commit_hash: ${{ steps.get_service_commit_hash.outputs.service_commit_hash }}
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Service repo
+        uses: actions/checkout@v2.3.4
         with:
           repository: "mcagov/beacons-service"
       - id: get_service_commit_hash
         name: Get commit hash from Service repo
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
-      - uses: actions/checkout@v2.3.4
+      - name: Checkout webapp repo
+        uses: actions/checkout@v2.3.4
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
