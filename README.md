@@ -71,6 +71,19 @@ Our approach to testing:
 - `npm run cypress:run` -- Run Cypress tests in the `cypress/integration` directory in the [command line](https://docs.cypress.io/guides/guides/command-line.html#cypress-run)
 - `npm run cypress:run:firefox` -- Run Cypress tests in the `cypress/integration` directory using Firefox (requires Firefox to be installed)
 
+#### End to end tests
+
+- To run the Cypress end to end tests locally, the `SESSION_TOKEN` environment variable needs to be set
+
+  - This can be done by copying `cypress.env.json.example` to `cypress.env.json` file
+  - The value is in 1Password
+  - TODO: Command for running just end to end test?
+
+- The end to end tests are also a part of our CI/CD pipeline
+  - They required the env vars `SESSION_TOKEN`, `JWT_SECRET` and `WEBAPP_CLIENT_SECRET`
+  - These values are the ones used locally (`.env.local`)
+  - They have been set as Github secrets in the repository
+
 ## Deployment
 
 A Continuous Integration and Deployment (CI/CD) pipeline is configured to deploy to our development environment on merges into the `main` branch.
