@@ -85,6 +85,7 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
         with:
+          spec: cypress/integration/*
           browser: chrome
           start: npm run start
           build: npm run build
@@ -133,7 +134,7 @@ jobs:
       - name: Run Cypress end to end tests
         uses: cypress-io/github-action@v2
         with:
-          spec: cypress/integration/endToEnd/*
+          spec: cypress/endToEnd/*
           browser: chrome
           start: npm run start
           build: npm run build

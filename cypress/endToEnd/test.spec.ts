@@ -1,23 +1,23 @@
-import { PageURLs } from "../../../src/lib/urls";
-import { sentenceCase } from "../../../src/lib/utils";
+import { PageURLs } from "../../src/lib/urls";
+import { sentenceCase } from "../../src/lib/utils";
 import {
   testBeaconAndOwnerData,
   testLandUseData,
-} from "../common/happy-path-test-data.spec";
-import { givenIHaveEnteredMyBeaconDetails } from "../common/i-can-enter-beacon-information.spec";
+} from "../integration/common/happy-path-test-data.spec";
+import { givenIHaveEnteredMyBeaconDetails } from "../integration/common/i-can-enter-beacon-information.spec";
 import {
   givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
-} from "../common/i-can-enter-owner-information.spec";
-import { andIHaveNoFurtherUses } from "../common/i-can-enter-use-information/generic.spec";
-import { givenIHaveEnteredMyLandUse } from "../common/i-can-enter-use-information/land.spec";
+} from "../integration/common/i-can-enter-owner-information.spec";
+import { andIHaveNoFurtherUses } from "../integration/common/i-can-enter-use-information/generic.spec";
+import { givenIHaveEnteredMyLandUse } from "../integration/common/i-can-enter-use-information/land.spec";
 import {
   givenIHaveACookieSetAndHaveSignedInIVisit,
   givenIHaveClicked,
   iCanSeeATableCaptionThatContains,
   thenTheUrlShouldContain,
-} from "../common/selectors-and-assertions.spec";
+} from "../integration/common/selectors-and-assertions.spec";
 
 describe("As user with an account", () => {
   const iCanSeeTheBeaconListWithMyInformation = (): void => {
