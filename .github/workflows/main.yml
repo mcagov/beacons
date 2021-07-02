@@ -3,7 +3,6 @@ on: push
 
 jobs:
   install_dependencies:
-    if: github.ref == 'refs/heads/main'
     name: Install dependencies
     runs-on: ubuntu-latest
 
