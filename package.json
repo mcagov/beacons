@@ -18,7 +18,8 @@
     "cypress:open": "cypress open",
     "cypress:watch": "cypress open --config watchForFileChanges=true",
     "cypress:run": "cypress run",
-    "cypress:run:firefox": "cypress run --browser firefox"
+    "cypress:run:firefox": "cypress run --browser firefox",
+    "cypress:e2e": "cypress run --spec cypress/endToEnd/**"
   },
   "husky": {
     "hooks": {
