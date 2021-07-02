@@ -82,6 +82,7 @@ jobs:
       - name: Run Cypress UI tests
         uses: cypress-io/github-action@v2
         with:
+          spec: cypress/integration/**/*.spec.ts
           browser: chrome
           start: npm run start
           build: npm run build
