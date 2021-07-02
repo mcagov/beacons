@@ -70,20 +70,22 @@ Our approach to testing:
 - `npm run cypress:watch` -- Run Cypress tests with the Test Runner, with Cypress watching test files for changes
 - `npm run cypress:run` -- Run Cypress tests in the `cypress/integration` directory in the [command line](https://docs.cypress.io/guides/guides/command-line.html#cypress-run)
 - `npm run cypress:run:firefox` -- Run Cypress tests in the `cypress/integration` directory using Firefox (requires Firefox to be installed)
+- `npm run cypress:e2e` -- Run Cypress tests in the `cypress/endToEnd` directory in the command line
 
-#### End to end tests
+#### Running end to end tests locally:
 
-- To run the Cypress end to end tests locally, the `SESSION_TOKEN` environment variable needs to be set
-
-  - This can be done by copying `cypress.env.json.example` to `cypress.env.json` file
+- Bring up the: Service, Database and Webapp
+- Cypress needs the `SESSION_TOKEN` environment variable to be set
+  - This can be done by copying `cypress.env.json.example` to `cypress.env.json`
   - The value is in 1Password - the token has been set to expire in 2031
+- Run tests in the `cypress/endToEnd` directory in the Cypress Test Runner or using `npm run cypress:e2e`
 
-TODO: Command for running just end to end test? - Write about needing to bring up API and DB - What about running locally and DB containing previous test runs' data - make scripts? for brining everything up? and erasing data? - but again same issue with not knowing people's local repo paths
+The end to end tests are also a part of our CI/CD pipeline
 
-- The end to end tests are also a part of our CI/CD pipeline
-  - They required the env vars `SESSION_TOKEN`, `JWT_SECRET` and `WEBAPP_CLIENT_SECRET`
-  - These values are the ones used locally (`.env.local`)
-  - They have been set as Github secrets in the repository
+- They require the env vars `SESSION_TOKEN`, `JWT_SECRET` and `WEBAPP_CLIENT_SECRET`
+  - These have been set as Github secrets in the repository
+- Currently, the values are the same as the ones used locally (`.env.local`)
+  - They're listed in 1Password in case the local or repo values change
 
 ## Deployment
 
