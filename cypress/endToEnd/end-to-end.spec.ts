@@ -15,7 +15,6 @@ import { givenIHaveEnteredMyLandUse } from "../integration/common/i-can-enter-us
 import {
   givenIHaveACookieSetAndHaveSignedInIVisit,
   givenIHaveClicked,
-  iCanSeeATableCaptionThatContains,
   thenTheUrlShouldContain,
 } from "../integration/common/selectors-and-assertions.spec";
 
@@ -30,8 +29,6 @@ describe("As user with an account", () => {
 
   it("I register a beacon with a single use and see it in my Account page", () => {
     givenIHaveACookieSetAndHaveSignedInIVisit(PageURLs.accountHome);
-    // Will fail locally if you run the test multiple times
-    iCanSeeATableCaptionThatContains("0 registered beacons");
     givenIHaveClicked(".govuk-button");
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyLandUse();
@@ -43,8 +40,6 @@ describe("As user with an account", () => {
     thenTheUrlShouldContain(PageURLs.applicationComplete);
     givenIHaveClicked(".govuk-button");
     thenTheUrlShouldContain(PageURLs.accountHome);
-    // Will fail locally if you run the test multiple times
-    iCanSeeATableCaptionThatContains("1 registered beacons");
     iCanSeeTheBeaconListWithMyInformation();
   });
 });

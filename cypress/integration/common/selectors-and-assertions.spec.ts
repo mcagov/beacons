@@ -50,10 +50,6 @@ export const iCanSeeASectionHeadingThatContains = (text: string): void => {
   cy.get("h2").contains(text);
 };
 
-export const iCanSeeATableCaptionThatContains = (text: string): void => {
-  cy.get("caption").contains(text);
-};
-
 export const givenIHaveClickedTheButtonContaining = (text: string): void => {
   cy.get("button").contains(text).click();
 };
