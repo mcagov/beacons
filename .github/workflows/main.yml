@@ -23,6 +23,7 @@ jobs:
 
   docker_build:
     name: Build and Push Docker image
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
 
     steps:
@@ -138,6 +139,7 @@ jobs:
 
   codeql_check:
     name: CodeQL check
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
 
     steps:
