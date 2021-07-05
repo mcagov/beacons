@@ -56,29 +56,37 @@ Our approach to testing:
 
 - **Testing the rendering of React components**. We use [React testing library](https://testing-library.com/docs/react-testing-library/intro/) with Jest to ensure the rendered pages are what the user expects to see.
 - **Testing logic**. We segregate frontend logic from components by defining reusable TypeScript functions in `src/lib/`. Unit tests for these functions using Jest are in `test/lib`.
-- **End-to-end testing**. We use [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) to ensure the logic of the frontend matches the requirements.
+- **UI testing**. We use [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) to ensure the logic of the frontend matches the requirements.
+- **End-to-end testing**. We also use [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) to test the user journey from end to end.
 
 ### Running unit tests
 
 - `npm run test` -- Runs all unit tests in the `test/` directory
 - `npm run test:watch` -- Runs unit tests in watch mode
 
-### Running Cypress tests
+### Running UI tests
 
 - `docker compose up` -- Start the app in production mode.
 - `npm run cypress:open` -- Run Cypress tests in the `cypress/integration` directory with the [Cypress Test Runner](https://docs.cypress.io/guides/core-concepts/test-runner.html#Overview)
 - `npm run cypress:watch` -- Run Cypress tests with the Test Runner, with Cypress watching test files for changes
 - `npm run cypress:run` -- Run Cypress tests in the `cypress/integration` directory in the [command line](https://docs.cypress.io/guides/guides/command-line.html#cypress-run)
 - `npm run cypress:run:firefox` -- Run Cypress tests in the `cypress/integration` directory using Firefox (requires Firefox to be installed)
-- `npm run cypress:e2e` -- Run Cypress tests in the `cypress/endToEnd` directory in the command line
 
-#### Running end to end tests locally:
+The UI tests are a part of our CI/CD pipeline.
+
+- The tests run in Chrome
+- [Web Security is disabled](https://docs.cypress.io/guides/guides/web-security#Disabling-Web-Security) in our [cypress config](cypress.json)
+  - This is to work around the [same superdomain](https://docs.cypress.io/guides/guides/web-security#Same-superdomain-per-test) limitation
+  - e.g. [tests that access localhost as well as B2C](cypress/integration/single-beacon-owner/i-can-create-and-use-an-account.spec.ts)
+
+#### Running end to end tests:
 
 - Bring up the: Service, Database and Webapp
 - Cypress needs the `SESSION_TOKEN` environment variable to be set
   - This can be done by copying `cypress.env.json.example` to `cypress.env.json`
   - The value is in 1Password - the token has been set to expire in 2031
-- Run tests in the `cypress/endToEnd` directory in the Cypress Test Runner or using `npm run cypress:e2e`
+- `npm run cypress:open` or `npm run cypress:watch` -- Run Cypress tests in the `cypress/endToEnd` directory with the Test Runner
+- `npm run cypress:e2e` -- Run Cypress tests in the `cypress/endToEnd` directory in the command line
 
 The end to end tests are also a part of our CI/CD pipeline
 
