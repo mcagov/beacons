@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: beacons_service
+      POSTGRES_DB: beacons
+    ports:
+      - 5432:5432
+
+  api:
+    image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-service:$SERVICE_COMMIT_HASH
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
+    ports:
+      - 8080:8080
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"

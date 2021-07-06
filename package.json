@@ -17,8 +17,9 @@
     "postinstall": "scripts/post-install.sh",
     "cypress:open": "cypress open",
     "cypress:watch": "cypress open --config watchForFileChanges=true",
-    "cypress:run": "cypress run",
-    "cypress:run:firefox": "cypress run --browser firefox"
+    "cypress:run": "cypress run --spec 'cypress/integration/**/*.spec.ts'",
+    "cypress:run:firefox": "cypress run --browser firefox",
+    "cypress:e2e": "cypress run --spec cypress/endToEnd/**"
   },
   "husky": {
     "hooks": {
