@@ -15,6 +15,7 @@ export const getOrCreateAccountHolder =
   async (context: BeaconsGetServerSidePropsContext) => {
     const session = await getSession(context);
     const authId: string = session.user.authId;
+    const email: string = session.user.email;
     const accessToken = await getAccessToken();
 
     const accountHolderId = await accountHolderApiGateway.getAccountHolderId(
@@ -30,6 +31,7 @@ export const getOrCreateAccountHolder =
 
     return await accountHolderApiGateway.createAccountHolder(
       authId,
+      email,
       accessToken
     );
   };

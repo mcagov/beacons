@@ -9,6 +9,7 @@ import { BeaconResponseMapper } from "./mappers/beaconResponseMapper";
 export interface IAccountHolderApiGateway {
   createAccountHolder(
     authId: string,
+    email: string,
     accessToken: string
   ): Promise<IAccountHolderDetails>;
   getAccountHolderId(authId: string, accessToken: string): Promise<string>;
@@ -56,12 +57,13 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
 
   public async createAccountHolder(
     authId: string,
+    email: string,
     accessToken: string
   ): Promise<IAccountHolderDetails> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}`;
     try {
       const request = {
-        data: { attributes: { authId } },
+        data: { attributes: { authId, email } },
       } as IAccountHolderDetailsResponse;
       const response = await axios.post<
         any,
