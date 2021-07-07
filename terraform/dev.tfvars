@@ -22,3 +22,4 @@ db_delete_protection         = false
 db_instance_class            = "db.t2.micro"
 db_storage_encrypted         = false
 db_skip_final_snapshot       = true
+nat_gateway_count            = 1

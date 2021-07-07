@@ -197,3 +197,8 @@ variable "redis_port" {
   description = "Port on which to serve Redis"
   default     = 6379
 }
+variable "nat_gateway_count" {
+  type        = number
+  description = "Number of NAT gateways"
+  default     = 2
+}
