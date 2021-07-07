@@ -1,5 +1,5 @@
 aws_region                   = "eu-west-2"
-az_count                     = 1
+az_count                     = 2
 ecs_fargate_version          = "1.4.0"
 webapp_count                 = 1
 webapp_fargate_cpu           = 256
