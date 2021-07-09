@@ -2,7 +2,7 @@ import { Environment } from "../../../../src/lib/registration/types";
 import { PageURLs } from "../../../../src/lib/urls";
 import {
   andIClickContinue,
-  givenIHaveSelected,
+  andIClickTheButtonContaining,
   iCanSeeAButtonContaining,
   iCanSeeNLinksContaining,
   thenTheUrlShouldContain,
@@ -19,13 +19,12 @@ export const andIHaveNoFurtherUses = (): void => {
 
 export const andIHaveAnotherUse = (): void => {
   thenTheUrlShouldContain(PageURLs.additionalUse);
-  givenIHaveSelected("#yes");
-  andIClickContinue();
+  andIClickTheButtonContaining(/add another/i);
 };
 
 export const iCanEditMyNUses = (n: number): void => {
-  iCanSeeNLinksContaining(n, /change/i);
-  iCanSeeNLinksContaining(n, /delete/i);
+  iCanSeeNLinksContaining(n, "Change");
+  iCanSeeNLinksContaining(n, "Delete");
   iCanSeeAButtonContaining(/continue/i);
   iCanSeeAButtonContaining(/add another/i);
 };

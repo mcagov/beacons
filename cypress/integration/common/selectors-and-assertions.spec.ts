@@ -50,20 +50,22 @@ export const iCanSeeASectionHeadingThatContains = (text: string): void => {
   cy.get("h2").contains(text);
 };
 
-export const iCanSeeNLinksContaining = (
-  n: number,
-  text: string | RegExp
-): void => {
-  cy.get("a[href]").contains(text).should("have.length", n);
+export const iCanSeeNLinksContaining = (n: number, text: string): void => {
+  cy.get(`a[href]:contains(${text})`).should("have.length", n);
 };
 
 export const iCanSeeAButtonContaining = (text: string | RegExp): void => {
   cy.get("button").contains(text);
 };
 
-export const givenIHaveClickedTheButtonContaining = (text: string): void => {
+export const givenIHaveClickedTheButtonContaining = (
+  text: string | RegExp
+): void => {
   cy.get("button").contains(text).click();
 };
+
+export const andIClickTheButtonContaining =
+  givenIHaveClickedTheButtonContaining;
 
 export const whenIClickContinue = (): void => {
   givenIHaveClickedTheButtonContaining("Continue");

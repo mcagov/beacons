@@ -1,8 +1,4 @@
-import {
-  AdditionalUses,
-  Environment,
-  Purpose,
-} from "../../../src/lib/registration/types";
+import { Environment, Purpose } from "../../../src/lib/registration/types";
 import { PageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyBeaconDetails,
@@ -36,7 +32,7 @@ import {
   andIHaveAnotherUse,
   andIHaveNoFurtherUses,
   iCanEditMyEnvironment,
-  iCanEditMyUses,
+  iCanEditMyNUses,
 } from "../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyLandUse,
@@ -70,12 +66,15 @@ describe("As a single beacon owner with many uses", () => {
     givenIHaveEnteredMyBeaconDetails();
     iCanSeeAPageHeadingThatContains("main use");
     givenIHaveEnteredMyLandUse();
+    iCanEditMyNUses(1);
     andIHaveAnotherUse();
     iCanSeeAPageHeadingThatContains("second use");
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
+    iCanEditMyNUses(2);
     andIHaveAnotherUse();
     iCanSeeAPageHeadingThatContains("third use");
     givenIHaveEnteredMyAviationUse(Purpose.PLEASURE);
+    iCanEditMyNUses(3);
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
@@ -105,7 +104,7 @@ const iCanGoBackThroughTheFormInReverse = () => {
   whenIClickBack();
   iCanEditMyPersonalDetails();
   whenIClickBack();
-  iCanEditMyUses(AdditionalUses.NO);
+  iCanEditMyNUses(3);
   whenIClickBack();
   iCanEditMyAdditionalAviationUseInformation();
   whenIClickBack();
@@ -120,7 +119,7 @@ const iCanGoBackThroughTheFormInReverse = () => {
   iCanEditMyEnvironment(Environment.AVIATION);
   iCanSeeAPageHeadingThatContains("third use");
   whenIClickBack();
-  iCanEditMyUses(AdditionalUses.YES);
+  iCanEditMyNUses(3);
   whenIClickBack();
   iCanEditMyAdditionalMaritimeUseInformation();
   whenIClickBack();
@@ -135,7 +134,7 @@ const iCanGoBackThroughTheFormInReverse = () => {
   iCanEditMyEnvironment(Environment.MARITIME);
   iCanSeeAPageHeadingThatContains("second use");
   whenIClickBack();
-  iCanEditMyUses(AdditionalUses.YES);
+  iCanEditMyNUses(3);
   whenIClickBack();
   iCanEditMyAdditionalLandUseMoreDetails();
   whenIClickBack();
