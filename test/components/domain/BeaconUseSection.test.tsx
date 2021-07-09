@@ -10,6 +10,8 @@ describe("BeaconUseSection", () => {
 
     render(<BeaconUseSection use={use} index={1} />);
 
-    expect(screen.getByText(Environment.MARITIME)).toBeVisible();
+    expect(
+      screen.getByText(Environment.MARITIME, { exact: false })
+    ).toBeVisible();
   });
 });
