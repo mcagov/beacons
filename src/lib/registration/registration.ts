@@ -1,7 +1,10 @@
 import { FormSubmission } from "../formCache";
 import { stringToBoolean } from "../utils";
 import { initBeacon, initBeaconUse } from "./registrationInitialisation";
-import { IRegistrationRequestBody } from "./registrationRequestBody";
+import {
+  IRegistrationRequestBody,
+  IUseRequestBody,
+} from "./registrationRequestBody";
 import { Activity, BeaconUse, IRegistration } from "./types";
 
 type Indexes = {
@@ -177,7 +180,7 @@ export class Registration {
     });
   }
 
-  private _serialiseUse(use: BeaconUse, mainUse: boolean) {
+  private _serialiseUse(use: BeaconUse, mainUse: boolean): IUseRequestBody {
     const serialisedUse = {
       environment: use.environment,
       purpose: use.purpose ? use.purpose : null,

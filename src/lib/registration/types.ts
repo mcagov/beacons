@@ -92,7 +92,6 @@ export interface BeaconUse {
   windfarm: string;
   windfarmLocation: string;
   windfarmPeopleCount: string;
-  otherActivityDescription: string;
   otherActivityLocation: string;
   otherActivityPeopleCount: string;
 
