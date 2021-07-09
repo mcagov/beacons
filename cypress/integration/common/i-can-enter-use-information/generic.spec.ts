@@ -16,7 +16,6 @@ export const iCanEditMyEnvironment = (environment: Environment): void => {
 
 export const andIHaveNoFurtherUses = (): void => {
   thenTheUrlShouldContain(PageURLs.additionalUse);
-  givenIHaveSelected("#no");
   andIClickContinue();
 };
 
