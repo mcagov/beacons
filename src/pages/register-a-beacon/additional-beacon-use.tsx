@@ -66,7 +66,7 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
                   <br />
                   <LinkButton
                     buttonText="Continue"
-                    href={PageURLs.checkYourAnswers}
+                    href={PageURLs.aboutBeaconOwner}
                   />
                 </>
               )}
