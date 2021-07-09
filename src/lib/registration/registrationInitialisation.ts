@@ -109,7 +109,6 @@ export const initBeaconUse = (): BeaconUse => {
     windfarm: "",
     windfarmLocation: "",
     windfarmPeopleCount: "",
-    otherActivityDescription: "",
     otherActivityLocation: "",
     otherActivityPeopleCount: "",
 

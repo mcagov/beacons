@@ -1,5 +1,10 @@
 import { IFormCache } from "../src/lib/formCache";
-import { Activity, Environment } from "../src/lib/registration/types";
+import {
+  Activity,
+  BeaconUse,
+  Environment,
+  Purpose,
+} from "../src/lib/registration/types";
 
 export const getCacheMock = (): jest.Mocked<IFormCache> => {
   return {
@@ -22,25 +27,24 @@ export const getMockBeacon = (): any => ({
   lastServicedDate: new Date().toISOString(),
 });
 
-// TODO: Update `any` type once domain/form objects are defined
-export const getMockUse = (): any => ({
+export const getMockUse = (): BeaconUse => ({
   environment: Environment.MARITIME,
   activity: Activity.OTHER,
-  otherActivity: "On my boat",
+  purpose: Purpose.PLEASURE,
   callSign: "callSign",
   vhfRadio: "false",
-  fixedVhfRadio: "false",
-  fixedVhfRadioValue: "0117",
-  portableVhfRadio: "false",
-  portableVhfRadioValue: "0118",
-  satelliteTelephone: "false",
-  satelliteTelephoneValue: "0119",
-  mobileTelephone: "false",
-  mobileTelephone1: "01178123456",
-  mobileTelephone2: "01178123457",
-  otherCommunication: "false",
-  otherCommunicationValue: "Via email",
-  maxCapacity: 22,
+  fixedVhfRadio: "true",
+  fixedVhfRadioInput: "0117",
+  portableVhfRadio: "true",
+  portableVhfRadioInput: "0118",
+  satelliteTelephone: "true",
+  satelliteTelephoneInput: "0119",
+  mobileTelephone: "true",
+  mobileTelephoneInput1: "01178123456",
+  mobileTelephoneInput2: "01178123457",
+  otherCommunication: "true",
+  otherCommunicationInput: "Via email",
+  maxCapacity: "22",
   vesselName: "My lucky boat",
   portLetterNumber: "12345",
   homeport: "Bristol",
@@ -51,22 +55,30 @@ export const getMockUse = (): any => ({
   rssNumber: "123456",
   officialNumber: "123456",
   rigPlatformLocation: "On the rig",
-  mainUse: true,
   aircraftManufacturer: "Boeing",
   principalAirport: "Bristol",
   secondaryAirport: "Cardiff",
   registrationMark: "Reg mark",
   hexAddress: "123456",
   cnOrMsnNumber: "123456",
-  dongle: false,
+  dongle: "false",
   beaconPosition: "Carry bag",
+  driving: "false",
+  cycling: "false",
+  climbingMountaineering: "false",
+  skiing: "false",
+  walkingHiking: "false",
+  workingRemotely: "true",
   workingRemotelyLocation: "Bristol",
   workingRemotelyPeopleCount: "10",
+  windfarm: "true",
   windfarmLocation: "10",
   windfarmPeopleCount: "10",
+  otherActivityText: "On my boat",
   otherActivityLocation: "Taunton",
   otherActivityPeopleCount: "10",
   moreDetails: "Blue boat, tracked in SafeTrx",
+  additionalBeaconUse: "false",
 });
 
 // TODO: Update `any` type once domain/form objects are defined

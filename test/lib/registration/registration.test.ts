@@ -3,8 +3,10 @@ import {
   initBeacon,
   initBeaconUse,
 } from "../../../src/lib/registration/registrationInitialisation";
+import { IUseRequestBody } from "../../../src/lib/registration/registrationRequestBody";
 import {
   Activity,
+  BeaconUse,
   Environment,
   Purpose,
 } from "../../../src/lib/registration/types";
@@ -151,7 +153,7 @@ describe("Registration", () => {
 
   describe("serialising the registration for the API", () => {
     let beacon;
-    let use;
+    let use: BeaconUse;
     let owner;
     let emergencyContact;
     let formData;
@@ -165,13 +167,13 @@ describe("Registration", () => {
       formData = {
         ...beacon,
         ...use,
-        fixedVhfRadioInput: use.fixedVhfRadioValue,
-        portableVhfRadioInput: use.portableVhfRadioValue,
-        otherCommunicationInput: use.otherCommunicationValue,
-        satelliteTelephoneInput: use.satelliteTelephoneValue,
-        mobileTelephoneInput1: use.mobileTelephone1,
-        mobileTelephoneInput2: use.mobileTelephone2,
-        otherActivityText: use.otherActivity,
+        fixedVhfRadioInput: use.fixedVhfRadioInput,
+        portableVhfRadioInput: use.portableVhfRadioInput,
+        otherCommunicationInput: use.otherCommunicationInput,
+        satelliteTelephoneInput: use.satelliteTelephoneInput,
+        mobileTelephoneInput1: use.mobileTelephoneInput1,
+        mobileTelephoneInput2: use.mobileTelephoneInput2,
+        otherActivityText: use.otherActivityText,
         ownerFullName: owner.fullName,
         ownerEmail: owner.email,
         ownerTelephoneNumber: owner.telephoneNumber,
@@ -199,26 +201,56 @@ describe("Registration", () => {
     });
 
     it("should serialise the registration for sending to the API", () => {
-      const expectedUse = {
-        ...use,
+      const expectedUseRequestBody: IUseRequestBody = {
+        activity: Activity.OTHER,
+        aircraftManufacturer: "Boeing",
+        areaOfOperation: "Newport",
+        beaconLocation: "In my carry bag",
+        beaconPosition: "Carry bag",
+        callSign: "callSign",
+        cnOrMsnNumber: "123456",
+        dongle: false,
+        environment: Environment.MARITIME,
+        fixedVhfRadio: true,
+        fixedVhfRadioValue: "0117",
+        hexAddress: "123456",
+        homeport: "Bristol",
+        imoNumber: "123456",
+        mainUse: true,
+        mobileTelephone: true,
+        mobileTelephone1: "01178123456",
+        mobileTelephone2: "01178123457",
+        moreDetails: "Blue boat, tracked in SafeTrx",
+        officialNumber: "123456",
+        otherActivity: "On my boat",
+        otherActivityLocation: "Taunton",
+        otherActivityPeopleCount: "10",
+        otherCommunication: true,
+        otherCommunicationValue: "Via email",
+        portLetterNumber: "12345",
+        portableVhfRadio: true,
+        portableVhfRadioValue: "0118",
+        principalAirport: "Bristol",
+        purpose: Purpose.PLEASURE,
+        registrationMark: "Reg mark",
+        rigPlatformLocation: "On the rig",
+        rssNumber: "123456",
+        satelliteTelephone: true,
+        satelliteTelephoneValue: "0119",
+        secondaryAirport: "Cardiff",
+        ssrNumber: "123456",
+        vesselName: "My lucky boat",
         vhfRadio: false,
-        fixedVhfRadio: false,
-        fixedVhfRadioValue: "",
-        portableVhfRadio: false,
-        portableVhfRadioValue: "",
-        satelliteTelephone: false,
-        satelliteTelephoneValue: "",
-        mobileTelephone: false,
-        mobileTelephone1: "",
-        mobileTelephone2: "",
-        otherCommunication: false,
-        otherCommunicationValue: "",
+        windfarmLocation: "10",
+        windfarmPeopleCount: "10",
+        workingRemotelyLocation: "Bristol",
+        workingRemotelyPeopleCount: "10",
       };
       const expected = {
         beacons: [
           {
             ...beacon,
-            uses: [expectedUse],
+            uses: [expectedUseRequestBody],
             owner: { ...owner },
             emergencyContacts: [
               emergencyContact,
@@ -240,7 +272,6 @@ describe("Registration", () => {
       registration.createUse();
       registration.update({ useIndex: 1, ...formData });
       const json = registration.serialiseToAPI();
-      use.mainUse = false;
 
       expect(json.beacons[0].uses.length).toBe(2);
     });
