@@ -31,10 +31,7 @@ import {
   whenIClearTheInput,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
-import {
-  iCanEditMyAdditionalUsesChoice,
-  iCanEditMyEnvironment,
-} from "./generic.spec";
+import { iCanEditMyEnvironment, iCanEditMyUses } from "./generic.spec";
 
 export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
   thenTheUrlShouldContain(PageURLs.environment);
@@ -167,7 +164,7 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyPersonalDetails();
   whenIClickBack();
-  iCanEditMyAdditionalUsesChoice(AdditionalUses.NO);
+  iCanEditMyUses(AdditionalUses.NO);
   whenIClickBack();
   iCanEditMyAdditionalMaritimeUseInformation();
   whenIClickBack();

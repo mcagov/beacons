@@ -35,8 +35,8 @@ import {
 import {
   andIHaveAnotherUse,
   andIHaveNoFurtherUses,
-  iCanEditMyAdditionalUsesChoice,
   iCanEditMyEnvironment,
+  iCanEditMyUses,
 } from "../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyLandUse,
@@ -105,7 +105,7 @@ const iCanGoBackThroughTheFormInReverse = () => {
   whenIClickBack();
   iCanEditMyPersonalDetails();
   whenIClickBack();
-  iCanEditMyAdditionalUsesChoice(AdditionalUses.NO);
+  iCanEditMyUses(AdditionalUses.NO);
   whenIClickBack();
   iCanEditMyAdditionalAviationUseInformation();
   whenIClickBack();
@@ -120,7 +120,7 @@ const iCanGoBackThroughTheFormInReverse = () => {
   iCanEditMyEnvironment(Environment.AVIATION);
   iCanSeeAPageHeadingThatContains("third use");
   whenIClickBack();
-  iCanEditMyAdditionalUsesChoice(AdditionalUses.YES);
+  iCanEditMyUses(AdditionalUses.YES);
   whenIClickBack();
   iCanEditMyAdditionalMaritimeUseInformation();
   whenIClickBack();
@@ -135,7 +135,7 @@ const iCanGoBackThroughTheFormInReverse = () => {
   iCanEditMyEnvironment(Environment.MARITIME);
   iCanSeeAPageHeadingThatContains("second use");
   whenIClickBack();
-  iCanEditMyAdditionalUsesChoice(AdditionalUses.YES);
+  iCanEditMyUses(AdditionalUses.YES);
   whenIClickBack();
   iCanEditMyAdditionalLandUseMoreDetails();
   whenIClickBack();

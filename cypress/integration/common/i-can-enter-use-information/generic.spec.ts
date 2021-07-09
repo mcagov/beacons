@@ -1,12 +1,10 @@
-import {
-  AdditionalUses,
-  Environment,
-} from "../../../../src/lib/registration/types";
+import { Environment } from "../../../../src/lib/registration/types";
 import { PageURLs } from "../../../../src/lib/urls";
 import {
   andIClickContinue,
   givenIHaveSelected,
-  thenTheRadioButtonShouldBeSelected,
+  iCanSeeAButtonContaining,
+  iCanSeeNLinksContaining,
   thenTheUrlShouldContain,
 } from "../selectors-and-assertions.spec";
 
@@ -25,14 +23,9 @@ export const andIHaveAnotherUse = (): void => {
   andIClickContinue();
 };
 
-export const iCanEditMyAdditionalUsesChoice = (
-  additionalChoices: AdditionalUses
-): void => {
-  switch (additionalChoices) {
-    case AdditionalUses.YES:
-      thenTheRadioButtonShouldBeSelected("#yes");
-      break;
-    case AdditionalUses.NO:
-      thenTheRadioButtonShouldBeSelected("#no");
-  }
+export const iCanEditMyNUses = (n: number): void => {
+  iCanSeeNLinksContaining(n, /change/i);
+  iCanSeeNLinksContaining(n, /delete/i);
+  iCanSeeAButtonContaining(/continue/i);
+  iCanSeeAButtonContaining(/add another/i);
 };

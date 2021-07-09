@@ -23,8 +23,8 @@ import {
 } from "../common/i-can-enter-owner-information.spec";
 import {
   andIHaveNoFurtherUses,
-  iCanEditMyAdditionalUsesChoice,
   iCanEditMyEnvironment,
+  iCanEditMyUses,
 } from "../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyLandUse,
@@ -70,7 +70,7 @@ describe("As a land beacon owner", () => {
     whenIClickBack();
     iCanEditMyPersonalDetails();
     whenIClickBack();
-    iCanEditMyAdditionalUsesChoice(AdditionalUses.NO);
+    iCanEditMyUses(AdditionalUses.NO);
     whenIClickBack();
     iCanEditMyAdditionalLandUseMoreDetails();
     whenIClickBack();

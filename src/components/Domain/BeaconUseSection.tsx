@@ -57,6 +57,7 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
     <>
       <SectionHeading>
         {sentenceCase(useRankString(index + 1))} use:{" "}
+        {makeEnumValueUserFriendly(use.environment)} {"- "}
         {makeEnumValueUserFriendly(use.activity)} (
         {makeEnumValueUserFriendly(use.purpose)})
         <a className="govuk-link" href={href}>
