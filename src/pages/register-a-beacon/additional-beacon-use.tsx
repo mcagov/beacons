@@ -36,12 +36,9 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
   const pageHeading = "Summary of how you use this beacon";
   const additionalBeaconName = "additionalBeaconUse";
 
-  const useSections = [];
-  for (const [index, use] of registration.uses.entries()) {
-    useSections.push(
-      <BeaconUseSection index={index} use={use} key={`row${index}`} />
-    );
-  }
+  const useSections = registration.uses.map((use, index) => (
+    <BeaconUseSection index={index} use={use} key={`row${index}`} />
+  ));
 
   return (
     <BeaconsForm
