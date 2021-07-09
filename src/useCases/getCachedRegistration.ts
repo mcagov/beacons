@@ -1,10 +1,11 @@
 import { FormCacheFactory } from "../lib/formCache";
-import { Registration } from "../lib/registration/registration";
+import { IRegistration } from "../lib/registration/types";
 
 export type GetCachedRegistrationFn = (
   submissionId: string
-) => Promise<Registration>;
+) => Promise<IRegistration>;
 
 export const getCachedRegistration: GetCachedRegistrationFn = async (
   submissionId: string
-) => await FormCacheFactory.getCache().get(submissionId);
+): Promise<IRegistration> =>
+  (await FormCacheFactory.getCache().get(submissionId)).getRegistration();

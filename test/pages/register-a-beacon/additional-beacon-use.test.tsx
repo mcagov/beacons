@@ -1,0 +1,3 @@
+describe("AdditionalBeaconUse page", () => {
+  it("");
+});

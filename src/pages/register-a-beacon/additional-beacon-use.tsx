@@ -1,102 +1,115 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
+import Link from "next/link";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import { BackButton, LinkButton } from "../../components/Button";
 import { BeaconUseSection } from "../../components/domain/BeaconUseSection";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
-import { FormCacheFactory, FormSubmission } from "../../lib/formCache";
+import { Grid } from "../../components/Grid";
+import { Layout } from "../../components/Layout";
+import { PageHeading } from "../../components/Typography";
 import {
-  DestinationIfValidCallback,
-  FormPageProps,
-  handlePageRequest,
-} from "../../lib/handlePageRequest";
-import {
-  BeaconsContext,
-  decorateGetServerSidePropsContext,
-  setFormCache,
-} from "../../lib/middleware";
-import { AdditionalUses } from "../../lib/registration/types";
-import { formatUrlQueryParams } from "../../lib/utils";
-
-const definePageForm = ({}: FormSubmission): FormManager => {
-  return new FormManager({
-    additionalBeaconUse: new FieldManager("mainUse", [
-      Validators.required("Additional beacon use is a required field"),
-    ]),
-  });
-};
+  BeaconsGetServerSidePropsContext,
+  withContainer,
+} from "../../lib/container";
+import { FormPageProps } from "../../lib/handlePageRequest";
+import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
+import { PageURLs } from "../../lib/urls";
+import { getCachedRegistration } from "../../useCases/getCachedRegistration";
 
 const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
-  form,
   registration,
   showCookieBanner,
 }: FormPageProps): JSX.Element => {
-  const previousPageUrl = "/register-a-beacon/more-details";
   const pageHeading = "Summary of how you use this beacon";
-  const additionalBeaconName = "additionalBeaconUse";
-
-  const useSections = registration.uses.map((use, index) => (
-    <BeaconUseSection index={index} use={use} key={`row${index}`} />
-  ));
 
   return (
-    <BeaconsForm
-      pageHeading={pageHeading}
-      previousPageUrl={previousPageUrl}
-      formErrors={form.errorSummary}
-      showCookieBanner={showCookieBanner}
-      errorMessages={form.fields.additionalBeaconUse.errorMessages}
-    >
-      {useSections}
-
-      <button
-        role="button"
-        draggable="false"
-        className="govuk-button govuk-button--secondary"
-        data-module="govuk-button"
-        type="submit"
-        name={additionalBeaconName}
-        value={AdditionalUses.YES}
+    <>
+      <Layout
+        navigation={<BackButton href={PageURLs.moreDetails} />}
+        title={pageHeading}
+        showCookieBanner={showCookieBanner}
       >
-        Add another use for this beacon
-      </button>
-    </BeaconsForm>
+        <Grid
+          mainContent={
+            <>
+              <PageHeading>{pageHeading}</PageHeading>
+
+              {registration.uses.map((use, index) => (
+                <BeaconUseSection index={index} use={use} key={`row${index}`} />
+              ))}
+
+              {registration.uses.length === 0 && (
+                <LinkButton
+                  buttonText="Add a use for this beacon"
+                  href={PageURLs.environment}
+                />
+              )}
+
+              {registration.uses.length > 0 && (
+                <>
+                  <Link
+                    href={
+                      PageURLs.environment +
+                      "?useIndex=" +
+                      registration.uses.length
+                    }
+                  >
+                    <a
+                      role="button"
+                      draggable="false"
+                      className="govuk-button govuk-button--secondary"
+                      data-module="govuk-button"
+                    >
+                      Add another use for this beacon
+                    </a>
+                  </Link>
+                  <br />
+                  <br />
+                  <LinkButton
+                    buttonText="Continue"
+                    href={PageURLs.checkYourAnswers}
+                  />
+                </>
+              )}
+            </>
+          }
+        />
+      </Layout>
+    </>
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = async (
-  context: BeaconsContext
-) => {
-  const shouldCreateAdditionalUse =
-    context.formData.additionalBeaconUse === "true";
+// const onSuccessfulFormCallback: DestinationIfValidCallback = async (
+//   context: BeaconsContext
+// ) => {
+//   const shouldCreateAdditionalUse =
+//     context.formData.additionalBeaconUse === "true";
+//
+//   if (shouldCreateAdditionalUse) {
+//     const registration = await FormCacheFactory.getCache().get(
+//       context.submissionId
+//     );
+//     registration.createUse();
+//     await setFormCache(context.submissionId, registration);
+//
+//     const useIndex = registration.getRegistration().uses.length - 1;
+//
+//     return formatUrlQueryParams("/register-a-beacon/beacon-use", { useIndex });
+//   } else {
+//     return "/register-a-beacon/about-beacon-owner";
+//   }
+// };
 
-  if (shouldCreateAdditionalUse) {
-    const registration = await FormCacheFactory.getCache().get(
-      context.submissionId
-    );
-    registration.createUse();
-    await setFormCache(context.submissionId, registration);
-
-    const useIndex = registration.getRegistration().uses.length - 1;
-
-    return formatUrlQueryParams("/register-a-beacon/beacon-use", { useIndex });
-  } else {
-    return "/register-a-beacon/about-beacon-owner";
-  }
-};
-
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "",
-  definePageForm,
-  async (context: GetServerSidePropsContext) => {
-    const decoratedContext = await decorateGetServerSidePropsContext(context);
+export const getServerSideProps: GetServerSideProps = withContainer(
+  async (context: BeaconsGetServerSidePropsContext) => {
+    const submissionId = retrieveUserFormSubmissionId(context);
+    const registration = await getCachedRegistration(submissionId);
 
     return {
-      props: { registration: decoratedContext.registration.registration },
+      props: {
+        registration,
+      },
     };
-  },
-  onSuccessfulFormCallback
+  }
 );
 
 export default AdditionalBeaconUse;
