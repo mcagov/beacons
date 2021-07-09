@@ -1,5 +1,5 @@
-import { Session } from "next-auth";
-import { session } from "next-auth/client";
+import { GetServerSidePropsContext } from "next";
+import { Session } from "../gateways/userSessionGateway";
 import { BeaconsGetServerSidePropsContext } from "../lib/container";
 
 export type GetSessionFn = (
@@ -7,5 +7,7 @@ export type GetSessionFn = (
 ) => Promise<Session>;
 
 export const getSession =
-  (): GetSessionFn => async (context: BeaconsGetServerSidePropsContext) =>
-    await session(context);
+  ({ userSessionGateway }): GetSessionFn =>
+  async (context: GetServerSidePropsContext) => {
+    return await userSessionGateway.getSession(context);
+  };

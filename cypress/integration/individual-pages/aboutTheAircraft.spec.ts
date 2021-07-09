@@ -1,7 +1,6 @@
 import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveTyped,
-  iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenMyFocusMovesTo,
@@ -13,7 +12,6 @@ import {
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to submit information about my aircraft", () => {
-  const previousPageUrl = "/register-a-beacon/activity";
   const thisPageUrl = "/register-a-beacon/about-the-aircraft";
   const nextPageUrl = "/register-a-beacon/aircraft-communications";
 
@@ -29,10 +27,6 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
     whenIClickContinue();
 
     thenTheUrlShouldContain(nextPageUrl);
-  });
-
-  it("should route to the previous page", () => {
-    iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
   });
 
   describe("maximum capacity field", () => {

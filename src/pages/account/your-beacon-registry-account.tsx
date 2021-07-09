@@ -147,7 +147,6 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
             <view>{email}</view>
             <view>
               <br></br>
-              ********
             </view>
           </dd>
         </div>

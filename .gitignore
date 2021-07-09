@@ -17,4 +17,4 @@ screenshots
 # Jest
 coverage
 
-.env.local
+cypress.env.json

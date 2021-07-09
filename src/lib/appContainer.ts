@@ -17,6 +17,10 @@ import {
   IGovNotifyGateway,
 } from "../gateways/govNotifyApiGateway";
 import {
+  IUserSessionGateway,
+  UserSessionGateway,
+} from "../gateways/userSessionGateway";
+import {
   authenticateUser,
   AuthenticateUserFn,
 } from "../useCases/authenticateUser";
@@ -70,6 +74,7 @@ export interface IAppContainer {
   beaconsApiGateway: IBeaconsApiGateway;
   govNotifyGateway: IGovNotifyGateway;
   accountHolderApiGateway: IAccountHolderApiGateway;
+  userSessionGateway: IUserSessionGateway;
 }
 
 // "overrides" is spread over the default appContainer at the bottom of this method to enable injecting mocks et al.
@@ -118,6 +123,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get accountHolderApiGateway() {
       return new AccountHolderApiGateway(process.env.API_URL);
+    },
+    get userSessionGateway() {
+      return new UserSessionGateway();
     },
     ...overrides,
   };
