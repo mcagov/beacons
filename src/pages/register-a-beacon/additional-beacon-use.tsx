@@ -99,7 +99,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
     return {
       props: {
-        currentUseIndex: new URLSearchParams(context.req.url).get("useIndex"),
+        currentUseIndex: context.query.useIndex,
         uses: registration.uses,
       },
     };
