@@ -5,20 +5,25 @@ import { BackButton, LinkButton } from "../../components/Button";
 import { BeaconUseSection } from "../../components/domain/BeaconUseSection";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
-import { PageHeading } from "../../components/Typography";
+import { GovUKBody, PageHeading } from "../../components/Typography";
 import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
-import { FormPageProps } from "../../lib/handlePageRequest";
+import { BeaconUse } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { PageURLs } from "../../lib/urls";
 import { getCachedRegistration } from "../../useCases/getCachedRegistration";
 
-const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
-  registration,
-  showCookieBanner,
-}: FormPageProps): JSX.Element => {
+interface AdditionalBeaconUseProps {
+  uses: BeaconUse[];
+  showCookieBanner?: boolean;
+}
+
+const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
+  uses,
+  showCookieBanner = false,
+}: AdditionalBeaconUseProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
 
   return (
@@ -33,25 +38,31 @@ const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
             <>
               <PageHeading>{pageHeading}</PageHeading>
 
-              {registration.uses.map((use, index) => (
-                <BeaconUseSection index={index} use={use} key={`row${index}`} />
-              ))}
+              {uses.length === 0 && (
+                <>
+                  <GovUKBody>
+                    You have not assigned any uses to this beacon yet.
+                  </GovUKBody>
 
-              {registration.uses.length === 0 && (
-                <LinkButton
-                  buttonText="Add a use for this beacon"
-                  href={PageURLs.environment}
-                />
+                  <LinkButton
+                    buttonText="Add a use for this beacon"
+                    href={PageURLs.environment}
+                  />
+                </>
               )}
 
-              {registration.uses.length > 0 && (
+              {uses.length > 0 && (
                 <>
+                  {uses.map((use, index) => (
+                    <BeaconUseSection
+                      index={index}
+                      use={use}
+                      key={`row${index}`}
+                    />
+                  ))}
+
                   <Link
-                    href={
-                      PageURLs.environment +
-                      "?useIndex=" +
-                      registration.uses.length
-                    }
+                    href={PageURLs.environment + "?useIndex=" + uses.length}
                   >
                     <a
                       role="button"
@@ -106,7 +117,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
     return {
       props: {
-        registration,
+        uses: registration.uses,
       },
     };
   }

@@ -29,7 +29,7 @@ export const getMockBeacon = (): any => ({
 
 export const getMockUse = (): BeaconUse => ({
   environment: Environment.MARITIME,
-  activity: Activity.OTHER,
+  activity: Activity.SAILING,
   purpose: Purpose.PLEASURE,
   callSign: "callSign",
   vhfRadio: "true",
