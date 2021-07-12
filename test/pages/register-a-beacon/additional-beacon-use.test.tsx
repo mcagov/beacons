@@ -10,13 +10,13 @@ import { getMockUse } from "../../mocks";
 
 describe("AdditionalBeaconUse page", () => {
   it("given there are no uses, displays a 'no assigned uses' message", () => {
-    render(<AdditionalBeaconUse uses={[]} />);
+    render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
 
     expect(screen.getByText(/have not assigned any uses to this beacon yet/i));
   });
 
   it("given there are no uses, prompts the user to add a user via a button", () => {
-    render(<AdditionalBeaconUse uses={[]} />);
+    render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
 
     expect(screen.getByRole("button", { name: /add a use/i }));
   });
@@ -24,7 +24,7 @@ describe("AdditionalBeaconUse page", () => {
   it("given there is one use, displays that use", () => {
     const use = getMockUse();
 
-    render(<AdditionalBeaconUse uses={[use]} />);
+    render(<AdditionalBeaconUse uses={[use]} currentUseIndex={0} />);
 
     const content = screen.getByRole("main");
     expect(within(content).getByText(new RegExp(use.environment, "i")));
@@ -41,7 +41,7 @@ describe("AdditionalBeaconUse page", () => {
       activity: Activity.GLIDER,
     };
 
-    render(<AdditionalBeaconUse uses={[use1, use2]} />);
+    render(<AdditionalBeaconUse uses={[use1, use2]} currentUseIndex={0} />);
 
     const content = screen.getByRole("main");
     expect(within(content).getByText(new RegExp(use1.environment, "i")));
