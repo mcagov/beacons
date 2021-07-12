@@ -19,12 +19,12 @@ export const andIHaveNoFurtherUses = (): void => {
 
 export const andIHaveAnotherUse = (): void => {
   thenTheUrlShouldContain(PageURLs.additionalUse);
-  andIClickTheButtonContaining(/add another/i);
+  andIClickTheButtonContaining("Add another");
 };
 
 export const iCanEditMyNUses = (n: number): void => {
   iCanSeeNLinksContaining(n, "Change");
   iCanSeeNLinksContaining(n, "Delete");
-  iCanSeeAButtonContaining(/continue/i);
-  iCanSeeAButtonContaining(/add another/i);
+  iCanSeeAButtonContaining("Continue");
+  iCanSeeAButtonContaining("Add another");
 };
