@@ -34,7 +34,7 @@ export const ButtonGroup: FunctionComponent<ButtonGroupProps> = ({
 export const Button: FunctionComponent<ButtonProps> = ({
   buttonText,
 }: ButtonProps): JSX.Element => (
-  <button className="govuk-button" data-module="govuk-button" role="button">
+  <button className="govuk-button" data-module="govuk-button">
     {buttonText}
   </button>
 );

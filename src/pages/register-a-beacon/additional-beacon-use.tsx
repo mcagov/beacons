@@ -89,27 +89,6 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   );
 };
 
-// const onSuccessfulFormCallback: DestinationIfValidCallback = async (
-//   context: BeaconsContext
-// ) => {
-//   const shouldCreateAdditionalUse =
-//     context.formData.additionalBeaconUse === "true";
-//
-//   if (shouldCreateAdditionalUse) {
-//     const registration = await FormCacheFactory.getCache().get(
-//       context.submissionId
-//     );
-//     registration.createUse();
-//     await setFormCache(context.submissionId, registration);
-//
-//     const useIndex = registration.getRegistration().uses.length - 1;
-//
-//     return formatUrlQueryParams("/register-a-beacon/beacon-use", { useIndex });
-//   } else {
-//     return "/register-a-beacon/about-beacon-owner";
-//   }
-// };
-
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
     const submissionId = retrieveUserFormSubmissionId(context);

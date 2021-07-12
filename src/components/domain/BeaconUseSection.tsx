@@ -36,7 +36,7 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
           className="govuk-link"
           href={
             // TODO: Update delete link.  See https://trello.com/c/nuEwKc21
-            "https://www.google.com/search?q=how+to+implement+an+are+you+sure+page+without+clientside+javascript&source=hp&ei=AxfsYMWDBISo8gLOx4CQBQ&iflsig=AINFCbYAAAAAYOwlE3g2vYGGn-I__b3GXlj5tmuK6Vpt&oq=how+to+implement+an+are+you+sure+page+without+clientside+javascript&gs_lcp=Cgdnd3Mtd2l6EAM6CAgAELEDEIMBOggILhCxAxCDAToLCC4QsQMQxwEQowI6DgguELEDEIMBEMcBEKMCOgUIABCxAzoNCAAQsQMQgwEQRhD7AToCCAA6BAgAEAM6AgguOgYIABAWEB46BAgAEA06BggAEA0QHjoICCEQFhAdEB46BAghEBU6BQghEKABOgcIIRAKEKABOgQIIRAKUOUIWNlCYMhDaAJwAHgCgAG8AogB1kCSAQk0My4xNC45LjKYAQCgAQGqAQdnd3Mtd2l6&sclient=gws-wiz&ved=0ahUKEwiFkYqRp93xAhUElFwKHc4jAFIQ4dUDCAk&uact=5"
+            "#"
           }
         >
           Delete

@@ -55,11 +55,11 @@ export const iCanSeeNLinksContaining = (n: number, text: string): void => {
 };
 
 export const iCanSeeAButtonContaining = (text: string | RegExp): void => {
-  cy.get("button").contains(text);
+  cy.get(`button:contains(${text})`);
 };
 
 export const givenIHaveClickedTheButtonContaining = (text: string): void => {
-  cy.get("button").contains(text).click();
+  cy.get(`button:contains(${text})`).click();
 };
 
 export const andIClickTheButtonContaining =
