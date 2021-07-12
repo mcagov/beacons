@@ -1,5 +1,4 @@
 import { GetServerSideProps } from "next";
-import Link from "next/link";
 import React, { FunctionComponent } from "react";
 import { BackButton, LinkButton } from "../../components/Button";
 import { BeaconUseSection } from "../../components/domain/BeaconUseSection";
@@ -17,11 +16,13 @@ import { getCachedRegistration } from "../../useCases/getCachedRegistration";
 
 interface AdditionalBeaconUseProps {
   uses: BeaconUse[];
+  currentUseIndex: number;
   showCookieBanner?: boolean;
 }
 
 const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   uses,
+  currentUseIndex,
   showCookieBanner = false,
 }: AdditionalBeaconUseProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
@@ -29,7 +30,11 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   return (
     <>
       <Layout
-        navigation={<BackButton href={PageURLs.moreDetails} />}
+        navigation={
+          <BackButton
+            href={PageURLs.moreDetails + "?useIndex=" + currentUseIndex}
+          />
+        }
         title={pageHeading}
         showCookieBanner={showCookieBanner}
       >
@@ -60,19 +65,15 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                       key={`row${index}`}
                     />
                   ))}
-
-                  <Link
+                  <a
                     href={PageURLs.environment + "?useIndex=" + uses.length}
+                    role="button"
+                    draggable="false"
+                    className="govuk-button govuk-button--secondary"
+                    data-module="govuk-button"
                   >
-                    <a
-                      role="button"
-                      draggable="false"
-                      className="govuk-button govuk-button--secondary"
-                      data-module="govuk-button"
-                    >
-                      Add another use for this beacon
-                    </a>
-                  </Link>
+                    Add another use for this beacon
+                  </a>
                   <br />
                   <br />
                   <LinkButton
@@ -98,6 +99,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
     return {
       props: {
+        currentUseIndex: new URLSearchParams(context.req.url).get("useIndex"),
         uses: registration.uses,
       },
     };

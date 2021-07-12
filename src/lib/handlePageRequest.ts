@@ -5,6 +5,7 @@ import {
 } from "next";
 import { BasicAuthGateway } from "../gateways/basicAuthGateway";
 import { AuthenticateUser } from "../useCases/authenticateUser";
+import { saveCachedRegistration } from "../useCases/saveCachedRegistration";
 import { FormJSON, FormManager } from "./form/formManager";
 import { FormSubmission } from "./formCache";
 import {
@@ -47,6 +48,15 @@ export const handlePageRequest = (
 
     const beaconsContext: BeaconsContext =
       await decorateGetServerSidePropsContext(context);
+
+    const registration: Registration = beaconsContext.registration;
+    const existingUseCount = registration.getRegistration().uses.length;
+    const useIndexDoesNotExist = beaconsContext.useIndex > existingUseCount - 1;
+    if (useIndexDoesNotExist) {
+      registration.createUse();
+      saveCachedRegistration(beaconsContext.submissionId, registration);
+    }
+
     const userDidSubmitForm = beaconsContext.req.method === "POST";
 
     if (userDidSubmitForm) {
@@ -66,6 +76,7 @@ const handleGetRequest = (
   formManagerFactory: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
   const registration: Registration = context.registration;
+
   const flattenedRegistration = registration.getFlattenedRegistration({
     useIndex: context.useIndex,
   });
