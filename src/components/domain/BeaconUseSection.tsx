@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { BeaconUse, Environment } from "../../lib/registration/types";
+import { BeaconUse } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
 import {
   makeEnumValueUserFriendly,
@@ -20,203 +20,237 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
   use,
 }: BeaconUseSectionProps): JSX.Element => {
   const href = `${PageURLs.environment}?useIndex=${index}`;
-  let aboutTheSection = <></>;
-  let commsSection = <></>;
-  switch (use.environment) {
-    case Environment.MARITIME:
-      aboutTheSection = <AboutTheVesselSubSection index={index} use={use} />;
-      commsSection = (
-        <CommunicationsSubSection
-          index={index}
-          use={use}
-          href={PageURLs.vesselCommunications}
-        />
-      );
-      break;
-    case Environment.AVIATION:
-      aboutTheSection = <AboutTheAircraftSubSection index={index} use={use} />;
-      commsSection = (
-        <CommunicationsSubSection
-          index={index}
-          use={use}
-          href={PageURLs.aircraftCommunications}
-        />
-      );
-      break;
-    case Environment.LAND:
-      commsSection = (
-        <CommunicationsSubSection
-          index={index}
-          use={use}
-          href={PageURLs.landCommunications}
-        />
-      );
-      break;
-  }
+
   return (
     <>
       <SectionHeading>
         {sentenceCase(useRankString(index + 1))} use:{" "}
-        {makeEnumValueUserFriendly(use.environment)} {"- "}
+        {makeEnumValueUserFriendly(use.environment)} {" - "}
         {makeEnumValueUserFriendly(use.activity)} (
         {makeEnumValueUserFriendly(use.purpose)})
         <a className="govuk-link" href={href}>
           Change
           <span className="govuk-visually-hidden">Change</span>
         </a>
-        <a className="govuk-link" href={href}>
+        <a
+          className="govuk-link"
+          href={
+            // TODO: Update delete link.  See https://trello.com/c/nuEwKc21
+            "https://www.google.com/search?q=how+to+implement+an+are+you+sure+page+without+clientside+javascript&source=hp&ei=AxfsYMWDBISo8gLOx4CQBQ&iflsig=AINFCbYAAAAAYOwlE3g2vYGGn-I__b3GXlj5tmuK6Vpt&oq=how+to+implement+an+are+you+sure+page+without+clientside+javascript&gs_lcp=Cgdnd3Mtd2l6EAM6CAgAELEDEIMBOggILhCxAxCDAToLCC4QsQMQxwEQowI6DgguELEDEIMBEMcBEKMCOgUIABCxAzoNCAAQsQMQgwEQRhD7AToCCAA6BAgAEAM6AgguOgYIABAWEB46BAgAEA06BggAEA0QHjoICCEQFhAdEB46BAghEBU6BQghEKABOgcIIRAKEKABOgQIIRAKUOUIWNlCYMhDaAJwAHgCgAG8AogB1kCSAQk0My4xNC45LjKYAQCgAQGqAQdnd3Mtd2l6&sclient=gws-wiz&ved=0ahUKEwiFkYqRp93xAhUElFwKHc4jAFIQ4dUDCAk&uact=5"
+          }
+        >
           Delete
           <span className="govuk-visually-hidden">Delete</span>
         </a>
       </SectionHeading>
 
-      {aboutTheSection}
-      {commsSection}
-      <MoreDetailsSubSection index={index} use={use} />
+      <AboutThisUse use={use} />
+      <Communications use={use} />
+      <MoreDetailsSubSection use={use} />
     </>
   );
 };
 
-const AboutTheVesselSubSection: FunctionComponent<BeaconUseSectionProps> = ({
-  index,
+const AboutThisUse: FunctionComponent<{ use: BeaconUse }> = ({
   use,
-}: BeaconUseSectionProps): JSX.Element => {
-  const href = `${PageURLs.aboutTheVessel}?useIndex=${index}`;
-  return (
-    <>
-      <SummaryList>
-        <SummaryListItem labelText="About the vessel, rig or windfarm">
-          {use.vesselName && (
-            <BeaconUseDataRowItem label="Name" value={use.vesselName} />
-          )}
+}: {
+  use: BeaconUse;
+}): JSX.Element => (
+  <>
+    <SummaryList>
+      <SummaryListItem labelText="About this use">
+        {use.vesselName && (
+          <BeaconUseDataRowItem label="Name" value={use.vesselName} />
+        )}
+        {use.maxCapacity && (
           <BeaconUseDataRowItem
             label="Max persons onboard"
             value={use.maxCapacity}
           />
-          {use.beaconLocation && (
-            <BeaconUseDataRowItem
-              label="Beacon position"
-              value={use.beaconLocation}
-            />
-          )}
-          {use.homeport && (
-            <BeaconUseDataRowItem label="Homeport" value={use.homeport} />
-          )}
-          {use.areaOfOperation && (
-            <BeaconUseDataRowItem
-              label="Area of operation"
-              value={use.areaOfOperation}
-            />
-          )}
-          {use.portLetterNumber && (
-            <BeaconUseDataRowItem
-              label="Port letter number"
-              value={use.portLetterNumber}
-            />
-          )}
-          {use.imoNumber && (
-            <BeaconUseDataRowItem label="IMO number" value={use.imoNumber} />
-          )}
-          {use.ssrNumber && (
-            <BeaconUseDataRowItem
-              label="Small Ships Register number"
-              value={use.ssrNumber}
-            />
-          )}
-          {use.rssNumber && (
-            <BeaconUseDataRowItem
-              label=" Registry of Shipping and Seamen (RSS) number"
-              value={use.rssNumber}
-            />
-          )}
-          {use.officialNumber && (
-            <BeaconUseDataRowItem
-              label="Official number"
-              value={use.officialNumber}
-            />
-          )}
-          {use.rigPlatformLocation && (
-            <BeaconUseDataRowItem
-              label="Windfarm, rig or platform location"
-              value={use.rigPlatformLocation}
-            />
-          )}
-        </SummaryListItem>
-      </SummaryList>
-    </>
-  );
-};
-
-const AboutTheAircraftSubSection: FunctionComponent<BeaconUseSectionProps> = ({
-  index,
-  use,
-}: BeaconUseSectionProps): JSX.Element => {
-  const href = `${PageURLs.aboutTheAircraft}?useIndex=${index}`;
-
-  return (
-    <>
-      <SummaryList>
-        <SummaryListItem labelText="About the aircraft">
+        )}
+        {use.beaconLocation && (
           <BeaconUseDataRowItem
-            label="Max persons onboard"
-            value={use.maxCapacity}
+            label="Beacon position"
+            value={use.beaconLocation}
           />
+        )}
+        {use.homeport && (
+          <BeaconUseDataRowItem label="Homeport" value={use.homeport} />
+        )}
+        {use.areaOfOperation && (
+          <BeaconUseDataRowItem
+            label="Area of operation"
+            value={use.areaOfOperation}
+          />
+        )}
+        {use.portLetterNumber && (
+          <BeaconUseDataRowItem
+            label="Port letter number"
+            value={use.portLetterNumber}
+          />
+        )}
+        {use.imoNumber && (
+          <BeaconUseDataRowItem label="IMO number" value={use.imoNumber} />
+        )}
+        {use.ssrNumber && (
+          <BeaconUseDataRowItem
+            label="Small Ships Register number"
+            value={use.ssrNumber}
+          />
+        )}
+        {use.rssNumber && (
+          <BeaconUseDataRowItem
+            label=" Registry of Shipping and Seamen (RSS) number"
+            value={use.rssNumber}
+          />
+        )}
+        {use.officialNumber && (
+          <BeaconUseDataRowItem
+            label="Official number"
+            value={use.officialNumber}
+          />
+        )}
+        {use.rigPlatformLocation && (
+          <BeaconUseDataRowItem
+            label="Windfarm, rig or platform location"
+            value={use.rigPlatformLocation}
+          />
+        )}
+        {use.aircraftManufacturer && (
           <BeaconUseDataRowItem
             label="Manufacture and model: "
             value={use.aircraftManufacturer}
           />
+        )}
+        {use.principalAirport && (
           <BeaconUseDataRowItem
             label="Principal airport"
             value={use.principalAirport}
           />
+        )}
+        {use.secondaryAirport && (
           <BeaconUseDataRowItem
             label="Secondary airport"
             value={use.secondaryAirport}
           />
+        )}
+        {use.registrationMark && (
           <BeaconUseDataRowItem
             label="Registration mark"
             value={use.registrationMark}
           />
+        )}
+        {use.hexAddress && (
           <BeaconUseDataRowItem label="24-bit HEX" value={use.hexAddress} />
+        )}
+        {use.cnOrMsnNumber && (
           <BeaconUseDataRowItem
             label="CORE/Serial number"
             value={use.cnOrMsnNumber}
           />
-          {use.dongle && (
-            <BeaconUseDataRowItem label="Is this a dongle?" value="Yes" />
-          )}
+        )}
+        {use.dongle.includes("true") && (
+          <BeaconUseDataRowItem label="Is this a dongle?" value="Yes" />
+        )}
+        {use.beaconPosition && (
           <BeaconUseDataRowItem
             label="Beacon position"
             value={use.beaconPosition}
           />
-        </SummaryListItem>
-      </SummaryList>
-    </>
-  );
-};
+        )}
 
-const CommunicationsSubSection: FunctionComponent<BeaconUseSectionProps> = ({
-  index,
+        {use.driving.includes("true") && (
+          <BeaconUseDataRowItem value="This beacon is used while driving" />
+        )}
+
+        {use.cycling.includes("true") && (
+          <BeaconUseDataRowItem value="This beacon is used while cycling" />
+        )}
+
+        {use.climbingMountaineering.includes("true") && (
+          <BeaconUseDataRowItem value="This beacon is used while climbing and/or mountaineering" />
+        )}
+
+        {use.skiing.includes("true") && (
+          <BeaconUseDataRowItem value="This beacon is used while skiing" />
+        )}
+
+        {use.walkingHiking.includes("true") && (
+          <BeaconUseDataRowItem value="This beacon is used while walking and/or hiking" />
+        )}
+
+        {use.workingRemotely.includes("true") && (
+          <>
+            <BeaconUseDataRowItem value="This beacon is used while working remotely" />
+            <BeaconUseDataRowItem
+              label="Working remotely location"
+              value={use.workingRemotelyLocation}
+            />
+            <BeaconUseDataRowItem
+              label="Number of people working remotely"
+              value={use.workingRemotelyPeopleCount}
+            />
+          </>
+        )}
+
+        {use.windfarm.includes("true") && (
+          <>
+            <BeaconUseDataRowItem value="This beacon is used at a windfarm or windfarms" />
+            <BeaconUseDataRowItem
+              label="Windfarm location:"
+              value={use.windfarmLocation}
+            />
+            <BeaconUseDataRowItem
+              label="Number of people usually at the windfarm or windfarms:"
+              value={use.windfarmPeopleCount}
+            />
+          </>
+        )}
+
+        {use.otherActivityText && (
+          <>
+            <BeaconUseDataRowItem
+              label="Other activity"
+              value={use.otherActivityText}
+            />
+            <BeaconUseDataRowItem
+              label="Other activity location"
+              value={use.otherActivityLocation}
+            />
+            <BeaconUseDataRowItem
+              label="Number of people present during other activity"
+              value={use.otherActivityPeopleCount}
+            />
+          </>
+        )}
+      </SummaryListItem>
+    </SummaryList>
+  </>
+);
+
+const Communications: FunctionComponent<{ use: BeaconUse }> = ({
   use,
-  href,
-}: BeaconUseSectionProps): JSX.Element => {
-  href = `${href}?useIndex=${index}`;
-
+}: {
+  use: BeaconUse;
+}): JSX.Element => {
   return (
     <>
       <SummaryList>
         <SummaryListItem labelText="Communications">
-          {use.environment === Environment.MARITIME && (
+          {use.callSign && (
             <BeaconUseDataRowItem label="Callsign" value={use.callSign} />
           )}
           {use.fixedVhfRadio.includes("true") && (
             <>
-              Fixed VHF/DSC
+              Fixed VHF/DSC radio
               <br />
+              {use.fixedVhfRadioInput && (
+                <BeaconUseDataRowItem
+                  label="MMSI number"
+                  value={use.fixedVhfRadioInput}
+                />
+              )}
             </>
-          )}
-          {use.fixedVhfRadio.includes("true") && use.fixedVhfRadioInput && (
-            <BeaconUseDataRowItem label="MMSI" value={use.fixedVhfRadioInput} />
           )}
           {use.vhfRadio.includes("true") && (
             <>
@@ -226,17 +260,16 @@ const CommunicationsSubSection: FunctionComponent<BeaconUseSectionProps> = ({
           )}
           {use.portableVhfRadio.includes("true") && (
             <>
-              Portable VHF/DSC
+              Portable VHF/DSC radio
               <br />
+              {use.portableVhfRadioInput && (
+                <BeaconUseDataRowItem
+                  label="MMSI number"
+                  value={use.portableVhfRadioInput}
+                />
+              )}
             </>
           )}
-          {use.portableVhfRadio.includes("true") &&
-            use.portableVhfRadioInput && (
-              <BeaconUseDataRowItem
-                label="Portable MMSI"
-                value={use.portableVhfRadioInput}
-              />
-            )}
           {use.mobileTelephone.includes("true") && (
             <BeaconUseDataRowItem
               label="Mobile telephone (1)"
@@ -267,21 +300,17 @@ const CommunicationsSubSection: FunctionComponent<BeaconUseSectionProps> = ({
   );
 };
 
-const MoreDetailsSubSection: FunctionComponent<BeaconUseSectionProps> = ({
-  index,
+const MoreDetailsSubSection: FunctionComponent<{ use: BeaconUse }> = ({
   use,
-}: BeaconUseSectionProps): JSX.Element => {
-  const href = `${PageURLs.moreDetails}?useIndex=${index}`;
-  return (
-    <>
-      <SummaryList>
-        <SummaryListItem labelText="More details">
-          <BeaconUseDataRowItem value={use.moreDetails} />
-        </SummaryListItem>
-      </SummaryList>
-    </>
-  );
-};
+}: {
+  use: BeaconUse;
+}): JSX.Element => (
+  <SummaryList>
+    <SummaryListItem labelText="More details">
+      <BeaconUseDataRowItem value={use.moreDetails} />
+    </SummaryListItem>
+  </SummaryList>
+);
 
 interface CheckYourAnswersDataRowItemProps {
   label?: string;
