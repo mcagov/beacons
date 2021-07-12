@@ -113,7 +113,9 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
     const submissionId = retrieveUserFormSubmissionId(context);
-    const registration = await getCachedRegistration(submissionId);
+    const registration = (
+      await getCachedRegistration(submissionId)
+    ).getRegistration();
 
     return {
       props: {
