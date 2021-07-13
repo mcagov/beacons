@@ -28,11 +28,13 @@ export const SummaryListItem: FunctionComponent<SummaryListItemProps> = ({
   <div className="govuk-summary-list__row">
     <dt className="govuk-summary-list__key">{labelText}</dt>
     <dd className="govuk-summary-list__value">{children}</dd>
-    <dd className="govuk-summary-list__actions">
-      <a className="govuk-link" href={href}>
-        {actionText}
-        <span className="govuk-visually-hidden"> {actionValue}</span>
-      </a>
-    </dd>
+    {actionText && actionValue && (
+      <dd className="govuk-summary-list__actions">
+        <a className="govuk-link" href={href}>
+          {actionText}
+          <span className="govuk-visually-hidden"> {actionValue}</span>
+        </a>
+      </dd>
+    )}
   </div>
 );

@@ -6,11 +6,13 @@ interface PageHeadingProps {
 
 interface SectionHeadingProps {
   children: ReactNode;
+  classes?: string;
 }
 
 interface AnchorLinkProps {
   href: string;
   children: ReactNode;
+  classes?: string;
 }
 
 interface GovUKBodyProps {
@@ -28,17 +30,32 @@ export const PageHeading: FunctionComponent = ({
   <h1 className="govuk-heading-l">{children}</h1>
 );
 
-export const SectionHeading: FunctionComponent = ({
+export const SectionHeading: FunctionComponent<SectionHeadingProps> = ({
   children,
+  classes,
 }: SectionHeadingProps): JSX.Element => (
-  <h2 className="govuk-heading-m">{children}</h2>
+  <h2 className={"govuk-heading-m " + classes || ""}>{children}</h2>
 );
 
 export const AnchorLink: FunctionComponent<AnchorLinkProps> = ({
   href,
   children,
+  classes,
 }: AnchorLinkProps): JSX.Element => (
-  <a href={href} className="govuk-link">
+  <a href={href} className={"govuk-link " + classes || ""}>
+    {children}
+  </a>
+);
+
+export const WarningLink: FunctionComponent<AnchorLinkProps> = ({
+  href,
+  children,
+}: AnchorLinkProps): JSX.Element => (
+  <a
+    href={href}
+    className="govuk-link govuk-link--no-visited-state"
+    style={{ color: "#d4351c" }}
+  >
     {children}
   </a>
 );

@@ -65,15 +65,11 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                       key={`row${index}`}
                     />
                   ))}
-                  <a
+                  <LinkButton
+                    buttonText="Add another use for this beacon"
                     href={PageURLs.environment + "?useIndex=" + uses.length}
-                    role="button"
-                    draggable="false"
-                    className="govuk-button govuk-button--secondary"
-                    data-module="govuk-button"
-                  >
-                    Add another use for this beacon
-                  </a>
+                    classes="govuk-button--secondary"
+                  />
                   <br />
                   <br />
                   <LinkButton
