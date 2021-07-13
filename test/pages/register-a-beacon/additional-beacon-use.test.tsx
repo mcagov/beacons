@@ -15,7 +15,13 @@ describe("AdditionalBeaconUse page", () => {
     expect(screen.getByText(/have not assigned any uses to this beacon yet/i));
   });
 
-  it("given there are no uses, prompts the user to add a user via a button", () => {
+  it("given there are no uses, doesn't allow the user to continue to the next stage", () => {
+    render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
+
+    expect(screen.queryByRole("button", { name: /continue/i })).toBeNull();
+  });
+
+  it("given there are no uses, instead prompts the user to add a use via a button", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
 
     expect(screen.getByRole("button", { name: /add a use/i }));
