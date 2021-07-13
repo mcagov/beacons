@@ -1,26 +1,21 @@
 import React, { FunctionComponent } from "react";
 import { BeaconUse } from "../../lib/registration/types";
-import { PageURLs } from "../../lib/urls";
-import {
-  makeEnumValueUserFriendly,
-  sentenceCase,
-  useRankString,
-} from "../../lib/utils";
+import { prettyUseName } from "../../lib/utils";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { AnchorLink, SectionHeading, WarningLink } from "../Typography";
 
 interface BeaconUseSectionProps {
   index: number;
   use: BeaconUse;
-  changeUri?: string;
-  deleteUri?: string;
+  changeUri: string;
+  deleteUri: string;
 }
 
 export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
   index,
   use,
-  changeUri = `${PageURLs.environment}?useIndex=${index}`,
-  deleteUri = `${PageURLs.removeAUse}?useIndex=${index}`,
+  changeUri,
+  deleteUri,
 }: BeaconUseSectionProps): JSX.Element => {
   return (
     <>
@@ -33,10 +28,7 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
         }}
       >
         <SectionHeading classes="govuk-!-margin-0">
-          {sentenceCase(useRankString(index + 1))} use:{" "}
-          {makeEnumValueUserFriendly(use.environment)} {" - "}
-          {makeEnumValueUserFriendly(use.activity)} (
-          {makeEnumValueUserFriendly(use.purpose)})
+          {prettyUseName(use, index)}
         </SectionHeading>
 
         <div>

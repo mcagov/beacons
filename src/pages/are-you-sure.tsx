@@ -4,7 +4,6 @@ import { BackButton, LinkButton } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";
 import { GovUKBody, PageHeading } from "../components/Typography";
-import { PageURLs } from "../lib/urls";
 
 interface AreYouSureProps {
   actionText: string;
@@ -42,14 +41,13 @@ export const AreYouSure: FunctionComponent<AreYouSureProps> = ({
   );
 };
 
-export const buildAreYouSureUri = (
+export const buildAreYouSureQuery = (
   action: string,
   yes: string,
   no: string,
   consequences: string
 ): string => {
   return (
-    PageURLs.areYouSure +
     "?" +
     new URLSearchParams({
       action,

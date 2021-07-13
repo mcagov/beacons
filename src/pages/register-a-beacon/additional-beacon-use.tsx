@@ -11,8 +11,10 @@ import {
 } from "../../lib/container";
 import { BeaconUse } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
-import { PageURLs } from "../../lib/urls";
+import { ActionURLs, PageURLs } from "../../lib/urls";
+import { prettyUseName } from "../../lib/utils";
 import { getCachedRegistration } from "../../useCases/getCachedRegistration";
+import { buildAreYouSureQuery } from "../are-you-sure";
 
 interface AdditionalBeaconUseProps {
   uses: BeaconUse[];
@@ -58,13 +60,29 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
 
               {uses.length > 0 && (
                 <>
-                  {uses.map((use, index) => (
-                    <BeaconUseSection
-                      index={index}
-                      use={use}
-                      key={`row${index}`}
-                    />
-                  ))}
+                  {uses.map((use, index) => {
+                    // Prompt the user to confirm before deleting their use
+                    const action =
+                      "delete your " + prettyUseName(use, index) + " use";
+                    const consequences =
+                      "You will have the opportunity to review this change at the end.";
+                    const yes =
+                      ActionURLs.deleteCachedUse + "?useIndex=" + index;
+                    const no = PageURLs.additionalUse + "?useIndex=" + index;
+                    const deleteUri =
+                      PageURLs.areYouSure +
+                      buildAreYouSureQuery(action, yes, no, consequences);
+
+                    return (
+                      <BeaconUseSection
+                        index={index}
+                        use={use}
+                        changeUri={PageURLs.environment + "?useIndex=" + index}
+                        deleteUri={deleteUri}
+                        key={`row${index}`}
+                      />
+                    );
+                  })}
                   <LinkButton
                     buttonText="Add another use for this beacon"
                     href={PageURLs.environment + "?useIndex=" + uses.length}
