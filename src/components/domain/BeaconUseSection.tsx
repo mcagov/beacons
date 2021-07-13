@@ -40,10 +40,12 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
         </SectionHeading>
 
         <div>
-          <AnchorLink href={changeHref} classes="govuk-link--no-visited-state">
+          <AnchorLink
+            href={changeHref}
+            classes="govuk-link--no-visited-state govuk-!-margin-right-4"
+          >
             Change
           </AnchorLink>
-          &nbsp;
           <WarningLink href={deleteHref}>Delete</WarningLink>
         </div>
       </div>
