@@ -7,6 +7,7 @@ export enum PageURLs {
   signUp = "/account/sign-up",
   signIn = "/account/sign-in",
   accountHome = "/account/your-beacon-registry-account",
+  areYouSure = "/are-you-sure",
   checkBeaconDetails = "/register-a-beacon/check-beacon-details",
   beaconInformation = "/register-a-beacon/beacon-information",
   environment = "/register-a-beacon/beacon-use",
@@ -24,4 +25,8 @@ export enum PageURLs {
   emergencyContact = "/register-a-beacon/emergency-contact",
   checkYourAnswers = "/register-a-beacon/check-your-answers",
   applicationComplete = "/register-a-beacon/application-complete",
+}
+
+export enum ActionURLs {
+  deleteCachedUse = "/todo",
 }
