@@ -19,7 +19,8 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
   index,
   use,
 }: BeaconUseSectionProps): JSX.Element => {
-  const href = `${PageURLs.environment}?useIndex=${index}`;
+  const changeHref = `${PageURLs.environment}?useIndex=${index}`;
+  const deleteHref = "#"; // TODO: Update delete link.  See https://trello.com/c/nuEwKc21
 
   return (
     <>
@@ -28,17 +29,11 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
         {makeEnumValueUserFriendly(use.environment)} {" - "}
         {makeEnumValueUserFriendly(use.activity)} (
         {makeEnumValueUserFriendly(use.purpose)})
-        <a className="govuk-link" href={href}>
+        <a className="govuk-link" href={changeHref}>
           Change
           <span className="govuk-visually-hidden">Change</span>
         </a>
-        <a
-          className="govuk-link"
-          href={
-            // TODO: Update delete link.  See https://trello.com/c/nuEwKc21
-            "#"
-          }
-        >
+        <a className="govuk-link" href={deleteHref}>
           Delete
           <span className="govuk-visually-hidden">Delete</span>
         </a>
@@ -312,16 +307,13 @@ const MoreDetailsSubSection: FunctionComponent<{ use: BeaconUse }> = ({
   </SummaryList>
 );
 
-interface CheckYourAnswersDataRowItemProps {
+const BeaconUseDataRowItem: FunctionComponent<{
   label?: string;
   value?: string;
-}
-
-const BeaconUseDataRowItem: FunctionComponent<CheckYourAnswersDataRowItemProps> =
-  ({ label, value }: CheckYourAnswersDataRowItemProps): JSX.Element => (
-    <>
-      {label ? label + ": " : ""}
-      {value ? value : ""}
-      <br />
-    </>
-  );
+}> = ({ label, value }: { label?: string; value?: string }): JSX.Element => (
+  <>
+    {label ? label + ": " : ""}
+    {value ? value : ""}
+    <br />
+  </>
+);
