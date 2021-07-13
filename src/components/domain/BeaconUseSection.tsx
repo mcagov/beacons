@@ -12,16 +12,16 @@ import { AnchorLink, SectionHeading, WarningLink } from "../Typography";
 interface BeaconUseSectionProps {
   index: number;
   use: BeaconUse;
-  href?: string;
+  changeUri?: string;
+  deleteUri?: string;
 }
 
 export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
   index,
   use,
+  changeUri = `${PageURLs.environment}?useIndex=${index}`,
+  deleteUri = `${PageURLs.removeAUse}?useIndex=${index}`,
 }: BeaconUseSectionProps): JSX.Element => {
-  const changeHref = `${PageURLs.environment}?useIndex=${index}`;
-  const deleteHref = "#"; // TODO: Update delete link.  See https://trello.com/c/nuEwKc21
-
   return (
     <>
       <div
@@ -41,12 +41,12 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
 
         <div>
           <AnchorLink
-            href={changeHref}
+            href={changeUri}
             classes="govuk-link--no-visited-state govuk-!-margin-right-4"
           >
             Change
           </AnchorLink>
-          <WarningLink href={deleteHref}>Delete</WarningLink>
+          <WarningLink href={deleteUri}>Delete</WarningLink>
         </div>
       </div>
 

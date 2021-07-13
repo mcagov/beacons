@@ -40,12 +40,15 @@ describe("BeaconUseSection", () => {
 
   it("has a delete link to allow deleting the use", () => {
     const use: BeaconUse = getMockUse();
+    const useIndex = 0;
 
-    render(<BeaconUseSection use={use} index={0} />);
+    render(<BeaconUseSection use={use} index={useIndex} />);
 
     const deleteLink = screen.getByRole("link", { name: /delete/i });
-    expect(deleteLink).toHaveAttribute("href");
-    // TODO: To where should the delete button href?  See https://trello.com/c/nuEwKc21
+    expect(deleteLink).toHaveAttribute(
+      "href",
+      PageURLs.removeAUse + "?useIndex=" + useIndex
+    );
   });
 
   it("displays the vhfRadio boolean as 'VHF radio''", () => {
