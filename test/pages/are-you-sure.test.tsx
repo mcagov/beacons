@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import AreYouSure from "../../src/pages/are-you-sure";
+import { PageURLs } from "../../src/lib/urls";
+import AreYouSure, { buildAreYouSureUri } from "../../src/pages/are-you-sure";
 
-describe("ConfirmAction", () => {
+describe("AreYouSure", () => {
   it("plays back the action in the header as a question", () => {
     render(
       <AreYouSure
@@ -64,5 +65,21 @@ describe("ConfirmAction", () => {
     const yesButton = screen.getByRole("button", { name: "Yes" });
     expect(yesButton).toBeVisible();
     expect(yesButton).toHaveAttribute("href", redirectUriIfYes);
+  });
+});
+
+describe("buildUri", () => {
+  it("builds its expected URI from values", () => {
+    const action = "Delete your use";
+    const yes = "/api/delete-use";
+    const no = "/register-a-beacon/additional-beacon-use";
+    const consequences = "We may not come and rescue you.";
+
+    const result = buildAreYouSureUri(action, yes, no, consequences);
+
+    expect(result).toEqual(
+      PageURLs.areYouSure +
+        "?action=Delete+your+use&yes=%2Fapi%2Fdelete-use&no=%2Fregister-a-beacon%2Fadditional-beacon-use&consequences=We+may+not+come+and+rescue+you."
+    );
   });
 });
