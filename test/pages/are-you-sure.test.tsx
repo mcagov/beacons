@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { ConfirmAnAction } from "../../../src/components/domain/ConfirmAnAction";
+import AreYouSure from "../../src/pages/are-you-sure";
 
 describe("ConfirmAction", () => {
   it("plays back the action in the header as a question", () => {
     render(
-      <ConfirmAnAction
+      <AreYouSure
         actionText={"go to Chelsea"}
         redirectUriIfYes={"#"}
         redirectUriIfCancel={"#"}
@@ -21,7 +21,7 @@ describe("ConfirmAction", () => {
     const consequencesOfGoingToChelsea =
       "If you go to Chelsea, there will be photographs of fancy tricks";
     render(
-      <ConfirmAnAction
+      <AreYouSure
         actionText={"go to Chelsea"}
         redirectUriIfYes={"#"}
         redirectUriIfCancel={"#"}
@@ -39,7 +39,7 @@ describe("ConfirmAction", () => {
   it("contains a 'Cancel' button allowing the user to back out the action", () => {
     const redirectUriIfCancel = "https://idontwanttogoto.chelsea";
     render(
-      <ConfirmAnAction
+      <AreYouSure
         actionText="go to Chelsea"
         redirectUriIfYes="#"
         redirectUriIfCancel={redirectUriIfCancel}
@@ -54,7 +54,7 @@ describe("ConfirmAction", () => {
   it("contains a 'Yes' button allowing the user to confirm the action", () => {
     const redirectUriIfYes = "https://www.youtube.com/watch?v=XvRQDsH0Yho";
     render(
-      <ConfirmAnAction
+      <AreYouSure
         actionText="go to Chelsea"
         redirectUriIfYes={redirectUriIfYes}
         redirectUriIfCancel="#"
