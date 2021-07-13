@@ -4,6 +4,8 @@
  * @param toConvert {T|T[]}  The value to safe return as an array
  * @returns         {T[]}    An array of the provided values
  */
+import { BeaconUse } from "./registration/types";
+
 export function toArray<T>(toConvert: T | T[]): T[] {
   const toReturn = toConvert instanceof Array ? toConvert : [toConvert];
   return toReturn.filter((value: T) => !!value);
@@ -77,6 +79,16 @@ export function sentenceCase(string: string): string {
     ? ""
     : string[0].toUpperCase() + string.slice(1).toLowerCase();
 }
+
+export const prettyUseName = (use: BeaconUse, index: number): string =>
+  sentenceCase(useRankString(index + 1)) +
+  " use: " +
+  makeEnumValueUserFriendly(use.environment) +
+  " - " +
+  makeEnumValueUserFriendly(use.activity) +
+  "(" +
+  makeEnumValueUserFriendly(use.purpose) +
+  ")";
 
 export function formatUrlQueryParams(
   url: string,
