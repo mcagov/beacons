@@ -34,7 +34,7 @@ const andIDeleteMyMainUse = () => {
 };
 
 const iAmPromptedToConfirmDeletion = () => {
-  cy.get("h1").contains(/are you sure/i);
+  cy.get("h1").contains(/are you sure/i && /land/i && /cycling/i);
   // [ ] I can see a short title for the use so I know which one I am deleting
   // [ ] There is a 'cancel' choice reverse my decision
   // [ ] There is a 'confirm' choice to carry out the action

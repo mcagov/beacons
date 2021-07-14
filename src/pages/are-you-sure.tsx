@@ -58,8 +58,9 @@ export const buildAreYouSureQuery = (
   );
 };
 
-export const getServersideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const { action, consequences, yes, no } = context.query;
+
   return {
     props: {
       actionText: action,
