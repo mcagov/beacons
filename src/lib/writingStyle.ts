@@ -1,4 +1,4 @@
-export const useRankString = (number: number): string => {
+export const ordinal = (number: number): string => {
   const map = {
     1: "main",
     2: "second",

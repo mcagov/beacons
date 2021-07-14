@@ -3,8 +3,8 @@ import { BeaconUse } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
 import {
   makeEnumValueUserFriendly,
+  ordinal,
   sentenceCase,
-  useRankString,
 } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { SectionHeading } from "../Typography";
@@ -24,7 +24,7 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
   return (
     <>
       <SectionHeading>
-        {sentenceCase(useRankString(index + 1))} use:{" "}
+        {sentenceCase(ordinal(index + 1))} use:{" "}
         {makeEnumValueUserFriendly(use.environment)} {" - "}
         {makeEnumValueUserFriendly(use.activity)} (
         {makeEnumValueUserFriendly(use.purpose)})

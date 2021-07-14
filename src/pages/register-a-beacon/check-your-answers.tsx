@@ -22,8 +22,8 @@ import {
 import { PageURLs } from "../../lib/urls";
 import {
   makeEnumValueUserFriendly,
+  ordinal,
   sentenceCase,
-  useRankString,
 } from "../../lib/writingStyle";
 
 interface CheckYourAnswersProps {
@@ -204,7 +204,7 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
     return (
       <>
         <SectionHeading>
-          {sentenceCase(useRankString(index + 1))} use for the beacon
+          {sentenceCase(ordinal(index + 1))} use for the beacon
         </SectionHeading>
 
         <SummaryList>
