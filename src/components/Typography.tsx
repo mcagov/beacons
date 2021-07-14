@@ -32,17 +32,17 @@ export const PageHeading: FunctionComponent = ({
 
 export const SectionHeading: FunctionComponent<SectionHeadingProps> = ({
   children,
-  classes,
+  classes = "",
 }: SectionHeadingProps): JSX.Element => (
-  <h2 className={"govuk-heading-m " + classes || ""}>{children}</h2>
+  <h2 className={"govuk-heading-m " + classes}>{children}</h2>
 );
 
 export const AnchorLink: FunctionComponent<AnchorLinkProps> = ({
   href,
   children,
-  classes,
+  classes = "",
 }: AnchorLinkProps): JSX.Element => (
-  <a href={href} className={"govuk-link " + classes || ""}>
+  <a href={href} className={"govuk-link " + classes}>
     {children}
   </a>
 );
