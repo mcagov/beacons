@@ -31,7 +31,7 @@ describe("AreYouSure", () => {
 
     expect(
       screen.getByText(
-        "If you go to Chelsea, there will be photographs of fancy tricks"
+       consequencesOfGoingToChelsea
       )
     ).toBeVisible();
   });
