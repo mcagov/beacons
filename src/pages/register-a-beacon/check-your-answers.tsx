@@ -108,8 +108,7 @@ const BeaconDetailsSection: FunctionComponent<IRegistration> = ({
     <SummaryList>
       <SummaryListItem
         labelText="Beacon information"
-        href={PageURLs.checkBeaconDetails}
-        actionText="Change"
+        actions={[{ text: "Change", href: PageURLs.checkBeaconDetails }]}
       >
         <CheckYourAnswersDataRowItem
           label="Manufacturer"
@@ -134,8 +133,7 @@ const BeaconInformationSection: FunctionComponent<IRegistration> = ({
     <SummaryList>
       <SummaryListItem
         labelText="Additional beacon information"
-        href={PageURLs.beaconInformation}
-        actionText="Change"
+        actions={[{ text: "Change", href: PageURLs.beaconInformation }]}
       >
         <CheckYourAnswersDataRowItem
           label="Serial number"
@@ -210,8 +208,7 @@ const BeaconUseSection: FunctionComponent<CheckYourAnswersBeaconUseSectionProps>
         <SummaryList>
           <SummaryListItem
             labelText="Beacon use"
-            href={href}
-            actionText="Change"
+            actions={[{ text: "Change", href: href }]}
           >
             <CheckYourAnswersDataRowItem
               value={makeEnumValueUserFriendly(use.environment)}
@@ -241,8 +238,7 @@ const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
         <SummaryList>
           <SummaryListItem
             labelText="About the vessel, rig or windfarm"
-            href={href}
-            actionText="Change"
+            actions={[{ text: "Change", href: href }]}
           >
             {use.vesselName && (
               <CheckYourAnswersDataRowItem
@@ -323,8 +319,7 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
         <SummaryList>
           <SummaryListItem
             labelText="About the aircraft"
-            href={href}
-            actionText="Change"
+            actions={[{ text: "Change", href: href }]}
           >
             <CheckYourAnswersDataRowItem
               label="Max persons onboard"
@@ -383,8 +378,7 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
         <SummaryList>
           <SummaryListItem
             labelText="Communications"
-            href={href}
-            actionText="Change"
+            actions={[{ text: "Change", href: href }]}
           >
             {use.environment === Environment.MARITIME && (
               <CheckYourAnswersDataRowItem
@@ -461,8 +455,7 @@ const MoreDetailsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSectionP
         <SummaryList>
           <SummaryListItem
             labelText="More details"
-            href={href}
-            actionText="Change"
+            actions={[{ text: "Change", href: href }]}
           >
             <CheckYourAnswersDataRowItem value={use.moreDetails} />
           </SummaryListItem>
@@ -483,8 +476,7 @@ const BeaconOwnerSection: FunctionComponent<IRegistration> = ({
     <SummaryList>
       <SummaryListItem
         labelText="Owner details"
-        href={PageURLs.aboutBeaconOwner}
-        actionText="Change"
+        actions={[{ text: "Change", href: PageURLs.aboutBeaconOwner }]}
       >
         <CheckYourAnswersDataRowItem value={ownerFullName} />
         <CheckYourAnswersDataRowItem value={ownerTelephoneNumber} />
@@ -507,8 +499,7 @@ const BeaconOwnerAddressSection: FunctionComponent<IRegistration> = ({
       <SummaryList>
         <SummaryListItem
           labelText="Address"
-          href={PageURLs.beaconOwnerAddress}
-          actionText="Change"
+          actions={[{ text: "Change", href: PageURLs.beaconOwnerAddress }]}
         >
           <CheckYourAnswersDataRowItem value={ownerAddressLine1} />
           <CheckYourAnswersDataRowItem value={ownerAddressLine2} />
@@ -540,8 +531,7 @@ const BeaconOwnerEmergencyContactsSection: FunctionComponent<FormSubmission> =
         <SummaryList>
           <SummaryListItem
             labelText="Contact 1"
-            href={PageURLs.emergencyContact}
-            actionText="Change"
+            actions={[{ text: "Change", href: PageURLs.emergencyContact }]}
           >
             <CheckYourAnswersDataRowItem value={emergencyContact1FullName} />
             <CheckYourAnswersDataRowItem
@@ -553,8 +543,7 @@ const BeaconOwnerEmergencyContactsSection: FunctionComponent<FormSubmission> =
           </SummaryListItem>
           <SummaryListItem
             labelText="Contact 2"
-            href={PageURLs.emergencyContact}
-            actionText="Change"
+            actions={[{ text: "Change", href: PageURLs.emergencyContact }]}
           >
             <CheckYourAnswersDataRowItem value={emergencyContact2FullName} />
             <CheckYourAnswersDataRowItem
@@ -566,8 +555,7 @@ const BeaconOwnerEmergencyContactsSection: FunctionComponent<FormSubmission> =
           </SummaryListItem>
           <SummaryListItem
             labelText="Contact 3"
-            href={PageURLs.emergencyContact}
-            actionText="Change"
+            actions={[{ text: "Change", href: PageURLs.emergencyContact }]}
           >
             <CheckYourAnswersDataRowItem value={emergencyContact3FullName} />
             <CheckYourAnswersDataRowItem
