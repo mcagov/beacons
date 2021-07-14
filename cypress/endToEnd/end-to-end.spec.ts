@@ -1,5 +1,5 @@
 import { PageURLs } from "../../src/lib/urls";
-import { sentenceCase } from "../../src/lib/utils";
+import { sentenceCase } from "../../src/lib/writingStyle";
 import {
   testBeaconAndOwnerData,
   testLandUseData,

@@ -1,11 +1,11 @@
+import { formatUrlQueryParams } from "../../src/lib/urls";
+import { toArray } from "../../src/lib/utils";
 import {
-  formatUrlQueryParams,
   makeEnumValueUserFriendly,
   padNumberWithLeadingZeros,
   stringToBoolean,
-  toArray,
   toUpperCase,
-} from "../../src/lib/utils";
+} from "../../src/lib/writingStyle";
 
 describe("to array function", () => {
   it("should convert a number to an array", () => {
