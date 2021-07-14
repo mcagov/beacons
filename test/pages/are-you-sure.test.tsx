@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { PageURLs } from "../../src/lib/urls";
-import AreYouSure, { buildAreYouSureUri } from "../../src/pages/are-you-sure";
+import AreYouSure, { buildAreYouSureQuery } from "../../src/pages/are-you-sure";
 
 describe("AreYouSure", () => {
   it("plays back the action in the header as a question", () => {
@@ -68,18 +67,17 @@ describe("AreYouSure", () => {
   });
 });
 
-describe("buildUri", () => {
-  it("builds its expected URI from values", () => {
+describe("buildAreYouSureQuery", () => {
+  it("builds its an AreYouSure query from values", () => {
     const action = "Delete your use";
     const yes = "/api/delete-use";
     const no = "/register-a-beacon/additional-beacon-use";
     const consequences = "We may not come and rescue you.";
 
-    const result = buildAreYouSureUri(action, yes, no, consequences);
+    const result = buildAreYouSureQuery(action, yes, no, consequences);
 
     expect(result).toEqual(
-      PageURLs.areYouSure +
-        "?action=Delete+your+use&yes=%2Fapi%2Fdelete-use&no=%2Fregister-a-beacon%2Fadditional-beacon-use&consequences=We+may+not+come+and+rescue+you."
+      "?action=Delete+your+use&yes=%2Fapi%2Fdelete-use&no=%2Fregister-a-beacon%2Fadditional-beacon-use&consequences=We+may+not+come+and+rescue+you."
     );
   });
 });

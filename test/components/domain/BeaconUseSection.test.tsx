@@ -2,7 +2,6 @@ import { render, screen, within } from "@testing-library/react";
 import React from "react";
 import { BeaconUseSection } from "../../../src/components/domain/BeaconUseSection";
 import { BeaconUse, Environment } from "../../../src/lib/registration/types";
-import { PageURLs } from "../../../src/lib/urls";
 import { getMockUse } from "../../mocks";
 
 describe("BeaconUseSection", () => {
@@ -29,26 +28,20 @@ describe("BeaconUseSection", () => {
     const use: BeaconUse = getMockUse();
     const index = 0;
 
-    render(<BeaconUseSection use={use} index={index} />);
+    render(<BeaconUseSection use={use} index={index} changeUri={"#"} />);
 
     const changeLink = screen.getByRole("link", { name: /change/i });
-    expect(changeLink).toHaveAttribute(
-      "href",
-      PageURLs.environment + "?useIndex=" + index
-    );
+    expect(changeLink).toHaveAttribute("href", "#");
   });
 
   it("has a delete link to allow deleting the use", () => {
     const use: BeaconUse = getMockUse();
     const useIndex = 0;
 
-    render(<BeaconUseSection use={use} index={useIndex} />);
+    render(<BeaconUseSection use={use} index={useIndex} deleteUri={"#"} />);
 
     const deleteLink = screen.getByRole("link", { name: /delete/i });
-    expect(deleteLink).toHaveAttribute(
-      "href",
-      PageURLs.removeAUse + "?useIndex=" + useIndex
-    );
+    expect(deleteLink).toHaveAttribute("href", "#");
   });
 
   it("displays the vhfRadio boolean as 'VHF radio''", () => {

@@ -12,7 +12,7 @@ import {
 import { BeaconUse } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { ActionURLs, PageURLs } from "../../lib/urls";
-import { prettyUseName } from "../../lib/utils";
+import { prettyUseName } from "../../lib/writingStyle";
 import { getCachedRegistration } from "../../useCases/getCachedRegistration";
 import { buildAreYouSureQuery } from "../are-you-sure";
 
@@ -62,8 +62,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                 <>
                   {uses.map((use, index) => {
                     // Prompt the user to confirm before deleting their use
-                    const action =
-                      "delete your " + prettyUseName(use, index) + " use";
+                    const action = "delete your " + prettyUseName(use) + " use";
                     const consequences =
                       "You will have the opportunity to review this change at the end.";
                     const yes =
