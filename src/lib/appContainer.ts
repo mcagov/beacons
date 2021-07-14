@@ -54,6 +54,10 @@ import {
   submitRegistration,
   SubmitRegistrationFn,
 } from "../useCases/submitRegistration";
+import {
+  updateAccountHolder,
+  UpdateAccountHolderFn,
+} from "../useCases/updateAccountHolder";
 
 export interface IAppContainer {
   /* Use cases */
@@ -65,6 +69,7 @@ export interface IAppContainer {
   getAccessToken: GetAccessTokenFn;
   getSession: GetSessionFn;
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
+  updateAccountHolder: UpdateAccountHolderFn;
   getAccountHolderId: GetAccountHolderIdFn;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
 
@@ -100,6 +105,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get getOrCreateAccountHolder() {
       return getOrCreateAccountHolder(this);
+    },
+    get updateAccountHolder() {
+      return updateAccountHolder(this);
     },
     get getAccountHolderId() {
       return getAccountHolderId(this);

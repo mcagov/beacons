@@ -17,6 +17,11 @@ export interface IAccountHolderApiGateway {
     accountHolderId: string,
     accessToken: string
   ): Promise<IAccountHolderDetails>;
+  updateAccountHolderDetails(
+    accountHolderId: string,
+    update: IAccountHolderDetails,
+    accessToken: string
+  ): Promise<IAccountHolderDetails>;
   getAccountBeacons(
     accountHolderId: string,
     accessToken: string
@@ -101,6 +106,34 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
     } catch (error) {
       /* eslint-disable no-console */
       console.error("getAccountHolderDetails:", error);
+      throw error;
+    }
+  }
+
+  public async updateAccountHolderDetails(
+    accountHolderId: string,
+    update: IAccountHolderDetails,
+    accessToken: string
+  ): Promise<IAccountHolderDetails> {
+    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}`;
+    try {
+      const request = {
+        data: { id: accountHolderId, attributes: { ...update } },
+      };
+      console.log("\n\n\request: ", request);
+      const response = await axios.patch<
+        any,
+        AxiosResponse<IAccountHolderDetailsResponse>
+      >(url, request, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      return {
+        id: response.data.data.id,
+        ...response.data.data.attributes,
+      };
+    } catch (error) {
+      /* eslint-disable no-console */
+      console.error("createAccountHolderId:", JSON.stringify(error));
       throw error;
     }
   }
