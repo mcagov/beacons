@@ -1,8 +1,4 @@
-import {
-  AdditionalUses,
-  Environment,
-  Purpose,
-} from "../../../../src/lib/registration/types";
+import { Environment, Purpose } from "../../../../src/lib/registration/types";
 import { PageURLs } from "../../../../src/lib/urls";
 import { makeEnumValueUserFriendly } from "../../../../src/lib/utils";
 import {
@@ -31,10 +27,7 @@ import {
   whenIClearTheInput,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
-import {
-  iCanEditMyAdditionalUsesChoice,
-  iCanEditMyEnvironment,
-} from "./generic.spec";
+import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
 export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
   thenTheUrlShouldContain(PageURLs.environment);
@@ -167,7 +160,7 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyPersonalDetails();
   whenIClickBack();
-  iCanEditMyAdditionalUsesChoice(AdditionalUses.NO);
+  iCanEditMyNUses(1);
   whenIClickBack();
   iCanEditMyAdditionalMaritimeUseInformation();
   whenIClickBack();

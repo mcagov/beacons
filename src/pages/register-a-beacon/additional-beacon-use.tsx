@@ -1,97 +1,109 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
-import { RadioList, RadioListItem } from "../../components/RadioList";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
-import { FormCacheFactory, FormSubmission } from "../../lib/formCache";
+import { BackButton, LinkButton } from "../../components/Button";
+import { BeaconUseSection } from "../../components/domain/BeaconUseSection";
+import { Grid } from "../../components/Grid";
+import { Layout } from "../../components/Layout";
+import { GovUKBody, PageHeading } from "../../components/Typography";
 import {
-  DestinationIfValidCallback,
-  FormPageProps,
-  handlePageRequest,
-} from "../../lib/handlePageRequest";
-import { BeaconsContext, setFormCache } from "../../lib/middleware";
-import { AdditionalUses } from "../../lib/registration/types";
-import { formatUrlQueryParams } from "../../lib/utils";
+  BeaconsGetServerSidePropsContext,
+  withContainer,
+} from "../../lib/container";
+import { BeaconUse } from "../../lib/registration/types";
+import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
+import { PageURLs } from "../../lib/urls";
+import { getCachedRegistration } from "../../useCases/getCachedRegistration";
 
-const definePageForm = ({
-  additionalBeaconUse,
-}: FormSubmission): FormManager => {
-  return new FormManager({
-    additionalBeaconUse: new FieldManager(additionalBeaconUse, [
-      Validators.required("Additional beacon use is a required field"),
-    ]),
-  });
-};
+interface AdditionalBeaconUseProps {
+  uses: BeaconUse[];
+  currentUseIndex: number;
+  showCookieBanner?: boolean;
+}
 
-const AdditionalBeaconUse: FunctionComponent<FormPageProps> = ({
-  form,
-  showCookieBanner,
-}: FormPageProps): JSX.Element => {
-  const previousPageUrl = "/register-a-beacon/more-details";
-  const pageHeading = "Do you have other additional uses for this beacon?";
-  const additionalBeaconName = "additionalBeaconUse";
+const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
+  uses,
+  currentUseIndex,
+  showCookieBanner = false,
+}: AdditionalBeaconUseProps): JSX.Element => {
+  const pageHeading = "Summary of how you use this beacon";
 
   return (
-    <BeaconsForm
-      pageHeading={pageHeading}
-      previousPageUrl={previousPageUrl}
-      formErrors={form.errorSummary}
-      showCookieBanner={showCookieBanner}
-      errorMessages={form.fields.additionalBeaconUse.errorMessages}
-    >
-      <RadioList>
-        <RadioListItem
-          id="yes"
-          name={additionalBeaconName}
-          value={AdditionalUses.YES}
-          label="Yes"
-          hintText="We'll ask you to tell us about these in the next step"
-          defaultChecked={
-            form.fields.additionalBeaconUse.value === AdditionalUses.YES
-          }
-        />
+    <>
+      <Layout
+        navigation={
+          <BackButton
+            href={PageURLs.moreDetails + "?useIndex=" + currentUseIndex}
+          />
+        }
+        title={pageHeading}
+        showCookieBanner={showCookieBanner}
+      >
+        <Grid
+          mainContent={
+            <>
+              <PageHeading>{pageHeading}</PageHeading>
 
-        <RadioListItem
-          id="no"
-          name={additionalBeaconName}
-          value={AdditionalUses.NO}
-          label="No"
-          defaultChecked={
-            form.fields.additionalBeaconUse.value === AdditionalUses.NO
+              {uses.length === 0 && (
+                <>
+                  <GovUKBody>
+                    You have not assigned any uses to this beacon yet.
+                  </GovUKBody>
+
+                  <LinkButton
+                    buttonText="Add a use for this beacon"
+                    href={PageURLs.environment}
+                  />
+                </>
+              )}
+
+              {uses.length > 0 && (
+                <>
+                  {uses.map((use, index) => (
+                    <BeaconUseSection
+                      index={index}
+                      use={use}
+                      key={`row${index}`}
+                    />
+                  ))}
+                  <a
+                    href={PageURLs.environment + "?useIndex=" + uses.length}
+                    role="button"
+                    draggable="false"
+                    className="govuk-button govuk-button--secondary"
+                    data-module="govuk-button"
+                  >
+                    Add another use for this beacon
+                  </a>
+                  <br />
+                  <br />
+                  <LinkButton
+                    buttonText="Continue"
+                    href={PageURLs.aboutBeaconOwner}
+                  />
+                </>
+              )}
+            </>
           }
         />
-      </RadioList>
-    </BeaconsForm>
+      </Layout>
+    </>
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = async (
-  context: BeaconsContext
-) => {
-  const shouldCreateAdditionalUse =
-    context.formData.additionalBeaconUse === "true";
-  if (shouldCreateAdditionalUse) {
-    const registration = await FormCacheFactory.getCache().get(
-      context.submissionId
-    );
-    registration.createUse();
-    await setFormCache(context.submissionId, registration);
+export const getServerSideProps: GetServerSideProps = withContainer(
+  async (context: BeaconsGetServerSidePropsContext) => {
+    const submissionId = retrieveUserFormSubmissionId(context);
+    const registration = (
+      await getCachedRegistration(submissionId)
+    ).getRegistration();
 
-    const useIndex = registration.getRegistration().uses.length - 1;
-
-    return formatUrlQueryParams("/register-a-beacon/beacon-use", { useIndex });
-  } else {
-    return "/register-a-beacon/about-beacon-owner";
+    return {
+      props: {
+        currentUseIndex: context.query.useIndex,
+        uses: registration.uses,
+      },
+    };
   }
-};
-
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "",
-  definePageForm,
-  (f) => f,
-  onSuccessfulFormCallback
 );
 
 export default AdditionalBeaconUse;

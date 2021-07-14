@@ -25,6 +25,7 @@ describe("As a maritime beacon owner,", () => {
   it("I can register my beacon for pleasure purposes", () => {
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
+    iCanSeeMyMaritimeUse(Purpose.PLEASURE);
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
@@ -44,6 +45,7 @@ describe("As a maritime beacon owner,", () => {
   it("I can register my beacon for commercial purposes", () => {
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyMaritimeUse(Purpose.COMMERCIAL);
+    iCanSeeMyMaritimeUse(Purpose.COMMERCIAL);
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
