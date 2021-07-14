@@ -1,11 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { BeaconUse } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
-import {
-  makeEnumValueUserFriendly,
-  sentenceCase,
-  useRankString,
-} from "../../lib/utils";
+import { makeEnumValueUserFriendly, sentenceCase } from "../../lib/utils";
+import { useRankString } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { SectionHeading } from "../Typography";
 

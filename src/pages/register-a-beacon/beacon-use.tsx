@@ -14,7 +14,7 @@ import {
 } from "../../lib/handlePageRequest";
 import { Environment } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
-import { useRankString } from "../../lib/utils";
+import { useRankString } from "../../lib/writingStyle";
 
 const getPageForm = ({ environment }) => {
   return new FormManager({

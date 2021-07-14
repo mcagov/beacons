@@ -20,11 +20,8 @@ import {
   IRegistration,
 } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
-import {
-  makeEnumValueUserFriendly,
-  sentenceCase,
-  useRankString,
-} from "../../lib/utils";
+import { makeEnumValueUserFriendly, sentenceCase } from "../../lib/utils";
+import { useRankString } from "../../lib/writingStyle";
 
 interface CheckYourAnswersProps {
   registration: IRegistration;
