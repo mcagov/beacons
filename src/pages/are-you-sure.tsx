@@ -23,6 +23,7 @@ export const AreYouSure: FunctionComponent<AreYouSureProps> = ({
     <Layout
       navigation={<BackButton href={redirectUriIfCancel} />}
       title={pageHeading}
+      showCookieBanner={false}
     >
       <Grid
         mainContent={
@@ -31,8 +32,13 @@ export const AreYouSure: FunctionComponent<AreYouSureProps> = ({
 
             <GovUKBody>{consequencesText}</GovUKBody>
 
-            <LinkButton buttonText="Cancel" href={redirectUriIfCancel} />
-
+            <LinkButton
+              buttonText="Cancel"
+              href={redirectUriIfCancel}
+              classes="govuk-button--secondary"
+            />
+            <br />
+            <br />
             <LinkButton buttonText="Yes" href={redirectUriIfYes} />
           </>
         }
@@ -61,13 +67,15 @@ export const buildAreYouSureQuery = (
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { action, consequences, yes, no } = context.query;
 
+  const props: AreYouSureProps = {
+    actionText: action as string,
+    consequencesText: consequences as string,
+    redirectUriIfYes: yes as string,
+    redirectUriIfCancel: no as string,
+  };
+
   return {
-    props: {
-      actionText: action,
-      consequencesText: consequences,
-      redirectUriIfYes: yes,
-      redirectUriIfNo: no,
-    },
+    props,
   };
 };
 
