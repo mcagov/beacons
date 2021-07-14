@@ -9,11 +9,11 @@ import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
+import { userHasAcceptedCookies } from "../../lib/cookies";
 import { withCookieRedirect } from "../../lib/middleware";
 import { BeaconUse } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { ActionURLs, PageURLs } from "../../lib/urls";
-import { userHasAcceptedCookies } from "../../lib/verifyFormSubmissionCookieIsSet";
 import { prettyUseName } from "../../lib/writingStyle";
 import { getCachedRegistration } from "../../useCases/getCachedRegistration";
 import { buildAreYouSureQuery } from "../are-you-sure";
