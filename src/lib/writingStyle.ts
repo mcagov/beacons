@@ -1,3 +1,11 @@
+import { BeaconUse } from "./registration/types";
+
+export const prettyUseName = (use: BeaconUse): string =>
+  makeEnumValueUserFriendly(use.environment) +
+  " - " +
+  makeEnumValueUserFriendly(use.activity) +
+  (use.purpose ? " (" + makeEnumValueUserFriendly(use.purpose) + ")" : "");
+
 export const ordinal = (number: number): string => {
   const map = {
     1: "main",
