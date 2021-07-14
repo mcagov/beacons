@@ -9,6 +9,12 @@ describe("As a beacon owner with several uses", () => {
     givenIHaveTwoUses();
     andIDeleteMyMainUse();
     iAmPromptedToConfirmDeletion();
+    // [ ] when I choose to Cancel I can see all my uses again
+    // [ ] I can choose to delete another use
+    // [ ] iAmPromptedToConfirmDeletion();
+    // [ ] I can confirm my deletion choice
+    // [ ] I can see my uses without the deleted use
+    // End
   });
 });
 
@@ -30,8 +36,6 @@ const andIDeleteMyMainUse = () => {
 const iAmPromptedToConfirmDeletion = () => {
   cy.get("h1").contains(/are you sure/i);
   // [ ] I can see a short title for the use so I know which one I am deleting
-  // [ ] I can cancel to reverse my decision
-  // [ ] I can click "Delete" again
-  // [ ] I can click "Confirm" to confirm the deletion
-  // [ ] I can see that my use has been deleted
+  // [ ] There is a 'cancel' choice reverse my decision
+  // [ ] There is a 'confirm' choice to carry out the action
 };
