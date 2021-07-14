@@ -1,6 +1,6 @@
 import { IAppContainer } from "../lib/appContainer";
 import { IRegistration } from "../lib/registration/types";
-import { joinStrings } from "../lib/utils";
+import { joinStrings } from "../lib/writingStyle";
 
 export type SendConfirmationEmailFn = (
   registration: IRegistration

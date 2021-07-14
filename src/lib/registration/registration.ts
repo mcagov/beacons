@@ -1,5 +1,5 @@
 import { FormSubmission } from "../formCache";
-import { stringToBoolean } from "../utils";
+import { stringToBoolean } from "../writingStyle";
 import { initBeacon, initBeaconUse } from "./registrationInitialisation";
 import {
   IRegistrationRequestBody,

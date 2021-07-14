@@ -14,7 +14,7 @@ import {
 } from "../../lib/handlePageRequest";
 import { Environment } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
-import { useRankString } from "../../lib/utils";
+import { ordinal } from "../../lib/writingStyle";
 
 const getPageForm = ({ environment }) => {
   return new FormManager({
@@ -29,7 +29,7 @@ export const BeaconUse: FunctionComponent<FormPageProps> = ({
   showCookieBanner,
   useIndex,
 }: FormPageProps): JSX.Element => {
-  const pageHeading = `What is the ${useRankString(
+  const pageHeading = `What is the ${ordinal(
     useIndex + 1
   )} use for this beacon?`;
   const pageText = (

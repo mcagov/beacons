@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FunctionComponent, ReactNode } from "react";
-import { formatUrlQueryParams } from "../lib/utils";
+import { formatUrlQueryParams } from "../lib/urls";
 
 interface ButtonGroupProps {
   children: ReactNode;

@@ -11,7 +11,7 @@ import {
 import { Registration } from "./registration/registration";
 import { IRegistration } from "./registration/types";
 import { retrieveUserFormSubmissionId } from "./retrieveUserFormSubmissionId";
-import { formatUrlQueryParams } from "./utils";
+import { formatUrlQueryParams } from "./urls";
 
 type TransformCallback = (formData: FormSubmission) => FormSubmission;
 
