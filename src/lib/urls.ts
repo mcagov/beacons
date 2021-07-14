@@ -25,3 +25,22 @@ export enum PageURLs {
   checkYourAnswers = "/register-a-beacon/check-your-answers",
   applicationComplete = "/register-a-beacon/application-complete",
 }
+
+export function formatUrlQueryParams(
+  url: string,
+  queryParamMap: Record<string, any>
+): string {
+  const formatUrl = (queryParam, value) => {
+    if (!url.includes(queryParam)) {
+      const queryStringCombiner = url.includes("?") ? "&" : "?";
+      url = `${url}${queryStringCombiner}${queryParam}=${value}`;
+    }
+  };
+
+  Object.keys(queryParamMap).forEach((queryParam) => {
+    const value = queryParamMap[queryParam];
+    formatUrl(queryParam, value);
+  });
+
+  return url;
+}

@@ -1,6 +1,6 @@
 import { Environment, Purpose } from "../../../../src/lib/registration/types";
 import { PageURLs } from "../../../../src/lib/urls";
-import { makeEnumValueUserFriendly } from "../../../../src/lib/utils";
+import { makeEnumValueUserFriendly } from "../../../../src/lib/writingStyle";
 import {
   testMaritimeCommercialUseData,
   testMaritimePleasureUseData,
