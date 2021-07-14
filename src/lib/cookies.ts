@@ -6,7 +6,10 @@ export const verifyFormSubmissionCookieIsSet = (
 ): boolean =>
   !!context.req.cookies && !!context.req.cookies[formSubmissionCookieId];
 
-export const userHasAcceptedCookies = (
+export const userHasHiddenCookieBanner = (
   context: GetServerSidePropsContext
 ): boolean =>
   !!context.req.cookies && !!context.req.cookies[acceptRejectCookieId];
+
+export const showCookieBanner = (context: GetServerSidePropsContext): boolean =>
+  !userHasHiddenCookieBanner(context);

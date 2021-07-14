@@ -9,13 +9,12 @@ import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
-import { userHasAcceptedCookies } from "../../lib/cookies";
+import { showCookieBanner } from "../../lib/cookies";
 import { withCookieRedirect } from "../../lib/middleware";
 import { BeaconUse } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { ActionURLs, PageURLs } from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
-import { getCachedRegistration } from "../../useCases/getCachedRegistration";
 import { buildAreYouSureQuery } from "../are-you-sure";
 
 interface AdditionalBeaconUseProps {
@@ -107,6 +106,8 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+    const { getCachedRegistration } = context.container;
+
     const submissionId = retrieveUserFormSubmissionId(context);
     const registration = (
       await getCachedRegistration(submissionId)
@@ -116,7 +117,7 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
       props: {
         currentUseIndex: context.query.useIndex,
         uses: registration.uses,
-        showCookieBanner: userHasAcceptedCookies(context),
+        showCookieBanner: showCookieBanner(context),
       },
     };
   })
