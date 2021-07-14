@@ -29,11 +29,7 @@ describe("AreYouSure", () => {
       />
     );
 
-    expect(
-      screen.getByText(
-       consequencesOfGoingToChelsea
-      )
-    ).toBeVisible();
+    expect(screen.getByText(consequencesOfGoingToChelsea)).toBeVisible();
   });
 
   it("contains a 'Cancel' button allowing the user to back out the action", () => {
