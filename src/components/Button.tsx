@@ -94,7 +94,7 @@ export const BackButtonRouterIndexes: FunctionComponent<BackButtonProps> = ({
 export const LinkButton: FunctionComponent<LinkButtonProps> = ({
   buttonText,
   href,
-  classes,
+  classes = "",
 }: LinkButtonProps): JSX.Element => (
   <a
     href={href}

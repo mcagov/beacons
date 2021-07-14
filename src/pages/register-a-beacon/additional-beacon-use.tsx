@@ -9,10 +9,13 @@ import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
+import { showCookieBanner } from "../../lib/cookies";
+import { withCookieRedirect } from "../../lib/middleware";
 import { BeaconUse } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
-import { PageURLs } from "../../lib/urls";
-import { getCachedRegistration } from "../../useCases/getCachedRegistration";
+import { ActionURLs, PageURLs } from "../../lib/urls";
+import { prettyUseName } from "../../lib/writingStyle";
+import { buildAreYouSureQuery } from "../are-you-sure";
 
 interface AdditionalBeaconUseProps {
   uses: BeaconUse[];
@@ -23,7 +26,7 @@ interface AdditionalBeaconUseProps {
 const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   uses,
   currentUseIndex,
-  showCookieBanner = false,
+  showCookieBanner,
 }: AdditionalBeaconUseProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
 
@@ -58,13 +61,17 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
 
               {uses.length > 0 && (
                 <>
-                  {uses.map((use, index) => (
-                    <BeaconUseSection
-                      index={index}
-                      use={use}
-                      key={`row${index}`}
-                    />
-                  ))}
+                  {uses.map((use, index) => {
+                    return (
+                      <BeaconUseSection
+                        index={index}
+                        use={use}
+                        changeUri={PageURLs.environment + "?useIndex=" + index}
+                        deleteUri={confirmBeforeDelete(use, index)}
+                        key={`row${index}`}
+                      />
+                    );
+                  })}
                   <LinkButton
                     buttonText="Add another use for this beacon"
                     href={PageURLs.environment + "?useIndex=" + uses.length}
@@ -86,8 +93,22 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = withContainer(
-  async (context: BeaconsGetServerSidePropsContext) => {
+const confirmBeforeDelete = (use, index) => {
+  const action = "delete your " + prettyUseName(use) + " use";
+  const yes = ActionURLs.deleteCachedUse + "?useIndex=" + index;
+  const no = PageURLs.additionalUse + "?useIndex=" + index;
+  const consequences =
+    "You will have the opportunity to review this change at the end.";
+
+  return (
+    PageURLs.areYouSure + buildAreYouSureQuery(action, yes, no, consequences)
+  );
+};
+
+export const getServerSideProps: GetServerSideProps = withCookieRedirect(
+  withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+    const { getCachedRegistration } = context.container;
+
     const submissionId = retrieveUserFormSubmissionId(context);
     const registration = (
       await getCachedRegistration(submissionId)
@@ -97,9 +118,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       props: {
         currentUseIndex: context.query.useIndex,
         uses: registration.uses,
+        showCookieBanner: showCookieBanner(context),
       },
     };
-  }
+  })
 );
 
 export default AdditionalBeaconUse;

@@ -10,11 +10,11 @@ import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
+import { verifyFormSubmissionCookieIsSet } from "../../lib/cookies";
 import { clearFormSubmissionCookie } from "../../lib/middleware";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { PageURLs } from "../../lib/urls";
-import { verifyFormSubmissionCookieIsSet } from "../../lib/verifyFormSubmissionCookieIsSet";
 import { ISubmitRegistrationResult } from "../../useCases/submitRegistration";
 
 interface ApplicationCompleteProps {

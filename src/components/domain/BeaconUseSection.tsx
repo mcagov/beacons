@@ -1,27 +1,22 @@
 import React, { FunctionComponent } from "react";
 import { BeaconUse } from "../../lib/registration/types";
-import { PageURLs } from "../../lib/urls";
-import {
-  makeEnumValueUserFriendly,
-  ordinal,
-  sentenceCase,
-} from "../../lib/writingStyle";
+import { ordinal, prettyUseName, sentenceCase } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { AnchorLink, SectionHeading, WarningLink } from "../Typography";
 
 interface BeaconUseSectionProps {
   index: number;
   use: BeaconUse;
-  href?: string;
+  changeUri?: string;
+  deleteUri?: string;
 }
 
 export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
   index,
   use,
+  changeUri,
+  deleteUri,
 }: BeaconUseSectionProps): JSX.Element => {
-  const changeHref = `${PageURLs.environment}?useIndex=${index}`;
-  const deleteHref = "#"; // TODO: Update delete link.  See https://trello.com/c/nuEwKc21
-
   return (
     <>
       <div
@@ -33,20 +28,19 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
         }}
       >
         <SectionHeading classes="govuk-!-margin-0">
-          {sentenceCase(ordinal(index + 1))} use:{" "}
-          {makeEnumValueUserFriendly(use.environment)} {" - "}
-          {makeEnumValueUserFriendly(use.activity)} (
-          {makeEnumValueUserFriendly(use.purpose)})
+          {sentenceCase(ordinal(index + 1) + " use: ") + prettyUseName(use)}
         </SectionHeading>
 
         <div>
-          <AnchorLink
-            href={changeHref}
-            classes="govuk-link--no-visited-state govuk-!-margin-right-4"
-          >
-            Change
-          </AnchorLink>
-          <WarningLink href={deleteHref}>Delete</WarningLink>
+          {changeUri && (
+            <AnchorLink
+              href={changeUri}
+              classes="govuk-link--no-visited-state govuk-!-margin-right-4"
+            >
+              Change
+            </AnchorLink>
+          )}
+          {deleteUri && <WarningLink href={deleteUri}>Delete</WarningLink>}
         </div>
       </div>
 
