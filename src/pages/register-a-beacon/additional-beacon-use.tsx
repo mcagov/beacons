@@ -9,9 +9,11 @@ import {
   BeaconsGetServerSidePropsContext,
   withContainer,
 } from "../../lib/container";
+import { withCookieRedirect } from "../../lib/middleware";
 import { BeaconUse } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { ActionURLs, PageURLs } from "../../lib/urls";
+import { userHasAcceptedCookies } from "../../lib/verifyFormSubmissionCookieIsSet";
 import { prettyUseName } from "../../lib/writingStyle";
 import { getCachedRegistration } from "../../useCases/getCachedRegistration";
 import { buildAreYouSureQuery } from "../are-you-sure";
@@ -25,7 +27,7 @@ interface AdditionalBeaconUseProps {
 const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   uses,
   currentUseIndex,
-  showCookieBanner = false,
+  showCookieBanner,
 }: AdditionalBeaconUseProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
 
@@ -103,8 +105,8 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = withContainer(
-  async (context: BeaconsGetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = withCookieRedirect(
+  withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     const submissionId = retrieveUserFormSubmissionId(context);
     const registration = (
       await getCachedRegistration(submissionId)
@@ -114,9 +116,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       props: {
         currentUseIndex: context.query.useIndex,
         uses: registration.uses,
+        showCookieBanner: userHasAcceptedCookies(context),
       },
     };
-  }
+  })
 );
 
 export default AdditionalBeaconUse;
