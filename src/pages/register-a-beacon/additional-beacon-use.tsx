@@ -62,23 +62,12 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
               {uses.length > 0 && (
                 <>
                   {uses.map((use, index) => {
-                    // Prompt the user to confirm before deleting their use
-                    const action = "delete your " + prettyUseName(use) + " use";
-                    const consequences =
-                      "You will have the opportunity to review this change at the end.";
-                    const yes =
-                      ActionURLs.deleteCachedUse + "?useIndex=" + index;
-                    const no = PageURLs.additionalUse + "?useIndex=" + index;
-                    const deleteUri =
-                      PageURLs.areYouSure +
-                      buildAreYouSureQuery(action, yes, no, consequences);
-
                     return (
                       <BeaconUseSection
                         index={index}
                         use={use}
                         changeUri={PageURLs.environment + "?useIndex=" + index}
-                        deleteUri={deleteUri}
+                        deleteUri={confirmBeforeDelete(use, index)}
                         key={`row${index}`}
                       />
                     );
@@ -101,6 +90,18 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
         />
       </Layout>
     </>
+  );
+};
+
+const confirmBeforeDelete = (use, index) => {
+  const action = "delete your " + prettyUseName(use) + " use";
+  const yes = ActionURLs.deleteCachedUse + "?useIndex=" + index;
+  const no = PageURLs.additionalUse + "?useIndex=" + index;
+  const consequences =
+    "You will have the opportunity to review this change at the end.";
+
+  return (
+    PageURLs.areYouSure + buildAreYouSureQuery(action, yes, no, consequences)
   );
 };
 
