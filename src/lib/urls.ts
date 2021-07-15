@@ -48,5 +48,5 @@ export function formatUrlQueryParams(
     formatUrl(queryParam, value);
   });
 
-  return url;
+  return encodeURI(url);
 }
