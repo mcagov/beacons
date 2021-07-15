@@ -64,7 +64,7 @@ describe("AreYouSure", () => {
 });
 
 describe("buildAreYouSureQuery", () => {
-  it("builds its an AreYouSure query from values", () => {
+  it("builds an AreYouSure query from values", () => {
     const action = "Delete your use";
     const yes = "/api/delete-use";
     const no = "/register-a-beacon/additional-beacon-use";
