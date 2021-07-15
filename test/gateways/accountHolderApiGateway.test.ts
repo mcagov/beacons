@@ -207,8 +207,7 @@ describe("Account Holder API Gateway", () => {
     });
 
     it("should request account holder details from the correct endpoint", async () => {
-      const mockUpdate: IAccountHolderDetails = {
-        id: accountHolderId,
+      const mockUpdate: Partial<IAccountHolderDetails> = {
         fullName: "Bill Gates",
         email: "bill@billynomates.test",
         telephoneNumber: "0788888888",
@@ -248,7 +247,7 @@ describe("Account Holder API Gateway", () => {
       });
       await gateway.updateAccountHolderDetails(
         accountHolderId,
-        mockUpdate,
+        mockUpdate as IAccountHolderDetails,
         token
       );
 

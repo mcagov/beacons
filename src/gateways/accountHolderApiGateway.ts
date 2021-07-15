@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import * as _ from "lodash";
 import { IAccountHolderDetails } from "../entities/accountHolderDetails";
 import { IBeacon } from "../entities/beacon";
 import { IAccountHolderDetailsResponse } from "./mappers/accountHolderDetailsResponse";
@@ -121,7 +120,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
       const request = {
         data: {
           id: accountHolderId,
-          attributes: { ..._.omit(update, ["id"]) },
+          attributes: update,
         },
       };
       const response = await axios.patch<

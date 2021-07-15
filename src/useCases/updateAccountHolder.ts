@@ -1,5 +1,7 @@
+import * as _ from "lodash";
 import { IAccountHolderDetails } from "../entities/accountHolderDetails";
 import { IAppContainer } from "../lib/appContainer";
+import { diffObjValues } from "../lib/utils";
 
 export type UpdateAccountHolderFn = (
   accountHolderDetails: IAccountHolderDetails,
@@ -17,10 +19,15 @@ export const updateAccountHolder =
   ) => {
     const accessToken = await getAccessToken();
 
+    const update = diffObjValues(
+      accountHolderDetails,
+      _.omit(accountHolderUpdate, ["id"])
+    ) as IAccountHolderDetails;
+
     const updatedAccountHolder =
       await accountHolderApiGateway.updateAccountHolderDetails(
         accountHolderDetails.id,
-        accountHolderUpdate,
+        update,
         accessToken
       );
 
