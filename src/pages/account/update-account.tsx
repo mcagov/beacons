@@ -21,7 +21,8 @@ import {
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { parseFormDataAs } from "../../lib/middleware";
+import { redirectUserTo } from "../../lib/redirectUserTo";
+import { PageURLs } from "../../lib/urls";
 import { getOrCreateAccountHolder } from "../../useCases/getOrCreateAccountHolder";
 import { updateAccountHolder } from "../../useCases/updateAccountHolder";
 
@@ -57,12 +58,12 @@ const getPageForm = ({
       Validators.required("Postcode is a required field"),
       Validators.postcode("Postcode must be a valid UK postcode"),
     ]),
+    email: new FieldManager(email),
   });
 };
 
 const UpdateAccount: FunctionComponent<UpdateAccountPageProps> = ({
   form,
-  accountHolderDetails,
 }: UpdateAccountPageProps): JSX.Element => {
   const pageHeading =
     "Update your details as the Beacon Registry Account Holder";
@@ -99,10 +100,7 @@ const UpdateAccount: FunctionComponent<UpdateAccountPageProps> = ({
                   value={form.fields.telephoneNumber.value}
                   errorMessages={form.fields.telephoneNumber.errorMessages}
                 />
-                <AccountHolderAddress
-                  form={form}
-                  accountHolderDetails={accountHolderDetails}
-                />
+                <AccountHolderAddress form={form} />
               </FormGroup>
               <Button buttonText="Save these account details" />
               &nbsp;
@@ -139,16 +137,18 @@ const TelephoneNumber: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-const AccountHolderAddress: FunctionComponent<UpdateAccountPageProps> = ({
+const AccountHolderAddress: FunctionComponent<{ form: FormJSON }> = ({
   form,
-}: UpdateAccountPageProps): JSX.Element => (
+}: {
+  form: FormJSON;
+}): JSX.Element => (
   <FormGroup>
     <FormGroup errorMessages={form.fields.addressLine1.errorMessages}>
       <Input
         id="addressLine1"
         label="Building number and street"
         defaultValue={form.fields.addressLine1.value}
-      />{" "}
+      />
     </FormGroup>
     <FormGroup>
       <Input id="addressLine2" defaultValue={form.fields.addressLine2.value} />
@@ -183,35 +183,33 @@ function userDidSubmitForm(context: BeaconsGetServerSidePropsContext) {
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    let updateAccountHolderFn = updateAccountHolder(context.container);
-    let getOrCreateAccountHolderFn = getOrCreateAccountHolder(
+    const parseFormDataAsFn = context.container.parseFormDataAs;
+    const updateAccountHolderFn = updateAccountHolder(context.container);
+    const getOrCreateAccountHolderFn = getOrCreateAccountHolder(
       context.container
     );
     let formManager: FormManager;
 
-    let accountHolderDetails = await getOrCreateAccountHolderFn(context);
-
     if (userDidSubmitForm(context)) {
-      var formData = await parseFormDataAs<AccountDetailsForm>(context.req);
+      const formData = await parseFormDataAsFn<AccountDetailsForm>(context.req);
       formManager = getPageForm(formData).asDirty();
 
-      if (
-        formManager.isValid() &&
-        (await updateAccountHolderFn(
-          accountHolderDetails,
-          accountHolderUpdate(formData)
-        ))
-      ) {
-        // do redirect
+      if (formManager.isValid()) {
+        const accountHolder = await getOrCreateAccountHolderFn(context);
+        const update = accountHolderUpdate(formData);
+        if (await updateAccountHolderFn(accountHolder, update)) {
+          return redirectUserTo(PageURLs.accountHome);
+        }
       }
     } else {
-      formManager = getPageForm(accountDetailsForm(accountHolderDetails));
+      formManager = getPageForm(
+        accountDetailsForm(await getOrCreateAccountHolderFn(context))
+      );
     }
 
     return {
       props: {
         form: formManager.serialise(),
-        accountHolderDetails,
       },
     };
   }

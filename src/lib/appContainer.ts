@@ -1,3 +1,4 @@
+import { IncomingMessage } from "http";
 import { getSession } from "next-auth/client";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
 import {
@@ -20,6 +21,7 @@ import {
   IUserSessionGateway,
   UserSessionGateway,
 } from "../gateways/userSessionGateway";
+import { parseFormDataAs } from "../lib/middleware";
 import {
   authenticateUser,
   AuthenticateUserFn,
@@ -73,6 +75,7 @@ export interface IAppContainer {
   clearCachedRegistration: ClearCachedRegistrationFn;
   getAccessToken: GetAccessTokenFn;
   getSession: GetSessionFn;
+  parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
   updateAccountHolder: UpdateAccountHolderFn;
   getAccountHolderId: GetAccountHolderIdFn;
@@ -95,6 +98,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     saveCachedRegistration: saveCachedRegistration,
     clearCachedRegistration: clearCachedRegistration,
     getSession: getSession,
+    parseFormDataAs: parseFormDataAs,
 
     /* Composite use cases requiring access to other use cases */
     get getAccessToken() {
