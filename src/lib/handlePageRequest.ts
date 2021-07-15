@@ -1,10 +1,5 @@
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-} from "next";
-import { BasicAuthGateway } from "../gateways/basicAuthGateway";
-import { AuthenticateUser } from "../useCases/authenticateUser";
+import { GetServerSideProps, GetServerSidePropsResult } from "next";
+import { BeaconsGetServerSidePropsContext, withContainer } from "./container";
 import { FormJSON, FormManager } from "./form/formManager";
 import { FormSubmission } from "./formCache";
 import {
@@ -15,7 +10,8 @@ import {
 } from "./middleware";
 import { Registration } from "./registration/registration";
 import { IRegistration } from "./registration/types";
-import { formatUrlQueryParams } from "./utils";
+import { retrieveUserFormSubmissionId } from "./retrieveUserFormSubmissionId";
+import { formatUrlQueryParams } from "./urls";
 
 type TransformCallback = (formData: FormSubmission) => FormSubmission;
 
@@ -40,32 +36,52 @@ export const handlePageRequest = (
   destinationIfValidCallback: DestinationIfValidCallback = async () =>
     destinationIfValid
 ): GetServerSideProps =>
-  withCookieRedirect(async (context: GetServerSidePropsContext) => {
-    const authGateway = new BasicAuthGateway();
-    const authUseCase = new AuthenticateUser(authGateway);
-    await authUseCase.execute(context);
+  withCookieRedirect(
+    withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+      const {
+        getCachedRegistration,
+        saveCachedRegistration,
+        authenticateUser,
+      } = context.container;
 
-    const beaconsContext: BeaconsContext =
-      await decorateGetServerSidePropsContext(context);
-    const userDidSubmitForm = beaconsContext.req.method === "POST";
+      await authenticateUser(context);
 
-    if (userDidSubmitForm) {
-      return handlePostRequest(
-        beaconsContext,
-        formManagerFactory,
-        transformCallback,
-        destinationIfValidCallback
+      const beaconsContext: BeaconsContext =
+        await decorateGetServerSidePropsContext(context);
+
+      const registration: Registration = await getCachedRegistration(
+        retrieveUserFormSubmissionId(context)
       );
-    }
 
-    return handleGetRequest(beaconsContext, formManagerFactory);
-  });
+      const useIndexDoesNotExist =
+        beaconsContext.useIndex >
+        registration.getRegistration().uses.length - 1;
+      if (useIndexDoesNotExist) {
+        registration.createUse();
+        await saveCachedRegistration(beaconsContext.submissionId, registration);
+      }
+
+      const userDidSubmitForm = beaconsContext.req.method === "POST";
+
+      if (userDidSubmitForm) {
+        return handlePostRequest(
+          beaconsContext,
+          formManagerFactory,
+          transformCallback,
+          destinationIfValidCallback
+        );
+      }
+
+      return handleGetRequest(beaconsContext, formManagerFactory);
+    })
+  );
 
 const handleGetRequest = (
   context: BeaconsContext,
   formManagerFactory: FormManagerFactory
 ): GetServerSidePropsResult<FormPageProps> => {
   const registration: Registration = context.registration;
+
   const flattenedRegistration = registration.getFlattenedRegistration({
     useIndex: context.useIndex,
   });

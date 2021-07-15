@@ -7,6 +7,7 @@ export enum PageURLs {
   signUp = "/account/sign-up",
   signIn = "/account/sign-in",
   accountHome = "/account/your-beacon-registry-account",
+  areYouSure = "/are-you-sure",
   checkBeaconDetails = "/register-a-beacon/check-beacon-details",
   beaconInformation = "/register-a-beacon/beacon-information",
   environment = "/register-a-beacon/beacon-use",
@@ -24,4 +25,27 @@ export enum PageURLs {
   emergencyContact = "/register-a-beacon/emergency-contact",
   checkYourAnswers = "/register-a-beacon/check-your-answers",
   applicationComplete = "/register-a-beacon/application-complete",
+}
+
+export enum ActionURLs {
+  deleteCachedUse = "/todo",
+}
+
+export function formatUrlQueryParams(
+  url: string,
+  queryParamMap: Record<string, any>
+): string {
+  const formatUrl = (queryParam, value) => {
+    if (!url.includes(queryParam)) {
+      const queryStringCombiner = url.includes("?") ? "&" : "?";
+      url = `${url}${queryStringCombiner}${queryParam}=${value}`;
+    }
+  };
+
+  Object.keys(queryParamMap).forEach((queryParam) => {
+    const value = queryParamMap[queryParam];
+    formatUrl(queryParam, value);
+  });
+
+  return url;
 }

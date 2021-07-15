@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FunctionComponent, ReactNode } from "react";
-import { formatUrlQueryParams } from "../lib/utils";
+import { formatUrlQueryParams } from "../lib/urls";
 
 interface ButtonGroupProps {
   children: ReactNode;
@@ -23,6 +23,7 @@ interface BackButtonProps {
 interface LinkButtonProps {
   buttonText: string;
   href: string;
+  classes?: string;
 }
 
 export const ButtonGroup: FunctionComponent<ButtonGroupProps> = ({
@@ -34,7 +35,7 @@ export const ButtonGroup: FunctionComponent<ButtonGroupProps> = ({
 export const Button: FunctionComponent<ButtonProps> = ({
   buttonText,
 }: ButtonProps): JSX.Element => (
-  <button className="govuk-button" data-module="govuk-button">
+  <button className="govuk-button" data-module="govuk-button" role="button">
     {buttonText}
   </button>
 );
@@ -93,15 +94,15 @@ export const BackButtonRouterIndexes: FunctionComponent<BackButtonProps> = ({
 export const LinkButton: FunctionComponent<LinkButtonProps> = ({
   buttonText,
   href,
+  classes = "",
 }: LinkButtonProps): JSX.Element => (
-  <Link href={href}>
-    <a
-      role="button"
-      draggable="false"
-      className="govuk-button"
-      data-module="govuk-button"
-    >
-      {buttonText}
-    </a>
-  </Link>
+  <a
+    href={href}
+    role="button"
+    draggable="false"
+    className={"govuk-button " + classes}
+    data-module="govuk-button"
+  >
+    {buttonText}
+  </a>
 );

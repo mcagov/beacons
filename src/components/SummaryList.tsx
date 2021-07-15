@@ -4,12 +4,15 @@ interface SummaryListProps {
   children: ReactNode;
 }
 
+interface SummaryListItemAction {
+  text: string;
+  href: string;
+}
+
 interface SummaryListItemProps {
   labelText: string;
   children: ReactNode;
-  href?: string;
-  actionText?: string;
-  actionValue?: string;
+  actions?: SummaryListItemAction[];
 }
 
 export const SummaryList: FunctionComponent<SummaryListProps> = ({
@@ -21,18 +24,18 @@ export const SummaryList: FunctionComponent<SummaryListProps> = ({
 export const SummaryListItem: FunctionComponent<SummaryListItemProps> = ({
   labelText,
   children,
-  href,
-  actionText,
-  actionValue,
+  actions = [],
 }: SummaryListItemProps): JSX.Element => (
   <div className="govuk-summary-list__row">
     <dt className="govuk-summary-list__key">{labelText}</dt>
     <dd className="govuk-summary-list__value">{children}</dd>
-    <dd className="govuk-summary-list__actions">
-      <a className="govuk-link" href={href}>
-        {actionText}
-        <span className="govuk-visually-hidden"> {actionValue}</span>
-      </a>
-    </dd>
+    {actions.map(({ text, href }, i) => (
+      <dd className="govuk-summary-list__actions" key={i}>
+        <a className="govuk-link" href={href}>
+          {text}
+          <span className="govuk-visually-hidden">{href}</span>
+        </a>
+      </dd>
+    ))}
   </div>
 );

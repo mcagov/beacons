@@ -3,8 +3,10 @@ import {
   initBeacon,
   initBeaconUse,
 } from "../../../src/lib/registration/registrationInitialisation";
+import { IUseRequestBody } from "../../../src/lib/registration/registrationRequestBody";
 import {
   Activity,
+  BeaconUse,
   Environment,
   Purpose,
 } from "../../../src/lib/registration/types";
@@ -151,7 +153,7 @@ describe("Registration", () => {
 
   describe("serialising the registration for the API", () => {
     let beacon;
-    let use;
+    let use: BeaconUse;
     let owner;
     let emergencyContact;
     let formData;
@@ -165,13 +167,13 @@ describe("Registration", () => {
       formData = {
         ...beacon,
         ...use,
-        fixedVhfRadioInput: use.fixedVhfRadioValue,
-        portableVhfRadioInput: use.portableVhfRadioValue,
-        otherCommunicationInput: use.otherCommunicationValue,
-        satelliteTelephoneInput: use.satelliteTelephoneValue,
-        mobileTelephoneInput1: use.mobileTelephone1,
-        mobileTelephoneInput2: use.mobileTelephone2,
-        otherActivityText: use.otherActivity,
+        fixedVhfRadioInput: use.fixedVhfRadioInput,
+        portableVhfRadioInput: use.portableVhfRadioInput,
+        otherCommunicationInput: use.otherCommunicationInput,
+        satelliteTelephoneInput: use.satelliteTelephoneInput,
+        mobileTelephoneInput1: use.mobileTelephoneInput1,
+        mobileTelephoneInput2: use.mobileTelephoneInput2,
+        otherActivityText: use.otherActivityText,
         ownerFullName: owner.fullName,
         ownerEmail: owner.email,
         ownerTelephoneNumber: owner.telephoneNumber,
@@ -199,26 +201,56 @@ describe("Registration", () => {
     });
 
     it("should serialise the registration for sending to the API", () => {
-      const expectedUse = {
-        ...use,
-        vhfRadio: false,
-        fixedVhfRadio: false,
-        fixedVhfRadioValue: "",
-        portableVhfRadio: false,
-        portableVhfRadioValue: "",
-        satelliteTelephone: false,
-        satelliteTelephoneValue: "",
-        mobileTelephone: false,
-        mobileTelephone1: "",
-        mobileTelephone2: "",
-        otherCommunication: false,
-        otherCommunicationValue: "",
+      const expectedUseRequestBody: IUseRequestBody = {
+        activity: use.activity,
+        aircraftManufacturer: use.aircraftManufacturer,
+        areaOfOperation: use.areaOfOperation,
+        beaconLocation: use.beaconLocation,
+        beaconPosition: use.beaconPosition,
+        callSign: use.callSign,
+        cnOrMsnNumber: use.cnOrMsnNumber,
+        dongle: use.dongle === "true",
+        environment: use.environment,
+        fixedVhfRadio: use.fixedVhfRadio === "true",
+        fixedVhfRadioValue: use.fixedVhfRadioInput,
+        hexAddress: use.hexAddress,
+        homeport: use.homeport,
+        imoNumber: use.imoNumber,
+        mainUse: true,
+        mobileTelephone: use.mobileTelephone === "true",
+        mobileTelephone1: use.mobileTelephoneInput1,
+        mobileTelephone2: use.mobileTelephoneInput2,
+        moreDetails: use.moreDetails,
+        officialNumber: use.officialNumber,
+        otherActivity: "",
+        otherActivityLocation: "",
+        otherActivityPeopleCount: "",
+        otherCommunication: use.otherCommunication === "true",
+        otherCommunicationValue: use.otherCommunicationInput,
+        portLetterNumber: use.portLetterNumber,
+        portableVhfRadio: use.portableVhfRadio === "true",
+        portableVhfRadioValue: use.portableVhfRadioInput,
+        principalAirport: use.principalAirport,
+        purpose: use.purpose,
+        registrationMark: use.registrationMark,
+        rigPlatformLocation: use.rigPlatformLocation,
+        rssNumber: use.rssNumber,
+        satelliteTelephone: use.satelliteTelephone === "true",
+        satelliteTelephoneValue: use.satelliteTelephoneInput,
+        secondaryAirport: use.secondaryAirport,
+        ssrNumber: use.ssrNumber,
+        vesselName: use.vesselName,
+        vhfRadio: use.vhfRadio === "true",
+        windfarmLocation: use.windfarmLocation,
+        windfarmPeopleCount: use.windfarmPeopleCount,
+        workingRemotelyLocation: use.workingRemotelyLocation,
+        workingRemotelyPeopleCount: use.workingRemotelyPeopleCount,
       };
       const expected = {
         beacons: [
           {
             ...beacon,
-            uses: [expectedUse],
+            uses: [expectedUseRequestBody],
             owner: { ...owner },
             emergencyContacts: [
               emergencyContact,
@@ -240,7 +272,6 @@ describe("Registration", () => {
       registration.createUse();
       registration.update({ useIndex: 1, ...formData });
       const json = registration.serialiseToAPI();
-      use.mainUse = false;
 
       expect(json.beacons[0].uses.length).toBe(2);
     });
@@ -292,16 +323,20 @@ describe("Registration", () => {
       const firstUse = json.beacons[0].uses[0];
       expect(firstUse.vhfRadio).toBe(true);
       expect(firstUse.fixedVhfRadio).toBe(true);
-      expect(firstUse.fixedVhfRadioValue).toBe("0117");
+      expect(firstUse.fixedVhfRadioValue).toBe(use.fixedVhfRadioInput);
       expect(firstUse.portableVhfRadio).toBe(true);
-      expect(firstUse.portableVhfRadioValue).toBe("0118");
+      expect(firstUse.portableVhfRadioValue).toBe(use.portableVhfRadioInput);
       expect(firstUse.satelliteTelephone).toBe(true);
-      expect(firstUse.satelliteTelephoneValue).toBe("0119");
+      expect(firstUse.satelliteTelephoneValue).toBe(
+        use.satelliteTelephoneInput
+      );
       expect(firstUse.mobileTelephone).toBe(true);
-      expect(firstUse.mobileTelephone1).toBe("01178123456");
-      expect(firstUse.mobileTelephone2).toBe("01178123457");
+      expect(firstUse.mobileTelephone1).toBe(use.mobileTelephoneInput1);
+      expect(firstUse.mobileTelephone2).toBe(use.mobileTelephoneInput2);
       expect(firstUse.otherCommunication).toBe(true);
-      expect(firstUse.otherCommunicationValue).toBe("Via email");
+      expect(firstUse.otherCommunicationValue).toBe(
+        use.otherCommunicationInput
+      );
     });
   });
 });

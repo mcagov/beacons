@@ -1,7 +1,4 @@
-import {
-  AdditionalUses,
-  Environment,
-} from "../../../src/lib/registration/types";
+import { Environment } from "../../../src/lib/registration/types";
 import { PageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyBeaconDetails,
@@ -23,8 +20,8 @@ import {
 } from "../common/i-can-enter-owner-information.spec";
 import {
   andIHaveNoFurtherUses,
-  iCanEditMyAdditionalUsesChoice,
   iCanEditMyEnvironment,
+  iCanEditMyNUses,
 } from "../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyLandUse,
@@ -32,6 +29,7 @@ import {
   iCanEditMyAdditionalLandUseMoreDetails,
   iCanEditMyLandActivity,
   iCanEditMyLandCommunications,
+  iCanSeeMyLandUse,
   iCanSeeMySingleLandUse,
   iCanViewMyChangedLandCommunications,
 } from "../common/i-can-enter-use-information/land.spec";
@@ -46,6 +44,7 @@ describe("As a land beacon owner", () => {
   it("I can register my beacon", () => {
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyLandUse();
+    iCanSeeMyLandUse();
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
@@ -70,7 +69,7 @@ describe("As a land beacon owner", () => {
     whenIClickBack();
     iCanEditMyPersonalDetails();
     whenIClickBack();
-    iCanEditMyAdditionalUsesChoice(AdditionalUses.NO);
+    iCanEditMyNUses(1);
     whenIClickBack();
     iCanEditMyAdditionalLandUseMoreDetails();
     whenIClickBack();

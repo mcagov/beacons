@@ -35,7 +35,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
     <>
       {head}
       {cookieBanner}
-      <a href="#main-content" className="govuk-skip-link" role="main">
+      <a href="#main-content" className="govuk-skip-link">
         Skip to main content
       </a>
       <Header

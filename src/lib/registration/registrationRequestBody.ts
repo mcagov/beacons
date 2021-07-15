@@ -34,7 +34,7 @@ interface IEmergencyContactRequestBody {
   alternativeTelephoneNumber: string;
 }
 
-interface IUseRequestBody {
+export interface IUseRequestBody {
   environment: string;
   purpose: string;
   activity: string;

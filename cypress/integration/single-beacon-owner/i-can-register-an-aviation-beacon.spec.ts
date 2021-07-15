@@ -16,6 +16,7 @@ import {
 import {
   givenIHaveEnteredMyAviationUse,
   iCanGoBackAndEditMyAviationUse,
+  iCanSeeMyAviationUse,
   iCanSeeMySingleAviationUse,
 } from "../common/i-can-enter-use-information/aviation.spec";
 import { andIHaveNoFurtherUses } from "../common/i-can-enter-use-information/generic.spec";
@@ -25,6 +26,7 @@ describe("As an aviation beacon owner,", () => {
   it("I can register my beacon for pleasure purposes", () => {
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyAviationUse(Purpose.PLEASURE);
+    iCanSeeMyAviationUse(Purpose.PLEASURE);
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
@@ -44,6 +46,7 @@ describe("As an aviation beacon owner,", () => {
   it("I can register my beacon for commercial purposes", () => {
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyAviationUse(Purpose.COMMERCIAL);
+    iCanSeeMyAviationUse(Purpose.COMMERCIAL);
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();

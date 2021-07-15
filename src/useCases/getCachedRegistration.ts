@@ -7,4 +7,4 @@ export type GetCachedRegistrationFn = (
 
 export const getCachedRegistration: GetCachedRegistrationFn = async (
   submissionId: string
-) => await FormCacheFactory.getCache().get(submissionId);
+): Promise<Registration> => await FormCacheFactory.getCache().get(submissionId);

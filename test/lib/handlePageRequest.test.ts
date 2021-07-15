@@ -1,5 +1,6 @@
 // Mock module dependencies in getServerSideProps for testing handlePageRequest()
 import { handlePageRequest } from "../../src/lib/handlePageRequest";
+import { Registration } from "../../src/lib/registration/registration";
 
 jest.mock("../../src/lib/middleware", () => ({
   __esModule: true,
@@ -54,6 +55,11 @@ describe("handlePageRequest()", () => {
         cookies: {},
       },
       query: {},
+      container: {
+        getCachedRegistration: jest.fn().mockResolvedValue(new Registration()),
+        saveCachedRegistration: jest.fn(),
+        authenticateUser: jest.fn(),
+      },
     };
   });
 

@@ -47,6 +47,10 @@ import {
 } from "../useCases/getOrCreateAccountHolder";
 import { GetSessionFn } from "../useCases/getSession";
 import {
+  saveCachedRegistration,
+  SaveCachedRegistrationFn,
+} from "../useCases/saveCachedRegistration";
+import {
   sendConfirmationEmail,
   SendConfirmationEmailFn,
 } from "../useCases/sendConfirmationEmail";
@@ -65,6 +69,7 @@ export interface IAppContainer {
   submitRegistration: SubmitRegistrationFn;
   sendConfirmationEmail: SendConfirmationEmailFn;
   getCachedRegistration: GetCachedRegistrationFn;
+  saveCachedRegistration: SaveCachedRegistrationFn;
   clearCachedRegistration: ClearCachedRegistrationFn;
   getAccessToken: GetAccessTokenFn;
   getSession: GetSessionFn;
@@ -87,6 +92,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
   return {
     /* Simple use cases */
     getCachedRegistration: getCachedRegistration,
+    saveCachedRegistration: saveCachedRegistration,
     clearCachedRegistration: clearCachedRegistration,
     getSession: getSession,
 

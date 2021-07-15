@@ -10,7 +10,7 @@ import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
-import { toUpperCase } from "../../lib/utils";
+import { toUpperCase } from "../../lib/writingStyle";
 
 const definePageForm = ({
   manufacturer,
