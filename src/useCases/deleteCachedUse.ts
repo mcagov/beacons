@@ -4,7 +4,7 @@ import { RedisCachedRegistrationGateway } from "../gateways/RedisCachedRegistrat
 export type DeleteCachedUseFn = (
   submissionId: string,
   useIndex: number,
-  cachedRegistrationGateway: CachedRegistrationGateway
+  cachedRegistrationGateway?: CachedRegistrationGateway
 ) => Promise<void>;
 
 export const deleteCachedUse: DeleteCachedUseFn = async (

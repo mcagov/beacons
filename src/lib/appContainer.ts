@@ -28,7 +28,10 @@ import {
   clearCachedRegistration,
   ClearCachedRegistrationFn,
 } from "../useCases/clearCachedRegistration";
-import { DeleteCachedUseFn } from "../useCases/deleteCachedUse";
+import {
+  deleteCachedUse,
+  DeleteCachedUseFn,
+} from "../useCases/deleteCachedUse";
 import { getAccessToken, GetAccessTokenFn } from "../useCases/getAccessToken";
 import {
   getBeaconsByAccountHolderId,
@@ -91,6 +94,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     getCachedRegistration: getCachedRegistration,
     saveCachedRegistration: saveCachedRegistration,
     clearCachedRegistration: clearCachedRegistration,
+    deleteCachedUse: deleteCachedUse,
     getSession: getSession,
 
     /* Composite use cases requiring access to other use cases */
