@@ -93,9 +93,30 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   );
 };
 
+const buildDeleteUseQuery = (
+  useIndex: number,
+  onSuccess: string,
+  onFailure: string
+): string =>
+  "?" +
+  new URLSearchParams({
+    useIndex: useIndex.toString(),
+    onSuccess,
+    onFailure,
+  }).toString();
+
+export const buildAdditionalBeaconUseQuery = (useIndex: number) =>
+  "?" + new URLSearchParams({ useIndex: useIndex.toString() }).toString();
+
 const confirmBeforeDelete = (use, index) => {
   const action = "delete your " + prettyUseName(use) + " use";
-  const yes = ActionURLs.deleteCachedUse + "?useIndex=" + index;
+  const yes =
+    ActionURLs.deleteCachedUse +
+    buildDeleteUseQuery(
+      index,
+      PageURLs.additionalUse + buildAdditionalBeaconUseQuery(index - 1),
+      PageURLs.serverError
+    );
   const no = PageURLs.additionalUse + "?useIndex=" + index;
   const consequences =
     "You will have the opportunity to review this change at the end.";

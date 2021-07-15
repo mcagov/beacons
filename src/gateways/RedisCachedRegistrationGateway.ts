@@ -16,6 +16,8 @@ export class RedisCachedRegistrationGateway
       await cache.get(submissionId)
     ).getRegistration();
 
+    console.log(registration);
+
     const registrationMinusDeletedUse = {
       ...registration,
       uses: registration.uses.filter((use, i) => i !== useIndex),
