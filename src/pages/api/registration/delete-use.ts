@@ -9,9 +9,9 @@ export const handler = withApiContainer(async (req: BeaconsApiRequest, res) => {
 
   try {
     await deleteCachedUse(submissionId, parseInt(useIndex));
-    res.redirect(303, onSuccess);
+    res.redirect(onSuccess);
   } catch (e) {
-    res.redirect(303, onFailure);
+    res.redirect(onFailure);
   }
 });
 
