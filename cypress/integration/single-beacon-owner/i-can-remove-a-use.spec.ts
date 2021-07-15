@@ -28,7 +28,7 @@ describe("As a beacon owner with several uses", () => {
   });
 });
 
-const iCanSeeMyMainUse = () => iCanSeeMyMaritimeUse(Purpose.PLEASURE);
+const iCanSeeMyMainUse = () => iCanSeeMyLandUse();
 
 const givenIHaveTwoUses = () => {
   givenIHaveEnteredMyBeaconDetails();
