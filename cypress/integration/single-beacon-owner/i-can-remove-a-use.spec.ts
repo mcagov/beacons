@@ -15,17 +15,20 @@ describe("As a beacon owner with several uses", () => {
   it("I can safely remove a use from my draft registration", () => {
     givenIHaveTwoUses();
     andIGoToDeleteMyMainUse();
-    iAmPromptedToConfirmDeletion();
+    iAmPromptedToConfirmDeletionOfMyMainUse();
 
     givenIHaveClickedTheButtonContaining("Cancel");
     iCanSeeMyTwoUses();
     andIGoToDeleteMySecondUse();
-    // TODO: iAmPromptedToConfirmDeletion();
-    // TODO: givenIHaveClickedTheButtonContaining("Yes");
-    // TODO: iCanConfirmMyDeletionChoice;
-    // TODO: iCanSeeMyUsesWithoutTheDeletedUse
+    iAmPromptedToConfirmDeletionOfMySecondUse();
+
+    givenIHaveClickedTheButtonContaining("Yes");
+    iCanSeeMyMainUse();
+    iCannotSeeMySecondUseBecauseItIsDeleted();
   });
 });
+
+const iCanSeeMyMainUse = () => iCanSeeMyMaritimeUse(Purpose.PLEASURE);
 
 const givenIHaveTwoUses = () => {
   givenIHaveEnteredMyBeaconDetails();
@@ -37,6 +40,12 @@ const givenIHaveTwoUses = () => {
 const iCanSeeMyTwoUses = () => {
   iCanSeeMyLandUse();
   iCanSeeMyMaritimeUse(Purpose.PLEASURE);
+};
+
+const iCannotSeeMySecondUseBecauseItIsDeleted = () => {
+  cy.get("main")
+    .contains(/maritime/i && /motor/i && /pleasure/i)
+    .should("not.exist");
 };
 
 const andIGoToDeleteMyMainUse = () => {
@@ -55,6 +64,12 @@ const andIGoToDeleteMySecondUse = () => {
     .click();
 };
 
-const iAmPromptedToConfirmDeletion = () => {
+const iAmPromptedToConfirmDeletionOfMyMainUse = () => {
   cy.get("h1").contains(/are you sure/i && /land/i && /cycling/i);
+};
+
+const iAmPromptedToConfirmDeletionOfMySecondUse = () => {
+  cy.get("h1").contains(
+    /are you sure/i && /maritime/i && /motor/i && /pleasure/i
+  );
 };
