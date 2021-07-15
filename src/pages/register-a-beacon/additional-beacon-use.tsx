@@ -11,15 +11,15 @@ import {
 } from "../../lib/container";
 import { showCookieBanner } from "../../lib/cookies";
 import { withCookieRedirect } from "../../lib/middleware";
-import { BeaconUse } from "../../lib/registration/types";
+import { BeaconUse, IRegistration } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
-import { ActionURLs, PageURLs } from "../../lib/urls";
+import { ActionURLs, formatUrlQueryParams, PageURLs } from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
 import { buildAreYouSureQuery } from "../are-you-sure";
 
 interface AdditionalBeaconUseProps {
   uses: BeaconUse[];
-  currentUseIndex: number;
+  currentUseIndex?: number;
   showCookieBanner?: boolean;
 }
 
@@ -35,7 +35,9 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
       <Layout
         navigation={
           <BackButton
-            href={PageURLs.moreDetails + "?useIndex=" + currentUseIndex}
+            href={formatUrlQueryParams(PageURLs.moreDetails, {
+              useIndex: currentUseIndex || uses.length - 1,
+            })}
           />
         }
         title={pageHeading}
@@ -105,7 +107,7 @@ const buildDeleteUseQuery = (
     onFailure,
   }).toString();
 
-export const buildAdditionalBeaconUseQuery = (useIndex: number) =>
+export const buildAdditionalBeaconUseQuery = (useIndex: number): string =>
   "?" + new URLSearchParams({ useIndex: useIndex.toString() }).toString();
 
 const confirmBeforeDelete = (use, index) => {
@@ -135,6 +137,11 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
       await getCachedRegistration(submissionId)
     ).getRegistration();
 
+    if (currentUseIndexDoesNotExist(context, registration))
+      throw new ReferenceError(
+        "Page was accessed with a useIndex parameter that does not exist on the cached registration."
+      );
+
     return {
       props: {
         currentUseIndex: context.query.useIndex,
@@ -144,5 +151,11 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
     };
   })
 );
+
+const currentUseIndexDoesNotExist = (
+  context: BeaconsGetServerSidePropsContext,
+  registration: IRegistration
+): boolean =>
+  parseInt(context.query.useIndex as string) > registration.uses.length - 1;
 
 export default AdditionalBeaconUse;
