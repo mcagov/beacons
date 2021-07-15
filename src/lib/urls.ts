@@ -48,5 +48,8 @@ export function formatUrlQueryParams(
     formatUrl(queryParam, value);
   });
 
-  return encodeURI(url);
+  return url;
 }
+
+export const queryParams = (queryParams: Record<string, any>): string =>
+  "?" + new URLSearchParams(queryParams).toString();

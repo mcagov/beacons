@@ -6,7 +6,7 @@ import {
   Purpose,
 } from "../../../src/lib/registration/types";
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { formatUrlQueryParams, PageURLs } from "../../../src/lib/urls";
+import { PageURLs, queryParams } from "../../../src/lib/urls";
 import AdditionalBeaconUse, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/additional-beacon-use";
@@ -73,7 +73,7 @@ describe("AdditionalBeaconUse page", () => {
 
     expect(screen.getByRole("link", { name: "Back" })).toHaveAttribute(
       "href",
-      formatUrlQueryParams(PageURLs.moreDetails, { useIndex: currentUseIndex })
+      PageURLs.moreDetails + queryParams({ useIndex: currentUseIndex })
     );
   });
 

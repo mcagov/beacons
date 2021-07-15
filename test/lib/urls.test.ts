@@ -36,14 +36,4 @@ describe("format URL query params function", () => {
       "/beacons?useIndex=0&beaconIndex=0"
     );
   });
-
-  it("should URL-encode strings", () => {
-    url += "?useIndex=0";
-    queryParamMap = {
-      action: "here are some chars that should be URL-encoded",
-    };
-    expect(formatUrlQueryParams(url, queryParamMap)).toBe(
-      "/beacons?useIndex=0&action=here%20are%20some%20chars%20that%20should%20be%20URL-encoded"
-    );
-  });
 });

@@ -13,7 +13,7 @@ import { showCookieBanner } from "../../lib/cookies";
 import { withCookieRedirect } from "../../lib/middleware";
 import { BeaconUse, IRegistration } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
-import { ActionURLs, formatUrlQueryParams, PageURLs } from "../../lib/urls";
+import { ActionURLs, PageURLs, queryParams } from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
 
 interface AdditionalBeaconUseProps {
@@ -34,9 +34,12 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
       <Layout
         navigation={
           <BackButton
-            href={formatUrlQueryParams(PageURLs.moreDetails, {
-              useIndex: currentUseIndex || uses.length - 1,
-            })}
+            href={
+              PageURLs.moreDetails +
+              queryParams({
+                useIndex: currentUseIndex || uses.length - 1,
+              })
+            }
           />
         }
         title={pageHeading}
@@ -95,16 +98,21 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
 };
 
 const confirmBeforeDelete = (use, index) =>
-  formatUrlQueryParams(PageURLs.areYouSure, {
+  PageURLs.areYouSure +
+  queryParams({
     action: "delete your " + prettyUseName(use) + " use",
-    yes: formatUrlQueryParams(ActionURLs.deleteCachedUse, {
-      useIndex: index,
-      onSuccess: formatUrlQueryParams(PageURLs.additionalUse, {
-        useIndex: index >= 1 ? index - 1 : 0,
+    yes:
+      ActionURLs.deleteCachedUse +
+      queryParams({
+        useIndex: index,
+        onSuccess:
+          PageURLs.additionalUse +
+          queryParams({
+            useIndex: index >= 1 ? index - 1 : 0,
+          }),
+        onFailure: PageURLs.serverError,
       }),
-      onFailure: PageURLs.serverError,
-    }),
-    no: formatUrlQueryParams(PageURLs.additionalUse, { useIndex: index }),
+    no: PageURLs.additionalUse + queryParams({ useIndex: index }),
     consequences:
       "You will have the opportunity to review this change at the end.",
   });
