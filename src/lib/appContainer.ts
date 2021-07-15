@@ -28,6 +28,7 @@ import {
   clearCachedRegistration,
   ClearCachedRegistrationFn,
 } from "../useCases/clearCachedRegistration";
+import { DeleteCachedUseFn } from "../useCases/deleteCachedUse";
 import { getAccessToken, GetAccessTokenFn } from "../useCases/getAccessToken";
 import {
   getBeaconsByAccountHolderId,
@@ -67,6 +68,7 @@ export interface IAppContainer {
   getCachedRegistration: GetCachedRegistrationFn;
   saveCachedRegistration: SaveCachedRegistrationFn;
   clearCachedRegistration: ClearCachedRegistrationFn;
+  deleteCachedUse: DeleteCachedUseFn;
   getAccessToken: GetAccessTokenFn;
   getSession: GetSessionFn;
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
