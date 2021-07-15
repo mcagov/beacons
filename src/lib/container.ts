@@ -8,7 +8,7 @@ import {
 import { appContainer, IAppContainer } from "./appContainer";
 
 export type BeaconsGetServerSidePropsContext = GetServerSidePropsContext & {
-  container: Partial<IAppContainer>;
+  container: IAppContainer;
 };
 
 export const withContainer =
