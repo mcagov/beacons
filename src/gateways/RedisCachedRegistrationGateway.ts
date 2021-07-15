@@ -16,12 +16,16 @@ export class RedisCachedRegistrationGateway
       await cache.get(submissionId)
     ).getRegistration();
 
-    console.log(registration);
+    // console.log("sId: " + submissionId);
+    //
+    // console.log("1: " + registration.uses);
 
     const registrationMinusDeletedUse = {
       ...registration,
       uses: registration.uses.filter((use, i) => i !== useIndex),
     };
+
+    // console.log("2: " + registrationMinusDeletedUse.uses);
 
     await cache.set(
       submissionId,
