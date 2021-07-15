@@ -19,7 +19,7 @@ import { buildAreYouSureQuery } from "../are-you-sure";
 
 interface AdditionalBeaconUseProps {
   uses: BeaconUse[];
-  currentUseIndex?: number;
+  currentUseIndex: number;
   showCookieBanner?: boolean;
 }
 
@@ -116,7 +116,8 @@ const confirmBeforeDelete = (use, index) => {
     ActionURLs.deleteCachedUse +
     buildDeleteUseQuery(
       index,
-      PageURLs.additionalUse + buildAdditionalBeaconUseQuery(index - 1),
+      PageURLs.additionalUse +
+        buildAdditionalBeaconUseQuery(index >= 1 ? index - 1 : 0),
       PageURLs.serverError
     );
   const no = PageURLs.additionalUse + "?useIndex=" + index;
@@ -139,7 +140,8 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
 
     if (currentUseIndexDoesNotExist(context, registration))
       throw new ReferenceError(
-        "Page was accessed with a useIndex parameter that does not exist on the cached registration."
+        PageURLs.additionalUse +
+          " was accessed with a useIndex parameter that does not exist on the cached registration."
       );
 
     return {
