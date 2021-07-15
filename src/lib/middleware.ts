@@ -168,6 +168,10 @@ export async function parseFormData(
   return await parse(request);
 }
 
+export async function parseFormDataAs<T>(request: IncomingMessage): Promise<T> {
+  return (await parseFormData(request)) as T;
+}
+
 export const getCache = async (
   id: string,
   cache: IFormCache = FormCacheFactory.getCache()

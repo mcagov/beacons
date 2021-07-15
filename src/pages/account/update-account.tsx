@@ -21,7 +21,7 @@ import {
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { parseFormData } from "../../lib/middleware";
+import { parseFormDataAs } from "../../lib/middleware";
 import { getOrCreateAccountHolder } from "../../useCases/getOrCreateAccountHolder";
 import { updateAccountHolder } from "../../useCases/updateAccountHolder";
 
@@ -39,7 +39,7 @@ const getPageForm = ({
   county,
   postcode,
   email,
-}): FormManager => {
+}: any): FormManager => {
   return new FormManager({
     fullName: new FieldManager(fullName, [
       Validators.required("Full name is a required field"),
@@ -177,42 +177,49 @@ const AccountHolderAddress: FunctionComponent<UpdateAccountPageProps> = ({
   </FormGroup>
 );
 
+function userDidSubmitForm(context: BeaconsGetServerSidePropsContext) {
+  return context.req.method === "POST";
+}
+
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    var accountHolderDetails = await getOrCreateAccountHolder(
+    let updateAccountHolderFn = updateAccountHolder(context.container);
+    let getOrCreateAccountHolderFn = getOrCreateAccountHolder(
       context.container
-    )(context);
+    );
+    let formManager: FormManager;
 
-    const userDidSubmitForm = context.req.method === "POST";
+    let accountHolderDetails = await getOrCreateAccountHolderFn(context);
 
-    var formManager: FormManager;
-    if (userDidSubmitForm) {
-      var formData = (await parseFormData(context.req)) as AccountDetailsForm;
-      formManager = getPageForm(formData);
-      formManager.markAsDirty();
-      const formIsValid = !formManager.hasErrors();
-      if (formIsValid) {
-        const accountUpdate = accountDetailsFormToaccountHolderUpdate(formData);
-        accountHolderDetails = await updateAccountHolder(context.container)(
+    if (userDidSubmitForm(context)) {
+      var formData = await parseFormDataAs<AccountDetailsForm>(context.req);
+      formManager = getPageForm(formData).asDirty();
+
+      if (
+        formManager.isValid() &&
+        (await updateAccountHolderFn(
           accountHolderDetails,
-          accountUpdate as IAccountHolderDetails
-        );
+          accountHolderUpdate(formData)
+        ))
+      ) {
+        // do redirect
       }
+    } else {
+      formManager = getPageForm(accountDetailsForm(accountHolderDetails));
     }
 
     return {
       props: {
-        form: (
-          formManager ||
-          getPageForm(accountHolderToAccountDetailsForm(accountHolderDetails))
-        ).serialise(),
+        form: formManager.serialise(),
         accountHolderDetails,
       },
     };
   }
 );
 
-const accountHolderToAccountDetailsForm = (
+export default UpdateAccount;
+
+const accountDetailsForm = (
   accountHolder: IAccountHolderDetails
 ): AccountDetailsForm => ({
   fullName: accountHolder.fullName,
@@ -225,18 +232,19 @@ const accountHolderToAccountDetailsForm = (
   email: accountHolder.email,
 });
 
-const accountDetailsFormToaccountHolderUpdate = (
+const accountHolderUpdate = (
   accountDetailsForm: AccountDetailsForm
-): Partial<IAccountHolderDetails> => ({
-  fullName: accountDetailsForm.fullName,
-  telephoneNumber: accountDetailsForm.telephoneNumber,
-  addressLine1: accountDetailsForm.addressLine1,
-  addressLine2: accountDetailsForm.addressLine2,
-  townOrCity: accountDetailsForm.townOrCity,
-  county: accountDetailsForm.county,
-  postcode: accountDetailsForm.postcode,
-  email: accountDetailsForm.email,
-});
+): IAccountHolderDetails =>
+  ({
+    fullName: accountDetailsForm.fullName,
+    telephoneNumber: accountDetailsForm.telephoneNumber,
+    addressLine1: accountDetailsForm.addressLine1,
+    addressLine2: accountDetailsForm.addressLine2,
+    townOrCity: accountDetailsForm.townOrCity,
+    county: accountDetailsForm.county,
+    postcode: accountDetailsForm.postcode,
+    email: accountDetailsForm.email,
+  } as IAccountHolderDetails);
 
 interface AccountDetailsForm {
   fullName: string;
@@ -248,5 +256,3 @@ interface AccountDetailsForm {
   postcode: string;
   email: string;
 }
-
-export default UpdateAccount;

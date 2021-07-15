@@ -120,7 +120,6 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
       const request = {
         data: { id: accountHolderId, attributes: { ...update } },
       };
-      console.log("\n\n\request: ", request);
       const response = await axios.patch<
         any,
         AxiosResponse<IAccountHolderDetailsResponse>
@@ -133,7 +132,7 @@ export class AccountHolderApiGateway implements IAccountHolderApiGateway {
       };
     } catch (error) {
       /* eslint-disable no-console */
-      console.error("createAccountHolderId:", JSON.stringify(error));
+      console.error("updateAccountHolderDetails:", JSON.stringify(error));
       throw error;
     }
   }
