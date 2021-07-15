@@ -1,4 +1,5 @@
 import { CachedRegistrationGateway } from "../gateways/CachedRegistrationGateway";
+import { RedisCachedRegistrationGateway } from "../gateways/RedisCachedRegistrationGateway";
 
 export type DeleteCachedUseFn = (
   submissionId: string,
@@ -9,7 +10,7 @@ export type DeleteCachedUseFn = (
 export const deleteCachedUse: DeleteCachedUseFn = async (
   submissionId,
   useIndex,
-  cachedRegistrationGateway
+  cachedRegistrationGateway = new RedisCachedRegistrationGateway()
 ) => {
   await cachedRegistrationGateway.deleteUse(submissionId, useIndex);
 };
