@@ -33,6 +33,7 @@ describe("The getOrCreateAccountHolder use case", () => {
   it("creates a new account holder if one is not found for a given auth id", async () => {
     const gateway: Partial<IAccountHolderApiGateway> = {
       getAccountHolderId: jest.fn().mockResolvedValue(null),
+      createAccountHolder: jest.fn(),
     };
     const container: Partial<IAppContainer> = {
       getSession: jest.fn().mockResolvedValue({ user: { id: "a-session-id" } }),

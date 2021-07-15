@@ -195,4 +195,126 @@ describe("Account Holder API Gateway", () => {
       expect(call).rejects.toThrow();
     });
   });
+
+  describe("Updating an account holder details", () => {
+    const accountHolderDetailsEndpoint = "account-holder";
+    let accountHolderId;
+
+    beforeEach(() => {
+      accountHolderId = v4();
+      token = v4();
+      gateway = new AccountHolderApiGateway(hostName);
+    });
+
+    it("should request account holder details from the correct endpoint", async () => {
+      const mockUpdate: IAccountHolderDetails = {
+        id: accountHolderId,
+        fullName: "Bill Gates",
+        email: "bill@billynomates.test",
+        telephoneNumber: "0788888888",
+        alternativeTelephoneNumber: "NA",
+        addressLine1: "Evil Lair",
+        addressLine2: "1 Microsoft Square",
+        addressLine3: "",
+        addressLine4: "",
+        townOrCity: "Googleville",
+        county: "Lancs",
+        postcode: "ZX80 CPC",
+      };
+      const expectedPatch = {
+        id: accountHolderId,
+        attributes: {
+          fullName: "Bill Gates",
+          email: "bill@billynomates.test",
+          telephoneNumber: "0788888888",
+          alternativeTelephoneNumber: "NA",
+          addressLine1: "Evil Lair",
+          addressLine2: "1 Microsoft Square",
+          addressLine3: "",
+          addressLine4: "",
+          townOrCity: "Googleville",
+          county: "Lancs",
+          postcode: "ZX80 CPC",
+        },
+      };
+      const expectedUrl = `${hostName}/${accountHolderDetailsEndpoint}/${accountHolderId}`;
+      mockedAxios.patch.mockResolvedValue({
+        data: {
+          data: {
+            id: "any id",
+            attributes: {},
+          },
+        },
+      });
+      await gateway.updateAccountHolderDetails(
+        accountHolderId,
+        mockUpdate,
+        token
+      );
+
+      expect(mockedAxios.patch).toHaveBeenLastCalledWith(
+        expectedUrl,
+        { data: { ...expectedPatch } },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    });
+
+    it("should return account holder details on update", async () => {
+      const mockResponse = {
+        data: {
+          id: accountHolderId,
+          attributes: {
+            fullName: "updated Bill Gates",
+            email: "updated bill@billynomates.test",
+            telephoneNumber: "updated 0788888888",
+            alternativeTelephoneNumber: "updated NA",
+            addressLine1: "updated Evil Lair",
+            addressLine2: "updated 1 Microsoft Square",
+            addressLine3: "updated ",
+            addressLine4: "updated ",
+            townOrCity: "updated Googleville",
+            county: "updated Lancs",
+            postcode: "updated ZX80 CPC",
+          },
+        },
+      };
+      const expectedResult = {
+        id: accountHolderId,
+        fullName: "updated Bill Gates",
+        email: "updated bill@billynomates.test",
+        telephoneNumber: "updated 0788888888",
+        alternativeTelephoneNumber: "updated NA",
+        addressLine1: "updated Evil Lair",
+        addressLine2: "updated 1 Microsoft Square",
+        addressLine3: "updated ",
+        addressLine4: "updated ",
+        townOrCity: "updated Googleville",
+        county: "updated Lancs",
+        postcode: "updated ZX80 CPC",
+      };
+      mockedAxios.patch.mockResolvedValue({ data: { ...mockResponse } });
+
+      const result = await gateway.updateAccountHolderDetails(
+        accountHolderId,
+        {} as IAccountHolderDetails,
+        token
+      );
+      expect(result).toMatchObject<IAccountHolderDetails>(expectedResult);
+    });
+
+    it("should allow errors to bubble up", async () => {
+      jest.spyOn(console, "error").mockReturnValue();
+      mockedAxios.patch.mockImplementationOnce(() =>
+        Promise.reject(new Error())
+      );
+      const call = () =>
+        gateway.updateAccountHolderDetails(
+          accountHolderId,
+          {} as IAccountHolderDetails,
+          token
+        );
+
+      expect(call).rejects.toThrow();
+    });
+  });
 });
