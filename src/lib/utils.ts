@@ -21,6 +21,7 @@ export const diffObjValues = (
 
   return Object.keys(comparator).reduce((diff: Record<any, any>, key) => {
     if (_.isEqual(comparator[key], base[key])) return diff;
+    /* eslint-disable no-prototype-builtins */
     if (!base.hasOwnProperty(key))
       throw ReferenceError(`Comparator key ${key} not found on base`);
 
