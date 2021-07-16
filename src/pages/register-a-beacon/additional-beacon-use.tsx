@@ -115,8 +115,6 @@ const confirmBeforeDelete = (use, index) =>
         onFailure: PageURLs.serverError,
       }),
     no: PageURLs.additionalUse + queryParams({ useIndex: index }),
-    consequences:
-      "You will have the opportunity to review this change at the end.",
   });
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
