@@ -15,22 +15,23 @@ import {
   iCanSeeMyMaritimeUse,
 } from "../common/i-can-enter-use-information/maritime.spec";
 import {
-  givenIHaveClickedTheButtonContaining,
   whenIClickBack,
+  whenIClickTheButtonContaining,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner with several uses", () => {
   it("I can safely remove a use from my draft registration", () => {
     givenIHaveThreeUses();
-    andIGoToDeleteMyMainUse();
-    iAmPromptedToConfirmDeletionOfMyMainUse();
+    whenIGoToDeleteMyMainUse();
+    thenIAmPromptedToConfirmDeletionOfMyMainUse();
 
-    givenIHaveClickedTheButtonContaining("Cancel");
+    whenIClickTheButtonContaining("Cancel");
     iCanSeeMyThreeUses();
-    andIGoToDeleteMySecondUse();
+
+    whenIGoToDeleteMySecondUse();
     iAmPromptedToConfirmDeletionOfMySecondUse();
 
-    givenIHaveClickedTheButtonContaining("Yes");
+    whenIClickTheButtonContaining("Yes");
     iCanSeeMyMainUse();
     iCannotSeeWhatWasMySecondUseBecauseItIsDeleted();
     myThirdUseIsNowMySecondUse();
@@ -66,7 +67,7 @@ const iCannotSeeWhatWasMySecondUseBecauseItIsDeleted = () =>
     .contains(/maritime/i && /motor/i && /pleasure/i)
     .should("not.exist");
 
-const andIGoToDeleteMyMainUse = () =>
+const whenIGoToDeleteMyMainUse = () =>
   cy
     .get("h2")
     .contains(/main use/i)
@@ -74,7 +75,7 @@ const andIGoToDeleteMyMainUse = () =>
     .contains(/delete/i)
     .click();
 
-const andIGoToDeleteMySecondUse = () =>
+const whenIGoToDeleteMySecondUse = () =>
   cy
     .get("h2")
     .contains(/second use/i)
@@ -82,7 +83,7 @@ const andIGoToDeleteMySecondUse = () =>
     .contains(/delete/i)
     .click();
 
-const iAmPromptedToConfirmDeletionOfMyMainUse = () =>
+const thenIAmPromptedToConfirmDeletionOfMyMainUse = () =>
   cy.get("h1").contains(/are you sure/i && /land/i && /cycling/i);
 
 const iAmPromptedToConfirmDeletionOfMySecondUse = () =>
