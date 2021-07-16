@@ -163,6 +163,14 @@ resource "aws_ecs_task_definition" "service" {
       {
         name : "SPRING_DATASOURCE_USER",
         value : var.db_username
+      },
+      {
+        name : "SPRING_BASIC_AUTH_USERNAME",
+        value : var.service_basic_auth_username
+      },
+      {
+        name : "SPRING_BASIC_AUTH_PASSWORD",
+        value : var.service_basic_auth_password
       }
     ],
     logConfiguration : {
