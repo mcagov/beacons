@@ -123,6 +123,11 @@ variable "service_basic_auth_password" {
   type        = string
   description = "The Basic Auth username for the Spring API migration endpoints"
 }
+variable "service_spring_active_profiles" {
+  sensitive   = true
+  type        = string
+  description = "A comma-separated list of Spring Boot profiles that are active"
+}
 variable "service_fargate_cpu" {
   type        = number
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) Beacons Service"

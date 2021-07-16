@@ -171,6 +171,10 @@ resource "aws_ecs_task_definition" "service" {
       {
         name : "SPRING_BASIC_AUTH_PASSWORD",
         value : var.service_basic_auth_password
+      },
+      {
+        name : "SPRING_PROFILES_ACTIVE",
+        value : var.service_spring_active_profiles
       }
     ],
     logConfiguration : {
