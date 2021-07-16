@@ -16,7 +16,9 @@ describe("AdditionalBeaconUse page", () => {
   it("given there are no uses, displays a 'no assigned uses' message", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
 
-    expect(screen.getByText(/have not assigned any uses to this beacon yet/i));
+    expect(
+      screen.getByText(/have not assigned any uses to this beacon yet/i)
+    ).toBeVisible();
   });
 
   it("given there are no uses, doesn't allow the user to continue to the next stage", () => {
@@ -29,6 +31,12 @@ describe("AdditionalBeaconUse page", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
 
     expect(screen.getByRole("button", { name: /add a use/i }));
+  });
+
+  it("given there are no uses, doesn't allow the user to go 'back' to the use-editing path", () => {
+    render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
+
+    expect(screen.queryByRole("link", { name: /back/i })).toBeNull();
   });
 
   it("given there is one use, displays that use", () => {

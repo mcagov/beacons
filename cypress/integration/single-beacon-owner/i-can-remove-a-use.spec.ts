@@ -44,7 +44,7 @@ describe("As a beacon owner with several uses", () => {
 const iCanSeeMyMainUse = () => iCanSeeMyLandUse();
 
 const myThirdUseIsNowMySecondUse = () =>
-  cy.get("h2").contains(/third use/i && /aviation/i && /commercial/i);
+  cy.get("h2").contains(/(?=.*second use)(?=.*aviation)(?=.*commercial)/i);
 
 const givenIHaveThreeUses = () => {
   givenIHaveEnteredMyBeaconDetails();
@@ -64,7 +64,7 @@ const iCanSeeMyThreeUses = () => {
 const iCannotSeeWhatWasMySecondUseBecauseItIsDeleted = () =>
   cy
     .get("main")
-    .contains(/maritime/i && /motor/i && /pleasure/i)
+    .contains(/(?=.*maritime)(?=.*motor)(?=.*pleasure)/i)
     .should("not.exist");
 
 const whenIGoToDeleteMyMainUse = () =>
@@ -84,11 +84,11 @@ const whenIGoToDeleteMySecondUse = () =>
     .click();
 
 const thenIAmPromptedToConfirmDeletionOfMyMainUse = () =>
-  cy.get("h1").contains(/are you sure/i && /land/i && /cycling/i);
+  cy.get("h1").contains(/(?=.*are you sure)(?=.*land)(?=.*cycling)/i);
 
 const iAmPromptedToConfirmDeletionOfMySecondUse = () =>
   cy
     .get("h1")
-    .contains(/are you sure/i && /maritime/i && /motor/i && /pleasure/i);
+    .contains(/(?=.*are you sure)(?=.*maritime)(?=.*motor)(?=.*pleasure)/i);
 
 const iAmEditingWhatIsNowMySecondUse = iCanEditMyAdditionalLandUseMoreDetails;
