@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const props: AreYouSureProps = {
     actionText: action as string,
-    consequencesText: consequences as string,
+    consequencesText: (consequences as string) || null,
     redirectUriIfYes: yes as string,
     redirectUriIfCancel: no as string,
   };
