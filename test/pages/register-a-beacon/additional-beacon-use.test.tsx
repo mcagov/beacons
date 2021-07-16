@@ -16,7 +16,9 @@ describe("AdditionalBeaconUse page", () => {
   it("given there are no uses, displays a 'no assigned uses' message", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
 
-    expect(screen.getByText(/have not assigned any uses to this beacon yet/i));
+    expect(
+      screen.getByText(/have not assigned any uses to this beacon yet/i)
+    ).toBeVisible();
   });
 
   it("given there are no uses, doesn't allow the user to continue to the next stage", () => {
