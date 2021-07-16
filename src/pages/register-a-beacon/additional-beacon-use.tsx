@@ -126,7 +126,10 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
       await getCachedRegistration(submissionId)
     ).getRegistration();
 
-    if (currentUseIndexDoesNotExist(context, registration))
+    if (
+      registration.uses.length >= 1 &&
+      currentUseIndexDoesNotExist(context, registration)
+    )
       throw new ReferenceError(
         PageURLs.additionalUse +
           " was accessed with a useIndex parameter that does not exist on the cached registration."
