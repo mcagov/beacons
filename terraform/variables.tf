@@ -113,6 +113,16 @@ variable "service_health_check_path" {
   description = "Health check path used by the Application Load Balancer for the Beacons Service"
   default     = "/spring-api/actuator/health"
 }
+variable "service_basic_auth_username" {
+  sensitive   = true
+  type        = string
+  description = "The Basic Auth username for the Spring API migration endpoints"
+}
+variable "service_basic_auth_password" {
+  sensitive   = true
+  type        = string
+  description = "The Basic Auth username for the Spring API migration endpoints"
+}
 variable "service_fargate_cpu" {
   type        = number
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) Beacons Service"
