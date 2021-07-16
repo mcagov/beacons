@@ -35,10 +35,8 @@ export const AreYouSure: FunctionComponent<AreYouSureProps> = ({
             <LinkButton
               buttonText="Cancel"
               href={redirectUriIfCancel}
-              classes="govuk-button--secondary"
+              classes="govuk-button--secondary govuk-!-margin-right-8"
             />
-            <br />
-            <br />
             <LinkButton buttonText="Yes" href={redirectUriIfYes} />
           </>
         }
