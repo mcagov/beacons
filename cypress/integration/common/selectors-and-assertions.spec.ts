@@ -65,6 +65,9 @@ export const givenIHaveClickedTheButtonContaining = (text: string): void => {
 export const andIClickTheButtonContaining =
   givenIHaveClickedTheButtonContaining;
 
+export const whenIClickTheButtonContaining =
+  givenIHaveClickedTheButtonContaining;
+
 export const whenIClickContinue = (): void => {
   givenIHaveClickedTheButtonContaining("Continue");
 };

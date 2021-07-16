@@ -11,11 +11,10 @@ import {
 } from "../../lib/container";
 import { showCookieBanner } from "../../lib/cookies";
 import { withCookieRedirect } from "../../lib/middleware";
-import { BeaconUse } from "../../lib/registration/types";
+import { BeaconUse, IRegistration } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
-import { ActionURLs, PageURLs } from "../../lib/urls";
+import { ActionURLs, PageURLs, queryParams } from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
-import { buildAreYouSureQuery } from "../are-you-sure";
 
 interface AdditionalBeaconUseProps {
   uses: BeaconUse[];
@@ -34,9 +33,16 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
     <>
       <Layout
         navigation={
-          <BackButton
-            href={PageURLs.moreDetails + "?useIndex=" + currentUseIndex}
-          />
+          uses.length > 0 && (
+            <BackButton
+              href={
+                PageURLs.moreDetails +
+                queryParams({
+                  useIndex: currentUseIndex || uses.length - 1,
+                })
+              }
+            />
+          )
         }
         title={pageHeading}
         showCookieBanner={showCookieBanner}
@@ -93,17 +99,23 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   );
 };
 
-const confirmBeforeDelete = (use, index) => {
-  const action = "delete your " + prettyUseName(use) + " use";
-  const yes = ActionURLs.deleteCachedUse + "?useIndex=" + index;
-  const no = PageURLs.additionalUse + "?useIndex=" + index;
-  const consequences =
-    "You will have the opportunity to review this change at the end.";
-
-  return (
-    PageURLs.areYouSure + buildAreYouSureQuery(action, yes, no, consequences)
-  );
-};
+const confirmBeforeDelete = (use, index) =>
+  PageURLs.areYouSure +
+  queryParams({
+    action: "delete your " + prettyUseName(use) + " use",
+    yes:
+      ActionURLs.deleteCachedUse +
+      queryParams({
+        useIndex: index,
+        onSuccess:
+          PageURLs.additionalUse +
+          queryParams({
+            useIndex: index >= 1 ? index - 1 : 0,
+          }),
+        onFailure: PageURLs.serverError,
+      }),
+    no: PageURLs.additionalUse + queryParams({ useIndex: index }),
+  });
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
@@ -114,6 +126,15 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
       await getCachedRegistration(submissionId)
     ).getRegistration();
 
+    if (
+      registration.uses.length >= 1 &&
+      currentUseIndexDoesNotExist(context, registration)
+    )
+      throw new ReferenceError(
+        PageURLs.additionalUse +
+          " was accessed with a useIndex parameter that does not exist on the cached registration."
+      );
+
     return {
       props: {
         currentUseIndex: context.query.useIndex,
@@ -123,5 +144,11 @@ export const getServerSideProps: GetServerSideProps = withCookieRedirect(
     };
   })
 );
+
+const currentUseIndexDoesNotExist = (
+  context: BeaconsGetServerSidePropsContext,
+  registration: IRegistration
+): boolean =>
+  parseInt(context.query.useIndex as string) > registration.uses.length - 1;
 
 export default AdditionalBeaconUse;
