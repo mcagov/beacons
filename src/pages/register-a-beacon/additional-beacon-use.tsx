@@ -33,14 +33,16 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
     <>
       <Layout
         navigation={
-          <BackButton
-            href={
-              PageURLs.moreDetails +
-              queryParams({
-                useIndex: currentUseIndex || uses.length - 1,
-              })
-            }
-          />
+          uses.length > 0 && (
+            <BackButton
+              href={
+                PageURLs.moreDetails +
+                queryParams({
+                  useIndex: currentUseIndex || uses.length - 1,
+                })
+              }
+            />
+          )
         }
         title={pageHeading}
         showCookieBanner={showCookieBanner}

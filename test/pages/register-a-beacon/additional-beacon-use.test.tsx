@@ -36,7 +36,7 @@ describe("AdditionalBeaconUse page", () => {
   it("given there are no uses, doesn't allow the user to go 'back' to the use-editing path", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
 
-    expect(screen.queryByRole("link", { name: /back/i })).toBeNull();
+    expect(screen.queryByRole("link", { name: /^back$/i })).toBeNull();
   });
 
   it("given there is one use, displays that use", () => {
