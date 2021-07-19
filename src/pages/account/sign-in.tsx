@@ -17,7 +17,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const callbackUrl = process.env.NEXTAUTH_URL + PageURLs.updateHome;
+  const callbackUrl = process.env.NEXTAUTH_URL + PageURLs.updateAccount;
   return { props: { callbackUrl } };
 };
 
