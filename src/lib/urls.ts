@@ -7,6 +7,7 @@ export enum PageURLs {
   signUp = "/account/sign-up",
   signIn = "/account/sign-in",
   accountHome = "/account/your-beacon-registry-account",
+  updateHome = "/account/update-account",
   areYouSure = "/are-you-sure",
   checkBeaconDetails = "/register-a-beacon/check-beacon-details",
   beaconInformation = "/register-a-beacon/beacon-information",
