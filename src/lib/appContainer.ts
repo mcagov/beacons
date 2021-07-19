@@ -30,6 +30,10 @@ import {
   clearCachedRegistration,
   ClearCachedRegistrationFn,
 } from "../useCases/clearCachedRegistration";
+import {
+  deleteCachedUse,
+  DeleteCachedUseFn,
+} from "../useCases/deleteCachedUse";
 import { getAccessToken, GetAccessTokenFn } from "../useCases/getAccessToken";
 import {
   getBeaconsByAccountHolderId,
@@ -73,6 +77,7 @@ export interface IAppContainer {
   getCachedRegistration: GetCachedRegistrationFn;
   saveCachedRegistration: SaveCachedRegistrationFn;
   clearCachedRegistration: ClearCachedRegistrationFn;
+  deleteCachedUse: DeleteCachedUseFn;
   getAccessToken: GetAccessTokenFn;
   getSession: GetSessionFn;
   parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
@@ -97,6 +102,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     getCachedRegistration: getCachedRegistration,
     saveCachedRegistration: saveCachedRegistration,
     clearCachedRegistration: clearCachedRegistration,
+    deleteCachedUse: deleteCachedUse,
     getSession: getSession,
     parseFormDataAs: parseFormDataAs,
 

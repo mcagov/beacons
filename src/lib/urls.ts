@@ -26,10 +26,11 @@ export enum PageURLs {
   emergencyContact = "/register-a-beacon/emergency-contact",
   checkYourAnswers = "/register-a-beacon/check-your-answers",
   applicationComplete = "/register-a-beacon/application-complete",
+  serverError = "/500",
 }
 
 export enum ActionURLs {
-  deleteCachedUse = "/todo",
+  deleteCachedUse = "/api/registration/delete-use",
 }
 
 export function formatUrlQueryParams(
@@ -50,3 +51,6 @@ export function formatUrlQueryParams(
 
   return url;
 }
+
+export const queryParams = (queryParams: Record<string, any>): string =>
+  "?" + new URLSearchParams(queryParams).toString();

@@ -5,14 +5,20 @@ import {
   Environment,
   Purpose,
 } from "../../../src/lib/registration/types";
-import AdditionalBeaconUse from "../../../src/pages/register-a-beacon/additional-beacon-use";
+import { formSubmissionCookieId } from "../../../src/lib/types";
+import { PageURLs, queryParams } from "../../../src/lib/urls";
+import AdditionalBeaconUse, {
+  getServerSideProps,
+} from "../../../src/pages/register-a-beacon/additional-beacon-use";
 import { getMockUse } from "../../mocks";
 
 describe("AdditionalBeaconUse page", () => {
   it("given there are no uses, displays a 'no assigned uses' message", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
 
-    expect(screen.getByText(/have not assigned any uses to this beacon yet/i));
+    expect(
+      screen.getByText(/have not assigned any uses to this beacon yet/i)
+    ).toBeVisible();
   });
 
   it("given there are no uses, doesn't allow the user to continue to the next stage", () => {
@@ -25,6 +31,12 @@ describe("AdditionalBeaconUse page", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
 
     expect(screen.getByRole("button", { name: /add a use/i }));
+  });
+
+  it("given there are no uses, doesn't allow the user to go 'back' to the use-editing path", () => {
+    render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
+
+    expect(screen.queryByRole("link", { name: /^back$/i })).toBeNull();
   });
 
   it("given there is one use, displays that use", () => {
@@ -56,5 +68,46 @@ describe("AdditionalBeaconUse page", () => {
     expect(within(content).getByText(new RegExp(use2.environment, "i")));
     expect(within(content).getByText(new RegExp(use2.activity, "i")));
     expect(within(content).getByText(new RegExp(use2.purpose, "i")));
+  });
+
+  it("given a currentUseIndex, sends the user back down the editing route for that use", () => {
+    const currentUseIndex = 1;
+    render(
+      <AdditionalBeaconUse
+        uses={[getMockUse(), getMockUse()]}
+        currentUseIndex={currentUseIndex}
+      />
+    );
+
+    expect(screen.getByRole("link", { name: "Back" })).toHaveAttribute(
+      "href",
+      PageURLs.moreDetails + queryParams({ useIndex: currentUseIndex })
+    );
+  });
+
+  describe("getServerSideProps()", () => {
+    it("given a non-existent currentUseIndex, throws an error", () => {
+      const mockRegistration = {
+        getRegistration: jest
+          .fn()
+          .mockReturnValue({ model: "ASOS", uses: [getMockUse()] }),
+      };
+      const nonExistentUseIndex = "1";
+      const context = {
+        query: {
+          useIndex: nonExistentUseIndex,
+        },
+        container: {
+          getCachedRegistration: jest.fn().mockResolvedValue(mockRegistration),
+        },
+        req: {
+          cookies: {
+            [formSubmissionCookieId]: "test-submission-id",
+          },
+        },
+      };
+
+      expect(() => getServerSideProps(context as any)).rejects.toThrow();
+    });
   });
 });

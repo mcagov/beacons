@@ -35,10 +35,8 @@ export const AreYouSure: FunctionComponent<AreYouSureProps> = ({
             <LinkButton
               buttonText="Cancel"
               href={redirectUriIfCancel}
-              classes="govuk-button--secondary"
+              classes="govuk-button--secondary govuk-!-margin-right-8"
             />
-            <br />
-            <br />
             <LinkButton buttonText="Yes" href={redirectUriIfYes} />
           </>
         }
@@ -47,29 +45,12 @@ export const AreYouSure: FunctionComponent<AreYouSureProps> = ({
   );
 };
 
-export const buildAreYouSureQuery = (
-  action: string,
-  yes: string,
-  no: string,
-  consequences: string
-): string => {
-  return (
-    "?" +
-    new URLSearchParams({
-      action,
-      yes,
-      no,
-      consequences,
-    }).toString()
-  );
-};
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { action, consequences, yes, no } = context.query;
 
   const props: AreYouSureProps = {
     actionText: action as string,
-    consequencesText: consequences as string,
+    consequencesText: (consequences as string) || null,
     redirectUriIfYes: yes as string,
     redirectUriIfCancel: no as string,
   };
