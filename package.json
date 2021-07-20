@@ -32,7 +32,7 @@
     "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "google-libphonenumber": "^3.2.21",
-    "govuk-frontend": "^3.11.0",
+    "govuk-frontend": "^3.13.0",
     "ioredis": "^4.27.3",
     "isodate": "^0.1.4",
     "next": "10.2.0",
@@ -74,7 +74,7 @@
     "pretty-quick": "^3.1.0",
     "sass": "^1.35.1",
     "ts-node": "^10.0.0",
-    "typescript": "^4.3.4"
+    "typescript": "^4.3.5"
   },
   "engines": {
     "node": ">=12.20.x <=14.15.x",
