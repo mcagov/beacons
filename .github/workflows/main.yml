@@ -132,6 +132,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           spec: cypress/endToEnd/*
+          browser: chrome
           start: npm run start
           build: npm run build
           wait-on: "http://localhost:3000"
