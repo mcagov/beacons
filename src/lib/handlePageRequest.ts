@@ -10,7 +10,6 @@ import {
 } from "./middleware";
 import { Registration } from "./registration/registration";
 import { IRegistration } from "./registration/types";
-import { retrieveUserFormSubmissionId } from "./retrieveUserFormSubmissionId";
 import { formatUrlQueryParams } from "./urls";
 
 type TransformCallback = (formData: FormSubmission) => FormSubmission;
@@ -38,28 +37,12 @@ export const handlePageRequest = (
 ): GetServerSideProps =>
   withCookieRedirect(
     withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-      const {
-        getCachedRegistration,
-        saveCachedRegistration,
-        authenticateUser,
-      } = context.container;
+      const { authenticateUser } = context.container;
 
       await authenticateUser(context);
 
       const beaconsContext: BeaconsContext =
         await decorateGetServerSidePropsContext(context);
-
-      const registration: Registration = await getCachedRegistration(
-        retrieveUserFormSubmissionId(context)
-      );
-
-      const useIndexDoesNotExist =
-        beaconsContext.useIndex >
-        registration.getRegistration().uses.length - 1;
-      if (useIndexDoesNotExist) {
-        registration.createUse();
-        await saveCachedRegistration(beaconsContext.submissionId, registration);
-      }
 
       const userDidSubmitForm = beaconsContext.req.method === "POST";
 
