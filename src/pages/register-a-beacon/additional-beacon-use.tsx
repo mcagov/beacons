@@ -60,7 +60,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
 
                   <LinkButton
                     buttonText="Add a use for this beacon"
-                    href={PageURLs.environment}
+                    href={ActionURLs.addNewUseToDraftRegistration}
                   />
                 </>
               )}
