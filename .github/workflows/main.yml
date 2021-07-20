@@ -33,7 +33,7 @@ jobs:
         run: REF=${GITHUB_REF#refs/heads/} && arrREF=(${REF//// }) && echo "##[set-output name=branch;]$(echo ${arrREF[-1]})"
         id: extract_branch
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1.5.0
+        uses: docker/setup-buildx-action@v1.5.1
       - name: Login to ECR
         uses: docker/login-action@v1.10.0
         with:
@@ -132,6 +132,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           spec: cypress/endToEnd/*
+          browser: chrome
           start: npm run start
           build: npm run build
           wait-on: "http://localhost:3000"
