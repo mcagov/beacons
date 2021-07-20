@@ -1,6 +1,7 @@
 import { Purpose } from "../../../src/lib/registration/types";
 import { givenIHaveEnteredMyBeaconDetails } from "../common/i-can-enter-beacon-information.spec";
 import {
+  andIHaveEnteredMyAviationUse,
   givenIHaveEnteredMyAviationUse,
   iCanSeeMyAviationUse,
 } from "../common/i-can-enter-use-information/aviation.spec";
@@ -15,53 +16,79 @@ import {
   iCanSeeMyMaritimeUse,
 } from "../common/i-can-enter-use-information/maritime.spec";
 import {
-  whenIClickBack,
+  andIClickTheButtonContaining,
   whenIClickTheButtonContaining,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner with several uses", () => {
   it("I can safely remove a use from my draft registration", () => {
-    givenIHaveThreeUses();
+    givenIHaveEnteredMyBeaconDetails();
+    givenIHaveEnteredMyLandUse();
+    andIHaveAnotherUse();
+    givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
+    thereAreNUses(2);
+
     whenIGoToDeleteMyMainUse();
-    thenIAmPromptedToConfirmDeletionOfMyMainUse();
+    thenIAmPromptedToConfirmDeletionOfMyLandUse();
 
     whenIClickTheButtonContaining("Cancel");
-    iCanSeeMyThreeUses();
+    thereAreNUses(2);
+    iCanSeeMyLandUse();
+    iCanSeeMyMaritimeUse(Purpose.PLEASURE);
 
     whenIGoToDeleteMySecondUse();
-    iAmPromptedToConfirmDeletionOfMySecondUse();
-
+    iAmPromptedToConfirmDeletionOfMyMaritimeMotorPleasureUse();
     whenIClickTheButtonContaining("Yes");
-    iCanSeeMyMainUse();
-    iCannotSeeWhatWasMySecondUseBecauseItIsDeleted();
-    myThirdUseIsNowMySecondUse();
+    thereAreNUses(1);
+    iCanSeeMyLandUse();
+    iCannotSeeMyMaritimePleasureUseBecauseItIsDeleted();
 
-    whenIClickBack();
-    iAmEditingWhatIsNowMySecondUse();
+    andIHaveAnotherUse();
+    andIHaveEnteredMyAviationUse(Purpose.COMMERCIAL);
+    thereAreNUses(2);
+    iCanSeeMyLandUse();
+    iCanSeeMyAviationUse(Purpose.COMMERCIAL);
+
+    whenIGoToDeleteMyMainUse();
+    andIClickTheButtonContaining("Yes");
+    thereAreNUses(1);
+    myAviationCommercialUseIsNowMyMainUse();
+
+    whenIGoToDeleteMyMainUse();
+    whenIClickTheButtonContaining("Yes");
+    thereAreNUses(0);
   });
 });
 
 const iCanSeeMyMainUse = () => iCanSeeMyLandUse();
 
+const myAviationCommercialUseIsNowMyMainUse = () =>
+  cy.get("h2").contains(/(?=.*main use)(?=.*aviation)(?=.*commercial)/i);
+
 const myThirdUseIsNowMySecondUse = () =>
   cy.get("h2").contains(/(?=.*second use)(?=.*aviation)(?=.*commercial)/i);
 
-const givenIHaveThreeUses = () => {
+const thereAreNUses = (n: number) =>
+  cy.get(".govuk-summary-list").should("have.length", n);
+
+const givenIHaveTwoUses = () => {
   givenIHaveEnteredMyBeaconDetails();
   givenIHaveEnteredMyLandUse();
   andIHaveAnotherUse();
   givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
+};
+
+const iCanSeeMyOriginalTwoUses = () => {
+  iCanSeeMyLandUse();
+  iCanSeeMyMaritimeUse(Purpose.PLEASURE);
+};
+
+const whenIGoToAddAnotherUse = () => {
   andIHaveAnotherUse();
   givenIHaveEnteredMyAviationUse(Purpose.COMMERCIAL);
 };
 
-const iCanSeeMyThreeUses = () => {
-  iCanSeeMyLandUse();
-  iCanSeeMyMaritimeUse(Purpose.PLEASURE);
-  iCanSeeMyAviationUse(Purpose.COMMERCIAL);
-};
-
-const iCannotSeeWhatWasMySecondUseBecauseItIsDeleted = () =>
+const iCannotSeeMyMaritimePleasureUseBecauseItIsDeleted = () =>
   cy
     .get("main")
     .contains(/(?=.*maritime)(?=.*motor)(?=.*pleasure)/i)
@@ -83,10 +110,10 @@ const whenIGoToDeleteMySecondUse = () =>
     .contains(/delete/i)
     .click();
 
-const thenIAmPromptedToConfirmDeletionOfMyMainUse = () =>
+const thenIAmPromptedToConfirmDeletionOfMyLandUse = () =>
   cy.get("h1").contains(/(?=.*are you sure)(?=.*land)(?=.*cycling)/i);
 
-const iAmPromptedToConfirmDeletionOfMySecondUse = () =>
+const iAmPromptedToConfirmDeletionOfMyMaritimeMotorPleasureUse = () =>
   cy
     .get("h1")
     .contains(/(?=.*are you sure)(?=.*maritime)(?=.*motor)(?=.*pleasure)/i);

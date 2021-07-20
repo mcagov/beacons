@@ -22,6 +22,8 @@ export const andIHaveAnotherUse = (): void => {
   andIClickTheButtonContaining("Add another");
 };
 
+export const givenIHaveAnotherUse = andIHaveAnotherUse;
+
 export const iCanEditMyNUses = (n: number): void => {
   iCanSeeNLinksContaining(n, "Change");
   iCanSeeNLinksContaining(n, "Delete");
