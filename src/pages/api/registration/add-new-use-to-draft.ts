@@ -4,22 +4,13 @@ import { PageURLs, queryParams } from "../../../lib/urls";
 export const handler = withApiContainer(async (req: BeaconsApiRequest, res) => {
   const { addNewUseToDraftRegistration, getCachedRegistration } = req.container;
   const { submissionId } = req.cookies;
-  const { onSuccess, onFailure } = req.query as {
-    [key: string]: string;
-  };
 
-  try {
-    await addNewUseToDraftRegistration(submissionId);
-    const newUseIndex =
-      (await getCachedRegistration(submissionId)).getRegistration().uses
-        .length - 1;
+  await addNewUseToDraftRegistration(submissionId);
+  const newUseIndex =
+    (await getCachedRegistration(submissionId)).getRegistration().uses.length -
+    1;
 
-    res.redirect(
-      onSuccess || PageURLs.environment + queryParams({ useIndex: newUseIndex })
-    );
-  } catch (e) {
-    res.redirect(onFailure || PageURLs.serverError);
-  }
+  res.redirect(PageURLs.environment + queryParams({ useIndex: newUseIndex }));
 });
 
 export default handler;

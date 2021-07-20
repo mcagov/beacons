@@ -43,9 +43,9 @@ export class RedisCachedRegistrationGateway
   private static async getRegistration(
     submissionId: string
   ): Promise<IRegistration> {
-    const cache = FormCacheFactory.getCache();
-
-    return (await cache.get(submissionId)).getRegistration();
+    return (
+      await FormCacheFactory.getCache().get(submissionId)
+    ).getRegistration();
   }
 
   private static async saveRegistration(
