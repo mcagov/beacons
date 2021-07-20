@@ -20,6 +20,11 @@ export const andIHaveNoFurtherUses = (): void => {
 export const andIHaveAnotherUse = (): void => {
   thenTheUrlShouldContain(PageURLs.additionalUse);
   andIClickTheButtonContaining("Add another");
+  iShouldBeEditingAFreshUse();
+};
+
+const iShouldBeEditingAFreshUse = (): void => {
+  cy.get('[type="radio"]').should("not.be.checked");
 };
 
 export const givenIHaveAnotherUse = andIHaveAnotherUse;
