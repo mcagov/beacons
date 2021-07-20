@@ -80,7 +80,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                   })}
                   <LinkButton
                     buttonText="Add another use for this beacon"
-                    href={PageURLs.environment + "?useIndex=" + uses.length}
+                    href={ActionURLs.addNewUseToDraftRegistration}
                     classes="govuk-button--secondary"
                   />
                   <br />

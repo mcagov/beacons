@@ -12,7 +12,7 @@ export class RedisCachedRegistrationGateway
     useIndex: number
   ): Promise<void> {
     const registration: IRegistration =
-      RedisCachedRegistrationGateway.getRegistration(submissionId);
+      await RedisCachedRegistrationGateway.getRegistration(submissionId);
 
     const registrationMinusDeletedUse = {
       ...registration,

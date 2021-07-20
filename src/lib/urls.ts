@@ -30,7 +30,7 @@ export enum PageURLs {
 
 export enum ActionURLs {
   deleteCachedUse = "/api/registration/delete-use",
-  createNewCachedUse = "/api/registration/create-use",
+  addNewUseToDraftRegistration = "/api/registration/add-new-use-to-draft",
 }
 
 export function formatUrlQueryParams(

@@ -21,6 +21,10 @@ import {
   UserSessionGateway,
 } from "../gateways/userSessionGateway";
 import {
+  addNewUseToDraftRegistration,
+  AddNewUseToDraftRegistrationFn,
+} from "../useCases/addNewUseToDraftRegistration";
+import {
   authenticateUser,
   AuthenticateUserFn,
 } from "../useCases/authenticateUser";
@@ -77,6 +81,7 @@ export interface IAppContainer {
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
   getAccountHolderId: GetAccountHolderIdFn;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
+  addNewUseToDraftRegistration: AddNewUseToDraftRegistrationFn;
 
   /* Gateways */
   beaconsApiAuthGateway: IAuthGateway;
@@ -95,6 +100,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     saveCachedRegistration: saveCachedRegistration,
     clearCachedRegistration: clearCachedRegistration,
     deleteCachedUse: deleteCachedUse,
+    addNewUseToDraftRegistration: addNewUseToDraftRegistration,
     getSession: getSession,
 
     /* Composite use cases requiring access to other use cases */
