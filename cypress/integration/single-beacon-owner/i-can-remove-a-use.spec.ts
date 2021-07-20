@@ -2,13 +2,14 @@ import { Purpose } from "../../../src/lib/registration/types";
 import { givenIHaveEnteredMyBeaconDetails } from "../common/i-can-enter-beacon-information.spec";
 import {
   andIHaveEnteredMyAviationUse,
-  givenIHaveEnteredMyAviationUse,
   iCanSeeMyAviationUse,
 } from "../common/i-can-enter-use-information/aviation.spec";
-import { andIHaveAnotherUse } from "../common/i-can-enter-use-information/generic.spec";
+import {
+  andIHaveAnotherUse,
+  whenIHaveAnotherUse,
+} from "../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyLandUse,
-  iCanEditMyAdditionalLandUseMoreDetails,
   iCanSeeMyLandUse,
 } from "../common/i-can-enter-use-information/land.spec";
 import {
@@ -43,7 +44,7 @@ describe("As a beacon owner with several uses", () => {
     iCanSeeMyLandUse();
     iCannotSeeMyMaritimePleasureUseBecauseItIsDeleted();
 
-    andIHaveAnotherUse();
+    whenIHaveAnotherUse();
     andIHaveEnteredMyAviationUse(Purpose.COMMERCIAL);
     thereAreNUses(2);
     iCanSeeMyLandUse();
@@ -60,33 +61,11 @@ describe("As a beacon owner with several uses", () => {
   });
 });
 
-const iCanSeeMyMainUse = () => iCanSeeMyLandUse();
-
 const myAviationCommercialUseIsNowMyMainUse = () =>
   cy.get("h2").contains(/(?=.*main use)(?=.*aviation)(?=.*commercial)/i);
 
-const myThirdUseIsNowMySecondUse = () =>
-  cy.get("h2").contains(/(?=.*second use)(?=.*aviation)(?=.*commercial)/i);
-
 const thereAreNUses = (n: number) =>
   cy.get(".govuk-summary-list").should("have.length", n);
-
-const givenIHaveTwoUses = () => {
-  givenIHaveEnteredMyBeaconDetails();
-  givenIHaveEnteredMyLandUse();
-  andIHaveAnotherUse();
-  givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
-};
-
-const iCanSeeMyOriginalTwoUses = () => {
-  iCanSeeMyLandUse();
-  iCanSeeMyMaritimeUse(Purpose.PLEASURE);
-};
-
-const whenIGoToAddAnotherUse = () => {
-  andIHaveAnotherUse();
-  givenIHaveEnteredMyAviationUse(Purpose.COMMERCIAL);
-};
 
 const iCannotSeeMyMaritimePleasureUseBecauseItIsDeleted = () =>
   cy
@@ -117,5 +96,3 @@ const iAmPromptedToConfirmDeletionOfMyMaritimeMotorPleasureUse = () =>
   cy
     .get("h1")
     .contains(/(?=.*are you sure)(?=.*maritime)(?=.*motor)(?=.*pleasure)/i);
-
-const iAmEditingWhatIsNowMySecondUse = iCanEditMyAdditionalLandUseMoreDetails;

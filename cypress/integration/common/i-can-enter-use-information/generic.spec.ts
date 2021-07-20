@@ -23,11 +23,13 @@ export const andIHaveAnotherUse = (): void => {
   iShouldBeEditingAFreshUse();
 };
 
+export const givenIHaveAnotherUse = andIHaveAnotherUse;
+
+export const whenIHaveAnotherUse = andIHaveAnotherUse;
+
 const iShouldBeEditingAFreshUse = (): void => {
   cy.get('[type="radio"]').should("not.be.checked");
 };
-
-export const givenIHaveAnotherUse = andIHaveAnotherUse;
 
 export const iCanEditMyNUses = (n: number): void => {
   iCanSeeNLinksContaining(n, "Change");
