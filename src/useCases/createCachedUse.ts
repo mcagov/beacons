@@ -12,5 +12,5 @@ export const createCachedUse: CreateCachedUseFn = async (
   useIndex,
   cachedRegistrationGateway = new RedisCachedRegistrationGateway()
 ) => {
-  await cachedRegistrationGateway.createUse(submissionId);
+  await cachedRegistrationGateway.createEmptyUse(submissionId);
 };
