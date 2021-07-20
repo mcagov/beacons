@@ -17,6 +17,7 @@ export const submitRegistration =
     getCachedRegistration,
     getAccessToken,
     beaconsApiGateway,
+    accountHolderApiGateway,
   }: Partial<IAppContainer>): SubmitRegistrationFn =>
   async (submissionId: string, accountHolderId: string) => {
     const registration = await getCachedRegistration(submissionId);
@@ -30,8 +31,17 @@ export const submitRegistration =
       accessToken
     );
 
+    const { email: accountHolderEmail } =
+      await accountHolderApiGateway.getAccountHolderDetails(
+        accountHolderId,
+        accessToken
+      );
+
     const confirmationEmailSent = beaconRegistered
-      ? await sendConfirmationEmail(registration.getRegistration())
+      ? await sendConfirmationEmail(
+          registration.getRegistration(),
+          accountHolderEmail
+        )
       : false;
 
     if (!beaconRegistered) registration.setReferenceNumber("");

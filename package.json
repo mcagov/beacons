@@ -15,6 +15,7 @@
     "format": "prettier --write '**/*.{js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
     "format:check": "prettier --check '**/*.{js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
     "postinstall": "scripts/post-install.sh",
+    "cypress": "cypress run",
     "cypress:open": "cypress open",
     "cypress:watch": "cypress open --config watchForFileChanges=true",
     "cypress:run": "cypress run --spec 'cypress/integration/**/*.spec.ts'",
