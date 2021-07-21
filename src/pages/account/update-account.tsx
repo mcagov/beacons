@@ -21,6 +21,7 @@ import {
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
+import { FormSubmission } from "../../lib/formCache";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { PageURLs } from "../../lib/urls";
 import { diffObjValues } from "../../lib/utils";
@@ -182,8 +183,9 @@ const AccountHolderAddress: FunctionComponent<{ form: FormJSON }> = ({
   </FormGroup>
 );
 
-const userDidSubmitForm = (context: BeaconsGetServerSidePropsContext): boolean =>
-    context.req.method === "POST";
+const userDidSubmitForm = (
+  context: BeaconsGetServerSidePropsContext
+): boolean => context.req.method === "POST";
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
@@ -193,7 +195,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     if (!userDidSubmitForm(context)) {
       return {
         props: {
-          form: getPageForm(
+          form: definePageForm(
             accountUpdateFields(await getOrCreateAccountHolder(context))
           ).serialise(),
         },
@@ -201,7 +203,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     }
 
     const formData = await parseFormDataAs<AccountUpdateFields>(context.req);
-    const formManager = getPageForm(formData).asDirty();
+    const formManager = definePageForm(formData).asDirty();
     if (formManager.hasErrors()) {
       return {
         props: {
