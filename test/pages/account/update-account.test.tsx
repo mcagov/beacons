@@ -40,9 +40,9 @@ describe("UpdateAccount", () => {
         req: mockRequest,
       };
 
-      const result = await getServerSideProps(
+      const result = (await getServerSideProps(
         context as BeaconsGetServerSidePropsContext
-      );
+      )) as any;
 
       const fields = result.props.form.fields;
       expect(fields.fullName.value).toEqual("Tesy McTestface");
