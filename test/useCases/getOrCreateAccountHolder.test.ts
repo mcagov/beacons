@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from "next";
 import { IAccountHolderDetails } from "../../src/entities/accountHolderDetails";
 import { IAccountHolderApiGateway } from "../../src/gateways/accountHolderApiGateway";
 import { IAppContainer } from "../../src/lib/appContainer";
-import { BeaconsGetServerSidePropsContext } from "../../src/lib/container";
+import { BeaconsGetServerSidePropsContext } from "../../src/lib/middleware/withContainer";
 import { getOrCreateAccountHolder } from "../../src/useCases/getOrCreateAccountHolder";
 
 describe("The getOrCreateAccountHolder use case", () => {

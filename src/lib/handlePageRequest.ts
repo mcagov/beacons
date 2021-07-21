@@ -1,5 +1,4 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
-import { BeaconsGetServerSidePropsContext, withContainer } from "./container";
 import { FormJSON, FormManager } from "./form/formManager";
 import { FormSubmission } from "./formCache";
 import {
@@ -8,6 +7,10 @@ import {
   updateFormCache,
   withCookieRedirect,
 } from "./middleware";
+import {
+  BeaconsGetServerSidePropsContext,
+  withContainer,
+} from "./middleware/withContainer";
 import { Registration } from "./registration/registration";
 import { IRegistration } from "./registration/types";
 import { retrieveUserFormSubmissionId } from "./retrieveUserFormSubmissionId";

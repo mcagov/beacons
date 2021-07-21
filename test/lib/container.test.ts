@@ -1,4 +1,4 @@
-import { withContainer } from "../../src/lib/container";
+import { withContainer } from "../../src/lib/middleware/withContainer";
 
 describe("Application Container callback", () => {
   it("should return a new instance of the application container if none is provided", () => {

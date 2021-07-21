@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { Session } from "../gateways/userSessionGateway";
-import { BeaconsGetServerSidePropsContext } from "../lib/container";
+import { BeaconsGetServerSidePropsContext } from "../lib/middleware/withContainer";
 
 export type GetSessionFn = (
   context: BeaconsGetServerSidePropsContext

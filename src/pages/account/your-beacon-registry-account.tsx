@@ -14,7 +14,7 @@ import { IBeacon } from "../../entities/beacon";
 import {
   BeaconsGetServerSidePropsContext,
   withContainer,
-} from "../../lib/container";
+} from "../../lib/middleware/withContainer";
 import { PageURLs } from "../../lib/urls";
 import { formatUses } from "../../utils/formatUses";
 

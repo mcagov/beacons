@@ -14,14 +14,14 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { IAccountHolderDetails } from "../../entities/accountHolderDetails";
-import {
-  BeaconsGetServerSidePropsContext,
-  withContainer,
-} from "../../lib/container";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
+import {
+  BeaconsGetServerSidePropsContext,
+  withContainer,
+} from "../../lib/middleware/withContainer";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { PageURLs } from "../../lib/urls";
 import { diffObjValues } from "../../lib/utils";

@@ -1,5 +1,5 @@
 import { IAppContainer } from "../lib/appContainer";
-import { BeaconsGetServerSidePropsContext } from "../lib/container";
+import { BeaconsGetServerSidePropsContext } from "../lib/middleware/withContainer";
 
 export type GetAccountHolderIdFn = (
   context: BeaconsGetServerSidePropsContext

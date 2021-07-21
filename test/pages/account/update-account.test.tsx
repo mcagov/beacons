@@ -1,7 +1,7 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { getAppContainer, IAppContainer } from "../../../src/lib/appContainer";
-import { BeaconsGetServerSidePropsContext } from "../../../src/lib/container";
+import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/withContainer";
 import { getServerSideProps } from "../../../src/pages/account/update-account";
 import {
   accountDetailsResponseJson,
