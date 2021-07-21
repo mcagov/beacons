@@ -38,10 +38,7 @@ import {
   getBeaconsByAccountHolderId,
   GetBeaconsByAccountHolderIdFn,
 } from "../useCases/getAccountBeacons";
-import {
-  getAccountHolderId,
-  GetAccountHolderIdFn,
-} from "../useCases/getAccountHolderId";
+import { getAccountHolderId } from "../useCases/getAccountHolderId";
 import {
   getCachedRegistration,
   GetCachedRegistrationFn,
@@ -81,7 +78,7 @@ export interface IAppContainer {
   parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
   updateAccountHolder: UpdateAccountHolderFn;
-  getAccountHolderId: GetAccountHolderIdFn;
+  getAccountHolderId;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
   deleteBeacon: DeleteBeaconFn;
 
