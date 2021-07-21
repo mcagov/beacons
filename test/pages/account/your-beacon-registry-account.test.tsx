@@ -1,7 +1,7 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { getAppContainer, IAppContainer } from "../../../src/lib/appContainer";
-import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/withContainer";
+import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { getServerSideProps } from "../../../src/pages/account/your-beacon-registry-account";
 import { accountHolderFixture } from "../../fixtures/accountHolder.fixture";
 import {

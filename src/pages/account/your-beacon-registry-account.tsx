@@ -11,10 +11,8 @@ import {
 } from "../../components/Typography";
 import { IAccountHolderDetails } from "../../entities/accountHolderDetails";
 import { IBeacon } from "../../entities/beacon";
-import {
-  BeaconsGetServerSidePropsContext,
-  withContainer,
-} from "../../lib/middleware/withContainer";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
 import { PageURLs } from "../../lib/urls";
 import { formatUses } from "../../utils/formatUses";
 

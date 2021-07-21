@@ -8,10 +8,8 @@ import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
 import { verifyFormSubmissionCookieIsSet } from "../../lib/cookies";
 import { clearFormSubmissionCookie } from "../../lib/middleware";
-import {
-  BeaconsGetServerSidePropsContext,
-  withContainer,
-} from "../../lib/middleware/withContainer";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { PageURLs } from "../../lib/urls";

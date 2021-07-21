@@ -1,10 +1,11 @@
 import { GetServerSideProps } from "next";
-import { appContainer } from "../appContainer";
+import { getSession } from "next-auth/client";
 import { BeaconsGetServerSidePropsContext } from "./BeaconsGetServerSidePropsContext";
 
-export const withContainer =
+export const withSession =
   (callback: GetServerSideProps): GetServerSideProps =>
-  (context: BeaconsGetServerSidePropsContext) => {
-    context.container = context.container || appContainer;
+  async (context: BeaconsGetServerSidePropsContext) => {
+    context.session = context.session || (await getSession(context));
+
     return callback(context);
   };

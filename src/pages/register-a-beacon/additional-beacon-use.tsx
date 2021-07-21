@@ -7,10 +7,8 @@ import { Layout } from "../../components/Layout";
 import { GovUKBody, PageHeading } from "../../components/Typography";
 import { showCookieBanner } from "../../lib/cookies";
 import { withCookieRedirect } from "../../lib/middleware";
-import {
-  BeaconsGetServerSidePropsContext,
-  withContainer,
-} from "../../lib/middleware/withContainer";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
 import { BeaconUse, IRegistration } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { ActionURLs, PageURLs, queryParams } from "../../lib/urls";
