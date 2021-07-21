@@ -40,9 +40,9 @@ describe("UpdateAccount", () => {
         req: mockRequest,
       };
 
-      const result = (await getServerSideProps(
+      const result = await getServerSideProps(
         context as BeaconsGetServerSidePropsContext
-      )) as any;
+      );
 
       const fields = result.props.form.fields;
       expect(fields.fullName.value).toEqual("Tesy McTestface");
@@ -62,9 +62,6 @@ describe("UpdateAccount", () => {
       };
       const containerMocks: Partial<IAppContainer> = {
         getAccessToken: jest.fn(),
-        getSession: jest
-          .fn()
-          .mockResolvedValue({ user: { id: "a-session-id" } }),
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "new fullName",
           telephoneNumber: "new telephoneNumber",
@@ -77,6 +74,7 @@ describe("UpdateAccount", () => {
       };
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: getAppContainer(containerMocks as IAppContainer),
+        session: { user: { authId: "a-session-id" } },
         req: mockRequest,
       };
 
@@ -104,9 +102,6 @@ describe("UpdateAccount", () => {
       };
       const containerMocks: Partial<IAppContainer> = {
         getAccessToken: jest.fn(),
-        getSession: jest
-          .fn()
-          .mockResolvedValue({ user: { id: "a-session-id" } }),
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "new fullName",
           telephoneNumber: "new telephoneNumber",
@@ -120,6 +115,7 @@ describe("UpdateAccount", () => {
 
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: getAppContainer(containerMocks as IAppContainer),
+        session: { user: { authId: "a-session-id" } },
         req: mockRequest,
       };
 
@@ -139,9 +135,6 @@ describe("UpdateAccount", () => {
       };
       const containerMocks: Partial<IAppContainer> = {
         getAccessToken: jest.fn(),
-        getSession: jest
-          .fn()
-          .mockResolvedValue({ user: { id: "a-session-id" } }),
         updateAccountHolder: jest.fn(),
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "Sir David", //changed
@@ -156,6 +149,7 @@ describe("UpdateAccount", () => {
 
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: getAppContainer(containerMocks as IAppContainer),
+        session: { user: { authId: "a-session-id" } },
         req: mockRequest,
       };
 
