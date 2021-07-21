@@ -1,5 +1,4 @@
 import { IncomingMessage } from "http";
-import { getSession } from "next-auth/client";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
 import {
   AccountHolderApiGateway,
@@ -21,7 +20,6 @@ import {
   IUserSessionGateway,
   UserSessionGateway,
 } from "../gateways/userSessionGateway";
-import { parseFormDataAs } from "../lib/middleware";
 import {
   authenticateUser,
   AuthenticateUserFn,
@@ -40,10 +38,7 @@ import {
   getBeaconsByAccountHolderId,
   GetBeaconsByAccountHolderIdFn,
 } from "../useCases/getAccountBeacons";
-import {
-  getAccountHolderId,
-  GetAccountHolderIdFn,
-} from "../useCases/getAccountHolderId";
+import { getAccountHolderId } from "../useCases/getAccountHolderId";
 import {
   getCachedRegistration,
   GetCachedRegistrationFn,
@@ -52,7 +47,6 @@ import {
   getOrCreateAccountHolder,
   GetOrCreateAccountHolderFn,
 } from "../useCases/getOrCreateAccountHolder";
-import { GetSessionFn } from "../useCases/getSession";
 import {
   saveCachedRegistration,
   SaveCachedRegistrationFn,
@@ -69,6 +63,7 @@ import {
   updateAccountHolder,
   UpdateAccountHolderFn,
 } from "../useCases/updateAccountHolder";
+import { parseFormDataAs } from "./middleware";
 
 export interface IAppContainer {
   /* Use cases */
@@ -80,11 +75,10 @@ export interface IAppContainer {
   clearCachedRegistration: ClearCachedRegistrationFn;
   deleteCachedUse: DeleteCachedUseFn;
   getAccessToken: GetAccessTokenFn;
-  getSession: GetSessionFn;
   parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
   updateAccountHolder: UpdateAccountHolderFn;
-  getAccountHolderId: GetAccountHolderIdFn;
+  getAccountHolderId;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
   deleteBeacon: DeleteBeaconFn;
 
@@ -105,7 +99,6 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     saveCachedRegistration: saveCachedRegistration,
     clearCachedRegistration: clearCachedRegistration,
     deleteCachedUse: deleteCachedUse,
-    getSession: getSession,
 
     /* Composite use cases requiring access to other use cases */
     get getAccessToken() {

@@ -60,6 +60,7 @@ describe("handlePageRequest()", () => {
         saveCachedRegistration: jest.fn(),
         authenticateUser: jest.fn(),
       },
+      session: { user: { authId: "a-session-id" } },
     };
   });
 

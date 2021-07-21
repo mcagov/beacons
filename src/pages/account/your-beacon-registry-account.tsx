@@ -11,10 +11,9 @@ import {
 } from "../../components/Typography";
 import { IAccountHolderDetails } from "../../entities/accountHolderDetails";
 import { IBeacon } from "../../entities/beacon";
-import {
-  BeaconsGetServerSidePropsContext,
-  withContainer,
-} from "../../lib/container";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { formatUses } from "../../utils/formatUses";
 
@@ -37,12 +36,10 @@ export const YourBeaconRegistyAccount: FunctionComponent<YourBeaconRegistyAccoun
           mainContent={
             <>
               <PageHeading>{pageHeading}</PageHeading>
-              <YourDetails
-                accountHolderDetails={accountHolderDetails}
-              ></YourDetails>
-              <YourBeacons beacons={beacons}></YourBeacons>
-              <RegisterANewBeacon></RegisterANewBeacon>
-              <Contact></Contact>
+              <YourDetails accountHolderDetails={accountHolderDetails} />
+              <YourBeacons beacons={beacons} />
+              <RegisterANewBeacon />
+              <Contact />
             </>
           }
         />
@@ -94,11 +91,11 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
           <dt className="govuk-summary-list__key">Account holder details</dt>
           <dd className="govuk-summary-list__value">
             {fullName}
-            <br></br>
+            <br />
             {telephoneNumber}
             {alternativeTelephoneNumber && (
               <view>
-                <br></br>
+                <br />
                 {alternativeTelephoneNumber}
               </view>
             )}
@@ -111,49 +108,49 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
             <view>{addressLine1}</view>
             {addressLine2 && (
               <view>
-                <br></br>
+                <br />
                 {addressLine2}
               </view>
             )}
             {addressLine3 && (
               <view>
-                <br></br>
+                <br />
                 {addressLine3}
               </view>
             )}
             {addressLine4 && (
               <view>
-                <br></br>
+                <br />
                 {addressLine4}
               </view>
             )}
             {addressLine4 && (
               <view>
-                <br></br>
+                <br />
                 {addressLine4}
               </view>
             )}
             {addressLine4 && (
               <view>
-                <br></br>
+                <br />
                 {addressLine4}
               </view>
             )}
             {townOrCity && (
               <view>
-                <br></br>
+                <br />
                 {townOrCity}
               </view>
             )}
             {county && (
               <view>
-                <br></br>
+                <br />
                 {county}
               </view>
             )}
             {postcode && (
               <view>
-                <br></br>
+                <br />
                 {postcode}
               </view>
             )}
@@ -165,7 +162,7 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
           <dd className="govuk-summary-list__value">
             <view>{email}</view>
             <view>
-              <br></br>
+              <br />
             </view>
           </dd>
         </div>
@@ -247,12 +244,14 @@ const Contact: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = withContainer(
-  async (context: BeaconsGetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = withSession(
+  withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     const { getOrCreateAccountHolder, getBeaconsByAccountHolderId } =
       context.container;
 
-    const accountHolderDetails = await getOrCreateAccountHolder(context);
+    const accountHolderDetails = await getOrCreateAccountHolder(
+      context.session
+    );
     const beacons = await getBeaconsByAccountHolderId(accountHolderDetails.id);
 
     return {
@@ -261,7 +260,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         beacons,
       },
     };
-  }
+  })
 );
 
 export default YourBeaconRegistyAccount;

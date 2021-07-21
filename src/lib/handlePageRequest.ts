@@ -1,5 +1,4 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
-import { BeaconsGetServerSidePropsContext, withContainer } from "./container";
 import { FormJSON, FormManager } from "./form/formManager";
 import { FormSubmission } from "./formCache";
 import {
@@ -8,6 +7,9 @@ import {
   updateFormCache,
   withCookieRedirect,
 } from "./middleware";
+import { BeaconsGetServerSidePropsContext } from "./middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "./middleware/withContainer";
+import { withSession } from "./middleware/withSession";
 import { Registration } from "./registration/registration";
 import { IRegistration } from "./registration/types";
 import { retrieveUserFormSubmissionId } from "./retrieveUserFormSubmissionId";
@@ -37,43 +39,48 @@ export const handlePageRequest = (
     destinationIfValid
 ): GetServerSideProps =>
   withCookieRedirect(
-    withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-      const {
-        getCachedRegistration,
-        saveCachedRegistration,
-        authenticateUser,
-      } = context.container;
+    withSession(
+      withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+        const {
+          getCachedRegistration,
+          saveCachedRegistration,
+          authenticateUser,
+        } = context.container;
 
-      await authenticateUser(context);
+        await authenticateUser(context);
 
-      const beaconsContext: BeaconsContext =
-        await decorateGetServerSidePropsContext(context);
+        const beaconsContext: BeaconsContext =
+          await decorateGetServerSidePropsContext(context);
 
-      const registration: Registration = await getCachedRegistration(
-        retrieveUserFormSubmissionId(context)
-      );
-
-      const useIndexDoesNotExist =
-        beaconsContext.useIndex >
-        registration.getRegistration().uses.length - 1;
-      if (useIndexDoesNotExist) {
-        registration.createUse();
-        await saveCachedRegistration(beaconsContext.submissionId, registration);
-      }
-
-      const userDidSubmitForm = beaconsContext.req.method === "POST";
-
-      if (userDidSubmitForm) {
-        return handlePostRequest(
-          beaconsContext,
-          formManagerFactory,
-          transformCallback,
-          destinationIfValidCallback
+        const registration: Registration = await getCachedRegistration(
+          retrieveUserFormSubmissionId(context)
         );
-      }
 
-      return handleGetRequest(beaconsContext, formManagerFactory);
-    })
+        const useIndexDoesNotExist =
+          beaconsContext.useIndex >
+          registration.getRegistration().uses.length - 1;
+        if (useIndexDoesNotExist) {
+          registration.createUse();
+          await saveCachedRegistration(
+            beaconsContext.submissionId,
+            registration
+          );
+        }
+
+        const userDidSubmitForm = beaconsContext.req.method === "POST";
+
+        if (userDidSubmitForm) {
+          return handlePostRequest(
+            beaconsContext,
+            formManagerFactory,
+            transformCallback,
+            destinationIfValidCallback
+          );
+        }
+
+        return handleGetRequest(beaconsContext, formManagerFactory);
+      })
+    )
   );
 
 const handleGetRequest = (

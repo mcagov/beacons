@@ -35,6 +35,7 @@ describe("ApplicationCompletePage", () => {
         req: { cookies: {} },
         res: createResponse(),
         container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
       };
 
       const result = await getServerSideProps(context as any);
@@ -56,6 +57,7 @@ describe("ApplicationCompletePage", () => {
         },
         res: createResponse(),
         container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
       };
 
       await getServerSideProps(context as any);
@@ -76,12 +78,13 @@ describe("ApplicationCompletePage", () => {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
         res: createResponse(),
         container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
       };
       mockSubmitRegistration.mockResolvedValue(unsuccessful);
 
       const result = await getServerSideProps(context as any);
 
-      expect(result.props.reference).toBe("");
+      expect(result["props"].reference).toBe("");
     });
 
     it("should return a reference number if creating the registration is successful", async () => {
@@ -94,12 +97,13 @@ describe("ApplicationCompletePage", () => {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
         res: createResponse(),
         container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
       };
       mockSubmitRegistration.mockResolvedValue(successful);
 
       const result = await getServerSideProps(context as any);
 
-      expect(result.props.reference).toBe("ABC123");
+      expect(result["props"].reference).toBe("ABC123");
     });
 
     it("should have a page heading on success", async () => {
@@ -112,12 +116,13 @@ describe("ApplicationCompletePage", () => {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
         res: createResponse(),
         container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
       };
       mockSubmitRegistration.mockResolvedValue(successful);
 
       const result = await getServerSideProps(context as any);
 
-      expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
+      expect(result["props"].pageSubHeading.length).toBeGreaterThan(1);
     });
 
     it("should have a page heading on failed confirmation email", async () => {
@@ -130,12 +135,13 @@ describe("ApplicationCompletePage", () => {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
         res: createResponse(),
         container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
       };
       mockSubmitRegistration.mockResolvedValue(failedEmail);
 
       const result = await getServerSideProps(context as any);
 
-      expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
+      expect(result["props"].pageSubHeading.length).toBeGreaterThan(1);
     });
 
     it("should have a page heading on failed registration and failed confirmation email", async () => {
@@ -148,12 +154,13 @@ describe("ApplicationCompletePage", () => {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
         res: createResponse(),
         container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
       };
       mockSubmitRegistration.mockResolvedValue(failedEverything);
 
       const result = await getServerSideProps(context as any);
 
-      expect(result.props.pageSubHeading.length).toBeGreaterThan(1);
+      expect(result["props"].pageSubHeading.length).toBeGreaterThan(1);
     });
 
     it("should not throw if there is an error submitting the user's registration", async () => {
@@ -164,6 +171,7 @@ describe("ApplicationCompletePage", () => {
         },
         res: createResponse(),
         container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
       };
       mockSubmitRegistration.mockImplementation(() => {
         throw new Error();
@@ -182,6 +190,7 @@ describe("ApplicationCompletePage", () => {
         },
         res: createResponse(),
         container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
       };
       mockSubmitRegistration.mockImplementation(() => {
         throw new Error();
@@ -189,7 +198,7 @@ describe("ApplicationCompletePage", () => {
 
       const result = await getServerSideProps(context as any);
 
-      expect(result.props.pageSubHeading).toMatch(/error/i);
+      expect(result["props"].pageSubHeading).toMatch(/error/i);
     });
   });
 });

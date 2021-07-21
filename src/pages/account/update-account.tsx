@@ -14,14 +14,13 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { IAccountHolderDetails } from "../../entities/accountHolderDetails";
-import {
-  BeaconsGetServerSidePropsContext,
-  withContainer,
-} from "../../lib/container";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { PageURLs } from "../../lib/urls";
 import { diffObjValues } from "../../lib/utils";
@@ -187,8 +186,8 @@ const userDidSubmitForm = (
   context: BeaconsGetServerSidePropsContext
 ): boolean => context.req.method === "POST";
 
-export const getServerSideProps: GetServerSideProps = withContainer(
-  async (context: BeaconsGetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = withSession(
+  withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     const { parseFormDataAs, updateAccountHolder, getOrCreateAccountHolder } =
       context.container;
 
@@ -196,7 +195,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       return {
         props: {
           form: definePageForm(
-            accountUpdateFields(await getOrCreateAccountHolder(context))
+            accountUpdateFields(await getOrCreateAccountHolder(context.session))
           ).serialise(),
         },
       };
@@ -212,7 +211,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       };
     }
 
-    const accountHolder = await getOrCreateAccountHolder(context);
+    const accountHolder = await getOrCreateAccountHolder(context.session);
     const update = diffObjValues(accountUpdateFields(accountHolder), formData);
     await updateAccountHolder(
       accountHolder.id,
@@ -220,7 +219,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     );
 
     return redirectUserTo(PageURLs.accountHome);
-  }
+  })
 );
 
 export default UpdateAccount;
