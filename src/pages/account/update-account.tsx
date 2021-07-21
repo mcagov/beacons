@@ -23,8 +23,7 @@ import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { PageURLs } from "../../lib/urls";
-import { getOrCreateAccountHolder } from "../../useCases/getOrCreateAccountHolder";
-import { updateAccountHolder } from "../../useCases/updateAccountHolder";
+import { diffObjValues } from "../../lib/utils";
 
 export interface UpdateAccountPageProps {
   form: FormJSON;
@@ -183,68 +182,61 @@ function userDidSubmitForm(context: BeaconsGetServerSidePropsContext) {
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    const parseFormDataAsFn = context.container.parseFormDataAs;
-    const updateAccountHolderFn = updateAccountHolder(context.container);
-    const getOrCreateAccountHolderFn = getOrCreateAccountHolder(
-      context.container
-    );
-    let formManager: FormManager;
+    const { parseFormDataAs, updateAccountHolder, getOrCreateAccountHolder } =
+      context.container;
 
-    if (userDidSubmitForm(context)) {
-      const formData = await parseFormDataAsFn<AccountDetailsForm>(context.req);
-      formManager = getPageForm(formData).asDirty();
-
-      if (formManager.isValid()) {
-        const accountHolder = await getOrCreateAccountHolderFn(context);
-        const update = accountHolderUpdate(formData);
-        if (await updateAccountHolderFn(accountHolder, update)) {
-          return redirectUserTo(PageURLs.accountHome);
-        }
-      }
-    } else {
-      formManager = getPageForm(
-        accountDetailsForm(await getOrCreateAccountHolderFn(context))
-      );
+    if (!userDidSubmitForm(context)) {
+      return {
+        props: {
+          form: getPageForm(
+            accountUpdateFields(await getOrCreateAccountHolder(context))
+          ).serialise(),
+        },
+      };
     }
 
-    return {
-      props: {
-        form: formManager.serialise(),
-      },
-    };
+    const formData = await parseFormDataAs<AccountUpdateFields>(context.req);
+    const formManager = getPageForm(formData).asDirty();
+    if (formManager.hasErrors()) {
+      return {
+        props: {
+          form: formManager.serialise(),
+        },
+      };
+    }
+
+    const accountHolder = await getOrCreateAccountHolder(context);
+    const update = diffObjValues(accountUpdateFields(accountHolder), formData);
+    await updateAccountHolder(
+      accountHolder.id,
+      update as IAccountHolderDetails
+    );
+
+    return redirectUserTo(PageURLs.accountHome);
   }
 );
 
 export default UpdateAccount;
 
-const accountDetailsForm = (
+/**
+ * Turns an account holder in to a set of update fields
+ * @param accountHolder {IAccountHolderDetails} the account holder from which to populate these fields
+ * @returns {AccountUpdateFields} update field values from accountHolder or properties are undefined (to allow for obj diffing)
+ */
+const accountUpdateFields = (
   accountHolder: IAccountHolderDetails
-): AccountDetailsForm => ({
-  fullName: accountHolder.fullName,
-  telephoneNumber: accountHolder.telephoneNumber,
-  addressLine1: accountHolder.addressLine1,
-  addressLine2: accountHolder.addressLine2,
-  townOrCity: accountHolder.townOrCity,
-  county: accountHolder.county,
-  postcode: accountHolder.postcode,
+): AccountUpdateFields => ({
+  fullName: accountHolder.fullName || undefined,
+  telephoneNumber: accountHolder.telephoneNumber || undefined,
+  addressLine1: accountHolder.addressLine1 || undefined,
+  addressLine2: accountHolder.addressLine2 || undefined,
+  townOrCity: accountHolder.townOrCity || undefined,
+  county: accountHolder.county || undefined,
+  postcode: accountHolder.postcode || undefined,
   email: accountHolder.email,
 });
 
-const accountHolderUpdate = (
-  accountDetailsForm: AccountDetailsForm
-): IAccountHolderDetails =>
-  ({
-    fullName: accountDetailsForm.fullName,
-    telephoneNumber: accountDetailsForm.telephoneNumber,
-    addressLine1: accountDetailsForm.addressLine1,
-    addressLine2: accountDetailsForm.addressLine2,
-    townOrCity: accountDetailsForm.townOrCity,
-    county: accountDetailsForm.county,
-    postcode: accountDetailsForm.postcode,
-    email: accountDetailsForm.email,
-  } as IAccountHolderDetails);
-
-interface AccountDetailsForm {
+interface AccountUpdateFields {
   fullName: string;
   telephoneNumber: string;
   addressLine1: string;

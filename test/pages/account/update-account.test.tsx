@@ -29,24 +29,16 @@ describe("UpdateAccount", () => {
       server.close();
     });
 
-    let containerMocks: Partial<IAppContainer>;
-
-    const getContainer = () =>
-      getAppContainer(containerMocks as IAppContainer) as IAppContainer;
-
-    beforeEach(() => {
-      containerMocks = {
+    it("should return form with account details for current user on page GET", async () => {
+      const mockRequest: any = { method: "GET" };
+      const containerMocks: Partial<IAppContainer> = {
         getAccessToken: jest.fn(),
         getSession: jest
           .fn()
           .mockResolvedValue({ user: { id: "a-session-id" } }),
       };
-    });
-
-    it("should return form with account details for current user on page GET", async () => {
-      const mockRequest: any = { method: "GET" };
       const context: Partial<BeaconsGetServerSidePropsContext> = {
-        container: getContainer(),
+        container: getAppContainer(containerMocks as IAppContainer),
         req: mockRequest,
       };
 
@@ -66,22 +58,27 @@ describe("UpdateAccount", () => {
     });
 
     it("should return form with updated account details with field errors", async () => {
-      containerMocks.parseFormDataAs = jest.fn().mockResolvedValue({
-        fullName: "new fullName",
-        telephoneNumber: "new telephoneNumber",
-        addressLine1: "new addressLine1",
-        addressLine2: "new addressLine2",
-        townOrCity: "new townOrCity",
-        county: "new county",
-        postcode: "invalid postcode",
-      });
-
       const mockRequest: any = {
         method: "POST",
         headers: { contentType: "json" },
       };
+      const containerMocks: Partial<IAppContainer> = {
+        getAccessToken: jest.fn(),
+        getSession: jest
+          .fn()
+          .mockResolvedValue({ user: { id: "a-session-id" } }),
+        parseFormDataAs: jest.fn().mockResolvedValue({
+          fullName: "new fullName",
+          telephoneNumber: "new telephoneNumber",
+          addressLine1: "new addressLine1",
+          addressLine2: "new addressLine2",
+          townOrCity: "new townOrCity",
+          county: "new county",
+          postcode: "invalid postcode",
+        }),
+      };
       const context: Partial<BeaconsGetServerSidePropsContext> = {
-        container: getContainer(),
+        container: getAppContainer(containerMocks as IAppContainer),
         req: mockRequest,
       };
 
@@ -103,22 +100,28 @@ describe("UpdateAccount", () => {
     });
 
     it("should redirect to home when post has no errors", async () => {
-      containerMocks.parseFormDataAs = jest.fn().mockResolvedValue({
-        fullName: "new fullName",
-        telephoneNumber: "new telephoneNumber",
-        addressLine1: "new addressLine1",
-        addressLine2: "new addressLine2",
-        townOrCity: "new townOrCity",
-        county: "new county",
-        postcode: "bs7 9lm", // a valid postcode this time
-      });
-
       const mockRequest: any = {
         method: "POST",
         headers: { contentType: "json" },
       };
+      const containerMocks: Partial<IAppContainer> = {
+        getAccessToken: jest.fn(),
+        getSession: jest
+          .fn()
+          .mockResolvedValue({ user: { id: "a-session-id" } }),
+        parseFormDataAs: jest.fn().mockResolvedValue({
+          fullName: "new fullName",
+          telephoneNumber: "new telephoneNumber",
+          addressLine1: "new addressLine1",
+          addressLine2: "new addressLine2",
+          townOrCity: "new townOrCity",
+          county: "new county",
+          postcode: "bs7 9lm",
+        }), // a valid postcode this time
+      };
+
       const context: Partial<BeaconsGetServerSidePropsContext> = {
-        container: getContainer(),
+        container: getAppContainer(containerMocks as IAppContainer),
         req: mockRequest,
       };
 
@@ -128,6 +131,46 @@ describe("UpdateAccount", () => {
 
       expect(result.redirect.destination).toEqual(
         "/account/your-beacon-registry-account"
+      );
+    });
+
+    it("should only PATCH updated fields", async () => {
+      const mockRequest: any = {
+        method: "POST",
+        headers: { contentType: "json" },
+      };
+      const containerMocks: Partial<IAppContainer> = {
+        getAccessToken: jest.fn(),
+        getSession: jest
+          .fn()
+          .mockResolvedValue({ user: { id: "a-session-id" } }),
+        updateAccountHolder: jest.fn(),
+        parseFormDataAs: jest.fn().mockResolvedValue({
+          fullName: "Sir David", //changed
+          telephoneNumber: "07800 16 16 16", //changed
+          addressLine1: "Flat 42",
+          addressLine2: "Testington Towers",
+          townOrCity: "Testville",
+          county: "", //changed
+          postcode: "TS1 2AB", //changed
+        }),
+      };
+
+      const context: Partial<BeaconsGetServerSidePropsContext> = {
+        container: getAppContainer(containerMocks as IAppContainer),
+        req: mockRequest,
+      };
+
+      await getServerSideProps(context as BeaconsGetServerSidePropsContext);
+
+      expect(containerMocks.updateAccountHolder).toHaveBeenCalledWith(
+        "cb2e9fd2-45bb-4865-a04c-add5bb7c34a7",
+        {
+          fullName: "Sir David",
+          telephoneNumber: "07800 16 16 16",
+          county: "",
+          postcode: "TS1 2AB",
+        }
       );
     });
   });

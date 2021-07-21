@@ -13,10 +13,7 @@ export type Callback<T> = (t: T) => void;
 
 // Low-level utility functions that could be considered an extension of the JavaScript API.  No domain logic.
 import * as _ from "lodash";
-export const diffObjValues = (
-  base: Record<any, any>,
-  comparator: Record<any, any>
-): Record<string, any> => {
+export const diffObjValues = <T>(base: T, comparator: T): T => {
   if (noRecursionNeeded(base, comparator)) return comparator;
 
   return Object.keys(comparator).reduce((diff: Record<any, any>, key) => {

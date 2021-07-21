@@ -16,8 +16,6 @@ import {
   withContainer,
 } from "../../lib/container";
 import { PageURLs } from "../../lib/urls";
-import { getBeaconsByAccountHolderId } from "../../useCases/getAccountBeacons";
-import { getOrCreateAccountHolder } from "../../useCases/getOrCreateAccountHolder";
 import { formatUses } from "../../utils/formatUses";
 
 export interface YourBeaconRegistyAccountPageProps {
@@ -251,12 +249,11 @@ const Contact: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    const accountHolderDetails = await getOrCreateAccountHolder(
-      context.container
-    )(context);
-    const beacons = await getBeaconsByAccountHolderId(context.container)(
-      accountHolderDetails.id
-    );
+    const { getOrCreateAccountHolder, getBeaconsByAccountHolderId } =
+      context.container;
+
+    const accountHolderDetails = await getOrCreateAccountHolder(context);
+    const beacons = await getBeaconsByAccountHolderId(accountHolderDetails.id);
 
     return {
       props: {
