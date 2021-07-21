@@ -4,7 +4,11 @@ import { LinkButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { BeaconRegistryContactInfo } from "../../components/Mca";
-import { PageHeading, SectionHeading } from "../../components/Typography";
+import {
+  AnchorLink,
+  PageHeading,
+  SectionHeading,
+} from "../../components/Typography";
 import { IAccountHolderDetails } from "../../entities/accountHolderDetails";
 import { IBeacon } from "../../entities/beacon";
 import {
@@ -12,8 +16,6 @@ import {
   withContainer,
 } from "../../lib/container";
 import { PageURLs } from "../../lib/urls";
-import { getBeaconsByAccountHolderId } from "../../useCases/getAccountBeacons";
-import { getOrCreateAccountHolder } from "../../useCases/getOrCreateAccountHolder";
 import { formatUses } from "../../utils/formatUses";
 
 export interface YourBeaconRegistyAccountPageProps {
@@ -69,7 +71,24 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
 }: IYourDetailsProps): JSX.Element => {
   return (
     <>
-      <SectionHeading>Your details</SectionHeading>
+      <div
+        className="govuk-!-margin-bottom-4"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+        }}
+      >
+        <SectionHeading classes="govuk-!-margin-0">Your details</SectionHeading>
+        <div>
+          <AnchorLink
+            href={PageURLs.updateAccount}
+            classes="govuk-link--no-visited-state govuk-!-margin-right-4"
+          >
+            Change
+          </AnchorLink>
+        </div>
+      </div>
       <dl className="govuk-summary-list">
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Account holder details</dt>
@@ -230,12 +249,11 @@ const Contact: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    const accountHolderDetails = await getOrCreateAccountHolder(
-      context.container
-    )(context);
-    const beacons = await getBeaconsByAccountHolderId(context.container)(
-      accountHolderDetails.id
-    );
+    const { getOrCreateAccountHolder, getBeaconsByAccountHolderId } =
+      context.container;
+
+    const accountHolderDetails = await getOrCreateAccountHolder(context);
+    const beacons = await getBeaconsByAccountHolderId(accountHolderDetails.id);
 
     return {
       props: {

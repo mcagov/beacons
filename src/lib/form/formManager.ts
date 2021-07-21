@@ -36,6 +36,16 @@ export class FormManager extends AbstractFormNode {
   }
 
   /**
+   * Sets this form manager and all descendant fields as dirty.
+   * @override
+   */
+  public asDirty(): FormManager {
+    super.markAsDirty();
+    this.forEachControl((control: FieldManager) => control.markAsDirty());
+    return this;
+  }
+
+  /**
    * Returns the fields that the form manager manages.
    */
   public get value(): Record<string, FieldManager> {
@@ -55,6 +65,10 @@ export class FormManager extends AbstractFormNode {
       const field: FieldManager = this.fields[key];
       return field.hasErrors();
     });
+  }
+
+  public isValid(): boolean {
+    return !this.hasErrors();
   }
 
   /**

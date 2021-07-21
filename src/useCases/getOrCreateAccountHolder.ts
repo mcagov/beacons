@@ -12,7 +12,9 @@ export const getOrCreateAccountHolder =
     getAccessToken,
     accountHolderApiGateway,
   }: IAppContainer): GetOrCreateAccountHolderFn =>
-  async (context: BeaconsGetServerSidePropsContext) => {
+  async (
+    context: BeaconsGetServerSidePropsContext
+  ): Promise<IAccountHolderDetails> => {
     const session = await getSession(context);
     const authId: string = session.user.authId;
     const email: string = session.user.email;
