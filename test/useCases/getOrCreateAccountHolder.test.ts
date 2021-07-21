@@ -30,7 +30,6 @@ describe("The getOrCreateAccountHolder use case", () => {
       createAccountHolder: jest.fn(),
     };
     const container: Partial<IAppContainer> = {
-      getSession: jest.fn().mockResolvedValue({ user: { id: "a-session-id" } }),
       accountHolderApiGateway: gateway as IAccountHolderApiGateway,
       getAccessToken: jest.fn(),
     };

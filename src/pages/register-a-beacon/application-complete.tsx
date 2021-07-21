@@ -98,7 +98,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
     try {
       const result = await submitRegistration(
         retrieveUserFormSubmissionId(context),
-        await getAccountHolderId(context)
+        await getAccountHolderId(context.session)
       );
 
       const pageSubHeading = (result: ISubmitRegistrationResult) => {
