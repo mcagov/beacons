@@ -30,7 +30,7 @@ export interface UpdateAccountPageProps {
   accountHolderDetails: IAccountHolderDetails;
 }
 
-const getPageForm = ({
+const definePageForm = ({
   fullName,
   telephoneNumber,
   addressLine1,
@@ -39,7 +39,7 @@ const getPageForm = ({
   county,
   postcode,
   email,
-}: any): FormManager => {
+}: FormSubmission): FormManager => {
   return new FormManager({
     fullName: new FieldManager(fullName, [
       Validators.required("Full name is a required field"),
