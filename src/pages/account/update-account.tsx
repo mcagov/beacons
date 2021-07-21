@@ -176,9 +176,8 @@ const AccountHolderAddress: FunctionComponent<{ form: FormJSON }> = ({
   </FormGroup>
 );
 
-function userDidSubmitForm(context: BeaconsGetServerSidePropsContext) {
-  return context.req.method === "POST";
-}
+const userDidSubmitForm = (context: BeaconsGetServerSidePropsContext): boolean =>
+    context.req.method === "POST";
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
