@@ -33,12 +33,10 @@ describe("UpdateAccount", () => {
       const mockRequest: any = { method: "GET" };
       const containerMocks: Partial<IAppContainer> = {
         getAccessToken: jest.fn(),
-        getSession: jest
-          .fn()
-          .mockResolvedValue({ user: { id: "a-session-id" } }),
       };
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: getAppContainer(containerMocks as IAppContainer),
+        session: { user: { authId: "test-auth-id" } },
         req: mockRequest,
       };
 
