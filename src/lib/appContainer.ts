@@ -30,6 +30,7 @@ import {
   clearCachedRegistration,
   ClearCachedRegistrationFn,
 } from "../useCases/clearCachedRegistration";
+import { deleteBeacon, DeleteBeaconFn } from "../useCases/deleteBeacon";
 import {
   deleteCachedUse,
   DeleteCachedUseFn,
@@ -85,6 +86,7 @@ export interface IAppContainer {
   updateAccountHolder: UpdateAccountHolderFn;
   getAccountHolderId: GetAccountHolderIdFn;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
+  deleteBeacon: DeleteBeaconFn;
 
   /* Gateways */
   beaconsApiAuthGateway: IAuthGateway;
@@ -130,6 +132,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get getBeaconsByAccountHolderId() {
       return getBeaconsByAccountHolderId(this);
+    },
+    get deleteBeacon() {
+      return deleteBeacon(this);
     },
 
     /* Gateways */
