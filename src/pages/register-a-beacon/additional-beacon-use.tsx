@@ -9,6 +9,7 @@ import { showCookieBanner } from "../../lib/cookies";
 import { withCookieRedirect } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
 import { BeaconUse, IRegistration } from "../../lib/registration/types";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { ActionURLs, PageURLs, queryParams } from "../../lib/urls";
@@ -116,31 +117,33 @@ const confirmBeforeDelete = (use, index) =>
   });
 
 export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-    const { getCachedRegistration } = context.container;
+  withSession(
+    withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+      const { getCachedRegistration } = context.container;
 
-    const submissionId = retrieveUserFormSubmissionId(context);
-    const registration = (
-      await getCachedRegistration(submissionId)
-    ).getRegistration();
+      const submissionId = retrieveUserFormSubmissionId(context);
+      const registration = (
+        await getCachedRegistration(submissionId)
+      ).getRegistration();
 
-    if (
-      registration.uses.length >= 1 &&
-      currentUseIndexDoesNotExist(context, registration)
-    )
-      throw new ReferenceError(
-        PageURLs.additionalUse +
-          " was accessed with a useIndex parameter that does not exist on the cached registration."
-      );
+      if (
+        registration.uses.length >= 1 &&
+        currentUseIndexDoesNotExist(context, registration)
+      )
+        throw new ReferenceError(
+          PageURLs.additionalUse +
+            " was accessed with a useIndex parameter that does not exist on the cached registration."
+        );
 
-    return {
-      props: {
-        currentUseIndex: context.query.useIndex,
-        uses: registration.uses,
-        showCookieBanner: showCookieBanner(context),
-      },
-    };
-  })
+      return {
+        props: {
+          currentUseIndex: context.query.useIndex,
+          uses: registration.uses,
+          showCookieBanner: showCookieBanner(context),
+        },
+      };
+    })
+  )
 );
 
 const currentUseIndexDoesNotExist = (
