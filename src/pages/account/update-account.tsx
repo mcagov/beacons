@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { Button } from "../../components/Button";
+import { Button, LinkButton } from "../../components/Button";
 import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
@@ -103,8 +103,18 @@ const UpdateAccount: FunctionComponent<UpdateAccountPageProps> = ({
               </FormGroup>
               <Button buttonText="Save these account details" />
               &nbsp;
-              <Button buttonText="Cancel" />
+              <LinkButton
+                buttonText="Cancel"
+                href={PageURLs.accountHome}
+                classes="govuk-button--secondary"
+              />
             </Form>
+            <GovUKBody>
+              Your registered email address is {form.fields.email.value}.
+              <br />
+              We will send your registration confirmation and certificate to
+              this email.
+            </GovUKBody>
             <IfYouNeedHelp />
           </>
         }
