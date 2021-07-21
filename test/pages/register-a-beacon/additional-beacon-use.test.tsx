@@ -73,8 +73,13 @@ describe("AdditionalBeaconUse page", () => {
     expect(within(content).getByText(new RegExp(use2.purpose, "i")));
   });
 
-  it("given there are one or many uses, allows the user to add a use via a button", () => {
-    render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
+  it("given there are uses, allows the user to add another use via a button", () => {
+    render(
+      <AdditionalBeaconUse
+        uses={[getMockUse(), getMockUse()]}
+        currentUseIndex={0}
+      />
+    );
 
     expect(screen.getByRole("button", { name: /add a use/i })).toHaveAttribute(
       "href",
