@@ -106,7 +106,6 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     clearCachedRegistration: clearCachedRegistration,
     deleteCachedUse: deleteCachedUse,
     getSession: getSession,
-    parseFormDataAs: parseFormDataAs,
 
     /* Composite use cases requiring access to other use cases */
     get getAccessToken() {
@@ -156,6 +155,11 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get userSessionGateway() {
       return new UserSessionGateway();
     },
+
+    /* Mockable utilities */
+    parseFormDataAs: parseFormDataAs,
+
+    /* Apply injected overrides */
     ...overrides,
   };
 };

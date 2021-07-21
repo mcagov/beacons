@@ -68,11 +68,7 @@ const UpdateAccount: FunctionComponent<UpdateAccountPageProps> = ({
     "Update your details as the Beacon Registry Account Holder";
 
   return (
-    <Layout
-      // navigation={backButton}
-      title={pageHeading}
-      showCookieBanner={false}
-    >
+    <Layout title={pageHeading} showCookieBanner={false}>
       <Grid
         mainContent={
           <>
