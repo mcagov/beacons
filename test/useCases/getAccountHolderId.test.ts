@@ -1,7 +1,5 @@
-import { GetServerSidePropsContext } from "next";
 import { IAccountHolderApiGateway } from "../../src/gateways/accountHolderApiGateway";
 import { IAppContainer } from "../../src/lib/appContainer";
-import { BeaconsGetServerSidePropsContext } from "../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { getAccountHolderId } from "../../src/useCases/getAccountHolderId";
 
 describe("The getAccountHolderId use case", () => {
@@ -12,14 +10,12 @@ describe("The getAccountHolderId use case", () => {
     };
     const container: Partial<IAppContainer> = {
       accountHolderApiGateway: gateway as IAccountHolderApiGateway,
-      getSession: jest.fn().mockResolvedValue({ user: { id: "a-session-id" } }),
       getAccessToken: jest.fn(),
     };
-    const context: Partial<GetServerSidePropsContext> = {};
-    const functionToTest = await getAccountHolderId(container as IAppContainer);
+    const session = { user: { authId: "a-session-id" } };
 
-    const result = await functionToTest(
-      context as BeaconsGetServerSidePropsContext
+    const result = await getAccountHolderId(container as IAppContainer)(
+      session
     );
 
     expect(result).toEqual(testId);
@@ -30,14 +26,12 @@ describe("The getAccountHolderId use case", () => {
       getAccountHolderId: jest.fn().mockResolvedValue(null),
     };
     const container: Partial<IAppContainer> = {
-      getSession: jest.fn().mockResolvedValue({ user: { id: "a-session-id" } }),
       accountHolderApiGateway: gateway as IAccountHolderApiGateway,
       getAccessToken: jest.fn(),
     };
-    const context: Partial<GetServerSidePropsContext> = {};
-    const functionToTest = await getAccountHolderId(container as IAppContainer);
+    const session = { user: { authId: "a-session-id" } };
 
-    await functionToTest(context as BeaconsGetServerSidePropsContext);
+    await getAccountHolderId(container as IAppContainer)(session);
 
     expect(
       container.accountHolderApiGateway.getAccountHolderId
