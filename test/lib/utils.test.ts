@@ -223,7 +223,7 @@ describe("diffObjValues()", () => {
 
   testCases.forEach((test) => {
     it(`${test.description}`, () => {
-      expect(diffObjValues(test.base, test.comparator)).toStrictEqual(
+      expect(diffObjValues(test.base, test.comparator as any)).toStrictEqual(
         test.expectedOutput
       );
     });
@@ -233,7 +233,8 @@ describe("diffObjValues()", () => {
     const base = { a: "b", b: "d" };
     const comparator = { a: "c", f: "e" };
 
-    const diffIncomparableObjects = () => diffObjValues(base, comparator);
+    const diffIncomparableObjects = () =>
+      diffObjValues(base, comparator as any);
 
     expect(diffIncomparableObjects).toThrowError();
   });
