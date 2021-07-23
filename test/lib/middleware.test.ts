@@ -7,7 +7,7 @@ import {
   getCache,
   setFormSubmissionCookie,
   updateFormCache,
-  withCookieRedirect,
+  withCookiePolicy,
 } from "../../src/lib/middleware";
 import { Registration } from "../../src/lib/registration/registration";
 import {
@@ -39,7 +39,7 @@ describe("Middleware Functions", () => {
     });
 
     const assertRedirected = async () => {
-      const result = await withCookieRedirect(callback)(context);
+      const result = await withCookiePolicy(callback)(context);
 
       expect(result).toStrictEqual({
         redirect: {
@@ -51,7 +51,7 @@ describe("Middleware Functions", () => {
     };
 
     const assertNotRedirected = async () => {
-      await withCookieRedirect(callback)(context);
+      await withCookiePolicy(callback)(context);
 
       expect(callback).toHaveBeenCalledTimes(1);
     };

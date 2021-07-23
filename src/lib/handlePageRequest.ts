@@ -5,7 +5,7 @@ import {
   BeaconsContext,
   decorateGetServerSidePropsContext,
   updateFormCache,
-  withCookieRedirect,
+  withCookiePolicy,
 } from "./middleware";
 import { BeaconsGetServerSidePropsContext } from "./middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "./middleware/withContainer";
@@ -38,7 +38,7 @@ export const handlePageRequest = (
   destinationIfValidCallback: DestinationIfValidCallback = async () =>
     destinationIfValid
 ): GetServerSideProps =>
-  withCookieRedirect(
+  withCookiePolicy(
     withSession(
       withContainer(async (context: BeaconsGetServerSidePropsContext) => {
         const {

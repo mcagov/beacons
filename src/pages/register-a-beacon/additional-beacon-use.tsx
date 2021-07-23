@@ -6,7 +6,7 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { GovUKBody, PageHeading } from "../../components/Typography";
 import { showCookieBanner } from "../../lib/cookies";
-import { withCookieRedirect } from "../../lib/middleware";
+import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -116,7 +116,7 @@ const confirmBeforeDelete = (use, index) =>
     no: PageURLs.additionalUse + queryParams({ useIndex: index }),
   });
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withSession(
     withContainer(async (context: BeaconsGetServerSidePropsContext) => {
       const { getCachedRegistration } = context.container;

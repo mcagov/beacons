@@ -21,7 +21,7 @@ export type BeaconsContext = GetServerSidePropsContext & {
   useIndex: number;
 };
 
-export function withCookieRedirect<T>(callback: GetServerSideProps<T>) {
+export function withCookiePolicy<T>(callback: GetServerSideProps<T>) {
   return async (
     context: BeaconsContext
   ): Promise<GetServerSidePropsResult<T>> => {
@@ -35,6 +35,8 @@ export function withCookieRedirect<T>(callback: GetServerSideProps<T>) {
         },
       };
     }
+
+    context.showCookieBanner = !cookies[acceptRejectCookieId];
 
     return callback(context);
   };
@@ -53,17 +55,11 @@ export async function decorateGetServerSidePropsContext(
 ): Promise<BeaconsContext> {
   const decoratedContext: BeaconsContext = context as BeaconsContext;
 
-  addCookieBannerAcceptance(decoratedContext);
   await addCacheFn(decoratedContext);
   await addFormData(decoratedContext);
   addRegistrationIndexes(decoratedContext);
 
   return decoratedContext;
-}
-
-function addCookieBannerAcceptance(context: BeaconsContext): void {
-  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
-  context.showCookieBanner = showCookieBanner;
 }
 
 async function addCache(context: BeaconsContext): Promise<void> {

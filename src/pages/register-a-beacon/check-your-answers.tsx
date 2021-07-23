@@ -12,7 +12,7 @@ import {
 import { FormSubmission } from "../../lib/formCache";
 import {
   decorateGetServerSidePropsContext,
-  withCookieRedirect,
+  withCookiePolicy,
 } from "../../lib/middleware";
 import {
   BeaconUse,
@@ -581,7 +581,7 @@ const SendYourApplication: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   async (context: GetServerSidePropsContext) => {
     const decoratedContext = await decorateGetServerSidePropsContext(context);
 
