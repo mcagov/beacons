@@ -1,11 +1,16 @@
+import Redis from "ioredis";
+import JSONCache from "redis-json";
+import { DraftRegistration } from "../entities/DraftRegistration";
 import { FormCacheFactory } from "../lib/formCache";
 import { Registration } from "../lib/registration/registration";
 import { IRegistration } from "../lib/registration/types";
-import { CachedRegistrationGateway } from "./CachedRegistrationGateway";
+import { DraftRegistrationGateway } from "./DraftRegistrationGateway";
 
-export class RedisCachedRegistrationGateway
-  implements CachedRegistrationGateway
-{
+export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
+  private cache = new JSONCache<DraftRegistration>(
+    new Redis(process.env.REDIS_URI)
+  );
+
   public async deleteUse(
     submissionId: string,
     useIndex: number
@@ -25,5 +30,16 @@ export class RedisCachedRegistrationGateway
       submissionId,
       new Registration(registrationMinusDeletedUse)
     );
+  }
+
+  public async read(id: string): Promise<DraftRegistration> {
+    return await this.cache.get(id);
+  }
+
+  public async update(
+    id: string,
+    draftRegistration: DraftRegistration
+  ): Promise<void> {
+    await this.cache.set(id, draftRegistration);
   }
 }
