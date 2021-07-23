@@ -12,6 +12,7 @@ import {
   BeaconsApiGateway,
   IBeaconsApiGateway,
 } from "../gateways/beaconsApiGateway";
+import { DraftRegistrationGateway } from "../gateways/DraftRegistrationGateway";
 import {
   GovNotifyGateway,
   IGovNotifyGateway,
@@ -39,18 +40,12 @@ import {
   GetBeaconsByAccountHolderIdFn,
 } from "../useCases/getAccountBeacons";
 import { getAccountHolderId } from "../useCases/getAccountHolderId";
-import {
-  getCachedRegistration,
-  GetCachedRegistrationFn,
-} from "../useCases/getCachedRegistration";
+import { getDraftRegistration } from "../useCases/getDraftRegistration";
 import {
   getOrCreateAccountHolder,
   GetOrCreateAccountHolderFn,
 } from "../useCases/getOrCreateAccountHolder";
-import {
-  saveCachedRegistration,
-  SaveCachedRegistrationFn,
-} from "../useCases/saveCachedRegistration";
+import { saveDraftRegistration } from "../useCases/saveDraftRegistration";
 import {
   sendConfirmationEmail,
   SendConfirmationEmailFn,
@@ -67,36 +62,37 @@ import { parseFormDataAs } from "./middleware";
 
 export interface IAppContainer {
   /* Use cases */
-  authenticateUser: AuthenticateUserFn;
-  submitRegistration: SubmitRegistrationFn;
-  sendConfirmationEmail: SendConfirmationEmailFn;
-  getCachedRegistration: GetCachedRegistrationFn;
-  saveCachedRegistration: SaveCachedRegistrationFn;
-  clearCachedRegistration: ClearCachedRegistrationFn;
-  deleteCachedUse: DeleteCachedUseFn;
-  getAccessToken: GetAccessTokenFn;
-  parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
-  getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
-  updateAccountHolder: UpdateAccountHolderFn;
-  getAccountHolderId;
-  getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
-  deleteBeacon: DeleteBeaconFn;
+  authenticateUser?: AuthenticateUserFn;
+  submitRegistration?: SubmitRegistrationFn;
+  sendConfirmationEmail?: SendConfirmationEmailFn;
+  getCachedRegistration?;
+  saveDraftRegistration?;
+  clearCachedRegistration?: ClearCachedRegistrationFn;
+  deleteCachedUse?: DeleteCachedUseFn;
+  getAccessToken?: GetAccessTokenFn;
+  parseFormDataAs?<T>(request: IncomingMessage): Promise<T>;
+  getOrCreateAccountHolder?: GetOrCreateAccountHolderFn;
+  updateAccountHolder?: UpdateAccountHolderFn;
+  getAccountHolderId?;
+  getBeaconsByAccountHolderId?: GetBeaconsByAccountHolderIdFn;
+  deleteBeacon?: DeleteBeaconFn;
 
   /* Gateways */
-  beaconsApiAuthGateway: IAuthGateway;
-  basicAuthGateway: IBasicAuthGateway;
-  beaconsApiGateway: IBeaconsApiGateway;
-  govNotifyGateway: IGovNotifyGateway;
-  accountHolderApiGateway: IAccountHolderApiGateway;
-  userSessionGateway: IUserSessionGateway;
+  beaconsApiAuthGateway?: IAuthGateway;
+  basicAuthGateway?: IBasicAuthGateway;
+  beaconsApiGateway?: IBeaconsApiGateway;
+  govNotifyGateway?: IGovNotifyGateway;
+  accountHolderApiGateway?: IAccountHolderApiGateway;
+  userSessionGateway?: IUserSessionGateway;
+  draftRegistrationGateway?: DraftRegistrationGateway;
 }
 
 // "overrides" is spread over the default appContainer at the bottom of this method to enable injecting mocks et al.
 export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
   return {
     /* Simple use cases */
-    getCachedRegistration: getCachedRegistration,
-    saveCachedRegistration: saveCachedRegistration,
+    getCachedRegistration: getDraftRegistration,
+    saveDraftRegistration: saveDraftRegistration,
     clearCachedRegistration: clearCachedRegistration,
     deleteCachedUse: deleteCachedUse,
 

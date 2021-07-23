@@ -43,7 +43,7 @@ export const handlePageRequest = (
       withContainer(async (context: BeaconsGetServerSidePropsContext) => {
         const {
           getCachedRegistration,
-          saveCachedRegistration,
+          saveDraftRegistration,
           authenticateUser,
         } = context.container;
 
@@ -61,7 +61,7 @@ export const handlePageRequest = (
           registration.getRegistration().uses.length - 1;
         if (useIndexDoesNotExist) {
           registration.createUse();
-          await saveCachedRegistration(
+          await saveDraftRegistration(
             beaconsContext.submissionId,
             registration
           );

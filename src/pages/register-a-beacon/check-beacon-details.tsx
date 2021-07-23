@@ -5,18 +5,30 @@ import { BeaconsForm } from "../../components/BeaconsForm";
 import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
+import { DraftRegistration } from "../../entities/DraftRegistration";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { FormPageProps } from "../../lib/handlePageRequest";
+import { parseFormDataAs, withCookiePolicy } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
+import { IRegistration } from "../../lib/registration/types";
+import { formSubmissionCookieId } from "../../lib/types";
 import { toUpperCase } from "../../lib/writingStyle";
+
+interface CheckBeaconDetailsForm {
+  manufacturer: string;
+  model: string;
+  hexId: string;
+}
 
 const definePageForm = ({
   manufacturer,
   model,
   hexId,
-}: FormSubmission): FormManager => {
+}: CheckBeaconDetailsForm): FormManager => {
   return new FormManager({
     manufacturer: new FieldManager(manufacturer, [
       Validators.required("Beacon manufacturer is a required field"),
@@ -126,16 +138,52 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-const transformFormData = (formData: FormSubmission): FormSubmission => {
-  formData = { ...formData, hexId: toUpperCase(formData.hexId) };
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
+  withContainer(
+    withSession(async (context: BeaconsGetServerSidePropsContext) => {
+      const draftRegistrationId = context.req.cookies[formSubmissionCookieId];
 
-  return formData;
-};
+      const { getCachedRegistration, saveDraftRegistration } =
+        context.container;
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/beacon-information",
-  definePageForm,
-  transformFormData
+      if (context.req.method === "GET") {
+        return {
+          props: {
+            form: draftRegistrationToForm(
+              await getCachedRegistration(draftRegistrationId)
+            ),
+            showCookieBanner: context.showCookieBanner,
+          },
+        };
+      } else {
+        // 1. Save draft registration
+        await saveDraftRegistration(
+          draftRegistrationId,
+          formToDraftRegistration(
+            await parseFormDataAs<CheckBeaconDetailsForm>(context.req)
+          )
+        );
+
+        // 2. Validate
+      }
+    })
+  )
 );
+
+const draftRegistrationToForm = (
+  registration: IRegistration
+): CheckBeaconDetailsForm => ({
+  manufacturer: registration.manufacturer,
+  model: registration.model,
+  hexId: registration.hexId,
+});
+
+const formToDraftRegistration = (
+  form: CheckBeaconDetailsForm
+): DraftRegistration => ({
+  manufacturer: form.manufacturer,
+  model: form.model,
+  hexId: toUpperCase(form.hexId),
+});
 
 export default CheckBeaconDetails;
