@@ -58,7 +58,7 @@ import {
   updateAccountHolder,
   UpdateAccountHolderFn,
 } from "../useCases/updateAccountHolder";
-import { parseFormDataAs } from "./middleware";
+import { parseForm } from "./middleware";
 
 export interface IAppContainer {
   /* Use cases */
@@ -146,7 +146,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
 
     /* Mockable utilities */
-    parseFormDataAs: parseFormDataAs,
+    parseFormDataAs: parseForm,
 
     /* Apply injected overrides */
     ...overrides,

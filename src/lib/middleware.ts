@@ -164,7 +164,7 @@ export async function parseFormData(
   return await parse(request);
 }
 
-export async function parseFormDataAs<T>(request: IncomingMessage): Promise<T> {
+export async function parseForm<T>(request: IncomingMessage): Promise<T> {
   return (await parseFormData(request)) as T;
 }
 
