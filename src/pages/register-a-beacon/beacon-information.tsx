@@ -199,9 +199,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       if (userDidSubmitForm(context)) {
         const form = await parseForm<BeaconInformationForm>(context.req);
 
-        if (
-          isValid<BeaconInformationForm>(form, beaconInformationValidationRules)
-        ) {
+        if (isValid<BeaconInformationForm>(form, validationRules)) {
           await saveDraftRegistration(
             id(context),
             mapper.toDraftRegistration(form)
@@ -211,7 +209,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
         } else {
           return presentRegistrationFormErrors<BeaconInformationForm>(
             form,
-            beaconInformationValidationRules,
+            validationRules,
             mapper,
             { showCookieBanner: context.showCookieBanner }
           );
@@ -219,7 +217,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       } else {
         return presentDraftRegistration<BeaconInformationForm>(
           await getDraftRegistration(id(context)),
-          beaconInformationValidationRules,
+          validationRules,
           mapper,
           { showCookieBanner: context.showCookieBanner }
         );
@@ -271,7 +269,7 @@ const mapper: RegistrationFormMapper<BeaconInformationForm> = {
   },
 };
 
-const beaconInformationValidationRules = ({
+const validationRules = ({
   manufacturerSerialNumber,
   chkCode,
   batteryExpiryDate,
