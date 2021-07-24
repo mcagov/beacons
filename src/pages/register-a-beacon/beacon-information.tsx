@@ -11,25 +11,19 @@ import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
 import { GovUKBody } from "../../components/Typography";
-import { DraftRegistration } from "../../entities/DraftRegistration";
 import { isoDateString } from "../../lib/dateTimeUtils";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
-import { isValid } from "../../lib/form/lib";
-import { userDidSubmitForm } from "../../lib/form/userDidSubmitForm";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { FormPageProps } from "../../lib/handlePageRequest";
-import { parseForm, withCookiePolicy } from "../../lib/middleware";
+import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { redirectUserTo } from "../../lib/redirectUserTo";
-import { draftRegistrationId as id } from "../../lib/types";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
-import { presentDraftRegistration } from "../../presenters/presentDraftRegistration";
-import { presentRegistrationFormErrors } from "../../presenters/presentRegistrationFormErrors";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { updateOrViewDraftRegistration } from "../../routers/updateOrViewDraftRegistration";
 
 interface BeaconInformationForm {
   manufacturerSerialNumber: string;
@@ -40,12 +34,6 @@ interface BeaconInformationForm {
   lastServicedDate: string;
   lastServicedDateMonth: string;
   lastServicedDateYear: string;
-}
-
-interface DateInputProps {
-  monthValue: string;
-  yearValue: string;
-  errorMessages: string[];
 }
 
 const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
@@ -87,6 +75,12 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
     </BeaconsForm>
   );
 };
+
+interface DateInputProps {
+  monthValue: string;
+  yearValue: string;
+  errorMessages: string[];
+}
 
 const ManufacturerSerialNumberInput: FunctionComponent<FormInputProps> = ({
   value,
@@ -193,80 +187,54 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
-    withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const { getDraftRegistration, saveDraftRegistration } = context.container;
-
-      if (userDidSubmitForm(context)) {
-        const form = await parseForm<BeaconInformationForm>(context.req);
-
-        if (isValid<BeaconInformationForm>(form, validationRules)) {
-          await saveDraftRegistration(
-            id(context),
-            mapper.toDraftRegistration(form)
-          );
-
-          return redirectUserTo("/register-a-beacon/beacon-use");
-        } else {
-          return presentRegistrationFormErrors<BeaconInformationForm>(
-            form,
-            validationRules,
-            mapper,
-            { showCookieBanner: context.showCookieBanner }
-          );
-        }
-      } else {
-        return presentDraftRegistration<BeaconInformationForm>(
-          await getDraftRegistration(id(context)),
+    withSession(
+      async (context: BeaconsGetServerSidePropsContext) =>
+        await updateOrViewDraftRegistration<BeaconInformationForm>(
+          context,
           validationRules,
-          mapper,
-          { showCookieBanner: context.showCookieBanner }
-        );
-      }
-    })
+          mapper
+        )
+    )
   )
 );
 
 const mapper: RegistrationFormMapper<BeaconInformationForm> = {
-  toDraftRegistration(form: BeaconInformationForm): DraftRegistration {
-    return {
-      manufacturerSerialNumber: form.manufacturerSerialNumber || null,
-      chkCode: form.chkCode || null,
-      batteryExpiryDate: isoDateString(
-        form.batteryExpiryDateYear,
-        form.batteryExpiryDateMonth
-      ),
-      batteryExpiryDateYear: form.batteryExpiryDateYear,
-      batteryExpiryDateMonth: form.batteryExpiryDateMonth,
-      lastServicedDate: isoDateString(
-        form.lastServicedDateYear,
-        form.lastServicedDateMonth
-      ),
-      lastServicedDateYear: form.lastServicedDateYear,
-      lastServicedDateMonth: form.lastServicedDateMonth,
-    };
-  },
-  toForm(draftRegistration: DraftRegistration): BeaconInformationForm {
-    return {
-      manufacturerSerialNumber: draftRegistration?.manufacturerSerialNumber,
-      chkCode: draftRegistration?.chkCode,
-      batteryExpiryDate: draftRegistration?.batteryExpiryDate,
-      batteryExpiryDateMonth: padNumberWithLeadingZeros(
-        draftRegistration?.batteryExpiryDateMonth
-      ),
-      batteryExpiryDateYear: padNumberWithLeadingZeros(
-        draftRegistration?.batteryExpiryDateYear,
-        4
-      ),
-      lastServicedDate: draftRegistration?.lastServicedDate,
-      lastServicedDateMonth: padNumberWithLeadingZeros(
-        draftRegistration?.lastServicedDateMonth
-      ),
-      lastServicedDateYear: padNumberWithLeadingZeros(
-        draftRegistration?.lastServicedDateYear,
-        4
-      ),
-    };
-  },
+  toDraftRegistration: (form) => ({
+    manufacturerSerialNumber: form.manufacturerSerialNumber || null,
+    chkCode: form.chkCode || null,
+    batteryExpiryDate: isoDateString(
+      form.batteryExpiryDateYear,
+      form.batteryExpiryDateMonth
+    ),
+    batteryExpiryDateYear: form.batteryExpiryDateYear,
+    batteryExpiryDateMonth: form.batteryExpiryDateMonth,
+    lastServicedDate: isoDateString(
+      form.lastServicedDateYear,
+      form.lastServicedDateMonth
+    ),
+    lastServicedDateYear: form.lastServicedDateYear,
+    lastServicedDateMonth: form.lastServicedDateMonth,
+  }),
+  toForm: (draftRegistration) => ({
+    manufacturerSerialNumber: draftRegistration?.manufacturerSerialNumber,
+    chkCode: draftRegistration?.chkCode,
+    batteryExpiryDate: draftRegistration?.batteryExpiryDate,
+    batteryExpiryDateMonth: padNumberWithLeadingZeros(
+      draftRegistration?.batteryExpiryDateMonth
+    ),
+    batteryExpiryDateYear: padNumberWithLeadingZeros(
+      draftRegistration?.batteryExpiryDateYear,
+      4
+    ),
+    lastServicedDate: draftRegistration?.lastServicedDate,
+    lastServicedDateMonth: padNumberWithLeadingZeros(
+      draftRegistration?.lastServicedDateMonth
+    ),
+    lastServicedDateYear: padNumberWithLeadingZeros(
+      draftRegistration?.lastServicedDateYear,
+      4
+    ),
+  }),
 };
 
 const validationRules = ({

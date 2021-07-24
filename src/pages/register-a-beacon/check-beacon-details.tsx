@@ -5,9 +5,9 @@ import { BeaconsForm } from "../../components/BeaconsForm";
 import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
-import { DraftRegistration } from "../../entities/DraftRegistration";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
+import { isValid } from "../../lib/form/lib";
 import { userDidSubmitForm } from "../../lib/form/userDidSubmitForm";
 import { Validators } from "../../lib/form/validators";
 import { FormPageProps } from "../../lib/handlePageRequest";
@@ -16,9 +16,11 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
-import { IRegistration } from "../../lib/registration/types";
 import { draftRegistrationId as id } from "../../lib/types";
 import { toUpperCase } from "../../lib/writingStyle";
+import { presentDraftRegistration } from "../../presenters/presentDraftRegistration";
+import { presentRegistrationFormErrors } from "../../presenters/presentRegistrationFormErrors";
+import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 
 interface CheckBeaconDetailsForm {
   manufacturer: string;
@@ -116,65 +118,47 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       if (userDidSubmitForm(context)) {
         const form = await parseForm<CheckBeaconDetailsForm>(context.req);
 
-        await saveDraftRegistration(id(context), formToDraftRegistration(form));
+        if (isValid<CheckBeaconDetailsForm>(form, validationRules)) {
+          await saveDraftRegistration(
+            id(context),
+            mapper.toDraftRegistration(form)
+          );
 
-        if (isValid(form))
-          return redirectUserTo("/register-a-beacon/beacon-information");
+          return redirectUserTo("/register-a-beacon/beacon-use");
+        } else {
+          return presentRegistrationFormErrors<CheckBeaconDetailsForm>(
+            form,
+            validationRules,
+            mapper,
+            { showCookieBanner: context.showCookieBanner }
+          );
+        }
+      } else {
+        return presentDraftRegistration<CheckBeaconDetailsForm>(
+          await getDraftRegistration(id(context)),
+          validationRules,
+          mapper,
+          { showCookieBanner: context.showCookieBanner }
+        );
       }
-
-      return showPage(
-        context,
-        draftRegistrationToForm(await getDraftRegistration(id(context)))
-      );
     })
   )
 );
 
-const showPage = (context, form) => ({
-  props: {
-    form: userDidSubmitForm(context)
-      ? withErrorMessages(form)
-      : withoutErrorMessages(form),
-    showCookieBanner: context.showCookieBanner,
-  },
-});
-
-const draftRegistrationToForm = (
-  registration: IRegistration
-): CheckBeaconDetailsForm => ({
-  manufacturer: registration?.manufacturer || "",
-  model: registration?.model || "",
-  hexId: registration?.hexId || "",
-});
-
-const formToDraftRegistration = (
-  form: CheckBeaconDetailsForm
-): DraftRegistration => ({
-  manufacturer: form.manufacturer,
-  model: form.model,
-  hexId: toUpperCase(form.hexId),
-});
-
-const isValid = (form: CheckBeaconDetailsForm) => {
-  const formManager = checkBeaconDetailsFormManager(form);
-
-  formManager.markAsDirty();
-
-  return formManager.isValid();
+const mapper: RegistrationFormMapper<CheckBeaconDetailsForm> = {
+  toDraftRegistration: (form) => ({
+    manufacturer: form.manufacturer,
+    model: form.model,
+    hexId: toUpperCase(form.hexId),
+  }),
+  toForm: (draftRegistration) => ({
+    manufacturer: draftRegistration?.manufacturer || "",
+    model: draftRegistration?.model || "",
+    hexId: draftRegistration?.hexId || "",
+  }),
 };
 
-const withErrorMessages = (form: CheckBeaconDetailsForm) => {
-  const formManager = checkBeaconDetailsFormManager(form);
-
-  formManager.markAsDirty();
-
-  return formManager.serialise();
-};
-
-const withoutErrorMessages = (form: CheckBeaconDetailsForm) =>
-  checkBeaconDetailsFormManager(form).serialise();
-
-const checkBeaconDetailsFormManager = ({
+const validationRules = ({
   manufacturer,
   model,
   hexId,
