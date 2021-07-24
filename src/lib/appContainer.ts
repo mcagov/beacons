@@ -67,7 +67,7 @@ export interface IAppContainer {
   submitRegistration: SubmitRegistrationFn;
   sendConfirmationEmail: SendConfirmationEmailFn;
   getDraftRegistration;
-  saveDraftRegistration;
+  saveDraftRegistration: typeof saveDraftRegistration;
   clearCachedRegistration: ClearCachedRegistrationFn;
   deleteCachedUse: DeleteCachedUseFn;
   getAccessToken: GetAccessTokenFn;

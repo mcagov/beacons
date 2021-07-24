@@ -1,7 +1,6 @@
 import { GetServerSidePropsResult } from "next";
 import { isValid } from "../lib/form/lib";
 import { FormManagerFactory } from "../lib/handlePageRequest";
-import { parseForm } from "../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../lib/redirectUserTo";
 import { draftRegistrationId as id } from "../lib/types";
@@ -22,9 +21,11 @@ export const updateOrViewDraftRegistration = async <T>(
     new UserRequestedToViewForm(),
   ];
 
-  return await rules
-    .find(async (rule) => await rule.condition(context, validationRules))
-    .action(context, validationRules, mapper, nextPage);
+  for (const rule of rules) {
+    if (await rule.condition(context, validationRules)) {
+      return await rule.action(context, validationRules, mapper, nextPage);
+    }
+  }
 };
 
 interface RegistrationFormRule<T> {
@@ -44,14 +45,19 @@ class UserSubmittedValidForm<T> implements RegistrationFormRule<T> {
   public async condition(context, validationRules) {
     return (
       context.req.method === "POST" &&
-      isValid(await parseForm<T>(context.req), validationRules)
+      isValid<T>(
+        await context.container.parseFormDataAs(context.req),
+        validationRules
+      )
     );
   }
 
   public async action(context, validationRules, mapper, nextPage) {
     await context.container.saveDraftRegistration(
       id(context),
-      mapper.toDraftRegistration(await parseForm<T>(context.req))
+      mapper.toDraftRegistration(
+        await context.container.parseFormDataAs(context.req)
+      )
     );
 
     return redirectUserTo(nextPage);
@@ -62,13 +68,16 @@ class UserSubmittedInvalidForm<T> implements RegistrationFormRule<T> {
   public async condition(context, validationRules) {
     return (
       context.req.method === "POST" &&
-      !isValid(await parseForm<T>(context.req), validationRules)
+      !isValid(
+        await context.container.parseFormDataAs(context.req),
+        validationRules
+      )
     );
   }
 
   public async action(context, validationRules, mapper) {
     return presentRegistrationFormErrors(
-      await parseForm<T>(context.req),
+      await context.container.parseFormDataAs(context.req),
       validationRules,
       mapper,
       {
@@ -85,7 +94,7 @@ class UserRequestedToViewForm<T> implements RegistrationFormRule<T> {
 
   public async action(context, validationRules, mapper) {
     return presentDraftRegistration<T>(
-      await parseForm<T>(context.req),
+      await context.container.parseFormDataAs(context.req),
       validationRules,
       mapper,
       {
