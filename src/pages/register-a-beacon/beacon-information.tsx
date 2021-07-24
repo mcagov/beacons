@@ -11,72 +11,38 @@ import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
 import { GovUKBody } from "../../components/Typography";
+import { DraftRegistration } from "../../entities/DraftRegistration";
 import { isoDateString } from "../../lib/dateTimeUtils";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
+import { userDidSubmitForm } from "../../lib/form/userDidSubmitForm";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { FormPageProps } from "../../lib/handlePageRequest";
+import { parseForm, withCookiePolicy } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
+import { redirectUserTo } from "../../lib/redirectUserTo";
+import { draftRegistrationId as id } from "../../lib/types";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
+
+interface BeaconInformationForm {
+  manufacturerSerialNumber: string;
+  chkCode: string;
+  batteryExpiryDate: string;
+  batteryExpiryDateMonth: string;
+  batteryExpiryDateYear: string;
+  lastServicedDate: string;
+  lastServicedDateMonth: string;
+  lastServicedDateYear: string;
+}
 
 interface DateInputProps {
   monthValue: string;
   yearValue: string;
   errorMessages: string[];
 }
-
-const definePageForm = ({
-  manufacturerSerialNumber,
-  chkCode,
-  batteryExpiryDate,
-  batteryExpiryDateMonth,
-  batteryExpiryDateYear,
-  lastServicedDate,
-  lastServicedDateMonth,
-  lastServicedDateYear,
-}: FormSubmission): FormManager => {
-  return new FormManager({
-    manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber, [
-      Validators.required(
-        "Beacon manufacturer serial number is a required field"
-      ),
-    ]),
-    chkCode: new FieldManager(chkCode),
-    batteryExpiryDate: new FieldManager(
-      batteryExpiryDate,
-      [
-        Validators.isValidDate("Enter a correct battery expiry date"),
-        Validators.minDateYear("Battery expiry date must be after 1980", 1980),
-      ],
-      [
-        {
-          dependsOn: "batteryExpiryDate",
-          meetingCondition: () =>
-            batteryExpiryDateYear !== "" || batteryExpiryDateMonth !== "",
-        },
-      ]
-    ),
-    batteryExpiryDateMonth: new FieldManager(batteryExpiryDateMonth),
-    batteryExpiryDateYear: new FieldManager(batteryExpiryDateYear),
-    lastServicedDate: new FieldManager(
-      lastServicedDate,
-      [
-        Validators.isValidDate("Enter a correct last serviced date"),
-        Validators.isInThePast("Enter a last serviced date in the past"),
-        Validators.minDateYear("Last serviced date must be after 1980", 1980),
-      ],
-      [
-        {
-          dependsOn: "lastServicedDate",
-          meetingCondition: () =>
-            lastServicedDateYear !== "" || lastServicedDateMonth !== "",
-        },
-      ]
-    ),
-    lastServicedDateMonth: new FieldManager(lastServicedDateMonth),
-    lastServicedDateYear: new FieldManager(lastServicedDateYear),
-  });
-};
 
 const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
   form,
@@ -221,32 +187,159 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
   </DateListInput>
 );
 
-const transformFormData = (formData: FormSubmission): FormSubmission => {
-  formData = {
-    ...formData,
-    batteryExpiryDate: isoDateString(
-      formData.batteryExpiryDateYear,
-      formData.batteryExpiryDateMonth
-    ),
-    lastServicedDate: isoDateString(
-      formData.lastServicedDateYear,
-      formData.lastServicedDateMonth
-    ),
-    batteryExpiryDateMonth: padNumberWithLeadingZeros(
-      formData.batteryExpiryDateMonth
-    ),
-    lastServicedDateMonth: padNumberWithLeadingZeros(
-      formData.lastServicedDateMonth
-    ),
-  };
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
+  withContainer(
+    withSession(async (context: BeaconsGetServerSidePropsContext) => {
+      const { getDraftRegistration, saveDraftRegistration } = context.container;
 
-  return formData;
+      if (userDidSubmitForm(context)) {
+        const newlySubmittedForm = await parseForm<BeaconInformationForm>(
+          context.req
+        );
+
+        await saveDraftRegistration(
+          id(context),
+          formToDraftRegistration(newlySubmittedForm)
+        );
+
+        if (isValid(newlySubmittedForm))
+          return redirectUserTo("/register-a-beacon/beacon-use");
+      }
+
+      const draftRegistrationForm = draftRegistrationToForm(
+        await getDraftRegistration(id(context))
+      );
+
+      return showPage(context, draftRegistrationForm);
+    })
+  )
+);
+
+const formToDraftRegistration = (
+  form: BeaconInformationForm
+): DraftRegistration => {
+  return {
+    manufacturerSerialNumber: form.manufacturerSerialNumber || null,
+    chkCode: form.chkCode || null,
+    batteryExpiryDate: isoDateString(
+      form.batteryExpiryDateYear,
+      form.batteryExpiryDateMonth
+    ),
+    batteryExpiryDateYear: form.batteryExpiryDateYear,
+    batteryExpiryDateMonth: form.batteryExpiryDateMonth,
+    lastServicedDate: isoDateString(
+      form.lastServicedDateYear,
+      form.lastServicedDateMonth
+    ),
+    lastServicedDateYear: form.lastServicedDateYear,
+    lastServicedDateMonth: form.lastServicedDateMonth,
+  };
 };
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/beacon-use",
-  definePageForm,
-  transformFormData
-);
+const draftRegistrationToForm = (
+  draftRegistration: DraftRegistration
+): BeaconInformationForm => {
+  return {
+    manufacturerSerialNumber: draftRegistration?.manufacturerSerialNumber,
+    chkCode: draftRegistration?.chkCode,
+    batteryExpiryDate: draftRegistration?.batteryExpiryDate,
+    batteryExpiryDateMonth: padNumberWithLeadingZeros(
+      draftRegistration?.batteryExpiryDateMonth
+    ),
+    batteryExpiryDateYear: padNumberWithLeadingZeros(
+      draftRegistration?.batteryExpiryDateYear,
+      4
+    ),
+    lastServicedDate: draftRegistration?.lastServicedDate,
+    lastServicedDateMonth: padNumberWithLeadingZeros(
+      draftRegistration?.lastServicedDateMonth
+    ),
+    lastServicedDateYear: padNumberWithLeadingZeros(
+      draftRegistration?.lastServicedDateYear,
+      4
+    ),
+  };
+};
+
+const showPage = (context, form) => ({
+  props: {
+    form: userDidSubmitForm(context)
+      ? withErrorMessages(form)
+      : withoutErrorMessages(form),
+    showCookieBanner: context.showCookieBanner,
+  },
+});
+
+const isValid = (form: BeaconInformationForm) => {
+  const formManager = beaconInformationFormManager(form);
+
+  formManager.markAsDirty();
+
+  return formManager.isValid();
+};
+
+const withErrorMessages = (form: BeaconInformationForm) => {
+  const formManager = beaconInformationFormManager(form);
+
+  formManager.markAsDirty();
+
+  return formManager.serialise();
+};
+
+const withoutErrorMessages = (form: BeaconInformationForm) =>
+  beaconInformationFormManager(form).serialise();
+
+const beaconInformationFormManager = ({
+  manufacturerSerialNumber,
+  chkCode,
+  batteryExpiryDate,
+  batteryExpiryDateMonth,
+  batteryExpiryDateYear,
+  lastServicedDate,
+  lastServicedDateMonth,
+  lastServicedDateYear,
+}: FormSubmission): FormManager => {
+  return new FormManager({
+    manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber, [
+      Validators.required(
+        "Beacon manufacturer serial number is a required field"
+      ),
+    ]),
+    chkCode: new FieldManager(chkCode),
+    batteryExpiryDate: new FieldManager(
+      batteryExpiryDate,
+      [
+        Validators.isValidDate("Enter a correct battery expiry date"),
+        Validators.minDateYear("Battery expiry date must be after 1980", 1980),
+      ],
+      [
+        {
+          dependsOn: "batteryExpiryDate",
+          meetingCondition: () =>
+            batteryExpiryDateYear !== "" || batteryExpiryDateMonth !== "",
+        },
+      ]
+    ),
+    batteryExpiryDateMonth: new FieldManager(batteryExpiryDateMonth),
+    batteryExpiryDateYear: new FieldManager(batteryExpiryDateYear),
+    lastServicedDate: new FieldManager(
+      lastServicedDate,
+      [
+        Validators.isValidDate("Enter a correct last serviced date"),
+        Validators.isInThePast("Enter a last serviced date in the past"),
+        Validators.minDateYear("Last serviced date must be after 1980", 1980),
+      ],
+      [
+        {
+          dependsOn: "lastServicedDate",
+          meetingCondition: () =>
+            lastServicedDateYear !== "" || lastServicedDateMonth !== "",
+        },
+      ]
+    ),
+    lastServicedDateMonth: new FieldManager(lastServicedDateMonth),
+    lastServicedDateYear: new FieldManager(lastServicedDateYear),
+  });
+};
 
 export default BeaconInformationPage;
