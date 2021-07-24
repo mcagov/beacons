@@ -119,11 +119,11 @@ const confirmBeforeDelete = (use, index) =>
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withSession(
     withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-      const { getCachedRegistration } = context.container;
+      const { getDraftRegistration } = context.container;
 
       const submissionId = retrieveUserFormSubmissionId(context);
       const registration = (
-        await getCachedRegistration(submissionId)
+        await getDraftRegistration(submissionId)
       ).getRegistration();
 
       if (

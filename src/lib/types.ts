@@ -1,3 +1,5 @@
+import { GetServerSidePropsContext } from "next";
+
 export enum HttpMethod {
   POST = "POST",
   PUT = "PUT",
@@ -12,4 +14,9 @@ export enum BeaconIntent {
 }
 
 export const formSubmissionCookieId = "submissionId";
+
+export const draftRegistrationId = (
+  context: GetServerSidePropsContext
+): string => context.req.cookies["submissionId"];
+
 export const acceptRejectCookieId = "acceptRejectId";

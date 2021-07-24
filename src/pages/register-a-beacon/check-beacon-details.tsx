@@ -8,14 +8,16 @@ import { FormInputProps, Input } from "../../components/Input";
 import { DraftRegistration } from "../../entities/DraftRegistration";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
+import { userDidSubmitForm } from "../../lib/form/userDidSubmitForm";
 import { Validators } from "../../lib/form/validators";
 import { FormPageProps } from "../../lib/handlePageRequest";
-import { parseFormDataAs, withCookiePolicy } from "../../lib/middleware";
+import { parseForm, withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { redirectUserTo } from "../../lib/redirectUserTo";
 import { IRegistration } from "../../lib/registration/types";
-import { formSubmissionCookieId } from "../../lib/types";
+import { draftRegistrationId as id } from "../../lib/types";
 import { toUpperCase } from "../../lib/writingStyle";
 
 interface CheckBeaconDetailsForm {
@@ -23,38 +25,6 @@ interface CheckBeaconDetailsForm {
   model: string;
   hexId: string;
 }
-
-const definePageForm = ({
-  manufacturer,
-  model,
-  hexId,
-}: CheckBeaconDetailsForm): FormManager => {
-  return new FormManager({
-    manufacturer: new FieldManager(manufacturer, [
-      Validators.required("Beacon manufacturer is a required field"),
-    ]),
-    model: new FieldManager(model, [
-      Validators.required("Beacon model is a required field"),
-    ]),
-    hexId: new FieldManager(hexId, [
-      Validators.required("Beacon HEX ID is a required field"),
-      Validators.isLength(
-        "Beacon HEX ID or UIN must be 15 characters long",
-        15
-      ),
-      Validators.hexadecimalString(
-        "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
-      ),
-      Validators.ukEncodedBeacon(
-        "You entered a beacon encoded with a Hex ID from %HEX_ID_COUNTRY%.  Your beacon must be UK-encoded to use this service."
-      ),
-      Validators.shouldNotContain(
-        'Your HEX ID should not contain the letter "O".  Did you mean the number zero?',
-        "O"
-      ),
-    ]),
-  });
-};
 
 const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
   form,
@@ -141,41 +111,40 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const draftRegistrationId = context.req.cookies[formSubmissionCookieId];
+      const { getDraftRegistration, saveDraftRegistration } = context.container;
 
-      const { getCachedRegistration, saveDraftRegistration } =
-        context.container;
+      if (userDidSubmitForm(context)) {
+        const form = await parseForm<CheckBeaconDetailsForm>(context.req);
 
-      if (context.req.method === "GET") {
-        return {
-          props: {
-            form: draftRegistrationToForm(
-              await getCachedRegistration(draftRegistrationId)
-            ),
-            showCookieBanner: context.showCookieBanner,
-          },
-        };
-      } else {
-        // 1. Save draft registration
-        await saveDraftRegistration(
-          draftRegistrationId,
-          formToDraftRegistration(
-            await parseFormDataAs<CheckBeaconDetailsForm>(context.req)
-          )
-        );
+        await saveDraftRegistration(id(context), formToDraftRegistration(form));
 
-        // 2. Validate
+        if (isValid(form))
+          return redirectUserTo("/register-a-beacon/beacon-information");
       }
+
+      return showPage(
+        context,
+        draftRegistrationToForm(await getDraftRegistration(id(context)))
+      );
     })
   )
 );
 
+const showPage = (context, form) => ({
+  props: {
+    form: userDidSubmitForm(context)
+      ? withErrorMessages(form)
+      : withoutErrorMessages(form),
+    showCookieBanner: context.showCookieBanner,
+  },
+});
+
 const draftRegistrationToForm = (
   registration: IRegistration
 ): CheckBeaconDetailsForm => ({
-  manufacturer: registration.manufacturer,
-  model: registration.model,
-  hexId: registration.hexId,
+  manufacturer: registration?.manufacturer || "",
+  model: registration?.model || "",
+  hexId: registration?.hexId || "",
 });
 
 const formToDraftRegistration = (
@@ -185,5 +154,56 @@ const formToDraftRegistration = (
   model: form.model,
   hexId: toUpperCase(form.hexId),
 });
+
+const isValid = (form: CheckBeaconDetailsForm) => {
+  const formManager = checkBeaconDetailsFormManager(form);
+
+  formManager.markAsDirty();
+
+  return formManager.isValid();
+};
+
+const withErrorMessages = (form: CheckBeaconDetailsForm) => {
+  const formManager = checkBeaconDetailsFormManager(form);
+
+  formManager.markAsDirty();
+
+  return formManager.serialise();
+};
+
+const withoutErrorMessages = (form: CheckBeaconDetailsForm) =>
+  checkBeaconDetailsFormManager(form).serialise();
+
+const checkBeaconDetailsFormManager = ({
+  manufacturer,
+  model,
+  hexId,
+}: CheckBeaconDetailsForm): FormManager => {
+  return new FormManager({
+    manufacturer: new FieldManager(manufacturer, [
+      Validators.required("Beacon manufacturer is a required field"),
+    ]),
+    model: new FieldManager(model, [
+      Validators.required("Beacon model is a required field"),
+    ]),
+    hexId: new FieldManager(hexId, [
+      Validators.required("Beacon HEX ID is a required field"),
+      Validators.isLength(
+        "Beacon HEX ID or UIN must be 15 characters long",
+        15
+      ),
+      Validators.hexadecimalString(
+        "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
+      ),
+      Validators.ukEncodedBeacon(
+        "You entered a beacon encoded with a Hex ID from %HEX_ID_COUNTRY%.  Your beacon must be UK-encoded to use this service."
+      ),
+      Validators.shouldNotContain(
+        'Your HEX ID should not contain the letter "O".  Did you mean the number zero?',
+        "O"
+      ),
+    ]),
+  });
+};
 
 export default CheckBeaconDetails;

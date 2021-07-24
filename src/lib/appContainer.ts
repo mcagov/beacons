@@ -17,6 +17,7 @@ import {
   GovNotifyGateway,
   IGovNotifyGateway,
 } from "../gateways/govNotifyApiGateway";
+import { RedisDraftRegistrationGateway } from "../gateways/RedisDraftRegistrationGateway";
 import {
   IUserSessionGateway,
   UserSessionGateway,
@@ -62,41 +63,45 @@ import { parseForm } from "./middleware";
 
 export interface IAppContainer {
   /* Use cases */
-  authenticateUser?: AuthenticateUserFn;
-  submitRegistration?: SubmitRegistrationFn;
-  sendConfirmationEmail?: SendConfirmationEmailFn;
-  getCachedRegistration?;
-  saveDraftRegistration?;
-  clearCachedRegistration?: ClearCachedRegistrationFn;
-  deleteCachedUse?: DeleteCachedUseFn;
-  getAccessToken?: GetAccessTokenFn;
-  parseFormDataAs?<T>(request: IncomingMessage): Promise<T>;
-  getOrCreateAccountHolder?: GetOrCreateAccountHolderFn;
-  updateAccountHolder?: UpdateAccountHolderFn;
-  getAccountHolderId?;
-  getBeaconsByAccountHolderId?: GetBeaconsByAccountHolderIdFn;
-  deleteBeacon?: DeleteBeaconFn;
+  authenticateUser: AuthenticateUserFn;
+  submitRegistration: SubmitRegistrationFn;
+  sendConfirmationEmail: SendConfirmationEmailFn;
+  getDraftRegistration;
+  saveDraftRegistration;
+  clearCachedRegistration: ClearCachedRegistrationFn;
+  deleteCachedUse: DeleteCachedUseFn;
+  getAccessToken: GetAccessTokenFn;
+  parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
+  getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
+  updateAccountHolder: UpdateAccountHolderFn;
+  getAccountHolderId;
+  getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
+  deleteBeacon: DeleteBeaconFn;
 
   /* Gateways */
-  beaconsApiAuthGateway?: IAuthGateway;
-  basicAuthGateway?: IBasicAuthGateway;
-  beaconsApiGateway?: IBeaconsApiGateway;
-  govNotifyGateway?: IGovNotifyGateway;
-  accountHolderApiGateway?: IAccountHolderApiGateway;
-  userSessionGateway?: IUserSessionGateway;
-  draftRegistrationGateway?: DraftRegistrationGateway;
+  beaconsApiAuthGateway: IAuthGateway;
+  basicAuthGateway: IBasicAuthGateway;
+  beaconsApiGateway: IBeaconsApiGateway;
+  govNotifyGateway: IGovNotifyGateway;
+  accountHolderApiGateway: IAccountHolderApiGateway;
+  userSessionGateway: IUserSessionGateway;
+  draftRegistrationGateway: DraftRegistrationGateway;
 }
 
 // "overrides" is spread over the default appContainer at the bottom of this method to enable injecting mocks et al.
 export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
   return {
     /* Simple use cases */
-    getCachedRegistration: getDraftRegistration,
-    saveDraftRegistration: saveDraftRegistration,
     clearCachedRegistration: clearCachedRegistration,
     deleteCachedUse: deleteCachedUse,
 
     /* Composite use cases requiring access to other use cases */
+    get getDraftRegistration() {
+      return getDraftRegistration(this);
+    },
+    get saveDraftRegistration() {
+      return saveDraftRegistration(this);
+    },
     get getAccessToken() {
       return getAccessToken(this);
     },
@@ -143,6 +148,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get userSessionGateway() {
       return new UserSessionGateway();
+    },
+    get draftRegistrationGateway() {
+      return new RedisDraftRegistrationGateway();
     },
 
     /* Mockable utilities */

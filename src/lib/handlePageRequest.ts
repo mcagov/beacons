@@ -42,7 +42,7 @@ export const handlePageRequest = (
     withSession(
       withContainer(async (context: BeaconsGetServerSidePropsContext) => {
         const {
-          getCachedRegistration,
+          getDraftRegistration,
           saveDraftRegistration,
           authenticateUser,
         } = context.container;
@@ -52,7 +52,7 @@ export const handlePageRequest = (
         const beaconsContext: BeaconsContext =
           await decorateGetServerSidePropsContext(context);
 
-        const registration: Registration = await getCachedRegistration(
+        const registration: Registration = await getDraftRegistration(
           retrieveUserFormSubmissionId(context)
         );
 
