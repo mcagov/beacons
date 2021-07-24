@@ -15,6 +15,7 @@ import { DraftRegistration } from "../../entities/DraftRegistration";
 import { isoDateString } from "../../lib/dateTimeUtils";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
+import { isValid } from "../../lib/form/lib";
 import { userDidSubmitForm } from "../../lib/form/userDidSubmitForm";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
@@ -26,6 +27,9 @@ import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { draftRegistrationId as id } from "../../lib/types";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
+import { presentDraftRegistration } from "../../presenters/presentDraftRegistration";
+import { presentRegistrationFormErrors } from "../../presenters/presentRegistrationFormErrors";
+import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 
 interface BeaconInformationForm {
   manufacturerSerialNumber: string;
@@ -193,103 +197,81 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const { getDraftRegistration, saveDraftRegistration } = context.container;
 
       if (userDidSubmitForm(context)) {
-        const newlySubmittedForm = await parseForm<BeaconInformationForm>(
-          context.req
-        );
+        const form = await parseForm<BeaconInformationForm>(context.req);
 
-        await saveDraftRegistration(
-          id(context),
-          formToDraftRegistration(newlySubmittedForm)
-        );
+        if (
+          isValid<BeaconInformationForm>(form, beaconInformationValidationRules)
+        ) {
+          await saveDraftRegistration(
+            id(context),
+            mapper.toDraftRegistration(form)
+          );
 
-        if (isValid(newlySubmittedForm))
           return redirectUserTo("/register-a-beacon/beacon-use");
+        } else {
+          return presentRegistrationFormErrors<BeaconInformationForm>(
+            form,
+            beaconInformationValidationRules,
+            mapper,
+            { showCookieBanner: context.showCookieBanner }
+          );
+        }
+      } else {
+        return presentDraftRegistration<BeaconInformationForm>(
+          await getDraftRegistration(id(context)),
+          beaconInformationValidationRules,
+          mapper,
+          { showCookieBanner: context.showCookieBanner }
+        );
       }
-
-      const draftRegistrationForm = draftRegistrationToForm(
-        await getDraftRegistration(id(context))
-      );
-
-      return showPage(context, draftRegistrationForm);
     })
   )
 );
 
-const formToDraftRegistration = (
-  form: BeaconInformationForm
-): DraftRegistration => {
-  return {
-    manufacturerSerialNumber: form.manufacturerSerialNumber || null,
-    chkCode: form.chkCode || null,
-    batteryExpiryDate: isoDateString(
-      form.batteryExpiryDateYear,
-      form.batteryExpiryDateMonth
-    ),
-    batteryExpiryDateYear: form.batteryExpiryDateYear,
-    batteryExpiryDateMonth: form.batteryExpiryDateMonth,
-    lastServicedDate: isoDateString(
-      form.lastServicedDateYear,
-      form.lastServicedDateMonth
-    ),
-    lastServicedDateYear: form.lastServicedDateYear,
-    lastServicedDateMonth: form.lastServicedDateMonth,
-  };
-};
-
-const draftRegistrationToForm = (
-  draftRegistration: DraftRegistration
-): BeaconInformationForm => {
-  return {
-    manufacturerSerialNumber: draftRegistration?.manufacturerSerialNumber,
-    chkCode: draftRegistration?.chkCode,
-    batteryExpiryDate: draftRegistration?.batteryExpiryDate,
-    batteryExpiryDateMonth: padNumberWithLeadingZeros(
-      draftRegistration?.batteryExpiryDateMonth
-    ),
-    batteryExpiryDateYear: padNumberWithLeadingZeros(
-      draftRegistration?.batteryExpiryDateYear,
-      4
-    ),
-    lastServicedDate: draftRegistration?.lastServicedDate,
-    lastServicedDateMonth: padNumberWithLeadingZeros(
-      draftRegistration?.lastServicedDateMonth
-    ),
-    lastServicedDateYear: padNumberWithLeadingZeros(
-      draftRegistration?.lastServicedDateYear,
-      4
-    ),
-  };
-};
-
-const showPage = (context, form) => ({
-  props: {
-    form: userDidSubmitForm(context)
-      ? withErrorMessages(form)
-      : withoutErrorMessages(form),
-    showCookieBanner: context.showCookieBanner,
+const mapper: RegistrationFormMapper<BeaconInformationForm> = {
+  toDraftRegistration(form: BeaconInformationForm): DraftRegistration {
+    return {
+      manufacturerSerialNumber: form.manufacturerSerialNumber || null,
+      chkCode: form.chkCode || null,
+      batteryExpiryDate: isoDateString(
+        form.batteryExpiryDateYear,
+        form.batteryExpiryDateMonth
+      ),
+      batteryExpiryDateYear: form.batteryExpiryDateYear,
+      batteryExpiryDateMonth: form.batteryExpiryDateMonth,
+      lastServicedDate: isoDateString(
+        form.lastServicedDateYear,
+        form.lastServicedDateMonth
+      ),
+      lastServicedDateYear: form.lastServicedDateYear,
+      lastServicedDateMonth: form.lastServicedDateMonth,
+    };
   },
-});
-
-const isValid = (form: BeaconInformationForm) => {
-  const formManager = beaconInformationFormManager(form);
-
-  formManager.markAsDirty();
-
-  return formManager.isValid();
+  toForm(draftRegistration: DraftRegistration): BeaconInformationForm {
+    return {
+      manufacturerSerialNumber: draftRegistration?.manufacturerSerialNumber,
+      chkCode: draftRegistration?.chkCode,
+      batteryExpiryDate: draftRegistration?.batteryExpiryDate,
+      batteryExpiryDateMonth: padNumberWithLeadingZeros(
+        draftRegistration?.batteryExpiryDateMonth
+      ),
+      batteryExpiryDateYear: padNumberWithLeadingZeros(
+        draftRegistration?.batteryExpiryDateYear,
+        4
+      ),
+      lastServicedDate: draftRegistration?.lastServicedDate,
+      lastServicedDateMonth: padNumberWithLeadingZeros(
+        draftRegistration?.lastServicedDateMonth
+      ),
+      lastServicedDateYear: padNumberWithLeadingZeros(
+        draftRegistration?.lastServicedDateYear,
+        4
+      ),
+    };
+  },
 };
 
-const withErrorMessages = (form: BeaconInformationForm) => {
-  const formManager = beaconInformationFormManager(form);
-
-  formManager.markAsDirty();
-
-  return formManager.serialise();
-};
-
-const withoutErrorMessages = (form: BeaconInformationForm) =>
-  beaconInformationFormManager(form).serialise();
-
-const beaconInformationFormManager = ({
+const beaconInformationValidationRules = ({
   manufacturerSerialNumber,
   chkCode,
   batteryExpiryDate,
