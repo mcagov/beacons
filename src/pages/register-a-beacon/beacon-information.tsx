@@ -21,6 +21,7 @@ import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { PageURLs } from "../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { updateOrViewDraftRegistration } from "../../routers/updateOrViewDraftRegistration";
@@ -187,14 +188,16 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
-    withSession(
-      async (context: BeaconsGetServerSidePropsContext) =>
-        await updateOrViewDraftRegistration<BeaconInformationForm>(
-          context,
-          validationRules,
-          mapper
-        )
-    )
+    withSession(async (context: BeaconsGetServerSidePropsContext) => {
+      const nextPage = PageURLs.environment;
+
+      return await updateOrViewDraftRegistration<BeaconInformationForm>(
+        context,
+        validationRules,
+        mapper,
+        nextPage
+      );
+    })
   )
 );
 

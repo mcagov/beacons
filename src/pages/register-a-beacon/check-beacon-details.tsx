@@ -7,20 +7,16 @@ import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
-import { isValid } from "../../lib/form/lib";
-import { userDidSubmitForm } from "../../lib/form/userDidSubmitForm";
 import { Validators } from "../../lib/form/validators";
 import { FormPageProps } from "../../lib/handlePageRequest";
-import { parseForm, withCookiePolicy } from "../../lib/middleware";
+import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { redirectUserTo } from "../../lib/redirectUserTo";
-import { draftRegistrationId as id } from "../../lib/types";
+import { PageURLs } from "../../lib/urls";
 import { toUpperCase } from "../../lib/writingStyle";
-import { presentDraftRegistration } from "../../presenters/presentDraftRegistration";
-import { presentRegistrationFormErrors } from "../../presenters/presentRegistrationFormErrors";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { updateOrViewDraftRegistration } from "../../routers/updateOrViewDraftRegistration";
 
 interface CheckBeaconDetailsForm {
   manufacturer: string;
@@ -113,52 +109,33 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const { getDraftRegistration, saveDraftRegistration } = context.container;
+      const nextPageUrl = PageURLs.beaconInformation;
 
-      if (userDidSubmitForm(context)) {
-        const form = await parseForm<CheckBeaconDetailsForm>(context.req);
-
-        if (isValid<CheckBeaconDetailsForm>(form, validationRules)) {
-          await saveDraftRegistration(
-            id(context),
-            mapper.toDraftRegistration(form)
-          );
-
-          return redirectUserTo("/register-a-beacon/beacon-use");
-        } else {
-          return presentRegistrationFormErrors<CheckBeaconDetailsForm>(
-            form,
-            validationRules,
-            mapper,
-            { showCookieBanner: context.showCookieBanner }
-          );
-        }
-      } else {
-        return presentDraftRegistration<CheckBeaconDetailsForm>(
-          await getDraftRegistration(id(context)),
-          validationRules,
-          mapper,
-          { showCookieBanner: context.showCookieBanner }
-        );
-      }
+      return await updateOrViewDraftRegistration<CheckBeaconDetailsForm>(
+        context,
+        formValidationRules,
+        formToDraftRegistrationMapper,
+        nextPageUrl
+      );
     })
   )
 );
 
-const mapper: RegistrationFormMapper<CheckBeaconDetailsForm> = {
-  toDraftRegistration: (form) => ({
-    manufacturer: form.manufacturer,
-    model: form.model,
-    hexId: toUpperCase(form.hexId),
-  }),
-  toForm: (draftRegistration) => ({
-    manufacturer: draftRegistration?.manufacturer || "",
-    model: draftRegistration?.model || "",
-    hexId: draftRegistration?.hexId || "",
-  }),
-};
+const formToDraftRegistrationMapper: RegistrationFormMapper<CheckBeaconDetailsForm> =
+  {
+    toDraftRegistration: (form) => ({
+      manufacturer: form.manufacturer,
+      model: form.model,
+      hexId: toUpperCase(form.hexId),
+    }),
+    toForm: (draftRegistration) => ({
+      manufacturer: draftRegistration?.manufacturer || "",
+      model: draftRegistration?.model || "",
+      hexId: draftRegistration?.hexId || "",
+    }),
+  };
 
-const validationRules = ({
+const formValidationRules = ({
   manufacturer,
   model,
   hexId,
