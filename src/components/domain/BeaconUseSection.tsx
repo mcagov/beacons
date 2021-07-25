@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { BeaconUse } from "../../lib/registration/types";
 import { ordinal, prettyUseName, sentenceCase } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
@@ -6,7 +7,7 @@ import { AnchorLink, SectionHeading, WarningLink } from "../Typography";
 
 interface BeaconUseSectionProps {
   index: number;
-  use: BeaconUse;
+  use: DraftBeaconUse;
   changeUri?: string;
   deleteUri?: string;
 }
@@ -53,7 +54,7 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
   );
 };
 
-const AboutThisUse: FunctionComponent<{ use: BeaconUse }> = ({
+const AboutThisUse: FunctionComponent<{ use: DraftBeaconUse }> = ({
   use,
 }: {
   use: BeaconUse;
@@ -226,7 +227,7 @@ const AboutThisUse: FunctionComponent<{ use: BeaconUse }> = ({
   </SummaryListItem>
 );
 
-const Communications: FunctionComponent<{ use: BeaconUse }> = ({
+const Communications: FunctionComponent<{ use: DraftBeaconUse }> = ({
   use,
 }: {
   use: BeaconUse;
@@ -294,7 +295,7 @@ const Communications: FunctionComponent<{ use: BeaconUse }> = ({
   );
 };
 
-const MoreDetailsSubSection: FunctionComponent<{ use: BeaconUse }> = ({
+const MoreDetailsSubSection: FunctionComponent<{ use: DraftBeaconUse }> = ({
   use,
 }: {
   use: BeaconUse;

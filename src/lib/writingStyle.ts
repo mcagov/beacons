@@ -1,6 +1,6 @@
-import { BeaconUse } from "./registration/types";
+import { DraftBeaconUse } from "../entities/DraftBeaconUse";
 
-export const prettyUseName = (use: BeaconUse): string =>
+export const prettyUseName = (use: DraftBeaconUse): string =>
   makeEnumValueUserFriendly(use.environment) +
   " - " +
   makeEnumValueUserFriendly(use.activity) +

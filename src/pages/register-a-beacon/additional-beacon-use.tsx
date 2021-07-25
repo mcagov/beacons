@@ -5,18 +5,20 @@ import { BeaconUseSection } from "../../components/domain/BeaconUseSection";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { GovUKBody, PageHeading } from "../../components/Typography";
-import { showCookieBanner } from "../../lib/cookies";
+import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { BeaconUse, IRegistration } from "../../lib/registration/types";
-import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
+import { formSubmissionCookieId } from "../../lib/types";
 import { ActionURLs, PageURLs, queryParams } from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
+import { IfUserViewedNonFormPage } from "../../router/rules/IfUserViewedNonFormPage";
 
 interface AdditionalBeaconUseProps {
-  uses: BeaconUse[];
+  uses: DraftBeaconUse[];
   currentUseIndex: number;
   showCookieBanner?: boolean;
 }
@@ -119,37 +121,28 @@ const confirmBeforeDelete = (use, index) =>
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withSession(
     withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-      const { getDraftRegistration } = context.container;
-
-      const submissionId = retrieveUserFormSubmissionId(context);
-      const registration = (
-        await getDraftRegistration(submissionId)
-      ).getRegistration();
-
-      if (
-        registration.uses.length >= 1 &&
-        currentUseIndexDoesNotExist(context, registration)
-      )
-        throw new ReferenceError(
-          PageURLs.additionalUse +
-            " was accessed with a useIndex parameter that does not exist on the cached registration."
-        );
-
-      return {
-        props: {
-          currentUseIndex: context.query.useIndex,
-          uses: registration.uses,
-          showCookieBanner: showCookieBanner(context),
-        },
-      };
+      return await new BeaconsPageRouter([
+        new IfNoUseIndexRule(context),
+        new IfUserViewedNonFormPage(context, props(context)),
+      ]).execute();
     })
   )
 );
 
-const currentUseIndexDoesNotExist = (
-  context: BeaconsGetServerSidePropsContext,
-  registration: IRegistration
-): boolean =>
-  parseInt(context.query.useIndex as string) > registration.uses.length - 1;
+const props = (
+  context: BeaconsGetServerSidePropsContext
+): Promise<Partial<AdditionalBeaconUseProps>> =>
+  (async () => {
+    const draftRegistration = await context.container.getDraftRegistration(
+      context.req.cookies[formSubmissionCookieId]
+    );
+
+    const useIndex = parseInt(context.query.useIndex as string);
+
+    return {
+      uses: draftRegistration.uses,
+      currentUseIndex: useIndex,
+    };
+  })();
 
 export default AdditionalBeaconUse;
