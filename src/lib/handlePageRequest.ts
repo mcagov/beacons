@@ -5,14 +5,12 @@ import {
   BeaconsContext,
   decorateGetServerSidePropsContext,
   updateFormCache,
-  withCookiePolicy,
+  withCookieRedirect,
 } from "./middleware";
 import { BeaconsGetServerSidePropsContext } from "./middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "./middleware/withContainer";
-import { withSession } from "./middleware/withSession";
 import { Registration } from "./registration/registration";
 import { IRegistration } from "./registration/types";
-import { retrieveUserFormSubmissionId } from "./retrieveUserFormSubmissionId";
 import { formatUrlQueryParams } from "./urls";
 
 type TransformCallback = (formData: FormSubmission) => FormSubmission;
@@ -38,49 +36,28 @@ export const handlePageRequest = (
   destinationIfValidCallback: DestinationIfValidCallback = async () =>
     destinationIfValid
 ): GetServerSideProps =>
-  withCookiePolicy(
-    withSession(
-      withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-        const {
-          getDraftRegistration,
-          saveDraftRegistration,
-          authenticateUser,
-        } = context.container;
+  withCookieRedirect(
+    withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+      const { authenticateUser } = context.container;
 
-        await authenticateUser(context);
+      await authenticateUser(context);
 
-        const beaconsContext: BeaconsContext =
-          await decorateGetServerSidePropsContext(context);
+      const beaconsContext: BeaconsContext =
+        await decorateGetServerSidePropsContext(context);
 
-        const registration: Registration = await getDraftRegistration(
-          retrieveUserFormSubmissionId(context)
+      const userDidSubmitForm = beaconsContext.req.method === "POST";
+
+      if (userDidSubmitForm) {
+        return handlePostRequest(
+          beaconsContext,
+          formManagerFactory,
+          transformCallback,
+          destinationIfValidCallback
         );
+      }
 
-        const useIndexDoesNotExist =
-          beaconsContext.useIndex >
-          registration.getRegistration().uses.length - 1;
-        if (useIndexDoesNotExist) {
-          registration.createUse();
-          await saveDraftRegistration(
-            beaconsContext.submissionId,
-            registration
-          );
-        }
-
-        const userDidSubmitForm = beaconsContext.req.method === "POST";
-
-        if (userDidSubmitForm) {
-          return handlePostRequest(
-            beaconsContext,
-            formManagerFactory,
-            transformCallback,
-            destinationIfValidCallback
-          );
-        }
-
-        return handleGetRequest(beaconsContext, formManagerFactory);
-      })
-    )
+      return handleGetRequest(beaconsContext, formManagerFactory);
+    })
   );
 
 const handleGetRequest = (

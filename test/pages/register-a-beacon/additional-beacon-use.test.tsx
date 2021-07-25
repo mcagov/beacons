@@ -6,7 +6,7 @@ import {
   Purpose,
 } from "../../../src/lib/registration/types";
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { PageURLs, queryParams } from "../../../src/lib/urls";
+import { ActionURLs, PageURLs, queryParams } from "../../../src/lib/urls";
 import AdditionalBeaconUse, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/additional-beacon-use";
@@ -30,7 +30,10 @@ describe("AdditionalBeaconUse page", () => {
   it("given there are no uses, instead prompts the user to add a use via a button", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseIndex={0} />);
 
-    expect(screen.getByRole("button", { name: /add a use/i }));
+    expect(screen.getByRole("button", { name: /add a use/i })).toHaveAttribute(
+      "href",
+      ActionURLs.addNewUseToDraftRegistration
+    );
   });
 
   it("given there are no uses, doesn't allow the user to go 'back' to the use-editing path", () => {
@@ -70,7 +73,20 @@ describe("AdditionalBeaconUse page", () => {
     expect(within(content).getByText(new RegExp(use2.purpose, "i")));
   });
 
-  it("given a currentUseIndex, sends the user back down the editing execute for that use", () => {
+  it("given there are uses, allows the user to add another use via a button", () => {
+    render(
+      <AdditionalBeaconUse
+        uses={[getMockUse(), getMockUse()]}
+        currentUseIndex={0}
+      />
+    );
+
+    expect(
+      screen.getByRole("button", { name: /add another use/i })
+    ).toHaveAttribute("href", ActionURLs.addNewUseToDraftRegistration);
+  });
+
+  it("given a currentUseIndex, sends the user back down the editing route for that use", () => {
     const currentUseIndex = 1;
     render(
       <AdditionalBeaconUse

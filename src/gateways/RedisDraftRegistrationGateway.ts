@@ -1,8 +1,8 @@
 import Redis from "ioredis";
 import JSONCache from "redis-json";
 import { DraftRegistration } from "../entities/DraftRegistration";
-import { FormCacheFactory } from "../lib/formCache";
 import { Registration } from "../lib/registration/registration";
+import { initBeaconUse } from "../lib/registration/registrationInitialisation";
 import { IRegistration } from "../lib/registration/types";
 import { DraftRegistrationGateway } from "./DraftRegistrationGateway";
 
@@ -15,18 +15,14 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
     submissionId: string,
     useIndex: number
   ): Promise<void> {
-    const cache = FormCacheFactory.getCache();
-
-    const registration: IRegistration = (
-      await cache.get(submissionId)
-    ).getRegistration();
+    const registration: IRegistration = await this.read(submissionId);
 
     const registrationMinusDeletedUse = {
       ...registration,
       uses: registration.uses.filter((use, i) => i !== useIndex),
     };
 
-    await cache.set(
+    await RedisCachedRegistrationGateway.saveRegistration(
       submissionId,
       new Registration(registrationMinusDeletedUse)
     );
@@ -41,5 +37,20 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
     draftRegistration: DraftRegistration
   ): Promise<void> {
     await this.cache.set(id, draftRegistration);
+  }
+
+  public async createEmptyUse(submissionId: string): Promise<void> {
+    const registration: IRegistration =
+      await RedisCachedRegistrationGateway.getRegistration(submissionId);
+
+    const registrationWithNewUse = {
+      ...registration,
+      uses: [...registration.uses, initBeaconUse()],
+    };
+
+    await this.update(
+      submissionId,
+      new Registration(registrationWithNewUse).getRegistration()
+    );
   }
 }

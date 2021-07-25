@@ -102,6 +102,8 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   iAmAt(PageURLs.start);
 };
 
+export const andIHaveEnteredMyAviationUse = givenIHaveEnteredMyAviationUse;
+
 export const iCanEditMyAircraftCommunications = (): void => {
   const comms = testAviationUseData.communications;
   comms.checkedFields.forEach((field) =>
