@@ -10,53 +10,34 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { FormPageProps } from "../../lib/handlePageRequest";
+import { withCookiePolicy } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
+import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { makeRegistrationMapper } from "../../presenters/UseMapper";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
+import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
+import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
+import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
 
-const definePageForm = ({
-  maxCapacity,
-  vesselName,
-  beaconLocation,
-  portLetterNumber,
-  homeport,
-  areaOfOperation,
-  imoNumber,
-  ssrNumber,
-  rssNumber,
-  officialNumber,
-  rigPlatformLocation,
-}: FormSubmission): FormManager => {
-  return new FormManager({
-    maxCapacity: new FieldManager(maxCapacity, [
-      Validators.required(
-        "Maximum number of persons onboard is a required field"
-      ),
-      Validators.wholeNumber(
-        "Maximum number of persons onboard must be a whole number"
-      ),
-    ]),
-    vesselName: new FieldManager(vesselName),
-    beaconLocation: new FieldManager(beaconLocation, [
-      Validators.maxLength(
-        "Where the beacon is kept has too many characters",
-        100
-      ),
-    ]),
-    portLetterNumber: new FieldManager(portLetterNumber),
-    homeport: new FieldManager(homeport),
-    areaOfOperation: new FieldManager(areaOfOperation, [
-      Validators.maxLength(
-        "Typical area of operation has too many characters",
-        250
-      ),
-    ]),
-    imoNumber: new FieldManager(imoNumber),
-    ssrNumber: new FieldManager(ssrNumber),
-    rssNumber: new FieldManager(rssNumber),
-    officialNumber: new FieldManager(officialNumber),
-    rigPlatformLocation: new FieldManager(rigPlatformLocation),
-  });
-};
+interface AboutTheVesselForm {
+  maxCapacity: string;
+  vesselName: string;
+  beaconLocation: string;
+  portLetterNumber: string;
+  homeport: string;
+  areaOfOperation: string;
+  imoNumber: string;
+  ssrNumber: string;
+  rssNumber: string;
+  officialNumber: string;
+  rigPlatformLocation: string;
+}
 
 const AboutTheVessel: FunctionComponent<FormPageProps> = ({
   form,
@@ -258,9 +239,118 @@ const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
   />
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/vessel-communications",
-  definePageForm
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
+  withContainer(
+    withSession(async (context: BeaconsGetServerSidePropsContext) => {
+      const nextPage = PageURLs.vesselCommunications;
+
+      return await new BeaconsPageRouter([
+        new IfNoUseIndexRule(context),
+        new IfUserViewedFormRule<AboutTheVesselForm>(
+          context,
+          validationRules,
+          mapper(context)
+        ),
+        new IfUserSubmittedInvalidFormRule<AboutTheVesselForm>(
+          context,
+          validationRules,
+          mapper(context)
+        ),
+        new IfUserSubmittedValidFormRule<AboutTheVesselForm>(
+          context,
+          validationRules,
+          mapper(context),
+          nextPage
+        ),
+      ]).execute();
+    })
+  )
 );
+
+const mapper = (
+  context: BeaconsGetServerSidePropsContext
+): RegistrationFormMapper<AboutTheVesselForm> =>
+  (() => {
+    const beaconUseMapper: BeaconUseFormMapper<AboutTheVesselForm> = {
+      toDraftBeaconUse: (form) => ({
+        maxCapacity: form.maxCapacity,
+        vesselName: form.vesselName,
+        beaconLocation: form.beaconLocation,
+        portLetterNumber: form.portLetterNumber,
+        homeport: form.homeport,
+        areaOfOperation: form.areaOfOperation,
+        imoNumber: form.imoNumber,
+        ssrNumber: form.ssrNumber,
+        rssNumber: form.rssNumber,
+        officialNumber: form.officialNumber,
+        rigPlatformLocation: form.rigPlatformLocation,
+      }),
+      toForm: (draftRegistration) => ({
+        maxCapacity: draftRegistration.maxCapacity,
+        vesselName: draftRegistration.vesselName,
+        beaconLocation: draftRegistration.beaconLocation,
+        portLetterNumber: draftRegistration.portLetterNumber,
+        homeport: draftRegistration.homeport,
+        areaOfOperation: draftRegistration.areaOfOperation,
+        imoNumber: draftRegistration.imoNumber,
+        ssrNumber: draftRegistration.ssrNumber,
+        rssNumber: draftRegistration.rssNumber,
+        officialNumber: draftRegistration.officialNumber,
+        rigPlatformLocation: draftRegistration.rigPlatformLocation,
+      }),
+    };
+
+    const useIndex = parseInt(context.query.useIndex as string);
+
+    return makeRegistrationMapper<AboutTheVesselForm>(
+      useIndex,
+      beaconUseMapper
+    );
+  })();
+
+const validationRules = ({
+  maxCapacity,
+  vesselName,
+  beaconLocation,
+  portLetterNumber,
+  homeport,
+  areaOfOperation,
+  imoNumber,
+  ssrNumber,
+  rssNumber,
+  officialNumber,
+  rigPlatformLocation,
+}: FormSubmission): FormManager => {
+  return new FormManager({
+    maxCapacity: new FieldManager(maxCapacity, [
+      Validators.required(
+        "Maximum number of persons onboard is a required field"
+      ),
+      Validators.wholeNumber(
+        "Maximum number of persons onboard must be a whole number"
+      ),
+    ]),
+    vesselName: new FieldManager(vesselName),
+    beaconLocation: new FieldManager(beaconLocation, [
+      Validators.maxLength(
+        "Where the beacon is kept has too many characters",
+        100
+      ),
+    ]),
+    portLetterNumber: new FieldManager(portLetterNumber),
+    homeport: new FieldManager(homeport),
+    areaOfOperation: new FieldManager(areaOfOperation, [
+      Validators.maxLength(
+        "Typical area of operation has too many characters",
+        250
+      ),
+    ]),
+    imoNumber: new FieldManager(imoNumber),
+    ssrNumber: new FieldManager(ssrNumber),
+    rssNumber: new FieldManager(rssNumber),
+    officialNumber: new FieldManager(officialNumber),
+    rigPlatformLocation: new FieldManager(rigPlatformLocation),
+  });
+};
 
 export default AboutTheVessel;
