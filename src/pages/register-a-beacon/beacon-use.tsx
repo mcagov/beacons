@@ -7,22 +7,24 @@ import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import {
-  DestinationIfValidCallback,
-  FormPageProps,
-  handlePageRequest,
-} from "../../lib/handlePageRequest";
+import { FormPageProps } from "../../lib/handlePageRequest";
+import { withCookiePolicy } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
 import { Environment } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
 import { ordinal } from "../../lib/writingStyle";
+import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { UserSubmittedInvalidDraftRegistrationFormRule } from "../../router/rules/UserSubmittedInvalidDraftRegistrationFormRule";
+import { UserSubmittedValidDraftRegistrationFormWithConditionalNextPagesRule } from "../../router/rules/UserSubmittedValidDraftRegistrationFormWithConditionalNextPagesRule";
+import { UserViewedBeaconUseFormWithoutUseIndexRule } from "../../router/rules/UserViewedBeaconUseFormWithoutUseIndexRule";
+import { UserViewedDraftRegistrationFormRule } from "../../router/rules/UserViewedDraftRegistrationFormRule";
 
-const getPageForm = ({ environment }) => {
-  return new FormManager({
-    environment: new FieldManager(environment, [
-      Validators.required("Where the beacon will be used is required"),
-    ]),
-  });
-};
+interface BeaconUseForm {
+  environment: Environment;
+}
 
 export const BeaconUse: FunctionComponent<FormPageProps> = ({
   form,
@@ -99,24 +101,75 @@ export const BeaconUse: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = async (
-  context
-) => {
-  switch (context.formData.environment) {
-    case Environment.MARITIME:
-    case Environment.AVIATION:
-      return PageURLs.purpose;
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
+  withContainer(
+    withSession(async (context: BeaconsGetServerSidePropsContext) => {
+      const useIndex = parseInt(context.query.useIndex as string) || 0;
 
-    default:
-      return PageURLs.activity;
-  }
+      const props = { useIndex };
+
+      return await new BeaconsPageRouter([
+        new UserViewedBeaconUseFormWithoutUseIndexRule(context),
+        new UserViewedDraftRegistrationFormRule<BeaconUseForm>(
+          context,
+          validationRules,
+          mapper(useIndex),
+          props
+        ),
+        new UserSubmittedInvalidDraftRegistrationFormRule(
+          context,
+          validationRules,
+          mapper(useIndex)
+        ),
+        new UserSubmittedValidDraftRegistrationFormWithConditionalNextPagesRule(
+          context,
+          validationRules,
+          mapper(useIndex),
+          deriveNextPage
+        ),
+      ]).execute();
+    })
+  )
+);
+
+const deriveNextPage = async (
+  context: BeaconsGetServerSidePropsContext
+): Promise<PageURLs> => {
+  const { environment } =
+    await context.container.parseFormDataAs<BeaconUseForm>(context.req);
+
+  return environment === Environment.LAND
+    ? PageURLs.activity
+    : PageURLs.purpose;
 };
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "",
-  getPageForm,
-  (f) => f,
-  onSuccessfulFormCallback
-);
+const mapper = (useIndex: number): RegistrationFormMapper<BeaconUseForm> => ({
+  toDraftRegistration: (form) => {
+    return {
+      uses: new Array(useIndex > 1 ? useIndex - 1 : 1).fill({}).fill(
+        {
+          environment: form.environment,
+        },
+        useIndex,
+        useIndex + 1
+      ),
+    };
+  },
+  toForm: (draftRegistration) => {
+    return {
+      environment: draftRegistration?.uses
+        ? (draftRegistration?.uses[useIndex]?.environment as Environment)
+        : null,
+    };
+  },
+});
+
+const validationRules = ({ environment }) => {
+  return new FormManager({
+    environment: new FieldManager(environment, [
+      Validators.required("Where the beacon will be used is required"),
+    ]),
+  });
+};
 
 export default BeaconUse;

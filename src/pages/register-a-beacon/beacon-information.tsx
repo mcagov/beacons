@@ -25,9 +25,9 @@ import { PageURLs } from "../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { UserRequestedToViewFormRule } from "../../router/rules/UserRequestedToViewFormRule";
-import { UserSubmittedInvalidFormRule } from "../../router/rules/UserSubmittedInvalidFormRule";
-import { UserSubmittedValidFormRule } from "../../router/rules/UserSubmittedValidFormRule";
+import { UserSubmittedInvalidDraftRegistrationFormRule } from "../../router/rules/UserSubmittedInvalidDraftRegistrationFormRule";
+import { UserSubmittedValidDraftRegistrationFormRule } from "../../router/rules/UserSubmittedValidDraftRegistrationFormRule";
+import { UserViewedDraftRegistrationFormRule } from "../../router/rules/UserViewedDraftRegistrationFormRule";
 
 interface BeaconInformationForm {
   manufacturerSerialNumber: string;
@@ -195,9 +195,17 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPageUrl = PageURLs.environment;
 
       return await new BeaconsPageRouter([
-        new UserRequestedToViewFormRule(context, validationRules, mapper),
-        new UserSubmittedInvalidFormRule(context, validationRules, mapper),
-        new UserSubmittedValidFormRule(
+        new UserViewedDraftRegistrationFormRule(
+          context,
+          validationRules,
+          mapper
+        ),
+        new UserSubmittedInvalidDraftRegistrationFormRule(
+          context,
+          validationRules,
+          mapper
+        ),
+        new UserSubmittedValidDraftRegistrationFormRule(
           context,
           validationRules,
           mapper,

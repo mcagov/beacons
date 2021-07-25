@@ -9,16 +9,16 @@ import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper"
 import { Rule } from "./Rule";
 
 export class UserSubmittedValidDraftRegistrationFormRule<T> implements Rule {
-  private readonly context: BeaconsGetServerSidePropsContext;
-  private readonly validationRules: FormManagerFactory;
-  private readonly mapper: RegistrationFormMapper<T>;
+  protected readonly context: BeaconsGetServerSidePropsContext;
+  protected readonly validationRules: FormManagerFactory;
+  protected readonly mapper: RegistrationFormMapper<T>;
   private readonly nextPage: PageURLs;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
     mapper: RegistrationFormMapper<T>,
-    nextPage: PageURLs
+    nextPage?: PageURLs
   ) {
     this.context = context;
     this.validationRules = validationRules;

@@ -17,7 +17,7 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
     iCanClickTheBackLinkToGoToPreviousPage(PageURLs.beaconInformation);
   });
 
-  it("should execute to the purpose page if maritime selected with the correct heading text", () => {
+  it.only("should execute to the purpose page if maritime selected with the correct heading text", () => {
     givenIHaveSelected("#maritime");
     whenIClickContinue();
 

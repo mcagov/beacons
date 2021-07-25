@@ -10,15 +10,18 @@ export class UserViewedDraftRegistrationFormRule<T> implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
   private readonly mapper: RegistrationFormMapper<T>;
+  private readonly props: any;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
-    mapper: RegistrationFormMapper<T>
+    mapper: RegistrationFormMapper<T>,
+    props?: any
   ) {
     this.context = context;
     this.validationRules = validationRules;
     this.mapper = mapper;
+    this.props = props;
   }
 
   public async condition(): Promise<boolean> {
@@ -34,6 +37,7 @@ export class UserViewedDraftRegistrationFormRule<T> implements Rule {
       this.mapper,
       {
         showCookieBanner: this.context.showCookieBanner,
+        ...this.props,
       }
     );
   }

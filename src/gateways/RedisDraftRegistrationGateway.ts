@@ -39,7 +39,7 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
 
     const registrationWithNewUse = {
       ...registration,
-      uses: [...registration.uses, initBeaconUse()],
+      uses: [...(registration?.uses || []), initBeaconUse()],
     };
 
     await this.update(submissionId, registrationWithNewUse);
