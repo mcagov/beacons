@@ -115,20 +115,12 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPageUrl = PageURLs.beaconInformation;
 
       return await new BeaconsPageRouter([
-        new UserRequestedToViewFormRule(
-          context,
-          formValidationRules,
-          formToDraftRegistrationMapper
-        ),
-        new UserSubmittedInvalidFormRule(
-          context,
-          formValidationRules,
-          formToDraftRegistrationMapper
-        ),
+        new UserRequestedToViewFormRule(context, validationRules, mapper),
+        new UserSubmittedInvalidFormRule(context, validationRules, mapper),
         new UserSubmittedValidFormRule(
           context,
-          formValidationRules,
-          formToDraftRegistrationMapper,
+          validationRules,
+          mapper,
           nextPageUrl
         ),
       ]).execute();
@@ -136,21 +128,20 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   )
 );
 
-const formToDraftRegistrationMapper: RegistrationFormMapper<CheckBeaconDetailsForm> =
-  {
-    toDraftRegistration: (form) => ({
-      manufacturer: form.manufacturer,
-      model: form.model,
-      hexId: toUpperCase(form.hexId),
-    }),
-    toForm: (draftRegistration) => ({
-      manufacturer: draftRegistration?.manufacturer || "",
-      model: draftRegistration?.model || "",
-      hexId: draftRegistration?.hexId || "",
-    }),
-  };
+export const mapper: RegistrationFormMapper<CheckBeaconDetailsForm> = {
+  toDraftRegistration: (form) => ({
+    manufacturer: form.manufacturer,
+    model: form.model,
+    hexId: toUpperCase(form.hexId),
+  }),
+  toForm: (draftRegistration) => ({
+    manufacturer: draftRegistration?.manufacturer || "",
+    model: draftRegistration?.model || "",
+    hexId: draftRegistration?.hexId || "",
+  }),
+};
 
-const formValidationRules = ({
+export const validationRules = ({
   manufacturer,
   model,
   hexId,
