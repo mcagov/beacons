@@ -1,3 +1,4 @@
 import { IRegistration } from "../lib/registration/types";
+import { RecursivePartial } from "../utils/RecursivePartial";
 
-export type DraftRegistration = Partial<IRegistration>;
+export type DraftRegistration = RecursivePartial<IRegistration>;

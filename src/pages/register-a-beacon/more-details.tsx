@@ -4,37 +4,40 @@ import { BeaconsForm } from "../../components/BeaconsForm";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
+import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { withCookiePolicy } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
 import { Environment } from "../../lib/registration/types";
+import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
+import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { makeRegistrationMapper } from "../../presenters/UseMapper";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
+import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
+import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
+import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
 
-interface MoreDetailsTextAreaProps {
-  id: string;
-  value?: string;
-  errorMessages: string[];
+interface MoreDetailsForm {
+  moreDetails: string;
 }
 
-const definePageForm = ({ moreDetails }: FormSubmission): FormManager => {
-  return new FormManager({
-    moreDetails: new FieldManager(moreDetails, [
-      Validators.required("More details is a required field"),
-      Validators.maxLength(
-        "More details must be less than 250 characters",
-        250
-      ),
-    ]),
-  });
-};
+interface MoreDetailsFormProps {
+  form: FormJSON;
+  showCookieBanner: boolean;
+  environment: Environment;
+}
 
-const MoreDetails: FunctionComponent<FormPageProps> = ({
+const MoreDetails: FunctionComponent<MoreDetailsFormProps> = ({
   form,
   showCookieBanner,
-  flattenedRegistration,
-}: FormPageProps): JSX.Element => {
-  const environment = flattenedRegistration.environment;
+  environment,
+}: MoreDetailsFormProps): JSX.Element => {
   const previousPageUrlMap = {
     [Environment.MARITIME]: PageURLs.vesselCommunications,
     [Environment.AVIATION]: PageURLs.aircraftCommunications,
@@ -80,6 +83,12 @@ const MoreDetails: FunctionComponent<FormPageProps> = ({
   );
 };
 
+interface MoreDetailsTextAreaProps {
+  id: string;
+  value?: string;
+  errorMessages: string[];
+}
+
 const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
   id,
   value = "",
@@ -94,9 +103,79 @@ const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
   />
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/additional-beacon-use",
-  definePageForm
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
+  withContainer(
+    withSession(async (context: BeaconsGetServerSidePropsContext) => {
+      const nextPage = PageURLs.additionalUse;
+
+      return await new BeaconsPageRouter([
+        new IfNoUseIndexRule(context),
+        new IfUserViewedFormRule<MoreDetailsForm>(
+          context,
+          validationRules,
+          mapper(context),
+          props(context)
+        ),
+        new IfUserSubmittedInvalidFormRule<MoreDetailsForm>(
+          context,
+          validationRules,
+          mapper(context),
+          props(context)
+        ),
+        new IfUserSubmittedValidFormRule<MoreDetailsForm>(
+          context,
+          validationRules,
+          mapper(context),
+          nextPage
+        ),
+      ]).execute();
+    })
+  )
 );
+
+const props = (
+  context: BeaconsGetServerSidePropsContext
+): Promise<Partial<MoreDetailsFormProps>> =>
+  (async () => {
+    const draftRegistration = await context.container.getDraftRegistration(
+      context.req.cookies[formSubmissionCookieId]
+    );
+
+    const useIndex = parseInt(context.query.useIndex as string);
+
+    return {
+      environment: draftRegistration.uses[useIndex].environment as Environment,
+    };
+  })();
+
+const mapper = (
+  context: BeaconsGetServerSidePropsContext
+): RegistrationFormMapper<MoreDetailsForm> =>
+  (() => {
+    const beaconUseMapper: BeaconUseFormMapper<MoreDetailsForm> = {
+      toDraftBeaconUse: (form) => ({
+        moreDetails: form.moreDetails,
+      }),
+      toForm: (draftBeaconUse) => ({
+        moreDetails: draftBeaconUse.moreDetails,
+      }),
+    };
+
+    const useIndex = parseInt(context.query.useIndex as string);
+
+    return makeRegistrationMapper<MoreDetailsForm>(useIndex, beaconUseMapper);
+  })();
+
+const validationRules = ({ moreDetails }: FormSubmission): FormManager => {
+  return new FormManager({
+    moreDetails: new FieldManager(moreDetails, [
+      Validators.required("More details is a required field"),
+      Validators.maxLength(
+        "More details must be less than 250 characters",
+        250
+      ),
+    ]),
+  });
+};
 
 export default MoreDetails;

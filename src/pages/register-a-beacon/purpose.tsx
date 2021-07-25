@@ -3,7 +3,6 @@ import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
-import { DraftRegistration } from "../../entities/DraftRegistration";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -26,7 +25,6 @@ interface PurposeForm {
 }
 
 interface PurposeFormProps {
-  draftRegistration: DraftRegistration;
   form: FormJSON;
   showCookieBanner: boolean;
   environment: Environment;
@@ -34,8 +32,8 @@ interface PurposeFormProps {
 
 const PurposePage: FunctionComponent<PurposeFormProps> = ({
   form,
-  environment,
   showCookieBanner,
+  environment,
 }: PurposeFormProps): JSX.Element => {
   const pageHeading = `Is your ${environment.toLowerCase()} use of this beacon mainly for pleasure or commercial reasons?`;
   const beaconUsePurposeFieldName = "purpose";
