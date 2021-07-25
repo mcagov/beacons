@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
+import { Environment } from "../../../src/lib/registration/types";
 import MoreDetails from "../../../src/pages/register-a-beacon/more-details";
 
 describe("MoreDetails page", () => {
@@ -19,7 +20,8 @@ describe("MoreDetails page", () => {
     render(
       <MoreDetails
         form={moreDetailsFormTestData}
-        flattenedRegistration={{ environment: "MARITIME" }}
+        environment={Environment.MARITIME}
+        showCookieBanner={true}
       />
     );
 

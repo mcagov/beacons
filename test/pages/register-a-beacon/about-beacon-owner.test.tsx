@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
-import { initBeacon } from "../../../src/lib/registration/registrationInitialisation";
+import { PageURLs } from "../../../src/lib/urls";
 import AboutBeaconOwner from "../../../src/pages/register-a-beacon/about-beacon-owner";
 
 describe("AboutBeaconOwner", () => {
@@ -32,7 +32,8 @@ describe("AboutBeaconOwner", () => {
     const { container } = render(
       <AboutBeaconOwner
         form={emptyAboutBeaconOwnerForm}
-        registration={initBeacon()}
+        previousPageUrl={PageURLs.environment}
+        showCookieBanner={true}
       />
     );
     const ownPath = "";

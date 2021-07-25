@@ -33,20 +33,6 @@ describe("Activity", () => {
     },
   };
 
-  it("should render the page", () => {
-    render(
-      <ActivityPage
-        form={activityFormTestData}
-        flattenedRegistration={{
-          environment: Environment.MARITIME,
-          purpose: Purpose.PLEASURE,
-        }}
-      />
-    );
-
-    expect(screen.getByLabelText(/rowing/i)).toBeChecked();
-  });
-
   describe("the page heading", () => {
     function assertPageHeadingContains(
       expected: string,
@@ -56,10 +42,9 @@ describe("Activity", () => {
       render(
         <ActivityPage
           form={activityFormTestData}
-          flattenedRegistration={{
-            environment,
-            purpose,
-          }}
+          showCookieBanner={false}
+          environment={environment}
+          purpose={purpose}
         />
       );
 

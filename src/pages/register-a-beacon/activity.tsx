@@ -44,16 +44,16 @@ interface ActivityFormProps extends FormPageProps {
   purpose;
 }
 
-const ActivityPage: FunctionComponent<FormPageProps> = ({
+const ActivityPage: FunctionComponent<ActivityFormProps> = ({
   form,
   showCookieBanner,
   environment,
   purpose,
 }: ActivityFormProps): JSX.Element => {
   const pageHeading = `Please select the ${
-    environment !== Environment.LAND
-      ? purpose.toLowerCase()
-      : environment.toLowerCase()
+    environment === Environment.LAND
+      ? environment.toLowerCase()
+      : purpose.toLowerCase() + " " + environment.toLowerCase()
   } activity that best describes how the beacon will be used`;
 
   const pageText = (

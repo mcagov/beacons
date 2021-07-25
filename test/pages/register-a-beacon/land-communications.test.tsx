@@ -1,16 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
-import { handlePageRequest } from "../../../src/lib/handlePageRequest";
-import LandCommunications, {
-  getServerSideProps,
-} from "../../../src/pages/register-a-beacon/land-communications";
-
-jest.mock("../../../src/lib/handlePageRequest", () => ({
-  __esModule: true,
-  handlePageRequest: jest.fn().mockImplementation(() => jest.fn()),
-}));
+import LandCommunications from "../../../src/pages/register-a-beacon/land-communications";
 
 describe("LandOtherCommunications", () => {
   const emptyLandOtherCommunicationsForm: FormJSON = {
@@ -73,16 +64,6 @@ describe("LandOtherCommunications", () => {
     const form = container.querySelectorAll("form")[1];
 
     expect(form).toHaveAttribute("action", "");
-  });
-
-  it("should redirect to more-details page on valid form submission", async () => {
-    const context = {};
-    await getServerSideProps(context as GetServerSidePropsContext);
-
-    expect(handlePageRequest).toHaveBeenCalledWith(
-      "/register-a-beacon/more-details",
-      expect.anything()
-    );
   });
 
   it("should have an autocomplete attribute on the mobile telephone number field", () => {

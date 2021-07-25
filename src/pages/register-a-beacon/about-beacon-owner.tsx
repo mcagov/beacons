@@ -7,7 +7,6 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps } from "../../lib/handlePageRequest";
 import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
@@ -33,7 +32,7 @@ interface AboutBeaconOwnerFormProps {
   previousPageUrl: string;
 }
 
-const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
+const AboutBeaconOwner: FunctionComponent<AboutBeaconOwnerFormProps> = ({
   form,
   showCookieBanner,
   previousPageUrl,
