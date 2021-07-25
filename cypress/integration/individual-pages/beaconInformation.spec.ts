@@ -38,7 +38,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     iCanSeeAPageHeadingThatContains("Beacon information");
   });
 
-  it("should route to the previous page when I click the back button", () => {
+  it("should execute to the previous page when I click the back button", () => {
     iCanClickTheBackLinkToGoToPreviousPage(previousPageUrl);
   });
 

@@ -13,11 +13,11 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
     givenIHaveACookieSetAndIVisit(PageURLs.environment);
   });
 
-  it("should route to the previous page", () => {
+  it("should execute to the previous page", () => {
     iCanClickTheBackLinkToGoToPreviousPage(PageURLs.beaconInformation);
   });
 
-  it("should route to the purpose page if maritime selected with the correct heading text", () => {
+  it("should execute to the purpose page if maritime selected with the correct heading text", () => {
     givenIHaveSelected("#maritime");
     whenIClickContinue();
 
@@ -25,7 +25,7 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
     thenTheUrlShouldContain(PageURLs.purpose);
   });
 
-  it("should route to the purpose page if aviation selected", () => {
+  it("should execute to the purpose page if aviation selected", () => {
     givenIHaveSelected("#aviation");
     whenIClickContinue();
 
@@ -33,7 +33,7 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
     thenTheUrlShouldContain(PageURLs.purpose);
   });
 
-  it("should route to the activity page if land is selected", () => {
+  it("should execute to the activity page if land is selected", () => {
     givenIHaveSelected("#land");
     whenIClickContinue();
 

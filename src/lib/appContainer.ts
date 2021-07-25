@@ -1,4 +1,5 @@
 import { IncomingMessage } from "http";
+import { DraftRegistration } from "../entities/DraftRegistration";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
 import {
   AccountHolderApiGateway,
@@ -67,7 +68,10 @@ export interface IAppContainer {
   submitRegistration: SubmitRegistrationFn;
   sendConfirmationEmail: SendConfirmationEmailFn;
   getDraftRegistration;
-  saveDraftRegistration: typeof saveDraftRegistration;
+  saveDraftRegistration: (
+    id: string,
+    updates: DraftRegistration
+  ) => Promise<void>;
   clearCachedRegistration: ClearCachedRegistrationFn;
   deleteCachedUse: DeleteCachedUseFn;
   getAccessToken: GetAccessTokenFn;

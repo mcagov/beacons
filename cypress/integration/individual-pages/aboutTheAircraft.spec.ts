@@ -22,7 +22,7 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
     givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
-  it("should route to the next page if there are no errors with the form submission", () => {
+  it("should execute to the next page if there are no errors with the form submission", () => {
     whenIType("42", aircraftMaxCapacitySelector);
     whenIClickContinue();
 

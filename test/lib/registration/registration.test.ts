@@ -25,13 +25,13 @@ describe("Registration", () => {
   });
 
   describe("updating beacon information", () => {
-    it("should handle null form data", () => {
+    it("should execute null form data", () => {
       registration.update(null);
 
       expect(registration.registration).toStrictEqual(initBeacon());
     });
 
-    it("should handle undefined form data", () => {
+    it("should execute undefined form data", () => {
       registration.update(undefined);
 
       expect(registration.registration).toStrictEqual(initBeacon());

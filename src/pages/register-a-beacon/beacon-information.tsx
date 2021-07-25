@@ -23,8 +23,8 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
+import { updateOrViewDraftRegistration } from "../../pageHandler/updateOrViewDraftRegistration";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
-import { updateOrViewDraftRegistration } from "../../routers/updateOrViewDraftRegistration";
 
 interface BeaconInformationForm {
   manufacturerSerialNumber: string;

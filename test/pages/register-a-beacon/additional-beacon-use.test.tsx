@@ -70,7 +70,7 @@ describe("AdditionalBeaconUse page", () => {
     expect(within(content).getByText(new RegExp(use2.purpose, "i")));
   });
 
-  it("given a currentUseIndex, sends the user back down the editing route for that use", () => {
+  it("given a currentUseIndex, sends the user back down the editing execute for that use", () => {
     const currentUseIndex = 1;
     render(
       <AdditionalBeaconUse
