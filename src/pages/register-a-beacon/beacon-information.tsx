@@ -55,7 +55,7 @@ const BeaconInformationPage: FunctionComponent<FormPageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl="/register-a-beacon/check-beacon-details"
+      previousPageUrl={PageURLs.checkBeaconDetails}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}

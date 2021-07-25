@@ -25,7 +25,11 @@ export class UserSubmittedInvalidFormRule<T> implements Rule {
     return (
       this.context.req.method === "POST" &&
       !isValid(
-        await this.context.container.parseFormDataAs(this.context.req),
+        this.mapper.toForm(
+          this.mapper.toDraftRegistration(
+            await this.context.container.parseFormDataAs(this.context.req)
+          )
+        ),
         this.validationRules
       )
     );

@@ -1,6 +1,7 @@
 import { GetServerSidePropsResult } from "next";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { formSubmissionCookieId } from "../../lib/types";
 import { presentDraftRegistration } from "../../presenters/presentDraftRegistration";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { Rule } from "./Rule";
@@ -26,7 +27,9 @@ export class UserRequestedToViewFormRule<T> implements Rule {
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
     return presentDraftRegistration<T>(
-      await this.context.container.parseFormDataAs(this.context.req),
+      await this.context.container.getDraftRegistration(
+        this.context.req.cookies[formSubmissionCookieId]
+      ),
       this.validationRules,
       this.mapper,
       {

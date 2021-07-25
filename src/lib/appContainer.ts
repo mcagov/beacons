@@ -67,7 +67,7 @@ export interface IAppContainer {
   authenticateUser: AuthenticateUserFn;
   submitRegistration: SubmitRegistrationFn;
   sendConfirmationEmail: SendConfirmationEmailFn;
-  getDraftRegistration;
+  getDraftRegistration: (id: string) => Promise<DraftRegistration>;
   saveDraftRegistration: (
     id: string,
     updates: DraftRegistration

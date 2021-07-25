@@ -30,7 +30,11 @@ export class UserSubmittedValidFormRule<T> implements Rule {
     return (
       this.context.req.method === "POST" &&
       isValid<T>(
-        await this.context.container.parseFormDataAs(this.context.req),
+        this.mapper.toForm(
+          this.mapper.toDraftRegistration(
+            await this.context.container.parseFormDataAs(this.context.req)
+          )
+        ),
         this.validationRules
       )
     );
