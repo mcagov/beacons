@@ -12,13 +12,13 @@ export class UserSubmittedValidDraftRegistrationFormRule<T> implements Rule {
   protected readonly context: BeaconsGetServerSidePropsContext;
   protected readonly validationRules: FormManagerFactory;
   protected readonly mapper: RegistrationFormMapper<T>;
-  private readonly nextPage: PageURLs;
+  private readonly nextPage: Promise<PageURLs>;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
     mapper: RegistrationFormMapper<T>,
-    nextPage: PageURLs
+    nextPage: Promise<PageURLs>
   ) {
     this.context = context;
     this.validationRules = validationRules;
@@ -48,6 +48,6 @@ export class UserSubmittedValidDraftRegistrationFormRule<T> implements Rule {
       )
     );
 
-    return redirectUserTo(this.nextPage);
+    return redirectUserTo(await this.nextPage);
   }
 }

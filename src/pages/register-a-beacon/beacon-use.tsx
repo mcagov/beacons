@@ -17,7 +17,7 @@ import { PageURLs } from "../../lib/urls";
 import { ordinal } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { UserSubmittedInvalidDraftRegistrationFormRule } from "../../router/rules/UserSubmittedInvalidDraftRegistrationFormRule";
-import { UserSubmittedValidDraftRegistrationFormWithConditionalNextPagesRule } from "../../router/rules/UserSubmittedValidDraftRegistrationFormWithConditionalNextPagesRule";
+import { UserSubmittedValidDraftRegistrationFormRule } from "../../router/rules/UserSubmittedValidDraftRegistrationFormRule";
 import { UserViewedBeaconUseFormWithoutUseIndexRule } from "../../router/rules/UserViewedBeaconUseFormWithoutUseIndexRule";
 import { UserViewedDraftRegistrationFormRule } from "../../router/rules/UserViewedDraftRegistrationFormRule";
 
@@ -117,11 +117,11 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
           mapper(context),
           props(context)
         ),
-        new UserSubmittedValidDraftRegistrationFormWithConditionalNextPagesRule<BeaconUseForm>(
+        new UserSubmittedValidDraftRegistrationFormRule<BeaconUseForm>(
           context,
           validationRules,
           mapper(context),
-          nextPage
+          nextPage(context)
         ),
       ]).execute();
     })
