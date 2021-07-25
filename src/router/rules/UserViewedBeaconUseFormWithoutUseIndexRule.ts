@@ -6,7 +6,7 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { queryParams } from "../../lib/urls";
 import { Rule } from "./Rule";
 
-export class UserViewedBeaconUseFormWithoutUseIndexRule<T> implements Rule {
+export class UserViewedBeaconUseFormWithoutUseIndexRule implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
 
   constructor(context: BeaconsGetServerSidePropsContext) {
@@ -14,7 +14,7 @@ export class UserViewedBeaconUseFormWithoutUseIndexRule<T> implements Rule {
   }
 
   public async condition(): Promise<boolean> {
-    return this.context.req.method === "GET" && !this.context.query.useIndex;
+    return this.context.req.method === "GET" && !this.context?.query?.useIndex;
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
