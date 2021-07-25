@@ -7,7 +7,7 @@ export class IfUserViewedNonFormPage<T> implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly props: T;
 
-  constructor(context: BeaconsGetServerSidePropsContext, props: T) {
+  constructor(context: BeaconsGetServerSidePropsContext, props?: T) {
     this.context = context;
     this.props = props;
   }

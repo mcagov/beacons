@@ -20,9 +20,9 @@ import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper"
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
-import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
-import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
+import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
+import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
+import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
 
 interface AircraftCommunicationsForm {
   vhfRadio: string;
@@ -145,17 +145,17 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
       return await new BeaconsPageRouter([
         new IfNoUseIndexRule(context),
-        new IfUserViewedFormRule<AircraftCommunicationsForm>(
+        new IfUserViewedRegistrationFormRule<AircraftCommunicationsForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedInvalidFormRule<AircraftCommunicationsForm>(
+        new IfUserSubmittedInvalidRegistrationFormRule<AircraftCommunicationsForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedValidFormRule<AircraftCommunicationsForm>(
+        new IfUserSubmittedValidRegistrationFormRule<AircraftCommunicationsForm>(
           context,
           validationRules,
           mapper(context),

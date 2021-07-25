@@ -23,9 +23,9 @@ import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper"
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
-import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
-import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
+import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
+import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
+import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
 
 interface ActivityForm {
   environment;
@@ -561,19 +561,19 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
       return await new BeaconsPageRouter([
         new IfNoUseIndexRule(context),
-        new IfUserViewedFormRule<ActivityForm>(
+        new IfUserViewedRegistrationFormRule<ActivityForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedInvalidFormRule<ActivityForm>(
+        new IfUserSubmittedInvalidRegistrationFormRule<ActivityForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedValidFormRule<ActivityForm>(
+        new IfUserSubmittedValidRegistrationFormRule<ActivityForm>(
           context,
           validationRules,
           mapper(context),

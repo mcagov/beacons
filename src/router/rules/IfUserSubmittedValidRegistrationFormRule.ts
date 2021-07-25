@@ -8,7 +8,7 @@ import { PageURLs } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class IfUserSubmittedValidFormRule<T> implements Rule {
+export class IfUserSubmittedValidRegistrationFormRule<T> implements Rule {
   protected readonly context: BeaconsGetServerSidePropsContext;
   protected readonly validationRules: FormManagerFactory;
   protected readonly mapper: RegistrationFormMapper<T>;

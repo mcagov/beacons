@@ -16,9 +16,9 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
-import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
-import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
+import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
+import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
+import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
 
 interface PurposeForm {
   purpose: Purpose;
@@ -76,19 +76,19 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
       return await new BeaconsPageRouter([
         new IfNoUseIndexRule(context),
-        new IfUserViewedFormRule<PurposeForm>(
+        new IfUserViewedRegistrationFormRule<PurposeForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedInvalidFormRule<PurposeForm>(
+        new IfUserSubmittedInvalidRegistrationFormRule<PurposeForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedValidFormRule<PurposeForm>(
+        new IfUserSubmittedValidRegistrationFormRule<PurposeForm>(
           context,
           validationRules,
           mapper(context),

@@ -10,17 +10,17 @@ import { Validators } from "../../lib/form/validators";
 import {
   DestinationIfValidCallback,
   FormPageProps,
-  handlePageRequest,
 } from "../../lib/handlePageRequest";
+import { withCookiePolicy } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
-
-const getPageForm = ({ signUpOrSignIn }) => {
-  return new FormManager({
-    signUpOrSignIn: new FieldManager(signUpOrSignIn, [
-      Validators.required("Please select an option"),
-    ]),
-  });
-};
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
+import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
+import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
+import { mapper } from "../register-a-beacon/check-beacon-details";
 
 export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
   form,
@@ -79,11 +79,42 @@ const onSuccessfulFormCallback: DestinationIfValidCallback = async (
   }
 };
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "",
-  getPageForm,
-  (f) => f,
-  onSuccessfulFormCallback
+// export const getServerSideProps: GetServerSideProps = handlePageRequest(
+//   "",
+//   validationRules,
+//   (f) => f,
+//   onSuccessfulFormCallback
+// );
+
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
+  withContainer(
+    withSession(async (context: BeaconsGetServerSidePropsContext) => {
+      const nextPageUrl = PageURLs.beaconInformation;
+
+      return await new BeaconsPageRouter([
+        new IfUserViewedRegistrationFormRule(context, validationRules, mapper),
+        new IfUserSubmittedInvalidRegistrationFormRule(
+          context,
+          validationRules,
+          mapper
+        ),
+        new IfUserSubmittedValidRegistrationFormRule(
+          context,
+          validationRules,
+          mapper,
+          nextPageUrl
+        ),
+      ]).execute();
+    })
+  )
 );
+
+const validationRules = ({ signUpOrSignIn }) => {
+  return new FormManager({
+    signUpOrSignIn: new FieldManager(signUpOrSignIn, [
+      Validators.required("Please select an option"),
+    ]),
+  });
+};
 
 export default SignUpOrSignIn;

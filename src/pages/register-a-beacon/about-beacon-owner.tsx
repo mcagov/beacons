@@ -16,9 +16,9 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs, queryParams } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
-import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
-import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
+import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
+import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
+import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
 
 interface AboutBeaconOwnerForm {
   ownerFullName: string;
@@ -125,19 +125,19 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPageUrl = PageURLs.beaconOwnerAddress;
 
       return await new BeaconsPageRouter([
-        new IfUserViewedFormRule<AboutBeaconOwnerForm>(
+        new IfUserViewedRegistrationFormRule<AboutBeaconOwnerForm>(
           context,
           validationRules,
           mapper,
           props(context)
         ),
-        new IfUserSubmittedInvalidFormRule<AboutBeaconOwnerForm>(
+        new IfUserSubmittedInvalidRegistrationFormRule<AboutBeaconOwnerForm>(
           context,
           validationRules,
           mapper,
           props(context)
         ),
-        new IfUserSubmittedValidFormRule<AboutBeaconOwnerForm>(
+        new IfUserSubmittedValidRegistrationFormRule<AboutBeaconOwnerForm>(
           context,
           validationRules,
           mapper,

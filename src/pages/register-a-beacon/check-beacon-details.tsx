@@ -17,9 +17,9 @@ import { PageURLs } from "../../lib/urls";
 import { toUpperCase } from "../../lib/writingStyle";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
-import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
-import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
+import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
+import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
+import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
 
 interface CheckBeaconDetailsForm {
   manufacturer: string;
@@ -115,9 +115,13 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPageUrl = PageURLs.beaconInformation;
 
       return await new BeaconsPageRouter([
-        new IfUserViewedFormRule(context, validationRules, mapper),
-        new IfUserSubmittedInvalidFormRule(context, validationRules, mapper),
-        new IfUserSubmittedValidFormRule(
+        new IfUserViewedRegistrationFormRule(context, validationRules, mapper),
+        new IfUserSubmittedInvalidRegistrationFormRule(
+          context,
+          validationRules,
+          mapper
+        ),
+        new IfUserSubmittedValidRegistrationFormRule(
           context,
           validationRules,
           mapper,

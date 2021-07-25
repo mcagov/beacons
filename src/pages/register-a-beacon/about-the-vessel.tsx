@@ -21,9 +21,9 @@ import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper"
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
-import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
-import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
+import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
+import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
+import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
 
 interface AboutTheVesselForm {
   maxCapacity: string;
@@ -246,17 +246,17 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
       return await new BeaconsPageRouter([
         new IfNoUseIndexRule(context),
-        new IfUserViewedFormRule<AboutTheVesselForm>(
+        new IfUserViewedRegistrationFormRule<AboutTheVesselForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedInvalidFormRule<AboutTheVesselForm>(
+        new IfUserSubmittedInvalidRegistrationFormRule<AboutTheVesselForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedValidFormRule<AboutTheVesselForm>(
+        new IfUserSubmittedValidRegistrationFormRule<AboutTheVesselForm>(
           context,
           validationRules,
           mapper(context),

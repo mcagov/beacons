@@ -25,9 +25,9 @@ import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper"
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
-import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
-import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
+import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
+import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
+import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
 
 interface AboutTheAircraftForm {
   maxCapacity: string;
@@ -231,17 +231,17 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
       return await new BeaconsPageRouter([
         new IfNoUseIndexRule(context),
-        new IfUserViewedFormRule<AboutTheAircraftForm>(
+        new IfUserViewedRegistrationFormRule<AboutTheAircraftForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedInvalidFormRule<AboutTheAircraftForm>(
+        new IfUserSubmittedInvalidRegistrationFormRule<AboutTheAircraftForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedValidFormRule<AboutTheAircraftForm>(
+        new IfUserSubmittedValidRegistrationFormRule<AboutTheAircraftForm>(
           context,
           validationRules,
           mapper(context),

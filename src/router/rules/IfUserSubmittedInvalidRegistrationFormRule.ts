@@ -6,7 +6,7 @@ import { presentRegistrationFormErrors } from "../../presenters/presentRegistrat
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class IfUserSubmittedInvalidFormRule<T> implements Rule {
+export class IfUserSubmittedInvalidRegistrationFormRule<T> implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
   private readonly mapper: RegistrationFormMapper<T>;

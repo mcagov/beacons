@@ -17,9 +17,9 @@ import { PageURLs } from "../../lib/urls";
 import { ordinal } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
-import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
-import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
+import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
+import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
+import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
 
 interface BeaconUseForm {
   environment: Environment;
@@ -105,19 +105,19 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
       return await new BeaconsPageRouter([
         new IfNoUseIndexRule(context),
-        new IfUserViewedFormRule<BeaconUseForm>(
+        new IfUserViewedRegistrationFormRule<BeaconUseForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedInvalidFormRule<BeaconUseForm>(
+        new IfUserSubmittedInvalidRegistrationFormRule<BeaconUseForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedValidFormRule<BeaconUseForm>(
+        new IfUserSubmittedValidRegistrationFormRule<BeaconUseForm>(
           context,
           validationRules,
           mapper(context),

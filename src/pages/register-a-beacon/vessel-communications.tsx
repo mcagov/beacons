@@ -20,9 +20,9 @@ import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper"
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
-import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
-import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
+import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
+import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
+import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
 
 interface VesselCommunicationsForm {
   callSign: string;
@@ -219,17 +219,17 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
       return await new BeaconsPageRouter([
         new IfNoUseIndexRule(context),
-        new IfUserViewedFormRule<VesselCommunicationsForm>(
+        new IfUserViewedRegistrationFormRule<VesselCommunicationsForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedInvalidFormRule<VesselCommunicationsForm>(
+        new IfUserSubmittedInvalidRegistrationFormRule<VesselCommunicationsForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedValidFormRule<VesselCommunicationsForm>(
+        new IfUserSubmittedValidRegistrationFormRule<VesselCommunicationsForm>(
           context,
           validationRules,
           mapper(context),

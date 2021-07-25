@@ -1,6 +1,6 @@
 import { IfNoUseIndexRule } from "../../../src/router/rules/IfNoUseIndexRule";
 
-describe("IfUserViewedFormRule", () => {
+describe("IfUserViewedRegistrationFormRule", () => {
   it("triggers if the useIndex query param is missing", async () => {
     const context = {
       req: {
