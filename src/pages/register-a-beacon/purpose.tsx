@@ -3,31 +3,41 @@ import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
+import { DraftRegistration } from "../../entities/DraftRegistration";
 import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
+import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { withCookiePolicy } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
 import { Environment, Purpose } from "../../lib/registration/types";
+import { formSubmissionCookieId } from "../../lib/types";
+import { PageURLs } from "../../lib/urls";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { UserSubmittedInvalidDraftRegistrationFormRule } from "../../router/rules/UserSubmittedInvalidDraftRegistrationFormRule";
+import { UserSubmittedValidDraftRegistrationFormRule } from "../../router/rules/UserSubmittedValidDraftRegistrationFormRule";
+import { UserViewedBeaconUseFormWithoutUseIndexRule } from "../../router/rules/UserViewedBeaconUseFormWithoutUseIndexRule";
+import { UserViewedDraftRegistrationFormRule } from "../../router/rules/UserViewedDraftRegistrationFormRule";
 
-const definePageForm = ({ purpose }: FormSubmission): FormManager => {
-  return new FormManager({
-    purpose: new FieldManager(purpose, [
-      Validators.required("Beacon use purpose is a required field"),
-    ]),
-  });
-};
+interface PurposeForm {
+  purpose: Purpose;
+}
 
-const PurposePage: FunctionComponent<FormPageProps> = ({
+interface PurposeFormProps {
+  draftRegistration: DraftRegistration;
+  form: FormJSON;
+  showCookieBanner: boolean;
+  environment: Environment;
+}
+
+const PurposePage: FunctionComponent<PurposeFormProps> = ({
   form,
+  environment,
   showCookieBanner,
-  flattenedRegistration,
-}: FormPageProps): JSX.Element => {
-  const environmentChoice =
-    flattenedRegistration.environment === Environment.MARITIME
-      ? "maritime"
-      : "aviation";
-  const pageHeading = `Is your ${environmentChoice} use of this beacon mainly for pleasure or commercial reasons?`;
+}: PurposeFormProps): JSX.Element => {
+  const pageHeading = `Is your ${environment.toLowerCase()} use of this beacon mainly for pleasure or commercial reasons?`;
   const beaconUsePurposeFieldName = "purpose";
 
   return (
@@ -61,9 +71,83 @@ const PurposePage: FunctionComponent<FormPageProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/activity",
-  definePageForm
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
+  withContainer(
+    withSession(async (context: BeaconsGetServerSidePropsContext) => {
+      const nextPage = PageURLs.activity;
+
+      return await new BeaconsPageRouter([
+        new UserViewedBeaconUseFormWithoutUseIndexRule(context),
+        new UserViewedDraftRegistrationFormRule<PurposeForm>(
+          context,
+          validationRules,
+          mapper(context),
+          props(context)
+        ),
+        new UserSubmittedInvalidDraftRegistrationFormRule<PurposeForm>(
+          context,
+          validationRules,
+          mapper(context),
+          props(context)
+        ),
+        new UserSubmittedValidDraftRegistrationFormRule<PurposeForm>(
+          context,
+          validationRules,
+          mapper(context),
+          nextPage
+        ),
+      ]).execute();
+    })
+  )
 );
+
+const props = (
+  context: BeaconsGetServerSidePropsContext
+): Promise<Partial<PurposeFormProps>> =>
+  (async () => {
+    const draftRegistration = await context.container.getDraftRegistration(
+      context.req.cookies[formSubmissionCookieId]
+    );
+
+    const useIndex = parseInt(context.query.useIndex as string);
+
+    return {
+      environment: draftRegistration.uses[useIndex].environment as Environment,
+    };
+  })();
+
+const mapper = (context: BeaconsGetServerSidePropsContext) =>
+  (() => {
+    const useIndex = parseInt(context.query.useIndex as string);
+
+    return {
+      toDraftRegistration: (form) => {
+        return {
+          uses: new Array(useIndex > 1 ? useIndex - 1 : 1).fill({}).fill(
+            {
+              purpose: form.purpose,
+            },
+            useIndex,
+            useIndex + 1
+          ),
+        };
+      },
+      toForm: (draftRegistration) => {
+        return {
+          purpose: draftRegistration?.uses
+            ? (draftRegistration?.uses[useIndex]?.purpose as Purpose)
+            : null,
+        };
+      },
+    };
+  })();
+
+const validationRules = ({ purpose }: FormSubmission): FormManager => {
+  return new FormManager({
+    purpose: new FieldManager(purpose, [
+      Validators.required("Beacon use purpose is a required field"),
+    ]),
+  });
+};
 
 export default PurposePage;

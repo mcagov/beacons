@@ -18,7 +18,7 @@ export class UserSubmittedValidDraftRegistrationFormRule<T> implements Rule {
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
     mapper: RegistrationFormMapper<T>,
-    nextPage?: PageURLs
+    nextPage: PageURLs
   ) {
     this.context = context;
     this.validationRules = validationRules;

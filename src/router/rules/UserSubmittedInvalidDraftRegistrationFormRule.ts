@@ -10,15 +10,18 @@ export class UserSubmittedInvalidDraftRegistrationFormRule<T> implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
   private readonly mapper: RegistrationFormMapper<T>;
+  private readonly additionalProps: Record<string, any>;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
-    mapper: RegistrationFormMapper<T>
+    mapper: RegistrationFormMapper<T>,
+    additionalProps: Record<string, any>
   ) {
     this.context = context;
     this.validationRules = validationRules;
     this.mapper = mapper;
+    this.additionalProps = additionalProps;
   }
 
   public async condition(): Promise<boolean> {
@@ -37,11 +40,12 @@ export class UserSubmittedInvalidDraftRegistrationFormRule<T> implements Rule {
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
     return presentRegistrationFormErrors(
-      await this.context.container.parseFormDataAs(this.context.req),
+      await this.context.container.parseFormDataAs<T>(this.context.req),
       this.validationRules,
       this.mapper,
       {
-        showCookieBanner: this.context.showCookieBanner,
+        showCookieBanner: this.context.showCookieBanner || true,
+        ...(await this.additionalProps),
       }
     );
   }

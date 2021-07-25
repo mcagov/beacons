@@ -15,7 +15,6 @@ import { withSession } from "../../lib/middleware/withSession";
 import { Environment } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
 import { ordinal } from "../../lib/writingStyle";
-import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { UserSubmittedInvalidDraftRegistrationFormRule } from "../../router/rules/UserSubmittedInvalidDraftRegistrationFormRule";
 import { UserSubmittedValidDraftRegistrationFormWithConditionalNextPagesRule } from "../../router/rules/UserSubmittedValidDraftRegistrationFormWithConditionalNextPagesRule";
@@ -26,7 +25,7 @@ interface BeaconUseForm {
   environment: Environment;
 }
 
-export const BeaconUse: FunctionComponent<FormPageProps> = ({
+const BeaconUse: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
   useIndex,
@@ -104,65 +103,75 @@ export const BeaconUse: FunctionComponent<FormPageProps> = ({
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const useIndex = parseInt(context.query.useIndex as string) || 0;
-
-      const props = { useIndex };
-
       return await new BeaconsPageRouter([
         new UserViewedBeaconUseFormWithoutUseIndexRule(context),
         new UserViewedDraftRegistrationFormRule<BeaconUseForm>(
           context,
           validationRules,
-          mapper(useIndex),
-          props
+          mapper(context),
+          props(context)
         ),
-        new UserSubmittedInvalidDraftRegistrationFormRule(
+        new UserSubmittedInvalidDraftRegistrationFormRule<BeaconUseForm>(
           context,
           validationRules,
-          mapper(useIndex)
+          mapper(context),
+          props(context)
         ),
-        new UserSubmittedValidDraftRegistrationFormWithConditionalNextPagesRule(
+        new UserSubmittedValidDraftRegistrationFormWithConditionalNextPagesRule<BeaconUseForm>(
           context,
           validationRules,
-          mapper(useIndex),
-          deriveNextPage
+          mapper(context),
+          nextPage
         ),
       ]).execute();
     })
   )
 );
 
-const deriveNextPage = async (
+const props = (
   context: BeaconsGetServerSidePropsContext
-): Promise<PageURLs> => {
-  const { environment } =
-    await context.container.parseFormDataAs<BeaconUseForm>(context.req);
+): Partial<FormPageProps> =>
+  (() => ({
+    useIndex: parseInt(context.query.useIndex as string),
+  }))();
 
-  return environment === Environment.LAND
-    ? PageURLs.activity
-    : PageURLs.purpose;
-};
+const nextPage = (
+  context: BeaconsGetServerSidePropsContext
+): Promise<PageURLs> =>
+  (async () => {
+    const { environment } =
+      await context.container.parseFormDataAs<BeaconUseForm>(context.req);
 
-const mapper = (useIndex: number): RegistrationFormMapper<BeaconUseForm> => ({
-  toDraftRegistration: (form) => {
+    return environment === Environment.LAND
+      ? PageURLs.activity
+      : PageURLs.purpose;
+  })();
+
+const mapper = (context: BeaconsGetServerSidePropsContext) =>
+  (() => {
+    const useIndex = parseInt(context.query.useIndex as string);
+
     return {
-      uses: new Array(useIndex > 1 ? useIndex - 1 : 1).fill({}).fill(
-        {
-          environment: form.environment,
-        },
-        useIndex,
-        useIndex + 1
-      ),
+      toDraftRegistration: (form) => {
+        return {
+          uses: new Array(useIndex > 1 ? useIndex - 1 : 1).fill({}).fill(
+            {
+              environment: form.environment,
+            },
+            useIndex,
+            useIndex + 1
+          ),
+        };
+      },
+      toForm: (draftRegistration) => {
+        return {
+          environment: draftRegistration?.uses
+            ? (draftRegistration?.uses[useIndex]?.environment as Environment)
+            : null,
+        };
+      },
     };
-  },
-  toForm: (draftRegistration) => {
-    return {
-      environment: draftRegistration?.uses
-        ? (draftRegistration?.uses[useIndex]?.environment as Environment)
-        : null,
-    };
-  },
-});
+  })();
 
 const validationRules = ({ environment }) => {
   return new FormManager({

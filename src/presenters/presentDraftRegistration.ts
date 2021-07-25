@@ -7,11 +7,10 @@ import { RegistrationFormMapper } from "./RegistrationFormMapper";
 export const presentDraftRegistration = <T>(
   draftRegistration: DraftRegistration,
   validationRules: FormManagerFactory,
-  mapper: RegistrationFormMapper<T>,
-  props = {}
+  mapper: RegistrationFormMapper<T>
 ): GetServerSidePropsResult<any> => ({
   props: {
-    ...props,
+    draftRegistration,
     form: withoutErrorMessages<T>(
       mapper.toForm(draftRegistration),
       validationRules
