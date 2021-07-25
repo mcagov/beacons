@@ -125,19 +125,19 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPageUrl = PageURLs.beaconOwnerAddress;
 
       return await new BeaconsPageRouter([
-        new IfUserViewedFormRule(
+        new IfUserViewedFormRule<AboutBeaconOwnerForm>(
           context,
           validationRules,
           mapper,
           props(context)
         ),
-        new IfUserSubmittedInvalidFormRule(
+        new IfUserSubmittedInvalidFormRule<AboutBeaconOwnerForm>(
           context,
           validationRules,
           mapper,
           props(context)
         ),
-        new IfUserSubmittedValidFormRule(
+        new IfUserSubmittedValidFormRule<AboutBeaconOwnerForm>(
           context,
           validationRules,
           mapper,
