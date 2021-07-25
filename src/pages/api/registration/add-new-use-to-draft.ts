@@ -1,4 +1,7 @@
-import { BeaconsApiRequest, withApiContainer } from "../../../lib/container";
+import {
+  BeaconsApiRequest,
+  withApiContainer,
+} from "../../../lib/middleware/withApiContainer";
 import { PageURLs, queryParams } from "../../../lib/urls";
 
 export const handler = withApiContainer(async (req: BeaconsApiRequest, res) => {
