@@ -5,8 +5,8 @@ import { Validators } from "../../src/lib/form/validators";
 import { formSubmissionCookieId } from "../../src/lib/types";
 import { PageURLs } from "../../src/lib/urls";
 import { toUpperCase } from "../../src/lib/writingStyle";
-import { updateOrViewDraftRegistration } from "../../src/pageHandler/updateOrViewDraftRegistration";
 import { RegistrationFormMapper } from "../../src/presenters/RegistrationFormMapper";
+import { updateOrViewDraftRegistration } from "../../src/router/updateOrViewDraftRegistration";
 
 describe("updateOrViewDraftRegistration", () => {
   it("routes to next page if user submitted a valid form via POST", async () => {

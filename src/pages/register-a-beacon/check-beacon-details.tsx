@@ -15,11 +15,11 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { toUpperCase } from "../../lib/writingStyle";
-import { BeaconsPageRouter } from "../../pageHandler/BeaconsPageRouter";
-import { UserRequestedToViewFormRule } from "../../pageHandler/rules/UserRequestedToViewFormRule";
-import { UserSubmittedInvalidFormRule } from "../../pageHandler/rules/UserSubmittedInvalidFormRule";
-import { UserSubmittedValidFormRule } from "../../pageHandler/rules/UserSubmittedValidFormRule";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { UserRequestedToViewFormRule } from "../../router/rules/UserRequestedToViewFormRule";
+import { UserSubmittedInvalidFormRule } from "../../router/rules/UserSubmittedInvalidFormRule";
+import { UserSubmittedValidFormRule } from "../../router/rules/UserSubmittedValidFormRule";
 
 interface CheckBeaconDetailsForm {
   manufacturer: string;
