@@ -11,7 +11,6 @@ import {
 } from "../../src/lib/middleware";
 import { Registration } from "../../src/lib/registration/registration";
 import {
-  acceptRejectCookieId,
   formSubmissionCookieId,
   formSubmissionCookieId as submissionCookieId,
 } from "../../src/lib/types";
@@ -97,24 +96,6 @@ describe("Middleware Functions", () => {
         context.submissionId = context.req.cookies[formSubmissionCookieId];
         context.registration = new Registration();
       });
-    });
-
-    it("should decorate the context with false if the user has accepted the cookie policy", async () => {
-      context.req.cookies[acceptRejectCookieId] = true;
-      const decoratedContext = await decorateGetServerSidePropsContext(
-        context,
-        mockAddCacheFn
-      );
-      expect(decoratedContext.showCookieBanner).toBe(false);
-    });
-
-    it("should decorate the context with true if the user has not accepted the cookie policy", async () => {
-      context.req.cookies[acceptRejectCookieId] = false;
-      const decoratedContext = await decorateGetServerSidePropsContext(
-        context,
-        mockAddCacheFn
-      );
-      expect(decoratedContext.showCookieBanner).toBe(true);
     });
 
     it("should add the users submission cookie id onto the context", async () => {

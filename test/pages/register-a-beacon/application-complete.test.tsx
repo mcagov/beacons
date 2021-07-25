@@ -40,10 +40,9 @@ describe("ApplicationCompletePage", () => {
 
       const result = await getServerSideProps(context as any);
 
-      expect(result).toStrictEqual({
+      expect(result).toMatchObject({
         redirect: {
           destination: "/",
-          permanent: false,
         },
       });
     });

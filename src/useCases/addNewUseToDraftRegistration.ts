@@ -1,15 +1,11 @@
-import { CachedRegistrationGateway } from "../gateways/CachedRegistrationGateway";
-import { RedisCachedRegistrationGateway } from "../gateways/RedisCachedRegistrationGateway";
+import { IAppContainer } from "../lib/appContainer";
 
 export type AddNewUseToDraftRegistrationFn = (
-  submissionId: string,
-  cachedRegistrationGateway?: CachedRegistrationGateway
+  submissionId: string
 ) => Promise<void>;
 
-export const addNewUseToDraftRegistration: AddNewUseToDraftRegistrationFn =
-  async (
-    submissionId,
-    cachedRegistrationGateway = new RedisCachedRegistrationGateway()
-  ) => {
-    await cachedRegistrationGateway.createEmptyUse(submissionId);
+export const addNewUseToDraftRegistration =
+  ({ draftRegistrationGateway }: IAppContainer) =>
+  async (submissionId: string): Promise<void> => {
+    await draftRegistrationGateway.createEmptyUse(submissionId);
   };

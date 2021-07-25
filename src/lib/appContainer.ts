@@ -103,11 +103,13 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     /* Simple use cases */
     clearCachedRegistration: clearCachedRegistration,
     deleteCachedUse: deleteCachedUse,
-    addNewUseToDraftRegistration: addNewUseToDraftRegistration,
 
     /* Composite use cases requiring access to other use cases */
     get getDraftRegistration() {
       return getDraftRegistration(this);
+    },
+    get addNewUseToDraftRegistration() {
+      return addNewUseToDraftRegistration(this);
     },
     get saveDraftRegistration() {
       return saveDraftRegistration(this);
