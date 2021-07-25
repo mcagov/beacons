@@ -14,43 +14,32 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { FormPageProps } from "../../lib/handlePageRequest";
+import { withCookiePolicy } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
+import { PageURLs } from "../../lib/urls";
+import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { makeRegistrationMapper } from "../../presenters/UseMapper";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
+import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
+import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
+import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
 
-const definePageForm = ({
-  maxCapacity,
-  aircraftManufacturer,
-  principalAirport,
-  secondaryAirport,
-  registrationMark,
-  hexAddress,
-  cnOrMsnNumber,
-  dongle,
-  beaconPosition,
-}: FormSubmission): FormManager => {
-  return new FormManager({
-    maxCapacity: new FieldManager(maxCapacity, [
-      Validators.required(
-        "Maximum number of persons onboard is a required field"
-      ),
-      Validators.wholeNumber(
-        "Maximum number of persons onboard must be a whole number"
-      ),
-    ]),
-    aircraftManufacturer: new FieldManager(aircraftManufacturer),
-    principalAirport: new FieldManager(principalAirport),
-    secondaryAirport: new FieldManager(secondaryAirport),
-    registrationMark: new FieldManager(registrationMark),
-    hexAddress: new FieldManager(hexAddress),
-    cnOrMsnNumber: new FieldManager(cnOrMsnNumber),
-    dongle: new FieldManager(dongle),
-    beaconPosition: new FieldManager(beaconPosition, [
-      Validators.maxLength(
-        "Where the beacon will be positioned has too many characters",
-        100
-      ),
-    ]),
-  });
-};
+interface AboutTheAircraftForm {
+  maxCapacity: string;
+  aircraftManufacturer: string;
+  principalAirport: string;
+  secondaryAirport: string;
+  registrationMark: string;
+  hexAddress: string;
+  cnOrMsnNumber: string;
+  dongle: string;
+  beaconPosition: string;
+}
 
 const AboutTheAircraft: FunctionComponent<FormPageProps> = ({
   form,
@@ -235,9 +224,105 @@ const BeaconPosition: FunctionComponent<FormInputProps> = ({
   />
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/aircraft-communications",
-  definePageForm
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
+  withContainer(
+    withSession(async (context: BeaconsGetServerSidePropsContext) => {
+      const nextPage = PageURLs.aircraftCommunications;
+
+      return await new BeaconsPageRouter([
+        new IfNoUseIndexRule(context),
+        new IfUserViewedFormRule<AboutTheAircraftForm>(
+          context,
+          validationRules,
+          mapper(context)
+        ),
+        new IfUserSubmittedInvalidFormRule<AboutTheAircraftForm>(
+          context,
+          validationRules,
+          mapper(context)
+        ),
+        new IfUserSubmittedValidFormRule<AboutTheAircraftForm>(
+          context,
+          validationRules,
+          mapper(context),
+          nextPage
+        ),
+      ]).execute();
+    })
+  )
 );
+
+const mapper = (
+  context: BeaconsGetServerSidePropsContext
+): RegistrationFormMapper<AboutTheAircraftForm> =>
+  (() => {
+    const beaconUseMapper: BeaconUseFormMapper<AboutTheAircraftForm> = {
+      toDraftBeaconUse: (form) => ({
+        maxCapacity: form.maxCapacity,
+        aircraftManufacturer: form.aircraftManufacturer,
+        principalAirport: form.principalAirport,
+        secondaryAirport: form.secondaryAirport,
+        registrationMark: form.registrationMark,
+        hexAddress: form.hexAddress,
+        cnOrMsnNumber: form.cnOrMsnNumber,
+        dongle: form.dongle,
+        beaconPosition: form.beaconPosition,
+      }),
+      toForm: (draftRegistration) => ({
+        maxCapacity: draftRegistration.maxCapacity,
+        aircraftManufacturer: draftRegistration.aircraftManufacturer,
+        principalAirport: draftRegistration.principalAirport,
+        secondaryAirport: draftRegistration.secondaryAirport,
+        registrationMark: draftRegistration.registrationMark,
+        hexAddress: draftRegistration.hexAddress,
+        cnOrMsnNumber: draftRegistration.cnOrMsnNumber,
+        dongle: draftRegistration.dongle,
+        beaconPosition: draftRegistration.beaconPosition,
+      }),
+    };
+
+    const useIndex = parseInt(context.query.useIndex as string);
+
+    return makeRegistrationMapper<AboutTheAircraftForm>(
+      useIndex,
+      beaconUseMapper
+    );
+  })();
+
+const validationRules = ({
+  maxCapacity,
+  aircraftManufacturer,
+  principalAirport,
+  secondaryAirport,
+  registrationMark,
+  hexAddress,
+  cnOrMsnNumber,
+  dongle,
+  beaconPosition,
+}: FormSubmission): FormManager => {
+  return new FormManager({
+    maxCapacity: new FieldManager(maxCapacity, [
+      Validators.required(
+        "Maximum number of persons onboard is a required field"
+      ),
+      Validators.wholeNumber(
+        "Maximum number of persons onboard must be a whole number"
+      ),
+    ]),
+    aircraftManufacturer: new FieldManager(aircraftManufacturer),
+    principalAirport: new FieldManager(principalAirport),
+    secondaryAirport: new FieldManager(secondaryAirport),
+    registrationMark: new FieldManager(registrationMark),
+    hexAddress: new FieldManager(hexAddress),
+    cnOrMsnNumber: new FieldManager(cnOrMsnNumber),
+    dongle: new FieldManager(dongle),
+    beaconPosition: new FieldManager(beaconPosition, [
+      Validators.maxLength(
+        "Where the beacon will be positioned has too many characters",
+        100
+      ),
+    ]),
+  });
+};
 
 export default AboutTheAircraft;
