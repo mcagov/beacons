@@ -23,7 +23,10 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
-import { updateOrViewDraftRegistration } from "../../pageHandler/updateOrViewDraftRegistration";
+import { BeaconsPageRouter } from "../../pageHandler/BeaconsPageRouter";
+import { UserRequestedToViewFormRule } from "../../pageHandler/rules/UserRequestedToViewFormRule";
+import { UserSubmittedInvalidFormRule } from "../../pageHandler/rules/UserSubmittedInvalidFormRule";
+import { UserSubmittedValidFormRule } from "../../pageHandler/rules/UserSubmittedValidFormRule";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 
 interface BeaconInformationForm {
@@ -189,14 +192,18 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const nextPage = PageURLs.environment;
+      const nextPageUrl = PageURLs.environment;
 
-      return await updateOrViewDraftRegistration<BeaconInformationForm>(
-        context,
-        validationRules,
-        mapper,
-        nextPage
-      );
+      return await new BeaconsPageRouter([
+        new UserRequestedToViewFormRule(context, validationRules, mapper),
+        new UserSubmittedInvalidFormRule(context, validationRules, mapper),
+        new UserSubmittedValidFormRule(
+          context,
+          validationRules,
+          mapper,
+          nextPageUrl
+        ),
+      ]).execute();
     })
   )
 );
