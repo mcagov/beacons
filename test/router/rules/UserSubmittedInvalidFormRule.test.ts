@@ -3,9 +3,9 @@ import {
   mapper,
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
-import { UserSubmittedInvalidFormRule } from "../../../src/router/rules/UserSubmittedInvalidFormRule";
+import { UserSubmittedInvalidDraftRegistrationFormRule } from "../../../src/router/rules/UserSubmittedInvalidDraftRegistrationFormRule";
 
-describe("UserSubmittedInvalidFormRule", () => {
+describe("UserSubmittedInvalidDraftRegistrationFormRule", () => {
   it("triggers if the form is invalid", async () => {
     const invalidForm = {
       manufacturer: "ACME Inc.",
@@ -24,7 +24,7 @@ describe("UserSubmittedInvalidFormRule", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const rule = new UserSubmittedInvalidFormRule(
+    const rule = new UserSubmittedInvalidDraftRegistrationFormRule(
       context as any,
       validationRules,
       mapper
@@ -53,7 +53,7 @@ describe("UserSubmittedInvalidFormRule", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const rule = new UserSubmittedInvalidFormRule(
+    const rule = new UserSubmittedInvalidDraftRegistrationFormRule(
       context as any,
       validationRules,
       mapper
@@ -82,7 +82,7 @@ describe("UserSubmittedInvalidFormRule", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const rule = new UserSubmittedInvalidFormRule(
+    const rule = new UserSubmittedInvalidDraftRegistrationFormRule(
       context as any,
       validationRules,
       mapper

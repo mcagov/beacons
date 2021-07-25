@@ -6,7 +6,7 @@ import { presentDraftRegistration } from "../../presenters/presentDraftRegistrat
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class UserRequestedToViewFormRule<T> implements Rule {
+export class UserViewedDraftRegistrationFormRule<T> implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
   private readonly mapper: RegistrationFormMapper<T>;

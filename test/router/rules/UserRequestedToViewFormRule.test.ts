@@ -3,16 +3,16 @@ import {
   mapper,
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
-import { UserRequestedToViewFormRule } from "../../../src/router/rules/UserRequestedToViewFormRule";
+import { UserViewedDraftRegistrationFormRule } from "../../../src/router/rules/UserViewedDraftRegistrationFormRule";
 
-describe("UserRequestedToViewFormRule", () => {
+describe("UserViewedDraftRegistrationFormRule", () => {
   it("triggers if the request is a GET request", async () => {
     const context = {
       req: {
         method: "GET",
       },
     };
-    const rule = new UserRequestedToViewFormRule(
+    const rule = new UserViewedDraftRegistrationFormRule(
       context as any,
       validationRules,
       mapper
@@ -29,7 +29,7 @@ describe("UserRequestedToViewFormRule", () => {
         method: "POST",
       },
     };
-    const rule = new UserRequestedToViewFormRule(
+    const rule = new UserViewedDraftRegistrationFormRule(
       context as any,
       validationRules,
       mapper
@@ -66,7 +66,7 @@ describe("UserRequestedToViewFormRule", () => {
         }),
       },
     };
-    const rule = new UserRequestedToViewFormRule(
+    const rule = new UserViewedDraftRegistrationFormRule(
       context as any,
       validationRules,
       mapper

@@ -4,9 +4,9 @@ import {
   mapper,
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
-import { UserSubmittedValidFormRule } from "../../../src/router/rules/UserSubmittedValidFormRule";
+import { UserSubmittedValidDraftRegistrationFormRule } from "../../../src/router/rules/UserSubmittedValidDraftRegistrationFormRule";
 
-describe("UserSubmittedValidFormRule", () => {
+describe("UserSubmittedValidDraftRegistrationFormRule", () => {
   it("triggers if the form is valid", async () => {
     const validForm = {
       manufacturer: "ACME Inc.",
@@ -26,7 +26,7 @@ describe("UserSubmittedValidFormRule", () => {
       },
     };
     const nextPageUrl = PageURLs.beaconInformation;
-    const rule = new UserSubmittedValidFormRule(
+    const rule = new UserSubmittedValidDraftRegistrationFormRule(
       context as any,
       validationRules,
       mapper,
@@ -57,7 +57,7 @@ describe("UserSubmittedValidFormRule", () => {
       },
     };
     const nextPageUrl = PageURLs.beaconInformation;
-    const rule = new UserSubmittedValidFormRule(
+    const rule = new UserSubmittedValidDraftRegistrationFormRule(
       context as any,
       validationRules,
       mapper,
@@ -88,7 +88,7 @@ describe("UserSubmittedValidFormRule", () => {
       },
     };
     const nextPageUrl = PageURLs.beaconInformation;
-    const rule = new UserSubmittedValidFormRule(
+    const rule = new UserSubmittedValidDraftRegistrationFormRule(
       context as any,
       validationRules,
       mapper,
