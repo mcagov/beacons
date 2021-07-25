@@ -81,10 +81,9 @@ describe("AdditionalBeaconUse page", () => {
       />
     );
 
-    expect(screen.getByRole("button", { name: /add a use/i })).toHaveAttribute(
-      "href",
-      ActionURLs.addNewUseToDraftRegistration
-    );
+    expect(
+      screen.getByRole("button", { name: /add another use/i })
+    ).toHaveAttribute("href", ActionURLs.addNewUseToDraftRegistration);
   });
 
   it("given a currentUseIndex, sends the user back down the editing route for that use", () => {
