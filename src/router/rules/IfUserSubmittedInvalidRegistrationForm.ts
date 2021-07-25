@@ -1,12 +1,11 @@
 import { GetServerSidePropsResult } from "next";
-import { isValid } from "../../lib/form/lib";
+import { isValid, withErrorMessages } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { presentRegistrationFormErrors } from "../../presenters/presentRegistrationFormErrors";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class IfUserSubmittedInvalidRegistrationFormRule<T> implements Rule {
+export class IfUserSubmittedInvalidRegistrationForm<T> implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
   private readonly mapper: RegistrationFormMapper<T>;
@@ -39,14 +38,18 @@ export class IfUserSubmittedInvalidRegistrationFormRule<T> implements Rule {
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    return presentRegistrationFormErrors(
-      await this.context.container.parseFormDataAs<T>(this.context.req),
-      this.validationRules,
-      this.mapper,
-      {
-        showCookieBanner: this.context.showCookieBanner || true,
-        ...(await this.additionalProps),
-      }
+    const form = await this.context.container.parseFormDataAs<T>(
+      this.context.req
     );
+
+    return {
+      props: {
+        form: withErrorMessages<T>(
+          this.mapper.toForm(this.mapper.toDraftRegistration(form)),
+          this.validationRules
+        ),
+        ...this.additionalProps,
+      },
+    };
   }
 }

@@ -6,7 +6,7 @@ import { acceptRejectCookieId, formSubmissionCookieId } from "../../lib/types";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class IfUserViewedRegistrationFormRule<T> implements Rule {
+export class IfUserViewedRegistrationForm<T> implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
   private readonly mapper: RegistrationFormMapper<T>;

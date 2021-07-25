@@ -24,10 +24,10 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
-import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
-import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
+import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
 interface AboutTheAircraftForm {
   maxCapacity: string;
@@ -230,18 +230,18 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPage = PageURLs.aircraftCommunications;
 
       return await new BeaconsPageRouter([
-        new IfNoUseIndexRule(context),
-        new IfUserViewedRegistrationFormRule<AboutTheAircraftForm>(
+        new IfNoUseIndex(context),
+        new IfUserViewedRegistrationForm<AboutTheAircraftForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedInvalidRegistrationFormRule<AboutTheAircraftForm>(
+        new IfUserSubmittedInvalidRegistrationForm<AboutTheAircraftForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedValidRegistrationFormRule<AboutTheAircraftForm>(
+        new IfUserSubmittedValidRegistrationForm<AboutTheAircraftForm>(
           context,
           validationRules,
           mapper(context),

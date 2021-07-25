@@ -8,7 +8,7 @@ import { PageURLs } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class IfUserSubmittedValidRegistrationFormRule<T> implements Rule {
+export class IfUserSubmittedValidRegistrationForm<T> implements Rule {
   protected readonly context: BeaconsGetServerSidePropsContext;
   protected readonly validationRules: FormManagerFactory;
   protected readonly mapper: RegistrationFormMapper<T>;
@@ -27,25 +27,23 @@ export class IfUserSubmittedValidRegistrationFormRule<T> implements Rule {
   }
 
   public async condition(): Promise<boolean> {
+    const form = await this.context.container.parseFormDataAs(this.context.req);
+
     return (
       this.context.req.method === "POST" &&
       isValid<T>(
-        this.mapper.toForm(
-          this.mapper.toDraftRegistration(
-            await this.context.container.parseFormDataAs(this.context.req)
-          )
-        ),
+        this.mapper.toForm(this.mapper.toDraftRegistration(form as T)),
         this.validationRules
       )
     );
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
+    const form = await this.context.container.parseFormDataAs(this.context.req);
+
     await this.context.container.saveDraftRegistration(
       id(this.context),
-      this.mapper.toDraftRegistration(
-        await this.context.container.parseFormDataAs(this.context.req)
-      )
+      this.mapper.toDraftRegistration(form as T)
     );
 
     return redirectUserTo(await this.nextPage);

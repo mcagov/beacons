@@ -7,20 +7,20 @@ import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import {
-  DestinationIfValidCallback,
-  FormPageProps,
-} from "../../lib/handlePageRequest";
+import { FormPageProps } from "../../lib/handlePageRequest";
 import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
-import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
-import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
-import { mapper } from "../register-a-beacon/check-beacon-details";
+import { IfUserSubmittedInvalidSimpleForm } from "../../router/rules/IfUserSubmittedInvalidSimpleForm";
+import { IfUserSubmittedValidSimpleForm } from "../../router/rules/IfUserSubmittedValidSimpleForm";
+import { IfUserViewedSimpleForm } from "../../router/rules/IfUserViewedSimpleForm";
+
+interface SignUpOrSignInForm {
+  signUpOrSignIn: string;
+}
 
 export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
   form,
@@ -68,46 +68,35 @@ export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = async (
-  context
-) => {
-  switch (context.formData.signUpOrSignIn) {
-    case "signUp":
-      return PageURLs.signUp;
-    case "signIn":
-      return PageURLs.signIn;
-  }
-};
-
-// export const getServerSideProps: GetServerSideProps = handlePageRequest(
-//   "",
-//   validationRules,
-//   (f) => f,
-//   onSuccessfulFormCallback
-// );
-
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const nextPageUrl = PageURLs.beaconInformation;
-
       return await new BeaconsPageRouter([
-        new IfUserViewedRegistrationFormRule(context, validationRules, mapper),
-        new IfUserSubmittedInvalidRegistrationFormRule(
+        new IfUserViewedSimpleForm(context, validationRules),
+        new IfUserSubmittedInvalidSimpleForm(context, validationRules),
+        new IfUserSubmittedValidSimpleForm(
           context,
           validationRules,
-          mapper
-        ),
-        new IfUserSubmittedValidRegistrationFormRule(
-          context,
-          validationRules,
-          mapper,
-          nextPageUrl
+          nextPageUrl(context)
         ),
       ]).execute();
     })
   )
 );
+
+const nextPageUrl = (context: BeaconsGetServerSidePropsContext) =>
+  (async () => {
+    const form = await context.container.parseFormDataAs<SignUpOrSignInForm>(
+      context.req
+    );
+
+    switch (form.signUpOrSignIn) {
+      case "signUp":
+        return PageURLs.signUp;
+      case "signIn":
+        return PageURLs.signIn;
+    }
+  })();
 
 const validationRules = ({ signUpOrSignIn }) => {
   return new FormManager({

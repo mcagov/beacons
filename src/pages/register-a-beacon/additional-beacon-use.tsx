@@ -14,7 +14,7 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { ActionURLs, PageURLs, queryParams } from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
+import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
 import { IfUserViewedNonFormPage } from "../../router/rules/IfUserViewedNonFormPage";
 
 interface AdditionalBeaconUseProps {
@@ -122,7 +122,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withSession(
     withContainer(async (context: BeaconsGetServerSidePropsContext) => {
       return await new BeaconsPageRouter([
-        new IfNoUseIndexRule(context),
+        new IfNoUseIndex(context),
         new IfUserViewedNonFormPage(context, props(context)),
       ]).execute();
     })

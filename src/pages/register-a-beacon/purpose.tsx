@@ -15,10 +15,10 @@ import { Environment, Purpose } from "../../lib/registration/types";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
-import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
-import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
+import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
 interface PurposeForm {
   purpose: Purpose;
@@ -75,20 +75,20 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPage = PageURLs.activity;
 
       return await new BeaconsPageRouter([
-        new IfNoUseIndexRule(context),
-        new IfUserViewedRegistrationFormRule<PurposeForm>(
+        new IfNoUseIndex(context),
+        new IfUserViewedRegistrationForm<PurposeForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedInvalidRegistrationFormRule<PurposeForm>(
+        new IfUserSubmittedInvalidRegistrationForm<PurposeForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedValidRegistrationFormRule<PurposeForm>(
+        new IfUserSubmittedValidRegistrationForm<PurposeForm>(
           context,
           validationRules,
           mapper(context),

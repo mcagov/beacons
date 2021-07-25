@@ -18,10 +18,10 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
-import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
-import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
+import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
 interface MoreDetailsForm {
   moreDetails: string;
@@ -109,20 +109,20 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPage = PageURLs.additionalUse;
 
       return await new BeaconsPageRouter([
-        new IfNoUseIndexRule(context),
-        new IfUserViewedRegistrationFormRule<MoreDetailsForm>(
+        new IfNoUseIndex(context),
+        new IfUserViewedRegistrationForm<MoreDetailsForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedInvalidRegistrationFormRule<MoreDetailsForm>(
+        new IfUserSubmittedInvalidRegistrationForm<MoreDetailsForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedValidRegistrationFormRule<MoreDetailsForm>(
+        new IfUserSubmittedValidRegistrationForm<MoreDetailsForm>(
           context,
           validationRules,
           mapper(context),

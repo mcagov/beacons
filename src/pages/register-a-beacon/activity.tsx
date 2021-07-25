@@ -22,10 +22,10 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
-import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
-import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
+import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
 interface ActivityForm {
   environment;
@@ -560,20 +560,20 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
       return await new BeaconsPageRouter([
-        new IfNoUseIndexRule(context),
-        new IfUserViewedRegistrationFormRule<ActivityForm>(
+        new IfNoUseIndex(context),
+        new IfUserViewedRegistrationForm<ActivityForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedInvalidRegistrationFormRule<ActivityForm>(
+        new IfUserSubmittedInvalidRegistrationForm<ActivityForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedValidRegistrationFormRule<ActivityForm>(
+        new IfUserSubmittedValidRegistrationForm<ActivityForm>(
           context,
           validationRules,
           mapper(context),

@@ -16,10 +16,10 @@ import { Environment } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
 import { ordinal } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
-import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
-import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
+import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
 interface BeaconUseForm {
   environment: Environment;
@@ -104,20 +104,20 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
       return await new BeaconsPageRouter([
-        new IfNoUseIndexRule(context),
-        new IfUserViewedRegistrationFormRule<BeaconUseForm>(
+        new IfNoUseIndex(context),
+        new IfUserViewedRegistrationForm<BeaconUseForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedInvalidRegistrationFormRule<BeaconUseForm>(
+        new IfUserSubmittedInvalidRegistrationForm<BeaconUseForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new IfUserSubmittedValidRegistrationFormRule<BeaconUseForm>(
+        new IfUserSubmittedValidRegistrationForm<BeaconUseForm>(
           context,
           validationRules,
           mapper(context),

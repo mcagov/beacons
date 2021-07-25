@@ -27,9 +27,9 @@ import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
-import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
-import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
 interface EmergencyContactForm {
   emergencyContact1FullName: string;
@@ -193,17 +193,17 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPageUrl = PageURLs.checkYourAnswers;
 
       return await new BeaconsPageRouter([
-        new IfUserViewedRegistrationFormRule<EmergencyContactForm>(
+        new IfUserViewedRegistrationForm<EmergencyContactForm>(
           context,
           validationRules,
           mapper
         ),
-        new IfUserSubmittedInvalidRegistrationFormRule<EmergencyContactForm>(
+        new IfUserSubmittedInvalidRegistrationForm<EmergencyContactForm>(
           context,
           validationRules,
           mapper
         ),
-        new IfUserSubmittedValidRegistrationFormRule<EmergencyContactForm>(
+        new IfUserSubmittedValidRegistrationForm<EmergencyContactForm>(
           context,
           validationRules,
           mapper,

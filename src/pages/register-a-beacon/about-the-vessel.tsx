@@ -20,10 +20,10 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
-import { IfUserSubmittedInvalidRegistrationFormRule } from "../../router/rules/IfUserSubmittedInvalidRegistrationFormRule";
-import { IfUserSubmittedValidRegistrationFormRule } from "../../router/rules/IfUserSubmittedValidRegistrationFormRule";
-import { IfUserViewedRegistrationFormRule } from "../../router/rules/IfUserViewedRegistrationFormRule";
+import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
 interface AboutTheVesselForm {
   maxCapacity: string;
@@ -245,18 +245,18 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPage = PageURLs.vesselCommunications;
 
       return await new BeaconsPageRouter([
-        new IfNoUseIndexRule(context),
-        new IfUserViewedRegistrationFormRule<AboutTheVesselForm>(
+        new IfNoUseIndex(context),
+        new IfUserViewedRegistrationForm<AboutTheVesselForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedInvalidRegistrationFormRule<AboutTheVesselForm>(
+        new IfUserSubmittedInvalidRegistrationForm<AboutTheVesselForm>(
           context,
           validationRules,
           mapper(context)
         ),
-        new IfUserSubmittedValidRegistrationFormRule<AboutTheVesselForm>(
+        new IfUserSubmittedValidRegistrationForm<AboutTheVesselForm>(
           context,
           validationRules,
           mapper(context),
