@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/client";
+import { IncomingMessage } from "http";
 import { AadAuthGateway, IAuthGateway } from "../gateways/aadAuthGateway";
 import {
   AccountHolderApiGateway,
@@ -32,6 +32,7 @@ import {
   clearCachedRegistration,
   ClearCachedRegistrationFn,
 } from "../useCases/clearCachedRegistration";
+import { deleteBeacon, DeleteBeaconFn } from "../useCases/deleteBeacon";
 import {
   deleteCachedUse,
   DeleteCachedUseFn,
@@ -41,10 +42,7 @@ import {
   getBeaconsByAccountHolderId,
   GetBeaconsByAccountHolderIdFn,
 } from "../useCases/getAccountBeacons";
-import {
-  getAccountHolderId,
-  GetAccountHolderIdFn,
-} from "../useCases/getAccountHolderId";
+import { getAccountHolderId } from "../useCases/getAccountHolderId";
 import {
   getCachedRegistration,
   GetCachedRegistrationFn,
@@ -53,7 +51,6 @@ import {
   getOrCreateAccountHolder,
   GetOrCreateAccountHolderFn,
 } from "../useCases/getOrCreateAccountHolder";
-import { GetSessionFn } from "../useCases/getSession";
 import {
   saveCachedRegistration,
   SaveCachedRegistrationFn,
@@ -66,6 +63,11 @@ import {
   submitRegistration,
   SubmitRegistrationFn,
 } from "../useCases/submitRegistration";
+import {
+  updateAccountHolder,
+  UpdateAccountHolderFn,
+} from "../useCases/updateAccountHolder";
+import { parseFormDataAs } from "./middleware";
 
 export interface IAppContainer {
   /* Use cases */
@@ -77,10 +79,12 @@ export interface IAppContainer {
   clearCachedRegistration: ClearCachedRegistrationFn;
   deleteCachedUse: DeleteCachedUseFn;
   getAccessToken: GetAccessTokenFn;
-  getSession: GetSessionFn;
+  parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
-  getAccountHolderId: GetAccountHolderIdFn;
+  updateAccountHolder: UpdateAccountHolderFn;
+  getAccountHolderId;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
+  deleteBeacon: DeleteBeaconFn;
   addNewUseToDraftRegistration: AddNewUseToDraftRegistrationFn;
 
   /* Gateways */
@@ -101,7 +105,6 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     clearCachedRegistration: clearCachedRegistration,
     deleteCachedUse: deleteCachedUse,
     addNewUseToDraftRegistration: addNewUseToDraftRegistration,
-    getSession: getSession,
 
     /* Composite use cases requiring access to other use cases */
     get getAccessToken() {
@@ -119,11 +122,17 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get getOrCreateAccountHolder() {
       return getOrCreateAccountHolder(this);
     },
+    get updateAccountHolder() {
+      return updateAccountHolder(this);
+    },
     get getAccountHolderId() {
       return getAccountHolderId(this);
     },
     get getBeaconsByAccountHolderId() {
       return getBeaconsByAccountHolderId(this);
+    },
+    get deleteBeacon() {
+      return deleteBeacon(this);
     },
 
     /* Gateways */
@@ -145,6 +154,11 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get userSessionGateway() {
       return new UserSessionGateway();
     },
+
+    /* Mockable utilities */
+    parseFormDataAs: parseFormDataAs,
+
+    /* Apply injected overrides */
     ...overrides,
   };
 };

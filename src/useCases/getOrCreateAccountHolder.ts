@@ -1,19 +1,17 @@
 import { IAccountHolderDetails } from "../entities/accountHolderDetails";
+import { Session } from "../gateways/userSessionGateway";
 import { IAppContainer } from "../lib/appContainer";
-import { BeaconsGetServerSidePropsContext } from "../lib/container";
 
 export type GetOrCreateAccountHolderFn = (
-  context: BeaconsGetServerSidePropsContext
+  session: Session
 ) => Promise<IAccountHolderDetails>;
 
 export const getOrCreateAccountHolder =
   ({
-    getSession,
     getAccessToken,
     accountHolderApiGateway,
   }: IAppContainer): GetOrCreateAccountHolderFn =>
-  async (context: BeaconsGetServerSidePropsContext) => {
-    const session = await getSession(context);
+  async (session: Session): Promise<IAccountHolderDetails> => {
     const authId: string = session.user.authId;
     const email: string = session.user.email;
     const accessToken = await getAccessToken();

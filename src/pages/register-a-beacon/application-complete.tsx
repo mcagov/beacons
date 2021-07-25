@@ -6,12 +6,11 @@ import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
 import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
-import {
-  BeaconsGetServerSidePropsContext,
-  withContainer,
-} from "../../lib/container";
 import { verifyFormSubmissionCookieIsSet } from "../../lib/cookies";
 import { clearFormSubmissionCookie } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
 import { PageURLs } from "../../lib/urls";
@@ -87,8 +86,8 @@ const ApplicationCompleteYourBeaconRegistryAccount: FunctionComponent =
     </>
   );
 
-export const getServerSideProps: GetServerSideProps = withContainer(
-  async (context: BeaconsGetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = withSession(
+  withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     /* Retrieve injected use case(s) */
     const { submitRegistration, getAccountHolderId } = context.container;
 
@@ -99,7 +98,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     try {
       const result = await submitRegistration(
         retrieveUserFormSubmissionId(context),
-        await getAccountHolderId(context)
+        await getAccountHolderId(context.session)
       );
 
       const pageSubHeading = (result: ISubmitRegistrationResult) => {
@@ -127,7 +126,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         },
       };
     }
-  }
+  })
 );
 
 export default ApplicationCompletePage;

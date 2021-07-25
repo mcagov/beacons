@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { BeaconsApiRequest } from "../../../../src/lib/container";
+import { BeaconsApiRequest } from "../../../../src/lib/middleware/withApiContainer";
 import { formSubmissionCookieId } from "../../../../src/lib/types";
 import handler from "../../../../src/pages/api/registration/delete-use";
 

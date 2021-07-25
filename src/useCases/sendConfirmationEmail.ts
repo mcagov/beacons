@@ -3,16 +3,17 @@ import { IRegistration } from "../lib/registration/types";
 import { joinStrings } from "../lib/writingStyle";
 
 export type SendConfirmationEmailFn = (
-  registration: IRegistration
+  registration: IRegistration,
+  email: string
 ) => Promise<boolean>;
 
 export const sendConfirmationEmail =
   ({ govNotifyGateway }: IAppContainer): SendConfirmationEmailFn =>
-  async (registration) => {
+  async (registration, email) => {
     const templateId = process.env.GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE;
 
     if (templateId) {
-      return govNotifyGateway.sendEmail(templateId, registration.ownerEmail, {
+      return govNotifyGateway.sendEmail(templateId, email, {
         owner_name: registration.ownerFullName,
         reference: registration.referenceNumber,
         beacon_information: joinStrings([
