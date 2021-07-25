@@ -42,7 +42,7 @@ const MoreDetails: FunctionComponent<MoreDetailsFormProps> = ({
     [Environment.MARITIME]: PageURLs.vesselCommunications,
     [Environment.AVIATION]: PageURLs.aircraftCommunications,
     [Environment.LAND]: PageURLs.landCommunications,
-    "": PageURLs.start,
+    "": PageURLs.environment,
   };
 
   const pageHeading = "Provide more details that could help in a search";
@@ -144,7 +144,8 @@ const props = (
     const useIndex = parseInt(context.query.useIndex as string);
 
     return {
-      environment: draftRegistration.uses[useIndex].environment as Environment,
+      environment: draftRegistration?.uses[useIndex]
+        ?.environment as Environment,
     };
   })();
 
