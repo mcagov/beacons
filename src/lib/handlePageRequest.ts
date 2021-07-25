@@ -7,6 +7,8 @@ import {
   updateFormCache,
   withCookieRedirect,
 } from "./middleware";
+import { BeaconsGetServerSidePropsContext } from "./middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "./middleware/withContainer";
 import { Registration } from "./registration/registration";
 import { IRegistration } from "./registration/types";
 import { formatUrlQueryParams } from "./urls";
