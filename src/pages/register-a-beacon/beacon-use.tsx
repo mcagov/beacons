@@ -16,10 +16,10 @@ import { Environment } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
 import { ordinal } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { UserSubmittedInvalidDraftRegistrationFormRule } from "../../router/rules/UserSubmittedInvalidDraftRegistrationFormRule";
-import { UserSubmittedValidDraftRegistrationFormRule } from "../../router/rules/UserSubmittedValidDraftRegistrationFormRule";
-import { UserViewedBeaconUseFormWithoutUseIndexRule } from "../../router/rules/UserViewedBeaconUseFormWithoutUseIndexRule";
-import { UserViewedDraftRegistrationFormRule } from "../../router/rules/UserViewedDraftRegistrationFormRule";
+import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
+import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
+import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
+import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
 
 interface BeaconUseForm {
   environment: Environment;
@@ -104,20 +104,20 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
       return await new BeaconsPageRouter([
-        new UserViewedBeaconUseFormWithoutUseIndexRule(context),
-        new UserViewedDraftRegistrationFormRule<BeaconUseForm>(
+        new IfNoUseIndexRule(context),
+        new IfUserViewedFormRule<BeaconUseForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new UserSubmittedInvalidDraftRegistrationFormRule<BeaconUseForm>(
+        new IfUserSubmittedInvalidFormRule<BeaconUseForm>(
           context,
           validationRules,
           mapper(context),
           props(context)
         ),
-        new UserSubmittedValidDraftRegistrationFormRule<BeaconUseForm>(
+        new IfUserSubmittedValidFormRule<BeaconUseForm>(
           context,
           validationRules,
           mapper(context),

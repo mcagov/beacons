@@ -6,7 +6,7 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { queryParams } from "../../lib/urls";
 import { Rule } from "./Rule";
 
-export class UserViewedBeaconUseFormWithoutUseIndexRule implements Rule {
+export class IfNoUseIndexRule implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
 
   constructor(context: BeaconsGetServerSidePropsContext) {

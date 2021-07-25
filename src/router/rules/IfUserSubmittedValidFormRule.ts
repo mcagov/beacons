@@ -8,17 +8,17 @@ import { PageURLs } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class UserSubmittedValidDraftRegistrationFormRule<T> implements Rule {
+export class IfUserSubmittedValidFormRule<T> implements Rule {
   protected readonly context: BeaconsGetServerSidePropsContext;
   protected readonly validationRules: FormManagerFactory;
   protected readonly mapper: RegistrationFormMapper<T>;
-  private readonly nextPage: Promise<PageURLs>;
+  private readonly nextPage: PageURLs | Promise<PageURLs>;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
     mapper: RegistrationFormMapper<T>,
-    nextPage: Promise<PageURLs>
+    nextPage: PageURLs | Promise<PageURLs>
   ) {
     this.context = context;
     this.validationRules = validationRules;

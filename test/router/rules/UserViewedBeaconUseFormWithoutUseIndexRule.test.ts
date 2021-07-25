@@ -1,6 +1,6 @@
-import { UserViewedBeaconUseFormWithoutUseIndexRule } from "../../../src/router/rules/UserViewedBeaconUseFormWithoutUseIndexRule";
+import { IfNoUseIndexRule } from "../../../src/router/rules/IfNoUseIndexRule";
 
-describe("UserViewedDraftRegistrationFormRule", () => {
+describe("IfUserViewedFormRule", () => {
   it("triggers if the useIndex query param is missing", async () => {
     const context = {
       req: {
@@ -10,7 +10,7 @@ describe("UserViewedDraftRegistrationFormRule", () => {
         anIrrelevantQueryParam: "notice-how-useIndex-is-missing?",
       },
     };
-    const rule = new UserViewedBeaconUseFormWithoutUseIndexRule(context as any);
+    const rule = new IfNoUseIndexRule(context as any);
 
     const result = await rule.condition();
 
@@ -26,7 +26,7 @@ describe("UserViewedDraftRegistrationFormRule", () => {
         useIndex: "ah-there-it-is!",
       },
     };
-    const rule = new UserViewedBeaconUseFormWithoutUseIndexRule(context as any);
+    const rule = new IfNoUseIndexRule(context as any);
 
     const result = await rule.condition();
 
