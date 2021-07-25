@@ -1,16 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
-import { handlePageRequest } from "../../../src/lib/handlePageRequest";
-import AboutTheVessel, {
-  getServerSideProps,
-} from "../../../src/pages/register-a-beacon/about-the-vessel";
-
-jest.mock("../../../src/lib/handlePageRequest", () => ({
-  __esModule: true,
-  handlePageRequest: jest.fn().mockImplementation(() => jest.fn()),
-}));
+import AboutTheVessel from "../../../src/pages/register-a-beacon/about-the-vessel";
 
 describe("AboutTheVessel", () => {
   const aboutTheVesselForm: FormJSON = {
@@ -79,15 +70,5 @@ describe("AboutTheVessel", () => {
     const form = container.querySelectorAll("form")[1];
 
     expect(form).toHaveAttribute("action", "");
-  });
-
-  it("should redirect to vessel-communications page on valid form submission", async () => {
-    const context = {};
-    await getServerSideProps(context as GetServerSidePropsContext);
-
-    expect(handlePageRequest).toHaveBeenCalledWith(
-      "/register-a-beacon/vessel-communications",
-      expect.anything()
-    );
   });
 });

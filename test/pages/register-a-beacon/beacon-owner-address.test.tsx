@@ -1,16 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
-import { handlePageRequest } from "../../../src/lib/handlePageRequest";
-import BeaconOwnerAddressPage, {
-  getServerSideProps,
-} from "../../../src/pages/register-a-beacon/beacon-owner-address";
-
-jest.mock("../../../src/lib/handlePageRequest", () => ({
-  __esModule: true,
-  handlePageRequest: jest.fn().mockImplementation(() => jest.fn()),
-}));
+import BeaconOwnerAddressPage from "../../../src/pages/register-a-beacon/beacon-owner-address";
 
 describe("BeaconOwnerAddressPage", () => {
   const emptyBeaconOwnerAddressForm: FormJSON = {
@@ -57,14 +48,5 @@ describe("BeaconOwnerAddressPage", () => {
     const form = container.querySelectorAll("form")[1];
 
     expect(form).toHaveAttribute("action", "");
-  });
-
-  it("should redirect to the start page on valid form submission", async () => {
-    const context = {};
-    await getServerSideProps(context as GetServerSidePropsContext);
-
-    const startURL = "/register-a-beacon/emergency-contact";
-
-    expect(handlePageRequest).toHaveBeenCalledWith(startURL, expect.anything());
   });
 });

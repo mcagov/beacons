@@ -1,16 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
-import { handlePageRequest } from "../../../src/lib/handlePageRequest";
-import EmergencyContact, {
-  getServerSideProps,
-} from "../../../src/pages/register-a-beacon/emergency-contact";
-
-jest.mock("../../../src/lib/handlePageRequest", () => ({
-  __esModule: true,
-  handlePageRequest: jest.fn().mockImplementation(() => jest.fn()),
-}));
+import EmergencyContact from "../../../src/pages/register-a-beacon/emergency-contact";
 
 describe("EmergencyContact", () => {
   const emptyEmergencyContactForm: FormJSON = {
@@ -73,15 +64,5 @@ describe("EmergencyContact", () => {
     const form = container.querySelectorAll("form")[1];
 
     expect(form).toHaveAttribute("action", "");
-  });
-
-  it("should redirect to the check answers page on valid form submission", async () => {
-    const context = {};
-    await getServerSideProps(context as GetServerSidePropsContext);
-
-    expect(handlePageRequest).toHaveBeenCalledWith(
-      "/register-a-beacon/check-your-answers",
-      expect.anything()
-    );
   });
 });
