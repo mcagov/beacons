@@ -10,80 +10,32 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { FormPageProps } from "../../lib/handlePageRequest";
+import { withCookiePolicy } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
 import { ofcomLicenseUrl, PageURLs } from "../../lib/urls";
+import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { makeRegistrationMapper } from "../../presenters/UseMapper";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoUseIndexRule } from "../../router/rules/IfNoUseIndexRule";
+import { IfUserSubmittedInvalidFormRule } from "../../router/rules/IfUserSubmittedInvalidFormRule";
+import { IfUserSubmittedValidFormRule } from "../../router/rules/IfUserSubmittedValidFormRule";
+import { IfUserViewedFormRule } from "../../router/rules/IfUserViewedFormRule";
 
-const matchingConditionIsTrueForKey = (key: string) => ({
-  dependsOn: key,
-  meetingCondition: (value) => value.includes("true"),
-});
-
-const definePageForm = ({
-  portableVhfRadio,
-  portableVhfRadioInput,
-  satelliteTelephone,
-  satelliteTelephoneInput,
-  mobileTelephone,
-  mobileTelephoneInput1,
-  mobileTelephoneInput2,
-  otherCommunication,
-  otherCommunicationInput,
-}: FormSubmission): FormManager => {
-  return new FormManager({
-    portableVhfRadio: new FieldManager(portableVhfRadio),
-    portableVhfRadioInput: new FieldManager(
-      portableVhfRadioInput,
-      [
-        Validators.required(
-          "We need your portable MMSI number if you have a portable VHF/DSC radio"
-        ),
-        Validators.mmsiNumber(
-          "Your portable MMSI number must be exactly nine digits long and only include numbers 0 to 9, with no letters or other characters"
-        ),
-      ],
-      [matchingConditionIsTrueForKey("portableVhfRadio")]
-    ),
-    satelliteTelephone: new FieldManager(satelliteTelephone),
-    satelliteTelephoneInput: new FieldManager(
-      satelliteTelephoneInput,
-      [
-        Validators.required(
-          "We need your phone number if you have a satellite telephone"
-        ),
-        Validators.phoneNumber(
-          "Enter a satellite telephone number in the correct format"
-        ),
-      ],
-      [matchingConditionIsTrueForKey("satelliteTelephone")]
-    ),
-    mobileTelephone: new FieldManager(mobileTelephone),
-    mobileTelephoneInput1: new FieldManager(
-      mobileTelephoneInput1,
-      [
-        Validators.required(
-          "We need your telephone number if you have a mobile telephone"
-        ),
-        Validators.phoneNumber(
-          "Enter a mobile telephone number, like 07700 982736 or +447700912738"
-        ),
-      ],
-      [matchingConditionIsTrueForKey("mobileTelephone")]
-    ),
-    mobileTelephoneInput2: new FieldManager(mobileTelephoneInput2),
-    otherCommunication: new FieldManager(otherCommunication),
-    otherCommunicationInput: new FieldManager(
-      otherCommunicationInput,
-      [
-        Validators.required("We need your other communication"),
-        Validators.maxLength(
-          "Other communication has too many characters",
-          250
-        ),
-      ],
-      [matchingConditionIsTrueForKey("otherCommunication")]
-    ),
-  });
-};
+interface LandCommunicationsForm {
+  portableVhfRadio: string;
+  portableVhfRadioInput: string;
+  satelliteTelephone: string;
+  satelliteTelephoneInput: string;
+  mobileTelephone: string;
+  mobileTelephoneInput1: string;
+  mobileTelephoneInput2: string;
+  otherCommunication: string;
+  otherCommunicationInput: string;
+}
 
 const LandCommunications: FunctionComponent<FormPageProps> = ({
   form,
@@ -207,9 +159,141 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/more-details",
-  definePageForm
+export const getServerSideProps: GetServerSideProps = withCookiePolicy(
+  withContainer(
+    withSession(async (context: BeaconsGetServerSidePropsContext) => {
+      const nextPage = PageURLs.moreDetails;
+
+      return await new BeaconsPageRouter([
+        new IfNoUseIndexRule(context),
+        new IfUserViewedFormRule<LandCommunicationsForm>(
+          context,
+          validationRules,
+          mapper(context)
+        ),
+        new IfUserSubmittedInvalidFormRule<LandCommunicationsForm>(
+          context,
+          validationRules,
+          mapper(context)
+        ),
+        new IfUserSubmittedValidFormRule<LandCommunicationsForm>(
+          context,
+          validationRules,
+          mapper(context),
+          nextPage
+        ),
+      ]).execute();
+    })
+  )
 );
+
+const mapper = (
+  context: BeaconsGetServerSidePropsContext
+): RegistrationFormMapper<LandCommunicationsForm> =>
+  (() => {
+    const beaconUseMapper: BeaconUseFormMapper<LandCommunicationsForm> = {
+      toDraftBeaconUse: (form) => ({
+        portableVhfRadio: form.portableVhfRadio,
+        portableVhfRadioInput: form.portableVhfRadioInput,
+        satelliteTelephone: form.satelliteTelephone,
+        satelliteTelephoneInput: form.satelliteTelephoneInput,
+        mobileTelephone: form.mobileTelephone,
+        mobileTelephoneInput1: form.mobileTelephoneInput1,
+        mobileTelephoneInput2: form.mobileTelephoneInput2,
+        otherCommunication: form.otherCommunication,
+        otherCommunicationInput: form.otherCommunicationInput,
+      }),
+      toForm: (draftBeaconUse) => ({
+        portableVhfRadio: draftBeaconUse.portableVhfRadio,
+        portableVhfRadioInput: draftBeaconUse.portableVhfRadioInput,
+        satelliteTelephone: draftBeaconUse.satelliteTelephone,
+        satelliteTelephoneInput: draftBeaconUse.satelliteTelephoneInput,
+        mobileTelephone: draftBeaconUse.mobileTelephone,
+        mobileTelephoneInput1: draftBeaconUse.mobileTelephoneInput1,
+        mobileTelephoneInput2: draftBeaconUse.mobileTelephoneInput2,
+        otherCommunication: draftBeaconUse.otherCommunication,
+        otherCommunicationInput: draftBeaconUse.otherCommunicationInput,
+      }),
+    };
+
+    const useIndex = parseInt(context.query.useIndex as string);
+
+    return makeRegistrationMapper<LandCommunicationsForm>(
+      useIndex,
+      beaconUseMapper
+    );
+  })();
+
+const validationRules = ({
+  portableVhfRadio,
+  portableVhfRadioInput,
+  satelliteTelephone,
+  satelliteTelephoneInput,
+  mobileTelephone,
+  mobileTelephoneInput1,
+  mobileTelephoneInput2,
+  otherCommunication,
+  otherCommunicationInput,
+}: FormSubmission): FormManager => {
+  const matchingConditionIsTrueForKey = (key: string) => ({
+    dependsOn: key,
+    meetingCondition: (value) => value.includes("true"),
+  });
+
+  return new FormManager({
+    portableVhfRadio: new FieldManager(portableVhfRadio),
+    portableVhfRadioInput: new FieldManager(
+      portableVhfRadioInput,
+      [
+        Validators.required(
+          "We need your portable MMSI number if you have a portable VHF/DSC radio"
+        ),
+        Validators.mmsiNumber(
+          "Your portable MMSI number must be exactly nine digits long and only include numbers 0 to 9, with no letters or other characters"
+        ),
+      ],
+      [matchingConditionIsTrueForKey("portableVhfRadio")]
+    ),
+    satelliteTelephone: new FieldManager(satelliteTelephone),
+    satelliteTelephoneInput: new FieldManager(
+      satelliteTelephoneInput,
+      [
+        Validators.required(
+          "We need your phone number if you have a satellite telephone"
+        ),
+        Validators.phoneNumber(
+          "Enter a satellite telephone number in the correct format"
+        ),
+      ],
+      [matchingConditionIsTrueForKey("satelliteTelephone")]
+    ),
+    mobileTelephone: new FieldManager(mobileTelephone),
+    mobileTelephoneInput1: new FieldManager(
+      mobileTelephoneInput1,
+      [
+        Validators.required(
+          "We need your telephone number if you have a mobile telephone"
+        ),
+        Validators.phoneNumber(
+          "Enter a mobile telephone number, like 07700 982736 or +447700912738"
+        ),
+      ],
+      [matchingConditionIsTrueForKey("mobileTelephone")]
+    ),
+    mobileTelephoneInput2: new FieldManager(mobileTelephoneInput2),
+    otherCommunication: new FieldManager(otherCommunication),
+    otherCommunicationInput: new FieldManager(
+      otherCommunicationInput,
+      [
+        Validators.required("We need your other communication"),
+        Validators.maxLength(
+          "Other communication has too many characters",
+          250
+        ),
+      ],
+      [matchingConditionIsTrueForKey("otherCommunication")]
+    ),
+  });
+};
 
 export default LandCommunications;
