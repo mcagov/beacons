@@ -18,27 +18,23 @@ export class IfNoUseIndex implements Rule {
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    const { getDraftRegistration } = this.context.container;
-
-    const draftRegistration: DraftRegistration = await getDraftRegistration(
-      this.context.req.cookies[formSubmissionCookieId]
-    );
-
-    const draftUsesExist = draftRegistration?.uses?.length > 0;
-
-    if (draftUsesExist) {
-      return this.sendUserToHighestUseIndex(draftRegistration);
-    }
+    if (await this.draftUsesExist()) return this.sendUserToHighestUseIndex();
 
     return this.createNewUseAndRedirectToIt();
   }
 
-  private sendUserToHighestUseIndex(
-    draftRegistration: DraftRegistration
-  ): GetServerSidePropsResult<any> {
+  private async draftUsesExist() {
+    return (await this.draftRegistration())?.uses?.length > 0;
+  }
+
+  private async sendUserToHighestUseIndex(): Promise<
+    GetServerSidePropsResult<any>
+  > {
     return redirectUserTo(
       this.context.req.url +
-        queryParams({ useIndex: draftRegistration.uses.length - 1 })
+        queryParams({
+          useIndex: (await this.draftRegistration()).uses.length - 1,
+        })
     );
   }
 
@@ -52,5 +48,11 @@ export class IfNoUseIndex implements Rule {
     );
 
     return redirectUserTo(this.context.req.url + queryParams({ useIndex: 0 }));
+  }
+
+  private async draftRegistration(): Promise<DraftRegistration> {
+    return await this.context.container.getDraftRegistration(
+      this.context.req.cookies[formSubmissionCookieId]
+    );
   }
 }

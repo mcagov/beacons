@@ -1,4 +1,5 @@
 import { GetServerSidePropsResult } from "next";
+import { DraftRegistration } from "../../entities/DraftRegistration";
 import { withoutErrorMessages } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
@@ -25,18 +26,24 @@ export class IfUserViewedRegistrationForm<T> implements Rule {
   }
 
   public async condition(): Promise<boolean> {
-    return this.context.req.method === "GET";
+    return this.isHttpGetRequest();
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    const { getDraftRegistration } = this.context.container;
+    return await this.showFormWithoutErrors();
+  }
 
-    const id = this.context.req.cookies[formSubmissionCookieId];
+  private isHttpGetRequest(): boolean {
+    return this.context.req.method === "GET";
+  }
 
+  private async showFormWithoutErrors(): Promise<
+    GetServerSidePropsResult<any>
+  > {
     return {
       props: {
         form: withoutErrorMessages<T>(
-          this.mapper.toForm(await getDraftRegistration(id)),
+          this.mapper.toForm(await this.draftRegistration()),
           this.validationRules
         ),
         showCookieBanner:
@@ -44,5 +51,15 @@ export class IfUserViewedRegistrationForm<T> implements Rule {
         ...(await this.additionalProps),
       },
     };
+  }
+
+  private async draftRegistration(): Promise<DraftRegistration> {
+    return await this.context.container.getDraftRegistration(
+      this.draftRegistrationId()
+    );
+  }
+
+  private draftRegistrationId(): string {
+    return this.context.req.cookies[formSubmissionCookieId];
   }
 }
