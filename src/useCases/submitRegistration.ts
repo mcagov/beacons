@@ -1,4 +1,6 @@
 import { IAppContainer } from "../lib/appContainer";
+import { Registration } from "../lib/registration/registration";
+import { IRegistration } from "../lib/registration/types";
 
 export type SubmitRegistrationFn = (
   submissionId: string,
@@ -20,7 +22,9 @@ export const submitRegistration =
     accountHolderApiGateway,
   }: Partial<IAppContainer>): SubmitRegistrationFn =>
   async (submissionId: string, accountHolderId: string) => {
-    const registration = await getDraftRegistration(submissionId);
+    const registration = new Registration(
+      (await getDraftRegistration(submissionId)) as IRegistration
+    );
     const accessToken = await getAccessToken();
 
     registration.setReferenceNumber(referenceNumber("A#", 7));
