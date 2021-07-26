@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "(trap 'kill 0' SIGINT; docker compose up redis & next dev)",
+    "dev": "(trap 'kill 0' SIGINT; docker compose up redis & NODE_OPTIONS='--unhandled-rejections=strict' next dev)",
     "build": "next build",
     "start": "next start",
     "test": "jest",
