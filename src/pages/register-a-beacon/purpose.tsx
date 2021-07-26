@@ -3,6 +3,7 @@ import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
+import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
@@ -14,6 +15,8 @@ import { withSession } from "../../lib/middleware/withSession";
 import { Environment, Purpose } from "../../lib/registration/types";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
+import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
@@ -116,28 +119,18 @@ const props = (
 
 const mapper = (context: BeaconsGetServerSidePropsContext) =>
   (() => {
+    const beaconUseMapper: BeaconUseFormMapper<PurposeForm> = {
+      toDraftBeaconUse: (form: PurposeForm): DraftBeaconUse => ({
+        purpose: form.purpose,
+      }),
+      toForm: (draftBeaconUse: DraftBeaconUse): PurposeForm => ({
+        purpose: draftBeaconUse.purpose as Purpose,
+      }),
+    };
+
     const useIndex = parseInt(context.query.useIndex as string);
 
-    return {
-      toDraftRegistration: (form) => {
-        return {
-          uses: new Array(useIndex > 1 ? useIndex - 1 : 1).fill({}).fill(
-            {
-              purpose: form.purpose,
-            },
-            useIndex,
-            useIndex + 1
-          ),
-        };
-      },
-      toForm: (draftRegistration) => {
-        return {
-          purpose: draftRegistration?.uses
-            ? (draftRegistration?.uses[useIndex]?.purpose as Purpose)
-            : null,
-        };
-      },
-    };
+    return makeRegistrationMapper<PurposeForm>(useIndex, beaconUseMapper);
   })();
 
 const validationRules = ({ purpose }: FormSubmission): FormManager => {
