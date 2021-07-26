@@ -48,7 +48,7 @@ export class IfUserSubmittedInvalidRegistrationForm<T> implements Rule {
           this.mapper.toForm(this.mapper.toDraftRegistration(form)),
           this.validationRules
         ),
-        ...this.additionalProps,
+        ...(await this.additionalProps),
       },
     };
   }
