@@ -1,7 +1,6 @@
 import Redis from "ioredis";
 import JSONCache from "redis-json";
 import { DraftRegistration } from "../entities/DraftRegistration";
-import { initBeaconUse } from "../lib/registration/registrationInitialisation";
 import { DraftRegistrationGateway } from "./DraftRegistrationGateway";
 
 export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
@@ -39,7 +38,7 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
 
     const registrationWithNewUse = {
       ...registration,
-      uses: [...(registration?.uses || []), initBeaconUse()],
+      uses: [...(registration?.uses || []), {}],
     };
 
     await this.update(submissionId, registrationWithNewUse);
