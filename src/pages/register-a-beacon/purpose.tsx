@@ -18,6 +18,7 @@ import { PageURLs } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
@@ -79,6 +80,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
       return await new BeaconsPageRouter([
         new IfNoUseIndex(context),
+        new IfNoDraftRegistration(context),
         new IfUserViewedRegistrationForm<PurposeForm>(
           context,
           validationRules,
@@ -113,7 +115,7 @@ const props = (
     const useIndex = parseInt(context.query.useIndex as string);
 
     return {
-      environment: draftRegistration.uses[useIndex].environment as Environment,
+      environment: draftRegistration.uses[useIndex]?.environment as Environment,
     };
   })();
 

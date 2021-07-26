@@ -22,6 +22,7 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
@@ -561,6 +562,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
       return await new BeaconsPageRouter([
         new IfNoUseIndex(context),
+        new IfNoDraftRegistration(context),
         new IfUserViewedRegistrationForm<ActivityForm>(
           context,
           validationRules,
@@ -577,85 +579,81 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
           context,
           validationRules,
           mapper(context),
-          nextPage(context)
+          await nextPage(context)
         ),
       ]).execute();
     })
   )
 );
 
-const nextPage = (
+const nextPage = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<PageURLs> =>
-  (async () => {
-    const { environment } = (
-      await context.container.getDraftRegistration(
-        context.req.cookies[formSubmissionCookieId]
-      )
-    ).uses[context.query.useIndex as string];
+): Promise<PageURLs> => {
+  const environment = (
+    await context.container.getDraftRegistration(
+      context.req.cookies[formSubmissionCookieId]
+    )
+  ).uses[context.query.useIndex as string]?.environment;
 
-    switch (environment) {
-      case Environment.MARITIME:
-        return PageURLs.aboutTheVessel;
-      case Environment.AVIATION:
-        return PageURLs.aboutTheAircraft;
-      case Environment.LAND:
-        return PageURLs.landCommunications;
-      default:
-        return PageURLs.environment;
-    }
-  })();
+  switch (environment) {
+    case Environment.MARITIME:
+      return PageURLs.aboutTheVessel;
+    case Environment.AVIATION:
+      return PageURLs.aboutTheAircraft;
+    case Environment.LAND:
+      return PageURLs.landCommunications;
+    default:
+      return PageURLs.environment;
+  }
+};
 
-const props = (
+const props = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<Partial<ActivityFormProps>> =>
-  (async () => {
-    const use: DraftBeaconUse = (
-      await context.container.getDraftRegistration(
-        context.req.cookies[formSubmissionCookieId]
-      )
-    ).uses[context.query.useIndex as string];
+): Promise<Partial<ActivityFormProps>> => {
+  const use: DraftBeaconUse = (
+    await context.container.getDraftRegistration(
+      context.req.cookies[formSubmissionCookieId]
+    )
+  ).uses[context.query.useIndex as string];
 
-    return {
-      environment: use.environment,
-      purpose: use.purpose,
-    };
-  })();
+  return {
+    environment: use?.environment,
+    purpose: use?.purpose,
+  };
+};
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext
-): RegistrationFormMapper<ActivityForm> =>
-  (() => {
-    const beaconUseMapper: BeaconUseFormMapper<ActivityForm> = {
-      toDraftBeaconUse: (form) => ({
-        environment: form.environment,
-        activity: form.activity,
-        otherActivityText: form.otherActivityText,
-        otherActivityLocation: form.otherActivityLocation,
-        otherActivityPeopleCount: form.otherActivityPeopleCount,
-        workingRemotelyLocation: form.workingRemotelyLocation,
-        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount,
-        windfarmLocation: form.windfarmLocation,
-        windfarmPeopleCount: form.windfarmPeopleCount,
-      }),
-      toForm: (draftRegistration) => ({
-        environment: draftRegistration.environment,
-        activity: draftRegistration.activity,
-        otherActivityText: draftRegistration.otherActivityText,
-        otherActivityLocation: draftRegistration.otherActivityLocation,
-        otherActivityPeopleCount: draftRegistration.otherActivityPeopleCount,
-        workingRemotelyLocation: draftRegistration.workingRemotelyLocation,
-        workingRemotelyPeopleCount:
-          draftRegistration.workingRemotelyPeopleCount,
-        windfarmLocation: draftRegistration.windfarmLocation,
-        windfarmPeopleCount: draftRegistration.windfarmPeopleCount,
-      }),
-    };
+): RegistrationFormMapper<ActivityForm> => {
+  const beaconUseMapper: BeaconUseFormMapper<ActivityForm> = {
+    toDraftBeaconUse: (form) => ({
+      environment: form.environment,
+      activity: form.activity,
+      otherActivityText: form.otherActivityText,
+      otherActivityLocation: form.otherActivityLocation,
+      otherActivityPeopleCount: form.otherActivityPeopleCount,
+      workingRemotelyLocation: form.workingRemotelyLocation,
+      workingRemotelyPeopleCount: form.workingRemotelyPeopleCount,
+      windfarmLocation: form.windfarmLocation,
+      windfarmPeopleCount: form.windfarmPeopleCount,
+    }),
+    toForm: (draftRegistration) => ({
+      environment: draftRegistration.environment,
+      activity: draftRegistration.activity,
+      otherActivityText: draftRegistration.otherActivityText,
+      otherActivityLocation: draftRegistration.otherActivityLocation,
+      otherActivityPeopleCount: draftRegistration.otherActivityPeopleCount,
+      workingRemotelyLocation: draftRegistration.workingRemotelyLocation,
+      workingRemotelyPeopleCount: draftRegistration.workingRemotelyPeopleCount,
+      windfarmLocation: draftRegistration.windfarmLocation,
+      windfarmPeopleCount: draftRegistration.windfarmPeopleCount,
+    }),
+  };
 
-    const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return makeRegistrationMapper<ActivityForm>(useIndex, beaconUseMapper);
-  })();
+  return makeRegistrationMapper<ActivityForm>(useIndex, beaconUseMapper);
+};
 
 const validationRules = ({
   environment,
