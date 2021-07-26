@@ -20,7 +20,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
     givenIHaveACookieSetAndIVisit(pageUrl);
   });
 
-  it.only("shows me the page title", () => {
+  it("shows me the page title", () => {
     iCanSeeAPageHeadingThatContains("Check beacon details");
   });
 
