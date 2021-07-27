@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
+import { PageURLs } from "../../../src/lib/urls";
 import VesselCommunications from "../../../src/pages/register-a-beacon/vessel-communications";
 
 describe("VesselCommunications", () => {
@@ -68,7 +69,7 @@ describe("VesselCommunications", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/about-the-vessel?useIndex=0"
+      PageURLs.aboutTheVessel
     );
   });
 

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
+import { PageURLs } from "../../../src/lib/urls";
 import EmergencyContact from "../../../src/pages/register-a-beacon/emergency-contact";
 
 describe("EmergencyContact", () => {
@@ -52,7 +53,7 @@ describe("EmergencyContact", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/beacon-owner-address?useIndex=0"
+      PageURLs.beaconOwnerAddress
     );
   });
 

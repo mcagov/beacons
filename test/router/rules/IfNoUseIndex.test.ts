@@ -71,7 +71,7 @@ describe("IfNoUseIndex", () => {
     });
 
     it("when there are no uses it creates a new use and sends the user to it", async () => {
-      const draftRegistrationNoUses: DraftRegistration = {};
+      const draftRegistrationNoUses: DraftRegistration = { uses: [] };
       const context = {
         container: {
           getDraftRegistration: jest

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
+import { PageURLs } from "../../../src/lib/urls";
 import AboutTheVessel from "../../../src/pages/register-a-beacon/about-the-vessel";
 
 describe("AboutTheVessel", () => {
@@ -55,12 +56,12 @@ describe("AboutTheVessel", () => {
     },
   };
 
-  it("should have a back button which directs the user to the about the vessel page", () => {
+  it("should have a back button which directs the user to the Activity page", () => {
     render(<AboutTheVessel form={aboutTheVesselForm} />);
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/activity?useIndex=0"
+      PageURLs.activity
     );
   });
 

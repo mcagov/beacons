@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
+import { PageURLs } from "../../../src/lib/urls";
 import AboutTheAircraft from "../../../src/pages/register-a-beacon/about-the-aircraft";
 
 describe("AboutTheAircraft", () => {
@@ -52,7 +53,7 @@ describe("AboutTheAircraft", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/activity?useIndex=0"
+      PageURLs.activity
     );
   });
 });

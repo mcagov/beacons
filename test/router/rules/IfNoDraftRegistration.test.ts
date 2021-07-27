@@ -46,6 +46,7 @@ describe("IfNoDraftRegistration", () => {
     it("doesn't trigger if the cookie exists and there is a DraftRegistration in the cache", async () => {
       const existingDraftRegistration: DraftRegistration = {
         hexId: "1D0E9B07CEFFBFF",
+        uses: [],
       };
       const context = {
         req: {
@@ -104,7 +105,9 @@ describe("IfNoDraftRegistration", () => {
         } as Partial<IAppContainer>,
       };
       const rule = new IfNoDraftRegistration(context as any);
-      const blankRegistration: DraftRegistration = {};
+      const blankRegistration: DraftRegistration = {
+        uses: [],
+      };
 
       const result: GetServerSidePropsResult<any> = await rule.action();
 
