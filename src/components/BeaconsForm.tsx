@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { FunctionComponent, ReactNode } from "react";
 import { FormError } from "../lib/form/formManager";
-import { BackButton, BackButtonRouterIndexes, Button } from "./Button";
+import { BackButton, Button } from "./Button";
 import { FormErrorSummary } from "./ErrorSummary";
 import { Form, FormFieldset, FormGroup, FormLegendPageHeading } from "./Form";
 import { Grid } from "./Grid";
@@ -28,20 +28,13 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   formErrors = [],
   errorMessages = [],
   pageText = null,
-  includeUseIndex = true,
 }: BeaconsFormProps): JSX.Element => {
-  const backButton: ReactNode = includeUseIndex ? (
-    <BackButtonRouterIndexes href={previousPageUrl} />
-  ) : (
-    <BackButton href={previousPageUrl} />
-  );
-
   const pageTextComponent: ReactNode =
     typeof pageText === "string" ? <GovUKBody>{pageText}</GovUKBody> : pageText;
 
   return (
     <Layout
-      navigation={backButton}
+      navigation={<BackButton href={previousPageUrl} />}
       title={pageHeading}
       showCookieBanner={showCookieBanner}
     >
