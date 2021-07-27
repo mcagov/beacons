@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, StartButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
@@ -9,25 +9,27 @@ import {
   PageHeading,
   SectionHeading,
 } from "../../components/Typography";
+import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
+import { DraftRegistration } from "../../entities/DraftRegistration";
 import { FormSubmission } from "../../lib/formCache";
-import {
-  decorateGetServerSidePropsContext,
-  withCookiePolicy,
-} from "../../lib/middleware";
-import {
-  BeaconUse,
-  Environment,
-  IRegistration,
-} from "../../lib/registration/types";
+import { withCookiePolicy } from "../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
+import { Environment } from "../../lib/registration/types";
+import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import {
   makeEnumValueUserFriendly,
   ordinal,
   sentenceCase,
 } from "../../lib/writingStyle";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
+import { IfUserViewedNonFormPage } from "../../router/rules/IfUserViewedNonFormPage";
 
 interface CheckYourAnswersProps {
-  registration: IRegistration;
+  registration: DraftRegistration;
 }
 
 interface CheckYourAnswersDataRowItemProps {
@@ -37,7 +39,7 @@ interface CheckYourAnswersDataRowItemProps {
 
 interface CheckYourAnswersBeaconUseSectionProps {
   index: number;
-  use: BeaconUse;
+  use: DraftBeaconUse;
   href?: string;
 }
 
@@ -97,11 +99,11 @@ const CheckYourAnswersDataRowItem: FunctionComponent<CheckYourAnswersDataRowItem
     </>
   );
 
-const BeaconDetailsSection: FunctionComponent<IRegistration> = ({
+const BeaconDetailsSection: FunctionComponent<DraftRegistration> = ({
   manufacturer,
   model,
   hexId,
-}: IRegistration): JSX.Element => (
+}: DraftRegistration): JSX.Element => (
   <>
     <SectionHeading>About the beacon being registered</SectionHeading>
 
@@ -121,14 +123,14 @@ const BeaconDetailsSection: FunctionComponent<IRegistration> = ({
   </>
 );
 
-const BeaconInformationSection: FunctionComponent<IRegistration> = ({
+const BeaconInformationSection: FunctionComponent<DraftRegistration> = ({
   manufacturerSerialNumber,
   chkCode,
   batteryExpiryDateMonth,
   batteryExpiryDateYear,
   lastServicedDateMonth,
   lastServicedDateYear,
-}: IRegistration): JSX.Element => (
+}: DraftRegistration): JSX.Element => (
   <>
     <SummaryList>
       <SummaryListItem
@@ -463,12 +465,12 @@ const MoreDetailsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSectionP
     );
   };
 
-const BeaconOwnerSection: FunctionComponent<IRegistration> = ({
+const BeaconOwnerSection: FunctionComponent<DraftRegistration> = ({
   ownerFullName,
   ownerTelephoneNumber,
   ownerAlternativeTelephoneNumber,
   ownerEmail,
-}: IRegistration): JSX.Element => (
+}: DraftRegistration): JSX.Element => (
   <>
     <SectionHeading>About the beacon owner</SectionHeading>
 
@@ -486,13 +488,13 @@ const BeaconOwnerSection: FunctionComponent<IRegistration> = ({
   </>
 );
 
-const BeaconOwnerAddressSection: FunctionComponent<IRegistration> = ({
+const BeaconOwnerAddressSection: FunctionComponent<DraftRegistration> = ({
   ownerAddressLine1,
   ownerAddressLine2,
   ownerTownOrCity,
   ownerCounty,
   ownerPostcode,
-}: IRegistration): JSX.Element => {
+}: DraftRegistration): JSX.Element => {
   return (
     <>
       <SummaryList>
@@ -581,13 +583,26 @@ const SendYourApplication: FunctionComponent = (): JSX.Element => (
 );
 
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  async (context: GetServerSidePropsContext) => {
-    const decoratedContext = await decorateGetServerSidePropsContext(context);
-
-    return {
-      props: { registration: decoratedContext.registration.registration },
-    };
-  }
+  withSession(
+    withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+      return await new BeaconsPageRouter([
+        new IfNoDraftRegistration(context),
+        new IfUserViewedNonFormPage(context, props(context)),
+      ]).execute();
+    })
+  )
 );
+
+const props = async (
+  context: BeaconsGetServerSidePropsContext
+): Promise<Partial<CheckYourAnswersProps>> => {
+  const draftRegistration = await context.container.getDraftRegistration(
+    context.req.cookies[formSubmissionCookieId]
+  );
+
+  return {
+    registration: draftRegistration,
+  };
+};
 
 export default CheckYourAnswersPage;
