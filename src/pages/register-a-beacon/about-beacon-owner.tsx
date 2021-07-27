@@ -16,7 +16,6 @@ import { PageURLs, queryParams } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
-import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -127,7 +126,6 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
       return await new BeaconsPageRouter([
         new IfNoDraftRegistration(context),
-        new IfNoUseIndex(context), // A specified use is required by this page for the back button
         new IfUserViewedRegistrationForm<AboutBeaconOwnerForm>(
           context,
           validationRules,
@@ -154,13 +152,16 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 const props = async (
   context: BeaconsGetServerSidePropsContext
 ): Promise<Partial<AboutBeaconOwnerFormProps>> => {
-  const draftRegistration = await context.container.getDraftRegistration(
-    context.req.cookies[formSubmissionCookieId]
-  );
+  const uses =
+    (
+      await context.container.getDraftRegistration(
+        context.req.cookies[formSubmissionCookieId]
+      )
+    )?.uses || [];
 
   const previousPageUrl =
     PageURLs.additionalUse +
-    queryParams({ useIndex: draftRegistration.uses.length - 1 });
+    queryParams({ useIndex: uses.length > 1 ? uses.length - 1 : 0 });
 
   return {
     previousPageUrl,
