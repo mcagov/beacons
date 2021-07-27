@@ -3,7 +3,6 @@ import { isValid } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
-import { draftRegistrationId as id } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { Rule } from "./Rule";
@@ -42,7 +41,7 @@ export class IfUserSubmittedValidRegistrationForm<T> implements Rule {
     const form = await this.context.container.parseFormDataAs(this.context.req);
 
     await this.context.container.saveDraftRegistration(
-      id(this.context),
+      this.context.req.cookies["submissionId"],
       this.mapper.toDraftRegistration(form as T)
     );
 
