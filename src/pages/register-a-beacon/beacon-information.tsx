@@ -228,6 +228,7 @@ const mapper: RegistrationFormMapper<BeaconInformationForm> = {
     ),
     lastServicedDateYear: form.lastServicedDateYear,
     lastServicedDateMonth: form.lastServicedDateMonth,
+    uses: [],
   }),
   toForm: (draftRegistration) => ({
     manufacturerSerialNumber: draftRegistration?.manufacturerSerialNumber,

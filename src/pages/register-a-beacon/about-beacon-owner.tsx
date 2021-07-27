@@ -15,6 +15,8 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs, queryParams } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
+import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -124,6 +126,8 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPageUrl = PageURLs.beaconOwnerAddress;
 
       return await new BeaconsPageRouter([
+        new IfNoDraftRegistration(context),
+        new IfNoUseIndex(context), // A specified use is required by this page for the back button
         new IfUserViewedRegistrationForm<AboutBeaconOwnerForm>(
           context,
           validationRules,
@@ -169,6 +173,7 @@ const mapper: RegistrationFormMapper<AboutBeaconOwnerForm> = {
     ownerTelephoneNumber: form.ownerTelephoneNumber,
     ownerAlternativeTelephoneNumber: form.ownerAlternativeTelephoneNumber,
     ownerEmail: form.ownerEmail,
+    uses: [],
   }),
   toForm: (draftRegistration) => ({
     ownerFullName: draftRegistration.ownerFullName,

@@ -216,18 +216,22 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const mapper: RegistrationFormMapper<EmergencyContactForm> = {
   toDraftRegistration: (form) => ({
-    emergencyContact1FullName: form.emergencyContact1FullName,
-    emergencyContact1TelephoneNumber: form.emergencyContact1TelephoneNumber,
+    emergencyContact1FullName: form.emergencyContact1FullName || null,
+    emergencyContact1TelephoneNumber:
+      form.emergencyContact1TelephoneNumber || null,
     emergencyContact1AlternativeTelephoneNumber:
-      form.emergencyContact1AlternativeTelephoneNumber,
-    emergencyContact2FullName: form.emergencyContact2FullName,
-    emergencyContact2TelephoneNumber: form.emergencyContact2TelephoneNumber,
+      form.emergencyContact1AlternativeTelephoneNumber || null,
+    emergencyContact2FullName: form.emergencyContact2FullName || null,
+    emergencyContact2TelephoneNumber:
+      form.emergencyContact2TelephoneNumber || null,
     emergencyContact2AlternativeTelephoneNumber:
-      form.emergencyContact2AlternativeTelephoneNumber,
-    emergencyContact3FullName: form.emergencyContact3FullName,
-    emergencyContact3TelephoneNumber: form.emergencyContact3TelephoneNumber,
+      form.emergencyContact2AlternativeTelephoneNumber || null,
+    emergencyContact3FullName: form.emergencyContact3FullName || null,
+    emergencyContact3TelephoneNumber:
+      form.emergencyContact3TelephoneNumber || null,
     emergencyContact3AlternativeTelephoneNumber:
-      form.emergencyContact3AlternativeTelephoneNumber,
+      form.emergencyContact3AlternativeTelephoneNumber || null,
+    uses: [],
   }),
   toForm: (draftRegistration) => ({
     emergencyContact1FullName: draftRegistration.emergencyContact1FullName,

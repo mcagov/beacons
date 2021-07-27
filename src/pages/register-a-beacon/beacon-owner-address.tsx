@@ -164,11 +164,12 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const mapper: RegistrationFormMapper<BeaconOwnerAddressForm> = {
   toDraftRegistration: (form) => ({
-    ownerAddressLine1: form.ownerAddressLine1,
-    ownerAddressLine2: form.ownerAddressLine2,
-    ownerTownOrCity: form.ownerTownOrCity,
-    ownerCounty: form.ownerCounty,
-    ownerPostcode: form.ownerPostcode,
+    ownerAddressLine1: form.ownerAddressLine1 || null,
+    ownerAddressLine2: form.ownerAddressLine2 || null,
+    ownerTownOrCity: form.ownerTownOrCity || null,
+    ownerCounty: form.ownerCounty || null,
+    ownerPostcode: form.ownerPostcode || null,
+    uses: [],
   }),
   toForm: (draftRegistration) => ({
     ownerAddressLine1: draftRegistration.ownerAddressLine1,

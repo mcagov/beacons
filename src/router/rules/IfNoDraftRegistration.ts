@@ -30,7 +30,9 @@ export class IfNoDraftRegistration implements Rule {
   }
 
   private async createBlankDraftRegistration(): Promise<void> {
-    const blankDraftRegistration: DraftRegistration = {};
+    const blankDraftRegistration: DraftRegistration = {
+      uses: [],
+    };
 
     await this.context.container.saveDraftRegistration(
       this.cookieId(),

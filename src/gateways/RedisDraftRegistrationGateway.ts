@@ -23,7 +23,7 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
   }
 
   public async read(id: string): Promise<DraftRegistration> {
-    return await this.cache.get(id);
+    return (await this.cache.get(id)) as Promise<DraftRegistration>;
   }
 
   public async update(

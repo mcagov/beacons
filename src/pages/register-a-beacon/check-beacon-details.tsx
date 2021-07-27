@@ -134,14 +134,15 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 export const mapper: RegistrationFormMapper<CheckBeaconDetailsForm> = {
   toDraftRegistration: (form) => ({
-    manufacturer: form.manufacturer,
-    model: form.model,
-    hexId: toUpperCase(form.hexId),
+    manufacturer: form.manufacturer || null,
+    model: form.model || null,
+    hexId: toUpperCase(form.hexId) || null,
+    uses: [],
   }),
   toForm: (draftRegistration) => ({
-    manufacturer: draftRegistration?.manufacturer || "",
-    model: draftRegistration?.model || "",
-    hexId: draftRegistration?.hexId || "",
+    manufacturer: draftRegistration?.manufacturer,
+    model: draftRegistration?.model,
+    hexId: draftRegistration?.hexId,
   }),
 };
 
