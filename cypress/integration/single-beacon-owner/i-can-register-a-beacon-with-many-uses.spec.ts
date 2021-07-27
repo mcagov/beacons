@@ -62,7 +62,7 @@ import {
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a single beacon owner with many uses", () => {
-  it.only("I can register my beacon for a land, maritime pleasure, and aviation pleasure use", () => {
+  it("I can register my beacon for a land, maritime pleasure, and aviation pleasure use", () => {
     givenIHaveEnteredMyBeaconDetails();
     iCanSeeAPageHeadingThatContains("main use");
     givenIHaveEnteredMyLandUse();

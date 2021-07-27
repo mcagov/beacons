@@ -39,7 +39,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
               href={
                 PageURLs.moreDetails +
                 queryParams({
-                  useIndex: currentUseIndex || uses.length - 1,
+                  useIndex: currentUseIndex,
                 })
               }
             />

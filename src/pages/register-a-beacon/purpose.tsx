@@ -14,7 +14,7 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { Environment, Purpose } from "../../lib/registration/types";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs } from "../../lib/urls";
+import { PageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
@@ -32,12 +32,14 @@ interface PurposeFormProps {
   form: FormJSON;
   showCookieBanner: boolean;
   environment: Environment;
+  useIndex: number;
 }
 
 const PurposePage: FunctionComponent<PurposeFormProps> = ({
   form,
   showCookieBanner,
   environment,
+  useIndex,
 }: PurposeFormProps): JSX.Element => {
   const pageHeading = `Is your ${environment.toLowerCase()} use of this beacon mainly for pleasure or commercial reasons?`;
   const beaconUsePurposeFieldName = "purpose";
@@ -45,7 +47,7 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
-      previousPageUrl="/register-a-beacon/beacon-use"
+      previousPageUrl={PageURLs.environment + queryParams({ useIndex })}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
     >
@@ -115,6 +117,7 @@ const props = async (
 
   return {
     environment: draftRegistration.uses[useIndex]?.environment as Environment,
+    useIndex,
   };
 };
 

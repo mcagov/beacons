@@ -15,7 +15,7 @@ import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { PageURLs } from "../../lib/urls";
+import { PageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
@@ -42,6 +42,7 @@ interface AboutTheVesselForm {
 const AboutTheVessel: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
+  useIndex,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "About the vessel, windfarm or rig/platform";
 
@@ -54,7 +55,7 @@ const AboutTheVessel: FunctionComponent<FormPageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl={PageURLs.activity}
+      previousPageUrl={PageURLs.activity + queryParams({ useIndex })}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
@@ -249,12 +250,14 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
         new IfUserViewedRegistrationForm<AboutTheVesselForm>(
           context,
           validationRules,
-          mapper(context)
+          mapper(context),
+          props(context)
         ),
         new IfUserSubmittedInvalidRegistrationForm<AboutTheVesselForm>(
           context,
           validationRules,
-          mapper(context)
+          mapper(context),
+          props(context)
         ),
         new IfUserSubmittedValidRegistrationForm<AboutTheVesselForm>(
           context,
@@ -266,6 +269,12 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
     })
   )
 );
+
+const props = (
+  context: BeaconsGetServerSidePropsContext
+): Partial<FormPageProps> => ({
+  useIndex: parseInt(context.query.useIndex as string),
+});
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext

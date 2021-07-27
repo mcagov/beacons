@@ -19,7 +19,7 @@ import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { PageURLs } from "../../lib/urls";
+import { PageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
@@ -44,12 +44,13 @@ interface AboutTheAircraftForm {
 const AboutTheAircraft: FunctionComponent<FormPageProps> = ({
   form,
   showCookieBanner,
+  useIndex,
 }: FormPageProps): JSX.Element => {
   const pageHeading = "About the aircraft";
 
   return (
     <BeaconsForm
-      previousPageUrl="/register-a-beacon/activity"
+      previousPageUrl={PageURLs.activity + queryParams({ useIndex })}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
@@ -234,12 +235,14 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
         new IfUserViewedRegistrationForm<AboutTheAircraftForm>(
           context,
           validationRules,
-          mapper(context)
+          mapper(context),
+          props(context)
         ),
         new IfUserSubmittedInvalidRegistrationForm<AboutTheAircraftForm>(
           context,
           validationRules,
-          mapper(context)
+          mapper(context),
+          props(context)
         ),
         new IfUserSubmittedValidRegistrationForm<AboutTheAircraftForm>(
           context,
@@ -251,6 +254,12 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
     })
   )
 );
+
+const props = (
+  context: BeaconsGetServerSidePropsContext
+): Partial<FormPageProps> => ({
+  useIndex: parseInt(context.query.useIndex as string),
+});
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext

@@ -17,7 +17,7 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { Activity, Environment, Purpose } from "../../lib/registration/types";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs } from "../../lib/urls";
+import { PageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
@@ -40,17 +40,19 @@ interface ActivityForm {
   windfarmPeopleCount;
 }
 
-interface ActivityFormProps extends FormPageProps {
+interface ActivityPageProps extends FormPageProps {
   environment;
   purpose;
+  useIndex;
 }
 
-const ActivityPage: FunctionComponent<ActivityFormProps> = ({
+const ActivityPage: FunctionComponent<ActivityPageProps> = ({
   form,
   showCookieBanner,
   environment,
   purpose,
-}: ActivityFormProps): JSX.Element => {
+  useIndex,
+}: ActivityPageProps): JSX.Element => {
   const pageHeading = `Please select the ${
     environment === Environment.LAND
       ? environment.toLowerCase()
@@ -72,12 +74,13 @@ const ActivityPage: FunctionComponent<ActivityFormProps> = ({
     </>
   );
 
-  const previousPageUrl =
-    environment === Environment.LAND ? PageURLs.environment : PageURLs.purpose;
-
   return (
     <BeaconsForm
-      previousPageUrl={previousPageUrl}
+      previousPageUrl={
+        (environment === Environment.LAND
+          ? PageURLs.environment
+          : PageURLs.purpose) + queryParams({ useIndex })
+      }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
@@ -609,7 +612,7 @@ const nextPage = async (
 
 const props = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<Partial<ActivityFormProps>> => {
+): Promise<Partial<ActivityPageProps>> => {
   const use: DraftBeaconUse = (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId]
@@ -619,6 +622,7 @@ const props = async (
   return {
     environment: use?.environment || null,
     purpose: use?.purpose || null,
+    useIndex: parseInt(context.query.useIndex as string),
   };
 };
 
