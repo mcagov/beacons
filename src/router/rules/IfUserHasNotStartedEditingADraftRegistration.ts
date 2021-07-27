@@ -6,7 +6,7 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
-export class IfNoDraftRegistration implements Rule {
+export class IfUserHasNotStartedEditingADraftRegistration implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
 
   constructor(context: BeaconsGetServerSidePropsContext) {

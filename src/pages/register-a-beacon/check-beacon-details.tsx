@@ -9,7 +9,6 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
-import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -17,6 +16,7 @@ import { PageURLs } from "../../lib/urls";
 import { toUpperCase } from "../../lib/writingStyle";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -109,27 +109,26 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withContainer(
-    withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const nextPageUrl = PageURLs.beaconInformation;
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPageUrl = PageURLs.beaconInformation;
 
-      return await new BeaconsPageRouter([
-        new IfUserViewedRegistrationForm(context, validationRules, mapper),
-        new IfUserSubmittedInvalidRegistrationForm(
-          context,
-          validationRules,
-          mapper
-        ),
-        new IfUserSubmittedValidRegistrationForm(
-          context,
-          validationRules,
-          mapper,
-          nextPageUrl
-        ),
-      ]).execute();
-    })
-  )
+    return await new BeaconsPageRouter([
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm(context, validationRules, mapper),
+      new IfUserSubmittedInvalidRegistrationForm(
+        context,
+        validationRules,
+        mapper
+      ),
+      new IfUserSubmittedValidRegistrationForm(
+        context,
+        validationRules,
+        mapper,
+        nextPageUrl
+      ),
+    ]).execute();
+  })
 );
 
 export const mapper: RegistrationFormMapper<CheckBeaconDetailsForm> = {

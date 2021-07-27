@@ -7,10 +7,9 @@ import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
+import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
-import { withCookiePolicy } from "../../lib/middleware";
+import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -20,6 +19,7 @@ import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrat
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -35,11 +35,11 @@ interface AircraftCommunicationsForm {
   otherCommunicationInput: string;
 }
 
-const AircraftCommunications: FunctionComponent<DraftRegistrationPageProps> = ({
+const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
   useIndex,
-}: DraftRegistrationPageProps): JSX.Element => {
+}: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = "How can we communicate with you, when on this aircraft?";
   const pageText = (
     <GovUKBody>
@@ -60,9 +60,11 @@ const AircraftCommunications: FunctionComponent<DraftRegistrationPageProps> = ({
   );
 };
 
-const TypesOfCommunication: FunctionComponent<DraftRegistrationPageProps> = ({
+const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
   form,
-}: DraftRegistrationPageProps) => (
+}: {
+  form: FormJSON;
+}) => (
   <FormFieldset>
     <FormLegend size="small">
       Tick all that apply and provide as much detail as you can
@@ -139,39 +141,38 @@ const TypesOfCommunication: FunctionComponent<DraftRegistrationPageProps> = ({
   </FormFieldset>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withContainer(
-    withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const nextPage = PageURLs.moreDetails;
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPage = PageURLs.moreDetails;
 
-      return await new BeaconsPageRouter([
-        new IfNoUseIndex(context),
-        new IfUserViewedRegistrationForm<AircraftCommunicationsForm>(
-          context,
-          validationRules,
-          mapper(context),
-          props(context)
-        ),
-        new IfUserSubmittedInvalidRegistrationForm<AircraftCommunicationsForm>(
-          context,
-          validationRules,
-          mapper(context),
-          props(context)
-        ),
-        new IfUserSubmittedValidRegistrationForm<AircraftCommunicationsForm>(
-          context,
-          validationRules,
-          mapper(context),
-          nextPage
-        ),
-      ]).execute();
-    })
-  )
+    return await new BeaconsPageRouter([
+      new IfNoUseIndex(context),
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<AircraftCommunicationsForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<AircraftCommunicationsForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedValidRegistrationForm<AircraftCommunicationsForm>(
+        context,
+        validationRules,
+        mapper(context),
+        nextPage
+      ),
+    ]).execute();
+  })
 );
 
 const props = (
   context: BeaconsGetServerSidePropsContext
-): Partial<DraftRegistrationPageProps> => ({
+): Partial<DraftBeaconUsePageProps> => ({
   useIndex: parseInt(context.query.useIndex as string),
 });
 

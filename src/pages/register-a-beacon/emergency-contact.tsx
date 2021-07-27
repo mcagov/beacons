@@ -20,14 +20,13 @@ import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
-import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -188,32 +187,30 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withContainer(
-    withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const nextPageUrl = PageURLs.checkYourAnswers;
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPageUrl = PageURLs.checkYourAnswers;
 
-      return await new BeaconsPageRouter([
-        new IfNoDraftRegistration(context),
-        new IfUserViewedRegistrationForm<EmergencyContactForm>(
-          context,
-          validationRules,
-          mapper
-        ),
-        new IfUserSubmittedInvalidRegistrationForm<EmergencyContactForm>(
-          context,
-          validationRules,
-          mapper
-        ),
-        new IfUserSubmittedValidRegistrationForm<EmergencyContactForm>(
-          context,
-          validationRules,
-          mapper,
-          nextPageUrl
-        ),
-      ]).execute();
-    })
-  )
+    return await new BeaconsPageRouter([
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<EmergencyContactForm>(
+        context,
+        validationRules,
+        mapper
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<EmergencyContactForm>(
+        context,
+        validationRules,
+        mapper
+      ),
+      new IfUserSubmittedValidRegistrationForm<EmergencyContactForm>(
+        context,
+        validationRules,
+        mapper,
+        nextPageUrl
+      ),
+    ]).execute();
+  })
 );
 
 const mapper: RegistrationFormMapper<EmergencyContactForm> = {

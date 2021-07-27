@@ -7,8 +7,7 @@ import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
-import { withCookiePolicy } from "../../lib/middleware";
+import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -18,8 +17,8 @@ import { ordinal } from "../../lib/writingStyle";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -28,11 +27,11 @@ interface BeaconUseForm {
   environment: Environment;
 }
 
-const BeaconUse: FunctionComponent<DraftRegistrationPageProps> = ({
+const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
   useIndex,
-}: DraftRegistrationPageProps): JSX.Element => {
+}: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = `What is the ${ordinal(
     useIndex + 1
   )} use for this beacon?`;
@@ -103,38 +102,36 @@ const BeaconUse: FunctionComponent<DraftRegistrationPageProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withContainer(
-    withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      return await new BeaconsPageRouter([
-        new IfNoUseIndex(context),
-        new IfNoDraftRegistration(context),
-        new IfUserViewedRegistrationForm<BeaconUseForm>(
-          context,
-          validationRules,
-          mapper(context),
-          props(context)
-        ),
-        new IfUserSubmittedInvalidRegistrationForm<BeaconUseForm>(
-          context,
-          validationRules,
-          mapper(context),
-          props(context)
-        ),
-        new IfUserSubmittedValidRegistrationForm<BeaconUseForm>(
-          context,
-          validationRules,
-          mapper(context),
-          await nextPage(context)
-        ),
-      ]).execute();
-    })
-  )
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    return await new BeaconsPageRouter([
+      new IfNoUseIndex(context),
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<BeaconUseForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<BeaconUseForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedValidRegistrationForm<BeaconUseForm>(
+        context,
+        validationRules,
+        mapper(context),
+        await nextPage(context)
+      ),
+    ]).execute();
+  })
 );
 
 const props = (
   context: BeaconsGetServerSidePropsContext
-): Partial<DraftRegistrationPageProps> => ({
+): Partial<DraftBeaconUsePageProps> => ({
   useIndex: parseInt(context.query.useIndex as string),
 });
 

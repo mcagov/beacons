@@ -12,10 +12,13 @@ export class IfUserViewedSimpleForm extends SimpleFormRule {
     return {
       props: {
         form: withoutErrorMessages({}, this.validationRules),
-        showCookieBanner:
-          this.context.req.cookies[acceptRejectCookieId] || true,
+        showCookieBanner: this.userHasNotHiddenEssentialCookieBanner(),
         ...(await this.additionalProps),
       },
     };
+  }
+
+  private userHasNotHiddenEssentialCookieBanner(): boolean {
+    return !this.context.req.cookies[acceptRejectCookieId];
   }
 }

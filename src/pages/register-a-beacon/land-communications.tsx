@@ -7,11 +7,10 @@ import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { AnchorLink, GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
+import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
-import { withCookiePolicy } from "../../lib/middleware";
+import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -21,6 +20,7 @@ import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrat
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -37,11 +37,11 @@ interface LandCommunicationsForm {
   otherCommunicationInput: string;
 }
 
-const LandCommunications: FunctionComponent<DraftRegistrationPageProps> = ({
+const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
   useIndex,
-}: DraftRegistrationPageProps): JSX.Element => {
+}: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = "How can we communicate with you?";
 
   const pageText = (
@@ -75,9 +75,11 @@ const LandCommunications: FunctionComponent<DraftRegistrationPageProps> = ({
   );
 };
 
-const TypesOfCommunication: FunctionComponent<DraftRegistrationPageProps> = ({
+const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
   form,
-}: DraftRegistrationPageProps) => (
+}: {
+  form: FormJSON;
+}) => (
   <FormGroup>
     <CheckboxList conditional={true}>
       <CheckboxListItem
@@ -160,39 +162,38 @@ const TypesOfCommunication: FunctionComponent<DraftRegistrationPageProps> = ({
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withContainer(
-    withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const nextPage = PageURLs.moreDetails;
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPage = PageURLs.moreDetails;
 
-      return await new BeaconsPageRouter([
-        new IfNoUseIndex(context),
-        new IfUserViewedRegistrationForm<LandCommunicationsForm>(
-          context,
-          validationRules,
-          mapper(context),
-          props(context)
-        ),
-        new IfUserSubmittedInvalidRegistrationForm<LandCommunicationsForm>(
-          context,
-          validationRules,
-          mapper(context),
-          props(context)
-        ),
-        new IfUserSubmittedValidRegistrationForm<LandCommunicationsForm>(
-          context,
-          validationRules,
-          mapper(context),
-          nextPage
-        ),
-      ]).execute();
-    })
-  )
+    return await new BeaconsPageRouter([
+      new IfNoUseIndex(context),
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<LandCommunicationsForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<LandCommunicationsForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedValidRegistrationForm<LandCommunicationsForm>(
+        context,
+        validationRules,
+        mapper(context),
+        nextPage
+      ),
+    ]).execute();
+  })
 );
 
 const props = (
   context: BeaconsGetServerSidePropsContext
-): Partial<DraftRegistrationPageProps> => ({
+): Partial<DraftBeaconUsePageProps> => ({
   useIndex: parseInt(context.query.useIndex as string),
 });
 

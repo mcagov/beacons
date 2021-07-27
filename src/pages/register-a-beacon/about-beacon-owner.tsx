@@ -7,7 +7,6 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -15,7 +14,7 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs, queryParams } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -119,34 +118,32 @@ const EmailAddress: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withContainer(
-    withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const nextPageUrl = PageURLs.beaconOwnerAddress;
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPageUrl = PageURLs.beaconOwnerAddress;
 
-      return await new BeaconsPageRouter([
-        new IfNoDraftRegistration(context),
-        new IfUserViewedRegistrationForm<AboutBeaconOwnerForm>(
-          context,
-          validationRules,
-          mapper,
-          props(context)
-        ),
-        new IfUserSubmittedInvalidRegistrationForm<AboutBeaconOwnerForm>(
-          context,
-          validationRules,
-          mapper,
-          props(context)
-        ),
-        new IfUserSubmittedValidRegistrationForm<AboutBeaconOwnerForm>(
-          context,
-          validationRules,
-          mapper,
-          nextPageUrl
-        ),
-      ]).execute();
-    })
-  )
+    return await new BeaconsPageRouter([
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<AboutBeaconOwnerForm>(
+        context,
+        validationRules,
+        mapper,
+        props(context)
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<AboutBeaconOwnerForm>(
+        context,
+        validationRules,
+        mapper,
+        props(context)
+      ),
+      new IfUserSubmittedValidRegistrationForm<AboutBeaconOwnerForm>(
+        context,
+        validationRules,
+        mapper,
+        nextPageUrl
+      ),
+    ]).execute();
+  })
 );
 
 const props = async (

@@ -6,7 +6,6 @@ import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { GovUKBody, PageHeading } from "../../components/Typography";
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
-import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -15,6 +14,7 @@ import { ActionURLs, PageURLs, queryParams } from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserViewedNonFormPage } from "../../router/rules/IfUserViewedNonFormPage";
 
 interface AdditionalBeaconUseProps {
@@ -118,15 +118,14 @@ const confirmBeforeDelete = (use, index) =>
     no: PageURLs.additionalUse + queryParams({ useIndex: index }),
   });
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withSession(
-    withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-      return await new BeaconsPageRouter([
-        new IfNoUseIndex(context),
-        new IfUserViewedNonFormPage(context, props(context)),
-      ]).execute();
-    })
-  )
+export const getServerSideProps: GetServerSideProps = withSession(
+  withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+    return await new BeaconsPageRouter([
+      new IfNoUseIndex(context),
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedNonFormPage(context, props(context)),
+    ]).execute();
+  })
 );
 
 const props = async (

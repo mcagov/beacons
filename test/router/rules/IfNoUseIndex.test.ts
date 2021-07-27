@@ -111,7 +111,7 @@ describe("IfNoUseIndex", () => {
   //         },
   //       },
   //     };
-  //     const rule = new IfNoDraftRegistration(context as any);
+  //     const rule = new IfUserHasNotStartedEditingADraftRegistration(context as any);
   //
   //     const result: GetServerSidePropsResult<any> = await rule.action();
   //
@@ -135,7 +135,7 @@ describe("IfNoUseIndex", () => {
   //         saveDraftRegistration: jest.fn(),
   //       } as Partial<IAppContainer>,
   //     };
-  //     const rule = new IfNoDraftRegistration(context as any);
+  //     const rule = new IfUserHasNotStartedEditingADraftRegistration(context as any);
   //     const blankRegistration: DraftRegistration = {};
   //
   //     const result: GetServerSidePropsResult<any> = await rule.action();

@@ -11,7 +11,6 @@ import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
-import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -21,6 +20,7 @@ import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrat
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -240,34 +240,33 @@ const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
   />
 );
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withContainer(
-    withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const nextPage = PageURLs.vesselCommunications;
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPage = PageURLs.vesselCommunications;
 
-      return await new BeaconsPageRouter([
-        new IfNoUseIndex(context),
-        new IfUserViewedRegistrationForm<AboutTheVesselForm>(
-          context,
-          validationRules,
-          mapper(context),
-          props(context)
-        ),
-        new IfUserSubmittedInvalidRegistrationForm<AboutTheVesselForm>(
-          context,
-          validationRules,
-          mapper(context),
-          props(context)
-        ),
-        new IfUserSubmittedValidRegistrationForm<AboutTheVesselForm>(
-          context,
-          validationRules,
-          mapper(context),
-          nextPage
-        ),
-      ]).execute();
-    })
-  )
+    return await new BeaconsPageRouter([
+      new IfNoUseIndex(context),
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<AboutTheVesselForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<AboutTheVesselForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedValidRegistrationForm<AboutTheVesselForm>(
+        context,
+        validationRules,
+        mapper(context),
+        nextPage
+      ),
+    ]).execute();
+  })
 );
 
 const props = (

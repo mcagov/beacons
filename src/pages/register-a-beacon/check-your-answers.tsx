@@ -12,7 +12,6 @@ import {
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { DraftRegistration } from "../../entities/DraftRegistration";
 import { FormSubmission } from "../../lib/formCache";
-import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -25,7 +24,7 @@ import {
   sentenceCase,
 } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserViewedNonFormPage } from "../../router/rules/IfUserViewedNonFormPage";
 
 interface CheckYourAnswersProps {
@@ -582,15 +581,13 @@ const SendYourApplication: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withSession(
-    withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-      return await new BeaconsPageRouter([
-        new IfNoDraftRegistration(context),
-        new IfUserViewedNonFormPage(context, props(context)),
-      ]).execute();
-    })
-  )
+export const getServerSideProps: GetServerSideProps = withSession(
+  withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+    return await new BeaconsPageRouter([
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedNonFormPage(context, props(context)),
+    ]).execute();
+  })
 );
 
 const props = async (

@@ -11,7 +11,6 @@ import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
 import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
-import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -22,8 +21,8 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -560,33 +559,31 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withContainer(
-    withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      return await new BeaconsPageRouter([
-        new IfNoUseIndex(context),
-        new IfNoDraftRegistration(context),
-        new IfUserViewedRegistrationForm<ActivityForm>(
-          context,
-          validationRules,
-          mapper(context),
-          props(context)
-        ),
-        new IfUserSubmittedInvalidRegistrationForm<ActivityForm>(
-          context,
-          validationRules,
-          mapper(context),
-          props(context)
-        ),
-        new IfUserSubmittedValidRegistrationForm<ActivityForm>(
-          context,
-          validationRules,
-          mapper(context),
-          await nextPage(context)
-        ),
-      ]).execute();
-    })
-  )
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    return await new BeaconsPageRouter([
+      new IfNoUseIndex(context),
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<ActivityForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<ActivityForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedValidRegistrationForm<ActivityForm>(
+        context,
+        validationRules,
+        mapper(context),
+        await nextPage(context)
+      ),
+    ]).execute();
+  })
 );
 
 const nextPage = async (

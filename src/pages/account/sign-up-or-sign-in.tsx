@@ -8,7 +8,6 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
-import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -68,20 +67,18 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = withCookiePolicy(
-  withContainer(
-    withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      return await new BeaconsPageRouter([
-        new IfUserViewedSimpleForm(context, validationRules),
-        new IfUserSubmittedInvalidSimpleForm(context, validationRules),
-        new IfUserSubmittedValidSimpleForm(
-          context,
-          validationRules,
-          nextPageUrl(context)
-        ),
-      ]).execute();
-    })
-  )
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    return await new BeaconsPageRouter([
+      new IfUserViewedSimpleForm(context, validationRules),
+      new IfUserSubmittedInvalidSimpleForm(context, validationRules),
+      new IfUserSubmittedValidSimpleForm(
+        context,
+        validationRules,
+        nextPageUrl(context)
+      ),
+    ]).execute();
+  })
 );
 
 const nextPageUrl = async (context: BeaconsGetServerSidePropsContext) => {

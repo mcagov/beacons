@@ -1,5 +1,6 @@
 import { GetServerSidePropsResult } from "next";
 import { isValid, withErrorMessages } from "../../lib/form/lib";
+import { acceptRejectCookieId } from "../../lib/types";
 import { SimpleFormRule } from "./SimpleFormRule";
 
 export class IfUserSubmittedInvalidSimpleForm extends SimpleFormRule {
@@ -17,8 +18,13 @@ export class IfUserSubmittedInvalidSimpleForm extends SimpleFormRule {
     return {
       props: {
         form: withErrorMessages(form, this.validationRules),
+        showCookieBanner: this.userHasNotHiddenEssentialCookieBanner(),
         ...this.additionalProps,
       },
     };
+  }
+
+  private userHasNotHiddenEssentialCookieBanner(): boolean {
+    return !this.context.req.cookies[acceptRejectCookieId];
   }
 }

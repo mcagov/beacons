@@ -4,9 +4,9 @@ import { DraftRegistration } from "../../../src/entities/DraftRegistration";
 import { IAppContainer } from "../../../src/lib/appContainer";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import { PageURLs } from "../../../src/lib/urls";
-import { IfNoDraftRegistration } from "../../../src/router/rules/IfNoDraftRegistration";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../../src/router/rules/IfUserHasNotStartedEditingADraftRegistration";
 
-describe("IfNoDraftRegistration", () => {
+describe("IfUserHasNotStartedEditingADraftRegistration", () => {
   describe("condition", () => {
     it("triggers if no cookie exists", async () => {
       const context = {
@@ -17,7 +17,9 @@ describe("IfNoDraftRegistration", () => {
           },
         },
       };
-      const rule = new IfNoDraftRegistration(context as any);
+      const rule = new IfUserHasNotStartedEditingADraftRegistration(
+        context as any
+      );
 
       const result = await rule.condition();
 
@@ -36,7 +38,9 @@ describe("IfNoDraftRegistration", () => {
           getDraftRegistration: jest.fn().mockResolvedValue(null),
         } as Partial<IAppContainer>,
       };
-      const rule = new IfNoDraftRegistration(context as any);
+      const rule = new IfUserHasNotStartedEditingADraftRegistration(
+        context as any
+      );
 
       const result = await rule.condition();
 
@@ -62,7 +66,9 @@ describe("IfNoDraftRegistration", () => {
           saveDraftRegistration: jest.fn(),
         } as Partial<IAppContainer>,
       };
-      const rule = new IfNoDraftRegistration(context as any);
+      const rule = new IfUserHasNotStartedEditingADraftRegistration(
+        context as any
+      );
 
       const result = await rule.condition();
 
@@ -80,7 +86,9 @@ describe("IfNoDraftRegistration", () => {
           },
         },
       };
-      const rule = new IfNoDraftRegistration(context as any);
+      const rule = new IfUserHasNotStartedEditingADraftRegistration(
+        context as any
+      );
 
       const result: GetServerSidePropsResult<any> = await rule.action();
 
@@ -104,7 +112,9 @@ describe("IfNoDraftRegistration", () => {
           saveDraftRegistration: jest.fn(),
         } as Partial<IAppContainer>,
       };
-      const rule = new IfNoDraftRegistration(context as any);
+      const rule = new IfUserHasNotStartedEditingADraftRegistration(
+        context as any
+      );
       const blankRegistration: DraftRegistration = {
         uses: [],
       };
