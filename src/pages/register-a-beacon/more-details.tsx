@@ -13,7 +13,7 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { Environment } from "../../lib/registration/types";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs } from "../../lib/urls";
+import { PageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { makeRegistrationMapper } from "../../presenters/UseMapper";
@@ -31,18 +31,21 @@ interface MoreDetailsFormProps {
   form: FormJSON;
   showCookieBanner: boolean;
   environment: Environment;
+  useIndex: number;
 }
 
 const MoreDetails: FunctionComponent<MoreDetailsFormProps> = ({
   form,
   showCookieBanner,
   environment,
+  useIndex,
 }: MoreDetailsFormProps): JSX.Element => {
   const previousPageUrlMap = {
-    [Environment.MARITIME]: PageURLs.vesselCommunications,
-    [Environment.AVIATION]: PageURLs.aircraftCommunications,
-    [Environment.LAND]: PageURLs.landCommunications,
-    "": PageURLs.environment,
+    [Environment.MARITIME]:
+      PageURLs.vesselCommunications + queryParams({ useIndex }),
+    [Environment.AVIATION]:
+      PageURLs.aircraftCommunications + queryParams({ useIndex }),
+    [Environment.LAND]: PageURLs.landCommunications + queryParams({ useIndex }),
   };
 
   const pageHeading = "Provide more details that could help in a search";
@@ -144,6 +147,7 @@ const props = async (
 
   return {
     environment: draftRegistration?.uses[useIndex]?.environment as Environment,
+    useIndex,
   };
 };
 
