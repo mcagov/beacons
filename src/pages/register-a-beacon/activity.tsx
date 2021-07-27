@@ -626,17 +626,19 @@ const mapper = (
   context: BeaconsGetServerSidePropsContext
 ): RegistrationFormMapper<ActivityForm> => {
   const beaconUseMapper: BeaconUseFormMapper<ActivityForm> = {
-    toDraftBeaconUse: (form) => ({
-      environment: form.environment,
-      activity: form.activity,
-      otherActivityText: form.otherActivityText,
-      otherActivityLocation: form.otherActivityLocation,
-      otherActivityPeopleCount: form.otherActivityPeopleCount,
-      workingRemotelyLocation: form.workingRemotelyLocation,
-      workingRemotelyPeopleCount: form.workingRemotelyPeopleCount,
-      windfarmLocation: form.windfarmLocation,
-      windfarmPeopleCount: form.windfarmPeopleCount,
-    }),
+    toDraftBeaconUse: (form) => {
+      return {
+        environment: form.environment || null,
+        activity: form.activity || null,
+        otherActivityText: form.otherActivityText || null,
+        otherActivityLocation: form.otherActivityLocation || null,
+        otherActivityPeopleCount: form.otherActivityPeopleCount || null,
+        workingRemotelyLocation: form.workingRemotelyLocation || null,
+        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount || null,
+        windfarmLocation: form.windfarmLocation || null,
+        windfarmPeopleCount: form.windfarmPeopleCount || null,
+      };
+    },
     toForm: (draftRegistration) => ({
       environment: draftRegistration.environment,
       activity: draftRegistration.activity,
