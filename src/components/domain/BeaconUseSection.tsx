@@ -150,7 +150,7 @@ const AboutThisUse: FunctionComponent<{ use: DraftBeaconUse }> = ({
         value={use.cnOrMsnNumber}
       />
     )}
-    {use.dongle.includes("true") && (
+    {use.dongle === "true" && (
       <BeaconUseDataRowItem label="Is this a dongle?" value="Yes" />
     )}
     {use.beaconPosition && (
@@ -160,27 +160,27 @@ const AboutThisUse: FunctionComponent<{ use: DraftBeaconUse }> = ({
       />
     )}
 
-    {use.driving.includes("true") && (
+    {use.driving === "true" && (
       <BeaconUseDataRowItem value="This beacon is used while driving" />
     )}
 
-    {use.cycling.includes("true") && (
+    {use.cycling === "true" && (
       <BeaconUseDataRowItem value="This beacon is used while cycling" />
     )}
 
-    {use.climbingMountaineering.includes("true") && (
+    {use.climbingMountaineering === "true" && (
       <BeaconUseDataRowItem value="This beacon is used while climbing and/or mountaineering" />
     )}
 
-    {use.skiing.includes("true") && (
+    {use.skiing === "true" && (
       <BeaconUseDataRowItem value="This beacon is used while skiing" />
     )}
 
-    {use.walkingHiking.includes("true") && (
+    {use.walkingHiking === "true" && (
       <BeaconUseDataRowItem value="This beacon is used while walking and/or hiking" />
     )}
 
-    {use.workingRemotely.includes("true") && (
+    {use.workingRemotely === "true" && (
       <>
         <BeaconUseDataRowItem value="This beacon is used while working remotely" />
         <BeaconUseDataRowItem
@@ -194,7 +194,7 @@ const AboutThisUse: FunctionComponent<{ use: DraftBeaconUse }> = ({
       </>
     )}
 
-    {use.windfarm.includes("true") && (
+    {use.windfarm === "true" && (
       <>
         <BeaconUseDataRowItem value="This beacon is used at a windfarm or windfarms" />
         <BeaconUseDataRowItem
@@ -237,7 +237,7 @@ const Communications: FunctionComponent<{ use: DraftBeaconUse }> = ({
       {use.callSign && (
         <BeaconUseDataRowItem label="Callsign" value={use.callSign} />
       )}
-      {use.fixedVhfRadio.includes("true") && (
+      {use.fixedVhfRadio === "true" && (
         <>
           Fixed VHF/DSC radio
           <br />
@@ -249,13 +249,13 @@ const Communications: FunctionComponent<{ use: DraftBeaconUse }> = ({
           )}
         </>
       )}
-      {use.vhfRadio.includes("true") && (
+      {use.vhfRadio === "true" && (
         <>
           VHF Radio
           <br />
         </>
       )}
-      {use.portableVhfRadio.includes("true") && (
+      {use.portableVhfRadio === "true" && (
         <>
           Portable VHF/DSC radio
           <br />
@@ -267,25 +267,25 @@ const Communications: FunctionComponent<{ use: DraftBeaconUse }> = ({
           )}
         </>
       )}
-      {use.mobileTelephone.includes("true") && (
+      {use.mobileTelephone === "true" && (
         <BeaconUseDataRowItem
           label="Mobile telephone (1)"
           value={use.mobileTelephoneInput1}
         />
       )}
-      {use.mobileTelephone.includes("true") && (
+      {use.mobileTelephone === "true" && (
         <BeaconUseDataRowItem
           label="Mobile telephone (2)"
           value={use.mobileTelephoneInput2}
         />
       )}
-      {use.satelliteTelephone.includes("true") && (
+      {use.satelliteTelephone === "true" && (
         <BeaconUseDataRowItem
           label="Satellite telephone"
           value={use.satelliteTelephoneInput}
         />
       )}
-      {use.otherCommunication.includes("true") && (
+      {use.otherCommunication === "true" && (
         <BeaconUseDataRowItem
           label="Other communication"
           value={use.otherCommunicationInput}

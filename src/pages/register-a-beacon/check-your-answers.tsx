@@ -386,56 +386,55 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
                 value={use.callSign}
               />
             )}
-            {use.fixedVhfRadio.includes("true") && (
+            {use.fixedVhfRadio === "true" && (
               <>
                 Fixed VHF/DSC
                 <br />
               </>
             )}
-            {use.fixedVhfRadio.includes("true") && use.fixedVhfRadioInput && (
+            {use.fixedVhfRadio === "true" && use.fixedVhfRadioInput && (
               <CheckYourAnswersDataRowItem
                 label="MMSI"
                 value={use.fixedVhfRadioInput}
               />
             )}
-            {use.vhfRadio.includes("true") && (
+            {use.vhfRadio === "true" && (
               <>
                 VHF Radio
                 <br />
               </>
             )}
-            {use.portableVhfRadio.includes("true") && (
+            {use.portableVhfRadio === "true" && (
               <>
                 Portable VHF/DSC
                 <br />
               </>
             )}
-            {use.portableVhfRadio.includes("true") &&
-              use.portableVhfRadioInput && (
-                <CheckYourAnswersDataRowItem
-                  label="Portable MMSI"
-                  value={use.portableVhfRadioInput}
-                />
-              )}
-            {use.mobileTelephone.includes("true") && (
+            {use.portableVhfRadio === "true" && use.portableVhfRadioInput && (
+              <CheckYourAnswersDataRowItem
+                label="Portable MMSI"
+                value={use.portableVhfRadioInput}
+              />
+            )}
+            {use.mobileTelephone === "true" && (
               <CheckYourAnswersDataRowItem
                 label="Mobile telephone (1)"
                 value={use.mobileTelephoneInput1}
               />
             )}
-            {use.mobileTelephone.includes("true") && (
+            {use.mobileTelephone === "true" && (
               <CheckYourAnswersDataRowItem
                 label="Mobile telephone (2)"
                 value={use.mobileTelephoneInput2}
               />
             )}
-            {use.satelliteTelephone.includes("true") && (
+            {use.satelliteTelephone === "true" && (
               <CheckYourAnswersDataRowItem
                 label="Satellite telephone"
                 value={use.satelliteTelephoneInput}
               />
             )}
-            {use.otherCommunication.includes("true") && (
+            {use.otherCommunication === "true" && (
               <CheckYourAnswersDataRowItem
                 label="Other communication"
                 value={use.otherCommunicationInput}

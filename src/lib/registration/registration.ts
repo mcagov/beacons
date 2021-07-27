@@ -188,30 +188,24 @@ export class Registration {
       otherActivity:
         use.activity === Activity.OTHER ? use.otherActivityText : "",
       callSign: use.callSign,
-      vhfRadio: use.vhfRadio.includes("true"),
-      fixedVhfRadio: use.fixedVhfRadio.includes("true"),
-      fixedVhfRadioValue: use.fixedVhfRadio.includes("true")
-        ? use.fixedVhfRadioInput
-        : "",
-      portableVhfRadio: use.portableVhfRadio.includes("true"),
-      portableVhfRadioValue: use.portableVhfRadio.includes("true")
-        ? use.portableVhfRadioInput
-        : "",
-      satelliteTelephone: use.satelliteTelephone.includes("true"),
-      satelliteTelephoneValue: use.satelliteTelephone.includes("true")
-        ? use.satelliteTelephoneInput
-        : "",
-      mobileTelephone: use.mobileTelephone.includes("true"),
-      mobileTelephone1: use.mobileTelephone.includes("true")
-        ? use.mobileTelephoneInput1
-        : "",
-      mobileTelephone2: use.mobileTelephone.includes("true")
-        ? use.mobileTelephoneInput2
-        : "",
-      otherCommunication: use.otherCommunication.includes("true"),
-      otherCommunicationValue: use.otherCommunication.includes("true")
-        ? use.otherCommunicationInput
-        : "",
+      vhfRadio: use.vhfRadio === "true",
+      fixedVhfRadio: use.fixedVhfRadio === "true",
+      fixedVhfRadioValue:
+        use.fixedVhfRadio === "true" ? use.fixedVhfRadioInput : "",
+      portableVhfRadio: use.portableVhfRadio === "true",
+      portableVhfRadioValue:
+        use.portableVhfRadio === "true" ? use.portableVhfRadioInput : "",
+      satelliteTelephone: use.satelliteTelephone === "true",
+      satelliteTelephoneValue:
+        use.satelliteTelephone === "true" ? use.satelliteTelephoneInput : "",
+      mobileTelephone: use.mobileTelephone === "true",
+      mobileTelephone1:
+        use.mobileTelephone === "true" ? use.mobileTelephoneInput1 : "",
+      mobileTelephone2:
+        use.mobileTelephone === "true" ? use.mobileTelephoneInput2 : "",
+      otherCommunication: use.otherCommunication === "true",
+      otherCommunicationValue:
+        use.otherCommunication === "true" ? use.otherCommunicationInput : "",
       vesselName: use.vesselName,
       portLetterNumber: use.portLetterNumber,
       homeport: use.homeport,

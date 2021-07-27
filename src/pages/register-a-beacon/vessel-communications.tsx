@@ -110,13 +110,13 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
       <CheckboxList conditional={true}>
         <CheckboxListItem
           id="vhfRadio"
-          defaultChecked={form.fields.vhfRadio.value.includes("true")}
+          defaultChecked={form.fields.vhfRadio.value === "true"}
           label="VHF Radio"
         />
         <CheckboxListItem
           id="fixedVhfRadio"
           label="VHF/DSC Radio"
-          defaultChecked={form.fields.fixedVhfRadio.value.includes("true")}
+          defaultChecked={form.fields.fixedVhfRadio.value === "true"}
           conditional={true}
         >
           <FormGroup
@@ -133,7 +133,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="portableVhfRadio"
-          defaultChecked={form.fields.portableVhfRadio.value.includes("true")}
+          defaultChecked={form.fields.portableVhfRadio.value === "true"}
           label="Portable VHF/DSC Radio"
           conditional={true}
         >
@@ -150,7 +150,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="satelliteTelephone"
-          defaultChecked={form.fields.satelliteTelephone.value.includes("true")}
+          defaultChecked={form.fields.satelliteTelephone.value === "true"}
           label="Satellite Telephone"
           conditional={true}
         >
@@ -167,7 +167,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="mobileTelephone"
-          defaultChecked={form.fields.mobileTelephone.value.includes("true")}
+          defaultChecked={form.fields.mobileTelephone.value === "true"}
           label="Mobile Telephone(s)"
           conditional={true}
         >
@@ -192,7 +192,7 @@ const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
         </CheckboxListItem>
         <CheckboxListItem
           id="otherCommunication"
-          defaultChecked={form.fields.otherCommunication.value.includes("true")}
+          defaultChecked={form.fields.otherCommunication.value === "true"}
           label="Other"
           conditional={true}
         >
@@ -301,7 +301,7 @@ const validationRules = ({
 }: VesselCommunicationsForm): FormManager => {
   const matchingConditionIsTrueForKey = (key: string) => ({
     dependsOn: key,
-    meetingCondition: (value) => value.includes("true"),
+    meetingCondition: (value) => value === "true",
   });
 
   return new FormManager({
