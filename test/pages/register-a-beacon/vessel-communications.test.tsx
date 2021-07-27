@@ -65,17 +65,27 @@ describe("VesselCommunications", () => {
   };
 
   it("should have a back button which directs the user to the about the vessel page", () => {
-    render(<VesselCommunications form={emptyVesselCommunicationsForm} />);
+    render(
+      <VesselCommunications
+        form={emptyVesselCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
+    );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      PageURLs.aboutTheVessel
+      expect.stringContaining(PageURLs.aboutTheVessel)
     );
   });
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <VesselCommunications form={emptyVesselCommunicationsForm} />
+      <VesselCommunications
+        form={emptyVesselCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
     );
 
     const form = container.querySelectorAll("form")[1];
@@ -85,7 +95,11 @@ describe("VesselCommunications", () => {
 
   it("should have an autocomplete attribute on the mobile telephone number field", () => {
     const { container } = render(
-      <VesselCommunications form={emptyVesselCommunicationsForm} />
+      <VesselCommunications
+        form={emptyVesselCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
     );
 
     const mobilePhoneInput1 = container.querySelector("#mobileTelephoneInput1");
@@ -99,7 +113,11 @@ describe("VesselCommunications", () => {
     // Because this is likely to result in users' mobile and other more commonly used
     // numbers being autocompleted into the satellite number field.  We don't want this.
     const { container } = render(
-      <VesselCommunications form={emptyVesselCommunicationsForm} />
+      <VesselCommunications
+        form={emptyVesselCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
     );
 
     const satelliteTelephoneNumberInput = container.querySelector(

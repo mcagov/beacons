@@ -9,7 +9,7 @@ import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { FormPageProps } from "../../lib/handlePageRequest";
+import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
@@ -35,11 +35,11 @@ interface AircraftCommunicationsForm {
   otherCommunicationInput: string;
 }
 
-const AircraftCommunications: FunctionComponent<FormPageProps> = ({
+const AircraftCommunications: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
   useIndex,
-}: FormPageProps): JSX.Element => {
+}: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "How can we communicate with you, when on this aircraft?";
   const pageText = (
     <GovUKBody>
@@ -60,9 +60,9 @@ const AircraftCommunications: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
+const TypesOfCommunication: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
-}: FormPageProps) => (
+}: DraftRegistrationPageProps) => (
   <FormFieldset>
     <FormLegend size="small">
       Tick all that apply and provide as much detail as you can
@@ -171,7 +171,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const props = (
   context: BeaconsGetServerSidePropsContext
-): Partial<FormPageProps> => ({
+): Partial<DraftRegistrationPageProps> => ({
   useIndex: parseInt(context.query.useIndex as string),
 });
 

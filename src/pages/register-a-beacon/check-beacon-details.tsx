@@ -8,7 +8,7 @@ import { FormInputProps, Input } from "../../components/Input";
 import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { FormPageProps } from "../../lib/handlePageRequest";
+import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
@@ -27,10 +27,10 @@ interface CheckBeaconDetailsForm {
   hexId: string;
 }
 
-const CheckBeaconDetails: FunctionComponent<FormPageProps> = ({
+const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
-}: FormPageProps): JSX.Element => {
+}: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Check beacon details";
   const pageText =
     "The details of your beacon must be checked to ensure it is programmed for UK registration.";

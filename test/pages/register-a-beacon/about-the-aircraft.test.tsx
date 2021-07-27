@@ -49,11 +49,17 @@ describe("AboutTheAircraft", () => {
   };
 
   it("should have a back button which directs the user to the about the vessel page", () => {
-    render(<AboutTheAircraft form={aboutTheAircraftForm} />);
+    render(
+      <AboutTheAircraft
+        form={aboutTheAircraftForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
+    );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      PageURLs.activity
+      expect.stringContaining(PageURLs.activity)
     );
   });
 });

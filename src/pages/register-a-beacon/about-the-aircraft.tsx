@@ -14,7 +14,7 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps } from "../../lib/handlePageRequest";
+import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
@@ -41,11 +41,11 @@ interface AboutTheAircraftForm {
   beaconPosition: string;
 }
 
-const AboutTheAircraft: FunctionComponent<FormPageProps> = ({
+const AboutTheAircraft: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
   useIndex,
-}: FormPageProps): JSX.Element => {
+}: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = "About the aircraft";
 
   return (
@@ -257,7 +257,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const props = (
   context: BeaconsGetServerSidePropsContext
-): Partial<FormPageProps> => ({
+): Partial<DraftBeaconUsePageProps> => ({
   useIndex: parseInt(context.query.useIndex as string),
 });
 

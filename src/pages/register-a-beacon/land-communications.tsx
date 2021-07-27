@@ -10,7 +10,7 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps } from "../../lib/handlePageRequest";
+import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
@@ -37,11 +37,11 @@ interface LandCommunicationsForm {
   otherCommunicationInput: string;
 }
 
-const LandCommunications: FunctionComponent<FormPageProps> = ({
+const LandCommunications: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
   useIndex,
-}: FormPageProps): JSX.Element => {
+}: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "How can we communicate with you?";
 
   const pageText = (
@@ -75,9 +75,9 @@ const LandCommunications: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
+const TypesOfCommunication: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
-}: FormPageProps) => (
+}: DraftRegistrationPageProps) => (
   <FormGroup>
     <CheckboxList conditional={true}>
       <CheckboxListItem
@@ -192,7 +192,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const props = (
   context: BeaconsGetServerSidePropsContext
-): Partial<FormPageProps> => ({
+): Partial<DraftRegistrationPageProps> => ({
   useIndex: parseInt(context.query.useIndex as string),
 });
 

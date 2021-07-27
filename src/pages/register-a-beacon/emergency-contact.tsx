@@ -19,7 +19,7 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps } from "../../lib/handlePageRequest";
+import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
@@ -44,10 +44,10 @@ interface EmergencyContactForm {
   emergencyContact3AlternativeTelephoneNumber: string;
 }
 
-const EmergencyContact: FunctionComponent<FormPageProps> = ({
+const EmergencyContact: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
-}: FormPageProps): JSX.Element => {
+}: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Add emergency contact information for up to 3 people";
 
   return (

@@ -7,9 +7,9 @@ import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { AnchorLink, GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
+import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
-import { FormPageProps } from "../../lib/handlePageRequest";
+import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
@@ -40,11 +40,11 @@ interface VesselCommunicationsForm {
   otherCommunicationInput: string;
 }
 
-const VesselCommunications: FunctionComponent<FormPageProps> = ({
+const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
   useIndex,
-}: FormPageProps): JSX.Element => {
+}: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading =
     "How can we communicate with you when you are in this vessel, rig or windfarm?";
 
@@ -99,9 +99,11 @@ const CallSign: FunctionComponent<FormInputProps> = ({
   </>
 );
 
-const TypesOfCommunication: FunctionComponent<FormPageProps> = ({
+const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
   form,
-}: FormPageProps) => (
+}: {
+  form: FormJSON;
+}) => (
   <FormFieldset>
     <FormLegend size="small">
       Tick all that apply and provide as much detail as you can
@@ -245,7 +247,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const props = (
   context: BeaconsGetServerSidePropsContext
-): Partial<FormPageProps> => ({
+): Partial<DraftBeaconUsePageProps> => ({
   useIndex: parseInt(context.query.useIndex as string),
 });
 

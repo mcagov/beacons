@@ -1,13 +1,13 @@
 import { FormJSON, FormManager } from "./form/formManager";
 import { FormSubmission } from "./formCache";
-import { IRegistration } from "./registration/types";
 
 export type FormManagerFactory = (formData: FormSubmission) => FormManager;
 
-export interface FormPageProps {
+export interface DraftRegistrationPageProps {
   form: FormJSON;
-  showCookieBanner?: boolean;
-  registration?: IRegistration;
-  flattenedRegistration?: FormSubmission;
-  useIndex?: number;
+  showCookieBanner: boolean;
+}
+
+export interface DraftBeaconUsePageProps extends DraftRegistrationPageProps {
+  useIndex: number;
 }

@@ -10,7 +10,7 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormJSON, FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps } from "../../lib/handlePageRequest";
+import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { withCookiePolicy } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
@@ -40,7 +40,7 @@ interface ActivityForm {
   windfarmPeopleCount;
 }
 
-interface ActivityPageProps extends FormPageProps {
+interface ActivityPageProps extends DraftRegistrationPageProps {
   environment;
   purpose;
   useIndex;
