@@ -3,17 +3,13 @@ import {
   checkHeaderContains,
   clearFormCache,
   clearFormSubmissionCookie,
-  decorateGetServerSidePropsContext,
   getCache,
   setFormSubmissionCookie,
   updateFormCache,
   withCookiePolicy,
 } from "../../src/lib/middleware";
 import { Registration } from "../../src/lib/registration/registration";
-import {
-  formSubmissionCookieId,
-  formSubmissionCookieId as submissionCookieId,
-} from "../../src/lib/types";
+import { formSubmissionCookieId as submissionCookieId } from "../../src/lib/types";
 import { getCacheMock } from "../mocks";
 
 jest.mock("uuid", () => ({
@@ -83,72 +79,6 @@ describe("Middleware Functions", () => {
       context.req.cookies = { [submissionCookieId]: void 0 };
 
       assertRedirected();
-    });
-  });
-
-  describe("decorateGetServerSidePropsContext()", () => {
-    let context;
-    let mockAddCacheFn;
-
-    beforeEach(() => {
-      context = { req: { cookies: {} }, query: {} };
-      mockAddCacheFn = jest.fn().mockImplementation((context) => {
-        context.submissionId = context.req.cookies[formSubmissionCookieId];
-        context.registration = new Registration();
-      });
-    });
-
-    it("should add the users submission cookie id onto the context", async () => {
-      context.req.cookies[formSubmissionCookieId] = "id";
-      const decoratedContext = await decorateGetServerSidePropsContext(
-        context,
-        mockAddCacheFn
-      );
-      expect(decoratedContext.submissionId).toBe("id");
-    });
-
-    it("should add the users registration onto the context", async () => {
-      context.req.cookies[formSubmissionCookieId] = "id";
-      const decoratedContext = await decorateGetServerSidePropsContext(
-        context,
-        mockAddCacheFn
-      );
-      expect(decoratedContext.registration).toBeDefined();
-      expect(decoratedContext.registration).toBeInstanceOf(Registration);
-    });
-
-    it("should parse the form data and add onto the context", async () => {
-      const decoratedContext = await decorateGetServerSidePropsContext(
-        context,
-        mockAddCacheFn
-      );
-      expect(decoratedContext.formData).toStrictEqual({ model: "ASOS" });
-    });
-
-    it("should set the useIndex to 0 on the context if the useIndex is not set", async () => {
-      const decoratedContext = await decorateGetServerSidePropsContext(
-        context,
-        mockAddCacheFn
-      );
-      expect(decoratedContext.useIndex).toStrictEqual(0);
-    });
-
-    it("should set the useIndex to 0 if useIndex is null", async () => {
-      context.query.useIndex = null;
-      const decoratedContext = await decorateGetServerSidePropsContext(
-        context,
-        mockAddCacheFn
-      );
-      expect(decoratedContext.useIndex).toStrictEqual(0);
-    });
-
-    it("should set the useIndex on the query param", async () => {
-      context.query.useIndex = 1;
-      const decoratedContext = await decorateGetServerSidePropsContext(
-        context,
-        mockAddCacheFn
-      );
-      expect(decoratedContext.useIndex).toStrictEqual(1);
     });
   });
 

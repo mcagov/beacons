@@ -42,45 +42,6 @@ export function withCookiePolicy<T>(callback: GetServerSideProps<T>) {
   };
 }
 
-/**
- * Decorator function to add beacons specific information to the `getServerSideProps` context.
- *
- * @param context {GetServerSidePropsContext}   The NextJS application context
- * @param addCacheFn {(context: BeaconsContext) => Promise<void>} (Optional) the function used to add the cache to the context
- * @returns       {Promise<BeaconsContext>}     A promise resolving to the decorated context containing application specific data
- */
-export async function decorateGetServerSidePropsContext(
-  context: GetServerSidePropsContext,
-  addCacheFn: (context: BeaconsContext) => Promise<void> = addCache
-): Promise<BeaconsContext> {
-  const decoratedContext: BeaconsContext = context as BeaconsContext;
-
-  await addCacheFn(decoratedContext);
-  await addFormData(decoratedContext);
-  addRegistrationIndexes(decoratedContext);
-
-  return decoratedContext;
-}
-
-async function addCache(context: BeaconsContext): Promise<void> {
-  const submissionId: string = context.req.cookies[formSubmissionCookieId];
-  const registration: Registration = await (async () =>
-    getCache(submissionId))();
-
-  context.submissionId = submissionId;
-  context.registration = registration;
-}
-
-async function addFormData(context: BeaconsContext): Promise<void> {
-  const formData = await parseFormData(context.req);
-  context.formData = formData;
-}
-
-function addRegistrationIndexes(context: BeaconsContext): void {
-  const useIndex = parseInt(context.query.useIndex as string) || 0;
-  context.useIndex = useIndex;
-}
-
 export const setFormSubmissionCookie = async (
   context: GetServerSidePropsContext,
   seedCacheFn: (id: string) => Promise<void> = seedCache
@@ -128,14 +89,6 @@ export async function updateFormCache(
   cache: IFormCache = FormCacheFactory.getCache()
 ): Promise<void> {
   await cache.update(submissionId, formData);
-}
-
-export async function setFormCache(
-  submissionId: string,
-  registration: Registration,
-  cache: IFormCache = FormCacheFactory.getCache()
-): Promise<void> {
-  await cache.set(submissionId, registration);
 }
 
 export async function clearFormCache(
