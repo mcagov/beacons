@@ -1,4 +1,4 @@
-import { IfNoUseIndex } from "../../../src/router/rules/IfNoUseIndex";
+import { IfUserHasNotSpecifiedAUse } from "../../../src/router/rules/IfUserHasNotSpecifiedAUse";
 
 describe("IfUserViewedRegistrationForm", () => {
   it("triggers if the useIndex query param is missing", async () => {
@@ -10,7 +10,7 @@ describe("IfUserViewedRegistrationForm", () => {
         anIrrelevantQueryParam: "notice-how-useIndex-is-missing?",
       },
     };
-    const rule = new IfNoUseIndex(context as any);
+    const rule = new IfUserHasNotSpecifiedAUse(context as any);
 
     const result = await rule.condition();
 
@@ -26,7 +26,7 @@ describe("IfUserViewedRegistrationForm", () => {
         useIndex: "ah-there-it-is!",
       },
     };
-    const rule = new IfNoUseIndex(context as any);
+    const rule = new IfUserHasNotSpecifiedAUse(context as any);
 
     const result = await rule.condition();
 

@@ -1,9 +1,9 @@
 import { DraftRegistration } from "../../../src/entities/DraftRegistration";
 import { Environment } from "../../../src/lib/registration/types";
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { IfNoUseIndex } from "../../../src/router/rules/IfNoUseIndex";
+import { IfUserHasNotSpecifiedAUse } from "../../../src/router/rules/IfUserHasNotSpecifiedAUse";
 
-describe("IfNoUseIndex", () => {
+describe("IfUserHasNotSpecifiedAUse", () => {
   describe("condition", () => {
     it("triggers if there is no useIndex query param", async () => {
       const context = {
@@ -14,7 +14,7 @@ describe("IfNoUseIndex", () => {
           whereIsTheUseIndexQueryParam: "itIsMissingOhNo",
         },
       };
-      const rule = new IfNoUseIndex(context as any);
+      const rule = new IfUserHasNotSpecifiedAUse(context as any);
 
       const result = await rule.condition();
 
@@ -30,7 +30,7 @@ describe("IfNoUseIndex", () => {
           useIndex: "1",
         },
       };
-      const rule = new IfNoUseIndex(context as any);
+      const rule = new IfUserHasNotSpecifiedAUse(context as any);
 
       const result = await rule.condition();
 
@@ -59,7 +59,7 @@ describe("IfNoUseIndex", () => {
           },
         },
       };
-      const rule = new IfNoUseIndex(context as any);
+      const rule = new IfUserHasNotSpecifiedAUse(context as any);
 
       const result = await rule.action();
 
@@ -86,7 +86,7 @@ describe("IfNoUseIndex", () => {
           },
         },
       };
-      const rule = new IfNoUseIndex(context as any);
+      const rule = new IfUserHasNotSpecifiedAUse(context as any);
 
       const result = await rule.action();
 

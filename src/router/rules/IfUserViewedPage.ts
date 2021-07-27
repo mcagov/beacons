@@ -3,7 +3,7 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { acceptRejectCookieId } from "../../lib/types";
 import { Rule } from "./Rule";
 
-export class IfUserViewedNonFormPage<T> implements Rule {
+export class IfUserViewedPage<T> implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly props: T;
 

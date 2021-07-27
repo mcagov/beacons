@@ -4,9 +4,10 @@ import { BeaconsForm } from "../../components/BeaconsForm";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/fieldManager";
-import { FormJSON, FormManager } from "../../lib/form/formManager";
+import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
+import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -17,7 +18,7 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
@@ -27,19 +28,17 @@ interface MoreDetailsForm {
   moreDetails: string;
 }
 
-interface MoreDetailsFormProps {
-  form: FormJSON;
-  showCookieBanner: boolean;
+interface MoreDetailsPageProps extends DraftBeaconUsePageProps {
   environment: Environment;
   useIndex: number;
 }
 
-const MoreDetails: FunctionComponent<MoreDetailsFormProps> = ({
+const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
   form,
   showCookieBanner,
   environment,
   useIndex,
-}: MoreDetailsFormProps): JSX.Element => {
+}: MoreDetailsPageProps): JSX.Element => {
   const previousPageUrlMap = {
     [Environment.MARITIME]:
       PageURLs.vesselCommunications + queryParams({ useIndex }),
@@ -111,7 +110,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const nextPage = PageURLs.additionalUse;
 
     return await new BeaconsPageRouter([
-      new IfNoUseIndex(context),
+      new IfUserHasNotSpecifiedAUse(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
       new IfUserViewedRegistrationForm<MoreDetailsForm>(
         context,
@@ -137,7 +136,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
 const props = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<Partial<MoreDetailsFormProps>> => {
+): Promise<Partial<MoreDetailsPageProps>> => {
   const draftRegistration = await context.container.getDraftRegistration(
     context.req.cookies[formSubmissionCookieId]
   );

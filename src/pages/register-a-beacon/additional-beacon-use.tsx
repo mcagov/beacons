@@ -13,9 +13,9 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { ActionURLs, PageURLs, queryParams } from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
-import { IfUserViewedNonFormPage } from "../../router/rules/IfUserViewedNonFormPage";
+import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
 
 interface AdditionalBeaconUseProps {
   uses: DraftBeaconUse[];
@@ -121,9 +121,9 @@ const confirmBeforeDelete = (use, index) =>
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfNoUseIndex(context),
+      new IfUserHasNotSpecifiedAUse(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
-      new IfUserViewedNonFormPage(context, props(context)),
+      new IfUserViewedPage(context, props(context)),
     ]).execute();
   })
 );

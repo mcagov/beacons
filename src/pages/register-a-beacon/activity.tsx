@@ -21,7 +21,7 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
@@ -562,7 +562,7 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfNoUseIndex(context),
+      new IfUserHasNotSpecifiedAUse(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
       new IfUserViewedRegistrationForm<ActivityForm>(
         context,

@@ -23,7 +23,7 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
@@ -231,7 +231,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
     return await new BeaconsPageRouter([
       new IfUserHasNotStartedEditingADraftRegistration(context),
-      new IfNoUseIndex(context),
+      new IfUserHasNotSpecifiedAUse(context),
       new IfUserViewedRegistrationForm<AboutTheAircraftForm>(
         context,
         validationRules,

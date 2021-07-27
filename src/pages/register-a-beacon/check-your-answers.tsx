@@ -25,7 +25,7 @@ import {
 } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
-import { IfUserViewedNonFormPage } from "../../router/rules/IfUserViewedNonFormPage";
+import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
 
 interface CheckYourAnswersProps {
   registration: DraftRegistration;
@@ -585,7 +585,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new IfUserHasNotStartedEditingADraftRegistration(context),
-      new IfUserViewedNonFormPage(context, props(context)),
+      new IfUserViewedPage(context, props(context)),
     ]).execute();
   })
 );

@@ -17,7 +17,7 @@ import { ordinal } from "../../lib/writingStyle";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
+import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
@@ -105,7 +105,7 @@ const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfNoUseIndex(context),
+      new IfUserHasNotSpecifiedAUse(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
       new IfUserViewedRegistrationForm<BeaconUseForm>(
         context,
