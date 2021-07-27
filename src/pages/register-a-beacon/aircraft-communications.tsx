@@ -171,14 +171,14 @@ const mapper = (
 ): RegistrationFormMapper<AircraftCommunicationsForm> => {
   const beaconUseMapper: BeaconUseFormMapper<AircraftCommunicationsForm> = {
     toDraftBeaconUse: (form) => ({
-      vhfRadio: form.vhfRadio,
-      satelliteTelephone: form.satelliteTelephone,
-      satelliteTelephoneInput: form.satelliteTelephoneInput,
-      mobileTelephone: form.mobileTelephone,
-      mobileTelephoneInput1: form.mobileTelephoneInput1,
-      mobileTelephoneInput2: form.mobileTelephoneInput2,
-      otherCommunication: form.otherCommunication,
-      otherCommunicationInput: form.otherCommunicationInput,
+      vhfRadio: form.vhfRadio || null,
+      satelliteTelephone: form.satelliteTelephone || null,
+      satelliteTelephoneInput: form.satelliteTelephoneInput || null,
+      mobileTelephone: form.mobileTelephone || null,
+      mobileTelephoneInput1: form.mobileTelephoneInput1 || null,
+      mobileTelephoneInput2: form.mobileTelephoneInput2 || null,
+      otherCommunication: form.otherCommunication || null,
+      otherCommunicationInput: form.otherCommunicationInput || null,
     }),
     toForm: (draftRegistration) => ({
       vhfRadio: draftRegistration.vhfRadio,
