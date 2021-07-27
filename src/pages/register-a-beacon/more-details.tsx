@@ -133,39 +133,36 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   )
 );
 
-const props = (
+const props = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<Partial<MoreDetailsFormProps>> =>
-  (async () => {
-    const draftRegistration = await context.container.getDraftRegistration(
-      context.req.cookies[formSubmissionCookieId]
-    );
+): Promise<Partial<MoreDetailsFormProps>> => {
+  const draftRegistration = await context.container.getDraftRegistration(
+    context.req.cookies[formSubmissionCookieId]
+  );
 
-    const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return {
-      environment: draftRegistration?.uses[useIndex]
-        ?.environment as Environment,
-    };
-  })();
+  return {
+    environment: draftRegistration?.uses[useIndex]?.environment as Environment,
+  };
+};
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext
-): RegistrationFormMapper<MoreDetailsForm> =>
-  (() => {
-    const beaconUseMapper: BeaconUseFormMapper<MoreDetailsForm> = {
-      toDraftBeaconUse: (form) => ({
-        moreDetails: form.moreDetails,
-      }),
-      toForm: (draftBeaconUse) => ({
-        moreDetails: draftBeaconUse.moreDetails,
-      }),
-    };
+): RegistrationFormMapper<MoreDetailsForm> => {
+  const beaconUseMapper: BeaconUseFormMapper<MoreDetailsForm> = {
+    toDraftBeaconUse: (form) => ({
+      moreDetails: form.moreDetails,
+    }),
+    toForm: (draftBeaconUse) => ({
+      moreDetails: draftBeaconUse.moreDetails,
+    }),
+  };
 
-    const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return makeRegistrationMapper<MoreDetailsForm>(useIndex, beaconUseMapper);
-  })();
+  return makeRegistrationMapper<MoreDetailsForm>(useIndex, beaconUseMapper);
+};
 
 const validationRules = ({ moreDetails }: FormSubmission): FormManager => {
   return new FormManager({

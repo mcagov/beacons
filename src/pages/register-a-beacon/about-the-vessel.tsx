@@ -269,44 +269,40 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext
-): RegistrationFormMapper<AboutTheVesselForm> =>
-  (() => {
-    const beaconUseMapper: BeaconUseFormMapper<AboutTheVesselForm> = {
-      toDraftBeaconUse: (form) => ({
-        maxCapacity: form.maxCapacity,
-        vesselName: form.vesselName,
-        beaconLocation: form.beaconLocation,
-        portLetterNumber: form.portLetterNumber,
-        homeport: form.homeport,
-        areaOfOperation: form.areaOfOperation,
-        imoNumber: form.imoNumber,
-        ssrNumber: form.ssrNumber,
-        rssNumber: form.rssNumber,
-        officialNumber: form.officialNumber,
-        rigPlatformLocation: form.rigPlatformLocation,
-      }),
-      toForm: (draftRegistration) => ({
-        maxCapacity: draftRegistration.maxCapacity,
-        vesselName: draftRegistration.vesselName,
-        beaconLocation: draftRegistration.beaconLocation,
-        portLetterNumber: draftRegistration.portLetterNumber,
-        homeport: draftRegistration.homeport,
-        areaOfOperation: draftRegistration.areaOfOperation,
-        imoNumber: draftRegistration.imoNumber,
-        ssrNumber: draftRegistration.ssrNumber,
-        rssNumber: draftRegistration.rssNumber,
-        officialNumber: draftRegistration.officialNumber,
-        rigPlatformLocation: draftRegistration.rigPlatformLocation,
-      }),
-    };
+): RegistrationFormMapper<AboutTheVesselForm> => {
+  const beaconUseMapper: BeaconUseFormMapper<AboutTheVesselForm> = {
+    toDraftBeaconUse: (form) => ({
+      maxCapacity: form.maxCapacity,
+      vesselName: form.vesselName,
+      beaconLocation: form.beaconLocation,
+      portLetterNumber: form.portLetterNumber,
+      homeport: form.homeport,
+      areaOfOperation: form.areaOfOperation,
+      imoNumber: form.imoNumber,
+      ssrNumber: form.ssrNumber,
+      rssNumber: form.rssNumber,
+      officialNumber: form.officialNumber,
+      rigPlatformLocation: form.rigPlatformLocation,
+    }),
+    toForm: (draftRegistration) => ({
+      maxCapacity: draftRegistration.maxCapacity,
+      vesselName: draftRegistration.vesselName,
+      beaconLocation: draftRegistration.beaconLocation,
+      portLetterNumber: draftRegistration.portLetterNumber,
+      homeport: draftRegistration.homeport,
+      areaOfOperation: draftRegistration.areaOfOperation,
+      imoNumber: draftRegistration.imoNumber,
+      ssrNumber: draftRegistration.ssrNumber,
+      rssNumber: draftRegistration.rssNumber,
+      officialNumber: draftRegistration.officialNumber,
+      rigPlatformLocation: draftRegistration.rigPlatformLocation,
+    }),
+  };
 
-    const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return makeRegistrationMapper<AboutTheVesselForm>(
-      useIndex,
-      beaconUseMapper
-    );
-  })();
+  return makeRegistrationMapper<AboutTheVesselForm>(useIndex, beaconUseMapper);
+};
 
 const validationRules = ({
   maxCapacity,

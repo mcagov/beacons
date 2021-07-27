@@ -129,20 +129,19 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   )
 );
 
-const props = (
+const props = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<Partial<AdditionalBeaconUseProps>> =>
-  (async () => {
-    const draftRegistration = await context.container.getDraftRegistration(
-      context.req.cookies[formSubmissionCookieId]
-    );
+): Promise<Partial<AdditionalBeaconUseProps>> => {
+  const draftRegistration = await context.container.getDraftRegistration(
+    context.req.cookies[formSubmissionCookieId]
+  );
 
-    const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return {
-      uses: draftRegistration.uses,
-      currentUseIndex: useIndex,
-    };
-  })();
+  return {
+    uses: draftRegistration.uses,
+    currentUseIndex: useIndex,
+  };
+};
 
 export default AdditionalBeaconUse;

@@ -84,19 +84,18 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   )
 );
 
-const nextPageUrl = (context: BeaconsGetServerSidePropsContext) =>
-  (async () => {
-    const form = await context.container.parseFormDataAs<SignUpOrSignInForm>(
-      context.req
-    );
+const nextPageUrl = async (context: BeaconsGetServerSidePropsContext) => {
+  const form = await context.container.parseFormDataAs<SignUpOrSignInForm>(
+    context.req
+  );
 
-    switch (form.signUpOrSignIn) {
-      case "signUp":
-        return PageURLs.signUp;
-      case "signIn":
-        return PageURLs.signIn;
-    }
-  })();
+  switch (form.signUpOrSignIn) {
+    case "signUp":
+      return PageURLs.signUp;
+    case "signIn":
+      return PageURLs.signIn;
+  }
+};
 
 const validationRules = ({ signUpOrSignIn }) => {
   return new FormManager({

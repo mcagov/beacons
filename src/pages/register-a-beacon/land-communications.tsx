@@ -189,40 +189,39 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext
-): RegistrationFormMapper<LandCommunicationsForm> =>
-  (() => {
-    const beaconUseMapper: BeaconUseFormMapper<LandCommunicationsForm> = {
-      toDraftBeaconUse: (form) => ({
-        portableVhfRadio: form.portableVhfRadio,
-        portableVhfRadioInput: form.portableVhfRadioInput,
-        satelliteTelephone: form.satelliteTelephone,
-        satelliteTelephoneInput: form.satelliteTelephoneInput,
-        mobileTelephone: form.mobileTelephone,
-        mobileTelephoneInput1: form.mobileTelephoneInput1,
-        mobileTelephoneInput2: form.mobileTelephoneInput2,
-        otherCommunication: form.otherCommunication,
-        otherCommunicationInput: form.otherCommunicationInput,
-      }),
-      toForm: (draftBeaconUse) => ({
-        portableVhfRadio: draftBeaconUse.portableVhfRadio,
-        portableVhfRadioInput: draftBeaconUse.portableVhfRadioInput,
-        satelliteTelephone: draftBeaconUse.satelliteTelephone,
-        satelliteTelephoneInput: draftBeaconUse.satelliteTelephoneInput,
-        mobileTelephone: draftBeaconUse.mobileTelephone,
-        mobileTelephoneInput1: draftBeaconUse.mobileTelephoneInput1,
-        mobileTelephoneInput2: draftBeaconUse.mobileTelephoneInput2,
-        otherCommunication: draftBeaconUse.otherCommunication,
-        otherCommunicationInput: draftBeaconUse.otherCommunicationInput,
-      }),
-    };
+): RegistrationFormMapper<LandCommunicationsForm> => {
+  const beaconUseMapper: BeaconUseFormMapper<LandCommunicationsForm> = {
+    toDraftBeaconUse: (form) => ({
+      portableVhfRadio: form.portableVhfRadio,
+      portableVhfRadioInput: form.portableVhfRadioInput,
+      satelliteTelephone: form.satelliteTelephone,
+      satelliteTelephoneInput: form.satelliteTelephoneInput,
+      mobileTelephone: form.mobileTelephone,
+      mobileTelephoneInput1: form.mobileTelephoneInput1,
+      mobileTelephoneInput2: form.mobileTelephoneInput2,
+      otherCommunication: form.otherCommunication,
+      otherCommunicationInput: form.otherCommunicationInput,
+    }),
+    toForm: (draftBeaconUse) => ({
+      portableVhfRadio: draftBeaconUse.portableVhfRadio,
+      portableVhfRadioInput: draftBeaconUse.portableVhfRadioInput,
+      satelliteTelephone: draftBeaconUse.satelliteTelephone,
+      satelliteTelephoneInput: draftBeaconUse.satelliteTelephoneInput,
+      mobileTelephone: draftBeaconUse.mobileTelephone,
+      mobileTelephoneInput1: draftBeaconUse.mobileTelephoneInput1,
+      mobileTelephoneInput2: draftBeaconUse.mobileTelephoneInput2,
+      otherCommunication: draftBeaconUse.otherCommunication,
+      otherCommunicationInput: draftBeaconUse.otherCommunicationInput,
+    }),
+  };
 
-    const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return makeRegistrationMapper<LandCommunicationsForm>(
-      useIndex,
-      beaconUseMapper
-    );
-  })();
+  return makeRegistrationMapper<LandCommunicationsForm>(
+    useIndex,
+    beaconUseMapper
+  );
+};
 
 const validationRules = ({
   portableVhfRadio,

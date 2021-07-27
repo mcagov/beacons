@@ -254,40 +254,39 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext
-): RegistrationFormMapper<AboutTheAircraftForm> =>
-  (() => {
-    const beaconUseMapper: BeaconUseFormMapper<AboutTheAircraftForm> = {
-      toDraftBeaconUse: (form) => ({
-        maxCapacity: form.maxCapacity,
-        aircraftManufacturer: form.aircraftManufacturer,
-        principalAirport: form.principalAirport,
-        secondaryAirport: form.secondaryAirport,
-        registrationMark: form.registrationMark,
-        hexAddress: form.hexAddress,
-        cnOrMsnNumber: form.cnOrMsnNumber,
-        dongle: form.dongle,
-        beaconPosition: form.beaconPosition,
-      }),
-      toForm: (draftRegistration) => ({
-        maxCapacity: draftRegistration.maxCapacity,
-        aircraftManufacturer: draftRegistration.aircraftManufacturer,
-        principalAirport: draftRegistration.principalAirport,
-        secondaryAirport: draftRegistration.secondaryAirport,
-        registrationMark: draftRegistration.registrationMark,
-        hexAddress: draftRegistration.hexAddress,
-        cnOrMsnNumber: draftRegistration.cnOrMsnNumber,
-        dongle: draftRegistration.dongle,
-        beaconPosition: draftRegistration.beaconPosition,
-      }),
-    };
+): RegistrationFormMapper<AboutTheAircraftForm> => {
+  const beaconUseMapper: BeaconUseFormMapper<AboutTheAircraftForm> = {
+    toDraftBeaconUse: (form) => ({
+      maxCapacity: form.maxCapacity,
+      aircraftManufacturer: form.aircraftManufacturer,
+      principalAirport: form.principalAirport,
+      secondaryAirport: form.secondaryAirport,
+      registrationMark: form.registrationMark,
+      hexAddress: form.hexAddress,
+      cnOrMsnNumber: form.cnOrMsnNumber,
+      dongle: form.dongle,
+      beaconPosition: form.beaconPosition,
+    }),
+    toForm: (draftRegistration) => ({
+      maxCapacity: draftRegistration.maxCapacity,
+      aircraftManufacturer: draftRegistration.aircraftManufacturer,
+      principalAirport: draftRegistration.principalAirport,
+      secondaryAirport: draftRegistration.secondaryAirport,
+      registrationMark: draftRegistration.registrationMark,
+      hexAddress: draftRegistration.hexAddress,
+      cnOrMsnNumber: draftRegistration.cnOrMsnNumber,
+      dongle: draftRegistration.dongle,
+      beaconPosition: draftRegistration.beaconPosition,
+    }),
+  };
 
-    const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return makeRegistrationMapper<AboutTheAircraftForm>(
-      useIndex,
-      beaconUseMapper
-    );
-  })();
+  return makeRegistrationMapper<AboutTheAircraftForm>(
+    useIndex,
+    beaconUseMapper
+  );
+};
 
 const validationRules = ({
   maxCapacity,

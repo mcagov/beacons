@@ -168,38 +168,37 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext
-): RegistrationFormMapper<AircraftCommunicationsForm> =>
-  (() => {
-    const beaconUseMapper: BeaconUseFormMapper<AircraftCommunicationsForm> = {
-      toDraftBeaconUse: (form) => ({
-        vhfRadio: form.vhfRadio,
-        satelliteTelephone: form.satelliteTelephone,
-        satelliteTelephoneInput: form.satelliteTelephoneInput,
-        mobileTelephone: form.mobileTelephone,
-        mobileTelephoneInput1: form.mobileTelephoneInput1,
-        mobileTelephoneInput2: form.mobileTelephoneInput2,
-        otherCommunication: form.otherCommunication,
-        otherCommunicationInput: form.otherCommunicationInput,
-      }),
-      toForm: (draftRegistration) => ({
-        vhfRadio: draftRegistration.vhfRadio,
-        satelliteTelephone: draftRegistration.satelliteTelephone,
-        satelliteTelephoneInput: draftRegistration.satelliteTelephoneInput,
-        mobileTelephone: draftRegistration.mobileTelephone,
-        mobileTelephoneInput1: draftRegistration.mobileTelephoneInput1,
-        mobileTelephoneInput2: draftRegistration.mobileTelephoneInput2,
-        otherCommunication: draftRegistration.otherCommunication,
-        otherCommunicationInput: draftRegistration.otherCommunicationInput,
-      }),
-    };
+): RegistrationFormMapper<AircraftCommunicationsForm> => {
+  const beaconUseMapper: BeaconUseFormMapper<AircraftCommunicationsForm> = {
+    toDraftBeaconUse: (form) => ({
+      vhfRadio: form.vhfRadio,
+      satelliteTelephone: form.satelliteTelephone,
+      satelliteTelephoneInput: form.satelliteTelephoneInput,
+      mobileTelephone: form.mobileTelephone,
+      mobileTelephoneInput1: form.mobileTelephoneInput1,
+      mobileTelephoneInput2: form.mobileTelephoneInput2,
+      otherCommunication: form.otherCommunication,
+      otherCommunicationInput: form.otherCommunicationInput,
+    }),
+    toForm: (draftRegistration) => ({
+      vhfRadio: draftRegistration.vhfRadio,
+      satelliteTelephone: draftRegistration.satelliteTelephone,
+      satelliteTelephoneInput: draftRegistration.satelliteTelephoneInput,
+      mobileTelephone: draftRegistration.mobileTelephone,
+      mobileTelephoneInput1: draftRegistration.mobileTelephoneInput1,
+      mobileTelephoneInput2: draftRegistration.mobileTelephoneInput2,
+      otherCommunication: draftRegistration.otherCommunication,
+      otherCommunicationInput: draftRegistration.otherCommunicationInput,
+    }),
+  };
 
-    const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return makeRegistrationMapper<AircraftCommunicationsForm>(
-      useIndex,
-      beaconUseMapper
-    );
-  })();
+  return makeRegistrationMapper<AircraftCommunicationsForm>(
+    useIndex,
+    beaconUseMapper
+  );
+};
 
 const validationRules = ({
   vhfRadio,

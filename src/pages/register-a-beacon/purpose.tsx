@@ -104,36 +104,34 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   )
 );
 
-const props = (
+const props = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<Partial<PurposeFormProps>> =>
-  (async () => {
-    const draftRegistration = await context.container.getDraftRegistration(
-      context.req.cookies[formSubmissionCookieId]
-    );
+): Promise<Partial<PurposeFormProps>> => {
+  const draftRegistration = await context.container.getDraftRegistration(
+    context.req.cookies[formSubmissionCookieId]
+  );
 
-    const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return {
-      environment: draftRegistration.uses[useIndex]?.environment as Environment,
-    };
-  })();
+  return {
+    environment: draftRegistration.uses[useIndex]?.environment as Environment,
+  };
+};
 
-const mapper = (context: BeaconsGetServerSidePropsContext) =>
-  (() => {
-    const beaconUseMapper: BeaconUseFormMapper<PurposeForm> = {
-      toDraftBeaconUse: (form: PurposeForm): DraftBeaconUse => ({
-        purpose: form.purpose,
-      }),
-      toForm: (draftBeaconUse: DraftBeaconUse): PurposeForm => ({
-        purpose: draftBeaconUse.purpose as Purpose,
-      }),
-    };
+const mapper = (context: BeaconsGetServerSidePropsContext) => {
+  const beaconUseMapper: BeaconUseFormMapper<PurposeForm> = {
+    toDraftBeaconUse: (form: PurposeForm): DraftBeaconUse => ({
+      purpose: form.purpose,
+    }),
+    toForm: (draftBeaconUse: DraftBeaconUse): PurposeForm => ({
+      purpose: draftBeaconUse.purpose as Purpose,
+    }),
+  };
 
-    const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return makeRegistrationMapper<PurposeForm>(useIndex, beaconUseMapper);
-  })();
+  return makeRegistrationMapper<PurposeForm>(useIndex, beaconUseMapper);
+};
 
 const validationRules = ({ purpose }: FormSubmission): FormManager => {
   return new FormManager({

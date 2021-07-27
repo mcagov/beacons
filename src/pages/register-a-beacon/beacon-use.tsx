@@ -121,7 +121,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
           context,
           validationRules,
           mapper(context),
-          nextPage(context)
+          await nextPage(context)
         ),
       ]).execute();
     })
@@ -130,48 +130,45 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
 
 const props = (
   context: BeaconsGetServerSidePropsContext
-): Partial<FormPageProps> =>
-  (() => ({
-    useIndex: parseInt(context.query.useIndex as string),
-  }))();
+): Partial<FormPageProps> => ({
+  useIndex: parseInt(context.query.useIndex as string),
+});
 
-const nextPage = (
+const nextPage = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<PageURLs> =>
-  (async () => {
-    const { environment } =
-      await context.container.parseFormDataAs<BeaconUseForm>(context.req);
+): Promise<PageURLs> => {
+  const { environment } =
+    await context.container.parseFormDataAs<BeaconUseForm>(context.req);
 
-    return environment === Environment.LAND
-      ? PageURLs.activity
-      : PageURLs.purpose;
-  })();
+  return environment === Environment.LAND
+    ? PageURLs.activity
+    : PageURLs.purpose;
+};
 
-const mapper = (context: BeaconsGetServerSidePropsContext) =>
-  (() => {
-    const useIndex = parseInt(context.query.useIndex as string);
+const mapper = (context: BeaconsGetServerSidePropsContext) => {
+  const useIndex = parseInt(context.query.useIndex as string);
 
-    return {
-      toDraftRegistration: (form) => {
-        return {
-          uses: new Array(useIndex > 1 ? useIndex - 1 : 1).fill({}).fill(
-            {
-              environment: form.environment,
-            },
-            useIndex,
-            useIndex + 1
-          ),
-        };
-      },
-      toForm: (draftRegistration) => {
-        return {
-          environment: draftRegistration?.uses
-            ? (draftRegistration?.uses[useIndex]?.environment as Environment)
-            : null,
-        };
-      },
-    };
-  })();
+  return {
+    toDraftRegistration: (form) => {
+      return {
+        uses: new Array(useIndex > 1 ? useIndex - 1 : 1).fill({}).fill(
+          {
+            environment: form.environment,
+          },
+          useIndex,
+          useIndex + 1
+        ),
+      };
+    },
+    toForm: (draftRegistration) => {
+      return {
+        environment: draftRegistration?.uses
+          ? (draftRegistration?.uses[useIndex]?.environment as Environment)
+          : null,
+      };
+    },
+  };
+};
 
 const validationRules = ({ environment }) => {
   return new FormManager({

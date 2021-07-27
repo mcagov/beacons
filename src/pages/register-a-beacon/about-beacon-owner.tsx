@@ -147,22 +147,21 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   )
 );
 
-const props = (
+const props = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<Partial<AboutBeaconOwnerFormProps>> =>
-  (async () => {
-    const draftRegistration = await context.container.getDraftRegistration(
-      context.req.cookies[formSubmissionCookieId]
-    );
+): Promise<Partial<AboutBeaconOwnerFormProps>> => {
+  const draftRegistration = await context.container.getDraftRegistration(
+    context.req.cookies[formSubmissionCookieId]
+  );
 
-    const previousPageUrl =
-      PageURLs.additionalUse +
-      queryParams({ useIndex: draftRegistration.uses.length - 1 });
+  const previousPageUrl =
+    PageURLs.additionalUse +
+    queryParams({ useIndex: draftRegistration.uses.length - 1 });
 
-    return {
-      previousPageUrl,
-    };
-  })();
+  return {
+    previousPageUrl,
+  };
+};
 
 const mapper: RegistrationFormMapper<AboutBeaconOwnerForm> = {
   toDraftRegistration: (form) => ({
