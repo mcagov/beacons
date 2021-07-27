@@ -311,12 +311,12 @@ describe("Registration", () => {
 
     it("should serialise all the communication information if selected", () => {
       registration.update({
-        vhfRadio: ["false", "true"],
-        fixedVhfRadio: ["false", "true"],
-        portableVhfRadio: ["false", "true"],
-        satelliteTelephone: ["false", "true"],
-        mobileTelephone: ["false", "true"],
-        otherCommunication: ["false", "true"],
+        vhfRadio: "true",
+        fixedVhfRadio: "true",
+        portableVhfRadio: "true",
+        satelliteTelephone: "true",
+        mobileTelephone: "true",
+        otherCommunication: "true",
       });
 
       const json = registration.serialiseToAPI();
