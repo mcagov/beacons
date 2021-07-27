@@ -57,18 +57,30 @@ describe("AboutTheVessel", () => {
   };
 
   it("should have a back button which directs the user to the Activity page", () => {
-    render(<AboutTheVessel form={aboutTheVesselForm} />);
+    render(
+      <AboutTheVessel
+        form={aboutTheVesselForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
+    );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      PageURLs.activity
+      expect.stringContaining(PageURLs.activity)
     );
   });
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
-    const { container } = render(<AboutTheVessel form={aboutTheVesselForm} />);
+    const { container } = render(
+      <AboutTheVessel
+        form={aboutTheVesselForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
+    );
 
-    const form = container.querySelectorAll("form")[1];
+    const form = container.querySelector("form");
 
     expect(form).toHaveAttribute("action", "");
   });

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
+import { PageURLs } from "../../../src/lib/urls";
 import BeaconOwnerAddressPage from "../../../src/pages/register-a-beacon/beacon-owner-address";
 
 describe("BeaconOwnerAddressPage", () => {
@@ -32,20 +33,28 @@ describe("BeaconOwnerAddressPage", () => {
   };
 
   it("should have a back button which directs the user to the about beacon owner page", () => {
-    render(<BeaconOwnerAddressPage form={emptyBeaconOwnerAddressForm} />);
+    render(
+      <BeaconOwnerAddressPage
+        form={emptyBeaconOwnerAddressForm}
+        showCookieBanner={false}
+      />
+    );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/about-beacon-owner"
+      expect.stringContaining(PageURLs.aboutBeaconOwner)
     );
   });
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <BeaconOwnerAddressPage form={emptyBeaconOwnerAddressForm} />
+      <BeaconOwnerAddressPage
+        form={emptyBeaconOwnerAddressForm}
+        showCookieBanner={false}
+      />
     );
 
-    const form = container.querySelectorAll("form")[1];
+    const form = container.querySelector("form");
 
     expect(form).toHaveAttribute("action", "");
   });

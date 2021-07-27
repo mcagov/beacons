@@ -10,7 +10,7 @@ import { FieldManager } from "../../lib/form/fieldManager";
 import { FormManager } from "../../lib/form/formManager";
 import { Validators } from "../../lib/form/validators";
 import { FormSubmission } from "../../lib/formCache";
-import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
+import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -39,11 +39,11 @@ interface AboutTheVesselForm {
   rigPlatformLocation: string;
 }
 
-const AboutTheVessel: FunctionComponent<DraftRegistrationPageProps> = ({
+const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
   useIndex,
-}: DraftRegistrationPageProps): JSX.Element => {
+}: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = "About the vessel, windfarm or rig/platform";
 
   const pageText: ReactNode = (
@@ -271,7 +271,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
 const props = (
   context: BeaconsGetServerSidePropsContext
-): Partial<DraftRegistrationPageProps> => ({
+): Partial<DraftBeaconUsePageProps> => ({
   useIndex: parseInt(context.query.useIndex as string),
 });
 

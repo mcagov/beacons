@@ -49,7 +49,12 @@ describe("EmergencyContact", () => {
   };
 
   it("should have a back button which directs the user to the beacon owner page", () => {
-    render(<EmergencyContact form={emptyEmergencyContactForm} />);
+    render(
+      <EmergencyContact
+        form={emptyEmergencyContactForm}
+        showCookieBanner={false}
+      />
+    );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
@@ -59,10 +64,13 @@ describe("EmergencyContact", () => {
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <EmergencyContact form={emptyEmergencyContactForm} />
+      <EmergencyContact
+        form={emptyEmergencyContactForm}
+        showCookieBanner={false}
+      />
     );
 
-    const form = container.querySelectorAll("form")[1];
+    const form = container.querySelector("form");
 
     expect(form).toHaveAttribute("action", "");
   });

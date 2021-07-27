@@ -33,12 +33,12 @@ describe("AboutBeaconOwner", () => {
       <AboutBeaconOwner
         form={emptyAboutBeaconOwnerForm}
         previousPageUrl={PageURLs.environment}
-        showCookieBanner={true}
+        showCookieBanner={false}
       />
     );
     const ownPath = "";
 
-    const form = container.querySelectorAll("form")[1];
+    const form = container.querySelector("form");
 
     expect(form).toHaveAttribute("action", ownPath);
   });

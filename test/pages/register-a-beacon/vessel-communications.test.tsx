@@ -88,7 +88,7 @@ describe("VesselCommunications", () => {
       />
     );
 
-    const form = container.querySelectorAll("form")[1];
+    const form = container.querySelector("form");
 
     expect(form).toHaveAttribute("action", "");
   });

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/formManager";
+import { PageURLs } from "../../../src/lib/urls";
 import LandCommunications from "../../../src/pages/register-a-beacon/land-communications";
 
 describe("LandOtherCommunications", () => {
@@ -47,28 +48,42 @@ describe("LandOtherCommunications", () => {
     },
   };
 
-  xit("should have a back button which directs the user to the about the vessel page", () => {
-    render(<LandCommunications form={emptyLandOtherCommunicationsForm} />);
+  it("should have a back button which directs the user to the Activity page", () => {
+    render(
+      <LandCommunications
+        form={emptyLandOtherCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
+    );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      "/register-a-beacon/about-the-vessel?useIndex=0"
+      expect.stringContaining(PageURLs.activity)
     );
   });
 
   it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
     const { container } = render(
-      <LandCommunications form={emptyLandOtherCommunicationsForm} />
+      <LandCommunications
+        form={emptyLandOtherCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
     );
 
-    const form = container.querySelectorAll("form")[1];
+    const form = container.querySelector("form");
 
     expect(form).toHaveAttribute("action", "");
   });
 
   it("should have an autocomplete attribute on the mobile telephone number field", () => {
     const { container } = render(
-      <LandCommunications form={emptyLandOtherCommunicationsForm} />
+      <LandCommunications
+        form={emptyLandOtherCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
     );
 
     const mobilePhoneInput1 = container.querySelector("#mobileTelephoneInput1");
@@ -82,7 +97,11 @@ describe("LandOtherCommunications", () => {
     // Because this is likely to result in users' mobile and other more commonly used
     // numbers being autocompleted into the satellite number field.  We don't want this.
     const { container } = render(
-      <LandCommunications form={emptyLandOtherCommunicationsForm} />
+      <LandCommunications
+        form={emptyLandOtherCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
     );
 
     const satelliteTelephoneNumberInput = container.querySelector(
