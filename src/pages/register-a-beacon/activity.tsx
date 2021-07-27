@@ -617,8 +617,8 @@ const props = async (
   ).uses[context.query.useIndex as string];
 
   return {
-    environment: use?.environment,
-    purpose: use?.purpose,
+    environment: use?.environment || null,
+    purpose: use?.purpose || null,
   };
 };
 
