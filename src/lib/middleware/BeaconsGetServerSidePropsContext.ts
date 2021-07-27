@@ -5,5 +5,4 @@ import { IAppContainer } from "../appContainer";
 export type BeaconsGetServerSidePropsContext = GetServerSidePropsContext & {
   container: IAppContainer;
   session: Session;
-  showCookieBanner: boolean;
 };
