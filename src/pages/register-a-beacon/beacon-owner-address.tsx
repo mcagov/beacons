@@ -24,6 +24,7 @@ import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -138,9 +139,10 @@ const PostcodeInput: FunctionComponent<FormInputProps> = ({
 export const getServerSideProps: GetServerSideProps = withCookiePolicy(
   withContainer(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
-      const nextPageUrl = PageURLs.beaconOwnerAddress;
+      const nextPageUrl = PageURLs.emergencyContact;
 
       return await new BeaconsPageRouter([
+        new IfNoDraftRegistration(context),
         new IfUserViewedRegistrationForm<BeaconOwnerAddressForm>(
           context,
           validationRules,

@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButtonRouterIndexes, Button } from "../../components/Button";
+import { BackButton, Button } from "../../components/Button";
 import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
@@ -27,6 +27,7 @@ import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
@@ -53,7 +54,7 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
     <>
       <Layout
         navigation={
-          <BackButtonRouterIndexes href="/register-a-beacon/beacon-owner-address" />
+          <BackButton href="/register-a-beacon/beacon-owner-address" />
         }
         title={pageHeading}
         pageHasErrors={form.hasErrors}
@@ -193,6 +194,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
       const nextPageUrl = PageURLs.checkYourAnswers;
 
       return await new BeaconsPageRouter([
+        new IfNoDraftRegistration(context),
         new IfUserViewedRegistrationForm<EmergencyContactForm>(
           context,
           validationRules,
