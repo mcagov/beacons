@@ -55,7 +55,7 @@ describe("makeDraftRegistrationMapper", () => {
       });
     });
 
-    it("can also map the use in the middle", () => {
+    it("and three uses", () => {
       const useIndex = 2;
       const beaconUseForm = {
         environment: Environment.LAND,

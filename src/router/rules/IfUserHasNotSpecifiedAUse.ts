@@ -14,13 +14,17 @@ export class IfUserHasNotSpecifiedAUse implements Rule {
   }
 
   public async condition(): Promise<boolean> {
-    return !this.context?.query?.useIndex;
+    return this.userHasNotSpecifiedAUse();
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
     if (await this.draftUsesExist()) return this.sendUserToHighestUseIndex();
 
     return this.createNewUseAndRedirectToIt();
+  }
+
+  private userHasNotSpecifiedAUse() {
+    return !this.context?.query?.useIndex;
   }
 
   private async draftUsesExist() {

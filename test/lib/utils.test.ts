@@ -51,7 +51,7 @@ describe("to upper case function", () => {
     expect(toUpperCase("abc123")).toBe("ABC123");
   });
 
-  it("should execute only numbers", () => {
+  it("should handle only numbers", () => {
     expect(toUpperCase("123")).toBe("123");
   });
 });
