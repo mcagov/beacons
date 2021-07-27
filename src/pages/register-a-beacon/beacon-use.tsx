@@ -15,7 +15,10 @@ import { withSession } from "../../lib/middleware/withSession";
 import { Environment } from "../../lib/registration/types";
 import { PageURLs } from "../../lib/urls";
 import { ordinal } from "../../lib/writingStyle";
+import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
@@ -105,6 +108,7 @@ export const getServerSideProps: GetServerSideProps = withCookiePolicy(
     withSession(async (context: BeaconsGetServerSidePropsContext) => {
       return await new BeaconsPageRouter([
         new IfNoUseIndex(context),
+        new IfNoDraftRegistration(context),
         new IfUserViewedRegistrationForm<BeaconUseForm>(
           context,
           validationRules,
@@ -146,28 +150,22 @@ const nextPage = async (
 };
 
 const mapper = (context: BeaconsGetServerSidePropsContext) => {
-  const useIndex = parseInt(context.query.useIndex as string);
-
-  return {
-    toDraftRegistration: (form) => {
+  const beaconUseMapper: BeaconUseFormMapper<BeaconUseForm> = {
+    toDraftBeaconUse: (form) => {
       return {
-        uses: new Array(useIndex > 1 ? useIndex - 1 : 1).fill({}).fill(
-          {
-            environment: form.environment,
-          },
-          useIndex,
-          useIndex + 1
-        ),
+        environment: form.environment,
       };
     },
-    toForm: (draftRegistration) => {
+    toForm: (draftBeaconUse) => {
       return {
-        environment: draftRegistration?.uses
-          ? (draftRegistration?.uses[useIndex]?.environment as Environment)
-          : null,
+        environment: draftBeaconUse.environment as Environment,
       };
     },
   };
+
+  const useIndex = parseInt(context.query.useIndex as string);
+
+  return makeDraftRegistrationMapper<BeaconUseForm>(useIndex, beaconUseMapper);
 };
 
 const validationRules = ({ environment }) => {

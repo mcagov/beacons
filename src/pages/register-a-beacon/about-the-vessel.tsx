@@ -17,8 +17,8 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
-import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
@@ -301,7 +301,10 @@ const mapper = (
 
   const useIndex = parseInt(context.query.useIndex as string);
 
-  return makeRegistrationMapper<AboutTheVesselForm>(useIndex, beaconUseMapper);
+  return makeDraftRegistrationMapper<AboutTheVesselForm>(
+    useIndex,
+    beaconUseMapper
+  );
 };
 
 const validationRules = ({

@@ -19,8 +19,8 @@ import { Activity, Environment, Purpose } from "../../lib/registration/types";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
-import { makeRegistrationMapper } from "../../presenters/UseMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
@@ -654,7 +654,7 @@ const mapper = (
 
   const useIndex = parseInt(context.query.useIndex as string);
 
-  return makeRegistrationMapper<ActivityForm>(useIndex, beaconUseMapper);
+  return makeDraftRegistrationMapper<ActivityForm>(useIndex, beaconUseMapper);
 };
 
 const validationRules = ({

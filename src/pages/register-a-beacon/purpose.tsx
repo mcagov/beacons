@@ -16,7 +16,7 @@ import { Environment, Purpose } from "../../lib/registration/types";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
-import { makeRegistrationMapper } from "../../presenters/UseMapper";
+import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfNoDraftRegistration } from "../../router/rules/IfNoDraftRegistration";
 import { IfNoUseIndex } from "../../router/rules/IfNoUseIndex";
@@ -130,7 +130,7 @@ const mapper = (context: BeaconsGetServerSidePropsContext) => {
 
   const useIndex = parseInt(context.query.useIndex as string);
 
-  return makeRegistrationMapper<PurposeForm>(useIndex, beaconUseMapper);
+  return makeDraftRegistrationMapper<PurposeForm>(useIndex, beaconUseMapper);
 };
 
 const validationRules = ({ purpose }: FormSubmission): FormManager => {
