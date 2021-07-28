@@ -42,7 +42,7 @@ export class IfUserViewedRegistrationForm<T> implements Rule {
   > {
     return {
       props: {
-        form: withoutErrorMessages<T>(
+        form: withoutErrorMessages(
           this.mapper.toForm(await this.draftRegistration()),
           this.validationRules
         ),

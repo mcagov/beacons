@@ -44,7 +44,7 @@ export class IfUserSubmittedInvalidRegistrationForm<T> implements Rule {
 
     return {
       props: {
-        form: withErrorMessages<T>(
+        form: withErrorMessages(
           this.mapper.toForm(this.mapper.toDraftRegistration(form)),
           this.validationRules
         ),
