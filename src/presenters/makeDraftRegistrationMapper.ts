@@ -5,7 +5,7 @@ export const makeDraftRegistrationMapper = <T>(
   useIndex: number,
   beaconUseMapper: BeaconUseFormMapper<T>
 ): RegistrationFormMapper<T> => ({
-  toDraftRegistration: (form) => {
+  formToDraftRegistration: (form) => {
     return {
       uses: new Array(useIndex >= 1 ? useIndex + 1 : 1)
         .fill({})
@@ -16,7 +16,7 @@ export const makeDraftRegistrationMapper = <T>(
         ),
     };
   },
-  toForm: (draftRegistration) => {
+  draftRegistrationToForm: (draftRegistration) => {
     return beaconUseMapper.beaconUseToForm(draftRegistration.uses[useIndex]);
   },
 });

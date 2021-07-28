@@ -43,7 +43,7 @@ export class IfUserViewedRegistrationForm<T> implements Rule {
     return {
       props: {
         form: withoutErrorMessages(
-          this.mapper.toForm(await this.draftRegistration()),
+          this.mapper.draftRegistrationToForm(await this.draftRegistration()),
           this.validationRules
         ),
         showCookieBanner:

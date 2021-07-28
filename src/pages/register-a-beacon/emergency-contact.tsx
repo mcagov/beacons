@@ -214,7 +214,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 );
 
 const mapper: RegistrationFormMapper<EmergencyContactForm> = {
-  toDraftRegistration: (form) => ({
+  formToDraftRegistration: (form) => ({
     emergencyContact1FullName: form.emergencyContact1FullName || null,
     emergencyContact1TelephoneNumber:
       form.emergencyContact1TelephoneNumber || null,
@@ -232,7 +232,7 @@ const mapper: RegistrationFormMapper<EmergencyContactForm> = {
       form.emergencyContact3AlternativeTelephoneNumber || null,
     uses: [],
   }),
-  toForm: (draftRegistration) => ({
+  draftRegistrationToForm: (draftRegistration) => ({
     emergencyContact1FullName: draftRegistration.emergencyContact1FullName,
     emergencyContact1TelephoneNumber:
       draftRegistration.emergencyContact1TelephoneNumber,

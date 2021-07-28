@@ -132,13 +132,13 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 );
 
 export const mapper: RegistrationFormMapper<CheckBeaconDetailsForm> = {
-  toDraftRegistration: (form) => ({
+  formToDraftRegistration: (form) => ({
     manufacturer: form.manufacturer || null,
     model: form.model || null,
     hexId: toUpperCase(form.hexId) || null,
     uses: [],
   }),
-  toForm: (draftRegistration) => ({
+  draftRegistrationToForm: (draftRegistration) => ({
     manufacturer: draftRegistration?.manufacturer,
     model: draftRegistration?.model,
     hexId: draftRegistration?.hexId,

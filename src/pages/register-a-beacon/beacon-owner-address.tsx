@@ -162,7 +162,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 );
 
 const mapper: RegistrationFormMapper<BeaconOwnerAddressForm> = {
-  toDraftRegistration: (form) => ({
+  formToDraftRegistration: (form) => ({
     ownerAddressLine1: form.ownerAddressLine1 || null,
     ownerAddressLine2: form.ownerAddressLine2 || null,
     ownerTownOrCity: form.ownerTownOrCity || null,
@@ -170,7 +170,7 @@ const mapper: RegistrationFormMapper<BeaconOwnerAddressForm> = {
     ownerPostcode: form.ownerPostcode || null,
     uses: [],
   }),
-  toForm: (draftRegistration) => ({
+  draftRegistrationToForm: (draftRegistration) => ({
     ownerAddressLine1: draftRegistration.ownerAddressLine1,
     ownerAddressLine2: draftRegistration.ownerAddressLine2,
     ownerTownOrCity: draftRegistration.ownerTownOrCity,

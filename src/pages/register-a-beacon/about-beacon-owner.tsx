@@ -166,14 +166,14 @@ const props = async (
 };
 
 const mapper: RegistrationFormMapper<AboutBeaconOwnerForm> = {
-  toDraftRegistration: (form) => ({
+  formToDraftRegistration: (form) => ({
     ownerFullName: form.ownerFullName,
     ownerTelephoneNumber: form.ownerTelephoneNumber,
     ownerAlternativeTelephoneNumber: form.ownerAlternativeTelephoneNumber,
     ownerEmail: form.ownerEmail,
     uses: [],
   }),
-  toForm: (draftRegistration) => ({
+  draftRegistrationToForm: (draftRegistration) => ({
     ownerFullName: draftRegistration.ownerFullName,
     ownerTelephoneNumber: draftRegistration.ownerTelephoneNumber,
     ownerAlternativeTelephoneNumber:

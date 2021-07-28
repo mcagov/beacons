@@ -27,8 +27,8 @@ export class IfUserSubmittedInvalidRegistrationForm<T> implements Rule {
     return (
       this.context.req.method === "POST" &&
       !isValid(
-        this.mapper.toForm(
-          this.mapper.toDraftRegistration(
+        this.mapper.draftRegistrationToForm(
+          this.mapper.formToDraftRegistration(
             await this.context.container.parseFormDataAs(this.context.req)
           )
         ),
@@ -45,7 +45,9 @@ export class IfUserSubmittedInvalidRegistrationForm<T> implements Rule {
     return {
       props: {
         form: withErrorMessages(
-          this.mapper.toForm(this.mapper.toDraftRegistration(form)),
+          this.mapper.draftRegistrationToForm(
+            this.mapper.formToDraftRegistration(form)
+          ),
           this.validationRules
         ),
         ...(await this.additionalProps),

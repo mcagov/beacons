@@ -4,7 +4,7 @@ import { BeaconUseFormMapper } from "../../src/presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../src/presenters/makeDraftRegistrationMapper";
 
 describe("makeDraftRegistrationMapper", () => {
-  describe("toDraftRegistration", () => {
+  describe("formToDraftRegistration", () => {
     it("given a useIndex and a BeaconUseFormMapper, returns a function that maps BeaconUse form properties to a DraftRegistration", () => {
       const useIndex = 0;
       const beaconUseForm = {
@@ -23,7 +23,7 @@ describe("makeDraftRegistrationMapper", () => {
         beaconUseFormMapper
       );
       const draftRegistration: DraftRegistration =
-        draftRegistrationMapper.toDraftRegistration(beaconUseForm);
+        draftRegistrationMapper.formToDraftRegistration(beaconUseForm);
 
       expect(draftRegistration).toStrictEqual({
         uses: [{ environment: Environment.LAND }],
@@ -48,7 +48,7 @@ describe("makeDraftRegistrationMapper", () => {
         beaconUseFormMapper
       );
       const draftRegistration: DraftRegistration =
-        draftRegistrationMapper.toDraftRegistration(beaconUseForm);
+        draftRegistrationMapper.formToDraftRegistration(beaconUseForm);
 
       expect(draftRegistration).toStrictEqual({
         uses: [{}, { environment: Environment.LAND }],
@@ -73,7 +73,7 @@ describe("makeDraftRegistrationMapper", () => {
         beaconUseFormMapper
       );
       const draftRegistration: DraftRegistration =
-        draftRegistrationMapper.toDraftRegistration(beaconUseForm);
+        draftRegistrationMapper.formToDraftRegistration(beaconUseForm);
 
       expect(draftRegistration).toStrictEqual({
         uses: [{}, {}, { environment: Environment.LAND }],

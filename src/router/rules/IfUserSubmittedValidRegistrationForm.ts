@@ -30,8 +30,10 @@ export class IfUserSubmittedValidRegistrationForm<T> implements Rule {
 
     return (
       this.context.req.method === "POST" &&
-      isValid<T>(
-        this.mapper.toForm(this.mapper.toDraftRegistration(form as T)),
+      isValid(
+        this.mapper.draftRegistrationToForm(
+          this.mapper.formToDraftRegistration(form as T)
+        ),
         this.validationRules
       )
     );
@@ -42,7 +44,7 @@ export class IfUserSubmittedValidRegistrationForm<T> implements Rule {
 
     await this.context.container.saveDraftRegistration(
       this.context.req.cookies["submissionId"],
-      this.mapper.toDraftRegistration(form as T)
+      this.mapper.formToDraftRegistration(form as T)
     );
 
     return redirectUserTo(await this.nextPage);
