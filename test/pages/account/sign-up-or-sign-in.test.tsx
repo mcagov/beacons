@@ -17,7 +17,9 @@ describe("SignUpOrSignIn", () => {
       errorSummary: [],
     };
 
-    render(<SignUpOrSignIn form={signUpOrSignInForm} />);
+    render(
+      <SignUpOrSignIn form={signUpOrSignInForm} showCookieBanner={false} />
+    );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
