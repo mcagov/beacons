@@ -1,6 +1,6 @@
 import { FormSubmission } from "../formCache";
 import { FormManagerFactory } from "../handlePageRequest";
-import { FormJSON } from "./formManager";
+import { FormJSON } from "./FormManager";
 
 export function isValid(
   form: FormSubmission,

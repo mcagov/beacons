@@ -12,7 +12,7 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
-import { retrieveUserFormSubmissionId } from "../../lib/retrieveUserFormSubmissionId";
+import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import { ISubmitRegistrationResult } from "../../useCases/submitRegistration";
 
@@ -97,7 +97,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
     try {
       const result = await submitRegistration(
-        retrieveUserFormSubmissionId(context),
+        context.req.cookies[formSubmissionCookieId],
         await getAccountHolderId(context.session)
       );
 

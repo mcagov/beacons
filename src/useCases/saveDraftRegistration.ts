@@ -1,6 +1,7 @@
 import * as _ from "lodash";
 import { DraftRegistration } from "../entities/DraftRegistration";
-import { appContainer, IAppContainer } from "../lib/appContainer";
+import { appContainer } from "../lib/appContainer";
+import { IAppContainer } from "../lib/IAppContainer";
 
 export const saveDraftRegistration =
   ({ draftRegistrationGateway }: IAppContainer = appContainer) =>

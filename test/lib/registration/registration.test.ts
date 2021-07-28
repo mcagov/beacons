@@ -1,15 +1,15 @@
-import { Registration } from "../../../src/lib/registration/registration";
+import { BeaconUse } from "../../../src/entities/BeaconUse";
+import { DeprecatedRegistration } from "../../../src/lib/deprecatedRegistration/DeprecatedRegistration";
+import { IUseRequestBody } from "../../../src/lib/deprecatedRegistration/IRegistrationRequestBody";
 import {
   initBeacon,
   initBeaconUse,
-} from "../../../src/lib/registration/registrationInitialisation";
-import { IUseRequestBody } from "../../../src/lib/registration/registrationRequestBody";
+} from "../../../src/lib/deprecatedRegistration/registrationInitialisation";
 import {
   Activity,
-  BeaconUse,
   Environment,
   Purpose,
-} from "../../../src/lib/registration/types";
+} from "../../../src/lib/deprecatedRegistration/types";
 import {
   getMockBeacon,
   getMockEmergencyContact,
@@ -17,11 +17,11 @@ import {
   getMockUse,
 } from "../../mocks";
 
-describe("Registration", () => {
-  let registration: Registration;
+describe("DeprecatedRegistration", () => {
+  let registration: DeprecatedRegistration;
 
   beforeEach(() => {
-    registration = new Registration();
+    registration = new DeprecatedRegistration();
   });
 
   describe("updating beacon information", () => {

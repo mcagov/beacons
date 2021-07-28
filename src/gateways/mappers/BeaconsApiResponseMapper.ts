@@ -1,17 +1,15 @@
-import { IBeacon } from "../../entities/beacon";
-import { IEmergencyContact } from "../../entities/emergencyContact";
-import { IEntityLink } from "../../entities/entityLink";
-import { IOwner } from "../../entities/owner";
-import { IUse } from "../../entities/use";
+import { Beacon } from "../../entities/Beacon";
+import { EmergencyContact } from "../../entities/EmergencyContact";
+import { EntityLink } from "../../entities/EntityLink";
+import { Owner } from "../../entities/Owner";
+import { Use } from "../../entities/Use";
 import { isoDate } from "../../utils/dateTime";
-import { IBeaconDataAttributes, IBeaconListResponse } from "./beaconResponse";
+import { IBeaconDataAttributes } from "./IBeaconDataAttributes";
+import { IBeaconListResponse } from "./IBeaconListResponse";
+import { IBeaconResponseMapper } from "./IBeaconResponseMapper";
 
-export interface IBeaconResponseMapper {
-  mapList: (beaconApiResponse: IBeaconListResponse) => IBeacon[];
-}
-
-export class BeaconResponseMapper implements IBeaconResponseMapper {
-  public mapList(beaconApiResponse: IBeaconListResponse): IBeacon[] {
+export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
+  public mapList(beaconApiResponse: IBeaconListResponse): Beacon[] {
     return beaconApiResponse.data.map((beacon) => {
       return {
         id: beacon.id,
@@ -36,7 +34,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
     });
   }
 
-  private mapLinks(links: IEntityLink[]): IEntityLink[] {
+  private mapLinks(links: EntityLink[]): EntityLink[] {
     return links.map((link) => {
       return { verb: link.verb, path: link.path };
     });
@@ -45,7 +43,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
   private mapOwners(
     beaconApiResponse: IBeaconListResponse,
     beacon: IBeaconDataAttributes
-  ): IOwner[] {
+  ): Owner[] {
     const ownerIds = beacon.relationships.owner.data.map((owner) => owner.id);
 
     return ownerIds.map((ownerId) => {
@@ -74,7 +72,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
   private mapEmergencyContacts(
     beaconApiResponse: IBeaconListResponse,
     beacon: IBeaconDataAttributes
-  ): IEmergencyContact[] {
+  ): EmergencyContact[] {
     const emergencyContactIds = beacon.relationships.emergencyContacts.data.map(
       (relationship) => relationship.id
     );
@@ -102,7 +100,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
   private mapUses(
     beaconApiResponse: IBeaconListResponse,
     beacon: IBeaconDataAttributes
-  ): IUse[] {
+  ): Use[] {
     return beaconApiResponse.included
       .filter((entity) => entity !== null)
       .filter((entity) => entity.type === "beaconUse")
@@ -161,7 +159,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
       .sort((firstUse, secondUse) => this.mainUseSortFn(firstUse, secondUse));
   }
 
-  private mainUseSortFn(firstUse: IUse, secondUse: IUse): number {
+  private mainUseSortFn(firstUse: Use, secondUse: Use): number {
     const firstUseMainUseAsNumber: number = +firstUse.mainUse;
     const secondUseMainUseAsNumber: number = +secondUse.mainUse;
     return secondUseMainUseAsNumber - firstUseMainUseAsNumber;

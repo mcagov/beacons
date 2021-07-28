@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import React from "react";
-import { FormJSON } from "../../../src/lib/form/formManager";
+import { FormJSON } from "../../../src/lib/form/FormManager";
 import AircraftCommunications from "../../../src/pages/register-a-beacon/aircraft-communications";
 
 describe("AircraftCommunications", () => {
@@ -44,6 +44,12 @@ describe("AircraftCommunications", () => {
   };
 
   it("should render the aircraft comms page", () => {
-    render(<AircraftCommunications form={emptyAircraftCommunicationsForm} />);
+    render(
+      <AircraftCommunications
+        form={emptyAircraftCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
+    );
   });
 });

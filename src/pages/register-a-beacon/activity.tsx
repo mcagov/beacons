@@ -6,15 +6,19 @@ import { Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { GovUKBody } from "../../components/Typography";
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormJSON, FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
+import {
+  Activity,
+  Environment,
+  Purpose,
+} from "../../lib/deprecatedRegistration/types";
+import { FieldManager } from "../../lib/form/FieldManager";
+import { FormJSON, FormManager } from "../../lib/form/FormManager";
+import { Validators } from "../../lib/form/Validators";
 import { FormSubmission } from "../../lib/formCache";
 import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { Activity, Environment, Purpose } from "../../lib/registration/types";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";

@@ -1,5 +1,5 @@
 import { NotifyClient } from "notifications-node-client";
-import { GovNotifyGateway } from "../../src/gateways/govNotifyApiGateway";
+import { GovNotifyEmailServiceGateway } from "../../src/gateways/GovNotifyEmailServiceGateway";
 
 jest.mock("notifications-node-client");
 
@@ -13,7 +13,7 @@ describe("Gov Notify API Gateway", () => {
   beforeEach(() => {
     NotifyClient.mockClear();
     apiKey = "1234-5678-9101";
-    gateway = new GovNotifyGateway(apiKey);
+    gateway = new GovNotifyEmailServiceGateway(apiKey);
     emailTemplateId = "template-id";
     email = "Hello Beacon Person!";
     personalisation = {};
@@ -48,7 +48,7 @@ describe("Gov Notify API Gateway", () => {
       .spyOn(console, "log")
       .mockImplementationOnce(() => null);
 
-    new GovNotifyGateway(undefined);
+    new GovNotifyEmailServiceGateway(undefined);
 
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });

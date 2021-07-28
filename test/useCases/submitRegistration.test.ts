@@ -1,4 +1,4 @@
-import { IAppContainer } from "../../src/lib/appContainer";
+import { IAppContainer } from "../../src/lib/IAppContainer";
 import { submitRegistration } from "../../src/useCases/submitRegistration";
 
 describe("submitRegistration()", () => {

@@ -1,6 +1,6 @@
-import { HexIdParser } from "../hexIdParser/hexIdParser";
-import { AbstractFormNode } from "./abstractFormNode";
-import { ValidationRule } from "./validators";
+import { HexIdParser } from "../hexIdParser/HexIdParser";
+import { AbstractFormNode } from "./AbstractFormNode";
+import { ValidationRule } from "./Validators";
 
 export type ValidationCondition = {
   dependsOn: string;

@@ -1,4 +1,4 @@
-import { BeaconUse } from "../src/lib/registration/types";
+import { BeaconUse } from "../src/entities/BeaconUse";
 import { prettyUseName } from "../src/lib/writingStyle";
 
 describe("prettyUseName", () => {

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { FormJSON } from "../../../src/lib/form/formManager";
-import { Environment } from "../../../src/lib/registration/types";
+import { Environment } from "../../../src/lib/deprecatedRegistration/types";
+import { FormJSON } from "../../../src/lib/form/FormManager";
 import MoreDetails from "../../../src/pages/register-a-beacon/more-details";
 
 describe("MoreDetails page", () => {
@@ -22,6 +22,7 @@ describe("MoreDetails page", () => {
         form={moreDetailsFormTestData}
         environment={Environment.MARITIME}
         showCookieBanner={true}
+        useIndex={0}
       />
     );
 

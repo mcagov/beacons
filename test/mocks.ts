@@ -1,10 +1,10 @@
-import { IFormCache } from "../src/lib/formCache";
+import { BeaconUse } from "../src/entities/BeaconUse";
 import {
   Activity,
-  BeaconUse,
   Environment,
   Purpose,
-} from "../src/lib/registration/types";
+} from "../src/lib/deprecatedRegistration/types";
+import { IFormCache } from "../src/lib/formCache";
 
 export const getCacheMock = (): jest.Mocked<IFormCache> => {
   return {

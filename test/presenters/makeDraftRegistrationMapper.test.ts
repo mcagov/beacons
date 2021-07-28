@@ -1,5 +1,5 @@
 import { DraftRegistration } from "../../src/entities/DraftRegistration";
-import { Environment } from "../../src/lib/registration/types";
+import { Environment } from "../../src/lib/deprecatedRegistration/types";
 import { BeaconUseFormMapper } from "../../src/presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../src/presenters/makeDraftRegistrationMapper";
 

@@ -1,4 +1,4 @@
-import { formatDateLong, formatMonth } from "../../src/utils/dateTime";
+import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 
 describe("formatDateLong()", () => {
   const expectations = [

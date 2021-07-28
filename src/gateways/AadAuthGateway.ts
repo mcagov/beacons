@@ -4,11 +4,11 @@ import {
 } from "@azure/msal-node";
 import { appConfig } from "../appConfig";
 
-export interface IAuthGateway {
+export interface AuthGateway {
   getAccessToken: (cca?: ConfidentialClientApplication) => Promise<string>;
 }
 
-export class AadAuthGateway implements IAuthGateway {
+export class AadAuthGateway implements AuthGateway {
   public async getAccessToken(
     cca = new ConfidentialClientApplication(appConfig.aadConfig)
   ): Promise<string> {

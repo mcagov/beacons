@@ -1,4 +1,4 @@
-import { IAppContainer } from "../lib/appContainer";
+import { IAppContainer } from "../lib/IAppContainer";
 
 export type GetAccessTokenFn = () => Promise<string>;
 

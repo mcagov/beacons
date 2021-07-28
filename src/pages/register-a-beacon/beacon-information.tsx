@@ -11,15 +11,15 @@ import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
 import { GovUKBody } from "../../components/Typography";
-import { isoDateString } from "../../lib/dateTimeUtils";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
+import { FieldManager } from "../../lib/form/FieldManager";
+import { FormManager } from "../../lib/form/FormManager";
+import { Validators } from "../../lib/form/Validators";
 import { FormSubmission } from "../../lib/formCache";
 import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { toIsoDateString } from "../../lib/toIsoDateString";
 import { PageURLs } from "../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
 import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
@@ -215,13 +215,13 @@ const mapper: RegistrationFormMapper<BeaconInformationForm> = {
   formToDraftRegistration: (form) => ({
     manufacturerSerialNumber: form.manufacturerSerialNumber,
     chkCode: form.chkCode,
-    batteryExpiryDate: isoDateString(
+    batteryExpiryDate: toIsoDateString(
       form.batteryExpiryDateYear,
       form.batteryExpiryDateMonth
     ),
     batteryExpiryDateYear: form.batteryExpiryDateYear,
     batteryExpiryDateMonth: form.batteryExpiryDateMonth,
-    lastServicedDate: isoDateString(
+    lastServicedDate: toIsoDateString(
       form.lastServicedDateYear,
       form.lastServicedDateMonth
     ),

@@ -1,5 +1,5 @@
 import { DraftRegistration } from "../../../src/entities/DraftRegistration";
-import { Environment } from "../../../src/lib/registration/types";
+import { Environment } from "../../../src/lib/deprecatedRegistration/types";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import { IfUserHasNotSpecifiedAUse } from "../../../src/router/rules/IfUserHasNotSpecifiedAUse";
 

@@ -1,4 +1,4 @@
-export interface IAccountHolderDetails {
+export interface AccountHolder {
   id: string;
   fullName: string;
   email: string;

@@ -1,7 +1,7 @@
 import { IncomingMessage } from "http";
 import { GetServerSidePropsResult } from "next";
 import { DraftRegistration } from "../../../src/entities/DraftRegistration";
-import { IAppContainer } from "../../../src/lib/appContainer";
+import { IAppContainer } from "../../../src/lib/IAppContainer";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import { PageURLs } from "../../../src/lib/urls";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../../src/router/rules/IfUserHasNotStartedEditingADraftRegistration";

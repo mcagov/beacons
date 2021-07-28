@@ -1,3 +1,3 @@
-import { BeaconUse } from "../lib/registration/types";
+import { BeaconUse } from "./BeaconUse";
 
 export type DraftBeaconUse = Partial<BeaconUse>;

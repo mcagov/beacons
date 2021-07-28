@@ -1,5 +1,5 @@
-import { IAccountHolderDetailsResponse } from "../../src/gateways/mappers/accountHolderDetailsResponse";
-import { IAccountHolderIdResponseBody } from "../../src/gateways/mappers/accountHolderIdResponseBody";
+import { IAccountHolderDetailsResponse } from "../../src/gateways/mappers/IAccountHolderDetailsResponse";
+import { IAccountHolderIdResponseBody } from "../../src/gateways/mappers/IAccountHolderIdResponseBody";
 import { deepFreeze } from "../utils/deepFreeze";
 
 export const accountIdFromAuthIdResponseJson: IAccountHolderIdResponseBody =

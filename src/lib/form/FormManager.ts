@@ -1,6 +1,6 @@
 import { Callback } from "../utils";
-import { AbstractFormNode } from "./abstractFormNode";
-import { FieldJSON, FieldManager } from "./fieldManager";
+import { AbstractFormNode } from "./AbstractFormNode";
+import { FieldJSON, FieldManager } from "./FieldManager";
 
 export type FormError = { fieldId: string; errorMessages: string[] };
 

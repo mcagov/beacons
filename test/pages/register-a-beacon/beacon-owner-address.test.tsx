@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { FormJSON } from "../../../src/lib/form/formManager";
+import { FormJSON } from "../../../src/lib/form/FormManager";
 import { PageURLs } from "../../../src/lib/urls";
 import BeaconOwnerAddressPage from "../../../src/pages/register-a-beacon/beacon-owner-address";
 

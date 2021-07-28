@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { createResponse } from "node-mocks-http";
 import React from "react";
-import { IAppContainer } from "../../../src/lib/appContainer";
+import { IAppContainer } from "../../../src/lib/IAppContainer";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import ApplicationCompletePage, {
   getServerSideProps,

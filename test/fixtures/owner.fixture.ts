@@ -1,7 +1,7 @@
-import { IOwner } from "../../src/entities/owner";
+import { Owner } from "../../src/entities/Owner";
 import { deepFreeze } from "../utils/deepFreeze";
 
-export const ownerFixture: IOwner = deepFreeze({
+export const ownerFixture: Owner = deepFreeze({
   id: "cb2e9fd2-45bb-4865-a04c-add5bb7c34a7",
   fullName: "Steve Stevington",
   email: "steve@beaconowner.com",
@@ -13,4 +13,4 @@ export const ownerFixture: IOwner = deepFreeze({
   postcode: "BS8 7NW",
 });
 
-export const testOwners: IOwner[] = [ownerFixture];
+export const testOwners: Owner[] = [ownerFixture];

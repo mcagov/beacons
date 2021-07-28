@@ -1,20 +1,13 @@
 import { NotifyClient } from "notifications-node-client";
+import { EmailServiceGateway } from "./EmailServiceGateway";
 
-export interface IGovNotifyGateway {
-  sendEmail: (
-    emailTemplateId: string,
-    email: string,
-    personalisation?: any
-  ) => Promise<boolean>;
-}
-
-export class GovNotifyGateway implements IGovNotifyGateway {
+export class GovNotifyEmailServiceGateway implements EmailServiceGateway {
   private api;
   constructor(apiKey: string) {
     if (!apiKey) {
       // eslint-disable-next-line no-console
       console.log(
-        "GOV_NOTIFY_API_KEY not set on instantiation of GovNotifyGateway.  I'm not going to send any Gov Notify emails."
+        "GOV_NOTIFY_API_KEY not set on instantiation of GovNotifyEmailServiceGateway.  I'm not going to send any Gov Notify emails."
       );
     } else {
       this.api = new NotifyClient(apiKey);

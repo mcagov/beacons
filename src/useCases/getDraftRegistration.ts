@@ -1,5 +1,5 @@
 import { DraftRegistration } from "../entities/DraftRegistration";
-import { IAppContainer } from "../lib/appContainer";
+import { IAppContainer } from "../lib/IAppContainer";
 
 export const getDraftRegistration =
   ({ draftRegistrationGateway }: IAppContainer) =>

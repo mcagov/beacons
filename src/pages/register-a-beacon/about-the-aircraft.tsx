@@ -10,9 +10,9 @@ import {
 import { FormInputProps, Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { TextareaCharacterCount } from "../../components/Textarea";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
+import { FieldManager } from "../../lib/form/FieldManager";
+import { FormManager } from "../../lib/form/FormManager";
+import { Validators } from "../../lib/form/Validators";
 import { FormSubmission } from "../../lib/formCache";
 import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
@@ -148,7 +148,7 @@ const RegistrationMark: FunctionComponent<FormInputProps> = ({
   <FormGroup>
     <Input
       id="registrationMark"
-      label="Enter the Aircraft Registration Mark (optional)"
+      label="Enter the Aircraft DeprecatedRegistration Mark (optional)"
       hintText="This is usually found on the rear fuselage or tail E.g. G-AAAA"
       defaultValue={value}
     />

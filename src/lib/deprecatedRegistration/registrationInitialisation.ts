@@ -1,4 +1,5 @@
-import { BeaconUse, IRegistration } from "./types";
+import { BeaconUse } from "../../entities/BeaconUse";
+import { IRegistration } from "../../entities/Registration";
 
 /**
  * Convenience function for returning an `empty` instance of a beacon registration.

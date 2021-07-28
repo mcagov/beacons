@@ -1,4 +1,4 @@
-export function isoDateString(year: string, month: string): string {
+export function toIsoDateString(year: string, month: string): string {
   const monthAsNumber = Number(month);
   const yearAsNumber = Number(year);
   const isValidMonth = monthAsNumber > 0 && monthAsNumber < 13;

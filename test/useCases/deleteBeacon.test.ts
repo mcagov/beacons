@@ -1,4 +1,4 @@
-import { IAppContainer } from "../../src/lib/appContainer";
+import { IAppContainer } from "../../src/lib/IAppContainer";
 import { deleteBeacon } from "../../src/useCases/deleteBeacon";
 
 describe("Delete beacon use case", () => {

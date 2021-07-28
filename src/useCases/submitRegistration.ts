@@ -1,6 +1,6 @@
-import { IAppContainer } from "../lib/appContainer";
-import { Registration } from "../lib/registration/registration";
-import { IRegistration } from "../lib/registration/types";
+import { IRegistration } from "../entities/Registration";
+import { DeprecatedRegistration } from "../lib/deprecatedRegistration/DeprecatedRegistration";
+import { IAppContainer } from "../lib/IAppContainer";
 
 export type SubmitRegistrationFn = (
   submissionId: string,
@@ -22,7 +22,7 @@ export const submitRegistration =
     accountHolderApiGateway,
   }: Partial<IAppContainer>): SubmitRegistrationFn =>
   async (submissionId: string, accountHolderId: string) => {
-    const registration = new Registration(
+    const registration = new DeprecatedRegistration(
       (await getDraftRegistration(submissionId)) as IRegistration
     );
     const accessToken = await getAccessToken();

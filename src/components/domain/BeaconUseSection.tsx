@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
+import { BeaconUse } from "../../entities/BeaconUse";
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
-import { BeaconUse } from "../../lib/registration/types";
 import { ordinal, prettyUseName, sentenceCase } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { AnchorLink, SectionHeading, WarningLink } from "../Typography";
@@ -137,7 +137,7 @@ const AboutThisUse: FunctionComponent<{ use: DraftBeaconUse }> = ({
     )}
     {use.registrationMark && (
       <BeaconUseDataRowItem
-        label="Registration mark"
+        label="DeprecatedRegistration mark"
         value={use.registrationMark}
       />
     )}

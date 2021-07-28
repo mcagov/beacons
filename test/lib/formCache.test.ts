@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
+import { DeprecatedRegistration } from "../../src/lib/deprecatedRegistration/DeprecatedRegistration";
 import { FormCacheFactory, IFormCache } from "../../src/lib/formCache";
-import { Registration } from "../../src/lib/registration/registration";
 
 jest.mock(
   "redis-json",
@@ -26,6 +26,6 @@ describe("FormCache", () => {
   it("should return an instance of a registration class for an unknown id", async () => {
     const cache = FormCacheFactory.getCache();
 
-    expect(await cache.get(uuidv4())).toBeInstanceOf(Registration);
+    expect(await cache.get(uuidv4())).toBeInstanceOf(DeprecatedRegistration);
   });
 });

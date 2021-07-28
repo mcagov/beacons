@@ -1,12 +1,12 @@
-import { IUse } from "../../src/entities/use";
+import { Use } from "../../src/entities/Use";
 import {
   Activity,
   Environment,
   Purpose,
-} from "../../src/lib/registration/types";
+} from "../../src/lib/deprecatedRegistration/types";
 import { deepFreeze } from "../utils/deepFreeze";
 
-const getUseFixture = (id: string, mainUse: boolean): IUse =>
+const getUseFixture = (id: string, mainUse: boolean): Use =>
   deepFreeze({
     id,
     environment: Environment.MARITIME,
@@ -56,7 +56,7 @@ const getUseFixture = (id: string, mainUse: boolean): IUse =>
     entityLinks: [{ verb: "PATCH", path: `/beacon-uses/${id}` }],
   });
 
-export const usesFixture: IUse[] = deepFreeze([
+export const usesFixture: Use[] = deepFreeze([
   {
     ...getUseFixture("e00036c4-e3f4-46bb-aa9e-1d91870d9172", true),
   },

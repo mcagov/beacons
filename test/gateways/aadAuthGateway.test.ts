@@ -3,17 +3,14 @@ import {
   ConfidentialClientApplication,
   IConfidentialClientApplication,
 } from "@azure/msal-node";
-import {
-  AadAuthGateway,
-  IAuthGateway,
-} from "../../src/gateways/aadAuthGateway";
+import { AadAuthGateway, AuthGateway } from "../../src/gateways/AadAuthGateway";
 
 describe("AadAuthGateway", () => {
   describe("getAccessToken", () => {
     let mockConfidentialClientApplication: Partial<IConfidentialClientApplication>;
     let mockAccessToken: string;
     let mockAuthenticationResult: Partial<AuthenticationResult>;
-    let gateway: IAuthGateway;
+    let gateway: AuthGateway;
 
     beforeEach(() => {
       mockAccessToken = "mock_accessToken";

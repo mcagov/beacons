@@ -12,7 +12,7 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
 };
 
 export const givenIHaveBeenToTheStartPageAndClickedStartNow = (): void => {
-  // Creates an empty Registration object linked to the user's session
+  // Creates an empty DeprecatedRegistration object linked to the user's session
   givenIHaveBeenTo(PageURLs.start);
   givenIHaveClicked(".govuk-button--start");
   // TODO: when we have sign up/sign in flow set up, update this to sign up/sign in user

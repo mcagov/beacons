@@ -1,17 +1,19 @@
+import { BeaconUse } from "../../entities/BeaconUse";
+import { IRegistration } from "../../entities/Registration";
 import { FormSubmission } from "../formCache";
 import { stringToBoolean } from "../writingStyle";
-import { initBeacon, initBeaconUse } from "./registrationInitialisation";
 import {
   IRegistrationRequestBody,
   IUseRequestBody,
-} from "./registrationRequestBody";
-import { Activity, BeaconUse, IRegistration } from "./types";
+} from "./IRegistrationRequestBody";
+import { initBeacon, initBeaconUse } from "./registrationInitialisation";
+import { Activity } from "./types";
 
 type Indexes = {
   useIndex: number;
 };
 
-export class Registration {
+export class DeprecatedRegistration {
   private static readonly USES_KEY = "uses";
 
   public registration: IRegistration;
@@ -56,7 +58,7 @@ export class Registration {
 
   private _updateBeacon(formData: FormSubmission): void {
     Object.keys(formData)
-      .filter((key: string) => !(key === Registration.USES_KEY))
+      .filter((key: string) => !(key === DeprecatedRegistration.USES_KEY))
       .forEach((key: string) => {
         if (key in this.registration) {
           this.registration[key] = formData[key];

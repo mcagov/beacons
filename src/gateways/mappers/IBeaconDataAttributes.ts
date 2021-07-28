@@ -1,13 +1,3 @@
-import { IApiResponse } from "./apiResponse";
-
-export interface IBeaconResponse extends IApiResponse {
-  data: IBeaconDataAttributes;
-}
-
-export interface IBeaconListResponse extends IApiResponse {
-  data: IBeaconDataAttributes[];
-}
-
 export interface IBeaconDataAttributes {
   type: string;
   id: string;

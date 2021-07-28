@@ -11,11 +11,11 @@ import {
 } from "../../components/Typography";
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { DraftRegistration } from "../../entities/DraftRegistration";
+import { Environment } from "../../lib/deprecatedRegistration/types";
 import { FormSubmission } from "../../lib/formCache";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { Environment } from "../../lib/registration/types";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import {
@@ -339,7 +339,7 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
               value={use.secondaryAirport}
             />
             <CheckYourAnswersDataRowItem
-              label="Registration mark"
+              label="DeprecatedRegistration mark"
               value={use.registrationMark}
             />
             <CheckYourAnswersDataRowItem

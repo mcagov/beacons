@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { FunctionComponent, ReactNode } from "react";
-import { formatUrlQueryParams } from "../lib/urls";
 
 interface ButtonGroupProps {
   children: ReactNode;
@@ -70,20 +68,6 @@ export const StartButton: FunctionComponent<StartButtonProps> = ({
 export const BackButton: FunctionComponent<BackButtonProps> = ({
   href,
 }: BackButtonProps): JSX.Element => {
-  return (
-    <a href={href} className="govuk-back-link">
-      Back
-    </a>
-  );
-};
-
-export const BackButtonRouterIndexes: FunctionComponent<BackButtonProps> = ({
-  href,
-}: BackButtonProps): JSX.Element => {
-  const router = useRouter();
-  const useIndex = router?.query.useIndex || 0;
-  href = formatUrlQueryParams(href, { useIndex });
-
   return (
     <a href={href} className="govuk-back-link">
       Back

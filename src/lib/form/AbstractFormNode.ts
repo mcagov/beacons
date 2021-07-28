@@ -1,4 +1,4 @@
-import { FormManager } from "./formManager";
+import { FormManager } from "./FormManager";
 
 type ControlValue = string | Record<string, AbstractFormNode>;
 

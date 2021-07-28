@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IRegistrationRequestBody } from "../lib/registration/registrationRequestBody";
+import { IRegistrationRequestBody } from "../lib/deprecatedRegistration/IRegistrationRequestBody";
 
 export interface IDeleteBeaconRequest {
   beaconId: string;
@@ -7,7 +7,7 @@ export interface IDeleteBeaconRequest {
   reason: string;
 }
 
-export interface IBeaconsApiGateway {
+export interface BeaconGateway {
   sendRegistration: (
     json: IRegistrationRequestBody,
     accessToken: string
@@ -19,7 +19,7 @@ export interface IBeaconsApiGateway {
   ) => Promise<boolean>;
 }
 
-export class BeaconsApiGateway implements IBeaconsApiGateway {
+export class BeaconsApiBeaconGateway implements BeaconGateway {
   private readonly apiUrl: string;
   private readonly registrationsEndpoint = "registrations/register";
 
@@ -43,7 +43,10 @@ export class BeaconsApiGateway implements IBeaconsApiGateway {
     }
   }
 
-  public async deleteBeacon(json: IDeleteBeaconRequest, accessToken: string) {
+  public async deleteBeacon(
+    json: IDeleteBeaconRequest,
+    accessToken: string
+  ): Promise<boolean> {
     const url = `${this.apiUrl}/beacons/${json.beaconId}/delete`;
     const data = {
       beaconId: json.beaconId,

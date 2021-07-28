@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { FormJSON } from "../../../src/lib/form/formManager";
 import {
   Activity,
   Environment,
   Purpose,
-} from "../../../src/lib/registration/types";
+} from "../../../src/lib/deprecatedRegistration/types";
+import { FormJSON } from "../../../src/lib/form/FormManager";
 import ActivityPage from "../../../src/pages/register-a-beacon/activity";
 
 describe("Activity", () => {
@@ -43,6 +43,7 @@ describe("Activity", () => {
         <ActivityPage
           form={activityFormTestData}
           showCookieBanner={false}
+          useIndex={0}
           environment={environment}
           purpose={purpose}
         />

@@ -1,7 +1,7 @@
 import Redis from "ioredis";
 import JSONCache from "redis-json";
-import { Registration } from "./registration/registration";
-import { IRegistration } from "./registration/types";
+import { IRegistration } from "../entities/Registration";
+import { DeprecatedRegistration } from "./deprecatedRegistration/DeprecatedRegistration";
 
 // Convenience type
 export type FormSubmission = Record<string, any>;
@@ -9,9 +9,9 @@ export type FormSubmission = Record<string, any>;
 export interface IFormCache {
   update(id: string, formData?: FormSubmission): Promise<void>;
 
-  set(id: string, registration: Registration): Promise<void>;
+  set(id: string, registration: DeprecatedRegistration): Promise<void>;
 
-  get(id: string): Promise<Registration>;
+  get(id: string): Promise<DeprecatedRegistration>;
 
   clear(id: string): Promise<void>;
 }
@@ -29,7 +29,7 @@ export class FormCacheFactory {
 }
 
 class FormCache implements IFormCache {
-  private _byIdToRegistration: Record<string, Registration> = {};
+  private _byIdToRegistration: Record<string, DeprecatedRegistration> = {};
   private cache = new JSONCache<IRegistration>(
     new Redis(process.env.REDIS_URI)
   );
@@ -38,12 +38,13 @@ class FormCache implements IFormCache {
     id: string,
     formData: FormSubmission = {}
   ): Promise<void> {
-    const registration: Registration = await this._safeGetRegistration(id);
+    const registration: DeprecatedRegistration =
+      await this._safeGetRegistration(id);
     registration.update(formData);
     await this.cache.set(id, registration.getRegistration());
   }
 
-  public async get(id: string): Promise<Registration> {
+  public async get(id: string): Promise<DeprecatedRegistration> {
     return await this._safeGetRegistration(id);
   }
 
@@ -52,19 +53,21 @@ class FormCache implements IFormCache {
     delete this._byIdToRegistration[id];
   }
 
-  public async set(id: string, registration: Registration) {
+  public async set(id: string, registration: DeprecatedRegistration) {
     await this.cache.set(id, registration.getRegistration());
   }
 
-  private async _safeGetRegistration(id: string): Promise<Registration> {
+  private async _safeGetRegistration(
+    id: string
+  ): Promise<DeprecatedRegistration> {
     const registrationData: IRegistration = (await this.cache.get(
       id
     )) as IRegistration;
 
     if (registrationData) {
-      return new Registration(registrationData);
+      return new DeprecatedRegistration(registrationData);
     } else {
-      const registration = new Registration();
+      const registration = new DeprecatedRegistration();
       await this.cache.set(id, registration.getRegistration());
       return registration;
     }

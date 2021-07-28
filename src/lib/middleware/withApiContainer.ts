@@ -1,5 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { appContainer, IAppContainer } from "../appContainer";
+import { appContainer } from "../appContainer";
+import { IAppContainer } from "../IAppContainer";
 
 export type BeaconsApiRequest = NextApiRequest & {
   container: Partial<IAppContainer>;

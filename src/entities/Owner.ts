@@ -1,4 +1,4 @@
-export interface IOwner {
+export interface Owner {
   id: string;
   fullName: string;
   email: string;

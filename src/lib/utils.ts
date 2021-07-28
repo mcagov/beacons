@@ -1,3 +1,6 @@
+// Low-level utility functions that could be considered an extension of the JavaScript API.  No domain logic.
+import * as _ from "lodash";
+
 /**
  * Convenience function for converting a single or array of a given type into an array with nullish values removed.
  *
@@ -11,8 +14,6 @@ export function toArray<T>(toConvert: T | T[]): T[] {
 
 export type Callback<T> = (t: T) => void;
 
-// Low-level utility functions that could be considered an extension of the JavaScript API.  No domain logic.
-import * as _ from "lodash";
 export const diffObjValues = <T>(base: T, comparator: T): T => {
   if (noRecursionNeeded(base, comparator)) return comparator;
 

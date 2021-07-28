@@ -1,7 +1,7 @@
-import { Environment } from "../lib/registration/types";
-import { IEntityLink } from "./entityLink";
+import { Environment } from "../lib/deprecatedRegistration/types";
+import { EntityLink } from "./EntityLink";
 
-export interface IUse {
+export interface Use {
   id: string;
   environment: Environment;
   purpose?: string;
@@ -47,5 +47,5 @@ export interface IUse {
   otherActivityPeopleCount?: string;
   moreDetails: string;
   mainUse: boolean;
-  entityLinks: IEntityLink[];
+  entityLinks: EntityLink[];
 }

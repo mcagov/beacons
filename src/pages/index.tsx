@@ -15,11 +15,11 @@ import {
   SectionHeading,
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
-import { BasicAuthGateway } from "../gateways/basicAuthGateway";
+import { BasicAuthGateway } from "../gateways/BasicAuthGateway";
 import { setFormSubmissionCookie } from "../lib/middleware";
 import { acceptRejectCookieId } from "../lib/types";
 import { PageURLs } from "../lib/urls";
-import { AuthenticateUser } from "../useCases/authenticateUser";
+import { DeprecatedAuthenticateUser } from "../useCases/deprecatedAuthenticateUser";
 
 interface ServiceStartPageProps {
   showCookieBanner: boolean;
@@ -191,7 +191,7 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const authGateway = new BasicAuthGateway();
-  const authUseCase = new AuthenticateUser(authGateway);
+  const authUseCase = new DeprecatedAuthenticateUser(authGateway);
   await authUseCase.execute(context);
 
   await setFormSubmissionCookie(context);

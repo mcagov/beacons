@@ -6,5 +6,6 @@ export const withContainer =
   (callback: GetServerSideProps): GetServerSideProps =>
   (context: BeaconsGetServerSidePropsContext) => {
     context.container = context.container || appContainer;
+
     return callback(context);
   };

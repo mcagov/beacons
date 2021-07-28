@@ -4,14 +4,14 @@ import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { GovUKBody } from "../../components/Typography";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
+import { FieldManager } from "../../lib/form/FieldManager";
+import { FormManager } from "../../lib/form/FormManager";
 import {
   isValid,
   withErrorMessages,
   withoutErrorMessages,
 } from "../../lib/form/lib";
-import { Validators } from "../../lib/form/validators";
+import { Validators } from "../../lib/form/Validators";
 import { FormSubmission } from "../../lib/formCache";
 import {
   DraftRegistrationPageProps,

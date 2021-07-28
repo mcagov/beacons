@@ -1,5 +1,5 @@
-import { FieldManager } from "../../../src/lib/form/fieldManager";
-import { FormManager } from "../../../src/lib/form/formManager";
+import { FieldManager } from "../../../src/lib/form/FieldManager";
+import { FormManager } from "../../../src/lib/form/FormManager";
 
 describe("FieldManager", () => {
   let value;

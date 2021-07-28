@@ -1,10 +1,10 @@
-import { IAccountHolderDetails } from "../entities/accountHolderDetails";
-import { IAppContainer } from "../lib/appContainer";
+import { AccountHolder } from "../entities/AccountHolder";
+import { IAppContainer } from "../lib/IAppContainer";
 
 export type UpdateAccountHolderFn = (
   id: string,
-  accountHolderUpdate: IAccountHolderDetails
-) => Promise<IAccountHolderDetails>;
+  accountHolderUpdate: AccountHolder
+) => Promise<AccountHolder>;
 
 export const updateAccountHolder =
   ({
@@ -13,8 +13,8 @@ export const updateAccountHolder =
   }: IAppContainer): UpdateAccountHolderFn =>
   async (
     id: string,
-    accountHolderUpdate: IAccountHolderDetails
-  ): Promise<IAccountHolderDetails> => {
+    accountHolderUpdate: AccountHolder
+  ): Promise<AccountHolder> => {
     const accessToken = await getAccessToken();
     const updatedAccountHolder =
       await accountHolderApiGateway.updateAccountHolderDetails(

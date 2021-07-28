@@ -1,13 +1,13 @@
-import { IUse } from "../entities/use";
-import { Activity } from "../lib/registration/types";
+import { Use } from "../entities/Use";
+import { Activity } from "../lib/deprecatedRegistration/types";
 
-export const formatUses = (uses: IUse[]): string =>
+export const formatUses = (uses: Use[]): string =>
   uses.reduce((formattedUses, use, index, uses) => {
     if (index === uses.length - 1) return formattedUses + formatUse(use);
     return formattedUses + formatUse(use) + ", ";
   }, "");
 
-export const formatUse = (use: IUse): string => {
+export const formatUse = (use: Use): string => {
   const formattedActivity =
     use.activity === Activity.OTHER
       ? titleCase(use.otherActivity || "")

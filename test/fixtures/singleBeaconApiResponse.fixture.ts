@@ -1,4 +1,4 @@
-import { IBeaconResponse } from "../../src/gateways/mappers/beaconResponse";
+import { IBeaconResponse } from "../../src/gateways/mappers/IBeaconResponse";
 import { deepFreeze } from "../utils/deepFreeze";
 
 const getUseResponseJson = (mainUse: boolean) =>

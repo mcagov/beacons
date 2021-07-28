@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import client from "next-auth/client";
-import { UserSessionGateway } from "../../src/gateways/userSessionGateway";
+import { NextAuthUserSessionGateway } from "../../src/gateways/NextAuthUserSessionGateway";
 
 jest.mock("next-auth/client");
 const mockedNextAuthClient = client as jest.Mocked<typeof client>;
@@ -17,7 +17,7 @@ describe("userSessionGateway", () => {
     };
     mockedNextAuthClient.getSession.mockResolvedValue(mockSession);
     const context = {};
-    const userSessionGateway = new UserSessionGateway();
+    const userSessionGateway = new NextAuthUserSessionGateway();
 
     const result = await userSessionGateway.getSession(
       context as GetServerSidePropsContext
@@ -30,7 +30,7 @@ describe("userSessionGateway", () => {
   it("returns null if there is no session", async () => {
     mockedNextAuthClient.getSession.mockResolvedValue(null);
     const context = {};
-    const userSessionGateway = new UserSessionGateway();
+    const userSessionGateway = new NextAuthUserSessionGateway();
 
     const result = await userSessionGateway.getSession(
       context as GetServerSidePropsContext

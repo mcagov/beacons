@@ -1,5 +1,5 @@
-import { Session } from "../gateways/userSessionGateway";
-import { IAppContainer } from "../lib/appContainer";
+import { Session } from "../gateways/NextAuthUserSessionGateway";
+import { IAppContainer } from "../lib/IAppContainer";
 
 export const getAccountHolderId =
   ({ getAccessToken, accountHolderApiGateway }: IAppContainer) =>

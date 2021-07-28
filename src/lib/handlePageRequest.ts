@@ -1,4 +1,4 @@
-import { FormJSON, FormManager } from "./form/formManager";
+import { FormJSON, FormManager } from "./form/FormManager";
 import { FormSubmission } from "./formCache";
 
 export type FormManagerFactory = (formData: FormSubmission) => FormManager;

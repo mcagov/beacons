@@ -1,7 +1,8 @@
 import { render, screen, within } from "@testing-library/react";
 import React from "react";
 import { BeaconUseSection } from "../../../src/components/domain/BeaconUseSection";
-import { BeaconUse, Environment } from "../../../src/lib/registration/types";
+import { BeaconUse } from "../../../src/entities/BeaconUse";
+import { Environment } from "../../../src/lib/deprecatedRegistration/types";
 import { getMockUse } from "../../mocks";
 
 describe("BeaconUseSection", () => {

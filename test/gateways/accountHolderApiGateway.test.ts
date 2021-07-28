@@ -1,21 +1,21 @@
 import axios from "axios";
 import { v4 } from "uuid";
-import { IAccountHolderDetails } from "../../src/entities/accountHolderDetails";
-import { AccountHolderApiGateway } from "../../src/gateways/accountHolderApiGateway";
+import { AccountHolder } from "../../src/entities/AccountHolder";
+import { BeaconsApiAccountHolderGateway } from "../../src/gateways/BeaconsApiAccountHolderGateway";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("Account Holder API Gateway", () => {
   const hostName = "a-host";
-  let gateway: AccountHolderApiGateway;
+  let gateway: BeaconsApiAccountHolderGateway;
   let token;
 
   describe("Creating an account holder from a provided auth id", () => {
     const authId = v4();
     const email = authId + "@madetech.com";
     const accessToken = v4();
-    gateway = new AccountHolderApiGateway(hostName);
+    gateway = new BeaconsApiAccountHolderGateway(hostName);
 
     it("should call the endpoint with the correct request and headers", () => {
       const createAccountHolderEndpoint = "account-holder";
@@ -46,7 +46,7 @@ describe("Account Holder API Gateway", () => {
     it("returns the newly created account holder's details", async () => {
       const tesId = v4();
       const testFullName = "Adut Akech";
-      const expectedAccountHolder: Partial<IAccountHolderDetails> = {
+      const expectedAccountHolder: Partial<AccountHolder> = {
         id: tesId,
         email: email,
         fullName: testFullName,
@@ -78,7 +78,7 @@ describe("Account Holder API Gateway", () => {
     beforeEach(() => {
       authId = v4();
       token = v4();
-      gateway = new AccountHolderApiGateway(hostName);
+      gateway = new BeaconsApiAccountHolderGateway(hostName);
     });
 
     it("should request an accountHolderId from the correct endpoint", async () => {
@@ -124,7 +124,7 @@ describe("Account Holder API Gateway", () => {
     beforeEach(() => {
       accountHolderId = v4();
       token = v4();
-      gateway = new AccountHolderApiGateway(hostName);
+      gateway = new BeaconsApiAccountHolderGateway(hostName);
     });
 
     it("should request account holder details from the correct endpoint", async () => {
@@ -183,7 +183,7 @@ describe("Account Holder API Gateway", () => {
         accountHolderId,
         token
       );
-      expect(result).toMatchObject<IAccountHolderDetails>(expected);
+      expect(result).toMatchObject<AccountHolder>(expected);
     });
 
     it("should allow errors to bubble up", async () => {
@@ -203,11 +203,11 @@ describe("Account Holder API Gateway", () => {
     beforeEach(() => {
       accountHolderId = v4();
       token = v4();
-      gateway = new AccountHolderApiGateway(hostName);
+      gateway = new BeaconsApiAccountHolderGateway(hostName);
     });
 
     it("should request account holder details from the correct endpoint", async () => {
-      const mockUpdate: Partial<IAccountHolderDetails> = {
+      const mockUpdate: Partial<AccountHolder> = {
         fullName: "Bill Gates",
         email: "bill@billynomates.test",
         telephoneNumber: "0788888888",
@@ -247,7 +247,7 @@ describe("Account Holder API Gateway", () => {
       });
       await gateway.updateAccountHolderDetails(
         accountHolderId,
-        mockUpdate as IAccountHolderDetails,
+        mockUpdate as AccountHolder,
         token
       );
 
@@ -295,10 +295,10 @@ describe("Account Holder API Gateway", () => {
 
       const result = await gateway.updateAccountHolderDetails(
         accountHolderId,
-        {} as IAccountHolderDetails,
+        {} as AccountHolder,
         token
       );
-      expect(result).toMatchObject<IAccountHolderDetails>(expectedResult);
+      expect(result).toMatchObject<AccountHolder>(expectedResult);
     });
 
     it("should allow errors to bubble up", async () => {
@@ -309,7 +309,7 @@ describe("Account Holder API Gateway", () => {
       const call = () =>
         gateway.updateAccountHolderDetails(
           accountHolderId,
-          {} as IAccountHolderDetails,
+          {} as AccountHolder,
           token
         );
 

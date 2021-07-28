@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/client";
+import { UserSessionGateway } from "./UserSessionGateway";
 
 export interface Session {
   user?: {
@@ -11,11 +12,7 @@ export interface Session {
   expires?: string;
 }
 
-export interface IUserSessionGateway {
-  getSession: (context: GetServerSidePropsContext) => Promise<Session | null>;
-}
-
-export class UserSessionGateway implements IUserSessionGateway {
+export class NextAuthUserSessionGateway implements UserSessionGateway {
   public async getSession(
     context: GetServerSidePropsContext
   ): Promise<Session | null> {
