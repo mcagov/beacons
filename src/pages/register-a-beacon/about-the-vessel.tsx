@@ -279,7 +279,7 @@ const mapper = (
   context: BeaconsGetServerSidePropsContext
 ): RegistrationFormMapper<AboutTheVesselForm> => {
   const beaconUseMapper: BeaconUseFormMapper<AboutTheVesselForm> = {
-    toDraftBeaconUse: (form) => ({
+    formToDraftBeaconUse: (form) => ({
       maxCapacity: form.maxCapacity,
       vesselName: form.vesselName,
       beaconLocation: form.beaconLocation,
@@ -292,7 +292,7 @@ const mapper = (
       officialNumber: form.officialNumber,
       rigPlatformLocation: form.rigPlatformLocation,
     }),
-    toForm: (draftRegistration) => ({
+    beaconUseToForm: (draftRegistration) => ({
       maxCapacity: draftRegistration.maxCapacity,
       vesselName: draftRegistration.vesselName,
       beaconLocation: draftRegistration.beaconLocation,

@@ -9,10 +9,14 @@ export const makeDraftRegistrationMapper = <T>(
     return {
       uses: new Array(useIndex >= 1 ? useIndex + 1 : 1)
         .fill({})
-        .fill(beaconUseMapper.toDraftBeaconUse(form), useIndex, useIndex + 1),
+        .fill(
+          beaconUseMapper.formToDraftBeaconUse(form),
+          useIndex,
+          useIndex + 1
+        ),
     };
   },
   toForm: (draftRegistration) => {
-    return beaconUseMapper.toForm(draftRegistration.uses[useIndex]);
+    return beaconUseMapper.beaconUseToForm(draftRegistration.uses[useIndex]);
   },
 });

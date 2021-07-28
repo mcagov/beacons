@@ -153,10 +153,10 @@ const mapper = (
   context: BeaconsGetServerSidePropsContext
 ): RegistrationFormMapper<MoreDetailsForm> => {
   const beaconUseMapper: BeaconUseFormMapper<MoreDetailsForm> = {
-    toDraftBeaconUse: (form) => ({
+    formToDraftBeaconUse: (form) => ({
       moreDetails: form.moreDetails,
     }),
-    toForm: (draftBeaconUse) => ({
+    beaconUseToForm: (draftBeaconUse) => ({
       moreDetails: draftBeaconUse.moreDetails,
     }),
   };

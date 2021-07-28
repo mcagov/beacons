@@ -627,7 +627,7 @@ const mapper = (
   context: BeaconsGetServerSidePropsContext
 ): RegistrationFormMapper<ActivityForm> => {
   const beaconUseMapper: BeaconUseFormMapper<ActivityForm> = {
-    toDraftBeaconUse: (form) => {
+    formToDraftBeaconUse: (form) => {
       return {
         environment: form.environment || null,
         activity: form.activity || null,
@@ -640,7 +640,7 @@ const mapper = (
         windfarmPeopleCount: form.windfarmPeopleCount || null,
       };
     },
-    toForm: (draftRegistration) => ({
+    beaconUseToForm: (draftRegistration) => ({
       environment: draftRegistration.environment,
       activity: draftRegistration.activity,
       otherActivityText: draftRegistration.otherActivityText,

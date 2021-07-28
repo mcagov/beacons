@@ -254,7 +254,7 @@ const mapper = (
   context: BeaconsGetServerSidePropsContext
 ): RegistrationFormMapper<VesselCommunicationsForm> => {
   const beaconUseMapper: BeaconUseFormMapper<VesselCommunicationsForm> = {
-    toDraftBeaconUse: (form) => ({
+    formToDraftBeaconUse: (form) => ({
       callSign: form.callSign || null,
       vhfRadio: form.vhfRadio || null,
       fixedVhfRadio: form.fixedVhfRadio || null,
@@ -269,7 +269,7 @@ const mapper = (
       otherCommunication: form.otherCommunication || null,
       otherCommunicationInput: form.otherCommunicationInput || null,
     }),
-    toForm: (draftRegistration) => ({
+    beaconUseToForm: (draftRegistration) => ({
       callSign: draftRegistration.callSign,
       vhfRadio: draftRegistration.vhfRadio,
       fixedVhfRadio: draftRegistration.fixedVhfRadio,

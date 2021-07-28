@@ -11,10 +11,10 @@ describe("makeDraftRegistrationMapper", () => {
         environment: Environment.LAND,
       };
       const beaconUseFormMapper: BeaconUseFormMapper<typeof beaconUseForm> = {
-        toForm: (draftBeaconUse) => ({
+        beaconUseToForm: (draftBeaconUse) => ({
           environment: draftBeaconUse.environment as Environment,
         }),
-        toDraftBeaconUse: (form) => ({
+        formToDraftBeaconUse: (form) => ({
           environment: form.environment,
         }),
       };
@@ -36,10 +36,10 @@ describe("makeDraftRegistrationMapper", () => {
         environment: Environment.LAND,
       };
       const beaconUseFormMapper: BeaconUseFormMapper<typeof beaconUseForm> = {
-        toForm: (draftBeaconUse) => ({
+        beaconUseToForm: (draftBeaconUse) => ({
           environment: draftBeaconUse.environment as Environment,
         }),
-        toDraftBeaconUse: (form) => ({
+        formToDraftBeaconUse: (form) => ({
           environment: form.environment,
         }),
       };
@@ -61,10 +61,10 @@ describe("makeDraftRegistrationMapper", () => {
         environment: Environment.LAND,
       };
       const beaconUseFormMapper: BeaconUseFormMapper<typeof beaconUseForm> = {
-        toForm: (draftBeaconUse) => ({
+        beaconUseToForm: (draftBeaconUse) => ({
           environment: draftBeaconUse.environment as Environment,
         }),
-        toDraftBeaconUse: (form) => ({
+        formToDraftBeaconUse: (form) => ({
           environment: form.environment,
         }),
       };

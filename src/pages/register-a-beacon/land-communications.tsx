@@ -201,7 +201,7 @@ const mapper = (
   context: BeaconsGetServerSidePropsContext
 ): RegistrationFormMapper<LandCommunicationsForm> => {
   const beaconUseMapper: BeaconUseFormMapper<LandCommunicationsForm> = {
-    toDraftBeaconUse: (form) => ({
+    formToDraftBeaconUse: (form) => ({
       portableVhfRadio: form.portableVhfRadio || null,
       portableVhfRadioInput: form.portableVhfRadioInput || null,
       satelliteTelephone: form.satelliteTelephone || null,
@@ -212,7 +212,7 @@ const mapper = (
       otherCommunication: form.otherCommunication || null,
       otherCommunicationInput: form.otherCommunicationInput || null,
     }),
-    toForm: (draftBeaconUse) => ({
+    beaconUseToForm: (draftBeaconUse) => ({
       portableVhfRadio: draftBeaconUse.portableVhfRadio,
       portableVhfRadioInput: draftBeaconUse.portableVhfRadioInput,
       satelliteTelephone: draftBeaconUse.satelliteTelephone,

@@ -148,12 +148,12 @@ const nextPage = async (
 
 const mapper = (context: BeaconsGetServerSidePropsContext) => {
   const beaconUseMapper: BeaconUseFormMapper<BeaconUseForm> = {
-    toDraftBeaconUse: (form) => {
+    formToDraftBeaconUse: (form) => {
       return {
         environment: form.environment,
       };
     },
-    toForm: (draftBeaconUse) => {
+    beaconUseToForm: (draftBeaconUse) => {
       return {
         environment: draftBeaconUse.environment as Environment,
       };

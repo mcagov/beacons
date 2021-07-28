@@ -264,7 +264,7 @@ const mapper = (
   context: BeaconsGetServerSidePropsContext
 ): RegistrationFormMapper<AboutTheAircraftForm> => {
   const beaconUseMapper: BeaconUseFormMapper<AboutTheAircraftForm> = {
-    toDraftBeaconUse: (form) => ({
+    formToDraftBeaconUse: (form) => ({
       maxCapacity: form.maxCapacity,
       aircraftManufacturer: form.aircraftManufacturer,
       principalAirport: form.principalAirport,
@@ -275,7 +275,7 @@ const mapper = (
       dongle: form.dongle,
       beaconPosition: form.beaconPosition,
     }),
-    toForm: (draftRegistration) => ({
+    beaconUseToForm: (draftRegistration) => ({
       maxCapacity: draftRegistration.maxCapacity,
       aircraftManufacturer: draftRegistration.aircraftManufacturer,
       principalAirport: draftRegistration.principalAirport,
