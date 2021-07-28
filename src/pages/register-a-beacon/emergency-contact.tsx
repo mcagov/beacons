@@ -215,21 +215,18 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
 const mapper: RegistrationFormMapper<EmergencyContactForm> = {
   formToDraftRegistration: (form) => ({
-    emergencyContact1FullName: form.emergencyContact1FullName || null,
-    emergencyContact1TelephoneNumber:
-      form.emergencyContact1TelephoneNumber || null,
+    emergencyContact1FullName: form.emergencyContact1FullName,
+    emergencyContact1TelephoneNumber: form.emergencyContact1TelephoneNumber,
     emergencyContact1AlternativeTelephoneNumber:
-      form.emergencyContact1AlternativeTelephoneNumber || null,
-    emergencyContact2FullName: form.emergencyContact2FullName || null,
-    emergencyContact2TelephoneNumber:
-      form.emergencyContact2TelephoneNumber || null,
+      form.emergencyContact1AlternativeTelephoneNumber,
+    emergencyContact2FullName: form.emergencyContact2FullName,
+    emergencyContact2TelephoneNumber: form.emergencyContact2TelephoneNumber,
     emergencyContact2AlternativeTelephoneNumber:
-      form.emergencyContact2AlternativeTelephoneNumber || null,
-    emergencyContact3FullName: form.emergencyContact3FullName || null,
-    emergencyContact3TelephoneNumber:
-      form.emergencyContact3TelephoneNumber || null,
+      form.emergencyContact2AlternativeTelephoneNumber,
+    emergencyContact3FullName: form.emergencyContact3FullName,
+    emergencyContact3TelephoneNumber: form.emergencyContact3TelephoneNumber,
     emergencyContact3AlternativeTelephoneNumber:
-      form.emergencyContact3AlternativeTelephoneNumber || null,
+      form.emergencyContact3AlternativeTelephoneNumber,
     uses: [],
   }),
   draftRegistrationToForm: (draftRegistration) => ({

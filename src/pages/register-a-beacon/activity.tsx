@@ -617,8 +617,8 @@ const props = async (
   ).uses[context.query.useIndex as string];
 
   return {
-    environment: use?.environment || null,
-    purpose: use?.purpose || null,
+    environment: use?.environment,
+    purpose: use?.purpose,
     useIndex: parseInt(context.query.useIndex as string),
   };
 };
@@ -629,15 +629,15 @@ const mapper = (
   const beaconUseMapper: BeaconUseFormMapper<ActivityForm> = {
     formToDraftBeaconUse: (form) => {
       return {
-        environment: form.environment || null,
-        activity: form.activity || null,
-        otherActivityText: form.otherActivityText || null,
-        otherActivityLocation: form.otherActivityLocation || null,
-        otherActivityPeopleCount: form.otherActivityPeopleCount || null,
-        workingRemotelyLocation: form.workingRemotelyLocation || null,
-        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount || null,
-        windfarmLocation: form.windfarmLocation || null,
-        windfarmPeopleCount: form.windfarmPeopleCount || null,
+        environment: form.environment,
+        activity: form.activity,
+        otherActivityText: form.otherActivityText,
+        otherActivityLocation: form.otherActivityLocation,
+        otherActivityPeopleCount: form.otherActivityPeopleCount,
+        workingRemotelyLocation: form.workingRemotelyLocation,
+        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount,
+        windfarmLocation: form.windfarmLocation,
+        windfarmPeopleCount: form.windfarmPeopleCount,
       };
     },
     beaconUseToForm: (draftRegistration) => ({

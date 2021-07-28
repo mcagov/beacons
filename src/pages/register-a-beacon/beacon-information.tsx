@@ -213,8 +213,8 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
 const mapper: RegistrationFormMapper<BeaconInformationForm> = {
   formToDraftRegistration: (form) => ({
-    manufacturerSerialNumber: form.manufacturerSerialNumber || null,
-    chkCode: form.chkCode || null,
+    manufacturerSerialNumber: form.manufacturerSerialNumber,
+    chkCode: form.chkCode,
     batteryExpiryDate: isoDateString(
       form.batteryExpiryDateYear,
       form.batteryExpiryDateMonth
