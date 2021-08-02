@@ -1,7 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/FormManager";
-import { PageURLs } from "../../../src/lib/urls";
 import VesselCommunications from "../../../src/pages/register-a-beacon/vessel-communications";
 
 describe("VesselCommunications", () => {
@@ -63,35 +62,6 @@ describe("VesselCommunications", () => {
       },
     },
   };
-
-  it("should have a back button which directs the user to the about the vessel page", () => {
-    render(
-      <VesselCommunications
-        form={emptyVesselCommunicationsForm}
-        useIndex={0}
-        showCookieBanner={false}
-      />
-    );
-
-    expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
-      "href",
-      expect.stringContaining(PageURLs.aboutTheVessel)
-    );
-  });
-
-  it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
-    const { container } = render(
-      <VesselCommunications
-        form={emptyVesselCommunicationsForm}
-        useIndex={0}
-        showCookieBanner={false}
-      />
-    );
-
-    const form = container.querySelector("form");
-
-    expect(form).toHaveAttribute("action", "");
-  });
 
   it("should have an autocomplete attribute on the mobile telephone number field", () => {
     const { container } = render(
