@@ -1,5 +1,5 @@
 import { Beacon } from "../../src/entities/Beacon";
-import { deepFreeze } from "../utils/deepFreeze";
+import { deepFreeze } from "../deepFreeze";
 
 export const beaconFixtures: Beacon = deepFreeze([
   {

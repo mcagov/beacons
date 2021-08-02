@@ -4,7 +4,7 @@ import {
   Environment,
   Purpose,
 } from "../../src/lib/deprecatedRegistration/types";
-import { deepFreeze } from "../utils/deepFreeze";
+import { deepFreeze } from "../deepFreeze";
 
 const getUseFixture = (id: string, mainUse: boolean): Use =>
   deepFreeze({
@@ -55,12 +55,3 @@ const getUseFixture = (id: string, mainUse: boolean): Use =>
     mainUse,
     entityLinks: [{ verb: "PATCH", path: `/beacon-uses/${id}` }],
   });
-
-export const usesFixture: Use[] = deepFreeze([
-  {
-    ...getUseFixture("e00036c4-e3f4-46bb-aa9e-1d91870d9172", true),
-  },
-  {
-    ...getUseFixture("e00036c4-e3f4-46bb-aa9e-1d91870d9173", false),
-  },
-]);

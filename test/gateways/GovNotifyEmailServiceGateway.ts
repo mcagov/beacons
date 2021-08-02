@@ -3,7 +3,7 @@ import { GovNotifyEmailServiceGateway } from "../../src/gateways/GovNotifyEmailS
 
 jest.mock("notifications-node-client");
 
-describe("Gov Notify API Gateway", () => {
+describe("GovNotifyEmailServiceGateway", () => {
   let gateway;
   let apiKey;
   let emailTemplateId;

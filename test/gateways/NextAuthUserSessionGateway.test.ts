@@ -5,7 +5,7 @@ import { NextAuthUserSessionGateway } from "../../src/gateways/NextAuthUserSessi
 jest.mock("next-auth/client");
 const mockedNextAuthClient = client as jest.Mocked<typeof client>;
 
-describe("userSessionGateway", () => {
+describe("NextAuthUserSessionGateway", () => {
   it("returns the user's session using the context provided", async () => {
     const mockSession = {
       user: {

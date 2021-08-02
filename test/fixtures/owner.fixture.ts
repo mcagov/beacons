@@ -1,5 +1,5 @@
 import { Owner } from "../../src/entities/Owner";
-import { deepFreeze } from "../utils/deepFreeze";
+import { deepFreeze } from "../deepFreeze";
 
 export const ownerFixture: Owner = deepFreeze({
   id: "cb2e9fd2-45bb-4865-a04c-add5bb7c34a7",
