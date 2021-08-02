@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/client";
-import { UserSessionGateway } from "./UserSessionGateway";
+import { UserSessionGateway } from "./interfaces/UserSessionGateway";
 
 export interface Session {
   user?: {

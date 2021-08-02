@@ -1,7 +1,7 @@
 import Redis from "ioredis";
 import JSONCache from "redis-json";
 import { DraftRegistration } from "../entities/DraftRegistration";
-import { DraftRegistrationGateway } from "./DraftRegistrationGateway";
+import { DraftRegistrationGateway } from "./interfaces/DraftRegistrationGateway";
 
 export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
   private cache = new JSONCache<DraftRegistration>(

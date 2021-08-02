@@ -1,4 +1,4 @@
-import { DraftRegistrationGateway } from "../gateways/DraftRegistrationGateway";
+import { DraftRegistrationGateway } from "../gateways/interfaces/DraftRegistrationGateway";
 import { RedisDraftRegistrationGateway } from "../gateways/RedisDraftRegistrationGateway";
 
 export type DeleteCachedUseFn = (

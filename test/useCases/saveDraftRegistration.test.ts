@@ -12,6 +12,7 @@ describe("saveDraftRegistration", () => {
       manufacturer: "ACME Inc.",
       model: "Excelsior",
       hexId: "1D0...",
+      uses: [],
     };
     const container = {
       draftRegistrationGateway: {
