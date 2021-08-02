@@ -15,7 +15,7 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
-import { formatUses } from "../../utils/formatUses";
+import { formatUses } from "../../lib/writingStyle";
 
 export interface YourBeaconRegistyAccountPageProps {
   id?: string;
