@@ -1,11 +1,11 @@
 import { IncomingMessage } from "http";
 import { DraftRegistration } from "../entities/DraftRegistration";
-import { AuthGateway } from "../gateways/AadAuthGateway";
 import { AccountHolderGateway } from "../gateways/AccountHolderGateway";
-import { IBasicAuthGateway } from "../gateways/BasicAuthGateway";
-import { BeaconGateway } from "../gateways/BeaconsApiBeaconGateway";
 import { DraftRegistrationGateway } from "../gateways/DraftRegistrationGateway";
 import { EmailServiceGateway } from "../gateways/EmailServiceGateway";
+import { AuthGateway } from "../gateways/interfaces/AuthGateway";
+import { BeaconGateway } from "../gateways/interfaces/BeaconGateway";
+import { IBasicAuthGateway } from "../gateways/interfaces/IBasicAuthGateway";
 import { UserSessionGateway } from "../gateways/UserSessionGateway";
 import { AddNewUseToDraftRegistrationFn } from "../useCases/addNewUseToDraftRegistration";
 import { AuthenticateUserFn } from "../useCases/authenticateUser";

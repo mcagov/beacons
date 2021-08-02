@@ -1,5 +1,5 @@
-import { AccountHolder } from "../entities/AccountHolder";
-import { Beacon } from "../entities/Beacon";
+import { AccountHolder } from "../../entities/AccountHolder";
+import { Beacon } from "../../entities/Beacon";
 
 export interface AccountHolderGateway {
   createAccountHolder(

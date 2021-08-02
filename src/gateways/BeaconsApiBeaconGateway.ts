@@ -1,22 +1,7 @@
-import axios from "axios";
-import { IRegistrationRequestBody } from "../lib/deprecatedRegistration/IRegistrationRequestBody";
-
 export interface IDeleteBeaconRequest {
   beaconId: string;
   accountHolderId: string;
   reason: string;
-}
-
-export interface BeaconGateway {
-  sendRegistration: (
-    json: IRegistrationRequestBody,
-    accessToken: string
-  ) => Promise<boolean>;
-
-  deleteBeacon: (
-    json: IDeleteBeaconRequest,
-    accessToken: string
-  ) => Promise<boolean>;
 }
 
 export class BeaconsApiBeaconGateway implements BeaconGateway {

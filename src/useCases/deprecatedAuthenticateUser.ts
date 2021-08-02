@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from "next";
-import { IBasicAuthGateway } from "../gateways/BasicAuthGateway";
+import { IBasicAuthGateway } from "../gateways/interfaces/IBasicAuthGateway";
 
 export interface DeprecatedIAuthenticateUser {
   execute: (context: GetServerSidePropsContext) => Promise<void>;

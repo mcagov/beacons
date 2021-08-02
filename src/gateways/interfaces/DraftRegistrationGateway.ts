@@ -1,4 +1,4 @@
-import { DraftRegistration } from "../entities/DraftRegistration";
+import { DraftRegistration } from "../../entities/DraftRegistration";
 
 export interface DraftRegistrationGateway {
   deleteUse: (submissionId: string, useIndex: number) => Promise<void>;

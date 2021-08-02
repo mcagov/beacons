@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { AccountHolder } from "../entities/AccountHolder";
 import { Beacon } from "../entities/Beacon";
-import { AccountHolderGateway } from "./AccountHolderGateway";
+import { AccountHolderGateway } from "./interfaces/AccountHolderGateway";
 import { BeaconsApiResponseMapper } from "./mappers/BeaconsApiResponseMapper";
 import { IAccountHolderDetailsResponse } from "./mappers/IAccountHolderDetailsResponse";
 import { IAccountHolderIdResponseBody } from "./mappers/IAccountHolderIdResponseBody";
