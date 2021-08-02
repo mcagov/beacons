@@ -25,30 +25,47 @@ export class IfUserSubmittedInvalidRegistrationForm<T> implements Rule {
   }
 
   public async condition(): Promise<boolean> {
-    return (
-      this.context.req.method === "POST" &&
-      !isValid(
-        this.mapper.draftRegistrationToForm(
-          this.mapper.formToDraftRegistration(
-            await this.context.container.parseFormDataAs(this.context.req)
-          )
-        ),
-        this.validationRules
-      )
-    );
+    return this.userSubmittedForm() && (await this.formIsInvalid());
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
+    await this.saveDraftRegistration();
+
+    return await this.showFormWithErrorMessages();
+  }
+
+  private userSubmittedForm(): boolean {
+    return this.context.req.method === "POST";
+  }
+
+  private async formIsInvalid(): Promise<boolean> {
+    return !isValid(
+      this.mapper.draftRegistrationToForm(
+        this.mapper.formToDraftRegistration(
+          await this.context.container.parseFormDataAs(this.context.req)
+        )
+      ),
+      this.validationRules
+    );
+  }
+
+  private async saveDraftRegistration(): Promise<void> {
     await this.context.container.saveDraftRegistration(
       this.draftRegistrationId(),
       await this.mapper.formToDraftRegistration(await this.form())
     );
+  }
 
+  private async showFormWithErrorMessages(): Promise<
+    GetServerSidePropsResult<any>
+  > {
     return {
       props: {
         form: withErrorMessages(
-          await this.context.container.getDraftRegistration(
-            this.draftRegistrationId()
+          this.mapper.draftRegistrationToForm(
+            await this.context.container.getDraftRegistration(
+              this.draftRegistrationId()
+            )
           ),
           this.validationRules
         ),
