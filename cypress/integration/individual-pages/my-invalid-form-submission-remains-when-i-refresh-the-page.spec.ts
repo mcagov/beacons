@@ -24,10 +24,6 @@ describe("Given I have submitted invalid data to a registration form,", () => {
       iCanEditAFieldContaining("ACME Inc.");
       iCanEditAFieldContaining("Excelsior");
       iCanEditAFieldContaining("INVALID HEX ID");
-
-      // TODO: User should see error messages after refreshing an invalid form submission
-      // thenIShouldSeeAnErrorSummaryLinkThatContains("HEX ID");
-      // thenIShouldSeeAnErrorMessageThatContains("HEX ID");
     });
   });
 });
