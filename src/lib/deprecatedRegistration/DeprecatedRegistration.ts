@@ -1,5 +1,5 @@
 import { BeaconUse } from "../../entities/BeaconUse";
-import { IRegistration } from "../../entities/Registration";
+import { Registration } from "../../entities/Registration";
 import { FormSubmission } from "../formCache";
 import { stringToBoolean } from "../writingStyle";
 import {
@@ -16,9 +16,9 @@ type Indexes = {
 export class DeprecatedRegistration {
   private static readonly USES_KEY = "uses";
 
-  public registration: IRegistration;
+  public registration: Registration;
 
-  constructor(registration: IRegistration = initBeacon()) {
+  constructor(registration: Registration = initBeacon()) {
     this.registration = registration;
   }
 
@@ -33,7 +33,7 @@ export class DeprecatedRegistration {
     return flattenedRegistration;
   }
 
-  public getRegistration = (): IRegistration => {
+  public getRegistration = (): Registration => {
     return this.registration;
   };
 

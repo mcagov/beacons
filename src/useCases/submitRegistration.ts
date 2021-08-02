@@ -1,4 +1,4 @@
-import { IRegistration } from "../entities/Registration";
+import { Registration } from "../entities/Registration";
 import { DeprecatedRegistration } from "../lib/deprecatedRegistration/DeprecatedRegistration";
 import { IAppContainer } from "../lib/IAppContainer";
 
@@ -23,7 +23,7 @@ export const submitRegistration =
   }: Partial<IAppContainer>): SubmitRegistrationFn =>
   async (submissionId: string, accountHolderId: string) => {
     const registration = new DeprecatedRegistration(
-      (await getDraftRegistration(submissionId)) as IRegistration
+      (await getDraftRegistration(submissionId)) as Registration
     );
     const accessToken = await getAccessToken();
 

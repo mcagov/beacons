@@ -1,6 +1,6 @@
 import Redis from "ioredis";
 import JSONCache from "redis-json";
-import { IRegistration } from "../entities/Registration";
+import { Registration } from "../entities/Registration";
 import { DeprecatedRegistration } from "./deprecatedRegistration/DeprecatedRegistration";
 
 // Convenience type
@@ -30,9 +30,7 @@ export class FormCacheFactory {
 
 class FormCache implements IFormCache {
   private _byIdToRegistration: Record<string, DeprecatedRegistration> = {};
-  private cache = new JSONCache<IRegistration>(
-    new Redis(process.env.REDIS_URI)
-  );
+  private cache = new JSONCache<Registration>(new Redis(process.env.REDIS_URI));
 
   public async update(
     id: string,
@@ -60,9 +58,9 @@ class FormCache implements IFormCache {
   private async _safeGetRegistration(
     id: string
   ): Promise<DeprecatedRegistration> {
-    const registrationData: IRegistration = (await this.cache.get(
+    const registrationData: Registration = (await this.cache.get(
       id
-    )) as IRegistration;
+    )) as Registration;
 
     if (registrationData) {
       return new DeprecatedRegistration(registrationData);

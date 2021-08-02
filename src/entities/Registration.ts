@@ -1,6 +1,6 @@
 import { BeaconUse } from "./BeaconUse";
 
-export interface IRegistration {
+export interface Registration {
   manufacturer: string;
   model: string;
   hexId: string;

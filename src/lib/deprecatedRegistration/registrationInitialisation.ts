@@ -1,12 +1,12 @@
 import { BeaconUse } from "../../entities/BeaconUse";
-import { IRegistration } from "../../entities/Registration";
+import { Registration } from "../../entities/Registration";
 
 /**
  * Convenience function for returning an `empty` instance of a beacon registration.
  *
- * @returns {IRegistration}   JSON representation of a beacon registration
+ * @returns {Registration}   JSON representation of a beacon registration
  */
-export const initBeacon = (): IRegistration => {
+export const initBeacon = (): Registration => {
   return {
     manufacturer: "",
     model: "",
