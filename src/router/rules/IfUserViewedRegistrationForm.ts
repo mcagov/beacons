@@ -4,19 +4,19 @@ import { withoutErrorMessages } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { acceptRejectCookieId, formSubmissionCookieId } from "../../lib/types";
-import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { Rule } from "./Rule";
 
 export class IfUserViewedRegistrationForm<T> implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
-  private readonly mapper: RegistrationFormMapper<T>;
+  private readonly mapper: DraftRegistrationFormMapper<T>;
   private readonly additionalProps: Record<string, any>;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
-    mapper: RegistrationFormMapper<T>,
+    mapper: DraftRegistrationFormMapper<T>,
     additionalProps?: Record<string, any>
   ) {
     this.context = context;

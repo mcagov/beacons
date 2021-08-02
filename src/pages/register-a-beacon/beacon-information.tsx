@@ -22,7 +22,7 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
-import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
@@ -211,7 +211,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   })
 );
 
-const mapper: RegistrationFormMapper<BeaconInformationForm> = {
+const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
   formToDraftRegistration: (form) => ({
     manufacturerSerialNumber: form.manufacturerSerialNumber,
     chkCode: form.chkCode,

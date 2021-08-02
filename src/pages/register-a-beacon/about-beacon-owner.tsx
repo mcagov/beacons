@@ -12,7 +12,7 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs, queryParams } from "../../lib/urls";
-import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
@@ -165,7 +165,7 @@ const props = async (
   };
 };
 
-const mapper: RegistrationFormMapper<AboutBeaconOwnerForm> = {
+const mapper: DraftRegistrationFormMapper<AboutBeaconOwnerForm> = {
   formToDraftRegistration: (form) => ({
     ownerFullName: form.ownerFullName,
     ownerTelephoneNumber: form.ownerTelephoneNumber,

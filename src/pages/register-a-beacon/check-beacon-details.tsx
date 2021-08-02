@@ -14,7 +14,7 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
 import { toUpperCase } from "../../lib/writingStyle";
-import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
@@ -131,7 +131,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   })
 );
 
-export const mapper: RegistrationFormMapper<CheckBeaconDetailsForm> = {
+export const mapper: DraftRegistrationFormMapper<CheckBeaconDetailsForm> = {
   formToDraftRegistration: (form) => ({
     manufacturer: form.manufacturer,
     model: form.model,

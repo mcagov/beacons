@@ -1,4 +1,4 @@
-import { RecursivePartial } from "../utils/RecursivePartial";
+import { RecursivePartial } from "../lib/RecursivePartial";
 import { DraftBeaconUse } from "./DraftBeaconUse";
 import { IRegistration } from "./Registration";
 

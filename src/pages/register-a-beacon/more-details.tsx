@@ -15,8 +15,8 @@ import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
-import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
@@ -151,7 +151,7 @@ const props = async (
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext
-): RegistrationFormMapper<MoreDetailsForm> => {
+): DraftRegistrationFormMapper<MoreDetailsForm> => {
   const beaconUseMapper: BeaconUseFormMapper<MoreDetailsForm> = {
     formToDraftBeaconUse: (form) => ({
       moreDetails: form.moreDetails,

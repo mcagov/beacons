@@ -24,7 +24,7 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
-import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
@@ -213,7 +213,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   })
 );
 
-const mapper: RegistrationFormMapper<EmergencyContactForm> = {
+const mapper: DraftRegistrationFormMapper<EmergencyContactForm> = {
   formToDraftRegistration: (form) => ({
     emergencyContact1FullName: form.emergencyContact1FullName,
     emergencyContact1TelephoneNumber: form.emergencyContact1TelephoneNumber,

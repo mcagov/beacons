@@ -20,8 +20,8 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
-import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
@@ -262,7 +262,7 @@ const props = (
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext
-): RegistrationFormMapper<AboutTheAircraftForm> => {
+): DraftRegistrationFormMapper<AboutTheAircraftForm> => {
   const beaconUseMapper: BeaconUseFormMapper<AboutTheAircraftForm> = {
     formToDraftBeaconUse: (form) => ({
       maxCapacity: form.maxCapacity,

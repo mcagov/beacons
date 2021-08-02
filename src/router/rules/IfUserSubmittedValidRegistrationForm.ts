@@ -4,19 +4,19 @@ import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { PageURLs } from "../../lib/urls";
-import { RegistrationFormMapper } from "../../presenters/RegistrationFormMapper";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { Rule } from "./Rule";
 
 export class IfUserSubmittedValidRegistrationForm<T> implements Rule {
   protected readonly context: BeaconsGetServerSidePropsContext;
   protected readonly validationRules: FormManagerFactory;
-  protected readonly mapper: RegistrationFormMapper<T>;
+  protected readonly mapper: DraftRegistrationFormMapper<T>;
   private readonly nextPage: PageURLs | Promise<PageURLs>;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
-    mapper: RegistrationFormMapper<T>,
+    mapper: DraftRegistrationFormMapper<T>,
     nextPage: PageURLs | Promise<PageURLs>
   ) {
     this.context = context;
