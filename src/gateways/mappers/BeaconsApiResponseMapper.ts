@@ -3,7 +3,7 @@ import { EmergencyContact } from "../../entities/EmergencyContact";
 import { EntityLink } from "../../entities/EntityLink";
 import { Owner } from "../../entities/Owner";
 import { Use } from "../../entities/Use";
-import { isoDate } from "../../utils/dateTime";
+import { isoDate } from "../../lib/dateTime";
 import { IBeaconDataAttributes } from "./IBeaconDataAttributes";
 import { IBeaconListResponse } from "./IBeaconListResponse";
 import { IBeaconResponseMapper } from "./IBeaconResponseMapper";

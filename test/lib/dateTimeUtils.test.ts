@@ -1,4 +1,4 @@
-import { toIsoDateString } from "../../src/lib/toIsoDateString";
+import { toIsoDateString } from "../../src/lib/dateTime";
 
 describe("dateTimeUtils", () => {
   describe("toIsoDateString()", () => {

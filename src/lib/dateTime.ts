@@ -16,3 +16,6 @@ export function toIsoDateString(year: string, month: string): string {
 
   return null;
 }
+
+export const isoDate = (isoDateTime: string): string =>
+  isoDateTime.slice(0, 10);
