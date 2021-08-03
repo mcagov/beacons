@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { FormJSON } from "../../../src/lib/form/formManager";
 import {
   Activity,
   Environment,
   Purpose,
-} from "../../../src/lib/registration/types";
+} from "../../../src/lib/deprecatedRegistration/types";
+import { FormJSON } from "../../../src/lib/form/FormManager";
 import ActivityPage from "../../../src/pages/register-a-beacon/activity";
 
 describe("Activity", () => {
@@ -33,20 +33,6 @@ describe("Activity", () => {
     },
   };
 
-  it("should render the page", () => {
-    render(
-      <ActivityPage
-        form={activityFormTestData}
-        flattenedRegistration={{
-          environment: Environment.MARITIME,
-          purpose: Purpose.PLEASURE,
-        }}
-      />
-    );
-
-    expect(screen.getByLabelText(/rowing/i)).toBeChecked();
-  });
-
   describe("the page heading", () => {
     function assertPageHeadingContains(
       expected: string,
@@ -56,10 +42,10 @@ describe("Activity", () => {
       render(
         <ActivityPage
           form={activityFormTestData}
-          flattenedRegistration={{
-            environment,
-            purpose,
-          }}
+          showCookieBanner={false}
+          useIndex={0}
+          environment={environment}
+          purpose={purpose}
         />
       );
 

@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { createResponse } from "node-mocks-http";
 import React from "react";
-import { IAppContainer } from "../../../src/lib/appContainer";
+import { IAppContainer } from "../../../src/lib/IAppContainer";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import ApplicationCompletePage, {
   getServerSideProps,
@@ -40,10 +40,9 @@ describe("ApplicationCompletePage", () => {
 
       const result = await getServerSideProps(context as any);
 
-      expect(result).toStrictEqual({
+      expect(result).toMatchObject({
         redirect: {
           destination: "/",
-          permanent: false,
         },
       });
     });

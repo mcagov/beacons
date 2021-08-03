@@ -4,7 +4,7 @@ import {
   Activity,
   Environment,
   Purpose,
-} from "../../../src/lib/registration/types";
+} from "../../../src/lib/deprecatedRegistration/types";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import { ActionURLs, PageURLs, queryParams } from "../../../src/lib/urls";
 import AdditionalBeaconUse, {

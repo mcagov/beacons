@@ -1,7 +1,7 @@
-import { IBeacon } from "../../src/entities/beacon";
-import { deepFreeze } from "../utils/deepFreeze";
+import { Beacon } from "../../src/entities/Beacon";
+import { deepFreeze } from "../deepFreeze";
 
-export const beaconFixtures: IBeacon = deepFreeze([
+export const beaconFixtures: Beacon = deepFreeze([
   {
     id: "f48e8212-2e10-4154-95c7-bdfd061bcfd2",
     hexId: "1D0EA08C52FFBFF",

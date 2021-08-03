@@ -54,7 +54,7 @@ describe("BeaconsForm Component", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      `${previousPageUrl}?useIndex=1`
+      previousPageUrl
     );
   });
 

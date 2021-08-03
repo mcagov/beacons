@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactNode } from "react";
-import { FormError } from "../lib/form/formManager";
+import { FormError } from "../lib/form/FormManager";
 
 interface FormErrorSummaryProps {
   formErrors: FormError[];

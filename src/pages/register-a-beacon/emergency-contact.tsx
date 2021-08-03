@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButtonRouterIndexes, Button } from "../../components/Button";
+import { BackButton, Button } from "../../components/Button";
 import { FormErrorSummary } from "../../components/ErrorSummary";
 import {
   Form,
@@ -15,80 +15,45 @@ import { InsetText } from "../../components/InsetText";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { WarningText } from "../../components/WarningText";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
+import { FieldManager } from "../../lib/form/FieldManager";
+import { FormManager } from "../../lib/form/FormManager";
+import { Validators } from "../../lib/form/Validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
+import { PageURLs } from "../../lib/urls";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
-export interface EmergencyContactGroupProps {
-  index: string;
-  fullName: string;
-  telephoneNumber: string;
-  alternativeTelephoneNumber: string;
-  fullNameErrorMessages?: string[];
-  fullNameErrors?: boolean;
-  telephoneNumberErrorMessages?: string[];
-  telephoneNumberErrors?: boolean;
+interface EmergencyContactForm {
+  emergencyContact1FullName: string;
+  emergencyContact1TelephoneNumber: string;
+  emergencyContact1AlternativeTelephoneNumber: string;
+  emergencyContact2FullName: string;
+  emergencyContact2TelephoneNumber: string;
+  emergencyContact2AlternativeTelephoneNumber: string;
+  emergencyContact3FullName: string;
+  emergencyContact3TelephoneNumber: string;
+  emergencyContact3AlternativeTelephoneNumber: string;
 }
 
-const definePageForm = ({
-  emergencyContact1FullName,
-  emergencyContact1TelephoneNumber,
-  emergencyContact1AlternativeTelephoneNumber,
-  emergencyContact2FullName,
-  emergencyContact2TelephoneNumber,
-  emergencyContact2AlternativeTelephoneNumber,
-  emergencyContact3FullName,
-  emergencyContact3TelephoneNumber,
-  emergencyContact3AlternativeTelephoneNumber,
-}: FormSubmission): FormManager => {
-  return new FormManager({
-    emergencyContact1FullName: new FieldManager(emergencyContact1FullName, [
-      Validators.required("Emergency contact full name is a required field"),
-    ]),
-    emergencyContact1TelephoneNumber: new FieldManager(
-      emergencyContact1TelephoneNumber,
-      [
-        Validators.required(
-          "Emergency contact telephone number is a required field"
-        ),
-        Validators.phoneNumber(
-          "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
-        ),
-      ]
-    ),
-    emergencyContact1AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact1AlternativeTelephoneNumber
-    ),
-    emergencyContact2FullName: new FieldManager(emergencyContact2FullName),
-    emergencyContact2TelephoneNumber: new FieldManager(
-      emergencyContact2TelephoneNumber
-    ),
-    emergencyContact2AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact2AlternativeTelephoneNumber
-    ),
-    emergencyContact3FullName: new FieldManager(emergencyContact3FullName),
-    emergencyContact3TelephoneNumber: new FieldManager(
-      emergencyContact3TelephoneNumber
-    ),
-    emergencyContact3AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact3AlternativeTelephoneNumber
-    ),
-  });
-};
-
-const EmergencyContact: FunctionComponent<FormPageProps> = ({
+const EmergencyContact: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
-}: FormPageProps): JSX.Element => {
+}: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Add emergency contact information for up to 3 people";
 
   return (
     <>
       <Layout
         navigation={
-          <BackButtonRouterIndexes href="/register-a-beacon/beacon-owner-address" />
+          <BackButton href="/register-a-beacon/beacon-owner-address" />
         }
         title={pageHeading}
         pageHasErrors={form.hasErrors}
@@ -169,6 +134,17 @@ const EmergencyContact: FunctionComponent<FormPageProps> = ({
   );
 };
 
+interface EmergencyContactGroupProps {
+  index: string;
+  fullName: string;
+  telephoneNumber: string;
+  alternativeTelephoneNumber: string;
+  fullNameErrorMessages?: string[];
+  fullNameErrors?: boolean;
+  telephoneNumberErrorMessages?: string[];
+  telephoneNumberErrors?: boolean;
+}
+
 const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
   index = "",
   fullName = "",
@@ -211,9 +187,111 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/check-your-answers",
-  definePageForm
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPageUrl = PageURLs.checkYourAnswers;
+
+    return await new BeaconsPageRouter([
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<EmergencyContactForm>(
+        context,
+        validationRules,
+        mapper
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<EmergencyContactForm>(
+        context,
+        validationRules,
+        mapper
+      ),
+      new IfUserSubmittedValidRegistrationForm<EmergencyContactForm>(
+        context,
+        validationRules,
+        mapper,
+        nextPageUrl
+      ),
+    ]).execute();
+  })
 );
+
+const mapper: DraftRegistrationFormMapper<EmergencyContactForm> = {
+  formToDraftRegistration: (form) => ({
+    emergencyContact1FullName: form.emergencyContact1FullName,
+    emergencyContact1TelephoneNumber: form.emergencyContact1TelephoneNumber,
+    emergencyContact1AlternativeTelephoneNumber:
+      form.emergencyContact1AlternativeTelephoneNumber,
+    emergencyContact2FullName: form.emergencyContact2FullName,
+    emergencyContact2TelephoneNumber: form.emergencyContact2TelephoneNumber,
+    emergencyContact2AlternativeTelephoneNumber:
+      form.emergencyContact2AlternativeTelephoneNumber,
+    emergencyContact3FullName: form.emergencyContact3FullName,
+    emergencyContact3TelephoneNumber: form.emergencyContact3TelephoneNumber,
+    emergencyContact3AlternativeTelephoneNumber:
+      form.emergencyContact3AlternativeTelephoneNumber,
+    uses: [],
+  }),
+  draftRegistrationToForm: (draftRegistration) => ({
+    emergencyContact1FullName: draftRegistration.emergencyContact1FullName,
+    emergencyContact1TelephoneNumber:
+      draftRegistration.emergencyContact1TelephoneNumber,
+    emergencyContact1AlternativeTelephoneNumber:
+      draftRegistration.emergencyContact1AlternativeTelephoneNumber,
+    emergencyContact2FullName: draftRegistration.emergencyContact2FullName,
+    emergencyContact2TelephoneNumber:
+      draftRegistration.emergencyContact2TelephoneNumber,
+    emergencyContact2AlternativeTelephoneNumber:
+      draftRegistration.emergencyContact2AlternativeTelephoneNumber,
+    emergencyContact3FullName: draftRegistration.emergencyContact3FullName,
+    emergencyContact3TelephoneNumber:
+      draftRegistration.emergencyContact3TelephoneNumber,
+    emergencyContact3AlternativeTelephoneNumber:
+      draftRegistration.emergencyContact3AlternativeTelephoneNumber,
+  }),
+};
+
+const validationRules = ({
+  emergencyContact1FullName,
+  emergencyContact1TelephoneNumber,
+  emergencyContact1AlternativeTelephoneNumber,
+  emergencyContact2FullName,
+  emergencyContact2TelephoneNumber,
+  emergencyContact2AlternativeTelephoneNumber,
+  emergencyContact3FullName,
+  emergencyContact3TelephoneNumber,
+  emergencyContact3AlternativeTelephoneNumber,
+}: FormSubmission): FormManager => {
+  return new FormManager({
+    emergencyContact1FullName: new FieldManager(emergencyContact1FullName, [
+      Validators.required("Emergency contact full name is a required field"),
+    ]),
+    emergencyContact1TelephoneNumber: new FieldManager(
+      emergencyContact1TelephoneNumber,
+      [
+        Validators.required(
+          "Emergency contact telephone number is a required field"
+        ),
+        Validators.phoneNumber(
+          "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
+        ),
+      ]
+    ),
+    emergencyContact1AlternativeTelephoneNumber: new FieldManager(
+      emergencyContact1AlternativeTelephoneNumber
+    ),
+    emergencyContact2FullName: new FieldManager(emergencyContact2FullName),
+    emergencyContact2TelephoneNumber: new FieldManager(
+      emergencyContact2TelephoneNumber
+    ),
+    emergencyContact2AlternativeTelephoneNumber: new FieldManager(
+      emergencyContact2AlternativeTelephoneNumber
+    ),
+    emergencyContact3FullName: new FieldManager(emergencyContact3FullName),
+    emergencyContact3TelephoneNumber: new FieldManager(
+      emergencyContact3TelephoneNumber
+    ),
+    emergencyContact3AlternativeTelephoneNumber: new FieldManager(
+      emergencyContact3AlternativeTelephoneNumber
+    ),
+  });
+};
 
 export default EmergencyContact;

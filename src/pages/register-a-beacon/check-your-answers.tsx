@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, StartButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
@@ -9,25 +9,26 @@ import {
   PageHeading,
   SectionHeading,
 } from "../../components/Typography";
+import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
+import { DraftRegistration } from "../../entities/DraftRegistration";
+import { Environment } from "../../lib/deprecatedRegistration/types";
 import { FormSubmission } from "../../lib/formCache";
-import {
-  decorateGetServerSidePropsContext,
-  withCookieRedirect,
-} from "../../lib/middleware";
-import {
-  BeaconUse,
-  Environment,
-  IRegistration,
-} from "../../lib/registration/types";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import {
   makeEnumValueUserFriendly,
   ordinal,
   sentenceCase,
 } from "../../lib/writingStyle";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
+import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
 
 interface CheckYourAnswersProps {
-  registration: IRegistration;
+  registration: DraftRegistration;
 }
 
 interface CheckYourAnswersDataRowItemProps {
@@ -37,7 +38,7 @@ interface CheckYourAnswersDataRowItemProps {
 
 interface CheckYourAnswersBeaconUseSectionProps {
   index: number;
-  use: BeaconUse;
+  use: DraftBeaconUse;
   href?: string;
 }
 
@@ -97,11 +98,11 @@ const CheckYourAnswersDataRowItem: FunctionComponent<CheckYourAnswersDataRowItem
     </>
   );
 
-const BeaconDetailsSection: FunctionComponent<IRegistration> = ({
+const BeaconDetailsSection: FunctionComponent<DraftRegistration> = ({
   manufacturer,
   model,
   hexId,
-}: IRegistration): JSX.Element => (
+}: DraftRegistration): JSX.Element => (
   <>
     <SectionHeading>About the beacon being registered</SectionHeading>
 
@@ -121,14 +122,14 @@ const BeaconDetailsSection: FunctionComponent<IRegistration> = ({
   </>
 );
 
-const BeaconInformationSection: FunctionComponent<IRegistration> = ({
+const BeaconInformationSection: FunctionComponent<DraftRegistration> = ({
   manufacturerSerialNumber,
   chkCode,
   batteryExpiryDateMonth,
   batteryExpiryDateYear,
   lastServicedDateMonth,
   lastServicedDateYear,
-}: IRegistration): JSX.Element => (
+}: DraftRegistration): JSX.Element => (
   <>
     <SummaryList>
       <SummaryListItem
@@ -386,56 +387,55 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSecti
                 value={use.callSign}
               />
             )}
-            {use.fixedVhfRadio.includes("true") && (
+            {use.fixedVhfRadio === "true" && (
               <>
                 Fixed VHF/DSC
                 <br />
               </>
             )}
-            {use.fixedVhfRadio.includes("true") && use.fixedVhfRadioInput && (
+            {use.fixedVhfRadio === "true" && use.fixedVhfRadioInput && (
               <CheckYourAnswersDataRowItem
                 label="MMSI"
                 value={use.fixedVhfRadioInput}
               />
             )}
-            {use.vhfRadio.includes("true") && (
+            {use.vhfRadio === "true" && (
               <>
                 VHF Radio
                 <br />
               </>
             )}
-            {use.portableVhfRadio.includes("true") && (
+            {use.portableVhfRadio === "true" && (
               <>
                 Portable VHF/DSC
                 <br />
               </>
             )}
-            {use.portableVhfRadio.includes("true") &&
-              use.portableVhfRadioInput && (
-                <CheckYourAnswersDataRowItem
-                  label="Portable MMSI"
-                  value={use.portableVhfRadioInput}
-                />
-              )}
-            {use.mobileTelephone.includes("true") && (
+            {use.portableVhfRadio === "true" && use.portableVhfRadioInput && (
+              <CheckYourAnswersDataRowItem
+                label="Portable MMSI"
+                value={use.portableVhfRadioInput}
+              />
+            )}
+            {use.mobileTelephone === "true" && (
               <CheckYourAnswersDataRowItem
                 label="Mobile telephone (1)"
                 value={use.mobileTelephoneInput1}
               />
             )}
-            {use.mobileTelephone.includes("true") && (
+            {use.mobileTelephone === "true" && (
               <CheckYourAnswersDataRowItem
                 label="Mobile telephone (2)"
                 value={use.mobileTelephoneInput2}
               />
             )}
-            {use.satelliteTelephone.includes("true") && (
+            {use.satelliteTelephone === "true" && (
               <CheckYourAnswersDataRowItem
                 label="Satellite telephone"
                 value={use.satelliteTelephoneInput}
               />
             )}
-            {use.otherCommunication.includes("true") && (
+            {use.otherCommunication === "true" && (
               <CheckYourAnswersDataRowItem
                 label="Other communication"
                 value={use.otherCommunicationInput}
@@ -464,12 +464,12 @@ const MoreDetailsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSectionP
     );
   };
 
-const BeaconOwnerSection: FunctionComponent<IRegistration> = ({
+const BeaconOwnerSection: FunctionComponent<DraftRegistration> = ({
   ownerFullName,
   ownerTelephoneNumber,
   ownerAlternativeTelephoneNumber,
   ownerEmail,
-}: IRegistration): JSX.Element => (
+}: DraftRegistration): JSX.Element => (
   <>
     <SectionHeading>About the beacon owner</SectionHeading>
 
@@ -487,13 +487,13 @@ const BeaconOwnerSection: FunctionComponent<IRegistration> = ({
   </>
 );
 
-const BeaconOwnerAddressSection: FunctionComponent<IRegistration> = ({
+const BeaconOwnerAddressSection: FunctionComponent<DraftRegistration> = ({
   ownerAddressLine1,
   ownerAddressLine2,
   ownerTownOrCity,
   ownerCounty,
   ownerPostcode,
-}: IRegistration): JSX.Element => {
+}: DraftRegistration): JSX.Element => {
   return (
     <>
       <SummaryList>
@@ -581,14 +581,25 @@ const SendYourApplication: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = withCookieRedirect(
-  async (context: GetServerSidePropsContext) => {
-    const decoratedContext = await decorateGetServerSidePropsContext(context);
-
-    return {
-      props: { registration: decoratedContext.registration.registration },
-    };
-  }
+export const getServerSideProps: GetServerSideProps = withSession(
+  withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+    return await new BeaconsPageRouter([
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedPage(context, props(context)),
+    ]).execute();
+  })
 );
+
+const props = async (
+  context: BeaconsGetServerSidePropsContext
+): Promise<Partial<CheckYourAnswersProps>> => {
+  const draftRegistration = await context.container.getDraftRegistration(
+    context.req.cookies[formSubmissionCookieId]
+  );
+
+  return {
+    registration: draftRegistration,
+  };
+};
 
 export default CheckYourAnswersPage;

@@ -1,4 +1,4 @@
-import { Purpose } from "../../../src/lib/registration/types";
+import { Purpose } from "../../../src/lib/deprecatedRegistration/types";
 import { givenIHaveEnteredMyBeaconDetails } from "../common/i-can-enter-beacon-information.spec";
 import {
   andIHaveEnteredMyAviationUse,

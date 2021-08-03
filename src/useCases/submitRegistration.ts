@@ -1,4 +1,6 @@
-import { IAppContainer } from "../lib/appContainer";
+import { Registration } from "../entities/Registration";
+import { DeprecatedRegistration } from "../lib/deprecatedRegistration/DeprecatedRegistration";
+import { IAppContainer } from "../lib/IAppContainer";
 
 export type SubmitRegistrationFn = (
   submissionId: string,
@@ -14,13 +16,15 @@ export interface ISubmitRegistrationResult {
 export const submitRegistration =
   ({
     sendConfirmationEmail,
-    getCachedRegistration,
+    getDraftRegistration,
     getAccessToken,
     beaconsApiGateway,
     accountHolderApiGateway,
   }: Partial<IAppContainer>): SubmitRegistrationFn =>
   async (submissionId: string, accountHolderId: string) => {
-    const registration = await getCachedRegistration(submissionId);
+    const registration = new DeprecatedRegistration(
+      (await getDraftRegistration(submissionId)) as Registration
+    );
     const accessToken = await getAccessToken();
 
     registration.setReferenceNumber(referenceNumber("A#", 7));

@@ -1,4 +1,4 @@
-import { Environment } from "../../../../src/lib/registration/types";
+import { Environment } from "../../../../src/lib/deprecatedRegistration/types";
 import { PageURLs } from "../../../../src/lib/urls";
 import {
   andIClickContinue,

@@ -34,24 +34,5 @@ export enum ActionURLs {
   addNewUseToDraftRegistration = "/api/registration/add-new-use-to-draft",
 }
 
-export function formatUrlQueryParams(
-  url: string,
-  queryParamMap: Record<string, any>
-): string {
-  const formatUrl = (queryParam, value) => {
-    if (!url.includes(queryParam)) {
-      const queryStringCombiner = url.includes("?") ? "&" : "?";
-      url = `${url}${queryStringCombiner}${queryParam}=${value}`;
-    }
-  };
-
-  Object.keys(queryParamMap).forEach((queryParam) => {
-    const value = queryParamMap[queryParam];
-    formatUrl(queryParam, value);
-  });
-
-  return url;
-}
-
 export const queryParams = (queryParams: Record<string, any>): string =>
   "?" + new URLSearchParams(queryParams).toString();

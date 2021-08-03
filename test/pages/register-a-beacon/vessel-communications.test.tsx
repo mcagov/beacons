@@ -1,16 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import { GetServerSidePropsContext } from "next";
+import { render } from "@testing-library/react";
 import React from "react";
-import { FormJSON } from "../../../src/lib/form/formManager";
-import { handlePageRequest } from "../../../src/lib/handlePageRequest";
-import VesselCommunications, {
-  getServerSideProps,
-} from "../../../src/pages/register-a-beacon/vessel-communications";
-
-jest.mock("../../../src/lib/handlePageRequest", () => ({
-  __esModule: true,
-  handlePageRequest: jest.fn().mockImplementation(() => jest.fn()),
-}));
+import { FormJSON } from "../../../src/lib/form/FormManager";
+import VesselCommunications from "../../../src/pages/register-a-beacon/vessel-communications";
 
 describe("VesselCommunications", () => {
   const emptyVesselCommunicationsForm: FormJSON = {
@@ -72,38 +63,13 @@ describe("VesselCommunications", () => {
     },
   };
 
-  it("should have a back button which directs the user to the about the vessel page", () => {
-    render(<VesselCommunications form={emptyVesselCommunicationsForm} />);
-
-    expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
-      "href",
-      "/register-a-beacon/about-the-vessel?useIndex=0"
-    );
-  });
-
-  it("should POST its form submission to itself for redirection via getServerSideProps()", () => {
-    const { container } = render(
-      <VesselCommunications form={emptyVesselCommunicationsForm} />
-    );
-
-    const form = container.querySelectorAll("form")[1];
-
-    expect(form).toHaveAttribute("action", "");
-  });
-
-  it("should redirect to more-details page on valid form submission", async () => {
-    const context = {};
-    await getServerSideProps(context as GetServerSidePropsContext);
-
-    expect(handlePageRequest).toHaveBeenCalledWith(
-      "/register-a-beacon/more-details",
-      expect.anything()
-    );
-  });
-
   it("should have an autocomplete attribute on the mobile telephone number field", () => {
     const { container } = render(
-      <VesselCommunications form={emptyVesselCommunicationsForm} />
+      <VesselCommunications
+        form={emptyVesselCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
     );
 
     const mobilePhoneInput1 = container.querySelector("#mobileTelephoneInput1");
@@ -117,7 +83,11 @@ describe("VesselCommunications", () => {
     // Because this is likely to result in users' mobile and other more commonly used
     // numbers being autocompleted into the satellite number field.  We don't want this.
     const { container } = render(
-      <VesselCommunications form={emptyVesselCommunicationsForm} />
+      <VesselCommunications
+        form={emptyVesselCommunicationsForm}
+        useIndex={0}
+        showCookieBanner={false}
+      />
     );
 
     const satelliteTelephoneNumberInput = container.querySelector(

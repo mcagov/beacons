@@ -12,4 +12,5 @@ export enum BeaconIntent {
 }
 
 export const formSubmissionCookieId = "submissionId";
+
 export const acceptRejectCookieId = "acceptRejectId";

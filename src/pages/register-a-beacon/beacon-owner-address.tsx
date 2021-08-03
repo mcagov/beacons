@@ -13,45 +13,33 @@ import { FormInputProps, Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { GovUKBody } from "../../components/Typography";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
-import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { FieldManager } from "../../lib/form/FieldManager";
+import { FormManager } from "../../lib/form/FormManager";
+import { Validators } from "../../lib/form/Validators";
+import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
+import { PageURLs } from "../../lib/urls";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
-interface BuildingNumberAndStreetInputProps {
-  valueLine1: string;
-  valueLine2: string;
-  errorMessages: string[];
+interface BeaconOwnerAddressForm {
+  ownerAddressLine1: string;
+  ownerAddressLine2: string;
+  ownerTownOrCity: string;
+  ownerCounty: string;
+  ownerPostcode: string;
 }
 
-const definePageForm = ({
-  ownerAddressLine1,
-  ownerAddressLine2,
-  ownerTownOrCity,
-  ownerCounty,
-  ownerPostcode,
-}: FormSubmission): FormManager => {
-  return new FormManager({
-    ownerAddressLine1: new FieldManager(ownerAddressLine1, [
-      Validators.required("Building number and street is a required field"),
-    ]),
-    ownerAddressLine2: new FieldManager(ownerAddressLine2),
-    ownerTownOrCity: new FieldManager(ownerTownOrCity, [
-      Validators.required("Town or city is a required field"),
-    ]),
-    ownerCounty: new FieldManager(ownerCounty),
-    ownerPostcode: new FieldManager(ownerPostcode, [
-      Validators.required("Postcode is a required field"),
-      Validators.postcode("Postcode must be a valid UK postcode"),
-    ]),
-  });
-};
-
-const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
+const BeaconOwnerAddressPage: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
-}: FormPageProps): JSX.Element => {
+}: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "What is the beacon owner's address?";
 
   return (
@@ -98,6 +86,12 @@ const BeaconOwnerAddressPage: FunctionComponent<FormPageProps> = ({
   );
 };
 
+interface BuildingNumberAndStreetInputProps {
+  valueLine1: string;
+  valueLine2: string;
+  errorMessages: string[];
+}
+
 const BuildingNumberAndStreetInput: FunctionComponent<BuildingNumberAndStreetInputProps> =
   ({
     valueLine1 = "",
@@ -141,9 +135,71 @@ const PostcodeInput: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/emergency-contact",
-  definePageForm
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPageUrl = PageURLs.emergencyContact;
+
+    return await new BeaconsPageRouter([
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<BeaconOwnerAddressForm>(
+        context,
+        validationRules,
+        mapper
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<BeaconOwnerAddressForm>(
+        context,
+        validationRules,
+        mapper
+      ),
+      new IfUserSubmittedValidRegistrationForm<BeaconOwnerAddressForm>(
+        context,
+        validationRules,
+        mapper,
+        nextPageUrl
+      ),
+    ]).execute();
+  })
 );
+
+const mapper: DraftRegistrationFormMapper<BeaconOwnerAddressForm> = {
+  formToDraftRegistration: (form) => ({
+    ownerAddressLine1: form.ownerAddressLine1,
+    ownerAddressLine2: form.ownerAddressLine2,
+    ownerTownOrCity: form.ownerTownOrCity,
+    ownerCounty: form.ownerCounty,
+    ownerPostcode: form.ownerPostcode,
+    uses: [],
+  }),
+  draftRegistrationToForm: (draftRegistration) => ({
+    ownerAddressLine1: draftRegistration.ownerAddressLine1,
+    ownerAddressLine2: draftRegistration.ownerAddressLine2,
+    ownerTownOrCity: draftRegistration.ownerTownOrCity,
+    ownerCounty: draftRegistration.ownerCounty,
+    ownerPostcode: draftRegistration.ownerPostcode,
+  }),
+};
+
+const validationRules = ({
+  ownerAddressLine1,
+  ownerAddressLine2,
+  ownerTownOrCity,
+  ownerCounty,
+  ownerPostcode,
+}: BeaconOwnerAddressForm): FormManager => {
+  return new FormManager({
+    ownerAddressLine1: new FieldManager(ownerAddressLine1, [
+      Validators.required("Building number and street is a required field"),
+    ]),
+    ownerAddressLine2: new FieldManager(ownerAddressLine2),
+    ownerTownOrCity: new FieldManager(ownerTownOrCity, [
+      Validators.required("Town or city is a required field"),
+    ]),
+    ownerCounty: new FieldManager(ownerCounty),
+    ownerPostcode: new FieldManager(ownerPostcode, [
+      Validators.required("Postcode is a required field"),
+      Validators.postcode("Postcode must be a valid UK postcode"),
+    ]),
+  });
+};
 
 export default BeaconOwnerAddressPage;

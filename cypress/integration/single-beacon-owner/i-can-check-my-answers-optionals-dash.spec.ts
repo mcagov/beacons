@@ -1,4 +1,4 @@
-import { Purpose } from "../../../src/lib/registration/types";
+import { Purpose } from "../../../src/lib/deprecatedRegistration/types";
 import { PageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyRequiredBeaconDetails,

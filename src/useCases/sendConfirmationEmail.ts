@@ -1,9 +1,9 @@
-import { IAppContainer } from "../lib/appContainer";
-import { IRegistration } from "../lib/registration/types";
+import { Registration } from "../entities/Registration";
+import { IAppContainer } from "../lib/IAppContainer";
 import { joinStrings } from "../lib/writingStyle";
 
 export type SendConfirmationEmailFn = (
-  registration: IRegistration,
+  registration: Registration,
   email: string
 ) => Promise<boolean>;
 

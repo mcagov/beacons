@@ -1,4 +1,4 @@
-import { HexIdParser } from "../../src/lib/hexIdParser/hexIdParser";
+import { HexIdParser } from "../../src/lib/hexIdParser/HexIdParser";
 
 describe("HexIdParser", () => {
   describe("countryCode", () => {

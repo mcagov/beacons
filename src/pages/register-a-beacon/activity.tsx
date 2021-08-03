@@ -1,174 +1,89 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { GovUKBody } from "../../components/Typography";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormJSON, FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
-import { FormSubmission } from "../../lib/formCache";
+import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import {
-  DestinationIfValidCallback,
-  FormPageProps,
-  handlePageRequest,
-} from "../../lib/handlePageRequest";
-import { Activity, Environment, Purpose } from "../../lib/registration/types";
-import { PageURLs } from "../../lib/urls";
+  Activity,
+  Environment,
+  Purpose,
+} from "../../lib/deprecatedRegistration/types";
+import { FieldManager } from "../../lib/form/FieldManager";
+import { FormJSON, FormManager } from "../../lib/form/FormManager";
+import { Validators } from "../../lib/form/Validators";
+import { FormSubmission } from "../../lib/formCache";
+import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../lib/types";
+import { PageURLs, queryParams } from "../../lib/urls";
+import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
+import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
-interface OptionsProps {
-  form: FormJSON;
-  listItemName: string;
+interface ActivityForm {
+  environment;
+  activity;
+  otherActivityText;
+  otherActivityLocation;
+  otherActivityPeopleCount;
+  workingRemotelyLocation;
+  workingRemotelyPeopleCount;
+  windfarmLocation;
+  windfarmPeopleCount;
 }
 
-interface ActivityOptionsProps extends OptionsProps {
-  environment: string;
-  purpose: string;
+interface ActivityPageProps extends DraftRegistrationPageProps {
+  environment;
+  purpose;
+  useIndex;
 }
 
-const activityMatchingCondition = (activity: Activity) => ({
-  dependsOn: "activity",
-  meetingCondition: (value) => value === activity,
-});
-
-const environmentIsLandMatchingCondition = {
-  dependsOn: "environment",
-  meetingCondition: (value) => value === Environment.LAND,
-};
-
-const definePageForm = ({
-  environment,
-  activity,
-  otherActivityText,
-  otherActivityLocation,
-  otherActivityPeopleCount,
-  workingRemotelyLocation,
-  workingRemotelyPeopleCount,
-  windfarmLocation,
-  windfarmPeopleCount,
-}: FormSubmission): FormManager => {
-  return new FormManager({
-    environment: new FieldManager(environment),
-    activity: new FieldManager(activity, [
-      Validators.required("Activity is a required field"),
-    ]),
-    otherActivityText: new FieldManager(
-      otherActivityText,
-      [Validators.required("Enter a description for your activity")],
-      [activityMatchingCondition(Activity.OTHER)]
-    ),
-    otherActivityLocation: new FieldManager(
-      otherActivityLocation,
-      [Validators.required("Enter where you use your beacon")],
-      [
-        activityMatchingCondition(Activity.OTHER),
-        environmentIsLandMatchingCondition,
-      ]
-    ),
-    otherActivityPeopleCount: new FieldManager(
-      otherActivityPeopleCount,
-      [
-        Validators.required(
-          "Enter how many people tend to be with you when you use your beacon"
-        ),
-        Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you when you use your beacon"
-        ),
-      ],
-      [
-        activityMatchingCondition(Activity.OTHER),
-        environmentIsLandMatchingCondition,
-      ]
-    ),
-    workingRemotelyLocation: new FieldManager(
-      workingRemotelyLocation,
-      [Validators.required("Enter the location where you work remotely")],
-      [activityMatchingCondition(Activity.WORKING_REMOTELY)]
-    ),
-    workingRemotelyPeopleCount: new FieldManager(
-      workingRemotelyPeopleCount,
-      [
-        Validators.required(
-          "Enter how many people tend to be with you when you work remotely"
-        ),
-        Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you when you work remotely"
-        ),
-      ],
-      [activityMatchingCondition(Activity.WORKING_REMOTELY)]
-    ),
-    windfarmLocation: new FieldManager(
-      windfarmLocation,
-      [Validators.required("Enter the location of the windfarm")],
-      [activityMatchingCondition(Activity.WINDFARM)]
-    ),
-    windfarmPeopleCount: new FieldManager(
-      windfarmPeopleCount,
-      [
-        Validators.required(
-          "Enter how many people tend to be with you when you work at a windfarm"
-        ),
-        Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you are at the windfarm"
-        ),
-      ],
-      [activityMatchingCondition(Activity.WINDFARM)]
-    ),
-  });
-};
-
-const getPageHeading = (purpose: Purpose, environment: Environment): string => {
-  let pageHeading = "Please select the ";
-  if (environment !== Environment.LAND) {
-    pageHeading += `${purpose.toLowerCase()} `;
-  }
-
-  pageHeading += `${environment.toLowerCase()} activity that best describes how the beacon will be used`;
-
-  return pageHeading;
-};
-
-const ActivityPage: FunctionComponent<FormPageProps> = ({
+const ActivityPage: FunctionComponent<ActivityPageProps> = ({
   form,
   showCookieBanner,
-  flattenedRegistration,
-}: FormPageProps): JSX.Element => {
-  const environment = flattenedRegistration.environment;
-  const purpose = flattenedRegistration.purpose;
+  environment,
+  purpose,
+  useIndex,
+}: ActivityPageProps): JSX.Element => {
+  const pageHeading = `Please select the ${
+    environment === Environment.LAND
+      ? environment.toLowerCase()
+      : purpose.toLowerCase() + " " + environment.toLowerCase()
+  } activity that best describes how the beacon will be used`;
 
-  const pageHeading = getPageHeading(purpose, environment);
-  let vesselDescriptionText: ReactNode;
-  if (environment === Environment.MARITIME) {
-    vesselDescriptionText = (
-      <GovUKBody>
-        We will ask you for a full description of any vessels later in the form
-      </GovUKBody>
-    );
-  }
   const pageText = (
     <>
       <GovUKBody>
         This information will help us plan any Search and Rescue response that
         may be required in future.
       </GovUKBody>
-      {vesselDescriptionText}
+      {environment === Environment.MARITIME && (
+        <GovUKBody>
+          We will ask you for a full description of any vessels later in the
+          form
+        </GovUKBody>
+      )}
     </>
   );
-  let previousPageUrl = "/";
-  if (
-    environment === Environment.MARITIME ||
-    environment === Environment.AVIATION
-  ) {
-    previousPageUrl = PageURLs.purpose;
-  }
-  if (environment === Environment.LAND) {
-    previousPageUrl = PageURLs.environment;
-  }
 
   return (
     <BeaconsForm
-      previousPageUrl={previousPageUrl}
+      previousPageUrl={
+        (environment === Environment.LAND
+          ? PageURLs.environment
+          : PageURLs.purpose) + queryParams({ useIndex })
+      }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
@@ -187,6 +102,16 @@ const ActivityPage: FunctionComponent<FormPageProps> = ({
     </BeaconsForm>
   );
 };
+
+interface OptionsProps {
+  form: FormJSON;
+  listItemName: string;
+}
+
+interface ActivityOptionsProps extends OptionsProps {
+  environment: string;
+  purpose: string;
+}
 
 export const ActivityOptions: FunctionComponent<ActivityOptionsProps> = ({
   environment,
@@ -638,33 +563,194 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = async (
-  context
-) => {
-  const flattenedRegistration = context.registration.getFlattenedRegistration({
-    useIndex: context.useIndex,
-  });
-  const environment = flattenedRegistration.environment;
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    return await new BeaconsPageRouter([
+      new IfUserHasNotSpecifiedAUse(context),
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<ActivityForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<ActivityForm>(
+        context,
+        validationRules,
+        mapper(context),
+        props(context)
+      ),
+      new IfUserSubmittedValidRegistrationForm<ActivityForm>(
+        context,
+        validationRules,
+        mapper(context),
+        await nextPage(context)
+      ),
+    ]).execute();
+  })
+);
+
+const nextPage = async (
+  context: BeaconsGetServerSidePropsContext
+): Promise<PageURLs> => {
+  const environment = (
+    await context.container.getDraftRegistration(
+      context.req.cookies[formSubmissionCookieId]
+    )
+  ).uses[context.query.useIndex as string]?.environment;
 
   switch (environment) {
     case Environment.MARITIME:
-      return "/register-a-beacon/about-the-vessel";
+      return PageURLs.aboutTheVessel;
     case Environment.AVIATION:
-      return "/register-a-beacon/about-the-aircraft";
+      return PageURLs.aboutTheAircraft;
     case Environment.LAND:
-      return "/register-a-beacon/land-communications";
-    case null:
-      return "/register-a-beacon/beacon-use";
+      return PageURLs.landCommunications;
     default:
-      throw new Error(`Error: unrecognised environment ${environment}`);
+      return PageURLs.environment;
   }
 };
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/about-the-vessel",
-  definePageForm,
-  (formData) => formData,
-  onSuccessfulFormCallback
-);
+const props = async (
+  context: BeaconsGetServerSidePropsContext
+): Promise<Partial<ActivityPageProps>> => {
+  const use: DraftBeaconUse = (
+    await context.container.getDraftRegistration(
+      context.req.cookies[formSubmissionCookieId]
+    )
+  ).uses[context.query.useIndex as string];
+
+  return {
+    environment: use?.environment || null,
+    purpose: use?.purpose || null,
+    useIndex: parseInt(context.query.useIndex as string),
+  };
+};
+
+const mapper = (
+  context: BeaconsGetServerSidePropsContext
+): DraftRegistrationFormMapper<ActivityForm> => {
+  const beaconUseMapper: BeaconUseFormMapper<ActivityForm> = {
+    formToDraftBeaconUse: (form) => {
+      return {
+        environment: form.environment,
+        activity: form.activity,
+        otherActivityText: form.otherActivityText,
+        otherActivityLocation: form.otherActivityLocation,
+        otherActivityPeopleCount: form.otherActivityPeopleCount,
+        workingRemotelyLocation: form.workingRemotelyLocation,
+        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount,
+        windfarmLocation: form.windfarmLocation,
+        windfarmPeopleCount: form.windfarmPeopleCount,
+      };
+    },
+    beaconUseToForm: (draftRegistration) => ({
+      environment: draftRegistration.environment,
+      activity: draftRegistration.activity,
+      otherActivityText: draftRegistration.otherActivityText,
+      otherActivityLocation: draftRegistration.otherActivityLocation,
+      otherActivityPeopleCount: draftRegistration.otherActivityPeopleCount,
+      workingRemotelyLocation: draftRegistration.workingRemotelyLocation,
+      workingRemotelyPeopleCount: draftRegistration.workingRemotelyPeopleCount,
+      windfarmLocation: draftRegistration.windfarmLocation,
+      windfarmPeopleCount: draftRegistration.windfarmPeopleCount,
+    }),
+  };
+
+  const useIndex = parseInt(context.query.useIndex as string);
+
+  return makeDraftRegistrationMapper<ActivityForm>(useIndex, beaconUseMapper);
+};
+
+const validationRules = ({
+  environment,
+  activity,
+  otherActivityText,
+  otherActivityLocation,
+  otherActivityPeopleCount,
+  workingRemotelyLocation,
+  workingRemotelyPeopleCount,
+  windfarmLocation,
+  windfarmPeopleCount,
+}: FormSubmission): FormManager => {
+  const activityMatchingCondition = (activity: Activity) => ({
+    dependsOn: "activity",
+    meetingCondition: (value) => value === activity,
+  });
+
+  const environmentIsLandMatchingCondition = {
+    dependsOn: "environment",
+    meetingCondition: (value) => value === Environment.LAND,
+  };
+
+  return new FormManager({
+    environment: new FieldManager(environment),
+    activity: new FieldManager(activity, [
+      Validators.required("Activity is a required field"),
+    ]),
+    otherActivityText: new FieldManager(
+      otherActivityText,
+      [Validators.required("Enter a description for your activity")],
+      [activityMatchingCondition(Activity.OTHER)]
+    ),
+    otherActivityLocation: new FieldManager(
+      otherActivityLocation,
+      [Validators.required("Enter where you use your beacon")],
+      [
+        activityMatchingCondition(Activity.OTHER),
+        environmentIsLandMatchingCondition,
+      ]
+    ),
+    otherActivityPeopleCount: new FieldManager(
+      otherActivityPeopleCount,
+      [
+        Validators.required(
+          "Enter how many people tend to be with you when you use your beacon"
+        ),
+        Validators.wholeNumber(
+          "Enter a whole number for the typical/maximum number of people that tend to be with you when you use your beacon"
+        ),
+      ],
+      [
+        activityMatchingCondition(Activity.OTHER),
+        environmentIsLandMatchingCondition,
+      ]
+    ),
+    workingRemotelyLocation: new FieldManager(
+      workingRemotelyLocation,
+      [Validators.required("Enter the location where you work remotely")],
+      [activityMatchingCondition(Activity.WORKING_REMOTELY)]
+    ),
+    workingRemotelyPeopleCount: new FieldManager(
+      workingRemotelyPeopleCount,
+      [
+        Validators.required(
+          "Enter how many people tend to be with you when you work remotely"
+        ),
+        Validators.wholeNumber(
+          "Enter a whole number for the typical/maximum number of people that tend to be with you when you work remotely"
+        ),
+      ],
+      [activityMatchingCondition(Activity.WORKING_REMOTELY)]
+    ),
+    windfarmLocation: new FieldManager(
+      windfarmLocation,
+      [Validators.required("Enter the location of the windfarm")],
+      [activityMatchingCondition(Activity.WINDFARM)]
+    ),
+    windfarmPeopleCount: new FieldManager(
+      windfarmPeopleCount,
+      [
+        Validators.required(
+          "Enter how many people tend to be with you when you work at a windfarm"
+        ),
+        Validators.wholeNumber(
+          "Enter a whole number for the typical/maximum number of people that tend to be with you are at the windfarm"
+        ),
+      ],
+      [activityMatchingCondition(Activity.WINDFARM)]
+    ),
+  });
+};
 
 export default ActivityPage;

@@ -1,4 +1,4 @@
-import { IAppContainer } from "../../src/lib/appContainer";
+import { IAppContainer } from "../../src/lib/IAppContainer";
 import { deleteBeacon } from "../../src/useCases/deleteBeacon";
 
 describe("Delete beacon use case", () => {
@@ -7,10 +7,10 @@ describe("Delete beacon use case", () => {
       getAccessToken: jest.fn(async () => "access_token"),
       beaconsApiGateway: {
         deleteBeacon: jest.fn(async () => true),
-      },
+      } as any,
     };
 
-    const result = await deleteBeacon(container)(
+    const result = await deleteBeacon(container as any)(
       "Unused on my boat",
       "1234",
       "0987"
@@ -33,10 +33,10 @@ describe("Delete beacon use case", () => {
       getAccessToken: jest.fn(async () => "access_token"),
       beaconsApiGateway: {
         deleteBeacon: jest.fn(async () => false),
-      },
+      } as any,
     };
 
-    const result = await deleteBeacon(container)(
+    const result = await deleteBeacon(container as any)(
       "Unused on my boat",
       "1234",
       "0987"

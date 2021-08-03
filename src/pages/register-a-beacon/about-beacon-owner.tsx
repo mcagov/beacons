@@ -3,46 +3,47 @@ import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
+import { FieldManager } from "../../lib/form/FieldManager";
+import { FormJSON, FormManager } from "../../lib/form/FormManager";
+import { Validators } from "../../lib/form/Validators";
 import { FormSubmission } from "../../lib/formCache";
-import { FormPageProps, handlePageRequest } from "../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../lib/types";
+import { PageURLs, queryParams } from "../../lib/urls";
+import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
-const definePageForm = ({
-  ownerFullName,
-  ownerTelephoneNumber,
-  ownerAlternativeTelephoneNumber,
-  ownerEmail,
-}: FormSubmission): FormManager => {
-  return new FormManager({
-    ownerFullName: new FieldManager(ownerFullName, [
-      Validators.required("Full name is a required field"),
-    ]),
-    ownerTelephoneNumber: new FieldManager(ownerTelephoneNumber),
-    ownerAlternativeTelephoneNumber: new FieldManager(
-      ownerAlternativeTelephoneNumber
-    ),
-    ownerEmail: new FieldManager(ownerEmail, [
-      Validators.email("Email address must be valid"),
-    ]),
-  });
-};
+interface AboutBeaconOwnerForm {
+  ownerFullName: string;
+  ownerTelephoneNumber: string;
+  ownerAlternativeTelephoneNumber: string;
+  ownerEmail: string;
+}
 
-const AboutBeaconOwner: FunctionComponent<FormPageProps> = ({
+interface AboutBeaconOwnerFormProps {
+  form: FormJSON;
+  showCookieBanner: boolean;
+  previousPageUrl: string;
+}
+
+const AboutBeaconOwner: FunctionComponent<AboutBeaconOwnerFormProps> = ({
   form,
   showCookieBanner,
-  registration,
-}: FormPageProps): JSX.Element => {
+  previousPageUrl,
+}: AboutBeaconOwnerFormProps): JSX.Element => {
   const pageHeading = "About the beacon owner";
 
   return (
     <BeaconsForm
       pageHeading={pageHeading}
       formErrors={form.errorSummary}
-      previousPageUrl={`/register-a-beacon/additional-beacon-use?useIndex=${
-        registration.uses.length - 1
-      }`}
+      previousPageUrl={previousPageUrl}
       showCookieBanner={showCookieBanner}
       includeUseIndex={true}
     >
@@ -117,9 +118,88 @@ const EmailAddress: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "/register-a-beacon/beacon-owner-address",
-  definePageForm
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPageUrl = PageURLs.beaconOwnerAddress;
+
+    return await new BeaconsPageRouter([
+      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new IfUserViewedRegistrationForm<AboutBeaconOwnerForm>(
+        context,
+        validationRules,
+        mapper,
+        props(context)
+      ),
+      new IfUserSubmittedInvalidRegistrationForm<AboutBeaconOwnerForm>(
+        context,
+        validationRules,
+        mapper,
+        props(context)
+      ),
+      new IfUserSubmittedValidRegistrationForm<AboutBeaconOwnerForm>(
+        context,
+        validationRules,
+        mapper,
+        nextPageUrl
+      ),
+    ]).execute();
+  })
 );
+
+const props = async (
+  context: BeaconsGetServerSidePropsContext
+): Promise<Partial<AboutBeaconOwnerFormProps>> => {
+  const uses =
+    (
+      await context.container.getDraftRegistration(
+        context.req.cookies[formSubmissionCookieId]
+      )
+    )?.uses || [];
+
+  const previousPageUrl =
+    PageURLs.additionalUse +
+    queryParams({ useIndex: uses.length > 1 ? uses.length - 1 : 0 });
+
+  return {
+    previousPageUrl,
+  };
+};
+
+const mapper: DraftRegistrationFormMapper<AboutBeaconOwnerForm> = {
+  formToDraftRegistration: (form) => ({
+    ownerFullName: form.ownerFullName,
+    ownerTelephoneNumber: form.ownerTelephoneNumber,
+    ownerAlternativeTelephoneNumber: form.ownerAlternativeTelephoneNumber,
+    ownerEmail: form.ownerEmail,
+    uses: [],
+  }),
+  draftRegistrationToForm: (draftRegistration) => ({
+    ownerFullName: draftRegistration.ownerFullName,
+    ownerTelephoneNumber: draftRegistration.ownerTelephoneNumber,
+    ownerAlternativeTelephoneNumber:
+      draftRegistration.ownerAlternativeTelephoneNumber,
+    ownerEmail: draftRegistration.ownerEmail,
+  }),
+};
+
+const validationRules = ({
+  ownerFullName,
+  ownerTelephoneNumber,
+  ownerAlternativeTelephoneNumber,
+  ownerEmail,
+}: FormSubmission): FormManager => {
+  return new FormManager({
+    ownerFullName: new FieldManager(ownerFullName, [
+      Validators.required("Full name is a required field"),
+    ]),
+    ownerTelephoneNumber: new FieldManager(ownerTelephoneNumber),
+    ownerAlternativeTelephoneNumber: new FieldManager(
+      ownerAlternativeTelephoneNumber
+    ),
+    ownerEmail: new FieldManager(ownerEmail, [
+      Validators.email("Email address must be valid"),
+    ]),
+  });
+};
 
 export default AboutBeaconOwner;

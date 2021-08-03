@@ -1,31 +1,36 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { GovUKBody } from "../../components/Typography";
-import { FieldManager } from "../../lib/form/fieldManager";
-import { FormManager } from "../../lib/form/formManager";
-import { Validators } from "../../lib/form/validators";
+import { FieldManager } from "../../lib/form/FieldManager";
+import { FormManager } from "../../lib/form/FormManager";
 import {
-  DestinationIfValidCallback,
-  FormPageProps,
-  handlePageRequest,
+  isValid,
+  withErrorMessages,
+  withoutErrorMessages,
+} from "../../lib/form/lib";
+import { Validators } from "../../lib/form/Validators";
+import { FormSubmission } from "../../lib/formCache";
+import {
+  DraftRegistrationPageProps,
+  FormManagerFactory,
 } from "../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../lib/middleware/withContainer";
+import { withSession } from "../../lib/middleware/withSession";
+import { redirectUserTo } from "../../lib/redirectUserTo";
+import { acceptRejectCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
+import { Rule } from "../../router/rules/Rule";
 
-const getPageForm = ({ signUpOrSignIn }) => {
-  return new FormManager({
-    signUpOrSignIn: new FieldManager(signUpOrSignIn, [
-      Validators.required("Please select an option"),
-    ]),
-  });
-};
-
-export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
-  form,
+export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
+  form = withoutErrorMessages({}, validationRules),
   showCookieBanner,
-}: FormPageProps): JSX.Element => {
+}: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Do you have a Beacon Registry Account?";
   const pageText = (
     <GovUKBody>
@@ -68,22 +73,71 @@ export const SignUpOrSignIn: FunctionComponent<FormPageProps> = ({
   );
 };
 
-const onSuccessfulFormCallback: DestinationIfValidCallback = async (
-  context
-) => {
-  switch (context.formData.signUpOrSignIn) {
-    case "signUp":
-      return PageURLs.signUp;
-    case "signIn":
-      return PageURLs.signIn;
-  }
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    return await new BeaconsPageRouter([
+      new IfUserViewedPage(context),
+      new IfUserSubmittedSignUpOrSignInForm(context, validationRules),
+    ]).execute();
+  })
+);
+
+const validationRules = ({ signUpOrSignIn }) => {
+  return new FormManager({
+    signUpOrSignIn: new FieldManager(signUpOrSignIn, [
+      Validators.required("Please select an option"),
+    ]),
+  });
 };
 
-export const getServerSideProps: GetServerSideProps = handlePageRequest(
-  "",
-  getPageForm,
-  (f) => f,
-  onSuccessfulFormCallback
-);
+class IfUserSubmittedSignUpOrSignInForm implements Rule {
+  private readonly context: BeaconsGetServerSidePropsContext;
+  private readonly validationRules: FormManagerFactory;
+
+  constructor(context, validationRules) {
+    this.context = context;
+    this.validationRules = validationRules;
+  }
+
+  async condition(): Promise<boolean> {
+    return this.context.req.method === "POST";
+  }
+
+  async action(): Promise<GetServerSidePropsResult<any>> {
+    if (await this.formIsValid()) return redirectUserTo(await this.nextPage());
+
+    return this.showFormWithErrorMessages();
+  }
+
+  private async form(): Promise<FormSubmission> {
+    return await this.context.container.parseFormDataAs(this.context.req);
+  }
+
+  private async formIsValid(): Promise<boolean> {
+    return isValid(await this.form(), this.validationRules);
+  }
+
+  private async nextPage(): Promise<PageURLs> {
+    switch ((await this.form()).signUpOrSignIn) {
+      case "signUp":
+        return PageURLs.signUp;
+      case "signIn":
+        return PageURLs.signIn;
+    }
+  }
+
+  private showFormWithErrorMessages(): GetServerSidePropsResult<any> {
+    return {
+      props: {
+        form: withErrorMessages(this.form, this.validationRules),
+        showCookieBanner: this.userHasNotHiddenEssentialCookieBanner(),
+      },
+    };
+  }
+
+  private userHasNotHiddenEssentialCookieBanner(): boolean {
+    return !this.context.req.cookies[acceptRejectCookieId];
+  }
+}
 
 export default SignUpOrSignIn;
