@@ -339,7 +339,7 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSec
               value={use.secondaryAirport}
             />
             <CheckYourAnswersDataRowItem
-              label="DeprecatedRegistration mark"
+              label="Registration mark"
               value={use.registrationMark}
             />
             <CheckYourAnswersDataRowItem

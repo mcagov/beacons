@@ -137,7 +137,7 @@ const AboutThisUse: FunctionComponent<{ use: DraftBeaconUse }> = ({
     )}
     {use.registrationMark && (
       <BeaconUseDataRowItem
-        label="DeprecatedRegistration mark"
+        label="Registration mark"
         value={use.registrationMark}
       />
     )}

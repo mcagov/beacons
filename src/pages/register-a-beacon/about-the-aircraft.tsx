@@ -148,7 +148,7 @@ const RegistrationMark: FunctionComponent<FormInputProps> = ({
   <FormGroup>
     <Input
       id="registrationMark"
-      label="Enter the Aircraft DeprecatedRegistration Mark (optional)"
+      label="Enter the Aircraft Registration Mark (optional)"
       hintText="This is usually found on the rear fuselage or tail E.g. G-AAAA"
       defaultValue={value}
     />

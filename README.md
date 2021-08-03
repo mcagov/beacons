@@ -1,16 +1,16 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 ![CI/CD pipeline](https://github.com/mcagov/beacons-webapp/workflows/CI/CD%20pipeline/badge.svg)
 
-# Beacons DeprecatedRegistration Webapp
+# Beacons Registration Webapp
 
-The frontend application for the Beacons DeprecatedRegistration service enables:
+The frontend application for the Beacons Registration service enables:
 
 - [406Mhz beacon](https://www.gov.uk/maritime-safety-weather-and-navigation/register-406-mhz-beacons) owners to register their details with the Maritime & Coastguard Agency
 - Search and rescue [Mission Control Centres](<https://en.wikipedia.org/wiki/Mission_control_centre_(Cospas-Sarsat)>) to retrieve information about beacons during distress signal activations
 
 This repository contains the frontend application of the service. It is built using [NextJS](https://nextjs.org/) and based on the [GOV.UK Design System](https://design-system.service.gov.uk/).
 
-This application depends on the [Beacons DeprecatedRegistration API](https://github.com/mcagov/beacons-service).
+This application depends on the [Beacons Registration API](https://github.com/mcagov/beacons-service).
 
 ## Getting started
 
