@@ -26,7 +26,7 @@ const seedCache = async (id: string): Promise<void> => {
   await cache.update(id);
 };
 
-const setCookieHeader = (id: string, res: ServerResponse): void => {
+export const setCookieHeader = (id: string, res: ServerResponse): void => {
   const options: CookieSerializeOptions = {
     path: "/",
     httpOnly: true,
