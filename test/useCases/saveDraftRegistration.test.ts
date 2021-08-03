@@ -1,14 +1,16 @@
+import { DraftRegistration } from "../../src/entities/DraftRegistration";
 import { Environment } from "../../src/lib/deprecatedRegistration/types";
 import { saveDraftRegistration } from "../../src/useCases/saveDraftRegistration";
 
 describe("saveDraftRegistration", () => {
   it("only mutates the cache with the updated fields", async () => {
-    const existingDraftRegistration = {
+    const existingDraftRegistration: DraftRegistration = {
       ownerFullName: "Steve Stevington",
       ownerEmail: "steve@stevington.com",
       ownerTelephoneNumber: "07283 726182",
+      uses: [],
     };
-    const updatesTodraftRegistration = {
+    const updatesTodraftRegistration: DraftRegistration = {
       manufacturer: "ACME Inc.",
       model: "Excelsior",
       hexId: "1D0...",
@@ -36,19 +38,20 @@ describe("saveDraftRegistration", () => {
         manufacturer: "ACME Inc.",
         model: "Excelsior",
         hexId: "1D0...",
+        uses: [],
       }
     );
   });
 
   it("retains existing properties of the mutated uses array element", async () => {
-    const existingDraftRegistration = {
+    const existingDraftRegistration: DraftRegistration = {
       uses: [
         {
           environment: Environment.MARITIME,
         },
       ],
     };
-    const updatesTodraftRegistration = {
+    const updatesTodraftRegistration: DraftRegistration = {
       uses: [{ vesselName: "SS Fedora" }],
     };
     const container = {
