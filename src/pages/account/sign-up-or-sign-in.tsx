@@ -76,7 +76,7 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfUserViewedPage(context, validationRules),
+      new IfUserViewedPage(context),
       new IfUserSubmittedSignUpOrSignInForm(context, validationRules),
     ]).execute();
   })
