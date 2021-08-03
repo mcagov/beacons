@@ -12,7 +12,6 @@ import {
   withoutErrorMessages,
 } from "../../lib/form/lib";
 import { Validators } from "../../lib/form/Validators";
-import { FormSubmission } from "../../lib/formCache";
 import {
   DraftRegistrationPageProps,
   FormManagerFactory,
@@ -23,6 +22,7 @@ import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { acceptRejectCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
+import { FormSubmission } from "../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
 import { Rule } from "../../router/rules/Rule";
