@@ -15,4 +15,8 @@ resource "aws_db_instance" "postgres" {
   skip_final_snapshot             = var.db_skip_final_snapshot
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
   allow_major_version_upgrade     = true
+  backup_window                   = "23:00-23:55"
+  backup_retention_period         = 30
+  performance_insights_enabled    = true
+  apply_immediately               = true
 }

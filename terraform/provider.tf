@@ -8,9 +8,9 @@ terraform {
 
   # Requires S3 bucket & Dynamo DB to be configured, please see README.md
   backend "s3" {
-    bucket         = "beacons-terraform-state"
+    bucket         = "beacons-terraform-state-rds-backups-branch"
     encrypt        = true
-    dynamodb_table = "beacons-terraform-state-lock"
+    dynamodb_table = "beacons-terraform-state-rds-backups-branch-lock"
     key            = "state"
     region         = "eu-west-2"
   }
