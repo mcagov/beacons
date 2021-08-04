@@ -19,4 +19,12 @@ resource "aws_db_instance" "postgres" {
   backup_retention_period         = 30
   performance_insights_enabled    = true
   apply_immediately               = true
+  multi_az                        = true
+}
+
+module "aws-rds-alarms" {
+  source            = "lorenzoaiello/rds-alarms/aws"
+  version           = "2.1.0"
+  db_instance_id    = aws_db_instance.postgres.id
+  db_instance_class = "db.t2.micro"
 }
