@@ -217,3 +217,28 @@ variable "nat_gateway_count" {
   description = "Number of NAT gateways"
   default     = 2
 }
+variable "backup_window" {
+  type        = string
+  description = "Time period e.g 23:00-23:55"
+  default     = ""
+}
+variable "backup_retention_period" {
+  type        = number
+  description = "Days to retain backups"
+  default     = 0
+}
+variable "performance_insights_enabled" {
+  type        = bool
+  description = "Enable performance insights"
+  default     = false
+}
+variable "multi_az" {
+  type        = bool
+  description = "Enable multiple availabilty zones"
+  default     = false
+}
+variable "apply_immediately" {
+  type        = bool
+  description = "Apply changes to infrastrucure immediatly"
+  default     = true
+}
