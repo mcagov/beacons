@@ -1,9 +1,9 @@
+import { DraftRegistration } from "../entities/DraftRegistration";
 import { Registration } from "../entities/Registration";
-import { DeprecatedRegistration } from "../lib/deprecatedRegistration/DeprecatedRegistration";
 import { IAppContainer } from "../lib/IAppContainer";
 
 export type SubmitRegistrationFn = (
-  submissionId: string,
+  draftRegistration: DraftRegistration,
   accountHolderId: string
 ) => Promise<ISubmitRegistrationResult>;
 
@@ -16,22 +16,22 @@ export interface ISubmitRegistrationResult {
 export const submitRegistration =
   ({
     sendConfirmationEmail,
-    getDraftRegistration,
     getAccessToken,
     beaconsApiGateway,
     accountHolderApiGateway,
   }: Partial<IAppContainer>): SubmitRegistrationFn =>
-  async (submissionId: string, accountHolderId: string) => {
-    const registration = new DeprecatedRegistration(
-      (await getDraftRegistration(submissionId)) as Registration
-    );
+  async (draftRegistration: DraftRegistration, accountHolderId: string) => {
     const accessToken = await getAccessToken();
 
-    registration.setReferenceNumber(referenceNumber("A#", 7));
-    registration.setAccountHolderId(accountHolderId);
+    const draftRegistrationWithReferenceAndAccountHolderId: DraftRegistration =
+      {
+        ...draftRegistration,
+        referenceNumber: referenceNumber("A#", 7),
+        accountHolderId,
+      };
 
     const beaconRegistered = await beaconsApiGateway.sendRegistration(
-      registration.serialiseToAPI(),
+      draftRegistrationWithReferenceAndAccountHolderId,
       accessToken
     );
 
@@ -43,17 +43,19 @@ export const submitRegistration =
 
     const confirmationEmailSent = beaconRegistered
       ? await sendConfirmationEmail(
-          registration.getRegistration(),
+          draftRegistrationWithReferenceAndAccountHolderId as Registration,
           accountHolderEmail
         )
       : false;
 
-    if (!beaconRegistered) registration.setReferenceNumber("");
+    if (!beaconRegistered)
+      draftRegistrationWithReferenceAndAccountHolderId.referenceNumber = "";
 
     return {
       beaconRegistered,
       confirmationEmailSent,
-      referenceNumber: registration.getRegistration().referenceNumber || "",
+      referenceNumber:
+        draftRegistrationWithReferenceAndAccountHolderId.referenceNumber || "",
     };
   };
 
