@@ -1,5 +1,7 @@
 import axios from "axios";
-import { IRegistrationRequestBody } from "../lib/deprecatedRegistration/IRegistrationRequestBody";
+import { DraftRegistration } from "../entities/DraftRegistration";
+import { Registration } from "../entities/Registration";
+import { DeprecatedRegistration } from "../lib/deprecatedRegistration/DeprecatedRegistration";
 import { BeaconGateway } from "./interfaces/BeaconGateway";
 
 export interface IDeleteBeaconRequest {
@@ -17,13 +19,18 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
   }
 
   public async sendRegistration(
-    json: IRegistrationRequestBody,
+    draftRegistration: DraftRegistration,
     accessToken: string
   ): Promise<boolean> {
     const url = `${this.apiUrl}/${this.registrationsEndpoint}`;
 
+    const requestBody =
+      BeaconsApiBeaconGateway.draftRegistrationToApiRequestBody(
+        draftRegistration
+      );
+
     try {
-      await axios.post(url, json, {
+      await axios.post(url, requestBody, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       return true;
@@ -51,5 +58,13 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
     } catch (error) {
       return false;
     }
+  }
+
+  private static draftRegistrationToApiRequestBody(
+    draftRegistration: DraftRegistration
+  ) {
+    return new DeprecatedRegistration(
+      draftRegistration as Registration
+    ).serialiseToAPI();
   }
 }

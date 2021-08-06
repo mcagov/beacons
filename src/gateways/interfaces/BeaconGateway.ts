@@ -1,9 +1,9 @@
-import { IRegistrationRequestBody } from "../../lib/deprecatedRegistration/IRegistrationRequestBody";
+import { DraftRegistration } from "../../entities/DraftRegistration";
 import { IDeleteBeaconRequest } from "../BeaconsApiBeaconGateway";
 
 export interface BeaconGateway {
   sendRegistration: (
-    json: IRegistrationRequestBody,
+    draftRegistration: DraftRegistration,
     accessToken: string
   ) => Promise<boolean>;
 
