@@ -8,28 +8,20 @@ export type GetOrCreateAccountHolderFn = (
 
 export const getOrCreateAccountHolder =
   ({
-    getAccessToken,
     accountHolderApiGateway,
-  }: IAppContainer): GetOrCreateAccountHolderFn =>
+  }: Partial<IAppContainer>): GetOrCreateAccountHolderFn =>
   async (session: BeaconsSession): Promise<AccountHolder> => {
     const authId: string = session.user.authId;
     const email: string = session.user.email;
-    const accessToken = await getAccessToken();
 
     const accountHolderId = await accountHolderApiGateway.getAccountHolderId(
-      authId,
-      accessToken
+      authId
     );
 
     if (accountHolderId)
       return await accountHolderApiGateway.getAccountHolderDetails(
-        accountHolderId,
-        accessToken
+        accountHolderId
       );
 
-    return await accountHolderApiGateway.createAccountHolder(
-      authId,
-      email,
-      accessToken
-    );
+    return await accountHolderApiGateway.createAccountHolder(authId, email);
   };
