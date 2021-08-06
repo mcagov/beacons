@@ -2,16 +2,31 @@ import {
   ClientCredentialRequest,
   ConfidentialClientApplication,
 } from "@azure/msal-node";
-import { appConfig } from "../appConfig";
+import { NodeAuthOptions } from "@azure/msal-node/dist/config/Configuration";
 import { AuthGateway } from "./interfaces/AuthGateway";
 
 export class AadAuthGateway implements AuthGateway {
+  private config: { auth: NodeAuthOptions; apiId: string };
+
+  public constructor(
+    config = {
+      auth: {
+        clientId: process.env.WEBAPP_CLIENT_ID,
+        authority: `https://login.microsoftonline.com/${process.env.AAD_TENANT_ID}`,
+        clientSecret: process.env.WEBAPP_CLIENT_SECRET,
+      },
+      apiId: process.env.AAD_API_ID,
+    }
+  ) {
+    this.config = config;
+  }
+
   public async getAccessToken(
-    cca = new ConfidentialClientApplication(appConfig.aadConfig)
+    cca = new ConfidentialClientApplication({ auth: this.config.auth })
   ): Promise<string> {
     try {
       const accessTokenRequest: ClientCredentialRequest = {
-        scopes: [`api://${process.env.AAD_API_ID}/.default`],
+        scopes: [`api://${this.config.apiId}/.default`],
       };
 
       const authResult = await cca.acquireTokenByClientCredential(
