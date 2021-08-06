@@ -2,6 +2,7 @@ import axios from "axios";
 import { v4 } from "uuid";
 import { AccountHolder } from "../../src/entities/AccountHolder";
 import { BeaconsApiAccountHolderGateway } from "../../src/gateways/BeaconsApiAccountHolderGateway";
+import { AuthGateway } from "../../src/gateways/interfaces/AuthGateway";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -15,9 +16,12 @@ describe("Account Holder API Gateway", () => {
     const authId = v4();
     const email = authId + "@madetech.com";
     const accessToken = v4();
-    gateway = new BeaconsApiAccountHolderGateway(hostName);
+    const mockAuthGateway: AuthGateway = {
+      getAccessToken: jest.fn().mockResolvedValue(accessToken),
+    };
+    gateway = new BeaconsApiAccountHolderGateway(hostName, mockAuthGateway);
 
-    it("should call the endpoint with the correct request and headers", () => {
+    it("should call the endpoint with the correct request and headers", async () => {
       const createAccountHolderEndpoint = "account-holder";
       const expectedUrl = `${hostName}/${createAccountHolderEndpoint}`;
       const expectedRequest = {
@@ -34,7 +38,7 @@ describe("Account Holder API Gateway", () => {
         },
       });
 
-      gateway.createAccountHolder(authId, email, accessToken);
+      await gateway.createAccountHolder(authId, email);
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
         expectedUrl,
@@ -65,8 +69,7 @@ describe("Account Holder API Gateway", () => {
 
       const createdAccountHolder = await gateway.createAccountHolder(
         authId,
-        email,
-        accessToken
+        email
       );
       expect(createdAccountHolder).toEqual(expectedAccountHolder);
     });
@@ -78,7 +81,10 @@ describe("Account Holder API Gateway", () => {
     beforeEach(() => {
       authId = v4();
       token = v4();
-      gateway = new BeaconsApiAccountHolderGateway(hostName);
+      const mockAuthGateway: AuthGateway = {
+        getAccessToken: jest.fn().mockResolvedValue(token),
+      };
+      gateway = new BeaconsApiAccountHolderGateway(hostName, mockAuthGateway);
     });
 
     it("should request an accountHolderId from the correct endpoint", async () => {
@@ -89,7 +95,7 @@ describe("Account Holder API Gateway", () => {
         },
       });
 
-      await gateway.getAccountHolderId(authId, token);
+      await gateway.getAccountHolderId(authId);
 
       expect(mockedAxios.get).toHaveBeenLastCalledWith(expectedUrl, {
         headers: { Authorization: `Bearer ${token}` },
@@ -103,7 +109,7 @@ describe("Account Holder API Gateway", () => {
         },
       });
 
-      const result = await gateway.getAccountHolderId(authId, token);
+      const result = await gateway.getAccountHolderId(authId);
 
       expect(result).toBe("any-account-holder-id");
     });
@@ -111,7 +117,7 @@ describe("Account Holder API Gateway", () => {
     it("should allow errors to bubble up", async () => {
       jest.spyOn(console, "error").mockReturnValue();
       mockedAxios.get.mockImplementationOnce(() => Promise.reject(new Error()));
-      const call = () => gateway.getAccountHolderId(authId, token);
+      const call = () => gateway.getAccountHolderId(authId);
 
       expect(call).rejects.toThrow();
     });
@@ -124,7 +130,10 @@ describe("Account Holder API Gateway", () => {
     beforeEach(() => {
       accountHolderId = v4();
       token = v4();
-      gateway = new BeaconsApiAccountHolderGateway(hostName);
+      const mockAuthGateway: AuthGateway = {
+        getAccessToken: jest.fn().mockResolvedValue(token),
+      };
+      gateway = new BeaconsApiAccountHolderGateway(hostName, mockAuthGateway);
     });
 
     it("should request account holder details from the correct endpoint", async () => {
@@ -137,7 +146,7 @@ describe("Account Holder API Gateway", () => {
           },
         },
       });
-      await gateway.getAccountHolderDetails(accountHolderId, token);
+      await gateway.getAccountHolderDetails(accountHolderId);
 
       expect(mockedAxios.get).toHaveBeenLastCalledWith(expectedUrl, {
         headers: { Authorization: `Bearer ${token}` },
@@ -179,18 +188,14 @@ describe("Account Holder API Gateway", () => {
       };
       mockedAxios.get.mockResolvedValue({ data: { ...mockResponse } });
 
-      const result = await gateway.getAccountHolderDetails(
-        accountHolderId,
-        token
-      );
+      const result = await gateway.getAccountHolderDetails(accountHolderId);
       expect(result).toMatchObject<AccountHolder>(expected);
     });
 
     it("should allow errors to bubble up", async () => {
       jest.spyOn(console, "error").mockReturnValue();
       mockedAxios.get.mockImplementationOnce(() => Promise.reject(new Error()));
-      const call = () =>
-        gateway.getAccountHolderDetails(accountHolderId, token);
+      const call = () => gateway.getAccountHolderDetails(accountHolderId);
 
       expect(call).rejects.toThrow();
     });
@@ -203,7 +208,10 @@ describe("Account Holder API Gateway", () => {
     beforeEach(() => {
       accountHolderId = v4();
       token = v4();
-      gateway = new BeaconsApiAccountHolderGateway(hostName);
+      const mockAuthGateway: AuthGateway = {
+        getAccessToken: jest.fn().mockResolvedValue(token),
+      };
+      gateway = new BeaconsApiAccountHolderGateway(hostName, mockAuthGateway);
     });
 
     it("should request account holder details from the correct endpoint", async () => {
@@ -247,8 +255,7 @@ describe("Account Holder API Gateway", () => {
       });
       await gateway.updateAccountHolderDetails(
         accountHolderId,
-        mockUpdate as AccountHolder,
-        token
+        mockUpdate as AccountHolder
       );
 
       expect(mockedAxios.patch).toHaveBeenLastCalledWith(
@@ -295,8 +302,7 @@ describe("Account Holder API Gateway", () => {
 
       const result = await gateway.updateAccountHolderDetails(
         accountHolderId,
-        {} as AccountHolder,
-        token
+        {} as AccountHolder
       );
       expect(result).toMatchObject<AccountHolder>(expectedResult);
     });
@@ -309,11 +315,10 @@ describe("Account Holder API Gateway", () => {
       const call = () =>
         gateway.updateAccountHolderDetails(
           accountHolderId,
-          {} as AccountHolder,
-          token
+          {} as AccountHolder
         );
 
-      expect(call).rejects.toThrow();
+      await expect(call).rejects.toThrow();
     });
   });
 });

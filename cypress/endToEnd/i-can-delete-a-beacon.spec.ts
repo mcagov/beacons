@@ -7,7 +7,7 @@ import {
 import {
   iCanSeeMyExistingRegistration,
   iHavePreviouslyRegisteredABeacon,
-} from "./common/i-have-previously-registered-a-beacon";
+} from "./common/i-have-previously-registered-a-beacon.spec";
 
 describe("As an account holder", () => {
   it("I can delete one of my beacons", () => {

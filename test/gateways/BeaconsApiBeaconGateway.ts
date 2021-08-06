@@ -6,12 +6,10 @@ jest.mock("axios");
 describe("Beacons API Gateway", () => {
   let gateway: BeaconsApiBeaconGateway;
   let apiUrl: string;
-  let token: string;
 
   beforeEach(() => {
     apiUrl = "http://localhost:8080/spring-api";
     gateway = new BeaconsApiBeaconGateway(apiUrl);
-    token = "mock_access_token";
   });
 
   describe("Posting an entity", () => {
@@ -24,7 +22,7 @@ describe("Beacons API Gateway", () => {
     });
 
     it("should return true if it posted the entity successfully", async () => {
-      const expected = await gateway.sendRegistration(json, token);
+      const expected = await gateway.sendRegistration(json);
       expect(expected).toBe(true);
     });
 
@@ -32,13 +30,13 @@ describe("Beacons API Gateway", () => {
       (axios as any).post.mockImplementation(() => {
         throw new Error();
       });
-      const expected = await gateway.sendRegistration(json, token);
+      const expected = await gateway.sendRegistration(json);
       expect(expected).toBe(false);
     });
 
     it("should send the JSON to the correct url", async () => {
       const expectedUrl = `${apiUrl}/${endpoint}`;
-      await gateway.sendRegistration(json, token);
+      await gateway.sendRegistration(json);
       expect((axios as any).post).toHaveBeenLastCalledWith(
         expectedUrl,
         json,
@@ -59,7 +57,7 @@ describe("Beacons API Gateway", () => {
     });
 
     it("should return true if it deleted the entity successfully", async () => {
-      const expected = await gateway.deleteBeacon(json, token);
+      const expected = await gateway.deleteBeacon(json);
       expect(expected).toBe(true);
     });
 
@@ -68,7 +66,7 @@ describe("Beacons API Gateway", () => {
         throw new Error();
       });
 
-      const expected = await gateway.deleteBeacon(json, token);
+      const expected = await gateway.deleteBeacon(json);
       expect(expected).toBe(false);
     });
 
@@ -80,7 +78,7 @@ describe("Beacons API Gateway", () => {
         reason: "Unused on my boat anymore",
       };
 
-      await gateway.deleteBeacon(json, token);
+      await gateway.deleteBeacon(json);
       expect((axios as any).patch).toHaveBeenLastCalledWith(
         expectedUrl,
         expectedJson,

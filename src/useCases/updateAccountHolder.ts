@@ -7,21 +7,13 @@ export type UpdateAccountHolderFn = (
 ) => Promise<AccountHolder>;
 
 export const updateAccountHolder =
-  ({
-    getAccessToken,
-    accountHolderApiGateway,
-  }: IAppContainer): UpdateAccountHolderFn =>
+  ({ accountHolderApiGateway }: IAppContainer): UpdateAccountHolderFn =>
   async (
     id: string,
     accountHolderUpdate: AccountHolder
   ): Promise<AccountHolder> => {
-    const accessToken = await getAccessToken();
-    const updatedAccountHolder =
-      await accountHolderApiGateway.updateAccountHolderDetails(
-        id,
-        accountHolderUpdate,
-        accessToken
-      );
-
-    return updatedAccountHolder;
+    return await accountHolderApiGateway.updateAccountHolderDetails(
+      id,
+      accountHolderUpdate
+    );
   };

@@ -11,13 +11,12 @@ export interface IDeleteBeaconResult {
 }
 
 export const deleteBeacon =
-  ({ beaconsApiGateway, getAccessToken }: IAppContainer): DeleteBeaconFn =>
+  ({ beaconsApiGateway }: IAppContainer): DeleteBeaconFn =>
   async (reason, beaconId, accountHolderId) => {
-    const accessToken = await getAccessToken();
-
-    const success = await beaconsApiGateway.deleteBeacon(
-      { reason, beaconId, accountHolderId },
-      accessToken
-    );
+    const success = await beaconsApiGateway.deleteBeacon({
+      reason,
+      beaconId,
+      accountHolderId,
+    });
     return { success };
   };
