@@ -2,27 +2,16 @@ import { AccountHolder } from "../../entities/AccountHolder";
 import { Beacon } from "../../entities/Beacon";
 
 export interface AccountHolderGateway {
-  createAccountHolder(
-    authId: string,
-    email: string,
-    accessToken: string
-  ): Promise<AccountHolder>;
+  createAccountHolder(authId: string, email: string): Promise<AccountHolder>;
 
-  getAccountHolderId(authId: string, accessToken: string): Promise<string>;
+  getAccountHolderId(authId: string): Promise<string>;
 
-  getAccountHolderDetails(
-    accountHolderId: string,
-    accessToken: string
-  ): Promise<AccountHolder>;
+  getAccountHolderDetails(accountHolderId: string): Promise<AccountHolder>;
 
   updateAccountHolderDetails(
     accountHolderId: string,
-    update: AccountHolder,
-    accessToken: string
+    update: AccountHolder
   ): Promise<AccountHolder>;
 
-  getAccountBeacons(
-    accountHolderId: string,
-    accessToken: string
-  ): Promise<Beacon[]>;
+  getAccountBeacons(accountHolderId: string): Promise<Beacon[]>;
 }

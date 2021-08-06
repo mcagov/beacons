@@ -1,4 +1,3 @@
-import { GetServerSidePropsContext } from "next";
 import client from "next-auth/client";
 import { NextAuthUserSessionGateway } from "../../src/gateways/NextAuthUserSessionGateway";
 
@@ -16,25 +15,19 @@ describe("NextAuthUserSessionGateway", () => {
       expires: "never",
     };
     mockedNextAuthClient.getSession.mockResolvedValue(mockSession);
-    const context = {};
     const userSessionGateway = new NextAuthUserSessionGateway();
 
-    const result = await userSessionGateway.getSession(
-      context as GetServerSidePropsContext
-    );
+    const result = await userSessionGateway.getSession();
 
     expect(result).toStrictEqual(mockSession);
-    expect(mockedNextAuthClient.getSession).toHaveBeenCalledWith(context);
+    expect(mockedNextAuthClient.getSession).toHaveBeenCalled();
   });
 
   it("returns null if there is no session", async () => {
     mockedNextAuthClient.getSession.mockResolvedValue(null);
-    const context = {};
     const userSessionGateway = new NextAuthUserSessionGateway();
 
-    const result = await userSessionGateway.getSession(
-      context as GetServerSidePropsContext
-    );
+    const result = await userSessionGateway.getSession();
     expect(result).toStrictEqual(null);
   });
 });

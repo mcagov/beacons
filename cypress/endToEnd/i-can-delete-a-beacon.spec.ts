@@ -1,10 +1,12 @@
+import axios from "axios";
 import { AadAuthGateway } from "../../src/gateways/AadAuthGateway";
 import { BeaconsApiAccountHolderGateway } from "../../src/gateways/BeaconsApiAccountHolderGateway";
 import { BeaconsApiBeaconGateway } from "../../src/gateways/BeaconsApiBeaconGateway";
-import { appContainer } from "../../src/lib/appContainer";
+import { AuthGateway } from "../../src/gateways/interfaces/AuthGateway";
+import { BeaconsSession } from "../../src/gateways/NextAuthUserSessionGateway";
 import { IAppContainer } from "../../src/lib/IAppContainer";
 import { PageURLs } from "../../src/lib/urls";
-import { getOrCreateAccountHolder } from "../../src/useCases/getOrCreateAccountHolder";
+import { submitRegistration } from "../../src/useCases/submitRegistration";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import { givenIHaveACookieSetAndHaveSignedInIVisit } from "../integration/common/selectors-and-assertions.spec";
 
@@ -16,33 +18,44 @@ describe("As an account holder", () => {
 });
 
 const givenIHavePreviouslyRegisteredABeacon = async (): Promise<void> => {
-  const container: IAppContainer = {
-    ...appContainer,
-    beaconsApiAuthGateway: new AadAuthGateway({
-      auth: {
-        clientId: Cypress.env("WEBAPP_CLIENT_ID"),
-        authority: `https://login.microsoftonline.com/${Cypress.env(
-          "AAD_TENANT_ID"
-        )}`,
-        clientSecret: Cypress.env("WEBAPP_CLIENT_SECRET"),
-      },
-      apiId: Cypress.env("AAD_API_ID"),
-    }),
-    accountHolderApiGateway: new BeaconsApiAccountHolderGateway(
-      Cypress.env("API_URL")
-    ),
-    beaconsApiGateway: new BeaconsApiBeaconGateway(Cypress.env("API_URL")),
-    govNotifyGateway: {
-      sendEmail: () => new Promise(() => false),
+  const beaconsApiAuthGateway: AuthGateway = new AadAuthGateway({
+    auth: {
+      clientId: Cypress.env("WEBAPP_CLIENT_ID"),
+      authority: `https://login.microsoftonline.com/${Cypress.env(
+        "AAD_TENANT_ID"
+      )}`,
+      clientSecret: Cypress.env("WEBAPP_CLIENT_SECRET"),
     },
-  };
-
-  const accountHolder = await getOrCreateAccountHolder(container)({
-    user: { authId: Cypress.env("AUTH_ID") },
+    apiId: Cypress.env("AAD_API_ID"),
   });
 
-  await container.submitRegistration(
-    singleBeaconRegistration,
-    accountHolder.id
+  const beaconsApiGateway = new BeaconsApiBeaconGateway(
+    Cypress.env("API_URL"),
+    beaconsApiAuthGateway
   );
+
+  const accountHolderApiGateway = new BeaconsApiAccountHolderGateway(
+    Cypress.env("API_URL"),
+    beaconsApiAuthGateway
+  );
+
+  const container: Partial<IAppContainer> = {
+    beaconsApiGateway,
+    accountHolderApiGateway,
+  };
+
+  await submitRegistration(container)(
+    singleBeaconRegistration,
+    await getAccountHolderAuthId()
+  );
+};
+
+const getAccountHolderAuthId = async (): Promise<string> => {
+  const sessionEndpoint = "/api/auth/session";
+
+  const session: BeaconsSession = await axios.get(sessionEndpoint);
+
+  console.log(session.data); // undefined
+
+  return session.user.authId;
 };

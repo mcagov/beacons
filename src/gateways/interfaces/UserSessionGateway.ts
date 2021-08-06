@@ -1,6 +1,6 @@
-import { GetServerSidePropsContext } from "next";
-import { Session } from "../NextAuthUserSessionGateway";
+import { CtxOrReq } from "next-auth/client";
+import { BeaconsSession } from "../NextAuthUserSessionGateway";
 
 export interface UserSessionGateway {
-  getSession: (context: GetServerSidePropsContext) => Promise<Session | null>;
+  getSession: (contextOrRequest: CtxOrReq) => Promise<BeaconsSession | null>;
 }

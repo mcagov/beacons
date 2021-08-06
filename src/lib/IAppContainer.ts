@@ -48,6 +48,6 @@ export interface IAppContainer {
   beaconsApiGateway: BeaconGateway;
   govNotifyGateway: EmailServiceGateway;
   accountHolderApiGateway: AccountHolderGateway;
-  NextAuthUserSessionGateway: UserSessionGateway;
+  sessionGateway: UserSessionGateway;
   draftRegistrationGateway: DraftRegistrationGateway;
 }

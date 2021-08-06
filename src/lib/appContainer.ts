@@ -83,7 +83,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get accountHolderApiGateway() {
       return new BeaconsApiAccountHolderGateway(process.env.API_URL);
     },
-    get NextAuthUserSessionGateway() {
+    get sessionGateway() {
       return new NextAuthUserSessionGateway();
     },
     get draftRegistrationGateway() {

@@ -16,13 +16,10 @@ export interface ISubmitRegistrationResult {
 export const submitRegistration =
   ({
     sendConfirmationEmail,
-    getAccessToken,
     beaconsApiGateway,
     accountHolderApiGateway,
   }: Partial<IAppContainer>): SubmitRegistrationFn =>
   async (draftRegistration: DraftRegistration, accountHolderId: string) => {
-    const accessToken = await getAccessToken();
-
     const draftRegistrationWithReferenceAndAccountHolderId: DraftRegistration =
       {
         ...draftRegistration,
@@ -31,15 +28,11 @@ export const submitRegistration =
       };
 
     const beaconRegistered = await beaconsApiGateway.sendRegistration(
-      draftRegistrationWithReferenceAndAccountHolderId,
-      accessToken
+      draftRegistrationWithReferenceAndAccountHolderId
     );
 
     const { email: accountHolderEmail } =
-      await accountHolderApiGateway.getAccountHolderDetails(
-        accountHolderId,
-        accessToken
-      );
+      await accountHolderApiGateway.getAccountHolderDetails(accountHolderId);
 
     const confirmationEmailSent = beaconRegistered
       ? await sendConfirmationEmail(

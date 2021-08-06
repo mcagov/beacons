@@ -1,9 +1,9 @@
 import { AccountHolder } from "../entities/AccountHolder";
-import { Session } from "../gateways/NextAuthUserSessionGateway";
+import { BeaconsSession } from "../gateways/NextAuthUserSessionGateway";
 import { IAppContainer } from "../lib/IAppContainer";
 
 export type GetOrCreateAccountHolderFn = (
-  session: Session
+  session: BeaconsSession
 ) => Promise<AccountHolder>;
 
 export const getOrCreateAccountHolder =
@@ -11,7 +11,7 @@ export const getOrCreateAccountHolder =
     getAccessToken,
     accountHolderApiGateway,
   }: IAppContainer): GetOrCreateAccountHolderFn =>
-  async (session: Session): Promise<AccountHolder> => {
+  async (session: BeaconsSession): Promise<AccountHolder> => {
     const authId: string = session.user.authId;
     const email: string = session.user.email;
     const accessToken = await getAccessToken();
