@@ -23,9 +23,6 @@ import { singleBeaconRegistration } from "../../fixtures/singleBeaconRegistratio
 export const iHavePreviouslyRegisteredABeacon = async (
   draftRegistration: DraftRegistration
 ): Promise<void> => {
-  /**
-   *  A custom auth gateway is
-   */
   const beaconsApiAuthGateway: AuthGateway = new AadAuthGateway({
     auth: {
       clientId: Cypress.env("WEBAPP_CLIENT_ID"),
