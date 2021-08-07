@@ -1,6 +1,6 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { v4 } from "UUID";
+import { v4 } from "uuid";
 import { BeaconsApiAccountHolderGateway } from "../../../src/gateways/BeaconsApiAccountHolderGateway";
 import { AccountHolderGateway } from "../../../src/gateways/interfaces/AccountHolderGateway";
 import { AuthGateway } from "../../../src/gateways/interfaces/AuthGateway";
