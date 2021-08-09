@@ -17,7 +17,7 @@ import {
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
 import { DraftRegistration } from "../entities/DraftRegistration";
-import { setCookieHeader } from "../lib/middleware";
+import { setCookie } from "../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
 import { acceptRejectCookieId, formSubmissionCookieId } from "../lib/types";
@@ -241,7 +241,7 @@ class IfUserViewedIndexPage implements Rule {
 
     await saveDraftRegistration(draftRegistrationId, emptyDraftRegistration);
 
-    setCookieHeader(draftRegistrationId, this.context.res);
+    setCookie(this.context.res, formSubmissionCookieId, draftRegistrationId);
   }
 }
 

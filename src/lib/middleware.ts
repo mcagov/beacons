@@ -4,14 +4,23 @@ import { GetServerSidePropsContext } from "next";
 import parse from "urlencoded-body-parser";
 import { formSubmissionCookieId } from "./types";
 
-export const setCookieHeader = (id: string, res: ServerResponse): void => {
-  const options: CookieSerializeOptions = {
+export const setCookie = (
+  res: ServerResponse,
+  cookieName: string,
+  cookieValue: string,
+  options: Partial<CookieSerializeOptions> = {}
+): void => {
+  const cookieSerializeOptions: CookieSerializeOptions = {
     path: "/",
     httpOnly: true,
     sameSite: "lax",
+    ...options,
   };
 
-  res.setHeader("Set-Cookie", serialize(formSubmissionCookieId, id, options));
+  res.setHeader(
+    "Set-Cookie",
+    serialize(cookieName, cookieValue, cookieSerializeOptions)
+  );
 };
 
 export function clearFormSubmissionCookie(
