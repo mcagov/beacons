@@ -47,7 +47,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@jest/types": "^26.6.2",
+    "@jest/types": "^27.0.6",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.7",
     "@types/cookie": "^0.4.0",
