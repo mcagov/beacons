@@ -1,4 +1,4 @@
-import { DraftRegistration } from "../../../src/entities/DraftRegistration";
+import { Registration } from "../../../src/entities/Registration";
 import { AadAuthGateway } from "../../../src/gateways/AadAuthGateway";
 import { BeaconsApiAccountHolderGateway } from "../../../src/gateways/BeaconsApiAccountHolderGateway";
 import { BeaconsApiBeaconGateway } from "../../../src/gateways/BeaconsApiBeaconGateway";
@@ -21,7 +21,7 @@ import { singleBeaconRegistration } from "../../fixtures/singleBeaconRegistratio
  * it were the Webapp.
  */
 export const iHavePreviouslyRegisteredABeacon = async (
-  draftRegistration: DraftRegistration
+  registration: Registration
 ): Promise<void> => {
   const beaconsApiAuthGateway: AuthGateway = new AadAuthGateway({
     auth: {
@@ -57,7 +57,7 @@ export const iHavePreviouslyRegisteredABeacon = async (
 
     const accountHolder = await getOrCreateAccountHolder(container)(session);
 
-    await submitRegistration(container)(draftRegistration, accountHolder.id);
+    await submitRegistration(container)(registration, accountHolder.id);
   });
 };
 
