@@ -3,14 +3,6 @@ import React from "react";
 import { acceptRejectCookieId } from "../../src/lib/types";
 import ServiceStartPage, { getServerSideProps } from "../../src/pages";
 
-jest.mock("../../src/lib/middleware", () => {
-  return {
-    __esModule: true,
-    setFormSubmissionCookie: jest.fn(),
-  };
-});
-jest.mock("../../src/gateways/BasicAuthGateway");
-
 describe("ServiceStartPage", () => {
   it("should have a start now button which directs the user to check your beacon details page", () => {
     render(<ServiceStartPage showCookieBanner={false} />);
@@ -27,7 +19,15 @@ describe("ServiceStartPage", () => {
     beforeEach(() => {
       context = {
         req: {
+          method: "GET",
           cookies: {},
+        },
+        container: {
+          saveDraftRegistration: jest.fn(),
+          authenticateUser: jest.fn(),
+        },
+        res: {
+          setHeader: jest.fn(),
         },
       };
     });

@@ -17,13 +17,13 @@ import { AccountHolder } from "../../entities/AccountHolder";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormJSON, FormManager } from "../../lib/form/FormManager";
 import { Validators } from "../../lib/form/Validators";
-import { FormSubmission } from "../../lib/formCache";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { PageURLs } from "../../lib/urls";
 import { diffObjValues } from "../../lib/utils";
+import { FormSubmission } from "../../presenters/formSubmission";
 
 export interface UpdateAccountPageProps {
   form: FormJSON;

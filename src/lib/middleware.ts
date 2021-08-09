@@ -1,39 +1,26 @@
 import { CookieSerializeOptions, serialize } from "cookie";
 import { IncomingMessage, ServerResponse } from "http";
 import { GetServerSidePropsContext } from "next";
-import { NextApiRequestCookies } from "next/dist/next-server/server/api-utils";
 import parse from "urlencoded-body-parser";
-import { v4 as uuidv4 } from "uuid";
-import { FormCacheFactory, IFormCache } from "./formCache";
 import { formSubmissionCookieId } from "./types";
 
-export const setFormSubmissionCookie = async (
-  context: GetServerSidePropsContext,
-  seedCacheFn: (id: string) => Promise<void> = seedCache
-): Promise<void> => {
-  const cookies: NextApiRequestCookies = context.req.cookies;
-
-  if (!cookies || !cookies[formSubmissionCookieId]) {
-    const id: string = uuidv4();
-
-    await seedCacheFn(id);
-    setCookieHeader(id, context.res);
-  }
-};
-
-const seedCache = async (id: string): Promise<void> => {
-  const cache: IFormCache = FormCacheFactory.getCache();
-  await cache.update(id);
-};
-
-const setCookieHeader = (id: string, res: ServerResponse): void => {
-  const options: CookieSerializeOptions = {
+export const setCookie = (
+  res: ServerResponse,
+  cookieName: string,
+  cookieValue: string,
+  options: Partial<CookieSerializeOptions> = {}
+): void => {
+  const cookieSerializeOptions: CookieSerializeOptions = {
     path: "/",
     httpOnly: true,
     sameSite: "lax",
+    ...options,
   };
 
-  res.setHeader("Set-Cookie", serialize(formSubmissionCookieId, id, options));
+  res.setHeader(
+    "Set-Cookie",
+    serialize(cookieName, cookieValue, cookieSerializeOptions)
+  );
 };
 
 export function clearFormSubmissionCookie(
