@@ -1,17 +1,16 @@
 import { sendConfirmationEmail } from "../../src/useCases/sendConfirmationEmail";
 
 describe("Send Gov Notify Email", () => {
-  let container;
+  const mockSendEmail = jest.fn();
+  const container = {
+    emailServiceGateway: {
+      sendEmail: mockSendEmail,
+    },
+  };
   let registration;
   let email;
-  const mockSendEmail = jest.fn();
 
   beforeEach(() => {
-    container = {
-      govNotifyGateway: {
-        sendEmail: mockSendEmail,
-      },
-    };
     registration = {
       model: "ASOS",
     };
