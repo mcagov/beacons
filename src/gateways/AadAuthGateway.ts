@@ -1,8 +1,8 @@
 import {
   ClientCredentialRequest,
   ConfidentialClientApplication,
+  NodeAuthOptions,
 } from "@azure/msal-node";
-import { NodeAuthOptions } from "@azure/msal-node/dist/config/Configuration";
 import { AuthGateway } from "./interfaces/AuthGateway";
 
 export class AadAuthGateway implements AuthGateway {
