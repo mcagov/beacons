@@ -1,24 +1,30 @@
 import axios from "axios";
+import { DraftRegistration } from "../../src/entities/DraftRegistration";
 import { BeaconsApiBeaconGateway } from "../../src/gateways/BeaconsApiBeaconGateway";
+import { AuthGateway } from "../../src/gateways/interfaces/AuthGateway";
 
 jest.mock("axios");
 
 describe("Beacons API Gateway", () => {
   let gateway: BeaconsApiBeaconGateway;
   let apiUrl: string;
+  let mockAuthGateway: AuthGateway;
 
   beforeEach(() => {
     apiUrl = "http://localhost:8080/spring-api";
-    gateway = new BeaconsApiBeaconGateway(apiUrl);
+    mockAuthGateway = {
+      getAccessToken: jest.fn().mockResolvedValue("Access token"),
+    };
+    gateway = new BeaconsApiBeaconGateway(apiUrl, mockAuthGateway);
   });
 
   describe("Posting an entity", () => {
     let endpoint;
-    let json;
+    let json: DraftRegistration;
 
     beforeEach(() => {
       endpoint = "registrations/register";
-      json = { model: "ASOS" };
+      json = { model: "ASOS", uses: [] };
     });
 
     it("should return true if it posted the entity successfully", async () => {
@@ -39,7 +45,7 @@ describe("Beacons API Gateway", () => {
       await gateway.sendRegistration(json);
       expect((axios as any).post).toHaveBeenLastCalledWith(
         expectedUrl,
-        json,
+        expect.anything(),
         expect.anything()
       );
     });
