@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { AccountHolder } from "../entities/AccountHolder";
 import { Beacon } from "../entities/Beacon";
-import { AadAuthGateway } from "./AadAuthGateway";
 import { AccountHolderGateway } from "./interfaces/AccountHolderGateway";
 import { AuthGateway } from "./interfaces/AuthGateway";
 import { BeaconsApiResponseMapper } from "./mappers/BeaconsApiResponseMapper";
@@ -16,7 +15,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
   private readonly accountHolderBeaconsEndpoint = "beacons";
   private readonly authGateway: AuthGateway;
 
-  constructor(apiUrl: string, authGateway: AuthGateway = new AadAuthGateway()) {
+  constructor(apiUrl: string, authGateway: AuthGateway) {
     this.apiUrl = apiUrl;
     this.authGateway = authGateway;
   }

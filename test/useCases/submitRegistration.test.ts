@@ -46,7 +46,7 @@ describe("submitRegistration()", () => {
       "accountHolderId"
     );
 
-    expect(container.beaconsApiGateway.sendRegistration).toHaveBeenCalledWith(
+    expect(container.beaconGateway.sendRegistration).toHaveBeenCalledWith(
       expect.objectContaining({ referenceNumber: expect.any(String) })
     );
   });
@@ -69,7 +69,7 @@ describe("submitRegistration()", () => {
       "accountHolderId"
     );
 
-    expect(container.beaconsApiGateway.sendRegistration).toHaveBeenCalledWith(
+    expect(container.beaconGateway.sendRegistration).toHaveBeenCalledWith(
       expect.objectContaining({ accountHolderId: "accountHolderId" })
     );
   });
@@ -89,7 +89,7 @@ describe("submitRegistration()", () => {
 
     await submitRegistration(container)(mockDraftRegistration, null);
 
-    expect(container.beaconsApiGateway.sendRegistration).toHaveBeenCalledWith(
+    expect(container.beaconGateway.sendRegistration).toHaveBeenCalledWith(
       expect.objectContaining({ accountHolderId: null })
     );
   });

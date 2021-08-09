@@ -68,26 +68,29 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
 
     /* Gateways */
-    get beaconsApiAuthGateway() {
-      return new AadAuthGateway();
+    get beaconGateway() {
+      return new BeaconsApiBeaconGateway(
+        process.env.API_URL,
+        new AadAuthGateway()
+      );
     },
-    get basicAuthGateway() {
-      return new BasicAuthGateway();
-    },
-    get beaconsApiGateway() {
-      return new BeaconsApiBeaconGateway(process.env.API_URL);
-    },
-    get govNotifyGateway() {
+    get emailServiceGateway() {
       return new GovNotifyEmailServiceGateway(process.env.GOV_NOTIFY_API_KEY);
     },
-    get accountHolderApiGateway() {
-      return new BeaconsApiAccountHolderGateway(process.env.API_URL);
-    },
-    get sessionGateway() {
-      return new NextAuthUserSessionGateway();
+    get accountHolderGateway() {
+      return new BeaconsApiAccountHolderGateway(
+        process.env.API_URL,
+        new AadAuthGateway()
+      );
     },
     get draftRegistrationGateway() {
       return new RedisDraftRegistrationGateway();
+    },
+    get NextAuthUserSessionGateway() {
+      return new NextAuthUserSessionGateway();
+    },
+    get basicAuthGateway() {
+      return new BasicAuthGateway();
     },
 
     /* Mockable utilities */

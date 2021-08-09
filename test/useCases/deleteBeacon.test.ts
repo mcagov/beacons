@@ -4,7 +4,7 @@ import { deleteBeacon } from "../../src/useCases/deleteBeacon";
 describe("Delete beacon use case", () => {
   it("should successfully delete the beacon", async () => {
     const container: Partial<IAppContainer> = {
-      beaconsApiGateway: {
+      beaconGateway: {
         deleteBeacon: jest.fn(async () => true),
       } as any,
     };
@@ -16,7 +16,7 @@ describe("Delete beacon use case", () => {
     );
 
     expect(result).toStrictEqual({ success: true });
-    expect(container.beaconsApiGateway.deleteBeacon).toHaveBeenLastCalledWith({
+    expect(container.beaconGateway.deleteBeacon).toHaveBeenLastCalledWith({
       reason: "Unused on my boat",
       beaconId: "1234",
       accountHolderId: "0987",
@@ -25,7 +25,7 @@ describe("Delete beacon use case", () => {
 
   it("should return the result if the beacon is not sucessfully deleted", async () => {
     const container: Partial<IAppContainer> = {
-      beaconsApiGateway: {
+      beaconGateway: {
         deleteBeacon: jest.fn(async () => false),
       } as any,
     };

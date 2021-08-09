@@ -6,7 +6,7 @@ export type GetBeaconsByAccountHolderIdFn = (
 ) => Promise<Beacon[]>;
 
 export const getBeaconsByAccountHolderId =
-  ({ accountHolderApiGateway }: IAppContainer): GetBeaconsByAccountHolderIdFn =>
+  ({ accountHolderGateway }: IAppContainer): GetBeaconsByAccountHolderIdFn =>
   async (accountId: string) => {
-    return await accountHolderApiGateway.getAccountBeacons(accountId);
+    return await accountHolderGateway.getAccountBeacons(accountId);
   };

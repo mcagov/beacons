@@ -8,12 +8,12 @@ export type SendConfirmationEmailFn = (
 ) => Promise<boolean>;
 
 export const sendConfirmationEmail =
-  ({ govNotifyGateway }: IAppContainer): SendConfirmationEmailFn =>
+  ({ emailServiceGateway }: IAppContainer): SendConfirmationEmailFn =>
   async (registration, email) => {
     const templateId = process.env.GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE;
 
     if (templateId) {
-      return govNotifyGateway.sendEmail(templateId, email, {
+      return emailServiceGateway.sendEmail(templateId, email, {
         owner_name: registration.ownerFullName,
         reference: registration.referenceNumber,
         beacon_information: joinStrings([

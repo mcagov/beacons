@@ -44,7 +44,7 @@ describe("UpdateAccount", () => {
     it("should return form with account details for current user on page GET", async () => {
       const mockRequest: any = { method: "GET" };
       const containerMocks: Partial<IAppContainer> = {
-        accountHolderApiGateway,
+        accountHolderGateway: accountHolderApiGateway,
       };
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: getAppContainer(containerMocks as IAppContainer),
@@ -73,7 +73,7 @@ describe("UpdateAccount", () => {
         headers: { contentType: "json" },
       };
       const containerMocks: Partial<IAppContainer> = {
-        accountHolderApiGateway,
+        accountHolderGateway: accountHolderApiGateway,
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "new fullName",
           telephoneNumber: "new telephoneNumber",
@@ -113,7 +113,7 @@ describe("UpdateAccount", () => {
         headers: { contentType: "json" },
       };
       const containerMocks: Partial<IAppContainer> = {
-        accountHolderApiGateway,
+        accountHolderGateway: accountHolderApiGateway,
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "new fullName",
           telephoneNumber: "new telephoneNumber",
@@ -146,7 +146,7 @@ describe("UpdateAccount", () => {
         headers: { contentType: "json" },
       };
       const containerMocks: Partial<IAppContainer> = {
-        accountHolderApiGateway,
+        accountHolderGateway: accountHolderApiGateway,
         updateAccountHolder: jest.fn(),
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "Sir David", //changed

@@ -41,7 +41,7 @@ describe("YourBeaconRegistryAccount", () => {
         getAccessToken: jest.fn().mockResolvedValue(v4()),
       };
       const mocks: Partial<IAppContainer> = {
-        accountHolderApiGateway: new BeaconsApiAccountHolderGateway(
+        accountHolderGateway: new BeaconsApiAccountHolderGateway(
           process.env.API_URL,
           mockAuthGateway
         ),

@@ -2,7 +2,6 @@ import axios from "axios";
 import { DraftRegistration } from "../entities/DraftRegistration";
 import { Registration } from "../entities/Registration";
 import { DeprecatedRegistration } from "../lib/deprecatedRegistration/DeprecatedRegistration";
-import { AadAuthGateway } from "./AadAuthGateway";
 import { AuthGateway } from "./interfaces/AuthGateway";
 import { BeaconGateway } from "./interfaces/BeaconGateway";
 
@@ -17,7 +16,7 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
   private readonly registrationsEndpoint = "registrations/register";
   private readonly authGateway: AuthGateway;
 
-  constructor(apiUrl: string, authGateway: AuthGateway = new AadAuthGateway()) {
+  constructor(apiUrl: string, authGateway: AuthGateway) {
     this.apiUrl = apiUrl;
     this.authGateway = authGateway;
   }

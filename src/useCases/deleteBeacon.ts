@@ -11,9 +11,9 @@ export interface IDeleteBeaconResult {
 }
 
 export const deleteBeacon =
-  ({ beaconsApiGateway }: IAppContainer): DeleteBeaconFn =>
+  ({ beaconGateway }: IAppContainer): DeleteBeaconFn =>
   async (reason, beaconId, accountHolderId) => {
-    const success = await beaconsApiGateway.deleteBeacon({
+    const success = await beaconGateway.deleteBeacon({
       reason,
       beaconId,
       accountHolderId,

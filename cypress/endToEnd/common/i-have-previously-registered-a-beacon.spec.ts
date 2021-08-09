@@ -44,8 +44,8 @@ export const iHavePreviouslyRegisteredABeacon = async (
   );
 
   const container: Partial<IAppContainer> = {
-    beaconsApiGateway,
-    accountHolderApiGateway,
+    beaconGateway: beaconsApiGateway,
+    accountHolderGateway: accountHolderApiGateway,
     sendConfirmationEmail: () => null,
   };
 
