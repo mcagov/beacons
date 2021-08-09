@@ -11,7 +11,6 @@ import { AuthenticateUserFn } from "../useCases/authenticateUser";
 import { ClearCachedRegistrationFn } from "../useCases/clearCachedRegistration";
 import { DeleteBeaconFn } from "../useCases/deleteBeacon";
 import { DeleteCachedUseFn } from "../useCases/deleteCachedUse";
-import { GetAccessTokenFn } from "../useCases/getAccessToken";
 import { GetBeaconsByAccountHolderIdFn } from "../useCases/getBeaconsByAccountHolderId";
 import { GetOrCreateAccountHolderFn } from "../useCases/getOrCreateAccountHolder";
 import { SendConfirmationEmailFn } from "../useCases/sendConfirmationEmail";
@@ -30,7 +29,6 @@ export interface IAppContainer {
   ) => Promise<void>;
   clearCachedRegistration: ClearCachedRegistrationFn;
   deleteCachedUse: DeleteCachedUseFn;
-  getAccessToken: GetAccessTokenFn;
 
   parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
 

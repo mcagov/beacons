@@ -10,7 +10,6 @@ import { authenticateUser } from "../useCases/authenticateUser";
 import { clearCachedRegistration } from "../useCases/clearCachedRegistration";
 import { deleteBeacon } from "../useCases/deleteBeacon";
 import { deleteCachedUse } from "../useCases/deleteCachedUse";
-import { getAccessToken } from "../useCases/getAccessToken";
 import { getAccountHolderId } from "../useCases/getAccountHolderId";
 import { getBeaconsByAccountHolderId } from "../useCases/getBeaconsByAccountHolderId";
 import { getDraftRegistration } from "../useCases/getDraftRegistration";
@@ -38,9 +37,6 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get saveDraftRegistration() {
       return saveDraftRegistration(this);
-    },
-    get getAccessToken() {
-      return getAccessToken(this);
     },
     get authenticateUser() {
       return authenticateUser(this);
