@@ -6,7 +6,6 @@ import { AuthGateway } from "../../../src/gateways/interfaces/AuthGateway";
 import { IAppContainer } from "../../../src/lib/IAppContainer";
 import { getOrCreateAccountHolder } from "../../../src/useCases/getOrCreateAccountHolder";
 import { submitRegistration } from "../../../src/useCases/submitRegistration";
-import { singleBeaconRegistration } from "../../fixtures/singleBeaconRegistration";
 
 /**
  * Quickly sets up test state where a single beacon is already registered.
@@ -59,9 +58,4 @@ export const iHavePreviouslyRegisteredABeacon = async (
 
     await submitRegistration(container)(registration, accountHolder.id);
   });
-};
-
-export const iCanSeeMyExistingRegistration = (): void => {
-  cy.get("main").contains(singleBeaconRegistration.hexId);
-  cy.get("main").contains(singleBeaconRegistration.ownerFullName);
 };
