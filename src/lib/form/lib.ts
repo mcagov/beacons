@@ -1,4 +1,4 @@
-import { FormSubmission } from "../formCache";
+import { FormSubmission } from "../../presenters/formSubmission";
 import { FormManagerFactory } from "../handlePageRequest";
 import { FormJSON } from "./FormManager";
 

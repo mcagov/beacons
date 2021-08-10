@@ -1,6 +1,6 @@
 import { BeaconUse } from "../../entities/BeaconUse";
 import { Registration } from "../../entities/Registration";
-import { FormSubmission } from "../formCache";
+import { FormSubmission } from "../../presenters/formSubmission";
 import { stringToBoolean } from "../writingStyle";
 import {
   IRegistrationRequestBody,
