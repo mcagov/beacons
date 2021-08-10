@@ -14,6 +14,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
 
   const fullNameInputFieldSelector = "#ownerFullName";
   const emailInputFieldSelector = "#ownerEmail";
+  const telephoneNumberInputFieldSelector = "#ownerTelephoneNumber";
 
   beforeEach(() => {
     givenIHaveACookieSetAndIVisit(thisPageUrl);
@@ -30,6 +31,35 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
 
     whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
     thenMyFocusMovesTo(fullNameInputFieldSelector);
+  });
+
+  it("requires at least one character in the email address field", () => {
+    const expectedErrorMessage = ["Email address", requiredFieldErrorMessage];
+
+    whenIType(" ", emailInputFieldSelector);
+    andIClickContinue();
+
+    thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+    thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+
+    whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+    thenMyFocusMovesTo(emailInputFieldSelector);
+  });
+
+  it("requires at least one character in the telephone number field", () => {
+    const expectedErrorMessage = [
+      "Telephone number",
+      requiredFieldErrorMessage,
+    ];
+
+    whenIType(" ", telephoneNumberInputFieldSelector);
+    andIClickContinue();
+
+    thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+    thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+
+    whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+    thenMyFocusMovesTo(telephoneNumberInputFieldSelector);
   });
 
   it("requires the owner's email address to be in the correct format", () => {
