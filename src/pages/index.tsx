@@ -1,7 +1,7 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
+import { v4 as uuidv4 } from "uuid";
 import Aside from "../components/Aside";
-import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
 import { StartButton } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
@@ -15,11 +15,14 @@ import {
   SectionHeading,
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
-import { BasicAuthGateway } from "../gateways/BasicAuthGateway";
-import { setFormSubmissionCookie } from "../lib/middleware";
-import { acceptRejectCookieId } from "../lib/types";
+import { DraftRegistration } from "../entities/DraftRegistration";
+import { setCookie } from "../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../lib/middleware/withContainer";
+import { acceptRejectCookieId, formSubmissionCookieId } from "../lib/types";
 import { PageURLs } from "../lib/urls";
-import { DeprecatedAuthenticateUser } from "../useCases/deprecatedAuthenticateUser";
+import { BeaconsPageRouter } from "../router/BeaconsPageRouter";
+import { Rule } from "../router/rules/Rule";
 
 interface ServiceStartPageProps {
   showCookieBanner: boolean;
@@ -33,11 +36,7 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
 
   return (
     <>
-      <Layout
-        navigation={<Breadcrumbs />}
-        title={pageHeading}
-        showCookieBanner={showCookieBanner}
-      >
+      <Layout title={pageHeading} showCookieBanner={showCookieBanner}>
         <Grid
           mainContent={
             <>
@@ -53,14 +52,6 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
     </>
   );
 };
-
-const Breadcrumbs: FunctionComponent = (): JSX.Element => (
-  <BreadcrumbList>
-    <BreadcrumbListItem>Home</BreadcrumbListItem>
-    <BreadcrumbListItem>Section</BreadcrumbListItem>
-    <BreadcrumbListItem>Subsection</BreadcrumbListItem>
-  </BreadcrumbList>
-);
 
 const AboutTheService: FunctionComponent = (): JSX.Element => (
   <>
@@ -187,17 +178,58 @@ const DataProtection: FunctionComponent = (): JSX.Element => (
   </>
 );
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const authGateway = new BasicAuthGateway();
-  const authUseCase = new DeprecatedAuthenticateUser(authGateway);
-  await authUseCase.execute(context);
+export const getServerSideProps: GetServerSideProps = withContainer(
+  async (context: BeaconsGetServerSidePropsContext) => {
+    return await new BeaconsPageRouter([
+      new IfUserViewedIndexPage(context),
+    ]).execute();
+  }
+);
 
-  await setFormSubmissionCookie(context);
-  const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
+class IfUserViewedIndexPage implements Rule {
+  private readonly context: BeaconsGetServerSidePropsContext;
 
-  return { props: { showCookieBanner } };
-};
+  constructor(context: BeaconsGetServerSidePropsContext) {
+    this.context = context;
+  }
+
+  public async condition(): Promise<boolean> {
+    return this.context.req.method === "GET";
+  }
+
+  public async action(): Promise<GetServerSidePropsResult<any>> {
+    const { authenticateUser } = this.context.container;
+
+    await authenticateUser(this.context);
+
+    if (this.noDraftRegistrationForUser()) await this.createDraftRegistration();
+
+    return {
+      props: {
+        showCookieBanner: !this.context.req.cookies[acceptRejectCookieId],
+      },
+    };
+  }
+
+  private noDraftRegistrationForUser(): boolean {
+    return (
+      !this.context.req.cookies ||
+      !this.context.req.cookies[formSubmissionCookieId]
+    );
+  }
+
+  private async createDraftRegistration(): Promise<void> {
+    const { saveDraftRegistration } = this.context.container;
+
+    const draftRegistrationId: string = uuidv4();
+    const emptyDraftRegistration: DraftRegistration = {
+      uses: [],
+    };
+
+    await saveDraftRegistration(draftRegistrationId, emptyDraftRegistration);
+
+    setCookie(this.context.res, formSubmissionCookieId, draftRegistrationId);
+  }
+}
 
 export default ServiceStartPage;

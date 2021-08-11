@@ -7,7 +7,6 @@ import { NextAuthUserSessionGateway } from "../gateways/NextAuthUserSessionGatew
 import { RedisDraftRegistrationGateway } from "../gateways/RedisDraftRegistrationGateway";
 import { addNewUseToDraftRegistration } from "../useCases/addNewUseToDraftRegistration";
 import { authenticateUser } from "../useCases/authenticateUser";
-import { clearCachedRegistration } from "../useCases/clearCachedRegistration";
 import { deleteBeacon } from "../useCases/deleteBeacon";
 import { deleteCachedUse } from "../useCases/deleteCachedUse";
 import { getAccountHolderId } from "../useCases/getAccountHolderId";
@@ -25,7 +24,6 @@ import { parseFormDataAs } from "./middleware";
 export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
   return {
     /* Simple use cases */
-    clearCachedRegistration: clearCachedRegistration,
     deleteCachedUse: deleteCachedUse,
 
     /* Composite use cases requiring access to other use cases */

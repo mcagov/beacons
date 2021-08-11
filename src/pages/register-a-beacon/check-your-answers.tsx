@@ -12,7 +12,6 @@ import {
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { DraftRegistration } from "../../entities/DraftRegistration";
 import { Environment } from "../../lib/deprecatedRegistration/types";
-import { FormSubmission } from "../../lib/formCache";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -23,6 +22,7 @@ import {
   ordinal,
   sentenceCase,
 } from "../../lib/writingStyle";
+import { FormSubmission } from "../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
