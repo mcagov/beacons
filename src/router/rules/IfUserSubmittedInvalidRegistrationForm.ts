@@ -1,4 +1,5 @@
 import { GetServerSidePropsResult } from "next";
+import { showCookieBanner } from "../../lib/cookies";
 import { isValid, withErrorMessages } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
@@ -70,6 +71,7 @@ export class IfUserSubmittedInvalidRegistrationForm<T> implements Rule {
           this.validationRules
         ),
         ...(await this.additionalProps),
+        showCookieBanner: showCookieBanner(this.context),
       },
     };
   }
