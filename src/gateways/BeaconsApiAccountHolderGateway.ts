@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { AccountHolder } from "../entities/AccountHolder";
 import { Beacon } from "../entities/Beacon";
 import { AccountHolderGateway } from "./interfaces/AccountHolderGateway";
+import { AuthGateway } from "./interfaces/AuthGateway";
 import { BeaconsApiResponseMapper } from "./mappers/BeaconsApiResponseMapper";
 import { IAccountHolderDetailsResponse } from "./mappers/IAccountHolderDetailsResponse";
 import { IAccountHolderIdResponseBody } from "./mappers/IAccountHolderIdResponseBody";
@@ -12,22 +13,21 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
   private readonly accountHolderControllerRoute = "account-holder";
   private readonly accountHolderIdEndpoint = "auth-id";
   private readonly accountHolderBeaconsEndpoint = "beacons";
+  private readonly authGateway: AuthGateway;
 
-  constructor(apiUrl: string) {
+  constructor(apiUrl: string, authGateway: AuthGateway) {
     this.apiUrl = apiUrl;
+    this.authGateway = authGateway;
   }
 
-  public async getAccountHolderId(
-    authId: string,
-    accessToken: string
-  ): Promise<string> {
+  public async getAccountHolderId(authId: string): Promise<string> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${this.accountHolderIdEndpoint}/${authId}`;
     try {
       const response = await axios.get<
         any,
         AxiosResponse<IAccountHolderIdResponseBody>
       >(url, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       return response.data.id;
     } catch (error) {
@@ -42,8 +42,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
 
   public async createAccountHolder(
     authId: string,
-    email: string,
-    accessToken: string
+    email: string
   ): Promise<AccountHolder> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}`;
     try {
@@ -54,7 +53,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
         any,
         AxiosResponse<IAccountHolderDetailsResponse>
       >(url, request, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       return {
         id: response.data.data.id,
@@ -68,8 +67,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
   }
 
   public async getAccountHolderDetails(
-    accountHolderId: string,
-    accessToken: string
+    accountHolderId: string
   ): Promise<AccountHolder> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}`;
     try {
@@ -77,7 +75,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
         any,
         AxiosResponse<IAccountHolderDetailsResponse>
       >(url, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       return {
         id: response.data.data.id,
@@ -92,8 +90,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
 
   public async updateAccountHolderDetails(
     accountHolderId: string,
-    update: AccountHolder,
-    accessToken: string
+    update: AccountHolder
   ): Promise<AccountHolder> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}`;
     try {
@@ -107,7 +104,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
         any,
         AxiosResponse<IAccountHolderDetailsResponse>
       >(url, request, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       return {
         id: response.data.data.id,
@@ -120,16 +117,13 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
     }
   }
 
-  public async getAccountBeacons(
-    accountHolderId: string,
-    accessToken: string
-  ): Promise<Beacon[]> {
+  public async getAccountBeacons(accountHolderId: string): Promise<Beacon[]> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}/${this.accountHolderBeaconsEndpoint}`;
     try {
       const response = await axios.get<any, AxiosResponse<IBeaconListResponse>>(
         url,
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
         }
       );
 
@@ -139,5 +133,9 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
       console.error("getAccountBeacons:", error);
       throw error;
     }
+  }
+
+  private async getAccessToken() {
+    return await this.authGateway.getAccessToken();
   }
 }

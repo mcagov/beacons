@@ -1,5 +1,5 @@
 import { Registration } from "../entities/Registration";
-import { IAppContainer } from "../lib/IAppContainer";
+import { EmailServiceGateway } from "../gateways/interfaces/EmailServiceGateway";
 import { joinStrings } from "../lib/writingStyle";
 
 export type SendConfirmationEmailFn = (
@@ -7,13 +7,17 @@ export type SendConfirmationEmailFn = (
   email: string
 ) => Promise<boolean>;
 
+interface Dependencies {
+  emailServiceGateway: EmailServiceGateway;
+}
+
 export const sendConfirmationEmail =
-  ({ govNotifyGateway }: IAppContainer): SendConfirmationEmailFn =>
+  ({ emailServiceGateway }: Dependencies): SendConfirmationEmailFn =>
   async (registration, email) => {
     const templateId = process.env.GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE;
 
     if (templateId) {
-      return govNotifyGateway.sendEmail(templateId, email, {
+      return emailServiceGateway.sendEmail(templateId, email, {
         owner_name: registration.ownerFullName,
         reference: registration.referenceNumber,
         beacon_information: joinStrings([

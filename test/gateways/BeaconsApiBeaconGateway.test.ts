@@ -1,30 +1,34 @@
 import axios from "axios";
+import { DraftRegistration } from "../../src/entities/DraftRegistration";
 import { BeaconsApiBeaconGateway } from "../../src/gateways/BeaconsApiBeaconGateway";
+import { AuthGateway } from "../../src/gateways/interfaces/AuthGateway";
 
 jest.mock("axios");
 
 describe("Beacons API Gateway", () => {
   let gateway: BeaconsApiBeaconGateway;
   let apiUrl: string;
-  let token: string;
+  let mockAuthGateway: AuthGateway;
 
   beforeEach(() => {
     apiUrl = "http://localhost:8080/spring-api";
-    gateway = new BeaconsApiBeaconGateway(apiUrl);
-    token = "mock_access_token";
+    mockAuthGateway = {
+      getAccessToken: jest.fn().mockResolvedValue("Access token"),
+    };
+    gateway = new BeaconsApiBeaconGateway(apiUrl, mockAuthGateway);
   });
 
   describe("Posting an entity", () => {
     let endpoint;
-    let json;
+    let json: DraftRegistration;
 
     beforeEach(() => {
       endpoint = "registrations/register";
-      json = { model: "ASOS" };
+      json = { model: "ASOS", uses: [] };
     });
 
     it("should return true if it posted the entity successfully", async () => {
-      const expected = await gateway.sendRegistration(json, token);
+      const expected = await gateway.sendRegistration(json);
       expect(expected).toBe(true);
     });
 
@@ -32,16 +36,16 @@ describe("Beacons API Gateway", () => {
       (axios as any).post.mockImplementation(() => {
         throw new Error();
       });
-      const expected = await gateway.sendRegistration(json, token);
+      const expected = await gateway.sendRegistration(json);
       expect(expected).toBe(false);
     });
 
     it("should send the JSON to the correct url", async () => {
       const expectedUrl = `${apiUrl}/${endpoint}`;
-      await gateway.sendRegistration(json, token);
+      await gateway.sendRegistration(json);
       expect((axios as any).post).toHaveBeenLastCalledWith(
         expectedUrl,
-        json,
+        expect.anything(),
         expect.anything()
       );
     });
@@ -59,7 +63,7 @@ describe("Beacons API Gateway", () => {
     });
 
     it("should return true if it deleted the entity successfully", async () => {
-      const expected = await gateway.deleteBeacon(json, token);
+      const expected = await gateway.deleteBeacon(json);
       expect(expected).toBe(true);
     });
 
@@ -68,7 +72,7 @@ describe("Beacons API Gateway", () => {
         throw new Error();
       });
 
-      const expected = await gateway.deleteBeacon(json, token);
+      const expected = await gateway.deleteBeacon(json);
       expect(expected).toBe(false);
     });
 
@@ -80,7 +84,7 @@ describe("Beacons API Gateway", () => {
         reason: "Unused on my boat anymore",
       };
 
-      await gateway.deleteBeacon(json, token);
+      await gateway.deleteBeacon(json);
       expect((axios as any).patch).toHaveBeenLastCalledWith(
         expectedUrl,
         expectedJson,

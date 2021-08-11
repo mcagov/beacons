@@ -18,11 +18,15 @@ export const givenIHaveACookieSetAndIVisit = (url: string): void => {
 export const givenIHaveACookieSetAndHaveSignedInIVisit = (
   url: string
 ): void => {
+  givenIHaveACookieSetAndHaveSignedIn();
+  cy.visit(url);
+};
+
+export const givenIHaveACookieSetAndHaveSignedIn = (): void => {
   cy.setCookie("submissionId", v4());
   cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
     log: false,
   });
-  cy.visit(url);
 };
 
 export const givenIAmAt = (url: string): void => {
@@ -30,7 +34,7 @@ export const givenIAmAt = (url: string): void => {
 };
 
 export const givenIHaveBeenTo = givenIAmAt;
-export const andIHaveBeenTo = givenIAmAt;
+export const whenIAmAt = givenIAmAt;
 export const andIAmAt = givenIAmAt;
 export const iAmAt = givenIAmAt;
 

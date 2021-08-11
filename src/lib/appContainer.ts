@@ -9,7 +9,6 @@ import { addNewUseToDraftRegistration } from "../useCases/addNewUseToDraftRegist
 import { authenticateUser } from "../useCases/authenticateUser";
 import { deleteBeacon } from "../useCases/deleteBeacon";
 import { deleteCachedUse } from "../useCases/deleteCachedUse";
-import { getAccessToken } from "../useCases/getAccessToken";
 import { getAccountHolderId } from "../useCases/getAccountHolderId";
 import { getBeaconsByAccountHolderId } from "../useCases/getBeaconsByAccountHolderId";
 import { getDraftRegistration } from "../useCases/getDraftRegistration";
@@ -37,9 +36,6 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get saveDraftRegistration() {
       return saveDraftRegistration(this);
     },
-    get getAccessToken() {
-      return getAccessToken(this);
-    },
     get authenticateUser() {
       return authenticateUser(this);
     },
@@ -66,26 +62,29 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
 
     /* Gateways */
-    get beaconsApiAuthGateway() {
-      return new AadAuthGateway();
+    get beaconGateway() {
+      return new BeaconsApiBeaconGateway(
+        process.env.API_URL,
+        new AadAuthGateway()
+      );
     },
-    get basicAuthGateway() {
-      return new BasicAuthGateway();
-    },
-    get beaconsApiGateway() {
-      return new BeaconsApiBeaconGateway(process.env.API_URL);
-    },
-    get govNotifyGateway() {
+    get emailServiceGateway() {
       return new GovNotifyEmailServiceGateway(process.env.GOV_NOTIFY_API_KEY);
     },
-    get accountHolderApiGateway() {
-      return new BeaconsApiAccountHolderGateway(process.env.API_URL);
+    get accountHolderGateway() {
+      return new BeaconsApiAccountHolderGateway(
+        process.env.API_URL,
+        new AadAuthGateway()
+      );
+    },
+    get draftRegistrationGateway() {
+      return new RedisDraftRegistrationGateway();
     },
     get NextAuthUserSessionGateway() {
       return new NextAuthUserSessionGateway();
     },
-    get draftRegistrationGateway() {
-      return new RedisDraftRegistrationGateway();
+    get basicAuthGateway() {
+      return new BasicAuthGateway();
     },
 
     /* Mockable utilities */
