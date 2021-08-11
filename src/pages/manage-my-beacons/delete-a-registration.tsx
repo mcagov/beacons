@@ -3,33 +3,52 @@ import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormFieldset, FormGroup, FormLegend } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
+import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { Beacon } from "../../entities/Beacon";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { PageURLs } from "../../lib/urls";
+import { prettyUseName } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { Rule } from "../../router/rules/Rule";
 
 export interface DeleteRegistrationProps {
   previousPageURL: PageURLs;
-  registration: Beacon;
+  beacon: Beacon;
   showCookieBanner: boolean;
 }
 
 export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
   previousPageURL,
-  registration,
+  beacon,
   showCookieBanner,
 }: DeleteRegistrationProps): JSX.Element => {
-  const pageHeading =
-    "Are you sure you want to delete this beacon registration from your account?";
   return (
     <BeaconsForm
       previousPageUrl={previousPageURL}
       pageHeading="Are you sure you want to delete this beacon registration from your account?"
       showCookieBanner={showCookieBanner}
     >
+      <SummaryList>
+        <SummaryListItem labelText="Beacon information">
+          {beacon.manufacturer} <br />
+          {beacon.model} <br />
+          Hex ID/UIN: {beacon.hexId}
+        </SummaryListItem>
+        <SummaryListItem labelText="Used for">
+          {beacon.uses.map((use) => (
+            <>
+              {prettyUseName({
+                environment: use.environment,
+                purpose: use.purpose,
+                activity: use.activity,
+              })}
+              <br />
+            </>
+          ))}
+        </SummaryListItem>
+      </SummaryList>
       <FormFieldset>
         <FormLegend>Tell us why</FormLegend>
         <FormGroup>
@@ -54,12 +73,12 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfUserViewedDeleteRegistrationPage_DisplayPage(context),
+      new WhenUserViewsDeleteRegistrationPage_ThenDisplayPage(context),
     ]).execute();
   })
 );
 
-class IfUserViewedDeleteRegistrationPage_DisplayPage implements Rule {
+class WhenUserViewsDeleteRegistrationPage_ThenDisplayPage implements Rule {
   private context: BeaconsGetServerSidePropsContext;
 
   constructor(context: BeaconsGetServerSidePropsContext) {
@@ -82,7 +101,7 @@ class IfUserViewedDeleteRegistrationPage_DisplayPage implements Rule {
     return {
       props: {
         previousPageURL: PageURLs.accountHome,
-        registration: registrationToBeDeleted,
+        beacon: registrationToBeDeleted,
         showCookieBanner: true,
       },
     };
