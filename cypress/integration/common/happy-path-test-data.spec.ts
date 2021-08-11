@@ -4,6 +4,14 @@ import {
   Purpose,
 } from "../../../src/lib/deprecatedRegistration/types";
 
+export const testAccountDetails = {
+  fullName: "Test User",
+  telephoneNumber: "07800505999",
+  addressLine1: "10 Downing Street",
+  townOrCity: "London",
+  postcode: "SW1A 2AA",
+};
+
 export const testBeaconAndOwnerData = {
   beaconDetails: {
     manufacturer: "Ocean Signal",
