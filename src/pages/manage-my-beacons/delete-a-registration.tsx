@@ -1,7 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
-import { LinkButton } from "../../components/Button";
+import { Button, LinkButton } from "../../components/Button";
 import { FormFieldset, FormGroup, FormLegend } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
@@ -31,6 +31,12 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
       previousPageUrl={previousPageURL}
       pageHeading="Are you sure you want to delete this beacon registration from your account?"
       showCookieBanner={showCookieBanner}
+      continueButton={
+        <Button
+          buttonText="Delete this registration"
+          classes="govuk-button--warning govuk-!-margin-right-8"
+        />
+      }
       cancelButton={
         <LinkButton
           buttonText="Cancel"

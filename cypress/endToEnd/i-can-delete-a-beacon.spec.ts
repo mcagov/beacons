@@ -3,6 +3,7 @@ import { PageURLs } from "../../src/lib/urls";
 import { prettyUseName } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
+  andIClickTheButtonContaining,
   givenIHaveACookieSetAndHaveSignedIn,
   iAmAt,
   whenIAmAt,
@@ -30,6 +31,13 @@ describe("As an account holder", () => {
       singleBeaconRegistration.hexId,
       singleBeaconRegistration.ownerFullName
     );
+
+    whenIClickTheDeleteButtonForTheRegistrationWithHexId(
+      singleBeaconRegistration.hexId
+    );
+    andIClickTheButtonContaining("Delete");
+    iAmGivenAConfirmationMessage();
+    iAmGivenAReferenceNumber();
   });
 });
 
@@ -67,4 +75,12 @@ const iAmAskedIfIAmSureIWantToDeleteMyRegistration = (
   registration.uses.forEach((use) => {
     cy.get("main").contains(prettyUseName(use));
   });
+};
+
+const iAmGivenAConfirmationMessage = () => {
+  cy.get("main").contains("Registration deleted");
+};
+
+const iAmGivenAReferenceNumber = () => {
+  cy.get("main").contains("Your reference number");
 };
