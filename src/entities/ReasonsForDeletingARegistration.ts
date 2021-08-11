@@ -1,7 +1,7 @@
 export enum ReasonsForDeletingARegistration {
-  Sold = "SOLD",
-  Destroyed = "DESTROYED",
-  Replaced = "REPLACED",
-  IncorrectlyRegistered = "INCORRECTLY_REGISTERED",
-  Other = "OTHER",
+  SOLD = "SOLD",
+  DESTROYED = "DESTROYED",
+  REPLACED = "REPLACED",
+  INCORRECTLY_REGISTERED = "INCORRECTLY_REGISTERED",
+  OTHER = "OTHER",
 }

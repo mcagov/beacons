@@ -5,6 +5,7 @@ import { FormFieldset, FormGroup, FormLegend } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { Beacon } from "../../entities/Beacon";
+import { ReasonsForDeletingARegistration } from "../../entities/ReasonsForDeletingARegistration";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
@@ -50,18 +51,38 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
         </SummaryListItem>
       </SummaryList>
       <FormFieldset>
-        <FormLegend>Tell us why</FormLegend>
+        <FormLegend size="medium">Tell us why</FormLegend>
         <FormGroup>
           <RadioList>
             <RadioListItem
-              id="sold"
-              value="sold"
+              name="reason-for-deletion"
+              id={ReasonsForDeletingARegistration.SOLD.toLowerCase()}
+              value={ReasonsForDeletingARegistration.SOLD}
               label="I have sold this beacon"
             />
             <RadioListItem
-              id="destroy"
-              value="sold"
-              label="I have sold this beacon"
+              name="reason-for-deletion"
+              id={ReasonsForDeletingARegistration.DESTROYED.toLowerCase()}
+              value={ReasonsForDeletingARegistration.DESTROYED}
+              label="This beacon has been destroyed"
+            />
+            <RadioListItem
+              name="reason-for-deletion"
+              id={ReasonsForDeletingARegistration.REPLACED.toLowerCase()}
+              value={ReasonsForDeletingARegistration.REPLACED}
+              label="This beacons has been replaced by another beacon"
+            />
+            <RadioListItem
+              name="reason-for-deletion"
+              id={ReasonsForDeletingARegistration.INCORRECTLY_REGISTERED.toLowerCase()}
+              value={ReasonsForDeletingARegistration.INCORRECTLY_REGISTERED}
+              label="This beacon was wrongly matched to my email address"
+            />
+            <RadioListItem
+              name="reason-for-deletion"
+              id={ReasonsForDeletingARegistration.OTHER.toLowerCase()}
+              value={ReasonsForDeletingARegistration.OTHER}
+              label="Other"
             />
           </RadioList>
         </FormGroup>
