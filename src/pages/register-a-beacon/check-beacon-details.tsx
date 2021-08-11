@@ -101,7 +101,8 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
     >
       <Image
         src="/assets/mca_images/beacon_hex_id.png"
-        alt="Where to find your beacon's hexadecimal ID or UIN"
+        alt="This image illustrates what a beacon's HEX ID or UIN number looks like on an actual
+        beacon. The example HEX ID or UIN here is 1D0EA08C52FFBFF."
         height={640}
         width={960}
       />
