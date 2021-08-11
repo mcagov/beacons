@@ -14,7 +14,7 @@ import { Beacon } from "../../entities/Beacon";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { PageURLs } from "../../lib/urls";
+import { PageURLs, queryParams } from "../../lib/urls";
 import { formatUses } from "../../lib/writingStyle";
 
 export interface YourBeaconRegistyAccountPageProps {
@@ -217,23 +217,31 @@ interface BeaconRowProps {
 
 const BeaconRow: FunctionComponent<BeaconRowProps> = ({
   beacon,
-}: BeaconRowProps): JSX.Element => (
-  <>
-    <tr className="govuk-table__row">
-      <th scope="row" className="govuk-table__header">
-        {beacon.hexId}
-      </th>
-      <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
-      <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
-      <td className="govuk-table__cell">{beacon.registeredDate}</td>
-      <td className="govuk-table__cell">
-        <a href="#" style={{ color: "#d4351c" }}>
-          Delete
-        </a>
-      </td>
-    </tr>
-  </>
-);
+}: BeaconRowProps): JSX.Element => {
+  const confirmBeforeDelete = (registrationId: string) =>
+    PageURLs.deleteRegistration +
+    queryParams({
+      id: registrationId,
+    });
+
+  return (
+    <>
+      <tr className="govuk-table__row">
+        <th scope="row" className="govuk-table__header">
+          {beacon.hexId}
+        </th>
+        <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
+        <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
+        <td className="govuk-table__cell">{beacon.registeredDate}</td>
+        <td className="govuk-table__cell">
+          <a href={confirmBeforeDelete(beacon.id)} style={{ color: "#d4351c" }}>
+            Delete
+          </a>
+        </td>
+      </tr>
+    </>
+  );
+};
 
 const RegisterANewBeacon: FunctionComponent = (): JSX.Element => (
   <>

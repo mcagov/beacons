@@ -1,4 +1,6 @@
+import { Registration } from "../../src/entities/Registration";
 import { PageURLs } from "../../src/lib/urls";
+import { prettyUseName } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
   givenIHaveACookieSetAndHaveSignedIn,
@@ -19,7 +21,7 @@ describe("As an account holder", () => {
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
       singleBeaconRegistration.hexId
     );
-    // iAmAskedIfIAmSureIWantToDeleteMyRegistration();
+    iAmAskedIfIAmSureIWantToDeleteMyRegistration(singleBeaconRegistration);
   });
 });
 
@@ -41,4 +43,20 @@ const whenIClickTheDeleteButtonForTheRegistrationWithHexId = (
     .parent()
     .contains(/delete/i)
     .click();
+};
+
+const iAmAskedIfIAmSureIWantToDeleteMyRegistration = (
+  registration: Registration
+) => {
+  cy.get("h1").contains(/Are you sure/i);
+
+  // Plays back beacon information to the Account Holder
+  cy.get("main").contains(registration.manufacturer);
+  cy.get("main").contains(registration.model);
+  cy.get("main").contains(registration.hexId);
+
+  // Plays back what the beacon is used for to the Account Holder
+  registration.uses.forEach((use) => {
+    cy.get("main").contains(prettyUseName(use));
+  });
 };
