@@ -1,9 +1,10 @@
 import { GetServerSidePropsResult } from "next";
 import { DraftRegistration } from "../../entities/DraftRegistration";
+import { showCookieBanner } from "../../lib/cookies";
 import { withoutErrorMessages } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { acceptRejectCookieId, formSubmissionCookieId } from "../../lib/types";
+import { formSubmissionCookieId } from "../../lib/types";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { Rule } from "./Rule";
 
@@ -46,8 +47,7 @@ export class IfUserViewedRegistrationForm<T> implements Rule {
           this.mapper.draftRegistrationToForm(await this.draftRegistration()),
           this.validationRules
         ),
-        showCookieBanner:
-          this.context.req.cookies[acceptRejectCookieId] || true,
+        showCookieBanner: showCookieBanner(this.context),
         ...(await this.additionalProps),
       },
     };
