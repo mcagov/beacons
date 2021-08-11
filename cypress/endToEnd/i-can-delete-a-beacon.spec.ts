@@ -9,14 +9,17 @@ import { iHavePreviouslyRegisteredABeacon } from "./common/i-have-previously-reg
 describe("As an account holder", () => {
   it("I can delete one of my beacons", () => {
     givenIHaveACookieSetAndHaveSignedIn();
-    andIHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
+    // andIHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
     whenIAmAt(PageURLs.accountHome);
     iCanSeeMyExistingRegistration(
       singleBeaconRegistration.hexId,
       singleBeaconRegistration.ownerFullName
     );
 
-    // TODO: Tests to delete an existing registration
+    whenIClickTheDeleteButtonForTheRegistrationWithHexId(
+      singleBeaconRegistration.hexId
+    );
+    // iAmAskedIfIAmSureIWantToDeleteMyRegistration();
   });
 });
 
@@ -28,4 +31,14 @@ export const iCanSeeMyExistingRegistration = (
 ): void => {
   cy.get("main").contains(hexId);
   cy.get("main").contains(ownerFullName);
+};
+
+const whenIClickTheDeleteButtonForTheRegistrationWithHexId = (
+  hexId: string
+) => {
+  cy.get("tr")
+    .contains(hexId)
+    .parent()
+    .contains(/delete/i)
+    .click();
 };

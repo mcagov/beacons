@@ -197,6 +197,9 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
           <th scope="col" className="govuk-table__header">
             Registered
           </th>
+          <th scope="col" className="govuk-table__header">
+            Actions
+          </th>
         </tr>
       </thead>
       <tbody className="govuk-table__body">
@@ -223,6 +226,11 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
       <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
       <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
       <td className="govuk-table__cell">{beacon.registeredDate}</td>
+      <td className="govuk-table__cell">
+        <a href="#" style={{ color: "#d4351c" }}>
+          Delete
+        </a>
+      </td>
     </tr>
   </>
 );
