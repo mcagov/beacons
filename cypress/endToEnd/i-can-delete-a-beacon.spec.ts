@@ -4,7 +4,9 @@ import { prettyUseName } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
   givenIHaveACookieSetAndHaveSignedIn,
+  iAmAt,
   whenIAmAt,
+  whenIClickTheButtonContaining,
 } from "../integration/common/selectors-and-assertions.spec";
 import { iHavePreviouslyRegisteredABeacon } from "./common/i-have-previously-registered-a-beacon.spec";
 
@@ -22,6 +24,12 @@ describe("As an account holder", () => {
       singleBeaconRegistration.hexId
     );
     iAmAskedIfIAmSureIWantToDeleteMyRegistration(singleBeaconRegistration);
+    whenIClickTheButtonContaining("Cancel");
+    iAmAt(PageURLs.accountHome);
+    iCanSeeMyExistingRegistration(
+      singleBeaconRegistration.hexId,
+      singleBeaconRegistration.ownerFullName
+    );
   });
 });
 
