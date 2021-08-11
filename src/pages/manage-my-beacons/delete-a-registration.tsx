@@ -7,9 +7,15 @@ import { RadioList, RadioListItem } from "../../components/RadioList";
 import { SummaryList, SummaryListItem } from "../../components/SummaryList";
 import { Beacon } from "../../entities/Beacon";
 import { ReasonsForDeletingARegistration } from "../../entities/ReasonsForDeletingARegistration";
+import { FieldManager } from "../../lib/form/FieldManager";
+import { FormManager } from "../../lib/form/FormManager";
+import { isInvalid } from "../../lib/form/lib";
+import { Validators } from "../../lib/form/Validators";
+import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { redirectUserTo } from "../../lib/redirectUserTo";
 import { PageURLs } from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
@@ -19,6 +25,10 @@ export interface DeleteRegistrationProps {
   previousPageURL: PageURLs;
   beacon: Beacon;
   showCookieBanner: boolean;
+}
+
+interface DeleteRegistrationForm {
+  reasonForDeletion: string;
 }
 
 export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
@@ -142,5 +152,49 @@ class WhenUserViewsDeleteRegistrationPage_ThenDisplayPage implements Rule {
     };
   }
 }
+
+class WhenUserTriesToDeleteWithoutSelectingAReason_ThenShowErrorMessage {
+  private context: BeaconsGetServerSidePropsContext;
+  private validationRules: FormManagerFactory;
+
+  constructor(
+    context: BeaconsGetServerSidePropsContext,
+    validationRules: FormManagerFactory
+  ) {
+    this.context = context;
+    this.validationRules = validationRules;
+  }
+
+  async condition(): Promise<boolean> {
+    const formValues = await this.context.container.parseFormDataAs(
+      this.context.req
+    );
+
+    return (
+      this.context.req.method === "POST" &&
+      isInvalid(formValues, this.validationRules)
+    );
+  }
+
+  async action(): Promise<GetServerSidePropsResult<DeleteRegistrationProps>> {
+    const { deleteBeacon } = this.context.container;
+
+    // Carry out delete beacon action
+    await deleteBeacon();
+
+    // Redirect to confirmation page if successful
+    return redirectUserTo(PageURLs.accountHome);
+  }
+}
+
+const validationRules = ({
+  reasonForDeletion,
+}: DeleteRegistrationForm): FormManager => {
+  return new FormManager({
+    reasonForDeletion: new FieldManager(reasonForDeletion, [
+      Validators.required("Enter a reason for deleting your registration"),
+    ]),
+  });
+};
 
 export default DeleteRegistration;
