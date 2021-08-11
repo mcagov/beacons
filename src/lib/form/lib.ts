@@ -13,6 +13,11 @@ export function isValid(
   return formManager.isValid();
 }
 
+export const isInvalid = (
+  form: FormSubmission,
+  rules: FormManagerFactory
+): boolean => !isValid(form, rules);
+
 export function withErrorMessages(
   form: FormSubmission,
   rules: FormManagerFactory
