@@ -120,7 +120,7 @@ describe("UpdateAccount", () => {
         accountHolderGateway: accountHolderApiGateway,
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "new fullName",
-          telephoneNumber: "new telephoneNumber",
+          telephoneNumber: "07713812958",
           addressLine1: "new addressLine1",
           addressLine2: "new addressLine2",
           townOrCity: "new townOrCity",

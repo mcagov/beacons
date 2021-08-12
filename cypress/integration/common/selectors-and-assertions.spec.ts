@@ -98,6 +98,8 @@ export const whenIClearTheInput = (selector: string): void => {
   cy.get(selector).clear();
 };
 
+export const givenIHaveClearedTheInput = whenIClearTheInput;
+
 export const thenTheUrlShouldContain = (urlPath: string): void => {
   cy.url().should("include", urlPath);
 };
