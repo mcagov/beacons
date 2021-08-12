@@ -6,6 +6,7 @@ import {
   andIClickTheButtonContaining,
   givenIHaveACookieSetAndHaveSignedIn,
   iAmAt,
+  thenIShouldSeeFormErrors,
   whenIAmAt,
   whenIClickTheButtonContaining,
 } from "../integration/common/selectors-and-assertions.spec";
@@ -35,9 +36,14 @@ describe("As an account holder", () => {
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
       singleBeaconRegistration.hexId
     );
+    andIDontSelectAReason();
+    andIClickTheButtonContaining("Delete");
+    thenIShouldSeeFormErrors("Enter a reason for deleting your registration");
+
+    whenISelectAReasonForDeletion();
     andIClickTheButtonContaining("Delete");
     iAmGivenAConfirmationMessage();
-    iAmGivenAReferenceNumber();
+    // iAmGivenAReferenceNumber();
   });
 });
 
@@ -83,4 +89,10 @@ const iAmGivenAConfirmationMessage = () => {
 
 const iAmGivenAReferenceNumber = () => {
   cy.get("main").contains("Your reference number");
+};
+
+const andIDontSelectAReason = () => null;
+
+const whenISelectAReasonForDeletion = () => {
+  cy.get("#incorrectly_registered").check();
 };
