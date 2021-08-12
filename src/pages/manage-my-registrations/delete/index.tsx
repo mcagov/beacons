@@ -22,7 +22,7 @@ import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/Beacon
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
 import { redirectUserTo } from "../../../lib/redirectUserTo";
-import { PageURLs, queryParams } from "../../../lib/urls";
+import { PageURLs } from "../../../lib/urls";
 import { prettyUseName } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { Rule } from "../../../router/rules/Rule";
@@ -275,7 +275,8 @@ class GivenUserHasSelectedAReason_WhenUserTriesToDeleteARegistration_ThenDeleteT
       )
     ).success;
 
-    return redirectUserTo("/" + queryParams({ success }));
+    if (success) return redirectUserTo(PageURLs.deleteRegistrationSuccess);
+    else redirectUserTo(PageURLs.deleteRegistrationFailure);
   }
 
   private async form(): Promise<DeleteRegistrationForm> {
