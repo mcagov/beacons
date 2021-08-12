@@ -18,11 +18,6 @@ describe("As an account holder", () => {
   const countySelector = "#county";
   const postcodeSelector = "#postcode";
 
-  beforeEach(() => {
-    givenIHaveACookieSetAndHaveSignedInIVisit(PageURLs.updateAccount);
-    givenIHaveClearedAllInputFields();
-  });
-
   const whenIClickContinue = () => {
     cy.contains("Save these account details").click();
   };
@@ -37,6 +32,11 @@ describe("As an account holder", () => {
       postcodeSelector,
     ].forEach((input) => givenIHaveClearedTheInput(input));
   };
+
+  beforeEach(() => {
+    givenIHaveACookieSetAndHaveSignedInIVisit(PageURLs.updateAccount);
+    givenIHaveClearedAllInputFields();
+  });
 
   it("should allow the user to update their information", () => {
     whenIType("Mrs Beacon", fullNameSelector);

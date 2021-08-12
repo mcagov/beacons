@@ -18,7 +18,7 @@ export const accountDetailsResponseJson = (
         authId: "replace-with-test-auth-id",
         email: "testy@mctestface.com",
         fullName,
-        telephoneNumber: "01178 657123",
+        telephoneNumber: "+447713812657",
         alternativeTelephoneNumber: "",
         addressLine1: "Flat 42",
         addressLine2: "Testington Towers",
