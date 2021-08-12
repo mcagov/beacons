@@ -18,6 +18,8 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
   changeUri,
   deleteUri,
 }: BeaconUseSectionProps): JSX.Element => {
+  const description = "The main use of this beacon";
+
   return (
     <>
       <div
@@ -36,12 +38,17 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
           {changeUri && (
             <AnchorLink
               href={changeUri}
+              description={description}
               classes="govuk-link--no-visited-state govuk-!-margin-right-4"
             >
               Change
             </AnchorLink>
           )}
-          {deleteUri && <WarningLink href={deleteUri}>Delete</WarningLink>}
+          {deleteUri && (
+            <WarningLink href={deleteUri} description={description}>
+              Delete
+            </WarningLink>
+          )}
         </div>
       </div>
 

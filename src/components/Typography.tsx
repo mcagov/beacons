@@ -11,6 +11,7 @@ interface SectionHeadingProps {
 
 interface AnchorLinkProps {
   href: string;
+  description?: string;
   children: ReactNode;
   classes?: string;
 }
@@ -39,16 +40,28 @@ export const SectionHeading: FunctionComponent<SectionHeadingProps> = ({
 
 export const AnchorLink: FunctionComponent<AnchorLinkProps> = ({
   href,
+  description,
   children,
   classes = "",
 }: AnchorLinkProps): JSX.Element => (
   <a href={href} className={"govuk-link " + classes}>
-    {children}
+    <>
+      {children}
+      {!!description && (
+        <span
+          data-testid="anchor-link-description"
+          className="govuk-visually-hidden"
+        >
+          {description}
+        </span>
+      )}
+    </>
   </a>
 );
 
 export const WarningLink: FunctionComponent<AnchorLinkProps> = ({
   href,
+  description,
   children,
 }: AnchorLinkProps): JSX.Element => (
   <a
@@ -56,7 +69,17 @@ export const WarningLink: FunctionComponent<AnchorLinkProps> = ({
     className="govuk-link govuk-link--no-visited-state"
     style={{ color: "#d4351c" }}
   >
-    {children}
+    <>
+      {children}
+      {!!description && (
+        <span
+          data-testid="warning-link-description"
+          className="govuk-visually-hidden"
+        >
+          {description}
+        </span>
+      )}
+    </>
   </a>
 );
 
