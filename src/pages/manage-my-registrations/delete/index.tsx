@@ -34,6 +34,10 @@ export interface DeleteRegistrationProps {
   previousPageURL?: PageURLs;
 }
 
+interface DeleteRegistrationForm {
+  reasonForDeletion: ReasonsForDeletingARegistration;
+}
+
 export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
   previousPageURL = PageURLs.accountHome,
   beacon,
@@ -84,7 +88,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
         <FormGroup errorMessages={form.fields.reasonForDeletion.errorMessages}>
           <RadioList>
             <RadioListItem
-              name="reason-for-deletion"
+              name="reasonForDeletion"
               id={ReasonsForDeletingARegistration.SOLD.toLowerCase()}
               value={ReasonsForDeletingARegistration.SOLD}
               defaultChecked={
@@ -94,7 +98,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
               label="I have sold this beacon"
             />
             <RadioListItem
-              name="reason-for-deletion"
+              name="reasonForDeletion"
               id={ReasonsForDeletingARegistration.DESTROYED.toLowerCase()}
               value={ReasonsForDeletingARegistration.DESTROYED}
               defaultChecked={
@@ -104,7 +108,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
               label="This beacon has been destroyed"
             />
             <RadioListItem
-              name="reason-for-deletion"
+              name="reasonForDeletion"
               id={ReasonsForDeletingARegistration.REPLACED.toLowerCase()}
               value={ReasonsForDeletingARegistration.REPLACED}
               defaultChecked={
@@ -114,7 +118,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
               label="This beacons has been replaced by another beacon"
             />
             <RadioListItem
-              name="reason-for-deletion"
+              name="reasonForDeletion"
               id={ReasonsForDeletingARegistration.INCORRECTLY_REGISTERED.toLowerCase()}
               value={ReasonsForDeletingARegistration.INCORRECTLY_REGISTERED}
               defaultChecked={
@@ -124,7 +128,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
               label="This beacon was wrongly matched to my email address"
             />
             <RadioListItem
-              name="reason-for-deletion"
+              name="reasonForDeletion"
               id={ReasonsForDeletingARegistration.OTHER.toLowerCase()}
               value={ReasonsForDeletingARegistration.OTHER}
               defaultChecked={
@@ -210,7 +214,7 @@ class GivenUserHasNotSelectedAReason_WhenUserTriesToDeleteARegistration_ThenShow
   async condition(): Promise<boolean> {
     return (
       this.context.req.method === "POST" &&
-      isInvalid(this.form(), this.validationRules)
+      isInvalid(await this.form(), this.validationRules)
     );
   }
 
@@ -254,7 +258,7 @@ class GivenUserHasSelectedAReason_WhenUserTriesToDeleteARegistration_ThenDeleteT
   public async condition(): Promise<boolean> {
     return (
       this.context.req.method === "POST" &&
-      isValid(this.form(), this.validationRules)
+      isValid(await this.form(), this.validationRules)
     );
   }
 
@@ -274,8 +278,8 @@ class GivenUserHasSelectedAReason_WhenUserTriesToDeleteARegistration_ThenDeleteT
     return redirectUserTo("/" + queryParams({ success }));
   }
 
-  private async form(): Promise<FormJSON> {
-    return await this.context.container.parseFormDataAs<FormJSON>(
+  private async form(): Promise<DeleteRegistrationForm> {
+    return await this.context.container.parseFormDataAs<DeleteRegistrationForm>(
       this.context.req
     );
   }
@@ -293,16 +297,13 @@ class GivenUserHasSelectedAReason_WhenUserTriesToDeleteARegistration_ThenDeleteT
   }
 
   private async reasonForDeletion(): Promise<ReasonsForDeletingARegistration> {
-    return (await this.form()).fields.reasonForDeletingARegistration
-      .value as ReasonsForDeletingARegistration;
+    return (await this.form()).reasonForDeletion;
   }
 }
 
 const validationRules = ({
   reasonForDeletion,
-}: {
-  reasonForDeletion: string;
-}): FormManager => {
+}: DeleteRegistrationForm): FormManager => {
   return new FormManager({
     reasonForDeletion: new FieldManager(reasonForDeletion, [
       Validators.required("Enter a reason for deleting your registration"),
