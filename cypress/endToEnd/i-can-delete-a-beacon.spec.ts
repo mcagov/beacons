@@ -15,6 +15,7 @@ import { iHavePreviouslyRegisteredABeacon } from "./common/i-have-previously-reg
 describe("As an account holder", () => {
   it("I can delete one of my beacons", () => {
     givenIHaveACookieSetAndHaveSignedIn();
+    // randomise HexID to remove test bleed, update singleBeaconRegistration
     // andIHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
     whenIAmAt(PageURLs.accountHome);
     iCanSeeMyExistingRegistration(
@@ -44,6 +45,9 @@ describe("As an account holder", () => {
     andIClickTheButtonContaining("Delete");
     iAmGivenAConfirmationMessage();
     // iAmGivenAReferenceNumber();
+
+    // myRegistrationNoLongerExists(); // Go back to Account Home and assert hexId doesn't appear
+    // Teardown: clear database
   });
 });
 
