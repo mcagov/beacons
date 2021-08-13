@@ -27,6 +27,11 @@ export const givenIHaveEnteredMyRequiredPersonalDetails = (): void => {
     testBeaconAndOwnerData.ownerDetails.fullName,
     "#ownerFullName"
   );
+  givenIHaveTyped(
+    testBeaconAndOwnerData.ownerDetails.telephoneNumber,
+    "#ownerTelephoneNumber"
+  );
+  givenIHaveTyped(testBeaconAndOwnerData.ownerDetails.email, "#ownerEmail");
   givenIHaveClickedContinue();
 };
 export const givenIHaveEnteredMyAddressDetails = (): void => {
