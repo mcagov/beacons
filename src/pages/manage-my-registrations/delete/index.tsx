@@ -199,7 +199,9 @@ class WhenUserViewsDeleteRegistrationPage_ThenDisplayPage implements Rule {
   }
 }
 
-class GivenUserHasNotSelectedAReason_WhenUserTriesToDeleteARegistration_ThenShowErrorMessage {
+class GivenUserHasNotSelectedAReason_WhenUserTriesToDeleteARegistration_ThenShowErrorMessage
+  implements Rule
+{
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
 
