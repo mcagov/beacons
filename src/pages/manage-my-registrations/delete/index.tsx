@@ -3,6 +3,7 @@ import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../../components/BeaconsForm";
 import { Button, LinkButton } from "../../../components/Button";
 import { FormFieldset, FormGroup, FormLegend } from "../../../components/Form";
+import { Input } from "../../../components/Input";
 import { RadioList, RadioListItem } from "../../../components/RadioList";
 import { SummaryList, SummaryListItem } from "../../../components/SummaryList";
 import { Beacon } from "../../../entities/Beacon";
@@ -86,7 +87,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
       <FormFieldset>
         <FormLegend size="medium">Tell us why</FormLegend>
         <FormGroup errorMessages={form.fields.reasonForDeletion.errorMessages}>
-          <RadioList>
+          <RadioList conditional={true}>
             <RadioListItem
               name="reasonForDeletion"
               id={ReasonsForDeletingARegistration.SOLD.toLowerCase()}
@@ -135,8 +136,19 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
                 form.fields.reasonForDeletion.value ===
                 ReasonsForDeletingARegistration.OTHER
               }
-              label="Other"
-            />
+              label="Another reason"
+              conditional={true}
+            >
+              <FormGroup
+                errorMessages={form.fields.reasonForDeletion.errorMessages}
+              >
+                <Input
+                  id="anotherReasonText"
+                  label="Tell us why you are deleting this beacon registration"
+                  defaultValue={form.fields.reasonForDeletion.value}
+                />
+              </FormGroup>
+            </RadioListItem>
           </RadioList>
         </FormGroup>
       </FormFieldset>

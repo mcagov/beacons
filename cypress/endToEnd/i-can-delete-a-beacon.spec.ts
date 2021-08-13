@@ -48,7 +48,11 @@ describe("As an account holder", () => {
     andIClickTheButtonContaining("Delete");
     thenIShouldSeeFormErrors("Enter a reason for deleting your registration");
 
-    whenISelectAReasonForDeletion();
+    whenISelectTheOtherReasonForDeletion();
+    andIDontEnterAReasonInTheResultingTextbox();
+    thenIShouldSeeFormErrors("Enter a reason for deleting your registration");
+
+    whenIEnterMyReasonInTheResultingTextbox("Lost overboard");
     andIClickTheButtonContaining("Delete");
     iAmGivenAConfirmationMessage();
 
@@ -96,8 +100,14 @@ const iAmGivenAConfirmationMessage = () => {
 
 const andIDontSelectAReason = () => null;
 
-const whenISelectAReasonForDeletion = () => {
-  cy.get("#incorrectly_registered").check();
+const andIDontEnterAReasonInTheResultingTextbox = () => null;
+
+const whenISelectTheOtherReasonForDeletion = () => {
+  cy.get("#other").check();
+};
+
+const whenIEnterMyReasonInTheResultingTextbox = (reason: string) => {
+  cy.get("form input[type=text]").type(reason);
 };
 
 const whenIGoBackToAccountHome = () => {
