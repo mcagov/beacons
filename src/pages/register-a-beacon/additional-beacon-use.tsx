@@ -100,7 +100,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   );
 };
 
-const confirmBeforeDelete = (use, index) =>
+const confirmBeforeDelete = (use: DraftBeaconUse, index: number) =>
   PageURLs.areYouSure +
   queryParams({
     action: "delete your " + prettyUseName(use) + " use",
