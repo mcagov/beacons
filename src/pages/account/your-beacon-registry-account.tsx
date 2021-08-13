@@ -19,17 +19,17 @@ import { redirectUserTo } from "../../lib/redirectUserTo";
 import { PageURLs, queryParams } from "../../lib/urls";
 import { formatUses } from "../../lib/writingStyle";
 
-export interface YourBeaconRegistyAccountPageProps {
+export interface YourBeaconRegistryAccountPageProps {
   id?: string;
   accountHolderDetails: AccountHolder;
   beacons: Beacon[];
 }
 
-export const YourBeaconRegistyAccount: FunctionComponent<YourBeaconRegistyAccountPageProps> =
+export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAccountPageProps> =
   ({
     accountHolderDetails,
     beacons,
-  }: YourBeaconRegistyAccountPageProps): JSX.Element => {
+  }: YourBeaconRegistryAccountPageProps): JSX.Element => {
     const pageHeading = "Your Beacon Registy Account";
 
     return (
@@ -286,4 +286,4 @@ export const getServerSideProps: GetServerSideProps = withSession(
   })
 );
 
-export default YourBeaconRegistyAccount;
+export default YourBeaconRegistryAccount;
