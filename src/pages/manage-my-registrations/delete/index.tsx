@@ -243,7 +243,9 @@ class GivenUserHasNotSelectedAReason_WhenUserTriesToDeleteARegistration_ThenShow
   }
 }
 
-class GivenUserHasSelectedAReason_WhenUserTriesToDeleteARegistration_ThenDeleteTheRegistration {
+class GivenUserHasSelectedAReason_WhenUserTriesToDeleteARegistration_ThenDeleteTheRegistration
+  implements Rule
+{
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
 
