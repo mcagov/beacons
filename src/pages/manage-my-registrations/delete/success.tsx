@@ -4,6 +4,7 @@ import { Grid } from "../../../components/Grid";
 import { Layout } from "../../../components/Layout";
 import { Panel } from "../../../components/Panel";
 import { GovUKBody, SectionHeading } from "../../../components/Typography";
+import styles from "../../../styles/delete-panel.module.scss";
 
 const Success: FunctionComponent = (): JSX.Element => {
   const pageHeading = "Registration deleted";
@@ -18,13 +19,7 @@ const Success: FunctionComponent = (): JSX.Element => {
         <Grid
           mainContent={
             <>
-              <Panel
-                title={pageHeading}
-                styles={{
-                  color: "#f3f2f1",
-                  background: "#0b0c0c",
-                }}
-              >
+              <Panel title={pageHeading} classes={styles.success}>
                 Your beacon is no longer registered with the Maritime &
                 Coastguard Agency
               </Panel>
