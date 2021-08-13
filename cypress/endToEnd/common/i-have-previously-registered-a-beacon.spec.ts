@@ -62,5 +62,9 @@ export const iHavePreviouslyRegisteredABeacon = async (
 };
 
 export const randomUkEncodedHexId = (): string => {
-  return "1D0" + Math.random().toString(16).substr(2, 12).toUpperCase();
+  const ukEncodingCountryCode = "1D0";
+  return (
+    ukEncodingCountryCode +
+    Math.random().toString(16).substr(2, 12).toUpperCase()
+  );
 };

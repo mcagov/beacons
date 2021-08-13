@@ -6,6 +6,7 @@ import {
   andIClickTheButtonContaining,
   givenIHaveACookieSetAndHaveSignedIn,
   iAmAt,
+  iCanSeeAButtonContaining,
   thenIShouldSeeFormErrors,
   whenIAmAt,
   whenIClickTheButtonContaining,
@@ -24,13 +25,18 @@ describe("As an account holder", () => {
 
     givenIHaveACookieSetAndHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
+
     whenIAmAt(PageURLs.accountHome);
     iCanSeeMyExistingRegistration(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
       testRegistration.hexId
     );
-    iAmAskedIfIAmSureIWantToDeleteMyRegistration(testRegistration);
+    iAmAskedIfIAmSureIWantToDeleteMyRegistration();
+    iAmPresentedWithSomeRegistrationInformation_SoICanMakeSureIAmDeletingTheCorrectRegistration(
+      testRegistration
+    );
+
     whenIClickTheButtonContaining("Cancel");
     iAmAt(PageURLs.accountHome);
     iCanSeeMyExistingRegistration(testRegistration.hexId);
@@ -67,21 +73,22 @@ const whenIClickTheDeleteButtonForTheRegistrationWithHexId = (
     .click();
 };
 
-const iAmAskedIfIAmSureIWantToDeleteMyRegistration = (
-  registration: Registration
-) => {
+const iAmAskedIfIAmSureIWantToDeleteMyRegistration = () => {
   cy.get("h1").contains(/Are you sure/i);
-
-  // Plays back beacon information to the Account Holder
-  cy.get("main").contains(registration.manufacturer);
-  cy.get("main").contains(registration.model);
-  cy.get("main").contains(registration.hexId);
-
-  // Plays back what the beacon is used for to the Account Holder
-  registration.uses.forEach((use) => {
-    cy.get("main").contains(prettyUseName(use));
-  });
+  iCanSeeAButtonContaining("Cancel");
+  iCanSeeAButtonContaining("Delete");
 };
+
+const iAmPresentedWithSomeRegistrationInformation_SoICanMakeSureIAmDeletingTheCorrectRegistration =
+  (registration: Registration) => {
+    cy.get("main").contains(registration.manufacturer);
+    cy.get("main").contains(registration.model);
+    cy.get("main").contains(registration.hexId);
+
+    registration.uses.forEach((use) => {
+      cy.get("main").contains(prettyUseName(use));
+    });
+  };
 
 const iAmGivenAConfirmationMessage = () => {
   cy.get("main").contains("Registration deleted");
