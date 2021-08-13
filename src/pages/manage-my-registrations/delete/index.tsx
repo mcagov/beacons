@@ -30,6 +30,7 @@ export interface DeleteRegistrationProps {
 
 export interface DeleteRegistrationForm {
   reasonForDeletion: ReasonsForDeletingARegistration;
+  anotherReasonText: string;
 }
 
 export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({

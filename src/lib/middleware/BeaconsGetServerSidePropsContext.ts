@@ -3,6 +3,6 @@ import { BeaconsSession } from "../../gateways/NextAuthUserSessionGateway";
 import { IAppContainer } from "../IAppContainer";
 
 export type BeaconsGetServerSidePropsContext = GetServerSidePropsContext & {
-  container: IAppContainer;
+  container: Partial<IAppContainer>;
   session: BeaconsSession;
 };

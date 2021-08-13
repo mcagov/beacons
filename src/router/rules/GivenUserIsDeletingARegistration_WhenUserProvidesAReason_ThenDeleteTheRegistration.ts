@@ -64,7 +64,12 @@ export class GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDelete
     ).id;
   }
 
-  private async reasonForDeletion(): Promise<ReasonsForDeletingARegistration> {
+  private async reasonForDeletion(): Promise<string> {
+    const form = await this.form();
+
+    if (form.reasonForDeletion === ReasonsForDeletingARegistration.OTHER)
+      return form.anotherReasonText;
+
     return (await this.form()).reasonForDeletion;
   }
 }
