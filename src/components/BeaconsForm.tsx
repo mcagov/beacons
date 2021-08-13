@@ -47,8 +47,8 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   {pageTextComponent}
+                  {children}
                 </FormFieldset>
-                {children}
                 <HiddenFormMetadata />
               </FormGroup>
               <Button buttonText="Continue" />
