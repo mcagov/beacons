@@ -46,7 +46,9 @@ const definePageForm = ({
     ]),
     telephoneNumber: new FieldManager(telephoneNumber),
     addressLine1: new FieldManager(addressLine1, [
-      Validators.required("Building number and street is a required field"),
+      Validators.required(
+        "Address line one (building number and street name) is a required field"
+      ),
     ]),
     addressLine2: new FieldManager(addressLine2),
     townOrCity: new FieldManager(townOrCity, [
@@ -151,12 +153,16 @@ const AccountHolderAddress: FunctionComponent<{ form: FormJSON }> = ({
     <FormGroup errorMessages={form.fields.addressLine1.errorMessages}>
       <Input
         id="addressLine1"
-        label="Building number and street"
+        label="Address line one (building number and street name)"
         defaultValue={form.fields.addressLine1.value}
       />
     </FormGroup>
     <FormGroup>
-      <Input id="addressLine2" defaultValue={form.fields.addressLine2.value} />
+      <Input
+        id="addressLine2"
+        defaultValue={form.fields.addressLine2.value}
+        label="Address line two"
+      />
     </FormGroup>
     <FormGroup errorMessages={form.fields.townOrCity.errorMessages}>
       <Input
