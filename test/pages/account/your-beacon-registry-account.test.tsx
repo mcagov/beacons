@@ -1,5 +1,8 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
+import { v4 } from "uuid";
+import { BeaconsApiAccountHolderGateway } from "../../../src/gateways/BeaconsApiAccountHolderGateway";
+import { AuthGateway } from "../../../src/gateways/interfaces/AuthGateway";
 import { getAppContainer } from "../../../src/lib/appContainer";
 import { IAppContainer } from "../../../src/lib/IAppContainer";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
@@ -13,13 +16,25 @@ import { beaconFixtures } from "../../fixtures/beacons.fixture";
 import { manyBeaconsApiResponseFixture } from "../../fixtures/manyBeaconsApiResponse.fixture";
 
 describe("YourBeaconRegistryAccount", () => {
-  describe("GetServerSideProps", () => {
+  const mockAuthGateway: AuthGateway = {
+    getAccessToken: jest.fn().mockResolvedValue(v4()),
+  };
+  const mocks: Partial<IAppContainer> = {
+    accountHolderGateway: new BeaconsApiAccountHolderGateway(
+      process.env.API_URL,
+      mockAuthGateway
+    ),
+  };
+
+  describe("GetServerSideProps for user with full account details", () => {
     const server = setupServer(
       rest.get("*/account-holder/auth-id/:authId", (req, res, ctx) => {
         return res(ctx.json({ ...accountIdFromAuthIdResponseJson }));
       }),
       rest.get("*/account-holder/:accountId", (req, res, ctx) => {
-        return res(ctx.json({ ...accountDetailsResponseJson }));
+        return res(
+          ctx.json({ ...accountDetailsResponseJson("Testy McTestface") })
+        );
       }),
       rest.get("*/account-holder/:accountId/beacons", (req, res, ctx) => {
         return res(ctx.json({ ...manyBeaconsApiResponseFixture }));
@@ -34,9 +49,6 @@ describe("YourBeaconRegistryAccount", () => {
     });
 
     it("should contain correct account details for a given user", async () => {
-      const mocks: Partial<IAppContainer> = {
-        getAccessToken: jest.fn(),
-      };
       const container = getAppContainer(mocks as IAppContainer);
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: container as IAppContainer,
@@ -51,6 +63,41 @@ describe("YourBeaconRegistryAccount", () => {
         accountHolderFixture
       );
       expect(result["props"]["beacons"]).toEqual(beaconFixtures);
+    });
+  });
+
+  describe("GetServerSideProps for user with account detail missing", () => {
+    const server = setupServer(
+      rest.get("*/account-holder/auth-id/:authId", (req, res, ctx) => {
+        return res(ctx.json({ ...accountIdFromAuthIdResponseJson }));
+      }),
+      rest.get("*/account-holder/:accountId", (req, res, ctx) => {
+        return res(ctx.json({ ...accountDetailsResponseJson("") }));
+      }),
+      rest.get("*/account-holder/:accountId/beacons", (req, res, ctx) => {
+        return res(ctx.json({ ...manyBeaconsApiResponseFixture }));
+      })
+    );
+
+    beforeAll(() => {
+      server.listen();
+    });
+    afterAll(() => {
+      server.close();
+    });
+
+    it("should redirect to account updates if account details are invalid", async () => {
+      const container = getAppContainer(mocks as IAppContainer);
+      const context: Partial<BeaconsGetServerSidePropsContext> = {
+        container,
+        session: { user: { authId: "a-session-id" } },
+      };
+
+      const result = (await getServerSideProps(
+        context as BeaconsGetServerSidePropsContext
+      )) as any;
+
+      expect(result.redirect.destination).toEqual("/account/update-account");
     });
   });
 });

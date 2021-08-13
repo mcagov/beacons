@@ -6,6 +6,7 @@ import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
 import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { WarningText } from "../../components/WarningText";
+import { DraftRegistration } from "../../entities/DraftRegistration";
 import { verifyFormSubmissionCookieIsSet } from "../../lib/cookies";
 import { clearFormSubmissionCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
@@ -89,15 +90,20 @@ const ApplicationCompleteYourBeaconRegistryAccount: FunctionComponent =
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     /* Retrieve injected use case(s) */
-    const { submitRegistration, getAccountHolderId } = context.container;
+    const { getDraftRegistration, submitRegistration, getAccountHolderId } =
+      context.container;
 
     /* Page logic */
     if (!verifyFormSubmissionCookieIsSet(context))
       return redirectUserTo(PageURLs.start);
 
     try {
+      const draftRegistration: DraftRegistration = await getDraftRegistration(
+        context.req.cookies[formSubmissionCookieId]
+      );
+
       const result = await submitRegistration(
-        context.req.cookies[formSubmissionCookieId],
+        draftRegistration,
         await getAccountHolderId(context.session)
       );
 

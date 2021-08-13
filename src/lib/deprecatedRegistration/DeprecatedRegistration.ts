@@ -238,8 +238,8 @@ export class DeprecatedRegistration {
       moreDetails: use.moreDetails,
     };
 
-    if (Number.isInteger(use.maxCapacity))
-      serialisedUse["maxCapacity"] = use.maxCapacity;
+    if (Number.isInteger(+use.maxCapacity))
+      serialisedUse["maxCapacity"] = +use.maxCapacity;
 
     return serialisedUse;
   }

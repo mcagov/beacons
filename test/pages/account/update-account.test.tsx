@@ -1,5 +1,9 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
+import { v4 } from "uuid";
+import { BeaconsApiAccountHolderGateway } from "../../../src/gateways/BeaconsApiAccountHolderGateway";
+import { AccountHolderGateway } from "../../../src/gateways/interfaces/AccountHolderGateway";
+import { AuthGateway } from "../../../src/gateways/interfaces/AuthGateway";
 import { getAppContainer } from "../../../src/lib/appContainer";
 import { IAppContainer } from "../../../src/lib/IAppContainer";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
@@ -16,12 +20,23 @@ describe("UpdateAccount", () => {
         return res(ctx.json({ ...accountIdFromAuthIdResponseJson }));
       }),
       rest.get("*/account-holder/:accountId", (req, res, ctx) => {
-        return res(ctx.json({ ...accountDetailsResponseJson }));
+        return res(
+          ctx.json({ ...accountDetailsResponseJson("Testy McTestface") })
+        );
       }),
       rest.patch("*/account-holder/:accountId", (req, res, ctx) => {
-        return res(ctx.json({ ...accountDetailsResponseJson }));
+        return res(
+          ctx.json({ ...accountDetailsResponseJson("Testy McTestface") })
+        );
       })
     );
+
+    const mockAuthGateway: AuthGateway = {
+      getAccessToken: jest.fn().mockResolvedValue(v4()),
+    };
+
+    const accountHolderApiGateway: AccountHolderGateway =
+      new BeaconsApiAccountHolderGateway(process.env.API_URL, mockAuthGateway);
 
     beforeAll(() => {
       server.listen();
@@ -33,7 +48,7 @@ describe("UpdateAccount", () => {
     it("should return form with account details for current user on page GET", async () => {
       const mockRequest: any = { method: "GET" };
       const containerMocks: Partial<IAppContainer> = {
-        getAccessToken: jest.fn(),
+        accountHolderGateway: accountHolderApiGateway,
       };
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: getAppContainer(containerMocks as IAppContainer),
@@ -46,14 +61,14 @@ describe("UpdateAccount", () => {
       )) as any;
 
       const fields = result.props.form.fields;
-      expect(fields.fullName.value).toEqual("Tesy McTestface");
-      expect(fields.telephoneNumber.value).toEqual("01178 657123");
-      expect(fields.addressLine1.value).toEqual("Flat 42");
-      expect(fields.addressLine2.value).toEqual("Testington Towers");
-      expect(fields.townOrCity.value).toEqual("Testville");
-      expect(fields.county.value).toEqual("Testershire");
-      expect(fields.postcode.value).toEqual("TS1 23A");
-      expect(fields.email.value).toEqual("testy@mctestface.com");
+      expect(fields.fullName.value).toBe("Testy McTestface");
+      expect(fields.telephoneNumber.value).toBe("+447713812657");
+      expect(fields.addressLine1.value).toBe("Flat 42");
+      expect(fields.addressLine2.value).toBe("Testington Towers");
+      expect(fields.townOrCity.value).toBe("Testville");
+      expect(fields.county.value).toBe("Testershire");
+      expect(fields.postcode.value).toBe("TS1 5AE");
+      expect(fields.email.value).toBe("testy@mctestface.com");
     });
 
     it("should return form with updated account details with field errors", async () => {
@@ -62,7 +77,7 @@ describe("UpdateAccount", () => {
         headers: { contentType: "json" },
       };
       const containerMocks: Partial<IAppContainer> = {
-        getAccessToken: jest.fn(),
+        accountHolderGateway: accountHolderApiGateway,
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "new fullName",
           telephoneNumber: "new telephoneNumber",
@@ -102,10 +117,10 @@ describe("UpdateAccount", () => {
         headers: { contentType: "json" },
       };
       const containerMocks: Partial<IAppContainer> = {
-        getAccessToken: jest.fn(),
+        accountHolderGateway: accountHolderApiGateway,
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "new fullName",
-          telephoneNumber: "new telephoneNumber",
+          telephoneNumber: "07713812958",
           addressLine1: "new addressLine1",
           addressLine2: "new addressLine2",
           townOrCity: "new townOrCity",
@@ -135,7 +150,7 @@ describe("UpdateAccount", () => {
         headers: { contentType: "json" },
       };
       const containerMocks: Partial<IAppContainer> = {
-        getAccessToken: jest.fn(),
+        accountHolderGateway: accountHolderApiGateway,
         updateAccountHolder: jest.fn(),
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "Sir David", //changed

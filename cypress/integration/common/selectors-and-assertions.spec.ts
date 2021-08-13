@@ -18,11 +18,15 @@ export const givenIHaveACookieSetAndIVisit = (url: string): void => {
 export const givenIHaveACookieSetAndHaveSignedInIVisit = (
   url: string
 ): void => {
+  givenIHaveACookieSetAndHaveSignedIn();
+  cy.visit(url);
+};
+
+export const givenIHaveACookieSetAndHaveSignedIn = (): void => {
   cy.setCookie("submissionId", v4());
   cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
     log: false,
   });
-  cy.visit(url);
 };
 
 export const givenIAmAt = (url: string): void => {
@@ -30,7 +34,7 @@ export const givenIAmAt = (url: string): void => {
 };
 
 export const givenIHaveBeenTo = givenIAmAt;
-export const andIHaveBeenTo = givenIAmAt;
+export const whenIAmAt = givenIAmAt;
 export const andIAmAt = givenIAmAt;
 export const iAmAt = givenIAmAt;
 
@@ -83,12 +87,18 @@ export const whenIType = (value: string, selector: string): void => {
   cy.get(selector).should("be.empty").type(value);
 };
 
+export const whenIClearAndType = (value: string, selector: string): void => {
+  cy.get(selector).clear().type(value);
+};
+
 export const givenIHaveTyped = whenIType;
 export const andIType = whenIType;
 
 export const whenIClearTheInput = (selector: string): void => {
   cy.get(selector).clear();
 };
+
+export const givenIHaveClearedTheInput = whenIClearTheInput;
 
 export const thenTheUrlShouldContain = (urlPath: string): void => {
   cy.url().should("include", urlPath);

@@ -14,52 +14,19 @@ import { Layout } from "../../components/Layout";
 import { IfYouNeedHelp } from "../../components/Mca";
 import { GovUKBody, SectionHeading } from "../../components/Typography";
 import { AccountHolder } from "../../entities/AccountHolder";
-import { FieldManager } from "../../lib/form/FieldManager";
-import { FormJSON, FormManager } from "../../lib/form/FormManager";
-import { Validators } from "../../lib/form/Validators";
+import { FormJSON } from "../../lib/form/FormManager";
+import { accountDetailsFormManager } from "../../lib/form/formManagers/accountDetailsFormManager";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { PageURLs } from "../../lib/urls";
 import { diffObjValues } from "../../lib/utils";
-import { FormSubmission } from "../../presenters/formSubmission";
 
 export interface UpdateAccountPageProps {
   form: FormJSON;
   accountHolderDetails: AccountHolder;
 }
-
-const definePageForm = ({
-  fullName,
-  telephoneNumber,
-  addressLine1,
-  addressLine2,
-  townOrCity,
-  county,
-  postcode,
-  email,
-}: FormSubmission): FormManager => {
-  return new FormManager({
-    fullName: new FieldManager(fullName, [
-      Validators.required("Full name is a required field"),
-    ]),
-    telephoneNumber: new FieldManager(telephoneNumber),
-    addressLine1: new FieldManager(addressLine1, [
-      Validators.required("Building number and street is a required field"),
-    ]),
-    addressLine2: new FieldManager(addressLine2),
-    townOrCity: new FieldManager(townOrCity, [
-      Validators.required("Town or city is a required field"),
-    ]),
-    county: new FieldManager(county),
-    postcode: new FieldManager(postcode, [
-      Validators.required("Postcode is a required field"),
-      Validators.postcode("Postcode must be a valid UK postcode"),
-    ]),
-    email: new FieldManager(email),
-  });
-};
 
 const UpdateAccount: FunctionComponent<UpdateAccountPageProps> = ({
   form,
@@ -74,7 +41,7 @@ const UpdateAccount: FunctionComponent<UpdateAccountPageProps> = ({
           <>
             <FormErrorSummary formErrors={form.errorSummary} />
             <Form>
-              <FormGroup errorMessages={[]}>
+              <FormGroup>
                 <FormFieldset>
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   <GovUKBody>
@@ -194,7 +161,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
     if (!userDidSubmitForm(context)) {
       return {
         props: {
-          form: definePageForm(
+          form: accountDetailsFormManager(
             accountUpdateFields(await getOrCreateAccountHolder(context.session))
           ).serialise(),
         },
@@ -202,7 +169,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
     }
 
     const formData = await parseFormDataAs<AccountUpdateFields>(context.req);
-    const formManager = definePageForm(formData).asDirty();
+    const formManager = accountDetailsFormManager(formData).asDirty();
     if (formManager.hasErrors()) {
       return {
         props: {

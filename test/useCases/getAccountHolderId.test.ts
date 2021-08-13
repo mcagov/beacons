@@ -9,7 +9,7 @@ describe("The getAccountHolderId use case", () => {
       getAccountHolderId: jest.fn().mockResolvedValue(testId),
     };
     const container: Partial<IAppContainer> = {
-      accountHolderApiGateway: gateway as AccountHolderGateway,
+      accountHolderGateway: gateway as AccountHolderGateway,
       getAccessToken: jest.fn(),
     };
     const session = { user: { authId: "a-session-id" } };
@@ -26,7 +26,7 @@ describe("The getAccountHolderId use case", () => {
       getAccountHolderId: jest.fn().mockResolvedValue(null),
     };
     const container: Partial<IAppContainer> = {
-      accountHolderApiGateway: gateway as AccountHolderGateway,
+      accountHolderGateway: gateway as AccountHolderGateway,
       getAccessToken: jest.fn(),
     };
     const session = { user: { authId: "a-session-id" } };
@@ -34,7 +34,7 @@ describe("The getAccountHolderId use case", () => {
     await getAccountHolderId(container as IAppContainer)(session);
 
     expect(
-      container.accountHolderApiGateway.getAccountHolderId
+      container.accountHolderGateway.getAccountHolderId
     ).toHaveBeenCalledTimes(1);
   });
 });

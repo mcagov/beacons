@@ -1,35 +1,27 @@
 import { AccountHolder } from "../entities/AccountHolder";
-import { Session } from "../gateways/NextAuthUserSessionGateway";
+import { BeaconsSession } from "../gateways/NextAuthUserSessionGateway";
 import { IAppContainer } from "../lib/IAppContainer";
 
 export type GetOrCreateAccountHolderFn = (
-  session: Session
+  session: BeaconsSession
 ) => Promise<AccountHolder>;
 
 export const getOrCreateAccountHolder =
   ({
-    getAccessToken,
-    accountHolderApiGateway,
-  }: IAppContainer): GetOrCreateAccountHolderFn =>
-  async (session: Session): Promise<AccountHolder> => {
+    accountHolderGateway,
+  }: Partial<IAppContainer>): GetOrCreateAccountHolderFn =>
+  async (session: BeaconsSession): Promise<AccountHolder> => {
     const authId: string = session.user.authId;
     const email: string = session.user.email;
-    const accessToken = await getAccessToken();
 
-    const accountHolderId = await accountHolderApiGateway.getAccountHolderId(
-      authId,
-      accessToken
+    const accountHolderId = await accountHolderGateway.getAccountHolderId(
+      authId
     );
 
     if (accountHolderId)
-      return await accountHolderApiGateway.getAccountHolderDetails(
-        accountHolderId,
-        accessToken
+      return await accountHolderGateway.getAccountHolderDetails(
+        accountHolderId
       );
 
-    return await accountHolderApiGateway.createAccountHolder(
-      authId,
-      email,
-      accessToken
-    );
+    return await accountHolderGateway.createAccountHolder(authId, email);
   };

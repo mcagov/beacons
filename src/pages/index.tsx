@@ -2,7 +2,6 @@ import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Aside from "../components/Aside";
-import { BreadcrumbList, BreadcrumbListItem } from "../components/Breadcrumb";
 import { StartButton } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
@@ -37,11 +36,7 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
 
   return (
     <>
-      <Layout
-        navigation={<Breadcrumbs />}
-        title={pageHeading}
-        showCookieBanner={showCookieBanner}
-      >
+      <Layout title={pageHeading} showCookieBanner={showCookieBanner}>
         <Grid
           mainContent={
             <>
@@ -57,14 +52,6 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
     </>
   );
 };
-
-const Breadcrumbs: FunctionComponent = (): JSX.Element => (
-  <BreadcrumbList>
-    <BreadcrumbListItem>Home</BreadcrumbListItem>
-    <BreadcrumbListItem>Section</BreadcrumbListItem>
-    <BreadcrumbListItem>Subsection</BreadcrumbListItem>
-  </BreadcrumbList>
-);
 
 const AboutTheService: FunctionComponent = (): JSX.Element => (
   <>

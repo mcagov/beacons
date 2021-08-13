@@ -10,6 +10,7 @@ node_modules/
 .idea/
 .eslintcache
 .env.local
+.env
 
 # Cypress
 screenshots

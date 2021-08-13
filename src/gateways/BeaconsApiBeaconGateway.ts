@@ -1,5 +1,8 @@
 import axios from "axios";
-import { IRegistrationRequestBody } from "../lib/deprecatedRegistration/IRegistrationRequestBody";
+import { DraftRegistration } from "../entities/DraftRegistration";
+import { Registration } from "../entities/Registration";
+import { DeprecatedRegistration } from "../lib/deprecatedRegistration/DeprecatedRegistration";
+import { AuthGateway } from "./interfaces/AuthGateway";
 import { BeaconGateway } from "./interfaces/BeaconGateway";
 
 export interface IDeleteBeaconRequest {
@@ -11,20 +14,26 @@ export interface IDeleteBeaconRequest {
 export class BeaconsApiBeaconGateway implements BeaconGateway {
   private readonly apiUrl: string;
   private readonly registrationsEndpoint = "registrations/register";
+  private readonly authGateway: AuthGateway;
 
-  constructor(apiUrl: string) {
+  constructor(apiUrl: string, authGateway: AuthGateway) {
     this.apiUrl = apiUrl;
+    this.authGateway = authGateway;
   }
 
   public async sendRegistration(
-    json: IRegistrationRequestBody,
-    accessToken: string
+    draftRegistration: DraftRegistration
   ): Promise<boolean> {
     const url = `${this.apiUrl}/${this.registrationsEndpoint}`;
 
+    const requestBody =
+      BeaconsApiBeaconGateway.draftRegistrationToApiRequestBody(
+        draftRegistration
+      );
+
     try {
-      await axios.post(url, json, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+      await axios.post(url, requestBody, {
+        headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       return true;
     } catch (error) {
@@ -32,10 +41,7 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
     }
   }
 
-  public async deleteBeacon(
-    json: IDeleteBeaconRequest,
-    accessToken: string
-  ): Promise<boolean> {
+  public async deleteBeacon(json: IDeleteBeaconRequest): Promise<boolean> {
     const url = `${this.apiUrl}/beacons/${json.beaconId}/delete`;
     const data = {
       beaconId: json.beaconId,
@@ -45,11 +51,23 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
 
     try {
       await axios.patch(url, data, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       return true;
     } catch (error) {
       return false;
     }
+  }
+
+  private static draftRegistrationToApiRequestBody(
+    draftRegistration: DraftRegistration
+  ) {
+    return new DeprecatedRegistration(
+      draftRegistration as Registration
+    ).serialiseToAPI();
+  }
+
+  private async getAccessToken() {
+    return await this.authGateway.getAccessToken();
   }
 }
