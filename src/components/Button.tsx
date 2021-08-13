@@ -36,7 +36,7 @@ export const Button: FunctionComponent<ButtonProps> = ({
   classes = "",
 }: ButtonProps): JSX.Element => (
   <button
-    className={"govuk-button " + classes}
+    className={`govuk-button ${classes}`}
     data-module="govuk-button"
     role="button"
   >

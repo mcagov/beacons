@@ -4,16 +4,16 @@ interface PanelBannerProps {
   title: string;
   children?: ReactNode;
   reference?: string;
-  styles?: Record<string, string>;
+  classes?: string;
 }
 
 export const Panel: FunctionComponent<PanelBannerProps> = ({
   title,
   children,
   reference,
-  styles = {},
+  classes = "",
 }: PanelBannerProps): JSX.Element => (
-  <div className="govuk-panel govuk-panel--confirmation" style={styles}>
+  <div className={`govuk-panel govuk-panel--confirmation ${classes}`}>
     <h1 className="govuk-panel__title">{title}</h1>
     <div className="govuk-panel__body">{children}</div>
     {reference && (
