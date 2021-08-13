@@ -81,9 +81,11 @@ const iAmAskedIfIAmSureIWantToDeleteMyRegistration = () => {
 
 const iAmPresentedWithSomeRegistrationInformation_SoICanMakeSureIAmDeletingTheCorrectRegistration =
   (registration: Registration) => {
-    cy.get("main").contains(registration.manufacturer);
-    cy.get("main").contains(registration.model);
-    cy.get("main").contains(registration.hexId);
+    cy.get("main").within(() => {
+      cy.contains(registration.manufacturer);
+      cy.contains(registration.model);
+      cy.contains(registration.hexId);
+    });
 
     registration.uses.forEach((use) => {
       cy.get("main").contains(prettyUseName(use));
