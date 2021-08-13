@@ -11,6 +11,7 @@ interface TextareaProps {
   defaultValue?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   rows?: number;
+  label?: string;
 }
 
 interface TextareaCharacterCountProps {
@@ -31,19 +32,23 @@ export const Textarea: FunctionComponent<TextareaProps> = ({
   defaultValue = "",
   htmlAttributes = {},
   rows = 3,
+  label = "",
 }: TextareaProps): JSX.Element => {
   name = name ? name : id;
 
   return (
-    <textarea
-      className="govuk-textarea"
-      id={id}
-      name={name}
-      defaultValue={defaultValue}
-      rows={rows}
-      aria-describedby={`${id}-hint`}
-      {...htmlAttributes}
-    />
+    <div>
+      <label>{label}</label>
+      <textarea
+        className="govuk-textarea"
+        id={id}
+        name={name}
+        defaultValue={defaultValue}
+        rows={rows}
+        aria-describedby={`${id}-hint`}
+        {...htmlAttributes}
+      />
+    </div>
   );
 };
 
@@ -60,7 +65,6 @@ export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountPro
     htmlAttributes = {},
   }: TextareaCharacterCountProps): JSX.Element => {
     name = name ? name : id;
-
     let labelComponent: ReactNode;
     if (label) {
       labelComponent = <FormLabel htmlFor={id}>{label}</FormLabel>;
