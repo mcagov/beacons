@@ -25,20 +25,22 @@ export const IfYouNeedHelp: FunctionComponent = (): JSX.Element => (
 );
 
 export const BeaconRegistryContactInfo: FunctionComponent = (): JSX.Element => (
-  <GovUKList>
-    <li className="govuk-!-font-weight-bold">The UK Beacon Registry</li>
-    <li>
-      <a className="govuk-link" href="mailto:ukbeacons@mcga.gov.uk">
-        ukbeacons@mcga.gov.uk
-      </a>
-    </li>
-    <li>Telephone: +44 (0)20 3817 2006</li>
-    <li>Fax: +44 (0)1326 319264</li>
-    <li>Monday to Friday, 9am to 5pm (except public holidays)</li>
-    <li>
-      <AnchorLink href="https://www.gov.uk/call-charges">
-        Find out about call charges
-      </AnchorLink>
-    </li>
-  </GovUKList>
+  <div>
+    <strong className="govuk-!-font-weight-bold">The UK Beacon Registry</strong>
+    <GovUKList>
+      <li>
+        <a className="govuk-link" href="mailto:ukbeacons@mcga.gov.uk">
+          ukbeacons@mcga.gov.uk
+        </a>
+      </li>
+      <li>Telephone: +44 (0)20 3817 2006</li>
+      <li>Fax: +44 (0)1326 319264</li>
+      <li>Monday to Friday, 9am to 5pm (except public holidays)</li>
+      <li>
+        <AnchorLink href="https://www.gov.uk/call-charges">
+          Find out about call charges
+        </AnchorLink>
+      </li>
+    </GovUKList>
+  </div>
 );
