@@ -10,32 +10,33 @@ import {
   whenIAmAt,
   whenIClickTheButtonContaining,
 } from "../integration/common/selectors-and-assertions.spec";
-import { iHavePreviouslyRegisteredABeacon } from "./common/i-have-previously-registered-a-beacon.spec";
+import {
+  iHavePreviouslyRegisteredABeacon,
+  randomUkEncodedHexId,
+} from "./common/i-have-previously-registered-a-beacon.spec";
 
 describe("As an account holder", () => {
   it("I can delete one of my beacons", () => {
+    const testRegistration = {
+      ...singleBeaconRegistration,
+      hexId: randomUkEncodedHexId(),
+    };
+
     givenIHaveACookieSetAndHaveSignedIn();
-    // randomise HexID to remove test bleed, update singleBeaconRegistration
-    // andIHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
+    andIHavePreviouslyRegisteredABeacon(testRegistration);
     whenIAmAt(PageURLs.accountHome);
-    iCanSeeMyExistingRegistration(
-      singleBeaconRegistration.hexId,
-      singleBeaconRegistration.ownerFullName
-    );
+    iCanSeeMyExistingRegistration(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
-      singleBeaconRegistration.hexId
+      testRegistration.hexId
     );
-    iAmAskedIfIAmSureIWantToDeleteMyRegistration(singleBeaconRegistration);
+    iAmAskedIfIAmSureIWantToDeleteMyRegistration(testRegistration);
     whenIClickTheButtonContaining("Cancel");
     iAmAt(PageURLs.accountHome);
-    iCanSeeMyExistingRegistration(
-      singleBeaconRegistration.hexId,
-      singleBeaconRegistration.ownerFullName
-    );
+    iCanSeeMyExistingRegistration(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
-      singleBeaconRegistration.hexId
+      testRegistration.hexId
     );
     andIDontSelectAReason();
     andIClickTheButtonContaining("Delete");
@@ -44,21 +45,16 @@ describe("As an account holder", () => {
     whenISelectAReasonForDeletion();
     andIClickTheButtonContaining("Delete");
     iAmGivenAConfirmationMessage();
-    // iAmGivenAReferenceNumber();
 
-    // myRegistrationNoLongerExists(); // Go back to Account Home and assert hexId doesn't appear
-    // Teardown: clear database
+    whenIGoBackToAccountHome();
+    myDeletedRegistrationIsNoLongerVisible(testRegistration.hexId);
   });
 });
 
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 
-export const iCanSeeMyExistingRegistration = (
-  hexId: string,
-  ownerFullName: string
-): void => {
+export const iCanSeeMyExistingRegistration = (hexId: string): void => {
   cy.get("main").contains(hexId);
-  cy.get("main").contains(ownerFullName);
 };
 
 const whenIClickTheDeleteButtonForTheRegistrationWithHexId = (
@@ -91,12 +87,17 @@ const iAmGivenAConfirmationMessage = () => {
   cy.get("main").contains("Registration deleted");
 };
 
-const iAmGivenAReferenceNumber = () => {
-  cy.get("main").contains("Your reference number");
-};
-
 const andIDontSelectAReason = () => null;
 
 const whenISelectAReasonForDeletion = () => {
   cy.get("#incorrectly_registered").check();
+};
+
+const whenIGoBackToAccountHome = () => {
+  whenIClickTheButtonContaining("Return to your Account");
+  iAmAt(PageURLs.accountHome);
+};
+
+const myDeletedRegistrationIsNoLongerVisible = (hexId: string): void => {
+  cy.get("main").contains(hexId).should("not.exist");
 };
