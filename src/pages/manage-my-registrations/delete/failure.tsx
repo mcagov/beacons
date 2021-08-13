@@ -20,7 +20,7 @@ const Success: FunctionComponent = (): JSX.Element => {
             <>
               <PageHeading>{pageHeading}</PageHeading>
               <SectionHeading>
-                Please get in touch with the Beacon Registry Team
+                Please get in touch with the UK Beacon Registry
               </SectionHeading>
               <BeaconRegistryContactInfo />
               <ReturnToYourAccountSection />
