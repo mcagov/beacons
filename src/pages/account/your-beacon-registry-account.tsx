@@ -238,9 +238,12 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
           {formatDateLong(beacon.registeredDate)}
         </td>
         <td className="govuk-table__cell">
-          <a href={confirmBeforeDelete(beacon.id)} style={{ color: "#d4351c" }}>
+          <AnchorLink
+            href={confirmBeforeDelete(beacon.id)}
+            classes="govuk-link--no-visited-state"
+          >
             Delete
-          </a>
+          </AnchorLink>
         </td>
       </tr>
     </>
