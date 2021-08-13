@@ -22,7 +22,6 @@ import { submitRegistration } from "../../../src/useCases/submitRegistration";
 export const iHavePreviouslyRegisteredABeacon = async (
   registration: Registration
 ): Promise<void> => {
-  // return { arrange: () => ... , teardown: () => }
   const beaconsApiAuthGateway: AuthGateway = new AadAuthGateway({
     auth: {
       clientId: Cypress.env("WEBAPP_CLIENT_ID"),
