@@ -32,21 +32,21 @@ import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserS
 import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
 interface ActivityForm {
-  environment;
-  activity;
-  otherActivityText;
-  otherActivityLocation;
-  otherActivityPeopleCount;
-  workingRemotelyLocation;
-  workingRemotelyPeopleCount;
-  windfarmLocation;
-  windfarmPeopleCount;
+  environment: string;
+  activity: string;
+  otherActivityText: string;
+  otherActivityLocation: string;
+  otherActivityPeopleCount: string;
+  workingRemotelyLocation: string;
+  workingRemotelyPeopleCount: string;
+  windfarmLocation: string;
+  windfarmPeopleCount: string;
 }
 
 interface ActivityPageProps extends DraftRegistrationPageProps {
-  environment;
-  purpose;
-  useIndex;
+  environment: Environment;
+  purpose: Purpose;
+  useIndex: number;
 }
 
 const ActivityPage: FunctionComponent<ActivityPageProps> = ({
@@ -621,8 +621,8 @@ const props = async (
   ).uses[context.query.useIndex as string];
 
   return {
-    environment: use?.environment || null,
-    purpose: use?.purpose || null,
+    environment: (use?.environment as Environment) || null,
+    purpose: (use?.purpose as Purpose) || null,
     useIndex: parseInt(context.query.useIndex as string),
   };
 };
@@ -633,27 +633,29 @@ const mapper = (
   const beaconUseMapper: BeaconUseFormMapper<ActivityForm> = {
     formToDraftBeaconUse: (form) => {
       return {
-        environment: form.environment,
-        activity: form.activity,
-        otherActivityText: form.otherActivityText,
-        otherActivityLocation: form.otherActivityLocation,
-        otherActivityPeopleCount: form.otherActivityPeopleCount,
-        workingRemotelyLocation: form.workingRemotelyLocation,
-        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount,
-        windfarmLocation: form.windfarmLocation,
-        windfarmPeopleCount: form.windfarmPeopleCount,
+        environment: form.environment || "",
+        activity: form.activity || "",
+        otherActivityText: form.otherActivityText || "",
+        otherActivityLocation: form.otherActivityLocation || "",
+        otherActivityPeopleCount: form.otherActivityPeopleCount || "",
+        workingRemotelyLocation: form.workingRemotelyLocation || "",
+        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount || "",
+        windfarmLocation: form.windfarmLocation || "",
+        windfarmPeopleCount: form.windfarmPeopleCount || "",
       };
     },
     beaconUseToForm: (draftRegistration) => ({
-      environment: draftRegistration.environment,
-      activity: draftRegistration.activity,
-      otherActivityText: draftRegistration.otherActivityText,
-      otherActivityLocation: draftRegistration.otherActivityLocation,
-      otherActivityPeopleCount: draftRegistration.otherActivityPeopleCount,
-      workingRemotelyLocation: draftRegistration.workingRemotelyLocation,
-      workingRemotelyPeopleCount: draftRegistration.workingRemotelyPeopleCount,
-      windfarmLocation: draftRegistration.windfarmLocation,
-      windfarmPeopleCount: draftRegistration.windfarmPeopleCount,
+      environment: draftRegistration.environment || "",
+      activity: draftRegistration.activity || "",
+      otherActivityText: draftRegistration.otherActivityText || "",
+      otherActivityLocation: draftRegistration.otherActivityLocation || "",
+      otherActivityPeopleCount:
+        draftRegistration.otherActivityPeopleCount || "",
+      workingRemotelyLocation: draftRegistration.workingRemotelyLocation || "",
+      workingRemotelyPeopleCount:
+        draftRegistration.workingRemotelyPeopleCount || "",
+      windfarmLocation: draftRegistration.windfarmLocation || "",
+      windfarmPeopleCount: draftRegistration.windfarmPeopleCount || "",
     }),
   };
 
@@ -675,12 +677,12 @@ const validationRules = ({
 }: FormSubmission): FormManager => {
   const activityMatchingCondition = (activity: Activity) => ({
     dependsOn: "activity",
-    meetingCondition: (value) => value === activity,
+    meetingCondition: (value: Activity) => value === activity,
   });
 
   const environmentIsLandMatchingCondition = {
     dependsOn: "environment",
-    meetingCondition: (value) => value === Environment.LAND,
+    meetingCondition: (value: Environment) => value === Environment.LAND,
   };
 
   return new FormManager({

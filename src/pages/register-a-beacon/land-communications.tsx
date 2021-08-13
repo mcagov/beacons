@@ -246,7 +246,7 @@ const validationRules = ({
 }: FormSubmission): FormManager => {
   const matchingConditionIsTrueForKey = (key: string) => ({
     dependsOn: key,
-    meetingCondition: (value) => value === "true",
+    meetingCondition: (value: string) => value === "true",
   });
 
   return new FormManager({
