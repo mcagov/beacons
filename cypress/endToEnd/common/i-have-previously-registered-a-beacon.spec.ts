@@ -59,3 +59,11 @@ export const iHavePreviouslyRegisteredABeacon = async (
     await submitRegistration(container)(registration, accountHolder.id);
   });
 };
+
+export const randomUkEncodedHexId = (): string => {
+  const ukEncodingCountryCode = "1D0";
+  return (
+    ukEncodingCountryCode +
+    Math.random().toString(16).substr(2, 12).toUpperCase()
+  );
+};

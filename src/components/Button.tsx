@@ -7,6 +7,7 @@ interface ButtonGroupProps {
 
 interface ButtonProps {
   buttonText: string;
+  classes?: string;
 }
 
 interface StartButtonProps {
@@ -32,8 +33,13 @@ export const ButtonGroup: FunctionComponent<ButtonGroupProps> = ({
 
 export const Button: FunctionComponent<ButtonProps> = ({
   buttonText,
+  classes = "",
 }: ButtonProps): JSX.Element => (
-  <button className="govuk-button" data-module="govuk-button" role="button">
+  <button
+    className={`govuk-button ${classes}`}
+    data-module="govuk-button"
+    role="button"
+  >
     {buttonText}
   </button>
 );

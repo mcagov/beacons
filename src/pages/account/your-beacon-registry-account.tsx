@@ -16,21 +16,21 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
-import { PageURLs } from "../../lib/urls";
-import { formatUses } from "../../lib/writingStyle";
+import { PageURLs, queryParams } from "../../lib/urls";
+import { formatDateLong, formatUses } from "../../lib/writingStyle";
 
-export interface YourBeaconRegistyAccountPageProps {
+export interface YourBeaconRegistryAccountPageProps {
   id?: string;
   accountHolderDetails: AccountHolder;
   beacons: Beacon[];
 }
 
-export const YourBeaconRegistyAccount: FunctionComponent<YourBeaconRegistyAccountPageProps> =
+export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAccountPageProps> =
   ({
     accountHolderDetails,
     beacons,
-  }: YourBeaconRegistyAccountPageProps): JSX.Element => {
-    const pageHeading = "Your Beacon Registy Account";
+  }: YourBeaconRegistryAccountPageProps): JSX.Element => {
+    const pageHeading = "Your Beacon Registry Account";
 
     return (
       <Layout title={pageHeading} showCookieBanner={false}>
@@ -197,7 +197,10 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
             Used for
           </th>
           <th scope="col" className="govuk-table__header">
-            Registered
+            Registered on
+          </th>
+          <th scope="col" className="govuk-table__header">
+            Actions
           </th>
         </tr>
       </thead>
@@ -216,18 +219,36 @@ interface BeaconRowProps {
 
 const BeaconRow: FunctionComponent<BeaconRowProps> = ({
   beacon,
-}: BeaconRowProps): JSX.Element => (
-  <>
-    <tr className="govuk-table__row">
-      <th scope="row" className="govuk-table__header">
-        {beacon.hexId}
-      </th>
-      <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
-      <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
-      <td className="govuk-table__cell">{beacon.registeredDate}</td>
-    </tr>
-  </>
-);
+}: BeaconRowProps): JSX.Element => {
+  const confirmBeforeDelete = (registrationId: string) =>
+    PageURLs.deleteRegistration +
+    queryParams({
+      id: registrationId,
+    });
+
+  return (
+    <>
+      <tr className="govuk-table__row">
+        <th scope="row" className="govuk-table__header">
+          {beacon.hexId}
+        </th>
+        <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
+        <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
+        <td className="govuk-table__cell">
+          {formatDateLong(beacon.registeredDate)}
+        </td>
+        <td className="govuk-table__cell">
+          <AnchorLink
+            href={confirmBeforeDelete(beacon.id)}
+            classes="govuk-link--no-visited-state"
+          >
+            Delete
+          </AnchorLink>
+        </td>
+      </tr>
+    </>
+  );
+};
 
 const RegisterANewBeacon: FunctionComponent = (): JSX.Element => (
   <>
@@ -270,4 +291,4 @@ export const getServerSideProps: GetServerSideProps = withSession(
   })
 );
 
-export default YourBeaconRegistyAccount;
+export default YourBeaconRegistryAccount;
