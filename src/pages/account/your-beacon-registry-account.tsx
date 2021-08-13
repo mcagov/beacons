@@ -17,7 +17,7 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { PageURLs, queryParams } from "../../lib/urls";
-import { formatUses } from "../../lib/writingStyle";
+import { formatDateLong, formatUses } from "../../lib/writingStyle";
 
 export interface YourBeaconRegistryAccountPageProps {
   id?: string;
@@ -30,7 +30,7 @@ export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAcco
     accountHolderDetails,
     beacons,
   }: YourBeaconRegistryAccountPageProps): JSX.Element => {
-    const pageHeading = "Your Beacon Registy Account";
+    const pageHeading = "Your Beacon Registry Account";
 
     return (
       <Layout title={pageHeading} showCookieBanner={false}>
@@ -197,7 +197,7 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
             Used for
           </th>
           <th scope="col" className="govuk-table__header">
-            Registered
+            Registered on
           </th>
           <th scope="col" className="govuk-table__header">
             Actions
@@ -234,7 +234,9 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
         </th>
         <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
         <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
-        <td className="govuk-table__cell">{beacon.registeredDate}</td>
+        <td className="govuk-table__cell">
+          {formatDateLong(beacon.registeredDate)}
+        </td>
         <td className="govuk-table__cell">
           <a href={confirmBeforeDelete(beacon.id)} style={{ color: "#d4351c" }}>
             Delete
