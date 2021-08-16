@@ -1,7 +1,6 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
 import { DateListItem, DateType } from "../../components/DateInput";
 import { Details } from "../../components/Details";
 import {
@@ -11,6 +10,7 @@ import {
   FormLegend,
 } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
+import { NoFieldSetOrLegendForm } from "../../components/NoFieldSetOrLegendForm";
 import { GovUKBody } from "../../components/Typography";
 import { toIsoDateString } from "../../lib/dateTime";
 import { FieldManager } from "../../lib/form/FieldManager";
@@ -55,7 +55,7 @@ const BeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> = ({
   );
 
   return (
-    <BeaconsForm
+    <NoFieldSetOrLegendForm
       previousPageUrl={PageURLs.checkBeaconDetails}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -77,7 +77,7 @@ const BeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> = ({
         yearValue={form.fields.lastServicedDateYear.value}
         errorMessages={form.fields.lastServicedDate.errorMessages}
       />
-    </BeaconsForm>
+    </NoFieldSetOrLegendForm>
   );
 };
 

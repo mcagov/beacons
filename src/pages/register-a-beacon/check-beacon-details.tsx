@@ -1,10 +1,10 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
 import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
+import { NoFieldSetOrLegendForm } from "../../components/NoFieldSetOrLegendForm";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormManager } from "../../lib/form/FormManager";
 import { Validators } from "../../lib/form/Validators";
@@ -36,7 +36,7 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
     "The details of your beacon must be checked to ensure it is programmed for UK registration.";
 
   return (
-    <BeaconsForm
+    <NoFieldSetOrLegendForm
       formErrors={form.errorSummary}
       previousPageUrl="/"
       includeUseIndex={false}
@@ -56,7 +56,7 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
         value={form.fields.hexId.value}
         errorMessages={form.fields.hexId.errorMessages}
       />
-    </BeaconsForm>
+    </NoFieldSetOrLegendForm>
   );
 };
 
