@@ -26,6 +26,9 @@ export enum PageURLs {
   emergencyContact = "/register-a-beacon/emergency-contact",
   checkYourAnswers = "/register-a-beacon/check-your-answers",
   applicationComplete = "/register-a-beacon/application-complete",
+  deleteRegistration = "/manage-my-registrations/delete",
+  deleteRegistrationSuccess = "/manage-my-registrations/delete/success",
+  deleteRegistrationFailure = "/manage-my-registrations/delete/failure",
   serverError = "/500",
 }
 

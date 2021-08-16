@@ -18,6 +18,8 @@ interface BeaconsFormProps {
   errorMessages?: string[];
   pageText?: string | ReactNode;
   includeUseIndex?: boolean;
+  continueButton?: JSX.Element;
+  cancelButton?: JSX.Element;
 }
 
 export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
@@ -28,6 +30,8 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   formErrors = [],
   errorMessages = [],
   pageText = null,
+  continueButton = <Button buttonText="Continue" />,
+  cancelButton = null,
 }: BeaconsFormProps): JSX.Element => {
   const pageTextComponent: ReactNode =
     typeof pageText === "string" ? <GovUKBody>{pageText}</GovUKBody> : pageText;
@@ -51,7 +55,8 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
                 </FormFieldset>
                 <HiddenFormMetadata />
               </FormGroup>
-              <Button buttonText="Continue" />
+              {cancelButton}
+              {continueButton}
             </Form>
             <IfYouNeedHelp />
           </>

@@ -52,7 +52,10 @@ const AboutBeaconOwner: FunctionComponent<AboutBeaconOwnerFormProps> = ({
         errorMessages={form.fields.ownerFullName.errorMessages}
       />
 
-      <TelephoneNumber value={form.fields.ownerTelephoneNumber.value} />
+      <TelephoneNumber
+        value={form.fields.ownerTelephoneNumber.value}
+        errorMessages={form.fields.ownerTelephoneNumber.errorMessages}
+      />
 
       <AlternativeTelephoneNumber
         value={form.fields.ownerAlternativeTelephoneNumber.value}
@@ -82,7 +85,7 @@ const TelephoneNumber: FunctionComponent<FormInputProps> = ({
   <FormGroup errorMessages={errorMessages}>
     <Input
       id="ownerTelephoneNumber"
-      label="Telephone number (optional)"
+      label="Telephone number"
       hintText="This can be a mobile or landline. For international numbers include the country code."
       defaultValue={value}
     />
@@ -110,7 +113,7 @@ const EmailAddress: FunctionComponent<FormInputProps> = ({
   <FormGroup errorMessages={errorMessages}>
     <Input
       id="ownerEmail"
-      label="Email address (optional)"
+      label="Email address"
       hintText="You will receive an email confirming your beacon registration application, including a reference
         number if you need to get in touch with the beacons registry team."
       defaultValue={value}
@@ -192,11 +195,14 @@ const validationRules = ({
     ownerFullName: new FieldManager(ownerFullName, [
       Validators.required("Full name is a required field"),
     ]),
-    ownerTelephoneNumber: new FieldManager(ownerTelephoneNumber),
+    ownerTelephoneNumber: new FieldManager(ownerTelephoneNumber, [
+      Validators.required("Telephone number is a required field"),
+    ]),
     ownerAlternativeTelephoneNumber: new FieldManager(
       ownerAlternativeTelephoneNumber
     ),
     ownerEmail: new FieldManager(ownerEmail, [
+      Validators.required("Email address is a required field"),
       Validators.email("Email address must be valid"),
     ]),
   });

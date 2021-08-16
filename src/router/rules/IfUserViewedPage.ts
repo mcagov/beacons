@@ -1,6 +1,6 @@
 import { GetServerSidePropsResult } from "next";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { acceptRejectCookieId } from "../../lib/types";
+import { showCookieBanner } from "./../../lib/cookies";
 import { Rule } from "./Rule";
 
 export class IfUserViewedPage<T> implements Rule {
@@ -19,8 +19,7 @@ export class IfUserViewedPage<T> implements Rule {
   public async action(): Promise<GetServerSidePropsResult<any>> {
     return {
       props: {
-        showCookieBanner:
-          this.context.req.cookies[acceptRejectCookieId] || true,
+        showCookieBanner: showCookieBanner(this.context),
         ...(await this.props),
       },
     };

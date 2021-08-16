@@ -20,10 +20,14 @@ describe("UpdateAccount", () => {
         return res(ctx.json({ ...accountIdFromAuthIdResponseJson }));
       }),
       rest.get("*/account-holder/:accountId", (req, res, ctx) => {
-        return res(ctx.json({ ...accountDetailsResponseJson }));
+        return res(
+          ctx.json({ ...accountDetailsResponseJson("Testy McTestface") })
+        );
       }),
       rest.patch("*/account-holder/:accountId", (req, res, ctx) => {
-        return res(ctx.json({ ...accountDetailsResponseJson }));
+        return res(
+          ctx.json({ ...accountDetailsResponseJson("Testy McTestface") })
+        );
       })
     );
 
@@ -57,14 +61,14 @@ describe("UpdateAccount", () => {
       )) as any;
 
       const fields = result.props.form.fields;
-      expect(fields.fullName.value).toEqual("Tesy McTestface");
-      expect(fields.telephoneNumber.value).toEqual("01178 657123");
-      expect(fields.addressLine1.value).toEqual("Flat 42");
-      expect(fields.addressLine2.value).toEqual("Testington Towers");
-      expect(fields.townOrCity.value).toEqual("Testville");
-      expect(fields.county.value).toEqual("Testershire");
-      expect(fields.postcode.value).toEqual("TS1 23A");
-      expect(fields.email.value).toEqual("testy@mctestface.com");
+      expect(fields.fullName.value).toBe("Testy McTestface");
+      expect(fields.telephoneNumber.value).toBe("+447713812657");
+      expect(fields.addressLine1.value).toBe("Flat 42");
+      expect(fields.addressLine2.value).toBe("Testington Towers");
+      expect(fields.townOrCity.value).toBe("Testville");
+      expect(fields.county.value).toBe("Testershire");
+      expect(fields.postcode.value).toBe("TS1 5AE");
+      expect(fields.email.value).toBe("testy@mctestface.com");
     });
 
     it("should return form with updated account details with field errors", async () => {
@@ -116,7 +120,7 @@ describe("UpdateAccount", () => {
         accountHolderGateway: accountHolderApiGateway,
         parseFormDataAs: jest.fn().mockResolvedValue({
           fullName: "new fullName",
-          telephoneNumber: "new telephoneNumber",
+          telephoneNumber: "07713812958",
           addressLine1: "new addressLine1",
           addressLine2: "new addressLine2",
           townOrCity: "new townOrCity",

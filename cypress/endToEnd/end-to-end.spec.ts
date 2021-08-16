@@ -4,6 +4,10 @@ import {
   testBeaconAndOwnerData,
   testLandUseData,
 } from "../integration/common/happy-path-test-data.spec";
+import {
+  givenIHaveFilledInUpdateAccountDetailsPage,
+  iCanSeeMyAccountDetails,
+} from "../integration/common/i-can-enter-account-details.spec";
 import { givenIHaveEnteredMyBeaconDetails } from "../integration/common/i-can-enter-beacon-information.spec";
 import {
   givenIHaveEnteredMyAddressDetails,
@@ -28,7 +32,9 @@ describe("As user with an account", () => {
   };
 
   it("I register a beacon with a single use and see it in my Account page", () => {
-    givenIHaveACookieSetAndHaveSignedInIVisit(PageURLs.accountHome);
+    givenIHaveACookieSetAndHaveSignedInIVisit(PageURLs.updateAccount);
+    givenIHaveFilledInUpdateAccountDetailsPage();
+    iCanSeeMyAccountDetails();
     givenIHaveClicked(".govuk-button");
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyLandUse();
