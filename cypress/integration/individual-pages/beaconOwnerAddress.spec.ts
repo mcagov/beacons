@@ -26,9 +26,9 @@ describe("As a beacon owner I can enter my address so I will receive physical ev
     givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
-  it("requires at least one character in the Building number and street field", () => {
+  it("requires at least one character in the Address Line One field", () => {
     const expectedErrorMessage = [
-      "Building number and street",
+      "Address line one (building number and street name)",
       requiredFieldErrorMessage,
     ];
 
