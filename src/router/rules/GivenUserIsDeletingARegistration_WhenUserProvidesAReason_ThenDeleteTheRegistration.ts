@@ -9,7 +9,6 @@ import {
   DeleteRegistrationForm,
   DeleteRegistrationProps,
 } from "../../pages/manage-my-registrations/delete";
-import { IDeleteBeaconResult } from "../../useCases/deleteBeacon";
 
 export class GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteTheRegistration {
   private readonly context: BeaconsGetServerSidePropsContext;
@@ -35,11 +34,13 @@ export class GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDelete
   > {
     const { deleteBeacon } = this.context.container;
 
-    const { success }: IDeleteBeaconResult = await deleteBeacon(
-      await this.reasonForDeletion(),
-      this.registrationId(),
-      await this.accountHolderId()
-    );
+    const success: boolean = (
+      await deleteBeacon(
+        await this.reasonForDeletion(),
+        this.registrationId(),
+        await this.accountHolderId()
+      )
+    ).success;
 
     if (success) return redirectUserTo(PageURLs.deleteRegistrationSuccess);
     else redirectUserTo(PageURLs.deleteRegistrationFailure);
