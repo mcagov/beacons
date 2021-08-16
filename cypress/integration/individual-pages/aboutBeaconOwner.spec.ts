@@ -20,7 +20,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
-  it("requires at least one character in the More details field", () => {
+  it("requires at least one character in the full name field", () => {
     const expectedErrorMessage = ["Full name", requiredFieldErrorMessage];
 
     whenIType(" ", fullNameInputFieldSelector);
