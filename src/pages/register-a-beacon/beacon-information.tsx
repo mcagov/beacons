@@ -118,7 +118,7 @@ const CHKCode: FunctionComponent<FormInputProps> = ({
   <FormGroup>
     <Input
       id="chkCode"
-      label="Enter the beacon CHK (optional)"
+      label="Enter the beacon CHK (checksum) code (optional)"
       hintText="This might be on the registration card you received when you bought the
       beacon"
       defaultValue={value}
@@ -127,7 +127,7 @@ const CHKCode: FunctionComponent<FormInputProps> = ({
     <Details
       // TODO: Add govuk-!-!-padding-top-2 to component
       className="govuk-!-padding-top-2"
-      summaryText="What is the beacon CHK code?"
+      summaryText="What is the beacon CHK (checksum) code?"
     >
       The beacon CHK is a checksum or code which verifies the hexadecimal beacon
       ID. An example is: CHK: 9480B. If the beacon manufacturer uses a CHK code,

@@ -140,7 +140,10 @@ const BeaconInformationSection: FunctionComponent<DraftRegistration> = ({
           label="Serial number"
           value={manufacturerSerialNumber}
         />
-        <CheckYourAnswersDataRowItem label="CHK code" value={chkCode} />
+        <CheckYourAnswersDataRowItem
+          label="CHK (checksum) code"
+          value={chkCode}
+        />
         <CheckYourAnswersDataRowItem
           label="Battery expiry"
           value={
