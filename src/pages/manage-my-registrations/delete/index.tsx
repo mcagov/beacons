@@ -110,7 +110,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
                 form.fields.reasonForDeletion.value ===
                 ReasonsForDeletingARegistration.REPLACED
               }
-              label="This beacons has been replaced by another beacon"
+              label="This beacon has been replaced by another beacon"
             />
             <RadioListItem
               name="reasonForDeletion"
