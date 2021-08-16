@@ -26,7 +26,9 @@ export const IfYouNeedHelp: FunctionComponent = (): JSX.Element => (
 
 export const BeaconRegistryContactInfo: FunctionComponent = (): JSX.Element => (
   <div>
-    <h3 className="govuk-!-font-weight-bold">The UK Beacon Registry</h3>
+    <h3 className="govuk-!-font-weight-bold govuk-!-margin-bottom-1">
+      The UK Beacon Registry
+    </h3>
     <GovUKList>
       <li>
         <a className="govuk-link" href="mailto:ukbeacons@mcga.gov.uk">
