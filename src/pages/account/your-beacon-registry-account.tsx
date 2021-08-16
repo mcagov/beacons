@@ -83,6 +83,7 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
           <AnchorLink
             href={PageURLs.updateAccount}
             classes="govuk-link--no-visited-state govuk-!-margin-right-4"
+            description="Your details"
           >
             Change
           </AnchorLink>
