@@ -1,3 +1,4 @@
+import { showCookieBanner } from './../../lib/cookies';
 import { GetServerSidePropsResult } from "next";
 import { withoutErrorMessages } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
@@ -38,7 +39,7 @@ export class GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage
         form: withoutErrorMessages({}, this.validationRules),
         previousPageURL: PageURLs.accountHome,
         beacon: registrationToBeDeleted,
-        showCookieBanner: true,
+        showCookieBanner: showCookieBanner(this.context),
       },
     };
   }
