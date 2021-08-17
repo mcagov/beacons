@@ -242,3 +242,8 @@ variable "apply_immediately" {
   description = "Apply changes to infrastrucure immediatly"
   default     = true
 }
+variable "sns_alerts_name" {
+  type        = string
+  description = "Name for SNS Alerts"
+  default     = "Alerts"
+}
