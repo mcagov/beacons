@@ -27,3 +27,7 @@ nat_gateway_count              = 1
 performance_insights_enabled   = true
 apply_immediately              = true
 multi_az                       = false
+alert_email_address            = "beacons-team@madetech.com"
+aws_account_number             = "232705206979"
+actions_alarm                  = []
+actions_ok                     = []

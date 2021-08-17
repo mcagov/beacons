@@ -252,3 +252,13 @@ variable "aws_account_number" {
   description = "AWS Account Number"
   default     = ""
 }
+variable "actions_alarm" {
+  type        = list
+  description = "A list of actions to take when alarms are triggered. Will likely be an SNS topic for event distribution."
+  default     = []
+}
+variable "actions_ok" {
+  type        = list
+  description = "A list of actions to take when alarms are cleared. Will likely be an SNS topic for event distribution."
+  default     = []
+}

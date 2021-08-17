@@ -27,6 +27,6 @@ module "aws-rds-alarms" {
   version           = "2.1.0"
   db_instance_id    = aws_db_instance.postgres.id
   db_instance_class = "db.t2.micro"
-  actions_alarm     = [aws_sns_topic.sns_alerts.arn]
-  actions_ok        = [aws_sns_topic.sns_alerts.arn]
+  actions_alarm     = var.actions_alarm
+  actions_ok        = var.actions_ok
 }
