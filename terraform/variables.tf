@@ -242,8 +242,13 @@ variable "apply_immediately" {
   description = "Apply changes to infrastrucure immediatly"
   default     = true
 }
-variable "sns_alerts_name" {
+variable "alert_email_address" {
   type        = string
-  description = "Name for SNS Alerts"
-  default     = "Alerts"
+  description = "Email Address subscribed to alerts"
+  default     = ""
+}
+variable "aws_account_number" {
+  type        = string
+  description = "AWS Account Number"
+  default     = ""
 }

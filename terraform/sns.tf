@@ -1,5 +1,5 @@
 resource "aws_sns_topic" "sns_alerts" {
-  name = var.sns_alerts_name
+  name = "Alerts"
 }
 
 resource "aws_sns_topic_policy" "sns_alerts_policy" {
@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "sns_policy_document" {
       variable = "AWS:SourceOwner"
 
       values = [
-        "232705206979",
+        var.aws_account_number,
       ]
     }
 
@@ -50,5 +50,5 @@ data "aws_iam_policy_document" "sns_policy_document" {
 resource "aws_sns_topic_subscription" "sns_alerts_subscription" {
   topic_arn = aws_sns_topic.sns_alerts.arn
   protocol  = "email"
-  endpoint  = "stephen.strudwick@madetech.com"
+  endpoint  = var.alert_email_address
 }
