@@ -33,7 +33,7 @@ export const SummaryListItem: FunctionComponent<SummaryListItemProps> = ({
       <dd className="govuk-summary-list__actions" key={i}>
         <a className="govuk-link" href={href}>
           {text}
-          <span className="govuk-visually-hidden">{href}</span>
+          <span className="govuk-visually-hidden">{labelText}</span>
         </a>
       </dd>
     ))}

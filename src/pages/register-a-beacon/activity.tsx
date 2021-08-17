@@ -656,6 +656,7 @@ const mapper = (
         draftRegistration.workingRemotelyPeopleCount || "",
       windfarmLocation: draftRegistration.windfarmLocation || "",
       windfarmPeopleCount: draftRegistration.windfarmPeopleCount || "",
+      purpose: draftRegistration.purpose,
     }),
   };
 
@@ -674,6 +675,7 @@ const validationRules = ({
   workingRemotelyPeopleCount,
   windfarmLocation,
   windfarmPeopleCount,
+  purpose,
 }: FormSubmission): FormManager => {
   const activityMatchingCondition = (activity: Activity) => ({
     dependsOn: "activity",
@@ -685,11 +687,16 @@ const validationRules = ({
     meetingCondition: (value: Environment) => value === Environment.LAND,
   };
 
+  fieldToFocus(environment, purpose);
+
   return new FormManager({
     environment: new FieldManager(environment),
-    activity: new FieldManager(activity, [
-      Validators.required("Activity is a required field"),
-    ]),
+    activity: new FieldManager(
+      activity,
+      [Validators.required("Activity is a required field")],
+      [],
+      fieldToFocus(environment, purpose)
+    ),
     otherActivityText: new FieldManager(
       otherActivityText,
       [Validators.required("Enter a description for your activity")],
@@ -753,6 +760,26 @@ const validationRules = ({
       [activityMatchingCondition(Activity.WINDFARM)]
     ),
   });
+};
+
+const fieldToFocus = (
+  environment: Environment | undefined,
+  purpose: Purpose | undefined
+) => {
+  switch (environment) {
+    case Environment.MARITIME:
+      if (purpose === Purpose.COMMERCIAL) {
+        return "fishing-vessel";
+      }
+      return "motor-vessel";
+    case Environment.AVIATION:
+      if (purpose === Purpose.COMMERCIAL) {
+        return "passenger-plane";
+      }
+      return "jet-aircraft";
+    case Environment.LAND:
+      return "driving";
+  }
 };
 
 export default ActivityPage;

@@ -20,7 +20,10 @@ const Aside: FunctionComponent<AsideProps> = ({
           {title}
         </h2>
       )}
-      <nav role="navigation" aria-labelledby="subsection-title">
+      <nav
+        role="navigation"
+        aria-labelledby={title != null ? "subsection-title" : null}
+      >
         {children}
       </nav>
     </aside>

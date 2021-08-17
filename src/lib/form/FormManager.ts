@@ -110,7 +110,7 @@ export class FormManager extends AbstractFormNode {
       .map((fieldId) => {
         const fieldInput = this.fields[fieldId];
         return {
-          fieldId,
+          fieldId: fieldInput.fieldId || fieldId,
           errorMessages: fieldInput.errorMessages(),
         };
       });
