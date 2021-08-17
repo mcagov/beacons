@@ -3,7 +3,9 @@ import {
   andIHaveEnteredNoInformation,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
+  thenMyFocusMovesTo,
   whenIClickContinue,
+  whenIClickOnTheErrorSummaryLinkContaining,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to submit the purpose for my beacon", () => {
@@ -12,13 +14,11 @@ describe("As a beacon owner, I want to submit the purpose for my beacon", () => 
     andIHaveEnteredNoInformation();
     whenIClickContinue();
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
-    // TODO: Uncomment below assertions when issue #148 fixed.  Error link
-    // should move focus to first radio button.
-    //
-    // whenIClickOnTheErrorSummaryLinkContaining(
-    //   "purpose",
-    //   requiredFieldErrorMessage
-    // );
-    // thenMyFocusMovesTo("#pleasure");
+
+    whenIClickOnTheErrorSummaryLinkContaining(
+      "purpose",
+      requiredFieldErrorMessage
+    );
+    thenMyFocusMovesTo("#pleasure");
   });
 });

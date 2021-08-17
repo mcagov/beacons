@@ -138,7 +138,7 @@ const validationRules = ({ purpose }: FormSubmission): FormManager => {
     purpose: new FieldManager(
       purpose,
       [Validators.required("Beacon use purpose is a required field")],
-      undefined,
+      [],
       "pleasure"
     ),
   });

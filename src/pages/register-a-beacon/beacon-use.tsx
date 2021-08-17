@@ -170,7 +170,7 @@ const validationRules = ({ environment }) => {
     environment: new FieldManager(
       environment,
       [Validators.required("Where the beacon will be used is required")],
-      undefined,
+      [],
       "maritime"
     ),
   });

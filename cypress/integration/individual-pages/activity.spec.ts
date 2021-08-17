@@ -39,6 +39,8 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
         "Activity",
         requiredFieldErrorMessage
       );
+      whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);
+      thenMyFocusMovesTo("#motor-vessel");
     });
 
     it("displays an error if 'Other activity' is selected, but no text is provided", () => {
@@ -67,6 +69,8 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
         "Activity",
         requiredFieldErrorMessage
       );
+      whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);
+      thenMyFocusMovesTo("#fishing-vessel");
     });
 
     it("displays an error if 'Other activity' is selected, but no text is provided", () => {
@@ -95,6 +99,8 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
         "Activity",
         requiredFieldErrorMessage
       );
+      whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);
+      thenMyFocusMovesTo("#jet-aircraft");
     });
 
     it("displays an error if 'Other activity' is selected, but no text is provided", () => {
@@ -123,6 +129,8 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
         "Activity",
         requiredFieldErrorMessage
       );
+      whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);
+      thenMyFocusMovesTo("#passenger-plane");
     });
 
     it("displays an error if 'Other activity' is selected, but no text is provided", () => {
@@ -150,6 +158,17 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
     beforeEach(() => {
       givenIHaveSelected("#land");
       andIClickContinue();
+    });
+
+    it("displays an error if no activity is selected", () => {
+      whenIClickContinue();
+      thenIShouldSeeFormErrors(requiredFieldErrorMessage);
+      thenIShouldSeeAnErrorSummaryLinkThatContains(
+        "Activity",
+        requiredFieldErrorMessage
+      );
+      whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);
+      thenMyFocusMovesTo("#driving");
     });
 
     describe("the Working remotely option", () => {

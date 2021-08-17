@@ -87,7 +87,7 @@ const validationRules = ({ signUpOrSignIn }) => {
     signUpOrSignIn: new FieldManager(
       signUpOrSignIn,
       [Validators.required("Please select an option")],
-      undefined,
+      [],
       "signIn"
     ),
   });

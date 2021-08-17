@@ -694,7 +694,7 @@ const validationRules = ({
     activity: new FieldManager(
       activity,
       [Validators.required("Activity is a required field")],
-      undefined,
+      [],
       fieldToFocus(environment, purpose)
     ),
     otherActivityText: new FieldManager(
