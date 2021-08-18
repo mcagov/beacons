@@ -23,6 +23,7 @@ interface BeaconsFormProps {
   id?: string;
   displayLabelledHeading?: boolean;
   displayFormFieldsetAndLegend?: boolean;
+  headingType?: "label" | "legend";
 }
 
 export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
@@ -35,74 +36,11 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   pageText = null,
   continueButton = <Button buttonText="Continue" />,
   cancelButton = null,
-  displayLabelledHeading = false,
-  displayFormFieldsetAndLegend = false,
+  headingType,
   id = "",
 }: BeaconsFormProps): JSX.Element => {
   const pageTextComponent: ReactNode =
     typeof pageText === "string" ? <GovUKBody>{pageText}</GovUKBody> : pageText;
-
-  if (displayFormFieldsetAndLegend) {
-    return (
-      <Layout
-        navigation={<BackButton href={previousPageUrl} />}
-        title={pageHeading}
-        showCookieBanner={showCookieBanner}
-      >
-        <Grid
-          mainContent={
-            <>
-              <FormErrorSummary formErrors={formErrors} />
-              <Form>
-                <FormGroup errorMessages={errorMessages}>
-                  <FormFieldset>
-                    <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                    {pageTextComponent}
-                    {children}
-                  </FormFieldset>
-                  <HiddenFormMetadata />
-                </FormGroup>
-                {cancelButton}
-                {continueButton}
-              </Form>
-              <IfYouNeedHelp />
-            </>
-          }
-        />
-      </Layout>
-    );
-  }
-
-  if (displayLabelledHeading) {
-    return (
-      <Layout
-        navigation={<BackButton href={previousPageUrl} />}
-        title={pageHeading}
-        showCookieBanner={showCookieBanner}
-      >
-        <Grid
-          mainContent={
-            <>
-              <FormErrorSummary formErrors={formErrors} />
-              <Form>
-                <FormGroup errorMessages={errorMessages}>
-                  <h1 className="govuk-heading-l govuk-!-margin-bottom-3">
-                    <label htmlFor={id}>{pageHeading}</label>
-                  </h1>
-                  {pageTextComponent}
-                  {children}
-                  <HiddenFormMetadata />
-                </FormGroup>
-                {cancelButton}
-                {continueButton}
-              </Form>
-              <IfYouNeedHelp />
-            </>
-          }
-        />
-      </Layout>
-    );
-  }
 
   return (
     <Layout
@@ -116,11 +54,29 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
             <FormErrorSummary formErrors={formErrors} />
             <Form>
               <FormGroup errorMessages={errorMessages}>
-                <h1 className="govuk-heading-l govuk-!-margin-bottom-3">
-                  {pageHeading}
-                </h1>
-                {pageTextComponent}
-                {children}
+                {headingType === "label" ? (
+                  <>
+                    <h1 className="govuk-heading-l govuk-!-margin-bottom-3">
+                      <label htmlFor={id}>{pageHeading}</label>
+                    </h1>
+                    {pageTextComponent}
+                    {children}
+                  </>
+                ) : headingType === "legend" ? (
+                  <FormFieldset>
+                    <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
+                    {pageTextComponent}
+                    {children}
+                  </FormFieldset>
+                ) : (
+                  <>
+                    <h1 className="govuk-heading-l govuk-!-margin-bottom-3">
+                      {pageHeading}
+                    </h1>
+                    {pageTextComponent}
+                    {children}
+                  </>
+                )}
                 <HiddenFormMetadata />
               </FormGroup>
               {cancelButton}
