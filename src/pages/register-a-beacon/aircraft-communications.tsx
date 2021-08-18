@@ -54,6 +54,7 @@ const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
       pageText={pageText}
+      displayFormFieldsetAndLegend
     >
       <TypesOfCommunication form={form} />
     </BeaconsForm>

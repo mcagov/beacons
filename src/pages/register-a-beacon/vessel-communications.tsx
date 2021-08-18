@@ -70,6 +70,7 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
       pageText={pageText}
+      displayFormFieldsetAndLegend
     >
       <CallSign value={form.fields.callSign.value} />
 

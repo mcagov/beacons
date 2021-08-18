@@ -63,6 +63,7 @@ const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       pageText={pageText}
+      displayFormFieldsetAndLegend
     >
       <FormGroup errorMessages={form.fields.environment.errorMessages}>
         <RadioList conditional={true}>

@@ -48,6 +48,7 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
       showCookieBanner={showCookieBanner}
       pageText={pageText}
       includeUseIndex={false}
+      displayFormFieldsetAndLegend
     >
       <FormGroup errorMessages={form.fields.signUpOrSignIn.errorMessages}>
         <RadioList>
