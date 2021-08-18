@@ -167,4 +167,87 @@ describe("BeaconsForm Component", () => {
 
     expect(screen.queryByText("This is an error")).toBeNull();
   });
+
+  it("should render an unlabelled heading as default", () => {
+    render(
+      <BeaconsForm
+        previousPageUrl={previousPageUrl}
+        pageHeading={pageHeading}
+        showCookieBanner={showCookieBanner}
+      >
+        {children}
+      </BeaconsForm>
+    );
+
+    const unlabelledHeading =
+      '<h1 class="govuk-heading-l govuk-!-margin-bottom-3">A day in the beacon life</h1>';
+
+    expect(screen.getByText(pageHeading).outerHTML).toEqual(unlabelledHeading);
+  });
+
+  it("should render a labelled heading and not an unlabelled heading if displayedLabelledHeading prop is passed", () => {
+    render(
+      <BeaconsForm
+        previousPageUrl={previousPageUrl}
+        pageHeading={pageHeading}
+        showCookieBanner={showCookieBanner}
+        displayLabelledHeading
+      >
+        {children}
+      </BeaconsForm>
+    );
+
+    const labelledHeading = '<label for="">A day in the beacon life</label>';
+    const unlabelledHeading =
+      '<h1 class="govuk-heading-l govuk-!-margin-bottom-3">A day in the beacon life</h1>';
+
+    expect(screen.getByText(pageHeading).outerHTML).toEqual(labelledHeading);
+    expect(screen.getByText(pageHeading).outerHTML).not.toEqual(
+      unlabelledHeading
+    );
+  });
+
+  it("should render a labelled heading with an id as the 'for' attribute when displayedLabelledHeading and an id is passed", () => {
+    render(
+      <BeaconsForm
+        previousPageUrl={previousPageUrl}
+        pageHeading={pageHeading}
+        showCookieBanner={showCookieBanner}
+        displayLabelledHeading
+        id="beaconsForm"
+      >
+        {children}
+      </BeaconsForm>
+    );
+
+    const labelledHeading =
+      '<label for="beaconsForm">A day in the beacon life</label>';
+
+    expect(screen.getByText(pageHeading).outerHTML).toEqual(labelledHeading);
+  });
+
+  it("should render a form fieldset and legend and not a heading when displayFormFieldsetAndLegend is passed", () => {
+    render(
+      <BeaconsForm
+        previousPageUrl={previousPageUrl}
+        pageHeading={pageHeading}
+        showCookieBanner={showCookieBanner}
+        displayFormFieldsetAndLegend
+      >
+        {children}
+      </BeaconsForm>
+    );
+
+    const fieldsetAndLegendHeading =
+      '<h1 class="govuk-fieldset__heading">A day in the beacon life</h1>';
+    const unlabelledHeading =
+      '<h1 class="govuk-heading-l govuk-!-margin-bottom-3">A day in the beacon life</h1>';
+
+    expect(screen.getByText(pageHeading).outerHTML).toEqual(
+      fieldsetAndLegendHeading
+    );
+    expect(screen.getByText(pageHeading).outerHTML).not.toEqual(
+      unlabelledHeading
+    );
+  });
 });
