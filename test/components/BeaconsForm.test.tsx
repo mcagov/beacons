@@ -191,7 +191,7 @@ describe("BeaconsForm Component", () => {
         previousPageUrl={previousPageUrl}
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
-        displayLabelledHeading
+        headingType="label"
       >
         {children}
       </BeaconsForm>
@@ -213,7 +213,7 @@ describe("BeaconsForm Component", () => {
         previousPageUrl={previousPageUrl}
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
-        displayLabelledHeading
+        headingType="label"
         id="beaconsForm"
       >
         {children}
@@ -232,7 +232,7 @@ describe("BeaconsForm Component", () => {
         previousPageUrl={previousPageUrl}
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
-        displayFormFieldsetAndLegend
+        headingType="legend"
       >
         {children}
       </BeaconsForm>
