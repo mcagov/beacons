@@ -69,7 +69,7 @@ const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       formErrors={form.errorSummary}
       showCookieBanner={showCookieBanner}
       pageText={pageText}
-      displayFormFieldsetAndLegend
+      headingType="legend"
     >
       <TypesOfCommunication form={form} />
     </BeaconsForm>

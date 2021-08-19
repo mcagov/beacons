@@ -49,7 +49,7 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
       previousPageUrl={PageURLs.environment + queryParams({ useIndex })}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      displayFormFieldsetAndLegend
+      headingType="legend"
     >
       <FormGroup errorMessages={form.fields.purpose.errorMessages}>
         <RadioList>

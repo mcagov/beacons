@@ -45,7 +45,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
       pageHeading="Are you sure you want to delete this beacon registration from your account?"
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      displayFormFieldsetAndLegend
+      headingType="legend"
       continueButton={
         <Button
           buttonText="Delete this registration"
