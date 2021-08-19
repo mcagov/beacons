@@ -10,7 +10,7 @@ terraform {
   backend "s3" {
     bucket         = "beacons-terraform-state"
     encrypt        = true
-    dynamodb_table = "beacons-terraform-state"
+    dynamodb_table = "beacons-terraform-state-lock"
     key            = "state"
     region         = "eu-west-2"
   }
