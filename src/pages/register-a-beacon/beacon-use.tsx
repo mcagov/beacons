@@ -168,9 +168,12 @@ const mapper = (context: BeaconsGetServerSidePropsContext) => {
 
 const validationRules = ({ environment }) => {
   return new FormManager({
-    environment: new FieldManager(environment, [
-      Validators.required("Where the beacon will be used is required"),
-    ]),
+    environment: new FieldManager(
+      environment,
+      [Validators.required("Where the beacon will be used is required")],
+      [],
+      "maritime"
+    ),
   });
 };
 

@@ -85,9 +85,12 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
 const validationRules = ({ signUpOrSignIn }) => {
   return new FormManager({
-    signUpOrSignIn: new FieldManager(signUpOrSignIn, [
-      Validators.required("Please select an option"),
-    ]),
+    signUpOrSignIn: new FieldManager(
+      signUpOrSignIn,
+      [Validators.required("Please select an option")],
+      [],
+      "signIn"
+    ),
   });
 };
 

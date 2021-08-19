@@ -18,6 +18,8 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
   changeUri,
   deleteUri,
 }: BeaconUseSectionProps): JSX.Element => {
+  const useRank = sentenceCase(ordinal(index + 1)) + " use";
+
   return (
     <>
       <div
@@ -29,19 +31,24 @@ export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
         }}
       >
         <SectionHeading classes="govuk-!-margin-0">
-          {sentenceCase(ordinal(index + 1) + " use: ") + prettyUseName(use)}
+          {useRank + ": " + prettyUseName(use)}
         </SectionHeading>
 
         <div>
           {changeUri && (
             <AnchorLink
               href={changeUri}
+              description={useRank}
               classes="govuk-link--no-visited-state govuk-!-margin-right-4"
             >
               Change
             </AnchorLink>
           )}
-          {deleteUri && <WarningLink href={deleteUri}>Delete</WarningLink>}
+          {deleteUri && (
+            <WarningLink href={deleteUri} description={useRank}>
+              Delete
+            </WarningLink>
+          )}
         </div>
       </div>
 

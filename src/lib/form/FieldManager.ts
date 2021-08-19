@@ -19,14 +19,21 @@ export class FieldManager extends AbstractFormNode {
   private _keywordMap = {
     HEX_ID_COUNTRY: (hexId) => HexIdParser.countryName(hexId),
   };
+  /**
+   * Assign to fieldId the id of an element that needs to be focused when
+   * skipping to error.  E.g. the first element in a `RadioList`
+   */
+  public readonly fieldId?: string;
 
   constructor(
     value: string,
     public readonly validators: ValidationRule[] = [],
-    public readonly conditions: ValidationCondition[] = []
+    public readonly conditions: ValidationCondition[] = [],
+    fieldId?: string
   ) {
     super(value);
     this._value = value ? value : "";
+    this.fieldId = fieldId;
   }
 
   /**

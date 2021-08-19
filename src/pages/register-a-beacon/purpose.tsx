@@ -136,9 +136,12 @@ const mapper = (context: BeaconsGetServerSidePropsContext) => {
 
 const validationRules = ({ purpose }: FormSubmission): FormManager => {
   return new FormManager({
-    purpose: new FieldManager(purpose, [
-      Validators.required("Beacon use purpose is a required field"),
-    ]),
+    purpose: new FieldManager(
+      purpose,
+      [Validators.required("Beacon use purpose is a required field")],
+      [],
+      "pleasure"
+    ),
   });
 };
 
