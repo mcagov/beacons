@@ -29,5 +29,4 @@ apply_immediately              = true
 multi_az                       = false
 alert_email_address            = "beacons-team@madetech.com"
 aws_account_number             = "232705206979"
-actions_alarm                  = []
-actions_ok                     = []
+enable_alerts                  = false

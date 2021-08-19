@@ -30,5 +30,4 @@ apply_immediately              = false
 multi_az                       = true
 alert_email_address            = "beacons-team@madetech.com"
 aws_account_number             = "232705206979"
-actions_alarm                  = [aws_sns_topic.sns_alerts.arn]
-actions_ok                     = [aws_sns_topic.sns_alerts.arn]
+enable_alerts                  = true
