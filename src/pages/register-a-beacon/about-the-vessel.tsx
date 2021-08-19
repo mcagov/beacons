@@ -1,9 +1,9 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent, ReactNode } from "react";
+import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
-import { NoFieldSetOrLegendForm } from "../../components/NoFieldSetOrLegendForm";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { SectionHeading } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/FieldManager";
@@ -54,7 +54,7 @@ const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
   );
 
   return (
-    <NoFieldSetOrLegendForm
+    <BeaconsForm
       previousPageUrl={PageURLs.activity + queryParams({ useIndex })}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -83,7 +83,7 @@ const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
       <OfficialNumberInput value={form.fields.officialNumber.value} />
       <SectionHeading>Windfarm, rig or platform information</SectionHeading>
       <RigPlatformLocationInput value={form.fields.rigPlatformLocation.value} />
-    </NoFieldSetOrLegendForm>
+    </BeaconsForm>
   );
 };
 

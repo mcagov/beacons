@@ -1,8 +1,8 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
+import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
-import { NoFieldSetOrLegendForm } from "../../components/NoFieldSetOrLegendForm";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormJSON, FormManager } from "../../lib/form/FormManager";
 import { Validators } from "../../lib/form/Validators";
@@ -40,7 +40,7 @@ const AboutBeaconOwner: FunctionComponent<AboutBeaconOwnerFormProps> = ({
   const pageHeading = "About the beacon owner";
 
   return (
-    <NoFieldSetOrLegendForm
+    <BeaconsForm
       pageHeading={pageHeading}
       formErrors={form.errorSummary}
       previousPageUrl={previousPageUrl}
@@ -65,7 +65,7 @@ const AboutBeaconOwner: FunctionComponent<AboutBeaconOwnerFormProps> = ({
         value={form.fields.ownerEmail.value}
         errorMessages={form.fields.ownerEmail.errorMessages}
       />
-    </NoFieldSetOrLegendForm>
+    </BeaconsForm>
   );
 };
 
