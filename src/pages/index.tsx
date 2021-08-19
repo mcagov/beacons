@@ -164,16 +164,18 @@ const DataProtection: FunctionComponent = (): JSX.Element => (
     <GovUKBody>
       Further details on Beacon Registration privacy policy can be found at{" "}
       <AnchorLink href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice">
-        https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice
+        406 MHz beacons privacy information notice
       </AnchorLink>
+      .
     </GovUKBody>
 
     <GovUKBody>
       To find out more about how the MCA looks after personal data, your rights,
       and how to contact our data protection officer, please go to{" "}
       <AnchorLink href="https://www.gov.uk/mca/privacy-policy">
-        www.gov.uk/mca/privacy-policy
+        personal information charter
       </AnchorLink>
+      .
     </GovUKBody>
   </>
 );
