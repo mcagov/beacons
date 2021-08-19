@@ -185,7 +185,7 @@ describe("BeaconsForm Component", () => {
     expect(screen.getByText(pageHeading).outerHTML).toEqual(unlabelledHeading);
   });
 
-  it("should render a labelled heading and not an unlabelled heading if displayedLabelledHeading prop is passed", () => {
+  it("should render a labelled heading and not an unlabelled heading if headingType is label", () => {
     render(
       <BeaconsForm
         previousPageUrl={previousPageUrl}
@@ -207,7 +207,7 @@ describe("BeaconsForm Component", () => {
     );
   });
 
-  it("should render a labelled heading with an id as the 'for' attribute when displayedLabelledHeading and an id is passed", () => {
+  it("should render a labelled heading with an id as the 'for' attribute when headingType is label and an id is passed", () => {
     render(
       <BeaconsForm
         previousPageUrl={previousPageUrl}
@@ -226,7 +226,7 @@ describe("BeaconsForm Component", () => {
     expect(screen.getByText(pageHeading).outerHTML).toEqual(labelledHeading);
   });
 
-  it("should render a form fieldset and legend and not a heading when displayFormFieldsetAndLegend is passed", () => {
+  it("should render a form fieldset and legend and not a heading when headingType is legend", () => {
     render(
       <BeaconsForm
         previousPageUrl={previousPageUrl}
