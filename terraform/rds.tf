@@ -17,6 +17,7 @@ resource "aws_db_instance" "postgres" {
   allow_major_version_upgrade     = true
   backup_window                   = var.backup_window
   backup_retention_period         = var.backup_retention_period
+  copy_tags_to_snapshot           = true
   performance_insights_enabled    = var.performance_insights_enabled
   apply_immediately               = var.apply_immediately
   multi_az                        = var.multi_az
