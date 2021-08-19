@@ -71,13 +71,13 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
 
     <GovUKBody>Registering takes around 15 minutes.</GovUKBody>
 
-    <InsetText>
+    {/* <InsetText>
       If you want to register multiple beacons (i.e. more than 5),&nbsp;
       <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
         contact the UK Beacon Registry
       </AnchorLink>{" "}
       who will provide you with a spreadsheet template
-    </InsetText>
+    </InsetText> */}
 
     <SectionHeading>Before you start</SectionHeading>
 
