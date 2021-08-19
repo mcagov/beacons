@@ -21,8 +21,6 @@ interface BeaconsFormProps {
   continueButton?: JSX.Element;
   cancelButton?: JSX.Element;
   id?: string;
-  displayLabelledHeading?: boolean;
-  displayFormFieldsetAndLegend?: boolean;
   headingType?: "label" | "legend";
 }
 
