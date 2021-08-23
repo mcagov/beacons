@@ -30,7 +30,7 @@ export const CookieBanner: FunctionComponent = (): JSX.Element => (
 
           <ButtonGroup>
             <AnchorLink href="/help/cookies">View cookies</AnchorLink>
-            <Button buttonText="Hide this message" />
+            <Button buttonText="Hide this message about essential cookies" />
           </ButtonGroup>
         </div>
       </div>

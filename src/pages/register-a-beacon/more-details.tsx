@@ -75,11 +75,13 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
       pageText={pageText}
+      id="moreDetails"
+      headingType="label"
     >
       <MoreDetailsTextArea
-        id="moreDetails"
         value={form.fields.moreDetails.value}
         errorMessages={form.fields.moreDetails.errorMessages}
+        id="moreDetails"
       />
     </BeaconsForm>
   );
@@ -102,6 +104,7 @@ const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
     rows={4}
     defaultValue={value}
     errorMessages={errorMessages}
+    label="Please provide more details that could help in a search"
   />
 );
 

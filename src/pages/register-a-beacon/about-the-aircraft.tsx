@@ -54,6 +54,7 @@ const AboutTheAircraft: FunctionComponent<DraftBeaconUsePageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
+      headingType="legend"
     >
       <MaxCapacityInput
         value={form.fields.maxCapacity.value}

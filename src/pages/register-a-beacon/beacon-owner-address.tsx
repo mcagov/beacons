@@ -101,11 +101,15 @@ const BuildingNumberAndStreetInput: FunctionComponent<BuildingNumberAndStreetInp
     <FormGroup errorMessages={errorMessages}>
       <Input
         id="ownerAddressLine1"
-        label="Building number and street"
+        label="Address line one (building number and street name)"
         defaultValue={valueLine1}
         inputClassName="govuk-!-margin-bottom-2"
       />
-      <Input id="ownerAddressLine2" defaultValue={valueLine2} />
+      <Input
+        id="ownerAddressLine2"
+        defaultValue={valueLine2}
+        label="Address line two"
+      />
     </FormGroup>
   );
 
@@ -188,7 +192,9 @@ const validationRules = ({
 }: BeaconOwnerAddressForm): FormManager => {
   return new FormManager({
     ownerAddressLine1: new FieldManager(ownerAddressLine1, [
-      Validators.required("Building number and street is a required field"),
+      Validators.required(
+        "Address line one (building number and street name) is a required field"
+      ),
     ]),
     ownerAddressLine2: new FieldManager(ownerAddressLine2),
     ownerTownOrCity: new FieldManager(ownerTownOrCity, [

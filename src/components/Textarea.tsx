@@ -60,7 +60,6 @@ export const TextareaCharacterCount: FunctionComponent<TextareaCharacterCountPro
     htmlAttributes = {},
   }: TextareaCharacterCountProps): JSX.Element => {
     name = name ? name : id;
-
     let labelComponent: ReactNode;
     if (label) {
       labelComponent = <FormLabel htmlFor={id}>{label}</FormLabel>;

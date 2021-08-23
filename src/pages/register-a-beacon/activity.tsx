@@ -89,6 +89,7 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
       formErrors={form.errorSummary}
       errorMessages={form.fields.activity.errorMessages}
       pageText={pageText}
+      headingType="legend"
     >
       <RadioList conditional={true}>
         <ActivityOptions

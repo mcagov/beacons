@@ -2,13 +2,14 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
-import {
-  DateListInput,
-  DateListItem,
-  DateType,
-} from "../../components/DateInput";
+import { DateListItem, DateType } from "../../components/DateInput";
 import { Details } from "../../components/Details";
-import { FormGroup } from "../../components/Form";
+import {
+  FormFieldset,
+  FormGroup,
+  FormHint,
+  FormLegend,
+} from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
 import { GovUKBody } from "../../components/Typography";
 import { toIsoDateString } from "../../lib/dateTime";
@@ -117,7 +118,7 @@ const CHKCode: FunctionComponent<FormInputProps> = ({
   <FormGroup>
     <Input
       id="chkCode"
-      label="Enter the beacon CHK code (optional)"
+      label="Enter the beacon CHK (checksum) code (optional)"
       hintText="This might be on the registration card you received when you bought the
       beacon"
       defaultValue={value}
@@ -126,11 +127,12 @@ const CHKCode: FunctionComponent<FormInputProps> = ({
     <Details
       // TODO: Add govuk-!-!-padding-top-2 to component
       className="govuk-!-padding-top-2"
-      summaryText="What is the beacon CHK code?"
+      summaryText="What is the beacon CHK (checksum) code?"
     >
-      If the beacon manufacturer uses a CHK code, it will be written on the
-      manufacturers card underneath the Hex ID or UIN and serial number. An
-      example is: CHK: 9480B
+      The beacon CHK is a checksum or code which verifies the hexadecimal beacon
+      ID. An example is: CHK: 9480B. If the beacon manufacturer uses a CHK code,
+      it will be written on the manufacturers card underneath the Hex ID or UIN
+      and serial number.
     </Details>
   </FormGroup>
 );
@@ -140,26 +142,31 @@ const BatteryExpiryDate: FunctionComponent<DateInputProps> = ({
   yearValue,
   errorMessages,
 }: DateInputProps): JSX.Element => (
-  <DateListInput
-    id="batteryExpiryDate"
-    label="Enter your beacon battery expiry date (optional)"
-    hintText="You only need to enter the month and year, for example 11 2009"
-    errorMessages={errorMessages}
-  >
-    <DateListItem
-      id="batteryExpiryDateMonth"
-      label="Month"
-      defaultValue={monthValue}
-      dateType={DateType.MONTH}
-    />
+  <FormGroup errorMessages={errorMessages}>
+    <div id="batteryExpiryDate">
+      <FormFieldset>
+        <FormLegend>
+          Enter your beacon battery expiry date (optional)
+        </FormLegend>
+        <FormHint forId="batteryExpiryDate">
+          You only need to enter the month and year, for example 11 2009
+        </FormHint>
+        <DateListItem
+          id="batteryExpiryDateMonth"
+          label="Month"
+          defaultValue={monthValue}
+          dateType={DateType.MONTH}
+        />
 
-    <DateListItem
-      id="batteryExpiryDateYear"
-      label="Year"
-      defaultValue={yearValue}
-      dateType={DateType.YEAR}
-    />
-  </DateListInput>
+        <DateListItem
+          id="batteryExpiryDateYear"
+          label="Year"
+          defaultValue={yearValue}
+          dateType={DateType.YEAR}
+        />
+      </FormFieldset>
+    </div>
+  </FormGroup>
 );
 
 const LastServicedDate: FunctionComponent<DateInputProps> = ({
@@ -167,26 +174,29 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
   yearValue,
   errorMessages,
 }: DateInputProps): JSX.Element => (
-  <DateListInput
-    id="lastServicedDate"
-    label="When was your beacon last serviced? (optional)"
-    hintText="You only need to enter the month and year, for example 11 2009"
-    errorMessages={errorMessages}
-  >
-    <DateListItem
-      id="lastServicedDateMonth"
-      label="Month"
-      defaultValue={monthValue}
-      dateType={DateType.MONTH}
-    />
+  <FormGroup errorMessages={errorMessages}>
+    <div id="lastServicedDate">
+      <FormFieldset>
+        <FormLegend>When was your beacon last serviced? (optional)</FormLegend>
+        <FormHint forId="lastServicedDate">
+          You only need to enter the month and year, for example 11 2009
+        </FormHint>
+        <DateListItem
+          id="lastServicedDateMonth"
+          label="Month"
+          defaultValue={monthValue}
+          dateType={DateType.MONTH}
+        />
 
-    <DateListItem
-      id="lastServicedDateYear"
-      label="Year"
-      defaultValue={yearValue}
-      dateType={DateType.YEAR}
-    />
-  </DateListInput>
+        <DateListItem
+          id="lastServicedDateYear"
+          label="Year"
+          defaultValue={yearValue}
+          dateType={DateType.YEAR}
+        />
+      </FormFieldset>
+    </div>
+  </FormGroup>
 );
 
 export const getServerSideProps: GetServerSideProps = withContainer(
