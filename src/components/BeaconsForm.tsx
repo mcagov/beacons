@@ -3,7 +3,13 @@ import React, { FunctionComponent, ReactNode } from "react";
 import { FormError } from "../lib/form/FormManager";
 import { BackButton, Button } from "./Button";
 import { FormErrorSummary } from "./ErrorSummary";
-import { Form, FormFieldset, FormGroup, FormLegendPageHeading } from "./Form";
+import {
+  Form,
+  FormFieldset,
+  FormGroup,
+  FormLabel,
+  FormLegendPageHeading,
+} from "./Form";
 import { Grid } from "./Grid";
 import { Layout } from "./Layout";
 import { IfYouNeedHelp } from "./Mca";
@@ -54,7 +60,7 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
               <FormGroup errorMessages={errorMessages}>
                 {headingType === "label" ? (
                   <>
-                   <h1 className="govuk-label-wrapper">
+                    <h1 className="govuk-label-wrapper">
                       <FormLabel htmlFor={id} className="govuk-label--l">
                         {pageHeading}
                       </FormLabel>
