@@ -54,8 +54,10 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
               <FormGroup errorMessages={errorMessages}>
                 {headingType === "label" ? (
                   <>
-                    <h1 className="govuk-heading-l govuk-!-margin-bottom-3">
-                      <label htmlFor={id}>{pageHeading}</label>
+                   <h1 className="govuk-label-wrapper">
+                      <FormLabel htmlFor={id} className="govuk-label--l">
+                        {pageHeading}
+                      </FormLabel>
                     </h1>
                     {pageTextComponent}
                     {children}
