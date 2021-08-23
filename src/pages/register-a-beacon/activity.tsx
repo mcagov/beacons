@@ -71,7 +71,7 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
       {environment === Environment.MARITIME && (
         <GovUKBody>
           We will ask you for a full description of any vessels later in the
-          form
+          form.
         </GovUKBody>
       )}
     </>
