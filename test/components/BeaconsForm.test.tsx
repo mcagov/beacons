@@ -197,7 +197,8 @@ describe("BeaconsForm Component", () => {
       </BeaconsForm>
     );
 
-    const labelledHeading = '<label for="">A day in the beacon life</label>';
+    const labelledHeading =
+      '<label class="govuk-label govuk-label--l" for="">A day in the beacon life</label>';
     const unlabelledHeading =
       '<h1 class="govuk-heading-l govuk-!-margin-bottom-3">A day in the beacon life</h1>';
 
@@ -221,7 +222,7 @@ describe("BeaconsForm Component", () => {
     );
 
     const labelledHeading =
-      '<label for="beaconsForm">A day in the beacon life</label>';
+      '<label class="govuk-label govuk-label--l" for="beaconsForm">A day in the beacon life</label>';
 
     expect(screen.getByText(pageHeading).outerHTML).toEqual(labelledHeading);
   });
