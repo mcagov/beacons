@@ -3,7 +3,7 @@ resource "aws_sns_topic" "sns_alerts" {
 }
 
 resource "aws_sns_topic_policy" "sns_alerts_policy" {
-  arn = aws_sns_topic.sns_alerts.arn
+  arn    = aws_sns_topic.sns_alerts.arn
   policy = data.aws_iam_policy_document.sns_policy_document.json
 }
 
