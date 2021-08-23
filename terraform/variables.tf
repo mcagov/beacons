@@ -60,6 +60,14 @@ variable "webapp_next_auth_url" {
   type        = string
   description = "The NEXT AUTH environment variable used by NextAuth"
 }
+variable "webapp_url" {
+  type        = string
+  description = "The URL of the web app, used for health checks"
+}
+variable "service_url" {
+  type        = string
+  description = "The URL of the API service, used for health checks"
+}
 variable "webapp_azure_b2c_client_id" {
   type        = string
   description = "The Azure B2C Client ID for the B2C App Registration"
