@@ -28,6 +28,7 @@ interface BeaconsFormProps {
   cancelButton?: JSX.Element;
   id?: string;
   headingType?: "label" | "legend";
+  ariaDescribedBy?: string;
 }
 
 export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
@@ -35,6 +36,7 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   previousPageUrl,
   pageHeading,
   showCookieBanner,
+  ariaDescribedBy,
   formErrors = [],
   errorMessages = [],
   pageText = null,
@@ -69,7 +71,7 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
                     {children}
                   </>
                 ) : headingType === "legend" ? (
-                  <FormFieldset>
+                  <FormFieldset ariaDescribedBy={ariaDescribedBy}>
                     <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                     {pageTextComponent}
                     {children}

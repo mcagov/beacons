@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent, ReactNode } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
-import { FormGroup } from "../../components/Form";
+import { FormGroup, FormHint } from "../../components/Form";
 import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { AnchorLink, GovUKBody } from "../../components/Typography";
@@ -64,6 +64,7 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       formErrors={form.errorSummary}
       pageText={pageText}
       headingType="legend"
+      ariaDescribedBy="vessel-communication-types-hint"
     >
       <TypesOfCommunication form={form} />
       <CallSign value={form.fields.callSign.value} />
@@ -105,9 +106,10 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
   form: FormJSON;
 }) => (
   <>
-    <h2 className="govuk-heading-s govuk-!-margin-bottom-1">
+    <FormHint forId="vessel-communication-types">
       Tick all that apply and provide as much detail as you can
-    </h2>
+    </FormHint>
+
     <FormGroup>
       <CheckboxList conditional={true}>
         <CheckboxListItem
