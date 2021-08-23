@@ -36,7 +36,6 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   previousPageUrl,
   pageHeading,
   showCookieBanner,
-  ariaDescribedBy,
   formErrors = [],
   errorMessages = [],
   pageText = null,
@@ -44,6 +43,7 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   cancelButton = null,
   headingType,
   id = "",
+  ariaDescribedBy = null,
 }: BeaconsFormProps): JSX.Element => {
   const pageTextComponent: ReactNode =
     typeof pageText === "string" ? <GovUKBody>{pageText}</GovUKBody> : pageText;
