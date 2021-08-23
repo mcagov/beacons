@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
-import { FormFieldset, FormGroup, FormLegend } from "../../components/Form";
+import { FormGroup } from "../../components/Form";
 import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { GovUKBody } from "../../components/Typography";
@@ -66,10 +66,10 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
 }: {
   form: FormJSON;
 }) => (
-  <FormFieldset>
-    <FormLegend size="small">
+  <>
+    <h2 className="govuk-heading-s govuk-!-margin-bottom-1">
       Tick all that apply and provide as much detail as you can
-    </FormLegend>
+    </h2>
 
     <FormGroup>
       <CheckboxList conditional={true}>
@@ -139,7 +139,7 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
         </CheckboxListItem>
       </CheckboxList>
     </FormGroup>
-  </FormFieldset>
+  </>
 );
 
 export const getServerSideProps: GetServerSideProps = withContainer(
