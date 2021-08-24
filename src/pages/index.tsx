@@ -179,7 +179,6 @@ const DataProtection: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   async (context: BeaconsGetServerSidePropsContext) => {
-    console.log(context);
     return await new BeaconsPageRouter([
       new IfUserViewedIndexPage(context),
     ]).execute();
