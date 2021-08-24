@@ -188,7 +188,7 @@ const Dongle: FunctionComponent<FormInputProps> = ({
 }: FormInputProps): JSX.Element => (
   <FormGroup>
     <FormFieldset>
-      <FormLegend>Types of communication devices onboard</FormLegend>
+      <FormLegend>Is the beacon a USB dongle? (optional)</FormLegend>
       <FormHint forId="typesOfCommunication">
         A dongle is a small USB stick beacon that can be moved between different
         aircraft. Knowing if it might used on a different aircraft will help
