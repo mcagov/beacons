@@ -3,13 +3,7 @@ import React, { FunctionComponent, ReactNode } from "react";
 import { FormError } from "../lib/form/FormManager";
 import { BackButton, Button } from "./Button";
 import { FormErrorSummary } from "./ErrorSummary";
-import {
-  Form,
-  FormFieldset,
-  FormGroup,
-  FormLabel,
-  FormLegendPageHeading,
-} from "./Form";
+import { Form, FormGroup } from "./Form";
 import { Grid } from "./Grid";
 import { Layout } from "./Layout";
 import { IfYouNeedHelp } from "./Mca";
@@ -26,9 +20,6 @@ interface BeaconsFormProps {
   includeUseIndex?: boolean;
   continueButton?: JSX.Element;
   cancelButton?: JSX.Element;
-  id?: string;
-  headingType?: "label" | "legend";
-  ariaDescribedBy?: string;
 }
 
 export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
@@ -41,9 +32,6 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   pageText = null,
   continueButton = <Button buttonText="Continue" />,
   cancelButton = null,
-  headingType,
-  id = "",
-  ariaDescribedBy = null,
 }: BeaconsFormProps): JSX.Element => {
   const pageTextComponent: ReactNode =
     typeof pageText === "string" ? <GovUKBody>{pageText}</GovUKBody> : pageText;
@@ -60,31 +48,8 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
             <FormErrorSummary formErrors={formErrors} />
             <Form>
               <FormGroup errorMessages={errorMessages}>
-                {headingType === "label" ? (
-                  <>
-                    <h1 className="govuk-label-wrapper">
-                      <FormLabel htmlFor={id} className="govuk-label--l">
-                        {pageHeading}
-                      </FormLabel>
-                    </h1>
-                    {pageTextComponent}
-                    {children}
-                  </>
-                ) : headingType === "legend" ? (
-                  <FormFieldset ariaDescribedBy={ariaDescribedBy}>
-                    <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                    {pageTextComponent}
-                    {children}
-                  </FormFieldset>
-                ) : (
-                  <>
-                    <h1 className="govuk-heading-l govuk-!-margin-bottom-3">
-                      {pageHeading}
-                    </h1>
-                    {pageTextComponent}
-                    {children}
-                  </>
-                )}
+                {pageTextComponent}
+                {children}
                 <HiddenFormMetadata />
               </FormGroup>
               {cancelButton}
