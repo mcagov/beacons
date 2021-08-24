@@ -57,7 +57,7 @@ resource "aws_route53_health_check" "service-health-check" {
   fqdn              = var.service_fqdn
   port              = 443
   request_interval  = "30"
-  resource_path     = "/api/health"
+  resource_path     = "/spring-api/actuator/health"
   type              = "HTTPS_STR_MATCH"
-  search_string     = "Ship shape and Bristol fashion"
+  search_string     = "UP"
 }

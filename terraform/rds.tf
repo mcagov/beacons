@@ -22,12 +22,3 @@ resource "aws_db_instance" "postgres" {
   apply_immediately               = var.apply_immediately
   multi_az                        = var.multi_az
 }
-
-module "aws-rds-alarms" {
-  source            = "lorenzoaiello/rds-alarms/aws"
-  version           = "2.1.0"
-  db_instance_id    = aws_db_instance.postgres.id
-  db_instance_class = "db.t2.micro"
-  actions_alarm     = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
-  actions_ok        = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
-}

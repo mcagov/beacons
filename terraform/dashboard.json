@@ -1,0 +1,186 @@
+{
+    "widgets": [
+        {
+            "height": 3,
+            "width": 6,
+            "y": 7,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "title": "rds-dev-ops-beacons-database-lowCPUCreditBalance",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:rds-dev-ops-beacons-database-lowCPUCreditBalance"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 3,
+            "width": 6,
+            "y": 10,
+            "x": 6,
+            "type": "metric",
+            "properties": {
+                "title": "rds-dev-ops-beacons-database-lowFreeableMemory",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:rds-dev-ops-beacons-database-lowFreeableMemory"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 3,
+            "width": 6,
+            "y": 10,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "title": "rds-dev-ops-beacons-database-lowFreeStorageSpace",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:rds-dev-ops-beacons-database-lowFreeStorageSpace"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 3,
+            "width": 6,
+            "y": 7,
+            "x": 6,
+            "type": "metric",
+            "properties": {
+                "title": "rds-dev-ops-beacons-database-highSwapUsage",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:rds-dev-ops-beacons-database-highSwapUsage"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 3,
+            "width": 6,
+            "y": 7,
+            "x": 12,
+            "type": "metric",
+            "properties": {
+                "title": "rds-dev-ops-beacons-database-highCPUUtilization",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:rds-dev-ops-beacons-database-highCPUUtilization"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 3,
+            "width": 6,
+            "y": 10,
+            "x": 12,
+            "type": "metric",
+            "properties": {
+                "title": "rds-dev-ops-beacons-database-highDiskQueueDepth",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:rds-dev-ops-beacons-database-highDiskQueueDepth"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 6,
+            "width": 6,
+            "y": 7,
+            "x": 18,
+            "type": "metric",
+            "properties": {
+                "title": "rds-dev-ops-beacons-database-anomalousConnectionCount",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:rds-dev-ops-beacons-database-anomalousConnectionCount"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 3,
+            "width": 6,
+            "y": 2,
+            "x": 6,
+            "type": "metric",
+            "properties": {
+                "title": "service-health-alarm",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:us-east-1:232705206979:alarm:service-health-alarm"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 3,
+            "width": 6,
+            "y": 2,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "title": "webapp-health-alarm",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:us-east-1:232705206979:alarm:webapp-health-alarm"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 2,
+            "width": 24,
+            "y": 5,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "# Database Health\n## Alarms"
+            }
+        },
+        {
+            "height": 2,
+            "width": 12,
+            "y": 0,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "# Beacons Health\n## Health Check Alarms"
+            }
+        }
+    ]
+}
