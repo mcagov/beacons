@@ -17,7 +17,11 @@ interface FormLabelHeadingProps {
 }
 
 export const FormFieldsetAndLegend: FunctionComponent<FormFieldsetAndLegendProps> =
-  ({ children, pageHeading, ariaDescribedBy = null }) => {
+  ({
+    children,
+    pageHeading,
+    ariaDescribedBy = null,
+  }: FormFieldsetAndLegendProps): JSX.Element => {
     return (
       <FormFieldset ariaDescribedBy={ariaDescribedBy}>
         <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
@@ -28,7 +32,7 @@ export const FormFieldsetAndLegend: FunctionComponent<FormFieldsetAndLegendProps
 
 export const FormHeading: FunctionComponent<FormHeadingProps> = ({
   pageHeading,
-}) => {
+}: FormHeadingProps): JSX.Element => {
   return (
     <h1 className="govuk-heading-l govuk-!-margin-bottom-3">{pageHeading}</h1>
   );
@@ -37,7 +41,7 @@ export const FormHeading: FunctionComponent<FormHeadingProps> = ({
 export const FormLabelHeading: FunctionComponent<FormLabelHeadingProps> = ({
   pageHeading,
   id = null,
-}) => {
+}: FormLabelHeadingProps): JSX.Element => {
   return (
     <h1 className="govuk-label-wrapper">
       <FormLabel htmlFor={id} className="govuk-label--l">
