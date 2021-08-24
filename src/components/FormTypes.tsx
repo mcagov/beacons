@@ -8,12 +8,10 @@ interface FormFieldsetAndLegendProps {
 }
 
 interface FormHeadingProps {
-  children: ReactNode;
   pageHeading: string;
 }
 
 interface FormLabelHeadingProps {
-  children: ReactNode;
   pageHeading: string;
   id: string;
 }
@@ -29,30 +27,22 @@ export const FormFieldsetAndLegend: FunctionComponent<FormFieldsetAndLegendProps
   };
 
 export const FormHeading: FunctionComponent<FormHeadingProps> = ({
-  children,
   pageHeading,
 }) => {
   return (
-    <>
-      <h1 className="govuk-heading-l govuk-!-margin-bottom-3">{pageHeading}</h1>
-      {children}
-    </>
+    <h1 className="govuk-heading-l govuk-!-margin-bottom-3">{pageHeading}</h1>
   );
 };
 
 export const FormLabelHeading: FunctionComponent<FormLabelHeadingProps> = ({
-  children,
   pageHeading,
   id = null,
 }) => {
   return (
-    <>
-      <h1 className="govuk-label-wrapper">
-        <FormLabel htmlFor={id} className="govuk-label--l">
-          {pageHeading}
-        </FormLabel>
-      </h1>
-      {children}
-    </>
+    <h1 className="govuk-label-wrapper">
+      <FormLabel htmlFor={id} className="govuk-label--l">
+        {pageHeading}
+      </FormLabel>
+    </h1>
   );
 };
