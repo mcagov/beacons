@@ -3,6 +3,7 @@ import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../../components/BeaconsForm";
 import { Button, LinkButton } from "../../../components/Button";
 import { FormFieldset, FormGroup, FormLegend } from "../../../components/Form";
+import { FormHeading } from "../../../components/FormTypes";
 import { Input } from "../../../components/Input";
 import { RadioList, RadioListItem } from "../../../components/RadioList";
 import { SummaryList, SummaryListItem } from "../../../components/SummaryList";
@@ -45,7 +46,6 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
       pageHeading="Are you sure you want to delete this beacon registration from your account?"
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      headingType="legend"
       continueButton={
         <Button
           buttonText="Delete this registration"
@@ -60,6 +60,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
         />
       }
     >
+      <FormHeading pageHeading="Are you sure you want to delete this beacon registration from your account?" />
       <SummaryList>
         <SummaryListItem labelText="Beacon information">
           {beacon.manufacturer} <br />

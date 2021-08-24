@@ -7,6 +7,7 @@ import {
   FormHint,
   FormLegend,
 } from "../../components/Form";
+import { FormHeading } from "../../components/FormTypes";
 import { FormInputProps, Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { TextareaCharacterCount } from "../../components/Textarea";
@@ -54,8 +55,9 @@ const AboutTheAircraft: FunctionComponent<DraftBeaconUsePageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      headingType="legend"
     >
+      <FormHeading pageHeading={pageHeading} />
+
       <MaxCapacityInput
         value={form.fields.maxCapacity.value}
         errorMessages={form.fields.maxCapacity.errorMessages}

@@ -4,6 +4,7 @@ import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
+import { FormHeading } from "../../components/FormTypes";
 import { FormInputProps, Input } from "../../components/Input";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormManager } from "../../lib/form/FormManager";
@@ -43,8 +44,8 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       pageText={pageText}
-      headingType="legend"
     >
+      <FormHeading pageHeading={pageHeading} />
       <BeaconManufacturerInput
         value={form.fields.manufacturer.value}
         errorMessages={form.fields.manufacturer.errorMessages}

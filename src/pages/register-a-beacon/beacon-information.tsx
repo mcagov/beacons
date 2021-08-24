@@ -10,6 +10,7 @@ import {
   FormHint,
   FormLegend,
 } from "../../components/Form";
+import { FormHeading } from "../../components/FormTypes";
 import { FormInputProps, Input } from "../../components/Input";
 import { GovUKBody } from "../../components/Typography";
 import { toIsoDateString } from "../../lib/dateTime";
@@ -62,6 +63,7 @@ const BeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> = ({
       formErrors={form.errorSummary}
       pageText={pageText}
     >
+      <FormHeading pageHeading={pageHeading} />
       <ManufacturerSerialNumberInput
         value={form.fields.manufacturerSerialNumber.value}
         errorMessages={form.fields.manufacturerSerialNumber.errorMessages}
