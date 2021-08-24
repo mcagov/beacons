@@ -265,3 +265,8 @@ variable "enable_alerts" {
   description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
   default     = false
 }
+variable "low_disk_burst_balance_threshold" {
+  type        = number
+  description = "Alarm threshold for low RDS disk burst balance"
+  default     = 100
+}
