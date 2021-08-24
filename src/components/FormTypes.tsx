@@ -4,7 +4,7 @@ import { FormFieldset, FormLabel, FormLegendPageHeading } from "./Form";
 interface FormFieldsetAndLegendProps {
   children: ReactNode;
   pageHeading: string;
-  ariaDescribedby?: string;
+  ariaDescribedBy?: string;
 }
 
 interface FormHeadingProps {
@@ -17,9 +17,9 @@ interface FormLabelHeadingProps {
 }
 
 export const FormFieldsetAndLegend: FunctionComponent<FormFieldsetAndLegendProps> =
-  ({ children, pageHeading, ariaDescribedby = null }) => {
+  ({ children, pageHeading, ariaDescribedBy = null }) => {
     return (
-      <FormFieldset ariaDescribedBy={ariaDescribedby}>
+      <FormFieldset ariaDescribedBy={ariaDescribedBy}>
         <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
         {children}
       </FormFieldset>
