@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { LinkButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
@@ -11,11 +12,14 @@ import {
 } from "../../components/Typography";
 import { AccountHolder } from "../../entities/AccountHolder";
 import { Beacon } from "../../entities/Beacon";
+import { DraftRegistration } from "../../entities/DraftRegistration";
 import { accountDetailsFormManager } from "../../lib/form/formManagers/accountDetailsFormManager";
+import { setCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
+import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs, queryParams } from "../../lib/urls";
 import { formatDateLong, formatUses } from "../../lib/writingStyle";
 
@@ -270,6 +274,8 @@ const Contact: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+    await createDraftRegistrationIfNoneForUser(context);
+
     const { getOrCreateAccountHolder, getBeaconsByAccountHolderId } =
       context.container;
 
@@ -291,5 +297,22 @@ export const getServerSideProps: GetServerSideProps = withSession(
     };
   })
 );
+
+const createDraftRegistrationIfNoneForUser = async (
+  context: BeaconsGetServerSidePropsContext
+) => {
+  if (!context.req.cookies?.[formSubmissionCookieId]) {
+    const { saveDraftRegistration } = context.container;
+
+    const draftRegistrationId: string = uuidv4();
+    const emptyDraftRegistration: DraftRegistration = {
+      uses: [],
+    };
+
+    await saveDraftRegistration(draftRegistrationId, emptyDraftRegistration);
+
+    setCookie(context.res, formSubmissionCookieId, draftRegistrationId);
+  }
+};
 
 export default YourBeaconRegistryAccount;
