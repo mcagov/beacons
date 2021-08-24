@@ -1,8 +1,3 @@
-provider "aws" {
-  alias  = "use1"
-  region = "us-east-1"
-}
-
 resource "aws_cloudwatch_metric_alarm" "webapp-health" {
   tags                = module.beacons_label.tags
   namespace           = "AWS/Route53"
@@ -14,9 +9,9 @@ resource "aws_cloudwatch_metric_alarm" "webapp-health" {
   statistic           = "Minimum"
   threshold           = "0"
   alarm_description   = "This metric monitors webapp health"
-  provider            = aws.use1
-  alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_alerts.arn] : []
-  ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_alerts.arn] : []
+  provider            = aws.us-east
+  alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_service_alerts.arn] : []
+  ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_service_alerts.arn] : []
 
   dimensions = {
     HealthCheckId = aws_route53_health_check.webapp-health-check.id
@@ -34,9 +29,9 @@ resource "aws_cloudwatch_metric_alarm" "service-health" {
   statistic           = "Minimum"
   threshold           = "0"
   alarm_description   = "This metric monitors API service health"
-  provider            = aws.use1
-  alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_alerts.arn] : []
-  ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_alerts.arn] : []
+  provider            = aws.us-east
+  alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_service_alerts.arn] : []
+  ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_service_alerts.arn] : []
 
   dimensions = {
     HealthCheckId = aws_route53_health_check.service-health-check.id
