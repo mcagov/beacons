@@ -3,6 +3,7 @@ import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
 import { FormGroup, FormHint } from "../../components/Form";
+import { FormFieldsetAndLegend } from "../../components/FormTypes";
 import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { GovUKBody } from "../../components/Typography";
@@ -54,10 +55,13 @@ const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
       pageText={pageText}
-      headingType="legend"
-      ariaDescribedBy="aircraft-communication-types-hint"
     >
-      <TypesOfCommunication form={form} />
+      <FormFieldsetAndLegend
+        pageHeading={pageHeading}
+        ariaDescribedBy="aircraft-communication-types-hint"
+      >
+        <TypesOfCommunication form={form} />
+      </FormFieldsetAndLegend>
     </BeaconsForm>
   );
 };

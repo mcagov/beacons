@@ -3,6 +3,7 @@ import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
 import { FormGroup, FormHint } from "../../components/Form";
+import { FormFieldsetAndLegend } from "../../components/FormTypes";
 import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { AnchorLink, GovUKBody } from "../../components/Typography";
@@ -66,10 +67,13 @@ const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       formErrors={form.errorSummary}
       showCookieBanner={showCookieBanner}
       pageText={pageText}
-      headingType="legend"
-      ariaDescribedBy="land-communication-types-hint"
     >
-      <TypesOfCommunication form={form} />
+      <FormFieldsetAndLegend
+        pageHeading={pageHeading}
+        ariaDescribedBy="land-communication-types-hint"
+      >
+        <TypesOfCommunication form={form} />
+      </FormFieldsetAndLegend>
     </BeaconsForm>
   );
 };

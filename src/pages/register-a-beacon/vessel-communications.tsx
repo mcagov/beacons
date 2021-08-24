@@ -3,6 +3,7 @@ import React, { FunctionComponent, ReactNode } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
 import { FormGroup, FormHint } from "../../components/Form";
+import { FormFieldsetAndLegend } from "../../components/FormTypes";
 import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { AnchorLink, GovUKBody } from "../../components/Typography";
@@ -63,10 +64,13 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
       pageText={pageText}
-      headingType="legend"
-      ariaDescribedBy="vessel-communication-types-hint"
     >
-      <TypesOfCommunication form={form} />
+      <FormFieldsetAndLegend
+        pageHeading={pageHeading}
+        ariaDescribedBy="vessel-communication-types-hint"
+      >
+        <TypesOfCommunication form={form} />
+      </FormFieldsetAndLegend>
       <CallSign value={form.fields.callSign.value} />
     </BeaconsForm>
   );

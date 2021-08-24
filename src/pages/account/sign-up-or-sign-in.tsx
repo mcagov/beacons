@@ -2,6 +2,7 @@ import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
+import { FormFieldsetAndLegend } from "../../components/FormTypes";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/FieldManager";
@@ -48,28 +49,29 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
       showCookieBanner={showCookieBanner}
       pageText={pageText}
       includeUseIndex={false}
-      headingType="legend"
     >
-      <FormGroup errorMessages={form.fields.signUpOrSignIn.errorMessages}>
-        <RadioList>
-          <RadioListItem
-            id="signIn"
-            name={fieldName}
-            label="Sign in using my Beacon Registry Account"
-            hintText="You’ll have an account if you’ve registered a beacon before. Your log in details will be an email address and password"
-            value="signIn"
-            defaultChecked={form.fields.signUpOrSignIn.value === "signIn"}
-          />
-          <RadioListItem
-            id="signUp"
-            name={fieldName}
-            label="Create a Beacon Registry Account"
-            hintText="You must create and account before you can register your first beacon"
-            value="signUp"
-            defaultChecked={form.fields.signUpOrSignIn.value === "signUp"}
-          />
-        </RadioList>
-      </FormGroup>
+      <FormFieldsetAndLegend pageHeading={pageHeading}>
+        <FormGroup errorMessages={form.fields.signUpOrSignIn.errorMessages}>
+          <RadioList>
+            <RadioListItem
+              id="signIn"
+              name={fieldName}
+              label="Sign in using my Beacon Registry Account"
+              hintText="You’ll have an account if you’ve registered a beacon before. Your log in details will be an email address and password"
+              value="signIn"
+              defaultChecked={form.fields.signUpOrSignIn.value === "signIn"}
+            />
+            <RadioListItem
+              id="signUp"
+              name={fieldName}
+              label="Create a Beacon Registry Account"
+              hintText="You must create and account before you can register your first beacon"
+              value="signUp"
+              defaultChecked={form.fields.signUpOrSignIn.value === "signUp"}
+            />
+          </RadioList>
+        </FormGroup>
+      </FormFieldsetAndLegend>
     </BeaconsForm>
   );
 };

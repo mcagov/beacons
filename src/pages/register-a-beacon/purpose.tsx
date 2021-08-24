@@ -2,6 +2,7 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
+import { FormFieldsetAndLegend } from "../../components/FormTypes";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { Environment, Purpose } from "../../lib/deprecatedRegistration/types";
@@ -49,28 +50,29 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
       previousPageUrl={PageURLs.environment + queryParams({ useIndex })}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      headingType="legend"
     >
-      <FormGroup errorMessages={form.fields.purpose.errorMessages}>
-        <RadioList>
-          <RadioListItem
-            id="pleasure"
-            name={beaconUsePurposeFieldName}
-            value={Purpose.PLEASURE}
-            label="Personal pleasure"
-            defaultChecked={form.fields.purpose.value === Purpose.PLEASURE}
-            hintText="Choose this if you mainly use the beacon for leisure, or personal trips. If you hire out pleasure craft choose 'commercial-use' instead"
-          />
-          <RadioListItem
-            id="commercial"
-            name={beaconUsePurposeFieldName}
-            value={Purpose.COMMERCIAL}
-            defaultChecked={form.fields.purpose.value === Purpose.COMMERCIAL}
-            label="Commercial use"
-            hintText="Choose this if you mainly use the beacon for commercial activities such as Fishing, Merchant vessels, Hire of pleasure craft, Delivery Skipper etc"
-          />
-        </RadioList>
-      </FormGroup>
+      <FormFieldsetAndLegend pageHeading={pageHeading}>
+        <FormGroup errorMessages={form.fields.purpose.errorMessages}>
+          <RadioList>
+            <RadioListItem
+              id="pleasure"
+              name={beaconUsePurposeFieldName}
+              value={Purpose.PLEASURE}
+              label="Personal pleasure"
+              defaultChecked={form.fields.purpose.value === Purpose.PLEASURE}
+              hintText="Choose this if you mainly use the beacon for leisure, or personal trips. If you hire out pleasure craft choose 'commercial-use' instead"
+            />
+            <RadioListItem
+              id="commercial"
+              name={beaconUsePurposeFieldName}
+              value={Purpose.COMMERCIAL}
+              defaultChecked={form.fields.purpose.value === Purpose.COMMERCIAL}
+              label="Commercial use"
+              hintText="Choose this if you mainly use the beacon for commercial activities such as Fishing, Merchant vessels, Hire of pleasure craft, Delivery Skipper etc"
+            />
+          </RadioList>
+        </FormGroup>
+      </FormFieldsetAndLegend>
     </BeaconsForm>
   );
 };
