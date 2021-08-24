@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
+import { FormLabelHeading } from "../../components/FormTypes";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { GovUKBody } from "../../components/Typography";
 import { Environment } from "../../lib/deprecatedRegistration/types";
@@ -75,9 +76,8 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
       pageText={pageText}
-      id="moreDetails"
-      headingType="label"
     >
+      <FormLabelHeading pageHeading={pageHeading} id="moreDetails" />
       <MoreDetailsTextArea
         value={form.fields.moreDetails.value}
         errorMessages={form.fields.moreDetails.errorMessages}
