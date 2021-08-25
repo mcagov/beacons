@@ -32,7 +32,7 @@ interface BeaconDetailProps extends DraftRegistrationPageProps {
   pageHeading: string;
   pageText: string;
   previousPageUrl: string;
-  isUpdate?: boolean;
+  isUpdate: boolean;
 }
 
 interface ExistingBeaconHexIdProps {
@@ -47,10 +47,6 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   const pageText =
     "The details of your beacon must be checked to ensure it is programmed for UK registration.";
 
-  // const pageHeading = "Beacon details";
-  // const pageText =
-  //   "The UIN / HEX ID of a registered beacon is not editable. If you wish to change the beacon HEX ID, you must first delete the beacon record and register the new UID/HEX ID as new beacon record.";
-
   return (
     <BeaconDetails
       form={form}
@@ -59,7 +55,6 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
       pageText={pageText}
       previousPageUrl={"/"}
       isUpdate={false}
-      // isUpdate={true}
     />
   );
 };
