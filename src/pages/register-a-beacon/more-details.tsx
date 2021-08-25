@@ -75,9 +75,9 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      pageText={pageText}
     >
       <FormLabelHeading pageHeading={pageHeading} id="moreDetails" />
+      {pageText}
       <MoreDetailsTextArea
         value={form.fields.moreDetails.value}
         errorMessages={form.fields.moreDetails.errorMessages}

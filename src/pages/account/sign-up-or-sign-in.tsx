@@ -47,10 +47,10 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
       previousPageUrl={PageURLs.start}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      pageText={pageText}
       includeUseIndex={false}
     >
       <FormFieldsetAndLegend pageHeading={pageHeading}>
+        {pageText}
         <FormGroup errorMessages={form.fields.signUpOrSignIn.errorMessages}>
           <RadioList>
             <RadioListItem

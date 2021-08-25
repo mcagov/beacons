@@ -66,12 +66,12 @@ const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       previousPageUrl={PageURLs.activity + queryParams({ useIndex })}
       formErrors={form.errorSummary}
       showCookieBanner={showCookieBanner}
-      pageText={pageText}
     >
       <FormFieldsetAndLegend
         pageHeading={pageHeading}
         ariaDescribedBy="land-communication-types-hint"
       >
+        {pageText}
         <TypesOfCommunication form={form} />
       </FormFieldsetAndLegend>
     </BeaconsForm>

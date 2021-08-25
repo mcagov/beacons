@@ -54,12 +54,12 @@ const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      pageText={pageText}
     >
       <FormFieldsetAndLegend
         pageHeading={pageHeading}
         ariaDescribedBy="aircraft-communication-types-hint"
       >
+        {pageText}
         <TypesOfCommunication form={form} />
       </FormFieldsetAndLegend>
     </BeaconsForm>

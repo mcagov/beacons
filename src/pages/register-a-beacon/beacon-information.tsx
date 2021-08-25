@@ -61,9 +61,9 @@ const BeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      pageText={pageText}
     >
       <FormHeading pageHeading={pageHeading} />
+      {pageText}
       <ManufacturerSerialNumberInput
         value={form.fields.manufacturerSerialNumber.value}
         errorMessages={form.fields.manufacturerSerialNumber.errorMessages}
@@ -145,29 +145,25 @@ const BatteryExpiryDate: FunctionComponent<DateInputProps> = ({
   errorMessages,
 }: DateInputProps): JSX.Element => (
   <FormGroup errorMessages={errorMessages}>
-    <div id="batteryExpiryDate">
-      <FormFieldset>
-        <FormLegend>
-          Enter your beacon battery expiry date (optional)
-        </FormLegend>
-        <FormHint forId="batteryExpiryDate">
-          You only need to enter the month and year, for example 11 2009
-        </FormHint>
-        <DateListItem
-          id="batteryExpiryDateMonth"
-          label="Month"
-          defaultValue={monthValue}
-          dateType={DateType.MONTH}
-        />
+    <FormFieldset ariaDescribedBy="batteryExpiryDate-hint">
+      <FormLegend>Enter your beacon battery expiry date (optional)</FormLegend>
+      <FormHint forId="batteryExpiryDate">
+        You only need to enter the month and year, for example 11 2009
+      </FormHint>
+      <DateListItem
+        id="batteryExpiryDateMonth"
+        label="Month"
+        defaultValue={monthValue}
+        dateType={DateType.MONTH}
+      />
 
-        <DateListItem
-          id="batteryExpiryDateYear"
-          label="Year"
-          defaultValue={yearValue}
-          dateType={DateType.YEAR}
-        />
-      </FormFieldset>
-    </div>
+      <DateListItem
+        id="batteryExpiryDateYear"
+        label="Year"
+        defaultValue={yearValue}
+        dateType={DateType.YEAR}
+      />
+    </FormFieldset>
   </FormGroup>
 );
 
@@ -177,27 +173,25 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
   errorMessages,
 }: DateInputProps): JSX.Element => (
   <FormGroup errorMessages={errorMessages}>
-    <div id="lastServicedDate">
-      <FormFieldset>
-        <FormLegend>When was your beacon last serviced? (optional)</FormLegend>
-        <FormHint forId="lastServicedDate">
-          You only need to enter the month and year, for example 11 2009
-        </FormHint>
-        <DateListItem
-          id="lastServicedDateMonth"
-          label="Month"
-          defaultValue={monthValue}
-          dateType={DateType.MONTH}
-        />
+    <FormFieldset ariaDescribedBy="lastServicedDate-hint">
+      <FormLegend>When was your beacon last serviced? (optional)</FormLegend>
+      <FormHint forId="lastServicedDate">
+        You only need to enter the month and year, for example 11 2009
+      </FormHint>
+      <DateListItem
+        id="lastServicedDateMonth"
+        label="Month"
+        defaultValue={monthValue}
+        dateType={DateType.MONTH}
+      />
 
-        <DateListItem
-          id="lastServicedDateYear"
-          label="Year"
-          defaultValue={yearValue}
-          dateType={DateType.YEAR}
-        />
-      </FormFieldset>
-    </div>
+      <DateListItem
+        id="lastServicedDateYear"
+        label="Year"
+        defaultValue={yearValue}
+        dateType={DateType.YEAR}
+      />
+    </FormFieldset>
   </FormGroup>
 );
 

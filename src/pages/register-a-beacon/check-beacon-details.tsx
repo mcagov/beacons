@@ -43,9 +43,9 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
       includeUseIndex={false}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      pageText={pageText}
     >
       <FormHeading pageHeading={pageHeading} />
+      {pageText}
       <BeaconManufacturerInput
         value={form.fields.manufacturer.value}
         errorMessages={form.fields.manufacturer.errorMessages}

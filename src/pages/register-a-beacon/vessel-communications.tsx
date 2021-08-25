@@ -63,12 +63,12 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      pageText={pageText}
     >
       <FormFieldsetAndLegend
         pageHeading={pageHeading}
         ariaDescribedBy="vessel-communication-types-hint"
       >
+        {pageText}
         <TypesOfCommunication form={form} />
       </FormFieldsetAndLegend>
       <CallSign value={form.fields.callSign.value} />

@@ -89,9 +89,9 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
       errorMessages={form.fields.activity.errorMessages}
-      pageText={pageText}
     >
       <FormFieldsetAndLegend pageHeading={pageHeading}>
+        {pageText}
         <RadioList conditional={true}>
           <ActivityOptions
             environment={environment}

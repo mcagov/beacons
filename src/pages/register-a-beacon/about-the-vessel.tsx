@@ -60,9 +60,9 @@ const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      pageText={pageText}
     >
       <FormHeading pageHeading={pageHeading} />
+      {pageText}
       <MaxCapacityInput
         value={form.fields.maxCapacity.value}
         errorMessages={form.fields.maxCapacity.errorMessages}
