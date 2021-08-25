@@ -1,7 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { BeaconsForm } from "../../src/components/BeaconsForm";
-import { InsetText } from "../../src/components/InsetText";
+import {
+  BeaconsForm,
+  BeaconsFormFieldsetAndLegend,
+  BeaconsFormHeading,
+  BeaconsFormLabelHeading,
+} from "../../src/components/BeaconsForm";
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn().mockImplementation(() => ({
@@ -15,7 +19,6 @@ describe("BeaconsForm Component", () => {
   let pageHeading;
   let showCookieBanner;
   let errorMessages;
-  let pageText;
 
   beforeEach(() => {
     children = <h1>Beacons for life</h1>;
@@ -23,7 +26,6 @@ describe("BeaconsForm Component", () => {
     pageHeading = "A day in the beacon life";
     showCookieBanner = true;
     errorMessages = ["This is an error"];
-    pageText = "Once upon a time a person with a beacon walked the seas";
   });
 
   it("should render the beacons form component", () => {
@@ -76,69 +78,6 @@ describe("BeaconsForm Component", () => {
     );
   });
 
-  it("should render the page text if provided", () => {
-    render(
-      <BeaconsForm
-        previousPageUrl={previousPageUrl}
-        pageHeading={pageHeading}
-        showCookieBanner={showCookieBanner}
-        pageText={pageText}
-      >
-        {children}
-      </BeaconsForm>
-    );
-
-    expect(screen.getByText(pageText)).toBeDefined();
-  });
-
-  it("should not render the page text if it is not provided", () => {
-    render(
-      <BeaconsForm
-        previousPageUrl={previousPageUrl}
-        pageHeading={pageHeading}
-        showCookieBanner={showCookieBanner}
-      >
-        {children}
-      </BeaconsForm>
-    );
-
-    expect(screen.queryByText(pageText)).toBeNull();
-  });
-
-  it("should apply govuk-body class to pageText if not already wrapped in a React component", () => {
-    render(
-      <BeaconsForm
-        previousPageUrl={previousPageUrl}
-        pageHeading={pageHeading}
-        showCookieBanner={showCookieBanner}
-        pageText={pageText}
-      >
-        {children}
-      </BeaconsForm>
-    );
-
-    expect(screen.queryByText(pageText).classList.contains("govuk-body")).toBe(
-      true
-    );
-  });
-
-  it("should not apply govuk-body class to pageText if already wrapped in a React component", () => {
-    render(
-      <BeaconsForm
-        previousPageUrl={previousPageUrl}
-        pageHeading={pageHeading}
-        showCookieBanner={showCookieBanner}
-        pageText={<InsetText>{pageText}</InsetText>}
-      >
-        {children}
-      </BeaconsForm>
-    );
-
-    expect(screen.queryByText(pageText).classList.contains("govuk-body")).toBe(
-      false
-    );
-  });
-
   it("should render the error messages if provided", () => {
     render(
       <BeaconsForm
@@ -166,5 +105,34 @@ describe("BeaconsForm Component", () => {
     );
 
     expect(screen.queryByText("This is an error")).toBeNull();
+  });
+
+  it("should render the BeaconsFormFieldsetAndLegend with correct pageHeading and children", () => {
+    render(
+      <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
+        <p>lorem</p>
+      </BeaconsFormFieldsetAndLegend>
+    );
+  });
+
+  it("should render the BeaconsFormFieldsetAndLegend with correct pageHeading, children and ariaDescribedBy", () => {
+    render(
+      <BeaconsFormFieldsetAndLegend
+        pageHeading={pageHeading}
+        ariaDescribedBy="aria-example"
+      >
+        <p>lorem</p>
+      </BeaconsFormFieldsetAndLegend>
+    );
+  });
+
+  it("should render the BeaconsFormHeading", () => {
+    render(<BeaconsFormHeading pageHeading={pageHeading} />);
+  });
+
+  it("should render the FormLabelHeading", () => {
+    render(
+      <BeaconsFormLabelHeading id="id-example" pageHeading={pageHeading} />
+    );
   });
 });
