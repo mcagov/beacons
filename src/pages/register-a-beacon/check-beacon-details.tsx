@@ -1,11 +1,11 @@
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm } from "../../components/BeaconsForm";
-import { Details } from "../../components/Details";
-import { FormGroup } from "../../components/Form";
-import { FormInputProps, Input } from "../../components/Input";
-import { GovUKBody } from "../../components/Typography";
+import {
+  BeaconHexIdInput,
+  BeaconManufacturerInput,
+  BeaconModelInput,
+} from "../../components/domain/BeaconDetailsSection";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormManager } from "../../lib/form/FormManager";
 import { Validators } from "../../lib/form/Validators";
@@ -28,17 +28,6 @@ interface CheckBeaconDetailsForm {
   hexId: string;
 }
 
-interface BeaconDetailProps extends DraftRegistrationPageProps {
-  pageHeading: string;
-  pageText: string;
-  previousPageUrl: string;
-  isUpdate: boolean;
-}
-
-interface ExistingBeaconHexIdProps {
-  hexId: string;
-}
-
 const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
@@ -46,27 +35,8 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   const pageHeading = "Check beacon details";
   const pageText =
     "The details of your beacon must be checked to ensure it is programmed for UK registration.";
+  const previousPageUrl = PageURLs.accountHome;
 
-  return (
-    <BeaconDetails
-      form={form}
-      showCookieBanner={showCookieBanner}
-      pageHeading={pageHeading}
-      pageText={pageText}
-      previousPageUrl={"/"}
-      isUpdate={false}
-    />
-  );
-};
-
-const BeaconDetails: FunctionComponent<BeaconDetailProps> = ({
-  form,
-  showCookieBanner,
-  pageHeading,
-  pageText,
-  previousPageUrl,
-  isUpdate,
-}: BeaconDetailProps): JSX.Element => {
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
@@ -85,82 +55,13 @@ const BeaconDetails: FunctionComponent<BeaconDetailProps> = ({
         value={form.fields.model.value}
         errorMessages={form.fields.model.errorMessages}
       />
-      {isUpdate ? (
-        <ExistingBeaconHexId hexId={form.fields.hexId.value} />
-      ) : (
-        <BeaconHexIdInput
-          value={form.fields.hexId.value}
-          errorMessages={form.fields.hexId.errorMessages}
-        />
-      )}
+      <BeaconHexIdInput
+        value={form.fields.hexId.value}
+        errorMessages={form.fields.hexId.errorMessages}
+      />
     </BeaconsForm>
   );
 };
-
-const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
-  value = "",
-  errorMessages,
-}: FormInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <Input
-      id="manufacturer"
-      label="Enter your beacon manufacturer"
-      defaultValue={value}
-    />
-  </FormGroup>
-);
-
-const BeaconModelInput: FunctionComponent<FormInputProps> = ({
-  value = "",
-  errorMessages,
-}: FormInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <Input id="model" label="Enter your beacon model" defaultValue={value} />
-  </FormGroup>
-);
-
-const HexIdHelp: FunctionComponent = (): JSX.Element => (
-  <Details
-    summaryText="What does the 15 character beacon HEX ID or UIN look like?"
-    className="govuk-!-padding-top-2"
-  >
-    <Image
-      src="/assets/mca_images/beacon_hex_id.png"
-      alt="This image illustrates what a beacon's HEX ID or UIN number looks like on an actual
-        beacon. The example HEX ID or UIN here is 1D0EA08C52FFBFF."
-      height={640}
-      width={960}
-    />
-  </Details>
-);
-
-const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
-  value = "",
-  errorMessages,
-}: FormInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <Input
-      id="hexId"
-      label="Enter the 15 character beacon HEX ID or UIN number"
-      hintText="This will be on your beacon. It must be 15 characters long and use
-      characters 0 to 9 and letters A to F"
-      htmlAttributes={{ spellCheck: false }}
-      defaultValue={value}
-    />
-    <HexIdHelp />
-  </FormGroup>
-);
-
-const ExistingBeaconHexId: FunctionComponent<ExistingBeaconHexIdProps> = ({
-  hexId,
-}: ExistingBeaconHexIdProps): JSX.Element => (
-  <>
-    <br />
-    <GovUKBody>The 15 character beacon HEX ID or UIN number</GovUKBody>
-    <GovUKBody>Hex ID/UIN: {hexId}</GovUKBody>
-    <HexIdHelp />
-  </>
-);
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
