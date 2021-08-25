@@ -43,7 +43,8 @@ const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   showCookieBanner,
   useIndex,
 }: DraftBeaconUsePageProps): JSX.Element => {
-  const pageHeading = "How can we communicate with you, when on this aircraft?";
+  const pageHeading =
+    "How can we communicate with you, when on this aircraft? (Optional)";
   const pageText = (
     <GovUKBody>
       {"This will be critical for Search and Rescue in an emergency."}

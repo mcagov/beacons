@@ -49,12 +49,19 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   useIndex,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading =
-    "How can we communicate with you when you are in this vessel, rig or windfarm?";
+    "How can we communicate with you when you are in this vessel, rig or windfarm? (Optional)";
 
   const pageText: ReactNode = (
     <>
       <GovUKBody>
         This will be critical for Search and Rescue in an emergency.
+      </GovUKBody>
+      <GovUKBody>
+        If you have a radio license, VHF and/or VHF/DSC radio, you can{" "}
+        <AnchorLink href={ofcomLicenseUrl}>
+          find your Call Sign and Maritime Mobile Service Identity (MMSI) number
+          on the OFCOM website.
+        </AnchorLink>
       </GovUKBody>
     </>
   );
@@ -86,13 +93,6 @@ const CallSign: FunctionComponent<FormInputProps> = ({
   value,
 }: FormInputProps) => (
   <>
-    <GovUKBody>
-      If you have a radio license, VHF and/or VHF/DSC radio, you can{" "}
-      <AnchorLink href={ofcomLicenseUrl}>
-        find your Call Sign and Maritime Mobile Service Identity (MMSI) number
-        on the OFCOM website.
-      </AnchorLink>
-    </GovUKBody>
     <FormGroup className="govuk-!-margin-top-4">
       <Input
         id="callSign"
