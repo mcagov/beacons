@@ -191,7 +191,7 @@ resource "aws_cloudwatch_dashboard" "service-health" {
             "width": 6,
             "height": 3,
             "properties": {
-                "title": "API Service Task Count",
+                "title": "API Task Count",
                 "annotations": {
                     "alarms": [
                         "${aws_cloudwatch_metric_alarm.ecs_service_task_count_too_low.arn}"
@@ -225,7 +225,7 @@ resource "aws_cloudwatch_dashboard" "service-health" {
             "width": 6,
             "height": 3,
             "properties": {
-                "title": "API Service Memory Utilization",
+                "title": "API Memory Utilization",
                 "annotations": {
                     "alarms": [
                         "${aws_cloudwatch_metric_alarm.ecs_service_memory_too_high.arn}"
@@ -261,7 +261,7 @@ resource "aws_cloudwatch_dashboard" "service-health" {
             "width": 6,
             "height": 3,
             "properties": {
-                "title": "API Service CPU Utilization",
+                "title": "API CPU Utilization",
                 "annotations": {
                     "alarms": [
                         "${aws_cloudwatch_metric_alarm.ecs_service_cpu_too_high.arn}"

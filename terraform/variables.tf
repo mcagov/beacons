@@ -240,9 +240,9 @@ variable "performance_insights_enabled" {
   description = "Enable performance insights"
   default     = false
 }
-variable "multi_az" {
+variable "rds_multi_az" {
   type        = bool
-  description = "Enable multiple availabilty zones"
+  description = "Enable multiple availabilty zones for RDS"
   default     = false
 }
 variable "apply_immediately" {

@@ -20,5 +20,5 @@ resource "aws_db_instance" "postgres" {
   copy_tags_to_snapshot           = true
   performance_insights_enabled    = var.performance_insights_enabled
   apply_immediately               = var.apply_immediately
-  multi_az                        = var.multi_az
+  multi_az                        = var.rds_multi_az
 }
