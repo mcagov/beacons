@@ -1,6 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
-import { v4 as uuidv4 } from "uuid";
 import Aside from "../components/Aside";
 import { StartButton } from "../components/Button";
 import { Grid } from "../components/Grid";
@@ -15,11 +14,9 @@ import {
   SectionHeading,
 } from "../components/Typography";
 import { WarningText } from "../components/WarningText";
-import { DraftRegistration } from "../entities/DraftRegistration";
-import { setCookie } from "../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
-import { acceptRejectCookieId, formSubmissionCookieId } from "../lib/types";
+import { acceptRejectCookieId } from "../lib/types";
 import { PageURLs } from "../lib/urls";
 import { BeaconsPageRouter } from "../router/BeaconsPageRouter";
 import { Rule } from "../router/rules/Rule";
@@ -204,33 +201,11 @@ class IfUserViewedIndexPage implements Rule {
 
     await authenticateUser(this.context);
 
-    if (this.noDraftRegistrationForUser()) await this.createDraftRegistration();
-
     return {
       props: {
         showCookieBanner: !this.context.req.cookies[acceptRejectCookieId],
       },
     };
-  }
-
-  private noDraftRegistrationForUser(): boolean {
-    return (
-      !this.context.req.cookies ||
-      !this.context.req.cookies[formSubmissionCookieId]
-    );
-  }
-
-  private async createDraftRegistration(): Promise<void> {
-    const { saveDraftRegistration } = this.context.container;
-
-    const draftRegistrationId: string = uuidv4();
-    const emptyDraftRegistration: DraftRegistration = {
-      uses: [],
-    };
-
-    await saveDraftRegistration(draftRegistrationId, emptyDraftRegistration);
-
-    setCookie(this.context.res, formSubmissionCookieId, draftRegistrationId);
   }
 }
 

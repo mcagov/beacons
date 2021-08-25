@@ -31,11 +31,14 @@ describe("As user with an account", () => {
     cy.contains(date.toISOString().split("T")[0]);
   };
 
-  it("I register a beacon with a single use and see it in my Account page", () => {
+  const givenIHaveClickedToCreateANewBeacon = () =>
+    givenIHaveClicked(".govuk-button");
+
+  it("I register a beacon with a single use and see it in my Account page and I can click to start to create another beacon", () => {
     givenIHaveACookieSetAndHaveSignedInIVisit(PageURLs.updateAccount);
     givenIHaveFilledInUpdateAccountDetailsPage();
     iCanSeeMyAccountDetails();
-    givenIHaveClicked(".govuk-button");
+    givenIHaveClickedToCreateANewBeacon();
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyLandUse();
     andIHaveNoFurtherUses();
@@ -47,5 +50,8 @@ describe("As user with an account", () => {
     givenIHaveClicked(".govuk-button");
     thenTheUrlShouldContain(PageURLs.accountHome);
     iCanSeeTheBeaconListWithMyInformation();
+
+    givenIHaveClickedToCreateANewBeacon();
+    thenTheUrlShouldContain(PageURLs.checkBeaconDetails);
   });
 });
