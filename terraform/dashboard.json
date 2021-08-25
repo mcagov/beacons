@@ -75,7 +75,7 @@
         {
             "height": 3,
             "width": 6,
-            "y": 7,
+            "y": 10,
             "x": 12,
             "type": "metric",
             "properties": {
@@ -93,7 +93,7 @@
         {
             "height": 3,
             "width": 6,
-            "y": 10,
+            "y": 7,
             "x": 12,
             "type": "metric",
             "properties": {
@@ -130,24 +130,6 @@
             "height": 3,
             "width": 6,
             "y": 2,
-            "x": 6,
-            "type": "metric",
-            "properties": {
-                "title": "service-health-alarm",
-                "annotations": {
-                    "alarms": [
-                        "arn:aws:cloudwatch:us-east-1:232705206979:alarm:service-health-alarm"
-                    ]
-                },
-                "view": "singleValue",
-                "stacked": false,
-                "type": "chart"
-            }
-        },
-        {
-            "height": 3,
-            "width": 6,
-            "y": 2,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -165,21 +147,135 @@
         {
             "height": 2,
             "width": 24,
-            "y": 5,
+            "y": 13,
             "x": 0,
             "type": "text",
             "properties": {
-                "markdown": "# Database Health\n## Alarms"
+                "markdown": "# ECS Cluster Health\n## Alarms"
             }
         },
         {
             "height": 2,
-            "width": 12,
+            "width": 24,
             "y": 0,
             "x": 0,
             "type": "text",
             "properties": {
                 "markdown": "# Beacons Health\n## Health Check Alarms"
+            }
+        },
+        {
+            "height": 3,
+            "width": 6,
+            "y": 2,
+            "x": 6,
+            "type": "metric",
+            "properties": {
+                "title": "ecs-dev-ops-beacons-webapp-lowTaskCount",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:ecs-dev-ops-beacons-webapp-lowTaskCount"
+                    ]
+                },
+                "view": "singleValue"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 2,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "title": "API Service Tasks",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:ecs-dev-ops-beacons-service-lowTaskCount"
+                    ]
+                },
+                "view": "singleValue"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 15,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "title": "ecs-dev-ops-beacons-webapp-highMemoryUtilization",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:ecs-dev-ops-beacons-webapp-highMemoryUtilization"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 15,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "title": "ecs-dev-ops-beacons-service-highMemoryUtilization",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:ecs-dev-ops-beacons-service-highMemoryUtilization"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 15,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "title": "ecs-dev-ops-beacons-webapp-highCPUUtilization",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:ecs-dev-ops-beacons-webapp-highCPUUtilization"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 15,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "title": "ecs-dev-ops-beacons-service-highCPUUtilization",
+                "annotations": {
+                    "alarms": [
+                        "arn:aws:cloudwatch:eu-west-2:232705206979:alarm:ecs-dev-ops-beacons-service-highCPUUtilization"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 2,
+            "width": 24,
+            "y": 5,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "# Database Health\n## Alarms"
             }
         }
     ]
