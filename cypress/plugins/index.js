@@ -32,6 +32,5 @@ const setTestEnvVarsFromSystem = (config) => {
   config.env.AAD_TENANT_ID = process.env.AAD_TENANT_ID;
   config.env.AAD_API_ID = process.env.AAD_API_ID;
   config.env.API_URL = process.env.API_URL;
-  config.env.JWT_SECRET = process.env.JWT_SECRET;
   config.env.SESSION_TOKEN = process.env.SESSION_TOKEN;
 };
