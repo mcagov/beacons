@@ -24,7 +24,9 @@ export const accountDetailsFormManager = ({
       ),
     ]),
     addressLine1: new FieldManager(addressLine1, [
-      Validators.required("Building number and street is a required field"),
+      Validators.required(
+        "Address line one (building number and street name) is a required field"
+      ),
     ]),
     addressLine2: new FieldManager(addressLine2),
     townOrCity: new FieldManager(townOrCity, [
