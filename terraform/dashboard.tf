@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_dashboard" "service-health" {
-  dashboard_name = "beacons-dashboard"
+  dashboard_name = "${terraform.workspace}-beacons-dashboard"
 
   dashboard_body = <<-EOT
 {
@@ -155,7 +155,7 @@ resource "aws_cloudwatch_dashboard" "service-health" {
             "x": 0,
             "type": "text",
             "properties": {
-                "markdown": "# ECS Cluster Health\n## Alarms"
+                "markdown": "# ECS Cluster Health - ${terraform.workspace}\n## Alarms"
             }
         },
         {
@@ -165,7 +165,7 @@ resource "aws_cloudwatch_dashboard" "service-health" {
             "x": 0,
             "type": "text",
             "properties": {
-                "markdown": "# Beacons Health\n## Health Check Alarms"
+                "markdown": "# Beacons Health - ${terraform.workspace}\n## Health Check Alarms"
             }
         },
         {
@@ -279,7 +279,7 @@ resource "aws_cloudwatch_dashboard" "service-health" {
             "x": 0,
             "type": "text",
             "properties": {
-                "markdown": "# Database Health\n## Alarms"
+                "markdown": "# Database Health - ${terraform.workspace}\n## Alarms"
             }
         }
     ]
