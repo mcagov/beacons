@@ -1,9 +1,11 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import {
+  BeaconsForm,
+  BeaconsFormFieldsetAndLegend,
+} from "../../components/BeaconsForm";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
 import { FormGroup, FormHint } from "../../components/Form";
-import { FormFieldsetAndLegend } from "../../components/FormTypes";
 import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { GovUKBody } from "../../components/Typography";
@@ -55,13 +57,13 @@ const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
     >
-      <FormFieldsetAndLegend
+      <BeaconsFormFieldsetAndLegend
         pageHeading={pageHeading}
         ariaDescribedBy="aircraft-communication-types-hint"
       >
         {pageText}
         <TypesOfCommunication form={form} />
-      </FormFieldsetAndLegend>
+      </BeaconsFormFieldsetAndLegend>
     </BeaconsForm>
   );
 };

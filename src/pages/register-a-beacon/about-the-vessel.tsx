@@ -1,8 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent, ReactNode } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
-import { FormHeading } from "../../components/FormTypes";
 import { FormInputProps, Input } from "../../components/Input";
 import { InsetText } from "../../components/InsetText";
 import { TextareaCharacterCount } from "../../components/Textarea";
@@ -61,7 +60,7 @@ const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
     >
-      <FormHeading pageHeading={pageHeading} />
+      <BeaconsFormHeading pageHeading={pageHeading} />
       {pageText}
       <MaxCapacityInput
         value={form.fields.maxCapacity.value}

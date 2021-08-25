@@ -1,13 +1,12 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
 import {
   FormFieldset,
   FormGroup,
   FormHint,
   FormLegend,
 } from "../../components/Form";
-import { FormHeading } from "../../components/FormTypes";
 import { FormInputProps, Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { TextareaCharacterCount } from "../../components/Textarea";
@@ -56,7 +55,7 @@ const AboutTheAircraft: FunctionComponent<DraftBeaconUsePageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
     >
-      <FormHeading pageHeading={pageHeading} />
+      <BeaconsFormHeading pageHeading={pageHeading} />
 
       <MaxCapacityInput
         value={form.fields.maxCapacity.value}

@@ -1,8 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
-import { FormHeading } from "../../components/FormTypes";
 import { FormInputProps, Input } from "../../components/Input";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormJSON, FormManager } from "../../lib/form/FormManager";
@@ -48,7 +47,7 @@ const AboutBeaconOwner: FunctionComponent<AboutBeaconOwnerFormProps> = ({
       showCookieBanner={showCookieBanner}
       includeUseIndex={true}
     >
-      <FormHeading pageHeading={pageHeading} />
+      <BeaconsFormHeading pageHeading={pageHeading} />
       <FullName
         value={form.fields.ownerFullName.value}
         errorMessages={form.fields.ownerFullName.errorMessages}

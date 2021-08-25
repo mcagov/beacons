@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
 import { DateListItem, DateType } from "../../components/DateInput";
 import { Details } from "../../components/Details";
 import {
@@ -10,7 +10,6 @@ import {
   FormHint,
   FormLegend,
 } from "../../components/Form";
-import { FormHeading } from "../../components/FormTypes";
 import { FormInputProps, Input } from "../../components/Input";
 import { GovUKBody } from "../../components/Typography";
 import { toIsoDateString } from "../../lib/dateTime";
@@ -62,7 +61,7 @@ const BeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
     >
-      <FormHeading pageHeading={pageHeading} />
+      <BeaconsFormHeading pageHeading={pageHeading} />
       {pageText}
       <ManufacturerSerialNumberInput
         value={form.fields.manufacturerSerialNumber.value}

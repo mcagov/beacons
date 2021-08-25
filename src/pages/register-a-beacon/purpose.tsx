@@ -1,8 +1,10 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import {
+  BeaconsForm,
+  BeaconsFormFieldsetAndLegend,
+} from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
-import { FormFieldsetAndLegend } from "../../components/FormTypes";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { Environment, Purpose } from "../../lib/deprecatedRegistration/types";
@@ -51,7 +53,7 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
     >
-      <FormFieldsetAndLegend pageHeading={pageHeading}>
+      <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
         <FormGroup errorMessages={form.fields.purpose.errorMessages}>
           <RadioList>
             <RadioListItem
@@ -72,7 +74,7 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
             />
           </RadioList>
         </FormGroup>
-      </FormFieldsetAndLegend>
+      </BeaconsFormFieldsetAndLegend>
     </BeaconsForm>
   );
 };

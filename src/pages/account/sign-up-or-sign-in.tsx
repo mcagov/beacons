@@ -1,8 +1,10 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import {
+  BeaconsForm,
+  BeaconsFormFieldsetAndLegend,
+} from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
-import { FormFieldsetAndLegend } from "../../components/FormTypes";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/FieldManager";
@@ -49,7 +51,7 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
       showCookieBanner={showCookieBanner}
       includeUseIndex={false}
     >
-      <FormFieldsetAndLegend pageHeading={pageHeading}>
+      <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
         {pageText}
         <FormGroup errorMessages={form.fields.signUpOrSignIn.errorMessages}>
           <RadioList>
@@ -71,7 +73,7 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
             />
           </RadioList>
         </FormGroup>
-      </FormFieldsetAndLegend>
+      </BeaconsFormFieldsetAndLegend>
     </BeaconsForm>
   );
 };
