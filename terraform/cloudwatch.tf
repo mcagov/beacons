@@ -133,3 +133,23 @@ resource "aws_cloudwatch_metric_alarm" "ecs_webapp_memory_too_high" {
   }
   tags = module.beacons_label.tags
 }
+
+resource "aws_cloudwatch_metric_alarm" "redis_memory_too_high" {
+  alarm_name          = "redis-${terraform.workspace}-highMemoryUtilization"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 5
+  metric_name         = "DatabaseMemoryUsageCountedForEvictPercentage"
+  namespace           = "AWS/ElastiCache"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 80
+  alarm_description   = "Average Memory utilization is too high."
+  alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
+  ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
+
+  dimensions = {
+      ReplicationGroupId = "${terraform.workspace}-mca-beacons-elasticache-cluster"
+
+  }
+  tags = module.beacons_label.tags
+}
