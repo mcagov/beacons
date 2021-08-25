@@ -1,37 +1,39 @@
 import { render } from "@testing-library/react";
 import React from "react";
 import {
-  FormFieldsetAndLegend,
-  FormHeading,
-  FormLabelHeading,
-} from "../../src/components/FormTypes";
+  BeaconsFormFieldsetAndLegend,
+  BeaconsFormHeading,
+  BeaconsFormLabelHeading,
+} from "../../src/components/BeaconsForm";
 
 describe("FormTypes Component", () => {
   const pageHeading = "Lorem Ipsum";
-  it("should render the FormFieldsetAndLegend with correct pageHeading and children", () => {
+  it("should render the BeaconsFormFieldsetAndLegend with correct pageHeading and children", () => {
     render(
-      <FormFieldsetAndLegend pageHeading={pageHeading}>
+      <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
         <p>lorem</p>
-      </FormFieldsetAndLegend>
+      </BeaconsFormFieldsetAndLegend>
     );
   });
 
-  it("should render the FormFieldsetAndLegend with correct pageHeading, children and ariaDescribedBy", () => {
+  it("should render the BeaconsFormFieldsetAndLegend with correct pageHeading, children and ariaDescribedBy", () => {
     render(
-      <FormFieldsetAndLegend
+      <BeaconsFormFieldsetAndLegend
         pageHeading={pageHeading}
         ariaDescribedBy="aria-example"
       >
         <p>lorem</p>
-      </FormFieldsetAndLegend>
+      </BeaconsFormFieldsetAndLegend>
     );
   });
 
-  it("should render the FormHeading", () => {
-    render(<FormHeading pageHeading={pageHeading} />);
+  it("should render the BeaconsFormHeading", () => {
+    render(<BeaconsFormHeading pageHeading={pageHeading} />);
   });
 
   it("should render the FormLabelHeading", () => {
-    render(<FormLabelHeading id="id-example" pageHeading={pageHeading} />);
+    render(
+      <BeaconsFormLabelHeading id="id-example" pageHeading={pageHeading} />
+    );
   });
 });
