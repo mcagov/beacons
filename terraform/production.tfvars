@@ -31,3 +31,4 @@ rds_multi_az                   = true
 enable_alerts                  = true
 api_service_minimum_task_count = 1
 webapp_minimum_task_count      = 1
+webapp_fqdn                    = "production.406beacons.com"
