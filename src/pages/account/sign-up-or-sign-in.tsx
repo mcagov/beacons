@@ -87,7 +87,11 @@ const validationRules = ({ signUpOrSignIn }) => {
   return new FormManager({
     signUpOrSignIn: new FieldManager(
       signUpOrSignIn,
-      [Validators.required("Please select an option")],
+      [
+        Validators.required(
+          "Select an option to sign in or to create an account"
+        ),
+      ],
       [],
       "signIn"
     ),
