@@ -33,6 +33,12 @@ export const givenIHaveSignedIn = (): void => {
   });
 };
 
+export const givenIDoNotHaveAValidSession = (): void => {
+  cy.setCookie("next-auth.session-token", "not-a-valid-token", {
+    log: false,
+  });
+};
+
 export const givenIAmAt = (url: string): void => {
   cy.visit(url);
 };
