@@ -40,7 +40,20 @@ Staging deployment is a workflow that is manually run from the `Actions` tab of 
 
 ### Production Environment
 
-_TODO_
+Production deployment follows the same approach as deploying to `Staging`. This is done through the [Deploy Production Workflow](https://github.com/mcagov/beacons-integration/actions/workflows/production.yml).
+
+
+- `Deploy staging onto production` is an input for the workflow, which defaults to `true`
+
+  - When `true`, the Docker image versions used in the `staging` environment are promoted to the `production` environment
+
+    - This is done by copying the Docker image versions in `staging.images.tfvars` and updating `production.images.tfvars`
+
+  - When `false`, the Docker image versions are taken from the existing `production.images.tfvars`
+
+    - This allows us to choose specific Docker image versions to be used in `production` by manually editing `production.images.tfvars`
+
+    - We would use this to apply any hotfixes or rollback
 
 ## Architectural Decision Records (ADRs)
 

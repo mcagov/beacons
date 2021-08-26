@@ -34,6 +34,7 @@ variable "webapp_health_check_path" {
   description = "Health check path used by the Application Load Balancer for the Beacons Webapp"
   default     = "/api/health"
 }
+// See docs for ecs task definition: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html
 variable "webapp_fargate_cpu" {
   type        = number
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the Beacons Webapp"
@@ -132,6 +133,7 @@ variable "service_spring_active_profiles" {
   type        = string
   description = "A comma-separated list of Spring Boot profiles that are active"
 }
+// See docs for ecs task definition: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html
 variable "service_fargate_cpu" {
   type        = number
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) Beacons Service"
