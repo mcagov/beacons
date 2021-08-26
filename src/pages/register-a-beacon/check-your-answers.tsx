@@ -1,11 +1,13 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, StartButton } from "../../components/Button";
-import { BeaconDetailsSection } from "../../components/domain/BeaconDetailsSection";
-import { BeaconInformationSection } from "../../components/domain/BeaconInformationSection";
-import { BeaconOwnerEmergencyContactsSection } from "../../components/domain/BeaconOwneEmergencyContactsSection";
-import { BeaconOwnerAddressSection } from "../../components/domain/BeaconOwnerAddressSection";
-import { BeaconOwnerSection } from "../../components/domain/BeaconOwnerSection";
+import {
+  BeaconDetailsSection,
+  BeaconEmergencyContactsSection,
+  BeaconInformationSection,
+  BeaconOwnerAddressSection,
+  BeaconOwnerSection,
+} from "../../components/domain/Summary";
 import { SummaryBeaconUseSection } from "../../components/domain/SummaryBeaconUseSection";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
@@ -54,12 +56,27 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
                 Please check you answer before sending in your registration
                 application
               </GovUKBody>
-              <BeaconDetailsSection {...registration} />
-              <BeaconInformationSection {...registration} />
+              <BeaconDetailsSection
+                {...registration}
+                changeUrl={PageURLs.checkBeaconDetails}
+              />
+              <BeaconInformationSection
+                {...registration}
+                changeUrl={PageURLs.beaconInformation}
+              />
               {useSections}
-              <BeaconOwnerSection {...registration} />
-              <BeaconOwnerAddressSection {...registration} />
-              <BeaconOwnerEmergencyContactsSection {...registration} />
+              <BeaconOwnerSection
+                {...registration}
+                changeUrl={PageURLs.aboutBeaconOwner}
+              />
+              <BeaconOwnerAddressSection
+                {...registration}
+                changeUrl={PageURLs.beaconOwnerAddress}
+              />
+              <BeaconEmergencyContactsSection
+                {...registration}
+                changeUrl={PageURLs.emergencyContact}
+              />
               <SendYourApplication />
               <StartButton
                 buttonText="Accept and send"

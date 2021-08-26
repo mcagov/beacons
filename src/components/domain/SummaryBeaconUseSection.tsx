@@ -9,7 +9,7 @@ import {
 } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { SectionHeading } from "../Typography";
-import { DataRowItem } from "./DataRowItem";
+import { DataRowItem } from "./Summary";
 
 interface SummaryBeaconUseSectionProps {
   index: number;
