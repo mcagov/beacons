@@ -29,6 +29,6 @@ backup_retention_period        = 5
 performance_insights_enabled   = true
 apply_immediately              = true
 rds_multi_az                   = false
-alert_email_address            = "beacons-team@madetech.com"
+alert_email_address            = "mca-beacons-technical-alerts@madetech.com"
 aws_account_number             = "232705206979"
 enable_alerts                  = false
