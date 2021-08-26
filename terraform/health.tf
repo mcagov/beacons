@@ -25,7 +25,7 @@ resource "aws_route53_health_check" "webapp_health_check" {
   fqdn              = var.webapp_fqdn
   port              = 443
   request_interval  = "30"
-  resource_path     = "/api/health"
+  resource_path     = var.webapp_health_check_path
   type              = "HTTPS_STR_MATCH"
   search_string     = "Ship shape and Bristol fashion"
 }
