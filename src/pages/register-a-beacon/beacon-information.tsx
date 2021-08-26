@@ -49,7 +49,7 @@ const BeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> = ({
   const pageText = (
     <GovUKBody>
       {
-        "Further information about your beacon is useful for Search and Rescue. Provide as much information you can find."
+        "Further information about your beacon is useful for Search and Rescue. Provide as much information as you can."
       }
     </GovUKBody>
   );
