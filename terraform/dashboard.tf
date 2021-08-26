@@ -180,7 +180,7 @@ resource "aws_cloudwatch_dashboard" "service_health" {
                 "title": "Webapp Health",
                 "annotations": {
                     "alarms": [
-                        "${aws_cloudwatch_metric_alarm.webapp-health.arn}"
+                        "${aws_cloudwatch_metric_alarm.webapp_health.arn}"
                     ]
                 },
                 "view": "singleValue",

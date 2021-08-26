@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_metric_alarm" "webapp-health" {
+resource "aws_cloudwatch_metric_alarm" "webapp_health" {
   tags                = module.beacons_label.tags
   namespace           = "AWS/Route53"
   alarm_name          = "webapp-health-alarm"
@@ -14,11 +14,11 @@ resource "aws_cloudwatch_metric_alarm" "webapp-health" {
   ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_service_alerts.arn] : []
 
   dimensions = {
-    HealthCheckId = aws_route53_health_check.webapp-health-check.id
+    HealthCheckId = aws_route53_health_check.webapp_health_check.id
   }
 }
 
-resource "aws_route53_health_check" "webapp-health-check" {
+resource "aws_route53_health_check" "webapp_health_check" {
   reference_name    = "webapp-health-check"
   tags              = module.beacons_label.tags
   failure_threshold = 5
