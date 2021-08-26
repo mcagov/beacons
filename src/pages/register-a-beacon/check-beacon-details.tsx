@@ -5,7 +5,7 @@ import {
   BeaconHexIdInput,
   BeaconManufacturerInput,
   BeaconModelInput,
-} from "../../components/domain/BeaconDetailsSection";
+} from "../../components/domain/BeaconDetails";
 import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormManager } from "../../lib/form/FormManager";
