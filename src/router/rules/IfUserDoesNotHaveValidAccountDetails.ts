@@ -13,7 +13,7 @@ export class IfUserDoesNotHaveValidAccountDetails implements Rule {
   ) {}
 
   public async condition(): Promise<boolean> {
-    const accountHolderDetails = this.getAccountHolderDetails();
+    const accountHolderDetails = await this.getAccountHolderDetails();
 
     return this.validationRules(accountHolderDetails).asDirty().hasErrors();
   }

@@ -83,6 +83,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get NextAuthUserSessionGateway() {
       return new NextAuthUserSessionGateway();
     },
+    get sessionGateway() {
+      return new NextAuthUserSessionGateway();
+    },
     get basicAuthGateway() {
       return new BasicAuthGateway();
     },
