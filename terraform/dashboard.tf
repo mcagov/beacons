@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_dashboard" "service-health" {
+resource "aws_cloudwatch_dashboard" "service_health" {
   dashboard_name = "${terraform.workspace}-beacons-dashboard"
 
   dashboard_body = <<-EOT
