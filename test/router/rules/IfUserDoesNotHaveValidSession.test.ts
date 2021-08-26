@@ -3,7 +3,7 @@ import { PageURLs } from "../../../src/lib/urls";
 import { IfUserDoesNotHaveValidSession } from "../../../src/router/rules/IfUserDoesNotHaveValidSession";
 
 describe("IfUserDoesNotHaveValidSession", () => {
-  it("routes the user to the sign up or sign in page if the session is not valid", async () => {
+  it("should route the user to the sign up or sign in page if the session is not valid", async () => {
     const mockGetSession = jest.fn();
     mockGetSession.mockReturnValueOnce(null);
 
@@ -31,7 +31,7 @@ describe("IfUserDoesNotHaveValidSession", () => {
     });
   });
 
-  it("does not trigger if the user has a valid session", async () => {
+  it("should not trigger if the user has a valid session", async () => {
     const mockGetSession = jest.fn();
     const session: BeaconsSession = {
       user: {
