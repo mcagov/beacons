@@ -29,3 +29,5 @@ performance_insights_enabled   = true
 apply_immediately              = false
 rds_multi_az                   = true
 enable_alerts                  = true
+api_service_minimum_task_count = 1
+webapp_minimum_task_count      = 1

@@ -270,3 +270,13 @@ variable "low_disk_burst_balance_threshold" {
   description = "Alarm threshold for low RDS disk burst balance"
   default     = 100
 }
+variable "api_service_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the API Service"
+  default     = 1
+}
+variable "webapp_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the Webapp"
+  default     = 1
+}

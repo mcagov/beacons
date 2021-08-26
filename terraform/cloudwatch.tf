@@ -16,7 +16,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_task_count_too_low" {
   namespace           = "AWS/ECS"
   period              = 60
   statistic           = "SampleCount"
-  threshold           = 1
+  threshold           = var.api_service_minimum_task_count
   alarm_description   = "Task count is too low."
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
@@ -79,7 +79,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_webapp_task_count_too_low" {
   namespace           = "AWS/ECS"
   period              = 60
   statistic           = "SampleCount"
-  threshold           = 1
+  threshold           = var.webapp_minimum_task_count
   alarm_description   = "Task count is too low."
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
