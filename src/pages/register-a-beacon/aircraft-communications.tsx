@@ -1,8 +1,11 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import {
+  BeaconsForm,
+  BeaconsFormFieldsetAndLegend,
+} from "../../components/BeaconsForm";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
-import { FormFieldset, FormGroup, FormLegend } from "../../components/Form";
+import { FormGroup, FormHint } from "../../components/Form";
 import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { GovUKBody } from "../../components/Typography";
@@ -40,7 +43,8 @@ const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   showCookieBanner,
   useIndex,
 }: DraftBeaconUsePageProps): JSX.Element => {
-  const pageHeading = "How can we communicate with you, when on this aircraft?";
+  const pageHeading =
+    "How can we communicate with you, when on this aircraft? (Optional)";
   const pageText = (
     <GovUKBody>
       {"This will be critical for Search and Rescue in an emergency."}
@@ -53,10 +57,14 @@ const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      pageText={pageText}
-      headingType="legend"
     >
-      <TypesOfCommunication form={form} />
+      <BeaconsFormFieldsetAndLegend
+        pageHeading={pageHeading}
+        ariaDescribedBy="aircraft-communication-types-hint"
+      >
+        {pageText}
+        <TypesOfCommunication form={form} />
+      </BeaconsFormFieldsetAndLegend>
     </BeaconsForm>
   );
 };
@@ -66,10 +74,10 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
 }: {
   form: FormJSON;
 }) => (
-  <FormFieldset>
-    <FormLegend size="small">
+  <>
+    <FormHint forId="aircraft-communication-types">
       Tick all that apply and provide as much detail as you can
-    </FormLegend>
+    </FormHint>
 
     <FormGroup>
       <CheckboxList conditional={true}>
@@ -139,7 +147,7 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
         </CheckboxListItem>
       </CheckboxList>
     </FormGroup>
-  </FormFieldset>
+  </>
 );
 
 export const getServerSideProps: GetServerSideProps = withContainer(

@@ -1,6 +1,9 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import {
+  BeaconsForm,
+  BeaconsFormFieldsetAndLegend,
+} from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
 import { GovUKBody } from "../../components/Typography";
@@ -45,7 +48,7 @@ const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
         </GovUKBody>
       )}
       <GovUKBody>
-        {"You will be able to tell us about other uses later in the form"}
+        {"You will be able to tell us about other uses later in the form."}
       </GovUKBody>
     </>
   );
@@ -62,43 +65,46 @@ const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      pageText={pageText}
-      headingType="legend"
     >
-      <FormGroup errorMessages={form.fields.environment.errorMessages}>
-        <RadioList conditional={true}>
-          <RadioListItem
-            id="maritime"
-            name={environmentFieldName}
-            label="Maritime"
-            hintText="This might include commercial or pleasure sailing / motor vessels or unpowered craft. It could also include sea-based windfarms and rigs/platforms."
-            value={Environment.MARITIME}
-            defaultChecked={
-              form.fields.environment.value === Environment.MARITIME
-            }
-          />
+      <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
+        {pageText}
+        <FormGroup errorMessages={form.fields.environment.errorMessages}>
+          <RadioList conditional={true}>
+            <RadioListItem
+              id="maritime"
+              name={environmentFieldName}
+              label="Maritime"
+              hintText="This might include commercial or pleasure sailing / motor vessels or unpowered craft. It could also include sea-based windfarms and rigs/platforms."
+              value={Environment.MARITIME}
+              defaultChecked={
+                form.fields.environment.value === Environment.MARITIME
+              }
+            />
 
-          <RadioListItem
-            id="aviation"
-            name={environmentFieldName}
-            label="Aviation"
-            hintText="This might include commercial or pleasure aircraft"
-            value={Environment.AVIATION}
-            defaultChecked={
-              form.fields.environment.value === Environment.AVIATION
-            }
-          />
+            <RadioListItem
+              id="aviation"
+              name={environmentFieldName}
+              label="Aviation"
+              hintText="This might include commercial or pleasure aircraft."
+              value={Environment.AVIATION}
+              defaultChecked={
+                form.fields.environment.value === Environment.AVIATION
+              }
+            />
 
-          <RadioListItem
-            id="land"
-            name={environmentFieldName}
-            label="Land-based"
-            hintText="This could include vehicle or other overland uses. It could also include land-based windfarms."
-            value={Environment.LAND}
-            defaultChecked={form.fields.environment.value === Environment.LAND}
-          />
-        </RadioList>
-      </FormGroup>
+            <RadioListItem
+              id="land"
+              name={environmentFieldName}
+              label="Land-based"
+              hintText="This could include vehicle or other overland uses. It could also include land-based windfarms."
+              value={Environment.LAND}
+              defaultChecked={
+                form.fields.environment.value === Environment.LAND
+              }
+            />
+          </RadioList>
+        </FormGroup>
+      </BeaconsFormFieldsetAndLegend>
     </BeaconsForm>
   );
 };

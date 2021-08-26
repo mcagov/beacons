@@ -13,7 +13,6 @@ import {
 import { Grid } from "./Grid";
 import { Layout } from "./Layout";
 import { IfYouNeedHelp } from "./Mca";
-import { GovUKBody } from "./Typography";
 
 interface BeaconsFormProps {
   children: ReactNode;
@@ -22,12 +21,24 @@ interface BeaconsFormProps {
   showCookieBanner: boolean;
   formErrors?: FormError[];
   errorMessages?: string[];
-  pageText?: string | ReactNode;
   includeUseIndex?: boolean;
   continueButton?: JSX.Element;
   cancelButton?: JSX.Element;
-  id?: string;
-  headingType?: "label" | "legend";
+}
+
+interface BeaconsFormFieldsetAndLegendProps {
+  children: ReactNode;
+  pageHeading: string;
+  ariaDescribedBy?: string;
+}
+
+interface BeaconsFormHeadingProps {
+  pageHeading: string;
+}
+
+interface BeaconsFormLabelHeadingProps {
+  pageHeading: string;
+  id: string;
 }
 
 export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
@@ -37,15 +48,9 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   showCookieBanner,
   formErrors = [],
   errorMessages = [],
-  pageText = null,
   continueButton = <Button buttonText="Continue" />,
   cancelButton = null,
-  headingType,
-  id = "",
 }: BeaconsFormProps): JSX.Element => {
-  const pageTextComponent: ReactNode =
-    typeof pageText === "string" ? <GovUKBody>{pageText}</GovUKBody> : pageText;
-
   return (
     <Layout
       navigation={<BackButton href={previousPageUrl} />}
@@ -58,31 +63,7 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
             <FormErrorSummary formErrors={formErrors} />
             <Form>
               <FormGroup errorMessages={errorMessages}>
-                {headingType === "label" ? (
-                  <>
-                    <h1 className="govuk-label-wrapper">
-                      <FormLabel htmlFor={id} className="govuk-label--l">
-                        {pageHeading}
-                      </FormLabel>
-                    </h1>
-                    {pageTextComponent}
-                    {children}
-                  </>
-                ) : headingType === "legend" ? (
-                  <FormFieldset>
-                    <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                    {pageTextComponent}
-                    {children}
-                  </FormFieldset>
-                ) : (
-                  <>
-                    <h1 className="govuk-heading-l govuk-!-margin-bottom-3">
-                      {pageHeading}
-                    </h1>
-                    {pageTextComponent}
-                    {children}
-                  </>
-                )}
+                {children}
                 <HiddenFormMetadata />
               </FormGroup>
               {cancelButton}
@@ -104,3 +85,36 @@ const HiddenFormMetadata: FunctionComponent = () => {
     <input id="use-index" type="hidden" name="useIndex" value={useIndexValue} />
   );
 };
+
+export const BeaconsFormFieldsetAndLegend: FunctionComponent<BeaconsFormFieldsetAndLegendProps> =
+  ({
+    children,
+    pageHeading,
+    ariaDescribedBy = null,
+  }: BeaconsFormFieldsetAndLegendProps): JSX.Element => {
+    return (
+      <FormFieldset ariaDescribedBy={ariaDescribedBy}>
+        <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
+        {children}
+      </FormFieldset>
+    );
+  };
+
+export const BeaconsFormHeading: FunctionComponent<BeaconsFormHeadingProps> = ({
+  pageHeading,
+}: BeaconsFormHeadingProps): JSX.Element => {
+  return (
+    <h1 className="govuk-heading-l govuk-!-margin-bottom-3">{pageHeading}</h1>
+  );
+};
+
+export const BeaconsFormLabelHeading: FunctionComponent<BeaconsFormLabelHeadingProps> =
+  ({ pageHeading, id = null }: BeaconsFormLabelHeadingProps): JSX.Element => {
+    return (
+      <h1 className="govuk-label-wrapper">
+        <FormLabel htmlFor={id} className="govuk-label--l">
+          {pageHeading}
+        </FormLabel>
+      </h1>
+    );
+  };

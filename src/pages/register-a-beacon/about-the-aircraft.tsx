@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
 import {
   FormFieldset,
   FormGroup,
@@ -54,8 +54,9 @@ const AboutTheAircraft: FunctionComponent<DraftBeaconUsePageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      headingType="legend"
     >
+      <BeaconsFormHeading pageHeading={pageHeading} />
+
       <MaxCapacityInput
         value={form.fields.maxCapacity.value}
         errorMessages={form.fields.maxCapacity.errorMessages}
