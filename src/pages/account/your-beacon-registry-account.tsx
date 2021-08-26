@@ -298,7 +298,7 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
   public async action(): Promise<GetServerSidePropsResult<any>> {
     const accountHolderDetails = await this.getAccountHolderDetails();
     const beacons = await this.getBeacons(accountHolderDetails.id);
-    this.createDraftRegistrationIfNoneForUser();
+    await this.createDraftRegistrationIfNoneForUser();
 
     return {
       props: {
