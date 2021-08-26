@@ -5,6 +5,46 @@ resource "aws_cloudwatch_dashboard" "service-health" {
 {
     "widgets": [
         {
+            "height": 2,
+            "width": 24,
+            "y": 0,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "# Beacons Health - ${terraform.workspace}\n## Health Check Alarms"
+            }
+        },
+        {
+            "height": 2,
+            "width": 24,
+            "y": 5,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "# Database Health\n## Alarms"
+            }
+        },
+        {
+            "height": 2,
+            "width": 24,
+            "y": 13,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "# ECS Cluster Health\n## Alarms"
+            }
+        },
+        {
+            "height": 2,
+            "width": 24,
+            "y": 19,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "# ElasticCache Health\n## Alarms"
+            }
+        },
+        {
             "height": 3,
             "width": 6,
             "y": 7,
@@ -149,26 +189,6 @@ resource "aws_cloudwatch_dashboard" "service-health" {
             }
         },
         {
-            "height": 2,
-            "width": 24,
-            "y": 13,
-            "x": 0,
-            "type": "text",
-            "properties": {
-                "markdown": "# ECS Cluster Health - ${terraform.workspace}\n## Alarms"
-            }
-        },
-        {
-            "height": 2,
-            "width": 24,
-            "y": 0,
-            "x": 0,
-            "type": "text",
-            "properties": {
-                "markdown": "# Beacons Health - ${terraform.workspace}\n## Health Check Alarms"
-            }
-        },
-        {
             "height": 3,
             "width": 6,
             "y": 2,
@@ -273,13 +293,21 @@ resource "aws_cloudwatch_dashboard" "service-health" {
             }
         },
         {
-            "height": 2,
-            "width": 24,
-            "y": 5,
+            "type": "metric",
             "x": 0,
-            "type": "text",
+            "y": 22,
+            "width": 6,
+            "height": 3,
             "properties": {
-                "markdown": "# Database Health - ${terraform.workspace}\n## Alarms"
+                "title": "Memory Utilization",
+                "annotations": {
+                    "alarms": [
+                        "${aws_cloudwatch_metric_alarm.redis_memory_too_high.arn}"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
             }
         }
     ]
