@@ -2,7 +2,7 @@ module "aws-rds-alarms" {
   source                               = "lorenzoaiello/rds-alarms/aws"
   version                              = "2.1.0"
   db_instance_id                       = aws_db_instance.postgres.id
-  db_instance_class                    = "db.t2.micro"
+  db_instance_class                    = var.db_instance_class
   actions_alarm                        = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   actions_ok                           = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   disk_burst_balance_too_low_threshold = var.low_disk_burst_balance_threshold
