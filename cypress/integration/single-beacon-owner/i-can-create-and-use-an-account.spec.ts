@@ -31,7 +31,8 @@ describe("As a new user who wants to register a beacon", () => {
   });
 
   it("requires me to choose an option", () => {
-    const expectedErrorMessage = "Please select an option";
+    const expectedErrorMessage =
+      "Select an option to sign in or to create an account";
     givenIHaveBeenTo(PageURLs.start);
     givenIHaveClicked(".govuk-button--start");
     givenIHaveWaitedForAzureB2C();
