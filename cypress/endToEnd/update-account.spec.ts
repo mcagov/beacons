@@ -60,7 +60,10 @@ describe("As an account holder", () => {
         selector: telephoneSelector,
       },
       {
-        errorMessages: ["Building number", requiredFieldErrorMessage],
+        errorMessages: [
+          "Address line one (building number and street name)",
+          requiredFieldErrorMessage,
+        ],
         selector: addressSelector,
       },
       {

@@ -11,6 +11,7 @@ interface TextareaProps {
   defaultValue?: string;
   htmlAttributes?: InputHTMLAttributes<Element>;
   rows?: number;
+  hintText?: string;
 }
 
 interface TextareaCharacterCountProps {
@@ -28,22 +29,31 @@ interface TextareaCharacterCountProps {
 export const Textarea: FunctionComponent<TextareaProps> = ({
   id,
   name = null,
+  hintText = null,
   defaultValue = "",
   htmlAttributes = {},
   rows = 3,
 }: TextareaProps): JSX.Element => {
   name = name ? name : id;
 
+  let hintComponent: ReactNode;
+  if (hintText) {
+    hintComponent = <FormHint forId={id}>{hintText}</FormHint>;
+  }
+
   return (
-    <textarea
-      className="govuk-textarea"
-      id={id}
-      name={name}
-      defaultValue={defaultValue}
-      rows={rows}
-      aria-describedby={`${id}-hint`}
-      {...htmlAttributes}
-    />
+    <div>
+      {hintComponent}
+      <textarea
+        className="govuk-textarea"
+        id={id}
+        name={name}
+        defaultValue={defaultValue}
+        rows={rows}
+        aria-describedby={`${id}-hint`}
+        {...htmlAttributes}
+      />
+    </div>
   );
 };
 

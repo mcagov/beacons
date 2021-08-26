@@ -24,6 +24,10 @@ export const givenIHaveACookieSetAndHaveSignedInIVisit = (
 
 export const givenIHaveACookieSetAndHaveSignedIn = (): void => {
   cy.setCookie("submissionId", v4());
+  givenIHaveSignedIn();
+};
+
+export const givenIHaveSignedIn = (): void => {
   cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
     log: false,
   });

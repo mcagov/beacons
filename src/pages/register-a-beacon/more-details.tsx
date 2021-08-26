@@ -1,6 +1,9 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import {
+  BeaconsForm,
+  BeaconsFormLabelHeading,
+} from "../../components/BeaconsForm";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { GovUKBody } from "../../components/Typography";
 import { Environment } from "../../lib/deprecatedRegistration/types";
@@ -55,15 +58,15 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
         anything else associated with this beacon.
       </GovUKBody>
       <GovUKBody>
-        This might include defining features such as the length, colour etc) and
-        any tracking details (e.g. RYA SafeTrx or Web) if you have them.
+        This might include defining features (e.g. length, colour, etc.) and any
+        tracking details (e.g. RYA SafeTrx or Web) if you have them.
       </GovUKBody>
       <GovUKBody className="govuk-!-font-weight-bold">
         Please do not provide medical details as we cannot store these.
       </GovUKBody>
       <GovUKBody>
         This information is very helpful to Search and Rescue when trying to
-        locate you
+        locate you.
       </GovUKBody>
     </>
   );
@@ -74,10 +77,9 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      pageText={pageText}
-      id="moreDetails"
-      headingType="label"
     >
+      <BeaconsFormLabelHeading pageHeading={pageHeading} id="moreDetails" />
+      {pageText}
       <MoreDetailsTextArea
         value={form.fields.moreDetails.value}
         errorMessages={form.fields.moreDetails.errorMessages}

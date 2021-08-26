@@ -1,11 +1,12 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
 import {
   BeaconHexIdInput,
   BeaconManufacturerInput,
   BeaconModelInput,
 } from "../../components/domain/BeaconDetailsSection";
+import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormManager } from "../../lib/form/FormManager";
 import { Validators } from "../../lib/form/Validators";
@@ -33,8 +34,12 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   showCookieBanner,
 }: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Check beacon details";
-  const pageText =
-    "The details of your beacon must be checked to ensure it is programmed for UK registration.";
+  const pageText = (
+    <GovUKBody>
+      The details of your beacon must be checked to ensure it is programmed for
+      UK registration.
+    </GovUKBody>
+  );
   const previousPageUrl = PageURLs.accountHome;
 
   return (
@@ -44,9 +49,9 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
       includeUseIndex={false}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      pageText={pageText}
-      headingType="legend"
     >
+      <BeaconsFormHeading pageHeading={pageHeading} />
+      {pageText}
       <BeaconManufacturerInput
         value={form.fields.manufacturer.value}
         errorMessages={form.fields.manufacturer.errorMessages}

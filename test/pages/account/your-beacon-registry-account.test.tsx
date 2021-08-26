@@ -6,6 +6,7 @@ import { AuthGateway } from "../../../src/gateways/interfaces/AuthGateway";
 import { getAppContainer } from "../../../src/lib/appContainer";
 import { IAppContainer } from "../../../src/lib/IAppContainer";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
+import { formSubmissionCookieId } from "../../../src/lib/types";
 import { getServerSideProps } from "../../../src/pages/account/your-beacon-registry-account";
 import { accountHolderFixture } from "../../fixtures/accountHolder.fixture";
 import {
@@ -53,6 +54,11 @@ describe("YourBeaconRegistryAccount", () => {
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: container as IAppContainer,
         session: { user: { authId: "a-session-id" } },
+        req: {
+          cookies: {
+            [formSubmissionCookieId]: "set",
+          },
+        } as any,
       };
 
       const result = await getServerSideProps(
@@ -91,6 +97,11 @@ describe("YourBeaconRegistryAccount", () => {
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container,
         session: { user: { authId: "a-session-id" } },
+        req: {
+          cookies: {
+            [formSubmissionCookieId]: "set",
+          },
+        } as any,
       };
 
       const result = (await getServerSideProps(

@@ -83,7 +83,7 @@ The UI tests are a part of our CI/CD pipeline.
 
 - Bring up the: Service, Database and Webapp
 - Cypress needs the `SESSION_TOKEN` environment variable to be set
-  - This can be done by copying `cypress.env.json.example` to `cypress.env.json`
+  - This value is set in env.local
   - The value is in 1Password - the token has been set to expire in 2031
 - `npm run cypress:open` or `npm run cypress:watch` -- Run Cypress tests in the `cypress/endToEnd` directory with the Test Runner
 - `npm run cypress:e2e` -- Run Cypress tests in the `cypress/endToEnd` directory in the command line

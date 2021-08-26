@@ -1,6 +1,9 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import {
+  BeaconsForm,
+  BeaconsFormFieldsetAndLegend,
+} from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { Input } from "../../components/Input";
 import { RadioList, RadioListItem } from "../../components/RadioList";
@@ -71,7 +74,7 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
       {environment === Environment.MARITIME && (
         <GovUKBody>
           We will ask you for a full description of any vessels later in the
-          form
+          form.
         </GovUKBody>
       )}
     </>
@@ -88,17 +91,18 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
       errorMessages={form.fields.activity.errorMessages}
-      pageText={pageText}
-      headingType="legend"
     >
-      <RadioList conditional={true}>
-        <ActivityOptions
-          environment={environment}
-          purpose={purpose}
-          form={form}
-          listItemName="activity"
-        />
-      </RadioList>
+      <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
+        {pageText}
+        <RadioList conditional={true}>
+          <ActivityOptions
+            environment={environment}
+            purpose={purpose}
+            form={form}
+            listItemName="activity"
+          />
+        </RadioList>
+      </BeaconsFormFieldsetAndLegend>
       <input type="hidden" name="environment" value={environment} />
     </BeaconsForm>
   );

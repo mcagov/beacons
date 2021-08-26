@@ -1,8 +1,11 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent, ReactNode } from "react";
-import { BeaconsForm } from "../../components/BeaconsForm";
+import {
+  BeaconsForm,
+  BeaconsFormFieldsetAndLegend,
+} from "../../components/BeaconsForm";
 import { CheckboxList, CheckboxListItem } from "../../components/Checkbox";
-import { FormFieldset, FormGroup, FormLegend } from "../../components/Form";
+import { FormGroup, FormHint } from "../../components/Form";
 import { Input } from "../../components/Input";
 import { TextareaCharacterCount } from "../../components/Textarea";
 import { AnchorLink, GovUKBody } from "../../components/Typography";
@@ -46,7 +49,7 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   useIndex,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading =
-    "How can we communicate with you when you are in this vessel, rig or windfarm?";
+    "How can we communicate with you when you are in this vessel, rig or windfarm? (Optional)";
 
   const pageText: ReactNode = (
     <>
@@ -56,8 +59,8 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       <GovUKBody>
         If you have a radio license, VHF and/or VHF/DSC radio, you can{" "}
         <AnchorLink href={ofcomLicenseUrl}>
-          find up your Call Sign and Maritime Mobile Service Identity (MMSI)
-          number on the OFCOM website.
+          find your Call Sign and Maritime Mobile Service Identity (MMSI) number
+          on the OFCOM website.
         </AnchorLink>
       </GovUKBody>
     </>
@@ -69,12 +72,15 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
-      pageText={pageText}
-      headingType="legend"
     >
+      <BeaconsFormFieldsetAndLegend
+        pageHeading={pageHeading}
+        ariaDescribedBy="vessel-communication-types-hint"
+      >
+        {pageText}
+        <TypesOfCommunication form={form} />
+      </BeaconsFormFieldsetAndLegend>
       <CallSign value={form.fields.callSign.value} />
-
-      <TypesOfCommunication form={form} />
     </BeaconsForm>
   );
 };
@@ -105,10 +111,10 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
 }: {
   form: FormJSON;
 }) => (
-  <FormFieldset>
-    <FormLegend size="small">
+  <>
+    <FormHint forId="vessel-communication-types">
       Tick all that apply and provide as much detail as you can
-    </FormLegend>
+    </FormHint>
 
     <FormGroup>
       <CheckboxList conditional={true}>
@@ -213,7 +219,7 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
         </CheckboxListItem>
       </CheckboxList>
     </FormGroup>
-  </FormFieldset>
+  </>
 );
 
 export const getServerSideProps: GetServerSideProps = withContainer(
