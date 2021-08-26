@@ -58,15 +58,15 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
         anything else associated with this beacon.
       </GovUKBody>
       <GovUKBody>
-        This might include defining features such as the length, colour etc) and
-        any tracking details (e.g. RYA SafeTrx or Web) if you have them.
+        This might include defining features (e.g. length, colour, etc.) and any
+        tracking details (e.g. RYA SafeTrx or Web) if you have them.
       </GovUKBody>
       <GovUKBody className="govuk-!-font-weight-bold">
         Please do not provide medical details as we cannot store these.
       </GovUKBody>
       <GovUKBody>
         This information is very helpful to Search and Rescue when trying to
-        locate you
+        locate you.
       </GovUKBody>
     </>
   );
