@@ -48,7 +48,7 @@ const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
         </GovUKBody>
       )}
       <GovUKBody>
-        {"You will be able to tell us about other uses later in the form"}
+        {"You will be able to tell us about other uses later in the form."}
       </GovUKBody>
     </>
   );
@@ -85,7 +85,7 @@ const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
               id="aviation"
               name={environmentFieldName}
               label="Aviation"
-              hintText="This might include commercial or pleasure aircraft"
+              hintText="This might include commercial or pleasure aircraft."
               value={Environment.AVIATION}
               defaultChecked={
                 form.fields.environment.value === Environment.AVIATION
