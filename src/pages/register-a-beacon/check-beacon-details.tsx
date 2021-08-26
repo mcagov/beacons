@@ -5,6 +5,7 @@ import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
 import { Details } from "../../components/Details";
 import { FormGroup } from "../../components/Form";
 import { FormInputProps, Input } from "../../components/Input";
+import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormManager } from "../../lib/form/FormManager";
 import { Validators } from "../../lib/form/Validators";
@@ -32,8 +33,12 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   showCookieBanner,
 }: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Check beacon details";
-  const pageText =
-    "The details of your beacon must be checked to ensure it is programmed for UK registration.";
+  const pageText = (
+    <GovUKBody>
+      The details of your beacon must be checked to ensure it is programmed for
+      UK registration.
+    </GovUKBody>
+  );
 
   return (
     <BeaconsForm
