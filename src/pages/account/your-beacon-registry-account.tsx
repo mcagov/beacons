@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { LinkButton } from "../../components/Button";
@@ -18,10 +18,13 @@ import { setCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs, queryParams } from "../../lib/urls";
 import { formatDateLong, formatUses } from "../../lib/writingStyle";
+import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserDoesNotHaveValidAccountDetails } from "../../router/rules/IfUserDoesNotHaveValidAccountDetails";
+import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
+import { Rule } from "../../router/rules/Rule";
 
 export interface YourBeaconRegistryAccountPageProps {
   id?: string;
@@ -274,20 +277,28 @@ const Contact: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-    await createDraftRegistrationIfNoneForUser(context);
+    return await new BeaconsPageRouter([
+      new IfUserDoesNotHaveValidSession(context),
+      new IfUserDoesNotHaveValidAccountDetails(
+        context,
+        accountDetailsFormManager
+      ),
+      new IfUserIsSignedInAndHasValidAccountDetails(context),
+    ]).execute();
+  })
+);
 
-    const { getOrCreateAccountHolder, getBeaconsByAccountHolderId } =
-      context.container;
+class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
+  constructor(private readonly context: BeaconsGetServerSidePropsContext) {}
 
-    const accountHolderDetails = await getOrCreateAccountHolder(
-      context.session
-    );
+  public async condition(): Promise<boolean> {
+    return this.context.req.method === "GET";
+  }
 
-    if (accountDetailsFormManager(accountHolderDetails).asDirty().hasErrors()) {
-      return redirectUserTo(PageURLs.updateAccount);
-    }
-
-    const beacons = await getBeaconsByAccountHolderId(accountHolderDetails.id);
+  public async action(): Promise<GetServerSidePropsResult<any>> {
+    const accountHolderDetails = await this.getAccountHolderDetails();
+    const beacons = await this.getBeacons(accountHolderDetails.id);
+    this.createDraftRegistrationIfNoneForUser();
 
     return {
       props: {
@@ -295,24 +306,34 @@ export const getServerSideProps: GetServerSideProps = withSession(
         beacons,
       },
     };
-  })
-);
-
-const createDraftRegistrationIfNoneForUser = async (
-  context: BeaconsGetServerSidePropsContext
-) => {
-  if (!context.req.cookies?.[formSubmissionCookieId]) {
-    const { saveDraftRegistration } = context.container;
-
-    const draftRegistrationId: string = uuidv4();
-    const emptyDraftRegistration: DraftRegistration = {
-      uses: [],
-    };
-
-    await saveDraftRegistration(draftRegistrationId, emptyDraftRegistration);
-
-    setCookie(context.res, formSubmissionCookieId, draftRegistrationId);
   }
-};
+
+  private async getBeacons(accountHolderId: string): Promise<Beacon[]> {
+    const { getBeaconsByAccountHolderId } = this.context.container;
+
+    return getBeaconsByAccountHolderId(accountHolderId);
+  }
+
+  private async getAccountHolderDetails() {
+    const { getOrCreateAccountHolder } = this.context.container;
+
+    return getOrCreateAccountHolder(this.context.session);
+  }
+
+  private async createDraftRegistrationIfNoneForUser() {
+    if (!this.context.req.cookies?.[formSubmissionCookieId]) {
+      const { saveDraftRegistration } = this.context.container;
+
+      const draftRegistrationId: string = uuidv4();
+      const emptyDraftRegistration: DraftRegistration = {
+        uses: [],
+      };
+
+      await saveDraftRegistration(draftRegistrationId, emptyDraftRegistration);
+
+      setCookie(this.context.res, formSubmissionCookieId, draftRegistrationId);
+    }
+  }
+}
 
 export default YourBeaconRegistryAccount;
