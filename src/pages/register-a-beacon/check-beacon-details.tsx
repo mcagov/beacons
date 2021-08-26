@@ -1,10 +1,11 @@
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
-import { Details } from "../../components/Details";
-import { FormGroup } from "../../components/Form";
-import { FormInputProps, Input } from "../../components/Input";
+import {
+  BeaconHexIdInput,
+  BeaconManufacturerInput,
+  BeaconModelInput,
+} from "../../components/domain/BeaconDetailsSection";
 import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormManager } from "../../lib/form/FormManager";
@@ -39,11 +40,12 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
       UK registration.
     </GovUKBody>
   );
+  const previousPageUrl = PageURLs.accountHome;
 
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
-      previousPageUrl="/"
+      previousPageUrl={previousPageUrl}
       includeUseIndex={false}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -65,56 +67,6 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
     </BeaconsForm>
   );
 };
-
-const BeaconManufacturerInput: FunctionComponent<FormInputProps> = ({
-  value = "",
-  errorMessages,
-}: FormInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <Input
-      id="manufacturer"
-      label="Enter your beacon manufacturer"
-      defaultValue={value}
-    />
-  </FormGroup>
-);
-
-const BeaconModelInput: FunctionComponent<FormInputProps> = ({
-  value = "",
-  errorMessages,
-}: FormInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <Input id="model" label="Enter your beacon model" defaultValue={value} />
-  </FormGroup>
-);
-
-const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
-  value = "",
-  errorMessages,
-}: FormInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <Input
-      id="hexId"
-      label="Enter the 15 character beacon HEX ID or UIN number"
-      hintText="This will be on your beacon. It must be 15 characters long and use
-      characters 0 to 9 and letters A to F"
-      htmlAttributes={{ spellCheck: false }}
-      defaultValue={value}
-    />
-    <Details
-      summaryText="What does the 15 character beacon HEX ID or UIN look like?"
-      className="govuk-!-padding-top-2"
-    >
-      <Image
-        src="/assets/mca_images/beacon_hex_id.png"
-        alt="This image illustrates what a beacon's HEX ID or UIN number looks like on an actual
-        beacon. The example HEX ID or UIN here is 1D0EA08C52FFBFF."
-        height={640}
-        width={960}
-      />
-    </Details>
-  </FormGroup>
-);
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
