@@ -4,34 +4,47 @@ import { EntityLink } from "../../entities/EntityLink";
 import { Owner } from "../../entities/Owner";
 import { Use } from "../../entities/Use";
 import { isoDate } from "../../lib/dateTime";
+import { IApiResponse } from "./IApiResponse";
 import { IBeaconDataAttributes } from "./IBeaconDataAttributes";
 import { IBeaconListResponse } from "./IBeaconListResponse";
+import { IBeaconResponse } from "./IBeaconResponse";
 import { IBeaconResponseMapper } from "./IBeaconResponseMapper";
 
 export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
+  public map(beaconApiResponse: IBeaconResponse): Beacon {
+    return this.mapToBeacon(beaconApiResponse, beaconApiResponse.data);
+  }
+
   public mapList(beaconApiResponse: IBeaconListResponse): Beacon[] {
-    return beaconApiResponse.data.map((beacon) => {
-      return {
-        id: beacon.id,
-        hexId: beacon.attributes.hexId,
-        type: beacon.attributes.type || "",
-        manufacturer: beacon.attributes.manufacturer || "",
-        model: beacon.attributes.model || "",
-        status: beacon.attributes.status || "",
-        registeredDate: isoDate(beacon.attributes.createdDate || ""),
-        batteryExpiryDate: isoDate(beacon.attributes.batteryExpiryDate || ""),
-        chkCode: beacon.attributes.chkCode || "",
-        protocolCode: beacon.attributes.protocolCode || "",
-        codingMethod: beacon.attributes.codingMethod || "",
-        lastServicedDate: isoDate(beacon.attributes.lastServicedDate || ""),
-        manufacturerSerialNumber:
-          beacon.attributes.manufacturerSerialNumber || "",
-        owners: this.mapOwners(beaconApiResponse, beacon),
-        emergencyContacts: this.mapEmergencyContacts(beaconApiResponse, beacon),
-        uses: this.mapUses(beaconApiResponse, beacon),
-        entityLinks: this.mapLinks(beacon.links),
-      };
+    return beaconApiResponse.data.map((beaconData) => {
+      return this.mapToBeacon(beaconApiResponse, beaconData);
     });
+  }
+
+  private mapToBeacon(
+    response: IApiResponse,
+    beaconData: IBeaconDataAttributes
+  ): Beacon {
+    return {
+      id: beaconData.id,
+      hexId: beaconData.attributes.hexId,
+      type: beaconData.attributes.type || "",
+      manufacturer: beaconData.attributes.manufacturer || "",
+      model: beaconData.attributes.model || "",
+      status: beaconData.attributes.status || "",
+      registeredDate: isoDate(beaconData.attributes.createdDate || ""),
+      batteryExpiryDate: isoDate(beaconData.attributes.batteryExpiryDate || ""),
+      chkCode: beaconData.attributes.chkCode || "",
+      protocolCode: beaconData.attributes.protocolCode || "",
+      codingMethod: beaconData.attributes.codingMethod || "",
+      lastServicedDate: isoDate(beaconData.attributes.lastServicedDate || ""),
+      manufacturerSerialNumber:
+        beaconData.attributes.manufacturerSerialNumber || "",
+      owners: this.mapOwners(response, beaconData),
+      emergencyContacts: this.mapEmergencyContacts(response, beaconData),
+      uses: this.mapUses(response, beaconData),
+      entityLinks: this.mapLinks(beaconData.links),
+    };
   }
 
   private mapLinks(links: EntityLink[]): EntityLink[] {
@@ -41,7 +54,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
   }
 
   private mapOwners(
-    beaconApiResponse: IBeaconListResponse,
+    beaconApiResponse: IApiResponse,
     beacon: IBeaconDataAttributes
   ): Owner[] {
     const ownerIds = beacon.relationships.owner.data.map((owner) => owner.id);
@@ -70,7 +83,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
   }
 
   private mapEmergencyContacts(
-    beaconApiResponse: IBeaconListResponse,
+    beaconApiResponse: IApiResponse,
     beacon: IBeaconDataAttributes
   ): EmergencyContact[] {
     const emergencyContactIds = beacon.relationships.emergencyContacts.data.map(
@@ -98,7 +111,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
   }
 
   private mapUses(
-    beaconApiResponse: IBeaconListResponse,
+    beaconApiResponse: IApiResponse,
     beacon: IBeaconDataAttributes
   ): Use[] {
     return beaconApiResponse.included
