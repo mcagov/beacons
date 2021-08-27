@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_metric_alarm" "webapp_health" {
   tags                = module.beacons_label.tags
   namespace           = "AWS/Route53"
-  alarm_name          = "webapp-health-alarm"
+  alarm_name          = "${terraform.workspace}-webapp-health-alarm"
   metric_name         = "HealthCheckStatus"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -19,7 +19,7 @@ resource "aws_cloudwatch_metric_alarm" "webapp_health" {
 }
 
 resource "aws_route53_health_check" "webapp_health_check" {
-  reference_name    = "webapp-health-check"
+  reference_name    = "${terraform.workspace}-webapp-health-check"
   tags              = module.beacons_label.tags
   failure_threshold = 5
   fqdn              = var.webapp_fqdn
