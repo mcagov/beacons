@@ -61,6 +61,10 @@ variable "webapp_next_auth_url" {
   type        = string
   description = "The NEXT AUTH environment variable used by NextAuth"
 }
+variable "webapp_fqdn" {
+  type        = string
+  description = "The URL of the web app, used for health checks"
+}
 variable "webapp_azure_b2c_client_id" {
   type        = string
   description = "The Azure B2C Client ID for the B2C App Registration"
@@ -218,4 +222,61 @@ variable "nat_gateway_count" {
   type        = number
   description = "Number of NAT gateways"
   default     = 2
+}
+variable "backup_window" {
+  type        = string
+  description = "Time period e.g 23:00-23:55"
+  default     = ""
+}
+variable "backup_retention_period" {
+  type        = number
+  description = "Days to retain backups"
+  default     = 0
+}
+variable "performance_insights_enabled" {
+  type        = bool
+  description = "Enable performance insights"
+  default     = false
+}
+variable "rds_multi_az" {
+  type        = bool
+  description = "Enable multiple availabilty zones for RDS"
+  default     = false
+}
+variable "apply_immediately" {
+  type        = bool
+  description = "Apply changes to infrastrucure immediatly"
+  default     = true
+}
+variable "alert_email_address" {
+  sensitive   = true
+  type        = string
+  description = "Email Address subscribed to alerts"
+  default     = ""
+}
+variable "aws_account_number" {
+  sensitive   = true
+  type        = string
+  description = "AWS Account Number"
+  default     = ""
+}
+variable "enable_alerts" {
+  type        = bool
+  description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
+  default     = false
+}
+variable "low_disk_burst_balance_threshold" {
+  type        = number
+  description = "Alarm threshold for low RDS disk burst balance"
+  default     = 100
+}
+variable "api_service_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the API Service"
+  default     = 1
+}
+variable "webapp_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the Webapp"
+  default     = 1
 }

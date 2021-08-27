@@ -22,6 +22,11 @@ provider "aws" {
   region = var.aws_region
 }
 
+provider "aws" {
+  alias  = "us-east"
+  region = "us-east-1"
+}
+
 locals {
   dns_sub_domain         = "${terraform.workspace}.beacons.local"
   service_local_endpoint = "service.${local.dns_sub_domain}:${var.service_port}/spring-api"

@@ -113,4 +113,6 @@ jobs:
           TF_VAR_webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.JWT_SECRET }}
           TF_VAR_service_basic_auth_username: ${{ secrets.SERVICE_BASIC_AUTH_USERNAME }}
           TF_VAR_service_basic_auth_password: ${{ secrets.SERVICE_BASIC_AUTH_PASSWORD }}
+          TF_VAR_alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
+          TF_VAR_aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
         run: terraform apply -auto-approve -var-file=dev.tfvars -var-file=dev.images.tfvars
