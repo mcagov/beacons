@@ -178,7 +178,7 @@ resource "aws_ecs_task_definition" "service" {
       },
       {
         name : "BEACONS_SEARCH_VIEW_SCHEDULER_TIMEOUT",
-        value : var.service_beacon_search_scheduler_timeout
+        value : "${var.service_beacon_search_scheduler_timeout}"
       }
     ],
     logConfiguration : {
