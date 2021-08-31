@@ -1,14 +1,12 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, StartButton } from "../../components/Button";
+import { CheckYourAnswersBeaconDetailsSummary } from "../../components/domain/CheckYourAnswersBeaconDetailsSummary";
+import { CheckYourAnswersBeaconEmergencyContactsSummary } from "../../components/domain/CheckYourAnswersBeaconEmergencyContactsSummary";
+import { CheckYourAnswersBeaconInformationSummary } from "../../components/domain/CheckYourAnswersBeaconInformationSummary";
+import { CheckYourAnswersBeaconOwnerAddressSummary } from "../../components/domain/CheckYourAnswersBeaconOwnerAddressSummary";
+import { CheckYourAnswersBeaconOwnerSummary } from "../../components/domain/CheckYourAnswersBeaconOwnerSummary";
 import { CheckYourAnswersBeaconUseSummary } from "../../components/domain/CheckYourAnswersBeaconUseSummary";
-import {
-  BeaconDetailsSection,
-  BeaconEmergencyContactsSection,
-  BeaconInformationSection,
-  BeaconOwnerAddressSection,
-  BeaconOwnerSection,
-} from "../../components/domain/Summary";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import {
@@ -60,24 +58,24 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
                 Please check you answer before sending in your registration
                 application
               </GovUKBody>
-              <BeaconDetailsSection
+              <CheckYourAnswersBeaconDetailsSummary
                 {...registration}
                 changeUrl={PageURLs.checkBeaconDetails}
               />
-              <BeaconInformationSection
+              <CheckYourAnswersBeaconInformationSummary
                 {...registration}
                 changeUrl={PageURLs.beaconInformation}
               />
               {useSections}
-              <BeaconOwnerSection
+              <CheckYourAnswersBeaconOwnerSummary
                 {...registration}
                 changeUrl={PageURLs.aboutBeaconOwner}
               />
-              <BeaconOwnerAddressSection
+              <CheckYourAnswersBeaconOwnerAddressSummary
                 {...registration}
                 changeUrl={PageURLs.beaconOwnerAddress}
               />
-              <BeaconEmergencyContactsSection
+              <CheckYourAnswersBeaconEmergencyContactsSummary
                 {...registration}
                 changeUrl={PageURLs.emergencyContact}
               />
