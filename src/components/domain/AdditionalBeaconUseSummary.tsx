@@ -13,54 +13,55 @@ interface BeaconUseSectionProps {
   deleteUri?: string;
 }
 
-export const BeaconUseSection: FunctionComponent<BeaconUseSectionProps> = ({
-  index,
-  use,
-  changeUri,
-  deleteUri,
-}: BeaconUseSectionProps): JSX.Element => {
-  const useRank = sentenceCase(ordinal(index + 1)) + " use";
+export const AdditionalBeaconUseSummary: FunctionComponent<BeaconUseSectionProps> =
+  ({
+    index,
+    use,
+    changeUri,
+    deleteUri,
+  }: BeaconUseSectionProps): JSX.Element => {
+    const useRank = sentenceCase(ordinal(index + 1)) + " use";
 
-  return (
-    <>
-      <div
-        className="govuk-!-margin-bottom-4"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-        }}
-      >
-        <SectionHeading classes="govuk-!-margin-0">
-          {useRank + ": " + prettyUseName(use)}
-        </SectionHeading>
+    return (
+      <>
+        <div
+          className="govuk-!-margin-bottom-4"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+          }}
+        >
+          <SectionHeading classes="govuk-!-margin-0">
+            {useRank + ": " + prettyUseName(use)}
+          </SectionHeading>
 
-        <div>
-          {changeUri && (
-            <AnchorLink
-              href={changeUri}
-              description={useRank}
-              classes="govuk-link--no-visited-state govuk-!-margin-right-4"
-            >
-              Change
-            </AnchorLink>
-          )}
-          {deleteUri && (
-            <WarningLink href={deleteUri} description={useRank}>
-              Delete
-            </WarningLink>
-          )}
+          <div>
+            {changeUri && (
+              <AnchorLink
+                href={changeUri}
+                description={useRank}
+                classes="govuk-link--no-visited-state govuk-!-margin-right-4"
+              >
+                Change
+              </AnchorLink>
+            )}
+            {deleteUri && (
+              <WarningLink href={deleteUri} description={useRank}>
+                Delete
+              </WarningLink>
+            )}
+          </div>
         </div>
-      </div>
 
-      <SummaryList>
-        <AboutThisUse use={use} />
-        <Communications use={use} />
-        <MoreDetailsSubSection use={use} />
-      </SummaryList>
-    </>
-  );
-};
+        <SummaryList>
+          <AboutThisUse use={use} />
+          <Communications use={use} />
+          <MoreDetailsSubSection use={use} />
+        </SummaryList>
+      </>
+    );
+  };
 
 const AboutThisUse: FunctionComponent<{ use: DraftBeaconUse }> = ({
   use,
