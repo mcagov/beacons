@@ -106,7 +106,6 @@ const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
     rows={4}
     defaultValue={value}
     errorMessages={errorMessages}
-    label="Please provide more details that could help in a search"
   />
 );
 
