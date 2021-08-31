@@ -2,28 +2,11 @@ import React, { FunctionComponent } from "react";
 import { DraftRegistration } from "../../entities/DraftRegistration";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { SectionHeading } from "../Typography";
-
-interface DataRowItemProps {
-  label?: string;
-  value?: string;
-}
+import { DataRowItem } from "./DataRowItem";
 
 interface SummarySectionProps extends DraftRegistration {
   changeUrl: string;
 }
-
-const noData = "-";
-
-export const DataRowItem: FunctionComponent<DataRowItemProps> = ({
-  label,
-  value,
-}: DataRowItemProps): JSX.Element => (
-  <>
-    {label ? label + ": " : ""}
-    {value ? value : noData}
-    <br />
-  </>
-);
 
 export const BeaconDetailsSection: FunctionComponent<SummarySectionProps> = ({
   manufacturer,
