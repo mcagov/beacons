@@ -29,6 +29,10 @@ provider "aws" {
 provider "aws" {
   alias  = "us-east"
   region = "us-east-1"
+
+   default_tags {
+    tags = module.beacons_label.tags
+  }
 }
 
 locals {
