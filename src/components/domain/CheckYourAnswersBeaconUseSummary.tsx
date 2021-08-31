@@ -11,14 +11,14 @@ import { SummaryList, SummaryListItem } from "../SummaryList";
 import { SectionHeading } from "../Typography";
 import { DataRowItem } from "./DataRowItem";
 
-interface SummaryBeaconUseSectionProps {
+interface CheckYourAnswersBeaconUseSummaryProps {
   index: number;
   use: DraftBeaconUse;
   href?: string;
 }
 
-export const SummaryBeaconUseSection: FunctionComponent<SummaryBeaconUseSectionProps> =
-  ({ index, use }: SummaryBeaconUseSectionProps): JSX.Element => {
+export const CheckYourAnswersBeaconUseSummary: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
+  ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
     const href = `${PageURLs.environment}?useIndex=${index}`;
     let aboutTheSection = <></>;
     let commsSection = <></>;
@@ -80,8 +80,8 @@ export const SummaryBeaconUseSection: FunctionComponent<SummaryBeaconUseSectionP
     );
   };
 
-const AboutTheVesselSubSection: FunctionComponent<SummaryBeaconUseSectionProps> =
-  ({ index, use }: SummaryBeaconUseSectionProps): JSX.Element => {
+const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
+  ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
     const href = `${PageURLs.aboutTheVessel}?useIndex=${index}`;
     return (
       <>
@@ -142,8 +142,8 @@ const AboutTheVesselSubSection: FunctionComponent<SummaryBeaconUseSectionProps> 
     );
   };
 
-const AboutTheAircraftSubSection: FunctionComponent<SummaryBeaconUseSectionProps> =
-  ({ index, use }: SummaryBeaconUseSectionProps): JSX.Element => {
+const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
+  ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
     const href = `${PageURLs.aboutTheAircraft}?useIndex=${index}`;
 
     return (
@@ -182,8 +182,12 @@ const AboutTheAircraftSubSection: FunctionComponent<SummaryBeaconUseSectionProps
     );
   };
 
-const CommunicationsSubSection: FunctionComponent<SummaryBeaconUseSectionProps> =
-  ({ index, use, href }: SummaryBeaconUseSectionProps): JSX.Element => {
+const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
+  ({
+    index,
+    use,
+    href,
+  }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
     href = `${href}?useIndex=${index}`;
 
     return (
@@ -253,8 +257,8 @@ const CommunicationsSubSection: FunctionComponent<SummaryBeaconUseSectionProps> 
     );
   };
 
-const MoreDetailsSubSection: FunctionComponent<SummaryBeaconUseSectionProps> =
-  ({ index, use }: SummaryBeaconUseSectionProps): JSX.Element => {
+const MoreDetailsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
+  ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
     const href = `${PageURLs.moreDetails}?useIndex=${index}`;
     return (
       <>

@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, StartButton } from "../../components/Button";
+import { CheckYourAnswersBeaconUseSummary } from "../../components/domain/CheckYourAnswersBeaconUseSummary";
 import {
   BeaconDetailsSection,
   BeaconEmergencyContactsSection,
@@ -8,7 +9,6 @@ import {
   BeaconOwnerAddressSection,
   BeaconOwnerSection,
 } from "../../components/domain/Summary";
-import { SummaryBeaconUseSection } from "../../components/domain/SummaryBeaconUseSection";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import {
@@ -37,7 +37,11 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   const useSections = [];
   for (const [index, use] of registration.uses.entries()) {
     useSections.push(
-      <SummaryBeaconUseSection index={index} use={use} key={`row${index}`} />
+      <CheckYourAnswersBeaconUseSummary
+        index={index}
+        use={use}
+        key={`row${index}`}
+      />
     );
   }
 
