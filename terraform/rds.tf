@@ -1,5 +1,4 @@
 resource "aws_db_instance" "postgres" {
-  tags                            = module.beacons_label.tags
   identifier                      = "${terraform.workspace}-beacons-database"
   allocated_storage               = var.db_storage
   engine                          = "postgres"

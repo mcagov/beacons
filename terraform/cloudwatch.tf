@@ -26,7 +26,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_task_count_too_low" {
     ServiceName = "${aws_ecs_service.service.name}"
 
   }
-  tags = module.beacons_label.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_service_cpu_too_high" {
@@ -47,7 +46,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_cpu_too_high" {
     ServiceName = "${aws_ecs_service.service.name}"
 
   }
-  tags = module.beacons_label.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_service_memory_too_high" {
@@ -68,7 +66,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_memory_too_high" {
     ServiceName = "${aws_ecs_service.service.name}"
 
   }
-  tags = module.beacons_label.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_webapp_task_count_too_low" {
@@ -89,7 +86,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_webapp_task_count_too_low" {
     ServiceName = "${aws_ecs_service.webapp.name}"
 
   }
-  tags = module.beacons_label.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_webapp_cpu_too_high" {
@@ -110,7 +106,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_webapp_cpu_too_high" {
     ServiceName = "${aws_ecs_service.webapp.name}"
 
   }
-  tags = module.beacons_label.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_webapp_memory_too_high" {
@@ -131,7 +126,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_webapp_memory_too_high" {
     ServiceName = "${aws_ecs_service.webapp.name}"
 
   }
-  tags = module.beacons_label.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "redis_memory_too_high" {
@@ -151,5 +145,4 @@ resource "aws_cloudwatch_metric_alarm" "redis_memory_too_high" {
     ReplicationGroupId = "${terraform.workspace}-mca-beacons-elasticache-cluster"
 
   }
-  tags = module.beacons_label.tags
 }

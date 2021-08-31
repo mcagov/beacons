@@ -1,11 +1,9 @@
 resource "aws_sns_topic" "sns_technical_alerts" {
   name = "${terraform.workspace}-beacons-technical-alerts"
-  tags = module.beacons_label.tags
 }
 
 resource "aws_sns_topic" "sns_service_alerts" {
   name     = "${terraform.workspace}-beacons-service-alerts"
-  tags     = module.beacons_label.tags
   provider = aws.us-east
 }
 

@@ -1,6 +1,5 @@
 resource "aws_alb" "main" {
   name            = "${terraform.workspace}-beacons"
-  tags            = module.beacons_label.tags
   subnets         = aws_subnet.public.*.id
   security_groups = [aws_security_group.lb.id]
 }
