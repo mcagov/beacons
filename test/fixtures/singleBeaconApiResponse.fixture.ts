@@ -76,7 +76,6 @@ export const singleBeaconApiResponseFixture: IBeaconResponse = deepFreeze({
       uses: {
         data: [
           { type: "beaconUse", id: "e00036c4-e3f4-46bb-aa9e-1d91870d9172" },
-          { type: "beaconUse", id: "e00036c4-e3f4-46bb-aa9e-1d91870d9173" },
         ],
       },
       owner: {
@@ -102,19 +101,6 @@ export const singleBeaconApiResponseFixture: IBeaconResponse = deepFreeze({
     },
   },
   included: [
-    {
-      type: "beaconUse",
-      id: "e00036c4-e3f4-46bb-aa9e-1d91870d9173",
-      attributes: {
-        ...getUseResponseJson(false),
-      },
-      links: [
-        {
-          verb: "PATCH",
-          path: "/beacon-uses/e00036c4-e3f4-46bb-aa9e-1d91870d9173",
-        },
-      ],
-    },
     {
       type: "beaconUse",
       id: "e00036c4-e3f4-46bb-aa9e-1d91870d9172",
