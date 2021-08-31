@@ -26,7 +26,7 @@ describe("IfUserDoesNotHaveValidSession", () => {
     expect(result).toStrictEqual({
       redirect: {
         statusCode: 303,
-        destination: PageURLs.signUpOrSignIn,
+        destination: PageURLs.unauthenticated,
       },
     });
   });
