@@ -16,6 +16,6 @@ export class IfUserDoesNotHaveValidSession implements Rule {
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    return redirectUserTo(PageURLs.signUpOrSignIn);
+    return redirectUserTo(PageURLs.unauthenticated);
   }
 }
