@@ -45,7 +45,6 @@ resource "aws_secretsmanager_secret_version" "webapp_client_secret" {
 
 resource "aws_secretsmanager_secret" "webapp_b2c_client_secret" {
   name = "${terraform.workspace}_b2c_client_secret"
-  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "webapp_b2c_client_secret" {

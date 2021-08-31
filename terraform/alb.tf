@@ -49,7 +49,6 @@ resource "aws_lb_listener_rule" "service" {
 }
 
 resource "aws_alb_target_group" "webapp" {
-  tags        = module.beacons_label.tags
   name        = "${terraform.workspace}-webapp-target-group"
   port        = var.webapp_port
   protocol    = "HTTP"
@@ -72,7 +71,6 @@ resource "aws_alb_target_group" "webapp" {
 }
 
 resource "aws_alb_target_group" "service" {
-  tags        = module.beacons_label.tags
   name        = "${terraform.workspace}-service-target-group"
   port        = var.service_port
   protocol    = "HTTP"
