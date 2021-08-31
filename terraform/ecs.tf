@@ -175,6 +175,10 @@ resource "aws_ecs_task_definition" "service" {
       {
         name : "SPRING_PROFILES_ACTIVE",
         value : var.service_spring_active_profiles
+      },
+      {
+        name : "BEACONS_SEARCH_VIEW_SCHEDULER_TIMEOUT",
+        value : var.service_beacon_search_scheduler_timeout
       }
     ],
     logConfiguration : {

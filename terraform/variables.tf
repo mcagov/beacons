@@ -147,6 +147,10 @@ variable "service_azure_ad_api_id" {
   type        = string
   description = "The GUID for the Service API, provided in Azure AD"
 }
+variable "service_beacon_search_scheduler_timeout" {
+  type        = number
+  description = "The amount of time to wait, in milliseconds, between refreshing the beacon search view which contains beacon and legacy beacon records"
+}
 variable "db_storage" {
   type        = number
   description = "Allocated storage, in GB, for the PostgreSQL instance"
