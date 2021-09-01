@@ -1,10 +1,11 @@
+import { Registration } from "../../src/entities/Registration";
 import { PageURLs } from "../../src/lib/urls";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
   givenIHaveACookieSetAndHaveSignedIn,
   whenIAmAt,
 } from "../integration/common/selectors-and-assertions.spec";
-import { iCanSeeMyExistingRegistration } from "./common/i-can-see-my-existing-registration.spec";
+import { iCanSeeMyExistingRegistrationHexId } from "./common/i-can-see-my-existing-registration-hex-id.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
   randomUkEncodedHexId,
@@ -12,7 +13,7 @@ import {
 
 describe("As an account holder", () => {
   it("I can update one of my registrations", () => {
-    const testRegistration = {
+    const testRegistration: Registration = {
       ...singleBeaconRegistration,
       hexId: randomUkEncodedHexId(),
     };
@@ -21,9 +22,10 @@ describe("As an account holder", () => {
     andIHavePreviouslyRegisteredABeacon(testRegistration);
 
     whenIAmAt(PageURLs.accountHome);
-    iCanSeeMyExistingRegistration(testRegistration.hexId);
+    iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+    iCanSeeTheDetailsOfMyExistingRegistration(testRegistration);
   });
 });
 
@@ -31,4 +33,15 @@ const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 
 const whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
   cy.get("a").contains(hexId).click();
+};
+
+const iCanSeeTheDetailsOfMyExistingRegistration = (
+  registration: Registration
+) => {
+  iCanSeeMyExistingRegistrationHexId(registration.hexId);
+  iCanSeeTheHistoryOfMyRegistration(registration);
+};
+
+const iCanSeeTheHistoryOfMyRegistration = (registration: Registration) => {
+  cy.get("main").contains("First registered: 1 September 2021");
 };
