@@ -1,15 +1,15 @@
 import { render, screen, within } from "@testing-library/react";
 import React from "react";
-import { BeaconUseSection } from "../../../src/components/domain/BeaconUseSection";
+import { AdditionalBeaconUseSummary } from "../../../src/components/domain/AdditionalBeaconUseSummary";
 import { BeaconUse } from "../../../src/entities/BeaconUse";
 import { Environment } from "../../../src/lib/deprecatedRegistration/types";
 import { getMockUse } from "../../mocks";
 
-describe("BeaconUseSection", () => {
+describe("AdditionalBeaconUseSummary", () => {
   it("displays the use's ranking in user friendly terms", () => {
     const use: BeaconUse = getMockUse();
 
-    render(<BeaconUseSection use={use} index={0} />);
+    render(<AdditionalBeaconUseSummary use={use} index={0} />);
 
     expect(screen.getByText(/main use/i)).toBeVisible();
   });
@@ -17,7 +17,7 @@ describe("BeaconUseSection", () => {
   it("displays the environment, activity and purpose in the heading", () => {
     const use: BeaconUse = getMockUse();
 
-    render(<BeaconUseSection use={use} index={0} />);
+    render(<AdditionalBeaconUseSummary use={use} index={0} />);
 
     const heading = within(screen.getByRole("heading"));
     expect(heading.getByText(use.environment, { exact: false })).toBeVisible();
@@ -29,7 +29,9 @@ describe("BeaconUseSection", () => {
     const use: BeaconUse = getMockUse();
     const index = 0;
 
-    render(<BeaconUseSection use={use} index={index} changeUri={"#"} />);
+    render(
+      <AdditionalBeaconUseSummary use={use} index={index} changeUri={"#"} />
+    );
 
     const changeLink = screen.getByRole("link", { name: /change/i });
     expect(changeLink).toHaveAttribute("href", "#");
@@ -39,7 +41,9 @@ describe("BeaconUseSection", () => {
     const use: BeaconUse = getMockUse();
     const useIndex = 0;
 
-    render(<BeaconUseSection use={use} index={useIndex} deleteUri={"#"} />);
+    render(
+      <AdditionalBeaconUseSummary use={use} index={useIndex} deleteUri={"#"} />
+    );
 
     const deleteLink = screen.getByRole("link", { name: /delete/i });
     expect(deleteLink).toHaveAttribute("href", "#");
@@ -48,7 +52,7 @@ describe("BeaconUseSection", () => {
   it("displays the vhfRadio boolean as 'VHF radio''", () => {
     const use: BeaconUse = { ...getMockUse(), vhfRadio: "true" };
 
-    render(<BeaconUseSection use={use} index={0} />);
+    render(<AdditionalBeaconUseSummary use={use} index={0} />);
 
     expect(screen.getByText(/VHF radio/i));
   });
@@ -60,7 +64,7 @@ describe("BeaconUseSection", () => {
       dongle: "true",
     };
 
-    render(<BeaconUseSection use={use} index={0} />);
+    render(<AdditionalBeaconUseSummary use={use} index={0} />);
 
     expect(screen.getByText(/dongle/i));
   });
@@ -103,7 +107,7 @@ describe("BeaconUseSection", () => {
       "moreDetails",
     ];
 
-    render(<BeaconUseSection use={use} index={0} />);
+    render(<AdditionalBeaconUseSummary use={use} index={0} />);
 
     textFields.forEach((fieldName) => {
       expect(screen.getByText(new RegExp(use[fieldName], "i"))).toBeVisible();
