@@ -1,6 +1,8 @@
 import { BeaconUse } from "./BeaconUse";
 
 export interface Registration {
+  id?: string;
+  registeredDate?: string;
   manufacturer: string;
   model: string;
   hexId: string;
