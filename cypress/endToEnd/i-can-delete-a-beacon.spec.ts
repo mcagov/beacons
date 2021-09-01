@@ -11,7 +11,7 @@ import {
   whenIAmAt,
   whenIClickTheButtonContaining,
 } from "../integration/common/selectors-and-assertions.spec";
-import { iCanSeeMyExistingRegistration } from "./common/i-can-see-my-existing-registration.spec";
+import { iCanSeeMyExistingRegistrationHexId } from "./common/i-can-see-my-existing-registration-hex-id.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
   randomUkEncodedHexId,
@@ -28,7 +28,7 @@ describe("As an account holder", () => {
     andIHavePreviouslyRegisteredABeacon(testRegistration);
 
     whenIAmAt(PageURLs.accountHome);
-    iCanSeeMyExistingRegistration(testRegistration.hexId);
+    iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
       testRegistration.hexId
@@ -40,7 +40,7 @@ describe("As an account holder", () => {
 
     whenIClickTheButtonContaining("Cancel");
     iAmAt(PageURLs.accountHome);
-    iCanSeeMyExistingRegistration(testRegistration.hexId);
+    iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
       testRegistration.hexId
