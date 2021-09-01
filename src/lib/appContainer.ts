@@ -80,9 +80,6 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get draftRegistrationGateway() {
       return new RedisDraftRegistrationGateway();
     },
-    get NextAuthUserSessionGateway() {
-      return new NextAuthUserSessionGateway();
-    },
     get sessionGateway() {
       return new NextAuthUserSessionGateway();
     },
