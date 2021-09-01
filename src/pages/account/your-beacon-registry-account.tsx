@@ -20,7 +20,7 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs, queryParams } from "../../lib/urls";
+import { PageURLs, queryParams, UpdatePageURLs } from "../../lib/urls";
 import { formatDateLong, formatUses } from "../../lib/writingStyle";
 
 export interface YourBeaconRegistryAccountPageProps {
@@ -235,7 +235,12 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
     <>
       <tr className="govuk-table__row">
         <th scope="row" className="govuk-table__header">
-          {beacon.hexId}
+          <AnchorLink
+            href={UpdatePageURLs.registrationSummary + "/" + beacon.id}
+            classes="govuk-link--no-visited-state"
+          >
+            {beacon.hexId}
+          </AnchorLink>
         </th>
         <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
         <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>

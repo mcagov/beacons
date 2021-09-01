@@ -32,6 +32,10 @@ export enum PageURLs {
   serverError = "/500",
 }
 
+export enum UpdatePageURLs {
+  registrationSummary = "/manage-my-registrations/update",
+}
+
 export enum ActionURLs {
   deleteCachedUse = "/api/registration/delete-use",
   addNewUseToDraftRegistration = "/api/registration/add-new-use-to-draft",
