@@ -11,6 +11,7 @@ import {
   whenIAmAt,
   whenIClickTheButtonContaining,
 } from "../integration/common/selectors-and-assertions.spec";
+import { iCanSeeMyExistingRegistration } from "./common/i-can-see-my-existing-registration.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
   randomUkEncodedHexId,
@@ -62,10 +63,6 @@ describe("As an account holder", () => {
 });
 
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
-
-export const iCanSeeMyExistingRegistration = (hexId: string): void => {
-  cy.get("main").contains(hexId);
-};
 
 const whenIClickTheDeleteButtonForTheRegistrationWithHexId = (
   hexId: string
