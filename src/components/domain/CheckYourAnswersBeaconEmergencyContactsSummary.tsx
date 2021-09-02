@@ -4,21 +4,13 @@ import { SummaryList, SummaryListItem } from "../SummaryList";
 import { SectionHeading } from "../Typography";
 import { DataRowItem } from "./DataRowItem";
 
-interface CheckYourAnswersBeaconEmergencyContactsSummaryProps
-  extends DraftRegistration {
+interface CheckYourAnswersBeaconEmergencyContactsSummaryProps {
+  registration: DraftRegistration;
   changeUrl: string;
 }
 export const CheckYourAnswersBeaconEmergencyContactsSummary: FunctionComponent<CheckYourAnswersBeaconEmergencyContactsSummaryProps> =
   ({
-    emergencyContact1FullName,
-    emergencyContact1TelephoneNumber,
-    emergencyContact1AlternativeTelephoneNumber,
-    emergencyContact2FullName,
-    emergencyContact2TelephoneNumber,
-    emergencyContact2AlternativeTelephoneNumber,
-    emergencyContact3FullName,
-    emergencyContact3TelephoneNumber,
-    emergencyContact3AlternativeTelephoneNumber,
+    registration,
     changeUrl,
   }: CheckYourAnswersBeaconEmergencyContactsSummaryProps): JSX.Element => {
     return (
@@ -30,25 +22,37 @@ export const CheckYourAnswersBeaconEmergencyContactsSummary: FunctionComponent<C
             labelText="Contact 1"
             actions={[{ text: "Change", href: changeUrl }]}
           >
-            <DataRowItem value={emergencyContact1FullName} />
-            <DataRowItem value={emergencyContact1TelephoneNumber} />
-            <DataRowItem value={emergencyContact1AlternativeTelephoneNumber} />
+            <DataRowItem value={registration.emergencyContact1FullName} />
+            <DataRowItem
+              value={registration.emergencyContact1TelephoneNumber}
+            />
+            <DataRowItem
+              value={registration.emergencyContact1AlternativeTelephoneNumber}
+            />
           </SummaryListItem>
           <SummaryListItem
             labelText="Contact 2"
             actions={[{ text: "Change", href: changeUrl }]}
           >
-            <DataRowItem value={emergencyContact2FullName} />
-            <DataRowItem value={emergencyContact2TelephoneNumber} />
-            <DataRowItem value={emergencyContact2AlternativeTelephoneNumber} />
+            <DataRowItem value={registration.emergencyContact2FullName} />
+            <DataRowItem
+              value={registration.emergencyContact2TelephoneNumber}
+            />
+            <DataRowItem
+              value={registration.emergencyContact2AlternativeTelephoneNumber}
+            />
           </SummaryListItem>
           <SummaryListItem
             labelText="Contact 3"
             actions={[{ text: "Change", href: changeUrl }]}
           >
-            <DataRowItem value={emergencyContact3FullName} />
-            <DataRowItem value={emergencyContact3TelephoneNumber} />
-            <DataRowItem value={emergencyContact3AlternativeTelephoneNumber} />
+            <DataRowItem value={registration.emergencyContact3FullName} />
+            <DataRowItem
+              value={registration.emergencyContact3TelephoneNumber}
+            />
+            <DataRowItem
+              value={registration.emergencyContact3AlternativeTelephoneNumber}
+            />
           </SummaryListItem>
         </SummaryList>
       </>

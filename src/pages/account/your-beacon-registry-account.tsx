@@ -19,8 +19,8 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs, queryParams } from "../../lib/urls";
-import { formatDateLong, formatUses } from "../../lib/writingStyle";
+import { PageURLs, queryParams, UpdatePageURLs } from "../../lib/urls";
+import { formatDateTruncated, formatUses } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserDoesNotHaveValidAccountDetails } from "../../router/rules/IfUserDoesNotHaveValidAccountDetails";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
@@ -238,12 +238,17 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
     <>
       <tr className="govuk-table__row">
         <th scope="row" className="govuk-table__header">
-          {beacon.hexId}
+          <AnchorLink
+            href={UpdatePageURLs.registrationSummary + "/" + beacon.id}
+            classes="govuk-link--no-visited-state"
+          >
+            {beacon.hexId}
+          </AnchorLink>
         </th>
         <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
         <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
         <td className="govuk-table__cell">
-          {formatDateLong(beacon.registeredDate)}
+          {formatDateTruncated(beacon.registeredDate)}
         </td>
         <td className="govuk-table__cell">
           <AnchorLink

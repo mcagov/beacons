@@ -64,20 +64,20 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
                 changeUrl={PageURLs.checkBeaconDetails}
               />
               <CheckYourAnswersBeaconInformationSummary
-                {...registration}
+                registration={registration}
                 changeUrl={PageURLs.beaconInformation}
               />
               {useSections}
               <CheckYourAnswersBeaconOwnerSummary
-                {...registration}
+                registration={registration}
                 changeUrl={PageURLs.aboutBeaconOwner}
               />
               <CheckYourAnswersBeaconOwnerAddressSummary
-                {...registration}
+                registration={registration}
                 changeUrl={PageURLs.beaconOwnerAddress}
               />
               <CheckYourAnswersBeaconEmergencyContactsSummary
-                {...registration}
+                registration={registration}
                 changeUrl={PageURLs.emergencyContact}
               />
               <SendYourApplication />

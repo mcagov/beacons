@@ -3,10 +3,13 @@ export interface IBeaconDataAttributes {
   id: string;
   attributes: {
     hexId: string;
+    referenceNumber: string;
+    accountHolderId: string;
     status?: string;
     type?: string;
     manufacturer?: string;
     createdDate?: string;
+    lastModifiedDate?: string;
     model?: string;
     manufacturerSerialNumber?: string;
     chkCode?: string;

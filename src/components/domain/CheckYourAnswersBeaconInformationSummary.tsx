@@ -1,21 +1,17 @@
 import React, { FunctionComponent } from "react";
 import { DraftRegistration } from "../../entities/DraftRegistration";
+import { formatMonth } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { DataRowItem } from "./DataRowItem";
 
-interface CheckYourAnswersBeaconInformationSummaryProps
-  extends DraftRegistration {
+interface CheckYourAnswersBeaconInformationSummaryProps {
+  registration: DraftRegistration;
   changeUrl: string;
 }
 
 export const CheckYourAnswersBeaconInformationSummary: FunctionComponent<CheckYourAnswersBeaconInformationSummaryProps> =
   ({
-    manufacturerSerialNumber,
-    chkCode,
-    batteryExpiryDateMonth,
-    batteryExpiryDateYear,
-    lastServicedDateMonth,
-    lastServicedDateYear,
+    registration,
     changeUrl,
   }: CheckYourAnswersBeaconInformationSummaryProps): JSX.Element => (
     <>
@@ -24,22 +20,32 @@ export const CheckYourAnswersBeaconInformationSummary: FunctionComponent<CheckYo
           labelText="Additional beacon information"
           actions={[{ text: "Change", href: changeUrl }]}
         >
-          <DataRowItem label="Serial number" value={manufacturerSerialNumber} />
-          <DataRowItem label="CHK (checksum) code" value={chkCode} />
+          <DataRowItem
+            label="Serial number"
+            value={registration.manufacturerSerialNumber}
+          />
+          <DataRowItem
+            label="CHK (checksum) code"
+            value={registration.chkCode}
+          />
           <DataRowItem
             label="Battery expiry"
             value={
-              batteryExpiryDateMonth
-                ? batteryExpiryDateMonth + ", " + batteryExpiryDateYear
-                : batteryExpiryDateYear
+              registration.batteryExpiryDateMonth
+                ? formatMonth(
+                    `${registration.batteryExpiryDateYear}-${registration.batteryExpiryDateMonth}`
+                  )
+                : registration.batteryExpiryDateYear
             }
           />
           <DataRowItem
             label="Beacon service date"
             value={
-              lastServicedDateMonth
-                ? lastServicedDateMonth + ", " + lastServicedDateYear
-                : lastServicedDateYear
+              registration.lastServicedDateMonth
+                ? formatMonth(
+                    `${registration.lastServicedDateYear}-${registration.lastServicedDateMonth}`
+                  )
+                : registration.lastServicedDateYear
             }
           />
         </SummaryListItem>
