@@ -24,7 +24,9 @@ export const CheckYourAnswersBeaconOwnerSummary: FunctionComponent<CheckYourAnsw
         >
           <DataRowItem value={registration.ownerFullName} />
           <DataRowItem value={registration.ownerTelephoneNumber} />
-          <DataRowItem value={registration.ownerAlternativeTelephoneNumber} />
+          {registration.ownerAlternativeTelephoneNumber && (
+            <DataRowItem value={registration.ownerAlternativeTelephoneNumber} />
+          )}
           <DataRowItem value={registration.ownerEmail} />
         </SummaryListItem>
       </SummaryList>
