@@ -1,6 +1,7 @@
 import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
+  givenIHaveSignedIn,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -17,6 +18,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
   const telephoneNumberInputFieldSelector = "#ownerTelephoneNumber";
 
   beforeEach(() => {
+    givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 

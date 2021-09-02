@@ -3,6 +3,7 @@ import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
+  givenIHaveSignedIn,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -21,6 +22,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
   ];
 
   beforeEach(() => {
+    givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(PageURLs.environment);
   });
 

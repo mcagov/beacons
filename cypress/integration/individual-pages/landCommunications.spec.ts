@@ -4,6 +4,7 @@ import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
+  givenIHaveSignedIn,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
@@ -24,6 +25,7 @@ describe("As a beacon owner and land or other use user", () => {
   const otherCommunicationInputSelector = "#otherCommunicationInput";
 
   beforeEach(() => {
+    givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(PageURLs.landCommunications);
   });
 

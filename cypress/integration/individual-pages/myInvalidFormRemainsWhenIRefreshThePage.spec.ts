@@ -2,6 +2,7 @@ import { PageURLs } from "../../../src/lib/urls";
 import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
+  givenIHaveSignedIn,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   whenIType,
@@ -10,6 +11,7 @@ import {
 describe("Given I have submitted invalid data to a registration form,", () => {
   describe("when I refresh the page,", () => {
     it("I can still see my invalid data", () => {
+      givenIHaveSignedIn();
       givenIHaveACookieSetAndIVisit(PageURLs.checkBeaconDetails);
       whenIType("ACME Inc.", "#manufacturer");
       whenIType("Excelsior", "#model");

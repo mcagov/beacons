@@ -1,6 +1,7 @@
 import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
+  givenIHaveSignedIn,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -17,6 +18,7 @@ describe("As a beacon owner I want to submit more information about my beacon", 
   const moreDetailsTextareaSelector = "#moreDetails";
 
   beforeEach(() => {
+    givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 

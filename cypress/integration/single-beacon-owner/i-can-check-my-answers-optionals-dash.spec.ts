@@ -18,10 +18,14 @@ import {
   givenIHaveEnteredMyRequiredMaritimeUse,
   iCanSeeMyRequiredMaritimeUse,
 } from "../common/i-can-enter-use-information/maritime.spec";
-import { thenTheUrlShouldContain } from "../common/selectors-and-assertions.spec";
+import {
+  givenIHaveSignedIn,
+  thenTheUrlShouldContain,
+} from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner who enters all required fields,", () => {
   it("I check my answers and the optional data is marked as dash", () => {
+    givenIHaveSignedIn();
     givenIHaveEnteredMyRequiredBeaconDetails();
     givenIHaveEnteredMyRequiredMaritimeUse(Purpose.PLEASURE);
     andIHaveNoFurtherUses();

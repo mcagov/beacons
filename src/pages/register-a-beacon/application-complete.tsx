@@ -15,6 +15,7 @@ import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
+import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { ISubmitRegistrationResult } from "../../useCases/submitRegistration";
 
 interface ApplicationCompleteProps {
@@ -78,6 +79,11 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+    const rule = new IfUserDoesNotHaveValidSession(context);
+
+    if (await rule.condition()) {
+      return rule.action();
+    }
     /* Retrieve injected use case(s) */
     const { getDraftRegistration, submitRegistration, getAccountHolderId } =
       context.container;

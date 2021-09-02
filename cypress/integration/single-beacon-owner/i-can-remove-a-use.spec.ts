@@ -18,11 +18,13 @@ import {
 } from "../common/i-can-enter-use-information/maritime.spec";
 import {
   andIClickTheButtonContaining,
+  givenIHaveSignedIn,
   whenIClickTheButtonContaining,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner with several uses", () => {
   it("I can safely remove a use from my draft registration", () => {
+    givenIHaveSignedIn();
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyLandUse();
     andIHaveAnotherUse();

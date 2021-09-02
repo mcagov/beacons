@@ -25,6 +25,7 @@ import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
@@ -204,6 +205,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const nextPageUrl = PageURLs.environment;
 
     return await new BeaconsPageRouter([
+      new IfUserDoesNotHaveValidSession(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
       new IfUserViewedRegistrationForm(context, validationRules, mapper),
       new IfUserSubmittedInvalidRegistrationForm(
