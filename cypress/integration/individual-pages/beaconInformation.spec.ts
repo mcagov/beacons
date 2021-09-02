@@ -1,5 +1,6 @@
 import {
   givenIHaveACookieSetAndIVisit,
+  givenIHaveSignedIn,
   iCanClickTheBackLinkToGoToPreviousPage,
   iCanSeeAPageHeadingThatContains,
   requiredFieldErrorMessage,
@@ -31,6 +32,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
   const validMonth = "12";
 
   beforeEach(() => {
+    givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(pageUrl);
   });
 

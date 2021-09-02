@@ -1,9 +1,9 @@
-import { FormSubmission } from "../../../presenters/formSubmission";
+import { FormManagerFactory } from "../../handlePageRequest";
 import { FieldManager } from "../FieldManager";
 import { FormManager } from "../FormManager";
 import { Validators } from "../Validators";
 
-export const accountDetailsFormManager = ({
+export const accountDetailsFormManager: FormManagerFactory = ({
   fullName,
   telephoneNumber,
   addressLine1,
@@ -12,7 +12,7 @@ export const accountDetailsFormManager = ({
   county,
   postcode,
   email,
-}: FormSubmission): FormManager => {
+}) => {
   return new FormManager({
     fullName: new FieldManager(fullName, [
       Validators.required("Full name is a required field"),

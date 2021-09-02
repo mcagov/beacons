@@ -2,6 +2,7 @@ import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
+  givenIHaveSignedIn,
   iCanClickTheBackLinkToGoToPreviousPage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -26,6 +27,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
   const otherCommunicationInputSelector = "#otherCommunicationInput";
 
   beforeEach(() => {
+    givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(pageUrl);
   });
 

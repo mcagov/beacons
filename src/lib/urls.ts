@@ -30,6 +30,7 @@ export enum PageURLs {
   deleteRegistrationSuccess = "/manage-my-registrations/delete/success",
   deleteRegistrationFailure = "/manage-my-registrations/delete/failure",
   serverError = "/500",
+  unauthenticated = "/unauthenticated",
 }
 
 export enum UpdatePageURLs {

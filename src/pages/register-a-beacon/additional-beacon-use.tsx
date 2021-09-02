@@ -13,6 +13,7 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { ActionURLs, PageURLs, queryParams } from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
@@ -121,6 +122,7 @@ const confirmBeforeDelete = (use: DraftBeaconUse, index: number) =>
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
+      new IfUserDoesNotHaveValidSession(context),
       new IfUserHasNotSpecifiedAUse(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
       new IfUserViewedPage(context, props(context)),

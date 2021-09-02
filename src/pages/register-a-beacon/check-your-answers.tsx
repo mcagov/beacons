@@ -21,6 +21,7 @@ import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs } from "../../lib/urls";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
 
@@ -106,6 +107,7 @@ const SendYourApplication: FunctionComponent = (): JSX.Element => (
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
+      new IfUserDoesNotHaveValidSession(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
       new IfUserViewedPage(context, props(context)),
     ]).execute();

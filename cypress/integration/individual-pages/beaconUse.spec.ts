@@ -2,6 +2,7 @@ import { PageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
+  givenIHaveSignedIn,
   iCanClickTheBackLinkToGoToPreviousPage,
   iCanSeeAPageHeadingThatContains,
   thenTheUrlShouldContain,
@@ -10,6 +11,7 @@ import {
 
 describe("As a beacon owner, I want to submit uses for my beacon", () => {
   beforeEach(() => {
+    givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(PageURLs.environment);
   });
 

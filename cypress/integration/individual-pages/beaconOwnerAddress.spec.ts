@@ -2,6 +2,7 @@ import {
   andIClickContinue,
   andIType,
   givenIHaveACookieSetAndIVisit,
+  givenIHaveSignedIn,
   iCanClickTheBackLinkToGoToPreviousPage,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -23,6 +24,7 @@ describe("As a beacon owner I can enter my address so I will receive physical ev
   const beaconOwnerPostcodeSelector = "#ownerPostcode";
 
   beforeEach(() => {
+    givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 
