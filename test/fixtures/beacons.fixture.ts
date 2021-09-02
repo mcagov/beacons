@@ -5,6 +5,8 @@ export const beaconFixtures: Beacon = deepFreeze([
   {
     id: "f48e8212-2e10-4154-95c7-bdfd061bcfd2",
     hexId: "1D0EA08C52FFBFF",
+    referenceNumber: "A1B2C3B4",
+    accountHolderId: "b32deeb3-031f-4be7-ab16-681a8cac7ddd",
     type: "Beacon type to be derived from Hex ID",
     manufacturer: "Ocean Signal",
     model: "Excelsior",
@@ -112,6 +114,8 @@ export const beaconFixtures: Beacon = deepFreeze([
   {
     id: "f48e8212-2e10-4154-95c7-bdfd061bcfd2",
     hexId: "1D0EA08C52FFBFF",
+    referenceNumber: "Z9Y8X7",
+    accountHolderId: "b32deeb3-031f-4be7-ab16-681a8cac7ddd",
     type: "Beacon type to be derived from Hex ID",
     manufacturer: "Ocean Signal",
     model: "Excelsior",

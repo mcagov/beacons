@@ -57,6 +57,8 @@ export const manyBeaconsApiResponseFixture: IBeaconListResponse = deepFreeze({
       id: "f48e8212-2e10-4154-95c7-bdfd061bcfd2",
       attributes: {
         hexId: "1D0EA08C52FFBFF",
+        referenceNumber: "A1B2C3B4",
+        accountHolderId: "b32deeb3-031f-4be7-ab16-681a8cac7ddd",
         status: "NEW",
         type: "Beacon type to be derived from Hex ID",
         protocolCode: "Protocol code to be derived from Hex ID",
@@ -109,6 +111,8 @@ export const manyBeaconsApiResponseFixture: IBeaconListResponse = deepFreeze({
       id: "f48e8212-2e10-4154-95c7-bdfd061bcfd2",
       attributes: {
         hexId: "1D0EA08C52FFBFF",
+        referenceNumber: "Z9Y8X7",
+        accountHolderId: "b32deeb3-031f-4be7-ab16-681a8cac7ddd",
         status: "NEW",
         type: "Beacon type to be derived from Hex ID",
         protocolCode: "Protocol code to be derived from Hex ID",

@@ -8,6 +8,8 @@ export interface Beacon {
   hexId: string;
   type: string;
   registeredDate: string;
+  referenceNumber: string;
+  accountHolderId: string;
   status: string;
   manufacturer: string;
   model: string;
