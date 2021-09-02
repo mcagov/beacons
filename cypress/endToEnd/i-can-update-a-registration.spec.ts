@@ -46,6 +46,7 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
   iCanSeeMyBeaconInformation(registration);
   iCanSeeAdditionalBeaconInformation(registration);
   iCanSeeOwnerInformation(registration);
+  iCanSeeEmergencyContactInformation(registration);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -84,4 +85,28 @@ const iCanSeeOwnerInformation = (registration: Registration) => {
   }
   cy.get("main").contains(registration.ownerTownOrCity);
   cy.get("main").contains(registration.ownerPostcode);
+};
+
+const iCanSeeEmergencyContactInformation = (registration: Registration) => {
+  cy.get("main").contains(registration.emergencyContact1FullName);
+  cy.get("main").contains(registration.emergencyContact1TelephoneNumber);
+  if (registration.emergencyContact1AlternativeTelephoneNumber) {
+    cy.get("main").contains(
+      registration.emergencyContact1AlternativeTelephoneNumber
+    );
+  }
+  cy.get("main").contains(registration.emergencyContact2FullName);
+  cy.get("main").contains(registration.emergencyContact2TelephoneNumber);
+  if (registration.emergencyContact2AlternativeTelephoneNumber) {
+    cy.get("main").contains(
+      registration.emergencyContact2AlternativeTelephoneNumber
+    );
+  }
+  cy.get("main").contains(registration.emergencyContact3FullName);
+  cy.get("main").contains(registration.emergencyContact3TelephoneNumber);
+  if (registration.emergencyContact3AlternativeTelephoneNumber) {
+    cy.get("main").contains(
+      registration.emergencyContact3AlternativeTelephoneNumber
+    );
+  }
 };
