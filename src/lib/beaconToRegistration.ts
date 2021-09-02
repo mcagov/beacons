@@ -38,16 +38,16 @@ export const beaconToRegistration = (beacon: Beacon): Registration => {
       beacon.emergencyContacts[0].telephoneNumber,
     emergencyContact1AlternativeTelephoneNumber:
       beacon.emergencyContacts[0].alternativeTelephoneNumber,
-    emergencyContact2FullName: beacon.emergencyContacts[1]?.fullName || null,
+    emergencyContact2FullName: beacon.emergencyContacts[1]?.fullName || "",
     emergencyContact2TelephoneNumber:
-      beacon.emergencyContacts[1]?.telephoneNumber || null,
+      beacon.emergencyContacts[1]?.telephoneNumber || "",
     emergencyContact2AlternativeTelephoneNumber:
-      beacon.emergencyContacts[1]?.alternativeTelephoneNumber || null,
-    emergencyContact3FullName: beacon.emergencyContacts[2]?.fullName || null,
+      beacon.emergencyContacts[1]?.alternativeTelephoneNumber || "",
+    emergencyContact3FullName: beacon.emergencyContacts[2]?.fullName || "",
     emergencyContact3TelephoneNumber:
-      beacon.emergencyContacts[2]?.telephoneNumber || null,
+      beacon.emergencyContacts[2]?.telephoneNumber || "",
     emergencyContact3AlternativeTelephoneNumber:
-      beacon.emergencyContacts[2]?.alternativeTelephoneNumber || null,
+      beacon.emergencyContacts[2]?.alternativeTelephoneNumber || "",
     uses: [...beaconUses],
   };
 };
