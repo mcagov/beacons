@@ -1,8 +1,4 @@
-export interface IRegistrationRequestBody {
-  beacons: IBeaconRequestBody[];
-}
-
-interface IBeaconRequestBody {
+export interface IBeaconRequestBody {
   manufacturer: string;
   model: string;
   hexId: string;
