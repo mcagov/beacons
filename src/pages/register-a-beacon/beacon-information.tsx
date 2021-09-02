@@ -105,7 +105,8 @@ const ManufacturerSerialNumberInput: FunctionComponent<FormInputProps> = ({
     >
       <Image
         src="/assets/mca_images/beacon_serial_number.png"
-        alt="Where to find your beacon's manufacturer serial number"
+        alt="Image illustrates what a beacon's manufacturer serial number looks like
+        on an actual beacon (i.e. SerNo: 0141201577T)"
         height={640}
         width={960}
       />
