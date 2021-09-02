@@ -79,7 +79,14 @@ export const joinStrings = (strings: Array<string>): string => {
   return output.join(", ");
 };
 
-export const formatDateLong = (dateString: string): string => {
+/**
+ * Format an ISO date string as "[D]D MMM YY".
+ *
+ * @param dateString
+ *
+ * See https://www.gov.uk/guidance/style-guide/a-to-z-of-gov-uk-style
+ */
+export const formatDateTruncated = (dateString: string): string => {
   const date = new Date(dateString);
   const [, month, day, year] = date.toDateString().split(" ");
   return `${parseInt(day)} ${month} ${year.slice(2)}`;

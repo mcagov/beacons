@@ -21,7 +21,7 @@ import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
 import { PageURLs, queryParams, UpdatePageURLs } from "../../lib/urls";
-import { formatDateLong, formatUses } from "../../lib/writingStyle";
+import { formatDateTruncated, formatUses } from "../../lib/writingStyle";
 
 export interface YourBeaconRegistryAccountPageProps {
   id?: string;
@@ -245,7 +245,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
         <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
         <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
         <td className="govuk-table__cell">
-          {formatDateLong(beacon.registeredDate)}
+          {formatDateTruncated(beacon.registeredDate)}
         </td>
         <td className="govuk-table__cell">
           <AnchorLink

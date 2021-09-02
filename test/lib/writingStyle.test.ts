@@ -1,6 +1,6 @@
 import { BeaconUse } from "../../src/entities/BeaconUse";
 import {
-  formatDateLong,
+  formatDateTruncated,
   formatMonth,
   prettyUseName,
 } from "../../src/lib/writingStyle";
@@ -35,7 +35,7 @@ describe("prettyUseName", () => {
   });
 });
 
-describe("formatDateLong()", () => {
+describe("formatDateTruncated()", () => {
   const expectations = [
     { in: "1 April 2021", out: "1 Apr 21" },
     { in: "1 April 2022", out: "1 Apr 22" },
@@ -46,7 +46,7 @@ describe("formatDateLong()", () => {
     it(`formats ${JSON.stringify(expectation.in)} ==> ${
       expectation.out
     }`, () => {
-      expect(formatDateLong(expectation.in)).toEqual(expectation.out);
+      expect(formatDateTruncated(expectation.in)).toEqual(expectation.out);
     });
   });
 });
