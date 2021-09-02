@@ -15,6 +15,7 @@ export const beaconToRegistration = (beacon: Beacon): Registration => {
     referenceNumber: beacon.referenceNumber,
     accountHolderId: beacon.accountHolderId,
     registeredDate: beacon.registeredDate,
+    lastModifiedDate: beacon.lastModifiedDate,
     manufacturerSerialNumber: beacon.manufacturerSerialNumber,
     chkCode: beacon.chkCode,
     batteryExpiryDate: beacon.batteryExpiryDate,

@@ -35,6 +35,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
       model: beaconData.attributes.model || "",
       status: beaconData.attributes.status || "",
       registeredDate: isoDate(beaconData.attributes.createdDate || ""),
+      lastModifiedDate: isoDate(beaconData.attributes.lastModifiedDate || ""),
       batteryExpiryDate: isoDate(beaconData.attributes.batteryExpiryDate || ""),
       chkCode: beaconData.attributes.chkCode || "",
       protocolCode: beaconData.attributes.protocolCode || "",

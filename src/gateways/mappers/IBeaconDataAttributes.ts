@@ -9,6 +9,7 @@ export interface IBeaconDataAttributes {
     type?: string;
     manufacturer?: string;
     createdDate?: string;
+    lastModifiedDate?: string;
     model?: string;
     manufacturerSerialNumber?: string;
     chkCode?: string;
