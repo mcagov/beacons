@@ -4,16 +4,14 @@ import { SummaryList, SummaryListItem } from "../SummaryList";
 import { SectionHeading } from "../Typography";
 import { DataRowItem } from "./DataRowItem";
 
-interface CheckYourAnswersBeaconOwnerSummaryProps extends DraftRegistration {
+interface CheckYourAnswersBeaconOwnerSummaryProps {
+  registration: DraftRegistration;
   changeUrl: string;
 }
 
 export const CheckYourAnswersBeaconOwnerSummary: FunctionComponent<CheckYourAnswersBeaconOwnerSummaryProps> =
   ({
-    ownerFullName,
-    ownerTelephoneNumber,
-    ownerAlternativeTelephoneNumber,
-    ownerEmail,
+    registration,
     changeUrl,
   }: CheckYourAnswersBeaconOwnerSummaryProps): JSX.Element => (
     <>
@@ -24,10 +22,10 @@ export const CheckYourAnswersBeaconOwnerSummary: FunctionComponent<CheckYourAnsw
           labelText="Owner details"
           actions={[{ text: "Change", href: changeUrl }]}
         >
-          <DataRowItem value={ownerFullName} />
-          <DataRowItem value={ownerTelephoneNumber} />
-          <DataRowItem value={ownerAlternativeTelephoneNumber} />
-          <DataRowItem value={ownerEmail} />
+          <DataRowItem value={registration.ownerFullName} />
+          <DataRowItem value={registration.ownerTelephoneNumber} />
+          <DataRowItem value={registration.ownerAlternativeTelephoneNumber} />
+          <DataRowItem value={registration.ownerEmail} />
         </SummaryListItem>
       </SummaryList>
     </>
