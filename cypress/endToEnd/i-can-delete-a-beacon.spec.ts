@@ -70,6 +70,7 @@ const whenIClickTheDeleteButtonForTheRegistrationWithHexId = (
   cy.get("tr")
     .contains(hexId)
     .parent()
+    .parent()
     .contains(/delete/i)
     .click();
 };
