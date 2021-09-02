@@ -29,7 +29,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
       id: beaconData.id,
       hexId: beaconData.attributes.hexId,
       referenceNumber: beaconData.attributes.referenceNumber,
-      accountHolderId: beaconData.attributes.accountHolderId,
+      accountHolderId: beaconData.attributes.accountHolderId || "",
       type: beaconData.attributes.type || "",
       manufacturer: beaconData.attributes.manufacturer || "",
       model: beaconData.attributes.model || "",
