@@ -1,6 +1,6 @@
 import { Registration } from "../../src/entities/Registration";
 import { PageURLs } from "../../src/lib/urls";
-import { formatDateLong } from "../../src/lib/writingStyle";
+import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
   givenIHaveACookieSetAndHaveSignedIn,
@@ -40,15 +40,34 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
   registration: Registration
 ) => {
   iCanSeeMyExistingRegistrationHexId(registration.hexId);
-  iCanSeeTheHistoryOfMyRegistration(registration);
+  const dateRegistered = formatDateLong(new Date().toDateString()); // Assume test user registered beacon on same day for ease)
+  const dateUpdated = dateRegistered; // Assume test user registered beacon on same day for ease)
+  iCanSeeTheHistoryOfMyRegistration(dateRegistered, dateUpdated);
+  iCanSeeMyBeaconInformation(registration);
+  iCanSeeAdditionalBeaconInformation(registration);
 };
 
-const iCanSeeTheHistoryOfMyRegistration = (registration: Registration) => {
+const iCanSeeTheHistoryOfMyRegistration = (
+  dateRegistered: string,
+  dateUpdated: string
+) => {
   cy.get(".govuk-summary-list__value")
     .should("contain", "First registered")
-    .and("contain", formatDateLong(new Date().toDateString())); // Assume test user registered beacon on same day for ease)
+    .and("contain", dateRegistered);
 
   cy.get(".govuk-summary-list__value")
     .should("contain", "Last updated")
-    .and("contain", formatDateLong(new Date().toDateString())); // User has not yet updated the beacon, only created it
+    .and("contain", dateUpdated);
+};
+
+const iCanSeeMyBeaconInformation = (registration: Registration) => {
+  cy.get("main").contains(registration.manufacturer);
+  cy.get("main").contains(registration.model);
+  cy.get("main").contains(registration.hexId);
+};
+
+const iCanSeeAdditionalBeaconInformation = (registration: Registration) => {
+  cy.get("main").contains(registration.manufacturerSerialNumber);
+  cy.get("main").contains(formatMonth(registration.batteryExpiryDate));
+  cy.get("main").contains(formatMonth(registration.lastServicedDate));
 };

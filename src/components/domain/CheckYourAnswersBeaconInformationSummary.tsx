@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { DraftRegistration } from "../../entities/DraftRegistration";
+import { formatMonth } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { DataRowItem } from "./DataRowItem";
 
@@ -30,7 +31,9 @@ export const CheckYourAnswersBeaconInformationSummary: FunctionComponent<CheckYo
             label="Battery expiry"
             value={
               batteryExpiryDateMonth
-                ? batteryExpiryDateMonth + ", " + batteryExpiryDateYear
+                ? formatMonth(
+                    `${batteryExpiryDateYear}-${batteryExpiryDateMonth}`
+                  )
                 : batteryExpiryDateYear
             }
           />
@@ -38,7 +41,9 @@ export const CheckYourAnswersBeaconInformationSummary: FunctionComponent<CheckYo
             label="Beacon service date"
             value={
               lastServicedDateMonth
-                ? lastServicedDateMonth + ", " + lastServicedDateYear
+                ? formatMonth(
+                    `${lastServicedDateYear}-${lastServicedDateMonth}`
+                  )
                 : lastServicedDateYear
             }
           />
