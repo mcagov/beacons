@@ -31,6 +31,12 @@ describe("UpdateAccount", () => {
       })
     );
 
+    const mockSessionGateway = {
+      getSession: jest
+        .fn()
+        .mockReturnValue({ user: { authId: "test-auth-id" } }),
+    };
+
     const mockAuthGateway: AuthGateway = {
       getAccessToken: jest.fn().mockResolvedValue(v4()),
     };
@@ -49,6 +55,7 @@ describe("UpdateAccount", () => {
       const mockRequest: any = { method: "GET" };
       const containerMocks: Partial<IAppContainer> = {
         accountHolderGateway: accountHolderApiGateway,
+        sessionGateway: mockSessionGateway,
       };
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: getAppContainer(containerMocks as IAppContainer),
@@ -87,6 +94,7 @@ describe("UpdateAccount", () => {
           county: "new county",
           postcode: "invalid postcode",
         }),
+        sessionGateway: mockSessionGateway,
       };
       const context: Partial<BeaconsGetServerSidePropsContext> = {
         container: getAppContainer(containerMocks as IAppContainer),
@@ -127,6 +135,7 @@ describe("UpdateAccount", () => {
           county: "new county",
           postcode: "bs7 9lm",
         }), // a valid postcode this time
+        sessionGateway: mockSessionGateway,
       };
 
       const context: Partial<BeaconsGetServerSidePropsContext> = {
@@ -161,6 +170,7 @@ describe("UpdateAccount", () => {
           county: "", //changed
           postcode: "TS1 2AB", //changed
         }),
+        sessionGateway: mockSessionGateway,
       };
 
       const context: Partial<BeaconsGetServerSidePropsContext> = {

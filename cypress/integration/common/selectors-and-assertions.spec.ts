@@ -33,6 +33,10 @@ export const givenIHaveSignedIn = (): void => {
   });
 };
 
+export const givenIHaveNotSignedIn = (): void => {
+  cy.clearCookie("next-auth.session-token");
+};
+
 export const givenIAmAt = (url: string): void => {
   cy.visit(url);
 };

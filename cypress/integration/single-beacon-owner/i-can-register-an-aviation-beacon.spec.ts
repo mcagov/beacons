@@ -20,10 +20,14 @@ import {
   iCanSeeMySingleAviationUse,
 } from "../common/i-can-enter-use-information/aviation.spec";
 import { andIHaveNoFurtherUses } from "../common/i-can-enter-use-information/generic.spec";
-import { thenTheUrlShouldContain } from "../common/selectors-and-assertions.spec";
+import {
+  givenIHaveSignedIn,
+  thenTheUrlShouldContain,
+} from "../common/selectors-and-assertions.spec";
 
 describe("As an aviation beacon owner,", () => {
   it("I can register my beacon for pleasure purposes", () => {
+    givenIHaveSignedIn();
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyAviationUse(Purpose.PLEASURE);
     iCanSeeMyAviationUse(Purpose.PLEASURE);
@@ -44,6 +48,7 @@ describe("As an aviation beacon owner,", () => {
   });
 
   it("I can register my beacon for commercial purposes", () => {
+    givenIHaveSignedIn();
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyAviationUse(Purpose.COMMERCIAL);
     iCanSeeMyAviationUse(Purpose.COMMERCIAL);

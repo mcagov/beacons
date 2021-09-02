@@ -20,11 +20,15 @@ describe("YourBeaconRegistryAccount", () => {
   const mockAuthGateway: AuthGateway = {
     getAccessToken: jest.fn().mockResolvedValue(v4()),
   };
+  const mockSessionGateway = {
+    getSession: jest.fn().mockReturnValue({ user: { authId: "a-session-id" } }),
+  };
   const mocks: Partial<IAppContainer> = {
     accountHolderGateway: new BeaconsApiAccountHolderGateway(
       process.env.API_URL,
       mockAuthGateway
     ),
+    sessionGateway: mockSessionGateway as any,
   };
 
   describe("GetServerSideProps for user with full account details", () => {
@@ -58,6 +62,7 @@ describe("YourBeaconRegistryAccount", () => {
           cookies: {
             [formSubmissionCookieId]: "set",
           },
+          method: "GET",
         } as any,
       };
 
@@ -101,6 +106,7 @@ describe("YourBeaconRegistryAccount", () => {
           cookies: {
             [formSubmissionCookieId]: "set",
           },
+          method: "GET",
         } as any,
       };
 

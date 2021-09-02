@@ -57,6 +57,7 @@ import {
 } from "../common/i-can-enter-use-information/maritime.spec";
 import {
   givenIAmAt,
+  givenIHaveSignedIn,
   iAmAt,
   iCanSeeAPageHeadingThatContains,
   iCanSeeASectionHeadingThatContains,
@@ -66,6 +67,7 @@ import {
 
 describe("As a single beacon owner with many uses", () => {
   it("I can register my beacon for a land, maritime pleasure, and aviation pleasure use", () => {
+    givenIHaveSignedIn();
     givenIHaveEnteredMyBeaconDetails();
     iCanSeeAPageHeadingThatContains("main use");
     givenIHaveEnteredMyLandUse();
