@@ -39,6 +39,10 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                     label="First registered"
                     value={formatDateLong(registration.registeredDate)}
                   />
+                  <DataRowItem
+                    label="Last updated"
+                    value={formatDateLong(registration.lastModifiedDate)}
+                  />
                 </SummaryListItem>
               </SummaryList>
             </>

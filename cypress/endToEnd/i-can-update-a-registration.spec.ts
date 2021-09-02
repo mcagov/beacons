@@ -44,8 +44,11 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (registration: Registration) => {
-  cy.get(".govuk-summary-list__value").contains("First registered");
-  cy.get(".govuk-summary-list__value").contains(
-    formatDateLong(new Date().toDateString()) // Assume test user registered beacon on same day for ease
-  );
+  cy.get(".govuk-summary-list__value")
+    .should("contain", "First registered")
+    .and("contain", formatDateLong(new Date().toDateString())); // Assume test user registered beacon on same day for ease)
+
+  cy.get(".govuk-summary-list__value")
+    .should("contain", "Last updated")
+    .and("contain", formatDateLong(new Date().toDateString())); // User has not yet updated the beacon, only created it
 };
