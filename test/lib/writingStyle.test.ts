@@ -1,5 +1,6 @@
 import { BeaconUse } from "../../src/entities/BeaconUse";
 import {
+  formatDateLong,
   formatDateTruncated,
   formatMonth,
   prettyUseName,
@@ -47,6 +48,22 @@ describe("formatDateTruncated()", () => {
       expectation.out
     }`, () => {
       expect(formatDateTruncated(expectation.in)).toEqual(expectation.out);
+    });
+  });
+});
+
+describe("formatDateLong()", () => {
+  const expectations = [
+    { in: "1994-05-29", out: "29 May 1994" },
+    { in: "2020-10-28", out: "28 October 2020" },
+    { in: "1989-10-11", out: "11 October 1989" },
+  ];
+
+  expectations.forEach((expectation) => {
+    it(`formats ${JSON.stringify(expectation.in)} ==> ${
+      expectation.out
+    }`, () => {
+      expect(formatDateLong(expectation.in)).toEqual(expectation.out);
     });
   });
 });
