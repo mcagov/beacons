@@ -13,7 +13,7 @@ import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/Beacon
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
 import { PageURLs } from "../../../lib/urls";
-import { formatDateTruncated } from "../../../lib/writingStyle";
+import { formatDateLong } from "../../../lib/writingStyle";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;
@@ -37,7 +37,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                 <SummaryListItem labelText="Registration history">
                   <DataRowItem
                     label="First registered"
-                    value={formatDateTruncated(registration.registeredDate)}
+                    value={formatDateLong(registration.registeredDate)}
                   />
                 </SummaryListItem>
               </SummaryList>

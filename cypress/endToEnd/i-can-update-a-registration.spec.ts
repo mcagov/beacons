@@ -1,5 +1,6 @@
 import { Registration } from "../../src/entities/Registration";
 import { PageURLs } from "../../src/lib/urls";
+import { formatDateLong } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
   givenIHaveACookieSetAndHaveSignedIn,
@@ -13,11 +14,6 @@ import {
 
 describe("As an account holder", () => {
   it("I can update one of my registrations", () => {
-    const testRegistration: Registration = {
-      ...singleBeaconRegistration,
-      hexId: randomUkEncodedHexId(),
-    };
-
     givenIHaveACookieSetAndHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
 
@@ -28,6 +24,11 @@ describe("As an account holder", () => {
     iCanSeeTheDetailsOfMyExistingRegistration(testRegistration);
   });
 });
+
+const testRegistration: Registration = {
+  ...singleBeaconRegistration,
+  hexId: randomUkEncodedHexId(),
+};
 
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 
@@ -43,5 +44,8 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (registration: Registration) => {
-  cy.get("main").contains("First registered: 2 September 2021");
+  cy.get(".govuk-summary-list__value").contains("First registered");
+  cy.get(".govuk-summary-list__value").contains(
+    formatDateLong(new Date().toDateString()) // Assume test user registered beacon on same day for ease
+  );
 };
