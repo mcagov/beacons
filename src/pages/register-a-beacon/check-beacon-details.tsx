@@ -1,11 +1,11 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
-import {
-  BeaconHexIdInput,
-  BeaconManufacturerInput,
-  BeaconModelInput,
-} from "../../components/domain/BeaconDetails";
+import { BeaconManufacturerInput } from "../../components/domain/formElements/BeaconManufacturerInput";
+import { BeaconModelInput } from "../../components/domain/formElements/BeaconModelInput";
+import { HexIdHelp } from "../../components/domain/formElements/HexIdHelp";
+import { FormGroup } from "../../components/Form";
+import { FormInputProps, Input } from "../../components/Input";
 import { GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormManager } from "../../lib/form/FormManager";
@@ -67,6 +67,23 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
     </BeaconsForm>
   );
 };
+
+const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
+  value = "",
+  errorMessages,
+}: FormInputProps): JSX.Element => (
+  <FormGroup errorMessages={errorMessages}>
+    <Input
+      id="hexId"
+      label="Enter the 15 character beacon HEX ID or UIN number"
+      hintText="This will be on your beacon. It must be 15 characters long and use
+      characters 0 to 9 and letters A to F"
+      htmlAttributes={{ spellCheck: false }}
+      defaultValue={value}
+    />
+    <HexIdHelp />
+  </FormGroup>
+);
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {

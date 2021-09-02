@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, LinkButton } from "../../components/Button";
-import { BeaconUseSection } from "../../components/domain/BeaconUseSection";
+import { AdditionalBeaconUseSummary } from "../../components/domain/AdditionalBeaconUseSummary";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { GovUKBody, PageHeading } from "../../components/Typography";
@@ -70,7 +70,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                 <>
                   {uses.map((use, index) => {
                     return (
-                      <BeaconUseSection
+                      <AdditionalBeaconUseSummary
                         index={index}
                         use={use}
                         changeUri={PageURLs.environment + "?useIndex=" + index}
