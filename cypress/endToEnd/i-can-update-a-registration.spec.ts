@@ -79,7 +79,9 @@ const iCanSeeOwnerInformation = (registration: Registration) => {
   cy.get("main").contains(registration.ownerAlternativeTelephoneNumber);
   cy.get("main").contains(registration.ownerEmail);
   cy.get("main").contains(registration.ownerAddressLine1);
-  cy.get("main").contains(registration.ownerAddressLine2);
+  if (registration.ownerAddressLine2) {
+    cy.get("main").contains(registration.ownerAddressLine2);
+  }
   cy.get("main").contains(registration.ownerTownOrCity);
   cy.get("main").contains(registration.ownerPostcode);
 };

@@ -2,6 +2,8 @@ import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton } from "../../../components/Button";
 import { CheckYourAnswersBeaconInformationSummary } from "../../../components/domain/CheckYourAnswersBeaconInformationSummary";
+import { CheckYourAnswersBeaconOwnerAddressSummary } from "../../../components/domain/CheckYourAnswersBeaconOwnerAddressSummary";
+import { CheckYourAnswersBeaconOwnerSummary } from "../../../components/domain/CheckYourAnswersBeaconOwnerSummary";
 import { DataRowItem } from "../../../components/domain/DataRowItem";
 import { Grid } from "../../../components/Grid";
 import { Layout } from "../../../components/Layout";
@@ -61,7 +63,15 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                 </SummaryListItem>
               </SummaryList>
               <CheckYourAnswersBeaconInformationSummary
-                {...registration}
+                registration={registration}
+                changeUrl={"#"}
+              />
+              <CheckYourAnswersBeaconOwnerSummary
+                registration={registration}
+                changeUrl={"#"}
+              />
+              <CheckYourAnswersBeaconOwnerAddressSummary
+                registration={registration}
                 changeUrl={"#"}
               />
             </>

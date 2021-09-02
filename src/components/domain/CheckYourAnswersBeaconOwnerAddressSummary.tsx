@@ -20,7 +20,9 @@ export const CheckYourAnswersBeaconOwnerAddressSummary: FunctionComponent<CheckY
             actions={[{ text: "Change", href: changeUrl }]}
           >
             <DataRowItem value={registration.ownerAddressLine1} />
-            <DataRowItem value={registration.ownerAddressLine2} />
+            {registration.ownerAddressLine2 && (
+              <DataRowItem value={registration.ownerAddressLine2} />
+            )}
             <DataRowItem value={registration.ownerTownOrCity} />
             {registration.ownerCounty && (
               <DataRowItem value={registration.ownerCounty} />
