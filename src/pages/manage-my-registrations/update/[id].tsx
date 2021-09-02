@@ -1,9 +1,11 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton } from "../../../components/Button";
+import { DataRowItem } from "../../../components/domain/DataRowItem";
 import { Grid } from "../../../components/Grid";
 import { Layout } from "../../../components/Layout";
-import { PageHeading } from "../../../components/Typography";
+import { SummaryList, SummaryListItem } from "../../../components/SummaryList";
+import { PageHeading, SectionHeading } from "../../../components/Typography";
 import { Beacon } from "../../../entities/Beacon";
 import { Registration } from "../../../entities/Registration";
 import { beaconToRegistration } from "../../../lib/beaconToRegistration";
@@ -11,6 +13,7 @@ import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/Beacon
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
 import { PageURLs } from "../../../lib/urls";
+import { formatDateLong } from "../../../lib/writingStyle";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;
@@ -29,6 +32,15 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
           mainContent={
             <>
               <PageHeading>{pageHeading}</PageHeading>
+              <SectionHeading>About the registration</SectionHeading>
+              <SummaryList>
+                <SummaryListItem labelText="Registration history">
+                  <DataRowItem
+                    label="First registered"
+                    value={formatDateLong(registration.registeredDate)}
+                  />
+                </SummaryListItem>
+              </SummaryList>
             </>
           }
         />

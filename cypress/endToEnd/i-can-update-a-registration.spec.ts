@@ -43,5 +43,5 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (registration: Registration) => {
-  cy.get("main").contains("First registered: 1 September 2021");
+  cy.get("main").contains("First registered: 2 September 2021");
 };
