@@ -247,25 +247,21 @@ describe("DeprecatedRegistration", () => {
         workingRemotelyPeopleCount: use.workingRemotelyPeopleCount,
       };
       const expected = {
-        beacons: [
-          {
-            ...beacon,
-            uses: [expectedUseRequestBody],
-            owner: { ...owner },
-            emergencyContacts: [
-              emergencyContact,
-              emergencyContact,
-              emergencyContact,
-            ],
-          },
+        ...beacon,
+        uses: [expectedUseRequestBody],
+        owner: { ...owner },
+        emergencyContacts: [
+          emergencyContact,
+          emergencyContact,
+          emergencyContact,
         ],
       };
 
       const json = registration.serialiseToAPI();
 
       expect(json).toMatchObject(expected);
-      expect(json.beacons[0].uses.length).toBe(1);
-      expect(json.beacons[0].emergencyContacts.length).toBe(3);
+      expect(json.uses.length).toBe(1);
+      expect(json.emergencyContacts.length).toBe(3);
     });
 
     it("should serialise a second use", () => {
@@ -273,7 +269,7 @@ describe("DeprecatedRegistration", () => {
       registration.update({ useIndex: 1, ...formData });
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses.length).toBe(2);
+      expect(json.uses.length).toBe(2);
     });
 
     it("should serialise the purpose if it is defined", () => {
@@ -281,23 +277,23 @@ describe("DeprecatedRegistration", () => {
       use.purpose = Purpose.PLEASURE;
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0].purpose).toBe(Purpose.PLEASURE);
+      expect(json.uses[0].purpose).toBe(Purpose.PLEASURE);
     });
 
     it("should not serialise the other activity text, location or people count if other activity is not selected", () => {
       registration.update({ activity: Activity.CARGO_AIRPLANE });
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0].otherActivity).toBe("");
-      expect(json.beacons[0].uses[0].otherActivityLocation).toBe("");
-      expect(json.beacons[0].uses[0].otherActivityPeopleCount).toBe("");
+      expect(json.uses[0].otherActivity).toBe("");
+      expect(json.uses[0].otherActivityLocation).toBe("");
+      expect(json.uses[0].otherActivityPeopleCount).toBe("");
     });
 
     it("should serialise the max capacity if it is a number", () => {
       registration.update({ maxCapacity: "10" });
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0]["maxCapacity"]).toBe(10);
+      expect(json.uses[0]["maxCapacity"]).toBe(10);
     });
 
     it("should not serialise the max capacity if it is not a number", () => {
@@ -305,7 +301,7 @@ describe("DeprecatedRegistration", () => {
       delete use.maxCapacity;
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0]["maxCapacity"]).not.toBeDefined();
+      expect(json.uses[0]["maxCapacity"]).not.toBeDefined();
     });
 
     it("should not serialise the max capacity if it is not a whole number", () => {
@@ -313,7 +309,7 @@ describe("DeprecatedRegistration", () => {
       delete use.maxCapacity;
       const json = registration.serialiseToAPI();
 
-      expect(json.beacons[0].uses[0]["maxCapacity"]).not.toBeDefined();
+      expect(json.uses[0]["maxCapacity"]).not.toBeDefined();
     });
 
     it("should serialise all the communication information if selected", () => {
@@ -327,7 +323,7 @@ describe("DeprecatedRegistration", () => {
       });
 
       const json = registration.serialiseToAPI();
-      const firstUse = json.beacons[0].uses[0];
+      const firstUse = json.uses[0];
       expect(firstUse.vhfRadio).toBe(true);
       expect(firstUse.fixedVhfRadio).toBe(true);
       expect(firstUse.fixedVhfRadioValue).toBe(use.fixedVhfRadioInput);
