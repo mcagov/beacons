@@ -19,10 +19,14 @@ import {
   iCanGoBackAndEditMyMaritimeUse,
   iCanSeeMyMaritimeUse,
 } from "../common/i-can-enter-use-information/maritime.spec";
-import { thenTheUrlShouldContain } from "../common/selectors-and-assertions.spec";
+import {
+  givenIHaveSignedIn,
+  thenTheUrlShouldContain,
+} from "../common/selectors-and-assertions.spec";
 
 describe("As a maritime beacon owner,", () => {
   it("I can register my beacon for pleasure purposes", () => {
+    givenIHaveSignedIn();
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
@@ -43,6 +47,7 @@ describe("As a maritime beacon owner,", () => {
   });
 
   it("I can register my beacon for commercial purposes", () => {
+    givenIHaveSignedIn();
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyMaritimeUse(Purpose.COMMERCIAL);
     iCanSeeMyMaritimeUse(Purpose.COMMERCIAL);

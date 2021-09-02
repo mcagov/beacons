@@ -22,6 +22,12 @@ describe("ApplicationCompletePage", () => {
       uses: [],
     };
 
+    const mockSessionGateway = {
+      getSession: jest
+        .fn()
+        .mockReturnValue({ user: { authId: "test-auth-id" } }),
+    };
+
     let mockContainer: Partial<IAppContainer>;
 
     const mockSubmitRegistration = jest.fn().mockResolvedValue({
@@ -37,6 +43,7 @@ describe("ApplicationCompletePage", () => {
         getDraftRegistration: jest
           .fn()
           .mockResolvedValue(mockDraftRegistration),
+        sessionGateway: mockSessionGateway,
       };
     });
 

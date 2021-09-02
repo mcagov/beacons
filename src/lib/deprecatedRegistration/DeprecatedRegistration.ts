@@ -3,7 +3,7 @@ import { Registration } from "../../entities/Registration";
 import { FormSubmission } from "../../presenters/formSubmission";
 import { stringToBoolean } from "../writingStyle";
 import {
-  IRegistrationRequestBody,
+  IBeaconRequestBody,
   IUseRequestBody,
 } from "./IRegistrationRequestBody";
 import { initBeacon, initBeaconUse } from "./registrationInitialisation";
@@ -83,14 +83,17 @@ export class DeprecatedRegistration {
     return Math.min(useIndex, beaconUseLength);
   }
 
-  public serialiseToAPI(): IRegistrationRequestBody {
+  public serialiseToAPI(): IBeaconRequestBody {
     const beacon = this._serialiseBeacon();
     const owner = this._serialiseOwner();
     const emergencyContacts = this._serialiseEmergencyContacts();
     const uses = this._serialiseUses();
 
     return {
-      beacons: [{ ...beacon, owner, emergencyContacts, uses }],
+      ...beacon,
+      owner,
+      emergencyContacts,
+      uses,
     };
   }
 

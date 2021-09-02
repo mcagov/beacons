@@ -1,5 +1,6 @@
 import {
   givenIHaveACookieSetAndIVisit,
+  givenIHaveSignedIn,
   iCanSeeAPageHeadingThatContains,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -17,6 +18,7 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
   const hexIdFieldSelector = "#hexId";
 
   beforeEach(() => {
+    givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(pageUrl);
   });
 

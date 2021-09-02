@@ -1,6 +1,7 @@
 import { asAnAviationBeaconOwner } from "../common/i-can-enter-beacon-information.spec";
 import {
   andIHaveEnteredNoInformation,
+  givenIHaveSignedIn,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenMyFocusMovesTo,
@@ -10,6 +11,7 @@ import {
 
 describe("As a beacon owner, I want to submit the purpose for my beacon", () => {
   it("displays an error if no beacon use purpose is selected", () => {
+    givenIHaveSignedIn();
     asAnAviationBeaconOwner();
     andIHaveEnteredNoInformation();
     whenIClickContinue();

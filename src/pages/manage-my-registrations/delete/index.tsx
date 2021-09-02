@@ -23,6 +23,7 @@ import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_ThenShowErrorMessage } from "../../../router/rules/GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_ThenShowErrorMessage";
 import { GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteTheRegistration } from "../../../router/rules/GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteTheRegistration";
 import { GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage";
+import { IfUserDoesNotHaveValidSession } from "../../../router/rules/IfUserDoesNotHaveValidSession";
 
 export interface DeleteRegistrationProps {
   form: FormJSON;
@@ -157,6 +158,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
+      new IfUserDoesNotHaveValidSession(context),
       new GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage(
         context,
         validationRules

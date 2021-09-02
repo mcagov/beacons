@@ -1,5 +1,6 @@
 import {
   givenIHaveACookieSetAndIVisit,
+  givenIHaveSignedIn,
   givenIHaveTyped,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
@@ -19,6 +20,7 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
   const beaconPositionSelector = "#beaconPosition";
 
   beforeEach(() => {
+    givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(thisPageUrl);
   });
 

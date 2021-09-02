@@ -103,6 +103,11 @@ describe("AdditionalBeaconUse page", () => {
 
   describe("getServerSideProps()", () => {
     it("given a non-existent currentUseIndex, throws an error", () => {
+      const mockSessionGateway = {
+        getSession: jest
+          .fn()
+          .mockReturnValue({ user: { authId: "a-session-id" } }),
+      };
       const mockRegistration = {
         getRegistration: jest
           .fn()
@@ -115,6 +120,7 @@ describe("AdditionalBeaconUse page", () => {
         },
         container: {
           getCachedRegistration: jest.fn().mockResolvedValue(mockRegistration),
+          sessionGateway: mockSessionGateway,
         },
         req: {
           cookies: {
