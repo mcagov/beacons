@@ -45,6 +45,7 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
   iCanSeeTheHistoryOfMyRegistration(dateRegistered, dateUpdated);
   iCanSeeMyBeaconInformation(registration);
   iCanSeeAdditionalBeaconInformation(registration);
+  iCanSeeOwnerInformation(registration);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -70,4 +71,15 @@ const iCanSeeAdditionalBeaconInformation = (registration: Registration) => {
   cy.get("main").contains(registration.manufacturerSerialNumber);
   cy.get("main").contains(formatMonth(registration.batteryExpiryDate));
   cy.get("main").contains(formatMonth(registration.lastServicedDate));
+};
+
+const iCanSeeOwnerInformation = (registration: Registration) => {
+  cy.get("main").contains(registration.ownerFullName);
+  cy.get("main").contains(registration.ownerTelephoneNumber);
+  cy.get("main").contains(registration.ownerAlternativeTelephoneNumber);
+  cy.get("main").contains(registration.ownerEmail);
+  cy.get("main").contains(registration.ownerAddressLine1);
+  cy.get("main").contains(registration.ownerAddressLine2);
+  cy.get("main").contains(registration.ownerTownOrCity);
+  cy.get("main").contains(registration.ownerPostcode);
 };
