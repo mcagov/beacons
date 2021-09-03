@@ -1,4 +1,5 @@
 import { Registration } from "../../src/entities/Registration";
+import { Environment } from "../../src/lib/deprecatedRegistration/types";
 import { PageURLs } from "../../src/lib/urls";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
@@ -47,6 +48,7 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
   iCanSeeAdditionalBeaconInformation(registration);
   iCanSeeOwnerInformation(registration);
   iCanSeeEmergencyContactInformation(registration);
+  iCanSeeUseInformation(registration);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -109,4 +111,18 @@ const iCanSeeEmergencyContactInformation = (registration: Registration) => {
       registration.emergencyContact3AlternativeTelephoneNumber
     );
   }
+};
+
+const iCanSeeUseInformation = (registration: Registration) => {
+  registration.uses.forEach((use) => {
+    cy.get("main").contains(new RegExp(use.environment, "i"));
+    cy.get("main").contains(new RegExp(use.activity, "i"));
+    if (use.environment !== Environment.LAND) {
+      cy.get("main").contains(new RegExp(use.purpose, "i"));
+    }
+
+    cy.get("main").contains("About this use");
+    cy.get("main").contains("Communications");
+    cy.get("main").contains("More details");
+  });
 };

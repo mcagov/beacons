@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton } from "../../../components/Button";
+import { AdditionalBeaconUseSummary } from "../../../components/domain/AdditionalBeaconUseSummary";
 import { CheckYourAnswersBeaconEmergencyContactsSummary } from "../../../components/domain/CheckYourAnswersBeaconEmergencyContactsSummary";
 import { CheckYourAnswersBeaconInformationSummary } from "../../../components/domain/CheckYourAnswersBeaconInformationSummary";
 import { CheckYourAnswersBeaconOwnerAddressSummary } from "../../../components/domain/CheckYourAnswersBeaconOwnerAddressSummary";
@@ -8,8 +9,13 @@ import { CheckYourAnswersBeaconOwnerSummary } from "../../../components/domain/C
 import { DataRowItem } from "../../../components/domain/DataRowItem";
 import { Grid } from "../../../components/Grid";
 import { Layout } from "../../../components/Layout";
+import { BeaconRegistryContactInfo } from "../../../components/Mca";
 import { SummaryList, SummaryListItem } from "../../../components/SummaryList";
-import { PageHeading, SectionHeading } from "../../../components/Typography";
+import {
+  GovUKBody,
+  PageHeading,
+  SectionHeading,
+} from "../../../components/Typography";
 import { Beacon } from "../../../entities/Beacon";
 import { Registration } from "../../../entities/Registration";
 import { beaconToRegistration } from "../../../lib/beaconToRegistration";
@@ -79,6 +85,20 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                 registration={registration}
                 changeUrl={"#"}
               />
+              {registration.uses.map((use, index) => (
+                <AdditionalBeaconUseSummary
+                  index={index}
+                  use={use}
+                  key={index}
+                  changeUri={"#"}
+                />
+              ))}
+              <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
+              <GovUKBody>
+                If you have a question about your beacon registration, contact
+                the UK Beacon Registry team on:
+              </GovUKBody>
+              <BeaconRegistryContactInfo />
             </>
           }
         />
