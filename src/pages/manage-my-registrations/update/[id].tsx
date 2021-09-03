@@ -24,6 +24,9 @@ import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
 import { PageURLs } from "../../../lib/urls";
 import { formatDateLong } from "../../../lib/writingStyle";
+import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
+import { IfUserDoesNotHaveValidSession } from "../../../router/rules/IfUserDoesNotHaveValidSession";
+import { WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;
@@ -108,21 +111,25 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-    const { getBeaconsByAccountHolderId, getAccountHolderId } =
-      context.container;
-
-    const beacon: Beacon = (
-      await getBeaconsByAccountHolderId(
-        await getAccountHolderId(context.session)
-      )
-    ).find((beacon) => beacon.id === context.query.id);
-
-    return {
-      props: {
-        registration: beaconToRegistration(beacon),
-      },
-    };
+    return await new BeaconsPageRouter([
+      new IfUserDoesNotHaveValidSession(context),
+      new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
+    ]).execute();
   })
 );
+
+const props = async (
+  context: BeaconsGetServerSidePropsContext
+): Promise<Partial<RegistrationSummaryPageProps>> => {
+  const { getBeaconsByAccountHolderId, getAccountHolderId } = context.container;
+
+  const beacon: Beacon = (
+    await getBeaconsByAccountHolderId(await getAccountHolderId(context.session))
+  ).find((beacon) => beacon.id === context.query.id);
+
+  return {
+    registration: beaconToRegistration(beacon),
+  };
+};
 
 export default RegistrationSummaryPage;
