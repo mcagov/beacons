@@ -25,7 +25,7 @@ export const AdditionalBeaconUseSummary: FunctionComponent<BeaconUseSectionProps
     return (
       <>
         <div
-          className="govuk-!-margin-bottom-4"
+          className="govuk-!-margin-bottom-4 govuk-summary-list"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -41,7 +41,9 @@ export const AdditionalBeaconUseSummary: FunctionComponent<BeaconUseSectionProps
               <AnchorLink
                 href={changeUri}
                 description={useRank}
-                classes="govuk-link--no-visited-state govuk-!-margin-right-4"
+                classes={`govuk-link--no-visited-state ${
+                  deleteUri ? "govuk-!-margin-right-4" : ""
+                }`}
               >
                 Change
               </AnchorLink>
