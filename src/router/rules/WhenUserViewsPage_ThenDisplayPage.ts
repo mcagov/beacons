@@ -1,9 +1,9 @@
 import { GetServerSidePropsResult } from "next";
+import { showCookieBanner } from "../../lib/cookies";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { showCookieBanner } from "./../../lib/cookies";
 import { Rule } from "./Rule";
 
-export class IfUserViewedPage<T> implements Rule {
+export class WhenUserViewsPage_ThenDisplayPage<T> implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly props: T;
 

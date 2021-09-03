@@ -16,7 +16,7 @@ import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
-import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
+import { WhenUserViewsPage_ThenDisplayPage } from "../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 interface AdditionalBeaconUseProps {
   uses: DraftBeaconUse[];
@@ -125,7 +125,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
       new IfUserDoesNotHaveValidSession(context),
       new IfUserHasNotSpecifiedAUse(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
-      new IfUserViewedPage(context, props(context)),
+      new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
     ]).execute();
   })
 );
