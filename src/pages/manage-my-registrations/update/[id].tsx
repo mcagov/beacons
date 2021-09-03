@@ -22,7 +22,7 @@ import { beaconToRegistration } from "../../../lib/beaconToRegistration";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
-import { PageURLs } from "../../../lib/urls";
+import { PageURLs, UpdatePageURLs } from "../../../lib/urls";
 import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { IfUserDoesNotHaveValidSession } from "../../../router/rules/IfUserDoesNotHaveValidSession";
@@ -62,7 +62,12 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               <SummaryList>
                 <SummaryListItem
                   labelText="Beacon information"
-                  actions={[{ text: "Change", href: "#" }]}
+                  actions={[
+                    {
+                      text: "Change",
+                      href: UpdatePageURLs.beaconDetails + registration.id,
+                    },
+                  ]}
                 >
                   <DataRowItem
                     label="Manufacturer"
