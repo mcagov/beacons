@@ -195,6 +195,24 @@ resource "aws_cloudwatch_dashboard" "service_health" {
             "x": 6,
             "type": "metric",
             "properties": {
+                "title": "API Health",
+                "annotations": {
+                    "alarms": [
+                        "${aws_cloudwatch_metric_alarm.service_health.arn}"
+                    ]
+                },
+                "view": "singleValue",
+                "stacked": false,
+                "type": "chart"
+            }
+        },
+        {
+            "height": 3,
+            "width": 6,
+            "y": 2,
+            "x": 12,
+            "type": "metric",
+            "properties": {
                 "title": "Webapp Task Count",
                 "annotations": {
                     "alarms": [
@@ -206,7 +224,7 @@ resource "aws_cloudwatch_dashboard" "service_health" {
         },
         {
             "type": "metric",
-            "x": 12,
+            "x": 18,
             "y": 2,
             "width": 6,
             "height": 3,
