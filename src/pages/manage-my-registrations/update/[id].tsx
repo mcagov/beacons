@@ -9,8 +9,13 @@ import { CheckYourAnswersBeaconOwnerSummary } from "../../../components/domain/C
 import { DataRowItem } from "../../../components/domain/DataRowItem";
 import { Grid } from "../../../components/Grid";
 import { Layout } from "../../../components/Layout";
+import { BeaconRegistryContactInfo } from "../../../components/Mca";
 import { SummaryList, SummaryListItem } from "../../../components/SummaryList";
-import { PageHeading, SectionHeading } from "../../../components/Typography";
+import {
+  GovUKBody,
+  PageHeading,
+  SectionHeading,
+} from "../../../components/Typography";
 import { Beacon } from "../../../entities/Beacon";
 import { Registration } from "../../../entities/Registration";
 import { beaconToRegistration } from "../../../lib/beaconToRegistration";
@@ -88,6 +93,12 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   changeUri={"#"}
                 />
               ))}
+              <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
+              <GovUKBody>
+                If you have a question about your beacon registration, contact
+                the UK Beacon Registry team on:
+              </GovUKBody>
+              <BeaconRegistryContactInfo />
             </>
           }
         />
