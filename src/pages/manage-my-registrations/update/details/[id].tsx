@@ -13,6 +13,7 @@ import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/Bea
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
+import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
 import { IfUserDoesNotHaveValidSession } from "../../../../router/rules/IfUserDoesNotHaveValidSession";
 
 interface BeaconDetailsForm {
@@ -65,7 +66,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),
-    ]);
+      new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+        context
+      ),
+    ]).execute();
   })
 );
 

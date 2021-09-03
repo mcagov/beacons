@@ -2,6 +2,7 @@ import { v4 } from "uuid";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../src/router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
+import { registrationFixture } from "../../fixtures/registration.fixture";
 
 describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache", () => {
   describe("condition", () => {
@@ -74,34 +75,69 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
   });
 
   describe("action", () => {
-    it("Gets registration from the Beacons API", async () => {
-      const context: BeaconsGetServerSidePropsContext = {};
-    });
-
-    xit("Copies registration to draft registration cache", async () => {
-      const registrationId = v4();
+    it("gets the existing Registration from getAccountHoldersRegistration", async () => {
+      const registration = {
+        ...registrationFixture,
+        id: v4(),
+        accountHolderId: v4(),
+      };
       const context: BeaconsGetServerSidePropsContext = {
         container: {
+          getAccountHolderId: jest
+            .fn()
+            .mockResolvedValue(registration.accountHolderId),
+          getAccountHoldersRegistration: jest
+            .fn()
+            .mockResolvedValue(registration),
           saveDraftRegistration: jest.fn(),
         },
         query: {
-          id: registrationId,
+          id: registration.id,
         },
-      };
-
+      } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context as any
         );
-      const result = await rule.action();
+
+      await rule.action();
+
+      expect(
+        context.container.getAccountHoldersRegistration
+      ).toHaveBeenCalledWith(registration.id, registration.accountHolderId);
+    });
+
+    it("saves the Registration to the DraftRegistration cache", async () => {
+      const registration = {
+        ...registrationFixture,
+        id: v4(),
+        accountHolderId: v4(),
+      };
+      const context: BeaconsGetServerSidePropsContext = {
+        container: {
+          getAccountHolderId: jest
+            .fn()
+            .mockResolvedValue(registration.accountHolderId),
+          getAccountHoldersRegistration: jest
+            .fn()
+            .mockResolvedValue(registration),
+          saveDraftRegistration: jest.fn(),
+        },
+        query: {
+          id: registration.id,
+        },
+      } as any;
+      const rule =
+        new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+          context as any
+        );
+
+      await rule.action();
 
       expect(context.container.saveDraftRegistration).toHaveBeenCalledWith(
-        registrationId,
+        registration.id,
         registration
       );
     });
   });
 });
-
-// 1. Get existing registration from API (getRegistration())
-// 2. Save that registration to Redis (saveDraftRegistration())

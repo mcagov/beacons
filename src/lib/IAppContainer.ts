@@ -10,7 +10,7 @@ import { AddNewUseToDraftRegistrationFn } from "../useCases/addNewUseToDraftRegi
 import { AuthenticateUserFn } from "../useCases/authenticateUser";
 import { DeleteBeaconFn } from "../useCases/deleteBeacon";
 import { DeleteCachedUseFn } from "../useCases/deleteCachedUse";
-import { getAccountHoldersRegistrationFn } from "../useCases/getAccountHoldersRegistration";
+import { GetAccountHoldersRegistrationFn } from "../useCases/getAccountHoldersRegistration";
 import { GetBeaconsByAccountHolderIdFn } from "../useCases/getBeaconsByAccountHolderId";
 import { GetOrCreateAccountHolderFn } from "../useCases/getOrCreateAccountHolder";
 import { SendConfirmationEmailFn } from "../useCases/sendConfirmationEmail";
@@ -35,7 +35,7 @@ export interface IAppContainer {
   updateAccountHolder: UpdateAccountHolderFn;
   getAccountHolderId;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
-  getAccountHoldersRegistration: getAccountHoldersRegistrationFn;
+  getAccountHoldersRegistration: GetAccountHoldersRegistrationFn;
   deleteBeacon: DeleteBeaconFn;
   addNewUseToDraftRegistration: AddNewUseToDraftRegistrationFn;
 

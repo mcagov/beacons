@@ -1,4 +1,5 @@
 import { GetServerSidePropsResult } from "next";
+import { Registration } from "../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { formSubmissionCookieId } from "../../lib/types";
 import { Rule } from "./Rule";
@@ -17,7 +18,28 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
     return this.context.req?.cookies[formSubmissionCookieId] !== registrationId;
   }
 
-  action(): Promise<GetServerSidePropsResult<any>> {
-    return Promise.resolve(undefined);
+  public async action(): Promise<GetServerSidePropsResult<any>> {
+    const {
+      getAccountHoldersRegistration,
+      getAccountHolderId,
+      saveDraftRegistration,
+    } = this.context.container;
+
+    const registrationId = this.context.query.id as string;
+
+    const accountHolderId = await getAccountHolderId(this.context.session);
+
+    const registration: Registration = await getAccountHoldersRegistration(
+      registrationId,
+      accountHolderId
+    );
+
+    await saveDraftRegistration(registrationId, registration);
+
+    return {
+      props: {
+        registration,
+      },
+    };
   }
 }

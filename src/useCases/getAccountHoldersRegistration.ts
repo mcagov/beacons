@@ -2,7 +2,7 @@ import { Registration } from "../entities/Registration";
 import { beaconToRegistration } from "../lib/beaconToRegistration";
 import { IAppContainer } from "../lib/IAppContainer";
 
-export type getAccountHoldersRegistrationFn = (
+export type GetAccountHoldersRegistrationFn = (
   registrationId: string,
   accountHolderId: string
 ) => Promise<Registration>;
