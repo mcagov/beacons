@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton } from "../../../components/Button";
+import { AdditionalBeaconUseSummary } from "../../../components/domain/AdditionalBeaconUseSummary";
 import { CheckYourAnswersBeaconEmergencyContactsSummary } from "../../../components/domain/CheckYourAnswersBeaconEmergencyContactsSummary";
 import { CheckYourAnswersBeaconInformationSummary } from "../../../components/domain/CheckYourAnswersBeaconInformationSummary";
 import { CheckYourAnswersBeaconOwnerAddressSummary } from "../../../components/domain/CheckYourAnswersBeaconOwnerAddressSummary";
@@ -79,6 +80,14 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                 registration={registration}
                 changeUrl={"#"}
               />
+              {registration.uses.map((use, index) => (
+                <AdditionalBeaconUseSummary
+                  index={index}
+                  use={use}
+                  key={index}
+                  changeUri={"#"}
+                />
+              ))}
             </>
           }
         />
