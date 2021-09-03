@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../src/router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
 
@@ -71,4 +72,36 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       expect(result).toBe(true);
     });
   });
+
+  describe("action", () => {
+    it("Gets registration from the Beacons API", async () => {
+      const context: BeaconsGetServerSidePropsContext = {};
+    });
+
+    xit("Copies registration to draft registration cache", async () => {
+      const registrationId = v4();
+      const context: BeaconsGetServerSidePropsContext = {
+        container: {
+          saveDraftRegistration: jest.fn(),
+        },
+        query: {
+          id: registrationId,
+        },
+      };
+
+      const rule =
+        new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+          context as any
+        );
+      const result = await rule.action();
+
+      expect(context.container.saveDraftRegistration).toHaveBeenCalledWith(
+        registrationId,
+        registration
+      );
+    });
+  });
 });
+
+// 1. Get existing registration from API (getRegistration())
+// 2. Save that registration to Redis (saveDraftRegistration())
