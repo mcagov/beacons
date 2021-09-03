@@ -67,7 +67,7 @@ const myAviationCommercialUseIsNowMyMainUse = () =>
   cy.get("h2").contains(/(?=.*main use)(?=.*aviation)(?=.*commercial)/i);
 
 const thereAreNUses = (n: number) =>
-  cy.get(".govuk-summary-list").should("have.length", n);
+  cy.get("main").get("dt:contains(About this use)").should("have.length", n);
 
 const iCannotSeeMyMaritimePleasureUseBecauseItIsDeleted = () =>
   cy
