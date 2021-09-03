@@ -57,6 +57,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get getBeaconsByAccountHolderId() {
       return getBeaconsByAccountHolderId(this);
     },
+    get getAccountHoldersRegistration() {
+      return getBeaconsByAccountHolderId(this);
+    },
     get deleteBeacon() {
       return deleteBeacon(this);
     },
