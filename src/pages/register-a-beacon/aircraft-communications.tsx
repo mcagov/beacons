@@ -21,12 +21,12 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors } from "../../router/rules/GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
-import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
 interface AircraftCommunicationsForm {
   vhfRadio: string;
@@ -161,7 +161,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       new IfUserDoesNotHaveValidSession(context),
       new IfUserHasNotSpecifiedAUse(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
-      new IfUserViewedRegistrationForm<AircraftCommunicationsForm>(
+      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors<AircraftCommunicationsForm>(
         context,
         validationRules,
         mapper(context),

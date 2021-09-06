@@ -3,20 +3,21 @@ import {
   mapper,
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
-import { IfUserViewedRegistrationForm } from "../../../src/router/rules/IfUserViewedRegistrationForm";
+import { GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors } from "../../../src/router/rules/GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors";
 
-describe("IfUserViewedRegistrationForm", () => {
+describe("GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors", () => {
   it("triggers if the request is a GET request", async () => {
     const context = {
       req: {
         method: "GET",
       },
     };
-    const rule = new IfUserViewedRegistrationForm(
-      context as any,
-      validationRules,
-      mapper
-    );
+    const rule =
+      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors(
+        context as any,
+        validationRules,
+        mapper
+      );
 
     const result = await rule.condition();
 
@@ -29,11 +30,12 @@ describe("IfUserViewedRegistrationForm", () => {
         method: "POST",
       },
     };
-    const rule = new IfUserViewedRegistrationForm(
-      context as any,
-      validationRules,
-      mapper
-    );
+    const rule =
+      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors(
+        context as any,
+        validationRules,
+        mapper
+      );
 
     const result = await rule.condition();
 
@@ -66,11 +68,12 @@ describe("IfUserViewedRegistrationForm", () => {
         }),
       },
     };
-    const rule = new IfUserViewedRegistrationForm(
-      context as any,
-      validationRules,
-      mapper
-    );
+    const rule =
+      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors(
+        context as any,
+        validationRules,
+        mapper
+      );
 
     const result = (await rule.action()) as any;
 

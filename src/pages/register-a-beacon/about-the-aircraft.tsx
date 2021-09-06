@@ -23,12 +23,12 @@ import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationF
 import { FormSubmission } from "../../presenters/formSubmission";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
+import { GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors } from "../../router/rules/GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
 import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
-import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
 
 interface AboutTheAircraftForm {
   maxCapacity: string;
@@ -238,7 +238,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       new IfUserDoesNotHaveValidSession(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
       new IfUserHasNotSpecifiedAUse(context),
-      new IfUserViewedRegistrationForm<AboutTheAircraftForm>(
+      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors<AboutTheAircraftForm>(
         context,
         validationRules,
         mapper(context),
