@@ -15,6 +15,7 @@ import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../../../lib/types";
 import { toUpperCase } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
@@ -70,6 +71,9 @@ const BeaconHexId: FunctionComponent<{ hexId: string }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    console.log("cookie value: ", context.req.cookies[formSubmissionCookieId]);
+    console.log("query:", context.query.id);
+
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(

@@ -21,6 +21,9 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
+    console.log(
+      "triggered GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache"
+    );
     const {
       getAccountHoldersRegistration,
       getAccountHolderId,

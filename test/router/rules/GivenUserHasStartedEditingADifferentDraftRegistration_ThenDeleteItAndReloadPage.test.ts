@@ -10,6 +10,30 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
         req: {
           cookies: {},
         },
+        query: {
+          id: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
+        },
+      };
+      const rule =
+        new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
+          context
+        );
+
+      const triggered = await rule.condition();
+
+      expect(triggered).toBe(false);
+    });
+
+    it(`doesn't trigger if the ${formSubmissionCookieId} exists but is undefined`, async () => {
+      const context: BeaconsGetServerSidePropsContext = {
+        req: {
+          cookies: {
+            [formSubmissionCookieId]: undefined,
+          },
+        },
+        query: {
+          id: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
+        },
       } as any;
       const rule =
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(

@@ -8,17 +8,16 @@ import { Rule } from "./Rule";
 export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage
   implements Rule
 {
-  private context: BeaconsGetServerSidePropsContext;
+  private readonly context: BeaconsGetServerSidePropsContext;
 
   constructor(context: BeaconsGetServerSidePropsContext) {
     this.context = context;
   }
 
   public async condition(): Promise<boolean> {
-    return (
-      this.context.req.cookies[formSubmissionCookieId] !==
-      this.context.query?.id
-    );
+    if (this.thereIsNoDraftRegistrationCookieSet()) return false;
+
+    return this.theDraftRegistrationCookieIdMatchesTheQueryId();
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
@@ -29,5 +28,16 @@ export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItA
     clearFormSubmissionCookie(this.context);
 
     return redirectUserTo(this.context.req.url);
+  }
+
+  private thereIsNoDraftRegistrationCookieSet() {
+    return !this.context.req.cookies[formSubmissionCookieId];
+  }
+
+  private theDraftRegistrationCookieIdMatchesTheQueryId() {
+    return (
+      this.context.req.cookies[formSubmissionCookieId] !==
+      this.context.query?.id
+    );
   }
 }
