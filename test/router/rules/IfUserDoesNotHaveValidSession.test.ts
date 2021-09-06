@@ -1,4 +1,5 @@
 import { BeaconsSession } from "../../../src/gateways/NextAuthUserSessionGateway";
+import { ErrorPageURLs } from "../../../src/lib/urls";
 import { IfUserDoesNotHaveValidSession } from "../../../src/router/rules/IfUserDoesNotHaveValidSession";
 
 describe("IfUserDoesNotHaveValidSession", () => {

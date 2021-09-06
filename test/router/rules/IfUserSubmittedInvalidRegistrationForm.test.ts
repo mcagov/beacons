@@ -80,6 +80,7 @@ describe("IfUserSubmittedInvalidRegistrationForm", () => {
       container: {
         parseFormDataAs: jest.fn().mockResolvedValue(invalidForm),
         saveDraftRegistration: jest.fn(),
+        getDraftRegistration: jest.fn(),
       },
     };
     const rule = new IfUserSubmittedInvalidRegistrationForm(

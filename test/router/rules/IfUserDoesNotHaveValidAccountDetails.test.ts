@@ -1,3 +1,4 @@
+import { AccountPageURLs } from "../../../src/lib/urls";
 import { IfUserDoesNotHaveValidAccountDetails } from "../../../src/router/rules/IfUserDoesNotHaveValidAccountDetails";
 
 describe("IfUserDoesNotHaveValidAccountDetails", () => {
