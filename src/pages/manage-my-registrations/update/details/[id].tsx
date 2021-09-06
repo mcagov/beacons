@@ -42,7 +42,15 @@ const BeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
       showCookieBanner={showCookieBanner}
     >
       <BeaconsFormHeading pageHeading={pageHeading} />
-      <BeaconsFormHeading pageHeading={pageHeading} />
+      <GovUKBody>
+        The Unique Identifying Number (UIN) or Hexadecimal Identification (HEX
+        ID) of a registered beacon is not editable.
+        <br />
+        <br />
+        If you wish to change the beacon&apos;s UIN or HEX ID, you must first
+        delete the registration then register the beacon again with the new
+        UIN/HEX ID.
+      </GovUKBody>
       <BeaconManufacturerInput
         value={form.fields.manufacturer.value}
         errorMessages={form.fields.manufacturer.errorMessages}
