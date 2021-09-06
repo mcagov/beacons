@@ -77,7 +77,8 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context
       ),
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
-        context
+        context,
+        context.query.id as string
       ),
       new IfUserViewedRegistrationForm(context, validationRules, mapper),
     ]).execute();
