@@ -2,7 +2,7 @@ import {
   Environment,
   Purpose,
 } from "../../../src/lib/deprecatedRegistration/types";
-import { PageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyBeaconDetails,
   iCanEditMyAdditionalBeaconInformation,
@@ -86,7 +86,7 @@ describe("As a single beacon owner with many uses", () => {
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
-    thenTheUrlShouldContain(PageURLs.checkYourAnswers);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeASectionHeadingThatContains("Main use");
@@ -158,30 +158,38 @@ const iCanGoBackThroughTheFormInReverse = () => {
 };
 
 const iCanClickEveryChangeButtonToEditMyRegistration = () => {
-  givenIAmAt(PageURLs.checkYourAnswers);
+  givenIAmAt(CreateRegistrationPageURLs.checkYourAnswers);
 
   const changeLinkAssertions = {
-    [PageURLs.checkBeaconDetails]: iCanEditMyBeaconDetails,
-    [PageURLs.beaconInformation]: iCanEditMyAdditionalBeaconInformation,
-    [PageURLs.environment + "?useIndex=0"]: iCanEditMyLandEnvironment,
-    [PageURLs.landCommunications + "?useIndex=0"]: iCanEditMyLandCommunications,
-    [PageURLs.moreDetails + "?useIndex=0"]:
+    [CreateRegistrationPageURLs.checkBeaconDetails]: iCanEditMyBeaconDetails,
+    [CreateRegistrationPageURLs.beaconInformation]:
+      iCanEditMyAdditionalBeaconInformation,
+    [CreateRegistrationPageURLs.environment + "?useIndex=0"]:
+      iCanEditMyLandEnvironment,
+    [CreateRegistrationPageURLs.landCommunications + "?useIndex=0"]:
+      iCanEditMyLandCommunications,
+    [CreateRegistrationPageURLs.moreDetails + "?useIndex=0"]:
       iCanEditMyAdditionalLandUseMoreDetails,
-    [PageURLs.environment + "?useIndex=1"]: iCanEditMyMaritimeEnvironment,
-    [PageURLs.aboutTheVessel + "?useIndex=1"]: iCanEditMyVesselDetails,
-    [PageURLs.vesselCommunications + "?useIndex=1"]:
+    [CreateRegistrationPageURLs.environment + "?useIndex=1"]:
+      iCanEditMyMaritimeEnvironment,
+    [CreateRegistrationPageURLs.aboutTheVessel + "?useIndex=1"]:
+      iCanEditMyVesselDetails,
+    [CreateRegistrationPageURLs.vesselCommunications + "?useIndex=1"]:
       iCanEditMyVesselCommunications,
-    [PageURLs.moreDetails + "?useIndex=1"]:
+    [CreateRegistrationPageURLs.moreDetails + "?useIndex=1"]:
       iCanEditMyAdditionalMaritimeUseInformation,
-    [PageURLs.environment + "?useIndex=2"]: iCanEditMyAviationEnvironment,
-    [PageURLs.aboutTheAircraft + "?useIndex=2"]: iCanEditMyAircraftDetails,
-    [PageURLs.aircraftCommunications + "?useIndex=2"]:
+    [CreateRegistrationPageURLs.environment + "?useIndex=2"]:
+      iCanEditMyAviationEnvironment,
+    [CreateRegistrationPageURLs.aboutTheAircraft + "?useIndex=2"]:
+      iCanEditMyAircraftDetails,
+    [CreateRegistrationPageURLs.aircraftCommunications + "?useIndex=2"]:
       iCanEditMyAircraftCommunications,
-    [PageURLs.moreDetails + "?useIndex=2"]:
+    [CreateRegistrationPageURLs.moreDetails + "?useIndex=2"]:
       iCanEditMyAdditionalAviationUseInformation,
-    [PageURLs.aboutBeaconOwner]: iCanEditMyPersonalDetails,
-    [PageURLs.beaconOwnerAddress]: iCanEditMyAddressDetails,
-    [PageURLs.emergencyContact]: iCanEditMyEmergencyContactDetails,
+    [CreateRegistrationPageURLs.aboutBeaconOwner]: iCanEditMyPersonalDetails,
+    [CreateRegistrationPageURLs.beaconOwnerAddress]: iCanEditMyAddressDetails,
+    [CreateRegistrationPageURLs.emergencyContact]:
+      iCanEditMyEmergencyContactDetails,
   };
 
   Object.entries(changeLinkAssertions).forEach(([href, assertion]) => {
@@ -193,9 +201,9 @@ const iCanClickEveryChangeButtonToEditMyRegistration = () => {
     // check-your-answers.  E.g.:
     // ---
     // andIClickContinue();
-    // thenTheUrlShouldContain(PageURLs.checkYourAnswers)
+    // thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers)
     // ---
     // See https://design-system.service.gov.uk/patterns/check-answers/
-    cy.visit(PageURLs.checkYourAnswers);
+    cy.visit(CreateRegistrationPageURLs.checkYourAnswers);
   });
 };

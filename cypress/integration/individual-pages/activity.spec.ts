@@ -1,4 +1,4 @@
-import { PageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
@@ -23,7 +23,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
 
   beforeEach(() => {
     givenIHaveSignedIn();
-    givenIHaveACookieSetAndIVisit(PageURLs.environment);
+    givenIHaveACookieSetAndIVisit(CreateRegistrationPageURLs.environment);
   });
 
   describe("As a maritime, pleasure owner", () => {

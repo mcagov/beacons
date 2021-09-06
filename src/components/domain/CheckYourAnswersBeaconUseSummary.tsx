@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { Environment } from "../../lib/deprecatedRegistration/types";
-import { PageURLs } from "../../lib/urls";
+import { CreateRegistrationPageURLs } from "../../lib/urls";
 import {
   makeEnumValueUserFriendly,
   ordinal,
@@ -19,7 +19,7 @@ interface CheckYourAnswersBeaconUseSummaryProps {
 
 export const CheckYourAnswersBeaconUseSummary: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
   ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
-    const href = `${PageURLs.environment}?useIndex=${index}`;
+    const href = `${CreateRegistrationPageURLs.environment}?useIndex=${index}`;
     let aboutTheSection = <></>;
     let commsSection = <></>;
     switch (use.environment) {
@@ -29,7 +29,7 @@ export const CheckYourAnswersBeaconUseSummary: FunctionComponent<CheckYourAnswer
           <CommunicationsSubSection
             index={index}
             use={use}
-            href={PageURLs.vesselCommunications}
+            href={CreateRegistrationPageURLs.vesselCommunications}
           />
         );
         break;
@@ -41,7 +41,7 @@ export const CheckYourAnswersBeaconUseSummary: FunctionComponent<CheckYourAnswer
           <CommunicationsSubSection
             index={index}
             use={use}
-            href={PageURLs.aircraftCommunications}
+            href={CreateRegistrationPageURLs.aircraftCommunications}
           />
         );
         break;
@@ -50,7 +50,7 @@ export const CheckYourAnswersBeaconUseSummary: FunctionComponent<CheckYourAnswer
           <CommunicationsSubSection
             index={index}
             use={use}
-            href={PageURLs.landCommunications}
+            href={CreateRegistrationPageURLs.landCommunications}
           />
         );
         break;
@@ -82,7 +82,7 @@ export const CheckYourAnswersBeaconUseSummary: FunctionComponent<CheckYourAnswer
 
 const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
   ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
-    const href = `${PageURLs.aboutTheVessel}?useIndex=${index}`;
+    const href = `${CreateRegistrationPageURLs.aboutTheVessel}?useIndex=${index}`;
     return (
       <>
         <SummaryList>
@@ -144,7 +144,7 @@ const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSumma
 
 const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
   ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
-    const href = `${PageURLs.aboutTheAircraft}?useIndex=${index}`;
+    const href = `${CreateRegistrationPageURLs.aboutTheAircraft}?useIndex=${index}`;
 
     return (
       <>
@@ -259,7 +259,7 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSumma
 
 const MoreDetailsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
   ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
-    const href = `${PageURLs.moreDetails}?useIndex=${index}`;
+    const href = `${CreateRegistrationPageURLs.moreDetails}?useIndex=${index}`;
     return (
       <>
         <SummaryList>

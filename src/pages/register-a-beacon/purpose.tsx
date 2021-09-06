@@ -15,7 +15,7 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs, queryParams } from "../../lib/urls";
+import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { FormSubmission } from "../../presenters/formSubmission";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
@@ -50,7 +50,9 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
-      previousPageUrl={PageURLs.environment + queryParams({ useIndex })}
+      previousPageUrl={
+        CreateRegistrationPageURLs.environment + queryParams({ useIndex })
+      }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
     >
@@ -82,7 +84,7 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = PageURLs.activity;
+    const nextPage = CreateRegistrationPageURLs.activity;
 
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),

@@ -20,7 +20,7 @@ import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { PageURLs } from "../../lib/urls";
+import { CreateRegistrationPageURLs } from "../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../presenters/formSubmission";
@@ -57,7 +57,7 @@ const BeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl={PageURLs.checkBeaconDetails}
+      previousPageUrl={CreateRegistrationPageURLs.checkBeaconDetails}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
@@ -198,7 +198,7 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = PageURLs.environment;
+    const nextPageUrl = CreateRegistrationPageURLs.environment;
 
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),

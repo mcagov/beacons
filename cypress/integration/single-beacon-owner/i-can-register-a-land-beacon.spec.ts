@@ -1,5 +1,8 @@
 import { Environment } from "../../../src/lib/deprecatedRegistration/types";
-import { GeneralPageURLs, PageURLs } from "../../../src/lib/urls";
+import {
+  CreateRegistrationPageURLs,
+  GeneralPageURLs,
+} from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyBeaconDetails,
   iCanEditMyAdditionalBeaconInformation,
@@ -53,7 +56,7 @@ describe("As a land beacon owner", () => {
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
-    thenTheUrlShouldContain(PageURLs.checkYourAnswers);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMySingleLandUse();

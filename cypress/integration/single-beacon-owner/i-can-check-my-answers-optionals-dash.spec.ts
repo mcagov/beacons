@@ -1,5 +1,5 @@
 import { Purpose } from "../../../src/lib/deprecatedRegistration/types";
-import { PageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyRequiredBeaconDetails,
   iCanSeeMyBeaconDetails,
@@ -34,7 +34,7 @@ describe("As a beacon owner who enters all required fields,", () => {
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyRequiredEmergencyContactDetails();
 
-    thenTheUrlShouldContain(PageURLs.checkYourAnswers);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyRequiredAdditionalBeaconInformationOrDash();
 

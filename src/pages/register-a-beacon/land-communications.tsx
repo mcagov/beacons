@@ -16,7 +16,11 @@ import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { ofcomLicenseUrl, PageURLs, queryParams } from "../../lib/urls";
+import {
+  CreateRegistrationPageURLs,
+  ofcomLicenseUrl,
+  queryParams,
+} from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../presenters/formSubmission";
@@ -66,7 +70,9 @@ const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   return (
     <BeaconsForm
       pageHeading={pageHeading}
-      previousPageUrl={PageURLs.activity + queryParams({ useIndex })}
+      previousPageUrl={
+        CreateRegistrationPageURLs.activity + queryParams({ useIndex })
+      }
       formErrors={form.errorSummary}
       showCookieBanner={showCookieBanner}
     >
@@ -176,7 +182,7 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = PageURLs.moreDetails;
+    const nextPage = CreateRegistrationPageURLs.moreDetails;
 
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),

@@ -15,7 +15,7 @@ import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { PageURLs } from "../../lib/urls";
+import { CreateRegistrationPageURLs } from "../../lib/urls";
 import { ordinal } from "../../lib/writingStyle";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
@@ -61,8 +61,9 @@ const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
       formErrors={form.errorSummary}
       previousPageUrl={
         useIndex === 0
-          ? PageURLs.beaconInformation
-          : PageURLs.additionalUse + `?useIndex=${useIndex - 1}`
+          ? CreateRegistrationPageURLs.beaconInformation
+          : CreateRegistrationPageURLs.additionalUse +
+            `?useIndex=${useIndex - 1}`
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -146,13 +147,13 @@ const props = (
 
 const nextPage = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<PageURLs> => {
+): Promise<CreateRegistrationPageURLs> => {
   const { environment } =
     await context.container.parseFormDataAs<BeaconUseForm>(context.req);
 
   return environment === Environment.LAND
-    ? PageURLs.activity
-    : PageURLs.purpose;
+    ? CreateRegistrationPageURLs.activity
+    : CreateRegistrationPageURLs.purpose;
 };
 
 const mapper = (context: BeaconsGetServerSidePropsContext) => {

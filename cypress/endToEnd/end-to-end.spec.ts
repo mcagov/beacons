@@ -1,4 +1,7 @@
-import { AccountPageURLs, PageURLs } from "../../src/lib/urls";
+import {
+  AccountPageURLs,
+  CreateRegistrationPageURLs,
+} from "../../src/lib/urls";
 import { sentenceCase } from "../../src/lib/writingStyle";
 import {
   testBeaconAndOwnerData,
@@ -46,12 +49,12 @@ describe("As user with an account", () => {
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
     givenIHaveClicked(".govuk-button--start");
-    thenTheUrlShouldContain(PageURLs.applicationComplete);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.applicationComplete);
     givenIHaveClicked(".govuk-button");
     thenTheUrlShouldContain(AccountPageURLs.accountHome);
     iCanSeeTheBeaconListWithMyInformation();
 
     givenIHaveClickedToCreateANewBeacon();
-    thenTheUrlShouldContain(PageURLs.checkBeaconDetails);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkBeaconDetails);
   });
 });

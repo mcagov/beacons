@@ -1,5 +1,5 @@
 import { Purpose } from "../../../src/lib/deprecatedRegistration/types";
-import { PageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyBeaconDetails,
   iCanSeeMyAdditionalBeaconInformation,
@@ -37,7 +37,7 @@ describe("As an aviation beacon owner,", () => {
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
-    thenTheUrlShouldContain(PageURLs.checkYourAnswers);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMySingleAviationUse(Purpose.PLEASURE);
@@ -58,7 +58,7 @@ describe("As an aviation beacon owner,", () => {
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
-    thenTheUrlShouldContain(PageURLs.checkYourAnswers);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMySingleAviationUse(Purpose.COMMERCIAL);

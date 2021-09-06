@@ -19,7 +19,11 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs, queryParams, UpdatePageURLs } from "../../lib/urls";
+import {
+  CreateRegistrationPageURLs,
+  queryParams,
+  UpdatePageURLs,
+} from "../../lib/urls";
 import { formatDateTruncated, formatUses } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserDoesNotHaveValidAccountDetails } from "../../router/rules/IfUserDoesNotHaveValidAccountDetails";
@@ -268,7 +272,7 @@ const RegisterANewBeacon: FunctionComponent = (): JSX.Element => (
     <SectionHeading>Register a new beacon</SectionHeading>
     <LinkButton
       buttonText="Register a new beacon"
-      href={PageURLs.checkBeaconDetails}
+      href={CreateRegistrationPageURLs.checkBeaconDetails}
     />
   </>
 );

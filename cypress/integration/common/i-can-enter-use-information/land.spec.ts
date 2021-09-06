@@ -1,5 +1,5 @@
 import { Environment } from "../../../../src/lib/deprecatedRegistration/types";
-import { PageURLs } from "../../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../../src/lib/urls";
 import { makeEnumValueUserFriendly } from "../../../../src/lib/writingStyle";
 import { testLandUseData } from "../happy-path-test-data.spec";
 import {
@@ -14,21 +14,21 @@ import {
 import { iCanEditMyEnvironment } from "./generic.spec";
 
 export const givenIHaveEnteredMyLandUse = (): void => {
-  thenTheUrlShouldContain(PageURLs.environment);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
   givenIHaveSelected("#land");
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.activity);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
   iCanSeeAPageHeadingThatContains("land");
   givenIHaveSelected(`#${testLandUseData.type.activity.toLowerCase()}`);
 
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.landCommunications);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.landCommunications);
   givenIHaveEnteredMyLandCommunicationDetails();
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.moreDetails);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.moreDetails);
   givenIHaveEnteredMoreDetailsAboutMyLandUse();
   andIClickContinue();
 };
@@ -74,13 +74,13 @@ export const iCanViewMyChangedLandCommunications = (): void => {
   cy.get("#otherCommunicationInput").should("not.be.visible");
   andIClickContinue();
 
-  cy.visit(PageURLs.checkYourAnswers);
+  cy.visit(CreateRegistrationPageURLs.checkYourAnswers);
   Object.values(comms)
     .filter((value) => typeof value === "string")
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIAmAt(PageURLs.landCommunications + "?useIndex=0");
+  andIAmAt(CreateRegistrationPageURLs.landCommunications + "?useIndex=0");
 };
 
 export const iCanEditMyLandActivity = (): void => {

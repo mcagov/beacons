@@ -17,7 +17,7 @@ import { Validators } from "../../../lib/form/Validators";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
-import { PageURLs } from "../../../lib/urls";
+import { CreateRegistrationPageURLs } from "../../../lib/urls";
 import { prettyUseName } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_ThenShowErrorMessage } from "../../../router/rules/GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_ThenShowErrorMessage";
@@ -29,7 +29,7 @@ export interface DeleteRegistrationProps {
   form: FormJSON;
   beacon: Beacon;
   showCookieBanner: boolean;
-  previousPageURL?: PageURLs;
+  previousPageURL?: CreateRegistrationPageURLs;
 }
 
 export interface DeleteRegistrationForm {

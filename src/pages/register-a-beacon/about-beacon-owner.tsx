@@ -10,7 +10,7 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs, queryParams } from "../../lib/urls";
+import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
@@ -125,7 +125,7 @@ const EmailAddress: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = PageURLs.beaconOwnerAddress;
+    const nextPageUrl = CreateRegistrationPageURLs.beaconOwnerAddress;
 
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),
@@ -163,7 +163,7 @@ const props = async (
     )?.uses || [];
 
   const previousPageUrl =
-    PageURLs.additionalUse +
+    CreateRegistrationPageURLs.additionalUse +
     queryParams({ useIndex: uses.length > 1 ? uses.length - 1 : 0 });
 
   return {

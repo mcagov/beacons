@@ -24,7 +24,7 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { acceptRejectCookieId } from "../../lib/types";
-import { PageURLs } from "../../lib/urls";
+import { CreateRegistrationPageURLs } from "../../lib/urls";
 import { FormSubmission } from "../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { Rule } from "../../router/rules/Rule";
@@ -129,7 +129,7 @@ class IfUserSubmittedSignUpOrSignInForm implements Rule {
     return isValid(await this.form(), this.validationRules);
   }
 
-  private async nextPage(): Promise<PageURLs> {
+  private async nextPage(): Promise<CreateRegistrationPageURLs> {
     switch ((await this.form()).signUpOrSignIn) {
       case "signUp":
         return AccountPageURLs.signUp;

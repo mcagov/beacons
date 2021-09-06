@@ -10,7 +10,11 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
-import { ActionURLs, PageURLs, queryParams } from "../../lib/urls";
+import {
+  ActionURLs,
+  CreateRegistrationPageURLs,
+  queryParams,
+} from "../../lib/urls";
 import { prettyUseName } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
@@ -38,7 +42,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
           uses.length > 0 && (
             <BackButton
               href={
-                PageURLs.moreDetails +
+                CreateRegistrationPageURLs.moreDetails +
                 queryParams({
                   useIndex: currentUseIndex,
                 })
@@ -74,7 +78,11 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                       <AdditionalBeaconUseSummary
                         index={index}
                         use={use}
-                        changeUri={PageURLs.environment + "?useIndex=" + index}
+                        changeUri={
+                          CreateRegistrationPageURLs.environment +
+                          "?useIndex=" +
+                          index
+                        }
                         deleteUri={confirmBeforeDelete(use, index)}
                         key={`row${index}`}
                       />
@@ -89,7 +97,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                   <br />
                   <LinkButton
                     buttonText="Continue"
-                    href={PageURLs.aboutBeaconOwner}
+                    href={CreateRegistrationPageURLs.aboutBeaconOwner}
                   />
                 </>
               )}
@@ -110,13 +118,15 @@ const confirmBeforeDelete = (use: DraftBeaconUse, index: number) =>
       queryParams({
         useIndex: index,
         onSuccess:
-          PageURLs.additionalUse +
+          CreateRegistrationPageURLs.additionalUse +
           queryParams({
             useIndex: index >= 1 ? index - 1 : 0,
           }),
         onFailure: ErrorPageURLs.serverError,
       }),
-    no: PageURLs.additionalUse + queryParams({ useIndex: index }),
+    no:
+      CreateRegistrationPageURLs.additionalUse +
+      queryParams({ useIndex: index }),
   });
 
 export const getServerSideProps: GetServerSideProps = withSession(

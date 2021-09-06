@@ -25,7 +25,7 @@ export enum DeleteRegistrationPageURLs {
   deleteRegistrationFailure = "/manage-my-registrations/delete/failure",
 }
 
-export enum PageURLs {
+export enum CreateRegistrationPageURLs {
   checkBeaconDetails = "/register-a-beacon/check-beacon-details",
   beaconInformation = "/register-a-beacon/beacon-information",
   environment = "/register-a-beacon/beacon-use",

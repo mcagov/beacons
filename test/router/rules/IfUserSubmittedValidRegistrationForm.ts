@@ -1,5 +1,5 @@
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { PageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
   mapper,
   validationRules,
@@ -25,7 +25,7 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const nextPageUrl = PageURLs.beaconInformation;
+    const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
     const rule = new IfUserSubmittedValidRegistrationForm(
       context as any,
       validationRules,
@@ -56,7 +56,7 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const nextPageUrl = PageURLs.beaconInformation;
+    const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
     const rule = new IfUserSubmittedValidRegistrationForm(
       context as any,
       validationRules,
@@ -87,7 +87,7 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const nextPageUrl = PageURLs.beaconInformation;
+    const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
     const rule = new IfUserSubmittedValidRegistrationForm(
       context as any,
       validationRules,
@@ -100,7 +100,7 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
     expect(result).toStrictEqual({
       redirect: {
         statusCode: 303,
-        destination: PageURLs.beaconInformation,
+        destination: CreateRegistrationPageURLs.beaconInformation,
       },
     });
   });

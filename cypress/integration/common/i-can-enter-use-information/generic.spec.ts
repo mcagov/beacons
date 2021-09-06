@@ -1,5 +1,5 @@
 import { Environment } from "../../../../src/lib/deprecatedRegistration/types";
-import { PageURLs } from "../../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../../src/lib/urls";
 import {
   andIClickContinue,
   andIClickTheButtonContaining,
@@ -13,12 +13,12 @@ export const iCanEditMyEnvironment = (environment: Environment): void => {
 };
 
 export const andIHaveNoFurtherUses = (): void => {
-  thenTheUrlShouldContain(PageURLs.additionalUse);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.additionalUse);
   andIClickContinue();
 };
 
 export const andIHaveAnotherUse = (): void => {
-  thenTheUrlShouldContain(PageURLs.additionalUse);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.additionalUse);
   andIClickTheButtonContaining("Add another");
   iShouldBeEditingAFreshUse();
 };

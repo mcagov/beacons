@@ -22,7 +22,7 @@ import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { PageURLs } from "../../lib/urls";
+import { CreateRegistrationPageURLs } from "../../lib/urls";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
@@ -190,7 +190,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = PageURLs.checkYourAnswers;
+    const nextPageUrl = CreateRegistrationPageURLs.checkYourAnswers;
 
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),

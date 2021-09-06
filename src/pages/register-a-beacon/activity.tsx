@@ -22,7 +22,7 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs, queryParams } from "../../lib/urls";
+import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../presenters/formSubmission";
@@ -85,8 +85,8 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
     <BeaconsForm
       previousPageUrl={
         (environment === Environment.LAND
-          ? PageURLs.environment
-          : PageURLs.purpose) + queryParams({ useIndex })
+          ? CreateRegistrationPageURLs.environment
+          : CreateRegistrationPageURLs.purpose) + queryParams({ useIndex })
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -599,7 +599,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
 const nextPage = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<PageURLs> => {
+): Promise<CreateRegistrationPageURLs> => {
   const environment = (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId]
@@ -608,13 +608,13 @@ const nextPage = async (
 
   switch (environment) {
     case Environment.MARITIME:
-      return PageURLs.aboutTheVessel;
+      return CreateRegistrationPageURLs.aboutTheVessel;
     case Environment.AVIATION:
-      return PageURLs.aboutTheAircraft;
+      return CreateRegistrationPageURLs.aboutTheAircraft;
     case Environment.LAND:
-      return PageURLs.landCommunications;
+      return CreateRegistrationPageURLs.landCommunications;
     default:
-      return PageURLs.environment;
+      return CreateRegistrationPageURLs.environment;
   }
 };
 
