@@ -1,6 +1,15 @@
 export const ofcomLicenseUrl =
   "https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio";
 
+export type ExistingPageURLs =
+  | AccountPageURLs
+  | GeneralPageURLs
+  | ErrorPageURLs
+  | DeleteRegistrationPageURLs
+  | CreateRegistrationPageURLs
+  | UpdatePageURLs
+  | ActionURLs;
+
 export enum AccountPageURLs {
   signUpOrSignIn = "/account/sign-up-or-sign-in",
   signUp = "/account/sign-up",
@@ -48,6 +57,7 @@ export enum CreateRegistrationPageURLs {
 export enum UpdatePageURLs {
   registrationSummary = "/manage-my-registrations/update",
   beaconDetails = "/manage-my-registrations/update/details/",
+  beaconInformation = "/manage-my-registrations/update/beacon-information/",
 }
 
 export enum ActionURLs {
