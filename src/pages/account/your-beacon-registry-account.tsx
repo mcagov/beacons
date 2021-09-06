@@ -229,7 +229,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
   beacon,
 }: BeaconRowProps): JSX.Element => {
   const confirmBeforeDelete = (registrationId: string) =>
-    PageURLs.deleteRegistration +
+    DeleteRegistrationPageURLs.deleteRegistration +
     queryParams({
       id: registrationId,
     });

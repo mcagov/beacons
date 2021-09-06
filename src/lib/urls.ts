@@ -19,6 +19,12 @@ export enum ErrorPageURLs {
   unauthenticated = "/unauthenticated",
 }
 
+export enum DeleteRegistrationPageURLs {
+  deleteRegistration = "/manage-my-registrations/delete",
+  deleteRegistrationSuccess = "/manage-my-registrations/delete/success",
+  deleteRegistrationFailure = "/manage-my-registrations/delete/failure",
+}
+
 export enum PageURLs {
   checkBeaconDetails = "/register-a-beacon/check-beacon-details",
   beaconInformation = "/register-a-beacon/beacon-information",
@@ -37,10 +43,6 @@ export enum PageURLs {
   emergencyContact = "/register-a-beacon/emergency-contact",
   checkYourAnswers = "/register-a-beacon/check-your-answers",
   applicationComplete = "/register-a-beacon/application-complete",
-
-  deleteRegistration = "/manage-my-registrations/delete",
-  deleteRegistrationSuccess = "/manage-my-registrations/delete/success",
-  deleteRegistrationFailure = "/manage-my-registrations/delete/failure",
 }
 
 export enum UpdatePageURLs {
