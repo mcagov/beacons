@@ -29,11 +29,11 @@ import { FormSubmission } from "../../presenters/formSubmission";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
-import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 
 interface ActivityForm {
   environment: string;
@@ -587,7 +587,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         mapper(context),
         props(context)
       ),
-      new IfUserSubmittedValidRegistrationForm<ActivityForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<ActivityForm>(
         context,
         validationRules,
         mapper(context),

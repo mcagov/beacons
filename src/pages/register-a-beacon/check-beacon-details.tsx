@@ -19,10 +19,10 @@ import { toUpperCase } from "../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
-import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 
 interface CheckBeaconDetailsForm {
   manufacturer: string;
@@ -103,7 +103,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         validationRules,
         mapper
       ),
-      new IfUserSubmittedValidRegistrationForm(
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
         context,
         validationRules,
         mapper,
