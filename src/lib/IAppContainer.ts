@@ -22,11 +22,13 @@ export interface IAppContainer {
   authenticateUser: AuthenticateUserFn;
   submitRegistration: SubmitRegistrationFn;
   sendConfirmationEmail: SendConfirmationEmailFn;
+
   getDraftRegistration: (id: string) => Promise<DraftRegistration>;
   saveDraftRegistration: (
     id: string,
     updates: DraftRegistration
   ) => Promise<void>;
+  deleteDraftRegistration: (id: string) => Promise<void>;
   deleteCachedUse: DeleteCachedUseFn;
 
   parseFormDataAs<T>(request: IncomingMessage): Promise<T>;

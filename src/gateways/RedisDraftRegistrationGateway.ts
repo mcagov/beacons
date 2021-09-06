@@ -8,6 +8,32 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
     new Redis(process.env.REDIS_URI)
   );
 
+  public async read(id: string): Promise<DraftRegistration> {
+    return (await this.cache.get(id)) as DraftRegistration;
+  }
+
+  public async update(
+    id: string,
+    draftRegistration: DraftRegistration
+  ): Promise<void> {
+    await this.cache.set(id, draftRegistration);
+  }
+
+  public async delete(id: string): Promise<void> {
+    await this.cache.del(id);
+  }
+
+  public async createEmptyUse(submissionId: string): Promise<void> {
+    const registration: DraftRegistration = await this.read(submissionId);
+
+    const registrationWithNewUse = {
+      ...registration,
+      uses: [...(registration?.uses || []), {}],
+    };
+
+    await this.update(submissionId, registrationWithNewUse);
+  }
+
   public async deleteUse(
     submissionId: string,
     useIndex: number
@@ -20,27 +46,5 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
     };
 
     await this.update(submissionId, registrationMinusDeletedUse);
-  }
-
-  public async read(id: string): Promise<DraftRegistration> {
-    return (await this.cache.get(id)) as DraftRegistration;
-  }
-
-  public async update(
-    id: string,
-    draftRegistration: DraftRegistration
-  ): Promise<void> {
-    await this.cache.set(id, draftRegistration);
-  }
-
-  public async createEmptyUse(submissionId: string): Promise<void> {
-    const registration: DraftRegistration = await this.read(submissionId);
-
-    const registrationWithNewUse = {
-      ...registration,
-      uses: [...(registration?.uses || []), {}],
-    };
-
-    await this.update(submissionId, registrationWithNewUse);
   }
 }
