@@ -41,7 +41,7 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
       UK registration.
     </GovUKBody>
   );
-  const previousPageUrl = PageURLs.accountHome;
+  const previousPageUrl = AccountPageURLs.accountHome;
 
   return (
     <BeaconsForm

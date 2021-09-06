@@ -1,4 +1,4 @@
-import { PageURLs } from "../../src/lib/urls";
+import { AccountPageURLs, PageURLs } from "../../src/lib/urls";
 import { sentenceCase } from "../../src/lib/writingStyle";
 import {
   testBeaconAndOwnerData,
@@ -35,7 +35,7 @@ describe("As user with an account", () => {
     givenIHaveClicked(".govuk-button");
 
   it("I register a beacon with a single use and see it in my Account page and I can click to start to create another beacon", () => {
-    givenIHaveACookieSetAndHaveSignedInIVisit(PageURLs.updateAccount);
+    givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.updateAccount);
     givenIHaveFilledInUpdateAccountDetailsPage();
     iCanSeeMyAccountDetails();
     givenIHaveClickedToCreateANewBeacon();
@@ -48,7 +48,7 @@ describe("As user with an account", () => {
     givenIHaveClicked(".govuk-button--start");
     thenTheUrlShouldContain(PageURLs.applicationComplete);
     givenIHaveClicked(".govuk-button");
-    thenTheUrlShouldContain(PageURLs.accountHome);
+    thenTheUrlShouldContain(AccountPageURLs.accountHome);
     iCanSeeTheBeaconListWithMyInformation();
 
     givenIHaveClickedToCreateANewBeacon();

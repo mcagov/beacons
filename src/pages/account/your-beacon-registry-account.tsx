@@ -88,7 +88,7 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
         <SectionHeading classes="govuk-!-margin-0">Your details</SectionHeading>
         <div>
           <AnchorLink
-            href={PageURLs.updateAccount}
+            href={AccountPageURLs.updateAccount}
             classes="govuk-link--no-visited-state govuk-!-margin-right-4"
             description="Your details"
           >

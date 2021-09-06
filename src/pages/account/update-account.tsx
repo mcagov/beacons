@@ -20,7 +20,6 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
-import { PageURLs } from "../../lib/urls";
 import { diffObjValues } from "../../lib/utils";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 
@@ -69,7 +68,7 @@ const UpdateAccount: FunctionComponent<UpdateAccountPageProps> = ({
               &nbsp;
               <LinkButton
                 buttonText="Cancel"
-                href={PageURLs.accountHome}
+                href={AccountPageURLs.accountHome}
                 classes="govuk-button--secondary"
               />
             </Form>
@@ -192,7 +191,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
     const update = diffObjValues(accountUpdateFields(accountHolder), formData);
     await updateAccountHolder(accountHolder.id, update as AccountHolder);
 
-    return redirectUserTo(PageURLs.accountHome);
+    return redirectUserTo(AccountPageURLs.accountHome);
   })
 );
 

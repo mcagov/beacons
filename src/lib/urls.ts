@@ -1,14 +1,20 @@
 export const ofcomLicenseUrl =
   "https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/ships-radio";
 
-export enum PageURLs {
-  start = "/",
+export enum AccountPageURLs {
   signUpOrSignIn = "/account/sign-up-or-sign-in",
   signUp = "/account/sign-up",
   signIn = "/account/sign-in",
   accountHome = "/account/your-beacon-registry-account",
   updateAccount = "/account/update-account",
+}
+
+export enum PageURLs {
+  start = "/",
   areYouSure = "/are-you-sure",
+  serverError = "/500",
+  unauthenticated = "/unauthenticated",
+
   checkBeaconDetails = "/register-a-beacon/check-beacon-details",
   beaconInformation = "/register-a-beacon/beacon-information",
   environment = "/register-a-beacon/beacon-use",
@@ -26,11 +32,10 @@ export enum PageURLs {
   emergencyContact = "/register-a-beacon/emergency-contact",
   checkYourAnswers = "/register-a-beacon/check-your-answers",
   applicationComplete = "/register-a-beacon/application-complete",
+
   deleteRegistration = "/manage-my-registrations/delete",
   deleteRegistrationSuccess = "/manage-my-registrations/delete/success",
   deleteRegistrationFailure = "/manage-my-registrations/delete/failure",
-  serverError = "/500",
-  unauthenticated = "/unauthenticated",
 }
 
 export enum UpdatePageURLs {

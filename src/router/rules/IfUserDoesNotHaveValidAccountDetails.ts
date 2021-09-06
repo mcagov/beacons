@@ -3,7 +3,6 @@ import { AccountHolder } from "../../entities/AccountHolder";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
-import { PageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
 export class IfUserDoesNotHaveValidAccountDetails implements Rule {
@@ -25,6 +24,6 @@ export class IfUserDoesNotHaveValidAccountDetails implements Rule {
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    return redirectUserTo(PageURLs.updateAccount);
+    return redirectUserTo(AccountPageURLs.updateAccount);
   }
 }

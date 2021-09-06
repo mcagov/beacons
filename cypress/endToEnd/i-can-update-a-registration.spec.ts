@@ -1,6 +1,6 @@
 import { Registration } from "../../src/entities/Registration";
 import { Environment } from "../../src/lib/deprecatedRegistration/types";
-import { PageURLs, UpdatePageURLs } from "../../src/lib/urls";
+import { AccountPageURLs, UpdatePageURLs } from "../../src/lib/urls";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
@@ -19,7 +19,7 @@ describe("As an account holder", () => {
     givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
 
-    whenIAmAt(PageURLs.accountHome);
+    whenIAmAt(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);

@@ -132,9 +132,9 @@ class IfUserSubmittedSignUpOrSignInForm implements Rule {
   private async nextPage(): Promise<PageURLs> {
     switch ((await this.form()).signUpOrSignIn) {
       case "signUp":
-        return PageURLs.signUp;
+        return AccountPageURLs.signUp;
       case "signIn":
-        return PageURLs.signIn;
+        return AccountPageURLs.signIn;
     }
   }
 

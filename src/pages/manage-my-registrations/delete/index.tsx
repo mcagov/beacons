@@ -38,7 +38,7 @@ export interface DeleteRegistrationForm {
 }
 
 export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
-  previousPageURL = PageURLs.accountHome,
+  previousPageURL = AccountPageURLs.accountHome,
   beacon,
   showCookieBanner,
   form,
@@ -58,7 +58,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
       cancelButton={
         <LinkButton
           buttonText="Cancel"
-          href={PageURLs.accountHome}
+          href={AccountPageURLs.accountHome}
           classes="govuk-button--secondary govuk-!-margin-right-8"
         />
       }

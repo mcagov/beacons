@@ -1,4 +1,4 @@
-import { PageURLs } from "../../../src/lib/urls";
+import { AccountPageURLs, PageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveBeenTo,
   givenIHaveClicked,
@@ -44,7 +44,7 @@ describe("As a new user who wants to register a beacon", () => {
 describe("As user with an account", () => {
   it("I can sign in to my Beacon Registry Account", () => {
     givenIHaveBeenTo(PageURLs.start);
-    givenIHaveBeenTo(PageURLs.signUpOrSignIn);
+    givenIHaveBeenTo(AccountPageURLs.signUpOrSignIn);
     givenIHaveSelected("#signIn");
     givenIHaveClickedContinue();
     thenTheUrlShouldContain(

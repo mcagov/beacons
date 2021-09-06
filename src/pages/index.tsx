@@ -17,7 +17,6 @@ import { WarningText } from "../components/WarningText";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
 import { acceptRejectCookieId } from "../lib/types";
-import { PageURLs } from "../lib/urls";
 import { BeaconsPageRouter } from "../router/BeaconsPageRouter";
 import { Rule } from "../router/rules/Rule";
 
@@ -106,7 +105,7 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
         &nbsp;if you aren&apos;t sure if your beacon is 406 MHz or not.
       </>
     </WarningText>
-    <StartButton href={PageURLs.signUpOrSignIn} />
+    <StartButton href={AccountAccountPageURLs.signUpOrSignIn} />
   </>
 );
 

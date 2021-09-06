@@ -22,7 +22,7 @@ import { beaconToRegistration } from "../../../lib/beaconToRegistration";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
-import { PageURLs, UpdatePageURLs } from "../../../lib/urls";
+import { UpdatePageURLs } from "../../../lib/urls";
 import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { IfUserDoesNotHaveValidSession } from "../../../router/rules/IfUserDoesNotHaveValidSession";
@@ -37,7 +37,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
     const pageHeading = `Your registered beacon with Hex ID/UIN: ${registration.hexId}`;
     return (
       <Layout
-        navigation={<BackButton href={PageURLs.accountHome} />}
+        navigation={<BackButton href={AccountPageURLs.accountHome} />}
         title={pageHeading}
         showCookieBanner={true}
       >
