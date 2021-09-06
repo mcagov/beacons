@@ -1,4 +1,4 @@
-import { PageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
   andIClickContinue,
@@ -20,7 +20,7 @@ export const givenIHaveEnteredMyRequiredBeaconDetails = (): void => {
 };
 
 export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
-  givenIHaveACookieSetAndIVisit(PageURLs.checkBeaconDetails);
+  givenIHaveACookieSetAndIVisit(CreateRegistrationPageURLs.checkBeaconDetails);
   givenIHaveTyped(
     testBeaconAndOwnerData.beaconDetails.manufacturer,
     "#manufacturer"
@@ -32,7 +32,7 @@ export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
 
 export const givenIHaveFilledInBeaconInformationPage = (): void => {
   const beaconInfo = testBeaconAndOwnerData.additionalBeaconInformation;
-  thenTheUrlShouldContain(PageURLs.beaconInformation);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.beaconInformation);
   givenIHaveTyped(beaconInfo.serialNumber, "#manufacturerSerialNumber");
   givenIHaveTyped(beaconInfo.chkCode, "#chkCode");
   givenIHaveTyped(beaconInfo.batteryExpiryMonth, "#batteryExpiryDateMonth");
@@ -44,7 +44,7 @@ export const givenIHaveFilledInBeaconInformationPage = (): void => {
 
 export const givenIHaveFilledInRequiredBeaconInformationPage = (): void => {
   const beaconInfo = testBeaconAndOwnerData.additionalBeaconInformation;
-  thenTheUrlShouldContain(PageURLs.beaconInformation);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.beaconInformation);
   givenIHaveTyped(beaconInfo.serialNumber, "#manufacturerSerialNumber");
   givenIHaveClickedContinue();
 };

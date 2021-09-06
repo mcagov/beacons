@@ -4,7 +4,7 @@ import { isValid } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
-import { PageURLs } from "../../lib/urls";
+import { DeleteRegistrationPageURLs } from "../../lib/urls";
 import {
   DeleteRegistrationForm,
   DeleteRegistrationProps,
@@ -42,8 +42,11 @@ export class GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDelete
       )
     ).success;
 
-    if (success) return redirectUserTo(PageURLs.deleteRegistrationSuccess);
-    else redirectUserTo(PageURLs.deleteRegistrationFailure);
+    if (success)
+      return redirectUserTo(
+        DeleteRegistrationPageURLs.deleteRegistrationSuccess
+      );
+    else redirectUserTo(DeleteRegistrationPageURLs.deleteRegistrationFailure);
   }
 
   private async form(): Promise<DeleteRegistrationForm> {

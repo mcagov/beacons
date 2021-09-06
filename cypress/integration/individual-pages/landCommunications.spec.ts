@@ -1,4 +1,4 @@
-import { PageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import { testLandUseData } from "../common/happy-path-test-data.spec";
 import {
   andIClickContinue,
@@ -26,7 +26,9 @@ describe("As a beacon owner and land or other use user", () => {
 
   beforeEach(() => {
     givenIHaveSignedIn();
-    givenIHaveACookieSetAndIVisit(PageURLs.landCommunications);
+    givenIHaveACookieSetAndIVisit(
+      CreateRegistrationPageURLs.landCommunications
+    );
   });
 
   describe("the Portable VHF/DSC radio option", () => {

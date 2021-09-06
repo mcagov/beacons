@@ -1,4 +1,4 @@
-import { PageURLs } from "../../../src/lib/urls";
+import { AccountPageURLs } from "../../../src/lib/urls";
 import { IfUserDoesNotHaveValidAccountDetails } from "../../../src/router/rules/IfUserDoesNotHaveValidAccountDetails";
 
 describe("IfUserDoesNotHaveValidAccountDetails", () => {
@@ -32,7 +32,7 @@ describe("IfUserDoesNotHaveValidAccountDetails", () => {
     expect(result).toStrictEqual({
       redirect: {
         statusCode: 303,
-        destination: PageURLs.updateAccount,
+        destination: AccountPageURLs.updateAccount,
       },
     });
   });

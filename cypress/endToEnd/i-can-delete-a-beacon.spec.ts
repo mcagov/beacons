@@ -1,5 +1,5 @@
 import { Registration } from "../../src/entities/Registration";
-import { PageURLs } from "../../src/lib/urls";
+import { AccountPageURLs } from "../../src/lib/urls";
 import { prettyUseName } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
@@ -27,7 +27,7 @@ describe("As an account holder", () => {
     givenIHaveACookieSetAndHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
 
-    whenIAmAt(PageURLs.accountHome);
+    whenIAmAt(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
@@ -39,7 +39,7 @@ describe("As an account holder", () => {
     );
 
     whenIClickTheButtonContaining("Cancel");
-    iAmAt(PageURLs.accountHome);
+    iAmAt(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
@@ -112,7 +112,7 @@ const whenIEnterMyReasonInTheResultingTextbox = (reason: string) => {
 
 const whenIGoBackToAccountHome = () => {
   whenIClickTheButtonContaining("Return to your Account");
-  iAmAt(PageURLs.accountHome);
+  iAmAt(AccountPageURLs.accountHome);
 };
 
 const myDeletedRegistrationIsNoLongerVisible = (hexId: string): void => {

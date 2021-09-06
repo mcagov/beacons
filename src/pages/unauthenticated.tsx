@@ -8,7 +8,7 @@ import {
   PageHeading,
   SectionHeading,
 } from "../components/Typography";
-import { PageURLs } from "../lib/urls";
+import { GeneralPageURLs } from "../lib/urls";
 
 const Unauthenticated: FunctionComponent = (): JSX.Element => {
   const pageHeading = "You must be signed in to access this page";
@@ -28,7 +28,7 @@ const Unauthenticated: FunctionComponent = (): JSX.Element => {
             </GovUKBody>
             <LinkButton
               buttonText="Go to service start page"
-              href={PageURLs.start}
+              href={GeneralPageURLs.start}
             />
             <SectionHeading>Contact the UK Beacon Registry</SectionHeading>
             <BeaconRegistryContactInfo />

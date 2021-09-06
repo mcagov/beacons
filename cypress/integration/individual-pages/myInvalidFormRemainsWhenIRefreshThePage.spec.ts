@@ -1,4 +1,4 @@
-import { PageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
@@ -12,7 +12,9 @@ describe("Given I have submitted invalid data to a registration form,", () => {
   describe("when I refresh the page,", () => {
     it("I can still see my invalid data", () => {
       givenIHaveSignedIn();
-      givenIHaveACookieSetAndIVisit(PageURLs.checkBeaconDetails);
+      givenIHaveACookieSetAndIVisit(
+        CreateRegistrationPageURLs.checkBeaconDetails
+      );
       whenIType("ACME Inc.", "#manufacturer");
       whenIType("Excelsior", "#model");
       whenIType("invalid hex id", "#hexId");

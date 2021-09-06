@@ -14,7 +14,7 @@ import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { PageURLs } from "../../lib/urls";
+import { AccountPageURLs, CreateRegistrationPageURLs } from "../../lib/urls";
 import { toUpperCase } from "../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
@@ -41,7 +41,7 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
       UK registration.
     </GovUKBody>
   );
-  const previousPageUrl = PageURLs.accountHome;
+  const previousPageUrl = AccountPageURLs.accountHome;
 
   return (
     <BeaconsForm
@@ -88,7 +88,7 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = PageURLs.beaconInformation;
+    const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
 
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),

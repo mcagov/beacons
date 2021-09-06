@@ -1,48 +1,16 @@
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { PageURLs } from "../../../src/lib/urls";
 import {
   mapper,
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
-import { IfUserSubmittedValidRegistrationForm } from "../../../src/router/rules/IfUserSubmittedValidRegistrationForm";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../../src/router/rules/IfUserSubmittedInvalidRegistrationForm";
 
-describe("IfUserSubmittedValidRegistrationForm", () => {
-  it("triggers if the form is valid", async () => {
-    const validForm = {
-      manufacturer: "ACME Inc.",
-      model: "Excelsior",
-      hexId: "1D0E9B07CEFFBFF",
-    };
-    const context = {
-      req: {
-        method: "POST",
-        cookies: {
-          [formSubmissionCookieId]: "test-draft-registration-id",
-        },
-      },
-      container: {
-        parseFormDataAs: jest.fn().mockResolvedValue(validForm),
-        saveDraftRegistration: jest.fn(),
-      },
-    };
-    const nextPageUrl = PageURLs.beaconInformation;
-    const rule = new IfUserSubmittedValidRegistrationForm(
-      context as any,
-      validationRules,
-      mapper,
-      nextPageUrl
-    );
-
-    const result = await rule.condition();
-
-    expect(result).toBe(true);
-  });
-
-  it("does not trigger if the form is invalid", async () => {
+describe("IfUserSubmittedInvalidRegistrationForm", () => {
+  it("triggers if the form is invalid", async () => {
     const invalidForm = {
       manufacturer: "ACME Inc.",
       model: "Excelsior",
-      hexId: "", // Missing required field
+      hexId: "", // Missing field
     };
     const context = {
       req: {
@@ -56,20 +24,18 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const nextPageUrl = PageURLs.beaconInformation;
-    const rule = new IfUserSubmittedValidRegistrationForm(
+    const rule = new IfUserSubmittedInvalidRegistrationForm(
       context as any,
       validationRules,
-      mapper,
-      nextPageUrl
+      mapper
     );
 
     const result = await rule.condition();
 
-    expect(result).toBe(false);
+    expect(result).toBe(true);
   });
 
-  it("routes to the next page if triggered", async () => {
+  it("does not trigger if the form is valid", async () => {
     const validForm = {
       manufacturer: "ACME Inc.",
       model: "Excelsior",
@@ -87,20 +53,50 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const nextPageUrl = PageURLs.beaconInformation;
-    const rule = new IfUserSubmittedValidRegistrationForm(
+    const rule = new IfUserSubmittedInvalidRegistrationForm(
       context as any,
       validationRules,
-      mapper,
-      nextPageUrl
+      mapper
+    );
+
+    const result = await rule.condition();
+
+    expect(result).toBe(false);
+  });
+
+  it("displays errors if triggered", async () => {
+    const invalidForm = {
+      manufacturer: "ACME Inc.",
+      model: "Excelsior",
+      hexId: "", // Missing field
+    };
+    const context = {
+      req: {
+        method: "POST",
+        cookies: {
+          [formSubmissionCookieId]: "test-draft-registration-id",
+        },
+      },
+      container: {
+        parseFormDataAs: jest.fn().mockResolvedValue(invalidForm),
+        saveDraftRegistration: jest.fn(),
+        getDraftRegistration: jest.fn(),
+      },
+    };
+    const rule = new IfUserSubmittedInvalidRegistrationForm(
+      context as any,
+      validationRules,
+      mapper
     );
 
     const result = await rule.action();
 
-    expect(result).toStrictEqual({
-      redirect: {
-        statusCode: 303,
-        destination: PageURLs.beaconInformation,
+    expect(result).toMatchObject({
+      props: {
+        form: {
+          hasErrors: true,
+          errorSummary: expect.any(Array),
+        },
       },
     });
   });

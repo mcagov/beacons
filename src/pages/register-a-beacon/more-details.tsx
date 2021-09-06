@@ -15,7 +15,7 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs, queryParams } from "../../lib/urls";
+import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../presenters/formSubmission";
@@ -45,10 +45,13 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
 }: MoreDetailsPageProps): JSX.Element => {
   const previousPageUrlMap = {
     [Environment.MARITIME]:
-      PageURLs.vesselCommunications + queryParams({ useIndex }),
+      CreateRegistrationPageURLs.vesselCommunications +
+      queryParams({ useIndex }),
     [Environment.AVIATION]:
-      PageURLs.aircraftCommunications + queryParams({ useIndex }),
-    [Environment.LAND]: PageURLs.landCommunications + queryParams({ useIndex }),
+      CreateRegistrationPageURLs.aircraftCommunications +
+      queryParams({ useIndex }),
+    [Environment.LAND]:
+      CreateRegistrationPageURLs.landCommunications + queryParams({ useIndex }),
   };
 
   const pageHeading = "Provide more details that could help in a search";
@@ -112,7 +115,7 @@ const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = PageURLs.additionalUse;
+    const nextPage = CreateRegistrationPageURLs.additionalUse;
 
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),

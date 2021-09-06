@@ -1,4 +1,7 @@
-import { PageURLs } from "../../src/lib/urls";
+import {
+  AccountPageURLs,
+  CreateRegistrationPageURLs,
+} from "../../src/lib/urls";
 import { sentenceCase } from "../../src/lib/writingStyle";
 import {
   testBeaconAndOwnerData,
@@ -35,7 +38,7 @@ describe("As user with an account", () => {
     givenIHaveClicked(".govuk-button");
 
   it("I register a beacon with a single use and see it in my Account page and I can click to start to create another beacon", () => {
-    givenIHaveACookieSetAndHaveSignedInIVisit(PageURLs.updateAccount);
+    givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.updateAccount);
     givenIHaveFilledInUpdateAccountDetailsPage();
     iCanSeeMyAccountDetails();
     givenIHaveClickedToCreateANewBeacon();
@@ -46,12 +49,12 @@ describe("As user with an account", () => {
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
     givenIHaveClicked(".govuk-button--start");
-    thenTheUrlShouldContain(PageURLs.applicationComplete);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.applicationComplete);
     givenIHaveClicked(".govuk-button");
-    thenTheUrlShouldContain(PageURLs.accountHome);
+    thenTheUrlShouldContain(AccountPageURLs.accountHome);
     iCanSeeTheBeaconListWithMyInformation();
 
     givenIHaveClickedToCreateANewBeacon();
-    thenTheUrlShouldContain(PageURLs.checkBeaconDetails);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkBeaconDetails);
   });
 });

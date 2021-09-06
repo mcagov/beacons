@@ -1,4 +1,4 @@
-import { PageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
@@ -12,11 +12,13 @@ import {
 describe("As a beacon owner, I want to submit uses for my beacon", () => {
   beforeEach(() => {
     givenIHaveSignedIn();
-    givenIHaveACookieSetAndIVisit(PageURLs.environment);
+    givenIHaveACookieSetAndIVisit(CreateRegistrationPageURLs.environment);
   });
 
   it("should route to the previous page", () => {
-    iCanClickTheBackLinkToGoToPreviousPage(PageURLs.beaconInformation);
+    iCanClickTheBackLinkToGoToPreviousPage(
+      CreateRegistrationPageURLs.beaconInformation
+    );
   });
 
   it("should route to the purpose page if maritime selected with the correct heading text", () => {
@@ -24,7 +26,7 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
     whenIClickContinue();
 
     iCanSeeAPageHeadingThatContains("maritime use");
-    thenTheUrlShouldContain(PageURLs.purpose);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.purpose);
   });
 
   it("should route to the purpose page if aviation selected", () => {
@@ -32,13 +34,13 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
     whenIClickContinue();
 
     iCanSeeAPageHeadingThatContains("aviation use");
-    thenTheUrlShouldContain(PageURLs.purpose);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.purpose);
   });
 
   it("should route to the activity page if land is selected", () => {
     givenIHaveSelected("#land");
     whenIClickContinue();
 
-    thenTheUrlShouldContain(PageURLs.activity);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
   });
 });

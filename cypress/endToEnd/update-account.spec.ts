@@ -1,14 +1,14 @@
-import { PageURLs } from "../../src/lib/urls";
+import { AccountPageURLs } from "../../src/lib/urls";
 import {
   givenIHaveACookieSetAndHaveSignedInIVisit,
   givenIHaveClearedTheInput,
+  requiredFieldErrorMessage,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
 } from "../integration/common/selectors-and-assertions.spec";
-import { requiredFieldErrorMessage } from "./../integration/common/selectors-and-assertions.spec";
 
 describe("As an account holder", () => {
   const fullNameSelector = "#fullName";
@@ -34,7 +34,7 @@ describe("As an account holder", () => {
   };
 
   beforeEach(() => {
-    givenIHaveACookieSetAndHaveSignedInIVisit(PageURLs.updateAccount);
+    givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.updateAccount);
     givenIHaveClearedAllInputFields();
   });
 
@@ -46,7 +46,7 @@ describe("As an account holder", () => {
     whenIType("BS8 9DB", postcodeSelector);
 
     whenIClickContinue();
-    thenTheUrlShouldContain(PageURLs.accountHome);
+    thenTheUrlShouldContain(AccountPageURLs.accountHome);
   });
 
   it("requires mandatory fields", () => {

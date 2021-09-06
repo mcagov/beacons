@@ -1,5 +1,5 @@
 import { BeaconsSession } from "../../../src/gateways/NextAuthUserSessionGateway";
-import { PageURLs } from "../../../src/lib/urls";
+import { ErrorPageURLs } from "../../../src/lib/urls";
 import { IfUserDoesNotHaveValidSession } from "../../../src/router/rules/IfUserDoesNotHaveValidSession";
 
 describe("IfUserDoesNotHaveValidSession", () => {
@@ -26,7 +26,7 @@ describe("IfUserDoesNotHaveValidSession", () => {
     expect(result).toStrictEqual({
       redirect: {
         statusCode: 303,
-        destination: PageURLs.unauthenticated,
+        destination: ErrorPageURLs.unauthenticated,
       },
     });
   });
