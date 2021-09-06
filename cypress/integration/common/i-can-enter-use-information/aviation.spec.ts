@@ -2,7 +2,10 @@ import {
   Environment,
   Purpose,
 } from "../../../../src/lib/deprecatedRegistration/types";
-import { CreateRegistrationPageURLs } from "../../../../src/lib/urls";
+import {
+  CreateRegistrationPageURLs,
+  GeneralPageURLs,
+} from "../../../../src/lib/urls";
 import { makeEnumValueUserFriendly } from "../../../../src/lib/writingStyle";
 import {
   testAviationCommercialUseData,

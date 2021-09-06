@@ -1,4 +1,4 @@
-import { AccountPageURLs } from "../../../src/lib/urls";
+import { AccountPageURLs, GeneralPageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveBeenTo,
   givenIHaveClicked,
