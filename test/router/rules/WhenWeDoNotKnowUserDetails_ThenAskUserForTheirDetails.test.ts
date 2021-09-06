@@ -1,7 +1,7 @@
 import { AccountPageURLs } from "../../../src/lib/urls";
-import { WhenWeDoNotKnowUserDetails_AskUserForTheirDetails } from "../../../src/router/rules/WhenWeDoNotKnowUserDetails_AskUserForTheirDetails";
+import { WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails } from "../../../src/router/rules/WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails";
 
-describe("WhenWeDoNotKnowUserDetails_AskUserForTheirDetails", () => {
+describe("WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails", () => {
   it("should route the user to the update account page if the account details are not valid", async () => {
     const mockGetOrCreateAccountHolder = jest.fn().mockReturnValueOnce({});
     const mockHasErrors = jest.fn().mockReturnValueOnce(true);
@@ -19,7 +19,7 @@ describe("WhenWeDoNotKnowUserDetails_AskUserForTheirDetails", () => {
       },
     };
 
-    const rule = new WhenWeDoNotKnowUserDetails_AskUserForTheirDetails(
+    const rule = new WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails(
       context as any,
       mockAccountDetailsFormManager
     );
@@ -54,7 +54,7 @@ describe("WhenWeDoNotKnowUserDetails_AskUserForTheirDetails", () => {
       },
     };
 
-    const rule = new WhenWeDoNotKnowUserDetails_AskUserForTheirDetails(
+    const rule = new WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails(
       context as any,
       mockAccountDetailsFormManager
     );

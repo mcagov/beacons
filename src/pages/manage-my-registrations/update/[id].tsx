@@ -25,7 +25,7 @@ import { withSession } from "../../../lib/middleware/withSession";
 import { AccountPageURLs, UpdatePageURLs } from "../../../lib/urls";
 import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
-import { IfUserDoesNotHaveValidSession } from "../../../router/rules/IfUserDoesNotHaveValidSession";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 interface RegistrationSummaryPageProps {
@@ -117,7 +117,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfUserDoesNotHaveValidSession(context),
+      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
     ]).execute();
   })
