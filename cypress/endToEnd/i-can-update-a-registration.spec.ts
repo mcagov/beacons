@@ -53,7 +53,8 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheUpdateButtonForTheSectionWithHeading("Beacon information");
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
-  iCanSeeMyBeaconDetails(registration);
+  iCanEditMyBeaconManufacturerAndModel(registration);
+  iCanSeeButICannotEditMyHexId(registration);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -140,8 +141,15 @@ const whenIClickTheUpdateButtonForTheSectionWithHeading = (heading: string) => {
     .click();
 };
 
-export const iCanSeeMyBeaconDetails = (registration: Registration): void => {
-  cy.contains(registration.manufacturer);
-  cy.contains(registration.model);
-  cy.contains(registration.hexId);
+export const iCanEditMyBeaconManufacturerAndModel = (
+  registration: Registration
+): void => {
+  cy.get(`input[value="${registration.manufacturer}"]`);
+  cy.get(`input[value="${registration.model}"]`);
+};
+
+export const iCanSeeButICannotEditMyHexId = (
+  registration: Registration
+): void => {
+  cy.get("main").contains(registration.hexId);
 };
