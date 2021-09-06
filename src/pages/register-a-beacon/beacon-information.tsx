@@ -20,7 +20,7 @@ import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { CreateRegistrationPageURLs } from "../../lib/urls";
+import { CreateRegistrationPageURLs, ExistingPageURLs } from "../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../presenters/formSubmission";
@@ -198,26 +198,36 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = CreateRegistrationPageURLs.environment;
-
-    return await new BeaconsPageRouter([
-      new IfUserDoesNotHaveValidSession(context),
-      new IfUserHasNotStartedEditingADraftRegistration(context),
-      new IfUserViewedRegistrationForm(context, validationRules, mapper),
-      new IfUserSubmittedInvalidRegistrationForm(
-        context,
-        validationRules,
-        mapper
-      ),
-      new IfUserSubmittedValidRegistrationForm(
-        context,
-        validationRules,
-        mapper,
-        nextPageUrl
-      ),
-    ]).execute();
+    return handleBeaconInformationPageRequest(
+      context,
+      CreateRegistrationPageURLs.environment
+    );
   })
 );
+
+export const handleBeaconInformationPageRequest = async (
+  context: BeaconsGetServerSidePropsContext,
+  nextPageURL: ExistingPageURLs
+) => {
+  const nextPageUrl = nextPageURL;
+
+  return await new BeaconsPageRouter([
+    new IfUserDoesNotHaveValidSession(context),
+    new IfUserHasNotStartedEditingADraftRegistration(context),
+    new IfUserViewedRegistrationForm(context, validationRules, mapper),
+    new IfUserSubmittedInvalidRegistrationForm(
+      context,
+      validationRules,
+      mapper
+    ),
+    new IfUserSubmittedValidRegistrationForm(
+      context,
+      validationRules,
+      mapper,
+      nextPageUrl
+    ),
+  ]).execute();
+};
 
 const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
   formToDraftRegistration: (form) => ({

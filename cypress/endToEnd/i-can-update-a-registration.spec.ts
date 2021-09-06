@@ -54,10 +54,20 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheUpdateButtonForTheSectionWithHeading("Beacon information");
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
-  iCanEditMyBeaconManufacturerAndModel(registration);
+  iEditMyBeaconManufacturerAndModel(registration, "McMurdo", "New Beacon");
   iCanSeeButICannotEditMyHexId(registration);
   whenIClickContinue();
+
   thenTheUrlShouldContain(UpdatePageURLs.beaconInformation);
+  iEditMyBeaconInformation(
+    registration,
+    "New SerialNumber",
+    "New Chk code",
+    "01",
+    "2050",
+    "12",
+    "2020"
+  );
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -144,15 +154,46 @@ const whenIClickTheUpdateButtonForTheSectionWithHeading = (heading: string) => {
     .click();
 };
 
-export const iCanEditMyBeaconManufacturerAndModel = (
-  registration: Registration
+export const iEditMyBeaconManufacturerAndModel = (
+  registration: Registration,
+  newManufacturer: string,
+  newModel: string
 ): void => {
-  cy.get(`input[value="${registration.manufacturer}"]`);
-  cy.get(`input[value="${registration.model}"]`);
+  cy.get(`input[value="${registration.manufacturer}"]`)
+    .clear()
+    .type(newManufacturer);
+  cy.get(`input[value="${registration.model}"]`).clear().type(newModel);
 };
 
 export const iCanSeeButICannotEditMyHexId = (
   registration: Registration
 ): void => {
   cy.get("main").contains(registration.hexId);
+};
+
+export const iEditMyBeaconInformation = (
+  registration: Registration,
+  newManufacturerSerialNumber: string,
+  newChkCode: string,
+  newBatteryExpiryDateMonth: string,
+  newBatteryExpiryDateYear: string,
+  newLastServicedDateMonth: string,
+  newLastServicedDateYear: string
+): void => {
+  cy.get(`input[value="${registration.manufacturerSerialNumber}"]`)
+    .clear()
+    .type(newManufacturerSerialNumber);
+  cy.get(`input[value="${registration.chkCode}"]`).clear().type(newChkCode);
+  cy.get(`input[value="${registration.batteryExpiryDateMonth}"]`)
+    .clear()
+    .type(newBatteryExpiryDateMonth);
+  cy.get(`input[value="${registration.batteryExpiryDateYear}"]`)
+    .clear()
+    .type(newBatteryExpiryDateYear);
+  cy.get(`input[value="${registration.lastServicedDateMonth}"]`)
+    .clear()
+    .type(newLastServicedDateMonth);
+  cy.get(`input[value="${registration.lastServicedDateYear}"]`)
+    .clear()
+    .type(newLastServicedDateYear);
 };

@@ -82,7 +82,7 @@ const BeaconHexId: FunctionComponent<{ hexId: string }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageURL = UpdatePageURLs.beaconInformation;
+    const nextPageURL = UpdatePageURLs.beaconInformation + context.query.id;
 
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),
