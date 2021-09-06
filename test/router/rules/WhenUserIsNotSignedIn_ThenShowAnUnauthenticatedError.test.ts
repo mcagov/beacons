@@ -1,8 +1,8 @@
 import { BeaconsSession } from "../../../src/gateways/NextAuthUserSessionGateway";
 import { ErrorPageURLs } from "../../../src/lib/urls";
-import { IfUserDoesNotHaveValidSession } from "../../../src/router/rules/IfUserDoesNotHaveValidSession";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../src/router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
-describe("IfUserDoesNotHaveValidSession", () => {
+describe("WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError", () => {
   it("should route the user to the sign up or sign in page if the session is not valid", async () => {
     const mockGetSession = jest.fn();
     mockGetSession.mockReturnValueOnce(null);
@@ -15,7 +15,9 @@ describe("IfUserDoesNotHaveValidSession", () => {
       },
     };
 
-    const rule = new IfUserDoesNotHaveValidSession(context as any);
+    const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
+      context as any
+    );
 
     const condition = await rule.condition();
     expect(condition).toBe(true);
@@ -52,7 +54,9 @@ describe("IfUserDoesNotHaveValidSession", () => {
       },
     };
 
-    const rule = new IfUserDoesNotHaveValidSession(context as any);
+    const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
+      context as any
+    );
 
     const condition = await rule.condition();
 
