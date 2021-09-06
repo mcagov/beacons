@@ -15,12 +15,15 @@ import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
+import { UpdatePageURLs } from "../../../../lib/urls";
 import { toUpperCase } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
 import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
 import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../../router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
 import { IfUserDoesNotHaveValidSession } from "../../../../router/rules/IfUserDoesNotHaveValidSession";
+import { IfUserSubmittedInvalidRegistrationForm } from "../../../../router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { IfUserSubmittedValidRegistrationForm } from "../../../../router/rules/IfUserSubmittedValidRegistrationForm";
 import { IfUserViewedRegistrationForm } from "../../../../router/rules/IfUserViewedRegistrationForm";
 
 interface UpdateBeaconDetailsForm {
@@ -79,6 +82,8 @@ const BeaconHexId: FunctionComponent<{ hexId: string }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPageURL = UpdatePageURLs.beaconInformation;
+
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
@@ -89,6 +94,17 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context.query.id as string
       ),
       new IfUserViewedRegistrationForm(context, validationRules, mapper),
+      new IfUserSubmittedInvalidRegistrationForm(
+        context,
+        validationRules,
+        mapper
+      ),
+      new IfUserSubmittedValidRegistrationForm(
+        context,
+        validationRules,
+        mapper,
+        nextPageURL
+      ),
     ]).execute();
   })
 );
@@ -119,23 +135,7 @@ export const validationRules = ({
     model: new FieldManager(model, [
       Validators.required("Beacon model is a required field"),
     ]),
-    hexId: new FieldManager(hexId, [
-      Validators.required("Beacon HEX ID is a required field"),
-      Validators.isLength(
-        "Beacon HEX ID or UIN must be 15 characters long",
-        15
-      ),
-      Validators.hexadecimalString(
-        "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
-      ),
-      Validators.ukEncodedBeacon(
-        "You entered a beacon encoded with a Hex ID from %HEX_ID_COUNTRY%.  Your beacon must be UK-encoded to use this service."
-      ),
-      Validators.shouldNotContain(
-        'Your HEX ID should not contain the letter "O".  Did you mean the number zero?',
-        "O"
-      ),
-    ]),
+    hexId: new FieldManager(hexId, []),
   });
 };
 

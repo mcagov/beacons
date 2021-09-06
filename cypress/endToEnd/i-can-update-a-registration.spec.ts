@@ -7,6 +7,7 @@ import {
   givenIHaveSignedIn,
   thenTheUrlShouldContain,
   whenIAmAt,
+  whenIClickContinue,
 } from "../integration/common/selectors-and-assertions.spec";
 import { iCanSeeMyExistingRegistrationHexId } from "./common/i-can-see-my-existing-registration-hex-id.spec";
 import {
@@ -55,6 +56,8 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
   iCanEditMyBeaconManufacturerAndModel(registration);
   iCanSeeButICannotEditMyHexId(registration);
+  whenIClickContinue();
+  thenTheUrlShouldContain(UpdatePageURLs.beaconInformation);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
