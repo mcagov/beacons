@@ -10,15 +10,20 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
   implements Rule
 {
   private readonly context: BeaconsGetServerSidePropsContext;
+  private readonly registrationId: string;
 
-  constructor(context: BeaconsGetServerSidePropsContext) {
+  constructor(
+    context: BeaconsGetServerSidePropsContext,
+    registrationId: string
+  ) {
     this.context = context;
+    this.registrationId = registrationId;
   }
 
   public async condition(): Promise<boolean> {
-    const registrationId = this.context.query.id;
-
-    return this.context.req?.cookies[formSubmissionCookieId] !== registrationId;
+    return (
+      this.context.req?.cookies[formSubmissionCookieId] !== this.registrationId
+    );
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
@@ -28,18 +33,16 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
       saveDraftRegistration,
     } = this.context.container;
 
-    const registrationId = this.context.query.id as string;
-
     const accountHolderId = await getAccountHolderId(this.context.session);
 
     const registration: Registration = await getAccountHoldersRegistration(
-      registrationId,
+      this.registrationId,
       accountHolderId
     );
 
-    await saveDraftRegistration(registrationId, registration);
+    await saveDraftRegistration(this.registrationId, registration);
 
-    setCookie(this.context.res, formSubmissionCookieId, registrationId);
+    setCookie(this.context.res, formSubmissionCookieId, this.registrationId);
 
     return redirectUserTo(this.context.req.url);
   }

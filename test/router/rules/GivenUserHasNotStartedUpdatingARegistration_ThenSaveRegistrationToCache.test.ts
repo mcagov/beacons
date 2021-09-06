@@ -17,14 +17,12 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
             [formSubmissionCookieId]: registrationId,
           },
         },
-        query: {
-          id: registrationId,
-        },
       };
 
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
-          context as any
+          context as any,
+          registrationId
         );
 
       const result = await rule.condition();
@@ -41,14 +39,12 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
           },
           url: "page-url",
         },
-        query: {
-          id: registrationId,
-        },
       };
 
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
-          context as any
+          context as any,
+          registrationId
         );
 
       const result = await rule.condition();
@@ -63,14 +59,12 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
           cookies: {},
           url: "page-url",
         },
-        query: {
-          id: registrationId,
-        },
       };
 
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
-          context as any
+          context as any,
+          registrationId
         );
 
       const result = await rule.condition();
@@ -95,9 +89,6 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
             .mockResolvedValue(registration),
           saveDraftRegistration: jest.fn(),
         },
-        query: {
-          id: registration.id,
-        },
         req: {
           url: "page-url",
         },
@@ -107,7 +98,8 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
-          context as any
+          context as any,
+          registration.id
         );
 
       await rule.action();
@@ -133,9 +125,6 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
             .mockResolvedValue(registration),
           saveDraftRegistration: jest.fn(),
         },
-        query: {
-          id: registration.id,
-        },
         req: {
           url: "page-url",
         },
@@ -145,7 +134,8 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
-          context as any
+          context as any,
+          registration.id
         );
 
       await rule.action();
@@ -172,9 +162,6 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
             .mockResolvedValue(registration),
           saveDraftRegistration: jest.fn(),
         },
-        query: {
-          id: registration.id,
-        },
         req: {
           url: "page-url",
         },
@@ -184,7 +171,8 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
-          context as any
+          context as any,
+          registration.id
         );
 
       await rule.action();
@@ -205,9 +193,6 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
           getAccountHoldersRegistration: jest.fn(),
           saveDraftRegistration: jest.fn(),
         },
-        query: {
-          id: registration.id,
-        },
         req: {
           url: "page-url",
         },
@@ -217,7 +202,8 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
-          context as any
+          context as any,
+          registration.id
         );
 
       const props = await rule.action();
