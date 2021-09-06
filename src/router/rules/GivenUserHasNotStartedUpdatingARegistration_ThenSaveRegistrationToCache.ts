@@ -1,6 +1,7 @@
 import { GetServerSidePropsResult } from "next";
 import { Registration } from "../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
 import { Rule } from "./Rule";
 
@@ -15,6 +16,7 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
 
   public async condition(): Promise<boolean> {
     const registrationId = this.context.query.id;
+
     return this.context.req?.cookies[formSubmissionCookieId] !== registrationId;
   }
 
@@ -36,10 +38,6 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
 
     await saveDraftRegistration(registrationId, registration);
 
-    return {
-      props: {
-        registration,
-      },
-    };
+    return redirectUserTo(this.context.req.url);
   }
 }

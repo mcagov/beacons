@@ -4,7 +4,7 @@ import { PageURLs, UpdatePageURLs } from "../../src/lib/urls";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
-  givenIHaveACookieSetAndHaveSignedIn,
+  givenIHaveSignedIn,
   thenTheUrlShouldContain,
   whenIAmAt,
 } from "../integration/common/selectors-and-assertions.spec";
@@ -16,7 +16,7 @@ import {
 
 describe("As an account holder", () => {
   it("I can update one of my registrations", () => {
-    givenIHaveACookieSetAndHaveSignedIn();
+    givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
 
     whenIAmAt(PageURLs.accountHome);
@@ -140,7 +140,7 @@ const whenIClickTheUpdateButtonForTheSectionWithHeading = (heading: string) => {
     .click();
 };
 
-export const iCanSeeMyBeaconDetails = (registration: Registration) => {
+export const iCanSeeMyBeaconDetails = (registration: Registration): void => {
   cy.contains(registration.manufacturer);
   cy.contains(registration.model);
   cy.contains(registration.hexId);

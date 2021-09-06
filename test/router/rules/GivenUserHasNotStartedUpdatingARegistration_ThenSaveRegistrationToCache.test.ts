@@ -11,6 +11,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       const context = {
         req: {
           method: "GET",
+          url: "page-url",
           cookies: {
             [formSubmissionCookieId]: registrationId,
           },
@@ -37,6 +38,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
           cookies: {
             [formSubmissionCookieId]: "Not-the-registration-id",
           },
+          url: "page-url",
         },
         query: {
           id: registrationId,
@@ -58,6 +60,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         req: {
           method: "GET",
           cookies: {},
+          url: "page-url",
         },
         query: {
           id: registrationId,
@@ -94,6 +97,9 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         query: {
           id: registration.id,
         },
+        req: {
+          url: "page-url",
+        },
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
@@ -126,6 +132,9 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         query: {
           id: registration.id,
         },
+        req: {
+          url: "page-url",
+        },
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
@@ -138,6 +147,38 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         registration.id,
         registration
       );
+    });
+
+    it("reloads same page once DraftRegistration has been saved to cache", async () => {
+      const registration = {
+        id: v4(),
+      };
+      const context: BeaconsGetServerSidePropsContext = {
+        container: {
+          getAccountHolderId: jest.fn(),
+          getAccountHoldersRegistration: jest.fn(),
+          saveDraftRegistration: jest.fn(),
+        },
+        query: {
+          id: registration.id,
+        },
+        req: {
+          url: "page-url",
+        },
+      } as any;
+      const rule =
+        new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+          context as any
+        );
+
+      const props = await rule.action();
+
+      expect(props).toMatchObject({
+        redirect: {
+          statusCode: 303,
+          destination: context.req.url,
+        },
+      });
     });
   });
 });
