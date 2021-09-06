@@ -28,9 +28,9 @@ import {
 } from "../../lib/urls";
 import { formatDateTruncated, formatUses } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserDoesNotHaveValidAccountDetails } from "../../router/rules/IfUserDoesNotHaveValidAccountDetails";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { Rule } from "../../router/rules/Rule";
+import { WhenWeDoNotKnowUserDetails_AskUserForTheirDetails } from "../../router/rules/WhenWeDoNotKnowUserDetails_AskUserForTheirDetails";
 
 export interface YourBeaconRegistryAccountPageProps {
   id?: string;
@@ -290,7 +290,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),
-      new IfUserDoesNotHaveValidAccountDetails(
+      new WhenWeDoNotKnowUserDetails_AskUserForTheirDetails(
         context,
         accountDetailsFormManager
       ),

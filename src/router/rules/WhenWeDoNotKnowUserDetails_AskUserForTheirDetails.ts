@@ -6,7 +6,7 @@ import { redirectUserTo } from "../../lib/redirectUserTo";
 import { AccountPageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
-export class IfUserDoesNotHaveValidAccountDetails implements Rule {
+export class WhenWeDoNotKnowUserDetails_AskUserForTheirDetails implements Rule {
   constructor(
     private readonly context: BeaconsGetServerSidePropsContext,
     private readonly validationRules: FormManagerFactory
