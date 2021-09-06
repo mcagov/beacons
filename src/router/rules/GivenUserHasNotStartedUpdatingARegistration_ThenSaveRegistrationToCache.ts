@@ -1,5 +1,6 @@
 import { GetServerSidePropsResult } from "next";
 import { Registration } from "../../entities/Registration";
+import { setCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
@@ -21,9 +22,6 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    console.log(
-      "triggered GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache"
-    );
     const {
       getAccountHoldersRegistration,
       getAccountHolderId,
@@ -40,6 +38,8 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
     );
 
     await saveDraftRegistration(registrationId, registration);
+
+    setCookie(this.context.res, formSubmissionCookieId, registrationId);
 
     return redirectUserTo(this.context.req.url);
   }

@@ -142,10 +142,9 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
 
       await rule.action();
 
-      //expect(context.res.setHeader).toHaveBeenCalledWith("Set-Cookie", "submissionId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict");
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
-        stringContaining("submissionId=; Path=/;")
+        stringContaining("submissionId=;")
       );
     });
 

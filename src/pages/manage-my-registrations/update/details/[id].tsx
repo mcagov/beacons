@@ -15,13 +15,13 @@ import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { formSubmissionCookieId } from "../../../../lib/types";
 import { toUpperCase } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
 import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
 import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../../router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
 import { IfUserDoesNotHaveValidSession } from "../../../../router/rules/IfUserDoesNotHaveValidSession";
+import { IfUserViewedRegistrationForm } from "../../../../router/rules/IfUserViewedRegistrationForm";
 
 interface UpdateBeaconDetailsForm {
   manufacturer: string;
@@ -71,9 +71,6 @@ const BeaconHexId: FunctionComponent<{ hexId: string }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    console.log("cookie value: ", context.req.cookies[formSubmissionCookieId]);
-    console.log("query:", context.query.id);
-
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
@@ -82,7 +79,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
         context
       ),
-      //new IfUserViewedRegistrationForm(context, validationRules, mapper),
+      new IfUserViewedRegistrationForm(context, validationRules, mapper),
     ]).execute();
   })
 );

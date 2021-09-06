@@ -1,3 +1,4 @@
+import { stringContaining } from "expect/build/asymmetricMatchers";
 import { v4 } from "uuid";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { formSubmissionCookieId } from "../../../src/lib/types";
@@ -100,6 +101,9 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         req: {
           url: "page-url",
         },
+        res: {
+          setHeader: jest.fn(),
+        },
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
@@ -135,6 +139,9 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         req: {
           url: "page-url",
         },
+        res: {
+          setHeader: jest.fn(),
+        },
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
@@ -146,6 +153,45 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       expect(context.container.saveDraftRegistration).toHaveBeenCalledWith(
         registration.id,
         registration
+      );
+    });
+
+    it(`sets ${formSubmissionCookieId} with the id of the just-saved DraftRegistration`, async () => {
+      const registration = {
+        ...registrationFixture,
+        id: v4(),
+        accountHolderId: v4(),
+      };
+      const context: BeaconsGetServerSidePropsContext = {
+        container: {
+          getAccountHolderId: jest
+            .fn()
+            .mockResolvedValue(registration.accountHolderId),
+          getAccountHoldersRegistration: jest
+            .fn()
+            .mockResolvedValue(registration),
+          saveDraftRegistration: jest.fn(),
+        },
+        query: {
+          id: registration.id,
+        },
+        req: {
+          url: "page-url",
+        },
+        res: {
+          setHeader: jest.fn(),
+        },
+      } as any;
+      const rule =
+        new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+          context as any
+        );
+
+      await rule.action();
+
+      expect(context.res.setHeader).toHaveBeenCalledWith(
+        "Set-Cookie",
+        stringContaining(`submissionId=${registration.id};`)
       );
     });
 
@@ -164,6 +210,9 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         },
         req: {
           url: "page-url",
+        },
+        res: {
+          setHeader: jest.fn(),
         },
       } as any;
       const rule =
