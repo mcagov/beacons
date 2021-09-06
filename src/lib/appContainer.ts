@@ -17,6 +17,7 @@ import { saveDraftRegistration } from "../useCases/saveDraftRegistration";
 import { sendConfirmationEmail } from "../useCases/sendConfirmationEmail";
 import { submitRegistration } from "../useCases/submitRegistration";
 import { updateAccountHolder } from "../useCases/updateAccountHolder";
+import { BeaconsApiBeaconSearchGateway } from "./../gateways/BeaconsApiBeaconSearchGateway";
 import { IAppContainer } from "./IAppContainer";
 import { parseFormDataAs } from "./middleware";
 
@@ -65,6 +66,12 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get beaconGateway() {
       return new BeaconsApiBeaconGateway(
         process.env.API_URL,
+        new AadAuthGateway()
+      );
+    },
+    get beaconSearchGateway() {
+      return new BeaconsApiBeaconSearchGateway(
+        process.env.NODE_ENV,
         new AadAuthGateway()
       );
     },

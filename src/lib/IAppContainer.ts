@@ -15,6 +15,7 @@ import { GetOrCreateAccountHolderFn } from "../useCases/getOrCreateAccountHolder
 import { SendConfirmationEmailFn } from "../useCases/sendConfirmationEmail";
 import { SubmitRegistrationFn } from "../useCases/submitRegistration";
 import { UpdateAccountHolderFn } from "../useCases/updateAccountHolder";
+import { BeaconSearchGateway } from "./../gateways/interfaces/BeaconSearchGateway";
 
 export interface IAppContainer {
   /* Use cases */
@@ -40,6 +41,7 @@ export interface IAppContainer {
   /* Gateways */
   // Entities
   beaconGateway: BeaconGateway;
+  beaconSearchGateway: BeaconSearchGateway;
   emailServiceGateway: EmailServiceGateway;
   accountHolderGateway: AccountHolderGateway;
   draftRegistrationGateway: DraftRegistrationGateway;
