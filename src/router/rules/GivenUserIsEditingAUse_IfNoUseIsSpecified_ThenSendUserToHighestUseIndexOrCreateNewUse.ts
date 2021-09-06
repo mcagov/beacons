@@ -6,7 +6,9 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { queryParams } from "../../lib/urls";
 import { Rule } from "./Rule";
 
-export class IfUserHasNotSpecifiedAUse implements Rule {
+export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse
+  implements Rule
+{
   private readonly context: BeaconsGetServerSidePropsContext;
 
   constructor(context: BeaconsGetServerSidePropsContext) {
