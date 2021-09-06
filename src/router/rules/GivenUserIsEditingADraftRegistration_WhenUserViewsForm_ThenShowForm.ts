@@ -8,7 +8,7 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors<
+export class GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<
   T
 > implements Rule
 {

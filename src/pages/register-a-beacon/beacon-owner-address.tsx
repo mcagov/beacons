@@ -23,10 +23,10 @@ import { withSession } from "../../lib/middleware/withSession";
 import { CreateRegistrationPageURLs } from "../../lib/urls";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors } from "../../router/rules/GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
-import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 
 interface BeaconOwnerAddressForm {
@@ -147,12 +147,12 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
-      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors<BeaconOwnerAddressForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<BeaconOwnerAddressForm>(
         context,
         validationRules,
         mapper
       ),
-      new IfUserSubmittedInvalidRegistrationForm<BeaconOwnerAddressForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<BeaconOwnerAddressForm>(
         context,
         validationRules,
         mapper

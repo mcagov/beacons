@@ -3,9 +3,9 @@ import {
   mapper,
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
-import { GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors } from "../../../src/router/rules/GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../src/router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 
-describe("GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors", () => {
+describe("GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm", () => {
   it("triggers if the request is a GET request", async () => {
     const context = {
       req: {
@@ -13,7 +13,7 @@ describe("GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors
       },
     };
     const rule =
-      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors(
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context as any,
         validationRules,
         mapper
@@ -31,7 +31,7 @@ describe("GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors
       },
     };
     const rule =
-      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors(
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context as any,
         validationRules,
         mapper
@@ -69,7 +69,7 @@ describe("GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors
       },
     };
     const rule =
-      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors(
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context as any,
         validationRules,
         mapper

@@ -20,11 +20,11 @@ import { ordinal } from "../../lib/writingStyle";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors } from "../../router/rules/GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
 import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
-import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
 import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
 
 interface BeaconUseForm {
@@ -117,13 +117,13 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       new IfUserDoesNotHaveValidSession(context),
       new IfUserHasNotSpecifiedAUse(context),
       new IfUserHasNotStartedEditingADraftRegistration(context),
-      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors<BeaconUseForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<BeaconUseForm>(
         context,
         validationRules,
         mapper(context),
         props(context)
       ),
-      new IfUserSubmittedInvalidRegistrationForm<BeaconUseForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<BeaconUseForm>(
         context,
         validationRules,
         mapper(context),

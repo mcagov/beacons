@@ -20,7 +20,7 @@ import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistr
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
 import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
 import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../../router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
-import { GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors } from "../../../../router/rules/GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { IfUserDoesNotHaveValidSession } from "../../../../router/rules/IfUserDoesNotHaveValidSession";
 
 interface UpdateBeaconDetailsForm {
@@ -80,7 +80,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         context.query.id as string
       ),
-      new GivenUserViewedRegistrationFormWithoutSubmitting_ShowFormWithoutErrors(
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context,
         validationRules,
         mapper

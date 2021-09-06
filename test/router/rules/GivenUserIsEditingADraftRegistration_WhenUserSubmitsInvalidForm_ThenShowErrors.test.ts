@@ -3,9 +3,9 @@ import {
   mapper,
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
-import { IfUserSubmittedInvalidRegistrationForm } from "../../../src/router/rules/IfUserSubmittedInvalidRegistrationForm";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../src/router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
 
-describe("IfUserSubmittedInvalidRegistrationForm", () => {
+describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors", () => {
   it("triggers if the form is invalid", async () => {
     const invalidForm = {
       manufacturer: "ACME Inc.",
@@ -24,11 +24,12 @@ describe("IfUserSubmittedInvalidRegistrationForm", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const rule = new IfUserSubmittedInvalidRegistrationForm(
-      context as any,
-      validationRules,
-      mapper
-    );
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
+        context as any,
+        validationRules,
+        mapper
+      );
 
     const result = await rule.condition();
 
@@ -53,11 +54,12 @@ describe("IfUserSubmittedInvalidRegistrationForm", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const rule = new IfUserSubmittedInvalidRegistrationForm(
-      context as any,
-      validationRules,
-      mapper
-    );
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
+        context as any,
+        validationRules,
+        mapper
+      );
 
     const result = await rule.condition();
 
@@ -83,11 +85,12 @@ describe("IfUserSubmittedInvalidRegistrationForm", () => {
         getDraftRegistration: jest.fn(),
       },
     };
-    const rule = new IfUserSubmittedInvalidRegistrationForm(
-      context as any,
-      validationRules,
-      mapper
-    );
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
+        context as any,
+        validationRules,
+        mapper
+      );
 
     const result = await rule.action();
 
