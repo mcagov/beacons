@@ -1,3 +1,4 @@
+import { ErrorPageURLs } from "../../../src/lib/urls";
 import { givenIHaveNotSignedIn } from "../common/selectors-and-assertions.spec";
 
 describe("Your beacon registry account", () => {

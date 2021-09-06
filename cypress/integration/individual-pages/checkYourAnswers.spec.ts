@@ -1,4 +1,7 @@
-import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
+import {
+  CreateRegistrationPageURLs,
+  GeneralPageURLs,
+} from "../../../src/lib/urls";
 import {
   givenIHaveFilledInCheckBeaconDetailsPage,
   iCanEditMyBeaconDetails,
