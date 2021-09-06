@@ -1,13 +1,14 @@
+import { AccountPageURLs } from "../../src/lib/urls";
 import {
   givenIHaveACookieSetAndHaveSignedInIVisit,
   givenIHaveClearedTheInput,
+  requiredFieldErrorMessage,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
 } from "../integration/common/selectors-and-assertions.spec";
-import { requiredFieldErrorMessage } from "./../integration/common/selectors-and-assertions.spec";
 
 describe("As an account holder", () => {
   const fullNameSelector = "#fullName";
