@@ -14,7 +14,6 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs } from "../../lib/urls";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { ISubmitRegistrationResult } from "../../useCases/submitRegistration";
 
@@ -90,7 +89,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
     /* Page logic */
     if (!verifyFormSubmissionCookieIsSet(context))
-      return redirectUserTo(PageURLs.start);
+      return redirectUserTo(GeneralPageURLs.start);
 
     try {
       const draftRegistration: DraftRegistration = await getDraftRegistration(

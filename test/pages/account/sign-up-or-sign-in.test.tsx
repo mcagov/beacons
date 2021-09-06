@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/FormManager";
-import { PageURLs } from "../../../src/lib/urls";
 import SignUpOrSignIn from "../../../src/pages/account/sign-up-or-sign-in";
 
 describe("SignUpOrSignIn", () => {
@@ -23,7 +22,7 @@ describe("SignUpOrSignIn", () => {
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      PageURLs.start
+      GeneralPageURLs.start
     );
   });
 });

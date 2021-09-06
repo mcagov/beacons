@@ -153,7 +153,7 @@ const iCanGoBackThroughTheFormInReverse = () => {
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iAmAt(PageURLs.start);
+  iAmAt(GeneralPageURLs.start);
   iCanClickEveryChangeButtonToEditMyRegistration();
 };
 

@@ -31,7 +31,7 @@ describe("As a beacon owner, I want to check the details that were submitted", (
     andIAmAt(PageURLs.applicationComplete);
     cy.get("div").contains("There was an error while registering your beacon");
     givenIHaveClicked(homePageLinkSelector);
-    andIAmAt(PageURLs.start);
+    andIAmAt(GeneralPageURLs.start);
     givenIHaveClicked(startButtonSelector);
     andIAmAt(PageURLs.checkBeaconDetails);
     iCanEditMyBeaconDetails();

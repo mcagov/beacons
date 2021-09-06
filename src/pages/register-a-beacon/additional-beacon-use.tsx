@@ -102,7 +102,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
 };
 
 const confirmBeforeDelete = (use: DraftBeaconUse, index: number) =>
-  PageURLs.areYouSure +
+  GeneralPageURLs.areYouSure +
   queryParams({
     action: "delete your " + prettyUseName(use) + " use",
     yes:
@@ -114,7 +114,7 @@ const confirmBeforeDelete = (use: DraftBeaconUse, index: number) =>
           queryParams({
             useIndex: index >= 1 ? index - 1 : 0,
           }),
-        onFailure: PageURLs.serverError,
+        onFailure: ErrorPageURLs.serverError,
       }),
     no: PageURLs.additionalUse + queryParams({ useIndex: index }),
   });

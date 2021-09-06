@@ -102,7 +102,7 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iAmAt(PageURLs.start);
+  iAmAt(GeneralPageURLs.start);
 };
 
 export const andIHaveEnteredMyAviationUse = givenIHaveEnteredMyAviationUse;

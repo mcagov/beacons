@@ -46,7 +46,7 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
-      previousPageUrl={PageURLs.start}
+      previousPageUrl={GeneralPageURLs.start}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       includeUseIndex={false}

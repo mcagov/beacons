@@ -1,7 +1,6 @@
 import { GetServerSidePropsResult } from "next";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
-import { PageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
 export class IfUserDoesNotHaveValidSession implements Rule {
@@ -16,6 +15,6 @@ export class IfUserDoesNotHaveValidSession implements Rule {
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    return redirectUserTo(PageURLs.unauthenticated);
+    return redirectUserTo(ErrorPageURLs.unauthenticated);
   }
 }

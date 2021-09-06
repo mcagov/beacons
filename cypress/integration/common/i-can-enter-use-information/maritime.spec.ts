@@ -185,7 +185,7 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iAmAt(PageURLs.start);
+  iAmAt(GeneralPageURLs.start);
 };
 
 export const iCanEditMyVesselCommunications = (): void => {

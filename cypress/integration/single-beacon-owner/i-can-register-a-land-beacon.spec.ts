@@ -1,5 +1,5 @@
 import { Environment } from "../../../src/lib/deprecatedRegistration/types";
-import { PageURLs } from "../../../src/lib/urls";
+import { GeneralPageURLs, PageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyBeaconDetails,
   iCanEditMyAdditionalBeaconInformation,
@@ -89,6 +89,6 @@ describe("As a land beacon owner", () => {
     whenIClickBack();
     iCanEditMyBeaconDetails();
     whenIClickBack();
-    iAmAt(PageURLs.start);
+    iAmAt(GeneralPageURLs.start);
   };
 });

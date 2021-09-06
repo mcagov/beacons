@@ -9,12 +9,17 @@ export enum AccountPageURLs {
   updateAccount = "/account/update-account",
 }
 
-export enum PageURLs {
+export enum GeneralPageURLs {
   start = "/",
   areYouSure = "/are-you-sure",
+}
+
+export enum ErrorPageURLs {
   serverError = "/500",
   unauthenticated = "/unauthenticated",
+}
 
+export enum PageURLs {
   checkBeaconDetails = "/register-a-beacon/check-beacon-details",
   beaconInformation = "/register-a-beacon/beacon-information",
   environment = "/register-a-beacon/beacon-use",
