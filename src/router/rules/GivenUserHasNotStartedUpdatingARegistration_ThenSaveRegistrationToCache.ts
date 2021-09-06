@@ -21,6 +21,8 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
   }
 
   public async condition(): Promise<boolean> {
+    if (!this.context.req?.cookies[formSubmissionCookieId]) return true;
+
     return (
       this.context.req?.cookies[formSubmissionCookieId] !== this.registrationId
     );
@@ -34,7 +36,6 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
     } = this.context.container;
 
     const accountHolderId = await getAccountHolderId(this.context.session);
-
     const registration: Registration = await getAccountHoldersRegistration(
       this.registrationId,
       accountHolderId

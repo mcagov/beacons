@@ -7,6 +7,29 @@ import { registrationFixture } from "../../fixtures/registration.fixture";
 
 describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache", () => {
   describe("condition", () => {
+    it("will return true if formSubmissionCookieId is undefined and registrationId is set", async () => {
+      const registrationId = v4();
+
+      const context = {
+        req: {
+          method: "GET",
+          url: "page-url",
+          cookies: {
+            [formSubmissionCookieId]: undefined,
+          },
+        },
+      };
+
+      const rule =
+        new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+          context as any,
+          registrationId
+        );
+
+      const result = await rule.condition();
+      expect(result).toBe(true);
+    });
+
     it("will return false if formSubmissionCookieId equals registration id", async () => {
       const registrationId = v4();
       const context = {
