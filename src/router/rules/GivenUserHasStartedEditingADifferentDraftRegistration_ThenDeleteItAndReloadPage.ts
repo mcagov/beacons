@@ -1,4 +1,5 @@
 import { GetServerSidePropsResult } from "next";
+import { clearFormSubmissionCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
@@ -24,6 +25,8 @@ export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItA
     await this.context.container.deleteDraftRegistration(
       this.context.req.cookies[formSubmissionCookieId]
     );
+
+    clearFormSubmissionCookie(this.context);
 
     return redirectUserTo(this.context.req.url);
   }

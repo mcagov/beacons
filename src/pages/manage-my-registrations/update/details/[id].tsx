@@ -19,6 +19,7 @@ import { toUpperCase } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
 import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
+import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../../router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
 import { IfUserDoesNotHaveValidSession } from "../../../../router/rules/IfUserDoesNotHaveValidSession";
 
 interface UpdateBeaconDetailsForm {
@@ -71,6 +72,9 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new IfUserDoesNotHaveValidSession(context),
+      new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
+        context
+      ),
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
         context
       ),

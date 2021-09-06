@@ -1,3 +1,4 @@
+import { stringContaining } from "expect/build/asymmetricMatchers";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../src/router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
@@ -78,6 +79,9 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
         container: {
           deleteDraftRegistration: jest.fn(),
         },
+        res: {
+          setHeader: jest.fn(),
+        },
       } as any;
       const rule =
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
@@ -88,6 +92,36 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
 
       expect(context.container.deleteDraftRegistration).toHaveBeenCalledWith(
         existingDraftRegistrationId
+      );
+    });
+
+    it("delete the existing DraftRegistration cookie", async () => {
+      const existingDraftRegistrationId =
+        "a-draft-registration-id-from-a-flow-the-user-is-no-longer-on";
+      const context: BeaconsGetServerSidePropsContext = {
+        req: {
+          cookies: {
+            [formSubmissionCookieId]: existingDraftRegistrationId,
+          },
+        },
+        container: {
+          deleteDraftRegistration: jest.fn(),
+        },
+        res: {
+          setHeader: jest.fn(),
+        },
+      } as any;
+      const rule =
+        new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
+          context
+        );
+
+      await rule.action();
+
+      //expect(context.res.setHeader).toHaveBeenCalledWith("Set-Cookie", "submissionId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict");
+      expect(context.res.setHeader).toHaveBeenCalledWith(
+        "Set-Cookie",
+        stringContaining("submissionId=; Path=/;")
       );
     });
 
@@ -103,6 +137,9 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
         },
         container: {
           deleteDraftRegistration: jest.fn(),
+        },
+        res: {
+          setHeader: jest.fn(),
         },
       } as any;
       const rule =
