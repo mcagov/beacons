@@ -20,7 +20,9 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
 import {
+  AccountPageURLs,
   CreateRegistrationPageURLs,
+  DeleteRegistrationPageURLs,
   queryParams,
   UpdatePageURLs,
 } from "../../lib/urls";

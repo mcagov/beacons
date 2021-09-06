@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import { AccountPageURLs } from "../../lib/urls";
 import { LinkButton } from "../Button";
 import { SectionHeading } from "../Typography";
 

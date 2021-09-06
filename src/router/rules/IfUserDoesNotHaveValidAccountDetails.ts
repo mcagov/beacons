@@ -3,6 +3,7 @@ import { AccountHolder } from "../../entities/AccountHolder";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
+import { AccountPageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
 export class IfUserDoesNotHaveValidAccountDetails implements Rule {

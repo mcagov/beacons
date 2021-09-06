@@ -1,9 +1,10 @@
 import { GetServerSidePropsResult } from "next";
+import { showCookieBanner } from "../../lib/cookies";
 import { withoutErrorMessages } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { AccountPageURLs } from "../../lib/urls";
 import { DeleteRegistrationProps } from "../../pages/manage-my-registrations/delete";
-import { showCookieBanner } from "./../../lib/cookies";
 import { Rule } from "./Rule";
 
 export class GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage

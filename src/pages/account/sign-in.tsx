@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import { signIn } from "next-auth/client";
 import React, { FunctionComponent, useEffect } from "react";
+import { AccountPageURLs } from "../../lib/urls";
 
 interface SignInPageProps {
   callbackUrl: string;

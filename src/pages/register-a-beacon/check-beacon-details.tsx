@@ -14,7 +14,7 @@ import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { CreateRegistrationPageURLs } from "../../lib/urls";
+import { AccountPageURLs, CreateRegistrationPageURLs } from "../../lib/urls";
 import { toUpperCase } from "../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";

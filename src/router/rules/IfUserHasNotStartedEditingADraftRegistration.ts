@@ -3,6 +3,7 @@ import { DraftRegistration } from "../../entities/DraftRegistration";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
+import { GeneralPageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
 export class IfUserHasNotStartedEditingADraftRegistration implements Rule {

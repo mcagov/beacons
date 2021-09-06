@@ -22,7 +22,7 @@ import { beaconToRegistration } from "../../../lib/beaconToRegistration";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
-import { UpdatePageURLs } from "../../../lib/urls";
+import { AccountPageURLs, UpdatePageURLs } from "../../../lib/urls";
 import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { IfUserDoesNotHaveValidSession } from "../../../router/rules/IfUserDoesNotHaveValidSession";

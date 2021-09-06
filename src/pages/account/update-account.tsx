@@ -20,6 +20,7 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
+import { AccountPageURLs } from "../../lib/urls";
 import { diffObjValues } from "../../lib/utils";
 import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 

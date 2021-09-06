@@ -1,6 +1,7 @@
 import { GetServerSidePropsResult } from "next";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
+import { ErrorPageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
 export class IfUserDoesNotHaveValidSession implements Rule {
