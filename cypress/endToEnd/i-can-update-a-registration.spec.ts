@@ -1,10 +1,11 @@
 import { Registration } from "../../src/entities/Registration";
 import { Environment } from "../../src/lib/deprecatedRegistration/types";
-import { PageURLs } from "../../src/lib/urls";
+import { AccountPageURLs, UpdatePageURLs } from "../../src/lib/urls";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
-  givenIHaveACookieSetAndHaveSignedIn,
+  givenIHaveSignedIn,
+  thenTheUrlShouldContain,
   whenIAmAt,
 } from "../integration/common/selectors-and-assertions.spec";
 import { iCanSeeMyExistingRegistrationHexId } from "./common/i-can-see-my-existing-registration-hex-id.spec";
@@ -15,10 +16,10 @@ import {
 
 describe("As an account holder", () => {
   it("I can update one of my registrations", () => {
-    givenIHaveACookieSetAndHaveSignedIn();
+    givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
 
-    whenIAmAt(PageURLs.accountHome);
+    whenIAmAt(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
@@ -49,6 +50,10 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
   iCanSeeOwnerInformation(registration);
   iCanSeeEmergencyContactInformation(registration);
   iCanSeeUseInformation(registration);
+
+  whenIClickTheUpdateButtonForTheSectionWithHeading("Beacon information");
+  thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
+  iCanSeeMyBeaconDetails(registration);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -125,4 +130,18 @@ const iCanSeeUseInformation = (registration: Registration) => {
     cy.get("main").contains("Communications");
     cy.get("main").contains("More details");
   });
+};
+
+const whenIClickTheUpdateButtonForTheSectionWithHeading = (heading: string) => {
+  cy.get("dt")
+    .contains(heading)
+    .parent()
+    .contains(/change/i)
+    .click();
+};
+
+export const iCanSeeMyBeaconDetails = (registration: Registration): void => {
+  cy.contains(registration.manufacturer);
+  cy.contains(registration.model);
+  cy.contains(registration.hexId);
 };

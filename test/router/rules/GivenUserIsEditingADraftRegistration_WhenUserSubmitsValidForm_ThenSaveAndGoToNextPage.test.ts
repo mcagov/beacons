@@ -1,12 +1,12 @@
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { PageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
   mapper,
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
-import { IfUserSubmittedValidRegistrationForm } from "../../../src/router/rules/IfUserSubmittedValidRegistrationForm";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../src/router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 
-describe("IfUserSubmittedValidRegistrationForm", () => {
+describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage", () => {
   it("triggers if the form is valid", async () => {
     const validForm = {
       manufacturer: "ACME Inc.",
@@ -25,13 +25,14 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const nextPageUrl = PageURLs.beaconInformation;
-    const rule = new IfUserSubmittedValidRegistrationForm(
-      context as any,
-      validationRules,
-      mapper,
-      nextPageUrl
-    );
+    const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
+        context as any,
+        validationRules,
+        mapper,
+        nextPageUrl
+      );
 
     const result = await rule.condition();
 
@@ -56,13 +57,14 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const nextPageUrl = PageURLs.beaconInformation;
-    const rule = new IfUserSubmittedValidRegistrationForm(
-      context as any,
-      validationRules,
-      mapper,
-      nextPageUrl
-    );
+    const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
+        context as any,
+        validationRules,
+        mapper,
+        nextPageUrl
+      );
 
     const result = await rule.condition();
 
@@ -87,20 +89,21 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
         saveDraftRegistration: jest.fn(),
       },
     };
-    const nextPageUrl = PageURLs.beaconInformation;
-    const rule = new IfUserSubmittedValidRegistrationForm(
-      context as any,
-      validationRules,
-      mapper,
-      nextPageUrl
-    );
+    const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
+        context as any,
+        validationRules,
+        mapper,
+        nextPageUrl
+      );
 
     const result = await rule.action();
 
     expect(result).toStrictEqual({
       redirect: {
         statusCode: 303,
-        destination: PageURLs.beaconInformation,
+        destination: CreateRegistrationPageURLs.beaconInformation,
       },
     });
   });

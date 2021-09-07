@@ -2,7 +2,10 @@ import {
   Environment,
   Purpose,
 } from "../../../../src/lib/deprecatedRegistration/types";
-import { PageURLs } from "../../../../src/lib/urls";
+import {
+  CreateRegistrationPageURLs,
+  GeneralPageURLs,
+} from "../../../../src/lib/urls";
 import { makeEnumValueUserFriendly } from "../../../../src/lib/writingStyle";
 import {
   testAviationCommercialUseData,
@@ -32,16 +35,16 @@ import {
 import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
 export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
-  thenTheUrlShouldContain(PageURLs.environment);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
   givenIHaveSelected("#aviation");
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.purpose);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.purpose);
   iCanSeeAPageHeadingThatContains("aviation");
   givenIHaveSelected(`#${purpose.toLowerCase()}`);
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.activity);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
   iCanSeeAPageHeadingThatContains("aviation");
   iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
@@ -58,16 +61,16 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   }
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.aboutTheAircraft);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.aboutTheAircraft);
   iCanSeeAPageHeadingThatContains("aircraft");
   givenIHaveEnteredInformationAboutMyAircraft();
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.aircraftCommunications);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.aircraftCommunications);
   givenIHaveEnteredMyAircraftCommunicationDetails();
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.moreDetails);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.moreDetails);
   givenIHaveEnteredMoreDetailsAboutMyAircraft();
   andIClickContinue();
 };
@@ -102,7 +105,7 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iAmAt(PageURLs.start);
+  iAmAt(GeneralPageURLs.start);
 };
 
 export const andIHaveEnteredMyAviationUse = givenIHaveEnteredMyAviationUse;
@@ -137,13 +140,13 @@ export const iCanViewMyChangedAircraftCommunications = (): void => {
   cy.get("#mobileTelephoneInput2").should("not.be.visible");
   cy.get("#otherCommunicationInput").should("not.be.visible");
   andIClickContinue();
-  cy.visit(PageURLs.checkYourAnswers);
+  cy.visit(CreateRegistrationPageURLs.checkYourAnswers);
   Object.values(comms)
     .filter((value) => typeof value === "string")
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIAmAt(PageURLs.aircraftCommunications + "?useIndex=0");
+  andIAmAt(CreateRegistrationPageURLs.aircraftCommunications + "?useIndex=0");
 };
 
 export const iCanEditMyAircraftDetails = (): void => {

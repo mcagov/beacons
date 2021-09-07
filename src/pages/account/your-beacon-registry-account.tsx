@@ -19,12 +19,18 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs, queryParams, UpdatePageURLs } from "../../lib/urls";
+import {
+  AccountPageURLs,
+  CreateRegistrationPageURLs,
+  DeleteRegistrationPageURLs,
+  queryParams,
+  UpdatePageURLs,
+} from "../../lib/urls";
 import { formatDateTruncated, formatUses } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserDoesNotHaveValidAccountDetails } from "../../router/rules/IfUserDoesNotHaveValidAccountDetails";
-import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
 import { Rule } from "../../router/rules/Rule";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+import { WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails } from "../../router/rules/WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails";
 
 export interface YourBeaconRegistryAccountPageProps {
   id?: string;
@@ -88,7 +94,7 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
         <SectionHeading classes="govuk-!-margin-0">Your details</SectionHeading>
         <div>
           <AnchorLink
-            href={PageURLs.updateAccount}
+            href={AccountPageURLs.updateAccount}
             classes="govuk-link--no-visited-state govuk-!-margin-right-4"
             description="Your details"
           >
@@ -229,7 +235,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
   beacon,
 }: BeaconRowProps): JSX.Element => {
   const confirmBeforeDelete = (registrationId: string) =>
-    PageURLs.deleteRegistration +
+    DeleteRegistrationPageURLs.deleteRegistration +
     queryParams({
       id: registrationId,
     });
@@ -268,7 +274,7 @@ const RegisterANewBeacon: FunctionComponent = (): JSX.Element => (
     <SectionHeading>Register a new beacon</SectionHeading>
     <LinkButton
       buttonText="Register a new beacon"
-      href={PageURLs.checkBeaconDetails}
+      href={CreateRegistrationPageURLs.checkBeaconDetails}
     />
   </>
 );
@@ -283,8 +289,8 @@ const Contact: FunctionComponent = (): JSX.Element => (
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfUserDoesNotHaveValidSession(context),
-      new IfUserDoesNotHaveValidAccountDetails(
+      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
+      new WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails(
         context,
         accountDetailsFormManager
       ),

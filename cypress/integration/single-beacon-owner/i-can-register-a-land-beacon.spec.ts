@@ -1,5 +1,8 @@
 import { Environment } from "../../../src/lib/deprecatedRegistration/types";
-import { PageURLs } from "../../../src/lib/urls";
+import {
+  CreateRegistrationPageURLs,
+  GeneralPageURLs,
+} from "../../../src/lib/urls";
 import {
   givenIHaveEnteredMyBeaconDetails,
   iCanEditMyAdditionalBeaconInformation,
@@ -53,7 +56,7 @@ describe("As a land beacon owner", () => {
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
-    thenTheUrlShouldContain(PageURLs.checkYourAnswers);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMySingleLandUse();
@@ -89,6 +92,6 @@ describe("As a land beacon owner", () => {
     whenIClickBack();
     iCanEditMyBeaconDetails();
     whenIClickBack();
-    iAmAt(PageURLs.start);
+    iAmAt(GeneralPageURLs.start);
   };
 });

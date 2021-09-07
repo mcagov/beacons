@@ -2,7 +2,10 @@ import {
   Environment,
   Purpose,
 } from "../../../../src/lib/deprecatedRegistration/types";
-import { PageURLs } from "../../../../src/lib/urls";
+import {
+  CreateRegistrationPageURLs,
+  GeneralPageURLs,
+} from "../../../../src/lib/urls";
 import { makeEnumValueUserFriendly } from "../../../../src/lib/writingStyle";
 import {
   testMaritimeCommercialUseData,
@@ -33,16 +36,16 @@ import {
 import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
 export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
-  thenTheUrlShouldContain(PageURLs.environment);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
   givenIHaveSelected("#maritime");
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.purpose);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.purpose);
   iCanSeeAPageHeadingThatContains("maritime");
   givenIHaveSelected(`#${purpose.toLowerCase()}`);
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.activity);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
   iCanSeeAPageHeadingThatContains("maritime");
   iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
@@ -55,16 +58,16 @@ export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
   }
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.aboutTheVessel);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.aboutTheVessel);
   iCanSeeAPageHeadingThatContains("vessel");
   givenIHaveEnteredInformationAboutMyVessel();
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.vesselCommunications);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.vesselCommunications);
   givenIHaveEnteredMyVesselCommunicationDetails();
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.moreDetails);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.moreDetails);
   givenIHaveEnteredMoreDetailsAboutMyVessel();
   andIClickContinue();
 };
@@ -72,16 +75,16 @@ export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
 export const givenIHaveEnteredMyRequiredMaritimeUse = (
   purpose: Purpose
 ): void => {
-  thenTheUrlShouldContain(PageURLs.environment);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
   givenIHaveSelected("#maritime");
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.purpose);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.purpose);
   iCanSeeAPageHeadingThatContains("maritime");
   givenIHaveSelected(`#${purpose.toLowerCase()}`);
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.activity);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
   iCanSeeAPageHeadingThatContains("maritime");
   iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
@@ -94,15 +97,15 @@ export const givenIHaveEnteredMyRequiredMaritimeUse = (
   }
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.aboutTheVessel);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.aboutTheVessel);
   iCanSeeAPageHeadingThatContains("vessel");
   givenIHaveEnteredRequiredInformationAboutMyVessel();
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.vesselCommunications);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.vesselCommunications);
   andIClickContinue();
 
-  thenTheUrlShouldContain(PageURLs.moreDetails);
+  thenTheUrlShouldContain(CreateRegistrationPageURLs.moreDetails);
   givenIHaveEnteredMoreDetailsAboutMyVessel();
   andIClickContinue();
 };
@@ -185,7 +188,7 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iAmAt(PageURLs.start);
+  iAmAt(GeneralPageURLs.start);
 };
 
 export const iCanEditMyVesselCommunications = (): void => {
@@ -224,13 +227,13 @@ export const iCanViewMyChangedVesselCommunications = (): void => {
   cy.get("#mobileTelephoneInput2").should("not.be.visible");
   cy.get("#otherCommunicationInput").should("not.be.visible");
   andIClickContinue();
-  cy.visit(PageURLs.checkYourAnswers);
+  cy.visit(CreateRegistrationPageURLs.checkYourAnswers);
   Object.values(comms)
     .filter((value) => typeof value === "string")
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIAmAt(PageURLs.vesselCommunications + "?useIndex=0");
+  andIAmAt(CreateRegistrationPageURLs.vesselCommunications + "?useIndex=0");
 };
 
 export const iCanEditMyVesselDetails = (): void => {

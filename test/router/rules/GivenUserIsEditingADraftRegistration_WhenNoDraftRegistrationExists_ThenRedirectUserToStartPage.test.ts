@@ -3,10 +3,10 @@ import { GetServerSidePropsResult } from "next";
 import { DraftRegistration } from "../../../src/entities/DraftRegistration";
 import { IAppContainer } from "../../../src/lib/IAppContainer";
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { PageURLs } from "../../../src/lib/urls";
-import { IfUserHasNotStartedEditingADraftRegistration } from "../../../src/router/rules/IfUserHasNotStartedEditingADraftRegistration";
+import { GeneralPageURLs } from "../../../src/lib/urls";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../src/router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
 
-describe("IfUserHasNotStartedEditingADraftRegistration", () => {
+describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage", () => {
   describe("condition", () => {
     it("triggers if no cookie exists", async () => {
       const context = {
@@ -17,9 +17,10 @@ describe("IfUserHasNotStartedEditingADraftRegistration", () => {
           },
         },
       };
-      const rule = new IfUserHasNotStartedEditingADraftRegistration(
-        context as any
-      );
+      const rule =
+        new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+          context as any
+        );
 
       const result = await rule.condition();
 
@@ -38,9 +39,10 @@ describe("IfUserHasNotStartedEditingADraftRegistration", () => {
           getDraftRegistration: jest.fn().mockResolvedValue(null),
         } as Partial<IAppContainer>,
       };
-      const rule = new IfUserHasNotStartedEditingADraftRegistration(
-        context as any
-      );
+      const rule =
+        new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+          context as any
+        );
 
       const result = await rule.condition();
 
@@ -66,9 +68,10 @@ describe("IfUserHasNotStartedEditingADraftRegistration", () => {
           saveDraftRegistration: jest.fn(),
         } as Partial<IAppContainer>,
       };
-      const rule = new IfUserHasNotStartedEditingADraftRegistration(
-        context as any
-      );
+      const rule =
+        new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+          context as any
+        );
 
       const result = await rule.condition();
 
@@ -86,15 +89,16 @@ describe("IfUserHasNotStartedEditingADraftRegistration", () => {
           },
         },
       };
-      const rule = new IfUserHasNotStartedEditingADraftRegistration(
-        context as any
-      );
+      const rule =
+        new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+          context as any
+        );
 
       const result: GetServerSidePropsResult<any> = await rule.action();
 
       expect(result).toMatchObject({
         redirect: {
-          destination: PageURLs.start,
+          destination: GeneralPageURLs.start,
         },
       });
     });
@@ -112,9 +116,10 @@ describe("IfUserHasNotStartedEditingADraftRegistration", () => {
           saveDraftRegistration: jest.fn(),
         } as Partial<IAppContainer>,
       };
-      const rule = new IfUserHasNotStartedEditingADraftRegistration(
-        context as any
-      );
+      const rule =
+        new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+          context as any
+        );
       const blankRegistration: DraftRegistration = {
         uses: [],
       };

@@ -19,11 +19,11 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs } from "../../lib/urls";
+import { CreateRegistrationPageURLs } from "../../lib/urls";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
-import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
-import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+import { WhenUserViewsPage_ThenDisplayPage } from "../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 interface CheckYourAnswersProps {
   registration: DraftRegistration;
@@ -47,7 +47,9 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   return (
     <>
       <Layout
-        navigation={<BackButton href={PageURLs.emergencyContact} />}
+        navigation={
+          <BackButton href={CreateRegistrationPageURLs.emergencyContact} />
+        }
         title={pageHeading}
         showCookieBanner={false}
       >
@@ -61,29 +63,29 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
               </GovUKBody>
               <CheckYourAnswersBeaconDetailsSummary
                 {...registration}
-                changeUrl={PageURLs.checkBeaconDetails}
+                changeUrl={CreateRegistrationPageURLs.checkBeaconDetails}
               />
               <CheckYourAnswersBeaconInformationSummary
                 registration={registration}
-                changeUrl={PageURLs.beaconInformation}
+                changeUrl={CreateRegistrationPageURLs.beaconInformation}
               />
               {useSections}
               <CheckYourAnswersBeaconOwnerSummary
                 registration={registration}
-                changeUrl={PageURLs.aboutBeaconOwner}
+                changeUrl={CreateRegistrationPageURLs.aboutBeaconOwner}
               />
               <CheckYourAnswersBeaconOwnerAddressSummary
                 registration={registration}
-                changeUrl={PageURLs.beaconOwnerAddress}
+                changeUrl={CreateRegistrationPageURLs.beaconOwnerAddress}
               />
               <CheckYourAnswersBeaconEmergencyContactsSummary
                 registration={registration}
-                changeUrl={PageURLs.emergencyContact}
+                changeUrl={CreateRegistrationPageURLs.emergencyContact}
               />
               <SendYourApplication />
               <StartButton
                 buttonText="Accept and send"
-                href={PageURLs.applicationComplete}
+                href={CreateRegistrationPageURLs.applicationComplete}
               />
             </>
           }
@@ -107,9 +109,11 @@ const SendYourApplication: FunctionComponent = (): JSX.Element => (
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfUserDoesNotHaveValidSession(context),
-      new IfUserHasNotStartedEditingADraftRegistration(context),
-      new IfUserViewedPage(context, props(context)),
+      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
+      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+        context
+      ),
+      new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
     ]).execute();
   })
 );

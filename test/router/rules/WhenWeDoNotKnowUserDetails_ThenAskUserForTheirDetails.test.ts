@@ -1,7 +1,7 @@
-import { PageURLs } from "../../../src/lib/urls";
-import { IfUserDoesNotHaveValidAccountDetails } from "../../../src/router/rules/IfUserDoesNotHaveValidAccountDetails";
+import { AccountPageURLs } from "../../../src/lib/urls";
+import { WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails } from "../../../src/router/rules/WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails";
 
-describe("IfUserDoesNotHaveValidAccountDetails", () => {
+describe("WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails", () => {
   it("should route the user to the update account page if the account details are not valid", async () => {
     const mockGetOrCreateAccountHolder = jest.fn().mockReturnValueOnce({});
     const mockHasErrors = jest.fn().mockReturnValueOnce(true);
@@ -19,7 +19,7 @@ describe("IfUserDoesNotHaveValidAccountDetails", () => {
       },
     };
 
-    const rule = new IfUserDoesNotHaveValidAccountDetails(
+    const rule = new WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails(
       context as any,
       mockAccountDetailsFormManager
     );
@@ -32,7 +32,7 @@ describe("IfUserDoesNotHaveValidAccountDetails", () => {
     expect(result).toStrictEqual({
       redirect: {
         statusCode: 303,
-        destination: PageURLs.updateAccount,
+        destination: AccountPageURLs.updateAccount,
       },
     });
   });
@@ -54,7 +54,7 @@ describe("IfUserDoesNotHaveValidAccountDetails", () => {
       },
     };
 
-    const rule = new IfUserDoesNotHaveValidAccountDetails(
+    const rule = new WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails(
       context as any,
       mockAccountDetailsFormManager
     );

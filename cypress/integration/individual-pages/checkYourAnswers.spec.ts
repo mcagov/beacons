@@ -1,4 +1,7 @@
-import { PageURLs } from "../../../src/lib/urls";
+import {
+  CreateRegistrationPageURLs,
+  GeneralPageURLs,
+} from "../../../src/lib/urls";
 import {
   givenIHaveFilledInCheckBeaconDetailsPage,
   iCanEditMyBeaconDetails,
@@ -18,22 +21,22 @@ describe("As a beacon owner, I want to check the details that were submitted", (
 
   it("should display the page title", () => {
     givenIHaveSignedIn();
-    givenIHaveACookieSetAndIVisit(PageURLs.checkYourAnswers);
+    givenIHaveACookieSetAndIVisit(CreateRegistrationPageURLs.checkYourAnswers);
     iCanSeeAPageHeadingThatContains("Check your answers");
   });
 
   it("should not clear the form when I click Accept and Send and the registration fails", () => {
     givenIHaveSignedIn();
-    givenIHaveACookieSetAndIVisit(PageURLs.beaconInformation);
+    givenIHaveACookieSetAndIVisit(CreateRegistrationPageURLs.beaconInformation);
     givenIHaveFilledInCheckBeaconDetailsPage();
-    andIAmAt(PageURLs.checkYourAnswers);
+    andIAmAt(CreateRegistrationPageURLs.checkYourAnswers);
     givenIHaveClicked(acceptAndSendButtonSelector);
-    andIAmAt(PageURLs.applicationComplete);
+    andIAmAt(CreateRegistrationPageURLs.applicationComplete);
     cy.get("div").contains("There was an error while registering your beacon");
     givenIHaveClicked(homePageLinkSelector);
-    andIAmAt(PageURLs.start);
+    andIAmAt(GeneralPageURLs.start);
     givenIHaveClicked(startButtonSelector);
-    andIAmAt(PageURLs.checkBeaconDetails);
+    andIAmAt(CreateRegistrationPageURLs.checkBeaconDetails);
     iCanEditMyBeaconDetails();
   });
 });

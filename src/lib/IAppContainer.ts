@@ -10,6 +10,7 @@ import { AddNewUseToDraftRegistrationFn } from "../useCases/addNewUseToDraftRegi
 import { AuthenticateUserFn } from "../useCases/authenticateUser";
 import { DeleteBeaconFn } from "../useCases/deleteBeacon";
 import { DeleteCachedUseFn } from "../useCases/deleteCachedUse";
+import { GetAccountHoldersRegistrationFn } from "../useCases/getAccountHoldersRegistration";
 import { GetBeaconsByAccountHolderIdFn } from "../useCases/getBeaconsByAccountHolderId";
 import { GetOrCreateAccountHolderFn } from "../useCases/getOrCreateAccountHolder";
 import { SendConfirmationEmailFn } from "../useCases/sendConfirmationEmail";
@@ -22,11 +23,13 @@ export interface IAppContainer {
   authenticateUser: AuthenticateUserFn;
   submitRegistration: SubmitRegistrationFn;
   sendConfirmationEmail: SendConfirmationEmailFn;
+
   getDraftRegistration: (id: string) => Promise<DraftRegistration>;
   saveDraftRegistration: (
     id: string,
     updates: DraftRegistration
   ) => Promise<void>;
+  deleteDraftRegistration: (id: string) => Promise<void>;
   deleteCachedUse: DeleteCachedUseFn;
 
   parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
@@ -35,6 +38,7 @@ export interface IAppContainer {
   updateAccountHolder: UpdateAccountHolderFn;
   getAccountHolderId;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
+  getAccountHoldersRegistration: GetAccountHoldersRegistrationFn;
   deleteBeacon: DeleteBeaconFn;
   addNewUseToDraftRegistration: AddNewUseToDraftRegistrationFn;
 

@@ -7,7 +7,10 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class IfUserSubmittedInvalidRegistrationForm<T> implements Rule {
+export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<
+  T
+> implements Rule
+{
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
   private readonly mapper: DraftRegistrationFormMapper<T>;

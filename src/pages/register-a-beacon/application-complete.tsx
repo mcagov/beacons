@@ -14,8 +14,8 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs } from "../../lib/urls";
-import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
+import { GeneralPageURLs } from "../../lib/urls";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { ISubmitRegistrationResult } from "../../useCases/submitRegistration";
 
 interface ApplicationCompleteProps {
@@ -79,7 +79,9 @@ const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-    const rule = new IfUserDoesNotHaveValidSession(context);
+    const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
+      context
+    );
 
     if (await rule.condition()) {
       return rule.action();
@@ -90,7 +92,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
     /* Page logic */
     if (!verifyFormSubmissionCookieIsSet(context))
-      return redirectUserTo(PageURLs.start);
+      return redirectUserTo(GeneralPageURLs.start);
 
     try {
       const draftRegistration: DraftRegistration = await getDraftRegistration(

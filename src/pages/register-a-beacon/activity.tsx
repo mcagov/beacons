@@ -22,18 +22,18 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
-import { PageURLs, queryParams } from "../../lib/urls";
+import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../presenters/formSubmission";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
-import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
-import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
-import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
-import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
-import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface ActivityForm {
   environment: string;
@@ -85,8 +85,8 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
     <BeaconsForm
       previousPageUrl={
         (environment === Environment.LAND
-          ? PageURLs.environment
-          : PageURLs.purpose) + queryParams({ useIndex })
+          ? CreateRegistrationPageURLs.environment
+          : CreateRegistrationPageURLs.purpose) + queryParams({ useIndex })
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -572,22 +572,26 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfUserDoesNotHaveValidSession(context),
-      new IfUserHasNotSpecifiedAUse(context),
-      new IfUserHasNotStartedEditingADraftRegistration(context),
-      new IfUserViewedRegistrationForm<ActivityForm>(
+      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
+      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+        context
+      ),
+      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+        context
+      ),
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<ActivityForm>(
         context,
         validationRules,
         mapper(context),
         props(context)
       ),
-      new IfUserSubmittedInvalidRegistrationForm<ActivityForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<ActivityForm>(
         context,
         validationRules,
         mapper(context),
         props(context)
       ),
-      new IfUserSubmittedValidRegistrationForm<ActivityForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<ActivityForm>(
         context,
         validationRules,
         mapper(context),
@@ -599,7 +603,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
 const nextPage = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<PageURLs> => {
+): Promise<CreateRegistrationPageURLs> => {
   const environment = (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId]
@@ -608,13 +612,13 @@ const nextPage = async (
 
   switch (environment) {
     case Environment.MARITIME:
-      return PageURLs.aboutTheVessel;
+      return CreateRegistrationPageURLs.aboutTheVessel;
     case Environment.AVIATION:
-      return PageURLs.aboutTheAircraft;
+      return CreateRegistrationPageURLs.aboutTheAircraft;
     case Environment.LAND:
-      return PageURLs.landCommunications;
+      return CreateRegistrationPageURLs.landCommunications;
     default:
-      return PageURLs.environment;
+      return CreateRegistrationPageURLs.environment;
   }
 };
 

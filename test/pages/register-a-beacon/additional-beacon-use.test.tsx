@@ -6,7 +6,11 @@ import {
   Purpose,
 } from "../../../src/lib/deprecatedRegistration/types";
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { ActionURLs, PageURLs, queryParams } from "../../../src/lib/urls";
+import {
+  ActionURLs,
+  CreateRegistrationPageURLs,
+  queryParams,
+} from "../../../src/lib/urls";
 import AdditionalBeaconUse, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/additional-beacon-use";
@@ -97,7 +101,8 @@ describe("AdditionalBeaconUse page", () => {
 
     expect(screen.getByRole("link", { name: "Back" })).toHaveAttribute(
       "href",
-      PageURLs.moreDetails + queryParams({ useIndex: currentUseIndex })
+      CreateRegistrationPageURLs.moreDetails +
+        queryParams({ useIndex: currentUseIndex })
     );
   });
 

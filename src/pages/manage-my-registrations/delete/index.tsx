@@ -17,19 +17,19 @@ import { Validators } from "../../../lib/form/Validators";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
-import { PageURLs } from "../../../lib/urls";
+import { AccountPageURLs } from "../../../lib/urls";
 import { prettyUseName } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_ThenShowErrorMessage } from "../../../router/rules/GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_ThenShowErrorMessage";
 import { GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteTheRegistration } from "../../../router/rules/GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteTheRegistration";
 import { GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage";
-import { IfUserDoesNotHaveValidSession } from "../../../router/rules/IfUserDoesNotHaveValidSession";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 export interface DeleteRegistrationProps {
   form: FormJSON;
   beacon: Beacon;
   showCookieBanner: boolean;
-  previousPageURL?: PageURLs;
+  previousPageURL?: AccountPageURLs;
 }
 
 export interface DeleteRegistrationForm {
@@ -38,7 +38,7 @@ export interface DeleteRegistrationForm {
 }
 
 export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
-  previousPageURL = PageURLs.accountHome,
+  previousPageURL = AccountPageURLs.accountHome,
   beacon,
   showCookieBanner,
   form,
@@ -58,7 +58,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
       cancelButton={
         <LinkButton
           buttonText="Cancel"
-          href={PageURLs.accountHome}
+          href={AccountPageURLs.accountHome}
           classes="govuk-button--secondary govuk-!-margin-right-8"
         />
       }
@@ -158,7 +158,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfUserDoesNotHaveValidSession(context),
+      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage(
         context,
         validationRules

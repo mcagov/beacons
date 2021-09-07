@@ -24,11 +24,11 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { acceptRejectCookieId } from "../../lib/types";
-import { PageURLs } from "../../lib/urls";
+import { AccountPageURLs, GeneralPageURLs } from "../../lib/urls";
 import { FormSubmission } from "../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserViewedPage } from "../../router/rules/IfUserViewedPage";
 import { Rule } from "../../router/rules/Rule";
+import { WhenUserViewsPage_ThenDisplayPage } from "../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
   form = withoutErrorMessages({}, validationRules),
@@ -46,7 +46,7 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
-      previousPageUrl={PageURLs.start}
+      previousPageUrl={GeneralPageURLs.start}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       includeUseIndex={false}
@@ -81,7 +81,7 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfUserViewedPage(context),
+      new WhenUserViewsPage_ThenDisplayPage(context),
       new IfUserSubmittedSignUpOrSignInForm(context, validationRules),
     ]).execute();
   })
@@ -129,12 +129,12 @@ class IfUserSubmittedSignUpOrSignInForm implements Rule {
     return isValid(await this.form(), this.validationRules);
   }
 
-  private async nextPage(): Promise<PageURLs> {
+  private async nextPage(): Promise<AccountPageURLs> {
     switch ((await this.form()).signUpOrSignIn) {
       case "signUp":
-        return PageURLs.signUp;
+        return AccountPageURLs.signUp;
       case "signIn":
-        return PageURLs.signIn;
+        return AccountPageURLs.signIn;
     }
   }
 

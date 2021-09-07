@@ -9,7 +9,9 @@ import { addNewUseToDraftRegistration } from "../useCases/addNewUseToDraftRegist
 import { authenticateUser } from "../useCases/authenticateUser";
 import { deleteBeacon } from "../useCases/deleteBeacon";
 import { deleteCachedUse } from "../useCases/deleteCachedUse";
+import { deleteDraftRegistration } from "../useCases/deleteDraftRegistration";
 import { getAccountHolderId } from "../useCases/getAccountHolderId";
+import { getAccountHoldersRegistration } from "../useCases/getAccountHoldersRegistration";
 import { getBeaconsByAccountHolderId } from "../useCases/getBeaconsByAccountHolderId";
 import { getDraftRegistration } from "../useCases/getDraftRegistration";
 import { getOrCreateAccountHolder } from "../useCases/getOrCreateAccountHolder";
@@ -37,6 +39,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get saveDraftRegistration() {
       return saveDraftRegistration(this);
     },
+    get deleteDraftRegistration() {
+      return deleteDraftRegistration(this);
+    },
     get authenticateUser() {
       return authenticateUser(this);
     },
@@ -57,6 +62,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get getBeaconsByAccountHolderId() {
       return getBeaconsByAccountHolderId(this);
+    },
+    get getAccountHoldersRegistration() {
+      return getAccountHoldersRegistration(this);
     },
     get deleteBeacon() {
       return deleteBeacon(this);
