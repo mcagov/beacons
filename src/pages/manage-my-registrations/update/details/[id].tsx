@@ -8,6 +8,7 @@ import { BeaconManufacturerInput } from "../../../../components/domain/formEleme
 import { BeaconModelInput } from "../../../../components/domain/formElements/BeaconModelInput";
 import { HexIdHelp } from "../../../../components/domain/formElements/HexIdHelp";
 import { GovUKBody } from "../../../../components/Typography";
+import { DraftRegistration } from "../../../../entities/DraftRegistration";
 import { FieldManager } from "../../../../lib/form/FieldManager";
 import { FormManager } from "../../../../lib/form/FormManager";
 import { Validators } from "../../../../lib/form/Validators";
@@ -32,15 +33,22 @@ interface UpdateBeaconDetailsForm {
   hexId: string;
 }
 
-const BeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
+interface BeaconDetailsProps extends DraftRegistrationPageProps {
+  registration: DraftRegistration;
+}
+
+const BeaconDetails: FunctionComponent<BeaconDetailsProps> = ({
   form,
+  registration,
   showCookieBanner,
-}: DraftRegistrationPageProps): JSX.Element => {
+}: BeaconDetailsProps): JSX.Element => {
   const pageHeading = "Beacon details";
 
   return (
     <BeaconsForm
-      previousPageUrl={"/"}
+      previousPageUrl={
+        UpdatePageURLs.registrationSummary + "/" + registration.id
+      }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
     >
@@ -82,7 +90,7 @@ const BeaconHexId: FunctionComponent<{ hexId: string }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageURL = UpdatePageURLs.beaconInformation;
+    const nextPageURL = UpdatePageURLs.beaconInformation + context.query.id;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
