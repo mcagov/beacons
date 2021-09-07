@@ -10,6 +10,10 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
   thenTheUrlShouldContain(previousPageURL);
 };
 
+export const theBackLinkGoesTo = (url: string): void => {
+  cy.get(".govuk-back-link").should("have.attr", "href", url);
+};
+
 export const givenIHaveACookieSetAndIVisit = (url: string): void => {
   cy.setCookie("submissionId", v4());
   cy.visit(url);
