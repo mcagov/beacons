@@ -245,7 +245,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
       <tr className="govuk-table__row">
         <th scope="row" className="govuk-table__header">
           <AnchorLink
-            href={UpdatePageURLs.registrationSummary + "/" + beacon.id}
+            href={UpdatePageURLs.registrationSummary + beacon.id}
             classes="govuk-link--no-visited-state"
           >
             {beacon.hexId}

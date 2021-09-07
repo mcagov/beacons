@@ -23,6 +23,7 @@ import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
+import { UpdatePageURLs } from "../../../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../../../presenters/formSubmission";
@@ -44,46 +45,48 @@ interface BeaconInformationForm {
   lastServicedDateYear: string;
 }
 
-const BeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> = ({
-  form,
-  showCookieBanner,
-}: DraftRegistrationPageProps): JSX.Element => {
-  const pageHeading = "Beacon information";
-  const pageText = (
-    <GovUKBody>
-      {
-        "Further information about your beacon is useful for Search and Rescue. Provide as much information as you can."
-      }
-    </GovUKBody>
-  );
+const UpdateBeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> =
+  ({
+    form,
+    draftRegistration,
+    showCookieBanner,
+  }: DraftRegistrationPageProps): JSX.Element => {
+    const pageHeading = "Beacon information";
+    const pageText = (
+      <GovUKBody>
+        {
+          "Further information about your beacon is useful for Search and Rescue. Provide as much information as you can."
+        }
+      </GovUKBody>
+    );
 
-  return (
-    <BeaconsForm
-      previousPageUrl={"/"}
-      pageHeading={pageHeading}
-      showCookieBanner={showCookieBanner}
-      formErrors={form.errorSummary}
-    >
-      <BeaconsFormHeading pageHeading={pageHeading} />
-      {pageText}
-      <ManufacturerSerialNumberInput
-        value={form.fields.manufacturerSerialNumber.value}
-        errorMessages={form.fields.manufacturerSerialNumber.errorMessages}
-      />
-      <CHKCode value={form.fields.chkCode.value} />
-      <BatteryExpiryDate
-        monthValue={form.fields.batteryExpiryDateMonth.value}
-        yearValue={form.fields.batteryExpiryDateYear.value}
-        errorMessages={form.fields.batteryExpiryDate.errorMessages}
-      />
-      <LastServicedDate
-        monthValue={form.fields.lastServicedDateMonth.value}
-        yearValue={form.fields.lastServicedDateYear.value}
-        errorMessages={form.fields.lastServicedDate.errorMessages}
-      />
-    </BeaconsForm>
-  );
-};
+    return (
+      <BeaconsForm
+        previousPageUrl={UpdatePageURLs.beaconDetails + draftRegistration.id}
+        pageHeading={pageHeading}
+        showCookieBanner={showCookieBanner}
+        formErrors={form.errorSummary}
+      >
+        <BeaconsFormHeading pageHeading={pageHeading} />
+        {pageText}
+        <ManufacturerSerialNumberInput
+          value={form.fields.manufacturerSerialNumber.value}
+          errorMessages={form.fields.manufacturerSerialNumber.errorMessages}
+        />
+        <CHKCode value={form.fields.chkCode.value} />
+        <BatteryExpiryDate
+          monthValue={form.fields.batteryExpiryDateMonth.value}
+          yearValue={form.fields.batteryExpiryDateYear.value}
+          errorMessages={form.fields.batteryExpiryDate.errorMessages}
+        />
+        <LastServicedDate
+          monthValue={form.fields.lastServicedDateMonth.value}
+          yearValue={form.fields.lastServicedDateYear.value}
+          errorMessages={form.fields.lastServicedDate.errorMessages}
+        />
+      </BeaconsForm>
+    );
+  };
 
 interface DateInputProps {
   monthValue: string;
@@ -320,4 +323,4 @@ const validationRules = ({
   });
 };
 
-export default BeaconInformationPage;
+export default UpdateBeaconInformationPage;

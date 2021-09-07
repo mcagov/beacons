@@ -17,7 +17,7 @@ export const theBackLinkGoesTo = (previousPageUrl: string): void => {
     cy.get(".govuk-back-link").should(
       "have.attr",
       "href",
-      previousPageUrl + "/" + registrationId
+      previousPageUrl + registrationId
     );
   });
 };

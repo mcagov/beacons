@@ -62,6 +62,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   whenIClickContinue();
 
   thenTheUrlShouldContain(UpdatePageURLs.beaconInformation);
+  theBackLinkGoesTo(UpdatePageURLs.beaconDetails);
   iEditMyBeaconInformation(
     registration,
     "New SerialNumber",
