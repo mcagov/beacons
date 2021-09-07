@@ -10,8 +10,16 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
   thenTheUrlShouldContain(previousPageURL);
 };
 
-export const theBackLinkGoesTo = (url: string): void => {
-  cy.get(".govuk-back-link").should("have.attr", "href", url);
+export const theBackLinkGoesTo = (previousPageUrl: string): void => {
+  cy.url().then((currentPageUrl) => {
+    const urlArray = currentPageUrl.split("/");
+    const registrationId = urlArray[urlArray.length - 1];
+    cy.get(".govuk-back-link").should(
+      "have.attr",
+      "href",
+      previousPageUrl + "/" + registrationId
+    );
+  });
 };
 
 export const givenIHaveACookieSetAndIVisit = (url: string): void => {

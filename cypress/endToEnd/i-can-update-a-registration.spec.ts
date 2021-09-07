@@ -55,13 +55,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheUpdateButtonForTheSectionWithHeading("Beacon information");
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
-  cy.url().then((url) => {
-    const urlArray = url.split("/");
-    const registrationId = urlArray[urlArray.length - 1];
-    theBackLinkGoesTo(
-      UpdatePageURLs.registrationSummary + "/" + registrationId
-    );
-  });
+  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
 
   iEditMyBeaconManufacturerAndModel(registration, "McMurdo", "New Beacon");
   iCanSeeButICannotEditMyHexId(registration);
