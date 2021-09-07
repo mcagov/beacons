@@ -34,6 +34,11 @@ describe("As user with an account", () => {
   const givenIHaveClickedToCreateANewBeacon = () =>
     givenIHaveClicked(".govuk-button");
 
+  const givenIHaveClickedToGoBackToMyAccount = () => {
+    cy.wait(1000);
+    givenIHaveClicked(".govuk-button");
+  };
+
   it("I register a beacon with a single use and see it in my Account page and I can click to start to create another beacon", () => {
     givenIHaveACookieSetAndHaveSignedInIVisit(PageURLs.updateAccount);
     givenIHaveFilledInUpdateAccountDetailsPage();
@@ -47,7 +52,7 @@ describe("As user with an account", () => {
     givenIHaveEnteredMyEmergencyContactDetails();
     givenIHaveClicked(".govuk-button--start");
     thenTheUrlShouldContain(PageURLs.applicationComplete);
-    givenIHaveClicked(".govuk-button");
+    givenIHaveClickedToGoBackToMyAccount();
     thenTheUrlShouldContain(PageURLs.accountHome);
     iCanSeeTheBeaconListWithMyInformation();
 
