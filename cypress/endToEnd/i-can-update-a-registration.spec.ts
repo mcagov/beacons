@@ -5,7 +5,6 @@ import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
   givenIHaveSignedIn,
-  theBackLinkGoesTo,
   theBackLinkGoesTo_WithRegistrationId,
   thenTheUrlShouldContain,
   whenIAmAt,
@@ -75,8 +74,16 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   );
   whenIClickContinue();
 
-  thenTheUrlShouldContain(UpdatePageURLs.environment);
-  theBackLinkGoesTo(UpdatePageURLs.beaconInformation);
+  thenTheUrlShouldContain(UpdatePageURLs.usesSummary);
+
+  // thenTheUrlShouldContain(UpdatePageURLs.environment);
+  // theBackLinkGoesTo(UpdatePageURLs.beaconInformation);
+  // thenTheRadioButtonShouldBeSelected(
+  //   "#" + registration.uses[0].environment.toLowerCase()
+  // );
+  //
+  // whenISelect("#" + Environment.AVIATION.toLowerCase());
+  // andIClickContinue();
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (

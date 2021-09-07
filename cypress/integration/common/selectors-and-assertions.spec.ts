@@ -166,6 +166,7 @@ export const givenIHaveSelected = (selector: string): void => {
   cy.get(selector).should("not.be.checked").check();
 };
 export const andIHaveSelected = givenIHaveSelected;
+export const whenISelect = givenIHaveSelected;
 
 export const givenIHaveUnselected = (selector: string): void => {
   cy.get(selector).should("be.checked").uncheck();

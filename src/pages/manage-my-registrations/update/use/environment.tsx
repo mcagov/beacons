@@ -65,7 +65,7 @@ const UpdateBeaconUsePage: FunctionComponent<DraftBeaconUsePageProps> = ({
       previousPageUrl={
         useIndex === 0
           ? UpdatePageURLs.beaconInformation
-          : UpdatePageURLs.additionalUse + `?useIndex=${useIndex - 1}`
+          : UpdatePageURLs.usesSummary + `?useIndex=${useIndex - 1}`
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}

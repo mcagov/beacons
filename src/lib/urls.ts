@@ -59,7 +59,7 @@ export enum UpdatePageURLs {
   beaconDetails = "/manage-my-registrations/update/details/",
   beaconInformation = "/manage-my-registrations/update/beacon-information/",
   environment = "/manage-my-registrations/update/use/environment",
-  additionalUse = "/manage-my-registrations/update/use/additional/",
+  usesSummary = "/manage-my-registrations/update/use/summary",
 }
 
 export enum ActionURLs {
