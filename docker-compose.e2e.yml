@@ -14,6 +14,7 @@ services:
     image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-service:$SERVICE_COMMIT_HASH
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
+      BEACONS_SEARCH_VIEW_SCHEDULER_TIMEOUT: 1000
     ports:
       - 8080:8080
 
