@@ -63,18 +63,19 @@ export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_The
   private async showFormWithErrorMessages(): Promise<
     GetServerSidePropsResult<any>
   > {
+    const draftRegistration = await this.context.container.getDraftRegistration(
+      this.draftRegistrationId()
+    );
+
     return {
       props: {
         form: withErrorMessages(
-          this.mapper.draftRegistrationToForm(
-            await this.context.container.getDraftRegistration(
-              this.draftRegistrationId()
-            )
-          ),
+          this.mapper.draftRegistrationToForm(draftRegistration),
           this.validationRules
         ),
         ...(await this.additionalProps),
         showCookieBanner: showCookieBanner(this.context),
+        draftRegistration: draftRegistration,
       },
     };
   }

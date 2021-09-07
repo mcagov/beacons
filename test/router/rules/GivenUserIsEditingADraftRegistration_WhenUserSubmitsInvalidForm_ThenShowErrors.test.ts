@@ -4,6 +4,7 @@ import {
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../src/router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { registrationFixture } from "../../fixtures/registration.fixture";
 
 describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors", () => {
   it("triggers if the form is invalid", async () => {
@@ -102,5 +103,35 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSh
         },
       },
     });
+  });
+
+  it("returns the DraftRegistration", async () => {
+    const invalidForm = {
+      manufacturer: "ACME Inc.",
+      model: "Excelsior",
+      hexId: "", // Missing field
+    };
+
+    const context = {
+      req: {
+        cookies: {},
+      },
+      container: {
+        parseFormDataAs: jest.fn().mockResolvedValue(invalidForm),
+        saveDraftRegistration: jest.fn(),
+        getDraftRegistration: jest.fn().mockResolvedValue(registrationFixture),
+      },
+    };
+
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
+        context as any,
+        validationRules,
+        mapper
+      );
+
+    const result = await rule.action();
+
+    expect(result.props.draftRegistration).toStrictEqual(registrationFixture);
   });
 });
