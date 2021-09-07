@@ -1,0 +1,3 @@
+describe("getBeaconsForAccountHolder", () => {
+  let container;
+});
