@@ -75,6 +75,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   whenIClickContinue();
 
   thenTheUrlShouldContain(UpdatePageURLs.environment);
+  theBackLinkGoesTo(UpdatePageURLs.beaconInformation);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
