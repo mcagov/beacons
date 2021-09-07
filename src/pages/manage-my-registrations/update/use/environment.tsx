@@ -15,10 +15,7 @@ import { DraftBeaconUsePageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import {
-  CreateRegistrationPageURLs,
-  UpdatePageURLs,
-} from "../../../../lib/urls";
+import { UpdatePageURLs } from "../../../../lib/urls";
 import { ordinal } from "../../../../lib/writingStyle";
 import { BeaconUseFormMapper } from "../../../../presenters/BeaconUseFormMapper";
 import { makeDraftRegistrationMapper } from "../../../../presenters/makeDraftRegistrationMapper";
@@ -153,13 +150,13 @@ const props = (
 
 const nextPage = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<CreateRegistrationPageURLs> => {
+): Promise<UpdatePageURLs> => {
   const { environment } =
     await context.container.parseFormDataAs<BeaconUseForm>(context.req);
 
   return environment === Environment.LAND
-    ? CreateRegistrationPageURLs.activity
-    : CreateRegistrationPageURLs.purpose;
+    ? UpdatePageURLs.activity
+    : UpdatePageURLs.purpose;
 };
 
 const mapper = (context: BeaconsGetServerSidePropsContext) => {
