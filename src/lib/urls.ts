@@ -58,8 +58,13 @@ export enum UpdatePageURLs {
   registrationSummary = "/manage-my-registrations/update/",
   beaconDetails = "/manage-my-registrations/update/details/",
   beaconInformation = "/manage-my-registrations/update/beacon-information/",
-  environment = "/manage-my-registrations/update/use/environment",
   usesSummary = "/manage-my-registrations/update/use/summary",
+  environment = "/manage-my-registrations/update/use/environment",
+  purpose = "/manage-my-registrations/update/use/purpose",
+  activity = "/manage-my-registrations/update/use/activity",
+  aboutTheVessel = "manage-my-registration/update/use/about-the-vessel",
+  aboutTheAircraft = "manage-my-registration/update/use/about-the-aircraft",
+  landCommunications = "manage-my-registration/update/use/land-communications",
 }
 
 export enum ActionURLs {
