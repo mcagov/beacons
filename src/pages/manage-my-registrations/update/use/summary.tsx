@@ -69,7 +69,10 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
 
                   <LinkButton
                     buttonText="Add a use for this beacon"
-                    href={ActionURLs.addNewUseToDraftRegistration}
+                    href={
+                      ActionURLs.addNewUseToDraftRegistration +
+                      queryParams({ nextPage: UpdatePageURLs.environment })
+                    }
                   />
                 </>
               )}
@@ -88,15 +91,15 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                   })}
                   <LinkButton
                     buttonText="Add another use for this beacon"
-                    href={ActionURLs.addNewUseToDraftRegistration}
+                    href={
+                      ActionURLs.addNewUseToDraftRegistration +
+                      queryParams({ nextPage: UpdatePageURLs.environment })
+                    }
                     classes="govuk-button--secondary"
                   />
                   <br />
                   <br />
-                  <LinkButton
-                    buttonText="Continue"
-                    href={CreateRegistrationPageURLs.aboutBeaconOwner}
-                  />
+                  <LinkButton buttonText="Continue" href={"#"} />
                 </>
               )}
             </>

@@ -1,15 +1,22 @@
 import { Registration } from "../../src/entities/Registration";
-import { Environment } from "../../src/lib/deprecatedRegistration/types";
+import {
+  Environment,
+  Purpose,
+} from "../../src/lib/deprecatedRegistration/types";
 import { AccountPageURLs, UpdatePageURLs } from "../../src/lib/urls";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { iAmPromptedToConfirm } from "../common/i-am-prompted-to-confirm.spec";
+import { iCanEditMyNUses } from "../common/i-can-enter-use-information/generic.spec";
+import { givenIHaveEnteredMyMaritimeUse } from "../common/i-can-enter-use-information/maritime.spec";
 import { iCanSeeMyExistingRegistrationHexId } from "../common/i-can-see-my-existing-registration-hex-id.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
   randomUkEncodedHexId,
 } from "../common/i-have-previously-registered-a-beacon.spec";
 import {
+  andIClickTheButtonContaining,
   givenIHaveSignedIn,
+  iCanSeeAPageHeadingThatContains,
   theBackLinkGoesTo_WithRegistrationId,
   thenTheUrlShouldContain,
   whenIAmAt,
@@ -88,7 +95,11 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   whenIClickTheButtonContaining("Yes");
   thereAreNUses(0);
 
-  whenI;
+  andIClickTheButtonContaining("Add a use");
+  iCanSeeAPageHeadingThatContains("main use");
+  iAmOnTheUpdateFlow();
+  givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
+  iCanEditMyNUses(1);
 
   // thenTheUrlShouldContain(UpdatePageURLs.environment);
   // theBackLinkGoesTo(UpdatePageURLs.beaconInformation);
@@ -226,4 +237,8 @@ export const iEditMyBeaconInformation = (
   cy.get(`input[value="${registration.lastServicedDateYear}"]`)
     .clear()
     .type(newLastServicedDateYear);
+};
+
+const iAmOnTheUpdateFlow = () => {
+  cy.url().should("contain", "manage-my-registrations/update");
 };

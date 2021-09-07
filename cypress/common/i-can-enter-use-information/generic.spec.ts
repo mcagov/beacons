@@ -18,7 +18,6 @@ export const andIHaveNoFurtherUses = (): void => {
 };
 
 export const andIHaveAnotherUse = (): void => {
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.additionalUse);
   andIClickTheButtonContaining("Add another");
   iShouldBeEditingAFreshUse();
 };
