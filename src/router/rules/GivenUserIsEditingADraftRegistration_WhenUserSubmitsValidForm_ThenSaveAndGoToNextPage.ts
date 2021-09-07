@@ -7,7 +7,10 @@ import { ExistingPageURLs } from "../../lib/urls";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class IfUserSubmittedValidRegistrationForm<T> implements Rule {
+export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<
+  T
+> implements Rule
+{
   protected readonly context: BeaconsGetServerSidePropsContext;
   protected readonly validationRules: FormManagerFactory;
   protected readonly mapper: DraftRegistrationFormMapper<T>;

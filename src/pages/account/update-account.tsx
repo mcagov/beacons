@@ -22,7 +22,7 @@ import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { AccountPageURLs } from "../../lib/urls";
 import { diffObjValues } from "../../lib/utils";
-import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 export interface UpdateAccountPageProps {
   form: FormJSON;
@@ -160,7 +160,9 @@ const userDidSubmitForm = (
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-    const rule = new IfUserDoesNotHaveValidSession(context);
+    const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
+      context
+    );
     if (await rule.condition()) {
       return rule.action();
     }

@@ -21,12 +21,12 @@ import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { makeDraftRegistrationMapper } from "../../presenters/makeDraftRegistrationMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
-import { IfUserHasNotSpecifiedAUse } from "../../router/rules/IfUserHasNotSpecifiedAUse";
-import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
-import { IfUserSubmittedInvalidRegistrationForm } from "../../router/rules/IfUserSubmittedInvalidRegistrationForm";
-import { IfUserSubmittedValidRegistrationForm } from "../../router/rules/IfUserSubmittedValidRegistrationForm";
-import { IfUserViewedRegistrationForm } from "../../router/rules/IfUserViewedRegistrationForm";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface AircraftCommunicationsForm {
   vhfRadio: string;
@@ -158,22 +158,26 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const nextPage = CreateRegistrationPageURLs.moreDetails;
 
     return await new BeaconsPageRouter([
-      new IfUserDoesNotHaveValidSession(context),
-      new IfUserHasNotSpecifiedAUse(context),
-      new IfUserHasNotStartedEditingADraftRegistration(context),
-      new IfUserViewedRegistrationForm<AircraftCommunicationsForm>(
+      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
+      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+        context
+      ),
+      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+        context
+      ),
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<AircraftCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
         props(context)
       ),
-      new IfUserSubmittedInvalidRegistrationForm<AircraftCommunicationsForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<AircraftCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
         props(context)
       ),
-      new IfUserSubmittedValidRegistrationForm<AircraftCommunicationsForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<AircraftCommunicationsForm>(
         context,
         validationRules,
         mapper(context),

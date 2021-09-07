@@ -1,9 +1,9 @@
 import { DraftRegistration } from "../../../src/entities/DraftRegistration";
 import { Environment } from "../../../src/lib/deprecatedRegistration/types";
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { IfUserHasNotSpecifiedAUse } from "../../../src/router/rules/IfUserHasNotSpecifiedAUse";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../src/router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
 
-describe("IfUserHasNotSpecifiedAUse", () => {
+describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse", () => {
   describe("condition", () => {
     it("triggers if there is no useIndex query param", async () => {
       const context = {
@@ -14,7 +14,10 @@ describe("IfUserHasNotSpecifiedAUse", () => {
           whereIsTheUseIndexQueryParam: "itIsMissingOhNo",
         },
       };
-      const rule = new IfUserHasNotSpecifiedAUse(context as any);
+      const rule =
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+          context as any
+        );
 
       const result = await rule.condition();
 
@@ -30,7 +33,10 @@ describe("IfUserHasNotSpecifiedAUse", () => {
           useIndex: "1",
         },
       };
-      const rule = new IfUserHasNotSpecifiedAUse(context as any);
+      const rule =
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+          context as any
+        );
 
       const result = await rule.condition();
 
@@ -59,7 +65,10 @@ describe("IfUserHasNotSpecifiedAUse", () => {
           },
         },
       };
-      const rule = new IfUserHasNotSpecifiedAUse(context as any);
+      const rule =
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+          context as any
+        );
 
       const result = await rule.action();
 
@@ -86,7 +95,10 @@ describe("IfUserHasNotSpecifiedAUse", () => {
           },
         },
       };
-      const rule = new IfUserHasNotSpecifiedAUse(context as any);
+      const rule =
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+          context as any
+        );
 
       const result = await rule.action();
 

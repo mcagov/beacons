@@ -4,7 +4,9 @@ import { redirectUserTo } from "../../lib/redirectUserTo";
 import { ErrorPageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
-export class IfUserDoesNotHaveValidSession implements Rule {
+export class WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError
+  implements Rule
+{
   constructor(private readonly context: BeaconsGetServerSidePropsContext) {}
 
   public async condition(): Promise<boolean> {

@@ -21,8 +21,8 @@ import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
 import { CreateRegistrationPageURLs } from "../../lib/urls";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { IfUserDoesNotHaveValidSession } from "../../router/rules/IfUserDoesNotHaveValidSession";
-import { IfUserHasNotStartedEditingADraftRegistration } from "../../router/rules/IfUserHasNotStartedEditingADraftRegistration";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 interface CheckYourAnswersProps {
@@ -109,8 +109,10 @@ const SendYourApplication: FunctionComponent = (): JSX.Element => (
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      new IfUserDoesNotHaveValidSession(context),
-      new IfUserHasNotStartedEditingADraftRegistration(context),
+      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
+      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+        context
+      ),
       new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
     ]).execute();
   })
