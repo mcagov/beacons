@@ -44,14 +44,16 @@ export class GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm
   private async showFormWithoutErrors(): Promise<
     GetServerSidePropsResult<any>
   > {
+    const draftRegistration = await this.draftRegistration();
     return {
       props: {
         form: withoutErrorMessages(
-          this.mapper.draftRegistrationToForm(await this.draftRegistration()),
+          this.mapper.draftRegistrationToForm(draftRegistration),
           this.validationRules
         ),
         showCookieBanner: showCookieBanner(this.context),
         ...(await this.additionalProps),
+        draftRegistration,
       },
     };
   }

@@ -4,6 +4,7 @@ import {
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../src/router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { registrationFixture } from "../../fixtures/registration.fixture";
 
 describe("GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm", () => {
   it("triggers if the request is a GET request", async () => {
@@ -79,5 +80,26 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm", 
 
     expect(result.props.form.hasErrors).toBe(false);
     expect(result.props.form.errorSummary).toHaveLength(0);
+  });
+
+  it("return the DraftRegistration being edited", async () => {
+    const context = {
+      req: {
+        cookies: {},
+      },
+      container: {
+        getDraftRegistration: jest.fn().mockResolvedValue(registrationFixture),
+      },
+    };
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
+        context as any,
+        validationRules,
+        mapper
+      );
+
+    const result = (await rule.action()) as any;
+
+    expect(result.props.draftRegistration).toStrictEqual(registrationFixture);
   });
 });
