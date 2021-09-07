@@ -11,14 +11,16 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
 };
 
 export const theBackLinkGoesTo = (previousPageUrl: string): void => {
+  cy.get(".govuk-back-link").should("have.attr", "href", previousPageUrl);
+};
+
+export const theBackLinkGoesTo_WithRegistrationId = (
+  previousPageUrl: string
+): void => {
   cy.url().then((currentPageUrl) => {
     const urlArray = currentPageUrl.split("/");
     const registrationId = urlArray[urlArray.length - 1];
-    cy.get(".govuk-back-link").should(
-      "have.attr",
-      "href",
-      previousPageUrl + registrationId
-    );
+    theBackLinkGoesTo(previousPageUrl + registrationId);
   });
 };
 

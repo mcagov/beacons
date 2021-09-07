@@ -6,6 +6,7 @@ import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
   givenIHaveSignedIn,
   theBackLinkGoesTo,
+  theBackLinkGoesTo_WithRegistrationId,
   thenTheUrlShouldContain,
   whenIAmAt,
   whenIClickContinue,
@@ -55,14 +56,14 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheUpdateButtonForTheSectionWithHeading("Beacon information");
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
-  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
+  theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.registrationSummary);
 
   iEditMyBeaconManufacturerAndModel(registration, "McMurdo", "New Beacon");
   iCanSeeButICannotEditMyHexId(registration);
   whenIClickContinue();
 
   thenTheUrlShouldContain(UpdatePageURLs.beaconInformation);
-  theBackLinkGoesTo(UpdatePageURLs.beaconDetails);
+  theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.beaconDetails);
   iEditMyBeaconInformation(
     registration,
     "New SerialNumber",
