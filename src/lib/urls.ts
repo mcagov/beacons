@@ -62,9 +62,12 @@ export enum UpdatePageURLs {
   environment = "/manage-my-registrations/update/use/environment",
   purpose = "/manage-my-registrations/update/use/purpose",
   activity = "/manage-my-registrations/update/use/activity",
-  aboutTheVessel = "manage-my-registration/update/use/about-the-vessel",
-  aboutTheAircraft = "manage-my-registration/update/use/about-the-aircraft",
-  landCommunications = "manage-my-registration/update/use/land-communications",
+  aboutTheVessel = "/manage-my-registrations/update/use/about-the-vessel",
+  vesselCommunications = "/manage-my-registrations/update/use/vessel-communications",
+  aboutTheAircraft = "/manage-my-registrations/update/use/about-the-aircraft",
+  aircraftCommunications = "/manage-my-registrations/update/use/aircraft-communications",
+  landCommunications = "/manage-my-registrations/update/use/land-communications",
+  moreDetails = "/manage-my-registrations/update/use/more-details",
 }
 
 export enum ActionURLs {
