@@ -1,4 +1,5 @@
 import { Purpose } from "../../../src/lib/deprecatedRegistration/types";
+import { whenIGoToDeleteMy } from "../../endToEnd/common/when-i-go-to-delete-my.spec";
 import { givenIHaveEnteredMyBeaconDetails } from "../common/i-can-enter-beacon-information.spec";
 import {
   andIHaveEnteredMyAviationUse,
@@ -31,7 +32,7 @@ describe("As a beacon owner with several uses", () => {
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
     thereAreNUses(2);
 
-    whenIGoToDeleteMyMainUse();
+    whenIGoToDeleteMy(/main use/i);
     thenIAmPromptedToConfirmDeletionOfMyLandUse();
 
     whenIClickTheButtonContaining("Cancel");
@@ -39,7 +40,7 @@ describe("As a beacon owner with several uses", () => {
     iCanSeeMyLandUse();
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
 
-    whenIGoToDeleteMySecondUse();
+    whenIGoToDeleteMy(/second use/i);
     iAmPromptedToConfirmDeletionOfMyMaritimeMotorPleasureUse();
     whenIClickTheButtonContaining("Yes");
     thereAreNUses(1);
@@ -52,12 +53,12 @@ describe("As a beacon owner with several uses", () => {
     iCanSeeMyLandUse();
     iCanSeeMyAviationUse(Purpose.COMMERCIAL);
 
-    whenIGoToDeleteMyMainUse();
+    whenIGoToDeleteMy(/main use/i);
     andIClickTheButtonContaining("Yes");
     thereAreNUses(1);
     myAviationCommercialUseIsNowMyMainUse();
 
-    whenIGoToDeleteMyMainUse();
+    whenIGoToDeleteMy(/main use/i);
     whenIClickTheButtonContaining("Yes");
     thereAreNUses(0);
   });
@@ -74,22 +75,6 @@ const iCannotSeeMyMaritimePleasureUseBecauseItIsDeleted = () =>
     .get("main")
     .contains(/(?=.*maritime)(?=.*motor)(?=.*pleasure)/i)
     .should("not.exist");
-
-const whenIGoToDeleteMyMainUse = () =>
-  cy
-    .get("h2")
-    .contains(/main use/i)
-    .siblings()
-    .contains(/delete/i)
-    .click();
-
-const whenIGoToDeleteMySecondUse = () =>
-  cy
-    .get("h2")
-    .contains(/second use/i)
-    .siblings()
-    .contains(/delete/i)
-    .click();
 
 const thenIAmPromptedToConfirmDeletionOfMyLandUse = () =>
   cy.get("h1").contains(/(?=.*are you sure)(?=.*land)(?=.*cycling)/i);

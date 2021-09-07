@@ -1,20 +1,28 @@
 import { Registration } from "../../src/entities/Registration";
-import { Environment } from "../../src/lib/deprecatedRegistration/types";
+import {
+  Environment,
+  Purpose,
+} from "../../src/lib/deprecatedRegistration/types";
 import { AccountPageURLs, UpdatePageURLs } from "../../src/lib/urls";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
+import { iCanSeeMyLandUse } from "../integration/common/i-can-enter-use-information/land.spec";
+import { iCanSeeMyMaritimeUse } from "../integration/common/i-can-enter-use-information/maritime.spec";
 import {
   givenIHaveSignedIn,
   theBackLinkGoesTo_WithRegistrationId,
   thenTheUrlShouldContain,
   whenIAmAt,
   whenIClickContinue,
+  whenIClickTheButtonContaining,
 } from "../integration/common/selectors-and-assertions.spec";
+import { iAmPromptedToConfirm } from "./common/i-am-prompted-to-confirm.spec";
 import { iCanSeeMyExistingRegistrationHexId } from "./common/i-can-see-my-existing-registration-hex-id.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
   randomUkEncodedHexId,
 } from "./common/i-have-previously-registered-a-beacon.spec";
+import { whenIGoToDeleteMy } from "./common/when-i-go-to-delete-my.spec";
 
 describe("As an account holder", () => {
   it("I can update one of my registrations", () => {
@@ -45,8 +53,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 ) => {
   iCanSeeMyExistingRegistrationHexId(registration.hexId);
   const dateRegistered = formatDateLong(new Date().toDateString()); // Assume test user registered beacon on same day for ease)
-  const dateUpdated = dateRegistered; // Assume test user registered beacon on same day for ease)
-  iCanSeeTheHistoryOfMyRegistration(dateRegistered, dateUpdated);
+  iCanSeeTheHistoryOfMyRegistration(dateRegistered, dateRegistered);
   iCanSeeMyBeaconInformation(registration);
   iCanSeeAdditionalBeaconInformation(registration);
   iCanSeeOwnerInformation(registration);
@@ -75,6 +82,17 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   whenIClickContinue();
 
   thenTheUrlShouldContain(UpdatePageURLs.usesSummary);
+  whenIGoToDeleteMy(/main use/i);
+  iAmPromptedToConfirm(
+    registration.uses[0].environment,
+    registration.uses[0].purpose,
+    registration.uses[0].activity
+  );
+
+  whenIClickTheButtonContaining("Cancel");
+  // thereAreNUses(2);
+  iCanSeeMyLandUse();
+  iCanSeeMyMaritimeUse(Purpose.PLEASURE);
 
   // thenTheUrlShouldContain(UpdatePageURLs.environment);
   // theBackLinkGoesTo(UpdatePageURLs.beaconInformation);
