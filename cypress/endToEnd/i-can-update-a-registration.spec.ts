@@ -88,6 +88,8 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   whenIClickTheButtonContaining("Yes");
   thereAreNUses(0);
 
+  whenI;
+
   // thenTheUrlShouldContain(UpdatePageURLs.environment);
   // theBackLinkGoesTo(UpdatePageURLs.beaconInformation);
   // thenTheRadioButtonShouldBeSelected(
