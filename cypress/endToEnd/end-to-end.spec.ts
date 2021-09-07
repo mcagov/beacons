@@ -54,7 +54,7 @@ describe("As user with an account", () => {
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
     givenIHaveClicked(".govuk-button--start");
-thenTheUrlShouldContain(CreateRegistrationPageURLs.applicationComplete);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.applicationComplete);
     givenIHaveClickedToGoBackToMyAccount();
     thenTheUrlShouldContain(AccountPageURLs.accountHome);
 
