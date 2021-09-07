@@ -6,7 +6,6 @@ import {
 import { AccountPageURLs, UpdatePageURLs } from "../../src/lib/urls";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { iAmPromptedToConfirm } from "../common/i-am-prompted-to-confirm.spec";
-import { iCanEditMyNUses } from "../common/i-can-enter-use-information/generic.spec";
 import { givenIHaveEnteredMyMaritimeUse } from "../common/i-can-enter-use-information/maritime.spec";
 import { iCanSeeMyExistingRegistrationHexId } from "../common/i-can-see-my-existing-registration-hex-id.spec";
 import {
@@ -99,7 +98,8 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   iCanSeeAPageHeadingThatContains("main use");
   iAmOnTheUpdateFlow();
   givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
-  iCanEditMyNUses(1);
+  iAmOnTheUpdateFlow();
+  thereAreNUses(1);
 
   // thenTheUrlShouldContain(UpdatePageURLs.environment);
   // theBackLinkGoesTo(UpdatePageURLs.beaconInformation);
