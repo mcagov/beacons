@@ -101,14 +101,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   iAmOnTheUpdateFlow();
   thereAreNUses(1);
 
-  // thenTheUrlShouldContain(UpdatePageURLs.environment);
-  // theBackLinkGoesTo(UpdatePageURLs.beaconInformation);
-  // thenTheRadioButtonShouldBeSelected(
-  //   "#" + registration.uses[0].environment.toLowerCase()
-  // );
-  //
-  // whenISelect("#" + Environment.AVIATION.toLowerCase());
-  // andIClickContinue();
+  // TODO - Complete updating Registration flow
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
