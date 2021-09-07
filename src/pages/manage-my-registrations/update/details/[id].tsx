@@ -34,12 +34,12 @@ interface UpdateBeaconDetailsForm {
 }
 
 interface BeaconDetailsProps extends DraftRegistrationPageProps {
-  registration: DraftRegistration;
+  draftRegistration: DraftRegistration;
 }
 
 const BeaconDetails: FunctionComponent<BeaconDetailsProps> = ({
   form,
-  registration,
+  draftRegistration,
   showCookieBanner,
 }: BeaconDetailsProps): JSX.Element => {
   const pageHeading = "Beacon details";
@@ -47,7 +47,7 @@ const BeaconDetails: FunctionComponent<BeaconDetailsProps> = ({
   return (
     <BeaconsForm
       previousPageUrl={
-        UpdatePageURLs.registrationSummary + "/" + registration.id
+        UpdatePageURLs.registrationSummary + "/" + draftRegistration.id
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
