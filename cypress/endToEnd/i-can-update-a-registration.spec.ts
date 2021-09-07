@@ -1,13 +1,8 @@
 import { Registration } from "../../src/entities/Registration";
-import {
-  Environment,
-  Purpose,
-} from "../../src/lib/deprecatedRegistration/types";
+import { Environment } from "../../src/lib/deprecatedRegistration/types";
 import { AccountPageURLs, UpdatePageURLs } from "../../src/lib/urls";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { iAmPromptedToConfirm } from "../common/i-am-prompted-to-confirm.spec";
-import { iCanSeeMyLandUse } from "../common/i-can-enter-use-information/land.spec";
-import { iCanSeeMyMaritimeUse } from "../common/i-can-enter-use-information/maritime.spec";
 import { iCanSeeMyExistingRegistrationHexId } from "../common/i-can-see-my-existing-registration-hex-id.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
@@ -21,6 +16,7 @@ import {
   whenIClickContinue,
   whenIClickTheButtonContaining,
 } from "../common/selectors-and-assertions.spec";
+import { thereAreNUses } from "../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 
@@ -89,10 +85,8 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
     registration.uses[0].activity
   );
 
-  whenIClickTheButtonContaining("Cancel");
-  // thereAreNUses(2);
-  iCanSeeMyLandUse();
-  iCanSeeMyMaritimeUse(Purpose.PLEASURE);
+  whenIClickTheButtonContaining("Yes");
+  thereAreNUses(0);
 
   // thenTheUrlShouldContain(UpdatePageURLs.environment);
   // theBackLinkGoesTo(UpdatePageURLs.beaconInformation);
