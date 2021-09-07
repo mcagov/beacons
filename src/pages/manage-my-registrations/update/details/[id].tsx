@@ -8,7 +8,6 @@ import { BeaconManufacturerInput } from "../../../../components/domain/formEleme
 import { BeaconModelInput } from "../../../../components/domain/formElements/BeaconModelInput";
 import { HexIdHelp } from "../../../../components/domain/formElements/HexIdHelp";
 import { GovUKBody } from "../../../../components/Typography";
-import { DraftRegistration } from "../../../../entities/DraftRegistration";
 import { FieldManager } from "../../../../lib/form/FieldManager";
 import { FormManager } from "../../../../lib/form/FormManager";
 import { Validators } from "../../../../lib/form/Validators";
@@ -33,15 +32,11 @@ interface UpdateBeaconDetailsForm {
   hexId: string;
 }
 
-interface BeaconDetailsProps extends DraftRegistrationPageProps {
-  draftRegistration: DraftRegistration;
-}
-
-const BeaconDetails: FunctionComponent<BeaconDetailsProps> = ({
+const BeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   draftRegistration,
   showCookieBanner,
-}: BeaconDetailsProps): JSX.Element => {
+}: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Beacon details";
 
   return (
