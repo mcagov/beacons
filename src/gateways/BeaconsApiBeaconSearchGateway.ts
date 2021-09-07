@@ -1,6 +1,9 @@
 import axios from "axios";
 import { AuthGateway } from "./interfaces/AuthGateway";
-import { BeaconSearchGateway } from "./interfaces/BeaconSearchGateway";
+import {
+  BeaconSearchGateway,
+  BeaconSearchSortOptions,
+} from "./interfaces/BeaconSearchGateway";
 import { IBeaconSearchApiResponse } from "./mappers/IBeaconSearchApiResponse";
 
 export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
@@ -18,14 +21,20 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
 
   public async getBeaconsForAccountHolder(
     accountHolderId: string,
-    email: string
+    email: string,
+    sortOptions: BeaconSearchSortOptions
   ): Promise<IBeaconSearchApiResponse> {
     try {
       const url = `${this.apiUrl}/${this.beaconSearchControllerRoute}/${this.beaconsForAccountHolderEndpoint}`;
+      const { column, direction } = sortOptions;
 
       return await axios.get<any, IBeaconSearchApiResponse>(url, {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
-        params: { accountHolderId, email },
+        params: {
+          accountHolderId,
+          email,
+          sort: `${column},${direction}`,
+        },
       });
     } catch (error) {
       /* eslint-disable no-console */
