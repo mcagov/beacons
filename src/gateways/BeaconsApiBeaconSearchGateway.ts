@@ -25,6 +25,7 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
 
       return await axios.get<any, IBeaconSearchApiResponse>(url, {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
+        params: { accountHolderId, email },
       });
     } catch (error) {
       /* eslint-disable no-console */
