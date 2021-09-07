@@ -2,7 +2,7 @@ import {
   Activity,
   Environment,
   Purpose,
-} from "../../../src/lib/deprecatedRegistration/types";
+} from "../../src/lib/deprecatedRegistration/types";
 
 export const testAccountDetails = {
   fullName: "Test User",

@@ -1,11 +1,11 @@
-import { Registration } from "../../../src/entities/Registration";
-import { AadAuthGateway } from "../../../src/gateways/AadAuthGateway";
-import { BeaconsApiAccountHolderGateway } from "../../../src/gateways/BeaconsApiAccountHolderGateway";
-import { BeaconsApiBeaconGateway } from "../../../src/gateways/BeaconsApiBeaconGateway";
-import { AuthGateway } from "../../../src/gateways/interfaces/AuthGateway";
-import { IAppContainer } from "../../../src/lib/IAppContainer";
-import { getOrCreateAccountHolder } from "../../../src/useCases/getOrCreateAccountHolder";
-import { submitRegistration } from "../../../src/useCases/submitRegistration";
+import { Registration } from "../../src/entities/Registration";
+import { AadAuthGateway } from "../../src/gateways/AadAuthGateway";
+import { BeaconsApiAccountHolderGateway } from "../../src/gateways/BeaconsApiAccountHolderGateway";
+import { BeaconsApiBeaconGateway } from "../../src/gateways/BeaconsApiBeaconGateway";
+import { AuthGateway } from "../../src/gateways/interfaces/AuthGateway";
+import { IAppContainer } from "../../src/lib/IAppContainer";
+import { getOrCreateAccountHolder } from "../../src/useCases/getOrCreateAccountHolder";
+import { submitRegistration } from "../../src/useCases/submitRegistration";
 
 /**
  * Quickly sets up test state where a single beacon is already registered.

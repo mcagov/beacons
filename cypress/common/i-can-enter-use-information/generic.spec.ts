@@ -1,5 +1,5 @@
-import { Environment } from "../../../../src/lib/deprecatedRegistration/types";
-import { CreateRegistrationPageURLs } from "../../../../src/lib/urls";
+import { Environment } from "../../../src/lib/deprecatedRegistration/types";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
   andIClickContinue,
   andIClickTheButtonContaining,
