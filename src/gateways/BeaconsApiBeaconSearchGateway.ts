@@ -27,13 +27,14 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
     try {
       const url = `${this.apiUrl}/${this.beaconSearchControllerRoute}/${this.beaconsForAccountHolderEndpoint}`;
       const { column, direction } = sortOptions;
+      const sort = `${column},${direction}`;
 
       return await axios.get<any, IBeaconSearchApiResponse>(url, {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
         params: {
           accountHolderId,
           email,
-          sort: `${column},${direction}`,
+          sort,
         },
       });
     } catch (error) {
