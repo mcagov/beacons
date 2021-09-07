@@ -83,7 +83,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get beaconSearchGateway() {
       return new BeaconsApiBeaconSearchGateway(
-        process.env.NODE_ENV,
+        process.env.API_URL,
         new AadAuthGateway()
       );
     },
