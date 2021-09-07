@@ -211,7 +211,10 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
             Used for
           </th>
           <th scope="col" className="govuk-table__header">
-            Registered on
+            First registered
+          </th>
+          <th scope="col" className="govuk-table__header">
+            Last updated
           </th>
           <th scope="col" className="govuk-table__header">
             Actions
@@ -328,7 +331,10 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
   ): Promise<Beacon[]> {
     const { getBeaconsForAccountHolder } = this.context.container;
 
-    return getBeaconsForAccountHolder(accountHolderId, email);
+    return getBeaconsForAccountHolder(accountHolderId, email, {
+      sortColumn: "lastModifiedDate",
+      sortDirection: "desc",
+    });
   }
 
   private async getAccountHolderDetails() {
