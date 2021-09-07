@@ -1,3 +1,0 @@
-describe("getBeaconsForAccountHolderPage", () => {
-  let container;
-});

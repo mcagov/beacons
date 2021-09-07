@@ -308,7 +308,10 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
     const accountHolderDetails = await this.getAccountHolderDetails();
-    const beacons = await this.getBeacons(accountHolderDetails.id);
+    const beacons = await this.getBeacons(
+      accountHolderDetails.id,
+      accountHolderDetails.email
+    );
     await this.createDraftRegistrationIfNoneForUser();
 
     return {
@@ -319,10 +322,13 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
     };
   }
 
-  private async getBeacons(accountHolderId: string): Promise<Beacon[]> {
-    const { getBeaconsByAccountHolderId } = this.context.container;
+  private async getBeacons(
+    accountHolderId: string,
+    email: string
+  ): Promise<Beacon[]> {
+    const { getBeaconsForAccountHolder } = this.context.container;
 
-    return getBeaconsByAccountHolderId(accountHolderId);
+    return getBeaconsForAccountHolder(accountHolderId, email);
   }
 
   private async getAccountHolderDetails() {

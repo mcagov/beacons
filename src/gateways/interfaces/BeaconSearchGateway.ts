@@ -1,6 +1,7 @@
 import { IBeaconSearchApiResponse } from "./../mappers/IBeaconSearchApiResponse";
 
 export type BeaconSearchSortColumn =
+  | "createdDate"
   | "lastModifiedDate"
   | "beaconStatus"
   | "hexId"
