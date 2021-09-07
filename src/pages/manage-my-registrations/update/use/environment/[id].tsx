@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React from "react";
+import React, { FunctionComponent } from "react";
 import {
   BeaconsForm,
   BeaconsFormFieldsetAndLegend,
@@ -7,6 +7,7 @@ import {
 import { FormGroup } from "../../../../../components/Form";
 import { RadioList, RadioListItem } from "../../../../../components/RadioList";
 import { GovUKBody } from "../../../../../components/Typography";
+import { Environment } from "../../../../../lib/deprecatedRegistration/types";
 import { FieldManager } from "../../../../../lib/form/FieldManager";
 import { FormManager } from "../../../../../lib/form/FormManager";
 import { Validators } from "../../../../../lib/form/Validators";
