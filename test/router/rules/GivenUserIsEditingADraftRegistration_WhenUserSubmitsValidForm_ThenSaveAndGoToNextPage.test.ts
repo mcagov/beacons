@@ -4,9 +4,9 @@ import {
   mapper,
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
-import { IfUserSubmittedValidRegistrationForm } from "../../../src/router/rules/IfUserSubmittedValidRegistrationForm";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../src/router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 
-describe("IfUserSubmittedValidRegistrationForm", () => {
+describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage", () => {
   it("triggers if the form is valid", async () => {
     const validForm = {
       manufacturer: "ACME Inc.",
@@ -26,12 +26,13 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
       },
     };
     const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
-    const rule = new IfUserSubmittedValidRegistrationForm(
-      context as any,
-      validationRules,
-      mapper,
-      nextPageUrl
-    );
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
+        context as any,
+        validationRules,
+        mapper,
+        nextPageUrl
+      );
 
     const result = await rule.condition();
 
@@ -57,12 +58,13 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
       },
     };
     const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
-    const rule = new IfUserSubmittedValidRegistrationForm(
-      context as any,
-      validationRules,
-      mapper,
-      nextPageUrl
-    );
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
+        context as any,
+        validationRules,
+        mapper,
+        nextPageUrl
+      );
 
     const result = await rule.condition();
 
@@ -88,12 +90,13 @@ describe("IfUserSubmittedValidRegistrationForm", () => {
       },
     };
     const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
-    const rule = new IfUserSubmittedValidRegistrationForm(
-      context as any,
-      validationRules,
-      mapper,
-      nextPageUrl
-    );
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
+        context as any,
+        validationRules,
+        mapper,
+        nextPageUrl
+      );
 
     const result = await rule.action();
 

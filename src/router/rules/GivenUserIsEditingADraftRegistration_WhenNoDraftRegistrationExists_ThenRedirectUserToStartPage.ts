@@ -6,7 +6,9 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { GeneralPageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
-export class IfUserHasNotStartedEditingADraftRegistration implements Rule {
+export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage
+  implements Rule
+{
   private readonly context: BeaconsGetServerSidePropsContext;
 
   constructor(context: BeaconsGetServerSidePropsContext) {

@@ -3,20 +3,22 @@ import {
   mapper,
   validationRules,
 } from "../../../src/pages/register-a-beacon/check-beacon-details";
-import { IfUserViewedRegistrationForm } from "../../../src/router/rules/IfUserViewedRegistrationForm";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../src/router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { registrationFixture } from "../../fixtures/registration.fixture";
 
-describe("IfUserViewedRegistrationForm", () => {
+describe("GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm", () => {
   it("triggers if the request is a GET request", async () => {
     const context = {
       req: {
         method: "GET",
       },
     };
-    const rule = new IfUserViewedRegistrationForm(
-      context as any,
-      validationRules,
-      mapper
-    );
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
+        context as any,
+        validationRules,
+        mapper
+      );
 
     const result = await rule.condition();
 
@@ -29,11 +31,12 @@ describe("IfUserViewedRegistrationForm", () => {
         method: "POST",
       },
     };
-    const rule = new IfUserViewedRegistrationForm(
-      context as any,
-      validationRules,
-      mapper
-    );
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
+        context as any,
+        validationRules,
+        mapper
+      );
 
     const result = await rule.condition();
 
@@ -66,15 +69,37 @@ describe("IfUserViewedRegistrationForm", () => {
         }),
       },
     };
-    const rule = new IfUserViewedRegistrationForm(
-      context as any,
-      validationRules,
-      mapper
-    );
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
+        context as any,
+        validationRules,
+        mapper
+      );
 
     const result = (await rule.action()) as any;
 
     expect(result.props.form.hasErrors).toBe(false);
     expect(result.props.form.errorSummary).toHaveLength(0);
+  });
+
+  it("return the DraftRegistration being edited", async () => {
+    const context = {
+      req: {
+        cookies: {},
+      },
+      container: {
+        getDraftRegistration: jest.fn().mockResolvedValue(registrationFixture),
+      },
+    };
+    const rule =
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
+        context as any,
+        validationRules,
+        mapper
+      );
+
+    const result = (await rule.action()) as any;
+
+    expect(result.props.draftRegistration).toStrictEqual(registrationFixture);
   });
 });

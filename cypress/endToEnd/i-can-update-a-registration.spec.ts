@@ -5,6 +5,7 @@ import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 import {
   givenIHaveSignedIn,
+  theBackLinkGoesTo,
   thenTheUrlShouldContain,
   whenIAmAt,
   whenIClickContinue,
@@ -24,7 +25,7 @@ describe("As an account holder", () => {
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
-    iCanSeeTheDetailsOfMyExistingRegistration(testRegistration);
+    iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
   });
 });
 
@@ -39,7 +40,7 @@ const whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
   cy.get("a").contains(hexId).click();
 };
 
-const iCanSeeTheDetailsOfMyExistingRegistration = (
+const iCanUpdateTheDetailsOfMyExistingRegistration = (
   registration: Registration
 ) => {
   iCanSeeMyExistingRegistrationHexId(registration.hexId);
@@ -54,11 +55,14 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheUpdateButtonForTheSectionWithHeading("Beacon information");
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
+  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
+
   iEditMyBeaconManufacturerAndModel(registration, "McMurdo", "New Beacon");
   iCanSeeButICannotEditMyHexId(registration);
   whenIClickContinue();
 
   thenTheUrlShouldContain(UpdatePageURLs.beaconInformation);
+  theBackLinkGoesTo(UpdatePageURLs.beaconDetails);
   iEditMyBeaconInformation(
     registration,
     "New SerialNumber",
@@ -68,6 +72,10 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
     "12",
     "2020"
   );
+  whenIClickContinue();
+
+  thenTheUrlShouldContain(UpdatePageURLs.environment);
+  theBackLinkGoesTo(UpdatePageURLs.beaconInformation);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (

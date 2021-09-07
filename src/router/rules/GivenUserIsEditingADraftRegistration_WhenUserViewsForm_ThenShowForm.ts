@@ -8,7 +8,10 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { Rule } from "./Rule";
 
-export class IfUserViewedRegistrationForm<T> implements Rule {
+export class GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<
+  T
+> implements Rule
+{
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
   private readonly mapper: DraftRegistrationFormMapper<T>;
@@ -41,14 +44,16 @@ export class IfUserViewedRegistrationForm<T> implements Rule {
   private async showFormWithoutErrors(): Promise<
     GetServerSidePropsResult<any>
   > {
+    const draftRegistration = await this.draftRegistration();
     return {
       props: {
         form: withoutErrorMessages(
-          this.mapper.draftRegistrationToForm(await this.draftRegistration()),
+          this.mapper.draftRegistrationToForm(draftRegistration),
           this.validationRules
         ),
         showCookieBanner: showCookieBanner(this.context),
         ...(await this.additionalProps),
+        draftRegistration,
       },
     };
   }
