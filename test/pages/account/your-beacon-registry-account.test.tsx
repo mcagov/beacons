@@ -2,6 +2,7 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { v4 } from "uuid";
 import { BeaconsApiAccountHolderGateway } from "../../../src/gateways/BeaconsApiAccountHolderGateway";
+import { BeaconsApiBeaconSearchGateway } from "../../../src/gateways/BeaconsApiBeaconSearchGateway";
 import { AuthGateway } from "../../../src/gateways/interfaces/AuthGateway";
 import { getAppContainer } from "../../../src/lib/appContainer";
 import { IAppContainer } from "../../../src/lib/IAppContainer";
@@ -13,7 +14,6 @@ import {
   accountDetailsResponseJson,
   accountIdFromAuthIdResponseJson,
 } from "../../fixtures/accountResponses.fixture";
-import { beaconFixtures } from "../../fixtures/beacons.fixture";
 import { manyBeaconsApiResponseFixture } from "../../fixtures/manyBeaconsApiResponse.fixture";
 
 describe("YourBeaconRegistryAccount", () => {
@@ -29,6 +29,10 @@ describe("YourBeaconRegistryAccount", () => {
       mockAuthGateway
     ),
     sessionGateway: mockSessionGateway as any,
+    beaconSearchGateway: new BeaconsApiBeaconSearchGateway(
+      process.env.API_URL,
+      mockAuthGateway
+    ),
   };
 
   describe("GetServerSideProps for user with full account details", () => {
@@ -41,9 +45,28 @@ describe("YourBeaconRegistryAccount", () => {
           ctx.json({ ...accountDetailsResponseJson("Testy McTestface") })
         );
       }),
-      rest.get("*/account-holder/:accountId/beacons", (req, res, ctx) => {
-        return res(ctx.json({ ...manyBeaconsApiResponseFixture }));
-      })
+      rest.get(
+        "*/beacon-search/search/find-all-by-account-holder-and-email",
+        (req, res, ctx) => {
+          return res(
+            ctx.json({
+              _embedded: {
+                beaconSearch: [
+                  {
+                    id: "123",
+                    hexId: "1D0",
+                    beaconStatus: "NEW",
+                    createdDate: "2021-03-20",
+                    lastModifiedDate: "2021-09-02",
+                    useActivities: "SAILING",
+                    ownerName: "Beacon woman",
+                  },
+                ],
+              },
+            })
+          );
+        }
+      )
     );
 
     beforeAll(() => {
@@ -73,7 +96,17 @@ describe("YourBeaconRegistryAccount", () => {
       expect(result["props"]["accountHolderDetails"]).toEqual(
         accountHolderFixture
       );
-      expect(result["props"]["beacons"]).toEqual(beaconFixtures);
+      expect(result["props"]["beacons"]).toStrictEqual([
+        {
+          id: "123",
+          hexId: "1D0",
+          beaconStatus: "NEW",
+          createdDate: "20 Mar 21",
+          lastModifiedDate: "2 Sep 21",
+          ownerName: "Beacon woman",
+          uses: "Sailing",
+        },
+      ]);
     });
   });
 

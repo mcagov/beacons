@@ -1,4 +1,10 @@
 export interface IBeaconSearchApiResponse {
+  _embedded: {
+    beaconSearch: IBeaconSearchApiResponseBody[];
+  };
+}
+
+export interface IBeaconSearchApiResponseBody {
   id: string;
   createdDate: string;
   lastModifiedDate: string;

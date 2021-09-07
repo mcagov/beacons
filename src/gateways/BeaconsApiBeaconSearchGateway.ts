@@ -4,13 +4,16 @@ import {
   BeaconSearchGateway,
   BeaconSearchSortOptions,
 } from "./interfaces/BeaconSearchGateway";
-import { IBeaconSearchApiResponse } from "./mappers/IBeaconSearchApiResponse";
+import {
+  IBeaconSearchApiResponse,
+  IBeaconSearchApiResponseBody,
+} from "./mappers/IBeaconSearchApiResponse";
 
 export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
   private readonly apiUrl: string;
   private readonly beaconSearchControllerRoute = "beacon-search";
   private readonly beaconsByAccountHolderAndEmailEndpoint =
-    "search/find-all-for-account-holder";
+    "search/find-all-by-account-holder-and-email";
 
   private readonly authGateway: AuthGateway;
 
@@ -23,13 +26,13 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
     accountHolderId: string,
     email: string,
     sortOptions: BeaconSearchSortOptions
-  ): Promise<IBeaconSearchApiResponse[]> {
+  ): Promise<IBeaconSearchApiResponseBody[]> {
     try {
       const url = `${this.apiUrl}/${this.beaconSearchControllerRoute}/${this.beaconsByAccountHolderAndEmailEndpoint}`;
       const { column, direction } = sortOptions;
       const sort = `${column},${direction}`;
 
-      return await axios.get<any, IBeaconSearchApiResponse[]>(url, {
+      const response = await axios.get<IBeaconSearchApiResponse>(url, {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
         params: {
           accountHolderId,
@@ -37,6 +40,8 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
           sort,
         },
       });
+
+      return response.data._embedded.beaconSearch;
     } catch (error) {
       /* eslint-disable no-console */
       console.error("getBeaconsForAccountHolder", error);

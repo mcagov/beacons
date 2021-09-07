@@ -22,15 +22,15 @@ export const getBeaconsForAccountHolder =
       sortOptions
     );
 
-    return beacons
-      .filter((beacon) => beacon.beaconStatus === "NEW")
-      .map((beacon) => ({
-        id: beacon.id,
-        createdDate: formatDateTruncated(beacon.createdDate),
-        lastModifiedDate: formatDateTruncated(beacon.lastModifiedDate),
-        beaconStatus: beacon.beaconStatus,
-        hexId: beacon.hexId,
-        ownerName: beacon.ownerName,
-        uses: titleCase(beacon.useActivities),
-      }));
+    console.log(beacons);
+
+    return beacons.map((beacon) => ({
+      id: beacon.id,
+      createdDate: formatDateTruncated(beacon.createdDate),
+      lastModifiedDate: formatDateTruncated(beacon.lastModifiedDate),
+      beaconStatus: beacon.beaconStatus,
+      hexId: beacon.hexId,
+      ownerName: beacon.ownerName,
+      uses: titleCase(beacon.useActivities),
+    }));
   };

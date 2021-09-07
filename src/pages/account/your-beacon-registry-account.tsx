@@ -11,7 +11,7 @@ import {
   SectionHeading,
 } from "../../components/Typography";
 import { AccountHolder } from "../../entities/AccountHolder";
-import { Beacon } from "../../entities/Beacon";
+import { AccountListBeacon } from "../../entities/AccountListBeacon";
 import { DraftRegistration } from "../../entities/DraftRegistration";
 import { accountDetailsFormManager } from "../../lib/form/formManagers/accountDetailsFormManager";
 import { setCookie } from "../../lib/middleware";
@@ -26,7 +26,6 @@ import {
   queryParams,
   UpdatePageURLs,
 } from "../../lib/urls";
-import { formatDateTruncated, formatUses } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { Rule } from "../../router/rules/Rule";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
@@ -35,7 +34,7 @@ import { WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails } from "../../rou
 export interface YourBeaconRegistryAccountPageProps {
   id?: string;
   accountHolderDetails: AccountHolder;
-  beacons: Beacon[];
+  beacons: AccountListBeacon[];
 }
 
 export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAccountPageProps> =
@@ -188,7 +187,7 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
 };
 
 interface IYourBeaconsProps {
-  beacons: Beacon[];
+  beacons: AccountListBeacon[];
 }
 
 const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
@@ -231,7 +230,7 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
 );
 
 interface BeaconRowProps {
-  beacon: Beacon;
+  beacon: AccountListBeacon;
 }
 
 const BeaconRow: FunctionComponent<BeaconRowProps> = ({
@@ -254,11 +253,10 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
             {beacon.hexId}
           </AnchorLink>
         </th>
-        <td className="govuk-table__cell">{beacon.owners[0].fullName}</td>
-        <td className="govuk-table__cell">{formatUses(beacon.uses)}</td>
-        <td className="govuk-table__cell">
-          {formatDateTruncated(beacon.registeredDate)}
-        </td>
+        <td className="govuk-table__cell">{beacon.ownerName}</td>
+        <td className="govuk-table__cell">{beacon.uses}</td>
+        <td className="govuk-table__cell">{beacon.createdDate}</td>
+        <td className="govuk-table__cell">{beacon.lastModifiedDate}</td>
         <td className="govuk-table__cell">
           <AnchorLink
             href={confirmBeforeDelete(beacon.id)}
@@ -328,12 +326,12 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
   private async getBeacons(
     accountHolderId: string,
     email: string
-  ): Promise<Beacon[]> {
+  ): Promise<AccountListBeacon[]> {
     const { getBeaconsForAccountHolder } = this.context.container;
 
     return getBeaconsForAccountHolder(accountHolderId, email, {
-      sortColumn: "lastModifiedDate",
-      sortDirection: "desc",
+      column: "lastModifiedDate",
+      direction: "desc",
     });
   }
 

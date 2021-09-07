@@ -1,4 +1,4 @@
-import { IBeaconSearchApiResponse } from "./../mappers/IBeaconSearchApiResponse";
+import { IBeaconSearchApiResponseBody } from "../mappers/IBeaconSearchApiResponse";
 
 export type BeaconSearchSortColumn =
   | "createdDate"
@@ -20,5 +20,5 @@ export interface BeaconSearchGateway {
     accountHolderId: string,
     email: string,
     sortOptions: BeaconSearchSortOptions
-  ): Promise<IBeaconSearchApiResponse[]>;
+  ): Promise<IBeaconSearchApiResponseBody[]>;
 }
