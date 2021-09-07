@@ -15,9 +15,9 @@ export interface BeaconSearchSortOptions {
 }
 
 export interface BeaconSearchGateway {
-  getBeaconsForAccountHolder(
+  getBeaconsByAccountHolderAndEmail(
     accountHolderId: string,
     email: string,
     sortOptions: BeaconSearchSortOptions
-  ): Promise<IBeaconSearchApiResponse>;
+  ): Promise<IBeaconSearchApiResponse[]>;
 }
