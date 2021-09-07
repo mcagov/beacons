@@ -81,11 +81,6 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                       <AdditionalBeaconUseSummary
                         index={index}
                         use={use}
-                        changeUri={
-                          CreateRegistrationPageURLs.environment +
-                          "?useIndex=" +
-                          index
-                        }
                         deleteUri={confirmBeforeDelete(use, index)}
                         key={`row${index}`}
                       />
