@@ -72,7 +72,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
     "12",
     "2020"
   );
-  // whenIClickContinue();
+  whenIClickContinue();
 
   thenTheUrlShouldContain(UpdatePageURLs.environment);
 };
