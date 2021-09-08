@@ -205,17 +205,9 @@ const validationRules = ({
     ]),
     ownerTelephoneNumber: new FieldManager(ownerTelephoneNumber, [
       Validators.required("Telephone number is a required field"),
-      Validators.phoneNumber(
-        "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
-      ),
     ]),
     ownerAlternativeTelephoneNumber: new FieldManager(
-      ownerAlternativeTelephoneNumber,
-      [
-        Validators.phoneNumber(
-          "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
-        ),
-      ]
+      ownerAlternativeTelephoneNumber
     ),
     ownerEmail: new FieldManager(ownerEmail, [
       Validators.required("Email address is a required field"),

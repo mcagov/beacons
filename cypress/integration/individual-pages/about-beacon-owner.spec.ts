@@ -3,8 +3,6 @@ import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveSignedIn,
   requiredFieldErrorMessage,
-  thenIShouldSeeAnErrorMessageThatContains,
-  thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
   whenIClickOnTheErrorSummaryLinkContaining,
@@ -29,24 +27,10 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     whenIType(" ", fullNameInputFieldSelector);
     andIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+    thenIShouldSeeFormErrors(...expectedErrorMessage);
 
     whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
     thenMyFocusMovesTo(fullNameInputFieldSelector);
-  });
-
-  it("displays errors if the telephone number is in an incorrect format", () => {
-    const errorMessage = [
-      "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192",
-    ];
-
-    whenIType("01283 7392018232123123", telephoneNumberInputFieldSelector);
-    andIClickContinue();
-    thenIShouldSeeFormErrors(...errorMessage);
-
-    whenIClickOnTheErrorSummaryLinkContaining(...errorMessage);
-    thenMyFocusMovesTo(telephoneNumberInputFieldSelector);
   });
 
   it("requires at least one character in the email address field", () => {
@@ -55,8 +39,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     whenIType(" ", emailInputFieldSelector);
     andIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+    thenIShouldSeeFormErrors(...expectedErrorMessage);
 
     whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
     thenMyFocusMovesTo(emailInputFieldSelector);
@@ -71,8 +54,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     whenIType(" ", telephoneNumberInputFieldSelector);
     andIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+    thenIShouldSeeFormErrors(...expectedErrorMessage);
 
     whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
     thenMyFocusMovesTo(telephoneNumberInputFieldSelector);
@@ -84,8 +66,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     whenIType("not@validemail", emailInputFieldSelector);
     andIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+    thenIShouldSeeFormErrors(...expectedErrorMessage);
 
     whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
     thenMyFocusMovesTo(emailInputFieldSelector);
