@@ -54,7 +54,7 @@ const EmergencyContact: FunctionComponent<DraftRegistrationPageProps> = ({
     <>
       <Layout
         navigation={
-          <BackButton href="/register-a-beacon/beacon-owner-address" />
+          <BackButton href={CreateRegistrationPageURLs.beaconOwnerAddress} />
         }
         title={pageHeading}
         pageHasErrors={form.hasErrors}

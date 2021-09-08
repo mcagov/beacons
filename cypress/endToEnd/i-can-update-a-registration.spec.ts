@@ -124,6 +124,10 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
     "County",
     "AB1 2CD"
   );
+
+  whenIClickContinue();
+  thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
+  theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
