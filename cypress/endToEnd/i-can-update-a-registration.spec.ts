@@ -16,6 +16,7 @@ import {
   andIClickTheButtonContaining,
   givenIHaveSignedIn,
   iCanSeeAPageHeadingThatContains,
+  theBackLinkGoesTo,
   theBackLinkGoesTo_WithRegistrationId,
   thenTheUrlShouldContain,
   whenIAmAt,
@@ -101,7 +102,17 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   iAmOnTheUpdateFlow();
   thereAreNUses(1);
 
-  // TODO - Complete updating Registration flow
+  whenIClickContinue();
+  thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
+  theBackLinkGoesTo(UpdatePageURLs.usesSummary);
+
+  iEditMyOwnerInformation(
+    registration,
+    "John Johnnsonn",
+    "0711111111",
+    "02012345678",
+    "hello@hello.com"
+  );
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -234,4 +245,23 @@ export const iEditMyBeaconInformation = (
 
 const iAmOnTheUpdateFlow = () => {
   cy.url().should("contain", "manage-my-registrations/update");
+};
+
+const iEditMyOwnerInformation = (
+  registration,
+  newFullName,
+  newTelephoneNumber,
+  newAlternativeTelephoneNumber,
+  newEmail
+) => {
+  cy.get(`input[value="${registration.ownerFullName}"]`)
+    .clear()
+    .type(newFullName);
+  cy.get(`input[value="${registration.ownerTelephoneNumber}"]`)
+    .clear()
+    .type(newTelephoneNumber);
+  cy.get(`input[value="${registration.ownerAlternativeTelephoneNumber}"]`)
+    .clear()
+    .type(newAlternativeTelephoneNumber);
+  cy.get(`input[value="${registration.ownerEmail}"]`).clear().type(newEmail);
 };

@@ -99,7 +99,10 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                   />
                   <br />
                   <br />
-                  <LinkButton buttonText="Continue" href={"#"} />
+                  <LinkButton
+                    buttonText="Continue"
+                    href={UpdatePageURLs.aboutBeaconOwner}
+                  />
                 </>
               )}
             </>
