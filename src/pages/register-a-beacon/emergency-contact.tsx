@@ -263,10 +263,6 @@ const validationRules = ({
   emergencyContact3TelephoneNumber,
   emergencyContact3AlternativeTelephoneNumber,
 }: FormSubmission): FormManager => {
-  const phoneValidator = Validators.phoneNumber(
-    "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
-  );
-
   return new FormManager({
     emergencyContact1FullName: new FieldManager(emergencyContact1FullName, [
       Validators.required("Emergency contact full name is a required field"),
@@ -277,7 +273,10 @@ const validationRules = ({
         Validators.required(
           "Emergency contact telephone number is a required field"
         ),
-        phoneValidator,
+        Validators.phoneNumber(
+          "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
+        ),
+        ,
       ]
     ),
     emergencyContact1AlternativeTelephoneNumber: new FieldManager(
@@ -285,21 +284,17 @@ const validationRules = ({
     ),
     emergencyContact2FullName: new FieldManager(emergencyContact2FullName),
     emergencyContact2TelephoneNumber: new FieldManager(
-      emergencyContact2TelephoneNumber,
-      [phoneValidator]
+      emergencyContact2TelephoneNumber
     ),
     emergencyContact2AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact2AlternativeTelephoneNumber,
-      [phoneValidator]
+      emergencyContact2AlternativeTelephoneNumber
     ),
     emergencyContact3FullName: new FieldManager(emergencyContact3FullName),
     emergencyContact3TelephoneNumber: new FieldManager(
-      emergencyContact3TelephoneNumber,
-      [phoneValidator]
+      emergencyContact3TelephoneNumber
     ),
     emergencyContact3AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact3AlternativeTelephoneNumber,
-      [phoneValidator]
+      emergencyContact3AlternativeTelephoneNumber
     ),
   });
 };
