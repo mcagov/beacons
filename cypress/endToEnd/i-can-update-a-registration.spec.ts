@@ -129,6 +129,16 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
   theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
   iEditMyEmergencyContactInformation(registration, "Dr Martha", "0712345678");
+
+  whenIClickContinue();
+  thenTheUrlShouldContain(UpdatePageURLs.checkYourAnswers);
+  theBackLinkGoesTo(UpdatePageURLs.emergencyContact);
+
+  whenIClickTheButtonContaining("Accept and send");
+  thenTheUrlShouldContain(UpdatePageURLs.updateComplete);
+
+  whenIClickTheButtonContaining("Return to your Account");
+  thenTheUrlShouldContain(AccountPageURLs.accountHome);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -310,15 +320,13 @@ const iEditMyEmergencyContactInformation = (
   newEmergencyContactName,
   newEmergencyContactTelephoneNumber
 ) => {
-  cy.get(`input[value="${registration.emergencyContact1FullName}"]`)
+  cy.get("#emergencyContact1FullName")
     .clear()
-    .type(`${newEmergencyContactName}0`);
-  cy.get(`input[value="${registration.emergencyContact1TelephoneNumber}"]`)
+    .type(`${newEmergencyContactName}`);
+  cy.get("#emergencyContact1TelephoneNumber")
     .clear()
     .type(`${newEmergencyContactTelephoneNumber}0`);
-  cy.get(
-    `input[value="${registration.emergencyContact1AlternativeTelephoneNumber}"]`
-  )
+  cy.get("#emergencyContact1AlternativeTelephoneNumber")
     .clear()
     .type(`${newEmergencyContactTelephoneNumber}1`);
 };

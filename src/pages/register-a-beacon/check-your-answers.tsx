@@ -95,7 +95,7 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   );
 };
 
-const SendYourApplication: FunctionComponent = (): JSX.Element => (
+export const SendYourApplication: FunctionComponent = (): JSX.Element => (
   <>
     <SectionHeading>Now send in your application</SectionHeading>
 
