@@ -1,5 +1,5 @@
 import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
-import { testLandUseData } from "../common/happy-path-test-data.spec";
+import { testLandUseData } from "../../common/happy-path-test-data.spec";
 import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
@@ -12,7 +12,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "../common/selectors-and-assertions.spec";
+} from "../../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner and land or other use user", () => {
   const portableVhfDscRadioCheckboxSelector = "#portableVhfRadio";

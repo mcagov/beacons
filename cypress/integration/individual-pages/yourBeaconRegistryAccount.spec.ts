@@ -1,5 +1,5 @@
 import { ErrorPageURLs } from "../../../src/lib/urls";
-import { givenIHaveNotSignedIn } from "../common/selectors-and-assertions.spec";
+import { givenIHaveNotSignedIn } from "../../common/selectors-and-assertions.spec";
 
 describe("Your beacon registry account", () => {
   it("Redirects the user to the unauthenticated page if the user does not have a valid session", () => {

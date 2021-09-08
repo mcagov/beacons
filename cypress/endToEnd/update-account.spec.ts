@@ -8,7 +8,7 @@ import {
   thenTheUrlShouldContain,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "../integration/common/selectors-and-assertions.spec";
+} from "../common/selectors-and-assertions.spec";
 
 describe("As an account holder", () => {
   const fullNameSelector = "#fullName";
