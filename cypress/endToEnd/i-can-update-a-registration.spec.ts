@@ -1,18 +1,30 @@
 import { Registration } from "../../src/entities/Registration";
-import { Environment } from "../../src/lib/deprecatedRegistration/types";
+import {
+  Environment,
+  Purpose,
+} from "../../src/lib/deprecatedRegistration/types";
 import { AccountPageURLs, UpdatePageURLs } from "../../src/lib/urls";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
-import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
-import {
-  givenIHaveSignedIn,
-  thenTheUrlShouldContain,
-  whenIAmAt,
-} from "../integration/common/selectors-and-assertions.spec";
-import { iCanSeeMyExistingRegistrationHexId } from "./common/i-can-see-my-existing-registration-hex-id.spec";
+import { iAmPromptedToConfirm } from "../common/i-am-prompted-to-confirm.spec";
+import { givenIHaveEnteredMyMaritimeUse } from "../common/i-can-enter-use-information/maritime.spec";
+import { iCanSeeMyExistingRegistrationHexId } from "../common/i-can-see-my-existing-registration-hex-id.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
   randomUkEncodedHexId,
-} from "./common/i-have-previously-registered-a-beacon.spec";
+} from "../common/i-have-previously-registered-a-beacon.spec";
+import {
+  andIClickTheButtonContaining,
+  givenIHaveSignedIn,
+  iCanSeeAPageHeadingThatContains,
+  theBackLinkGoesTo_WithRegistrationId,
+  thenTheUrlShouldContain,
+  whenIAmAt,
+  whenIClickContinue,
+  whenIClickTheButtonContaining,
+} from "../common/selectors-and-assertions.spec";
+import { thereAreNUses } from "../common/there-are-n-uses.spec";
+import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
+import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 
 describe("As an account holder", () => {
   it("I can update one of my registrations", () => {
@@ -23,7 +35,7 @@ describe("As an account holder", () => {
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
-    iCanSeeTheDetailsOfMyExistingRegistration(testRegistration);
+    iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
   });
 });
 
@@ -38,13 +50,12 @@ const whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
   cy.get("a").contains(hexId).click();
 };
 
-const iCanSeeTheDetailsOfMyExistingRegistration = (
+const iCanUpdateTheDetailsOfMyExistingRegistration = (
   registration: Registration
 ) => {
   iCanSeeMyExistingRegistrationHexId(registration.hexId);
   const dateRegistered = formatDateLong(new Date().toDateString()); // Assume test user registered beacon on same day for ease)
-  const dateUpdated = dateRegistered; // Assume test user registered beacon on same day for ease)
-  iCanSeeTheHistoryOfMyRegistration(dateRegistered, dateUpdated);
+  iCanSeeTheHistoryOfMyRegistration(dateRegistered, dateRegistered);
   iCanSeeMyBeaconInformation(registration);
   iCanSeeAdditionalBeaconInformation(registration);
   iCanSeeOwnerInformation(registration);
@@ -53,7 +64,44 @@ const iCanSeeTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheUpdateButtonForTheSectionWithHeading("Beacon information");
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
-  iCanSeeMyBeaconDetails(registration);
+  theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.registrationSummary);
+
+  iEditMyBeaconManufacturerAndModel(registration, "McMurdo", "New Beacon");
+  iCanSeeButICannotEditMyHexId(registration);
+  whenIClickContinue();
+
+  thenTheUrlShouldContain(UpdatePageURLs.beaconInformation);
+  theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.beaconDetails);
+  iEditMyBeaconInformation(
+    registration,
+    "New SerialNumber",
+    "New Chk code",
+    "01",
+    "2050",
+    "12",
+    "2020"
+  );
+  whenIClickContinue();
+
+  thenTheUrlShouldContain(UpdatePageURLs.usesSummary);
+  whenIGoToDeleteMy(/main use/i);
+  iAmPromptedToConfirm(
+    registration.uses[0].environment,
+    registration.uses[0].purpose,
+    registration.uses[0].activity
+  );
+
+  whenIClickTheButtonContaining("Yes");
+  thereAreNUses(0);
+
+  andIClickTheButtonContaining("Add a use");
+  iCanSeeAPageHeadingThatContains("main use");
+  iAmOnTheUpdateFlow();
+  givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
+  iAmOnTheUpdateFlow();
+  thereAreNUses(1);
+
+  // TODO - Complete updating Registration flow
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -140,8 +188,50 @@ const whenIClickTheUpdateButtonForTheSectionWithHeading = (heading: string) => {
     .click();
 };
 
-export const iCanSeeMyBeaconDetails = (registration: Registration): void => {
-  cy.contains(registration.manufacturer);
-  cy.contains(registration.model);
-  cy.contains(registration.hexId);
+export const iEditMyBeaconManufacturerAndModel = (
+  registration: Registration,
+  newManufacturer: string,
+  newModel: string
+): void => {
+  cy.get(`input[value="${registration.manufacturer}"]`)
+    .clear()
+    .type(newManufacturer);
+  cy.get(`input[value="${registration.model}"]`).clear().type(newModel);
+};
+
+export const iCanSeeButICannotEditMyHexId = (
+  registration: Registration
+): void => {
+  cy.get("main").contains(registration.hexId);
+};
+
+export const iEditMyBeaconInformation = (
+  registration: Registration,
+  newManufacturerSerialNumber: string,
+  newChkCode: string,
+  newBatteryExpiryDateMonth: string,
+  newBatteryExpiryDateYear: string,
+  newLastServicedDateMonth: string,
+  newLastServicedDateYear: string
+): void => {
+  cy.get(`input[value="${registration.manufacturerSerialNumber}"]`)
+    .clear()
+    .type(newManufacturerSerialNumber);
+  cy.get(`input[value="${registration.chkCode}"]`).clear().type(newChkCode);
+  cy.get(`input[value="${registration.batteryExpiryDateMonth}"]`)
+    .clear()
+    .type(newBatteryExpiryDateMonth);
+  cy.get(`input[value="${registration.batteryExpiryDateYear}"]`)
+    .clear()
+    .type(newBatteryExpiryDateYear);
+  cy.get(`input[value="${registration.lastServicedDateMonth}"]`)
+    .clear()
+    .type(newLastServicedDateMonth);
+  cy.get(`input[value="${registration.lastServicedDateYear}"]`)
+    .clear()
+    .type(newLastServicedDateYear);
+};
+
+const iAmOnTheUpdateFlow = () => {
+  cy.url().should("contain", "manage-my-registrations/update");
 };

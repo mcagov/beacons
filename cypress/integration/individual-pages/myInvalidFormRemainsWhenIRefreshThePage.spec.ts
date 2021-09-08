@@ -6,7 +6,7 @@ import {
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   whenIType,
-} from "../common/selectors-and-assertions.spec";
+} from "../../common/selectors-and-assertions.spec";
 
 describe("Given I have submitted invalid data to a registration form,", () => {
   describe("when I refresh the page,", () => {

@@ -6,24 +6,24 @@ import { sentenceCase } from "../../src/lib/writingStyle";
 import {
   testBeaconAndOwnerData,
   testLandUseData,
-} from "../integration/common/happy-path-test-data.spec";
+} from "../common/happy-path-test-data.spec";
 import {
   givenIHaveFilledInUpdateAccountDetailsPage,
   iCanSeeMyAccountDetails,
-} from "../integration/common/i-can-enter-account-details.spec";
-import { givenIHaveEnteredMyBeaconDetails } from "../integration/common/i-can-enter-beacon-information.spec";
+} from "../common/i-can-enter-account-details.spec";
+import { givenIHaveEnteredMyBeaconDetails } from "../common/i-can-enter-beacon-information.spec";
 import {
   givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
-} from "../integration/common/i-can-enter-owner-information.spec";
-import { andIHaveNoFurtherUses } from "../integration/common/i-can-enter-use-information/generic.spec";
-import { givenIHaveEnteredMyLandUse } from "../integration/common/i-can-enter-use-information/land.spec";
+} from "../common/i-can-enter-owner-information.spec";
+import { andIHaveNoFurtherUses } from "../common/i-can-enter-use-information/generic.spec";
+import { givenIHaveEnteredMyLandUse } from "../common/i-can-enter-use-information/land.spec";
 import {
   givenIHaveACookieSetAndHaveSignedInIVisit,
   givenIHaveClicked,
   thenTheUrlShouldContain,
-} from "../integration/common/selectors-and-assertions.spec";
+} from "../common/selectors-and-assertions.spec";
 
 describe("As user with an account", () => {
   const iCanSeeTheBeaconListWithMyInformation = (): void => {

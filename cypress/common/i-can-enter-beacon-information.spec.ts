@@ -1,4 +1,4 @@
-import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
+import { CreateRegistrationPageURLs } from "../../src/lib/urls";
 import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
   andIClickContinue,

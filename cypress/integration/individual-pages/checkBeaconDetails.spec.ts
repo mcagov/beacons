@@ -9,7 +9,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "../common/selectors-and-assertions.spec";
+} from "../../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to enter my initial beacon information", () => {
   const pageUrl = "/register-a-beacon/check-beacon-details";

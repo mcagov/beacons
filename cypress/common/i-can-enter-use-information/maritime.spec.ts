@@ -1,12 +1,12 @@
 import {
   Environment,
   Purpose,
-} from "../../../../src/lib/deprecatedRegistration/types";
+} from "../../../src/lib/deprecatedRegistration/types";
 import {
   CreateRegistrationPageURLs,
   GeneralPageURLs,
-} from "../../../../src/lib/urls";
-import { makeEnumValueUserFriendly } from "../../../../src/lib/writingStyle";
+} from "../../../src/lib/urls";
+import { makeEnumValueUserFriendly } from "../../../src/lib/writingStyle";
 import {
   testMaritimeCommercialUseData,
   testMaritimePleasureUseData,
@@ -36,16 +36,13 @@ import {
 import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
 export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
   givenIHaveSelected("#maritime");
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.purpose);
   iCanSeeAPageHeadingThatContains("maritime");
   givenIHaveSelected(`#${purpose.toLowerCase()}`);
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
   iCanSeeAPageHeadingThatContains("maritime");
   iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
@@ -58,16 +55,13 @@ export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
   }
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.aboutTheVessel);
   iCanSeeAPageHeadingThatContains("vessel");
   givenIHaveEnteredInformationAboutMyVessel();
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.vesselCommunications);
   givenIHaveEnteredMyVesselCommunicationDetails();
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.moreDetails);
   givenIHaveEnteredMoreDetailsAboutMyVessel();
   andIClickContinue();
 };

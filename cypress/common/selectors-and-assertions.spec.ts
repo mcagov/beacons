@@ -10,6 +10,20 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
   thenTheUrlShouldContain(previousPageURL);
 };
 
+export const theBackLinkGoesTo = (previousPageUrl: string): void => {
+  cy.get(".govuk-back-link").should("have.attr", "href", previousPageUrl);
+};
+
+export const theBackLinkGoesTo_WithRegistrationId = (
+  previousPageUrl: string
+): void => {
+  cy.url().then((currentPageUrl) => {
+    const urlArray = currentPageUrl.split("/");
+    const registrationId = urlArray[urlArray.length - 1];
+    theBackLinkGoesTo(previousPageUrl + registrationId);
+  });
+};
+
 export const givenIHaveACookieSetAndIVisit = (url: string): void => {
   cy.setCookie("submissionId", v4());
   cy.visit(url);
@@ -152,6 +166,7 @@ export const givenIHaveSelected = (selector: string): void => {
   cy.get(selector).should("not.be.checked").check();
 };
 export const andIHaveSelected = givenIHaveSelected;
+export const whenISelect = givenIHaveSelected;
 
 export const givenIHaveUnselected = (selector: string): void => {
   cy.get(selector).should("be.checked").uncheck();

@@ -1,4 +1,4 @@
-import { AccountPageURLs } from "../../../src/lib/urls";
+import { AccountPageURLs } from "../../src/lib/urls";
 import { testAccountDetails } from "./happy-path-test-data.spec";
 import {
   givenIHaveClickedTheButtonContaining,

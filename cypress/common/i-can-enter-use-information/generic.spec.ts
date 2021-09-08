@@ -1,5 +1,5 @@
-import { Environment } from "../../../../src/lib/deprecatedRegistration/types";
-import { CreateRegistrationPageURLs } from "../../../../src/lib/urls";
+import { Environment } from "../../../src/lib/deprecatedRegistration/types";
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
   andIClickContinue,
   andIClickTheButtonContaining,
@@ -18,7 +18,6 @@ export const andIHaveNoFurtherUses = (): void => {
 };
 
 export const andIHaveAnotherUse = (): void => {
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.additionalUse);
   andIClickTheButtonContaining("Add another");
   iShouldBeEditingAFreshUse();
 };
