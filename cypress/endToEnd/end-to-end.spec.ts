@@ -30,12 +30,14 @@ describe("As user with an account", () => {
     cy.contains(testBeaconAndOwnerData.beaconDetails.hexId);
     cy.contains(testBeaconAndOwnerData.ownerDetails.fullName);
     cy.contains(sentenceCase(testLandUseData.type.activity));
-    const date = new Date();
-    cy.contains(date.toISOString().split("T")[0]);
   };
 
   const givenIHaveClickedToCreateANewBeacon = () =>
     givenIHaveClicked(".govuk-button");
+
+  const givenIHaveClickedToGoBackToMyAccount = () => {
+    givenIHaveClicked(".govuk-button");
+  };
 
   it("I register a beacon with a single use and see it in my Account page and I can click to start to create another beacon", () => {
     givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.updateAccount);
@@ -50,8 +52,9 @@ describe("As user with an account", () => {
     givenIHaveEnteredMyEmergencyContactDetails();
     givenIHaveClicked(".govuk-button--start");
     thenTheUrlShouldContain(CreateRegistrationPageURLs.applicationComplete);
-    givenIHaveClicked(".govuk-button");
+    givenIHaveClickedToGoBackToMyAccount();
     thenTheUrlShouldContain(AccountPageURLs.accountHome);
+
     iCanSeeTheBeaconListWithMyInformation();
 
     givenIHaveClickedToCreateANewBeacon();

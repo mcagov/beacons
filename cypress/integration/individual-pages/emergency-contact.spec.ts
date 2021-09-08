@@ -12,7 +12,7 @@ import {
   whenIType,
 } from "../../common/selectors-and-assertions.spec";
 
-describe("As a beacon owner, I want to submit information about my beacon", () => {
+describe("As a beacon owner, I want to submit information about my emergency contacts", () => {
   const thisPageUrl = "/register-a-beacon/emergency-contact";
   const previousPageUrl = "/register-a-beacon/beacon-owner-address";
   const nextPageUrl = "/register-a-beacon/check-your-answers";
