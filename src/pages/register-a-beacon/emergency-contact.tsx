@@ -276,7 +276,6 @@ const validationRules = ({
         Validators.phoneNumber(
           "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
         ),
-        ,
       ]
     ),
     emergencyContact1AlternativeTelephoneNumber: new FieldManager(
