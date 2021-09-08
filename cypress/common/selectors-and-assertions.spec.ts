@@ -11,7 +11,9 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
 };
 
 export const theBackLinkGoesTo = (previousPageUrl: string): void => {
-  cy.get(".govuk-back-link").should("have.attr", "href", previousPageUrl);
+  cy.get(".govuk-back-link")
+    .should("have.attr", "href")
+    .and("match", new RegExp(previousPageUrl, "i"));
 };
 
 export const theBackLinkGoesTo_WithRegistrationId = (

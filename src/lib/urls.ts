@@ -68,6 +68,9 @@ export enum UpdatePageURLs {
   aircraftCommunications = "/manage-my-registrations/update/use/aircraft-communications",
   landCommunications = "/manage-my-registrations/update/use/land-communications",
   moreDetails = "/manage-my-registrations/update/use/more-details",
+  aboutBeaconOwner = "/manage-my-registrations/update/about-beacon-owner",
+  beaconOwnerAddress = "/manage-my-registrations/update/beacon-owner-address",
+  emergencyContact = "/manage-my-registrations/update/emergency-contact",
 }
 
 export enum ActionURLs {

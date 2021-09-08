@@ -16,6 +16,7 @@ import {
   andIClickTheButtonContaining,
   givenIHaveSignedIn,
   iCanSeeAPageHeadingThatContains,
+  theBackLinkGoesTo,
   theBackLinkGoesTo_WithRegistrationId,
   thenTheUrlShouldContain,
   whenIAmAt,
@@ -101,7 +102,28 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   iAmOnTheUpdateFlow();
   thereAreNUses(1);
 
-  // TODO - Complete updating Registration flow
+  whenIClickContinue();
+  thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
+  theBackLinkGoesTo(UpdatePageURLs.usesSummary);
+
+  iEditMyOwnerInformation(
+    registration,
+    "John Johnnsonn",
+    "0711111111",
+    "02012345678",
+    "hello@hello.com"
+  );
+  whenIClickContinue();
+  thenTheUrlShouldContain(UpdatePageURLs.beaconOwnerAddress);
+  theBackLinkGoesTo(UpdatePageURLs.aboutBeaconOwner);
+  iEditMyOwnerAddress(
+    registration,
+    "1 Street",
+    "Area",
+    "Town",
+    "County",
+    "AB1 2CD"
+  );
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -234,4 +256,46 @@ export const iEditMyBeaconInformation = (
 
 const iAmOnTheUpdateFlow = () => {
   cy.url().should("contain", "manage-my-registrations/update");
+};
+
+const iEditMyOwnerInformation = (
+  registration,
+  newFullName,
+  newTelephoneNumber,
+  newAlternativeTelephoneNumber,
+  newEmail
+) => {
+  cy.get(`input[value="${registration.ownerFullName}"]`)
+    .clear()
+    .type(newFullName);
+  cy.get(`input[value="${registration.ownerTelephoneNumber}"]`)
+    .clear()
+    .type(newTelephoneNumber);
+  cy.get(`input[value="${registration.ownerAlternativeTelephoneNumber}"]`)
+    .clear()
+    .type(newAlternativeTelephoneNumber);
+  cy.get(`input[value="${registration.ownerEmail}"]`).clear().type(newEmail);
+};
+
+const iEditMyOwnerAddress = (
+  registration,
+  newAddressLine1,
+  newAddressLine2,
+  newTownOrCity,
+  newCounty,
+  newPostcode
+) => {
+  cy.get(`input[value="${registration.ownerAddressLine1}"]`)
+    .clear()
+    .type(newAddressLine1);
+  cy.get(`input[value="${registration.ownerAddressLine2}"]`)
+    .clear()
+    .type(newAddressLine2);
+  cy.get(`input[value="${registration.ownerTownOrCity}"]`)
+    .clear()
+    .type(newTownOrCity);
+  cy.get(`input[value="${registration.ownerCounty}"]`).clear().type(newCounty);
+  cy.get(`input[value="${registration.ownerPostcode}"]`)
+    .clear()
+    .type(newPostcode);
 };
