@@ -38,7 +38,6 @@ describe("As user with an account", () => {
     givenIHaveClicked(".govuk-button");
 
   const givenIHaveClickedToGoBackToMyAccount = () => {
-    cy.wait(1000);
     givenIHaveClicked(".govuk-button");
   };
 
