@@ -13,12 +13,14 @@ import { deleteDraftRegistration } from "../useCases/deleteDraftRegistration";
 import { getAccountHolderId } from "../useCases/getAccountHolderId";
 import { getAccountHoldersRegistration } from "../useCases/getAccountHoldersRegistration";
 import { getBeaconsByAccountHolderId } from "../useCases/getBeaconsByAccountHolderId";
+import { getBeaconsForAccountHolder } from "../useCases/getBeaconsForAccountHolder";
 import { getDraftRegistration } from "../useCases/getDraftRegistration";
 import { getOrCreateAccountHolder } from "../useCases/getOrCreateAccountHolder";
 import { saveDraftRegistration } from "../useCases/saveDraftRegistration";
 import { sendConfirmationEmail } from "../useCases/sendConfirmationEmail";
 import { submitRegistration } from "../useCases/submitRegistration";
 import { updateAccountHolder } from "../useCases/updateAccountHolder";
+import { BeaconsApiBeaconSearchGateway } from "./../gateways/BeaconsApiBeaconSearchGateway";
 import { IAppContainer } from "./IAppContainer";
 import { parseFormDataAs } from "./middleware";
 
@@ -62,6 +64,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get getBeaconsByAccountHolderId() {
       return getBeaconsByAccountHolderId(this);
     },
+    get getBeaconsForAccountHolder() {
+      return getBeaconsForAccountHolder(this);
+    },
     get getAccountHoldersRegistration() {
       return getAccountHoldersRegistration(this);
     },
@@ -72,6 +77,12 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     /* Gateways */
     get beaconGateway() {
       return new BeaconsApiBeaconGateway(
+        process.env.API_URL,
+        new AadAuthGateway()
+      );
+    },
+    get beaconSearchGateway() {
+      return new BeaconsApiBeaconSearchGateway(
         process.env.API_URL,
         new AadAuthGateway()
       );
