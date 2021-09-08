@@ -113,6 +113,17 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
     "02012345678",
     "hello@hello.com"
   );
+  whenIClickContinue();
+  thenTheUrlShouldContain(UpdatePageURLs.beaconOwnerAddress);
+  theBackLinkGoesTo(UpdatePageURLs.aboutBeaconOwner);
+  iEditMyOwnerAddress(
+    registration,
+    "1 Street",
+    "Area",
+    "Town",
+    "County",
+    "AB1 2CD"
+  );
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -264,4 +275,27 @@ const iEditMyOwnerInformation = (
     .clear()
     .type(newAlternativeTelephoneNumber);
   cy.get(`input[value="${registration.ownerEmail}"]`).clear().type(newEmail);
+};
+
+const iEditMyOwnerAddress = (
+  registration,
+  newAddressLine1,
+  newAddressLine2,
+  newTownOrCity,
+  newCounty,
+  newPostcode
+) => {
+  cy.get(`input[value="${registration.ownerAddressLine1}"]`)
+    .clear()
+    .type(newAddressLine1);
+  cy.get(`input[value="${registration.ownerAddressLine2}"]`)
+    .clear()
+    .type(newAddressLine2);
+  cy.get(`input[value="${registration.ownerTownOrCity}"]`)
+    .clear()
+    .type(newTownOrCity);
+  cy.get(`input[value="${registration.ownerCounty}"]`).clear().type(newCounty);
+  cy.get(`input[value="${registration.ownerPostcode}"]`)
+    .clear()
+    .type(newPostcode);
 };
