@@ -12,7 +12,7 @@ describe("getBeaconsForAccountHolder", () => {
     direction: "desc",
   };
 
-  it("should only return newly registered beacons and not migrated ones", async () => {
+  it("should only return newly registered beacons", async () => {
     getBeaconsByAccountHolderEmailMock.mockImplementation(() => [
       {
         beaconStatus: "MIGRATED",
