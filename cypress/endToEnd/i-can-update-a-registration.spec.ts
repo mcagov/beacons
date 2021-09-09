@@ -39,7 +39,9 @@ describe("As an account holder", () => {
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
 
     whenIClickOnTheHexIdOfTheRegistrationIUpdated(testRegistration.hexId);
-    iCanViewTheUpdatedDetailsOfMyRegistration(updatedRegistrationDetails);
+
+    iCanViewTheUpdatedBeaconInformation(updatedRegistrationDetails);
+    iCanViewTheUpdatedAdditionalBeaconInformation(updatedRegistrationDetails);
   });
 });
 
@@ -66,6 +68,9 @@ const updatedRegistrationDetails: Partial<Registration> = {
   ownerTownOrCity: "Town",
   ownerCounty: "County",
   ownerPostcode: "AB1 2CD",
+  emergencyContact1FullName: "Dr Martha",
+  emergencyContact1TelephoneNumber: "07123456780",
+  emergencyContact1AlternativeTelephoneNumber: "07123456781",
 };
 
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
@@ -158,7 +163,12 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   whenIClickContinue();
   thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
   theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
-  iEditMyEmergencyContactInformation(registration, "Dr Martha", "0712345678");
+  iEditMyEmergencyContactInformation(
+    registration,
+    updatedRegistrationDetails.emergencyContact1FullName,
+    updatedRegistrationDetails.emergencyContact1TelephoneNumber,
+    updatedRegistrationDetails.emergencyContact1AlternativeTelephoneNumber
+  );
 
   whenIClickContinue();
   thenTheUrlShouldContain(UpdatePageURLs.checkYourAnswers);
@@ -348,23 +358,52 @@ const iEditMyOwnerAddress = (
 const iEditMyEmergencyContactInformation = (
   registration: Registration,
   newEmergencyContactName,
-  newEmergencyContactTelephoneNumber
+  newEmergencyContactTelephoneNumber,
+  newEmergencyContactAlternativeTelephoneNumber
 ) => {
   cy.get("#emergencyContact1FullName")
     .clear()
     .type(`${newEmergencyContactName}`);
   cy.get("#emergencyContact1TelephoneNumber")
     .clear()
-    .type(`${newEmergencyContactTelephoneNumber}0`);
+    .type(`${newEmergencyContactTelephoneNumber}`);
   cy.get("#emergencyContact1AlternativeTelephoneNumber")
     .clear()
-    .type(`${newEmergencyContactTelephoneNumber}1`);
+    .type(`${newEmergencyContactAlternativeTelephoneNumber}`);
 };
 
-const iCanViewTheUpdatedDetailsOfMyRegistration = (
+const iCanViewTheUpdatedBeaconInformation = (
   updatedRegistrationDetails: Partial<Registration>
 ) => {
-  Object.values(updatedRegistrationDetails).forEach((value) =>
-    cy.get("main").contains(value as string)
-  );
+  cy.get("dt")
+    .contains("Beacon information")
+    .parent()
+    .contains(updatedRegistrationDetails.manufacturer)
+    .and("contain", updatedRegistrationDetails.model);
+};
+
+const iCanViewTheUpdatedAdditionalBeaconInformation = (
+  updatedRegistrationDetails: Partial<Registration>
+) => {
+  cy.get("dt")
+    .contains("Additional beacon information")
+    .parent()
+    .contains(updatedRegistrationDetails.manufacturerSerialNumber)
+    .and("contain", updatedRegistrationDetails.chkCode)
+    .and(
+      "contain",
+      formatMonth(
+        updatedRegistrationDetails.batteryExpiryDateYear +
+          "-" +
+          updatedRegistrationDetails.batteryExpiryDateMonth
+      )
+    )
+    .and(
+      "contain",
+      formatMonth(
+        updatedRegistrationDetails.lastServicedDateYear +
+          "-" +
+          updatedRegistrationDetails.lastServicedDateMonth
+      )
+    );
 };
