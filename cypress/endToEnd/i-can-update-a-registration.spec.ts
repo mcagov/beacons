@@ -37,6 +37,9 @@ describe("As an account holder", () => {
 
     whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
+
+    whenIClickOnTheHexIdOfTheRegistrationIUpdated(testRegistration.hexId);
+    iCanViewTheUpdatedDetailsOfMyRegistration(updatedRegistrationDetails);
   });
 });
 
@@ -45,11 +48,34 @@ const testRegistration: Registration = {
   hexId: randomUkEncodedHexId(),
 };
 
+const updatedRegistrationDetails: Partial<Registration> = {
+  manufacturer: "McMurdo",
+  model: "New Beacon",
+  manufacturerSerialNumber: "New SerialNumber",
+  chkCode: "New Chk code",
+  batteryExpiryDateMonth: "01",
+  batteryExpiryDateYear: "2050",
+  lastServicedDateMonth: "12",
+  lastServicedDateYear: "2020",
+  ownerFullName: "John Johnnsonn",
+  ownerTelephoneNumber: "0711111111",
+  ownerAlternativeTelephoneNumber: "02012345678",
+  ownerEmail: "hello@hello.com",
+  ownerAddressLine1: "1 Street",
+  ownerAddressLine2: "Area",
+  ownerTownOrCity: "Town",
+  ownerCounty: "County",
+  ownerPostcode: "AB1 2CD",
+};
+
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 
 const whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
   cy.get("a").contains(hexId).click();
 };
+
+const whenIClickOnTheHexIdOfTheRegistrationIUpdated =
+  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate;
 
 const iCanUpdateTheDetailsOfMyExistingRegistration = (
   registration: Registration
@@ -67,7 +93,11 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
   theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.registrationSummary);
 
-  iEditMyBeaconManufacturerAndModel(registration, "McMurdo", "New Beacon");
+  iEditMyBeaconManufacturerAndModel(
+    registration,
+    updatedRegistrationDetails.manufacturer,
+    updatedRegistrationDetails.model
+  );
   iCanSeeButICannotEditMyHexId(registration);
   whenIClickContinue();
 
@@ -75,12 +105,12 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.beaconDetails);
   iEditMyBeaconInformation(
     registration,
-    "New SerialNumber",
-    "New Chk code",
-    "01",
-    "2050",
-    "12",
-    "2020"
+    updatedRegistrationDetails.manufacturerSerialNumber,
+    updatedRegistrationDetails.chkCode,
+    updatedRegistrationDetails.batteryExpiryDateMonth,
+    updatedRegistrationDetails.batteryExpiryDateYear,
+    updatedRegistrationDetails.lastServicedDateMonth,
+    updatedRegistrationDetails.lastServicedDateYear
   );
   whenIClickContinue();
 
@@ -108,21 +138,21 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   iEditMyOwnerInformation(
     registration,
-    "John Johnnsonn",
-    "0711111111",
-    "02012345678",
-    "hello@hello.com"
+    updatedRegistrationDetails.ownerFullName,
+    updatedRegistrationDetails.ownerTelephoneNumber,
+    updatedRegistrationDetails.ownerAlternativeTelephoneNumber,
+    updatedRegistrationDetails.ownerEmail
   );
   whenIClickContinue();
   thenTheUrlShouldContain(UpdatePageURLs.beaconOwnerAddress);
   theBackLinkGoesTo(UpdatePageURLs.aboutBeaconOwner);
   iEditMyOwnerAddress(
     registration,
-    "1 Street",
-    "Area",
-    "Town",
-    "County",
-    "AB1 2CD"
+    updatedRegistrationDetails.ownerAddressLine1,
+    updatedRegistrationDetails.ownerAddressLine2,
+    updatedRegistrationDetails.ownerTownOrCity,
+    updatedRegistrationDetails.ownerCounty,
+    updatedRegistrationDetails.ownerPostcode
   );
 
   whenIClickContinue();
@@ -331,4 +361,10 @@ const iEditMyEmergencyContactInformation = (
     .type(`${newEmergencyContactTelephoneNumber}1`);
 };
 
-// const iCanSeeMyUpdatedRegistration = (regis)
+const iCanViewTheUpdatedDetailsOfMyRegistration = (
+  updatedRegistrationDetails: Partial<Registration>
+) => {
+  Object.values(updatedRegistrationDetails).forEach((value) =>
+    cy.get("main").contains(value as string)
+  );
+};
