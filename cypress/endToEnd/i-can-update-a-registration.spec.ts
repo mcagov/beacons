@@ -37,6 +37,11 @@ describe("As an account holder", () => {
 
     whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
+
+    whenIClickOnTheHexIdOfTheRegistrationIUpdated(testRegistration.hexId);
+
+    iCanViewTheUpdatedBeaconInformation(updatedRegistrationDetails);
+    iCanViewTheUpdatedAdditionalBeaconInformation(updatedRegistrationDetails);
   });
 });
 
@@ -45,11 +50,37 @@ const testRegistration: Registration = {
   hexId: randomUkEncodedHexId(),
 };
 
+const updatedRegistrationDetails: Partial<Registration> = {
+  manufacturer: "McMurdo",
+  model: "New Beacon",
+  manufacturerSerialNumber: "New SerialNumber",
+  chkCode: "New Chk code",
+  batteryExpiryDateMonth: "01",
+  batteryExpiryDateYear: "2050",
+  lastServicedDateMonth: "12",
+  lastServicedDateYear: "2020",
+  ownerFullName: "John Johnnsonn",
+  ownerTelephoneNumber: "0711111111",
+  ownerAlternativeTelephoneNumber: "02012345678",
+  ownerEmail: "hello@hello.com",
+  ownerAddressLine1: "1 Street",
+  ownerAddressLine2: "Area",
+  ownerTownOrCity: "Town",
+  ownerCounty: "County",
+  ownerPostcode: "AB1 2CD",
+  emergencyContact1FullName: "Dr Martha",
+  emergencyContact1TelephoneNumber: "07123456780",
+  emergencyContact1AlternativeTelephoneNumber: "07123456781",
+};
+
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 
 const whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
   cy.get("a").contains(hexId).click();
 };
+
+const whenIClickOnTheHexIdOfTheRegistrationIUpdated =
+  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate;
 
 const iCanUpdateTheDetailsOfMyExistingRegistration = (
   registration: Registration
@@ -67,7 +98,11 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
   theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.registrationSummary);
 
-  iEditMyBeaconManufacturerAndModel(registration, "McMurdo", "New Beacon");
+  iEditMyBeaconManufacturerAndModel(
+    registration,
+    updatedRegistrationDetails.manufacturer,
+    updatedRegistrationDetails.model
+  );
   iCanSeeButICannotEditMyHexId(registration);
   whenIClickContinue();
 
@@ -75,12 +110,12 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.beaconDetails);
   iEditMyBeaconInformation(
     registration,
-    "New SerialNumber",
-    "New Chk code",
-    "01",
-    "2050",
-    "12",
-    "2020"
+    updatedRegistrationDetails.manufacturerSerialNumber,
+    updatedRegistrationDetails.chkCode,
+    updatedRegistrationDetails.batteryExpiryDateMonth,
+    updatedRegistrationDetails.batteryExpiryDateYear,
+    updatedRegistrationDetails.lastServicedDateMonth,
+    updatedRegistrationDetails.lastServicedDateYear
   );
   whenIClickContinue();
 
@@ -108,22 +143,42 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   iEditMyOwnerInformation(
     registration,
-    "John Johnnsonn",
-    "0711111111",
-    "02012345678",
-    "hello@hello.com"
+    updatedRegistrationDetails.ownerFullName,
+    updatedRegistrationDetails.ownerTelephoneNumber,
+    updatedRegistrationDetails.ownerAlternativeTelephoneNumber,
+    updatedRegistrationDetails.ownerEmail
   );
   whenIClickContinue();
   thenTheUrlShouldContain(UpdatePageURLs.beaconOwnerAddress);
   theBackLinkGoesTo(UpdatePageURLs.aboutBeaconOwner);
   iEditMyOwnerAddress(
     registration,
-    "1 Street",
-    "Area",
-    "Town",
-    "County",
-    "AB1 2CD"
+    updatedRegistrationDetails.ownerAddressLine1,
+    updatedRegistrationDetails.ownerAddressLine2,
+    updatedRegistrationDetails.ownerTownOrCity,
+    updatedRegistrationDetails.ownerCounty,
+    updatedRegistrationDetails.ownerPostcode
   );
+
+  whenIClickContinue();
+  thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
+  theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
+  iEditMyEmergencyContactInformation(
+    registration,
+    updatedRegistrationDetails.emergencyContact1FullName,
+    updatedRegistrationDetails.emergencyContact1TelephoneNumber,
+    updatedRegistrationDetails.emergencyContact1AlternativeTelephoneNumber
+  );
+
+  whenIClickContinue();
+  thenTheUrlShouldContain(UpdatePageURLs.checkYourAnswers);
+  theBackLinkGoesTo(UpdatePageURLs.emergencyContact);
+
+  whenIClickTheButtonContaining("Accept and send");
+  thenTheUrlShouldContain(UpdatePageURLs.updateComplete);
+  iCanSeeAPageHeadingThatContains("Your beacon registration has been updated");
+  whenIClickTheButtonContaining("Return to your Account");
+  thenTheUrlShouldContain(AccountPageURLs.accountHome);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (
@@ -298,4 +353,57 @@ const iEditMyOwnerAddress = (
   cy.get(`input[value="${registration.ownerPostcode}"]`)
     .clear()
     .type(newPostcode);
+};
+
+const iEditMyEmergencyContactInformation = (
+  registration: Registration,
+  newEmergencyContactName,
+  newEmergencyContactTelephoneNumber,
+  newEmergencyContactAlternativeTelephoneNumber
+) => {
+  cy.get("#emergencyContact1FullName")
+    .clear()
+    .type(`${newEmergencyContactName}`);
+  cy.get("#emergencyContact1TelephoneNumber")
+    .clear()
+    .type(`${newEmergencyContactTelephoneNumber}`);
+  cy.get("#emergencyContact1AlternativeTelephoneNumber")
+    .clear()
+    .type(`${newEmergencyContactAlternativeTelephoneNumber}`);
+};
+
+const iCanViewTheUpdatedBeaconInformation = (
+  updatedRegistrationDetails: Partial<Registration>
+) => {
+  cy.get("dt")
+    .contains("Beacon information")
+    .parent()
+    .contains(updatedRegistrationDetails.manufacturer)
+    .and("contain", updatedRegistrationDetails.model);
+};
+
+const iCanViewTheUpdatedAdditionalBeaconInformation = (
+  updatedRegistrationDetails: Partial<Registration>
+) => {
+  cy.get("dt")
+    .contains("Additional beacon information")
+    .parent()
+    .contains(updatedRegistrationDetails.manufacturerSerialNumber)
+    .and("contain", updatedRegistrationDetails.chkCode)
+    .and(
+      "contain",
+      formatMonth(
+        updatedRegistrationDetails.batteryExpiryDateYear +
+          "-" +
+          updatedRegistrationDetails.batteryExpiryDateMonth
+      )
+    )
+    .and(
+      "contain",
+      formatMonth(
+        updatedRegistrationDetails.lastServicedDateYear +
+          "-" +
+          updatedRegistrationDetails.lastServicedDateMonth
+      )
+    );
 };

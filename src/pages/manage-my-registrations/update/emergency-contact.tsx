@@ -1,36 +1,36 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, Button } from "../../components/Button";
-import { FormErrorSummary } from "../../components/ErrorSummary";
+import { BackButton, Button } from "../../../components/Button";
+import { FormErrorSummary } from "../../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
   FormGroup,
   FormLegend,
   FormLegendPageHeading,
-} from "../../components/Form";
-import { Grid } from "../../components/Grid";
-import { Input } from "../../components/Input";
-import { InsetText } from "../../components/InsetText";
-import { Layout } from "../../components/Layout";
-import { IfYouNeedHelp } from "../../components/Mca";
-import { WarningText } from "../../components/WarningText";
-import { FieldManager } from "../../lib/form/FieldManager";
-import { FormManager } from "../../lib/form/FormManager";
-import { Validators } from "../../lib/form/Validators";
-import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
-import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../lib/middleware/withContainer";
-import { withSession } from "../../lib/middleware/withSession";
-import { CreateRegistrationPageURLs } from "../../lib/urls";
-import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
-import { FormSubmission } from "../../presenters/formSubmission";
-import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+} from "../../../components/Form";
+import { Grid } from "../../../components/Grid";
+import { Input } from "../../../components/Input";
+import { InsetText } from "../../../components/InsetText";
+import { Layout } from "../../../components/Layout";
+import { IfYouNeedHelp } from "../../../components/Mca";
+import { WarningText } from "../../../components/WarningText";
+import { FieldManager } from "../../../lib/form/FieldManager";
+import { FormManager } from "../../../lib/form/FormManager";
+import { Validators } from "../../../lib/form/Validators";
+import { DraftRegistrationPageProps } from "../../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../lib/middleware/withContainer";
+import { withSession } from "../../../lib/middleware/withSession";
+import { UpdatePageURLs } from "../../../lib/urls";
+import { DraftRegistrationFormMapper } from "../../../presenters/DraftRegistrationFormMapper";
+import { FormSubmission } from "../../../presenters/formSubmission";
+import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface EmergencyContactForm {
   emergencyContact1FullName: string;
@@ -53,9 +53,7 @@ const EmergencyContact: FunctionComponent<DraftRegistrationPageProps> = ({
   return (
     <>
       <Layout
-        navigation={
-          <BackButton href={CreateRegistrationPageURLs.beaconOwnerAddress} />
-        }
+        navigation={<BackButton href={UpdatePageURLs.beaconOwnerAddress} />}
         title={pageHeading}
         pageHasErrors={form.hasErrors}
         showCookieBanner={showCookieBanner}
@@ -190,7 +188,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = CreateRegistrationPageURLs.checkYourAnswers;
+    const nextPageUrl = UpdatePageURLs.checkYourAnswers;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
@@ -263,6 +261,10 @@ const validationRules = ({
   emergencyContact3TelephoneNumber,
   emergencyContact3AlternativeTelephoneNumber,
 }: FormSubmission): FormManager => {
+  const phoneValidator = Validators.phoneNumber(
+    "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
+  );
+
   return new FormManager({
     emergencyContact1FullName: new FieldManager(emergencyContact1FullName, [
       Validators.required("Emergency contact full name is a required field"),
@@ -273,27 +275,30 @@ const validationRules = ({
         Validators.required(
           "Emergency contact telephone number is a required field"
         ),
-        Validators.phoneNumber(
-          "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
-        ),
+        phoneValidator,
       ]
     ),
     emergencyContact1AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact1AlternativeTelephoneNumber
+      emergencyContact1AlternativeTelephoneNumber,
+      [phoneValidator]
     ),
     emergencyContact2FullName: new FieldManager(emergencyContact2FullName),
     emergencyContact2TelephoneNumber: new FieldManager(
-      emergencyContact2TelephoneNumber
+      emergencyContact2TelephoneNumber,
+      [phoneValidator]
     ),
     emergencyContact2AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact2AlternativeTelephoneNumber
+      emergencyContact2AlternativeTelephoneNumber,
+      [phoneValidator]
     ),
     emergencyContact3FullName: new FieldManager(emergencyContact3FullName),
     emergencyContact3TelephoneNumber: new FieldManager(
-      emergencyContact3TelephoneNumber
+      emergencyContact3TelephoneNumber,
+      [phoneValidator]
     ),
     emergencyContact3AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact3AlternativeTelephoneNumber
+      emergencyContact3AlternativeTelephoneNumber,
+      [phoneValidator]
     ),
   });
 };
