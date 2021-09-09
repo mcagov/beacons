@@ -282,7 +282,7 @@ const mapper = (
       registrationMark: form.registrationMark,
       hexAddress: form.hexAddress,
       cnOrMsnNumber: form.cnOrMsnNumber,
-      dongle: form.dongle,
+      dongle: form.dongle || null,
       beaconPosition: form.beaconPosition,
     }),
     beaconUseToForm: (draftRegistration) => ({
