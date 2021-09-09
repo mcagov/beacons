@@ -155,7 +155,9 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = CreateRegistrationPageURLs.moreDetails;
+    const useIndex = parseInt(context.query.useIndex as string);
+    const nextPage =
+      CreateRegistrationPageURLs.moreDetails + queryParams({ useIndex });
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

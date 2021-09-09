@@ -232,7 +232,10 @@ const BeaconPosition: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = CreateRegistrationPageURLs.aircraftCommunications;
+    const useIndex = parseInt(context.query.useIndex as string);
+    const nextPage =
+      CreateRegistrationPageURLs.aircraftCommunications +
+      queryParams({ useIndex });
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

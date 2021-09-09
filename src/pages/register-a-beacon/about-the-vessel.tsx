@@ -246,7 +246,10 @@ const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = CreateRegistrationPageURLs.vesselCommunications;
+    const useIndex = parseInt(context.query.useIndex as string);
+    const nextPage =
+      CreateRegistrationPageURLs.vesselCommunications +
+      queryParams({ useIndex });
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

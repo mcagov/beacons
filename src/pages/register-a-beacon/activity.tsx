@@ -571,6 +571,7 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const useIndex = parseInt(context.query.useIndex as string);
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
@@ -595,7 +596,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        await nextPage(context)
+        (await nextPage(context)) + queryParams({ useIndex })
       ),
     ]).execute();
   })
@@ -630,7 +631,6 @@ const props = async (
       context.req.cookies[formSubmissionCookieId]
     )
   ).uses[context.query.useIndex as string];
-
   return {
     environment: (use?.environment as Environment) || null,
     purpose: (use?.purpose as Purpose) || null,
