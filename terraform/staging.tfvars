@@ -30,7 +30,6 @@ backup_retention_period                 = 5
 performance_insights_enabled            = true
 apply_immediately                       = true
 rds_multi_az                            = false
-enable_alerts                           = false
 api_service_minimum_task_count          = 1
 webapp_minimum_task_count               = 1
 webapp_fqdn                             = "staging.406beacons.com"
