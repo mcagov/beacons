@@ -136,7 +136,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheButtonContaining("Accept and send");
   thenTheUrlShouldContain(UpdatePageURLs.updateComplete);
-
+  iCanSeeAPageHeadingThatContains("Your beacon registration has been updated");
   whenIClickTheButtonContaining("Return to your Account");
   thenTheUrlShouldContain(AccountPageURLs.accountHome);
 };
@@ -330,3 +330,5 @@ const iEditMyEmergencyContactInformation = (
     .clear()
     .type(`${newEmergencyContactTelephoneNumber}1`);
 };
+
+// const iCanSeeMyUpdatedRegistration = (regis)

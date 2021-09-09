@@ -4,7 +4,6 @@ import { ReturnToYourAccountSection } from "../../../components/domain/ReturnToY
 import { Grid } from "../../../components/Grid";
 import { Layout } from "../../../components/Layout";
 import { Panel } from "../../../components/Panel";
-import { GovUKBody, SectionHeading } from "../../../components/Typography";
 import { DraftRegistration } from "../../../entities/DraftRegistration";
 import { verifyFormSubmissionCookieIsSet } from "../../../lib/cookies";
 import { clearFormSubmissionCookie } from "../../../lib/middleware";
@@ -15,19 +14,17 @@ import { redirectUserTo } from "../../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../../lib/types";
 import { GeneralPageURLs } from "../../../lib/urls";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-import { ISubmitRegistrationResult } from "../../../useCases/submitRegistration";
+import { IUpdateRegistrationResult } from "../../../useCases/updateRegistration";
 
 interface ApplicationCompleteProps {
   reference: string;
-  pageSubHeading: string;
+  pageHeading: string;
 }
 
 const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
   reference,
-  pageSubHeading,
+  pageHeading,
 }: ApplicationCompleteProps): JSX.Element => {
-  const pageHeading = "Your beacon registration has been updated";
-
   return (
     <>
       <Layout
@@ -38,9 +35,7 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
         <Grid
           mainContent={
             <>
-              <Panel title={pageHeading} reference={reference}>
-                {pageSubHeading}
-              </Panel>
+              <Panel title={pageHeading} reference={reference} />
               <ApplicationCompleteWhatNext />
               <ReturnToYourAccountSection />
             </>
@@ -51,14 +46,17 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
   );
 };
 
-const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
-  <>
-    <SectionHeading>What happens next</SectionHeading>
-    <GovUKBody>
-      We have sent you an email confirming your registration has been updated
-    </GovUKBody>
-  </>
-);
+const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => {
+  // TODO: Implement email confirmation of update
+  return (
+    <>
+      {/*<SectionHeading>What happens next</SectionHeading>*/}
+      {/*<GovUKBody>*/}
+      {/*  We have sent you an email confirming your registration has been updated*/}
+      {/*</GovUKBody>*/}
+    </>
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
@@ -70,8 +68,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
       return rule.action();
     }
     /* Retrieve injected use case(s) */
-    const { getDraftRegistration, submitRegistration, getAccountHolderId } =
-      context.container;
+    const { getDraftRegistration, updateRegistration } = context.container;
 
     /* Page logic */
     if (!verifyFormSubmissionCookieIsSet(context))
@@ -82,17 +79,15 @@ export const getServerSideProps: GetServerSideProps = withSession(
         context.req.cookies[formSubmissionCookieId]
       );
 
-      const result = await submitRegistration(
+      const result = await updateRegistration(
         draftRegistration,
-        await getAccountHolderId(context.session)
+        draftRegistration.id
       );
 
-      const pageSubHeading = (result: ISubmitRegistrationResult) => {
-        if (result.beaconRegistered && result.confirmationEmailSent)
-          return "We have sent you a confirmation email.";
-        if (result.beaconRegistered && !result.confirmationEmailSent)
-          return "We could not send you a confirmation email. But we have registered your beacon under the following reference id.";
-        return "We could not save your registration or send you a confirmation email. Please contact the Beacons Registry team.";
+      const pageHeading = (result: IUpdateRegistrationResult) => {
+        if (result.beaconUpdated)
+          return "Your beacon registration has been updated.";
+        return "We could not update your registration. Please contact the Beacons Registry team.";
       };
 
       clearFormSubmissionCookie(context);
@@ -100,15 +95,15 @@ export const getServerSideProps: GetServerSideProps = withSession(
       return {
         props: {
           reference: result.referenceNumber,
-          pageSubHeading: pageSubHeading(result),
+          pageHeading: pageHeading(result),
         },
       };
     } catch {
       return {
         props: {
           reference: "",
-          pageSubHeading:
-            "There was an error while registering your beacon.  Please contact the Beacons Registry team.",
+          pageHeading:
+            "There was an error while updating your beacon.  Please contact the Beacons Registry team.",
         },
       };
     }
