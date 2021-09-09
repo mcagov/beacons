@@ -42,6 +42,11 @@ describe("As an account holder", () => {
 
     iCanViewTheUpdatedBeaconInformation(updatedRegistrationDetails);
     iCanViewTheUpdatedAdditionalBeaconInformation(updatedRegistrationDetails);
+
+    // whenIClickTheUpdateButtonForTheSectionWithHeading(
+    //   "Additional beacon information"
+    // );
+    // thenTheUrlShouldContain(UpdatePageURLs.beaconInformation);
   });
 });
 

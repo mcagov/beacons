@@ -66,6 +66,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                     {
                       text: "Change",
                       href: UpdatePageURLs.beaconDetails + registration.id,
+                      //href: `/api/update-journey/start?redirectUri=${UpdatePageURLs.beaconDetails}&id=registration.id`,
                     },
                   ]}
                 >
@@ -79,7 +80,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               </SummaryList>
               <CheckYourAnswersBeaconInformationSummary
                 registration={registration}
-                changeUrl={"#"}
+                changeUrl={UpdatePageURLs.beaconInformation}
               />
               <CheckYourAnswersBeaconOwnerSummary
                 registration={registration}
