@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_metric_alarm" "webapp_health" {
   namespace           = "AWS/Route53"
-  alarm_name          = "webapp-health-alarm"
+  alarm_name          = "${aws_ecs_service.service.name}-webapp-health-alarm"
   metric_name         = "HealthCheckStatus"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -30,7 +30,7 @@ resource "aws_route53_health_check" "webapp_health_check" {
 
 resource "aws_cloudwatch_metric_alarm" "service_health" {
   namespace           = "AWS/Route53"
-  alarm_name          = "service-health-alarm"
+  alarm_name          = "${aws_ecs_service.service.name}-service-health-alarm"
   metric_name         = "HealthCheckStatus"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
