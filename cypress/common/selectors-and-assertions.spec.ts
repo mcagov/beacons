@@ -53,14 +53,14 @@ export const givenIHaveNotSignedIn = (): void => {
   cy.clearCookie("next-auth.session-token");
 };
 
-export const givenIAmAt = (url: string): void => {
+export const givenIHaveVisited = (url: string): void => {
   cy.visit(url);
 };
 
-export const givenIHaveBeenTo = givenIAmAt;
-export const whenIAmAt = givenIAmAt;
-export const andIAmAt = givenIAmAt;
-export const iAmAt = givenIAmAt;
+export const givenIHaveBeenTo = givenIHaveVisited;
+export const whenIHaveVisited = givenIHaveVisited;
+export const andIHaveVisited = givenIHaveVisited;
+export const iHaveVisited = givenIHaveVisited;
 
 export const iCanSeeAPageHeadingThatContains = (text: string): void => {
   cy.get("h1").contains(text);

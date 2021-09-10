@@ -59,11 +59,11 @@ import {
   iCanSeeMyMaritimeUse,
 } from "../../common/i-can-enter-use-information/maritime.spec";
 import {
-  givenIAmAt,
   givenIHaveSignedIn,
-  iAmAt,
+  givenIHaveVisited,
   iCanSeeAPageHeadingThatContains,
   iCanSeeASectionHeadingThatContains,
+  iHaveVisited,
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../../common/selectors-and-assertions.spec";
@@ -156,12 +156,12 @@ const iCanGoBackThroughTheFormInReverse = () => {
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iAmAt(GeneralPageURLs.start);
+  iHaveVisited(GeneralPageURLs.start);
   iCanClickEveryChangeButtonToEditMyRegistration();
 };
 
 const iCanClickEveryChangeButtonToEditMyRegistration = () => {
-  givenIAmAt(CreateRegistrationPageURLs.checkYourAnswers);
+  givenIHaveVisited(CreateRegistrationPageURLs.checkYourAnswers);
 
   const changeLinkAssertions = {
     [CreateRegistrationPageURLs.checkBeaconDetails]: iCanEditMyBeaconDetails,

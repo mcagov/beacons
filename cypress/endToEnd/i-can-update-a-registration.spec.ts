@@ -19,9 +19,10 @@ import {
   theBackLinkGoesTo,
   theBackLinkGoesTo_WithRegistrationId,
   thenTheUrlShouldContain,
-  whenIAmAt,
+  whenIClickBack,
   whenIClickContinue,
   whenIClickTheButtonContaining,
+  whenIHaveVisited,
 } from "../common/selectors-and-assertions.spec";
 import { thereAreNUses } from "../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
@@ -32,7 +33,7 @@ describe("As an account holder", () => {
     givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
 
-    whenIAmAt(AccountPageURLs.accountHome);
+    whenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
@@ -46,7 +47,13 @@ describe("As an account holder", () => {
     whenIClickTheUpdateButtonForTheSectionWithHeading(
       "Additional beacon information"
     );
-    thenTheUrlShouldContain(UpdatePageURLs.beaconInformation);
+    UpdatePageURLs.beaconInformation;
+
+    whenIClickBack();
+    whenIClickBack();
+    thenTheUrlShouldContain(UpdatePageURLs.registrationSummary);
+    whenIClickTheUpdateButtonForTheSectionWithHeading("Owner details");
+    thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
   });
 });
 

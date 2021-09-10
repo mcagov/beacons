@@ -1,9 +1,9 @@
 import { CreateRegistrationPageURLs } from "../../src/lib/urls";
 import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
-  givenIAmAt,
   givenIHaveClickedContinue,
   givenIHaveTyped,
+  givenIHaveVisited,
 } from "./selectors-and-assertions.spec";
 
 export const givenIHaveEnteredMyPersonalDetails = (): void => {
@@ -54,7 +54,7 @@ export const givenIHaveEnteredMyAddressDetails = (): void => {
   givenIHaveClickedContinue();
 };
 export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
-  givenIAmAt(CreateRegistrationPageURLs.emergencyContact);
+  givenIHaveVisited(CreateRegistrationPageURLs.emergencyContact);
   givenIHaveTyped(
     testBeaconAndOwnerData.emergencyContacts.emergencyContact1FullName,
     "#emergencyContact1FullName"
@@ -97,7 +97,7 @@ export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
   givenIHaveClickedContinue();
 };
 export const givenIHaveEnteredMyRequiredEmergencyContactDetails = (): void => {
-  givenIAmAt(CreateRegistrationPageURLs.emergencyContact);
+  givenIHaveVisited(CreateRegistrationPageURLs.emergencyContact);
   givenIHaveTyped(
     testBeaconAndOwnerData.emergencyContacts.emergencyContact1FullName,
     "#emergencyContact1FullName"

@@ -39,7 +39,7 @@ import {
 import {
   andIClickContinue,
   givenIHaveSignedIn,
-  iAmAt,
+  iHaveVisited,
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../../common/selectors-and-assertions.spec";
@@ -92,6 +92,6 @@ describe("As a land beacon owner", () => {
     whenIClickBack();
     iCanEditMyBeaconDetails();
     whenIClickBack();
-    iAmAt(GeneralPageURLs.start);
+    iHaveVisited(GeneralPageURLs.start);
   };
 });

@@ -1,7 +1,7 @@
 import { AccountPageURLs } from "../../../src/lib/urls";
 import {
   andIClickContinue,
-  givenIAmAt,
+  givenIHaveVisited,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
   whenIClickOnTheErrorSummaryLinkContaining,
@@ -10,7 +10,7 @@ import {
 describe("Given that I have visited sign-up-or-sign-in", () => {
   it("Displays an error if I have not selected an option", () => {
     const errorMessage = "Select an option to sign in or to create an account";
-    givenIAmAt(AccountPageURLs.signUpOrSignIn);
+    givenIHaveVisited(AccountPageURLs.signUpOrSignIn);
     andIHaveNotSelectedAnOption();
     andIClickContinue();
     thenIShouldSeeFormErrors(errorMessage);
