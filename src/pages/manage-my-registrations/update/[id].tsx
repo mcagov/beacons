@@ -84,7 +84,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   index={index}
                   use={use}
                   key={index}
-                  changeUri={UpdatePageURLs.usesSummary + registration.id}
+                  changeUri={UpdatePageURLs.usesSummary + "/" + registration.id}
                 />
               ))}
               <CheckYourAnswersBeaconOwnerSummary

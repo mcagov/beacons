@@ -204,7 +204,8 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = UpdatePageURLs.usesSummary;
+    const registrationId = context.query.id as string;
+    const nextPageUrl = UpdatePageURLs.usesSummary + "/" + registrationId;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
@@ -213,7 +214,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       ),
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
         context,
-        context.query.id as string
+        registrationId
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context,

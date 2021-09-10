@@ -44,18 +44,15 @@ describe("As an account holder", () => {
     iCanViewTheUpdatedBeaconInformation(updatedRegistrationDetails);
     iCanViewTheUpdatedAdditionalBeaconInformation(updatedRegistrationDetails);
 
-    whenIClickTheUpdateButtonForTheSectionWithHeading(
+    whenIClickTheChangeLinkForTheSectionWithHeading(
       "Additional beacon information"
     );
-    UpdatePageURLs.beaconInformation;
 
     whenIClickBack();
     whenIClickBack();
     thenTheUrlShouldContain(UpdatePageURLs.registrationSummary);
-    whenIClickTheUpdateButtonForTheSectionWithHeading(
-      "Main use: Maritime - Motor (Pleasure)\n"
-    );
-    // thenTheUrlShouldContain(UpdatePageURLs);
+    whenIClickTheChangeLinkForTheSectionWithHeading("Main use");
+    thenTheUrlShouldContain(UpdatePageURLs.usesSummary);
   });
 });
 
@@ -108,7 +105,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   iCanSeeEmergencyContactInformation(registration);
   iCanSeeUseInformation(registration);
 
-  whenIClickTheUpdateButtonForTheSectionWithHeading("Beacon information");
+  whenIClickTheChangeLinkForTheSectionWithHeading("Beacon information");
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
   theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.registrationSummary);
 
@@ -271,7 +268,7 @@ const iCanSeeUseInformation = (registration: Registration) => {
   });
 };
 
-const whenIClickTheUpdateButtonForTheSectionWithHeading = (heading: string) => {
+const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
   cy.get("dt")
     .contains(heading)
     .parent()
