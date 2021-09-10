@@ -52,8 +52,10 @@ describe("As an account holder", () => {
     whenIClickBack();
     whenIClickBack();
     thenTheUrlShouldContain(UpdatePageURLs.registrationSummary);
-    whenIClickTheUpdateButtonForTheSectionWithHeading("Owner details");
-    thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
+    whenIClickTheUpdateButtonForTheSectionWithHeading(
+      "Main use: Maritime - Motor (Pleasure)\n"
+    );
+    // thenTheUrlShouldContain(UpdatePageURLs);
   });
 });
 

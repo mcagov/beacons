@@ -81,6 +81,14 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                 registration={registration}
                 changeUrl={UpdatePageURLs.beaconInformation + registration.id}
               />
+              {registration.uses.map((use, index) => (
+                <AdditionalBeaconUseSummary
+                  index={index}
+                  use={use}
+                  key={index}
+                  changeUri={"#"}
+                />
+              ))}
               <CheckYourAnswersBeaconOwnerSummary
                 registration={registration}
                 changeUrl={"#"}
@@ -93,14 +101,6 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                 registration={registration}
                 changeUrl={"#"}
               />
-              {registration.uses.map((use, index) => (
-                <AdditionalBeaconUseSummary
-                  index={index}
-                  use={use}
-                  key={index}
-                  changeUri={"#"}
-                />
-              ))}
               <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
               <GovUKBody>
                 If you have a question about your beacon registration, contact
