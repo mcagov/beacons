@@ -17,6 +17,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_task_count_too_low" {
   period              = 60
   statistic           = "SampleCount"
   threshold           = var.api_service_minimum_task_count
+  treat_missing_data  = "breaching"
   alarm_description   = "Task count is too low."
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
@@ -37,6 +38,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_cpu_too_high" {
   period              = 300
   statistic           = "Average"
   threshold           = 80
+  treat_missing_data  = "breaching"
   alarm_description   = "Average CPU utilization is too high."
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
@@ -57,6 +59,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_memory_too_high" {
   period              = 300
   statistic           = "Average"
   threshold           = 80
+  treat_missing_data  = "breaching"
   alarm_description   = "Average Memory utilization is too high."
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
@@ -77,6 +80,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_webapp_task_count_too_low" {
   period              = 60
   statistic           = "SampleCount"
   threshold           = var.webapp_minimum_task_count
+  treat_missing_data  = "breaching"
   alarm_description   = "Task count is too low."
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
@@ -97,6 +101,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_webapp_cpu_too_high" {
   period              = 300
   statistic           = "Average"
   threshold           = 80
+  treat_missing_data  = "breaching"
   alarm_description   = "Average CPU utilization is too high."
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
@@ -117,6 +122,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_webapp_memory_too_high" {
   period              = 300
   statistic           = "Average"
   threshold           = 80
+  treat_missing_data  = "breaching"
   alarm_description   = "Average Memory utilization is too high."
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
@@ -137,6 +143,7 @@ resource "aws_cloudwatch_metric_alarm" "redis_memory_too_high" {
   period              = 300
   statistic           = "Average"
   threshold           = 80
+  treat_missing_data  = "breaching"
   alarm_description   = "Average Memory utilization is too high."
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
