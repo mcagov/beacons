@@ -13,6 +13,7 @@ import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { nextPageWithUseIndex } from "../../lib/nextPageWithUseIndexHelper";
 import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
@@ -246,11 +247,6 @@ const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const useIndex = parseInt(context.query.useIndex as string);
-    const nextPage =
-      CreateRegistrationPageURLs.vesselCommunications +
-      queryParams({ useIndex });
-
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
@@ -275,7 +271,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        nextPage
+        nextPageWithUseIndex(
+          parseInt(context.query.useIndex as string),
+          CreateRegistrationPageURLs.vesselCommunications
+        )
       ),
     ]).execute();
   })

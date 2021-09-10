@@ -21,6 +21,7 @@ import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { nextPageWithUseIndex } from "../../lib/nextPageWithUseIndexHelper";
 import { formSubmissionCookieId } from "../../lib/types";
 import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
@@ -571,7 +572,6 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const useIndex = parseInt(context.query.useIndex as string);
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
@@ -596,7 +596,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        (await nextPage(context)) + queryParams({ useIndex })
+        nextPageWithUseIndex(
+          parseInt(context.query.useIndex as string),
+          await nextPage(context)
+        )
       ),
     ]).execute();
   })
