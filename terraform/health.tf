@@ -7,6 +7,7 @@ resource "aws_cloudwatch_metric_alarm" "webapp_health" {
   period              = "60"
   statistic           = "Minimum"
   threshold           = "0"
+  treat_missing_data  = "breaching"
   alarm_description   = "This metric monitors webapp health"
   provider            = aws.us-east
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_service_alerts.arn] : []
@@ -37,6 +38,7 @@ resource "aws_cloudwatch_metric_alarm" "service_health" {
   period              = "60"
   statistic           = "Minimum"
   threshold           = "0"
+  treat_missing_data  = "breaching"
   alarm_description   = "This metric monitors API service health"
   provider            = aws.us-east
   alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_service_alerts.arn] : []
