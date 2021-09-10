@@ -21,7 +21,7 @@ import {
   givenIHaveSignedIn,
   whenIClickTheButtonContaining,
 } from "../../common/selectors-and-assertions.spec";
-import { thereAreNUses } from "../../common/there-are-n-uses.spec";
+import { theNumberOfUsesIs } from "../../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../../common/when-i-go-to-delete-my.spec";
 
 describe("As a beacon owner with several uses", () => {
@@ -31,37 +31,37 @@ describe("As a beacon owner with several uses", () => {
     givenIHaveEnteredMyLandUse();
     andIHaveAnotherUse();
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
-    thereAreNUses(2);
+    theNumberOfUsesIs(2);
 
     whenIGoToDeleteMy(/main use/i);
     thenIAmPromptedToConfirmDeletionOfMyLandUse();
 
     whenIClickTheButtonContaining("Cancel");
-    thereAreNUses(2);
+    theNumberOfUsesIs(2);
     iCanSeeMyLandUse();
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
 
     whenIGoToDeleteMy(/second use/i);
     iAmPromptedToConfirmDeletionOfMyMaritimeMotorPleasureUse();
     whenIClickTheButtonContaining("Yes");
-    thereAreNUses(1);
+    theNumberOfUsesIs(1);
     iCanSeeMyLandUse();
     iCannotSeeMyMaritimePleasureUseBecauseItIsDeleted();
 
     whenIHaveAnotherUse();
     andIHaveEnteredMyAviationUse(Purpose.COMMERCIAL);
-    thereAreNUses(2);
+    theNumberOfUsesIs(2);
     iCanSeeMyLandUse();
     iCanSeeMyAviationUse(Purpose.COMMERCIAL);
 
     whenIGoToDeleteMy(/main use/i);
     andIClickTheButtonContaining("Yes");
-    thereAreNUses(1);
+    theNumberOfUsesIs(1);
     myAviationCommercialUseIsNowMyMainUse();
 
     whenIGoToDeleteMy(/main use/i);
     whenIClickTheButtonContaining("Yes");
-    thereAreNUses(0);
+    theNumberOfUsesIs(0);
   });
 });
 

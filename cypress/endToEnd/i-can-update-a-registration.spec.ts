@@ -24,7 +24,7 @@ import {
   whenIClickTheButtonContaining,
   whenIHaveVisited,
 } from "../common/selectors-and-assertions.spec";
-import { thereAreNUses } from "../common/there-are-n-uses.spec";
+import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 
@@ -142,14 +142,14 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   );
 
   whenIClickTheButtonContaining("Yes");
-  thereAreNUses(0);
+  theNumberOfUsesIs(0);
 
   andIClickTheButtonContaining("Add a use");
   iCanSeeAPageHeadingThatContains("main use");
   iAmOnTheUpdateFlow();
   givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
   iAmOnTheUpdateFlow();
-  thereAreNUses(1);
+  theNumberOfUsesIs(1);
 
   whenIClickContinue();
   thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
