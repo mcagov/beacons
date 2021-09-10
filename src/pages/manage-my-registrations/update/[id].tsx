@@ -16,9 +16,7 @@ import {
   PageHeading,
   SectionHeading,
 } from "../../../components/Typography";
-import { Beacon } from "../../../entities/Beacon";
 import { Registration } from "../../../entities/Registration";
-import { beaconToRegistration } from "../../../lib/beaconToRegistration";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
@@ -86,7 +84,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   index={index}
                   use={use}
                   key={index}
-                  changeUri={"#"}
+                  changeUri={UpdatePageURLs.usesSummary + registration.id}
                 />
               ))}
               <CheckYourAnswersBeaconOwnerSummary
@@ -126,14 +124,16 @@ export const getServerSideProps: GetServerSideProps = withSession(
 const props = async (
   context: BeaconsGetServerSidePropsContext
 ): Promise<Partial<RegistrationSummaryPageProps>> => {
-  const { getBeaconsByAccountHolderId, getAccountHolderId } = context.container;
+  const { getAccountHolderId, getAccountHoldersRegistration } =
+    context.container;
 
-  const beacon: Beacon = (
-    await getBeaconsByAccountHolderId(await getAccountHolderId(context.session))
-  ).find((beacon) => beacon.id === context.query.id);
+  const registrationId = context.query.id as string;
 
   return {
-    registration: beaconToRegistration(beacon),
+    registration: await getAccountHoldersRegistration(
+      registrationId,
+      await getAccountHolderId(context.session)
+    ),
   };
 };
 
