@@ -99,15 +99,15 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               ))}
               <CheckYourAnswersBeaconOwnerSummary
                 registration={registration}
-                changeUrl={"#"}
+                changeUrl={UpdatePageURLs.aboutBeaconOwner}
               />
               <CheckYourAnswersBeaconOwnerAddressSummary
                 registration={registration}
-                changeUrl={"#"}
+                changeUrl={UpdatePageURLs.beaconOwnerAddress}
               />
               <CheckYourAnswersBeaconEmergencyContactsSummary
                 registration={registration}
-                changeUrl={"#"}
+                changeUrl={UpdatePageURLs.emergencyContact}
               />
               <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
               <GovUKBody>

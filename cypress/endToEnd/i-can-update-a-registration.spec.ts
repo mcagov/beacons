@@ -44,11 +44,11 @@ describe("As an account holder", () => {
     iCanViewTheUpdatedBeaconInformation(updatedRegistrationDetails);
     iCanViewTheUpdatedAdditionalBeaconInformation(updatedRegistrationDetails);
     iCanViewTheUpdatedUseInformation(updatedRegistrationDetails);
-    iCanViewUpdatedOwnerInformation(testRegistration);
+    iCanViewTheUpdatedOwnerInformation(updatedRegistrationDetails);
   });
 });
 
-const iCanViewUpdatedOwnerInformation = (
+const iCanViewTheUpdatedOwnerInformation = (
   draftRegistration: DraftRegistration
 ) => {
   whenIHaveVisited(AccountPageURLs.accountHome);
@@ -62,7 +62,7 @@ const iCanViewUpdatedOwnerInformation = (
   iCanEditAFieldContaining(draftRegistration.ownerEmail);
 
   whenIHaveVisited(AccountPageURLs.accountHome);
-  whenIClickOnTheHexIdOfTheRegistrationIUpdated(draftRegistration.hexId);
+  whenIClickOnTheHexIdOfTheRegistrationIUpdated(testRegistration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
   thenTheUrlShouldContain(UpdatePageURLs.beaconOwnerAddress);
