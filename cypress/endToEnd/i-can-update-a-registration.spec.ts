@@ -1,5 +1,7 @@
+import { DraftRegistration } from "../../src/entities/DraftRegistration";
 import { Registration } from "../../src/entities/Registration";
 import {
+  Activity,
   Environment,
   Purpose,
 } from "../../src/lib/deprecatedRegistration/types";
@@ -15,11 +17,11 @@ import {
 import {
   andIClickTheButtonContaining,
   givenIHaveSignedIn,
+  iCanEditAFieldContaining,
   iCanSeeAPageHeadingThatContains,
   theBackLinkGoesTo,
   theBackLinkGoesTo_WithRegistrationId,
   thenTheUrlShouldContain,
-  whenIClickBack,
   whenIClickContinue,
   whenIClickTheButtonContaining,
   whenIHaveVisited,
@@ -39,29 +41,54 @@ describe("As an account holder", () => {
     whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
 
-    whenIClickOnTheHexIdOfTheRegistrationIUpdated(testRegistration.hexId);
-
     iCanViewTheUpdatedBeaconInformation(updatedRegistrationDetails);
     iCanViewTheUpdatedAdditionalBeaconInformation(updatedRegistrationDetails);
-
-    whenIClickTheChangeLinkForTheSectionWithHeading(
-      "Additional beacon information"
-    );
-
-    whenIClickBack();
-    whenIClickBack();
-    thenTheUrlShouldContain(UpdatePageURLs.registrationSummary);
-    whenIClickTheChangeLinkForTheSectionWithHeading("Main use");
-    thenTheUrlShouldContain(UpdatePageURLs.usesSummary);
+    iCanViewTheUpdatedUseInformation(updatedRegistrationDetails);
+    iCanViewUpdatedOwnerInformation(testRegistration);
   });
 });
+
+const iCanViewUpdatedOwnerInformation = (
+  draftRegistration: DraftRegistration
+) => {
+  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Owner details");
+  thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
+  iCanEditAFieldContaining(draftRegistration.ownerFullName);
+  iCanEditAFieldContaining(draftRegistration.ownerTelephoneNumber);
+  iCanEditAFieldContaining(draftRegistration.ownerAlternativeTelephoneNumber);
+  iCanEditAFieldContaining(draftRegistration.ownerEmail);
+
+  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIClickOnTheHexIdOfTheRegistrationIUpdated(draftRegistration.hexId);
+
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
+  thenTheUrlShouldContain(UpdatePageURLs.beaconOwnerAddress);
+  iCanEditAFieldContaining(draftRegistration.ownerAddressLine1);
+  iCanEditAFieldContaining(draftRegistration.ownerAddressLine2);
+  iCanEditAFieldContaining(draftRegistration.ownerTownOrCity);
+  iCanEditAFieldContaining(draftRegistration.ownerCounty);
+  iCanEditAFieldContaining(draftRegistration.ownerPostcode);
+};
+
+const iCanViewTheUpdatedUseInformation = (
+  draftRegistration: DraftRegistration
+) => {
+  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+  whenIClickTheChangeLinkForTheSectionWithHeading("Main use");
+  thenTheUrlShouldContain(UpdatePageURLs.usesSummary);
+  iCanSeeUseInformation(draftRegistration);
+};
 
 const testRegistration: Registration = {
   ...singleBeaconRegistration,
   hexId: randomUkEncodedHexId(),
 };
 
-const updatedRegistrationDetails: Partial<Registration> = {
+const updatedRegistrationDetails: DraftRegistration = {
   manufacturer: "McMurdo",
   model: "New Beacon",
   manufacturerSerialNumber: "New SerialNumber",
@@ -82,6 +109,13 @@ const updatedRegistrationDetails: Partial<Registration> = {
   emergencyContact1FullName: "Dr Martha",
   emergencyContact1TelephoneNumber: "07123456780",
   emergencyContact1AlternativeTelephoneNumber: "07123456781",
+  uses: [
+    {
+      environment: Environment.MARITIME,
+      purpose: Purpose.PLEASURE,
+      activity: Activity.MOTOR,
+    },
+  ],
 };
 
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
@@ -105,7 +139,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   iCanSeeEmergencyContactInformation(registration);
   iCanSeeUseInformation(registration);
 
-  whenIClickTheChangeLinkForTheSectionWithHeading("Beacon information");
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Beacon information");
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
   theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.registrationSummary);
 
@@ -254,8 +288,8 @@ const iCanSeeEmergencyContactInformation = (registration: Registration) => {
   }
 };
 
-const iCanSeeUseInformation = (registration: Registration) => {
-  registration.uses.forEach((use) => {
+const iCanSeeUseInformation = (draftRegistration: DraftRegistration) => {
+  draftRegistration.uses.forEach((use) => {
     cy.get("main").contains(new RegExp(use.environment, "i"));
     cy.get("main").contains(new RegExp(use.activity, "i"));
     if (use.environment !== Environment.LAND) {
@@ -268,8 +302,18 @@ const iCanSeeUseInformation = (registration: Registration) => {
   });
 };
 
-const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
+const whenIClickTheChangeLinkForTheSummaryListRowWithHeading = (
+  heading: string
+) => {
   cy.get("dt")
+    .contains(heading)
+    .parent()
+    .contains(/change/i)
+    .click();
+};
+
+const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
+  cy.get("h2")
     .contains(heading)
     .parent()
     .contains(/change/i)
@@ -384,18 +428,27 @@ const iEditMyEmergencyContactInformation = (
 };
 
 const iCanViewTheUpdatedBeaconInformation = (
-  updatedRegistrationDetails: Partial<Registration>
+  updatedRegistrationDetails: DraftRegistration
 ) => {
+  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+
   cy.get("dt")
     .contains("Beacon information")
     .parent()
     .contains(updatedRegistrationDetails.manufacturer)
     .and("contain", updatedRegistrationDetails.model);
+
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Beacon information");
+  iCanSeeAPageHeadingThatContains("Beacon details");
 };
 
 const iCanViewTheUpdatedAdditionalBeaconInformation = (
-  updatedRegistrationDetails: Partial<Registration>
+  updatedRegistrationDetails: DraftRegistration
 ) => {
+  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+
   cy.get("dt")
     .contains("Additional beacon information")
     .parent()
@@ -417,4 +470,9 @@ const iCanViewTheUpdatedAdditionalBeaconInformation = (
           updatedRegistrationDetails.lastServicedDateMonth
       )
     );
+
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading(
+    "Additional beacon information"
+  );
+  iCanSeeAPageHeadingThatContains("Beacon information");
 };

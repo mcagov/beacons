@@ -20,7 +20,11 @@ import { Registration } from "../../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
-import { AccountPageURLs, UpdatePageURLs } from "../../../lib/urls";
+import {
+  AccountPageURLs,
+  queryParams,
+  UpdatePageURLs,
+} from "../../../lib/urls";
 import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
@@ -84,7 +88,13 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   index={index}
                   use={use}
                   key={index}
-                  changeUri={UpdatePageURLs.usesSummary + "/" + registration.id}
+                  changeUri={
+                    UpdatePageURLs.usesSummary +
+                    queryParams({
+                      registrationId: registration.id,
+                      useIndex: index,
+                    })
+                  }
                 />
               ))}
               <CheckYourAnswersBeaconOwnerSummary

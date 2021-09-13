@@ -206,3 +206,7 @@ export const thenThereAreNoErrors = (): void => {
   thenICannotSee(".govuk-error-summary");
   thenICannotSee(".govuk-error-message");
 };
+
+export const iCanEditAFieldContaining = (value: string): void => {
+  cy.get(`input[value="${value}"]`);
+};
