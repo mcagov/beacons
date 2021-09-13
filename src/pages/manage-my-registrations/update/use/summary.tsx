@@ -1,15 +1,16 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, LinkButton } from "../../../../../components/Button";
-import { AdditionalBeaconUseSummary } from "../../../../../components/domain/AdditionalBeaconUseSummary";
-import { Grid } from "../../../../../components/Grid";
-import { Layout } from "../../../../../components/Layout";
-import { GovUKBody, PageHeading } from "../../../../../components/Typography";
-import { DraftBeaconUse } from "../../../../../entities/DraftBeaconUse";
-import { BeaconsGetServerSidePropsContext } from "../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../../../lib/middleware/withContainer";
-import { withSession } from "../../../../../lib/middleware/withSession";
-import { formSubmissionCookieId } from "../../../../../lib/types";
+import { BackButton, LinkButton } from "../../../../components/Button";
+import { AdditionalBeaconUseSummary } from "../../../../components/domain/AdditionalBeaconUseSummary";
+import { Grid } from "../../../../components/Grid";
+import { Layout } from "../../../../components/Layout";
+import { GovUKBody, PageHeading } from "../../../../components/Typography";
+import { DraftBeaconUse } from "../../../../entities/DraftBeaconUse";
+import { DraftRegistration } from "../../../../entities/DraftRegistration";
+import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../../../lib/types";
 import {
   ActionURLs,
   CreateRegistrationPageURLs,
@@ -17,22 +18,24 @@ import {
   GeneralPageURLs,
   queryParams,
   UpdatePageURLs,
-} from "../../../../../lib/urls";
-import { prettyUseName } from "../../../../../lib/writingStyle";
-import { BeaconsPageRouter } from "../../../../../router/BeaconsPageRouter";
-import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-import { WhenUserViewsPage_ThenDisplayPage } from "../../../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
+} from "../../../../lib/urls";
+import { prettyUseName } from "../../../../lib/writingStyle";
+import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
+import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
+import { GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface AdditionalBeaconUseProps {
+  draftRegistration: DraftRegistration;
   uses: DraftBeaconUse[];
   currentUseIndex: number;
   showCookieBanner?: boolean;
 }
 
 const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
+  draftRegistration,
   uses,
   currentUseIndex,
   showCookieBanner,
@@ -85,7 +88,11 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                       <AdditionalBeaconUseSummary
                         index={index}
                         use={use}
-                        deleteUri={confirmBeforeDelete(use, index)}
+                        deleteUri={confirmBeforeDelete(
+                          use,
+                          index,
+                          draftRegistration.id
+                        )}
                         key={`row${index}`}
                       />
                     );
@@ -114,7 +121,11 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   );
 };
 
-const confirmBeforeDelete = (use: DraftBeaconUse, index: number) =>
+const confirmBeforeDelete = (
+  use: DraftBeaconUse,
+  index: number,
+  registrationId: string
+) =>
   GeneralPageURLs.areYouSure +
   queryParams({
     action: "delete your " + prettyUseName(use) + " use",
@@ -126,10 +137,13 @@ const confirmBeforeDelete = (use: DraftBeaconUse, index: number) =>
           UpdatePageURLs.usesSummary +
           queryParams({
             useIndex: index >= 1 ? index - 1 : 0,
+            registrationId: registrationId,
           }),
         onFailure: ErrorPageURLs.serverError,
       }),
-    no: UpdatePageURLs.usesSummary + queryParams({ useIndex: index }),
+    no:
+      UpdatePageURLs.usesSummary +
+      queryParams({ useIndex: index, registrationId: registrationId }),
   });
 
 export const getServerSideProps: GetServerSideProps = withSession(
@@ -148,7 +162,10 @@ export const getServerSideProps: GetServerSideProps = withSession(
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
         context
       ),
-      new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
+      new GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable(
+        context,
+        props(context)
+      ),
     ]).execute();
   })
 );

@@ -113,7 +113,9 @@ const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = UpdatePageURLs.usesSummary;
+    const registrationId = context.req.cookies[formSubmissionCookieId];
+    const nextPage =
+      UpdatePageURLs.usesSummary + queryParams({ registrationId });
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
