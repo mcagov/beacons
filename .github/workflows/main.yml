@@ -137,7 +137,7 @@ jobs:
           browser: chrome
           start: npm run start
           build: npm run build
-          wait-on: "http://localhost:3000"
+          wait-on: "http://localhost:8080/spring-api/actuator/health"
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
