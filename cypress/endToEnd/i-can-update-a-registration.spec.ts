@@ -41,6 +41,7 @@ describe("As an account holder", () => {
 
     iCanClickTheUpdateLinkToUpdateARegistration(testRegistration);
     iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
 
     iCanViewTheUpdatedBeaconInformation(updatedRegistrationDetails);
