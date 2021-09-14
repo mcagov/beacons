@@ -16,13 +16,15 @@ import {
   PageHeading,
   SectionHeading,
 } from "../../../components/Typography";
-import { Beacon } from "../../../entities/Beacon";
 import { Registration } from "../../../entities/Registration";
-import { beaconToRegistration } from "../../../lib/beaconToRegistration";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
-import { AccountPageURLs, UpdatePageURLs } from "../../../lib/urls";
+import {
+  AccountPageURLs,
+  queryParams,
+  UpdatePageURLs,
+} from "../../../lib/urls";
 import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
@@ -79,28 +81,34 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               </SummaryList>
               <CheckYourAnswersBeaconInformationSummary
                 registration={registration}
-                changeUrl={"#"}
-              />
-              <CheckYourAnswersBeaconOwnerSummary
-                registration={registration}
-                changeUrl={"#"}
-              />
-              <CheckYourAnswersBeaconOwnerAddressSummary
-                registration={registration}
-                changeUrl={"#"}
-              />
-              <CheckYourAnswersBeaconEmergencyContactsSummary
-                registration={registration}
-                changeUrl={"#"}
+                changeUrl={UpdatePageURLs.beaconInformation + registration.id}
               />
               {registration.uses.map((use, index) => (
                 <AdditionalBeaconUseSummary
                   index={index}
                   use={use}
                   key={index}
-                  changeUri={"#"}
+                  changeUri={
+                    UpdatePageURLs.usesSummary +
+                    queryParams({
+                      registrationId: registration.id,
+                      useIndex: index,
+                    })
+                  }
                 />
               ))}
+              <CheckYourAnswersBeaconOwnerSummary
+                registration={registration}
+                changeUrl={UpdatePageURLs.aboutBeaconOwner}
+              />
+              <CheckYourAnswersBeaconOwnerAddressSummary
+                registration={registration}
+                changeUrl={UpdatePageURLs.beaconOwnerAddress}
+              />
+              <CheckYourAnswersBeaconEmergencyContactsSummary
+                registration={registration}
+                changeUrl={UpdatePageURLs.emergencyContact}
+              />
               <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
               <GovUKBody>
                 If you have a question about your beacon registration, contact
@@ -126,14 +134,16 @@ export const getServerSideProps: GetServerSideProps = withSession(
 const props = async (
   context: BeaconsGetServerSidePropsContext
 ): Promise<Partial<RegistrationSummaryPageProps>> => {
-  const { getBeaconsByAccountHolderId, getAccountHolderId } = context.container;
+  const { getAccountHolderId, getAccountHoldersRegistration } =
+    context.container;
 
-  const beacon: Beacon = (
-    await getBeaconsByAccountHolderId(await getAccountHolderId(context.session))
-  ).find((beacon) => beacon.id === context.query.id);
+  const registrationId = context.query.id as string;
 
   return {
-    registration: beaconToRegistration(beacon),
+    registration: await getAccountHoldersRegistration(
+      registrationId,
+      await getAccountHolderId(context.session)
+    ),
   };
 };
 

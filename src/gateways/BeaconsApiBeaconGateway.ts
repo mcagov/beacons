@@ -41,6 +41,27 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
     }
   }
 
+  public async updateRegistration(
+    draftRegistration: DraftRegistration,
+    registrationId: string
+  ): Promise<boolean> {
+    const url = `${this.apiUrl}/${this.registrationsEndpoint}/${registrationId}`;
+
+    const requestBody =
+      BeaconsApiBeaconGateway.draftRegistrationToApiRequestBody(
+        draftRegistration
+      );
+
+    try {
+      await axios.patch(url, requestBody, {
+        headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   public async deleteBeacon(json: IDeleteBeaconRequest): Promise<boolean> {
     const url = `${this.apiUrl}/beacons/${json.beaconId}/delete`;
     const data = {

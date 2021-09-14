@@ -2,6 +2,7 @@ import { IncomingMessage } from "http";
 import { DraftRegistration } from "../entities/DraftRegistration";
 import { AccountHolderGateway } from "../gateways/interfaces/AccountHolderGateway";
 import { BeaconGateway } from "../gateways/interfaces/BeaconGateway";
+import { BeaconSearchGateway } from "../gateways/interfaces/BeaconSearchGateway";
 import { DraftRegistrationGateway } from "../gateways/interfaces/DraftRegistrationGateway";
 import { EmailServiceGateway } from "../gateways/interfaces/EmailServiceGateway";
 import { IBasicAuthGateway } from "../gateways/interfaces/IBasicAuthGateway";
@@ -10,6 +11,7 @@ import { AddNewUseToDraftRegistrationFn } from "../useCases/addNewUseToDraftRegi
 import { AuthenticateUserFn } from "../useCases/authenticateUser";
 import { DeleteBeaconFn } from "../useCases/deleteBeacon";
 import { DeleteCachedUseFn } from "../useCases/deleteCachedUse";
+import { GetAccountHolderIdFn } from "../useCases/getAccountHolderId";
 import { GetAccountHoldersRegistrationFn } from "../useCases/getAccountHoldersRegistration";
 import { GetBeaconsByAccountHolderIdFn } from "../useCases/getBeaconsByAccountHolderId";
 import { GetBeaconsForAccountHolderFn } from "../useCases/getBeaconsForAccountHolder";
@@ -17,13 +19,14 @@ import { GetOrCreateAccountHolderFn } from "../useCases/getOrCreateAccountHolder
 import { SendConfirmationEmailFn } from "../useCases/sendConfirmationEmail";
 import { SubmitRegistrationFn } from "../useCases/submitRegistration";
 import { UpdateAccountHolderFn } from "../useCases/updateAccountHolder";
-import { BeaconSearchGateway } from "./../gateways/interfaces/BeaconSearchGateway";
+import { UpdateRegistrationFn } from "../useCases/updateRegistration";
 
 export interface IAppContainer {
   /* Use cases */
   authenticateUser: AuthenticateUserFn;
   submitRegistration: SubmitRegistrationFn;
   sendConfirmationEmail: SendConfirmationEmailFn;
+  updateRegistration: UpdateRegistrationFn;
 
   getDraftRegistration: (id: string) => Promise<DraftRegistration>;
   saveDraftRegistration: (
@@ -37,7 +40,7 @@ export interface IAppContainer {
 
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
   updateAccountHolder: UpdateAccountHolderFn;
-  getAccountHolderId;
+  getAccountHolderId: GetAccountHolderIdFn;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
   getBeaconsForAccountHolder: GetBeaconsForAccountHolderFn;
   getAccountHoldersRegistration: GetAccountHoldersRegistrationFn;

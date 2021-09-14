@@ -3,7 +3,6 @@ import { isValid } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
-import { CreateRegistrationPageURLs } from "../../lib/urls";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { Rule } from "./Rule";
 
@@ -14,15 +13,13 @@ export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenS
   protected readonly context: BeaconsGetServerSidePropsContext;
   protected readonly validationRules: FormManagerFactory;
   protected readonly mapper: DraftRegistrationFormMapper<T>;
-  private readonly nextPage:
-    | CreateRegistrationPageURLs
-    | Promise<CreateRegistrationPageURLs>;
+  private readonly nextPage: string | Promise<string>;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
     mapper: DraftRegistrationFormMapper<T>,
-    nextPage: CreateRegistrationPageURLs | Promise<CreateRegistrationPageURLs>
+    nextPage: string | Promise<string>
   ) {
     this.context = context;
     this.validationRules = validationRules;

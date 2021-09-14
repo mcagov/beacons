@@ -12,7 +12,7 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "../common/selectors-and-assertions.spec";
+} from "../../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to submit the primary activity for my beacon", () => {
   const otherActivitySelector = "#other-activity";

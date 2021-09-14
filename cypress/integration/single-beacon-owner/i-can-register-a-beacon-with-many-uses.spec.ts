@@ -12,7 +12,7 @@ import {
   iCanEditMyBeaconDetails,
   iCanSeeMyAdditionalBeaconInformation,
   iCanSeeMyBeaconDetails,
-} from "../common/i-can-enter-beacon-information.spec";
+} from "../../common/i-can-enter-beacon-information.spec";
 import {
   givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
@@ -23,7 +23,7 @@ import {
   iCanSeeMyAddressDetails,
   iCanSeeMyEmergencyContactDetails,
   iCanSeeMyPersonalDetails,
-} from "../common/i-can-enter-owner-information.spec";
+} from "../../common/i-can-enter-owner-information.spec";
 import {
   givenIHaveEnteredMyAviationUse,
   iCanEditMyAdditionalAviationUseInformation,
@@ -33,13 +33,13 @@ import {
   iCanEditMyAviationEnvironment,
   iCanEditMyAviationPurpose,
   iCanSeeMyAviationUse,
-} from "../common/i-can-enter-use-information/aviation.spec";
+} from "../../common/i-can-enter-use-information/aviation.spec";
 import {
   andIHaveAnotherUse,
   andIHaveNoFurtherUses,
   iCanEditMyEnvironment,
   iCanEditMyNUses,
-} from "../common/i-can-enter-use-information/generic.spec";
+} from "../../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyLandUse,
   iCanEditMyAdditionalLandUseMoreDetails,
@@ -47,7 +47,7 @@ import {
   iCanEditMyLandCommunications,
   iCanEditMyLandEnvironment,
   iCanSeeMyLandUse,
-} from "../common/i-can-enter-use-information/land.spec";
+} from "../../common/i-can-enter-use-information/land.spec";
 import {
   givenIHaveEnteredMyMaritimeUse,
   iCanEditMyAdditionalMaritimeUseInformation,
@@ -57,16 +57,16 @@ import {
   iCanEditMyVesselCommunications,
   iCanEditMyVesselDetails,
   iCanSeeMyMaritimeUse,
-} from "../common/i-can-enter-use-information/maritime.spec";
+} from "../../common/i-can-enter-use-information/maritime.spec";
 import {
-  givenIAmAt,
   givenIHaveSignedIn,
-  iAmAt,
+  givenIHaveVisited,
   iCanSeeAPageHeadingThatContains,
   iCanSeeASectionHeadingThatContains,
+  iHaveVisited,
   thenTheUrlShouldContain,
   whenIClickBack,
-} from "../common/selectors-and-assertions.spec";
+} from "../../common/selectors-and-assertions.spec";
 
 describe("As a single beacon owner with many uses", () => {
   it("I can register my beacon for a land, maritime pleasure, and aviation pleasure use", () => {
@@ -156,12 +156,12 @@ const iCanGoBackThroughTheFormInReverse = () => {
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iAmAt(GeneralPageURLs.start);
+  iHaveVisited(GeneralPageURLs.start);
   iCanClickEveryChangeButtonToEditMyRegistration();
 };
 
 const iCanClickEveryChangeButtonToEditMyRegistration = () => {
-  givenIAmAt(CreateRegistrationPageURLs.checkYourAnswers);
+  givenIHaveVisited(CreateRegistrationPageURLs.checkYourAnswers);
 
   const changeLinkAssertions = {
     [CreateRegistrationPageURLs.checkBeaconDetails]: iCanEditMyBeaconDetails,

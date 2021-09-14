@@ -10,10 +10,10 @@ export const singleBeaconRegistration: Registration = {
   batteryExpiryDateYear: "2022",
   chkCode: "9480B",
   referenceNumber: "ABCDE4",
-  batteryExpiryDate: "2020-02-01",
+  batteryExpiryDate: "2022-12-01",
   lastServicedDate: "2020-02-01",
-  lastServicedDateMonth: "12",
-  lastServicedDateYear: "2021",
+  lastServicedDateMonth: "02",
+  lastServicedDateYear: "2020",
   uses: [
     {
       environment: "MARITIME",

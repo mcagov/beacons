@@ -1,21 +1,21 @@
 import { Registration } from "../../src/entities/Registration";
 import { AccountPageURLs } from "../../src/lib/urls";
 import { prettyUseName } from "../../src/lib/writingStyle";
-import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
-import {
-  andIClickTheButtonContaining,
-  givenIHaveACookieSetAndHaveSignedIn,
-  iAmAt,
-  iCanSeeAButtonContaining,
-  thenIShouldSeeFormErrors,
-  whenIAmAt,
-  whenIClickTheButtonContaining,
-} from "../integration/common/selectors-and-assertions.spec";
-import { iCanSeeMyExistingRegistrationHexId } from "./common/i-can-see-my-existing-registration-hex-id.spec";
+import { iCanSeeMyExistingRegistrationHexId } from "../common/i-can-see-my-existing-registration-hex-id.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
   randomUkEncodedHexId,
-} from "./common/i-have-previously-registered-a-beacon.spec";
+} from "../common/i-have-previously-registered-a-beacon.spec";
+import {
+  andIClickTheButtonContaining,
+  givenIHaveACookieSetAndHaveSignedIn,
+  iCanSeeAButtonContaining,
+  iHaveVisited,
+  thenIShouldSeeFormErrors,
+  whenIClickTheButtonContaining,
+  whenIHaveVisited,
+} from "../common/selectors-and-assertions.spec";
+import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 
 describe("As an account holder", () => {
   it("I can delete one of my beacons", () => {
@@ -27,7 +27,7 @@ describe("As an account holder", () => {
     givenIHaveACookieSetAndHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
 
-    whenIAmAt(AccountPageURLs.accountHome);
+    whenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
@@ -39,7 +39,7 @@ describe("As an account holder", () => {
     );
 
     whenIClickTheButtonContaining("Cancel");
-    iAmAt(AccountPageURLs.accountHome);
+    iHaveVisited(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
@@ -112,7 +112,7 @@ const whenIEnterMyReasonInTheResultingTextbox = (reason: string) => {
 
 const whenIGoBackToAccountHome = () => {
   whenIClickTheButtonContaining("Return to your Account");
-  iAmAt(AccountPageURLs.accountHome);
+  iHaveVisited(AccountPageURLs.accountHome);
 };
 
 const myDeletedRegistrationIsNoLongerVisible = (hexId: string): void => {

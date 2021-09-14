@@ -9,7 +9,7 @@ import {
   iCanEditMyBeaconDetails,
   iCanSeeMyAdditionalBeaconInformation,
   iCanSeeMyBeaconDetails,
-} from "../common/i-can-enter-beacon-information.spec";
+} from "../../common/i-can-enter-beacon-information.spec";
 import {
   givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
@@ -20,12 +20,12 @@ import {
   iCanSeeMyAddressDetails,
   iCanSeeMyEmergencyContactDetails,
   iCanSeeMyPersonalDetails,
-} from "../common/i-can-enter-owner-information.spec";
+} from "../../common/i-can-enter-owner-information.spec";
 import {
   andIHaveNoFurtherUses,
   iCanEditMyEnvironment,
   iCanEditMyNUses,
-} from "../common/i-can-enter-use-information/generic.spec";
+} from "../../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyLandUse,
   iCanChangeMyLandCommunications,
@@ -35,14 +35,14 @@ import {
   iCanSeeMyLandUse,
   iCanSeeMySingleLandUse,
   iCanViewMyChangedLandCommunications,
-} from "../common/i-can-enter-use-information/land.spec";
+} from "../../common/i-can-enter-use-information/land.spec";
 import {
   andIClickContinue,
   givenIHaveSignedIn,
-  iAmAt,
+  iHaveVisited,
   thenTheUrlShouldContain,
   whenIClickBack,
-} from "../common/selectors-and-assertions.spec";
+} from "../../common/selectors-and-assertions.spec";
 
 describe("As a land beacon owner", () => {
   it("I can register my beacon", () => {
@@ -92,6 +92,6 @@ describe("As a land beacon owner", () => {
     whenIClickBack();
     iCanEditMyBeaconDetails();
     whenIClickBack();
-    iAmAt(GeneralPageURLs.start);
+    iHaveVisited(GeneralPageURLs.start);
   };
 });

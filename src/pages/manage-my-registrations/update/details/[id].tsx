@@ -15,11 +15,14 @@ import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
+import { UpdatePageURLs } from "../../../../lib/urls";
 import { toUpperCase } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
 import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
 import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../../router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
@@ -31,18 +34,29 @@ interface UpdateBeaconDetailsForm {
 
 const BeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
+  draftRegistration,
   showCookieBanner,
 }: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Beacon details";
 
   return (
     <BeaconsForm
-      previousPageUrl={"/"}
+      previousPageUrl={
+        UpdatePageURLs.registrationSummary + draftRegistration.id
+      }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
     >
       <BeaconsFormHeading pageHeading={pageHeading} />
-      <BeaconsFormHeading pageHeading={pageHeading} />
+      <GovUKBody>
+        The Unique Identifying Number (UIN) or Hexadecimal Identification (HEX
+        ID) of a registered beacon is not editable.
+        <br />
+        <br />
+        If you wish to change the beacon&apos;s UIN or HEX ID, you must first
+        delete the registration then register the beacon again with the new
+        UIN/HEX ID.
+      </GovUKBody>
       <BeaconManufacturerInput
         value={form.fields.manufacturer.value}
         errorMessages={form.fields.manufacturer.errorMessages}
@@ -71,6 +85,10 @@ const BeaconHexId: FunctionComponent<{ hexId: string }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const nextPageURL = UpdatePageURLs.beaconInformation + context.query.id;
+    // endpoint to start an update journey
+    // endpoint to start a register journey
+
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
@@ -84,6 +102,17 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper
+      ),
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
+        context,
+        validationRules,
+        mapper
+      ),
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
+        context,
+        validationRules,
+        mapper,
+        nextPageURL
       ),
     ]).execute();
   })
@@ -115,23 +144,7 @@ export const validationRules = ({
     model: new FieldManager(model, [
       Validators.required("Beacon model is a required field"),
     ]),
-    hexId: new FieldManager(hexId, [
-      Validators.required("Beacon HEX ID is a required field"),
-      Validators.isLength(
-        "Beacon HEX ID or UIN must be 15 characters long",
-        15
-      ),
-      Validators.hexadecimalString(
-        "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
-      ),
-      Validators.ukEncodedBeacon(
-        "You entered a beacon encoded with a Hex ID from %HEX_ID_COUNTRY%.  Your beacon must be UK-encoded to use this service."
-      ),
-      Validators.shouldNotContain(
-        'Your HEX ID should not contain the letter "O".  Did you mean the number zero?',
-        "O"
-      ),
-    ]),
+    hexId: new FieldManager(hexId, []),
   });
 };
 
