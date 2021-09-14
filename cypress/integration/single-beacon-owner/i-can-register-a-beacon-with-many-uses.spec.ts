@@ -37,9 +37,11 @@ import {
 import {
   andIHaveAnotherUse,
   andIHaveNoFurtherUses,
-  iAmEditingTheCorrectUse,
+  iAmOnTheLandBranchForUseNumber,
+  iAmOnTheMaritimeOrAviationBranchForUseNumber,
   iCanEditMyEnvironment,
   iCanEditMyNUses,
+  whenIGoToEditTheUseNumber,
 } from "../../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyLandUse,
@@ -84,20 +86,18 @@ describe("As a single beacon owner with many uses", () => {
     iCanSeeAPageHeadingThatContains("third use");
     givenIHaveEnteredMyAviationUse(Purpose.PLEASURE);
     iCanEditMyNUses(3);
-    iAmEditingTheCorrectUse(
-      `${CreateRegistrationPageURLs.environment}?useIndex=0`,
-      `${CreateRegistrationPageURLs.activity}?useIndex=0`
-    );
+
+    whenIGoToEditTheUseNumber(0);
+    iAmOnTheLandBranchForUseNumber(0);
+
     givenIHaveVisited(CreateRegistrationPageURLs.additionalUse);
-    iAmEditingTheCorrectUse(
-      `${CreateRegistrationPageURLs.environment}?useIndex=1`,
-      `${CreateRegistrationPageURLs.purpose}?useIndex=1`
-    );
+    whenIGoToEditTheUseNumber(1);
+    iAmOnTheMaritimeOrAviationBranchForUseNumber(1);
+
     givenIHaveVisited(CreateRegistrationPageURLs.additionalUse);
-    iAmEditingTheCorrectUse(
-      `${CreateRegistrationPageURLs.environment}?useIndex=2`,
-      `${CreateRegistrationPageURLs.purpose}?useIndex=2`
-    );
+    whenIGoToEditTheUseNumber(2);
+    iAmOnTheMaritimeOrAviationBranchForUseNumber(2);
+
     givenIHaveVisited(CreateRegistrationPageURLs.additionalUse);
     andIHaveNoFurtherUses();
 

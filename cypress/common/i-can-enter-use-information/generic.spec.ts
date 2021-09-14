@@ -39,8 +39,23 @@ export const iCanEditMyNUses = (n: number): void => {
   iCanSeeAButtonContaining("Add another");
 };
 
-export const iAmEditingTheCorrectUse = (href1: string, href2: string): void => {
-  iHaveClickedOnAGivenLink(href1);
+export const whenIGoToEditTheUseNumber = (useNumber: number) => {
+  iHaveClickedOnAGivenLink(
+    `${CreateRegistrationPageURLs.environment}?useIndex=${useNumber}`
+  );
   whenIClickContinue();
-  thenTheUrlShouldContain(href2);
+};
+
+export const iAmOnTheLandBranchForUseNumber = (useNumber: number) => {
+  thenTheUrlShouldContain(
+    `${CreateRegistrationPageURLs.activity}?useIndex=${useNumber}`
+  );
+};
+
+export const iAmOnTheMaritimeOrAviationBranchForUseNumber = (
+  useNumber: number
+) => {
+  thenTheUrlShouldContain(
+    `${CreateRegistrationPageURLs.purpose}?useIndex=${useNumber}`
+  );
 };
