@@ -51,13 +51,15 @@ export const iHavePreviouslyRegisteredABeacon = async (
 
   const sessionEndpoint = "/api/auth/session";
 
-  cy.request(sessionEndpoint).then(async (response) => {
-    const session = response.body;
+  cy.request(sessionEndpoint)
+    .then((response) => {
+      const session = response.body;
 
-    const accountHolder = await getOrCreateAccountHolder(container)(session);
-
-    await submitRegistration(container)(registration, accountHolder.id);
-  });
+      return getOrCreateAccountHolder(container)(session);
+    })
+    .then((accountHolder) => {
+      return submitRegistration(container)(registration, accountHolder.id);
+    });
 };
 
 export const randomUkEncodedHexId = (): string => {
