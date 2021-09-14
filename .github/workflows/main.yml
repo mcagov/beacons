@@ -64,6 +64,37 @@ jobs:
       - name: Run tests
         run: npm run test
 
+  UI_tests:
+    name: UI tests
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+    env:
+      WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+      SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Copy env vars
+        run: cp .env.example .env.local
+      - name: Run Cypress UI tests
+        uses: cypress-io/github-action@v2
+        with:
+          spec: cypress/integration/**/*.spec.ts
+          browser: chrome
+          start: npm run start
+          build: npm run build
+          wait-on: "http://localhost:3000"
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots/
+
   end_to_end_tests:
     name: End to end tests
     runs-on: ubuntu-latest
@@ -182,6 +213,7 @@ jobs:
         install_dependencies,
         docker_build,
         unit_tests,
+        UI_tests,
         end_to_end_tests,
         lint_check,
         prettier_check,
