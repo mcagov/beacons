@@ -178,6 +178,10 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
   cy.wait(1000);
 };
 
+export const givenIHaveWaitedForBeaconsApi = (): void => {
+  cy.wait(10000);
+};
+
 export const andIHaveEnteredNoInformation = (): void => null;
 
 export const whenIClickBack = (): void => {
