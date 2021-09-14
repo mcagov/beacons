@@ -23,12 +23,13 @@ import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { UpdatePageURLs } from "../../../../lib/urls";
+import { queryParams, UpdatePageURLs } from "../../../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
+import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../../router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
@@ -203,12 +204,18 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = UpdatePageURLs.usesSummary;
+    const registrationId = context.query.id as string;
+    const nextPageUrl =
+      UpdatePageURLs.usesSummary + queryParams({ registrationId });
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+      new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
         context
+      ),
+      new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+        context,
+        registrationId
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context,

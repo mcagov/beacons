@@ -22,13 +22,13 @@ import {
   iCanEditMyPersonalDetails,
 } from "../i-can-enter-owner-information.spec";
 import {
-  andIAmAt,
   andIClickContinue,
+  andIHaveVisited,
   givenIHaveSelected,
   givenIHaveTyped,
   givenIHaveUnselected,
-  iAmAt,
   iCanSeeAPageHeadingThatContains,
+  iHaveVisited,
   thenTheUrlShouldContain,
   whenIClearTheInput,
   whenIClickBack,
@@ -182,7 +182,7 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iAmAt(GeneralPageURLs.start);
+  iHaveVisited(GeneralPageURLs.start);
 };
 
 export const iCanEditMyVesselCommunications = (): void => {
@@ -227,7 +227,9 @@ export const iCanViewMyChangedVesselCommunications = (): void => {
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIAmAt(CreateRegistrationPageURLs.vesselCommunications + "?useIndex=0");
+  andIHaveVisited(
+    CreateRegistrationPageURLs.vesselCommunications + "?useIndex=0"
+  );
 };
 
 export const iCanEditMyVesselDetails = (): void => {

@@ -33,16 +33,6 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
   registration,
 }: CheckYourAnswersProps): JSX.Element => {
   const pageHeading = "Check your answers";
-  const useSections = [];
-  for (const [index, use] of registration.uses.entries()) {
-    useSections.push(
-      <CheckYourAnswersBeaconUseSummary
-        index={index}
-        use={use}
-        key={`row${index}`}
-      />
-    );
-  }
 
   return (
     <>
@@ -69,7 +59,13 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
                 registration={registration}
                 changeUrl={CreateRegistrationPageURLs.beaconInformation}
               />
-              {useSections}
+              {registration.uses.map((use, index) => (
+                <CheckYourAnswersBeaconUseSummary
+                  index={index}
+                  use={use}
+                  key={`row${index}`}
+                />
+              ))}
               <CheckYourAnswersBeaconOwnerSummary
                 registration={registration}
                 changeUrl={CreateRegistrationPageURLs.aboutBeaconOwner}

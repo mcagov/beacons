@@ -3,6 +3,7 @@ import {
   andIClickContinue,
   givenIHaveACookieSetAndIVisit,
   givenIHaveSignedIn,
+  iCanEditAFieldContaining,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   whenIType,
@@ -33,7 +34,3 @@ describe("Given I have submitted invalid data to a registration form,", () => {
 });
 
 const givenIHaveRefreshedThePage = () => cy.reload();
-
-const iCanEditAFieldContaining = (value: string): void => {
-  cy.get(`input[value="${value}"]`);
-};

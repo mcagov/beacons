@@ -3,8 +3,8 @@ import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import { makeEnumValueUserFriendly } from "../../../src/lib/writingStyle";
 import { testLandUseData } from "../happy-path-test-data.spec";
 import {
-  andIAmAt,
   andIClickContinue,
+  andIHaveVisited,
   givenIHaveSelected,
   givenIHaveTyped,
   givenIHaveUnselected,
@@ -80,7 +80,9 @@ export const iCanViewMyChangedLandCommunications = (): void => {
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIAmAt(CreateRegistrationPageURLs.landCommunications + "?useIndex=0");
+  andIHaveVisited(
+    CreateRegistrationPageURLs.landCommunications + "?useIndex=0"
+  );
 };
 
 export const iCanEditMyLandActivity = (): void => {

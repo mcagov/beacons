@@ -7,7 +7,7 @@ import {
   iCanEditMyBeaconDetails,
 } from "../../common/i-can-enter-beacon-information.spec";
 import {
-  andIAmAt,
+  andIHaveVisited,
   givenIHaveACookieSetAndIVisit,
   givenIHaveClicked,
   givenIHaveSignedIn,
@@ -29,14 +29,14 @@ describe("As a beacon owner, I want to check the details that were submitted", (
     givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(CreateRegistrationPageURLs.beaconInformation);
     givenIHaveFilledInCheckBeaconDetailsPage();
-    andIAmAt(CreateRegistrationPageURLs.checkYourAnswers);
+    andIHaveVisited(CreateRegistrationPageURLs.checkYourAnswers);
     givenIHaveClicked(acceptAndSendButtonSelector);
-    andIAmAt(CreateRegistrationPageURLs.applicationComplete);
+    andIHaveVisited(CreateRegistrationPageURLs.applicationComplete);
     cy.get("div").contains("There was an error while registering your beacon");
     givenIHaveClicked(homePageLinkSelector);
-    andIAmAt(GeneralPageURLs.start);
+    andIHaveVisited(GeneralPageURLs.start);
     givenIHaveClicked(startButtonSelector);
-    andIAmAt(CreateRegistrationPageURLs.checkBeaconDetails);
+    andIHaveVisited(CreateRegistrationPageURLs.checkBeaconDetails);
     iCanEditMyBeaconDetails();
   });
 });
