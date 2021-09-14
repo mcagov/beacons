@@ -63,8 +63,7 @@ jobs:
           browser: chrome
           start: npm run start
           build: npm run build
-          wait-on: "http://localhost:3000"
-          wait-on-timeout: 120
+          wait-on: "http://localhost:8080"
 
       - uses: actions/upload-artifact@v2
         if: failure()
