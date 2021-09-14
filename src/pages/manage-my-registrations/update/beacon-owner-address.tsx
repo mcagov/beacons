@@ -142,7 +142,8 @@ const PostcodeInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = UpdatePageURLs.emergencyContact;
+    const nextPageUrl =
+      (context.query.review as string) || UpdatePageURLs.emergencyContact;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

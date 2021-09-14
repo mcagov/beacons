@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton } from "../../../components/Button";
+import { BackButton, StartButton } from "../../../components/Button";
 import { AdditionalBeaconUseSummary } from "../../../components/domain/AdditionalBeaconUseSummary";
 import { CheckYourAnswersBeaconEmergencyContactsSummary } from "../../../components/domain/CheckYourAnswersBeaconEmergencyContactsSummary";
 import { CheckYourAnswersBeaconInformationSummary } from "../../../components/domain/CheckYourAnswersBeaconInformationSummary";
@@ -29,6 +29,7 @@ import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
+import { SendYourApplication } from "../../register-a-beacon/check-your-answers";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;
@@ -67,7 +68,14 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   actions={[
                     {
                       text: "Change",
-                      href: UpdatePageURLs.beaconDetails + registration.id,
+                      href:
+                        UpdatePageURLs.beaconDetails +
+                        registration.id +
+                        queryParams({
+                          review:
+                            UpdatePageURLs.registrationSummary +
+                            registration.id,
+                        }),
                     },
                   ]}
                 >
@@ -81,7 +89,14 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               </SummaryList>
               <CheckYourAnswersBeaconInformationSummary
                 registration={registration}
-                changeUrl={UpdatePageURLs.beaconInformation + registration.id}
+                changeUrl={
+                  UpdatePageURLs.beaconInformation +
+                  registration.id +
+                  queryParams({
+                    review:
+                      UpdatePageURLs.registrationSummary + registration.id,
+                  })
+                }
               />
               {registration.uses.map((use, index) => (
                 <AdditionalBeaconUseSummary
@@ -93,21 +108,46 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                     queryParams({
                       registrationId: registration.id,
                       useIndex: index,
+                      review:
+                        UpdatePageURLs.registrationSummary + registration.id,
                     })
                   }
                 />
               ))}
               <CheckYourAnswersBeaconOwnerSummary
                 registration={registration}
-                changeUrl={UpdatePageURLs.aboutBeaconOwner}
+                changeUrl={
+                  UpdatePageURLs.aboutBeaconOwner +
+                  queryParams({
+                    review:
+                      UpdatePageURLs.registrationSummary + registration.id,
+                  })
+                }
               />
               <CheckYourAnswersBeaconOwnerAddressSummary
                 registration={registration}
-                changeUrl={UpdatePageURLs.beaconOwnerAddress}
+                changeUrl={
+                  UpdatePageURLs.beaconOwnerAddress +
+                  queryParams({
+                    review:
+                      UpdatePageURLs.registrationSummary + registration.id,
+                  })
+                }
               />
               <CheckYourAnswersBeaconEmergencyContactsSummary
                 registration={registration}
-                changeUrl={UpdatePageURLs.emergencyContact}
+                changeUrl={
+                  UpdatePageURLs.emergencyContact +
+                  queryParams({
+                    review:
+                      UpdatePageURLs.registrationSummary + registration.id,
+                  })
+                }
+              />
+              <SendYourApplication />
+              <StartButton
+                buttonText="Accept and send"
+                href={UpdatePageURLs.updateComplete}
               />
               <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
               <GovUKBody>

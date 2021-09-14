@@ -128,7 +128,9 @@ const EmailAddress: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = UpdatePageURLs.beaconOwnerAddress;
+    const nextPageUrl =
+      (context.query.review as string) ||
+      UpdatePageURLs.beaconOwnerAddress + context.query.id;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

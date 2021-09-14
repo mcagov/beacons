@@ -165,7 +165,6 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Beacon information");
   thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
   theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.registrationSummary);
-
   iEditMyBeaconManufacturerAndModel(
     registration,
     updatedRegistrationDetails.manufacturer,
@@ -173,8 +172,11 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   );
   iCanSeeButICannotEditMyHexId(registration);
   whenIClickContinue();
+  thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
-  thenTheUrlShouldContain(UpdatePageURLs.beaconInformation);
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading(
+    "Additional beacon information"
+  );
   theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.beaconDetails);
   iEditMyBeaconInformation(
     registration,
@@ -186,7 +188,9 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
     updatedRegistrationDetails.lastServicedDateYear
   );
   whenIClickContinue();
+  thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
+  whenIClickTheChangeLinkForTheSectionWithHeading("Main use");
   thenTheUrlShouldContain(UpdatePageURLs.usesSummary);
   whenIGoToDeleteMy(/main use/i);
   iAmPromptedToConfirm(
@@ -194,21 +198,20 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
     registration.uses[0].purpose,
     registration.uses[0].activity
   );
-
   whenIClickTheButtonContaining("Yes");
   theNumberOfUsesIs(0);
-
   andIClickTheButtonContaining("Add a use");
   iCanSeeAPageHeadingThatContains("main use");
   iAmOnTheUpdateFlow();
   givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
   iAmOnTheUpdateFlow();
   theNumberOfUsesIs(1);
-
   whenIClickContinue();
+  thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
+
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Owner details");
   thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
   theBackLinkGoesTo(UpdatePageURLs.usesSummary);
-
   iEditMyOwnerInformation(
     registration,
     updatedRegistrationDetails.ownerFullName,
@@ -217,6 +220,9 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
     updatedRegistrationDetails.ownerEmail
   );
   whenIClickContinue();
+  thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
+
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
   thenTheUrlShouldContain(UpdatePageURLs.beaconOwnerAddress);
   theBackLinkGoesTo(UpdatePageURLs.aboutBeaconOwner);
   iEditMyOwnerAddress(
@@ -227,8 +233,10 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
     updatedRegistrationDetails.ownerCounty,
     updatedRegistrationDetails.ownerPostcode
   );
-
   whenIClickContinue();
+  thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
+
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 1");
   thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
   theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
   iEditMyEmergencyContactInformation(
@@ -237,10 +245,20 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
     updatedRegistrationDetails.emergencyContact1TelephoneNumber,
     updatedRegistrationDetails.emergencyContact1AlternativeTelephoneNumber
   );
-
   whenIClickContinue();
-  thenTheUrlShouldContain(UpdatePageURLs.checkYourAnswers);
-  theBackLinkGoesTo(UpdatePageURLs.emergencyContact);
+  thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
+
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 2");
+  thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
+  theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
+  whenIClickContinue();
+  thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
+
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 3");
+  thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
+  theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
+  whenIClickContinue();
+  thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheButtonContaining("Accept and send");
   thenTheUrlShouldContain(UpdatePageURLs.updateComplete);
@@ -498,4 +516,9 @@ const iCanViewTheUpdatedAdditionalBeaconInformation = (
     "Additional beacon information"
   );
   iCanSeeAPageHeadingThatContains("Beacon information");
+};
+
+const thenIShouldBeOnTheRegistrationSummaryPageForHexId = (hexId) => {
+  iCanSeeAPageHeadingThatContains("Your registered beacon with Hex ID/UIN");
+  iCanSeeAPageHeadingThatContains(hexId);
 };

@@ -206,6 +206,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     const registrationId = context.query.id as string;
     const nextPageUrl =
+      (context.query.review as string) ||
       UpdatePageURLs.usesSummary + queryParams({ registrationId });
 
     return await new BeaconsPageRouter([
