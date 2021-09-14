@@ -22,6 +22,7 @@ import {
   theBackLinkGoesTo,
   theBackLinkGoesTo_WithRegistrationId,
   thenTheUrlShouldContain,
+  whenIClickBack,
   whenIClickContinue,
   whenIClickTheButtonContaining,
   whenIHaveVisited,
@@ -38,7 +39,8 @@ describe("As an account holder", () => {
     whenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
-    whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+    iCanClickTheUpdateLinkToUpdateARegistration(testRegistration);
+    iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
 
     iCanViewTheUpdatedBeaconInformation(updatedRegistrationDetails);
@@ -48,11 +50,31 @@ describe("As an account holder", () => {
   });
 });
 
+const iCanClickTheUpdateLinkToUpdateARegistration = (
+  registration: Registration
+) => {
+  cy.get("main")
+    .contains(registration.hexId)
+    .parent()
+    .parent()
+    .contains(/update/i)
+    .click();
+
+  iCanSeeMyBeaconInformation(registration);
+  iCanSeeAdditionalBeaconInformation(registration);
+  iCanSeeOwnerInformation(registration);
+  iCanSeeEmergencyContactInformation(registration);
+  iCanSeeUseInformation(registration);
+  theBackLinkGoesTo(AccountPageURLs.accountHome);
+  whenIClickBack();
+  thenTheUrlShouldContain(AccountPageURLs.accountHome);
+};
+
 const iCanViewTheUpdatedOwnerInformation = (
   draftRegistration: DraftRegistration
 ) => {
   whenIHaveVisited(AccountPageURLs.accountHome);
-  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+  iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Owner details");
   thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
@@ -77,7 +99,7 @@ const iCanViewTheUpdatedUseInformation = (
   draftRegistration: DraftRegistration
 ) => {
   whenIHaveVisited(AccountPageURLs.accountHome);
-  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+  iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
   whenIClickTheChangeLinkForTheSectionWithHeading("Main use");
   thenTheUrlShouldContain(UpdatePageURLs.usesSummary);
   iCanSeeUseInformation(draftRegistration);
@@ -120,12 +142,12 @@ const updatedRegistrationDetails: DraftRegistration = {
 
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 
-const whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
+const iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
   cy.get("a").contains(hexId).click();
 };
 
 const whenIClickOnTheHexIdOfTheRegistrationIUpdated =
-  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate;
+  iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate;
 
 const iCanUpdateTheDetailsOfMyExistingRegistration = (
   registration: Registration
@@ -431,7 +453,7 @@ const iCanViewTheUpdatedBeaconInformation = (
   updatedRegistrationDetails: DraftRegistration
 ) => {
   whenIHaveVisited(AccountPageURLs.accountHome);
-  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+  iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
 
   cy.get("dt")
     .contains("Beacon information")
@@ -447,7 +469,7 @@ const iCanViewTheUpdatedAdditionalBeaconInformation = (
   updatedRegistrationDetails: DraftRegistration
 ) => {
   whenIHaveVisited(AccountPageURLs.accountHome);
-  whenIClickOnTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+  iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
 
   cy.get("dt")
     .contains("Additional beacon information")

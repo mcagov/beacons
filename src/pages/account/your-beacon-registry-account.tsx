@@ -259,6 +259,12 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
         <td className="govuk-table__cell">{beacon.lastModifiedDate}</td>
         <td className="govuk-table__cell">
           <AnchorLink
+            href={UpdatePageURLs.registrationSummary + beacon.id}
+            classes="govuk-link--no-visited-state"
+          >
+            Update
+          </AnchorLink>{" "}
+          <AnchorLink
             href={confirmBeforeDelete(beacon.id)}
             classes="govuk-link--no-visited-state"
           >
