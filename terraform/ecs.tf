@@ -175,6 +175,14 @@ resource "aws_ecs_task_definition" "service" {
       {
         name : "BEACONS_SEARCH_VIEW_SCHEDULER_TIMEOUT",
         value : var.service_beacon_search_scheduler_timeout
+      },
+      {
+        name: "AZURE_AD_API_CLIENT_ID",
+        value: var.service_azure_ad_api_id
+      },
+      {
+        name: "AZURE_AD_API_ID_URI",
+        value: "api://${var.service_azure_ad_api_id}"
       }
     ],
     logConfiguration : {
