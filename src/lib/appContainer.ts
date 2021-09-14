@@ -2,6 +2,7 @@ import { AadAuthGateway } from "../gateways/AadAuthGateway";
 import { BasicAuthGateway } from "../gateways/BasicAuthGateway";
 import { BeaconsApiAccountHolderGateway } from "../gateways/BeaconsApiAccountHolderGateway";
 import { BeaconsApiBeaconGateway } from "../gateways/BeaconsApiBeaconGateway";
+import { BeaconsApiBeaconSearchGateway } from "../gateways/BeaconsApiBeaconSearchGateway";
 import { GovNotifyEmailServiceGateway } from "../gateways/GovNotifyEmailServiceGateway";
 import { NextAuthUserSessionGateway } from "../gateways/NextAuthUserSessionGateway";
 import { RedisDraftRegistrationGateway } from "../gateways/RedisDraftRegistrationGateway";
@@ -20,7 +21,7 @@ import { saveDraftRegistration } from "../useCases/saveDraftRegistration";
 import { sendConfirmationEmail } from "../useCases/sendConfirmationEmail";
 import { submitRegistration } from "../useCases/submitRegistration";
 import { updateAccountHolder } from "../useCases/updateAccountHolder";
-import { BeaconsApiBeaconSearchGateway } from "./../gateways/BeaconsApiBeaconSearchGateway";
+import { updateRegistration } from "../useCases/updateRegistration";
 import { IAppContainer } from "./IAppContainer";
 import { parseFormDataAs } from "./middleware";
 
@@ -72,6 +73,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get deleteBeacon() {
       return deleteBeacon(this);
+    },
+    get updateRegistration() {
+      return updateRegistration(this);
     },
 
     /* Gateways */

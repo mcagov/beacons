@@ -22,13 +22,13 @@ import {
   iCanEditMyPersonalDetails,
 } from "../i-can-enter-owner-information.spec";
 import {
-  andIAmAt,
   andIClickContinue,
+  andIHaveVisited,
   givenIHaveSelected,
   givenIHaveTyped,
   givenIHaveUnselected,
-  iAmAt,
   iCanSeeAPageHeadingThatContains,
+  iHaveVisited,
   thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
@@ -105,7 +105,7 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iAmAt(GeneralPageURLs.start);
+  iHaveVisited(GeneralPageURLs.start);
 };
 
 export const andIHaveEnteredMyAviationUse = givenIHaveEnteredMyAviationUse;
@@ -146,7 +146,9 @@ export const iCanViewMyChangedAircraftCommunications = (): void => {
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIAmAt(CreateRegistrationPageURLs.aircraftCommunications + "?useIndex=0");
+  andIHaveVisited(
+    CreateRegistrationPageURLs.aircraftCommunications + "?useIndex=0"
+  );
 };
 
 export const iCanEditMyAircraftDetails = (): void => {

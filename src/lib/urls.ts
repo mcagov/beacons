@@ -71,6 +71,8 @@ export enum UpdatePageURLs {
   aboutBeaconOwner = "/manage-my-registrations/update/about-beacon-owner",
   beaconOwnerAddress = "/manage-my-registrations/update/beacon-owner-address",
   emergencyContact = "/manage-my-registrations/update/emergency-contact",
+  checkYourAnswers = "/manage-my-registrations/update/check-your-answers",
+  updateComplete = "/manage-my-registrations/update/complete",
 }
 
 export enum ActionURLs {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { v4 } from "uuid";
 import { DraftRegistration } from "../../src/entities/DraftRegistration";
 import { BeaconsApiBeaconGateway } from "../../src/gateways/BeaconsApiBeaconGateway";
 import { AuthGateway } from "../../src/gateways/interfaces/AuthGateway";
@@ -16,6 +17,7 @@ describe("Beacons API Gateway", () => {
       getAccessToken: jest.fn().mockResolvedValue("Access token"),
     };
     gateway = new BeaconsApiBeaconGateway(apiUrl, mockAuthGateway);
+    jest.resetAllMocks();
   });
 
   describe("Posting an entity", () => {
@@ -44,6 +46,41 @@ describe("Beacons API Gateway", () => {
       const expectedUrl = `${apiUrl}/${endpoint}`;
       await gateway.sendRegistration(json);
       expect((axios as any).post).toHaveBeenLastCalledWith(
+        expectedUrl,
+        expect.anything(),
+        expect.anything()
+      );
+    });
+  });
+
+  describe("Updating a registration", () => {
+    let endpoint;
+    let json: DraftRegistration;
+    let registrationId;
+
+    beforeEach(() => {
+      endpoint = "registrations/register";
+      json = { model: "ASOS", uses: [] };
+      registrationId = v4();
+    });
+
+    it("should return true if it posted the entity successfully", async () => {
+      const expected = await gateway.updateRegistration(json, registrationId);
+      expect(expected).toBe(true);
+    });
+
+    it("should return false if the request is unsuccessful", async () => {
+      (axios as any).patch.mockImplementation(() => {
+        throw new Error();
+      });
+      const expected = await gateway.updateRegistration(json, registrationId);
+      expect(expected).toBe(false);
+    });
+
+    it("should send the JSON to the correct url", async () => {
+      const expectedUrl = `${apiUrl}/${endpoint}/${registrationId}`;
+      await gateway.updateRegistration(json, registrationId);
+      expect((axios as any).patch).toHaveBeenLastCalledWith(
         expectedUrl,
         expect.anything(),
         expect.anything()

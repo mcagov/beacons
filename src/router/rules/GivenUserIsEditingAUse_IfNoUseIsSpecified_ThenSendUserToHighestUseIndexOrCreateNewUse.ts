@@ -36,6 +36,17 @@ export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseI
   private async sendUserToHighestUseIndex(): Promise<
     GetServerSidePropsResult<any>
   > {
+    const urlHasQueryParams = this.context.req.url.includes("?");
+
+    if (urlHasQueryParams) {
+      return redirectUserTo(
+        this.context.req.url +
+          queryParams({
+            useIndex: (await this.draftRegistration()).uses.length - 1,
+          }).replace("?", "&")
+      );
+    }
+
     return redirectUserTo(
       this.context.req.url +
         queryParams({

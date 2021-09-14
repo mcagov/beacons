@@ -3,8 +3,7 @@ import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveSignedIn,
   requiredFieldErrorMessage,
-  thenIShouldSeeAnErrorMessageThatContains,
-  thenIShouldSeeAnErrorSummaryLinkThatContains,
+  thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
@@ -28,8 +27,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     whenIType(" ", fullNameInputFieldSelector);
     andIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+    thenIShouldSeeFormErrors(...expectedErrorMessage);
 
     whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
     thenMyFocusMovesTo(fullNameInputFieldSelector);
@@ -41,8 +39,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     whenIType(" ", emailInputFieldSelector);
     andIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+    thenIShouldSeeFormErrors(...expectedErrorMessage);
 
     whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
     thenMyFocusMovesTo(emailInputFieldSelector);
@@ -57,8 +54,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     whenIType(" ", telephoneNumberInputFieldSelector);
     andIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+    thenIShouldSeeFormErrors(...expectedErrorMessage);
 
     whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
     thenMyFocusMovesTo(telephoneNumberInputFieldSelector);
@@ -70,8 +66,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
     whenIType("not@validemail", emailInputFieldSelector);
     andIClickContinue();
 
-    thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
-    thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+    thenIShouldSeeFormErrors(...expectedErrorMessage);
 
     whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
     thenMyFocusMovesTo(emailInputFieldSelector);
