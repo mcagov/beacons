@@ -42,7 +42,19 @@ describe("As an account holder", () => {
     iCanClickTheUpdateLinkToUpdateARegistration(testRegistration);
     iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
 
+    iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges();
+
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
+    whenIClickTheButtonContaining("Accept and send");
+    thenTheUrlShouldContain(UpdatePageURLs.updateComplete);
+    iCanSeeAPageHeadingThatContains(
+      "Your beacon registration has been updated"
+    );
+    whenIClickTheButtonContaining("Return to your Account");
+    thenTheUrlShouldContain(AccountPageURLs.accountHome);
+
+    iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+    iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges();
 
     iCanViewTheUpdatedBeaconInformation(updatedRegistrationDetails);
     iCanViewTheUpdatedAdditionalBeaconInformation(updatedRegistrationDetails);
@@ -50,6 +62,10 @@ describe("As an account holder", () => {
     iCanViewTheUpdatedOwnerInformation(updatedRegistrationDetails);
   });
 });
+
+const iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges = () => {
+  cy.get(`[role=button]:contains(accept and send)`).should("not.exist");
+};
 
 const iCanClickTheUpdateLinkToUpdateARegistration = (
   registration: Registration
@@ -259,12 +275,6 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
-
-  whenIClickTheButtonContaining("Accept and send");
-  thenTheUrlShouldContain(UpdatePageURLs.updateComplete);
-  iCanSeeAPageHeadingThatContains("Your beacon registration has been updated");
-  whenIClickTheButtonContaining("Return to your Account");
-  thenTheUrlShouldContain(AccountPageURLs.accountHome);
 };
 
 const iCanSeeTheHistoryOfMyRegistration = (

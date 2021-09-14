@@ -27,17 +27,23 @@ import {
 } from "../../../lib/urls";
 import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
+import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend } from "../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 import { SendYourApplication } from "../../register-a-beacon/check-your-answers";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;
+  userHasEdited: boolean;
 }
 
 const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
-  ({ registration }: RegistrationSummaryPageProps): JSX.Element => {
+  ({
+    registration,
+    userHasEdited,
+  }: RegistrationSummaryPageProps): JSX.Element => {
     const pageHeading = `Your registered beacon with Hex ID/UIN: ${registration.hexId}`;
+
     return (
       <Layout
         navigation={<BackButton href={AccountPageURLs.accountHome} />}
@@ -144,11 +150,16 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   })
                 }
               />
-              <SendYourApplication />
-              <StartButton
-                buttonText="Accept and send"
-                href={UpdatePageURLs.updateComplete}
-              />
+              {userHasEdited && (
+                <>
+                  <SendYourApplication />
+                  <StartButton
+                    buttonText="Accept and send"
+                    href={UpdatePageURLs.updateComplete}
+                  />
+                </>
+              )}
+
               <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
               <GovUKBody>
                 If you have a question about your beacon registration, contact
@@ -164,12 +175,25 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+    const registrationId = context.query.id as string;
+
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
+      new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend(
+        context,
+        registrationId,
+        props(context)
+      ),
+      new GivenUserHasNotMadeChangesToTheirRegistration_ThenHideAcceptAndSendButton(
+        context,
+        props(context)
+      ),
     ]).execute();
   })
 );
+
+const GivenUserHasNotMadeChangesToTheirRegistration_ThenHideAcceptAndSendButton =
+  WhenUserViewsPage_ThenDisplayPage;
 
 const props = async (
   context: BeaconsGetServerSidePropsContext
