@@ -189,7 +189,7 @@ const EmergencyContactGroup: FunctionComponent<EmergencyContactGroupProps> = ({
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     const nextPageUrl =
-      (context.query.review as string) || UpdatePageURLs.checkYourAnswers;
+      (context.query.review as string) || UpdatePageURLs.registrationSummary;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
