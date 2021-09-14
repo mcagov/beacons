@@ -20,7 +20,8 @@ export const theBackLinkGoesTo_WithRegistrationId = (
   previousPageUrl: string
 ): void => {
   cy.url().then((currentPageUrl) => {
-    const urlArray = currentPageUrl.split("/");
+    const currentPageUrlwithoutQuery = new URL(currentPageUrl).pathname;
+    const urlArray = currentPageUrlwithoutQuery.split("/");
     const registrationId = urlArray[urlArray.length - 1];
     theBackLinkGoesTo(previousPageUrl + registrationId);
   });
