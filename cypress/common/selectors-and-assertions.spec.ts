@@ -211,5 +211,5 @@ export const iCanEditAFieldContaining = (value: string): void => {
   cy.get(`input[value="${value}"]`);
 };
 export const iHaveClickedOnAGivenLink = (href: string) => {
-  cy.get(`a[href]:contains(${href})`);
+  cy.get(`a[href="${href}"]`).click();
 };
