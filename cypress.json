@@ -3,6 +3,5 @@
   "chromeWebSecurity": false,
   "video": false,
   "integrationFolder": "cypress/",
-  "testFiles": "**/*.spec.ts",
-  "responseTimeout": 60000
+  "testFiles": "**/*.spec.ts"
 }
