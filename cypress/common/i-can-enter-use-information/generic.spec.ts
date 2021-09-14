@@ -5,7 +5,9 @@ import {
   andIClickTheButtonContaining,
   iCanSeeAButtonContaining,
   iCanSeeNLinksContaining,
+  iHaveClickedOnAGivenLink,
   thenTheUrlShouldContain,
+  whenIClickContinue,
 } from "../selectors-and-assertions.spec";
 
 export const iCanEditMyEnvironment = (environment: Environment): void => {
@@ -35,4 +37,10 @@ export const iCanEditMyNUses = (n: number): void => {
   iCanSeeNLinksContaining(n, "Delete");
   iCanSeeAButtonContaining("Continue");
   iCanSeeAButtonContaining("Add another");
+};
+
+export const iAmEditingTheCorrectUse = (href1: string, href2: string): void => {
+  iHaveClickedOnAGivenLink(href1);
+  whenIClickContinue();
+  thenTheUrlShouldContain(href2);
 };
