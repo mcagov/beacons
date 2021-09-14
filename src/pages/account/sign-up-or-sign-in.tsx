@@ -6,7 +6,7 @@ import {
 } from "../../components/BeaconsForm";
 import { FormGroup } from "../../components/Form";
 import { RadioList, RadioListItem } from "../../components/RadioList";
-import { GovUKBody } from "../../components/Typography";
+import { AnchorLink, GovUKBody } from "../../components/Typography";
 import { FieldManager } from "../../lib/form/FieldManager";
 import { FormManager } from "../../lib/form/FormManager";
 import {
@@ -37,7 +37,19 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
   const pageHeading = "Do you have a Beacon Registry Account?";
   const pageText = (
     <GovUKBody>
-      {"You will need an account to register your beacon online."}
+      You will have an account if you registered a beacon online, using this
+      service after September 1st 2021.
+      <br />
+      <br />
+      If you previously registered your beacon in any way prior to September 1st
+      2021, then you will need to create a new Beacon Registry Account.
+      <br />
+      <br />
+      By signing up to the beacons service, you automatically accept the{" "}
+      <AnchorLink href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice">
+        service privacy policy
+      </AnchorLink>
+      .
     </GovUKBody>
   );
 
