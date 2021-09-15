@@ -38,24 +38,22 @@ describe("As an account holder", () => {
 
     whenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
-
     iCanClickTheUpdateLinkToUpdateARegistration(testRegistration);
     iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
-
     iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges();
-
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
+
     whenIClickTheButtonContaining("Accept and send");
     thenTheUrlShouldContain(UpdatePageURLs.updateComplete);
     iCanSeeAPageHeadingThatContains(
       "Your beacon registration has been updated"
     );
+
     whenIClickTheButtonContaining("Return to your Account");
     thenTheUrlShouldContain(AccountPageURLs.accountHome);
 
-    iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+    whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
     iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges();
-
     iCanViewTheUpdatedBeaconInformation(updatedRegistrationDetails);
     iCanViewTheUpdatedAdditionalBeaconInformation(updatedRegistrationDetails);
     iCanViewTheUpdatedUseInformation(updatedRegistrationDetails);
@@ -162,6 +160,9 @@ const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 const iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
   cy.get("a").contains(hexId).click();
 };
+
+const whenIClickTheHexIdOfTheRegistrationIWantToUpdate =
+  iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate;
 
 const whenIClickOnTheHexIdOfTheRegistrationIUpdated =
   iCanAlsoClickTheHexIdOfTheRegistrationIWantToUpdate;
