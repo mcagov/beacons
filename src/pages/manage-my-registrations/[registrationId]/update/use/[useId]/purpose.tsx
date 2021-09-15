@@ -22,6 +22,9 @@ import { withContainer } from "../../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../../../../../lib/types";
 import { queryParams, UpdatePageURLs } from "../../../../../../lib/urls";
+import { Actions } from "../../../../../../lib/URLs/Actions";
+import { UrlBuilder } from "../../../../../../lib/URLs/UrlBuilder";
+import { UsePages } from "../../../../../../lib/URLs/UsePages";
 import { BeaconUseFormMapper } from "../../../../../../presenters/BeaconUseFormMapper";
 import { FormSubmission } from "../../../../../../presenters/formSubmission";
 import { makeDraftRegistrationMapper } from "../../../../../../presenters/makeDraftRegistrationMapper";
@@ -88,7 +91,12 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = UpdatePageURLs.activity;
+    const nextPage = UrlBuilder.buildUseUrl(
+      Actions.update,
+      UsePages.activity,
+      context.query.registrationId as string,
+      context.query.useId as string
+    );
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

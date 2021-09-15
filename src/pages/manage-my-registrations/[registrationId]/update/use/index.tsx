@@ -78,7 +78,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           Actions.update,
                           UsePages.environment,
                           draftRegistration.id,
-                          uses.length
+                          uses.length.toString()
                         ),
                       })
                     }
@@ -111,7 +111,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           Actions.update,
                           UsePages.environment,
                           draftRegistration.id,
-                          uses.length
+                          uses.length.toString()
                         ),
                       })
                     }
@@ -181,11 +181,8 @@ const props = async (
     context.req.cookies[formSubmissionCookieId]
   );
 
-  const useIndex = parseInt(context.query.useId as string);
-
   return {
     uses: draftRegistration.uses,
-    currentUseIndex: useIndex,
   };
 };
 

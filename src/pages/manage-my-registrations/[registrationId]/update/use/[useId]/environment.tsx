@@ -155,8 +155,8 @@ const nextPage = async (
   const { environment } =
     await context.container.parseFormDataAs<BeaconUseForm>(context.req);
 
-  const registrationId = context.query.registrationId;
-  const useId = parseInt(context.query.useId as string);
+  const registrationId = context.query.registrationId as string;
+  const useId = context.query.useId as string;
 
   const nextPageInFlow =
     environment === Environment.LAND ? UsePages.activity : UsePages.purpose;
@@ -164,7 +164,7 @@ const nextPage = async (
   return UrlBuilder.buildUseUrl(
     Actions.update,
     nextPageInFlow,
-    registrationId as string,
+    registrationId,
     useId
   );
 };

@@ -15,7 +15,7 @@ export class UrlBuilder {
     action: Actions,
     page: UsePages,
     registrationId: string,
-    useId: number
+    useId: string
   ): string {
     return `/manage-my-registrations/${registrationId}/${action}/use/${useId}/${page}`;
   }
