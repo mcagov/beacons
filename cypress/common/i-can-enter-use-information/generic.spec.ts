@@ -39,14 +39,14 @@ export const iCanEditMyNUses = (n: number): void => {
   iCanSeeAButtonContaining("Add another");
 };
 
-export const whenIGoToEditTheUseNumber = (useNumber: number) => {
+export const whenIGoToEditTheUseNumber = (useNumber: number): void => {
   iHaveClickedOnAGivenLink(
     `${CreateRegistrationPageURLs.environment}?useIndex=${useNumber}`
   );
   whenIClickContinue();
 };
 
-export const iAmOnTheLandBranchForUseNumber = (useNumber: number) => {
+export const iAmOnTheLandBranchForUseNumber = (useNumber: number): void => {
   thenTheUrlShouldContain(
     `${CreateRegistrationPageURLs.activity}?useIndex=${useNumber}`
   );
@@ -54,7 +54,7 @@ export const iAmOnTheLandBranchForUseNumber = (useNumber: number) => {
 
 export const iAmOnTheMaritimeOrAviationBranchForUseNumber = (
   useNumber: number
-) => {
+): void => {
   thenTheUrlShouldContain(
     `${CreateRegistrationPageURLs.purpose}?useIndex=${useNumber}`
   );
