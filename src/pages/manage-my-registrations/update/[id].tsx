@@ -184,16 +184,10 @@ export const getServerSideProps: GetServerSideProps = withSession(
         registrationId,
         props(context)
       ),
-      new GivenUserHasNotMadeChangesToTheirRegistration_ThenHideAcceptAndSendButton(
-        context,
-        props(context)
-      ),
+      new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
     ]).execute();
   })
 );
-
-const GivenUserHasNotMadeChangesToTheirRegistration_ThenHideAcceptAndSendButton =
-  WhenUserViewsPage_ThenDisplayPage;
 
 const props = async (
   context: BeaconsGetServerSidePropsContext
