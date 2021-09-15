@@ -37,7 +37,7 @@ export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItA
   private theDraftRegistrationCookieIdMatchesTheQueryId() {
     return (
       this.context.req.cookies[formSubmissionCookieId] !==
-      this.context.query?.id
+      this.context.query?.registrationId
     );
   }
 }

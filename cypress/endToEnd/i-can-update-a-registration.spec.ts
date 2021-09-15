@@ -220,9 +220,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   theNumberOfUsesIs(0);
   andIClickTheButtonContaining("Add a use");
   iCanSeeAPageHeadingThatContains("main use");
-  iAmOnTheUpdateFlow();
   givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
-  iAmOnTheUpdateFlow();
   theNumberOfUsesIs(1);
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
@@ -410,10 +408,6 @@ export const iEditMyBeaconInformation = (
   cy.get(`input[value="${registration.lastServicedDateYear}"]`)
     .clear()
     .type(newLastServicedDateYear);
-};
-
-const iAmOnTheUpdateFlow = () => {
-  cy.url().should("contain", "manage-my-registrations/update");
 };
 
 const iEditMyOwnerInformation = (

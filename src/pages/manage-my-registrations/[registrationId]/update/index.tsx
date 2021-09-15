@@ -27,7 +27,6 @@ import { AccountPageURLs, UpdatePageURLs } from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
-import { UsePages } from "../../../../lib/URLs/UsePages";
 import { formatDateLong } from "../../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
 import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend";
@@ -106,11 +105,9 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   index={index}
                   use={use}
                   key={index}
-                  changeUri={UrlBuilder.buildUseUrl(
+                  changeUri={UrlBuilder.buildUseSummaryUrl(
                     Actions.update,
-                    UsePages.summary,
-                    registration.id,
-                    index
+                    registration.id
                   )}
                 />
               ))}
@@ -163,7 +160,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-    const registrationId = context.query.id as string;
+    const registrationId = context.query.registrationId as string;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
@@ -183,7 +180,7 @@ const props = async (
   const { getAccountHolderId, getAccountHoldersRegistration } =
     context.container;
 
-  const registrationId = context.query.id as string;
+  const registrationId = context.query.registrationId as string;
 
   return {
     registration: await getAccountHoldersRegistration(

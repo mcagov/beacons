@@ -209,12 +209,12 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const registrationId = context.query.id as string;
+    const registrationId = context.query.registrationId as string;
 
     const nextPageUrl = UrlBuilder.buildRegistrationUrl(
       Actions.update,
       Pages.summary,
-      context.query.id as string
+      context.query.registrationId as string
     );
 
     return await new BeaconsPageRouter([

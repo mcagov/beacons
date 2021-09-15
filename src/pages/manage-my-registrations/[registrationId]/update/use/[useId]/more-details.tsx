@@ -154,7 +154,7 @@ const props = async (
     context.req.cookies[formSubmissionCookieId]
   );
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useId as string);
 
   return {
     environment: draftRegistration?.uses[useIndex]?.environment as Environment,
@@ -174,7 +174,7 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useId as string);
 
   return makeDraftRegistrationMapper<MoreDetailsForm>(
     useIndex,

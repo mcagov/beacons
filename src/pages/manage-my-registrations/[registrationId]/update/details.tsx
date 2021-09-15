@@ -91,7 +91,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const nextPageUrl = UrlBuilder.buildRegistrationUrl(
       Actions.update,
       Pages.summary,
-      context.query.id as string
+      context.query.registrationId as string
     );
 
     return await new BeaconsPageRouter([
@@ -101,7 +101,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       ),
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
         context,
-        context.query.id as string
+        context.query.registrationId as string
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context,

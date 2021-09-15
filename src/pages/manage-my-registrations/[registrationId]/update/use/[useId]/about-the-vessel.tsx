@@ -288,7 +288,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: parseInt(context.query.useIndex as string),
+  useIndex: parseInt(context.query.useId as string),
 });
 
 const mapper = (
@@ -323,7 +323,7 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useId as string);
 
   return makeDraftRegistrationMapper<AboutTheVesselForm>(
     useIndex,

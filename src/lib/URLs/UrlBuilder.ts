@@ -17,7 +17,13 @@ export class UrlBuilder {
     registrationId: string,
     useId: number
   ): string {
-    // manage-my-registrations/{registrationId}/update/use/[useIndex]/environment
     return `/manage-my-registrations/${registrationId}/${action}/use/${useId}/${page}`;
+  }
+
+  public static buildUseSummaryUrl(
+    action: Actions,
+    registrationId: string
+  ): string {
+    return `/manage-my-registrations/${registrationId}/${action}/use/${UsePages.summary}`;
   }
 }

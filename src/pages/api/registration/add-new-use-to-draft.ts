@@ -14,8 +14,10 @@ export const handler = withApiContainer(async (req: BeaconsApiRequest, res) => {
     (await getDraftRegistration(submissionId)).uses.length - 1;
 
   res.redirect(
-    (nextPage ? (nextPage as string) : CreateRegistrationPageURLs.environment) +
-      queryParams({ useIndex: newUseIndex })
+    nextPage
+      ? (nextPage as string)
+      : CreateRegistrationPageURLs.environment +
+          queryParams({ useIndex: newUseIndex })
   );
 });
 

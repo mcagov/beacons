@@ -611,7 +611,7 @@ const nextPage = async (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId]
     )
-  ).uses[context.query.useIndex as string]?.environment;
+  ).uses[context.query.useId as string]?.environment;
 
   switch (environment) {
     case Environment.MARITIME:
@@ -632,12 +632,12 @@ const props = async (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId]
     )
-  ).uses[context.query.useIndex as string];
+  ).uses[context.query.useId as string];
 
   return {
     environment: (use?.environment as Environment) || null,
     purpose: (use?.purpose as Purpose) || null,
-    useIndex: parseInt(context.query.useIndex as string),
+    useIndex: parseInt(context.query.useId as string),
   };
 };
 
@@ -674,7 +674,7 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = parseInt(context.query.useId as string);
 
   return makeDraftRegistrationMapper<ActivityForm>(useIndex, beaconUseMapper);
 };
