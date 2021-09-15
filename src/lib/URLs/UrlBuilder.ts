@@ -17,13 +17,13 @@ export class UrlBuilder {
     registrationId: string,
     useId: string
   ): string {
-    return `/manage-my-registrations/${registrationId}/${action}/use/${useId}/${page}`;
+    return `/manage-my-registrations/${registrationId}/${action}/uses/${useId}/${page}`;
   }
 
   public static buildUseSummaryUrl(
     action: Actions,
     registrationId: string
   ): string {
-    return `/manage-my-registrations/${registrationId}/${action}/use/${UsePages.summary}`;
+    return `/manage-my-registrations/${registrationId}/${action}/uses/${UsePages.summary}`;
   }
 }
