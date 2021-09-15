@@ -43,8 +43,12 @@ describe("As an account holder", () => {
     iCanClickTheUpdateLinkToUpdateARegistration(testRegistration);
 
     whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+    iCanSeeTheDetailsOfMyRegistration(testRegistration);
     iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges();
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
+    iCanSeeTheDetailsOfMyRegistration(
+      updatedRegistrationDetails as Registration
+    );
 
     whenIClickTheButtonContaining("Accept and send");
     thenTheUrlShouldContain(UpdatePageURLs.updateComplete);
@@ -170,9 +174,7 @@ const whenIClickTheHexIdOfTheRegistrationIJustUpdated =
 const whenIClickOnTheHexIdOfTheRegistrationIUpdated =
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate;
 
-const iCanUpdateTheDetailsOfMyExistingRegistration = (
-  registration: Registration
-) => {
+const iCanSeeTheDetailsOfMyRegistration = (registration: Registration) => {
   iCanSeeMyExistingRegistrationHexId(registration.hexId);
   const dateRegistered = formatDateLong(new Date().toDateString()); // Assume test user registered beacon on same day for ease)
   iCanSeeTheHistoryOfMyRegistration(dateRegistered, dateRegistered);
@@ -181,7 +183,11 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   iCanSeeOwnerInformation(registration);
   iCanSeeEmergencyContactInformation(registration);
   iCanSeeUseInformation(registration);
+};
 
+const iCanUpdateTheDetailsOfMyExistingRegistration = (
+  registration: Registration
+) => {
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Beacon information");
   theBackLinkContains(Resources.registration, Actions.update);
   iEditMyBeaconManufacturerAndModel(
