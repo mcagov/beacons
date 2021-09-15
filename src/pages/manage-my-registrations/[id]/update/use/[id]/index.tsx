@@ -1,16 +1,19 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, LinkButton } from "../../../../components/Button";
-import { AdditionalBeaconUseSummary } from "../../../../components/domain/AdditionalBeaconUseSummary";
-import { Grid } from "../../../../components/Grid";
-import { Layout } from "../../../../components/Layout";
-import { GovUKBody, PageHeading } from "../../../../components/Typography";
-import { DraftBeaconUse } from "../../../../entities/DraftBeaconUse";
-import { DraftRegistration } from "../../../../entities/DraftRegistration";
-import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../../lib/middleware/withContainer";
-import { withSession } from "../../../../lib/middleware/withSession";
-import { formSubmissionCookieId } from "../../../../lib/types";
+import { BackButton, LinkButton } from "../../../../../../components/Button";
+import { AdditionalBeaconUseSummary } from "../../../../../../components/domain/AdditionalBeaconUseSummary";
+import { Grid } from "../../../../../../components/Grid";
+import { Layout } from "../../../../../../components/Layout";
+import {
+  GovUKBody,
+  PageHeading,
+} from "../../../../../../components/Typography";
+import { DraftBeaconUse } from "../../../../../../entities/DraftBeaconUse";
+import { DraftRegistration } from "../../../../../../entities/DraftRegistration";
+import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../../../../../lib/types";
 import {
   ActionURLs,
   CreateRegistrationPageURLs,
@@ -18,14 +21,14 @@ import {
   GeneralPageURLs,
   queryParams,
   UpdatePageURLs,
-} from "../../../../lib/urls";
-import { prettyUseName } from "../../../../lib/writingStyle";
-import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
-import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
-import { GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+} from "../../../../../../lib/urls";
+import { prettyUseName } from "../../../../../../lib/writingStyle";
+import { BeaconsPageRouter } from "../../../../../../router/BeaconsPageRouter";
+import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
+import { GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../../../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface AdditionalBeaconUseProps {
   draftRegistration: DraftRegistration;

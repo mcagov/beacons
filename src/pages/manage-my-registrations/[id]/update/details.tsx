@@ -18,7 +18,6 @@ import { withSession } from "../../../../lib/middleware/withSession";
 import { UpdatePageURLs } from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
-import { Resources } from "../../../../lib/URLs/Resources";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
 import { toUpperCase } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
@@ -89,8 +88,7 @@ const BeaconHexId: FunctionComponent<{ hexId: string }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageUrl = UrlBuilder.build(
-      Resources.registration,
+    const nextPageUrl = UrlBuilder.buildRegistrationUrl(
       Actions.update,
       Pages.summary,
       context.query.id as string

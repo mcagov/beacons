@@ -23,15 +23,11 @@ import { Registration } from "../../../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import {
-  AccountPageURLs,
-  queryParams,
-  UpdatePageURLs,
-} from "../../../../lib/urls";
+import { AccountPageURLs, UpdatePageURLs } from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
-import { Resources } from "../../../../lib/URLs/Resources";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
+import { UsePages } from "../../../../lib/URLs/UsePages";
 import { formatDateLong } from "../../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
 import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend";
@@ -81,8 +77,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   actions={[
                     {
                       text: "Change",
-                      href: UrlBuilder.build(
-                        Resources.registration,
+                      href: UrlBuilder.buildRegistrationUrl(
                         Actions.update,
                         Pages.beaconDetails,
                         registration.id
@@ -100,8 +95,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               </SummaryList>
               <CheckYourAnswersBeaconInformationSummary
                 registration={registration}
-                changeUrl={UrlBuilder.build(
-                  Resources.registration,
+                changeUrl={UrlBuilder.buildRegistrationUrl(
                   Actions.update,
                   Pages.beaconInformation,
                   registration.id
@@ -112,19 +106,17 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   index={index}
                   use={use}
                   key={index}
-                  changeUri={
-                    UpdatePageURLs.usesSummary +
-                    queryParams({
-                      registrationId: registration.id,
-                      useIndex: index,
-                    })
-                  }
+                  changeUri={UrlBuilder.buildUseUrl(
+                    Actions.update,
+                    UsePages.summary,
+                    registration.id,
+                    index
+                  )}
                 />
               ))}
               <CheckYourAnswersBeaconOwnerSummary
                 registration={registration}
-                changeUrl={UrlBuilder.build(
-                  Resources.registration,
+                changeUrl={UrlBuilder.buildRegistrationUrl(
                   Actions.update,
                   Pages.aboutBeaconOwner,
                   registration.id
@@ -132,8 +124,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               />
               <CheckYourAnswersBeaconOwnerAddressSummary
                 registration={registration}
-                changeUrl={UrlBuilder.build(
-                  Resources.registration,
+                changeUrl={UrlBuilder.buildRegistrationUrl(
                   Actions.update,
                   Pages.beaconOwnerAddress,
                   registration.id
@@ -141,8 +132,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               />
               <CheckYourAnswersBeaconEmergencyContactsSummary
                 registration={registration}
-                changeUrl={UrlBuilder.build(
-                  Resources.registration,
+                changeUrl={UrlBuilder.buildRegistrationUrl(
                   Actions.update,
                   Pages.emergencyContact,
                   registration.id

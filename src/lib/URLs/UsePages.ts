@@ -1,5 +1,5 @@
 export enum UsePages {
-  summary = "summary",
+  summary = "",
   environment = "environment",
   purpose = "purpose",
   activity = "activity",

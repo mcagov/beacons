@@ -27,7 +27,6 @@ import {
 } from "../../lib/urls";
 import { Actions } from "../../lib/URLs/Actions";
 import { Pages } from "../../lib/URLs/Pages";
-import { Resources } from "../../lib/URLs/Resources";
 import { UrlBuilder } from "../../lib/URLs/UrlBuilder";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { Rule } from "../../router/rules/Rule";
@@ -250,8 +249,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
       <tr className="govuk-table__row">
         <th scope="row" className="govuk-table__header">
           <AnchorLink
-            href={UrlBuilder.build(
-              Resources.registration,
+            href={UrlBuilder.buildRegistrationUrl(
               Actions.update,
               Pages.summary,
               beacon.id
@@ -267,8 +265,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
         <td className="govuk-table__cell">{beacon.lastModifiedDate}</td>
         <td className="govuk-table__cell">
           <AnchorLink
-            href={UrlBuilder.build(
-              Resources.registration,
+            href={UrlBuilder.buildRegistrationUrl(
               Actions.update,
               Pages.summary,
               beacon.id

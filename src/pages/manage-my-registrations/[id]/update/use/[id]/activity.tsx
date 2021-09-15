@@ -3,37 +3,40 @@ import React, { FunctionComponent } from "react";
 import {
   BeaconsForm,
   BeaconsFormFieldsetAndLegend,
-} from "../../../../components/BeaconsForm";
-import { FormGroup } from "../../../../components/Form";
-import { Input } from "../../../../components/Input";
-import { RadioList, RadioListItem } from "../../../../components/RadioList";
-import { GovUKBody } from "../../../../components/Typography";
-import { DraftBeaconUse } from "../../../../entities/DraftBeaconUse";
+} from "../../../../../../components/BeaconsForm";
+import { FormGroup } from "../../../../../../components/Form";
+import { Input } from "../../../../../../components/Input";
+import {
+  RadioList,
+  RadioListItem,
+} from "../../../../../../components/RadioList";
+import { GovUKBody } from "../../../../../../components/Typography";
+import { DraftBeaconUse } from "../../../../../../entities/DraftBeaconUse";
 import {
   Activity,
   Environment,
   Purpose,
-} from "../../../../lib/deprecatedRegistration/types";
-import { FieldManager } from "../../../../lib/form/FieldManager";
-import { FormJSON, FormManager } from "../../../../lib/form/FormManager";
-import { Validators } from "../../../../lib/form/Validators";
-import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
-import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../../lib/middleware/withContainer";
-import { withSession } from "../../../../lib/middleware/withSession";
-import { formSubmissionCookieId } from "../../../../lib/types";
-import { queryParams, UpdatePageURLs } from "../../../../lib/urls";
-import { BeaconUseFormMapper } from "../../../../presenters/BeaconUseFormMapper";
-import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
-import { FormSubmission } from "../../../../presenters/formSubmission";
-import { makeDraftRegistrationMapper } from "../../../../presenters/makeDraftRegistrationMapper";
-import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+} from "../../../../../../lib/deprecatedRegistration/types";
+import { FieldManager } from "../../../../../../lib/form/FieldManager";
+import { FormJSON, FormManager } from "../../../../../../lib/form/FormManager";
+import { Validators } from "../../../../../../lib/form/Validators";
+import { DraftRegistrationPageProps } from "../../../../../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../../../../../lib/types";
+import { queryParams, UpdatePageURLs } from "../../../../../../lib/urls";
+import { BeaconUseFormMapper } from "../../../../../../presenters/BeaconUseFormMapper";
+import { DraftRegistrationFormMapper } from "../../../../../../presenters/DraftRegistrationFormMapper";
+import { FormSubmission } from "../../../../../../presenters/formSubmission";
+import { makeDraftRegistrationMapper } from "../../../../../../presenters/makeDraftRegistrationMapper";
+import { BeaconsPageRouter } from "../../../../../../router/BeaconsPageRouter";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../../../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface ActivityForm {
   environment: string;

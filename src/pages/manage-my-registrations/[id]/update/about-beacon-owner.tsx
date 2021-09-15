@@ -16,7 +16,6 @@ import { formSubmissionCookieId } from "../../../../lib/types";
 import { queryParams, UpdatePageURLs } from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
-import { Resources } from "../../../../lib/URLs/Resources";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../../../presenters/formSubmission";
@@ -135,8 +134,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     const registrationId = context.query.id as string;
 
-    const nextPageUrl = UrlBuilder.build(
-      Resources.registration,
+    const nextPageUrl = UrlBuilder.buildRegistrationUrl(
       Actions.update,
       Pages.summary,
       context.query.id as string

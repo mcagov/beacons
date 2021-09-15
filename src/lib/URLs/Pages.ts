@@ -6,13 +6,4 @@ export enum Pages {
   beaconOwnerAddress = "beacon-owner-address",
   emergencyContact = "emergency-contact",
   complete = "complete",
-  environment = "environment",
-  purpose = "purpose",
-  activity = "activity",
-  aboutTheVessel = "about-the-vessel",
-  vesselCommunications = "vessel-communications",
-  aboutTheAircraft = "about-the-aircraft",
-  aircraftCommunications = "aircraft-communications",
-  landCommunications = "land-communications",
-  moreDetails = "more-details",
 }
