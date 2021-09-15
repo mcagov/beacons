@@ -25,10 +25,28 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
   }
 
   public async condition(): Promise<boolean> {
-    return (
-      (await this.thereIsNoDraftRegistration()) ||
-      (await this.theDraftRegistrationIsDifferentToExistingRegistration())
+    const {
+      getAccountHoldersRegistration,
+      getDraftRegistration,
+      getAccountHolderId,
+    } = this.context.container;
+
+    const registrationId: string = this.context.query.id as string;
+
+    const draftRegistration: DraftRegistration = await getDraftRegistration(
+      registrationId
     );
+
+    if (!draftRegistration) return false;
+
+    const accountHolderId: string = await getAccountHolderId(
+      this.context.session
+    );
+
+    const existingRegistration: Registration =
+      await getAccountHoldersRegistration(registrationId, accountHolderId);
+
+    return !isEqual(existingRegistration, draftRegistration);
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
@@ -39,40 +57,5 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
         ...(await this.props),
       },
     };
-  }
-
-  private async thereIsNoDraftRegistration() {
-    const { getDraftRegistration } = this.context.container;
-
-    const registrationId: string = this.context.query.id as string;
-
-    const draftRegistration: DraftRegistration = await getDraftRegistration(
-      registrationId
-    );
-
-    if (!draftRegistration) return false;
-  }
-
-  private async theDraftRegistrationIsDifferentToExistingRegistration() {
-    const {
-      getDraftRegistration,
-      getAccountHolderId,
-      getAccountHoldersRegistration,
-    } = this.context.container;
-
-    const accountHolderId: string = await getAccountHolderId(
-      this.context.session
-    );
-
-    const registrationId: string = this.context.query.id as string;
-
-    const draftRegistration: DraftRegistration = await getDraftRegistration(
-      registrationId
-    );
-
-    const existingRegistration: Registration =
-      await getAccountHoldersRegistration(registrationId, accountHolderId);
-
-    return !isEqual(existingRegistration, draftRegistration);
   }
 }
