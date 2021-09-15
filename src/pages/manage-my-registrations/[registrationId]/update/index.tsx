@@ -29,9 +29,9 @@ import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
 import { formatDateLong } from "../../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
-import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend";
+import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend";
+import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-import { WhenUserViewsPage_ThenDisplayPage } from "../../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 import { SendYourApplication } from "../../../register-a-beacon/check-your-answers";
 
 interface RegistrationSummaryPageProps {
@@ -164,30 +164,16 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend(
+      new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
         context,
-        registrationId,
-        props(context)
+        registrationId
       ),
-      new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
+      new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration(
+        context,
+        registrationId
+      ),
     ]).execute();
   })
 );
-
-const props = async (
-  context: BeaconsGetServerSidePropsContext
-): Promise<Partial<RegistrationSummaryPageProps>> => {
-  const { getAccountHolderId, getAccountHoldersRegistration } =
-    context.container;
-
-  const registrationId = context.query.registrationId as string;
-
-  return {
-    registration: await getAccountHoldersRegistration(
-      registrationId,
-      await getAccountHolderId(context.session)
-    ),
-  };
-};
 
 export default RegistrationSummaryPage;

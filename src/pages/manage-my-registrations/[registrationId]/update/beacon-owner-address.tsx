@@ -26,7 +26,8 @@ import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
+import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../../router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
@@ -153,8 +154,12 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+      new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
         context
+      ),
+      new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+        context,
+        context.query.registrationId as string
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<BeaconOwnerAddressForm>(
         context,

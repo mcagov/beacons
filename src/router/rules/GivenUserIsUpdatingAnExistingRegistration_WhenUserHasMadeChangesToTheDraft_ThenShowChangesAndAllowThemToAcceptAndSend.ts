@@ -6,22 +6,18 @@ import { showCookieBanner } from "../../lib/cookies";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { Rule } from "./Rule";
 
-export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend<
-  T
-> implements Rule
+export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend
+  implements Rule
 {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly registrationId: string;
-  private readonly props: T;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
-    registrationId: string,
-    props?: T
+    registrationId: string
   ) {
     this.context = context;
     this.registrationId = registrationId;
-    this.props = props;
   }
 
   public async condition(): Promise<boolean> {
@@ -50,11 +46,15 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
+    const { getDraftRegistration } = this.context.container;
+
+    const registrationId: string = this.context.query.id as string;
+
     return {
       props: {
         showCookieBanner: showCookieBanner(this.context),
         userHasEdited: true,
-        ...(await this.props),
+        registration: await getDraftRegistration(registrationId),
       },
     };
   }

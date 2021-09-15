@@ -16,7 +16,6 @@ import {
   ErrorPageURLs,
   GeneralPageURLs,
   queryParams,
-  UpdatePageURLs,
 } from "../../../../../lib/urls";
 import { Actions } from "../../../../../lib/URLs/Actions";
 import { Pages } from "../../../../../lib/URLs/Pages";
@@ -121,9 +120,9 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                   <br />
                   <LinkButton
                     buttonText="Continue"
-                    href={
-                      UpdatePageURLs.registrationSummary + draftRegistration.id
-                    }
+                    href={UrlBuilder.updateRegistrationSummaryPath(
+                      draftRegistration.id
+                    )}
                   />
                 </>
               )}
