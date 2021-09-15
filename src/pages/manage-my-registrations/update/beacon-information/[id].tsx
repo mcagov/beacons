@@ -23,7 +23,7 @@ import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { queryParams, UpdatePageURLs } from "../../../../lib/urls";
+import { UpdatePageURLs } from "../../../../lib/urls";
 import { padNumberWithLeadingZeros } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../../../presenters/formSubmission";
@@ -205,9 +205,8 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     const registrationId = context.query.id as string;
-    const nextPageUrl =
-      (context.query.review as string) ||
-      UpdatePageURLs.usesSummary + queryParams({ registrationId });
+
+    const nextPageUrl = UpdatePageURLs.registrationSummary + context.query.id;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

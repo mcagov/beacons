@@ -85,9 +85,7 @@ const BeaconHexId: FunctionComponent<{ hexId: string }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageURL =
-      (context.query.review as string) ||
-      UpdatePageURLs.beaconInformation + context.query.id;
+    const nextPageUrl = UpdatePageURLs.registrationSummary + context.query.id;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
@@ -112,7 +110,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper,
-        nextPageURL
+        nextPageUrl
       ),
     ]).execute();
   })
