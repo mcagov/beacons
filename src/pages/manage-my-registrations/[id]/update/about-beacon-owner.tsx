@@ -14,6 +14,10 @@ import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../../../lib/types";
 import { queryParams, UpdatePageURLs } from "../../../../lib/urls";
+import { Actions } from "../../../../lib/URLs/Actions";
+import { Pages } from "../../../../lib/URLs/Pages";
+import { Resources } from "../../../../lib/URLs/Resources";
+import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
@@ -131,7 +135,12 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     const registrationId = context.query.id as string;
 
-    const nextPageUrl = UpdatePageURLs.registrationSummary + context.query.id;
+    const nextPageUrl = UrlBuilder.build(
+      Resources.registration,
+      Actions.update,
+      Pages.summary,
+      context.query.id as string
+    );
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
