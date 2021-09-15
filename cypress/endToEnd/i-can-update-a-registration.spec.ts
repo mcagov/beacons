@@ -6,6 +6,10 @@ import {
   Purpose,
 } from "../../src/lib/deprecatedRegistration/types";
 import { AccountPageURLs, UpdatePageURLs } from "../../src/lib/urls";
+import { Actions } from "../../src/lib/URLs/Actions";
+import { Pages } from "../../src/lib/URLs/Pages";
+import { Resources } from "../../src/lib/URLs/Resources";
+import { UrlBuilder } from "../../src/lib/URLs/UrlBuilder";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
 import { iAmPromptedToConfirm } from "../common/i-am-prompted-to-confirm.spec";
 import { givenIHaveEnteredMyMaritimeUse } from "../common/i-can-enter-use-information/maritime.spec";
@@ -19,6 +23,7 @@ import {
   givenIHaveSignedIn,
   iCanEditAFieldContaining,
   iCanSeeAPageHeadingThatContains,
+  theBackLinkContains,
   theBackLinkGoesTo,
   theBackLinkGoesTo_WithRegistrationId,
   thenTheUrlShouldContain,
@@ -181,8 +186,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   iCanSeeUseInformation(registration);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Beacon information");
-  thenTheUrlShouldContain(UpdatePageURLs.beaconDetails);
-  theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.registrationSummary);
+  theBackLinkContains(Resources.registration, Actions.update);
   iEditMyBeaconManufacturerAndModel(
     registration,
     updatedRegistrationDetails.manufacturer,
@@ -209,7 +213,6 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSectionWithHeading("Main use");
-  thenTheUrlShouldContain(UpdatePageURLs.usesSummary);
   whenIGoToDeleteMy(/main use/i);
   iAmPromptedToConfirm(
     registration.uses[0].environment,
@@ -228,8 +231,14 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Owner details");
-  thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
-  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
+  theBackLinkGoesTo(
+    UrlBuilder.build(
+      Resources.registration,
+      Actions.update,
+      Pages.summary,
+      registration.hexId
+    )
+  );
   iEditMyOwnerInformation(
     registration,
     updatedRegistrationDetails.ownerFullName,
@@ -241,8 +250,14 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
-  thenTheUrlShouldContain(UpdatePageURLs.beaconOwnerAddress);
-  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
+  theBackLinkGoesTo(
+    UrlBuilder.build(
+      Resources.registration,
+      Actions.update,
+      Pages.summary,
+      registration.hexId
+    )
+  );
   iEditMyOwnerAddress(
     registration,
     updatedRegistrationDetails.ownerAddressLine1,
@@ -255,8 +270,14 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 1");
-  thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
-  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
+  theBackLinkGoesTo(
+    UrlBuilder.build(
+      Resources.registration,
+      Actions.update,
+      Pages.summary,
+      registration.hexId
+    )
+  );
   iEditMyEmergencyContactInformation(
     registration,
     updatedRegistrationDetails.emergencyContact1FullName,
@@ -267,14 +288,26 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 2");
-  thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
-  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
+  theBackLinkGoesTo(
+    UrlBuilder.build(
+      Resources.registration,
+      Actions.update,
+      Pages.summary,
+      registration.hexId
+    )
+  );
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 3");
-  thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
-  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
+  theBackLinkGoesTo(
+    UrlBuilder.build(
+      Resources.registration,
+      Actions.update,
+      Pages.summary,
+      registration.hexId
+    )
+  );
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 };

@@ -28,6 +28,10 @@ import {
   queryParams,
   UpdatePageURLs,
 } from "../../../../lib/urls";
+import { Actions } from "../../../../lib/URLs/Actions";
+import { Pages } from "../../../../lib/URLs/Pages";
+import { Resources } from "../../../../lib/URLs/Resources";
+import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
 import { formatDateLong } from "../../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
 import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend";
@@ -77,7 +81,12 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   actions={[
                     {
                       text: "Change",
-                      href: UpdatePageURLs.beaconDetails + registration.id,
+                      href: UrlBuilder.build(
+                        Resources.registration,
+                        Actions.update,
+                        Pages.beaconDetails,
+                        registration.id
+                      ),
                     },
                   ]}
                 >
@@ -91,7 +100,12 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               </SummaryList>
               <CheckYourAnswersBeaconInformationSummary
                 registration={registration}
-                changeUrl={UpdatePageURLs.beaconInformation + registration.id}
+                changeUrl={UrlBuilder.build(
+                  Resources.registration,
+                  Actions.update,
+                  Pages.beaconInformation,
+                  registration.id
+                )}
               />
               {registration.uses.map((use, index) => (
                 <AdditionalBeaconUseSummary
@@ -109,15 +123,30 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               ))}
               <CheckYourAnswersBeaconOwnerSummary
                 registration={registration}
-                changeUrl={UpdatePageURLs.aboutBeaconOwner}
+                changeUrl={UrlBuilder.build(
+                  Resources.registration,
+                  Actions.update,
+                  Pages.aboutBeaconOwner,
+                  registration.id
+                )}
               />
               <CheckYourAnswersBeaconOwnerAddressSummary
                 registration={registration}
-                changeUrl={UpdatePageURLs.beaconOwnerAddress}
+                changeUrl={UrlBuilder.build(
+                  Resources.registration,
+                  Actions.update,
+                  Pages.beaconOwnerAddress,
+                  registration.id
+                )}
               />
               <CheckYourAnswersBeaconEmergencyContactsSummary
                 registration={registration}
-                changeUrl={UpdatePageURLs.emergencyContact}
+                changeUrl={UrlBuilder.build(
+                  Resources.registration,
+                  Actions.update,
+                  Pages.emergencyContact,
+                  registration.id
+                )}
               />
               {userHasEdited && (
                 <>

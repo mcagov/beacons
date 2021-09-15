@@ -16,6 +16,14 @@ export const theBackLinkGoesTo = (previousPageUrl: string): void => {
     .and("match", new RegExp(previousPageUrl, "i"));
 };
 
+export const theBackLinkContains = (...strings: string[]): void => {
+  strings.forEach((s) => {
+    cy.get(".govuk-back-link")
+      .should("have.attr", "href")
+      .and("match", new RegExp(s, "i"));
+  });
+};
+
 export const theBackLinkGoesTo_WithRegistrationId = (
   previousPageUrl: string
 ): void => {
