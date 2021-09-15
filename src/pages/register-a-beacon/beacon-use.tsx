@@ -15,6 +15,7 @@ import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { nextPageWithUseIndex } from "../../lib/nextPageWithUseIndexHelper";
 import { CreateRegistrationPageURLs } from "../../lib/urls";
 import { ordinal } from "../../lib/writingStyle";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
@@ -137,7 +138,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        await nextPage(context)
+        nextPageWithUseIndex(
+          parseInt(context.query.useIndex as string),
+          await nextPage(context)
+        )
       ),
     ]).execute();
   })
@@ -154,7 +158,6 @@ const nextPage = async (
 ): Promise<CreateRegistrationPageURLs> => {
   const { environment } =
     await context.container.parseFormDataAs<BeaconUseForm>(context.req);
-
   return environment === Environment.LAND
     ? CreateRegistrationPageURLs.activity
     : CreateRegistrationPageURLs.purpose;

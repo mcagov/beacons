@@ -84,7 +84,9 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = CreateRegistrationPageURLs.activity;
+    const useIndex = parseInt(context.query.useIndex as string);
+    const nextPage =
+      CreateRegistrationPageURLs.activity + queryParams({ useIndex });
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

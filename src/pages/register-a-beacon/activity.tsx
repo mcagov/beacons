@@ -21,6 +21,7 @@ import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { nextPageWithUseIndex } from "../../lib/nextPageWithUseIndexHelper";
 import { formSubmissionCookieId } from "../../lib/types";
 import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
@@ -595,7 +596,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        await nextPage(context)
+        nextPageWithUseIndex(
+          parseInt(context.query.useIndex as string),
+          await nextPage(context)
+        )
       ),
     ]).execute();
   })
@@ -630,7 +634,6 @@ const props = async (
       context.req.cookies[formSubmissionCookieId]
     )
   ).uses[context.query.useIndex as string];
-
   return {
     environment: (use?.environment as Environment) || null,
     purpose: (use?.purpose as Purpose) || null,

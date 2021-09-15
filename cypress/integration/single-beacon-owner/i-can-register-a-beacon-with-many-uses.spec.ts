@@ -37,8 +37,11 @@ import {
 import {
   andIHaveAnotherUse,
   andIHaveNoFurtherUses,
+  iAmOnTheLandBranchForUseNumber,
+  iAmOnTheMaritimeOrAviationBranchForUseNumber,
   iCanEditMyEnvironment,
   iCanEditMyNUses,
+  whenIGoToEditTheUseNumber,
 } from "../../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyLandUse,
@@ -83,6 +86,19 @@ describe("As a single beacon owner with many uses", () => {
     iCanSeeAPageHeadingThatContains("third use");
     givenIHaveEnteredMyAviationUse(Purpose.PLEASURE);
     iCanEditMyNUses(3);
+
+    whenIGoToEditTheUseNumber(0);
+    iAmOnTheLandBranchForUseNumber(0);
+
+    givenIHaveVisited(CreateRegistrationPageURLs.additionalUse);
+    whenIGoToEditTheUseNumber(1);
+    iAmOnTheMaritimeOrAviationBranchForUseNumber(1);
+
+    givenIHaveVisited(CreateRegistrationPageURLs.additionalUse);
+    whenIGoToEditTheUseNumber(2);
+    iAmOnTheMaritimeOrAviationBranchForUseNumber(2);
+
+    givenIHaveVisited(CreateRegistrationPageURLs.additionalUse);
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
