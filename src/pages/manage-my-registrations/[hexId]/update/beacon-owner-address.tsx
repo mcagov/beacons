@@ -1,33 +1,33 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, Button } from "../../../components/Button";
-import { FormErrorSummary } from "../../../components/ErrorSummary";
+import { BackButton, Button } from "../../../../components/Button";
+import { FormErrorSummary } from "../../../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
   FormGroup,
   FormLegendPageHeading,
-} from "../../../components/Form";
-import { Grid } from "../../../components/Grid";
-import { FormInputProps, Input } from "../../../components/Input";
-import { Layout } from "../../../components/Layout";
-import { IfYouNeedHelp } from "../../../components/Mca";
-import { GovUKBody } from "../../../components/Typography";
-import { FieldManager } from "../../../lib/form/FieldManager";
-import { FormManager } from "../../../lib/form/FormManager";
-import { Validators } from "../../../lib/form/Validators";
-import { DraftRegistrationPageProps } from "../../../lib/handlePageRequest";
-import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../lib/middleware/withContainer";
-import { withSession } from "../../../lib/middleware/withSession";
-import { UpdatePageURLs } from "../../../lib/urls";
-import { DraftRegistrationFormMapper } from "../../../presenters/DraftRegistrationFormMapper";
-import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+} from "../../../../components/Form";
+import { Grid } from "../../../../components/Grid";
+import { FormInputProps, Input } from "../../../../components/Input";
+import { Layout } from "../../../../components/Layout";
+import { IfYouNeedHelp } from "../../../../components/Mca";
+import { GovUKBody } from "../../../../components/Typography";
+import { FieldManager } from "../../../../lib/form/FieldManager";
+import { FormManager } from "../../../../lib/form/FormManager";
+import { Validators } from "../../../../lib/form/Validators";
+import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../lib/middleware/withSession";
+import { UpdatePageURLs } from "../../../../lib/urls";
+import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
+import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface BeaconOwnerAddressForm {
   ownerAddressLine1: string;

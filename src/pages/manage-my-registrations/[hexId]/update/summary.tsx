@@ -1,36 +1,39 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, StartButton } from "../../../components/Button";
-import { AdditionalBeaconUseSummary } from "../../../components/domain/AdditionalBeaconUseSummary";
-import { CheckYourAnswersBeaconEmergencyContactsSummary } from "../../../components/domain/CheckYourAnswersBeaconEmergencyContactsSummary";
-import { CheckYourAnswersBeaconInformationSummary } from "../../../components/domain/CheckYourAnswersBeaconInformationSummary";
-import { CheckYourAnswersBeaconOwnerAddressSummary } from "../../../components/domain/CheckYourAnswersBeaconOwnerAddressSummary";
-import { CheckYourAnswersBeaconOwnerSummary } from "../../../components/domain/CheckYourAnswersBeaconOwnerSummary";
-import { DataRowItem } from "../../../components/domain/DataRowItem";
-import { Grid } from "../../../components/Grid";
-import { Layout } from "../../../components/Layout";
-import { BeaconRegistryContactInfo } from "../../../components/Mca";
-import { SummaryList, SummaryListItem } from "../../../components/SummaryList";
+import { BackButton, StartButton } from "../../../../components/Button";
+import { AdditionalBeaconUseSummary } from "../../../../components/domain/AdditionalBeaconUseSummary";
+import { CheckYourAnswersBeaconEmergencyContactsSummary } from "../../../../components/domain/CheckYourAnswersBeaconEmergencyContactsSummary";
+import { CheckYourAnswersBeaconInformationSummary } from "../../../../components/domain/CheckYourAnswersBeaconInformationSummary";
+import { CheckYourAnswersBeaconOwnerAddressSummary } from "../../../../components/domain/CheckYourAnswersBeaconOwnerAddressSummary";
+import { CheckYourAnswersBeaconOwnerSummary } from "../../../../components/domain/CheckYourAnswersBeaconOwnerSummary";
+import { DataRowItem } from "../../../../components/domain/DataRowItem";
+import { Grid } from "../../../../components/Grid";
+import { Layout } from "../../../../components/Layout";
+import { BeaconRegistryContactInfo } from "../../../../components/Mca";
+import {
+  SummaryList,
+  SummaryListItem,
+} from "../../../../components/SummaryList";
 import {
   GovUKBody,
   PageHeading,
   SectionHeading,
-} from "../../../components/Typography";
-import { Registration } from "../../../entities/Registration";
-import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../lib/middleware/withContainer";
-import { withSession } from "../../../lib/middleware/withSession";
+} from "../../../../components/Typography";
+import { Registration } from "../../../../entities/Registration";
+import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../lib/middleware/withSession";
 import {
   AccountPageURLs,
   queryParams,
   UpdatePageURLs,
-} from "../../../lib/urls";
-import { formatDateLong } from "../../../lib/writingStyle";
-import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
-import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend } from "../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-import { WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
-import { SendYourApplication } from "../../register-a-beacon/check-your-answers";
+} from "../../../../lib/urls";
+import { formatDateLong } from "../../../../lib/writingStyle";
+import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
+import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenAllowThemToAcceptAndSend";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+import { WhenUserViewsPage_ThenDisplayPage } from "../../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
+import { SendYourApplication } from "../../../register-a-beacon/check-your-answers";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;

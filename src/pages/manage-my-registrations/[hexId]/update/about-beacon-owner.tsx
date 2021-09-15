@@ -3,25 +3,26 @@ import React, { FunctionComponent } from "react";
 import {
   BeaconsForm,
   BeaconsFormHeading,
-} from "../../../components/BeaconsForm";
-import { FormGroup } from "../../../components/Form";
-import { FormInputProps, Input } from "../../../components/Input";
-import { FieldManager } from "../../../lib/form/FieldManager";
-import { FormJSON, FormManager } from "../../../lib/form/FormManager";
-import { Validators } from "../../../lib/form/Validators";
-import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../lib/middleware/withContainer";
-import { withSession } from "../../../lib/middleware/withSession";
-import { formSubmissionCookieId } from "../../../lib/types";
-import { queryParams, UpdatePageURLs } from "../../../lib/urls";
-import { DraftRegistrationFormMapper } from "../../../presenters/DraftRegistrationFormMapper";
-import { FormSubmission } from "../../../presenters/formSubmission";
-import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+} from "../../../../components/BeaconsForm";
+import { FormGroup } from "../../../../components/Form";
+import { FormInputProps, Input } from "../../../../components/Input";
+import { FieldManager } from "../../../../lib/form/FieldManager";
+import { FormJSON, FormManager } from "../../../../lib/form/FormManager";
+import { Validators } from "../../../../lib/form/Validators";
+import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../../../lib/types";
+import { queryParams, UpdatePageURLs } from "../../../../lib/urls";
+import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
+import { FormSubmission } from "../../../../presenters/formSubmission";
+import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
+import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
+import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../../router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface AboutBeaconOwnerForm {
   ownerFullName: string;
@@ -128,12 +129,18 @@ const EmailAddress: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
+    const registrationId = context.query.id as string;
+
     const nextPageUrl = UpdatePageURLs.registrationSummary + context.query.id;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+      new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
         context
+      ),
+      new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+        context,
+        registrationId
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<AboutBeaconOwnerForm>(
         context,

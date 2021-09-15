@@ -63,7 +63,9 @@ const UpdateBeaconInformationPage: FunctionComponent<DraftRegistrationPageProps>
 
     return (
       <BeaconsForm
-        previousPageUrl={UpdatePageURLs.beaconDetails + draftRegistration.id}
+        previousPageUrl={
+          UpdatePageURLs.registrationSummary + draftRegistration.id
+        }
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
         formErrors={form.errorSummary}

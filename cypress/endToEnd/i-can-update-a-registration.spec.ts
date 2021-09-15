@@ -195,7 +195,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading(
     "Additional beacon information"
   );
-  theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.beaconDetails);
+  theBackLinkGoesTo_WithRegistrationId(UpdatePageURLs.registrationSummary);
   iEditMyBeaconInformation(
     registration,
     updatedRegistrationDetails.manufacturerSerialNumber,
@@ -229,7 +229,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Owner details");
   thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
-  theBackLinkGoesTo(UpdatePageURLs.usesSummary);
+  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
   iEditMyOwnerInformation(
     registration,
     updatedRegistrationDetails.ownerFullName,
@@ -242,7 +242,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
   thenTheUrlShouldContain(UpdatePageURLs.beaconOwnerAddress);
-  theBackLinkGoesTo(UpdatePageURLs.aboutBeaconOwner);
+  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
   iEditMyOwnerAddress(
     registration,
     updatedRegistrationDetails.ownerAddressLine1,
@@ -256,7 +256,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 1");
   thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
-  theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
+  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
   iEditMyEmergencyContactInformation(
     registration,
     updatedRegistrationDetails.emergencyContact1FullName,
@@ -268,13 +268,13 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 2");
   thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
-  theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
+  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 3");
   thenTheUrlShouldContain(UpdatePageURLs.emergencyContact);
-  theBackLinkGoesTo(UpdatePageURLs.beaconOwnerAddress);
+  theBackLinkGoesTo(UpdatePageURLs.registrationSummary);
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 };
