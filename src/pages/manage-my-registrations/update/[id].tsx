@@ -74,14 +74,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   actions={[
                     {
                       text: "Change",
-                      href:
-                        UpdatePageURLs.beaconDetails +
-                        registration.id +
-                        queryParams({
-                          review:
-                            UpdatePageURLs.registrationSummary +
-                            registration.id,
-                        }),
+                      href: UpdatePageURLs.beaconDetails + registration.id,
                     },
                   ]}
                 >
@@ -95,14 +88,7 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
               </SummaryList>
               <CheckYourAnswersBeaconInformationSummary
                 registration={registration}
-                changeUrl={
-                  UpdatePageURLs.beaconInformation +
-                  registration.id +
-                  queryParams({
-                    review:
-                      UpdatePageURLs.registrationSummary + registration.id,
-                  })
-                }
+                changeUrl={UpdatePageURLs.beaconInformation + registration.id}
               />
               {registration.uses.map((use, index) => (
                 <AdditionalBeaconUseSummary
@@ -114,41 +100,21 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                     queryParams({
                       registrationId: registration.id,
                       useIndex: index,
-                      review:
-                        UpdatePageURLs.registrationSummary + registration.id,
                     })
                   }
                 />
               ))}
               <CheckYourAnswersBeaconOwnerSummary
                 registration={registration}
-                changeUrl={
-                  UpdatePageURLs.aboutBeaconOwner +
-                  queryParams({
-                    review:
-                      UpdatePageURLs.registrationSummary + registration.id,
-                  })
-                }
+                changeUrl={UpdatePageURLs.aboutBeaconOwner}
               />
               <CheckYourAnswersBeaconOwnerAddressSummary
                 registration={registration}
-                changeUrl={
-                  UpdatePageURLs.beaconOwnerAddress +
-                  queryParams({
-                    review:
-                      UpdatePageURLs.registrationSummary + registration.id,
-                  })
-                }
+                changeUrl={UpdatePageURLs.beaconOwnerAddress}
               />
               <CheckYourAnswersBeaconEmergencyContactsSummary
                 registration={registration}
-                changeUrl={
-                  UpdatePageURLs.emergencyContact +
-                  queryParams({
-                    review:
-                      UpdatePageURLs.registrationSummary + registration.id,
-                  })
-                }
+                changeUrl={UpdatePageURLs.emergencyContact}
               />
               {userHasEdited && (
                 <>
