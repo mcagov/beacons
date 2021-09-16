@@ -23,7 +23,7 @@ import { Registration } from "../../../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { AccountPageURLs, UpdatePageURLs } from "../../../../lib/urls";
+import { AccountPageURLs } from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
@@ -140,7 +140,11 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   <SendYourApplication />
                   <StartButton
                     buttonText="Accept and send"
-                    href={UpdatePageURLs.updateComplete}
+                    href={UrlBuilder.buildRegistrationUrl(
+                      Actions.update,
+                      Pages.complete,
+                      registration.id
+                    )}
                   />
                 </>
               )}

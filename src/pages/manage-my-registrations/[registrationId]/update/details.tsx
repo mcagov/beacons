@@ -69,6 +69,12 @@ const BeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
         errorMessages={form.fields.manufacturer.errorMessages}
       />
       <BeaconHexId hexId={form.fields.hexId.value} />
+      <input
+        id="hexId"
+        type="hidden"
+        name="hexId"
+        value={form.fields.hexId.value}
+      />
     </BeaconsForm>
   );
 };

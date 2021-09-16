@@ -27,11 +27,13 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
       getAccountHolderId,
     } = this.context.container;
 
-    const registrationId: string = this.context.query.id as string;
+    const registrationId: string = this.context.query.registrationId as string;
 
     const draftRegistration: DraftRegistration = await getDraftRegistration(
       registrationId
     );
+
+    console.log("draftReg:", draftRegistration);
 
     if (!draftRegistration) return false;
 
@@ -42,13 +44,17 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
     const existingRegistration: Registration =
       await getAccountHoldersRegistration(registrationId, accountHolderId);
 
+    console.log("existingReg:", existingRegistration);
+
     return !isEqual(existingRegistration, draftRegistration);
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
     const { getDraftRegistration } = this.context.container;
 
-    const registrationId: string = this.context.query.id as string;
+    const registrationId: string = this.context.query.registrationId as string;
+
+    console.log("showing with changes");
 
     return {
       props: {

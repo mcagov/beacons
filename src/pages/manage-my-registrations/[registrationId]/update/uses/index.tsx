@@ -120,7 +120,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                   <br />
                   <LinkButton
                     buttonText="Continue"
-                    href={UrlBuilder.updateRegistrationSummaryPath(
+                    href={UrlBuilder.buildUpdateRegistrationSummaryUrl(
                       draftRegistration.id
                     )}
                   />

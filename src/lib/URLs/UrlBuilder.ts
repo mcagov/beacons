@@ -8,7 +8,7 @@ export class UrlBuilder {
   public static buildRegistrationUrl(
     action: Actions,
     page: Pages,
-    registrationId?: string
+    registrationId: string
   ): string {
     return `${this.topLevelPath}/${registrationId}/${action}/${page}`;
   }
@@ -29,7 +29,9 @@ export class UrlBuilder {
     return `${this.topLevelPath}/${registrationId}/${action}/uses/${UsePages.summary}`;
   }
 
-  public static updateRegistrationSummaryPath(registrationId: string): string {
+  public static buildUpdateRegistrationSummaryUrl(
+    registrationId: string
+  ): string {
     return `${this.topLevelPath}/${registrationId}/update`;
   }
 }

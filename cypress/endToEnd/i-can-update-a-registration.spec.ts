@@ -46,9 +46,7 @@ describe("As an account holder", () => {
     iCanSeeTheDetailsOfMyRegistration(testRegistration);
     iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges();
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
-    iCanSeeTheDetailsOfMyRegistration(
-      updatedRegistrationDetails as Registration
-    );
+    iCanSeeTheDetailsOfMyRegistration(updatedRegistrationDetails);
 
     whenIClickTheButtonContaining("Accept and send");
     thenTheUrlShouldContain(UpdatePageURLs.updateComplete);
@@ -127,20 +125,25 @@ const iCanViewTheUpdatedUseInformation = (
   iCanSeeUseInformation(draftRegistration);
 };
 
+const hexId = randomUkEncodedHexId();
+
 const testRegistration: Registration = {
   ...singleBeaconRegistration,
-  hexId: randomUkEncodedHexId(),
+  hexId,
 };
 
 const updatedRegistrationDetails: DraftRegistration = {
+  ...testRegistration,
   manufacturer: "McMurdo",
   model: "New Beacon",
   manufacturerSerialNumber: "New SerialNumber",
   chkCode: "New Chk code",
   batteryExpiryDateMonth: "01",
   batteryExpiryDateYear: "2050",
+  batteryExpiryDate: "2050-01-01",
   lastServicedDateMonth: "12",
   lastServicedDateYear: "2020",
+  lastServicedDate: "2020-12-01",
   ownerFullName: "John Johnnsonn",
   ownerTelephoneNumber: "0711111111",
   ownerAlternativeTelephoneNumber: "02012345678",
