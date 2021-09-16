@@ -19,11 +19,7 @@ import { DraftBeaconUsePageProps } from "../../../../../../lib/handlePageRequest
 import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../../lib/middleware/withSession";
-import {
-  ofcomLicenseUrl,
-  queryParams,
-  UpdatePageURLs,
-} from "../../../../../../lib/urls";
+import { ofcomLicenseUrl } from "../../../../../../lib/urls";
 import { Actions } from "../../../../../../lib/URLs/Actions";
 import { UrlBuilder } from "../../../../../../lib/URLs/UrlBuilder";
 import { UsePages } from "../../../../../../lib/URLs/UsePages";
@@ -51,6 +47,7 @@ interface LandCommunicationsForm {
 
 const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
+  draftRegistration,
   showCookieBanner,
   useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
@@ -74,7 +71,12 @@ const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   return (
     <BeaconsForm
       pageHeading={pageHeading}
-      previousPageUrl={UpdatePageURLs.activity + queryParams({ useId })}
+      previousPageUrl={UrlBuilder.buildUseUrl(
+        Actions.update,
+        UsePages.activity,
+        draftRegistration.id,
+        useId
+      )}
       formErrors={form.errorSummary}
       showCookieBanner={showCookieBanner}
     >
