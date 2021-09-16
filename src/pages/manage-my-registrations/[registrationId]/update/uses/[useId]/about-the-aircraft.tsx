@@ -23,7 +23,6 @@ import { DraftBeaconUsePageProps } from "../../../../../../lib/handlePageRequest
 import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../../lib/middleware/withSession";
-import { queryParams, UpdatePageURLs } from "../../../../../../lib/urls";
 import { Actions } from "../../../../../../lib/URLs/Actions";
 import { UrlBuilder } from "../../../../../../lib/URLs/UrlBuilder";
 import { UsePages } from "../../../../../../lib/URLs/UsePages";
@@ -51,6 +50,7 @@ interface AboutTheAircraftForm {
 
 const AboutTheAircraft: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
+  draftRegistration,
   showCookieBanner,
   useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
@@ -58,7 +58,12 @@ const AboutTheAircraft: FunctionComponent<DraftBeaconUsePageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl={UpdatePageURLs.activity + queryParams({ useId })}
+      previousPageUrl={UrlBuilder.buildUseUrl(
+        Actions.update,
+        UsePages.activity,
+        draftRegistration.id,
+        useId
+      )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}

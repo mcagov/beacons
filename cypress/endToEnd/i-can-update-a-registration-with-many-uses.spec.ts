@@ -8,7 +8,15 @@ import { Pages } from "../../src/lib/URLs/Pages";
 import { Resources } from "../../src/lib/URLs/Resources";
 import { UsePages } from "../../src/lib/URLs/UsePages";
 import { makeEnumValueUserFriendly } from "../../src/lib/writingStyle";
+import {
+  givenIHaveEnteredInformationAboutMyAircraft,
+  givenIHaveEnteredMyAircraftCommunicationDetails,
+} from "../common/i-can-enter-use-information/aviation.spec";
 import { whenIHaveAnotherUse } from "../common/i-can-enter-use-information/generic.spec";
+import {
+  givenIHaveEnteredInformationAboutMyVessel,
+  givenIHaveEnteredMyVesselCommunicationDetails,
+} from "../common/i-can-enter-use-information/maritime.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
   randomUkEncodedHexId,
@@ -18,6 +26,7 @@ import {
   givenIHaveSelected,
   givenIHaveSignedIn,
   theBackLinkContains,
+  whenIClickBack,
   whenIHaveVisited,
 } from "../common/selectors-and-assertions.spec";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
@@ -31,7 +40,7 @@ describe("As an account holder", () => {
     whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
 
     whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
-    iCanUseTheBackLinksAndContinueButtonsToNavigateMyUses();
+    iCanUseTheBackLinksAndContinueButtonsToNavigateMyAviationUse();
 
     // iCanSeeUseInformation(testRegistration);
     //
@@ -142,7 +151,7 @@ const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
     .click();
 };
 
-const iCanUseTheBackLinksAndContinueButtonsToNavigateMyUses = () => {
+const iCanUseTheBackLinksAndContinueButtonsToNavigateMyMaritimeUse = () => {
   // whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
   theBackLinkContains(Resources.registration, Actions.update, Pages.summary);
   whenIHaveAnotherUse();
@@ -186,4 +195,108 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyUses = () => {
     "/1/",
     UsePages.activity
   );
+
+  givenIHaveEnteredInformationAboutMyVessel();
+  andIClickContinue();
+
+  theBackLinkContains(
+    Resources.registration,
+    Actions.update,
+    Resources.use,
+    "/1/",
+    UsePages.aboutTheVessel
+  );
+
+  givenIHaveEnteredMyVesselCommunicationDetails();
+  andIClickContinue();
+
+  theBackLinkContains(
+    Resources.registration,
+    Actions.update,
+    Resources.use,
+    "/1/",
+    UsePages.vesselCommunications
+  );
+
+  whenIClickBack();
+  whenIClickBack();
+  whenIClickBack();
+  whenIClickBack();
+  whenIClickBack();
+  whenIClickBack();
+};
+
+const iCanUseTheBackLinksAndContinueButtonsToNavigateMyAviationUse = () => {
+  // whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
+  theBackLinkContains(Resources.registration, Actions.update, Pages.summary);
+  whenIHaveAnotherUse();
+
+  theBackLinkContains(
+    Resources.registration,
+    Actions.update,
+    Resources.use,
+    UsePages.summary
+  );
+
+  givenIHaveSelected("#aviation");
+  andIClickContinue();
+
+  theBackLinkContains(
+    Resources.registration,
+    Actions.update,
+    Resources.use,
+    "/1/",
+    UsePages.environment
+  );
+
+  givenIHaveSelected("#pleasure");
+  andIClickContinue();
+
+  theBackLinkContains(
+    Resources.registration,
+    Actions.update,
+    Resources.use,
+    "/1/",
+    UsePages.purpose
+  );
+
+  givenIHaveSelected("#glider");
+  andIClickContinue();
+
+  theBackLinkContains(
+    Resources.registration,
+    Actions.update,
+    Resources.use,
+    "/1/",
+    UsePages.activity
+  );
+
+  givenIHaveEnteredInformationAboutMyAircraft();
+  andIClickContinue();
+
+  theBackLinkContains(
+    Resources.registration,
+    Actions.update,
+    Resources.use,
+    "/1/",
+    UsePages.aboutTheAircraft
+  );
+
+  givenIHaveEnteredMyAircraftCommunicationDetails();
+  andIClickContinue();
+
+  theBackLinkContains(
+    Resources.registration,
+    Actions.update,
+    Resources.use,
+    "/1/",
+    UsePages.aircraftCommunications
+  );
+
+  whenIClickBack();
+  whenIClickBack();
+  whenIClickBack();
+  whenIClickBack();
+  whenIClickBack();
+  whenIClickBack();
 };

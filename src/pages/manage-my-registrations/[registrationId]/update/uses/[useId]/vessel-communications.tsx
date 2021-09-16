@@ -19,11 +19,7 @@ import { DraftBeaconUsePageProps } from "../../../../../../lib/handlePageRequest
 import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../../lib/middleware/withSession";
-import {
-  ofcomLicenseUrl,
-  queryParams,
-  UpdatePageURLs,
-} from "../../../../../../lib/urls";
+import { ofcomLicenseUrl } from "../../../../../../lib/urls";
 import { Actions } from "../../../../../../lib/URLs/Actions";
 import { UrlBuilder } from "../../../../../../lib/URLs/UrlBuilder";
 import { UsePages } from "../../../../../../lib/URLs/UsePages";
@@ -54,6 +50,7 @@ interface VesselCommunicationsForm {
 
 const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
+  draftRegistration,
   showCookieBanner,
   useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
@@ -77,7 +74,12 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl={UpdatePageURLs.aboutTheVessel + queryParams({ useId })}
+      previousPageUrl={UrlBuilder.buildUseUrl(
+        Actions.update,
+        UsePages.aboutTheVessel,
+        draftRegistration.id,
+        useId
+      )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}

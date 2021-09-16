@@ -215,7 +215,7 @@ export const iCanSeeMySingleAviationUse = (purpose: Purpose): void => {
   cy.get("main").should("not.contain", "Callsign");
 };
 
-const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
+export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.maxCapacity,
     "#maxCapacity"
@@ -251,7 +251,7 @@ const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   );
 };
 
-const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
+export const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#satelliteTelephone");
   givenIHaveTyped(
