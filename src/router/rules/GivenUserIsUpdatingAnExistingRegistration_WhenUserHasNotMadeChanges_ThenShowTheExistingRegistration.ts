@@ -46,7 +46,6 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    console.log("showing without changes");
     const { getAccountHoldersRegistration, getAccountHolderId } =
       this.context.container;
 

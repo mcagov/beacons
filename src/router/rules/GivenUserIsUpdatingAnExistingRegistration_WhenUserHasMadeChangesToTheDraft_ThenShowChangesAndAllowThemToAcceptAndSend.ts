@@ -33,8 +33,6 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
       registrationId
     );
 
-    console.log("draftReg:", draftRegistration);
-
     if (!draftRegistration) return false;
 
     const accountHolderId: string = await getAccountHolderId(
@@ -44,8 +42,6 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
     const existingRegistration: Registration =
       await getAccountHoldersRegistration(registrationId, accountHolderId);
 
-    console.log("existingReg:", existingRegistration);
-
     return !isEqual(existingRegistration, draftRegistration);
   }
 
@@ -53,8 +49,6 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
     const { getDraftRegistration } = this.context.container;
 
     const registrationId: string = this.context.query.registrationId as string;
-
-    console.log("showing with changes");
 
     return {
       props: {
