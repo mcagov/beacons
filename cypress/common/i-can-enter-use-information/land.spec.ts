@@ -9,29 +9,26 @@ import {
   givenIHaveTyped,
   givenIHaveUnselected,
   iCanSeeAPageHeadingThatContains,
-  thenTheUrlShouldContain,
 } from "../selectors-and-assertions.spec";
 import { iCanEditMyEnvironment } from "./generic.spec";
 
 export const givenIHaveEnteredMyLandUse = (): void => {
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
   givenIHaveSelected("#land");
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
   iCanSeeAPageHeadingThatContains("land");
   givenIHaveSelected(`#${testLandUseData.type.activity.toLowerCase()}`);
 
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.landCommunications);
   givenIHaveEnteredMyLandCommunicationDetails();
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.moreDetails);
   givenIHaveEnteredMoreDetailsAboutMyLandUse();
   andIClickContinue();
 };
+
+export const andIHaveEnteredMyLandUse = givenIHaveEnteredMyLandUse;
 
 export const iCanEditMyLandCommunications = (): void => {
   const comms = testLandUseData.communications;

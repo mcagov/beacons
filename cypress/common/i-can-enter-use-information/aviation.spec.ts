@@ -29,22 +29,18 @@ import {
   givenIHaveUnselected,
   iCanSeeAPageHeadingThatContains,
   iHaveVisited,
-  thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
 import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
 export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
   givenIHaveSelected("#aviation");
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.purpose);
   iCanSeeAPageHeadingThatContains("aviation");
   givenIHaveSelected(`#${purpose.toLowerCase()}`);
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
   iCanSeeAPageHeadingThatContains("aviation");
   iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
@@ -61,16 +57,13 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   }
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.aboutTheAircraft);
   iCanSeeAPageHeadingThatContains("aircraft");
   givenIHaveEnteredInformationAboutMyAircraft();
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.aircraftCommunications);
   givenIHaveEnteredMyAircraftCommunicationDetails();
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.moreDetails);
   givenIHaveEnteredMoreDetailsAboutMyAircraft();
   andIClickContinue();
 };
