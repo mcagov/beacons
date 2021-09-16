@@ -10,6 +10,7 @@ import {
   RadioListItem,
 } from "../../../../../../components/RadioList";
 import { DraftBeaconUse } from "../../../../../../entities/DraftBeaconUse";
+import { DraftRegistration } from "../../../../../../entities/DraftRegistration";
 import {
   Environment,
   Purpose,
@@ -21,7 +22,6 @@ import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middlewa
 import { withContainer } from "../../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../../../../../lib/types";
-import { queryParams, UpdatePageURLs } from "../../../../../../lib/urls";
 import { Actions } from "../../../../../../lib/URLs/Actions";
 import { UrlBuilder } from "../../../../../../lib/URLs/UrlBuilder";
 import { UsePages } from "../../../../../../lib/URLs/UsePages";
@@ -42,14 +42,16 @@ interface PurposeFormProps {
   form: FormJSON;
   showCookieBanner: boolean;
   environment: Environment;
-  useIndex: number;
+  useId: string;
+  draftRegistration: DraftRegistration;
 }
 
 const PurposePage: FunctionComponent<PurposeFormProps> = ({
   form,
+  draftRegistration,
   showCookieBanner,
   environment,
-  useIndex,
+  useId,
 }: PurposeFormProps): JSX.Element => {
   const pageHeading = `Is your ${environment.toLowerCase()} use of this beacon mainly for pleasure or commercial reasons?`;
   const beaconUsePurposeFieldName = "purpose";
@@ -57,7 +59,12 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
-      previousPageUrl={UpdatePageURLs.environment + queryParams({ useIndex })}
+      previousPageUrl={UrlBuilder.buildUseUrl(
+        Actions.update,
+        UsePages.environment,
+        draftRegistration.id,
+        useId
+      )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
     >
@@ -127,11 +134,11 @@ const props = async (
     context.req.cookies[formSubmissionCookieId]
   );
 
-  const useIndex = parseInt(context.query.useId as string);
+  const useId = context.query.useId as string;
 
   return {
-    environment: draftRegistration.uses[useIndex]?.environment as Environment,
-    useIndex,
+    environment: draftRegistration.uses[useId]?.environment as Environment,
+    useId,
   };
 };
 
