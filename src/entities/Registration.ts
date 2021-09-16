@@ -12,6 +12,7 @@ export interface Registration {
 
   manufacturerSerialNumber: string;
   chkCode: string;
+  csta: string;
   batteryExpiryDate: string;
   batteryExpiryDateMonth: string;
   batteryExpiryDateYear: string;

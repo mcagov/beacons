@@ -28,6 +28,7 @@ export const CheckYourAnswersBeaconInformationSummary: FunctionComponent<CheckYo
             label="CHK (checksum) code"
             value={registration.chkCode}
           />
+          <DataRowItem label="CSTA / TAC code" value={registration.csta} />
           <DataRowItem
             label="Battery expiry"
             value={

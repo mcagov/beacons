@@ -31,6 +31,7 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
         draftRegistration
       );
 
+    console.log(requestBody);
     try {
       await axios.post(url, requestBody, {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
