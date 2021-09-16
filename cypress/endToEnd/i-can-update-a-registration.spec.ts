@@ -153,7 +153,7 @@ const iCanViewTheUpdatedUseInformation = (
 ) => {
   whenIHaveVisited(AccountPageURLs.accountHome);
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
-  whenIClickTheChangeLinkForTheSectionWithHeading("Main use");
+  whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
   iCanSeeUseInformation(draftRegistration);
 };
 
@@ -250,7 +250,8 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
-  whenIClickTheChangeLinkForTheSectionWithHeading("Main use");
+  whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
+  theBackLinkContains(Resources.registration, Actions.update);
   whenIGoToDeleteMy(/main use/i);
   iAmPromptedToConfirm(
     registration.uses[0].environment,
@@ -261,6 +262,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   theNumberOfUsesIs(0);
   andIClickTheButtonContaining("Add a use");
   iCanSeeAPageHeadingThatContains("main use");
+  theBackLinkContains(Resources.registration, Actions.update, Resources.use);
   givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
   theNumberOfUsesIs(1);
   whenIClickContinue();
