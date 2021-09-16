@@ -49,7 +49,7 @@ interface AircraftCommunicationsForm {
 const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
-  useIndex,
+  useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading =
     "How can we communicate with you, when on this aircraft? (Optional)";
@@ -62,7 +62,7 @@ const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   return (
     <BeaconsForm
       previousPageUrl={
-        CreateRegistrationPageURLs.aboutTheAircraft + queryParams({ useIndex })
+        CreateRegistrationPageURLs.aboutTheAircraft + queryParams({ useId })
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -198,7 +198,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: context.query.useId as string,
+  useId: context.query.useId as string,
 });
 
 const mapper = (

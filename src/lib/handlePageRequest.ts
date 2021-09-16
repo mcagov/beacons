@@ -11,5 +11,5 @@ export interface DraftRegistrationPageProps {
 }
 
 export interface DraftBeaconUsePageProps extends DraftRegistrationPageProps {
-  useIndex: string;
+  useId: string;
 }

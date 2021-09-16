@@ -28,7 +28,7 @@ describe("/api/registration/delete-use", () => {
     );
   });
 
-  it("does the same for other values of useIndex", async () => {
+  it("does the same for other values of useId", async () => {
     const req: Partial<BeaconsApiRequest> = {
       cookies: {
         [formSubmissionCookieId]: "test-submission-id",

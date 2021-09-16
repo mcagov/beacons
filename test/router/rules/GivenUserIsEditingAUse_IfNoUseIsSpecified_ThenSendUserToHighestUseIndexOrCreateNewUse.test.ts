@@ -5,7 +5,7 @@ import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndex
 
 describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse", () => {
   describe("condition", () => {
-    it("triggers if there is no useIndex query param", async () => {
+    it("triggers if there is no useId query param", async () => {
       const context = {
         req: {
           method: "GET",
@@ -24,7 +24,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseInde
       expect(result).toBe(true);
     });
 
-    it("doesn't trigger if there is a useIndex query param", async () => {
+    it("doesn't trigger if there is a useId query param", async () => {
       const context = {
         req: {
           method: "GET",
@@ -74,7 +74,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseInde
 
       expect(result).toMatchObject({
         redirect: {
-          destination: "current-page-url?useIndex=1",
+          destination: "current-page-url?useId=1",
         },
       });
     });
@@ -107,7 +107,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseInde
       ).toHaveBeenCalledWith("test-draft-registration-id");
       expect(result).toMatchObject({
         redirect: {
-          destination: "current-page-url?useIndex=0",
+          destination: "current-page-url?useId=0",
         },
       });
     });

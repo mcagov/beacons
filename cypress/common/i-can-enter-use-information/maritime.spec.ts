@@ -227,9 +227,7 @@ export const iCanViewMyChangedVesselCommunications = (): void => {
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIHaveVisited(
-    CreateRegistrationPageURLs.vesselCommunications + "?useIndex=0"
-  );
+  andIHaveVisited(CreateRegistrationPageURLs.vesselCommunications + "?useId=0");
 };
 
 export const iCanEditMyVesselDetails = (): void => {

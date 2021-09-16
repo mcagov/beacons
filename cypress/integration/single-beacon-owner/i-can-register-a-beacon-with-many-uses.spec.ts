@@ -167,27 +167,27 @@ const iCanClickEveryChangeButtonToEditMyRegistration = () => {
     [CreateRegistrationPageURLs.checkBeaconDetails]: iCanEditMyBeaconDetails,
     [CreateRegistrationPageURLs.beaconInformation]:
       iCanEditMyAdditionalBeaconInformation,
-    [CreateRegistrationPageURLs.environment + "?useIndex=0"]:
+    [CreateRegistrationPageURLs.environment + "?useId=0"]:
       iCanEditMyLandEnvironment,
-    [CreateRegistrationPageURLs.landCommunications + "?useIndex=0"]:
+    [CreateRegistrationPageURLs.landCommunications + "?useId=0"]:
       iCanEditMyLandCommunications,
-    [CreateRegistrationPageURLs.moreDetails + "?useIndex=0"]:
+    [CreateRegistrationPageURLs.moreDetails + "?useId=0"]:
       iCanEditMyAdditionalLandUseMoreDetails,
-    [CreateRegistrationPageURLs.environment + "?useIndex=1"]:
+    [CreateRegistrationPageURLs.environment + "?useId=1"]:
       iCanEditMyMaritimeEnvironment,
-    [CreateRegistrationPageURLs.aboutTheVessel + "?useIndex=1"]:
+    [CreateRegistrationPageURLs.aboutTheVessel + "?useId=1"]:
       iCanEditMyVesselDetails,
-    [CreateRegistrationPageURLs.vesselCommunications + "?useIndex=1"]:
+    [CreateRegistrationPageURLs.vesselCommunications + "?useId=1"]:
       iCanEditMyVesselCommunications,
-    [CreateRegistrationPageURLs.moreDetails + "?useIndex=1"]:
+    [CreateRegistrationPageURLs.moreDetails + "?useId=1"]:
       iCanEditMyAdditionalMaritimeUseInformation,
-    [CreateRegistrationPageURLs.environment + "?useIndex=2"]:
+    [CreateRegistrationPageURLs.environment + "?useId=2"]:
       iCanEditMyAviationEnvironment,
-    [CreateRegistrationPageURLs.aboutTheAircraft + "?useIndex=2"]:
+    [CreateRegistrationPageURLs.aboutTheAircraft + "?useId=2"]:
       iCanEditMyAircraftDetails,
-    [CreateRegistrationPageURLs.aircraftCommunications + "?useIndex=2"]:
+    [CreateRegistrationPageURLs.aircraftCommunications + "?useId=2"]:
       iCanEditMyAircraftCommunications,
-    [CreateRegistrationPageURLs.moreDetails + "?useIndex=2"]:
+    [CreateRegistrationPageURLs.moreDetails + "?useId=2"]:
       iCanEditMyAdditionalAviationUseInformation,
     [CreateRegistrationPageURLs.aboutBeaconOwner]: iCanEditMyPersonalDetails,
     [CreateRegistrationPageURLs.beaconOwnerAddress]: iCanEditMyAddressDetails,

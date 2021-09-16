@@ -41,7 +41,7 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
   draftRegistration,
   showCookieBanner,
   environment,
-  useIndex,
+  useId,
 }: MoreDetailsPageProps): JSX.Element => {
   const previousPageUrlMap = {
     [Environment.MARITIME]: UsePages.vesselCommunications,
@@ -76,7 +76,7 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
         Actions.update,
         previousPageUrlMap[environment],
         draftRegistration.id,
-        useIndex
+        useId
       )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -157,7 +157,7 @@ const props = async (
 
   return {
     environment: draftRegistration?.uses[useIndex]?.environment as Environment,
-    useIndex,
+    useId: useIndex,
   };
 };
 

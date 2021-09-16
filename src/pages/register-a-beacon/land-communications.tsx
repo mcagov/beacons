@@ -48,7 +48,7 @@ interface LandCommunicationsForm {
 const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
-  useIndex,
+  useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = "How can we communicate with you?";
 
@@ -71,7 +71,7 @@ const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
     <BeaconsForm
       pageHeading={pageHeading}
       previousPageUrl={
-        CreateRegistrationPageURLs.activity + queryParams({ useIndex })
+        CreateRegistrationPageURLs.activity + queryParams({ useId })
       }
       formErrors={form.errorSummary}
       showCookieBanner={showCookieBanner}
@@ -217,7 +217,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: context.query.useIndex as string,
+  useId: context.query.useIndex as string,
 });
 
 const mapper = (

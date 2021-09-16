@@ -40,17 +40,16 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
   form,
   showCookieBanner,
   environment,
-  useIndex,
+  useId,
 }: MoreDetailsPageProps): JSX.Element => {
   const previousPageUrlMap = {
     [Environment.MARITIME]:
-      CreateRegistrationPageURLs.vesselCommunications +
-      queryParams({ useIndex }),
+      CreateRegistrationPageURLs.vesselCommunications + queryParams({ useId }),
     [Environment.AVIATION]:
       CreateRegistrationPageURLs.aircraftCommunications +
-      queryParams({ useIndex }),
+      queryParams({ useId }),
     [Environment.LAND]:
-      CreateRegistrationPageURLs.landCommunications + queryParams({ useIndex }),
+      CreateRegistrationPageURLs.landCommunications + queryParams({ useId }),
   };
 
   const pageHeading = "Provide more details that could help in a search";
@@ -157,7 +156,7 @@ const props = async (
 
   return {
     environment: draftRegistration?.uses[useIndex]?.environment as Environment,
-    useIndex,
+    useId: useIndex,
   };
 };
 

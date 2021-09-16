@@ -140,7 +140,7 @@ export const iCanViewMyChangedAircraftCommunications = (): void => {
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
   andIHaveVisited(
-    CreateRegistrationPageURLs.aircraftCommunications + "?useIndex=0"
+    CreateRegistrationPageURLs.aircraftCommunications + "?useId=0"
   );
 };
 

@@ -55,7 +55,7 @@ interface VesselCommunicationsForm {
 const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
-  useIndex,
+  useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading =
     "How can we communicate with you when you are in this vessel, rig or windfarm? (Optional)";
@@ -77,9 +77,7 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl={
-        UpdatePageURLs.aboutTheVessel + queryParams({ useIndex })
-      }
+      previousPageUrl={UpdatePageURLs.aboutTheVessel + queryParams({ useId })}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
@@ -271,7 +269,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: context.query.useId as string,
+  useId: context.query.useId as string,
 });
 
 const mapper = (

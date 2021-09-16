@@ -52,13 +52,13 @@ interface AboutTheAircraftForm {
 const AboutTheAircraft: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
-  useIndex,
+  useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = "About the aircraft";
 
   return (
     <BeaconsForm
-      previousPageUrl={UpdatePageURLs.activity + queryParams({ useIndex })}
+      previousPageUrl={UpdatePageURLs.activity + queryParams({ useId })}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
@@ -273,7 +273,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: context.query.useId as string,
+  useId: context.query.useId as string,
 });
 
 const mapper = (

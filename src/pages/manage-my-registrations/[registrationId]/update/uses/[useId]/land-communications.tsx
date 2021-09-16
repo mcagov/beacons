@@ -52,7 +52,7 @@ interface LandCommunicationsForm {
 const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
-  useIndex,
+  useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = "How can we communicate with you?";
 
@@ -74,7 +74,7 @@ const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   return (
     <BeaconsForm
       pageHeading={pageHeading}
-      previousPageUrl={UpdatePageURLs.activity + queryParams({ useIndex })}
+      previousPageUrl={UpdatePageURLs.activity + queryParams({ useId })}
       formErrors={form.errorSummary}
       showCookieBanner={showCookieBanner}
     >
@@ -220,7 +220,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: context.query.useId as string,
+  useId: context.query.useId as string,
 });
 
 const mapper = (

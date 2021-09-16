@@ -16,10 +16,6 @@ import { DraftBeaconUsePageProps } from "../../../../../../lib/handlePageRequest
 import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../../lib/middleware/withSession";
-import {
-  CreateRegistrationPageURLs,
-  queryParams,
-} from "../../../../../../lib/urls";
 import { Actions } from "../../../../../../lib/URLs/Actions";
 import { UrlBuilder } from "../../../../../../lib/URLs/UrlBuilder";
 import { UsePages } from "../../../../../../lib/URLs/UsePages";
@@ -49,8 +45,9 @@ interface AboutTheVesselForm {
 
 const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
+  draftRegistration,
   showCookieBanner,
-  useIndex,
+  useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = "About the vessel, windfarm or rig/platform";
 
@@ -63,9 +60,12 @@ const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl={
-        CreateRegistrationPageURLs.activity + queryParams({ useIndex })
-      }
+      previousPageUrl={UrlBuilder.buildUseUrl(
+        Actions.update,
+        UsePages.activity,
+        draftRegistration.id,
+        useId
+      )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
@@ -289,7 +289,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: context.query.useId as string,
+  useId: context.query.useId as string,
 });
 
 const mapper = (

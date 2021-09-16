@@ -175,4 +175,15 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyUses = () => {
     "/1/",
     UsePages.purpose
   );
+
+  givenIHaveSelected("#motor-vessel");
+  andIClickContinue();
+
+  theBackLinkContains(
+    Resources.registration,
+    Actions.update,
+    Resources.use,
+    "/1/",
+    UsePages.activity
+  );
 };

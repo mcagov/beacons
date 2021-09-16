@@ -5,7 +5,7 @@ import { makeDraftRegistrationMapper } from "../../src/presenters/makeDraftRegis
 
 describe("makeDraftRegistrationMapper", () => {
   describe("formToDraftRegistration", () => {
-    it("given a useIndex and a BeaconUseFormMapper, returns a function that maps BeaconUse form properties to a DraftRegistration", () => {
+    it("given a useId and a BeaconUseFormMapper, returns a function that maps BeaconUse form properties to a DraftRegistration", () => {
       const useIndex = 0;
       const beaconUseForm = {
         environment: Environment.LAND,

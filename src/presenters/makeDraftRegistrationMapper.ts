@@ -18,11 +18,11 @@ import { DraftRegistrationFormMapper } from "./DraftRegistrationFormMapper";
  *
  * To map a BeaconUse form submission to a DraftRegistration, it creates a
  * DraftRegistration with a uses array filled with empty uses up to the
- * specified useIndex.  The beaconUseFormMapper is then used to
+ * specified useId.  The beaconUseFormMapper is then used to
  * map the form submission to a BeaconUse, which is inserted at the parameter
- * useIndex.
+ * useId.
  *
- * For example, given a useIndex of 2 and a form submission of
+ * For example, given a useId of 2 and a form submission of
  * { vhfRadio: true }, the created DraftRegistrationFormMapper's
  * formToDraftRegistration function would return a DraftRegistration that looks
  * like this:
