@@ -66,6 +66,7 @@ describe("As an account holder", () => {
     iCanViewTheUpdatedAdditionalBeaconInformation(updatedRegistrationDetails);
     iCanViewTheUpdatedUseInformation(updatedRegistrationDetails);
     iCanViewTheUpdatedOwnerInformation(updatedRegistrationDetails);
+    iCanViewTheUpdatedEmergencyContactInformation(updatedRegistrationDetails);
   });
 });
 
@@ -114,6 +115,37 @@ const iCanViewTheUpdatedOwnerInformation = (
   iCanEditAFieldContaining(draftRegistration.ownerTownOrCity);
   iCanEditAFieldContaining(draftRegistration.ownerCounty);
   iCanEditAFieldContaining(draftRegistration.ownerPostcode);
+};
+
+const iCanViewTheUpdatedEmergencyContactInformation = (
+  draftRegistration: DraftRegistration
+) => {
+  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 1");
+  iCanEditAFieldContaining(draftRegistration.emergencyContact1FullName);
+  iCanEditAFieldContaining(draftRegistration.emergencyContact1TelephoneNumber);
+  iCanEditAFieldContaining(
+    draftRegistration.emergencyContact1AlternativeTelephoneNumber
+  );
+
+  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 2");
+  iCanEditAFieldContaining(draftRegistration.emergencyContact2FullName);
+  iCanEditAFieldContaining(draftRegistration.emergencyContact2TelephoneNumber);
+  iCanEditAFieldContaining(
+    draftRegistration.emergencyContact2AlternativeTelephoneNumber
+  );
+
+  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
+  whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 3");
+  iCanEditAFieldContaining(draftRegistration.emergencyContact3FullName);
+  iCanEditAFieldContaining(draftRegistration.emergencyContact3TelephoneNumber);
+  iCanEditAFieldContaining(
+    draftRegistration.emergencyContact3AlternativeTelephoneNumber
+  );
 };
 
 const iCanViewTheUpdatedUseInformation = (
