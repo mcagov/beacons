@@ -41,6 +41,7 @@ import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../.
 interface BeaconInformationForm {
   manufacturerSerialNumber: string;
   chkCode: string;
+  csta: string;
   batteryExpiryDate: string;
   batteryExpiryDateMonth: string;
   batteryExpiryDateYear: string;
@@ -80,6 +81,7 @@ const UpdateBeaconInformationPage: FunctionComponent<DraftRegistrationPageProps>
           errorMessages={form.fields.manufacturerSerialNumber.errorMessages}
         />
         <CHKCode value={form.fields.chkCode.value} />
+        <CSTACode value={form.fields.csta.value} />
         <BatteryExpiryDate
           monthValue={form.fields.batteryExpiryDateMonth.value}
           yearValue={form.fields.batteryExpiryDateYear.value}
@@ -122,6 +124,29 @@ const ManufacturerSerialNumberInput: FunctionComponent<FormInputProps> = ({
         height={640}
         width={960}
       />
+    </Details>
+  </FormGroup>
+);
+
+const CSTACode: FunctionComponent<FormInputProps> = ({
+  value,
+}: FormInputProps): JSX.Element => (
+  <FormGroup>
+    <Input
+      id="csta"
+      label="Enter the CSTA / TAC code (optional)"
+      hintText="This might be on the registration card you received when you bought the
+      beacon"
+      defaultValue={value}
+      htmlAttributes={{ spellCheck: false }}
+    />
+    <Details
+      // TODO: Add govuk-!-!-padding-top-2 to component
+      className="govuk-!-padding-top-2"
+      summaryText="What is the beacon CSTA / TAC code?"
+    >
+      The beacon CSTA or TAC code which some beacons comes with. An example is:
+      CSTA / TAC: 1024.
     </Details>
   </FormGroup>
 );
@@ -250,6 +275,7 @@ const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
   formToDraftRegistration: (form) => ({
     manufacturerSerialNumber: form.manufacturerSerialNumber,
     chkCode: form.chkCode,
+    csta: form.csta,
     batteryExpiryDate: toIsoDateString(
       form.batteryExpiryDateYear,
       form.batteryExpiryDateMonth
@@ -267,6 +293,7 @@ const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
   draftRegistrationToForm: (draftRegistration) => ({
     manufacturerSerialNumber: draftRegistration?.manufacturerSerialNumber,
     chkCode: draftRegistration?.chkCode,
+    csta: draftRegistration?.csta,
     batteryExpiryDate: draftRegistration?.batteryExpiryDate,
     batteryExpiryDateMonth: padNumberWithLeadingZeros(
       draftRegistration?.batteryExpiryDateMonth
@@ -289,6 +316,7 @@ const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
 const validationRules = ({
   manufacturerSerialNumber,
   chkCode,
+  csta,
   batteryExpiryDate,
   batteryExpiryDateMonth,
   batteryExpiryDateYear,
@@ -303,6 +331,7 @@ const validationRules = ({
       ),
     ]),
     chkCode: new FieldManager(chkCode),
+    csta: new FieldManager(csta),
     batteryExpiryDate: new FieldManager(
       batteryExpiryDate,
       [

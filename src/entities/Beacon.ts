@@ -16,6 +16,7 @@ export interface Beacon {
   model: string;
   manufacturerSerialNumber: string;
   chkCode: string;
+  csta: string;
   protocolCode: string;
   codingMethod: string;
   batteryExpiryDate: string;

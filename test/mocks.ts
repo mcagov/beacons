@@ -13,6 +13,7 @@ export const getMockBeacon = (): any => ({
   referenceNumber: "ADBEFD",
   manufacturerSerialNumber: "1234",
   chkCode: "check",
+  csta: "CSTA",
   batteryExpiryDate: new Date().toISOString(),
   lastServicedDate: new Date().toISOString(),
 });

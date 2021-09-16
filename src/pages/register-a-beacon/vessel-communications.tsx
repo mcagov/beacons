@@ -16,6 +16,7 @@ import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { nextPageWithUseIndex } from "../../lib/nextPageWithUseIndexHelper";
 import {
   CreateRegistrationPageURLs,
   ofcomLicenseUrl,
@@ -231,8 +232,6 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = CreateRegistrationPageURLs.moreDetails;
-
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
@@ -257,7 +256,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        nextPage
+        nextPageWithUseIndex(
+          parseInt(context.query.useIndex as string),
+          CreateRegistrationPageURLs.moreDetails
+        )
       ),
     ]).execute();
   })

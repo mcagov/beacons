@@ -223,3 +223,6 @@ export const thenThereAreNoErrors = (): void => {
 export const iCanEditAFieldContaining = (value: string): void => {
   cy.get(`input[value="${value}"]`);
 };
+export const iHaveClickedOnAGivenLink = (href: string): void => {
+  cy.get(`a[href="${href}"]`).click();
+};

@@ -109,6 +109,7 @@ export class DeprecatedRegistration {
 
       manufacturerSerialNumber: registration.manufacturerSerialNumber,
       chkCode: registration.chkCode,
+      csta: registration.csta,
       batteryExpiryDate: registration.batteryExpiryDate,
       lastServicedDate: registration.lastServicedDate,
     };

@@ -11,6 +11,7 @@ export const registrationFixture: Registration = {
   lastModifiedDate: "2021-09-01",
   manufacturerSerialNumber: "1407312904",
   chkCode: "456QWE",
+  csta: "CSTA",
   batteryExpiryDate: "2020-02-01",
   batteryExpiryDateMonth: "02",
   batteryExpiryDateYear: "2020",

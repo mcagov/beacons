@@ -9,6 +9,7 @@ export const singleBeaconRegistration: Registration = {
   batteryExpiryDateMonth: "12",
   batteryExpiryDateYear: "2022",
   chkCode: "9480B",
+  csta: "CSTA",
   referenceNumber: "ABCDE4",
   batteryExpiryDate: "2022-12-01",
   lastServicedDate: "2020-02-01",
