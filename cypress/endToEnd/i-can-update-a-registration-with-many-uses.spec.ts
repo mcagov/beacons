@@ -164,4 +164,15 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyUses = () => {
     "/1/",
     UsePages.environment
   );
+
+  givenIHaveSelected("#commercial");
+  andIClickContinue();
+
+  theBackLinkContains(
+    Resources.registration,
+    Actions.update,
+    Resources.use,
+    "/1/",
+    UsePages.purpose
+  );
 };

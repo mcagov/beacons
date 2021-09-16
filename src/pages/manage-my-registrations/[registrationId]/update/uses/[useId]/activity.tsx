@@ -12,6 +12,7 @@ import {
 } from "../../../../../../components/RadioList";
 import { GovUKBody } from "../../../../../../components/Typography";
 import { DraftBeaconUse } from "../../../../../../entities/DraftBeaconUse";
+import { DraftRegistration } from "../../../../../../entities/DraftRegistration";
 import {
   Activity,
   Environment,
@@ -25,7 +26,6 @@ import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middlewa
 import { withContainer } from "../../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../../../../../lib/types";
-import { queryParams, UpdatePageURLs } from "../../../../../../lib/urls";
 import { Actions } from "../../../../../../lib/URLs/Actions";
 import { UrlBuilder } from "../../../../../../lib/URLs/UrlBuilder";
 import { UsePages } from "../../../../../../lib/URLs/UsePages";
@@ -53,16 +53,18 @@ interface ActivityForm {
 
 interface ActivityPageProps extends DraftRegistrationPageProps {
   environment: Environment;
+  draftRegistration: DraftRegistration;
   purpose: Purpose;
-  useIndex: number;
+  useId: string;
 }
 
 const ActivityPage: FunctionComponent<ActivityPageProps> = ({
   form,
+  draftRegistration,
   showCookieBanner,
   environment,
   purpose,
-  useIndex,
+  useId,
 }: ActivityPageProps): JSX.Element => {
   const pageHeading = `Please select the ${
     environment === Environment.LAND
@@ -88,9 +90,19 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
   return (
     <BeaconsForm
       previousPageUrl={
-        (environment === Environment.LAND
-          ? UpdatePageURLs.environment
-          : UpdatePageURLs.purpose) + queryParams({ useIndex })
+        environment === Environment.LAND
+          ? UrlBuilder.buildUseUrl(
+              Actions.update,
+              UsePages.environment,
+              draftRegistration.id,
+              useId
+            )
+          : UrlBuilder.buildUseUrl(
+              Actions.update,
+              UsePages.purpose,
+              draftRegistration.id,
+              useId
+            )
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -636,7 +648,7 @@ const props = async (
   return {
     environment: (use?.environment as Environment) || null,
     purpose: (use?.purpose as Purpose) || null,
-    useIndex: parseInt(context.query.useId as string),
+    useId: context.query.useId as string,
   };
 };
 
@@ -673,9 +685,9 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useId as string);
+  const useId = parseInt(context.query.useId as string);
 
-  return makeDraftRegistrationMapper<ActivityForm>(useIndex, beaconUseMapper);
+  return makeDraftRegistrationMapper<ActivityForm>(useId, beaconUseMapper);
 };
 
 const validationRules = ({
