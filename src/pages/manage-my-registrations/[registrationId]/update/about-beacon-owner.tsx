@@ -53,7 +53,7 @@ const AboutBeaconOwner: FunctionComponent<AboutBeaconOwnerFormProps> = ({
       formErrors={form.errorSummary}
       previousPageUrl={previousPageUrl}
       showCookieBanner={showCookieBanner}
-      includeUseIndex={true}
+      includeUseId={true}
     >
       <BeaconsFormHeading pageHeading={pageHeading} />
       <FullName
@@ -183,7 +183,7 @@ const props = async (
 
   const previousPageUrl =
     UpdatePageURLs.usesSummary +
-    queryParams({ useIndex: uses.length > 1 ? uses.length - 1 : 0 });
+    queryParams({ useId: uses.length > 1 ? uses.length - 1 : 0 });
 
   return {
     previousPageUrl,

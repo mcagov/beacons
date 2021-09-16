@@ -145,7 +145,7 @@ const confirmBeforeDelete = (
     yes:
       ActionURLs.deleteCachedUse +
       queryParams({
-        useIndex: index,
+        useId: index,
         onSuccess: UrlBuilder.buildUseSummaryUrl(
           Actions.update,
           registrationId

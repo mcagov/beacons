@@ -1,9 +1,7 @@
-import { nextPageWithUseIndex } from "../../src/lib/nextPageWithUseIndexHelper";
+import { nextPageWithUseId } from "../../src/lib/nextPageWithUseIdHelper";
 
-describe("nextPageWithUseIndexHelper function", () => {
-  it("returns a URL with a useIndex parameter", () => {
-    expect(nextPageWithUseIndex(1, "/lorem/ipsum")).toBe(
-      "/lorem/ipsum?useIndex=1"
-    );
+describe("nextPageWithUseIdHelper function", () => {
+  it("returns a URL with a useId parameter", () => {
+    expect(nextPageWithUseId(1, "/lorem/ipsum")).toBe("/lorem/ipsum?useId=1");
   });
 });

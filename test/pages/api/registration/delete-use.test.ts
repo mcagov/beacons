@@ -10,7 +10,7 @@ describe("/api/registration/delete-use", () => {
         [formSubmissionCookieId]: "test-submission-id",
       },
       query: {
-        useIndex: "0",
+        useId: "0",
         onSuccess: "/irrelevant-on-success-path",
         onFailure: "/irrelevant-on-failure-path",
       },
@@ -34,7 +34,7 @@ describe("/api/registration/delete-use", () => {
         [formSubmissionCookieId]: "test-submission-id",
       },
       query: {
-        useIndex: "12",
+        useId: "12",
         onSuccess: "/irrelevant-on-success-path",
         onFailure: "/irrelevant-on-failure-path",
       },
@@ -60,7 +60,7 @@ describe("/api/registration/delete-use", () => {
         [formSubmissionCookieId]: submissionId,
       },
       query: {
-        useIndex: "0",
+        useId: "0",
         onSuccess: "/on-success-path",
         onFailure: "/irrelevant-on-failure-path",
       },
@@ -82,7 +82,7 @@ describe("/api/registration/delete-use", () => {
         [formSubmissionCookieId]: submissionId,
       },
       query: {
-        useIndex: "0",
+        useId: "0",
         onSuccess: "/on-success-path",
         onFailure: "/irrelevant-on-failure-path",
       },

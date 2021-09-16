@@ -3,14 +3,14 @@ import { RedisDraftRegistrationGateway } from "../gateways/RedisDraftRegistratio
 
 export type DeleteCachedUseFn = (
   submissionId: string,
-  useIndex: number,
+  useId: number,
   cachedRegistrationGateway?: DraftRegistrationGateway
 ) => Promise<void>;
 
 export const deleteCachedUse: DeleteCachedUseFn = async (
   submissionId,
-  useIndex,
+  useId,
   cachedRegistrationGateway = new RedisDraftRegistrationGateway()
 ) => {
-  await cachedRegistrationGateway.deleteUse(submissionId, useIndex);
+  await cachedRegistrationGateway.deleteUse(submissionId, useId);
 };

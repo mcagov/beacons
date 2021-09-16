@@ -1,21 +1,21 @@
 import { DraftRegistration } from "../../../src/entities/DraftRegistration";
 import { Environment } from "../../../src/lib/deprecatedRegistration/types";
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../src/router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../../src/router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse";
 
-describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse", () => {
+describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse", () => {
   describe("condition", () => {
-    it("triggers if there is no useIndex query param", async () => {
+    it("triggers if there is no useId query param", async () => {
       const context = {
         req: {
           method: "GET",
         },
         query: {
-          whereIsTheUseIndexQueryParam: "itIsMissingOhNo",
+          whereIsTheUseIdQueryParam: "itIsMissingOhNo",
         },
       };
       const rule =
-        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
           context as any
         );
 
@@ -24,17 +24,17 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseInde
       expect(result).toBe(true);
     });
 
-    it("doesn't trigger if there is a useIndex query param", async () => {
+    it("doesn't trigger if there is a useId query param", async () => {
       const context = {
         req: {
           method: "GET",
         },
         query: {
-          useIndex: "1",
+          useId: "1",
         },
       };
       const rule =
-        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
           context as any
         );
 
@@ -66,7 +66,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseInde
         },
       };
       const rule =
-        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
           context as any
         );
 
@@ -74,7 +74,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseInde
 
       expect(result).toMatchObject({
         redirect: {
-          destination: "current-page-url?useIndex=1",
+          destination: "current-page-url?useId=1",
         },
       });
     });
@@ -96,7 +96,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseInde
         },
       };
       const rule =
-        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
           context as any
         );
 
@@ -107,7 +107,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseInde
       ).toHaveBeenCalledWith("test-draft-registration-id");
       expect(result).toMatchObject({
         redirect: {
-          destination: "current-page-url?useIndex=0",
+          destination: "current-page-url?useId=0",
         },
       });
     });

@@ -152,9 +152,9 @@ const mapper = (context: BeaconsGetServerSidePropsContext) => {
     }),
   };
 
-  const useIndex = parseInt(context.query.useId as string);
+  const useId = parseInt(context.query.useId as string);
 
-  return makeDraftRegistrationMapper<PurposeForm>(useIndex, beaconUseMapper);
+  return makeDraftRegistrationMapper<PurposeForm>(useId, beaconUseMapper);
 };
 
 const validationRules = ({ purpose }: FormSubmission): FormManager => {

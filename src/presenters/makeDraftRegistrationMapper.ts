@@ -34,32 +34,26 @@ import { DraftRegistrationFormMapper } from "./DraftRegistrationFormMapper";
  * This can then be used to update an existing DraftRegistration via a merge
  * operation.
  *
- * @param useIndex The identifier of the BeaconUse being converted.
+ * @param useId The identifier of the BeaconUse being converted.
  * @param beaconUseFormMapper A BeaconUseFormMapper that converts a BeaconUse
  * entity to/from a form type, e.g. a VesselCommunicationsForm.
  * @returns DraftRegistrationFormMapper that converts a DraftRegistration
  * to/from a form type, e.g. a VesselCommunicationsForm.
  */
 export const makeDraftRegistrationMapper = <T>(
-  useIndex: number,
+  useId: number,
   beaconUseFormMapper: BeaconUseFormMapper<T>
 ): DraftRegistrationFormMapper<T> => ({
   formToDraftRegistration: (form) => {
     const emptyUse = {};
 
     return {
-      uses: new Array(useIndex >= 1 ? useIndex + 1 : 1)
+      uses: new Array(useId >= 1 ? useId + 1 : 1)
         .fill(emptyUse)
-        .fill(
-          beaconUseFormMapper.formToDraftBeaconUse(form),
-          useIndex,
-          useIndex + 1
-        ),
+        .fill(beaconUseFormMapper.formToDraftBeaconUse(form), useId, useId + 1),
     };
   },
   draftRegistrationToForm: (draftRegistration) => {
-    return beaconUseFormMapper.beaconUseToForm(
-      draftRegistration.uses[useIndex]
-    );
+    return beaconUseFormMapper.beaconUseToForm(draftRegistration.uses[useId]);
   },
 });

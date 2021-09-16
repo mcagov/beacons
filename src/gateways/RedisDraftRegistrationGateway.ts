@@ -34,15 +34,12 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
     await this.update(submissionId, registrationWithNewUse);
   }
 
-  public async deleteUse(
-    submissionId: string,
-    useIndex: number
-  ): Promise<void> {
+  public async deleteUse(submissionId: string, useId: number): Promise<void> {
     const registration: DraftRegistration = await this.read(submissionId);
 
     const registrationMinusDeletedUse = {
       ...registration,
-      uses: registration.uses.filter((use, i) => i !== useIndex),
+      uses: registration.uses.filter((use, i) => i !== useId),
     };
 
     await this.update(submissionId, registrationMinusDeletedUse);

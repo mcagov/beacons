@@ -61,7 +61,7 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
       previousPageUrl={GeneralPageURLs.start}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      includeUseIndex={false}
+      includeUseId={false}
     >
       <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
         {pageText}

@@ -21,7 +21,7 @@ interface BeaconsFormProps {
   showCookieBanner: boolean;
   formErrors?: FormError[];
   errorMessages?: string[];
-  includeUseIndex?: boolean;
+  includeUseId?: boolean;
   continueButton?: JSX.Element;
   cancelButton?: JSX.Element;
 }
@@ -79,11 +79,9 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
 
 const HiddenFormMetadata: FunctionComponent = () => {
   const router = useRouter();
-  const useIndexValue = router?.query.useIndex || 0;
+  const useIdValue = router?.query.useId || 0;
 
-  return (
-    <input id="use-index" type="hidden" name="useIndex" value={useIndexValue} />
-  );
+  return <input id="use-index" type="hidden" name="useId" value={useIdValue} />;
 };
 
 export const BeaconsFormFieldsetAndLegend: FunctionComponent<BeaconsFormFieldsetAndLegendProps> =

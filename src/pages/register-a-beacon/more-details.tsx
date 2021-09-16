@@ -14,7 +14,7 @@ import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { nextPageWithUseIndex } from "../../lib/nextPageWithUseIndexHelper";
+import { nextPageWithUseId } from "../../lib/nextPageWithUseIndexHelper";
 import { formSubmissionCookieId } from "../../lib/types";
 import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
@@ -26,7 +26,7 @@ import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_Then
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface MoreDetailsForm {
@@ -116,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
         context
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
@@ -138,8 +138,8 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        nextPageWithUseIndex(
-          parseInt(context.query.useIndex as string),
+        nextPageWithUseId(
+          parseInt(context.query.useId as string),
           CreateRegistrationPageURLs.additionalUse
         )
       ),
@@ -154,11 +154,11 @@ const props = async (
     context.req.cookies[formSubmissionCookieId]
   );
 
-  const useIndex = context.query.useIndex as string;
+  const useId = context.query.useId as string;
 
   return {
-    environment: draftRegistration?.uses[useIndex]?.environment as Environment,
-    useId: useIndex,
+    environment: draftRegistration?.uses[useId]?.environment as Environment,
+    useId: useId,
   };
 };
 
@@ -174,12 +174,9 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = parseInt(context.query.useId as string);
 
-  return makeDraftRegistrationMapper<MoreDetailsForm>(
-    useIndex,
-    beaconUseMapper
-  );
+  return makeDraftRegistrationMapper<MoreDetailsForm>(useId, beaconUseMapper);
 };
 
 const validationRules = ({ moreDetails }: FormSubmission): FormManager => {

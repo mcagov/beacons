@@ -41,14 +41,14 @@ export const iCanEditMyNUses = (n: number): void => {
 
 export const whenIGoToEditTheUseNumber = (useNumber: number): void => {
   iHaveClickedOnAGivenLink(
-    `${CreateRegistrationPageURLs.environment}?useIndex=${useNumber}`
+    `${CreateRegistrationPageURLs.environment}?useId=${useNumber}`
   );
   whenIClickContinue();
 };
 
 export const iAmOnTheLandBranchForUseNumber = (useNumber: number): void => {
   thenTheUrlShouldContain(
-    `${CreateRegistrationPageURLs.activity}?useIndex=${useNumber}`
+    `${CreateRegistrationPageURLs.activity}?useId=${useNumber}`
   );
 };
 
@@ -56,6 +56,6 @@ export const iAmOnTheMaritimeOrAviationBranchForUseNumber = (
   useNumber: number
 ): void => {
   thenTheUrlShouldContain(
-    `${CreateRegistrationPageURLs.purpose}?useIndex=${useNumber}`
+    `${CreateRegistrationPageURLs.purpose}?useId=${useNumber}`
   );
 };

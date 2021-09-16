@@ -324,10 +324,10 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useId as string);
+  const useId = parseInt(context.query.useId as string);
 
   return makeDraftRegistrationMapper<AboutTheVesselForm>(
-    useIndex,
+    useId,
     beaconUseMapper
   );
 };

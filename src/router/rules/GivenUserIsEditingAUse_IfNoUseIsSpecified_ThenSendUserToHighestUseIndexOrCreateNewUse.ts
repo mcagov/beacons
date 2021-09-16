@@ -6,7 +6,7 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { queryParams } from "../../lib/urls";
 import { Rule } from "./Rule";
 
-export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse
+export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse
   implements Rule
 {
   private readonly context: BeaconsGetServerSidePropsContext;
@@ -20,20 +20,20 @@ export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseI
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    if (await this.draftUsesExist()) return this.sendUserToHighestUseIndex();
+    if (await this.draftUsesExist()) return this.sendUserToHighestUseId();
 
     return this.createNewUseAndRedirectToIt();
   }
 
   private userHasNotSpecifiedAUse() {
-    return !this.context?.query?.useIndex;
+    return !this.context?.query?.useId;
   }
 
   private async draftUsesExist() {
     return (await this.draftRegistration())?.uses?.length > 0;
   }
 
-  private async sendUserToHighestUseIndex(): Promise<
+  private async sendUserToHighestUseId(): Promise<
     GetServerSidePropsResult<any>
   > {
     const urlHasQueryParams = this.context.req.url.includes("?");
@@ -42,7 +42,7 @@ export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseI
       return redirectUserTo(
         this.context.req.url +
           queryParams({
-            useIndex: (await this.draftRegistration()).uses.length - 1,
+            useId: (await this.draftRegistration()).uses.length - 1,
           }).replace("?", "&")
       );
     }
@@ -50,7 +50,7 @@ export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseI
     return redirectUserTo(
       this.context.req.url +
         queryParams({
-          useIndex: (await this.draftRegistration()).uses.length - 1,
+          useId: (await this.draftRegistration()).uses.length - 1,
         })
     );
   }
@@ -64,7 +64,7 @@ export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseI
       this.context.req.cookies[formSubmissionCookieId]
     );
 
-    return redirectUserTo(this.context.req.url + queryParams({ useIndex: 0 }));
+    return redirectUserTo(this.context.req.url + queryParams({ useId: 0 }));
   }
 
   private async draftRegistration(): Promise<DraftRegistration> {

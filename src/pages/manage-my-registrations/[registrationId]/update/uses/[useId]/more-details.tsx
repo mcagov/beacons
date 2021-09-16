@@ -153,11 +153,11 @@ const props = async (
     context.req.cookies[formSubmissionCookieId]
   );
 
-  const useIndex = context.query.useId as string;
+  const useId = context.query.useId as string;
 
   return {
-    environment: draftRegistration?.uses[useIndex]?.environment as Environment,
-    useId: useIndex,
+    environment: draftRegistration?.uses[useId]?.environment as Environment,
+    useId: useId,
   };
 };
 
@@ -173,12 +173,9 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useId as string);
+  const useId = parseInt(context.query.useId as string);
 
-  return makeDraftRegistrationMapper<MoreDetailsForm>(
-    useIndex,
-    beaconUseMapper
-  );
+  return makeDraftRegistrationMapper<MoreDetailsForm>(useId, beaconUseMapper);
 };
 
 const validationRules = ({ moreDetails }: FormSubmission): FormManager => {
