@@ -35,6 +35,7 @@ export const givenIHaveFilledInBeaconInformationPage = (): void => {
   thenTheUrlShouldContain(CreateRegistrationPageURLs.beaconInformation);
   givenIHaveTyped(beaconInfo.serialNumber, "#manufacturerSerialNumber");
   givenIHaveTyped(beaconInfo.chkCode, "#chkCode");
+  givenIHaveTyped(beaconInfo.csta, "#csta");
   givenIHaveTyped(beaconInfo.batteryExpiryMonth, "#batteryExpiryDateMonth");
   givenIHaveTyped(beaconInfo.batteryExpiryYear, "#batteryExpiryDateYear");
   givenIHaveTyped(beaconInfo.lastServicedMonth, "#lastServicedDateMonth");
