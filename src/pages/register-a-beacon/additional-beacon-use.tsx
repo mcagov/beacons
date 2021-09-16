@@ -26,13 +26,13 @@ import { WhenUserViewsPage_ThenDisplayPage } from "../../router/rules/WhenUserVi
 
 interface AdditionalBeaconUseProps {
   uses: DraftBeaconUse[];
-  currentuseId: number;
+  currentUseId: number;
   showCookieBanner?: boolean;
 }
 
 const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   uses,
-  currentuseId,
+  currentUseId,
   showCookieBanner,
 }: AdditionalBeaconUseProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
@@ -46,7 +46,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
               href={
                 CreateRegistrationPageURLs.moreDetails +
                 queryParams({
-                  useId: currentuseId,
+                  useId: currentUseId,
                 })
               }
             />
@@ -156,7 +156,7 @@ const props = async (
 
   return {
     uses: draftRegistration.uses,
-    currentuseId: useId,
+    currentUseId: useId,
   };
 };
 

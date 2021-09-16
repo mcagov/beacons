@@ -38,7 +38,7 @@ const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
   useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = `What is the ${ordinal(
-    parseInt(useId + 1)
+    parseInt(useId) + 1
   )} use for this beacon?`;
   const pageText = (
     <>
