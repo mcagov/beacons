@@ -15,6 +15,7 @@ import {
   SummaryListItem,
 } from "../../../../components/SummaryList";
 import {
+  AnchorLink,
   GovUKBody,
   PageHeading,
   SectionHeading,
@@ -100,15 +101,12 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
                   registration.id
                 )}
               />
+              <UpdateUseSection registrationId={registration.id} />
               {registration.uses.map((use, index) => (
                 <AdditionalBeaconUseSummary
                   index={index}
                   use={use}
                   key={index}
-                  changeUri={UrlBuilder.buildUseSummaryUrl(
-                    Actions.update,
-                    registration.id
-                  )}
                 />
               ))}
               <CheckYourAnswersBeaconOwnerSummary
@@ -161,6 +159,33 @@ const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
       </Layout>
     );
   };
+
+const UpdateUseSection = ({
+  registrationId,
+}: {
+  registrationId: string;
+}): JSX.Element => (
+  <div
+    className="govuk-!-margin-bottom-4 govuk-summary-list"
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "flex-end",
+    }}
+  >
+    <SectionHeading classes="govuk-!-margin-0">
+      How this beacon is used
+    </SectionHeading>
+    <div>
+      <AnchorLink
+        href={UrlBuilder.buildUseSummaryUrl(Actions.update, registrationId)}
+        classes="govuk-link--no-visited-state"
+      >
+        Change
+      </AnchorLink>
+    </div>
+  </div>
+);
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
