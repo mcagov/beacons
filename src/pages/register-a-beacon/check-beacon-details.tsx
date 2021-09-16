@@ -47,7 +47,7 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
     <BeaconsForm
       formErrors={form.errorSummary}
       previousPageUrl={previousPageUrl}
-      includeUseId={false}
+      includeuseId={false}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
     >

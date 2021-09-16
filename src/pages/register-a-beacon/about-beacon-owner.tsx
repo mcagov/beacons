@@ -46,7 +46,7 @@ const AboutBeaconOwner: FunctionComponent<AboutBeaconOwnerFormProps> = ({
       formErrors={form.errorSummary}
       previousPageUrl={previousPageUrl}
       showCookieBanner={showCookieBanner}
-      includeUseId={true}
+      includeuseId={true}
     >
       <BeaconsFormHeading pageHeading={pageHeading} />
       <FullName

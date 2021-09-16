@@ -20,19 +20,19 @@ import {
 import { prettyUseName } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 interface AdditionalBeaconUseProps {
   uses: DraftBeaconUse[];
-  currentUseId: number;
+  currentuseId: number;
   showCookieBanner?: boolean;
 }
 
 const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   uses,
-  currentUseId,
+  currentuseId,
   showCookieBanner,
 }: AdditionalBeaconUseProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
@@ -46,7 +46,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
               href={
                 CreateRegistrationPageURLs.moreDetails +
                 queryParams({
-                  useId: currentUseId,
+                  useId: currentuseId,
                 })
               }
             />
@@ -134,7 +134,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
         context
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
@@ -156,7 +156,7 @@ const props = async (
 
   return {
     uses: draftRegistration.uses,
-    currentUseId: useId,
+    currentuseId: useId,
   };
 };
 
