@@ -7,7 +7,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
     it("should not trigger if there is no DraftRegistration", async () => {
       const context: BeaconsGetServerSidePropsContext = {
         query: {
-          id: "registration-id-from-url",
+          registrationId: "registration-id-from-url",
         },
         container: {
           getAccountHolderId: jest
@@ -22,7 +22,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
       const rule =
         new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
           context,
-          context.query.id as string
+          context.query.registrationId as string
         );
 
       const triggered = await rule.condition();
@@ -33,7 +33,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
     it("should not trigger if there are no changes to the existing DraftRegistration", async () => {
       const context: BeaconsGetServerSidePropsContext = {
         query: {
-          id: "registration-id-from-url",
+          registrationId: "registration-id-from-url",
         },
         container: {
           getDraftRegistration: jest
@@ -50,7 +50,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
       const rule =
         new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
           context,
-          context.query.id as string
+          context.query.registrationId as string
         );
 
       const triggered = await rule.condition();
@@ -61,7 +61,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
     it("should trigger if DraftRegistration is different to the corresponding Registration", async () => {
       const context: BeaconsGetServerSidePropsContext = {
         query: {
-          id: "registration-id-from-url",
+          registrationId: "registration-id-from-url",
         },
         container: {
           getAccountHolderId: jest
@@ -80,7 +80,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
       const rule =
         new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
           context,
-          context.query.id as string
+          context.query.registrationId as string
         );
 
       const triggered = await rule.condition();
@@ -91,12 +91,18 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
 
   describe("action()", () => {
     it("sets an edited boolean prop to true", async () => {
+      const registrationId = "test-registration-id";
       const context = {
+        query: {
+          registrationId: registrationId,
+        },
         req: {
           cookies: null,
         },
+        container: {
+          getDraftRegistration: jest.fn(),
+        },
       } as any;
-      const registrationId = "test-registration-id";
       const rule =
         new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
           context,
