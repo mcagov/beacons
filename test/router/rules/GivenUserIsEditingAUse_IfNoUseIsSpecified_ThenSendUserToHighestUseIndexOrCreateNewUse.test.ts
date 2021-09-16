@@ -1,9 +1,9 @@
 import { DraftRegistration } from "../../../src/entities/DraftRegistration";
 import { Environment } from "../../../src/lib/deprecatedRegistration/types";
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../../src/router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../src/router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
 
-describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse", () => {
+describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse", () => {
   describe("condition", () => {
     it("triggers if there is no useId query param", async () => {
       const context = {
@@ -15,7 +15,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOr
         },
       };
       const rule =
-        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
           context as any
         );
 
@@ -34,7 +34,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOr
         },
       };
       const rule =
-        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
           context as any
         );
 
@@ -66,7 +66,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOr
         },
       };
       const rule =
-        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
           context as any
         );
 
@@ -96,7 +96,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOr
         },
       };
       const rule =
-        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
+        new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
           context as any
         );
 
