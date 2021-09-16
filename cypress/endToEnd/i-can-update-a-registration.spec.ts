@@ -5,7 +5,7 @@ import {
   Environment,
   Purpose,
 } from "../../src/lib/deprecatedRegistration/types";
-import { AccountPageURLs, UpdatePageURLs } from "../../src/lib/urls";
+import { AccountPageURLs } from "../../src/lib/urls";
 import { Actions } from "../../src/lib/URLs/Actions";
 import { Resources } from "../../src/lib/URLs/Resources";
 import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
@@ -19,6 +19,7 @@ import {
 import {
   andIClickTheButtonContaining,
   givenIHaveSignedIn,
+  givenIHaveWaitedForBeaconsApi,
   iCanEditAFieldContaining,
   iCanSeeAPageHeadingThatContains,
   theBackLinkContains,
@@ -46,10 +47,12 @@ describe("As an account holder", () => {
     iCanSeeTheDetailsOfMyRegistration(testRegistration);
     iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges();
     iCanUpdateTheDetailsOfMyExistingRegistration(testRegistration);
-    iCanSeeTheDetailsOfMyRegistration(updatedRegistrationDetails);
+    iCanSeeTheDetailsOfMyRegistration(
+      updatedRegistrationDetails as Registration
+    );
 
     whenIClickTheButtonContaining("Accept and send");
-    thenTheUrlShouldContain(UpdatePageURLs.updateComplete);
+    givenIHaveWaitedForBeaconsApi(10000);
     iCanSeeAPageHeadingThatContains(
       "Your beacon registration has been updated"
     );
@@ -97,7 +100,6 @@ const iCanViewTheUpdatedOwnerInformation = (
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Owner details");
-  thenTheUrlShouldContain(UpdatePageURLs.aboutBeaconOwner);
   iCanEditAFieldContaining(draftRegistration.ownerFullName);
   iCanEditAFieldContaining(draftRegistration.ownerTelephoneNumber);
   iCanEditAFieldContaining(draftRegistration.ownerAlternativeTelephoneNumber);
@@ -107,7 +109,6 @@ const iCanViewTheUpdatedOwnerInformation = (
   whenIClickOnTheHexIdOfTheRegistrationIUpdated(testRegistration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
-  thenTheUrlShouldContain(UpdatePageURLs.beaconOwnerAddress);
   iCanEditAFieldContaining(draftRegistration.ownerAddressLine1);
   iCanEditAFieldContaining(draftRegistration.ownerAddressLine2);
   iCanEditAFieldContaining(draftRegistration.ownerTownOrCity);
@@ -121,7 +122,6 @@ const iCanViewTheUpdatedUseInformation = (
   whenIHaveVisited(AccountPageURLs.accountHome);
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
   whenIClickTheChangeLinkForTheSectionWithHeading("Main use");
-  thenTheUrlShouldContain(UpdatePageURLs.usesSummary);
   iCanSeeUseInformation(draftRegistration);
 };
 
