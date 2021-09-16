@@ -190,7 +190,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: parseInt(context.query.useIndex as string),
+  useIndex: context.query.useIndex as string,
 });
 
 const mapper = (

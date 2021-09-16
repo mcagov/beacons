@@ -42,11 +42,11 @@ const UpdateBeaconUsePage: FunctionComponent<DraftBeaconUsePageProps> = ({
   useIndex,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = `What is the ${ordinal(
-    useIndex + 1
+    parseInt(useIndex) + 1
   )} use for this beacon?`;
   const pageText = (
     <>
-      {useIndex === 0 && (
+      {parseInt(useIndex) === 0 && (
         <GovUKBody>
           {
             "If you have multiple uses for this beacon, tell us about the main one first."
@@ -146,7 +146,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: parseInt(context.query.useId as string),
+  useIndex: context.query.useId as string,
 });
 
 const nextPage = async (

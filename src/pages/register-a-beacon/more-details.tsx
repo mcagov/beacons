@@ -34,7 +34,6 @@ interface MoreDetailsForm {
 
 interface MoreDetailsPageProps extends DraftBeaconUsePageProps {
   environment: Environment;
-  useIndex: number;
 }
 
 const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
@@ -154,7 +153,7 @@ const props = async (
     context.req.cookies[formSubmissionCookieId]
   );
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useIndex = context.query.useIndex as string;
 
   return {
     environment: draftRegistration?.uses[useIndex]?.environment as Environment,
