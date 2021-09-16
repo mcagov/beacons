@@ -42,7 +42,56 @@ describe("As an account holder", () => {
 
     whenIHaveVisited(AccountPageURLs.accountHome);
     whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
-    iCanAddANewUse(testRegistration);
+    whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
+    iCanSeeUseInformation(testRegistration);
+
+    whenIGoToDeleteMy(/main use/i);
+    thenIAmPromptedToConfirmDeletionOfMyUse(testRegistration.uses[0]);
+
+    whenIClickTheButtonContaining("Cancel");
+    theNumberOfUsesIs(1);
+    iCanSeeMyUse(testRegistration.uses[0]);
+
+    whenIHaveAnotherUse();
+    andIHaveEnteredMyAviationUse(Purpose.COMMERCIAL);
+    theNumberOfUsesIs(2);
+    iCanSeeMyUse(testRegistration.uses[0]);
+    iCanSeeMyAviationUse(Purpose.COMMERCIAL);
+
+    whenIHaveAnotherUse();
+    andIHaveEnteredMyLandUse();
+    theNumberOfUsesIs(3);
+    iCanSeeMyUse(testRegistration.uses[0]);
+    iCanSeeMyAviationUse(Purpose.COMMERCIAL);
+    iCanSeeMyLandUse();
+
+    whenIGoToDeleteMy(/second use/i);
+    iAmPromptedToConfirm(
+      Environment.AVIATION,
+      Activity.GLIDER,
+      Purpose.COMMERCIAL
+    );
+    whenIClickTheButtonContaining("Yes");
+    theNumberOfUsesIs(2);
+    iCanSeeMyUse(testRegistration.uses[0]);
+    iCanSeeMyLandUse();
+
+    whenIClickContinue();
+    iCanSeeMyUse(testRegistration.uses[0]);
+    iCanSeeMyLandUse();
+
+    whenIClickTheButtonContaining("Accept and send");
+    givenIHaveWaitedForBeaconsApi(10000);
+    iCanSeeAPageHeadingThatContains(
+      "Your beacon registration has been updated"
+    );
+
+    whenIClickTheButtonContaining("Return to your Account");
+    thenTheUrlShouldContain(AccountPageURLs.accountHome);
+
+    whenIClickTheHexIdOfTheRegistrationIJustUpdated(testRegistration.hexId);
+    iCanSeeMyUse(testRegistration.uses[0]);
+    iCanSeeMyLandUse();
   });
 });
 
@@ -61,57 +110,6 @@ const whenIClickTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
 
 const whenIClickTheHexIdOfTheRegistrationIJustUpdated =
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate;
-
-const iCanAddANewUse = (registration: Registration) => {
-  whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
-  iCanSeeUseInformation(registration);
-
-  whenIGoToDeleteMy(/main use/i);
-  thenIAmPromptedToConfirmDeletionOfMyUse(registration.uses[0]);
-
-  whenIClickTheButtonContaining("Cancel");
-  theNumberOfUsesIs(1);
-  iCanSeeMyUse(registration.uses[0]);
-
-  whenIHaveAnotherUse();
-  andIHaveEnteredMyAviationUse(Purpose.COMMERCIAL);
-  theNumberOfUsesIs(2);
-  iCanSeeMyUse(registration.uses[0]);
-  iCanSeeMyAviationUse(Purpose.COMMERCIAL);
-
-  whenIHaveAnotherUse();
-  andIHaveEnteredMyLandUse();
-  theNumberOfUsesIs(3);
-  iCanSeeMyUse(registration.uses[0]);
-  iCanSeeMyAviationUse(Purpose.COMMERCIAL);
-  iCanSeeMyLandUse();
-
-  whenIGoToDeleteMy(/second use/i);
-  iAmPromptedToConfirm(
-    Environment.AVIATION,
-    Activity.GLIDER,
-    Purpose.COMMERCIAL
-  );
-  whenIClickTheButtonContaining("Yes");
-  theNumberOfUsesIs(2);
-  iCanSeeMyUse(registration.uses[0]);
-  iCanSeeMyLandUse();
-
-  whenIClickContinue();
-  iCanSeeMyUse(registration.uses[0]);
-  iCanSeeMyLandUse();
-
-  whenIClickTheButtonContaining("Accept and send");
-  givenIHaveWaitedForBeaconsApi(10000);
-  iCanSeeAPageHeadingThatContains("Your beacon registration has been updated");
-
-  whenIClickTheButtonContaining("Return to your Account");
-  thenTheUrlShouldContain(AccountPageURLs.accountHome);
-
-  whenIClickTheHexIdOfTheRegistrationIJustUpdated(testRegistration.hexId);
-  iCanSeeMyUse(registration.uses[0]);
-  iCanSeeMyLandUse();
-};
 
 const thenIAmPromptedToConfirmDeletionOfMyUse = (use: BeaconUse) =>
   cy
