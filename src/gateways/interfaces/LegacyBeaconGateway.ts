@@ -1,3 +1,3 @@
 export interface LegacyBeaconGatewayInterface {
-  getLegacyBeacon: (legacyBeaconId: string) => {};
+  getLegacyBeacon: (legacyBeaconId: string) => Promise<string>;
 }
