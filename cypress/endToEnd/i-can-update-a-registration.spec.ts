@@ -74,6 +74,7 @@ describe("As an account holder", () => {
     andIClickContinue();
 
     andIHavePreviouslyRegisteredABeacon(secondRegistrationToUpdate);
+    whenIClickBack();
     whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
       secondRegistrationToUpdate.hexId
     );
