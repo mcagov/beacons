@@ -51,7 +51,7 @@ export const iHavePreviouslyRegisteredABeacon = async (
 
   const sessionEndpoint = "/api/auth/session";
 
-  cy.request(sessionEndpoint).then(async (response) => {
+  cy.request(sessionEndpoint, { timeout: 10000 }).then(async (response) => {
     const session = response.body;
 
     const accountHolder = await getOrCreateAccountHolder(container)(session);
