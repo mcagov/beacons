@@ -2,7 +2,12 @@ import { GetServerSideProps } from "next";
 import React from "react";
 import { Grid } from "../../../components/Grid";
 import { Layout } from "../../../components/Layout";
-import { PageHeading } from "../../../components/Typography";
+import { BeaconRegistryContactInfo } from "../../../components/Mca";
+import {
+  GovUKBody,
+  PageHeading,
+  SectionHeading,
+} from "../../../components/Typography";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
@@ -15,8 +20,7 @@ interface LegacyBeaconPageProps {
 }
 
 const CheckMyLegacyBeacon = ({ legacyBeacon, showCookieBanner }) => {
-  console.log(legacyBeacon);
-  const pageHeading = "Is this beacon yours?";
+  const pageHeading = "Legacy Beacon Information";
 
   return (
     <Layout title={pageHeading}>
@@ -48,6 +52,12 @@ const CheckMyLegacyBeacon = ({ legacyBeacon, showCookieBanner }) => {
                 <dd className="govuk-summary-list__value">1st Gen PLB</dd>
               </div>
             </dl>
+            <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
+            <GovUKBody>
+              If you have a question about your beacon registration, contact the
+              UK Beacon Registry team on:
+            </GovUKBody>
+            <BeaconRegistryContactInfo />
           </>
         }
       ></Grid>
@@ -70,7 +80,6 @@ const props = async (
   const legacyBeaconId = context.query.id as string;
   const legacyBeacon =
     await context.container.legacyBeaconGateway.getLegacyBeacon(legacyBeaconId);
-  console.log(legacyBeacon);
   return legacyBeacon;
 };
 
