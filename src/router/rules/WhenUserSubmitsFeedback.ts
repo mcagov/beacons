@@ -2,6 +2,7 @@ import { GetServerSidePropsResult } from "next";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
+import { FeedbackURLs } from "../../lib/urls";
 import { FormSubmission } from "../../presenters/formSubmission";
 import { sendFeedbackEmail } from "../../useCases/sendFeedbackEmail";
 import { Rule } from "./Rule";
@@ -28,10 +29,11 @@ export class WhenUserSubmitsFeedback implements Rule {
     const form = await this.form();
     const success = await this.sendFeedbackEmail(form);
 
+    //TODO: Add randomly assigned id to url parameters
     if (success) {
-      return redirectUserTo("/");
+      return redirectUserTo(FeedbackURLs.confirmation + "?success=true");
     } else {
-      return redirectUserTo("/");
+      return redirectUserTo(FeedbackURLs.confirmation + "?success=false");
     }
   }
 
