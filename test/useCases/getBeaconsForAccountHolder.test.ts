@@ -12,7 +12,7 @@ describe("getBeaconsForAccountHolder", () => {
     direction: "desc",
   };
 
-  it("should only return newly registered beacons", async () => {
+  it("should return only new and migrated registered beacons", async () => {
     getBeaconsByAccountHolderEmailMock.mockImplementation(() => [
       {
         beaconStatus: "MIGRATED",
@@ -24,13 +24,18 @@ describe("getBeaconsForAccountHolder", () => {
         createdDate: "2021-03-20",
         lastModifiedDate: "2021-09-02",
       },
+      {
+        beaconStatus: "DELETED",
+        createdDate: "2021-03-20",
+        lastModifiedDate: "2021-09-02",
+      },
     ]);
 
     const result = await getBeaconsForAccountHolder({
       beaconSearchGateway,
     } as any)(accountHolderId, email, sortOptions);
 
-    expect(result.length).toBe(1);
+    expect(result.length).toBe(2);
   });
 
   it("should format the dates", async () => {
