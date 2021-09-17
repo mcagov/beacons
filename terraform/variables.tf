@@ -181,6 +181,16 @@ variable "gov_notify_customer_email_template" {
   description = "The template ID for the customer confirmation email"
   sensitive   = true
 }
+variable "gov_notify_feedback_email_template" {
+  type        = string
+  description = "The template ID for the feedback email"
+  sensitive   = true
+}
+variable "gov_notify_feedback_email_address" {
+  type        = string
+  description = "The email address to which feedback should be sent"
+  sensitive   = true
+}
 variable "basic_auth" {
   type        = string
   description = "A | separated list of username:passwords describing basic auth credentials"
