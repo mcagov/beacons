@@ -103,7 +103,7 @@ const LegacyBeaconsNotification: FunctionComponent<LegacyBeaconsNotificationProp
                 then be able to view, edit and delete your beacon information
                 from your online customer account.
               </p>
-              <h3>Why can I see beacons that aren't mine?</h3>
+              <h3>Why can I see beacons that are not mine?</h3>
               <p>
                 To ensure we have correctly matched a beacon to you, we ask all
                 customers to review and confirm the beacons are theirs.
@@ -111,7 +111,7 @@ const LegacyBeaconsNotification: FunctionComponent<LegacyBeaconsNotificationProp
                 <br />
                 We may have matched a beacon to you because it was previously
                 registered to the same email address. You can delete any beacons
-                from your account that aren't yours. By doing this you will no
+                from your account that are not yours. By doing this you will no
                 longer see it when you log in, but Search and rescue will still
                 have a record of it in an emergency.
               </p>
@@ -131,14 +131,15 @@ const LegacyBeaconsNotification: FunctionComponent<LegacyBeaconsNotificationProp
                 is up to date.
               </p>
               <h3>
-                I registered beacons using the old service, but I can't see them
-                here
+                I registered beacons using the old service, but I cannot see
+                them here
               </h3>
               <p>
                 You may have registered those beacons with a different email
-                address. Please re-register any beacons using the 'Register a
-                new beacon' button below. This is the safest way to ensure we
-                have the correct information, in case the beacon is activated
+                address. Please re-register any beacons using the &quot;Register
+                a new beacon&quot; button below. This is the safest way to
+                ensure we have the correct information, in case the beacon is
+                activated
               </p>
               <h3>
                 Do I need to review and confirm my beacons now? Or can I do this
