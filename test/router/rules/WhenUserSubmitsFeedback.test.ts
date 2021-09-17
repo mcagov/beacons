@@ -5,6 +5,7 @@ import { WhenUserSubmitsFeedback } from "../../../src/router/rules/WhenUserSubmi
 describe("WhenUserSubmitsFeedback", () => {
   beforeAll(() => {
     process.env.GOV_NOTIFY_FEEDBACK_EMAIL_TEMPLATE = "template-id";
+    process.env.GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS = "not-a-real-email@nope.com";
   });
 
   it("should route the user to the feedback confirmation page with success if the user successfully submits feedback", async () => {
