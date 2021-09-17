@@ -3,6 +3,10 @@ import { validationRules } from "../../../src/pages/feedback";
 import { WhenUserSubmitsFeedback } from "../../../src/router/rules/WhenUserSubmitsFeedback";
 
 describe("WhenUserSubmitsFeedback", () => {
+  beforeAll(() => {
+    process.env.GOV_NOTIFY_FEEDBACK_EMAIL_TEMPLATE = "template-id";
+  });
+
   it("should route the user to the feedback confirmation page with success if the user successfully submits feedback", async () => {
     const mockSendEmail = jest.fn().mockResolvedValue(true);
     const mockGateway = {
@@ -32,7 +36,7 @@ describe("WhenUserSubmitsFeedback", () => {
     expect(result).toStrictEqual({
       redirect: {
         statusCode: 303,
-        destination: FeedbackURLs.confirmation + "?success=true",
+        destination: FeedbackURLs.success,
       },
     });
   });
@@ -66,7 +70,7 @@ describe("WhenUserSubmitsFeedback", () => {
     expect(result).toStrictEqual({
       redirect: {
         statusCode: 303,
-        destination: FeedbackURLs.confirmation + "?success=false",
+        destination: FeedbackURLs.failure,
       },
     });
   });

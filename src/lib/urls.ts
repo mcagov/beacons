@@ -82,7 +82,8 @@ export enum ActionURLs {
 
 export enum FeedbackURLs {
   feedback = "/feedback",
-  confirmation = "/feedback/confirmation",
+  success = "/feedback/success",
+  failure = "/feedback/failure",
 }
 
 export const queryParams = (queryParams: Record<string, any>): string =>

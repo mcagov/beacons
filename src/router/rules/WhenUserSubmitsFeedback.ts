@@ -30,10 +30,11 @@ export class WhenUserSubmitsFeedback implements Rule {
     const success = await this.sendFeedbackEmail(form);
 
     //TODO: Add randomly assigned id to url parameters
+    //TODO: Add method to generate destination URL
     if (success) {
-      return redirectUserTo(FeedbackURLs.confirmation + "?success=true");
+      return redirectUserTo(FeedbackURLs.success);
     } else {
-      return redirectUserTo(FeedbackURLs.confirmation + "?success=false");
+      return redirectUserTo(FeedbackURLs.failure);
     }
   }
 
