@@ -1,10 +1,14 @@
 import React, { FunctionComponent } from "react";
-import { ReturnToYourAccountSection } from "../../components/domain/ReturnToYourAccountSection";
+import { LinkButton } from "../../components/Button";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
-import { Panel } from "../../components/Panel";
-import { GovUKBody, SectionHeading } from "../../components/Typography";
-import styles from "../../styles/delete-panel.module.scss";
+import { BeaconRegistryContactInfo } from "../../components/Mca";
+import {
+  GovUKBody,
+  PageHeading,
+  SectionHeading,
+} from "../../components/Typography";
+import { GeneralPageURLs } from "../../lib/urls";
 
 const Success: FunctionComponent = (): JSX.Element => {
   const pageHeading = "Feedback submitted";
@@ -19,14 +23,14 @@ const Success: FunctionComponent = (): JSX.Element => {
         <Grid
           mainContent={
             <>
-              <Panel title={pageHeading} classes={styles.success}>
-                Thank you for submitting your feedback.
-              </Panel>
-              <SectionHeading>What happens next</SectionHeading>
-              <GovUKBody>
-                We will use your feedback to improve our service.
-              </GovUKBody>
-              <ReturnToYourAccountSection />
+              <PageHeading>{pageHeading}</PageHeading>
+              <GovUKBody>Thank you for submitting your feedback.</GovUKBody>
+              <LinkButton
+                buttonText="Go to service start page"
+                href={GeneralPageURLs.start}
+              />
+              <SectionHeading>Contact the UK Beacon Registry</SectionHeading>
+              <BeaconRegistryContactInfo />
             </>
           }
         />
