@@ -1,3 +1,4 @@
+import axios from "axios";
 import { AadAuthGateway } from "../../src/gateways/AadAuthGateway";
 import { BeaconsApiAccountHolderGateway } from "../../src/gateways/BeaconsApiAccountHolderGateway";
 import { AuthGateway } from "../../src/gateways/interfaces/AuthGateway";
@@ -18,6 +19,22 @@ import { getOrCreateAccountHolder } from "../../src/useCases/getOrCreateAccountH
  * confidential client, allowing it to submit requests to the Service API as if
  * it were the Webapp.
  */
+
+const createLegacyBeacon = async (
+  apiUrl: string,
+  migratedLegacyBeaconEndpoint: string,
+  legacyBeaconRequest: ILegacyBeaconRequest
+) => {
+  const url = `${apiUrl}/${migratedLegacyBeaconEndpoint}`;
+  const response = await axios.post(url, legacyBeaconRequest, {
+    auth: {
+      username: "user",
+      password: "password",
+    },
+  });
+  cy.log("legacy beacon successfully posted");
+};
+
 export const iHavePreviouslyRegisteredALegacyBeacon = async (
   legacyBeaconRequest: ILegacyBeaconRequest
 ): Promise<void> => {
@@ -48,10 +65,15 @@ export const iHavePreviouslyRegisteredALegacyBeacon = async (
 
   cy.request(sessionEndpoint).then(async (response) => {
     const session = response.body;
+    const migrateLegacyBeaconEndpoint = "migrate/legacy-beacon";
 
     const accountHolder = await getOrCreateAccountHolder(container)(session);
 
-    await legacyBeaconGateway.create(legacyBeaconRequest);
+    await createLegacyBeacon(
+      Cypress.env("API_URL"),
+      migrateLegacyBeaconEndpoint,
+      legacyBeaconRequest
+    );
   });
 };
 

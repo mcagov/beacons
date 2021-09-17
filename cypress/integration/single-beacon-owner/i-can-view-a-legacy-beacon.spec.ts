@@ -6,5 +6,6 @@ describe("As an account holder", () => {
   it("I can view a legacy beacon linked to my email", () => {
     givenIHaveSignedIn();
     iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
+    cy.visit("/account/your-beacon-registry-account");
   });
 });
