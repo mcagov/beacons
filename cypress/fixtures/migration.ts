@@ -136,7 +136,7 @@ export const legacyBeaconRequest: ILegacyBeaconRequest = {
         mobile1: "077123456788",
         mobile2: "077123456789",
         fax: "Fax me",
-        email: "ownerbeacon@beacons.com",
+        email: "matt.carr@madetech.com",
         isMain: "Y",
         createUserId: "3748",
         createdDate: "2021-07-27T17:15:24",
