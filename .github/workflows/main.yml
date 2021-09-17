@@ -102,6 +102,8 @@ jobs:
       WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
       SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      GOV_NOTIFY_FEEDBACK_EMAIL_TEMPLATE: ${{ secrets.GOV_NOTIFY_FEEDBACK_EMAIL_TEMPLATE }}
+      GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS: ${{ secrets.GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS }}
 
     outputs:
       service_commit_hash: ${{ steps.get_service_commit_hash.outputs.service_commit_hash }}
