@@ -33,7 +33,6 @@ export const Feedback: FunctionComponent<DraftRegistrationPageProps> = ({
       previousPageUrl={GeneralPageURLs.start}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      includeUseIndex={false}
       continueButton={sendFeedbackButton}
     >
       <BeaconsFormHeading pageHeading={pageHeading} />
