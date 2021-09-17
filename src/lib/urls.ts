@@ -16,6 +16,7 @@ export enum AccountPageURLs {
   signIn = "/account/sign-in",
   accountHome = "/account/your-beacon-registry-account",
   updateAccount = "/account/update-account",
+  checkLegacyBeacons = "/account/check-my-legacy-beacons",
 }
 
 export enum GeneralPageURLs {
