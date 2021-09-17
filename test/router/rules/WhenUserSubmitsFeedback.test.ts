@@ -1,3 +1,4 @@
+import { FeedbackURLs } from "../../../src/lib/urls";
 import { validationRules } from "../../../src/pages/feedback";
 import { WhenUserSubmitsFeedback } from "../../../src/router/rules/WhenUserSubmitsFeedback";
 
@@ -31,7 +32,7 @@ describe("WhenUserSubmitsFeedback", () => {
     expect(result).toStrictEqual({
       redirect: {
         statusCode: 303,
-        destination: "/",
+        destination: FeedbackURLs.confirmation + "?success=true",
       },
     });
   });
