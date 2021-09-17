@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { EmailServiceGateway } from "../gateways/interfaces/EmailServiceGateway";
 
 //TODO: Maybe restructure and add to the container object
@@ -13,7 +14,7 @@ export const sendFeedbackEmail = async (
 
   if (templateId) {
     return emailServiceGateway.sendEmail(templateId, email, {
-      referenceId: "junk",
+      referenceId: uuidv4(),
       satisfactionRating: feedback.satisfactionRating,
       howCouldWeImproveThisService: feedback.howCouldWeImproveThisService,
     });
