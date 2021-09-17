@@ -24,7 +24,7 @@ import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_Then
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface PurposeForm {
@@ -35,14 +35,14 @@ interface PurposeFormProps {
   form: FormJSON;
   showCookieBanner: boolean;
   environment: Environment;
-  useIndex: number;
+  useId: number;
 }
 
 const PurposePage: FunctionComponent<PurposeFormProps> = ({
   form,
   showCookieBanner,
   environment,
-  useIndex,
+  useId,
 }: PurposeFormProps): JSX.Element => {
   const pageHeading = `Is your ${environment.toLowerCase()} use of this beacon mainly for pleasure or commercial reasons?`;
   const beaconUsePurposeFieldName = "purpose";
@@ -51,7 +51,7 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
     <BeaconsForm
       formErrors={form.errorSummary}
       previousPageUrl={
-        CreateRegistrationPageURLs.environment + queryParams({ useIndex })
+        CreateRegistrationPageURLs.environment + queryParams({ useId })
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -84,13 +84,13 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const useIndex = parseInt(context.query.useIndex as string);
+    const useId = parseInt(context.query.useId as string);
     const nextPage =
-      CreateRegistrationPageURLs.activity + queryParams({ useIndex });
+      CreateRegistrationPageURLs.activity + queryParams({ useId });
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
         context
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
@@ -125,11 +125,11 @@ const props = async (
     context.req.cookies[formSubmissionCookieId]
   );
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = parseInt(context.query.useId as string);
 
   return {
-    environment: draftRegistration.uses[useIndex]?.environment as Environment,
-    useIndex,
+    environment: draftRegistration.uses[useId]?.environment as Environment,
+    useId,
   };
 };
 
@@ -143,9 +143,9 @@ const mapper = (context: BeaconsGetServerSidePropsContext) => {
     }),
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = parseInt(context.query.useId as string);
 
-  return makeDraftRegistrationMapper<PurposeForm>(useIndex, beaconUseMapper);
+  return makeDraftRegistrationMapper<PurposeForm>(useId, beaconUseMapper);
 };
 
 const validationRules = ({ purpose }: FormSubmission): FormManager => {

@@ -17,7 +17,7 @@ export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItA
   public async condition(): Promise<boolean> {
     if (this.thereIsNoDraftRegistrationCookieSet()) return false;
 
-    return this.theDraftRegistrationCookieIdMatchesTheQueryId();
+    return this.theDraftRegistrationCookieIdDoesNotMatchTheQueryId();
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
@@ -34,10 +34,10 @@ export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItA
     return !this.context.req.cookies[formSubmissionCookieId];
   }
 
-  private theDraftRegistrationCookieIdMatchesTheQueryId() {
+  private theDraftRegistrationCookieIdDoesNotMatchTheQueryId() {
     return (
       this.context.req.cookies[formSubmissionCookieId] !==
-      this.context.query?.id
+      this.context.query?.registrationId
     );
   }
 }

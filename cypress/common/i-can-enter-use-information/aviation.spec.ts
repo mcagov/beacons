@@ -29,22 +29,18 @@ import {
   givenIHaveUnselected,
   iCanSeeAPageHeadingThatContains,
   iHaveVisited,
-  thenTheUrlShouldContain,
   whenIClickBack,
 } from "../selectors-and-assertions.spec";
 import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
 export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
   givenIHaveSelected("#aviation");
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.purpose);
   iCanSeeAPageHeadingThatContains("aviation");
   givenIHaveSelected(`#${purpose.toLowerCase()}`);
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
   iCanSeeAPageHeadingThatContains("aviation");
   iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
@@ -61,16 +57,13 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   }
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.aboutTheAircraft);
   iCanSeeAPageHeadingThatContains("aircraft");
   givenIHaveEnteredInformationAboutMyAircraft();
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.aircraftCommunications);
   givenIHaveEnteredMyAircraftCommunicationDetails();
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.moreDetails);
   givenIHaveEnteredMoreDetailsAboutMyAircraft();
   andIClickContinue();
 };
@@ -147,7 +140,7 @@ export const iCanViewMyChangedAircraftCommunications = (): void => {
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
   andIHaveVisited(
-    CreateRegistrationPageURLs.aircraftCommunications + "?useIndex=0"
+    CreateRegistrationPageURLs.aircraftCommunications + "?useId=0"
   );
 };
 
@@ -222,7 +215,7 @@ export const iCanSeeMySingleAviationUse = (purpose: Purpose): void => {
   cy.get("main").should("not.contain", "Callsign");
 };
 
-const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
+export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.maxCapacity,
     "#maxCapacity"
@@ -258,7 +251,7 @@ const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   );
 };
 
-const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
+export const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#satelliteTelephone");
   givenIHaveTyped(

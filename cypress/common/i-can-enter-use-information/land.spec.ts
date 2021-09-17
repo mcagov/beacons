@@ -9,29 +9,26 @@ import {
   givenIHaveTyped,
   givenIHaveUnselected,
   iCanSeeAPageHeadingThatContains,
-  thenTheUrlShouldContain,
 } from "../selectors-and-assertions.spec";
 import { iCanEditMyEnvironment } from "./generic.spec";
 
 export const givenIHaveEnteredMyLandUse = (): void => {
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
   givenIHaveSelected("#land");
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
   iCanSeeAPageHeadingThatContains("land");
   givenIHaveSelected(`#${testLandUseData.type.activity.toLowerCase()}`);
 
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.landCommunications);
   givenIHaveEnteredMyLandCommunicationDetails();
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.moreDetails);
   givenIHaveEnteredMoreDetailsAboutMyLandUse();
   andIClickContinue();
 };
+
+export const andIHaveEnteredMyLandUse = givenIHaveEnteredMyLandUse;
 
 export const iCanEditMyLandCommunications = (): void => {
   const comms = testLandUseData.communications;
@@ -80,9 +77,7 @@ export const iCanViewMyChangedLandCommunications = (): void => {
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIHaveVisited(
-    CreateRegistrationPageURLs.landCommunications + "?useIndex=0"
-  );
+  andIHaveVisited(CreateRegistrationPageURLs.landCommunications + "?useId=0");
 };
 
 export const iCanEditMyLandActivity = (): void => {
@@ -111,7 +106,7 @@ export const iCanSeeMySingleLandUse = (): void => {
   cy.get("main").should("not.contain", "Callsign");
 };
 
-const givenIHaveEnteredMyLandCommunicationDetails = (): void => {
+export const givenIHaveEnteredMyLandCommunicationDetails = (): void => {
   givenIHaveSelected("#portableVhfRadio");
   givenIHaveTyped(
     testLandUseData.communications.portableMMSI,

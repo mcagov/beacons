@@ -5,8 +5,8 @@ import { makeDraftRegistrationMapper } from "../../src/presenters/makeDraftRegis
 
 describe("makeDraftRegistrationMapper", () => {
   describe("formToDraftRegistration", () => {
-    it("given a useIndex and a BeaconUseFormMapper, returns a function that maps BeaconUse form properties to a DraftRegistration", () => {
-      const useIndex = 0;
+    it("given a useId and a BeaconUseFormMapper, returns a function that maps BeaconUse form properties to a DraftRegistration", () => {
+      const useId = 0;
       const beaconUseForm = {
         environment: Environment.LAND,
       };
@@ -19,7 +19,7 @@ describe("makeDraftRegistrationMapper", () => {
         }),
       };
       const draftRegistrationMapper = makeDraftRegistrationMapper(
-        useIndex,
+        useId,
         beaconUseFormMapper
       );
       const draftRegistration: DraftRegistration =
@@ -31,7 +31,7 @@ describe("makeDraftRegistrationMapper", () => {
     });
 
     it("does the same when there are two uses", () => {
-      const useIndex = 1;
+      const useId = 1;
       const beaconUseForm = {
         environment: Environment.LAND,
       };
@@ -44,7 +44,7 @@ describe("makeDraftRegistrationMapper", () => {
         }),
       };
       const draftRegistrationMapper = makeDraftRegistrationMapper(
-        useIndex,
+        useId,
         beaconUseFormMapper
       );
       const draftRegistration: DraftRegistration =
@@ -56,7 +56,7 @@ describe("makeDraftRegistrationMapper", () => {
     });
 
     it("and three uses", () => {
-      const useIndex = 2;
+      const useId = 2;
       const beaconUseForm = {
         environment: Environment.LAND,
       };
@@ -69,7 +69,7 @@ describe("makeDraftRegistrationMapper", () => {
         }),
       };
       const draftRegistrationMapper = makeDraftRegistrationMapper(
-        useIndex,
+        useId,
         beaconUseFormMapper
       );
       const draftRegistration: DraftRegistration =

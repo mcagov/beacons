@@ -39,10 +39,10 @@ describe("AdditionalBeaconUseSummary", () => {
 
   it("has a delete link to allow deleting the use", () => {
     const use: BeaconUse = getMockUse();
-    const useIndex = 0;
+    const useId = 0;
 
     render(
-      <AdditionalBeaconUseSummary use={use} index={useIndex} deleteUri={"#"} />
+      <AdditionalBeaconUseSummary use={use} index={useId} deleteUri={"#"} />
     );
 
     const deleteLink = screen.getByRole("link", { name: /delete/i });

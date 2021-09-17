@@ -67,7 +67,7 @@ describe("VesselCommunications", () => {
     const { container } = render(
       <VesselCommunications
         form={emptyVesselCommunicationsForm}
-        useIndex={0}
+        useId={0}
         showCookieBanner={false}
       />
     );
@@ -85,7 +85,7 @@ describe("VesselCommunications", () => {
     const { container } = render(
       <VesselCommunications
         form={emptyVesselCommunicationsForm}
-        useIndex={0}
+        useId={0}
         showCookieBanner={false}
       />
     );

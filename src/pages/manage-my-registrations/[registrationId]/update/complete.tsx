@@ -1,20 +1,20 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { ReturnToYourAccountSection } from "../../../components/domain/ReturnToYourAccountSection";
-import { Grid } from "../../../components/Grid";
-import { Layout } from "../../../components/Layout";
-import { Panel } from "../../../components/Panel";
-import { DraftRegistration } from "../../../entities/DraftRegistration";
-import { verifyFormSubmissionCookieIsSet } from "../../../lib/cookies";
-import { clearFormSubmissionCookie } from "../../../lib/middleware";
-import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../lib/middleware/withContainer";
-import { withSession } from "../../../lib/middleware/withSession";
-import { redirectUserTo } from "../../../lib/redirectUserTo";
-import { formSubmissionCookieId } from "../../../lib/types";
-import { GeneralPageURLs } from "../../../lib/urls";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-import { IUpdateRegistrationResult } from "../../../useCases/updateRegistration";
+import { ReturnToYourAccountSection } from "../../../../components/domain/ReturnToYourAccountSection";
+import { Grid } from "../../../../components/Grid";
+import { Layout } from "../../../../components/Layout";
+import { Panel } from "../../../../components/Panel";
+import { DraftRegistration } from "../../../../entities/DraftRegistration";
+import { verifyFormSubmissionCookieIsSet } from "../../../../lib/cookies";
+import { clearFormSubmissionCookie } from "../../../../lib/middleware";
+import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../lib/middleware/withSession";
+import { redirectUserTo } from "../../../../lib/redirectUserTo";
+import { formSubmissionCookieId } from "../../../../lib/types";
+import { GeneralPageURLs } from "../../../../lib/urls";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+import { IUpdateRegistrationResult } from "../../../../useCases/updateRegistration";
 
 interface ApplicationCompleteProps {
   reference: string;

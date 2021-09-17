@@ -16,6 +16,9 @@ import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/Bea
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
 import { UpdatePageURLs } from "../../../../lib/urls";
+import { Actions } from "../../../../lib/URLs/Actions";
+import { Pages } from "../../../../lib/URLs/Pages";
+import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
 import { toUpperCase } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
@@ -66,6 +69,12 @@ const BeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
         errorMessages={form.fields.manufacturer.errorMessages}
       />
       <BeaconHexId hexId={form.fields.hexId.value} />
+      <input
+        id="hexId"
+        type="hidden"
+        name="hexId"
+        value={form.fields.hexId.value}
+      />
     </BeaconsForm>
   );
 };
@@ -85,9 +94,11 @@ const BeaconHexId: FunctionComponent<{ hexId: string }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPageURL = UpdatePageURLs.beaconInformation + context.query.id;
-    // endpoint to start an update journey
-    // endpoint to start a register journey
+    const nextPageUrl = UrlBuilder.buildRegistrationUrl(
+      Actions.update,
+      Pages.summary,
+      context.query.registrationId as string
+    );
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
@@ -96,7 +107,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       ),
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
         context,
-        context.query.id as string
+        context.query.registrationId as string
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context,
@@ -112,7 +123,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper,
-        nextPageURL
+        nextPageUrl
       ),
     ]).execute();
   })

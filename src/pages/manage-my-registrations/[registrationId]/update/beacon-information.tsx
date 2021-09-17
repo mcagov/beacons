@@ -23,7 +23,10 @@ import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { queryParams, UpdatePageURLs } from "../../../../lib/urls";
+import { UpdatePageURLs } from "../../../../lib/urls";
+import { Actions } from "../../../../lib/URLs/Actions";
+import { Pages } from "../../../../lib/URLs/Pages";
+import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
 import { padNumberWithLeadingZeros } from "../../../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
 import { FormSubmission } from "../../../../presenters/formSubmission";
@@ -64,7 +67,9 @@ const UpdateBeaconInformationPage: FunctionComponent<DraftRegistrationPageProps>
 
     return (
       <BeaconsForm
-        previousPageUrl={UpdatePageURLs.beaconDetails + draftRegistration.id}
+        previousPageUrl={
+          UpdatePageURLs.registrationSummary + draftRegistration.id
+        }
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
         formErrors={form.errorSummary}
@@ -229,9 +234,13 @@ const LastServicedDate: FunctionComponent<DateInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const registrationId = context.query.id as string;
-    const nextPageUrl =
-      UpdatePageURLs.usesSummary + queryParams({ registrationId });
+    const registrationId = context.query.registrationId as string;
+
+    const nextPageUrl = UrlBuilder.buildRegistrationUrl(
+      Actions.update,
+      Pages.summary,
+      context.query.registrationId as string
+    );
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

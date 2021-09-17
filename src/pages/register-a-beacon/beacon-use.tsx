@@ -15,7 +15,7 @@ import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
-import { nextPageWithUseIndex } from "../../lib/nextPageWithUseIndexHelper";
+import { nextPageWithUseIdHelper } from "../../lib/nextPageWithUseIdHelper";
 import { CreateRegistrationPageURLs } from "../../lib/urls";
 import { ordinal } from "../../lib/writingStyle";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
@@ -25,7 +25,7 @@ import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_Then
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface BeaconUseForm {
@@ -35,14 +35,14 @@ interface BeaconUseForm {
 const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
-  useIndex,
+  useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = `What is the ${ordinal(
-    useIndex + 1
+    parseInt(useId) + 1
   )} use for this beacon?`;
   const pageText = (
     <>
-      {useIndex === 0 && (
+      {parseInt(useId) === 0 && (
         <GovUKBody>
           {
             "If you have multiple uses for this beacon, tell us about the main one first."
@@ -61,10 +61,10 @@ const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
     <BeaconsForm
       formErrors={form.errorSummary}
       previousPageUrl={
-        useIndex === 0
+        parseInt(useId) === 0
           ? CreateRegistrationPageURLs.beaconInformation
           : CreateRegistrationPageURLs.additionalUse +
-            `?useIndex=${useIndex - 1}`
+            `?useId=${parseInt(useId) - 1}`
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -116,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
         context
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
@@ -138,8 +138,8 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        nextPageWithUseIndex(
-          parseInt(context.query.useIndex as string),
+        nextPageWithUseIdHelper(
+          parseInt(context.query.useId as string),
           await nextPage(context)
         )
       ),
@@ -150,7 +150,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: parseInt(context.query.useIndex as string),
+  useId: context.query.useId as string,
 });
 
 const nextPage = async (
@@ -177,9 +177,9 @@ const mapper = (context: BeaconsGetServerSidePropsContext) => {
     },
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = parseInt(context.query.useId as string);
 
-  return makeDraftRegistrationMapper<BeaconUseForm>(useIndex, beaconUseMapper);
+  return makeDraftRegistrationMapper<BeaconUseForm>(useId, beaconUseMapper);
 };
 
 const validationRules = ({ environment }) => {
