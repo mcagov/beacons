@@ -1,5 +1,5 @@
 import { BeaconSearchSortOptions } from "../../src/gateways/interfaces/BeaconSearchGateway";
-import { getBeaconsForAccountHolder } from "./../../src/useCases/getBeaconsForAccountHolder";
+import { getBeaconsForAccountHolder } from "./../../src/useCases/getBeaconsByAccountHolderAndEmail";
 describe("getBeaconsForAccountHolder", () => {
   const getBeaconsByAccountHolderEmailMock = jest.fn();
   const beaconSearchGateway = {
