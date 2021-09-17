@@ -4,6 +4,7 @@ import { BeaconsApiAccountHolderGateway } from "../gateways/BeaconsApiAccountHol
 import { BeaconsApiBeaconGateway } from "../gateways/BeaconsApiBeaconGateway";
 import { BeaconsApiBeaconSearchGateway } from "../gateways/BeaconsApiBeaconSearchGateway";
 import { GovNotifyEmailServiceGateway } from "../gateways/GovNotifyEmailServiceGateway";
+import { LegacyBeaconGateway } from "../gateways/LegacyBeaconGateway";
 import { NextAuthUserSessionGateway } from "../gateways/NextAuthUserSessionGateway";
 import { RedisDraftRegistrationGateway } from "../gateways/RedisDraftRegistrationGateway";
 import { addNewUseToDraftRegistration } from "../useCases/addNewUseToDraftRegistration";
@@ -13,8 +14,8 @@ import { deleteCachedUse } from "../useCases/deleteCachedUse";
 import { deleteDraftRegistration } from "../useCases/deleteDraftRegistration";
 import { getAccountHolderId } from "../useCases/getAccountHolderId";
 import { getAccountHoldersRegistration } from "../useCases/getAccountHoldersRegistration";
+import { getBeaconsForAccountHolder } from "../useCases/getBeaconsByAccountHolderAndEmail";
 import { getBeaconsByAccountHolderId } from "../useCases/getBeaconsByAccountHolderId";
-import { getBeaconsForAccountHolder } from "../useCases/getBeaconsForAccountHolder";
 import { getDraftRegistration } from "../useCases/getDraftRegistration";
 import { getOrCreateAccountHolder } from "../useCases/getOrCreateAccountHolder";
 import { saveDraftRegistration } from "../useCases/saveDraftRegistration";
@@ -108,6 +109,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get basicAuthGateway() {
       return new BasicAuthGateway();
+    },
+    get legacyBeaconGateway() {
+      return new LegacyBeaconGateway(process.env.API_URL);
     },
 
     /* Mockable utilities */

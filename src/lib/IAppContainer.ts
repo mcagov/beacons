@@ -6,6 +6,7 @@ import { BeaconSearchGateway } from "../gateways/interfaces/BeaconSearchGateway"
 import { DraftRegistrationGateway } from "../gateways/interfaces/DraftRegistrationGateway";
 import { EmailServiceGateway } from "../gateways/interfaces/EmailServiceGateway";
 import { IBasicAuthGateway } from "../gateways/interfaces/IBasicAuthGateway";
+import { LegacyBeaconGatewayInterface } from "../gateways/interfaces/LegacyBeaconGateway";
 import { UserSessionGateway } from "../gateways/interfaces/UserSessionGateway";
 import { AddNewUseToDraftRegistrationFn } from "../useCases/addNewUseToDraftRegistration";
 import { AuthenticateUserFn } from "../useCases/authenticateUser";
@@ -13,8 +14,8 @@ import { DeleteBeaconFn } from "../useCases/deleteBeacon";
 import { DeleteCachedUseFn } from "../useCases/deleteCachedUse";
 import { GetAccountHolderIdFn } from "../useCases/getAccountHolderId";
 import { GetAccountHoldersRegistrationFn } from "../useCases/getAccountHoldersRegistration";
+import { GetBeaconsForAccountHolderFn } from "../useCases/getBeaconsByAccountHolderAndEmail";
 import { GetBeaconsByAccountHolderIdFn } from "../useCases/getBeaconsByAccountHolderId";
-import { GetBeaconsForAccountHolderFn } from "../useCases/getBeaconsForAccountHolder";
 import { GetOrCreateAccountHolderFn } from "../useCases/getOrCreateAccountHolder";
 import { SendConfirmationEmailFn } from "../useCases/sendConfirmationEmail";
 import { SubmitRegistrationFn } from "../useCases/submitRegistration";
@@ -50,6 +51,7 @@ export interface IAppContainer {
   /* Gateways */
   // Entities
   beaconGateway: BeaconGateway;
+  legacyBeaconGateway: LegacyBeaconGatewayInterface;
   beaconSearchGateway: BeaconSearchGateway;
   emailServiceGateway: EmailServiceGateway;
   accountHolderGateway: AccountHolderGateway;
