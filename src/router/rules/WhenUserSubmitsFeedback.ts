@@ -29,8 +29,6 @@ export class WhenUserSubmitsFeedback implements Rule {
     const form = await this.form();
     const success = await this.sendFeedbackEmail(form);
 
-    //TODO: Add randomly assigned id to url parameters
-    //TODO: Add method to generate destination URL
     if (success) {
       return redirectUserTo(FeedbackURLs.success);
     } else {
@@ -43,7 +41,7 @@ export class WhenUserSubmitsFeedback implements Rule {
   }
 
   // TODO: Properly type feedback
-  private async sendFeedbackEmail(feedback: any): Promise<boolean> {
+  private async sendFeedbackEmail(feedback: FormSubmission): Promise<boolean> {
     const gateway = this.context.container.emailServiceGateway;
     return sendFeedbackEmail(gateway, feedback);
   }

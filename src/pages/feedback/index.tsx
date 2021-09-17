@@ -13,6 +13,7 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { GeneralPageURLs } from "../../lib/urls";
+import { FormSubmission } from "../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { WhenUserSubmitsFeedback } from "../../router/rules/WhenUserSubmitsFeedback";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../router/rules/WhenUserViewsPage_ThenDisplayPage";
@@ -98,7 +99,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 export const validationRules = ({
   satisfactionRating,
   howCouldWeImproveThisService,
-}) => {
+}: FormSubmission): FormManager => {
   return new FormManager({
     satisfactionRating: new FieldManager(satisfactionRating),
     howCouldWeImproveThisService: new FieldManager(

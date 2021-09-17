@@ -1,15 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import { EmailServiceGateway } from "../gateways/interfaces/EmailServiceGateway";
+import { FormSubmission } from "../presenters/formSubmission";
 
 //TODO: Maybe restructure and add to the container object
 export const sendFeedbackEmail = async (
   emailServiceGateway: EmailServiceGateway,
-  //TODO: Properly type feedback
-  feedback: any
+  feedback: FormSubmission
 ): Promise<boolean> => {
-  // TODO: Use actual template id
   const templateId = process.env.GOV_NOTIFY_FEEDBACK_EMAIL_TEMPLATE;
-  // TODO: Use email pulled from environment variables
   const email = process.env.GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS;
 
   if (templateId) {
