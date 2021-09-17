@@ -45,5 +45,29 @@ describe("WhenUserSubmitsFeedback", () => {
 
     const mockForm = {};
     const mockParseFormDataAs = jest.fn().mockReturnValueOnce(mockForm);
+
+    const context = {
+      container: {
+        parseFormDataAs: mockParseFormDataAs,
+        emailServiceGateway: mockGateway,
+      },
+      req: {
+        method: "POST",
+      },
+    };
+
+    const rule = new WhenUserSubmitsFeedback(context as any, validationRules);
+
+    const condition = await rule.condition();
+    expect(condition).toBe(true);
+
+    const result = await rule.action();
+    expect(mockSendEmail).toHaveBeenCalledTimes(1);
+    expect(result).toStrictEqual({
+      redirect: {
+        statusCode: 303,
+        destination: FeedbackURLs.confirmation + "?success=false",
+      },
+    });
   });
 });
