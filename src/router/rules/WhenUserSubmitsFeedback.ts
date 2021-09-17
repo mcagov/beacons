@@ -1,13 +1,15 @@
 import { GetServerSidePropsResult } from "next";
-import { isValid } from "../../lib/form/lib";
 import { FormManagerFactory } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { FormSubmission } from "../../presenters/formSubmission";
+import { sendFeedbackEmail } from "../../useCases/sendFeedbackEmail";
 import { Rule } from "./Rule";
 
+//TODO: Currently no validation on the form, may want an error rule at some point
 export class WhenUserSubmitsFeedback implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
+  // Currently unused due to lack of validation
   private readonly validationRules: FormManagerFactory;
 
   constructor(
@@ -23,7 +25,12 @@ export class WhenUserSubmitsFeedback implements Rule {
   }
 
   async action(): Promise<GetServerSidePropsResult<any>> {
-    if (await this.formIsValid()) {
+    const form = await this.form();
+    const success = await this.sendFeedbackEmail(form);
+
+    if (success) {
+      return redirectUserTo("/");
+    } else {
       return redirectUserTo("/");
     }
   }
@@ -32,7 +39,9 @@ export class WhenUserSubmitsFeedback implements Rule {
     return await this.context.container.parseFormDataAs(this.context.req);
   }
 
-  private async formIsValid(): Promise<boolean> {
-    return isValid(await this.form(), this.validationRules);
+  // TODO: Properly type feedback
+  private async sendFeedbackEmail(feedback: any): Promise<boolean> {
+    const gateway = this.context.container.emailServiceGateway;
+    return sendFeedbackEmail(gateway, feedback);
   }
 }
