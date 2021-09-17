@@ -42,19 +42,13 @@ export interface YourBeaconRegistryAccountPageProps {
 export interface LegacyBeaconsNotificationProps {
   beacons: AccountListBeacon[];
   accountHolderDetails: AccountHolder;
-  // legacyBeaconApiGateway: LegacyBeaconGateway;
 }
 
 const LegacyBeaconsNotification: FunctionComponent<LegacyBeaconsNotificationProps> =
   ({
     beacons,
     accountHolderDetails,
-  }: // legacyBeaconApiGateway,
-  LegacyBeaconsNotificationProps): JSX.Element => {
-    // useEffect(() => {
-    //   legacyBeaconApiGateway.getLegacyBeacon(beacons[0].id)
-    // }, [beacons])
-
+  }: LegacyBeaconsNotificationProps): JSX.Element => {
     return (
       <div className="govuk-notification-banner">
         <div className="govuk-notification-banner__header">
@@ -402,18 +396,23 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
   return (
     <>
       <tr className="govuk-table__row">
-        <th scope="row" className="govuk-table__header">
-          <AnchorLink
-            href={UrlBuilder.buildRegistrationUrl(
-              Actions.update,
-              Pages.summary,
-              beacon.id
-            )}
-            classes="govuk-link--no-visited-state"
-          >
-            {beacon.hexId}
-          </AnchorLink>
-        </th>
+        {beacon.beaconStatus === "NEW" ? (
+          <th scope="row" className="govuk-table__header">
+            <AnchorLink
+              href={UrlBuilder.buildRegistrationUrl(
+                Actions.update,
+                Pages.summary,
+                beacon.id
+              )}
+              classes="govuk-link--no-visited-state"
+            >
+              {beacon.hexId}
+            </AnchorLink>
+          </th>
+        ) : (
+          <td className="govuk-table__cell">{beacon.hexId}</td>
+        )}
+
         <td className="govuk-table__cell">
           {beacon.ownerName ? beacon.ownerName : "-"}
         </td>
@@ -429,12 +428,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
               Delete
             </AnchorLink>
           ) : (
-            <AnchorLink
-              href={`${AccountPageURLs.checkLegacyBeacons}/${beacon.id}`}
-              classes="govuk-link--no-visited-state"
-            >
-              Review this beacon
-            </AnchorLink>
+            <td className="govuk-table__cell">-</td>
           )}
         </td>
       </tr>
