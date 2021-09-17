@@ -40,7 +40,6 @@ export class WhenUserSubmitsFeedback implements Rule {
     return await this.context.container.parseFormDataAs(this.context.req);
   }
 
-  // TODO: Properly type feedback
   private async sendFeedbackEmail(feedback: FormSubmission): Promise<boolean> {
     const gateway = this.context.container.emailServiceGateway;
     return sendFeedbackEmail(gateway, feedback);
