@@ -5,7 +5,9 @@ import {
   andIClickTheButtonContaining,
   iCanSeeAButtonContaining,
   iCanSeeNLinksContaining,
+  iHaveClickedOnAGivenLink,
   thenTheUrlShouldContain,
+  whenIClickContinue,
 } from "../selectors-and-assertions.spec";
 
 export const iCanEditMyEnvironment = (environment: Environment): void => {
@@ -35,4 +37,25 @@ export const iCanEditMyNUses = (n: number): void => {
   iCanSeeNLinksContaining(n, "Delete");
   iCanSeeAButtonContaining("Continue");
   iCanSeeAButtonContaining("Add another");
+};
+
+export const whenIGoToEditTheUseNumber = (useNumber: number): void => {
+  iHaveClickedOnAGivenLink(
+    `${CreateRegistrationPageURLs.environment}?useId=${useNumber}`
+  );
+  whenIClickContinue();
+};
+
+export const iAmOnTheLandBranchForUseNumber = (useNumber: number): void => {
+  thenTheUrlShouldContain(
+    `${CreateRegistrationPageURLs.activity}?useId=${useNumber}`
+  );
+};
+
+export const iAmOnTheMaritimeOrAviationBranchForUseNumber = (
+  useNumber: number
+): void => {
+  thenTheUrlShouldContain(
+    `${CreateRegistrationPageURLs.purpose}?useId=${useNumber}`
+  );
 };

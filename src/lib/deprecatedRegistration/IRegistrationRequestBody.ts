@@ -5,6 +5,7 @@ export interface IBeaconRequestBody {
   referenceNumber: string;
   manufacturerSerialNumber: string;
   chkCode: string;
+  csta: string;
   batteryExpiryDate: string;
   lastServicedDate: string;
   owner: IOwnerRequestBody;

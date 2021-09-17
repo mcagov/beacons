@@ -19,7 +19,7 @@ interface CheckYourAnswersBeaconUseSummaryProps {
 
 export const CheckYourAnswersBeaconUseSummary: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
   ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
-    const href = `${CreateRegistrationPageURLs.environment}?useIndex=${index}`;
+    const href = `${CreateRegistrationPageURLs.environment}?useId=${index}`;
     let aboutTheSection = <></>;
     let commsSection = <></>;
     switch (use.environment) {
@@ -82,7 +82,7 @@ export const CheckYourAnswersBeaconUseSummary: FunctionComponent<CheckYourAnswer
 
 const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
   ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
-    const href = `${CreateRegistrationPageURLs.aboutTheVessel}?useIndex=${index}`;
+    const href = `${CreateRegistrationPageURLs.aboutTheVessel}?useId=${index}`;
     return (
       <>
         <SummaryList>
@@ -144,7 +144,7 @@ const AboutTheVesselSubSection: FunctionComponent<CheckYourAnswersBeaconUseSumma
 
 const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
   ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
-    const href = `${CreateRegistrationPageURLs.aboutTheAircraft}?useIndex=${index}`;
+    const href = `${CreateRegistrationPageURLs.aboutTheAircraft}?useId=${index}`;
 
     return (
       <>
@@ -188,7 +188,7 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSumma
     use,
     href,
   }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
-    href = `${href}?useIndex=${index}`;
+    href = `${href}?useId=${index}`;
 
     return (
       <>
@@ -259,7 +259,7 @@ const CommunicationsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSumma
 
 const MoreDetailsSubSection: FunctionComponent<CheckYourAnswersBeaconUseSummaryProps> =
   ({ index, use }: CheckYourAnswersBeaconUseSummaryProps): JSX.Element => {
-    const href = `${CreateRegistrationPageURLs.moreDetails}?useIndex=${index}`;
+    const href = `${CreateRegistrationPageURLs.moreDetails}?useId=${index}`;
     return (
       <>
         <SummaryList>

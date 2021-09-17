@@ -16,11 +16,20 @@ export const theBackLinkGoesTo = (previousPageUrl: string): void => {
     .and("match", new RegExp(previousPageUrl, "i"));
 };
 
+export const theBackLinkContains = (...strings: string[]): void => {
+  strings.forEach((s) => {
+    cy.get(".govuk-back-link")
+      .should("have.attr", "href")
+      .and("match", new RegExp(s, "i"));
+  });
+};
+
 export const theBackLinkGoesTo_WithRegistrationId = (
   previousPageUrl: string
 ): void => {
   cy.url().then((currentPageUrl) => {
-    const urlArray = currentPageUrl.split("/");
+    const currentPageUrlWithoutQuery = new URL(currentPageUrl).pathname;
+    const urlArray = currentPageUrlWithoutQuery.split("/");
     const registrationId = urlArray[urlArray.length - 1];
     theBackLinkGoesTo(previousPageUrl + registrationId);
   });
@@ -178,6 +187,10 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
   cy.wait(1000);
 };
 
+export const givenIHaveWaitedForBeaconsApi = (ms = 10000): void => {
+  cy.wait(ms);
+};
+
 export const andIHaveEnteredNoInformation = (): void => null;
 
 export const whenIClickBack = (): void => {
@@ -209,4 +222,7 @@ export const thenThereAreNoErrors = (): void => {
 
 export const iCanEditAFieldContaining = (value: string): void => {
   cy.get(`input[value="${value}"]`);
+};
+export const iHaveClickedOnAGivenLink = (href: string): void => {
+  cy.get(`a[href="${href}"]`).click();
 };

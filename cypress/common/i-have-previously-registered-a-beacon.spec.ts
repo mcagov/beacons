@@ -56,7 +56,19 @@ export const iHavePreviouslyRegisteredABeacon = async (
 
     const accountHolder = await getOrCreateAccountHolder(container)(session);
 
-    await submitRegistration(container)(registration, accountHolder.id);
+    const { beaconRegistered } = await submitRegistration(container)(
+      registration,
+      accountHolder.id
+    );
+
+    if (beaconRegistered) {
+      cy.log("Registered a beacon with hex ID " + registration.hexId);
+    } else {
+      cy.log(
+        "There was a problem registering beacon with hex ID " +
+          registration.hexId
+      );
+    }
   });
 };
 

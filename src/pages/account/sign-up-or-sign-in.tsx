@@ -38,10 +38,10 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
   const pageText = (
     <GovUKBody>
       You will have an account if you registered a beacon online, using this
-      service after September 1st 2021.
+      service after 30 September 2021.
       <br />
       <br />
-      If you previously registered your beacon in any way prior to September 1st
+      If you previously registered your beacon in any way prior to 30 September
       2021, then you will need to create a new Beacon Registry Account.
       <br />
       <br />
@@ -61,7 +61,7 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
       previousPageUrl={GeneralPageURLs.start}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
-      includeUseIndex={false}
+      includeUseId={false}
     >
       <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
         {pageText}

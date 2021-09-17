@@ -43,7 +43,7 @@ describe("Activity", () => {
         <ActivityPage
           form={activityFormTestData}
           showCookieBanner={false}
-          useIndex={0}
+          useId={0}
           environment={environment}
           purpose={purpose}
         />

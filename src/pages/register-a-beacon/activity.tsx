@@ -21,6 +21,7 @@ import { DraftRegistrationPageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { nextPageWithUseIdHelper } from "../../lib/nextPageWithUseIdHelper";
 import { formSubmissionCookieId } from "../../lib/types";
 import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
@@ -32,7 +33,7 @@ import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_Then
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface ActivityForm {
@@ -50,7 +51,7 @@ interface ActivityForm {
 interface ActivityPageProps extends DraftRegistrationPageProps {
   environment: Environment;
   purpose: Purpose;
-  useIndex: number;
+  useId: number;
 }
 
 const ActivityPage: FunctionComponent<ActivityPageProps> = ({
@@ -58,7 +59,7 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
   showCookieBanner,
   environment,
   purpose,
-  useIndex,
+  useId,
 }: ActivityPageProps): JSX.Element => {
   const pageHeading = `Please select the ${
     environment === Environment.LAND
@@ -86,7 +87,7 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
       previousPageUrl={
         (environment === Environment.LAND
           ? CreateRegistrationPageURLs.environment
-          : CreateRegistrationPageURLs.purpose) + queryParams({ useIndex })
+          : CreateRegistrationPageURLs.purpose) + queryParams({ useId })
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -573,7 +574,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
         context
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
@@ -595,7 +596,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        await nextPage(context)
+        nextPageWithUseIdHelper(
+          parseInt(context.query.useId as string),
+          await nextPage(context)
+        )
       ),
     ]).execute();
   })
@@ -608,7 +612,7 @@ const nextPage = async (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId]
     )
-  ).uses[context.query.useIndex as string]?.environment;
+  ).uses[context.query.useId as string]?.environment;
 
   switch (environment) {
     case Environment.MARITIME:
@@ -629,12 +633,11 @@ const props = async (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId]
     )
-  ).uses[context.query.useIndex as string];
-
+  ).uses[context.query.useId as string];
   return {
     environment: (use?.environment as Environment) || null,
     purpose: (use?.purpose as Purpose) || null,
-    useIndex: parseInt(context.query.useIndex as string),
+    useId: parseInt(context.query.useId as string),
   };
 };
 
@@ -671,9 +674,9 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = parseInt(context.query.useId as string);
 
-  return makeDraftRegistrationMapper<ActivityForm>(useIndex, beaconUseMapper);
+  return makeDraftRegistrationMapper<ActivityForm>(useId, beaconUseMapper);
 };
 
 const validationRules = ({

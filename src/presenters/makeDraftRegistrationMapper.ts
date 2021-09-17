@@ -18,11 +18,11 @@ import { DraftRegistrationFormMapper } from "./DraftRegistrationFormMapper";
  *
  * To map a BeaconUse form submission to a DraftRegistration, it creates a
  * DraftRegistration with a uses array filled with empty uses up to the
- * specified useIndex.  The beaconUseFormMapper is then used to
+ * specified useId.  The beaconUseFormMapper is then used to
  * map the form submission to a BeaconUse, which is inserted at the parameter
- * useIndex.
+ * useId.
  *
- * For example, given a useIndex of 2 and a form submission of
+ * For example, given a useId of 2 and a form submission of
  * { vhfRadio: true }, the created DraftRegistrationFormMapper's
  * formToDraftRegistration function would return a DraftRegistration that looks
  * like this:
@@ -34,32 +34,26 @@ import { DraftRegistrationFormMapper } from "./DraftRegistrationFormMapper";
  * This can then be used to update an existing DraftRegistration via a merge
  * operation.
  *
- * @param useIndex The identifier of the BeaconUse being converted.
+ * @param useId The identifier of the BeaconUse being converted.
  * @param beaconUseFormMapper A BeaconUseFormMapper that converts a BeaconUse
  * entity to/from a form type, e.g. a VesselCommunicationsForm.
  * @returns DraftRegistrationFormMapper that converts a DraftRegistration
  * to/from a form type, e.g. a VesselCommunicationsForm.
  */
 export const makeDraftRegistrationMapper = <T>(
-  useIndex: number,
+  useId: number,
   beaconUseFormMapper: BeaconUseFormMapper<T>
 ): DraftRegistrationFormMapper<T> => ({
   formToDraftRegistration: (form) => {
     const emptyUse = {};
 
     return {
-      uses: new Array(useIndex >= 1 ? useIndex + 1 : 1)
+      uses: new Array(useId >= 1 ? useId + 1 : 1)
         .fill(emptyUse)
-        .fill(
-          beaconUseFormMapper.formToDraftBeaconUse(form),
-          useIndex,
-          useIndex + 1
-        ),
+        .fill(beaconUseFormMapper.formToDraftBeaconUse(form), useId, useId + 1),
     };
   },
   draftRegistrationToForm: (draftRegistration) => {
-    return beaconUseFormMapper.beaconUseToForm(
-      draftRegistration.uses[useIndex]
-    );
+    return beaconUseFormMapper.beaconUseToForm(draftRegistration.uses[useId]);
   },
 });

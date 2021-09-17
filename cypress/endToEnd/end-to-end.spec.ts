@@ -22,6 +22,7 @@ import { givenIHaveEnteredMyLandUse } from "../common/i-can-enter-use-informatio
 import {
   givenIHaveACookieSetAndHaveSignedInIVisit,
   givenIHaveClicked,
+  givenIHaveWaitedForBeaconsApi,
   thenTheUrlShouldContain,
 } from "../common/selectors-and-assertions.spec";
 
@@ -51,6 +52,7 @@ describe("As user with an account", () => {
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
     givenIHaveClicked(".govuk-button--start");
+    givenIHaveWaitedForBeaconsApi();
     thenTheUrlShouldContain(CreateRegistrationPageURLs.applicationComplete);
     givenIHaveClickedToGoBackToMyAccount();
     thenTheUrlShouldContain(AccountPageURLs.accountHome);

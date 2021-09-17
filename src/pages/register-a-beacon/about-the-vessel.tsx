@@ -13,6 +13,7 @@ import { DraftBeaconUsePageProps } from "../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
+import { nextPageWithUseIdHelper } from "../../lib/nextPageWithUseIdHelper";
 import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
 import { BeaconUseFormMapper } from "../../presenters/BeaconUseFormMapper";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
@@ -23,7 +24,7 @@ import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_Then
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface AboutTheVesselForm {
@@ -43,7 +44,7 @@ interface AboutTheVesselForm {
 const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
   showCookieBanner,
-  useIndex,
+  useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = "About the vessel, windfarm or rig/platform";
 
@@ -57,7 +58,7 @@ const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
   return (
     <BeaconsForm
       previousPageUrl={
-        CreateRegistrationPageURLs.activity + queryParams({ useIndex })
+        CreateRegistrationPageURLs.activity + queryParams({ useId })
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -246,11 +247,9 @@ const BeaconLocationInput: FunctionComponent<FormInputProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = CreateRegistrationPageURLs.vesselCommunications;
-
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
         context
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
@@ -272,7 +271,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        nextPage
+        nextPageWithUseIdHelper(
+          parseInt(context.query.useId as string),
+          CreateRegistrationPageURLs.vesselCommunications
+        )
       ),
     ]).execute();
   })
@@ -281,7 +283,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: parseInt(context.query.useIndex as string),
+  useId: context.query.useId as string,
 });
 
 const mapper = (
@@ -316,10 +318,10 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = parseInt(context.query.useId as string);
 
   return makeDraftRegistrationMapper<AboutTheVesselForm>(
-    useIndex,
+    useId,
     beaconUseMapper
   );
 };

@@ -81,7 +81,7 @@ describe("DeprecatedRegistration", () => {
 
   describe("updating beacon uses", () => {
     it("should update a beacon use with the values provided at the given index", () => {
-      const formData = { useIndex: 0, environment: Environment.MARITIME };
+      const formData = { useId: 0, environment: Environment.MARITIME };
       registration.update(formData);
 
       expect(registration.registration.uses.length).toBe(1);
@@ -103,7 +103,7 @@ describe("DeprecatedRegistration", () => {
 
     it("should update the latest beacon use if the index is greater than the length of the beacon use array", () => {
       const formData = {
-        useIndex: 100,
+        useId: 100,
         environment: Environment.MARITIME,
       };
       registration.update(formData);
@@ -121,32 +121,32 @@ describe("DeprecatedRegistration", () => {
       registration.update(formData);
 
       expect(
-        registration.getFlattenedRegistration({ useIndex: null }).environment
+        registration.getFlattenedRegistration({ useId: null }).environment
       ).toBe(Environment.MARITIME);
     });
 
     it("should flatten the registration and return use objects as top level keys", () => {
-      const formData = { useIndex: 0, environment: Environment.MARITIME };
+      const formData = { useId: 0, environment: Environment.MARITIME };
       registration.update(formData);
 
       expect(
-        registration.getFlattenedRegistration({ useIndex: 0 }).environment
+        registration.getFlattenedRegistration({ useId: 0 }).environment
       ).toBe(Environment.MARITIME);
     });
 
     it("should return the latest beacon use information if the index is greater than the length of the array", () => {
       registration.registration.uses.push(initBeaconUse());
-      const formData = { useIndex: 1, environment: Environment.MARITIME };
+      const formData = { useId: 1, environment: Environment.MARITIME };
       registration.update(formData);
 
       expect(
-        registration.getFlattenedRegistration({ useIndex: 100 }).environment
+        registration.getFlattenedRegistration({ useId: 100 }).environment
       ).toBe(Environment.MARITIME);
     });
 
     it("should remove the uses key from the flattened object", () => {
       expect(
-        registration.getFlattenedRegistration({ useIndex: 0 }).uses
+        registration.getFlattenedRegistration({ useId: 0 }).uses
       ).toBeUndefined();
     });
   });
@@ -266,7 +266,7 @@ describe("DeprecatedRegistration", () => {
 
     it("should serialise a second use", () => {
       registration.createUse();
-      registration.update({ useIndex: 1, ...formData });
+      registration.update({ useId: 1, ...formData });
       const json = registration.serialiseToAPI();
 
       expect(json.uses.length).toBe(2);

@@ -17,6 +17,7 @@ export const initBeacon = (): Registration => {
 
     manufacturerSerialNumber: "",
     chkCode: "",
+    csta: "",
     batteryExpiryDate: "",
     batteryExpiryDateMonth: "",
     batteryExpiryDateYear: "",

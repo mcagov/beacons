@@ -9,7 +9,7 @@ import {
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn().mockImplementation(() => ({
-    query: { useIndex: 1 },
+    query: { useId: 1 },
   })),
 }));
 
@@ -48,7 +48,7 @@ describe("BeaconsForm Component", () => {
         previousPageUrl={previousPageUrl}
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
-        includeUseIndex={true}
+        includeUseId={true}
       >
         {children}
       </BeaconsForm>
@@ -66,7 +66,7 @@ describe("BeaconsForm Component", () => {
         previousPageUrl={previousPageUrl}
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
-        includeUseIndex={false}
+        includeUseId={false}
       >
         {children}
       </BeaconsForm>

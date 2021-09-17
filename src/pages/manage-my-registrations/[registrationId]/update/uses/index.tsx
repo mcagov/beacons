@@ -1,45 +1,43 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, LinkButton } from "../../../../components/Button";
-import { AdditionalBeaconUseSummary } from "../../../../components/domain/AdditionalBeaconUseSummary";
-import { Grid } from "../../../../components/Grid";
-import { Layout } from "../../../../components/Layout";
-import { GovUKBody, PageHeading } from "../../../../components/Typography";
-import { DraftBeaconUse } from "../../../../entities/DraftBeaconUse";
-import { DraftRegistration } from "../../../../entities/DraftRegistration";
-import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../../lib/middleware/withContainer";
-import { withSession } from "../../../../lib/middleware/withSession";
-import { formSubmissionCookieId } from "../../../../lib/types";
+import { BackButton, LinkButton } from "../../../../../components/Button";
+import { AdditionalBeaconUseSummary } from "../../../../../components/domain/AdditionalBeaconUseSummary";
+import { Grid } from "../../../../../components/Grid";
+import { Layout } from "../../../../../components/Layout";
+import { GovUKBody, PageHeading } from "../../../../../components/Typography";
+import { DraftBeaconUse } from "../../../../../entities/DraftBeaconUse";
+import { DraftRegistration } from "../../../../../entities/DraftRegistration";
+import { BeaconsGetServerSidePropsContext } from "../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../../../../lib/types";
 import {
   ActionURLs,
-  CreateRegistrationPageURLs,
   ErrorPageURLs,
   GeneralPageURLs,
   queryParams,
-  UpdatePageURLs,
-} from "../../../../lib/urls";
-import { prettyUseName } from "../../../../lib/writingStyle";
-import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
-import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
-import { GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+} from "../../../../../lib/urls";
+import { Actions } from "../../../../../lib/URLs/Actions";
+import { Pages } from "../../../../../lib/URLs/Pages";
+import { UrlBuilder } from "../../../../../lib/URLs/UrlBuilder";
+import { UsePages } from "../../../../../lib/URLs/UsePages";
+import { prettyUseName } from "../../../../../lib/writingStyle";
+import { BeaconsPageRouter } from "../../../../../router/BeaconsPageRouter";
+import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
+import { GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable } from "../../../../../router/rules/GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
-interface AdditionalBeaconUseProps {
+interface UseSummaryProps {
   draftRegistration: DraftRegistration;
   uses: DraftBeaconUse[];
-  currentUseIndex: number;
   showCookieBanner?: boolean;
 }
 
-const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
+const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
   draftRegistration,
   uses,
-  currentUseIndex,
   showCookieBanner,
-}: AdditionalBeaconUseProps): JSX.Element => {
+}: UseSummaryProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
 
   return (
@@ -48,12 +46,11 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
         navigation={
           uses.length > 0 && (
             <BackButton
-              href={
-                CreateRegistrationPageURLs.moreDetails +
-                queryParams({
-                  useIndex: currentUseIndex,
-                })
-              }
+              href={UrlBuilder.buildRegistrationUrl(
+                Actions.update,
+                Pages.summary,
+                draftRegistration.id
+              )}
             />
           )
         }
@@ -75,7 +72,14 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                     buttonText="Add a use for this beacon"
                     href={
                       ActionURLs.addNewUseToDraftRegistration +
-                      queryParams({ nextPage: UpdatePageURLs.environment })
+                      queryParams({
+                        nextPage: UrlBuilder.buildUseUrl(
+                          Actions.update,
+                          UsePages.environment,
+                          draftRegistration.id,
+                          uses.length.toString()
+                        ),
+                      })
                     }
                   />
                 </>
@@ -101,7 +105,14 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                     buttonText="Add another use for this beacon"
                     href={
                       ActionURLs.addNewUseToDraftRegistration +
-                      queryParams({ nextPage: UpdatePageURLs.environment })
+                      queryParams({
+                        nextPage: UrlBuilder.buildUseUrl(
+                          Actions.update,
+                          UsePages.environment,
+                          draftRegistration.id,
+                          uses.length.toString()
+                        ),
+                      })
                     }
                     classes="govuk-button--secondary"
                   />
@@ -109,7 +120,9 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                   <br />
                   <LinkButton
                     buttonText="Continue"
-                    href={UpdatePageURLs.aboutBeaconOwner}
+                    href={UrlBuilder.buildUpdateRegistrationSummaryUrl(
+                      draftRegistration.id
+                    )}
                   />
                 </>
               )}
@@ -132,18 +145,14 @@ const confirmBeforeDelete = (
     yes:
       ActionURLs.deleteCachedUse +
       queryParams({
-        useIndex: index,
-        onSuccess:
-          UpdatePageURLs.usesSummary +
-          queryParams({
-            useIndex: index >= 1 ? index - 1 : 0,
-            registrationId: registrationId,
-          }),
+        useId: index,
+        onSuccess: UrlBuilder.buildUseSummaryUrl(
+          Actions.update,
+          registrationId
+        ),
         onFailure: ErrorPageURLs.serverError,
       }),
-    no:
-      UpdatePageURLs.usesSummary +
-      queryParams({ useIndex: index, registrationId: registrationId }),
+    no: UrlBuilder.buildUseSummaryUrl(Actions.update, registrationId),
   });
 
 export const getServerSideProps: GetServerSideProps = withSession(
@@ -156,12 +165,6 @@ export const getServerSideProps: GetServerSideProps = withSession(
         context,
         registrationId
       ),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
-        context
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
-      ),
       new GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable(
         context,
         props(context)
@@ -172,16 +175,13 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
 const props = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<Partial<AdditionalBeaconUseProps>> => {
+): Promise<Partial<UseSummaryProps>> => {
   const draftRegistration = await context.container.getDraftRegistration(
     context.req.cookies[formSubmissionCookieId]
   );
 
-  const useIndex = parseInt(context.query.useIndex as string);
-
   return {
     uses: draftRegistration.uses,
-    currentUseIndex: useIndex,
   };
 };
 

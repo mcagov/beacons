@@ -1,42 +1,42 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactNode } from "react";
 import {
   BeaconsForm,
   BeaconsFormFieldsetAndLegend,
-} from "../../../../components/BeaconsForm";
+} from "../../../../../../components/BeaconsForm";
 import {
   CheckboxList,
   CheckboxListItem,
-} from "../../../../components/Checkbox";
-import { FormGroup, FormHint } from "../../../../components/Form";
-import { Input } from "../../../../components/Input";
-import { TextareaCharacterCount } from "../../../../components/Textarea";
-import { AnchorLink, GovUKBody } from "../../../../components/Typography";
-import { FieldManager } from "../../../../lib/form/FieldManager";
-import { FormJSON, FormManager } from "../../../../lib/form/FormManager";
-import { Validators } from "../../../../lib/form/Validators";
-import { DraftBeaconUsePageProps } from "../../../../lib/handlePageRequest";
-import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../../lib/middleware/withContainer";
-import { withSession } from "../../../../lib/middleware/withSession";
-import {
-  ofcomLicenseUrl,
-  queryParams,
-  UpdatePageURLs,
-} from "../../../../lib/urls";
-import { BeaconUseFormMapper } from "../../../../presenters/BeaconUseFormMapper";
-import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
-import { FormSubmission } from "../../../../presenters/formSubmission";
-import { makeDraftRegistrationMapper } from "../../../../presenters/makeDraftRegistrationMapper";
-import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+} from "../../../../../../components/Checkbox";
+import { FormGroup, FormHint } from "../../../../../../components/Form";
+import { Input } from "../../../../../../components/Input";
+import { TextareaCharacterCount } from "../../../../../../components/Textarea";
+import { AnchorLink, GovUKBody } from "../../../../../../components/Typography";
+import { FieldManager } from "../../../../../../lib/form/FieldManager";
+import { FormJSON, FormManager } from "../../../../../../lib/form/FormManager";
+import { Validators } from "../../../../../../lib/form/Validators";
+import { DraftBeaconUsePageProps } from "../../../../../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../../../lib/middleware/withSession";
+import { ofcomLicenseUrl } from "../../../../../../lib/urls";
+import { Actions } from "../../../../../../lib/URLs/Actions";
+import { UrlBuilder } from "../../../../../../lib/URLs/UrlBuilder";
+import { UsePages } from "../../../../../../lib/URLs/UsePages";
+import { BeaconUseFormMapper } from "../../../../../../presenters/BeaconUseFormMapper";
+import { DraftRegistrationFormMapper } from "../../../../../../presenters/DraftRegistrationFormMapper";
+import { makeDraftRegistrationMapper } from "../../../../../../presenters/makeDraftRegistrationMapper";
+import { BeaconsPageRouter } from "../../../../../../router/BeaconsPageRouter";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
-interface LandCommunicationsForm {
+interface VesselCommunicationsForm {
+  callSign: string;
+  vhfRadio: string;
+  fixedVhfRadio: string;
+  fixedVhfRadioInput: string;
   portableVhfRadio: string;
   portableVhfRadioInput: string;
   satelliteTelephone: string;
@@ -48,14 +48,16 @@ interface LandCommunicationsForm {
   otherCommunicationInput: string;
 }
 
-const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
+const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   form,
+  draftRegistration,
   showCookieBanner,
-  useIndex,
+  useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
-  const pageHeading = "How can we communicate with you?";
+  const pageHeading =
+    "How can we communicate with you when you are in this vessel, rig or windfarm? (Optional)";
 
-  const pageText = (
+  const pageText: ReactNode = (
     <>
       <GovUKBody>
         This will be critical for Search and Rescue in an emergency.
@@ -72,21 +74,48 @@ const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
 
   return (
     <BeaconsForm
+      previousPageUrl={UrlBuilder.buildUseUrl(
+        Actions.update,
+        UsePages.aboutTheVessel,
+        draftRegistration.id,
+        useId
+      )}
       pageHeading={pageHeading}
-      previousPageUrl={UpdatePageURLs.activity + queryParams({ useIndex })}
-      formErrors={form.errorSummary}
       showCookieBanner={showCookieBanner}
+      formErrors={form.errorSummary}
     >
       <BeaconsFormFieldsetAndLegend
         pageHeading={pageHeading}
-        ariaDescribedBy="land-communication-types-hint"
+        ariaDescribedBy="vessel-communication-types-hint"
       >
         {pageText}
         <TypesOfCommunication form={form} />
       </BeaconsFormFieldsetAndLegend>
+      <CallSign value={form.fields.callSign.value} />
     </BeaconsForm>
   );
 };
+
+interface FormInputProps {
+  value: string;
+}
+
+const CallSign: FunctionComponent<FormInputProps> = ({
+  value,
+}: FormInputProps) => (
+  <>
+    <FormGroup className="govuk-!-margin-top-4">
+      <Input
+        id="callSign"
+        labelClassName="govuk-label--s"
+        label="Vessel Call Sign (optional)"
+        hintText="This is the unique Call Sign associated to this vessel"
+        defaultValue={value}
+        numOfChars={20}
+      />
+    </FormGroup>
+  </>
+);
 
 const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
   form,
@@ -94,12 +123,35 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
   form: FormJSON;
 }) => (
   <>
-    <FormHint forId="land-communication-types">
+    <FormHint forId="vessel-communication-types">
       Tick all that apply and provide as much detail as you can
     </FormHint>
 
     <FormGroup>
       <CheckboxList conditional={true}>
+        <CheckboxListItem
+          id="vhfRadio"
+          defaultChecked={form.fields.vhfRadio.value === "true"}
+          label="VHF Radio"
+        />
+        <CheckboxListItem
+          id="fixedVhfRadio"
+          label="VHF/DSC Radio"
+          defaultChecked={form.fields.fixedVhfRadio.value === "true"}
+          conditional={true}
+        >
+          <FormGroup
+            errorMessages={form.fields.fixedVhfRadioInput.errorMessages}
+          >
+            <Input
+              id="fixedVhfRadioInput"
+              label="Fixed MMSI number"
+              hintText="This is the unique MMSI number associated to the vessel, it is 9
+          digits long"
+              defaultValue={form.fields.fixedVhfRadioInput.value}
+            />
+          </FormGroup>
+        </CheckboxListItem>
         <CheckboxListItem
           id="portableVhfRadio"
           defaultChecked={form.fields.portableVhfRadio.value === "true"}
@@ -183,29 +235,30 @@ const TypesOfCommunication: FunctionComponent<{ form: FormJSON }> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const nextPage = UpdatePageURLs.moreDetails;
+    const { registrationId, useId } = context.query;
+
+    const nextPage = UrlBuilder.buildUseUrl(
+      Actions.update,
+      UsePages.moreDetails,
+      registrationId as string,
+      useId as string
+    );
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
-        context
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<LandCommunicationsForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<VesselCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
         props(context)
       ),
-      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<LandCommunicationsForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<VesselCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
         props(context)
       ),
-      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<LandCommunicationsForm>(
+      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<VesselCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
@@ -218,14 +271,18 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = (
   context: BeaconsGetServerSidePropsContext
 ): Partial<DraftBeaconUsePageProps> => ({
-  useIndex: parseInt(context.query.useIndex as string),
+  useId: context.query.useId as string,
 });
 
 const mapper = (
   context: BeaconsGetServerSidePropsContext
-): DraftRegistrationFormMapper<LandCommunicationsForm> => {
-  const beaconUseMapper: BeaconUseFormMapper<LandCommunicationsForm> = {
+): DraftRegistrationFormMapper<VesselCommunicationsForm> => {
+  const beaconUseMapper: BeaconUseFormMapper<VesselCommunicationsForm> = {
     formToDraftBeaconUse: (form) => ({
+      callSign: form.callSign,
+      vhfRadio: form.vhfRadio || "false",
+      fixedVhfRadio: form.fixedVhfRadio || "false",
+      fixedVhfRadioInput: form.fixedVhfRadioInput,
       portableVhfRadio: form.portableVhfRadio || "false",
       portableVhfRadioInput: form.portableVhfRadioInput,
       satelliteTelephone: form.satelliteTelephone || "false",
@@ -237,6 +294,10 @@ const mapper = (
       otherCommunicationInput: form.otherCommunicationInput,
     }),
     beaconUseToForm: (draftBeaconUse) => ({
+      callSign: draftBeaconUse.callSign,
+      vhfRadio: draftBeaconUse.vhfRadio,
+      fixedVhfRadio: draftBeaconUse.fixedVhfRadio,
+      fixedVhfRadioInput: draftBeaconUse.fixedVhfRadioInput,
       portableVhfRadio: draftBeaconUse.portableVhfRadio,
       portableVhfRadioInput: draftBeaconUse.portableVhfRadioInput,
       satelliteTelephone: draftBeaconUse.satelliteTelephone,
@@ -249,15 +310,19 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = parseInt(context.query.useId as string);
 
-  return makeDraftRegistrationMapper<LandCommunicationsForm>(
-    useIndex,
+  return makeDraftRegistrationMapper<VesselCommunicationsForm>(
+    useId,
     beaconUseMapper
   );
 };
 
 const validationRules = ({
+  callSign,
+  vhfRadio,
+  fixedVhfRadio,
+  fixedVhfRadioInput,
   portableVhfRadio,
   portableVhfRadioInput,
   satelliteTelephone,
@@ -267,13 +332,32 @@ const validationRules = ({
   mobileTelephoneInput2,
   otherCommunication,
   otherCommunicationInput,
-}: FormSubmission): FormManager => {
+}: VesselCommunicationsForm): FormManager => {
   const matchingConditionIsTrueForKey = (key: string) => ({
     dependsOn: key,
-    meetingCondition: (value: string) => value === "true",
+    meetingCondition: (value) => value === "true",
   });
 
   return new FormManager({
+    callSign: new FieldManager(callSign),
+    vhfRadio: new FieldManager(vhfRadio),
+    fixedVhfRadio: new FieldManager(fixedVhfRadio),
+    fixedVhfRadioInput: new FieldManager(
+      fixedVhfRadioInput,
+      [
+        Validators.required(
+          "We need your MMSI number if you have a fixed VHF/DSC radio"
+        ),
+        Validators.wholeNumber(
+          "Your fixed MMSI number must only include numbers 0 to 9, with no letters or other characters"
+        ),
+        Validators.isLength(
+          "Your fixed MMSI number must be exactly nine digits long",
+          9
+        ),
+      ],
+      [matchingConditionIsTrueForKey("fixedVhfRadio")]
+    ),
     portableVhfRadio: new FieldManager(portableVhfRadio),
     portableVhfRadioInput: new FieldManager(
       portableVhfRadioInput,
@@ -281,8 +365,12 @@ const validationRules = ({
         Validators.required(
           "We need your portable MMSI number if you have a portable VHF/DSC radio"
         ),
-        Validators.mmsiNumber(
-          "Your portable MMSI number must be exactly nine digits long and only include numbers 0 to 9, with no letters or other characters"
+        Validators.wholeNumber(
+          "Your portable MMSI number must only include numbers 0 to 9, with no letters or other characters"
+        ),
+        Validators.isLength(
+          "Your portable MMSI number must be exactly nine digits long",
+          9
         ),
       ],
       [matchingConditionIsTrueForKey("portableVhfRadio")]
@@ -329,4 +417,4 @@ const validationRules = ({
   });
 };
 
-export default LandCommunications;
+export default VesselCommunications;

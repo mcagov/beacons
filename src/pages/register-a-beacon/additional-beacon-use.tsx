@@ -20,19 +20,19 @@ import {
 import { prettyUseName } from "../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
+import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 interface AdditionalBeaconUseProps {
   uses: DraftBeaconUse[];
-  currentUseIndex: number;
+  currentUseId: number;
   showCookieBanner?: boolean;
 }
 
 const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
   uses,
-  currentUseIndex,
+  currentUseId,
   showCookieBanner,
 }: AdditionalBeaconUseProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
@@ -46,7 +46,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
               href={
                 CreateRegistrationPageURLs.moreDetails +
                 queryParams({
-                  useIndex: currentUseIndex,
+                  useId: currentUseId,
                 })
               }
             />
@@ -82,7 +82,7 @@ const AdditionalBeaconUse: FunctionComponent<AdditionalBeaconUseProps> = ({
                         use={use}
                         changeUri={
                           CreateRegistrationPageURLs.environment +
-                          "?useIndex=" +
+                          "?useId=" +
                           index
                         }
                         deleteUri={confirmBeforeDelete(use, index)}
@@ -118,24 +118,23 @@ const confirmBeforeDelete = (use: DraftBeaconUse, index: number) =>
     yes:
       ActionURLs.deleteCachedUse +
       queryParams({
-        useIndex: index,
+        useId: index,
         onSuccess:
           CreateRegistrationPageURLs.additionalUse +
           queryParams({
-            useIndex: index >= 1 ? index - 1 : 0,
+            useId: index >= 1 ? index - 1 : 0,
           }),
         onFailure: ErrorPageURLs.serverError,
       }),
     no:
-      CreateRegistrationPageURLs.additionalUse +
-      queryParams({ useIndex: index }),
+      CreateRegistrationPageURLs.additionalUse + queryParams({ useId: index }),
   });
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
+      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
         context
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
@@ -153,11 +152,11 @@ const props = async (
     context.req.cookies[formSubmissionCookieId]
   );
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = parseInt(context.query.useId as string);
 
   return {
     uses: draftRegistration.uses,
-    currentUseIndex: useIndex,
+    currentUseId: useId,
   };
 };
 

@@ -3,37 +3,41 @@ import React, { FunctionComponent } from "react";
 import {
   BeaconsForm,
   BeaconsFormFieldsetAndLegend,
-} from "../../../../components/BeaconsForm";
-import { FormGroup } from "../../../../components/Form";
-import { Input } from "../../../../components/Input";
-import { RadioList, RadioListItem } from "../../../../components/RadioList";
-import { GovUKBody } from "../../../../components/Typography";
-import { DraftBeaconUse } from "../../../../entities/DraftBeaconUse";
+} from "../../../../../../components/BeaconsForm";
+import { FormGroup } from "../../../../../../components/Form";
+import { Input } from "../../../../../../components/Input";
+import {
+  RadioList,
+  RadioListItem,
+} from "../../../../../../components/RadioList";
+import { GovUKBody } from "../../../../../../components/Typography";
+import { DraftBeaconUse } from "../../../../../../entities/DraftBeaconUse";
+import { DraftRegistration } from "../../../../../../entities/DraftRegistration";
 import {
   Activity,
   Environment,
   Purpose,
-} from "../../../../lib/deprecatedRegistration/types";
-import { FieldManager } from "../../../../lib/form/FieldManager";
-import { FormJSON, FormManager } from "../../../../lib/form/FormManager";
-import { Validators } from "../../../../lib/form/Validators";
-import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
-import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../../lib/middleware/withContainer";
-import { withSession } from "../../../../lib/middleware/withSession";
-import { formSubmissionCookieId } from "../../../../lib/types";
-import { queryParams, UpdatePageURLs } from "../../../../lib/urls";
-import { BeaconUseFormMapper } from "../../../../presenters/BeaconUseFormMapper";
-import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
-import { FormSubmission } from "../../../../presenters/formSubmission";
-import { makeDraftRegistrationMapper } from "../../../../presenters/makeDraftRegistrationMapper";
-import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+} from "../../../../../../lib/deprecatedRegistration/types";
+import { FieldManager } from "../../../../../../lib/form/FieldManager";
+import { FormJSON, FormManager } from "../../../../../../lib/form/FormManager";
+import { Validators } from "../../../../../../lib/form/Validators";
+import { DraftRegistrationPageProps } from "../../../../../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../../../../../lib/types";
+import { Actions } from "../../../../../../lib/URLs/Actions";
+import { UrlBuilder } from "../../../../../../lib/URLs/UrlBuilder";
+import { UsePages } from "../../../../../../lib/URLs/UsePages";
+import { BeaconUseFormMapper } from "../../../../../../presenters/BeaconUseFormMapper";
+import { DraftRegistrationFormMapper } from "../../../../../../presenters/DraftRegistrationFormMapper";
+import { FormSubmission } from "../../../../../../presenters/formSubmission";
+import { makeDraftRegistrationMapper } from "../../../../../../presenters/makeDraftRegistrationMapper";
+import { BeaconsPageRouter } from "../../../../../../router/BeaconsPageRouter";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface ActivityForm {
   environment: string;
@@ -49,16 +53,18 @@ interface ActivityForm {
 
 interface ActivityPageProps extends DraftRegistrationPageProps {
   environment: Environment;
+  draftRegistration: DraftRegistration;
   purpose: Purpose;
-  useIndex: number;
+  useId: string;
 }
 
 const ActivityPage: FunctionComponent<ActivityPageProps> = ({
   form,
+  draftRegistration,
   showCookieBanner,
   environment,
   purpose,
-  useIndex,
+  useId,
 }: ActivityPageProps): JSX.Element => {
   const pageHeading = `Please select the ${
     environment === Environment.LAND
@@ -84,9 +90,19 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
   return (
     <BeaconsForm
       previousPageUrl={
-        (environment === Environment.LAND
-          ? UpdatePageURLs.environment
-          : UpdatePageURLs.purpose) + queryParams({ useIndex })
+        environment === Environment.LAND
+          ? UrlBuilder.buildUseUrl(
+              Actions.update,
+              UsePages.environment,
+              draftRegistration.id,
+              useId
+            )
+          : UrlBuilder.buildUseUrl(
+              Actions.update,
+              UsePages.purpose,
+              draftRegistration.id,
+              useId
+            )
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -573,12 +589,6 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
-        context
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
-      ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<ActivityForm>(
         context,
         validationRules,
@@ -603,23 +613,27 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
 const nextPage = async (
   context: BeaconsGetServerSidePropsContext
-): Promise<UpdatePageURLs> => {
+): Promise<string> => {
   const environment = (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId]
     )
-  ).uses[context.query.useIndex as string]?.environment;
+  ).uses[context.query.useId as string]?.environment;
 
-  switch (environment) {
-    case Environment.MARITIME:
-      return UpdatePageURLs.aboutTheVessel;
-    case Environment.AVIATION:
-      return UpdatePageURLs.aboutTheAircraft;
-    case Environment.LAND:
-      return UpdatePageURLs.landCommunications;
-    default:
-      return UpdatePageURLs.environment;
-  }
+  const { registrationId, useId } = context.query;
+
+  const nextPageInFlow = {
+    [Environment.MARITIME]: UsePages.aboutTheVessel,
+    [Environment.AVIATION]: UsePages.aboutTheAircraft,
+    [Environment.LAND]: UsePages.landCommunications,
+  };
+
+  return UrlBuilder.buildUseUrl(
+    Actions.update,
+    nextPageInFlow[environment],
+    registrationId as string,
+    useId as string
+  );
 };
 
 const props = async (
@@ -629,12 +643,12 @@ const props = async (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId]
     )
-  ).uses[context.query.useIndex as string];
+  ).uses[context.query.useId as string];
 
   return {
     environment: (use?.environment as Environment) || null,
     purpose: (use?.purpose as Purpose) || null,
-    useIndex: parseInt(context.query.useIndex as string),
+    useId: context.query.useId as string,
   };
 };
 
@@ -671,9 +685,9 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = parseInt(context.query.useId as string);
 
-  return makeDraftRegistrationMapper<ActivityForm>(useIndex, beaconUseMapper);
+  return makeDraftRegistrationMapper<ActivityForm>(useId, beaconUseMapper);
 };
 
 const validationRules = ({

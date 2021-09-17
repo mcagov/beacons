@@ -68,6 +68,7 @@ export const singleBeaconApiResponseFixture: IBeaconResponse = deepFreeze({
       model: "Excelsior",
       manufacturerSerialNumber: "1407312904",
       chkCode: "456QWE",
+      csta: "CSTA",
       batteryExpiryDate: "2020-02-01T00:00",
       lastServicedDate: "2020-02-01T00:00",
     },

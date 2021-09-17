@@ -10,7 +10,7 @@ import { initBeacon, initBeaconUse } from "./registrationInitialisation";
 import { Activity } from "./types";
 
 type Indexes = {
-  useIndex: number;
+  useId: number;
 };
 
 export class DeprecatedRegistration {
@@ -26,8 +26,8 @@ export class DeprecatedRegistration {
     let flattenedRegistration = { ...this.registration };
     delete flattenedRegistration.uses;
 
-    const useIndex = this._parseUseIndex(indexes.useIndex);
-    const use = this.registration.uses[useIndex];
+    const useId = this._parseUseId(indexes.useId);
+    const use = this.registration.uses[useId];
     flattenedRegistration = { ...flattenedRegistration, ...use };
 
     return flattenedRegistration;
@@ -67,8 +67,8 @@ export class DeprecatedRegistration {
   }
 
   private _updateUse(formData: FormSubmission): void {
-    const useIndex = this._parseUseIndex(formData.useIndex);
-    const use = this.registration.uses[useIndex];
+    const useId = this._parseUseId(formData.useId);
+    const use = this.registration.uses[useId];
 
     Object.keys(formData).forEach((key: string) => {
       if (key in use) {
@@ -77,10 +77,10 @@ export class DeprecatedRegistration {
     });
   }
 
-  private _parseUseIndex(useIndex = 0): number {
-    useIndex = useIndex || 0;
+  private _parseUseId(useId = 0): number {
+    useId = useId || 0;
     const beaconUseLength = this.registration.uses.length - 1;
-    return Math.min(useIndex, beaconUseLength);
+    return Math.min(useId, beaconUseLength);
   }
 
   public serialiseToAPI(): IBeaconRequestBody {
@@ -109,6 +109,7 @@ export class DeprecatedRegistration {
 
       manufacturerSerialNumber: registration.manufacturerSerialNumber,
       chkCode: registration.chkCode,
+      csta: registration.csta,
       batteryExpiryDate: registration.batteryExpiryDate,
       lastServicedDate: registration.lastServicedDate,
     };

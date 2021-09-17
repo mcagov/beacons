@@ -3,30 +3,30 @@ import React, { FunctionComponent } from "react";
 import {
   BeaconsForm,
   BeaconsFormLabelHeading,
-} from "../../../../components/BeaconsForm";
-import { TextareaCharacterCount } from "../../../../components/Textarea";
-import { GovUKBody } from "../../../../components/Typography";
-import { Environment } from "../../../../lib/deprecatedRegistration/types";
-import { FieldManager } from "../../../../lib/form/FieldManager";
-import { FormManager } from "../../../../lib/form/FormManager";
-import { Validators } from "../../../../lib/form/Validators";
-import { DraftBeaconUsePageProps } from "../../../../lib/handlePageRequest";
-import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../../lib/middleware/withContainer";
-import { withSession } from "../../../../lib/middleware/withSession";
-import { formSubmissionCookieId } from "../../../../lib/types";
-import { queryParams, UpdatePageURLs } from "../../../../lib/urls";
-import { BeaconUseFormMapper } from "../../../../presenters/BeaconUseFormMapper";
-import { DraftRegistrationFormMapper } from "../../../../presenters/DraftRegistrationFormMapper";
-import { FormSubmission } from "../../../../presenters/formSubmission";
-import { makeDraftRegistrationMapper } from "../../../../presenters/makeDraftRegistrationMapper";
-import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
-import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
-import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
-import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse } from "../../../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+} from "../../../../../../components/BeaconsForm";
+import { TextareaCharacterCount } from "../../../../../../components/Textarea";
+import { GovUKBody } from "../../../../../../components/Typography";
+import { Environment } from "../../../../../../lib/deprecatedRegistration/types";
+import { FieldManager } from "../../../../../../lib/form/FieldManager";
+import { FormManager } from "../../../../../../lib/form/FormManager";
+import { Validators } from "../../../../../../lib/form/Validators";
+import { DraftBeaconUsePageProps } from "../../../../../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../../../lib/middleware/withSession";
+import { formSubmissionCookieId } from "../../../../../../lib/types";
+import { Actions } from "../../../../../../lib/URLs/Actions";
+import { UrlBuilder } from "../../../../../../lib/URLs/UrlBuilder";
+import { UsePages } from "../../../../../../lib/URLs/UsePages";
+import { BeaconUseFormMapper } from "../../../../../../presenters/BeaconUseFormMapper";
+import { DraftRegistrationFormMapper } from "../../../../../../presenters/DraftRegistrationFormMapper";
+import { FormSubmission } from "../../../../../../presenters/formSubmission";
+import { makeDraftRegistrationMapper } from "../../../../../../presenters/makeDraftRegistrationMapper";
+import { BeaconsPageRouter } from "../../../../../../router/BeaconsPageRouter";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
+import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
+import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 interface MoreDetailsForm {
   moreDetails: string;
@@ -34,22 +34,19 @@ interface MoreDetailsForm {
 
 interface MoreDetailsPageProps extends DraftBeaconUsePageProps {
   environment: Environment;
-  useIndex: number;
 }
 
 const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
   form,
+  draftRegistration,
   showCookieBanner,
   environment,
-  useIndex,
+  useId,
 }: MoreDetailsPageProps): JSX.Element => {
   const previousPageUrlMap = {
-    [Environment.MARITIME]:
-      UpdatePageURLs.vesselCommunications + queryParams({ useIndex }),
-    [Environment.AVIATION]:
-      UpdatePageURLs.aircraftCommunications + queryParams({ useIndex }),
-    [Environment.LAND]:
-      UpdatePageURLs.landCommunications + queryParams({ useIndex }),
+    [Environment.MARITIME]: UsePages.vesselCommunications,
+    [Environment.AVIATION]: UsePages.aircraftCommunications,
+    [Environment.LAND]: UsePages.landCommunications,
   };
 
   const pageHeading = "Provide more details that could help in a search";
@@ -75,7 +72,12 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl={previousPageUrlMap[environment]}
+      previousPageUrl={UrlBuilder.buildUseUrl(
+        Actions.update,
+        previousPageUrlMap[environment],
+        draftRegistration.id,
+        useId
+      )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
@@ -113,18 +115,15 @@ const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    const registrationId = context.req.cookies[formSubmissionCookieId];
-    const nextPage =
-      UpdatePageURLs.usesSummary + queryParams({ registrationId });
+    const { registrationId } = context.query;
+
+    const nextPage = UrlBuilder.buildUseSummaryUrl(
+      Actions.update,
+      registrationId as string
+    );
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIndexOrCreateNewUse(
-        context
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
-      ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<MoreDetailsForm>(
         context,
         validationRules,
@@ -154,11 +153,11 @@ const props = async (
     context.req.cookies[formSubmissionCookieId]
   );
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = context.query.useId as string;
 
   return {
-    environment: draftRegistration?.uses[useIndex]?.environment as Environment,
-    useIndex,
+    environment: draftRegistration?.uses[useId]?.environment as Environment,
+    useId: useId,
   };
 };
 
@@ -174,12 +173,9 @@ const mapper = (
     }),
   };
 
-  const useIndex = parseInt(context.query.useIndex as string);
+  const useId = parseInt(context.query.useId as string);
 
-  return makeDraftRegistrationMapper<MoreDetailsForm>(
-    useIndex,
-    beaconUseMapper
-  );
+  return makeDraftRegistrationMapper<MoreDetailsForm>(useId, beaconUseMapper);
 };
 
 const validationRules = ({ moreDetails }: FormSubmission): FormManager => {

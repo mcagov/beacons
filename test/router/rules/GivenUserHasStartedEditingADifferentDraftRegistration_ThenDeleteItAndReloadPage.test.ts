@@ -11,7 +11,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
           cookies: {},
         },
         query: {
-          id: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
+          registrationId: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
         },
       };
       const rule =
@@ -32,7 +32,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
           },
         },
         query: {
-          id: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
+          registrationId: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
         },
       } as any;
       const rule =
@@ -54,7 +54,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
           },
         },
         query: {
-          id: "user-is-already-editing-this-draft-registration",
+          registrationId: "user-is-already-editing-this-draft-registration",
         },
       } as any;
       const rule =
@@ -75,7 +75,8 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
               "user-has-started-doing-something-to-a-draft-registration",
           },
           query: {
-            id: "but-is-now-trying-to-do-something-to-a-different-draft-registration",
+            registrationId:
+              "but-is-now-trying-to-do-something-to-a-different-draft-registration",
           },
         },
       } as any;

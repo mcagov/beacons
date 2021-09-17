@@ -24,8 +24,10 @@ import {
   CreateRegistrationPageURLs,
   DeleteRegistrationPageURLs,
   queryParams,
-  UpdatePageURLs,
 } from "../../lib/urls";
+import { Actions } from "../../lib/URLs/Actions";
+import { Pages } from "../../lib/URLs/Pages";
+import { UrlBuilder } from "../../lib/URLs/UrlBuilder";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { Rule } from "../../router/rules/Rule";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
@@ -247,7 +249,11 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
       <tr className="govuk-table__row">
         <th scope="row" className="govuk-table__header">
           <AnchorLink
-            href={UpdatePageURLs.registrationSummary + beacon.id}
+            href={UrlBuilder.buildRegistrationUrl(
+              Actions.update,
+              Pages.summary,
+              beacon.id
+            )}
             classes="govuk-link--no-visited-state"
           >
             {beacon.hexId}
@@ -258,6 +264,16 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
         <td className="govuk-table__cell">{beacon.createdDate}</td>
         <td className="govuk-table__cell">{beacon.lastModifiedDate}</td>
         <td className="govuk-table__cell">
+          <AnchorLink
+            href={UrlBuilder.buildRegistrationUrl(
+              Actions.update,
+              Pages.summary,
+              beacon.id
+            )}
+            classes="govuk-link--no-visited-state"
+          >
+            Update
+          </AnchorLink>{" "}
           <AnchorLink
             href={confirmBeforeDelete(beacon.id)}
             classes="govuk-link--no-visited-state"

@@ -10,12 +10,13 @@ export const handler = withApiContainer(async (req: BeaconsApiRequest, res) => {
   const { nextPage } = req.query;
 
   await addNewUseToDraftRegistration(submissionId);
-  const newUseIndex =
-    (await getDraftRegistration(submissionId)).uses.length - 1;
+  const newUseId = (await getDraftRegistration(submissionId)).uses.length - 1;
 
   res.redirect(
-    (nextPage ? (nextPage as string) : CreateRegistrationPageURLs.environment) +
-      queryParams({ useIndex: newUseIndex })
+    nextPage
+      ? (nextPage as string)
+      : CreateRegistrationPageURLs.environment +
+          queryParams({ useId: newUseId })
   );
 });
 
