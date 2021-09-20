@@ -202,12 +202,13 @@ resource "aws_ecs_task_definition" "service" {
 }
 
 resource "aws_ecs_service" "service" {
-  name             = "${terraform.workspace}-beacons-service"
-  cluster          = aws_ecs_cluster.main.id
-  task_definition  = aws_ecs_task_definition.service.arn
-  desired_count    = var.service_count
-  launch_type      = "FARGATE"
-  platform_version = var.ecs_fargate_version
+  name                              = "${terraform.workspace}-beacons-service"
+  cluster                           = aws_ecs_cluster.main.id
+  task_definition                   = aws_ecs_task_definition.service.arn
+  desired_count                     = var.service_count
+  launch_type                       = "FARGATE"
+  platform_version                  = var.ecs_fargate_version
+  health_check_grace_period_seconds = 600
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
