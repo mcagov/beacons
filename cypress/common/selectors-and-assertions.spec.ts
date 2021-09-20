@@ -191,6 +191,14 @@ export const givenIHaveWaitedForBeaconsApi = (ms = 10000): void => {
   cy.wait(ms);
 };
 
+export const iPerformOperationAndWaitForThePageToReload = (
+  operation: () => void
+): void => {
+  cy.window().then((w) => (w["initial"] = true));
+  operation();
+  cy.window().its("initial").should("be.undefined");
+};
+
 export const andIHaveEnteredNoInformation = (): void => null;
 
 export const whenIClickBack = (): void => {

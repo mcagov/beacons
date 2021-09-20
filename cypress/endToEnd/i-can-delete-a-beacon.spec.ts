@@ -11,6 +11,7 @@ import {
   givenIHaveACookieSetAndHaveSignedIn,
   iCanSeeAButtonContaining,
   iHaveVisited,
+  iPerformOperationAndWaitForThePageToReload,
   thenIShouldSeeFormErrors,
   whenIClickTheButtonContaining,
   whenIHaveVisited,
@@ -54,7 +55,9 @@ describe("As an account holder", () => {
     thenIShouldSeeFormErrors("Enter a reason for deleting your registration");
 
     whenIEnterMyReasonInTheResultingTextbox("Lost overboard");
-    andIClickTheButtonContaining("Delete");
+    iPerformOperationAndWaitForThePageToReload(() =>
+      andIClickTheButtonContaining("Delete")
+    );
     iAmGivenAConfirmationMessage();
 
     whenIGoBackToAccountHome();
