@@ -187,10 +187,6 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
   cy.wait(1000);
 };
 
-export const givenIHaveWaitedForBeaconsApi = (ms = 10000): void => {
-  cy.wait(ms);
-};
-
 export const iPerformOperationAndWaitForThePageToReload = (
   operation: () => void
 ): void => {
