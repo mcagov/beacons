@@ -191,9 +191,10 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
  *
  * Performs an operation and ensures a new page has loaded before continuing.
  *
- * Will continue as soon as either:
- *  - A new page is loaded
- *  - @param maxTimeoutMs has elapsed
+ * Will continue as soon as a new page is loaded, up to the maximum timout
+ * set in @param maxTimeoutMs.
+ *
+ * Will fail if maxTimeoutMs is exceeded.
  *
  * @param operation - A callback function to perform
  * @param maxTimeoutMs - Max time to wait in ms
