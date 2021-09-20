@@ -187,12 +187,24 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
   cy.wait(1000);
 };
 
-export const iPerformOperationAndWaitForThePageToReload = (
-  operation: () => void
+/**
+ *
+ * Performs an operation and ensures a new page has loaded before continuing.
+ *
+ * Will continue as soon as either:
+ *  - A new page is loaded
+ *  - @param maxTimeoutMs has elapsed
+ *
+ * @param operation - A callback function to perform
+ * @param maxTimeoutMs - Max time to wait in ms
+ */
+export const iPerformOperationAndWaitForPageToReload = (
+  operation: () => void,
+  maxTimeoutMs = 10000
 ): void => {
   cy.window().then((w) => (w["initial"] = true));
   operation();
-  cy.window().its("initial").should("be.undefined");
+  cy.window().its("initial", { timeout: maxTimeoutMs }).should("be.undefined");
 };
 
 export const andIHaveEnteredNoInformation = (): void => null;
