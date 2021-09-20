@@ -201,7 +201,7 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
  */
 export const iPerformOperationAndWaitForPageToReload = (
   operation: () => void,
-  maxTimeoutMs = 10000
+  maxTimeoutMs = 20000
 ): void => {
   cy.window().then((w) => (w["initial"] = true));
   operation();
