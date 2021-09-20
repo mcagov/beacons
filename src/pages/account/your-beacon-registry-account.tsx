@@ -422,12 +422,24 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
         <td className="govuk-table__cell">{beacon.lastModifiedDate}</td>
         <td className="govuk-table__cell">
           {beacon.beaconStatus === "NEW" ? (
-            <AnchorLink
-              href={confirmBeforeDelete(beacon.id)}
-              classes="govuk-link--no-visited-state"
-            >
-              Delete
-            </AnchorLink>
+            <>
+              <AnchorLink
+                href={UrlBuilder.buildRegistrationUrl(
+                  Actions.update,
+                  Pages.summary,
+                  beacon.id
+                )}
+                classes="govuk-link--no-visited-state"
+              >
+                Update
+              </AnchorLink>
+              <AnchorLink
+                href={confirmBeforeDelete(beacon.id)}
+                classes="govuk-link--no-visited-state"
+              >
+                Delete
+              </AnchorLink>
+            </>
           ) : (
             <td className="govuk-table__cell">-</td>
           )}
