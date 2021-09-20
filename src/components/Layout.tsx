@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React, { FunctionComponent, ReactNode } from "react";
+import { FeedbackURLs } from "../lib/urls";
 import { CookieBanner } from "./CookieBanner";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -44,7 +45,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
       />
       <PhaseBanner phase="BETA">
         This is a new service – your{" "}
-        <a className="govuk-link" href="#">
+        <a className="govuk-link" href={FeedbackURLs.feedback}>
           feedback
         </a>{" "}
         will help us to improve it.

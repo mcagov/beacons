@@ -79,5 +79,11 @@ export enum ActionURLs {
   addNewUseToDraftRegistration = "/api/registration/add-new-use-to-draft",
 }
 
+export enum FeedbackURLs {
+  feedback = "/feedback",
+  success = "/feedback/success",
+  failure = "/feedback/failure",
+}
+
 export const queryParams = (queryParams: Record<string, any>): string =>
   "?" + new URLSearchParams(queryParams).toString();
