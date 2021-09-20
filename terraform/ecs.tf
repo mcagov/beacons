@@ -110,12 +110,13 @@ resource "aws_ecs_task_definition" "webapp" {
 }
 
 resource "aws_ecs_service" "webapp" {
-  name             = "${terraform.workspace}-beacons-webapp"
-  cluster          = aws_ecs_cluster.main.id
-  task_definition  = aws_ecs_task_definition.webapp.arn
-  desired_count    = var.webapp_count
-  launch_type      = "FARGATE"
-  platform_version = "1.4.0"
+  name                              = "${terraform.workspace}-beacons-webapp"
+  cluster                           = aws_ecs_cluster.main.id
+  task_definition                   = aws_ecs_task_definition.webapp.arn
+  desired_count                     = var.webapp_count
+  launch_type                       = "FARGATE"
+  platform_version                  = "1.4.0"
+  health_check_grace_period_seconds = 60
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
