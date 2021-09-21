@@ -20,7 +20,7 @@
     "cypress:watch": "cypress open --config watchForFileChanges=true",
     "cypress:run": "cypress run --spec 'cypress/integration/**/*.spec.ts'",
     "cypress:run:firefox": "cypress run --browser firefox",
-    "cypress:e2e": "cypress run --spec cypress/endToEnd/**"
+    "cypress:e2e": "cypress run --spec cypress/integration/endToEnd/**"
   },
   "husky": {
     "hooks": {
