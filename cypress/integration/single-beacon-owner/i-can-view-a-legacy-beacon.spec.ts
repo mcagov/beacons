@@ -4,7 +4,9 @@ import { legacyBeaconRequest } from "../../fixtures/migration";
 
 describe("As an account holder", () => {
   it("I can view a legacy beacon linked to my email", () => {
+    cy.log("test start success");
     givenIHaveSignedIn();
+    cy.log("signed in success");
     iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
     cy.visit("/account/your-beacon-registry-account");
   });
