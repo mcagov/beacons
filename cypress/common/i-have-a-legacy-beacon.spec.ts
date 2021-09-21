@@ -65,7 +65,7 @@ export const iHavePreviouslyRegisteredALegacyBeacon = async (
 
   cy.request(sessionEndpoint).then(async (response) => {
     const session = response.body;
-    const migrateLegacyBeaconEndpoint = "migrate/legacy-beacon";
+    const migrateLegacyBeaconEndpoint = "/migrate/legacy-beacon";
 
     const accountHolder = await getOrCreateAccountHolder(container)(session);
 
