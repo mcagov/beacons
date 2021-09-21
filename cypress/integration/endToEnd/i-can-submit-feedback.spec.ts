@@ -1,4 +1,4 @@
-import { GeneralPageURLs } from "../../src/lib/urls";
+import { GeneralPageURLs } from "../../../src/lib/urls";
 import {
   andIClickTheButtonContaining,
   givenIHaveVisited,
@@ -7,7 +7,7 @@ import {
   thenTheUrlPathShouldBe,
   whenISelect,
   whenIType,
-} from "../common/selectors-and-assertions.spec";
+} from "../../common/selectors-and-assertions.spec";
 
 describe("As any user", () => {
   it("I can submit feedback", () => {

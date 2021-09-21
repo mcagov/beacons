@@ -1,21 +1,21 @@
-import { DraftRegistration } from "../../src/entities/DraftRegistration";
-import { Registration } from "../../src/entities/Registration";
+import { DraftRegistration } from "../../../src/entities/DraftRegistration";
+import { Registration } from "../../../src/entities/Registration";
 import {
   Activity,
   Environment,
   Purpose,
-} from "../../src/lib/deprecatedRegistration/types";
-import { AccountPageURLs } from "../../src/lib/urls";
-import { Actions } from "../../src/lib/URLs/Actions";
-import { Resources } from "../../src/lib/URLs/Resources";
-import { formatDateLong, formatMonth } from "../../src/lib/writingStyle";
-import { iAmPromptedToConfirm } from "../common/i-am-prompted-to-confirm.spec";
-import { givenIHaveEnteredMyMaritimeUse } from "../common/i-can-enter-use-information/maritime.spec";
-import { iCanSeeMyExistingRegistrationHexId } from "../common/i-can-see-my-existing-registration-hex-id.spec";
+} from "../../../src/lib/deprecatedRegistration/types";
+import { AccountPageURLs } from "../../../src/lib/urls";
+import { Actions } from "../../../src/lib/URLs/Actions";
+import { Resources } from "../../../src/lib/URLs/Resources";
+import { formatDateLong, formatMonth } from "../../../src/lib/writingStyle";
+import { iAmPromptedToConfirm } from "../../common/i-am-prompted-to-confirm.spec";
+import { givenIHaveEnteredMyMaritimeUse } from "../../common/i-can-enter-use-information/maritime.spec";
+import { iCanSeeMyExistingRegistrationHexId } from "../../common/i-can-see-my-existing-registration-hex-id.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
   randomUkEncodedHexId,
-} from "../common/i-have-previously-registered-a-beacon.spec";
+} from "../../common/i-have-previously-registered-a-beacon.spec";
 import {
   andIClickContinue,
   andIClickTheButtonContaining,
@@ -30,11 +30,11 @@ import {
   whenIClickContinue,
   whenIClickTheButtonContaining,
   whenIHaveVisited,
-} from "../common/selectors-and-assertions.spec";
-import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
-import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
-import { anotherBeaconRegistration } from "../fixtures/anotherBeaconRegistration";
-import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
+} from "../../common/selectors-and-assertions.spec";
+import { theNumberOfUsesIs } from "../../common/there-are-n-uses.spec";
+import { whenIGoToDeleteMy } from "../../common/when-i-go-to-delete-my.spec";
+import { anotherBeaconRegistration } from "../../fixtures/anotherBeaconRegistration";
+import { singleBeaconRegistration } from "../../fixtures/singleBeaconRegistration";
 
 describe("As an account holder", () => {
   it("I can update one of my registrations", () => {

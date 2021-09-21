@@ -1,11 +1,11 @@
-import { Registration } from "../../src/entities/Registration";
-import { AccountPageURLs } from "../../src/lib/urls";
-import { prettyUseName } from "../../src/lib/writingStyle";
-import { iCanSeeMyExistingRegistrationHexId } from "../common/i-can-see-my-existing-registration-hex-id.spec";
+import { Registration } from "../../../src/entities/Registration";
+import { AccountPageURLs } from "../../../src/lib/urls";
+import { prettyUseName } from "../../../src/lib/writingStyle";
+import { iCanSeeMyExistingRegistrationHexId } from "../../common/i-can-see-my-existing-registration-hex-id.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
   randomUkEncodedHexId,
-} from "../common/i-have-previously-registered-a-beacon.spec";
+} from "../../common/i-have-previously-registered-a-beacon.spec";
 import {
   andIClickTheButtonContaining,
   givenIHaveACookieSetAndHaveSignedIn,
@@ -14,8 +14,8 @@ import {
   thenIShouldSeeFormErrors,
   whenIClickTheButtonContaining,
   whenIHaveVisited,
-} from "../common/selectors-and-assertions.spec";
-import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
+} from "../../common/selectors-and-assertions.spec";
+import { singleBeaconRegistration } from "../../fixtures/singleBeaconRegistration";
 
 describe("As an account holder", () => {
   it("I can delete one of my beacons", () => {

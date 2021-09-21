@@ -1,4 +1,4 @@
-import { AccountPageURLs } from "../../src/lib/urls";
+import { AccountPageURLs } from "../../../src/lib/urls";
 import {
   givenIHaveACookieSetAndHaveSignedInIVisit,
   givenIHaveClearedTheInput,
@@ -8,7 +8,7 @@ import {
   thenTheUrlShouldContain,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "../common/selectors-and-assertions.spec";
+} from "../../common/selectors-and-assertions.spec";
 
 describe("As an account holder", () => {
   const fullNameSelector = "#fullName";
