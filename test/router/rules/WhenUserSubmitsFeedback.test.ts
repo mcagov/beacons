@@ -6,11 +6,10 @@ import { validationRules } from "../../../src/pages/feedback";
 import { WhenUserSubmitsFeedback } from "../../../src/router/rules/WhenUserSubmitsFeedback";
 
 describe("WhenUserSubmitsFeedback", () => {
-  const templateId = "templateId";
+  const templateId = "ca84ec78-9c71-4247-b030-aa81d4b356d7";
   const email = "not-a-real-email@nope.com";
 
   beforeAll(() => {
-    process.env.GOV_NOTIFY_FEEDBACK_EMAIL_TEMPLATE = templateId;
     process.env.GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS = email;
   });
 
