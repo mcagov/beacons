@@ -16,25 +16,6 @@ resource "aws_secretsmanager_secret_version" "gov_notify_api_key" {
   secret_string = var.gov_notify_api_key
 }
 
-resource "aws_secretsmanager_secret" "gov_notify_customer_email_template" {
-  name = "${terraform.workspace}_gov_notify_customer_email_template"
-}
-
-resource "aws_secretsmanager_secret_version" "gov_notify_customer_email_template" {
-  secret_id     = aws_secretsmanager_secret.gov_notify_customer_email_template.id
-  secret_string = var.gov_notify_customer_email_template
-}
-
-resource "aws_secretsmanager_secret" "gov_notify_feedback_email_template" {
-  name = "${terraform.workspace}_gov_notify_feedback_email_template"
-  tags = module.beacons_label.tags
-}
-
-resource "aws_secretsmanager_secret_version" "gov_notify_feedback_email_template" {
-  secret_id     = aws_secretsmanager_secret.gov_notify_feedback_email_template.id
-  secret_string = var.gov_notify_feedback_email_template
-}
-
 resource "aws_secretsmanager_secret" "gov_notify_feedback_email_address" {
   name = "${terraform.workspace}_gov_notify_feedback_email_address"
   tags = module.beacons_label.tags
