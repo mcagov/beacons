@@ -6,7 +6,7 @@ import { validationRules } from "../../../src/pages/feedback";
 import { WhenUserSubmitsFeedback } from "../../../src/router/rules/WhenUserSubmitsFeedback";
 
 describe("WhenUserSubmitsFeedback", () => {
-  const templateId = "ca84ec78-9c71-4247-b030-aa81d4b356d7";
+  const templateId = "87dc177e-942f-4484-95ba-18580e937280";
   const email = "not-a-real-email@nope.com";
 
   beforeAll(() => {
