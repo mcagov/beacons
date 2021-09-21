@@ -8,7 +8,7 @@ export const sendFeedbackEmail = async (
 ): Promise<boolean> => {
   const feedbackEmailTemplateId = "87dc177e-942f-4484-95ba-18580e937280";
   const feedbackDestinationEmailAddress =
-    process.env.GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS || "ukbeacons@mcga.gov.uk";
+    process.env.GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS;
 
   return emailServiceGateway.sendEmail(
     feedbackEmailTemplateId,
