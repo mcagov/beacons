@@ -33,3 +33,4 @@ enable_alerts                           = true
 api_service_minimum_task_count          = 1
 webapp_minimum_task_count               = 1
 webapp_fqdn                             = "production.406beacons.com"
+gov_notify_feedback_email_address       = "ukbeacons@mcga.gov.uk"
