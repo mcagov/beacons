@@ -432,7 +432,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
                 classes="govuk-link--no-visited-state"
               >
                 Update
-              </AnchorLink>
+              </AnchorLink>{" "}
               <AnchorLink
                 href={confirmBeforeDelete(beacon.id)}
                 classes="govuk-link--no-visited-state"
