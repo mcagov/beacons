@@ -199,13 +199,17 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
  * @param operation - A callback function to perform
  * @param maxTimeoutMs - Max time to wait in ms
  */
-export const iPerformOperationAndWaitForPageToReload = (
+export const iPerformOperationAndWaitForNewPageToLoad = (
   operation: () => void,
   maxTimeoutMs = 20000
 ): void => {
-  cy.window().then((w) => (w["initial"] = true));
-  operation();
-  cy.window().its("initial", { timeout: maxTimeoutMs }).should("be.undefined");
+  cy.location().then((previousPage) => {
+    operation();
+    cy.location("pathname", { timeout: maxTimeoutMs }).should(
+      "not.equal",
+      previousPage.pathname
+    );
+  });
 };
 
 export const andIHaveEnteredNoInformation = (): void => null;

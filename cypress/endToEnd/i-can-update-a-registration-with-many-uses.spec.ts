@@ -38,7 +38,7 @@ import {
   givenIHaveSelected,
   givenIHaveSignedIn,
   iCanSeeAPageHeadingThatContains,
-  iPerformOperationAndWaitForPageToReload,
+  iPerformOperationAndWaitForNewPageToLoad,
   theBackLinkContains,
   thenTheUrlShouldContain,
   whenIClickBack,
@@ -96,7 +96,7 @@ describe("As an account holder", () => {
     iCanSeeMyUse(testRegistration.uses[0]);
     iCanSeeMyLandUse();
 
-    iPerformOperationAndWaitForPageToReload(() =>
+    iPerformOperationAndWaitForNewPageToLoad(() =>
       whenIClickTheButtonContaining("Accept and send")
     );
     iCanSeeAPageHeadingThatContains(

@@ -23,7 +23,7 @@ import {
   givenIHaveACookieSetAndHaveSignedInIVisit,
   givenIHaveClicked,
   givenIHaveClickedTheButtonContaining,
-  iPerformOperationAndWaitForPageToReload,
+  iPerformOperationAndWaitForNewPageToLoad,
   thenTheUrlShouldContain,
 } from "../common/selectors-and-assertions.spec";
 
@@ -52,7 +52,7 @@ describe("As user with an account", () => {
     givenIHaveEnteredMyPersonalDetails();
     givenIHaveEnteredMyAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
-    iPerformOperationAndWaitForPageToReload(() =>
+    iPerformOperationAndWaitForNewPageToLoad(() =>
       givenIHaveClickedTheButtonContaining("Accept and send")
     );
     thenTheUrlShouldContain(CreateRegistrationPageURLs.applicationComplete);

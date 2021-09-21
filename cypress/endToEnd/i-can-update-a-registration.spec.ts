@@ -22,7 +22,7 @@ import {
   givenIHaveSignedIn,
   iCanEditAFieldContaining,
   iCanSeeAPageHeadingThatContains,
-  iPerformOperationAndWaitForPageToReload,
+  iPerformOperationAndWaitForNewPageToLoad,
   theBackLinkContains,
   theBackLinkGoesTo,
   thenTheUrlShouldContain,
@@ -53,7 +53,7 @@ describe("As an account holder", () => {
     iCanUpdateTheDetailsOfMyExistingRegistration(firstRegistrationToUpdate);
     iCanSeeTheDetailsOfMyRegistration(firstUpdatedRegistration as Registration);
 
-    iPerformOperationAndWaitForPageToReload(() =>
+    iPerformOperationAndWaitForNewPageToLoad(() =>
       whenIClickTheButtonContaining("Accept and send")
     );
     iCanSeeAPageHeadingThatContains(
@@ -83,7 +83,7 @@ describe("As an account holder", () => {
     iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges();
     iCanUpdateTheDetailsOfMyExistingRegistration(secondRegistrationToUpdate);
 
-    iPerformOperationAndWaitForPageToReload(() =>
+    iPerformOperationAndWaitForNewPageToLoad(() =>
       whenIClickTheButtonContaining("Accept and send")
     );
     iCanSeeAPageHeadingThatContains(
