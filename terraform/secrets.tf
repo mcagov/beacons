@@ -1,6 +1,5 @@
 resource "aws_secretsmanager_secret" "db_password" {
   name = "${terraform.workspace}_db_password"
-  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "db_password" {
@@ -10,7 +9,6 @@ resource "aws_secretsmanager_secret_version" "db_password" {
 
 resource "aws_secretsmanager_secret" "gov_notify_api_key" {
   name = "${terraform.workspace}_gov_notify_api_key"
-  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "gov_notify_api_key" {
@@ -20,7 +18,6 @@ resource "aws_secretsmanager_secret_version" "gov_notify_api_key" {
 
 resource "aws_secretsmanager_secret" "gov_notify_customer_email_template" {
   name = "${terraform.workspace}_gov_notify_customer_email_template"
-  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "gov_notify_customer_email_template" {
@@ -50,7 +47,6 @@ resource "aws_secretsmanager_secret_version" "gov_notify_feedback_email_address"
 
 resource "aws_secretsmanager_secret" "basic_auth" {
   name = "${terraform.workspace}_basic_auth"
-  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "basic_auth" {
@@ -60,7 +56,6 @@ resource "aws_secretsmanager_secret_version" "basic_auth" {
 
 resource "aws_secretsmanager_secret" "webapp_client_secret" {
   name = "${terraform.workspace}_webapp_client_secret"
-  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "webapp_client_secret" {
@@ -70,7 +65,6 @@ resource "aws_secretsmanager_secret_version" "webapp_client_secret" {
 
 resource "aws_secretsmanager_secret" "webapp_b2c_client_secret" {
   name = "${terraform.workspace}_b2c_client_secret"
-  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "webapp_b2c_client_secret" {
@@ -80,7 +74,6 @@ resource "aws_secretsmanager_secret_version" "webapp_b2c_client_secret" {
 
 resource "aws_secretsmanager_secret" "webapp_b2c_next_auth_jwt_secret" {
   name = "${terraform.workspace}_b2c_next_auth_jwt_secret"
-  tags = module.beacons_label.tags
 }
 
 resource "aws_secretsmanager_secret_version" "webapp_b2c_next_auth_jwt_secret" {

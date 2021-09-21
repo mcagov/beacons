@@ -8,11 +8,9 @@ data "aws_ecr_repository" "service" {
 
 resource "aws_ecs_cluster" "main" {
   name = "${terraform.workspace}-mca-beacons-cluster"
-  tags = module.beacons_label.tags
 }
 
 resource "aws_ecs_task_definition" "webapp" {
-  tags                     = module.beacons_label.tags
   family                   = "${terraform.workspace}-beacons-webapp-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
@@ -112,7 +110,6 @@ resource "aws_ecs_task_definition" "webapp" {
 }
 
 resource "aws_ecs_service" "webapp" {
-  tags             = module.beacons_label.tags
   name             = "${terraform.workspace}-beacons-webapp"
   cluster          = aws_ecs_cluster.main.id
   task_definition  = aws_ecs_task_definition.webapp.arn
@@ -139,7 +136,6 @@ resource "aws_ecs_service" "webapp" {
 }
 
 resource "aws_ecs_task_definition" "service" {
-  tags                     = module.beacons_label.tags
   family                   = "${terraform.workspace}-beacons-service-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
@@ -175,6 +171,18 @@ resource "aws_ecs_task_definition" "service" {
       {
         name : "SPRING_PROFILES_ACTIVE",
         value : var.service_spring_active_profiles
+      },
+      {
+        name : "BEACONS_SEARCH_VIEW_SCHEDULER_TIMEOUT",
+        value : var.service_beacon_search_scheduler_timeout
+      },
+      {
+        name : "AZURE_AD_API_CLIENT_ID",
+        value : var.service_azure_ad_api_id
+      },
+      {
+        name : "AZURE_AD_API_ID_URI",
+        value : "api://${var.service_azure_ad_api_id}"
       }
     ],
     logConfiguration : {
@@ -194,7 +202,6 @@ resource "aws_ecs_task_definition" "service" {
 }
 
 resource "aws_ecs_service" "service" {
-  tags             = module.beacons_label.tags
   name             = "${terraform.workspace}-beacons-service"
   cluster          = aws_ecs_cluster.main.id
   task_definition  = aws_ecs_task_definition.service.arn

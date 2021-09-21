@@ -1,12 +1,10 @@
 resource "aws_elasticache_subnet_group" "main" {
   name       = "${terraform.workspace}-mca-beacons-elasticache-subnet-group"
   subnet_ids = aws_subnet.app.*.id
-  tags       = module.beacons_label.tags
 }
 
 resource "aws_security_group" "elasticache" {
   name        = "${terraform.workspace}-mca-beacons-elasticache-security-group"
-  tags        = module.beacons_label.tags
   description = "Allows inbound access from the task only"
   vpc_id      = aws_vpc.main.id
 
@@ -26,7 +24,6 @@ resource "aws_security_group" "elasticache" {
 }
 
 resource "aws_elasticache_cluster" "main" {
-  tags                 = module.beacons_label.tags
   cluster_id           = "${terraform.workspace}-mca-beacons-elasticache-cluster"
   engine               = "redis"
   node_type            = "cache.t2.micro"

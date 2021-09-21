@@ -1,7 +1,6 @@
 # ALB Security Group: Edit to restrict access to the application
 resource "aws_security_group" "lb" {
   name        = "${terraform.workspace}-beacons-load-balancer-security-group"
-  tags        = module.beacons_label.tags
   description = "Allows inbound traffic to the ALB"
   vpc_id      = aws_vpc.main.id
 
@@ -31,7 +30,6 @@ resource "aws_security_group" "lb" {
 // TODO: Separate ecs_tasks into a single security group for each of Webapp, API
 resource "aws_security_group" "ecs_tasks" {
   name        = "${terraform.workspace}-beacons-ecs-tasks-security-group"
-  tags        = module.beacons_label.tags
   description = "Allows inbound access from the ALB only"
   vpc_id      = aws_vpc.main.id
 
@@ -69,7 +67,6 @@ resource "aws_security_group" "ecs_tasks" {
 
 resource "aws_security_group" "db" {
   name        = "${terraform.workspace}-beacons-rds-security-group"
-  tags        = module.beacons_label.tags
   description = "Allows inbound access from the ECS tasks only"
   vpc_id      = aws_vpc.main.id
 
@@ -91,7 +88,6 @@ resource "aws_security_group" "db" {
 # Allows traffic from the ECS cluster to VPC endpoints for ECR images
 resource "aws_security_group" "vpc_endpoints" {
   name        = "${terraform.workspace}-beacons-ecr-vpc-endpoints-security-group"
-  tags        = module.beacons_label.tags
   description = "Allows inbound access from the ECS tasks"
   vpc_id      = aws_vpc.main.id
 

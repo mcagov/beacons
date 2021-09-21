@@ -7,6 +7,10 @@ on:
         description: "Deploy dev onto staging? (true/false)"
         required: false
         default: "true"
+      enableAlerts:
+        description: "Enable alerts? (true/false)"
+        required: false
+        default: "false"
 
 env:
   TERRAFORM_VERSION: 1.0.0
@@ -64,4 +68,7 @@ jobs:
           TF_VAR_webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.JWT_SECRET }}
           TF_VAR_service_basic_auth_username: ${{ secrets.SERVICE_BASIC_AUTH_USERNAME }}
           TF_VAR_service_basic_auth_password: ${{ secrets.SERVICE_BASIC_AUTH_PASSWORD }}
+          TF_VAR_alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
+          TF_VAR_aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+          TF_VAR_enable_alerts: ${{ github.event.inputs.enableAlerts }}
         run: terraform apply -auto-approve -var-file=staging.tfvars -var-file=staging.images.tfvars
