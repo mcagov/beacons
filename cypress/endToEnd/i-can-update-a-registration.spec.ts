@@ -20,9 +20,9 @@ import {
   andIClickContinue,
   andIClickTheButtonContaining,
   givenIHaveSignedIn,
-  givenIHaveWaitedForBeaconsApi,
   iCanEditAFieldContaining,
   iCanSeeAPageHeadingThatContains,
+  iPerformOperationAndWaitForNewPageToLoad,
   theBackLinkContains,
   theBackLinkGoesTo,
   thenTheUrlShouldContain,
@@ -53,8 +53,9 @@ describe("As an account holder", () => {
     iCanUpdateTheDetailsOfMyExistingRegistration(firstRegistrationToUpdate);
     iCanSeeTheDetailsOfMyRegistration(firstUpdatedRegistration as Registration);
 
-    whenIClickTheButtonContaining("Accept and send");
-    givenIHaveWaitedForBeaconsApi(10000);
+    iPerformOperationAndWaitForNewPageToLoad(() =>
+      whenIClickTheButtonContaining("Accept and send")
+    );
     iCanSeeAPageHeadingThatContains(
       "Your beacon registration has been updated"
     );
@@ -82,8 +83,9 @@ describe("As an account holder", () => {
     iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges();
     iCanUpdateTheDetailsOfMyExistingRegistration(secondRegistrationToUpdate);
 
-    whenIClickTheButtonContaining("Accept and send");
-    givenIHaveWaitedForBeaconsApi(10000);
+    iPerformOperationAndWaitForNewPageToLoad(() =>
+      whenIClickTheButtonContaining("Accept and send")
+    );
     iCanSeeAPageHeadingThatContains(
       "Your beacon registration has been updated"
     );

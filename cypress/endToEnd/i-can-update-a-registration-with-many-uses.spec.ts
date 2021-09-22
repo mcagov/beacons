@@ -37,8 +37,8 @@ import {
   andIClickContinue,
   givenIHaveSelected,
   givenIHaveSignedIn,
-  givenIHaveWaitedForBeaconsApi,
   iCanSeeAPageHeadingThatContains,
+  iPerformOperationAndWaitForNewPageToLoad,
   theBackLinkContains,
   thenTheUrlShouldContain,
   whenIClickBack,
@@ -96,8 +96,9 @@ describe("As an account holder", () => {
     iCanSeeMyUse(testRegistration.uses[0]);
     iCanSeeMyLandUse();
 
-    whenIClickTheButtonContaining("Accept and send");
-    givenIHaveWaitedForBeaconsApi(10000);
+    iPerformOperationAndWaitForNewPageToLoad(() =>
+      whenIClickTheButtonContaining("Accept and send")
+    );
     iCanSeeAPageHeadingThatContains(
       "Your beacon registration has been updated"
     );

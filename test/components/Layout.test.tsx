@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { render } from "@testing-library/react";
 import React, { ReactNode } from "react";
 import { BeaconRegistrationHead } from "../../src/components/Layout";
