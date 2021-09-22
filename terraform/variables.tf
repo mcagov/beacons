@@ -184,9 +184,9 @@ variable "gov_notify_api_key" {
   description = "The API key for Gov Notify"
   sensitive   = true
 }
-variable "gov_notify_customer_email_template" {
+variable "gov_notify_feedback_email_address" {
   type        = string
-  description = "The template ID for the customer confirmation email"
+  description = "The email address to which feedback should be sent"
   sensitive   = true
 }
 variable "basic_auth" {

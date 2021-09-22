@@ -32,3 +32,4 @@ enable_alerts                           = false
 api_service_minimum_task_count          = 1
 webapp_minimum_task_count               = 1
 webapp_fqdn                             = "dev.406beacons.com"
+gov_notify_feedback_email_address       = "beacons_test_feedback@mailsac.com"
