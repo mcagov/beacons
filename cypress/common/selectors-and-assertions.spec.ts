@@ -1,5 +1,4 @@
 import { v4 } from "uuid";
-import { ILegacyBeaconRequest } from "../../src/gateways/interfaces/LegacyBeaconRequest";
 
 export const requiredFieldErrorMessage = "required field";
 export const tooManyCharactersErrorMessage = "too many characters";
@@ -253,9 +252,8 @@ export const iHaveClickedOnALinkWithText = (text: string): void => {
   cy.get(`a[href]:contains(${text})`).click();
 };
 
-export const iCanSeeTheLegacyBeaconThatIsAssociatedWithMyEmailAddress = (
-  legacyBeaconRequest: ILegacyBeaconRequest
+export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
+  hexId: string
 ) => {
-  const hexId = legacyBeaconRequest.data.attributes.beacon.hexId;
   cy.contains(hexId);
 };
