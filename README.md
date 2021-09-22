@@ -86,7 +86,7 @@ The UI tests are a part of our CI/CD pipeline.
   - This value is set in env.local
   - The value is in 1Password - the token has been set to expire in 2031
 - `npm run cypress:open` or `npm run cypress:watch` -- Run Cypress tests in the `cypress/endToEnd` directory with the Test Runner
-- `npm run cypress:e2e` -- Run Cypress tests in the `cypress/intergration/endToEnd` directory in the command line
+- `npm run cypress:e2e` -- Run Cypress tests in the `cypress/endToEnd` directory in the command line
 
 The end to end tests are also a part of our CI/CD pipeline
 
