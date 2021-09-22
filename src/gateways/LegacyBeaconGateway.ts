@@ -1,7 +1,7 @@
 import axios from "axios";
-import { LegacyBeaconGatewayInterface } from "./interfaces/LegacyBeaconGateway";
+import { LegacyBeaconGateway } from "./interfaces/LegacyBeaconGateway";
 
-export class LegacyBeaconGateway implements LegacyBeaconGatewayInterface {
+export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
   private readonly apiUrl: string;
   private readonly legacyBeaconEndpoint = "legacy-beacon";
 

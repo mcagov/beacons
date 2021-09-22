@@ -6,7 +6,7 @@ import { BeaconSearchGateway } from "../gateways/interfaces/BeaconSearchGateway"
 import { DraftRegistrationGateway } from "../gateways/interfaces/DraftRegistrationGateway";
 import { EmailServiceGateway } from "../gateways/interfaces/EmailServiceGateway";
 import { IBasicAuthGateway } from "../gateways/interfaces/IBasicAuthGateway";
-import { LegacyBeaconGatewayInterface } from "../gateways/interfaces/LegacyBeaconGateway";
+import { LegacyBeaconGateway } from "../gateways/interfaces/LegacyBeaconGateway";
 import { UserSessionGateway } from "../gateways/interfaces/UserSessionGateway";
 import { AddNewUseToDraftRegistrationFn } from "../useCases/addNewUseToDraftRegistration";
 import { AuthenticateUserFn } from "../useCases/authenticateUser";
@@ -51,7 +51,7 @@ export interface IAppContainer {
   /* Gateways */
   // Entities
   beaconGateway: BeaconGateway;
-  legacyBeaconGateway: LegacyBeaconGatewayInterface;
+  legacyBeaconGateway: LegacyBeaconGateway;
   beaconSearchGateway: BeaconSearchGateway;
   emailServiceGateway: EmailServiceGateway;
   accountHolderGateway: AccountHolderGateway;
