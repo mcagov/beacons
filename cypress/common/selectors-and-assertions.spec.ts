@@ -187,8 +187,29 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
   cy.wait(1000);
 };
 
-export const givenIHaveWaitedForBeaconsApi = (ms = 10000): void => {
-  cy.wait(ms);
+/**
+ *
+ * Performs an operation and ensures a new page has loaded before continuing.
+ *
+ * Will continue as soon as a new page is loaded, up to the maximum timout
+ * set in @param maxTimeoutMs.
+ *
+ * Will fail if maxTimeoutMs is exceeded.
+ *
+ * @param operation - A callback function to perform
+ * @param maxTimeoutMs - Max time to wait in ms
+ */
+export const iPerformOperationAndWaitForNewPageToLoad = (
+  operation: () => void,
+  maxTimeoutMs = 20000
+): void => {
+  cy.location().then((previousPage) => {
+    operation();
+    cy.location("pathname", { timeout: maxTimeoutMs }).should(
+      "not.equal",
+      previousPage.pathname
+    );
+  });
 };
 
 export const andIHaveEnteredNoInformation = (): void => null;
