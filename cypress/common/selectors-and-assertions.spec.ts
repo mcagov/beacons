@@ -251,3 +251,9 @@ export const iHaveClickedOnAGivenLink = (href: string): void => {
 export const iHaveClickedOnALinkWithText = (text: string): void => {
   cy.get(`a[href]:contains(${text})`).click();
 };
+
+export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
+  hexId: string
+) => {
+  cy.contains(hexId);
+};

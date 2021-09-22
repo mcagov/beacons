@@ -2,6 +2,7 @@ import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { LinkButton } from "../../components/Button";
+import LegacyBeaconsNotification from "../../components/domain/LegacyBeaconsNotification";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { BeaconRegistryContactInfo } from "../../components/Mca";
@@ -45,6 +46,9 @@ export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAcco
     beacons,
   }: YourBeaconRegistryAccountPageProps): JSX.Element => {
     const pageHeading = "Your Beacon Registry Account";
+    const legacyBeacons = beacons.filter((beacon) => {
+      return beacon.beaconStatus === "MIGRATED";
+    });
 
     return (
       <Layout title={pageHeading} showCookieBanner={false}>
@@ -53,6 +57,12 @@ export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAcco
             <>
               <PageHeading>{pageHeading}</PageHeading>
               <YourDetails accountHolderDetails={accountHolderDetails} />
+              {legacyBeacons.length > 0 && (
+                <LegacyBeaconsNotification
+                  beacons={legacyBeacons}
+                  accountHolderDetails={accountHolderDetails}
+                />
+              )}
               <YourBeacons beacons={beacons} />
               <RegisterANewBeacon />
               <Contact />
@@ -247,39 +257,52 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
   return (
     <>
       <tr className="govuk-table__row">
-        <th scope="row" className="govuk-table__header">
-          <AnchorLink
-            href={UrlBuilder.buildRegistrationUrl(
-              Actions.update,
-              Pages.summary,
-              beacon.id
-            )}
-            classes="govuk-link--no-visited-state"
-          >
-            {beacon.hexId}
-          </AnchorLink>
-        </th>
-        <td className="govuk-table__cell">{beacon.ownerName}</td>
-        <td className="govuk-table__cell">{beacon.uses}</td>
+        {beacon.beaconStatus === "NEW" ? (
+          <th scope="row" className="govuk-table__header">
+            <AnchorLink
+              href={UrlBuilder.buildRegistrationUrl(
+                Actions.update,
+                Pages.summary,
+                beacon.id
+              )}
+              classes="govuk-link--no-visited-state"
+            >
+              {beacon.hexId}
+            </AnchorLink>
+          </th>
+        ) : (
+          <td className="govuk-table__cell">{beacon.hexId}</td>
+        )}
+
+        <td className="govuk-table__cell">
+          {beacon.ownerName ? beacon.ownerName : "-"}
+        </td>
+        <td className="govuk-table__cell">{beacon.uses ? beacon.uses : "-"}</td>
         <td className="govuk-table__cell">{beacon.createdDate}</td>
         <td className="govuk-table__cell">{beacon.lastModifiedDate}</td>
         <td className="govuk-table__cell">
-          <AnchorLink
-            href={UrlBuilder.buildRegistrationUrl(
-              Actions.update,
-              Pages.summary,
-              beacon.id
-            )}
-            classes="govuk-link--no-visited-state"
-          >
-            Update
-          </AnchorLink>{" "}
-          <AnchorLink
-            href={confirmBeforeDelete(beacon.id)}
-            classes="govuk-link--no-visited-state"
-          >
-            Delete
-          </AnchorLink>
+          {beacon.beaconStatus === "NEW" ? (
+            <>
+              <AnchorLink
+                href={UrlBuilder.buildRegistrationUrl(
+                  Actions.update,
+                  Pages.summary,
+                  beacon.id
+                )}
+                classes="govuk-link--no-visited-state"
+              >
+                Update
+              </AnchorLink>{" "}
+              <AnchorLink
+                href={confirmBeforeDelete(beacon.id)}
+                classes="govuk-link--no-visited-state"
+              >
+                Delete
+              </AnchorLink>
+            </>
+          ) : (
+            <td className="govuk-table__cell">-</td>
+          )}
         </td>
       </tr>
     </>

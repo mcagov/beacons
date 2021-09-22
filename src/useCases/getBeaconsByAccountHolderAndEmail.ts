@@ -25,15 +25,21 @@ export const getBeaconsForAccountHolder =
     return (
       beacons
         // TODO: remove filter and update account holder page table to enable claiming of beacons
-        .filter(({ beaconStatus }) => beaconStatus === "NEW")
+        .filter(
+          ({ beaconStatus }) =>
+            beaconStatus === "NEW" || beaconStatus === "MIGRATED"
+        )
         .map((beacon) => ({
           id: beacon.id,
           createdDate: formatDateTruncated(beacon.createdDate),
           lastModifiedDate: formatDateTruncated(beacon.lastModifiedDate),
           beaconStatus: beacon.beaconStatus,
           hexId: beacon.hexId,
-          ownerName: beacon.ownerName,
-          uses: titleCase(beacon.useActivities),
+          ownerName: beacon.beaconStatus === "NEW" ? beacon.ownerName : null,
+          uses:
+            beacon.beaconStatus === "NEW"
+              ? titleCase(beacon.useActivities)
+              : null,
         }))
     );
   };
