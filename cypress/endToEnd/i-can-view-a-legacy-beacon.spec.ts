@@ -1,5 +1,5 @@
 import { ILegacyBeaconRequest } from "../../src/gateways/interfaces/LegacyBeaconRequest";
-import { isoDate } from "../../src/lib/dateTime";
+import { formatDateLong } from "../../src/lib/writingStyle";
 import { iHavePreviouslyRegisteredALegacyBeacon } from "../common/i-have-a-legacy-beacon.spec";
 import { iHavePreviouslyRegisteredABeacon } from "../common/i-have-previously-registered-a-beacon.spec";
 import {
@@ -26,7 +26,7 @@ describe("As an account holder", () => {
     );
   });
 
-  it("I can claim a legacy beacon", () => {
+  it.only("I can claim a legacy beacon", () => {
     givenIHaveSignedIn();
     iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
     cy.visit("/account/your-beacon-registry-account");
@@ -48,10 +48,12 @@ const iCanSeeTheSelectedLegacyBeacon = (
   legacyBeaconRequest: ILegacyBeaconRequest
 ) => {
   cy.contains(
-    isoDate(legacyBeaconRequest.data.attributes.beacon.firstRegistrationDate)
+    formatDateLong(
+      legacyBeaconRequest.data.attributes.beacon.firstRegistrationDate
+    )
   );
   cy.contains(
-    isoDate(legacyBeaconRequest.data.attributes.beacon.lastModifiedDate)
+    formatDateLong(legacyBeaconRequest.data.attributes.beacon.lastModifiedDate)
   );
   cy.contains(legacyBeaconRequest.data.attributes.beacon.hexId);
   cy.contains(legacyBeaconRequest.data.attributes.beacon.manufacturer);

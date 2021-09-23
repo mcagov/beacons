@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { BeaconsFormFieldsetAndLegend } from "../../../components/BeaconsForm";
 import { BackButton, Button } from "../../../components/Button";
 import { Form, FormGroup } from "../../../components/Form";
@@ -9,22 +9,26 @@ import { BeaconRegistryContactInfo } from "../../../components/Mca";
 import { RadioList, RadioListItem } from "../../../components/RadioList";
 import { GovUKBody, SectionHeading } from "../../../components/Typography";
 import { WarningText } from "../../../components/WarningText";
-import { isoDate } from "../../../lib/dateTime";
 import { withErrorMessages } from "../../../lib/form/lib";
 import { FormManagerFactory } from "../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
 import { AccountPageURLs } from "../../../lib/urls";
+import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { Rule } from "../../../router/rules/Rule";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 interface ClaimLegacyBeaconPageProps {
   legacyBeacon: any;
+  showCookieBanner: boolean;
 }
 
-const ClaimLegacyBeacon = ({ legacyBeacon, showCookieBanner }) => {
+const ClaimLegacyBeacon: FunctionComponent<ClaimLegacyBeaconPageProps> = ({
+  legacyBeacon,
+  showCookieBanner,
+}: ClaimLegacyBeaconPageProps) => {
   const legacyBeaconData = legacyBeacon.data.attributes.beacon;
 
   const pageHeading = "Is this beacon yours?";
@@ -33,13 +37,13 @@ const ClaimLegacyBeacon = ({ legacyBeacon, showCookieBanner }) => {
       <div className="govuk-summary-list__row">
         <dt className="govuk-summary-list__key">Date first registered</dt>
         <dd className="govuk-summary-list__value">
-          {isoDate(legacyBeaconData.createdDate)}
+          {formatDateLong(legacyBeaconData.firstRegistrationDate)}
         </dd>
       </div>
       <div className="govuk-summary-list__row">
         <dt className="govuk-summary-list__key">Date last updated</dt>
         <dd className="govuk-summary-list__value">
-          {isoDate(legacyBeaconData.lastModifiedDate)}
+          {formatDateLong(legacyBeaconData.lastModifiedDate)}
         </dd>
       </div>
       <div className="govuk-summary-list__row">
@@ -98,7 +102,8 @@ const ClaimLegacyBeacon = ({ legacyBeacon, showCookieBanner }) => {
         />
         <h2 className="govuk-heading-m">
           Telling us if this beacon is yours is best for Search and Rescue. But
-          you can still use your beacon even if you don't tell us it's yours.
+          you can still use your beacon even if you don&apos;t tell us it&apos;s
+          yours.
         </h2>
         <WarningText>
           Your old beacon information is still available to Search and Rescue,
