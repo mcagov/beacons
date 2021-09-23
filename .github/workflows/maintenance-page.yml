@@ -1,15 +1,12 @@
 name: Maintenance Page
 
-on:
-  push:
-    branches:
-      - maintenance-page
+on: workflow_dispatch
 
 jobs:
   deploy:
     name: Deploy Maintenance Page 
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/maintenance-page'
+    if: github.ref == 'refs/heads/main'
     environment: production
     env:
       TF_WORKSPACE: production
