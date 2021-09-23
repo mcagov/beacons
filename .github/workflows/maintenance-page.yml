@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment: production
+    defaults:
+      run:
+        working-directory: maintenance-page
     env:
       TF_WORKSPACE: production
     steps:
