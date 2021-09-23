@@ -6,7 +6,7 @@ jobs:
   deploy:
     name: Deploy Maintenance Page 
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/maintenance-page'
     environment: production
     env:
       TF_WORKSPACE: production
