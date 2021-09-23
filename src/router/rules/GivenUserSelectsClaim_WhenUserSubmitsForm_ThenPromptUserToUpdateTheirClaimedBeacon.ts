@@ -3,7 +3,8 @@ import { LegacyBeacon } from "../../entities/LegacyBeacon";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
-import { CreateRegistrationPageURLs } from "../../lib/urls";
+import { CreateRegistrationPageURLs, queryParams } from "../../lib/urls";
+import { UrlBuilder } from "../../lib/URLs/UrlBuilder";
 import { Rule } from "./Rule";
 
 export class GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateTheirClaimedBeacon
@@ -37,7 +38,12 @@ export class GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateThe
 
     await this.prePopulateTheDraftRegistrationWithMigratedDetails(legacyBeacon);
 
-    return redirectUserTo(CreateRegistrationPageURLs.beaconInformation);
+    return redirectUserTo(
+      CreateRegistrationPageURLs.beaconInformation +
+        queryParams({
+          previous: UrlBuilder.buildClaimLegacyBeaconUrl(legacyBeacon.id),
+        })
+    );
   }
 
   private async prePopulateTheDraftRegistrationWithMigratedDetails(

@@ -34,4 +34,8 @@ export class UrlBuilder {
   ): string {
     return `${this.topLevelPath}/${registrationId}/update`;
   }
+
+  public static buildClaimLegacyBeaconUrl(legacyBeaconId: string): string {
+    return `${this.topLevelPath}/claim-legacy-beacon/${legacyBeaconId}`;
+  }
 }

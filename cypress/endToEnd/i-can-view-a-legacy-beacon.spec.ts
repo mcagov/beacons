@@ -10,6 +10,7 @@ import {
   iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress,
   thenIShouldSeeFormErrors,
   thenTheUrlShouldContain,
+  whenIClickBack,
   whenIClickContinue,
   whenISelect,
 } from "../common/selectors-and-assertions.spec";
@@ -44,6 +45,9 @@ describe("As an account holder", () => {
     whenISelect("#claim");
     andIClickContinue();
     thenTheUrlShouldContain(CreateRegistrationPageURLs.beaconInformation);
+
+    whenIClickBack();
+    iCanSeeTheSelectedLegacyBeacon(legacyBeaconRequest);
   });
 });
 
