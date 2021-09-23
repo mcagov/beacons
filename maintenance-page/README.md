@@ -20,9 +20,10 @@ When starting from a blank slate (no previous AWS setup) the following is requir
     - `terraform workspace list` allows you to view existing workspaces
 
 ## Build and Deploy
-The following example shows how to build and deploy a Maintenance Page for staging.
+The following example shows how to build and deploy a Maintenance Page for staging and copy over the html.
 
 - terraform workspace staging
+- terraform init
 - terraform plan -var-file="staging.tfvars"
 - terraform apply -var-file="staging.tfvars"
 - aws s3 sync ./html/ s3://staging.406beacons.com --delete
