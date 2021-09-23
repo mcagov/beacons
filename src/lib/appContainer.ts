@@ -111,7 +111,10 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
       return new BasicAuthGateway();
     },
     get legacyBeaconGateway() {
-      return new BeaconsApiLegacyBeaconGateway(process.env.API_URL);
+      return new BeaconsApiLegacyBeaconGateway(
+        process.env.API_URL,
+        new AadAuthGateway()
+      );
     },
 
     /* Mockable utilities */
