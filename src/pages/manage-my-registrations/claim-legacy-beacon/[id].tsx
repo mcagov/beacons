@@ -1,15 +1,16 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BeaconsFormFieldsetAndLegend } from "../../../components/BeaconsForm";
-import { BackButton, Button } from "../../../components/Button";
-import { Form, FormGroup } from "../../../components/Form";
-import { Grid } from "../../../components/Grid";
-import { Layout } from "../../../components/Layout";
-import { BeaconRegistryContactInfo } from "../../../components/Mca";
+import {
+  BeaconsForm,
+  BeaconsFormFieldsetAndLegend,
+} from "../../../components/BeaconsForm";
+import { FormGroup } from "../../../components/Form";
 import { RadioList, RadioListItem } from "../../../components/RadioList";
-import { GovUKBody, SectionHeading } from "../../../components/Typography";
 import { WarningText } from "../../../components/WarningText";
-import { withErrorMessages } from "../../../lib/form/lib";
+import { FieldManager } from "../../../lib/form/FieldManager";
+import { FormJSON, FormManager } from "../../../lib/form/FormManager";
+import { withErrorMessages, withoutErrorMessages } from "../../../lib/form/lib";
+import { Validators } from "../../../lib/form/Validators";
 import { FormManagerFactory } from "../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
@@ -18,18 +19,23 @@ import { AccountPageURLs } from "../../../lib/urls";
 import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { Rule } from "../../../router/rules/Rule";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 interface ClaimLegacyBeaconPageProps {
+  form: FormJSON;
   legacyBeacon: any;
   showCookieBanner: boolean;
 }
 
 const ClaimLegacyBeacon: FunctionComponent<ClaimLegacyBeaconPageProps> = ({
+  form = withoutErrorMessages({}, validationRules),
   legacyBeacon,
   showCookieBanner,
 }: ClaimLegacyBeaconPageProps) => {
   const legacyBeaconData = legacyBeacon.data.attributes.beacon;
+
+  const fieldName = "claimResponse";
 
   const pageHeading = "Is this beacon yours?";
   const pageText = (
@@ -64,42 +70,35 @@ const ClaimLegacyBeacon: FunctionComponent<ClaimLegacyBeaconPageProps> = ({
   );
 
   return (
-    <>
-      <Layout
-        navigation={<BackButton href={AccountPageURLs.accountHome} />}
-        title={pageHeading}
-      >
-        <Grid
-          mainContent={
-            <Form>
-              <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
-                {pageText}
-                <FormGroup>
-                  <div id="sign-in-hint" className="govuk-hint">
-                    Please select one of the following options
-                  </div>
-                  <RadioList>
-                    <RadioListItem
-                      id="thisIsMyBeacon"
-                      name="thisIsMyBeacon"
-                      label="This is my beacon"
-                      hintText="By confirming this beacon is yours, you will be able to manage this beacon online. You will also need to provide additional information, which is vital to Search and Rescue should the beacon be activated."
-                      value="thisIsMyBeacon"
-                    />
-                    <RadioListItem
-                      id="thisIsNotMyBeacon"
-                      name="thisIsNotMyBeacon"
-                      label="This is not my beacon"
-                      hintText="We may have matched this beacon to you because it was previously registered to the same email address. This beacon will be removed from your account and you will no longer see it when you log in."
-                      value="thisIsNotMyBeacon"
-                    />
-                  </RadioList>
-                </FormGroup>
-                <Button buttonText="Continue" />
-              </BeaconsFormFieldsetAndLegend>
-            </Form>
-          }
-        />
+    <BeaconsForm
+      formErrors={form.errorSummary}
+      previousPageUrl={AccountPageURLs.accountHome}
+      pageHeading={pageHeading}
+      showCookieBanner={showCookieBanner}
+    >
+      <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
+        {pageText}
+        <FormGroup errorMessages={form.fields.claimResponse.errorMessages}>
+          <div id="sign-in-hint" className="govuk-hint">
+            Please select one of the following options
+          </div>
+          <RadioList>
+            <RadioListItem
+              id="claim"
+              name={fieldName}
+              label="This is my beacon"
+              hintText="By confirming this beacon is yours, you will be able to manage this beacon online. You will also need to provide additional information, which is vital to Search and Rescue should the beacon be activated."
+              value="claim"
+            />
+            <RadioListItem
+              id="reject"
+              name={fieldName}
+              label="This is not my beacon"
+              hintText="We may have matched this beacon to you because it was previously registered to the same email address. This beacon will be removed from your account and you will no longer see it when you log in."
+              value="reject"
+            />
+          </RadioList>
+        </FormGroup>
         <h2 className="govuk-heading-m">
           Telling us if this beacon is yours is best for Search and Rescue. But
           you can still use your beacon even if you don&apos;t tell us it&apos;s
@@ -117,25 +116,21 @@ const ClaimLegacyBeacon: FunctionComponent<ClaimLegacyBeaconPageProps> = ({
           date information about yourself and beacon use - vital in an
           emergency.
         </WarningText>
-        <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
-        <GovUKBody>
-          If you have a question about your beacon registration, contact the UK
-          Beacon Registry team on:
-        </GovUKBody>
-        <BeaconRegistryContactInfo />
-      </Layout>
-    </>
+      </BeaconsFormFieldsetAndLegend>
+    </BeaconsForm>
   );
 };
-
-// To get this test to pass:
-// 1. Use WhenUserViewPage_ThenDisplayPage() rule with a props function that gets the legacy beacon
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
-      //   new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
+      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
+      new GivenUserHasNotSelectedAnOption_WhenUserSubmitsForm_ThenShowErrors(
+        context,
+        validationRules,
+        props(context)
+      ),
       //   // new WhenUserClaimsBeacon_ThenGoToUpdateFlowForClaimedBeacon(),
       //   // new WhenUserRejectsBeacon_ThenReturnToAccountHome(),
       //   // new WhenUserSelectsNoOptionsAndClicksContinue_ThenShowErrors(context, validationRules),
@@ -143,24 +138,35 @@ export const getServerSideProps: GetServerSideProps = withSession(
   })
 );
 
-class WhenUserSelectsNoOptionsAndClicksContinue_ThenShowErrors implements Rule {
+const validationRules = ({ claimResponse }) => {
+  return new FormManager({
+    claimResponse: new FieldManager(
+      claimResponse,
+      [Validators.required("Select an option")],
+      [],
+      "claim"
+    ),
+  });
+};
+
+class GivenUserHasNotSelectedAnOption_WhenUserSubmitsForm_ThenShowErrors
+  implements Rule
+{
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly validationRules: FormManagerFactory;
+  private readonly additionalProps: Record<string, any>;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
-    validationRules: FormManagerFactory
+    validationRules: FormManagerFactory,
+    additionalProps?: Record<string, any>
   ) {
     this.context = context;
     this.validationRules = validationRules;
+    this.additionalProps = additionalProps;
   }
 
   async condition(): Promise<boolean> {
-    // is a POST request and fails validation rules
-    return this.userSubmittedForm();
-  }
-
-  private userSubmittedForm(): boolean {
     return this.context.req.method === "POST";
   }
 
@@ -168,13 +174,13 @@ class WhenUserSelectsNoOptionsAndClicksContinue_ThenShowErrors implements Rule {
     return {
       props: {
         form: withErrorMessages(this.form, this.validationRules),
-        showCookieBanner: this.userHasNotHiddenEssentialCookieBanner(),
+        ...(await this.additionalProps),
       },
     };
   }
 
-  private async form(): Promise<T> {
-    return await this.context.container.parseFormDataAs<T>(this.context.req);
+  private async form(): Promise<any> {
+    return await this.context.container.parseFormDataAs(this.context.req);
   }
 }
 

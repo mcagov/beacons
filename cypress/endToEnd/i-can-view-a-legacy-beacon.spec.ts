@@ -6,6 +6,7 @@ import {
   clickViewLegacyBeacon,
   givenIHaveSignedIn,
   iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress,
+  thenIShouldSeeFormErrors,
   thenTheUrlShouldContain,
   whenIClickContinue,
 } from "../common/selectors-and-assertions.spec";
@@ -34,8 +35,8 @@ describe("As an account holder", () => {
     thenTheUrlShouldContain(`/manage-my-registrations/claim-legacy-beacon`);
     iCanSeeTheSelectedLegacyBeacon(legacyBeaconRequest);
     // unhappy path
-    // whenIClickContinueWithNoOptionsSelected();
-    // thenIShouldSeeFormErrors("Select an option");
+    whenIClickContinueWithNoOptionsSelected();
+    thenIShouldSeeFormErrors("Select an option");
     // happy path
     // givenISelectClaimABeacon();
     // iAmThenRedirectedToTheUpdateFlowForClaimedBeacon();
