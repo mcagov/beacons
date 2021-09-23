@@ -3,7 +3,6 @@ name: Maintenance Page
 on: workflow_dispatch
 
 jobs:
-
   deploy:
     name: Deploy Maintenance Page 
     runs-on: ubuntu-latest
@@ -23,6 +22,8 @@ jobs:
       - name: Initialize Terraform
         working-directory: terraform
         run: terraform init
+      - name: Validate Terraform
+        run: terraform validate
       - name: Create resources
         working-directory: maintenance-page
         run: terraform apply -auto-approve -var-file=production.tfvars
