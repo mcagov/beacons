@@ -1,14 +1,17 @@
 import { ILegacyBeaconRequest } from "../../src/gateways/interfaces/LegacyBeaconRequest";
+import { CreateRegistrationPageURLs } from "../../src/lib/urls";
 import { formatDateLong } from "../../src/lib/writingStyle";
 import { iHavePreviouslyRegisteredALegacyBeacon } from "../common/i-have-a-legacy-beacon.spec";
 import { iHavePreviouslyRegisteredABeacon } from "../common/i-have-previously-registered-a-beacon.spec";
 import {
+  andIClickContinue,
   clickViewLegacyBeacon,
   givenIHaveSignedIn,
   iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress,
   thenIShouldSeeFormErrors,
   thenTheUrlShouldContain,
   whenIClickContinue,
+  whenISelect,
 } from "../common/selectors-and-assertions.spec";
 import { legacyBeaconRequest } from "../fixtures/legacyBeaconRequest";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
@@ -34,12 +37,13 @@ describe("As an account holder", () => {
     clickViewLegacyBeacon(legacyBeaconRequest);
     thenTheUrlShouldContain(`/manage-my-registrations/claim-legacy-beacon`);
     iCanSeeTheSelectedLegacyBeacon(legacyBeaconRequest);
-    // unhappy path
+
     whenIClickContinueWithNoOptionsSelected();
     thenIShouldSeeFormErrors("Select an option");
-    // happy path
-    // givenISelectClaimABeacon();
-    // iAmThenRedirectedToTheUpdateFlowForClaimedBeacon();
+
+    whenISelect("#claim");
+    andIClickContinue();
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.beaconInformation);
   });
 });
 

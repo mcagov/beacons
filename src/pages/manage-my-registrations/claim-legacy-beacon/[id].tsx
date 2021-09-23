@@ -7,24 +7,25 @@ import {
 import { FormGroup } from "../../../components/Form";
 import { RadioList, RadioListItem } from "../../../components/RadioList";
 import { WarningText } from "../../../components/WarningText";
+import { LegacyBeacon } from "../../../entities/LegacyBeacon";
 import { FieldManager } from "../../../lib/form/FieldManager";
 import { FormJSON, FormManager } from "../../../lib/form/FormManager";
-import { withErrorMessages, withoutErrorMessages } from "../../../lib/form/lib";
+import { withoutErrorMessages } from "../../../lib/form/lib";
 import { Validators } from "../../../lib/form/Validators";
-import { FormManagerFactory } from "../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
 import { AccountPageURLs } from "../../../lib/urls";
 import { formatDateLong } from "../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
-import { Rule } from "../../../router/rules/Rule";
+import { GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateTheirClaimedBeacon } from "../../../router/rules/GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateTheirClaimedBeacon";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+import { WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../../router/rules/WhenUserSubmitsInvalidForm_ThenShowErrors";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 interface ClaimLegacyBeaconPageProps {
   form: FormJSON;
-  legacyBeacon: any;
+  legacyBeacon: LegacyBeacon;
   showCookieBanner: boolean;
 }
 
@@ -33,8 +34,6 @@ const ClaimLegacyBeacon: FunctionComponent<ClaimLegacyBeaconPageProps> = ({
   legacyBeacon,
   showCookieBanner,
 }: ClaimLegacyBeaconPageProps) => {
-  const legacyBeaconData = legacyBeacon.data.attributes.beacon;
-
   const fieldName = "claimResponse";
 
   const pageHeading = "Is this beacon yours?";
@@ -43,28 +42,28 @@ const ClaimLegacyBeacon: FunctionComponent<ClaimLegacyBeaconPageProps> = ({
       <div className="govuk-summary-list__row">
         <dt className="govuk-summary-list__key">Date first registered</dt>
         <dd className="govuk-summary-list__value">
-          {formatDateLong(legacyBeaconData.firstRegistrationDate)}
+          {formatDateLong(legacyBeacon.dateFirstRegistered)}
         </dd>
       </div>
       <div className="govuk-summary-list__row">
         <dt className="govuk-summary-list__key">Date last updated</dt>
         <dd className="govuk-summary-list__value">
-          {formatDateLong(legacyBeaconData.lastModifiedDate)}
+          {formatDateLong(legacyBeacon.dateLastUpdated)}
         </dd>
       </div>
       <div className="govuk-summary-list__row">
         <dt className="govuk-summary-list__key">Hex ID/UIN</dt>
-        <dd className="govuk-summary-list__value">{legacyBeaconData.hexId}</dd>
+        <dd className="govuk-summary-list__value">{legacyBeacon.hexId}</dd>
       </div>
       <div className="govuk-summary-list__row">
         <dt className="govuk-summary-list__key">Beacon Manufacturer</dt>
         <dd className="govuk-summary-list__value">
-          {legacyBeaconData.manufacturer}
+          {legacyBeacon.manufacturer}
         </dd>
       </div>
       <div className="govuk-summary-list__row">
         <dt className="govuk-summary-list__key">Beacon Model</dt>
-        <dd className="govuk-summary-list__value">{legacyBeaconData.model}</dd>
+        <dd className="govuk-summary-list__value">{legacyBeacon.model}</dd>
       </div>
     </dl>
   );
@@ -123,17 +122,21 @@ const ClaimLegacyBeacon: FunctionComponent<ClaimLegacyBeaconPageProps> = ({
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+    const legacyBeaconId = context.query.id as string;
+
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
-      new GivenUserHasNotSelectedAnOption_WhenUserSubmitsForm_ThenShowErrors(
+      new WhenUserSubmitsInvalidForm_ThenShowErrors(
         context,
         validationRules,
         props(context)
       ),
-      //   // new WhenUserClaimsBeacon_ThenGoToUpdateFlowForClaimedBeacon(),
-      //   // new WhenUserRejectsBeacon_ThenReturnToAccountHome(),
-      //   // new WhenUserSelectsNoOptionsAndClicksContinue_ThenShowErrors(context, validationRules),
+      new GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateTheirClaimedBeacon(
+        context,
+        legacyBeaconId
+      ),
+      // new WhenUserRejectsBeacon_ThenReturnToAccountHome(),
     ]).execute();
   })
 );
@@ -144,53 +147,20 @@ const validationRules = ({ claimResponse }) => {
       claimResponse,
       [Validators.required("Select an option")],
       [],
-      "claim"
+      "claimResponse"
     ),
   });
 };
-
-class GivenUserHasNotSelectedAnOption_WhenUserSubmitsForm_ThenShowErrors
-  implements Rule
-{
-  private readonly context: BeaconsGetServerSidePropsContext;
-  private readonly validationRules: FormManagerFactory;
-  private readonly additionalProps: Record<string, any>;
-
-  constructor(
-    context: BeaconsGetServerSidePropsContext,
-    validationRules: FormManagerFactory,
-    additionalProps?: Record<string, any>
-  ) {
-    this.context = context;
-    this.validationRules = validationRules;
-    this.additionalProps = additionalProps;
-  }
-
-  async condition(): Promise<boolean> {
-    return this.context.req.method === "POST";
-  }
-
-  async action(): Promise<any> {
-    return {
-      props: {
-        form: withErrorMessages(this.form, this.validationRules),
-        ...(await this.additionalProps),
-      },
-    };
-  }
-
-  private async form(): Promise<any> {
-    return await this.context.container.parseFormDataAs(this.context.req);
-  }
-}
 
 const props = async (
   context: BeaconsGetServerSidePropsContext
 ): Promise<any> => {
   const legacyBeaconId = context.query.id as string;
-  const legacyBeacon =
-    await context.container.legacyBeaconGateway.getLegacyBeacon(legacyBeaconId);
-  return { legacyBeacon };
+  return {
+    legacyBeacon: await context.container.legacyBeaconGateway.getLegacyBeacon(
+      legacyBeaconId
+    ),
+  };
 };
 
 export default ClaimLegacyBeacon;
