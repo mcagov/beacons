@@ -86,10 +86,6 @@ resource "aws_ecs_task_definition" "webapp" {
         valueFrom : aws_secretsmanager_secret.gov_notify_api_key.arn
       },
       {
-        name : "GOV_NOTIFY_CUSTOMER_EMAIL_TEMPLATE",
-        valueFrom : aws_secretsmanager_secret.gov_notify_customer_email_template.arn
-      },
-      {
         name : "BASIC_AUTH_CREDENTIALS",
         valueFrom : aws_secretsmanager_secret.basic_auth.arn
       },
@@ -110,12 +106,13 @@ resource "aws_ecs_task_definition" "webapp" {
 }
 
 resource "aws_ecs_service" "webapp" {
-  name             = "${terraform.workspace}-beacons-webapp"
-  cluster          = aws_ecs_cluster.main.id
-  task_definition  = aws_ecs_task_definition.webapp.arn
-  desired_count    = var.webapp_count
-  launch_type      = "FARGATE"
-  platform_version = "1.4.0"
+  name                              = "${terraform.workspace}-beacons-webapp"
+  cluster                           = aws_ecs_cluster.main.id
+  task_definition                   = aws_ecs_task_definition.webapp.arn
+  desired_count                     = var.webapp_count
+  launch_type                       = "FARGATE"
+  platform_version                  = "1.4.0"
+  health_check_grace_period_seconds = 60
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
@@ -202,12 +199,13 @@ resource "aws_ecs_task_definition" "service" {
 }
 
 resource "aws_ecs_service" "service" {
-  name             = "${terraform.workspace}-beacons-service"
-  cluster          = aws_ecs_cluster.main.id
-  task_definition  = aws_ecs_task_definition.service.arn
-  desired_count    = var.service_count
-  launch_type      = "FARGATE"
-  platform_version = var.ecs_fargate_version
+  name                              = "${terraform.workspace}-beacons-service"
+  cluster                           = aws_ecs_cluster.main.id
+  task_definition                   = aws_ecs_task_definition.service.arn
+  desired_count                     = var.service_count
+  launch_type                       = "FARGATE"
+  platform_version                  = var.ecs_fargate_version
+  health_check_grace_period_seconds = 600
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
