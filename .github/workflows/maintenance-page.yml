@@ -1,6 +1,9 @@
 name: Maintenance Page
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - maintenance-page
 
 jobs:
   deploy:
