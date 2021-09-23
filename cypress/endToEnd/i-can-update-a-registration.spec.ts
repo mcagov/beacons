@@ -28,6 +28,7 @@ import {
   thenTheUrlShouldContain,
   whenIClickBack,
   whenIClickContinue,
+  whenIClickTheActionLinkInATableRowContaining,
   whenIClickTheButtonContaining,
   whenIHaveVisited,
 } from "../common/selectors-and-assertions.spec";
@@ -99,16 +100,10 @@ const iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges = () => {
   cy.get(`[role=button]:contains(accept and send)`).should("not.exist");
 };
 
-const iCanClickTheUpdateLinkToUpdateARegistration = (
+export const iCanClickTheUpdateLinkToUpdateARegistration = (
   registration: Registration
-) => {
-  cy.get("main")
-    .contains(registration.hexId)
-    .parent()
-    .parent()
-    .contains(/update/i)
-    .click();
-
+): void => {
+  whenIClickTheActionLinkInATableRowContaining(registration.hexId, /update/);
   iCanSeeMyBeaconInformation(registration);
   iCanSeeAdditionalBeaconInformation(registration);
   iCanSeeOwnerInformation(registration);

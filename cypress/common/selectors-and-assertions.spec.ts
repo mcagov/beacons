@@ -1,5 +1,4 @@
 import { v4 } from "uuid";
-import { ILegacyBeaconRequest } from "../../src/gateways/interfaces/LegacyBeaconRequest";
 
 export const requiredFieldErrorMessage = "required field";
 export const tooManyCharactersErrorMessage = "too many characters";
@@ -22,17 +21,6 @@ export const theBackLinkContains = (...strings: string[]): void => {
     cy.get(".govuk-back-link")
       .should("have.attr", "href")
       .and("match", new RegExp(s, "i"));
-  });
-};
-
-export const theBackLinkGoesTo_WithRegistrationId = (
-  previousPageUrl: string
-): void => {
-  cy.url().then((currentPageUrl) => {
-    const currentPageUrlWithoutQuery = new URL(currentPageUrl).pathname;
-    const urlArray = currentPageUrlWithoutQuery.split("/");
-    const registrationId = urlArray[urlArray.length - 1];
-    theBackLinkGoesTo(previousPageUrl + registrationId);
   });
 };
 
@@ -226,9 +214,11 @@ export const thenTheCheckboxShouldBeChecked = (selector: string): void => {
 export const thenTheRadioButtonShouldBeSelected =
   thenTheCheckboxShouldBeChecked;
 
-export const thenICannotSee = (selector: string): void => {
+export const iCannotSee = (selector: string): void => {
   cy.get(selector).should("not.exist");
 };
+
+export const thenICannotSee = iCannotSee;
 
 export const thenICanSeeAnInputWithPlaceholder = (
   inputId: string,
@@ -255,16 +245,22 @@ export const iHaveClickedOnALinkWithText = (text: string): void => {
 
 export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
   hexId: string
-) => {
+): void => {
   cy.contains(hexId);
 };
 
-export const clickViewLegacyBeacon = (
-  legacyBeaconRequest: ILegacyBeaconRequest
-) => {
+export const iCanSeeText = (pattern: string | RegExp): void => {
+  cy.get("main").contains(pattern);
+};
+
+export const whenIClickTheActionLinkInATableRowContaining = (
+  pattern: string | RegExp,
+  actionLinkText: string | RegExp
+): void => {
   cy.get("main")
-    .contains(legacyBeaconRequest.data.attributes.beacon.hexId)
+    .contains(pattern)
     .parent()
-    .contains(/Claim this beacon/i)
+    .parent()
+    .contains(actionLinkText)
     .click();
 };

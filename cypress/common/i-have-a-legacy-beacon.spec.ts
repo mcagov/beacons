@@ -20,3 +20,6 @@ export const iHavePreviouslyRegisteredALegacyBeacon = async (
     cy.log("Seeding LegacyBeacon failed with message ", e);
   }
 };
+
+export const givenIHavePreviouslyRegisteredALegacyBeacon =
+  iHavePreviouslyRegisteredALegacyBeacon;
