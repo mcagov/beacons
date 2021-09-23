@@ -8,7 +8,7 @@ You can build a maintenance page for any environment or URL although the default
 
 e.g the staging environment uses the url staging.406beacons.com.
 
-Note: the s3 bucket 'must' have be named to match the hostname used to access the page e.g staging.406beacons.com
+Note: the s3 bucket 'must' be named to match the hostname used to access the page e.g staging.406beacons.com
 
 ## Required Setup
 When starting from a blank slate (no previous AWS setup) the following is required .
