@@ -65,7 +65,7 @@ describe("As an account holder", () => {
     );
   });
 
-  it.only("I can claim a legacy beacon", () => {
+  it("I can claim a legacy beacon", () => {
     const legacyBeaconRequest = { ...legacyBeaconRequestFixture };
     legacyBeaconRequest.data.attributes.beacon.hexId = randomUkEncodedHexId();
     const { hexId, manufacturer, model } =
