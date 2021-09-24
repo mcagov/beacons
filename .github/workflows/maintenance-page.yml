@@ -23,11 +23,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
       - name: Initialize Terraform
-        working-directory: maintenance-page
         run: terraform init
       - name: Validate Terraform
         run: terraform validate
       - name: Create resources
         run: terraform apply -auto-approve -var-file=production.tfvars
+      - name: Set Message
+        run: sed -i 's/soon/shortly/g' html/index.html
       - name: Deploy app build to S3 bucket
         run: aws s3 sync ./html/ s3://production.406beacons.com --delete
