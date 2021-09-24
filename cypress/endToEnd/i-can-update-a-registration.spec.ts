@@ -103,7 +103,7 @@ const iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges = () => {
 export const iCanClickTheUpdateLinkToUpdateARegistration = (
   registration: Registration
 ): void => {
-  whenIClickTheActionLinkInATableRowContaining(registration.hexId, /update/);
+  whenIClickTheActionLinkInATableRowContaining(registration.hexId, /update/i);
   iCanSeeMyBeaconInformation(registration);
   iCanSeeAdditionalBeaconInformation(registration);
   iCanSeeOwnerInformation(registration);
