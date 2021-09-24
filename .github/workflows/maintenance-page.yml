@@ -1,6 +1,12 @@
 name: Deploy Maintenance Page
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      maintenanceMessage:
+        description: "Set the maintenance message"
+        required: true
+        default: "You will be able to use the service soon"
 
 jobs:
   deploy:
@@ -29,6 +35,6 @@ jobs:
       - name: Create resources
         run: terraform apply -auto-approve -var-file=production.tfvars
       - name: Set Message
-        run: sed -i 's/soon/shortly/g' html/index.html
+        run: sed -i 's/${ maintenanceMessage }/${{ github.event.inputs.maintenanceMessage }}/g' html/index.html
       - name: Deploy app build to S3 bucket
         run: aws s3 sync ./html/ s3://production.406beacons.com --delete
