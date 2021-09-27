@@ -3,6 +3,7 @@ import {
   ConfidentialClientApplication,
   NodeAuthOptions,
 } from "@azure/msal-node";
+import logger from "../../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
 
 export class AadAuthGateway implements AuthGateway {
@@ -32,10 +33,11 @@ export class AadAuthGateway implements AuthGateway {
       const authResult = await cca.acquireTokenByClientCredential(
         accessTokenRequest
       );
+      logger.info("Access token retrieved");
       return authResult.accessToken;
     } catch (error) {
       /* eslint-disable no-console */
-      console.error(JSON.stringify(error));
+      logger.error("getAccessToken:", error);
       throw error;
     }
   }
