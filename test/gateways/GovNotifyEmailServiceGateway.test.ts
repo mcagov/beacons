@@ -1,4 +1,5 @@
 import { NotifyClient } from "notifications-node-client";
+import logger from "../../logger";
 import { GovNotifyEmailServiceGateway } from "../../src/gateways/GovNotifyEmailServiceGateway";
 
 jest.mock("notifications-node-client");
@@ -45,7 +46,7 @@ describe("GovNotifyEmailServiceGateway", () => {
 
   it("should fail silently with a console log message if the API key is not set", async () => {
     const consoleSpy = jest
-      .spyOn(console, "log")
+      .spyOn(logger, "info")
       .mockImplementationOnce(() => null);
 
     new GovNotifyEmailServiceGateway(undefined);
