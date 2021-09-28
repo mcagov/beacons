@@ -36,7 +36,6 @@ export class AadAuthGateway implements AuthGateway {
       logger.info("Access token retrieved");
       return authResult.accessToken;
     } catch (error) {
-      /* eslint-disable no-console */
       logger.error("getAccessToken:", error);
       throw error;
     }

@@ -6,7 +6,6 @@ export class GovNotifyEmailServiceGateway implements EmailServiceGateway {
   private api;
   constructor(apiKey: string) {
     if (!apiKey) {
-      // eslint-disable-next-line no-console
       logger.info(
         "GOV_NOTIFY_API_KEY not set on instantiation of GovNotifyEmailServiceGateway.  I'm not going to send any Gov Notify emails."
       );
@@ -31,7 +30,6 @@ export class GovNotifyEmailServiceGateway implements EmailServiceGateway {
           reference: personalisation["reference"],
         })
         .catch((err) => {
-          // eslint-disable-next-line no-console
           logger.error("sendEmail:", err);
         });
     } catch (error) {

@@ -44,7 +44,6 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
       logger.info("Beacons retrieved by account holder id & email address");
       return response.data._embedded.beaconSearch;
     } catch (error) {
-      /* eslint-disable no-console */
       logger.error("getBeaconsForAccountHolder:", error);
       throw error;
     }

@@ -62,7 +62,6 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
         ...response.data.data.attributes,
       };
     } catch (error) {
-      /* eslint-disable no-console */
       logger.error("createAccountHolderId:", error);
       throw error;
     }
@@ -85,7 +84,6 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
         ...response.data.data.attributes,
       };
     } catch (error) {
-      /* eslint-disable no-console */
       logger.error("getAccountHolderDetails:", error);
       throw error;
     }
@@ -115,7 +113,6 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
         ...response.data.data.attributes,
       };
     } catch (error) {
-      /* eslint-disable no-console */
       logger.error("updateAccountHolderDetails:", error);
       throw error;
     }
@@ -133,7 +130,6 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
       logger.info("Account beacons retrieved");
       return new BeaconsApiResponseMapper().mapList(response.data);
     } catch (error) {
-      /* eslint-disable no-console */
       logger.error("getAccountBeacons:", error);
       throw error;
     }
