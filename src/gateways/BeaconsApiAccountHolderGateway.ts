@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { AccountHolder } from "../entities/AccountHolder";
 import { Beacon } from "../entities/Beacon";
+import logger from "../logger";
 import { AccountHolderGateway } from "./interfaces/AccountHolderGateway";
 import { AuthGateway } from "./interfaces/AuthGateway";
 import { BeaconsApiResponseMapper } from "./mappers/BeaconsApiResponseMapper";
@@ -29,13 +30,13 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
       >(url, {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
+      logger.info("Account holder id retrieved");
       return response.data.id;
     } catch (error) {
       if (error.response && error.response.status === 404) {
         return null; // 404 is a-ok
       }
-      /* eslint-disable no-console */
-      console.error("getAccountHolderId:", JSON.stringify(error));
+      logger.error("getAccountHolderId:", error);
       throw error;
     }
   }
@@ -55,13 +56,13 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
       >(url, request, {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
+      logger.info("Account holder created");
       return {
         id: response.data.data.id,
         ...response.data.data.attributes,
       };
     } catch (error) {
-      /* eslint-disable no-console */
-      console.error("createAccountHolderId:", JSON.stringify(error));
+      logger.error("createAccountHolderId:", error);
       throw error;
     }
   }
@@ -77,13 +78,13 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
       >(url, {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
+      logger.info("Account holder details retrieved");
       return {
         id: response.data.data.id,
         ...response.data.data.attributes,
       };
     } catch (error) {
-      /* eslint-disable no-console */
-      console.error("getAccountHolderDetails:", error);
+      logger.error("getAccountHolderDetails:", error);
       throw error;
     }
   }
@@ -106,13 +107,13 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
       >(url, request, {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
+      logger.info("Account holder details updated");
       return {
         id: response.data.data.id,
         ...response.data.data.attributes,
       };
     } catch (error) {
-      /* eslint-disable no-console */
-      console.error("updateAccountHolderDetails:", JSON.stringify(error));
+      logger.error("updateAccountHolderDetails:", error);
       throw error;
     }
   }
@@ -126,11 +127,10 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
           headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
         }
       );
-
+      logger.info("Account beacons retrieved");
       return new BeaconsApiResponseMapper().mapList(response.data);
     } catch (error) {
-      /* eslint-disable no-console */
-      console.error("getAccountBeacons:", error);
+      logger.error("getAccountBeacons:", error);
       throw error;
     }
   }
