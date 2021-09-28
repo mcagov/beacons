@@ -44,7 +44,8 @@
     "react-dom": "17.0.2",
     "redis-json": "^6.0.1",
     "urlencoded-body-parser": "^3.0.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@jest/types": "^27.0.6",

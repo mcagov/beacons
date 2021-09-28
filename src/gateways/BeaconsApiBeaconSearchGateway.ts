@@ -1,4 +1,5 @@
 import axios from "axios";
+import logger from "../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
 import {
   BeaconSearchGateway,
@@ -40,11 +41,11 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
           sort,
         },
       });
-
+      logger.info("Beacons retrieved by account holder id & email address");
       return response.data._embedded.beaconSearch;
     } catch (error) {
       /* eslint-disable no-console */
-      console.error("getBeaconsForAccountHolder", error);
+      logger.error("getBeaconsForAccountHolder:", error);
       throw error;
     }
   }
