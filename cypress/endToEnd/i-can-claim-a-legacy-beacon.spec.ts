@@ -56,7 +56,8 @@ describe("As an account holder", () => {
     givenIHaveSignedIn();
     iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequestFixture);
     iHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
-    cy.visit("/account/your-beacon-registry-account");
+
+    whenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(
       legacyBeaconRequestFixture.data.attributes.beacon.hexId
     );
@@ -117,6 +118,7 @@ describe("As an account holder", () => {
 
     whenIClickTheButtonContaining("Return to your Account");
     iCanSeeTheClaimedBeaconAsANormalRegistration(hexId);
+    iCannotSeeTheClaimedBeaconAsALegacyBeaconBecauseItHasBeenClaimed(hexId);
 
     whenIClickTheActionLinkInATableRowContaining(hexId, /update/i);
     iCanSeeText(hexId);
@@ -137,20 +139,19 @@ const iCanSeeTheLegacyBeaconAssignedToMeInTheTable = (hexId: string) => {
 
 const iCanSeeTheClaimedBeaconAsANormalRegistration = (hexId: string) => {
   iCanSeeNLinksContaining(1, hexId);
-  cy.get("main")
+  cy.get("th")
     .contains(hexId)
     .parent()
     .parent()
-    .contains(/update/i)
-    .click();
-
-  cy.get("main")
-    .contains(hexId)
-    .parent()
-    .parent()
-    .contains(/update/i)
-    .click();
+    .contains(/update/i);
 };
+
+export const iCannotSeeTheClaimedBeaconAsALegacyBeaconBecauseItHasBeenClaimed =
+  (hexId: string): void => {
+    cy.get(`td:contains(${hexId})`).each((rowWithHexId) => {
+      cy.wrap(rowWithHexId).parent().contains(/claim/i).should("not.exist");
+    });
+  };
 
 const whenIClickContinueWithNoOptionsSelected = whenIClickContinue;
 
