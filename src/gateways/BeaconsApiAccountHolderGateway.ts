@@ -36,7 +36,6 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
       if (error.response && error.response.status === 404) {
         return null; // 404 is a-ok
       }
-      /* eslint-disable no-console */
       logger.error("getAccountHolderId:", error);
       throw error;
     }
