@@ -24,17 +24,6 @@ export const theBackLinkContains = (...strings: string[]): void => {
   });
 };
 
-export const theBackLinkGoesTo_WithRegistrationId = (
-  previousPageUrl: string
-): void => {
-  cy.url().then((currentPageUrl) => {
-    const currentPageUrlWithoutQuery = new URL(currentPageUrl).pathname;
-    const urlArray = currentPageUrlWithoutQuery.split("/");
-    const registrationId = urlArray[urlArray.length - 1];
-    theBackLinkGoesTo(previousPageUrl + registrationId);
-  });
-};
-
 export const givenIHaveACookieSetAndIVisit = (url: string): void => {
   cy.setCookie("submissionId", v4());
   cy.visit(url);
@@ -225,9 +214,11 @@ export const thenTheCheckboxShouldBeChecked = (selector: string): void => {
 export const thenTheRadioButtonShouldBeSelected =
   thenTheCheckboxShouldBeChecked;
 
-export const thenICannotSee = (selector: string): void => {
+export const iCannotSee = (selector: string): void => {
   cy.get(selector).should("not.exist");
 };
+
+export const thenICannotSee = iCannotSee;
 
 export const thenICanSeeAnInputWithPlaceholder = (
   inputId: string,
@@ -254,6 +245,22 @@ export const iHaveClickedOnALinkWithText = (text: string): void => {
 
 export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
   hexId: string
-) => {
+): void => {
   cy.contains(hexId);
+};
+
+export const iCanSeeText = (pattern: string | RegExp): void => {
+  cy.get("main").contains(pattern);
+};
+
+export const whenIClickTheActionLinkInATableRowContaining = (
+  pattern: string | RegExp,
+  actionLinkText: string | RegExp
+): void => {
+  cy.get("main")
+    .contains(pattern)
+    .parent()
+    .parent()
+    .contains(actionLinkText)
+    .click();
 };

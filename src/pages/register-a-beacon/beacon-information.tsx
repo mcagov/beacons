@@ -46,6 +46,7 @@ interface BeaconInformationForm {
 const BeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
+  previousPageUrl,
 }: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Beacon information";
   const pageText = (
@@ -58,7 +59,7 @@ const BeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl={CreateRegistrationPageURLs.checkBeaconDetails}
+      previousPageUrl={previousPageUrl}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
@@ -225,6 +226,9 @@ export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     const nextPageUrl = CreateRegistrationPageURLs.environment;
 
+    const previousPageUrl =
+      context.query.previous || CreateRegistrationPageURLs.checkBeaconDetails;
+
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
@@ -233,12 +237,14 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context,
         validationRules,
-        mapper
+        mapper,
+        { previousPageUrl }
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
         context,
         validationRules,
-        mapper
+        mapper,
+        { previousPageUrl }
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
         context,

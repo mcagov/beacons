@@ -18,6 +18,10 @@ export enum AccountPageURLs {
   updateAccount = "/account/update-account",
 }
 
+export enum ClaimPageURLs {
+  claimBeacon = "/manage-my-registrations/claim-legacy-beacon",
+}
+
 export enum GeneralPageURLs {
   start = "/",
   areYouSure = "/are-you-sure",

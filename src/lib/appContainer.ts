@@ -3,8 +3,8 @@ import { BasicAuthGateway } from "../gateways/BasicAuthGateway";
 import { BeaconsApiAccountHolderGateway } from "../gateways/BeaconsApiAccountHolderGateway";
 import { BeaconsApiBeaconGateway } from "../gateways/BeaconsApiBeaconGateway";
 import { BeaconsApiBeaconSearchGateway } from "../gateways/BeaconsApiBeaconSearchGateway";
+import { BeaconsApiLegacyBeaconGateway } from "../gateways/BeaconsApiLegacyBeaconGateway";
 import { GovNotifyEmailServiceGateway } from "../gateways/GovNotifyEmailServiceGateway";
-import { BeaconsApiLegacyBeaconGateway } from "../gateways/LegacyBeaconGateway";
 import { NextAuthUserSessionGateway } from "../gateways/NextAuthUserSessionGateway";
 import { RedisDraftRegistrationGateway } from "../gateways/RedisDraftRegistrationGateway";
 import { addNewUseToDraftRegistration } from "../useCases/addNewUseToDraftRegistration";
@@ -111,7 +111,10 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
       return new BasicAuthGateway();
     },
     get legacyBeaconGateway() {
-      return new BeaconsApiLegacyBeaconGateway(process.env.API_URL);
+      return new BeaconsApiLegacyBeaconGateway(
+        process.env.API_URL,
+        new AadAuthGateway()
+      );
     },
 
     /* Mockable utilities */

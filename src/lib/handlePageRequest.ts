@@ -6,8 +6,9 @@ export type FormManagerFactory = (formData: FormSubmission) => FormManager;
 
 export interface DraftRegistrationPageProps {
   form: FormJSON;
-  draftRegistration?: DraftRegistration;
   showCookieBanner: boolean;
+  previousPageUrl?: string;
+  draftRegistration?: DraftRegistration;
 }
 
 export interface DraftBeaconUsePageProps extends DraftRegistrationPageProps {

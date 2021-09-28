@@ -22,6 +22,7 @@ import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
 import {
   AccountPageURLs,
+  ClaimPageURLs,
   CreateRegistrationPageURLs,
   DeleteRegistrationPageURLs,
   queryParams,
@@ -301,7 +302,12 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
               </AnchorLink>
             </>
           ) : (
-            <td className="govuk-table__cell">-</td>
+            <AnchorLink
+              href={`${ClaimPageURLs.claimBeacon}/${beacon.id}`}
+              classes="govuk-link--no-visited-state"
+            >
+              Claim this beacon
+            </AnchorLink>
           )}
         </td>
       </tr>

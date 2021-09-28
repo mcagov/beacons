@@ -1,6 +1,6 @@
 import { ILegacyBeaconRequest } from "../../src/gateways/interfaces/LegacyBeaconRequest";
 
-export const legacyBeaconRequest: ILegacyBeaconRequest = {
+export const legacyBeaconRequestFixture: ILegacyBeaconRequest = {
   data: {
     type: "legacyBeacon",
     attributes: {
