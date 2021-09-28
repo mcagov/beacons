@@ -3,7 +3,7 @@ import {
   ConfidentialClientApplication,
   NodeAuthOptions,
 } from "@azure/msal-node";
-import logger from "../../logger";
+import logger from "../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
 
 export class AadAuthGateway implements AuthGateway {

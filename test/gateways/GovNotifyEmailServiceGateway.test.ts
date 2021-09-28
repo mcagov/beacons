@@ -1,6 +1,6 @@
 import { NotifyClient } from "notifications-node-client";
-import logger from "../../logger";
 import { GovNotifyEmailServiceGateway } from "../../src/gateways/GovNotifyEmailServiceGateway";
+import logger from "../../src/logger";
 
 jest.mock("notifications-node-client");
 

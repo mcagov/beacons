@@ -1,5 +1,5 @@
 import axios from "axios";
-import logger from "../../logger";
+import logger from "../logger";
 import { LegacyBeaconGateway } from "./interfaces/LegacyBeaconGateway";
 
 export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {

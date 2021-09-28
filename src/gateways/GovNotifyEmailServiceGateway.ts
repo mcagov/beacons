@@ -1,5 +1,5 @@
 import { NotifyClient } from "notifications-node-client";
-import logger from "../../logger";
+import logger from "../logger";
 import { EmailServiceGateway } from "./interfaces/EmailServiceGateway";
 
 export class GovNotifyEmailServiceGateway implements EmailServiceGateway {

@@ -1,8 +1,8 @@
 import axios from "axios";
-import logger from "../../logger";
 import { DraftRegistration } from "../entities/DraftRegistration";
 import { Registration } from "../entities/Registration";
 import { DeprecatedRegistration } from "../lib/deprecatedRegistration/DeprecatedRegistration";
+import logger from "../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
 import { BeaconGateway } from "./interfaces/BeaconGateway";
 
