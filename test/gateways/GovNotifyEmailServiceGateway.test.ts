@@ -44,7 +44,7 @@ describe("GovNotifyEmailServiceGateway", () => {
     expect(result).toBe(false);
   });
 
-  it("should fail silently with a console log message if the API key is not set", async () => {
+  it("should fail silently with a log message if the API key is not set", async () => {
     const consoleSpy = jest
       .spyOn(logger, "info")
       .mockImplementationOnce(() => null);
