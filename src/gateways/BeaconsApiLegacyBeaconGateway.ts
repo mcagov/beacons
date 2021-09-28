@@ -1,5 +1,6 @@
 import axios from "axios";
 import { LegacyBeacon } from "../entities/LegacyBeacon";
+import logger from "../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
 import { LegacyBeaconGateway } from "./interfaces/LegacyBeaconGateway";
 
@@ -15,14 +16,21 @@ export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
 
   public async getById(id: string): Promise<LegacyBeacon> {
     const url = `${this.apiDomainName}/${this.apiResourceName}/${id}`;
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${await this.authGateway.getAccessToken()}`,
-      },
-    });
-    return BeaconsApiLegacyBeaconGateway.legacyBeaconResponseToLegacyBeacon(
-      response.data
-    );
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${await this.authGateway.getAccessToken()}`,
+        },
+      });
+      logger.info("Legacy beacon retrieved");
+
+      return BeaconsApiLegacyBeaconGateway.legacyBeaconResponseToLegacyBeacon(
+        response.data
+      );
+    } catch (error) {
+      logger.error("getLegacyBeacon:", error);
+      throw error;
+    }
   }
 
   private static legacyBeaconResponseToLegacyBeacon(
