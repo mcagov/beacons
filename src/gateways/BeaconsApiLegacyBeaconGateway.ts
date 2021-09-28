@@ -14,19 +14,15 @@ export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
   }
 
   public async getLegacyBeacon(legacyBeaconId: string): Promise<LegacyBeacon> {
-    try {
-      const url = `${this.apiUrl}/${this.legacyBeaconEndpoint}/${legacyBeaconId}`;
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${await this.authGateway.getAccessToken()}`,
-        },
-      });
-      return BeaconsApiLegacyBeaconGateway.legacyBeaconResponseToLegacyBeacon(
-        response.data
-      );
-    } catch (error) {
-      return error;
-    }
+    const url = `${this.apiUrl}/${this.legacyBeaconEndpoint}/${legacyBeaconId}`;
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${await this.authGateway.getAccessToken()}`,
+      },
+    });
+    return BeaconsApiLegacyBeaconGateway.legacyBeaconResponseToLegacyBeacon(
+      response.data
+    );
   }
 
   private static legacyBeaconResponseToLegacyBeacon(
