@@ -32,9 +32,7 @@ export class GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateThe
   public async action(): Promise<any> {
     const { legacyBeaconGateway } = this.context.container;
 
-    const legacyBeacon = await legacyBeaconGateway.getLegacyBeacon(
-      this.legacyBeaconId
-    );
+    const legacyBeacon = await legacyBeaconGateway.getById(this.legacyBeaconId);
 
     await this.prePopulateTheDraftRegistrationWithMigratedDetails(legacyBeacon);
 

@@ -4,17 +4,17 @@ import { AuthGateway } from "./interfaces/AuthGateway";
 import { LegacyBeaconGateway } from "./interfaces/LegacyBeaconGateway";
 
 export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
-  private readonly apiUrl: string;
-  private readonly legacyBeaconEndpoint = "legacy-beacon";
+  private readonly apiDomainName: string;
   private readonly authGateway: AuthGateway;
+  private readonly apiResourceName = "legacy-beacon";
 
   constructor(apiUrl: string, authGateway: AuthGateway) {
-    this.apiUrl = apiUrl;
+    this.apiDomainName = apiUrl;
     this.authGateway = authGateway;
   }
 
-  public async getLegacyBeacon(legacyBeaconId: string): Promise<LegacyBeacon> {
-    const url = `${this.apiUrl}/${this.legacyBeaconEndpoint}/${legacyBeaconId}`;
+  public async getById(id: string): Promise<LegacyBeacon> {
+    const url = `${this.apiDomainName}/${this.apiResourceName}/${id}`;
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${await this.authGateway.getAccessToken()}`,

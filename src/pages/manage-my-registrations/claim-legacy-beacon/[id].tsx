@@ -157,7 +157,7 @@ const props = async (
 ): Promise<any> => {
   const legacyBeaconId = context.query.id as string;
   return {
-    legacyBeacon: await context.container.legacyBeaconGateway.getLegacyBeacon(
+    legacyBeacon: await context.container.legacyBeaconGateway.getById(
       legacyBeaconId
     ),
   };

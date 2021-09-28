@@ -1,5 +1,5 @@
 import { LegacyBeacon } from "../../entities/LegacyBeacon";
 
 export interface LegacyBeaconGateway {
-  getLegacyBeacon: (legacyBeaconId: string) => Promise<LegacyBeacon>;
+  getById: (legacyBeaconId: string) => Promise<LegacyBeacon>;
 }
