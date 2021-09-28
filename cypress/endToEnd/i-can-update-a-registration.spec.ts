@@ -41,6 +41,7 @@ describe("As an account holder", () => {
   it("I can update one of my registrations", () => {
     givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(firstRegistrationToUpdate);
+    andIHavePreviouslyRegisteredABeacon(secondRegistrationToUpdate);
 
     whenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(firstRegistrationToUpdate.hexId);
@@ -75,7 +76,6 @@ describe("As an account holder", () => {
     iCanViewTheUpdatedEmergencyContactInformation(firstUpdatedRegistration);
     andIClickContinue();
 
-    andIHavePreviouslyRegisteredABeacon(secondRegistrationToUpdate);
     whenIClickBack();
     whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
       secondRegistrationToUpdate.hexId
