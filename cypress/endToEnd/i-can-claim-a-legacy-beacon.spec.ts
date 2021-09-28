@@ -117,8 +117,8 @@ describe("As an account holder", () => {
     iCanSeeAPageHeadingThatContains("Application Complete");
 
     whenIClickTheButtonContaining("Return to your Account");
-    iCanSeeTheClaimedBeaconAsANormalRegistration(hexId);
-    iCannotSeeTheClaimedBeaconAsALegacyBeaconBecauseItHasBeenClaimed(hexId);
+    thereIsOnlyOneBeaconListedForHexId(hexId);
+    theBeaconListedForHexIdIsNotALegacyBeacon(hexId);
 
     whenIClickTheActionLinkInATableRowContaining(hexId, /update/i);
     iCanSeeText(hexId);
@@ -137,21 +137,17 @@ const iCanSeeTheLegacyBeaconAssignedToMeInTheTable = (hexId: string) => {
   iCanSeeText(hexId);
 };
 
-const iCanSeeTheClaimedBeaconAsANormalRegistration = (hexId: string) => {
+const thereIsOnlyOneBeaconListedForHexId = (hexId: string): void => {
   iCanSeeNLinksContaining(1, hexId);
+};
+
+const theBeaconListedForHexIdIsNotALegacyBeacon = (hexId: string) => {
   cy.get("th")
     .contains(hexId)
     .parent()
     .parent()
     .contains(/update/i);
 };
-
-export const iCannotSeeTheClaimedBeaconAsALegacyBeaconBecauseItHasBeenClaimed =
-  (hexId: string): void => {
-    cy.get(`td:contains(${hexId})`).each((rowWithHexId) => {
-      cy.wrap(rowWithHexId).parent().contains(/claim/i).should("not.exist");
-    });
-  };
 
 const whenIClickContinueWithNoOptionsSelected = whenIClickContinue;
 
