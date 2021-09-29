@@ -79,7 +79,7 @@ const ClaimLegacyBeacon: FunctionComponent<ClaimLegacyBeaconPageProps> = ({
         {pageText}
         <FormGroup errorMessages={form.fields.claimResponse.errorMessages}>
           <div id="sign-in-hint" className="govuk-hint">
-            Please select one of the following options
+            Please confirm that this is your beacon.
           </div>
           <RadioList>
             <RadioListItem
@@ -89,13 +89,13 @@ const ClaimLegacyBeacon: FunctionComponent<ClaimLegacyBeaconPageProps> = ({
               hintText="By confirming this beacon is yours, you will be able to manage this beacon online. You will also need to provide additional information, which is vital to Search and Rescue should the beacon be activated."
               value="claim"
             />
-            <RadioListItem
-              id="reject"
-              name={fieldName}
-              label="This is not my beacon"
-              hintText="We may have matched this beacon to you because it was previously registered to the same email address. This beacon will be removed from your account and you will no longer see it when you log in."
-              value="reject"
-            />
+            {/*<RadioListItem*/}
+            {/*  id="reject"*/}
+            {/*  name={fieldName}*/}
+            {/*  label="This is not my beacon"*/}
+            {/*  hintText="We may have matched this beacon to you because it was previously registered to the same email address. This beacon will be removed from your account and you will no longer see it when you log in."*/}
+            {/*  value="reject"*/}
+            {/*/>*/}
           </RadioList>
         </FormGroup>
         <h2 className="govuk-heading-m">
