@@ -37,7 +37,6 @@ resource "aws_iam_policy" "secret_manager_access" {
       "Resource": [
         "${aws_secretsmanager_secret.db_password.arn}",
         "${aws_secretsmanager_secret.gov_notify_api_key.arn}",
-        "${aws_secretsmanager_secret.gov_notify_feedback_email_address.arn}",
         "${aws_secretsmanager_secret.webapp_client_secret.arn}",
         "${aws_secretsmanager_secret.webapp_b2c_client_secret.arn}",
         "${aws_secretsmanager_secret.webapp_b2c_next_auth_jwt_secret.arn}"

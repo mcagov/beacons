@@ -86,10 +86,6 @@ resource "aws_ecs_task_definition" "webapp" {
         valueFrom : aws_secretsmanager_secret.gov_notify_api_key.arn
       },
       {
-        name : "GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS",
-        valueFrom : aws_secretsmanager_secret.gov_notify_feedback_email_address.arn
-      },
-      {
         name : "WEBAPP_CLIENT_SECRET",
         valueFrom : aws_secretsmanager_secret.webapp_client_secret.arn
       },

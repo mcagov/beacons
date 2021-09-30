@@ -61,7 +61,6 @@ jobs:
         env:
           TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
           TF_VAR_gov_notify_api_key: ${{ secrets.GOV_NOTIFY_API_KEY }}
-          TF_VAR_gov_notify_feedback_email_address: ${{ secrets.GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS }}
           TF_VAR_webapp_azure_ad_client_secret: ${{ secrets.WEBAPP_CLIENT_SECRET }}
           TF_VAR_webapp_azure_b2c_client_secret: ${{ secrets.AZURE_B2C_CLIENT_SECRET }}
           TF_VAR_webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.JWT_SECRET }}

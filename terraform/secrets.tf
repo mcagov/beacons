@@ -16,15 +16,6 @@ resource "aws_secretsmanager_secret_version" "gov_notify_api_key" {
   secret_string = var.gov_notify_api_key
 }
 
-resource "aws_secretsmanager_secret" "gov_notify_feedback_email_address" {
-  name = "${terraform.workspace}_gov_notify_feedback_email_address"
-}
-
-resource "aws_secretsmanager_secret_version" "gov_notify_feedback_email_address" {
-  secret_id     = aws_secretsmanager_secret.gov_notify_feedback_email_address.id
-  secret_string = var.gov_notify_feedback_email_address
-}
-
 resource "aws_secretsmanager_secret" "webapp_client_secret" {
   name = "${terraform.workspace}_webapp_client_secret"
 }
