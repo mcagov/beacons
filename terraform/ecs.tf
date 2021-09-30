@@ -70,6 +70,10 @@ resource "aws_ecs_task_definition" "webapp" {
       {
         name : "AZURE_B2C_SIGNUP_FLOW",
         value : var.webapp_azure_b2c_signup_flow
+      },
+      {
+        name : "GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS",
+        value : var.gov_notify_feedback_email_address
       }
     ],
     logConfiguration : {
