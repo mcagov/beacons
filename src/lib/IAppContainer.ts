@@ -5,11 +5,9 @@ import { BeaconGateway } from "../gateways/interfaces/BeaconGateway";
 import { BeaconSearchGateway } from "../gateways/interfaces/BeaconSearchGateway";
 import { DraftRegistrationGateway } from "../gateways/interfaces/DraftRegistrationGateway";
 import { EmailServiceGateway } from "../gateways/interfaces/EmailServiceGateway";
-import { IBasicAuthGateway } from "../gateways/interfaces/IBasicAuthGateway";
 import { LegacyBeaconGateway } from "../gateways/interfaces/LegacyBeaconGateway";
 import { UserSessionGateway } from "../gateways/interfaces/UserSessionGateway";
 import { AddNewUseToDraftRegistrationFn } from "../useCases/addNewUseToDraftRegistration";
-import { AuthenticateUserFn } from "../useCases/authenticateUser";
 import { DeleteBeaconFn } from "../useCases/deleteBeacon";
 import { DeleteCachedUseFn } from "../useCases/deleteCachedUse";
 import { GetAccountHolderIdFn } from "../useCases/getAccountHolderId";
@@ -24,7 +22,6 @@ import { UpdateRegistrationFn } from "../useCases/updateRegistration";
 
 export interface IAppContainer {
   /* Use cases */
-  authenticateUser: AuthenticateUserFn;
   submitRegistration: SubmitRegistrationFn;
   sendConfirmationEmail: SendConfirmationEmailFn;
   updateRegistration: UpdateRegistrationFn;
@@ -58,5 +55,4 @@ export interface IAppContainer {
   draftRegistrationGateway: DraftRegistrationGateway;
   // Other dependencies
   sessionGateway: UserSessionGateway;
-  basicAuthGateway: IBasicAuthGateway;
 }

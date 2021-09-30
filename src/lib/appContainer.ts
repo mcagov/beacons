@@ -1,5 +1,4 @@
 import { AadAuthGateway } from "../gateways/AadAuthGateway";
-import { BasicAuthGateway } from "../gateways/BasicAuthGateway";
 import { BeaconsApiAccountHolderGateway } from "../gateways/BeaconsApiAccountHolderGateway";
 import { BeaconsApiBeaconGateway } from "../gateways/BeaconsApiBeaconGateway";
 import { BeaconsApiBeaconSearchGateway } from "../gateways/BeaconsApiBeaconSearchGateway";
@@ -8,7 +7,6 @@ import { GovNotifyEmailServiceGateway } from "../gateways/GovNotifyEmailServiceG
 import { NextAuthUserSessionGateway } from "../gateways/NextAuthUserSessionGateway";
 import { RedisDraftRegistrationGateway } from "../gateways/RedisDraftRegistrationGateway";
 import { addNewUseToDraftRegistration } from "../useCases/addNewUseToDraftRegistration";
-import { authenticateUser } from "../useCases/authenticateUser";
 import { deleteBeacon } from "../useCases/deleteBeacon";
 import { deleteCachedUse } from "../useCases/deleteCachedUse";
 import { deleteDraftRegistration } from "../useCases/deleteDraftRegistration";
@@ -44,9 +42,6 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get deleteDraftRegistration() {
       return deleteDraftRegistration(this);
-    },
-    get authenticateUser() {
-      return authenticateUser(this);
     },
     get submitRegistration() {
       return submitRegistration(this);
@@ -106,9 +101,6 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get sessionGateway() {
       return new NextAuthUserSessionGateway();
-    },
-    get basicAuthGateway() {
-      return new BasicAuthGateway();
     },
     get legacyBeaconGateway() {
       return new BeaconsApiLegacyBeaconGateway(

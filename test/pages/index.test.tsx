@@ -28,7 +28,6 @@ describe("ServiceStartPage", () => {
         },
         container: {
           saveDraftRegistration: jest.fn(),
-          authenticateUser: jest.fn(),
         },
         res: {
           setHeader: jest.fn(),
