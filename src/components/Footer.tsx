@@ -14,6 +14,14 @@ export const Footer: FunctionComponent = () => (
                 </a>
               </li>
               <li className="govuk-footer__inline-list-item">
+                <a
+                  className="govuk-footer__link"
+                  href="/accessibility-statement"
+                >
+                  Accessibility
+                </a>
+              </li>
+              <li className="govuk-footer__inline-list-item">
                 Built by the&nbsp;
                 <a className="govuk-footer__link" href="/help/cookies">
                   Government Digital Service
