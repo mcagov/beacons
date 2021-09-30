@@ -178,5 +178,6 @@ const whenIClickOnTheHexIdOfTheLegacyBeaconAssignedToMe = (hexId: string) => {
 const iAmGivenTheOptionToClaimOrRejectTheLegacyBeacon = () => {
   iCanSeeAPageHeadingThatContains("Is this beacon yours?");
   iCanSeeText(/this is my beacon/i);
-  iCanSeeText(/this is not my beacon/i);
+  // TODO: Implement reject flow
+  // iCanSeeText(/this is not my beacon/i);
 };
