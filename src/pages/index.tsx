@@ -197,10 +197,6 @@ class IfUserViewedIndexPage implements Rule {
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    const { authenticateUser } = this.context.container;
-
-    await authenticateUser(this.context);
-
     return {
       props: {
         showCookieBanner: !this.context.req.cookies[acceptRejectCookieId],
