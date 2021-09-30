@@ -189,11 +189,6 @@ variable "gov_notify_feedback_email_address" {
   description = "The email address to which feedback should be sent"
   sensitive   = true
 }
-variable "basic_auth" {
-  type        = string
-  description = "A | separated list of username:passwords describing basic auth credentials"
-  sensitive   = true
-}
 variable "db_instance_class" {
   type        = string
   description = "The database instance class"

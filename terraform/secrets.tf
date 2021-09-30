@@ -16,15 +16,6 @@ resource "aws_secretsmanager_secret_version" "gov_notify_api_key" {
   secret_string = var.gov_notify_api_key
 }
 
-resource "aws_secretsmanager_secret" "basic_auth" {
-  name = "${terraform.workspace}_basic_auth"
-}
-
-resource "aws_secretsmanager_secret_version" "basic_auth" {
-  secret_id     = aws_secretsmanager_secret.basic_auth.id
-  secret_string = var.basic_auth
-}
-
 resource "aws_secretsmanager_secret" "webapp_client_secret" {
   name = "${terraform.workspace}_webapp_client_secret"
 }
