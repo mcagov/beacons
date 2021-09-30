@@ -37,4 +37,4 @@ jobs:
       - name: Set Message
         run: sed -i 's/${ maintenanceMessage }/${{ github.event.inputs.maintenanceMessage }}/g' html/index.html
       - name: Deploy app build to S3 bucket
-        run: aws s3 sync ./html/ s3://production.406beacons.com --delete
+        run: aws s3 sync ./html/ s3://register-406-beacons.service.gov.uk --delete
