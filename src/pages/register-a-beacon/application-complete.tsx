@@ -50,8 +50,8 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
                 </GovUKBody>
                 <GovUKBody className="govuk-!-font-weight-bold">
                   Remember your beacon should only be used in an emergency. If
-                  needed, you can also contact HM Coastguard 24/7 on Tel: 020
-                  381 72630.
+                  needed, you can also contact HM Coastguard 24/7 on Tel: +44
+                  3443 820 025.
                 </GovUKBody>
               </WarningText>
               <ReturnToYourAccountSection />
