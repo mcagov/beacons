@@ -279,3 +279,15 @@ variable "webapp_minimum_task_count" {
   description = "Minimum number of expected tasks to be running for the Webapp"
   default     = 1
 }
+variable "trelloToken" {
+  type        = string
+  description = "Token for Trello API"
+}
+variable "trelloApiKey" {
+  type        = string
+  description = "Key for Trello API"
+}
+variable "trelloListId" {
+  type        = string
+  description = "Unique idenitfier for list in Trello"
+}
