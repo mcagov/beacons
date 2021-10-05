@@ -4,17 +4,15 @@ var zlib = require('zlib');
 var https = require('https');
 var querystring = require('querystring');
 
-var trelloApiKey, trelloToken, trelloListId, totalRequests, completedRequests;
-
-trelloApiKey = '2bf7f31f200a598e573a78b60317b6c6';
-trelloToken  = 'd20cded595cd4dd77523d9fb9c205dc12850adf96e1abacd7404be514db29732';
-trelloListId = '6157064b4d7e1b3b1ea839ad';
-
 const http = require('https')
 
 function postToTrello(subject, message, context) {
      return new Promise((resolve, reject) => {
          
+        let trelloApiKey = process.env.trelloApiKey
+        let trelloToken = process.env.trelloToken
+        let trelloListId = process.env.trelloListId
+        
         var body='';
         var payloadStr = {
             "idList": trelloListId,
