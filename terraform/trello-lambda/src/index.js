@@ -9,11 +9,11 @@ const http = require('https')
 function postToTrello(subject, message, context) {
      return new Promise((resolve, reject) => {
          
-        let trelloApiKey = process.env.trelloApiKey
-        let trelloToken = process.env.trelloToken
-        let trelloListId = process.env.trelloListId
+        var trelloApiKey = process.env.trelloApiKey
+        var trelloToken = process.env.trelloToken
+        var trelloListId = process.env.trelloListId
+        var str = '';
         
-        var body='';
         var payloadStr = {
             "idList": trelloListId,
             "name": subject,
@@ -32,21 +32,28 @@ function postToTrello(subject, message, context) {
         };
         
         var postReq = https.request(options, function(res) {
-            console.log(`statusCode: ${res.statusCode}`)
             
-            res.on('data', function (chunk) {
-              body += chunk;
+            res.on('data', function(chunk) {
+                str += chunk;
             });
-            
+
+            res.on('end', function () {
+                //try {
+                //    body = JSON.parse(Buffer.concat(body).toString());
+                //} catch(e) {
+                //    reject(e);
+                //}
+                resolve(str);
+            });
+
             context.succeed('DONE');
             return res;
         });
-    
+
         postReq.on('error', error => {
             console.error(error)
         })
 
-        postReq.write(postData);
         postReq.end();
     });
 }
@@ -75,7 +82,7 @@ exports.handler = async (event, context) => {
     return postToTrello(subject, message, context).then((data) => {
         const response = {
             statusCode: 200,
-            body: JSON.stringify(data),
+            body: data,
          };
         return response;
     });
