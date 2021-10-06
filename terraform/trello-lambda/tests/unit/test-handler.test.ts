@@ -4,25 +4,40 @@ import { handler } from "../../src/index";
 describe('Unit test for app handler', function () {
     it('verifies successful response', async () => {
 
+        process.env.trelloApiKey = "testApiKey";
+        process.env.trelloToken = "testToken";
+        process.env.trelloListId = "testListId";
+
         const nock = require('nock')
 
+        const sns_event = "{\"AlarmName\":\"Test alarm name\",\"AlarmDescription\":\"Test alarm BeMyBeacon.\",\"NewStateValue\":\"ALARM\",\"NewStateReason\":\"Test Reason\",\"StateChangeTime\":\"2017-01-12T16:30:42.236+0000\"}";
+        const card_name = 'ALARM: Example Subject';
+
         const mockedResponse = {
-          license: {
-            key: 'mit',
-            name: 'MIT License',
-            spdx_id: 'MIT',
-            url: 'https://api.github.com/licenses/mit',
-            node_id: 'MDc6TGljZW5zZTEz',
-          }
+          id: "615db4d32c319821d743bc5a",
+          checkItemStates: [],
+          closed: false,
+          name: card_name,
+          idList: process.env.trelloListId
         };
 
         const scope = nock('https://api.trello.com')
-          .post(/.*cards.*$/)
+          .post("/1/cards")
+          .query(actualQueryObject => {
+            if (
+              actualQueryObject.key == process.env.trelloApiKey &&
+              actualQueryObject.token == process.env.trelloToken &&
+              actualQueryObject.idList == process.env.trelloListId &&
+              actualQueryObject.name == card_name &&
+              actualQueryObject.desc.includes('BeMyBeacon')
+            ) { return true } else { return false };
+          })
           .reply(200, mockedResponse,
         )
 
         const context = require('aws-lambda-mock-context');
         const ctx = context();
+
         const event: SNSEvent = {
             "Records": [{
             "EventSource": "aws:sns",
@@ -32,8 +47,8 @@ describe('Unit test for app handler', function () {
                 "Type": "Notification",
                 "MessageId": "95df01b4-ee98-5cb9-9903-4c221d41eb5e",
                 "TopicArn": "arn:aws:sns:us-east-1:123456789012:ExampleTopic",
-                "Subject": "ALARM: Example Subject",
-                "Message": "{\"AlarmName\":\"Test alarm name\",\"AlarmDescription\":\"Test alarm description.\",\"NewStateValue\":\"ALARM\",\"NewStateReason\":\"Test Reason\",\"StateChangeTime\":\"2017-01-12T16:30:42.236+0000\"}",
+                "Subject": card_name,
+                "Message": sns_event,
                 "MessageAttributes": {
                     "Test": {
                         "Type": "String",
@@ -49,7 +64,6 @@ describe('Unit test for app handler', function () {
         } as any
  
         const result = await handler(event, ctx)
-        console.log(result);
 
         expect(result.statusCode).toEqual(200);
         expect(result.body).toEqual(JSON.stringify(mockedResponse));

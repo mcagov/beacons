@@ -12,6 +12,10 @@ function postToTrello(subject, message, context) {
         var trelloApiKey = process.env.trelloApiKey
         var trelloToken = process.env.trelloToken
         var trelloListId = process.env.trelloListId
+        console.log(trelloApiKey);
+        console.log(trelloToken);
+        console.log(trelloListId);
+
         var str = '';
         
         var payloadStr = {
@@ -38,11 +42,6 @@ function postToTrello(subject, message, context) {
             });
 
             res.on('end', function () {
-                //try {
-                //    body = JSON.parse(Buffer.concat(body).toString());
-                //} catch(e) {
-                //    reject(e);
-                //}
                 resolve(str);
             });
 
@@ -52,6 +51,7 @@ function postToTrello(subject, message, context) {
 
         postReq.on('error', error => {
             console.error(error)
+            reject(error);
         })
 
         postReq.end();
