@@ -23,7 +23,6 @@ function postToTrello(subject, message, context) {
          };
          
         var postData = querystring.stringify(payloadStr);
-        console.info(postData);
     
         const options = {
             host: 'api.trello.com',
@@ -54,23 +53,24 @@ function postToTrello(subject, message, context) {
 
 exports.handler = async (event, context) => {
     const subject = event.Records[0].Sns.Subject;
-    const timestamp = event.Records[0].Sns.Timestamp;
     
     const jsonMessage = JSON.parse(event.Records[0].Sns.Message);
-    
-    const state =  jsonMessage.NewStateValue;
     const alarmName = jsonMessage.AlarmName;
     const alarmDescription = jsonMessage.AlarmDescription;
     const reason = jsonMessage.NewStateReason;
     const when = jsonMessage.StateChangeTime;
-    
-    const message = state + "\n\n" + alarmName + "\n\n" + alarmDescription + "\n\n" + reason + "\n On " + when;
-    console.info(subject);
-    console.info(message);
-    
+    const state =  jsonMessage.NewStateValue;
+
     if (state != "ALARM") {
+        console.info("Skipping as state is " + state);
         return;
     }
+
+    const message = state + "\n\n" + alarmName + "\n\n" + alarmDescription + "\n\n" + reason + "\n On " + when;
+
+    console.info("Posting to Trello");
+    console.info(subject);
+    console.info(message);
     
     return postToTrello(subject, message, context).then((data) => {
         const response = {
