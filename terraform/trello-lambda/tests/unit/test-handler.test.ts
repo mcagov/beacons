@@ -4,7 +4,6 @@ import { handler } from "../../src/index";
 describe('Unit test for app handler', function () {
     it('verifies successful response', async () => {
         const context = require('aws-lambda-mock-context');
- 
         const ctx = context();
         const event: SNSEvent = {
             "Records": [{
