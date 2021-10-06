@@ -59,7 +59,7 @@ exports.handler = async (event, context) => {
     const alarmDescription = jsonMessage.AlarmDescription;
     const reason = jsonMessage.NewStateReason;
     const when = jsonMessage.StateChangeTime;
-    const state =  jsonMessage.NewStateValue;
+    const state = jsonMessage.NewStateValue;
 
     if (state != "ALARM") {
         console.info("Skipping as state is " + state);
