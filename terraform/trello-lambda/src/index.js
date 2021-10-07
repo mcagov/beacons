@@ -8,16 +8,15 @@ const http = require('https')
 
 function postToTrello(subject, message, context) {
   return new Promise((resolve, reject) => {
+    var success_state = 'DONE'
+    var failed_state = 'FAILED'
+    var error_state = 'ERROR'
          
     var trelloApiKey = process.env.trelloApiKey
     var trelloToken = process.env.trelloToken
     var trelloListId = process.env.trelloListId
 
-    console.log(trelloApiKey);
-    console.log(trelloToken);
-    console.log(trelloListId);
-
-    var str = '';
+    var response_body = "";
     var responseObj = {};
         
     var payloadStr = {
@@ -40,27 +39,23 @@ function postToTrello(subject, message, context) {
     var postReq = https.request(options, function(res) {
             
       res.on('data', function(chunk) {
-        str += chunk;
+        response_body += chunk;
       });
 
       res.on('end', function () {
-        let succeed_state = 'DONE';
-
-        console.log(str)
-        console.log(res.statusCode)
-
-        if (res.statusCode != 200) { succeed_state = 'FAILED'};
-        responseObj = { statusCode: res.statusCode, body: str, state: succeed_state };
+        let succeed_state = null;
+        if (res.statusCode != 200) { succeed_state = failed_state } else { succeed_state = success_state };
+        responseObj = { statusCode: res.statusCode, body: response_body, state: succeed_state };
         resolve(responseObj);
       });
 
-      context.succeed('DONE');
+      context.succeed(success_state);
       return res;
     });
 
     postReq.on('error', error => {
-      context.fail('ERROR');
-      let errorObj = { state: 'ERROR', error_message: error.message };
+      context.fail(error_state);
+      let errorObj = { state: error_state, error_message: error.message };
       reject(errorObj);
     })
 

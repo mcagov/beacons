@@ -56,8 +56,6 @@ describe('Unit test for app handler', function () {
  
     const result = await handler(event, ctx)
 
-    console.log("------");
-    console.log(result);
     expect(result.state).toEqual('DONE');
     expect(result.http_response.statusCode).toEqual(200);
     expect(result.http_response.body).toEqual(JSON.stringify(mockedResponse));
@@ -117,5 +115,4 @@ describe('Unit test for app handler', function () {
     expect(result.state).toEqual('ERROR');
     expect(result.error_message).toEqual('something awful happened');
   });
-
 });
