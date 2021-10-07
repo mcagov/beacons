@@ -7,83 +7,100 @@ var querystring = require('querystring');
 const http = require('https')
 
 function postToTrello(subject, message, context) {
-     return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
          
-        var trelloApiKey = process.env.trelloApiKey
-        var trelloToken = process.env.trelloToken
-        var trelloListId = process.env.trelloListId
-        console.log(trelloApiKey);
-        console.log(trelloToken);
-        console.log(trelloListId);
+    var trelloApiKey = process.env.trelloApiKey
+    var trelloToken = process.env.trelloToken
+    var trelloListId = process.env.trelloListId
 
-        var str = '';
+    console.log(trelloApiKey);
+    console.log(trelloToken);
+    console.log(trelloListId);
+
+    var str = '';
+    var responseObj = {};
         
-        var payloadStr = {
-            "idList": trelloListId,
-            "name": subject,
-            "desc": message,
-            "due": null,
-            "urlSource": null
-         };
+    var payloadStr = {
+      "idList": trelloListId,
+      "name": subject,
+      "desc": message,
+      "due": null,
+      "urlSource": null
+    };
          
-        var postData = querystring.stringify(payloadStr);
+    var postData = querystring.stringify(payloadStr);
     
-        const options = {
-            host: 'api.trello.com',
-            path: '/1/cards?' + 'key=' + trelloApiKey + '&token=' + trelloToken + '&' + postData,
-            port: 443,
-            method: 'POST'
-        };
+    const options = {
+      host: 'api.trello.com',
+      path: '/1/cards?' + 'key=' + trelloApiKey + '&token=' + trelloToken + '&' + postData,
+      port: 443,
+      method: 'POST'
+    };
         
-        var postReq = https.request(options, function(res) {
+    var postReq = https.request(options, function(res) {
             
-            res.on('data', function(chunk) {
-                str += chunk;
-            });
+      res.on('data', function(chunk) {
+        str += chunk;
+      });
 
-            res.on('end', function () {
-                resolve(str);
-            });
+      res.on('end', function () {
+        let succeed_state = 'DONE';
 
-            context.succeed('DONE');
-            return res;
-        });
+        console.log(str)
+        console.log(res.statusCode)
 
-        postReq.on('error', error => {
-            console.error(error)
-            reject(error);
-        })
+        if (res.statusCode != 200) { succeed_state = 'FAILED'};
+        responseObj = { statusCode: res.statusCode, body: str, state: succeed_state}
+        resolve(responseObj);
+      });
 
-        postReq.end();
+      context.succeed('DONE');
+      return res;
     });
+
+    postReq.on('error', error => {
+      console.error(error)
+      responseObj = { statusCode: res.statusCode, body: error, state: 'FAILED'}
+      context.fail('FAILED');
+      reject(responseObj);
+    })
+
+    postReq.end();
+  });
 }
 
 exports.handler = async (event, context) => {
-    const subject = event.Records[0].Sns.Subject;
+  const subject = event.Records[0].Sns.Subject;
     
-    const jsonMessage = JSON.parse(event.Records[0].Sns.Message);
-    const alarmName = jsonMessage.AlarmName;
-    const alarmDescription = jsonMessage.AlarmDescription;
-    const reason = jsonMessage.NewStateReason;
-    const when = jsonMessage.StateChangeTime;
-    const state = jsonMessage.NewStateValue;
+  const jsonMessage = JSON.parse(event.Records[0].Sns.Message);
+  const alarmName = jsonMessage.AlarmName;
+  const alarmDescription = jsonMessage.AlarmDescription;
+  const reason = jsonMessage.NewStateReason;
+  const when = jsonMessage.StateChangeTime;
+  const state = jsonMessage.NewStateValue;
 
-    if (state != "ALARM") {
-        console.info("Skipping as state is " + state);
-        return;
-    }
+  const response = {
+    state: null,
+    http_response: { statusCode: null, body: null }
+  };
 
-    const message = state + "\n\n" + alarmName + "\n\n" + alarmDescription + "\n\n" + reason + "\n On " + when;
+  if (state != "ALARM") {
+    console.info("Skipping as state is " + state);
+    context.succeed('SKIPPED');
+    response.state = 'SKIPPED'
+    return response;
+  }
 
-    console.info("Posting to Trello");
-    console.info(subject);
-    console.info(message);
+  const message = state + "\n\n" + alarmName + "\n\n" + alarmDescription + "\n\n" + reason + "\n On " + when;
+
+  console.info("Posting to Trello");
+  console.info(subject);
+  console.info(message);
     
-    return postToTrello(subject, message, context).then((data) => {
-        const response = {
-            statusCode: 200,
-            body: data,
-         };
-        return response;
-    });
+  return postToTrello(subject, message, context).then((responseObj) => {
+    response.state = responseObj.state;
+    response.http_response.statusCode = responseObj.statusCode;
+    response.http_response.body = responseObj.body;
+    return response;
+  });
 };
