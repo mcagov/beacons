@@ -1,27 +1,36 @@
 console.log('Loading function');
 
-var zlib = require('zlib');
-var https = require('https');
-var querystring = require('querystring');
-var http = require('https')
+const zlib = require('zlib');
+const https = require('https');
+const querystring = require('querystring');
+const http = require('https')
 
-var success_state = 'DONE'
-var failed_state = 'FAILED'
-var error_state = 'ERROR'
-var skipped_state = 'SKIPPED'
+const success_state = 'DONE'
+const failed_state = 'FAILED'
+const error_state = 'ERROR'
+const skipped_state = 'SKIPPED'
+
+function buildTrelloDescription(jsonMessage) {
+  const alarmName = jsonMessage.AlarmName;
+  const alarmDescription = jsonMessage.AlarmDescription;
+  const reason = jsonMessage.NewStateReason;
+  const when = jsonMessage.StateChangeTime;
+  const alarm_state = jsonMessage.NewStateValue;
+
+  return alarm_state + "\n\n" + alarmName + "\n\n" + alarmDescription + "\n\n" + reason + " On " + when;
+}
 
 function postToTrello(subject, message, context) {
   return new Promise((resolve, reject) => {
-
-         
-    var trelloApiKey = process.env.trelloApiKey
-    var trelloToken = process.env.trelloToken
-    var trelloListId = process.env.trelloListId
+      
+    const trelloApiKey = process.env.trelloApiKey
+    const trelloToken = process.env.trelloToken
+    const trelloListId = process.env.trelloListId
 
     var response_body = "";
     var responseObj = {};
         
-    var payloadStr = {
+    const payload = {
       "idList": trelloListId,
       "name": subject,
       "desc": message,
@@ -29,7 +38,8 @@ function postToTrello(subject, message, context) {
       "urlSource": null
     };
          
-    var postData = querystring.stringify(payloadStr);
+    const qs = new URLSearchParams(payload);
+    const postData = qs.toString();
     
     const options = {
       host: 'api.trello.com',
@@ -38,7 +48,7 @@ function postToTrello(subject, message, context) {
       method: 'POST'
     };
         
-    var postReq = https.request(options, function(res) {
+    const postReq = https.request(options, function(res) {
       let succeed_state = null;
 
       res.on('data', function(chunk) {
@@ -68,12 +78,7 @@ function postToTrello(subject, message, context) {
 
 exports.handler = async (event, context) => {
   const subject = event.Records[0].Sns.Subject;
-    
   const jsonMessage = JSON.parse(event.Records[0].Sns.Message);
-  const alarmName = jsonMessage.AlarmName;
-  const alarmDescription = jsonMessage.AlarmDescription;
-  const reason = jsonMessage.NewStateReason;
-  const when = jsonMessage.StateChangeTime;
   const alarm_state = jsonMessage.NewStateValue;
 
   const response = {
@@ -86,7 +91,7 @@ exports.handler = async (event, context) => {
     return response;
   }
 
-  const message = alarm_state + "\n\n" + alarmName + "\n\n" + alarmDescription + "\n\n" + reason + "\n On " + when;
+  const message = buildTrelloDescription(jsonMessage);
 
   console.info("Posting to Trello");
   console.info(subject);
