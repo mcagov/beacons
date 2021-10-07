@@ -19,12 +19,12 @@ EOF
 }
 
 resource "aws_lambda_function" "notify_trello_lambda" {
-  filename      = "trello-lambda/trello-lambda.zip"
+  filename      = "trello-lambda/src/trello-lambda.zip"
   function_name = "notify-trello"
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "index.handler"
 
-  source_code_hash = filebase64sha256("trello-lambda/trello-lambda.zip")
+  source_code_hash = filebase64sha256("trello-lambda/src/trello-lambda.zip")
 
   runtime = "nodejs12.x"
 

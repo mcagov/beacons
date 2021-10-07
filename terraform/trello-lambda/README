@@ -4,6 +4,9 @@ An AWS lambda function that posts SNS oringinating from CloudWatch into your Tre
 
 ## Required Setup
 
+npm install
+npm run test
+
 ## Deployment via Terraform:
 
 cd  src

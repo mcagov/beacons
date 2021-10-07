@@ -30,7 +30,7 @@ describe('Unit test for app handler', function () {
     process.env.trelloListId = "testListId";
   });
 
-  it('verifies successful response', async () => {
+  it('verifies a successful response', async () => {
     const ctx = context();
 
     const mockedResponse = {
@@ -56,9 +56,15 @@ describe('Unit test for app handler', function () {
  
     const result = await handler(event, ctx)
 
-    expect(result.state).toEqual('DONE');
-    expect(result.http_response.statusCode).toEqual(200);
-    expect(result.http_response.body).toEqual(JSON.stringify(mockedResponse));
+    ctx.Promise
+    .then((value) => {
+        expect(value).toEqual('DONE');
+        expect(result.http_response.statusCode).toEqual(200);
+        expect(result.http_response.body).toEqual(JSON.stringify(mockedResponse));
+    })
+    .catch(err => {
+      fail('Context failed when it was expected to succeed: ' + err);
+    });
   });
 
   it('handles an 40X error response', async () => {
@@ -82,9 +88,16 @@ describe('Unit test for app handler', function () {
  
     const result = await handler(event, ctx);
 
-    expect(result.state).toEqual('FAILED');
-    expect(result.http_response.statusCode).toEqual(401);
-    expect(result.http_response.body).toEqual(JSON.stringify(mockedResponse));
+    ctx.Promise
+    .then((value) => {
+      expect(value).toEqual('FAILED');
+      expect(result.http_response.statusCode).toEqual(401);
+      expect(result.http_response.body).toEqual(JSON.stringify(mockedResponse));
+    })
+    .catch(err => {
+      console.log('context Failed' + err);
+      throw new Error('Context failed when it was expected to succeed: ' + err);
+    });
   });
 
   it('handles does not post to trello if alarm state is OK', async () => {
@@ -93,7 +106,15 @@ describe('Unit test for app handler', function () {
     event.Records[0].Sns.Message = "{\"AlarmName\":\"Test alarm name\",\"AlarmDescription\":\"Test alarm BeMyBeacon.\",\"NewStateValue\":\"OK\"}";
 
     const result = await handler(event, ctx);
-    expect(result.state).toEqual('SKIPPED');
+
+    ctx.Promise
+    .then((value) => {
+      expect(value).toEqual('SKIPPED');
+    })
+    .catch(err => {
+      console.log('context Failed' + err);
+      throw new Error('Context failed when it was expected to succeed: ' + err);
+    });
   });
 
   it('handles an awful HTTP error', async () => {
@@ -111,8 +132,13 @@ describe('Unit test for app handler', function () {
     
     const result = await handler(event, ctx);
 
-    const util = require('util')
-    expect(result.state).toEqual('ERROR');
-    expect(result.error_message).toEqual('something awful happened');
+    ctx.Promise
+    .then(() => {
+      throw new Error('Context succeeded when it was expected to fail');
+    })
+    .catch(err => {
+      expect(err.message).toEqual('ERROR');
+      expect(result.error_message).toEqual('something awful happened');  
+    });
   });
 });

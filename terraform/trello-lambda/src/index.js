@@ -39,25 +39,26 @@ function postToTrello(subject, message, context) {
     };
         
     var postReq = https.request(options, function(res) {
-            
+      let succeed_state = null;
+
       res.on('data', function(chunk) {
         response_body += chunk;
       });
 
       res.on('end', function () {
-        let succeed_state = null;
-        if (res.statusCode != 200) { succeed_state = failed_state } else { succeed_state = success_state };
-        responseObj = { statusCode: res.statusCode, body: response_body, state: succeed_state };
+        responseObj = { statusCode: res.statusCode, body: response_body };
         resolve(responseObj);
       });
 
-      context.succeed(success_state);
+      if (res.statusCode != 200) { succeed_state = failed_state } else { succeed_state = success_state };
+
+      context.succeed(succeed_state);
       return res;
     });
 
     postReq.on('error', error => {
       context.fail(error_state);
-      let errorObj = { state: error_state, error_message: error.message };
+      let errorObj = { error_message: error.message };
       reject(errorObj);
     })
 
@@ -73,21 +74,19 @@ exports.handler = async (event, context) => {
   const alarmDescription = jsonMessage.AlarmDescription;
   const reason = jsonMessage.NewStateReason;
   const when = jsonMessage.StateChangeTime;
-  const state = jsonMessage.NewStateValue;
+  const alarm_state = jsonMessage.NewStateValue;
 
   const response = {
-    state: null,
     http_response: { statusCode: null, body: null }
   };
 
-  if (state != "ALARM") {
-    console.info("Skipping as state is " + state);
+  if (alarm_state != "ALARM") {
+    console.info("Skipping as state is %s", alarm_state);
     context.succeed(skipped_state);
-    response.state = skipped_state;
     return response;
   }
 
-  const message = state + "\n\n" + alarmName + "\n\n" + alarmDescription + "\n\n" + reason + "\n On " + when;
+  const message = alarm_state + "\n\n" + alarmName + "\n\n" + alarmDescription + "\n\n" + reason + "\n On " + when;
 
   console.info("Posting to Trello");
   console.info(subject);
@@ -95,14 +94,13 @@ exports.handler = async (event, context) => {
     
   return postToTrello(subject, message, context)
   .then(responseObj => { 
-    response.state = responseObj.state;
+    console.info('API return code: %s', responseObj.statusCode);
     response.http_response.statusCode = responseObj.statusCode;
     response.http_response.body = responseObj.body;
     return response;
   })
   .catch(errorObj => {
     console.log(errorObj.error_message);
-    response.state = errorObj.state;
     response.error_message = errorObj.error_message;
     return response;
   })
