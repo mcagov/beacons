@@ -50,7 +50,7 @@ function postToTrello(subject, message, context) {
         console.log(res.statusCode)
 
         if (res.statusCode != 200) { succeed_state = 'FAILED'};
-        responseObj = { statusCode: res.statusCode, body: str, state: succeed_state}
+        responseObj = { statusCode: res.statusCode, body: str, state: succeed_state };
         resolve(responseObj);
       });
 
@@ -59,10 +59,9 @@ function postToTrello(subject, message, context) {
     });
 
     postReq.on('error', error => {
-      console.error(error)
-      responseObj = { statusCode: res.statusCode, body: error, state: 'FAILED'}
-      context.fail('FAILED');
-      reject(responseObj);
+      context.fail('ERROR');
+      let errorObj = { state: 'ERROR', error_message: error.message };
+      reject(errorObj);
     })
 
     postReq.end();
@@ -97,10 +96,17 @@ exports.handler = async (event, context) => {
   console.info(subject);
   console.info(message);
     
-  return postToTrello(subject, message, context).then((responseObj) => {
+  return postToTrello(subject, message, context)
+  .then(responseObj => { 
     response.state = responseObj.state;
     response.http_response.statusCode = responseObj.statusCode;
     response.http_response.body = responseObj.body;
     return response;
-  });
+  })
+  .catch(errorObj => {
+    console.log(errorObj.error_message);
+    response.state = errorObj.state;
+    response.error_message = errorObj.error_message;
+    return response;
+  })
 };

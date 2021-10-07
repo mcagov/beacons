@@ -52,8 +52,7 @@ describe('Unit test for app handler', function () {
           actualQueryObject.desc.includes('BeMyBeacon')
         ) { return true } else { return false };
       })
-      .reply(200, mockedResponse,
-    )
+      .reply(200, mockedResponse)
  
     const result = await handler(event, ctx)
 
@@ -64,11 +63,11 @@ describe('Unit test for app handler', function () {
     expect(result.http_response.body).toEqual(JSON.stringify(mockedResponse));
   });
 
-  it('handles an error response', async () => {
+  it('handles an 40X error response', async () => {
     const ctx = context();
 
     process.env.trelloApiKey = "badApiKey";
-    event.Records[0].Sns.Subject = "bad subject"
+    event.Records[0].Sns.Subject = "bad subject";
 
     const mockedResponse = {
       error: "The error",
@@ -81,10 +80,9 @@ describe('Unit test for app handler', function () {
       .query(actualQueryObject => {
          return actualQueryObject.name == "bad subject";
       })
-      .reply(401, mockedResponse,
-    )
+      .reply(401, mockedResponse)
  
-    const result = await handler(event, ctx)
+    const result = await handler(event, ctx);
 
     expect(result.state).toEqual('FAILED');
     expect(result.http_response.statusCode).toEqual(401);
@@ -96,8 +94,28 @@ describe('Unit test for app handler', function () {
 
     event.Records[0].Sns.Message = "{\"AlarmName\":\"Test alarm name\",\"AlarmDescription\":\"Test alarm BeMyBeacon.\",\"NewStateValue\":\"OK\"}";
 
-    const result = await handler(event, ctx)
+    const result = await handler(event, ctx);
     expect(result.state).toEqual('SKIPPED');
   });
-});
 
+  it('handles an awful HTTP error', async () => {
+    const ctx = context();
+
+    event.Records[0].Sns.Subject = "subject that crashes trello API"
+    event.Records[0].Sns.Message = sns_event;
+
+    const scope = nock('https://api.trello.com')
+      .post("/1/cards")
+      .query(actualQueryObject => {
+         return actualQueryObject.name == "subject that crashes trello API";
+      })
+      .replyWithError('something awful happened')
+    
+    const result = await handler(event, ctx);
+
+    const util = require('util')
+    expect(result.state).toEqual('ERROR');
+    expect(result.error_message).toEqual('something awful happened');
+  });
+
+});
