@@ -1,0 +1,14 @@
+# Trello Lambda
+  
+An AWS lambda function that posts SNS oringinating from CloudWatch into your Trello board.
+
+## Required Setup
+
+## Deployment via Terraform:
+
+cd  src
+zip trello-lambda.zip index.js 
+
+terraform apply -var-file=dev.tfvars  -target=aws_lambda_function.notify_trello_lambda
+terraform apply -var-file=dev.tfvars  -target=aws_sns_topic_subscription.sns_technical_alerts_lambda_subscription
+terraform apply -var-file=dev.tfvars  -target=aws_lambda_permission.with_sns_service_alerts

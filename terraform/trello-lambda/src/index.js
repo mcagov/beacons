@@ -3,14 +3,16 @@ console.log('Loading function');
 var zlib = require('zlib');
 var https = require('https');
 var querystring = require('querystring');
+var http = require('https')
 
-const http = require('https')
+var success_state = 'DONE'
+var failed_state = 'FAILED'
+var error_state = 'ERROR'
+var skipped_state = 'SKIPPED'
 
 function postToTrello(subject, message, context) {
   return new Promise((resolve, reject) => {
-    var success_state = 'DONE'
-    var failed_state = 'FAILED'
-    var error_state = 'ERROR'
+
          
     var trelloApiKey = process.env.trelloApiKey
     var trelloToken = process.env.trelloToken
@@ -80,8 +82,8 @@ exports.handler = async (event, context) => {
 
   if (state != "ALARM") {
     console.info("Skipping as state is " + state);
-    context.succeed('SKIPPED');
-    response.state = 'SKIPPED'
+    context.succeed(skipped_state);
+    response.state = skipped_state;
     return response;
   }
 
