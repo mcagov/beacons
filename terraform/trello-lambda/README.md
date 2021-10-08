@@ -39,9 +39,7 @@ Setup your API keys and tokens for trello by adding them to dev.tfvars e.g:
 
 You can get your token and keys from trello by following instructions on:
 
-
   https://trello.com/app-key
-
 
 and then discover the unique id of the column within the baord you would like to create cards by:
 
@@ -50,6 +48,8 @@ and then discover the unique id of the column within the baord you would like to
 You can now run Terraform from the console, as you are only deploying the lambda you can leave all the values it prompts for blank.
 
 ```sh
+  terraform init
+  terraform workspace dev
   terraform apply -var-file=dev.tfvars  -target=aws_lambda_function.notify_trello_lambda
   terraform apply -var-file=dev.tfvars  -target=aws_sns_topic_subscription.sns_technical_alerts_lambda_subscription
   terraform apply -var-file=dev.tfvars  -target=aws_lambda_permission.with_sns_technical_alerts
