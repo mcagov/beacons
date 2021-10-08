@@ -43,7 +43,7 @@ You can get your token and keys from trello by following instructions on:
 
 and then discover the unique id of the column within the baord you would like to create cards by:
 
-  https://api.trello.com/1/boards/your-id/lists?key=your-key&token=your-token
+  https://api.trello.com/1/boards/board-id/lists?key=your-key&token=your-token
 
 You can now run Terraform from the console, as you are only deploying the lambda you can leave all the values it prompts for blank.
 
