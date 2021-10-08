@@ -41,7 +41,7 @@ You can get your token and keys from trello by following instructions on:
 
   https://trello.com/app-key
 
-and then discover the unique id of the column within the baord you would like to create cards by:
+and then discover the unique id of the column within the board you would like to create cards by:
 
   https://api.trello.com/1/boards/board-id/lists?key=your-key&token=your-token
 

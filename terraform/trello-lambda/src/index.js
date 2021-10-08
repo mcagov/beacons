@@ -26,11 +26,11 @@ function postToTrello(subject, message, context) {
     var responseObj = {};
         
     const payload = {
+      "key": trelloApiKey,
+      "token": trelloToken,
       "idList": trelloListId,
       "name": subject,
-      "desc": message,
-      "due": null,
-      "urlSource": null
+      "desc": message
     };
          
     const qs = new URLSearchParams(payload);
@@ -38,7 +38,7 @@ function postToTrello(subject, message, context) {
     
     const options = {
       host: 'api.trello.com',
-      path: '/1/cards?' + 'key=' + trelloApiKey + '&token=' + trelloToken + '&' + postData,
+      path: '/1/cards?' + postData,
       port: 443,
       method: 'POST'
     };
