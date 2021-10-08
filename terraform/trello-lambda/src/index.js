@@ -1,7 +1,4 @@
-const zlib = require('zlib');
 const https = require('https');
-const querystring = require('querystring');
-const http = require('https')
 
 const success_state = 'DONE'
 const failed_state = 'FAILED'
