@@ -1,5 +1,5 @@
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+  name = "${terraform.workspace}-iam_for_lambda"
 
   assume_role_policy = <<EOF
 {
@@ -20,7 +20,7 @@ EOF
 
 resource "aws_lambda_function" "notify_trello_lambda" {
   filename      = "trello-lambda/src/trello-lambda.zip"
-  function_name = "notify-trello"
+  function_name = "${terraform.workspace}-notify-trello"
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "index.handler"
 
@@ -40,7 +40,7 @@ resource "aws_lambda_function" "notify_trello_lambda" {
 resource "aws_lambda_permission" "with_sns_technical_alerts" {
   statement_id  = "AllowExecutionFromSNSTechnicalAlerts"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.notify_trello_lambda.arn
+  function_name = "${terraform.workspace}-with_sns_technical_alerts"
   principal     = "sns.amazonaws.com"
   source_arn    = aws_sns_topic.sns_technical_alerts.arn
 }
@@ -48,7 +48,7 @@ resource "aws_lambda_permission" "with_sns_technical_alerts" {
 resource "aws_lambda_permission" "with_sns_service_alerts" {
   statement_id  = "AllowExecutionFromSNSServiceAlerts"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.notify_trello_lambda.arn
+  function_name = "${terraform.workspace}-with_sns_service_alerts"
   principal     = "sns.amazonaws.com"
   source_arn    = aws_sns_topic.sns_service_alerts.arn
 }
