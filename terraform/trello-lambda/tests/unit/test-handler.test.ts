@@ -63,7 +63,7 @@ describe('Unit test for app handler', function () {
         expect(result.http_response.body).toEqual(JSON.stringify(mockedResponse));
     })
     .catch(err => {
-      fail('Context failed when it was expected to succeed: ' + err);
+      throw new Error('Context failed when it was expected to succeed: ' + err);
     });
   });
 
