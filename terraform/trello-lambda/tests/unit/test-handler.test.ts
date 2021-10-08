@@ -100,7 +100,7 @@ describe('Unit test for app handler', function () {
     });
   });
 
-  it('handles does not post to trello if alarm state is OK', async () => {
+  it('does not post to trello if alarm state is OK', async () => {
     const ctx = context();
 
     event.Records[0].Sns.Message = "{\"AlarmName\":\"Test alarm name\",\"AlarmDescription\":\"Test alarm BeMyBeacon.\",\"NewStateValue\":\"OK\"}";
