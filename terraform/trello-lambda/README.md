@@ -32,9 +32,9 @@ Go Back and setup/run Terraform.
 Setup your API keys and tokens for trello by adding them to dev.tfvars e.g:
 
 ```sh
-  trelloApiKey = "2bf7.........."
-  trelloToken  = "d20cded595cd........"
-  trelloListId = "615706....."
+  trello_api_key = "2bf7.........."
+  trello_token  = "d20cded595cd........"
+  trello_list_id = "615706....."
 ```
 
 You can get your token and keys from trello by following instructions on:

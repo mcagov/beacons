@@ -30,9 +30,9 @@ resource "aws_lambda_function" "notify_trello_lambda" {
 
   environment {
     variables = {
-      trelloToken  = var.trelloToken
-      trelloApiKey = var.trelloApiKey
-      trelloListId = var.trelloListId
+      trelloToken  = var.trello_token
+      trelloApiKey = var.trello_api_key
+      trelloListId = var.trello_list_id
     }
   }
 }
