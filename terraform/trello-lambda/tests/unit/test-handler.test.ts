@@ -95,7 +95,6 @@ describe('Unit test for app handler', function () {
       expect(result.http_response.body).toEqual(JSON.stringify(mockedResponse));
     })
     .catch(err => {
-      console.log('context Failed' + err);
       throw new Error('Context failed when it was expected to succeed: ' + err);
     });
   });
@@ -112,7 +111,6 @@ describe('Unit test for app handler', function () {
       expect(value).toEqual('SKIPPED');
     })
     .catch(err => {
-      console.log('context Failed' + err);
       throw new Error('Context failed when it was expected to succeed: ' + err);
     });
   });
