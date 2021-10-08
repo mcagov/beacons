@@ -1,5 +1,3 @@
-console.log('Loading function');
-
 const zlib = require('zlib');
 const https = require('https');
 const querystring = require('querystring');
@@ -77,8 +75,8 @@ function postToTrello(subject, message, context) {
 }
 
 exports.handler = async (event, context) => {
-  const subject = event.Records[0].Sns.Subject;
   const jsonMessage = JSON.parse(event.Records[0].Sns.Message);
+  const subject = event.Records[0].Sns.Subject;
   const alarm_state = jsonMessage.NewStateValue;
 
   const response = {
