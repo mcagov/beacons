@@ -38,7 +38,7 @@ resource "aws_lambda_function" "notify_trello_lambda" {
 }
 
 resource "aws_lambda_permission" "with_sns_technical_alerts" {
-  statement_id  = "AllowExecutionFromSNS"
+  statement_id  = "AllowExecutionFromSNSTechnicalAlerts"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.notify_trello_lambda.arn
   principal     = "sns.amazonaws.com"
@@ -46,7 +46,7 @@ resource "aws_lambda_permission" "with_sns_technical_alerts" {
 }
 
 resource "aws_lambda_permission" "with_sns_service_alerts" {
-  statement_id  = "AllowExecutionFromSNS"
+  statement_id  = "AllowExecutionFromSNSServiceAlerts"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.notify_trello_lambda.arn
   principal     = "sns.amazonaws.com"
