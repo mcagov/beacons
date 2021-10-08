@@ -63,4 +63,5 @@ resource "aws_sns_topic_subscription" "sns_service_alerts_lambda_subscription" {
   topic_arn = aws_sns_topic.sns_service_alerts.arn
   protocol  = "lambda"
   endpoint  = aws_lambda_function.notify_trello_lambda.arn
+  provider  = aws.us-east
 }
