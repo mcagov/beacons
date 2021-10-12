@@ -47,9 +47,8 @@ const UnitedKingdom: FunctionComponent<UpdateAccountPageProps> = ({
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   <GovUKBody>
                     We will send this person confirmation messages, certificates
-                    and and account reminders. You can provide details of the
-                    beacon owner (if this is a different person or organisation)
-                    later.
+                    and account reminders. You can provide details of the beacon
+                    owner (if this is a different person or organisation) later.
                   </GovUKBody>
                 </FormFieldset>
 
