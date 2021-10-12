@@ -7,7 +7,7 @@ import { AuthGateway } from "../../../src/gateways/interfaces/AuthGateway";
 import { getAppContainer } from "../../../src/lib/appContainer";
 import { IAppContainer } from "../../../src/lib/IAppContainer";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
-import { getServerSideProps } from "../../../src/pages/account/update-account";
+import { getServerSideProps } from "../../../src/pages/account/update-account/united-kingdom";
 import {
   accountDetailsResponseJson,
   accountIdFromAuthIdResponseJson,

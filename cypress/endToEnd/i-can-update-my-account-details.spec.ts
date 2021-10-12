@@ -1,7 +1,9 @@
 import { AccountPageURLs } from "../../src/lib/urls";
 import {
+  andIClickContinue,
   givenIHaveSignedIn,
   givenIHaveVisited,
+  iCanSeeAPageHeadingThatContains,
   requiredFieldErrorMessage,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
@@ -9,9 +11,10 @@ import {
   whenIClearAndType,
   whenIClearTheInput,
   whenIClickOnTheErrorSummaryLinkContaining,
+  whenISelect,
 } from "../common/selectors-and-assertions.spec";
 
-describe("As an account holder", () => {
+describe("As an AccountHolder", () => {
   const fullNameSelector = "#fullName";
   const telephoneSelector = "#telephoneNumber";
   const addressSelector = "#addressLine1";
@@ -23,9 +26,14 @@ describe("As an account holder", () => {
     cy.contains("Save these account details").click();
   };
 
-  it("should allow the user to update their information", () => {
+  it.only("I can change my address to one in the United Kingdom", () => {
     givenIHaveSignedIn();
     givenIHaveVisited(AccountPageURLs.updateAccount);
+    iCanSeeAPageHeadingThatContains("Do you live in the United Kingdom?");
+
+    whenISelect("#unitedKingdom");
+    andIClickContinue();
+
     whenIClearAndType("Mrs Beacon", fullNameSelector);
     whenIClearAndType("+447713812659", telephoneSelector);
     whenIClearAndType("100 Beacons Road", addressSelector);
