@@ -7,10 +7,7 @@ import {
   testBeaconAndOwnerData,
   testLandUseData,
 } from "../common/happy-path-test-data.spec";
-import {
-  givenIHaveFilledInUpdateAccountDetailsPage,
-  iCanSeeMyAccountDetails,
-} from "../common/i-can-enter-account-details.spec";
+import { iCanSeeMyAccountDetails } from "../common/i-can-enter-account-details.spec";
 import { givenIHaveEnteredMyBeaconDetails } from "../common/i-can-enter-beacon-information.spec";
 import {
   givenIHaveEnteredMyAddressDetails,
@@ -30,7 +27,6 @@ import {
 describe("As user with an account", () => {
   it("I register a beacon with a single use and see it in my Account page and I can click to start to create another beacon", () => {
     givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.updateAccount);
-    givenIHaveFilledInUpdateAccountDetailsPage();
     iCanSeeMyAccountDetails();
 
     givenIHaveClickedToCreateANewBeacon();

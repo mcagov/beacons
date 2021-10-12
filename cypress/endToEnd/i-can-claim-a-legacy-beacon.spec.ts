@@ -32,7 +32,7 @@ import {
 } from "../common/i-have-previously-registered-a-beacon.spec";
 import {
   andIClickContinue,
-  givenIHaveSignedIn,
+  givenIHaveACookieSetAndHaveSignedInIVisit,
   iCannotSee,
   iCanSeeAPageHeadingThatContains,
   iCanSeeNLinksContaining,
@@ -53,11 +53,10 @@ import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 
 describe("As an account holder", () => {
   it("I can view a new and legacy beacon linked to my account/email", () => {
-    givenIHaveSignedIn();
+    givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.accountHome);
     iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequestFixture);
     iHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
 
-    whenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(
       legacyBeaconRequestFixture.data.attributes.beacon.hexId
     );
@@ -72,8 +71,8 @@ describe("As an account holder", () => {
     const { hexId, manufacturer, model } =
       legacyBeaconRequest.data.attributes.beacon;
 
+    givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.accountHome);
     givenIHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
-    givenIHaveSignedIn();
 
     whenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeTheLegacyBeaconAssignedToMeInTheTable(hexId);
