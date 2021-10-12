@@ -33,11 +33,13 @@ import {
 import {
   andIClickContinue,
   givenIHaveSignedIn,
+  givenIHaveVisited,
   iCannotSee,
   iCanSeeAPageHeadingThatContains,
   iCanSeeNLinksContaining,
   iCanSeeText,
   iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress,
+  ifIAmAskedForAccountHolderDetailsIProvideThem,
   iPerformOperationAndWaitForNewPageToLoad,
   thenIShouldSeeFormErrors,
   thenTheUrlShouldContain,
@@ -57,7 +59,9 @@ describe("As an account holder", () => {
     iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequestFixture);
     iHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
 
-    whenIHaveVisited(AccountPageURLs.accountHome);
+    givenIHaveVisited(AccountPageURLs.accountHome);
+    ifIAmAskedForAccountHolderDetailsIProvideThem();
+
     iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(
       legacyBeaconRequestFixture.data.attributes.beacon.hexId
     );
@@ -72,8 +76,10 @@ describe("As an account holder", () => {
     const { hexId, manufacturer, model } =
       legacyBeaconRequest.data.attributes.beacon;
 
-    givenIHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
     givenIHaveSignedIn();
+    givenIHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
+    givenIHaveVisited(AccountPageURLs.accountHome);
+    ifIAmAskedForAccountHolderDetailsIProvideThem();
 
     whenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeTheLegacyBeaconAssignedToMeInTheTable(hexId);

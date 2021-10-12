@@ -3,26 +3,41 @@ import React, { FunctionComponent } from "react";
 interface HeaderProps {
   serviceName: string;
   homeLink: string;
+  signOutUri?: string;
 }
 
 export const Header: FunctionComponent<HeaderProps> = ({
   serviceName,
   homeLink,
-}: HeaderProps): JSX.Element => (
-  <header className="govuk-header " role="banner" data-module="govuk-header">
-    <div className="govuk-header__container govuk-width-container">
-      <HeaderLogo />
-      <div className="govuk-header__content">
-        <a
-          href={homeLink}
-          className="govuk-header__link govuk-header__link--service-name"
-        >
-          {serviceName}
-        </a>
+  signOutUri,
+}: HeaderProps): JSX.Element => {
+  return (
+    <header className="govuk-header " role="banner" data-module="govuk-header">
+      <div className="govuk-header__container govuk-width-container">
+        <HeaderLogo />
+        <div className="govuk-header__content">
+          <a
+            href={homeLink}
+            className="govuk-header__link govuk-header__link--service-name"
+          >
+            {serviceName}
+          </a>
+          {signOutUri && (
+            <nav className="govuk-header__navigation">
+              <ul id="navigation" className="govuk-header__navigation ">
+                <li className="govuk-header__navigation-item">
+                  <a className="govuk-header__link" href={signOutUri}>
+                    Sign out
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          )}
+        </div>
       </div>
-    </div>
-  </header>
-);
+    </header>
+  );
+};
 
 const HeaderLogo: FunctionComponent = (): JSX.Element => (
   <>

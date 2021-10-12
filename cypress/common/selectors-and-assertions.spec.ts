@@ -29,11 +29,25 @@ export const givenIHaveACookieSetAndIVisit = (url: string): void => {
   cy.visit(url);
 };
 
+export const ifIAmAskedForAccountHolderDetailsIProvideThem = (): void => {
+  cy.get("h1").then(($heading) => {
+    if ($heading.text().includes("Update your details")) {
+      whenIType("Mrs Beacon", "#fullName");
+      whenIType("+447713812659", "#telephoneNumber");
+      whenIType("100 Beacons Road", "#addressLine1");
+      whenIType("Beacons", "#townOrCity");
+      whenIType("BS8 9DB", "#postcode");
+      whenIClickTheButtonContaining("Save these account details");
+    }
+  });
+};
+
 export const givenIHaveACookieSetAndHaveSignedInIVisit = (
   url: string
 ): void => {
   givenIHaveACookieSetAndHaveSignedIn();
   cy.visit(url);
+  ifIAmAskedForAccountHolderDetailsIProvideThem();
 };
 
 export const givenIHaveACookieSetAndHaveSignedIn = (): void => {

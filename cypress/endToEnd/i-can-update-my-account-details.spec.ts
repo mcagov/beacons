@@ -22,20 +22,14 @@ describe("As an account holder", () => {
     cy.contains("Save these account details").click();
   };
 
-  const givenIHaveClearedAllInputFields = () => {
-    [
-      fullNameSelector,
-      telephoneSelector,
-      addressSelector,
-      townOrCitySelector,
-      countySelector,
-      postcodeSelector,
-    ].forEach((input) => givenIHaveClearedTheInput(input));
-  };
-
   beforeEach(() => {
     givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.updateAccount);
-    givenIHaveClearedAllInputFields();
+    givenIHaveClearedTheInput(fullNameSelector);
+    givenIHaveClearedTheInput(telephoneSelector);
+    givenIHaveClearedTheInput(addressSelector);
+    givenIHaveClearedTheInput(townOrCitySelector);
+    givenIHaveClearedTheInput(countySelector);
+    givenIHaveClearedTheInput(postcodeSelector);
   });
 
   it("should allow the user to update their information", () => {

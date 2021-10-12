@@ -39,12 +39,14 @@ export interface YourBeaconRegistryAccountPageProps {
   id?: string;
   accountHolderDetails: AccountHolder;
   beacons: AccountListBeacon[];
+  signOutUri: string;
 }
 
 export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAccountPageProps> =
   ({
     accountHolderDetails,
     beacons,
+    signOutUri,
   }: YourBeaconRegistryAccountPageProps): JSX.Element => {
     const pageHeading = "Your Beacon Registry Account";
     const legacyBeacons = beacons.filter((beacon) => {
@@ -52,7 +54,11 @@ export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAcco
     });
 
     return (
-      <Layout title={pageHeading} showCookieBanner={false}>
+      <Layout
+        title={pageHeading}
+        showCookieBanner={false}
+        signOutUri={signOutUri}
+      >
         <Grid
           mainContent={
             <>
@@ -364,6 +370,7 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
       props: {
         accountHolderDetails,
         beacons,
+        signOutUri: "/api/auth/custom-signout",
       },
     };
   }

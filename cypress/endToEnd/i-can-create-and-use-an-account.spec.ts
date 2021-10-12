@@ -1,4 +1,4 @@
-import { AccountPageURLs, GeneralPageURLs } from "../../../src/lib/urls";
+import { AccountPageURLs, GeneralPageURLs } from "../../src/lib/urls";
 import {
   givenIHaveBeenTo,
   givenIHaveClicked,
@@ -9,7 +9,7 @@ import {
   thenICanSeeAnInputWithPlaceholder,
   thenIShouldSeeAnErrorMessageThatContains,
   thenTheUrlShouldContain,
-} from "../../common/selectors-and-assertions.spec";
+} from "../common/selectors-and-assertions.spec";
 
 describe("As a new user who wants to register a beacon", () => {
   it("I can create a Beacon Registry Account", () => {

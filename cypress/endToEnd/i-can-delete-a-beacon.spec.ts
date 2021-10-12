@@ -8,13 +8,13 @@ import {
 } from "../common/i-have-previously-registered-a-beacon.spec";
 import {
   andIClickTheButtonContaining,
-  givenIHaveACookieSetAndHaveSignedIn,
+  givenIHaveSignedIn,
+  givenIHaveVisited,
   iCanSeeAButtonContaining,
   iHaveVisited,
   iPerformOperationAndWaitForNewPageToLoad,
   thenIShouldSeeFormErrors,
   whenIClickTheButtonContaining,
-  whenIHaveVisited,
 } from "../common/selectors-and-assertions.spec";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 
@@ -25,10 +25,9 @@ describe("As an account holder", () => {
       hexId: randomUkEncodedHexId(),
     };
 
-    givenIHaveACookieSetAndHaveSignedIn();
+    givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
-
-    whenIHaveVisited(AccountPageURLs.accountHome);
+    givenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
