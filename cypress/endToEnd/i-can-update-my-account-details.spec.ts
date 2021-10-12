@@ -1,20 +1,17 @@
 import { AccountPageURLs } from "../../src/lib/urls";
 import {
-  andIClickContinue,
   givenIHaveSignedIn,
   givenIHaveVisited,
-  iCanSeeText,
   requiredFieldErrorMessage,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
   whenIClearAndType,
+  whenIClearTheInput,
   whenIClickOnTheErrorSummaryLinkContaining,
-  whenISelect,
-  whenIType,
 } from "../common/selectors-and-assertions.spec";
 
-describe("As an AccountHolder", () => {
+describe("As an account holder", () => {
   const fullNameSelector = "#fullName";
   const telephoneSelector = "#telephoneNumber";
   const addressSelector = "#addressLine1";
@@ -22,17 +19,17 @@ describe("As an AccountHolder", () => {
   const countySelector = "#county";
   const postcodeSelector = "#postcode";
 
-  it.only("I can change my address to an address in the United Kingdom", () => {
+  const whenIClickContinue = () => {
+    cy.contains("Save these account details").click();
+  };
+
+  it("should allow the user to update their information", () => {
     givenIHaveSignedIn();
     givenIHaveVisited(AccountPageURLs.updateAccount);
-
-    iCanSeeText("Do you live in the United Kingdom?");
-    whenISelect("#yes");
-    andIClickContinue();
-
     whenIClearAndType("Mrs Beacon", fullNameSelector);
     whenIClearAndType("+447713812659", telephoneSelector);
     whenIClearAndType("100 Beacons Road", addressSelector);
+    whenIClearAndType("Beaconshire", countySelector);
     whenIClearAndType("Beacons", townOrCitySelector);
     whenIClearAndType("BS8 9DB", postcodeSelector);
 
@@ -67,6 +64,13 @@ describe("As an AccountHolder", () => {
       },
     ];
 
+    givenIHaveSignedIn();
+    givenIHaveVisited(AccountPageURLs.updateAccount);
+    whenIClearTheInput(fullNameSelector);
+    whenIClearTheInput(telephoneSelector);
+    whenIClearTheInput(addressSelector);
+    whenIClearTheInput(townOrCitySelector);
+    whenIClearTheInput(postcodeSelector);
     whenIClickContinue();
 
     expectations.forEach((expectation) => {
@@ -80,13 +84,11 @@ describe("As an AccountHolder", () => {
     const tooLongMobileNumber = "+44 71234567891";
     const expectedErrorMessage = ["telephone number", "like"];
 
-    whenIType(tooLongMobileNumber, telephoneSelector);
+    givenIHaveSignedIn();
+    givenIHaveVisited(AccountPageURLs.updateAccount);
+    whenIClearAndType(tooLongMobileNumber, telephoneSelector);
     whenIClickContinue();
 
     thenIShouldSeeFormErrors(...expectedErrorMessage);
   });
 });
-
-const whenIClickContinue = () => {
-  cy.contains("Save these account details").click();
-};
