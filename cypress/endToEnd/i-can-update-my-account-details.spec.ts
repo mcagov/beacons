@@ -1,13 +1,14 @@
 import { AccountPageURLs } from "../../src/lib/urls";
 import {
-  givenIHaveACookieSetAndHaveSignedInIVisit,
-  givenIHaveClearedTheInput,
+  givenIHaveSignedIn,
+  givenIHaveVisited,
   requiredFieldErrorMessage,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
+  whenIClearAndType,
+  whenIClearTheInput,
   whenIClickOnTheErrorSummaryLinkContaining,
-  whenIType,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As an account holder", () => {
@@ -22,22 +23,15 @@ describe("As an account holder", () => {
     cy.contains("Save these account details").click();
   };
 
-  beforeEach(() => {
-    givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.updateAccount);
-    givenIHaveClearedTheInput(fullNameSelector);
-    givenIHaveClearedTheInput(telephoneSelector);
-    givenIHaveClearedTheInput(addressSelector);
-    givenIHaveClearedTheInput(townOrCitySelector);
-    givenIHaveClearedTheInput(countySelector);
-    givenIHaveClearedTheInput(postcodeSelector);
-  });
-
   it("should allow the user to update their information", () => {
-    whenIType("Mrs Beacon", fullNameSelector);
-    whenIType("+447713812659", telephoneSelector);
-    whenIType("100 Beacons Road", addressSelector);
-    whenIType("Beacons", townOrCitySelector);
-    whenIType("BS8 9DB", postcodeSelector);
+    givenIHaveSignedIn();
+    givenIHaveVisited(AccountPageURLs.updateAccount);
+    whenIClearAndType("Mrs Beacon", fullNameSelector);
+    whenIClearAndType("+447713812659", telephoneSelector);
+    whenIClearAndType("100 Beacons Road", addressSelector);
+    whenIClearAndType("Beaconshire", countySelector);
+    whenIClearAndType("Beacons", townOrCitySelector);
+    whenIClearAndType("BS8 9DB", postcodeSelector);
 
     whenIClickContinue();
     thenTheUrlShouldContain(AccountPageURLs.accountHome);
@@ -70,6 +64,13 @@ describe("As an account holder", () => {
       },
     ];
 
+    givenIHaveSignedIn();
+    givenIHaveVisited(AccountPageURLs.updateAccount);
+    whenIClearTheInput(fullNameSelector);
+    whenIClearTheInput(telephoneSelector);
+    whenIClearTheInput(addressSelector);
+    whenIClearTheInput(townOrCitySelector);
+    whenIClearTheInput(postcodeSelector);
     whenIClickContinue();
 
     expectations.forEach((expectation) => {
@@ -83,7 +84,9 @@ describe("As an account holder", () => {
     const tooLongMobileNumber = "+44 71234567891";
     const expectedErrorMessage = ["telephone number", "like"];
 
-    whenIType(tooLongMobileNumber, telephoneSelector);
+    givenIHaveSignedIn();
+    givenIHaveVisited(AccountPageURLs.updateAccount);
+    whenIClearAndType(tooLongMobileNumber, telephoneSelector);
     whenIClickContinue();
 
     thenIShouldSeeFormErrors(...expectedErrorMessage);
