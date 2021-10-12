@@ -29,11 +29,7 @@ export const givenIHaveACookieSetAndIVisit = (url: string): void => {
   cy.visit(url);
 };
 
-export const givenIHaveACookieSetAndHaveSignedInIVisit = (
-  url: string
-): void => {
-  givenIHaveACookieSetAndHaveSignedIn();
-  cy.visit(url);
+export const ifIAmAskedForAccountHolderDetailsIProvideThem = (): void => {
   cy.get("h1").then(($heading) => {
     if ($heading.text().includes("Update your details")) {
       whenIType("Mrs Beacon", "#fullName");
@@ -44,6 +40,14 @@ export const givenIHaveACookieSetAndHaveSignedInIVisit = (
       whenIClickTheButtonContaining("Save these account details");
     }
   });
+};
+
+export const givenIHaveACookieSetAndHaveSignedInIVisit = (
+  url: string
+): void => {
+  givenIHaveACookieSetAndHaveSignedIn();
+  cy.visit(url);
+  ifIAmAskedForAccountHolderDetailsIProvideThem();
 };
 
 export const givenIHaveACookieSetAndHaveSignedIn = (): void => {

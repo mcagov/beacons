@@ -8,7 +8,8 @@ import {
 } from "../common/i-have-previously-registered-a-beacon.spec";
 import {
   andIClickTheButtonContaining,
-  givenIHaveACookieSetAndHaveSignedInIVisit,
+  givenIHaveSignedIn,
+  givenIHaveVisited,
   iCanSeeAButtonContaining,
   iHaveVisited,
   iPerformOperationAndWaitForNewPageToLoad,
@@ -24,8 +25,9 @@ describe("As an account holder", () => {
       hexId: randomUkEncodedHexId(),
     };
 
-    givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.accountHome);
+    givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
+    givenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
