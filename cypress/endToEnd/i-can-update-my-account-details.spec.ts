@@ -1,16 +1,20 @@
 import { AccountPageURLs } from "../../src/lib/urls";
 import {
-  givenIHaveACookieSetAndHaveSignedInIVisit,
-  givenIHaveClearedTheInput,
+  andIClickContinue,
+  givenIHaveSignedIn,
+  givenIHaveVisited,
+  iCanSeeText,
   requiredFieldErrorMessage,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
+  whenIClearAndType,
   whenIClickOnTheErrorSummaryLinkContaining,
+  whenISelect,
   whenIType,
 } from "../common/selectors-and-assertions.spec";
 
-describe("As an account holder", () => {
+describe("As an AccountHolder", () => {
   const fullNameSelector = "#fullName";
   const telephoneSelector = "#telephoneNumber";
   const addressSelector = "#addressLine1";
@@ -18,26 +22,19 @@ describe("As an account holder", () => {
   const countySelector = "#county";
   const postcodeSelector = "#postcode";
 
-  const whenIClickContinue = () => {
-    cy.contains("Save these account details").click();
-  };
+  it.only("I can change my address to an address in the United Kingdom", () => {
+    givenIHaveSignedIn();
+    givenIHaveVisited(AccountPageURLs.updateAccount);
 
-  beforeEach(() => {
-    givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.updateAccount);
-    givenIHaveClearedTheInput(fullNameSelector);
-    givenIHaveClearedTheInput(telephoneSelector);
-    givenIHaveClearedTheInput(addressSelector);
-    givenIHaveClearedTheInput(townOrCitySelector);
-    givenIHaveClearedTheInput(countySelector);
-    givenIHaveClearedTheInput(postcodeSelector);
-  });
+    iCanSeeText("Do you live in the United Kingdom?");
+    whenISelect("#yes");
+    andIClickContinue();
 
-  it("should allow the user to update their information", () => {
-    whenIType("Mrs Beacon", fullNameSelector);
-    whenIType("+447713812659", telephoneSelector);
-    whenIType("100 Beacons Road", addressSelector);
-    whenIType("Beacons", townOrCitySelector);
-    whenIType("BS8 9DB", postcodeSelector);
+    whenIClearAndType("Mrs Beacon", fullNameSelector);
+    whenIClearAndType("+447713812659", telephoneSelector);
+    whenIClearAndType("100 Beacons Road", addressSelector);
+    whenIClearAndType("Beacons", townOrCitySelector);
+    whenIClearAndType("BS8 9DB", postcodeSelector);
 
     whenIClickContinue();
     thenTheUrlShouldContain(AccountPageURLs.accountHome);
@@ -89,3 +86,7 @@ describe("As an account holder", () => {
     thenIShouldSeeFormErrors(...expectedErrorMessage);
   });
 });
+
+const whenIClickContinue = () => {
+  cy.contains("Save these account details").click();
+};
