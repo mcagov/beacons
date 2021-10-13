@@ -16,6 +16,8 @@ export class WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails
     if (accountHolderDetails.fullName == null) return true;
     if (accountHolderDetails.email == null) return true;
     if (accountHolderDetails.telephoneNumber == null) return true;
+
+    return false;
   }
 
   private async getAccountHolderDetails(): Promise<AccountHolder> {
