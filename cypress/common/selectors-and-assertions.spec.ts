@@ -155,6 +155,17 @@ export const thenTheInputShouldBeEmpty = (selector: string): void => {
   thenTheInputShouldOnlyContain("", selector);
 };
 
+export const thenTheDropdownShouldHaveTheFirstOptionSelected = (
+  selector: string
+): void => {
+  cy.get(selector)
+    .children()
+    .first()
+    .then((option1) => {
+      expect(option1).to.be.selected;
+    });
+};
+
 export const thenIShouldSeeAnErrorSummaryLinkThatContains = (
   ...strings: string[]
 ): void => {
@@ -285,4 +296,11 @@ export const whenIClickTheActionLinkInATableRowContaining = (
     .parent()
     .contains(actionLinkText)
     .click();
+};
+
+export const whenISelectTheOptionFromTheDropdown = (
+  option: string,
+  selector: string
+): void => {
+  cy.get(selector).select(option);
 };

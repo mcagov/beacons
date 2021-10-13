@@ -9,12 +9,14 @@ import {
   requiredFieldErrorMessage,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
+  thenTheDropdownShouldHaveTheFirstOptionSelected,
   thenTheInputShouldBeEmpty,
   thenTheUrlShouldContain,
   whenIClearAndType,
   whenIClearTheInput,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenISelect,
+  whenISelectTheOptionFromTheDropdown,
   whenIType,
 } from "../common/selectors-and-assertions.spec";
 
@@ -110,7 +112,7 @@ describe("As an AccountHolder", () => {
       thenIShouldSeeFormErrors(...expectedErrorMessage);
     });
 
-    it.only("I previously lived outside of the United Kingdom", () => {
+    it("I previously lived outside of the United Kingdom", () => {
       // Set up to live outside of the United Kingdom
       givenIHaveSignedIn();
       givenIHaveVisited(AccountPageURLs.updateAccount);
@@ -123,8 +125,7 @@ describe("As an AccountHolder", () => {
       whenIClearAndType("Royal Dubai Yacht Club", "#addressLine2");
       whenIClearAndType("Desert", "#addressLine3");
       whenIClearAndType("Earth", "#addressLine4");
-      // TODO: Update to dropdown
-      whenIClearAndType("United Arab Emirates", "#country");
+      whenISelectTheOptionFromTheDropdown("United Arab Emirates", "#country");
       whenIClearAndType("60605", postcodeSelector);
 
       // Update to live in the United Kingdom
@@ -170,7 +171,7 @@ describe("As an AccountHolder", () => {
       whenIClearAndType("Royal Dubai Yacht Club", "#addressLine2");
       whenIClearAndType("Desert", "#addressLine3");
       whenIClearAndType("Earth", "#addressLine4");
-      whenIClearAndType("United Arab Emirates", "#country");
+      whenISelectTheOptionFromTheDropdown("United Arab Emirates", "#country");
       whenIClearAndType("60605", postcodeSelector);
 
       whenIClickContinue();
@@ -207,13 +208,13 @@ describe("As an AccountHolder", () => {
       thenTheInputShouldBeEmpty("#addressLine2");
       thenTheInputShouldBeEmpty("#addressLine3");
       thenTheInputShouldBeEmpty("#addressLine4");
-      thenTheInputShouldBeEmpty("#country");
+      thenTheDropdownShouldHaveTheFirstOptionSelected("#country");
       thenTheInputShouldBeEmpty("#postcode");
 
       whenIType("Swanson Wharf", "#addressLine1");
       whenIType("Royal Dubai Yacht Club", "#addressLine2");
       // TODO: Update to dropdown
-      whenIType("United Arab Emirates", "#country");
+      whenISelectTheOptionFromTheDropdown("United Arab Emirates", "#country");
       whenIType("60605", postcodeSelector);
 
       whenIClickContinue();
