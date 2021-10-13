@@ -307,7 +307,7 @@ export const restOfWorldFormManager: FormManagerFactory = ({
     addressLine4: new FieldManager(addressLine4),
     postcode: new FieldManager(postcode),
     country: new FieldManager(country, [
-      Validators.required("Enter your country"),
+      Validators.required("Select your country"),
     ]),
     email: new FieldManager(email),
   });

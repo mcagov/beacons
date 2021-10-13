@@ -228,7 +228,7 @@ describe("As an AccountHolder", () => {
       iCannotSeeText("Beaconshire");
     });
 
-    it("I am reminded to enter mandatory fields for a 'restOfWorld' address", () => {
+    it.only("I am reminded to enter mandatory fields for a 'restOfWorld' address", () => {
       const expectations = [
         {
           errorMessages: ["Enter your full name"],
@@ -247,7 +247,7 @@ describe("As an AccountHolder", () => {
           selector: "#addressLine2",
         },
         {
-          errorMessages: ["Enter your country"],
+          errorMessages: ["Select your country"],
           selector: "#country",
         },
       ];
