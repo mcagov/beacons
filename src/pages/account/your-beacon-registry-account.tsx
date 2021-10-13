@@ -183,16 +183,16 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
                 {county}
               </view>
             )}
-            {country && (
-              <view>
-                <br />
-                {country}
-              </view>
-            )}
             {postcode && (
               <view>
                 <br />
                 {postcode}
+              </view>
+            )}
+            {country && (
+              <view>
+                <br />
+                {country}
               </view>
             )}
           </dd>
