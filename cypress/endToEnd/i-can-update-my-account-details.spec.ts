@@ -7,11 +7,13 @@ import {
   requiredFieldErrorMessage,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
+  thenTheInputShouldBeEmpty,
   thenTheUrlShouldContain,
   whenIClearAndType,
   whenIClearTheInput,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenISelect,
+  whenIType,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As an AccountHolder", () => {
@@ -108,10 +110,48 @@ describe("As an AccountHolder", () => {
 
       thenIShouldSeeFormErrors(...expectedErrorMessage);
     });
+
+    it("I previously lived outside of the United Kingdom", () => {
+      // Set up to live outside of the United Kingdom
+      givenIHaveSignedIn();
+      givenIHaveVisited(AccountPageURLs.updateAccount);
+      whenISelect("#restOfWorld");
+      andIClickContinue();
+      whenIClearAndType("Monsieur Beacon", fullNameSelector);
+      whenIClearAndType("Mrs Beacon", fullNameSelector);
+      whenIClearAndType("+447713812659", telephoneSelector);
+      whenIClearAndType("Swanson Wharf", "#addressLine1");
+      whenIClearAndType("Royal Dubai Yacht Club", "#addressLine2");
+      // TODO: Update to dropdown
+      whenIClearAndType("United Arab Emirates", "#country");
+      whenIClearAndType("60605", postcodeSelector);
+
+      // Update to live in the United Kingdom
+      givenIHaveVisited(AccountPageURLs.updateAccount);
+      whenISelect("#unitedKingdom");
+      andIClickContinue();
+      thenTheInputShouldBeEmpty(fullNameSelector);
+      thenTheInputShouldBeEmpty(telephoneSelector);
+      thenTheInputShouldBeEmpty(addressSelector);
+      thenTheInputShouldBeEmpty("#addressLine2");
+      thenTheInputShouldBeEmpty(townOrCitySelector);
+      thenTheInputShouldBeEmpty(countySelector);
+      thenTheInputShouldBeEmpty(postcodeSelector);
+
+      whenIType("Mrs Beacon", fullNameSelector);
+      whenIType("+447713812659", telephoneSelector);
+      whenIType("100 Beacons Road", addressSelector);
+      whenIType("Beaconshire", countySelector);
+      whenIType("Beacons", townOrCitySelector);
+      whenIType("BS8 9DB", postcodeSelector);
+
+      whenIClickContinue();
+      thenTheUrlShouldContain(AccountPageURLs.accountHome);
+    });
   });
 
   describe("who now lives somewhere other than the United Kingdom", () => {
-    it.only("I can change my address to one outside the United Kingdom", () => {
+    it("I can change my address to one outside the United Kingdom", () => {
       givenIHaveSignedIn();
       givenIHaveVisited(AccountPageURLs.updateAccount);
       iCanSeeAPageHeadingThatContains("Do you live in the United Kingdom?");
@@ -125,6 +165,46 @@ describe("As an AccountHolder", () => {
       whenIClearAndType("Royal Dubai Yacht Club", "#addressLine2");
       whenIClearAndType("United Arab Emirates", "#country");
       whenIClearAndType("60605", postcodeSelector);
+
+      whenIClickContinue();
+      thenTheUrlShouldContain(AccountPageURLs.accountHome);
+    });
+
+    it("I previously lived in the United Kingdom", () => {
+      // Set up to live in the United Kingdom
+      givenIHaveSignedIn();
+      givenIHaveVisited(AccountPageURLs.updateAccount);
+      whenISelect("#unitedKingdom");
+      andIClickContinue();
+      whenIClearAndType("Mrs Beacon", fullNameSelector);
+      whenIClearAndType("+447713812659", telephoneSelector);
+      whenIClearAndType("100 Beacons Road", addressSelector);
+      whenIClearAndType("Beaconshire", countySelector);
+      whenIClearAndType("Beacons", townOrCitySelector);
+      whenIClearAndType("BS8 9DB", postcodeSelector);
+      whenIClickContinue();
+
+      // Update to live outside of the United Kingdom
+      givenIHaveVisited(AccountPageURLs.updateAccount);
+      whenISelect("#restOfWorld");
+      andIClickContinue();
+
+      thenTheInputShouldBeEmpty(fullNameSelector);
+      thenTheInputShouldBeEmpty(telephoneSelector);
+      thenTheInputShouldBeEmpty("#addressLine1");
+      thenTheInputShouldBeEmpty("#addressLine2");
+      thenTheInputShouldBeEmpty("#addressLine3");
+      thenTheInputShouldBeEmpty("#addressLine4");
+      thenTheInputShouldBeEmpty("#country");
+      thenTheInputShouldBeEmpty("#postcode");
+
+      whenIType("Mrs Beacon", fullNameSelector);
+      whenIType("+447713812659", telephoneSelector);
+      whenIType("Swanson Wharf", "#addressLine1");
+      whenIType("Royal Dubai Yacht Club", "#addressLine2");
+      // TODO: Update to dropdown
+      whenIType("United Arab Emirates", "#country");
+      whenIType("60605", postcodeSelector);
 
       whenIClickContinue();
       thenTheUrlShouldContain(AccountPageURLs.accountHome);
