@@ -12,6 +12,7 @@ export const accountDetailsFormManager: FormManagerFactory = ({
   county,
   postcode,
   email,
+  country,
 }) => {
   return new FormManager({
     fullName: new FieldManager(fullName, [
@@ -38,5 +39,6 @@ export const accountDetailsFormManager: FormManagerFactory = ({
       Validators.postcode("Postcode must be a valid UK postcode"),
     ]),
     email: new FieldManager(email),
+    country: new FieldManager(country),
   });
 };

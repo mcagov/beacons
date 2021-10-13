@@ -4,6 +4,7 @@ import {
   givenIHaveSignedIn,
   givenIHaveVisited,
   iCanSeeAPageHeadingThatContains,
+  iCanSeeText,
   requiredFieldErrorMessage,
   thenIShouldSeeFormErrors,
   thenMyFocusMovesTo,
@@ -136,13 +137,19 @@ describe("As an AccountHolder", () => {
       thenTheInputShouldBeEmpty(countySelector);
       thenTheInputShouldBeEmpty(postcodeSelector);
 
-      whenIType("100 Beacons Road", addressSelector);
+      whenIType("100 Beacon Road", addressSelector);
       whenIType("Beaconshire", countySelector);
-      whenIType("Beacons", townOrCitySelector);
+      whenIType("Beaconsville", townOrCitySelector);
       whenIType("BS8 9DB", postcodeSelector);
 
       whenIClickContinue();
       thenTheUrlShouldContain(AccountPageURLs.accountHome);
+
+      iCanSeeText("100 Beacon Road");
+      iCanSeeText("Beaconshire");
+      iCanSeeText("Beaconsville");
+      iCanSeeText("BS8 9DB");
+      iCanSeeText("United Kingdom");
     });
   });
 

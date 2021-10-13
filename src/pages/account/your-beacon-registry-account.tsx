@@ -97,6 +97,7 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
     county,
     postcode,
     email,
+    country,
   },
 }: IYourDetailsProps): JSX.Element => {
   return (
@@ -180,6 +181,12 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
               <view>
                 <br />
                 {county}
+              </view>
+            )}
+            {country && (
+              <view>
+                <br />
+                {country}
               </view>
             )}
             {postcode && (

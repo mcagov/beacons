@@ -21,7 +21,6 @@ import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
 import { redirectUserTo } from "../../../lib/redirectUserTo";
 import { AccountPageURLs } from "../../../lib/urls";
-import { diffObjValues } from "../../../lib/utils";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 export interface UpdateAccountPageProps {
@@ -150,6 +149,9 @@ const AccountHolderAddress: FunctionComponent<{ form: FormJSON }> = ({
         defaultValue={form.fields.postcode.value}
       />
     </FormGroup>
+    <FormGroup>
+      <input id="country" name="country" value="United Kingdom" type="hidden" />
+    </FormGroup>
   </FormGroup>
 );
 
@@ -191,11 +193,8 @@ export const getServerSideProps: GetServerSideProps = withSession(
     }
 
     const accountHolder = await getOrCreateAccountHolder(context.session);
-    const update = diffObjValues(
-      accountHolderToFormFields(accountHolder),
-      formData
-    );
-    await updateAccountHolder(accountHolder.id, update as AccountHolder);
+
+    await updateAccountHolder(accountHolder.id, formData as AccountHolder);
 
     return redirectUserTo(AccountPageURLs.accountHome);
   })
