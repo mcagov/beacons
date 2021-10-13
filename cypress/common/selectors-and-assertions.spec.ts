@@ -271,6 +271,10 @@ export const iCanSeeText = (pattern: string | RegExp): void => {
   cy.get("main").contains(pattern);
 };
 
+export const iCannotSeeText = (text: string | RegExp): void => {
+  cy.get("main").should("not.contain", text);
+};
+
 export const whenIClickTheActionLinkInATableRowContaining = (
   pattern: string | RegExp,
   actionLinkText: string | RegExp

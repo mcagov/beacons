@@ -3,6 +3,7 @@ import {
   andIClickContinue,
   givenIHaveSignedIn,
   givenIHaveVisited,
+  iCannotSeeText,
   iCanSeeAPageHeadingThatContains,
   iCanSeeText,
   requiredFieldErrorMessage,
@@ -85,9 +86,6 @@ describe("As an AccountHolder", () => {
 
       whenIClearTheInput(fullNameSelector);
       whenIClearTheInput(telephoneSelector);
-      whenIClearTheInput(addressSelector);
-      whenIClearTheInput(townOrCitySelector);
-      whenIClearTheInput(postcodeSelector);
       whenIClickContinue();
 
       expectations.forEach((expectation) => {
@@ -112,7 +110,7 @@ describe("As an AccountHolder", () => {
       thenIShouldSeeFormErrors(...expectedErrorMessage);
     });
 
-    it.only("I previously lived outside of the United Kingdom", () => {
+    it("I previously lived outside of the United Kingdom", () => {
       // Set up to live outside of the United Kingdom
       givenIHaveSignedIn();
       givenIHaveVisited(AccountPageURLs.updateAccount);
@@ -173,7 +171,7 @@ describe("As an AccountHolder", () => {
       thenTheUrlShouldContain(AccountPageURLs.accountHome);
     });
 
-    it("I previously lived in the United Kingdom", () => {
+    it.only("I previously lived in the United Kingdom", () => {
       // Set up to live in the United Kingdom
       givenIHaveSignedIn();
       givenIHaveVisited(AccountPageURLs.updateAccount);
@@ -183,7 +181,7 @@ describe("As an AccountHolder", () => {
       whenIClearAndType("+447713812659", telephoneSelector);
       whenIClearAndType("100 Beacons Road", addressSelector);
       whenIClearAndType("Beaconshire", countySelector);
-      whenIClearAndType("Beacons", townOrCitySelector);
+      whenIClearAndType("Beaconsville", townOrCitySelector);
       whenIClearAndType("BS8 9DB", postcodeSelector);
       whenIClickContinue();
 
@@ -207,6 +205,55 @@ describe("As an AccountHolder", () => {
 
       whenIClickContinue();
       thenTheUrlShouldContain(AccountPageURLs.accountHome);
+      iCanSeeText("Swanson Wharf");
+      iCanSeeText("Royal Dubai Yacht Club");
+      iCanSeeText("United Arab Emirates");
+      iCanSeeText("60605");
+      iCanSeeText("United Arab Emirates");
+      iCannotSeeText("Beaconsville");
+      iCannotSeeText("Beaconshire");
+    });
+
+    it("I am reminded to enter mandatory fields for a 'restOfWorld' address", () => {
+      const expectations = [
+        {
+          errorMessages: ["Enter your full name"],
+          selector: fullNameSelector,
+        },
+        {
+          errorMessages: ["Enter your telephone number"],
+          selector: telephoneSelector,
+        },
+        {
+          errorMessages: ["Enter the first line of your address"],
+          selector: "#addressLine1",
+        },
+        {
+          errorMessages: ["Enter the second line of your address"],
+          selector: "#addressLine2",
+        },
+        {
+          errorMessages: ["Enter your country"],
+          selector: "#country",
+        },
+      ];
+
+      givenIHaveSignedIn();
+      givenIHaveVisited(AccountPageURLs.updateAccount);
+      iCanSeeAPageHeadingThatContains("Do you live in the United Kingdom?");
+
+      whenISelect("#restOfWorld");
+      andIClickContinue();
+
+      whenIClearTheInput(fullNameSelector);
+      whenIClearTheInput(telephoneSelector);
+      whenIClickContinue();
+
+      expectations.forEach((expectation) => {
+        thenIShouldSeeFormErrors(...expectation.errorMessages);
+        whenIClickOnTheErrorSummaryLinkContaining(...expectation.errorMessages);
+        thenMyFocusMovesTo(expectation.selector);
+      });
     });
   });
 });

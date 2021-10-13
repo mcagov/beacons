@@ -23,7 +23,6 @@ import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
 import { redirectUserTo } from "../../../lib/redirectUserTo";
 import { AccountPageURLs } from "../../../lib/urls";
-import { diffObjValues } from "../../../lib/utils";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 export interface UpdateAccountPageProps {
@@ -31,7 +30,7 @@ export interface UpdateAccountPageProps {
   accountHolderDetails: AccountHolder;
 }
 
-const UnitedKingdom: FunctionComponent<UpdateAccountPageProps> = ({
+const RestOfWorld: FunctionComponent<UpdateAccountPageProps> = ({
   form,
 }: UpdateAccountPageProps): JSX.Element => {
   const pageHeading =
@@ -121,28 +120,28 @@ const RestOfWorldAccountHolderAddress: FunctionComponent<{ form: FormJSON }> =
           defaultValue={form.fields.addressLine1.value}
         />
       </FormGroup>
-      <FormGroup>
+      <FormGroup errorMessages={form.fields.addressLine2.errorMessages}>
         <Input
           id="addressLine2"
           defaultValue={form.fields.addressLine2.value}
           label="Address line 2"
         />
       </FormGroup>
-      <FormGroup errorMessages={form.fields.addressLine3.errorMessages}>
+      <FormGroup>
         <Input
           id="addressLine3"
           label="Address line 3 (optional)"
           defaultValue={form.fields.addressLine3.value}
         />
       </FormGroup>
-      <FormGroup errorMessages={form.fields.addressLine4.errorMessages}>
+      <FormGroup>
         <Input
           id="addressLine4"
           label="Address line 4 (optional)"
           defaultValue={form.fields.addressLine4.value}
         />
       </FormGroup>
-      <FormGroup errorMessages={form.fields.postcode.errorMessages}>
+      <FormGroup>
         <Input
           id="postcode"
           label="Postal or zip code (optional)"
@@ -179,21 +178,12 @@ export const getServerSideProps: GetServerSideProps = withSession(
       const accountHolder: AccountHolder = await getOrCreateAccountHolder(
         context.session
       );
-      const accountHolderWithoutAddress: AccountHolder = {
-        ...accountHolder,
-        addressLine1: undefined,
-        addressLine2: undefined,
-        addressLine3: undefined,
-        addressLine4: undefined,
-        townOrCity: undefined,
-        county: undefined,
-        postcode: undefined,
-        country: undefined,
-      };
       return {
         props: {
           form: restOfWorldFormManager(
-            accountHolderToRestOfWorldUpdateFields(accountHolderWithoutAddress)
+            accountHolderToRestOfWorldUpdateFields(
+              resetAddressFields(accountHolder)
+            )
           ).serialise(),
         },
       };
@@ -212,35 +202,34 @@ export const getServerSideProps: GetServerSideProps = withSession(
     }
 
     const accountHolder = await getOrCreateAccountHolder(context.session);
-    const update = diffObjValues(
-      accountHolderToRestOfWorldUpdateFields(accountHolder),
-      formData
+    await updateAccountHolder(
+      accountHolder.id,
+      formDataToRestOfWorldAccountHolder(formData)
     );
-    await updateAccountHolder(accountHolder.id, update as AccountHolder);
 
     return redirectUserTo(AccountPageURLs.accountHome);
   })
 );
 
-const restOfWorldUpdateFieldsToAccountHolder = (
-  restOfWorldForm: RestOfWorldAccountUpdateFields
-): AccountHolder => ({
-  addressLine1: "",
-  addressLine2: "",
-  addressLine3: "",
-  addressLine4: "",
-  alternativeTelephoneNumber: "",
-  country: "",
-  county: "",
-  email: "",
-  fullName: "",
-  id: "",
-  postcode: "",
-  telephoneNumber: "",
-  townOrCity: "",
-});
+const resetAddressFields = (accountHolder: AccountHolder): AccountHolder => {
+  const emptyAddressFields: Partial<AccountHolder> = {
+    addressLine1: "",
+    addressLine2: "",
+    addressLine3: "",
+    addressLine4: "",
+    townOrCity: "",
+    county: "",
+    country: "",
+    postcode: "",
+  };
 
-export default UnitedKingdom;
+  return {
+    ...accountHolder,
+    ...emptyAddressFields,
+  };
+};
+
+export default RestOfWorld;
 
 /**
  * Turns an account holder in to a set of update fields
@@ -260,6 +249,16 @@ const accountHolderToRestOfWorldUpdateFields = (
   country: accountHolder.country || undefined,
   email: accountHolder.email,
 });
+
+const formDataToRestOfWorldAccountHolder = (
+  formData: RestOfWorldAccountUpdateFields
+): AccountHolder => {
+  const emptyFields = {
+    county: "",
+    townOrCity: "",
+  };
+  return { ...formData, ...emptyFields } as AccountHolder;
+};
 
 interface RestOfWorldAccountUpdateFields {
   fullName: string;
