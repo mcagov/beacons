@@ -158,18 +158,6 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
                 {addressLine4}
               </view>
             )}
-            {addressLine4 && (
-              <view>
-                <br />
-                {addressLine4}
-              </view>
-            )}
-            {addressLine4 && (
-              <view>
-                <br />
-                {addressLine4}
-              </view>
-            )}
             {townOrCity && (
               <view>
                 <br />

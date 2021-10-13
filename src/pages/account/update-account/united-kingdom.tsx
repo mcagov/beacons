@@ -149,9 +149,6 @@ const AccountHolderAddress: FunctionComponent<{ form: FormJSON }> = ({
         defaultValue={form.fields.postcode.value}
       />
     </FormGroup>
-    <FormGroup>
-      <input id="country" name="country" value="United Kingdom" type="hidden" />
-    </FormGroup>
   </FormGroup>
 );
 
@@ -194,7 +191,10 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
     const accountHolder = await getOrCreateAccountHolder(context.session);
 
-    await updateAccountHolder(accountHolder.id, formData as AccountHolder);
+    await updateAccountHolder(
+      accountHolder.id,
+      formDataToUnitedKingdomAccountHolder(formData)
+    );
 
     return redirectUserTo(AccountPageURLs.accountHome);
   })
@@ -236,6 +236,21 @@ const resetAddressFields = (accountHolder: AccountHolder): AccountHolder => {
     ...accountHolder,
     ...emptyAddressFields,
   };
+};
+
+const formDataToUnitedKingdomAccountHolder = (
+  formData: AccountUpdateFields
+): AccountHolder => {
+  const emptyFields = {
+    addressLine3: "",
+    addressLine4: "",
+  };
+
+  return {
+    ...formData,
+    ...emptyFields,
+    country: "United Kingdom",
+  } as AccountHolder;
 };
 
 interface AccountUpdateFields {

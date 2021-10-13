@@ -110,7 +110,7 @@ describe("As an AccountHolder", () => {
       thenIShouldSeeFormErrors(...expectedErrorMessage);
     });
 
-    it("I previously lived outside of the United Kingdom", () => {
+    it.only("I previously lived outside of the United Kingdom", () => {
       // Set up to live outside of the United Kingdom
       givenIHaveSignedIn();
       givenIHaveVisited(AccountPageURLs.updateAccount);
@@ -121,6 +121,8 @@ describe("As an AccountHolder", () => {
       whenIClearAndType("+447713812659", telephoneSelector);
       whenIClearAndType("Swanson Wharf", "#addressLine1");
       whenIClearAndType("Royal Dubai Yacht Club", "#addressLine2");
+      whenIClearAndType("Desert", "#addressLine3");
+      whenIClearAndType("Earth", "#addressLine4");
       // TODO: Update to dropdown
       whenIClearAndType("United Arab Emirates", "#country");
       whenIClearAndType("60605", postcodeSelector);
@@ -148,6 +150,8 @@ describe("As an AccountHolder", () => {
       iCanSeeText("Beaconsville");
       iCanSeeText("BS8 9DB");
       iCanSeeText("United Kingdom");
+      iCannotSeeText("Desert");
+      iCannotSeeText("Earth");
     });
   });
 
@@ -164,14 +168,23 @@ describe("As an AccountHolder", () => {
       whenIClearAndType("+447713812659", telephoneSelector);
       whenIClearAndType("Swanson Wharf", "#addressLine1");
       whenIClearAndType("Royal Dubai Yacht Club", "#addressLine2");
+      whenIClearAndType("Desert", "#addressLine3");
+      whenIClearAndType("Earth", "#addressLine4");
       whenIClearAndType("United Arab Emirates", "#country");
       whenIClearAndType("60605", postcodeSelector);
 
       whenIClickContinue();
       thenTheUrlShouldContain(AccountPageURLs.accountHome);
+
+      iCanSeeText("Swanson Wharf");
+      iCanSeeText("Royal Dubai Yacht Club");
+      iCanSeeText("Desert");
+      iCanSeeText("Earth");
+      iCanSeeText("United Arab Emirates");
+      iCanSeeText("60605");
     });
 
-    it.only("I previously lived in the United Kingdom", () => {
+    it("I previously lived in the United Kingdom", () => {
       // Set up to live in the United Kingdom
       givenIHaveSignedIn();
       givenIHaveVisited(AccountPageURLs.updateAccount);
