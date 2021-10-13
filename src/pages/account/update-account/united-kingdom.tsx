@@ -170,10 +170,11 @@ export const getServerSideProps: GetServerSideProps = withSession(
       context.container;
 
     if (!userDidSubmitForm(context)) {
+      const accountHolder = await getOrCreateAccountHolder(context.session);
       return {
         props: {
           form: accountDetailsFormManager(
-            accountUpdateFields(await getOrCreateAccountHolder(context.session))
+            accountHolderToFormFields(resetAddressFields(accountHolder))
           ).serialise(),
         },
       };
@@ -190,7 +191,10 @@ export const getServerSideProps: GetServerSideProps = withSession(
     }
 
     const accountHolder = await getOrCreateAccountHolder(context.session);
-    const update = diffObjValues(accountUpdateFields(accountHolder), formData);
+    const update = diffObjValues(
+      accountHolderToFormFields(accountHolder),
+      formData
+    );
     await updateAccountHolder(accountHolder.id, update as AccountHolder);
 
     return redirectUserTo(AccountPageURLs.accountHome);
@@ -204,7 +208,7 @@ export default UnitedKingdom;
  * @param accountHolder {AccountHolder} the account holder from which to populate these fields
  * @returns {AccountUpdateFields} update field values from accountHolder or properties are undefined (to allow for obj diffing)
  */
-const accountUpdateFields = (
+const accountHolderToFormFields = (
   accountHolder: AccountHolder
 ): AccountUpdateFields => ({
   fullName: accountHolder.fullName || undefined,
@@ -216,6 +220,24 @@ const accountUpdateFields = (
   postcode: accountHolder.postcode || undefined,
   email: accountHolder.email,
 });
+
+const resetAddressFields = (accountHolder: AccountHolder): AccountHolder => {
+  const emptyAddressFields: Partial<AccountHolder> = {
+    addressLine1: "",
+    addressLine2: "",
+    addressLine3: "",
+    addressLine4: "",
+    townOrCity: "",
+    county: "",
+    country: "",
+    postcode: "",
+  };
+
+  return {
+    ...accountHolder,
+    ...emptyAddressFields,
+  };
+};
 
 interface AccountUpdateFields {
   fullName: string;

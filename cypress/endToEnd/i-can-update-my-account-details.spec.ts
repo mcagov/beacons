@@ -111,7 +111,7 @@ describe("As an AccountHolder", () => {
       thenIShouldSeeFormErrors(...expectedErrorMessage);
     });
 
-    it("I previously lived outside of the United Kingdom", () => {
+    it.only("I previously lived outside of the United Kingdom", () => {
       // Set up to live outside of the United Kingdom
       givenIHaveSignedIn();
       givenIHaveVisited(AccountPageURLs.updateAccount);
@@ -130,16 +130,12 @@ describe("As an AccountHolder", () => {
       givenIHaveVisited(AccountPageURLs.updateAccount);
       whenISelect("#unitedKingdom");
       andIClickContinue();
-      thenTheInputShouldBeEmpty(fullNameSelector);
-      thenTheInputShouldBeEmpty(telephoneSelector);
       thenTheInputShouldBeEmpty(addressSelector);
       thenTheInputShouldBeEmpty("#addressLine2");
       thenTheInputShouldBeEmpty(townOrCitySelector);
       thenTheInputShouldBeEmpty(countySelector);
       thenTheInputShouldBeEmpty(postcodeSelector);
 
-      whenIType("Mrs Beacon", fullNameSelector);
-      whenIType("+447713812659", telephoneSelector);
       whenIType("100 Beacons Road", addressSelector);
       whenIType("Beaconshire", countySelector);
       whenIType("Beacons", townOrCitySelector);
@@ -189,8 +185,6 @@ describe("As an AccountHolder", () => {
       whenISelect("#restOfWorld");
       andIClickContinue();
 
-      thenTheInputShouldBeEmpty(fullNameSelector);
-      thenTheInputShouldBeEmpty(telephoneSelector);
       thenTheInputShouldBeEmpty("#addressLine1");
       thenTheInputShouldBeEmpty("#addressLine2");
       thenTheInputShouldBeEmpty("#addressLine3");
@@ -198,8 +192,6 @@ describe("As an AccountHolder", () => {
       thenTheInputShouldBeEmpty("#country");
       thenTheInputShouldBeEmpty("#postcode");
 
-      whenIType("Mrs Beacon", fullNameSelector);
-      whenIType("+447713812659", telephoneSelector);
       whenIType("Swanson Wharf", "#addressLine1");
       whenIType("Royal Dubai Yacht Club", "#addressLine2");
       // TODO: Update to dropdown
