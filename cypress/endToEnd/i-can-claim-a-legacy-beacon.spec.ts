@@ -56,10 +56,13 @@ import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 describe("As an account holder", () => {
   it("I can view a new and legacy beacon linked to my account/email", () => {
     givenIHaveSignedIn();
-    iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequestFixture);
-    iHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
 
-    givenIHaveVisited(AccountPageURLs.accountHome);
+    iPerformOperationAndWaitForNewPageToLoad(() => {
+      iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequestFixture);
+      iHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
+      givenIHaveVisited(AccountPageURLs.accountHome);
+    });
+
     ifIAmAskedForAccountHolderDetailsIProvideThem();
 
     iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(
@@ -77,8 +80,10 @@ describe("As an account holder", () => {
       legacyBeaconRequest.data.attributes.beacon;
 
     givenIHaveSignedIn();
-    givenIHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
-    givenIHaveVisited(AccountPageURLs.accountHome);
+    iPerformOperationAndWaitForNewPageToLoad(() => {
+      givenIHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
+      givenIHaveVisited(AccountPageURLs.accountHome);
+    });
     ifIAmAskedForAccountHolderDetailsIProvideThem();
 
     whenIHaveVisited(AccountPageURLs.accountHome);
