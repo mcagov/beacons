@@ -31,6 +31,13 @@ export const givenIHaveACookieSetAndIVisit = (url: string): void => {
 
 export const ifIAmAskedForAccountHolderDetailsIProvideThem = (): void => {
   cy.get("h1").then(($heading) => {
+    if ($heading.text().includes("Do you live in the United Kingdom?")) {
+      whenISelect("#unitedKingdom");
+      andIClickContinue();
+    }
+  });
+
+  cy.get("h1").then(($heading) => {
     if ($heading.text().includes("Update your details")) {
       whenIType("Mrs Beacon", "#fullName");
       whenIType("+447713812659", "#telephoneNumber");
