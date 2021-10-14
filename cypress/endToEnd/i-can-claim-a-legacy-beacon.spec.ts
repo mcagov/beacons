@@ -57,11 +57,9 @@ describe("As an account holder", () => {
   it("I can view a new and legacy beacon linked to my account/email", () => {
     givenIHaveSignedIn();
 
-    iPerformOperationAndWaitForNewPageToLoad(() => {
-      iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequestFixture);
-      iHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
-      givenIHaveVisited(AccountPageURLs.accountHome);
-    });
+    iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequestFixture);
+    iHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
+    givenIHaveVisited(AccountPageURLs.accountHome);
 
     ifIAmAskedForAccountHolderDetailsIProvideThem();
 
@@ -80,11 +78,8 @@ describe("As an account holder", () => {
       legacyBeaconRequest.data.attributes.beacon;
 
     givenIHaveSignedIn();
-    iPerformOperationAndWaitForNewPageToLoad(() => {
-      givenIHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
-      givenIHaveVisited(AccountPageURLs.accountHome);
-    });
-    ifIAmAskedForAccountHolderDetailsIProvideThem();
+    givenIHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
+    givenIHaveVisited(AccountPageURLs.accountHome);
 
     whenIHaveVisited(AccountPageURLs.accountHome);
     iCanSeeTheLegacyBeaconAssignedToMeInTheTable(hexId);
