@@ -32,6 +32,7 @@ import {
 } from "../common/i-have-previously-registered-a-beacon.spec";
 import {
   andIClickContinue,
+  givenIHaveACookieSetAndHaveSignedInIVisit,
   givenIHaveSignedIn,
   givenIHaveVisited,
   iCannotSee,
@@ -59,7 +60,7 @@ describe("As an account holder", () => {
     iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequestFixture);
     iHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
 
-    givenIHaveVisited(AccountPageURLs.accountHome);
+    givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.accountHome);
     ifIAmAskedForAccountHolderDetailsIProvideThem();
 
     iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(
