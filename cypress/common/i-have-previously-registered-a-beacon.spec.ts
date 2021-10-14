@@ -51,25 +51,39 @@ export const iHavePreviouslyRegisteredABeacon = async (
 
   const sessionEndpoint = "/api/auth/session";
 
-  cy.request(sessionEndpoint, { timeout: 10000 }).then(async (response) => {
-    const session = response.body;
+  cy.request(sessionEndpoint, { timeout: 10000 }).then(
+    { timeout: 10000 },
+    async (response) => {
+      const session = response.body;
 
-    const accountHolder = await getOrCreateAccountHolder(container)(session);
+      try {
+        const accountHolder = await getOrCreateAccountHolder(container)(
+          session
+        );
 
-    const { beaconRegistered } = await submitRegistration(container)(
-      registration,
-      accountHolder.id
-    );
+        const { beaconRegistered } = await submitRegistration(container)(
+          registration,
+          accountHolder.id
+        );
 
-    if (beaconRegistered) {
-      cy.log("Registered a beacon with hex ID " + registration.hexId);
-    } else {
-      cy.log(
-        "There was a problem registering beacon with hex ID " +
-          registration.hexId
-      );
+        if (beaconRegistered) {
+          cy.log("Registered a beacon with hex ID " + registration.hexId);
+        } else {
+          cy.log(
+            "There was a problem registering beacon with hex ID " +
+              registration.hexId
+          );
+        }
+      } catch (e) {
+        cy.log(
+          "There was a problem registering beacon with hex ID " +
+            registration.hexId +
+            ", error message: " +
+            e
+        );
+      }
     }
-  });
+  );
 };
 
 export const randomUkEncodedHexId = (): string => {
