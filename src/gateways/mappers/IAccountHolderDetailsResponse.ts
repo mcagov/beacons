@@ -15,6 +15,7 @@ export interface IAccountHolderDetailsResponse {
       townOrCity: string;
       county: string;
       postcode: string;
+      country: string;
     };
   };
 }

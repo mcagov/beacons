@@ -31,6 +31,13 @@ export const givenIHaveACookieSetAndIVisit = (url: string): void => {
 
 export const ifIAmAskedForAccountHolderDetailsIProvideThem = (): void => {
   cy.get("h1").then(($heading) => {
+    if ($heading.text().includes("Do you live in the United Kingdom?")) {
+      whenISelect("#unitedKingdom");
+      andIClickContinue();
+    }
+  });
+
+  cy.get("h1").then(($heading) => {
     if ($heading.text().includes("Update your details")) {
       whenIType("Mrs Beacon", "#fullName");
       whenIType("+447713812659", "#telephoneNumber");
@@ -151,6 +158,21 @@ export const thenTheInputShouldOnlyContain = (
   cy.get(selector).should("have.value", expectedValue);
 };
 
+export const thenTheInputShouldBeEmpty = (selector: string): void => {
+  thenTheInputShouldOnlyContain("", selector);
+};
+
+export const thenTheDropdownShouldHaveTheFirstOptionSelected = (
+  selector: string
+): void => {
+  cy.get(selector)
+    .children()
+    .first()
+    .then((option1) => {
+      expect(option1).to.be.selected;
+    });
+};
+
 export const thenIShouldSeeAnErrorSummaryLinkThatContains = (
   ...strings: string[]
 ): void => {
@@ -267,6 +289,10 @@ export const iCanSeeText = (pattern: string | RegExp): void => {
   cy.get("main").contains(pattern);
 };
 
+export const iCannotSeeText = (text: string | RegExp): void => {
+  cy.get("main").should("not.contain", text);
+};
+
 export const whenIClickTheActionLinkInATableRowContaining = (
   pattern: string | RegExp,
   actionLinkText: string | RegExp
@@ -277,4 +303,11 @@ export const whenIClickTheActionLinkInATableRowContaining = (
     .parent()
     .contains(actionLinkText)
     .click();
+};
+
+export const whenISelectTheOptionFromTheDropdown = (
+  option: string,
+  selector: string
+): void => {
+  cy.get(selector).select(option);
 };
