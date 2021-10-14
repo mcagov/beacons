@@ -23,7 +23,7 @@ import { withContainer } from "../../../lib/middleware/withContainer";
 import { withSession } from "../../../lib/middleware/withSession";
 import { redirectUserTo } from "../../../lib/redirectUserTo";
 import { acceptRejectCookieId } from "../../../lib/types";
-import { AccountPageURLs, GeneralPageURLs } from "../../../lib/urls";
+import { AccountPageURLs } from "../../../lib/urls";
 import { FormSubmission } from "../../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { Rule } from "../../../router/rules/Rule";
@@ -41,10 +41,17 @@ export const UpdateAccountLocationChoiceForm: FunctionComponent<DraftRegistratio
     return (
       <BeaconsForm
         formErrors={form.errorSummary}
-        previousPageUrl={GeneralPageURLs.start}
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
         includeUseId={false}
+        cancelLink={
+          <a
+            className="govuk-link govuk-link--no-visited-state"
+            href={AccountPageURLs.accountHome}
+          >
+            Cancel
+          </a>
+        }
       >
         <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
           <FormGroup

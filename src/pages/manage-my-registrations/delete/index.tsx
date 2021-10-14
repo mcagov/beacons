@@ -55,7 +55,7 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
           classes="govuk-button--warning govuk-!-margin-right-8"
         />
       }
-      cancelButton={
+      cancelLink={
         <LinkButton
           buttonText="Cancel"
           href={AccountPageURLs.accountHome}
