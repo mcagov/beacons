@@ -5,6 +5,7 @@ import {
   givenIHaveSignedIn,
   iCanSeeAPageHeadingThatContains,
   iCanSeeText,
+  iPerformOperationAndWaitForNewPageToLoad,
   thenICanSeeAnInputWithPlaceholder,
   whenIClickTheBrowserBackButton,
   whenIClickTheButtonContaining,
@@ -25,7 +26,9 @@ describe("As an AccountHolder", () => {
     whenIClickTheLinkThatContains("Sign out");
     iCanSeeAPageHeadingThatContains("Are you sure");
 
-    whenIClickTheButtonContaining("Yes");
+    iPerformOperationAndWaitForNewPageToLoad(() => {
+      whenIClickTheButtonContaining("Yes");
+    });
     iCanSeeText("Start now");
 
     whenIClickTheBrowserBackButton();
