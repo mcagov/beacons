@@ -54,6 +54,9 @@ const options: NextAuthOptions = {
       protection: "none", // see: https://github.com/nextauthjs/next-auth/issues/468#issuecomment-663769334.  Next Auth uses Double-Submit-Cookie protection to protect against CSRF attacks, docs: https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie
     },
   ],
+  pages: {
+    signOut: "/account/sign-out",
+  },
   callbacks: {
     session: async (session, profile) => {
       session.user["authId"] = profile.sub;
