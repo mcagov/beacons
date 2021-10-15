@@ -361,7 +361,7 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
       props: {
         accountHolderDetails,
         beacons,
-        signOutUri: "/api/auth/custom-signout",
+        signOutUri: AccountPageURLs.signOut,
       },
     };
   }

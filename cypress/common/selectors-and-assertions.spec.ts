@@ -94,11 +94,11 @@ export const iCanSeeNLinksContaining = (n: number, text: string): void => {
 };
 
 export const iCanSeeAButtonContaining = (text: string | RegExp): void => {
-  cy.get(`[role=button]:contains(${text})`);
+  cy.get(`button:contains(${text}),[role=button]:contains(${text})`);
 };
 
 export const givenIHaveClickedTheButtonContaining = (text: string): void => {
-  cy.get(`[role=button]:contains(${text})`).click();
+  cy.get(`button:contains(${text}),[role=button]:contains(${text})`).click();
 };
 
 export const andIClickTheButtonContaining =
@@ -279,6 +279,8 @@ export const iHaveClickedOnALinkWithText = (text: string): void => {
   cy.get(`a[href]:contains(${text})`).click();
 };
 
+export const whenIClickTheLinkThatContains = iHaveClickedOnALinkWithText;
+
 export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
   hexId: string
 ): void => {
@@ -310,4 +312,8 @@ export const whenISelectTheOptionFromTheDropdown = (
   selector: string
 ): void => {
   cy.get(selector).select(option);
+};
+
+export const whenIClickTheBrowserBackButton = (): void => {
+  cy.go("back");
 };
