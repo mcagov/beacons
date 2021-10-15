@@ -78,7 +78,7 @@ export const Feedback: FunctionComponent<DraftRegistrationPageProps> = ({
       <TextareaCharacterCount
         id="howCouldWeImproveThisService"
         label="How could we improve this service?"
-        hintText="Do not include any personal or financial information, for example your National Insurance or credit card numbers."
+        hintText="Please include an email address or telephone number if you would like us to contact you."
         maxCharacters={1200}
         rows={4}
       />
