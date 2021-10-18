@@ -10,9 +10,7 @@ import {
   iCanSeeMyAdditionalBeaconInformation,
 } from "../common/i-can-enter-beacon-information.spec";
 import {
-  givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
-  givenIHaveEnteredMyPersonalDetails,
   iCanSeeMyAddressDetails,
   iCanSeeMyEmergencyContactDetails,
   iCanSeeMyPersonalDetails,
@@ -114,8 +112,17 @@ describe("As an account holder", () => {
     givenIHaveFilledInBeaconInformationPage();
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
     andIHaveNoFurtherUses();
-    givenIHaveEnteredMyPersonalDetails();
-    givenIHaveEnteredMyAddressDetails();
+    //givenIHaveEnteredMyPersonalDetails();
+    iCanSeeText(ownerName);
+    iCanSeeText(email);
+    andIClickContinue();
+    // givenIHaveEnteredMyAddressDetails();
+    iCanSeeText(address1);
+    iCanSeeText(address2);
+    iCanSeeText(address3);
+    iCanSeeText(address4);
+    iCanSeeText(postCode);
+    andIClickContinue();
     givenIHaveEnteredMyEmergencyContactDetails();
     iCanSeeText(hexId);
     iCanSeeText(manufacturer);
@@ -123,16 +130,9 @@ describe("As an account holder", () => {
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
 
-    iCanSeeText(ownerName);
-    iCanSeeText(email);
-    //iCanSeeMyPersonalDetails();
+    iCanSeeMyPersonalDetails();
 
-    iCanSeeText(address1);
-    iCanSeeText(address2);
-    iCanSeeText(address3);
-    iCanSeeText(address4);
-    iCanSeeText(postCode);
-    //iCanSeeMyAddressDetails();
+    iCanSeeMyAddressDetails();
 
     iCanSeeMyEmergencyContactDetails();
 
