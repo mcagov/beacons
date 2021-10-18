@@ -49,17 +49,12 @@ export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
       manufacturerSerialNumber:
         legacyBeaconResponse.data.attributes.beacon.manufacturerSerialNumber ||
         null,
-      ownerName: legacyBeaconResponse.data.attributes.owner.ownerName || null,
-      ownerAddress1:
-        legacyBeaconResponse.data.attributes.owner.address1 || null,
-      ownerAddress2:
-        legacyBeaconResponse.data.attributes.owner.address2 || null,
-      ownerAddress3:
-        legacyBeaconResponse.data.attributes.owner.address3 || null,
-      ownerAddress4:
-        legacyBeaconResponse.data.attributes.owner.address4 || null,
-      ownerPostcode:
-        legacyBeaconResponse.data.attributes.owner.postCode || null,
+      ownerName: legacyBeaconResponse.data.attributes.owner.ownerName,
+      ownerAddress1: legacyBeaconResponse.data.attributes.owner.address1,
+      ownerAddress2: legacyBeaconResponse.data.attributes.owner.address2,
+      ownerAddress3: legacyBeaconResponse.data.attributes.owner.address3,
+      ownerAddress4: legacyBeaconResponse.data.attributes.owner.address4,
+      ownerPostcode: legacyBeaconResponse.data.attributes.owner.postCode,
     };
   }
 }
