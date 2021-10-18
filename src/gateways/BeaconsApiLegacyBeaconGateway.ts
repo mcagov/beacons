@@ -23,7 +23,6 @@ export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
         },
       });
       logger.info("Legacy beacon retrieved");
-
       return BeaconsApiLegacyBeaconGateway.legacyBeaconResponseToLegacyBeacon(
         response.data
       );
@@ -46,6 +45,16 @@ export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
         legacyBeaconResponse.data.attributes.beacon.firstRegistrationDate,
       dateLastUpdated:
         legacyBeaconResponse.data.attributes.beacon.lastModifiedDate,
+      csta: legacyBeaconResponse.data.attributes.beacon.csta || null,
+      manufacturerSerialNumber:
+        legacyBeaconResponse.data.attributes.beacon.manufacturerSerialNumber ||
+        null,
+      ownerName: legacyBeaconResponse.data.attributes.owner.ownerName,
+      ownerAddress1: legacyBeaconResponse.data.attributes.owner.address1,
+      ownerAddress2: legacyBeaconResponse.data.attributes.owner.address2,
+      ownerAddress3: legacyBeaconResponse.data.attributes.owner.address3,
+      ownerAddress4: legacyBeaconResponse.data.attributes.owner.address4,
+      ownerPostcode: legacyBeaconResponse.data.attributes.owner.postCode,
     };
   }
 }
