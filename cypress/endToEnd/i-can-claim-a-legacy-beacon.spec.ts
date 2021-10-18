@@ -5,15 +5,14 @@ import {
   CreateRegistrationPageURLs,
 } from "../../src/lib/urls";
 import { formatDateLong } from "../../src/lib/writingStyle";
+import { testBeaconAndOwnerData } from "../common/happy-path-test-data.spec";
 import {
   givenIHaveFilledInBeaconInformationPage,
   iCanSeeMyAdditionalBeaconInformation,
 } from "../common/i-can-enter-beacon-information.spec";
 import {
   givenIHaveEnteredMyEmergencyContactDetails,
-  iCanSeeMyAddressDetails,
   iCanSeeMyEmergencyContactDetails,
-  iCanSeeMyPersonalDetails,
 } from "../common/i-can-enter-owner-information.spec";
 import { andIHaveNoFurtherUses } from "../common/i-can-enter-use-information/generic.spec";
 import {
@@ -31,6 +30,7 @@ import {
 import {
   andIClickContinue,
   givenIHaveSignedIn,
+  givenIHaveTyped,
   givenIHaveVisited,
   iCannotSee,
   iCanSeeAPageHeadingThatContains,
@@ -112,16 +112,12 @@ describe("As an account holder", () => {
     givenIHaveFilledInBeaconInformationPage();
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
     andIHaveNoFurtherUses();
-    //givenIHaveEnteredMyPersonalDetails();
-    iCanSeeText(ownerName);
-    iCanSeeText(email);
+    // givenIHaveEnteredMyPersonalDetails();
+    givenIHaveTyped(
+      testBeaconAndOwnerData.ownerDetails.telephoneNumber,
+      "#ownerTelephoneNumber"
+    );
     andIClickContinue();
-    // givenIHaveEnteredMyAddressDetails();
-    iCanSeeText(address1);
-    iCanSeeText(address2);
-    iCanSeeText(address3);
-    iCanSeeText(address4);
-    iCanSeeText(postCode);
     andIClickContinue();
     givenIHaveEnteredMyEmergencyContactDetails();
     iCanSeeText(hexId);
@@ -129,11 +125,6 @@ describe("As an account holder", () => {
     iCanSeeText(model);
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
-
-    iCanSeeMyPersonalDetails();
-
-    iCanSeeMyAddressDetails();
-
     iCanSeeMyEmergencyContactDetails();
 
     iPerformOperationAndWaitForNewPageToLoad(() => {
@@ -151,8 +142,13 @@ describe("As an account holder", () => {
     iCanSeeText(model);
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
-    iCanSeeMyPersonalDetails();
-    iCanSeeMyAddressDetails();
+    iCanSeeText(ownerName);
+    iCanSeeText(email);
+    iCanSeeText(address1);
+    iCanSeeText(address2);
+    iCanSeeText(address3);
+    iCanSeeText(address4);
+    iCanSeeText(postCode);
     iCanSeeMyEmergencyContactDetails();
   });
 });
