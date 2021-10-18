@@ -45,23 +45,21 @@ export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
         legacyBeaconResponse.data.attributes.beacon.firstRegistrationDate,
       dateLastUpdated:
         legacyBeaconResponse.data.attributes.beacon.lastModifiedDate,
-      mti: legacyBeaconResponse.data.attributes.beacon.mti || null,
       csta: legacyBeaconResponse.data.attributes.beacon.csta || null,
-      coding: legacyBeaconResponse.data.attributes.beacon?.coding || null,
-      protocol: legacyBeaconResponse.data.attributes.beacon?.protocol || null,
-      beaconType:
-        legacyBeaconResponse.data.attributes.beacon?.beaconType || null,
       manufacturerSerialNumber:
-        legacyBeaconResponse.data.attributes.beacon.manufacturerSerialNumber,
-      serialNumber: legacyBeaconResponse.data.attributes.beacon.serialNumber,
-      cospasSarsatNumber:
-        legacyBeaconResponse.data.attributes.beacon.cospasSarsatNumber,
-      ownerName: legacyBeaconResponse.data.attributes.owner.ownerName,
-      ownerAddress1: legacyBeaconResponse.data.attributes.owner.address1,
-      ownerAddress2: legacyBeaconResponse.data.attributes.owner.address2,
-      ownerAddress3: legacyBeaconResponse.data.attributes.owner.address3,
-      ownerAddress4: legacyBeaconResponse.data.attributes.owner.address4,
-      ownerPostcode: legacyBeaconResponse.data.attributes.owner.postCode,
+        legacyBeaconResponse.data.attributes.beacon.manufacturerSerialNumber ||
+        null,
+      ownerName: legacyBeaconResponse.data.attributes.owner.ownerName || null,
+      ownerAddress1:
+        legacyBeaconResponse.data.attributes.owner.address1 || null,
+      ownerAddress2:
+        legacyBeaconResponse.data.attributes.owner.address2 || null,
+      ownerAddress3:
+        legacyBeaconResponse.data.attributes.owner.address3 || null,
+      ownerAddress4:
+        legacyBeaconResponse.data.attributes.owner.address4 || null,
+      ownerPostcode:
+        legacyBeaconResponse.data.attributes.owner.postCode || null,
     };
   }
 }

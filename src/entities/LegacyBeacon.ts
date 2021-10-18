@@ -12,12 +12,6 @@ export interface LegacyBeacon {
   ownerAddress3: string;
   ownerAddress4: string;
   ownerPostcode: string;
-  mti: string;
   csta: string;
-  coding: string;
-  protocol: string;
-  beaconType: string;
   manufacturerSerialNumber: string;
-  serialNumber: string;
-  cospasSarsatNumber: string;
 }
