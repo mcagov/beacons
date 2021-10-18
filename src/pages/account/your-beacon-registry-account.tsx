@@ -14,7 +14,6 @@ import {
 import { AccountHolder } from "../../entities/AccountHolder";
 import { AccountListBeacon } from "../../entities/AccountListBeacon";
 import { DraftRegistration } from "../../entities/DraftRegistration";
-import { accountDetailsFormManager } from "../../lib/form/formManagers/accountDetailsFormManager";
 import { setCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../lib/middleware/withContainer";
@@ -39,12 +38,14 @@ export interface YourBeaconRegistryAccountPageProps {
   id?: string;
   accountHolderDetails: AccountHolder;
   beacons: AccountListBeacon[];
+  signOutUri: string;
 }
 
 export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAccountPageProps> =
   ({
     accountHolderDetails,
     beacons,
+    signOutUri,
   }: YourBeaconRegistryAccountPageProps): JSX.Element => {
     const pageHeading = "Your Beacon Registry Account";
     const legacyBeacons = beacons.filter((beacon) => {
@@ -52,7 +53,11 @@ export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAcco
     });
 
     return (
-      <Layout title={pageHeading} showCookieBanner={false}>
+      <Layout
+        title={pageHeading}
+        showCookieBanner={false}
+        signOutUri={signOutUri}
+      >
         <Grid
           mainContent={
             <>
@@ -91,6 +96,7 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
     county,
     postcode,
     email,
+    country,
   },
 }: IYourDetailsProps): JSX.Element => {
   return (
@@ -152,18 +158,6 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
                 {addressLine4}
               </view>
             )}
-            {addressLine4 && (
-              <view>
-                <br />
-                {addressLine4}
-              </view>
-            )}
-            {addressLine4 && (
-              <view>
-                <br />
-                {addressLine4}
-              </view>
-            )}
             {townOrCity && (
               <view>
                 <br />
@@ -180,6 +174,12 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
               <view>
                 <br />
                 {postcode}
+              </view>
+            )}
+            {country && (
+              <view>
+                <br />
+                {country}
               </view>
             )}
           </dd>
@@ -336,10 +336,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails(
-        context,
-        accountDetailsFormManager
-      ),
+      new WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails(context),
       new IfUserIsSignedInAndHasValidAccountDetails(context),
     ]).execute();
   })
@@ -364,6 +361,7 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
       props: {
         accountHolderDetails,
         beacons,
+        signOutUri: AccountPageURLs.signOut,
       },
     };
   }

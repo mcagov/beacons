@@ -29,11 +29,32 @@ export const givenIHaveACookieSetAndIVisit = (url: string): void => {
   cy.visit(url);
 };
 
+export const ifIAmAskedForAccountHolderDetailsIProvideThem = (): void => {
+  cy.get("h1").then(($heading) => {
+    if ($heading.text().includes("Do you live in the United Kingdom?")) {
+      whenISelect("#unitedKingdom");
+      andIClickContinue();
+    }
+  });
+
+  cy.get("h1").then(($heading) => {
+    if ($heading.text().includes("Update your details")) {
+      whenIType("Mrs Beacon", "#fullName");
+      whenIType("+447713812659", "#telephoneNumber");
+      whenIType("100 Beacons Road", "#addressLine1");
+      whenIType("Beacons", "#townOrCity");
+      whenIType("BS8 9DB", "#postcode");
+      whenIClickTheButtonContaining("Save these account details");
+    }
+  });
+};
+
 export const givenIHaveACookieSetAndHaveSignedInIVisit = (
   url: string
 ): void => {
   givenIHaveACookieSetAndHaveSignedIn();
   cy.visit(url);
+  ifIAmAskedForAccountHolderDetailsIProvideThem();
 };
 
 export const givenIHaveACookieSetAndHaveSignedIn = (): void => {
@@ -73,11 +94,11 @@ export const iCanSeeNLinksContaining = (n: number, text: string): void => {
 };
 
 export const iCanSeeAButtonContaining = (text: string | RegExp): void => {
-  cy.get(`[role=button]:contains(${text})`);
+  cy.get(`button:contains(${text}),[role=button]:contains(${text})`);
 };
 
 export const givenIHaveClickedTheButtonContaining = (text: string): void => {
-  cy.get(`[role=button]:contains(${text})`).click();
+  cy.get(`button:contains(${text}),[role=button]:contains(${text})`).click();
 };
 
 export const andIClickTheButtonContaining =
@@ -135,6 +156,21 @@ export const thenTheInputShouldOnlyContain = (
   selector: string
 ): void => {
   cy.get(selector).should("have.value", expectedValue);
+};
+
+export const thenTheInputShouldBeEmpty = (selector: string): void => {
+  thenTheInputShouldOnlyContain("", selector);
+};
+
+export const thenTheDropdownShouldHaveTheFirstOptionSelected = (
+  selector: string
+): void => {
+  cy.get(selector)
+    .children()
+    .first()
+    .then((option1) => {
+      expect(option1).to.be.selected;
+    });
 };
 
 export const thenIShouldSeeAnErrorSummaryLinkThatContains = (
@@ -243,6 +279,8 @@ export const iHaveClickedOnALinkWithText = (text: string): void => {
   cy.get(`a[href]:contains(${text})`).click();
 };
 
+export const whenIClickTheLinkThatContains = iHaveClickedOnALinkWithText;
+
 export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
   hexId: string
 ): void => {
@@ -251,6 +289,10 @@ export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
 
 export const iCanSeeText = (pattern: string | RegExp): void => {
   cy.get("main").contains(pattern);
+};
+
+export const iCannotSeeText = (text: string | RegExp): void => {
+  cy.get("main").should("not.contain", text);
 };
 
 export const whenIClickTheActionLinkInATableRowContaining = (
@@ -263,4 +305,15 @@ export const whenIClickTheActionLinkInATableRowContaining = (
     .parent()
     .contains(actionLinkText)
     .click();
+};
+
+export const whenISelectTheOptionFromTheDropdown = (
+  option: string,
+  selector: string
+): void => {
+  cy.get(selector).select(option);
+};
+
+export const whenIClickTheBrowserBackButton = (): void => {
+  cy.go("back");
 };

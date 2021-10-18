@@ -8,6 +8,7 @@ import { PhaseBanner } from "./PhaseBanner";
 
 interface LayoutProps {
   children: ReactNode;
+  signOutUri?: string;
   showCookieBanner?: boolean;
   head?: ReactNode;
   navigation?: ReactNode;
@@ -23,6 +24,7 @@ interface BeaconRegistrationHeadProps {
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
   title,
+  signOutUri,
   pageHasErrors = false,
   head = <BeaconRegistrationHead title={title} pageHasErrors={pageHasErrors} />,
   navigation = null,
@@ -42,6 +44,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
       <Header
         serviceName={"Maritime and Coastguard Agency: Register a beacon"}
         homeLink={"/"}
+        signOutUri={signOutUri}
       />
       <PhaseBanner phase="BETA">
         This is a new service – your{" "}

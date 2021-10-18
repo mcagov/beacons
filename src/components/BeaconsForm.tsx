@@ -16,14 +16,14 @@ import { IfYouNeedHelp } from "./Mca";
 
 interface BeaconsFormProps {
   children: ReactNode;
-  previousPageUrl: string;
+  previousPageUrl?: string;
   pageHeading: string;
   showCookieBanner: boolean;
   formErrors?: FormError[];
   errorMessages?: string[];
   includeUseId?: boolean;
   continueButton?: JSX.Element;
-  cancelButton?: JSX.Element;
+  cancelLink?: JSX.Element;
 }
 
 interface BeaconsFormFieldsetAndLegendProps {
@@ -49,11 +49,11 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
   formErrors = [],
   errorMessages = [],
   continueButton = <Button buttonText="Continue" />,
-  cancelButton = null,
+  cancelLink = null,
 }: BeaconsFormProps): JSX.Element => {
   return (
     <Layout
-      navigation={<BackButton href={previousPageUrl} />}
+      navigation={previousPageUrl && <BackButton href={previousPageUrl} />}
       title={pageHeading}
       showCookieBanner={showCookieBanner}
     >
@@ -66,8 +66,10 @@ export const BeaconsForm: FunctionComponent<BeaconsFormProps> = ({
                 {children}
                 <HiddenFormMetadata />
               </FormGroup>
-              {cancelButton}
-              {continueButton}
+              <div className="govuk-button-group">
+                {continueButton}
+                {cancelLink}
+              </div>
             </Form>
             <IfYouNeedHelp />
           </>

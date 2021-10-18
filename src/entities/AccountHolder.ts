@@ -11,4 +11,5 @@ export interface AccountHolder {
   townOrCity: string;
   county: string;
   postcode: string;
+  country: string;
 }

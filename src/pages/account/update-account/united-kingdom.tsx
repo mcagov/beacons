@@ -1,35 +1,34 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { Button, LinkButton } from "../../components/Button";
-import { FormErrorSummary } from "../../components/ErrorSummary";
+import { Button, LinkButton } from "../../../components/Button";
+import { FormErrorSummary } from "../../../components/ErrorSummary";
 import {
   Form,
   FormFieldset,
   FormGroup,
   FormLegendPageHeading,
-} from "../../components/Form";
-import { Grid } from "../../components/Grid";
-import { FormInputProps, Input } from "../../components/Input";
-import { Layout } from "../../components/Layout";
-import { IfYouNeedHelp } from "../../components/Mca";
-import { GovUKBody, SectionHeading } from "../../components/Typography";
-import { AccountHolder } from "../../entities/AccountHolder";
-import { FormJSON } from "../../lib/form/FormManager";
-import { accountDetailsFormManager } from "../../lib/form/formManagers/accountDetailsFormManager";
-import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../lib/middleware/withContainer";
-import { withSession } from "../../lib/middleware/withSession";
-import { redirectUserTo } from "../../lib/redirectUserTo";
-import { AccountPageURLs } from "../../lib/urls";
-import { diffObjValues } from "../../lib/utils";
-import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+} from "../../../components/Form";
+import { Grid } from "../../../components/Grid";
+import { FormInputProps, Input } from "../../../components/Input";
+import { Layout } from "../../../components/Layout";
+import { IfYouNeedHelp } from "../../../components/Mca";
+import { GovUKBody, SectionHeading } from "../../../components/Typography";
+import { AccountHolder } from "../../../entities/AccountHolder";
+import { FormJSON } from "../../../lib/form/FormManager";
+import { accountDetailsFormManager } from "../../../lib/form/formManagers/accountDetailsFormManager";
+import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../lib/middleware/withContainer";
+import { withSession } from "../../../lib/middleware/withSession";
+import { redirectUserTo } from "../../../lib/redirectUserTo";
+import { AccountPageURLs } from "../../../lib/urls";
+import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
 export interface UpdateAccountPageProps {
   form: FormJSON;
   accountHolderDetails: AccountHolder;
 }
 
-const UpdateAccount: FunctionComponent<UpdateAccountPageProps> = ({
+const UnitedKingdom: FunctionComponent<UpdateAccountPageProps> = ({
   form,
 }: UpdateAccountPageProps): JSX.Element => {
   const pageHeading =
@@ -47,9 +46,8 @@ const UpdateAccount: FunctionComponent<UpdateAccountPageProps> = ({
                   <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
                   <GovUKBody>
                     We will send this person confirmation messages, certificates
-                    and and account reminders. You can provide details of the
-                    beacon owner (if this is a different person or organisation)
-                    later.
+                    and account reminders. You can provide details of the beacon
+                    owner (if this is a different person or organisation) later.
                   </GovUKBody>
                 </FormFieldset>
 
@@ -171,10 +169,11 @@ export const getServerSideProps: GetServerSideProps = withSession(
       context.container;
 
     if (!userDidSubmitForm(context)) {
+      const accountHolder = await getOrCreateAccountHolder(context.session);
       return {
         props: {
           form: accountDetailsFormManager(
-            accountUpdateFields(await getOrCreateAccountHolder(context.session))
+            accountHolderToFormFields(resetAddressFields(accountHolder))
           ).serialise(),
         },
       };
@@ -191,21 +190,24 @@ export const getServerSideProps: GetServerSideProps = withSession(
     }
 
     const accountHolder = await getOrCreateAccountHolder(context.session);
-    const update = diffObjValues(accountUpdateFields(accountHolder), formData);
-    await updateAccountHolder(accountHolder.id, update as AccountHolder);
+
+    await updateAccountHolder(
+      accountHolder.id,
+      formDataToUnitedKingdomAccountHolder(formData)
+    );
 
     return redirectUserTo(AccountPageURLs.accountHome);
   })
 );
 
-export default UpdateAccount;
+export default UnitedKingdom;
 
 /**
  * Turns an account holder in to a set of update fields
  * @param accountHolder {AccountHolder} the account holder from which to populate these fields
  * @returns {AccountUpdateFields} update field values from accountHolder or properties are undefined (to allow for obj diffing)
  */
-const accountUpdateFields = (
+const accountHolderToFormFields = (
   accountHolder: AccountHolder
 ): AccountUpdateFields => ({
   fullName: accountHolder.fullName || undefined,
@@ -217,6 +219,39 @@ const accountUpdateFields = (
   postcode: accountHolder.postcode || undefined,
   email: accountHolder.email,
 });
+
+const resetAddressFields = (accountHolder: AccountHolder): AccountHolder => {
+  const emptyAddressFields: Partial<AccountHolder> = {
+    addressLine1: "",
+    addressLine2: "",
+    addressLine3: "",
+    addressLine4: "",
+    townOrCity: "",
+    county: "",
+    country: "",
+    postcode: "",
+  };
+
+  return {
+    ...accountHolder,
+    ...emptyAddressFields,
+  };
+};
+
+const formDataToUnitedKingdomAccountHolder = (
+  formData: AccountUpdateFields
+): AccountHolder => {
+  const emptyFields = {
+    addressLine3: "",
+    addressLine4: "",
+  };
+
+  return {
+    ...formData,
+    ...emptyFields,
+    country: "United Kingdom",
+  } as AccountHolder;
+};
 
 interface AccountUpdateFields {
   fullName: string;

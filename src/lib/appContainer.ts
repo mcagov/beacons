@@ -97,7 +97,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
       );
     },
     get draftRegistrationGateway() {
-      return new RedisDraftRegistrationGateway();
+      return RedisDraftRegistrationGateway.getGateway();
     },
     get sessionGateway() {
       return new NextAuthUserSessionGateway();
