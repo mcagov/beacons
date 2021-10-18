@@ -76,6 +76,15 @@ describe("As an account holder", () => {
     legacyBeaconRequest.data.attributes.beacon.hexId = randomUkEncodedHexId();
     const { hexId, manufacturer, model } =
       legacyBeaconRequest.data.attributes.beacon;
+    const {
+      ownerName,
+      email,
+      address1,
+      address2,
+      address3,
+      address4,
+      postCode,
+    } = legacyBeaconRequest.data.attributes.owner;
 
     givenIHaveSignedIn();
     givenIHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
@@ -113,8 +122,18 @@ describe("As an account holder", () => {
     iCanSeeText(model);
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
-    iCanSeeMyPersonalDetails();
-    iCanSeeMyAddressDetails();
+
+    iCanSeeText(ownerName);
+    iCanSeeText(email);
+    //iCanSeeMyPersonalDetails();
+
+    iCanSeeText(address1);
+    iCanSeeText(address2);
+    iCanSeeText(address3);
+    iCanSeeText(address4);
+    iCanSeeText(postCode);
+    //iCanSeeMyAddressDetails();
+
     iCanSeeMyEmergencyContactDetails();
 
     iPerformOperationAndWaitForNewPageToLoad(() => {
