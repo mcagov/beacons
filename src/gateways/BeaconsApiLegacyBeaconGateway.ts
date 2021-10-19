@@ -49,12 +49,6 @@ export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
       manufacturerSerialNumber:
         legacyBeaconResponse.data.attributes.beacon.manufacturerSerialNumber ||
         null,
-      ownerName: legacyBeaconResponse.data.attributes.owner.ownerName,
-      ownerAddress1: legacyBeaconResponse.data.attributes.owner.address1,
-      ownerAddress2: legacyBeaconResponse.data.attributes.owner.address2,
-      ownerAddress3: legacyBeaconResponse.data.attributes.owner.address3,
-      ownerAddress4: legacyBeaconResponse.data.attributes.owner.address4,
-      ownerPostcode: legacyBeaconResponse.data.attributes.owner.postCode,
     };
   }
 }

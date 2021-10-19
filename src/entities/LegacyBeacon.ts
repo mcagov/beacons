@@ -6,12 +6,6 @@ export interface LegacyBeacon {
   ownerEmail: string;
   dateFirstRegistered: string;
   dateLastUpdated: string;
-  ownerName: string;
-  ownerAddress1: string;
-  ownerAddress2: string;
-  ownerAddress3: string;
-  ownerAddress4: string;
-  ownerPostcode: string;
   csta: string;
   manufacturerSerialNumber: string;
 }

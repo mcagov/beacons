@@ -53,13 +53,7 @@ export class GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateThe
       model: legacyBeacon.model,
       csta: legacyBeacon.csta,
       manufacturerSerialNumber: legacyBeacon.manufacturerSerialNumber,
-      ownerFullName: legacyBeacon.ownerName,
       ownerEmail: legacyBeacon.ownerEmail,
-      ownerAddressLine1: legacyBeacon.ownerAddress1,
-      ownerAddressLine2: legacyBeacon.ownerAddress2,
-      ownerTownOrCity: legacyBeacon.ownerAddress3,
-      ownerCounty: legacyBeacon.ownerAddress4,
-      ownerPostcode: legacyBeacon.ownerPostcode,
       uses: [],
     };
 
