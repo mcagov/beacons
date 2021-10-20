@@ -56,6 +56,8 @@ export enum CreateRegistrationPageURLs {
   additionalUse = "/register-a-beacon/additional-beacon-use",
   aboutBeaconOwner = "/register-a-beacon/about-beacon-owner",
   beaconOwnerAddress = "/register-a-beacon/beacon-owner-address",
+  beaconOwnerAddressUnitedKingdom = "/register-a-beacon/beacon-owner-address/united-kingdom",
+  beaconOwnerAddressRestOfWorld = "/register-a-beacon/beacon-owner-address/rest-of-world",
   emergencyContact = "/register-a-beacon/emergency-contact",
   checkYourAnswers = "/register-a-beacon/check-your-answers",
   applicationComplete = "/register-a-beacon/application-complete",
