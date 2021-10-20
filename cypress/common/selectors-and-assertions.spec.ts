@@ -243,6 +243,12 @@ export const whenIClickBack = (): void => {
   cy.get(".govuk-back-link").click();
 };
 
+export const whenIClickBackTimes = (times: number): void => {
+  for (let i = 0; i < times; i++) {
+    whenIClickBack();
+  }
+};
+
 export const thenTheCheckboxShouldBeChecked = (selector: string): void => {
   cy.get(selector).should("be.checked");
 };

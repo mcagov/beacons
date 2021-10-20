@@ -6,9 +6,10 @@ import {
   iCanSeeMyBeaconDetails,
 } from "../../common/i-can-enter-beacon-information.spec";
 import {
-  givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
+  givenIHaveEnteredMyUnitedKingdomAddressDetails,
+  givenIHaveSelectedAUnitedKingdomAddress,
   iCanSeeMyAddressDetails,
   iCanSeeMyEmergencyContactDetails,
   iCanSeeMyPersonalDetails,
@@ -34,7 +35,8 @@ describe("As an aviation beacon owner,", () => {
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
-    givenIHaveEnteredMyAddressDetails();
+    givenIHaveSelectedAUnitedKingdomAddress();
+    givenIHaveEnteredMyUnitedKingdomAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
@@ -55,7 +57,8 @@ describe("As an aviation beacon owner,", () => {
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
-    givenIHaveEnteredMyAddressDetails();
+    givenIHaveSelectedAUnitedKingdomAddress();
+    givenIHaveEnteredMyUnitedKingdomAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);

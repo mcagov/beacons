@@ -9,9 +9,10 @@ import {
 } from "../common/happy-path-test-data.spec";
 import { givenIHaveEnteredMyBeaconDetails } from "../common/i-can-enter-beacon-information.spec";
 import {
-  givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
+  givenIHaveEnteredMyUnitedKingdomAddressDetails,
+  givenIHaveSelectedAUnitedKingdomAddress,
 } from "../common/i-can-enter-owner-information.spec";
 import { andIHaveNoFurtherUses } from "../common/i-can-enter-use-information/generic.spec";
 import { givenIHaveEnteredMyLandUse } from "../common/i-can-enter-use-information/land.spec";
@@ -36,7 +37,8 @@ describe("As user with an account", () => {
     givenIHaveEnteredMyLandUse();
     andIHaveNoFurtherUses();
     givenIHaveEnteredMyPersonalDetails();
-    givenIHaveEnteredMyAddressDetails();
+    givenIHaveSelectedAUnitedKingdomAddress();
+    givenIHaveEnteredMyUnitedKingdomAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
     iPerformOperationAndWaitForNewPageToLoad(() =>
       givenIHaveClickedTheButtonContaining("Accept and send")

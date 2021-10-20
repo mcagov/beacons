@@ -6,9 +6,10 @@ import {
   iCanSeeMyRequiredAdditionalBeaconInformationOrDash,
 } from "../../common/i-can-enter-beacon-information.spec";
 import {
-  givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyRequiredEmergencyContactDetails,
   givenIHaveEnteredMyRequiredPersonalDetails,
+  givenIHaveEnteredMyUnitedKingdomAddressDetails,
+  givenIHaveSelectedAUnitedKingdomAddress,
   iCanSeeMyRequiredAddressDetails,
   iCanSeeMyRequiredEmergencyContactDetails,
   iCanSeeMyRequiredPersonalDetails,
@@ -31,7 +32,8 @@ describe("As a beacon owner who enters all required fields,", () => {
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyRequiredPersonalDetails();
-    givenIHaveEnteredMyAddressDetails();
+    givenIHaveSelectedAUnitedKingdomAddress();
+    givenIHaveEnteredMyUnitedKingdomAddressDetails();
     givenIHaveEnteredMyRequiredEmergencyContactDetails();
 
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);

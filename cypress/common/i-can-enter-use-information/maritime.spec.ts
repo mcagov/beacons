@@ -32,6 +32,7 @@ import {
   thenTheUrlShouldContain,
   whenIClearTheInput,
   whenIClickBack,
+  whenIClickBackTimes,
 } from "../selectors-and-assertions.spec";
 import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
@@ -157,7 +158,8 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   iCanEditMyEmergencyContactDetails();
   whenIClickBack();
   iCanEditMyAddressDetails();
-  whenIClickBack();
+  // Go back twice due to branch
+  whenIClickBackTimes(2);
   iCanEditMyPersonalDetails();
   whenIClickBack();
   iCanEditMyNUses(1);

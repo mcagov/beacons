@@ -30,6 +30,7 @@ import {
   iCanSeeAPageHeadingThatContains,
   iHaveVisited,
   whenIClickBack,
+  whenIClickBackTimes,
 } from "../selectors-and-assertions.spec";
 import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
@@ -73,7 +74,7 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   iCanEditMyEmergencyContactDetails();
   whenIClickBack();
   iCanEditMyAddressDetails();
-  whenIClickBack();
+  whenIClickBackTimes(2);
   iCanEditMyPersonalDetails();
   whenIClickBack();
   iCanEditMyNUses(1);

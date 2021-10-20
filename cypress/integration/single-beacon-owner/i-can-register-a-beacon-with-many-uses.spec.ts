@@ -14,9 +14,10 @@ import {
   iCanSeeMyBeaconDetails,
 } from "../../common/i-can-enter-beacon-information.spec";
 import {
-  givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
+  givenIHaveEnteredMyUnitedKingdomAddressDetails,
+  givenIHaveSelectedAUnitedKingdomAddress,
   iCanEditMyAddressDetails,
   iCanEditMyEmergencyContactDetails,
   iCanEditMyPersonalDetails,
@@ -69,6 +70,7 @@ import {
   iHaveVisited,
   thenTheUrlShouldContain,
   whenIClickBack,
+  whenIClickBackTimes,
 } from "../../common/selectors-and-assertions.spec";
 
 describe("As a single beacon owner with many uses", () => {
@@ -102,7 +104,8 @@ describe("As a single beacon owner with many uses", () => {
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
-    givenIHaveEnteredMyAddressDetails();
+    givenIHaveSelectedAUnitedKingdomAddress();
+    givenIHaveEnteredMyUnitedKingdomAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
@@ -125,7 +128,7 @@ const iCanGoBackThroughTheFormInReverse = () => {
   iCanEditMyEmergencyContactDetails();
   whenIClickBack();
   iCanEditMyAddressDetails();
-  whenIClickBack();
+  whenIClickBackTimes(2);
   iCanEditMyPersonalDetails();
   whenIClickBack();
   iCanEditMyNUses(3);

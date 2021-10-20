@@ -2,6 +2,7 @@ import { CreateRegistrationPageURLs } from "../../src/lib/urls";
 import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
   givenIHaveClickedContinue,
+  givenIHaveSelected,
   givenIHaveTyped,
   givenIHaveVisited,
 } from "./selectors-and-assertions.spec";
@@ -34,7 +35,13 @@ export const givenIHaveEnteredMyRequiredPersonalDetails = (): void => {
   givenIHaveTyped(testBeaconAndOwnerData.ownerDetails.email, "#ownerEmail");
   givenIHaveClickedContinue();
 };
-export const givenIHaveEnteredMyAddressDetails = (): void => {
+
+export const givenIHaveSelectedAUnitedKingdomAddress = (): void => {
+  givenIHaveSelected("#unitedKingdom");
+  givenIHaveClickedContinue();
+};
+
+export const givenIHaveEnteredMyUnitedKingdomAddressDetails = (): void => {
   givenIHaveTyped(
     testBeaconAndOwnerData.ownerAddress.addressLine1,
     "#ownerAddressLine1"
@@ -112,10 +119,13 @@ export const iCanEditMyPersonalDetails = (): void =>
   Object.values(testBeaconAndOwnerData.ownerDetails).forEach((value) =>
     cy.get(`input[value="${value}"]`)
   );
-export const iCanEditMyAddressDetails = (): void =>
+export const iCanEditMyAddressDetails = (): void => {
+  givenIHaveSelectedAUnitedKingdomAddress();
   Object.values(testBeaconAndOwnerData.ownerAddress).forEach((value) =>
     cy.get(`input[value="${value}"]`)
   );
+};
+
 export const iCanEditMyEmergencyContactDetails = (): void =>
   Object.values(testBeaconAndOwnerData.emergencyContacts).forEach((value) =>
     cy.get(`input[value="${value}"]`)

@@ -12,12 +12,12 @@ import {
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
-} from "../../common/selectors-and-assertions.spec";
+} from "../../../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner I can enter my address so I will receive physical evidence of my registration", () => {
-  const thisPageUrl = "/register-a-beacon/beacon-owner-address";
+  const thisPageUrl = "/register-a-beacon/beacon-owner-address/united-kingdom";
   const nextPageUrl = "/register-a-beacon/emergency-contact";
-  const previousPageUrl = "/register-a-beacon/about-beacon-owner";
+  const previousPageUrl = "/register-a-beacon/beacon-owner-address";
 
   const beaconOwnerAddressLine1Selector = "#ownerAddressLine1";
   const beaconOwnerTownOrCitySelector = "#ownerTownOrCity";
