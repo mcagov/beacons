@@ -204,6 +204,7 @@ export const manyBeaconsApiResponseFixture: IBeaconListResponse = deepFreeze({
         townOrCity: "Beaconsfield",
         county: "Yorkshire",
         postcode: "BS8 7NW",
+        country: "United Kingdom",
       },
     },
     {
