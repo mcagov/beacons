@@ -320,6 +320,9 @@ export const whenISelectTheOptionFromTheDropdown = (
   cy.get(selector).select(option);
 };
 
+export const givenIHaveSelectedTheOptionFromTheDropdown =
+  whenISelectTheOptionFromTheDropdown;
+
 export const whenIClickTheBrowserBackButton = (): void => {
   cy.go("back");
 };

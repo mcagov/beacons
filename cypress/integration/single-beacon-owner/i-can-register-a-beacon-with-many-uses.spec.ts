@@ -21,9 +21,9 @@ import {
   iCanEditMyAddressDetails,
   iCanEditMyEmergencyContactDetails,
   iCanEditMyPersonalDetails,
-  iCanSeeMyAddressDetails,
   iCanSeeMyEmergencyContactDetails,
   iCanSeeMyPersonalDetails,
+  iCanSeeMyUnitedKingdomAddressDetails,
 } from "../../common/i-can-enter-owner-information.spec";
 import {
   givenIHaveEnteredMyAviationUse,
@@ -117,7 +117,7 @@ describe("As a single beacon owner with many uses", () => {
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
     iCanSeeMyAviationUse(Purpose.PLEASURE);
     iCanSeeMyPersonalDetails();
-    iCanSeeMyAddressDetails();
+    iCanSeeMyUnitedKingdomAddressDetails();
     iCanSeeMyEmergencyContactDetails();
     iCanGoBackThroughTheFormInReverse();
   });

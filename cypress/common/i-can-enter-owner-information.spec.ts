@@ -1,8 +1,12 @@
 import { CreateRegistrationPageURLs } from "../../src/lib/urls";
-import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
+import {
+  testBeaconAndOwnerData,
+  testBeaconAndOwnerDataRestOfWorld,
+} from "./happy-path-test-data.spec";
 import {
   givenIHaveClickedContinue,
   givenIHaveSelected,
+  givenIHaveSelectedTheOptionFromTheDropdown,
   givenIHaveTyped,
   givenIHaveVisited,
 } from "./selectors-and-assertions.spec";
@@ -41,6 +45,11 @@ export const givenIHaveSelectedAUnitedKingdomAddress = (): void => {
   givenIHaveClickedContinue();
 };
 
+export const givenIHaveSelectedARestOfWorldAddress = (): void => {
+  givenIHaveSelected("#restOfWorld");
+  givenIHaveClickedContinue();
+};
+
 export const givenIHaveEnteredMyUnitedKingdomAddressDetails = (): void => {
   givenIHaveTyped(
     testBeaconAndOwnerData.ownerAddress.addressLine1,
@@ -57,6 +66,34 @@ export const givenIHaveEnteredMyUnitedKingdomAddressDetails = (): void => {
   givenIHaveTyped(
     testBeaconAndOwnerData.ownerAddress.postcode,
     "#ownerPostcode"
+  );
+  givenIHaveClickedContinue();
+};
+
+export const givenIHaveEnteredMyRestOfWorldAddressDetails = (): void => {
+  givenIHaveTyped(
+    testBeaconAndOwnerDataRestOfWorld.ownerAddress.addressLine1,
+    "#ownerAddressLine1"
+  );
+  givenIHaveTyped(
+    testBeaconAndOwnerDataRestOfWorld.ownerAddress.addressLine2,
+    "#ownerAddressLine2"
+  );
+  givenIHaveTyped(
+    testBeaconAndOwnerDataRestOfWorld.ownerAddress.addressLine3,
+    "#ownerAddressLine3"
+  );
+  givenIHaveTyped(
+    testBeaconAndOwnerDataRestOfWorld.ownerAddress.addressLine4,
+    "#ownerAddressLine4"
+  );
+  givenIHaveTyped(
+    testBeaconAndOwnerDataRestOfWorld.ownerAddress.postcode,
+    "#ownerPostcode"
+  );
+  givenIHaveSelectedTheOptionFromTheDropdown(
+    testBeaconAndOwnerDataRestOfWorld.ownerAddress.country,
+    "#ownerCountry"
   );
   givenIHaveClickedContinue();
 };
@@ -141,10 +178,16 @@ export const iCanSeeMyRequiredPersonalDetails = (): void =>
       .parent()
       .contains(new RegExp(value + "|-"))
   );
-export const iCanSeeMyAddressDetails = (): void =>
+export const iCanSeeMyUnitedKingdomAddressDetails = (): void =>
   Object.values(testBeaconAndOwnerData.ownerAddress).forEach((value) =>
     cy.get("main").contains(value)
   );
+
+export const iCanSeeMyRestOfWorldAddressDetails = (): void =>
+  Object.values(testBeaconAndOwnerDataRestOfWorld.ownerAddress).forEach(
+    (value) => cy.get("main").contains(value)
+  );
+
 export const iCanSeeMyRequiredAddressDetails = (): void => {
   Object.values(testBeaconAndOwnerData.ownerAddress).forEach((value) =>
     cy

@@ -8,11 +8,11 @@ import {
 import {
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
-  givenIHaveEnteredMyUnitedKingdomAddressDetails,
-  givenIHaveSelectedAUnitedKingdomAddress,
+  givenIHaveEnteredMyRestOfWorldAddressDetails,
+  givenIHaveSelectedARestOfWorldAddress,
   iCanSeeMyEmergencyContactDetails,
   iCanSeeMyPersonalDetails,
-  iCanSeeMyUnitedKingdomAddressDetails,
+  iCanSeeMyRestOfWorldAddressDetails,
 } from "../../common/i-can-enter-owner-information.spec";
 import { andIHaveNoFurtherUses } from "../../common/i-can-enter-use-information/generic.spec";
 import {
@@ -25,30 +25,8 @@ import {
   thenTheUrlShouldContain,
 } from "../../common/selectors-and-assertions.spec";
 
-describe("As a maritime beacon owner,", () => {
-  it("I can register my beacon for pleasure purposes", () => {
-    givenIHaveSignedIn();
-    givenIHaveEnteredMyBeaconDetails();
-    givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
-    iCanSeeMyMaritimeUse(Purpose.PLEASURE);
-    andIHaveNoFurtherUses();
-
-    givenIHaveEnteredMyPersonalDetails();
-    givenIHaveSelectedAUnitedKingdomAddress();
-    givenIHaveEnteredMyUnitedKingdomAddressDetails();
-    givenIHaveEnteredMyEmergencyContactDetails();
-
-    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
-    iCanSeeMyBeaconDetails();
-    iCanSeeMyAdditionalBeaconInformation();
-    iCanSeeMyMaritimeUse(Purpose.PLEASURE);
-    iCanSeeMyPersonalDetails();
-    iCanSeeMyUnitedKingdomAddressDetails();
-    iCanSeeMyEmergencyContactDetails();
-    iCanGoBackAndEditMyMaritimeUse(Purpose.PLEASURE);
-  });
-
-  it("I can register my beacon for commercial purposes", () => {
+describe("As a beacon owner with an address outside of the United Kingdom", () => {
+  it("I can register my beacon", () => {
     givenIHaveSignedIn();
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyMaritimeUse(Purpose.COMMERCIAL);
@@ -56,8 +34,8 @@ describe("As a maritime beacon owner,", () => {
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
-    givenIHaveSelectedAUnitedKingdomAddress();
-    givenIHaveEnteredMyUnitedKingdomAddressDetails();
+    givenIHaveSelectedARestOfWorldAddress();
+    givenIHaveEnteredMyRestOfWorldAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
@@ -65,7 +43,7 @@ describe("As a maritime beacon owner,", () => {
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMyMaritimeUse(Purpose.COMMERCIAL);
     iCanSeeMyPersonalDetails();
-    iCanSeeMyUnitedKingdomAddressDetails();
+    iCanSeeMyRestOfWorldAddressDetails();
     iCanSeeMyEmergencyContactDetails();
     iCanGoBackAndEditMyMaritimeUse(Purpose.COMMERCIAL);
   });

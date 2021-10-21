@@ -18,9 +18,9 @@ import {
   iCanEditMyAddressDetails,
   iCanEditMyEmergencyContactDetails,
   iCanEditMyPersonalDetails,
-  iCanSeeMyAddressDetails,
   iCanSeeMyEmergencyContactDetails,
   iCanSeeMyPersonalDetails,
+  iCanSeeMyUnitedKingdomAddressDetails,
 } from "../../common/i-can-enter-owner-information.spec";
 import {
   andIHaveNoFurtherUses,
@@ -64,7 +64,7 @@ describe("As a land beacon owner", () => {
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMySingleLandUse();
     iCanSeeMyPersonalDetails();
-    iCanSeeMyAddressDetails();
+    iCanSeeMyUnitedKingdomAddressDetails();
     iCanSeeMyEmergencyContactDetails();
     iCanGoBackAndEditMyLandUse();
   });
