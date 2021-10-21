@@ -17,7 +17,6 @@ import {
 import { andIHaveNoFurtherUses } from "../../common/i-can-enter-use-information/generic.spec";
 import {
   givenIHaveEnteredMyMaritimeUse,
-  iCanGoBackAndEditMyMaritimeUse,
   iCanSeeMyMaritimeUse,
 } from "../../common/i-can-enter-use-information/maritime.spec";
 import {
@@ -45,6 +44,5 @@ describe("As a beacon owner with an address outside of the United Kingdom", () =
     iCanSeeMyPersonalDetails();
     iCanSeeMyRestOfWorldAddressDetails();
     iCanSeeMyEmergencyContactDetails();
-    iCanGoBackAndEditMyMaritimeUse(Purpose.COMMERCIAL);
   });
 });
