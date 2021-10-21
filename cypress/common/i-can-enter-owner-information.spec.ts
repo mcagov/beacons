@@ -145,13 +145,16 @@ export const iCanSeeMyAddressDetails = (): void =>
   Object.values(testBeaconAndOwnerData.ownerAddress).forEach((value) =>
     cy.get("main").contains(value)
   );
-export const iCanSeeMyRequiredAddressDetails = (): void =>
+export const iCanSeeMyRequiredAddressDetails = (): void => {
   Object.values(testBeaconAndOwnerData.ownerAddress).forEach((value) =>
     cy
       .contains("Address")
       .parent()
       .contains(new RegExp(value + "|-"))
   );
+
+  cy.contains("Address").parent().contains("United Kingdom");
+};
 export const iCanSeeMyEmergencyContactDetails = (): void =>
   Object.values(testBeaconAndOwnerData.emergencyContacts).forEach((value) =>
     cy.get("main").contains(value)
