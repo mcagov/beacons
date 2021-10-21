@@ -175,7 +175,7 @@ const mapper: DraftRegistrationFormMapper<BeaconOwnerAddressForm> = {
   draftRegistrationToForm: (draftRegistration) => {
     if (
       draftRegistration.ownerCountry === "United Kingdom" ||
-      draftRegistration.ownerCountry == null
+      !draftRegistration.ownerCountry
     ) {
       return {
         ownerAddressLine1: "",

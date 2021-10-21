@@ -41,7 +41,6 @@ export const CheckYourAnswersBeaconOwnerAddressSummary: FunctionComponent<CheckY
             {registration.ownerCountry && (
               <DataRowItem value={registration.ownerCountry} />
             )}
-            <DataRowItem value={registration.ownerCountry} />
           </SummaryListItem>
         </SummaryList>
       </>

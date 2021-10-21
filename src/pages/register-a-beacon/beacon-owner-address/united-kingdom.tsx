@@ -174,19 +174,36 @@ const mapper: DraftRegistrationFormMapper<BeaconOwnerAddressForm> = {
   formToDraftRegistration: (form) => ({
     ownerAddressLine1: form.ownerAddressLine1,
     ownerAddressLine2: form.ownerAddressLine2,
+    ownerAddressLine3: "",
+    ownerAddressLine4: "",
     ownerTownOrCity: form.ownerTownOrCity,
     ownerCounty: form.ownerCounty,
     ownerPostcode: form.ownerPostcode,
     ownerCountry: "United Kingdom",
     uses: [],
   }),
-  draftRegistrationToForm: (draftRegistration) => ({
-    ownerAddressLine1: draftRegistration.ownerAddressLine1,
-    ownerAddressLine2: draftRegistration.ownerAddressLine2,
-    ownerTownOrCity: draftRegistration.ownerTownOrCity,
-    ownerCounty: draftRegistration.ownerCounty,
-    ownerPostcode: draftRegistration.ownerPostcode,
-  }),
+  draftRegistrationToForm: (draftRegistration) => {
+    if (
+      draftRegistration.ownerCountry === "United Kingdom" ||
+      !draftRegistration.ownerCountry
+    ) {
+      return {
+        ownerAddressLine1: draftRegistration.ownerAddressLine1,
+        ownerAddressLine2: draftRegistration.ownerAddressLine2,
+        ownerTownOrCity: draftRegistration.ownerTownOrCity,
+        ownerCounty: draftRegistration.ownerCounty,
+        ownerPostcode: draftRegistration.ownerPostcode,
+      };
+    } else {
+      return {
+        ownerAddressLine1: "",
+        ownerAddressLine2: "",
+        ownerTownOrCity: "",
+        ownerCounty: "",
+        ownerPostcode: "",
+      };
+    }
+  },
 };
 
 const validationRules = ({
