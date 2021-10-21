@@ -83,6 +83,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
         townOrCity: owner.attributes.townOrCity || "",
         county: owner.attributes.county || "",
         postcode: owner.attributes.postcode || "",
+        country: owner.attributes.country || "",
       };
     });
   }

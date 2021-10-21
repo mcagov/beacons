@@ -169,6 +169,7 @@ describe("Account Holder API Gateway", () => {
             townOrCity: "Googleville",
             county: "Lancs",
             postcode: "ZX80 CPC",
+            country: "United Kingdom",
           },
         },
       };
@@ -185,6 +186,7 @@ describe("Account Holder API Gateway", () => {
         townOrCity: "Googleville",
         county: "Lancs",
         postcode: "ZX80 CPC",
+        country: "United Kingdom",
       };
       mockedAxios.get.mockResolvedValue({ data: { ...mockResponse } });
 
@@ -281,6 +283,7 @@ describe("Account Holder API Gateway", () => {
             townOrCity: "updated Googleville",
             county: "updated Lancs",
             postcode: "updated ZX80 CPC",
+            country: "United Kingdom",
           },
         },
       };
@@ -297,6 +300,7 @@ describe("Account Holder API Gateway", () => {
         townOrCity: "updated Googleville",
         county: "updated Lancs",
         postcode: "updated ZX80 CPC",
+        country: "United Kingdom",
       };
       mockedAxios.patch.mockResolvedValue({ data: { ...mockResponse } });
 

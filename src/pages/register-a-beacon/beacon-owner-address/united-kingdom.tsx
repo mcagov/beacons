@@ -177,6 +177,7 @@ const mapper: DraftRegistrationFormMapper<BeaconOwnerAddressForm> = {
     ownerTownOrCity: form.ownerTownOrCity,
     ownerCounty: form.ownerCounty,
     ownerPostcode: form.ownerPostcode,
+    ownerCountry: "United Kingdom",
     uses: [],
   }),
   draftRegistrationToForm: (draftRegistration) => ({

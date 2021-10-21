@@ -33,6 +33,7 @@ export const beaconToRegistration = (beacon: Beacon): Registration => {
     ownerAddressLine2: beacon.owners[0].addressLine2,
     ownerTownOrCity: beacon.owners[0].townOrCity,
     ownerCounty: beacon.owners[0].county,
+    ownerCountry: beacon.owners[0].country,
     ownerPostcode: beacon.owners[0].postcode,
     emergencyContact1FullName: beacon.emergencyContacts[0].fullName,
     emergencyContact1TelephoneNumber:

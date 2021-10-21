@@ -79,6 +79,7 @@ export const anotherBeaconRegistration: Registration = {
   ownerTownOrCity: "Sydney",
   ownerCounty: "New South Wales",
   ownerPostcode: "AU1 1AA",
+  ownerCountry: "United Kingdom",
   emergencyContact1FullName: "Sheila Irwin",
   emergencyContact1TelephoneNumber: "02392 123456",
   emergencyContact1AlternativeTelephoneNumber: "02392 123456",

@@ -33,6 +33,7 @@ export const initBeacon = (): Registration => {
     ownerAddressLine2: "",
     ownerTownOrCity: "",
     ownerCounty: "",
+    ownerCountry: "",
     ownerPostcode: "",
 
     emergencyContact1FullName: "",

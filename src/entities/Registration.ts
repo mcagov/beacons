@@ -29,6 +29,7 @@ export interface Registration {
   ownerTownOrCity: string;
   ownerCounty: string;
   ownerPostcode: string;
+  ownerCountry: string;
 
   emergencyContact1FullName: string;
   emergencyContact1TelephoneNumber: string;
