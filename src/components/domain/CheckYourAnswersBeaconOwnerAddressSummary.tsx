@@ -28,6 +28,9 @@ export const CheckYourAnswersBeaconOwnerAddressSummary: FunctionComponent<CheckY
               <DataRowItem value={registration.ownerCounty} />
             )}
             <DataRowItem value={registration.ownerPostcode} />
+            {registration.ownerCountry && (
+              <DataRowItem value={registration.ownerCountry} />
+            )}
           </SummaryListItem>
         </SummaryList>
       </>
