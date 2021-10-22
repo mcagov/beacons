@@ -20,7 +20,6 @@ import { DraftRegistrationPageProps } from "../../../../../lib/handlePageRequest
 import { BeaconsGetServerSidePropsContext } from "../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../lib/middleware/withSession";
-import { UpdatePageURLs } from "../../../../../lib/urls";
 import { Actions } from "../../../../../lib/URLs/Actions";
 import { Pages } from "../../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../../lib/URLs/UrlBuilder";
@@ -32,6 +31,7 @@ import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSho
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+import { withAdditionalProps } from "../../../../../router/withAddedProps";
 
 interface BeaconOwnerAddressForm {
   ownerAddressLine1: string;
@@ -42,12 +42,16 @@ interface BeaconOwnerAddressForm {
 }
 
 const BeaconOwnerAddressUnitedKingdom: FunctionComponent<DraftRegistrationPageProps> =
-  ({ form, showCookieBanner }: DraftRegistrationPageProps): JSX.Element => {
+  ({
+    form,
+    showCookieBanner,
+    previousPageUrl,
+  }: DraftRegistrationPageProps): JSX.Element => {
     const pageHeading = "What is the beacon owner's address?";
 
     return (
       <Layout
-        navigation={<BackButton href={UpdatePageURLs.aboutBeaconOwner} />}
+        navigation={<BackButton href={previousPageUrl} />}
         title={pageHeading}
         pageHasErrors={form.hasErrors}
         showCookieBanner={showCookieBanner}
@@ -151,32 +155,41 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       context.query.registrationId as string
     );
 
-    return await new BeaconsPageRouter([
-      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-        context
-      ),
-      new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
-        context,
-        context.query.registrationId as string
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<BeaconOwnerAddressForm>(
-        context,
-        validationRules,
-        mapper
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<BeaconOwnerAddressForm>(
-        context,
-        validationRules,
-        mapper
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<BeaconOwnerAddressForm>(
-        context,
-        validationRules,
-        mapper,
-        nextPageUrl
-      ),
-    ]).execute();
+    const previousPageUrl = UrlBuilder.buildRegistrationUrl(
+      Actions.update,
+      Pages.beaconOwnerAddress,
+      context.query.registrationId as string
+    );
+
+    return await withAdditionalProps(
+      new BeaconsPageRouter([
+        new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
+        new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
+          context
+        ),
+        new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+          context,
+          context.query.registrationId as string
+        ),
+        new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<BeaconOwnerAddressForm>(
+          context,
+          validationRules,
+          mapper
+        ),
+        new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<BeaconOwnerAddressForm>(
+          context,
+          validationRules,
+          mapper
+        ),
+        new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<BeaconOwnerAddressForm>(
+          context,
+          validationRules,
+          mapper,
+          nextPageUrl
+        ),
+      ]),
+      { previousPageUrl }
+    );
   })
 );
 
