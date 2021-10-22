@@ -31,6 +31,7 @@ import {
   whenIClickTheActionLinkInATableRowContaining,
   whenIClickTheButtonContaining,
   whenIHaveVisited,
+  whenISelect,
 } from "../common/selectors-and-assertions.spec";
 import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
@@ -134,6 +135,8 @@ const iCanViewTheUpdatedOwnerInformation = (
   );
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
+  whenISelect("#unitedKingdom");
+  whenIClickContinue();
   iCanEditAFieldContaining(draftRegistration.ownerAddressLine1);
   iCanEditAFieldContaining(draftRegistration.ownerAddressLine2);
   iCanEditAFieldContaining(draftRegistration.ownerTownOrCity);
@@ -323,6 +326,8 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
   theBackLinkContains(Resources.registration, Actions.update);
+  whenISelect("#unitedKingdom");
+  whenIClickContinue();
   iEditMyOwnerAddress(
     registration,
     firstUpdatedRegistration.ownerAddressLine1,

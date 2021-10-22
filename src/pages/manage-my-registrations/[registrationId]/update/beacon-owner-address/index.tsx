@@ -23,7 +23,7 @@ import { withContainer } from "../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../lib/middleware/withSession";
 import { redirectUserTo } from "../../../../../lib/redirectUserTo";
 import { acceptRejectCookieId } from "../../../../../lib/types";
-import { CreateRegistrationPageURLs } from "../../../../../lib/urls";
+import { UpdatePageURLs } from "../../../../../lib/urls";
 import { Actions } from "../../../../../lib/URLs/Actions";
 import { Pages } from "../../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../../lib/URLs/UrlBuilder";
@@ -47,7 +47,7 @@ const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPagePro
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
         includeUseId={false}
-        previousPageUrl={CreateRegistrationPageURLs.aboutBeaconOwner}
+        previousPageUrl={UpdatePageURLs.aboutBeaconOwner}
       >
         <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
           <FormGroup
