@@ -3,31 +3,34 @@ import React, { FunctionComponent } from "react";
 import {
   BeaconsForm,
   BeaconsFormFieldsetAndLegend,
-} from "../../../components/BeaconsForm";
-import { FormGroup } from "../../../components/Form";
-import { RadioList, RadioListItem } from "../../../components/RadioList";
-import { FieldManager } from "../../../lib/form/FieldManager";
-import { FormManager } from "../../../lib/form/FormManager";
+} from "../../../../../components/BeaconsForm";
+import { FormGroup } from "../../../../../components/Form";
+import { RadioList, RadioListItem } from "../../../../../components/RadioList";
+import { FieldManager } from "../../../../../lib/form/FieldManager";
+import { FormManager } from "../../../../../lib/form/FormManager";
 import {
   isValid,
   withErrorMessages,
   withoutErrorMessages,
-} from "../../../lib/form/lib";
-import { Validators } from "../../../lib/form/Validators";
+} from "../../../../../lib/form/lib";
+import { Validators } from "../../../../../lib/form/Validators";
 import {
   DraftRegistrationPageProps,
   FormManagerFactory,
-} from "../../../lib/handlePageRequest";
-import { BeaconsGetServerSidePropsContext } from "../../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { withContainer } from "../../../lib/middleware/withContainer";
-import { withSession } from "../../../lib/middleware/withSession";
-import { redirectUserTo } from "../../../lib/redirectUserTo";
-import { acceptRejectCookieId } from "../../../lib/types";
-import { CreateRegistrationPageURLs } from "../../../lib/urls";
-import { FormSubmission } from "../../../presenters/formSubmission";
-import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
-import { Rule } from "../../../router/rules/Rule";
-import { WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
+} from "../../../../../lib/handlePageRequest";
+import { BeaconsGetServerSidePropsContext } from "../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
+import { withContainer } from "../../../../../lib/middleware/withContainer";
+import { withSession } from "../../../../../lib/middleware/withSession";
+import { redirectUserTo } from "../../../../../lib/redirectUserTo";
+import { acceptRejectCookieId } from "../../../../../lib/types";
+import { CreateRegistrationPageURLs } from "../../../../../lib/urls";
+import { Actions } from "../../../../../lib/URLs/Actions";
+import { Pages } from "../../../../../lib/URLs/Pages";
+import { UrlBuilder } from "../../../../../lib/URLs/UrlBuilder";
+import { FormSubmission } from "../../../../../presenters/formSubmission";
+import { BeaconsPageRouter } from "../../../../../router/BeaconsPageRouter";
+import { Rule } from "../../../../../router/rules/Rule";
+import { WhenUserViewsPage_ThenDisplayPage } from "../../../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
 const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPageProps> =
   ({
@@ -128,12 +131,20 @@ class WhenUserSubmitsBeaconOwnerLocationChoiceForm_RedirectAccordingly
     return isValid(await this.form(), this.validationRules);
   }
 
-  private async nextPage(): Promise<CreateRegistrationPageURLs> {
+  private async nextPage(): Promise<string> {
     switch ((await this.form()).beaconOwnerLocation) {
       case "unitedKingdom":
-        return CreateRegistrationPageURLs.beaconOwnerAddressUnitedKingdom;
+        return UrlBuilder.buildRegistrationUrl(
+          Actions.update,
+          Pages.beaconOwnerAddressUnitedKingdom,
+          this.context.query.registrationId as string
+        );
       case "restOfWorld":
-        return CreateRegistrationPageURLs.beaconOwnerAddressRestOfWorld;
+        return UrlBuilder.buildRegistrationUrl(
+          Actions.update,
+          Pages.beaconOwnerAddressRestOfWorld,
+          this.context.query.registrationId as string
+        );
     }
   }
 
