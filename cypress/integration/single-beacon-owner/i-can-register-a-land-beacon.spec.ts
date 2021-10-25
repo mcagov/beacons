@@ -11,15 +11,16 @@ import {
   iCanSeeMyBeaconDetails,
 } from "../../common/i-can-enter-beacon-information.spec";
 import {
-  givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
+  givenIHaveEnteredMyUnitedKingdomAddressDetails,
+  givenIHaveSelectedAUnitedKingdomAddress,
   iCanEditMyAddressDetails,
   iCanEditMyEmergencyContactDetails,
   iCanEditMyPersonalDetails,
-  iCanSeeMyAddressDetails,
   iCanSeeMyEmergencyContactDetails,
   iCanSeeMyPersonalDetails,
+  iCanSeeMyUnitedKingdomAddressDetails,
 } from "../../common/i-can-enter-owner-information.spec";
 import {
   andIHaveNoFurtherUses,
@@ -42,6 +43,7 @@ import {
   iHaveVisited,
   thenTheUrlShouldContain,
   whenIClickBack,
+  whenIClickBackTimes,
 } from "../../common/selectors-and-assertions.spec";
 
 describe("As a land beacon owner", () => {
@@ -53,7 +55,8 @@ describe("As a land beacon owner", () => {
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
-    givenIHaveEnteredMyAddressDetails();
+    givenIHaveSelectedAUnitedKingdomAddress();
+    givenIHaveEnteredMyUnitedKingdomAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
@@ -61,7 +64,7 @@ describe("As a land beacon owner", () => {
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMySingleLandUse();
     iCanSeeMyPersonalDetails();
-    iCanSeeMyAddressDetails();
+    iCanSeeMyUnitedKingdomAddressDetails();
     iCanSeeMyEmergencyContactDetails();
     iCanGoBackAndEditMyLandUse();
   });
@@ -71,7 +74,8 @@ describe("As a land beacon owner", () => {
     iCanEditMyEmergencyContactDetails();
     whenIClickBack();
     iCanEditMyAddressDetails();
-    whenIClickBack();
+    // Go back twice due to branch
+    whenIClickBackTimes(2);
     iCanEditMyPersonalDetails();
     whenIClickBack();
     iCanEditMyNUses(1);

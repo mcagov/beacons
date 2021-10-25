@@ -32,6 +32,7 @@ export const beaconFixtures: Beacon = deepFreeze([
         townOrCity: "Beaconsfield",
         county: "Yorkshire",
         postcode: "BS8 7NW",
+        country: "United Kingdom",
       },
     ],
     emergencyContacts: [
@@ -144,6 +145,7 @@ export const beaconFixtures: Beacon = deepFreeze([
         townOrCity: "Beaconsfield",
         county: "Yorkshire",
         postcode: "BS8 7NW",
+        country: "United Kingdom",
       },
     ],
     emergencyContacts: [

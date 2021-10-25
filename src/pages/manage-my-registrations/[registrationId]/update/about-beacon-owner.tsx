@@ -13,7 +13,6 @@ import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/Bea
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../../../lib/types";
-import { queryParams, UpdatePageURLs } from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
@@ -181,9 +180,9 @@ const props = async (
       )
     )?.uses || [];
 
-  const previousPageUrl =
-    UpdatePageURLs.usesSummary +
-    queryParams({ useId: uses.length > 1 ? uses.length - 1 : 0 });
+  const previousPageUrl = UrlBuilder.buildUpdateRegistrationSummaryUrl(
+    context.query.registrationId as string
+  );
 
   return {
     previousPageUrl,

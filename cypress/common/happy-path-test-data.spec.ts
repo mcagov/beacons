@@ -52,6 +52,48 @@ export const testBeaconAndOwnerData = {
   },
 };
 
+export const testBeaconAndOwnerDataRestOfWorld = {
+  beaconDetails: {
+    manufacturer: "Ocean Signal",
+    model: "EPIRB1",
+    hexId: "1D0E9B07CEFFBFF",
+  },
+  additionalBeaconInformation: {
+    serialNumber: "1234",
+    chkCode: "9480B",
+    csta: "CSTA",
+    batteryExpiryMonth: "12",
+    batteryExpiryYear: "2025",
+    lastServicedMonth: "06",
+    lastServicedYear: "2019",
+  },
+  ownerDetails: {
+    fullName: "Steve Stevington",
+    telephoneNumber: "0303 123 7300",
+    alternativeTelephoneNumber: "0303 123 7301",
+    email: "steve@royal.uk",
+  },
+  ownerAddress: {
+    addressLine1: "Swanson Wharf",
+    addressLine2: "Royal Dubai Yacht Club",
+    addressLine3: "Desert",
+    addressLine4: "Earth",
+    postcode: "60605",
+    country: "United Arab Emirates",
+  },
+  emergencyContacts: {
+    emergencyContact1FullName: "Martha Marthaberg",
+    emergencyContact1TelephoneNumber: "07826 728192",
+    emergencyContact1AlternativeTelephoneNumber: "01283 920382",
+    emergencyContact2FullName: "Nick Nicklington",
+    emergencyContact2TelephoneNumber: "07283 929382",
+    emergencyContact2AlternativeTelephoneNumber: "01829 827392",
+    emergencyContact3FullName: "Laura Lark",
+    emergencyContact3TelephoneNumber: "02837 728192",
+    emergencyContact3AlternativeTelephoneNumber: "01272 299372",
+  },
+};
+
 export const testAviationUseData = {
   aircraft: {
     maxCapacity: "15",

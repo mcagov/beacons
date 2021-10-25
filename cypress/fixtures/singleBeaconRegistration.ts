@@ -79,6 +79,7 @@ export const singleBeaconRegistration: Registration = {
   ownerTownOrCity: "Portsmouth",
   ownerCounty: "Hampshire",
   ownerPostcode: "PO1 3DT",
+  ownerCountry: "United Kingdom",
   emergencyContact1FullName: "Lady Hamilton",
   emergencyContact1TelephoneNumber: "02392 856621",
   emergencyContact1AlternativeTelephoneNumber: "02392 856622",

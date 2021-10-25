@@ -31,6 +31,7 @@ import {
   whenIClickTheActionLinkInATableRowContaining,
   whenIClickTheButtonContaining,
   whenIHaveVisited,
+  whenISelect,
 } from "../common/selectors-and-assertions.spec";
 import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
@@ -94,6 +95,74 @@ describe("As an account holder", () => {
     whenIClickTheButtonContaining("Return to your Account");
     thenTheUrlShouldContain(AccountPageURLs.accountHome);
   });
+
+  it("I can change the beacon owner's address from UK to international", () => {
+    givenIHaveSignedIn();
+    andIHavePreviouslyRegisteredABeacon(firstRegistrationToUpdate);
+
+    whenIHaveVisited(AccountPageURLs.accountHome);
+    iCanSeeMyExistingRegistrationHexId(firstRegistrationToUpdate.hexId);
+
+    whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
+      firstRegistrationToUpdate.hexId
+    );
+
+    whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
+    theBackLinkContains(Resources.registration, Actions.update);
+    whenISelect("#restOfWorld");
+    whenIClickContinue();
+    iEditTheBeaconOwnersRestOfWorldAddress(
+      "Beacon Towers",
+      "Epirb wharf",
+      "c/o Harbour Master",
+      "Something",
+      "60605",
+      "United Arab Emirates"
+    );
+    whenIClickContinue();
+
+    iCanSeeTextInSummaryListRowWithHeading("Beacon Towers", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("Epirb wharf", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("c/o Harbour Master", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("60605", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("United Arab Emirates", "Address");
+    iCannotSeeTextInSummaryListRowWithHeading("Portsmouth", "Address");
+    iCannotSeeTextInSummaryListRowWithHeading("Hampshire", "Address");
+  });
+
+  it("I can change the beacon owner's address from international to UK", () => {
+    givenIHaveSignedIn();
+    andIHavePreviouslyRegisteredABeacon(
+      registrationWithInternationalAddressToUpdate
+    );
+
+    whenIHaveVisited(AccountPageURLs.accountHome);
+    iCanSeeMyExistingRegistrationHexId(internationalAddressHexId);
+
+    whenIClickTheHexIdOfTheRegistrationIWantToUpdate(internationalAddressHexId);
+
+    whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
+    theBackLinkContains(Resources.registration, Actions.update);
+    whenISelect("#unitedKingdom");
+    whenIClickContinue();
+    iEditTheBeaconOwnersUnitedKingdomAddress(
+      "mmsi Towers",
+      "PLB Wharf",
+      "Falmouth",
+      "Cornwall",
+      "TR10 8AB"
+    );
+    whenIClickContinue();
+
+    iCanSeeTextInSummaryListRowWithHeading("mmsi Towers", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("PLB Wharf", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("Falmouth", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("Cornwall", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("TR10 8AB", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("United Kingdom", "Address");
+    iCannotSeeTextInSummaryListRowWithHeading("Something", "Address");
+    iCannotSeeTextInSummaryListRowWithHeading("c/o Harbour Master", "Address");
+  });
 });
 
 const iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges = () => {
@@ -134,6 +203,8 @@ const iCanViewTheUpdatedOwnerInformation = (
   );
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
+  whenISelect("#unitedKingdom");
+  whenIClickContinue();
   iCanEditAFieldContaining(draftRegistration.ownerAddressLine1);
   iCanEditAFieldContaining(draftRegistration.ownerAddressLine2);
   iCanEditAFieldContaining(draftRegistration.ownerTownOrCity);
@@ -196,6 +267,21 @@ const firstRegistrationToUpdate: Registration = {
   hexId: firstRegistrationHexId,
 };
 
+const internationalAddressHexId = randomUkEncodedHexId();
+
+const registrationWithInternationalAddressToUpdate: Registration = {
+  ...singleBeaconRegistration,
+  hexId: internationalAddressHexId,
+  ownerAddressLine1: "Beacon Towers",
+  ownerAddressLine2: "Eprib Wharf",
+  ownerAddressLine3: "c/o Harbour Master",
+  ownerAddressLine4: "Something",
+  ownerTownOrCity: "",
+  ownerCounty: "",
+  ownerCountry: "United Arab Emirates",
+  ownerPostcode: "60605",
+};
+
 const secondRegistrationHexId = randomUkEncodedHexId();
 
 const secondRegistrationToUpdate: Registration = {
@@ -225,6 +311,7 @@ const firstUpdatedRegistration: DraftRegistration = {
   ownerTownOrCity: "Town",
   ownerCounty: "County",
   ownerPostcode: "AB1 2CD",
+  ownerCountry: "United Kingdom",
   emergencyContact1FullName: "Dr Martha",
   emergencyContact1TelephoneNumber: "07123456780",
   emergencyContact1AlternativeTelephoneNumber: "07123456781",
@@ -323,8 +410,9 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
   theBackLinkContains(Resources.registration, Actions.update);
-  iEditMyOwnerAddress(
-    registration,
+  whenISelect("#unitedKingdom");
+  whenIClickContinue();
+  iEditTheBeaconOwnersUnitedKingdomAddress(
     firstUpdatedRegistration.ownerAddressLine1,
     firstUpdatedRegistration.ownerAddressLine2,
     firstUpdatedRegistration.ownerTownOrCity,
@@ -442,6 +530,20 @@ const whenIClickTheChangeLinkForTheSummaryListRowWithHeading = (
     .click();
 };
 
+const iCanSeeTextInSummaryListRowWithHeading = (
+  text: string,
+  heading: string
+) => {
+  cy.get("dt").contains(heading).parent().contains(text);
+};
+
+const iCannotSeeTextInSummaryListRowWithHeading = (
+  text: string,
+  heading: string
+) => {
+  cy.get("dt").contains(heading).parent().should("not.contain", text);
+};
+
 const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
   cy.get("h2")
     .contains(heading)
@@ -514,27 +616,34 @@ const iEditMyOwnerInformation = (
   cy.get(`input[value="${registration.ownerEmail}"]`).clear().type(newEmail);
 };
 
-const iEditMyOwnerAddress = (
-  registration,
+const iEditTheBeaconOwnersUnitedKingdomAddress = (
   newAddressLine1,
   newAddressLine2,
   newTownOrCity,
   newCounty,
   newPostcode
 ) => {
-  cy.get(`input[value="${registration.ownerAddressLine1}"]`)
-    .clear()
-    .type(newAddressLine1);
-  cy.get(`input[value="${registration.ownerAddressLine2}"]`)
-    .clear()
-    .type(newAddressLine2);
-  cy.get(`input[value="${registration.ownerTownOrCity}"]`)
-    .clear()
-    .type(newTownOrCity);
-  cy.get(`input[value="${registration.ownerCounty}"]`).clear().type(newCounty);
-  cy.get(`input[value="${registration.ownerPostcode}"]`)
-    .clear()
-    .type(newPostcode);
+  cy.get("#ownerAddressLine1").clear().type(newAddressLine1);
+  cy.get("#ownerAddressLine2").clear().type(newAddressLine2);
+  cy.get("#ownerTownOrCity").clear().type(newTownOrCity);
+  cy.get("#ownerCounty").clear().type(newCounty);
+  cy.get("#ownerPostcode").clear().type(newPostcode);
+};
+
+const iEditTheBeaconOwnersRestOfWorldAddress = (
+  newAddressLine1,
+  newAddressLine2,
+  newAddressLine3,
+  newAddressLine4,
+  newPostcode,
+  newCountry
+) => {
+  cy.get("#ownerAddressLine1").clear().type(newAddressLine1);
+  cy.get("#ownerAddressLine2").clear().type(newAddressLine2);
+  cy.get("#ownerAddressLine3").clear().type(newAddressLine3);
+  cy.get("#ownerAddressLine4").clear().type(newAddressLine4);
+  cy.get("#ownerPostcode").clear().type(newPostcode);
+  cy.get("#ownerCountry").select(newCountry);
 };
 
 const iEditMyEmergencyContactInformation = (

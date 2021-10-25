@@ -243,6 +243,12 @@ export const whenIClickBack = (): void => {
   cy.get(".govuk-back-link").click();
 };
 
+export const whenIClickBackTimes = (times: number): void => {
+  for (let i = 0; i < times; i++) {
+    whenIClickBack();
+  }
+};
+
 export const thenTheCheckboxShouldBeChecked = (selector: string): void => {
   cy.get(selector).should("be.checked");
 };
@@ -313,6 +319,9 @@ export const whenISelectTheOptionFromTheDropdown = (
 ): void => {
   cy.get(selector).select(option);
 };
+
+export const givenIHaveSelectedTheOptionFromTheDropdown =
+  whenISelectTheOptionFromTheDropdown;
 
 export const whenIClickTheBrowserBackButton = (): void => {
   cy.go("back");

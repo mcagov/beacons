@@ -26,9 +26,12 @@ export interface Registration {
   ownerAlternativeTelephoneNumber: string;
   ownerAddressLine1: string;
   ownerAddressLine2: string;
+  ownerAddressLine3?: string;
+  ownerAddressLine4?: string;
   ownerTownOrCity: string;
   ownerCounty: string;
   ownerPostcode: string;
+  ownerCountry: string;
 
   emergencyContact1FullName: string;
   emergencyContact1TelephoneNumber: string;

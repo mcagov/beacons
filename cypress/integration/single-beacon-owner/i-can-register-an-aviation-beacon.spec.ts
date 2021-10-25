@@ -6,12 +6,13 @@ import {
   iCanSeeMyBeaconDetails,
 } from "../../common/i-can-enter-beacon-information.spec";
 import {
-  givenIHaveEnteredMyAddressDetails,
   givenIHaveEnteredMyEmergencyContactDetails,
   givenIHaveEnteredMyPersonalDetails,
-  iCanSeeMyAddressDetails,
+  givenIHaveEnteredMyUnitedKingdomAddressDetails,
+  givenIHaveSelectedAUnitedKingdomAddress,
   iCanSeeMyEmergencyContactDetails,
   iCanSeeMyPersonalDetails,
+  iCanSeeMyUnitedKingdomAddressDetails,
 } from "../../common/i-can-enter-owner-information.spec";
 import {
   givenIHaveEnteredMyAviationUse,
@@ -34,7 +35,8 @@ describe("As an aviation beacon owner,", () => {
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
-    givenIHaveEnteredMyAddressDetails();
+    givenIHaveSelectedAUnitedKingdomAddress();
+    givenIHaveEnteredMyUnitedKingdomAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
@@ -42,7 +44,7 @@ describe("As an aviation beacon owner,", () => {
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMySingleAviationUse(Purpose.PLEASURE);
     iCanSeeMyPersonalDetails();
-    iCanSeeMyAddressDetails();
+    iCanSeeMyUnitedKingdomAddressDetails();
     iCanSeeMyEmergencyContactDetails();
     iCanGoBackAndEditMyAviationUse(Purpose.PLEASURE);
   });
@@ -55,7 +57,8 @@ describe("As an aviation beacon owner,", () => {
     andIHaveNoFurtherUses();
 
     givenIHaveEnteredMyPersonalDetails();
-    givenIHaveEnteredMyAddressDetails();
+    givenIHaveSelectedAUnitedKingdomAddress();
+    givenIHaveEnteredMyUnitedKingdomAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
 
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
@@ -63,7 +66,7 @@ describe("As an aviation beacon owner,", () => {
     iCanSeeMyAdditionalBeaconInformation();
     iCanSeeMySingleAviationUse(Purpose.COMMERCIAL);
     iCanSeeMyPersonalDetails();
-    iCanSeeMyAddressDetails();
+    iCanSeeMyUnitedKingdomAddressDetails();
     iCanSeeMyEmergencyContactDetails();
     iCanGoBackAndEditMyAviationUse(Purpose.COMMERCIAL);
   });

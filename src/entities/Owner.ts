@@ -9,4 +9,5 @@ export interface Owner {
   townOrCity: string;
   county: string;
   postcode: string;
+  country: string;
 }

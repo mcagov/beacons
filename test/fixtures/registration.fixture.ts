@@ -27,6 +27,7 @@ export const registrationFixture: Registration = {
   ownerTownOrCity: "Beaconsfield",
   ownerCounty: "Yorkshire",
   ownerPostcode: "BS8 7NW",
+  ownerCountry: "United Kingdom",
   emergencyContact1FullName: "Lady Hamilton",
   emergencyContact1TelephoneNumber: "02392 856621",
   emergencyContact1AlternativeTelephoneNumber: "02392 856622",
