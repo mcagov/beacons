@@ -54,7 +54,7 @@ const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPagePro
               <RadioListItem
                 id="unitedKingdom"
                 name={fieldName}
-                label="Yes, the beacon owner lives in the United Kingdom"
+                label="Yes, the owner of this beacon lives in the United Kingdom"
                 value="unitedKingdom"
                 defaultChecked={
                   form.fields.beaconOwnerLocation.value === "unitedKingdom"
@@ -63,7 +63,7 @@ const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPagePro
               <RadioListItem
                 id="restOfWorld"
                 name={fieldName}
-                label="No, the beacon owner lives somewhere else"
+                label="No, the owner of this beacon lives somewhere else"
                 value="restOfWorld"
                 defaultChecked={
                   form.fields.beaconOwnerLocation.value === "restOfWorld"

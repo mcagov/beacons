@@ -37,7 +37,8 @@ const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPagePro
     form = withoutErrorMessages({}, validationRules),
     showCookieBanner,
   }: DraftRegistrationPageProps): JSX.Element => {
-    const pageHeading = "Does the beacon owner live in the United Kingdom?";
+    const pageHeading =
+      "Does the owner of this beacon live in the United Kingdom?";
 
     const fieldName = "beaconOwnerLocation";
 
@@ -57,7 +58,7 @@ const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPagePro
               <RadioListItem
                 id="unitedKingdom"
                 name={fieldName}
-                label="Yes, the beacon owner lives in the United Kingdom"
+                label="Yes, the owner of this beacon lives in the United Kingdom"
                 value="unitedKingdom"
                 defaultChecked={
                   form.fields.beaconOwnerLocation.value === "unitedKingdom"
@@ -66,7 +67,7 @@ const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPagePro
               <RadioListItem
                 id="restOfWorld"
                 name={fieldName}
-                label="No, the beacon owner lives somewhere else"
+                label="No, the owner of this beacon lives somewhere else"
                 value="restOfWorld"
                 defaultChecked={
                   form.fields.beaconOwnerLocation.value === "restOfWorld"
