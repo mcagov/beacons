@@ -22,7 +22,6 @@ import {
   givenIHaveSignedIn,
   iCanEditAFieldContaining,
   iCanSeeAPageHeadingThatContains,
-  iCanSeeText,
   iPerformOperationAndWaitForNewPageToLoad,
   theBackLinkContains,
   theBackLinkGoesTo,
@@ -122,14 +121,48 @@ describe("As an account holder", () => {
     );
     whenIClickContinue();
 
-    iCanSeeText("Beacon Towers");
-    iCanSeeText("Epirb wharf");
-    iCanSeeText("c/o Harbour Master");
-    iCanSeeText("60605");
-    iCanSeeText("United Arab Emirates");
+    iCanSeeTextInSummaryListRowWithHeading("Beacon Towers", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("Epirb wharf", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("c/o Harbour Master", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("60605", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("United Arab Emirates", "Address");
+    iCannotSeeTextInSummaryListRowWithHeading("Portsmouth", "Address");
+    iCannotSeeTextInSummaryListRowWithHeading("Hampshire", "Address");
   });
 
-  // it("I can change the beacon owner's address from international to UK", () => {});
+  it("I can change the beacon owner's address from international to UK", () => {
+    givenIHaveSignedIn();
+    andIHavePreviouslyRegisteredABeacon(
+      registrationWithInternationalAddressToUpdate
+    );
+
+    whenIHaveVisited(AccountPageURLs.accountHome);
+    iCanSeeMyExistingRegistrationHexId(internationalAddressHexId);
+
+    whenIClickTheHexIdOfTheRegistrationIWantToUpdate(internationalAddressHexId);
+
+    whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
+    theBackLinkContains(Resources.registration, Actions.update);
+    whenISelect("#unitedKingdom");
+    whenIClickContinue();
+    iEditTheBeaconOwnersUnitedKingdomAddress(
+      "mmsi Towers",
+      "PLB Wharf",
+      "Falmouth",
+      "Cornwall",
+      "TR10 8AB"
+    );
+    whenIClickContinue();
+
+    iCanSeeTextInSummaryListRowWithHeading("mmsi Towers", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("PLB Wharf", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("Falmouth", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("Cornwall", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("TR10 8AB", "Address");
+    iCanSeeTextInSummaryListRowWithHeading("United Kingdom", "Address");
+    iCannotSeeTextInSummaryListRowWithHeading("Something", "Address");
+    iCannotSeeTextInSummaryListRowWithHeading("c/o Harbour Master", "Address");
+  });
 });
 
 const iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges = () => {
@@ -234,6 +267,21 @@ const firstRegistrationToUpdate: Registration = {
   hexId: firstRegistrationHexId,
 };
 
+const internationalAddressHexId = randomUkEncodedHexId();
+
+const registrationWithInternationalAddressToUpdate: Registration = {
+  ...singleBeaconRegistration,
+  hexId: internationalAddressHexId,
+  ownerAddressLine1: "Beacon Towers",
+  ownerAddressLine2: "Eprib Wharf",
+  ownerAddressLine3: "c/o Harbour Master",
+  ownerAddressLine4: "Something",
+  ownerTownOrCity: "",
+  ownerCounty: "",
+  ownerCountry: "United Arab Emirates",
+  ownerPostcode: "60605",
+};
+
 const secondRegistrationHexId = randomUkEncodedHexId();
 
 const secondRegistrationToUpdate: Registration = {
@@ -263,6 +311,7 @@ const firstUpdatedRegistration: DraftRegistration = {
   ownerTownOrCity: "Town",
   ownerCounty: "County",
   ownerPostcode: "AB1 2CD",
+  ownerCountry: "United Kingdom",
   emergencyContact1FullName: "Dr Martha",
   emergencyContact1TelephoneNumber: "07123456780",
   emergencyContact1AlternativeTelephoneNumber: "07123456781",
@@ -479,6 +528,20 @@ const whenIClickTheChangeLinkForTheSummaryListRowWithHeading = (
     .parent()
     .contains(/change/i)
     .click();
+};
+
+const iCanSeeTextInSummaryListRowWithHeading = (
+  text: string,
+  heading: string
+) => {
+  cy.get("dt").contains(heading).parent().contains(text);
+};
+
+const iCannotSeeTextInSummaryListRowWithHeading = (
+  text: string,
+  heading: string
+) => {
+  cy.get("dt").contains(heading).parent().should("not.contain", text);
 };
 
 const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
