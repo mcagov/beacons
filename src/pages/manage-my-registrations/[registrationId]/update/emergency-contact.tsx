@@ -22,7 +22,6 @@ import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { UpdatePageURLs } from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
@@ -35,6 +34,7 @@ import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSho
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+import { withAdditionalProps } from "../../../../router/withAdditionalProps";
 
 interface EmergencyContactForm {
   emergencyContact1FullName: string;
@@ -51,13 +51,14 @@ interface EmergencyContactForm {
 const EmergencyContact: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
+  previousPageUrl,
 }: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Add emergency contact information for up to 3 people";
 
   return (
     <>
       <Layout
-        navigation={<BackButton href={UpdatePageURLs.beaconOwnerAddress} />}
+        navigation={<BackButton href={previousPageUrl} />}
         title={pageHeading}
         pageHasErrors={form.hasErrors}
         showCookieBanner={showCookieBanner}
@@ -198,32 +199,39 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       context.query.registrationId as string
     );
 
-    return await new BeaconsPageRouter([
-      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-        context
-      ),
-      new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
-        context,
-        context.query.registrationId as string
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<EmergencyContactForm>(
-        context,
-        validationRules,
-        mapper
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<EmergencyContactForm>(
-        context,
-        validationRules,
-        mapper
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<EmergencyContactForm>(
-        context,
-        validationRules,
-        mapper,
-        nextPageUrl
-      ),
-    ]).execute();
+    const previousPageUrl = UrlBuilder.buildUpdateRegistrationSummaryUrl(
+      context.query.registrationId as string
+    );
+
+    return withAdditionalProps(
+      new BeaconsPageRouter([
+        new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
+        new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
+          context
+        ),
+        new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+          context,
+          context.query.registrationId as string
+        ),
+        new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<EmergencyContactForm>(
+          context,
+          validationRules,
+          mapper
+        ),
+        new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<EmergencyContactForm>(
+          context,
+          validationRules,
+          mapper
+        ),
+        new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<EmergencyContactForm>(
+          context,
+          validationRules,
+          mapper,
+          nextPageUrl
+        ),
+      ]),
+      { previousPageUrl }
+    );
   })
 );
 

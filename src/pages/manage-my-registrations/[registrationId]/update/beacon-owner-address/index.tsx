@@ -23,7 +23,6 @@ import { withContainer } from "../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../lib/middleware/withSession";
 import { redirectUserTo } from "../../../../../lib/redirectUserTo";
 import { acceptRejectCookieId } from "../../../../../lib/types";
-import { UpdatePageURLs } from "../../../../../lib/urls";
 import { Actions } from "../../../../../lib/URLs/Actions";
 import { Pages } from "../../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../../lib/URLs/UrlBuilder";
@@ -31,11 +30,13 @@ import { FormSubmission } from "../../../../../presenters/formSubmission";
 import { BeaconsPageRouter } from "../../../../../router/BeaconsPageRouter";
 import { Rule } from "../../../../../router/rules/Rule";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
+import { withAdditionalProps } from "../../../../../router/withAdditionalProps";
 
 const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPageProps> =
   ({
     form = withoutErrorMessages({}, validationRules),
     showCookieBanner,
+    previousPageUrl,
   }: DraftRegistrationPageProps): JSX.Element => {
     const pageHeading =
       "Does the owner of this beacon live in the United Kingdom?";
@@ -48,7 +49,7 @@ const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPagePro
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
         includeUseId={false}
-        previousPageUrl={UpdatePageURLs.aboutBeaconOwner}
+        previousPageUrl={previousPageUrl}
       >
         <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
           <FormGroup
@@ -82,13 +83,20 @@ const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPagePro
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    return new BeaconsPageRouter([
-      new WhenUserViewsPage_ThenDisplayPage(context),
-      new WhenUserSubmitsBeaconOwnerLocationChoiceForm_RedirectAccordingly(
-        context,
-        validationRules
-      ),
-    ]).execute();
+    const previousPageUrl = UrlBuilder.buildUpdateRegistrationSummaryUrl(
+      context.query.registrationId as string
+    );
+
+    return withAdditionalProps(
+      new BeaconsPageRouter([
+        new WhenUserViewsPage_ThenDisplayPage(context),
+        new WhenUserSubmitsBeaconOwnerLocationChoiceForm_RedirectAccordingly(
+          context,
+          validationRules
+        ),
+      ]),
+      { previousPageUrl }
+    );
   })
 );
 

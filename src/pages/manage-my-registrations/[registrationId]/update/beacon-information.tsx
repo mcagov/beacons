@@ -23,7 +23,6 @@ import { DraftRegistrationPageProps } from "../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { UpdatePageURLs } from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
@@ -67,9 +66,9 @@ const UpdateBeaconInformationPage: FunctionComponent<DraftRegistrationPageProps>
 
     return (
       <BeaconsForm
-        previousPageUrl={
-          UpdatePageURLs.registrationSummary + draftRegistration.id
-        }
+        previousPageUrl={UrlBuilder.buildUpdateRegistrationSummaryUrl(
+          draftRegistration.id
+        )}
         pageHeading={pageHeading}
         showCookieBanner={showCookieBanner}
         formErrors={form.errorSummary}
