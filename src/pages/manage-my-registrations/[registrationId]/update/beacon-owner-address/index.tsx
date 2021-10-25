@@ -81,7 +81,7 @@ const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPagePro
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
-    return await new BeaconsPageRouter([
+    return new BeaconsPageRouter([
       new WhenUserViewsPage_ThenDisplayPage(context),
       new WhenUserSubmitsBeaconOwnerLocationChoiceForm_RedirectAccordingly(
         context,

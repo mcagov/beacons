@@ -22,6 +22,7 @@ import {
   givenIHaveSignedIn,
   iCanEditAFieldContaining,
   iCanSeeAPageHeadingThatContains,
+  iCanSeeText,
   iPerformOperationAndWaitForNewPageToLoad,
   theBackLinkContains,
   theBackLinkGoesTo,
@@ -95,6 +96,40 @@ describe("As an account holder", () => {
     whenIClickTheButtonContaining("Return to your Account");
     thenTheUrlShouldContain(AccountPageURLs.accountHome);
   });
+
+  it("I can change the beacon owner's address from UK to international", () => {
+    givenIHaveSignedIn();
+    andIHavePreviouslyRegisteredABeacon(firstRegistrationToUpdate);
+
+    whenIHaveVisited(AccountPageURLs.accountHome);
+    iCanSeeMyExistingRegistrationHexId(firstRegistrationToUpdate.hexId);
+
+    whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
+      firstRegistrationToUpdate.hexId
+    );
+
+    whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
+    theBackLinkContains(Resources.registration, Actions.update);
+    whenISelect("#restOfWorld");
+    whenIClickContinue();
+    iEditTheBeaconOwnersRestOfWorldAddress(
+      "Beacon Towers",
+      "Epirb wharf",
+      "c/o Harbour Master",
+      "Something",
+      "60605",
+      "United Arab Emirates"
+    );
+    whenIClickContinue();
+
+    iCanSeeText("Beacon Towers");
+    iCanSeeText("Epirb wharf");
+    iCanSeeText("c/o Harbour Master");
+    iCanSeeText("60605");
+    iCanSeeText("United Arab Emirates");
+  });
+
+  // it("I can change the beacon owner's address from international to UK", () => {});
 });
 
 const iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges = () => {
@@ -328,8 +363,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   theBackLinkContains(Resources.registration, Actions.update);
   whenISelect("#unitedKingdom");
   whenIClickContinue();
-  iEditMyOwnerAddress(
-    registration,
+  iEditTheBeaconOwnersUnitedKingdomAddress(
     firstUpdatedRegistration.ownerAddressLine1,
     firstUpdatedRegistration.ownerAddressLine2,
     firstUpdatedRegistration.ownerTownOrCity,
@@ -519,27 +553,34 @@ const iEditMyOwnerInformation = (
   cy.get(`input[value="${registration.ownerEmail}"]`).clear().type(newEmail);
 };
 
-const iEditMyOwnerAddress = (
-  registration,
+const iEditTheBeaconOwnersUnitedKingdomAddress = (
   newAddressLine1,
   newAddressLine2,
   newTownOrCity,
   newCounty,
   newPostcode
 ) => {
-  cy.get(`input[value="${registration.ownerAddressLine1}"]`)
-    .clear()
-    .type(newAddressLine1);
-  cy.get(`input[value="${registration.ownerAddressLine2}"]`)
-    .clear()
-    .type(newAddressLine2);
-  cy.get(`input[value="${registration.ownerTownOrCity}"]`)
-    .clear()
-    .type(newTownOrCity);
-  cy.get(`input[value="${registration.ownerCounty}"]`).clear().type(newCounty);
-  cy.get(`input[value="${registration.ownerPostcode}"]`)
-    .clear()
-    .type(newPostcode);
+  cy.get("#ownerAddressLine1").clear().type(newAddressLine1);
+  cy.get("#ownerAddressLine2").clear().type(newAddressLine2);
+  cy.get("#ownerTownOrCity").clear().type(newTownOrCity);
+  cy.get("#ownerCounty").clear().type(newCounty);
+  cy.get("#ownerPostcode").clear().type(newPostcode);
+};
+
+const iEditTheBeaconOwnersRestOfWorldAddress = (
+  newAddressLine1,
+  newAddressLine2,
+  newAddressLine3,
+  newAddressLine4,
+  newPostcode,
+  newCountry
+) => {
+  cy.get("#ownerAddressLine1").clear().type(newAddressLine1);
+  cy.get("#ownerAddressLine2").clear().type(newAddressLine2);
+  cy.get("#ownerAddressLine3").clear().type(newAddressLine3);
+  cy.get("#ownerAddressLine4").clear().type(newAddressLine4);
+  cy.get("#ownerPostcode").clear().type(newPostcode);
+  cy.get("#ownerCountry").select(newCountry);
 };
 
 const iEditMyEmergencyContactInformation = (

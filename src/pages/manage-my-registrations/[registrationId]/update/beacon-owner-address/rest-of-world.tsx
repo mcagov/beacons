@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
 import { BackButton, Button } from "../../../../../components/Button";
+import { CountrySelect } from "../../../../../components/domain/formElements/CountrySelect";
 import { FormErrorSummary } from "../../../../../components/ErrorSummary";
 import {
   Form,
@@ -9,12 +10,12 @@ import {
   FormLegendPageHeading,
 } from "../../../../../components/Form";
 import { Grid } from "../../../../../components/Grid";
-import { FormInputProps, Input } from "../../../../../components/Input";
+import { Input } from "../../../../../components/Input";
 import { Layout } from "../../../../../components/Layout";
 import { IfYouNeedHelp } from "../../../../../components/Mca";
 import { GovUKBody } from "../../../../../components/Typography";
 import { FieldManager } from "../../../../../lib/form/FieldManager";
-import { FormManager } from "../../../../../lib/form/FormManager";
+import { FormJSON, FormManager } from "../../../../../lib/form/FormManager";
 import { Validators } from "../../../../../lib/form/Validators";
 import { DraftRegistrationPageProps } from "../../../../../lib/handlePageRequest";
 import { BeaconsGetServerSidePropsContext } from "../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
@@ -36,12 +37,13 @@ import { withAdditionalProps } from "../../../../../router/withAdditionalProps";
 interface BeaconOwnerAddressForm {
   ownerAddressLine1: string;
   ownerAddressLine2: string;
-  ownerTownOrCity: string;
-  ownerCounty: string;
+  ownerAddressLine3: string;
+  ownerAddressLine4: string;
   ownerPostcode: string;
+  ownerCountry: string;
 }
 
-const BeaconOwnerAddressUnitedKingdom: FunctionComponent<DraftRegistrationPageProps> =
+const BeaconOwnerAddressRestOfWorld: FunctionComponent<DraftRegistrationPageProps> =
   ({
     form,
     showCookieBanner,
@@ -68,20 +70,7 @@ const BeaconOwnerAddressUnitedKingdom: FunctionComponent<DraftRegistrationPagePr
                     registration labels to stick to the beacon will be sent to
                     this address
                   </GovUKBody>
-                  <BuildingNumberAndStreetInput
-                    valueLine1={form.fields.ownerAddressLine1.value}
-                    valueLine2={form.fields.ownerAddressLine2.value}
-                    errorMessages={form.fields.ownerAddressLine1.errorMessages}
-                  />
-                  <TownOrCityInput
-                    value={form.fields.ownerTownOrCity.value}
-                    errorMessages={form.fields.ownerTownOrCity.errorMessages}
-                  />
-                  <CountyInput value={form.fields.ownerCounty.value} />
-                  <PostcodeInput
-                    value={form.fields.ownerPostcode.value}
-                    errorMessages={form.fields.ownerPostcode.errorMessages}
-                  />
+                  <RestOfWorldBeaconOwnerAddress form={form} />
                 </FormFieldset>
 
                 <Button buttonText="Continue" />
@@ -94,56 +83,57 @@ const BeaconOwnerAddressUnitedKingdom: FunctionComponent<DraftRegistrationPagePr
     );
   };
 
-interface BuildingNumberAndStreetInputProps {
-  valueLine1: string;
-  valueLine2: string;
-  errorMessages: string[];
-}
-
-const BuildingNumberAndStreetInput: FunctionComponent<BuildingNumberAndStreetInputProps> =
-  ({
-    valueLine1 = "",
-    valueLine2 = "",
-    errorMessages,
-  }: BuildingNumberAndStreetInputProps): JSX.Element => (
-    <FormGroup errorMessages={errorMessages}>
+const RestOfWorldBeaconOwnerAddress: FunctionComponent<{ form: FormJSON }> = ({
+  form,
+}: {
+  form: FormJSON;
+}): JSX.Element => (
+  <FormGroup>
+    <FormGroup errorMessages={form.fields.ownerAddressLine1.errorMessages}>
       <Input
         id="ownerAddressLine1"
-        label="Address line one (building number and street name)"
-        defaultValue={valueLine1}
-        inputClassName="govuk-!-margin-bottom-2"
-      />
-      <Input
-        id="ownerAddressLine2"
-        defaultValue={valueLine2}
-        label="Address line two"
+        label="Address line 1"
+        defaultValue={form.fields.ownerAddressLine1.value}
       />
     </FormGroup>
-  );
-
-const TownOrCityInput: FunctionComponent<FormInputProps> = ({
-  value = "",
-  errorMessages,
-}: FormInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <Input id="ownerTownOrCity" label="Town or city" defaultValue={value} />
-  </FormGroup>
-);
-
-const CountyInput: FunctionComponent<FormInputProps> = ({
-  value = "",
-}: FormInputProps): JSX.Element => (
-  <FormGroup>
-    <Input id="ownerCounty" label="County (optional)" defaultValue={value} />
-  </FormGroup>
-);
-
-const PostcodeInput: FunctionComponent<FormInputProps> = ({
-  value = "",
-  errorMessages,
-}: FormInputProps): JSX.Element => (
-  <FormGroup errorMessages={errorMessages}>
-    <Input id="ownerPostcode" label="Postcode" defaultValue={value} />
+    <FormGroup errorMessages={form.fields.ownerAddressLine2.errorMessages}>
+      <Input
+        id="ownerAddressLine2"
+        defaultValue={form.fields.ownerAddressLine2.value}
+        label="Address line 2"
+      />
+    </FormGroup>
+    <FormGroup>
+      <Input
+        id="ownerAddressLine3"
+        label="Address line 3 (optional)"
+        defaultValue={form.fields.ownerAddressLine3.value}
+      />
+    </FormGroup>
+    <FormGroup>
+      <Input
+        id="ownerAddressLine4"
+        label="Address line 4 (optional)"
+        defaultValue={form.fields.ownerAddressLine4.value}
+      />
+    </FormGroup>
+    <FormGroup>
+      <Input
+        id="ownerPostcode"
+        label="Postal or zip code (optional)"
+        defaultValue={form.fields.ownerPostcode.value}
+      />
+    </FormGroup>
+    <FormGroup errorMessages={form.fields.ownerCountry.errorMessages}>
+      <label className="govuk-label" htmlFor="country">
+        Country
+      </label>
+      <CountrySelect
+        id="ownerCountry"
+        name="ownerCountry"
+        defaultValue={form.fields.ownerCountry.value}
+      />
+    </FormGroup>
   </FormGroup>
 );
 
@@ -197,12 +187,12 @@ const mapper: DraftRegistrationFormMapper<BeaconOwnerAddressForm> = {
   formToDraftRegistration: (form) => ({
     ownerAddressLine1: form.ownerAddressLine1,
     ownerAddressLine2: form.ownerAddressLine2,
-    ownerAddressLine3: "",
-    ownerAddressLine4: "",
-    ownerTownOrCity: form.ownerTownOrCity,
-    ownerCounty: form.ownerCounty,
+    ownerAddressLine3: form.ownerAddressLine3,
+    ownerAddressLine4: form.ownerAddressLine4,
+    ownerTownOrCity: "",
+    ownerCounty: "",
     ownerPostcode: form.ownerPostcode,
-    ownerCountry: "United Kingdom",
+    ownerCountry: form.ownerCountry,
     uses: [],
   }),
   draftRegistrationToForm: (draftRegistration) => {
@@ -211,19 +201,21 @@ const mapper: DraftRegistrationFormMapper<BeaconOwnerAddressForm> = {
       !draftRegistration.ownerCountry
     ) {
       return {
-        ownerAddressLine1: draftRegistration.ownerAddressLine1,
-        ownerAddressLine2: draftRegistration.ownerAddressLine2,
-        ownerTownOrCity: draftRegistration.ownerTownOrCity,
-        ownerCounty: draftRegistration.ownerCounty,
-        ownerPostcode: draftRegistration.ownerPostcode,
+        ownerAddressLine1: "",
+        ownerAddressLine2: "",
+        ownerAddressLine3: "",
+        ownerAddressLine4: "",
+        ownerPostcode: "",
+        ownerCountry: null,
       };
     } else {
       return {
-        ownerAddressLine1: "",
-        ownerAddressLine2: "",
-        ownerTownOrCity: "",
-        ownerCounty: "",
-        ownerPostcode: "",
+        ownerAddressLine1: draftRegistration.ownerAddressLine1,
+        ownerAddressLine2: draftRegistration.ownerAddressLine2,
+        ownerAddressLine3: draftRegistration.ownerAddressLine3,
+        ownerAddressLine4: draftRegistration.ownerAddressLine4,
+        ownerPostcode: draftRegistration.ownerPostcode,
+        ownerCountry: draftRegistration.ownerCountry,
       };
     }
   },
@@ -232,26 +224,27 @@ const mapper: DraftRegistrationFormMapper<BeaconOwnerAddressForm> = {
 const validationRules = ({
   ownerAddressLine1,
   ownerAddressLine2,
-  ownerTownOrCity,
-  ownerCounty,
+  ownerAddressLine3,
+  ownerAddressLine4,
   ownerPostcode,
+  ownerCountry,
 }: BeaconOwnerAddressForm): FormManager => {
   return new FormManager({
     ownerAddressLine1: new FieldManager(ownerAddressLine1, [
+      Validators.required("Enter the first line of the beacon owner's address"),
+    ]),
+    ownerAddressLine2: new FieldManager(ownerAddressLine2, [
       Validators.required(
-        "Address line one (building number and street name) is a required field"
+        "Enter the second line of the beacon owner's address"
       ),
     ]),
-    ownerAddressLine2: new FieldManager(ownerAddressLine2),
-    ownerTownOrCity: new FieldManager(ownerTownOrCity, [
-      Validators.required("Town or city is a required field"),
-    ]),
-    ownerCounty: new FieldManager(ownerCounty),
-    ownerPostcode: new FieldManager(ownerPostcode, [
-      Validators.required("Postcode is a required field"),
-      Validators.postcode("Postcode must be a valid UK postcode"),
+    ownerAddressLine3: new FieldManager(ownerAddressLine3),
+    ownerAddressLine4: new FieldManager(ownerAddressLine4),
+    ownerPostcode: new FieldManager(ownerPostcode),
+    ownerCountry: new FieldManager(ownerCountry, [
+      Validators.required("Select the country"),
     ]),
   });
 };
 
-export default BeaconOwnerAddressUnitedKingdom;
+export default BeaconOwnerAddressRestOfWorld;
