@@ -24,6 +24,8 @@ export const registrationFixture: Registration = {
   ownerAlternativeTelephoneNumber: "",
   ownerAddressLine1: "1 Beacon Square",
   ownerAddressLine2: "",
+  ownerAddressLine3: "",
+  ownerAddressLine4: "",
   ownerTownOrCity: "Beaconsfield",
   ownerCounty: "Yorkshire",
   ownerPostcode: "BS8 7NW",
