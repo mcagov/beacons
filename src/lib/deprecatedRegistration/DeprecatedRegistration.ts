@@ -125,9 +125,12 @@ export class DeprecatedRegistration {
       alternativeTelephoneNumber: registration.ownerAlternativeTelephoneNumber,
       addressLine1: registration.ownerAddressLine1,
       addressLine2: registration.ownerAddressLine2,
+      addressLine3: registration.ownerAddressLine3,
+      addressLine4: registration.ownerAddressLine4,
       townOrCity: registration.ownerTownOrCity,
       county: registration.ownerCounty,
       postcode: registration.ownerPostcode,
+      country: registration.ownerCountry,
     };
   }
 

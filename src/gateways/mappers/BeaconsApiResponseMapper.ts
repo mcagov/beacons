@@ -80,6 +80,8 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
         telephoneNumber2: owner.attributes.alternativeTelephoneNumber || "",
         addressLine1: owner.attributes.addressLine1 || "",
         addressLine2: owner.attributes.addressLine2 || "",
+        addressLine3: owner.attributes.addressLine3 || "",
+        addressLine4: owner.attributes.addressLine4 || "",
         townOrCity: owner.attributes.townOrCity || "",
         county: owner.attributes.county || "",
         postcode: owner.attributes.postcode || "",
