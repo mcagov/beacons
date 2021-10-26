@@ -21,6 +21,7 @@ import {
   givenIHaveClickedTheButtonContaining,
   givenIHaveSignedIn,
   givenIHaveVisited,
+  iCanSeeTextInSummaryListRowWithHeading,
   ifIAmAskedForAccountHolderDetailsIProvideThem,
   iPerformOperationAndWaitForNewPageToLoad,
   thenTheUrlShouldContain,
@@ -49,6 +50,10 @@ describe("As user with an account", () => {
     thenTheUrlShouldContain(AccountPageURLs.accountHome);
     iCanSeeTheBeaconListWithMyInformation();
 
+    whenIClickOnTheBeaconIHaveJustRegistered();
+    iCanSeeAllTheDataIEntered();
+
+    givenIHaveVisited(AccountPageURLs.accountHome);
     givenIHaveClickedToCreateANewBeacon();
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkBeaconDetails);
   });
@@ -65,4 +70,62 @@ const givenIHaveClickedToCreateANewBeacon = () =>
 
 const givenIHaveClickedToGoBackToMyAccount = () => {
   givenIHaveClicked(".govuk-button");
+};
+
+const whenIClickOnTheBeaconIHaveJustRegistered = () => {
+  cy.get("a").contains(testBeaconAndOwnerData.beaconDetails.hexId).click();
+};
+
+const iCanSeeAllTheDataIEntered = () => {
+  iCanSeeDataInSummaryListRowWithHeading(
+    Object.values(testBeaconAndOwnerData.beaconDetails),
+    "Beacon information"
+  );
+
+  iCanSeeTextInSummaryListRowWithHeading(
+    testBeaconAndOwnerData.additionalBeaconInformation.serialNumber,
+    "Additional beacon information"
+  );
+  iCanSeeTextInSummaryListRowWithHeading(
+    testBeaconAndOwnerData.additionalBeaconInformation.chkCode,
+    "Additional beacon information"
+  );
+  iCanSeeTextInSummaryListRowWithHeading(
+    testBeaconAndOwnerData.additionalBeaconInformation.csta,
+    "Additional beacon information"
+  );
+
+  iCanSeeDataInSummaryListRowWithHeading(
+    Object.values(testBeaconAndOwnerData.ownerDetails),
+    "Owner details"
+  );
+
+  iCanSeeDataInSummaryListRowWithHeading(
+    [...Object.values(testBeaconAndOwnerData.ownerAddress), "United Kingdom"],
+    "Address"
+  );
+
+  iCanSeeDataInSummaryListRowWithHeading(
+    Object.values(testBeaconAndOwnerData.emergencyContacts).slice(0, 3),
+    "Contact 1"
+  );
+
+  iCanSeeDataInSummaryListRowWithHeading(
+    Object.values(testBeaconAndOwnerData.emergencyContacts).slice(3, 6),
+    "Contact 2"
+  );
+
+  iCanSeeDataInSummaryListRowWithHeading(
+    Object.values(testBeaconAndOwnerData.emergencyContacts).slice(6, 9),
+    "Contact 3"
+  );
+};
+
+const iCanSeeDataInSummaryListRowWithHeading = (
+  data: string[],
+  heading: string
+): void => {
+  data.forEach((data) => {
+    iCanSeeTextInSummaryListRowWithHeading(data, heading);
+  });
 };

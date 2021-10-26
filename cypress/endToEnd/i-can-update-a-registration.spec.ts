@@ -22,6 +22,7 @@ import {
   givenIHaveSignedIn,
   iCanEditAFieldContaining,
   iCanSeeAPageHeadingThatContains,
+  iCanSeeTextInSummaryListRowWithHeading,
   iPerformOperationAndWaitForNewPageToLoad,
   theBackLinkContains,
   theBackLinkGoesTo,
@@ -478,8 +479,15 @@ const iCanSeeOwnerInformation = (registration: Registration) => {
   if (registration.ownerAddressLine2) {
     cy.get("main").contains(registration.ownerAddressLine2);
   }
+  if (registration.ownerAddressLine3) {
+    cy.get("main").contains(registration.ownerAddressLine3);
+  }
+  if (registration.ownerAddressLine4) {
+    cy.get("main").contains(registration.ownerAddressLine4);
+  }
   cy.get("main").contains(registration.ownerTownOrCity);
   cy.get("main").contains(registration.ownerPostcode);
+  cy.get("main").contains(registration.ownerCountry);
 };
 
 const iCanSeeEmergencyContactInformation = (registration: Registration) => {
@@ -528,13 +536,6 @@ const whenIClickTheChangeLinkForTheSummaryListRowWithHeading = (
     .parent()
     .contains(/change/i)
     .click();
-};
-
-const iCanSeeTextInSummaryListRowWithHeading = (
-  text: string,
-  heading: string
-) => {
-  cy.get("dt").contains(heading).parent().contains(text);
 };
 
 const iCannotSeeTextInSummaryListRowWithHeading = (

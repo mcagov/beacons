@@ -326,3 +326,10 @@ export const givenIHaveSelectedTheOptionFromTheDropdown =
 export const whenIClickTheBrowserBackButton = (): void => {
   cy.go("back");
 };
+
+export const iCanSeeTextInSummaryListRowWithHeading = (
+  text: string,
+  heading: string
+) => {
+  cy.get("dt").contains(heading).parent().contains(text);
+};
