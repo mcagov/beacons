@@ -58,7 +58,7 @@ resource "aws_lb_listener_rule" "backoffice_spa" {
 
   condition {
     path_pattern {
-      values = ["/backoffice/*"]
+      values = ["/backoffice*"]
     }
   }
 }
