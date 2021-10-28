@@ -48,6 +48,21 @@ resource "aws_lb_listener_rule" "service" {
   }
 }
 
+resource "aws_lb_listener_rule" "backoffice_spa" {
+  listener_arn = aws_alb_listener.front_end_ssl.arn
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.service.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/backoffice/*"]
+    }
+  }
+}
+
 resource "aws_alb_target_group" "webapp" {
   name        = "${terraform.workspace}-webapp-target-group"
   port        = var.webapp_port
