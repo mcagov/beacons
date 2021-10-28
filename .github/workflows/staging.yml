@@ -21,7 +21,7 @@ jobs:
     name: Copy and save image tags for staging environment
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.5
         with:
           token: ${{ secrets.MCA_GITHUB_TOKEN }}
       - name: Save image tags for staging environment
@@ -47,7 +47,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       TF_WORKSPACE: staging
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.5
         with:
           ref: main
       - uses: hashicorp/setup-terraform@v1

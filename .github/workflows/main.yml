@@ -16,7 +16,7 @@ jobs:
     name: Lamdba Unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2.3.5
       - uses: actions/setup-node@v2.4.0
         with:
           node-version: "14"
@@ -34,7 +34,7 @@ jobs:
         working-directory: terraform
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.5
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.5
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
@@ -62,19 +62,19 @@ jobs:
       webapp_commit_hash: ${{ steps.get_webapp_commit_hash.outputs.webapp_commit_hash }}
       service_commit_hash: ${{ steps.get_service_commit_hash.outputs.service_commit_hash }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.5
         with:
           repository: "mcagov/beacons-webapp"
       - id: get_webapp_commit_hash
         name: Get commit hash from Webapp repo
         run: echo "::set-output name=webapp_commit_hash::$(git rev-parse HEAD)"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.5
         with:
           repository: "mcagov/beacons-service"
       - id: get_service_commit_hash
         name: Get commit hash from Service repo
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.5
         with:
           token: ${{ secrets.MCA_GITHUB_TOKEN }}
       - uses: hashicorp/setup-terraform@v1
@@ -106,7 +106,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       TF_WORKSPACE: dev
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.5
         with:
           ref: main
       - uses: hashicorp/setup-terraform@v1
