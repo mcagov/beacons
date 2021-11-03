@@ -1,0 +1,6 @@
+build
+cron_build
+node_modules
+*.zip
+.terraform.lock.hcl
+terraform.tfvars

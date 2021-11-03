@@ -1,0 +1,3 @@
+.terraform/
+build/
+cron_build/
