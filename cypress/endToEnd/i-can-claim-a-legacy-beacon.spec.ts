@@ -8,6 +8,7 @@ import { formatDateLong } from "../../src/lib/writingStyle";
 import { testBeaconAndOwnerData } from "../common/happy-path-test-data.spec";
 import {
   givenIHaveFilledInBeaconInformationPage,
+  givenIHaveFilledInCheckBeaconDetailsPage,
   iCanSeeMyAdditionalBeaconInformation,
 } from "../common/i-can-enter-beacon-information.spec";
 import {
@@ -100,6 +101,7 @@ describe("As an account holder", () => {
 
     whenISelect("#claim");
     andIClickContinue();
+    givenIHaveFilledInCheckBeaconDetailsPage();
     givenIHaveFilledInBeaconInformationPage();
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
     andIHaveNoFurtherUses();
