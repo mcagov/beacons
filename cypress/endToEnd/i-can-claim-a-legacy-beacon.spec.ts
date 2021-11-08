@@ -8,7 +8,6 @@ import { formatDateLong } from "../../src/lib/writingStyle";
 import { testBeaconAndOwnerData } from "../common/happy-path-test-data.spec";
 import {
   givenIHaveFilledInBeaconInformationPage,
-  givenIHaveFilledInCheckBeaconDetailsPage,
   iCanSeeMyAdditionalBeaconInformation,
 } from "../common/i-can-enter-beacon-information.spec";
 import {
@@ -91,7 +90,7 @@ describe("As an account holder", () => {
 
     whenISelect("#claim");
     andIClickContinue();
-    thenTheUrlShouldContain(CreateRegistrationPageURLs.beaconInformation);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkBeaconDetails);
 
     // Back button from the Create flow goes back to claim/reject page.  User
     // cannot go use back button to edit hexId, manufacturer, model.
@@ -101,7 +100,7 @@ describe("As an account holder", () => {
 
     whenISelect("#claim");
     andIClickContinue();
-    givenIHaveFilledInCheckBeaconDetailsPage();
+    andIClickContinue();
     givenIHaveFilledInBeaconInformationPage();
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
     andIHaveNoFurtherUses();

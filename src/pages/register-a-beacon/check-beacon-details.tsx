@@ -23,6 +23,7 @@ import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSho
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+import { withAdditionalProps } from "../../router/withAdditionalProps";
 
 interface CheckBeaconDetailsForm {
   manufacturer: string;
@@ -33,6 +34,7 @@ interface CheckBeaconDetailsForm {
 const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
+  previousPageUrl,
 }: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Check beacon details";
   const pageText = (
@@ -41,7 +43,6 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
       UK registration.
     </GovUKBody>
   );
-  const previousPageUrl = AccountPageURLs.accountHome;
 
   return (
     <BeaconsForm
@@ -89,29 +90,34 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     const nextPageUrl = CreateRegistrationPageURLs.beaconInformation;
+    const previousPageUrl =
+      context.query.previous ?? AccountPageURLs.accountHome;
 
-    return await new BeaconsPageRouter([
-      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
-        context,
-        validationRules,
-        mapper
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
-        context,
-        validationRules,
-        mapper
-      ),
-      new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
-        context,
-        validationRules,
-        mapper,
-        nextPageUrl
-      ),
-    ]).execute();
+    return withAdditionalProps(
+      new BeaconsPageRouter([
+        new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
+        new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+          context
+        ),
+        new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
+          context,
+          validationRules,
+          mapper
+        ),
+        new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
+          context,
+          validationRules,
+          mapper
+        ),
+        new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
+          context,
+          validationRules,
+          mapper,
+          nextPageUrl
+        ),
+      ]),
+      { previousPageUrl }
+    );
   })
 );
 
