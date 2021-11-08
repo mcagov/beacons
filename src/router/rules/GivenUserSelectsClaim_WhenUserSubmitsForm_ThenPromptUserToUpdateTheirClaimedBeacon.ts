@@ -37,7 +37,7 @@ export class GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateThe
     await this.prePopulateTheDraftRegistrationWithMigratedDetails(legacyBeacon);
 
     return redirectUserTo(
-      CreateRegistrationPageURLs.beaconInformation +
+      CreateRegistrationPageURLs.checkBeaconDetails +
         queryParams({
           previous: UrlBuilder.buildClaimLegacyBeaconUrl(legacyBeacon.id),
         })

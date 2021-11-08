@@ -90,7 +90,7 @@ describe("As an account holder", () => {
 
     whenISelect("#claim");
     andIClickContinue();
-    thenTheUrlShouldContain(CreateRegistrationPageURLs.beaconInformation);
+    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkBeaconDetails);
 
     // Back button from the Create flow goes back to claim/reject page.  User
     // cannot go use back button to edit hexId, manufacturer, model.
@@ -99,6 +99,7 @@ describe("As an account holder", () => {
     iAmGivenTheOptionToClaimOrRejectTheLegacyBeacon();
 
     whenISelect("#claim");
+    andIClickContinue();
     andIClickContinue();
     givenIHaveFilledInBeaconInformationPage();
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
