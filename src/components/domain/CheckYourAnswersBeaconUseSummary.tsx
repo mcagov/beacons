@@ -172,7 +172,7 @@ const AboutTheAircraftSubSection: FunctionComponent<CheckYourAnswersBeaconUseSum
             />
             <DataRowItem label="24-bit HEX" value={use.hexAddress} />
             <DataRowItem label="CORE/Serial number" value={use.cnOrMsnNumber} />
-            {use.dongle && (
+            {use.dongle === "true" && (
               <DataRowItem label="Is this a dongle?" value="Yes" />
             )}
             <DataRowItem label="Beacon position" value={use.beaconPosition} />
