@@ -4,7 +4,7 @@ import { ReturnToYourAccountSection } from "../../components/domain/ReturnToYour
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
-import { GovUKBody, SectionHeading } from "../../components/Typography";
+import { GovUKBody } from "../../components/Typography";
 import { DraftRegistration } from "../../entities/DraftRegistration";
 import { verifyFormSubmissionCookieIsSet } from "../../lib/cookies";
 import { clearFormSubmissionCookie } from "../../lib/middleware";
@@ -42,12 +42,11 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
                 {pageSubHeading}
               </Panel>
               {/*<ApplicationCompleteWhatNext />*/}
-              <GovUKBody className="govuk">
+              <GovUKBody className="govuk-body">
                 Your application to register a UK 406 MHz beacon has been
                 received by the Maritime and Coastguard Beacon Registry Team.
                 You can now use your Beacon.
               </GovUKBody>
-
               <ReturnToYourAccountSection />
             </>
           }
@@ -56,20 +55,6 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
     </>
   );
 };
-
-const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
-  <>
-    <SectionHeading>What happens next</SectionHeading>
-    <GovUKBody>
-      We&apos;ve sent your application to register a UK encoded 406 MHz beacon
-      to The Maritime and Coastguard Beacon Registry office.
-    </GovUKBody>
-    <GovUKBody>
-      They will contact you either to confirm your registration, or to ask for
-      more information.
-    </GovUKBody>
-  </>
-);
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {

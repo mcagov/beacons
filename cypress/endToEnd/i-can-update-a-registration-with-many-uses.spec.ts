@@ -103,7 +103,7 @@ describe("As an account holder", () => {
       "Your beacon registration has been updated"
     );
 
-    whenIClickTheButtonContaining("Return to your Account");
+    whenIClickTheButtonContaining("Return to your Beacon Registry Account");
     thenTheUrlShouldContain(AccountPageURLs.accountHome);
 
     whenIClickTheHexIdOfTheRegistrationIJustUpdated(testRegistration.hexId);
