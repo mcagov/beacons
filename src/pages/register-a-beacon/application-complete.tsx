@@ -4,8 +4,7 @@ import { ReturnToYourAccountSection } from "../../components/domain/ReturnToYour
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { Panel } from "../../components/Panel";
-import { GovUKBody, SectionHeading } from "../../components/Typography";
-import { WarningText } from "../../components/WarningText";
+import { GovUKBody } from "../../components/Typography";
 import { DraftRegistration } from "../../entities/DraftRegistration";
 import { verifyFormSubmissionCookieIsSet } from "../../lib/cookies";
 import { clearFormSubmissionCookie } from "../../lib/middleware";
@@ -27,7 +26,7 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
   reference,
   pageSubHeading,
 }: ApplicationCompleteProps): JSX.Element => {
-  const pageHeading = "Application Complete";
+  const pageHeading = "Beacon Registration Complete";
 
   return (
     <>
@@ -42,18 +41,12 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
               <Panel title={pageHeading} reference={reference}>
                 {pageSubHeading}
               </Panel>
-              <ApplicationCompleteWhatNext />
-              <WarningText>
-                <GovUKBody className="govuk-!-font-weight-bold">
-                  You can still use your beacon. Search and Rescue will be able
-                  to identify and locate you.
-                </GovUKBody>
-                <GovUKBody className="govuk-!-font-weight-bold">
-                  Remember your beacon should only be used in an emergency. If
-                  needed, you can also contact HM Coastguard 24/7 on Tel: +44
-                  3443 820 025.
-                </GovUKBody>
-              </WarningText>
+              {/*<ApplicationCompleteWhatNext />*/}
+              <GovUKBody className="govuk-body">
+                Your application to register a UK 406 MHz beacon has been
+                received by the Maritime and Coastguard Beacon Registry Team.
+                You can now use your Beacon.
+              </GovUKBody>
               <ReturnToYourAccountSection />
             </>
           }
@@ -62,20 +55,6 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
     </>
   );
 };
-
-const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => (
-  <>
-    <SectionHeading>What happens next</SectionHeading>
-    <GovUKBody>
-      We&apos;ve sent your application to register a UK encoded 406 MHz beacon
-      to The Maritime and Coastguard Beacon Registry office.
-    </GovUKBody>
-    <GovUKBody>
-      They will contact you either to confirm your registration, or to ask for
-      more information.
-    </GovUKBody>
-  </>
-);
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {

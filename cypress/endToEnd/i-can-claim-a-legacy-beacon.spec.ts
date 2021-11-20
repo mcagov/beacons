@@ -122,9 +122,9 @@ describe("As an account holder", () => {
     iPerformOperationAndWaitForNewPageToLoad(() => {
       whenIClickTheButtonContaining("Accept and send");
     });
-    iCanSeeAPageHeadingThatContains("Application Complete");
+    iCanSeeAPageHeadingThatContains("Beacon Registration Complete");
 
-    whenIClickTheButtonContaining("Return to your Account");
+    whenIClickTheButtonContaining("Return to your Beacon Registry Account");
     thereIsOnlyOneBeaconListedForHexId(hexId);
     theBeaconListedForHexIdIsNotALegacyBeacon(hexId);
 

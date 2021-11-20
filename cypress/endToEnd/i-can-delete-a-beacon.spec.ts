@@ -113,7 +113,7 @@ const whenIEnterMyReasonInTheResultingTextbox = (reason: string) => {
 };
 
 const whenIGoBackToAccountHome = () => {
-  whenIClickTheButtonContaining("Return to your Account");
+  whenIClickTheButtonContaining("Return to your Beacon Registry Account");
   iHaveVisited(AccountPageURLs.accountHome);
 };
 
