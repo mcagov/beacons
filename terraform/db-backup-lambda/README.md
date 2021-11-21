@@ -35,7 +35,7 @@ accountId = "xxxxx"
 
 It's useful to upload files from `tests/fixtures` to triger the transform lambda and then observe the lambda \
 logs. When deploying with terraform I would create a terraform state bucket via the console and then copy \
-the name into the backend s3 block in the root `main.tf`. 
+the name into the backend s3 block in the root `main.tf`.
 
 These commands are useful:
 

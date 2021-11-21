@@ -1,11 +1,11 @@
 import { writeCsv } from '../../src/writeCsv';
-import { InMemParquet } from '../../src/types'
+import { InMemParquet } from '../../src/types';
 import fs from 'fs';
 
 const mockRecord = [
   {
-    id: "123",
-    hex_id: "456",
+    id: '123',
+    hex_id: '456',
     manufacturer: 'massey ferguson',
     model: 'cool boat',
     manufacturer_serial_number: '00001',
@@ -14,15 +14,15 @@ const mockRecord = [
     created_date: '01/01/1970',
     beacon_status: 'WORKING',
     chk_code: 'ok',
-    reference_number: "8888",
-    account_holder_id: "789",
+    reference_number: '8888',
+    account_holder_id: '789',
     last_modified_date: '01/01/1970',
     mti: 'mti',
     svdr: true,
     csta: 'csta',
     beacon_type: 'flare',
     protocol: 'beacon',
-    coding: "true"
+    coding: 'true'
   }
 ] as InMemParquet[];
 

@@ -37,7 +37,7 @@ export const handler = async (): Promise<void> => {
 
   // export the snapshot to s3
   const s3ExportCommand = new StartExportTaskCommand({
-    SourceArn: response.DBSnapshot!.DBSnapshotArn,
+    SourceArn: "arn:aws:rds:eu-west-2:232705206979:snapshot:dev-backup-2021-11-21",
     S3BucketName: SNAPSHOT_BUCKET,
     S3Prefix: formattedDate,
     ExportTaskIdentifier: snapshotIdentifier,
@@ -45,5 +45,7 @@ export const handler = async (): Promise<void> => {
     KmsKeyId: KMS_KEY_ID
   });
 
-  await client.send(s3ExportCommand);
+  await client
+    .send(s3ExportCommand)
+    .catch((err) => console.log('export error', err));
 };

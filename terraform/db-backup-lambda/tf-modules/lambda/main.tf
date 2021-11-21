@@ -91,14 +91,7 @@ module "lambda_function_db_snapshot_cron" {
       "Action": [
         "rds:CreateDBSnapshot",
         "rds:DescribeDBSnapshots",
-        "rds:StartExportTask",
-        "kms:Encrypt",
-        "kms:Decrypt",
-        "kms:ReEncrypt*",
-        "kms:GenerateDataKey*",
-        "kms:CreateGrant",
-        "kms:DescribeKey",
-        "kms:RetireGrant"
+        "rds:StartExportTask"
         ],
       "Effect": "Allow",
       "Resource": [
@@ -106,6 +99,17 @@ module "lambda_function_db_snapshot_cron" {
         "arn:aws:rds:${var.region}:${var.accountId}:snapshot:*",
         "arn:aws:s3:::${var.s3_snapshots_bucket.s3_bucket_id}/*",
         "arn:aws:s3:::${var.s3_snapshots_bucket.s3_bucket_id}"
+      ]
+    },
+    {
+      "Sid": "AllowLambdaToExportSnapshotToS3",
+      "Action": [
+        "rds:StartExportTask",
+        "kms:*"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "*"
       ]
     },
     {
