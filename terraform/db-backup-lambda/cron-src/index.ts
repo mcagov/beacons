@@ -37,7 +37,7 @@ export const handler = async (): Promise<void> => {
 
   // export the snapshot to s3
   const s3ExportCommand = new StartExportTaskCommand({
-    SourceArn: "arn:aws:rds:eu-west-2:232705206979:snapshot:dev-backup-2021-11-21",
+    SourceArn: response.DBSnapshot!.DBSnapshotArn,,
     S3BucketName: SNAPSHOT_BUCKET,
     S3Prefix: formattedDate,
     ExportTaskIdentifier: snapshotIdentifier,
