@@ -3,6 +3,7 @@ import { clearFormSubmissionCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
+import { deleteCachedRegistrationsForAccountHolder } from "../../useCases/deleteCachedRegistrationsForAccountHolder";
 import { Rule } from "./Rule";
 
 export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage
@@ -21,8 +22,22 @@ export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItA
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
+    const {
+      getAccountHolderId,
+      draftRegistrationGateway,
+      accountHolderGateway,
+    } = this.context.container;
+
+    const accountHolderId = await getAccountHolderId(this.context.session);
+
     await this.context.container.deleteDraftRegistration(
       this.context.req.cookies[formSubmissionCookieId]
+    );
+
+    await deleteCachedRegistrationsForAccountHolder(
+      draftRegistrationGateway,
+      accountHolderGateway,
+      accountHolderId
     );
 
     clearFormSubmissionCookie(this.context);
