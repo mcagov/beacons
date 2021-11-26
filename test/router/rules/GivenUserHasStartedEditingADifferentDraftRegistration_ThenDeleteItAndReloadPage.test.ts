@@ -3,6 +3,8 @@ import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/Be
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../src/router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
 
+jest.mock("../../../src/useCases/deleteCachedRegistrationsForAccountHolder");
+
 describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage", () => {
   describe("condition()", () => {
     it("doesn't trigger if there are no cookies", async () => {
@@ -13,7 +15,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
         query: {
           registrationId: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
         },
-      };
+      } as any;
       const rule =
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
           context
@@ -53,6 +55,12 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
               "user-is-already-editing-this-draft-registration",
           },
         },
+        container: {
+          getAccountHolderId: jest.fn(),
+          accountHolderGateway: {
+            getAccountBeacons: jest.fn(),
+          },
+        },
         query: {
           registrationId: "user-is-already-editing-this-draft-registration",
         },
@@ -77,6 +85,12 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
           query: {
             registrationId:
               "but-is-now-trying-to-do-something-to-a-different-draft-registration",
+          },
+          container: {
+            getAccountHolderId: jest.fn(),
+            accountHolderGateway: {
+              getAccountBeacons: jest.fn(),
+            },
           },
         },
       } as any;
@@ -103,6 +117,10 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
         },
         container: {
           deleteDraftRegistration: jest.fn(),
+          getAccountHolderId: jest.fn(),
+          accountHolderGateway: {
+            getAccountBeacons: jest.fn(),
+          },
         },
         res: {
           setHeader: jest.fn(),
@@ -131,6 +149,10 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
         },
         container: {
           deleteDraftRegistration: jest.fn(),
+          getAccountHolderId: jest.fn(),
+          accountHolderGateway: {
+            getAccountBeacons: jest.fn(),
+          },
         },
         res: {
           setHeader: jest.fn(),
@@ -161,6 +183,10 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
         },
         container: {
           deleteDraftRegistration: jest.fn(),
+          getAccountHolderId: jest.fn(),
+          accountHolderGateway: {
+            getAccountBeacons: jest.fn(),
+          },
         },
         res: {
           setHeader: jest.fn(),
@@ -171,7 +197,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
           context
         );
 
-      const props = await rule.action();
+      const props = (await rule.action()) as any;
 
       expect(props.redirect.destination).toEqual("the-current-page");
     });
