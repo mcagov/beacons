@@ -13,7 +13,6 @@ import {
   PageHeading,
   SectionHeading,
 } from "../components/Typography";
-import { WarningText } from "../components/WarningText";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
 import { acceptRejectCookieId } from "../lib/types";
@@ -28,8 +27,7 @@ interface ServiceStartPageProps {
 const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   showCookieBanner,
 }: ServiceStartPageProps): JSX.Element => {
-  const pageHeading =
-    "Register a UK 406 MHz Beacon for commercial or pleasure use";
+  const pageHeading = "Register a UK 406 MHz beacon";
 
   return (
     <>
@@ -53,20 +51,36 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
 const AboutTheService: FunctionComponent = (): JSX.Element => (
   <>
     <GovUKBody>
-      You can use this service to register any of the following types of UK 406
-      Megahertz (MHz) emergency beacons:
+      A UK 406 Megahertz (MHz) beacon sends a distress signal to alert search
+      and rescue authorities to your location.
+    </GovUKBody>
+
+    <GovUKBody>Use this service to:</GovUKBody>
+
+    <GovUKBulletedList>
+      <li>register a UK 406 Megahertz (MHz) beacon</li>
+      <li>update your beacon registration details</li>
+      <li>update your vessel or aircraft details</li>
+    </GovUKBulletedList>
+
+    <GovUKBody>
+      You can register the following types of UK 406 Megahertz (MHz) beacon:
     </GovUKBody>
 
     <GovUKBulletedList>
-      <li>a Personal Locator Beacon (PLB) for any use</li>
+      <li>Personal Locator Beacon (PLB), for any use</li>
       <li>
-        an Emergency Position Indicating Radio Beacon (EPIRB) for maritime use
+        Emergency Position Indicating Radio Beacon (EPIRB) or Simplified
+        Voyage-Data Recorder, for maritime use
       </li>
-      <li>an Emergency Locator Transmitter (ELT) for aircraft use</li>
-      <li>a Beacon dongle for aircraft use</li>
+      <li>
+        Emergency Locator Transmitter (ELT) or ELT dongle, for aircraft use
+      </li>
     </GovUKBulletedList>
 
-    <GovUKBody>Registering takes around 15 minutes.</GovUKBody>
+    <GovUKBody>Registering is free and takes around 15 minutes.</GovUKBody>
+
+    <StartButton href={AccountPageURLs.signUpOrSignIn} />
 
     {/* <InsetText>
       If you want to register multiple beacons (i.e. more than 5),&nbsp;
@@ -77,36 +91,23 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
     </InsetText> */}
 
     <SectionHeading>Before you start</SectionHeading>
-
+    <GovUKBody>You’ll need:</GovUKBody>
     <GovUKBulletedList>
       <li>
-        You&apos;ll need to know the beacon Hexadecimal Identification (HEX ID)
-        or Unique Identifying Number (UIN), manufacturer serial number and model
+        the beacon Hexadecimal Identification (HEX ID) or Unique Identifying
+        Number (UIN), manufacturer serial number and model
+      </li>
+      <li>an emergency contact for search and rescue authorities</li>
+      <li>
+        if you have a vessel - your vessel name, number, call sign, Maritime
+        Mobile Service Identity (MMSI) number, and details of the radio
+        communications equipment you use
       </li>
       <li>
-        If you have a vessel, you will need your vessel name, number(s), radio
-        communications, Call Sign and Maritime Mobile Service Identity (MMSI)
-        number, if applicable
-      </li>
-      <li>
-        If you have an aircraft, you will need your aircraft make and model,
-        Aircraft Registration Mark, aircraft number(s), radio communications
-      </li>
-      <li>
-        You will also need at least one emergency contact for Search and Rescue
+        if you have an aircraft - your aircraft make, model, registration mark,
+        and details of the radio communications equipment you use
       </li>
     </GovUKBulletedList>
-
-    <WarningText>
-      <>
-        This service is only for UK programmed 406 MHz beacons.&nbsp;
-        <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
-          Contact the UK Beacon Registry
-        </AnchorLink>
-        &nbsp;if you aren&apos;t sure if your beacon is 406 MHz or not.
-      </>
-    </WarningText>
-    <StartButton href={AccountPageURLs.signUpOrSignIn} />
   </>
 );
 
@@ -122,11 +123,12 @@ const OtherWaysToAccessTheService: FunctionComponent = (): JSX.Element => (
   <>
     <SectionHeading>Other ways to apply</SectionHeading>
 
-    <GovUKBody>
-      If you need help with registering online, want to register multiple
-      beacons at once or would like to register by post, contact the UK Beacon
-      Registry team.
-    </GovUKBody>
+    <GovUKBody>Contact the UK Beacon Registry team to:</GovUKBody>
+    <GovUKBulletedList>
+      <li>get help registering online</li>
+      <li>register multiple beacons at once</li>
+      <li>register by post</li>
+    </GovUKBulletedList>
 
     <InsetText>
       <BeaconRegistryContactInfo />
