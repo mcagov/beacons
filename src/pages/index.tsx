@@ -27,7 +27,7 @@ interface ServiceStartPageProps {
 const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   showCookieBanner,
 }: ServiceStartPageProps): JSX.Element => {
-  const pageHeading = "Register a UK 406 MHz beacon";
+  const pageHeading = "Register a UK 406 megahertz (MHz) beacon";
 
   return (
     <>
@@ -51,20 +51,20 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
 const AboutTheService: FunctionComponent = (): JSX.Element => (
   <>
     <GovUKBody>
-      A UK 406 Megahertz (MHz) beacon sends a distress signal to alert search
+      A UK 406 megahertz (MHz) beacon sends a distress signal to alert search
       and rescue authorities to your location.
     </GovUKBody>
 
     <GovUKBody>Use this service to:</GovUKBody>
 
     <GovUKBulletedList>
-      <li>register a UK 406 Megahertz (MHz) beacon</li>
+      <li>register a UK 406 megahertz (MHz) beacon</li>
       <li>update your beacon registration details</li>
       <li>update your vessel or aircraft details</li>
     </GovUKBulletedList>
 
     <GovUKBody>
-      You can register the following types of UK 406 Megahertz (MHz) beacon:
+      You can register the following types of UK 406 megahertz (MHz) beacon:
     </GovUKBody>
 
     <GovUKBulletedList>
@@ -142,9 +142,9 @@ const DataProtection: FunctionComponent = (): JSX.Element => (
 
     <GovUKBody>
       The Maritime {"&"} Coastguard Agency (MCA) collect and retain the personal
-      information provided when you register a UK programmed 406 MHz beacon.
-      Processing your information allows the MCA to exercise its official duty
-      and to identify persons in distress and helps save lives.
+      information provided when you register a UK programmed 406 megahertz (MHz)
+      beacon. Processing your information allows the MCA to exercise its
+      official duty and to identify persons in distress and helps save lives.
     </GovUKBody>
 
     <GovUKBody>
@@ -163,7 +163,7 @@ const DataProtection: FunctionComponent = (): JSX.Element => (
     <GovUKBody>
       Further details on Beacon Registration privacy policy can be found at{" "}
       <AnchorLink href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice">
-        406 MHz beacons privacy information notice
+        406 megahertz (MHz) beacons privacy information notice
       </AnchorLink>
       .
     </GovUKBody>
