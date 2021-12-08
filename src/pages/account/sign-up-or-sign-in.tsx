@@ -34,18 +34,11 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
   form = withoutErrorMessages({}, validationRules),
   showCookieBanner,
 }: DraftRegistrationPageProps): JSX.Element => {
-  const pageHeading = "Do you have a Beacon Registry Account?";
+  const pageHeading = "Beacon Registry account sign-in";
   const pageText = (
     <GovUKBody>
-      You will have an account if you registered a beacon online, using this
-      service after 30 September 2021.
-      <br />
-      <br />
-      If you previously registered your beacon in any way prior to 30 September
-      2021, then you will need to create a new Beacon Registry Account.
-      <br />
-      <br />
-      By signing up to the beacons service, you automatically accept the{" "}
+      This is a customer self-service system and by signing up you automatically
+      accept the{" "}
       <AnchorLink href="https://www.gov.uk/mca/privacy-policy#mhz-beacons-privacy-information-notice">
         service privacy policy
       </AnchorLink>
@@ -68,20 +61,20 @@ export const SignUpOrSignIn: FunctionComponent<DraftRegistrationPageProps> = ({
         <FormGroup errorMessages={form.fields.signUpOrSignIn.errorMessages}>
           <RadioList>
             <RadioListItem
-              id="signIn"
-              name={fieldName}
-              label="Sign in using my Beacon Registry Account"
-              hintText="You’ll have an account if you’ve registered a beacon before. Your log in details will be an email address and password"
-              value="signIn"
-              defaultChecked={form.fields.signUpOrSignIn.value === "signIn"}
-            />
-            <RadioListItem
               id="signUp"
               name={fieldName}
-              label="Create a Beacon Registry Account"
-              hintText="You must create and account before you can register your first beacon"
+              label="Create a new account to use this service"
+              hintText="You must create an account before you can claim any existing beacon records or add any new beacons "
               value="signUp"
               defaultChecked={form.fields.signUpOrSignIn.value === "signUp"}
+            />
+            <RadioListItem
+              id="signIn"
+              name={fieldName}
+              label="Sign in using your account"
+              hintText="You’ll have an account if you’ve registered a beacon using this service previously. Your log in details will be an email address and password"
+              value="signIn"
+              defaultChecked={form.fields.signUpOrSignIn.value === "signIn"}
             />
           </RadioList>
         </FormGroup>
