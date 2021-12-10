@@ -27,7 +27,7 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges
       getAccountHolderId,
     } = this.context.container;
 
-    const registrationId: string = this.context.query.id as string;
+    const registrationId = this.context.params.registrationId as string;
 
     const draftRegistration: DraftRegistration = await getDraftRegistration(
       registrationId
@@ -49,7 +49,7 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges
     const { getAccountHoldersRegistration, getAccountHolderId } =
       this.context.container;
 
-    const registrationId: string = this.context.query.registrationId as string;
+    const registrationId = this.context.params.registrationId as string;
 
     const accountHolderId: string = await getAccountHolderId(
       this.context.session
