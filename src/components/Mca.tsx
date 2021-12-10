@@ -21,8 +21,9 @@ export const IfYouNeedHelp: FunctionComponent = (): JSX.Element => (
   <Details summaryText="If you need help completing this form">
     <BeaconRegistryContactInfo h2 />
     <p className="govuk-!-margin-top-5">
-      In an emergency situation please call UK Emergency Services, 24/7 UK Tels:
-      999 or 112
+      In an emergency in the UK, dial 999 and ask for the Coastguard. If you are
+      at sea and have GMDSS systems, use them to make a distress or urgency
+      alert.
     </p>
   </Details>
 );

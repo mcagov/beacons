@@ -167,6 +167,7 @@ const DataProtection: FunctionComponent = (): JSX.Element => (
       </AnchorLink>
       .
     </GovUKBody>
+
     <GovUKBody>
       To find out more about how the MCA looks after personal data, your rights,
       and how to contact our data protection officer, please go to{" "}
