@@ -79,9 +79,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-node@v2.4.0
-        with:
-          node-version: "14"
       - name: Copy env vars
         run: cp .env.example .env.local
       - name: Run Cypress UI tests
@@ -113,12 +110,9 @@ jobs:
 
     steps:
       - name: Checkout Service repo
-      - uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.3.4
         with:
           repository: "mcagov/beacons-service"
-      - uses: actions/setup-node@v2.4.0
-        with:
-          node-version: "14"
       - id: get_service_commit_hash
         name: Get commit hash from Service repo
         run: echo "::set-output name=service_commit_hash::$(git rev-parse HEAD)"
