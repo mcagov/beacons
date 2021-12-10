@@ -27,7 +27,7 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
       getAccountHolderId,
     } = this.context.container;
 
-    const registrationId: string = this.context.query.registrationId as string;
+    const registrationId = this.context.params.registrationId as string;
 
     const draftRegistration: DraftRegistration = await getDraftRegistration(
       registrationId
@@ -48,7 +48,7 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
   public async action(): Promise<GetServerSidePropsResult<any>> {
     const { getDraftRegistration } = this.context.container;
 
-    const registrationId: string = this.context.query.registrationId as string;
+    const registrationId: string = this.context.params.registrationId as string;
 
     return {
       props: {
