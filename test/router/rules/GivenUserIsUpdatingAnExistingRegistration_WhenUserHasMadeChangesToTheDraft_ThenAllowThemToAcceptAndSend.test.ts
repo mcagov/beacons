@@ -9,6 +9,9 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
         query: {
           registrationId: "registration-id-from-url",
         },
+        params: {
+          registrationId: "registration-id-from-url",
+        },
         container: {
           getAccountHolderId: jest
             .fn()
@@ -33,6 +36,9 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
     it("should not trigger if there are no changes to the existing DraftRegistration", async () => {
       const context: BeaconsGetServerSidePropsContext = {
         query: {
+          registrationId: "registration-id-from-url",
+        },
+        params: {
           registrationId: "registration-id-from-url",
         },
         container: {
@@ -61,6 +67,9 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
     it("should trigger if DraftRegistration is different to the corresponding Registration", async () => {
       const context: BeaconsGetServerSidePropsContext = {
         query: {
+          registrationId: "registration-id-from-url",
+        },
+        params: {
           registrationId: "registration-id-from-url",
         },
         container: {
@@ -96,6 +105,9 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
         query: {
           registrationId: registrationId,
         },
+        params: {
+          registrationId: "registration-id-from-url",
+        },
         req: {
           cookies: null,
         },
@@ -109,7 +121,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
           registrationId
         );
 
-      const result = await rule.action();
+      const result = (await rule.action()) as any;
 
       expect(result.props.userHasEdited).toBe(true);
     });
