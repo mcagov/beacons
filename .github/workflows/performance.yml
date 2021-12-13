@@ -1,0 +1,58 @@
+name: Deploy Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      webAppImageTag:
+        description: "Enter the desired git commit for the Web App"
+        required: true
+        default: ""
+      serviceImageTag:
+        description: "Enter the desired git commit for the API service"
+        required: true
+        default: ""
+env:
+  TERRAFORM_VERSION: 1.0.0
+
+jobs:
+  terraform_deploy_performance:
+    if: github.ref == 'refs/heads/main' && always()
+    name: Terraform Deploy
+    runs-on: ubuntu-latest
+    environment: performance
+    defaults:
+      run:
+        working-directory: terraform
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      TF_WORKSPACE: performance
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform Validate
+        run: terraform validate
+      - name: Terraform Deploy
+        env:
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_gov_notify_api_key: ${{ secrets.GOV_NOTIFY_API_KEY }}
+          TF_VAR_webapp_azure_ad_client_secret: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+          TF_VAR_webapp_azure_b2c_client_secret: ${{ secrets.AZURE_B2C_CLIENT_SECRET }}
+          TF_VAR_webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.JWT_SECRET }}
+          TF_VAR_service_basic_auth_username: ${{ secrets.SERVICE_BASIC_AUTH_USERNAME }}
+          TF_VAR_service_basic_auth_password: ${{ secrets.SERVICE_BASIC_AUTH_PASSWORD }}
+          TF_VAR_alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
+          TF_VAR_aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+          TF_VAR_enable_alerts: false
+          TF_VAR_webapp_image_tag: ${{ github.event.inputs.webAppImageTag }}
+          TF_VAR_service_image_tag: ${{ github.event.inputs.serviceImageTag }}
+          TF_VAR_trello_api_key: ""
+          TF_VAR_trello_token: ""
+          TF_VAR_trello_list_id: ""
+        run: terraform apply -auto-approve -var-file=performance.tfvars
