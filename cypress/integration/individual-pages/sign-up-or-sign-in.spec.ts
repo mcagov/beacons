@@ -16,7 +16,7 @@ describe("Given that I have visited sign-up-or-sign-in", () => {
     thenIShouldSeeFormErrors(errorMessage);
 
     whenIClickOnTheErrorSummaryLinkContaining(errorMessage);
-    thenMyFocusMovesTo("#signIn");
+    thenMyFocusMovesTo("#signUp");
   });
 });
 
