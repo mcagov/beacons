@@ -31,4 +31,20 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+        env:
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_gov_notify_api_key: ${{ secrets.GOV_NOTIFY_API_KEY }}
+          TF_VAR_webapp_azure_ad_client_secret: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+          TF_VAR_webapp_azure_b2c_client_secret: ${{ secrets.AZURE_B2C_CLIENT_SECRET }}
+          TF_VAR_webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.JWT_SECRET }}
+          TF_VAR_service_basic_auth_username: ${{ secrets.SERVICE_BASIC_AUTH_USERNAME }}
+          TF_VAR_service_basic_auth_password: ${{ secrets.SERVICE_BASIC_AUTH_PASSWORD }}
+          TF_VAR_alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
+          TF_VAR_aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+          TF_VAR_enable_alerts: false
+          TF_VAR_webapp_image_tag: ${{ github.event.inputs.webAppImageTag }}
+          TF_VAR_service_image_tag: ${{ github.event.inputs.serviceImageTag }}
+          TF_VAR_trello_api_key: ""
+          TF_VAR_trello_token: ""
+          TF_VAR_trello_list_id: ""
+        run: terraform destroy -auto-approve -var-file=performance.tfvars
