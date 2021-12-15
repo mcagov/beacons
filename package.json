@@ -28,7 +28,7 @@
     "adr-log": "^2.2.0",
     "husky": "^4.3.8",
     "prettier": "2.3.2",
-    "pretty-quick": "^3.1.1"
+    "pretty-quick": "^3.1.2"
   },
   "engines": {
     "node": ">=12.20.x <=14.15.x",
