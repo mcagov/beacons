@@ -114,7 +114,7 @@ describe("Beacons API Gateway", () => {
     });
 
     it("should send the JSON to the correct endpoint", async () => {
-      const expectedUrl = `${apiUrl}/beacons/1234/delete`;
+      const expectedUrl = `${apiUrl}/registrations/1234/delete`;
       const expectedJson = {
         beaconId: "1234",
         userId: "0987",

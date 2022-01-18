@@ -12,7 +12,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
         req: {
           cookies: {},
         },
-        query: {
+        params: {
           registrationId: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
         },
       } as any;
@@ -33,7 +33,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
             [formSubmissionCookieId]: undefined,
           },
         },
-        query: {
+        params: {
           registrationId: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
         },
       } as any;
@@ -61,7 +61,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
             getAccountBeacons: jest.fn(),
           },
         },
-        query: {
+        params: {
           registrationId: "user-is-already-editing-this-draft-registration",
         },
       } as any;
@@ -82,7 +82,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
             [formSubmissionCookieId]:
               "user-has-started-doing-something-to-a-draft-registration",
           },
-          query: {
+          params: {
             registrationId:
               "but-is-now-trying-to-do-something-to-a-different-draft-registration",
           },

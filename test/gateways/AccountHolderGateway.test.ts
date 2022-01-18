@@ -76,7 +76,7 @@ describe("Account Holder API Gateway", () => {
   });
 
   describe("Getting an account holder id from an auth id", () => {
-    const accountHolderIdEndpoint = "account-holder/auth-id";
+    const accountHolderEndpoint = "account-holder";
     let authId;
     beforeEach(() => {
       authId = v4();
@@ -88,10 +88,12 @@ describe("Account Holder API Gateway", () => {
     });
 
     it("should request an accountHolderId from the correct endpoint", async () => {
-      const expectedUrl = `${hostName}/${accountHolderIdEndpoint}/${authId}`;
+      const expectedUrl = `${hostName}/${accountHolderEndpoint}?authId=${authId}`;
       mockedAxios.get.mockResolvedValue({
         data: {
-          id: "any id",
+          data: {
+            id: "any id",
+          },
         },
       });
 
@@ -105,7 +107,9 @@ describe("Account Holder API Gateway", () => {
     it("should return the obtained accountHolderId from the API", async () => {
       mockedAxios.get.mockResolvedValue({
         data: {
-          id: "any-account-holder-id",
+          data: {
+            id: "any-account-holder-id",
+          },
         },
       });
 

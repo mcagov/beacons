@@ -6,7 +6,7 @@ export function toIsoDateString(year: string, month: string): string {
   if (yearAsNumber && isValidMonth) {
     try {
       const isoDateStringCharLength = 10;
-      return new Date(yearAsNumber, monthAsNumber - 1)
+      return new Date(Date.UTC(yearAsNumber, monthAsNumber - 1))
         .toISOString()
         .slice(0, isoDateStringCharLength);
     } catch {

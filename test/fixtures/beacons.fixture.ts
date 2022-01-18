@@ -98,22 +98,6 @@ export const beaconFixtures: Beacon = deepFreeze([
         otherActivityLocation: "Manchester",
         otherActivityPeopleCount: "10",
         mainUse: true,
-        entityLinks: [
-          {
-            verb: "PATCH",
-            path: "/beacon-uses/e00036c4-e3f4-46bb-aa9e-1d91870d9172",
-          },
-        ],
-      },
-    ],
-    entityLinks: [
-      {
-        verb: "GET",
-        path: "/beacons/f48e8212-2e10-4154-95c7-bdfd061bcfd2",
-      },
-      {
-        verb: "PATCH",
-        path: "/beacons/f48e8212-2e10-4154-95c7-bdfd061bcfd2",
       },
     ],
   },
@@ -213,22 +197,6 @@ export const beaconFixtures: Beacon = deepFreeze([
         otherActivityLocation: "Manchester",
         otherActivityPeopleCount: "10",
         mainUse: true,
-        entityLinks: [
-          {
-            verb: "PATCH",
-            path: "/beacon-uses/e00036c4-e3f4-46bb-aa9e-1d91870d9173",
-          },
-        ],
-      },
-    ],
-    entityLinks: [
-      {
-        verb: "GET",
-        path: "/beacons/f48e8212-2e10-4154-95c7-bdfd061bcfd2",
-      },
-      {
-        verb: "PATCH",
-        path: "/beacons/f48e8212-2e10-4154-95c7-bdfd061bcfd2",
       },
     ],
   },

@@ -25,7 +25,7 @@ describe("BeaconsApiResponseMapper", () => {
     expect(mappedBeacon).toStrictEqual(expectedBeacon);
   });
 
-  it("maps a beacon API response containing multiple beacons to an Beacon array", () => {
+  it("maps a beacon API response containing multiple beacons to a Beacon array", () => {
     beaconApiResponse = _.cloneDeep(manyBeaconsApiResponseFixture);
     const mappedBeacons = responseMapper.mapList(beaconApiResponse);
 

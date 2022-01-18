@@ -184,7 +184,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     it("displays errors if the last serviced date in the future", () => {
       const date = new Date();
       const futureYear = date.getFullYear() + 1;
-      whenIType(`${date.getMonth()}`, lastServicedDateMonthFieldSelector);
+      whenIType(`${date.getMonth() + 1}`, lastServicedDateMonthFieldSelector);
       whenIType(`${futureYear}`, lastServicedDateYearFieldSelector);
       whenIClickContinue();
 

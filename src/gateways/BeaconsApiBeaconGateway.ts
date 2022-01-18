@@ -68,7 +68,7 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
   }
 
   public async deleteBeacon(json: IDeleteBeaconRequest): Promise<boolean> {
-    const url = `${this.apiUrl}/beacons/${json.beaconId}/delete`;
+    const url = `${this.apiUrl}/registrations/${json.beaconId}/delete`;
     const data = {
       beaconId: json.beaconId,
       userId: json.accountHolderId,

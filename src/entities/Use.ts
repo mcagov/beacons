@@ -1,5 +1,4 @@
 import { Environment } from "../lib/deprecatedRegistration/types";
-import { EntityLink } from "./EntityLink";
 
 export interface Use {
   id: string;
@@ -47,5 +46,4 @@ export interface Use {
   otherActivityPeopleCount?: string;
   moreDetails: string;
   mainUse: boolean;
-  entityLinks: EntityLink[];
 }

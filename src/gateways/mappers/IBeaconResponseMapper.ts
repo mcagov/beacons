@@ -1,8 +1,7 @@
 import { Beacon } from "../../entities/Beacon";
-import { IBeaconListResponse } from "./IBeaconListResponse";
-import { IBeaconResponse } from "./IBeaconResponse";
+import { RegistrationResponse } from "../../lib/deprecatedRegistration/IRegistrationResponseBody";
 
 export interface IBeaconResponseMapper {
-  map: (beaconApiResponse: IBeaconResponse) => Beacon;
-  mapList: (beaconApiResponse: IBeaconListResponse) => Beacon[];
+  map: (beaconApiResponse: RegistrationResponse) => Beacon;
+  mapList: (beaconApiResponse: RegistrationResponse[]) => Beacon[];
 }

@@ -1,5 +1,4 @@
 import { EmergencyContact } from "./EmergencyContact";
-import { EntityLink } from "./EntityLink";
 import { Owner } from "./Owner";
 import { Use } from "./Use";
 
@@ -24,5 +23,4 @@ export interface Beacon {
   uses: Use[];
   owners: Owner[];
   emergencyContacts: EmergencyContact[];
-  entityLinks: EntityLink[];
 }

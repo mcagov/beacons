@@ -1,19 +1,17 @@
 import axios, { AxiosResponse } from "axios";
 import { AccountHolder } from "../entities/AccountHolder";
 import { Beacon } from "../entities/Beacon";
+import { RegistrationResponse } from "../lib/deprecatedRegistration/IRegistrationResponseBody";
 import logger from "../logger";
 import { AccountHolderGateway } from "./interfaces/AccountHolderGateway";
 import { AuthGateway } from "./interfaces/AuthGateway";
 import { BeaconsApiResponseMapper } from "./mappers/BeaconsApiResponseMapper";
 import { IAccountHolderDetailsResponse } from "./mappers/IAccountHolderDetailsResponse";
-import { IAccountHolderIdResponseBody } from "./mappers/IAccountHolderIdResponseBody";
-import { IBeaconListResponse } from "./mappers/IBeaconListResponse";
 
 export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
   private readonly apiUrl: string;
   private readonly accountHolderControllerRoute = "account-holder";
-  private readonly accountHolderIdEndpoint = "auth-id";
-  private readonly accountHolderBeaconsEndpoint = "beacons";
+  private readonly registrationControllerRoute = "registrations";
   private readonly authGateway: AuthGateway;
 
   constructor(apiUrl: string, authGateway: AuthGateway) {
@@ -22,16 +20,16 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
   }
 
   public async getAccountHolderId(authId: string): Promise<string> {
-    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${this.accountHolderIdEndpoint}/${authId}`;
+    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}?authId=${authId}`;
     try {
       const response = await axios.get<
         any,
-        AxiosResponse<IAccountHolderIdResponseBody>
+        AxiosResponse<IAccountHolderDetailsResponse>
       >(url, {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       logger.info("Account holder id retrieved");
-      return response.data.id;
+      return response.data.data.id;
     } catch (error) {
       if (error.response && error.response.status === 404) {
         return null; // 404 is a-ok
@@ -119,14 +117,15 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
   }
 
   public async getAccountBeacons(accountHolderId: string): Promise<Beacon[]> {
-    const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}/${this.accountHolderBeaconsEndpoint}`;
+    // This method should really be moved to a different gateway in the future.
+    const url = `${this.apiUrl}/${this.registrationControllerRoute}?accountHolderId=${accountHolderId}`;
     try {
-      const response = await axios.get<any, AxiosResponse<IBeaconListResponse>>(
-        url,
-        {
-          headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
-        }
-      );
+      const response = await axios.get<
+        any,
+        AxiosResponse<RegistrationResponse[]>
+      >(url, {
+        headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
+      });
       logger.info("Account beacons retrieved");
       return new BeaconsApiResponseMapper().mapList(response.data);
     } catch (error) {
