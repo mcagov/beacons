@@ -57,5 +57,5 @@ resource "aws_elasticsearch_domain" "opensearch" {
 }
 CONFIG
 
-  depends_on      = [aws_iam_service_linked_role.es]
+  depends_on = [aws_iam_service_linked_role.es]
 }
