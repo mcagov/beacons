@@ -180,6 +180,10 @@ resource "aws_ecs_task_definition" "service" {
       {
         name : "AZURE_AD_API_ID_URI",
         value : "api://${var.service_azure_ad_api_id}"
+      },
+      {
+        name : "OPENSEARCH_URL",
+        value : aws_elasticsearch_domain.opensearch.endpoint
       }
     ],
     logConfiguration : {
