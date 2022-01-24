@@ -4,7 +4,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
 
 
   cluster_config {
-    instance_type            = "t3.small.search"
+    instance_type            = "t3.small.elasticsearch"
     dedicated_master_enabled = false
     warm_enabled             = false
     instance_count           = 1
