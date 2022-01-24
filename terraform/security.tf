@@ -85,6 +85,26 @@ resource "aws_security_group" "db" {
   }
 }
 
+resource "aws_security_group" "opensearch" {
+  name        = "${terraform.workspace}-beacons-opensearch-security-group"
+  description = "Allows inbound access from ECS tasks only"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = 443
+    to_port         = 443
+    security_groups = aws_security_group.ecs_tasks[*].id
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 # Allows traffic from the ECS cluster to VPC endpoints for ECR images
 resource "aws_security_group" "vpc_endpoints" {
   name        = "${terraform.workspace}-beacons-ecr-vpc-endpoints-security-group"
