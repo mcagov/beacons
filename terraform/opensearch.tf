@@ -1,3 +1,11 @@
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
+
+resource "aws_iam_service_linked_role" "es" {
+  aws_service_name = "es.amazonaws.com"
+}
+
 resource "aws_elasticsearch_domain" "opensearch" {
   domain_name           = "${terraform.workspace}-opensearch-service"
   elasticsearch_version = "OS_1.1"
@@ -34,4 +42,20 @@ resource "aws_elasticsearch_domain" "opensearch" {
   node_to_node_encryption {
     enabled = true
   }
+
+  access_policies = <<CONFIG
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "es:*",
+            "Principal": "*",
+            "Effect": "Allow",
+            "Resource": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${terraform.workspace}-opensearch-service/*"
+        }
+    ]
+}
+CONFIG
+
+  depends_on      = [aws_iam_service_linked_role.es]
 }
