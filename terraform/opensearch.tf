@@ -10,6 +10,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
     dedicated_master_count   = 3
     dedicated_master_type    = "t3.small.elasticsearch"
     warm_enabled             = false
+    zone_awareness_enabled = true
 
     zone_awareness_config {
       availability_zone_count = var.az_count
