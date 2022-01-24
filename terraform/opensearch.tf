@@ -5,9 +5,15 @@ resource "aws_elasticsearch_domain" "opensearch" {
 
   cluster_config {
     instance_type            = "t3.small.elasticsearch"
-    dedicated_master_enabled = false
+    instance_count           = 2
+    dedicated_master_enabled = true
+    dedicated_master_count   = 3
+    dedicated_master_type    = "t3.small.elasticsearch"
     warm_enabled             = false
-    instance_count           = 1
+
+    zone_awareness_config {
+      availability_zone_count = var.az_count
+    }
   }
 
   ebs_options {
