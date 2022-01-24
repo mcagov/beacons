@@ -8,10 +8,6 @@ resource "aws_elasticsearch_domain" "opensearch" {
     dedicated_master_enabled = false
     warm_enabled             = false
     instance_count           = 1
-
-    zone_awareness_config {
-      availability_zone_count = var.az_count
-    }
   }
 
   ebs_options {
