@@ -40,7 +40,7 @@ resource "aws_db_subnet_group" "db" {
 resource "aws_subnet" "opensearch" {
   count             = var.az_count
   vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, (3 * var.az_count) + count.index)
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, (4 * var.az_count) + count.index)
   availability_zone = data.aws_availability_zones.available.names[count.index]
 }
 
