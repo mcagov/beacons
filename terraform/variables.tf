@@ -291,3 +291,23 @@ variable "trello_list_id" {
   type        = string
   description = "Unique idenitfier for list in Trello"
 }
+variable "opensearch_instance_type" {
+  type        = string
+  description = "Instance type for Opensearch data nodes"
+}
+variable "opensearch_dedicated_master_type" {
+  type        = string
+  description = "Instance type for Opensearch master nodes"
+}
+variable "opensearch_master_node_count" {
+  type        = number
+  description = "Dedicated master node count for Opensearch - must be correct number of nodes for master election"
+}
+variable "opensearch_instance_count" {
+  type        = number
+  description = "Data node count for Opensearch"
+}
+variable "opensearch_ebs_volume_size" {
+  type        = number
+  description = "Size of Elastic Block Store backing each data node in GB - min 10, max 100"
+}
