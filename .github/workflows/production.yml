@@ -67,4 +67,6 @@ jobs:
           TF_VAR_trello_api_key: ${{ secrets.TRELLO_API_KEY }}
           TF_VAR_trello_token: ${{ secrets.TRELLO_TOKEN }}
           TF_VAR_trello_list_id: ${{ secrets.TRELLO_LIST_ID }}
+          TF_VAR_opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
+          TF_VAR_opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
         run: terraform apply -auto-approve -var-file=production.tfvars -var-file=production.images.tfvars

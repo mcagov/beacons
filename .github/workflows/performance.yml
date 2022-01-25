@@ -55,4 +55,6 @@ jobs:
           TF_VAR_trello_api_key: ""
           TF_VAR_trello_token: ""
           TF_VAR_trello_list_id: ""
+          TF_VAR_opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
+          TF_VAR_opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
         run: terraform apply -auto-approve -var-file=performance.tfvars
