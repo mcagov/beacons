@@ -42,3 +42,12 @@ resource "aws_secretsmanager_secret_version" "webapp_b2c_next_auth_jwt_secret" {
   secret_id     = aws_secretsmanager_secret.webapp_b2c_next_auth_jwt_secret.id
   secret_string = var.webapp_azure_b2c_next_auth_jwt_secret
 }
+
+resource "aws_secretsmanager_secret" "opensearch_master_password" {
+  name = "${terraform.workspace}_opensearch_master_password"
+}
+
+resource "aws_secretsmanager_secret_version" "opensearch_master_password" {
+  secret_id     = aws_secretsmanager_secret.opensearch_master_password.id
+  secret_string = var.opensearch_master_user_password
+}

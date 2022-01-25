@@ -182,9 +182,13 @@ resource "aws_ecs_task_definition" "service" {
         value : "api://${var.service_azure_ad_api_id}"
       },
       {
-        name : "OPENSEARCH_URL",
+        name : "OPENSEARCH_ENDPOINT",
         value : aws_elasticsearch_domain.opensearch.endpoint
-      }
+      },
+      {
+        name : "OPENSEARCH_USER",
+        value : var.opensearch_master_user_name
+      },
     ],
     logConfiguration : {
       "logDriver" : "awslogs",
@@ -198,7 +202,12 @@ resource "aws_ecs_task_definition" "service" {
       {
         name : "SPRING_DATASOURCE_PASSWORD",
         valueFrom : aws_secretsmanager_secret.db_password.arn
-    }]
+      },
+      {
+        name : "OPENSEARCH_PASSWORD",
+        valueFrom : aws_secretsmanager_secret.opensearch_master_password.arn
+      }
+    ]
   }])
 }
 

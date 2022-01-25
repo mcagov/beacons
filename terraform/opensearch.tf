@@ -8,8 +8,17 @@ resource "aws_iam_service_linked_role" "es" {
 
 resource "aws_elasticsearch_domain" "opensearch" {
   domain_name           = "${terraform.workspace}-opensearch-service"
-  elasticsearch_version = "OS_1.1"
+  elasticsearch_version = "OpenSearch_1.1"
 
+  advanced_security_options {
+    enabled                        = true
+    internal_user_database_enabled = true
+
+    master_user_options {
+      master_user_name     = var.opensearch_master_user_name
+      master_user_password = var.opensearch_master_user_password
+    }
+  }
 
   cluster_config {
     instance_type            = var.opensearch_instance_type
@@ -25,14 +34,18 @@ resource "aws_elasticsearch_domain" "opensearch" {
     }
   }
 
+  domain_endpoint_options {
+    enforce_https = true
+  }
+
   ebs_options {
     ebs_enabled = true
-    volume_size = 10
+    volume_size = var.opensearch_ebs_volume_size
   }
 
   vpc_options {
     security_group_ids = [aws_security_group.opensearch.id]
-    subnet_ids         = aws_subnet.app.*.id
+    subnet_ids         = aws_subnet.opensearch.*.id
   }
 
   encrypt_at_rest {
@@ -49,7 +62,9 @@ resource "aws_elasticsearch_domain" "opensearch" {
     "Statement": [
         {
             "Action": "es:*",
-            "Principal": "*",
+            "Principal": {
+              "AWS": "*"
+            },
             "Effect": "Allow",
             "Resource": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${terraform.workspace}-opensearch-service/*"
         }

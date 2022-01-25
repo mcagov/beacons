@@ -291,6 +291,14 @@ variable "trello_list_id" {
   type        = string
   description = "Unique idenitfier for list in Trello"
 }
+variable "opensearch_master_user_name" {
+  type        = string
+  description = "Master username for opensearch"
+}
+variable "opensearch_master_user_password" {
+  type        = string
+  description = "Master password for opensearch"
+}
 variable "opensearch_instance_type" {
   type        = string
   description = "Instance type for Opensearch data nodes"
