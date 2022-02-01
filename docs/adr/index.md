@@ -12,6 +12,7 @@ This log lists the Architectural Decision Records (ADRs) for the Beacons Registr
 - [ADR-0005-2021-03-19](0005-2021-03-19-infrastructure-changes-and-deployment.md) - Infrastructure changes and deployment
 - [ADR-0006-2021-05-26](0006-2021-05-26-authorisation.md) - Authorisation of access to the Beacons Service
 - [ADR-0007-2021-10-25](0007-2021-10-25-serve-backoffice-spa-from-spring.md) - Serve Backoffice SPA from Spring service
+- [ADR-0008-2021-11-09](0008-2021-11-09-provide-backoffice-search-with-elasticsearch.md) - Provide Backoffice search functionality using OpenSearch
 
 <!-- adrlogstop -->
 
