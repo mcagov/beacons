@@ -3,6 +3,7 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 resource "aws_iam_service_linked_role" "es" {
+  custom_suffix = terraform.workspace
   aws_service_name = "es.amazonaws.com"
 }
 
