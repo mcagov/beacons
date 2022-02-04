@@ -2,7 +2,7 @@ data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}
 
-data "aws_iam_service_linked_role" "es" {
+data "aws_iam_role" "es" {
   # OpenSearch depends on having an IAM service-linked role available
   #
   # AWS only allows one service-linked role per account per service, because the service-linked role is associated with
@@ -11,7 +11,7 @@ data "aws_iam_service_linked_role" "es" {
   #
   # Therefore, an IAM service-linked role must be created manually in the AWS account, independent of Terraform, and
   # referenced as data.
-  aws_service_name = "es.amazonaws.com"
+  name = "AWSServiceRoleForAmazonElasticsearchService"
 }
 
 resource "aws_elasticsearch_domain" "opensearch" {
@@ -81,5 +81,5 @@ resource "aws_elasticsearch_domain" "opensearch" {
 }
 CONFIG
 
-  depends_on = [data.aws_iam_service_linked_role.es]
+  depends_on = [data.aws_iam_role.es]
 }
