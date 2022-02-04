@@ -91,10 +91,10 @@ resource "aws_security_group" "opensearch_public" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    protocol        = "tcp"
-    from_port       = 443
-    to_port         = 443
-    security_groups = ["0.0.0.0/0"]
+    protocol    = "tcp"
+    from_port   = 443
+    to_port     = 443
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
