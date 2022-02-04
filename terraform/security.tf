@@ -85,7 +85,7 @@ resource "aws_security_group" "db" {
   }
 }
 
-resource "aws_security_group" "opensearch" {
+resource "aws_security_group" "opensearch_public" {
   name        = "${terraform.workspace}-beacons-opensearch-security-group"
   description = "Allows access via Internet to OpenSearch.  OpenSearch handles authentication."
   vpc_id      = aws_vpc.main.id
