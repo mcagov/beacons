@@ -63,6 +63,38 @@ resource "aws_lb_listener_rule" "backoffice_spa" {
   }
 }
 
+resource "aws_lb_listener_rule" "backoffice_opensearch" {
+  listener_arn = aws_alb_listener.front_end_ssl.arn
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.service.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/backoffice/opensearch*"]
+    }
+  }
+}
+
+resource "aws_alb_target_group" "backoffice_opensearch" {
+  name        = "${terraform.workspace}-opensearch-target-group"
+  port        = 443
+  protocol    = "HTTPS"
+  vpc_id      = aws_vpc.main.id
+  target_type = "ip"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_alb_target_group_attachment" "backoffice_opensearch" {
+  target_group_arn = aws_alb_target_group.backoffice_opensearch.arn
+  target_id        = aws_elasticsearch_domain.opensearch.id
+}
+
 resource "aws_alb_target_group" "webapp" {
   name        = "${terraform.workspace}-webapp-target-group"
   port        = var.webapp_port
