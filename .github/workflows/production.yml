@@ -9,7 +9,7 @@ on:
         default: "true"
 
 env:
-  TERRAFORM_VERSION: 1.1.2
+  TERRAFORM_VERSION: 1.0.0
 
 jobs:
   update_production_docker_images:

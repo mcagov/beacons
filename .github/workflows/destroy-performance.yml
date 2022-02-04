@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TERRAFORM_VERSION: 1.1.2
+  TERRAFORM_VERSION: 1.0.0
 
 jobs:
   terraform_destroy_performance:
