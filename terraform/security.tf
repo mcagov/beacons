@@ -103,6 +103,10 @@ resource "aws_security_group" "opensearch" {
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # Allows traffic from the ECS cluster to VPC endpoints for ECR images
