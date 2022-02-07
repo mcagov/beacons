@@ -319,3 +319,7 @@ variable "opensearch_ebs_volume_size" {
   type        = number
   description = "Size of Elastic Block Store backing each data node in GB - min 10, max 100"
 }
+variable "openearch_proxy_image_tag" {
+  type = string
+  description = "Image tag of the Opensearch proxy container in ECR"
+}
