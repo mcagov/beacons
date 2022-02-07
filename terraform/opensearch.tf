@@ -52,11 +52,10 @@ resource "aws_elasticsearch_domain" "opensearch" {
     volume_size = var.opensearch_ebs_volume_size
   }
 
-  # Temporarily move OpenSearch to outside the VPC to confirm the batch job was successful
-  #  vpc_options {
-  #    security_group_ids = [aws_security_group.opensearch.id]
-  #    subnet_ids         = aws_subnet.opensearch.*.id
-  #  }
+  vpc_options {
+    security_group_ids = [aws_security_group.opensearch.id]
+    subnet_ids         = aws_subnet.opensearch.*.id
+  }
 
   encrypt_at_rest {
     enabled = true
@@ -66,30 +65,15 @@ resource "aws_elasticsearch_domain" "opensearch" {
     enabled = true
   }
 
-  #  Temporarily permit all access to confirm the batch job was successful
-  #  access_policies = <<CONFIG
-  #{
-  #    "Version": "2012-10-17",
-  #    "Statement": [
-  #        {
-  #            "Action": "es:*",
-  #            "Principal": {
-  #              "AWS": "*"
-  #            },
-  #            "Effect": "Allow",
-  #            "Resource": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${terraform.workspace}-opensearch-service/*"
-  #        }
-  #    ]
-  #}
-  #CONFIG
-
   access_policies = <<CONFIG
 {
     "Version": "2012-10-17",
     "Statement": [
         {
             "Action": "es:*",
-            "Principal": "*",
+            "Principal": {
+              "AWS": "*"
+            },
             "Effect": "Allow",
             "Resource": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${terraform.workspace}-opensearch-service/*"
         }
@@ -98,8 +82,4 @@ resource "aws_elasticsearch_domain" "opensearch" {
 CONFIG
 
   depends_on = [data.aws_iam_role.es]
-}
-
-output "opensearch_dashboards_url" {
-  value = aws_elasticsearch_domain.opensearch.kibana_endpoint
 }
