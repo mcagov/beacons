@@ -85,16 +85,16 @@ resource "aws_security_group" "db" {
   }
 }
 
-resource "aws_security_group" "opensearch_public" {
-  name        = "${terraform.workspace}-beacons-opensearch-security-group-public"
-  description = "Allows access via Internet to OpenSearch.  OpenSearch handles authentication."
+resource "aws_security_group" "opensearch" {
+  name        = "${terraform.workspace}-beacons-opensearch-security-group"
+  description = "Allows inbound access from ECS tasks only"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    protocol    = "tcp"
-    from_port   = 443
-    to_port     = 443
-    cidr_blocks = ["0.0.0.0/0"]
+    protocol        = "tcp"
+    from_port       = 443
+    to_port         = 443
+    security_groups = aws_security_group.ecs_tasks[*].id
   }
 
   egress {
@@ -102,10 +102,6 @@ resource "aws_security_group" "opensearch_public" {
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  lifecycle {
-    create_before_destroy = true
   }
 }
 

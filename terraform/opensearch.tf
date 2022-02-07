@@ -53,7 +53,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
   }
 
   vpc_options {
-    security_group_ids = [aws_security_group.opensearch_public.id]
+    security_group_ids = [aws_security_group.opensearch.id]
     subnet_ids         = aws_subnet.opensearch.*.id
   }
 
