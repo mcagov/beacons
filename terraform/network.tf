@@ -44,6 +44,13 @@ resource "aws_subnet" "opensearch" {
   availability_zone = data.aws_availability_zones.available.names[count.index]
 }
 
+resource "aws_subnet" "opensearch_proxy" {
+  count             = var.az_count
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, (5 * var.az_count) + count.index)
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+}
+
 resource "aws_route" "internet_access" {
   route_table_id         = aws_vpc.main.main_route_table_id
   destination_cidr_block = "0.0.0.0/0"

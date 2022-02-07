@@ -63,6 +63,44 @@ resource "aws_lb_listener_rule" "backoffice_spa" {
   }
 }
 
+/**
+* Forward traffic from the public Internet to a proxy for the OpenSearch service
+*
+* This allow the OpenSearch service to exist within the VPC, and for authentication rules to be applied at the
+* boundary with the public Internet.
+*
+* We do not want to give the public Internet unrestricted access to the OpenSearch service as it contains sensitive
+* data.
+*
+* TODO: Add Azure AD authentication to this rule when NGINX proxy has been tested
+*/
+resource "aws_lb_listener_rule" "opensearch_proxy" {
+  listener_arn = aws_alb_listener.front_end_ssl.arn
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.opensearch_proxy.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/opensearch*"]
+    }
+  }
+}
+
+resource "aws_alb_target_group" "opensearch_proxy" {
+  name        = "${terraform.workspace}-opensearch-proxy-target-group"
+  port        = 443
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.main.id
+  target_type = "ip"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
 resource "aws_alb_target_group" "webapp" {
   name        = "${terraform.workspace}-webapp-target-group"
   port        = var.webapp_port
