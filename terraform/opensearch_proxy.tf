@@ -18,8 +18,8 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
     image : var.opensearch_proxy_image_tag,
     portMappings : [
       {
-        containerPort : 443
-        hostPort : 443
+        containerPort : 80
+        hostPort : 80
       }
     ],
     environment : [
@@ -56,7 +56,7 @@ resource "aws_ecs_service" "opensearch_proxy" {
   load_balancer {
     target_group_arn = aws_alb_target_group.opensearch_proxy.arn
     container_name   = "opensearch-proxy"
-    container_port   = 443
+    container_port   = 80
   }
 
   service_registries {
@@ -66,7 +66,7 @@ resource "aws_ecs_service" "opensearch_proxy" {
   depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role]
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }
 }
 
