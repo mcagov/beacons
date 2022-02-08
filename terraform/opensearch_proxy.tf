@@ -1,5 +1,5 @@
 data "aws_ecr_repository" "opensearch_proxy" {
-  name = var.opensearch_proxy_image_tag
+  name = "232705206979.dkr.ecr.eu-west-2.amazonaws.com"
 }
 
 resource "aws_ecs_cluster" "opensearch_proxy" {
