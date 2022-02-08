@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
   memory                   = var.webapp_fargate_memory
   container_definitions = jsonencode([{
     name : "opensearch-proxy",
-    image : "${data.aws_ecr_repository.opensearch_proxy.repository_url}:${var.opensearch_proxy_image_tag}",
+    image : var.opensearch_proxy_image_tag,
     portMappings : [
       {
         containerPort : 80

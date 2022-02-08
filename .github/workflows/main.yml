@@ -93,7 +93,7 @@ jobs:
           git commit -m "Update image tags used in dev environment [skip ci]" & git push
 
   build_opensearch_proxy_container:
-    name: Build and push OpenSearch proxy Docker image
+    name: Build and Push Opensearch Proxy Docker image
     runs-on: ubuntu-latest
 
     steps:
@@ -111,7 +111,7 @@ jobs:
         with:
           context: ./terraform/opensearch-proxy
           push: true
-          tags: ${{ github.sha }}
+          tags: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/opensearch-proxy:${{ github.sha }}
 
   terraform_deploy_dev:
     needs:
