@@ -13,6 +13,10 @@ resource "aws_s3_bucket_policy" "logs_s3_policy" {
   policy = data.aws_iam_policy_document.log_policy.json
 }
 
+output "logs_s3_bucket_policy" {
+  value = data.aws_iam_policy_document.log_policy.json
+}
+
 # Global ELB account ID for eu-west-2 region
 # See https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html#access-logging-bucket-permissions
 locals {
