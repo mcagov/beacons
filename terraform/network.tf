@@ -84,3 +84,10 @@ resource "aws_route_table_association" "app" {
   count          = var.az_count
   subnet_id      = element(aws_subnet.app.*.id, count.index)
 }
+
+# Permit opensearch_proxy to access ECR
+resource "aws_route_table_association" "opensearch_proxy" {
+  route_table_id = element(aws_route_table.private.*.id, count.index)
+  count          = var.az_count
+  subnet_id      = element(aws_subnet.opensearch_proxy.*.id, count.index)
+}
