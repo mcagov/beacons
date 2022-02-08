@@ -18,8 +18,14 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
     image : var.opensearch_proxy_image_tag,
     portMappings : [
       {
-        containerPort : 80
-        hostPort : 80
+        containerPort : 443
+        hostPort : 443
+      }
+    ],
+    environment : [
+      {
+        name : "OPENSEARCH_URI",
+        value : aws_elasticsearch_domain.opensearch.endpoint
       }
     ]
   }])
