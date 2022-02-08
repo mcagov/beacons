@@ -90,7 +90,7 @@ resource "aws_lb_listener_rule" "opensearch_proxy" {
 
   condition {
     path_pattern {
-      values = ["/_dashboard*"]
+      values = ["/_dashboards*"]
     }
   }
 }
