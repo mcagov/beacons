@@ -27,7 +27,15 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
         name : "OPENSEARCH_URI",
         value : aws_elasticsearch_domain.opensearch.endpoint
       }
-    ]
+    ],
+    logConfiguration : {
+      "logDriver" : "awslogs",
+      "options" : {
+        "awslogs-group" : aws_cloudwatch_log_group.log_group.name,
+        "awslogs-region" : var.aws_region,
+        "awslogs-stream-prefix" : "opensearch-proxy"
+      }
+    }
   }])
 }
 
@@ -58,7 +66,7 @@ resource "aws_ecs_service" "opensearch_proxy" {
   depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role]
 
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
   }
 }
 

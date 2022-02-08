@@ -109,7 +109,7 @@ resource "aws_alb_target_group" "opensearch_proxy" {
   health_check {
     healthy_threshold   = "3"
     interval            = "30"
-    protocol            = "HTTPS"
+    protocol            = "HTTP"
     matcher             = "200"
     timeout             = "3"
     path                = "/health"
