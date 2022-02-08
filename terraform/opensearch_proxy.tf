@@ -48,7 +48,7 @@ resource "aws_ecs_service" "opensearch_proxy" {
   load_balancer {
     target_group_arn = aws_alb_target_group.opensearch_proxy.arn
     container_name   = "opensearch-proxy"
-    container_port   = 80
+    container_port   = 443
   }
 
   service_registries {
