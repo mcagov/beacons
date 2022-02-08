@@ -46,8 +46,22 @@ resource "aws_ecs_service" "opensearch_proxy" {
   }
 
   service_registries {
-    registry_arn = aws_service_discovery_service.webapp.arn
+    registry_arn = aws_service_discovery_service.opensearch_proxy.id
   }
 
   depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role]
+}
+
+resource "aws_service_discovery_service" "opensearch_proxy" {
+  name = "opensearch_proxy"
+
+  dns_config {
+    namespace_id   = aws_service_discovery_private_dns_namespace.private_dns.id
+    routing_policy = "MULTIVALUE"
+
+    dns_records {
+      ttl  = 10
+      type = "A"
+    }
+  }
 }
