@@ -99,6 +99,16 @@ resource "aws_alb_target_group" "opensearch_proxy" {
   lifecycle {
     create_before_destroy = true
   }
+
+  health_check {
+    healthy_threshold   = "3"
+    interval            = "30"
+    protocol            = "HTTP"
+    matcher             = "200"
+    timeout             = "3"
+    path                = "/"
+    unhealthy_threshold = "2"
+  }
 }
 
 resource "aws_alb_target_group" "webapp" {
