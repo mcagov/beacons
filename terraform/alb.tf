@@ -91,8 +91,8 @@ resource "aws_lb_listener_rule" "opensearch_proxy" {
 
 resource "aws_alb_target_group" "opensearch_proxy" {
   name        = "${terraform.workspace}-op-target-group"
-  port        = 80
-  protocol    = "HTTP"
+  port        = 443
+  protocol    = "HTTPS"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
 
@@ -103,10 +103,10 @@ resource "aws_alb_target_group" "opensearch_proxy" {
   health_check {
     healthy_threshold   = "3"
     interval            = "30"
-    protocol            = "HTTP"
+    protocol            = "HTTPS"
     matcher             = "200"
     timeout             = "3"
-    path                = "/"
+    path                = "/health"
     unhealthy_threshold = "2"
   }
 }
