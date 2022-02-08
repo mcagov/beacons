@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "log_policy" {
   statement {
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = ["${aws_s3_bucket.logs.arn}/${aws_alb.main.access_logs[0].prefix}/AWSLogs/${data.aws_caller_identity.current.account_id}"]
+    resources = ["${aws_s3_bucket.logs.arn}/${aws_alb.main.access_logs[0].prefix}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
 
     principals {
       type        = "AWS"
@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "log_policy" {
   statement {
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = ["${aws_s3_bucket.logs.arn}/${aws_alb.main.access_logs[0].prefix}/AWSLogs/${data.aws_caller_identity.current.account_id}"]
+    resources = ["${aws_s3_bucket.logs.arn}/${aws_alb.main.access_logs[0].prefix}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
 
     principals {
       type        = "Service"
