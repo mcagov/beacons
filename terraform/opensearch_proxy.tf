@@ -46,10 +46,14 @@ resource "aws_ecs_service" "opensearch_proxy" {
   }
 
   service_registries {
-    registry_arn = aws_service_discovery_service.opensearch_proxy.id
+    registry_arn = aws_service_discovery_service.opensearch_proxy.arn
   }
 
   depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_service_discovery_service" "opensearch_proxy" {
