@@ -96,7 +96,7 @@ resource "aws_lb_listener_rule" "opensearch_proxy" {
 }
 
 resource "aws_alb_target_group" "opensearch_proxy" {
-  name        = "${terraform.workspace}-opensearch-proxy"
+  name        = "${terraform.workspace}-opensearch-proxy-tg"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
