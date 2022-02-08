@@ -2,6 +2,12 @@ resource "aws_alb" "main" {
   name            = "${terraform.workspace}-beacons"
   subnets         = aws_subnet.public.*.id
   security_groups = [aws_security_group.lb.id]
+
+  access_logs {
+    bucket  = aws_s3_bucket.logs.bucket
+    prefix  = "load_balancer"
+    enabled = true
+  }
 }
 
 resource "aws_alb_listener" "front_end" {
