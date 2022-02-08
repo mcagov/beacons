@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "log_policy" {
 
     principals {
       type        = "Service"
-      identifiers = "delivery.logs.amazonaws.com"
+      identifiers = ["delivery.logs.amazonaws.com"]
     }
 
     condition {
@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "log_policy" {
 
     principals {
       type        = "Service"
-      identifiers = "delivery.logs.amazonaws.com"
+      identifiers = ["delivery.logs.amazonaws.com"]
     }
   }
 }
