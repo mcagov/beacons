@@ -160,3 +160,4 @@ resource "aws_alb_target_group" "service" {
     create_before_destroy = true
   }
 }
+
