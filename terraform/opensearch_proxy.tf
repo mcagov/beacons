@@ -58,7 +58,7 @@ resource "aws_ecs_service" "opensearch_proxy" {
   depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role]
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }
 }
 
