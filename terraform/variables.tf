@@ -323,3 +323,7 @@ variable "opensearch_proxy_image_tag" {
   type        = string
   description = "Image tag of the Opensearch proxy container in ECR"
 }
+variable "ssl_certificate_arn" {
+  type        = string
+  description = "ARN of ssl certificate generated in the AWS dashboard"
+}

@@ -31,23 +31,10 @@ resource "aws_alb_listener" "front_end_ssl" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:acm:eu-west-2:232705206979:certificate/b75eecc6-fff7-4114-b100-b1f0eb0641d7"
+  certificate_arn   = var.ssl_certificate_arn
 
   default_action {
     target_group_arn = aws_alb_target_group.webapp.id
-    type             = "forward"
-  }
-}
-
-resource "aws_alb_listener" "opensearch_proxy" {
-  load_balancer_arn = aws_alb.main.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:acm:eu-west-2:232705206979:certificate/270e952e-ffff-458f-a1d6-70e9989aa204"
-
-  default_action {
-    target_group_arn = aws_alb_target_group.opensearch_proxy.id
     type             = "forward"
   }
 }
@@ -94,7 +81,7 @@ resource "aws_lb_listener_rule" "backoffice_spa" {
 * TODO: Add Azure AD authentication to this rule when NGINX proxy has been tested
 */
 resource "aws_lb_listener_rule" "opensearch_proxy" {
-  listener_arn = aws_alb_listener.opensearch_proxy.arn
+  listener_arn = aws_alb_listener.front_end_ssl.arn
 
   action {
     type             = "forward"
