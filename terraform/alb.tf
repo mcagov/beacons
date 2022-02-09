@@ -69,13 +69,22 @@ resource "aws_lb_listener_rule" "backoffice_spa" {
   }
 }
 
-/**
-* Require users to authenticate.  Prevent all unauthenticated traffic from reaching the OpenSearch Proxy.
-*/
-resource "aws_lb_listener_rule" "opensearch_proxy_oidc" {
-  listener_arn = aws_alb_listener.front_end_ssl.arn
-  priority     = 1
 
+/**
+* Forward traffic from the public Internet to a proxy for the OpenSearch service
+*
+* This allow the OpenSearch service to exist within the VPC, and for authentication rules to be applied at the
+* boundary with the public Internet.
+*
+* We do not want to give the public Internet unrestricted access to the OpenSearch service as it contains sensitive
+* data.
+*/
+resource "aws_lb_listener_rule" "opensearch_proxy" {
+  listener_arn = aws_alb_listener.front_end_ssl.arn
+
+  /**
+  * Require users to authenticate.  Prevent all unauthenticated traffic from reaching the OpenSearch Proxy.
+  */
   action {
     type = "authenticate-oidc"
 
@@ -88,29 +97,6 @@ resource "aws_lb_listener_rule" "opensearch_proxy_oidc" {
       user_info_endpoint     = "https://graph.microsoft.com/oidc/userinfo"
     }
   }
-
-  condition {
-    host_header {
-      values = ["search.*"]
-    }
-  }
-}
-
-
-/**
-* Forward traffic from the public Internet to a proxy for the OpenSearch service
-*
-* This allow the OpenSearch service to exist within the VPC, and for authentication rules to be applied at the
-* boundary with the public Internet.
-*
-* We do not want to give the public Internet unrestricted access to the OpenSearch service as it contains sensitive
-* data.
-*
-* TODO: Add Azure AD authentication to this rule when NGINX proxy has been tested
-*/
-resource "aws_lb_listener_rule" "opensearch_proxy" {
-  listener_arn = aws_alb_listener.front_end_ssl.arn
-  priority     = 2
 
   action {
     type             = "forward"
