@@ -65,6 +65,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
     enabled = true
   }
 
+  # TODO: Add to fine grained access policy to limit the actions that a request from the opensearch_proxy can perform.
   access_policies = <<CONFIG
 {
     "Version": "2012-10-17",
