@@ -77,7 +77,7 @@ resource "aws_lb_listener_rule" "opensearch_proxy_oidc" {
   priority     = 1
 
   action {
-    type = "authenticate_oidc"
+    type = "authenticate-oidc"
 
     authenticate_oidc {
       authorization_endpoint = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/authorize"
