@@ -327,3 +327,14 @@ variable "ssl_certificate_arn" {
   type        = string
   description = "ARN of ssl certificate generated in the AWS dashboard"
 }
+
+/**
+* This secret is created and managed manually via the Azure portal (https://portal.azure.com) inside the relevant
+* environment's tenant.
+*
+* See https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-how-applications-are-added
+*/
+variable "opensearch_dashboards_sso_client_secret" {
+  type        = string
+  description = "Client secret for OpenSearch Proxy single sign-on"
+}

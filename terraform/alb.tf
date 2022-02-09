@@ -70,6 +70,34 @@ resource "aws_lb_listener_rule" "backoffice_spa" {
 }
 
 /**
+* Require users to authenticate.  Prevent all unauthenticated traffic from reaching the OpenSearch Proxy.
+*/
+resource "aws_lb_listener_rule" "opensearch_proxy_oidc" {
+  listener_arn = aws_alb_listener.front_end_ssl.arn
+  priority     = 1
+
+  action {
+    type = "authenticate_oidc"
+
+    authenticate_oidc {
+      authorization_endpoint = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/authorize"
+      client_id              = "485d79d6-4691-4287-a100-0d8eb1fcd4c4"
+      client_secret          = var.opensearch_dashboards_sso_client_secret
+      issuer                 = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/v2.0"
+      token_endpoint         = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/token"
+      user_info_endpoint     = "https://graph.microsoft.com/oidc/userinfo"
+    }
+  }
+
+  condition {
+    host_header {
+      values = ["search.*"]
+    }
+  }
+}
+
+
+/**
 * Forward traffic from the public Internet to a proxy for the OpenSearch service
 *
 * This allow the OpenSearch service to exist within the VPC, and for authentication rules to be applied at the
@@ -82,6 +110,7 @@ resource "aws_lb_listener_rule" "backoffice_spa" {
 */
 resource "aws_lb_listener_rule" "opensearch_proxy" {
   listener_arn = aws_alb_listener.front_end_ssl.arn
+  priority     = 2
 
   action {
     type             = "forward"
