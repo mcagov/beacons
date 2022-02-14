@@ -2,6 +2,8 @@ name: CI/CD Pipeline
 
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       updateImageTags:
@@ -121,7 +123,6 @@ jobs:
         prettier_check,
         build_opensearch_proxy_container,
       ]
-    if: github.ref == 'refs/heads/main'
     name: Terraform Deploy
     runs-on: ubuntu-latest
     environment: development
