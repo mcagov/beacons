@@ -40,4 +40,4 @@ opensearch_instance_type                = "t3.small.elasticsearch"
 opensearch_master_node_count            = 3
 opensearch_instance_count               = 2
 opensearch_ebs_volume_size              = 10
-ssl_certificate_arn                     = "arn:aws:acm:eu-west-2:232705206979:certificate/b75eecc6-fff7-4114-b100-b1f0eb0641d7"
+ssl_certificate_arn                     = "arn:aws:acm:eu-west-2:232705206979:certificate/0f4f1931-97d3-4504-88a7-ad28f1fb1d44"

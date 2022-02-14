@@ -13,6 +13,7 @@ coverage/
 
 # JetBrains
 .idea/
+*.iml
 
 # Node Modules
 node_modules
