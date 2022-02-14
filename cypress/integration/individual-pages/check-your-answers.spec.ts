@@ -32,7 +32,7 @@ describe("As a beacon owner, I want to check the details that were submitted", (
     andIHaveVisited(CreateRegistrationPageURLs.checkYourAnswers);
     givenIHaveClicked(acceptAndSendButtonSelector);
     andIHaveVisited(CreateRegistrationPageURLs.applicationComplete);
-    cy.get("div").contains("There was an error while registering your beacon");
+    cy.get("div").contains(/We could not save your registration/i);
     givenIHaveClicked(homePageLinkSelector);
     andIHaveVisited(GeneralPageURLs.start);
     givenIHaveClicked(startButtonSelector);

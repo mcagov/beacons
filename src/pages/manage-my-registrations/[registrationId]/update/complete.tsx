@@ -1,9 +1,12 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent } from "react";
+import React from "react";
 import { ReturnToYourAccountSection } from "../../../../components/domain/ReturnToYourAccountSection";
 import { Grid } from "../../../../components/Grid";
 import { Layout } from "../../../../components/Layout";
-import { Panel } from "../../../../components/Panel";
+import { BeaconRegistryContactInfo } from "../../../../components/Mca";
+import { PanelFailed } from "../../../../components/PanelFailed";
+import { PanelSucceeded } from "../../../../components/PanelSucceeded";
+import { GovUKBody } from "../../../../components/Typography";
 import { DraftRegistration } from "../../../../entities/DraftRegistration";
 import { verifyFormSubmissionCookieIsSet } from "../../../../lib/cookies";
 import { clearFormSubmissionCookie } from "../../../../lib/middleware";
@@ -13,18 +16,17 @@ import { withSession } from "../../../../lib/middleware/withSession";
 import { redirectUserTo } from "../../../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../../../lib/types";
 import { GeneralPageURLs } from "../../../../lib/urls";
+import logger from "../../../../logger";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-import { IUpdateRegistrationResult } from "../../../../useCases/updateRegistration";
 
-interface ApplicationCompleteProps {
+const ApplicationCompletePage = (props: {
   reference: string;
-  pageHeading: string;
-}
+  updateSuccess: boolean;
+}): JSX.Element => {
+  const pageHeading = props.updateSuccess
+    ? "Update succeeded"
+    : "Update failed";
 
-const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
-  reference,
-  pageHeading,
-}: ApplicationCompleteProps): JSX.Element => {
   return (
     <>
       <Layout
@@ -35,25 +37,33 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
         <Grid
           mainContent={
             <>
-              <Panel title={pageHeading} reference={reference} />
-              <ApplicationCompleteWhatNext />
+              {props.updateSuccess ? (
+                <>
+                  <PanelSucceeded
+                    title="Your beacon registration has been updated"
+                    reference={props.reference}
+                  />
+                  <GovUKBody className="govuk-body">
+                    Your updated details have been received by the Maritime and
+                    Coastguard Beacon Registry team. You can now use your
+                    beacon.
+                  </GovUKBody>
+                </>
+              ) : (
+                <>
+                  <PanelFailed>
+                    We could not update your beacon. Please contact the Beacon
+                    Registry team using the details below.
+                  </PanelFailed>
+                  <BeaconRegistryContactInfo />
+                </>
+              )}
+              <BeaconRegistryContactInfo />
               <ReturnToYourAccountSection />
             </>
           }
         />
       </Layout>
-    </>
-  );
-};
-
-const ApplicationCompleteWhatNext: FunctionComponent = (): JSX.Element => {
-  // TODO: Implement email confirmation of update
-  return (
-    <>
-      {/*<SectionHeading>What happens next</SectionHeading>*/}
-      {/*<GovUKBody>*/}
-      {/*  We have sent you an email confirming your registration has been updated*/}
-      {/*</GovUKBody>*/}
     </>
   );
 };
@@ -74,36 +84,37 @@ export const getServerSideProps: GetServerSideProps = withSession(
     if (!verifyFormSubmissionCookieIsSet(context))
       return redirectUserTo(GeneralPageURLs.start);
 
-    try {
-      const draftRegistration: DraftRegistration = await getDraftRegistration(
-        context.req.cookies[formSubmissionCookieId]
-      );
+    const draftRegistration: DraftRegistration = await getDraftRegistration(
+      context.req.cookies[formSubmissionCookieId]
+    );
 
+    try {
       const result = await updateRegistration(
         draftRegistration,
         draftRegistration.id
       );
 
-      const pageHeading = (result: IUpdateRegistrationResult) => {
-        if (result.beaconUpdated)
-          return "Your beacon registration has been updated.";
-        return "We could not update your registration. Please contact the Beacons Registry team.";
-      };
-
       clearFormSubmissionCookie(context);
+
+      if (!result.beaconUpdated) {
+        logger.error(
+          `Failed to update beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`
+        );
+      }
 
       return {
         props: {
           reference: result.referenceNumber,
-          pageHeading: pageHeading(result),
+          updateSuccess: result.beaconUpdated,
         },
       };
-    } catch {
+    } catch (e) {
+      logger.error(
+        `Threw error ${e} when updating beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`
+      );
       return {
         props: {
-          reference: "",
-          pageHeading:
-            "There was an error while updating your beacon.  Please contact the Beacons Registry team.",
+          updateSuccess: false,
         },
       };
     }

@@ -1,6 +1,7 @@
 # IntelliJ
 **/.idea/workspace.xml
 **/.idea/tasks.xml
+*.iml
 
 # MacOS
 **/.DS_Store

@@ -122,7 +122,7 @@ describe("As an account holder", () => {
     iPerformOperationAndWaitForNewPageToLoad(() => {
       whenIClickTheButtonContaining("Accept and send");
     });
-    iCanSeeAPageHeadingThatContains("Beacon Registration Complete");
+    iCanSeeAPageHeadingThatContains("Beacon registration complete");
 
     whenIClickTheButtonContaining("Return to your Beacon Registry Account");
     thereIsOnlyOneBeaconListedForHexId(hexId);

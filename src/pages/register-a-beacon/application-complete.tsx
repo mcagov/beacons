@@ -1,9 +1,11 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent } from "react";
+import React from "react";
 import { ReturnToYourAccountSection } from "../../components/domain/ReturnToYourAccountSection";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
-import { Panel } from "../../components/Panel";
+import { BeaconRegistryContactInfo } from "../../components/Mca";
+import { PanelFailed } from "../../components/PanelFailed";
+import { PanelSucceeded } from "../../components/PanelSucceeded";
 import { GovUKBody } from "../../components/Typography";
 import { DraftRegistration } from "../../entities/DraftRegistration";
 import { verifyFormSubmissionCookieIsSet } from "../../lib/cookies";
@@ -14,19 +16,17 @@ import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
 import { GeneralPageURLs } from "../../lib/urls";
+import logger from "../../logger";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-import { ISubmitRegistrationResult } from "../../useCases/submitRegistration";
 
-interface ApplicationCompleteProps {
+const ApplicationCompletePage = (props: {
   reference: string;
-  pageSubHeading: string;
-}
-
-const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
-  reference,
-  pageSubHeading,
-}: ApplicationCompleteProps): JSX.Element => {
-  const pageHeading = "Beacon Registration Complete";
+  registrationSuccess: boolean;
+  confirmationEmailSuccess: boolean;
+}): JSX.Element => {
+  const pageHeading = props.registrationSuccess
+    ? "Beacon registration complete"
+    : "Beacon registration failed";
 
   return (
     <>
@@ -38,15 +38,29 @@ const ApplicationCompletePage: FunctionComponent<ApplicationCompleteProps> = ({
         <Grid
           mainContent={
             <>
-              <Panel title={pageHeading} reference={reference}>
-                {pageSubHeading}
-              </Panel>
-              {/*<ApplicationCompleteWhatNext />*/}
-              <GovUKBody className="govuk-body">
-                Your application to register a UK 406 MHz beacon has been
-                received by the Maritime and Coastguard Beacon Registry Team.
-                You can now use your Beacon.
-              </GovUKBody>
+              {props.registrationSuccess ? (
+                <>
+                  <PanelSucceeded
+                    title={pageHeading}
+                    reference={props.reference}
+                  >
+                    {props.confirmationEmailSuccess
+                      ? "We have sent you a confirmation email."
+                      : "We could not send you a confirmation email but we have registered your beacon under the following reference id."}
+                  </PanelSucceeded>
+                  <GovUKBody className="govuk-body">
+                    Your application to register a UK 406 MHz beacon has been
+                    received by the Maritime and Coastguard Beacon Registry
+                    Team. You can now use your beacon.
+                  </GovUKBody>
+                </>
+              ) : (
+                <PanelFailed>
+                  We could not save your registration. Please contact the Beacon
+                  Registry team using the details below.
+                </PanelFailed>
+              )}
+              <BeaconRegistryContactInfo />
               <ReturnToYourAccountSection />
             </>
           }
@@ -73,38 +87,39 @@ export const getServerSideProps: GetServerSideProps = withSession(
     if (!verifyFormSubmissionCookieIsSet(context))
       return redirectUserTo(GeneralPageURLs.start);
 
-    try {
-      const draftRegistration: DraftRegistration = await getDraftRegistration(
-        context.req.cookies[formSubmissionCookieId]
-      );
+    const draftRegistration: DraftRegistration = await getDraftRegistration(
+      context.req.cookies[formSubmissionCookieId]
+    );
 
+    try {
       const result = await submitRegistration(
         draftRegistration,
         await getAccountHolderId(context.session)
       );
 
-      const pageSubHeading = (result: ISubmitRegistrationResult) => {
-        if (result.beaconRegistered && result.confirmationEmailSent)
-          return "We have sent you a confirmation email.";
-        if (result.beaconRegistered && !result.confirmationEmailSent)
-          return "We could not send you a confirmation email. But we have registered your beacon under the following reference id.";
-        return "We could not save your registration or send you a confirmation email. Please contact the Beacons Registry team.";
-      };
-
       clearFormSubmissionCookie(context);
+
+      if (!result.beaconRegistered) {
+        logger.error(
+          `Failed to register beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`
+        );
+      }
 
       return {
         props: {
           reference: result.referenceNumber,
-          pageSubHeading: pageSubHeading(result),
+          registrationSuccess: result.beaconRegistered,
+          confirmationEmailSuccess: result.confirmationEmailSent,
         },
       };
-    } catch {
+    } catch (e) {
+      logger.error(
+        `Threw error ${e} when registering beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`
+      );
       return {
         props: {
-          reference: "",
-          pageSubHeading:
-            "There was an error while registering your beacon.  Please contact the Beacons Registry team.",
+          registrationSuccess: false,
+          confirmationEmailSuccess: false,
         },
       };
     }
