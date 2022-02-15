@@ -76,7 +76,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
               "AWS": "*"
             },
             "Effect": "Allow",
-            "Resource": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${terraform.workspace}-opensearch-service/*"
+            "Resource": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${terraform.workspace}-beacons/*"
         }
     ]
 }
