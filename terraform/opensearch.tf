@@ -15,7 +15,7 @@ data "aws_iam_role" "es" {
 }
 
 resource "aws_elasticsearch_domain" "opensearch" {
-  domain_name           = "${terraform.workspace}-opensearch-service"
+  domain_name           = "${terraform.workspace}-beacons"
   elasticsearch_version = "OpenSearch_1.1"
 
   advanced_security_options {
