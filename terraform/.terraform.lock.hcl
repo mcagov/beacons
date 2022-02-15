@@ -2,22 +2,21 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/aws" {
-  version     = "3.57.0"
-  constraints = "~> 3.0"
+  version     = "4.1.0"
+  constraints = "~> 4.1"
   hashes = [
-    "h1:H6JCnoa3swF3rgHL0ys9KNArffU+IEGPvhQ6JnfQY/c=",
-    "h1:Ki9PSbXeuSRdjijH8TYqitfPZax6Xk1eaFst2LslnHI=",
-    "zh:241a4203078ea35f63202b613f0e4b428a842734ded62d9f487cdf7c2a66d639",
-    "zh:2c1cbf3cd03a2a7ff267be09cedf1698738c372b1411ca74cfcb3bf4b0846f27",
-    "zh:318ad2331f60e03d284f90f728486b9df7ac9570af641c43b56216357e624b52",
-    "zh:43ff96b34b4829a34693281492786b9ca6dd06870dd45b0ae82ea352c33353d7",
-    "zh:6c36b874622603793fc637272742d84ecbf68dfe4c8d8148bb6e9b733cd0e216",
-    "zh:7a1aaac01c82d06f9ebc997ae2094a7d96e7a467aaaeaa1cda64ee952f3144d8",
-    "zh:9b917b03b8771f87a021fe7aa9fd00ae06cc455a1eaa1fb748930182617b2772",
-    "zh:bd90550e6d9311092170f4935e42e91e6d8bed5241e41eca39fa4aeca28d9c6f",
-    "zh:be5076ea705c174581fd616b118e0c17d15bd8ab0da1b3eee4f3fb6b11e78f2c",
-    "zh:f4f0d13414c932ecf65ba92daab6e755c244dcb77b4be59a3ac18ba2f56cdc00",
-    "zh:fa3575a23fd20ce00658977374491022c4c0c36a00260ebeebb0c3f3af4824aa",
+    "h1:2iNZdsu+8nROjA7hHJs2JwAXAH10a0BAK3RAl2rGnDM=",
+    "zh:0e4143cf20943e0efd96805fe69b5527dd89a023fa67f39c5f4128e5ca736e91",
+    "zh:0f208f3497a2bc977204d195085466804f7c6c9eaa1a3cf864ab2631adf683dd",
+    "zh:2bcfcaad7957504d7572063fc9178a2f4636ad98f24cdd5c74d4ffcc750db5a6",
+    "zh:38100b0cddc1716f2a58d93e55a34272862ffe571439b6d472af26d79a2b5a12",
+    "zh:3bcf9b33dd9d44e9c9562ed45b05511c65ef35496e5a48f58aa31427a76e037f",
+    "zh:6a808deb14ef7b7f8e4f87ceb996bfac88a99d654489eb99d0f2325a0e7b3c09",
+    "zh:81b49e8f8d3e8ec220c206c2f9af83455f1b674481d11ffd279897a2972ec66b",
+    "zh:a37a637c48cd7be608ce248bbed717d154e70b328fccc31ae29ec94f158d64cd",
+    "zh:bdefee374253e800402c5f2ef4637836ba7d6c6889a6c8bb4ffd0602e95b8877",
+    "zh:cdc2df5a3bd5cdeff497572a74c023e102e087dd39610afeef27b1c3d15541a0",
+    "zh:f3fc038d953b35f4ed3572a71d92151ed99d56a9bc3a3eaa6670be6120e30588",
   ]
 }
 
