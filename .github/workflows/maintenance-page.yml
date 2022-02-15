@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy Maintenance Page 
+    name: Deploy Maintenance Page
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment: production
@@ -33,7 +33,7 @@ jobs:
       - name: Validate Terraform
         run: terraform validate
       - name: Create resources
-        run: terraform apply -auto-approve -var-file=production.tfvars
+        run: terraform apply -input=false -auto-approve -var-file=production.tfvars
       - name: Set Message
         run: sed -i 's/${ maintenanceMessage }/${{ github.event.inputs.maintenanceMessage }}/g' html/index.html
       - name: Deploy app build to S3 bucket

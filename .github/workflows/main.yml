@@ -162,4 +162,4 @@ jobs:
           TF_VAR_opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
           TF_VAR_opensearch_proxy_image_tag: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/opensearch-proxy:${{ github.sha }}
           TF_VAR_opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
-        run: terraform apply -auto-approve -var-file=dev.tfvars -var-file=dev.images.tfvars
+        run: terraform apply -input=false -auto-approve -var-file=dev.tfvars -var-file=dev.images.tfvars
