@@ -14,8 +14,15 @@ data "aws_iam_role" "es" {
   name = "AWSServiceRoleForAmazonElasticsearchService"
 }
 
+locals {
+  # Local variable necessary for aws_elasticsearch_domain.opensearch.domain_name to be referenced in the domain's access
+  # policy.  Reference of domain_name from access_policy would be cyclical, so is not permitted by Terraform.
+  # Alternative of hard-coding the domain_name in both locations results in errors should the two locations drift.  DRY.
+  opensearch_domain_name = "${terraform.workspace}-beacons"
+}
+
 resource "aws_elasticsearch_domain" "opensearch" {
-  domain_name           = "${terraform.workspace}-beacons"
+  domain_name           = local.opensearch_domain_name
   elasticsearch_version = "OpenSearch_1.1"
 
   advanced_security_options {
@@ -76,7 +83,7 @@ resource "aws_elasticsearch_domain" "opensearch" {
               "AWS": "*"
             },
             "Effect": "Allow",
-            "Resource": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${terraform.workspace}-beacons/*"
+            "Resource": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${local.opensearch_domain_name}/*"
         }
     ]
 }
