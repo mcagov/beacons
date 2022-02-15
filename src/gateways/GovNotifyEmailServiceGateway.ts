@@ -24,15 +24,13 @@ export class GovNotifyEmailServiceGateway implements EmailServiceGateway {
     }
 
     try {
-      return this.api
-        .sendEmail(emailTemplateId, email, {
-          personalisation: personalisation,
-          reference: personalisation["reference"],
-        })
-        .catch((err) => {
-          logger.error("sendEmail:", err);
-        });
+      await this.api.sendEmail(emailTemplateId, email, {
+        personalisation: personalisation,
+        reference: personalisation["reference"],
+      });
+      return true;
     } catch (error) {
+      logger.error("sendEmail:", error);
       return false;
     }
   }
