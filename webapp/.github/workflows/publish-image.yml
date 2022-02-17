@@ -1,0 +1,197 @@
+name: Publish a version of the Service image to ECR
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: The tag to add to the published Docker image, e.g. "v1.0.1"
+        required: true
+        type: string
+
+jobs:
+  install_dependencies:
+    name: Install dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-node@v2.4.0
+        with:
+          node-version: "14"
+      - name: Install npm dependencies
+        run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+      - name: Cache dependencies
+        uses: actions/cache@v2.1.6
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+  unit_tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-node@v2.4.0
+        with:
+          node-version: "14"
+      - name: Restore cache
+        uses: actions/cache@v2.1.6
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Run tests
+        run: npm run test
+
+  UI_tests:
+    name: UI tests
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+    services:
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+    env:
+      WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+      SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Copy env vars
+        run: cp .env.example .env.local
+      - name: Run Cypress UI tests
+        uses: cypress-io/github-action@v2
+        with:
+          spec: cypress/integration/**/*.spec.ts
+          browser: chrome
+          start: npm run start
+          build: npm run build
+          wait-on: "http://localhost:3000"
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots/
+
+  end_to_end_tests:
+    name: End to end tests
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+
+    env:
+      WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+      SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      GOV_NOTIFY_API_KEY: ${{ secrets.GOV_NOTIFY_API_KEY }}
+      GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS: ${{ secrets.GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2.3.4
+      - name: Use node
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: "14"
+      - name: Bring up API and DB
+        run: docker compose --verbose -f docker-compose.e2e.yml up --detach
+      - name: Copy env vars
+        run: cp .env.example .env.local
+      - name: Run Cypress end to end tests
+        uses: cypress-io/github-action@v2
+        with:
+          spec: cypress/endToEnd/*
+          browser: chrome
+          start: npm run start
+          build: npm run build
+          wait-on: "http://localhost:8080/spring-api/actuator/health"
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots/
+      - name: Stop containers
+        if: always()
+        run: docker-compose --file "docker-compose.e2e.yml" down
+
+  lint_check:
+    name: Lint check
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-node@v2.4.0
+        with:
+          node-version: "14"
+      - name: Restore cache
+        uses: actions/cache@v2.1.6
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Run linter
+        run: npm run lint
+
+  prettier_check:
+    name: Prettier check
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-node@v2.4.0
+        with:
+          node-version: "14"
+      - name: Restore cache
+        uses: actions/cache@v2.1.6
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Run prettier
+        run: npm run format:check
+
+  docker_lint:
+    name: Docker lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Docker lint
+        uses: brpaz/hadolint-action@v1.5.0
+
+  docker_build:
+    name: Build and Push Docker image
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    needs:
+      [
+        install_dependencies,
+        docker_build,
+        unit_tests,
+        UI_tests,
+        end_to_end_tests,
+        lint_check,
+        prettier_check,
+        docker_lint,
+        codeql_check,
+      ]
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1.5.1
+      - name: Login to ECR
+        uses: docker/login-action@v1.10.0
+        with:
+          registry: ${{ secrets.AWS_ECR_REGISTRY }}
+          username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Build and Push
+        uses: docker/build-push-action@v2.7.0
+        with:
+          push: true
+          tags: ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ github.event.inputs.tag }}

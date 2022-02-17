@@ -26,7 +26,7 @@ services:
       retries: 12
 
   api:
-    image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-service:$SERVICE_COMMIT_HASH
+    build: ../service
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
       OPENSEARCH_ENDPOINT: opensearch
