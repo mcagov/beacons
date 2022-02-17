@@ -99,7 +99,8 @@ jobs:
     needs:
       [
         terraform_lint,
-        update_dev_docker_images,
+        publish_webapp_version,
+        publish_service_version,
         prettier_check,
         build_opensearch_proxy_container,
       ]
