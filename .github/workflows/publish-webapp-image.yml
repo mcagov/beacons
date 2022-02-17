@@ -1,4 +1,4 @@
-name: Publish a version of the Service image to ECR
+name: Publish a version of the Webapp image to ECR
 
 on:
   workflow_call:
@@ -7,13 +7,14 @@ on:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
         required: true
         type: string
-
-env:
-  WEBAPP_DIRECTORY: webapp
+      working_directory:
+        description: The working directory in which to find the Webapp
+        required: true
+        type: string
 
 defaults:
   run:
-    working-directory: ${{ env.WEBAPP_DIRECTORY }}
+    working-directory: ${{ github.event.inputs.working_directory }}
 
 jobs:
   install_dependencies:
@@ -170,7 +171,7 @@ jobs:
       - name: Docker lint
         uses: brpaz/hadolint-action@v1.5.0
         with:
-          dockerfile: ${{ env.WEBAPP_DIRECTORY }}/Dockerfile
+          dockerfile: ${{ github.event.inputs.working_directory }}/Dockerfile
 
   codeql_check:
     name: CodeQL check

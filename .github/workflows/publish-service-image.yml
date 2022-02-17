@@ -7,13 +7,14 @@ on:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
         required: true
         type: string
-
-env:
-  SERVICE_DIRECTORY: service
+      working_directory:
+        description: The working directory in which to find the Service
+        required: true
+        type: string
 
 defaults:
   run:
-    working-directory: ${{ env.SERVICE_DIRECTORY }}
+    working-directory: ${{ github.event.inputs.working_directory }}
 
 jobs:
   backoffice_spa_lint:
