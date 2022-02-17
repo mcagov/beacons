@@ -53,13 +53,13 @@ jobs:
           npm run format:check
 
   publish_webapp_version:
-    name: Publish Webapp image version ${{ github.event.release.tag_name }}
+    name: Webapp
     uses: ./.github/workflows/publish-webapp-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
 
   publish_service_version:
-    name: Publish Service image version ${{ github.event.release.tag_name }}
+    name: Service
     uses: ./.github/workflows/publish-service-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
