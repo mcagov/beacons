@@ -24,14 +24,6 @@ class BeaconsApiIntegrationTest extends WebIntegrationTest {
       .json("{\"status\": \"UP\"}");
   }
 
-  @Test
-  void actuatorGitInfoEndpointShouldReturnGitInfo() {
-    makeGetRequest(ACTUATOR_INFO_ENDPOINT)
-      .expectBody()
-      .jsonPath("$.git")
-      .exists();
-  }
-
   private WebTestClient.ResponseSpec makeGetRequest(String url) {
     return webTestClient
       .get()
