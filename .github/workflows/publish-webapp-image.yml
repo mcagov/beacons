@@ -174,7 +174,6 @@ jobs:
     needs:
       [
         install_dependencies,
-        docker_build,
         unit_tests,
         UI_tests,
         end_to_end_tests,

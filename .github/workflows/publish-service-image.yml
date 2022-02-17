@@ -145,7 +145,6 @@ jobs:
         spring_boot_integration_test,
         prettier_check,
         docker_lint,
-        docker_build,
         codeql_check,
       ]
 
