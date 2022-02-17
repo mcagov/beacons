@@ -151,7 +151,6 @@ jobs:
         install_dependencies,
         unit_tests,
         UI_tests,
-        end_to_end_tests,
         lint_check,
         prettier_check,
         docker_lint,
