@@ -29,8 +29,8 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v2.1.6
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: "webapp/**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('webapp/**/package-lock.json') }}
 
   unit_tests:
     name: Unit tests
@@ -45,8 +45,8 @@ jobs:
       - name: Restore cache
         uses: actions/cache@v2.1.6
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: "webapp/**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('webapp/**/package-lock.json') }}
       - name: Run tests
         run: npm run test
 
@@ -137,8 +137,8 @@ jobs:
       - name: Restore cache
         uses: actions/cache@v2.1.6
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: "webapp/**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('webapp/**/package-lock.json') }}
       - name: Run linter
         run: npm run lint
 
@@ -155,8 +155,8 @@ jobs:
       - name: Restore cache
         uses: actions/cache@v2.1.6
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: "webapp/**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('webapp/**/package-lock.json') }}
       - name: Run prettier
         run: npm run format:check
 
