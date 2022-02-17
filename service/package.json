@@ -3,11 +3,9 @@
   "description": "Beacons Service API formatting scripts and dependencies",
   "scripts": {
     "format": "prettier --write './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
-    "format:check": "prettier --check './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
-    "prepare": "husky install"
+    "format:check": "prettier --check './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'"
   },
   "devDependencies": {
-    "husky": "^7.0.0",
     "prettier": "^2.4.1",
     "prettier-plugin-java": "1.3.1",
     "pretty-quick": "^3.1.1"
