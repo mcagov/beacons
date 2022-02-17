@@ -1,0 +1,68 @@
+spring:
+  profiles:
+    active: default,migration
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/beacons}
+    username: ${SPRING_DATASOURCE_USER:beacons_service}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
+  data:
+    rest:
+      basePath: spring-api
+  flyway:
+    baseline-on-migrate: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticSearchReactiveHealthContributorAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ReactiveElasticsearchRepositoriesAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ReactiveElasticsearchRestClientAutoConfiguration
+      - org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchRestClientAutoConfiguration
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: never
+
+server:
+  compression:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+      base-path: /spring-api/actuator
+
+beacons:
+  openapi:
+    github:
+      url: https://github.com/mcagov/beacons-service
+  scheduled:
+    legacy-beacon-search-view: ${BEACONS_SEARCH_VIEW_SCHEDULER_TIMEOUT:30000}
+  cors:
+    allowedOrigins: ${BEACONS_CORS_ALLOWED_ORIGINS:*}
+  security:
+    basic:
+      user:
+        name: ${SPRING_BASIC_AUTH_USERNAME:user}
+        password: ${SPRING_BASIC_AUTH_PASSWORD:password}
+
+azure:
+  activedirectory:
+    client-id: ${AZURE_AD_API_CLIENT_ID:8fb0f9ea-6351-4251-bcca-85e298bda8e7}
+    app-id-uri: ${AZURE_AD_API_ID_URI:api://8fb0f9ea-6351-4251-bcca-85e298bda8e7}
+
+opensearch:
+  source:
+    host: ${OPENSEARCH_ENDPOINT:localhost}
+    port: 443
+    https: true
+  credentials:
+    enabled: true
+    user: ${OPENSEARCH_USER:beacon_service}
+    password: ${OPENSEARCH_PASSWORD:password}

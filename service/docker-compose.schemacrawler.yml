@@ -1,0 +1,25 @@
+version: "3.8"
+
+# Generate a schema diagram from the database
+# Requires the postgres backing service to be running and the Beacons Service API migrations to have been performed
+# See https://www.schemacrawler.com/ for documentation
+services:
+  schemacrawler:
+    image: schemacrawler/schemacrawler:v16.15.2
+    volumes:
+      - ./schemacrawler:/opt/schema/
+    entrypoint:
+      [
+        "/opt/schemacrawler/schemacrawler.sh",
+        "--server=postgresql",
+        "--host=postgres",
+        "--port=5432",
+        "--database=beacons",
+        "--schemas=public",
+        "--user=beacons_service",
+        "--password=password",
+        "--info-level=standard",
+        "--command=schema",
+        "--output-format=htmlx",
+        "--output-file=/opt/schema/beacons-schema.html",
+      ]

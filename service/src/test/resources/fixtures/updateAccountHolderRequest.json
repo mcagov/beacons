@@ -1,0 +1,18 @@
+{
+  "meta": {},
+  "included": [],
+  "data": {
+    "id": "replace-with-test-account-id",
+    "type": "accountHolder",
+    "relationships": {},
+    "attributes": {
+      "fullName": "Updatey McUpdateface",
+      "telephoneNumber": "01178 919191",
+      "addressLine1": "Number 44",
+      "addressLine2": "Updatey Towers",
+      "addressLine3": "Updatey Test",
+      "addressLine4": "",
+      "postcode": "UP1 23A"
+    }
+  }
+}

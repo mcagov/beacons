@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "count": 1,
+    "pageSize": 1
+  },
+  "data": {
+    "type": "beacon",
+    "id": "97b306aa-cbd0-4f09-aa24-2d876b983efb",
+    "attributes": {
+      "hexId": "Hex me",
+      "status": "NEW",
+      "manufacturer": "Ocean Signal",
+      "createdDate": "2020-02-01T00:00",
+      "model": "EPIRB1",
+      "manufacturerSerialNumber": "1407312904",
+      "chkCode": "9480B",
+      "batteryExpiryDate": "2020-02-01",
+      "lastServicedDate": "2020-02-01"
+    },
+    "relationships": {
+      "uses": {
+        "data": [
+          {
+            "type": "beaconUse",
+            "id": "1"
+          }
+        ]
+      },
+      "owner": {
+        "data": [
+          {
+            "type": "beaconPerson",
+            "id": "1"
+          }
+        ]
+      },
+      "emergencyContacts": {
+        "data": [
+          {
+            "type": "beaconPerson",
+            "id": "2"
+          },
+          {
+            "type": "beaconPerson",
+            "id": "3"
+          }
+        ]
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "beaconUse",
+      "id": "1",
+      "attributes": {
+        "environment": "MARITIME",
+        "activity": "SAILING",
+        "otherActivity": null,
+        "moreDetails": "More details of this vessel",
+        "purpose": "PLEASURE",
+        "callSign": "Call me",
+        "vfhRadio": true,
+        "fixedVhfRadio": true,
+        "fixedVhfRadioValue": "123456",
+        "portableVhfRadio": true,
+        "portableVhfRadioValue": "123456",
+        "satelliteTelephone": true,
+        "satelliteTelephoneValue": "123456",
+        "mobileTelephone": true,
+        "mobileTelephone1": "0123456789",
+        "mobileTelephone2": "01234567890",
+        "otherCommunication": true,
+        "otherCommunicationValue": "By fax",
+        "maxCapacity": 10,
+        "vesselName": "SS Great Britain",
+        "portLetterNumber": "1",
+        "homeport": "England",
+        "areaOfOperation": "Bristol",
+        "beaconLocation": "Carry bag",
+        "imoNumber": "1",
+        "ssrNumber": "2",
+        "rssNumber": "3",
+        "officialNumber": "4",
+        "rigPlatformLocation": "5",
+        "mainUse": true,
+        "aircraftManufacturer": "Boeing",
+        "principalAirport": "Bristol",
+        "secondaryAirport": "Cardiff",
+        "registrationMark": "High flying",
+        "hexAddress": "Aircraft hex",
+        "cnOrMsnNumber": "1",
+        "dongle": false,
+        "beaconPosition": "In my carry bag",
+        "workingRemotelyLocation": "Bristol",
+        "workingRemotelyPeopleCount": 1,
+        "windfarmLocation": "Scotland",
+        "windfarmPeopleCount": "100",
+        "otherActivityLocation": "Manchester",
+        "otherActivityPeopleCount": "10"
+      }
+    },
+    {
+      "type": "beaconPerson",
+      "id": "1",
+      "attributes": {
+        "fullName": "Vice-Admiral Horatio Nelson, 1st Viscount Nelson",
+        "email": "nelson@royalnavy.mod.uk",
+        "telephoneNumber": "02392 856624",
+        "addressLine1": "1 The Hard",
+        "addressLine2": "",
+        "townOrCity": "Portsmouth",
+        "county": "Hampshire",
+        "postcode": "PO1 3DT"
+      }
+    },
+    {
+      "type": "beaconPerson",
+      "id": "2",
+      "attributes": {
+        "fullName": "Lady Hamilton",
+        "telephoneNumber": "02392 856621",
+        "alternativeTelephoneNumber": "02392 856622"
+      }
+    },
+    {
+      "type": "beaconPerson",
+      "id": "3",
+      "attributes": {
+        "fullName": "Neil Hamilton",
+        "telephoneNumber": "04392 856626",
+        "alternativeTelephoneNumber": "04392 856625"
+      }
+    }
+  ]
+}

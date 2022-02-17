@@ -1,0 +1,9 @@
+{
+  "data": {
+    "type": "beacon",
+    "id": "replace-with-beacon-id",
+    "attributes": {
+      "manufacturer": "ACR (Artex)"
+    }
+  }
+}

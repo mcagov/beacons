@@ -1,0 +1,23 @@
+{
+  "meta": {},
+  "data": {
+    "type": "accountHolder",
+    "attributes": {
+      "authId": "replace-with-test-auth-id",
+      "email": "testy@mctestface.com",
+      "fullName": "Tesy McTestface",
+      "telephoneNumber": "01178 657123",
+      "alternativeTelephoneNumber": "01178 657124",
+      "addressLine1": "Flat 42",
+      "addressLine2": "Testington Towers",
+      "addressLine3": "Tower Test",
+      "addressLine4": "Testing Towers",
+      "townOrCity": "Testville",
+      "postcode": "TS1 23A",
+      "county": "Testershire",
+      "country": "United Kingdom"
+    },
+    "relationships": {}
+  },
+  "included": []
+}

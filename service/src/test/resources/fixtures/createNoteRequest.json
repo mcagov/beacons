@@ -1,0 +1,13 @@
+{
+  "meta": {},
+  "included": [],
+  "data": {
+    "type": "note",
+    "relationships": {},
+    "attributes": {
+      "beaconId": "replace-with-test-beacon-id",
+      "text": "That's a great beacon right there",
+      "type": "GENERAL"
+    }
+  }
+}

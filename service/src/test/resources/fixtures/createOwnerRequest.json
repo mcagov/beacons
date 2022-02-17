@@ -1,0 +1,32 @@
+{
+  "meta": {},
+  "included": [],
+  "data": {
+    "type": "beaconPerson",
+    "relationships": {},
+    "attributes": {
+      "email": "testy@mctestface.com",
+      "fullName": "Tesy McTestface",
+      "telephoneNumber": "01178 657123",
+      "telephoneNumber2": "01178 657124",
+      "alternativeTelephoneNumber": "01178 657124",
+      "alternativeTelephoneNumber2": "01178 657125",
+      "addressLine1": "Flat 42",
+      "addressLine2": "Testington Towers",
+      "addressLine3": "Tower Test",
+      "addressLine4": "Testing Towers",
+      "townOrCity": "Testville",
+      "postcode": "TS1 23A",
+      "county": "Testershire",
+      "country": "UK",
+      "companyName": "Lido",
+      "careOf": "Beacons",
+      "fax": "Fax me",
+      "isMain": "yes",
+      "createUserId": 0,
+      "updateUserId": 1,
+      "versioning": 2,
+      "migrated": true
+    }
+  }
+}
