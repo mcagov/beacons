@@ -8,9 +8,12 @@ on:
         required: true
         type: string
 
+env:
+  WEBAPP_DIRECTORY: webapp
+
 defaults:
   run:
-    working-directory: webapp
+    working-directory: ${{ env.WEBAPP_DIRECTORY }}
 
 jobs:
   install_dependencies:
@@ -166,6 +169,8 @@ jobs:
       - uses: actions/checkout@v2.3.4
       - name: Docker lint
         uses: brpaz/hadolint-action@v1.5.0
+        with:
+          dockerfile: ${{ env.WEBAPP_DIRECTORY }}/Dockerfile
 
   codeql_check:
     name: CodeQL check
