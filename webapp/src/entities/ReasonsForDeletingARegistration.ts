@@ -1,0 +1,7 @@
+export enum ReasonsForDeletingARegistration {
+  SOLD = "SOLD",
+  DESTROYED = "DESTROYED",
+  REPLACED = "REPLACED",
+  INCORRECTLY_REGISTERED = "INCORRECTLY_REGISTERED",
+  OTHER = "OTHER",
+}

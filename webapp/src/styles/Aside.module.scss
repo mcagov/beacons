@@ -1,0 +1,7 @@
+@import "../styles/variables";
+
+$aside-border-top: 2px;
+
+.related_items {
+  border-top: $aside-border-top solid $govuk-brand-colour;
+}

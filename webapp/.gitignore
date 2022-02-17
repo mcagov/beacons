@@ -1,0 +1,22 @@
+# IntelliJ
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+*.iml
+
+# MacOS
+**/.DS_Store
+
+node_modules/
+.next/
+.idea/
+.eslintcache
+.env.local
+.env
+
+# Cypress
+screenshots
+
+# Jest
+coverage
+
+cypress.env.json

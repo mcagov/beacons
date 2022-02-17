@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: beacons_service
+      POSTGRES_DB: beacons
+    ports:
+      - 5432:5432
+
+  opensearch:
+    image: opensearchproject/opensearch:1.1.0
+    container_name: opensearch
+    environment:
+      - "discovery.type=single-node"
+      - "DISABLE_INSTALL_DEMO_CONFIG=true" # disables execution of install_demo_configuration.sh bundled with security plugin, which installs demo certificates and security configurations to OpenSearch
+      - "DISABLE_SECURITY_PLUGIN=true" # disables security plugin entirely in OpenSearch by setting plugins.security.disabled: true in opensearch.yml
+    ports:
+      - 9200:9200
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+
+  api:
+    image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-service:$SERVICE_COMMIT_HASH
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
+      OPENSEARCH_ENDPOINT: opensearch
+      OPENSEARCH_PORT: 9200
+      # 'dev' profile is necessary to allow Spring to connect to local OpenSearch container without authenticating
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - 8080:8080
+    links:
+      - opensearch
+      - postgres
+    depends_on:
+      - opensearch
+      - postgres
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:8080/spring-api/actuator/health",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+    restart: on-failure
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
