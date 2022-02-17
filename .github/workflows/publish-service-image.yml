@@ -14,7 +14,7 @@ on:
 
 defaults:
   run:
-    working-directory: ${{ inputs.working_directory }}
+    working-directory: ${{ github.event.inputs.working_directory }}
 
 jobs:
   backoffice_spa_lint:
@@ -166,4 +166,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ inputs.tag }}
+          tags: ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ github.event.inputs.tag }}
