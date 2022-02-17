@@ -167,6 +167,18 @@ jobs:
       - name: Docker lint
         uses: brpaz/hadolint-action@v1.5.0
 
+  codeql_check:
+    name: CodeQL check
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
   docker_build:
     name: Build and Push Docker image
     if: github.actor != 'dependabot[bot]'
