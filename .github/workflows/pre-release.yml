@@ -85,12 +85,18 @@ jobs:
           push: true
           tags: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/opensearch-proxy:${{ github.sha }}
 
+  end_to_end_tests:
+    name: End-to-end tests
+    needs: [publish_webapp_version, publish_service_version]
+    uses: ./.github/workflows/end-to-end-tests.yml
+    with:
+      service-image-tag: ${{ github.event.release.tag_name }}
+
   terraform_deploy_dev:
     needs:
       [
+        end_to_end_tests,
         terraform_lint,
-        publish_webapp_version,
-        publish_service_version,
         prettier_check,
         build_opensearch_proxy_container,
       ]

@@ -83,47 +83,6 @@ jobs:
           name: cypress-screenshots
           path: cypress/screenshots/
 
-  end_to_end_tests:
-    name: End to end tests
-    runs-on: ubuntu-latest
-    needs: install_dependencies
-
-    env:
-      WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
-      SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      GOV_NOTIFY_API_KEY: ${{ secrets.GOV_NOTIFY_API_KEY }}
-      GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS: ${{ secrets.GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS }}
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2.3.4
-      - name: Use node
-        uses: actions/setup-node@v2.4.0
-        with:
-          node-version: "14"
-      - name: Bring up API and DB
-        run: docker compose --verbose -f docker-compose.e2e.yml up --detach
-      - name: Copy env vars
-        run: cp .env.example .env.local
-      - name: Run Cypress end to end tests
-        uses: cypress-io/github-action@v2
-        with:
-          working-directory: webapp
-          spec: cypress/endToEnd/*
-          browser: chrome
-          start: npm run start
-          build: npm run build
-          wait-on: "http://localhost:8080/spring-api/actuator/health"
-      - uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots/
-      - name: Stop containers
-        if: always()
-        run: docker-compose --file "docker-compose.e2e.yml" down
-
   lint_check:
     name: Lint check
     runs-on: ubuntu-latest
