@@ -7,14 +7,10 @@ on:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
         required: true
         type: string
-      working_directory:
-        description: The working directory in which to find the Webapp
-        required: true
-        type: string
 
 defaults:
   run:
-    working-directory: ${{ github.event.inputs.working_directory }}
+    working-directory: webapp
 
 jobs:
   install_dependencies:
@@ -171,7 +167,7 @@ jobs:
       - name: Docker lint
         uses: brpaz/hadolint-action@v1.5.0
         with:
-          dockerfile: ${{ github.event.inputs.working_directory }}/Dockerfile
+          dockerfile: webapp/Dockerfile
 
   codeql_check:
     name: CodeQL check

@@ -7,14 +7,10 @@ on:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
         required: true
         type: string
-      working_directory:
-        description: The working directory in which to find the Service
-        required: true
-        type: string
 
 defaults:
   run:
-    working-directory: ${{ github.event.inputs.working_directory }}
+    working-directory: service
 
 jobs:
   backoffice_spa_lint:
@@ -27,10 +23,10 @@ jobs:
         with:
           node-version: "14"
       - name: Install npm dependencies
-        working-directory: ${{ env.SERVICE_DIRECTORY }}/src/main/backoffice
+        working-directory: service/src/main/backoffice
         run: npm ci
       - name: Run linter
-        working-directory: ${{ env.SERVICE_DIRECTORY }}/src/main/backoffice
+        working-directory: service/src/main/backoffice
         run: npm run lint
 
   backoffice_spa_unit_test:
@@ -43,10 +39,10 @@ jobs:
         with:
           node-version: "14"
       - name: Install npm dependencies
-        working-directory: ${{ env.SERVICE_DIRECTORY }}/src/main/backoffice
+        working-directory: service/src/main/backoffice
         run: npm ci
       - name: Run unit tests
-        working-directory: ${{ env.SERVICE_DIRECTORY }}/src/main/backoffice
+        working-directory: service/src/main/backoffice
         run: npm test
 
   spring_boot_unit_test:
@@ -113,7 +109,7 @@ jobs:
       - name: Docker lint
         uses: brpaz/hadolint-action@v1.5.0
         with:
-          dockerfile: ${{ env.SERVICE_DIRECTORY }}/Dockerfile
+          dockerfile: service/Dockerfile
 
   codeql_check:
     name: CodeQL check

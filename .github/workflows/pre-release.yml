@@ -57,14 +57,12 @@ jobs:
     uses: ./.github/workflows/publish-webapp-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
-      working_directory: webapp
 
   publish_service_version:
     name: Service
     uses: ./.github/workflows/publish-service-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
-      working_directory: service
 
   build_opensearch_proxy_container:
     name: Build and Push Opensearch Proxy Docker image
