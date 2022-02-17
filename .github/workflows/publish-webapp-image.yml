@@ -66,16 +66,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-node@v2.4.0
-        with:
-          node-version: "14"
-      - name: Install npm dependencies
-        run: npm ci
       - name: Copy env vars
         run: cp .env.example .env.local
       - name: Run Cypress UI tests
         uses: cypress-io/github-action@v2
         with:
+          working-directory: webapp
           spec: cypress/integration/**/*.spec.ts
           browser: chrome
           start: npm run start
@@ -113,6 +109,7 @@ jobs:
       - name: Run Cypress end to end tests
         uses: cypress-io/github-action@v2
         with:
+          working-directory: webapp
           spec: cypress/endToEnd/*
           browser: chrome
           start: npm run start
