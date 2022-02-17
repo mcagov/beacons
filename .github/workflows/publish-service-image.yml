@@ -120,7 +120,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
         with:
-          config-file: ./.github/codeql/codeql-config.yml
+          config-file: service/.github/codeql/codeql-config.yml
           languages: java
       - uses: actions/setup-java@v2
         with:
