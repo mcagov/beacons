@@ -8,6 +8,13 @@ on:
         required: true
         type: string
 
+env:
+  SERVICE_DIRECTORY: service
+
+defaults:
+  run:
+    working-directory: env.SERVICE_DIRECTORY
+
 jobs:
   backoffice_spa_lint:
     name: Backoffice SPA - Lint
@@ -19,10 +26,10 @@ jobs:
         with:
           node-version: "14"
       - name: Install npm dependencies
-        working-directory: "src/main/backoffice"
+        working-directory: ${{ env.SERVICE_DIRECTORY }}/src/main/backoffice
         run: npm ci
       - name: Run linter
-        working-directory: "src/main/backoffice"
+        working-directory: ${{ env.SERVICE_DIRECTORY }}/src/main/backoffice
         run: npm run lint
 
   backoffice_spa_unit_test:
@@ -35,10 +42,10 @@ jobs:
         with:
           node-version: "14"
       - name: Install npm dependencies
-        working-directory: "src/main/backoffice"
+        working-directory: ${{ env.SERVICE_DIRECTORY }}/src/main/backoffice
         run: npm ci
       - name: Run unit tests
-        working-directory: "src/main/backoffice"
+        working-directory: ${{ env.SERVICE_DIRECTORY }}/src/main/backoffice
         run: npm test
 
   spring_boot_unit_test:
