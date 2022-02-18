@@ -6,22 +6,8 @@ on:
       - main
 
 jobs:
-  unit_tests:
-    name: Unit test CloudWatch -> Trello Lambda
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-node@v2.4.0
-        with:
-          node-version: 14
-      - name: Run tests
-        run: |
-          cd terraform/trello-lambda
-          npm ci
-          npm run test
-
   terraform_lint:
-    name: Terraform Lint
+    name: Terraform lint
     runs-on: ubuntu-latest
     defaults:
       run:
