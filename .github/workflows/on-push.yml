@@ -89,7 +89,7 @@ jobs:
       test_webapp_gov_notify_api_key: ${{ secrets.TEST_WEBAPP_GOV_NOTIFY_API_KEY }}
 
   deploy_dev:
-    name: Deploy
+    name: Development
     if: ${{ github.event.action == 'push' }}
     needs: [end_to_end_tests, terraform_lint, prettier_check]
     uses: ./.github/workflows/deploy.yml
@@ -118,7 +118,7 @@ jobs:
       opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
 
   deploy_staging:
-    name: Deploy
+    name: Staging
     if: ${{ github.event.action == 'release' }}
     needs: [ end_to_end_tests, terraform_lint, prettier_check ]
     uses: ./.github/workflows/deploy.yml
@@ -169,7 +169,7 @@ jobs:
   deploy_production:
     if: ${{ github.event.action == 'release' }}
     needs: [ deploy_staging, codeql ]
-    name: Deploy production
+    name: Deploy / Production
     runs-on: ubuntu-latest
     steps:
       - run: echo "I would have deployed release with tag ${{ github.event.release.tag_name }} to production"
