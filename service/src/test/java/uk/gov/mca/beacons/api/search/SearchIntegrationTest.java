@@ -31,7 +31,7 @@ public class SearchIntegrationTest extends WebIntegrationTest {
   }
 
   @Test
-  public void whenABeaconIsUpdated_thenTheChangesAreReflectedWhenSearching()
+  public void whenABeaconIsUpdated_ThenTheChangesAreReflectedWhenSearching()
     throws Exception {
     String accountHolderId = seedAccountHolder();
     String beaconId = seedRegistration(
@@ -57,5 +57,36 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       .expectBody()
       .jsonPath("$.hits.hits[0]._source.beaconOwner.ownerEmail")
       .isEqualTo(ownerEmailAfterUpdate);
+  }
+
+  @Test
+  public void whenABeaconIsDeleted_ThenTheChangesAreReflectedWhenSearching()
+    throws Exception {
+    String accountHolderId = seedAccountHolder();
+    String beaconId = seedRegistration(
+      RegistrationUseCase.SINGLE_BEACON,
+      accountHolderId
+    );
+    deleteRegistration(beaconId, accountHolderId);
+
+    String beaconStatus = "DELETED";
+
+    String searchQuery =
+      "{\"query\": {\"match\": {\"beaconStatus\":\"" + beaconStatus + "\"}}}";
+    String fixtureHexId = "1D0EA08C52FFBFF";
+
+    webTestClient
+      .post()
+      .uri(OPENSEARCH_CONTAINER.getHttpHostAddress() + "/_search")
+      .body(BodyInserters.fromValue(searchQuery))
+      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+      .exchange()
+      .expectStatus()
+      .isOk()
+      .expectBody()
+      .jsonPath("$.hits.hits[0]._source.beaconStatus")
+      .isEqualTo(beaconStatus)
+      .jsonPath("$.hits.hits[0]._source.hexId")
+      .isEqualTo(fixtureHexId);
   }
 }
