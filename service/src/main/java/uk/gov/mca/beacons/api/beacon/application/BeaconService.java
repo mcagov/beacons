@@ -77,7 +77,7 @@ public class BeaconService {
       .findById(beaconId)
       .orElseThrow(ResourceNotFoundException::new);
 
-    beacon.setBeaconStatus(BeaconStatus.DELETED);
+    beacon.delete();
 
     return beaconRepository.save(beacon);
   }
