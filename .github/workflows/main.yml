@@ -1,4 +1,4 @@
-name: On push, deploy to dev
+name: CI/CD pipeline
 
 on:
   push:
@@ -136,7 +136,8 @@ jobs:
           distribution: "adopt"
           java-version: 11
       - name: Compile code
-        run: ./service/gradlew clean assemble
+        working-directory: service
+        run: ./gradlew clean assemble
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
 
