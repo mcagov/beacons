@@ -15,18 +15,6 @@ on:
           must match the environment input.
         type: string
         required: true
-      tag:
-        description: The tag to add to the published Docker image, e.g. "v1.0.1"
-        required: true
-        type: string
-      alert_email_address:
-        description: The email address to which CloudWatch alerts should be sent
-        required: true
-        type: string
-      trello_list_id:
-        description: The Trello list to which CloudWatch alert cards should be added
-        required: true
-        type: string
       webapp_image_tag:
         description: The image tag for the Webapp container that should be deployed
         required: true
@@ -39,6 +27,14 @@ on:
         description: The image tag for the OpenSearch proxy container that should be deployed
         required: true
         type: string
+      trello_list_id:
+        description: The Trello list to which CloudWatch alert cards should be added
+        required: true
+        type: string
+      alert_email_address:
+        description: The email address to which CloudWatch alerts should be sent
+        required: false
+        type: string
     secrets:
       aws_access_key_id:
         required: true
@@ -50,13 +46,13 @@ on:
       gov_notify_api_key:
         description: API key for the Gov Notifications API used to send emails
         required: true
-      webapp_client_secret:
+      webapp_azure_ad_client_secret:
         description: Permits Webapp to authenticate and communicate with Service
         required: true
-      azure_b2c_client_secret:
+      webapp_azure_b2c_client_secret:
         description: Allows AccountHolders to use Azure B2C to authenticate with the Webapp
         required: true
-      jwt_secret:
+      webapp_azure_b2c_next_auth_jwt_secret:
         required: true
       service_basic_auth_username:
         description: The basic auth username used to secure non-essential endpoints
@@ -73,10 +69,10 @@ on:
       trello_token:
         description: Token for the CloudWatch alarm -> Trello integration
         required: true
-      opensearch_username:
+      opensearch_master_user_name:
         description: The username for the master user on OpenSearch
         required: true
-      opensearch_password:
+      opensearch_master_user_password:
         description: The password for the master user on OpenSearch
         required: true
       opensearch_dashboards_sso_client_secret:
@@ -114,15 +110,15 @@ jobs:
           TF_VAR_opensearch_proxy_image_tag: ${{ inputs.opensearch_proxy_image_tag }}
           TF_VAR_db_password: ${{ secrets.db_password }}
           TF_VAR_gov_notify_api_key: ${{ secrets.gov_notify_api_key }}
-          TF_VAR_webapp_azure_ad_client_secret: ${{ secrets.webapp_client_secret }}
-          TF_VAR_webapp_azure_b2c_client_secret: ${{ secrets.azure_b2c_client_secret }}
-          TF_VAR_webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.jwt_secret }}
+          TF_VAR_webapp_azure_ad_client_secret: ${{ secrets.webapp_azure_ad_client_secret }}
+          TF_VAR_webapp_azure_b2c_client_secret: ${{ secrets.webapp_azure_b2c_client_secret }}
+          TF_VAR_webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.webapp_azure_b2c_next_auth_jwt_secret }}
           TF_VAR_service_basic_auth_username: ${{ secrets.service_basic_auth_username }}
           TF_VAR_service_basic_auth_password: ${{ secrets.service_basic_auth_password }}
           TF_VAR_aws_account_number: ${{ secrets.aws_account_number }}
           TF_VAR_trello_api_key: ${{ secrets.trello_api_key }}
           TF_VAR_trello_token: ${{ secrets.trello_token }}
-          TF_VAR_opensearch_master_user_name: ${{ secrets.opensearch_username }}
-          TF_VAR_opensearch_master_user_password: ${{ secrets.opensearch_password }}
+          TF_VAR_opensearch_master_user_name: ${{ secrets.opensearch_master_user_name }}
+          TF_VAR_opensearch_master_user_password: ${{ secrets.opensearch_master_user_password }}
           TF_VAR_opensearch_dashboards_sso_client_secret: ${{ secrets.opensearch_dashboards_sso_client_secret }}
         run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars

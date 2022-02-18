@@ -84,9 +84,15 @@ jobs:
     needs: [end_to_end_tests, terraform_lint, prettier_check]
     uses: ./.github/workflows/deploy.yml
     with:
+      environment: development
+      terraform_workspace: dev
+      webapp_image_tag: ${{ github.sha }}
+      service_image_tag: ${{ github.sha }}
+      opensearch_proxy_image_tag: ${{ github.sha }}
       trello_list_id: ${{ secrets.TRELLO_LIST_ID }}
-      alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
-      opensearch_proxy_image_tag: ${{ secrets.OPENSEARCH_PROXY_IMAGE_TAG }}
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       db_password: ${{ secrets.DB_PASSWORD }}
       gov_notify_api_key: ${{ secrets.GOV_NOTIFY_API_KEY }}
       webapp_azure_ad_client_secret: ${{ secrets.WEBAPP_CLIENT_SECRET }}
