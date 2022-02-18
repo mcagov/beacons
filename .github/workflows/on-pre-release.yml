@@ -75,7 +75,7 @@ jobs:
       ]
     uses: ./.github/workflows/end-to-end-tests.yml
     with:
-      tag: ${{ github.event.release.tag_name }}
+      service-image-tag: ${{ github.event.release.tag_name }}
       test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
