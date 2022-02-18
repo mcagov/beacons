@@ -40,7 +40,7 @@ jobs:
     name: Webapp
     uses: ./.github/workflows/publish-webapp-image.yml
     with:
-      tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
+      tag: ${{ github.event_name == 'release' && github.event.release.tag_name || github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -52,7 +52,7 @@ jobs:
     name: Service
     uses: ./.github/workflows/publish-service-image.yml
     with:
-      tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
+      tag: ${{ github.event_name == 'release' && github.event.release.tag_name || github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -62,7 +62,7 @@ jobs:
     name: OpenSearch proxy
     uses: ./.github/workflows/publish-opensearch-proxy-image.yml
     with:
-      tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
+      tag: ${{ github.event_name == 'release' && github.event.release.tag_name || github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -78,7 +78,7 @@ jobs:
       ]
     uses: ./.github/workflows/end-to-end-tests.yml
     with:
-      service-image-tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
+      service-image-tag: ${{ github.event_name == 'release' && github.event.release.tag_name || github.sha }}
       test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -90,7 +90,7 @@ jobs:
 
   deploy_dev:
     name: Development
-    if: ${{ github.event.action == 'push' }}
+    if: ${{ github.event_name == 'push' }}
     needs: [end_to_end_tests, terraform_lint, prettier_check]
     uses: ./.github/workflows/deploy.yml
     with:
@@ -117,17 +117,40 @@ jobs:
       opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
       opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
 
+  ##
+  # Pre-production checks
+  ##
+  codeql:
+    name: CodeQL check
+    if: ${{ github.event_name == 'release' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          config-file: .github/codeql/codeql-config.yml
+          languages: java, typescript
+      - uses: actions/setup-java@v2
+        with:
+          distribution: "adopt"
+          java-version: 11
+      - name: Compile code
+        run: ./service/gradlew clean assemble
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
   deploy_staging:
     name: Staging
-    if: ${{ github.event.action == 'release' }}
+    if: ${{ github.event_name == 'release' }}
     needs: [ end_to_end_tests, terraform_lint, prettier_check ]
     uses: ./.github/workflows/deploy.yml
     with:
       environment: staging
       terraform_workspace: dev
-      webapp_image_tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
-      service_image_tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
-      opensearch_proxy_image_tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
+      webapp_image_tag: ${{ github.event_name == 'release' && github.event.release.tag_name || github.sha }}
+      service_image_tag: ${{ github.event_name == 'release' && github.event.release.tag_name || github.sha }}
+      opensearch_proxy_image_tag: ${{ github.event_name == 'release' && github.event.release.tag_name || github.sha }}
       trello_list_id: 6157064b4d7e1b3b1ea839ad
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -146,30 +169,11 @@ jobs:
       opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
       opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
 
-  codeql:
-    name: CodeQL check
-    if: ${{ github.event.action == 'release' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
-        with:
-          config-file: .github/codeql/codeql-config.yml
-          languages: java, typescript
-      - uses: actions/setup-java@v2
-        with:
-          distribution: "adopt"
-          java-version: 11
-      - name: Compile code
-        run: ./service/gradlew clean assemble
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
-
   deploy_production:
-    if: ${{ github.event.action == 'release' }}
-    needs: [ deploy_staging, codeql ]
     name: Deploy / Production
+    needs: [ deploy_staging, codeql ]
+    if: ${{ github.event_name == 'release' }}
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - run: echo "I would have deployed release with tag ${{ github.event.release.tag_name }} to production"
