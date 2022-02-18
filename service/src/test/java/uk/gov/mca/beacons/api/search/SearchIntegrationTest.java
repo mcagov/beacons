@@ -125,7 +125,7 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       .expectStatus()
       .isOk()
       .expectBody()
-      .jsonPath("$.hits.hits[0]._source._id")
+      .jsonPath("$.hits.hits[0]._id")
       .isEqualTo(legacyBeaconId)
       .jsonPath("$.hits.hits[0]._source.beaconStatus")
       .isEqualTo(beaconStatus);
