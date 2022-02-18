@@ -79,7 +79,12 @@ jobs:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
     steps:
-      - uses: actions/checkout@v2.3.4
+      - name: Checkout repo
+        uses: actions/checkout@v2.3.4
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
       - name: Copy env vars
         run: cp .env.example .env.local
       - name: Run Cypress UI tests
