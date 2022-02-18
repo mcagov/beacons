@@ -29,4 +29,33 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       .jsonPath("$.hits.hits[0]._source.hexId")
       .isEqualTo(fixtureHexId);
   }
+
+  @Test
+  public void whenABeaconIsUpdated_thenTheChangesAreReflectedWhenSearching()
+    throws Exception {
+    String accountHolderId = seedAccountHolder();
+    String beaconId = seedRegistration(
+      RegistrationUseCase.SINGLE_BEACON,
+      accountHolderId
+    );
+    updateRegistration(beaconId, accountHolderId);
+
+    String ownerEmailAfterUpdate = "sergio@royalnavy.esp";
+    String searchQuery =
+      "{\"query\": {\"nested\": {\"path\": \"beaconOwner\", \"query\": { \"match\": {\"beaconOwner.ownerEmail\":\"" +
+      ownerEmailAfterUpdate +
+      "\"}}}}}";
+
+    webTestClient
+      .post()
+      .uri(OPENSEARCH_CONTAINER.getHttpHostAddress() + "/_search")
+      .body(BodyInserters.fromValue(searchQuery))
+      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+      .exchange()
+      .expectStatus()
+      .isOk()
+      .expectBody()
+      .jsonPath("$.hits.hits[0]._source.beaconOwner.ownerEmail")
+      .isEqualTo(ownerEmailAfterUpdate);
+  }
 }

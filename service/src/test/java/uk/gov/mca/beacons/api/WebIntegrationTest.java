@@ -140,6 +140,23 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
     );
   }
 
+  protected void updateRegistration(String beaconId, String accountHolderId)
+    throws Exception {
+    final String updateRegistrationBody = getRegistrationBody(
+      RegistrationUseCase.BEACON_TO_UPDATE,
+      accountHolderId
+    );
+
+    webTestClient
+      .patch()
+      .uri(Endpoints.Registration.value + "/register/" + beaconId)
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(updateRegistrationBody)
+      .exchange()
+      .expectStatus()
+      .isOk();
+  }
+
   protected String getRegistrationBody(
     RegistrationUseCase useCase,
     String accountHolderId
