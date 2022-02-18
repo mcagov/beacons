@@ -7,6 +7,15 @@ on:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
         required: true
         type: string
+      registry_url:
+        description: The URL of the registry where the image should be published
+        required: true
+        type: string
+      repository_name:
+        description: The name of the image to be published
+        required: false
+        default: opensearch-proxy
+        type: string
     secrets:
       aws_access_key_id:
         required: true
@@ -25,7 +34,7 @@ jobs:
       - name: Login to ECR
         uses: docker/login-action@v1.10.0
         with:
-          registry: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+          registry: ${{ inputs.registry_url }}
           username: ${{ secrets.aws_access_key_id }}
           password: ${{ secrets.aws_secret_access_key }}
       - name: Build and push
@@ -33,4 +42,4 @@ jobs:
         with:
           context: ./terraform/opensearch-proxy
           push: true
-          tags: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/opensearch-proxy:${{ inputs.tag }}
+          tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
