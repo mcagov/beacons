@@ -1,0 +1,9 @@
+name: "Beacons CodeQL config"
+
+paths-ignore:
+  - "**/*.js"
+  - "**/node_modules"
+  - "**/*.test.js"
+  - "**/*.test.ts"
+  - "**/*.spec.js"
+  - "**/*.spec.ts"

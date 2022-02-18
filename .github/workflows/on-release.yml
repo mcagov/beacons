@@ -7,6 +7,26 @@ on:
       - released # Require approval, then deploy to production environment
 
 jobs:
+  codeql:
+    name: CodeQL check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          config-file: .github/codeql/codeql-config.yml
+          languages: java, typescript
+      - uses: actions/setup-java@v2
+        with:
+          distribution: "adopt"
+          java-version: 11
+      - name: Compile code
+        run: ./service/gradlew clean assemble
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
   unit_tests:
     if: ${{ github.event.release.prereleased }}
     name: Unit test CloudWatch -> Trello Lambda
@@ -113,6 +133,7 @@ jobs:
 
   deploy_production:
     if: ${{ github.event.release.released }}
+    needs: [deploy_staging, codeql]
     name: Deploy production
     runs-on: ubuntu-latest
     steps:

@@ -1,4 +1,0 @@
-name: "Beacons CodeQL config"
-
-paths-ignore:
-  - "**/*.js"
