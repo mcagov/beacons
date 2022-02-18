@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      WEBAPP_CLIENT_SECRET: ${{ secrets.test_azure_ad_client_secret }}
+      WEBAPP_CLIENT_SECRET: ${{ secrets.test_webapp_azure_ad_client_secret }}
       SESSION_TOKEN: ${{ secrets.test_webapp_azure_b2c_session_token }}
       JWT_SECRET: ${{ secrets.test_webapp_azure_b2c_jwt_secret }}
       GOV_NOTIFY_API_KEY: ${{ secrets.test_webapp_gov_notify_api_key }}
