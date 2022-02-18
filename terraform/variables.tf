@@ -289,7 +289,7 @@ variable "trello_api_key" {
 }
 variable "trello_list_id" {
   type        = string
-  description = "Unique idenitfier for list in Trello"
+  description = "Unique identifier for list in Trello"
 }
 variable "opensearch_master_user_name" {
   type        = string
