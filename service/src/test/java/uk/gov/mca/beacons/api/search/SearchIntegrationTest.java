@@ -11,7 +11,10 @@ public class SearchIntegrationTest extends WebIntegrationTest {
   @Test
   public void whenANewBeaconIsRegistered_thenItIsSearchable() throws Exception {
     String accountHolderId = seedAccountHolder();
-    seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId);
+    String beaconId = seedRegistration(
+      RegistrationUseCase.SINGLE_BEACON,
+      accountHolderId
+    );
     String fixtureHexId = "1D0EA08C52FFBFF";
 
     String searchQuery =
@@ -26,6 +29,8 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       .expectStatus()
       .isOk()
       .expectBody()
+      .jsonPath("$.hits.hits[0]._id")
+      .isEqualTo(beaconId)
       .jsonPath("$.hits.hits[0]._source.hexId")
       .isEqualTo(fixtureHexId);
   }
@@ -55,6 +60,8 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       .expectStatus()
       .isOk()
       .expectBody()
+      .jsonPath("$.hits.hits[0]._id")
+      .isEqualTo(beaconId)
       .jsonPath("$.hits.hits[0]._source.beaconOwner.ownerEmail")
       .isEqualTo(ownerEmailAfterUpdate);
   }
@@ -84,9 +91,43 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       .expectStatus()
       .isOk()
       .expectBody()
+      .jsonPath("$.hits.hits[0]._id")
+      .isEqualTo(beaconId)
       .jsonPath("$.hits.hits[0]._source.beaconStatus")
       .isEqualTo(beaconStatus)
       .jsonPath("$.hits.hits[0]._source.hexId")
       .isEqualTo(fixtureHexId);
+  }
+
+  @Test
+  public void whenALegacyBeaconIsClaimed_ThenTheChangesAreReflectedWhenSearching()
+    throws Exception {
+    String accountHolderId = seedAccountHolder();
+
+    String legacyBeaconId = seedLegacyBeacon(
+      fixture ->
+        fixture
+          .replace("ownerbeacon@beacons.com", "testy@mctestface.com")
+          .replace("9D0E1D1B8C00001", "1D0EA08C52FFBFF")
+    );
+    seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId);
+
+    String beaconStatus = "CLAIMED";
+    String searchQuery =
+      "{\"query\": {\"match\": {\"beaconStatus\":\"" + beaconStatus + "\"}}}";
+
+    webTestClient
+      .post()
+      .uri(OPENSEARCH_CONTAINER.getHttpHostAddress() + "/_search")
+      .body(BodyInserters.fromValue(searchQuery))
+      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+      .exchange()
+      .expectStatus()
+      .isOk()
+      .expectBody()
+      .jsonPath("$.hits.hits[0]._source._id")
+      .isEqualTo(legacyBeaconId)
+      .jsonPath("$.hits.hits[0]._source.beaconStatus")
+      .isEqualTo(beaconStatus);
   }
 }
