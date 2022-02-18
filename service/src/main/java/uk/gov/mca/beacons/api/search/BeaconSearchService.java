@@ -13,6 +13,9 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseRepository;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
 import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
 
@@ -23,18 +26,21 @@ public class BeaconSearchService {
   BeaconRepository beaconRepository;
   BeaconOwnerRepository beaconOwnerRepository;
   BeaconUseRepository beaconUseRepository;
+  LegacyBeaconRepository legacyBeaconRepository;
 
   @Autowired
   public BeaconSearchService(
     BeaconSearchRepository beaconSearchRepository,
     BeaconRepository beaconRepository,
     BeaconOwnerRepository beaconOwnerRepository,
-    BeaconUseRepository beaconUseRepository
+    BeaconUseRepository beaconUseRepository,
+    LegacyBeaconRepository legacyBeaconRepository
   ) {
     this.beaconSearchRepository = beaconSearchRepository;
     this.beaconRepository = beaconRepository;
     this.beaconOwnerRepository = beaconOwnerRepository;
     this.beaconUseRepository = beaconUseRepository;
+    this.legacyBeaconRepository = legacyBeaconRepository;
   }
 
   /**
@@ -65,6 +71,18 @@ public class BeaconSearchService {
       owner,
       uses
     );
+    return beaconSearchRepository.save(beaconSearchDocument);
+  }
+
+  public BeaconSearchDocument index(LegacyBeaconId legacyBeaconId) {
+    LegacyBeacon legacyBeacon = legacyBeaconRepository
+      .findById(legacyBeaconId)
+      .orElseThrow(IllegalArgumentException::new);
+
+    BeaconSearchDocument beaconSearchDocument = new BeaconSearchDocument(
+      legacyBeacon
+    );
+
     return beaconSearchRepository.save(beaconSearchDocument);
   }
 }
