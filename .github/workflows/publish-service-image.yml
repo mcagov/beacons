@@ -151,6 +151,6 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v2.7.0
         with:
-          context: .
+          context: service
           push: true
           tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
