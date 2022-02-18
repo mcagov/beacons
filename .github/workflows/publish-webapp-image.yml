@@ -161,7 +161,6 @@ jobs:
         lint_check,
         prettier_check,
         docker_lint,
-        codeql_check,
       ]
 
     steps:
