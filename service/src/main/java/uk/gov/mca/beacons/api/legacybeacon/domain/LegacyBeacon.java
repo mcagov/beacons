@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import uk.gov.mca.beacons.api.legacybeacon.domain.events.LegacyBeaconClaimed;
 import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
 
 @Getter
@@ -81,6 +82,7 @@ public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
     if (!isClaimed()) {
       LegacyBeaconClaimAction claimAction = new LegacyBeaconClaimAction();
       actions.add(claimAction);
+      this.registerEvent(new LegacyBeaconClaimed(this));
     }
   }
 
