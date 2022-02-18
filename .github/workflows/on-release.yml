@@ -8,7 +8,6 @@ on:
 jobs:
   deploy_production:
     name: Deploy / Production
-    needs: [ deploy_staging, codeql ]
     environment: production
     runs-on: ubuntu-latest
     steps:
