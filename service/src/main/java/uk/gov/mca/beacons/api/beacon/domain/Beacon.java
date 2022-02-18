@@ -103,7 +103,7 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
     this.registerEvent(new BeaconUpdated(this));
   }
 
-  public void delete() {
+  public void softDelete() {
     setBeaconStatus(BeaconStatus.DELETED);
     this.registerEvent(new BeaconDeleted(this));
   }
