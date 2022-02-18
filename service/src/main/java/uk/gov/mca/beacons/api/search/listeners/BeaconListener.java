@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 import uk.gov.mca.beacons.api.beacon.domain.events.BeaconCreated;
+import uk.gov.mca.beacons.api.beacon.domain.events.BeaconDeleted;
+import uk.gov.mca.beacons.api.beacon.domain.events.BeaconUpdated;
 import uk.gov.mca.beacons.api.search.BeaconSearchService;
 
 @Component
@@ -18,6 +20,16 @@ public class BeaconListener {
 
   @TransactionalEventListener
   public void whenCustomerRegistersBeacon(BeaconCreated event) {
+    beaconSearchService.index(event.getBeaconId());
+  }
+
+  @TransactionalEventListener
+  public void whenCustomerUpdatesABeacon(BeaconUpdated event) {
+    beaconSearchService.index(event.getBeaconId());
+  }
+
+  @TransactionalEventListener
+  public void whenCustomerDeletesABeaconRegistration(BeaconDeleted event) {
     beaconSearchService.index(event.getBeaconId());
   }
 }

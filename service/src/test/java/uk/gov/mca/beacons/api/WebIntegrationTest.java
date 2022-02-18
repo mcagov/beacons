@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
+import uk.gov.mca.beacons.api.registration.rest.DeleteRegistrationDTO;
 
 @AutoConfigureWebTestClient
 public abstract class WebIntegrationTest extends BaseIntegrationTest {
@@ -138,6 +139,45 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
         .blockFirst(),
       "$.id"
     );
+  }
+
+  protected void updateRegistration(String beaconId, String accountHolderId)
+    throws Exception {
+    final String updateRegistrationBody = getRegistrationBody(
+      RegistrationUseCase.BEACON_TO_UPDATE,
+      accountHolderId
+    );
+
+    webTestClient
+      .patch()
+      .uri(Endpoints.Registration.value + "/register/" + beaconId)
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(updateRegistrationBody)
+      .exchange()
+      .expectStatus()
+      .isOk();
+  }
+
+  protected void deleteRegistration(String beaconId, String accountHolderId)
+    throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    String deleteRegistrationRequestBody = objectMapper.writeValueAsString(
+      DeleteRegistrationDTO
+        .builder()
+        .beaconId(UUID.fromString(beaconId))
+        .userId(UUID.fromString(accountHolderId))
+        .reason("I don't want it")
+        .build()
+    );
+
+    webTestClient
+      .patch()
+      .uri(Endpoints.Registration.value + "/" + beaconId + "/delete")
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(deleteRegistrationRequestBody)
+      .exchange()
+      .expectStatus()
+      .isOk();
   }
 
   protected String getRegistrationBody(

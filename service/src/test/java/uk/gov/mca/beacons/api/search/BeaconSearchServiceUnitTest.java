@@ -29,6 +29,7 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseRepository;
+import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
 import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
 
@@ -49,6 +50,9 @@ public class BeaconSearchServiceUnitTest {
 
   @Mock
   BeaconUseRepository beaconUseRepository;
+
+  @Mock
+  LegacyBeaconRepository legacyBeaconRepository;
 
   @Test
   public void givenABeaconId_thenSaveACorrespondingBeaconSearchDocument() {
@@ -126,6 +130,38 @@ public class BeaconSearchServiceUnitTest {
     );
   }
 
+  @Test
+  public void givenALegacyBeaconId_thenSaveACorrespondingBeaconSearchDocument() {
+    ArgumentCaptor<BeaconSearchDocument> argumentCaptor = ArgumentCaptor.forClass(
+      BeaconSearchDocument.class
+    );
+    LegacyBeacon mockLegacyBeacon = createMockLegacyBeacon();
+    given(legacyBeaconRepository.findById(any(LegacyBeaconId.class)))
+      .willReturn(Optional.of(mockLegacyBeacon));
+
+    beaconSearchService.index(mockLegacyBeacon.getId());
+
+    verify(beaconSearchRepository, times(1)).save(argumentCaptor.capture());
+
+    BeaconSearchDocument beaconSearchDocument = argumentCaptor.getValue();
+    assertThat(
+      beaconSearchDocument.getHexId(),
+      equalTo(mockLegacyBeacon.getHexId())
+    );
+    assertThat(
+      beaconSearchDocument.getBeaconStatus(),
+      equalTo(mockLegacyBeacon.getBeaconStatus())
+    );
+  }
+
+  @Test
+  public void givenALegacyBeaconId_whenTheLegacyBeaconIdIsNotFound_thenThrowException() {
+    assertThrows(
+      IllegalArgumentException.class,
+      () -> beaconSearchService.index(new LegacyBeaconId(UUID.randomUUID()))
+    );
+  }
+
   private Beacon createMockBeacon(BeaconStatus status) {
     Beacon beacon = mock(Beacon.class);
     given(beacon.getId()).willReturn(new BeaconId(UUID.randomUUID()));
@@ -147,5 +183,24 @@ public class BeaconSearchServiceUnitTest {
     given(beaconUse.getVesselName()).willReturn("Ever Given");
 
     return beaconUse;
+  }
+
+  private LegacyBeacon createMockLegacyBeacon() {
+    LegacyUse legacyUse = mock(LegacyUse.class);
+    LegacyOwner legacyOwner = mock(LegacyOwner.class);
+    LegacyBeaconDetails legacyBeaconDetails = mock(LegacyBeaconDetails.class);
+    LegacyData legacyData = mock(LegacyData.class);
+    LegacyBeacon legacyBeacon = mock(LegacyBeacon.class);
+
+    given(legacyData.getBeacon()).willReturn(legacyBeaconDetails);
+    given(legacyData.getUses()).willReturn(List.of(legacyUse));
+    given(legacyData.getOwner()).willReturn(legacyOwner);
+    given(legacyBeacon.getId())
+      .willReturn(new LegacyBeaconId(UUID.randomUUID()));
+    given(legacyBeacon.getData()).willReturn(legacyData);
+    given(legacyBeacon.getHexId()).willReturn("1D0EA08C52FFBFF");
+    given(legacyBeacon.getBeaconStatus()).willReturn("CLAIMED");
+
+    return legacyBeacon;
   }
 }

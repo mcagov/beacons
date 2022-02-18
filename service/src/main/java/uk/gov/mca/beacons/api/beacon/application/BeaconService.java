@@ -25,7 +25,9 @@ public class BeaconService {
 
   @Autowired
   BeaconService(
-    AuditingHandler auditingHandler,
+    @SuppressWarnings(
+      "SpringJavaInjectionPointsAutowiringInspection"
+    ) AuditingHandler auditingHandler,
     BeaconRepository beaconRepository,
     ModelPatcherFactory<Beacon> beaconModelPatcherFactory
   ) {
@@ -56,18 +58,18 @@ public class BeaconService {
     );
   }
 
-  public Beacon update(BeaconId beaconId, Beacon beaconUpdate)
+  public Beacon update(BeaconId beaconId, Beacon patch)
     throws ResourceNotFoundException {
-    Beacon toUpdate = beaconRepository
+    Beacon beacon = beaconRepository
       .findById(beaconId)
       .orElseThrow(ResourceNotFoundException::new);
 
     final ModelPatcher<Beacon> patcher = getPatcher();
 
-    Beacon updatedBeacon = patcher.patchModel(toUpdate, beaconUpdate);
-    auditingHandler.markModified(updatedBeacon);
+    beacon.update(patch, patcher);
+    auditingHandler.markModified(beacon);
 
-    return beaconRepository.save(updatedBeacon);
+    return beaconRepository.save(beacon);
   }
 
   public Beacon softDelete(BeaconId beaconId) {
@@ -75,7 +77,7 @@ public class BeaconService {
       .findById(beaconId)
       .orElseThrow(ResourceNotFoundException::new);
 
-    beacon.setBeaconStatus(BeaconStatus.DELETED);
+    beacon.softDelete();
 
     return beaconRepository.save(beacon);
   }
