@@ -7,6 +7,30 @@ on:
         description: The tag of the Service artefact to test
         required: true
         type: string
+      test_gov_notify_feedback_email_address:
+        description: The email address to use to test email alerts against
+        required: true
+        type: string
+    secrets:
+      aws_access_key_id:
+        description: Required to download the test images from ECR
+        required: true
+      aws_secret_access_key:
+        description: Required to download the test images from ECR
+        required: true
+      test_webapp_azure_b2c_session_token:
+        description: The session token of a logged in user to allow Cypress to test behind auth
+        required: true
+      test_webapp_azure_b2c_jwt_secret:
+        description: Permits Cypress to authenticate with Azure B2C to perform logged-in tests
+        required: true
+      test_webapp_azure_ad_client_secret:
+        description: Permits the Webapp to authenticate with the Service
+        required: true
+      test_webapp_gov_notify_api_key:
+        description: API key for the Webapp to send test emails
+        required: true
+
 
 defaults:
   run:
@@ -18,11 +42,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      WEBAPP_CLIENT_SECRET: ${{ secrets.WEBAPP_CLIENT_SECRET }}
-      SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      GOV_NOTIFY_API_KEY: ${{ secrets.GOV_NOTIFY_API_KEY }}
-      GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS: ${{ secrets.GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS }}
+      WEBAPP_CLIENT_SECRET: ${{ secrets.test_azure_ad_client_secret }}
+      SESSION_TOKEN: ${{ secrets.test_webapp_azure_b2c_session_token }}
+      JWT_SECRET: ${{ secrets.test_webapp_azure_b2c_jwt_secret }}
+      GOV_NOTIFY_API_KEY: ${{ secrets.test_webapp_gov_notify_api_key }}
+      GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS: ${{ inputs.test_gov_notify_feedback_email_address }}
 
     steps:
       - uses: actions/checkout@v2.3.4
@@ -36,15 +60,15 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.aws_access_key_id }}
+          aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
           aws-region: eu-west-2
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - name: Bring up API and DB
         run: |
-          SERVICE_IMAGE_TAG=${{ github.event.inputs.service-image-tag }} docker compose --verbose -f docker-compose.e2e.yml up --detach
+          SERVICE_IMAGE_TAG=${{ inputs.service-image-tag }} docker compose --verbose -f docker-compose.e2e.yml up --detach
       - name: Copy env vars
         run: cp .env.example .env.local
       - name: Checkout node
