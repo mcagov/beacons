@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  release:
+    types:
+      - released
 
 jobs:
   terraform_lint:
@@ -12,7 +15,6 @@ jobs:
     defaults:
       run:
         working-directory: terraform
-
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
@@ -24,7 +26,6 @@ jobs:
   prettier_check:
     name: Prettier check
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -39,7 +40,7 @@ jobs:
     name: Webapp
     uses: ./.github/workflows/publish-webapp-image.yml
     with:
-      tag: ${{ github.sha }}
+      tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -51,7 +52,7 @@ jobs:
     name: Service
     uses: ./.github/workflows/publish-service-image.yml
     with:
-      tag: ${{ github.sha }}
+      tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -61,7 +62,7 @@ jobs:
     name: OpenSearch proxy
     uses: ./.github/workflows/publish-opensearch-proxy-image.yml
     with:
-      tag: ${{ github.sha }}
+      tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -77,8 +78,8 @@ jobs:
       ]
     uses: ./.github/workflows/end-to-end-tests.yml
     with:
-      service-image-tag: ${{ github.sha }}
-      test_gov_notify_feedback_email_address: sdf@sdf.com
+      service-image-tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
+      test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -89,6 +90,7 @@ jobs:
 
   deploy_dev:
     name: Deploy
+    if: ${{ github.event.action == 'push' }}
     needs: [end_to_end_tests, terraform_lint, prettier_check]
     uses: ./.github/workflows/deploy.yml
     with:
@@ -114,3 +116,60 @@ jobs:
       opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
       opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
       opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
+
+  deploy_staging:
+    name: Deploy
+    if: ${{ github.event.action == 'release' }}
+    needs: [ end_to_end_tests, terraform_lint, prettier_check ]
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: staging
+      terraform_workspace: dev
+      webapp_image_tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
+      service_image_tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
+      opensearch_proxy_image_tag: ${{ github.event.action == 'released' && github.event.release.tag_name || github.sha }}
+      trello_list_id: 6157064b4d7e1b3b1ea839ad
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      db_password: ${{ secrets.DB_PASSWORD }}
+      gov_notify_api_key: ${{ secrets.GOV_NOTIFY_API_KEY }}
+      webapp_azure_ad_client_secret: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+      webapp_azure_b2c_client_secret: ${{ secrets.AZURE_B2C_CLIENT_SECRET }}
+      webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.JWT_SECRET }}
+      service_basic_auth_username: ${{ secrets.SERVICE_BASIC_AUTH_USERNAME }}
+      service_basic_auth_password: ${{ secrets.SERVICE_BASIC_AUTH_PASSWORD }}
+      aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+      trello_api_key: ${{ secrets.TRELLO_API_KEY }}
+      trello_token: ${{ secrets.TRELLO_TOKEN }}
+      opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
+      opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
+      opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
+
+  codeql:
+    name: CodeQL check
+    if: ${{ github.event.action == 'release' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          config-file: .github/codeql/codeql-config.yml
+          languages: java, typescript
+      - uses: actions/setup-java@v2
+        with:
+          distribution: "adopt"
+          java-version: 11
+      - name: Compile code
+        run: ./service/gradlew clean assemble
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
+  deploy_production:
+    if: ${{ github.event.action == 'release' }}
+    needs: [ deploy_staging, codeql ]
+    name: Deploy production
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "I would have deployed release with tag ${{ github.event.release.tag_name }} to production"
