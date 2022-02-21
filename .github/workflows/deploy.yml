@@ -105,7 +105,7 @@ jobs:
       - name: Terraform deploy
         env:
           TF_VAR_trello_list_id: ${{ inputs.trello_list_id }}
-          TF_VAR_alert_email_address: ${{ inputs.alert_email_address }}
+          TF_VAR_alert_email_address: ${{ secrets.alert_email_address }}
           TF_VAR_db_password: ${{ secrets.db_password }}
           TF_VAR_gov_notify_api_key: ${{ secrets.gov_notify_api_key }}
           TF_VAR_webapp_image_tag: ${{ inputs.webapp_image_tag }}
