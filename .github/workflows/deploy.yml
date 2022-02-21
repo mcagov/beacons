@@ -127,5 +127,4 @@ jobs:
           TF_VAR_opensearch_master_user_name: ${{ secrets.opensearch_master_user_name }}
           TF_VAR_opensearch_master_user_password: ${{ secrets.opensearch_master_user_password }}
           TF_VAR_opensearch_dashboards_sso_client_secret: ${{ secrets.opensearch_dashboards_sso_client_secret }}
-        run: terraform plan -input=false -var-file=${{ inputs.terraform_workspace }}.tfvars
-#        run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
+        run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
