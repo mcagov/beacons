@@ -3,7 +3,6 @@ import {
   ThemeProvider,
   StyledEngineProvider,
   Theme,
-  adaptV4Theme,
 } from "@mui/material/styles";
 import "fontsource-roboto";
 import React from "react";
@@ -20,23 +19,28 @@ if (
   makeServer();
 }
 
-const theme: Theme = createTheme(
-  adaptV4Theme({
-    palette: {
-      primary: {
-        main: "#000000",
-        contrastText: "#fff",
-      },
-      secondary: {
-        main: "#007cb8",
-        contrastText: "#fff",
-      },
-      background: {
-        default: "#eeeeee",
+const theme: Theme = createTheme({
+  palette: {
+    primary: {
+      main: "#000000",
+      contrastText: "#fff",
+    },
+    secondary: {
+      main: "#007cb8",
+      contrastText: "#fff",
+    },
+    background: {
+      default: "#eeeeee",
+    },
+  },
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: "standard",
       },
     },
-  })
-);
+  },
+});
 
 ReactDOM.render(
   <StyledEngineProvider injectFirst>
