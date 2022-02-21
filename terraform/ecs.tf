@@ -140,7 +140,6 @@ resource "aws_ecs_task_definition" "service" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.service_fargate_cpu
   memory                   = var.service_fargate_memory
-  wait_for_steady_state    = true
 
   container_definitions = jsonencode([{
     name : "beacons-service",
@@ -222,6 +221,7 @@ resource "aws_ecs_service" "service" {
   launch_type                       = "FARGATE"
   platform_version                  = var.ecs_fargate_version
   health_check_grace_period_seconds = 600
+  wait_for_steady_state             = true
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
