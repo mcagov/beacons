@@ -28,7 +28,6 @@ on:
         description: Permits Cypress to authenticate with Azure B2C to perform logged-in tests
         required: true
 
-
 defaults:
   run:
     working-directory: webapp
@@ -115,12 +114,7 @@ jobs:
     name: Build and Push Docker image
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
-    needs:
-      [
-        static_analysis,
-        unit_tests,
-        ui_tests,
-      ]
+    needs: [static_analysis, unit_tests, ui_tests]
     steps:
       - uses: actions/checkout@v2.3.4
       - name: Set up Docker Buildx

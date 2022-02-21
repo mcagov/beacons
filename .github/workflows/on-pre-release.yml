@@ -69,9 +69,9 @@ jobs:
     name: End-to-end tests
     needs:
       [
-          publish_webapp_image,
-          publish_service_image,
-          publish_opensearch_proxy_image,
+        publish_webapp_image,
+        publish_service_image,
+        publish_opensearch_proxy_image,
       ]
     uses: ./.github/workflows/end-to-end-tests.yml
     with:
@@ -107,7 +107,7 @@ jobs:
 
   deploy_staging:
     name: Staging
-    needs: [ end_to_end_tests, terraform_lint, prettier_check ]
+    needs: [end_to_end_tests, terraform_lint, prettier_check]
     uses: ./.github/workflows/deploy.yml
     with:
       environment: staging

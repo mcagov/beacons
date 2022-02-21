@@ -31,7 +31,6 @@ on:
         description: API key for the Webapp to send test emails
         required: true
 
-
 defaults:
   run:
     working-directory: webapp

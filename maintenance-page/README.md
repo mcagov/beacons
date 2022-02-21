@@ -11,15 +11,17 @@ e.g the staging environment uses the url staging.406beacons.com.
 Note: the s3 bucket 'must' be named to match the hostname used to access the page e.g staging.406beacons.com
 
 ## Required Setup
+
 When starting from a blank slate (no previous AWS setup) the following is required .
 
 - [S3 bucket](https://www.terraform.io/docs/language/settings/backends/s3.html) configured. Bucket key needs to match that in [main.tf](./main.tf)
 - Dynamo DB table configured. See [Terraform docs](https://www.terraform.io/docs/language/settings/backends/s3.html#dynamodb-state-locking)
 - Ensure that the terraform workspaces for all environments exist
-    - `terraform workspace new ${env_name}` where env_name is `dev`, `staging` or `production`
-    - `terraform workspace list` allows you to view existing workspaces
+  - `terraform workspace new ${env_name}` where env_name is `dev`, `staging` or `production`
+  - `terraform workspace list` allows you to view existing workspaces
 
 ## Build and Deploy
+
 The following example shows how to build and deploy a Maintenance Page for staging and copy over the html.
 
 - terraform workspace staging

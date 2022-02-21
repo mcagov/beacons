@@ -26,8 +26,6 @@ Wrapper.
 
 ## Development
 
-Clone this repo.
-
 Set the Node environment using `nvm use` (having installed [nvm](https://github.com/nvm-sh/nvm))
 
 Install node packages (needed for code formatting): `npm install`
@@ -68,14 +66,6 @@ As well as during the pre-commit hook, the formatter can be run manually with:
 $ npm run format
 ```
 
-## Deployment
-
-A Continuous Integration and Deployment (CI/CD) pipeline is configured to deploy to our development environment on
-merges into the `main` branch.
-
-Please see the [Beacons Integration](https://github.com/mcagov/beacons-integration) project which manages the
-infrastructure-as-code and deployments for the application.
-
 ## Jobs
 
 ### Manually adding all beacon registrations to OpenSearch (reindexing)
@@ -105,15 +95,3 @@ Logs are also output to CloudWatch when the job starts and finishes.
 With the Beacons Service API running, execute `docker compose up -f docker-compose.schemacrawler.yml`. This will create
 a diagram of the database schema at
 [schemacrawler/beacons-schema.html](schemacrawler/beacons-schema.html).
-
-## Licence
-
-Unless stated otherwise, the codebase is released under [the MIT License][mit]. This covers both the codebase and any
-sample code in the documentation.
-
-The documentation is [&copy; Crown copyright][copyright] and available under the terms of the [Open Government 3.0][ogl]
-licence.
-
-[mit]: LICENCE
-[copyright]: http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/
-[ogl]: http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
