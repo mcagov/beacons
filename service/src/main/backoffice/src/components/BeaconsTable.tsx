@@ -113,13 +113,21 @@ const columns: Column<BeaconRowData>[] = [
     render: (rowData: BeaconRowData) => {
       if (rowData.beaconType === "LEGACY_BEACON") {
         return (
-          <Link component={RouterLink} to={"/legacy-beacons/" + rowData.id}>
+          <Link
+            component={RouterLink}
+            to={"/legacy-beacons/" + rowData.id}
+            underline="hover"
+          >
             {rowData.hexId ? rowData.hexId : <i>{Placeholders.NoData}</i>}
           </Link>
         );
       } else {
         return (
-          <Link component={RouterLink} to={"/beacons/" + rowData.id}>
+          <Link
+            component={RouterLink}
+            to={"/beacons/" + rowData.id}
+            underline="hover"
+          >
             {rowData.hexId ? rowData.hexId : <i>{Placeholders.NoData}</i>}
           </Link>
         );
