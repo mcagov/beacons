@@ -39,6 +39,11 @@ const theme: Theme = createTheme({
         variant: "standard",
       },
     },
+    MuiSelect: {
+      defaultProps: {
+        variant: "standard",
+      },
+    },
   },
 });
 
