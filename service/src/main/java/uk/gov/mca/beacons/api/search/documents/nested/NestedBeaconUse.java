@@ -23,6 +23,7 @@ public class NestedBeaconUse {
     this.vesselName = beaconUse.getVesselName();
     this.callSign = beaconUse.getCallSign();
     this.aircraftRegistrationMark = beaconUse.getRegistrationMark();
+    this.mmsi = beaconUse.getFixedVhfRadioValue();
   }
 
   public NestedBeaconUse(LegacyUse legacyUse) {
@@ -32,6 +33,7 @@ public class NestedBeaconUse {
     this.vesselName = legacyUse.getVesselName();
     this.callSign = legacyUse.getCallSign();
     this.aircraftRegistrationMark = legacyUse.getAircraftRegistrationMark();
+    setMmsi(legacyUse.getMmsiNumber());
   }
 
   @Field(type = FieldType.Keyword)
@@ -51,6 +53,9 @@ public class NestedBeaconUse {
 
   @Field(type = FieldType.Keyword)
   private String aircraftRegistrationMark;
+
+  @Field(type = FieldType.Keyword)
+  private String mmsi;
 
   public void setEnvironment(Environment environment) {
     if (environment != null) {
@@ -97,6 +102,12 @@ public class NestedBeaconUse {
       this.activity = activity.toUpperCase();
     } else {
       this.activity = null;
+    }
+  }
+
+  public void setMmsi(Number mmsi) {
+    if (mmsi != null) {
+      this.mmsi = mmsi.toString();
     }
   }
 }
