@@ -45,7 +45,7 @@ export class BeaconsGateway implements IBeaconsGateway {
       return response.data;
     } catch (e) {
       console.error(e);
-      throw Error(e);
+      throw e;
     }
   }
 
@@ -55,7 +55,7 @@ export class BeaconsGateway implements IBeaconsGateway {
 
       return this._beaconResponseMapper.map(response.data);
     } catch (e) {
-      throw Error(e);
+      throw e;
     }
   }
 
@@ -65,7 +65,7 @@ export class BeaconsGateway implements IBeaconsGateway {
 
       return this._legacyBeaconResponseMapper.map(response.data);
     } catch (e) {
-      throw Error(e);
+      throw e;
     }
   }
 
@@ -81,7 +81,7 @@ export class BeaconsGateway implements IBeaconsGateway {
       );
       return response.data;
     } catch (e) {
-      throw Error(e);
+      throw e;
     }
   }
 

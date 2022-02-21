@@ -4,20 +4,28 @@ import { beaconFixture } from "../fixtures/beacons.fixture";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { IUsesGateway } from "../gateways/uses/IUsesGateway";
 import { SingleBeaconRecordView } from "./SingleBeaconRecordView";
+import { INotesGateway } from "../gateways/notes/INotesGateway";
 
 describe("Beacon record page", () => {
   let beaconsGatewayDouble: IBeaconsGateway;
   let usesGatewayDouble: IUsesGateway;
+  let notesGatewayDouble: INotesGateway;
 
   beforeEach(() => {
     beaconsGatewayDouble = {
       getBeacon: jest.fn().mockResolvedValue(beaconFixture),
       getAllBeacons: jest.fn(),
       updateBeacon: jest.fn(),
+      getLegacyBeacon: jest.fn(),
     };
 
     usesGatewayDouble = {
       getUses: jest.fn(),
+    };
+
+    notesGatewayDouble = {
+      getNotes: jest.fn(),
+      createNote: jest.fn(),
     };
   });
 
@@ -27,6 +35,7 @@ describe("Beacon record page", () => {
         beaconsGateway={beaconsGatewayDouble}
         usesGateway={usesGatewayDouble}
         beaconId={beaconFixture.id}
+        notesGateway={notesGatewayDouble}
       />
     );
     const hexId = beaconFixture.hexId;
@@ -43,6 +52,7 @@ describe("Beacon record page", () => {
         beaconsGateway={beaconsGatewayDouble}
         usesGateway={usesGatewayDouble}
         beaconId={beaconFixture.id}
+        notesGateway={notesGatewayDouble}
       />
     );
     const numberOfUses = beaconFixture.uses.length;
