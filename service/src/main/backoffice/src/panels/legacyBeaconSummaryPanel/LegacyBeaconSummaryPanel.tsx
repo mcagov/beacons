@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@material-ui/core";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { FunctionComponent, useEffect, useState } from "react";
 import { Placeholders } from "utils/writingStyle";

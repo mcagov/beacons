@@ -1,8 +1,10 @@
 import {
-  createMuiTheme,
-  MuiThemeProvider,
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
   Theme,
-} from "@material-ui/core/styles";
+  adaptV4Theme,
+} from "@mui/material/styles";
 import "fontsource-roboto";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -18,26 +20,30 @@ if (
   makeServer();
 }
 
-const theme: Theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#000000",
-      contrastText: "#fff",
+const theme: Theme = createTheme(
+  adaptV4Theme({
+    palette: {
+      primary: {
+        main: "#000000",
+        contrastText: "#fff",
+      },
+      secondary: {
+        main: "#007cb8",
+        contrastText: "#fff",
+      },
+      background: {
+        default: "#eeeeee",
+      },
     },
-    secondary: {
-      main: "#007cb8",
-      contrastText: "#fff",
-    },
-    background: {
-      default: "#eeeeee",
-    },
-  },
-});
+  })
+);
 
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <App />
-  </MuiThemeProvider>,
+  <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  </StyledEngineProvider>,
   document.getElementById("root")
 );
 

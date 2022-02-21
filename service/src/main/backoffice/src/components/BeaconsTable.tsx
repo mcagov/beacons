@@ -1,4 +1,4 @@
-import { Chip, Link, Paper } from "@material-ui/core";
+import { Chip, Link, Paper } from "@mui/material";
 import {
   AddBox,
   ArrowDownward,
@@ -15,7 +15,7 @@ import {
   SaveAlt,
   Search,
   ViewColumn,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import {
   GetAllBeaconsFilters,
   GetAllBeaconsSort,

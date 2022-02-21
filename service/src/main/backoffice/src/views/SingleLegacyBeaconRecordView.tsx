@@ -1,5 +1,7 @@
-import { Grid, Tab, Tabs } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Grid, Tab, Tabs } from "@mui/material";
+import { Theme } from "@mui/material/styles";
+import createStyles from "@mui/styles/createStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { LegacyBeaconSummaryPanel } from "panels/legacyBeaconSummaryPanel/LegacyBeaconSummaryPanel";
 import { LegacyEmergencyContactPanel } from "panels/legacyEmergencyContactPanel/LegacyEmergencyContactPanel";
@@ -64,7 +66,12 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<ISingleLegacyBeacon
             <Tab label={`${numberOfUses} Registered Uses`} />
           </Tabs>
           <TabPanel value={selectedTab} index={0}>
-            <Grid direction="row" container justify="space-between" spacing={1}>
+            <Grid
+              direction="row"
+              container
+              justifyContent="space-between"
+              spacing={1}
+            >
               <Grid item xs={6}>
                 <LegacyOwnerPanel
                   legacyOwner={beacon.owner}

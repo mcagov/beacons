@@ -1,5 +1,7 @@
-import { Grid, Tab, Tabs } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Grid, Tab, Tabs } from "@mui/material";
+import { Theme } from "@mui/material/styles";
+import createStyles from "@mui/styles/createStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import { IBeacon } from "entities/IBeacon";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import { OwnerPanel } from "panels/ownerPanel/OwnerPanel";
@@ -73,7 +75,12 @@ export const SingleBeaconRecordView: FunctionComponent<ISingleBeaconRecordViewPr
             <Tab label={`Notes`} />
           </Tabs>
           <TabPanel value={selectedTab} index={0}>
-            <Grid direction="row" container justify="space-between" spacing={1}>
+            <Grid
+              direction="row"
+              container
+              justifyContent="space-between"
+              spacing={1}
+            >
               <Grid item xs={6}>
                 <OwnerPanel
                   beaconsGateway={beaconsGateway}

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Grid } from "@material-ui/core";
+import { Card, CardContent, CardHeader, Grid } from "@mui/material";
 import { IUse } from "entities/IUse";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import React, { FunctionComponent, useEffect, useState } from "react";

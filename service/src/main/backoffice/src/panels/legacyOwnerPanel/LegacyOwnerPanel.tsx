@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@material-ui/core";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import { ILegacyOwner } from "entities/ILegacyBeacon";
 import React, { FunctionComponent, useState } from "react";
 import { FieldValueTypes } from "../../components/dataPanel/FieldValue";

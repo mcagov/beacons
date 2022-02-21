@@ -1,5 +1,5 @@
-import { Button, Menu, MenuItem } from "@material-ui/core";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import { Button, Menu, MenuItem } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { FunctionComponent, useState } from "react";
 import { AuthContext } from "./AuthContext";
 

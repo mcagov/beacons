@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SearchBar, SearchbarProps } from "./SearchBar";
 import { Icons } from "@material-table/core";
-import { Clear, Search } from "@material-ui/icons";
+import { Clear, Search } from "@mui/icons-material";
 
 const tableIcons: Icons = {
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),

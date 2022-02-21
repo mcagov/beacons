@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@material-ui/core";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import { IField } from "components/dataPanel/IField";
 import { PanelViewingState } from "components/dataPanel/PanelViewingState";
 import { ILegacyUse } from "entities/ILegacyBeacon";
