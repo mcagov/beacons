@@ -3,6 +3,11 @@ name: Deploy
 on:
   workflow_call:
     inputs:
+      dry-run:
+        description: Toggle true if no infrastructure should be altered (runs `terraform plan` instead of `apply`)
+        type: boolean
+        default: false
+        required: false
       environment:
         description: >
           The environment to which the application should be deployed.  Must be one of development/staging/production
@@ -122,4 +127,5 @@ jobs:
           TF_VAR_opensearch_master_user_name: ${{ secrets.opensearch_master_user_name }}
           TF_VAR_opensearch_master_user_password: ${{ secrets.opensearch_master_user_password }}
           TF_VAR_opensearch_dashboards_sso_client_secret: ${{ secrets.opensearch_dashboards_sso_client_secret }}
-        run: terraform plan -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
+        run: terraform plan -input=false -var-file=${{ inputs.terraform_workspace }}.tfvars
+#        run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
