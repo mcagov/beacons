@@ -111,7 +111,7 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       environment: staging
-      terraform_workspace: dev
+      terraform_workspace: staging
       webapp_image_tag: ${{ github.event.release.tag_name }}
       service_image_tag: ${{ github.event.release.tag_name }}
       opensearch_proxy_image_tag: ${{ github.event.release.tag_name }}
