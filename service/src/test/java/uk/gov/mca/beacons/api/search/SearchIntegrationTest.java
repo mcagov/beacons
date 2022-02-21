@@ -153,7 +153,7 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       );
 
       String searchQuery =
-        "{\"query\": {\"nested\": {\"path\": \"beaconUse\", \"query\": { \"match\": {\"beaconUse.mmsi\":\"" +
+        "{\"query\": {\"nested\": {\"path\": \"beaconUses\", \"query\": { \"match\": {\"beaconUses.mmsi\":\"" +
         mmsi +
         "\"}}}}}";
 
@@ -168,7 +168,7 @@ public class SearchIntegrationTest extends WebIntegrationTest {
         .expectBody()
         .jsonPath("$.hits.hits[0]._id")
         .isEqualTo(beaconId)
-        .jsonPath("$.hits.hits[0]._source.beaconUse[0].mmsi")
+        .jsonPath("$.hits.hits[0]._source.beaconUses[0].mmsi")
         .isEqualTo(mmsi);
     }
   }
