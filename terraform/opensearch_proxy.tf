@@ -47,6 +47,7 @@ resource "aws_ecs_service" "opensearch_proxy" {
   launch_type                       = "FARGATE"
   platform_version                  = "1.4.0"
   health_check_grace_period_seconds = 60
+  wait_for_steady_state             = true
 
   network_configuration {
     security_groups = [aws_security_group.opensearch_proxy.id]

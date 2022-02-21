@@ -113,6 +113,7 @@ resource "aws_ecs_service" "webapp" {
   launch_type                       = "FARGATE"
   platform_version                  = "1.4.0"
   health_check_grace_period_seconds = 60
+  wait_for_steady_state             = true
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
@@ -139,6 +140,8 @@ resource "aws_ecs_task_definition" "service" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.service_fargate_cpu
   memory                   = var.service_fargate_memory
+  wait_for_steady_state    = true
+
   container_definitions = jsonencode([{
     name : "beacons-service",
     image : "${data.aws_ecr_repository.service.repository_url}:${var.service_image_tag}",
