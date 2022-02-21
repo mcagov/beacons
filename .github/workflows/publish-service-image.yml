@@ -1,4 +1,4 @@
-name: Publish a version of the Service image to ECR
+name: Publish Service image
 
 on:
   workflow_call:

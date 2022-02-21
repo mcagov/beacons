@@ -1,4 +1,4 @@
-name: Publish a version of the Webapp image to ECR
+name: Publish Webapp image
 
 on:
   workflow_call:

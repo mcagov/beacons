@@ -1,4 +1,4 @@
-name: Test the Beacons application end-to-end
+name: E2E tests
 
 on:
   workflow_call:

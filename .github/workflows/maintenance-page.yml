@@ -1,4 +1,4 @@
-name: Deploy Maintenance Page
+name: Deploy maintenance page
 
 on:
   workflow_dispatch:
