@@ -32,6 +32,9 @@ export const Navigation: FunctionComponent = (): JSX.Element => {
           <Button color="inherit" component={RouterLink} to="/">
             Beacon records
           </Button>
+          <Button color="inherit" component={RouterLink} to="/advanced-search">
+            Advanced search
+          </Button>
           <Box ml="auto">
             <UserMenu />
           </Box>
