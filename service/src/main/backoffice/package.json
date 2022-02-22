@@ -13,6 +13,7 @@
     "lint:fix": "eslint --fix src"
   },
   "dependencies": {
+    "@appbaseio/reactivesearch": "^3.28.0",
     "@azure/msal-browser": "^2.16.1",
     "@azure/msal-react": "^1.0.0",
     "@emotion/react": "^11.8.1",
