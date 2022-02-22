@@ -21,7 +21,7 @@ import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContactRepository;
 import uk.gov.mca.beacons.api.shared.domain.person.Address;
 
-@Profile("dev")
+@Profile("seed")
 @Component
 @Transactional
 public class DataSeeder implements CommandLineRunner {
