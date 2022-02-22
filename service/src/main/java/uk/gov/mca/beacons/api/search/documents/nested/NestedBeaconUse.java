@@ -54,7 +54,7 @@ public class NestedBeaconUse {
   @Field(type = FieldType.Keyword)
   private String aircraftRegistrationMark;
 
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "keyword")
   private String mmsi;
 
   public void setEnvironment(Environment environment) {
