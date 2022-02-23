@@ -33,10 +33,12 @@ describe("NotesEditing", () => {
     const noteInputField = screen.getByPlaceholderText("Add a note here");
     userEvent.type(noteInputField, "Here is a note");
 
+    let saveButton = screen.getByTestId(/save/i);
     await waitFor(() => {
-      const saveButton = screen.getByTestId(/save/i);
-      userEvent.click(saveButton);
+      expect(saveButton).toBeEnabled();
     });
+
+    userEvent.click(saveButton);
 
     await waitFor(() => {
       expect(onSave).toHaveBeenCalledWith({
@@ -72,9 +74,7 @@ describe("NotesEditing", () => {
     });
 
     const noteInputField = screen.getByPlaceholderText("Add a note here");
-    await waitFor(() => {
-      userEvent.type(noteInputField, "Here is a note");
-    });
+    userEvent.type(noteInputField, "Here is a note");
 
     await waitFor(() => {
       expect(screen.getByTestId(/save/i)).toBeDisabled();

@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SearchBar, SearchbarProps } from "./SearchBar";
 import { Icons } from "@material-table/core";
@@ -38,13 +38,13 @@ describe("SearchBar", () => {
     const onSearchChanged = jest.fn();
     const changeSearchText = jest.fn();
 
-    const { getByPlaceholderText } = renderSearchBar({
+    renderSearchBar({
       dataManager: { changeSearchText },
       onSearchChanged,
       searchText: "",
     });
 
-    const inputNode = getByPlaceholderText(/search/i);
+    const inputNode = screen.getByPlaceholderText(/search/i);
     userEvent.type(inputNode, "A query");
     inputNode.blur();
 
@@ -59,13 +59,13 @@ describe("SearchBar", () => {
     const onSearchChanged = jest.fn();
     const changeSearchText = jest.fn();
 
-    const { getByPlaceholderText } = renderSearchBar({
+    renderSearchBar({
       dataManager: { changeSearchText },
       onSearchChanged,
       searchText: "Prefilled",
     });
 
-    const inputNode = getByPlaceholderText(/search/i);
+    const inputNode = screen.getByPlaceholderText(/search/i);
     userEvent.clear(inputNode);
     userEvent.type(inputNode, "Prefilled");
     inputNode.blur();
@@ -78,14 +78,14 @@ describe("SearchBar", () => {
     const onSearchChanged = jest.fn();
     const changeSearchText = jest.fn();
 
-    const { getByPlaceholderText, getByTestId } = renderSearchBar({
+    renderSearchBar({
       dataManager: { changeSearchText },
       onSearchChanged,
       searchText: "Prefilled",
     });
 
-    const inputNode = getByPlaceholderText(/search/i);
-    const buttonNode = getByTestId("reset-search");
+    const inputNode = screen.getByPlaceholderText(/search/i);
+    const buttonNode = screen.getByTestId("reset-search");
 
     userEvent.type(inputNode, "More");
     userEvent.click(buttonNode);
