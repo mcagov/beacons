@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { SearchBar, SearchbarProps } from "./SearchBar";
 import { Icons } from "@material-table/core";
 import { Clear, Search } from "@mui/icons-material";
+import { ThemeProvider } from "@mui/styles";
+import { createTheme } from "@mui/material/styles";
 
 const tableIcons: Icons = {
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
@@ -21,15 +23,17 @@ function renderSearchBar({
   onSearchChanged,
 }: RenderSearchBarParams) {
   return render(
-    <SearchBar
-      searchAutoFocus={false}
-      searchFieldVariant="outlined"
-      onSearchChanged={onSearchChanged}
-      icons={tableIcons}
-      searchFieldStyle={{}}
-      searchText={searchText}
-      dataManager={dataManager}
-    />
+    <ThemeProvider theme={createTheme()}>
+      <SearchBar
+        searchAutoFocus={false}
+        searchFieldVariant="outlined"
+        onSearchChanged={onSearchChanged}
+        icons={tableIcons}
+        searchFieldStyle={{}}
+        searchText={searchText}
+        dataManager={dataManager}
+      />
+    </ThemeProvider>
   );
 }
 

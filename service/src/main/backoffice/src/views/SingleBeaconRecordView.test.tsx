@@ -5,6 +5,8 @@ import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { IUsesGateway } from "../gateways/uses/IUsesGateway";
 import { SingleBeaconRecordView } from "./SingleBeaconRecordView";
 import { INotesGateway } from "../gateways/notes/INotesGateway";
+import { ThemeProvider } from "@mui/styles";
+import { createTheme } from "@mui/material/styles";
 
 describe("Beacon record page", () => {
   let beaconsGatewayDouble: IBeaconsGateway;
@@ -31,12 +33,14 @@ describe("Beacon record page", () => {
 
   it("Displays beacon's hex ID in the header", async () => {
     render(
-      <SingleBeaconRecordView
-        beaconsGateway={beaconsGatewayDouble}
-        usesGateway={usesGatewayDouble}
-        beaconId={beaconFixture.id}
-        notesGateway={notesGatewayDouble}
-      />
+      <ThemeProvider theme={createTheme()}>
+        <SingleBeaconRecordView
+          beaconsGateway={beaconsGatewayDouble}
+          usesGateway={usesGatewayDouble}
+          beaconId={beaconFixture.id}
+          notesGateway={notesGatewayDouble}
+        />
+      </ThemeProvider>
     );
     const hexId = beaconFixture.hexId;
     const heading = screen.getByRole("heading");
@@ -48,12 +52,14 @@ describe("Beacon record page", () => {
 
   it("Displays the number of uses a beacon has", async () => {
     render(
-      <SingleBeaconRecordView
-        beaconsGateway={beaconsGatewayDouble}
-        usesGateway={usesGatewayDouble}
-        beaconId={beaconFixture.id}
-        notesGateway={notesGatewayDouble}
-      />
+      <ThemeProvider theme={createTheme()}>
+        <SingleBeaconRecordView
+          beaconsGateway={beaconsGatewayDouble}
+          usesGateway={usesGatewayDouble}
+          beaconId={beaconFixture.id}
+          notesGateway={notesGatewayDouble}
+        />
+      </ThemeProvider>
     );
     const numberOfUses = beaconFixture.uses.length;
 
