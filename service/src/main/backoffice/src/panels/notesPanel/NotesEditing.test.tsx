@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NoteType } from "../../entities/INote";
 import { NotesEditing } from "./NotesEditing";
@@ -10,19 +10,15 @@ describe("NotesEditing", () => {
     const incidentNoteRadio = screen.getByTestId(/incident-note-type/i);
     const generalNoteRadio = screen.getByTestId(/general-note-type/i);
 
-    act(() => {
-      userEvent.click(incidentNoteRadio);
-      userEvent.click(generalNoteRadio);
-    });
+    userEvent.click(incidentNoteRadio);
+    userEvent.click(generalNoteRadio);
   });
 
   it("user can type a note into text field", async () => {
     render(<NotesEditing onSave={jest.fn()} onCancel={jest.fn()} />);
 
     const noteInputField = screen.getByPlaceholderText("Add a note here");
-    act(() => {
-      userEvent.type(noteInputField, "Here is a note");
-    });
+    userEvent.type(noteInputField, "Here is a note");
 
     expect(await screen.findByDisplayValue("Here is a note")).toBeVisible();
   });
@@ -33,19 +29,15 @@ describe("NotesEditing", () => {
 
     const generalNoteRadio = screen.getByTestId(/general-note-type/i);
     const noteInputField = screen.getByPlaceholderText("Add a note here");
-    act(() => {
-      userEvent.click(generalNoteRadio);
-      userEvent.type(noteInputField, "Here is a note");
-    });
+    userEvent.click(generalNoteRadio);
+    userEvent.type(noteInputField, "Here is a note");
 
     let saveButton = screen.getByTestId(/save/i);
     await waitFor(() => {
       expect(saveButton).toBeEnabled();
     });
 
-    act(() => {
-      userEvent.click(saveButton);
-    });
+    userEvent.click(saveButton);
 
     await waitFor(() => {
       expect(onSave).toHaveBeenCalledWith({
@@ -63,11 +55,9 @@ describe("NotesEditing", () => {
     const noteInputField = screen.getByPlaceholderText("Add a note here");
     const cancelButton = screen.getByRole("button", { name: "Cancel" });
 
-    act(() => {
-      userEvent.click(incidentNoteRadio);
-      userEvent.type(noteInputField, "Here is a note");
-      userEvent.click(cancelButton);
-    });
+    userEvent.click(incidentNoteRadio);
+    userEvent.type(noteInputField, "Here is a note");
+    userEvent.click(cancelButton);
 
     await waitFor(() => {
       expect(onCancel).toHaveBeenCalled();
@@ -83,18 +73,14 @@ describe("NotesEditing", () => {
       expect(screen.getByTestId(/save/i)).toBeDisabled();
     });
 
-    act(() => {
-      userEvent.type(noteInputField, "Here is a note");
-    });
+    userEvent.type(noteInputField, "Here is a note");
 
     await waitFor(() => {
       expect(screen.getByTestId(/save/i)).toBeDisabled();
     });
 
-    act(() => {
-      userEvent.clear(noteInputField);
-      userEvent.click(generalNoteRadio);
-    });
+    userEvent.clear(noteInputField);
+    userEvent.click(generalNoteRadio);
 
     await waitFor(() => {
       expect(screen.getByTestId(/save/i)).toBeDisabled();
