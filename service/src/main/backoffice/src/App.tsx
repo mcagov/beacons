@@ -23,8 +23,6 @@ import { BeaconRecordsListView } from "./views/BeaconRecordsListView";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { AdvancedSearchView } from "./views/AdvancedSearchView";
-import { ThemeProvider } from "@mui/styles";
-import { createTheme } from "@mui/material/styles";
 
 interface ResourceParams {
   id: string;
@@ -76,30 +74,28 @@ const App: FunctionComponent = () => {
   };
 
   return (
-    <ThemeProvider theme={createTheme()}>
-      <AuthWrapper pca={pca}>
-        <Router>
-          <Navigation />
-          <RequireAuth>
-            <Switch>
-              <Route exact path="/">
-                <BeaconRecordsListView beaconsGateway={beaconsGateway} />
-              </Route>
-              <Route path={`/beacons/:id`}>
-                <SingleBeaconRecordViewWithParam />
-              </Route>
-              <Route path={`/legacy-beacons/:id`}>
-                <SingleLegacyBeaconRecordViewWithParam />
-              </Route>
-              <Route path="/advanced-search">
-                <AdvancedSearchView />
-              </Route>
-            </Switch>
-          </RequireAuth>
-        </Router>
-        <Footer />
-      </AuthWrapper>
-    </ThemeProvider>
+    <AuthWrapper pca={pca}>
+      <Router>
+        <Navigation />
+        <RequireAuth>
+          <Switch>
+            <Route exact path="/">
+              <BeaconRecordsListView beaconsGateway={beaconsGateway} />
+            </Route>
+            <Route path={`/beacons/:id`}>
+              <SingleBeaconRecordViewWithParam />
+            </Route>
+            <Route path={`/legacy-beacons/:id`}>
+              <SingleLegacyBeaconRecordViewWithParam />
+            </Route>
+            <Route path="/advanced-search">
+              <AdvancedSearchView />
+            </Route>
+          </Switch>
+        </RequireAuth>
+      </Router>
+      <Footer />
+    </AuthWrapper>
   );
 };
 
