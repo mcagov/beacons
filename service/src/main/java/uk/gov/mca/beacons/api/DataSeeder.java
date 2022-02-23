@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api;
 
 import com.github.javafaker.Faker;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -22,6 +23,7 @@ import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContactRepository
 import uk.gov.mca.beacons.api.shared.domain.person.Address;
 
 @Profile("seed")
+@Slf4j
 @Component
 @Transactional
 public class DataSeeder implements CommandLineRunner {
@@ -52,15 +54,23 @@ public class DataSeeder implements CommandLineRunner {
   public void run(String... args) throws Exception {
     AccountHolder accountHolder = seedAccountHolder();
     long countBeaconRecords = beaconRepository.count();
+    long desiredBeaconRecords = 1000;
 
-    for (long i = countBeaconRecords; i < 1000; i++) {
-      if (faker.random().nextInt(0, 10) == 1) {
-        accountHolder = seedAccountHolder();
+    if (countBeaconRecords >= desiredBeaconRecords) {
+      log.info(countBeaconRecords + " found, no need to seed.  I would have seeded if there were less than " + desiredBeaconRecords);
+    } else {
+      long numberRecordsToSeed = desiredBeaconRecords - countBeaconRecords;
+      log.info("Seeding with " + numberRecordsToSeed + " test beacon records");
+
+      for (long i = 0; i < numberRecordsToSeed; i++) {
+        if (faker.random().nextInt(0, 10) == 1) {
+          accountHolder = seedAccountHolder();
+        }
+        Beacon beacon = seedBeacon(accountHolder.getId());
+        seedMaritimeUse(beacon.getId());
+        seedBeaconOwner(beacon.getId());
+        seedEmergencyContact(beacon.getId());
       }
-      Beacon beacon = seedBeacon(accountHolder.getId());
-      seedMaritimeUse(beacon.getId());
-      seedBeaconOwner(beacon.getId());
-      seedEmergencyContact(beacon.getId());
     }
   }
 
