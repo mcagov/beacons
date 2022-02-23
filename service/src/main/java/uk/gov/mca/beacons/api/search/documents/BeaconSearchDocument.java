@@ -55,6 +55,7 @@ public class BeaconSearchDocument {
         .stream()
         .map(NestedBeaconUse::new)
         .collect(Collectors.toList());
+    this.isLegacy = false;
   }
 
   public BeaconSearchDocument(LegacyBeacon legacyBeacon) {
@@ -73,6 +74,7 @@ public class BeaconSearchDocument {
         .stream()
         .map(NestedBeaconUse::new)
         .collect(Collectors.toList());
+    this.isLegacy = true;
   }
 
   @Id
