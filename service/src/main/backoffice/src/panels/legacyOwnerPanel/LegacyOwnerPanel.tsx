@@ -76,8 +76,8 @@ export const LegacyOwnerPanel: FunctionComponent<LegacyOwnerSummaryPanelProps> =
         </Card>
         <br />
         {secondaryLegacyOwners?.map((secondaryLegacyOwner, index) => (
-          <>
-            <Card key={"owner_" + index}>
+          <div key={"owner_" + index}>
+            <Card>
               <CardContent>
                 <CardHeader title={`Owner`} />
                 <>
@@ -93,7 +93,7 @@ export const LegacyOwnerPanel: FunctionComponent<LegacyOwnerSummaryPanelProps> =
               </CardContent>
             </Card>
             <br />
-          </>
+          </div>
         ))}
       </>
     );
