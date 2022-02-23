@@ -3,13 +3,15 @@ import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import React from "react";
 import { PageContent } from "../components/layout/PageContent";
-import { Paper } from "@mui/material";
+import { Chip, Paper } from "@mui/material";
 import {
   ReactiveBase,
   DataSearch,
   ReactiveList,
   ResultCard,
 } from "@appbaseio/reactivesearch";
+import { Podcasts } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,18 +37,11 @@ export function AdvancedSearchView(): JSX.Element {
           >
             <DataSearch
               componentId="searchbox"
-              dataField="hexId"
-              placeholder="Search by Hex Id"
-            />
-            <DataSearch
-              componentId="mmsiSearchBox"
-              dataField="beaconUses.mmsi"
-              nestedField="beaconUses"
-              fuzziness={0}
+              dataField={["hexId", "mmsiNumbers"]}
+              placeholder="Search for beacons"
             />
             <ReactiveList
               componentId="results"
-              size={6}
               pagination={true}
               react={{
                 and: ["searchbox", "mmsiSearchBox"],
@@ -56,14 +51,24 @@ export function AdvancedSearchView(): JSX.Element {
                 <ReactiveList.ResultCardsWrapper>
                   {data.map((item: any) => (
                     <ResultCard key={item._id}>
-                      <ResultCard.Image src={item.image} />
-                      <ResultCard.Title
-                        dangerouslySetInnerHTML={{
-                          __html: item.hexId,
-                        }}
+                      <Chip
+                        label={item.hexId}
+                        icon={<Podcasts />}
+                        component={RouterLink}
+                        to={
+                          item.isLegacy
+                            ? "/legacy-beacons/"
+                            : "/beacons/" + item.id
+                        }
+                        clickable
                       />
                       <ResultCard.Description>
-                        {JSON.stringify(item.beaconUses, null, 2)}
+                        <table style={{ paddingTop: "1rem" }}>
+                          <tr>
+                            <th>MMSI number(s):</th>
+                            <td>{item.mmsiNumbers}</td>
+                          </tr>
+                        </table>
                       </ResultCard.Description>
                     </ResultCard>
                   ))}
