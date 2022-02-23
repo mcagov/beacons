@@ -3,7 +3,7 @@ import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import React from "react";
 import { PageContent } from "../components/layout/PageContent";
-import { Chip, Paper } from "@mui/material";
+import { Alert, Chip, Paper } from "@mui/material";
 import {
   ReactiveBase,
   DataSearch,
@@ -47,8 +47,9 @@ export function AdvancedSearchView(): JSX.Element {
                 and: ["searchbox", "mmsiSearchBox"],
               }}
               dataField="hexId"
-              render={({ data }) => (
+              render={({ data, error }) => (
                 <ReactiveList.ResultCardsWrapper>
+                  {error && <Alert severity="error">Error: {error}</Alert>}
                   {data.map((item: any) => (
                     <ResultCard key={item._id}>
                       <Chip
@@ -64,10 +65,12 @@ export function AdvancedSearchView(): JSX.Element {
                       />
                       <ResultCard.Description>
                         <table style={{ paddingTop: "1rem" }}>
-                          <tr>
-                            <th>MMSI number(s):</th>
-                            <td>{item.mmsiNumbers}</td>
-                          </tr>
+                          <tbody>
+                            <tr>
+                              <th>MMSI number(s):</th>
+                              <td>{item.mmsiNumbers}</td>
+                            </tr>
+                          </tbody>
                         </table>
                       </ResultCard.Description>
                     </ResultCard>
