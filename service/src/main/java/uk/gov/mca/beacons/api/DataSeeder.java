@@ -57,7 +57,11 @@ public class DataSeeder implements CommandLineRunner {
     long desiredBeaconRecords = 1000;
 
     if (countBeaconRecords >= desiredBeaconRecords) {
-      log.info(countBeaconRecords + " found, no need to seed.  I would have seeded if there were less than " + desiredBeaconRecords);
+      log.info(
+        countBeaconRecords +
+        " found, no need to seed.  I would have seeded if there were less than " +
+        desiredBeaconRecords
+      );
     } else {
       long numberRecordsToSeed = desiredBeaconRecords - countBeaconRecords;
       log.info("Seeding with " + numberRecordsToSeed + " test beacon records");
