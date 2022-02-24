@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import { FunctionComponent } from "react";
 
 export const LoadingState: FunctionComponent = () => (

@@ -1,8 +1,8 @@
 import React, { forwardRef } from "react";
 import { TextFilter, TextFilterProps } from "./TextFilter";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Icons } from "@material-table/core";
-import { FilterList } from "@material-ui/icons";
+import { FilterList } from "@mui/icons-material";
 import userEvent from "@testing-library/user-event";
 
 const tableIcons: Icons = {
@@ -40,8 +40,8 @@ describe("TextFilter", () => {
 
     const onFilterChanged = jest.fn();
 
-    const { getByTestId } = renderTextFilter({ columnDef, onFilterChanged });
-    const inputNode = getByTestId("text-filter-input");
+    renderTextFilter({ columnDef, onFilterChanged });
+    const inputNode = screen.getByTestId("text-filter-input");
 
     userEvent.type(inputNode, "testing 123");
     inputNode.blur();
@@ -58,11 +58,11 @@ describe("TextFilter", () => {
       },
       title: "Test",
     };
-
     const onFilterChanged = jest.fn();
 
-    const { getByTestId } = renderTextFilter({ columnDef, onFilterChanged });
-    const inputNode = getByTestId("text-filter-input");
+    renderTextFilter({ columnDef, onFilterChanged });
+
+    const inputNode = screen.getByTestId("text-filter-input");
 
     userEvent.clear(inputNode);
     userEvent.type(inputNode, "Already filled");

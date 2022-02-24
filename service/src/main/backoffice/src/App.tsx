@@ -22,6 +22,7 @@ import { NotesGateway } from "./gateways/notes/NotesGateway";
 import { BeaconRecordsListView } from "./views/BeaconRecordsListView";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
+import { AdvancedSearchView } from "./views/AdvancedSearchView";
 
 interface ResourceParams {
   id: string;
@@ -86,6 +87,9 @@ const App: FunctionComponent = () => {
             </Route>
             <Route path={`/legacy-beacons/:id`}>
               <SingleLegacyBeaconRecordViewWithParam />
+            </Route>
+            <Route path="/advanced-search">
+              <AdvancedSearchView />
             </Route>
           </Switch>
         </RequireAuth>

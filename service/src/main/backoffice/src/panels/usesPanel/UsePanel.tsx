@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@material-ui/core";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import { Environments, IUse } from "entities/IUse";
 import React, { FunctionComponent, ReactNode } from "react";
 import { formatUse } from "utils/writingStyle";

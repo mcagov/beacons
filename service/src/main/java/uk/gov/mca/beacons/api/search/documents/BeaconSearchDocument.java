@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api.search.documents;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -43,11 +44,18 @@ public class BeaconSearchDocument {
     if (beaconOwner != null) {
       this.beaconOwner = new NestedBeaconOwner(beaconOwner);
     }
+    this.mmsiNumbers =
+      beaconUses
+        .stream()
+        .map(BeaconUse::getMmsiNumbers)
+        .flatMap(Collection::stream)
+        .collect(Collectors.toList());
     this.beaconUses =
       beaconUses
         .stream()
         .map(NestedBeaconUse::new)
         .collect(Collectors.toList());
+    this.isLegacy = false;
   }
 
   public BeaconSearchDocument(LegacyBeacon legacyBeacon) {
@@ -66,12 +74,13 @@ public class BeaconSearchDocument {
         .stream()
         .map(NestedBeaconUse::new)
         .collect(Collectors.toList());
+    this.isLegacy = true;
   }
 
   @Id
   private UUID id;
 
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "keyword")
   private String hexId;
 
   @Field(type = FieldType.Keyword)
@@ -86,13 +95,13 @@ public class BeaconSearchDocument {
   @Field(type = FieldType.Date)
   private OffsetDateTime lastModifiedDate;
 
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "keyword")
   private String manufacturerSerialNumber;
 
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "keyword")
   private String cospasSarsatNumber;
 
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "keyword")
   private String referenceNumber;
 
   @Field(type = FieldType.Date)
@@ -100,6 +109,9 @@ public class BeaconSearchDocument {
 
   @Field(type = FieldType.Date)
   private LocalDate lastServicedDate;
+
+  @Field(type = FieldType.Text, analyzer = "keyword")
+  private List<String> mmsiNumbers;
 
   @Field(type = FieldType.Nested)
   private NestedBeaconOwner beaconOwner;

@@ -120,6 +120,7 @@ describe("formatOwners()", () => {
           townOrCity: "Bristol",
           county: "",
           postcode: "BS8 9NW",
+          country: "United Kingdom",
         },
       ],
       out: "Steve Stevington",
@@ -136,6 +137,7 @@ describe("formatOwners()", () => {
           townOrCity: "Bristol",
           county: "",
           postcode: "BS8 9NW",
+          country: "United Kingdom",
         },
         {
           id: "2",
@@ -147,6 +149,7 @@ describe("formatOwners()", () => {
           townOrCity: "Bristol",
           county: "",
           postcode: "BS8 9NW",
+          country: "United Kingdom",
         },
       ],
       out: "Steve Stevington, Prunella Stevington",

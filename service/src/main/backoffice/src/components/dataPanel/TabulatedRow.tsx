@@ -1,4 +1,4 @@
-import { TableCell, TableRow } from "@material-ui/core";
+import { TableCell, TableRow } from "@mui/material";
 import React, { FunctionComponent } from "react";
 
 export const TabulatedRow: FunctionComponent<{

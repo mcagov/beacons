@@ -6,7 +6,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from "@mui/material";
 import { INote } from "entities/INote";
 import React, { FunctionComponent } from "react";
 import { formatMonth } from "utils/dateTime";

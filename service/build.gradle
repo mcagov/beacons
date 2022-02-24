@@ -52,6 +52,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("com.github.javafaker:javafaker:1.0.2")
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
@@ -86,10 +87,11 @@ check.dependsOn 'integrationTest'
  * Build, package and serve the Backoffice SPA's static assets
  */
 node {
-    version = '14.18.1'
+    version = '16.14.0'
     download = true
     workDir = file("${project.buildDir}/nodejs")
     npmWorkDir = file("${project.buildDir}/npm")
+    npmInstallCommand = "ci"
 }
 
 npmInstall {

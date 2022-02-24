@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.search;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -129,5 +131,45 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       .isEqualTo(legacyBeaconId)
       .jsonPath("$.hits.hits[0]._source.beaconStatus")
       .isEqualTo(beaconStatus);
+  }
+
+  @Nested
+  class SearchParameters {
+
+    private String accountHolderId;
+
+    @BeforeEach
+    void init() throws Exception {
+      accountHolderId = seedAccountHolder();
+    }
+
+    @Test
+    public void searchForBeaconUsingMmsi() throws Exception {
+      String mmsi = "235 762000";
+      String beaconId = seedRegistration(
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId,
+        fixture -> fixture.replace("this is my MMSI number", mmsi)
+      );
+
+      String searchQuery =
+        "{\"query\": {\"nested\": {\"path\": \"beaconUses\", \"query\": { \"match\": {\"beaconUses.mmsi\":\"" +
+        mmsi +
+        "\"}}}}}";
+
+      webTestClient
+        .post()
+        .uri(OPENSEARCH_CONTAINER.getHttpHostAddress() + "/_search")
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(searchQuery)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(beaconId)
+        .jsonPath("$.hits.hits[0]._source.beaconUses[0].mmsi")
+        .isEqualTo(mmsi);
+    }
   }
 }

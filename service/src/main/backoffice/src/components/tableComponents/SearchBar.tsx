@@ -24,8 +24,8 @@ import {
   TextField,
   Tooltip,
   Theme,
-  withStyles,
-} from "@material-ui/core";
+} from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
 import { Icons } from "@material-table/core";
 import {
   clearInternalValue,
@@ -140,6 +140,7 @@ export const SearchBar = withStyles(styles)(function ({
               ref={buttonRef}
               aria-label={localization.clearSearchAriaLabel}
               data-testid="reset-search"
+              size="large"
             >
               <ResetSearchIcon fontSize="small" aria-label="clear" />
             </IconButton>

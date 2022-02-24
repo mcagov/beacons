@@ -1,13 +1,14 @@
 package uk.gov.mca.beacons.api.beaconuse.domain;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
@@ -60,12 +61,18 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   @Setter
   private Boolean fixedVhfRadio;
 
+  /**
+   * Also known as an MMSI number
+   */
   @Setter
   private String fixedVhfRadioValue;
 
   @Setter
   private Boolean portableVhfRadio;
 
+  /**
+   * Also known as an MMSI number
+   */
   @Setter
   private String portableVhfRadioValue;
 
@@ -182,4 +189,23 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   @Setter
   @NotNull
   private BeaconId beaconId;
+
+  public List<String> getMmsiNumbers() {
+    var mmsiNumbers = new ArrayList<String>();
+
+    if (
+      this.getFixedVhfRadioValue() != null &&
+      !this.getFixedVhfRadioValue().isBlank()
+    ) {
+      mmsiNumbers.add(this.getFixedVhfRadioValue());
+    }
+    if (
+      this.getPortableVhfRadioValue() != null &&
+      this.getPortableVhfRadioValue().isBlank()
+    ) {
+      mmsiNumbers.add(this.getPortableVhfRadioValue());
+    }
+
+    return mmsiNumbers;
+  }
 }

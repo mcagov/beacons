@@ -1,4 +1,4 @@
-import { Chip, Link, Paper } from "@material-ui/core";
+import { Chip, Link, Paper } from "@mui/material";
 import {
   AddBox,
   ArrowDownward,
@@ -15,7 +15,7 @@ import {
   SaveAlt,
   Search,
   ViewColumn,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import {
   GetAllBeaconsFilters,
   GetAllBeaconsSort,
@@ -113,13 +113,21 @@ const columns: Column<BeaconRowData>[] = [
     render: (rowData: BeaconRowData) => {
       if (rowData.beaconType === "LEGACY_BEACON") {
         return (
-          <Link component={RouterLink} to={"/legacy-beacons/" + rowData.id}>
+          <Link
+            component={RouterLink}
+            to={"/legacy-beacons/" + rowData.id}
+            underline="hover"
+          >
             {rowData.hexId ? rowData.hexId : <i>{Placeholders.NoData}</i>}
           </Link>
         );
       } else {
         return (
-          <Link component={RouterLink} to={"/beacons/" + rowData.id}>
+          <Link
+            component={RouterLink}
+            to={"/beacons/" + rowData.id}
+            underline="hover"
+          >
             {rowData.hexId ? rowData.hexId : <i>{Placeholders.NoData}</i>}
           </Link>
         );
