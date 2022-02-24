@@ -17,7 +17,6 @@ services:
 
   opensearch:
     image: opensearchproject/opensearch:1.1.0
-    container_name: opensearch
     environment:
       - discovery.type=single-node
     volumes:
@@ -43,19 +42,16 @@ services:
       - opensearch
     expose:
       - "8081"
-    links:
-      - opensearch
 
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:1.1.0
-    container_name: opensearch-dashboards
     ports:
       - "5601:5601"
     expose:
       - "5601"
     environment:
       # Communicate with OpenSearch Proxy from outside the Docker network, as if on public Internet
-      OPENSEARCH_HOSTS: '["http://localhost:8081"]'
+      OPENSEARCH_HOSTS: '["http://opensearch-proxy"]'
       DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
     depends_on:
       - opensearch-proxy
@@ -63,7 +59,6 @@ services:
   beacons-service:
     build:
       context: ./service
-    container_name: beacons-service
     ports:
       - "8080:8080"
     depends_on:
