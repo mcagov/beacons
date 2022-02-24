@@ -63,3 +63,14 @@ services:
       - opensearch
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
+
+  backoffice:
+    build:
+      context: ./backoffice
+    ports:
+      - "3000:3000"
+    depends_on:
+      - beacons-service
+      - opensearch
+    volumes:
+      - ./backoffice/src:/app/src # Enable hot reloading

@@ -4,7 +4,6 @@ plugins {
     id 'java'
     id 'com.adarshr.test-logger' version '3.0.0'
     id "io.freefair.lombok" version "6.1.0"
-    id "com.github.node-gradle.node" version "3.1.1"
 }
 
 group = 'uk.gov.mca'
@@ -82,41 +81,3 @@ task integrationTest(type: Test) {
 }
 
 check.dependsOn 'integrationTest'
-
-/**
- * Build, package and serve the Backoffice SPA's static assets
- */
-node {
-    version = '16.14.0'
-    download = true
-    workDir = file("${project.buildDir}/nodejs")
-    npmWorkDir = file("${project.buildDir}/npm")
-    npmInstallCommand = "ci"
-}
-
-npmInstall {
-    workingDir = file("${project.projectDir}/src/main/backoffice")
-}
-
-task backofficeSpaNpmBuild(type: NpmTask, dependsOn: 'npmInstall') {
-    description = "Building production version of Backoffice SPA"
-    workingDir = file("${project.projectDir}/src/main/backoffice")
-    args = ["run", "build"]
-}
-
-task backofficeSpaUnitTest(type: NpmTask) {
-    description = "Run the unit tests for the Backoffice SPA"
-    workingDir = file("${project.projectDir}/src/main/backoffice")
-    args = ["run", "test"]
-}
-
-task backofficeSpaCopyToStaticAssetsDirectory(type: Copy, dependsOn: 'backofficeSpaNpmBuild') {
-    from 'src/main/backoffice/build'
-    into 'build/resources/main/static/backoffice/.'
-}
-
-bootRun.dependsOn 'backofficeSpaCopyToStaticAssetsDirectory'
-assemble.dependsOn 'backofficeSpaCopyToStaticAssetsDirectory'
-clean {
-    delete file('src/main/backoffice/node_modules')
-}
