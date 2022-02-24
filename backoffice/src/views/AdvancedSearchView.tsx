@@ -32,7 +32,7 @@ export function AdvancedSearchView(): JSX.Element {
         <Paper className={classes.paper}>
           <ReactiveBase
             app="beacon_search"
-            url="http://localhost:9200"
+            url={process.env.REACT_APP_OPENSEARCH_URL}
             enableAppbase={false}
           >
             <DataSearch
