@@ -54,10 +54,8 @@ services:
       SPRING_PROFILES_ACTIVE: dev,seed
       OPENSEARCH_ENDPOINT: opensearch
 
-  backoffice:
-    build:
-      context: ./backoffice
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./backoffice/src:/app/src # Enable hot reloading
+  # backoffice:
+  #   Run the Backoffice application using npm from the backoffice/ dir
+
+  # webapp:
+  #   Run the Webapp application using npm from the webapp/ dir
