@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: library/postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: beacons_service
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: beacons
+
+  opensearch:
+    image: opensearchproject/opensearch:1.1.0
+    container_name: opensearch
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ./opensearch/opensearch.dev.yml:/usr/share/opensearch/config/opensearch.yml
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+
+  # Client queries to OpenSearch from the public internet are authenticated using Azure AD and proxied through to
+  # OpenSearch for security.
+  opensearch-proxy:
+    build: ./opensearch/proxy
+    ports:
+      - "9200:80"
+    environment:
+      OPENSEARCH_URI: "opensearch"
+    depends_on:
+      - opensearch
+
+  opensearch-dashboard:
+    image: opensearchproject/opensearch-dashboards:1.1.0
+    container_name: opensearch-dashboards
+    ports:
+      - "5601:5601"
+    expose:
+      - "5601"
+    environment:
+      OPENSEARCH_HOSTS: '["http://opensearch-proxy:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
+    depends_on:
+      - opensearch-proxy
+    links:
+      - opensearch
+
+  beacons-service:
+    build:
+      context: ./service
+    container_name: beacons-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - opensearch
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
