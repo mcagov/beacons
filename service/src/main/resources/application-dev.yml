@@ -4,4 +4,6 @@ opensearch:
     port: ${OPENSEARCH_PORT:9200}
     https: false
   credentials:
-    enabled: false
+    enabled: true
+    user: ${OPENSEARCH_USER:user}
+    password: ${OPENSEARCH_PASSWORD:password}

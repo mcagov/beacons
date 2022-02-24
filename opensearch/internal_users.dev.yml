@@ -1,0 +1,6 @@
+_meta:
+  type: "internalusers"
+  config_version: 2
+
+user: # The user's username is "user"
+  hash: "$2y$12$wIYJh09fJjk3C3mqKrIcjem7feHaFcXCdXbrYy8.iQ8jDFUezoCrO" # hash of "password"
