@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Typography } from "@material-ui/core";
 import { IEntityLink } from "entities/IEntityLink";
 import React, { FunctionComponent } from "react";
 

@@ -1,10 +1,12 @@
 package uk.gov.mca.beacons.api.accountholder.domain;
 
 import java.util.UUID;
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.context.SpringBootTest;
 import uk.gov.mca.beacons.api.BaseIntegrationTest;
+import uk.gov.mca.beacons.api.accountholder.mappers.AccountHolderMapper;
 import uk.gov.mca.beacons.api.shared.domain.person.Address;
 
 public class AccountHolderIntegrationTest extends BaseIntegrationTest {

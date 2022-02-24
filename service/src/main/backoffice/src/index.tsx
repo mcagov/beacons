@@ -1,9 +1,8 @@
 import {
-  createTheme,
-  ThemeProvider,
-  StyledEngineProvider,
+  createMuiTheme,
+  MuiThemeProvider,
   Theme,
-} from "@mui/material/styles";
+} from "@material-ui/core/styles";
 import "fontsource-roboto";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -19,7 +18,7 @@ if (
   makeServer();
 }
 
-const theme: Theme = createTheme({
+const theme: Theme = createMuiTheme({
   palette: {
     primary: {
       main: "#000000",
@@ -33,26 +32,12 @@ const theme: Theme = createTheme({
       default: "#eeeeee",
     },
   },
-  components: {
-    MuiTextField: {
-      defaultProps: {
-        variant: "standard",
-      },
-    },
-    MuiSelect: {
-      defaultProps: {
-        variant: "standard",
-      },
-    },
-  },
 });
 
 ReactDOM.render(
-  <StyledEngineProvider injectFirst>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
-  </StyledEngineProvider>,
+  <MuiThemeProvider theme={theme}>
+    <App />
+  </MuiThemeProvider>,
   document.getElementById("root")
 );
 

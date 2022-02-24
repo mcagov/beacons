@@ -23,9 +23,9 @@ public class NestedBeaconOwner {
     this.ownerEmail = legacyOwner.getEmail();
   }
 
-  @Field(type = FieldType.Text, analyzer = "keyword")
+  @Field(type = FieldType.Keyword)
   private String ownerName;
 
-  @Field(type = FieldType.Text, analyzer = "keyword")
+  @Field(type = FieldType.Keyword)
   private String ownerEmail;
 }

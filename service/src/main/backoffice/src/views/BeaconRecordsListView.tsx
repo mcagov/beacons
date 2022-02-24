@@ -1,7 +1,5 @@
-import { Paper } from "@mui/material";
-import { Theme } from "@mui/material/styles";
-import createStyles from "@mui/styles/createStyles";
-import makeStyles from "@mui/styles/makeStyles";
+import { Paper } from "@material-ui/core";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import React, { FunctionComponent } from "react";
 import { BeaconsTable } from "../components/BeaconsTable";
 import { PageContent } from "../components/layout/PageContent";

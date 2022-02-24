@@ -120,13 +120,11 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
    */
   protected String seedRegistration(
     RegistrationUseCase useCase,
-    String accountHolderId,
-    Function<String, String> replacer
+    String accountHolderId
   ) throws Exception {
     final String registrationBody = getRegistrationBody(
       useCase,
-      accountHolderId,
-      replacer
+      accountHolderId
     );
     return JsonPath.read(
       webTestClient
@@ -141,13 +139,6 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
         .blockFirst(),
       "$.id"
     );
-  }
-
-  protected String seedRegistration(
-    RegistrationUseCase useCase,
-    String accountHolderId
-  ) throws Exception {
-    return seedRegistration(useCase, accountHolderId, fixture -> fixture);
   }
 
   protected void updateRegistration(String beaconId, String accountHolderId)
@@ -191,8 +182,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
 
   protected String getRegistrationBody(
     RegistrationUseCase useCase,
-    String accountHolderId,
-    Function<String, String> replacer
+    String accountHolderId
   ) throws Exception {
     final String REGISTRATION_JSON_RESOURCE =
       "src/test/resources/fixtures/registrations.json";
@@ -203,24 +193,15 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
     final Map<String, Map<String, Object>> registrationMap = mapper.readValue(
       fixtureHelper.getFixture(
         REGISTRATION_JSON_RESOURCE,
-        fixture -> {
-          String withAccountHolderId = fixture.replace(
+        fixture ->
+          fixture.replace(
             "replace-with-test-account-holder-id",
             accountHolderId
-          );
-          return replacer.apply(withAccountHolderId);
-        }
+          )
       ),
       HashMap.class
     );
 
     return mapper.writeValueAsString(registrationMap.get(useCase.toString()));
-  }
-
-  protected String getRegistrationBody(
-    RegistrationUseCase useCase,
-    String accountHolderId
-  ) throws Exception {
-    return getRegistrationBody(useCase, accountHolderId, fixture -> fixture);
   }
 }

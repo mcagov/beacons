@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Card, CardContent, CardHeader } from "@material-ui/core";
 import { PanelViewingState } from "components/dataPanel/PanelViewingState";
 import { ILegacyEmergencyContact } from "entities/ILegacyBeacon";
 import React, { FunctionComponent } from "react";

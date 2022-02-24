@@ -3,9 +3,9 @@ package uk.gov.mca.beacons.api.registration.application;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
@@ -21,6 +21,7 @@ import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.note.application.NoteService;
+import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.rest.DeleteRegistrationDTO;
 

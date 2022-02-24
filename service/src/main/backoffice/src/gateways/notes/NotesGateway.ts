@@ -20,7 +20,7 @@ export class NotesGateway implements INotesGateway {
       const response = await this._makeGetRequest(`/note?beaconId=${beaconId}`);
       return this._mapNotesListResponseToNotes(response.data);
     } catch (e) {
-      throw e;
+      throw Error(e);
     }
   }
 
@@ -29,7 +29,7 @@ export class NotesGateway implements INotesGateway {
       const response = await this._makePostRequest(`/note`, note);
       return this._mapNoteResponseToNote(response.data);
     } catch (e) {
-      throw e;
+      throw Error(e);
     }
   }
 

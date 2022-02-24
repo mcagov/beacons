@@ -6,7 +6,7 @@ import {
   TableContainer,
   TableRow,
   Typography,
-} from "@mui/material";
+} from "@material-ui/core";
 import React, { FunctionComponent } from "react";
 import { WritingStyle } from "../../utils/writingStyle";
 import { FieldValue, FieldValueTypes } from "./FieldValue";

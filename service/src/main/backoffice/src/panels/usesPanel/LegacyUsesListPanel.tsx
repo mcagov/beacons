@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Card, CardContent, CardHeader, Grid } from "@material-ui/core";
 import { ILegacyUse } from "entities/ILegacyBeacon";
 import React, { FunctionComponent } from "react";
 import { LegacyUsePanel } from "./LegacyUsePanel";

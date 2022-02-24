@@ -8,9 +8,9 @@ describe("NotesEditing", () => {
     render(<NotesEditing onSave={jest.fn()} onCancel={jest.fn()} />);
 
     const incidentNoteRadio = screen.getByTestId(/incident-note-type/i);
-    const generalNoteRadio = screen.getByTestId(/general-note-type/i);
-
     userEvent.click(incidentNoteRadio);
+
+    const generalNoteRadio = screen.getByTestId(/general-note-type/i);
     userEvent.click(generalNoteRadio);
   });
 
@@ -28,16 +28,15 @@ describe("NotesEditing", () => {
     render(<NotesEditing onSave={onSave} onCancel={jest.fn()} />);
 
     const generalNoteRadio = screen.getByTestId(/general-note-type/i);
-    const noteInputField = screen.getByPlaceholderText("Add a note here");
     userEvent.click(generalNoteRadio);
+
+    const noteInputField = screen.getByPlaceholderText("Add a note here");
     userEvent.type(noteInputField, "Here is a note");
 
-    let saveButton = screen.getByTestId(/save/i);
     await waitFor(() => {
-      expect(saveButton).toBeEnabled();
+      const saveButton = screen.getByTestId(/save/i);
+      userEvent.click(saveButton);
     });
-
-    userEvent.click(saveButton);
 
     await waitFor(() => {
       expect(onSave).toHaveBeenCalledWith({
@@ -52,11 +51,12 @@ describe("NotesEditing", () => {
     render(<NotesEditing onSave={jest.fn()} onCancel={onCancel} />);
 
     const incidentNoteRadio = screen.getByTestId(/incident-note-type/i);
-    const noteInputField = screen.getByPlaceholderText("Add a note here");
-    const cancelButton = screen.getByRole("button", { name: "Cancel" });
-
     userEvent.click(incidentNoteRadio);
+
+    const noteInputField = screen.getByPlaceholderText("Add a note here");
     userEvent.type(noteInputField, "Here is a note");
+
+    const cancelButton = screen.getByRole("button", { name: "Cancel" });
     userEvent.click(cancelButton);
 
     await waitFor(() => {
@@ -66,20 +66,23 @@ describe("NotesEditing", () => {
 
   it("does not allow user to submit an incomplete note", async () => {
     render(<NotesEditing onSave={jest.fn()} onCancel={jest.fn()} />);
-    const noteInputField = screen.getByPlaceholderText("Add a note here");
-    const generalNoteRadio = screen.getByTestId(/general-note-type/i);
 
     await waitFor(() => {
       expect(screen.getByTestId(/save/i)).toBeDisabled();
     });
 
-    userEvent.type(noteInputField, "Here is a note");
+    const noteInputField = screen.getByPlaceholderText("Add a note here");
+    await waitFor(() => {
+      userEvent.type(noteInputField, "Here is a note");
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId(/save/i)).toBeDisabled();
     });
 
     userEvent.clear(noteInputField);
+
+    const generalNoteRadio = screen.getByTestId(/general-note-type/i);
     userEvent.click(generalNoteRadio);
 
     await waitFor(() => {

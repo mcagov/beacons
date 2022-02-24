@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Card, CardContent, CardHeader } from "@material-ui/core";
 import { FunctionComponent, useEffect, useState } from "react";
 import { EditPanelButton } from "../../components/dataPanel/EditPanelButton";
 import { ErrorState } from "../../components/dataPanel/PanelErrorState";

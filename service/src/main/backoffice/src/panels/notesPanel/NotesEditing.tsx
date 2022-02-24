@@ -6,7 +6,7 @@ import {
   Radio,
   RadioGroup,
   TextField,
-} from "@mui/material";
+} from "@material-ui/core";
 import { NoteType } from "entities/INote";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import React from "react";

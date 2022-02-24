@@ -8,7 +8,7 @@ import {
   TableBody,
   TableContainer,
   Typography,
-} from "@mui/material";
+} from "@material-ui/core";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import React, { FunctionComponent } from "react";
 import { PanelViewingState } from "../../components/dataPanel/PanelViewingState";

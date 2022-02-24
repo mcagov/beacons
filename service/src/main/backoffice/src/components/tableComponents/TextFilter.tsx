@@ -1,5 +1,5 @@
 import React from "react";
-import { InputAdornment, TextField, Tooltip } from "@mui/material";
+import { InputAdornment, TextField, Tooltip } from "@material-ui/core";
 import { Column, Icons } from "@material-table/core";
 import {
   setEditing,

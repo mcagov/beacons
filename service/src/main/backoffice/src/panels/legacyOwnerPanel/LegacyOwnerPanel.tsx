@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Card, CardContent, CardHeader } from "@material-ui/core";
 import { ILegacyOwner } from "entities/ILegacyBeacon";
 import React, { FunctionComponent, useState } from "react";
 import { FieldValueTypes } from "../../components/dataPanel/FieldValue";
@@ -76,8 +76,8 @@ export const LegacyOwnerPanel: FunctionComponent<LegacyOwnerSummaryPanelProps> =
         </Card>
         <br />
         {secondaryLegacyOwners?.map((secondaryLegacyOwner, index) => (
-          <div key={"owner_" + index}>
-            <Card>
+          <>
+            <Card key={"owner_" + index}>
               <CardContent>
                 <CardHeader title={`Owner`} />
                 <>
@@ -93,7 +93,7 @@ export const LegacyOwnerPanel: FunctionComponent<LegacyOwnerSummaryPanelProps> =
               </CardContent>
             </Card>
             <br />
-          </div>
+          </>
         ))}
       </>
     );

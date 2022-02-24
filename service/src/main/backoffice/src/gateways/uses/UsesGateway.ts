@@ -23,7 +23,7 @@ export class UsesGateway implements IUsesGateway {
 
       return this._usesResponseMapper.map(response.data).uses;
     } catch (e) {
-      throw e;
+      throw Error(e);
     }
   }
 
