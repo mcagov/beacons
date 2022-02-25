@@ -56,6 +56,16 @@ jobs:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+  publish_backoffice_image:
+    name: Backoffice
+    uses: ./.github/workflows/publish-backoffice-image.yml
+    with:
+      tag: ${{ github.sha }}
+      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
   publish_opensearch_proxy_image:
     name: OpenSearch proxy
     uses: ./.github/workflows/publish-opensearch-proxy-image.yml
@@ -72,6 +82,7 @@ jobs:
       [
         publish_webapp_image,
         publish_service_image,
+        publish_backoffice_image,
         publish_opensearch_proxy_image,
       ]
     uses: ./.github/workflows/end-to-end-tests.yml
@@ -95,6 +106,7 @@ jobs:
       terraform_workspace: dev
       webapp_image_tag: ${{ github.sha }}
       service_image_tag: ${{ github.sha }}
+      backoffice_image_tag: ${{ github.sha }}
       opensearch_proxy_image_tag: ${{ github.sha }}
       trello_list_id: 6157064b4d7e1b3b1ea839ad
     secrets:
