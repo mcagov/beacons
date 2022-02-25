@@ -1,3 +1,11 @@
+variable "public_fqdn" {
+  type        = string
+  description = "The fully qualified domain name of the publicly accessible parts of the application"
+}
+variable "search_subdomain" {
+  type        = string
+  description = "The subdomain under which search functionality resides (OpenSearch)"
+}
 variable "aws_region" {
   type        = string
   description = "The AWS region resources are created in"
@@ -60,10 +68,6 @@ variable "webapp_azure_ad_tenant_id" {
 variable "webapp_next_auth_url" {
   type        = string
   description = "The NEXT AUTH environment variable used by NextAuth"
-}
-variable "webapp_fqdn" {
-  type        = string
-  description = "The URL of the web app, used for health checks"
 }
 variable "webapp_azure_b2c_client_id" {
   type        = string
@@ -325,6 +329,40 @@ variable "opensearch_proxy_image_tag" {
 variable "ssl_certificate_arn" {
   type        = string
   description = "ARN of ssl certificate generated in the AWS dashboard"
+}
+variable "backoffice_image" {
+  type        = string
+  description = "The name of the image for the Backoffice application"
+  default     = "beacons-backoffice"
+}
+variable "backoffice_image_tag" {
+  type        = string
+  description = "The image tag of the Backoffice application to be deployed"
+}
+variable "backoffice_count" {
+  type        = number
+  description = "Number of docker containers to run for the Backoffice application"
+  default     = 1
+}
+variable "backoffice_port" {
+  type        = number
+  description = "Port exposed by the docker image to redirect traffic to for the Beacons Service"
+  default     = 80
+}
+variable "backoffice_health_check_path" {
+  type        = string
+  description = "Health check path used by the Application Load Balancer for the Backoffice app"
+  default     = "/" # TODO: Replace with better health check, possibly via NGINX
+}
+variable "backoffice_fargate_cpu" {
+  type        = number
+  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the Backoffice app"
+  default     = 256
+}
+variable "backoffice_fargate_memory" {
+  type        = number
+  description = "Fargate instance memory to provision (in MiB) for the Backoffice app"
+  default     = 512
 }
 
 /**

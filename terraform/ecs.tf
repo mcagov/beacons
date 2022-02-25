@@ -6,6 +6,10 @@ data "aws_ecr_repository" "service" {
   name = var.service_image
 }
 
+data "aws_ecr_repository" "backoffice" {
+  name = var.backoffice_image
+}
+
 resource "aws_ecs_cluster" "main" {
   name = "${terraform.workspace}-mca-beacons-cluster"
 }
@@ -241,3 +245,61 @@ resource "aws_ecs_service" "service" {
   depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs_task_execution_role]
 }
 
+locals {
+  backoffice_container_name = "beacons-backoffice"
+}
+
+resource "aws_ecs_task_definition" "backoffice" {
+  family                   = "${terraform.workspace}-beacons-backoffice-task"
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = var.backoffice_fargate_cpu
+  memory                   = var.backoffice_fargate_memory
+  container_definitions = jsonencode([{
+    name : local.backoffice_container_name
+    image : "${data.aws_ecr_repository.backoffice.repository_url}:${var.backoffice_image_tag}"
+    portMappings : [
+      {
+        containerPort : var.backoffice_port
+        hostPort : var.backoffice_port
+      }
+    ],
+    environment : [
+      {
+        name : "REACT_APP_OPENSEARCH_URL",
+        value : "${var.search_subdomain}.${var.public_fqdn}"
+      },
+    ],
+    logConfiguration : {
+      "logDriver" : "awslogs",
+      "options" : {
+        "awslogs-group" : aws_cloudwatch_log_group.log_group.name
+        "awslogs-region" : var.aws_region
+        "awslogs-stream-prefix" : "webapp"
+      }
+    }
+  }])
+}
+
+resource "aws_ecs_service" "backoffice" {
+  name                              = "${terraform.workspace}-beacons-backoffice"
+  cluster                           = aws_ecs_cluster.main.id
+  task_definition                   = aws_ecs_task_definition.backoffice.arn
+  desired_count                     = var.backoffice_count
+  launch_type                       = "FARGATE"
+  platform_version                  = var.ecs_fargate_version
+  health_check_grace_period_seconds = 600
+  wait_for_steady_state             = true
+
+  network_configuration {
+    security_groups = [aws_security_group.ecs_tasks.id]
+    subnets         = aws_subnet.app.*.id
+  }
+
+  load_balancer {
+    target_group_arn = aws_alb_target_group.backoffice.id
+    container_name   = local.backoffice_container_name
+    container_port   = 0
+  }
+}

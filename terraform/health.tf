@@ -21,7 +21,7 @@ resource "aws_cloudwatch_metric_alarm" "webapp_health" {
 resource "aws_route53_health_check" "webapp_health_check" {
   reference_name    = "webapp-health-check"
   failure_threshold = 5
-  fqdn              = var.webapp_fqdn
+  fqdn              = var.public_fqdn
   port              = 443
   request_interval  = "30"
   resource_path     = var.webapp_health_check_path
@@ -52,7 +52,7 @@ resource "aws_cloudwatch_metric_alarm" "service_health" {
 resource "aws_route53_health_check" "service_health_check" {
   reference_name    = "service-health-check"
   failure_threshold = 5
-  fqdn              = var.webapp_fqdn
+  fqdn              = var.public_fqdn
   port              = 443
   request_interval  = "30"
   resource_path     = var.service_health_check_path
