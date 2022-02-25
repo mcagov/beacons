@@ -28,6 +28,10 @@ on:
         description: The image tag for the Service container that should be deployed
         required: true
         type: string
+      backoffice_image_tag:
+        description: The image tag for the Backoffice container that should be deployed
+        required: true
+        type: string
       opensearch_proxy_image_tag:
         description: The image tag for the OpenSearch proxy container that should be deployed
         required: true
@@ -120,6 +124,7 @@ jobs:
           TF_VAR_service_image_tag: ${{ inputs.service_image_tag }}
           TF_VAR_service_basic_auth_username: ${{ secrets.service_basic_auth_username }}
           TF_VAR_service_basic_auth_password: ${{ secrets.service_basic_auth_password }}
+          TF_VAR_backoffice_image_tag: ${{ inputs.backoffice_image_tag }}
           TF_VAR_aws_account_number: ${{ secrets.aws_account_number }}
           TF_VAR_trello_api_key: ${{ secrets.trello_api_key }}
           TF_VAR_trello_token: ${{ secrets.trello_token }}
