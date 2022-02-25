@@ -22,7 +22,6 @@ services:
       - discovery.type=single-node
     volumes:
       - ./opensearch/opensearch.dev.yml:/usr/share/opensearch/config/opensearch.yml
-      - ./opensearch/internal_users.dev.yml:/usr/share/opensearch/config/internal_users.yml
     expose:
       - 9200 # Core OpenSearch queries
       - 9600 # Performance Analyzer queries
@@ -35,8 +34,6 @@ services:
       - "8081:80"
     environment:
       OPENSEARCH_URI: "opensearch:9200"
-      OPENSEARCH_USER: "user"
-      OPENSEARCH_PASSWORD: "password"
 
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:1.1.0
@@ -45,8 +42,6 @@ services:
     environment:
       OPENSEARCH_HOSTS: '["http://opensearch-proxy"]'
       DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
-      OPENSEARCH_USER: "user"
-      OPENSEARCH_PASSWORD: "password"
 
   service:
     build:
