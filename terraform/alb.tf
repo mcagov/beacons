@@ -54,17 +54,39 @@ resource "aws_lb_listener_rule" "service" {
   }
 }
 
-resource "aws_lb_listener_rule" "backoffice_spa" {
+resource "aws_alb_target_group" "backoffice" {
+  name        = "${terraform.workspace}-backoffice-target-group"
+  port        = var.backoffice_port
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.main.id
+  target_type = "ip"
+
+  health_check {
+    healthy_threshold   = "6"
+    interval            = "30"
+    protocol            = "HTTP"
+    matcher             = "200"
+    timeout             = "10"
+    path                = var.backoffice_health_check_path
+    unhealthy_threshold = "6"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_lb_listener_rule" "backoffice" {
   listener_arn = aws_alb_listener.front_end_ssl.arn
 
   action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.service.arn
+    target_group_arn = aws_alb_target_group.backoffice.arn
   }
 
   condition {
     path_pattern {
-      values = ["/backoffice*"]
+      values = ["/backoffice/*"]
     }
   }
 }

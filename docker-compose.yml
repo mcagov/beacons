@@ -1,0 +1,61 @@
+version: "3.9"
+
+##
+# A containerised local development environment similar to the deployed environment
+#
+# ! Requires Docker Desktop to be configured with 4GB of RAM !
+##
+
+services:
+  postgres:
+    image: library/postgres:12
+    environment:
+      POSTGRES_USER: beacons_service
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: beacons
+
+  # The OpenSearch service is not accessible via the public internet, so its ports are only exposed to the internal
+  # Docker network
+  opensearch:
+    image: opensearchproject/opensearch:1.1.0
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ./opensearch/opensearch.dev.yml:/usr/share/opensearch/config/opensearch.yml
+    expose:
+      - 9200 # Core OpenSearch queries
+      - 9600 # Performance Analyzer queries
+
+  # Client queries to OpenSearch from the public internet are authenticated using Azure AD and proxied through to
+  # OpenSearch for security.
+  opensearch-proxy:
+    build: ./opensearch/proxy
+    ports:
+      - "8081:80"
+    environment:
+      OPENSEARCH_URI: "opensearch:9200"
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:1.1.0
+    ports:
+      - "5601:5601"
+    environment:
+      OPENSEARCH_HOSTS: '["http://opensearch-proxy"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
+
+  service:
+    build:
+      context: ./service
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
+      SPRING_PROFILES_ACTIVE: dev,seed
+      OPENSEARCH_ENDPOINT: opensearch
+
+  # backoffice:
+  #   Run the Backoffice application using npm from the backoffice/ dir
+
+  # webapp:
+  #   Run the Webapp application using npm from the webapp/ dir

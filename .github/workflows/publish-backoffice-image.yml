@@ -1,4 +1,4 @@
-name: Publish Service image
+name: Publish Backoffice image
 
 on:
   workflow_call:
@@ -14,7 +14,7 @@ on:
       repository_name:
         description: The name of the image to be published
         required: false
-        default: beacons-service
+        default: beacons-backoffice
         type: string
     secrets:
       aws_access_key_id:
@@ -24,7 +24,7 @@ on:
 
 defaults:
   run:
-    working-directory: service
+    working-directory: backoffice
 
 jobs:
   static_analysis:
@@ -35,20 +35,15 @@ jobs:
       - uses: actions/checkout@v2.3.4
       - uses: actions/setup-node@v2.4.0
         with:
-          node-version: "14"
+          node-version: "16"
       - name: Install npm dependencies
         run: npm ci
-      - name: Cache dependencies
-        uses: actions/cache@v2.1.6
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      - name: Run prettier
-        run: npm run format:check
+      - name: Npm linter
+        run: npm run lint
       - name: Docker lint
         uses: brpaz/hadolint-action@v1.5.0
         with:
-          dockerfile: service/Dockerfile
+          dockerfile: backoffice/Dockerfile
 
   unit_tests:
     name: Unit tests
@@ -56,40 +51,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-node@v2.4.0
         with:
-          distribution: "adopt"
-          java-version: 11
-      - name: Unit tests
-        run: ./gradlew clean test
+          node-version: "16"
+      - name: Install npm dependencies
+        run: npm ci
+      - name: Run unit tests
+        run: npm test
 
-  integration_tests:
-    name: Integration test
+  publish:
+    name: Publish image
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:12
-        env:
-          POSTGRES_PASSWORD: password
-          POSTGRES_USER: beacons_service
-          POSTGRES_DB: beacons
-        ports:
-          - 5432:5432
-
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-java@v2
-        with:
-          distribution: "adopt"
-          java-version: 11
-      - name: Integration tests
-        run: ./gradlew clean integrationTest
-
-  docker_build:
-    name: Build and Push Docker image
-    runs-on: ubuntu-latest
-    needs: [static_analysis, unit_tests, integration_tests]
+    needs: [static_analysis, unit_test]
 
     steps:
       - uses: actions/checkout@v2.3.4
@@ -101,9 +74,9 @@ jobs:
           registry: ${{ inputs.registry_url }}
           username: ${{ secrets.aws_access_key_id }}
           password: ${{ secrets.aws_secret_access_key }}
-      - name: Build and Push
+      - name: Build and push
         uses: docker/build-push-action@v2.7.0
         with:
-          context: service
+          context: backoffice
           push: true
           tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
