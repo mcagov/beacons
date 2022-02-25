@@ -40,6 +40,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2.7.0
         with:
-          context: ./terraform/opensearch-proxy
+          context: ./opensearch/proxy
           push: true
           tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
