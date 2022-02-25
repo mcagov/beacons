@@ -86,7 +86,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://register-406-beacons.service.gov.uk/backoffice",
+  "homepage": "/backoffice",
   "jest": {
     "clearMocks": true
   },
