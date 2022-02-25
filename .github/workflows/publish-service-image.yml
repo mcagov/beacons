@@ -27,8 +27,8 @@ defaults:
     working-directory: service
 
 jobs:
-  backoffice_spa_lint:
-    name: Backoffice SPA - Lint
+  static_analysis:
+    name: Static analysis
     runs-on: ubuntu-latest
 
     steps:
@@ -37,30 +37,21 @@ jobs:
         with:
           node-version: "14"
       - name: Install npm dependencies
-        working-directory: service/src/main/backoffice
         run: npm ci
-      - name: Run linter
-        working-directory: service/src/main/backoffice
-        run: npm run lint
-
-  backoffice_spa_unit_test:
-    name: Backoffice SPA - Unit test
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-node@v2.4.0
+      - name: Cache dependencies
+        uses: actions/cache@v2.1.6
         with:
-          node-version: "14"
-      - name: Install npm dependencies
-        working-directory: service/src/main/backoffice
-        run: npm ci
-      - name: Run unit tests
-        working-directory: service/src/main/backoffice
-        run: npm test
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Run prettier
+        run: npm run format:check
+      - name: Docker lint
+        uses: brpaz/hadolint-action@v1.5.0
+        with:
+          dockerfile: service/Dockerfile
 
-  spring_boot_unit_test:
-    name: Spring Boot - Unit test
+  unit_tests:
+    name: Unit tests
     runs-on: ubuntu-latest
 
     steps:
@@ -72,8 +63,8 @@ jobs:
       - name: Unit tests
         run: ./gradlew clean test
 
-  spring_boot_integration_test:
-    name: Spring Boot - Integration test
+  integration_tests:
+    name: Integration test
     runs-on: ubuntu-latest
 
     services:
@@ -95,48 +86,10 @@ jobs:
       - name: Integration tests
         run: ./gradlew clean integrationTest
 
-  prettier_check:
-    name: Prettier check
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-node@v2.4.0
-        with:
-          node-version: "14"
-      - name: Install npm dependencies
-        run: npm ci
-      - name: Cache dependencies
-        uses: actions/cache@v2.1.6
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      - name: Run prettier
-        run: npm run format:check
-
-  docker_lint:
-    name: Docker lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - name: Docker lint
-        uses: brpaz/hadolint-action@v1.5.0
-        with:
-          dockerfile: service/Dockerfile
-
   docker_build:
     name: Build and Push Docker image
     runs-on: ubuntu-latest
-    needs:
-      [
-        backoffice_spa_lint,
-        backoffice_spa_unit_test,
-        spring_boot_unit_test,
-        spring_boot_integration_test,
-        prettier_check,
-        docker_lint,
-      ]
+    needs: [static_analysis, unit_tests, integration_tests]
 
     steps:
       - uses: actions/checkout@v2.3.4
