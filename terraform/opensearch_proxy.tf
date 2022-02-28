@@ -26,6 +26,10 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
       {
         name : "OPENSEARCH_URI",
         value : aws_elasticsearch_domain.opensearch.endpoint
+      },
+      {
+        name : "PERMITTED_ORIGIN",
+        value : var.public_fqdn
       }
     ],
     logConfiguration : {
