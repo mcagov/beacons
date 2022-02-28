@@ -12,6 +12,7 @@ import {
 } from "@appbaseio/reactivesearch";
 import { Podcasts } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
+import { searchUrl } from "../utils/searchUrl";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,7 +33,7 @@ export function AdvancedSearchView(): JSX.Element {
         <Paper className={classes.paper}>
           <ReactiveBase
             app="beacon_search"
-            url={process.env.REACT_APP_OPENSEARCH_URL}
+            url={searchUrl(window.location.hostname)}
             enableAppbase={false}
           >
             <DataSearch

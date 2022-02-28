@@ -265,12 +265,6 @@ resource "aws_ecs_task_definition" "backoffice" {
         hostPort : var.backoffice_port
       }
     ],
-    environment : [
-      {
-        name : "REACT_APP_OPENSEARCH_URL",
-        value : "${var.search_subdomain}.${var.public_fqdn}"
-      },
-    ],
     logConfiguration : {
       "logDriver" : "awslogs",
       "options" : {

@@ -2,10 +2,6 @@ variable "public_fqdn" {
   type        = string
   description = "The fully qualified domain name of the publicly accessible parts of the application"
 }
-variable "search_subdomain" {
-  type        = string
-  description = "The subdomain under which search functionality resides (OpenSearch)"
-}
 variable "aws_region" {
   type        = string
   description = "The AWS region resources are created in"
