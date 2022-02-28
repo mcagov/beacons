@@ -12,7 +12,7 @@ import {
 } from "@appbaseio/reactivesearch";
 import { Podcasts } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
-import { searchUrl } from "../utils/searchUrl";
+import { searchUrl } from "../utils/urls";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
