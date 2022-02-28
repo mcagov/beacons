@@ -34,6 +34,7 @@ services:
       - "8081:80"
     environment:
       OPENSEARCH_URI: "opensearch:9200"
+      LOCAL: "true"
 
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:1.1.0

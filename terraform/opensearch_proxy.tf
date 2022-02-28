@@ -6,6 +6,14 @@ resource "aws_ecs_cluster" "opensearch_proxy" {
   name = "${terraform.workspace}-opensearch-proxy-cluster"
 }
 
+resource "random_password" "opensearch_application_password" {
+  length = 32
+}
+
+resource "random_string" "opensearch_application_username" {
+  length = 8
+}
+
 resource "aws_ecs_task_definition" "opensearch_proxy" {
   family                   = "${terraform.workspace}-opensearch-proxy-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
@@ -30,7 +38,23 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
       {
         name : "PERMITTED_ORIGIN",
         value : var.public_fqdn
-      }
+      },
+      {
+        name : "MASTER_USER",
+        value : var.opensearch_master_user_name
+      },
+      {
+        name : "MASTER_PASSWORD",
+        value : var.opensearch_master_user_password
+      },
+      {
+        name : "APPLICATION_USERNAME",
+        value : var.opensearch_master_user_name
+      },
+      {
+        name : "APPLICATION_PASSWORD",
+        value : var.opensearch_master_user_password
+      },
     ],
     logConfiguration : {
       "logDriver" : "awslogs",
