@@ -121,7 +121,7 @@ jobs:
       [
           publish_backoffice_image,
           publish_webapp_image,
-          publish_service,
+          publish_service_image,
           terraform_lint,
           prettier_check,
       ]
