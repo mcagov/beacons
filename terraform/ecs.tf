@@ -296,4 +296,10 @@ resource "aws_ecs_service" "backoffice" {
     container_name   = local.backoffice_container_name
     container_port   = var.backoffice_port
   }
+
+  service_registries {
+    registry_arn = aws_service_discovery_service.service.arn
+  }
+
+  depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs_task_execution_role]
 }
