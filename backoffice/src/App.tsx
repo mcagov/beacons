@@ -91,6 +91,7 @@ const App: FunctionComponent = () => {
             <Route path="/advanced-search">
               <AdvancedSearchView />
             </Route>
+            <Route>Page not found. Is the address correct?</Route>
           </Switch>
         </RequireAuth>
       </Router>
