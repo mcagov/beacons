@@ -48,17 +48,21 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
         value : var.opensearch_master_user_password
       },
       {
+        name : "APPLICATION_CREDENTIALS_BASE64",
+        value : base64encode("${random_string.opensearch_application_username.result}:${random_password.opensearch_application_password.result}")
+      },
+      {
         name : "APPLICATION_USERNAME",
-        value : var.opensearch_master_user_name
+        value : random_string.opensearch_application_username.result
       },
       {
         name : "APPLICATION_PASSWORD",
-        value : var.opensearch_master_user_password
+        value : random_password.opensearch_application_password.result
       },
       {
         name : "OPENSEARCH_PROTOCOL",
         value : "https"
-      }
+      },
     ],
     logConfiguration : {
       "logDriver" : "awslogs",
