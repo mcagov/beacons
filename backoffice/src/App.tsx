@@ -73,6 +73,8 @@ const App: FunctionComponent = () => {
     );
   };
 
+  console.log("I have been deployed");
+
   return (
     <AuthWrapper pca={pca}>
       <Router basename="/backoffice">
