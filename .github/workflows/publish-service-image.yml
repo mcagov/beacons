@@ -30,7 +30,6 @@ jobs:
   docker_build:
     name: Build and Push Docker image
     runs-on: ubuntu-latest
-    needs: [static_analysis, unit_tests, integration_tests]
 
     steps:
       - uses: actions/checkout@v2.3.4
