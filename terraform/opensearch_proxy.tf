@@ -32,7 +32,7 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
     ],
     environment : [
       {
-        name : "OPENSEARCH_URI",
+        name : "OPENSEARCH_DOMAIN",
         value : aws_elasticsearch_domain.opensearch.endpoint
       },
       {
@@ -55,6 +55,10 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
         name : "APPLICATION_PASSWORD",
         value : var.opensearch_master_user_password
       },
+      {
+        name : "OPENSEARCH_PROTOCOL",
+        value : "https"
+      }
     ],
     logConfiguration : {
       "logDriver" : "awslogs",

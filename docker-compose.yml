@@ -33,7 +33,8 @@ services:
     ports:
       - "8081:80"
     environment:
-      OPENSEARCH_URI: "opensearch:9200"
+      OPENSEARCH_DOMAIN: "opensearch:9200"
+      OPENSEARCH_PROTOCOL: "http"
       LOCAL: "true"
 
   opensearch-dashboards:
