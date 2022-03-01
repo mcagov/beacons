@@ -56,8 +56,12 @@ jobs:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+  test_backoffice:
+    name: Test Backoffice
+    uses: ./.github/workflows/test-backoffice.yml
+
   publish_backoffice_image:
-    name: Backoffice
+    name: Publish Backoffice
     uses: ./.github/workflows/publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
@@ -80,10 +84,11 @@ jobs:
     name: End-to-end tests
     needs:
       [
-        publish_webapp_image,
-        publish_service_image,
-        publish_backoffice_image,
-        publish_opensearch_proxy_image,
+          publish_webapp_image,
+          publish_service_image,
+          test_backoffice,
+          publish_backoffice_image,
+          publish_opensearch_proxy_image,
       ]
     uses: ./.github/workflows/end-to-end-tests.yml
     with:
@@ -99,7 +104,7 @@ jobs:
 
   deploy_dev:
     name: Development
-    needs: [end_to_end_tests, terraform_lint, prettier_check]
+    needs: [ publish_backoffice_image, terraform_lint, prettier_check ]
     uses: ./.github/workflows/deploy.yml
     with:
       environment: development
