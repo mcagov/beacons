@@ -30,6 +30,7 @@ export const BeaconRecordsListView: FunctionComponent<BeaconRecordsProps> = ({
     <div className={classes.root}>
       <PageContent>
         <Paper className={classes.paper}>
+          <p>I have been deployed</p>
           <BeaconsTable beaconsGateway={beaconsGateway} />
         </Paper>
       </PageContent>
