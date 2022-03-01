@@ -36,6 +36,7 @@ services:
       OPENSEARCH_DOMAIN: "opensearch:9200"
       OPENSEARCH_PROTOCOL: "http"
       LOCAL: "true"
+      APPLICATION_CREDENTIALS_BASE64: "" # Not used in local development
 
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:1.1.0
