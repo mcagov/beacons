@@ -294,6 +294,6 @@ resource "aws_ecs_service" "backoffice" {
   load_balancer {
     target_group_arn = aws_alb_target_group.backoffice.id
     container_name   = local.backoffice_container_name
-    container_port   = 0
+    container_port   = var.backoffice_port
   }
 }
