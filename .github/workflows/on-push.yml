@@ -6,6 +6,10 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: on_push
+  cancel-in-progress: true
+
 jobs:
   terraform_lint:
     name: Terraform lint
