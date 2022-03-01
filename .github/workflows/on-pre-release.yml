@@ -48,6 +48,12 @@ jobs:
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     needs: [ test_backoffice ]
 
+  test_webapp:
+    name: Test Webapp
+    uses: ./.github/workflows/test-webapp.yml
+    secrets:
+      test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
+      test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
 
   publish_webapp_image:
     name: Webapp
@@ -60,6 +66,7 @@ jobs:
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
       test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
+    needs: [ test_webapp ]
 
   publish_service_image:
     name: Service
@@ -85,9 +92,10 @@ jobs:
     name: End-to-end tests
     needs:
       [
-        publish_webapp_image,
-        publish_service_image,
-        publish_opensearch_proxy_image,
+          publish_webapp_image,
+          publish_service_image,
+          publish_backoffice,
+          publish_opensearch_proxy_image,
       ]
     uses: ./.github/workflows/end-to-end-tests.yml
     with:
