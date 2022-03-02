@@ -5,14 +5,14 @@ describe("searchUrl()", () => {
     const deployedHostname = "localhost";
     const url = searchUrl(deployedHostname);
 
-    expect(url).toBe("http://localhost:8081/search");
+    expect(url).toBe("http://localhost:8081/search/");
   });
 
   it("when running on dev, return search.dev.406beacons.com", () => {
     const deployedHostname = "dev.406beacons.com";
     const url = searchUrl(deployedHostname);
 
-    expect(url).toBe("https://search.dev.406beacons.com/search");
+    expect(url).toBe("https://search.dev.406beacons.com/search/");
   });
 
   it("when running on production, return search.register-406-beacons.service.gov.uk", () => {
@@ -20,7 +20,7 @@ describe("searchUrl()", () => {
     const url = searchUrl(deployedHostname);
 
     expect(url).toBe(
-      "https://search.register-406-beacons.service.gov.uk/search"
+      "https://search.register-406-beacons.service.gov.uk/search/"
     );
   });
 });
