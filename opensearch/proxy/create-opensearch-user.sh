@@ -16,7 +16,7 @@ then
 
     REQUEST_BODY=$( jq -n \
        --arg password "$APPLICATION_PASSWORD" \
-       '{password: $password, roles: ["readall"]}')
+       '{password: $password, opendistro_security_roles: ["readall"]}')
 
     curl -XPUT -u "$credentials" https://"$OPENSEARCH_DOMAIN"/_plugins/_security/api/internalusers/"$APPLICATION_USERNAME" -H 'Content-Type: application/json' \
     -d "$REQUEST_BODY" --retry 10
