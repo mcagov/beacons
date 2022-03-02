@@ -95,9 +95,8 @@ export function AdvancedSearchView(): JSX.Element {
                         icon={<Podcasts />}
                         component={RouterLink}
                         to={
-                          item.isLegacy
-                            ? "/legacy-beacons/"
-                            : "/beacons/" + item.id
+                          (item.isLegacy ? "/legacy-beacons/" : "/beacons/") +
+                          item.id
                         }
                         clickable
                       />
