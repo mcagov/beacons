@@ -18,8 +18,16 @@ then
        --arg password "$APPLICATION_PASSWORD" \
        '{password: $password, opendistro_security_roles: ["readall"]}')
 
-    curl -XPUT -u "$credentials" https://"$OPENSEARCH_DOMAIN"/_plugins/_security/api/internalusers/"$APPLICATION_USERNAME" -H 'Content-Type: application/json' \
-    -d "$REQUEST_BODY" --retry 10
+    res=$(curl -s -o /dev/null -w '%{http_code}\n' -XPUT -u "$credentials" https://"$OPENSEARCH_DOMAIN"/_plugins/_security/api/internalusers/"$APPLICATION_USERNAME" -H 'Content-Type: application/json' \
+    -d "$REQUEST_BODY" --retry 10)
+
+    if((res != 201));
+    then
+      echo "Failed to create user, exiting..."
+      exit 1
+    fi
+
+    echo "User created, exiting..."
 else
     echo "User already exists, exiting..."
 fi
