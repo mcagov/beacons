@@ -37,7 +37,7 @@ const useConnectToOpenSearch = (): ConnectionStatus => {
   React.useEffect(() => {
     if (connectionStatus === "DISCONNECTED") {
       axios
-        .get(searchUrl(window.location.hostname))
+        .get(searchUrl(window.location.hostname) + "_health")
         .then(() => {
           setConnectionStatus("CONNECTED");
         })
