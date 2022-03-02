@@ -91,7 +91,6 @@ resource "aws_lb_listener_rule" "backoffice" {
   }
 }
 
-
 /**
 * Forward traffic from the public Internet to a proxy for the OpenSearch service
 *
@@ -101,12 +100,43 @@ resource "aws_lb_listener_rule" "backoffice" {
 * We do not want to give the public Internet unrestricted access to the OpenSearch service as it contains sensitive
 * data.
 */
-resource "aws_lb_listener_rule" "opensearch_proxy" {
+resource "aws_lb_listener_rule" "opensearch_search_proxy" {
   listener_arn = aws_alb_listener.front_end_ssl.arn
 
   /**
   * Require users to authenticate.  Prevent all unauthenticated traffic from reaching the OpenSearch Proxy.
   */
+  action {
+    type = "authenticate-oidc"
+
+    authenticate_oidc {
+      authorization_endpoint = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/authorize"
+      client_id              = "485d79d6-4691-4287-a100-0d8eb1fcd4c4"
+      client_secret          = var.opensearch_dashboards_sso_client_secret
+      issuer                 = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/v2.0"
+      token_endpoint         = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/token"
+      user_info_endpoint     = "https://graph.microsoft.com/oidc/userinfo"
+    }
+  }
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.opensearch_proxy.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/api/search*"]
+    }
+  }
+}
+
+/**
+* Identical rule to opensearch_search_proxy, but on the search.* subdomain to allow OpenSearch Dashboards a clean path
+*/
+resource "aws_lb_listener_rule" "opensearch_dashboards_proxy" {
+  listener_arn = aws_alb_listener.front_end_ssl.arn
+
   action {
     type = "authenticate-oidc"
 

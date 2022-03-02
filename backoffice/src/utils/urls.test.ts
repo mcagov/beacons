@@ -12,16 +12,14 @@ describe("searchUrl()", () => {
     const deployedHostname = "dev.406beacons.com";
     const url = searchUrl(deployedHostname);
 
-    expect(url).toBe("https://search.dev.406beacons.com/search/");
+    expect(url).toBe("https://dev.406beacons.com/api/search/");
   });
 
   it("when running on production, return search.register-406-beacons.service.gov.uk", () => {
     const deployedHostname = "register-406-beacons.service.gov.uk";
     const url = searchUrl(deployedHostname);
 
-    expect(url).toBe(
-      "https://search.register-406-beacons.service.gov.uk/search/"
-    );
+    expect(url).toBe("https://register-406-beacons.service.gov.uk/api/search/");
   });
 });
 
