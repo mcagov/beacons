@@ -100,7 +100,8 @@ resource "aws_ecs_service" "opensearch_proxy" {
     registry_arn = aws_service_discovery_service.opensearch_proxy.arn
   }
 
-  depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role]
+  # OpenSearch proxy start up script creates a new user. There is, therefore, a dependency on the OpenSearch domain.
+  depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role, aws_elasticsearch_domain.opensearch]
 
   lifecycle {
     create_before_destroy = false
