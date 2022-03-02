@@ -348,7 +348,7 @@ variable "backoffice_port" {
 variable "backoffice_health_check_path" {
   type        = string
   description = "Health check path used by the Application Load Balancer for the Backoffice app"
-  default     = "/" # TODO: Replace with better health check, possibly via NGINX
+  default     = "/health"
 }
 variable "backoffice_fargate_cpu" {
   type        = number
