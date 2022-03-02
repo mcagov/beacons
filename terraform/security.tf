@@ -50,6 +50,14 @@ resource "aws_security_group" "ecs_tasks" {
   }
 
   ingress {
+    description     = "Allow inbound traffic from load balance to backoffice"
+    protocol        = "tcp"
+    from_port       = var.backoffice_port
+    to_port         = var.backoffice_port
+    security_groups = [aws_security_group.lb.id]
+  }
+
+  ingress {
     description = "Allow inbound traffic from the webapp to the API"
     protocol    = "tcp"
     from_port   = var.service_port
