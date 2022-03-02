@@ -89,5 +89,36 @@ resource "aws_elasticsearch_domain" "opensearch" {
 }
 CONFIG
 
+  # Publish application logs to cloudwatch.
+  log_publishing_options {
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.log_group.arn
+    log_type                 = "ES_APPLICATION_LOGS"
+  }
+
   depends_on = [data.aws_iam_role.es]
+}
+
+# Policy to allow OpenSearch service to publish cloudwatch logs.
+resource "aws_cloudwatch_log_resource_policy" "opensearch" {
+  policy_name = "opensearch"
+
+  policy_document = <<CONFIG
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "es.amazonaws.com"
+      },
+      "Action": [
+        "logs:PutLogEvents",
+        "logs:PutLogEventsBatch",
+        "logs:CreateLogStream"
+      ],
+      "Resource": "arn:aws:logs:*"
+    }
+  ]
+}
+CONFIG
 }
