@@ -64,6 +64,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
         fullName: owner.fullName || "",
         email: owner.email || "",
         telephoneNumber: owner.telephoneNumber || "",
+        alternativeTelephoneNumber: owner.alternativeTelephoneNumber || "",
         addressLine1: owner.addressLine1 || "",
         addressLine2: owner.addressLine2 || "",
         addressLine3: owner.addressLine3 || "",

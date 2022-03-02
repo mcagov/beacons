@@ -23,8 +23,35 @@ describe("Owner Summary Panel", () => {
         beaconId={beaconFixture.id}
       />
     );
+    const owner = beaconFixture.owners[0];
 
-    expect(await screen.findByText(/Steve Stevington/i)).toBeVisible();
+    expect(
+      await screen.findByText(new RegExp(owner.fullName, "i"))
+    ).toBeVisible();
+    expect(await screen.findByText(new RegExp(owner.email, "i"))).toBeVisible();
+    expect(
+      await screen.findByText(new RegExp(owner.telephoneNumber, "i"))
+    ).toBeVisible();
+    expect(
+      await screen.findByText(
+        new RegExp(owner.alternativeTelephoneNumber!, "i")
+      )
+    ).toBeVisible();
+    expect(
+      await screen.findByText(new RegExp(owner.addressLine1, "i"))
+    ).toBeVisible();
+    expect(
+      await screen.findByText(new RegExp(owner.townOrCity!, "i"))
+    ).toBeVisible();
+    expect(
+      await screen.findByText(new RegExp(owner.county!, "i"))
+    ).toBeVisible();
+    expect(
+      await screen.findByText(new RegExp(owner.postcode!, "i"))
+    ).toBeVisible();
+    expect(
+      await screen.findByText(new RegExp(owner.country!, "i"))
+    ).toBeVisible();
   });
 
   it("calls the injected BeaconsGateway", async () => {
