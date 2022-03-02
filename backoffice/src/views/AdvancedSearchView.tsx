@@ -13,6 +13,9 @@ import {
 import { Podcasts } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { searchUrl } from "../utils/urls";
+import axios from "axios";
+import { ErrorState } from "../components/dataPanel/PanelErrorState";
+import { LoadingState } from "../components/dataPanel/PanelLoadingState";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,8 +28,42 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+type ConnectionStatus = "CONNECTED" | "DISCONNECTED" | "ERROR";
+
+const useConnectToOpenSearch = (): ConnectionStatus => {
+  const [connectionStatus, setConnectionStatus] =
+    React.useState<ConnectionStatus>("DISCONNECTED");
+
+  React.useEffect(() => {
+    if (connectionStatus === "DISCONNECTED") {
+      axios
+        .get(searchUrl(window.location.hostname))
+        .then(() => {
+          setConnectionStatus("CONNECTED");
+        })
+        .catch((e) => {
+          console.error(e);
+          setConnectionStatus("ERROR");
+        });
+    }
+  }, [connectionStatus, setConnectionStatus]);
+
+  return connectionStatus;
+};
+
 export function AdvancedSearchView(): JSX.Element {
   const classes = useStyles();
+
+  const connectionStatus = useConnectToOpenSearch();
+
+  if (connectionStatus === "ERROR") {
+    return <ErrorState message={"Failed to connect to OpenSearch"} />;
+  }
+
+  if (connectionStatus === "DISCONNECTED") {
+    return <LoadingState />;
+  }
+
   return (
     <div className={classes.root}>
       <PageContent>
