@@ -56,6 +56,7 @@ export const OwnerPanel: FunctionComponent<OwnerSummaryPanelProps> = ({
   const fields = [
     { key: "Name", value: owner?.fullName },
     { key: "Telephone", value: owner?.telephoneNumber },
+    { key: "Alternative Telephone", value: owner?.alternativeTelephoneNumber },
     { key: "Email", value: owner?.email },
     {
       key: "Address",
@@ -65,6 +66,7 @@ export const OwnerPanel: FunctionComponent<OwnerSummaryPanelProps> = ({
         owner?.townOrCity,
         owner?.county,
         owner?.postcode,
+        owner?.country || "United Kingdom",
       ],
       valueType: FieldValueTypes.MULTILINE,
     },
