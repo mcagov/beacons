@@ -17,6 +17,7 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconOwner;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconUse;
 
@@ -73,6 +74,15 @@ public class BeaconSearchDocument {
         .getUses()
         .stream()
         .map(NestedBeaconUse::new)
+        .collect(Collectors.toList());
+    this.mmsiNumbers =
+      legacyBeacon
+        .getData()
+        .getUses()
+        .stream()
+        .map(LegacyUse::getMmsiNumber)
+        .filter(Objects::nonNull)
+        .map(Number::toString)
         .collect(Collectors.toList());
     this.isLegacy = true;
   }
