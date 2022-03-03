@@ -74,7 +74,7 @@ jobs:
     name: Publish Backoffice
     uses: ./.github/workflows/publish-backoffice-image.yml
     with:
-      tag: ${{ github.sha }}
+      tag: ${{ github.event.release.tag_name }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
