@@ -40,6 +40,20 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
         value : var.public_fqdn
       },
       {
+        name : "OPENSEARCH_PROTOCOL",
+        value : "https"
+      },
+    ],
+    logConfiguration : {
+      "logDriver" : "awslogs",
+      "options" : {
+        "awslogs-group" : aws_cloudwatch_log_group.log_group.name,
+        "awslogs-region" : var.aws_region,
+        "awslogs-stream-prefix" : "opensearch-proxy"
+      }
+    },
+    secrets : [
+      {
         name : "MASTER_USER",
         value : var.opensearch_master_user_name
       },
@@ -59,19 +73,7 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
         name : "APPLICATION_PASSWORD",
         value : random_password.opensearch_application_password.result
       },
-      {
-        name : "OPENSEARCH_PROTOCOL",
-        value : "https"
-      },
-    ],
-    logConfiguration : {
-      "logDriver" : "awslogs",
-      "options" : {
-        "awslogs-group" : aws_cloudwatch_log_group.log_group.name,
-        "awslogs-region" : var.aws_region,
-        "awslogs-stream-prefix" : "opensearch-proxy"
-      }
-    }
+    ]
   }])
 }
 
