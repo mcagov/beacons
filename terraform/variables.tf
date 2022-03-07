@@ -56,7 +56,7 @@ variable "webapp_azure_ad_client_id" {
   type        = string
   description = "The client identifier for the consumer-facing web app, provided in Azure AD"
 }
-variable "webapp_azure_ad_tenant_id" {
+variable "azure_ad_tenant_id" {
   sensitive   = true
   type        = string
   description = "The UUID for the Azure AD tenant, provided in Azure AD"

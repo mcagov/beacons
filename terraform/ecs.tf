@@ -45,7 +45,7 @@ resource "aws_ecs_task_definition" "webapp" {
       },
       {
         name : "AAD_TENANT_ID",
-        value : var.webapp_azure_ad_tenant_id
+        value : var.azure_ad_tenant_id
       },
       {
         name : "REDIS_URI",
