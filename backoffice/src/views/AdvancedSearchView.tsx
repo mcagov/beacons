@@ -13,7 +13,6 @@ import {
 import { Podcasts } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { searchUrl } from "../utils/urls";
-import axios from "axios";
 import { ErrorState } from "../components/dataPanel/PanelErrorState";
 import { LoadingState } from "../components/dataPanel/PanelLoadingState";
 
@@ -36,8 +35,9 @@ const useConnectToOpenSearch = (): ConnectionStatus => {
 
   React.useEffect(() => {
     if (connectionStatus === "DISCONNECTED") {
-      axios
-        .get(searchUrl(window.location.hostname) + "_cluster/health")
+      fetch(searchUrl(window.location.hostname + "_cluster/health"), {
+        redirect: "follow",
+      })
         .then(() => {
           setConnectionStatus("CONNECTED");
         })
