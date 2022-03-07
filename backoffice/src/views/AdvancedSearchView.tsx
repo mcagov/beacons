@@ -35,7 +35,7 @@ const useConnectToOpenSearch = (): ConnectionStatus => {
 
   React.useEffect(() => {
     if (connectionStatus === "DISCONNECTED") {
-      fetch(searchUrl(window.location.hostname + "_cluster/health"), {
+      fetch(searchUrl(window.location.hostname) + "_cluster/health", {
         redirect: "follow",
       })
         .then(() => {
