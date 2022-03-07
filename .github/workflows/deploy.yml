@@ -83,7 +83,10 @@ on:
       opensearch_master_user_password:
         description: The password for the master user on OpenSearch
         required: true
-      opensearch_dashboards_sso_client_secret:
+      opensearch_proxy_sso_client_id:
+        description: The ID of the app registration in Azure AD used for authenticating users at the load balancer
+        required: true
+      opensearch_proxy_sso_client_secret:
         description: The Azure AD client secret required for authenticating OpenSearch users at the load balancer
         required: true
 
@@ -131,5 +134,6 @@ jobs:
           TF_VAR_opensearch_proxy_image_tag: ${{ inputs.opensearch_proxy_image_tag }}
           TF_VAR_opensearch_master_user_name: ${{ secrets.opensearch_master_user_name }}
           TF_VAR_opensearch_master_user_password: ${{ secrets.opensearch_master_user_password }}
-          TF_VAR_opensearch_dashboards_sso_client_secret: ${{ secrets.opensearch_dashboards_sso_client_secret }}
+          TF_VAR_opensearch_proxy_sso_client_id: ${{ secrets.opensearch_proxy_sso_client_id }}
+          TF_VAR_opensearch_proxy_sso_client_secret: ${{ secrets.opensearch_proxy_sso_client_secret }}
         run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
