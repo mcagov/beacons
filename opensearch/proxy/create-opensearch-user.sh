@@ -28,6 +28,10 @@ then
     fi
 
     echo "User created, exiting..."
-else
+elif ((res >= 200 && res < 300));
+then
     echo "User already exists, exiting..."
+else
+  echo "Something went wrong... HTTP Status " res
+  exit 1
 fi

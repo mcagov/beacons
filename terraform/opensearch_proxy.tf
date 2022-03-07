@@ -47,7 +47,7 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
     secrets : [
       {
         name : "MASTER_USER",
-        valueFrom : aws_secretsmanager_secret.opensearch_master_password.arn
+        valueFrom : aws_secretsmanager_secret.opensearch_master_user_name.arn
       },
       {
         name : "MASTER_PASSWORD",
