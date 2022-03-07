@@ -367,7 +367,7 @@ variable "backoffice_fargate_memory" {
 *
 * See https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-how-applications-are-added
 */
-variable "opensearch_dashboards_sso_client_secret" {
+variable "opensearch_proxy_sso_client_secret" {
   type        = string
   description = "Client secret for OpenSearch Proxy single sign-on"
 }

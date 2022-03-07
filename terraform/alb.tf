@@ -80,6 +80,20 @@ resource "aws_lb_listener_rule" "backoffice" {
   listener_arn = aws_alb_listener.front_end_ssl.arn
 
   action {
+    type = "authenticate-oidc"
+
+    authenticate_oidc {
+      authorization_endpoint     = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/authorize"
+      client_id                  = "485d79d6-4691-4287-a100-0d8eb1fcd4c4"
+      client_secret              = var.opensearch_proxy_sso_client_secret
+      issuer                     = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/v2.0"
+      token_endpoint             = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/token"
+      user_info_endpoint         = "https://graph.microsoft.com/oidc/userinfo"
+      on_unauthenticated_request = "deny"
+    }
+  }
+
+  action {
     type             = "forward"
     target_group_arn = aws_alb_target_group.backoffice.arn
   }
@@ -112,7 +126,7 @@ resource "aws_lb_listener_rule" "opensearch_search_proxy" {
     authenticate_oidc {
       authorization_endpoint     = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/authorize"
       client_id                  = "485d79d6-4691-4287-a100-0d8eb1fcd4c4"
-      client_secret              = var.opensearch_dashboards_sso_client_secret
+      client_secret              = var.opensearch_proxy_sso_client_secret
       issuer                     = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/v2.0"
       token_endpoint             = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/token"
       user_info_endpoint         = "https://graph.microsoft.com/oidc/userinfo"
@@ -144,7 +158,7 @@ resource "aws_lb_listener_rule" "opensearch_dashboards_proxy" {
     authenticate_oidc {
       authorization_endpoint = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/authorize"
       client_id              = "485d79d6-4691-4287-a100-0d8eb1fcd4c4"
-      client_secret          = var.opensearch_dashboards_sso_client_secret
+      client_secret          = var.opensearch_proxy_sso_client_secret
       issuer                 = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/v2.0"
       token_endpoint         = "https://login.microsoftonline.com/513fb495-9a90-425b-a49a-bc6ebe2a429e/oauth2/v2.0/token"
       user_info_endpoint     = "https://graph.microsoft.com/oidc/userinfo"
