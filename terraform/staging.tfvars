@@ -18,6 +18,7 @@ service_fargate_cpu                     = 1024
 service_fargate_memory                  = 2048
 service_azure_ad_api_id                 = "5cdcbb41-958a-43b6-baa1-bbafd80b4f70"
 service_beacon_search_scheduler_timeout = "20000"
+backoffice_azure_ad_client_id           = "5cdcbb41-958a-43b6-baa1-bbafd80b4f70"
 db_storage                              = 50
 db_max_storage                          = 50
 db_delete_protection                    = false

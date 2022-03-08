@@ -265,6 +265,16 @@ resource "aws_ecs_task_definition" "backoffice" {
         hostPort : var.backoffice_port
       }
     ],
+    environment : [
+      {
+        name : "AZURE_AD_TENANT_ID",
+        value : var.azure_ad_tenant_id
+      },
+      {
+        name : "AZURE_AD_CLIENT_ID",
+        value : var.backoffice_azure_ad_client_id
+      },
+    ]
     logConfiguration : {
       "logDriver" : "awslogs",
       "options" : {

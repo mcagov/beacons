@@ -326,6 +326,10 @@ variable "ssl_certificate_arn" {
   type        = string
   description = "ARN of ssl certificate generated in the AWS dashboard"
 }
+variable "backoffice_azure_ad_client_id" {
+  type        = string
+  description = "The Client ID of the app registration in Azure AD for the Backoffice SPA"
+}
 variable "backoffice_image" {
   type        = string
   description = "The name of the image for the Backoffice application"
