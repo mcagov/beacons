@@ -1,4 +1,4 @@
-import { AccountInfo } from "@azure/msal-browser";
+import { AccountInfo, Configuration } from "@azure/msal-browser";
 import { AuthGateway } from "./AuthGateway";
 
 describe("AuthGateway", () => {
@@ -23,6 +23,9 @@ describe("AuthGateway", () => {
       mockPublicClientApplication = {
         getAllAccounts: jest.fn(),
         acquireTokenSilent: jest.fn(),
+        getConfiguration: jest
+          .fn()
+          .mockReturnValue({ auth: { clientId: "123" } } as Configuration),
       };
       gateway = new AuthGateway(mockPublicClientApplication);
       consoleSpy = jest.spyOn(console, "error").mockReturnValue();

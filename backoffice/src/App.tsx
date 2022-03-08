@@ -1,4 +1,4 @@
-import { Configuration, PublicClientApplication } from "@azure/msal-browser";
+import { PublicClientApplication } from "@azure/msal-browser";
 import { RequireAuth } from "components/auth/RequireAuth";
 import { AuthGateway } from "gateways/auth/AuthGateway";
 import { BeaconsGateway } from "gateways/beacons/BeaconsGateway";
@@ -14,7 +14,6 @@ import "./App.scss";
 import { AuthWrapper } from "./components/auth/AuthWrapper";
 import { Footer } from "./components/layout/Footer";
 import { Navigation } from "./components/layout/Navigation";
-import { applicationConfig } from "./config";
 import { BeaconRequestMapper } from "./gateways/mappers/BeaconRequestMapper";
 import { BeaconResponseMapper } from "./gateways/mappers/BeaconResponseMapper";
 import { LegacyBeaconResponseMapper } from "./gateways/mappers/LegacyBeaconResponseMapper";
@@ -23,21 +22,23 @@ import { BeaconRecordsListView } from "./views/BeaconRecordsListView";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { AdvancedSearchView } from "./views/AdvancedSearchView";
+import { ErrorState } from "./components/dataPanel/PanelErrorState";
+import { LoadingState } from "./components/dataPanel/PanelLoadingState";
+import { useGetAuthState } from "./lib/useGetAuthState";
 
 interface ResourceParams {
   id: string;
 }
 
-const configuration: Configuration = {
-  auth: {
-    clientId: applicationConfig.azureADClientId as string,
-    authority: `https://login.microsoftonline.com/${applicationConfig.azureADTenantId}`,
-  },
-};
-
-const pca = new PublicClientApplication(configuration);
-
 const App: FunctionComponent = () => {
+  const authState = useGetAuthState();
+  if (authState.status === "PENDING") {
+    return <LoadingState />;
+  }
+  if (authState.status === "ERROR") {
+    return <ErrorState>Error loading authentication configuration</ErrorState>;
+  }
+  const pca = new PublicClientApplication(authState.config);
   const beaconResponseMapper = new BeaconResponseMapper();
   const legacyBeaconResponseMapper = new LegacyBeaconResponseMapper();
   const authGateway = new AuthGateway(pca);

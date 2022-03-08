@@ -1,5 +1,4 @@
 import { IPublicClientApplication } from "@azure/msal-browser";
-import { applicationConfig } from "config";
 import { IAuthGateway } from "./IAuthGateway";
 
 export class AuthGateway implements IAuthGateway {
@@ -14,7 +13,11 @@ export class AuthGateway implements IAuthGateway {
       const account = this.publicClientApplication.getAllAccounts()[0];
 
       const accessTokenRequest = {
-        scopes: [applicationConfig.azureADAPIScopeURI as string],
+        scopes: [
+          `api://${
+            this.publicClientApplication.getConfiguration().auth.clientId
+          }/access_as_user`,
+        ],
         account: account,
       };
 
