@@ -150,8 +150,8 @@ jobs:
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       db_password: ${{ secrets.DB_PASSWORD }}
       gov_notify_api_key: ${{ secrets.TEST_GOV_NOTIFY_API_KEY }}
-      webapp_azure_ad_client_secret: ${{ secrets.TEST_WEBAPP_CLIENT_SECRET }}
-      webapp_azure_b2c_client_secret: ${{ secrets.TEST_AZURE_B2C_CLIENT_SECRET }}
+      webapp_azure_ad_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_AD_CLIENT_SECRET }}
+      webapp_azure_b2c_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_CLIENT_SECRET }}
       webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
       service_basic_auth_username: ${{ secrets.SERVICE_BASIC_AUTH_USERNAME }}
       service_basic_auth_password: ${{ secrets.SERVICE_BASIC_AUTH_PASSWORD }}
