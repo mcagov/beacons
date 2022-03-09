@@ -32,4 +32,5 @@ jobs:
       trello_token: ${{ secrets.TRELLO_TOKEN }}
       opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
       opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
-      opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
+      opensearch_proxy_sso_client_id: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_ID }}
+      opensearch_proxy_sso_client_secret: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_SECRET }}
