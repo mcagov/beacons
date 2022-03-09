@@ -61,7 +61,7 @@ services:
     build:
       context: ./backoffice
     ports:
-      - "3000:80"
+      - "3001:80"
     environment:
       AZURE_AD_TENANT_ID: "513fb495-9a90-425b-a49a-bc6ebe2a429e"
       AZURE_AD_CLIENT_ID: "5cdcbb41-958a-43b6-baa1-bbafd80b4f70"
