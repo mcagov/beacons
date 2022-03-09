@@ -209,7 +209,7 @@ export const givenIHaveUnselected = (selector: string): void => {
 };
 
 export const givenIHaveWaitedForAzureB2C = (): void => {
-  cy.wait(1000);
+  cy.wait(2000);
 };
 
 /**
