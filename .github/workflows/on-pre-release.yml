@@ -110,7 +110,7 @@ jobs:
       test_webapp_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
       test_webapp_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
       test_webapp_azure_ad_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_AD_CLIENT_SECRET }}
-      test_webapp_gov_notify_api_key: ${{ secrets.TEST_WEBAPP_GOV_NOTIFY_API_KEY }}
+      test_webapp_gov_notify_api_key: ${{ secrets.TEST_GOV_NOTIFY_API_KEY }}
 
   codeql:
     name: CodeQL check
@@ -149,10 +149,10 @@ jobs:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       db_password: ${{ secrets.DB_PASSWORD }}
-      gov_notify_api_key: ${{ secrets.GOV_NOTIFY_API_KEY }}
-      webapp_azure_ad_client_secret: ${{ secrets.WEBAPP_CLIENT_SECRET }}
-      webapp_azure_b2c_client_secret: ${{ secrets.AZURE_B2C_CLIENT_SECRET }}
-      webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.JWT_SECRET }}
+      gov_notify_api_key: ${{ secrets.TEST_GOV_NOTIFY_API_KEY }}
+      webapp_azure_ad_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_AD_CLIENT_SECRET }}
+      webapp_azure_b2c_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_CLIENT_SECRET }}
+      webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
       service_basic_auth_username: ${{ secrets.SERVICE_BASIC_AUTH_USERNAME }}
       service_basic_auth_password: ${{ secrets.SERVICE_BASIC_AUTH_PASSWORD }}
       aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
@@ -160,4 +160,5 @@ jobs:
       trello_token: ${{ secrets.TRELLO_TOKEN }}
       opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
       opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
-      opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
+      opensearch_proxy_sso_client_id: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_ID }}
+      opensearch_proxy_sso_client_secret: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_SECRET }}
