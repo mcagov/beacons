@@ -34,7 +34,18 @@ resource "aws_iam_policy" "secret_manager_access" {
         "secretsmanager:GetSecretValue",
         "kms:Decrypt"
       ],
-      "Resource": "*"
+      "Resource": [
+        "${aws_secretsmanager_secret.db_password.arn}",
+        "${aws_secretsmanager_secret.gov_notify_api_key.arn}",
+        "${aws_secretsmanager_secret.webapp_client_secret.arn}",
+        "${aws_secretsmanager_secret.webapp_b2c_client_secret.arn}",
+        "${aws_secretsmanager_secret.webapp_b2c_next_auth_jwt_secret.arn}",
+        "${aws_secretsmanager_secret.opensearch_master_user_name.arn}"
+        "${aws_secretsmanager_secret.opensearch_master_password.arn}",
+        "${aws_secretsmanager_secret.opensearch_application_user_name.arn}",
+        "${aws_secretsmanager_secret.opensearch_application_password.arn}",
+        "${aws_secretsmanager_secret.opensearch_application_credentials_base64.arn}"
+      ]
     }
   ]
 }
