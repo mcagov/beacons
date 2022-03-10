@@ -49,7 +49,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-node@v2.4.0
+      - uses: actions/setup-node@v3
         with:
           node-version: "14"
       - name: Install npm dependencies
@@ -71,7 +71,7 @@ jobs:
       - name: Copy env vars
         run: cp .env.example .env.local
       - name: Checkout node
-        uses: actions/setup-node@v2.4.0
+        uses: actions/setup-node@v3
         with:
           node-version: "14"
       - name: Run Cypress end to end tests
