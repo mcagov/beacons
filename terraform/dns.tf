@@ -16,12 +16,6 @@ resource "aws_service_discovery_service" "webapp" {
       type = "A"
     }
   }
-
-  health_check_config {
-    failure_threshold = 10
-    resource_path     = var.webapp_health_check_path
-    type              = "HTTP"
-  }
 }
 
 resource "aws_service_discovery_service" "service" {
@@ -36,12 +30,6 @@ resource "aws_service_discovery_service" "service" {
       type = "A"
     }
   }
-
-  health_check_config {
-    failure_threshold = 10
-    resource_path     = var.service_health_check_path
-    type              = "HTTP"
-  }
 }
 
 resource "aws_service_discovery_service" "backoffice" {
@@ -55,11 +43,5 @@ resource "aws_service_discovery_service" "backoffice" {
       ttl  = 10
       type = "A"
     }
-  }
-
-  health_check_config {
-    failure_threshold = 10
-    resource_path     = var.backoffice_health_check_path
-    type              = "HTTP"
   }
 }
