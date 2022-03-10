@@ -34,12 +34,13 @@ resource "aws_secretsmanager_secret_version" "webapp_b2c_client_secret" {
   secret_string = var.webapp_azure_b2c_client_secret
 }
 
-resource "aws_secretsmanager_secret" "webapp_b2c_next_auth_jwt_secret" {
-  name = "${terraform.workspace}_b2c_next_auth_jwt_secret"
+resource "aws_secretsmanager_secret" "webapp_next_auth_jwt_secret" {
+  name        = "${terraform.workspace}_next_auth_jwt_secret"
+  description = "Used by Next Auth to validate user sessions"
 }
 
-resource "aws_secretsmanager_secret_version" "webapp_b2c_next_auth_jwt_secret" {
-  secret_id     = aws_secretsmanager_secret.webapp_b2c_next_auth_jwt_secret.id
+resource "aws_secretsmanager_secret_version" "webapp_next_auth_jwt_secret" {
+  secret_id     = aws_secretsmanager_secret.webapp_next_auth_jwt_secret.id
   secret_string = var.webapp_azure_b2c_next_auth_jwt_secret
 }
 
