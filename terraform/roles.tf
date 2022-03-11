@@ -40,7 +40,7 @@ resource "aws_iam_policy" "secret_manager_access" {
         "${aws_secretsmanager_secret.webapp_client_secret.arn}",
         "${aws_secretsmanager_secret.webapp_b2c_client_secret.arn}",
         "${aws_secretsmanager_secret.webapp_next_auth_jwt_secret.arn}",
-        "${aws_secretsmanager_secret.opensearch_master_user_name.arn}"
+        "${aws_secretsmanager_secret.opensearch_master_user_name.arn}",
         "${aws_secretsmanager_secret.opensearch_master_password.arn}",
         "${aws_secretsmanager_secret.opensearch_application_user_name.arn}",
         "${aws_secretsmanager_secret.opensearch_application_password.arn}",
