@@ -103,6 +103,7 @@ jobs:
       - name: Terraform validate
         run: terraform validate
       - name: Terraform deploy
+        if: always() # Prevent terraform deploy from being interrupted and causing state lock issues
         env:
           TF_VAR_trello_list_id: ${{ inputs.trello_list_id }}
           TF_VAR_alert_email_address: ${{ secrets.alert_email_address }}
