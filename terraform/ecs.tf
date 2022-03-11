@@ -117,7 +117,6 @@ resource "aws_ecs_service" "webapp" {
   launch_type                       = "FARGATE"
   platform_version                  = "1.4.0"
   health_check_grace_period_seconds = 60
-  wait_for_steady_state             = true
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
@@ -225,7 +224,6 @@ resource "aws_ecs_service" "service" {
   launch_type                       = "FARGATE"
   platform_version                  = var.ecs_fargate_version
   health_check_grace_period_seconds = 600
-  wait_for_steady_state             = true
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
@@ -294,7 +292,6 @@ resource "aws_ecs_service" "backoffice" {
   launch_type                       = "FARGATE"
   platform_version                  = var.ecs_fargate_version
   health_check_grace_period_seconds = 600
-  wait_for_steady_state             = true
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
