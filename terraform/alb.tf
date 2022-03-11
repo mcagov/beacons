@@ -55,7 +55,7 @@ resource "aws_lb_listener_rule" "service" {
 }
 
 resource "aws_alb_target_group" "backoffice" {
-  name        = "${terraform.workspace}-backoffice-target-group"
+  name        = "${terraform.workspace}-backoffice-tg"
   port        = var.backoffice_port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
