@@ -308,7 +308,7 @@ resource "aws_ecs_service" "backoffice" {
   }
 
   service_registries {
-    registry_arn = aws_service_discovery_service.service.arn
+    registry_arn = aws_service_discovery_service.backoffice.arn
   }
 
   depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs_task_execution_role]
