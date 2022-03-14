@@ -5,7 +5,7 @@ describe("searchUrl()", () => {
     const deployedHostname = "localhost";
     const url = searchUrl(deployedHostname);
 
-    expect(url).toBe("http://localhost:8081/search/");
+    expect(url).toBe("http://localhost:8081/api/search/");
   });
 
   it("when running on dev, return search.dev.406beacons.com", () => {
