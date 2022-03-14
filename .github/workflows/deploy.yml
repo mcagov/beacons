@@ -126,8 +126,3 @@ jobs:
           TF_VAR_opensearch_proxy_sso_client_id: ${{ secrets.opensearch_proxy_sso_client_id }}
           TF_VAR_opensearch_proxy_sso_client_secret: ${{ secrets.opensearch_proxy_sso_client_secret }}
         run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
-      - name: Wait for images to deploy
-        env:
-          DESIRED_IMAGE_TAG: ${{ inputs.image_tag }}
-        working-directory: .github/workflows
-        run: ./wait-for-ecs-deployment.sh
