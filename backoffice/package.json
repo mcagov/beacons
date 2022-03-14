@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "start:no-api-stub": "REACT_APP_NO_API_STUB=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
     "test:watch": "react-scripts test --watch",

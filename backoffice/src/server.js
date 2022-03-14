@@ -1,11 +1,5 @@
 import { camelize } from "inflected";
 import { createServer, JSONAPISerializer, Model } from "miragejs";
-import { v4 } from "uuid";
-import { applicationConfig } from "./config";
-import { beaconSearchResultFixture } from "./fixtures/beaconSearchResult.fixture";
-import { manyBeaconsApiResponseFixture } from "./fixtures/manyBeaconsApiResponse.fixture";
-import { singleBeaconApiResponseFixture } from "./fixtures/singleBeaconApiResponse.fixture";
-import { singleLegacyBeaconApiResponseFixture } from "./fixtures/singleLegacyBeaconApiResponse.fixture";
 
 export function makeServer({ environment = "development" } = {}) {
   console.log("Stubbing the Beacons API using Mirage...");
@@ -15,6 +9,8 @@ export function makeServer({ environment = "development" } = {}) {
     "https://login.live.com/**",
     "https://login.microsoftonline.com/**",
   ];
+
+  const apiDomains = ["http://localhost:8080"];
 
   return createServer({
     environment,
@@ -47,53 +43,16 @@ export function makeServer({ environment = "development" } = {}) {
 
     routes() {
       this.get(
-        `${applicationConfig.apiUrl}/beacon-search/search/find-all`,
-        () => {
-          return beaconSearchResultFixture;
-        }
+        "/backoffice/tenant-id",
+        () => "513fb495-9a90-425b-a49a-bc6ebe2a429e"
       );
 
-      this.get(`${applicationConfig.apiUrl}/beacons`, () => {
-        // TODO: Update manyBeaconsApiResponseFixture to match endpoint
-        return {
-          data: manyBeaconsApiResponseFixture,
-        };
-      });
+      this.get(
+        "/backoffice/client-id",
+        () => "5cdcbb41-958a-43b6-baa1-bbafd80b4f70"
+      );
 
-      this.get(`${applicationConfig.apiUrl}/beacons/:id`, () => {
-        return singleBeaconApiResponseFixture;
-      });
-
-      this.get(`${applicationConfig.apiUrl}/legacy-beacon/:id`, () => {
-        return singleLegacyBeaconApiResponseFixture;
-      });
-
-      this.patch(`${applicationConfig.apiUrl}/beacons/:id`, () => {
-        return true;
-      });
-
-      this.get(`${applicationConfig.apiUrl}/beacons/:id/notes`, (schema) => {
-        return schema.notes.all();
-      });
-
-      this.post(`${applicationConfig.apiUrl}/note`, (schema, request) => {
-        const noteRequest = JSON.parse(request.requestBody);
-        const noteId = v4();
-        const note = {
-          id: noteId,
-          beaconId: noteRequest.data.attributes.beaconId,
-          text: noteRequest.data.attributes.text,
-          type: noteRequest.data.attributes.type,
-          createdDate: "2021-09-24 11:09:55.914918 +00:00",
-          userId: v4(),
-          fullName: "Beacon McBeaconFace",
-          email: "mcbeaconface@beacons.com",
-        };
-        schema.db.notes.insert(note);
-        return schema.notes.find(noteId);
-      });
-
-      this.passthrough(...authDomains);
+      this.passthrough(...authDomains, ...apiDomains);
     },
   });
 }

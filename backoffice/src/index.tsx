@@ -12,10 +12,9 @@ import "./index.scss";
 import reportWebVitals from "./reportWebVitals";
 import { makeServer } from "./server";
 
-if (
-  process.env.NODE_ENV === "development" &&
-  process.env.REACT_APP_NO_API_STUB !== "true"
-) {
+// Stubs the API calls to retrieve the AzureAD tenant id and client id when running the dev server locally.
+// In production these are returned by the nginx container that serves the backoffice.
+if (process.env.NODE_ENV === "development") {
   makeServer();
 }
 
