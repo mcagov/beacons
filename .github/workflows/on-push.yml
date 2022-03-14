@@ -128,10 +128,7 @@ jobs:
     with:
       environment: development
       terraform_workspace: dev
-      webapp_image_tag: ${{ github.sha }}
-      service_image_tag: ${{ github.sha }}
-      backoffice_image_tag: ${{ github.sha }}
-      opensearch_proxy_image_tag: ${{ github.sha }}
+      image_tag: ${{ github.sha }}
       trello_list_id: 6157064b4d7e1b3b1ea839ad
     secrets:
       alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}

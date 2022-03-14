@@ -139,10 +139,7 @@ jobs:
     with:
       environment: staging
       terraform_workspace: staging
-      webapp_image_tag: ${{ github.event.release.tag_name }}
-      service_image_tag: ${{ github.event.release.tag_name }}
-      backoffice_image_tag: ${{ github.event.release.tag_name }}
-      opensearch_proxy_image_tag: ${{ github.event.release.tag_name }}
+      image_tag: ${{ github.event.release.tag_name }}
       trello_list_id: 6157064b4d7e1b3b1ea839ad
     secrets:
       alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
