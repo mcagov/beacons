@@ -10,13 +10,6 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.scss";
 import reportWebVitals from "./reportWebVitals";
-import { makeServer } from "./server";
-
-// Stubs the API calls to retrieve the AzureAD tenant id and client id when running the dev server locally.
-// In production these are returned by the nginx container that serves the backoffice.
-if (process.env.NODE_ENV === "development") {
-  makeServer();
-}
 
 const theme: Theme = createTheme({
   palette: {

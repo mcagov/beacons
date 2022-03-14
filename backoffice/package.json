@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "(trap 'kill 0' SIGINT; node stubs.js & react-scripts start)",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
     "test:watch": "react-scripts test --watch",
@@ -91,7 +91,8 @@
   },
   "devDependencies": {
     "@types/uuid": "^8.3.1",
-    "enhanced-resolve": "^5.9.0"
+    "enhanced-resolve": "^5.9.0",
+    "express": "^4.17.3"
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:3005"
 }
