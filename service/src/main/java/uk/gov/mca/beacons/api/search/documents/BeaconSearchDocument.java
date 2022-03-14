@@ -34,7 +34,6 @@ public class BeaconSearchDocument {
     List<BeaconUse> beaconUses
   ) {
     this.id = Objects.requireNonNull(beacon.getId()).unwrap();
-    this.hexId = beacon.getHexId();
     this.beaconStatus = beacon.getBeaconStatus().toString();
     this.createdDate = beacon.getCreatedDate();
     this.lastModifiedDate = beacon.getLastModifiedDate();
@@ -45,12 +44,7 @@ public class BeaconSearchDocument {
     if (beaconOwner != null) {
       this.beaconOwner = new NestedBeaconOwner(beaconOwner);
     }
-    this.mmsiNumbers =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getMmsiNumbers)
-        .flatMap(Collection::stream)
-        .collect(Collectors.toList());
+    setSearchFields(beacon, beaconOwner, beaconUses);
     this.beaconUses =
       beaconUses
         .stream()
@@ -123,9 +117,48 @@ public class BeaconSearchDocument {
   @Field(type = FieldType.Text, analyzer = "keyword")
   private List<String> mmsiNumbers;
 
+  @Field(type = FieldType.Text)
+  private List<String> vesselNames;
+
+  @Field(type = FieldType.Text, analyzer = "keyword")
+  private List<String> callSigns;
+
   @Field(type = FieldType.Nested)
   private NestedBeaconOwner beaconOwner;
 
   @Field(type = FieldType.Nested)
   private List<NestedBeaconUse> beaconUses;
+
+  private void setSearchFields(
+    Beacon beacon,
+    BeaconOwner beaconOwner,
+    List<BeaconUse> beaconUses
+  ) {
+    setHexId(beacon.getHexId());
+
+    this.mmsiNumbers =
+      beaconUses
+        .stream()
+        .map(BeaconUse::getMmsiNumbers)
+        .flatMap(Collection::stream)
+        .collect(Collectors.toList());
+
+    this.vesselNames =
+      beaconUses
+        .stream()
+        .map(BeaconUse::getVesselName)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+
+    this.callSigns =
+      beaconUses
+        .stream()
+        .map(BeaconUse::getCallSign)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+  }
+
+  private void setSearchFields(LegacyBeacon legacyBeacon) {
+    //
+  }
 }

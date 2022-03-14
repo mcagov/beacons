@@ -1,10 +1,13 @@
 package uk.gov.mca.beacons.api.search.documents;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 
-import com.github.javafaker.Faker;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import uk.gov.mca.beacons.api.BeaconMocker;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
@@ -70,5 +73,29 @@ public class BeaconSearchDocumentUnitTest {
     );
 
     assert (doc.getMmsiNumbers().get(0)).equals(mmsiNumber);
+  }
+
+  @Nested
+  class PrimarySearchFields {
+
+    @Test
+    public void givenABeaconWithAssociatedMaritimeBeaconUse_BeaconSearchDocumentShouldContainMmsiNumbersVesselNameRadioCallsign() {
+      AccountHolder accountHolder = BeaconMocker.getAccountHolder();
+      Beacon beacon = BeaconMocker.getBeacon(accountHolder.getId());
+      BeaconOwner beaconOwner = BeaconMocker.getBeaconOwner(beacon.getId());
+      BeaconUse maritimeUse = BeaconMocker.getMaritimeUse(beacon.getId());
+      String mmsiNumber = "123 456789";
+      given(maritimeUse.getMmsiNumbers()).willReturn(List.of(mmsiNumber));
+
+      BeaconSearchDocument doc = new BeaconSearchDocument(
+        beacon,
+        beaconOwner,
+        List.of(maritimeUse)
+      );
+
+      assertThat(doc.getMmsiNumbers(), contains(mmsiNumber));
+      assertThat(doc.getVesselNames(), contains(maritimeUse.getVesselName()));
+      assertThat(doc.getCallSigns(), contains(maritimeUse.getCallSign()));
+    }
   }
 }
