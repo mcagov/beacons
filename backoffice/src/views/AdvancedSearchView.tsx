@@ -3,18 +3,16 @@ import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import React from "react";
 import { PageContent } from "../components/layout/PageContent";
-import { Alert, Chip, Paper } from "@mui/material";
+import { Alert, Paper } from "@mui/material";
 import {
   ReactiveBase,
   DataSearch,
   ReactiveList,
-  ResultCard,
 } from "@appbaseio/reactivesearch";
-import { Podcasts } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom";
 import { searchUrl } from "../utils/urls";
 import { ErrorState } from "../components/dataPanel/PanelErrorState";
 import { LoadingState } from "../components/dataPanel/PanelLoadingState";
+import { SearchResult } from "../components/search/SearchResult";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -84,6 +82,7 @@ export function AdvancedSearchView(): JSX.Element {
                 "aircraft24bitHexAddresses",
               ]}
               placeholder="Search for beacons"
+              highlight={true}
             />
             <ReactiveList
               componentId="results"
@@ -96,56 +95,7 @@ export function AdvancedSearchView(): JSX.Element {
                 <ReactiveList.ResultCardsWrapper>
                   {error && <Alert severity="error">Error: {error}</Alert>}
                   {data.map((item: any) => {
-                    return (
-                      <ResultCard key={item._id}>
-                        <Chip
-                          label={item.hexId}
-                          icon={<Podcasts />}
-                          component={RouterLink}
-                          to={
-                            (item.isLegacy ? "/legacy-beacons/" : "/beacons/") +
-                            item.id
-                          }
-                          clickable
-                        />
-                        <ResultCard.Description>
-                          <table style={{ paddingTop: "1rem" }}>
-                            <tbody>
-                              {item.vesselMmsiNumbers.length > 0 && (
-                                <tr>
-                                  <th>MMSI number(s):</th>
-                                  <td>{item.vesselMmsiNumbers}</td>
-                                </tr>
-                              )}
-                              {item.vesselNames.length > 0 && (
-                                <tr>
-                                  <th>Vessel name(s):</th>
-                                  <td>{item.vesselNames}</td>
-                                </tr>
-                              )}
-                              {item.vesselCallsigns.length > 0 && (
-                                <tr>
-                                  <th>Callsign(s):</th>
-                                  <td>{item.vesselCallsigns}</td>
-                                </tr>
-                              )}
-                              {item.aircraftRegistrationMarks.length > 0 && (
-                                <tr>
-                                  <th>Aircraft registration mark(s):</th>
-                                  <td>{item.aircraftRegistrationMarks}</td>
-                                </tr>
-                              )}
-                              {item.aircraft24bitHexAddresses.length > 0 && (
-                                <tr>
-                                  <th>Aircraft 24-bit hex address(es):</th>
-                                  <td>{item.aircraft24bitHexAddresses}</td>
-                                </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </ResultCard.Description>
-                      </ResultCard>
-                    );
+                    return <SearchResult item={item} key={item._id} />;
                   })}
                 </ReactiveList.ResultCardsWrapper>
               )}
