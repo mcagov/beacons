@@ -36,8 +36,8 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       throws Exception {
       String accountHolderId = seedAccountHolder();
       String beaconId = seedRegistration(
-              RegistrationUseCase.SINGLE_BEACON,
-              accountHolderId
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId
       );
       updateRegistration(beaconId, accountHolderId);
 
