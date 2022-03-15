@@ -10,28 +10,30 @@ public class SearchIntegrationTest extends WebIntegrationTest {
 
   @Nested
   class GivenChangesToTransactionalRecordsShouldBeReflectedInSearchRecords {
+
     @Test
-    public void whenANewBeaconIsRegistered_thenItIsSearchable() throws Exception {
+    public void whenANewBeaconIsRegistered_thenItIsSearchable()
+      throws Exception {
       String accountHolderId = seedAccountHolder();
       String beaconId = seedRegistration(
-              RegistrationUseCase.SINGLE_BEACON,
-              accountHolderId
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId
       );
       String fixtureHexId = "1D0EA08C52FFBFF";
 
       String searchQuery =
-              "{\"query\": {\"match\": {\"hexId\":\"" + fixtureHexId + "\"}}}";
+        "{\"query\": {\"match\": {\"hexId\":\"" + fixtureHexId + "\"}}}";
 
       queryOpenSearch(searchQuery)
-              .jsonPath("$.hits.hits[0]._id")
-              .isEqualTo(beaconId)
-              .jsonPath("$.hits.hits[0]._source.hexId")
-              .isEqualTo(fixtureHexId);
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(beaconId)
+        .jsonPath("$.hits.hits[0]._source.hexId")
+        .isEqualTo(fixtureHexId);
     }
 
     @Test
     public void whenABeaconIsUpdated_ThenTheChangesAreReflectedWhenSearching()
-            throws Exception {
+      throws Exception {
       String accountHolderId = seedAccountHolder();
       String beaconId = seedRegistration(
               RegistrationUseCase.SINGLE_BEACON,
@@ -41,67 +43,66 @@ public class SearchIntegrationTest extends WebIntegrationTest {
 
       String ownerEmailAfterUpdate = "sergio@royalnavy.esp";
       String searchQuery =
-              "{\"query\": {\"nested\": {\"path\": \"beaconOwner\", \"query\": { \"match\": {\"beaconOwner.ownerEmail\":\"" +
-                      ownerEmailAfterUpdate +
-                      "\"}}}}}";
+        "{\"query\": {\"nested\": {\"path\": \"beaconOwner\", \"query\": { \"match\": {\"beaconOwner.ownerEmail\":\"" +
+        ownerEmailAfterUpdate +
+        "\"}}}}}";
 
       queryOpenSearch(searchQuery)
-              .jsonPath("$.hits.hits[0]._id")
-              .isEqualTo(beaconId)
-              .jsonPath("$.hits.hits[0]._source.beaconOwner.ownerEmail")
-              .isEqualTo(ownerEmailAfterUpdate);
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(beaconId)
+        .jsonPath("$.hits.hits[0]._source.beaconOwner.ownerEmail")
+        .isEqualTo(ownerEmailAfterUpdate);
     }
 
     @Test
     public void whenABeaconIsDeleted_ThenTheChangesAreReflectedWhenSearching()
-            throws Exception {
+      throws Exception {
       String accountHolderId = seedAccountHolder();
       String beaconId = seedRegistration(
-              RegistrationUseCase.SINGLE_BEACON,
-              accountHolderId
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId
       );
       deleteRegistration(beaconId, accountHolderId);
 
       String beaconStatus = "DELETED";
 
       String searchQuery =
-              "{\"query\": {\"match\": {\"beaconStatus\":\"" + beaconStatus + "\"}}}";
+        "{\"query\": {\"match\": {\"beaconStatus\":\"" + beaconStatus + "\"}}}";
       String fixtureHexId = "1D0EA08C52FFBFF";
 
       queryOpenSearch(searchQuery)
-              .jsonPath("$.hits.hits[0]._id")
-              .isEqualTo(beaconId)
-              .jsonPath("$.hits.hits[0]._source.beaconStatus")
-              .isEqualTo(beaconStatus)
-              .jsonPath("$.hits.hits[0]._source.hexId")
-              .isEqualTo(fixtureHexId);
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(beaconId)
+        .jsonPath("$.hits.hits[0]._source.beaconStatus")
+        .isEqualTo(beaconStatus)
+        .jsonPath("$.hits.hits[0]._source.hexId")
+        .isEqualTo(fixtureHexId);
     }
 
     @Test
     public void whenALegacyBeaconIsClaimed_ThenTheChangesAreReflectedWhenSearching()
-            throws Exception {
+      throws Exception {
       String accountHolderId = seedAccountHolder();
 
       String legacyBeaconId = seedLegacyBeacon(
-              fixture ->
-                      fixture
-                              .replace("ownerbeacon@beacons.com", "testy@mctestface.com")
-                              .replace("9D0E1D1B8C00001", "1D0EA08C52FFBFF")
+        fixture ->
+          fixture
+            .replace("ownerbeacon@beacons.com", "testy@mctestface.com")
+            .replace("9D0E1D1B8C00001", "1D0EA08C52FFBFF")
       );
       seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId);
 
       String beaconStatus = "CLAIMED";
       String searchQuery =
-              "{\"query\": {\"match\": {\"beaconStatus\":\"" + beaconStatus + "\"}}}";
+        "{\"query\": {\"match\": {\"beaconStatus\":\"" + beaconStatus + "\"}}}";
 
       queryOpenSearch(searchQuery)
-              .jsonPath("$.hits.hits[0]._id")
-              .isEqualTo(legacyBeaconId)
-              .jsonPath("$.hits.hits[0]._source.beaconStatus")
-              .isEqualTo(beaconStatus);
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(legacyBeaconId)
+        .jsonPath("$.hits.hits[0]._source.beaconStatus")
+        .isEqualTo(beaconStatus);
     }
   }
-
 
   @Nested
   class GivenABeacon {
@@ -124,7 +125,9 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       );
 
       String vesselMmsiSearchQuery =
-        "{\"query\": {\"match\": {\"vesselMmsiNumbers\":\"" + vesselMmsiNumber + "\"}}}";
+        "{\"query\": {\"match\": {\"vesselMmsiNumbers\":\"" +
+        vesselMmsiNumber +
+        "\"}}}";
 
       queryOpenSearch(vesselMmsiSearchQuery)
         .jsonPath("$.hits.total.value")
@@ -142,7 +145,9 @@ public class SearchIntegrationTest extends WebIntegrationTest {
         .isEqualTo(beaconId);
 
       String vesselCallsignSearchQuery =
-        "{\"query\": {\"match\": {\"vesselCallsigns\":\"" + vesselCallsign + "\"}}}";
+        "{\"query\": {\"match\": {\"vesselCallsigns\":\"" +
+        vesselCallsign +
+        "\"}}}";
 
       queryOpenSearch(vesselCallsignSearchQuery)
         .jsonPath("$.hits.total.value")
@@ -217,7 +222,9 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       reindexSearch();
 
       String vesselMmsiSearchQuery =
-        "{\"query\": {\"match\": {\"vesselMmsiNumbers\":\"" + vesselMmsiNumber + "\"}}}";
+        "{\"query\": {\"match\": {\"vesselMmsiNumbers\":\"" +
+        vesselMmsiNumber +
+        "\"}}}";
 
       queryOpenSearch(vesselMmsiSearchQuery)
         .jsonPath("$.hits.total.value")
@@ -235,7 +242,9 @@ public class SearchIntegrationTest extends WebIntegrationTest {
         .isEqualTo(legacyBeaconId);
 
       String vesselCallsignSearchQuery =
-        "{\"query\": {\"match\": {\"vesselCallsigns\":\"" + vesselCallsign + "\"}}}";
+        "{\"query\": {\"match\": {\"vesselCallsigns\":\"" +
+        vesselCallsign +
+        "\"}}}";
 
       queryOpenSearch(vesselCallsignSearchQuery)
         .jsonPath("$.hits.total.value")
