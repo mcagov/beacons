@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.search.documents;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 import java.util.Collections;
@@ -30,6 +31,18 @@ public class BeaconSearchDocumentUnitTest {
     );
 
     assert (doc.getMmsiNumbers()).isEmpty();
+  }
+
+  @Test
+  public void whenANullValueIsGivenForBeaconUses_thenPreventInstantiation() {
+    AccountHolder accountHolder = BeaconMocker.getAccountHolder();
+    Beacon beacon = BeaconMocker.getBeacon(accountHolder.getId());
+    BeaconOwner beaconOwner = BeaconMocker.getBeaconOwner(beacon.getId());
+
+    assertThrows(
+      NullPointerException.class,
+      () -> new BeaconSearchDocument(beacon, beaconOwner, null)
+    );
   }
 
   @Test

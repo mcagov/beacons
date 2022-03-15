@@ -13,6 +13,8 @@ import lombok.Setter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.NonNullFields;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
@@ -86,8 +88,9 @@ public class BeaconSearchDocument {
   public BeaconSearchDocument(
     Beacon beacon,
     BeaconOwner beaconOwner,
-    List<BeaconUse> beaconUses
+    @NonNull List<BeaconUse> beaconUses
   ) {
+    Objects.requireNonNull(beaconUses);
     this.id = Objects.requireNonNull(beacon.getId()).unwrap();
     this.beaconStatus = beacon.getBeaconStatus().toString();
     this.createdDate = beacon.getCreatedDate();
@@ -109,6 +112,7 @@ public class BeaconSearchDocument {
   }
 
   public BeaconSearchDocument(LegacyBeacon legacyBeacon) {
+    Objects.requireNonNull(legacyBeacon.getData().getUses());
     this.id = Objects.requireNonNull(legacyBeacon.getId()).unwrap();
     this.isLegacy = true;
     this.beaconStatus = legacyBeacon.getBeaconStatus();
