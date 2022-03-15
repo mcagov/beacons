@@ -1,9 +1,16 @@
 import { Chip } from "@mui/material";
-import { Podcasts } from "@mui/icons-material";
+import {
+  AirplanemodeActive,
+  Anchor,
+  Landscape,
+  Podcasts,
+  SvgIconComponent,
+} from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { ResultCard } from "@appbaseio/reactivesearch";
 import React from "react";
 import { BeaconStatus } from "../../entities/BeaconStatus";
+import { UseEnvironment } from "../../entities/UseEnvironment";
 
 export const SearchResult = ({ item }: { item: any }): JSX.Element => {
   return (
@@ -25,6 +32,13 @@ export const SearchResult = ({ item }: { item: any }): JSX.Element => {
           to={(item.isLegacy ? "/legacy-beacons/" : "/beacons/") + item.id}
           clickable
         />
+        {exists(item.beaconUses) && (
+          <Environments
+            environments={item.beaconUses.map(
+              (use: { environment: any }) => use.environment
+            )}
+          />
+        )}
         <ResultCard.Description>
           <table style={{ textAlign: "left" }}>
             <tbody>
@@ -73,4 +87,37 @@ function exists<T>(field: Array<T> | unknown): boolean {
 
 function StatusBar({ status }: { status: BeaconStatus }): JSX.Element {
   return <Chip label={status} size={"small"} variant="outlined" />;
+}
+
+function Environments({
+  environments,
+}: {
+  environments: UseEnvironment[];
+}): JSX.Element {
+  const icons: Record<UseEnvironment, SvgIconComponent> = {
+    AVIATION: AirplanemodeActive,
+    MARITIME: Anchor,
+    LAND: Landscape,
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+      }}
+    >
+      {environments.map((environment) => {
+        return (
+          <Chip
+            icon={React.createElement(icons[environment])}
+            label={environment}
+            variant="outlined"
+            size="small"
+          />
+        );
+      })}
+    </div>
+  );
 }
