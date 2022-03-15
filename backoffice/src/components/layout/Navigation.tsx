@@ -33,6 +33,15 @@ export const Navigation: FunctionComponent = (): JSX.Element => {
             Beacon records
           </Button>
           <Box ml="auto">
+            <Button
+              color="inherit"
+              variant="outlined"
+              component="a"
+              href={`mailto:${process.env.REACT_APP_FEEDBACK_EMAIL_ADDRESSES}`}
+              target="_blank"
+            >
+              Submit feedback
+            </Button>
             <UserMenu />
           </Box>
         </Toolbar>

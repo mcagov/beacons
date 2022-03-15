@@ -21,6 +21,9 @@ on:
         required: true
       aws_secret_access_key:
         required: true
+      feedback_email_addresses:
+        description: The email address(es) to which feedback should be sent.  E.g. "a@b.com" or "a@b.com,c@d.com".
+        required: true
 
 defaults:
   run:
