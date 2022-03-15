@@ -70,5 +70,5 @@ function exists<T>(field: Array<T> | unknown): boolean {
 }
 
 function StatusBar({ status }: { status: BeaconStatus }): JSX.Element {
-  return <Chip label={status} size={"small"} />;
+  return <Chip label={status} size={"small"} variant="outlined" />;
 }
