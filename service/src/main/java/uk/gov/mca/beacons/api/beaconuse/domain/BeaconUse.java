@@ -194,6 +194,8 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   /**
    * Registration mark generally found on the tail of an aircraft.
    * e.g."N59LW"
+   *
+   * Also known as "Aircraft mark", "Tail number" and "Aircraft registration number".
    */
   @Setter
   private String registrationMark;
@@ -201,6 +203,8 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   /**
    * 24 bit address of an aircraft stored in Hexadecimal: https://en.wikipedia.org/wiki/Aviation_transponder_interrogation_modes#ICAO_24-bit_address
    * e.g. AC82EC
+   *
+   * Also known as "24-bit address"
    */
   @Setter
   private String hexAddress;
