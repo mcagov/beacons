@@ -181,6 +181,44 @@ public class SearchIntegrationTest extends WebIntegrationTest {
         .jsonPath("$.hits.hits[0]._id")
         .isEqualTo(beaconId);
     }
+
+    @Test
+    public void whenTheBeaconHasAnAviationUse_findItUsingRegistrationMarkAndHexAddress()
+      throws Exception {
+      String aircraftRegistrationMark = "G-AXDN";
+      String aircraft24bitHexAddress = "ABC123";
+      String accountHolderId = seedAccountHolder();
+      String beaconId = seedRegistration(
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId,
+        fixture ->
+          fixture
+            .replace("R-PLCM", aircraftRegistrationMark)
+            .replace("F0FFFF", aircraft24bitHexAddress)
+      );
+
+      String mmsiSearchQuery =
+        "{\"query\": {\"match\": {\"aircraftRegistrationMarks\":\"" +
+        aircraftRegistrationMark +
+        "\"}}}";
+
+      queryOpenSearch(mmsiSearchQuery)
+        .jsonPath("$.hits.total.value")
+        .isEqualTo(1)
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(beaconId);
+
+      String aircraft24bitHexAddressQuery =
+        "{\"query\": {\"match\": {\"aircraft24bitHexAddresses\":\"" +
+        aircraft24bitHexAddress +
+        "\"}}}";
+
+      queryOpenSearch(aircraft24bitHexAddressQuery)
+        .jsonPath("$.hits.total.value")
+        .isEqualTo(1)
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(beaconId);
+    }
   }
 
   @Nested
@@ -255,23 +293,23 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       );
       reindexSearch();
 
-      String mmsiSearchQuery =
+      String aircraftRegistrationMarkQuery =
         "{\"query\": {\"match\": {\"aircraftRegistrationMarks\":\"" +
         aircraftRegistrationMark +
         "\"}}}";
 
-      queryOpenSearch(mmsiSearchQuery)
+      queryOpenSearch(aircraftRegistrationMarkQuery)
         .jsonPath("$.hits.total.value")
         .isEqualTo(1)
         .jsonPath("$.hits.hits[0]._id")
         .isEqualTo(legacyBeaconId);
 
-      String vesselNameSearchQuery =
+      String aircraft24bitHexAddressQuery =
         "{\"query\": {\"match\": {\"aircraft24bitHexAddresses\":\"" +
         aircraft24bitHexAddress +
         "\"}}}";
 
-      queryOpenSearch(vesselNameSearchQuery)
+      queryOpenSearch(aircraft24bitHexAddressQuery)
         .jsonPath("$.hits.total.value")
         .isEqualTo(1)
         .jsonPath("$.hits.hits[0]._id")

@@ -156,6 +156,18 @@ public class BeaconSearchDocument {
         .map(BeaconUse::getCallSign)
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
+    this.aircraftRegistrationMarks =
+      beaconUses
+        .stream()
+        .map(BeaconUse::getRegistrationMark)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+    this.aircraft24bitHexAddresses =
+      beaconUses
+        .stream()
+        .map(BeaconUse::getHexAddress)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
   }
 
   private void setBeaconRegistrationIdentifiers(LegacyBeacon legacyBeacon) {
