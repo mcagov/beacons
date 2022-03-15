@@ -51,7 +51,7 @@ public class DataSeeder implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
     AccountHolder accountHolder = seedAccountHolder();
     long countBeaconRecords = beaconRepository.count();
     long desiredBeaconRecords = 1000;
@@ -70,8 +70,15 @@ public class DataSeeder implements CommandLineRunner {
         if (faker.random().nextInt(0, 10) == 1) {
           accountHolder = seedAccountHolder();
         }
+        // Because the data is seeded within a single transaction the event that is registered when creating a Beacon
+        // only fires after all the related aggregates have been seeded as well. Once `Registration` has been deprecated
+        // the other aggregates will need to register "Created Events" on the domain object.
         Beacon beacon = seedBeacon(accountHolder.getId());
-        seedMaritimeUse(beacon.getId());
+        if (faker.random().nextBoolean()) {
+          seedMaritimeUse(beacon.getId());
+        } else {
+          seedAviationUse(beacon.getId());
+        }
         seedBeaconOwner(beacon.getId());
         seedEmergencyContact(beacon.getId());
       }
@@ -93,7 +100,7 @@ public class DataSeeder implements CommandLineRunner {
     Beacon beacon = new Beacon();
     beacon.setBeaconStatus(BeaconStatus.NEW);
     beacon.setAccountHolderId(accountHolderId);
-    beacon.setHexId(faker.regexify("1D[A-F1-9]{13}"));
+    beacon.setHexId(faker.regexify("1D[A-F0-9]{13}"));
     beacon.setManufacturer(faker.gameOfThrones().house());
     beacon.setManufacturerSerialNumber(faker.bothify("#?#?#?#?#?#???##"));
     beacon.setModel(faker.gameOfThrones().dragon());
@@ -114,6 +121,22 @@ public class DataSeeder implements CommandLineRunner {
     beaconUse.setFixedVhfRadio(true);
     beaconUse.setFixedVhfRadioValue(faker.numerify("### ####"));
     beaconUse.setVesselName(faker.lordOfTheRings().character());
+    beaconUse.setMoreDetails(faker.hitchhikersGuideToTheGalaxy().marvinQuote());
+
+    return beaconUseRepository.save(beaconUse);
+  }
+
+  BeaconUse seedAviationUse(BeaconId beaconId) {
+    BeaconUse beaconUse = new BeaconUse();
+    beaconUse.setBeaconId(beaconId);
+    beaconUse.setMainUse(true);
+    beaconUse.setEnvironment(Environment.AVIATION);
+    beaconUse.setPurpose(Purpose.COMMERCIAL);
+    beaconUse.setActivity(Activity.CARGO_AIRPLANE);
+    beaconUse.setAircraftManufacturer(faker.aviation().aircraft());
+    beaconUse.setPrincipalAirport(faker.aviation().airport());
+    beaconUse.setRegistrationMark(faker.bothify("??#??", true));
+    beaconUse.setHexAddress(faker.regexify("[A-F0-9]{6}"));
     beaconUse.setMoreDetails(faker.hitchhikersGuideToTheGalaxy().marvinQuote());
 
     return beaconUseRepository.save(beaconUse);
