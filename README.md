@@ -18,6 +18,18 @@ It comprises three applications:
    to allow users in MCA to query and perform operations on beacon registrations. Source code is in
    `service/src/main/backoffice`. The SPA is served by Spring Boot.
 
+## Local development
+
+| **dependency**                                    | **version** |
+| ------------------------------------------------- | ----------- |
+| [java](https://openjdk.java.net/projects/jdk/11/) | 11.x        |
+| [nvm](https://github.com/nvm-sh/nvm)              | 0.38        |
+| [https://www.terraform.io/](terraform)            | 1.0.X       |
+
+```bash
+$ make backoffice-dev       # Start up the Backoffice application and its backing services for development
+```
+
 ## Infrastructure-as-code
 
 The [Terraform](./terraform) directory contains the Terraform code for managing the infrastructure for the Beacons
@@ -49,10 +61,6 @@ deployments to production.
 ## Architectural Decision Records (ADRs)
 
 We use [ADRs](./docs/adr) to document design choices that address functional and non-functional requirements that are architecturally significant to the Beacons Registration project. Please see this [record](docs/adr/0003-2021-02-24-when-to-adr.md) for how and when to document ADRs for the project.
-
-## Installing AWS CLI
-
-Please see the [AWS installation guide](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) and [configuration guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) for configuring the AWS CLI required for Terraform when managing the infrastructure
 
 ## License
 
