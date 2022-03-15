@@ -20,11 +20,66 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconOwner;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconUse;
+import uk.gov.mca.beacons.api.utils.LegacyDataSanitiser;
 
 @Getter
 @Setter
 @Document(indexName = "beacon_search")
 public class BeaconSearchDocument {
+
+  @Id
+  private UUID id;
+
+  @Field(type = FieldType.Text, analyzer = "keyword")
+  private String hexId;
+
+  @Field(type = FieldType.Keyword)
+  private String beaconStatus;
+
+  @Field(type = FieldType.Boolean, index = false)
+  private boolean isLegacy;
+
+  @Field(type = FieldType.Date)
+  private OffsetDateTime createdDate;
+
+  @Field(type = FieldType.Date)
+  private OffsetDateTime lastModifiedDate;
+
+  @Field(type = FieldType.Text, analyzer = "keyword")
+  private String manufacturerSerialNumber;
+
+  @Field(type = FieldType.Text, analyzer = "keyword")
+  private String cospasSarsatNumber;
+
+  @Field(type = FieldType.Text, analyzer = "keyword")
+  private String referenceNumber;
+
+  @Field(type = FieldType.Date)
+  private LocalDate batteryExpiryDate;
+
+  @Field(type = FieldType.Date)
+  private LocalDate lastServicedDate;
+
+  @Field(type = FieldType.Text, analyzer = "keyword")
+  private List<String> mmsiNumbers;
+
+  @Field(type = FieldType.Text)
+  private List<String> vesselNames;
+
+  @Field(type = FieldType.Text, analyzer = "keyword")
+  private List<String> callSigns;
+
+  @Field(type = FieldType.Text, analyzer = "keyword")
+  private List<String> aircraftRegistrationMarks;
+
+  @Field(type = FieldType.Text, analyzer = "keyword")
+  private List<String> aircraft24bitHexAddresses;
+
+  @Field(type = FieldType.Nested)
+  private NestedBeaconOwner beaconOwner;
+
+  @Field(type = FieldType.Nested)
+  private List<NestedBeaconUse> beaconUses;
 
   public BeaconSearchDocument() {}
 
@@ -71,54 +126,6 @@ public class BeaconSearchDocument {
         .collect(Collectors.toList());
     setBeaconRegistrationIdentifiers(legacyBeacon);
   }
-
-  @Id
-  private UUID id;
-
-  @Field(type = FieldType.Text, analyzer = "keyword")
-  private String hexId;
-
-  @Field(type = FieldType.Keyword)
-  private String beaconStatus;
-
-  @Field(type = FieldType.Boolean, index = false)
-  private boolean isLegacy;
-
-  @Field(type = FieldType.Date)
-  private OffsetDateTime createdDate;
-
-  @Field(type = FieldType.Date)
-  private OffsetDateTime lastModifiedDate;
-
-  @Field(type = FieldType.Text, analyzer = "keyword")
-  private String manufacturerSerialNumber;
-
-  @Field(type = FieldType.Text, analyzer = "keyword")
-  private String cospasSarsatNumber;
-
-  @Field(type = FieldType.Text, analyzer = "keyword")
-  private String referenceNumber;
-
-  @Field(type = FieldType.Date)
-  private LocalDate batteryExpiryDate;
-
-  @Field(type = FieldType.Date)
-  private LocalDate lastServicedDate;
-
-  @Field(type = FieldType.Text, analyzer = "keyword")
-  private List<String> mmsiNumbers;
-
-  @Field(type = FieldType.Text)
-  private List<String> vesselNames;
-
-  @Field(type = FieldType.Text, analyzer = "keyword")
-  private List<String> callSigns;
-
-  @Field(type = FieldType.Nested)
-  private NestedBeaconOwner beaconOwner;
-
-  @Field(type = FieldType.Nested)
-  private List<NestedBeaconUse> beaconUses;
 
   /**
    * An identifier is a field that is unique to a single registration or a
@@ -171,6 +178,18 @@ public class BeaconSearchDocument {
       uses
         .stream()
         .map(LegacyUse::getCallSign)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+    this.aircraftRegistrationMarks =
+      uses
+        .stream()
+        .map(LegacyUse::getAircraftRegistrationMark)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+    this.aircraft24bitHexAddresses =
+      uses
+        .stream()
+        .map(LegacyUse::getBit24AddressHex)
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
   }

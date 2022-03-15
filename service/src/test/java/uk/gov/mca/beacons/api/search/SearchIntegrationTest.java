@@ -236,6 +236,47 @@ public class SearchIntegrationTest extends WebIntegrationTest {
         .jsonPath("$.hits.hits[0]._id")
         .isEqualTo(legacyBeaconId);
     }
+
+    @Test
+    public void whenTheLegacyBeaconHasAnAviationUse_findItUsingRegistrationMarkAndHexAddress()
+      throws Exception {
+      String aircraftRegistrationMark = "G-AXDN";
+      String aircraft24bitHexAddress = "ABC123";
+      String legacyBeaconId = seedLegacyBeacon(
+        fixture ->
+          fixture
+            .replace("R-PLCM", aircraftRegistrationMark)
+            .replace("F0FFFF", aircraft24bitHexAddress)
+      );
+      // seed non-matching legacy beacon
+      seedLegacyBeacon(
+        fixture ->
+          fixture.replace("R-PLCM", "A-NOTH").replace("F0FFFF", "000000")
+      );
+      reindexSearch();
+
+      String mmsiSearchQuery =
+        "{\"query\": {\"match\": {\"aircraftRegistrationMarks\":\"" +
+        aircraftRegistrationMark +
+        "\"}}}";
+
+      queryOpenSearch(mmsiSearchQuery)
+        .jsonPath("$.hits.total.value")
+        .isEqualTo(1)
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(legacyBeaconId);
+
+      String vesselNameSearchQuery =
+        "{\"query\": {\"match\": {\"aircraft24bitHexAddresses\":\"" +
+        aircraft24bitHexAddress +
+        "\"}}}";
+
+      queryOpenSearch(vesselNameSearchQuery)
+        .jsonPath("$.hits.total.value")
+        .isEqualTo(1)
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(legacyBeaconId);
+    }
   }
 
   private WebTestClient.BodyContentSpec queryOpenSearch(String query) {
