@@ -55,7 +55,7 @@ public class BeaconSearchDocument {
 
   public BeaconSearchDocument(LegacyBeacon legacyBeacon) {
     this.id = Objects.requireNonNull(legacyBeacon.getId()).unwrap();
-    this.hexId = legacyBeacon.getHexId();
+    this.isLegacy = true;
     this.beaconStatus = legacyBeacon.getBeaconStatus();
     this.createdDate = legacyBeacon.getCreatedDate();
     this.lastModifiedDate = legacyBeacon.getLastModifiedDate();
@@ -69,16 +69,7 @@ public class BeaconSearchDocument {
         .stream()
         .map(NestedBeaconUse::new)
         .collect(Collectors.toList());
-    this.mmsiNumbers =
-      legacyBeacon
-        .getData()
-        .getUses()
-        .stream()
-        .map(LegacyUse::getMmsiNumber)
-        .filter(Objects::nonNull)
-        .map(Number::toString)
-        .collect(Collectors.toList());
-    this.isLegacy = true;
+    setSearchFields(legacyBeacon);
   }
 
   @Id
@@ -134,22 +125,19 @@ public class BeaconSearchDocument {
     BeaconOwner beaconOwner,
     List<BeaconUse> beaconUses
   ) {
-    setHexId(beacon.getHexId());
-
+    this.hexId = beacon.getHexId();
     this.mmsiNumbers =
       beaconUses
         .stream()
         .map(BeaconUse::getMmsiNumbers)
         .flatMap(Collection::stream)
         .collect(Collectors.toList());
-
     this.vesselNames =
       beaconUses
         .stream()
         .map(BeaconUse::getVesselName)
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
-
     this.callSigns =
       beaconUses
         .stream()
@@ -159,6 +147,26 @@ public class BeaconSearchDocument {
   }
 
   private void setSearchFields(LegacyBeacon legacyBeacon) {
-    //
+    this.hexId = legacyBeacon.getHexId();
+    var uses = legacyBeacon.getData().getUses();
+    this.mmsiNumbers =
+      uses
+        .stream()
+        .map(LegacyUse::getMmsiNumber)
+        .filter(Objects::nonNull)
+        .map(Number::toString)
+        .collect(Collectors.toList());
+    this.vesselNames =
+      uses
+        .stream()
+        .map(LegacyUse::getVesselName)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+    this.callSigns =
+      uses
+        .stream()
+        .map(LegacyUse::getCallSign)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
   }
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
@@ -22,15 +23,7 @@ public class SearchIntegrationTest extends WebIntegrationTest {
     String searchQuery =
       "{\"query\": {\"match\": {\"hexId\":\"" + fixtureHexId + "\"}}}";
 
-    webTestClient
-      .post()
-      .uri(OPENSEARCH_CONTAINER.getHttpHostAddress() + "/_search")
-      .body(BodyInserters.fromValue(searchQuery))
-      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-      .exchange()
-      .expectStatus()
-      .isOk()
-      .expectBody()
+    queryOpenSearch(searchQuery)
       .jsonPath("$.hits.hits[0]._id")
       .isEqualTo(beaconId)
       .jsonPath("$.hits.hits[0]._source.hexId")
@@ -53,15 +46,7 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       ownerEmailAfterUpdate +
       "\"}}}}}";
 
-    webTestClient
-      .post()
-      .uri(OPENSEARCH_CONTAINER.getHttpHostAddress() + "/_search")
-      .body(BodyInserters.fromValue(searchQuery))
-      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-      .exchange()
-      .expectStatus()
-      .isOk()
-      .expectBody()
+    queryOpenSearch(searchQuery)
       .jsonPath("$.hits.hits[0]._id")
       .isEqualTo(beaconId)
       .jsonPath("$.hits.hits[0]._source.beaconOwner.ownerEmail")
@@ -84,15 +69,7 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       "{\"query\": {\"match\": {\"beaconStatus\":\"" + beaconStatus + "\"}}}";
     String fixtureHexId = "1D0EA08C52FFBFF";
 
-    webTestClient
-      .post()
-      .uri(OPENSEARCH_CONTAINER.getHttpHostAddress() + "/_search")
-      .body(BodyInserters.fromValue(searchQuery))
-      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-      .exchange()
-      .expectStatus()
-      .isOk()
-      .expectBody()
+    queryOpenSearch(searchQuery)
       .jsonPath("$.hits.hits[0]._id")
       .isEqualTo(beaconId)
       .jsonPath("$.hits.hits[0]._source.beaconStatus")
@@ -118,15 +95,7 @@ public class SearchIntegrationTest extends WebIntegrationTest {
     String searchQuery =
       "{\"query\": {\"match\": {\"beaconStatus\":\"" + beaconStatus + "\"}}}";
 
-    webTestClient
-      .post()
-      .uri(OPENSEARCH_CONTAINER.getHttpHostAddress() + "/_search")
-      .body(BodyInserters.fromValue(searchQuery))
-      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-      .exchange()
-      .expectStatus()
-      .isOk()
-      .expectBody()
+    queryOpenSearch(searchQuery)
       .jsonPath("$.hits.hits[0]._id")
       .isEqualTo(legacyBeaconId)
       .jsonPath("$.hits.hits[0]._source.beaconStatus")
@@ -157,19 +126,127 @@ public class SearchIntegrationTest extends WebIntegrationTest {
         mmsi +
         "\"}}}}}";
 
-      webTestClient
-        .post()
-        .uri(OPENSEARCH_CONTAINER.getHttpHostAddress() + "/_search")
-        .contentType(MediaType.APPLICATION_JSON)
-        .bodyValue(searchQuery)
-        .exchange()
-        .expectStatus()
-        .isOk()
-        .expectBody()
+      queryOpenSearch(searchQuery)
         .jsonPath("$.hits.hits[0]._id")
         .isEqualTo(beaconId)
         .jsonPath("$.hits.hits[0]._source.beaconUses[0].mmsi")
         .isEqualTo(mmsi);
     }
+  }
+
+  @Nested
+  class BeaconSearchParameters {
+
+    @Test
+    public void whenTheBeaconHasAnAssociatedMaritimeUse_searchForBeaconUsingMmsiVesselNameCallSign()
+      throws Exception {
+      String mmsiNumber = "123456789";
+      String vesselName = "My Vessel";
+      String callSign = "GE123";
+      String accountHolderId = seedAccountHolder();
+      String beaconId = seedRegistration(
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId,
+        fixture ->
+          fixture
+            .replace("this is my MMSI number", mmsiNumber)
+            .replace("HMS Victory", vesselName)
+            .replace("Fish and Ships", callSign)
+      );
+
+      String mmsiSearchQuery =
+        "{\"query\": {\"match\": {\"mmsiNumbers\":\"" + mmsiNumber + "\"}}}";
+
+      queryOpenSearch(mmsiSearchQuery)
+        .jsonPath("$.hits.total.value")
+        .isEqualTo(1)
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(beaconId);
+
+      String vesselNameSearchQuery =
+        "{\"query\": {\"match\": {\"vesselNames\":\"" + vesselName + "\"}}}";
+
+      queryOpenSearch(vesselNameSearchQuery)
+        .jsonPath("$.hits.total.value")
+        .isEqualTo(1)
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(beaconId);
+
+      String callSignSearchQuery =
+        "{\"query\": {\"match\": {\"callSigns\":\"" + callSign + "\"}}}";
+
+      queryOpenSearch(callSignSearchQuery)
+        .jsonPath("$.hits.total.value")
+        .isEqualTo(1)
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(beaconId);
+    }
+  }
+
+  @Nested
+  class LegacyBeaconSearchParameters {
+
+    @Test
+    public void whenTheLegacyBeaconHasAnAssociatedMaritimeUse_searchForLegacyBeaconUsingMmsiVesselNameCallSign()
+      throws Exception {
+      String mmsiNumber = "123456789";
+      String vesselName = "My Vessel";
+      String callSign = "GE123";
+      String legacyBeaconId = seedLegacyBeacon(
+        fixture ->
+          fixture
+            .replace("235007399", mmsiNumber)
+            .replace("KAYCEE", vesselName)
+            .replace("VQAS7", callSign)
+      );
+      // seed non-matching legacy beacon
+      seedLegacyBeacon(
+        fixture ->
+          fixture
+            .replace("235007399", "222222222")
+            .replace("KAYCEE", "Doesn't match")
+            .replace("VQAS7", "DNMTC")
+      );
+      reindexSearch();
+
+      String mmsiSearchQuery =
+        "{\"query\": {\"match\": {\"mmsiNumbers\":\"" + mmsiNumber + "\"}}}";
+
+      queryOpenSearch(mmsiSearchQuery)
+        .jsonPath("$.hits.total.value")
+        .isEqualTo(1)
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(legacyBeaconId);
+
+      String vesselNameSearchQuery =
+        "{\"query\": {\"match\": {\"vesselNames\":\"" + vesselName + "\"}}}";
+
+      queryOpenSearch(vesselNameSearchQuery)
+        .jsonPath("$.hits.total.value")
+        .isEqualTo(1)
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(legacyBeaconId);
+
+      String callSignSearchQuery =
+        "{\"query\": {\"match\": {\"callSigns\":\"" + callSign + "\"}}}";
+
+      queryOpenSearch(callSignSearchQuery)
+        .jsonPath("$.hits.total.value")
+        .isEqualTo(1)
+        .jsonPath("$.hits.hits[0]._id")
+        .isEqualTo(legacyBeaconId);
+    }
+  }
+
+  private WebTestClient.BodyContentSpec queryOpenSearch(String query) {
+    return webTestClient
+      .post()
+      .uri(OPENSEARCH_CONTAINER.getHttpHostAddress() + "/_search")
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(query)
+      .exchange()
+      .expectStatus()
+      .isOk()
+      .expectBody();
   }
 }

@@ -267,4 +267,9 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
       TimeUnit.SECONDS.sleep(1);
     }
   }
+
+  protected void reindexSearch() throws Exception {
+    String location = triggerReindexSearchJob();
+    pollJobStatusUntilFinished(location);
+  }
 }
