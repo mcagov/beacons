@@ -62,13 +62,13 @@ export const SearchResult = ({ item }: { item: any }): JSX.Element => {
               )}
               {exists(item.aircraftRegistrationMarks) && (
                 <tr>
-                  <th>Aircraft registration mark(s):</th>
+                  <th>Tail number(s):</th>
                   <td>{item.aircraftRegistrationMarks}</td>
                 </tr>
               )}
               {exists(item.aircraft24bitHexAddresses) && (
                 <tr>
-                  <th>Aircraft 24-bit hex address(es):</th>
+                  <th>24-bit address(es):</th>
                   <td>{item.aircraft24bitHexAddresses}</td>
                 </tr>
               )}
