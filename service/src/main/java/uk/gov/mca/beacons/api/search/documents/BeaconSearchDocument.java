@@ -14,7 +14,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.NonNullFields;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
@@ -22,7 +21,6 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconOwner;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconUse;
-import uk.gov.mca.beacons.api.utils.LegacyDataSanitiser;
 
 @Getter
 @Setter
@@ -63,13 +61,13 @@ public class BeaconSearchDocument {
   private LocalDate lastServicedDate;
 
   @Field(type = FieldType.Text, analyzer = "keyword")
-  private List<String> mmsiNumbers;
+  private List<String> vesselMmsiNumbers;
 
   @Field(type = FieldType.Text)
   private List<String> vesselNames;
 
   @Field(type = FieldType.Text, analyzer = "keyword")
-  private List<String> callSigns;
+  private List<String> vesselCallsigns;
 
   @Field(type = FieldType.Text, analyzer = "keyword")
   private List<String> aircraftRegistrationMarks;
@@ -142,7 +140,7 @@ public class BeaconSearchDocument {
     List<BeaconUse> beaconUses
   ) {
     this.hexId = beacon.getHexId();
-    this.mmsiNumbers =
+    this.vesselMmsiNumbers =
       beaconUses
         .stream()
         .map(BeaconUse::getMmsiNumbers)
@@ -154,7 +152,7 @@ public class BeaconSearchDocument {
         .map(BeaconUse::getVesselName)
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
-    this.callSigns =
+    this.vesselCallsigns =
       beaconUses
         .stream()
         .map(BeaconUse::getCallSign)
@@ -177,7 +175,7 @@ public class BeaconSearchDocument {
   private void setBeaconRegistrationIdentifiers(LegacyBeacon legacyBeacon) {
     this.hexId = legacyBeacon.getHexId();
     var uses = legacyBeacon.getData().getUses();
-    this.mmsiNumbers =
+    this.vesselMmsiNumbers =
       uses
         .stream()
         .map(LegacyUse::getMmsiNumber)
@@ -190,7 +188,7 @@ public class BeaconSearchDocument {
         .map(LegacyUse::getVesselName)
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
-    this.callSigns =
+    this.vesselCallsigns =
       uses
         .stream()
         .map(LegacyUse::getCallSign)

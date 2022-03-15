@@ -2,7 +2,6 @@ package uk.gov.mca.beacons.api.search.documents;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
@@ -30,19 +29,7 @@ public class BeaconSearchDocumentUnitTest {
       Collections.emptyList()
     );
 
-    assert (doc.getMmsiNumbers()).isEmpty();
-  }
-
-  @Test
-  public void whenANullValueIsGivenForBeaconUses_thenPreventInstantiation() {
-    AccountHolder accountHolder = BeaconMocker.getAccountHolder();
-    Beacon beacon = BeaconMocker.getBeacon(accountHolder.getId());
-    BeaconOwner beaconOwner = BeaconMocker.getBeaconOwner(beacon.getId());
-
-    assertThrows(
-      NullPointerException.class,
-      () -> new BeaconSearchDocument(beacon, beaconOwner, null)
-    );
+    assert (doc.getVesselMmsiNumbers()).isEmpty();
   }
 
   @Test
@@ -63,7 +50,7 @@ public class BeaconSearchDocumentUnitTest {
       uses
     );
 
-    assert (doc.getMmsiNumbers()).isEmpty();
+    assert (doc.getVesselMmsiNumbers()).isEmpty();
   }
 
   @Test
@@ -85,7 +72,7 @@ public class BeaconSearchDocumentUnitTest {
       uses
     );
 
-    assert (doc.getMmsiNumbers().get(0)).equals(mmsiNumber);
+    assert (doc.getVesselMmsiNumbers().get(0)).equals(mmsiNumber);
   }
 
   @Nested
@@ -106,9 +93,9 @@ public class BeaconSearchDocumentUnitTest {
         List.of(maritimeUse)
       );
 
-      assertThat(doc.getMmsiNumbers(), contains(mmsiNumber));
+      assertThat(doc.getVesselMmsiNumbers(), contains(mmsiNumber));
       assertThat(doc.getVesselNames(), contains(maritimeUse.getVesselName()));
-      assertThat(doc.getCallSigns(), contains(maritimeUse.getCallSign()));
+      assertThat(doc.getVesselCallsigns(), contains(maritimeUse.getCallSign()));
     }
   }
 }
