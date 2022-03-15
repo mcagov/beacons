@@ -75,14 +75,14 @@ export function AdvancedSearchView(): JSX.Element {
           >
             <DataSearch
               componentId="searchbox"
-              dataField={["hexId", "mmsiNumbers"]}
+              dataField={["hexId", "mmsiNumbers", "vesselNames", "callSigns"]}
               placeholder="Search for beacons"
             />
             <ReactiveList
               componentId="results"
               pagination={true}
               react={{
-                and: ["searchbox", "mmsiSearchBox"],
+                and: ["searchbox"],
               }}
               dataField="hexId"
               render={({ data, error }) => (
@@ -106,6 +106,14 @@ export function AdvancedSearchView(): JSX.Element {
                             <tr>
                               <th>MMSI number(s):</th>
                               <td>{item.mmsiNumbers}</td>
+                            </tr>
+                            <tr>
+                              <th>Vessel name(s):</th>
+                              <td>{item.vesselNames}</td>
+                            </tr>
+                            <tr>
+                              <th>Callsign(s):</th>
+                              <td>{item.callSigns}</td>
                             </tr>
                           </tbody>
                         </table>

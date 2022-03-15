@@ -44,7 +44,7 @@ public class BeaconSearchDocument {
     if (beaconOwner != null) {
       this.beaconOwner = new NestedBeaconOwner(beaconOwner);
     }
-    setSearchFields(beacon, beaconOwner, beaconUses);
+    setBeaconRegistrationIdentifiers(beacon, beaconOwner, beaconUses);
     this.beaconUses =
       beaconUses
         .stream()
@@ -69,7 +69,7 @@ public class BeaconSearchDocument {
         .stream()
         .map(NestedBeaconUse::new)
         .collect(Collectors.toList());
-    setSearchFields(legacyBeacon);
+    setBeaconRegistrationIdentifiers(legacyBeacon);
   }
 
   @Id
@@ -120,7 +120,12 @@ public class BeaconSearchDocument {
   @Field(type = FieldType.Nested)
   private List<NestedBeaconUse> beaconUses;
 
-  private void setSearchFields(
+  /**
+   * An identifier is a field that is unique to a single registration or a
+   * small set of registrations and can be used by SAR to find a Beacon
+   * registration using common search patterns.
+   */
+  private void setBeaconRegistrationIdentifiers(
     Beacon beacon,
     BeaconOwner beaconOwner,
     List<BeaconUse> beaconUses
@@ -146,7 +151,7 @@ public class BeaconSearchDocument {
         .collect(Collectors.toList());
   }
 
-  private void setSearchFields(LegacyBeacon legacyBeacon) {
+  private void setBeaconRegistrationIdentifiers(LegacyBeacon legacyBeacon) {
     this.hexId = legacyBeacon.getHexId();
     var uses = legacyBeacon.getData().getUses();
     this.mmsiNumbers =
