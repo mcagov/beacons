@@ -52,12 +52,21 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   @Setter
   private String otherActivity;
 
+  /**
+   * VHF CallSign - https://en.wikipedia.org/wiki/Maritime_call_sign
+   */
   @Setter
   private String callSign;
 
+  /**
+   * https://en.wikipedia.org/wiki/Marine_VHF_radio
+   */
   @Setter
   private Boolean vhfRadio;
 
+  /**
+   * See above
+   */
   @Setter
   private Boolean fixedVhfRadio;
 
@@ -99,36 +108,69 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   @Setter
   private String otherCommunicationValue;
 
+  /**
+   * Maximum number of people on the vessel/aircraft
+   */
   @Setter
   private Integer maxCapacity;
 
   @Setter
   private String vesselName;
 
+  /**
+   * The letter number of the homeport (fishing vessel) https://en.wikipedia.org/wiki/https://en.wikipedia.org/wiki/Port_letter_and_numberPort_letter_and_number
+   */
   @Setter
   private String portLetterNumber;
 
+  /**
+   * https://en.wikipedia.org/wiki/Home_port
+   */
   @Setter
   private String homeport;
 
+  /**
+   * Geographical location that the vessel/aircraft usually operates in. (e.g. "North Sea")
+   */
   @Setter
   private String areaOfOperation;
 
+  /**
+   * Location that the beacon is located within the vessel.
+   * e.g. "Bridge"
+   */
   @Setter
   private String beaconLocation;
 
+  /**
+   * International Maritime Organisation Number: https://en.wikipedia.org/wiki/IMO_number
+   * Uniquely identifies a vessel that has been assigned an IMO number.
+   */
   @Setter
   private String imoNumber;
 
+  /**
+   * Small Ship Registration Number: https://web.archive.org/web/20220312100939/https://www.ukshipregister.co.uk/
+   */
   @Setter
   private String ssrNumber;
 
+  /**
+   * Registry of shipping and seamen number: https://web.archive.org/web/20210416112036/https://www.ukshipregister.co.uk/registration/fishing/
+   */
   @Setter
   private String rssNumber;
 
+  /**
+   * https://en.wikipedia.org/wiki/Official_number
+   */
   @Setter
   private String officialNumber;
 
+  /**
+   * A description of the location of the oil rig/drilling platform.
+   * e.g. Schiehallion Area
+   */
   @Setter
   private String rigPlatformLocation;
 
@@ -136,6 +178,10 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   @NotNull
   private Boolean mainUse;
 
+  /**
+   * Aircraft manufacturer
+   * e.g. Boeing.
+   */
   @Setter
   private String aircraftManufacturer;
 
@@ -145,24 +191,47 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   @Setter
   private String secondaryAirport;
 
+  /**
+   * Registration mark generally found on the tail of an aircraft.
+   * e.g."N59LW"
+   */
   @Setter
   private String registrationMark;
 
+  /**
+   * 24 bit address of an aircraft stored in Hexadecimal: https://en.wikipedia.org/wiki/Aviation_transponder_interrogation_modes#ICAO_24-bit_address
+   * e.g. AC82EC
+   */
   @Setter
   private String hexAddress;
 
+  /**
+   * Manufacturer serial number or core number of an aircraft.
+   */
   @Setter
   private String cnOrMsnNumber;
 
+  /**
+   * Flag noting whether the beacon is a USB dongle in the aircraft
+   */
   @Setter
   private Boolean dongle;
 
+  /**
+   * Position in the aircraft that the beacon is mounted.
+   */
   @Setter
   private String beaconPosition;
 
+  /**
+   * Place name or latitude/longitude of where the beacon will be used (Land Use)
+   */
   @Setter
   private String workingRemotelyLocation;
 
+  /**
+   * Typical number of people working at the `workingRemotelyLocation`.
+   */
   @Setter
   private String workingRemotelyPeopleCount;
 
@@ -178,6 +247,9 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   @Setter
   private String otherActivityPeopleCount;
 
+  /**
+   * Free text field to capture information that may not have been asked for in the rest of the Beacon registration.
+   */
   @Setter
   @NotNull
   private String moreDetails;
