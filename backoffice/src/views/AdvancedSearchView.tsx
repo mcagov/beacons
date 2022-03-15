@@ -111,27 +111,36 @@ export function AdvancedSearchView(): JSX.Element {
                         <ResultCard.Description>
                           <table style={{ paddingTop: "1rem" }}>
                             <tbody>
-                              <tr>
-                                <th>MMSI number(s):</th>
-                                <td>{item.vesselMmsiNumbers}</td>
-                              </tr>
-                              )
-                              <tr>
-                                <th>Vessel name(s):</th>
-                                <td>{item.vesselNames}</td>
-                              </tr>
-                              <tr>
-                                <th>Callsign(s):</th>
-                                <td>{item.vesselCallsigns}</td>
-                              </tr>
-                              <tr>
-                                <th>Aircraft registration mark(s):</th>
-                                <td>{item.aircraftRegistrationMarks}</td>
-                              </tr>
-                              <tr>
-                                <th>Aircraft 24-bit hex address(es):</th>
-                                <td>{item.aircraft24bitHexAddresses}</td>
-                              </tr>
+                              {item.vesselMmsiNumbers.length > 0 && (
+                                <tr>
+                                  <th>MMSI number(s):</th>
+                                  <td>{item.vesselMmsiNumbers}</td>
+                                </tr>
+                              )}
+                              {item.vesselNames.length > 0 && (
+                                <tr>
+                                  <th>Vessel name(s):</th>
+                                  <td>{item.vesselNames}</td>
+                                </tr>
+                              )}
+                              {item.vesselCallsigns.length > 0 && (
+                                <tr>
+                                  <th>Callsign(s):</th>
+                                  <td>{item.vesselCallsigns}</td>
+                                </tr>
+                              )}
+                              {item.aircraftRegistrationMarks.length > 0 && (
+                                <tr>
+                                  <th>Aircraft registration mark(s):</th>
+                                  <td>{item.aircraftRegistrationMarks}</td>
+                                </tr>
+                              )}
+                              {item.aircraft24bitHexAddresses.length > 0 && (
+                                <tr>
+                                  <th>Aircraft 24-bit hex address(es):</th>
+                                  <td>{item.aircraft24bitHexAddresses}</td>
+                                </tr>
+                              )}
                             </tbody>
                           </table>
                         </ResultCard.Description>
