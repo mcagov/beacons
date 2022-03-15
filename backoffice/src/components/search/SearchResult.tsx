@@ -13,7 +13,9 @@ export const SearchResult = ({ item }: { item: any }): JSX.Element => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          alignContent: "center",
           height: "100%",
+          gap: "0.5rem",
         }}
       >
         <Chip
@@ -24,7 +26,7 @@ export const SearchResult = ({ item }: { item: any }): JSX.Element => {
           clickable
         />
         <ResultCard.Description>
-          <table style={{ paddingTop: "1rem" }}>
+          <table style={{ textAlign: "left" }}>
             <tbody>
               {exists(item.vesselMmsiNumbers) && (
                 <tr>
