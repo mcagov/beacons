@@ -88,29 +88,4 @@ public class JobControllerIntegrationTest extends WebIntegrationTest {
     assertThat(response.getHits().getAt(2).getId(), is(seededRegistrationId_3));
     assertThat(response.getHits().getAt(3).getId(), is(seededRegistrationId_4));
   }
-
-  private void pollJobStatusUntilFinished(String endpoint)
-    throws InterruptedException {
-    int maxRetries = 10;
-
-    for (int i = 0; i < maxRetries; i++) {
-      String status = JsonPath.read(
-        webTestClient
-          .get()
-          .uri(endpoint)
-          .exchange()
-          .returnResult(String.class)
-          .getResponseBody()
-          .blockFirst(),
-        "$.status"
-      );
-
-      assert !status.equals(BatchStatus.FAILED.toString());
-      assert !status.equals(BatchStatus.ABANDONED.toString());
-
-      if (status.equals("COMPLETED")) break;
-
-      TimeUnit.SECONDS.sleep(1);
-    }
-  }
 }

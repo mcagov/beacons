@@ -4,7 +4,9 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import javax.batch.runtime.BatchStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.http.HttpHeaders;
@@ -222,5 +224,47 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
     String accountHolderId
   ) throws Exception {
     return getRegistrationBody(useCase, accountHolderId, fixture -> fixture);
+  }
+
+  protected String triggerReindexSearchJob() {
+    String location = JsonPath.read(
+      webTestClient
+        .post()
+        .uri(Endpoints.Job.value + "/reindexSearch")
+        .exchange()
+        .expectStatus()
+        .isAccepted()
+        .returnResult(String.class)
+        .getResponseBody()
+        .blockFirst(),
+      "$.location"
+    );
+
+    return location;
+  }
+
+  protected void pollJobStatusUntilFinished(String endpoint)
+    throws InterruptedException {
+    int maxRetries = 10;
+
+    for (int i = 0; i < maxRetries; i++) {
+      String status = JsonPath.read(
+        webTestClient
+          .get()
+          .uri(endpoint)
+          .exchange()
+          .returnResult(String.class)
+          .getResponseBody()
+          .blockFirst(),
+        "$.status"
+      );
+
+      assert !status.equals(BatchStatus.FAILED.toString());
+      assert !status.equals(BatchStatus.ABANDONED.toString());
+
+      if (status.equals("COMPLETED")) break;
+
+      TimeUnit.SECONDS.sleep(1);
+    }
   }
 }
