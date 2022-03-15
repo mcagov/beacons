@@ -75,7 +75,14 @@ export function AdvancedSearchView(): JSX.Element {
           >
             <DataSearch
               componentId="searchbox"
-              dataField={["hexId", "mmsiNumbers", "vesselNames", "callSigns"]}
+              dataField={[
+                "hexId",
+                "vesselMmsiNumbers",
+                "vesselNames",
+                "vesselCallsigns",
+                "aircraftRegistrationMarks",
+                "aircraft24bitHexAddresses",
+              ]}
               placeholder="Search for beacons"
             />
             <ReactiveList
@@ -88,38 +95,49 @@ export function AdvancedSearchView(): JSX.Element {
               render={({ data, error }) => (
                 <ReactiveList.ResultCardsWrapper>
                   {error && <Alert severity="error">Error: {error}</Alert>}
-                  {data.map((item: any) => (
-                    <ResultCard key={item._id}>
-                      <Chip
-                        label={item.hexId}
-                        icon={<Podcasts />}
-                        component={RouterLink}
-                        to={
-                          (item.isLegacy ? "/legacy-beacons/" : "/beacons/") +
-                          item.id
-                        }
-                        clickable
-                      />
-                      <ResultCard.Description>
-                        <table style={{ paddingTop: "1rem" }}>
-                          <tbody>
-                            <tr>
-                              <th>MMSI number(s):</th>
-                              <td>{item.mmsiNumbers}</td>
-                            </tr>
-                            <tr>
-                              <th>Vessel name(s):</th>
-                              <td>{item.vesselNames}</td>
-                            </tr>
-                            <tr>
-                              <th>Callsign(s):</th>
-                              <td>{item.callSigns}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </ResultCard.Description>
-                    </ResultCard>
-                  ))}
+                  {data.map((item: any) => {
+                    return (
+                      <ResultCard key={item._id}>
+                        <Chip
+                          label={item.hexId}
+                          icon={<Podcasts />}
+                          component={RouterLink}
+                          to={
+                            (item.isLegacy ? "/legacy-beacons/" : "/beacons/") +
+                            item.id
+                          }
+                          clickable
+                        />
+                        <ResultCard.Description>
+                          <table style={{ paddingTop: "1rem" }}>
+                            <tbody>
+                              <tr>
+                                <th>MMSI number(s):</th>
+                                <td>{item.vesselMmsiNumbers}</td>
+                              </tr>
+                              )
+                              <tr>
+                                <th>Vessel name(s):</th>
+                                <td>{item.vesselNames}</td>
+                              </tr>
+                              <tr>
+                                <th>Callsign(s):</th>
+                                <td>{item.vesselCallsigns}</td>
+                              </tr>
+                              <tr>
+                                <th>Aircraft registration mark(s):</th>
+                                <td>{item.aircraftRegistrationMarks}</td>
+                              </tr>
+                              <tr>
+                                <th>Aircraft 24-bit hex address(es):</th>
+                                <td>{item.aircraft24bitHexAddresses}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </ResultCard.Description>
+                      </ResultCard>
+                    );
+                  })}
                 </ReactiveList.ResultCardsWrapper>
               )}
             />
