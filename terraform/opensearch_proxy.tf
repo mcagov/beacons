@@ -65,7 +65,10 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
         name : "APPLICATION_PASSWORD",
         valueFrom : aws_secretsmanager_secret.opensearch_application_password.arn
       },
-    ]
+    ],
+    healthCheck : {
+      command : [] # Delegate HealthCheck definition to container definition.
+    }
   }])
 }
 

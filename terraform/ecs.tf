@@ -105,7 +105,10 @@ resource "aws_ecs_task_definition" "webapp" {
         name : "JWT_SECRET",
         valueFrom : aws_secretsmanager_secret.webapp_next_auth_jwt_secret.arn
       }
-    ]
+    ],
+    healthCheck : {
+      command : [] # Delegate HealthCheck definition to container definition.
+    }
   }])
 }
 
@@ -213,7 +216,10 @@ resource "aws_ecs_task_definition" "service" {
         name : "OPENSEARCH_PASSWORD",
         valueFrom : aws_secretsmanager_secret.opensearch_master_password.arn
       }
-    ]
+    ],
+    healthCheck : {
+      command : [] # Delegate HealthCheck definition to container definition.
+    }
   }])
 }
 
@@ -282,6 +288,9 @@ resource "aws_ecs_task_definition" "backoffice" {
         "awslogs-region" : var.aws_region
         "awslogs-stream-prefix" : "backoffice"
       }
+    },
+    healthCheck : {
+      command : [] # Delegate HealthCheck definition to container definition.
     }
   }])
 }
