@@ -7,6 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 import React, { FunctionComponent } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserMenu } from "../auth/UserMenu";
+import { FeedbackButton } from "../FeedbackButton";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,15 +34,7 @@ export const Navigation: FunctionComponent = (): JSX.Element => {
             Beacon records
           </Button>
           <Box ml="auto">
-            <Button
-              color="inherit"
-              variant="outlined"
-              component="a"
-              href={`mailto:${process.env.REACT_APP_FEEDBACK_EMAIL_ADDRESSES}`}
-              target="_blank"
-            >
-              Submit feedback
-            </Button>
+            <FeedbackButton variant="outlined" color="inherit" />
             <UserMenu />
           </Box>
         </Toolbar>
