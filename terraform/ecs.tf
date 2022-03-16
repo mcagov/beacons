@@ -107,7 +107,8 @@ resource "aws_ecs_task_definition" "webapp" {
       }
     ],
     healthCheck : {
-      command : [] # Delegate HealthCheck definition to container definition.
+      retries : 6,
+      command : ["CMD-SHELL", "curl -f http://localhost:80/api/health || exit 1"],
     }
   }])
 }
@@ -218,7 +219,9 @@ resource "aws_ecs_task_definition" "service" {
       }
     ],
     healthCheck : {
-      command : [] # Delegate HealthCheck definition to container definition.
+      startPeriod : 30,
+      retries : 6,
+      command : ["CMD-SHELL", "curl -f http://localhost:8080/spring-api/actuator/health || exit 1"],
     }
   }])
 }
@@ -290,7 +293,8 @@ resource "aws_ecs_task_definition" "backoffice" {
       }
     },
     healthCheck : {
-      command : [] # Delegate HealthCheck definition to container definition.
+      retries : 6,
+      command : ["CMD-SHELL", "curl -f http://localhost:80/health || exit 1"],
     }
   }])
 }
