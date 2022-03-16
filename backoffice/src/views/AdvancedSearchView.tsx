@@ -13,6 +13,7 @@ import { searchUrl } from "../utils/urls";
 import { ErrorState } from "../components/dataPanel/PanelErrorState";
 import { LoadingState } from "../components/dataPanel/PanelLoadingState";
 import { SearchResult } from "../components/search/SearchResult";
+import { WhatCanISearchFor } from "../components/search/WhatCanISearchFor";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -81,7 +82,8 @@ export function AdvancedSearchView(): JSX.Element {
                 "aircraftRegistrationMarks",
                 "aircraft24bitHexAddresses",
               ]}
-              placeholder="Search for beacons"
+              placeholder="Search"
+              addonAfter={<WhatCanISearchFor />}
             />
             <ReactiveList
               componentId="results"
