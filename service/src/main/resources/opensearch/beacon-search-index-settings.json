@@ -1,0 +1,23 @@
+{
+  "analysis": {
+    "filter": {
+      "remove_whitespace": {
+        "type": "pattern_replace",
+        "pattern": " ",
+        "replacement": ""
+      }
+    },
+    "analyzer": {
+      "case_insensitive_keyword": {
+        "type": "custom",
+        "tokenizer": "keyword",
+        "filter": ["lowercase"]
+      },
+      "case_and_whitespace_insensitive_keyword": {
+        "type": "custom",
+        "tokenizer": "keyword",
+        "filter": ["lowercase", "remove_whitespace"]
+      }
+    }
+  }
+}

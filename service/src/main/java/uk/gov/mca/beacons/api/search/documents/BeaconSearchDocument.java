@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 import org.springframework.lang.NonNull;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
@@ -25,12 +26,13 @@ import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconUse;
 @Getter
 @Setter
 @Document(indexName = "beacon_search")
+@Setting(settingPath = "/opensearch/beacon-search-index-settings.json")
 public class BeaconSearchDocument {
 
   @Id
   private UUID id;
 
-  @Field(type = FieldType.Text, analyzer = "keyword")
+  @Field(type = FieldType.Text, analyzer = "case_insensitive_keyword")
   private String hexId;
 
   @Field(type = FieldType.Keyword)
@@ -45,13 +47,13 @@ public class BeaconSearchDocument {
   @Field(type = FieldType.Date)
   private OffsetDateTime lastModifiedDate;
 
-  @Field(type = FieldType.Text, analyzer = "keyword")
+  @Field(type = FieldType.Text, analyzer = "case_insensitive_keyword")
   private String manufacturerSerialNumber;
 
-  @Field(type = FieldType.Text, analyzer = "keyword")
+  @Field(type = FieldType.Text, analyzer = "case_insensitive_keyword")
   private String cospasSarsatNumber;
 
-  @Field(type = FieldType.Text, analyzer = "keyword")
+  @Field(type = FieldType.Text, analyzer = "case_insensitive_keyword")
   private String referenceNumber;
 
   @Field(type = FieldType.Date)
@@ -60,19 +62,19 @@ public class BeaconSearchDocument {
   @Field(type = FieldType.Date)
   private LocalDate lastServicedDate;
 
-  @Field(type = FieldType.Text, analyzer = "keyword")
+  @Field(type = FieldType.Text, analyzer = "case_and_whitespace_insensitive_keyword")
   private List<String> vesselMmsiNumbers;
 
   @Field(type = FieldType.Text)
   private List<String> vesselNames;
 
-  @Field(type = FieldType.Text, analyzer = "keyword")
+  @Field(type = FieldType.Text, analyzer = "case_insensitive_keyword")
   private List<String> vesselCallsigns;
 
-  @Field(type = FieldType.Text, analyzer = "keyword")
+  @Field(type = FieldType.Text, analyzer = "case_insensitive_keyword")
   private List<String> aircraftRegistrationMarks;
 
-  @Field(type = FieldType.Text, analyzer = "keyword")
+  @Field(type = FieldType.Text, analyzer = "case_insensitive_keyword")
   private List<String> aircraft24bitHexAddresses;
 
   @Field(type = FieldType.Nested)
