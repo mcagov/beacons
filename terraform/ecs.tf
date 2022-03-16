@@ -108,7 +108,7 @@ resource "aws_ecs_task_definition" "webapp" {
     ],
     healthCheck : {
       retries : 6,
-      command : ["CMD-SHELL", "curl -f http://localhost:80/api/health || exit 1"],
+      command : ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"],
     }
   }])
 }
