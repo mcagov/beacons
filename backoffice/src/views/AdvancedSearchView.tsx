@@ -82,7 +82,6 @@ export function AdvancedSearchView(): JSX.Element {
                 "aircraft24bitHexAddresses",
               ]}
               placeholder="Search for beacons"
-              highlight={true}
             />
             <ReactiveList
               componentId="results"
