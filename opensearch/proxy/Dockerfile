@@ -7,3 +7,5 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
 
 COPY ./*.sh /docker-entrypoint.d
 COPY ./default.conf /etc/nginx/templates/default.conf.template
+
+HEALTHCHECK --interval=30s --timeout=10s --retries=6 CMD curl --fail http://localhost:80/health || exit 1
