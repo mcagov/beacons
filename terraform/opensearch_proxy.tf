@@ -68,7 +68,7 @@ resource "aws_ecs_task_definition" "opensearch_proxy" {
     ],
     healthCheck : {
       retries : 6,
-      command : ["CMD-SHELL", "curl -f http://localhost:80/health || exit 1"],
+      command : ["CMD-SHELL", "curl -f http://localhost:80/health &>/dev/null || exit 1"],
     }
   }])
 }

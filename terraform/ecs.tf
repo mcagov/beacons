@@ -108,7 +108,7 @@ resource "aws_ecs_task_definition" "webapp" {
     ],
     healthCheck : {
       retries : 6,
-      command : ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"],
+      command : ["CMD-SHELL", "curl -f http://localhost:3000/api/health &>/dev/null || exit 1"],
     }
   }])
 }
@@ -221,7 +221,7 @@ resource "aws_ecs_task_definition" "service" {
     healthCheck : {
       startPeriod : 30,
       retries : 6,
-      command : ["CMD-SHELL", "curl -f http://localhost:8080/spring-api/actuator/health || exit 1"],
+      command : ["CMD-SHELL", "curl -f http://localhost:8080/spring-api/actuator/health &>/dev/null || exit 1"],
     }
   }])
 }
@@ -294,7 +294,7 @@ resource "aws_ecs_task_definition" "backoffice" {
     },
     healthCheck : {
       retries : 6,
-      command : ["CMD-SHELL", "curl -f http://localhost:80/health || exit 1"],
+      command : ["CMD-SHELL", "curl -f http://localhost:80/health &>/dev/null || exit 1"],
     }
   }])
 }
