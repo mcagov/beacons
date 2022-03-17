@@ -74,8 +74,8 @@ export function SettingsDrawer() {
             exclusive
             aria-labelledby="settings-search-mode"
           >
-            <ToggleButton value="normal" aria-label="normal search">
-              Normal
+            <ToggleButton value="default" aria-label="default search">
+              Default
             </ToggleButton>
             <ToggleButton value="advanced" aria-label="advanced search">
               Advanced

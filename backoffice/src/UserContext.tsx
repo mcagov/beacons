@@ -4,7 +4,7 @@ type UserSettings = {
   searchMode: SearchMode;
 };
 
-export type SearchMode = "normal" | "advanced";
+export type SearchMode = "default" | "advanced";
 
 type UserSettingsAction = {
   action: "update_searchMode";
@@ -33,7 +33,7 @@ export function UserSettingsProvider({
   children: React.ReactNode;
 }): JSX.Element {
   const [userSettings, dispatch] = React.useReducer(userSettingsReducer, {
-    searchMode: "normal",
+    searchMode: "default",
   });
   return (
     <UserSettingsContext.Provider value={[userSettings, dispatch]}>
