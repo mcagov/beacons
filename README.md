@@ -58,6 +58,8 @@ for the staging environment. [Environment protection](https://docs.github.com/en
 is applied to the `production` environment such that another member of the development team is prompted to approve
 deployments to production.
 
+**Manual scenario testing that must be performed before and after each release is documented in [tests/](./tests).**
+
 ## Architectural Decision Records (ADRs)
 
 We use [ADRs](./docs/adr) to document design choices that address functional and non-functional requirements that are architecturally significant to the Beacons Registration project. Please see this [record](docs/adr/0003-2021-02-24-when-to-adr.md) for how and when to document ADRs for the project.
