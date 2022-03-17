@@ -29,6 +29,17 @@ const theme: Theme = createTheme({
       default: "#eeeeee",
     },
   },
+  typography: {
+    subtitle2: {
+      textTransform: "uppercase",
+      margin: "20px 0 10px",
+      fontWeight: 700,
+      letterSpacing: "0.08rem",
+      fontSize: "0.6875rem",
+      color: "#6F7E8C",
+      lineHeight: 1.5,
+    },
+  },
   components: {
     MuiTextField: {
       defaultProps: {

@@ -4,7 +4,7 @@ type UserSettings = {
   searchMode: SearchMode;
 };
 
-type SearchMode = "normal" | "advanced";
+export type SearchMode = "normal" | "advanced";
 
 type UserSettingsAction = {
   action: "update_searchMode";
