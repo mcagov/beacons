@@ -25,6 +25,7 @@ import { AdvancedSearchView } from "./views/AdvancedSearchView";
 import { ErrorState } from "./components/dataPanel/PanelErrorState";
 import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { useGetAuthState } from "./lib/useGetAuthState";
+import { UserSettingsProvider } from "./UserContext";
 
 interface ResourceParams {
   id: string;
@@ -76,27 +77,29 @@ const App: FunctionComponent = () => {
 
   return (
     <AuthWrapper pca={pca}>
-      <Router basename="/backoffice">
-        <Navigation />
-        <RequireAuth>
-          <Switch>
-            <Route exact path="/">
-              <BeaconRecordsListView beaconsGateway={beaconsGateway} />
-            </Route>
-            <Route path={`/beacons/:id`}>
-              <SingleBeaconRecordViewWithParam />
-            </Route>
-            <Route path={`/legacy-beacons/:id`}>
-              <SingleLegacyBeaconRecordViewWithParam />
-            </Route>
-            <Route path="/advanced-search">
-              <AdvancedSearchView />
-            </Route>
-            <Route>Page not found. Is the address correct?</Route>
-          </Switch>
-        </RequireAuth>
-      </Router>
-      <Footer />
+      <UserSettingsProvider>
+        <Router basename="/backoffice">
+          <Navigation />
+          <RequireAuth>
+            <Switch>
+              <Route exact path="/">
+                <BeaconRecordsListView beaconsGateway={beaconsGateway} />
+              </Route>
+              <Route path={`/beacons/:id`}>
+                <SingleBeaconRecordViewWithParam />
+              </Route>
+              <Route path={`/legacy-beacons/:id`}>
+                <SingleLegacyBeaconRecordViewWithParam />
+              </Route>
+              <Route path="/advanced-search">
+                <AdvancedSearchView />
+              </Route>
+              <Route>Page not found. Is the address correct?</Route>
+            </Switch>
+          </RequireAuth>
+        </Router>
+        <Footer />
+      </UserSettingsProvider>
     </AuthWrapper>
   );
 };
