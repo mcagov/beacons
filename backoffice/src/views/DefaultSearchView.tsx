@@ -50,7 +50,7 @@ const useConnectToOpenSearch = (): ConnectionStatus => {
   return connectionStatus;
 };
 
-export function AdvancedSearchView(): JSX.Element {
+export function DefaultSearchView(): JSX.Element {
   const classes = useStyles();
 
   const connectionStatus = useConnectToOpenSearch();

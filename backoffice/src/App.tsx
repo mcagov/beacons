@@ -21,11 +21,11 @@ import { NotesGateway } from "./gateways/notes/NotesGateway";
 import { BeaconRecordsListView } from "./views/BeaconRecordsListView";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
-import { AdvancedSearchView } from "./views/AdvancedSearchView";
 import { ErrorState } from "./components/dataPanel/PanelErrorState";
 import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { useGetAuthState } from "./lib/useGetAuthState";
 import { UserSettingsProvider } from "./UserContext";
+import { Search } from "./Search";
 
 interface ResourceParams {
   id: string;
@@ -91,8 +91,8 @@ const App: FunctionComponent = () => {
               <Route path={`/legacy-beacons/:id`}>
                 <SingleLegacyBeaconRecordViewWithParam />
               </Route>
-              <Route path="/advanced-search">
-                <AdvancedSearchView />
+              <Route path="/search">
+                <Search beaconsGateway={beaconsGateway} />
               </Route>
               <Route>Page not found. Is the address correct?</Route>
             </Switch>
