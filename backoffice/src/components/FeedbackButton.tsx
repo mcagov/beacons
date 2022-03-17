@@ -4,11 +4,13 @@ import React from "react";
 export function FeedbackButton({
   variant,
   color,
-}: Pick<ButtonProps, "variant" | "color">) {
+  fullWidth = false,
+}: Pick<ButtonProps, "variant" | "color" | "fullWidth">) {
   return (
     <Button
       color={color}
       variant={variant}
+      fullWidth={fullWidth}
       component="a"
       href={`mailto:${process.env.REACT_APP_FEEDBACK_EMAIL_ADDRESSES}`}
       target="_blank"

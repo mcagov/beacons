@@ -7,7 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 import React, { FunctionComponent } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserMenu } from "../auth/UserMenu";
-import { FeedbackButton } from "../FeedbackButton";
+import { SettingsDrawer } from "./SettingsDrawer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,8 +34,8 @@ export const Navigation: FunctionComponent = (): JSX.Element => {
             Beacon records
           </Button>
           <Box ml="auto">
-            <FeedbackButton variant="outlined" color="inherit" />
             <UserMenu />
+            <SettingsDrawer />
           </Box>
         </Toolbar>
       </AppBar>
