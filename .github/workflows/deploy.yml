@@ -20,12 +20,12 @@ on:
           must match the environment input.
         type: string
         required: true
-      image_tag:
-        description: The application version that should be deployed
-        required: true
-        type: string
       trello_list_id:
         description: The Trello list to which CloudWatch alert cards should be added
+        required: true
+        type: string
+      version:
+        description: The version of the artifacts/infrastructure to deploy.
         required: true
         type: string
     secrets:
@@ -94,7 +94,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: main
+          ref: ${{ inputs.version }}
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.0
@@ -109,18 +109,18 @@ jobs:
           TF_VAR_alert_email_address: ${{ secrets.alert_email_address }}
           TF_VAR_db_password: ${{ secrets.db_password }}
           TF_VAR_gov_notify_api_key: ${{ secrets.gov_notify_api_key }}
-          TF_VAR_webapp_image_tag: ${{ inputs.image_tag }}
+          TF_VAR_webapp_image_tag: ${{ inputs.version }}
           TF_VAR_webapp_azure_ad_client_secret: ${{ secrets.webapp_azure_ad_client_secret }}
           TF_VAR_webapp_azure_b2c_client_secret: ${{ secrets.webapp_azure_b2c_client_secret }}
           TF_VAR_webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.webapp_azure_b2c_next_auth_jwt_secret }}
-          TF_VAR_service_image_tag: ${{ inputs.image_tag }}
+          TF_VAR_service_image_tag: ${{ inputs.version }}
           TF_VAR_service_basic_auth_username: ${{ secrets.service_basic_auth_username }}
           TF_VAR_service_basic_auth_password: ${{ secrets.service_basic_auth_password }}
-          TF_VAR_backoffice_image_tag: ${{ inputs.image_tag }}
+          TF_VAR_backoffice_image_tag: ${{ inputs.version }}
           TF_VAR_aws_account_number: ${{ secrets.aws_account_number }}
           TF_VAR_trello_api_key: ${{ secrets.trello_api_key }}
           TF_VAR_trello_token: ${{ secrets.trello_token }}
-          TF_VAR_opensearch_proxy_image_tag: ${{ inputs.image_tag }}
+          TF_VAR_opensearch_proxy_image_tag: ${{ inputs.version }}
           TF_VAR_opensearch_master_user_name: ${{ secrets.opensearch_master_user_name }}
           TF_VAR_opensearch_master_user_password: ${{ secrets.opensearch_master_user_password }}
           TF_VAR_opensearch_proxy_sso_client_id: ${{ secrets.opensearch_proxy_sso_client_id }}

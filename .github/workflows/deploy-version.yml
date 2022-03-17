@@ -1,14 +1,15 @@
 ##
-# Deploy a specified tag to production.  Useful for reverting production to a known good state.
+# Deploy a specified version to production.  Useful for reverting production to a known good state.
 ##
-name: Deploy a tag
+name: Deploy a version of the application
 
 on:
   workflow_dispatch:
     inputs:
-      tag_name:
-        description: "Enter the tag to deploy"
+      version:
+        description: "Enter the version of the application to deploy"
         required: true
+        type: string
 
 jobs:
   deploy_production:
@@ -17,10 +18,7 @@ jobs:
     with:
       environment: production
       terraform_workspace: production
-      webapp_image_tag: ${{ github.event.inputs.tag_name }}
-      service_image_tag: ${{ github.event.inputs.tag_name }}
-      backoffice_image_tag: ${{ github.event.inputs.tag_name }}
-      opensearch_proxy_image_tag: ${{ github.event.inputs.tag_name }}
+      version: ${{ inputs.version }}
       trello_list_id: 6157064b4d7e1b3b1ea839ad
     secrets:
       alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
