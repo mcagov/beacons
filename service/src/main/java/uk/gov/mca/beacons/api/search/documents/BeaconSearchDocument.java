@@ -62,7 +62,10 @@ public class BeaconSearchDocument {
   @Field(type = FieldType.Date)
   private LocalDate lastServicedDate;
 
-  @Field(type = FieldType.Text, analyzer = "case_and_whitespace_insensitive_keyword")
+  @Field(
+    type = FieldType.Text,
+    analyzer = "case_and_whitespace_insensitive_keyword"
+  )
   private List<String> vesselMmsiNumbers;
 
   @Field(type = FieldType.Text)
