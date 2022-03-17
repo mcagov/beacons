@@ -55,6 +55,10 @@ public class LegacyUse implements ValueObject, Serializable {
   private String survivalCraftType;
   private String aircraftDescription;
   private String aircraftRegistrationMark;
+  private String modType;
+  private String modStatus;
+  private String modVariant;
+  private String activationMode;
 
   public String getEnvironment() {
     return getUseType();
