@@ -14,12 +14,16 @@ import reportWebVitals from "./reportWebVitals";
 const theme: Theme = createTheme({
   palette: {
     primary: {
-      main: "#000000",
+      main: "#0b0c0c",
       contrastText: "#fff",
+      light: "#b1b4b6",
+      dark: "#0b0c0c",
     },
     secondary: {
-      main: "#007cb8",
+      main: "#1d70b8",
       contrastText: "#fff",
+      light: "#5694ca",
+      dark: "#003078",
     },
     background: {
       default: "#eeeeee",
@@ -34,6 +38,16 @@ const theme: Theme = createTheme({
     MuiSelect: {
       defaultProps: {
         variant: "standard",
+      },
+    },
+    MuiSwitch: {
+      defaultProps: {
+        color: "secondary",
+      },
+      styleOverrides: {
+        track: {
+          backgroundColor: "white",
+        },
       },
     },
   },
