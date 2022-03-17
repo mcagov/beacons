@@ -42,6 +42,12 @@ export const SearchResult = ({ item }: { item: any }): JSX.Element => {
         <ResultCard.Description>
           <table style={{ textAlign: "left" }}>
             <tbody>
+              {item.cospasSarsatNumber && (
+                <tr>
+                  <th>Cospas-Sarsat number:</th>
+                  <td>{item.cospasSarsatNumber}</td>
+                </tr>
+              )}
               {exists(item.vesselMmsiNumbers) && (
                 <tr>
                   <th>MMSI number(s):</th>

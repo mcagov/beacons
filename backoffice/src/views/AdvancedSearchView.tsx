@@ -76,6 +76,7 @@ export function AdvancedSearchView(): JSX.Element {
               componentId="searchbox"
               dataField={[
                 "hexId",
+                "cospasSarsatNumber",
                 "vesselMmsiNumbers",
                 "vesselNames",
                 "vesselCallsigns",
