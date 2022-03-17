@@ -55,11 +55,12 @@ resource "aws_lb_listener_rule" "service" {
 }
 
 resource "aws_alb_target_group" "backoffice" {
-  name        = "${terraform.workspace}-backoffice-tg"
-  port        = var.backoffice_port
-  protocol    = "HTTP"
-  vpc_id      = aws_vpc.main.id
-  target_type = "ip"
+  name                 = "${terraform.workspace}-backoffice-tg"
+  port                 = var.backoffice_port
+  protocol             = "HTTP"
+  vpc_id               = aws_vpc.main.id
+  target_type          = "ip"
+  deregistration_delay = 60
 
   health_check {
     healthy_threshold   = "6"
@@ -164,11 +165,12 @@ resource "aws_lb_listener_rule" "opensearch_dashboards_proxy" {
 }
 
 resource "aws_alb_target_group" "opensearch_proxy" {
-  name        = "${terraform.workspace}-opensearch-proxy-tg"
-  port        = 80
-  protocol    = "HTTP"
-  vpc_id      = aws_vpc.main.id
-  target_type = "ip"
+  name                 = "${terraform.workspace}-opensearch-proxy-tg"
+  port                 = 80
+  protocol             = "HTTP"
+  vpc_id               = aws_vpc.main.id
+  target_type          = "ip"
+  deregistration_delay = 60
 
   lifecycle {
     create_before_destroy = true
@@ -186,11 +188,12 @@ resource "aws_alb_target_group" "opensearch_proxy" {
 }
 
 resource "aws_alb_target_group" "webapp" {
-  name        = "${terraform.workspace}-webapp-target-group"
-  port        = var.webapp_port
-  protocol    = "HTTP"
-  vpc_id      = aws_vpc.main.id
-  target_type = "ip"
+  name                 = "${terraform.workspace}-webapp-target-group"
+  port                 = var.webapp_port
+  protocol             = "HTTP"
+  vpc_id               = aws_vpc.main.id
+  target_type          = "ip"
+  deregistration_delay = 60
 
   health_check {
     healthy_threshold   = "3"
@@ -208,11 +211,12 @@ resource "aws_alb_target_group" "webapp" {
 }
 
 resource "aws_alb_target_group" "service" {
-  name        = "${terraform.workspace}-service-target-group"
-  port        = var.service_port
-  protocol    = "HTTP"
-  vpc_id      = aws_vpc.main.id
-  target_type = "ip"
+  name                 = "${terraform.workspace}-service-target-group"
+  port                 = var.service_port
+  protocol             = "HTTP"
+  vpc_id               = aws_vpc.main.id
+  target_type          = "ip"
+  deregistration_delay = 60
 
   health_check {
     healthy_threshold   = "6"
