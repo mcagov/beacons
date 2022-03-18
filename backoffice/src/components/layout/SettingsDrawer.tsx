@@ -5,7 +5,7 @@ import {
   SearchMode,
   updateSearchMode,
   useUserSettings,
-} from "../../UserContext";
+} from "../../UserSettings";
 import { Divider, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { ToggleButton, ToggleButtonGroup } from "@mui/lab";

@@ -24,7 +24,7 @@ import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordVi
 import { ErrorState } from "./components/dataPanel/PanelErrorState";
 import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { useGetAuthState } from "./lib/useGetAuthState";
-import { UserSettingsProvider } from "./UserContext";
+import { UserSettingsProvider } from "./UserSettings";
 import { Search } from "./Search";
 
 interface ResourceParams {

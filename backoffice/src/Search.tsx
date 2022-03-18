@@ -1,5 +1,5 @@
 import React from "react";
-import { useUserSettings } from "./UserContext";
+import { useUserSettings } from "./UserSettings";
 import { DefaultSearchView } from "./views/DefaultSearchView";
 import { BeaconRecordsListView as AdvancedSearchView } from "./views/BeaconSearchListView";
 import { BeaconsGateway } from "./gateways/beacons/BeaconsGateway";
