@@ -3,6 +3,7 @@ import { useUserSettings } from "./UserSettings";
 import { DefaultSearchView } from "./views/DefaultSearchView";
 import { BeaconRecordsListView as AdvancedSearchView } from "./views/BeaconSearchListView";
 import { BeaconsGateway } from "./gateways/beacons/BeaconsGateway";
+import { SearchErrorBoundary } from "./components/search/SearchErrorBoundary";
 
 export function Search({
   beaconsGateway,
@@ -13,7 +14,11 @@ export function Search({
 
   switch (searchMode) {
     case "default":
-      return <DefaultSearchView />;
+      return (
+        <SearchErrorBoundary>
+          <DefaultSearchView />
+        </SearchErrorBoundary>
+      );
     case "advanced":
       return <AdvancedSearchView beaconsGateway={beaconsGateway} />;
   }
