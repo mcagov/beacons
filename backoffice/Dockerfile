@@ -1,6 +1,10 @@
 FROM node:16-alpine AS build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
+
+ARG feedback_email_addresses
+ENV REACT_APP_FEEDBACK_EMAIL_ADDRESSES=$feedback_email_addresses
+
 COPY package.json ./
 COPY package-lock.json ./
 RUN npm ci

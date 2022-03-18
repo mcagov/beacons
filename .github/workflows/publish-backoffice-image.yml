@@ -50,4 +50,4 @@ jobs:
           context: backoffice
           push: true
           tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
-          build-args: REACT_APP_FEEDBACK_EMAIL_ADDRESSES=${{ secrets.feedback_email_addresses }}
+          build-args: feedback_email_addresses=${{ secrets.feedback_email_addresses }}
