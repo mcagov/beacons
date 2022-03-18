@@ -93,6 +93,7 @@ export function DefaultSearchView(): JSX.Element {
                 and: ["searchbox"],
               }}
               dataField="hexId"
+              defaultQuery={() => ({ track_total_hits: true })}
               render={({ data, error }) => (
                 <ReactiveList.ResultCardsWrapper>
                   {error && <Alert severity="error">Error: {error}</Alert>}
