@@ -2,9 +2,9 @@ import { Chip } from "@mui/material";
 import {
   AirplanemodeActive,
   Anchor,
+  EmojiPeople,
   Landscape,
   Podcasts,
-  SvgIconComponent,
 } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { ResultCard } from "@appbaseio/reactivesearch";
@@ -98,13 +98,13 @@ function StatusBar({ status }: { status: BeaconStatus }): JSX.Element {
 function Environments({
   environments,
 }: {
-  environments: UseEnvironment[];
-}): JSX.Element {
-  const icons: Record<UseEnvironment, SvgIconComponent> = {
-    AVIATION: AirplanemodeActive,
-    MARITIME: Anchor,
-    LAND: Landscape,
-  };
+  environments: Array<UseEnvironment | unknown>;
+}): JSX.Element | null {
+  if (environments == null) {
+    return null;
+  }
+
+  const environmentsDeduped = Array.from(new Set(environments));
 
   return (
     <div
@@ -114,16 +114,34 @@ function Environments({
         justifyContent: "space-around",
       }}
     >
-      {environments.map((environment) => {
+      {environmentsDeduped.map((environment, index) => {
+        if (typeof environment !== "string") {
+          return null;
+        }
+
         return (
           <Chip
-            icon={React.createElement(icons[environment])}
+            icon={getIcon(environment)}
             label={environment}
             variant="outlined"
             size="small"
+            key={index}
           />
         );
       })}
     </div>
   );
+}
+
+function getIcon(environment: UseEnvironment | unknown): JSX.Element {
+  switch (environment) {
+    case "AVIATION":
+      return <AirplanemodeActive />;
+    case "MARITIME":
+      return <Anchor />;
+    case "LAND":
+      return <Landscape />;
+    default:
+      return <EmojiPeople />;
+  }
 }
