@@ -81,6 +81,20 @@ resource "aws_lb_listener_rule" "backoffice" {
   listener_arn = aws_alb_listener.front_end_ssl.arn
 
   action {
+    type = "authenticate-oidc"
+
+    authenticate_oidc {
+      authorization_endpoint     = "https://login.microsoftonline.com/${var.azure_ad_tenant_id}/oauth2/v2.0/authorize"
+      client_id                  = var.opensearch_proxy_sso_client_id
+      client_secret              = var.opensearch_proxy_sso_client_secret
+      issuer                     = "https://login.microsoftonline.com/${var.azure_ad_tenant_id}/v2.0"
+      token_endpoint             = "https://login.microsoftonline.com/${var.azure_ad_tenant_id}/oauth2/v2.0/token"
+      user_info_endpoint         = "https://graph.microsoft.com/oidc/userinfo"
+      on_unauthenticated_request = "authenticate"
+    }
+  }
+
+  action {
     type             = "forward"
     target_group_arn = aws_alb_target_group.backoffice.arn
   }
