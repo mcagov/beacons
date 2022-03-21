@@ -25,13 +25,14 @@ export type BeaconSearchItem = {
   beaconStatus: BeaconStatus;
   createdDate: DateString;
   lastModifiedDate: DateString;
+  cospasSarsatNumber: string | null;
   referenceNumber: string | null;
   vesselMmsiNumbers: Array<string> | unknown;
   vesselNames: Array<string>;
   vesselCallsigns: Array<string>;
   aircraftRegistrationMarks: Array<string>;
   aircraft24bitHexAddresses: Array<string>;
-  beaconOwner: BeaconOwnerDocument;
+  beaconOwner: BeaconOwnerDocument | null;
   beaconUses: Array<BeaconUseDocument>;
 };
 
@@ -40,15 +41,16 @@ export type BeaconSearchResult = {
   hexId: string | null;
   isLegacy: boolean;
   beaconStatus: BeaconStatus;
-  createdDate: DateString;
-  lastModifiedDate: DateString;
+  cospasSarsatNumber: string | null;
+  createdDate: Date;
+  lastModifiedDate: Date;
   referenceNumber: string | null;
   vesselMmsiNumbers: Array<string>;
   vesselNames: Array<string>;
   vesselCallsigns: Array<string>;
   aircraftRegistrationMarks: Array<string>;
   aircraft24bitHexAddresses: Array<string>;
-  beaconOwner: BeaconOwnerDocument;
+  beaconOwner: BeaconOwnerDocument | null;
   beaconUses: Array<BeaconUseDocument>;
 };
 
@@ -60,8 +62,9 @@ export function parseBeaconSearchItem(
     hexId: item.hexId,
     isLegacy: item.isLegacy,
     beaconStatus: item.beaconStatus,
-    createdDate: item.createdDate,
-    lastModifiedDate: item.lastModifiedDate,
+    cospasSarsatNumber: item.cospasSarsatNumber,
+    createdDate: new Date(item.createdDate),
+    lastModifiedDate: new Date(item.lastModifiedDate),
     referenceNumber: item.referenceNumber,
     vesselNames: processItemArray(item.vesselNames),
     vesselMmsiNumbers: processItemArray(item.vesselMmsiNumbers),
