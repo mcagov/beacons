@@ -18,13 +18,18 @@ export function ResultCard({
   result: BeaconSearchResult;
 }): JSX.Element {
   return (
-    <Card sx={{ width: 300 }}>
+    <Card
+      sx={{
+        display: "grid",
+        gridTemplateRows: "5rem 24rem 3rem",
+      }}
+    >
       <CardHeader
         avatar={<Podcasts />}
         title={result.hexId ?? "N/A"}
         subheader={result.beaconStatus}
       />
-      <CardContent>
+      <CardContent sx={{ overflow: "auto" }}>
         <Environments beaconUses={result.beaconUses} />
         <Uses
           vesselMmsiNumbers={result.vesselMmsiNumbers}
