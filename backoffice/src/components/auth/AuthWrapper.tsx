@@ -1,22 +1,43 @@
 import { IPublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider, useMsal } from "@azure/msal-react";
-import React, { FunctionComponent } from "react";
-import { AuthContext } from "./AuthContext";
+import React, { createContext, FunctionComponent } from "react";
+import { AuthGateway } from "../../gateways/auth/AuthGateway";
+
+export interface IAuthContext {
+  user: {
+    username: string | unknown;
+    displayName: string | unknown;
+  };
+  getAccessToken: () => Promise<string | unknown>;
+  logout: () => void;
+}
+
+export const AuthContext = createContext<IAuthContext>({
+  user: {
+    username: null,
+    displayName: null,
+  },
+  getAccessToken: () => Promise.resolve(null),
+  logout: () => {},
+});
 
 export const AuthWrapper: FunctionComponent<{
   pca: IPublicClientApplication;
-}> = ({ pca, children }) => {
+  authGateway: AuthGateway;
+}> = ({ pca, authGateway, children }) => {
   return (
     <MsalProvider instance={pca}>
-      <MsalShim pca={pca}>{children}</MsalShim>
+      <MsalShim pca={pca} authGateway={authGateway}>
+        {children}
+      </MsalShim>
     </MsalProvider>
   );
 };
 
-const MsalShim: FunctionComponent<{ pca: IPublicClientApplication }> = ({
-  pca,
-  children,
-}) => {
+const MsalShim: FunctionComponent<{
+  pca: IPublicClientApplication;
+  authGateway: AuthGateway;
+}> = ({ pca, authGateway, children }) => {
   /**
    * Wrapper for the MSAL auth context.
    *
@@ -31,9 +52,10 @@ const MsalShim: FunctionComponent<{ pca: IPublicClientApplication }> = ({
     <AuthContext.Provider
       value={{
         user: {
-          username: currentUser?.username || "",
-          displayName: currentUser?.name || "",
+          username: currentUser.username,
+          displayName: currentUser.name,
         },
+        getAccessToken: () => authGateway.getAccessToken(),
         logout: () => pca.logoutRedirect(),
       }}
     >
