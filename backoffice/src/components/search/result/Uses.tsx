@@ -1,6 +1,8 @@
 import React from "react";
 import { BeaconSearchResult } from "../../../entities/BeaconSearch";
 import { Divider, Typography } from "@mui/material";
+import { Field } from "./Field";
+import { Box } from "@mui/system";
 
 export function Uses({
   vesselCallsigns,
@@ -18,15 +20,18 @@ export function Uses({
 >): JSX.Element {
   return (
     <React.Fragment>
-      <Aviation
-        aircraftRegistrationMarks={aircraftRegistrationMarks}
-        aircraft24bitHexAddresses={aircraft24bitHexAddresses}
-      />
-      <Maritime
-        vesselMmsiNumbers={vesselMmsiNumbers}
-        vesselNames={vesselNames}
-        vesselCallsigns={vesselCallsigns}
-      />
+      <Divider sx={{ marginTop: "1rem" }} />
+      <Box sx={{ overflow: "auto" }}>
+        <Aviation
+          aircraftRegistrationMarks={aircraftRegistrationMarks}
+          aircraft24bitHexAddresses={aircraft24bitHexAddresses}
+        />
+        <Maritime
+          vesselMmsiNumbers={vesselMmsiNumbers}
+          vesselNames={vesselNames}
+          vesselCallsigns={vesselCallsigns}
+        />
+      </Box>
     </React.Fragment>
   );
 }
@@ -47,7 +52,6 @@ function Aviation({
 
   return (
     <React.Fragment>
-      <Divider sx={{ marginTop: "1rem" }} />
       <UseField
         field={"Aircraft 24-bit address"}
         values={aircraft24bitHexAddresses}
@@ -56,6 +60,7 @@ function Aviation({
         field={"Aircraft Tail number"}
         values={aircraftRegistrationMarks}
       />
+      <Divider sx={{ marginBottom: "1rem" }} />
     </React.Fragment>
   );
 }
@@ -78,10 +83,9 @@ function Maritime({
 
   return (
     <React.Fragment>
-      <Divider sx={{ marginTop: "1rem" }} />
-      <UseField field={"Vessel Callsign"} values={vesselCallsigns} />
-      <UseField field={"Vessel name"} values={vesselNames} />
-      <UseField field={"Vessel MMSI"} values={vesselMmsiNumbers} />
+      <Field name={"Vessel Callsign"} value={vesselCallsigns} />
+      <Field name={"Vessel name"} value={vesselNames} />
+      <Field name={"Vessel MMSI"} value={vesselMmsiNumbers} />
     </React.Fragment>
   );
 }
