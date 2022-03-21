@@ -12,7 +12,7 @@ describe("UserMenu", () => {
         username: "steve.stevington@mcga.gov.uk",
         displayName: "Steve Stevington",
       },
-      getAccessToken: jest.fn(),
+      accessToken: "mockAccessTokenString",
       logout: jest.fn(),
     };
   });

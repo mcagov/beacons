@@ -1,6 +1,6 @@
 import { IPublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider, useMsal } from "@azure/msal-react";
-import React, { createContext, FunctionComponent } from "react";
+import React, { createContext, FunctionComponent, useEffect } from "react";
 import { AuthGateway } from "../../gateways/auth/AuthGateway";
 
 export interface IAuthContext {
@@ -8,7 +8,7 @@ export interface IAuthContext {
     username: string | unknown;
     displayName: string | unknown;
   };
-  getAccessToken: () => Promise<string | unknown>;
+  accessToken: string | unknown;
   logout: () => void;
 }
 
@@ -17,7 +17,7 @@ export const AuthContext = createContext<IAuthContext>({
     username: null,
     displayName: null,
   },
-  getAccessToken: () => Promise.resolve(null),
+  accessToken: null,
   logout: () => {},
 });
 
@@ -34,19 +34,31 @@ export const AuthWrapper: FunctionComponent<{
   );
 };
 
+/**
+ * Wrapper for the MSAL auth context.
+ *
+ * @remarks
+ * Acts as a shim between MSAL and the Beacons Backoffice application so that high-level components can consume
+ * authenticated user data without depending on a concrete auth provider.
+ *
+ */
 const MsalShim: FunctionComponent<{
   pca: IPublicClientApplication;
   authGateway: AuthGateway;
 }> = ({ pca, authGateway, children }) => {
-  /**
-   * Wrapper for the MSAL auth context.
-   *
-   * @remarks
-   * Acts as a shim between MSAL and the Beacons Backoffice application so that high-level components can consume
-   * authenticated user data without depending on a concrete auth provider.
-   *
-   */
   const currentUser = useMsal().instance.getAllAccounts()[0] || {};
+
+  const [authToken, setAuthToken] = React.useState<string>("");
+
+  useEffect(() => {
+    if (!authToken) {
+      getSpringApiAuthToken();
+    }
+  }, []);
+
+  const getSpringApiAuthToken = async () => {
+    setAuthToken(await authGateway.getAccessToken());
+  };
 
   return (
     <AuthContext.Provider
@@ -55,7 +67,7 @@ const MsalShim: FunctionComponent<{
           username: currentUser.username,
           displayName: currentUser.name,
         },
-        getAccessToken: () => authGateway.getAccessToken(),
+        accessToken: authToken,
         logout: () => pca.logoutRedirect(),
       }}
     >

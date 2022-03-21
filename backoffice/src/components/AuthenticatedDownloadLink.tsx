@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, ReactChildren } from "react";
+import React, { MouseEventHandler } from "react";
 import { AuthContext } from "./auth/AuthWrapper";
 
 export function AuthenticatedDownloadLink({
@@ -8,7 +8,7 @@ export function AuthenticatedDownloadLink({
 }: {
   url: string;
   filename: string;
-  children: ReactChildren;
+  children: React.ReactNode;
 }): JSX.Element {
   const link = React.createRef<HTMLAnchorElement>();
 
@@ -35,12 +35,8 @@ export function AuthenticatedDownloadLink({
   return (
     <>
       <AuthContext.Consumer>
-        {async (auth) => (
-          <a
-            role="button"
-            ref={link}
-            onClick={downloadFile(await auth.getAccessToken())}
-          >
+        {(auth) => (
+          <a role="button" ref={link} onClick={downloadFile(auth.accessToken)}>
             {children}
           </a>
         )}

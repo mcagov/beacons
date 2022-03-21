@@ -6,10 +6,12 @@ import {
   updateSearchMode,
   useUserSettings,
 } from "../../UserSettings";
-import { Divider, IconButton, Typography } from "@mui/material";
+import { Button, Divider, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { ToggleButton, ToggleButtonGroup } from "@mui/lab";
 import { FeedbackButton } from "../FeedbackButton";
+import { AuthenticatedDownloadLink } from "../AuthenticatedDownloadLink";
+import { applicationConfig } from "../../config";
 
 export function SettingsDrawer() {
   const [settings, dispatch] = useUserSettings();
@@ -81,6 +83,22 @@ export function SettingsDrawer() {
               Advanced
             </ToggleButton>
           </ToggleButtonGroup>
+          <Typography
+            gutterBottom={true}
+            component={"p"}
+            variant={"subtitle2"}
+            id="feedback"
+          >
+            Export
+          </Typography>
+          <AuthenticatedDownloadLink
+            url={`${applicationConfig.apiUrl}/export/excel/`}
+            filename={"latest"}
+          >
+            <Button color="inherit" variant="outlined" fullWidth>
+              Export to Excel
+            </Button>
+          </AuthenticatedDownloadLink>
           <Typography
             gutterBottom={true}
             component={"p"}
