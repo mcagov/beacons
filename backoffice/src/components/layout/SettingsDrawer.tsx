@@ -92,8 +92,8 @@ export function SettingsDrawer() {
             Export
           </Typography>
           <AuthenticatedDownloadLink
-            url={`${applicationConfig.apiUrl}/export/excel/`}
-            filename={"latest"}
+            url={`${applicationConfig.apiUrl}/export/excel`}
+            filename={"Beacons_data_export--Official_Sensitive-Personal.csv"}
           >
             <Button color="inherit" variant="outlined" fullWidth>
               Export to Excel
