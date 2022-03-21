@@ -12,8 +12,12 @@ import {
 import { searchUrl } from "../utils/urls";
 import { ErrorState } from "../components/dataPanel/PanelErrorState";
 import { LoadingState } from "../components/dataPanel/PanelLoadingState";
-import { SearchResult } from "../components/search/SearchResult";
 import { WhatCanISearchFor } from "../components/search/WhatCanISearchFor";
+import {
+  BeaconSearchItem,
+  parseBeaconSearchItem,
+} from "../entities/BeaconSearch";
+import { ResultCard } from "../components/search/result/ResultCard";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -97,8 +101,9 @@ export function DefaultSearchView(): JSX.Element {
               render={({ data, error }) => (
                 <ReactiveList.ResultCardsWrapper>
                   {error && <Alert severity="error">Error: {error}</Alert>}
-                  {data.map((item: any) => {
-                    return <SearchResult item={item} key={item._id} />;
+                  {data.map((item: BeaconSearchItem) => {
+                    const result = parseBeaconSearchItem(item);
+                    return <ResultCard result={result} key={result._id} />;
                   })}
                 </ReactiveList.ResultCardsWrapper>
               )}
