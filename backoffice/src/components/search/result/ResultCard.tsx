@@ -10,7 +10,7 @@ import { Podcasts } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { Environments } from "./Environments";
 import { Uses } from "./Uses";
-import { Owner } from "./Owner";
+import { BeaconDetails } from "./BeaconDetails";
 
 export function ResultCard({
   result,
@@ -29,8 +29,12 @@ export function ResultCard({
         title={result.hexId ?? "N/A"}
         subheader={result.beaconStatus}
       />
-      <CardContent sx={{ overflow: "auto" }}>
+      <CardContent>
         <Environments beaconUses={result.beaconUses} />
+        <BeaconDetails
+          cospasSarsatNumber={result.cospasSarsatNumber}
+          lastModifiedDate={result.lastModifiedDate}
+        />
         <Uses
           vesselMmsiNumbers={result.vesselMmsiNumbers}
           vesselNames={result.vesselNames}
@@ -38,7 +42,6 @@ export function ResultCard({
           aircraftRegistrationMarks={result.aircraftRegistrationMarks}
           aircraft24bitHexAddresses={result.aircraft24bitHexAddresses}
         />
-        <Owner beaconOwner={result.beaconOwner} />
       </CardContent>
       <CardActions>
         <Button
