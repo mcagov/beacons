@@ -20,11 +20,6 @@ webapp:
 	@open http://localhost:3000
 	@cd ./webapp && npm run dev
 
-.PHONY: service
-service:
-	@echo "🌱 Starting the Spring Service API in dev mode..."
-	@cd ./service && (trap 'kill 0' SIGINT; while true; do ./gradlew bootRun --args='--spring.profiles.active=dev,seed'; sleep 2; done)
-
 .PHONY: backoffice
 backoffice:
 	@echo "💅 Starting the Backoffice in dev mode..."
@@ -51,4 +46,3 @@ backoffice-stubs:
 .PHONY: clean
 clean:
 	docker compose down
-	rm dev.logs
