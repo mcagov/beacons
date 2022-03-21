@@ -179,6 +179,15 @@ public class BeaconSearchDocument {
 
   private void setBeaconRegistrationIdentifiers(LegacyBeacon legacyBeacon) {
     this.hexId = legacyBeacon.getHexId();
+
+    var cospasSarsatNumber = legacyBeacon
+      .getData()
+      .getBeacon()
+      .getCospasSarsatNumber();
+    if (cospasSarsatNumber != null) {
+      this.cospasSarsatNumber = cospasSarsatNumber.toString();
+    }
+
     var uses = legacyBeacon.getData().getUses();
     this.vesselMmsiNumbers =
       uses
