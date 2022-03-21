@@ -20,7 +20,6 @@ export function Uses({
 >): JSX.Element {
   return (
     <React.Fragment>
-      <Divider sx={{ marginTop: "1rem" }} />
       <Box sx={{ overflow: "auto" }}>
         <Aviation
           aircraftRegistrationMarks={aircraftRegistrationMarks}
@@ -52,6 +51,7 @@ function Aviation({
 
   return (
     <React.Fragment>
+      <Divider sx={{ marginTop: "1rem" }} />
       <UseField
         field={"Aircraft 24-bit address"}
         values={aircraft24bitHexAddresses}
@@ -60,7 +60,6 @@ function Aviation({
         field={"Aircraft Tail number"}
         values={aircraftRegistrationMarks}
       />
-      <Divider sx={{ marginBottom: "1rem" }} />
     </React.Fragment>
   );
 }
@@ -83,6 +82,7 @@ function Maritime({
 
   return (
     <React.Fragment>
+      <Divider sx={{ marginTop: "1rem" }} />
       <Field name={"Vessel Callsign"} value={vesselCallsigns} />
       <Field name={"Vessel name"} value={vesselNames} />
       <Field name={"Vessel MMSI"} value={vesselMmsiNumbers} />
