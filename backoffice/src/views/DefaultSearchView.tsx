@@ -3,7 +3,7 @@ import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import React from "react";
 import { PageContent } from "../components/layout/PageContent";
-import { Alert, Paper } from "@mui/material";
+import { Alert, Paper, Box } from "@mui/material";
 import {
   ReactiveBase,
   DataSearch,
@@ -97,15 +97,16 @@ export function DefaultSearchView(): JSX.Element {
                 and: ["searchbox"],
               }}
               dataField="hexId"
+              size={5}
               defaultQuery={() => ({ track_total_hits: true })}
               render={({ data, error }) => (
-                <ReactiveList.ResultCardsWrapper>
+                <Box sx={gridContainer}>
                   {error && <Alert severity="error">Error: {error}</Alert>}
                   {data.map((item: BeaconSearchItem) => {
                     const result = parseBeaconSearchItem(item);
                     return <ResultCard result={result} key={result._id} />;
                   })}
-                </ReactiveList.ResultCardsWrapper>
+                </Box>
               )}
             />
           </ReactiveBase>
@@ -114,3 +115,9 @@ export function DefaultSearchView(): JSX.Element {
     </div>
   );
 }
+
+const gridContainer = {
+  display: "grid",
+  gridTemplateColumns: "repeat(5, 1fr)",
+  gridGap: 20,
+};
