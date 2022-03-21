@@ -23,7 +23,7 @@ webapp:
 .PHONY: service
 service:
 	@echo "🌱 Starting the Spring Service API in dev mode..."
-	@cd ./service && while true; do ./gradlew bootRun --args='--spring.profiles.active=dev,seed'; sleep 2; done
+	@cd ./service && (trap 'kill 0' SIGINT; while true; do ./gradlew bootRun --args='--spring.profiles.active=dev,seed'; sleep 2; done)
 
 .PHONY: backoffice
 backoffice:
