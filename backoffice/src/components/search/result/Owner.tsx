@@ -1,6 +1,6 @@
 import React from "react";
 import { BeaconSearchResult } from "../../../entities/BeaconSearch";
-import { Divider, Grid, Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 
 export function Owner({
   beaconOwner,
@@ -8,26 +8,16 @@ export function Owner({
   return (
     <React.Fragment>
       <Divider sx={{ marginTop: "1rem" }} />
-      <Typography
-        gutterBottom={true}
-        component={"p"}
-        variant={"subtitle2"}
-        id="settings-search-mode"
-      >
-        Owner
-      </Typography>
-      <Grid container spacing={1} sm>
-        <Field name={"Name:"} value={beaconOwner.ownerName} />
-      </Grid>
+      <Field field={"Owner Name"} value={beaconOwner.ownerName} />
     </React.Fragment>
   );
 }
 
 function Field({
-  name,
+  field,
   value,
 }: {
-  name: string;
+  field: string;
   value: string;
 }): JSX.Element | null {
   if (value.length == null) {
@@ -36,12 +26,16 @@ function Field({
 
   return (
     <React.Fragment>
-      <Grid item xs={6}>
-        <Typography>{name}</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography>{value}</Typography>
-      </Grid>
+      <Typography
+        gutterBottom={true}
+        component={"p"}
+        variant={"subtitle2"}
+        id="settings-search-mode"
+        sx={{ marginTop: "1rem" }}
+      >
+        {field}
+      </Typography>
+      <Typography>{value}</Typography>
     </React.Fragment>
   );
 }

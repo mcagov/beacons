@@ -1,6 +1,6 @@
 import React from "react";
 import { BeaconSearchResult } from "../../../entities/BeaconSearch";
-import { Divider, Grid, Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 
 export function Uses({
   vesselCallsigns,
@@ -48,18 +48,14 @@ function Aviation({
   return (
     <React.Fragment>
       <Divider sx={{ marginTop: "1rem" }} />
-      <Typography
-        gutterBottom={true}
-        component={"p"}
-        variant={"subtitle2"}
-        id="settings-search-mode"
-      >
-        Aviation
-      </Typography>
-      <Grid container spacing={1} sm>
-        <UseField name={"24-bit address:"} values={aircraft24bitHexAddresses} />
-        <UseField name={"Tail number:"} values={aircraftRegistrationMarks} />
-      </Grid>
+      <UseField
+        field={"Aircraft 24-bit address"}
+        values={aircraft24bitHexAddresses}
+      />
+      <UseField
+        field={"Aircraft Tail number"}
+        values={aircraftRegistrationMarks}
+      />
     </React.Fragment>
   );
 }
@@ -83,28 +79,18 @@ function Maritime({
   return (
     <React.Fragment>
       <Divider sx={{ marginTop: "1rem" }} />
-      <Typography
-        gutterBottom={true}
-        component={"p"}
-        variant={"subtitle2"}
-        id="settings-search-mode"
-      >
-        Maritime
-      </Typography>
-      <Grid container spacing={1} sm>
-        <UseField name={"Call sign:"} values={vesselCallsigns} />
-        <UseField name={"Vessel name:"} values={vesselNames} />
-        <UseField name={"MMSI:"} values={vesselMmsiNumbers} />
-      </Grid>
+      <UseField field={"Vessel Callsign"} values={vesselCallsigns} />
+      <UseField field={"Vessel name"} values={vesselNames} />
+      <UseField field={"Vessel MMSI"} values={vesselMmsiNumbers} />
     </React.Fragment>
   );
 }
 
 function UseField({
-  name,
+  field,
   values,
 }: {
-  name: string;
+  field: string;
   values: string[];
 }): JSX.Element | null {
   if (values.length === 0) {
@@ -113,12 +99,18 @@ function UseField({
 
   return (
     <React.Fragment>
-      <Grid item xs={6}>
-        <Typography>{name}</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography>{values}</Typography>
-      </Grid>
+      <Typography
+        gutterBottom={true}
+        component={"p"}
+        variant={"subtitle2"}
+        id="settings-search-mode"
+        sx={{ marginTop: "1rem" }}
+      >
+        {field}
+      </Typography>
+      {values.map((value, index) => (
+        <Typography key={index}>{value}</Typography>
+      ))}
     </React.Fragment>
   );
 }
