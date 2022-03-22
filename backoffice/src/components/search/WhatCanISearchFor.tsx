@@ -84,6 +84,7 @@ export function WhatCanISearchFor() {
           <Typography gutterBottom>
             <ul>
               <li>Hex ID</li>
+              <li>Cospas-Sarsat Number</li>
               <li>MMSI number</li>
               <li>VHF callsign</li>
               <li>Vessel name</li>
