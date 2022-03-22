@@ -62,6 +62,8 @@ const getFields = (use: ILegacyUse): IField[] => [
   { key: "MOD status", value: use?.modStatus },
   { key: "MOD Variant", value: use?.modVariant },
   { key: "Activation mode", value: use?.activationMode },
+  { key: "Beacon part number", value: use?.beaconPartNumber },
+  { key: "Beacon NSN", value: use?.beaconNsn },
 
   { key: "Survival craft type", value: use?.survivalCraftType },
   { key: "Bit 24 address hex", value: use?.bit24AddressHex },
