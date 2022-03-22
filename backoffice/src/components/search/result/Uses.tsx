@@ -2,7 +2,6 @@ import React from "react";
 import { BeaconSearchResult } from "../../../entities/BeaconSearch";
 import { Divider, Typography } from "@mui/material";
 import { Field } from "./Field";
-import { Box } from "@mui/system";
 
 export function Uses({
   vesselCallsigns,
@@ -20,17 +19,15 @@ export function Uses({
 >): JSX.Element {
   return (
     <React.Fragment>
-      <Box sx={{ overflow: "auto" }}>
-        <Aviation
-          aircraftRegistrationMarks={aircraftRegistrationMarks}
-          aircraft24bitHexAddresses={aircraft24bitHexAddresses}
-        />
-        <Maritime
-          vesselMmsiNumbers={vesselMmsiNumbers}
-          vesselNames={vesselNames}
-          vesselCallsigns={vesselCallsigns}
-        />
-      </Box>
+      <Aviation
+        aircraftRegistrationMarks={aircraftRegistrationMarks}
+        aircraft24bitHexAddresses={aircraft24bitHexAddresses}
+      />
+      <Maritime
+        vesselMmsiNumbers={vesselMmsiNumbers}
+        vesselNames={vesselNames}
+        vesselCallsigns={vesselCallsigns}
+      />
     </React.Fragment>
   );
 }

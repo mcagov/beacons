@@ -29,7 +29,7 @@ export function ResultCard({
         title={result.hexId ?? "N/A"}
         subheader={result.beaconStatus}
       />
-      <CardContent>
+      <CardContent sx={{ overflow: "auto" }}>
         <Environments beaconUses={result.beaconUses} />
         <BeaconDetails
           cospasSarsatNumber={result.cospasSarsatNumber}
