@@ -1,7 +1,10 @@
 package uk.gov.mca.beacons.api.export;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Map;
 import javax.persistence.EntityManagerFactory;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -12,6 +15,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.file.FlatFileHeaderCallback;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
@@ -84,6 +88,11 @@ public class ExportToSpreadsheetJobConfiguration {
         Resource destination = new FileSystemResource(jobParameters.get("destination"));
         writer.setResource(destination);
         writer.setAppendAllowed(true);
+        writer.setHeaderCallback(headerWriter -> {
+            for (String columnHeading : SpreadsheetRow.getColumnHeadings()) {
+                headerWriter.write(columnHeading + ", ");
+            }
+        });
         writer.setLineAggregator(new DelimitedLineAggregator<>() {
             {
                 setDelimiter(",");
