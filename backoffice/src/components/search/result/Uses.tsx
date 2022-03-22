@@ -80,7 +80,7 @@ function Maritime({
   return (
     <React.Fragment>
       <Divider sx={{ marginTop: "1rem" }} />
-      <Field name={"Vessel Callsign"} value={vesselCallsigns} />
+      <Field name={"Vessel call sign"} value={vesselCallsigns} />
       <Field name={"Vessel name"} value={vesselNames} />
       <Field name={"Vessel MMSI"} value={vesselMmsiNumbers} />
     </React.Fragment>

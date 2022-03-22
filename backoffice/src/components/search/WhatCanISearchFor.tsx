@@ -86,10 +86,10 @@ export function WhatCanISearchFor() {
               <li>Hex ID</li>
               <li>Cospas-Sarsat Number</li>
               <li>MMSI number</li>
-              <li>VHF callsign</li>
+              <li>VHF call sign</li>
               <li>Vessel name</li>
               <li>Aircraft tail number</li>
-              <li>24-bit hex address</li>
+              <li>Aircraft 24-bit hex address</li>
             </ul>
           </Typography>
           <Typography gutterBottom>
