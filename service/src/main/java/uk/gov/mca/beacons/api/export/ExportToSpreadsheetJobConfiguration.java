@@ -51,28 +51,6 @@ public class ExportToSpreadsheetJobConfiguration {
         this.jobExecutionLoggingListener = jobExecutionLoggingListener;
     }
 
-    // TODO Method duplicated from ReindexSearchJobConfiguration.  Abstract and reuse?
-    @Bean("beaconItemReader")
-    public JpaPagingItemReader<Beacon> beaconItemReader() {
-        return new JpaPagingItemReaderBuilder<Beacon>()
-                .name("beaconReader")
-                .entityManagerFactory(entityManagerFactory)
-                .queryString("select b from beacon b order by lastModifiedDate")
-                .pageSize(chunkSize)
-                .build();
-    }
-
-    // TODO Method duplicated from ReindexSearchJobConfiguration.  Abstract and reuse?
-    @Bean("legacyBeaconItemReader")
-    public JpaPagingItemReader<LegacyBeacon> legacyBeaconItemReader() {
-        return new JpaPagingItemReaderBuilder<LegacyBeacon>()
-                .name("legacyBeaconReader")
-                .entityManagerFactory(entityManagerFactory)
-                .queryString("select b from LegacyBeacon b order by lastModifiedDate")
-                .pageSize(chunkSize)
-                .build();
-    }
-
     @Bean
     public Step exportBeaconToExcelStep(
             ItemReader<Beacon> beaconItemReader,
