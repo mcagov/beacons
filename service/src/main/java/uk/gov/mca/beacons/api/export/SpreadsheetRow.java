@@ -3,10 +3,14 @@ package uk.gov.mca.beacons.api.export;
 import java.util.Objects;
 import java.util.UUID;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
+@Getter
+@Setter
 public class SpreadsheetRow {
     private @NotNull final UUID id;
     private final String hexId;
