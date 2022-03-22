@@ -33,7 +33,7 @@ export function UserSettingsProvider({
   children: React.ReactNode;
 }): JSX.Element {
   const [userSettings, dispatch] = React.useReducer(userSettingsReducer, {
-    searchMode: "default",
+    searchMode: "advanced",
   });
   return (
     <UserSettingsContext.Provider value={[userSettings, dispatch]}>

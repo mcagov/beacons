@@ -18,7 +18,6 @@ import { BeaconRequestMapper } from "./gateways/mappers/BeaconRequestMapper";
 import { BeaconResponseMapper } from "./gateways/mappers/BeaconResponseMapper";
 import { LegacyBeaconResponseMapper } from "./gateways/mappers/LegacyBeaconResponseMapper";
 import { NotesGateway } from "./gateways/notes/NotesGateway";
-import { BeaconRecordsListView } from "./views/BeaconRecordsListView";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { ErrorState } from "./components/dataPanel/PanelErrorState";
@@ -83,16 +82,13 @@ const App: FunctionComponent = () => {
           <RequireAuth>
             <Switch>
               <Route exact path="/">
-                <BeaconRecordsListView beaconsGateway={beaconsGateway} />
+                <Search beaconsGateway={beaconsGateway} />
               </Route>
               <Route path={`/beacons/:id`}>
                 <SingleBeaconRecordViewWithParam />
               </Route>
               <Route path={`/legacy-beacons/:id`}>
                 <SingleLegacyBeaconRecordViewWithParam />
-              </Route>
-              <Route path="/search">
-                <Search beaconsGateway={beaconsGateway} />
               </Route>
               <Route>Page not found. Is the address correct?</Route>
             </Switch>
