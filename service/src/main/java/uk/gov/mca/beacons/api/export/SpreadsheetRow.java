@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,10 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 @Getter
 @Setter
 public class SpreadsheetRow {
+    @Getter
+    private static final List<String> columnAttributes = List.of("id", "hexId", "ownerName");
+    @Getter
+    private static final List<String> columnHeadings = List.of("ID", "Hex ID", "Owner name");
     private @NotNull final UUID id;
     private final String hexId;
     private final String ownerName;
