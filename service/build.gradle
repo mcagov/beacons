@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.azure.spring:azure-spring-boot-starter-active-directory:3.6.1'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.jetbrains:annotations:21.0.1'
-
+    implementation 'com.opencsv:opencsv:5.6'
     implementation 'org.springframework.data:spring-data-elasticsearch:4.2.7'
 
     implementation 'org.springframework.boot:spring-boot-starter-cache'
