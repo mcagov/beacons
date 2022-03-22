@@ -11,6 +11,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { Environments } from "./Environments";
 import { Uses } from "./Uses";
 import { BeaconDetails } from "./BeaconDetails";
+import React from "react";
 
 export function ResultCard({
   result,
@@ -29,7 +30,7 @@ export function ResultCard({
         title={result.hexId ?? "N/A"}
         subheader={result.beaconStatus}
       />
-      <CardContent sx={{ overflow: "auto" }}>
+      <CardContent sx={{ overflow: "auto", paddingTop: 0 }}>
         <Environments beaconUses={result.beaconUses} />
         <BeaconDetails
           cospasSarsatNumber={result.cospasSarsatNumber}
@@ -43,7 +44,7 @@ export function ResultCard({
           aircraft24bitHexAddresses={result.aircraft24bitHexAddresses}
         />
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ minHeight: 0 }}>
         <Button
           size={"small"}
           color={"secondary"}
