@@ -36,7 +36,6 @@ public class ExportToSpreadsheetJobConfiguration {
     private final StepBuilderFactory stepBuilderFactory;
     private final JobExecutionLoggingListener jobExecutionLoggingListener;
     private static final int chunkSize = 256;
-    private final String[] columnNames = new String[] {"id", "hexId", "ownerName"};
 
     @Autowired
     public ExportToSpreadsheetJobConfiguration(
@@ -98,7 +97,7 @@ public class ExportToSpreadsheetJobConfiguration {
                 setDelimiter(",");
                 setFieldExtractor(new BeanWrapperFieldExtractor<>() {
                     {
-                        setNames(columnNames);
+                        setNames(SpreadsheetRow.getColumnAttributes().toArray(new String[0]));
                     }
                 });
             }
