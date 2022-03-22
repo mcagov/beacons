@@ -15,7 +15,6 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public class ExportService {
 
     @Autowired
     public ExportService(
-            @Qualifier("simpleAsyncJobLauncher") JobLauncher jobLauncher,
+            JobLauncher jobLauncher,
             Job exportToSpreadsheetJob,
             @Value("/tmp/beacons/export") Path localStorageDirectory,
             @Value("beacons_data.csv") File spreadsheetExportFilename) {
