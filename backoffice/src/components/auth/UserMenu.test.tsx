@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { AuthContext, IAuthContext } from "./AuthContext";
+import { AuthContext, IAuthContext } from "./AuthWrapper";
 import { UserMenu } from "./UserMenu";
 
 describe("UserMenu", () => {
@@ -12,6 +12,7 @@ describe("UserMenu", () => {
         username: "steve.stevington@mcga.gov.uk",
         displayName: "Steve Stevington",
       },
+      accessToken: "mockAccessTokenString",
       logout: jest.fn(),
     };
   });

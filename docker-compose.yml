@@ -13,9 +13,9 @@ services:
       POSTGRES_USER: beacons_service
       POSTGRES_PASSWORD: password
       POSTGRES_DB: beacons
+    ports:
+      - "5432:5432"
 
-  # The OpenSearch service is not accessible via the public internet, so its ports are only exposed to the internal
-  # Docker network
   opensearch:
     image: opensearchproject/opensearch:1.1.0
     environment:
@@ -25,6 +25,9 @@ services:
     expose:
       - 9200 # Core OpenSearch queries
       - 9600 # Performance Analyzer queries
+    ports: # Exposed only for local development with a non-Dockerized Spring; these ports are private when deployed
+      - "9200:9200"
+      - "9600:9600"
 
   # Client queries to OpenSearch from the public internet are authenticated using Azure AD and proxied through to
   # OpenSearch for security.
@@ -68,6 +71,11 @@ services:
       AZURE_AD_TENANT_ID: "513fb495-9a90-425b-a49a-bc6ebe2a429e"
       AZURE_AD_CLIENT_ID: "5cdcbb41-958a-43b6-baa1-bbafd80b4f70"
       REACT_APP_FEEDBACK_EMAIL_ADDRESSES: "x@y.com,y@z.com"
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
 
   # webapp:
   #   Run the Webapp application using npm from the webapp/ dir

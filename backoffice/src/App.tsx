@@ -75,7 +75,7 @@ const App: FunctionComponent = () => {
   };
 
   return (
-    <AuthWrapper pca={pca}>
+    <AuthWrapper pca={pca} authGateway={authGateway}>
       <UserSettingsProvider>
         <Router basename="/backoffice">
           <Navigation />
