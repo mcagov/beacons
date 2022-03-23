@@ -20,10 +20,8 @@ import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
-@SpringBatchTest
 public class JobControllerIntegrationTest extends WebIntegrationTest {
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
   private JobRepositoryTestUtils jobRepositoryTestUtils;
 

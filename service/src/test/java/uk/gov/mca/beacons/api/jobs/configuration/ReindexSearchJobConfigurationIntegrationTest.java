@@ -14,21 +14,19 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
 import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
 
-@SpringBatchTest
 public class ReindexSearchJobConfigurationIntegrationTest
   extends WebIntegrationTest {
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
+  @Qualifier("searchJobLauncherTestUtils")
   private JobLauncherTestUtils jobLauncherTestUtils;
 
-  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
   private JobRepositoryTestUtils jobRepositoryTestUtils;
 
@@ -36,16 +34,12 @@ public class ReindexSearchJobConfigurationIntegrationTest
   BeaconSearchRepository beaconSearchRepository;
 
   @Autowired
+  @Qualifier("reindexSearchJob")
   Job job;
 
   @AfterEach
   public void cleanUp() {
     jobRepositoryTestUtils.removeJobExecutions();
-  }
-
-  @Before
-  public void setUp() {
-    jobLauncherTestUtils.setJob(job);
   }
 
   @Test
