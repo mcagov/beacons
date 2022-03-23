@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
 class ExportServiceIntegrationTest extends WebIntegrationTest {
@@ -29,6 +30,7 @@ class ExportServiceIntegrationTest extends WebIntegrationTest {
   @Autowired
   public ExportServiceIntegrationTest(
     JobLauncher jobLauncher,
+    @Qualifier("simpleAsyncJobLauncher") JobLauncher asyncJobLauncher,
     Job exportToSpreadsheetJob
   ) throws IOException {
     this.testLocalStorageDirectory =
@@ -36,6 +38,7 @@ class ExportServiceIntegrationTest extends WebIntegrationTest {
     this.exportService =
       new ExportService(
         jobLauncher,
+        asyncJobLauncher,
         exportToSpreadsheetJob,
         this.testLocalStorageDirectory,
         new File("beacons_data.csv")

@@ -15,40 +15,66 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class ExportService {
-    private final Path localStorageDirectory;
-    private final File spreadsheetExportFilename;
-    private final JobLauncher jobLauncher;
-    private final Job exportToSpreadsheetJob;
 
-    @Autowired
-    public ExportService(
-            JobLauncher jobLauncher,
-            Job exportToSpreadsheetJob,
-            @Value("/tmp/beacons/export") Path localStorageDirectory,
-            @Value("beacons_data.csv") File spreadsheetExportFilename) {
-        this.jobLauncher = jobLauncher;
-        this.exportToSpreadsheetJob = exportToSpreadsheetJob;
-        this.localStorageDirectory = localStorageDirectory;
-        this.spreadsheetExportFilename = spreadsheetExportFilename;
-    }
+  private final Path localStorageDirectory;
+  private final File spreadsheetExportFilename;
+  private final JobLauncher jobLauncher;
+  private final JobLauncher asyncJobLauncher;
+  private final Job exportToSpreadsheetJob;
 
-    public byte[] getLatestExcelExport() throws IOException {
-        return Files.readAllBytes(getPathToSpreadsheetExport());
-    }
+  @Autowired
+  public ExportService(
+    JobLauncher jobLauncher,
+    @Qualifier("simpleAsyncJobLauncher") JobLauncher asyncJobLauncher,
+    Job exportToSpreadsheetJob,
+    @Value("/tmp/beacons/export") Path localStorageDirectory,
+    @Value("beacons_data.csv") File spreadsheetExportFilename
+  ) {
+    this.jobLauncher = jobLauncher;
+    this.asyncJobLauncher = asyncJobLauncher;
+    this.exportToSpreadsheetJob = exportToSpreadsheetJob;
+    this.localStorageDirectory = localStorageDirectory;
+    this.spreadsheetExportFilename = spreadsheetExportFilename;
+  }
 
-    public void exportBeaconsToSpreadsheet() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-        jobLauncher.run(exportToSpreadsheetJob, new JobParameters(
-                Map.of("destination", new JobParameter(String.valueOf(getPathToSpreadsheetExport())))
-        ));
-    }
+  public byte[] getLatestExcelExport() throws IOException {
+    return Files.readAllBytes(getPathToSpreadsheetExport());
+  }
 
-    private Path getPathToSpreadsheetExport() {
-        return localStorageDirectory.resolve(spreadsheetExportFilename.getName());
-    }
+  public void exportBeaconsToSpreadsheet()
+    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    jobLauncher.run(
+      exportToSpreadsheetJob,
+      new JobParameters(
+        Map.of(
+          "destination",
+          new JobParameter(String.valueOf(getPathToSpreadsheetExport()))
+        )
+      )
+    );
+  }
+
+  public void exportBeaconsToSpreadsheetAsync()
+    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    asyncJobLauncher.run(
+      exportToSpreadsheetJob,
+      new JobParameters(
+        Map.of(
+          "destination",
+          new JobParameter(String.valueOf(getPathToSpreadsheetExport()))
+        )
+      )
+    );
+  }
+
+  private Path getPathToSpreadsheetExport() {
+    return localStorageDirectory.resolve(spreadsheetExportFilename.getName());
+  }
 }
