@@ -29,7 +29,8 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
     Migration("/spring-api/migrate"),
     Note("/spring-api/note"),
     Registration("/spring-api/registrations"),
-    Job("/spring-api/job");
+    Job("/spring-api/job"),
+    Export("/spring-api/export");
 
     public final String value;
 
@@ -263,6 +264,24 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
       assert !status.equals(BatchStatus.ABANDONED.toString());
 
       if (status.equals("COMPLETED")) break;
+
+      TimeUnit.SECONDS.sleep(1);
+    }
+  }
+
+  protected void pollUntil2xx(String endpoint) throws InterruptedException {
+    int maxRetries = 10;
+
+    for (int i = 0; i < maxRetries; i++) {
+      int statusCode = webTestClient
+        .get()
+        .uri(endpoint)
+        .exchange()
+        .expectBody()
+        .returnResult()
+        .getRawStatusCode();
+
+      if (statusCode >= 200 && statusCode < 300) break;
 
       TimeUnit.SECONDS.sleep(1);
     }

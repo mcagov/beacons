@@ -26,82 +26,87 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 @Configuration
 @EnableBatchProcessing
 public class ExportToSpreadsheetJobConfiguration {
-    private static final int chunkSize = 256;
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
-    private final JobExecutionLoggingListener jobExecutionLoggingListener;
 
-    @Autowired
-    public ExportToSpreadsheetJobConfiguration(
-            JobBuilderFactory jobBuilderFactory,
-            StepBuilderFactory stepBuilderFactory,
-            EntityManagerFactory entityManagerFactory,
-            JobRepository jobRepository,
-            JobExecutionLoggingListener jobExecutionLoggingListener
-    ) {
-        this.jobBuilderFactory = jobBuilderFactory;
-        this.stepBuilderFactory = stepBuilderFactory;
-        this.jobExecutionLoggingListener = jobExecutionLoggingListener;
-    }
+  private static final int chunkSize = 256;
+  private final JobBuilderFactory jobBuilderFactory;
+  private final StepBuilderFactory stepBuilderFactory;
+  private final JobExecutionLoggingListener jobExecutionLoggingListener;
 
-    @Bean
-    public Step exportBeaconToExcelStep(
-            ItemReader<Beacon> beaconItemReader,
-            ItemProcessor<Beacon, SpreadsheetRow> exportBeaconToSpreadsheetRowItemProcessor,
-            ItemWriter<SpreadsheetRow> exportSpreadsheetRowItemWriter
-    ) {
-        return stepBuilderFactory
-                .get("exportBeaconToExcelStep")
-                .<Beacon, SpreadsheetRow>chunk(chunkSize)
-                .reader(beaconItemReader)
-                .processor(exportBeaconToSpreadsheetRowItemProcessor)
-                .writer(exportSpreadsheetRowItemWriter)
-                .build();
-    }
+  @Autowired
+  public ExportToSpreadsheetJobConfiguration(
+    JobBuilderFactory jobBuilderFactory,
+    StepBuilderFactory stepBuilderFactory,
+    EntityManagerFactory entityManagerFactory,
+    JobRepository jobRepository,
+    JobExecutionLoggingListener jobExecutionLoggingListener
+  ) {
+    this.jobBuilderFactory = jobBuilderFactory;
+    this.stepBuilderFactory = stepBuilderFactory;
+    this.jobExecutionLoggingListener = jobExecutionLoggingListener;
+  }
 
-    @Bean
-    public Step exportLegacyBeaconToExcelStep(
-            ItemReader<LegacyBeacon> legacyBeaconItemReader,
-            ItemProcessor<LegacyBeacon, SpreadsheetRow> exportLegacyBeaconToSpreadsheetItemProcessor,
-            ItemWriter<SpreadsheetRow> exportSpreadsheetRowItemWriter
-    ) {
-        return stepBuilderFactory
-                .get("exportLegacyBeaconToExcelStep")
-                .<LegacyBeacon, SpreadsheetRow>chunk(chunkSize)
-                .reader(legacyBeaconItemReader)
-                .processor(exportLegacyBeaconToSpreadsheetItemProcessor)
-                .writer(exportSpreadsheetRowItemWriter)
-                .build();
-    }
+  @Bean
+  public Step exportBeaconToExcelStep(
+    ItemReader<Beacon> beaconItemReader,
+    ItemProcessor<Beacon, SpreadsheetRow> exportBeaconToSpreadsheetRowItemProcessor,
+    ItemWriter<SpreadsheetRow> exportSpreadsheetRowItemWriter
+  ) {
+    return stepBuilderFactory
+      .get("exportBeaconToExcelStep")
+      .<Beacon, SpreadsheetRow>chunk(chunkSize)
+      .reader(beaconItemReader)
+      .processor(exportBeaconToSpreadsheetRowItemProcessor)
+      .writer(exportSpreadsheetRowItemWriter)
+      .build();
+  }
 
-    @Bean
-    @StepScope
-    public FlatFileItemWriter<SpreadsheetRow> writer(@Value("#{jobParameters}") Map<String, String> jobParameters) {
-        return new FlatFileItemWriterBuilder<SpreadsheetRow>()
-                .name("spreadsheetRowWriter")
-                .resource(new FileSystemResource(jobParameters.get("destination")))
-                .delimited()
-                .delimiter(",")
-                .names(SpreadsheetRow.getColumnAttributes().toArray(new String[0]))
-                .headerCallback(headerWriter -> {
-                    for (String columnHeading : SpreadsheetRow.getColumnHeadings()) {
-                        headerWriter.write(columnHeading + ", ");
-                    }
-                })
-                .append(true)
-                .build();
-    }
+  @Bean
+  public Step exportLegacyBeaconToExcelStep(
+    ItemReader<LegacyBeacon> legacyBeaconItemReader,
+    ItemProcessor<LegacyBeacon, SpreadsheetRow> exportLegacyBeaconToSpreadsheetItemProcessor,
+    ItemWriter<SpreadsheetRow> exportSpreadsheetRowItemWriter
+  ) {
+    return stepBuilderFactory
+      .get("exportLegacyBeaconToExcelStep")
+      .<LegacyBeacon, SpreadsheetRow>chunk(chunkSize)
+      .reader(legacyBeaconItemReader)
+      .processor(exportLegacyBeaconToSpreadsheetItemProcessor)
+      .writer(exportSpreadsheetRowItemWriter)
+      .build();
+  }
 
-    @Bean(value = "exportToSpreadsheetJob")
-    public Job exportToSpreadsheetJob(
-            Step exportBeaconToExcelStep,
-            Step exportLegacyBeaconToExcelStep
-    ) {
-        return jobBuilderFactory
-                .get("exportToSpreadsheetJob")
-                .listener(jobExecutionLoggingListener)
-                .start(exportBeaconToExcelStep)
-                .next(exportLegacyBeaconToExcelStep)
-                .build();
-    }
+  @Bean
+  @StepScope
+  public FlatFileItemWriter<SpreadsheetRow> writer(
+    @Value("#{jobParameters}") Map<String, String> jobParameters
+  ) {
+    return new FlatFileItemWriterBuilder<SpreadsheetRow>()
+      .name("spreadsheetRowWriter")
+      .resource(new FileSystemResource(jobParameters.get("destination")))
+      .delimited()
+      .delimiter(",")
+      .names(SpreadsheetRow.getColumnAttributes().toArray(new String[0]))
+      .headerCallback(
+        headerWriter -> {
+          for (String columnHeading : SpreadsheetRow.getColumnHeadings()) {
+            headerWriter.write(columnHeading + ", ");
+          }
+        }
+      )
+      .append(true)
+      .build();
+  }
+
+  @Bean(value = "exportToSpreadsheetJob")
+  public Job exportToSpreadsheetJob(
+    Step exportBeaconToExcelStep,
+    Step exportLegacyBeaconToExcelStep
+  ) {
+    return jobBuilderFactory
+      .get("exportToSpreadsheetJob")
+      .listener(jobExecutionLoggingListener)
+      .start(exportBeaconToExcelStep)
+      .next(exportLegacyBeaconToExcelStep)
+      .build();
+  }
 }

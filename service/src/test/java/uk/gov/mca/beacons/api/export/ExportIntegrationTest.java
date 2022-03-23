@@ -1,31 +1,69 @@
 package uk.gov.mca.beacons.api.export;
 
-
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
 public class ExportIntegrationTest extends WebIntegrationTest {
 
-    @Nested
-    class ExcelSpreadsheetExport {
+  @Autowired
+  ExportService exportService;
 
-        @Test
-        public void givenTheNightlyExcelExportCompleted_whenTheUserRequestsTheLatestExcelExport_thenServeTheFile() throws Exception {
-            // -- Arrange --
-            // Seed testcontainers database with Beacons, LegacyBeacons, AccountHolders etc.
-            String accountHolderId_1 = seedAccountHolder();
-            seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId_1);
-            seedLegacyBeacon();
-            // Trigger Excel export job (do not try and test @Scheduled by mocking System time or anything.  I researched; not worth it)
-            // exportService.createSpreadsheet();
+  @Nested
+  class ExcelSpreadsheetExport {
 
-            // -- Act --
-            // GET /spring-api/export/excel/latest
+    @Test
+    public void givenTheNightlyExcelExportCompleted_whenTheUserRequestsTheLatestExcelExport_thenServeTheFile()
+      throws Exception {
+      // -- Arrange --
+      String accountHolderId_1 = seedAccountHolder();
+      seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId_1);
+      seedLegacyBeacon();
+      exportService.exportBeaconsToSpreadsheet();
 
-            // -- Assert --
-            // Assert the number of lines in first sheet of Excel workbook == (the number of Beacons + LegacyBeacons in
-            // database) + 1 (header row)
-        }
+      // -- Act --
+      webTestClient
+        .get()
+        .uri(Endpoints.Export.value + "/excel")
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectHeader()
+        .contentType(MediaType.APPLICATION_OCTET_STREAM);
     }
+
+    @Test
+    public void givenTheSpreadsheetExportDoesNotExist_whenTheUserRequestsTheLatestExport_thenStartTheExportJobAndPromptUserToRetry()
+      throws Exception {
+      // Arrange
+      String accountHolderId_1 = seedAccountHolder();
+      seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId_1);
+      seedLegacyBeacon();
+
+      // Act
+      webTestClient
+        .get()
+        .uri(Endpoints.Export.value + "/excel")
+        .exchange()
+        .expectStatus()
+        .isEqualTo(HttpStatus.SERVICE_UNAVAILABLE)
+        .expectHeader()
+        .valueEquals(HttpHeaders.RETRY_AFTER, "5");
+
+      pollUntil2xx("/spring-api/export/excel");
+
+      webTestClient
+        .get()
+        .uri(Endpoints.Export.value + "/excel")
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody();
+      // Assert on contents of response?
+    }
+  }
 }

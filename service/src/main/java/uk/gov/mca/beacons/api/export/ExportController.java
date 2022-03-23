@@ -13,21 +13,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/spring-api/export")
 public class ExportController {
-    private final ExportService exportService;
 
-    @Autowired
-    public ExportController(ExportService exportService) {
-        this.exportService = exportService;
-    }
+  private final ExportService exportService;
 
-    @GetMapping(value="/excel")
-    public HttpEntity<ByteArrayResource> downloadExcelSpreadsheet() throws IOException {
-        byte[] excelContent = exportService.getLatestExcelExport();
+  @Autowired
+  public ExportController(ExportService exportService) {
+    this.exportService = exportService;
+  }
 
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(new MediaType("application", "force-download"));
-        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=my_file.xlsx");
+  @GetMapping(value = "/excel")
+  public HttpEntity<ByteArrayResource> downloadExcelSpreadsheet()
+    throws IOException {
+    byte[] excelContent = exportService.getLatestExcelExport();
 
-        return new HttpEntity<>(new ByteArrayResource(excelContent), header);
-    }
+    HttpHeaders header = new HttpHeaders();
+    header.setContentType(new MediaType("application", "force-download"));
+    header.set(
+      HttpHeaders.CONTENT_DISPOSITION,
+      "attachment; filename=my_file.xlsx"
+    );
+
+    return new HttpEntity<>(new ByteArrayResource(excelContent), header);
+  }
 }

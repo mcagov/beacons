@@ -10,21 +10,25 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
 
 @Component
-public class ExportBeaconToSpreadsheetRowItemProcessor implements ItemProcessor<Beacon, SpreadsheetRow> {
-    private final BeaconOwnerRepository beaconOwnerRepository;
+public class ExportBeaconToSpreadsheetRowItemProcessor
+  implements ItemProcessor<Beacon, SpreadsheetRow> {
 
-    @Autowired
-    public ExportBeaconToSpreadsheetRowItemProcessor(
-            BeaconOwnerRepository beaconOwnerRepository
-    ) {
-        this.beaconOwnerRepository = beaconOwnerRepository;
-    }
+  private final BeaconOwnerRepository beaconOwnerRepository;
 
-    @Override
-    public SpreadsheetRow process(Beacon beacon) {
-        BeaconId beaconId = beacon.getId();
-        BeaconOwner beaconOwner = beaconOwnerRepository.findBeaconOwnerByBeaconId(beaconId).orElse(null);
+  @Autowired
+  public ExportBeaconToSpreadsheetRowItemProcessor(
+    BeaconOwnerRepository beaconOwnerRepository
+  ) {
+    this.beaconOwnerRepository = beaconOwnerRepository;
+  }
 
-        return new SpreadsheetRow(beacon, beaconOwner);
-    }
+  @Override
+  public SpreadsheetRow process(Beacon beacon) {
+    BeaconId beaconId = beacon.getId();
+    BeaconOwner beaconOwner = beaconOwnerRepository
+      .findBeaconOwnerByBeaconId(beaconId)
+      .orElse(null);
+
+    return new SpreadsheetRow(beacon, beaconOwner);
+  }
 }
