@@ -6,7 +6,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-
 import static org.mockito.BDDMockito.then;
 
 import java.io.File;
@@ -26,38 +25,42 @@ import org.springframework.core.io.Resource;
 
 @ExtendWith(MockitoExtension.class)
 public class ExportServiceUnitTest {
-    @Mock(name="simpleAsyncJobLauncher")
-    private JobLauncher asyncJobLauncher;
 
-    @Mock
-    private JobLauncher jobLauncher;
+  @Mock(name = "simpleAsyncJobLauncher")
+  private JobLauncher asyncJobLauncher;
 
-    @Mock
-    private Job exportToSpreadsheetJob;
+  @Mock
+  private JobLauncher jobLauncher;
 
-    @Mock
-    private Resource csvExportFile;
+  @Mock
+  private Job exportToSpreadsheetJob;
 
-    @InjectMocks
-    ExportService exportService;
+  @Mock
+  private Resource csvExportFile;
 
-    @Test
-    public void whenThereIsNoPreviouslyExportedSpreadsheet_ThenStartExportingAndReturnNull() throws IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-        given(csvExportFile.exists()).willReturn(false);
-        given(csvExportFile.getFile()).willReturn(new File("/tmp/directory/does-not/exist.csv"));
+  @InjectMocks
+  ExportService exportService;
 
-        Resource export = exportService.getLatestExcelExport();
+  @Test
+  public void whenThereIsNoPreviouslyExportedSpreadsheet_ThenStartExportingAndReturnNull()
+    throws IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    given(csvExportFile.exists()).willReturn(false);
+    given(csvExportFile.getFile())
+      .willReturn(new File("/tmp/directory/does-not/exist.csv"));
 
-        assertThat(export, nullValue());
-        then(asyncJobLauncher).should().run(eq(exportToSpreadsheetJob), any());
-    }
+    Resource export = exportService.getLatestExcelExport();
 
-    @Test
-    public void whenThereIsAPreviouslyExportedSpreadsheet_ThenReturnTheExport() throws IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-        given(csvExportFile.exists()).willReturn(true);
+    assertThat(export, nullValue());
+    then(asyncJobLauncher).should().run(eq(exportToSpreadsheetJob), any());
+  }
 
-        Resource actualCsvExportFile = exportService.getLatestExcelExport();
+  @Test
+  public void whenThereIsAPreviouslyExportedSpreadsheet_ThenReturnTheExport()
+    throws IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    given(csvExportFile.exists()).willReturn(true);
 
-        assertThat(actualCsvExportFile, is(csvExportFile));
-    }
+    Resource actualCsvExportFile = exportService.getLatestExcelExport();
+
+    assertThat(actualCsvExportFile, is(csvExportFile));
+  }
 }
