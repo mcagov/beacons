@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
@@ -20,6 +19,8 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
 class ExportServiceIntegrationTest extends WebIntegrationTest {
@@ -40,8 +41,9 @@ class ExportServiceIntegrationTest extends WebIntegrationTest {
         jobLauncher,
         asyncJobLauncher,
         exportToSpreadsheetJob,
-        this.testLocalStorageDirectory,
-        new File("beacons_data.csv")
+        new FileSystemResource(
+          Files.createTempFile("export-service", "integration-test")
+        )
       );
   }
 
@@ -86,12 +88,12 @@ class ExportServiceIntegrationTest extends WebIntegrationTest {
     // TODO Look at the last modified date column and assert on ordering
   }
 
-  private List<List<String>> readCsv(byte[] bytearray) throws IOException {
+  private List<List<String>> readCsv(Resource csvExport) throws IOException {
     String COMMA_DELIMITER = ",";
 
     List<List<String>> records = new ArrayList<>();
     BufferedReader br = new BufferedReader(
-      new StringReader(new String(bytearray))
+      new StringReader(Files.readString(csvExport.getFile().toPath()))
     );
     String line;
     while ((line = br.readLine()) != null) {

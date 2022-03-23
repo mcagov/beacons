@@ -1,14 +1,11 @@
 package uk.gov.mca.beacons.api.export;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Map;
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
@@ -17,64 +14,55 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class ExportService {
 
-  private final Path localStorageDirectory;
-  private final File spreadsheetExportFilename;
   private final JobLauncher jobLauncher;
   private final JobLauncher asyncJobLauncher;
   private final Job exportToSpreadsheetJob;
+  private final Resource csvExportFile;
 
   @Autowired
   public ExportService(
     JobLauncher jobLauncher,
     @Qualifier("simpleAsyncJobLauncher") JobLauncher asyncJobLauncher,
     Job exportToSpreadsheetJob,
-    @Value("/tmp/beacons/export") Path localStorageDirectory,
-    @Value("beacons_data.csv") File spreadsheetExportFilename
+    @Value("/tmp/beacons/export/beacons_data.csv") Resource csvExportFile
   ) {
     this.jobLauncher = jobLauncher;
     this.asyncJobLauncher = asyncJobLauncher;
     this.exportToSpreadsheetJob = exportToSpreadsheetJob;
-    this.localStorageDirectory = localStorageDirectory;
-    this.spreadsheetExportFilename = spreadsheetExportFilename;
+    this.csvExportFile = csvExportFile;
   }
 
-  public byte[] getLatestExcelExport() throws IOException {
-    return Files.readAllBytes(getPathToSpreadsheetExport());
+  public Resource getLatestExcelExport()
+    throws IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    if (csvExportFile.exists()) {
+      return csvExportFile;
+    } else {
+      exportBeaconsToSpreadsheetAsync();
+      return null;
+    }
   }
 
   public void exportBeaconsToSpreadsheet()
-    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-    jobLauncher.run(
-      exportToSpreadsheetJob,
-      new JobParameters(
-        Map.of(
-          "destination",
-          new JobParameter(String.valueOf(getPathToSpreadsheetExport()))
-        )
-      )
-    );
+    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException, IOException {
+    jobLauncher.run(exportToSpreadsheetJob, getExportJobParameters());
   }
 
   public void exportBeaconsToSpreadsheetAsync()
-    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-    asyncJobLauncher.run(
-      exportToSpreadsheetJob,
-      new JobParameters(
-        Map.of(
-          "destination",
-          new JobParameter(String.valueOf(getPathToSpreadsheetExport()))
-        )
-      )
-    );
+    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException, IOException {
+    asyncJobLauncher.run(exportToSpreadsheetJob, getExportJobParameters());
   }
 
-  private Path getPathToSpreadsheetExport() {
-    return localStorageDirectory.resolve(spreadsheetExportFilename.getName());
+  private JobParameters getExportJobParameters() throws IOException {
+    JobParametersBuilder builder = new JobParametersBuilder();
+    builder.addDate("date", new Date());
+    builder.addString("destination", csvExportFile.getFile().getAbsolutePath());
+    return builder.toJobParameters();
   }
 }
