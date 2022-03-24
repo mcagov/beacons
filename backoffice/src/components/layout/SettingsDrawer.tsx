@@ -1,6 +1,6 @@
 import { Close, Settings as SettingsIcon } from "@mui/icons-material";
 import { ToggleButton, ToggleButtonGroup } from "@mui/lab";
-import { Button, Divider, IconButton, Typography } from "@mui/material";
+import { Divider, IconButton, Typography } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import { Box } from "@mui/system";
 import * as React from "react";
@@ -100,11 +100,7 @@ export function SettingsDrawer() {
                 filename={
                   "Beacons_data_export--Official_Sensitive-Personal.csv"
                 }
-              >
-                <Button color="inherit" variant="outlined" fullWidth>
-                  Export to Excel
-                </Button>
-              </AuthenticatedDownloadLink>
+              />
             </React.Fragment>
           )}
           <Typography

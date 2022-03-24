@@ -1,16 +1,23 @@
 import React, { MouseEventHandler } from "react";
 import { AuthContext } from "./auth/AuthWrapper";
+import { Button } from "@mui/material";
 
 export function AuthenticatedDownloadLink({
   url,
   filename,
-  children,
 }: {
   url: string;
   filename: string;
-  children: React.ReactNode;
 }): JSX.Element {
-  const link = React.createRef<HTMLAnchorElement>();
+  const [loading, setLoading] = React.useState(false);
+  const link = React.useRef<HTMLAnchorElement>(null);
+
+  const handleLoading = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+  };
 
   const downloadFile =
     (accessToken: string | unknown): MouseEventHandler<HTMLAnchorElement> =>
@@ -22,6 +29,11 @@ export function AuthenticatedDownloadLink({
       const result = await fetch(url, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
+
+      if (result.status === 503) {
+        handleLoading();
+        return;
+      }
 
       const blob = await result.blob();
       const href = window.URL.createObjectURL(blob);
@@ -36,9 +48,17 @@ export function AuthenticatedDownloadLink({
     <>
       <AuthContext.Consumer>
         {(auth) => (
-          <a role="button" ref={link} onClick={downloadFile(auth.accessToken)}>
-            {children}
-          </a>
+          <Button
+            component="a"
+            ref={link}
+            onClick={downloadFile(auth.accessToken)}
+            color="inherit"
+            variant="outlined"
+            fullWidth
+            disabled={loading}
+          >
+            Export to Excel
+          </Button>
         )}
       </AuthContext.Consumer>
     </>
