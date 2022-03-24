@@ -6,12 +6,16 @@ import {
   updateSearchMode,
   useUserSettings,
 } from "../../UserSettings";
-import { Divider, IconButton, Typography } from "@mui/material";
+import { Button, Divider, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { ToggleButton, ToggleButtonGroup } from "@mui/lab";
 import { FeedbackButton } from "../FeedbackButton";
+import { useLocation } from "react-router";
+import { AuthenticatedDownloadLink } from "../AuthenticatedDownloadLink";
+import { applicationConfig } from "../../config";
 
 export function SettingsDrawer() {
+  const location = useLocation();
   const [settings, dispatch] = useUserSettings();
   const [open, setOpen] = React.useState(false);
 
@@ -81,6 +85,28 @@ export function SettingsDrawer() {
               Advanced
             </ToggleButton>
           </ToggleButtonGroup>
+          {location.pathname.includes("export") && (
+            <React.Fragment>
+              <Typography
+                gutterBottom={true}
+                component={"p"}
+                variant={"subtitle2"}
+                id="feedback"
+              >
+                Export
+              </Typography>
+              <AuthenticatedDownloadLink
+                url={`${applicationConfig.apiUrl}/export/excel`}
+                filename={
+                  "Beacons_data_export--Official_Sensitive-Personal.csv"
+                }
+              >
+                <Button color="inherit" variant="outlined" fullWidth>
+                  Export to Excel
+                </Button>
+              </AuthenticatedDownloadLink>
+            </React.Fragment>
+          )}
           <Typography
             gutterBottom={true}
             component={"p"}

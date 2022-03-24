@@ -90,6 +90,9 @@ const App: FunctionComponent = () => {
               <Route path={`/legacy-beacons/:id`}>
                 <SingleLegacyBeaconRecordViewWithParam />
               </Route>
+              <Route path={`/export`}>
+                <p>How did you end up here!?!?!?</p>
+              </Route>
               <Route>Page not found. Is the address correct?</Route>
             </Switch>
           </RequireAuth>
