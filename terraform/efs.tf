@@ -5,8 +5,9 @@ resource "aws_efs_file_system" "service-filesystem" {
 }
 
 resource "aws_efs_mount_target" "service-filesystem" {
+  count           = length(aws_subnet.service-filesystem.*.id)
   file_system_id  = aws_efs_file_system.service-filesystem.id
-  subnet_id       = aws_subnet.service-filesystem.*.id
+  subnet_id       = element(aws_subnet.service-filesystem.*.id, count.index)
   security_groups = [aws_security_group.service-filesystem.id]
 }
 

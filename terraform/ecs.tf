@@ -154,7 +154,7 @@ resource "aws_ecs_task_definition" "service" {
   volume {
     name = aws_efs_file_system.service-filesystem.creation_token
     efs_volume_configuration {
-      file_system_id = aws_efs_file_system.service-filesystem.id
+      file_system_id = "${aws_efs_file_system.service-filesystem.id}.efs.${data.aws_region.current.name}"
       root_directory = "/export"
     }
   }
