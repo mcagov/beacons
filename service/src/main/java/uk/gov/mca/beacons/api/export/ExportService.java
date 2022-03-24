@@ -51,7 +51,6 @@ public class ExportService {
 
   public void exportBeaconsToSpreadsheet()
     throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException, IOException {
-    boolean success = csvExportFile.getFile().delete();
     jobLauncher.run(exportToSpreadsheetJob, getExportJobParameters());
   }
 
