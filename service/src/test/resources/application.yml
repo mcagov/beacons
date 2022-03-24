@@ -53,5 +53,4 @@ opensearch:
     enabled: false
 
 export:
-  directory:
-    /tmp/beacons/export
+  directory: /tmp/beacons/export

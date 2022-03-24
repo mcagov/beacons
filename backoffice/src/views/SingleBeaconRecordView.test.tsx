@@ -1,12 +1,12 @@
+import { createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/styles";
 import { render, screen, within } from "@testing-library/react";
 import React from "react";
 import { beaconFixture } from "../fixtures/beacons.fixture";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
+import { INotesGateway } from "../gateways/notes/INotesGateway";
 import { IUsesGateway } from "../gateways/uses/IUsesGateway";
 import { SingleBeaconRecordView } from "./SingleBeaconRecordView";
-import { INotesGateway } from "../gateways/notes/INotesGateway";
-import { ThemeProvider } from "@mui/styles";
-import { createTheme } from "@mui/material/styles";
 
 describe("Beacon record page", () => {
   let beaconsGatewayDouble: IBeaconsGateway;

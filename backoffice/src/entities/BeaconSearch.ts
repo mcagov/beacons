@@ -1,5 +1,5 @@
-import { UseEnvironment } from "./UseEnvironment";
 import { BeaconStatus } from "./BeaconStatus";
+import { UseEnvironment } from "./UseEnvironment";
 
 type DateString = string;
 

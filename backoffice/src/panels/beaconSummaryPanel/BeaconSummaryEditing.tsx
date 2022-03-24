@@ -14,6 +14,9 @@ import React, { FunctionComponent } from "react";
 import { PanelViewingState } from "../../components/dataPanel/PanelViewingState";
 import { TabulatedRow } from "../../components/dataPanel/TabulatedRow";
 import { BeaconTypes, IBeacon } from "../../entities/IBeacon";
+import manufacturerModelJson from "../../lib/manufacturerModel/manufacturerModel.json";
+import mtiJson from "../../lib/mti/mtis.json";
+import protocolJson from "../../lib/protocol/protocols.json";
 import {
   formatEmergencyContacts,
   formatOwners,
@@ -21,9 +24,6 @@ import {
   Placeholders,
   WritingStyle,
 } from "../../utils/writingStyle";
-import mtiJson from "../../lib/mti/mtis.json";
-import protocolJson from "../../lib/protocol/protocols.json";
-import manufacturerModelJson from "../../lib/manufacturerModel/manufacturerModel.json";
 
 export const BeaconSummaryEditing: FunctionComponent<{
   beacon: IBeacon;

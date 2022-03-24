@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beaconFixture } from "../../fixtures/beacons.fixture";
-import { BeaconSummaryEditing } from "./BeaconSummaryEditing";
 import { cloneDeep } from "lodash";
 import { IBeacon } from "../../entities/IBeacon";
+import { beaconFixture } from "../../fixtures/beacons.fixture";
+import { BeaconSummaryEditing } from "./BeaconSummaryEditing";
 
 describe("BeaconSummaryEditing", () => {
   it("user can type text in basic string input fields", async () => {

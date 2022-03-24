@@ -1,9 +1,9 @@
 import { Box, Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import { Theme } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
-import Toolbar from "@mui/material/Toolbar";
 import React, { FunctionComponent } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserMenu } from "../auth/UserMenu";

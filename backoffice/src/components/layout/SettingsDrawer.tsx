@@ -1,18 +1,18 @@
-import * as React from "react";
 import { Close, Settings as SettingsIcon } from "@mui/icons-material";
+import { ToggleButton, ToggleButtonGroup } from "@mui/lab";
+import { Button, Divider, IconButton, Typography } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
+import { Box } from "@mui/system";
+import * as React from "react";
+import { useLocation } from "react-router";
+import { applicationConfig } from "../../config";
 import {
   SearchMode,
   updateSearchMode,
   useUserSettings,
 } from "../../UserSettings";
-import { Button, Divider, IconButton, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import { ToggleButton, ToggleButtonGroup } from "@mui/lab";
-import { FeedbackButton } from "../FeedbackButton";
-import { useLocation } from "react-router";
 import { AuthenticatedDownloadLink } from "../AuthenticatedDownloadLink";
-import { applicationConfig } from "../../config";
+import { FeedbackButton } from "../FeedbackButton";
 
 export function SettingsDrawer() {
   const location = useLocation();

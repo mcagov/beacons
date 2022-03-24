@@ -1,6 +1,6 @@
+import { Divider } from "@mui/material";
 import React from "react";
 import { BeaconSearchResult } from "../../../entities/BeaconSearch";
-import { Divider } from "@mui/material";
 import { Field } from "./Field";
 
 export function Owner({

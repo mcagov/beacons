@@ -1,23 +1,23 @@
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
-import createStyles from "@mui/styles/createStyles";
-import React from "react";
-import { PageContent } from "../components/layout/PageContent";
-import { Alert, Paper, Box } from "@mui/material";
 import {
-  ReactiveBase,
   DataSearch,
+  ReactiveBase,
   ReactiveList,
 } from "@appbaseio/reactivesearch";
-import { searchUrl } from "../utils/urls";
+import { Alert, Box, Paper } from "@mui/material";
+import { Theme } from "@mui/material/styles";
+import createStyles from "@mui/styles/createStyles";
+import makeStyles from "@mui/styles/makeStyles";
+import React from "react";
 import { ErrorState } from "../components/dataPanel/PanelErrorState";
 import { LoadingState } from "../components/dataPanel/PanelLoadingState";
+import { PageContent } from "../components/layout/PageContent";
+import { ResultCard } from "../components/search/result/ResultCard";
 import { WhatCanISearchFor } from "../components/search/WhatCanISearchFor";
 import {
   BeaconSearchItem,
   parseBeaconSearchItem,
 } from "../entities/BeaconSearch";
-import { ResultCard } from "../components/search/result/ResultCard";
+import { searchUrl } from "../utils/urls";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -1,5 +1,3 @@
-import { BeaconSearchResult } from "../../../entities/BeaconSearch";
-import { UseEnvironment } from "../../../entities/UseEnvironment";
 import {
   AirplanemodeActive,
   Anchor,
@@ -7,6 +5,8 @@ import {
   Landscape,
 } from "@mui/icons-material";
 import { Chip, Stack } from "@mui/material";
+import { BeaconSearchResult } from "../../../entities/BeaconSearch";
+import { UseEnvironment } from "../../../entities/UseEnvironment";
 
 export function Environments({
   beaconUses,

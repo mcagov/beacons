@@ -1,4 +1,4 @@
-import { BeaconSearchResult } from "../../../entities/BeaconSearch";
+import { Podcasts } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -6,12 +6,12 @@ import {
   CardContent,
   CardHeader,
 } from "@mui/material";
-import { Podcasts } from "@mui/icons-material";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { BeaconSearchResult } from "../../../entities/BeaconSearch";
+import { BeaconDetails } from "./BeaconDetails";
 import { Environments } from "./Environments";
 import { Uses } from "./Uses";
-import { BeaconDetails } from "./BeaconDetails";
-import React from "react";
 
 export function ResultCard({
   result,

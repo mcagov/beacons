@@ -1,6 +1,6 @@
+import { IEmergencyContact } from "../../entities/IEmergencyContact";
 import { IOwner } from "../../entities/IOwner";
 import { IUse } from "../../entities/IUse";
-import { IEmergencyContact } from "../../entities/IEmergencyContact";
 
 export interface IRegistrationResponse {
   id: string;

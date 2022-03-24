@@ -1,4 +1,9 @@
-import { Chip, Link, Paper } from "@mui/material";
+import MaterialTable, {
+  Column,
+  Icons,
+  MTableBodyRow,
+  Query,
+} from "@material-table/core";
 import {
   AddBox,
   ArrowDownward,
@@ -16,17 +21,12 @@ import {
   Search,
   ViewColumn,
 } from "@mui/icons-material";
+import { Chip, Link, Paper } from "@mui/material";
 import {
   GetAllBeaconsFilters,
   GetAllBeaconsSort,
   IBeaconsGateway,
 } from "gateways/beacons/IBeaconsGateway";
-import MaterialTable, {
-  Column,
-  Icons,
-  MTableBodyRow,
-  Query,
-} from "@material-table/core";
 import React, { forwardRef, FunctionComponent } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Placeholders } from "utils/writingStyle";

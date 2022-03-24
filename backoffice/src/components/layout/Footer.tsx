@@ -1,7 +1,7 @@
 import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
-import Toolbar from "@mui/material/Toolbar";
 import React, { FunctionComponent } from "react";
 
 const useStyles = makeStyles(() =>

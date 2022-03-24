@@ -1,4 +1,4 @@
-import { Chip } from "@mui/material";
+import { ResultCard } from "@appbaseio/reactivesearch";
 import {
   AirplanemodeActive,
   Anchor,
@@ -6,9 +6,9 @@ import {
   Landscape,
   Podcasts,
 } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom";
-import { ResultCard } from "@appbaseio/reactivesearch";
+import { Chip } from "@mui/material";
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { BeaconStatus } from "../../entities/BeaconStatus";
 import { UseEnvironment } from "../../entities/UseEnvironment";
 

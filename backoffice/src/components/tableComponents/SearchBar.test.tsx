@@ -1,11 +1,11 @@
-import React, { forwardRef } from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { SearchBar, SearchbarProps } from "./SearchBar";
 import { Icons } from "@material-table/core";
 import { Clear, Search } from "@mui/icons-material";
-import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/styles";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import React, { forwardRef } from "react";
+import { SearchBar, SearchbarProps } from "./SearchBar";
 
 const tableIcons: Icons = {
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),

@@ -17,6 +17,7 @@ import org.springframework.core.io.Resource;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
 class ExportServiceIntegrationTest extends WebIntegrationTest {
+
   @Autowired
   private ExportService exportService;
 

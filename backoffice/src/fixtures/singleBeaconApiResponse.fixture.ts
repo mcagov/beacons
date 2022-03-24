@@ -1,9 +1,9 @@
-import { deepFreeze } from "../utils";
+import { Environments } from "../entities/IUse";
 import {
   IRegistrationResponse,
   UseRegistrationResponse,
 } from "../gateways/mappers/IRegistrationResponse";
-import { Environments } from "../entities/IUse";
+import { deepFreeze } from "../utils";
 
 const getUseResponseJson = (
   mainUse: boolean,

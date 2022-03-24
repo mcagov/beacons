@@ -17,16 +17,16 @@
  *   notified. Clicking the X will also trigger a blur event so handleBlur must allow handleClick
  *   to take precedence.
  */
-import React from "react";
+import { Icons } from "@material-table/core";
 import {
   IconButton,
   InputAdornment,
   TextField,
-  Tooltip,
   Theme,
+  Tooltip,
 } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
-import { Icons } from "@material-table/core";
+import React from "react";
 import {
   clearInternalValue,
   setEditing,

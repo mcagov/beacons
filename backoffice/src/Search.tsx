@@ -1,9 +1,9 @@
 import React from "react";
-import { useUserSettings } from "./UserSettings";
-import { DefaultSearchView } from "./views/DefaultSearchView";
-import { BeaconRecordsListView as AdvancedSearchView } from "./views/BeaconSearchListView";
-import { BeaconsGateway } from "./gateways/beacons/BeaconsGateway";
 import { SearchErrorBoundary } from "./components/search/SearchErrorBoundary";
+import { BeaconsGateway } from "./gateways/beacons/BeaconsGateway";
+import { useUserSettings } from "./UserSettings";
+import { BeaconRecordsListView as AdvancedSearchView } from "./views/BeaconSearchListView";
+import { DefaultSearchView } from "./views/DefaultSearchView";
 
 export function Search({
   beaconsGateway,

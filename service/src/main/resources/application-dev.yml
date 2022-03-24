@@ -7,5 +7,4 @@ opensearch:
     enabled: false
 
 export:
-  directory:
-    ${EXPORT_DIRECTORY:/tmp/beacons/export}
+  directory: ${EXPORT_DIRECTORY:/tmp/beacons/export}

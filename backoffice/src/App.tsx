@@ -12,19 +12,19 @@ import {
 } from "react-router-dom";
 import "./App.scss";
 import { AuthWrapper } from "./components/auth/AuthWrapper";
+import { ErrorState } from "./components/dataPanel/PanelErrorState";
+import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { Footer } from "./components/layout/Footer";
 import { Navigation } from "./components/layout/Navigation";
 import { BeaconRequestMapper } from "./gateways/mappers/BeaconRequestMapper";
 import { BeaconResponseMapper } from "./gateways/mappers/BeaconResponseMapper";
 import { LegacyBeaconResponseMapper } from "./gateways/mappers/LegacyBeaconResponseMapper";
 import { NotesGateway } from "./gateways/notes/NotesGateway";
+import { useGetAuthState } from "./lib/useGetAuthState";
+import { Search } from "./Search";
+import { UserSettingsProvider } from "./UserSettings";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
-import { ErrorState } from "./components/dataPanel/PanelErrorState";
-import { LoadingState } from "./components/dataPanel/PanelLoadingState";
-import { useGetAuthState } from "./lib/useGetAuthState";
-import { UserSettingsProvider } from "./UserSettings";
-import { Search } from "./Search";
 
 interface ResourceParams {
   id: string;

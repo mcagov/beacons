@@ -1,7 +1,7 @@
-import React from "react";
-import { ErrorState } from "../dataPanel/PanelErrorState";
-import { Link as RouterLink } from "react-router-dom";
 import { Typography } from "@mui/material";
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { ErrorState } from "../dataPanel/PanelErrorState";
 
 interface Props {
   children: React.ReactNode;

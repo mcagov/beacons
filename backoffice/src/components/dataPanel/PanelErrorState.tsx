@@ -1,5 +1,5 @@
-import { Box, Typography } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { Box, Typography } from "@mui/material";
 import { FunctionComponent } from "react";
 
 interface IPanelError {

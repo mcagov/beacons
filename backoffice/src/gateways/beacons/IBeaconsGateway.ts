@@ -1,7 +1,7 @@
 import { IBeaconSearchResult } from "entities/IBeaconSearchResult";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
-import { IBeacon } from "../../entities/IBeacon";
 import { BeaconRowData } from "../../components/BeaconsTable";
+import { IBeacon } from "../../entities/IBeacon";
 
 export type GetAllBeaconsFilters = Partial<
   Pick<
