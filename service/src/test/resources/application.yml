@@ -51,3 +51,7 @@ opensearch:
     https: false
   credentials:
     enabled: false
+
+export:
+  directory:
+    /tmp/beacons/export

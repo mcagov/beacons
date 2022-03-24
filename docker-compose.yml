@@ -59,6 +59,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
       SPRING_PROFILES_ACTIVE: dev,seed
       OPENSEARCH_ENDPOINT: opensearch
+      EXPORT_DIRECTORY: /var/export
     volumes:
       - /tmp/beacons:/var/export
 

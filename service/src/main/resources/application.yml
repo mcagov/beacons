@@ -66,3 +66,7 @@ opensearch:
     enabled: true
     user: ${OPENSEARCH_USER:beacon_service}
     password: ${OPENSEARCH_PASSWORD:password}
+
+export:
+  directory: /var/export
+

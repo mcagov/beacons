@@ -5,3 +5,7 @@ opensearch:
     https: false
   credentials:
     enabled: false
+
+export:
+  directory:
+    ${EXPORT_DIRECTORY:/tmp/beacons/export}

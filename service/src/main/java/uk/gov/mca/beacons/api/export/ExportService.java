@@ -31,7 +31,7 @@ public class ExportService {
     JobLauncher jobLauncher,
     @Qualifier("simpleAsyncJobLauncher") JobLauncher asyncJobLauncher,
     Job exportToSpreadsheetJob,
-    @Value("file:/var/export/beacons_data.csv") Resource csvExportFile
+    @Value("file:${export.directory}/beacons_data.csv") Resource csvExportFile
   ) {
     this.jobLauncher = jobLauncher;
     this.asyncJobLauncher = asyncJobLauncher;
@@ -51,6 +51,7 @@ public class ExportService {
 
   public void exportBeaconsToSpreadsheet()
     throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException, IOException {
+    boolean success = csvExportFile.getFile().delete();
     jobLauncher.run(exportToSpreadsheetJob, getExportJobParameters());
   }
 
