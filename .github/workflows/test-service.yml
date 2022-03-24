@@ -24,8 +24,6 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      - name: Run prettier
-        run: npm run format:check
       - name: Docker lint
         uses: brpaz/hadolint-action@v1.5.0
         with:

@@ -1,14 +1,14 @@
 {
-  "name": "mca-beacons-integration",
+  "name": "mca-beacons",
   "version": "1.0.0",
-  "description": "Beacons Integration Project",
+  "description": "Beacons formatting scripts",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
     "adr": "adr-log -d docs/adr -i",
-    "format": "prettier --write '**/*.{json,md,yml}'",
-    "format:check": "prettier --check '**/*.{json,md.yml}'"
+    "format": "prettier --write './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
+    "format:check": "prettier --check './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'"
   },
   "husky": {
     "hooks": {
@@ -28,7 +28,10 @@
     "adr-log": "^2.2.0",
     "husky": "^4.3.8",
     "prettier": "2.3.2",
-    "pretty-quick": "^3.1.1"
+    "prettier-plugin-java": "1.3.1",
+    "prettier-plugin-organize-imports": "^2.3.3",
+    "pretty-quick": "^3.1.1",
+    "typescript": "^4.6.2"
   },
   "engines": {
     "node": ">=12.20.x <=14.15.x",

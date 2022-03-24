@@ -31,8 +31,6 @@ jobs:
           CYPRESS_INSTALL_BINARY: 0
       - name: Code linting
         run: npm run lint
-      - name: Formatting
-        run: npm run format:check
       - name: Docker linting
         uses: brpaz/hadolint-action@v1.5.0
         with:

@@ -9,8 +9,7 @@
     "test:watch": "react-scripts test --watch",
     "eject": "react-scripts eject",
     "lint": "eslint src",
-    "lint:fix": "eslint --fix src",
-    "format": "prettier --write '**/*.{js,jsx,json,ts,tsx,yml,md,html,scss,css}'"
+    "lint:fix": "eslint --fix src"
   },
   "dependencies": {
     "@appbaseio/reactivesearch": "^3.28.0",
@@ -36,8 +35,6 @@
     "axios": "^0.21.1",
     "date-fns": "^2.21.3",
     "eslint": "^8.9.0",
-    "eslint-config-prettier": "^8.4.0",
-    "eslint-plugin-prettier": "^4.0.0",
     "fontsource-roboto": "^4.0.0",
     "formik": "^2.2.9",
     "inflected": "^2.1.0",
@@ -59,19 +56,15 @@
   },
   "eslintConfig": {
     "plugins": [
-      "react",
-      "prettier"
+      "react"
     ],
     "extends": [
       "react-app",
-      "react-app/jest",
-      "prettier"
+      "react-app/jest"
     ]
   },
   "lint-staged": {
-    "*.{js, jsx, ts, tsx}": "eslint --cache --fix",
-    "*.{js,jsx,json,ts,tsx,yml,md,html,scss,css}": "prettier --write",
-    "*.{tf}": "terraform fmt --recursive"
+    "*.{js, jsx, ts, tsx}": "eslint --cache --fix"
   },
   "browserslist": {
     "production": [
