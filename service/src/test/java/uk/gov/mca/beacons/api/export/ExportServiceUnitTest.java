@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersInvalidException;
@@ -26,20 +27,27 @@ import org.springframework.core.io.Resource;
 @ExtendWith(MockitoExtension.class)
 public class ExportServiceUnitTest {
 
-  @Mock(name = "simpleAsyncJobLauncher")
-  private JobLauncher asyncJobLauncher;
+  private final JobLauncher jobLauncher;
+  private final JobLauncher asyncJobLauncher;
+  private final Job exportToSpreadsheetJob;
+  private final Resource csvExportFile;
 
-  @Mock
-  private JobLauncher jobLauncher;
-
-  @Mock
-  private Job exportToSpreadsheetJob;
-
-  @Mock
-  private Resource csvExportFile;
-
-  @InjectMocks
   ExportService exportService;
+
+  public ExportServiceUnitTest() {
+    this.jobLauncher = Mockito.mock(JobLauncher.class);
+    this.asyncJobLauncher = Mockito.mock(JobLauncher.class);
+    this.exportToSpreadsheetJob = Mockito.mock(Job.class);
+    this.csvExportFile = Mockito.mock(Resource.class);
+
+    this.exportService =
+      new ExportService(
+        jobLauncher,
+        asyncJobLauncher,
+        exportToSpreadsheetJob,
+        csvExportFile
+      );
+  }
 
   @Test
   public void whenThereIsNoPreviouslyExportedSpreadsheet_ThenStartExportingAndReturnNull()
