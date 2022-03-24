@@ -1,15 +1,16 @@
 package uk.gov.mca.beacons.api;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 import org.apache.http.HttpHost;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.RestClient;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -23,6 +24,16 @@ public abstract class BaseIntegrationTest {
 
   @Autowired
   protected FixtureHelper fixtureHelper;
+
+  static final Path tempDir;
+
+  static {
+    try {
+      tempDir = Files.createTempDirectory("something");
+    } catch (IOException e) {
+      throw new RuntimeException();
+    }
+  }
 
   static final PostgreSQLContainer<?> POSTGRE_SQL_CONTAINER = new PostgreSQLContainer<>(
     DockerImageName.parse("postgres:12")
@@ -65,6 +76,7 @@ public abstract class BaseIntegrationTest {
       "opensearch.source.port",
       OPENSEARCH_CONTAINER::getFirstMappedPort
     );
+    registry.add("export.directory", tempDir::toString);
   }
 
   @Autowired
@@ -84,6 +96,11 @@ public abstract class BaseIntegrationTest {
       "legacy_beacon",
       "person"
     );
+  }
+
+  @AfterEach
+  public void cleanDirectory() throws IOException {
+    FileUtils.cleanDirectory(tempDir.toFile());
   }
 
   static RestClient restClient = RestClient

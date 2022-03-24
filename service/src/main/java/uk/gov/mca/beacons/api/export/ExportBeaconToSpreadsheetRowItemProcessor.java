@@ -1,6 +1,5 @@
 package uk.gov.mca.beacons.api.export;
 
-import java.util.Objects;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
