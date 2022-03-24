@@ -31,7 +31,7 @@ public class ExportService {
     JobLauncher jobLauncher,
     @Qualifier("simpleAsyncJobLauncher") JobLauncher asyncJobLauncher,
     Job exportToSpreadsheetJob,
-    @Value("/tmp/beacons/export/beacons_data.csv") Resource csvExportFile
+    @Value("file:/var/export/beacons_data.csv") Resource csvExportFile
   ) {
     this.jobLauncher = jobLauncher;
     this.asyncJobLauncher = asyncJobLauncher;
