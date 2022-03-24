@@ -29,7 +29,8 @@ public abstract class BaseIntegrationTest {
 
   static {
     try {
-      tempDir = Files.createTempDirectory("something");
+      tempDir = Files.createTempDirectory("beacons-temp-test");
+      FileUtils.forceDeleteOnExit(tempDir.toFile());
     } catch (IOException e) {
       throw new RuntimeException();
     }
@@ -76,6 +77,7 @@ public abstract class BaseIntegrationTest {
       "opensearch.source.port",
       OPENSEARCH_CONTAINER::getFirstMappedPort
     );
+    System.out.println("🗂 Setting the temporary test filesystem directory to " + tempDir.toString());
     registry.add("export.directory", tempDir::toString);
   }
 
