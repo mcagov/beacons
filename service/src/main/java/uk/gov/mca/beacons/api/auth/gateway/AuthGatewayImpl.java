@@ -64,5 +64,6 @@ public class AuthGatewayImpl implements AuthGateway {
 
   public enum SupportedPermissions {
     APPROLE_UPDATE_RECORDS,
+    APPROLE_DATA_EXPORTER,
   }
 }
