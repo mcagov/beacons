@@ -23,7 +23,6 @@ webapp:
 .PHONY: backoffice
 backoffice:
 	@echo "💅 Starting the Backoffice in dev mode..."
-	@open http://localhost:3001
 	@cd ./backoffice && npm run start
 
 ##
@@ -33,7 +32,7 @@ backoffice:
 backing-services:
 	@echo "🐳 Starting Postgres, Redis and OpenSearch..."
 	# Don't try separating these. Docker compose does not like working in parallel, so they all need to come up at once
-	@docker compose up postgres redis opensearch opensearch-proxy opensearch-dashboards service
+	@docker compose up postgres redis opensearch opensearch-proxy opensearch-dashboards service --build
 
 .PHONY: backoffice-stubs
 backoffice-stubs:
