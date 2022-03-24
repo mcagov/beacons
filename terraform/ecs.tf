@@ -168,10 +168,10 @@ resource "aws_ecs_task_definition" "service" {
         hostPort : var.service_port
       }
     ],
-    mountPoints: [
+    mountPoints : [
       {
-        containerPath: "/var/export",
-        sourceVolume: aws_efs_file_system.service-filesystem.creation_token
+        containerPath : "/var/export",
+        sourceVolume : aws_efs_file_system.service-filesystem.creation_token
       }
     ],
     environment : [
