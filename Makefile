@@ -33,7 +33,7 @@ backoffice:
 backing-services:
 	@echo "🐳 Starting Postgres, Redis and OpenSearch..."
 	# Don't try separating these. Docker compose does not like working in parallel, so they all need to come up at once
-	@docker compose up postgres redis opensearch opensearch-proxy opensearch-dashboards
+	@docker compose up postgres redis opensearch opensearch-proxy opensearch-dashboards service
 
 .PHONY: backoffice-stubs
 backoffice-stubs:
