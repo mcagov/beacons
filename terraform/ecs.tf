@@ -151,6 +151,14 @@ resource "aws_ecs_task_definition" "service" {
   cpu                      = var.service_fargate_cpu
   memory                   = var.service_fargate_memory
 
+  volume {
+    name = aws_efs_file_system.service-filesystem.creation_token
+    efs_volume_configuration {
+      file_system_id = aws_efs_file_system.service-filesystem.id
+      root_directory = "/export"
+    }
+  }
+
   container_definitions = jsonencode([{
     name : "beacons-service",
     image : "${data.aws_ecr_repository.service.repository_url}:${var.service_image_tag}",
@@ -158,6 +166,12 @@ resource "aws_ecs_task_definition" "service" {
       {
         containerPort : var.service_port
         hostPort : var.service_port
+      }
+    ],
+    mountPoints: [
+      {
+        containerPath: "/var/export",
+        sourceVolume: aws_efs_file_system.service-filesystem.creation_token
       }
     ],
     environment : [
