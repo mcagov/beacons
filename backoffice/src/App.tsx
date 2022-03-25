@@ -12,10 +12,12 @@ import {
 } from "react-router-dom";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
+import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
 import { ErrorState } from "./components/dataPanel/PanelErrorState";
 import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { Footer } from "./components/layout/Footer";
 import { Navigation } from "./components/layout/Navigation";
+import { applicationConfig } from "./config";
 import { BeaconRequestMapper } from "./gateways/mappers/BeaconRequestMapper";
 import { BeaconResponseMapper } from "./gateways/mappers/BeaconResponseMapper";
 import { LegacyBeaconResponseMapper } from "./gateways/mappers/LegacyBeaconResponseMapper";
@@ -92,6 +94,11 @@ const App: FunctionComponent = () => {
               </Route>
               <Route path={`/export`}>
                 <p>How did you end up here!?!?!?</p>
+                <AuthenticatedPOSTButton
+                  uri={`${applicationConfig.apiUrl}/export/excel`}
+                >
+                  Trigger export job
+                </AuthenticatedPOSTButton>
               </Route>
               <Route>Page not found. Is the address correct?</Route>
             </Switch>

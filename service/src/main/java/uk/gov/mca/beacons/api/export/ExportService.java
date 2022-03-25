@@ -71,11 +71,21 @@ public class ExportService {
   /**
    * Synchronously start the exportToSpreadsheetJob using the default JobLauncher.
    *
-   * @throws SpreadsheetExportFailedException when the export fails
+   * @throws SpreadsheetExportFailedException if the export fails
    */
   public void exportBeaconsToSpreadsheet()
     throws SpreadsheetExportFailedException {
     exportBeaconsToSpreadsheet(jobLauncher);
+  }
+
+  /**
+   * Synchronously start the exportToSpreadsheetJob using the default JobLauncher.
+   *
+   * @throws SpreadsheetExportFailedException if the export fails
+   */
+  public void exportBeaconsToSpreadsheetAsync()
+    throws SpreadsheetExportFailedException {
+    exportBeaconsToSpreadsheet(asyncJobLauncher);
   }
 
   /**
