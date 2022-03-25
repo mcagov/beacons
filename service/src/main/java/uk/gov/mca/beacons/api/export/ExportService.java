@@ -28,6 +28,11 @@ public class ExportService {
   private final Job exportToSpreadsheetJob;
   private final Resource csvExportFile;
 
+  private enum logMessages {
+    SPREADSHEET_EXPORT_FAILED,
+    NO_EXISTING_BACKUP_FOUND,
+  }
+
   @Autowired
   public ExportService(
     JobLauncher jobLauncher,
@@ -41,30 +46,82 @@ public class ExportService {
     this.csvExportFile = csvExportFile;
   }
 
+  /**
+   * Return the most recently saved backup of beacons data in .csv format
+   *
+   * If no backup is found, trigger a new backup export and return null
+   *
+   * @return Resource | null - The latest spreadsheet export, or null if it doesn't exist
+   * @throws SpreadsheetExportFailedException if the
+   */
   public Resource getLatestExcelExport()
-    throws IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-    if (csvExportFile.exists()) {
-      return csvExportFile;
-    } else {
-      exportBeaconsToSpreadsheetAsync();
+    throws SpreadsheetExportFailedException {
+    if (!csvExportFile.exists()) {
+      log.warn(
+        "[{}]: Expected there to be an existing backup of the data, but couldn't find one",
+        logMessages.NO_EXISTING_BACKUP_FOUND
+      );
+      exportBeaconsToSpreadsheet(asyncJobLauncher);
       return null;
+    }
+
+    return csvExportFile;
+  }
+
+  /**
+   * Synchronously start the exportToSpreadsheetJob using the default JobLauncher.
+   *
+   * @throws SpreadsheetExportFailedException when the export fails
+   */
+  public void exportBeaconsToSpreadsheet()
+    throws SpreadsheetExportFailedException {
+    exportBeaconsToSpreadsheet(jobLauncher);
+  }
+
+  /**
+   * Use an alternative jobLauncher, such as the simpleAsyncJobLauncher, to launch the exportToSpreadsheetJob
+   *
+   * @param jobLauncher a Spring Batch JobLauncher used to start the job
+   * @throws SpreadsheetExportFailedException when the export fails
+   */
+  public void exportBeaconsToSpreadsheet(JobLauncher jobLauncher)
+    throws SpreadsheetExportFailedException {
+    try {
+      jobLauncher.run(exportToSpreadsheetJob, getExportJobParameters());
+    } catch (
+      JobInstanceAlreadyCompleteException
+      | JobExecutionAlreadyRunningException
+      | JobRestartException
+      | JobParametersInvalidException e
+    ) {
+      log.error(
+        "{}: Tried to launch exportToSpreadsheetJob with jobLauncher {} but failed",
+        logMessages.SPREADSHEET_EXPORT_FAILED,
+        jobLauncher.getClass()
+      );
+      throw new SpreadsheetExportFailedException(e);
     }
   }
 
-  public void exportBeaconsToSpreadsheet()
-    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException, IOException {
-    jobLauncher.run(exportToSpreadsheetJob, getExportJobParameters());
-  }
-
-  public void exportBeaconsToSpreadsheetAsync()
-    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException, IOException {
-    asyncJobLauncher.run(exportToSpreadsheetJob, getExportJobParameters());
-  }
-
-  private JobParameters getExportJobParameters() throws IOException {
+  private JobParameters getExportJobParameters()
+    throws SpreadsheetExportFailedException {
     JobParametersBuilder builder = new JobParametersBuilder();
     builder.addDate("date", new Date());
-    builder.addString("destination", csvExportFile.getFile().getAbsolutePath());
+
+    try {
+      builder.addString(
+        "destination",
+        csvExportFile.getFile().getAbsolutePath()
+      );
+    } catch (IOException e) {
+      log.error(
+        "{}: Tried to access file {} but failed",
+        logMessages.SPREADSHEET_EXPORT_FAILED,
+        csvExportFile.getDescription()
+      );
+      throw new SpreadsheetExportFailedException(e);
+    }
+
     return builder.toJobParameters();
   }
 }

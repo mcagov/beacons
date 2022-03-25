@@ -49,7 +49,7 @@ public class ExportServiceUnitTest {
 
   @Test
   public void whenThereIsNoPreviouslyExportedSpreadsheet_ThenStartExportingAndReturnNull()
-    throws IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    throws SpreadsheetExportFailedException, IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
     given(csvExportFile.exists()).willReturn(false);
     given(csvExportFile.getFile())
       .willReturn(new File("/tmp/directory/does-not/exist.csv"));
@@ -62,7 +62,7 @@ public class ExportServiceUnitTest {
 
   @Test
   public void whenThereIsAPreviouslyExportedSpreadsheet_ThenReturnTheExport()
-    throws IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    throws SpreadsheetExportFailedException {
     given(csvExportFile.exists()).willReturn(true);
 
     Resource actualCsvExportFile = exportService.getLatestExcelExport();

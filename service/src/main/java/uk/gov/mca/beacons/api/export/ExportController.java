@@ -1,10 +1,5 @@
 package uk.gov.mca.beacons.api.export;
 
-import java.io.IOException;
-import org.springframework.batch.core.JobParametersInvalidException;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +23,7 @@ public class ExportController {
 
   @GetMapping(value = "/excel")
   public ResponseEntity<Resource> downloadExcelSpreadsheet()
-    throws IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    throws SpreadsheetExportFailedException {
     Resource latestExport = exportService.getLatestExcelExport();
 
     if (latestExport == null) {
