@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
@@ -40,9 +41,9 @@ public class SpreadsheetRow {
     this.ownerName = legacyBeacon.getOwnerName();
   }
 
-  public SpreadsheetRow(Beacon beacon, BeaconOwner beaconOwner) {
+  public SpreadsheetRow(Beacon beacon, @Nullable BeaconOwner beaconOwner) {
     this.id = Objects.requireNonNull(beacon.getId()).unwrap();
     this.hexId = beacon.getHexId();
-    this.ownerName = beaconOwner.getFullName();
+    this.ownerName = beaconOwner != null ? beaconOwner.getFullName() : null;
   }
 }
