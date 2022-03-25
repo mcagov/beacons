@@ -56,16 +56,12 @@ public class ExportService {
    */
   public Resource getLatestExcelExport()
     throws SpreadsheetExportFailedException {
-    if (!csvExportFile.exists()) {
-      log.warn(
-        "[{}]: Expected there to be an existing backup of the data, but couldn't find one",
-        logMessages.NO_EXISTING_BACKUP_FOUND
-      );
+    if (exportIsReady()) {
+      return csvExportFile;
+    } else {
       exportBeaconsToSpreadsheet(asyncJobLauncher);
       return null;
     }
-
-    return csvExportFile;
   }
 
   /**
@@ -79,7 +75,7 @@ public class ExportService {
   }
 
   /**
-   * Synchronously start the exportToSpreadsheetJob using the default JobLauncher.
+   * Asynchronously start the exportToSpreadsheetJob using the default JobLauncher.
    *
    * @throws SpreadsheetExportFailedException if the export fails
    */
@@ -88,12 +84,17 @@ public class ExportService {
     exportBeaconsToSpreadsheet(asyncJobLauncher);
   }
 
-  /**
-   * Use an alternative jobLauncher, such as the simpleAsyncJobLauncher, to launch the exportToSpreadsheetJob
-   *
-   * @param jobLauncher a Spring Batch JobLauncher used to start the job
-   * @throws SpreadsheetExportFailedException when the export fails
-   */
+  private boolean exportIsReady() {
+    if (!csvExportFile.exists()) {
+      log.warn(
+        "[{}]: Expected there to be an existing backup of the data, but couldn't find one",
+        logMessages.NO_EXISTING_BACKUP_FOUND
+      );
+    }
+
+    return csvExportFile.exists();
+  }
+
   private void exportBeaconsToSpreadsheet(JobLauncher jobLauncher)
     throws SpreadsheetExportFailedException {
     try {
@@ -105,7 +106,7 @@ public class ExportService {
       | JobParametersInvalidException e
     ) {
       log.error(
-        "{}: Tried to launch exportToSpreadsheetJob with jobLauncher {} but failed",
+        "[{}]: Tried to launch exportToSpreadsheetJob with jobLauncher {} but failed",
         logMessages.SPREADSHEET_EXPORT_FAILED,
         jobLauncher.getClass()
       );
@@ -125,7 +126,7 @@ public class ExportService {
       );
     } catch (IOException e) {
       log.error(
-        "{}: Tried to access file {} but failed",
+        "[{}]: Tried to access file {} but failed",
         logMessages.SPREADSHEET_EXPORT_FAILED,
         csvExportFile.getDescription()
       );
