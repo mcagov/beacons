@@ -35,6 +35,10 @@ public class BeaconMocker {
     return accountHolder;
   }
 
+  public static Beacon getBeacon() {
+    return getBeacon(getAccountHolder().getId());
+  }
+
   public static Beacon getBeacon(AccountHolderId accountHolderId) {
     Beacon beacon = mock(Beacon.class);
     given(beacon.getId()).willReturn(new BeaconId(UUID.randomUUID()));
