@@ -11,6 +11,7 @@ import {
   updateSearchMode,
   useUserSettings,
 } from "../../UserSettings";
+import { OnlyVisibleToUsersWith } from "../auth/OnlyVisibleToUsersWith";
 import { AuthenticatedDownloadLink } from "../AuthenticatedDownloadLink";
 import { FeedbackButton } from "../FeedbackButton";
 
@@ -85,24 +86,26 @@ export function SettingsDrawer() {
               Advanced
             </ToggleButton>
           </ToggleButtonGroup>
-          {location.pathname.includes("export") && (
-            <React.Fragment>
-              <Typography
-                gutterBottom={true}
-                component={"p"}
-                variant={"subtitle2"}
-                id="feedback"
-              >
-                Export
-              </Typography>
-              <AuthenticatedDownloadLink
-                url={`${applicationConfig.apiUrl}/export/excel`}
-                filename={
-                  "Beacons_data_export--Official_Sensitive-Personal.csv"
-                }
-              />
-            </React.Fragment>
-          )}
+          <OnlyVisibleToUsersWith role={"DATA_EXPORTER"}>
+            {location.pathname.includes("export") && (
+              <React.Fragment>
+                <Typography
+                  gutterBottom={true}
+                  component={"p"}
+                  variant={"subtitle2"}
+                  id="feedback"
+                >
+                  Export
+                </Typography>
+                <AuthenticatedDownloadLink
+                  url={`${applicationConfig.apiUrl}/export/excel`}
+                  filename={
+                    "Beacons_data_export--Official_Sensitive-Personal.csv"
+                  }
+                />
+              </React.Fragment>
+            )}
+          </OnlyVisibleToUsersWith>
           <Typography
             gutterBottom={true}
             component={"p"}

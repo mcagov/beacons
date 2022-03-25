@@ -11,6 +11,7 @@ describe("UserMenu", () => {
       user: {
         username: "steve.stevington@mcga.gov.uk",
         displayName: "Steve Stevington",
+        roles: [],
       },
       accessToken: "mockAccessTokenString",
       logout: jest.fn(),

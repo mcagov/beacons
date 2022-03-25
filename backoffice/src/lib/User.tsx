@@ -1,7 +1,7 @@
 export type User = {
-  username: string | unknown;
-  displayName: string | unknown;
-  roles: Role[] | unknown;
+  username: string | null;
+  displayName: string | null;
+  roles: Role[];
 };
 
 export type Role =

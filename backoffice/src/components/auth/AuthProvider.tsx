@@ -1,11 +1,11 @@
 import { AccountInfo, IPublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import React, { createContext, FunctionComponent, useEffect } from "react";
-import { User } from "../../lib/User";
+import { Role, User } from "../../lib/User";
 
 export interface IAuthContext {
-  user: User | unknown;
-  accessToken: string | unknown;
+  user: User | null;
+  accessToken: string | null;
   logout: () => void;
 }
 
@@ -47,13 +47,12 @@ export const AuthProvider: FunctionComponent<{
 };
 
 const createUser = (accountInfo: AccountInfo): User => {
-  const claims = accountInfo?.idTokenClaims as Record<string, string>;
-  const roles = claims && claims.hasOwnProperty("roles") ? claims.roles : [];
-
   return {
-    username: accountInfo?.username,
-    displayName: accountInfo?.name,
-    roles: roles,
+    username: accountInfo?.username ?? null,
+    displayName: accountInfo?.name ?? null,
+    roles:
+      ((accountInfo?.idTokenClaims as Record<string, string>)
+        ?.roles as unknown as Role[]) ?? null,
   };
 };
 
