@@ -1,7 +1,8 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { FunctionComponent, useState } from "react";
-import { AuthContext } from "./AuthWrapper";
+import { User } from "../../lib/User";
+import { AuthContext } from "./AuthProvider";
 
 export const UserMenu: FunctionComponent = () => {
   const [anchorElement, setAnchorElement] = useState(null);
@@ -26,7 +27,7 @@ export const UserMenu: FunctionComponent = () => {
           >
             <AccountCircleIcon />
             &nbsp;
-            {auth.user.displayName}
+            {auth.user && (auth.user as User).displayName}
           </Button>
           <Menu
             id="user-menu"

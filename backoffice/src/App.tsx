@@ -11,7 +11,7 @@ import {
   useParams,
 } from "react-router-dom";
 import "./App.scss";
-import { AuthWrapper } from "./components/auth/AuthWrapper";
+import { AuthProvider } from "./components/auth/AuthProvider";
 import { ErrorState } from "./components/dataPanel/PanelErrorState";
 import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { Footer } from "./components/layout/Footer";
@@ -75,7 +75,7 @@ const App: FunctionComponent = () => {
   };
 
   return (
-    <AuthWrapper pca={pca} authGateway={authGateway}>
+    <AuthProvider pca={pca}>
       <UserSettingsProvider>
         <Router basename="/backoffice">
           <Navigation />
@@ -99,7 +99,7 @@ const App: FunctionComponent = () => {
         </Router>
         <Footer />
       </UserSettingsProvider>
-    </AuthWrapper>
+    </AuthProvider>
   );
 };
 
