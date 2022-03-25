@@ -12,7 +12,7 @@ export const OnlyVisibleToUsersWith = ({
   return (
     <AuthContext.Consumer>
       {(auth) => {
-        if (auth.user?.roles.includes(role)) {
+        if (auth.user?.roles?.includes(role)) {
           return <>{children}</>;
         } else {
           return <></>;
