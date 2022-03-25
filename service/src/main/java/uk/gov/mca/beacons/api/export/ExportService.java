@@ -84,7 +84,7 @@ public class ExportService {
    * @param jobLauncher a Spring Batch JobLauncher used to start the job
    * @throws SpreadsheetExportFailedException when the export fails
    */
-  public void exportBeaconsToSpreadsheet(JobLauncher jobLauncher)
+  private void exportBeaconsToSpreadsheet(JobLauncher jobLauncher)
     throws SpreadsheetExportFailedException {
     try {
       jobLauncher.run(exportToSpreadsheetJob, getExportJobParameters());
