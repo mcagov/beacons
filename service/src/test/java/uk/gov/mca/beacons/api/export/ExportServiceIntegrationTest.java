@@ -7,13 +7,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
 class ExportServiceIntegrationTest extends WebIntegrationTest {
@@ -57,12 +57,12 @@ class ExportServiceIntegrationTest extends WebIntegrationTest {
     // TODO Look at the last modified date column and assert on ordering
   }
 
-  private List<List<String>> readCsv(Resource csvExport) throws IOException {
+  private List<List<String>> readCsv(Path csvExport) throws IOException {
     String COMMA_DELIMITER = ",";
 
     List<List<String>> records = new ArrayList<>();
     BufferedReader br = new BufferedReader(
-      new StringReader(Files.readString(csvExport.getFile().toPath()))
+      new StringReader(Files.readString(csvExport))
     );
     String line;
     while ((line = br.readLine()) != null) {

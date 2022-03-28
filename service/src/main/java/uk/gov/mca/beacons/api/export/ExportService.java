@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.export;
 
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -12,9 +13,7 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +23,8 @@ import org.springframework.stereotype.Service;
 public class ExportService {
 
   private final JobLauncher jobLauncher;
-  private final JobLauncher asyncJobLauncher;
   private final Job exportToSpreadsheetJob;
-  private final Resource csvExportFile;
+  private final Path exportDirectory;
 
   private enum logMessages {
     SPREADSHEET_EXPORT_FAILED,
@@ -36,14 +34,12 @@ public class ExportService {
   @Autowired
   public ExportService(
     JobLauncher jobLauncher,
-    @Qualifier("simpleAsyncJobLauncher") JobLauncher asyncJobLauncher,
     Job exportToSpreadsheetJob,
-    @Value("file:${export.directory}/beacons_data.csv") Resource csvExportFile
+    @Value("${export.directory}") Path exportDirectory
   ) {
     this.jobLauncher = jobLauncher;
-    this.asyncJobLauncher = asyncJobLauncher;
     this.exportToSpreadsheetJob = exportToSpreadsheetJob;
-    this.csvExportFile = csvExportFile;
+    this.exportDirectory = exportDirectory;
   }
 
   /**
@@ -54,13 +50,15 @@ public class ExportService {
    * @return Resource | null - The latest spreadsheet export, or null if it doesn't exist
    * @throws SpreadsheetExportFailedException if the
    */
-  public Resource getLatestExcelExport()
-    throws SpreadsheetExportFailedException {
+  public Path getLatestExcelExport() throws SpreadsheetExportFailedException {
     if (exportIsReady()) {
-      return csvExportFile;
+      return getPathToLatestExport();
     } else {
-      exportBeaconsToSpreadsheet(asyncJobLauncher);
-      return null;
+      log.error(
+        "[{}]: The latest spreadsheet export was requested but it was not available",
+        logMessages.SPREADSHEET_EXPORT_FAILED
+      );
+      throw new SpreadsheetExportFailedException();
     }
   }
 
@@ -74,25 +72,16 @@ public class ExportService {
     exportBeaconsToSpreadsheet(jobLauncher);
   }
 
-  /**
-   * Asynchronously start the exportToSpreadsheetJob using the default JobLauncher.
-   *
-   * @throws SpreadsheetExportFailedException if the export fails
-   */
-  public void exportBeaconsToSpreadsheetAsync()
-    throws SpreadsheetExportFailedException {
-    exportBeaconsToSpreadsheet(asyncJobLauncher);
-  }
-
   private boolean exportIsReady() {
-    if (!csvExportFile.exists()) {
+    boolean exportFileExists = Files.exists(getPathToLatestExport());
+    if (!exportFileExists) {
       log.warn(
         "[{}]: Expected there to be an existing backup of the data, but couldn't find one",
         logMessages.NO_EXISTING_BACKUP_FOUND
       );
     }
 
-    return csvExportFile.exists();
+    return exportFileExists;
   }
 
   private void exportBeaconsToSpreadsheet(JobLauncher jobLauncher)
@@ -118,21 +107,14 @@ public class ExportService {
     throws SpreadsheetExportFailedException {
     JobParametersBuilder builder = new JobParametersBuilder();
     builder.addDate("date", new Date());
-
-    try {
-      builder.addString(
-        "destination",
-        csvExportFile.getFile().getAbsolutePath()
-      );
-    } catch (IOException e) {
-      log.error(
-        "[{}]: Tried to access file {} but failed",
-        logMessages.SPREADSHEET_EXPORT_FAILED,
-        csvExportFile.getDescription()
-      );
-      throw new SpreadsheetExportFailedException(e);
-    }
+    builder.addString("destination", getPathToLatestExport().toString());
 
     return builder.toJobParameters();
+  }
+
+  private Path getPathToLatestExport() {
+    Path path = exportDirectory.resolve("beacons_data.csv");
+    assert Files.exists(path);
+    return path;
   }
 }

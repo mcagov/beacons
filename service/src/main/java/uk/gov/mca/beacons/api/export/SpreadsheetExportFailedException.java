@@ -5,4 +5,8 @@ public class SpreadsheetExportFailedException extends RuntimeException {
   public SpreadsheetExportFailedException(Throwable e) {
     super(e);
   }
+
+  public SpreadsheetExportFailedException() {
+    super();
+  }
 }

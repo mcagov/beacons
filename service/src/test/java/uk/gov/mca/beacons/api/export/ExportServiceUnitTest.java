@@ -1,72 +1,80 @@
 package uk.gov.mca.beacons.api.export;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.io.File;
+import com.google.common.jimfs.Jimfs;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.core.io.Resource;
 
 @ExtendWith(MockitoExtension.class)
 public class ExportServiceUnitTest {
 
-  private final JobLauncher jobLauncher;
-  private final JobLauncher asyncJobLauncher;
-  private final Job exportToSpreadsheetJob;
-  private final Resource csvExportFile;
+  @Mock
+  JobLauncher jobLauncher;
 
+  @Mock
+  Job exportToSpreadsheetJob;
+
+  FileSystem fileSystem = Jimfs.newFileSystem();
+  String exportDirectory = "/var/export";
   ExportService exportService;
 
-  public ExportServiceUnitTest() {
-    this.jobLauncher = Mockito.mock(JobLauncher.class);
-    this.asyncJobLauncher = Mockito.mock(JobLauncher.class);
-    this.exportToSpreadsheetJob = Mockito.mock(Job.class);
-    this.csvExportFile = Mockito.mock(Resource.class);
+  @BeforeEach
+  public void arrange() throws IOException {
+    Path path = fileSystem.getPath(exportDirectory);
+    Files.deleteIfExists(path);
+    Files.createDirectories(path);
 
-    this.exportService =
-      new ExportService(
-        jobLauncher,
-        asyncJobLauncher,
-        exportToSpreadsheetJob,
-        csvExportFile
-      );
+    exportService =
+      new ExportService(jobLauncher, exportToSpreadsheetJob, path);
   }
 
   @Test
-  public void whenThereIsNoPreviouslyExportedSpreadsheet_ThenStartExportingAndReturnNull()
-    throws SpreadsheetExportFailedException, IOException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-    given(csvExportFile.exists()).willReturn(false);
-    given(csvExportFile.getFile())
-      .willReturn(new File("/tmp/directory/does-not/exist.csv"));
-
-    Resource export = exportService.getLatestExcelExport();
-
-    assertThat(export, nullValue());
-    then(asyncJobLauncher).should().run(eq(exportToSpreadsheetJob), any());
+  public void whenThereIsNoPreviouslyExportedSpreadsheet_ThenRaiseException()
+    throws SpreadsheetExportFailedException {
+    assertThrows(
+      SpreadsheetExportFailedException.class,
+      () -> exportService.getLatestExcelExport()
+    );
   }
 
   @Test
   public void whenThereIsAPreviouslyExportedSpreadsheet_ThenReturnTheExport()
-    throws SpreadsheetExportFailedException {
-    given(csvExportFile.exists()).willReturn(true);
+    throws SpreadsheetExportFailedException, IOException {
+    assert testExportDirectoryIsEmpty();
+    createFile("beacons_data.csv");
+    Path previouslyExportedSpreadsheet = getFile("beacons_data.csv");
 
-    Resource actualCsvExportFile = exportService.getLatestExcelExport();
+    Path actualCsvExport = exportService.getLatestExcelExport();
 
-    assertThat(actualCsvExportFile, is(csvExportFile));
+    assertThat(actualCsvExport, is(previouslyExportedSpreadsheet));
+  }
+
+  private boolean testExportDirectoryIsEmpty() throws IOException {
+    return Files.list(testExportDirectory()).findFirst().isEmpty();
+  }
+
+  private Path testExportDirectory() {
+    return fileSystem.getPath(exportDirectory);
+  }
+
+  private void createFile(String filename) throws IOException {
+    Path fileToCreate = testExportDirectory().resolve(filename);
+    Files.createFile(fileToCreate);
+  }
+
+  private Path getFile(String filename) {
+    return testExportDirectory().resolve(filename);
   }
 }

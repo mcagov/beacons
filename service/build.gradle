@@ -51,6 +51,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+
     implementation("com.github.javafaker:javafaker:1.0.2")
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -60,6 +61,7 @@ dependencies {
     testImplementation 'org.testcontainers:postgresql:1.16.2'
     testImplementation 'org.testcontainers:elasticsearch:1.16.2'
     testImplementation 'org.springframework.batch:spring-batch-test'
+    testImplementation 'com.google.jimfs:jimfs:1.2' // File system mocking
 }
 
 test {

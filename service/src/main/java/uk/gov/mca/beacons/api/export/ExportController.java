@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.export;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,11 @@ public class ExportController {
   @GetMapping(value = "/excel")
   public ResponseEntity<Resource> downloadExcelSpreadsheet()
     throws SpreadsheetExportFailedException {
-    Resource latestExport = exportService.getLatestExcelExport();
+    Resource latestExport = new FileSystemResource(
+      exportService.getLatestExcelExport()
+    );
 
-    if (latestExport == null) {
+    if (!latestExport.exists()) {
       return askToRetryAfterNSeconds(5);
     } else {
       return serveFile(latestExport);
@@ -36,7 +39,7 @@ public class ExportController {
 
   @PostMapping(value = "/excel")
   public ResponseEntity<Void> createANewExcelBackup() {
-    exportService.exportBeaconsToSpreadsheetAsync();
+    exportService.exportBeaconsToSpreadsheet();
 
     return ResponseEntity.ok().build();
   }
