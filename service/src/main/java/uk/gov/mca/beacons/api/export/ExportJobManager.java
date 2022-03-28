@@ -55,7 +55,13 @@ public class ExportJobManager {
     exportBeaconsToSpreadsheet(jobLauncher, destination);
   }
 
-  public Path getLatestExport() throws FileNotFoundException {
+  /**
+   * Get the most recently exported spreadsheet
+   *
+   * @return Path to the latest spreadsheet
+   * @throws FileNotFoundException if no suitable spreadsheet export exists
+   */
+  public ExportResult getLatestExport() throws FileNotFoundException {
     JobInstance latestExportJobInstance = getLatestExportJobInstance();
     JobExecution latestJobExecution = getLatestJobExecution(
       latestExportJobInstance
@@ -71,7 +77,10 @@ public class ExportJobManager {
       throw new FileNotFoundException();
     }
 
-    return destinationOfLatestExport;
+    return new ExportResult(
+      destinationOfLatestExport,
+      latestJobExecution.getEndTime()
+    );
   }
 
   private JobInstance getLatestExportJobInstance() {
@@ -110,7 +119,7 @@ public class ExportJobManager {
       log.error(
         "[{}]: JobExecution with id {} for the exportToSpreadsheetJob has a status other than COMPLETED: {}",
         logMessages.SPREADSHEET_EXPORT_FAILED,
-        jobExecution.getJobId(),
+        jobExecution.getId(),
         jobExecution.getStatus()
       );
       throw new SpreadsheetExportFailedException();
@@ -124,7 +133,7 @@ public class ExportJobManager {
       log.error(
         "[{}]: JobExecution with id {} for the exportToSpreadsheetJob had no \"destination\" parameter.  Only parameters were {}",
         logMessages.SPREADSHEET_EXPORT_FAILED,
-        jobExecution.getJobId(),
+        jobExecution.getId(),
         jobExecution.getJobParameters()
       );
       throw new SpreadsheetExportFailedException();
