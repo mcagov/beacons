@@ -1,17 +1,12 @@
 package uk.gov.mca.beacons.api.export;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.time.Clock;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.JobParametersInvalidException;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,24 +17,23 @@ import org.springframework.stereotype.Service;
 @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
 public class ExportService {
 
-  private final JobLauncher jobLauncher;
-  private final Job exportToSpreadsheetJob;
+  private final ExportJobManager exportJobManager;
   private final Path exportDirectory;
+  private final Clock clock;
 
   private enum logMessages {
-    SPREADSHEET_EXPORT_FAILED,
     NO_EXISTING_BACKUP_FOUND,
   }
 
   @Autowired
   public ExportService(
-    JobLauncher jobLauncher,
-    Job exportToSpreadsheetJob,
-    @Value("${export.directory}") Path exportDirectory
+    ExportJobManager exportJobManager,
+    @Value("${export.directory}") Path exportDirectory,
+    Clock clock
   ) {
-    this.jobLauncher = jobLauncher;
-    this.exportToSpreadsheetJob = exportToSpreadsheetJob;
+    this.exportJobManager = exportJobManager;
     this.exportDirectory = exportDirectory;
+    this.clock = clock;
   }
 
   /**
@@ -51,70 +45,34 @@ public class ExportService {
    * @throws SpreadsheetExportFailedException if the
    */
   public Path getLatestExcelExport() throws SpreadsheetExportFailedException {
-    if (exportIsReady()) {
-      return getPathToLatestExport();
-    } else {
+    try {
+      return exportJobManager.getLatestExport();
+    } catch (FileNotFoundException e) {
       log.error(
-        "[{}]: The latest spreadsheet export was requested but it was not available",
-        logMessages.SPREADSHEET_EXPORT_FAILED
+        "[{}]: Expected there to be an existing backup of the data, but couldn't find one",
+        logMessages.NO_EXISTING_BACKUP_FOUND
       );
       throw new SpreadsheetExportFailedException();
     }
   }
 
-  /**
-   * Synchronously start the exportToSpreadsheetJob using the default JobLauncher.
-   *
-   * @throws SpreadsheetExportFailedException if the export fails
-   */
-  public void exportBeaconsToSpreadsheet()
-    throws SpreadsheetExportFailedException {
-    exportBeaconsToSpreadsheet(jobLauncher);
+  public void exportBeaconsToSpreadsheet() {
+    exportJobManager.exportBeaconsToSpreadsheet(getNextExportDestination());
   }
 
-  private boolean exportIsReady() {
-    boolean exportFileExists = Files.exists(getPathToLatestExport());
-    if (!exportFileExists) {
-      log.warn(
-        "[{}]: Expected there to be an existing backup of the data, but couldn't find one",
-        logMessages.NO_EXISTING_BACKUP_FOUND
-      );
-    }
+  private Path getNextExportDestination() {
+    Date today = Date.from(clock.instant());
+    String prefix = new SimpleDateFormat("yyyyMMdd").format(today);
+    String filename = "Beacons_Data";
+    String suffix = "Official Sensitive - Personal";
+    String extension = ".csv";
 
-    return exportFileExists;
-  }
+    Path destination = exportDirectory.resolve(
+      prefix + "-" + filename + "-" + suffix + extension
+    );
 
-  private void exportBeaconsToSpreadsheet(JobLauncher jobLauncher)
-    throws SpreadsheetExportFailedException {
-    try {
-      jobLauncher.run(exportToSpreadsheetJob, getExportJobParameters());
-    } catch (
-      JobInstanceAlreadyCompleteException
-      | JobExecutionAlreadyRunningException
-      | JobRestartException
-      | JobParametersInvalidException e
-    ) {
-      log.error(
-        "[{}]: Tried to launch exportToSpreadsheetJob with jobLauncher {} but failed",
-        logMessages.SPREADSHEET_EXPORT_FAILED,
-        jobLauncher.getClass()
-      );
-      throw new SpreadsheetExportFailedException(e);
-    }
-  }
+    assert Files.notExists(destination);
 
-  private JobParameters getExportJobParameters()
-    throws SpreadsheetExportFailedException {
-    JobParametersBuilder builder = new JobParametersBuilder();
-    builder.addDate("date", new Date());
-    builder.addString("destination", getPathToLatestExport().toString());
-
-    return builder.toJobParameters();
-  }
-
-  private Path getPathToLatestExport() {
-    Path path = exportDirectory.resolve("beacons_data.csv");
-    assert Files.exists(path);
-    return path;
+    return destination;
   }
 }

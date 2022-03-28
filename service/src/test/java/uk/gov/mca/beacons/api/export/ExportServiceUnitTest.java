@@ -3,28 +3,29 @@ package uk.gov.mca.beacons.api.export;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 import com.google.common.jimfs.Jimfs;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Clock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.launch.JobLauncher;
 
 @ExtendWith(MockitoExtension.class)
 public class ExportServiceUnitTest {
 
   @Mock
-  JobLauncher jobLauncher;
+  ExportJobManager exportJobManager;
 
   @Mock
-  Job exportToSpreadsheetJob;
+  Clock clock;
 
   FileSystem fileSystem = Jimfs.newFileSystem();
   String exportDirectory = "/var/export";
@@ -36,13 +37,15 @@ public class ExportServiceUnitTest {
     Files.deleteIfExists(path);
     Files.createDirectories(path);
 
-    exportService =
-      new ExportService(jobLauncher, exportToSpreadsheetJob, path);
+    exportService = new ExportService(exportJobManager, path, clock);
   }
 
   @Test
   public void whenThereIsNoPreviouslyExportedSpreadsheet_ThenRaiseException()
-    throws SpreadsheetExportFailedException {
+    throws SpreadsheetExportFailedException, FileNotFoundException {
+    when(exportJobManager.getLatestExport())
+      .thenThrow(FileNotFoundException.class);
+
     assertThrows(
       SpreadsheetExportFailedException.class,
       () -> exportService.getLatestExcelExport()
@@ -52,9 +55,10 @@ public class ExportServiceUnitTest {
   @Test
   public void whenThereIsAPreviouslyExportedSpreadsheet_ThenReturnTheExport()
     throws SpreadsheetExportFailedException, IOException {
-    assert testExportDirectoryIsEmpty();
     createFile("beacons_data.csv");
     Path previouslyExportedSpreadsheet = getFile("beacons_data.csv");
+    when(exportJobManager.getLatestExport())
+      .thenReturn(previouslyExportedSpreadsheet);
 
     Path actualCsvExport = exportService.getLatestExcelExport();
 
