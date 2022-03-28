@@ -25,11 +25,11 @@ export const AuthProvider: FunctionComponent<{
     getAccessToken(pca).then((token) => {
       setAuthToken(token);
     });
-  }, []);
+  }, [pca]);
 
   useEffect(() => {
     setUser(createUser(pca.getAllAccounts()[0]));
-  }, []);
+  }, [pca]);
 
   return (
     <MsalProvider instance={pca}>
