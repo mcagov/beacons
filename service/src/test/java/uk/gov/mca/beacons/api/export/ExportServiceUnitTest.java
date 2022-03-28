@@ -4,12 +4,16 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.jimfs.Jimfs;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,6 +49,9 @@ public class ExportServiceUnitTest {
     Files.createDirectories(path);
 
     exportService = new ExportService(exportJobManager, path, clock);
+
+    reset(exportJobManager);
+    reset(clock);
   }
 
   @Nested
@@ -58,7 +65,7 @@ public class ExportServiceUnitTest {
 
       assertThrows(
         SpreadsheetExportFailedException.class,
-        () -> exportService.getLatestExcelExport()
+        () -> exportService.getPathToLatestExport()
       );
     }
 
@@ -66,11 +73,14 @@ public class ExportServiceUnitTest {
     public void whenThereIsAnExportedSpreadsheet_thenReturnTheExport()
       throws SpreadsheetExportFailedException, IOException {
       createFile("beacons_data.csv");
-      Path previouslyExportedSpreadsheet = getFile("beacons_data.csv");
+      ExportResult previouslyExportedSpreadsheet = new ExportResult(
+        getFile("beacons_data.csv"),
+        Date.from(clock.instant())
+      );
       when(exportJobManager.getLatestExport())
         .thenReturn(previouslyExportedSpreadsheet);
 
-      Path actualCsvExport = exportService.getLatestExcelExport();
+      Path actualCsvExport = exportService.getPathToLatestExport();
 
       assertThat(actualCsvExport, is(previouslyExportedSpreadsheet));
     }
@@ -80,8 +90,12 @@ public class ExportServiceUnitTest {
   class exportBeaconsToSpreadsheet {
 
     @Test
-    public void prefixWithTodaysDate() {
+    public void prefixWithTodaysDate() throws FileNotFoundException {
       when(clock.instant()).thenReturn(Instant.EPOCH);
+      when(exportJobManager.getLatestExport())
+        .thenReturn(
+          new ExportResult(Path.of("/not/relevant"), Date.from(Instant.EPOCH))
+        );
       String yyyyMMdd = new SimpleDateFormat("yyyyMMdd")
         .format(Date.from(Instant.EPOCH));
       ArgumentCaptor<Path> argumentCaptor = ArgumentCaptor.forClass(Path.class);
@@ -92,6 +106,26 @@ public class ExportServiceUnitTest {
         .exportBeaconsToSpreadsheet(argumentCaptor.capture());
       String filename = argumentCaptor.getValue().getFileName().toString();
       assertThat(filename, startsWith(yyyyMMdd));
+    }
+
+    @Test
+    public void whenAnExportExistsForToday_thenDontCreateANewOne()
+      throws IOException {
+      when(clock.instant()).thenReturn(Instant.EPOCH);
+      String yyyyMMdd = new SimpleDateFormat("yyyyMMdd")
+        .format(Date.from(Instant.EPOCH));
+      when(exportJobManager.getLatestExport())
+        .thenReturn(
+          new ExportResult(
+            testExportDirectory()
+              .resolve(yyyyMMdd + "-rest_of_filename_doesnt_matter.csv"),
+            Date.from(Instant.EPOCH)
+          )
+        );
+
+      exportService.exportBeaconsToSpreadsheet();
+
+      verify(exportJobManager, never()).exportBeaconsToSpreadsheet(any());
     }
   }
 

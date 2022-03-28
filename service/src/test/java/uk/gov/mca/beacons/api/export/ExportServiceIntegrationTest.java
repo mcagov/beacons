@@ -39,7 +39,7 @@ class ExportServiceIntegrationTest extends WebIntegrationTest {
     exportService.exportBeaconsToSpreadsheet();
 
     List<List<String>> spreadsheet = readCsv(
-      exportService.getLatestExcelExport()
+      exportService.getPathToLatestExport()
     );
 
     List<String> headerRow = spreadsheet.get(0);

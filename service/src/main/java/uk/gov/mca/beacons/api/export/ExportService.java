@@ -39,15 +39,14 @@ public class ExportService {
   /**
    * Return the most recently saved backup of beacons data in .csv format
    *
-   * @return Resource - The latest spreadsheet export
-   * @throws SpreadsheetExportFailedException if the
+   * @return Path to the latest spreadsheet export
+   * @throws SpreadsheetExportFailedException if the latest export is unavailable
    */
-  public Path getLatestExcelExport() throws SpreadsheetExportFailedException {
+  public Path getPathToLatestExport() throws SpreadsheetExportFailedException {
     try {
-      Path latestExport = exportJobManager.getLatestExport();
-      assert Files.exists(latestExport);
-      return latestExport;
-    } catch (FileNotFoundException | AssertionError e) {
+      ExportResult latestExport = exportJobManager.getLatestExport();
+      return latestExport.getPath();
+    } catch (FileNotFoundException e) {
       log.error(
         "[{}]: Expected there to be an existing backup of the data, but couldn't find one",
         logMessages.NO_EXISTING_BACKUP_FOUND
@@ -57,22 +56,49 @@ public class ExportService {
   }
 
   public void exportBeaconsToSpreadsheet() {
-    exportJobManager.exportBeaconsToSpreadsheet(getNextExportDestination());
+    try {
+      ExportResult latestExport = exportJobManager.getLatestExport();
+
+      if (
+        latestExport
+          .getPath()
+          .getFileName()
+          .toString()
+          .startsWith(todaysDateFilenamePrefix())
+      ) {
+        log.info(
+          "ExportService::exportBeaconsToSpreadsheet: export file already exists for today at {}.  Doing nothing...",
+          getPathToLatestExport()
+        );
+        return;
+      }
+    } catch (FileNotFoundException e) {
+      // Do nothing
+    }
+
+    exportJobManager.exportBeaconsToSpreadsheet(getTodaysExportDestination());
   }
 
-  private Path getNextExportDestination() {
-    Date today = Date.from(clock.instant());
-    String prefix = new SimpleDateFormat("yyyyMMdd").format(today);
-    String filename = "Beacons_Data";
-    String suffix = "Official Sensitive - Personal";
-    String extension = ".csv";
-
-    Path destination = exportDirectory.resolve(
-      prefix + "-" + filename + "-" + suffix + extension
-    );
+  private Path getTodaysExportDestination() {
+    Path destination = exportDirectory.resolve(getTodaysExportFilename());
 
     assert Files.notExists(destination);
 
     return destination;
+  }
+
+  private String getTodaysExportFilename() {
+    String filename = "Beacons_Data";
+    String suffix = "Official Sensitive - Personal";
+    String extension = ".csv";
+
+    return (
+      todaysDateFilenamePrefix() + "-" + filename + "-" + suffix + extension
+    );
+  }
+
+  private String todaysDateFilenamePrefix() {
+    Date today = Date.from(clock.instant());
+    return new SimpleDateFormat("yyyyMMdd").format(today);
   }
 }

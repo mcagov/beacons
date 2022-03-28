@@ -27,7 +27,7 @@ public class ExportController {
   public ResponseEntity<Resource> downloadExcelSpreadsheet()
     throws SpreadsheetExportFailedException {
     Resource latestExport = new FileSystemResource(
-      exportService.getLatestExcelExport()
+      exportService.getPathToLatestExport()
     );
 
     if (!latestExport.exists()) {
