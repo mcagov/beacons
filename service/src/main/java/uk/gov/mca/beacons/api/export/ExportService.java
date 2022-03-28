@@ -39,15 +39,15 @@ public class ExportService {
   /**
    * Return the most recently saved backup of beacons data in .csv format
    *
-   * If no backup is found, trigger a new backup export and return null
-   *
-   * @return Resource | null - The latest spreadsheet export, or null if it doesn't exist
+   * @return Resource - The latest spreadsheet export
    * @throws SpreadsheetExportFailedException if the
    */
   public Path getLatestExcelExport() throws SpreadsheetExportFailedException {
     try {
-      return exportJobManager.getLatestExport();
-    } catch (FileNotFoundException e) {
+      Path latestExport = exportJobManager.getLatestExport();
+      assert Files.exists(latestExport);
+      return latestExport;
+    } catch (FileNotFoundException | AssertionError e) {
       log.error(
         "[{}]: Expected there to be an existing backup of the data, but couldn't find one",
         logMessages.NO_EXISTING_BACKUP_FOUND
