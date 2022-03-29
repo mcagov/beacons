@@ -7,19 +7,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.jimfs.Jimfs;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.Instant;
+import java.time.Period;
+import java.time.temporal.TemporalAmount;
 import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -55,38 +57,6 @@ public class ExportServiceUnitTest {
   }
 
   @Nested
-  class getLatestExcelExport {
-
-    @Test
-    public void whenThereIsNoPreviouslyExportedSpreadsheet_thenRaiseException()
-      throws SpreadsheetExportFailedException, FileNotFoundException {
-      when(exportJobManager.getLatestExport())
-        .thenThrow(FileNotFoundException.class);
-
-      assertThrows(
-        SpreadsheetExportFailedException.class,
-        () -> exportService.getPathToLatestExport()
-      );
-    }
-
-    @Test
-    public void whenThereIsAnExportedSpreadsheet_thenReturnTheExport()
-      throws SpreadsheetExportFailedException, IOException {
-      createFile("beacons_data.csv");
-      ExportResult previouslyExportedSpreadsheet = new ExportResult(
-        getFile("beacons_data.csv"),
-        Date.from(clock.instant())
-      );
-      when(exportJobManager.getLatestExport())
-        .thenReturn(previouslyExportedSpreadsheet);
-
-      Path actualCsvExport = exportService.getPathToLatestExport();
-
-      assertThat(actualCsvExport, is(previouslyExportedSpreadsheet));
-    }
-  }
-
-  @Nested
   class exportBeaconsToSpreadsheet {
 
     @Test
@@ -115,6 +85,51 @@ public class ExportServiceUnitTest {
       exportService.exportBeaconsToSpreadsheet();
 
       verify(exportJobManager, never()).exportBeaconsToSpreadsheet(any());
+    }
+
+    @Test
+    public void whenAnExportDoesntExistForToday_thenDoCreateANewOne()
+      throws IOException {
+      when(clock.instant()).thenReturn(Instant.EPOCH);
+      String yesterdayYyyyMMdd = new SimpleDateFormat("yyyyMMdd")
+        .format(Date.from(Instant.EPOCH.minus(Period.ofDays(1))));
+      createFile(yesterdayYyyyMMdd + "-yesterdays-export.csv");
+
+      exportService.exportBeaconsToSpreadsheet();
+
+      verify(exportJobManager, times(1)).exportBeaconsToSpreadsheet(any());
+    }
+  }
+
+  @Nested
+  class getLatestExcelExport {
+
+    @Test
+    public void whenThereIsNoPreviouslyExportedSpreadsheet_thenRaiseException()
+      throws SpreadsheetExportFailedException, FileNotFoundException {
+      when(exportJobManager.getLatestExport())
+        .thenThrow(FileNotFoundException.class);
+
+      assertThrows(
+        SpreadsheetExportFailedException.class,
+        () -> exportService.getPathToLatestExport()
+      );
+    }
+
+    @Test
+    public void whenThereIsAnExportedSpreadsheet_thenReturnTheExport()
+      throws SpreadsheetExportFailedException, IOException {
+      createFile("beacons_data.csv");
+      ExportResult previouslyExportedSpreadsheet = new ExportResult(
+        getFile("beacons_data.csv"),
+        Date.from(clock.instant())
+      );
+      when(exportJobManager.getLatestExport())
+        .thenReturn(previouslyExportedSpreadsheet);
+
+      Path actualCsvExport = exportService.getPathToLatestExport();
+
+      assertThat(actualCsvExport, is(previouslyExportedSpreadsheet));
     }
   }
 
