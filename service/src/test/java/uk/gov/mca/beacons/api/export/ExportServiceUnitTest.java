@@ -125,7 +125,8 @@ public class ExportServiceUnitTest {
 
       Path actualCsvExport = exportService
         .getMostRecentDailyExport()
-        .orElseThrow(SpreadsheetExportFailedException::new);
+        .orElseThrow(SpreadsheetExportFailedException::new)
+        .getFileName();
 
       assertThat(actualCsvExport, is(todaysExport));
     }
