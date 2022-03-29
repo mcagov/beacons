@@ -6,11 +6,9 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.reset;
 
-import com.google.common.jimfs.Jimfs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
@@ -26,12 +24,14 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
-/**
- * Test the integration between ExportService and Spring Batch, as encapsulated by the ExportJobManager.
- *
- * Integration of ExportService with the filesystem and clock are not under test, so are mocked.
- */
 class ExportServiceIntegrationTest extends WebIntegrationTest {
+
+  /**
+   * Spring Batch uses the pre-Java 7 "File" abstraction to write to files.  The File abstraction can't deal with
+   * alternative file systems, such as one mocked using Jimfs or similar.  This integration test therefore uses the
+   * host machine's real filesystem, and performs cleanup in the @AfterAll step.
+   */
+  static Path exportDirectory;
 
   @Mock
   Clock clock;
@@ -39,17 +39,14 @@ class ExportServiceIntegrationTest extends WebIntegrationTest {
   @Autowired
   ExportJobManager exportJobManager;
 
-  FileSystem fileSystem = Jimfs.newFileSystem();
-  String exportDirectory = "/var/export";
   ExportService exportService;
 
   @BeforeEach
   public void arrange() throws IOException {
-    Path path = fileSystem.getPath(exportDirectory);
-    Files.deleteIfExists(path);
-    Files.createDirectories(path);
+    exportDirectory = Files.createTempDirectory("beacons");
+    exportDirectory.toFile().deleteOnExit();
 
-    exportService = new ExportService(exportJobManager, path, clock);
+    exportService = new ExportService(exportJobManager, exportDirectory, clock);
 
     reset(clock);
     Mockito.when(clock.instant()).thenReturn(Instant.EPOCH);
@@ -71,26 +68,17 @@ class ExportServiceIntegrationTest extends WebIntegrationTest {
     String id3 = seedLegacyBeacon();
 
     exportService.exportBeaconsToSpreadsheet();
-    //    List<List<String>> spreadsheet = readCsv(
-    //      exportService.getPathToLatestExport()
-    //    );
-    //
-    //    List<String> headerRow = spreadsheet.get(0);
-    //    List<List<String>> dataRows = spreadsheet.subList(1, spreadsheet.size());
-    //    assertThat(headerRow, hasItems("ID"));
-    //    assertThat(dataRows, hasSize(3));
-    //    assertThat(
-    //      getColumnValuesByHeading(spreadsheet, "ID"),
-    //      containsInAnyOrder(id1, id2, id3)
-    //    );
-  }
+    Path export = exportService.getMostRecentDailyExport().orElseThrow();
+    List<List<String>> spreadsheet = readCsv(export);
 
-  @Test
-  public void givenBeaconsAndLegacyBeacons_whenExportFails_thenSpreasheetIsOrderedByLastModifiedDate() {}
-
-  @Test
-  public void givenBeaconsAndLegacyBeacons_whenExportIsTriggered_thenSpreasheetIsOrderedByLastModifiedDate() {
-    // TODO Look at the last modified date column and assert on ordering
+    List<String> headerRow = spreadsheet.get(0);
+    List<List<String>> dataRows = spreadsheet.subList(1, spreadsheet.size());
+    assertThat(headerRow, hasItems("ID"));
+    assertThat(dataRows, hasSize(3));
+    assertThat(
+      getColumnValuesByHeading(spreadsheet, "ID"),
+      containsInAnyOrder(id1, id2, id3)
+    );
   }
 
   private List<List<String>> readCsv(Path csvExport) throws IOException {
