@@ -1,6 +1,11 @@
 import { Close, Settings as SettingsIcon } from "@mui/icons-material";
-import { ToggleButton, ToggleButtonGroup } from "@mui/lab";
-import { Divider, IconButton, Typography } from "@mui/material";
+import {
+  Divider,
+  IconButton,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import { Box } from "@mui/system";
 import * as React from "react";
