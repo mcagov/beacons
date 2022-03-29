@@ -49,15 +49,13 @@ public class ExportService {
    * @throws SpreadsheetExportFailedException if the latest export is unavailable
    */
   public Optional<Path> getMostRecentDailyExport() throws IOException {
-    // TODO Also exclude "TEMPORARY" when exists
     return Files
       .list(exportDirectory)
       .filter(file -> !Files.isDirectory(file))
-      .map(Path::getFileName)
-      .filter(filename -> !filename.endsWith(".csv"))
+      .filter(file -> !file.getFileName().endsWith(".csv"))
       .max(
         Comparator.comparing(
-          this::getDate,
+          file -> getDate(file.getFileName()),
           Comparator.nullsFirst(Comparator.naturalOrder())
         )
       );
