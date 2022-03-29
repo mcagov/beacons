@@ -1,12 +1,14 @@
 package uk.gov.mca.beacons.api.export;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Clock;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +23,9 @@ public class ExportService {
   private final ExportJobManager exportJobManager;
   private final Path exportDirectory;
   private final Clock clock;
+  private final SimpleDateFormat filenameDatePrefixFormat = new SimpleDateFormat(
+    "yyyyMMdd"
+  );
 
   private enum logMessages {
     NO_EXISTING_BACKUP_FOUND,
@@ -38,30 +43,31 @@ public class ExportService {
   }
 
   /**
-   * Return the most recently saved backup of beacons data in .csv format
+   * Return the stored .csv file with the most current date prefix
    *
    * @return Path to the latest spreadsheet export
    * @throws SpreadsheetExportFailedException if the latest export is unavailable
    */
-  public Path getPathToLatestExport() throws SpreadsheetExportFailedException {
-    try {
-      ExportResult latestExport = exportJobManager.getLatestExport();
-
-      return latestExport.getPath();
-    } catch (FileNotFoundException e) {
-      log.error(
-        "[{}]: Expected there to be an existing backup of the data, but couldn't find one",
-        logMessages.NO_EXISTING_BACKUP_FOUND
+  public Optional<Path> getMostRecentDailyExport() throws IOException {
+    // TODO Also exclude "TEMPORARY" when exists
+    return Files
+      .list(exportDirectory)
+      .filter(file -> !Files.isDirectory(file))
+      .map(Path::getFileName)
+      .filter(filename -> !filename.endsWith(".csv"))
+      .max(
+        Comparator.comparing(
+          this::getDate,
+          Comparator.nullsFirst(Comparator.naturalOrder())
+        )
       );
-      throw new SpreadsheetExportFailedException();
-    }
   }
 
   public void exportBeaconsToSpreadsheet() throws IOException {
     if (todaysExportAlreadyExists()) {
       log.info(
         "ExportService::exportBeaconsToSpreadsheet: export file already exists for today at {}.  Doing nothing...",
-        getPathToLatestExport()
+        getMostRecentDailyExport()
       );
       return;
     }
@@ -99,6 +105,15 @@ public class ExportService {
 
   private String todaysDateFilenamePrefix() {
     Date today = Date.from(clock.instant());
-    return new SimpleDateFormat("yyyyMMdd").format(today);
+    return filenameDatePrefixFormat.format(today);
+  }
+
+  private Date getDate(Path filename) {
+    try {
+      return filenameDatePrefixFormat.parse((filename.toString()));
+    } catch (ParseException e) {
+      log.warn("Tried to parse a date from {} but failed", filename, e);
+      return null;
+    }
   }
 }

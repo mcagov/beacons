@@ -26,9 +26,11 @@ public class ExportController {
 
   @GetMapping(value = "/excel")
   public ResponseEntity<Resource> downloadExcelSpreadsheet()
-    throws SpreadsheetExportFailedException {
+    throws SpreadsheetExportFailedException, IOException {
     Resource latestExport = new FileSystemResource(
-      exportService.getPathToLatestExport()
+      exportService
+        .getMostRecentDailyExport()
+        .orElseThrow(SpreadsheetExportFailedException::new)
     );
 
     if (!latestExport.exists()) {

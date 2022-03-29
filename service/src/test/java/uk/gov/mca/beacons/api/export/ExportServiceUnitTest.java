@@ -12,7 +12,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.jimfs.Jimfs;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -21,8 +20,8 @@ import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.Period;
-import java.time.temporal.TemporalAmount;
 import java.util.Date;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -102,34 +101,33 @@ public class ExportServiceUnitTest {
   }
 
   @Nested
-  class getLatestExcelExport {
+  class getMostRecentDailyExport {
 
     @Test
-    public void whenThereIsNoPreviouslyExportedSpreadsheet_thenRaiseException()
-      throws SpreadsheetExportFailedException, FileNotFoundException {
-      when(exportJobManager.getLatestExport())
-        .thenThrow(FileNotFoundException.class);
+    public void whenThereIsNoPreviouslyExportedSpreadsheet_thenReturnOptionalOfNull()
+      throws SpreadsheetExportFailedException, IOException {
+      // No exports
 
-      assertThrows(
-        SpreadsheetExportFailedException.class,
-        () -> exportService.getPathToLatestExport()
-      );
+      Optional<Path> export = exportService.getMostRecentDailyExport();
+
+      assert export.isEmpty();
     }
 
     @Test
-    public void whenThereIsAnExportedSpreadsheet_thenReturnTheExport()
+    public void whenThereIsAnExportedSpreadsheetForToday_thenReturnTheExport()
       throws SpreadsheetExportFailedException, IOException {
-      createFile("beacons_data.csv");
-      ExportResult previouslyExportedSpreadsheet = new ExportResult(
-        getFile("beacons_data.csv"),
-        Date.from(clock.instant())
-      );
-      when(exportJobManager.getLatestExport())
-        .thenReturn(previouslyExportedSpreadsheet);
+      String todayYyyyMMdd = new SimpleDateFormat("yyyyMMdd")
+        .format(Date.from(Instant.EPOCH));
+      Path todaysExport = createFile(
+        todayYyyyMMdd + "-only-date-prefix-matters.csv"
+      )
+        .getFileName();
 
-      Path actualCsvExport = exportService.getPathToLatestExport();
+      Path actualCsvExport = exportService
+        .getMostRecentDailyExport()
+        .orElseThrow(SpreadsheetExportFailedException::new);
 
-      assertThat(actualCsvExport, is(previouslyExportedSpreadsheet));
+      assertThat(actualCsvExport, is(todaysExport));
     }
   }
 
@@ -137,9 +135,10 @@ public class ExportServiceUnitTest {
     return fileSystem.getPath(exportDirectory);
   }
 
-  private void createFile(String filename) throws IOException {
+  private Path createFile(String filename) throws IOException {
     Path fileToCreate = testExportDirectory().resolve(filename);
     Files.createFile(fileToCreate);
+    return fileToCreate;
   }
 
   private Path getFile(String filename) {
