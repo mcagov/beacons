@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.export;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import org.springframework.batch.core.Job;
@@ -9,6 +11,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -31,6 +34,7 @@ public class ExportToSpreadsheetJobConfiguration {
   private final JobBuilderFactory jobBuilderFactory;
   private final StepBuilderFactory stepBuilderFactory;
   private final JobExecutionLoggingListener jobExecutionLoggingListener;
+  private final Path temporaryExportFile;
 
   @Autowired
   public ExportToSpreadsheetJobConfiguration(
@@ -38,11 +42,13 @@ public class ExportToSpreadsheetJobConfiguration {
     StepBuilderFactory stepBuilderFactory,
     EntityManagerFactory entityManagerFactory,
     JobRepository jobRepository,
-    JobExecutionLoggingListener jobExecutionLoggingListener
+    JobExecutionLoggingListener jobExecutionLoggingListener,
+    @Value("${export.directory}/temporary.csv") String temporaryExportFile
   ) {
     this.jobBuilderFactory = jobBuilderFactory;
     this.stepBuilderFactory = stepBuilderFactory;
     this.jobExecutionLoggingListener = jobExecutionLoggingListener;
+    this.temporaryExportFile = Paths.get(temporaryExportFile);
   }
 
   @Bean
@@ -76,13 +82,33 @@ public class ExportToSpreadsheetJobConfiguration {
   }
 
   @Bean
+  public Step deleteTempFileStep() {
+    Tasklet deleteTempFileTasklet = new DeleteTempFileTasklet(
+      temporaryExportFile
+    );
+    return stepBuilderFactory
+      .get("deleteTempFileStep")
+      .tasklet(deleteTempFileTasklet)
+      .build();
+  }
+
+  @Bean
+  public Step renameFileStep() {
+    Tasklet renameFileTasklet = new RenameFileTasklet(temporaryExportFile);
+    return stepBuilderFactory
+      .get("renameFileStep")
+      .tasklet(renameFileTasklet)
+      .build();
+  }
+
+  @Bean
   @StepScope
   public FlatFileItemWriter<SpreadsheetRow> writer(
     @Value("#{jobParameters}") Map<String, String> jobParameters
   ) {
     return new FlatFileItemWriterBuilder<SpreadsheetRow>()
       .name("spreadsheetRowWriter")
-      .resource(new FileSystemResource(jobParameters.get("destination")))
+      .resource(new FileSystemResource(temporaryExportFile))
       .delimited()
       .delimiter(",")
       .names(SpreadsheetRow.getColumnAttributes().toArray(new String[0]))
@@ -99,14 +125,18 @@ public class ExportToSpreadsheetJobConfiguration {
 
   @Bean(value = "exportToSpreadsheetJob")
   public Job exportToSpreadsheetJob(
+    Step deleteTempFileStep,
     Step exportBeaconToExcelStep,
-    Step exportLegacyBeaconToExcelStep
+    Step exportLegacyBeaconToExcelStep,
+    Step renameFileStep
   ) {
     return jobBuilderFactory
       .get("exportToSpreadsheetJob")
       .listener(jobExecutionLoggingListener)
-      .start(exportBeaconToExcelStep)
+      .start(deleteTempFileStep)
+      .next(exportBeaconToExcelStep)
       .next(exportLegacyBeaconToExcelStep)
+      .next(renameFileStep)
       .build();
   }
 }
