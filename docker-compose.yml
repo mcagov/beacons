@@ -33,6 +33,7 @@ services:
   # OpenSearch for security.
   opensearch-proxy:
     build: ./opensearch/proxy
+    image: beacons-opensearch-proxy
     ports:
       - "8081:80"
     environment:
@@ -52,6 +53,7 @@ services:
   service:
     build:
       context: ./service
+    image: beacons-service
     ports:
       - "8080:8080"
     restart: on-failure
@@ -68,6 +70,7 @@ services:
       context: ./backoffice
       args:
         feedback_email_addresses: dev@mcga.gov.uk,dev@madetech.com
+    image: beacons-backoffice
     ports:
       - "3001:80"
     environment:
