@@ -21,22 +21,19 @@ export function AuthenticatedDownloadLink({
       });
 
       if (result.status === 503) {
+        window.alert("There was an error while downloading.");
         return;
       }
-
-      const blob = await result.blob();
-      const href = window.URL.createObjectURL(blob);
 
       const filename = parseFilename(result.headers);
 
       if (!filename) {
         window.alert("There was an error while downloading.");
-        console.error(
-          "Filename missing during download.  Headers were: ",
-          result.headers
-        );
         return;
       }
+
+      const blob = await result.blob();
+      const href = window.URL.createObjectURL(blob);
 
       link.current.download = filename;
       link.current.href = href;
