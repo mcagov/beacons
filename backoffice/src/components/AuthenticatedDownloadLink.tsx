@@ -4,20 +4,10 @@ import { AuthContext } from "./auth/AuthProvider";
 
 export function AuthenticatedDownloadLink({
   url,
-  filename,
 }: {
   url: string;
-  filename: string;
 }): JSX.Element {
-  const [loading, setLoading] = React.useState(false);
   const link = React.useRef<HTMLAnchorElement>(null);
-
-  const handleLoading = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 5000);
-  };
 
   const downloadFile =
     (accessToken: string | unknown): MouseEventHandler<HTMLAnchorElement> =>
@@ -31,12 +21,22 @@ export function AuthenticatedDownloadLink({
       });
 
       if (result.status === 503) {
-        handleLoading();
         return;
       }
 
       const blob = await result.blob();
       const href = window.URL.createObjectURL(blob);
+
+      const filename = parseFilename(result.headers);
+
+      if (!filename) {
+        window.alert("There was an error while downloading.");
+        console.error(
+          "Filename missing during download.  Headers were: ",
+          result.headers
+        );
+        return;
+      }
 
       link.current.download = filename;
       link.current.href = href;
@@ -55,7 +55,6 @@ export function AuthenticatedDownloadLink({
             color="inherit"
             variant="outlined"
             fullWidth
-            disabled={loading}
           >
             Export to Excel
           </Button>
@@ -64,3 +63,10 @@ export function AuthenticatedDownloadLink({
     </>
   );
 }
+
+export const parseFilename = (headers: Headers): string | null => {
+  const contentDisposition = headers.get("Content-Disposition");
+  if (!contentDisposition) return null;
+
+  return contentDisposition.split("filename=")[1];
+};

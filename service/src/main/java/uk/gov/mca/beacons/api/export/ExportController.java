@@ -36,11 +36,7 @@ public class ExportController {
         )
     );
 
-    if (!latestExport.exists()) {
-      return askToRetryAfterNSeconds(5);
-    } else {
-      return serveFile(latestExport);
-    }
+    return serveFile(latestExport);
   }
 
   @PostMapping(value = "/excel")
@@ -55,14 +51,8 @@ public class ExportController {
     headers.setContentType(new MediaType("application", "force-download"));
     headers.set(
       HttpHeaders.CONTENT_DISPOSITION,
-      "attachment; filename=my_file.xlsx"
+      "attachment; filename=" + resource.getFilename()
     );
     return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-  }
-
-  private ResponseEntity<Resource> askToRetryAfterNSeconds(int n) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.set(HttpHeaders.RETRY_AFTER, String.valueOf(n));
-    return new ResponseEntity<>(null, headers, HttpStatus.SERVICE_UNAVAILABLE);
   }
 }

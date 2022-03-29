@@ -99,9 +99,6 @@ export function SettingsDrawer() {
                 </Typography>
                 <AuthenticatedDownloadLink
                   url={`${applicationConfig.apiUrl}/export/excel`}
-                  filename={
-                    "Beacons_data_export--Official_Sensitive-Personal.csv"
-                  }
                 />
               </React.Fragment>
             )}
