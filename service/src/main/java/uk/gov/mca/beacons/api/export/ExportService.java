@@ -56,6 +56,20 @@ public class ExportService {
   }
 
   public void exportBeaconsToSpreadsheet() {
+    if (exportAlreadyPerformedToday()) {
+      log.info(
+        "ExportService::exportBeaconsToSpreadsheet: export file already exists for today at {}.  Doing nothing...",
+        getPathToLatestExport()
+      );
+      return;
+    }
+
+    exportJobManager.exportBeaconsToSpreadsheet(getTodaysExportDestination());
+  }
+
+  private boolean exportAlreadyPerformedToday() {
+    boolean exportAlreadyPerformedToday = false;
+
     try {
       ExportResult latestExport = exportJobManager.getLatestExport();
 
@@ -66,17 +80,13 @@ public class ExportService {
           .toString()
           .startsWith(todaysDateFilenamePrefix())
       ) {
-        log.info(
-          "ExportService::exportBeaconsToSpreadsheet: export file already exists for today at {}.  Doing nothing...",
-          getPathToLatestExport()
-        );
-        return;
+        exportAlreadyPerformedToday = true;
       }
     } catch (FileNotFoundException e) {
-      // Do nothing
+      // If file doesn't exist, export wasn't performed today, so return false
     }
 
-    exportJobManager.exportBeaconsToSpreadsheet(getTodaysExportDestination());
+    return exportAlreadyPerformedToday;
   }
 
   private Path getTodaysExportDestination() {
