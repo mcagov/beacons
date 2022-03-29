@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/spring-api/export")
@@ -30,7 +31,9 @@ public class ExportController {
     Resource latestExport = new FileSystemResource(
       exportService
         .getMostRecentDailyExport()
-        .orElseThrow(SpreadsheetExportFailedException::new)
+        .orElseThrow(
+          () -> new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE)
+        )
     );
 
     if (!latestExport.exists()) {

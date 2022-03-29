@@ -40,7 +40,7 @@ public class ExportControllerIntegrationTest extends WebIntegrationTest {
   }
 
   @Test
-  public void givenTheSpreadsheetExportDoesNotExist_whenTheUserRequestsTheLatestExport_thenStartTheExportJobAndPromptUserToRetry()
+  public void givenTheSpreadsheetExportDoesNotExist_whenTheUserRequestsTheLatestExport_thenReturn503ServiceUnavailable()
     throws Exception {
     // Arrange
     String accountHolderId_1 = seedAccountHolder();
@@ -53,19 +53,6 @@ public class ExportControllerIntegrationTest extends WebIntegrationTest {
       .uri(Endpoints.Export.value + "/excel")
       .exchange()
       .expectStatus()
-      .isEqualTo(HttpStatus.SERVICE_UNAVAILABLE)
-      .expectHeader()
-      .valueEquals(HttpHeaders.RETRY_AFTER, "5");
-
-    pollUntil2xx("/spring-api/export/excel");
-
-    webTestClient
-      .get()
-      .uri(Endpoints.Export.value + "/excel")
-      .exchange()
-      .expectStatus()
-      .isOk()
-      .expectBody();
-    // Assert on contents of response?
+      .isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
   }
 }
