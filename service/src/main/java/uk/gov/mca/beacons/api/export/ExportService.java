@@ -46,6 +46,7 @@ public class ExportService {
   public Path getPathToLatestExport() throws SpreadsheetExportFailedException {
     try {
       ExportResult latestExport = exportJobManager.getLatestExport();
+
       return latestExport.getPath();
     } catch (FileNotFoundException e) {
       log.error(
@@ -65,7 +66,7 @@ public class ExportService {
       return;
     }
 
-    exportJobManager.exportBeaconsToSpreadsheet(getTodaysExportDestination());
+    exportJobManager.exportBeaconsToSpreadsheet(getNextExportDestination());
   }
 
   private boolean todaysExportAlreadyExists() throws IOException {
@@ -78,15 +79,15 @@ public class ExportService {
       );
   }
 
-  private Path getTodaysExportDestination() {
-    Path destination = exportDirectory.resolve(getTodaysExportFilename());
+  private Path getNextExportDestination() {
+    Path destination = exportDirectory.resolve(getNextExportFilename());
 
     assert Files.notExists(destination);
 
     return destination;
   }
 
-  private String getTodaysExportFilename() {
+  private String getNextExportFilename() {
     String filename = "Beacons_Data";
     String suffix = "Official Sensitive - Personal";
     String extension = ".csv";

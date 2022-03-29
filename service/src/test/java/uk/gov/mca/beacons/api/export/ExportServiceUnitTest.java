@@ -92,10 +92,6 @@ public class ExportServiceUnitTest {
     @Test
     public void prefixWithTodaysDate() throws IOException {
       when(clock.instant()).thenReturn(Instant.EPOCH);
-      when(exportJobManager.getLatestExport())
-        .thenReturn(
-          new ExportResult(Path.of("/not/relevant"), Date.from(Instant.EPOCH))
-        );
       String yyyyMMdd = new SimpleDateFormat("yyyyMMdd")
         .format(Date.from(Instant.EPOCH));
       ArgumentCaptor<Path> argumentCaptor = ArgumentCaptor.forClass(Path.class);
@@ -114,14 +110,7 @@ public class ExportServiceUnitTest {
       when(clock.instant()).thenReturn(Instant.EPOCH);
       String yyyyMMdd = new SimpleDateFormat("yyyyMMdd")
         .format(Date.from(Instant.EPOCH));
-      when(exportJobManager.getLatestExport())
-        .thenReturn(
-          new ExportResult(
-            testExportDirectory()
-              .resolve(yyyyMMdd + "-rest_of_filename_doesnt_matter.csv"),
-            Date.from(Instant.EPOCH)
-          )
-        );
+      createFile(yyyyMMdd + "-rest_of_filename_doesnt_matter.csv");
 
       exportService.exportBeaconsToSpreadsheet();
 
