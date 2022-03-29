@@ -74,7 +74,7 @@ public class ExportJobManager {
         logMessages.SPREADSHEET_EXPORT_FAILED,
         destinationOfLatestExport
       );
-      throw new FileNotFoundException();
+      throw new FileNotFoundException(destinationOfLatestExport.toString());
     }
 
     return new ExportResult(
