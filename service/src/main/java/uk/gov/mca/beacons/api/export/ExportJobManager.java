@@ -63,6 +63,8 @@ public class ExportJobManager {
    */
   public ExportResult getLatestExport() throws FileNotFoundException {
     JobInstance latestExportJobInstance = getLatestExportJobInstance();
+    if (latestExportJobInstance == null) return null;
+
     JobExecution latestJobExecution = getLatestJobExecution(
       latestExportJobInstance
     );
@@ -84,18 +86,7 @@ public class ExportJobManager {
   }
 
   private JobInstance getLatestExportJobInstance() {
-    JobInstance latestExportJobInstance = jobExplorer.getLastJobInstance(
-      exportToSpreadsheetJob.getName()
-    );
-    if (latestExportJobInstance == null) {
-      log.error(
-        "[{}]: Tried to get most recent JobInstance for the exportToSpreadsheetJob but failed",
-        logMessages.SPREADSHEET_EXPORT_FAILED
-      );
-      throw new SpreadsheetExportFailedException();
-    }
-
-    return latestExportJobInstance;
+    return jobExplorer.getLastJobInstance(exportToSpreadsheetJob.getName());
   }
 
   private JobExecution getLatestJobExecution(JobInstance jobInstance) {

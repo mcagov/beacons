@@ -90,7 +90,7 @@ public class ExportServiceUnitTest {
   class exportBeaconsToSpreadsheet {
 
     @Test
-    public void prefixWithTodaysDate() throws FileNotFoundException {
+    public void prefixWithTodaysDate() throws IOException {
       when(clock.instant()).thenReturn(Instant.EPOCH);
       when(exportJobManager.getLatestExport())
         .thenReturn(

@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.export;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -55,8 +56,8 @@ public class ExportService {
     }
   }
 
-  public void exportBeaconsToSpreadsheet() {
-    if (exportAlreadyPerformedToday()) {
+  public void exportBeaconsToSpreadsheet() throws IOException {
+    if (todaysExportAlreadyExists()) {
       log.info(
         "ExportService::exportBeaconsToSpreadsheet: export file already exists for today at {}.  Doing nothing...",
         getPathToLatestExport()
@@ -67,26 +68,14 @@ public class ExportService {
     exportJobManager.exportBeaconsToSpreadsheet(getTodaysExportDestination());
   }
 
-  private boolean exportAlreadyPerformedToday() {
-    boolean exportAlreadyPerformedToday = false;
-
-    try {
-      ExportResult latestExport = exportJobManager.getLatestExport();
-
-      if (
-        latestExport
-          .getPath()
-          .getFileName()
-          .toString()
-          .startsWith(todaysDateFilenamePrefix())
-      ) {
-        exportAlreadyPerformedToday = true;
-      }
-    } catch (FileNotFoundException e) {
-      // If file doesn't exist, export wasn't performed today, so return false
-    }
-
-    return exportAlreadyPerformedToday;
+  private boolean todaysExportAlreadyExists() throws IOException {
+    return Files
+      .list(exportDirectory)
+      .filter(file -> !Files.isDirectory(file))
+      .map(Path::getFileName)
+      .anyMatch(
+        filename -> filename.toString().startsWith(todaysDateFilenamePrefix())
+      );
   }
 
   private Path getTodaysExportDestination() {
