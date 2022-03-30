@@ -1,13 +1,15 @@
 import { Button } from "@mui/material";
 import React, { MouseEventHandler } from "react";
-import { AuthContext } from "./auth/AuthProvider";
+import { useAuthContext } from "./auth/AuthProvider";
 
 export function AuthenticatedDownloadLink({
   url,
 }: {
   url: string;
-}): JSX.Element {
+}): JSX.Element | null {
   const link = React.useRef<HTMLAnchorElement>(null);
+
+  const { user } = useAuthContext();
 
   const downloadFile =
     (accessToken: string | unknown): MouseEventHandler<HTMLAnchorElement> =>
@@ -41,23 +43,21 @@ export function AuthenticatedDownloadLink({
       link.current.click();
     };
 
+  if (user.type !== "loggedInUser") {
+    return null;
+  }
+
   return (
-    <>
-      <AuthContext.Consumer>
-        {(auth) => (
-          <Button
-            component="a"
-            ref={link}
-            onClick={downloadFile(auth.accessToken)}
-            color="inherit"
-            variant="outlined"
-            fullWidth
-          >
-            Export to Excel
-          </Button>
-        )}
-      </AuthContext.Consumer>
-    </>
+    <Button
+      component="a"
+      ref={link}
+      onClick={downloadFile(user.apiAccessToken)}
+      color="inherit"
+      variant="outlined"
+      fullWidth
+    >
+      Export to Excel
+    </Button>
   );
 }
 

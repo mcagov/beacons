@@ -1,11 +1,12 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Button, Menu, MenuItem } from "@mui/material";
-import { FunctionComponent, useState } from "react";
-import { User } from "../../lib/User";
-import { AuthContext } from "./AuthProvider";
+import { useState } from "react";
+import { LoggedInUser } from "../../lib/User";
+import { useAuthContext } from "./AuthProvider";
 
-export const UserMenu: FunctionComponent = () => {
+export const UserMenu = (): JSX.Element | null => {
   const [anchorElement, setAnchorElement] = useState(null);
+  const { user, logout } = useAuthContext();
 
   const handleClick = (event: any) => {
     setAnchorElement(event.currentTarget);
@@ -15,31 +16,31 @@ export const UserMenu: FunctionComponent = () => {
     setAnchorElement(null);
   };
 
+  if (user.type !== "loggedInUser") {
+    return null;
+  }
+
   return (
-    <AuthContext.Consumer>
-      {(auth) => (
-        <>
-          <Button
-            color="inherit"
-            aria-controls="user-menu"
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
-            <AccountCircleIcon />
-            &nbsp;
-            {auth.user && (auth.user as User).displayName}
-          </Button>
-          <Menu
-            id="user-menu"
-            anchorEl={anchorElement}
-            keepMounted
-            open={Boolean(anchorElement)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={auth.logout}>Logout</MenuItem>
-          </Menu>
-        </>
-      )}
-    </AuthContext.Consumer>
+    <>
+      <Button
+        color="inherit"
+        aria-controls="user-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
+        <AccountCircleIcon />
+        &nbsp;
+        {(user as LoggedInUser).attributes.displayName}
+      </Button>
+      <Menu
+        id="user-menu"
+        anchorEl={anchorElement}
+        keepMounted
+        open={Boolean(anchorElement)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={logout}>Logout</MenuItem>
+      </Menu>
+    </>
   );
 };

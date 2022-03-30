@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import React, { MouseEventHandler } from "react";
-import { AuthContext } from "./auth/AuthProvider";
+import { useAuthContext } from "./auth/AuthProvider";
 
 /**
  * For triggering actions in the Service while authenticated as the user
@@ -13,7 +13,9 @@ export function AuthenticatedPOSTButton({
 }: {
   uri: string;
   children: React.ReactNode;
-}): JSX.Element {
+}): JSX.Element | null {
+  const { user } = useAuthContext();
+
   const performAction =
     (accessToken: string | unknown): MouseEventHandler<HTMLAnchorElement> =>
     async () => {
@@ -29,21 +31,19 @@ export function AuthenticatedPOSTButton({
         });
     };
 
+  if (user.type !== "loggedInUser") {
+    return null;
+  }
+
   return (
-    <>
-      <AuthContext.Consumer>
-        {(auth) => (
-          <Button
-            component="a"
-            onClick={performAction(auth.accessToken)}
-            color="inherit"
-            variant="outlined"
-            fullWidth
-          >
-            {children}
-          </Button>
-        )}
-      </AuthContext.Consumer>
-    </>
+    <Button
+      component="a"
+      onClick={performAction(user.apiAccessToken)}
+      color="inherit"
+      variant="outlined"
+      fullWidth
+    >
+      {children}
+    </Button>
   );
 }

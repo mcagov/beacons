@@ -1,6 +1,6 @@
 import React from "react";
 import { Role } from "../../lib/User";
-import { AuthContext } from "./AuthProvider";
+import { useAuthContext } from "./AuthProvider";
 
 export const OnlyVisibleToUsersWith = ({
   role,
@@ -9,15 +9,11 @@ export const OnlyVisibleToUsersWith = ({
   role: Role;
   children: React.ReactNode;
 }) => {
-  return (
-    <AuthContext.Consumer>
-      {(auth) => {
-        if (auth.user?.roles?.includes(role)) {
-          return <>{children}</>;
-        } else {
-          return <></>;
-        }
-      }}
-    </AuthContext.Consumer>
-  );
+  const { user } = useAuthContext();
+
+  if (user.type === "loggedInUser" && user?.attributes.roles.includes(role)) {
+    return <>{children}</>;
+  } else {
+    return <></>;
+  }
 };

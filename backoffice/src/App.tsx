@@ -1,4 +1,5 @@
 import { PublicClientApplication } from "@azure/msal-browser";
+import { MsalProvider } from "@azure/msal-react";
 import { RequireAuth } from "components/auth/RequireAuth";
 import { AuthGateway } from "gateways/auth/AuthGateway";
 import { BeaconsGateway } from "gateways/beacons/BeaconsGateway";
@@ -77,36 +78,38 @@ const App: FunctionComponent = () => {
   };
 
   return (
-    <AuthProvider pca={pca}>
-      <UserSettingsProvider>
-        <Router basename="/backoffice">
-          <Navigation />
-          <RequireAuth>
-            <Switch>
-              <Route exact path="/">
-                <Search beaconsGateway={beaconsGateway} />
-              </Route>
-              <Route path={`/beacons/:id`}>
-                <SingleBeaconRecordViewWithParam />
-              </Route>
-              <Route path={`/legacy-beacons/:id`}>
-                <SingleLegacyBeaconRecordViewWithParam />
-              </Route>
-              <Route path={`/export`}>
-                <p>How did you end up here!?!?!?</p>
-                <AuthenticatedPOSTButton
-                  uri={`${applicationConfig.apiUrl}/export/excel`}
-                >
-                  Trigger export job
-                </AuthenticatedPOSTButton>
-              </Route>
-              <Route>Page not found. Is the address correct?</Route>
-            </Switch>
-          </RequireAuth>
-        </Router>
-        <Footer />
-      </UserSettingsProvider>
-    </AuthProvider>
+    <MsalProvider instance={pca}>
+      <AuthProvider>
+        <UserSettingsProvider>
+          <Router basename="/backoffice">
+            <Navigation />
+            <RequireAuth>
+              <Switch>
+                <Route exact path="/">
+                  <Search beaconsGateway={beaconsGateway} />
+                </Route>
+                <Route path={`/beacons/:id`}>
+                  <SingleBeaconRecordViewWithParam />
+                </Route>
+                <Route path={`/legacy-beacons/:id`}>
+                  <SingleLegacyBeaconRecordViewWithParam />
+                </Route>
+                <Route path={`/export`}>
+                  <p>How did you end up here!?!?!?</p>
+                  <AuthenticatedPOSTButton
+                    uri={`${applicationConfig.apiUrl}/export/excel`}
+                  >
+                    Trigger export job
+                  </AuthenticatedPOSTButton>
+                </Route>
+                <Route>Page not found. Is the address correct?</Route>
+              </Switch>
+            </RequireAuth>
+          </Router>
+          <Footer />
+        </UserSettingsProvider>
+      </AuthProvider>
+    </MsalProvider>
   );
 };
 

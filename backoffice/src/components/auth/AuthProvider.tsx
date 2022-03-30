@@ -1,76 +1,84 @@
 import { AccountInfo, IPublicClientApplication } from "@azure/msal-browser";
-import { MsalProvider } from "@azure/msal-react";
-import React, { createContext, FunctionComponent, useEffect } from "react";
-import { Role, User } from "../../lib/User";
+import { useMsal } from "@azure/msal-react";
+import React, { useEffect } from "react";
+import { Role, User, UserAttributes, userReducer } from "../../lib/User";
 
 export interface IAuthContext {
-  user: User | null;
-  accessToken: string | null;
+  user: User;
   logout: () => void;
 }
 
-export const AuthContext = createContext<IAuthContext>({
-  user: null,
-  accessToken: null,
-  logout: () => {},
-});
+export const AuthContext = React.createContext<IAuthContext | null>(null);
 
-export const AuthProvider: FunctionComponent<{
-  pca: IPublicClientApplication;
-}> = ({ pca, children }) => {
-  const [authToken, setAuthToken] = React.useState<string | null>(null);
-  const [user, setUser] = React.useState<User | null>(null);
-
-  useEffect(() => {
-    getAccessToken(pca).then((token) => {
-      setAuthToken(token);
-    });
-  }, [pca]);
+export const AuthProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}): JSX.Element => {
+  const { instance, accounts } = useMsal();
+  const [user, dispatch] = React.useReducer(userReducer, {
+    type: "loggedOutUser",
+  });
 
   useEffect(() => {
-    setUser(createUser(pca.getAllAccounts()[0]));
-  }, [pca]);
+    if (accounts.length > 0) {
+      dispatch({
+        type: "login",
+        userAttributes: getUserAttributes(accounts[0]),
+      });
+    }
+  }, [accounts]);
+
+  useEffect(() => {
+    if (user.type === "loggedInUser" && user.apiAccessToken == null) {
+      getApiAccessToken(instance).then((apiAccessToken) => {
+        dispatch({ type: "set_api_access_token", apiAccessToken });
+      });
+    }
+  }, [instance, user]);
 
   return (
-    <MsalProvider instance={pca}>
-      <AuthContext.Provider
-        value={{
-          user: user,
-          accessToken: authToken,
-          logout: () => pca.logoutRedirect(),
-        }}
-      >
-        {children}
-      </AuthContext.Provider>
-    </MsalProvider>
+    <AuthContext.Provider
+      value={{
+        user: user,
+        logout: instance.logoutRedirect,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 };
 
-const createUser = (accountInfo: AccountInfo): User => {
+export function useAuthContext(): IAuthContext {
+  const context = React.useContext(AuthContext);
+  if (context == null) {
+    throw new Error(
+      "useAuthContext needs to be used within an AuthContextProvider"
+    );
+  }
+
+  return context;
+}
+
+const getUserAttributes = (accountInfo: AccountInfo): UserAttributes => {
   return {
-    username: accountInfo?.username ?? null,
-    displayName: accountInfo?.name ?? null,
-    roles:
-      ((accountInfo?.idTokenClaims as Record<string, string>)
-        ?.roles as unknown as Role[]) ?? null,
+    username: accountInfo.username,
+    displayName: accountInfo.name,
+    roles: (accountInfo.idTokenClaims as Record<string, Role[]>)?.roles,
   };
 };
 
-const getAccessToken = async (
+const getApiAccessToken = async (
   pca: IPublicClientApplication
-): Promise<string | null> => {
+): Promise<string> => {
   const account = pca.getAllAccounts()[0];
 
-  if (account) {
-    const accessTokenRequest = {
-      scopes: [`api://${pca.getConfiguration().auth.clientId}/access_as_user`],
-      account: account,
-    };
+  const accessTokenRequest = {
+    scopes: [`api://${pca.getConfiguration().auth.clientId}/access_as_user`],
+    account: account,
+  };
 
-    const response = await pca.acquireTokenSilent(accessTokenRequest);
+  const response = await pca.acquireTokenSilent(accessTokenRequest);
 
-    return response.accessToken;
-  } else {
-    return null;
-  }
+  return response.accessToken;
 };

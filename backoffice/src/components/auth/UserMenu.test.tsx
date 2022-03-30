@@ -9,11 +9,14 @@ describe("UserMenu", () => {
   beforeEach(() => {
     authContext = {
       user: {
-        username: "steve.stevington@mcga.gov.uk",
-        displayName: "Steve Stevington",
-        roles: [],
+        type: "loggedInUser",
+        attributes: {
+          username: "steve.stevington@mcga.gov.uk",
+          displayName: "Steve Stevington",
+          roles: [],
+        },
+        apiAccessToken: "mockAccessTokenString",
       },
-      accessToken: "mockAccessTokenString",
       logout: jest.fn(),
     };
   });
