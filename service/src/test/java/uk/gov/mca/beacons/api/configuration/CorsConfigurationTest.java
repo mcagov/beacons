@@ -36,6 +36,8 @@ class CorsConfigurationTest {
   void shouldAddTheCorrectCorsConfigurationIfTheAllowedOriginsIsSupplied() {
     given(registry.addMapping("/**")).willReturn(corsRegistration);
     given(corsRegistration.allowedMethods("*")).willReturn(corsRegistration);
+    given(corsRegistration.exposedHeaders("Content-Disposition"))
+      .willReturn(corsRegistration);
     final String[] allowedOrigins = {
       "http://localhost:8080",
       "http://localhost:8090",
