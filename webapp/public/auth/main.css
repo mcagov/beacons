@@ -1,4 +1,15 @@
-.govuk-link,
+/**
+* Hide "Change email" button from Azure B2C flows
+*/
+.buttons button#emailVerificationControl_but_change_claims {
+  visibility: hidden;
+}
+.buttons button:hover#emailVerificationControl_but_change_claims {
+  visibility: hidden;
+}
+/*
+* End "Hide 'Change email' button from Azure B2C flow"
+ */
 a {
   font-family: GDS Transport, arial, sans-serif;
   -webkit-font-smoothing: antialiased;
