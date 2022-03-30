@@ -53,6 +53,10 @@ public class ExportController {
       HttpHeaders.CONTENT_DISPOSITION,
       "attachment; filename=" + resource.getFilename()
     );
+    headers.set(
+      HttpHeaders.CACHE_CONTROL,
+      "no-cache, no-store, must-revalidate"
+    );
     return new ResponseEntity<>(resource, headers, HttpStatus.OK);
   }
 }
