@@ -17,7 +17,6 @@ all: backing-services webapp service backoffice backoffice-stubs
 .PHONY: webapp
 webapp:
 	@echo "⏭ Starting the NextJS Webapp in dev mode..."
-	@open http://localhost:3000
 	@cd ./webapp && npm run dev
 
 .PHONY: backoffice
