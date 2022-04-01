@@ -23,8 +23,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
+import uk.gov.mca.beacons.api.export.csv.CsvExportJobManager;
+import uk.gov.mca.beacons.api.export.csv.CsvExporter;
 
-class ExportServiceIntegrationTest extends WebIntegrationTest {
+class CsvExporterIntegrationTest extends WebIntegrationTest {
 
   /**
    * Spring Batch uses the pre-Java 7 "File" abstraction to write to files.  The File abstraction can't deal with
@@ -37,16 +39,21 @@ class ExportServiceIntegrationTest extends WebIntegrationTest {
   Clock clock;
 
   @Autowired
-  ExportJobManager exportJobManager;
+  CsvExportJobManager csvExportJobManager;
 
-  ExportService exportService;
+  CsvExporter csvExporter;
 
   @BeforeEach
   public void arrange() throws IOException {
     exportDirectory = Files.createTempDirectory("beacons");
     exportDirectory.toFile().deleteOnExit();
 
-    exportService = new ExportService(exportJobManager, exportDirectory, clock);
+    FileSystemRepository fileSystemRepository = new FileSystemRepository(
+      new ExportFileNamer(clock),
+      exportDirectory
+    );
+
+    csvExporter = new CsvExporter(csvExportJobManager, fileSystemRepository);
 
     reset(clock);
     Mockito.when(clock.instant()).thenReturn(Instant.EPOCH);
@@ -67,8 +74,8 @@ class ExportServiceIntegrationTest extends WebIntegrationTest {
     );
     String id3 = seedLegacyBeacon();
 
-    exportService.exportBeaconsToSpreadsheet();
-    Path export = exportService.getMostRecentDailyExport().orElseThrow();
+    csvExporter.exportBeaconsToCsv();
+    Path export = csvExporter.getMostRecentCsvExport().orElseThrow();
     List<List<String>> spreadsheet = readCsv(export);
 
     List<String> headerRow = spreadsheet.get(0);

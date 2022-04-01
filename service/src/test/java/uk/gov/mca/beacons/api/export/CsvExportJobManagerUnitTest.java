@@ -18,10 +18,11 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
+import uk.gov.mca.beacons.api.export.csv.CsvExportJobManager;
 import uk.gov.mca.beacons.api.export.csv.ExportToCsvFailedException;
 
 @ExtendWith(MockitoExtension.class)
-class ExportJobManagerUnitTest {
+class CsvExportJobManagerUnitTest {
 
   @Mock
   JobExplorer jobExplorer;
@@ -33,7 +34,7 @@ class ExportJobManagerUnitTest {
   Job exportToSpreadsheetJob;
 
   @InjectMocks
-  ExportJobManager exportJobManager;
+  CsvExportJobManager csvExportJobManager;
 
   @Test
   void whenAJobDoesNotComplete_thenLoudlyThrowAnException()
@@ -46,7 +47,7 @@ class ExportJobManagerUnitTest {
 
     assertThrows(
       ExportToCsvFailedException.class,
-      () -> exportJobManager.exportToCsv(Path.of("/filename.csv"))
+      () -> csvExportJobManager.exportToCsv(Path.of("/filename.csv"))
     );
   }
 }

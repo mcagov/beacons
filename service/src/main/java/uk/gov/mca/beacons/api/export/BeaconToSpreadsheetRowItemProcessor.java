@@ -7,9 +7,10 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
+import uk.gov.mca.beacons.api.export.SpreadsheetRow;
 
 @Component
-public class BeaconToSpreadsheetRowItemProcessor
+class BeaconToSpreadsheetRowItemProcessor
   implements ItemProcessor<Beacon, SpreadsheetRow> {
 
   private final BeaconOwnerRepository beaconOwnerRepository;

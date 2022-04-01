@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.export;
+package uk.gov.mca.beacons.api.export.csv;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -13,12 +13,16 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
-import uk.gov.mca.beacons.api.export.csv.ExportToCsvFailedException;
 
+/**
+ * Initiates export jobs using Spring Batch.
+ *
+ * Encapsulates Spring Batch concerns.
+ */
 @Component
 @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
 @Slf4j
-public class ExportJobManager {
+public class CsvExportJobManager {
 
   private final JobLauncher jobLauncher;
   private final Job exportToCsvJob;
@@ -28,7 +32,7 @@ public class ExportJobManager {
   }
 
   @Autowired
-  public ExportJobManager(JobLauncher jobLauncher, Job exportToCsvJob) {
+  public CsvExportJobManager(JobLauncher jobLauncher, Job exportToCsvJob) {
     this.jobLauncher = jobLauncher;
     this.exportToCsvJob = exportToCsvJob;
   }

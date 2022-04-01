@@ -11,6 +11,11 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
+/**
+ * Represents the contents of a spreadsheet export.
+ *
+ * File format agnostic: the same SpreadsheetRow may be used in a job to write to .csv, .xls, .xlsx etc.
+ */
 @Getter
 @Setter
 public class SpreadsheetRow {

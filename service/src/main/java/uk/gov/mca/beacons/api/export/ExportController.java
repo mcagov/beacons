@@ -13,25 +13,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import uk.gov.mca.beacons.api.export.csv.CsvExporter;
 import uk.gov.mca.beacons.api.export.csv.ExportToCsvFailedException;
+import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 
 @RestController
 @RequestMapping("/spring-api/export")
-public class ExportController {
+class ExportController {
 
-  private final ExportService exportService;
+  private final CsvExporter csvExporter;
+
+  private final XlsxExporter xlsxExporter;
 
   @Autowired
-  public ExportController(ExportService exportService) {
-    this.exportService = exportService;
+  public ExportController(CsvExporter csvExporter, XlsxExporter xlsxExporter) {
+    this.csvExporter = csvExporter;
+    this.xlsxExporter = xlsxExporter;
   }
 
   @GetMapping(value = "/csv")
   public ResponseEntity<Resource> downloadExistingCsvExport()
     throws ExportToCsvFailedException, IOException {
     Resource latestExport = new FileSystemResource(
-      exportService
-        .getMostRecentDailyExport()
+      csvExporter
+        .getMostRecentCsvExport()
         .orElseThrow(
           () -> new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE)
         )
@@ -42,9 +47,22 @@ public class ExportController {
 
   @PostMapping(value = "/csv")
   public ResponseEntity<Void> createNewCsvExport() throws IOException {
-    exportService.exportBeaconsToSpreadsheet();
+    csvExporter.exportBeaconsToCsv();
 
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping(value = "/xlsx")
+  public ResponseEntity<Resource> downloadExistingXlsxExport() {
+    Resource latestExport = new FileSystemResource(
+      xlsxExporter
+        .getMostRecentExport()
+        .orElseThrow(
+          () -> new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE)
+        )
+    );
+
+    return serveFile(latestExport);
   }
 
   private ResponseEntity<Resource> serveFile(Resource resource) {

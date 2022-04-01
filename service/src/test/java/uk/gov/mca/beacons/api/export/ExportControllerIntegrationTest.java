@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
+import uk.gov.mca.beacons.api.export.csv.CsvExporter;
 
 public class ExportControllerIntegrationTest extends WebIntegrationTest {
 
@@ -14,7 +15,7 @@ public class ExportControllerIntegrationTest extends WebIntegrationTest {
   private JobRepositoryTestUtils jobRepositoryTestUtils;
 
   @Autowired
-  ExportService exportService;
+  CsvExporter csvExporter;
 
   @Nested
   class csvExports {
@@ -26,7 +27,7 @@ public class ExportControllerIntegrationTest extends WebIntegrationTest {
       String accountHolderId_1 = seedAccountHolder();
       seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId_1);
       seedLegacyBeacon();
-      exportService.exportBeaconsToSpreadsheet();
+      csvExporter.exportBeaconsToCsv();
 
       // -- Act --
       webTestClient
@@ -60,20 +61,30 @@ public class ExportControllerIntegrationTest extends WebIntegrationTest {
     }
   }
 
-  @Test
-  public void givenTheSpreadsheetExportDoesNotExist_whenTheUserRequestsTheLatestExport_thenReturn503ServiceUnavailable()
-    throws Exception {
-    // Arrange
-    String accountHolderId_1 = seedAccountHolder();
-    seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId_1);
-    seedLegacyBeacon();
+  @Nested
+  class XlsxExports {
 
-    // Act
-    webTestClient
-      .get()
-      .uri(Endpoints.Export.value + "/excel")
-      .exchange()
-      .expectStatus()
-      .isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
+    @Test
+    public void givenAnXlsxExportExists_whenTheUserRequestsIt_thenServeTheFile()
+      throws Exception {
+      // -- Arrange --
+      String accountHolderId_1 = seedAccountHolder();
+      seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId_1);
+      seedLegacyBeacon();
+      csvExporter.exportBeaconsToCsv();
+
+      // -- Act --
+      webTestClient
+        .get()
+        .uri(Endpoints.Export.value + "/xlsx")
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectHeader()
+        .contentType(new MediaType("application", "force-download"));
+
+      // -- Teardown --
+      jobRepositoryTestUtils.removeJobExecutions();
+    }
   }
 }

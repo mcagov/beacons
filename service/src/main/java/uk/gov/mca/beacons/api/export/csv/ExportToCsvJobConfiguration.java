@@ -26,8 +26,6 @@ import org.springframework.core.io.FileSystemResource;
 import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.export.SpreadsheetRow;
-import uk.gov.mca.beacons.api.export.csv.DeleteTempFileTasklet;
-import uk.gov.mca.beacons.api.export.csv.RenameFileTasklet;
 import uk.gov.mca.beacons.api.jobs.listener.JobExecutionLoggingListener;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
@@ -73,14 +71,14 @@ public class ExportToCsvJobConfiguration {
   public Step exportBeaconToCsvStep(
     ItemReader<Beacon> exportBeaconItemReader,
     ItemProcessor<Beacon, SpreadsheetRow> exportBeaconToSpreadsheetRowItemProcessor,
-    ItemWriter<SpreadsheetRow> exportSpreadsheetRowItemWriter
+    ItemWriter<SpreadsheetRow> csvItemWriter
   ) {
     return stepBuilderFactory
       .get("exportBeaconToExcelStep")
       .<Beacon, SpreadsheetRow>chunk(chunkSize)
       .reader(exportBeaconItemReader)
       .processor(exportBeaconToSpreadsheetRowItemProcessor)
-      .writer(exportSpreadsheetRowItemWriter)
+      .writer(csvItemWriter)
       .build();
   }
 
@@ -88,14 +86,14 @@ public class ExportToCsvJobConfiguration {
   public Step exportLegacyBeaconToCsvStep(
     ItemReader<LegacyBeacon> exportLegacyBeaconItemReader,
     ItemProcessor<LegacyBeacon, SpreadsheetRow> exportLegacyBeaconToSpreadsheetItemProcessor,
-    ItemWriter<SpreadsheetRow> exportSpreadsheetRowItemWriter
+    ItemWriter<SpreadsheetRow> csvItemWriter
   ) {
     return stepBuilderFactory
       .get("exportLegacyBeaconToExcelStep")
       .<LegacyBeacon, SpreadsheetRow>chunk(chunkSize)
       .reader(exportLegacyBeaconItemReader)
       .processor(exportLegacyBeaconToSpreadsheetItemProcessor)
-      .writer(exportSpreadsheetRowItemWriter)
+      .writer(csvItemWriter)
       .build();
   }
 
@@ -119,9 +117,9 @@ public class ExportToCsvJobConfiguration {
       .build();
   }
 
-  @Bean
+  @Bean("csvItemWriter")
   @StepScope
-  public FlatFileItemWriter<SpreadsheetRow> csvWriter(
+  public FlatFileItemWriter<SpreadsheetRow> csvItemWriter(
     @Value("#{jobParameters}") Map<String, String> jobParameters
   ) {
     return new FlatFileItemWriterBuilder<SpreadsheetRow>()
