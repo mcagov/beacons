@@ -29,7 +29,7 @@ public class SpringBatchTestConfiguration {
     return new JobLauncherTestUtils() {
       @Override
       @Autowired
-      @Qualifier("exportToSpreadsheetJob")
+      @Qualifier("exportToCsvJob")
       public void setJob(@NonNull Job job) {
         super.setJob(job);
       }

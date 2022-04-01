@@ -13,6 +13,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.export.csv.ExportToCsvFailedException;
 
 @Component
 @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
@@ -20,35 +21,32 @@ import org.springframework.stereotype.Component;
 public class ExportJobManager {
 
   private final JobLauncher jobLauncher;
-  private final Job exportToSpreadsheetJob;
+  private final Job exportToCsvJob;
 
   private enum logMessages {
     SPREADSHEET_EXPORT_FAILED,
   }
 
   @Autowired
-  public ExportJobManager(JobLauncher jobLauncher, Job exportToSpreadsheetJob) {
+  public ExportJobManager(JobLauncher jobLauncher, Job exportToCsvJob) {
     this.jobLauncher = jobLauncher;
-    this.exportToSpreadsheetJob = exportToSpreadsheetJob;
+    this.exportToCsvJob = exportToCsvJob;
   }
 
   /**
-   * Synchronously start the exportToSpreadsheetJob using the default JobLauncher.
+   * Synchronously start the exportToCsvJob using the default JobLauncher.
    *
-   * @throws SpreadsheetExportFailedException if the export fails
+   * @throws ExportToCsvFailedException if the export fails
    */
-  public void exportBeaconsToSpreadsheet(Path destination)
-    throws SpreadsheetExportFailedException {
-    exportBeaconsToSpreadsheet(jobLauncher, destination);
+  public void exportToCsv(Path destination) throws ExportToCsvFailedException {
+    exportToCsv(jobLauncher, destination);
   }
 
-  private void exportBeaconsToSpreadsheet(
-    JobLauncher jobLauncher,
-    Path destination
-  ) throws SpreadsheetExportFailedException {
+  private void exportToCsv(JobLauncher jobLauncher, Path destination)
+    throws ExportToCsvFailedException {
     try {
       JobExecution jobExecution = jobLauncher.run(
-        exportToSpreadsheetJob,
+        exportToCsvJob,
         getExportJobParameters(destination.toString())
       );
       BatchStatus jobExecutionStatus = jobExecution.getStatus();
@@ -59,16 +57,17 @@ public class ExportJobManager {
       }
     } catch (Exception e) {
       log.error(
-        "[{}]: Tried to launch exportToSpreadsheetJob with jobLauncher {} but failed",
+        "[{}]: Tried to launch {} with jobLauncher {} but failed",
+        exportToCsvJob.getName(),
         logMessages.SPREADSHEET_EXPORT_FAILED,
         jobLauncher.getClass()
       );
-      throw new SpreadsheetExportFailedException(e);
+      throw new ExportToCsvFailedException(e);
     }
   }
 
   private JobParameters getExportJobParameters(String destination)
-    throws SpreadsheetExportFailedException {
+    throws ExportToCsvFailedException {
     JobParametersBuilder builder = new JobParametersBuilder();
     builder.addDate("date", new Date());
     builder.addString("destination", destination);

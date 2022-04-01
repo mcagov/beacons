@@ -29,6 +29,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.mca.beacons.api.export.csv.ExportToCsvFailedException;
 
 @ExtendWith(MockitoExtension.class)
 public class ExportServiceUnitTest {
@@ -67,8 +68,7 @@ public class ExportServiceUnitTest {
 
       exportService.exportBeaconsToSpreadsheet();
 
-      verify(exportJobManager)
-        .exportBeaconsToSpreadsheet(argumentCaptor.capture());
+      verify(exportJobManager).exportToCsv(argumentCaptor.capture());
       String filename = argumentCaptor.getValue().getFileName().toString();
       assertThat(filename, startsWith(yyyyMMdd));
     }
@@ -83,7 +83,7 @@ public class ExportServiceUnitTest {
 
       exportService.exportBeaconsToSpreadsheet();
 
-      verify(exportJobManager, never()).exportBeaconsToSpreadsheet(any());
+      verify(exportJobManager, never()).exportToCsv(any());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class ExportServiceUnitTest {
 
       exportService.exportBeaconsToSpreadsheet();
 
-      verify(exportJobManager, times(1)).exportBeaconsToSpreadsheet(any());
+      verify(exportJobManager, times(1)).exportToCsv(any());
     }
   }
 
@@ -105,7 +105,7 @@ public class ExportServiceUnitTest {
 
     @Test
     public void whenThereIsNoPreviouslyExportedSpreadsheet_thenReturnOptionalOfNull()
-      throws SpreadsheetExportFailedException, IOException {
+      throws ExportToCsvFailedException, IOException {
       // No exports
 
       Optional<Path> export = exportService.getMostRecentDailyExport();
@@ -115,7 +115,7 @@ public class ExportServiceUnitTest {
 
     @Test
     public void whenThereIsAnExportedSpreadsheetForToday_thenReturnTheExport()
-      throws SpreadsheetExportFailedException, IOException {
+      throws ExportToCsvFailedException, IOException {
       String todayYyyyMMdd = new SimpleDateFormat("yyyyMMdd")
         .format(Date.from(Instant.EPOCH));
       Path todaysExport = createFile(
@@ -125,7 +125,7 @@ public class ExportServiceUnitTest {
 
       Path actualCsvExport = exportService
         .getMostRecentDailyExport()
-        .orElseThrow(SpreadsheetExportFailedException::new)
+        .orElseThrow(ExportToCsvFailedException::new)
         .getFileName();
 
       assertThat(actualCsvExport, is(todaysExport));

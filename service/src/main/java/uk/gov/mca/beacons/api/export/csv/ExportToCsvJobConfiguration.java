@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.export;
+package uk.gov.mca.beacons.api.export.csv;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
+import uk.gov.mca.beacons.api.export.SpreadsheetRow;
 import uk.gov.mca.beacons.api.export.csv.DeleteTempFileTasklet;
 import uk.gov.mca.beacons.api.export.csv.RenameFileTasklet;
 import uk.gov.mca.beacons.api.jobs.listener.JobExecutionLoggingListener;
@@ -33,7 +34,7 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
 @Configuration
 @EnableBatchProcessing
-public class ExportToSpreadsheetJobConfiguration {
+public class ExportToCsvJobConfiguration {
 
   private static final int chunkSize = 256;
   private final JobBuilderFactory jobBuilderFactory;
@@ -43,7 +44,7 @@ public class ExportToSpreadsheetJobConfiguration {
   private final Path temporaryExportFile;
 
   @Autowired
-  public ExportToSpreadsheetJobConfiguration(
+  public ExportToCsvJobConfiguration(
     JobBuilderFactory jobBuilderFactory,
     StepBuilderFactory stepBuilderFactory,
     EntityManagerFactory entityManagerFactory,
@@ -69,8 +70,8 @@ public class ExportToSpreadsheetJobConfiguration {
   }
 
   @Bean
-  public Step exportBeaconToExcelStep(
-    ItemReader<Beacon> beaconItemReader,
+  public Step exportBeaconToCsvStep(
+    ItemReader<Beacon> exportBeaconItemReader,
     ItemProcessor<Beacon, SpreadsheetRow> exportBeaconToSpreadsheetRowItemProcessor,
     ItemWriter<SpreadsheetRow> exportSpreadsheetRowItemWriter
   ) {
@@ -84,8 +85,8 @@ public class ExportToSpreadsheetJobConfiguration {
   }
 
   @Bean
-  public Step exportLegacyBeaconToExcelStep(
-    ItemReader<LegacyBeacon> legacyBeaconItemReader,
+  public Step exportLegacyBeaconToCsvStep(
+    ItemReader<LegacyBeacon> exportLegacyBeaconItemReader,
     ItemProcessor<LegacyBeacon, SpreadsheetRow> exportLegacyBeaconToSpreadsheetItemProcessor,
     ItemWriter<SpreadsheetRow> exportSpreadsheetRowItemWriter
   ) {
@@ -120,7 +121,7 @@ public class ExportToSpreadsheetJobConfiguration {
 
   @Bean
   @StepScope
-  public FlatFileItemWriter<SpreadsheetRow> writer(
+  public FlatFileItemWriter<SpreadsheetRow> csvWriter(
     @Value("#{jobParameters}") Map<String, String> jobParameters
   ) {
     return new FlatFileItemWriterBuilder<SpreadsheetRow>()
@@ -140,19 +141,19 @@ public class ExportToSpreadsheetJobConfiguration {
       .build();
   }
 
-  @Bean(value = "exportToSpreadsheetJob")
-  public Job exportToSpreadsheetJob(
+  @Bean(value = "exportToCsvJob")
+  public Job exportToCsvJob(
     Step deleteTempFileStep,
-    Step exportBeaconToExcelStep,
-    Step exportLegacyBeaconToExcelStep,
+    Step exportBeaconToCsvStep,
+    Step exportLegacyBeaconToCsvStep,
     Step renameFileStep
   ) {
     return jobBuilderFactory
-      .get("exportToSpreadsheetJob")
+      .get("exportToCsvJob")
       .listener(jobExecutionLoggingListener)
       .start(deleteTempFileStep)
-      .next(exportBeaconToExcelStep)
-      .next(exportLegacyBeaconToExcelStep)
+      .next(exportBeaconToCsvStep)
+      .next(exportLegacyBeaconToCsvStep)
       .next(renameFileStep)
       .build();
   }

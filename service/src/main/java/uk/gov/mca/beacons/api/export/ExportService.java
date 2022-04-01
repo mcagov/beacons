@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import uk.gov.mca.beacons.api.export.csv.ExportToCsvFailedException;
 
 @Service
 @Slf4j
@@ -46,7 +47,7 @@ public class ExportService {
    * Return the stored .csv file with the most current date prefix
    *
    * @return Path to the latest spreadsheet export
-   * @throws SpreadsheetExportFailedException if the latest export is unavailable
+   * @throws ExportToCsvFailedException if the latest export is unavailable
    */
   public Optional<Path> getMostRecentDailyExport() throws IOException {
     return Files
@@ -70,7 +71,7 @@ public class ExportService {
       return;
     }
 
-    exportJobManager.exportBeaconsToSpreadsheet(getNextExportDestination());
+    exportJobManager.exportToCsv(getNextExportDestination());
   }
 
   private boolean todaysExportAlreadyExists() throws IOException {

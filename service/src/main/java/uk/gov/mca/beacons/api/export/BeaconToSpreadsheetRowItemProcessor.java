@@ -9,13 +9,13 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
 
 @Component
-public class ExportBeaconToSpreadsheetRowItemProcessor
+public class BeaconToSpreadsheetRowItemProcessor
   implements ItemProcessor<Beacon, SpreadsheetRow> {
 
   private final BeaconOwnerRepository beaconOwnerRepository;
 
   @Autowired
-  public ExportBeaconToSpreadsheetRowItemProcessor(
+  public BeaconToSpreadsheetRowItemProcessor(
     BeaconOwnerRepository beaconOwnerRepository
   ) {
     this.beaconOwnerRepository = beaconOwnerRepository;

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
 @Component
-public class ExportLegacyBeaconToSpreadsheetRowItemProcessor
+public class LegacyBeaconToSpreadsheetRowItemProcessor
   implements ItemProcessor<LegacyBeacon, SpreadsheetRow> {
 
   @Override
