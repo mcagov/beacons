@@ -2,26 +2,25 @@ package uk.gov.mca.beacons.api.jobs.configuration;
 
 import javax.persistence.EntityManagerFactory;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
-import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.jobs.listener.JobExecutionLoggingListener;
+import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
 
@@ -51,36 +50,26 @@ public class ReindexSearchJobConfiguration {
     this.jobExecutionLoggingListener = jobExecutionLoggingListener;
   }
 
-  @Bean("beaconItemReader")
-  public JpaPagingItemReader<Beacon> beaconItemReader() {
-    return new JpaPagingItemReaderBuilder<Beacon>()
-      .name("beaconReader")
-      .entityManagerFactory(entityManagerFactory)
-      .queryString("select b from beacon b order by lastModifiedDate")
-      .pageSize(chunkSize)
-      .build();
+  @Bean("searchBeaconItemReader")
+  public JpaPagingItemReader<Beacon> searchBeaconItemReader() {
+    return BeaconItemReaderFactory.getItemReader(entityManagerFactory);
   }
 
-  @Bean("legacyBeaconItemReader")
-  public JpaPagingItemReader<LegacyBeacon> legacyBeaconItemReader() {
-    return new JpaPagingItemReaderBuilder<LegacyBeacon>()
-      .name("legacyBeaconReader")
-      .entityManagerFactory(entityManagerFactory)
-      .queryString("select b from LegacyBeacon b order by lastModifiedDate")
-      .pageSize(chunkSize)
-      .build();
+  @Bean("searchLegacyBeaconItemReader")
+  public JpaPagingItemReader<LegacyBeacon> searchLegacyBeaconItemReader() {
+    return LegacyBeaconItemReaderFactory.getItemReader(entityManagerFactory);
   }
 
   @Bean
   public Step reindexSearchBeaconStep(
-    ItemReader<Beacon> beaconItemReader,
+    ItemReader<Beacon> searchBeaconItemReader,
     ItemProcessor<Beacon, BeaconSearchDocument> beaconBatchJobProcessor,
     ItemWriter<BeaconSearchDocument> beaconSearchDocumentWriter
   ) {
     return stepBuilderFactory
       .get("reindexSearchBeaconStep")
       .<Beacon, BeaconSearchDocument>chunk(chunkSize)
-      .reader(beaconItemReader)
+      .reader(searchBeaconItemReader)
       .processor(beaconBatchJobProcessor)
       .writer(beaconSearchDocumentWriter)
       .build();
@@ -88,14 +77,14 @@ public class ReindexSearchJobConfiguration {
 
   @Bean
   public Step reindexSearchLegacyBeaconStep(
-    ItemReader<LegacyBeacon> legacyBeaconItemReader,
+    ItemReader<LegacyBeacon> searchLegacyBeaconItemReader,
     ItemProcessor<LegacyBeacon, BeaconSearchDocument> reindexSearchLegacyBeaconProcessor,
     ItemWriter<BeaconSearchDocument> beaconSearchDocumentItemWriter
   ) {
     return stepBuilderFactory
       .get("reindexSearchLegacyBeaconStep")
       .<LegacyBeacon, BeaconSearchDocument>chunk(chunkSize)
-      .reader(legacyBeaconItemReader)
+      .reader(searchLegacyBeaconItemReader)
       .processor(reindexSearchLegacyBeaconProcessor)
       .writer(beaconSearchDocumentItemWriter)
       .build();
