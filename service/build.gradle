@@ -45,6 +45,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:21.0.1'
     implementation 'com.opencsv:opencsv:5.6'
     implementation 'org.springframework.data:spring-data-elasticsearch:4.2.7'
+    implementation 'org.apache.poi:poi:5.2.2' // Writing to Excel files
 
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'com.github.ben-manes.caffeine:caffeine'
