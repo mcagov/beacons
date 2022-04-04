@@ -1,14 +1,14 @@
 package uk.gov.mca.beacons.api.export.xlsx;
 
+import java.io.IOException;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
-import java.time.Clock;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import uk.gov.mca.beacons.api.export.ExportFileNamer;
+import uk.gov.mca.beacons.api.export.FileSystemRepository;
 
 /**
  * Export beacons data to .xlsx.
@@ -18,22 +18,38 @@ import org.springframework.stereotype.Service;
 @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
 public class XlsxExporter {
 
-  private final Path exportDirectory;
-  private final Clock clock;
-  private final SimpleDateFormat filenameDatePrefixFormat = new SimpleDateFormat(
-    "yyyyMMdd"
-  );
+  private final XlsxExportJobManager xlsxExportJobManager;
+  private final FileSystemRepository fs;
 
   @Autowired
   public XlsxExporter(
-    @Value("${export.directory}") Path exportDirectory,
-    Clock clock
+    XlsxExportJobManager xlsxExportJobManager,
+    FileSystemRepository fs
   ) {
-    this.exportDirectory = exportDirectory;
-    this.clock = clock;
+    this.xlsxExportJobManager = xlsxExportJobManager;
+    this.fs = fs;
   }
 
-  public Optional<Path> getMostRecentExport() {
-    return null;
+  public Optional<Path> getMostRecentExport() throws IOException {
+    return fs.findMostRecentExport(ExportFileNamer.FileType.EXCEL_SPREADSHEET);
+  }
+
+  /**
+   * Export the current state of Beacons and LegacyBeacons to a .xlsx file for retrieval later.
+   *
+   * @throws IOException if there is a problem accessing the file system
+   */
+  public void export() throws IOException {
+    if (fs.todaysExportExists(ExportFileNamer.FileType.EXCEL_SPREADSHEET)) {
+      log.info(
+        "CsvExporter::exportBeaconsToCsv: export file already exists for today at {}.  Doing nothing...",
+        getMostRecentExport()
+      );
+      return;
+    }
+
+    xlsxExportJobManager.export(
+      fs.getNextExportDestination(ExportFileNamer.FileType.EXCEL_SPREADSHEET)
+    );
   }
 }
