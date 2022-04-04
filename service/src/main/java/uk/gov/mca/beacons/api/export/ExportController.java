@@ -65,6 +65,13 @@ class ExportController {
     return serveFile(latestExport);
   }
 
+  @PostMapping(value = "/xlsx")
+  public ResponseEntity<Void> createNewXlsxExport() throws IOException {
+    xlsxExporter.export();
+
+    return ResponseEntity.ok().build();
+  }
+
   private ResponseEntity<Resource> serveFile(Resource resource) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(new MediaType("application", "force-download"));
