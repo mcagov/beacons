@@ -103,7 +103,7 @@ export function SettingsDrawer() {
                   Export
                 </Typography>
                 <AuthenticatedDownloadLink
-                  url={`${applicationConfig.apiUrl}/export/excel`}
+                  url={`${applicationConfig.apiUrl}/export/xlsx`}
                 />
               </React.Fragment>
             )}

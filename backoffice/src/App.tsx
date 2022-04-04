@@ -97,7 +97,7 @@ const App: FunctionComponent = () => {
                 <Route path={`/export`}>
                   <p>How did you end up here!?!?!?</p>
                   <AuthenticatedPOSTButton
-                    uri={`${applicationConfig.apiUrl}/export/excel`}
+                    uri={`${applicationConfig.apiUrl}/export/xlsx`}
                   >
                     Trigger export job
                   </AuthenticatedPOSTButton>
