@@ -1,9 +1,11 @@
 package uk.gov.mca.beacons.api.export.xlsx;
 
+import javax.batch.api.listener.JobListener;
 import javax.persistence.EntityManagerFactory;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -77,7 +79,7 @@ public class ExportToXlsxJobConfiguration {
     ItemWriter<SpreadsheetRow> xlsxItemWriter
   ) {
     return stepBuilderFactory
-      .get("exportBeaconToXlsxStep")
+      .get("exportLegacyBeaconToXlsxStep")
       .<LegacyBeacon, SpreadsheetRow>chunk(chunkSize)
       .reader(exportXlsxLegacyBeaconItemReader)
       .processor(exportXlsxLegacyBeaconToSpreadsheetRowItemProcessor)
@@ -96,14 +98,21 @@ public class ExportToXlsxJobConfiguration {
     return new XlsxItemWriter(sheet);
   }
 
+  @Bean
+  ExportToXlsxJobListener jobListener(SXSSFWorkbook workbook) {
+    return new ExportToXlsxJobListener(workbook);
+  }
+
   @Bean(value = "exportToXlsxJob")
   public Job exportToXlsxJob(
     Step exportBeaconToXlsxStep,
-    Step exportLegacyBeaconToXlsxStep
+    Step exportLegacyBeaconToXlsxStep,
+    JobExecutionListener jobExecutionListener
   ) {
     return jobBuilderFactory
       .get("exportToXlsxJob")
       .listener(jobExecutionLoggingListener)
+      .listener(jobExecutionListener)
       .start(exportBeaconToXlsxStep)
       .next(exportLegacyBeaconToXlsxStep)
       .build();
