@@ -20,7 +20,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.mca.beacons.api.export.csv.CsvExportJobManager;
 import uk.gov.mca.beacons.api.export.csv.CsvExporter;
-import uk.gov.mca.beacons.api.export.csv.ExportToCsvFailedException;
 
 @ExtendWith(MockitoExtension.class)
 public class CsvExporterUnitTest {
@@ -73,7 +72,7 @@ public class CsvExporterUnitTest {
 
     @Test
     public void whenThereIsNoPreviouslyExportedSpreadsheet_thenReturnOptionalOfNull()
-      throws ExportToCsvFailedException, IOException {
+      throws ExportFailedException, IOException {
       // No exports
 
       Optional<Path> export = csvExporter.getMostRecentCsvExport();
@@ -83,7 +82,7 @@ public class CsvExporterUnitTest {
 
     @Test
     public void whenThereIsAnExportedSpreadsheetForToday_thenReturnTheExport()
-      throws ExportToCsvFailedException, IOException {
+      throws ExportFailedException, IOException {
       Path mostRecentExport = Path.of("/test/todays-export.csv");
       when(
         fileSystemRepository.findMostRecentExport(
@@ -94,7 +93,7 @@ public class CsvExporterUnitTest {
 
       Path actualCsvExport = csvExporter
         .getMostRecentCsvExport()
-        .orElseThrow(ExportToCsvFailedException::new);
+        .orElseThrow(ExportFailedException::new);
 
       assertThat(actualCsvExport, is(mostRecentExport));
     }

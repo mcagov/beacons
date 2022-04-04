@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.export.csv.CsvExporter;
-import uk.gov.mca.beacons.api.export.csv.ExportToCsvFailedException;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 
 @RestController
@@ -33,7 +32,7 @@ class ExportController {
 
   @GetMapping(value = "/csv")
   public ResponseEntity<Resource> downloadExistingCsvExport()
-    throws ExportToCsvFailedException, IOException {
+    throws ExportFailedException, IOException {
     Resource latestExport = new FileSystemResource(
       csvExporter
         .getMostRecentCsvExport()
@@ -53,7 +52,8 @@ class ExportController {
   }
 
   @GetMapping(value = "/xlsx")
-  public ResponseEntity<Resource> downloadExistingXlsxExport() {
+  public ResponseEntity<Resource> downloadExistingXlsxExport()
+    throws IOException {
     Resource latestExport = new FileSystemResource(
       xlsxExporter
         .getMostRecentExport()

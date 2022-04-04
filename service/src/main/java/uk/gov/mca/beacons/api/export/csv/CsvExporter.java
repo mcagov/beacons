@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import uk.gov.mca.beacons.api.export.ExportFailedException;
 import uk.gov.mca.beacons.api.export.ExportFileNamer;
 import uk.gov.mca.beacons.api.export.FileSystemRepository;
 
@@ -38,7 +39,7 @@ public class CsvExporter {
    * Return the path of the most recently exported .csv
    *
    * @return Path to the latest spreadsheet export
-   * @throws ExportToCsvFailedException if the latest export is unavailable
+   * @throws ExportFailedException if the latest export is unavailable
    */
   public Optional<Path> getMostRecentCsvExport() throws IOException {
     return fs.findMostRecentExport(

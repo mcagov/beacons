@@ -13,6 +13,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.export.ExportFailedException;
 
 /**
  * Initiates export jobs using Spring Batch.
@@ -40,14 +41,14 @@ public class CsvExportJobManager {
   /**
    * Synchronously start the exportToCsvJob using the default JobLauncher.
    *
-   * @throws ExportToCsvFailedException if the export fails
+   * @throws ExportFailedException if the export fails
    */
-  public void exportToCsv(Path destination) throws ExportToCsvFailedException {
+  public void exportToCsv(Path destination) throws ExportFailedException {
     exportToCsv(jobLauncher, destination);
   }
 
   private void exportToCsv(JobLauncher jobLauncher, Path destination)
-    throws ExportToCsvFailedException {
+    throws ExportFailedException {
     try {
       JobExecution jobExecution = jobLauncher.run(
         exportToCsvJob,
@@ -66,12 +67,12 @@ public class CsvExportJobManager {
         logMessages.SPREADSHEET_EXPORT_FAILED,
         jobLauncher.getClass()
       );
-      throw new ExportToCsvFailedException(e);
+      throw new ExportFailedException(e);
     }
   }
 
   private JobParameters getExportJobParameters(String destination)
-    throws ExportToCsvFailedException {
+    throws ExportFailedException {
     JobParametersBuilder builder = new JobParametersBuilder();
     builder.addDate("date", new Date());
     builder.addString("destination", destination);

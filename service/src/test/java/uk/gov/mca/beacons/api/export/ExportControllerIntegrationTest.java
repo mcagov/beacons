@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 import uk.gov.mca.beacons.api.export.csv.CsvExporter;
+import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 
 public class ExportControllerIntegrationTest extends WebIntegrationTest {
 
@@ -16,6 +17,9 @@ public class ExportControllerIntegrationTest extends WebIntegrationTest {
 
   @Autowired
   CsvExporter csvExporter;
+
+  @Autowired
+  XlsxExporter xlsxExporter;
 
   @Nested
   class csvExports {
@@ -71,7 +75,7 @@ public class ExportControllerIntegrationTest extends WebIntegrationTest {
       String accountHolderId_1 = seedAccountHolder();
       seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId_1);
       seedLegacyBeacon();
-      csvExporter.exportBeaconsToCsv();
+      xlsxExporter.export();
 
       // -- Act --
       webTestClient
