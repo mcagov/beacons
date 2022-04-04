@@ -5,7 +5,7 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("jobExecutionLoggingListener")
 @Slf4j
 public class JobExecutionLoggingListener implements JobExecutionListener {
 

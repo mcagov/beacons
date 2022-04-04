@@ -1,6 +1,5 @@
 package uk.gov.mca.beacons.api.export.xlsx;
 
-import javax.batch.api.listener.JobListener;
 import javax.persistence.EntityManagerFactory;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -15,6 +14,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
@@ -98,7 +98,7 @@ public class ExportToXlsxJobConfiguration {
     return new XlsxItemWriter(sheet);
   }
 
-  @Bean
+  @Bean("exportToXlsxJobListener")
   ExportToXlsxJobListener jobListener(SXSSFWorkbook workbook) {
     return new ExportToXlsxJobListener(workbook);
   }
@@ -107,7 +107,12 @@ public class ExportToXlsxJobConfiguration {
   public Job exportToXlsxJob(
     Step exportBeaconToXlsxStep,
     Step exportLegacyBeaconToXlsxStep,
-    JobExecutionListener jobExecutionListener
+    @Qualifier(
+      "jobExecutionLoggingListener"
+    ) JobExecutionListener jobExecutionLoggingListener,
+    @Qualifier(
+      "exportToXlsxJobListener"
+    ) JobExecutionListener jobExecutionListener
   ) {
     return jobBuilderFactory
       .get("exportToXlsxJob")
