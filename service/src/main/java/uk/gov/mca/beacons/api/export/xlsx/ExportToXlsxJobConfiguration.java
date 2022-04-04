@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.export.SpreadsheetRow;
-import uk.gov.mca.beacons.api.jobs.listener.JobExecutionLoggingListener;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
@@ -31,20 +30,17 @@ public class ExportToXlsxJobConfiguration {
   private final EntityManagerFactory entityManagerFactory;
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
-  private final JobExecutionLoggingListener jobExecutionLoggingListener;
   private static final int chunkSize = 256;
 
   @Autowired
   public ExportToXlsxJobConfiguration(
     EntityManagerFactory entityManagerFactory,
     StepBuilderFactory stepBuilderFactory,
-    JobBuilderFactory jobBuilderFactory,
-    JobExecutionLoggingListener jobExecutionLoggingListener
+    JobBuilderFactory jobBuilderFactory
   ) {
     this.entityManagerFactory = entityManagerFactory;
     this.stepBuilderFactory = stepBuilderFactory;
     this.jobBuilderFactory = jobBuilderFactory;
-    this.jobExecutionLoggingListener = jobExecutionLoggingListener;
   }
 
   @Bean("exportXlsxBeaconItemReader")
