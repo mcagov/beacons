@@ -25,14 +25,10 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 @Setter
 public class SpreadsheetRow {
 
-  /**
-   * UUID, HexID, vesselMmsiNumbers, vesselNames, vesselCallsigns, aircraftRegistrationMarks,
-   * aircraft24bitHexAddresses, lastModifiedDate, beaconStatus, useActivities (e.g. "Maritime, Aviation"),
-   * manufacturerSerialNumber, cospasSarsatNumber, Owner (name, telephone, email),
-   * EmergencyContacts (name, telephone) [NB - This matches searchable fields in OpenSearch]
-   */
+  // The column attributes and column headers mut be in the same order so that the data is input into fields
+  // with the correct column header.
   @Getter
-  private static final List<String> columnAttributes = List.of(
+  private static final List<String> COLUMN_ATTRIBUTES = List.of(
     "id",
     "hexId",
     "beaconStatus",
@@ -40,6 +36,7 @@ public class SpreadsheetRow {
     "cospasSarsatNumber",
     "ownerName",
     "ownerTelephoneNumber",
+    "ownerAlternativeTelephoneNumber",
     "ownerEmail",
     "emergencyContactName_1",
     "emergencyContactTelephoneNumber_1",
@@ -59,7 +56,7 @@ public class SpreadsheetRow {
   );
 
   @Getter
-  private static final List<String> columnHeadings = List.of(
+  private static final List<String> COLUMN_HEADINGS = List.of(
     "ID",
     "Hex ID",
     "Beacon Status",
@@ -92,7 +89,7 @@ public class SpreadsheetRow {
   private String hexId;
   private String ownerName;
   private String beaconStatus;
-  private OffsetDateTime lastModifiedDate;
+  private String lastModifiedDate;
   private String cospasSarsatNumber;
   private String ownerTelephoneNumber;
   private String ownerAlternativeTelephoneNumber;
@@ -119,7 +116,7 @@ public class SpreadsheetRow {
     // Beacon details
     this.hexId = legacyBeacon.getHexId();
     this.beaconStatus = legacyBeacon.getBeaconStatus();
-    this.lastModifiedDate = legacyBeacon.getLastModifiedDate();
+    this.lastModifiedDate = legacyBeacon.getLastModifiedDate().toString();
     this.cospasSarsatNumber =
       legacyBeacon.getData().getBeacon().getCospasSarsatNumber().toString();
 
@@ -140,7 +137,7 @@ public class SpreadsheetRow {
 
     // Beacon details;
     this.hexId = beacon.getHexId();
-    this.lastModifiedDate = beacon.getLastModifiedDate();
+    this.lastModifiedDate = beacon.getLastModifiedDate().toString();
     this.beaconStatus = beacon.getBeaconStatus().toString();
 
     // Beacon owner

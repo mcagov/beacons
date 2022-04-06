@@ -1,8 +1,11 @@
 package uk.gov.mca.beacons.api.export.xlsx;
 
 import java.lang.ref.WeakReference;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.export.SpreadsheetRow;
 
 /**
  * This is implemented naively and without any thread safety (i.e. no use of Mutexes or Atomic Booleans) because
@@ -34,6 +37,13 @@ public class WorkbookRepository {
 
   private void initialiseWorkbook() {
     workbook = new SXSSFWorkbook(WORKBOOK_WINDOW_SIZE);
-    workbook.createSheet("Beacons Data");
+    Sheet sheet = workbook.createSheet("Beacons Data");
+    Row row = sheet.createRow(0);
+
+    int cellNum = 0;
+    for (String header : SpreadsheetRow.getCOLUMN_HEADINGS()) {
+      row.createCell(cellNum).setCellValue(header);
+      cellNum++;
+    }
   }
 }

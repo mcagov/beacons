@@ -1,7 +1,10 @@
 package uk.gov.mca.beacons.api.export.xlsx;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -45,7 +48,28 @@ public class XlsxItemWriter implements ItemWriter<SpreadsheetRow> {
   }
 
   private List<String> prepareValues(SpreadsheetRow row) {
-    return List.of(row.getId().toString(), row.getHexId(), row.getOwnerName());
+    return SpreadsheetRow
+      .getCOLUMN_ATTRIBUTES()
+      .stream()
+      .map(
+        attribute -> {
+          try {
+            Object property = PropertyUtils.getProperty(row, attribute);
+            if (property == null) {
+              return "";
+            } else {
+              return property.toString();
+            }
+          } catch (
+            IllegalAccessException
+            | InvocationTargetException
+            | NoSuchMethodException e
+          ) {
+            throw new RuntimeException(e);
+          }
+        }
+      )
+      .collect(Collectors.toList());
   }
 
   private void writeCell(Row row, int currentColumnNumber, String value) {
