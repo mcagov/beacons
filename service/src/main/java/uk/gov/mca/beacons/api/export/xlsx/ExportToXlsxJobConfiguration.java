@@ -1,8 +1,6 @@
 package uk.gov.mca.beacons.api.export.xlsx;
 
 import javax.persistence.EntityManagerFactory;
-import org.apache.poi.xssf.streaming.SXSSFSheet;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
@@ -30,7 +28,7 @@ public class ExportToXlsxJobConfiguration {
   private final EntityManagerFactory entityManagerFactory;
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
-  private static final int chunkSize = 256;
+  private static final int CHUNK_SIZE = 256;
 
   @Autowired
   public ExportToXlsxJobConfiguration(
@@ -61,7 +59,7 @@ public class ExportToXlsxJobConfiguration {
   ) {
     return stepBuilderFactory
       .get("exportBeaconToXlsxStep")
-      .<Beacon, SpreadsheetRow>chunk(chunkSize)
+      .<Beacon, SpreadsheetRow>chunk(CHUNK_SIZE)
       .reader(exportXlsxBeaconItemReader)
       .processor(exportXlsxBeaconToSpreadsheetRowItemProcessor)
       .writer(xlsxItemWriter)
@@ -76,7 +74,7 @@ public class ExportToXlsxJobConfiguration {
   ) {
     return stepBuilderFactory
       .get("exportLegacyBeaconToXlsxStep")
-      .<LegacyBeacon, SpreadsheetRow>chunk(chunkSize)
+      .<LegacyBeacon, SpreadsheetRow>chunk(CHUNK_SIZE)
       .reader(exportXlsxLegacyBeaconItemReader)
       .processor(exportXlsxLegacyBeaconToSpreadsheetRowItemProcessor)
       .writer(xlsxItemWriter)
@@ -84,19 +82,15 @@ public class ExportToXlsxJobConfiguration {
   }
 
   @Bean
-  public SXSSFWorkbook workbook() {
-    return new SXSSFWorkbook(chunkSize);
-  }
-
-  @Bean
-  public ItemWriter<SpreadsheetRow> xlsxItemWriter(SXSSFWorkbook workbook) {
-    SXSSFSheet sheet = workbook.createSheet("Beacons data");
-    return new XlsxItemWriter(sheet);
+  public ItemWriter<SpreadsheetRow> xlsxItemWriter(
+    WorkbookRepository workbookRepository
+  ) {
+    return new XlsxItemWriter(workbookRepository);
   }
 
   @Bean("exportToXlsxJobListener")
-  ExportToXlsxJobListener jobListener(SXSSFWorkbook workbook) {
-    return new ExportToXlsxJobListener(workbook);
+  ExportToXlsxJobListener jobListener(WorkbookRepository workbookRepository) {
+    return new ExportToXlsxJobListener(workbookRepository);
   }
 
   @Bean(value = "exportToXlsxJob")

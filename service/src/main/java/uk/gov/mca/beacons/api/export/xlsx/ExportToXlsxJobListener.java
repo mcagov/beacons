@@ -1,13 +1,11 @@
 package uk.gov.mca.beacons.api.export.xlsx;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -16,14 +14,14 @@ import org.springframework.batch.core.JobExecutionListener;
 @Slf4j
 public class ExportToXlsxJobListener implements JobExecutionListener {
 
-  private final SXSSFWorkbook workbook;
+  private final WorkbookRepository workbookRepository;
 
-  ExportToXlsxJobListener(SXSSFWorkbook workbook) {
-    this.workbook = workbook;
+  ExportToXlsxJobListener(WorkbookRepository workbookRepository) {
+    this.workbookRepository = workbookRepository;
   }
 
   @Override
-  public void afterJob(JobExecution jobExecution) {
+  public void afterJob(JobExecution jobExecution) throws NullPointerException {
     BatchStatus batchStatus = jobExecution.getStatus();
     if (batchStatus == BatchStatus.COMPLETED) {
       Path destination = Path.of(
@@ -33,9 +31,19 @@ public class ExportToXlsxJobListener implements JobExecutionListener {
       );
       try {
         OutputStream fileOutputStream = Files.newOutputStream(destination);
-        workbook.write(fileOutputStream);
+
+        Objects
+          .requireNonNull(workbookRepository.getWorkbook().get())
+          .write(fileOutputStream);
+
         fileOutputStream.close();
-        workbook.dispose();
+        boolean success = workbookRepository.disposeOfWorkbook();
+
+        if (success) {
+          log.info("Successfully disposed of workbook");
+        } else {
+          log.error("Failed to dispose of workbook");
+        }
       } catch (IOException e) {
         log.error(e.getMessage(), e);
       }
