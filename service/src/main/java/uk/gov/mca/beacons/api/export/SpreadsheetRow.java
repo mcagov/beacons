@@ -13,6 +13,7 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyEmergencyContact;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyOwner;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 
@@ -38,15 +39,9 @@ public class SpreadsheetRow {
     "ownerTelephoneNumber",
     "ownerAlternativeTelephoneNumber",
     "ownerEmail",
-    "emergencyContactName_1",
-    "emergencyContactTelephoneNumber_1",
-    "emergencyContactAlternativeTelephoneNumber_1",
-    "emergencyContactName_2",
-    "emergencyContactTelephoneNumber_2",
-    "emergencyContactAlternativeTelephoneNumber_2",
-    "emergencyContactName_3",
-    "emergencyContactTelephoneNumber_3",
-    "emergencyContactAlternativeTelephoneNumber_3",
+    "emergencyContact_1",
+    "emergencyContact_2",
+    "emergencyContact_3",
     "useActivities",
     "mmsiNumbers",
     "vesselNames",
@@ -66,15 +61,9 @@ public class SpreadsheetRow {
     "Owner telephone number",
     "Owner alternative telephone number",
     "Owner email",
-    "Emergency contact name (1)",
-    "Emergency contact telephone number (1)",
-    "Emergency contact alternative telephone number (1)",
-    "Emergency contact name (2)",
-    "Emergency contact telephone number (2)",
-    "Emergency contact alternative telephone number (2)",
-    "Emergency contact name (3)",
-    "Emergency contact telephone number (3)",
-    "Emergency contact alternative telephone number (3)",
+    "Emergency contact (1)",
+    "Emergency contact (2)",
+    "Emergency contact (3)",
     "Use activities",
     "MMSI numbers",
     "Vessel names",
@@ -94,15 +83,9 @@ public class SpreadsheetRow {
   private String ownerTelephoneNumber;
   private String ownerAlternativeTelephoneNumber;
   private String ownerEmail;
-  private String emergencyContactName_1;
-  private String emergencyContactTelephoneNumber_1;
-  private String emergencyContactAlternativeTelephoneNumber_1;
-  private String emergencyContactName_2;
-  private String emergencyContactTelephoneNumber_2;
-  private String emergencyContactAlternativeTelephoneNumber_2;
-  private String emergencyContactName_3;
-  private String emergencyContactTelephoneNumber_3;
-  private String emergencyContactAlternativeTelephoneNumber_3;
+  private String emergencyContact_1;
+  private String emergencyContact_2;
+  private String emergencyContact_3;
   private String useActivities;
   private String mmsiNumbers;
   private String vesselNames;
@@ -125,6 +108,9 @@ public class SpreadsheetRow {
 
     // Beacon uses
     setLegacyUses(legacyBeacon.getData().getUses());
+
+    // Emergency Contacts
+    setEmergencyContact(legacyBeacon.getData().getEmergencyContact());
   }
 
   public SpreadsheetRow(
@@ -145,7 +131,9 @@ public class SpreadsheetRow {
 
     // Beacon uses
     setUses(beaconUses);
+
     // Emergency contacts
+    setEmergencyContacts(emergencyContacts);
   }
 
   private void setOwnerDetails(BeaconOwner beaconOwner) {
@@ -242,6 +230,48 @@ public class SpreadsheetRow {
         .map(LegacyUse::getBit24AddressHex)
         .filter(Objects::nonNull)
         .collect(Collectors.joining(" / "));
+  }
+
+  private void setEmergencyContacts(List<EmergencyContact> emergencyContacts) {
+    int len = emergencyContacts.size();
+
+    if (len > 0) {
+      EmergencyContact emergencyContact = emergencyContacts.get(0);
+      this.emergencyContact_1 =
+        concatenateFields(
+          emergencyContact.getFullName(),
+          emergencyContact.getTelephoneNumber(),
+          emergencyContact.getAlternativeTelephoneNumber()
+        );
+    }
+
+    if (len > 1) {
+      EmergencyContact emergencyContact = emergencyContacts.get(1);
+      this.emergencyContact_2 =
+        concatenateFields(
+          emergencyContact.getFullName(),
+          emergencyContact.getTelephoneNumber(),
+          emergencyContact.getAlternativeTelephoneNumber()
+        );
+    }
+
+    if (len > 2) {
+      EmergencyContact emergencyContact = emergencyContacts.get(2);
+      this.emergencyContact_3 =
+        concatenateFields(
+          emergencyContact.getFullName(),
+          emergencyContact.getTelephoneNumber(),
+          emergencyContact.getAlternativeTelephoneNumber()
+        );
+    }
+  }
+
+  private void setEmergencyContact(
+    LegacyEmergencyContact legacyEmergencyContact
+  ) {
+    if (legacyEmergencyContact != null) {
+      this.emergencyContact_1 = legacyEmergencyContact.getDetails();
+    }
   }
 
   private String concatenateFields(String... fields) {
