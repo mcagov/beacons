@@ -10,7 +10,6 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
@@ -126,10 +125,10 @@ public class ExportToCsvJobConfiguration {
       .resource(new FileSystemResource(temporaryExportFile))
       .delimited()
       .delimiter(",")
-      .names(SpreadsheetRow.getColumnAttributes().toArray(new String[0]))
+      .names(SpreadsheetRow.getCOLUMN_ATTRIBUTES().toArray(new String[0]))
       .headerCallback(
         headerWriter -> {
-          for (String columnHeading : SpreadsheetRow.getColumnHeadings()) {
+          for (String columnHeading : SpreadsheetRow.getCOLUMN_HEADINGS()) {
             headerWriter.write(columnHeading + ", ");
           }
         }
