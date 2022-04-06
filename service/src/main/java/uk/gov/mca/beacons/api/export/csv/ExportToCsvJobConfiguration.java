@@ -46,7 +46,6 @@ public class ExportToCsvJobConfiguration {
     JobBuilderFactory jobBuilderFactory,
     StepBuilderFactory stepBuilderFactory,
     EntityManagerFactory entityManagerFactory,
-    JobRepository jobRepository,
     JobExecutionLoggingListener jobExecutionLoggingListener,
     @Value("${export.directory}/temporary.csv") String temporaryExportFile
   ) {

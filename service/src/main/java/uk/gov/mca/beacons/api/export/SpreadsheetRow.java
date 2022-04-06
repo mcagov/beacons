@@ -54,8 +54,8 @@ public class SpreadsheetRow {
     "mmsiNumbers",
     "vesselNames",
     "vesselCallsigns",
-    "aircraftTailmark",
-    "aircraft24BitHexAddress"
+    "aircraftTailMarks",
+    "aircraft24BitHexAddresses"
   );
 
   @Getter
