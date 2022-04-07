@@ -95,7 +95,6 @@ const App: FunctionComponent = () => {
                   <SingleLegacyBeaconRecordViewWithParam />
                 </Route>
                 <Route path={`/export`}>
-                  <p>How did you end up here!?!?!?</p>
                   <AuthenticatedPOSTButton
                     uri={`${applicationConfig.apiUrl}/export/xlsx`}
                   >
