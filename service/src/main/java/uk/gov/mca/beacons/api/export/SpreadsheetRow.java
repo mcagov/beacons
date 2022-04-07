@@ -96,8 +96,14 @@ public class SpreadsheetRow {
     this.hexId = legacyBeacon.getHexId();
     this.beaconStatus = legacyBeacon.getBeaconStatus();
     this.lastModifiedDate = legacyBeacon.getLastModifiedDate().toString();
-    this.cospasSarsatNumber =
-      legacyBeacon.getData().getBeacon().getCospasSarsatNumber().toString();
+
+    Integer cospasSarsatNumber = legacyBeacon
+      .getData()
+      .getBeacon()
+      .getCospasSarsatNumber();
+    if (cospasSarsatNumber != null) {
+      this.cospasSarsatNumber = cospasSarsatNumber.toString();
+    }
 
     // Beacon owner
     setOwnerDetails(legacyBeacon.getData().getOwner());
