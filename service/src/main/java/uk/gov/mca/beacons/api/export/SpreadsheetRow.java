@@ -165,6 +165,7 @@ public class SpreadsheetRow {
         .map(BeaconUse::getMmsiNumbers)
         .flatMap(Collection::stream)
         .filter(Objects::nonNull)
+        .filter(s -> !s.isBlank())
         .collect(Collectors.joining(" / "));
 
     this.vesselNames =
@@ -172,6 +173,7 @@ public class SpreadsheetRow {
         .stream()
         .map(BeaconUse::getVesselName)
         .filter(Objects::nonNull)
+        .filter(s -> !s.isBlank())
         .collect(Collectors.joining(" / "));
 
     this.vesselCallsigns =
@@ -179,6 +181,7 @@ public class SpreadsheetRow {
         .stream()
         .map(BeaconUse::getCallSign)
         .filter(Objects::nonNull)
+        .filter(s -> !s.isBlank())
         .collect(Collectors.joining());
 
     this.aircraftTailMarks =
@@ -186,6 +189,7 @@ public class SpreadsheetRow {
         .stream()
         .map(BeaconUse::getRegistrationMark)
         .filter(Objects::nonNull)
+        .filter(s -> !s.isBlank())
         .collect(Collectors.joining(" / "));
 
     this.aircraft24BitHexAddresses =
@@ -193,6 +197,7 @@ public class SpreadsheetRow {
         .stream()
         .map(BeaconUse::getHexAddress)
         .filter(Objects::nonNull)
+        .filter(s -> !s.isBlank())
         .collect(Collectors.joining(" / "));
   }
 
@@ -203,6 +208,7 @@ public class SpreadsheetRow {
         .map(LegacyUse::getMmsiNumber)
         .filter(Objects::nonNull)
         .map(Number::toString)
+        .filter(s -> !s.isBlank())
         .collect(Collectors.joining(" / "));
 
     this.vesselNames =
@@ -210,6 +216,7 @@ public class SpreadsheetRow {
         .stream()
         .map(LegacyUse::getVesselName)
         .filter(Objects::nonNull)
+        .filter(s -> !s.isBlank())
         .collect(Collectors.joining(" / "));
 
     this.vesselCallsigns =
@@ -217,6 +224,7 @@ public class SpreadsheetRow {
         .stream()
         .map(LegacyUse::getCallSign)
         .filter(Objects::nonNull)
+        .filter(s -> !s.isBlank())
         .collect(Collectors.joining(" / "));
 
     this.aircraftTailMarks =
@@ -224,6 +232,7 @@ public class SpreadsheetRow {
         .stream()
         .map(LegacyUse::getAircraftRegistrationMark)
         .filter(Objects::nonNull)
+        .filter(s -> !s.isBlank())
         .collect(Collectors.joining(" / "));
 
     this.aircraft24BitHexAddresses =
@@ -231,6 +240,7 @@ public class SpreadsheetRow {
         .stream()
         .map(LegacyUse::getBit24AddressHex)
         .filter(Objects::nonNull)
+        .filter(s -> !s.isBlank())
         .collect(Collectors.joining(" / "));
   }
 
@@ -280,6 +290,7 @@ public class SpreadsheetRow {
     return Arrays
       .stream(fields)
       .filter(Objects::nonNull)
+      .filter(s -> !s.isBlank())
       .collect(Collectors.joining(" / "));
   }
 }
