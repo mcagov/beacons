@@ -83,14 +83,16 @@ public class ExportToXlsxJobConfiguration {
 
   @Bean
   public ItemWriter<SpreadsheetRow> xlsxItemWriter(
-    WorkbookRepository workbookRepository
+    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
-    return new XlsxItemWriter(workbookRepository);
+    return new XlsxItemWriter(beaconsDataWorkbookRepository);
   }
 
   @Bean("exportToXlsxJobListener")
-  ExportToXlsxJobListener jobListener(WorkbookRepository workbookRepository) {
-    return new ExportToXlsxJobListener(workbookRepository);
+  ExportToXlsxJobListener jobListener(
+    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
+  ) {
+    return new ExportToXlsxJobListener(beaconsDataWorkbookRepository);
   }
 
   @Bean(value = "exportToXlsxJob")

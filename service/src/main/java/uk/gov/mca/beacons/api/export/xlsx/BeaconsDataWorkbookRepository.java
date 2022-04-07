@@ -8,18 +8,26 @@ import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.export.SpreadsheetRow;
 
 /**
- * This is implemented naively and without any thread safety (i.e. no use of Mutexes or Atomic Booleans) because
+ * Provide a reference to a Workbook whose lifecycle can be managed
+ *
+ * This class is necessary because the Beans in a Spring Batch job configuration are singleton instances instantiated
+ * on application start.
+ *
+ * We want to write to a new Workbook for each execution of the job so that each job executes with a blank state.  This
+ * class provides a WeakReference to a new workbook for use in jobs.
+ *
+ * @implNote This is implemented naively and without any thread safety (i.e. no use of Mutexes or Atomic Booleans) because
  * the jobs that make use of it are not thread safe themselves. Workbook repository instead manages the lifecycle
  * of a single workbook instance and does not make any attempt to prevent handing out multiple references to the
  * workbook.
  */
 @Component
-public class WorkbookRepository {
+public class BeaconsDataWorkbookRepository {
 
   private static final int WORKBOOK_WINDOW_SIZE = 256;
   private SXSSFWorkbook workbook;
 
-  public WorkbookRepository() {}
+  public BeaconsDataWorkbookRepository() {}
 
   public WeakReference<SXSSFWorkbook> getWorkbook() {
     if (workbook == null) {
@@ -41,7 +49,7 @@ public class WorkbookRepository {
     Row row = sheet.createRow(0);
 
     int cellNum = 0;
-    for (String header : SpreadsheetRow.getCOLUMN_HEADINGS()) {
+    for (String header : SpreadsheetRow.COLUMN_HEADINGS) {
       row.createCell(cellNum).setCellValue(header);
       cellNum++;
     }

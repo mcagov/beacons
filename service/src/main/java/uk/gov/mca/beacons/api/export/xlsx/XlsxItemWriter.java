@@ -13,17 +13,17 @@ import uk.gov.mca.beacons.api.export.SpreadsheetRow;
 
 public class XlsxItemWriter implements ItemWriter<SpreadsheetRow> {
 
-  WorkbookRepository workbookRepository;
+  BeaconsDataWorkbookRepository beaconsDataWorkbookRepository;
 
-  XlsxItemWriter(WorkbookRepository workbookRepository) {
-    this.workbookRepository = workbookRepository;
+  XlsxItemWriter(BeaconsDataWorkbookRepository beaconsDataWorkbookRepository) {
+    this.beaconsDataWorkbookRepository = beaconsDataWorkbookRepository;
   }
 
   @Override
   public void write(List<? extends SpreadsheetRow> list)
     throws NullPointerException {
     Sheet sheet = Objects
-      .requireNonNull(workbookRepository.getWorkbook().get())
+      .requireNonNull(beaconsDataWorkbookRepository.getWorkbook().get())
       .getSheet("Beacons Data");
 
     // returns -1 if there are no rows;
@@ -48,8 +48,7 @@ public class XlsxItemWriter implements ItemWriter<SpreadsheetRow> {
   }
 
   private List<String> prepareValues(SpreadsheetRow row) {
-    return SpreadsheetRow
-      .getCOLUMN_ATTRIBUTES()
+    return SpreadsheetRow.COLUMN_ATTRIBUTES
       .stream()
       .map(
         attribute -> {

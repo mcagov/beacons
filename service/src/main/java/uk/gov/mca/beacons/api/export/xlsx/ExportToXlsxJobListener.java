@@ -14,10 +14,12 @@ import org.springframework.batch.core.JobExecutionListener;
 @Slf4j
 public class ExportToXlsxJobListener implements JobExecutionListener {
 
-  private final WorkbookRepository workbookRepository;
+  private final BeaconsDataWorkbookRepository beaconsDataWorkbookRepository;
 
-  ExportToXlsxJobListener(WorkbookRepository workbookRepository) {
-    this.workbookRepository = workbookRepository;
+  ExportToXlsxJobListener(
+    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
+  ) {
+    this.beaconsDataWorkbookRepository = beaconsDataWorkbookRepository;
   }
 
   @Override
@@ -33,11 +35,11 @@ public class ExportToXlsxJobListener implements JobExecutionListener {
         OutputStream fileOutputStream = Files.newOutputStream(destination);
 
         Objects
-          .requireNonNull(workbookRepository.getWorkbook().get())
+          .requireNonNull(beaconsDataWorkbookRepository.getWorkbook().get())
           .write(fileOutputStream);
 
         fileOutputStream.close();
-        boolean success = workbookRepository.disposeOfWorkbook();
+        boolean success = beaconsDataWorkbookRepository.disposeOfWorkbook();
 
         if (success) {
           log.info("Successfully disposed of workbook");

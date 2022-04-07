@@ -28,8 +28,7 @@ public class SpreadsheetRow {
 
   // The column attributes and column headers mut be in the same order so that the data is input into fields
   // with the correct column header.
-  @Getter
-  private static final List<String> COLUMN_ATTRIBUTES = List.of(
+  public static final List<String> COLUMN_ATTRIBUTES = List.of(
     "id",
     "hexId",
     "beaconStatus",
@@ -50,8 +49,7 @@ public class SpreadsheetRow {
     "aircraft24BitHexAddresses"
   );
 
-  @Getter
-  private static final List<String> COLUMN_HEADINGS = List.of(
+  public static final List<String> COLUMN_HEADINGS = List.of(
     "ID",
     "Hex ID",
     "Beacon Status",
