@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -33,10 +35,17 @@ public class ExportToXlsxJobListener implements JobExecutionListener {
       );
       try {
         OutputStream fileOutputStream = Files.newOutputStream(destination);
+        SXSSFWorkbook workbook = Objects.requireNonNull(
+          beaconsDataWorkbookRepository.getWorkbook().get()
+        );
 
-        Objects
-          .requireNonNull(beaconsDataWorkbookRepository.getWorkbook().get())
-          .write(fileOutputStream);
+        SXSSFSheet sheet = workbook.getSheet("Beacons Data");
+
+        for (Integer i : sheet.getTrackedColumnsForAutoSizing()) {
+          sheet.autoSizeColumn(i);
+        }
+
+        workbook.write(fileOutputStream);
 
         fileOutputStream.close();
         boolean success = beaconsDataWorkbookRepository.disposeOfWorkbook();

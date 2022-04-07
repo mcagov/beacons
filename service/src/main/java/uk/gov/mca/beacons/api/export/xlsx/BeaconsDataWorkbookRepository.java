@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.export.xlsx;
 import java.lang.ref.WeakReference;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.export.SpreadsheetRow;
@@ -45,7 +46,8 @@ public class BeaconsDataWorkbookRepository {
 
   private void initialiseWorkbook() {
     workbook = new SXSSFWorkbook(WORKBOOK_WINDOW_SIZE);
-    Sheet sheet = workbook.createSheet("Beacons Data");
+    SXSSFSheet sheet = workbook.createSheet("Beacons Data");
+    sheet.trackAllColumnsForAutoSizing();
     Row row = sheet.createRow(0);
 
     int cellNum = 0;
