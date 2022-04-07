@@ -13,42 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import uk.gov.mca.beacons.api.export.csv.CsvExporter;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 
 @RestController
 @RequestMapping("/spring-api/export")
 class ExportController {
 
-  private final CsvExporter csvExporter;
-
   private final XlsxExporter xlsxExporter;
 
   @Autowired
-  public ExportController(CsvExporter csvExporter, XlsxExporter xlsxExporter) {
-    this.csvExporter = csvExporter;
+  public ExportController(XlsxExporter xlsxExporter) {
     this.xlsxExporter = xlsxExporter;
-  }
-
-  @GetMapping(value = "/csv")
-  public ResponseEntity<Resource> downloadExistingCsvExport()
-    throws ExportFailedException, IOException {
-    Resource latestExport = new FileSystemResource(
-      csvExporter
-        .getMostRecentCsvExport()
-        .orElseThrow(
-          () -> new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE)
-        )
-    );
-
-    return serveFile(latestExport);
-  }
-
-  @PostMapping(value = "/csv")
-  public ResponseEntity<Void> createNewCsvExport() throws IOException {
-    csvExporter.exportBeaconsToCsv();
-
-    return ResponseEntity.ok().build();
   }
 
   @GetMapping(value = "/xlsx")

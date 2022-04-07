@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
-import uk.gov.mca.beacons.api.export.csv.CsvExporter;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 
 public class ExportControllerIntegrationTest extends WebIntegrationTest {
@@ -16,54 +15,7 @@ public class ExportControllerIntegrationTest extends WebIntegrationTest {
   private JobRepositoryTestUtils jobRepositoryTestUtils;
 
   @Autowired
-  CsvExporter csvExporter;
-
-  @Autowired
   XlsxExporter xlsxExporter;
-
-  @Nested
-  class csvExports {
-
-    @Test
-    public void givenACsvExportExists_whenTheUserRequestsIt_thenServeTheFile()
-      throws Exception {
-      // -- Arrange --
-      String accountHolderId_1 = seedAccountHolder();
-      seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId_1);
-      seedLegacyBeacon();
-      csvExporter.exportBeaconsToCsv();
-
-      // -- Act --
-      webTestClient
-        .get()
-        .uri(Endpoints.Export.value + "/csv")
-        .exchange()
-        .expectStatus()
-        .isOk()
-        .expectHeader()
-        .contentType(new MediaType("application", "force-download"));
-
-      // -- Teardown --
-      jobRepositoryTestUtils.removeJobExecutions();
-    }
-
-    @Test
-    public void givenTheSpreadsheetExportDoesNotExist_whenTheUserRequestsTheLatestExport_thenReturn503ServiceUnavailable()
-      throws Exception {
-      // Arrange
-      String accountHolderId_1 = seedAccountHolder();
-      seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId_1);
-      seedLegacyBeacon();
-
-      // Act
-      webTestClient
-        .get()
-        .uri(Endpoints.Export.value + "/csv")
-        .exchange()
-        .expectStatus()
-        .isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
-    }
-  }
 
   @Nested
   class XlsxExports {
