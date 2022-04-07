@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 
 @RestController
 @RequestMapping("/spring-api/export")
+@PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
 class ExportController {
 
   private final XlsxExporter xlsxExporter;

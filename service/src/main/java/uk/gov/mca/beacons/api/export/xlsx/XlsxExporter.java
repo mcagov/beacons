@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.export.ExportFileNamer;
 import uk.gov.mca.beacons.api.export.FileSystemRepository;
@@ -15,7 +14,6 @@ import uk.gov.mca.beacons.api.export.FileSystemRepository;
  */
 @Service
 @Slf4j
-@PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
 public class XlsxExporter {
 
   private final XlsxExportJobManager xlsxExportJobManager;
