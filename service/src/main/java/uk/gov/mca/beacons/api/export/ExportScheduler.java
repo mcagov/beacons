@@ -17,7 +17,7 @@ public class ExportScheduler {
     this.xlsxExporter = xlsxExporter;
   }
 
-  @Scheduled(cron = "0 1 * * *") // Nightly at 1am
+  @Scheduled(cron = "0 1 * * * ?") // Nightly at 1am
   @SchedulerLock(
     name = "xlsxExport_scheduledTask",
     lockAtLeastFor = "15m", // 15 minutes
