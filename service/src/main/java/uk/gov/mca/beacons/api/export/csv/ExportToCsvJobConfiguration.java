@@ -125,10 +125,10 @@ public class ExportToCsvJobConfiguration {
       .resource(new FileSystemResource(temporaryExportFile))
       .delimited()
       .delimiter(",")
-      .names(SpreadsheetRow.getCOLUMN_ATTRIBUTES().toArray(new String[0]))
+      .names(SpreadsheetRow.COLUMN_ATTRIBUTES.toArray(new String[0]))
       .headerCallback(
         headerWriter -> {
-          for (String columnHeading : SpreadsheetRow.getCOLUMN_HEADINGS()) {
+          for (String columnHeading : SpreadsheetRow.COLUMN_HEADINGS) {
             headerWriter.write(columnHeading + ", ");
           }
         }
