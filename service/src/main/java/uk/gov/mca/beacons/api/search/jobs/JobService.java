@@ -1,6 +1,5 @@
-package uk.gov.mca.beacons.api.jobs;
+package uk.gov.mca.beacons.api.search.jobs;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 import javax.batch.runtime.BatchStatus;
@@ -35,7 +34,7 @@ public class JobService {
   }
 
   public Long startReindexSearchJob()
-    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException, NoSuchJobException {
+    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
     JobExecution jobExecution = jobLauncher.run(
       reindexSearchJob,
       new JobParameters(

@@ -29,7 +29,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
     Migration("/spring-api/migrate"),
     Note("/spring-api/note"),
     Registration("/spring-api/registrations"),
-    Job("/spring-api/job"),
+    Job("/spring-api/search/job"),
     Export("/spring-api/export");
 
     public final String value;

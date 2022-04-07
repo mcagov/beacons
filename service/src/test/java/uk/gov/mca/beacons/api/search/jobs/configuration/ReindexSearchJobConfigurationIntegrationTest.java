@@ -1,11 +1,10 @@
-package uk.gov.mca.beacons.api.jobs.configuration;
+package uk.gov.mca.beacons.api.search.jobs.configuration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;

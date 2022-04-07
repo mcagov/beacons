@@ -76,14 +76,14 @@ update OpenSearch to the latest version of the data in Postgres.
 To trigger the reindexSearch job, run:
 
 ```bash
-$ curl -X POST -s http://user:password@localhost:8080/spring-api/job/reindexSearch
-{"location":"/spring-api/job/reindexSearch/2"}
+$ curl -X POST -s http://user:password@localhost:8080/spring-api/search/job/reindexSearch
+{"location":"/spring-api/search/job/reindexSearch/2"}
 ```
 
 This will output the path to the job, which can then be checked for its status:
 
 ```bash
-$ curl -X GET -s http://user:password@localhost:8080/spring-api/job/reindexSearch/2
+$ curl -X GET -s http://user:password@localhost:8080/spring-api/search/job/reindexSearch/2
 {"status":"COMPLETED"}
 ```
 

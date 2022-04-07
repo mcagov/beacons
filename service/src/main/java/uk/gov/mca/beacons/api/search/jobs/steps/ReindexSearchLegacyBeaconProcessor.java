@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.jobs.steps;
+package uk.gov.mca.beacons.api.search.jobs.steps;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.item.ItemProcessor;

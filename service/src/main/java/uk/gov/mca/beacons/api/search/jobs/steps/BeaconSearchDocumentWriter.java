@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.jobs.steps;
+package uk.gov.mca.beacons.api.search.jobs.steps;
 
 import java.util.List;
 import org.springframework.batch.item.ItemWriter;
@@ -22,8 +22,7 @@ public class BeaconSearchDocumentWriter
   }
 
   @Override
-  public void write(@NonNull List<? extends BeaconSearchDocument> documents)
-    throws Exception {
+  public void write(@NonNull List<? extends BeaconSearchDocument> documents) {
     beaconSearchRepository.saveAll(documents);
   }
 }

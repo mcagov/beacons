@@ -1,11 +1,9 @@
-package uk.gov.mca.beacons.api.jobs.rest;
+package uk.gov.mca.beacons.api.search.jobs.rest;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import com.jayway.jsonpath.JsonPath;
-import java.util.concurrent.TimeUnit;
-import javax.batch.runtime.BatchStatus;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -16,7 +14,6 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.test.JobRepositoryTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 

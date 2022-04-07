@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.jobs.rest;
+package uk.gov.mca.beacons.api.search.jobs.rest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.batch.core.launch.JobExecutionNotRunningException;
@@ -6,10 +6,10 @@ import org.springframework.batch.core.launch.NoSuchJobExecutionException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
-import uk.gov.mca.beacons.api.jobs.JobService;
+import uk.gov.mca.beacons.api.search.jobs.JobService;
 
 @RestController
-@RequestMapping("/spring-api/job")
+@RequestMapping("/spring-api/search/job")
 @Tag(name = "Job Controller")
 public class JobController {
 
@@ -24,7 +24,7 @@ public class JobController {
     Long jobExecutionId = jobService.startReindexSearchJob();
     JobAcceptanceDTO jobAcceptanceDTO = JobAcceptanceDTO
       .builder()
-      .location("/spring-api/job/reindexSearch/" + jobExecutionId)
+      .location("/spring-api/search/job/reindexSearch/" + jobExecutionId)
       .build();
 
     return ResponseEntity.accepted().body(jobAcceptanceDTO);
@@ -44,7 +44,7 @@ public class JobController {
   @DeleteMapping("{id}")
   public ResponseEntity<Void> cancelJob(
     @PathVariable("id") Long jobExecutionId
-  ) throws NoSuchJobExecutionException, JobExecutionNotRunningException {
+  ) {
     try {
       jobService.cancel(jobExecutionId);
     } catch (NoSuchJobExecutionException e) {

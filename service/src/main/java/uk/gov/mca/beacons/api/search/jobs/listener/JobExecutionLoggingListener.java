@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.jobs.listener;
+package uk.gov.mca.beacons.api.search.jobs.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobExecution;

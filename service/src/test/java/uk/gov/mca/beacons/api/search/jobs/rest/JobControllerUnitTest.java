@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.jobs.rest;
+package uk.gov.mca.beacons.api.search.jobs.rest;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -15,7 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.mca.beacons.api.WebMvcTestConfiguration;
-import uk.gov.mca.beacons.api.jobs.JobService;
+import uk.gov.mca.beacons.api.search.jobs.JobService;
 
 @AutoConfigureMockMvc
 @WebMvcTest(controllers = JobController.class)
@@ -36,7 +36,7 @@ public class JobControllerUnitTest {
       .willThrow(NoSuchJobExecutionException.class);
 
     mvc
-      .perform(delete("/spring-api/job/" + nonexistentJobId))
+      .perform(delete("/spring-api/search/job/" + nonexistentJobId))
       .andExpect(status().isNotFound());
   }
 
@@ -47,7 +47,7 @@ public class JobControllerUnitTest {
     given(jobService.cancel(jobId)).willReturn(true);
 
     mvc
-      .perform(delete("/spring-api/job/" + jobId))
+      .perform(delete("/spring-api/search/job/" + jobId))
       .andExpect(status().isAccepted());
 
     verify(jobService, times(1)).cancel(jobId);

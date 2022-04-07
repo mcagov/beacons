@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.jobs.rest;
+package uk.gov.mca.beacons.api.search.jobs.rest;
 
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.jobs.configuration;
+package uk.gov.mca.beacons.api.search.jobs.configuration;
 
 import javax.persistence.EntityManagerFactory;
 import org.springframework.batch.core.Job;
@@ -19,10 +19,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
-import uk.gov.mca.beacons.api.jobs.listener.JobExecutionLoggingListener;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
+import uk.gov.mca.beacons.api.search.jobs.listener.JobExecutionLoggingListener;
 
 @Configuration
 @EnableBatchProcessing
