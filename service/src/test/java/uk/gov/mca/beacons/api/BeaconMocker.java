@@ -4,7 +4,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 import com.github.javafaker.Faker;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
@@ -50,6 +53,13 @@ public class BeaconMocker {
       .willReturn(faker.bothify("#?#?#?#?#?#???##"));
     given(beacon.getModel()).willReturn(faker.gameOfThrones().dragon());
     given(beacon.getCoding()).willReturn(faker.ancient().primordial());
+    given(beacon.getLastModifiedDate())
+      .willReturn(
+        OffsetDateTime.ofInstant(
+          faker.date().past(30, TimeUnit.DAYS).toInstant(),
+          ZoneId.of("Z")
+        )
+      );
 
     return beacon;
   }
