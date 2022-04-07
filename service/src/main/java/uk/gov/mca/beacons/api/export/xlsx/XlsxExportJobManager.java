@@ -19,7 +19,6 @@ import uk.gov.mca.beacons.api.export.ExportFailedException;
  * Initiates export jobs using Spring Batch.
  */
 @Component
-@PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
 @Slf4j
 public class XlsxExportJobManager {
 
