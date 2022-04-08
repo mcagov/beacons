@@ -1,13 +1,16 @@
 package uk.gov.mca.beacons.api.export;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.Mockito.when;
 
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,5 +37,18 @@ class ExportFileNamerUnitTest {
     );
 
     assertThat(filename, startsWith(yyyyMMdd));
+  }
+
+  @Nested
+  class parseDate {
+
+    @Test
+    public void givenAFilenameThatDoesNotStartWithADate_thenReturnNull() {
+      Path nonDatePrefixedFilename = Path.of("/var/tmp/beacons_data.xlsx");
+
+      Date shouldBeNull = fileNamer.parseDate(nonDatePrefixedFilename);
+
+      assertThat(shouldBeNull, nullValue());
+    }
   }
 }

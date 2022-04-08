@@ -72,7 +72,7 @@ public class ExportFileNamer {
         (exportPath.getFileName().toString())
       );
     } catch (ParseException e) {
-      log.warn("Tried to parse a date from {} but failed", exportPath, e);
+      log.warn("Tried to parse a date from {} but failed", exportPath);
       return null;
     }
   }
