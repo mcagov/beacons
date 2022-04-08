@@ -18,6 +18,7 @@ import { ErrorState } from "./components/dataPanel/PanelErrorState";
 import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { Footer } from "./components/layout/Footer";
 import { Navigation } from "./components/layout/Navigation";
+import { PageContent } from "./components/layout/PageContent";
 import { applicationConfig } from "./config";
 import { BeaconRequestMapper } from "./gateways/mappers/BeaconRequestMapper";
 import { BeaconResponseMapper } from "./gateways/mappers/BeaconResponseMapper";
@@ -94,12 +95,14 @@ const App: FunctionComponent = () => {
                 <Route path={`/legacy-beacons/:id`}>
                   <SingleLegacyBeaconRecordViewWithParam />
                 </Route>
-                <Route path={`/export`}>
-                  <AuthenticatedPOSTButton
-                    uri={`${applicationConfig.apiUrl}/export/xlsx`}
-                  >
-                    Trigger export job
-                  </AuthenticatedPOSTButton>
+                <Route path={`/admin`}>
+                  <PageContent>
+                    <AuthenticatedPOSTButton
+                      uri={`${applicationConfig.apiUrl}/export/xlsx`}
+                    >
+                      Trigger export job
+                    </AuthenticatedPOSTButton>
+                  </PageContent>
                 </Route>
                 <Route>Page not found. Is the address correct?</Route>
               </Switch>
