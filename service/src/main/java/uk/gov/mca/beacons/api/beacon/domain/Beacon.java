@@ -20,6 +20,11 @@ import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @Entity(name = "beacon")
+@NamedQuery(
+  name = "PagingBeaconReader",
+  query = "select b from beacon b order by lastModifiedDate",
+  hints = @QueryHint(name = "org.hibernate.readOnly", value = "true")
+)
 public class Beacon extends BaseAggregateRoot<BeaconId> {
 
   public static final String ID_GENERATOR_NAME = "beacon-id-generator";

@@ -1,8 +1,12 @@
 package uk.gov.mca.beacons.api.beacon.application;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
+import org.springframework.batch.item.database.orm.AbstractJpaQueryProvider;
+import org.springframework.batch.item.database.orm.JpaNamedQueryProvider;
+import org.springframework.batch.item.database.orm.JpaQueryProvider;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 
 /**
@@ -15,10 +19,14 @@ public class BeaconItemReaderFactory {
   public static JpaPagingItemReader<Beacon> getItemReader(
     EntityManagerFactory entityManagerFactory
   ) {
+    JpaNamedQueryProvider<Beacon> queryProvider = new JpaNamedQueryProvider<>();
+    queryProvider.setEntityClass(Beacon.class);
+    queryProvider.setNamedQuery("PagingBeaconReader");
+
     return new JpaPagingItemReaderBuilder<Beacon>()
       .name("beaconReader")
       .entityManagerFactory(entityManagerFactory)
-      .queryString("select b from beacon b order by lastModifiedDate")
+      .queryProvider(queryProvider)
       .pageSize(chunkSize)
       .build();
   }
