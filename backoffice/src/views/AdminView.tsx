@@ -10,7 +10,7 @@ export const AdminView = (): ReactNode => {
         Trigger export job
       </AuthenticatedPOSTButton>
       <AuthenticatedPOSTButton
-        uri={`${applicationConfig.apiUrl}/spring-api/search/job/reindexSearch`}
+        uri={`${applicationConfig.apiUrl}/search/job/reindexSearch`}
       >
         Trigger re-index search job
       </AuthenticatedPOSTButton>

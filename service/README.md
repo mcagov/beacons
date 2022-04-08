@@ -73,21 +73,10 @@ We use OpenSearch to support advanced querying of beacon registrations. Beacons 
 automatically on registration, though if necessary OpenSearch can be manually re-indexed using a job. This will
 update OpenSearch to the latest version of the data in Postgres.
 
-To trigger the reindexSearch job, run:
+To trigger the reindexSearch job, access the `/admin` path of the Backoffice application on the required environment,
+where you'll see a button to trigger the job.
 
-```bash
-$ curl -X POST -s http://user:password@localhost:8080/spring-api/search/job/reindexSearch
-{"location":"/spring-api/search/job/reindexSearch/2"}
-```
-
-This will output the path to the job, which can then be checked for its status:
-
-```bash
-$ curl -X GET -s http://user:password@localhost:8080/spring-api/search/job/reindexSearch/2
-{"status":"COMPLETED"}
-```
-
-Logs are also output to CloudWatch when the job starts and finishes.
+The progress of the job can then be monitored in the logs.
 
 ## Database schema diagram
 
