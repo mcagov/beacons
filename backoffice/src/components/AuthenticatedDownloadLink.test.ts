@@ -1,4 +1,4 @@
-import { parseFilename } from "./AuthenticatedDownloadLink";
+import { parseFilename } from "./AuthenticatedDownloadButton";
 
 describe("filename()", () => {
   it("parses the attachment filename from the HTTP Content-Disposition header", () => {

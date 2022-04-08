@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import React, { MouseEventHandler } from "react";
 import { useAuthContext } from "./auth/AuthProvider";
 
-export function AuthenticatedDownloadLink({
+export function AuthenticatedDownloadButton({
   url,
 }: {
   url: string;

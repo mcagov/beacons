@@ -9,7 +9,6 @@ import {
 import Drawer from "@mui/material/Drawer";
 import { Box } from "@mui/system";
 import * as React from "react";
-import { useLocation } from "react-router";
 import { applicationConfig } from "../../config";
 import {
   SearchMode,
@@ -17,11 +16,10 @@ import {
   useUserSettings,
 } from "../../UserSettings";
 import { OnlyVisibleToUsersWith } from "../auth/OnlyVisibleToUsersWith";
-import { AuthenticatedDownloadLink } from "../AuthenticatedDownloadLink";
+import { AuthenticatedDownloadButton } from "../AuthenticatedDownloadButton";
 import { FeedbackButton } from "../FeedbackButton";
 
 export function SettingsDrawer() {
-  const location = useLocation();
   const [settings, dispatch] = useUserSettings();
   const [open, setOpen] = React.useState(false);
 
@@ -92,21 +90,17 @@ export function SettingsDrawer() {
             </ToggleButton>
           </ToggleButtonGroup>
           <OnlyVisibleToUsersWith role={"DATA_EXPORTER"}>
-            {location.pathname.includes("export") && (
-              <React.Fragment>
-                <Typography
-                  gutterBottom={true}
-                  component={"p"}
-                  variant={"subtitle2"}
-                  id="feedback"
-                >
-                  Export
-                </Typography>
-                <AuthenticatedDownloadLink
-                  url={`${applicationConfig.apiUrl}/export/xlsx`}
-                />
-              </React.Fragment>
-            )}
+            <Typography
+              gutterBottom={true}
+              component={"p"}
+              variant={"subtitle2"}
+              id="feedback"
+            >
+              Export
+            </Typography>
+            <AuthenticatedDownloadButton
+              url={`${applicationConfig.apiUrl}/export/xlsx`}
+            />
           </OnlyVisibleToUsersWith>
           <Typography
             gutterBottom={true}
