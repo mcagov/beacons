@@ -19,6 +19,11 @@ import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
 @Entity
 @Table(name = "legacy_beacon")
 @TypeDefs({ @TypeDef(name = "json", typeClass = JsonType.class) })
+@NamedQuery(
+  name = "PagingLegacyBeaconReader",
+  query = "select b from LegacyBeacon b order by lastModifiedDate",
+  hints = @QueryHint(name = "org.hibernate.readOnly", value = "true")
+)
 public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
 
   public static final String ID_GENERATOR_NAME = "legacybeacon-id-generator";

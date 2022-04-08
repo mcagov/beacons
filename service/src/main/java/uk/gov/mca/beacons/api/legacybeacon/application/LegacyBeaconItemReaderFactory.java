@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.legacybeacon.application;
 import javax.persistence.EntityManagerFactory;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
+import org.springframework.batch.item.database.orm.JpaNamedQueryProvider;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
 /**
@@ -15,10 +16,14 @@ public class LegacyBeaconItemReaderFactory {
   public static JpaPagingItemReader<LegacyBeacon> getItemReader(
     EntityManagerFactory entityManagerFactory
   ) {
+    JpaNamedQueryProvider<LegacyBeacon> queryProvider = new JpaNamedQueryProvider<>();
+    queryProvider.setEntityClass(LegacyBeacon.class);
+    queryProvider.setNamedQuery("PagingLegacyBeaconReader");
+
     return new JpaPagingItemReaderBuilder<LegacyBeacon>()
       .name("legacyBeaconReader")
       .entityManagerFactory(entityManagerFactory)
-      .queryString("select b from LegacyBeacon b order by lastModifiedDate")
+      .queryProvider(queryProvider)
       .pageSize(chunkSize)
       .build();
   }
