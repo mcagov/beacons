@@ -20,14 +20,15 @@ It comprises three applications:
 
 ## Local development
 
-| **dependency**                                    | **version** |
-| ------------------------------------------------- | ----------- |
-| [java](https://openjdk.java.net/projects/jdk/11/) | 11.x        |
-| [nvm](https://github.com/nvm-sh/nvm)              | 0.38        |
-| [https://www.terraform.io/](terraform)            | 1.0.X       |
+| **dependency**                                                    | **version** |
+| ----------------------------------------------------------------- | ----------- |
+| [java](https://openjdk.java.net/projects/jdk/11/)                 | 11.x        |
+| [nvm](https://github.com/nvm-sh/nvm)                              | 0.38        |
+| [terraform](https://www.terraform.io/)                            | 1.0.X       |
+| [Docker desktop](https://www.docker.com/products/docker-desktop/) | Latest      |
 
 ```bash
-$ make backoffice-dev       # Start up the Backoffice application and its backing services for development
+$ make       # Start up the applications in development mode, with backing services
 ```
 
 ## Infrastructure-as-code
