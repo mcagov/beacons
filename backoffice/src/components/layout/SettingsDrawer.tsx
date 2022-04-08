@@ -99,6 +99,7 @@ export function SettingsDrawer() {
               Export
             </Typography>
             <AuthenticatedDownloadButton
+              label="Export to Excel"
               url={`${applicationConfig.apiUrl}/export/xlsx`}
             />
           </OnlyVisibleToUsersWith>

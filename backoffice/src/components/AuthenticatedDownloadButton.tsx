@@ -4,8 +4,10 @@ import { useAuthContext } from "./auth/AuthProvider";
 
 export function AuthenticatedDownloadButton({
   url,
+  label,
 }: {
   url: string;
+  label: string;
 }): JSX.Element | null {
   const link = React.useRef<HTMLAnchorElement>(null);
 
@@ -56,7 +58,7 @@ export function AuthenticatedDownloadButton({
       variant="outlined"
       fullWidth
     >
-      Export to Excel
+      {label}
     </Button>
   );
 }
