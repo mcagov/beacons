@@ -6,11 +6,13 @@ WORKDIR /usr/app
 COPY next.config.js package.json package-lock.json tsconfig.json src public ./
 
 # Builds NextJS application
+# hadolint ignore=DL3006
 FROM base AS build
 
 RUN CYPRESS_INSTALL_BINARY=0 npm ci && npm run build
 
 # Installs production dependencies
+# hadolint ignore=DL3006
 FROM base AS production-deps
 
 RUN npm ci --production
