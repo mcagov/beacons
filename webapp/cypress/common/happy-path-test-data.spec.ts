@@ -22,9 +22,9 @@ export const testBeaconAndOwnerData = {
     serialNumber: "1234",
     chkCode: "9480B",
     csta: "CSTA",
-    batteryExpiryMonth: "12",
+    batteryExpiryMonth: { input: "12", display: "December" },
     batteryExpiryYear: "2025",
-    lastServicedMonth: "06",
+    lastServicedMonth: { input: "06", display: "June" },
     lastServicedYear: "2019",
   },
   ownerDetails: {

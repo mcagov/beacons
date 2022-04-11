@@ -36,9 +36,12 @@ export const givenIHaveFilledInBeaconInformationPage = (): void => {
   givenIHaveTyped(beaconInfo.serialNumber, "#manufacturerSerialNumber");
   givenIHaveTyped(beaconInfo.chkCode, "#chkCode");
   givenIHaveTyped(beaconInfo.csta, "#csta");
-  givenIHaveTyped(beaconInfo.batteryExpiryMonth, "#batteryExpiryDateMonth");
+  givenIHaveTyped(
+    beaconInfo.batteryExpiryMonth.input,
+    "#batteryExpiryDateMonth"
+  );
   givenIHaveTyped(beaconInfo.batteryExpiryYear, "#batteryExpiryDateYear");
-  givenIHaveTyped(beaconInfo.lastServicedMonth, "#lastServicedDateMonth");
+  givenIHaveTyped(beaconInfo.lastServicedMonth.input, "#lastServicedDateMonth");
   givenIHaveTyped(beaconInfo.lastServicedYear, "#lastServicedDateYear");
   givenIHaveClickedContinue();
 };
@@ -82,20 +85,40 @@ export const iCanEditMyBeaconDetails = (): void =>
     cy.get(`input[value="${value}"]`)
   );
 
-export const iCanEditMyAdditionalBeaconInformation = (): void =>
-  Object.values(testBeaconAndOwnerData.additionalBeaconInformation).forEach(
-    (value) => cy.get(`input[value="${value}"]`)
-  );
+export const iCanEditMyAdditionalBeaconInformation = (): void => {
+  const expectedData = [
+    testBeaconAndOwnerData.additionalBeaconInformation.serialNumber,
+    testBeaconAndOwnerData.additionalBeaconInformation.chkCode,
+    testBeaconAndOwnerData.additionalBeaconInformation.csta,
+    testBeaconAndOwnerData.additionalBeaconInformation.batteryExpiryMonth.input,
+    testBeaconAndOwnerData.additionalBeaconInformation.batteryExpiryYear,
+    testBeaconAndOwnerData.additionalBeaconInformation.lastServicedMonth.input,
+    testBeaconAndOwnerData.additionalBeaconInformation.lastServicedYear,
+  ];
+
+  expectedData.forEach((value) => cy.get(`input[value="${value}"]`));
+};
 
 export const iCanSeeMyBeaconDetails = (): void =>
   Object.values(testBeaconAndOwnerData.beaconDetails).forEach((value) =>
     cy.contains(value)
   );
 
-export const iCanSeeMyAdditionalBeaconInformation = (): void =>
-  Object.values(testBeaconAndOwnerData.additionalBeaconInformation).forEach(
-    (value) => cy.contains(value)
-  );
+export const iCanSeeMyAdditionalBeaconInformation = (): void => {
+  const expectedData = [
+    testBeaconAndOwnerData.additionalBeaconInformation.serialNumber,
+    testBeaconAndOwnerData.additionalBeaconInformation.chkCode,
+    testBeaconAndOwnerData.additionalBeaconInformation.csta,
+    testBeaconAndOwnerData.additionalBeaconInformation.batteryExpiryMonth
+      .display,
+    testBeaconAndOwnerData.additionalBeaconInformation.batteryExpiryYear,
+    testBeaconAndOwnerData.additionalBeaconInformation.lastServicedMonth
+      .display,
+    testBeaconAndOwnerData.additionalBeaconInformation.lastServicedYear,
+  ];
+
+  expectedData.forEach((value) => cy.contains(value));
+};
 
 export const iCanSeeMyRequiredAdditionalBeaconInformationOrDash = (): void =>
   Object.values(testBeaconAndOwnerData.additionalBeaconInformation).forEach(
