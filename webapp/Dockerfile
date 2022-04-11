@@ -16,7 +16,7 @@ FROM base AS production-deps
 RUN npm ci --production
 
 # NextJS production application
-FROM node:${node_version} AS nextjs-app
+FROM node:16-alpine AS nextjs-app
 
 ENV NODE_ENV=production
 
