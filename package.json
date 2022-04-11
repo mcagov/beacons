@@ -17,13 +17,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/madetech/mca-beacons-integration.git"
+    "url": "git+https://github.com/mcagov/beacons.git"
   },
   "author": "MCA",
   "bugs": {
-    "url": "https://github.com/madetech/mca-beacons-integration/issues"
+    "url": "https://github.com/mcagov/beacons/issues"
   },
-  "homepage": "https://github.com/madetech/mca-beacons-integration#readme",
+  "homepage": "https://github.com/mcagov/beacons#readme",
   "devDependencies": {
     "adr-log": "^2.2.0",
     "husky": "^4.3.8",
