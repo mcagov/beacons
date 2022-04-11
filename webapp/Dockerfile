@@ -1,7 +1,5 @@
-ARG node_version=14.15.4-alpine3.12
-
 # Base Docker image for multi-stage build
-FROM node:${node_version} AS base
+FROM node:16-alpine AS build
 
 WORKDIR /usr/app
 
