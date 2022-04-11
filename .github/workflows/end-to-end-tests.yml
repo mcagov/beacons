@@ -48,7 +48,7 @@ jobs:
       GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS: ${{ inputs.test_gov_notify_feedback_email_address }}
 
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.1.0
         with:
           node-version: "14"
