@@ -1,5 +1,5 @@
 import { ILegacyBeaconRequest } from "../../src/gateways/interfaces/LegacyBeaconRequest";
-import { makeAuthenticatedPOSTRequest } from "./make-authenticated-POST-request";
+import { makeAuthenticatedPOSTRequest } from "./make-authenticated-POST-request.spec";
 
 export const iHavePreviouslyRegisteredALegacyBeacon = async (
   legacyBeaconRequest: ILegacyBeaconRequest
