@@ -39,43 +39,43 @@ interface BeaconOwnerAddressForm {
   ownerCountry: string;
 }
 
-const BeaconOwnerAddressRestOfWorld: FunctionComponent<DraftRegistrationPageProps> =
-  ({ form, showCookieBanner }: DraftRegistrationPageProps): JSX.Element => {
-    const pageHeading = "What is the beacon owner's address?";
+const BeaconOwnerAddressRestOfWorld: FunctionComponent<
+  DraftRegistrationPageProps
+> = ({ form, showCookieBanner }: DraftRegistrationPageProps): JSX.Element => {
+  const pageHeading = "What is the beacon owner's address?";
 
-    return (
-      <Layout
-        navigation={
-          <BackButton href={CreateRegistrationPageURLs.beaconOwnerAddress} />
+  return (
+    <Layout
+      navigation={
+        <BackButton href={CreateRegistrationPageURLs.beaconOwnerAddress} />
+      }
+      title={pageHeading}
+      pageHasErrors={form.hasErrors}
+      showCookieBanner={showCookieBanner}
+    >
+      <Grid
+        mainContent={
+          <>
+            <Form>
+              <FormFieldset>
+                <FormErrorSummary formErrors={form.errorSummary} />
+                <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
+                <GovUKBody>
+                  The beacon registration certificate and proof of registration
+                  labels to stick to the beacon will be sent to this address
+                </GovUKBody>
+                <RestOfWorldBeaconOwnerAddress form={form} />
+              </FormFieldset>
+
+              <Button buttonText="Continue" />
+              <IfYouNeedHelp />
+            </Form>
+          </>
         }
-        title={pageHeading}
-        pageHasErrors={form.hasErrors}
-        showCookieBanner={showCookieBanner}
-      >
-        <Grid
-          mainContent={
-            <>
-              <Form>
-                <FormFieldset>
-                  <FormErrorSummary formErrors={form.errorSummary} />
-                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                  <GovUKBody>
-                    The beacon registration certificate and proof of
-                    registration labels to stick to the beacon will be sent to
-                    this address
-                  </GovUKBody>
-                  <RestOfWorldBeaconOwnerAddress form={form} />
-                </FormFieldset>
-
-                <Button buttonText="Continue" />
-                <IfYouNeedHelp />
-              </Form>
-            </>
-          }
-        />
-      </Layout>
-    );
-  };
+      />
+    </Layout>
+  );
+};
 
 const RestOfWorldBeaconOwnerAddress: FunctionComponent<{ form: FormJSON }> = ({
   form,

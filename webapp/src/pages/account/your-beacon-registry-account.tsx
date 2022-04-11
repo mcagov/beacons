@@ -41,43 +41,44 @@ export interface YourBeaconRegistryAccountPageProps {
   signOutUri: string;
 }
 
-export const YourBeaconRegistryAccount: FunctionComponent<YourBeaconRegistryAccountPageProps> =
-  ({
-    accountHolderDetails,
-    beacons,
-    signOutUri,
-  }: YourBeaconRegistryAccountPageProps): JSX.Element => {
-    const pageHeading = "Your Beacon Registry Account";
-    const legacyBeacons = beacons.filter((beacon) => {
-      return beacon.beaconStatus === "MIGRATED";
-    });
+export const YourBeaconRegistryAccount: FunctionComponent<
+  YourBeaconRegistryAccountPageProps
+> = ({
+  accountHolderDetails,
+  beacons,
+  signOutUri,
+}: YourBeaconRegistryAccountPageProps): JSX.Element => {
+  const pageHeading = "Your Beacon Registry Account";
+  const legacyBeacons = beacons.filter((beacon) => {
+    return beacon.beaconStatus === "MIGRATED";
+  });
 
-    return (
-      <Layout
-        title={pageHeading}
-        showCookieBanner={false}
-        signOutUri={signOutUri}
-      >
-        <Grid
-          mainContent={
-            <>
-              <PageHeading>{pageHeading}</PageHeading>
-              <YourDetails accountHolderDetails={accountHolderDetails} />
-              {legacyBeacons.length > 0 && (
-                <LegacyBeaconsNotification
-                  beacons={legacyBeacons}
-                  accountHolderDetails={accountHolderDetails}
-                />
-              )}
-              <YourBeacons beacons={beacons} />
-              <RegisterANewBeacon />
-              <Contact />
-            </>
-          }
-        />
-      </Layout>
-    );
-  };
+  return (
+    <Layout
+      title={pageHeading}
+      showCookieBanner={false}
+      signOutUri={signOutUri}
+    >
+      <Grid
+        mainContent={
+          <>
+            <PageHeading>{pageHeading}</PageHeading>
+            <YourDetails accountHolderDetails={accountHolderDetails} />
+            {legacyBeacons.length > 0 && (
+              <LegacyBeaconsNotification
+                beacons={legacyBeacons}
+                accountHolderDetails={accountHolderDetails}
+              />
+            )}
+            <YourBeacons beacons={beacons} />
+            <RegisterANewBeacon />
+            <Contact />
+          </>
+        }
+      />
+    </Layout>
+  );
+};
 
 interface IYourDetailsProps {
   accountHolderDetails: AccountHolder;

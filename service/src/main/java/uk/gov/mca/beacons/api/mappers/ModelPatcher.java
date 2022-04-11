@@ -19,19 +19,17 @@ public class ModelPatcher<T> {
   }
 
   public <TValue> T patchModel(T model, T update) {
-    this.mapping.forEach(
-        mapping -> {
-          @SuppressWarnings("unchecked")
-          final Function<T, TValue> getter = mapping.getter;
-          @SuppressWarnings("unchecked")
-          final BiConsumer<T, TValue> setter = mapping.setter;
+    this.mapping.forEach(mapping -> {
+        @SuppressWarnings("unchecked")
+        final Function<T, TValue> getter = mapping.getter;
+        @SuppressWarnings("unchecked")
+        final BiConsumer<T, TValue> setter = mapping.setter;
 
-          TValue updateValue = getter.apply(update);
-          if (updateValue != null) {
-            setter.accept(model, updateValue);
-          }
+        TValue updateValue = getter.apply(update);
+        if (updateValue != null) {
+          setter.accept(model, updateValue);
         }
-      );
+      });
 
     return model;
   }

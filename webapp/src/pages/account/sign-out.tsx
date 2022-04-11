@@ -42,17 +42,18 @@ export const SignOut: FunctionComponent<SignOutProps> = ({
 
 export default SignOut;
 
-export const getServerSideProps: GetServerSideProps<SignOutProps> =
-  async () => {
-    const federatedSignOutUrl = `https://${process.env.AZURE_B2C_TENANT_NAME}\
+export const getServerSideProps: GetServerSideProps<
+  SignOutProps
+> = async () => {
+  const federatedSignOutUrl = `https://${process.env.AZURE_B2C_TENANT_NAME}\
 .b2clogin.com/${process.env.AZURE_B2C_TENANT_NAME}\
 .onmicrosoft.com/${process.env.AZURE_B2C_LOGIN_FLOW}\
 /oauth2/v2.0/logout?post_logout_redirect_uri=\
 ${process.env.NEXTAUTH_URL}${GeneralPageURLs.start}`;
 
-    return {
-      props: {
-        federatedSignOutUrl,
-      },
-    };
+  return {
+    props: {
+      federatedSignOutUrl,
+    },
   };
+};

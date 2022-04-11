@@ -29,59 +29,60 @@ import { BeaconsPageRouter } from "../../../router/BeaconsPageRouter";
 import { Rule } from "../../../router/rules/Rule";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 
-export const UpdateAccountLocationChoiceForm: FunctionComponent<DraftRegistrationPageProps> =
-  ({
-    form = withoutErrorMessages({}, validationRules),
-    showCookieBanner,
-  }: DraftRegistrationPageProps): JSX.Element => {
-    const pageHeading = "Do you live in the United Kingdom?";
+export const UpdateAccountLocationChoiceForm: FunctionComponent<
+  DraftRegistrationPageProps
+> = ({
+  form = withoutErrorMessages({}, validationRules),
+  showCookieBanner,
+}: DraftRegistrationPageProps): JSX.Element => {
+  const pageHeading = "Do you live in the United Kingdom?";
 
-    const fieldName = "accountHolderLocation";
+  const fieldName = "accountHolderLocation";
 
-    return (
-      <BeaconsForm
-        formErrors={form.errorSummary}
-        pageHeading={pageHeading}
-        showCookieBanner={showCookieBanner}
-        includeUseId={false}
-        cancelLink={
-          <a
-            className="govuk-link govuk-link--no-visited-state"
-            href={AccountPageURLs.accountHome}
-          >
-            Cancel
-          </a>
-        }
-      >
-        <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
-          <FormGroup
-            errorMessages={form.fields.accountHolderLocation.errorMessages}
-          >
-            <RadioList>
-              <RadioListItem
-                id="unitedKingdom"
-                name={fieldName}
-                label="Yes, I live in the United Kingdom"
-                value="unitedKingdom"
-                defaultChecked={
-                  form.fields.accountHolderLocation.value === "unitedKingdom"
-                }
-              />
-              <RadioListItem
-                id="restOfWorld"
-                name={fieldName}
-                label="No, I live somewhere else"
-                value="restOfWorld"
-                defaultChecked={
-                  form.fields.accountHolderLocation.value === "restOfWorld"
-                }
-              />
-            </RadioList>
-          </FormGroup>
-        </BeaconsFormFieldsetAndLegend>
-      </BeaconsForm>
-    );
-  };
+  return (
+    <BeaconsForm
+      formErrors={form.errorSummary}
+      pageHeading={pageHeading}
+      showCookieBanner={showCookieBanner}
+      includeUseId={false}
+      cancelLink={
+        <a
+          className="govuk-link govuk-link--no-visited-state"
+          href={AccountPageURLs.accountHome}
+        >
+          Cancel
+        </a>
+      }
+    >
+      <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
+        <FormGroup
+          errorMessages={form.fields.accountHolderLocation.errorMessages}
+        >
+          <RadioList>
+            <RadioListItem
+              id="unitedKingdom"
+              name={fieldName}
+              label="Yes, I live in the United Kingdom"
+              value="unitedKingdom"
+              defaultChecked={
+                form.fields.accountHolderLocation.value === "unitedKingdom"
+              }
+            />
+            <RadioListItem
+              id="restOfWorld"
+              name={fieldName}
+              label="No, I live somewhere else"
+              value="restOfWorld"
+              defaultChecked={
+                form.fields.accountHolderLocation.value === "restOfWorld"
+              }
+            />
+          </RadioList>
+        </FormGroup>
+      </BeaconsFormFieldsetAndLegend>
+    </BeaconsForm>
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {

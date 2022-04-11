@@ -113,56 +113,57 @@ const TelephoneNumber: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-const RestOfWorldAccountHolderAddress: FunctionComponent<{ form: FormJSON }> =
-  ({ form }: { form: FormJSON }): JSX.Element => (
-    <FormGroup>
-      <FormGroup errorMessages={form.fields.addressLine1.errorMessages}>
-        <Input
-          id="addressLine1"
-          label="Address line 1"
-          defaultValue={form.fields.addressLine1.value}
-        />
-      </FormGroup>
-      <FormGroup errorMessages={form.fields.addressLine2.errorMessages}>
-        <Input
-          id="addressLine2"
-          defaultValue={form.fields.addressLine2.value}
-          label="Address line 2"
-        />
-      </FormGroup>
-      <FormGroup>
-        <Input
-          id="addressLine3"
-          label="Address line 3 (optional)"
-          defaultValue={form.fields.addressLine3.value}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Input
-          id="addressLine4"
-          label="Address line 4 (optional)"
-          defaultValue={form.fields.addressLine4.value}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Input
-          id="postcode"
-          label="Postal or zip code (optional)"
-          defaultValue={form.fields.postcode.value}
-        />
-      </FormGroup>
-      <FormGroup errorMessages={form.fields.country.errorMessages}>
-        <label className="govuk-label" htmlFor="country">
-          Country
-        </label>
-        <CountrySelect
-          id="country"
-          name="country"
-          defaultValue={form.fields.country.value}
-        />
-      </FormGroup>
+const RestOfWorldAccountHolderAddress: FunctionComponent<{
+  form: FormJSON;
+}> = ({ form }: { form: FormJSON }): JSX.Element => (
+  <FormGroup>
+    <FormGroup errorMessages={form.fields.addressLine1.errorMessages}>
+      <Input
+        id="addressLine1"
+        label="Address line 1"
+        defaultValue={form.fields.addressLine1.value}
+      />
     </FormGroup>
-  );
+    <FormGroup errorMessages={form.fields.addressLine2.errorMessages}>
+      <Input
+        id="addressLine2"
+        defaultValue={form.fields.addressLine2.value}
+        label="Address line 2"
+      />
+    </FormGroup>
+    <FormGroup>
+      <Input
+        id="addressLine3"
+        label="Address line 3 (optional)"
+        defaultValue={form.fields.addressLine3.value}
+      />
+    </FormGroup>
+    <FormGroup>
+      <Input
+        id="addressLine4"
+        label="Address line 4 (optional)"
+        defaultValue={form.fields.addressLine4.value}
+      />
+    </FormGroup>
+    <FormGroup>
+      <Input
+        id="postcode"
+        label="Postal or zip code (optional)"
+        defaultValue={form.fields.postcode.value}
+      />
+    </FormGroup>
+    <FormGroup errorMessages={form.fields.country.errorMessages}>
+      <label className="govuk-label" htmlFor="country">
+        Country
+      </label>
+      <CountrySelect
+        id="country"
+        name="country"
+        defaultValue={form.fields.country.value}
+      />
+    </FormGroup>
+  </FormGroup>
+);
 
 const userDidSubmitForm = (
   context: BeaconsGetServerSidePropsContext

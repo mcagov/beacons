@@ -183,17 +183,18 @@ const HexAddress: FunctionComponent<FormInputProps> = ({
   </FormGroup>
 );
 
-const CoreNumberOrManufacturerSerialNumber: FunctionComponent<FormInputProps> =
-  ({ value = "" }: FormInputProps): JSX.Element => (
-    <FormGroup>
-      <Input
-        id="cnOrMsnNumber"
-        label="Enter the Aircraft CORE Number (CN) or Manufacturers Serial Number (MSN) (optional)"
-        hintText="These help Search and Rescue positively identify aircraft if it changes aircraft registration e.g. G-WXYZ becomes M-ZYXW"
-        defaultValue={value}
-      />
-    </FormGroup>
-  );
+const CoreNumberOrManufacturerSerialNumber: FunctionComponent<
+  FormInputProps
+> = ({ value = "" }: FormInputProps): JSX.Element => (
+  <FormGroup>
+    <Input
+      id="cnOrMsnNumber"
+      label="Enter the Aircraft CORE Number (CN) or Manufacturers Serial Number (MSN) (optional)"
+      hintText="These help Search and Rescue positively identify aircraft if it changes aircraft registration e.g. G-WXYZ becomes M-ZYXW"
+      defaultValue={value}
+    />
+  </FormGroup>
+);
 
 const Dongle: FunctionComponent<FormInputProps> = ({
   value = "",

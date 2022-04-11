@@ -7,27 +7,28 @@ interface LegacyUsesListSummaryPanelProps {
   uses: ILegacyUse[];
 }
 
-export const LegacyUsesListPanel: FunctionComponent<LegacyUsesListSummaryPanelProps> =
-  ({ uses }: LegacyUsesListSummaryPanelProps): JSX.Element => {
-    if (!uses) {
-      return (
-        <Card>
-          <CardContent>
-            <CardHeader title="No beacon uses associated" />
-          </CardContent>
-        </Card>
-      );
-    }
+export const LegacyUsesListPanel: FunctionComponent<
+  LegacyUsesListSummaryPanelProps
+> = ({ uses }: LegacyUsesListSummaryPanelProps): JSX.Element => {
+  if (!uses) {
     return (
-      <Grid container spacing={2}>
-        {uses.map((use, index) => (
-          <Grid item xs={6} key={index}>
-            <LegacyUsePanel use={use} titlePrefix={getTitlePrefix(index + 1)} />
-          </Grid>
-        ))}
-      </Grid>
+      <Card>
+        <CardContent>
+          <CardHeader title="No beacon uses associated" />
+        </CardContent>
+      </Card>
     );
-  };
+  }
+  return (
+    <Grid container spacing={2}>
+      {uses.map((use, index) => (
+        <Grid item xs={6} key={index}>
+          <LegacyUsePanel use={use} titlePrefix={getTitlePrefix(index + 1)} />
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
 
 const getTitlePrefix = (index: number): string => {
   const numberToOrdinalString: Record<number, string> = {

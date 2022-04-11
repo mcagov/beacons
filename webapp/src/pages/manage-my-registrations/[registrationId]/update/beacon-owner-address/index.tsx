@@ -32,54 +32,55 @@ import { Rule } from "../../../../../router/rules/Rule";
 import { WhenUserViewsPage_ThenDisplayPage } from "../../../../../router/rules/WhenUserViewsPage_ThenDisplayPage";
 import { withAdditionalProps } from "../../../../../router/withAdditionalProps";
 
-const BeaconOwnerAddressLocationForm: FunctionComponent<DraftRegistrationPageProps> =
-  ({
-    form = withoutErrorMessages({}, validationRules),
-    showCookieBanner,
-    previousPageUrl,
-  }: DraftRegistrationPageProps): JSX.Element => {
-    const pageHeading =
-      "Does the owner of this beacon live in the United Kingdom?";
+const BeaconOwnerAddressLocationForm: FunctionComponent<
+  DraftRegistrationPageProps
+> = ({
+  form = withoutErrorMessages({}, validationRules),
+  showCookieBanner,
+  previousPageUrl,
+}: DraftRegistrationPageProps): JSX.Element => {
+  const pageHeading =
+    "Does the owner of this beacon live in the United Kingdom?";
 
-    const fieldName = "beaconOwnerLocation";
+  const fieldName = "beaconOwnerLocation";
 
-    return (
-      <BeaconsForm
-        formErrors={form.errorSummary}
-        pageHeading={pageHeading}
-        showCookieBanner={showCookieBanner}
-        includeUseId={false}
-        previousPageUrl={previousPageUrl}
-      >
-        <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
-          <FormGroup
-            errorMessages={form.fields.beaconOwnerLocation.errorMessages}
-          >
-            <RadioList>
-              <RadioListItem
-                id="unitedKingdom"
-                name={fieldName}
-                label="Yes, the owner of this beacon lives in the United Kingdom"
-                value="unitedKingdom"
-                defaultChecked={
-                  form.fields.beaconOwnerLocation.value === "unitedKingdom"
-                }
-              />
-              <RadioListItem
-                id="restOfWorld"
-                name={fieldName}
-                label="No, the owner of this beacon lives somewhere else"
-                value="restOfWorld"
-                defaultChecked={
-                  form.fields.beaconOwnerLocation.value === "restOfWorld"
-                }
-              />
-            </RadioList>
-          </FormGroup>
-        </BeaconsFormFieldsetAndLegend>
-      </BeaconsForm>
-    );
-  };
+  return (
+    <BeaconsForm
+      formErrors={form.errorSummary}
+      pageHeading={pageHeading}
+      showCookieBanner={showCookieBanner}
+      includeUseId={false}
+      previousPageUrl={previousPageUrl}
+    >
+      <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
+        <FormGroup
+          errorMessages={form.fields.beaconOwnerLocation.errorMessages}
+        >
+          <RadioList>
+            <RadioListItem
+              id="unitedKingdom"
+              name={fieldName}
+              label="Yes, the owner of this beacon lives in the United Kingdom"
+              value="unitedKingdom"
+              defaultChecked={
+                form.fields.beaconOwnerLocation.value === "unitedKingdom"
+              }
+            />
+            <RadioListItem
+              id="restOfWorld"
+              name={fieldName}
+              label="No, the owner of this beacon lives somewhere else"
+              value="restOfWorld"
+              defaultChecked={
+                form.fields.beaconOwnerLocation.value === "restOfWorld"
+              }
+            />
+          </RadioList>
+        </FormGroup>
+      </BeaconsFormFieldsetAndLegend>
+    </BeaconsForm>
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {

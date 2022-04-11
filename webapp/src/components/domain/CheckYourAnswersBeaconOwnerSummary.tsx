@@ -9,24 +9,25 @@ interface CheckYourAnswersBeaconOwnerSummaryProps {
   changeUrl: string;
 }
 
-export const CheckYourAnswersBeaconOwnerSummary: FunctionComponent<CheckYourAnswersBeaconOwnerSummaryProps> =
-  ({
-    registration,
-    changeUrl,
-  }: CheckYourAnswersBeaconOwnerSummaryProps): JSX.Element => (
-    <>
-      <SectionHeading>About the beacon owner</SectionHeading>
+export const CheckYourAnswersBeaconOwnerSummary: FunctionComponent<
+  CheckYourAnswersBeaconOwnerSummaryProps
+> = ({
+  registration,
+  changeUrl,
+}: CheckYourAnswersBeaconOwnerSummaryProps): JSX.Element => (
+  <>
+    <SectionHeading>About the beacon owner</SectionHeading>
 
-      <SummaryList>
-        <SummaryListItem
-          labelText="Owner details"
-          actions={[{ text: "Change", href: changeUrl }]}
-        >
-          <DataRowItem value={registration.ownerFullName} />
-          <DataRowItem value={registration.ownerTelephoneNumber} />
-          <DataRowItem value={registration.ownerAlternativeTelephoneNumber} />
-          <DataRowItem value={registration.ownerEmail} />
-        </SummaryListItem>
-      </SummaryList>
-    </>
-  );
+    <SummaryList>
+      <SummaryListItem
+        labelText="Owner details"
+        actions={[{ text: "Change", href: changeUrl }]}
+      >
+        <DataRowItem value={registration.ownerFullName} />
+        <DataRowItem value={registration.ownerTelephoneNumber} />
+        <DataRowItem value={registration.ownerAlternativeTelephoneNumber} />
+        <DataRowItem value={registration.ownerEmail} />
+      </SummaryListItem>
+    </SummaryList>
+  </>
+);

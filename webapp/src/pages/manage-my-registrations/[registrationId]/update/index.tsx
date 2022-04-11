@@ -41,125 +41,122 @@ interface RegistrationSummaryPageProps {
   userHasEdited: boolean;
 }
 
-const RegistrationSummaryPage: FunctionComponent<RegistrationSummaryPageProps> =
-  ({
-    registration,
-    userHasEdited,
-  }: RegistrationSummaryPageProps): JSX.Element => {
-    const pageHeading = `Your registered beacon with Hex ID/UIN: ${registration.hexId}`;
+const RegistrationSummaryPage: FunctionComponent<
+  RegistrationSummaryPageProps
+> = ({
+  registration,
+  userHasEdited,
+}: RegistrationSummaryPageProps): JSX.Element => {
+  const pageHeading = `Your registered beacon with Hex ID/UIN: ${registration.hexId}`;
 
-    return (
-      <Layout
-        navigation={<BackButton href={AccountPageURLs.accountHome} />}
-        title={pageHeading}
-        showCookieBanner={true}
-      >
-        <Grid
-          mainContent={
-            <>
-              <PageHeading>{pageHeading}</PageHeading>
-              <SectionHeading>About the registration</SectionHeading>
-              <SummaryList>
-                <SummaryListItem labelText="Registration history">
-                  <DataRowItem
-                    label="First registered"
-                    value={formatDateLong(registration.registeredDate)}
-                  />
-                  <DataRowItem
-                    label="Last updated"
-                    value={formatDateLong(registration.lastModifiedDate)}
-                  />
-                </SummaryListItem>
-              </SummaryList>
-              <SectionHeading>About the beacon</SectionHeading>
-              <SummaryList>
-                <SummaryListItem
-                  labelText="Beacon information"
-                  actions={[
-                    {
-                      text: "Change",
-                      href: UrlBuilder.buildRegistrationUrl(
-                        Actions.update,
-                        Pages.beaconDetails,
-                        registration.id
-                      ),
-                    },
-                  ]}
-                >
-                  <DataRowItem
-                    label="Manufacturer"
-                    value={registration.manufacturer}
-                  />
-                  <DataRowItem label="Model" value={registration.model} />
-                  <DataRowItem label="Hex ID/UIN" value={registration.hexId} />
-                </SummaryListItem>
-              </SummaryList>
-              <CheckYourAnswersBeaconInformationSummary
-                registration={registration}
-                changeUrl={UrlBuilder.buildRegistrationUrl(
-                  Actions.update,
-                  Pages.beaconInformation,
-                  registration.id
-                )}
-              />
-              <UpdateUseSection registrationId={registration.id} />
-              {registration.uses.map((use, index) => (
-                <AdditionalBeaconUseSummary
-                  index={index}
-                  use={use}
-                  key={index}
+  return (
+    <Layout
+      navigation={<BackButton href={AccountPageURLs.accountHome} />}
+      title={pageHeading}
+      showCookieBanner={true}
+    >
+      <Grid
+        mainContent={
+          <>
+            <PageHeading>{pageHeading}</PageHeading>
+            <SectionHeading>About the registration</SectionHeading>
+            <SummaryList>
+              <SummaryListItem labelText="Registration history">
+                <DataRowItem
+                  label="First registered"
+                  value={formatDateLong(registration.registeredDate)}
                 />
-              ))}
-              <CheckYourAnswersBeaconOwnerSummary
-                registration={registration}
-                changeUrl={UrlBuilder.buildRegistrationUrl(
-                  Actions.update,
-                  Pages.aboutBeaconOwner,
-                  registration.id
-                )}
-              />
-              <CheckYourAnswersBeaconOwnerAddressSummary
-                registration={registration}
-                changeUrl={UrlBuilder.buildRegistrationUrl(
-                  Actions.update,
-                  Pages.beaconOwnerAddress,
-                  registration.id
-                )}
-              />
-              <CheckYourAnswersBeaconEmergencyContactsSummary
-                registration={registration}
-                changeUrl={UrlBuilder.buildRegistrationUrl(
-                  Actions.update,
-                  Pages.emergencyContact,
-                  registration.id
-                )}
-              />
-              {userHasEdited && (
-                <>
-                  <SendYourApplication />
-                  <StartButton
-                    buttonText="Accept and send"
-                    href={UrlBuilder.buildRegistrationUrl(
+                <DataRowItem
+                  label="Last updated"
+                  value={formatDateLong(registration.lastModifiedDate)}
+                />
+              </SummaryListItem>
+            </SummaryList>
+            <SectionHeading>About the beacon</SectionHeading>
+            <SummaryList>
+              <SummaryListItem
+                labelText="Beacon information"
+                actions={[
+                  {
+                    text: "Change",
+                    href: UrlBuilder.buildRegistrationUrl(
                       Actions.update,
-                      Pages.complete,
+                      Pages.beaconDetails,
                       registration.id
-                    )}
-                  />
-                </>
+                    ),
+                  },
+                ]}
+              >
+                <DataRowItem
+                  label="Manufacturer"
+                  value={registration.manufacturer}
+                />
+                <DataRowItem label="Model" value={registration.model} />
+                <DataRowItem label="Hex ID/UIN" value={registration.hexId} />
+              </SummaryListItem>
+            </SummaryList>
+            <CheckYourAnswersBeaconInformationSummary
+              registration={registration}
+              changeUrl={UrlBuilder.buildRegistrationUrl(
+                Actions.update,
+                Pages.beaconInformation,
+                registration.id
               )}
+            />
+            <UpdateUseSection registrationId={registration.id} />
+            {registration.uses.map((use, index) => (
+              <AdditionalBeaconUseSummary index={index} use={use} key={index} />
+            ))}
+            <CheckYourAnswersBeaconOwnerSummary
+              registration={registration}
+              changeUrl={UrlBuilder.buildRegistrationUrl(
+                Actions.update,
+                Pages.aboutBeaconOwner,
+                registration.id
+              )}
+            />
+            <CheckYourAnswersBeaconOwnerAddressSummary
+              registration={registration}
+              changeUrl={UrlBuilder.buildRegistrationUrl(
+                Actions.update,
+                Pages.beaconOwnerAddress,
+                registration.id
+              )}
+            />
+            <CheckYourAnswersBeaconEmergencyContactsSummary
+              registration={registration}
+              changeUrl={UrlBuilder.buildRegistrationUrl(
+                Actions.update,
+                Pages.emergencyContact,
+                registration.id
+              )}
+            />
+            {userHasEdited && (
+              <>
+                <SendYourApplication />
+                <StartButton
+                  buttonText="Accept and send"
+                  href={UrlBuilder.buildRegistrationUrl(
+                    Actions.update,
+                    Pages.complete,
+                    registration.id
+                  )}
+                />
+              </>
+            )}
 
-              <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
-              <GovUKBody>
-                If you have a question about your beacon registration, contact
-                the UK Beacon Registry team on:
-              </GovUKBody>
-              <BeaconRegistryContactInfo />
-            </>
-          }
-        />
-      </Layout>
-    );
-  };
+            <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
+            <GovUKBody>
+              If you have a question about your beacon registration, contact the
+              UK Beacon Registry team on:
+            </GovUKBody>
+            <BeaconRegistryContactInfo />
+          </>
+        }
+      />
+    </Layout>
+  );
+};
 
 const UpdateUseSection = ({
   registrationId,

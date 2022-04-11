@@ -37,8 +37,8 @@ public class JobControllerIntegrationTest extends WebIntegrationTest {
     String accountHolderId_1 = seedAccountHolder();
     String accountHolderId_2 = seedAccountHolder();
     String seededRegistrationId_1 = seedLegacyBeacon();
-    String seededRegistrationId_2 = seedLegacyBeacon(
-      fixture -> fixture.replace("2004-10-13T00:00:00", "2014-10-13T00:00:00")
+    String seededRegistrationId_2 = seedLegacyBeacon(fixture ->
+      fixture.replace("2004-10-13T00:00:00", "2014-10-13T00:00:00")
     );
     String seededRegistrationId_3 = seedRegistration(
       RegistrationUseCase.SINGLE_BEACON,

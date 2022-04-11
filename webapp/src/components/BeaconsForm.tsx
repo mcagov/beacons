@@ -86,19 +86,20 @@ const HiddenFormMetadata: FunctionComponent = () => {
   return <input id="use-index" type="hidden" name="useId" value={useIdValue} />;
 };
 
-export const BeaconsFormFieldsetAndLegend: FunctionComponent<BeaconsFormFieldsetAndLegendProps> =
-  ({
-    children,
-    pageHeading,
-    ariaDescribedBy = null,
-  }: BeaconsFormFieldsetAndLegendProps): JSX.Element => {
-    return (
-      <FormFieldset ariaDescribedBy={ariaDescribedBy}>
-        <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-        {children}
-      </FormFieldset>
-    );
-  };
+export const BeaconsFormFieldsetAndLegend: FunctionComponent<
+  BeaconsFormFieldsetAndLegendProps
+> = ({
+  children,
+  pageHeading,
+  ariaDescribedBy = null,
+}: BeaconsFormFieldsetAndLegendProps): JSX.Element => {
+  return (
+    <FormFieldset ariaDescribedBy={ariaDescribedBy}>
+      <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
+      {children}
+    </FormFieldset>
+  );
+};
 
 export const BeaconsFormHeading: FunctionComponent<BeaconsFormHeadingProps> = ({
   pageHeading,
@@ -108,13 +109,14 @@ export const BeaconsFormHeading: FunctionComponent<BeaconsFormHeadingProps> = ({
   );
 };
 
-export const BeaconsFormLabelHeading: FunctionComponent<BeaconsFormLabelHeadingProps> =
-  ({ pageHeading, id = null }: BeaconsFormLabelHeadingProps): JSX.Element => {
-    return (
-      <h1 className="govuk-label-wrapper">
-        <FormLabel htmlFor={id} className="govuk-label--l">
-          {pageHeading}
-        </FormLabel>
-      </h1>
-    );
-  };
+export const BeaconsFormLabelHeading: FunctionComponent<
+  BeaconsFormLabelHeadingProps
+> = ({ pageHeading, id = null }: BeaconsFormLabelHeadingProps): JSX.Element => {
+  return (
+    <h1 className="govuk-label-wrapper">
+      <FormLabel htmlFor={id} className="govuk-label--l">
+        {pageHeading}
+      </FormLabel>
+    </h1>
+  );
+};

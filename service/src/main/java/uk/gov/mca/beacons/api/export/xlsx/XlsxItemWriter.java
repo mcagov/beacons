@@ -50,24 +50,22 @@ public class XlsxItemWriter implements ItemWriter<SpreadsheetRow> {
   private List<String> prepareValues(SpreadsheetRow row) {
     return SpreadsheetRow.COLUMN_ATTRIBUTES
       .stream()
-      .map(
-        attribute -> {
-          try {
-            Object property = PropertyUtils.getProperty(row, attribute);
-            if (property == null) {
-              return "";
-            } else {
-              return property.toString();
-            }
-          } catch (
-            IllegalAccessException
-            | InvocationTargetException
-            | NoSuchMethodException e
-          ) {
-            throw new RuntimeException(e);
+      .map(attribute -> {
+        try {
+          Object property = PropertyUtils.getProperty(row, attribute);
+          if (property == null) {
+            return "";
+          } else {
+            return property.toString();
           }
+        } catch (
+          IllegalAccessException
+          | InvocationTargetException
+          | NoSuchMethodException e
+        ) {
+          throw new RuntimeException(e);
         }
-      )
+      })
       .collect(Collectors.toList());
   }
 

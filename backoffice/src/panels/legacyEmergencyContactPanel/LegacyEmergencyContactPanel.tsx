@@ -7,19 +7,20 @@ interface LegacyEmergencyContactPanelProps {
   legacyEmergencyContact: ILegacyEmergencyContact;
 }
 
-export const LegacyEmergencyContactPanel: FunctionComponent<LegacyEmergencyContactPanelProps> =
-  ({ legacyEmergencyContact }) => {
-    const fields = [{ key: "Details", value: legacyEmergencyContact?.details }];
-    const cardHeader = legacyEmergencyContact
-      ? "Emergency contact"
-      : "No emergency contacts";
+export const LegacyEmergencyContactPanel: FunctionComponent<
+  LegacyEmergencyContactPanelProps
+> = ({ legacyEmergencyContact }) => {
+  const fields = [{ key: "Details", value: legacyEmergencyContact?.details }];
+  const cardHeader = legacyEmergencyContact
+    ? "Emergency contact"
+    : "No emergency contacts";
 
-    return (
-      <Card>
-        <CardContent>
-          <CardHeader title={cardHeader} />
-          <PanelViewingState fields={fields} />
-        </CardContent>
-      </Card>
-    );
-  };
+  return (
+    <Card>
+      <CardContent>
+        <CardHeader title={cardHeader} />
+        <PanelViewingState fields={fields} />
+      </CardContent>
+    </Card>
+  );
+};

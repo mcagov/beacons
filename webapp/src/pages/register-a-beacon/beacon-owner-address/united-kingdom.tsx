@@ -37,56 +37,56 @@ interface BeaconOwnerAddressForm {
   ownerPostcode: string;
 }
 
-const BeaconOwnerAddressUnitedKingdom: FunctionComponent<DraftRegistrationPageProps> =
-  ({ form, showCookieBanner }: DraftRegistrationPageProps): JSX.Element => {
-    const pageHeading = "What is the beacon owner's address?";
+const BeaconOwnerAddressUnitedKingdom: FunctionComponent<
+  DraftRegistrationPageProps
+> = ({ form, showCookieBanner }: DraftRegistrationPageProps): JSX.Element => {
+  const pageHeading = "What is the beacon owner's address?";
 
-    return (
-      <Layout
-        navigation={
-          <BackButton href={CreateRegistrationPageURLs.beaconOwnerAddress} />
+  return (
+    <Layout
+      navigation={
+        <BackButton href={CreateRegistrationPageURLs.beaconOwnerAddress} />
+      }
+      title={pageHeading}
+      pageHasErrors={form.hasErrors}
+      showCookieBanner={showCookieBanner}
+    >
+      <Grid
+        mainContent={
+          <>
+            <Form>
+              <FormFieldset>
+                <FormErrorSummary formErrors={form.errorSummary} />
+                <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
+                <GovUKBody>
+                  The beacon registration certificate and proof of registration
+                  labels to stick to the beacon will be sent to this address
+                </GovUKBody>
+                <BuildingNumberAndStreetInput
+                  valueLine1={form.fields.ownerAddressLine1.value}
+                  valueLine2={form.fields.ownerAddressLine2.value}
+                  errorMessages={form.fields.ownerAddressLine1.errorMessages}
+                />
+                <TownOrCityInput
+                  value={form.fields.ownerTownOrCity.value}
+                  errorMessages={form.fields.ownerTownOrCity.errorMessages}
+                />
+                <CountyInput value={form.fields.ownerCounty.value} />
+                <PostcodeInput
+                  value={form.fields.ownerPostcode.value}
+                  errorMessages={form.fields.ownerPostcode.errorMessages}
+                />
+              </FormFieldset>
+
+              <Button buttonText="Continue" />
+              <IfYouNeedHelp />
+            </Form>
+          </>
         }
-        title={pageHeading}
-        pageHasErrors={form.hasErrors}
-        showCookieBanner={showCookieBanner}
-      >
-        <Grid
-          mainContent={
-            <>
-              <Form>
-                <FormFieldset>
-                  <FormErrorSummary formErrors={form.errorSummary} />
-                  <FormLegendPageHeading>{pageHeading}</FormLegendPageHeading>
-                  <GovUKBody>
-                    The beacon registration certificate and proof of
-                    registration labels to stick to the beacon will be sent to
-                    this address
-                  </GovUKBody>
-                  <BuildingNumberAndStreetInput
-                    valueLine1={form.fields.ownerAddressLine1.value}
-                    valueLine2={form.fields.ownerAddressLine2.value}
-                    errorMessages={form.fields.ownerAddressLine1.errorMessages}
-                  />
-                  <TownOrCityInput
-                    value={form.fields.ownerTownOrCity.value}
-                    errorMessages={form.fields.ownerTownOrCity.errorMessages}
-                  />
-                  <CountyInput value={form.fields.ownerCounty.value} />
-                  <PostcodeInput
-                    value={form.fields.ownerPostcode.value}
-                    errorMessages={form.fields.ownerPostcode.errorMessages}
-                  />
-                </FormFieldset>
-
-                <Button buttonText="Continue" />
-                <IfYouNeedHelp />
-              </Form>
-            </>
-          }
-        />
-      </Layout>
-    );
-  };
+      />
+    </Layout>
+  );
+};
 
 interface BuildingNumberAndStreetInputProps {
   valueLine1: string;
@@ -94,26 +94,27 @@ interface BuildingNumberAndStreetInputProps {
   errorMessages: string[];
 }
 
-const BuildingNumberAndStreetInput: FunctionComponent<BuildingNumberAndStreetInputProps> =
-  ({
-    valueLine1 = "",
-    valueLine2 = "",
-    errorMessages,
-  }: BuildingNumberAndStreetInputProps): JSX.Element => (
-    <FormGroup errorMessages={errorMessages}>
-      <Input
-        id="ownerAddressLine1"
-        label="Address line one (building number and street name)"
-        defaultValue={valueLine1}
-        inputClassName="govuk-!-margin-bottom-2"
-      />
-      <Input
-        id="ownerAddressLine2"
-        defaultValue={valueLine2}
-        label="Address line two"
-      />
-    </FormGroup>
-  );
+const BuildingNumberAndStreetInput: FunctionComponent<
+  BuildingNumberAndStreetInputProps
+> = ({
+  valueLine1 = "",
+  valueLine2 = "",
+  errorMessages,
+}: BuildingNumberAndStreetInputProps): JSX.Element => (
+  <FormGroup errorMessages={errorMessages}>
+    <Input
+      id="ownerAddressLine1"
+      label="Address line one (building number and street name)"
+      defaultValue={valueLine1}
+      inputClassName="govuk-!-margin-bottom-2"
+    />
+    <Input
+      id="ownerAddressLine2"
+      defaultValue={valueLine2}
+      label="Address line two"
+    />
+  </FormGroup>
+);
 
 const TownOrCityInput: FunctionComponent<FormInputProps> = ({
   value = "",

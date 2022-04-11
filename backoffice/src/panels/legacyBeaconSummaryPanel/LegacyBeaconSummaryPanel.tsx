@@ -10,39 +10,40 @@ interface ILegacyBeaconSummaryProps {
   legacyBeacon: ILegacyBeacon;
 }
 
-export const LegacyBeaconSummaryPanel: FunctionComponent<ILegacyBeaconSummaryProps> =
-  ({ legacyBeacon }): JSX.Element => {
-    const [userState, setUserState] = useState<DataPanelStates>(
-      DataPanelStates.Viewing
-    );
-    const [error, setError] = useState(false);
+export const LegacyBeaconSummaryPanel: FunctionComponent<
+  ILegacyBeaconSummaryProps
+> = ({ legacyBeacon }): JSX.Element => {
+  const [userState, setUserState] = useState<DataPanelStates>(
+    DataPanelStates.Viewing
+  );
+  const [error, setError] = useState(false);
 
-    useEffect((): void => {
-      setUserState(DataPanelStates.Viewing);
-    }, [userState, legacyBeacon]);
+  useEffect((): void => {
+    setUserState(DataPanelStates.Viewing);
+  }, [userState, legacyBeacon]);
 
-    const renderState = (state: DataPanelStates) => {
-      switch (state) {
-        case DataPanelStates.Viewing:
-          return (
-            <>
-              <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
-            </>
-          );
-        default:
-          setError(true);
-      }
-    };
-
-    return (
-      <Card>
-        <CardContent>
-          <CardHeader title="Summary" />
+  const renderState = (state: DataPanelStates) => {
+    switch (state) {
+      case DataPanelStates.Viewing:
+        return (
           <>
-            {error && <ErrorState message={Placeholders.UnspecifiedError} />}
-            {error || renderState(userState)}
+            <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
           </>
-        </CardContent>
-      </Card>
-    );
+        );
+      default:
+        setError(true);
+    }
   };
+
+  return (
+    <Card>
+      <CardContent>
+        <CardHeader title="Summary" />
+        <>
+          {error && <ErrorState message={Placeholders.UnspecifiedError} />}
+          {error || renderState(userState)}
+        </>
+      </CardContent>
+    </Card>
+  );
+};

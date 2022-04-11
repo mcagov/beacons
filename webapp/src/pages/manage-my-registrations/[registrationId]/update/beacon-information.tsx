@@ -49,51 +49,52 @@ interface BeaconInformationForm {
   lastServicedDateYear: string;
 }
 
-const UpdateBeaconInformationPage: FunctionComponent<DraftRegistrationPageProps> =
-  ({
-    form,
-    draftRegistration,
-    showCookieBanner,
-  }: DraftRegistrationPageProps): JSX.Element => {
-    const pageHeading = "Beacon information";
-    const pageText = (
-      <GovUKBody>
-        {
-          "Further information about your beacon is useful for Search and Rescue. Provide as much information as you can."
-        }
-      </GovUKBody>
-    );
+const UpdateBeaconInformationPage: FunctionComponent<
+  DraftRegistrationPageProps
+> = ({
+  form,
+  draftRegistration,
+  showCookieBanner,
+}: DraftRegistrationPageProps): JSX.Element => {
+  const pageHeading = "Beacon information";
+  const pageText = (
+    <GovUKBody>
+      {
+        "Further information about your beacon is useful for Search and Rescue. Provide as much information as you can."
+      }
+    </GovUKBody>
+  );
 
-    return (
-      <BeaconsForm
-        previousPageUrl={UrlBuilder.buildUpdateRegistrationSummaryUrl(
-          draftRegistration.id
-        )}
-        pageHeading={pageHeading}
-        showCookieBanner={showCookieBanner}
-        formErrors={form.errorSummary}
-      >
-        <BeaconsFormHeading pageHeading={pageHeading} />
-        {pageText}
-        <ManufacturerSerialNumberInput
-          value={form.fields.manufacturerSerialNumber.value}
-          errorMessages={form.fields.manufacturerSerialNumber.errorMessages}
-        />
-        <CHKCode value={form.fields.chkCode.value} />
-        <CSTACode value={form.fields.csta.value} />
-        <BatteryExpiryDate
-          monthValue={form.fields.batteryExpiryDateMonth.value}
-          yearValue={form.fields.batteryExpiryDateYear.value}
-          errorMessages={form.fields.batteryExpiryDate.errorMessages}
-        />
-        <LastServicedDate
-          monthValue={form.fields.lastServicedDateMonth.value}
-          yearValue={form.fields.lastServicedDateYear.value}
-          errorMessages={form.fields.lastServicedDate.errorMessages}
-        />
-      </BeaconsForm>
-    );
-  };
+  return (
+    <BeaconsForm
+      previousPageUrl={UrlBuilder.buildUpdateRegistrationSummaryUrl(
+        draftRegistration.id
+      )}
+      pageHeading={pageHeading}
+      showCookieBanner={showCookieBanner}
+      formErrors={form.errorSummary}
+    >
+      <BeaconsFormHeading pageHeading={pageHeading} />
+      {pageText}
+      <ManufacturerSerialNumberInput
+        value={form.fields.manufacturerSerialNumber.value}
+        errorMessages={form.fields.manufacturerSerialNumber.errorMessages}
+      />
+      <CHKCode value={form.fields.chkCode.value} />
+      <CSTACode value={form.fields.csta.value} />
+      <BatteryExpiryDate
+        monthValue={form.fields.batteryExpiryDateMonth.value}
+        yearValue={form.fields.batteryExpiryDateYear.value}
+        errorMessages={form.fields.batteryExpiryDate.errorMessages}
+      />
+      <LastServicedDate
+        monthValue={form.fields.lastServicedDateMonth.value}
+        yearValue={form.fields.lastServicedDateYear.value}
+        errorMessages={form.fields.lastServicedDate.errorMessages}
+      />
+    </BeaconsForm>
+  );
+};
 
 interface DateInputProps {
   monthValue: string;

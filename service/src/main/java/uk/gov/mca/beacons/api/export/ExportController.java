@@ -34,8 +34,8 @@ class ExportController {
     Resource latestExport = new FileSystemResource(
       xlsxExporter
         .getMostRecentExport()
-        .orElseThrow(
-          () -> new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE)
+        .orElseThrow(() ->
+          new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE)
         )
     );
 

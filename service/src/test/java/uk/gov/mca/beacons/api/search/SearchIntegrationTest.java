@@ -84,11 +84,10 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       throws Exception {
       String accountHolderId = seedAccountHolder();
 
-      String legacyBeaconId = seedLegacyBeacon(
-        fixture ->
-          fixture
-            .replace("ownerbeacon@beacons.com", "testy@mctestface.com")
-            .replace("9D0E1D1B8C00001", "1D0EA08C52FFBFF")
+      String legacyBeaconId = seedLegacyBeacon(fixture ->
+        fixture
+          .replace("ownerbeacon@beacons.com", "testy@mctestface.com")
+          .replace("9D0E1D1B8C00001", "1D0EA08C52FFBFF")
       );
       seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId);
 
@@ -204,20 +203,18 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       String vesselMmsiNumber = "123456789";
       String vesselName = "My Vessel";
       String vesselCallsign = "GE123";
-      String legacyBeaconId = seedLegacyBeacon(
-        fixture ->
-          fixture
-            .replace("235007399", vesselMmsiNumber)
-            .replace("KAYCEE", vesselName)
-            .replace("VQAS7", vesselCallsign)
+      String legacyBeaconId = seedLegacyBeacon(fixture ->
+        fixture
+          .replace("235007399", vesselMmsiNumber)
+          .replace("KAYCEE", vesselName)
+          .replace("VQAS7", vesselCallsign)
       );
       // seed non-matching legacy beacon
-      seedLegacyBeacon(
-        fixture ->
-          fixture
-            .replace("235007399", "222222222")
-            .replace("KAYCEE", "Doesn't match")
-            .replace("VQAS7", "DNMTC")
+      seedLegacyBeacon(fixture ->
+        fixture
+          .replace("235007399", "222222222")
+          .replace("KAYCEE", "Doesn't match")
+          .replace("VQAS7", "DNMTC")
       );
       reindexSearch();
 
@@ -258,16 +255,14 @@ public class SearchIntegrationTest extends WebIntegrationTest {
       throws Exception {
       String aircraftRegistrationMark = "G-AXDN";
       String aircraft24bitHexAddress = "ABC123";
-      String legacyBeaconId = seedLegacyBeacon(
-        fixture ->
-          fixture
-            .replace("R-PLCM", aircraftRegistrationMark)
-            .replace("F0FFFF", aircraft24bitHexAddress)
+      String legacyBeaconId = seedLegacyBeacon(fixture ->
+        fixture
+          .replace("R-PLCM", aircraftRegistrationMark)
+          .replace("F0FFFF", aircraft24bitHexAddress)
       );
       // seed non-matching legacy beacon
-      seedLegacyBeacon(
-        fixture ->
-          fixture.replace("R-PLCM", "A-NOTH").replace("F0FFFF", "000000")
+      seedLegacyBeacon(fixture ->
+        fixture.replace("R-PLCM", "A-NOTH").replace("F0FFFF", "000000")
       );
       reindexSearch();
 
