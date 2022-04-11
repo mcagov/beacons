@@ -10,55 +10,56 @@ interface EmergencyContactPanelProps {
   beaconId: string;
 }
 
-export const EmergencyContactPanel: FunctionComponent<EmergencyContactPanelProps> =
-  ({ beaconsGateway, beaconId }) => {
-    const [emergencyContacts, setEmergencyContacts] = useState<
-      IEmergencyContact[]
-    >([]);
+export const EmergencyContactPanel: FunctionComponent<
+  EmergencyContactPanelProps
+> = ({ beaconsGateway, beaconId }) => {
+  const [emergencyContacts, setEmergencyContacts] = useState<
+    IEmergencyContact[]
+  >([]);
 
-    useEffect((): void => {
-      const fetchBeacon = async (id: string) => {
-        try {
-          const beacon = await beaconsGateway.getBeacon(id);
-          setEmergencyContacts(beacon.emergencyContacts);
-        } catch (error) {
-          // TODO: Confirm with UCD what user feedback should be displayed if an error has occured when fetching a beacon
-          console.error(error);
-        }
-      };
+  useEffect((): void => {
+    const fetchBeacon = async (id: string) => {
+      try {
+        const beacon = await beaconsGateway.getBeacon(id);
+        setEmergencyContacts(beacon.emergencyContacts);
+      } catch (error) {
+        // TODO: Confirm with UCD what user feedback should be displayed if an error has occured when fetching a beacon
+        console.error(error);
+      }
+    };
 
-      fetchBeacon(beaconId);
-    }, [beaconId, beaconsGateway]);
+    fetchBeacon(beaconId);
+  }, [beaconId, beaconsGateway]);
 
-    const fields = emergencyContacts.map((emergencyContact) => [
-      { key: "Name", value: emergencyContact.fullName },
-      {
-        key: "Telephone",
-        value: [
-          emergencyContact.telephoneNumber,
-          emergencyContact.alternativeTelephoneNumber,
-        ],
-        valueType: FieldValueTypes.MULTILINE,
-      },
-    ]);
+  const fields = emergencyContacts.map((emergencyContact) => [
+    { key: "Name", value: emergencyContact.fullName },
+    {
+      key: "Telephone",
+      value: [
+        emergencyContact.telephoneNumber,
+        emergencyContact.alternativeTelephoneNumber,
+      ],
+      valueType: FieldValueTypes.MULTILINE,
+    },
+  ]);
 
-    if (fields.length > 0) {
-      return (
-        <>
-          {fields.map((field, index) => (
-            <Card key={index}>
-              <CardContent>
-                <CardHeader title={`Emergency Contact ${index + 1}`} />
-                <PanelViewingState fields={field} />
-              </CardContent>
-            </Card>
-          ))}
-        </>
-      );
-    } else {
-      return <NoEmergencyContacts />;
-    }
-  };
+  if (fields.length > 0) {
+    return (
+      <>
+        {fields.map((field, index) => (
+          <Card key={index}>
+            <CardContent>
+              <CardHeader title={`Emergency Contact ${index + 1}`} />
+              <PanelViewingState fields={field} />
+            </CardContent>
+          </Card>
+        ))}
+      </>
+    );
+  } else {
+    return <NoEmergencyContacts />;
+  }
+};
 
 const NoEmergencyContacts = () => (
   <Card>
