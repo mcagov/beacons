@@ -1,9 +1,9 @@
 # Base Docker image for multi-stage build
-FROM node:16-alpine AS base
+FROM node:16 AS base
 
 WORKDIR /usr/app
 
-COPY next.config.js package.json package-lock.json tsconfig.json src public ./
+COPY . ./
 
 # Builds NextJS application
 # hadolint ignore=DL3006
