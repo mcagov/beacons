@@ -38,11 +38,6 @@ beacons:
     legacy-beacon-search-view: ${BEACONS_SEARCH_VIEW_SCHEDULER:20000}
   cors:
     allowedOrigins: ${BEACONS_CORS_ALLOWED_ORIGINS:*}
-  security:
-    basic:
-      user:
-        name: user
-        password: password
 
 opensearch:
   source:

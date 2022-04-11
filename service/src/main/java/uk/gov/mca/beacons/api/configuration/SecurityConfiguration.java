@@ -19,62 +19,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class SecurityConfiguration {
 
   /**
-   * Secure the migration endpoints behind HTTP Basic Auth.
-   */
-  @Order(1)
-  @Configuration
-  @Profile("migration | dev")
-  public static class BasicAuthConfiguration
-    extends WebSecurityConfigurerAdapter {
-
-    @Value("${beacons.security.basic.user.name}")
-    private String username;
-
-    @Value("${beacons.security.basic.user.password}")
-    private String password;
-
-    /**
-     * Creates a HTTP basic auth security filter for the migration and job endpoints.
-     * <p>
-     * NOTE: The HTTP session has to be stateless for the basic auth security filter.
-     * Otherwise Spring allows access to Azure authenticated endpoints if a user
-     * has a session through authenticating via basic auth.
-     */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-      http
-        .cors()
-        .and()
-        .requestMatchers()
-        .antMatchers("/spring-api/migrate/**")
-        .and()
-        .csrf()
-        .disable()
-        .authorizeRequests()
-        .anyRequest()
-        .authenticated()
-        .and()
-        .httpBasic()
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-      throws Exception {
-      auth
-        .inMemoryAuthentication()
-        .withUser(username)
-        .password("{noop}" + password)
-        .roles("migration");
-    }
-  }
-
-  /**
    * Secure the operational API endpoints behind a confidential client grant flow with Azure AD (AAD)
    */
-  @Order(2)
+  @Order(1)
   @Configuration
   @Profile("default | dev")
   public static class AzureAdSecurityConfiguration

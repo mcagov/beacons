@@ -46,11 +46,6 @@ beacons:
     legacy-beacon-search-view: ${BEACONS_SEARCH_VIEW_SCHEDULER_TIMEOUT:30000}
   cors:
     allowedOrigins: ${BEACONS_CORS_ALLOWED_ORIGINS:*}
-  security:
-    basic:
-      user:
-        name: ${SPRING_BASIC_AUTH_USERNAME:user}
-        password: ${SPRING_BASIC_AUTH_PASSWORD:password}
 
 azure:
   activedirectory:
