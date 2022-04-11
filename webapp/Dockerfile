@@ -1,5 +1,5 @@
 # Base Docker image for multi-stage build
-FROM node:16-alpine AS build
+FROM node:16-alpine AS base
 
 WORKDIR /usr/app
 
