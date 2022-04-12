@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import React, { MouseEventHandler } from "react";
+import { logToServer } from "../logger";
 import { useAuthContext } from "./auth/AuthProvider";
 
 /**
@@ -22,13 +23,9 @@ export function AuthenticatedPOSTButton({
       await fetch(uri, {
         method: "POST",
         headers: { Authorization: `Bearer ${accessToken}` },
-      })
-        .then(() => {
-          console.info(`Successfully POSTed to ${uri}`);
-        })
-        .catch((e) => {
-          console.error(`Error while POSTing to ${uri}: ${e}`);
-        });
+      }).catch((e) => {
+        logToServer.error(`Error while POSTing to ${uri}: ${e}`);
+      });
     };
 
   if (user.type !== "loggedInUser") {

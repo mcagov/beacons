@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { logToServer } from "../../logger";
 import { ErrorState } from "../dataPanel/PanelErrorState";
 
 interface Props {
@@ -23,7 +24,7 @@ export class SearchErrorBoundary extends React.Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // You can also log the error to an error reporting service
-    console.log(error);
+    logToServer.error(error);
   }
 
   public render() {

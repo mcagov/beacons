@@ -6,6 +6,7 @@ import { LoadingState } from "../../components/dataPanel/PanelLoadingState";
 import { DataPanelStates } from "../../components/dataPanel/States";
 import { INote } from "../../entities/INote";
 import { INotesGateway } from "../../gateways/notes/INotesGateway";
+import { logToServer } from "../../logger";
 import { Placeholders } from "../../utils/writingStyle";
 import { NotesEditing } from "./NotesEditing";
 import { NotesViewing } from "./NotesViewing";
@@ -34,7 +35,7 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
         setNotes(notes);
         setLoading(false);
       } catch (error) {
-        console.error(error);
+        logToServer.error(error);
         setError(true);
       }
     };
@@ -48,7 +49,7 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
       await notesGateway.createNote(note);
       setUserState(DataPanelStates.Viewing);
     } catch (error) {
-      console.error(error);
+      logToServer.error(error);
       setError(true);
     }
   };
