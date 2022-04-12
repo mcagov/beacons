@@ -40,6 +40,7 @@ const App: FunctionComponent = () => {
     return <LoadingState />;
   }
   if (authState.status === "ERROR") {
+    console.error(authState.error);
     return <ErrorState>Error loading authentication configuration</ErrorState>;
   }
   const pca = new PublicClientApplication(authState.config);

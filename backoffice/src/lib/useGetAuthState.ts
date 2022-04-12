@@ -4,11 +4,12 @@ import React from "react";
 export type AuthState =
   | { status: "OK"; config: Configuration }
   | { status: "ERROR"; error: string }
-  | { status: "PENDING" };
+  | { status: "PENDING"; retryCount: number };
 
 export const useGetAuthState = (): AuthState => {
   const [authState, setAuthState] = React.useState<AuthState>({
     status: "PENDING",
+    retryCount: 0,
   });
 
   React.useEffect(() => {
@@ -26,11 +27,19 @@ export const useGetAuthState = (): AuthState => {
           });
         })
         .catch((error) => {
-          setAuthState({
-            status: "ERROR",
-            error: JSON.stringify(error),
+          setAuthState((authState) => {
+            if (authState.status === "PENDING" && authState.retryCount < 10) {
+              return {
+                status: "PENDING",
+                retryCount: authState.retryCount + 1,
+              };
+            } else {
+              return {
+                status: "ERROR",
+                error: JSON.stringify(error),
+              };
+            }
           });
-          console.error(JSON.stringify(error));
         });
     }
   }, [authState, setAuthState]);
