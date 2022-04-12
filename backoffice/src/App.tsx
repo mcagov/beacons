@@ -25,6 +25,7 @@ import { BeaconResponseMapper } from "./gateways/mappers/BeaconResponseMapper";
 import { LegacyBeaconResponseMapper } from "./gateways/mappers/LegacyBeaconResponseMapper";
 import { NotesGateway } from "./gateways/notes/NotesGateway";
 import { useGetAuthState } from "./lib/useGetAuthState";
+import { logger } from "./logger";
 import { Search } from "./Search";
 import { UserSettingsProvider } from "./UserSettings";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
@@ -40,7 +41,7 @@ const App: FunctionComponent = () => {
     return <LoadingState />;
   }
   if (authState.status === "ERROR") {
-    console.error(authState.error);
+    logger.error(authState.error);
     return <ErrorState>Error loading authentication configuration</ErrorState>;
   }
   const pca = new PublicClientApplication(authState.config);

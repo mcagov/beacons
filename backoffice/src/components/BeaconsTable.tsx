@@ -32,6 +32,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { Placeholders } from "utils/writingStyle";
 import { IBeaconSearchResultData } from "../entities/IBeaconSearchResult";
 import { replaceNone } from "../lib/legacyData/replaceNone";
+import { logger } from "../logger";
 import { TextFilter } from "./tableComponents/TextFilter";
 
 interface IBeaconsTableProps {
@@ -225,7 +226,7 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
                 totalCount: response.page.totalElements,
               });
             } catch (error) {
-              console.error("Could not fetch beacons", error);
+              logger.error("Could not fetch beacons", error);
               alert("Search timed out, please try refreshing in 30 seconds");
             }
           })

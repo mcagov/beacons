@@ -4,6 +4,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { FieldValueTypes } from "../../components/dataPanel/FieldValue";
 import { IEmergencyContact } from "../../entities/IEmergencyContact";
 import { IBeaconsGateway } from "../../gateways/beacons/IBeaconsGateway";
+import { logger } from "../../logger";
 
 interface EmergencyContactPanelProps {
   beaconsGateway: IBeaconsGateway;
@@ -24,7 +25,7 @@ export const EmergencyContactPanel: FunctionComponent<
         setEmergencyContacts(beacon.emergencyContacts);
       } catch (error) {
         // TODO: Confirm with UCD what user feedback should be displayed if an error has occured when fetching a beacon
-        console.error(error);
+        logger.error(error);
       }
     };
 
