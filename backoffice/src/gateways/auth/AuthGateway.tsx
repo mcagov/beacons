@@ -1,5 +1,4 @@
 import { IPublicClientApplication } from "@azure/msal-browser";
-import { logger } from "../../logger";
 import { IAuthGateway } from "./IAuthGateway";
 
 export class AuthGateway implements IAuthGateway {
@@ -28,7 +27,7 @@ export class AuthGateway implements IAuthGateway {
 
       return response.accessToken;
     } catch (error) {
-      logger.error(error);
+      console.error(error);
       throw error;
     }
   }

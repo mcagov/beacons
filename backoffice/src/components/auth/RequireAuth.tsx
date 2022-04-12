@@ -2,7 +2,6 @@ import { InteractionType } from "@azure/msal-browser";
 import { MsalAuthenticationTemplate } from "@azure/msal-react";
 import { MsalAuthenticationResult } from "@azure/msal-react/dist/hooks/useMsalAuthentication";
 import React, { FunctionComponent } from "react";
-import { logger } from "../../logger";
 
 interface RequireAuthProps {
   children: React.ReactNode;
@@ -30,7 +29,7 @@ export const RequireAuth: FunctionComponent<RequireAuthProps> = ({
 const ErrorComponent: FunctionComponent<MsalAuthenticationResult> = ({
   error,
 }) => {
-  logger.error(error);
+  console.error(error);
   return <p>An Error Occurred: {JSON.stringify(error)}</p>;
 };
 

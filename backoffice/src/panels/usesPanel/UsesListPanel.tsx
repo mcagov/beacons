@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, Grid } from "@mui/material";
 import { IUse } from "entities/IUse";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { logger } from "../../logger";
 import { UsePanel } from "./UsePanel";
 
 interface UsesListSummaryPanelProps {
@@ -22,7 +21,7 @@ export const UsesListPanel: FunctionComponent<UsesListSummaryPanelProps> = ({
         const uses = await usesGateway.getUses(id);
         setUses(uses);
       } catch (error) {
-        logger.error(error);
+        console.error(error);
       }
     };
 

@@ -7,7 +7,6 @@ import { IAuthGateway } from "gateways/auth/IAuthGateway";
 import { IBeaconRequestMapper } from "gateways/mappers/BeaconRequestMapper";
 import { IBeaconResponseMapper } from "gateways/mappers/BeaconResponseMapper";
 import { ILegacyBeaconResponseMapper } from "gateways/mappers/LegacyBeaconResponseMapper";
-import { logger } from "../../logger";
 import {
   GetAllBeaconsFilters,
   GetAllBeaconsSort,
@@ -45,7 +44,7 @@ export class BeaconsGateway implements IBeaconsGateway {
       );
       return response.data;
     } catch (e) {
-      logger.error(e);
+      console.error(e);
       throw e;
     }
   }

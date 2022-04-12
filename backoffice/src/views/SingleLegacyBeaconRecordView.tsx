@@ -12,7 +12,6 @@ import { PageContent } from "../components/layout/PageContent";
 import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
-import { logger } from "../logger";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -48,7 +47,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
         const beacon = await beaconsGateway.getLegacyBeacon(id);
         setBeacon(beacon);
       } catch (error) {
-        logger.error(error);
+        console.error(error);
       }
     };
 

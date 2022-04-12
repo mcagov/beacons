@@ -2,7 +2,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beaconFixture } from "../../fixtures/beacons.fixture";
 import { IBeaconsGateway } from "../../gateways/beacons/IBeaconsGateway";
-import { logger } from "../../logger";
 import { Placeholders } from "../../utils/writingStyle";
 import { BeaconSummaryPanel } from "./BeaconSummaryPanel";
 
@@ -35,7 +34,7 @@ describe("BeaconSummaryPanel", () => {
     beaconsGatewayDouble.getBeacon = jest.fn().mockImplementation(() => {
       throw Error();
     });
-    jest.spyOn(logger, "error").mockImplementation(); // Avoid error failing test
+    jest.spyOn(console, "error").mockImplementation(() => {}); // Avoid console error failing test
     render(
       <BeaconSummaryPanel
         beaconsGateway={beaconsGatewayDouble}

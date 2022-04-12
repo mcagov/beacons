@@ -17,7 +17,6 @@ import {
   BeaconSearchItem,
   parseBeaconSearchItem,
 } from "../entities/BeaconSearch";
-import { logger } from "../logger";
 import { searchUrl } from "../utils/urls";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -46,7 +45,7 @@ const useConnectToOpenSearch = (): ConnectionStatus => {
           setConnectionStatus("CONNECTED");
         })
         .catch((e) => {
-          logger.error(e);
+          console.error(e);
           setConnectionStatus("ERROR");
         });
     }

@@ -6,7 +6,6 @@ import { LoadingState } from "../../components/dataPanel/PanelLoadingState";
 import { DataPanelStates } from "../../components/dataPanel/States";
 import { IBeacon } from "../../entities/IBeacon";
 import { IBeaconsGateway } from "../../gateways/beacons/IBeaconsGateway";
-import { logger } from "../../logger";
 import { diffObjValues } from "../../utils/core";
 import { Placeholders } from "../../utils/writingStyle";
 import { BeaconSummaryEditing } from "./BeaconSummaryEditing";
@@ -36,7 +35,7 @@ export const BeaconSummaryPanel: FunctionComponent<IBeaconSummaryProps> = ({
         setBeacon(beacon);
         setLoading(false);
       } catch (error) {
-        logger.error(error);
+        console.error(error);
         setError(true);
       }
     };
@@ -52,7 +51,7 @@ export const BeaconSummaryPanel: FunctionComponent<IBeaconSummaryProps> = ({
       );
       setUserState(DataPanelStates.Viewing);
     } catch (error) {
-      logger.error(error);
+      console.error(error);
       setError(true);
     }
   };

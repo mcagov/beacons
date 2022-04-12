@@ -1,7 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { INotesGateway } from "../../gateways/notes/INotesGateway";
-import { logger } from "../../logger";
 import { Placeholders } from "../../utils/writingStyle";
 import { NotesPanel } from "./NotesPanel";
 
@@ -29,7 +28,7 @@ describe("NotesPanel", () => {
     notesGateway.getNotes = jest.fn().mockImplementation(() => {
       throw Error();
     });
-    jest.spyOn(logger, "error").mockImplementation(); // Avoid error failing test
+    jest.spyOn(console, "error").mockImplementation(() => {}); // Avoid console error failing test
     render(
       <NotesPanel notesGateway={notesGateway} beaconId={"does not exist"} />
     );

@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import React, { MouseEventHandler } from "react";
-import { logger } from "../logger";
 import { useAuthContext } from "./auth/AuthProvider";
 
 /**
@@ -25,10 +24,10 @@ export function AuthenticatedPOSTButton({
         headers: { Authorization: `Bearer ${accessToken}` },
       })
         .then(() => {
-          logger.info(`Successfully POSTed to ${uri}`);
+          console.info(`Successfully POSTed to ${uri}`);
         })
         .catch((e) => {
-          logger.error(`Error while POSTing to ${uri}: ${e}`);
+          console.error(`Error while POSTing to ${uri}: ${e}`);
         });
     };
 
