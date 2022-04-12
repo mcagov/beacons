@@ -17,6 +17,7 @@ export const makeAuthenticatedPOSTRequest = async (
   const scope = `api://${Cypress.env("AAD_API_ID")}/.default`;
   const grantType = "client_credentials";
 
+  // Retrieve an auth token from Azure AD
   cy.request({
     method: "POST",
     form: true,
@@ -29,6 +30,7 @@ export const makeAuthenticatedPOSTRequest = async (
     },
     url: `${authUrl}`,
   }).then(
+    // POST body to URL using the retrieved auth token
     (response: {
       body: {
         access_token: string;
