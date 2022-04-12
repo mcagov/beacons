@@ -42,7 +42,7 @@ export const useGetAuthState = (): AuthState => {
           });
         });
     }
-  }, [authState, setAuthState]);
+  }, [authState]);
 
   return authState;
 };
