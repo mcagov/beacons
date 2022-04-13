@@ -25,9 +25,9 @@ import { BeaconResponseMapper } from "./gateways/mappers/BeaconResponseMapper";
 import { LegacyBeaconResponseMapper } from "./gateways/mappers/LegacyBeaconResponseMapper";
 import { NotesGateway } from "./gateways/notes/NotesGateway";
 import { useGetAuthState } from "./lib/useGetAuthState";
-import { logToServer } from "./logger";
 import { Search } from "./Search";
 import { UserSettingsProvider } from "./UserSettings";
+import { logToServer } from "./utils/logger";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 

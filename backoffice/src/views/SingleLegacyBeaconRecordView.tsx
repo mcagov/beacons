@@ -12,7 +12,7 @@ import { PageContent } from "../components/layout/PageContent";
 import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
-import { logToServer } from "../logger";
+import { logToServer } from "../utils/logger";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
