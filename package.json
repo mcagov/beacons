@@ -8,12 +8,8 @@
   "scripts": {
     "adr": "adr-log -d docs/adr -i",
     "format": "prettier --write './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
-    "format:check": "prettier --check './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run adr && git add ./docs/adr && pretty-quick --staged && terraform fmt -recursive"
-    }
+    "format:check": "prettier --check './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -26,7 +22,7 @@
   "homepage": "https://github.com/mcagov/beacons#readme",
   "devDependencies": {
     "adr-log": "^2.2.0",
-    "husky": "^4.3.8",
+    "husky": "^7.0.0",
     "prettier": "2.6.2",
     "prettier-plugin-java": "1.6.1",
     "prettier-plugin-organize-imports": "^2.3.3",

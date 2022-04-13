@@ -1,0 +1,6 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run adr && git add ./docs/adr
+npx pretty-quick --staged
+terraform fmt -recursive
