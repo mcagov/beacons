@@ -160,3 +160,11 @@ jobs:
       opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
       opensearch_proxy_sso_client_id: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_ID }}
       opensearch_proxy_sso_client_secret: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_SECRET }}
+
+  manual_testing:
+    name: Manual testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Link to manual testing document
+        run: |
+          echo "::notice file=tests/pre-release-testing-scenarios.md,title={Remember to run through the pre-release testing scenarios before pushing to production}::This should be automated soon."
