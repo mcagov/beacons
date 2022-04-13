@@ -330,6 +330,6 @@ export const whenIClickTheBrowserBackButton = (): void => {
 export const iCanSeeTextInSummaryListRowWithHeading = (
   text: string,
   heading: string
-) => {
+): void => {
   cy.get("dt").contains(heading).parent().contains(text);
 };
