@@ -12,7 +12,6 @@ import { Validators } from "../../../../lib/form/Validators";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { formSubmissionCookieId } from "../../../../lib/types";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
@@ -173,13 +172,6 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 const props = async (
   context: BeaconsGetServerSidePropsContext
 ): Promise<Partial<AboutBeaconOwnerFormProps>> => {
-  const uses =
-    (
-      await context.container.getDraftRegistration(
-        context.req.cookies[formSubmissionCookieId]
-      )
-    )?.uses || [];
-
   const previousPageUrl = UrlBuilder.buildUpdateRegistrationSummaryUrl(
     context.query.registrationId as string
   );
