@@ -39,7 +39,7 @@
     "notifications-node-client": "^5.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "redis-json": "^6.0.1",
+    "redis-json": "^6.0.3",
     "urlencoded-body-parser": "^3.0.0",
     "uuid": "^8.3.2",
     "winston": "^3.3.3"
