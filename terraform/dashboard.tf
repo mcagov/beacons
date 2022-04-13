@@ -54,7 +54,7 @@ resource "aws_cloudwatch_dashboard" "service_health" {
                 "title": "CPU Credit Balance",
                 "annotations": {
                     "alarms": [
-                        "${module.aws-rds-alarms.alarm_cpu_credit_balance_too_low[0].arn}"
+                        "${module.aws-rds-alarms.alarm_cpu_credit_balance_too_low.arn}"
                     ]
                 },
                 "view": "singleValue",
