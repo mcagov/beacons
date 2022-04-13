@@ -66,6 +66,8 @@ dependencies {
     testImplementation 'org.testcontainers:elasticsearch:1.16.2'
     testImplementation 'org.springframework.batch:spring-batch-test'
     testImplementation 'com.google.jimfs:jimfs:1.2' // File system mocking
+    testImplementation 'org.springframework:spring-webflux:5.3.18' // POSTing in integration tests
+
 }
 
 test {

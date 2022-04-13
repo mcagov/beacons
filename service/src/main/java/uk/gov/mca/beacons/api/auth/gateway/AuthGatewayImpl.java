@@ -1,6 +1,6 @@
 package uk.gov.mca.beacons.api.auth.gateway;
 
-import com.azure.spring.aad.webapi.AADOAuth2AuthenticatedPrincipal;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadOAuth2AuthenticatedPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class AuthGatewayImpl implements AuthGateway {
   @Override
   public User getUser() {
     final var authentication = getAuthentication();
-    final var user = (AADOAuth2AuthenticatedPrincipal) authentication.getPrincipal();
+    final var user = (AadOAuth2AuthenticatedPrincipal) authentication.getPrincipal();
     final var userAttributes = user.getAttributes();
 
     final UUID userId = UUID.fromString((String) userAttributes.get("oid"));

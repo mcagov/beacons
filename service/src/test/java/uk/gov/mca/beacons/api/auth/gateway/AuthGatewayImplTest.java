@@ -8,10 +8,9 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.mca.beacons.api.auth.gateway.AuthGatewayImpl.SupportedPermissions;
 
-import com.azure.spring.aad.webapi.AADOAuth2AuthenticatedPrincipal;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadOAuth2AuthenticatedPrincipal;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -41,8 +40,8 @@ class AuthGatewayImplTest {
 
   Authentication authentication = mock(Authentication.class);
   SecurityContext context = mock(SecurityContext.class);
-  AADOAuth2AuthenticatedPrincipal principal = mock(
-    AADOAuth2AuthenticatedPrincipal.class
+  AadOAuth2AuthenticatedPrincipal principal = mock(
+    AadOAuth2AuthenticatedPrincipal.class
   );
 
   @BeforeEach
