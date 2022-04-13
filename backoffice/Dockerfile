@@ -6,8 +6,7 @@ ARG feedback_email_addresses
 ENV REACT_APP_FEEDBACK_EMAIL_ADDRESSES=$feedback_email_addresses
 
 COPY . ./
-RUN npm ci
-RUN npm run build
+RUN npm ci && npm run build
 
 FROM nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
