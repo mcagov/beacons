@@ -28,43 +28,42 @@ configurations.all {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-    implementation 'org.springframework.boot:spring-boot-starter-batch'
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'com.vladmihalcea:hibernate-types-55:2.12.1'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.5.10'
-    implementation 'org.springdoc:springdoc-openapi-data-rest:1.5.10'
-    implementation 'com.azure.spring:azure-spring-boot-starter-active-directory:4.0.0'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'org.jetbrains:annotations:21.0.1'
-    implementation 'com.opencsv:opencsv:5.6'
-    implementation 'org.springframework.data:spring-data-elasticsearch:4.2.7'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-batch:2.6.6'
+    implementation 'org.flywaydb:flyway-core:8.5.7'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.6'
+    implementation 'com.vladmihalcea:hibernate-types-55:2.15.1'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.7'
+    implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.7'
+    implementation 'com.azure.spring:azure-spring-boot-starter-active-directory:4.0.+'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:2.6.6'
+    implementation 'org.jetbrains:annotations:23.0.+'
+    implementation 'org.springframework.data:spring-data-elasticsearch:4.3.3'
     implementation 'org.apache.poi:poi:5.2.2' // Writing to Excel files
     implementation 'org.apache.poi:poi-ooxml:5.2.2' // Writing to Excel files (additional for .xlsx)
-    implementation 'net.javacrumbs.shedlock:shedlock-spring:4.34.0' // Scheduling jobs in a distributed system
-    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.33.0' // Scheduling jobs in a distributed system
+    implementation 'net.javacrumbs.shedlock:shedlock-spring:4.34.+' // Scheduling jobs in a distributed system
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.33.+' // Scheduling jobs in a distributed system
 
-    implementation 'org.springframework.boot:spring-boot-starter-cache'
-    implementation 'com.github.ben-manes.caffeine:caffeine'
-    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.springframework.boot:spring-boot-starter-cache:2.6.6'
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.0.6'
+    runtimeOnly 'org.postgresql:postgresql:42.3.3'
 
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    developmentOnly('org.springframework.boot:spring-boot-devtools:2.6.6')
 
     implementation("com.github.javafaker:javafaker:1.0.2")
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.testcontainers:testcontainers:1.16.2'
-    testImplementation 'org.testcontainers:junit-jupiter:1.16.2'
-    testImplementation 'org.testcontainers:postgresql:1.16.2'
-    testImplementation 'org.testcontainers:elasticsearch:1.16.2'
-    testImplementation 'org.springframework.batch:spring-batch-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.6'
+    testImplementation 'org.springframework.security:spring-security-test:5.6.2'
+    testImplementation 'org.testcontainers:testcontainers:1.16.3'
+    testImplementation 'org.testcontainers:junit-jupiter:1.16.3'
+    testImplementation 'org.testcontainers:postgresql:1.16.3'
+    testImplementation 'org.testcontainers:elasticsearch:1.16.3'
+    testImplementation 'org.springframework.batch:spring-batch-test:4.3.5'
     testImplementation 'com.google.jimfs:jimfs:1.2' // File system mocking
     testImplementation 'org.springframework:spring-webflux:5.3.18' // POSTing in integration tests
 
