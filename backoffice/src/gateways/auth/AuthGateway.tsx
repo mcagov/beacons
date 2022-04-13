@@ -1,5 +1,5 @@
 import { IPublicClientApplication } from "@azure/msal-browser";
-import { logToServer } from "../../logger";
+import { logToServer } from "../../utils/logger";
 import { IAuthGateway } from "./IAuthGateway";
 
 export class AuthGateway implements IAuthGateway {

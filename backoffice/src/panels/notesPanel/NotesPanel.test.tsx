@@ -4,6 +4,8 @@ import { INotesGateway } from "../../gateways/notes/INotesGateway";
 import { Placeholders } from "../../utils/writingStyle";
 import { NotesPanel } from "./NotesPanel";
 
+jest.mock("../../utils/logger");
+
 describe("NotesPanel", () => {
   let notesGateway: INotesGateway;
   let beaconId: string;

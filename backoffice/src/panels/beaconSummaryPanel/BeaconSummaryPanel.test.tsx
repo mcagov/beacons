@@ -5,6 +5,8 @@ import { IBeaconsGateway } from "../../gateways/beacons/IBeaconsGateway";
 import { Placeholders } from "../../utils/writingStyle";
 import { BeaconSummaryPanel } from "./BeaconSummaryPanel";
 
+jest.mock("../../utils/logger");
+
 describe("BeaconSummaryPanel", () => {
   let beaconsGatewayDouble: IBeaconsGateway;
 

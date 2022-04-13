@@ -12,6 +12,10 @@ app.get("/backoffice/client-id", (req, res) => {
   res.send("5cdcbb41-958a-43b6-baa1-bbafd80b4f70");
 });
 
+app.get("/backoffice/log", (req, res) => {
+  res.send();
+});
+
 console.log("🍽 Starting the Backoffice runtime env var stub server...");
 
 app.listen(PORT);

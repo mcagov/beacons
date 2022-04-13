@@ -19,7 +19,11 @@ const logger = (callback: (log: string | unknown) => void) => {
 
 const postToServer = (log: string | unknown): void => {
   const message = typeof log === "string" ? log : JSON.stringify(log);
-  fetch("/backoffice/log", { method: "POST", body: message });
+  try {
+    fetch("/backoffice/log", { method: "POST", body: message });
+  } catch (e) {
+    console.warn(`Failed to send log message to server: ${e}`);
+  }
 };
 
 export const logToServer = logger(postToServer);

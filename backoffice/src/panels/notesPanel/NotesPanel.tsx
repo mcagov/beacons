@@ -6,7 +6,7 @@ import { LoadingState } from "../../components/dataPanel/PanelLoadingState";
 import { DataPanelStates } from "../../components/dataPanel/States";
 import { INote } from "../../entities/INote";
 import { INotesGateway } from "../../gateways/notes/INotesGateway";
-import { logToServer } from "../../logger";
+import { logToServer } from "../../utils/logger";
 import { Placeholders } from "../../utils/writingStyle";
 import { NotesEditing } from "./NotesEditing";
 import { NotesViewing } from "./NotesViewing";

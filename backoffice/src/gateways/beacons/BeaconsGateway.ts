@@ -7,7 +7,7 @@ import { IAuthGateway } from "gateways/auth/IAuthGateway";
 import { IBeaconRequestMapper } from "gateways/mappers/BeaconRequestMapper";
 import { IBeaconResponseMapper } from "gateways/mappers/BeaconResponseMapper";
 import { ILegacyBeaconResponseMapper } from "gateways/mappers/LegacyBeaconResponseMapper";
-import { logToServer } from "../../logger";
+import { logToServer } from "../../utils/logger";
 import {
   GetAllBeaconsFilters,
   GetAllBeaconsSort,

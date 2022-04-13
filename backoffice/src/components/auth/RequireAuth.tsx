@@ -2,7 +2,7 @@ import { InteractionType } from "@azure/msal-browser";
 import { MsalAuthenticationTemplate } from "@azure/msal-react";
 import { MsalAuthenticationResult } from "@azure/msal-react/dist/hooks/useMsalAuthentication";
 import React, { FunctionComponent } from "react";
-import { logToServer } from "../../logger";
+import { logToServer } from "../../utils/logger";
 
 interface RequireAuthProps {
   children: React.ReactNode;

@@ -4,7 +4,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { FieldValueTypes } from "../../components/dataPanel/FieldValue";
 import { IEmergencyContact } from "../../entities/IEmergencyContact";
 import { IBeaconsGateway } from "../../gateways/beacons/IBeaconsGateway";
-import { logToServer } from "../../logger";
+import { logToServer } from "../../utils/logger";
 
 interface EmergencyContactPanelProps {
   beaconsGateway: IBeaconsGateway;

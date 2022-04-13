@@ -12,10 +12,10 @@ import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { INotesGateway } from "../gateways/notes/INotesGateway";
-import { logToServer } from "../logger";
 import { BeaconSummaryPanel } from "../panels/beaconSummaryPanel/BeaconSummaryPanel";
 import { EmergencyContactPanel } from "../panels/emergencyContactPanel/EmergencyContactPanel";
 import { NotesPanel } from "../panels/notesPanel/NotesPanel";
+import { logToServer } from "../utils/logger";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;

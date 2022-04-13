@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, Grid } from "@mui/material";
 import { IUse } from "entities/IUse";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { logToServer } from "../../logger";
+import { logToServer } from "../../utils/logger";
 import { UsePanel } from "./UsePanel";
 
 interface UsesListSummaryPanelProps {

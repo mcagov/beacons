@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { logToServer } from "../../logger";
+import { logToServer } from "../../utils/logger";
 import { ErrorState } from "../dataPanel/PanelErrorState";
 
 interface Props {

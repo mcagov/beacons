@@ -32,7 +32,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { Placeholders } from "utils/writingStyle";
 import { IBeaconSearchResultData } from "../entities/IBeaconSearchResult";
 import { replaceNone } from "../lib/legacyData/replaceNone";
-import { logToServer } from "../logger";
+import { logToServer } from "../utils/logger";
 import { TextFilter } from "./tableComponents/TextFilter";
 
 interface IBeaconsTableProps {

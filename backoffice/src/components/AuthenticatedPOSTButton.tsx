@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import React, { MouseEventHandler } from "react";
-import { logToServer } from "../logger";
+import { logToServer } from "../utils/logger";
 import { useAuthContext } from "./auth/AuthProvider";
 
 /**

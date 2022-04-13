@@ -17,7 +17,7 @@ import {
   BeaconSearchItem,
   parseBeaconSearchItem,
 } from "../entities/BeaconSearch";
-import { logToServer } from "../logger";
+import { logToServer } from "../utils/logger";
 import { searchUrl } from "../utils/urls";
 
 const useStyles = makeStyles((theme: Theme) =>
