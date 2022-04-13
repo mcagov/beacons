@@ -27,7 +27,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "logs" {
 resource "aws_s3_bucket_acl" "logs" {
   bucket = aws_s3_bucket.logs.bucket
 
-  acl    = "log-delivery-write"
+  acl = "log-delivery-write"
 }
 
 resource "aws_s3_bucket_policy" "logs" {
