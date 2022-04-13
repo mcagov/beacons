@@ -65,7 +65,7 @@
     "jest-css-modules-transform": "^4.3.0",
     "lint-staged": "^11.1.1",
     "lodash": "^4.17.21",
-    "msw": "^0.32.2",
+    "msw": "^0.39.2",
     "node-mocks-http": "^1.10.1",
     "postcss-normalize": "^10.0.0",
     "sass": "^1.37.5",
