@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.vladmihalcea:hibernate-types-55:2.12.1'
     implementation 'org.springdoc:springdoc-openapi-ui:1.5.10'
     implementation 'org.springdoc:springdoc-openapi-data-rest:1.5.10'
-    implementation 'com.azure.spring:azure-spring-boot-starter-active-directory:3.6.1'
+    implementation 'com.azure.spring:azure-spring-boot-starter-active-directory:4.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.jetbrains:annotations:21.0.1'
     implementation 'com.opencsv:opencsv:5.6'
