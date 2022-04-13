@@ -1,26 +1,52 @@
 version: 2
 
 updates:
-  # Keep terraform dependencies up to date
   - package-ecosystem: "terraform"
     directory: "/terraform"
     schedule:
-      interval: "daily"
-    pull-request-branch-name:
-      separator: "-"
+      interval: "weekly"
 
-  # Maintain package.json dependencies
+  - package-ecosystem: "terraform"
+    directory: "/maintenance-page"
+    schedule:
+      interval: "weekly"
+
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
-    pull-request-branch-name:
-      separator: "-"
+      interval: "weekly"
 
-  # Maintain GitHub Actions dependencies
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
-    pull-request-branch-name:
-      separator: "-"
+      interval: "weekly"
+
+  - package-ecosystem: "gradle"
+    directory: "/service"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "docker"
+    directory: "/service"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "docker"
+    directory: "/opensearch/proxy"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "npm"
+    directory: "/backoffice"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "docker"
+    directory: "/backoffice"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "npm"
+    directory: "/webapp"
+    schedule:
+      interval: "weekly"
