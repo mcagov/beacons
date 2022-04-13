@@ -6,7 +6,7 @@ resource "aws_db_instance" "postgres" {
   db_subnet_group_name            = aws_db_subnet_group.db.id
   vpc_security_group_ids          = [aws_security_group.db.id]
   deletion_protection             = var.db_delete_protection
-  name                            = var.db_name
+  db_name                            = var.db_name
   username                        = var.db_username
   password                        = var.db_password
   instance_class                  = var.db_instance_class
