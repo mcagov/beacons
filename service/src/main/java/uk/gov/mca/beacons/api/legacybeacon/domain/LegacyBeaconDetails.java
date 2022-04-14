@@ -17,6 +17,8 @@ public class LegacyBeaconDetails implements ValueObject, Serializable {
   private String note;
   private String hexId;
   private String model;
+  private String mti;
+  private String csta;
   private String coding;
   private String protocol;
   private String isPending;
