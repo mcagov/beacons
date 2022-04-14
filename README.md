@@ -18,6 +18,13 @@ It comprises three applications:
    to allow users in MCA to query and perform operations on beacon registrations. Source code is in
    `service/src/main/backoffice`. The SPA is served by Spring Boot.
 
+## Architecture
+
+![Architecture diagram](docs/architecture_diagram.svg)
+
+Infrastructure-as-code remains the single source-of-truth for Beacons infrastructure! Always check `terraform/` if
+unsure.
+
 ## Local development
 
 | **dependency**                                                    | **version** |
