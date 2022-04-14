@@ -24,6 +24,13 @@ spring:
       enabled: false
     jdbc:
       initialize-schema: never
+  cloud:
+    azure:
+      active-directory:
+        enabled: true
+        credential:
+          client-id: ${AZURE_AD_API_CLIENT_ID:5cdcbb41-958a-43b6-baa1-bbafd80b4f70}
+        app-id-uri: ${AZURE_AD_API_ID_URI:api://5cdcbb41-958a-43b6-baa1-bbafd80b4f70}
 
 server:
   compression:
@@ -46,11 +53,6 @@ beacons:
     legacy-beacon-search-view: ${BEACONS_SEARCH_VIEW_SCHEDULER_TIMEOUT:30000}
   cors:
     allowedOrigins: ${BEACONS_CORS_ALLOWED_ORIGINS:*}
-
-azure:
-  activedirectory:
-    client-id: ${AZURE_AD_API_CLIENT_ID:5cdcbb41-958a-43b6-baa1-bbafd80b4f70}
-    app-id-uri: ${AZURE_AD_API_ID_URI:api://5cdcbb41-958a-43b6-baa1-bbafd80b4f70}
 
 opensearch:
   source:
