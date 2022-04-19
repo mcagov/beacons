@@ -9,7 +9,9 @@
     "adr": "adr-log -d docs/adr -i",
     "format": "prettier --write './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
     "format:check": "prettier --check './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,8 @@
   "homepage": "https://github.com/mcagov/beacons#readme",
   "devDependencies": {
     "adr-log": "^2.2.0",
+    "cypress": "^9.5.3",
+    "dotenv": "^16.0.0",
     "husky": "^7.0.4",
     "prettier": "2.6.2",
     "prettier-plugin-java": "^1.6.1",

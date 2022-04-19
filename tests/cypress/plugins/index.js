@@ -13,8 +13,7 @@
 // the project's config changing)
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require("dotenv").config({ path: "../.env.local" });
-
+require("dotenv").config({ path: ".env" });
 /**
  * @type {Cypress.PluginConfig}
  */
