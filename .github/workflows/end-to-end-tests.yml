@@ -3,8 +3,8 @@ name: E2E tests
 on:
   workflow_call:
     inputs:
-      service-image-tag:
-        description: The tag of the Service artefact to test
+      image-tag:
+        description: The tag of the release to test
         required: true
         type: string
       test_gov_notify_feedback_email_address:
@@ -33,7 +33,7 @@ on:
 
 defaults:
   run:
-    working-directory: webapp
+    working-directory: tests
 
 jobs:
   end_to_end_tests:
@@ -41,17 +41,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      WEBAPP_CLIENT_SECRET: ${{ secrets.test_webapp_azure_ad_client_secret }}
       SESSION_TOKEN: ${{ secrets.test_webapp_azure_b2c_session_token }}
-      JWT_SECRET: ${{ secrets.test_webapp_azure_b2c_jwt_secret }}
-      GOV_NOTIFY_API_KEY: ${{ secrets.test_webapp_gov_notify_api_key }}
-      GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS: ${{ inputs.test_gov_notify_feedback_email_address }}
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.1.1
         with:
-          node-version: "14"
+          node-version: "16"
       - name: Install npm dependencies
         run: npm ci
         env:
@@ -65,23 +61,21 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      - name: Bring up API and DB
+      - name: Bring up published containers
         run: |
-          SERVICE_IMAGE_TAG=${{ inputs.service-image-tag }} docker compose --verbose -f docker-compose.e2e.yml up --detach
-      - name: Copy env vars
-        run: cp .env.example .env.local
-      - name: Checkout node
-        uses: actions/setup-node@v3.1.1
-        with:
-          node-version: "14"
+          IMAGE_TAG=${{ inputs.service-image-tag }}
+          GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS: ${{ inputs.test_gov_notify_feedback_email_address }}
+          AZURE_B2C_CLIENT_SECRET=${{ secrets.azure-b2c-client-secret }}
+          JWT_SECRET=${{ secrets.test_webapp_azure_b2c_jwt_secret }}
+          WEBAPP_CLIENT_SECRET=${{ secrets.test_webapp_azure_ad_client_secret }}
+          GOV_NOTIFY_API_KEY=${{ secrets.test_webapp_gov_notify_api_key }}
+          docker compose --verbose -f docker-compose.e2e.yml up --detach
       - name: Run Cypress end to end tests
         uses: cypress-io/github-action@v2
         with:
-          working-directory: webapp
+          working-directory: tests
           spec: cypress/endToEnd/*
           browser: chrome
-          start: npm run start
-          build: npm run build
           wait-on: "http://localhost:8080/spring-api/actuator/health"
       - uses: actions/upload-artifact@v3
         if: failure()
