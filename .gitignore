@@ -17,3 +17,4 @@ coverage/
 
 # Node Modules
 node_modules
+.env
