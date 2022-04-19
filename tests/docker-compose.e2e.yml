@@ -25,7 +25,7 @@ services:
       timeout: 10s
       retries: 12
 
-  api:
+  service:
     image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-service:$IMAGE_TAG
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
@@ -34,7 +34,7 @@ services:
       # 'dev' profile is necessary to allow Spring to connect to local OpenSearch container without authenticating
       SPRING_PROFILES_ACTIVE: dev
     ports:
-      - 8080:8080
+      - "8080:8080"
     links:
       - opensearch
       - postgres
@@ -57,7 +57,7 @@ services:
   webapp:
     image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-webapp:$IMAGE_TAG
     environment:
-      API_URL: api:8080/spring-api
+      API_URL: http://service:8080/spring-api
       WEBAPP_CLIENT_ID: 1ccbe14d-00e3-43ac-a434-8f7a38e03366
       AAD_API_ID: 5cdcbb41-958a-43b6-baa1-bbafd80b4f70
       AAD_TENANT_ID: 513fb495-9a90-425b-a49a-bc6ebe2a429e
