@@ -24,6 +24,9 @@ on:
       test_webapp_azure_b2c_jwt_secret:
         description: Permits Cypress to authenticate with Azure B2C to perform logged-in tests
         required: true
+      test_webapp_azure_b2c_client_secret:
+        description: The OAuth2.0 client secret for the Webapp app registration in Azure B2C
+        required: true
       test_webapp_azure_ad_client_secret:
         description: Permits the Webapp to authenticate with the Service
         required: true
@@ -63,9 +66,9 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - name: Bring up published containers
         run: |
-          IMAGE_TAG=${{ inputs.service-image-tag }}
+          IMAGE_TAG=${{ inputs.image-tag }}
           GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS: ${{ inputs.test_gov_notify_feedback_email_address }}
-          AZURE_B2C_CLIENT_SECRET=${{ secrets.azure-b2c-client-secret }}
+          AZURE_B2C_CLIENT_SECRET=${{ secrets.test_webapp_azure_b2c_client_secret }}
           JWT_SECRET=${{ secrets.test_webapp_azure_b2c_jwt_secret }}
           WEBAPP_CLIENT_SECRET=${{ secrets.test_webapp_azure_ad_client_secret }}
           GOV_NOTIFY_API_KEY=${{ secrets.test_webapp_gov_notify_api_key }}
