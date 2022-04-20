@@ -9,9 +9,7 @@
     "adr": "adr-log -d docs/adr -i",
     "format": "prettier --write './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
     "format:check": "prettier --check './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
-    "prepare": "husky install",
-    "test:e2e": "cypress run",
-    "test:e2e:open": "cypress open"
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
