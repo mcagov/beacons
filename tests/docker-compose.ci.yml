@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  service:
+    image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-service:$IMAGE_TAG
+
+  webapp:
+    image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-webapp:$IMAGE_TAG

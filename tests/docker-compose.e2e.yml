@@ -26,7 +26,8 @@ services:
       retries: 12
 
   service:
-    image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-service:$IMAGE_TAG
+    build:
+      context: ../service
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
       OPENSEARCH_ENDPOINT: opensearch
@@ -55,7 +56,8 @@ services:
     restart: on-failure
 
   webapp:
-    image: 232705206979.dkr.ecr.eu-west-2.amazonaws.com/beacons-webapp:$IMAGE_TAG
+    build:
+      context: ../webapp
     environment:
       API_URL: http://service:8080/spring-api
       WEBAPP_CLIENT_ID: 1ccbe14d-00e3-43ac-a434-8f7a38e03366

@@ -73,7 +73,7 @@ jobs:
           JWT_SECRET=${{ secrets.test_webapp_azure_b2c_jwt_secret }} \
           WEBAPP_CLIENT_SECRET=${{ secrets.test_webapp_azure_ad_client_secret }} \
           GOV_NOTIFY_API_KEY=${{ secrets.test_webapp_gov_notify_api_key }} \
-          docker compose --verbose -f docker-compose.e2e.yml up --detach
+          docker compose --verbose -f docker-compose.e2e.yml -f docker-compose.ci.yml up --detach
       - name: Run Cypress end to end tests
         uses: cypress-io/github-action@v2
         env:
