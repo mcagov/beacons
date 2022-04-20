@@ -27,7 +27,7 @@ import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
 import { formatDateLong, formatMonth } from "../common/writing-style.spec";
 import { anotherBeaconRegistration } from "../fixtures/anotherBeaconRegistration";
-import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
+import singleBeaconRegistration from "../fixtures/singleBeaconRegistration.json";
 
 describe("As an account holder", () => {
   it("I can update one of my registrations", () => {
@@ -257,14 +257,16 @@ const internationalAddressHexId = randomUkEncodedHexId();
 const registrationWithInternationalAddressToUpdate = {
   ...singleBeaconRegistration,
   hexId: internationalAddressHexId,
-  ownerAddressLine1: "Beacon Towers",
-  ownerAddressLine2: "Eprib Wharf",
-  ownerAddressLine3: "c/o Harbour Master",
-  ownerAddressLine4: "Something",
-  ownerTownOrCity: "",
-  ownerCounty: "",
-  ownerCountry: "United Arab Emirates",
-  ownerPostcode: "60605",
+  owner: {
+    addressLine1: "Beacon Towers",
+    addressLine2: "Eprib Wharf",
+    addressLine3: "c/o Harbour Master",
+    addressLine4: "Something",
+    townOrCity: "",
+    county: "",
+    country: "United Arab Emirates",
+    postcode: "60605",
+  },
 };
 
 const secondRegistrationHexId = randomUkEncodedHexId();
