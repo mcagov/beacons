@@ -11,6 +11,10 @@ on:
         description: The email address to use to test email alerts against
         required: true
         type: string
+      test_azure_ad_tenant_id:
+        description: The Azure Active Directory tenant used to protect the Service
+        required: true
+        type: string
     secrets:
       aws_access_key_id:
         description: Required to download the test images from ECR
@@ -42,9 +46,6 @@ jobs:
   end_to_end_tests:
     name: End to end tests
     runs-on: ubuntu-latest
-
-    env:
-      SESSION_TOKEN: ${{ secrets.test_webapp_azure_b2c_session_token }}
 
     steps:
       - uses: actions/checkout@v3
@@ -80,6 +81,14 @@ jobs:
           spec: cypress/endToEnd/*
           browser: chrome
           wait-on: "http://localhost:8080/spring-api/actuator/health"
+          args: |
+            --env \
+            SESSION_TOKEN=${{ secrets.test_webapp_azure_b2c_session_token }},\
+            AAD_TENANT_ID=da0cadc6-44c5-4830-bb04-82bddfd2f040,\
+            WEBAPP_CLIENT_ID=1ccbe14d-00e3-43ac-a434-8f7a38e03366,\
+            WEBAPP_CLIENT_SECRET==${{ secrets.test_webapp_azure_ad_client_secret }},\
+            AAD_API_ID=5cdcbb41-958a-43b6-baa1-bbafd80b4f70,\
+            API_URL=http://localhost:8080/spring-api
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
