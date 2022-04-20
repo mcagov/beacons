@@ -1,17 +1,3 @@
-import { DraftRegistration } from "../../../webapp/src/entities/DraftRegistration";
-import { Registration } from "../../../webapp/src/entities/Registration";
-import {
-  Activity,
-  Environment,
-  Purpose,
-} from "../../../webapp/src/lib/deprecatedRegistration/types";
-import { AccountPageURLs } from "../../../webapp/src/lib/urls";
-import { Actions } from "../../../webapp/src/lib/URLs/Actions";
-import { Resources } from "../../../webapp/src/lib/URLs/Resources";
-import {
-  formatDateLong,
-  formatMonth,
-} from "../../../webapp/src/lib/writingStyle";
 import { iAmPromptedToConfirm } from "../common/i-am-prompted-to-confirm.spec";
 import { givenIHaveEnteredMyMaritimeUse } from "../common/i-can-enter-use-information/maritime.spec";
 import { iCanSeeMyExistingRegistrationHexId } from "../common/i-can-see-my-existing-registration-hex-id.spec";
@@ -39,6 +25,7 @@ import {
 } from "../common/selectors-and-assertions.spec";
 import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
+import { formatDateLong, formatMonth } from "../common/writing-style.spec";
 import { anotherBeaconRegistration } from "../fixtures/anotherBeaconRegistration";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 
@@ -48,7 +35,7 @@ describe("As an account holder", () => {
     andIHavePreviouslyRegisteredABeacon(firstRegistrationToUpdate);
     andIHavePreviouslyRegisteredABeacon(secondRegistrationToUpdate);
 
-    whenIHaveVisited(AccountPageURLs.accountHome);
+    whenIHaveVisited("/account/your-beacon-registry-account");
     iCanSeeMyExistingRegistrationHexId(firstRegistrationToUpdate.hexId);
     iCanClickTheUpdateLinkToUpdateARegistration(firstRegistrationToUpdate);
 
@@ -58,7 +45,7 @@ describe("As an account holder", () => {
     iCanSeeTheDetailsOfMyRegistration(firstRegistrationToUpdate);
     iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges();
     iCanUpdateTheDetailsOfMyExistingRegistration(firstRegistrationToUpdate);
-    iCanSeeTheDetailsOfMyRegistration(firstUpdatedRegistration as Registration);
+    iCanSeeTheDetailsOfMyRegistration(firstUpdatedRegistration);
 
     iPerformOperationAndWaitForNewPageToLoad(() =>
       whenIClickTheButtonContaining("Accept and send")
@@ -68,7 +55,7 @@ describe("As an account holder", () => {
     );
 
     whenIClickTheButtonContaining("Return to your Beacon Registry Account");
-    thenTheUrlShouldContain(AccountPageURLs.accountHome);
+    thenTheUrlShouldContain("/account/your-beacon-registry-account");
 
     whenIClickTheHexIdOfTheRegistrationIJustUpdated(
       firstRegistrationToUpdate.hexId
@@ -97,14 +84,14 @@ describe("As an account holder", () => {
     );
 
     whenIClickTheButtonContaining("Return to your Beacon Registry Account");
-    thenTheUrlShouldContain(AccountPageURLs.accountHome);
+    thenTheUrlShouldContain("/account/your-beacon-registry-account");
   });
 
   it("I can change the beacon owner's address from UK to international", () => {
     givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(firstRegistrationToUpdate);
 
-    whenIHaveVisited(AccountPageURLs.accountHome);
+    whenIHaveVisited("/account/your-beacon-registry-account");
     iCanSeeMyExistingRegistrationHexId(firstRegistrationToUpdate.hexId);
 
     whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
@@ -112,7 +99,7 @@ describe("As an account holder", () => {
     );
 
     whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
-    theBackLinkContains(Resources.registration, Actions.update);
+    theBackLinkContains("manage-my-registrations", "update");
     whenISelect("#restOfWorld");
     whenIClickContinue();
     iEditTheBeaconOwnersRestOfWorldAddress(
@@ -140,13 +127,13 @@ describe("As an account holder", () => {
       registrationWithInternationalAddressToUpdate
     );
 
-    whenIHaveVisited(AccountPageURLs.accountHome);
+    whenIHaveVisited("/account/your-beacon-registry-account");
     iCanSeeMyExistingRegistrationHexId(internationalAddressHexId);
 
     whenIClickTheHexIdOfTheRegistrationIWantToUpdate(internationalAddressHexId);
 
     whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
-    theBackLinkContains(Resources.registration, Actions.update);
+    theBackLinkContains("manage-my-registrations", "update");
     whenISelect("#unitedKingdom");
     whenIClickContinue();
     iEditTheBeaconOwnersUnitedKingdomAddress(
@@ -174,7 +161,7 @@ const iCannotSeeAnAcceptAndSendButtonBecauseIHaveNotMadeAnyChanges = () => {
 };
 
 export const iCanClickTheUpdateLinkToUpdateARegistration = (
-  registration: Registration
+  registration
 ): void => {
   whenIClickTheActionLinkInATableRowContaining(registration.hexId, /update/i);
   iCanSeeMyBeaconInformation(registration);
@@ -182,15 +169,13 @@ export const iCanClickTheUpdateLinkToUpdateARegistration = (
   iCanSeeOwnerInformation(registration);
   iCanSeeEmergencyContactInformation(registration);
   iCanSeeUseInformation(registration);
-  theBackLinkGoesTo(AccountPageURLs.accountHome);
+  theBackLinkGoesTo("/account/your-beacon-registry-account");
   whenIClickBack();
-  thenTheUrlShouldContain(AccountPageURLs.accountHome);
+  thenTheUrlShouldContain("/account/your-beacon-registry-account");
 };
 
-const iCanViewTheUpdatedOwnerInformation = (
-  draftRegistration: DraftRegistration
-) => {
-  whenIHaveVisited(AccountPageURLs.accountHome);
+const iCanViewTheUpdatedOwnerInformation = (draftRegistration) => {
+  whenIHaveVisited("/account/your-beacon-registry-account");
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
     firstRegistrationToUpdate.hexId
   );
@@ -201,7 +186,7 @@ const iCanViewTheUpdatedOwnerInformation = (
   iCanEditAFieldContaining(draftRegistration.ownerAlternativeTelephoneNumber);
   iCanEditAFieldContaining(draftRegistration.ownerEmail);
 
-  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIHaveVisited("/account/your-beacon-registry-account");
   whenIClickOnTheHexIdOfTheRegistrationIUpdated(
     firstRegistrationToUpdate.hexId
   );
@@ -216,10 +201,8 @@ const iCanViewTheUpdatedOwnerInformation = (
   iCanEditAFieldContaining(draftRegistration.ownerPostcode);
 };
 
-const iCanViewTheUpdatedEmergencyContactInformation = (
-  draftRegistration: DraftRegistration
-) => {
-  whenIHaveVisited(AccountPageURLs.accountHome);
+const iCanViewTheUpdatedEmergencyContactInformation = (draftRegistration) => {
+  whenIHaveVisited("/account/your-beacon-registry-account");
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
     firstRegistrationToUpdate.hexId
   );
@@ -230,7 +213,7 @@ const iCanViewTheUpdatedEmergencyContactInformation = (
     draftRegistration.emergencyContact1AlternativeTelephoneNumber
   );
 
-  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIHaveVisited("/account/your-beacon-registry-account");
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
     firstRegistrationToUpdate.hexId
   );
@@ -241,7 +224,7 @@ const iCanViewTheUpdatedEmergencyContactInformation = (
     draftRegistration.emergencyContact2AlternativeTelephoneNumber
   );
 
-  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIHaveVisited("/account/your-beacon-registry-account");
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
     firstRegistrationToUpdate.hexId
   );
@@ -253,10 +236,8 @@ const iCanViewTheUpdatedEmergencyContactInformation = (
   );
 };
 
-const iCanViewTheUpdatedUseInformation = (
-  draftRegistration: DraftRegistration
-) => {
-  whenIHaveVisited(AccountPageURLs.accountHome);
+const iCanViewTheUpdatedUseInformation = (draftRegistration) => {
+  whenIHaveVisited("/account/your-beacon-registry-account");
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
     firstRegistrationToUpdate.hexId
   );
@@ -266,14 +247,14 @@ const iCanViewTheUpdatedUseInformation = (
 
 const firstRegistrationHexId = randomUkEncodedHexId();
 
-const firstRegistrationToUpdate: Registration = {
+const firstRegistrationToUpdate = {
   ...singleBeaconRegistration,
   hexId: firstRegistrationHexId,
 };
 
 const internationalAddressHexId = randomUkEncodedHexId();
 
-const registrationWithInternationalAddressToUpdate: Registration = {
+const registrationWithInternationalAddressToUpdate = {
   ...singleBeaconRegistration,
   hexId: internationalAddressHexId,
   ownerAddressLine1: "Beacon Towers",
@@ -288,12 +269,12 @@ const registrationWithInternationalAddressToUpdate: Registration = {
 
 const secondRegistrationHexId = randomUkEncodedHexId();
 
-const secondRegistrationToUpdate: Registration = {
+const secondRegistrationToUpdate = {
   ...anotherBeaconRegistration,
   hexId: secondRegistrationHexId,
 };
 
-const firstUpdatedRegistration: DraftRegistration = {
+const firstUpdatedRegistration = {
   ...firstRegistrationToUpdate,
   manufacturer: "McMurdo",
   model: "New Beacon",
@@ -321,9 +302,9 @@ const firstUpdatedRegistration: DraftRegistration = {
   emergencyContact1AlternativeTelephoneNumber: "07123456781",
   uses: [
     {
-      environment: Environment.MARITIME,
-      purpose: Purpose.PLEASURE,
-      activity: Activity.MOTOR,
+      environment: "MARITIME",
+      purpose: "PLEASURE",
+      activity: "MOTOR",
     },
   ],
 };
@@ -340,7 +321,7 @@ const whenIClickTheHexIdOfTheRegistrationIJustUpdated =
 const whenIClickOnTheHexIdOfTheRegistrationIUpdated =
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate;
 
-const iCanSeeTheDetailsOfMyRegistration = (registration: Registration) => {
+const iCanSeeTheDetailsOfMyRegistration = (registration) => {
   iCanSeeMyExistingRegistrationHexId(registration.hexId);
   const dateRegistered = formatDateLong(new Date().toDateString()); // Assume test user registered beacon on same day for ease)
   iCanSeeTheHistoryOfMyRegistration(dateRegistered, dateRegistered);
@@ -351,11 +332,9 @@ const iCanSeeTheDetailsOfMyRegistration = (registration: Registration) => {
   iCanSeeUseInformation(registration);
 };
 
-const iCanUpdateTheDetailsOfMyExistingRegistration = (
-  registration: Registration
-) => {
+const iCanUpdateTheDetailsOfMyExistingRegistration = (registration) => {
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Beacon information");
-  theBackLinkContains(Resources.registration, Actions.update);
+  theBackLinkContains("manage-my-registrations", "update");
   iEditMyBeaconManufacturerAndModel(
     registration,
     firstUpdatedRegistration.manufacturer,
@@ -368,7 +347,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading(
     "Additional beacon information"
   );
-  theBackLinkContains(Resources.registration, Actions.update);
+  theBackLinkContains("manage-my-registrations", "update");
   iEditMyBeaconInformation(
     registration,
     firstUpdatedRegistration.manufacturerSerialNumber,
@@ -383,7 +362,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
-  theBackLinkContains(Resources.registration, Actions.update);
+  theBackLinkContains("manage-my-registrations", "update");
   whenIGoToDeleteMy(/main use/i);
   iAmPromptedToConfirm(
     registration.uses[0].environment,
@@ -394,14 +373,14 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   theNumberOfUsesIs(0);
   andIClickTheButtonContaining("Add a use");
   iCanSeeAPageHeadingThatContains("main use");
-  theBackLinkContains(Resources.registration, Actions.update, Resources.use);
-  givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
+  theBackLinkContains("manage-my-registrations", "update", "use");
+  givenIHaveEnteredMyMaritimeUse("PLEASURE");
   theNumberOfUsesIs(1);
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Owner details");
-  theBackLinkContains(Resources.registration, Actions.update);
+  theBackLinkContains("manage-my-registrations", "update");
   iEditMyOwnerInformation(
     registration,
     firstUpdatedRegistration.ownerFullName,
@@ -413,7 +392,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
-  theBackLinkContains(Resources.registration, Actions.update);
+  theBackLinkContains("manage-my-registrations", "update");
   whenISelect("#unitedKingdom");
   whenIClickContinue();
   iEditTheBeaconOwnersUnitedKingdomAddress(
@@ -427,7 +406,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 1");
-  theBackLinkContains(Resources.registration, Actions.update);
+  theBackLinkContains("manage-my-registrations", "update");
   iEditMyEmergencyContactInformation(
     registration,
     firstUpdatedRegistration.emergencyContact1FullName,
@@ -438,12 +417,12 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 2");
-  theBackLinkContains(Resources.registration, Actions.update);
+  theBackLinkContains("manage-my-registrations", "update");
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 3");
-  theBackLinkContains(Resources.registration, Actions.update);
+  theBackLinkContains("manage-my-registrations", "update");
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
 };
@@ -461,19 +440,19 @@ const iCanSeeTheHistoryOfMyRegistration = (
     .and("contain", dateUpdated);
 };
 
-const iCanSeeMyBeaconInformation = (registration: Registration) => {
+const iCanSeeMyBeaconInformation = (registration) => {
   cy.get("main").contains(registration.manufacturer);
   cy.get("main").contains(registration.model);
   cy.get("main").contains(registration.hexId);
 };
 
-const iCanSeeAdditionalBeaconInformation = (registration: Registration) => {
+const iCanSeeAdditionalBeaconInformation = (registration) => {
   cy.get("main").contains(registration.manufacturerSerialNumber);
   cy.get("main").contains(formatMonth(registration.batteryExpiryDate));
   cy.get("main").contains(formatMonth(registration.lastServicedDate));
 };
 
-const iCanSeeOwnerInformation = (registration: Registration) => {
+const iCanSeeOwnerInformation = (registration) => {
   cy.get("main").contains(registration.ownerFullName);
   cy.get("main").contains(registration.ownerTelephoneNumber);
   cy.get("main").contains(registration.ownerAlternativeTelephoneNumber);
@@ -493,7 +472,7 @@ const iCanSeeOwnerInformation = (registration: Registration) => {
   cy.get("main").contains(registration.ownerCountry);
 };
 
-const iCanSeeEmergencyContactInformation = (registration: Registration) => {
+const iCanSeeEmergencyContactInformation = (registration) => {
   cy.get("main").contains(registration.emergencyContact1FullName);
   cy.get("main").contains(registration.emergencyContact1TelephoneNumber);
   if (registration.emergencyContact1AlternativeTelephoneNumber) {
@@ -517,11 +496,11 @@ const iCanSeeEmergencyContactInformation = (registration: Registration) => {
   }
 };
 
-const iCanSeeUseInformation = (draftRegistration: DraftRegistration) => {
+const iCanSeeUseInformation = (draftRegistration) => {
   draftRegistration.uses.forEach((use) => {
     cy.get("main").contains(new RegExp(use.environment, "i"));
     cy.get("main").contains(new RegExp(use.activity, "i"));
-    if (use.environment !== Environment.LAND) {
+    if (use.environment !== "LAND") {
       cy.get("main").contains(new RegExp(use.purpose, "i"));
     }
 
@@ -557,7 +536,7 @@ const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
 };
 
 export const iEditMyBeaconManufacturerAndModel = (
-  registration: Registration,
+  registration,
   newManufacturer: string,
   newModel: string
 ): void => {
@@ -567,14 +546,12 @@ export const iEditMyBeaconManufacturerAndModel = (
   cy.get(`input[value="${registration.model}"]`).clear().type(newModel);
 };
 
-export const iCanSeeButICannotEditMyHexId = (
-  registration: Registration
-): void => {
+export const iCanSeeButICannotEditMyHexId = (registration): void => {
   cy.get("main").contains(registration.hexId);
 };
 
 export const iEditMyBeaconInformation = (
-  registration: Registration,
+  registration,
   newManufacturerSerialNumber: string,
   newChkCode: string,
   csta: string,
@@ -651,7 +628,7 @@ const iEditTheBeaconOwnersRestOfWorldAddress = (
 };
 
 const iEditMyEmergencyContactInformation = (
-  registration: Registration,
+  registration,
   newEmergencyContactName,
   newEmergencyContactTelephoneNumber,
   newEmergencyContactAlternativeTelephoneNumber
@@ -667,10 +644,8 @@ const iEditMyEmergencyContactInformation = (
     .type(`${newEmergencyContactAlternativeTelephoneNumber}`);
 };
 
-const iCanViewTheUpdatedBeaconInformation = (
-  updatedRegistrationDetails: DraftRegistration
-) => {
-  whenIHaveVisited(AccountPageURLs.accountHome);
+const iCanViewTheUpdatedBeaconInformation = (updatedRegistrationDetails) => {
+  whenIHaveVisited("/account/your-beacon-registry-account");
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
     firstRegistrationToUpdate.hexId
   );
@@ -686,9 +661,9 @@ const iCanViewTheUpdatedBeaconInformation = (
 };
 
 const iCanViewTheUpdatedAdditionalBeaconInformation = (
-  updatedRegistrationDetails: DraftRegistration
+  updatedRegistrationDetails
 ) => {
-  whenIHaveVisited(AccountPageURLs.accountHome);
+  whenIHaveVisited("/account/your-beacon-registry-account");
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
     firstRegistrationToUpdate.hexId
   );

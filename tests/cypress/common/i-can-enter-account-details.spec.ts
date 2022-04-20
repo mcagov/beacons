@@ -1,8 +1,6 @@
-import { AccountPageURLs } from "../../../webapp/src/lib/urls";
 import { testAccountDetails } from "./happy-path-test-data.spec";
 import {
   givenIHaveClickedTheButtonContaining,
-  thenTheUrlShouldContain,
   whenIClearAndType,
   whenIClearTheInput,
 } from "./selectors-and-assertions.spec";
@@ -19,7 +17,6 @@ export const givenIHaveFilledInUpdateAccountDetailsPage = (): void => {
 };
 
 export const iCanSeeMyAccountDetails = (): void => {
-  thenTheUrlShouldContain(AccountPageURLs.accountHome);
   cy.contains(testAccountDetails.fullName);
   cy.contains(testAccountDetails.telephoneNumber);
   cy.contains(testAccountDetails.addressLine1);

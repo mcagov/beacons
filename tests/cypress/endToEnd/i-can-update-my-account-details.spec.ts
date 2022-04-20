@@ -1,4 +1,3 @@
-import { AccountPageURLs } from "../../../webapp/src/lib/urls";
 import {
   andIClickContinue,
   givenIHaveSignedIn,
@@ -35,7 +34,7 @@ describe("As an AccountHolder", () => {
   describe("who now lives in the United Kingdom", () => {
     it("I can change my address to one in the United Kingdom", () => {
       givenIHaveSignedIn();
-      givenIHaveVisited(AccountPageURLs.updateAccount);
+      givenIHaveVisited("/account/update-account");
       iCanSeeAPageHeadingThatContains("Do you live in the United Kingdom?");
 
       whenISelect("#unitedKingdom");
@@ -49,7 +48,7 @@ describe("As an AccountHolder", () => {
       whenIClearAndType("BS8 9DB", postcodeSelector);
 
       whenIClickContinue();
-      thenTheUrlShouldContain(AccountPageURLs.accountHome);
+      thenTheUrlShouldContain("/account/your-beacon-registry-account");
     });
 
     it("I am reminded to enter mandatory fields for a United Kingdom-based address", () => {
@@ -80,7 +79,7 @@ describe("As an AccountHolder", () => {
       ];
 
       givenIHaveSignedIn();
-      givenIHaveVisited(AccountPageURLs.updateAccount);
+      givenIHaveVisited("/account/update-account");
       iCanSeeAPageHeadingThatContains("Do you live in the United Kingdom?");
 
       whenISelect("#unitedKingdom");
@@ -99,7 +98,7 @@ describe("As an AccountHolder", () => {
 
     it("I am reminded to enter a valid telephone number", () => {
       givenIHaveSignedIn();
-      givenIHaveVisited(AccountPageURLs.updateAccount);
+      givenIHaveVisited("/account/update-account");
       iCanSeeAPageHeadingThatContains("Do you live in the United Kingdom?");
       whenISelect("#unitedKingdom");
       andIClickContinue();
@@ -115,7 +114,7 @@ describe("As an AccountHolder", () => {
     it("I previously lived outside of the United Kingdom", () => {
       // Set up to live outside of the United Kingdom
       givenIHaveSignedIn();
-      givenIHaveVisited(AccountPageURLs.updateAccount);
+      givenIHaveVisited("/account/update-account");
       whenISelect("#restOfWorld");
       andIClickContinue();
       whenIClearAndType("Monsieur Beacon", fullNameSelector);
@@ -129,7 +128,7 @@ describe("As an AccountHolder", () => {
       whenIClearAndType("60605", postcodeSelector);
 
       // Update to live in the United Kingdom
-      givenIHaveVisited(AccountPageURLs.updateAccount);
+      givenIHaveVisited("/account/update-account");
       whenISelect("#unitedKingdom");
       andIClickContinue();
       thenTheInputShouldBeEmpty(addressSelector);
@@ -144,7 +143,7 @@ describe("As an AccountHolder", () => {
       whenIType("BS8 9DB", postcodeSelector);
 
       whenIClickContinue();
-      thenTheUrlShouldContain(AccountPageURLs.accountHome);
+      thenTheUrlShouldContain("/account/your-beacon-registry-account");
 
       iCanSeeText("100 Beacon Road");
       iCanSeeText("Beaconshire");
@@ -159,7 +158,7 @@ describe("As an AccountHolder", () => {
   describe("who now lives somewhere other than the United Kingdom", () => {
     it("I can change my address to one outside the United Kingdom", () => {
       givenIHaveSignedIn();
-      givenIHaveVisited(AccountPageURLs.updateAccount);
+      givenIHaveVisited("/account/update-account");
       iCanSeeAPageHeadingThatContains("Do you live in the United Kingdom?");
 
       whenISelect("#restOfWorld");
@@ -175,7 +174,7 @@ describe("As an AccountHolder", () => {
       whenIClearAndType("60605", postcodeSelector);
 
       whenIClickContinue();
-      thenTheUrlShouldContain(AccountPageURLs.accountHome);
+      thenTheUrlShouldContain("/account/your-beacon-registry-account");
 
       iCanSeeText("Swanson Wharf");
       iCanSeeText("Royal Dubai Yacht Club");
@@ -188,7 +187,7 @@ describe("As an AccountHolder", () => {
     it("I previously lived in the United Kingdom", () => {
       // Set up to live in the United Kingdom
       givenIHaveSignedIn();
-      givenIHaveVisited(AccountPageURLs.updateAccount);
+      givenIHaveVisited("/account/update-account");
       whenISelect("#unitedKingdom");
       andIClickContinue();
       whenIClearAndType("Mrs Beacon", fullNameSelector);
@@ -200,7 +199,7 @@ describe("As an AccountHolder", () => {
       whenIClickContinue();
 
       // Update to live outside of the United Kingdom
-      givenIHaveVisited(AccountPageURLs.updateAccount);
+      givenIHaveVisited("/account/update-account");
       whenISelect("#restOfWorld");
       andIClickContinue();
 
@@ -218,7 +217,7 @@ describe("As an AccountHolder", () => {
       whenIType("60605", postcodeSelector);
 
       whenIClickContinue();
-      thenTheUrlShouldContain(AccountPageURLs.accountHome);
+      thenTheUrlShouldContain("/account/your-beacon-registry-account");
       iCanSeeText("Swanson Wharf");
       iCanSeeText("Royal Dubai Yacht Club");
       iCanSeeText("United Arab Emirates");
@@ -253,7 +252,7 @@ describe("As an AccountHolder", () => {
       ];
 
       givenIHaveSignedIn();
-      givenIHaveVisited(AccountPageURLs.updateAccount);
+      givenIHaveVisited("/account/update-account");
       iCanSeeAPageHeadingThatContains("Do you live in the United Kingdom?");
 
       whenISelect("#restOfWorld");

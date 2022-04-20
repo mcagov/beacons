@@ -1,10 +1,3 @@
-import { ILegacyBeaconRequest } from "../../../webapp/src/gateways/interfaces/LegacyBeaconRequest";
-import { Purpose } from "../../../webapp/src/lib/deprecatedRegistration/types";
-import {
-  AccountPageURLs,
-  CreateRegistrationPageURLs,
-} from "../../../webapp/src/lib/urls";
-import { formatDateLong } from "../../../webapp/src/lib/writingStyle";
 import { testBeaconAndOwnerData } from "../common/happy-path-test-data.spec";
 import {
   givenIHaveFilledInBeaconInformationPage,
@@ -48,6 +41,7 @@ import {
   whenIHaveVisited,
   whenISelect,
 } from "../common/selectors-and-assertions.spec";
+import { formatDateLong } from "../common/writing-style.spec";
 import { legacyBeaconRequestFixture } from "../fixtures/legacyBeaconRequest.fixture";
 import fixture from "../fixtures/singleBeaconRegistration.json";
 
@@ -57,7 +51,7 @@ describe("As an account holder", () => {
 
     iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequestFixture);
     iHavePreviouslyRegisteredABeacon(fixture);
-    givenIHaveVisited(AccountPageURLs.accountHome);
+    givenIHaveVisited("/account/your-beacon-registry-account");
 
     ifIAmAskedForAccountHolderDetailsIProvideThem();
 
@@ -75,9 +69,9 @@ describe("As an account holder", () => {
 
     givenIHaveSignedIn();
     givenIHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
-    givenIHaveVisited(AccountPageURLs.accountHome);
+    givenIHaveVisited("/account/your-beacon-registry-account");
 
-    whenIHaveVisited(AccountPageURLs.accountHome);
+    whenIHaveVisited("/account/your-beacon-registry-account");
     iCanSeeTheLegacyBeaconAssignedToMeInTheTable(hexId);
 
     whenIClickOnTheHexIdOfTheLegacyBeaconAssignedToMe(hexId);
@@ -88,7 +82,7 @@ describe("As an account holder", () => {
 
     whenISelect("#claim");
     andIClickContinue();
-    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkBeaconDetails);
+    thenTheUrlShouldContain("/register-a-beacon/check-beacon-details");
 
     // Back button from the Create flow goes back to claim/reject page.  User
     // cannot go use back button to edit hexId, manufacturer, model.
@@ -100,7 +94,7 @@ describe("As an account holder", () => {
     andIClickContinue();
     andIClickContinue();
     givenIHaveFilledInBeaconInformationPage();
-    givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
+    givenIHaveEnteredMyMaritimeUse("PLEASURE");
     andIHaveNoFurtherUses();
     // givenIHaveEnteredMyPersonalDetails();
     givenIHaveTyped(
@@ -114,7 +108,7 @@ describe("As an account holder", () => {
     iCanSeeText(manufacturer);
     iCanSeeText(model);
     iCanSeeMyAdditionalBeaconInformation();
-    iCanSeeMyMaritimeUse(Purpose.PLEASURE);
+    iCanSeeMyMaritimeUse("PLEASURE");
     iCanSeeMyEmergencyContactDetails();
 
     iPerformOperationAndWaitForNewPageToLoad(() => {
@@ -131,7 +125,7 @@ describe("As an account holder", () => {
     iCanSeeText(manufacturer);
     iCanSeeText(model);
     iCanSeeMyAdditionalBeaconInformation();
-    iCanSeeMyMaritimeUse(Purpose.PLEASURE);
+    iCanSeeMyMaritimeUse("PLEASURE");
     iCanSeeMyEmergencyContactDetails();
   });
 });
@@ -156,7 +150,7 @@ const theBeaconListedForHexIdIsNotALegacyBeacon = (hexId: string) => {
 const whenIClickContinueWithNoOptionsSelected = whenIClickContinue;
 
 const iCanSeeHighLevelInformationAboutTheLegacyBeacon = (
-  legacyBeaconRequest: ILegacyBeaconRequest
+  legacyBeaconRequest
 ) => {
   cy.contains(
     formatDateLong(

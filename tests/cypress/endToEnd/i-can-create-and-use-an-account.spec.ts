@@ -1,4 +1,3 @@
-import { AccountPageURLs, GeneralPageURLs } from "../../../webapp/src/lib/urls";
 import {
   givenIHaveBeenTo,
   givenIHaveClicked,
@@ -13,7 +12,7 @@ import {
 
 describe("As a new user who wants to register a beacon", () => {
   it("I can create a Beacon Registry Account", () => {
-    givenIHaveBeenTo(GeneralPageURLs.start);
+    givenIHaveBeenTo("/");
     givenIHaveClicked(".govuk-button--start");
     givenIHaveSelected("#signUp");
     givenIHaveClickedContinue();
@@ -33,7 +32,7 @@ describe("As a new user who wants to register a beacon", () => {
   it("requires me to choose an option", () => {
     const expectedErrorMessage =
       "Select an option to sign in or to create an account";
-    givenIHaveBeenTo(GeneralPageURLs.start);
+    givenIHaveBeenTo("/");
     givenIHaveClicked(".govuk-button--start");
     givenIHaveWaitedForAzureB2C();
     givenIHaveClickedContinue();
@@ -43,8 +42,8 @@ describe("As a new user who wants to register a beacon", () => {
 
 describe("As user with an account", () => {
   it("I can sign in to my Beacon Registry Account", () => {
-    givenIHaveBeenTo(GeneralPageURLs.start);
-    givenIHaveBeenTo(AccountPageURLs.signUpOrSignIn);
+    givenIHaveBeenTo("/");
+    givenIHaveBeenTo("/account/sign-up-or-sign-in");
     givenIHaveSelected("#signIn");
     givenIHaveClickedContinue();
     thenTheUrlShouldContain(

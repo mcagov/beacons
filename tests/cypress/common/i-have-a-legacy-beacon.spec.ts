@@ -1,12 +1,11 @@
-import { ILegacyBeaconRequest } from "../../../webapp/src/gateways/interfaces/LegacyBeaconRequest";
 import { makeAuthenticatedPOSTRequest } from "./make-authenticated-POST-request.spec";
 
-export const iHavePreviouslyRegisteredALegacyBeacon = async (
-  legacyBeaconRequest: ILegacyBeaconRequest
-): Promise<void> => {
+export const iHavePreviouslyRegisteredALegacyBeacon = (
+  legacyBeaconRequest
+): void => {
   const apiUrl = `${Cypress.env("API_URL")}/migrate/legacy-beacon`;
 
-  await makeAuthenticatedPOSTRequest(legacyBeaconRequest, apiUrl);
+  makeAuthenticatedPOSTRequest(legacyBeaconRequest, apiUrl);
 };
 
 export const givenIHavePreviouslyRegisteredALegacyBeacon =

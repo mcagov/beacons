@@ -1,13 +1,4 @@
 import {
-  Environment,
-  Purpose,
-} from "../../../../webapp/src/lib/deprecatedRegistration/types";
-import {
-  CreateRegistrationPageURLs,
-  GeneralPageURLs,
-} from "../../../../webapp/src/lib/urls";
-import { makeEnumValueUserFriendly } from "../../../../webapp/src/lib/writingStyle";
-import {
   testAviationCommercialUseData,
   testAviationPleasureUseData,
   testAviationUseData,
@@ -32,9 +23,10 @@ import {
   whenIClickBack,
   whenIClickBackTimes,
 } from "../selectors-and-assertions.spec";
+import { makeEnumValueUserFriendly } from "../writing-style.spec";
 import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
-export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
+export const givenIHaveEnteredMyAviationUse = (purpose: string): void => {
   givenIHaveSelected("#aviation");
   andIClickContinue();
 
@@ -45,12 +37,12 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   iCanSeeAPageHeadingThatContains("aviation");
   iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
-    case Purpose.COMMERCIAL:
+    case "COMMERCIAL":
       givenIHaveSelected(
         "#" + testAviationCommercialUseData.type.activity.toLowerCase()
       );
       break;
-    case Purpose.PLEASURE:
+    case "PLEASURE":
       givenIHaveSelected(
         "#" + testAviationPleasureUseData.type.activity.toLowerCase()
       );
@@ -69,7 +61,7 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   andIClickContinue();
 };
 
-export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
+export const iCanGoBackAndEditMyAviationUse = (purpose: string): void => {
   whenIClickBack();
   iCanEditMyEmergencyContactDetails();
   whenIClickBack();
@@ -93,13 +85,13 @@ export const iCanGoBackAndEditMyAviationUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyAviationPurpose(purpose);
   whenIClickBack();
-  iCanEditMyEnvironment(Environment.AVIATION);
+  iCanEditMyEnvironment("AVIATION");
   whenIClickBack();
   iCanEditMyAdditionalBeaconInformation();
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iHaveVisited(GeneralPageURLs.start);
+  iHaveVisited("/");
 };
 
 export const andIHaveEnteredMyAviationUse = givenIHaveEnteredMyAviationUse;
@@ -134,15 +126,13 @@ export const iCanViewMyChangedAircraftCommunications = (): void => {
   cy.get("#mobileTelephoneInput2").should("not.be.visible");
   cy.get("#otherCommunicationInput").should("not.be.visible");
   andIClickContinue();
-  cy.visit(CreateRegistrationPageURLs.checkYourAnswers);
+  cy.visit("/register-a-beacon/check-your-answers");
   Object.values(comms)
     .filter((value) => typeof value === "string")
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIHaveVisited(
-    CreateRegistrationPageURLs.aircraftCommunications + "?useId=0"
-  );
+  andIHaveVisited("/register-a-beacon/aircraft-communications?useId=0");
 };
 
 export const iCanEditMyAircraftDetails = (): void => {
@@ -168,14 +158,14 @@ export const iCanEditMyAdditionalAviationUseInformation = (): void => {
   cy.get("textarea").contains(testAviationUseData.moreDetails);
 };
 
-export const iCanEditMyAviationPurpose = (purpose: Purpose): void => {
+export const iCanEditMyAviationPurpose = (purpose: string): void => {
   switch (purpose) {
-    case Purpose.COMMERCIAL:
+    case "COMMERCIAL":
       cy.get(
         `input[value="${testAviationCommercialUseData.type.purpose}"]`
       ).should("be.checked");
       break;
-    case Purpose.PLEASURE:
+    case "PLEASURE":
       cy.get(
         `input[value="${testAviationPleasureUseData.type.purpose}"]`
       ).should("be.checked");
@@ -183,14 +173,14 @@ export const iCanEditMyAviationPurpose = (purpose: Purpose): void => {
   }
 };
 
-export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
+export const iCanSeeMyAviationUse = (purpose: string): void => {
   switch (purpose) {
-    case Purpose.COMMERCIAL:
+    case "COMMERCIAL":
       Object.values(testAviationCommercialUseData.type).forEach((value) => {
         cy.get("main").contains(makeEnumValueUserFriendly(value));
       });
       break;
-    case Purpose.PLEASURE:
+    case "PLEASURE":
       Object.values(testAviationPleasureUseData.type).forEach((value) => {
         cy.get("main").contains(makeEnumValueUserFriendly(value));
       });
@@ -211,7 +201,7 @@ export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
   cy.get("main").contains("dongle");
 };
 
-export const iCanSeeMySingleAviationUse = (purpose: Purpose): void => {
+export const iCanSeeMySingleAviationUse = (purpose: string): void => {
   iCanSeeMyAviationUse(purpose);
   cy.get("main").should("not.contain", "Callsign");
 };
@@ -280,4 +270,4 @@ const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
 };
 
 export const iCanEditMyAviationEnvironment = (): void =>
-  iCanEditMyEnvironment(Environment.AVIATION);
+  iCanEditMyEnvironment("AVIATION");

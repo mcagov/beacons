@@ -1,17 +1,3 @@
-import { BeaconUse } from "../../../webapp/src/entities/BeaconUse";
-import { DraftRegistration } from "../../../webapp/src/entities/DraftRegistration";
-import { Registration } from "../../../webapp/src/entities/Registration";
-import {
-  Activity,
-  Environment,
-  Purpose,
-} from "../../../webapp/src/lib/deprecatedRegistration/types";
-import { AccountPageURLs } from "../../../webapp/src/lib/urls";
-import { Actions } from "../../../webapp/src/lib/URLs/Actions";
-import { Pages } from "../../../webapp/src/lib/URLs/Pages";
-import { Resources } from "../../../webapp/src/lib/URLs/Resources";
-import { UsePages } from "../../../webapp/src/lib/URLs/UsePages";
-import { makeEnumValueUserFriendly } from "../../../webapp/src/lib/writingStyle";
 import { iAmPromptedToConfirm } from "../common/i-am-prompted-to-confirm.spec";
 import {
   andIHaveEnteredMyAviationUse,
@@ -48,6 +34,7 @@ import {
 } from "../common/selectors-and-assertions.spec";
 import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
+import { makeEnumValueUserFriendly } from "../common/writing-style.spec";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 
 describe("As an account holder", () => {
@@ -55,7 +42,7 @@ describe("As an account holder", () => {
     givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
 
-    whenIHaveVisited(AccountPageURLs.accountHome);
+    whenIHaveVisited("/account/your-beacon-registry-account");
     whenIClickTheHexIdOfTheRegistrationIWantToUpdate(testRegistration.hexId);
 
     whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
@@ -69,24 +56,20 @@ describe("As an account holder", () => {
     iCanSeeMyUse(testRegistration.uses[0]);
 
     whenIHaveAnotherUse();
-    andIHaveEnteredMyAviationUse(Purpose.COMMERCIAL);
+    andIHaveEnteredMyAviationUse("COMMERCIAL");
     theNumberOfUsesIs(2);
     iCanSeeMyUse(testRegistration.uses[0]);
-    iCanSeeMyAviationUse(Purpose.COMMERCIAL);
+    iCanSeeMyAviationUse("COMMERCIAL");
 
     whenIHaveAnotherUse();
     andIHaveEnteredMyLandUse();
     theNumberOfUsesIs(3);
     iCanSeeMyUse(testRegistration.uses[0]);
-    iCanSeeMyAviationUse(Purpose.COMMERCIAL);
+    iCanSeeMyAviationUse("COMMERCIAL");
     iCanSeeMyLandUse();
 
     whenIGoToDeleteMy(/second use/i);
-    iAmPromptedToConfirm(
-      Environment.AVIATION,
-      Activity.GLIDER,
-      Purpose.COMMERCIAL
-    );
+    iAmPromptedToConfirm("AVIATION", "GLIDER", "COMMERCIAL");
     whenIClickTheButtonContaining("Yes");
     theNumberOfUsesIs(2);
     iCanSeeMyUse(testRegistration.uses[0]);
@@ -104,7 +87,7 @@ describe("As an account holder", () => {
     );
 
     whenIClickTheButtonContaining("Return to your Beacon Registry Account");
-    thenTheUrlShouldContain(AccountPageURLs.accountHome);
+    thenTheUrlShouldContain("/account/your-beacon-registry-account");
 
     whenIClickTheHexIdOfTheRegistrationIJustUpdated(testRegistration.hexId);
     iCanSeeMyUse(testRegistration.uses[0]);
@@ -118,7 +101,7 @@ describe("As an account holder", () => {
 
 const hexId = randomUkEncodedHexId();
 
-const testRegistration: Registration = {
+const testRegistration = {
   ...singleBeaconRegistration,
   hexId,
 };
@@ -132,7 +115,7 @@ const whenIClickTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
 const whenIClickTheHexIdOfTheRegistrationIJustUpdated =
   whenIClickTheHexIdOfTheRegistrationIWantToUpdate;
 
-const thenIAmPromptedToConfirmDeletionOfMyUse = (use: BeaconUse) =>
+const thenIAmPromptedToConfirmDeletionOfMyUse = (use) =>
   cy
     .get("h1")
     .contains(
@@ -142,18 +125,18 @@ const thenIAmPromptedToConfirmDeletionOfMyUse = (use: BeaconUse) =>
       )
     );
 
-const iCanSeeMyUse = (use: BeaconUse): void => {
+const iCanSeeMyUse = (use): void => {
   cy.get("main").contains(makeEnumValueUserFriendly(use.environment));
   cy.get("main").contains(makeEnumValueUserFriendly(use.activity));
-  if (use.environment !== Environment.LAND)
+  if (use.environment !== "LAND")
     cy.get("main").contains(makeEnumValueUserFriendly(use.purpose));
 };
 
-const iCanSeeUseInformation = (draftRegistration: DraftRegistration) => {
+const iCanSeeUseInformation = (draftRegistration) => {
   draftRegistration.uses.forEach((use) => {
     cy.get("main").contains(new RegExp(use.environment, "i"));
     cy.get("main").contains(new RegExp(use.activity, "i"));
-    if (use.environment !== Environment.LAND) {
+    if (use.environment !== "LAND") {
       cy.get("main").contains(new RegExp(use.purpose, "i"));
     }
 
@@ -173,69 +156,64 @@ const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
 
 const iCanUseTheBackLinksAndContinueButtonsToNavigateMyMaritimeUse = () => {
   whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
-  theBackLinkContains(Resources.registration, Actions.update, Pages.summary);
+  theBackLinkContains("manage-my-registrations", "update", "");
   whenIHaveAnotherUse();
 
-  theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
-    UsePages.summary
-  );
+  theBackLinkContains("manage-my-registrations", "update", "use", "");
 
   givenIHaveSelected("#maritime");
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/2/",
-    UsePages.environment
+    "environment"
   );
 
   givenIHaveSelected("#commercial");
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/2/",
-    UsePages.purpose
+    "purpose"
   );
 
   givenIHaveSelected("#motor-vessel");
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/2/",
-    UsePages.activity
+    "activity"
   );
 
   givenIHaveEnteredInformationAboutMyVessel();
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/2/",
-    UsePages.aboutTheVessel
+    "about-the-vessel"
   );
 
   givenIHaveEnteredMyVesselCommunicationDetails();
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/2/",
-    UsePages.vesselCommunications
+    "vessel-communications"
   );
 
   whenIClickBack();
@@ -247,69 +225,64 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyMaritimeUse = () => {
 };
 
 const iCanUseTheBackLinksAndContinueButtonsToNavigateMyAviationUse = () => {
-  theBackLinkContains(Resources.registration, Actions.update, Pages.summary);
+  theBackLinkContains("manage-my-registrations", "update", "");
   whenIHaveAnotherUse();
 
-  theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
-    UsePages.summary
-  );
+  theBackLinkContains("manage-my-registrations", "update", "use", "");
 
   givenIHaveSelected("#aviation");
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/3/",
-    UsePages.environment
+    "environment"
   );
 
   givenIHaveSelected("#pleasure");
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/3/",
-    UsePages.purpose
+    "purpose"
   );
 
   givenIHaveSelected("#glider");
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/3/",
-    UsePages.activity
+    "activity"
   );
 
   givenIHaveEnteredInformationAboutMyAircraft();
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/3/",
-    UsePages.aboutTheAircraft
+    "about-the-aircraft"
   );
 
   givenIHaveEnteredMyAircraftCommunicationDetails();
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/3/",
-    UsePages.aircraftCommunications
+    "aircraft-communications"
   );
 
   whenIClickBack();
@@ -321,47 +294,42 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyAviationUse = () => {
 };
 
 const iCanUseTheBackLinksAndContinueButtonsToNavigateMyLandUse = () => {
-  theBackLinkContains(Resources.registration, Actions.update, Pages.summary);
+  theBackLinkContains("manage-my-registrations", "update", "");
   whenIHaveAnotherUse();
 
-  theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
-    UsePages.summary
-  );
+  theBackLinkContains("manage-my-registrations", "update", "use", "");
 
   givenIHaveSelected("#land");
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/4/",
-    UsePages.environment
+    "environment"
   );
 
   givenIHaveSelected("#driving");
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/4/",
-    UsePages.activity
+    "activity"
   );
 
   givenIHaveEnteredMyLandCommunicationDetails();
   andIClickContinue();
 
   theBackLinkContains(
-    Resources.registration,
-    Actions.update,
-    Resources.use,
+    "manage-my-registrations",
+    "update",
+    "use",
     "/4/",
-    UsePages.landCommunications
+    "land-communications"
   );
 
   whenIClickBack();

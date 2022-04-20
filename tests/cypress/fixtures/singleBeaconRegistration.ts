@@ -1,6 +1,4 @@
-import { Registration } from "../../src/entities/Registration";
-
-export const singleBeaconRegistration: Registration = {
+export const singleBeaconRegistration = {
   accountHolderId: "replace-with-account-holder-id",
   hexId: "1D0EA08C52FFBFF",
   manufacturer: "Ocean Signal",

@@ -1,6 +1,3 @@
-import { Environment } from "../../../../webapp/src/lib/deprecatedRegistration/types";
-import { CreateRegistrationPageURLs } from "../../../../webapp/src/lib/urls";
-import { makeEnumValueUserFriendly } from "../../../../webapp/src/lib/writingStyle";
 import { testLandUseData } from "../happy-path-test-data.spec";
 import {
   andIClickContinue,
@@ -10,6 +7,7 @@ import {
   givenIHaveUnselected,
   iCanSeeAPageHeadingThatContains,
 } from "../selectors-and-assertions.spec";
+import { makeEnumValueUserFriendly } from "../writing-style.spec";
 import { iCanEditMyEnvironment } from "./generic.spec";
 
 export const givenIHaveEnteredMyLandUse = (): void => {
@@ -71,13 +69,13 @@ export const iCanViewMyChangedLandCommunications = (): void => {
   cy.get("#otherCommunicationInput").should("not.be.visible");
   andIClickContinue();
 
-  cy.visit(CreateRegistrationPageURLs.checkYourAnswers);
+  cy.visit("/register-a-beacon/check-your-answers");
   Object.values(comms)
     .filter((value) => typeof value === "string")
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIHaveVisited(CreateRegistrationPageURLs.landCommunications + "?useId=0");
+  andIHaveVisited("/register-a-beacon/land-communications?useId=0");
 };
 
 export const iCanEditMyLandActivity = (): void => {
@@ -138,4 +136,4 @@ const givenIHaveEnteredMoreDetailsAboutMyLandUse = (): void => {
 };
 
 export const iCanEditMyLandEnvironment = (): void =>
-  iCanEditMyEnvironment(Environment.LAND);
+  iCanEditMyEnvironment("LAND");

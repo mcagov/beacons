@@ -1,4 +1,3 @@
-import { GeneralPageURLs } from "../../../webapp/src/lib/urls";
 import {
   andIClickTheButtonContaining,
   givenIHaveVisited,
@@ -11,7 +10,7 @@ import {
 
 describe("As any user", () => {
   it("I can submit feedback", () => {
-    givenIHaveVisited(GeneralPageURLs.start);
+    givenIHaveVisited("/");
     iHaveClickedOnALinkWithText("feedback");
     iCanSeeAPageHeadingThatContains("Give feedback on Register a beacon");
     whenISelect("#verySatisfied");
@@ -22,6 +21,6 @@ describe("As any user", () => {
     andIClickTheButtonContaining("Send feedback");
     iCanSeeAPageHeadingThatContains("Feedback submitted");
     andIClickTheButtonContaining("Go to service start page");
-    thenTheUrlPathShouldBe(GeneralPageURLs.start);
+    thenTheUrlPathShouldBe("/");
   });
 });

@@ -1,13 +1,4 @@
 import {
-  Environment,
-  Purpose,
-} from "../../../../webapp/src/lib/deprecatedRegistration/types";
-import {
-  CreateRegistrationPageURLs,
-  GeneralPageURLs,
-} from "../../../../webapp/src/lib/urls";
-import { makeEnumValueUserFriendly } from "../../../../webapp/src/lib/writingStyle";
-import {
   testMaritimeCommercialUseData,
   testMaritimePleasureUseData,
   testMaritimeUseData,
@@ -34,9 +25,10 @@ import {
   whenIClickBack,
   whenIClickBackTimes,
 } from "../selectors-and-assertions.spec";
+import { makeEnumValueUserFriendly } from "../writing-style.spec";
 import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
-export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
+export const givenIHaveEnteredMyMaritimeUse = (purpose): void => {
   givenIHaveSelected("#maritime");
   andIClickContinue();
 
@@ -47,10 +39,10 @@ export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
   iCanSeeAPageHeadingThatContains("maritime");
   iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
-    case Purpose.COMMERCIAL:
+    case "COMMERCIAL":
       givenIHaveSelected("#motor-vessel");
       break;
-    case Purpose.PLEASURE:
+    case "PLEASURE":
       givenIHaveSelected("#motor-vessel");
       break;
   }
@@ -67,52 +59,50 @@ export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
   andIClickContinue();
 };
 
-export const givenIHaveEnteredMyRequiredMaritimeUse = (
-  purpose: Purpose
-): void => {
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
+export const givenIHaveEnteredMyRequiredMaritimeUse = (purpose): void => {
+  thenTheUrlShouldContain("/register-a-beacon/beacon-use");
   givenIHaveSelected("#maritime");
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.purpose);
+  thenTheUrlShouldContain("/register-a-beacon/purpose");
   iCanSeeAPageHeadingThatContains("maritime");
   givenIHaveSelected(`#${purpose.toLowerCase()}`);
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.activity);
+  thenTheUrlShouldContain("/register-a-beacon/activity");
   iCanSeeAPageHeadingThatContains("maritime");
   iCanSeeAPageHeadingThatContains(purpose.toLowerCase());
   switch (purpose) {
-    case Purpose.COMMERCIAL:
+    case "COMMERCIAL":
       givenIHaveSelected("#motor-vessel");
       break;
-    case Purpose.PLEASURE:
+    case "PLEASURE":
       givenIHaveSelected("#motor-vessel");
       break;
   }
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.aboutTheVessel);
+  thenTheUrlShouldContain("/register-a-beacon/about-the-vessel");
   iCanSeeAPageHeadingThatContains("vessel");
   givenIHaveEnteredRequiredInformationAboutMyVessel();
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.vesselCommunications);
+  thenTheUrlShouldContain("/register-a-beacon/vessel-communications");
   andIClickContinue();
 
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.moreDetails);
+  thenTheUrlShouldContain("/register-a-beacon/more-details");
   givenIHaveEnteredMoreDetailsAboutMyVessel();
   andIClickContinue();
 };
 
-export const iCanSeeMyMaritimeUse = (purpose: Purpose): void => {
+export const iCanSeeMyMaritimeUse = (purpose): void => {
   switch (purpose) {
-    case Purpose.COMMERCIAL:
+    case "COMMERCIAL":
       Object.values(testMaritimeCommercialUseData.type).forEach((value) => {
         cy.get("main").contains(makeEnumValueUserFriendly(value));
       });
       break;
-    case Purpose.PLEASURE:
+    case "PLEASURE":
       Object.values(testMaritimePleasureUseData.type).forEach((value) => {
         cy.get("main").contains(makeEnumValueUserFriendly(value));
       });
@@ -134,14 +124,14 @@ export const iCanSeeMyMaritimeUse = (purpose: Purpose): void => {
   cy.get("main").contains(testMaritimeUseData.moreDetails);
 };
 
-export const iCanSeeMyRequiredMaritimeUse = (purpose: Purpose): void => {
+export const iCanSeeMyRequiredMaritimeUse = (purpose): void => {
   switch (purpose) {
-    case Purpose.COMMERCIAL:
+    case "COMMERCIAL":
       Object.values(testMaritimeCommercialUseData.type).forEach((value) => {
         cy.get("main").contains(makeEnumValueUserFriendly(value));
       });
       break;
-    case Purpose.PLEASURE:
+    case "PLEASURE":
       Object.values(testMaritimePleasureUseData.type).forEach((value) => {
         cy.get("main").contains(makeEnumValueUserFriendly(value));
       });
@@ -153,7 +143,7 @@ export const iCanSeeMyRequiredMaritimeUse = (purpose: Purpose): void => {
   cy.get("main").contains(testMaritimeUseData.moreDetails);
 };
 
-export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
+export const iCanGoBackAndEditMyMaritimeUse = (purpose): void => {
   whenIClickBack();
   iCanEditMyEmergencyContactDetails();
   whenIClickBack();
@@ -178,13 +168,13 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
   whenIClickBack();
   iCanEditMyMaritimePurpose(purpose);
   whenIClickBack();
-  iCanEditMyEnvironment(Environment.MARITIME);
+  iCanEditMyEnvironment("MARITIME");
   whenIClickBack();
   iCanEditMyAdditionalBeaconInformation();
   whenIClickBack();
   iCanEditMyBeaconDetails();
   whenIClickBack();
-  iHaveVisited(GeneralPageURLs.start);
+  iHaveVisited("/");
 };
 
 export const iCanEditMyVesselCommunications = (): void => {
@@ -223,13 +213,13 @@ export const iCanViewMyChangedVesselCommunications = (): void => {
   cy.get("#mobileTelephoneInput2").should("not.be.visible");
   cy.get("#otherCommunicationInput").should("not.be.visible");
   andIClickContinue();
-  cy.visit(CreateRegistrationPageURLs.checkYourAnswers);
+  cy.visit("/register-a-beacon/check-your-answers");
   Object.values(comms)
     .filter((value) => typeof value === "string")
     .forEach((value: string) =>
       cy.get(".govuk-summary-list__value").should("not.contain", value)
     );
-  andIHaveVisited(CreateRegistrationPageURLs.vesselCommunications + "?useId=0");
+  andIHaveVisited("/register-a-beacon/vessel-communications?useId=0");
 };
 
 export const iCanEditMyVesselDetails = (): void => {
@@ -255,14 +245,14 @@ export const iCanEditMyMaritimeActivity = (): void => {
   ).should("be.checked");
 };
 
-export const iCanEditMyMaritimePurpose = (purpose: Purpose): void => {
+export const iCanEditMyMaritimePurpose = (purpose): void => {
   switch (purpose) {
-    case Purpose.COMMERCIAL:
+    case "COMMERCIAL":
       cy.get(
         `input[value="${testMaritimeCommercialUseData.type.purpose}"]`
       ).should("be.checked");
       break;
-    case Purpose.PLEASURE:
+    case "PLEASURE":
       cy.get(
         `input[value="${testMaritimePleasureUseData.type.purpose}"]`
       ).should("be.checked");
@@ -316,4 +306,4 @@ export const iCanEditMyAdditionalMaritimeUseInformation = (): void => {
 };
 
 export const iCanEditMyMaritimeEnvironment = (): void =>
-  iCanEditMyEnvironment(Environment.MARITIME);
+  iCanEditMyEnvironment("MARITIME");

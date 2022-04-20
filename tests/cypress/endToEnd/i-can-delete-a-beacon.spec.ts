@@ -1,6 +1,3 @@
-import { Registration } from "../../../webapp/src/entities/Registration";
-import { AccountPageURLs } from "../../../webapp/src/lib/urls";
-import { prettyUseName } from "../../../webapp/src/lib/writingStyle";
 import { iCanSeeMyExistingRegistrationHexId } from "../common/i-can-see-my-existing-registration-hex-id.spec";
 import {
   iHavePreviouslyRegisteredABeacon,
@@ -16,6 +13,7 @@ import {
   thenIShouldSeeFormErrors,
   whenIClickTheButtonContaining,
 } from "../common/selectors-and-assertions.spec";
+import { prettyUseName } from "../common/writing-style.spec";
 import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
 
 describe("As an account holder", () => {
@@ -27,7 +25,9 @@ describe("As an account holder", () => {
 
     givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
-    givenIHaveACookieSetAndHaveSignedInIVisit(AccountPageURLs.accountHome);
+    givenIHaveACookieSetAndHaveSignedInIVisit(
+      "/account/your-beacon-registry-account"
+    );
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
@@ -39,7 +39,7 @@ describe("As an account holder", () => {
     );
 
     whenIClickTheButtonContaining("Cancel");
-    iHaveVisited(AccountPageURLs.accountHome);
+    iHaveVisited("/account/your-beacon-registry-account");
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
@@ -84,7 +84,7 @@ const iAmAskedIfIAmSureIWantToDeleteMyRegistration = () => {
 };
 
 const iAmPresentedWithSomeRegistrationInformation_SoICanMakeSureIAmDeletingTheCorrectRegistration =
-  (registration: Registration) => {
+  (registration) => {
     cy.get("main").within(() => {
       cy.contains(registration.manufacturer);
       cy.contains(registration.model);
@@ -114,7 +114,7 @@ const whenIEnterMyReasonInTheResultingTextbox = (reason: string) => {
 
 const whenIGoBackToAccountHome = () => {
   whenIClickTheButtonContaining("Return to your Beacon Registry Account");
-  iHaveVisited(AccountPageURLs.accountHome);
+  iHaveVisited("/account/your-beacon-registry-account");
 };
 
 const myDeletedRegistrationIsNoLongerVisible = (hexId: string): void => {

@@ -1,5 +1,3 @@
-import { Environment } from "../../../../webapp/src/lib/deprecatedRegistration/types";
-import { CreateRegistrationPageURLs } from "../../../../webapp/src/lib/urls";
 import {
   andIClickContinue,
   andIClickTheButtonContaining,
@@ -10,12 +8,12 @@ import {
   whenIClickContinue,
 } from "../selectors-and-assertions.spec";
 
-export const iCanEditMyEnvironment = (environment: Environment): void => {
+export const iCanEditMyEnvironment = (environment: string): void => {
   cy.get(`input[value="${environment}"]`).should("be.checked");
 };
 
 export const andIHaveNoFurtherUses = (): void => {
-  thenTheUrlShouldContain(CreateRegistrationPageURLs.additionalUse);
+  thenTheUrlShouldContain("/register-a-beacon/additional-beacon-use");
   andIClickContinue();
 };
 
@@ -40,22 +38,16 @@ export const iCanEditMyNUses = (n: number): void => {
 };
 
 export const whenIGoToEditTheUseNumber = (useNumber: number): void => {
-  iHaveClickedOnAGivenLink(
-    `${CreateRegistrationPageURLs.environment}?useId=${useNumber}`
-  );
+  iHaveClickedOnAGivenLink(`/register-a-beacon/beacon-use?useId=${useNumber}`);
   whenIClickContinue();
 };
 
 export const iAmOnTheLandBranchForUseNumber = (useNumber: number): void => {
-  thenTheUrlShouldContain(
-    `${CreateRegistrationPageURLs.activity}?useId=${useNumber}`
-  );
+  thenTheUrlShouldContain(`/register-a-beacon/activity?useId=${useNumber}`);
 };
 
 export const iAmOnTheMaritimeOrAviationBranchForUseNumber = (
   useNumber: number
 ): void => {
-  thenTheUrlShouldContain(
-    `${CreateRegistrationPageURLs.purpose}?useId=${useNumber}`
-  );
+  thenTheUrlShouldContain(`/register-a-beacon/purpose?useId=${useNumber}`);
 };

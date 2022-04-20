@@ -1,4 +1,3 @@
-import { CreateRegistrationPageURLs } from "../../../webapp/src/lib/urls";
 import {
   testBeaconAndOwnerData,
   testBeaconAndOwnerDataRestOfWorld,
@@ -98,7 +97,6 @@ export const givenIHaveEnteredMyRestOfWorldAddressDetails = (): void => {
   givenIHaveClickedContinue();
 };
 export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
-  givenIHaveVisited(CreateRegistrationPageURLs.emergencyContact);
   givenIHaveTyped(
     testBeaconAndOwnerData.emergencyContacts.emergencyContact1FullName,
     "#emergencyContact1FullName"
@@ -141,7 +139,7 @@ export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
   givenIHaveClickedContinue();
 };
 export const givenIHaveEnteredMyRequiredEmergencyContactDetails = (): void => {
-  givenIHaveVisited(CreateRegistrationPageURLs.emergencyContact);
+  givenIHaveVisited("/register-a-beacon/emergency-contact");
   givenIHaveTyped(
     testBeaconAndOwnerData.emergencyContacts.emergencyContact1FullName,
     "#emergencyContact1FullName"

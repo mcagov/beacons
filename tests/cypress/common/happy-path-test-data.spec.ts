@@ -1,9 +1,3 @@
-import {
-  Activity,
-  Environment,
-  Purpose,
-} from "../../../webapp/src/lib/deprecatedRegistration/types";
-
 export const testAccountDetails = {
   fullName: "Test User",
   telephoneNumber: "07800505999",
@@ -123,18 +117,18 @@ export const testAviationUseData = {
 export const testAviationPleasureUseData = {
   ...testAviationUseData,
   type: {
-    environment: Environment.AVIATION,
-    purpose: Purpose.PLEASURE,
-    activity: Activity.GLIDER,
+    environment: "AVIATION",
+    purpose: "PLEASURE",
+    activity: "GLIDER",
   },
 };
 
 export const testAviationCommercialUseData = {
   ...testAviationUseData,
   type: {
-    environment: Environment.AVIATION,
-    purpose: Purpose.COMMERCIAL,
-    activity: Activity.GLIDER,
+    environment: "AVIATION",
+    purpose: "COMMERCIAL",
+    activity: "GLIDER",
   },
 };
 
@@ -175,25 +169,25 @@ export const testMaritimeUseData = {
 export const testMaritimePleasureUseData = {
   ...testAviationUseData,
   type: {
-    environment: Environment.MARITIME,
-    purpose: Purpose.PLEASURE,
-    activity: Activity.MOTOR,
+    environment: "MARITIME",
+    purpose: "PLEASURE",
+    activity: "MOTOR",
   },
 };
 
 export const testMaritimeCommercialUseData = {
   ...testAviationUseData,
   type: {
-    environment: Environment.MARITIME,
-    purpose: Purpose.COMMERCIAL,
-    activity: Activity.MOTOR,
+    environment: "MARITIME",
+    purpose: "COMMERCIAL",
+    activity: "MOTOR",
   },
 };
 
 export const testLandUseData = {
   type: {
-    environment: Environment.LAND,
-    activity: Activity.CYCLING,
+    environment: "LAND",
+    activity: "CYCLING",
   },
   communications: {
     checkedFields: [

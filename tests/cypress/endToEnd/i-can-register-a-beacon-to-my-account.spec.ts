@@ -1,9 +1,4 @@
 import {
-  AccountPageURLs,
-  CreateRegistrationPageURLs,
-} from "../../../webapp/src/lib/urls";
-import { sentenceCase } from "../../../webapp/src/lib/writingStyle";
-import {
   testBeaconAndOwnerData,
   testLandUseData,
 } from "../common/happy-path-test-data.spec";
@@ -26,11 +21,12 @@ import {
   iPerformOperationAndWaitForNewPageToLoad,
   thenTheUrlShouldContain,
 } from "../common/selectors-and-assertions.spec";
+import { sentenceCase } from "../common/writing-style.spec";
 
 describe("As user with an account", () => {
   it("I register a beacon with a single use and see it in my Account page and I can click to start to create another beacon", () => {
     givenIHaveSignedIn();
-    givenIHaveVisited(AccountPageURLs.accountHome);
+    givenIHaveVisited("/account/your-beacon-registry-account");
     ifIAmAskedForAccountHolderDetailsIProvideThem();
 
     givenIHaveClickedToCreateANewBeacon();
@@ -44,18 +40,18 @@ describe("As user with an account", () => {
     iPerformOperationAndWaitForNewPageToLoad(() =>
       givenIHaveClickedTheButtonContaining("Accept and send")
     );
-    thenTheUrlShouldContain(CreateRegistrationPageURLs.applicationComplete);
+    thenTheUrlShouldContain("/register-a-beacon/application-complete");
 
     givenIHaveClickedToGoBackToMyAccount();
-    thenTheUrlShouldContain(AccountPageURLs.accountHome);
+    thenTheUrlShouldContain("/account/your-beacon-registry-account");
     iCanSeeTheBeaconListWithMyInformation();
 
     whenIClickOnTheBeaconIHaveJustRegistered();
     iCanSeeAllTheDataIEntered();
 
-    givenIHaveVisited(AccountPageURLs.accountHome);
+    givenIHaveVisited("/account/your-beacon-registry-account");
     givenIHaveClickedToCreateANewBeacon();
-    thenTheUrlShouldContain(CreateRegistrationPageURLs.checkBeaconDetails);
+    thenTheUrlShouldContain("/register-a-beacon/check-beacon-details");
   });
 });
 
