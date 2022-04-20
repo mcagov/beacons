@@ -28,8 +28,6 @@ export const givenIHaveEnteredMyLandUse = (): void => {
   andIClickContinue();
 };
 
-export const andIHaveEnteredMyLandUse = givenIHaveEnteredMyLandUse;
-
 export const iCanEditMyLandCommunications = (): void => {
   const comms = testLandUseData.communications;
   comms.checkedFields.forEach((field) =>

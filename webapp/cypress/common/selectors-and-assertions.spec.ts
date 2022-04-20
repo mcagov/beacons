@@ -10,12 +10,6 @@ export const iCanClickTheBackLinkToGoToPreviousPage = (
   thenTheUrlShouldContain(previousPageURL);
 };
 
-export const theBackLinkGoesTo = (previousPageUrl: string): void => {
-  cy.get(".govuk-back-link")
-    .should("have.attr", "href")
-    .and("match", new RegExp(previousPageUrl, "i"));
-};
-
 export const theBackLinkContains = (...strings: string[]): void => {
   strings.forEach((s) => {
     cy.get(".govuk-back-link")
@@ -76,7 +70,6 @@ export const givenIHaveVisited = (url: string): void => {
   cy.visit(url);
 };
 
-export const givenIHaveBeenTo = givenIHaveVisited;
 export const whenIHaveVisited = givenIHaveVisited;
 export const andIHaveVisited = givenIHaveVisited;
 export const iHaveVisited = givenIHaveVisited;
@@ -130,10 +123,6 @@ export const whenIType = (value: string, selector: string): void => {
   cy.get(selector).should("be.empty").type(value);
 };
 
-export const whenIClearAndType = (value: string, selector: string): void => {
-  cy.get(selector).clear().type(value);
-};
-
 export const givenIHaveTyped = whenIType;
 export const andIType = whenIType;
 
@@ -141,14 +130,8 @@ export const whenIClearTheInput = (selector: string): void => {
   cy.get(selector).clear();
 };
 
-export const givenIHaveClearedTheInput = whenIClearTheInput;
-
 export const thenTheUrlShouldContain = (urlPath: string): void => {
   cy.url().should("include", urlPath);
-};
-
-export const thenTheUrlPathShouldBe = (urlPath: string): void => {
-  cy.url().should("include", Cypress.config().baseUrl + urlPath);
 };
 
 export const thenTheInputShouldOnlyContain = (
@@ -156,21 +139,6 @@ export const thenTheInputShouldOnlyContain = (
   selector: string
 ): void => {
   cy.get(selector).should("have.value", expectedValue);
-};
-
-export const thenTheInputShouldBeEmpty = (selector: string): void => {
-  thenTheInputShouldOnlyContain("", selector);
-};
-
-export const thenTheDropdownShouldHaveTheFirstOptionSelected = (
-  selector: string
-): void => {
-  cy.get(selector)
-    .children()
-    .first()
-    .then((option1) => {
-      expect(option1).to.be.selected;
-    });
 };
 
 export const thenIShouldSeeAnErrorSummaryLinkThatContains = (
@@ -212,31 +180,6 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
   cy.wait(2000);
 };
 
-/**
- *
- * Performs an operation and ensures a new page has loaded before continuing.
- *
- * Will continue as soon as a new page is loaded, up to the maximum timout
- * set in @param maxTimeoutMs.
- *
- * Will fail if maxTimeoutMs is exceeded.
- *
- * @param operation - A callback function to perform
- * @param maxTimeoutMs - Max time to wait in ms
- */
-export const iPerformOperationAndWaitForNewPageToLoad = (
-  operation: () => void,
-  maxTimeoutMs = 20000
-): void => {
-  cy.location().then((previousPage) => {
-    operation();
-    cy.location("pathname", { timeout: maxTimeoutMs }).should(
-      "not.equal",
-      previousPage.pathname
-    );
-  });
-};
-
 export const andIHaveEnteredNoInformation = (): void => null;
 
 export const whenIClickBack = (): void => {
@@ -249,25 +192,11 @@ export const whenIClickBackTimes = (times: number): void => {
   }
 };
 
-export const thenTheCheckboxShouldBeChecked = (selector: string): void => {
-  cy.get(selector).should("be.checked");
-};
-
-export const thenTheRadioButtonShouldBeSelected =
-  thenTheCheckboxShouldBeChecked;
-
 export const iCannotSee = (selector: string): void => {
   cy.get(selector).should("not.exist");
 };
 
 export const thenICannotSee = iCannotSee;
-
-export const thenICanSeeAnInputWithPlaceholder = (
-  inputId: string,
-  placeholderText: string
-): void => {
-  cy.get(inputId).should("have.attr", "placeholder", placeholderText);
-};
 
 export const thenThereAreNoErrors = (): void => {
   thenICannotSee(".govuk-error-summary");
@@ -281,38 +210,6 @@ export const iHaveClickedOnAGivenLink = (href: string): void => {
   cy.get(`a[href="${href}"]`).click();
 };
 
-export const iHaveClickedOnALinkWithText = (text: string): void => {
-  cy.get(`a[href]:contains(${text})`).click();
-};
-
-export const whenIClickTheLinkThatContains = iHaveClickedOnALinkWithText;
-
-export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
-  hexId: string
-): void => {
-  cy.contains(hexId);
-};
-
-export const iCanSeeText = (pattern: string | RegExp): void => {
-  cy.get("main").contains(pattern);
-};
-
-export const iCannotSeeText = (text: string | RegExp): void => {
-  cy.get("main").should("not.contain", text);
-};
-
-export const whenIClickTheActionLinkInATableRowContaining = (
-  pattern: string | RegExp,
-  actionLinkText: string | RegExp
-): void => {
-  cy.get("main")
-    .contains(pattern)
-    .parent()
-    .parent()
-    .contains(actionLinkText)
-    .click();
-};
-
 export const whenISelectTheOptionFromTheDropdown = (
   option: string,
   selector: string
@@ -322,14 +219,3 @@ export const whenISelectTheOptionFromTheDropdown = (
 
 export const givenIHaveSelectedTheOptionFromTheDropdown =
   whenISelectTheOptionFromTheDropdown;
-
-export const whenIClickTheBrowserBackButton = (): void => {
-  cy.go("back");
-};
-
-export const iCanSeeTextInSummaryListRowWithHeading = (
-  text: string,
-  heading: string
-): void => {
-  cy.get("dt").contains(heading).parent().contains(text);
-};

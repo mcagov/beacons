@@ -24,8 +24,6 @@ export const andIHaveAnotherUse = (): void => {
   iShouldBeEditingAFreshUse();
 };
 
-export const givenIHaveAnotherUse = andIHaveAnotherUse;
-
 export const whenIHaveAnotherUse = andIHaveAnotherUse;
 
 const iShouldBeEditingAFreshUse = (): void => {
