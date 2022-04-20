@@ -4,27 +4,12 @@ import {
   testAviationUseData,
 } from "../happy-path-test-data.spec";
 import {
-  iCanEditMyAdditionalBeaconInformation,
-  iCanEditMyBeaconDetails,
-} from "../i-can-enter-beacon-information.spec";
-import {
-  iCanEditMyAddressDetails,
-  iCanEditMyEmergencyContactDetails,
-  iCanEditMyPersonalDetails,
-} from "../i-can-enter-owner-information.spec";
-import {
   andIClickContinue,
-  andIHaveVisited,
   givenIHaveSelected,
   givenIHaveTyped,
-  givenIHaveUnselected,
   iCanSeeAPageHeadingThatContains,
-  iHaveVisited,
-  whenIClickBack,
-  whenIClickBackTimes,
 } from "../selectors-and-assertions.spec";
 import { makeEnumValueUserFriendly } from "../writing-style.spec";
-import { iCanEditMyEnvironment, iCanEditMyNUses } from "./generic.spec";
 
 export const givenIHaveEnteredMyAviationUse = (purpose: string): void => {
   givenIHaveSelected("#aviation");
@@ -61,117 +46,7 @@ export const givenIHaveEnteredMyAviationUse = (purpose: string): void => {
   andIClickContinue();
 };
 
-export const iCanGoBackAndEditMyAviationUse = (purpose: string): void => {
-  whenIClickBack();
-  iCanEditMyEmergencyContactDetails();
-  whenIClickBack();
-  iCanEditMyAddressDetails();
-  whenIClickBackTimes(2);
-  iCanEditMyPersonalDetails();
-  whenIClickBack();
-  iCanEditMyNUses(1);
-  whenIClickBack();
-  iCanEditMyAdditionalAviationUseInformation();
-  whenIClickBack();
-  iCanEditMyAircraftCommunications();
-  iCanChangeMyAircraftCommunications();
-  andIClickContinue();
-  whenIClickBack();
-  iCanViewMyChangedAircraftCommunications();
-  whenIClickBack();
-  iCanEditMyAircraftDetails();
-  whenIClickBack();
-  iCanEditMyAviationActivity();
-  whenIClickBack();
-  iCanEditMyAviationPurpose(purpose);
-  whenIClickBack();
-  iCanEditMyEnvironment("AVIATION");
-  whenIClickBack();
-  iCanEditMyAdditionalBeaconInformation();
-  whenIClickBack();
-  iCanEditMyBeaconDetails();
-  whenIClickBack();
-  iHaveVisited("/");
-};
-
 export const andIHaveEnteredMyAviationUse = givenIHaveEnteredMyAviationUse;
-
-export const iCanEditMyAircraftCommunications = (): void => {
-  const comms = testAviationUseData.communications;
-  comms.checkedFields.forEach((field) =>
-    cy.get(`#${field}`).should("be.checked")
-  );
-  cy.get("#satelliteTelephoneInput").should(
-    "have.value",
-    comms.satelliteTelephone
-  );
-  cy.get("#mobileTelephoneInput1").should("have.value", comms.mobileTelephone1);
-  cy.get("#mobileTelephoneInput2").should("have.value", comms.mobileTelephone2);
-  cy.get("#otherCommunicationInput").contains(comms.otherCommunication);
-};
-
-export const iCanChangeMyAircraftCommunications = (): void => {
-  const comms = testAviationUseData.communications;
-  comms.checkedFields.forEach((field) => givenIHaveUnselected(`#${field}`));
-};
-
-export const iCanViewMyChangedAircraftCommunications = (): void => {
-  const comms = testAviationUseData.communications;
-
-  comms.checkedFields.forEach((field) =>
-    cy.get(`#${field}`).should("not.be.checked")
-  );
-  cy.get("#satelliteTelephoneInput").should("not.be.visible");
-  cy.get("#mobileTelephoneInput1").should("not.be.visible");
-  cy.get("#mobileTelephoneInput2").should("not.be.visible");
-  cy.get("#otherCommunicationInput").should("not.be.visible");
-  andIClickContinue();
-  cy.visit("/register-a-beacon/check-your-answers");
-  Object.values(comms)
-    .filter((value) => typeof value === "string")
-    .forEach((value: string) =>
-      cy.get(".govuk-summary-list__value").should("not.contain", value)
-    );
-  andIHaveVisited("/register-a-beacon/aircraft-communications?useId=0");
-};
-
-export const iCanEditMyAircraftDetails = (): void => {
-  const aircraft = testAviationUseData.aircraft;
-  cy.get("#maxCapacity").should("have.value", aircraft.maxCapacity);
-  cy.get("#aircraftManufacturer").should("have.value", aircraft.manufacturer);
-  cy.get("#principalAirport").should("have.value", aircraft.principalAirport);
-  cy.get("#secondaryAirport").should("have.value", aircraft.secondaryAirport);
-  cy.get("#registrationMark").should("have.value", aircraft.registrationMark);
-  cy.get("#hexAddress").should("have.value", aircraft.hexAddress);
-  cy.get("#cnOrMsnNumber").should("have.value", aircraft.cnOrMsnNumber);
-  cy.get("#dongle-yes").should("be.checked");
-  cy.get("#beaconPosition").contains(aircraft.beaconPosition);
-};
-
-export const iCanEditMyAviationActivity = (): void => {
-  cy.get(`input[value="${testAviationPleasureUseData.type.activity}"]`).should(
-    "be.checked"
-  );
-};
-
-export const iCanEditMyAdditionalAviationUseInformation = (): void => {
-  cy.get("textarea").contains(testAviationUseData.moreDetails);
-};
-
-export const iCanEditMyAviationPurpose = (purpose: string): void => {
-  switch (purpose) {
-    case "COMMERCIAL":
-      cy.get(
-        `input[value="${testAviationCommercialUseData.type.purpose}"]`
-      ).should("be.checked");
-      break;
-    case "PLEASURE":
-      cy.get(
-        `input[value="${testAviationPleasureUseData.type.purpose}"]`
-      ).should("be.checked");
-      break;
-  }
-};
 
 export const iCanSeeMyAviationUse = (purpose: string): void => {
   switch (purpose) {
@@ -199,11 +74,6 @@ export const iCanSeeMyAviationUse = (purpose: string): void => {
   );
   cy.get("main").contains(testAviationUseData.moreDetails);
   cy.get("main").contains("dongle");
-};
-
-export const iCanSeeMySingleAviationUse = (purpose: string): void => {
-  iCanSeeMyAviationUse(purpose);
-  cy.get("main").should("not.contain", "Callsign");
 };
 
 export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
@@ -268,6 +138,3 @@ export const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
 const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
   givenIHaveTyped(testAviationUseData.moreDetails, "#moreDetails");
 };
-
-export const iCanEditMyAviationEnvironment = (): void =>
-  iCanEditMyEnvironment("AVIATION");

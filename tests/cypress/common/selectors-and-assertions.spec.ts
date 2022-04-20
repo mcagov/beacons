@@ -1,14 +1,6 @@
 import { v4 } from "uuid";
 
 export const requiredFieldErrorMessage = "required field";
-export const tooManyCharactersErrorMessage = "too many characters";
-
-export const iCanClickTheBackLinkToGoToPreviousPage = (
-  previousPageURL: string
-): void => {
-  cy.get(".govuk-back-link").click();
-  thenTheUrlShouldContain(previousPageURL);
-};
 
 export const theBackLinkGoesTo = (previousPageUrl: string): void => {
   cy.get(".govuk-back-link")
@@ -68,25 +60,17 @@ export const givenIHaveSignedIn = (): void => {
   });
 };
 
-export const givenIHaveNotSignedIn = (): void => {
-  cy.clearCookie("next-auth.session-token");
-};
-
 export const givenIHaveVisited = (url: string): void => {
   cy.visit(url);
 };
 
 export const givenIHaveBeenTo = givenIHaveVisited;
 export const whenIHaveVisited = givenIHaveVisited;
-export const andIHaveVisited = givenIHaveVisited;
+
 export const iHaveVisited = givenIHaveVisited;
 
 export const iCanSeeAPageHeadingThatContains = (text: string): void => {
   cy.get("h1").contains(text);
-};
-
-export const iCanSeeASectionHeadingThatContains = (text: string): void => {
-  cy.get("h2").contains(text);
 };
 
 export const iCanSeeNLinksContaining = (n: number, text: string): void => {
@@ -135,13 +119,10 @@ export const whenIClearAndType = (value: string, selector: string): void => {
 };
 
 export const givenIHaveTyped = whenIType;
-export const andIType = whenIType;
 
 export const whenIClearTheInput = (selector: string): void => {
   cy.get(selector).clear();
 };
-
-export const givenIHaveClearedTheInput = whenIClearTheInput;
 
 export const thenTheUrlShouldContain = (urlPath: string): void => {
   cy.url().should("include", urlPath);
@@ -201,12 +182,8 @@ export const thenMyFocusMovesTo = (selector: string): void => {
 export const givenIHaveSelected = (selector: string): void => {
   cy.get(selector).should("not.be.checked").check();
 };
-export const andIHaveSelected = givenIHaveSelected;
-export const whenISelect = givenIHaveSelected;
 
-export const givenIHaveUnselected = (selector: string): void => {
-  cy.get(selector).should("be.checked").uncheck();
-};
+export const whenISelect = givenIHaveSelected;
 
 export const givenIHaveWaitedForAzureB2C = (): void => {
   cy.wait(2000);
@@ -237,30 +214,13 @@ export const iPerformOperationAndWaitForNewPageToLoad = (
   });
 };
 
-export const andIHaveEnteredNoInformation = (): void => null;
-
 export const whenIClickBack = (): void => {
   cy.get(".govuk-back-link").click();
 };
 
-export const whenIClickBackTimes = (times: number): void => {
-  for (let i = 0; i < times; i++) {
-    whenIClickBack();
-  }
-};
-
-export const thenTheCheckboxShouldBeChecked = (selector: string): void => {
-  cy.get(selector).should("be.checked");
-};
-
-export const thenTheRadioButtonShouldBeSelected =
-  thenTheCheckboxShouldBeChecked;
-
 export const iCannotSee = (selector: string): void => {
   cy.get(selector).should("not.exist");
 };
-
-export const thenICannotSee = iCannotSee;
 
 export const thenICanSeeAnInputWithPlaceholder = (
   inputId: string,
@@ -269,23 +229,13 @@ export const thenICanSeeAnInputWithPlaceholder = (
   cy.get(inputId).should("have.attr", "placeholder", placeholderText);
 };
 
-export const thenThereAreNoErrors = (): void => {
-  thenICannotSee(".govuk-error-summary");
-  thenICannotSee(".govuk-error-message");
-};
-
 export const iCanEditAFieldContaining = (value: string): void => {
   cy.get(`input[value="${value}"]`);
-};
-export const iHaveClickedOnAGivenLink = (href: string): void => {
-  cy.get(`a[href="${href}"]`).click();
 };
 
 export const iHaveClickedOnALinkWithText = (text: string): void => {
   cy.get(`a[href]:contains(${text})`).click();
 };
-
-export const whenIClickTheLinkThatContains = iHaveClickedOnALinkWithText;
 
 export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
   hexId: string
@@ -318,13 +268,6 @@ export const whenISelectTheOptionFromTheDropdown = (
   selector: string
 ): void => {
   cy.get(selector).select(option);
-};
-
-export const givenIHaveSelectedTheOptionFromTheDropdown =
-  whenISelectTheOptionFromTheDropdown;
-
-export const whenIClickTheBrowserBackButton = (): void => {
-  cy.go("back");
 };
 
 export const iCanSeeTextInSummaryListRowWithHeading = (
