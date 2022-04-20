@@ -1,11 +1,5 @@
-import { Registration } from "../../../webapp/src/entities/Registration";
-import { AadAuthGateway } from "../../../webapp/src/gateways/AadAuthGateway";
-import { BeaconsApiAccountHolderGateway } from "../../../webapp/src/gateways/BeaconsApiAccountHolderGateway";
-import { BeaconsApiBeaconGateway } from "../../../webapp/src/gateways/BeaconsApiBeaconGateway";
-import { AuthGateway } from "../../../webapp/src/gateways/interfaces/AuthGateway";
-import { IAppContainer } from "../../../webapp/src/lib/IAppContainer";
-import { getOrCreateAccountHolder } from "../../../webapp/src/useCases/getOrCreateAccountHolder";
-import { submitRegistration } from "../../../webapp/src/useCases/submitRegistration";
+import { makeAuthenticatedGETRequest } from "./make-authenticated-GET-request.spec";
+import { makeAuthenticatedPOSTRequest } from "./make-authenticated-POST-request.spec";
 
 /**
  * Quickly sets up test state where a single beacon is already registered.
@@ -14,74 +8,47 @@ import { submitRegistration } from "../../../webapp/src/useCases/submitRegistrat
  * This function programmatically submits a DraftRegistration to the Service
  * API, avoiding an expensive arrange step where Cypress goes to each page and
  * submits a web form from the browser.
- *
- * Webapp application code is re-used to establish Cypress as an OAuth 2.0
- * confidential client, allowing it to submit requests to the Service API as if
- * it were the Webapp.
  */
 export const iHavePreviouslyRegisteredABeacon = async (
-  registration: Registration
+  registration: any
 ): Promise<void> => {
-  const beaconsApiAuthGateway: AuthGateway = new AadAuthGateway({
-    auth: {
-      clientId: Cypress.env("WEBAPP_CLIENT_ID"),
-      authority: `https://login.microsoftonline.com/${Cypress.env(
-        "AAD_TENANT_ID"
-      )}`,
-      clientSecret: Cypress.env("WEBAPP_CLIENT_SECRET"),
-    },
-    apiId: Cypress.env("AAD_API_ID"),
-  });
-
-  const beaconsApiGateway = new BeaconsApiBeaconGateway(
-    Cypress.env("API_URL"),
-    beaconsApiAuthGateway
-  );
-
-  const accountHolderApiGateway = new BeaconsApiAccountHolderGateway(
-    Cypress.env("API_URL"),
-    beaconsApiAuthGateway
-  );
-
-  const container: Partial<IAppContainer> = {
-    beaconGateway: beaconsApiGateway,
-    accountHolderGateway: accountHolderApiGateway,
-    sendConfirmationEmail: () => null,
-  };
-
-  const sessionEndpoint = "/api/auth/session";
-
-  cy.request(sessionEndpoint, { timeout: 10000 }).then(
+  cy.log("Getting details of the logged-in user...");
+  cy.request("/api/auth/session", { timeout: 10000 }).then(
     { timeout: 10000 },
-    async (response) => {
-      const session = response.body;
+    async (session) => {
+      const { authId, email } = session.body.user;
 
-      try {
-        const accountHolder = await getOrCreateAccountHolder(container)(
-          session
-        );
-
-        const { beaconRegistered } = await submitRegistration(container)(
-          registration,
-          accountHolder.id
-        );
-
-        if (beaconRegistered) {
-          cy.log("Registered a beacon with hex ID " + registration.hexId);
-        } else {
+      let accountHolderId;
+      cy.log(`Attempting to get AccountHolder for authId ${authId}`);
+      makeAuthenticatedGETRequest<any>(
+        `http://localhost:8080/spring-api/account-holder?authId=${authId}`
+      ).then((getAccountHolderResponse) => {
+        if (getAccountHolderResponse.status === 404) {
           cy.log(
-            "There was a problem registering beacon with hex ID " +
-              registration.hexId
+            `AccountHolder for authId ${authId} and email ${email} not found; creating...`
           );
+          makeAuthenticatedPOSTRequest<any>(
+            { data: { attributes: { authId, email } } },
+            "http://localhost:8080/spring-api/account-holder"
+          ).then((createAccountHolderResponse) => {
+            cy.log(createAccountHolderResponse.body);
+            accountHolderId = createAccountHolderResponse.body.data.id;
+            cy.log(
+              `Successfully created AccountHolder with id ${accountHolderId}`
+            );
+          });
         }
-      } catch (e) {
+
+        accountHolderId = getAccountHolderResponse.body.data.id;
+
         cy.log(
-          "There was a problem registering beacon with hex ID " +
-            registration.hexId +
-            ", error message: " +
-            e
+          `Seeding a registration for AccountHolder with id ${accountHolderId}...`
         );
-      }
+        makeAuthenticatedPOSTRequest(
+          { ...registration, accountHolderId },
+          "http://localhost:8080/spring-api/registrations/register"
+        );
+      });
     }
   );
 };

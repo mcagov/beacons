@@ -1,0 +1,85 @@
+{
+  "accountHolderId": "replace-with-account-holder-id",
+  "hexId": "1D0EA08C52FFBFF",
+  "manufacturer": "Ocean Signal",
+  "model": "EPIRB1",
+  "manufacturerSerialNumber": "1407312904",
+  "chkCode": "9480B",
+  "referenceNumber": "ABCDE4",
+  "batteryExpiryDate": "2022-12-01",
+  "lastServicedDate": "2020-02-01",
+  "uses": [
+    {
+      "environment": "MARITIME",
+      "purpose": "COMMERCIAL",
+      "activity": "SAILING",
+      "otherActivity": "On my boat",
+      "callSign": "Fish and Ships",
+      "mainUse": true,
+      "vhfRadio": true,
+      "fixedVhfRadio": true,
+      "fixedVhfRadioValue": "this is my MMSI number",
+      "portableVhfRadio": true,
+      "portableVhfRadioValue": "Portable radio",
+      "satelliteTelephone": true,
+      "satelliteTelephoneValue": "0117",
+      "mobileTelephone": true,
+      "mobileTelephone1": "0123456789",
+      "mobileTelephone2": "012345678910",
+      "otherCommunication": true,
+      "otherCommunicationValue": "On my telephone",
+      "vesselName": "HMS Victory",
+      "maxCapacity": 180,
+      "portLetterNumber": "1",
+      "homeport": "England",
+      "beaconLocation": "Carry bag",
+      "imoNumber": "In my bag",
+      "ssrNumber": "1",
+      "officialNumber": "2",
+      "rigPlatformLocation": "Portsmouth",
+      "aircraftManufacturer": "Boeing",
+      "principalAirport": "Bristol",
+      "secondaryAirport": "Belfast",
+      "registrationMark": "1",
+      "hexAddress": "123456",
+      "cnOrMsnNumber": "cn",
+      "dongle": true,
+      "beaconPosition": "Bristol",
+      "workingRemotelyLocation": "Bristol",
+      "workingRemotelyPeopleCount": "3",
+      "windfarmLocation": "Bristol",
+      "windfarmPeopleCount": "100",
+      "otherActivityLocation": "Manchester",
+      "otherActivityPeopleCount": "150",
+      "areaOfOperation": "Cape of Trafalgar",
+      "moreDetails": "More details of this vessel"
+    }
+  ],
+  "owner": {
+    "fullName": "Vice-Admiral Horatio Nelson, 1st Viscount Nelson",
+    "email": "nelson@royalnavy.mod.uk",
+    "telephoneNumber": "02392 856624",
+    "addressLine1": "1 The Hard",
+    "addressLine2": "",
+    "townOrCity": "Portsmouth",
+    "county": "Hampshire",
+    "postcode": "PO1 3DT"
+  },
+  "emergencyContacts": [
+    {
+      "fullName": "Lady Hamilton",
+      "telephoneNumber": "02392 856621",
+      "alternativeTelephoneNumber": "02392 856622"
+    },
+    {
+      "fullName": "Lady Hamilton",
+      "telephoneNumber": "02392 856621",
+      "alternativeTelephoneNumber": "02392 856622"
+    },
+    {
+      "fullName": "Lady Hamilton",
+      "telephoneNumber": "02392 856621",
+      "alternativeTelephoneNumber": "02392 856622"
+    }
+  ]
+}

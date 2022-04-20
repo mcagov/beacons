@@ -49,14 +49,14 @@ import {
   whenISelect,
 } from "../common/selectors-and-assertions.spec";
 import { legacyBeaconRequestFixture } from "../fixtures/legacyBeaconRequest.fixture";
-import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
+import fixture from "../fixtures/singleBeaconRegistration.json";
 
 describe("As an account holder", () => {
   it("I can view a new and legacy beacon linked to my account/email", () => {
     givenIHaveSignedIn();
 
     iHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequestFixture);
-    iHavePreviouslyRegisteredABeacon(singleBeaconRegistration);
+    iHavePreviouslyRegisteredABeacon(fixture);
     givenIHaveVisited(AccountPageURLs.accountHome);
 
     ifIAmAskedForAccountHolderDetailsIProvideThem();
@@ -64,9 +64,7 @@ describe("As an account holder", () => {
     iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(
       legacyBeaconRequestFixture.data.attributes.beacon.hexId
     );
-    iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(
-      singleBeaconRegistration.hexId
-    );
+    iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(fixture.hexId);
   });
 
   it("I can claim a legacy beacon", () => {
