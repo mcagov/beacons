@@ -59,10 +59,12 @@
     "fullName": "Vice-Admiral Horatio Nelson, 1st Viscount Nelson",
     "email": "nelson@royalnavy.mod.uk",
     "telephoneNumber": "02392 856624",
+    "alternativeTelephoneNumber": "07827392819",
     "addressLine1": "1 The Hard",
-    "addressLine2": "",
+    "addressLine2": "Southsea",
     "townOrCity": "Portsmouth",
     "county": "Hampshire",
+    "country": "United Kingdom",
     "postcode": "PO1 3DT"
   },
   "emergencyContacts": [

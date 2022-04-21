@@ -35,7 +35,7 @@ import {
 import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
 import { makeEnumValueUserFriendly } from "../common/writing-style.spec";
-import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
+import singleBeaconRegistration from "../fixtures/singleBeaconRegistration.json";
 
 describe("As an account holder", () => {
   it("I can add many uses to one of my registrations", () => {
