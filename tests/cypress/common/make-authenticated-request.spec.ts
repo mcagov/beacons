@@ -63,6 +63,7 @@ export function makeAuthenticatedRequest<T>(
           },
           url: options.url,
           body: options.method === "GET" ? null : options.body,
+          failOnStatusCode: false,
         });
       }
     );
