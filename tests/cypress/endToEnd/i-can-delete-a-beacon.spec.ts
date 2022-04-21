@@ -14,7 +14,7 @@ import {
   whenIClickTheButtonContaining,
 } from "../common/selectors-and-assertions.spec";
 import { prettyUseName } from "../common/writing-style.spec";
-import { singleBeaconRegistration } from "../fixtures/singleBeaconRegistration";
+import singleBeaconRegistration from "../fixtures/singleBeaconRegistration.json";
 
 describe("As an account holder", () => {
   it("I can delete one of my beacons", () => {
