@@ -10,7 +10,6 @@ import { DraftRegistration } from "../../../../../entities/DraftRegistration";
 import { BeaconsGetServerSidePropsContext } from "../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../lib/middleware/withSession";
-import { formSubmissionCookieId } from "../../../../../lib/types";
 import {
   ActionURLs,
   ErrorPageURLs,
@@ -24,6 +23,7 @@ import { UsePages } from "../../../../../lib/URLs/UsePages";
 import { prettyUseName } from "../../../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../../../router/BeaconsPageRouter";
 import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
+import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../../../router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
 import { GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable } from "../../../../../router/rules/GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
@@ -35,7 +35,6 @@ interface UseSummaryProps {
 
 const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
   draftRegistration,
-  uses,
   showCookieBanner,
 }: UseSummaryProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
@@ -44,7 +43,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
     <>
       <Layout
         navigation={
-          uses.length > 0 && (
+          draftRegistration.uses.length > 0 && (
             <BackButton
               href={UrlBuilder.buildRegistrationUrl(
                 Actions.update,
@@ -62,7 +61,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
             <>
               <PageHeading>{pageHeading}</PageHeading>
 
-              {uses.length === 0 && (
+              {draftRegistration.uses.length === 0 && (
                 <>
                   <GovUKBody>
                     You have not assigned any uses to this beacon yet.
@@ -77,7 +76,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           Actions.update,
                           UsePages.environment,
                           draftRegistration.id,
-                          uses.length.toString()
+                          draftRegistration.uses.length.toString()
                         ),
                       })
                     }
@@ -85,9 +84,9 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                 </>
               )}
 
-              {uses.length > 0 && (
+              {draftRegistration.uses.length > 0 && (
                 <>
-                  {uses.map((use, index) => {
+                  {draftRegistration.uses.map((use, index) => {
                     return (
                       <AdditionalBeaconUseSummary
                         index={index}
@@ -110,7 +109,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           Actions.update,
                           UsePages.environment,
                           draftRegistration.id,
-                          uses.length.toString()
+                          draftRegistration.uses.length.toString()
                         ),
                       })
                     }
@@ -155,34 +154,24 @@ const confirmBeforeDelete = (
     no: UrlBuilder.buildUseSummaryUrl(Actions.update, registrationId),
   });
 
-export const getServerSideProps: GetServerSideProps = withSession(
-  withContainer(async (context: BeaconsGetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = withContainer(
+  withSession(async (context: BeaconsGetServerSidePropsContext) => {
     const registrationId = context.query.registrationId as string;
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
+      new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
+        context
+      ),
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
         context,
         registrationId
       ),
       new GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable(
-        context,
-        props(context)
+        context
       ),
     ]).execute();
   })
 );
-
-const props = async (
-  context: BeaconsGetServerSidePropsContext
-): Promise<Partial<UseSummaryProps>> => {
-  const draftRegistration = await context.container.getDraftRegistration(
-    context.req.cookies[formSubmissionCookieId]
-  );
-
-  return {
-    uses: draftRegistration.uses,
-  };
-};
 
 export default AdditionalBeaconUse;

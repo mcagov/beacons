@@ -9,14 +9,9 @@ export class GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAv
   implements Rule
 {
   private readonly context: BeaconsGetServerSidePropsContext;
-  private readonly additionalProps: Record<string, any>;
 
-  constructor(
-    context: BeaconsGetServerSidePropsContext,
-    additionalProps?: Record<string, any>
-  ) {
+  constructor(context: BeaconsGetServerSidePropsContext) {
     this.context = context;
-    this.additionalProps = additionalProps;
   }
 
   public async condition(): Promise<boolean> {
@@ -28,7 +23,6 @@ export class GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAv
     return {
       props: {
         showCookieBanner: showCookieBanner(this.context),
-        ...(await this.additionalProps),
         draftRegistration,
       },
     };
