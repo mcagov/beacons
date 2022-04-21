@@ -12,6 +12,10 @@ import Chainable = Cypress.Chainable;
 export const iHavePreviouslyRegisteredABeacon = async (
   registration: any
 ): Promise<void> => {
+  cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
+    log: false,
+  });
+
   cy.log("Getting details of the logged-in user...");
   cy.request("/api/auth/session", { timeout: 10000 }).then(
     { timeout: 10000 },
@@ -34,8 +38,6 @@ export const iHavePreviouslyRegisteredABeacon = async (
 };
 
 const getOrCreateAccountHolder = (authId: string, email: string): Chainable => {
-  let accountHolderId;
-
   cy.log(`Attempting to get AccountHolder for authId ${authId}`);
   return makeAuthenticatedRequest<{ data: { id: string } }>({
     url: `http://localhost:8080/spring-api/account-holder?authId=${authId}`,
@@ -46,21 +48,23 @@ const getOrCreateAccountHolder = (authId: string, email: string): Chainable => {
         `AccountHolder for authId ${authId} and email ${email} not found; creating...`
       );
 
-      makeAuthenticatedRequest<{ data: { id: string } }>({
+      return makeAuthenticatedRequest<{ data: { id: string } }>({
         method: "POST",
         body: { data: { attributes: { authId, email } } },
         url: "http://localhost:8080/spring-api/account-holder",
       }).then((createAccountHolderResponse) => {
-        accountHolderId = createAccountHolderResponse.body.data.id;
+        const accountHolderId = createAccountHolderResponse.body.data.id;
         cy.log(`Successfully created AccountHolder with id ${accountHolderId}`);
+        completeSignupProcess(accountHolderId).then(() => {
+          return accountHolderId;
+        });
       });
     } else {
-      accountHolderId = getAccountHolderResponse.body.data.id;
+      const accountHolderId = getAccountHolderResponse.body.data.id;
+      return completeSignupProcess(accountHolderId).then(() => {
+        return accountHolderId;
+      });
     }
-
-    return completeSignupProcess(accountHolderId).then(() => {
-      return accountHolderId;
-    });
   });
 };
 
