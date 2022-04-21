@@ -26,11 +26,11 @@ import {
 import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
 import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
 import { formatDateLong, formatMonth } from "../common/writing-style.spec";
-import { anotherBeaconRegistration } from "../fixtures/anotherBeaconRegistration";
+import anotherBeaconRegistration from "../fixtures/anotherBeaconRegistration.json";
 import singleBeaconRegistration from "../fixtures/singleBeaconRegistration.json";
 
 describe("As an account holder", () => {
-  it("I can update one of my registrations", () => {
+  it.only("I can update one of my registrations", () => {
     givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(firstRegistrationToUpdate);
     andIHavePreviouslyRegisteredABeacon(secondRegistrationToUpdate);
@@ -181,10 +181,10 @@ const iCanViewTheUpdatedOwnerInformation = (draftRegistration) => {
   );
 
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Owner details");
-  iCanEditAFieldContaining(draftRegistration.ownerFullName);
-  iCanEditAFieldContaining(draftRegistration.ownerTelephoneNumber);
-  iCanEditAFieldContaining(draftRegistration.ownerAlternativeTelephoneNumber);
-  iCanEditAFieldContaining(draftRegistration.ownerEmail);
+  iCanEditAFieldContaining(draftRegistration.owner.fullName);
+  iCanEditAFieldContaining(draftRegistration.owner.telephoneNumber);
+  iCanEditAFieldContaining(draftRegistration.owner.alternativeTelephoneNumber);
+  iCanEditAFieldContaining(draftRegistration.owner.email);
 
   whenIHaveVisited("/account/your-beacon-registry-account");
   whenIClickOnTheHexIdOfTheRegistrationIUpdated(
@@ -194,11 +194,11 @@ const iCanViewTheUpdatedOwnerInformation = (draftRegistration) => {
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Address");
   whenISelect("#unitedKingdom");
   whenIClickContinue();
-  iCanEditAFieldContaining(draftRegistration.ownerAddressLine1);
-  iCanEditAFieldContaining(draftRegistration.ownerAddressLine2);
-  iCanEditAFieldContaining(draftRegistration.ownerTownOrCity);
-  iCanEditAFieldContaining(draftRegistration.ownerCounty);
-  iCanEditAFieldContaining(draftRegistration.ownerPostcode);
+  iCanEditAFieldContaining(draftRegistration.owner.addressLine1);
+  iCanEditAFieldContaining(draftRegistration.owner.addressLine2);
+  iCanEditAFieldContaining(draftRegistration.owner.townOrCity);
+  iCanEditAFieldContaining(draftRegistration.owner.county);
+  iCanEditAFieldContaining(draftRegistration.owner.postcode);
 };
 
 const iCanViewTheUpdatedEmergencyContactInformation = (draftRegistration) => {
@@ -207,10 +207,12 @@ const iCanViewTheUpdatedEmergencyContactInformation = (draftRegistration) => {
     firstRegistrationToUpdate.hexId
   );
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 1");
-  iCanEditAFieldContaining(draftRegistration.emergencyContact1FullName);
-  iCanEditAFieldContaining(draftRegistration.emergencyContact1TelephoneNumber);
+  iCanEditAFieldContaining(draftRegistration.emergencyContacts[0].fullName);
   iCanEditAFieldContaining(
-    draftRegistration.emergencyContact1AlternativeTelephoneNumber
+    draftRegistration.emergencyContacts[0].telephoneNumber
+  );
+  iCanEditAFieldContaining(
+    draftRegistration.emergencyContacts[0].alternativeTelephoneNumber
   );
 
   whenIHaveVisited("/account/your-beacon-registry-account");
@@ -218,10 +220,12 @@ const iCanViewTheUpdatedEmergencyContactInformation = (draftRegistration) => {
     firstRegistrationToUpdate.hexId
   );
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 2");
-  iCanEditAFieldContaining(draftRegistration.emergencyContact2FullName);
-  iCanEditAFieldContaining(draftRegistration.emergencyContact2TelephoneNumber);
+  iCanEditAFieldContaining(draftRegistration.emergencyContacts[1].fullName);
   iCanEditAFieldContaining(
-    draftRegistration.emergencyContact2AlternativeTelephoneNumber
+    draftRegistration.emergencyContacts[1].telephoneNumber
+  );
+  iCanEditAFieldContaining(
+    draftRegistration.emergencyContacts[1].alternativeTelephoneNumber
   );
 
   whenIHaveVisited("/account/your-beacon-registry-account");
@@ -229,10 +233,12 @@ const iCanViewTheUpdatedEmergencyContactInformation = (draftRegistration) => {
     firstRegistrationToUpdate.hexId
   );
   whenIClickTheChangeLinkForTheSummaryListRowWithHeading("Contact 3");
-  iCanEditAFieldContaining(draftRegistration.emergencyContact3FullName);
-  iCanEditAFieldContaining(draftRegistration.emergencyContact3TelephoneNumber);
+  iCanEditAFieldContaining(draftRegistration.emergencyContacts[2].fullName);
   iCanEditAFieldContaining(
-    draftRegistration.emergencyContact3AlternativeTelephoneNumber
+    draftRegistration.emergencyContacts[2].telephoneNumber
+  );
+  iCanEditAFieldContaining(
+    draftRegistration.emergencyContacts[2].alternativeTelephoneNumber
   );
 };
 
@@ -385,10 +391,10 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (registration) => {
   theBackLinkContains("manage-my-registrations", "update");
   iEditMyOwnerInformation(
     registration,
-    firstUpdatedRegistration.ownerFullName,
-    firstUpdatedRegistration.ownerTelephoneNumber,
-    firstUpdatedRegistration.ownerAlternativeTelephoneNumber,
-    firstUpdatedRegistration.ownerEmail
+    firstUpdatedRegistration.owner.fullName,
+    firstUpdatedRegistration.owner.telephoneNumber,
+    firstUpdatedRegistration.owner.alternativeTelephoneNumber,
+    firstUpdatedRegistration.owner.email
   );
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
@@ -398,11 +404,11 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (registration) => {
   whenISelect("#unitedKingdom");
   whenIClickContinue();
   iEditTheBeaconOwnersUnitedKingdomAddress(
-    firstUpdatedRegistration.ownerAddressLine1,
-    firstUpdatedRegistration.ownerAddressLine2,
-    firstUpdatedRegistration.ownerTownOrCity,
-    firstUpdatedRegistration.ownerCounty,
-    firstUpdatedRegistration.ownerPostcode
+    firstUpdatedRegistration.owner.addressLine1,
+    firstUpdatedRegistration.owner.addressLine2,
+    firstUpdatedRegistration.owner.townOrCity,
+    firstUpdatedRegistration.owner.county,
+    firstUpdatedRegistration.owner.postcode
   );
   whenIClickContinue();
   thenIShouldBeOnTheRegistrationSummaryPageForHexId(registration.hexId);
@@ -455,47 +461,33 @@ const iCanSeeAdditionalBeaconInformation = (registration) => {
 };
 
 const iCanSeeOwnerInformation = (registration) => {
-  cy.get("main").contains(registration.ownerFullName);
-  cy.get("main").contains(registration.ownerTelephoneNumber);
-  cy.get("main").contains(registration.ownerAlternativeTelephoneNumber);
-  cy.get("main").contains(registration.ownerEmail);
-  cy.get("main").contains(registration.ownerAddressLine1);
-  if (registration.ownerAddressLine2) {
-    cy.get("main").contains(registration.ownerAddressLine2);
+  cy.get("main").contains(registration.owner.fullName);
+  cy.get("main").contains(registration.owner.telephoneNumber);
+  cy.get("main").contains(registration.owner.alternativeTelephoneNumber);
+  cy.get("main").contains(registration.owner.email);
+  cy.get("main").contains(registration.owner.addressLine1);
+  if (registration.owner.addressLine2) {
+    cy.get("main").contains(registration.owner.addressLine2);
   }
-  if (registration.ownerAddressLine3) {
-    cy.get("main").contains(registration.ownerAddressLine3);
+  if (registration.owner.addressLine3) {
+    cy.get("main").contains(registration.owner.addressLine3);
   }
-  if (registration.ownerAddressLine4) {
-    cy.get("main").contains(registration.ownerAddressLine4);
+  if (registration.owner.addressLine4) {
+    cy.get("main").contains(registration.owner.addressLine4);
   }
-  cy.get("main").contains(registration.ownerTownOrCity);
-  cy.get("main").contains(registration.ownerPostcode);
-  cy.get("main").contains(registration.ownerCountry);
+  cy.get("main").contains(registration.owner.townOrCity);
+  cy.get("main").contains(registration.owner.postcode);
+  cy.get("main").contains(registration.owner.country);
 };
 
 const iCanSeeEmergencyContactInformation = (registration) => {
-  cy.get("main").contains(registration.emergencyContact1FullName);
-  cy.get("main").contains(registration.emergencyContact1TelephoneNumber);
-  if (registration.emergencyContact1AlternativeTelephoneNumber) {
-    cy.get("main").contains(
-      registration.emergencyContact1AlternativeTelephoneNumber
-    );
-  }
-  cy.get("main").contains(registration.emergencyContact2FullName);
-  cy.get("main").contains(registration.emergencyContact2TelephoneNumber);
-  if (registration.emergencyContact2AlternativeTelephoneNumber) {
-    cy.get("main").contains(
-      registration.emergencyContact2AlternativeTelephoneNumber
-    );
-  }
-  cy.get("main").contains(registration.emergencyContact3FullName);
-  cy.get("main").contains(registration.emergencyContact3TelephoneNumber);
-  if (registration.emergencyContact3AlternativeTelephoneNumber) {
-    cy.get("main").contains(
-      registration.emergencyContact3AlternativeTelephoneNumber
-    );
-  }
+  registration.emergencyContacts.forEach((emergencyContact) => {
+    cy.get("main").contains(emergencyContact.fullName);
+    cy.get("main").contains(emergencyContact.telephoneNumber);
+    if (emergencyContact.alternativeTelephoneNumber) {
+      cy.get("main").contains(emergencyContact.alternativeTelephoneNumber);
+    }
+  });
 };
 
 const iCanSeeUseInformation = (draftRegistration) => {
@@ -562,20 +554,20 @@ export const iEditMyBeaconInformation = (
   newLastServicedDateMonth: string,
   newLastServicedDateYear: string
 ): void => {
-  cy.get(`input[value="${registration.manufacturerSerialNumber}"]`)
+  cy.get('input[name="manufacturerSerialNumber"]')
     .clear()
     .type(newManufacturerSerialNumber);
-  cy.get(`input[value="${registration.chkCode}"]`).clear().type(newChkCode);
-  cy.get(`input[value="${registration.batteryExpiryDateMonth}"]`)
+  cy.get('input[name="chkCode"]').clear().type(newChkCode);
+  cy.get('input[name="batteryExpiryDateMonth"]')
     .clear()
     .type(newBatteryExpiryDateMonth);
-  cy.get(`input[value="${registration.batteryExpiryDateYear}"]`)
+  cy.get('input[name="batteryExpiryDateYear"]')
     .clear()
     .type(newBatteryExpiryDateYear);
-  cy.get(`input[value="${registration.lastServicedDateMonth}"]`)
+  cy.get('input[name="lastServicedDateMonth"]')
     .clear()
     .type(newLastServicedDateMonth);
-  cy.get(`input[value="${registration.lastServicedDateYear}"]`)
+  cy.get('input[name="lastServicedDateYear"]')
     .clear()
     .type(newLastServicedDateYear);
 };
@@ -587,16 +579,16 @@ const iEditMyOwnerInformation = (
   newAlternativeTelephoneNumber,
   newEmail
 ) => {
-  cy.get(`input[value="${registration.ownerFullName}"]`)
+  cy.get(`input[value="${registration.owner.fullName}"]`)
     .clear()
     .type(newFullName);
-  cy.get(`input[value="${registration.ownerTelephoneNumber}"]`)
+  cy.get(`input[value="${registration.owner.telephoneNumber}"]`)
     .clear()
     .type(newTelephoneNumber);
-  cy.get(`input[value="${registration.ownerAlternativeTelephoneNumber}"]`)
+  cy.get(`input[value="${registration.owner.alternativeTelephoneNumber}"]`)
     .clear()
     .type(newAlternativeTelephoneNumber);
-  cy.get(`input[value="${registration.ownerEmail}"]`).clear().type(newEmail);
+  cy.get(`input[value="${registration.owner.email}"]`).clear().type(newEmail);
 };
 
 const iEditTheBeaconOwnersUnitedKingdomAddress = (
