@@ -1,11 +1,15 @@
-import { makeAuthenticatedPOSTRequest } from "./make-authenticated-POST-request.spec";
+import { makeAuthenticatedRequest } from "./make-authenticated-request.spec";
 
 export const iHavePreviouslyRegisteredALegacyBeacon = (
   legacyBeaconRequest
 ): void => {
   const apiUrl = `${Cypress.env("API_URL")}/migrate/legacy-beacon`;
 
-  makeAuthenticatedPOSTRequest(legacyBeaconRequest, apiUrl);
+  makeAuthenticatedRequest({
+    method: "POST",
+    url: apiUrl,
+    body: legacyBeaconRequest,
+  });
 };
 
 export const givenIHavePreviouslyRegisteredALegacyBeacon =

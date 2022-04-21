@@ -1,5 +1,5 @@
-import { makeAuthenticatedGETRequest } from "./make-authenticated-GET-request.spec";
-import { makeAuthenticatedPOSTRequest } from "./make-authenticated-POST-request.spec";
+import { makeAuthenticatedRequest } from "./make-authenticated-request.spec";
+import Chainable = Cypress.Chainable;
 
 /**
  * Quickly sets up test state where a single beacon is already registered.
@@ -18,39 +18,71 @@ export const iHavePreviouslyRegisteredABeacon = async (
     async (session) => {
       const { authId, email } = session.body.user;
 
-      let accountHolderId;
-      cy.log(`Attempting to get AccountHolder for authId ${authId}`);
-      makeAuthenticatedGETRequest<any>(
-        `http://localhost:8080/spring-api/account-holder?authId=${authId}`
-      ).then((getAccountHolderResponse) => {
-        if (getAccountHolderResponse.status === 404) {
-          cy.log(
-            `AccountHolder for authId ${authId} and email ${email} not found; creating...`
-          );
-          makeAuthenticatedPOSTRequest<any>(
-            { data: { attributes: { authId, email } } },
-            "http://localhost:8080/spring-api/account-holder"
-          ).then((createAccountHolderResponse) => {
-            cy.log(createAccountHolderResponse.body);
-            accountHolderId = createAccountHolderResponse.body.data.id;
-            cy.log(
-              `Successfully created AccountHolder with id ${accountHolderId}`
-            );
-          });
-        }
-
-        accountHolderId = getAccountHolderResponse.body.data.id;
-
+      getOrCreateAccountHolder(authId, email).then((accountHolderId) => {
         cy.log(
           `Seeding a registration for AccountHolder with id ${accountHolderId}...`
         );
-        makeAuthenticatedPOSTRequest(
-          { ...registration, accountHolderId },
-          "http://localhost:8080/spring-api/registrations/register"
-        );
+        cy.log(JSON.stringify({ ...registration, accountHolderId }));
+        makeAuthenticatedRequest({
+          method: "POST",
+          url: "http://localhost:8080/spring-api/registrations/register",
+          body: { ...registration, accountHolderId },
+        });
       });
     }
   );
+};
+
+const getOrCreateAccountHolder = (authId: string, email: string): Chainable => {
+  let accountHolderId;
+
+  cy.log(`Attempting to get AccountHolder for authId ${authId}`);
+  return makeAuthenticatedRequest<{ data: { id: string } }>({
+    url: `http://localhost:8080/spring-api/account-holder?authId=${authId}`,
+    method: "GET",
+  }).then((getAccountHolderResponse) => {
+    if (getAccountHolderResponse.status === 404) {
+      cy.log(
+        `AccountHolder for authId ${authId} and email ${email} not found; creating...`
+      );
+
+      makeAuthenticatedRequest<{ data: { id: string } }>({
+        method: "POST",
+        body: { data: { attributes: { authId, email } } },
+        url: "http://localhost:8080/spring-api/account-holder",
+      }).then((createAccountHolderResponse) => {
+        accountHolderId = createAccountHolderResponse.body.data.id;
+        cy.log(`Successfully created AccountHolder with id ${accountHolderId}`);
+      });
+    } else {
+      accountHolderId = getAccountHolderResponse.body.data.id;
+    }
+
+    return completeSignupProcess(accountHolderId).then(() => {
+      return accountHolderId;
+    });
+  });
+};
+
+const completeSignupProcess = (accountHolderId: string): Chainable => {
+  return makeAuthenticatedRequest({
+    method: "PATCH",
+    url: `http://localhost:8080/spring-api/account-holder/${accountHolderId}`,
+    body: {
+      data: {
+        id: accountHolderId,
+        attributes: {
+          fullName: "Mrs Beacon",
+          telephoneNumber: "+447713812659",
+          addressLine1: "100 Beacons Road",
+          townOrCity: "Beacons",
+          county: "Beaconshire",
+          postcode: "BS8 9DB",
+          country: "United Kingdom",
+        },
+      },
+    },
+  });
 };
 
 export const randomUkEncodedHexId = (): string => {

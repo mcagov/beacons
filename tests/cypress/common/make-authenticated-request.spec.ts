@@ -1,13 +1,31 @@
+/**
+ * Get an access token from Azure AD, then use it to POST body to URL
+ *
+ * @param body What to POST
+ * @param url Where to POST it
+ */
+import RequestBody = Cypress.RequestBody;
 import Response = Cypress.Response;
 import Chainable = Cypress.Chainable;
 
-/**
- * Get an access token from Azure AD, then use it to make a GET request to URL
- *
- * @param url The URL to GET
- */
-export function makeAuthenticatedGETRequest<T>(
-  url: string
+type AuthenticatedRequestOptions =
+  | {
+      method: "GET";
+      url: string;
+    }
+  | {
+      method: "POST";
+      url: string;
+      body: RequestBody;
+    }
+  | {
+      method: "PATCH";
+      url: string;
+      body: RequestBody;
+    };
+
+export function makeAuthenticatedRequest<T>(
+  options: AuthenticatedRequestOptions
 ): Chainable<Response<T>> {
   const tenant = Cypress.env("AAD_TENANT_ID");
   const authUrl = `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/token`;
@@ -31,7 +49,6 @@ export function makeAuthenticatedGETRequest<T>(
       url: `${authUrl}`,
     })
     .then(
-      // Make GET request to URL using the retrieved auth token
       (response: {
         body: {
           access_token: string;
@@ -40,12 +57,12 @@ export function makeAuthenticatedGETRequest<T>(
         };
       }) => {
         cy.request({
-          failOnStatusCode: false,
-          method: "GET",
+          method: options.method,
           auth: {
             bearer: response.body.access_token,
           },
-          url,
+          url: options.url,
+          body: options.method === "GET" ? null : options.body,
         });
       }
     );
