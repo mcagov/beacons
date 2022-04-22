@@ -264,6 +264,8 @@ const registrationWithInternationalAddressToUpdate = {
   ...singleBeaconRegistration,
   hexId: internationalAddressHexId,
   owner: {
+    fullName: "Austin Powers",
+    email: "austin@powers.co.uk",
     addressLine1: "Beacon Towers",
     addressLine2: "Eprib Wharf",
     addressLine3: "c/o Harbour Master",
