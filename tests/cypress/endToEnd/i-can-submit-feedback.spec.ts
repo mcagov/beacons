@@ -5,7 +5,7 @@ import {
   iHaveClickedOnALinkWithText,
   thenTheUrlPathShouldBe,
   whenISelect,
-  whenIType,
+  whenITypeInAnEmptyField,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As any user", () => {
@@ -14,7 +14,7 @@ describe("As any user", () => {
     iHaveClickedOnALinkWithText("feedback");
     iCanSeeAPageHeadingThatContains("Give feedback on Register a beacon");
     whenISelect("#verySatisfied");
-    whenIType(
+    whenITypeInAnEmptyField(
       "Should have used Ruby on Rails",
       "#howCouldWeImproveThisService"
     );

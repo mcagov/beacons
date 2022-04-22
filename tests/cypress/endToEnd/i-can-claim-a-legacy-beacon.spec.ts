@@ -1,10 +1,12 @@
-import { testBeaconAndOwnerData } from "../common/happy-path-test-data.spec";
 import {
   givenIHaveFilledInBeaconInformationPage,
   iCanSeeMyAdditionalBeaconInformation,
 } from "../common/i-can-enter-beacon-information.spec";
 import {
   givenIHaveEnteredMyEmergencyContactDetails,
+  givenIHaveEnteredMyPersonalDetails,
+  givenIHaveEnteredMyUnitedKingdomAddressDetails,
+  givenIHaveSelectedAUnitedKingdomAddress,
   iCanSeeMyEmergencyContactDetails,
 } from "../common/i-can-enter-owner-information.spec";
 import { andIHaveNoFurtherUses } from "../common/i-can-enter-use-information/generic.spec";
@@ -23,7 +25,6 @@ import {
 import {
   andIClickContinue,
   givenIHaveSignedIn,
-  givenIHaveTyped,
   givenIHaveVisited,
   iCannotSee,
   iCanSeeAPageHeadingThatContains,
@@ -61,7 +62,7 @@ describe("As an account holder", () => {
     iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(fixture.hexId);
   });
 
-  it("I can claim a legacy beacon", () => {
+  it.only("I can claim a legacy beacon", () => {
     const legacyBeaconRequest = { ...legacyBeaconRequestFixture };
     legacyBeaconRequest.data.attributes.beacon.hexId = randomUkEncodedHexId();
     const { hexId, manufacturer, model } =
@@ -96,13 +97,10 @@ describe("As an account holder", () => {
     givenIHaveFilledInBeaconInformationPage();
     givenIHaveEnteredMyMaritimeUse("PLEASURE");
     andIHaveNoFurtherUses();
-    // givenIHaveEnteredMyPersonalDetails();
-    givenIHaveTyped(
-      testBeaconAndOwnerData.ownerDetails.telephoneNumber,
-      "#ownerTelephoneNumber"
-    );
-    andIClickContinue();
-    andIClickContinue();
+    givenIHaveEnteredMyPersonalDetails();
+    // HERE IS THE FAILURE
+    givenIHaveSelectedAUnitedKingdomAddress();
+    givenIHaveEnteredMyUnitedKingdomAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
     iCanSeeText(hexId);
     iCanSeeText(manufacturer);

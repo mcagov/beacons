@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { getOrCreateAccountHolder } from "./get-or-create-account-holder.spec";
 
 export const requiredFieldErrorMessage = "required field";
 
@@ -31,11 +32,11 @@ export const ifIAmAskedForAccountHolderDetailsIProvideThem = (): void => {
 
   cy.get("h1").then(($heading) => {
     if ($heading.text().includes("Update your details")) {
-      whenIType("Mrs Beacon", "#fullName");
-      whenIType("+447713812659", "#telephoneNumber");
-      whenIType("100 Beacons Road", "#addressLine1");
-      whenIType("Beacons", "#townOrCity");
-      whenIType("BS8 9DB", "#postcode");
+      whenITypeInAnEmptyField("Mrs Beacon", "#fullName");
+      whenITypeInAnEmptyField("+447713812659", "#telephoneNumber");
+      whenITypeInAnEmptyField("100 Beacons Road", "#addressLine1");
+      whenITypeInAnEmptyField("Beacons", "#townOrCity");
+      whenITypeInAnEmptyField("BS8 9DB", "#postcode");
       whenIClickTheButtonContaining("Save these account details");
     }
   });
@@ -58,6 +59,14 @@ export const givenIHaveSignedIn = (): void => {
   cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
     log: false,
   });
+  cy.request("/api/auth/session", { timeout: 10000 }).then(
+    { timeout: 10000 },
+    async (session) => {
+      const { authId, email } = session.body.user;
+
+      getOrCreateAccountHolder(authId, email);
+    }
+  );
 };
 
 export const givenIHaveVisited = (url: string): void => {
@@ -110,15 +119,18 @@ export const whenIClickOnTheErrorSummaryLinkContaining = (
   link.click();
 };
 
-export const whenIType = (value: string, selector: string): void => {
-  cy.get(selector).should("be.empty").type(value);
+export const whenITypeInAnEmptyField = (
+  value: string,
+  selector: string
+): void => {
+  cy.get(selector).should("have.value", "").type(value);
 };
 
 export const whenIClearAndType = (value: string, selector: string): void => {
   cy.get(selector).clear().type(value);
 };
 
-export const givenIHaveTyped = whenIType;
+export const givenIHaveTypedInAnEmptyField = whenITypeInAnEmptyField;
 
 export const whenIClearTheInput = (selector: string): void => {
   cy.get(selector).clear();

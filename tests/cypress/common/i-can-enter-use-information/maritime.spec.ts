@@ -6,7 +6,7 @@ import {
 import {
   andIClickContinue,
   givenIHaveSelected,
-  givenIHaveTyped,
+  givenIHaveTypedInAnEmptyField,
   iCanSeeAPageHeadingThatContains,
 } from "../selectors-and-assertions.spec";
 import { makeEnumValueUserFriendly } from "../writing-style.spec";
@@ -73,36 +73,54 @@ export const iCanSeeMyMaritimeUse = (purpose): void => {
 
 export const givenIHaveEnteredInformationAboutMyVessel = (): void => {
   const vessel = testMaritimeUseData.vessel;
-  givenIHaveTyped(vessel.maxCapacity, "#maxCapacity");
-  givenIHaveTyped(vessel.name, "#vesselName");
-  givenIHaveTyped(vessel.beaconPosition, "#beaconLocation");
-  givenIHaveTyped(vessel.pln, "#portLetterNumber");
-  givenIHaveTyped(vessel.homePort, "#homeport");
-  givenIHaveTyped(vessel.typicalAO, "#areaOfOperation");
-  givenIHaveTyped(vessel.imoNumber, "#imoNumber");
-  givenIHaveTyped(vessel.ssrNumber, "#ssrNumber");
-  givenIHaveTyped(vessel.rssNumber, "#rssNumber");
-  givenIHaveTyped(vessel.officialNumber, "#officialNumber");
-  givenIHaveTyped(vessel.rigPlatformLocation, "#rigPlatformLocation");
+  givenIHaveTypedInAnEmptyField(vessel.maxCapacity, "#maxCapacity");
+  givenIHaveTypedInAnEmptyField(vessel.name, "#vesselName");
+  givenIHaveTypedInAnEmptyField(vessel.beaconPosition, "#beaconLocation");
+  givenIHaveTypedInAnEmptyField(vessel.pln, "#portLetterNumber");
+  givenIHaveTypedInAnEmptyField(vessel.homePort, "#homeport");
+  givenIHaveTypedInAnEmptyField(vessel.typicalAO, "#areaOfOperation");
+  givenIHaveTypedInAnEmptyField(vessel.imoNumber, "#imoNumber");
+  givenIHaveTypedInAnEmptyField(vessel.ssrNumber, "#ssrNumber");
+  givenIHaveTypedInAnEmptyField(vessel.rssNumber, "#rssNumber");
+  givenIHaveTypedInAnEmptyField(vessel.officialNumber, "#officialNumber");
+  givenIHaveTypedInAnEmptyField(
+    vessel.rigPlatformLocation,
+    "#rigPlatformLocation"
+  );
 };
 
 export const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {
   const comms = testMaritimeUseData.communications;
-  givenIHaveTyped(comms.callSign, "#callSign");
+  givenIHaveTypedInAnEmptyField(comms.callSign, "#callSign");
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#fixedVhfRadio");
-  givenIHaveTyped(comms.fixedMMSI, "#fixedVhfRadioInput");
+  givenIHaveTypedInAnEmptyField(comms.fixedMMSI, "#fixedVhfRadioInput");
   givenIHaveSelected("#portableVhfRadio");
-  givenIHaveTyped(comms.portableMMSI, "#portableVhfRadioInput");
+  givenIHaveTypedInAnEmptyField(comms.portableMMSI, "#portableVhfRadioInput");
   givenIHaveSelected("#satelliteTelephone");
-  givenIHaveTyped(comms.satelliteTelephone, "#satelliteTelephoneInput");
+  givenIHaveTypedInAnEmptyField(
+    comms.satelliteTelephone,
+    "#satelliteTelephoneInput"
+  );
   givenIHaveSelected("#mobileTelephone");
-  givenIHaveTyped(comms.mobileTelephone1, "#mobileTelephoneInput1");
-  givenIHaveTyped(comms.mobileTelephone2, "#mobileTelephoneInput2");
+  givenIHaveTypedInAnEmptyField(
+    comms.mobileTelephone1,
+    "#mobileTelephoneInput1"
+  );
+  givenIHaveTypedInAnEmptyField(
+    comms.mobileTelephone2,
+    "#mobileTelephoneInput2"
+  );
   givenIHaveSelected("#otherCommunication");
-  givenIHaveTyped(comms.otherCommunication, "#otherCommunicationInput");
+  givenIHaveTypedInAnEmptyField(
+    comms.otherCommunication,
+    "#otherCommunicationInput"
+  );
 };
 
 export const givenIHaveEnteredMoreDetailsAboutMyVessel = (): void => {
-  givenIHaveTyped(testMaritimeUseData.moreDetails, "#moreDetails");
+  givenIHaveTypedInAnEmptyField(
+    testMaritimeUseData.moreDetails,
+    "#moreDetails"
+  );
 };

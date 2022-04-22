@@ -2,23 +2,24 @@ import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
   givenIHaveClickedContinue,
   givenIHaveSelected,
-  givenIHaveTyped,
+  givenIHaveTypedInAnEmptyField,
+  whenIClearAndType,
 } from "./selectors-and-assertions.spec";
 
 export const givenIHaveEnteredMyPersonalDetails = (): void => {
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.ownerDetails.fullName,
     "#ownerFullName"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.ownerDetails.telephoneNumber,
     "#ownerTelephoneNumber"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.ownerDetails.alternativeTelephoneNumber,
     "#ownerAlternativeTelephoneNumber"
   );
-  givenIHaveTyped(testBeaconAndOwnerData.ownerDetails.email, "#ownerEmail");
+  whenIClearAndType(testBeaconAndOwnerData.ownerDetails.email, "#ownerEmail");
   givenIHaveClickedContinue();
 };
 
@@ -28,19 +29,19 @@ export const givenIHaveSelectedAUnitedKingdomAddress = (): void => {
 };
 
 export const givenIHaveEnteredMyUnitedKingdomAddressDetails = (): void => {
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.ownerAddress.addressLine1,
     "#ownerAddressLine1"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.ownerAddress.addressLine2,
     "#ownerAddressLine2"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.ownerAddress.townOrCity,
     "#ownerTownOrCity"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.ownerAddress.postcode,
     "#ownerPostcode"
   );
@@ -48,41 +49,41 @@ export const givenIHaveEnteredMyUnitedKingdomAddressDetails = (): void => {
 };
 
 export const givenIHaveEnteredMyEmergencyContactDetails = (): void => {
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.emergencyContacts.emergencyContact1FullName,
     "#emergencyContact1FullName"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.emergencyContacts.emergencyContact1TelephoneNumber,
     "#emergencyContact1TelephoneNumber"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.emergencyContacts
       .emergencyContact1AlternativeTelephoneNumber,
     "#emergencyContact1AlternativeTelephoneNumber"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.emergencyContacts.emergencyContact2FullName,
     "#emergencyContact2FullName"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.emergencyContacts.emergencyContact2TelephoneNumber,
     "#emergencyContact2TelephoneNumber"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.emergencyContacts
       .emergencyContact2AlternativeTelephoneNumber,
     "#emergencyContact2AlternativeTelephoneNumber"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.emergencyContacts.emergencyContact3FullName,
     "#emergencyContact3FullName"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.emergencyContacts.emergencyContact3TelephoneNumber,
     "#emergencyContact3TelephoneNumber"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.emergencyContacts
       .emergencyContact3AlternativeTelephoneNumber,
     "#emergencyContact3AlternativeTelephoneNumber"

@@ -2,7 +2,7 @@ import { testLandUseData } from "../happy-path-test-data.spec";
 import {
   andIClickContinue,
   givenIHaveSelected,
-  givenIHaveTyped,
+  givenIHaveTypedInAnEmptyField,
   iCanSeeAPageHeadingThatContains,
 } from "../selectors-and-assertions.spec";
 import { makeEnumValueUserFriendly } from "../writing-style.spec";
@@ -38,31 +38,31 @@ export const iCanSeeMyLandUse = (): void => {
 
 export const givenIHaveEnteredMyLandCommunicationDetails = (): void => {
   givenIHaveSelected("#portableVhfRadio");
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testLandUseData.communications.portableMMSI,
     "#portableVhfRadioInput"
   );
   givenIHaveSelected("#satelliteTelephone");
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testLandUseData.communications.satelliteTelephone,
     "#satelliteTelephoneInput"
   );
   givenIHaveSelected("#mobileTelephone");
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testLandUseData.communications.mobileTelephone1,
     "#mobileTelephoneInput1"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testLandUseData.communications.mobileTelephone2,
     "#mobileTelephoneInput2"
   );
   givenIHaveSelected("#otherCommunication");
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testLandUseData.communications.otherCommunication,
     "#otherCommunicationInput"
   );
 };
 
 const givenIHaveEnteredMoreDetailsAboutMyLandUse = (): void => {
-  givenIHaveTyped(testLandUseData.moreDetails, "#moreDetails");
+  givenIHaveTypedInAnEmptyField(testLandUseData.moreDetails, "#moreDetails");
 };

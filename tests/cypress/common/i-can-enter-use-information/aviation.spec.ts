@@ -6,7 +6,7 @@ import {
 import {
   andIClickContinue,
   givenIHaveSelected,
-  givenIHaveTyped,
+  givenIHaveTypedInAnEmptyField,
   iCanSeeAPageHeadingThatContains,
 } from "../selectors-and-assertions.spec";
 import { makeEnumValueUserFriendly } from "../writing-style.spec";
@@ -77,36 +77,36 @@ export const iCanSeeMyAviationUse = (purpose: string): void => {
 };
 
 export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.maxCapacity,
     "#maxCapacity"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.manufacturer,
     "#aircraftManufacturer"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.principalAirport,
     "#principalAirport"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.secondaryAirport,
     "#secondaryAirport"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.registrationMark,
     "#registrationMark"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.hexAddress,
     "#hexAddress"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.cnOrMsnNumber,
     "#cnOrMsnNumber"
   );
   givenIHaveSelected("#dongle-yes");
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.beaconPosition,
     "#beaconPosition"
   );
@@ -115,26 +115,29 @@ export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
 export const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
   givenIHaveSelected("#vhfRadio");
   givenIHaveSelected("#satelliteTelephone");
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationUseData.communications.satelliteTelephone,
     "#satelliteTelephoneInput"
   );
   givenIHaveSelected("#mobileTelephone");
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationUseData.communications.mobileTelephone1,
     "#mobileTelephoneInput1"
   );
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationUseData.communications.mobileTelephone2,
     "#mobileTelephoneInput2"
   );
   givenIHaveSelected("#otherCommunication");
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testAviationUseData.communications.otherCommunication,
     "#otherCommunicationInput"
   );
 };
 
 const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
-  givenIHaveTyped(testAviationUseData.moreDetails, "#moreDetails");
+  givenIHaveTypedInAnEmptyField(
+    testAviationUseData.moreDetails,
+    "#moreDetails"
+  );
 };

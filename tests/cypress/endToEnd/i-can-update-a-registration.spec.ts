@@ -30,7 +30,7 @@ import anotherBeaconRegistration from "../fixtures/anotherBeaconRegistration.jso
 import singleBeaconRegistration from "../fixtures/singleBeaconRegistration.json";
 
 describe("As an account holder", () => {
-  it.only("I can update one of my registrations", () => {
+  it("I can update one of my registrations", () => {
     givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(firstRegistrationToUpdate);
     andIHavePreviouslyRegisteredABeacon(secondRegistrationToUpdate);

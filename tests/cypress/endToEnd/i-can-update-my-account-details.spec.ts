@@ -16,7 +16,7 @@ import {
   whenIClickOnTheErrorSummaryLinkContaining,
   whenISelect,
   whenISelectTheOptionFromTheDropdown,
-  whenIType,
+  whenITypeInAnEmptyField,
 } from "../common/selectors-and-assertions.spec";
 
 describe("As an AccountHolder", () => {
@@ -137,10 +137,10 @@ describe("As an AccountHolder", () => {
       thenTheInputShouldBeEmpty(countySelector);
       thenTheInputShouldBeEmpty(postcodeSelector);
 
-      whenIType("100 Beacon Road", addressSelector);
-      whenIType("Beaconshire", countySelector);
-      whenIType("Beaconsville", townOrCitySelector);
-      whenIType("BS8 9DB", postcodeSelector);
+      whenITypeInAnEmptyField("100 Beacon Road", addressSelector);
+      whenITypeInAnEmptyField("Beaconshire", countySelector);
+      whenITypeInAnEmptyField("Beaconsville", townOrCitySelector);
+      whenITypeInAnEmptyField("BS8 9DB", postcodeSelector);
 
       whenIClickContinue();
       thenTheUrlShouldContain("/account/your-beacon-registry-account");
@@ -210,11 +210,11 @@ describe("As an AccountHolder", () => {
       thenTheDropdownShouldHaveTheFirstOptionSelected("#country");
       thenTheInputShouldBeEmpty("#postcode");
 
-      whenIType("Swanson Wharf", "#addressLine1");
-      whenIType("Royal Dubai Yacht Club", "#addressLine2");
+      whenITypeInAnEmptyField("Swanson Wharf", "#addressLine1");
+      whenITypeInAnEmptyField("Royal Dubai Yacht Club", "#addressLine2");
       // TODO: Update to dropdown
       whenISelectTheOptionFromTheDropdown("United Arab Emirates", "#country");
-      whenIType("60605", postcodeSelector);
+      whenITypeInAnEmptyField("60605", postcodeSelector);
 
       whenIClickContinue();
       thenTheUrlShouldContain("/account/your-beacon-registry-account");

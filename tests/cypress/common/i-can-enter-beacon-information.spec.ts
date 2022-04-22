@@ -2,8 +2,9 @@ import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveClickedContinue,
-  givenIHaveTyped,
+  givenIHaveTypedInAnEmptyField,
   thenTheUrlShouldContain,
+  whenIClearAndType,
 } from "./selectors-and-assertions.spec";
 
 export const givenIHaveEnteredMyBeaconDetails = (): void => {
@@ -13,28 +14,43 @@ export const givenIHaveEnteredMyBeaconDetails = (): void => {
 
 export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
   givenIHaveACookieSetAndIVisit("/register-a-beacon/check-beacon-details");
-  givenIHaveTyped(
+  givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.beaconDetails.manufacturer,
     "#manufacturer"
   );
-  givenIHaveTyped(testBeaconAndOwnerData.beaconDetails.model, "#model");
-  givenIHaveTyped(testBeaconAndOwnerData.beaconDetails.hexId, "#hexId");
+  givenIHaveTypedInAnEmptyField(
+    testBeaconAndOwnerData.beaconDetails.model,
+    "#model"
+  );
+  givenIHaveTypedInAnEmptyField(
+    testBeaconAndOwnerData.beaconDetails.hexId,
+    "#hexId"
+  );
   givenIHaveClickedContinue();
 };
 
 export const givenIHaveFilledInBeaconInformationPage = (): void => {
   const beaconInfo = testBeaconAndOwnerData.additionalBeaconInformation;
   thenTheUrlShouldContain("/register-a-beacon/beacon-information");
-  givenIHaveTyped(beaconInfo.serialNumber, "#manufacturerSerialNumber");
-  givenIHaveTyped(beaconInfo.chkCode, "#chkCode");
-  givenIHaveTyped(beaconInfo.csta, "#csta");
-  givenIHaveTyped(
+  whenIClearAndType(beaconInfo.serialNumber, "#manufacturerSerialNumber");
+  givenIHaveTypedInAnEmptyField(beaconInfo.chkCode, "#chkCode");
+  givenIHaveTypedInAnEmptyField(beaconInfo.csta, "#csta");
+  givenIHaveTypedInAnEmptyField(
     beaconInfo.batteryExpiryMonth.input,
     "#batteryExpiryDateMonth"
   );
-  givenIHaveTyped(beaconInfo.batteryExpiryYear, "#batteryExpiryDateYear");
-  givenIHaveTyped(beaconInfo.lastServicedMonth.input, "#lastServicedDateMonth");
-  givenIHaveTyped(beaconInfo.lastServicedYear, "#lastServicedDateYear");
+  givenIHaveTypedInAnEmptyField(
+    beaconInfo.batteryExpiryYear,
+    "#batteryExpiryDateYear"
+  );
+  givenIHaveTypedInAnEmptyField(
+    beaconInfo.lastServicedMonth.input,
+    "#lastServicedDateMonth"
+  );
+  givenIHaveTypedInAnEmptyField(
+    beaconInfo.lastServicedYear,
+    "#lastServicedDateYear"
+  );
   givenIHaveClickedContinue();
 };
 
