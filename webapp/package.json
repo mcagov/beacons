@@ -30,7 +30,7 @@
     "cookie": "^0.4.1",
     "google-libphonenumber": "^3.2.22",
     "govuk-frontend": "^3.13.1",
-    "ioredis": "^4.27.3",
+    "ioredis": "^5.0.4",
     "isodate": "^0.1.4",
     "next": "10.2.0",
     "next-auth": "^3.27.3",
