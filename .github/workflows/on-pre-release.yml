@@ -121,7 +121,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
+        uses: github/codeql-action/init@v2
         with:
           config-file: .github/codeql/codeql-config.yml
           languages: java, typescript
@@ -133,7 +133,7 @@ jobs:
         working-directory: service
         run: ./gradlew clean assemble
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
+        uses: github/codeql-action/analyze@v2
 
   deploy_staging:
     name: Staging
