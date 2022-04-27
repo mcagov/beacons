@@ -19,7 +19,7 @@ public class ReindexSearchScheduler {
     this.jobService = jobService;
   }
 
-  @Scheduled(cron = "0 0 2 * * ?") // Nightly at 2am
+  @Scheduled(cron = "0 30 */4 * * ?") // At half-past the hour every 4 hours
   @SchedulerLock(
     name = "reindexSearchJob_scheduledTask",
     lockAtLeastFor = "15m", // 15 minutes
