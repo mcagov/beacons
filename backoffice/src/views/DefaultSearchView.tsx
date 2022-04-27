@@ -31,26 +31,41 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-type ConnectionStatus = "CONNECTED" | "DISCONNECTED" | "ERROR";
+type ConnectionStatus =
+  | { status: "OK" }
+  | { status: "ERROR"; error: string }
+  | { status: "PENDING"; retryCount: number };
 
 const useConnectToOpenSearch = (): ConnectionStatus => {
   const [connectionStatus, setConnectionStatus] =
-    React.useState<ConnectionStatus>("DISCONNECTED");
+    React.useState<ConnectionStatus>({ status: "PENDING", retryCount: 0 });
 
   React.useEffect(() => {
-    if (connectionStatus === "DISCONNECTED") {
+    if (connectionStatus.status === "PENDING") {
       fetch(searchUrl(window.location.hostname) + "_cluster/health", {
         redirect: "follow",
       })
         .then(() => {
-          setConnectionStatus("CONNECTED");
+          setConnectionStatus({ status: "OK" });
         })
         .catch((e) => {
           logToServer.error(e);
-          setConnectionStatus("ERROR");
+          setConnectionStatus((connectionStatus) => {
+            if (
+              connectionStatus.status === "PENDING" &&
+              connectionStatus.retryCount < 10
+            ) {
+              return {
+                status: "PENDING",
+                retryCount: connectionStatus.retryCount + 1,
+              };
+            } else {
+              return { status: "ERROR", error: JSON.stringify(e) };
+            }
+          });
         });
     }
-  }, [connectionStatus, setConnectionStatus]);
+  }, [connectionStatus]);
 
   return connectionStatus;
 };
@@ -60,11 +75,11 @@ export function DefaultSearchView(): JSX.Element {
 
   const connectionStatus = useConnectToOpenSearch();
 
-  if (connectionStatus === "ERROR") {
+  if (connectionStatus.status === "ERROR") {
     return <ErrorState message={"Failed to connect to OpenSearch"} />;
   }
 
-  if (connectionStatus === "DISCONNECTED") {
+  if (connectionStatus.status === "PENDING") {
     return <LoadingState />;
   }
 
