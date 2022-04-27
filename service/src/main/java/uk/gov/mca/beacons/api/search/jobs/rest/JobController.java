@@ -21,7 +21,7 @@ public class JobController {
 
   @PostMapping("/reindexSearch")
   public ResponseEntity<JobAcceptanceDTO> reindexSearch() throws Exception {
-    Long jobExecutionId = jobService.startReindexSearchJob();
+    Long jobExecutionId = jobService.startReindexSearchJobAsync();
     JobAcceptanceDTO jobAcceptanceDTO = JobAcceptanceDTO
       .builder()
       .location("/spring-api/search/job/reindexSearch/" + jobExecutionId)

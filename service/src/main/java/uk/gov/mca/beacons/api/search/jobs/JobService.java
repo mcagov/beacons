@@ -17,20 +17,37 @@ import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 public class JobService {
 
   private final JobLauncher jobLauncher;
+  private final JobLauncher asyncJobLauncher;
   private final Job reindexSearchJob;
   private final JobExplorer jobExplorer;
   private final JobOperator jobOperator;
 
   public JobService(
-    @Qualifier("simpleAsyncJobLauncher") JobLauncher jobLauncher,
+    @Qualifier("jobLauncher") JobLauncher jobLauncher,
+    @Qualifier("simpleAsyncJobLauncher") JobLauncher asyncJobLauncher,
     Job reindexSearchJob,
     JobExplorer jobExplorer,
     JobOperator jobOperator
   ) {
     this.jobLauncher = jobLauncher;
+    this.asyncJobLauncher = asyncJobLauncher;
     this.reindexSearchJob = reindexSearchJob;
     this.jobExplorer = jobExplorer;
     this.jobOperator = jobOperator;
+  }
+
+  public Long startReindexSearchJobAsync()
+    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    JobExecution jobExecution = asyncJobLauncher.run(
+      reindexSearchJob,
+      new JobParameters(
+        // Pass in the last job instance ID, which is then incremented by the job launcher to provide the ID of the
+        // new job instance. See ReindexSearchJobConfiguration.
+        Map.of("run.datetime", new JobParameter(new Date()))
+      )
+    );
+
+    return jobExecution.getId();
   }
 
   public Long startReindexSearchJob()

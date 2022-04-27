@@ -10,7 +10,7 @@ import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 @Component
 public class ExportScheduler {
 
-  private XlsxExporter xlsxExporter;
+  private final XlsxExporter xlsxExporter;
 
   @Autowired
   public ExportScheduler(XlsxExporter xlsxExporter) {
