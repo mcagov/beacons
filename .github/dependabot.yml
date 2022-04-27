@@ -45,8 +45,3 @@ updates:
     directory: "/backoffice"
     schedule:
       interval: "weekly"
-
-  - package-ecosystem: "npm"
-    directory: "/webapp"
-    schedule:
-      interval: "weekly"
