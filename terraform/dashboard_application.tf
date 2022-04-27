@@ -68,7 +68,7 @@ resource "aws_cloudwatch_dashboard" "application_health" {
             "width": 24,
             "height": 6,
             "properties": {
-                "query": "SOURCE '/${terraform.workspace}/mca/beacons' | fields @timestamp, @message\n| fields strcontains(@message, \"Registration sent\") as registration_sent\n| stats sum(registration_sent) as registrations_sent by bin(1d) as day\n| sort day desc",
+                "query": "SOURCE '/${terraform.workspace}/mca/beacons' | fields @timestamp, @message\n| fields strcontains(@message, \"Registration sent\") as registration_sent\n| stats sum(registration_sent) as registrations_sent by bin(1d) as day\n| sort day asc\n",
                 "region": "${data.aws_region.current.name}",
                 "title": "Successful registrations per day",
                 "view": "bar"
