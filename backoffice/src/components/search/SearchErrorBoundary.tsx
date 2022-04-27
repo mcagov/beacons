@@ -1,6 +1,5 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { logToServer } from "../../utils/logger";
 import { ErrorState } from "../dataPanel/PanelErrorState";
 
@@ -35,7 +34,13 @@ export class SearchErrorBoundary extends React.Component<Props, State> {
           <Typography component="h1" variant={"h4"}>
             Something went wrong
           </Typography>
-          <RouterLink to="/">Back to home</RouterLink>
+          <Button
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            Click here to refresh the page
+          </Button>
         </ErrorState>
       );
     }
