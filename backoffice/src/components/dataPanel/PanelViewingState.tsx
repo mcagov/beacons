@@ -5,7 +5,6 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Typography,
 } from "@mui/material";
 import React, { FunctionComponent } from "react";
 import { WritingStyle } from "../../utils/writingStyle";
@@ -50,9 +49,7 @@ const OneColumn: FunctionComponent<IPanelViewingStateProps> = ({ fields }) => (
           return (
             <TableRow key={index}>
               <TableCell component="th" scope="row">
-                <Typography>
-                  {field.key + WritingStyle.KeyValueSeparator}
-                </Typography>
+                {field.key + WritingStyle.KeyValueSeparator}
               </TableCell>
               <TableCell>
                 {valuesAsArray.map((value, index) => (

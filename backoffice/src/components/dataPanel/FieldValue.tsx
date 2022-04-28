@@ -1,4 +1,3 @@
-import { Typography } from "@mui/material";
 import { FunctionComponent } from "react";
 import { formatFieldValue } from "../../utils/writingStyle";
 
@@ -14,4 +13,4 @@ export enum FieldValueTypes {
 export const FieldValue: FunctionComponent<IFieldValueProps> = ({
   children,
   valueType,
-}) => <Typography>{formatFieldValue(children, valueType)}</Typography>;
+}) => formatFieldValue(children, valueType);
