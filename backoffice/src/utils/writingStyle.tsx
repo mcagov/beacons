@@ -78,3 +78,16 @@ export const formatFieldValue = (
 
   return <i>{Placeholders.NoData}</i>;
 };
+
+export function formatForClipboard(entity: Record<any, any>): string {
+  return Object.entries(entity)
+    .map(([key, value]) => {
+      if (Array.isArray(value)) {
+        return `=====${key.toUpperCase()}=====
+${value.map(formatForClipboard)}`;
+      } else {
+        return `${key}:    ${value}\n`;
+      }
+    })
+    .join("");
+}

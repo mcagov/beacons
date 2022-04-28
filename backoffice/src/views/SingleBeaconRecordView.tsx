@@ -7,6 +7,7 @@ import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import { OwnerPanel } from "panels/ownerPanel/OwnerPanel";
 import { UsesListPanel } from "panels/usesPanel/UsesListPanel";
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { CopyToClipboardButton } from "../components/CopyToClipboardButton";
 import { PageContent } from "../components/layout/PageContent";
 import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
@@ -16,6 +17,7 @@ import { BeaconSummaryPanel } from "../panels/beaconSummaryPanel/BeaconSummaryPa
 import { EmergencyContactPanel } from "../panels/emergencyContactPanel/EmergencyContactPanel";
 import { NotesPanel } from "../panels/notesPanel/NotesPanel";
 import { logToServer } from "../utils/logger";
+import { formatForClipboard } from "../utils/writingStyle";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -65,7 +67,11 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   return (
     <div className={classes.root}>
-      <PageHeader>Hex ID/UIN: {hexId}</PageHeader>
+      <PageHeader>
+        Hex ID/UIN: {hexId}{" "}
+        <CopyToClipboardButton text={formatForClipboard(beacon)} />
+      </PageHeader>
+
       <PageContent>
         <BeaconSummaryPanel
           beaconsGateway={beaconsGateway}
