@@ -145,6 +145,35 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
   }
 
   @Nested
+  class GetRegistrationsByBeaconIdAndAccountHolderId {
+
+    @Test
+    void shouldGetTheRegistrationByBeaconIdAndAccountHolderId()
+      throws Exception {
+      String beaconId = seedRegistration(
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId
+      );
+
+      webTestClient
+        .get()
+        .uri(
+          Endpoints.Registration.value +
+          "/" +
+          beaconId +
+          "?accountHolderId=" +
+          accountHolderId
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("$.id")
+        .isEqualTo(beaconId);
+    }
+  }
+
+  @Nested
   class DeleteRegistration {
 
     String beaconId;
@@ -230,10 +259,11 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
     )
     void shouldClaimMatchingLegacyBeacon() throws Exception {
       //setup
-      String legacyBeaconId = seedLegacyBeacon(fixture ->
-        fixture
-          .replace("ownerbeacon@beacons.com", "testy@mctestface.com")
-          .replace("9D0E1D1B8C00001", "1D0EA08C52FFBFF")
+      String legacyBeaconId = seedLegacyBeacon(
+        fixture ->
+          fixture
+            .replace("ownerbeacon@beacons.com", "testy@mctestface.com")
+            .replace("9D0E1D1B8C00001", "1D0EA08C52FFBFF")
       );
       final String registrationBody = getRegistrationBody(
         RegistrationUseCase.SINGLE_BEACON,

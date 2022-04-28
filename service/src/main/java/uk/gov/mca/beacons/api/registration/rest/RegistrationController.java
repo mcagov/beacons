@@ -72,7 +72,27 @@ public class RegistrationController {
   }
 
   /**
-   *
+   * @implNote This is the wrong way to enforce ownership of the registration (i.e. account holder can get a
+   * registration by beacon id, but only their registrations). But given the fact that no "account holder session" is
+   * sent in the request headers (for example) this is the only way to enforce ownership currently (trusted client model
+   * of the webapp is creating these issues).
+   */
+  @GetMapping(value = "/{uuid}", params = "accountHolderId")
+  public ResponseEntity<RegistrationDTO> getRegistrationByBeaconId(
+    @PathVariable("uuid") UUID rawBeaconId,
+    @RequestParam("accountHolderId") UUID rawAccountHolderId
+  ) {
+    BeaconId beaconId = new BeaconId(rawBeaconId);
+    AccountHolderId accountHolderId = new AccountHolderId(rawAccountHolderId);
+    Registration registration = registrationService.getByBeaconIdAndAccountHolderId(
+      beaconId,
+      accountHolderId
+    );
+
+    return ResponseEntity.ok(registrationMapper.toDTO(registration));
+  }
+
+  /**
    * @param accountHolderId Account holder's id
    * @return List of registrations where beacon status is new
    */

@@ -58,6 +58,17 @@ public class BeaconService {
     );
   }
 
+  public Optional<Beacon> getByBeaconIdAndAccountHolderIdWhereStatusIsNew(
+    BeaconId beaconId,
+    AccountHolderId accountHolderId
+  ) {
+    return beaconRepository.getByIdAndAccountHolderIdAndBeaconStatus(
+      beaconId,
+      accountHolderId,
+      BeaconStatus.NEW
+    );
+  }
+
   public Beacon update(BeaconId beaconId, Beacon patch)
     throws ResourceNotFoundException {
     Beacon beacon = beaconRepository

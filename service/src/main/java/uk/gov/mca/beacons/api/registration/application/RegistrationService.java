@@ -121,6 +121,24 @@ public class RegistrationService {
       .collect(Collectors.toList());
   }
 
+  public Registration getByBeaconIdAndAccountHolderId(
+    BeaconId beaconId,
+    AccountHolderId accountHolderId
+  ) {
+    AccountHolder accountHolder = accountHolderService
+      .getAccountHolder(accountHolderId)
+      .orElseThrow(ResourceNotFoundException::new);
+
+    Beacon beacon = beaconService
+      .getByBeaconIdAndAccountHolderIdWhereStatusIsNew(
+        beaconId,
+        accountHolder.getId()
+      )
+      .orElseThrow(ResourceNotFoundException::new);
+
+    return getAssociatedAggregates(beacon);
+  }
+
   private Registration getAssociatedAggregates(Beacon beacon) {
     Optional<BeaconOwner> beaconOwner = beaconOwnerService.getByBeaconId(
       beacon.getId()
