@@ -83,8 +83,15 @@ export function formatForClipboard(entity: Record<any, any>): string {
   return Object.entries(entity)
     .map(([key, value]) => {
       if (Array.isArray(value)) {
-        return `=====${key.toUpperCase()}=====
-${value.map(formatForClipboard)}`;
+        return (
+          `=====${key.toUpperCase()}=====\n` +
+          value.map((element, index) => {
+            return (
+              `-----${key.toUpperCase()} (${index + 1})-----\n` +
+              formatForClipboard(element)
+            );
+          })
+        );
       } else {
         return `${key}:    ${value}\n`;
       }
