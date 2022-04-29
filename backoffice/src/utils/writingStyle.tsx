@@ -1,4 +1,5 @@
 import { ILegacyOwner, ILegacyUse } from "entities/ILegacyBeacon";
+import * as _ from "lodash";
 import { FieldValueTypes } from "../components/dataPanel/FieldValue";
 import { IEmergencyContact } from "../entities/IEmergencyContact";
 import { IOwner } from "../entities/IOwner";
@@ -84,16 +85,16 @@ export function formatForClipboard(entity: Record<any, any>): string {
     .map(([key, value]) => {
       if (Array.isArray(value)) {
         return (
-          `=====${key.toUpperCase()}=====\n` +
+          `\n=====${key.toUpperCase()}=====\n` +
           value.map((element, index) => {
             return (
-              `-----${key.toUpperCase()} (${index + 1})-----\n` +
+              `\n-----${key.toUpperCase()} (${index + 1})-----\n` +
               formatForClipboard(element)
             );
           })
         );
       } else {
-        return `${key}:    ${value}\n`;
+        return `${_.startCase(key)}:    ${value ? value : "N/A"}\n`;
       }
     })
     .join("");
