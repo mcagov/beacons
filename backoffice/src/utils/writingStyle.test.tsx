@@ -2,6 +2,7 @@ import { FieldValueTypes } from "../components/dataPanel/FieldValue";
 import { Activities, Environments, Purposes } from "../entities/IUse";
 import {
   formatFieldValue,
+  formatForClipboard,
   formatOwners,
   formatUses,
   Placeholders,
@@ -202,5 +203,21 @@ describe("formatFieldValue()", () => {
 
   it("handles null", () => {
     expect(formatFieldValue(null)).toEqual(<i>{Placeholders.NoData}</i>);
+  });
+});
+
+describe("formatForClipboard", () => {
+  it("explicitly states 'N/A' if there is an empty array for a key", () => {
+    const dynamicLegacyBeaconData = { secondaryOwners: [] };
+
+    expect(formatForClipboard(dynamicLegacyBeaconData)).toBe(
+      "Secondary Owners:    N/A\n"
+    );
+  });
+
+  it("explicitly states 'N/A' if there is an empty object for a key", () => {
+    const dynamicLegacyBeaconData = { owner: {} };
+
+    expect(formatForClipboard(dynamicLegacyBeaconData)).toBe("Owner:    N/A\n");
   });
 });

@@ -83,7 +83,7 @@ export const formatFieldValue = (
 export function formatForClipboard(entity: Record<any, any>): string {
   return Object.entries(entity)
     .map(([key, value]) => {
-      if (Array.isArray(value)) {
+      if (Array.isArray(value) && value.length > 0) {
         return (
           `\n=====${key.toUpperCase()}=====\n` +
           value.map((element, index) => {
@@ -94,7 +94,7 @@ export function formatForClipboard(entity: Record<any, any>): string {
           })
         );
       } else {
-        return `${_.startCase(key)}:    ${value ? value : "N/A"}\n`;
+        return `${_.startCase(key)}:    ${!_.isEmpty(value) ? value : "N/A"}\n`;
       }
     })
     .join("");
