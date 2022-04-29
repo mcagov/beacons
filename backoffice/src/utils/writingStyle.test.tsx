@@ -210,7 +210,7 @@ describe("formatForClipboard", () => {
   it("explicitly states 'N/A' if there is an empty array for a key", () => {
     const dynamicLegacyBeaconData = { secondaryOwners: [] };
 
-    expect(formatForClipboard(dynamicLegacyBeaconData)).toBe(
+    expect(formatForClipboard(dynamicLegacyBeaconData)).toEqual(
       "Secondary Owners:    N/A\n"
     );
   });
@@ -218,6 +218,16 @@ describe("formatForClipboard", () => {
   it("explicitly states 'N/A' if there is an empty object for a key", () => {
     const dynamicLegacyBeaconData = { owner: {} };
 
-    expect(formatForClipboard(dynamicLegacyBeaconData)).toBe("Owner:    N/A\n");
+    expect(formatForClipboard(dynamicLegacyBeaconData)).toEqual(
+      "Owner:    N/A\n"
+    );
+  });
+
+  it("exports nested data in its own section", () => {
+    const nestedData = { owner: { name: "Steve", email: "steve@mail.com" } };
+
+    expect(formatForClipboard(nestedData)).toEqual(
+      "\n=====OWNER=====\nName:    Steve\nEmail:    steve@mail.com\n"
+    );
   });
 });

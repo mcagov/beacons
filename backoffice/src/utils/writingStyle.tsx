@@ -81,20 +81,33 @@ export const formatFieldValue = (
 };
 
 export function formatForClipboard(entity: Record<any, any>): string {
+  const isArrayWithData = (value: any): boolean =>
+    Array.isArray(value) && value.length > 0;
+  const isKeyValueObject = (value: any): boolean =>
+    value != null &&
+    value.constructor.name === "Object" &&
+    Object.entries(value).length > 0;
+
   return Object.entries(entity)
     .map(([key, value]) => {
-      if (Array.isArray(value) && value.length > 0) {
+      if (isArrayWithData(value)) {
         return (
           `\n=====${key.toUpperCase()}=====\n` +
-          value.map((element, index) => {
+          value.map((element: Record<any, any>, index: number) => {
             return (
               `\n-----${key.toUpperCase()} (${index + 1})-----\n` +
               formatForClipboard(element)
             );
           })
         );
+      } else if (isKeyValueObject(value)) {
+        return `\n=====${_.startCase(
+          key
+        ).toUpperCase()}=====\n${formatForClipboard(value)}`;
+      } else if (_.isEmpty(value)) {
+        return `${_.startCase(key)}:    N/A\n`;
       } else {
-        return `${_.startCase(key)}:    ${!_.isEmpty(value) ? value : "N/A"}\n`;
+        return `${_.startCase(key)}:    ${value}\n`;
       }
     })
     .join("");
