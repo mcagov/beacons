@@ -62,7 +62,8 @@ branch. Docker images are tagged with the version tag of the release. Version ta
 ### Production environment
 
 Changing the status of a pre-release to `release` triggers a deployment to production of the images that were created
-for the staging environment. [Environment protection](https://docs.github.com/en/actions/managing-workflow-runs/reviewing-deployments)
+for the staging
+environment. [Environment protection](https://docs.github.com/en/actions/managing-workflow-runs/reviewing-deployments)
 is applied to the `production` environment such that another member of the development team is prompted to approve
 deployments to production.
 
@@ -70,15 +71,21 @@ deployments to production.
 
 ## Architectural Decision Records (ADRs)
 
-We use [ADRs](./docs/adr) to document design choices that address functional and non-functional requirements that are architecturally significant to the Beacons Registration project. Please see this [record](docs/adr/0003-2021-02-24-when-to-adr.md) for how and when to document ADRs for the project.
+We use [ADRs](./docs/adr) to document design choices that address functional and non-functional requirements that are
+architecturally significant to the Beacons Registration project. Please see
+this [record](docs/adr/0003-2021-02-24-when-to-adr.md) for how and when to document ADRs for the project.
+
+## Secrets
+
+Secrets are set in the Repository and injected during deployment.
 
 ## License
 
-Unless stated otherwise, the codebase is released under [the MIT License][mit].
-This covers both the codebase and any sample code in the documentation.
+Unless stated otherwise, the codebase is released under [the MIT License][mit]. This covers both the codebase and any
+sample code in the documentation.
 
-The documentation is [&copy; Crown copyright][copyright] and available under the terms
-of the [Open Government 3.0][ogl] licence.
+The documentation is [&copy; Crown copyright][copyright] and available under the terms of the [Open Government 3.0][ogl]
+licence.
 
 [mit]: LICENCE
 [copyright]: http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/
