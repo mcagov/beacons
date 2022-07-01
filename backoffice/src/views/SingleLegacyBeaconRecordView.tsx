@@ -8,13 +8,11 @@ import { LegacyEmergencyContactPanel } from "panels/legacyEmergencyContactPanel/
 import { LegacyOwnerPanel } from "panels/legacyOwnerPanel/LegacyOwnerPanel";
 import { LegacyUsesListPanel } from "panels/usesPanel/LegacyUsesListPanel";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { CopyToClipboardButton } from "../components/CopyToClipboardButton";
 import { PageContent } from "../components/layout/PageContent";
 import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { logToServer } from "../utils/logger";
-import { formatForClipboard } from "../utils/writingStyle";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -64,7 +62,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
     <div className={classes.root}>
       <PageHeader>
         Hex ID/UIN: {hexId}{" "}
-        <CopyToClipboardButton text={formatForClipboard(beacon)} />
+        {/* <CopyToClipboardButton text={formatForClipboard(beacon)} /> */}
       </PageHeader>
       <PageContent>
         <LegacyBeaconSummaryPanel legacyBeacon={beacon} />
