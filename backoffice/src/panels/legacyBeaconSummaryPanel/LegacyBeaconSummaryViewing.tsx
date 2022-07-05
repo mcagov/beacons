@@ -1,3 +1,4 @@
+import { FieldValueTypes } from "components/dataPanel/FieldValue";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { FunctionComponent } from "react";
 import { formatLegacyOwners, formatLegacyUses } from "utils/writingStyle";
@@ -98,6 +99,7 @@ export const LegacyBeaconSummaryViewing: FunctionComponent<{
     {
       key: "Emergency contacts",
       value: legacyBeacon?.emergencyContact?.details,
+      valueType: FieldValueTypes.MULTILINE,
     },
     {
       key: "Registered uses",
@@ -106,6 +108,7 @@ export const LegacyBeaconSummaryViewing: FunctionComponent<{
     {
       key: "Notes",
       value: legacyBeacon?.note || "",
+      valueType: FieldValueTypes.MULTILINE,
     },
   ];
 
