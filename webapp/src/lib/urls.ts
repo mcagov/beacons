@@ -84,6 +84,7 @@ export enum UpdatePageURLs {
 }
 
 export enum ActionURLs {
+  clearAndCheckBeaconDetails = "/api/registration/clear-and-check-beacon-details",
   deleteCachedUse = "/api/registration/delete-use",
   addNewUseToDraftRegistration = "/api/registration/add-new-use-to-draft",
 }
