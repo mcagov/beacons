@@ -21,8 +21,8 @@ import { withSession } from "../../lib/middleware/withSession";
 import { formSubmissionCookieId } from "../../lib/types";
 import {
   AccountPageURLs,
-  ActionURLs,
   ClaimPageURLs,
+  CreateRegistrationPageURLs,
   DeleteRegistrationPageURLs,
   queryParams,
 } from "../../lib/urls";
@@ -321,7 +321,8 @@ const RegisterANewBeacon: FunctionComponent = (): JSX.Element => (
     <SectionHeading>Register a new beacon</SectionHeading>
     <LinkButton
       buttonText="Register a new beacon"
-      href={ActionURLs.clearAndCheckBeaconDetails}
+      href={CreateRegistrationPageURLs.checkBeaconDetails}
+      // href={ActionURLs.clearAndCheckBeaconDetails}
     />
   </>
 );
