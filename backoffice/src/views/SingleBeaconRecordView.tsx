@@ -2,11 +2,13 @@ import { Grid, Tab, Tabs } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
+import { CopyToClipboardButton } from "components/CopyToClipboardButton";
 import { IBeacon } from "entities/IBeacon";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import { OwnerPanel } from "panels/ownerPanel/OwnerPanel";
 import { UsesListPanel } from "panels/usesPanel/UsesListPanel";
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { formatForClipboard } from "utils/writingStyle";
 import { PageContent } from "../components/layout/PageContent";
 import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
@@ -67,7 +69,7 @@ export const SingleBeaconRecordView: FunctionComponent<
     <div className={classes.root}>
       <PageHeader>
         Hex ID/UIN: {hexId}{" "}
-        {/* <CopyToClipboardButton text={formatForClipboard(beacon)} /> */}
+        <CopyToClipboardButton text={formatForClipboard(beacon)} />
       </PageHeader>
 
       <PageContent>

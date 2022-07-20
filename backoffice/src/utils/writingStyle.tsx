@@ -80,9 +80,20 @@ export const formatFieldValue = (
   return <i>{Placeholders.NoData}</i>;
 };
 
+const fieldNameReplacements: Record<string, string> = {
+  fixedVhfRadioValue: "MMSI",
+};
+
+function lookupFieldName(fieldName: string): string {
+  return fieldNameReplacements.hasOwnProperty(fieldName)
+    ? fieldNameReplacements[fieldName]
+    : fieldName;
+}
+
 export function formatForClipboard(entity: Record<any, any>): string {
   const isArrayWithData = (value: any): boolean =>
     Array.isArray(value) && value.length > 0;
+
   const isKeyValueObject = (value: any): boolean =>
     value != null &&
     value.constructor.name === "Object" &&
@@ -90,6 +101,8 @@ export function formatForClipboard(entity: Record<any, any>): string {
 
   return Object.entries(entity)
     .map(([key, value]) => {
+      key = lookupFieldName(key);
+
       if (isArrayWithData(value)) {
         return (
           `\n=====${key.toUpperCase()}=====\n` +
