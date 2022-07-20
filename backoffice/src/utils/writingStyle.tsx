@@ -91,8 +91,6 @@ function lookupFieldName(fieldName: string): string {
 }
 
 export function formatForClipboard(entity: Record<any, any>): string {
-  console.dir(entity);
-
   const isArrayWithData = (value: any): boolean =>
     Array.isArray(value) && value.length > 0;
 
