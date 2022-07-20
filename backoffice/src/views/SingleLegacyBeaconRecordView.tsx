@@ -2,12 +2,14 @@ import { Grid, Tab, Tabs } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
+import { CopyToClipboardButton } from "components/CopyToClipboardButton";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { LegacyBeaconSummaryPanel } from "panels/legacyBeaconSummaryPanel/LegacyBeaconSummaryPanel";
 import { LegacyEmergencyContactPanel } from "panels/legacyEmergencyContactPanel/LegacyEmergencyContactPanel";
 import { LegacyOwnerPanel } from "panels/legacyOwnerPanel/LegacyOwnerPanel";
 import { LegacyUsesListPanel } from "panels/usesPanel/LegacyUsesListPanel";
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { formatForClipboard } from "utils/writingStyle";
 import { PageContent } from "../components/layout/PageContent";
 import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
@@ -62,7 +64,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
     <div className={classes.root}>
       <PageHeader>
         Hex ID/UIN: {hexId}{" "}
-        {/* <CopyToClipboardButton text={formatForClipboard(beacon)} /> */}
+        <CopyToClipboardButton text={formatForClipboard(beacon)} />
       </PageHeader>
       <PageContent>
         <LegacyBeaconSummaryPanel legacyBeacon={beacon} />
