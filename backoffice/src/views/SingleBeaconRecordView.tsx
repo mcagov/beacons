@@ -4,11 +4,12 @@ import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 import { CopyToClipboardButton } from "components/CopyToClipboardButton";
 import { IBeacon } from "entities/IBeacon";
+import { INote } from "entities/INote";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import { OwnerPanel } from "panels/ownerPanel/OwnerPanel";
 import { UsesListPanel } from "panels/usesPanel/UsesListPanel";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { formatForClipboard } from "utils/writingStyle";
+import { formatForClipboardWithNotes } from "utils/writingStyle";
 import { PageContent } from "../components/layout/PageContent";
 import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
@@ -48,11 +49,14 @@ export const SingleBeaconRecordView: FunctionComponent<
   };
 
   const [beacon, setBeacon] = useState<IBeacon>({} as IBeacon);
+  const [notes, setNotes] = useState<INote[]>([] as INote[]);
 
   useEffect((): void => {
     const fetchBeacon = async (id: string) => {
       try {
         const beacon = await beaconsGateway.getBeacon(id);
+        const notes = await notesGateway.getNotes(beaconId);
+        setNotes(notes);
         setBeacon(beacon);
       } catch (error) {
         logToServer.error(error);
@@ -69,7 +73,9 @@ export const SingleBeaconRecordView: FunctionComponent<
     <div className={classes.root}>
       <PageHeader>
         Hex ID/UIN: {hexId}{" "}
-        <CopyToClipboardButton text={formatForClipboard(beacon)} />
+        <CopyToClipboardButton
+          text={formatForClipboardWithNotes(beacon, notes)}
+        />
       </PageHeader>
 
       <PageContent>

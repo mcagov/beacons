@@ -1,4 +1,5 @@
 import { ILegacyOwner, ILegacyUse } from "entities/ILegacyBeacon";
+import { INote } from "entities/INote";
 import * as _ from "lodash";
 import { FieldValueTypes } from "../components/dataPanel/FieldValue";
 import { IEmergencyContact } from "../entities/IEmergencyContact";
@@ -88,6 +89,31 @@ function lookupFieldName(fieldName: string): string {
   return fieldNameReplacements.hasOwnProperty(fieldName)
     ? fieldNameReplacements[fieldName]
     : fieldName;
+}
+
+export function formatForClipboardWithNotes(
+  beacon: Record<any, any>,
+  notes: INote[]
+): string {
+  const text = formatForClipboard(beacon);
+
+  if (!notes) {
+    return text;
+  }
+
+  return text + formatForClipboard(parseNotesData(notes));
+}
+
+export function parseNotesData(notes: INote[]): Record<string, any> {
+  return {
+    notes: notes.map((note) => ({
+      typeOfNote: note.type,
+      note: note.text,
+      notedBy: note.fullName,
+      notedByEmailAddress: note.email,
+      date: note.createdDate,
+    })),
+  };
 }
 
 export function formatForClipboard(entity: Record<any, any>): string {
