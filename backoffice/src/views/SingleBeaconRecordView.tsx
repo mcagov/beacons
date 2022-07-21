@@ -64,7 +64,7 @@ export const SingleBeaconRecordView: FunctionComponent<
     };
 
     fetchBeacon(beaconId);
-  }, [beaconId, beaconsGateway]);
+  }, [beaconId, beaconsGateway, notesGateway]);
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
