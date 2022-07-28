@@ -143,7 +143,7 @@ export function formatForClipboard(entity: Record<any, any>): string {
         return `\n=====${_.startCase(
           key
         ).toUpperCase()}=====\n${formatForClipboard(value)}`;
-      } else if (_.isEmpty(value)) {
+      } else if (!_.isNumber(value) && _.isEmpty(value)) {
         return `${_.startCase(key)}:    N/A\n`;
       } else {
         return `${_.startCase(key)}:    ${value}\n`;
