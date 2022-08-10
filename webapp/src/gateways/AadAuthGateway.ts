@@ -1,7 +1,9 @@
 import {
+  AccountInfo,
   ClientCredentialRequest,
   ConfidentialClientApplication,
   NodeAuthOptions,
+  PublicClientApplication,
 } from "@azure/msal-node";
 import logger from "../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
@@ -38,6 +40,18 @@ export class AadAuthGateway implements AuthGateway {
     } catch (error) {
       logger.error("getAccessToken:", error);
       throw error;
+    }
+  }
+
+  // what if everything'sfine with b2c but just nobody's logged in yet? not ideal to return null but that
+  // tells us if b2c is inaccessible
+  public async getSignedInAccounts(): Promise<AccountInfo[]> {
+    try {
+      const beaconsWebApp = new PublicClientApplication(this.config);
+      const tokenCache = beaconsWebApp.getTokenCache();
+      return tokenCache.getAllAccounts();
+    } catch (error) {
+      return null;
     }
   }
 }
