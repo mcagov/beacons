@@ -43,8 +43,6 @@ export class AadAuthGateway implements AuthGateway {
     }
   }
 
-  // what if everything'sfine with b2c but just nobody's logged in yet? not ideal to return null but that
-  // tells us if b2c is inaccessible
   public async getSignedInAccounts(): Promise<AccountInfo[]> {
     try {
       const beaconsWebApp = new PublicClientApplication(this.config);
