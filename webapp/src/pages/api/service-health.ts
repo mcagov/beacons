@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { AadAuthGateway } from "../../gateways/AadAuthGateway";
+import { B2CAuthGateway } from "../../gateways/B2CAuthGateway";
 import { IServiceHealthResponse } from "./IServiceHealthResponse";
 
 export default async (
@@ -17,10 +17,12 @@ export async function getB2CServiceHealthResponse(): Promise<IServiceHealthRespo
     statusCode: 200,
     message: "Ok",
   };
-  const azureAdAuthGateway = new AadAuthGateway();
-  const signedInAccounts = await azureAdAuthGateway.getSignedInAccounts();
 
-  if (signedInAccounts.length === null) {
+  const azureB2CAuthGateway = new B2CAuthGateway();
+  const accessToken = await azureB2CAuthGateway.getAccessToken();
+  console.log(accessToken);
+
+  if (!accessToken) {
     serviceHealthResponse.message = "Azure B2C login is not responding";
   }
 
