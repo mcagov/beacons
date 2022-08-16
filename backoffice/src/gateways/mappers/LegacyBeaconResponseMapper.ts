@@ -38,6 +38,8 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
       lastServiceDate: beaconApiResponse.data.attributes.beacon.lastServiceDate,
       batteryExpiryDate:
         beaconApiResponse.data.attributes.beacon.batteryExpiryDate,
+      csta: beaconApiResponse.data.attributes.beacon.csta,
+      mti: beaconApiResponse.data.attributes.beacon.mti,
       withdrawnReason: beaconApiResponse.data.attributes.beacon.withdrawnReason,
       isArchived: beaconApiResponse.data.attributes.beacon.isArchived,
       createUserId: beaconApiResponse.data.attributes.beacon.createUserId,
@@ -58,8 +60,6 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
       secondaryOwners: this.mapSecondaryOwners(beaconApiResponse),
       emergencyContact: this.mapEmergencyContacts(beaconApiResponse),
       uses: this.mapUses(beaconApiResponse),
-      csta: beaconApiResponse.data.attributes.beacon.csta,
-      mti: beaconApiResponse.data.attributes.beacon.mti,
     };
   }
 

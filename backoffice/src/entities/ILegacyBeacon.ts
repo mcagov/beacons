@@ -18,6 +18,8 @@ export interface ILegacyBeacon {
   firstRegistrationDate: string;
   lastServiceDate: string;
   batteryExpiryDate: string;
+  csta: string;
+  mti: string;
   withdrawnReason: string;
   isArchived: string;
   createUserId: number;
@@ -31,8 +33,6 @@ export interface ILegacyBeacon {
   secondaryOwners: ILegacyOwner[];
   emergencyContact: ILegacyEmergencyContact;
   beaconStatus: BeaconStatuses;
-  csta: string;
-  mti: string;
 }
 
 export interface ILegacyUse {
