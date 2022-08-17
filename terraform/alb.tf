@@ -27,7 +27,7 @@ resource "aws_alb_listener" "front_end" {
 }
 
 resource "aws_lb_listener_rule" "front_end" {
-  count        = terraform.workspace == "production" ? 0 : 1
+  count        = terraform.workspace == "production" ? 1 : 0
   listener_arn = aws_alb_listener.front_end_ssl.arn
 
   action {
