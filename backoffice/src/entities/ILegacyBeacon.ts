@@ -4,6 +4,7 @@ export interface ILegacyBeacon {
   pkBeaconId: number;
   hexId: string;
   statusCode: string;
+  beaconStatus: BeaconStatuses;
   manufacturer: string;
   model: string;
   manufacturerSerialNumber: string;
@@ -32,7 +33,6 @@ export interface ILegacyBeacon {
   owner: ILegacyOwner;
   secondaryOwners: ILegacyOwner[];
   emergencyContact: ILegacyEmergencyContact;
-  beaconStatus: BeaconStatuses;
 }
 
 export interface ILegacyUse {

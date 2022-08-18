@@ -19,6 +19,10 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
       pkBeaconId: beaconApiResponse.data.attributes.beacon.pkBeaconId,
       hexId: beaconApiResponse.data.attributes.beacon.hexId,
       statusCode: beaconApiResponse.data.attributes.beacon.statusCode,
+      beaconStatus:
+        beaconApiResponse.data.attributes.claimStatus === "CLAIMED"
+          ? BeaconStatuses.Claimed
+          : BeaconStatuses.Migrated,
       manufacturer: beaconApiResponse.data.attributes.beacon.manufacturer,
       model: beaconApiResponse.data.attributes.beacon.model,
       manufacturerSerialNumber:
@@ -52,10 +56,6 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
       updateUserId: beaconApiResponse.data.attributes.beacon.updateUserId,
       versioning: beaconApiResponse.data.attributes.beacon.versioning,
       note: beaconApiResponse.data.attributes.beacon.note,
-      beaconStatus:
-        beaconApiResponse.data.attributes.claimStatus === "CLAIMED"
-          ? BeaconStatuses.Claimed
-          : BeaconStatuses.Migrated,
       owner: this.mapOwner(beaconApiResponse),
       secondaryOwners: this.mapSecondaryOwners(beaconApiResponse),
       emergencyContact: this.mapEmergencyContacts(beaconApiResponse),
