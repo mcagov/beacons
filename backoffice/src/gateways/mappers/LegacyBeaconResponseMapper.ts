@@ -17,39 +17,39 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
     debugger;
     return {
       pkBeaconId: beaconApiResponse.data.attributes.beacon.pkBeaconId,
-      statusCode: beaconApiResponse.data.attributes.beacon.statusCode,
-      isWithdrawn: beaconApiResponse.data.attributes.beacon.isWithdrawn,
-      isPending: beaconApiResponse.data.attributes.beacon.isPending,
-      departRefId: beaconApiResponse.data.attributes.beacon.departRefId,
       hexId: beaconApiResponse.data.attributes.beacon.hexId,
+      statusCode: beaconApiResponse.data.attributes.beacon.statusCode,
       manufacturer: beaconApiResponse.data.attributes.beacon.manufacturer,
-      beaconType: beaconApiResponse.data.attributes.beacon.beaconType,
       model: beaconApiResponse.data.attributes.beacon.model,
-      protocol: beaconApiResponse.data.attributes.beacon.protocol,
-      serialNumber: beaconApiResponse.data.attributes.beacon.serialNumber,
-      cospasSarsatNumber:
-        beaconApiResponse.data.attributes.beacon.cospasSarsatNumber,
       manufacturerSerialNumber:
         beaconApiResponse.data.attributes.beacon.manufacturerSerialNumber,
+      serialNumber: beaconApiResponse.data.attributes.beacon.serialNumber,
+      beaconType: beaconApiResponse.data.attributes.beacon.beaconType,
       coding: beaconApiResponse.data.attributes.beacon.coding,
+      protocol: beaconApiResponse.data.attributes.beacon.protocol,
+      csta: beaconApiResponse.data.attributes.beacon.csta,
+      mti: beaconApiResponse.data.attributes.beacon.mti,
+      batteryExpiryDate:
+        beaconApiResponse.data.attributes.beacon.batteryExpiryDate,
+      lastServiceDate: beaconApiResponse.data.attributes.beacon.lastServiceDate,
       firstRegistrationDate: formatDateTime(
         beaconApiResponse.data.attributes.beacon.firstRegistrationDate
       ),
-      lastServiceDate: beaconApiResponse.data.attributes.beacon.lastServiceDate,
-      batteryExpiryDate:
-        beaconApiResponse.data.attributes.beacon.batteryExpiryDate,
-      csta: beaconApiResponse.data.attributes.beacon.csta,
-      mti: beaconApiResponse.data.attributes.beacon.mti,
-      withdrawnReason: beaconApiResponse.data.attributes.beacon.withdrawnReason,
-      isArchived: beaconApiResponse.data.attributes.beacon.isArchived,
-      createUserId: beaconApiResponse.data.attributes.beacon.createUserId,
       createdDate:
         formatDateTime(beaconApiResponse.data.attributes.beacon.createdDate) ||
         "",
-      updateUserId: beaconApiResponse.data.attributes.beacon.updateUserId,
       lastModifiedDate: formatDateTime(
         beaconApiResponse.data.attributes.beacon.lastModifiedDate
       ),
+      cospasSarsatNumber:
+        beaconApiResponse.data.attributes.beacon.cospasSarsatNumber,
+      departRefId: beaconApiResponse.data.attributes.beacon.departRefId,
+      isWithdrawn: beaconApiResponse.data.attributes.beacon.isWithdrawn,
+      withdrawnReason: beaconApiResponse.data.attributes.beacon.withdrawnReason,
+      isPending: beaconApiResponse.data.attributes.beacon.isPending,
+      isArchived: beaconApiResponse.data.attributes.beacon.isArchived,
+      createUserId: beaconApiResponse.data.attributes.beacon.createUserId,
+      updateUserId: beaconApiResponse.data.attributes.beacon.updateUserId,
       versioning: beaconApiResponse.data.attributes.beacon.versioning,
       note: beaconApiResponse.data.attributes.beacon.note,
       beaconStatus:

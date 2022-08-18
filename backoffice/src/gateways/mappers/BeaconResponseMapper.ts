@@ -19,34 +19,34 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
     return {
       id: beaconApiResponse.id,
       hexId: beaconApiResponse.hexId,
-      beaconType: beaconApiResponse.beaconType || "",
+      status: beaconApiResponse.status || "",
       manufacturer: beaconApiResponse.manufacturer || "",
       model: beaconApiResponse.model || "",
-      status: beaconApiResponse.status || "",
-      registeredDate: formatDateTime(beaconApiResponse.createdDate || ""),
-      lastModifiedDate: formatDateTime(
-        beaconApiResponse.lastModifiedDate || ""
-      ),
-      batteryExpiryDate: formatDateTime(
-        beaconApiResponse.batteryExpiryDate || ""
-      ),
+      manufacturerSerialNumber:
+        beaconApiResponse.manufacturerSerialNumber || "",
       chkCode: beaconApiResponse.chkCode || "",
+      beaconType: beaconApiResponse.beaconType || "",
+      protocol: beaconApiResponse.protocol || "",
+      coding: beaconApiResponse.coding || "",
+      csta: beaconApiResponse.csta || "",
       mti: beaconApiResponse.mti || "",
-      referenceNumber: beaconApiResponse.referenceNumber,
       svdr:
         beaconApiResponse.svdr == null
           ? ""
           : beaconApiResponse.svdr
           ? "true"
           : "false",
-      csta: beaconApiResponse.csta || "",
-      protocol: beaconApiResponse.protocol || "",
-      coding: beaconApiResponse.coding || "",
+      batteryExpiryDate: formatDateTime(
+        beaconApiResponse.batteryExpiryDate || ""
+      ),
       lastServicedDate: formatDateTime(
         beaconApiResponse.lastServicedDate || ""
       ),
-      manufacturerSerialNumber:
-        beaconApiResponse.manufacturerSerialNumber || "",
+      registeredDate: formatDateTime(beaconApiResponse.createdDate || ""),
+      lastModifiedDate: formatDateTime(
+        beaconApiResponse.lastModifiedDate || ""
+      ),
+      referenceNumber: beaconApiResponse.referenceNumber,
       owners: beaconApiResponse.owner
         ? this.mapOwners(beaconApiResponse.owner)
         : [],
