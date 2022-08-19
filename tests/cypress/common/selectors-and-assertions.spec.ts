@@ -1,5 +1,4 @@
 import { v4 } from "uuid";
-import { getOrCreateAccountHolder } from "./get-or-create-account-holder.spec";
 
 export const requiredFieldErrorMessage = "required field";
 
@@ -56,17 +55,22 @@ export const givenIHaveACookieSetAndHaveSignedIn = (): void => {
 };
 
 export const givenIHaveSignedIn = (): void => {
-  cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
-    log: false,
-  });
-  cy.request("/api/auth/session", { timeout: 10000 }).then(
-    { timeout: 10000 },
-    async (session) => {
-      const { authId, email } = session.body.user;
-
-      getOrCreateAccountHolder(authId, email);
-    }
-  );
+  // cy.task('log', 'Hi  from givenIHaveSignedIn()');
+  // cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
+  //   log: false,
+  // });
+  // let sessionString: string;
+  // let sessionObject: Cypress.Response<any>;
+  // cy.request("/api/auth/session", { timeout: 10000 }).then(
+  //   { timeout: 10000 },
+  //   async (session) => {
+  //     sessionString = JSON.stringify(session);
+  //     sessionObject = session;
+  //   }
+  // );
+  // cy.task('log', `Session string is ${sessionString}`);
+  // const { authId, email } = sessionObject.body.user;
+  // getOrCreateAccountHolder(authId, email);
 };
 
 export const givenIHaveVisited = (url: string): void => {

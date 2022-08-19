@@ -68,6 +68,25 @@ describe("As an account holder", () => {
     const { hexId, manufacturer, model } =
       legacyBeaconRequest.data.attributes.beacon;
 
+    cy.task("log", "Hi  from givenIHaveSignedIn()");
+    cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
+      log: false,
+    });
+
+    let sessionString: string;
+    let sessionObject: Cypress.Response<any>;
+
+    cy.request("/api/auth/session", { timeout: 10000 }).then(
+      { timeout: 10000 },
+      async (session) => {
+        sessionString = JSON.stringify(session);
+        sessionObject = session;
+      }
+    );
+
+    cy.task("log", `Session string is ${sessionString}`);
+    cy.task("log", `Session object is ${sessionObject}`);
+
     givenIHaveSignedIn();
     givenIHavePreviouslyRegisteredALegacyBeacon(legacyBeaconRequest);
     givenIHaveVisited("/account/your-beacon-registry-account");
