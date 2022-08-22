@@ -2,37 +2,37 @@ import { BeaconStatuses, BeaconTypes } from "./IBeacon";
 
 export interface ILegacyBeacon {
   pkBeaconId: number;
-  statusCode: string;
-  isWithdrawn: string;
-  isPending: string;
-  departRefId: string;
   hexId: string;
+  statusCode: string;
+  beaconStatus: BeaconStatuses;
   manufacturer: string;
-  beaconType: BeaconTypes;
   model: string;
-  protocol: string;
-  serialNumber: number;
-  cospasSarsatNumber: number;
   manufacturerSerialNumber: string;
+  serialNumber: number;
+  beaconType: BeaconTypes;
   coding: string;
-  firstRegistrationDate: string;
-  lastServiceDate: string;
+  protocol: string;
+  csta: string;
+  mti: string;
   batteryExpiryDate: string;
+  lastServiceDate: string;
+  firstRegistrationDate: string;
+  createdDate: string;
+  lastModifiedDate: string;
+  cospasSarsatNumber: number;
+  departRefId: string;
+  isWithdrawn: string;
   withdrawnReason: string;
+  isPending: string;
   isArchived: string;
   createUserId: number;
-  createdDate: string;
   updateUserId: number;
-  lastModifiedDate: string;
   versioning: number;
   note: string;
   uses: ILegacyUse[];
   owner: ILegacyOwner;
   secondaryOwners: ILegacyOwner[];
   emergencyContact: ILegacyEmergencyContact;
-  beaconStatus: BeaconStatuses;
-  csta: string;
-  mti: string;
 }
 
 export interface ILegacyUse {
