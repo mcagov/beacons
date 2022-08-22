@@ -47,7 +47,7 @@ dependencies {
     implementation 'org.apache.poi:poi:5.2.2' // Writing to Excel files
     implementation 'org.apache.poi:poi-ooxml:5.2.2' // Writing to Excel files (additional for .xlsx)
     implementation 'net.javacrumbs.shedlock:shedlock-spring:4.34.+' // Scheduling jobs in a distributed system
-    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.33.+' // Scheduling jobs in a distributed system
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.41.+' // Scheduling jobs in a distributed system
     implementation 'commons-beanutils:commons-beanutils:1.9.4'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
