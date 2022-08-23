@@ -6,7 +6,10 @@ import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
 import { Layout } from "../components/Layout";
 import { BeaconRegistryContactInfo, McaLogo } from "../components/Mca";
-import { NotificationBanner } from "../components/NotificationBanner";
+import {
+  NotificationBanner,
+  NotificationBannerProps,
+} from "../components/NotificationBanner";
 import {
   AnchorLink,
   GovUKBody,
@@ -14,6 +17,7 @@ import {
   PageHeading,
   SectionHeading,
 } from "../components/Typography";
+import { B2CAuthGateway } from "../gateways/B2CAuthGateway";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
 import { acceptRejectCookieId } from "../lib/types";
@@ -23,21 +27,26 @@ import { Rule } from "../router/rules/Rule";
 
 interface ServiceStartPageProps {
   showCookieBanner: boolean;
+  canConnectToB2C: boolean;
 }
 
 const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   showCookieBanner,
+  canConnectToB2C,
 }: ServiceStartPageProps): JSX.Element => {
   const pageHeading = "Register a UK 406 megahertz (MHz) beacon";
+
+  const notificationBannerProps: NotificationBannerProps = {
+    isErrorMessage: canConnectToB2C,
+    title: "error",
+    heading: "B2C is down oh no!",
+    children: "",
+  };
 
   return (
     <>
       <Layout title={pageHeading} showCookieBanner={showCookieBanner}>
-        <NotificationBanner
-          isErrorMessage={true}
-          title={"error"}
-          heading={"B2C is down oh no!"}
-        />
+        <NotificationBanner notificationBannerProps={notificationBannerProps} />
         <Grid
           mainContent={
             <>
@@ -87,14 +96,6 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
     <GovUKBody>Registering is free and takes around 15 minutes.</GovUKBody>
 
     <StartButton href={AccountPageURLs.signUpOrSignIn} />
-
-    {/* <InsetText>
-      If you want to register multiple beacons (i.e. more than 5),&nbsp;
-      <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
-        contact the UK Beacon Registry
-      </AnchorLink>{" "}
-      who will provide you with a spreadsheet template
-    </InsetText> */}
 
     <SectionHeading>Before you start</SectionHeading>
     <GovUKBody>You’ll need:</GovUKBody>
@@ -208,8 +209,14 @@ class IfUserViewedIndexPage implements Rule {
     return {
       props: {
         showCookieBanner: !this.context.req.cookies[acceptRejectCookieId],
+        canConnectToB2C: await this.checkB2CHealth(),
       },
     };
+  }
+
+  public async checkB2CHealth(): Promise<boolean> {
+    const b2cAuthGateway: B2CAuthGateway = new B2CAuthGateway();
+    return await b2cAuthGateway.canConnectToB2C();
   }
 }
 

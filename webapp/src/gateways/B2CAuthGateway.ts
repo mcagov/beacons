@@ -22,6 +22,17 @@ export class B2CAuthGateway implements AuthGateway {
     this.auth = auth;
   }
 
+  public async canConnectToB2C(): Promise<boolean> {
+    // const accessTokenResult = await this.getAccessToken();
+    const accessTokenResult = "error";
+
+    const canConnectToB2C = !accessTokenResult
+      .toLowerCase()
+      .trim()
+      .includes("error");
+    return canConnectToB2C;
+  }
+
   public async getAccessToken(
     cca = new ConfidentialClientApplication({ auth: this.auth })
   ): Promise<string> {

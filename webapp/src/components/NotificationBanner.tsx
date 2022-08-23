@@ -1,6 +1,6 @@
 import React, { FunctionComponent, ReactNode } from "react";
 
-interface NotificationBannerProps {
+export interface NotificationBannerProps {
   isErrorMessage: boolean;
   title: string;
   heading: string;
@@ -12,17 +12,12 @@ interface NotificationBannerSuccessProps {
   children: ReactNode;
 }
 
-// error colour #d4351c
-
-export const NotificationBanner: FunctionComponent<NotificationBannerProps> = ({
-  isErrorMessage,
-  title,
-  heading,
-  children,
-}: NotificationBannerProps): JSX.Element => (
+export const NotificationBanner: FunctionComponent<NotificationBannerProps> = (
+  notificationBannerProps: NotificationBannerProps
+): JSX.Element => (
   <div
     className={
-      isErrorMessage
+      notificationBannerProps.isErrorMessage
         ? "govuk-notification-banner govuk-error-notification-banner"
         : "govuk-notification-banner"
     }
@@ -35,12 +30,14 @@ export const NotificationBanner: FunctionComponent<NotificationBannerProps> = ({
         className="govuk-notification-banner__title"
         id="govuk-notification-banner-title"
       >
-        {title}
+        {notificationBannerProps.title}
       </h2>
     </div>
     <div className="govuk-notification-banner__content">
-      <p className="govuk-notification-banner__heading">{heading}</p>
-      {children}
+      <p className="govuk-notification-banner__heading">
+        {notificationBannerProps.heading}
+      </p>
+      {notificationBannerProps.children}
     </div>
   </div>
 );
