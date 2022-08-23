@@ -22,8 +22,8 @@ export class B2CAuthGateway implements AuthGateway {
     this.auth = auth;
   }
 
-  public async canConnectToB2C(): Promise<boolean> {
-    // const accessTokenResult = await this.getAccessToken();
+  public canConnectToB2C(): boolean {
+    // const accessTokenResult = this.getAccessToken()
     const accessTokenResult = "error";
 
     const canConnectToB2C = !accessTokenResult

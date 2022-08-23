@@ -40,7 +40,6 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
     isErrorMessage: canConnectToB2C,
     title: "error",
     heading: "B2C is down oh no!",
-    children: "",
   };
 
   return (
@@ -213,7 +212,6 @@ class IfUserViewedIndexPage implements Rule {
       },
     };
   }
-
   public async checkB2CHealth(): Promise<boolean> {
     const b2cAuthGateway: B2CAuthGateway = new B2CAuthGateway();
     return await b2cAuthGateway.canConnectToB2C();
