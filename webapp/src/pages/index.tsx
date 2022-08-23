@@ -6,6 +6,7 @@ import { Grid } from "../components/Grid";
 import { InsetText } from "../components/InsetText";
 import { Layout } from "../components/Layout";
 import { BeaconRegistryContactInfo, McaLogo } from "../components/Mca";
+import { NotificationBanner } from "../components/NotificationBanner";
 import {
   AnchorLink,
   GovUKBody,
@@ -32,6 +33,11 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   return (
     <>
       <Layout title={pageHeading} showCookieBanner={showCookieBanner}>
+        <NotificationBanner
+          isErrorMessage={true}
+          title={"error"}
+          heading={"B2C is down oh no!"}
+        />
         <Grid
           mainContent={
             <>

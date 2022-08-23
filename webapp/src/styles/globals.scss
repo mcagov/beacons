@@ -5,3 +5,9 @@
 body {
   margin: 0;
 }
+
+.govuk-error-notification-banner {
+  color: govuk-colour("white");
+  background: govuk-colour("red");
+  border: 5px solid govuk-colour("red");
+}
