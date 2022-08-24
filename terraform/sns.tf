@@ -31,13 +31,13 @@ resource "aws_sns_topic_subscription" "sns_service_alerts_subscription" {
   provider  = aws.us-east
 }
 
-resource "aws_sns_topic_subscription" "sns_technical_alerts_subscription" {
+resource "aws_sns_topic_subscription" "sns_technical_alerts_trello_subscription" {
   topic_arn = aws_sns_topic.sns_technical_alerts.arn
   protocol  = "email"
   endpoint  = var.trello_board_email_address
 }
 
-resource "aws_sns_topic_subscription" "sns_service_alerts_subscription" {
+resource "aws_sns_topic_subscription" "sns_service_alerts_trello_subscription" {
   topic_arn = aws_sns_topic.sns_service_alerts.arn
   protocol  = "email"
   endpoint  = var.trello_board_email_address
