@@ -27,6 +27,7 @@ jobs:
       service_basic_auth_password: ${{ secrets.SERVICE_BASIC_AUTH_PASSWORD }}
       aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
       trello_api_key: ${{ secrets.TRELLO_API_KEY }}
+      trello_board_email_address: ${{ secrets.trello_board_email_address }}
       trello_token: ${{ secrets.TRELLO_TOKEN }}
       opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
       opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}

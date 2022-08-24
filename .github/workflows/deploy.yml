@@ -62,6 +62,9 @@ on:
       trello_api_key:
         description: API key for the CloudWatch alarm -> Trello integration
         required: true
+      trello_board_email_address:
+        description: Email address for the Beacons Support user in Trello
+        required: true
       trello_token:
         description: Token for the CloudWatch alarm -> Trello integration
         required: true
@@ -119,6 +122,7 @@ jobs:
           TF_VAR_backoffice_image_tag: ${{ inputs.version }}
           TF_VAR_aws_account_number: ${{ secrets.aws_account_number }}
           TF_VAR_trello_api_key: ${{ secrets.trello_api_key }}
+          TF_VAR_trello_board_email_address: ${{ secrets.trello_board_email_address }}
           TF_VAR_trello_token: ${{ secrets.trello_token }}
           TF_VAR_opensearch_proxy_image_tag: ${{ inputs.version }}
           TF_VAR_opensearch_master_user_name: ${{ secrets.opensearch_master_user_name }}

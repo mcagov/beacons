@@ -286,6 +286,10 @@ variable "trello_api_key" {
   type        = string
   description = "Key for Trello API"
 }
+variable "trello_board_email_address" {
+  type        = string
+  description = "Email address for the Beacons Support user in Trello"
+}
 variable "trello_list_id" {
   type        = string
   description = "Unique identifier for list in Trello"
