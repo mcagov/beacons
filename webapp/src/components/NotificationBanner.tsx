@@ -12,9 +12,9 @@ interface NotificationBannerSuccessProps {
   children: ReactNode;
 }
 
-export const NotificationBanner: FunctionComponent<
-  NotificationBannerProps
-> = (notificationBannerProps: { NotificationBannerProps }): JSX.Element => (
+export const NotificationBanner: FunctionComponent<NotificationBannerProps> = (
+  notificationBannerProps: NotificationBannerProps
+): JSX.Element => (
   <div
     className={
       notificationBannerProps.isErrorMessage
