@@ -53,6 +53,7 @@ jobs:
           TF_VAR_webapp_image_tag: ${{ github.event.inputs.webAppImageTag }}
           TF_VAR_service_image_tag: ${{ github.event.inputs.serviceImageTag }}
           TF_VAR_trello_api_key: ""
+          TF_VAR_trello_board_email_address: ${{ secrets.TRELLO_BOARD_EMAIL_ADDRESS }}
           TF_VAR_trello_token: ""
           TF_VAR_trello_list_id: ""
           TF_VAR_opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
