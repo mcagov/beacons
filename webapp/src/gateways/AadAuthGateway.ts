@@ -1,9 +1,7 @@
 import {
-  AccountInfo,
   ClientCredentialRequest,
   ConfidentialClientApplication,
   NodeAuthOptions,
-  PublicClientApplication,
 } from "@azure/msal-node";
 import logger from "../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
@@ -40,16 +38,6 @@ export class AadAuthGateway implements AuthGateway {
     } catch (error) {
       logger.error("getAccessToken:", error);
       throw error;
-    }
-  }
-
-  public async getSignedInAccounts(): Promise<AccountInfo[]> {
-    try {
-      const beaconsWebApp = new PublicClientApplication(this.config);
-      const tokenCache = beaconsWebApp.getTokenCache();
-      return tokenCache.getAllAccounts();
-    } catch (error) {
-      return null;
     }
   }
 }
