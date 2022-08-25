@@ -12,12 +12,15 @@ interface NotificationBannerSuccessProps {
   children: ReactNode;
 }
 
-export const NotificationBanner: FunctionComponent<NotificationBannerProps> = (
-  notificationBannerProps: NotificationBannerProps
-): JSX.Element => (
+export const NotificationBanner: FunctionComponent<NotificationBannerProps> = ({
+  isErrorMessage,
+  title,
+  heading,
+  children,
+}: NotificationBannerProps): JSX.Element => (
   <div
     className={
-      notificationBannerProps.isErrorMessage
+      isErrorMessage
         ? "govuk-notification-banner govuk-error-notification-banner"
         : "govuk-notification-banner"
     }
@@ -30,14 +33,12 @@ export const NotificationBanner: FunctionComponent<NotificationBannerProps> = (
         className="govuk-notification-banner__title"
         id="govuk-notification-banner-title"
       >
-        {notificationBannerProps.title}
+        {title}
       </h2>
     </div>
     <div className="govuk-notification-banner__content">
-      <p className="govuk-notification-banner__heading">
-        {notificationBannerProps.heading}
-      </p>
-      {notificationBannerProps.children}
+      <p className="govuk-notification-banner__heading">{heading}</p>
+      {children}
     </div>
   </div>
 );

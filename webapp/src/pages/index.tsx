@@ -17,7 +17,7 @@ import {
   PageHeading,
   SectionHeading,
 } from "../components/Typography";
-import { B2CAuthGateway } from "../gateways/B2CAuthGateway";
+// import { B2CAuthGateway } from "../gateways/B2CAuthGateway";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
 import { acceptRejectCookieId } from "../lib/types";
@@ -45,7 +45,11 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   return (
     <>
       <Layout title={pageHeading} showCookieBanner={showCookieBanner}>
-        <NotificationBanner notificationBannerProps={notificationBannerProps} />
+        <NotificationBanner
+          isErrorMessage={notificationBannerProps.isErrorMessage}
+          title={notificationBannerProps.title}
+          heading={notificationBannerProps.heading}
+        />
         <Grid
           mainContent={
             <>
@@ -213,8 +217,9 @@ class IfUserViewedIndexPage implements Rule {
     };
   }
   public async checkB2CHealth(): Promise<boolean> {
-    const b2cAuthGateway: B2CAuthGateway = new B2CAuthGateway();
-    return await b2cAuthGateway.canConnectToB2C();
+    // const b2cAuthGateway: B2CAuthGateway = new B2CAuthGateway();
+    // return await b2cAuthGateway.canConnectToB2C();
+    return true;
   }
 }
 
