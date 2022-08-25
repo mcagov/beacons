@@ -32,7 +32,7 @@
     "govuk-frontend": "^3.13.1",
     "ioredis": "^4.27.3",
     "isodate": "^0.1.4",
-    "next": "10.2.0",
+    "next": "^12.2.5",
     "next-auth": "^3.29.10",
     "nextjs-basic-auth-middleware": "^0.2.0",
     "notifications-node-client": "^5.1.1",
