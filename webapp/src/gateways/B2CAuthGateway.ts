@@ -3,12 +3,10 @@ import {
   PublicClientApplication,
   SilentRequest,
 } from "@azure/msal-browser";
-// import { NodeAuthOptions, ConfidentialClientApplication, ClientCredentialRequest } from "@azure/msal-node";
 import { AuthGateway } from "./interfaces/AuthGateway";
 
 export class B2CAuthGateway implements AuthGateway {
   private msalConfig: Configuration;
-  // private msalAuthOptions: NodeAuthOptions;
 
   public constructor(
     msalConfig = {
@@ -52,24 +50,4 @@ export class B2CAuthGateway implements AuthGateway {
       return "MSAL error";
     }
   }
-
-  // public async getAccessToken(
-  //   cca = new ConfidentialClientApplication({ auth: this.msalAuthOptions })
-  // ): Promise<string> {
-  //   try {
-  //     const accessTokenRequest: ClientCredentialRequest = {
-  //       scopes: ["default"],
-  //     };
-
-  //     console.log(accessTokenRequest);
-
-  //     const authResult = await cca.acquireTokenByClientCredential(
-  //       accessTokenRequest
-  //     );
-  //     console.log(authResult.accessToken);
-  //     return authResult.accessToken;
-  //   } catch (error) {
-  //     throw `MSAL error: ${error}`;
-  //   }
-  // }
 }
