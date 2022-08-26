@@ -17,8 +17,7 @@ import {
   PageHeading,
   SectionHeading,
 } from "../components/Typography";
-// import { B2CAuthGateway } from "../gateways/B2CAuthGateway";
-import { AadAuthGateway } from "../gateways/AadAuthGateway";
+import { B2CAuthGateway } from "../gateways/B2CAuthGateway";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
 import { acceptRejectCookieId } from "../lib/types";
@@ -218,13 +217,10 @@ class IfUserViewedIndexPage implements Rule {
     };
   }
   public async checkB2CHealth(): Promise<boolean> {
-    // const b2cAuthGateway: B2CAuthGateway = new B2CAuthGateway();
-    // return await b2cAuthGateway.canConnectToB2C();
-    // return false;
-
-    const azureAdAuthGateway: AadAuthGateway = new AadAuthGateway();
-    const accessToken = await azureAdAuthGateway.getAccessToken();
-    return accessToken ? true : false;
+    const b2cAuthGateway: B2CAuthGateway = new B2CAuthGateway();
+    const canConnectToB2C = await b2cAuthGateway.canConnectToB2C();
+    console.log(canConnectToB2C);
+    return canConnectToB2C;
   }
 }
 
