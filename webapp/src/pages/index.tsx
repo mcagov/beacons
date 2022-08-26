@@ -1,4 +1,8 @@
-import { Configuration } from "@azure/msal-browser";
+import {
+  Configuration,
+  PublicClientApplication,
+  SilentRequest,
+} from "@azure/msal-browser";
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
 import Aside from "../components/Aside";
@@ -18,7 +22,6 @@ import {
   PageHeading,
   SectionHeading,
 } from "../components/Typography";
-import { B2CAuthGateway } from "../gateways/B2CAuthGateway";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
 import { acceptRejectCookieId } from "../lib/types";
@@ -213,11 +216,11 @@ class IfUserViewedIndexPage implements Rule {
     return {
       props: {
         showCookieBanner: !this.context.req.cookies[acceptRejectCookieId],
-        canConnectToB2C: this.checkB2CHealth(),
+        canConnectToB2C: await this.checkB2CHealth(),
       },
     };
   }
-  public checkB2CHealth(): boolean {
+  private async checkB2CHealth(): Promise<boolean> {
     const msalConfig: Configuration = {
       auth: {
         clientId: process.env.AZURE_B2C_CLIENT_ID,
@@ -228,10 +231,36 @@ class IfUserViewedIndexPage implements Rule {
         // clientSecret: process.env.AZURE_B2C_CLIENT_SECRET,
       },
     };
-    const b2cAuthGateway: B2CAuthGateway = new B2CAuthGateway();
-    const canConnectToB2C = b2cAuthGateway.canConnectToB2C();
+
+    const canConnectToB2C = await this.canConnectToB2C(msalConfig);
+
     console.log(canConnectToB2C);
     return canConnectToB2C;
+  }
+
+  private async canConnectToB2C(msalConfig: Configuration): Promise<boolean> {
+    const accessToken = await this.getAccessToken(msalConfig);
+
+    console.log(accessToken);
+    const canConnectToB2C = !accessToken.toLowerCase().trim().includes("error");
+    return canConnectToB2C;
+  }
+
+  public async getAccessToken(msalConfig: Configuration): Promise<string> {
+    const msalInstance = new PublicClientApplication(msalConfig);
+    const silentTokenRequest: SilentRequest = {
+      scopes: ["default"],
+    };
+
+    try {
+      const authenticationResult = await msalInstance.acquireTokenSilent(
+        silentTokenRequest
+      );
+      console.log(authenticationResult.accessToken);
+      return authenticationResult.accessToken;
+    } catch (error) {
+      return `MSAL error: ${error}`;
+    }
   }
 }
 
