@@ -1,3 +1,4 @@
+import { Configuration } from "@azure/msal-browser";
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
 import Aside from "../components/Aside";
@@ -212,13 +213,23 @@ class IfUserViewedIndexPage implements Rule {
     return {
       props: {
         showCookieBanner: !this.context.req.cookies[acceptRejectCookieId],
-        canConnectToB2C: await this.checkB2CHealth(),
+        canConnectToB2C: this.checkB2CHealth(),
       },
     };
   }
-  public async checkB2CHealth(): Promise<boolean> {
+  public checkB2CHealth(): boolean {
+    const msalConfig: Configuration = {
+      auth: {
+        clientId: process.env.AZURE_B2C_CLIENT_ID,
+        authority: `https://${process.env.AZURE_B2C_TENANT_NAME}.b2clogin.com/${process.env.AZURE_B2C_TENANT_NAME}.onmicrosoft.com`,
+        knownAuthorities: [
+          `https://${process.env.AZURE_B2C_TENANT_NAME}.b2clogin.com`,
+        ],
+        // clientSecret: process.env.AZURE_B2C_CLIENT_SECRET,
+      },
+    };
     const b2cAuthGateway: B2CAuthGateway = new B2CAuthGateway();
-    const canConnectToB2C = await b2cAuthGateway.canConnectToB2C();
+    const canConnectToB2C = b2cAuthGateway.canConnectToB2C();
     console.log(canConnectToB2C);
     return canConnectToB2C;
   }
