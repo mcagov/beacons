@@ -1,5 +1,7 @@
 import { ConfidentialClientApplication } from "@azure/msal-node";
 
 export interface AuthGateway {
-  getAccessToken: (cca?: ConfidentialClientApplication) => Promise<string>;
+  getAccessToken: (
+    cca?: ConfidentialClientApplication
+  ) => Promise<string> | string;
 }

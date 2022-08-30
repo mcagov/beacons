@@ -24,13 +24,10 @@ export class B2CAuthGateway implements AuthGateway {
   }
 
   public canConnectToB2C(): boolean {
-    const currentlySignedInAccount = this.getCurrentlySignedInAccount();
+    const token = this.getAccessToken();
 
-    console.log(currentlySignedInAccount);
-    const canConnectToB2C = !currentlySignedInAccount
-      .toLowerCase()
-      .trim()
-      .includes("error");
+    console.log(token);
+    const canConnectToB2C = !token.toLowerCase().trim().includes("error");
     return canConnectToB2C;
   }
 
@@ -46,18 +43,17 @@ export class B2CAuthGateway implements AuthGateway {
     }
   }
 
-  public async getAccessToken(): Promise<string> {
+  public getAccessToken(): string {
     const msalInstance = new PublicClientApplication(this.msalConfig);
     const silentTokenRequest: SilentRequest = {
       scopes: ["default"],
     };
 
     try {
-      const authenticationResult = await msalInstance.acquireTokenSilent(
-        silentTokenRequest
-      );
-      console.log(authenticationResult.accessToken);
-      return authenticationResult.accessToken;
+      msalInstance.acquireTokenSilent(silentTokenRequest).then((authResult) => {
+        console.log(authResult.accessToken);
+        return authResult.accessToken;
+      });
     } catch (error) {
       return `MSAL error: ${error}`;
     }
