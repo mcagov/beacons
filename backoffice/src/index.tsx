@@ -4,7 +4,7 @@ import {
   Theme,
   ThemeProvider,
 } from "@mui/material/styles";
-import "fontsource-roboto";
+import "@fontsource/roboto";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
