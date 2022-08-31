@@ -72,8 +72,8 @@
     "typescript": "^4.3.5"
   },
   "engines": {
-    "node": "16.14.x",
-    "npm": "8.5.x"
+    "node": "16.17.x",
+    "npm": "8.15.x"
   },
   "lint-staged": {
     "*.{js, jsx, ts, tsx}": "eslint --cache --fix"
