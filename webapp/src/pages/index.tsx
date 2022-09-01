@@ -17,7 +17,6 @@ import {
   PageHeading,
   SectionHeading,
 } from "../components/Typography";
-import { B2CAuthGateway } from "../gateways/B2CAuthGateway";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
 import { acceptRejectCookieId } from "../lib/types";
@@ -41,8 +40,8 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
     heading: "B2C is down oh no!",
   };
 
-  function ServiceUnavailableMessage() {
-    notificationBannerProps.isErrorMessage = !canConnectToB2C();
+  function ServiceUnavailableMessage(): JSX.Element | null {
+    // notificationBannerProps.isErrorMessage = !canConnectToB2C();
 
     if (notificationBannerProps.isErrorMessage) {
       return (
@@ -52,15 +51,17 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
           heading={notificationBannerProps.heading}
         />
       );
+    } else {
+      return null;
     }
   }
 
-  function canConnectToB2C(): boolean {
-    const gateway = new B2CAuthGateway();
-    const canConnect = gateway.canConnectToB2C();
-    console.log(canConnect);
-    return canConnect;
-  }
+  // function canConnectToB2C(): boolean {
+  //   const gateway = new B2CAuthGateway();
+  //   const canConnect = gateway.canConnectToB2C();
+  //   console.log(canConnect);
+  //   return canConnect;
+  // }
 
   return (
     <>
