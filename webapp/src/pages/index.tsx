@@ -1,3 +1,5 @@
+import { SilentRequest } from "@azure/msal-browser";
+import { useMsal } from "@azure/msal-react";
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
 import Aside from "../components/Aside";
@@ -33,6 +35,7 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   showCookieBanner,
 }: ServiceStartPageProps): JSX.Element => {
   const pageHeading = "Register a UK 406 megahertz (MHz) beacon";
+  const msalContext = useMsal();
 
   const notificationBannerProps: NotificationBannerProps = {
     isErrorMessage: false,
@@ -41,7 +44,7 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   };
 
   function ServiceUnavailableMessage(): JSX.Element | null {
-    // notificationBannerProps.isErrorMessage = !canConnectToB2C();
+    notificationBannerProps.isErrorMessage = !canConnectToB2C();
 
     if (notificationBannerProps.isErrorMessage) {
       return (
@@ -56,12 +59,40 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
     }
   }
 
-  // function canConnectToB2C(): boolean {
-  //   const gateway = new B2CAuthGateway();
-  //   const canConnect = gateway.canConnectToB2C();
-  //   console.log(canConnect);
-  //   return canConnect;
-  // }
+  function canConnectToB2C(): boolean {
+    const token = getAccessToken();
+    if (token) {
+      const canConnectToB2C = !token.toLowerCase().trim().includes("error");
+      console.log(
+        `got a result from getAccessToken(). canConnectToB2C: ${canConnectToB2C}`
+      );
+      return canConnectToB2C;
+    } else {
+      console.log("No token at all");
+      return false;
+    }
+  }
+
+  function getAccessToken(): string {
+    const activeAccount = msalContext.instance.getActiveAccount();
+    console.log(activeAccount);
+
+    const silentTokenRequest: SilentRequest = {
+      scopes: ["default"],
+      account: activeAccount,
+    };
+
+    try {
+      msalContext.instance
+        .acquireTokenSilent(silentTokenRequest)
+        .then((authResult) => {
+          console.log(authResult.accessToken);
+          return authResult.accessToken;
+        });
+    } catch (error) {
+      return `MSAL error: ${error}`;
+    }
+  }
 
   return (
     <>

@@ -1,7 +1,9 @@
+import { MsalProvider } from "@azure/msal-react";
 import { Provider as AuthProvider } from "next-auth/client";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import React, { FunctionComponent, useEffect } from "react";
+import { msalInstance } from "../authentication/msal-provider";
 import "../styles/globals.scss";
 
 const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
@@ -26,7 +28,9 @@ const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
       </Head>
 
       <AuthProvider session={pageProps.session}>
-        <Component {...pageProps} />
+        <MsalProvider instance={msalInstance}>
+          <Component {...pageProps} />
+        </MsalProvider>
       </AuthProvider>
     </>
   );
