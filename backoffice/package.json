@@ -12,12 +12,13 @@
     "lint:fix": "eslint --fix src"
   },
   "dependencies": {
-    "@appbaseio/reactivesearch": "^3.29.1",
+    "@appbaseio/reactivesearch": "^3.39.0-alpha.4",
     "@azure/msal-browser": "^2.16.1",
     "@azure/msal-react": "^1.0.0",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
-    "@material-table/core": "^0.2.23",
+    "@fontsource/roboto": "^4.0.0",
+    "@material-table/core": "^0.2.35",
     "@mui/icons-material": "^5.4.2",
     "@mui/material": "^5.4.2",
     "@mui/styles": "^5.4.2",
@@ -33,29 +34,30 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.1.8",
     "axios": "^0.21.1",
+    "css-select": "^5.1.0",
     "date-fns": "^2.21.3",
-    "eslint": "^8.9.0",
-    "fontsource-roboto": "^4.0.0",
+    "eslint": "^8.23.0",
     "formik": "^2.2.9",
     "inflected": "^2.1.0",
     "jest-canvas-mock": "^2.3.1",
     "lint-staged": "^11.1.2",
     "lodash": "^4.17.21",
-    "node-sass": "^7.0.1",
+    "polished": "^4.2.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.1",
-    "typescript": "^4.3.5",
+    "typescript": "^4.8.2",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.0"
   },
   "overrides": {
-    "follow-redirects": "^1.14.9"
+    "follow-redirects": "^1.14.9",
+    "@svgr/webpack": "$@svgr/webpack"
   },
   "engines": {
-    "node": "16.14.x",
-    "npm": "8.5.x"
+    "node": "16.17.x",
+    "npm": "8.15.x"
   },
   "eslintConfig": {
     "plugins": [
@@ -86,9 +88,11 @@
     "clearMocks": true
   },
   "devDependencies": {
+    "@svgr/webpack": "^6.3.1",
     "@types/uuid": "^8.3.1",
     "enhanced-resolve": "^5.9.0",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "sass": "^1.54.5"
   },
   "proxy": "http://localhost:3005"
 }

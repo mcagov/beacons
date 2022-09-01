@@ -2,7 +2,7 @@ import {
   IField,
   PanelViewingState,
 } from "components/dataPanel/PanelViewingState";
-import { Activities, IUse } from "entities/IUse";
+import { Activities, IUse } from "../../entities/IUse";
 import React, { FunctionComponent } from "react";
 
 interface LandSummaryProps {

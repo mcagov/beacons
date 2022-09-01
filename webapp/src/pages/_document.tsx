@@ -1,4 +1,4 @@
-import { DocumentInitialProps } from "next/dist/next-server/lib/utils";
+import { DocumentInitialProps } from "next/document";
 import Document, {
   DocumentContext,
   Head,

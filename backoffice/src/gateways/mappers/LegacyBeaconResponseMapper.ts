@@ -1,10 +1,10 @@
-import { BeaconStatuses } from "entities/IBeacon";
+import { BeaconStatuses } from "../../entities/IBeacon";
 import {
   ILegacyBeacon,
   ILegacyEmergencyContact,
   ILegacyOwner,
   ILegacyUse,
-} from "entities/ILegacyBeacon";
+} from "../../entities/ILegacyBeacon";
 import { formatDateTime } from "../../utils/dateTime";
 import { ILegacyBeaconResponse } from "./ILegacyBeaconResponse";
 

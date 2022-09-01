@@ -9,13 +9,13 @@ COPY . ./
 # hadolint ignore=DL3006
 FROM base AS build
 
-RUN CYPRESS_INSTALL_BINARY=0 npm ci && npm run build
+RUN CYPRESS_INSTALL_BINARY=0 npm install && npm run build
 
 # Installs production dependencies
 # hadolint ignore=DL3006
 FROM base AS production-deps
 
-RUN npm ci --production
+RUN npm install --production
 
 # NextJS production application
 FROM node:16-alpine AS nextjs-app

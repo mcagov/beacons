@@ -47,7 +47,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 To run the application in a production-like environment:
 
 ```bash
-docker-compose up
+docker-compose up --force-recreate
 ```
 
 ## Testing
