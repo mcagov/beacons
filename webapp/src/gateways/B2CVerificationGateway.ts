@@ -21,7 +21,6 @@ export class B2CVerificationGateway {
       const isSuccessStatus = b2cResponse.status === 200;
       return isSuccessStatus;
     } catch (error) {
-      console.error(`B2C connection attempt threw an error: ${error}`);
       return false;
     }
   }

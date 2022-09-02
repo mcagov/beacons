@@ -56,6 +56,14 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
     }
   }
 
+  function AboutTheServiceSection(): JSX.Element {
+    if (notificationBannerProps.isErrorMessage) {
+      return <AboutTheServiceWithNoStartButton />;
+    } else {
+      return <AboutTheService />;
+    }
+  }
+
   return (
     <>
       <Layout title={pageHeading} showCookieBanner={showCookieBanner}>
@@ -64,7 +72,7 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
           mainContent={
             <>
               <PageHeading>{pageHeading}</PageHeading>
-              <AboutTheService />
+              <AboutTheServiceSection />
               <OtherWaysToAccessTheService />
               <DataProtection />
             </>
@@ -109,6 +117,59 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
     <GovUKBody>Registering is free and takes around 15 minutes.</GovUKBody>
 
     <StartButton href={AccountPageURLs.signUpOrSignIn} />
+
+    <SectionHeading>Before you start</SectionHeading>
+    <GovUKBody>You’ll need:</GovUKBody>
+    <GovUKBulletedList>
+      <li>
+        the beacon Hexadecimal Identification (HEX ID) or Unique Identifying
+        Number (UIN), manufacturer serial number and model
+      </li>
+      <li>an emergency contact for search and rescue authorities</li>
+      <li>
+        if you have a vessel - your vessel name, number, call sign, Maritime
+        Mobile Service Identity (MMSI) number, and details of the radio
+        communications equipment you use
+      </li>
+      <li>
+        if you have an aircraft - your aircraft make, model, registration mark,
+        and details of the radio communications equipment you use
+      </li>
+    </GovUKBulletedList>
+  </>
+);
+
+const AboutTheServiceWithNoStartButton: FunctionComponent = (): JSX.Element => (
+  <>
+    <GovUKBody>
+      A UK 406 MHz beacon sends a distress signal to alert search and rescue
+      authorities to your location.
+    </GovUKBody>
+
+    <GovUKBody>Use this service to:</GovUKBody>
+
+    <GovUKBulletedList>
+      <li>register a UK 406 MHz beacon</li>
+      <li>update your beacon registration details</li>
+      <li>update your vessel or aircraft details</li>
+    </GovUKBulletedList>
+
+    <GovUKBody>
+      You can register the following types of UK 406 MHz beacon:
+    </GovUKBody>
+
+    <GovUKBulletedList>
+      <li>Personal Locator Beacon (PLB), for any use</li>
+      <li>
+        Emergency Position Indicating Radio Beacon (EPIRB) or Simplified
+        Voyage-Data Recorder, for maritime use
+      </li>
+      <li>
+        Emergency Locator Transmitter (ELT) or ELT dongle, for aircraft use
+      </li>
+    </GovUKBulletedList>
+
+    <GovUKBody>Registering is free and takes around 15 minutes.</GovUKBody>
 
     <SectionHeading>Before you start</SectionHeading>
     <GovUKBody>You’ll need:</GovUKBody>
