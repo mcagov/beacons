@@ -7,10 +7,6 @@ import { InsetText } from "../components/InsetText";
 import { Layout } from "../components/Layout";
 import { BeaconRegistryContactInfo, McaLogo } from "../components/Mca";
 import {
-  NotificationBanner,
-  NotificationBannerProps,
-} from "../components/NotificationBanner";
-import {
   AnchorLink,
   GovUKBody,
   GovUKBulletedList,
@@ -19,6 +15,7 @@ import {
 } from "../components/Typography";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
+import { redirectUserTo } from "../lib/redirectUserTo";
 import { acceptRejectCookieId } from "../lib/types";
 import { AccountPageURLs } from "../lib/urls";
 import { BeaconsPageRouter } from "../router/BeaconsPageRouter";
@@ -26,52 +23,21 @@ import { Rule } from "../router/rules/Rule";
 
 interface ServiceStartPageProps {
   showCookieBanner: boolean;
-  canConnectToB2C: boolean;
 }
 
 const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   showCookieBanner,
-  canConnectToB2C,
 }: ServiceStartPageProps): JSX.Element => {
   const pageHeading = "Register a UK 406 megahertz (MHz) beacon";
-
-  const notificationBannerProps: NotificationBannerProps = {
-    isErrorMessage: !canConnectToB2C,
-    title: "Service unavailable",
-    heading: "The Beacon Registry service is currently unavailable",
-  };
-
-  function ServiceUnavailableMessage(): JSX.Element | null {
-    if (notificationBannerProps.isErrorMessage) {
-      return (
-        <NotificationBanner
-          isErrorMessage={notificationBannerProps.isErrorMessage}
-          title={notificationBannerProps.title}
-          heading={notificationBannerProps.heading}
-        />
-      );
-    } else {
-      return null;
-    }
-  }
-
-  function AboutTheServiceSection(): JSX.Element {
-    if (notificationBannerProps.isErrorMessage) {
-      return <AboutTheServiceWithNoStartButton />;
-    } else {
-      return <AboutTheService />;
-    }
-  }
 
   return (
     <>
       <Layout title={pageHeading} showCookieBanner={showCookieBanner}>
-        <ServiceUnavailableMessage />
         <Grid
           mainContent={
             <>
               <PageHeading>{pageHeading}</PageHeading>
-              <AboutTheServiceSection />
+              <AboutTheService />
               <OtherWaysToAccessTheService />
               <DataProtection />
             </>
@@ -116,59 +82,6 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
     <GovUKBody>Registering is free and takes around 15 minutes.</GovUKBody>
 
     <StartButton href={AccountPageURLs.signUpOrSignIn} />
-
-    <SectionHeading>Before you start</SectionHeading>
-    <GovUKBody>You’ll need:</GovUKBody>
-    <GovUKBulletedList>
-      <li>
-        the beacon Hexadecimal Identification (HEX ID) or Unique Identifying
-        Number (UIN), manufacturer serial number and model
-      </li>
-      <li>an emergency contact for search and rescue authorities</li>
-      <li>
-        if you have a vessel - your vessel name, number, call sign, Maritime
-        Mobile Service Identity (MMSI) number, and details of the radio
-        communications equipment you use
-      </li>
-      <li>
-        if you have an aircraft - your aircraft make, model, registration mark,
-        and details of the radio communications equipment you use
-      </li>
-    </GovUKBulletedList>
-  </>
-);
-
-const AboutTheServiceWithNoStartButton: FunctionComponent = (): JSX.Element => (
-  <>
-    <GovUKBody>
-      A UK 406 MHz beacon sends a distress signal to alert search and rescue
-      authorities to your location.
-    </GovUKBody>
-
-    <GovUKBody>Use this service to:</GovUKBody>
-
-    <GovUKBulletedList>
-      <li>register a UK 406 MHz beacon</li>
-      <li>update your beacon registration details</li>
-      <li>update your vessel or aircraft details</li>
-    </GovUKBulletedList>
-
-    <GovUKBody>
-      You can register the following types of UK 406 MHz beacon:
-    </GovUKBody>
-
-    <GovUKBulletedList>
-      <li>Personal Locator Beacon (PLB), for any use</li>
-      <li>
-        Emergency Position Indicating Radio Beacon (EPIRB) or Simplified
-        Voyage-Data Recorder, for maritime use
-      </li>
-      <li>
-        Emergency Locator Transmitter (ELT) or ELT dongle, for aircraft use
-      </li>
-    </GovUKBulletedList>
-
-    <GovUKBody>Registering is free and takes around 15 minutes.</GovUKBody>
 
     <SectionHeading>Before you start</SectionHeading>
     <GovUKBody>You’ll need:</GovUKBody>
@@ -279,10 +192,12 @@ class IfUserViewedIndexPage implements Rule {
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
+    if (!(await this.canConnectToB2C())) {
+      return redirectUserTo("/500");
+    }
     return {
       props: {
         showCookieBanner: !this.context.req.cookies[acceptRejectCookieId],
-        canConnectToB2C: await this.canConnectToB2C(),
       },
     };
   }

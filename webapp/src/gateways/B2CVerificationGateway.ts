@@ -3,7 +3,7 @@ import logger from "../logger";
 import { AccountPageURLs } from "../lib/urls";
 
 export class B2CVerificationGateway {
-  private readonly tenantName = process.env.AZURE_B2C_TENANT_NAME;
+  private readonly tenantName = "bjb";
   private readonly userFlow = process.env.AZURE_B2C_SIGNUP_FLOW;
   private readonly clientId = process.env.AZURE_B2C_CLIENT_ID;
   private readonly redirectUri =
