@@ -38,8 +38,8 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
 
   const notificationBannerProps: NotificationBannerProps = {
     isErrorMessage: !canConnectToB2C,
-    title: "error",
-    heading: "B2C is down oh no!",
+    title: "Service unavailable",
+    heading: "The Beacon Registry service is currently unavailable",
   };
 
   function ServiceUnavailableMessage(): JSX.Element | null {
