@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 import { AccountPageURLs } from "../lib/urls";
-import logger from "../logger";
 
 export class B2CVerificationGateway {
   private readonly tenantName = process.env.AZURE_B2C_TENANT_NAME;
@@ -22,7 +21,7 @@ export class B2CVerificationGateway {
       const isSuccessStatus = b2cResponse.status === 200;
       return isSuccessStatus;
     } catch (error) {
-      logger.error(`B2C connection attempt threw an error: ${error}`);
+      console.error(`B2C connection attempt threw an error: ${error}`);
       return false;
     }
   }

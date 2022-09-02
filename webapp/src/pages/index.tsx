@@ -1,5 +1,3 @@
-import { SilentRequest } from "@azure/msal-browser";
-import { useMsal } from "@azure/msal-react";
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import React, { FunctionComponent } from "react";
 import Aside from "../components/Aside";
@@ -19,6 +17,7 @@ import {
   PageHeading,
   SectionHeading,
 } from "../components/Typography";
+import { B2CVerificationGateway } from "../gateways/B2CVerificationGateway";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
 import { acceptRejectCookieId } from "../lib/types";
@@ -33,19 +32,17 @@ interface ServiceStartPageProps {
 
 const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
   showCookieBanner,
+  canConnectToB2C,
 }: ServiceStartPageProps): JSX.Element => {
   const pageHeading = "Register a UK 406 megahertz (MHz) beacon";
-  const msalContext = useMsal();
 
   const notificationBannerProps: NotificationBannerProps = {
-    isErrorMessage: false,
+    isErrorMessage: !canConnectToB2C,
     title: "error",
     heading: "B2C is down oh no!",
   };
 
   function ServiceUnavailableMessage(): JSX.Element | null {
-    notificationBannerProps.isErrorMessage = !canConnectToB2C();
-
     if (notificationBannerProps.isErrorMessage) {
       return (
         <NotificationBanner
@@ -56,41 +53,6 @@ const ServiceStartPage: FunctionComponent<ServiceStartPageProps> = ({
       );
     } else {
       return null;
-    }
-  }
-
-  function canConnectToB2C(): boolean {
-    const token = getAccessToken();
-    if (token) {
-      const canConnectToB2C = !token.toLowerCase().trim().includes("error");
-      console.log(
-        `got a result from getAccessToken(). canConnectToB2C: ${canConnectToB2C}`
-      );
-      return canConnectToB2C;
-    } else {
-      console.log("No token at all");
-      return false;
-    }
-  }
-
-  function getAccessToken(): string {
-    const activeAccount = msalContext.instance.getActiveAccount();
-    console.log(activeAccount);
-
-    const silentTokenRequest: SilentRequest = {
-      scopes: ["default"],
-      account: activeAccount,
-    };
-
-    try {
-      msalContext.instance
-        .acquireTokenSilent(silentTokenRequest)
-        .then((authResult) => {
-          console.log(authResult.accessToken);
-          return authResult.accessToken;
-        });
-    } catch (error) {
-      return `MSAL error: ${error}`;
     }
   }
 
@@ -247,6 +209,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
 class IfUserViewedIndexPage implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
+  private readonly b2CVerificationGateway = new B2CVerificationGateway();
 
   constructor(context: BeaconsGetServerSidePropsContext) {
     this.context = context;
@@ -260,8 +223,13 @@ class IfUserViewedIndexPage implements Rule {
     return {
       props: {
         showCookieBanner: !this.context.req.cookies[acceptRejectCookieId],
+        canConnectToB2C: await this.canConnectToB2C(),
       },
     };
+  }
+
+  private async canConnectToB2C(): Promise<boolean> {
+    return await this.b2CVerificationGateway.canConnectToB2C();
   }
 }
 
