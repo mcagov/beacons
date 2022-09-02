@@ -17,7 +17,6 @@ import {
   PageHeading,
   SectionHeading,
 } from "../components/Typography";
-import { B2CVerificationGateway } from "../gateways/B2CVerificationGateway";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
 import { acceptRejectCookieId } from "../lib/types";
@@ -270,7 +269,6 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
 class IfUserViewedIndexPage implements Rule {
   private readonly context: BeaconsGetServerSidePropsContext;
-  private readonly b2CVerificationGateway = new B2CVerificationGateway();
 
   constructor(context: BeaconsGetServerSidePropsContext) {
     this.context = context;
@@ -290,7 +288,7 @@ class IfUserViewedIndexPage implements Rule {
   }
 
   private async canConnectToB2C(): Promise<boolean> {
-    return await this.b2CVerificationGateway.canConnectToB2C();
+    return await this.context.container.b2cVerificationGateway.canConnectToB2C();
   }
 }
 

@@ -1,5 +1,6 @@
 import { IncomingMessage } from "http";
 import { DraftRegistration } from "../entities/DraftRegistration";
+import { B2CVerificationGateway } from "../gateways/B2CVerificationGateway";
 import { AccountHolderGateway } from "../gateways/interfaces/AccountHolderGateway";
 import { BeaconGateway } from "../gateways/interfaces/BeaconGateway";
 import { BeaconSearchGateway } from "../gateways/interfaces/BeaconSearchGateway";
@@ -55,4 +56,5 @@ export interface IAppContainer {
   draftRegistrationGateway: DraftRegistrationGateway;
   // Other dependencies
   sessionGateway: UserSessionGateway;
+  b2cVerificationGateway: B2CVerificationGateway;
 }

@@ -1,4 +1,5 @@
 import { AadAuthGateway } from "../gateways/AadAuthGateway";
+import { B2CVerificationGateway } from "../gateways/B2CVerificationGateway";
 import { BeaconsApiAccountHolderGateway } from "../gateways/BeaconsApiAccountHolderGateway";
 import { BeaconsApiBeaconGateway } from "../gateways/BeaconsApiBeaconGateway";
 import { BeaconsApiBeaconSearchGateway } from "../gateways/BeaconsApiBeaconSearchGateway";
@@ -107,6 +108,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
         process.env.API_URL,
         new AadAuthGateway()
       );
+    },
+    get b2cVerificationGateway() {
+      return new B2CVerificationGateway();
     },
 
     /* Mockable utilities */
