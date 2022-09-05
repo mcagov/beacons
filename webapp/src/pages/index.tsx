@@ -192,18 +192,15 @@ class IfUserViewedIndexPage implements Rule {
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
-    if (!(await this.canConnectToB2C())) {
-      return redirectUserTo("/500");
+    if (!(await this.context.container.b2CGateway.canConnectToB2C())) {
+      return redirectUserTo(this.context.container.b2CGateway.redirectUrl);
     }
+
     return {
       props: {
         showCookieBanner: !this.context.req.cookies[acceptRejectCookieId],
       },
     };
-  }
-
-  private async canConnectToB2C(): Promise<boolean> {
-    return await this.context.container.b2cVerificationGateway.canConnectToB2C();
   }
 }
 
