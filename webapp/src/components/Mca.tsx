@@ -45,6 +45,7 @@ export const BeaconRegistryContactInfo: FunctionComponent<
         <a className="govuk-link" href="mailto:ukbeacons@mcga.gov.uk">
           ukbeacons@mcga.gov.uk
         </a>
+        : this is the quickest way to contact us
       </li>
       <li>Telephone: +44 (0)20 3817 2006</li>
       <li>Fax: +44 (0)1326 319264</li>
