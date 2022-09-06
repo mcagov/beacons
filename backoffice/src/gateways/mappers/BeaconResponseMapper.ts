@@ -68,7 +68,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
         addressLine1: owner.addressLine1 || "",
         addressLine2: owner.addressLine2 || "",
         addressLine3: owner.addressLine3 || "",
-        addressLine4: owner.addressLine3 || "",
+        addressLine4: owner.addressLine4 || "",
         townOrCity: owner.townOrCity || "",
         county: owner.county || "",
         postcode: owner.postcode || "",
