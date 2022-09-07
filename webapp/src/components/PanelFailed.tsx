@@ -1,8 +1,6 @@
-import React, { ReactChild, ReactChildren } from "react";
+import React, { ReactNode } from "react";
 
-export const PanelFailed = (props: {
-  children: ReactChildren | ReactChild;
-}): JSX.Element => (
+export const PanelFailed = (props: { children: ReactNode }): JSX.Element => (
   <div
     className="govuk-error-summary"
     aria-labelledby="error-summary-title"
