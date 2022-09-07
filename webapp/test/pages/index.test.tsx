@@ -28,6 +28,11 @@ describe("ServiceStartPage", () => {
         },
         container: {
           saveDraftRegistration: jest.fn(),
+          b2CGateway: {
+            canConnectToB2C: jest.fn(() => {
+              return true;
+            }),
+          },
         },
         res: {
           setHeader: jest.fn(),
@@ -35,7 +40,7 @@ describe("ServiceStartPage", () => {
       };
     });
 
-    it("should return false for showCookieBanner if the cookie is set", async () => {
+    it("when canConnectToB2C() is true, should return false for showCookieBanner if the cookie is set", async () => {
       context.req.cookies[acceptRejectCookieId] = "id";
       const props = await getServerSideProps(context);
 
@@ -46,7 +51,7 @@ describe("ServiceStartPage", () => {
       });
     });
 
-    it("should return true for showCookieBanner if the cookie is not set", async () => {
+    it("when canConnectToB2C() is true, should return true for showCookieBanner if the cookie is not set", async () => {
       const props = await getServerSideProps(context);
 
       expect(props).toStrictEqual({
