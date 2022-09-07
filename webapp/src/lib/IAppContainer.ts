@@ -1,5 +1,6 @@
 import { IncomingMessage } from "http";
 import { DraftRegistration } from "../entities/DraftRegistration";
+import { B2CGateway } from "../gateways/B2CGateway";
 import { AccountHolderGateway } from "../gateways/interfaces/AccountHolderGateway";
 import { BeaconGateway } from "../gateways/interfaces/BeaconGateway";
 import { BeaconSearchGateway } from "../gateways/interfaces/BeaconSearchGateway";
@@ -52,7 +53,8 @@ export interface IAppContainer {
   beaconSearchGateway: BeaconSearchGateway;
   emailServiceGateway: EmailServiceGateway;
   accountHolderGateway: AccountHolderGateway;
-  draftRegistrationGateway: DraftRegistrationGateway;
+  draftRegistratiFFonGateway: DraftRegistrationGateway;
   // Other dependencies
   sessionGateway: UserSessionGateway;
+  b2CGateway: B2CGateway;
 }

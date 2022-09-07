@@ -1,9 +1,10 @@
 import React, { FunctionComponent, ReactNode } from "react";
 
-interface NotificationBannerProps {
+export interface NotificationBannerProps {
+  isErrorMessage: boolean;
   title: string;
   heading: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 interface NotificationBannerSuccessProps {
@@ -12,17 +13,22 @@ interface NotificationBannerSuccessProps {
 }
 
 export const NotificationBanner: FunctionComponent<NotificationBannerProps> = ({
+  isErrorMessage,
   title,
   heading,
   children,
 }: NotificationBannerProps): JSX.Element => (
   <div
-    className="govuk-notification-banner"
+    className={
+      isErrorMessage
+        ? "govuk-notification-banner govuk-error-notification-banner"
+        : "govuk-notification-banner"
+    }
     role="region"
     aria-labelledby="govuk-notification-banner-title"
     data-module="govuk-notification-banner"
   >
-    <div className="govuk-notification-banner__header">
+    <div className={"govuk-notification-banner__header"}>
       <h2
         className="govuk-notification-banner__title"
         id="govuk-notification-banner-title"

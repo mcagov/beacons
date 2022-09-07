@@ -3,6 +3,9 @@
 **/.idea/tasks.xml
 *.iml
 
+# VSCode
+.vscode/
+
 # MacOS
 **/.DS_Store
 

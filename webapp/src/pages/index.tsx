@@ -15,6 +15,7 @@ import {
 } from "../components/Typography";
 import { BeaconsGetServerSidePropsContext } from "../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../lib/middleware/withContainer";
+import { redirectUserTo } from "../lib/redirectUserTo";
 import { acceptRejectCookieId } from "../lib/types";
 import { AccountPageURLs } from "../lib/urls";
 import { BeaconsPageRouter } from "../router/BeaconsPageRouter";
@@ -81,14 +82,6 @@ const AboutTheService: FunctionComponent = (): JSX.Element => (
     <GovUKBody>Registering is free and takes around 15 minutes.</GovUKBody>
 
     <StartButton href={AccountPageURLs.signUpOrSignIn} />
-
-    {/* <InsetText>
-      If you want to register multiple beacons (i.e. more than 5),&nbsp;
-      <AnchorLink href="mailto:ukbeacons@mcga.gov.uk">
-        contact the UK Beacon Registry
-      </AnchorLink>{" "}
-      who will provide you with a spreadsheet template
-    </InsetText> */}
 
     <SectionHeading>Before you start</SectionHeading>
     <GovUKBody>You’ll need:</GovUKBody>
@@ -199,6 +192,10 @@ class IfUserViewedIndexPage implements Rule {
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
+    if (!(await this.context.container.b2CGateway.canConnectToB2C())) {
+      return redirectUserTo(this.context.container.b2CGateway.redirectUrl);
+    }
+
     return {
       props: {
         showCookieBanner: !this.context.req.cookies[acceptRejectCookieId],
