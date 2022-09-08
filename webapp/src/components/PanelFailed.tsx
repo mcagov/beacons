@@ -1,6 +1,6 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
-export const PanelFailed = (): JSX.Element => (
+export const PanelFailed = (props: { children?: ReactNode }): JSX.Element => (
   <div
     className="govuk-error-summary"
     aria-labelledby="error-summary-title"
@@ -11,7 +11,9 @@ export const PanelFailed = (): JSX.Element => (
       There is a problem
     </h2>
     <div className="govuk-error-summary__body">
-      <ul className="govuk-list govuk-error-summary__list"></ul>
+      <ul className="govuk-list govuk-error-summary__list">
+        <li>{props.children}</li>
+      </ul>
     </div>
   </div>
 );

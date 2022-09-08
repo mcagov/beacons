@@ -53,7 +53,7 @@ export interface IAppContainer {
   beaconSearchGateway: BeaconSearchGateway;
   emailServiceGateway: EmailServiceGateway;
   accountHolderGateway: AccountHolderGateway;
-  draftRegistratiFFonGateway: DraftRegistrationGateway;
+  draftRegistrationGateway: DraftRegistrationGateway;
   // Other dependencies
   sessionGateway: UserSessionGateway;
   b2CGateway: B2CGateway;
