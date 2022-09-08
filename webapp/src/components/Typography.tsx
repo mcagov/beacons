@@ -25,16 +25,6 @@ interface GovUKListProps {
   children: ReactNode;
 }
 
-// export const PanelSucceeded = (props: {
-//   title: string;
-//   children?: ReactNode
-//   reference?: string;
-// }): JSX.Element => (
-//   <Panel title={props.title} reference={props.reference}>
-//     {props.children}
-//   </Panel>
-// );
-
 export const PageHeading = (props: PageHeadingProps): JSX.Element => (
   <h1 className="govuk-heading-l">{props.children}</h1>
 );
