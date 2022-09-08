@@ -1,34 +1,28 @@
 import PrintRoundedIcon from "@mui/icons-material/PrintRounded";
 import { Button, ButtonProps, Snackbar } from "@mui/material";
-import React, { ChangeEvent } from "react";
+import { IExportsGateway } from "gateways/exports/IExportsGateway";
+import React from "react";
 
 export function PrintLabelButton({
+  exportsGateway,
   variant,
   color,
   fullWidth = false,
-}: Pick<ButtonProps, "variant" | "color" | "fullWidth">) {
+}: { exportsGateway: IExportsGateway } & Pick<
+  ButtonProps,
+  "variant" | "color" | "fullWidth"
+>) {
   const [open, setOpen] = React.useState(false);
 
-  const fileReader = new FileReader();
-  let byteArray: Uint32Array = new Uint32Array();
-
-  async function getByteArrayFromFile(e: ChangeEvent<HTMLInputElement>) {
-    const uploadedFile = (e.target.files as FileList)[0];
-    console.log(uploadedFile.name);
-
-    byteArray = new Uint32Array(await readFile(uploadedFile));
-    console.log(byteArray);
-  }
-
-  function readFile(uploadedFile: File): Promise<ArrayBuffer> {
-    return new Promise((resolve, reject) => {
-      return fileReader.readAsArrayBuffer(uploadedFile);
-    });
+  async function printLabel() {
+    // will be better to refactor this later so the SingleBeaconRecordView or a separate panel
+    // to be passed in from outside
+    const beaconId = "666";
+    const labelToPrint = await exportsGateway.getPdfLabel(beaconId);
   }
 
   return (
     <>
-      <input type="file" onChange={(e) => getByteArrayFromFile(e)}></input>
       <Button
         color={color}
         variant={variant}
@@ -36,6 +30,7 @@ export function PrintLabelButton({
         component="a"
         target="_blank"
         onClick={() => {
+          printLabel();
           setOpen(true);
         }}
         endIcon={<PrintRoundedIcon />}

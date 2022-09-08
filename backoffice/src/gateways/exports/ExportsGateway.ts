@@ -1,6 +1,7 @@
 import axios from "axios";
 import { applicationConfig } from "../../config";
 import { IAuthGateway } from "../auth/IAuthGateway";
+import { IPdfLabel } from "./IPdfLabel";
 
 export class ExportsGateway {
   private _authGateway: IAuthGateway;
@@ -9,7 +10,7 @@ export class ExportsGateway {
     this._authGateway = authGateway;
   }
 
-  public async getPdfLabel(beaconId: string) {
+  public async getPdfLabel(beaconId: string): Promise<IPdfLabel> {
     const accessToken = await this._authGateway.getAccessToken();
 
     return await axios.get(
@@ -21,5 +22,3 @@ export class ExportsGateway {
     );
   }
 }
-
-interface IPdfLabel {}

@@ -6,6 +6,7 @@ import { CopyToClipboardButton } from "components/CopyToClipboardButton";
 import { PrintLabelButton } from "components/PrintLabelButton";
 import { IBeacon } from "entities/IBeacon";
 import { INote } from "entities/INote";
+import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import { OwnerPanel } from "panels/ownerPanel/OwnerPanel";
 import { UsesListPanel } from "panels/usesPanel/UsesListPanel";
@@ -25,6 +26,7 @@ interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
   usesGateway: IUsesGateway;
   notesGateway: INotesGateway;
+  exportsGateway: IExportsGateway;
   beaconId: string;
 }
 
@@ -41,7 +43,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const SingleBeaconRecordView: FunctionComponent<
   ISingleBeaconRecordViewProps
-> = ({ beaconsGateway, usesGateway, notesGateway, beaconId }): JSX.Element => {
+> = ({
+  beaconsGateway,
+  usesGateway,
+  notesGateway,
+  exportsGateway,
+  beaconId,
+}): JSX.Element => {
   const classes = useStyles();
 
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -78,7 +86,7 @@ export const SingleBeaconRecordView: FunctionComponent<
           text={formatForClipboardWithNotes(beacon, notes)}
           variant="outlined"
         />
-        <PrintLabelButton variant="outlined" />
+        <PrintLabelButton variant="outlined" exportsGateway={exportsGateway} />
       </PageHeader>
 
       <PageContent>
