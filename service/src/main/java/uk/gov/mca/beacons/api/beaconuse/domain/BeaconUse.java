@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -283,5 +284,15 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
     }
 
     return mmsiNumbers;
+  }
+
+  public String getName() {
+    String name = getVesselName();
+
+    if (StringUtils.isBlank(name)) {
+      name = getRegistrationMark();
+    }
+
+    return name;
   }
 }

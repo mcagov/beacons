@@ -1,31 +1,38 @@
 package uk.gov.mca.beacons.api.export;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.Map;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
+import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
+import uk.gov.mca.beacons.api.registration.application.RegistrationService;
+import uk.gov.mca.beacons.api.registration.domain.Registration;
 
 @RestController
 @RequestMapping("/spring-api/export")
-@PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+//@PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
 class ExportController {
 
   private final XlsxExporter xlsxExporter;
+  private final RegistrationService registrationService;
+  private final PdfGenerateService pdfService;
 
   @Autowired
-  public ExportController(XlsxExporter xlsxExporter) {
+  public ExportController(
+    XlsxExporter xlsxExporter,
+    RegistrationService rs,
+    PdfGenerateService pdfService
+  ) {
     this.xlsxExporter = xlsxExporter;
+    this.registrationService = rs;
+    this.pdfService = pdfService;
   }
 
   @GetMapping(value = "/xlsx")
@@ -61,5 +68,27 @@ class ExportController {
       "no-cache, no-store, must-revalidate"
     );
     return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+  }
+
+  @GetMapping(value = "/label/{uuid}")
+  public ResponseEntity<byte[]> getExportByBeaconId(
+    @PathVariable("uuid") UUID rawBeaconId
+  ) throws Exception {
+    BeaconId beaconId = new BeaconId(rawBeaconId);
+    Registration registration = registrationService.getByBeaconId(beaconId);
+
+    if (registration == null) {
+      throw new ResourceNotFoundException();
+    }
+
+    Map<String, Object> labelData = registrationService.getLabelData(
+      registration
+    );
+
+    labelData.put("contactNumber", "+44 (0)20 3817 2006"); // needs to be changed.
+
+    byte[] file = pdfService.generatePdf("Label", labelData).toByteArray();
+
+    return ResponseEntity.ok(file);
   }
 }

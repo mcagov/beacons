@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Label</title>
+    <style>
+      html {
+      }
+      .label {
+        background-color: white;
+        text-align: center;
+        width: 336px;
+        height: 236px;
+        border: 1px solid darkgrey;
+      }
+
+      .underline {
+        text-decoration: underline;
+      }
+
+      span.value {
+        font-weight: bold;
+        font-size: 1.35rem;
+      }
+
+      h1 {
+        margin: 5px 0;
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        margin: 6px 0;
+        font-size: 1.3rem;
+      }
+
+      h1.name {
+        margin: 15px 0;
+        font-size: 1.6rem;
+      }
+
+      p {
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="label">
+      <h1>UK 406 MHz Beacon Registry</h1>
+      <h2 class="underline">24 Hr Tel: <span th:text="${contactNumber}" /></h2>
+      <h1 class="name" th:text="${name}"></h1>
+      <p>HEX ID: <span class="value" th:text="${hexId}" /></p>
+      <p>Coding: <span class="value" th:text="${coding}" /></p>
+      <p>
+        Proof of Registration:
+        <span class="value" th:text="${lastModifiedDate}" />
+      </p>
+    </div>
+  </body>
+</html>
