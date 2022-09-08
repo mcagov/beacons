@@ -15,6 +15,9 @@ coverage/
 .idea/
 *.iml
 
+#Eclipse
+service/.metadata
+
 # Node Modules
 node_modules
 .env
