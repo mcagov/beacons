@@ -2,11 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";
 import { BeaconRegistryContactInfo } from "../components/Mca";
-import {
-  GovUKBody,
-  PageHeading,
-  SectionHeading,
-} from "../components/Typography";
+import { GovUKBody, PageHeading } from "../components/Typography";
 
 const Unavailable: FunctionComponent = () => {
   const pageHeading = "Sorry, the service is unavailable";
