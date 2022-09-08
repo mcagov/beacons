@@ -1,6 +1,10 @@
 package uk.gov.mca.beacons.api.registration.application;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,9 @@ public class RegistrationService {
   private final EmergencyContactService emergencyContactService;
   private final LegacyBeaconService legacyBeaconService;
   private final NoteService noteService;
+  private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
+    "dd/MM/yyyy"
+  );
 
   @Autowired
   public RegistrationService(
@@ -196,5 +203,23 @@ public class RegistrationService {
       beacon.getHexId(),
       accountHolder.getEmail()
     );
+  }
+
+  public Map<String, Object> getLabelData(Registration registration) {
+    Beacon beacon = registration.getBeacon();
+    BeaconUse mainUse = registration.getMainUse();
+
+    Map<String, Object> data = new HashMap<String, Object>();
+    data.put("name", mainUse.getName());
+    data.put("hexId", beacon.getHexId());
+    data.put("protocol", beacon.getProtocol());
+    data.put("createdDate", beacon.getCreatedDate());
+    data.put("lastModifiedDate", beacon.getLastModifiedDate().format(dtf));
+    data.put("mti", beacon.getMti());
+    data.put("svdr", beacon.getSvdr());
+    data.put("csta", beacon.getCsta());
+    data.put("coding", beacon.getCoding());
+
+    return data;
   }
 }

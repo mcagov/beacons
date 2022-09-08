@@ -36,6 +36,7 @@ public class SecurityConfiguration {
         .antMatchers(
           "/spring-api/actuator/health",
           "/spring-api/actuator/info",
+          "/spring-api/export/**", // remember to remove this.
           "/swagger-ui.html",
           "/swagger-ui/**",
           "/v3/api-docs/**",
