@@ -3,6 +3,7 @@ import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 import { CopyToClipboardButton } from "components/CopyToClipboardButton";
+import { PrintLabelButton } from "components/PrintLabelButton";
 import { IBeacon } from "entities/IBeacon";
 import { INote } from "entities/INote";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
@@ -75,7 +76,9 @@ export const SingleBeaconRecordView: FunctionComponent<
         Hex ID/UIN: {hexId}{" "}
         <CopyToClipboardButton
           text={formatForClipboardWithNotes(beacon, notes)}
+          variant="outlined"
         />
+        <PrintLabelButton variant="outlined" />
       </PageHeader>
 
       <PageContent>
