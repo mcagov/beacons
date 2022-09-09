@@ -24,6 +24,8 @@ class ExportController {
   private final RegistrationService registrationService;
   private final PdfGenerateService pdfService;
 
+  private final String contantNumber = "+44 (0)1326 317575";
+
   @Autowired
   public ExportController(
     XlsxExporter xlsxExporter,
@@ -71,7 +73,7 @@ class ExportController {
   }
 
   @GetMapping(value = "/label/{uuid}")
-  public ResponseEntity<byte[]> getExportByBeaconId(
+  public ResponseEntity<byte[]> getLabelByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
   ) throws Exception {
     BeaconId beaconId = new BeaconId(rawBeaconId);
@@ -81,14 +83,40 @@ class ExportController {
       throw new ResourceNotFoundException();
     }
 
-    Map<String, Object> labelData = registrationService.getLabelData(
+    Map<String, Object> data = registrationService.getLabelData(registration);
+
+    data.put("contactNumber", contantNumber);
+
+    byte[] file = pdfService.generatePdf("Label", data).toByteArray();
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(file);
+  }
+
+  @GetMapping(value = "/certificate/{uuid}")
+  public ResponseEntity<byte[]> getCertificateByBeaconId(
+    @PathVariable("uuid") UUID rawBeaconId
+  ) throws Exception {
+    BeaconId beaconId = new BeaconId(rawBeaconId);
+    Registration registration = registrationService.getByBeaconId(beaconId);
+
+    if (registration == null) {
+      throw new ResourceNotFoundException();
+    }
+
+    Map<String, Object> data = registrationService.getCertificateData(
       registration
     );
 
-    labelData.put("contactNumber", "+44 (0)20 3817 2006"); // needs to be changed.
+    data.put("contactNumber", contantNumber);
 
-    byte[] file = pdfService.generatePdf("Label", labelData).toByteArray();
+    byte[] file = pdfService.generatePdf("Certificate", data).toByteArray();
 
-    return ResponseEntity.ok(file);
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(file);
   }
 }

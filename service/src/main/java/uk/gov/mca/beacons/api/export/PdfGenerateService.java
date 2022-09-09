@@ -34,20 +34,22 @@ public class PdfGenerateService {
     String templateName,
     Map<String, Object> data
   ) throws DocumentException, IOException {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     Context context = new Context();
     context.setVariables(data);
+
     String html = templateEngine.process(templateName, context);
 
     ITextRenderer renderer = new ITextRenderer();
     renderer.setDocumentFromString(html);
+
     renderer.layout();
 
-    renderer.createPDF(baos);
+    renderer.createPDF(out, true);
 
-    baos.close();
+    out.close();
 
-    return baos;
+    return out;
   }
 }

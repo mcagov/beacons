@@ -5,12 +5,27 @@
     <style>
       html {
       }
-      .label {
+      .container {
         background-color: white;
-        text-align: center;
-        width: 336px;
-        height: 236px;
         border: 1px solid darkgrey;
+      }
+
+      .label {
+        padding-top: 100px;
+        text-align: center;
+      }
+
+      h1.title {
+        font-size: 60px;
+        margin: 20px 0;
+      }
+      h2.contact {
+        font-size: 55px;
+        margin: 5px 0;
+      }
+      h2.name {
+        font-size: 50px;
+        margin: 50px 0;
       }
 
       .underline {
@@ -19,40 +34,39 @@
 
       span.value {
         font-weight: bold;
-        font-size: 1.35rem;
-      }
-
-      h1 {
-        margin: 5px 0;
-        font-size: 1.5rem;
-      }
-
-      h2 {
-        margin: 6px 0;
-        font-size: 1.3rem;
-      }
-
-      h1.name {
-        margin: 15px 0;
-        font-size: 1.6rem;
+        font-size: 40px;
       }
 
       p {
-        margin: 5px;
+        margin: 10px;
+      }
+
+      p label {
+        font-size: 35px;
+      }
+
+      @page {
+        margin: 0;
       }
     </style>
   </head>
   <body>
-    <div class="label">
-      <h1>UK 406 MHz Beacon Registry</h1>
-      <h2 class="underline">24 Hr Tel: <span th:text="${contactNumber}" /></h2>
-      <h1 class="name" th:text="${name}"></h1>
-      <p>HEX ID: <span class="value" th:text="${hexId}" /></p>
-      <p>Coding: <span class="value" th:text="${coding}" /></p>
-      <p>
-        Proof of Registration:
-        <span class="value" th:text="${lastModifiedDate}" />
-      </p>
+    <div class="container">
+      <div class="label">
+        <h1 class="title">UK 406 MHz Beacon Registry</h1>
+        <h2 class="contact underline">
+          24 Hr Tel: <span th:text="${contactNumber}" />
+        </h2>
+        <h2 class="name" th:text="${name}"></h2>
+        <p><label>HEX ID: </label> <span class="value" th:text="${hexId}" /></p>
+        <p>
+          <label>Coding: </label> <span class="value" th:text="${coding}" />
+        </p>
+        <p>
+          <label>Proof of Registration: </label>
+          <span class="value" th:text="${lastModifiedDate}" />
+        </p>
+      </div>
     </div>
   </body>
 </html>
