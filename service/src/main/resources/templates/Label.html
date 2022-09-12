@@ -6,26 +6,28 @@
       html {
       }
       .container {
+        float: left;
         background-color: white;
         border: 1px solid darkgrey;
       }
 
       .label {
-        padding-top: 100px;
         text-align: center;
       }
 
-      h1.title {
-        font-size: 60px;
-        margin: 20px 0;
-      }
-      h2.contact {
-        font-size: 55px;
+      h2 {
         margin: 5px 0;
       }
+      h2.title {
+        font-size: 12.5px;
+      }
+
+      h2.contact {
+        font-size: 12.5px;
+      }
+
       h2.name {
-        font-size: 50px;
-        margin: 50px 0;
+        font-size: 12.5px;
       }
 
       .underline {
@@ -34,15 +36,15 @@
 
       span.value {
         font-weight: bold;
-        font-size: 40px;
+        font-size: 10px;
       }
 
       p {
-        margin: 10px;
+        margin: 1px;
       }
 
       p label {
-        font-size: 35px;
+        font-size: 8.75px;
       }
 
       @page {
@@ -53,7 +55,7 @@
   <body>
     <div class="container">
       <div class="label">
-        <h1 class="title">UK 406 MHz Beacon Registry</h1>
+        <h2 class="title">UK 406 MHz Beacon Registry</h2>
         <h2 class="contact underline">
           24 Hr Tel: <span th:text="${contactNumber}" />
         </h2>

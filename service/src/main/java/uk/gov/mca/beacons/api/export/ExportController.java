@@ -89,10 +89,17 @@ class ExportController {
 
     byte[] file = pdfService.generatePdf("Label", data).toByteArray();
 
-    return ResponseEntity
-      .ok()
-      .contentType(MediaType.APPLICATION_PDF)
-      .body(file);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_PDF);
+    headers.set(
+      HttpHeaders.CONTENT_DISPOSITION,
+      "attachment; filename=Label.pdf"
+    );
+    headers.set(
+      HttpHeaders.CACHE_CONTROL,
+      "no-cache, no-store, must-revalidate"
+    );
+    return new ResponseEntity<>(file, headers, HttpStatus.OK);
   }
 
   @GetMapping(value = "/certificate/{uuid}")
