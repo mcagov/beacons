@@ -3,7 +3,6 @@ import { MsalProvider } from "@azure/msal-react";
 import { RequireAuth } from "components/auth/RequireAuth";
 import { AuthGateway } from "gateways/auth/AuthGateway";
 import { BeaconsGateway } from "gateways/beacons/BeaconsGateway";
-import { ExportsGateway } from "gateways/exports/ExportsGateway";
 import { UsesGateway } from "gateways/uses/UsesGateway";
 import React, { FunctionComponent } from "react";
 import {

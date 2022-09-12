@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       padding: theme.spacing(2),
     },
+    printLabelButton: {
+      marginLeft: theme.spacing(2),
+    },
   })
 );
 
@@ -80,11 +83,13 @@ export const SingleBeaconRecordView: FunctionComponent<
           text={formatForClipboardWithNotes(beacon, notes)}
           variant="outlined"
         />
-        <AuthenticatedDownloadButton
-          label="Print label"
-          url={printLabelUrl}
-          isFullWidth={false}
-        />
+        <span className={classes.printLabelButton}>
+          <AuthenticatedDownloadButton
+            label="Print label"
+            url={printLabelUrl}
+            isFullWidth={false}
+          />
+        </span>
       </PageHeader>
 
       <PageContent>
