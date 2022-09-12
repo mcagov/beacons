@@ -113,7 +113,7 @@ class ExportController {
 
     data.put("contactNumber", contantNumber);
 
-    byte[] file = pdfService.generatePdf("Certificate2", data).toByteArray();
+    byte[] file = pdfService.generatePdf("Certificate", data).toByteArray();
     noteService.createSystemNote(beaconId, "Certificate Generated");
     //    return servePdf(file, "Certificate.pdf");
     return ResponseEntity

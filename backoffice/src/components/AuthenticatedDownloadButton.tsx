@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import React, { MouseEventHandler } from "react";
+import { parseFilename } from "utils/FileExportUtils";
 import { useAuthContext } from "./auth/AuthProvider";
 
 export function AuthenticatedDownloadButton({
@@ -64,10 +65,3 @@ export function AuthenticatedDownloadButton({
     </Button>
   );
 }
-
-export const parseFilename = (headers: Headers): string | null => {
-  const contentDisposition = headers.get("Content-Disposition");
-  if (!contentDisposition) return null;
-
-  return contentDisposition.split("filename=")[1];
-};

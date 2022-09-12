@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       padding: theme.spacing(2),
     },
-    printLabelButton: {
+    printButton: {
       marginLeft: theme.spacing(2),
     },
   })
@@ -74,6 +74,7 @@ export const SingleBeaconRecordView: FunctionComponent<
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
   const printLabelUrl = `${applicationConfig.apiUrl}/export/label/${beaconId}`;
+  const printCertificateUrl = `${applicationConfig.apiUrl}/export/certificate/${beaconId}`;
 
   return (
     <div className={classes.root}>
@@ -83,10 +84,17 @@ export const SingleBeaconRecordView: FunctionComponent<
           text={formatForClipboardWithNotes(beacon, notes)}
           variant="outlined"
         />
-        <span className={classes.printLabelButton}>
+        <span className={classes.printButton}>
           <AuthenticatedPrintButton
             label="Print label"
             url={printLabelUrl}
+            isFullWidth={false}
+          />
+        </span>
+        <span className={classes.printButton}>
+          <AuthenticatedPrintButton
+            label="Print certificate"
+            url={printCertificateUrl}
             isFullWidth={false}
           />
         </span>
