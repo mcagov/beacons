@@ -2,7 +2,7 @@ import { Grid, Tab, Tabs } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
-import { AuthenticatedDownloadButton } from "components/AuthenticatedDownloadButton";
+import { AuthenticatedPrintButton } from "components/AuthenticatedPrintButton";
 import { CopyToClipboardButton } from "components/CopyToClipboardButton";
 import { applicationConfig } from "config";
 import { IBeacon } from "entities/IBeacon";
@@ -84,7 +84,7 @@ export const SingleBeaconRecordView: FunctionComponent<
           variant="outlined"
         />
         <span className={classes.printLabelButton}>
-          <AuthenticatedDownloadButton
+          <AuthenticatedPrintButton
             label="Print label"
             url={printLabelUrl}
             isFullWidth={false}
