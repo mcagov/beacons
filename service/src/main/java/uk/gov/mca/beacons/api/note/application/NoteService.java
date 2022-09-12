@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.note.application;
 
 import java.util.List;
+import org.checkerframework.checker.units.qual.N;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,17 @@ public class NoteService {
 
   public List<Note> getByBeaconId(BeaconId beaconId) {
     return noteRepository.findByBeaconId(beaconId);
+  }
+
+  public Note createSystemNote(BeaconId beaconId, String text) {
+    Note note = new Note();
+
+    note.setFullName("SYSTEM");
+    note.setType(NoteType.RECORD_HISTORY);
+    note.setText(text);
+    note.setBeaconId(beaconId);
+
+    return noteRepository.save(note);
   }
 
   public Note createNoteForDeletedRegistration(

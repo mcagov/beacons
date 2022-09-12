@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
+import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 
@@ -23,18 +24,20 @@ class ExportController {
   private final XlsxExporter xlsxExporter;
   private final RegistrationService registrationService;
   private final PdfGenerateService pdfService;
-
+  private final NoteService noteService;
   private final String contantNumber = "+44 (0)1326 317575";
 
   @Autowired
   public ExportController(
     XlsxExporter xlsxExporter,
     RegistrationService rs,
-    PdfGenerateService pdfService
+    PdfGenerateService pdfService,
+    NoteService ns
   ) {
     this.xlsxExporter = xlsxExporter;
     this.registrationService = rs;
     this.pdfService = pdfService;
+    this.noteService = ns;
   }
 
   @GetMapping(value = "/xlsx")
@@ -89,17 +92,8 @@ class ExportController {
 
     byte[] file = pdfService.generatePdf("Label", data).toByteArray();
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_PDF);
-    headers.set(
-      HttpHeaders.CONTENT_DISPOSITION,
-      "attachment; filename=Label.pdf"
-    );
-    headers.set(
-      HttpHeaders.CACHE_CONTROL,
-      "no-cache, no-store, must-revalidate"
-    );
-    return new ResponseEntity<>(file, headers, HttpStatus.OK);
+    noteService.createSystemNote(beaconId, "Label Generated");
+    return servePdf(file, "Label.pdf");
   }
 
   @GetMapping(value = "/certificate/{uuid}")
@@ -119,11 +113,26 @@ class ExportController {
 
     data.put("contactNumber", contantNumber);
 
-    byte[] file = pdfService.generatePdf("Certificate", data).toByteArray();
-
+    byte[] file = pdfService.generatePdf("Certificate2", data).toByteArray();
+    noteService.createSystemNote(beaconId, "Certificate Generated");
+    //    return servePdf(file, "Certificate.pdf");
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_PDF)
       .body(file);
+  }
+
+  private ResponseEntity<byte[]> servePdf(byte[] file, String filename) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_PDF);
+    headers.set(
+      HttpHeaders.CONTENT_DISPOSITION,
+      "attachment; filename=" + filename
+    );
+    headers.set(
+      HttpHeaders.CACHE_CONTROL,
+      "no-cache, no-store, must-revalidate"
+    );
+    return new ResponseEntity<>(file, headers, HttpStatus.OK);
   }
 }
