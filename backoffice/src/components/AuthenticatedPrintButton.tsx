@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import ContentPrintIcon from "@mui/icons-material/Print";
 import React, { MouseEventHandler } from "react";
 import { useAuthContext } from "./auth/AuthProvider";
 
@@ -42,7 +43,7 @@ export function AuthenticatedPrintButton({
       // then print it
       const file = await result.blob();
       const href = window.URL.createObjectURL(file);
-      window.open(href, "PRINT", "height=400,width=600");
+      window.open(href, "PRINT", "height=800,width=1000");
     };
 
   if (user.type !== "loggedInUser") {
@@ -54,15 +55,16 @@ export function AuthenticatedPrintButton({
       component="a"
       ref={link}
       onClick={printFile(user.apiAccessToken)}
-      color="inherit"
       variant="outlined"
       fullWidth={isFullWidth}
+      endIcon={<ContentPrintIcon />}
     >
       {label}
     </Button>
   );
 }
 
+// abstract into shared utils class
 export const parseFilename = (headers: Headers): string | null => {
   const contentDisposition = headers.get("Content-Disposition");
   if (!contentDisposition) {
