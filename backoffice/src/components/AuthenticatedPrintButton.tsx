@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import ContentPrintIcon from "@mui/icons-material/Print";
 import React, { MouseEventHandler } from "react";
 import { useAuthContext } from "./auth/AuthProvider";
+import { parseFilename } from "utils/FileExportUtils";
 
 export function AuthenticatedPrintButton({
   url,
@@ -23,10 +24,7 @@ export function AuthenticatedPrintButton({
         return;
       }
 
-      // to-do: abstract into separate function to get the file
-      const result = await fetch(url, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const result = await getFile(accessToken);
 
       if (result.status === 503) {
         window.alert("There was an error while preparing the file.");
@@ -40,11 +38,21 @@ export function AuthenticatedPrintButton({
         return;
       }
 
-      // then print it
-      const file = await result.blob();
-      const href = window.URL.createObjectURL(file);
-      window.open(href, "PRINT", "height=800,width=1000");
+      openPrintWindow(result);
     };
+
+  async function getFile(accessToken: string | unknown): Promise<Response> {
+    const result = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    return result;
+  }
+
+  async function openPrintWindow(result: Response): Promise<void> {
+    const file = await result.blob();
+    const href = window.URL.createObjectURL(file);
+    window.open(href, "PRINT", "height=800,width=1000");
+  }
 
   if (user.type !== "loggedInUser") {
     return null;
@@ -63,13 +71,3 @@ export function AuthenticatedPrintButton({
     </Button>
   );
 }
-
-// abstract into shared utils class
-export const parseFilename = (headers: Headers): string | null => {
-  const contentDisposition = headers.get("Content-Disposition");
-  if (!contentDisposition) {
-    return null;
-  }
-
-  return contentDisposition.split("filename=")[1];
-};
