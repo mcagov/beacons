@@ -5,9 +5,11 @@ import { useAuthContext } from "./auth/AuthProvider";
 export function AuthenticatedDownloadButton({
   url,
   label,
+  isFullWidth,
 }: {
   url: string;
   label: string;
+  isFullWidth: boolean;
 }): JSX.Element | null {
   const link = React.useRef<HTMLAnchorElement>(null);
 
@@ -56,7 +58,7 @@ export function AuthenticatedDownloadButton({
       onClick={downloadFile(user.apiAccessToken)}
       color="inherit"
       variant="outlined"
-      fullWidth
+      fullWidth={isFullWidth}
     >
       {label}
     </Button>

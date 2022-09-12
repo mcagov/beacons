@@ -2,11 +2,11 @@ import { Grid, Tab, Tabs } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
+import { AuthenticatedDownloadButton } from "components/AuthenticatedDownloadButton";
 import { CopyToClipboardButton } from "components/CopyToClipboardButton";
-import { PrintLabelButton } from "components/PrintLabelButton";
+import { applicationConfig } from "config";
 import { IBeacon } from "entities/IBeacon";
 import { INote } from "entities/INote";
-import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import { OwnerPanel } from "panels/ownerPanel/OwnerPanel";
 import { UsesListPanel } from "panels/usesPanel/UsesListPanel";
@@ -26,7 +26,6 @@ interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
   usesGateway: IUsesGateway;
   notesGateway: INotesGateway;
-  exportsGateway: IExportsGateway;
   beaconId: string;
 }
 
@@ -43,13 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const SingleBeaconRecordView: FunctionComponent<
   ISingleBeaconRecordViewProps
-> = ({
-  beaconsGateway,
-  usesGateway,
-  notesGateway,
-  exportsGateway,
-  beaconId,
-}): JSX.Element => {
+> = ({ beaconsGateway, usesGateway, notesGateway, beaconId }): JSX.Element => {
   const classes = useStyles();
 
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -77,6 +70,7 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
+  const printLabelUrl = `${applicationConfig.apiUrl}/export/label/${beaconId}`;
 
   return (
     <div className={classes.root}>
@@ -86,7 +80,11 @@ export const SingleBeaconRecordView: FunctionComponent<
           text={formatForClipboardWithNotes(beacon, notes)}
           variant="outlined"
         />
-        <PrintLabelButton variant="outlined" exportsGateway={exportsGateway} />
+        <AuthenticatedDownloadButton
+          label="Print label"
+          url={printLabelUrl}
+          isFullWidth={false}
+        />
       </PageHeader>
 
       <PageContent>
