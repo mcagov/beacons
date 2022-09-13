@@ -3,6 +3,7 @@ import { MsalProvider } from "@azure/msal-react";
 import { RequireAuth } from "components/auth/RequireAuth";
 import { AuthGateway } from "gateways/auth/AuthGateway";
 import { BeaconsGateway } from "gateways/beacons/BeaconsGateway";
+import { ExportsGateway } from "gateways/exports/ExportsGateway";
 import { UsesGateway } from "gateways/uses/UsesGateway";
 import React, { FunctionComponent } from "react";
 import {
@@ -11,6 +12,7 @@ import {
   Switch,
   useParams,
 } from "react-router-dom";
+import { CertificateView } from "views/CertificateView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
@@ -57,6 +59,7 @@ const App: FunctionComponent = () => {
   );
   const usesGateway = new UsesGateway(beaconResponseMapper, authGateway);
   const notesGateway = new NotesGateway(authGateway);
+  const exportsGateway = new ExportsGateway(authGateway);
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
@@ -105,6 +108,9 @@ const App: FunctionComponent = () => {
                       Trigger export job
                     </AuthenticatedPOSTButton>
                   </PageContent>
+                </Route>
+                <Route path={`/certificate`}>
+                  <CertificateView exportsGateway={exportsGateway} />
                 </Route>
                 <Route>Page not found. Is the address correct?</Route>
               </Switch>
