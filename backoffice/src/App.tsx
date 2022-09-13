@@ -83,6 +83,11 @@ const App: FunctionComponent = () => {
     );
   };
 
+  const CertificateViewWithParam: FunctionComponent = () => {
+    const { id } = useParams<ResourceParams>();
+    return <CertificateView exportsGateway={exportsGateway} beaconId={id} />;
+  };
+
   return (
     <MsalProvider instance={pca}>
       <AuthProvider>
@@ -109,8 +114,8 @@ const App: FunctionComponent = () => {
                     </AuthenticatedPOSTButton>
                   </PageContent>
                 </Route>
-                <Route path={`/certificate`}>
-                  <CertificateView exportsGateway={exportsGateway} />
+                <Route path={`/certificates/:id`}>
+                  <CertificateViewWithParam />
                 </Route>
                 <Route>Page not found. Is the address correct?</Route>
               </Switch>

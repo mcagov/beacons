@@ -2,8 +2,8 @@ import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 import React, { FunctionComponent } from "react";
-import { IExportsGateway } from "../gateways/exports/IExportsGateway";
 import { Grid } from "@mui/material";
+import { ICertificate } from "gateways/exports/ICertificate";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface CertificateProps {
-  exportsGateway: IExportsGateway;
+  certificate: ICertificate;
 }
 
 export const Certificate: FunctionComponent<CertificateProps> = ({
-  exportsGateway,
+  certificate,
 }): JSX.Element => {
   const classes = useStyles();
   return (
@@ -31,7 +31,7 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
         <div>UK Distress & Security Beacon Registration</div>
       </Grid>
       <Grid item xs={4}>
-        <div>xs=4</div>
+        <div>{certificate.coding}</div>
       </Grid>
       <Grid item xs={4}>
         <div>xs=4</div>
