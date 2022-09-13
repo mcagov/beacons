@@ -90,10 +90,15 @@ class ExportController {
 
     data.put("contactNumber", contantNumber);
 
-    byte[] file = pdfService.generatePdf("Label", data).toByteArray();
+    //    byte[] file = pdfService.generatePdf("Label", data).toByteArray();
+    byte[] file = pdfService.createLabelPdf(data);
 
-    noteService.createSystemNote(beaconId, "Label Generated");
-    return servePdf(file, "Label.pdf");
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(file);
+    //    noteService.createSystemNote(beaconId, "Label Generated");
+    //    return servePdf(file, "Label.pdf");
   }
 
   @GetMapping(value = "/letter/{uuid}")
