@@ -4,8 +4,12 @@
     <title>Certificate</title>
     <title>Certificate</title>
     <style type="text/css">
-      div.heading {
+      .container {
+        width: 90%;
+      }
+      .heading {
         border-bottom: 3px black solid;
+        display: flex;
       }
       div.heading,
       div.footer {
@@ -31,47 +35,56 @@
         width: 95px;
         height: 79px;
         margin: 10px;
-        float: right;
       }
 
       div.with-image {
-        width: 85%;
+        width: 70%;
         float: left;
       }
     </style>
   </head>
   <body>
-    <div class="heading">
-      <div class="with-image">
-        <h3>OFFICIAL</h3>
-        <h1>UK Distress &amp; Security Beacon Registration</h1>
+    <main class="container">
+      <section class="heading">
+        <div class="with-image">
+          <h3>OFFICIAL</h3>
+          <h1>UK Distress &amp; Security Beacon Registration</h1>
+          <div class="half left">
+            <p><label>PROOF OF REGISTRATION:</label> 08 September 2022</p>
+          </div>
+
+          <div class="half right">
+            <p><label>DEPT REF:</label> 11010/112</p>
+          </div>
+        </div>
+        <img
+          class="logo"
+          src="https://register-406-beacons.service.gov.uk/assets/mca_images/mca-logo.png"
+        />
+      </section>
+
+      <section class="beacon-details">
         <div class="half left">
-          <p><label>PROOF OF REGISTRATION:</label> 08 September 2022</p>
+          <p><label>RECORD CREATED DATE:</label> 08 September 2022</p>
+          <p><label>BEACON STATUS:</label> ACTIVE</p>
         </div>
-
         <div class="half right">
-          <p><label>DEPT REF:</label> 11010/112</p>
+          <p><label>LAST MODIFIED:</label> 08 September 2022</p>
         </div>
-      </div>
-      <img
-        class="logo"
-        src="https://register-406-beacons.service.gov.uk/assets/mca_images/mca-logo.png"
-      />
-    </div>
+      </section>
 
-    <div class="beacon-details"></div>
+      <section class="vessel-details"></section>
 
-    <div class="vessel-details"></div>
+      <section class="vessel-identification"></section>
 
-    <div class="vessel-identification"></div>
+      <section class="owner-details"></section>
 
-    <div class="owner-details"></div>
-
-    <div class="footer">
-      <p>
-        In an Emergency, call Falmouth Coastguard, 24 hour Tel: +44 (0)1326
-        317575
-      </p>
-    </div>
+      <section class="footer">
+        <p>
+          In an Emergency, call Falmouth Coastguard, 24 hour Tel: +44 (0)1326
+          317575
+        </p>
+      </section>
+    </main>
   </body>
 </html>
