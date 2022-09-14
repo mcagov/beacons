@@ -11,9 +11,10 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       fontFamily: "Arial",
       backgroundColor: "white",
+      padding: "0.5%",
     },
-    paper: {
-      padding: theme.spacing(2),
+    header: {
+      borderBottom: "3px solid black",
     },
   })
 );
@@ -26,22 +27,41 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
   certificate,
 }): JSX.Element => {
   const classes = useStyles();
-  // later: consider the React version of a v-for
   return (
     <Grid container className={classes.root}>
-      <Grid item xl={12}>
-        <div>OFFICIAL</div>
-        <div>UK Distress & Security Beacon Registration</div>
+      <Grid className={classes.header} container spacing={0.5}>
+        <Grid item xl={12}>
+          <div>OFFICIAL</div>
+          <h3>UK Distress & Security Beacon Registration</h3>
+        </Grid>
+        <Grid item xs={6}>
+          <div>
+            PROOF OF REGISTRATION: {certificate.proofOfRegistrationDate}
+          </div>
+          <Grid item xs={6}>
+            <div>DEPT REF: {certificate.beacon.referenceNumber}</div>
+          </Grid>
+        </Grid>
       </Grid>
+
+      <Grid container spacing={0.5}>
+        <Grid item xs={6}>
+          <div>RECORD CREATED DATE: {certificate.beacon.registeredDate}</div>
+        </Grid>
+        <Grid item xs={6}>
+          <div>BEACON STATUS: {certificate.beacon.status}</div>
+        </Grid>
+        <Grid item xs={6}>
+          <div>LAST MODIFIED: {certificate.beacon.lastModifiedDate}</div>
+        </Grid>
+      </Grid>
+
+      {/* // beacon details */}
+
       <Grid item xs={6}>
-        <div>Coding: {certificate.beacon.coding}</div>
+        <div>MCA's Contact Number: {certificate.mcaContactNumber}</div>
       </Grid>
-      <Grid item xs={6}>
-        <div>MCA's Contact Number: {certificate.contactNumber}</div>
-      </Grid>
-      <Grid item xs={6}>
-        <div>Created Date: {certificate.beacon.registeredDate}</div>
-      </Grid>
+
       <Grid item xs={6}>
         <div>Csta: {certificate.beacon.csta}</div>
       </Grid>
@@ -55,7 +75,7 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
         <div>MTI: {certificate.beacon.mti}</div>
       </Grid>
       <Grid item xs={6}>
-        <div>Vessel Name: {certificate.beacon.uses[0].vesselName}</div>
+        <div>Vessel Name: {certificate.uses[0].vesselName}</div>
       </Grid>
       <Grid item xs={6}>
         <div>Protocol: {certificate.beacon.protocol}</div>

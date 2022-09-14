@@ -26,7 +26,6 @@ export class ExportsGateway implements IExportsGateway {
         }
       );
       const certificateData = certificateResponse.data;
-      console.log(certificateData);
       return certificateData;
     } catch (error) {
       logToServer.error(error);
