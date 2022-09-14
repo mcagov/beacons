@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.export;
 
 import java.io.*;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ class ExportController {
   private final RegistrationService registrationService;
   private final PdfGenerateService pdfService;
   private final NoteService noteService;
-  private final String contantNumber = "+44 (0)1326 317575";
+  private final String contactNumber = "+44 (0)1326 317575";
 
   @Autowired
   public ExportController(
@@ -88,7 +89,7 @@ class ExportController {
 
     Map<String, Object> data = registrationService.getLabelData(registration);
 
-    data.put("contactNumber", contantNumber);
+    data.put("contactNumber", contactNumber);
 
     //    byte[] file = pdfService.generatePdf("Label", data).toByteArray();
     byte[] file = pdfService.createLabelPdf(data);
@@ -116,7 +117,7 @@ class ExportController {
       registration
     ); // Needs to bring back data for letter
 
-    data.put("contactNumber", contantNumber);
+    data.put("contactNumber", contactNumber);
 
     byte[] file = pdfService.generatePdf("Letter", data).toByteArray();
 
@@ -139,7 +140,8 @@ class ExportController {
       registration
     );
 
-    data.put("contactNumber", contantNumber);
+    data.put("proofOfRegistrationDate", new Date());
+    data.put("contactNumber", contactNumber);
 
     return ResponseEntity
       .ok()
@@ -162,7 +164,7 @@ class ExportController {
       registration
     );
 
-    data.put("contactNumber", contantNumber);
+    data.put("contactNumber", contactNumber);
 
     byte[] file = pdfService.generatePdf("Certificate", data).toByteArray();
     noteService.createSystemNote(beaconId, "Certificate Generated");

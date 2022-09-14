@@ -27,25 +27,17 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
   beaconId,
 }): JSX.Element => {
   const classes = useStyles();
-  const [certificate, setCertificate] = useState({
-    coding: "",
-    protocol: "",
-    createdDate: new Date(),
-    mti: "",
-    csta: "",
-    lastModifiedDate: new Date(),
-    svdr: "",
-    name: "",
-    contactNumber: "",
-    hexid: "",
-  });
+  const [certificate, setCertificate] = useState({});
 
+  /**  eslint-disable-next-line react-hooks/exhaustive-deps */
   useEffect(() => {
     getCertificate();
-  });
+  }, []);
 
   async function getCertificate(): Promise<void> {
-    setCertificate(await exportsGateway.getCertificateDataForBeacon(beaconId));
+    const certData = await exportsGateway.getCertificateDataForBeacon(beaconId);
+    console.log(certData);
+    setCertificate(certData);
   }
 
   if (certificate.coding) {

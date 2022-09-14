@@ -1,12 +1,9 @@
+import { IBeacon } from "entities/IBeacon";
+import { INote } from "entities/INote";
+
 export interface ICertificate {
-  coding: string;
-  protocol: string;
-  createdDate: Date;
-  mti: string;
-  csta: string;
-  lastModifiedDate: Date;
-  svdr: string;
-  name: string;
+  proofOfRegistrationDate: Date;
   contactNumber: string;
-  hexid: string;
+  beacon: IBeacon;
+  notes: INote[];
 }

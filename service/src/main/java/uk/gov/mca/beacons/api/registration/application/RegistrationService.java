@@ -25,6 +25,7 @@ import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.note.application.NoteService;
+import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.rest.DeleteRegistrationDTO;
 
@@ -205,6 +206,7 @@ public class RegistrationService {
     );
   }
 
+  // get data common to labels and certs
   public Map<String, Object> getLabelData(Registration registration) {
     Beacon beacon = registration.getBeacon();
     BeaconUse mainUse = registration.getMainUse();
@@ -224,6 +226,13 @@ public class RegistrationService {
   }
 
   public Map<String, Object> getCertificateData(Registration registration) {
-    return getLabelData(registration); // TODO - Populate needed data.
+    Beacon beacon = registration.getBeacon();
+
+    Map<String, Object> certificate = new HashMap<String, Object>();
+    certificate.put("beacon", beacon);
+    certificate.put("mainUse", registration.getMainUse());
+    certificate.put("notes", noteService.getByBeaconId(beacon.getId()));
+
+    return certificate;
   }
 }
