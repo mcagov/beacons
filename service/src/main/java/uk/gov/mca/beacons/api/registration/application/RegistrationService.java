@@ -209,41 +209,18 @@ public class RegistrationService {
     );
   }
 
-  public Map<String, Object> getLabelData(Registration registration) {
+  public Map<String, String> getLabelData(Registration registration) {
     Beacon beacon = registration.getBeacon();
     BeaconUse mainUse = registration.getMainUse();
 
-    Map<String, Object> data = new HashMap<String, Object>();
-    data.put("name", mainUse.getName());
-    data.put("hexId", beacon.getHexId());
-    data.put("protocol", beacon.getProtocol());
-    data.put("createdDate", beacon.getCreatedDate());
-    data.put("lastModifiedDate", beacon.getLastModifiedDate().format(dtf));
-    data.put("mti", beacon.getMti());
-    data.put("svdr", beacon.getSvdr());
-    data.put("csta", beacon.getCsta());
-    data.put("coding", beacon.getCoding());
-
+    Map<String, String> data = new HashMap<String, String>();
     data.put("contactNumber", "+44 (0)1326 317575");
 
+    data.put("name", mainUse.getName());
+    data.put("hexId", beacon.getHexId());
+    data.put("coding", beacon.getCoding());
+    data.put("lastModifiedDate", beacon.getLastModifiedDate().format(dtf));
+
     return data;
-  }
-
-  public Map<String, Object> getCertificateData(Registration registration) {
-    Beacon beacon = registration.getBeacon();
-    //    Date todaysDate = new OffsetDateTime();
-
-    Map<String, Object> certificate = new HashMap<String, Object>();
-    certificate.put("contactNumber", contactNumber);
-    certificate.put("proofOfRegistrationDate", new Date());
-    certificate.put("beacon", beacon);
-    certificate.put("mainUse", registration.getMainUse());
-    certificate.put("notes", noteService.getByBeaconId(beacon.getId()));
-
-    return certificate;
-  }
-
-  public Map<String, Object> getLetterData(Registration registration) {
-    return getLabelData(registration); // TODO - Populate required data.
   }
 }
