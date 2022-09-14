@@ -220,6 +220,8 @@ public class RegistrationService {
     data.put("csta", beacon.getCsta());
     data.put("coding", beacon.getCoding());
 
+    data.put("contactNumber", "+44 (0)1326 317575");
+
     return data;
   }
 

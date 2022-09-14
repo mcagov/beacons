@@ -1,8 +1,10 @@
 package uk.gov.mca.beacons.api.export;
 
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -25,7 +27,6 @@ class ExportController {
   private final RegistrationService registrationService;
   private final PdfGenerateService pdfService;
   private final NoteService noteService;
-  private final String contantNumber = "+44 (0)1326 317575";
 
   @Autowired
   public ExportController(
@@ -88,14 +89,47 @@ class ExportController {
 
     Map<String, Object> data = registrationService.getLabelData(registration);
 
-    data.put("contactNumber", contantNumber);
-
-    byte[] file = pdfService.createLabelPdf(data);
+    byte[] file = pdfService.createPdfLabel(data);
 
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_PDF)
       .body(file);
+    //    noteService.createSystemNote(beaconId, "Label Generated");
+    //    return servePdf(file, "Label.pdf");
+  }
+
+  /**
+   * // This needs to be changed to a post, with form. Kept as GET for now for testing
+   * @param rawBeaconIds
+   * @return
+   * @throws Exception
+   */
+  @GetMapping(value = "/labels/{uuids}")
+  public ResponseEntity<byte[]> getLabelsByBeaconIds(
+    @PathVariable("uuids") List<UUID> rawBeaconIds
+  ) throws Exception {
+    List<Registration> registrations = rawBeaconIds
+      .stream()
+      .map(id -> registrationService.getByBeaconId(new BeaconId(id)))
+      .collect(Collectors.toList());
+
+    if (registrations.isEmpty()) {
+      throw new ResourceNotFoundException();
+    }
+
+    List<Map<String, Object>> dataList = registrations
+      .stream()
+      .map(r -> registrationService.getLabelData(r))
+      .collect(Collectors.toList());
+
+    byte[] file = pdfService.createPdfLabels(dataList);
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(file);
+    // do for each beaconId..
     //    noteService.createSystemNote(beaconId, "Label Generated");
     //    return servePdf(file, "Label.pdf");
   }
