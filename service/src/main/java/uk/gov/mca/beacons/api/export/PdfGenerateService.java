@@ -1,5 +1,8 @@
 package uk.gov.mca.beacons.api.export;
 
+import com.itextpdf.io.font.constants.StandardFontFamilies;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -25,7 +28,7 @@ public class PdfGenerateService {
 
   public PdfGenerateService() {}
 
-  public byte[] createPdfLabel(Map<String, Object> data) throws IOException {
+  public byte[] createPdfLabel(Map<String, String> data) throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PdfDocument pdf = new PdfDocument(new PdfWriter(baos));
     Document document = createLabelDocument(pdf);
@@ -38,14 +41,14 @@ public class PdfGenerateService {
     return baos.toByteArray();
   }
 
-  public byte[] createPdfLabels(List<Map<String, Object>> dataList)
+  public byte[] createPdfLabels(List<Map<String, String>> dataList)
     throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PdfDocument pdf = new PdfDocument(new PdfWriter(baos));
     Document document = createLabelDocument(pdf);
 
     for (
-      Iterator<Map<String, Object>> data = dataList.iterator();
+      Iterator<Map<String, String>> data = dataList.iterator();
       data.hasNext();
     ) {
       addLabelToDocument(document, data.next());
@@ -63,46 +66,46 @@ public class PdfGenerateService {
   @NotNull
   private Document createLabelDocument(PdfDocument pdf) {
     Document document = new Document(pdf);
-    float width = 1.68f * 72;
-    float height = 1.18f * 72;
+    float width = 1.6f * 72;
+    float height = 1.1f * 72;
 
     pdf.setDefaultPageSize(new PageSize(width, height));
     document.setMargins(2, 0, 2, 0);
+    //    PdfFont arial = PdfFontFactory.register("Arial.tff");
+
     document.setTextAlignment(TextAlignment.CENTER);
+    //    document.setFont()
     return document;
   }
 
-  private void addLabelToDocument(Document document, Map<String, Object> data) {
+  private void addLabelToDocument(Document document, Map<String, String> data) {
     document.add(
-      new Paragraph("UK 406 MHz Beacon Registry").setFontSize(9).setMargin(0)
+      new Paragraph("UK 406 MHz Beacon Registry").setFontSize(7).setMargin(0)
     );
     document.add(
       new Paragraph("24 Hr Tel: " + data.get("contactNumber"))
-        .setFontSize(8)
+        .setFontSize(6)
         .setUnderline()
         .setMargin(0)
     );
     document.add(
-      new Paragraph(data.get("name").toString())
-        .setFontSize(8)
+      new Paragraph(data.get("name"))
+        .setFontSize(6)
         .setBold()
         .setMargins(4, 0, 4, 0)
     );
 
-    document.add(getLabelDataLine("Hex ID", data.get("hexId").toString()));
-    document.add(getLabelDataLine("Coding", data.get("coding").toString()));
+    document.add(getLabelDataLine("Hex ID", data.get("hexId")));
+    document.add(getLabelDataLine("Coding", data.get("coding")));
     document.add(
-      getLabelDataLine(
-        "Proof of Registration",
-        data.get("lastModifiedDate").toString()
-      )
+      getLabelDataLine("Proof of Registration", data.get("lastModifiedDate"))
     );
   }
 
   private Paragraph getLabelDataLine(String key, String value) {
-    Paragraph p = new Paragraph().setMargin(0);
-    p.add(new Text(key + ": ").setFontSize(6));
-    p.add(new Text(value).setFontSize(8).setBold());
+    Paragraph p = new Paragraph().setMargin(0).setPadding(0);
+    p.add(new Text(key + ": ").setFontSize(4));
+    p.add(new Text(value).setFontSize(6).setBold());
     return p;
   }
 }

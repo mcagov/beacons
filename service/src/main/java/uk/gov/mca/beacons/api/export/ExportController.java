@@ -11,12 +11,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
+import uk.gov.mca.beacons.api.registration.mappers.RegistrationMapper;
+import uk.gov.mca.beacons.api.registration.rest.RegistrationDTO;
 
 @RestController
 @RequestMapping("/spring-api/export")
@@ -25,6 +28,7 @@ class ExportController {
 
   private final XlsxExporter xlsxExporter;
   private final RegistrationService registrationService;
+  private final RegistrationMapper registrationMapper;
   private final PdfGenerateService pdfService;
   private final NoteService noteService;
 
@@ -32,11 +36,13 @@ class ExportController {
   public ExportController(
     XlsxExporter xlsxExporter,
     RegistrationService rs,
+    RegistrationMapper rm,
     PdfGenerateService pdfService,
     NoteService ns
   ) {
     this.xlsxExporter = xlsxExporter;
     this.registrationService = rs;
+    this.registrationMapper = rm;
     this.pdfService = pdfService;
     this.noteService = ns;
   }
@@ -87,7 +93,7 @@ class ExportController {
       throw new ResourceNotFoundException();
     }
 
-    Map<String, Object> data = registrationService.getLabelData(registration);
+    Map<String, String> data = registrationService.getLabelData(registration);
 
     byte[] file = pdfService.createPdfLabel(data);
 
@@ -109,53 +115,58 @@ class ExportController {
   public ResponseEntity<byte[]> getLabelsByBeaconIds(
     @PathVariable("uuids") List<UUID> rawBeaconIds
   ) throws Exception {
-    List<Registration> registrations = rawBeaconIds
+    List<BeaconId> beaconIds = rawBeaconIds
       .stream()
-      .map(id -> registrationService.getByBeaconId(new BeaconId(id)))
+      .map(id -> new BeaconId(id))
+      .collect(Collectors.toList());
+    List<Registration> registrations = beaconIds
+      .stream()
+      .map(id -> registrationService.getByBeaconId(id))
       .collect(Collectors.toList());
 
     if (registrations.isEmpty()) {
       throw new ResourceNotFoundException();
     }
 
-    List<Map<String, Object>> dataList = registrations
+    List<Map<String, String>> dataList = registrations
       .stream()
       .map(r -> registrationService.getLabelData(r))
       .collect(Collectors.toList());
 
     byte[] file = pdfService.createPdfLabels(dataList);
+    beaconIds
+      .stream()
+      .forEach(id -> noteService.createSystemNote(id, "Label Generated"));
 
+    //    return servePdf(file, "Label.pdf");
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_PDF)
       .body(file);
-    // do for each beaconId..
-    //    noteService.createSystemNote(beaconId, "Label Generated");
-    //    return servePdf(file, "Label.pdf");
   }
 
-  @GetMapping(value = "/letter/data/{uuid}")
-  public ResponseEntity<Map<String, Object>> getLetterDataByBeaconId(
-    @PathVariable("uuid") UUID rawBeaconId
-  ) {
-    BeaconId beaconId = new BeaconId(rawBeaconId);
-    Registration registration = registrationService.getByBeaconId(beaconId);
-
-    if (registration == null) {
-      throw new ResourceNotFoundException();
-    }
-
-    Map<String, Object> data = registrationService.getLetterData(registration);
-
-    noteService.createSystemNote(beaconId, "Cover Letter Generated");
-    return ResponseEntity
-      .ok()
-      .contentType(MediaType.APPLICATION_JSON)
-      .body(data);
-  }
+  //  @GetMapping(value = "/letter/data/{uuid}")
+  //  public ResponseEntity<Map<String, Object>> getLetterDataByBeaconId(
+  //    @PathVariable("uuid") UUID rawBeaconId
+  //  ) {
+  //    BeaconId beaconId = new BeaconId(rawBeaconId);
+  //    Registration registration = registrationService.getByBeaconId(beaconId);
+  //
+  //    if (registration == null) {
+  //      throw new ResourceNotFoundException();
+  //    }
+  //
+  //    Map<String, Object> data = registrationService.getLetterData(registration);
+  //
+  //    noteService.createSystemNote(beaconId, "Cover Letter Generated");
+  //    return ResponseEntity
+  //      .ok()
+  //      .contentType(MediaType.APPLICATION_JSON)
+  //      .body(data);
+  //  }
 
   @GetMapping(value = "/certificate/data/{uuid}")
-  public ResponseEntity<Map<String, Object>> getCertificateDataByBeaconId(
+  public ResponseEntity<RegistrationDTO> getCertificateDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
   ) {
     BeaconId beaconId = new BeaconId(rawBeaconId);
@@ -164,16 +175,12 @@ class ExportController {
     if (registration == null) {
       throw new ResourceNotFoundException();
     }
-
-    Map<String, Object> data = registrationService.getCertificateData(
-      registration
-    );
 
     noteService.createSystemNote(beaconId, "Certificate Generated");
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
-      .body(data);
+      .body(registrationMapper.toDTO(registration));
   }
 
   private ResponseEntity<byte[]> servePdf(byte[] file, String filename) {
