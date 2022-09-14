@@ -1,7 +1,9 @@
 package uk.gov.mca.beacons.api.registration.application;
 
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +45,7 @@ public class RegistrationService {
   private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
     "dd/MM/yyyy"
   );
+  private final String contactNumber = "+44 (0)1326 317575";
 
   @Autowired
   public RegistrationService(
@@ -206,7 +209,6 @@ public class RegistrationService {
     );
   }
 
-  // get data common to labels and certs
   public Map<String, Object> getLabelData(Registration registration) {
     Beacon beacon = registration.getBeacon();
     BeaconUse mainUse = registration.getMainUse();
@@ -222,17 +224,26 @@ public class RegistrationService {
     data.put("csta", beacon.getCsta());
     data.put("coding", beacon.getCoding());
 
+    data.put("contactNumber", "+44 (0)1326 317575");
+
     return data;
   }
 
   public Map<String, Object> getCertificateData(Registration registration) {
     Beacon beacon = registration.getBeacon();
+    //    Date todaysDate = new OffsetDateTime();
 
     Map<String, Object> certificate = new HashMap<String, Object>();
+    certificate.put("contactNumber", contactNumber);
+    certificate.put("proofOfRegistrationDate", new Date());
     certificate.put("beacon", beacon);
     certificate.put("mainUse", registration.getMainUse());
     certificate.put("notes", noteService.getByBeaconId(beacon.getId()));
 
     return certificate;
+  }
+
+  public Map<String, Object> getLetterData(Registration registration) {
+    return getLabelData(registration); // TODO - Populate required data.
   }
 }

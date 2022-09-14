@@ -1,72 +1,67 @@
 package uk.gov.mca.beacons.api.export;
 
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.properties.AreaBreakType;
 import com.itextpdf.layout.properties.TextAlignment;
-import com.lowagie.text.DocumentException;
 import java.io.*;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import javax.swing.text.StyleConstants;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-import org.xhtmlrenderer.pdf.ITextRenderer;
 
 @Service("PdfGenerateService")
 public class PdfGenerateService {
 
   private Logger logger = LoggerFactory.getLogger(PdfGenerateService.class);
 
-  ClassLoaderTemplateResolver templateResolver;
-  TemplateEngine templateEngine;
+  public PdfGenerateService() {}
 
-  public PdfGenerateService() {
-    templateResolver = new ClassLoaderTemplateResolver();
-    templateResolver.setSuffix(".html");
-    templateResolver.setTemplateMode(TemplateMode.HTML);
-    templateResolver.setPrefix("templates/");
-
-    templateEngine = new TemplateEngine();
-    templateEngine.setTemplateResolver(templateResolver);
-  }
-
-  public ByteArrayOutputStream generatePdf(
-    String templateName,
-    Map<String, Object> data
-  ) throws DocumentException, IOException {
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-    Context context = new Context();
-    context.setVariables(data);
-
-    String html = templateEngine.process(templateName, context);
-
-    ITextRenderer renderer = new ITextRenderer();
-    renderer.setDocumentFromString(html);
-    renderer.layout();
-    //
-    //    renderer.createPDF(out, true);
-
-    out.close();
-
-    return out;
-  }
-
-  public byte[] createLabelPdf(Map<String, Object> data) throws IOException {
+  public byte[] createPdfLabel(Map<String, Object> data) throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PdfDocument pdf = new PdfDocument(new PdfWriter(baos));
+    Document document = createLabelDocument(pdf);
+
+    addLabelToDocument(document, data);
+
+    document.close();
+    baos.close();
+
+    return baos.toByteArray();
+  }
+
+  public byte[] createPdfLabels(List<Map<String, Object>> dataList)
+    throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PdfDocument pdf = new PdfDocument(new PdfWriter(baos));
+    Document document = createLabelDocument(pdf);
+
+    for (
+      Iterator<Map<String, Object>> data = dataList.iterator();
+      data.hasNext();
+    ) {
+      addLabelToDocument(document, data.next());
+      if (data.hasNext()) {
+        document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+      }
+    }
+
+    document.close();
+    baos.close();
+
+    return baos.toByteArray();
+  }
+
+  @NotNull
+  private Document createLabelDocument(PdfDocument pdf) {
     Document document = new Document(pdf);
     float width = 1.68f * 72;
     float height = 1.18f * 72;
@@ -74,7 +69,10 @@ public class PdfGenerateService {
     pdf.setDefaultPageSize(new PageSize(width, height));
     document.setMargins(2, 0, 2, 0);
     document.setTextAlignment(TextAlignment.CENTER);
+    return document;
+  }
 
+  private void addLabelToDocument(Document document, Map<String, Object> data) {
     document.add(
       new Paragraph("UK 406 MHz Beacon Registry").setFontSize(9).setMargin(0)
     );
@@ -99,11 +97,6 @@ public class PdfGenerateService {
         data.get("lastModifiedDate").toString()
       )
     );
-
-    document.close();
-    baos.close();
-
-    return baos.toByteArray();
   }
 
   private Paragraph getLabelDataLine(String key, String value) {
