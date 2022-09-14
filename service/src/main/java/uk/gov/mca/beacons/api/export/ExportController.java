@@ -90,7 +90,6 @@ class ExportController {
 
     data.put("contactNumber", contantNumber);
 
-    //    byte[] file = pdfService.generatePdf("Label", data).toByteArray();
     byte[] file = pdfService.createLabelPdf(data);
 
     return ResponseEntity
@@ -101,10 +100,10 @@ class ExportController {
     //    return servePdf(file, "Label.pdf");
   }
 
-  @GetMapping(value = "/letter/{uuid}")
-  public ResponseEntity<byte[]> getLetterByBeaconId(
+  @GetMapping(value = "/letter/data/{uuid}")
+  public ResponseEntity<Map<String, Object>> getLetterDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
-  ) throws Exception {
+  ) {
     BeaconId beaconId = new BeaconId(rawBeaconId);
     Registration registration = registrationService.getByBeaconId(beaconId);
 
@@ -112,45 +111,19 @@ class ExportController {
       throw new ResourceNotFoundException();
     }
 
-    Map<String, Object> data = registrationService.getCertificateData(
-      registration
-    ); // Needs to bring back data for letter
+    Map<String, Object> data = registrationService.getLetterData(registration);
 
-    data.put("contactNumber", contantNumber);
-
-    byte[] file = pdfService.generatePdf("Letter", data).toByteArray();
-
-    noteService.createSystemNote(beaconId, "Letter Generated");
-    return servePdf(file, "Letter.pdf");
-  }
-
-  @GetMapping(value = "/certificate/data/{uuid}")
-  public ResponseEntity<Map<String, Object>> getCertificateDataByBeaconId(
-    @PathVariable("uuid") UUID rawBeaconId
-  ) throws Exception {
-    BeaconId beaconId = new BeaconId(rawBeaconId);
-    Registration registration = registrationService.getByBeaconId(beaconId);
-
-    if (registration == null) {
-      throw new ResourceNotFoundException();
-    }
-
-    Map<String, Object> data = registrationService.getCertificateData(
-      registration
-    );
-
-    data.put("contactNumber", contantNumber);
-
+    noteService.createSystemNote(beaconId, "Cover Letter Generated");
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(data);
   }
 
-  @GetMapping(value = "/certificate/{uuid}")
-  public ResponseEntity<byte[]> getCertificateByBeaconId(
+  @GetMapping(value = "/certificate/data/{uuid}")
+  public ResponseEntity<Map<String, Object>> getCertificateDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
-  ) throws Exception {
+  ) {
     BeaconId beaconId = new BeaconId(rawBeaconId);
     Registration registration = registrationService.getByBeaconId(beaconId);
 
@@ -162,15 +135,11 @@ class ExportController {
       registration
     );
 
-    data.put("contactNumber", contantNumber);
-
-    byte[] file = pdfService.generatePdf("Certificate", data).toByteArray();
     noteService.createSystemNote(beaconId, "Certificate Generated");
-    //    return servePdf(file, "Certificate.pdf");
     return ResponseEntity
       .ok()
-      .contentType(MediaType.APPLICATION_PDF)
-      .body(file);
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(data);
   }
 
   private ResponseEntity<byte[]> servePdf(byte[] file, String filename) {

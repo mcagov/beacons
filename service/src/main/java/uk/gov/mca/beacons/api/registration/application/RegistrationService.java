@@ -224,6 +224,10 @@ public class RegistrationService {
   }
 
   public Map<String, Object> getCertificateData(Registration registration) {
-    return getLabelData(registration); // TODO - Populate needed data.
+    return getLabelData(registration); // TODO - Populate required data.
+  }
+
+  public Map<String, Object> getLetterData(Registration registration) {
+    return getLabelData(registration); // TODO - Populate required data.
   }
 }
