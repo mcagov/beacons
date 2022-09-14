@@ -16,25 +16,21 @@ export class ExportsGateway implements IExportsGateway {
     beaconId: string
   ): Promise<ICertificate> {
     const accessToken = await this._authGateway.getAccessToken();
-    let certificateData = {};
 
     try {
-      const certificateResponse = await axios.get(
+      const certificateResponse = await axios.get<ICertificate>(
         `${applicationConfig.apiUrl}/export/certificate/data/${beaconId}`,
         {
           timeout: applicationConfig.apiTimeoutMs,
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
-
-      if (certificateResponse.data) {
-        certificateData = certificateResponse.data;
-        console.log(certificateData);
-      }
+      const certificateData = certificateResponse.data;
+      console.log(certificateData);
+      return certificateData;
     } catch (error) {
       logToServer.error(error);
+      throw error;
     }
-
-    return certificateData;
   }
 }
