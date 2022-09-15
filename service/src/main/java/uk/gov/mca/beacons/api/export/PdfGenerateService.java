@@ -1,8 +1,5 @@
 package uk.gov.mca.beacons.api.export;
 
-import com.itextpdf.io.font.constants.StandardFontFamilies;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -15,11 +12,11 @@ import com.itextpdf.layout.properties.TextAlignment;
 import java.io.*;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import uk.gov.mca.beacons.api.registration.rest.LabelDTO;
 
 @Service("PdfGenerateService")
 public class PdfGenerateService {
@@ -28,7 +25,7 @@ public class PdfGenerateService {
 
   public PdfGenerateService() {}
 
-  public byte[] createPdfLabel(Map<String, String> data) throws IOException {
+  public byte[] createPdfLabel(LabelDTO data) throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PdfDocument pdf = new PdfDocument(new PdfWriter(baos));
     Document document = createLabelDocument(pdf);
@@ -41,16 +38,12 @@ public class PdfGenerateService {
     return baos.toByteArray();
   }
 
-  public byte[] createPdfLabels(List<Map<String, String>> dataList)
-    throws IOException {
+  public byte[] createPdfLabels(List<LabelDTO> dataList) throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PdfDocument pdf = new PdfDocument(new PdfWriter(baos));
     Document document = createLabelDocument(pdf);
 
-    for (
-      Iterator<Map<String, String>> data = dataList.iterator();
-      data.hasNext();
-    ) {
+    for (Iterator<LabelDTO> data = dataList.iterator(); data.hasNext();) {
       addLabelToDocument(document, data.next());
       if (data.hasNext()) {
         document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
@@ -70,7 +63,7 @@ public class PdfGenerateService {
     float height = 1.1f * 72;
 
     pdf.setDefaultPageSize(new PageSize(width, height));
-    document.setMargins(2, 0, 2, 0);
+    document.setMargins(2, 4, 2, 4);
     //    PdfFont arial = PdfFontFactory.register("Arial.tff");
 
     document.setTextAlignment(TextAlignment.CENTER);
@@ -78,34 +71,41 @@ public class PdfGenerateService {
     return document;
   }
 
-  private void addLabelToDocument(Document document, Map<String, String> data) {
+  private void addLabelToDocument(Document document, LabelDTO data) {
     document.add(
-      new Paragraph("UK 406 MHz Beacon Registry").setFontSize(7).setMargin(0)
-    );
-    document.add(
-      new Paragraph("24 Hr Tel: " + data.get("contactNumber"))
-        .setFontSize(6)
-        .setUnderline()
+      new Paragraph("UK 406 MHz Beacon Registry")
+        .setFontSize(7)
+        .setBold()
         .setMargin(0)
     );
     document.add(
-      new Paragraph(data.get("name"))
-        .setFontSize(6)
+      new Paragraph("24 Hr Tel: " + data.getMcaContactNumber())
+        .setFontSize(6.5f)
+        .setUnderline()
         .setBold()
-        .setMargins(4, 0, 4, 0)
+        .setMargin(0)
+    );
+    document.add(
+      new Paragraph(data.getBeaconUse())
+        .setFontSize(6.5f)
+        .setBold()
+        .setMargins(4, 4, 2, 4)
     );
 
-    document.add(getLabelDataLine("Hex ID", data.get("hexId")));
-    document.add(getLabelDataLine("Coding", data.get("coding")));
+    document.add(getLabelDataLine("Hex ID", data.getHexId()));
+    document.add(getLabelDataLine("Coding", data.getCoding()));
     document.add(
-      getLabelDataLine("Proof of Registration", data.get("lastModifiedDate"))
+      getLabelDataLine(
+        "Proof of Registration",
+        data.getProofOfRegistrationDate()
+      )
     );
   }
 
   private Paragraph getLabelDataLine(String key, String value) {
     Paragraph p = new Paragraph().setMargin(0).setPadding(0);
-    p.add(new Text(key + ": ").setFontSize(4));
-    p.add(new Text(value).setFontSize(6).setBold());
+    p.add(new Text(key + ": ").setFontSize(5.5f).setBold());
+    p.add(new Text(value).setFontSize(6.5f).setBold());
     return p;
   }
 }

@@ -42,10 +42,6 @@ public class RegistrationService {
   private final EmergencyContactService emergencyContactService;
   private final LegacyBeaconService legacyBeaconService;
   private final NoteService noteService;
-  private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
-    "dd/MM/yyyy"
-  );
-  private final String contactNumber = "+44 (0)1326 317575";
 
   @Autowired
   public RegistrationService(
@@ -207,20 +203,5 @@ public class RegistrationService {
       beacon.getHexId(),
       accountHolder.getEmail()
     );
-  }
-
-  public Map<String, String> getLabelData(Registration registration) {
-    Beacon beacon = registration.getBeacon();
-    BeaconUse mainUse = registration.getMainUse();
-
-    Map<String, String> data = new HashMap<String, String>();
-    data.put("contactNumber", "+44 (0)1326 317575");
-
-    data.put("name", mainUse.getName());
-    data.put("hexId", beacon.getHexId());
-    data.put("coding", beacon.getCoding());
-    data.put("lastModifiedDate", beacon.getLastModifiedDate().format(dtf));
-
-    return data;
   }
 }
