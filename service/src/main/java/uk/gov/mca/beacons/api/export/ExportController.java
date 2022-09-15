@@ -22,6 +22,7 @@ import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.mappers.RegistrationMapper;
 import uk.gov.mca.beacons.api.registration.rest.CertificateDTO;
+import uk.gov.mca.beacons.api.registration.rest.LabelDTO;
 import uk.gov.mca.beacons.api.registration.rest.RegistrationDTO;
 
 @RestController
@@ -96,7 +97,7 @@ class ExportController {
       throw new ResourceNotFoundException();
     }
 
-    Map<String, String> data = registrationService.getLabelData(registration);
+    LabelDTO data = registrationMapper.toLabelDTO(registration);
 
     byte[] file = pdfService.createPdfLabel(data);
 
@@ -131,9 +132,9 @@ class ExportController {
       throw new ResourceNotFoundException();
     }
 
-    List<Map<String, String>> dataList = registrations
+    List<LabelDTO> dataList = registrations
       .stream()
-      .map(r -> registrationService.getLabelData(r))
+      .map(r -> registrationMapper.toLabelDTO(r))
       .collect(Collectors.toList());
 
     byte[] file = pdfService.createPdfLabels(dataList);

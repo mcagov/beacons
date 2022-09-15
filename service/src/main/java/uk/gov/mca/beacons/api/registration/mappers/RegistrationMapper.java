@@ -1,13 +1,14 @@
 package uk.gov.mca.beacons.api.registration.mappers;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beaconowner.mappers.BeaconOwnerMapper;
+import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.beaconuse.rest.BeaconUseDTO;
 import uk.gov.mca.beacons.api.emergencycontact.mappers.EmergencyContactMapper;
@@ -17,6 +18,7 @@ import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.rest.CertificateDTO;
 import uk.gov.mca.beacons.api.registration.rest.CreateRegistrationDTO;
+import uk.gov.mca.beacons.api.registration.rest.LabelDTO;
 import uk.gov.mca.beacons.api.registration.rest.RegistrationDTO;
 
 @Component("RegistrationMapperV2")
@@ -26,8 +28,10 @@ public class RegistrationMapper {
   private final BeaconUseMapper beaconUseMapper;
   private final BeaconOwnerMapper beaconOwnerMapper;
   private final EmergencyContactMapper emergencyContactMapper;
-
   private final NoteMapper noteMapper;
+  private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
+    "dd/MM/yyyy"
+  );
 
   @Autowired
   public RegistrationMapper(
@@ -90,6 +94,20 @@ public class RegistrationMapper {
           .map(emergencyContactMapper::toDTO)
           .collect(Collectors.toList())
       )
+      .build();
+  }
+
+  public LabelDTO toLabelDTO(Registration registration) {
+    Beacon beacon = registration.getBeacon();
+    BeaconUse mainUse = registration.getMainUse();
+
+    return LabelDTO
+      .builder()
+      .mcaContactNumber("+44 (0)1326 317575")
+      .beaconUse(mainUse.getName())
+      .hexId(beacon.getHexId())
+      .coding(beacon.getCoding())
+      .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
       .build();
   }
 
