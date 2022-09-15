@@ -18,7 +18,7 @@ export class NotesGateway implements INotesGateway {
   public async getNotes(beaconId: string): Promise<INote[]> {
     try {
       const response = await this._makeGetRequest(`/note?beaconId=${beaconId}`);
-      return this._mapNotesListResponseToNotes(response.data);
+      return mapNotesListResponseToNotes(response.data);
     } catch (e) {
       throw e;
     }
@@ -72,27 +72,29 @@ export class NotesGateway implements INotesGateway {
   }
 
   private _mapNoteResponseToNote(noteResponse: INoteResponse): INote {
-    return this._mapData(noteResponse.data);
+    return mapData(noteResponse.data);
   }
+}
 
-  private _mapNotesListResponseToNotes(notesResponse: INotesResponse): INote[] {
-    if (!notesResponse.data || notesResponse.data.length === 0) return [];
+export function mapNotesListResponseToNotes(
+  notesResponse: INotesResponse
+): INote[] {
+  if (!notesResponse.data || notesResponse.data.length === 0) return [];
 
-    return notesResponse.data.map((noteResponseData) =>
-      this._mapData(noteResponseData)
-    );
-  }
+  return notesResponse.data.map((noteResponseData) =>
+    mapData(noteResponseData)
+  );
+}
 
-  private _mapData(responseData: INoteResponseData) {
-    return {
-      id: responseData.id,
-      beaconId: responseData.attributes.beaconId,
-      text: responseData.attributes.text,
-      type: NoteType[responseData.attributes.type as NoteType],
-      createdDate: responseData.attributes.createdDate,
-      userId: responseData.attributes.userId,
-      fullName: responseData.attributes.fullName,
-      email: responseData.attributes.email,
-    };
-  }
+function mapData(responseData: INoteResponseData) {
+  return {
+    id: responseData.id,
+    beaconId: responseData.attributes.beaconId,
+    text: responseData.attributes.text,
+    type: NoteType[responseData.attributes.type as NoteType],
+    createdDate: responseData.attributes.createdDate,
+    userId: responseData.attributes.userId,
+    fullName: responseData.attributes.fullName,
+    email: responseData.attributes.email,
+  };
 }

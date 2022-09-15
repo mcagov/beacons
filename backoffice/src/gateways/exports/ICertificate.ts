@@ -1,15 +1,16 @@
-import { IBeacon } from "entities/IBeacon";
 import { IEmergencyContact } from "entities/IEmergencyContact";
-import { INote } from "entities/INote";
 import { IOwner } from "entities/IOwner";
 import { IUse } from "entities/IUse";
+import { INoteResponseData } from "gateways/mappers/INoteResponseData";
+import { IRegistrationResponse } from "gateways/mappers/IRegistrationResponse";
 
+// to-do: comsider extending IRegistration or summat
 export interface ICertificate {
   proofOfRegistrationDate: Date;
   mcaContactNumber: string;
-  beacon: IBeacon;
+  beacon: IRegistrationResponse;
   owner: IOwner;
   uses: IUse[];
   emergencyContacts: IEmergencyContact[];
-  notes: INote[];
+  notes: INoteResponseData[];
 }

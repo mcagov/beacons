@@ -51,6 +51,7 @@ const getVesselSummaryFields = (use: IUse): IField[] => [
   },
 ];
 
+// to-do: moved to shared class
 const getVesselCommunicationsFields = (use: IUse): IField[] => {
   const fields = [];
   fields.push({

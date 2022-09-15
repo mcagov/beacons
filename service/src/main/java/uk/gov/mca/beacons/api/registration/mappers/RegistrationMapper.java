@@ -93,6 +93,7 @@ public class RegistrationMapper {
       .build();
   }
 
+  // CertificateDTO extends RegistrationDTO
   public CertificateDTO toCertificateDTO(
     Registration registration,
     List<Note> notes
@@ -101,7 +102,8 @@ public class RegistrationMapper {
     List<BeaconUseDTO> useDTOs = new ArrayList<>();
     useDTOs.add(mainUse);
 
-    List<NoteDTO> noteDTOs = noteMapper.toOrderedListOfDTOs(notes);
+    // format dates
+    List<NoteDTO> noteDTOs = noteMapper.toOrderedWrapperDTO(notes).getData();
 
     return CertificateDTO
       .builder()

@@ -60,15 +60,4 @@ public class NoteMapper {
     wrapperDTO.addMeta("count", noteDTOs.size());
     return wrapperDTO;
   }
-
-  public List<NoteDTO> toOrderedListOfDTOs(List<Note> notes) {
-    final var noteDTOs = notes
-      .stream()
-      .sorted(
-        Comparator.comparing(Note::getCreatedDate, Comparator.reverseOrder())
-      )
-      .map(this::toDTO)
-      .collect(Collectors.toList());
-    return noteDTOs;
-  }
 }
