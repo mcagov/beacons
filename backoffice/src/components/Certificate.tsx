@@ -6,6 +6,8 @@ import { ClassNameMap, Grid } from "@mui/material";
 import { ICertificate } from "gateways/exports/ICertificate";
 import { INoteResponseData } from "gateways/mappers/INoteResponseData";
 import { Environments, IUse } from "../entities/IUse";
+import { IOwner } from "entities/IOwner";
+import { IEmergencyContact } from "entities/IEmergencyContact";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,6 +42,18 @@ interface UsesSectionProps {
 
 interface VesselDetailsProps {
   maritimeUse: IUse;
+  classes: ClassNameMap<any>;
+}
+
+interface OwnersSectionProps {
+  owner: IOwner | undefined;
+  emergencyContacts: IEmergencyContact[] | undefined;
+  classes: ClassNameMap<any>;
+}
+
+interface OwnerDetailsProps {
+  owner: IOwner | undefined;
+  emergencyContacts: IEmergencyContact[] | undefined;
   classes: ClassNameMap<any>;
 }
 
@@ -188,7 +202,75 @@ const VesselIdentification: FunctionComponent<VesselDetailsProps> = ({
   );
 };
 
+const OwnersSection: FunctionComponent<OwnersSectionProps> = ({
+  owner,
+  emergencyContacts,
+  classes,
+}): JSX.Element => {
+  return (
+    <Grid container spacing={0.5}>
+      <OwnerDetails
+        owner={owner}
+        emergencyContacts={emergencyContacts}
+        classes={classes}
+      />
+    </Grid>
+  );
+};
+
 // Owner Details
+// how do I know which emergency contact(s) belong to which owner?
+const OwnerDetails: FunctionComponent<OwnerDetailsProps> = ({
+  owner,
+  emergencyContacts,
+  classes,
+}): JSX.Element => {
+  return (
+    <Grid container spacing={0.5}>
+      <Grid item xs={12}>
+        <h3>Vessel Identification:</h3>
+      </Grid>
+      <Grid item xs={6}>
+        <div>
+          <span className={classes.title}>
+            FISHING VESSEL PORT ID & NUMBERS:{" "}
+          </span>
+          {maritimeUse.portLetterNumber}
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div>
+          <span className={classes.title}>OFFICIAL NUMBER: </span>
+          {maritimeUse.officialNumber}
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div>
+          <span className={classes.title}>RSS/SSR NUMBER: </span>
+          {maritimeUse.rssNumber} / {maritimeUse.ssrNumber}
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div>
+          <span className={classes.title}>
+            COASTGUARD CG66 REFERENCE NUMBER:{" "}
+          </span>
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div>
+          <span className={classes.title}>IMO NUMBER: </span>
+          {maritimeUse.imoNumber}
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div>
+          <span className={classes.title}>HULL ID NUMBER: </span>
+        </div>
+      </Grid>
+    </Grid>
+  );
+};
 
 export const Certificate: FunctionComponent<CertificateProps> = ({
   certificate,
@@ -304,22 +386,11 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
 
       <UsesSection uses={maritimeUses} classes={classes} />
 
-      <Grid container spacing={0.5}>
-        <Grid item xs={6}>
-          <div>Notes: {certificate.beacon.mti}</div>
-          <div>MTI: {certificate.beacon.mti}</div>
-          <div>Vessel Name: {certificate.uses[0].vesselName}</div>
-        </Grid>
-      </Grid>
-
-      <Grid item xs={6}>
-        <div>Protocol: {certificate.beacon.protocol}</div>
-        <div>SVDR: {certificate.beacon.svdr}</div>
-      </Grid>
-
-      <Grid item xs={6}></Grid>
-      <Grid item xs={6}></Grid>
-      <Grid item xs={6}></Grid>
+      <OwnersSection
+        owner={certificate.beacon.owner}
+        emergencyContacts={certificate.beacon.emergencyContacts}
+        classes={classes}
+      />
     </Grid>
   );
 };

@@ -133,7 +133,13 @@ public class RegistrationMapper {
           ? null
           : beaconOwnerMapper.toDTO(registration.getBeaconOwner())
       )
-      .beaconUseDTOs(useDTOs)
+      .beaconUseDTOs(
+        registration
+          .getBeaconUses()
+          .stream()
+          .map(beaconUseMapper::toDTO)
+          .collect(Collectors.toList())
+      )
       .emergencyContactDTOs(
         registration
           .getEmergencyContacts()
