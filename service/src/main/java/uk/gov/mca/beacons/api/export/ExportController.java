@@ -16,9 +16,12 @@ import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 import uk.gov.mca.beacons.api.note.application.NoteService;
+import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.note.domain.NoteType;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.mappers.RegistrationMapper;
+import uk.gov.mca.beacons.api.registration.rest.CertificateDTO;
 import uk.gov.mca.beacons.api.registration.rest.RegistrationDTO;
 
 @RestController
@@ -166,7 +169,7 @@ class ExportController {
   //  }
 
   @GetMapping(value = "/certificate/data/{uuid}")
-  public ResponseEntity<RegistrationDTO> getCertificateDataByBeaconId(
+  public ResponseEntity<CertificateDTO> getCertificateDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
   ) {
     BeaconId beaconId = new BeaconId(rawBeaconId);
@@ -177,10 +180,19 @@ class ExportController {
     }
 
     noteService.createSystemNote(beaconId, "Certificate Generated");
+
+    List<Note> manuallyCreatedNotes = noteService
+      .getByBeaconId(beaconId)
+      .stream()
+      .filter((note -> !(note.getFullName().equals("SYSTEM"))))
+      .collect(Collectors.toList());
+
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
-      .body(registrationMapper.toDTO(registration));
+      .body(
+        registrationMapper.toCertificateDTO(registration, manuallyCreatedNotes)
+      );
   }
 
   private ResponseEntity<byte[]> servePdf(byte[] file, String filename) {

@@ -1,13 +1,21 @@
 package uk.gov.mca.beacons.api.registration.mappers;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beaconowner.mappers.BeaconOwnerMapper;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
+import uk.gov.mca.beacons.api.beaconuse.rest.BeaconUseDTO;
 import uk.gov.mca.beacons.api.emergencycontact.mappers.EmergencyContactMapper;
+import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.note.mappers.NoteMapper;
+import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
+import uk.gov.mca.beacons.api.registration.rest.CertificateDTO;
 import uk.gov.mca.beacons.api.registration.rest.CreateRegistrationDTO;
 import uk.gov.mca.beacons.api.registration.rest.RegistrationDTO;
 
@@ -19,17 +27,21 @@ public class RegistrationMapper {
   private final BeaconOwnerMapper beaconOwnerMapper;
   private final EmergencyContactMapper emergencyContactMapper;
 
+  private final NoteMapper noteMapper;
+
   @Autowired
   public RegistrationMapper(
     BeaconMapper beaconMapper,
     BeaconUseMapper beaconUseMapper,
     BeaconOwnerMapper beaconOwnerMapper,
-    EmergencyContactMapper emergencyContactMapper
+    EmergencyContactMapper emergencyContactMapper,
+    NoteMapper noteMapper
   ) {
     this.beaconMapper = beaconMapper;
     this.beaconUseMapper = beaconUseMapper;
     this.beaconOwnerMapper = beaconOwnerMapper;
     this.emergencyContactMapper = emergencyContactMapper;
+    this.noteMapper = noteMapper;
   }
 
   public Registration fromDTO(CreateRegistrationDTO dto) {
@@ -78,6 +90,39 @@ public class RegistrationMapper {
           .map(emergencyContactMapper::toDTO)
           .collect(Collectors.toList())
       )
+      .build();
+  }
+
+  public CertificateDTO toCertificateDTO(
+    Registration registration,
+    List<Note> notes
+  ) {
+    BeaconUseDTO mainUse = beaconUseMapper.toDTO(registration.getMainUse());
+    List<BeaconUseDTO> useDTOs = new ArrayList<>();
+    useDTOs.add(mainUse);
+
+    List<NoteDTO> noteDTOs = noteMapper.toOrderedListOfDTOs(notes);
+
+    return CertificateDTO
+      .builder()
+      .proofOfRegistrationDate(new Date().toString())
+      .mcaContactNumber("+44 (0)1326 317575")
+      .beaconDTO(beaconMapper.toRegistrationDTO(registration.getBeacon()))
+      .beaconOwnerDTO(
+        // special case for handling deleted beacon owners, this won't be necessary with a resource oriented API
+        registration.getBeaconOwner() == null
+          ? null
+          : beaconOwnerMapper.toDTO(registration.getBeaconOwner())
+      )
+      .beaconUseDTOs(useDTOs)
+      .emergencyContactDTOs(
+        registration
+          .getEmergencyContacts()
+          .stream()
+          .map(emergencyContactMapper::toDTO)
+          .collect(Collectors.toList())
+      )
+      .noteDTOs(noteDTOs)
       .build();
   }
 }

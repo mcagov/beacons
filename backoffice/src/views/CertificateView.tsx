@@ -5,6 +5,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { PageContent } from "../components/layout/PageContent";
 import { Certificate } from "../components/Certificate";
 import { IExportsGateway } from "../gateways/exports/IExportsGateway";
+import { ICertificate } from "gateways/exports/ICertificate";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,20 +28,23 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
   beaconId,
 }): JSX.Element => {
   const classes = useStyles();
-  const [certificate, setCertificate] = useState({});
+  const [certificate, setCertificate] = useState<ICertificate>(
+    {} as ICertificate
+  );
 
-  /**  eslint-disable-next-line react-hooks/exhaustive-deps */
   useEffect(() => {
+    async function getCertificate(): Promise<void> {
+      const certData = await exportsGateway.getCertificateDataForBeacon(
+        beaconId
+      );
+      console.log(certData);
+      setCertificate(certData);
+    }
+
     getCertificate();
-  }, []);
+  }, [beaconId, exportsGateway]);
 
-  async function getCertificate(): Promise<void> {
-    const certData = await exportsGateway.getCertificateDataForBeacon(beaconId);
-    console.log(certData);
-    setCertificate(certData);
-  }
-
-  if (certificate.coding) {
+  if (certificate.beacon) {
     return (
       <div className={classes.root}>
         <PageContent>
