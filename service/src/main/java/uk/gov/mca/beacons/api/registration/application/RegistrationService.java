@@ -45,7 +45,6 @@ public class RegistrationService {
   private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
     "dd/MM/yyyy"
   );
-  private final String contactNumber = "+44 (0)1326 317575";
 
   @Autowired
   public RegistrationService(

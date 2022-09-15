@@ -70,7 +70,7 @@ public class PdfGenerateService {
     float height = 1.1f * 72;
 
     pdf.setDefaultPageSize(new PageSize(width, height));
-    document.setMargins(2, 0, 2, 0);
+    document.setMargins(2, 4, 2, 4);
     //    PdfFont arial = PdfFontFactory.register("Arial.tff");
 
     document.setTextAlignment(TextAlignment.CENTER);
@@ -80,19 +80,23 @@ public class PdfGenerateService {
 
   private void addLabelToDocument(Document document, Map<String, String> data) {
     document.add(
-      new Paragraph("UK 406 MHz Beacon Registry").setFontSize(7).setMargin(0)
+      new Paragraph("UK 406 MHz Beacon Registry")
+        .setFontSize(7)
+        .setBold()
+        .setMargin(0)
     );
     document.add(
       new Paragraph("24 Hr Tel: " + data.get("contactNumber"))
-        .setFontSize(6)
+        .setFontSize(6.5f)
         .setUnderline()
+        .setBold()
         .setMargin(0)
     );
     document.add(
       new Paragraph(data.get("name"))
-        .setFontSize(6)
+        .setFontSize(6.5f)
         .setBold()
-        .setMargins(4, 0, 4, 0)
+        .setMargins(4, 4, 2, 4)
     );
 
     document.add(getLabelDataLine("Hex ID", data.get("hexId")));
@@ -104,8 +108,8 @@ public class PdfGenerateService {
 
   private Paragraph getLabelDataLine(String key, String value) {
     Paragraph p = new Paragraph().setMargin(0).setPadding(0);
-    p.add(new Text(key + ": ").setFontSize(4));
-    p.add(new Text(value).setFontSize(6).setBold());
+    p.add(new Text(key + ": ").setFontSize(5.5f).setBold());
+    p.add(new Text(value).setFontSize(6.5f).setBold());
     return p;
   }
 }
