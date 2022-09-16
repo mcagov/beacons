@@ -19,11 +19,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface CertificateViewProps {
+  hideLayout: boolean;
   exportsGateway: IExportsGateway;
   beaconId: string;
 }
 
 export const CertificateView: FunctionComponent<CertificateViewProps> = ({
+  hideLayout,
   exportsGateway,
   beaconId,
 }): JSX.Element => {
@@ -33,6 +35,9 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
   );
 
   useEffect(() => {
+    // how do I emit the event up to the parent to tell header and footer to hide?
+    // hideLayout(true);
+
     async function getCertificate(): Promise<void> {
       const certData = await exportsGateway.getCertificateDataForBeacon(
         beaconId

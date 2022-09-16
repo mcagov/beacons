@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.util.List;
 import javax.validation.Valid;
+import jdk.jfr.Name;
 import lombok.*;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconRegistrationDTO;
 import uk.gov.mca.beacons.api.beaconowner.rest.BeaconOwnerDTO;
@@ -19,17 +20,17 @@ public class RegistrationDTO {
 
   @Valid
   @JsonUnwrapped
-  BeaconRegistrationDTO beaconDTO;
+  public BeaconRegistrationDTO beaconDTO;
 
   @Valid
   @JsonProperty("owner")
-  BeaconOwnerDTO beaconOwnerDTO;
+  public BeaconOwnerDTO beaconOwnerDTO;
 
   @Valid
   @JsonProperty("uses")
-  List<BeaconUseDTO> beaconUseDTOs;
+  public List<BeaconUseDTO> beaconUseDTOs;
 
   @Valid
   @JsonProperty("emergencyContacts")
-  List<EmergencyContactDTO> emergencyContactDTOs;
+  public List<EmergencyContactDTO> emergencyContactDTOs;
 }

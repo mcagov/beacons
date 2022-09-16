@@ -120,8 +120,8 @@ const App: FunctionComponent = () => {
                 <Route>Page not found. Is the address correct?</Route>
               </Switch>
             </RequireAuth>
+            <Footer hide={} />
           </Router>
-          <Footer />
         </UserSettingsProvider>
       </AuthProvider>
     </MsalProvider>

@@ -10,6 +10,7 @@ import { IOwner } from "entities/IOwner";
 import { IEmergencyContact } from "entities/IEmergencyContact";
 
 const useStyles = makeStyles((theme: Theme) =>
+  // move to separate css file
   createStyles({
     root: {
       flexGrow: 1,

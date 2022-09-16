@@ -116,10 +116,11 @@ public class RegistrationMapper {
     List<Note> notes
   ) {
     BeaconUseDTO mainUse = beaconUseMapper.toDTO(registration.getMainUse());
+
     List<BeaconUseDTO> useDTOs = new ArrayList<>();
+
     useDTOs.add(mainUse);
 
-    // format dates
     List<NoteDTO> noteDTOs = noteMapper.toOrderedWrapperDTO(notes).getData();
 
     return CertificateDTO

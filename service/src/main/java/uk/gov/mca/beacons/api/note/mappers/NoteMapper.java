@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.note.mappers;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +15,10 @@ import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 @Component("NoteMapperV2")
 public class NoteMapper {
 
+  private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
+    "dd/MM/yyyy"
+  );
+
   public Note fromDTO(CreateNoteDTO dto) {
     var attributes = dto.getAttributes();
     Note note = new Note();
@@ -26,6 +31,7 @@ public class NoteMapper {
   public NoteDTO toDTO(Note note) {
     final NoteDTO dto = new NoteDTO();
     dto.setId(Objects.requireNonNull(note.getId()).unwrap());
+
     var attributes = NoteDTO.Attributes
       .builder()
       .beaconId(note.getBeaconId().unwrap())
@@ -34,7 +40,7 @@ public class NoteMapper {
       .text(note.getText())
       .type(note.getType())
       .userId(note.getUserId())
-      .createdDate(note.getCreatedDate())
+      .createdDate(note.getCreatedDate().format(dtf))
       .build();
 
     dto.setAttributes(attributes);
