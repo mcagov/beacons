@@ -18,10 +18,27 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "0.5%",
     },
     header: {
-      borderBottom: "3px solid black",
+      borderBottom: "2px solid black",
+      paddingBottom: "0.5%",
+    },
+    mcaLogo: {
+      height: "100px",
+      float: "right",
+      paddingRight: "15%",
+      transformOrigin: "0% 0% 0% 60%",
     },
     title: {
       fontWeight: "bold",
+    },
+    beaconInfo: {
+      paddingTop: "0.5%",
+    },
+    link: {
+      textDecoration: "none",
+      color: "blue",
+    },
+    footer: {
+      marginTop: "50%",
     },
   })
 );
@@ -45,14 +62,13 @@ interface VesselDetailsProps {
   classes: ClassNameMap<any>;
 }
 
-interface OwnersSectionProps {
-  owner: IOwner | undefined;
+interface OwnerDetailsProps {
+  owner: IOwner;
   emergencyContacts: IEmergencyContact[] | undefined;
   classes: ClassNameMap<any>;
 }
 
-interface OwnerDetailsProps {
-  owner: IOwner | undefined;
+interface EmergencyContactsSectionProps {
   emergencyContacts: IEmergencyContact[] | undefined;
   classes: ClassNameMap<any>;
 }
@@ -80,7 +96,7 @@ const UsesSection: FunctionComponent<UsesSectionProps> = ({
   classes,
 }): JSX.Element => {
   return (
-    <Grid container spacing={0.5}>
+    <Grid container spacing={1}>
       <Grid item xs={6}>
         <div>
           <span className={classes.title}>BEACON USES:</span>
@@ -102,7 +118,7 @@ const VesselDetails: FunctionComponent<VesselDetailsProps> = ({
   classes,
 }): JSX.Element => {
   return (
-    <Grid container spacing={0.5}>
+    <Grid container spacing={1}>
       <Grid item xs={12}>
         <h3>Vessel Details:</h3>
       </Grid>
@@ -156,7 +172,7 @@ const VesselIdentification: FunctionComponent<VesselDetailsProps> = ({
   classes,
 }): JSX.Element => {
   return (
-    <Grid container spacing={0.5}>
+    <Grid container spacing={1}>
       <Grid item xs={12}>
         <h3>Vessel Identification:</h3>
       </Grid>
@@ -202,74 +218,93 @@ const VesselIdentification: FunctionComponent<VesselDetailsProps> = ({
   );
 };
 
-const OwnersSection: FunctionComponent<OwnersSectionProps> = ({
-  owner,
-  emergencyContacts,
-  classes,
-}): JSX.Element => {
-  return (
-    <Grid container spacing={0.5}>
-      <OwnerDetails
-        owner={owner}
-        emergencyContacts={emergencyContacts}
-        classes={classes}
-      />
-    </Grid>
-  );
-};
-
-// Owner Details
-// how do I know which emergency contact(s) belong to which owner?
 const OwnerDetails: FunctionComponent<OwnerDetailsProps> = ({
   owner,
   emergencyContacts,
   classes,
 }): JSX.Element => {
   return (
-    <Grid container spacing={0.5}>
+    <Grid container spacing={1}>
       <Grid item xs={12}>
-        <h3>Vessel Identification:</h3>
+        <h3>Owner Details:</h3>
       </Grid>
       <Grid item xs={6}>
         <div>
-          <span className={classes.title}>
-            FISHING VESSEL PORT ID & NUMBERS:{" "}
-          </span>
-          {maritimeUse.portLetterNumber}
+          <span className={classes.title}>OWNER(S):</span>
+          {owner.fullName}
         </div>
-      </Grid>
-      <Grid item xs={6}>
         <div>
-          <span className={classes.title}>OFFICIAL NUMBER: </span>
-          {maritimeUse.officialNumber}
+          <span className={classes.title}>COMPANY AGENT: </span>
         </div>
-      </Grid>
-      <Grid item xs={6}>
         <div>
-          <span className={classes.title}>RSS/SSR NUMBER: </span>
-          {maritimeUse.rssNumber} / {maritimeUse.ssrNumber}
+          <span className={classes.title}>CARE OF: </span>
         </div>
-      </Grid>
-      <Grid item xs={6}>
         <div>
-          <span className={classes.title}>
-            COASTGUARD CG66 REFERENCE NUMBER:{" "}
-          </span>
+          <span className={classes.title}>ADDRESS: </span>
+          <p>
+            {owner.addressLine1} <br />
+            {owner.addressLine2} <br />
+            {owner.addressLine3} <br />
+            {owner.addressLine4} <br />
+            {owner.townOrCity} <br />
+            {owner.county} <br />
+            {owner.postcode} <br />
+          </p>
         </div>
-      </Grid>
-      <Grid item xs={6}>
         <div>
-          <span className={classes.title}>IMO NUMBER: </span>
-          {maritimeUse.imoNumber}
+          <span className={classes.title}>COUNTRY: </span>
+          {owner.country}
         </div>
-      </Grid>
-      <Grid item xs={6}>
         <div>
-          <span className={classes.title}>HULL ID NUMBER: </span>
+          <span className={classes.title}>TELs: </span>
+          <p>{owner.telephoneNumber}</p>
+          <p>{owner.alternativeTelephoneNumber}</p>
         </div>
+        <div>
+          <span className={classes.title}>MOBILES: </span>
+          {/* check for mobile numbers and put them here in a const */}
+        </div>
+        <div>
+          <span className={classes.title}>OTHER/EMAIL: </span>
+          {owner.email}
+        </div>
+        <EmergencyContactsSection
+          emergencyContacts={emergencyContacts}
+          classes={classes}
+        />
       </Grid>
     </Grid>
   );
+};
+
+const EmergencyContactsSection: FunctionComponent<
+  EmergencyContactsSectionProps
+> = ({ emergencyContacts, classes }): JSX.Element => {
+  if (emergencyContacts) {
+    return (
+      <Grid item xs={6}>
+        <div>
+          <span className={classes.title}>EMERGENCY CONTACTS:</span>
+          {emergencyContacts.map((emergencyContact, index) => (
+            <span>
+              <div key={emergencyContact.id}>
+                {emergencyContact.fullName}: {emergencyContact.telephoneNumber};{" "}
+                {emergencyContact.alternativeTelephoneNumber}.
+              </div>
+            </span>
+          ))}
+        </div>
+      </Grid>
+    );
+  } else {
+    return (
+      <Grid item xs={6}>
+        <div>
+          <span className={classes.title}>EMERGENCY CONTACTS:</span>
+        </div>
+      </Grid>
+    );
+  }
 };
 
 export const Certificate: FunctionComponent<CertificateProps> = ({
@@ -287,21 +322,27 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
           <div>OFFICIAL</div>
           <h3>UK Distress & Security Beacon Registration</h3>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={8}>
           <div>
-            <span className={classes.title}>PROOF OF REGISTRATION:</span>
+            <span className={classes.title}>PROOF OF REGISTRATION: </span>
             {certificate.proofOfRegistrationDate}
           </div>
-          <Grid item xs={6}>
-            <div>
-              <span className={classes.title}>DEPT REF: </span>
-              {certificate.beacon.referenceNumber}
-            </div>
-          </Grid>
         </Grid>
+        <Grid item xs={4}>
+          <span className={classes.title}> DEPT REF: </span>
+          {certificate.beacon.referenceNumber}845775
+          <img
+            src={process.env.PUBLIC_URL + "/mca-logo.png"}
+            alt="mca logo"
+            className={classes.mcaLogo}
+          />
+        </Grid>
+        {/* <Grid item xs={2}>
+
+          </Grid> */}
       </Grid>
 
-      <Grid container spacing={0.5}>
+      <Grid className={classes.beaconInfo} container spacing={1}>
         <Grid item xs={6}>
           <div>
             <span className={classes.title}>RECORD CREATED DATE: </span>
@@ -322,7 +363,7 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
         </Grid>
       </Grid>
 
-      <Grid container spacing={0.5}>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <h3>Beacon Details:</h3>
         </Grid>
@@ -386,11 +427,41 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
 
       <UsesSection uses={maritimeUses} classes={classes} />
 
-      <OwnersSection
-        owner={certificate.beacon.owner}
-        emergencyContacts={certificate.beacon.emergencyContacts}
+      <OwnerDetails
+        owner={certificate.owner as IOwner}
+        emergencyContacts={certificate.emergencyContacts}
         classes={classes}
       />
+
+      <Grid className={classes.footer} container spacing={1}>
+        <Grid item xl={12}>
+          <div>
+            <span className={classes.title}>
+              In an Emergency, call Falmouth Coastguard, 24 hour Tel: +44
+              (0)1326 317575
+            </span>
+            <p>
+              Proof of Registration from The UK Distress and Security Beacon
+              Registry
+              <br />
+              Falmouth MRCC, Castle Drive, Pendennis Point, Falmouth, Cornwall
+              TR11 4WZ
+              <br />
+              Office Hours Tel: +44 (0)1326 211569 Fax: +44 (0)1326 319264
+              <br />
+              Email:
+              <a className={classes.link} href="mailto:UKBeacons@mcga.gov.uk">
+                UKBeacons@mcga.gov.uk{" "}
+              </a>
+              <a className={classes.link} href="http://www.gov.uk/406beacon">
+                {" "}
+                http://www.gov.uk/406beacon
+              </a>
+            </p>
+          </div>
+          <div>OFFICIAL</div>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };
