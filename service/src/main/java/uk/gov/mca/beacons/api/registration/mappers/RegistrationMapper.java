@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.registration.mappers;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -115,6 +116,11 @@ public class RegistrationMapper {
     Registration registration,
     List<Note> notes
   ) {
+    String todaysDate = LocalDate.now().toString();
+    String formattedProofOfRegistrationDate = LocalDate
+      .parse(todaysDate, dtf)
+      .toString();
+
     BeaconUseDTO mainUse = beaconUseMapper.toDTO(registration.getMainUse());
 
     List<BeaconUseDTO> useDTOs = new ArrayList<>();
@@ -125,7 +131,7 @@ public class RegistrationMapper {
 
     return CertificateDTO
       .builder()
-      .proofOfRegistrationDate(new Date().toString())
+      .proofOfRegistrationDate(formattedProofOfRegistrationDate)
       .mcaContactNumber("+44 (0)1326 317575")
       .beaconDTO(beaconMapper.toRegistrationDTO(registration.getBeacon()))
       .beaconOwnerDTO(

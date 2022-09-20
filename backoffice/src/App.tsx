@@ -64,22 +64,30 @@ const App: FunctionComponent = () => {
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return (
-      <SingleBeaconRecordView
-        beaconsGateway={beaconsGateway}
-        usesGateway={usesGateway}
-        notesGateway={notesGateway}
-        beaconId={id}
-      />
+      <div>
+        <Navigation />
+        <SingleBeaconRecordView
+          beaconsGateway={beaconsGateway}
+          usesGateway={usesGateway}
+          notesGateway={notesGateway}
+          beaconId={id}
+        />
+        <Footer />
+      </div>
     );
   };
 
   const SingleLegacyBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return (
-      <SingleLegacyBeaconRecordView
-        beaconsGateway={beaconsGateway}
-        beaconId={id}
-      />
+      <div>
+        <Navigation />
+        <SingleLegacyBeaconRecordView
+          beaconsGateway={beaconsGateway}
+          beaconId={id}
+        />
+        <Footer />
+      </div>
     );
   };
 
@@ -93,11 +101,12 @@ const App: FunctionComponent = () => {
       <AuthProvider>
         <UserSettingsProvider>
           <Router basename="/backoffice">
-            <Navigation />
             <RequireAuth>
               <Switch>
                 <Route exact path="/">
+                  <Navigation />
                   <Search beaconsGateway={beaconsGateway} />
+                  <Footer />
                 </Route>
                 <Route path={`/beacons/:id`}>
                   <SingleBeaconRecordViewWithParam />
@@ -106,6 +115,7 @@ const App: FunctionComponent = () => {
                   <SingleLegacyBeaconRecordViewWithParam />
                 </Route>
                 <Route path={`/admin`}>
+                  <Navigation />
                   <PageContent>
                     <AuthenticatedPOSTButton
                       uri={`${applicationConfig.apiUrl}/export/xlsx`}
@@ -113,14 +123,18 @@ const App: FunctionComponent = () => {
                       Trigger export job
                     </AuthenticatedPOSTButton>
                   </PageContent>
+                  <Footer />
                 </Route>
                 <Route path={`/certificates/:id`}>
                   <CertificateViewWithParam />
                 </Route>
-                <Route>Page not found. Is the address correct?</Route>
+                <Route>
+                  <Navigation />
+                  Page not found. Is the address correct?
+                  <Footer />
+                </Route>
               </Switch>
             </RequireAuth>
-            <Footer hide={} />
           </Router>
         </UserSettingsProvider>
       </AuthProvider>

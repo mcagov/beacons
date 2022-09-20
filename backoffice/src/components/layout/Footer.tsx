@@ -20,7 +20,7 @@ const useStyles = makeStyles(() =>
 );
 
 interface FooterProps {
-  hide: boolean;
+  hide?: boolean;
 }
 
 export const Footer: FunctionComponent<FooterProps> = ({

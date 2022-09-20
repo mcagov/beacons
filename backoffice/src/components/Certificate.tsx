@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       flexGrow: 1,
       fontFamily: "Arial",
+      fontSize: "11pt",
       backgroundColor: "white",
       padding: "0.5%",
     },
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingBottom: "0.5%",
     },
     mcaLogo: {
-      height: "100px",
+      height: "90px",
       float: "right",
       paddingRight: "15%",
       transformOrigin: "0% 0% 0% 60%",
