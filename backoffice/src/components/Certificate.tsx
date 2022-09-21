@@ -7,47 +7,6 @@ import { Environments, IUse } from "../entities/IUse";
 import { IOwner } from "entities/IOwner";
 import { IEmergencyContact } from "entities/IEmergencyContact";
 
-// const useStyles = makeStyles((theme: Theme) =>
-//   // move to separate css file
-//   createStyles({
-//     root: {
-//       flexGrow: 1,
-//       fontFamily: "Arial",
-//       fontSize: "11pt",
-//       backgroundColor: "white",
-//       padding: "0.5%",
-//     },
-//     header: {
-//       borderBottom: "2px solid black",
-//       paddingBottom: "0.5%",
-//     },
-//     deptRefSection: {
-//       float: "left"
-//     },
-//     mcaLogo: {
-//       height: "90px",
-//       float: "right",
-//       paddingRight: "15%",
-//       transformOrigin: "60%",
-//     },
-//     title: {
-//       fontWeight: "bold",
-//     },
-//     beaconInfo: {
-//       paddingTop: "0.5%",
-//     },
-//     link: {
-//       textDecoration: "none",
-//       color: "blue",
-//     },
-//     footer: {
-//       marginTop: "80%",
-//       bottom: "0",
-//       // position: "sticky"
-//     },
-//   })
-// );
-
 interface CertificateProps {
   certificate: ICertificate;
 }
@@ -127,7 +86,8 @@ const VesselDetails: FunctionComponent<VesselDetailsProps> = ({
       </Grid>
       <Grid item xs={6}>
         <div>
-          <span className="title">VESSEL: </span>
+          <span className="title">HOMEPORT: </span>
+          {maritimeUse.homeport}
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -138,14 +98,13 @@ const VesselDetails: FunctionComponent<VesselDetailsProps> = ({
       </Grid>
       <Grid item xs={6}>
         <div>
-          <span className="title">RADIO SYSTEM: </span>
-          {maritimeUse.fixedVhfRadioValue}
+          <span className="title">MMSI NUMBER: </span>
+          {maritimeUse.cnOrMsnNumber}
         </div>
       </Grid>
       <Grid item xs={6}>
         <div>
-          <span className="title">HOMEPORT: </span>
-          {maritimeUse.homeport}
+          <span className="title">VESSEL: </span>
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -156,8 +115,8 @@ const VesselDetails: FunctionComponent<VesselDetailsProps> = ({
       </Grid>
       <Grid item xs={6}>
         <div>
-          <span className="title">MMSI NUMBER: </span>
-          {maritimeUse.cnOrMsnNumber}
+          <span className="title">RADIO SYSTEM: </span>
+          {maritimeUse.fixedVhfRadioValue}
         </div>
       </Grid>
     </Grid>
@@ -253,7 +212,8 @@ const OwnerDetails: FunctionComponent<OwnerDetailsProps> = ({
         </div>
         <div>
           <span className="title">MOBILES: </span>
-          {/* check for mobile numbers and put them here in a const */}
+          {/* check for mobile numbers and put them here in a const
+          export function that already does this for single beacon record view */}
         </div>
         <div>
           <span className="title">OTHER/EMAIL: </span>
@@ -324,7 +284,7 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
         </Grid>
         <Grid item xs={4}>
           <span className="title"> DEPT REF: </span>
-          {certificate.beacon.referenceNumber}845775
+          {certificate.beacon.referenceNumber}
         </Grid>
       </Grid>
 
@@ -332,19 +292,19 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
         <Grid item xs={6}>
           <div>
             <span className="title">RECORD CREATED DATE: </span>
-            {certificate.beacon.createdDate}
+            {certificate.beaconCreatedDate}
+          </div>
+        </Grid>
+        <Grid item xs={6}>
+          <div>
+            <span className="title">LAST MODIFIED: </span>
+            {certificate.proofOfRegistrationDate}
           </div>
         </Grid>
         <Grid item xs={6}>
           <div>
             <span className="title">BEACON STATUS: </span>
             {certificate.beacon.status}
-          </div>
-        </Grid>
-        <Grid item xs={6}>
-          <div>
-            <span className="title">LAST MODIFIED: </span>
-            {certificate.beacon.lastModifiedDate}
           </div>
         </Grid>
       </Grid>
@@ -361,14 +321,14 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
         </Grid>
         <Grid item xs={6}>
           <div>
-            <span className="title">MANUFACTURER: </span>
-            {certificate.beacon.manufacturer}
+            <span className="title">MANUFACTURER SERIAL NO: </span>
+            {certificate.beacon.manufacturerSerialNumber}
           </div>
         </Grid>
         <Grid item xs={6}>
           <div>
-            <span className="title">MANUFACTURER SERIAL NO: </span>
-            {certificate.beacon.manufacturerSerialNumber}
+            <span className="title">MANUFACTURER: </span>
+            {certificate.beacon.manufacturer}
           </div>
         </Grid>
         <Grid item xs={6}>

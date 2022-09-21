@@ -1,4 +1,5 @@
-import { Grid, Tab, Tabs } from "@mui/material";
+import { Button, Grid, Tab, Tabs } from "@mui/material";
+import ContentPrintIcon from "@mui/icons-material/Print";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
@@ -74,7 +75,7 @@ export const SingleBeaconRecordView: FunctionComponent<
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
   const printLabelUrl = `${applicationConfig.apiUrl}/export/label/${beaconId}`;
-  const printCertificateUrl = `${applicationConfig.apiUrl}/export/certificate/${beaconId}`;
+  const certificatePageUrl = `/backoffice#/certificates/${beaconId}`;
 
   return (
     <div className={classes.root}>
@@ -92,11 +93,13 @@ export const SingleBeaconRecordView: FunctionComponent<
           />
         </span>
         <span className={classes.printButton}>
-          <AuthenticatedPrintButton
-            label="Print certificate"
-            url={printCertificateUrl}
-            isFullWidth={false}
-          />
+          <Button
+            href={certificatePageUrl}
+            variant="outlined"
+            endIcon={<ContentPrintIcon />}
+          >
+            Print certificate
+          </Button>
         </span>
       </PageHeader>
 

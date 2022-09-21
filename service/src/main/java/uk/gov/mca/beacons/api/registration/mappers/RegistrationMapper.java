@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.registration.mappers;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -128,6 +129,9 @@ public class RegistrationMapper {
       .builder()
       .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
       .mcaContactNumber("+44 (0)1326 317575")
+      .beaconCreatedDate(formatDate(beacon.getCreatedDate(), dtf))
+      .beaconLastServicedDate(formatDate(beacon.getLastServicedDate(), dtf))
+      .beaconBatteryExpiryDate(formatDate(beacon.getBatteryExpiryDate(), dtf))
       .beaconDTO(beaconMapper.toRegistrationDTO(registration.getBeacon()))
       .beaconOwnerDTO(
         // special case for handling deleted beacon owners, this won't be necessary with a resource oriented API
@@ -151,5 +155,13 @@ public class RegistrationMapper {
       )
       .noteDTOs(noteDTOs)
       .build();
+  }
+
+  private String formatDate(OffsetDateTime date, DateTimeFormatter dtf) {
+    return date != null ? formatDate(date.toLocalDate(), dtf) : "";
+  }
+
+  private String formatDate(LocalDate date, DateTimeFormatter dtf) {
+    return date != null ? date.format(dtf) : "";
   }
 }

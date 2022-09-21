@@ -31,6 +31,18 @@ public class CertificateDTO {
   BeaconRegistrationDTO beaconDTO;
 
   @Valid
+  @JsonProperty("beaconCreatedDate")
+  String beaconCreatedDate;
+
+  @Valid
+  @JsonProperty("beaconLastServicedDate")
+  String beaconLastServicedDate;
+
+  @Valid
+  @JsonProperty("beaconBatteryExpiryDate")
+  String beaconBatteryExpiryDate;
+
+  @Valid
   @JsonProperty("owner")
   BeaconOwnerDTO beaconOwnerDTO;
 
