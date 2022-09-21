@@ -1,0 +1,41 @@
+.root {
+  flex-grow: 1;
+  font-family: Arial;
+  font-size: 11pt;
+  background-color: white;
+  padding: 0.5%;
+}
+
+.header {
+  border-bottom: 2px solid black;
+  padding-bottom: 0.5%;
+}
+
+.deptRefSection {
+  float: left;
+}
+
+.mcaLogo {
+  height: 90px;
+  float: right;
+  padding-right: 15%;
+  transform-origin: 60%;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.beaconInfo {
+  padding-top: 0.5%;
+}
+
+.link {
+  text-decoration: none;
+  color: blue;
+}
+
+.footer {
+  margin-top: 80%;
+  bottom: 0;
+}

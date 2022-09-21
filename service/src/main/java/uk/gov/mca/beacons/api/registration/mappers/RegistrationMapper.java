@@ -116,22 +116,17 @@ public class RegistrationMapper {
     Registration registration,
     List<Note> notes
   ) {
-    String todaysDate = LocalDate.now().toString();
-    String formattedProofOfRegistrationDate = LocalDate
-      .parse(todaysDate, dtf)
-      .toString();
+    Beacon beacon = registration.getBeacon();
 
     BeaconUseDTO mainUse = beaconUseMapper.toDTO(registration.getMainUse());
-
     List<BeaconUseDTO> useDTOs = new ArrayList<>();
-
     useDTOs.add(mainUse);
 
     List<NoteDTO> noteDTOs = noteMapper.toOrderedWrapperDTO(notes).getData();
 
     return CertificateDTO
       .builder()
-      .proofOfRegistrationDate(formattedProofOfRegistrationDate)
+      .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
       .mcaContactNumber("+44 (0)1326 317575")
       .beaconDTO(beaconMapper.toRegistrationDTO(registration.getBeacon()))
       .beaconOwnerDTO(
