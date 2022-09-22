@@ -37,7 +37,6 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
       const certData = await exportsGateway.getCertificateDataForBeacon(
         beaconId
       );
-      console.log(certData);
       setCertificate(certData);
     }
 

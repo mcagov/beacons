@@ -115,6 +115,7 @@ const VesselDetails: FunctionComponent<VesselDetailsProps> = ({
       </Grid>
       <Grid item xs={6}>
         <div>
+          {/* // getVesselCommunicationsFields */}
           <span className="title">RADIO SYSTEM: </span>
           {maritimeUse.fixedVhfRadioValue}
         </div>
@@ -126,6 +127,19 @@ const VesselDetails: FunctionComponent<VesselDetailsProps> = ({
 const VesselIdentification: FunctionComponent<VesselDetailsProps> = ({
   maritimeUse,
 }): JSX.Element => {
+  let rssOrSsrValue =
+    (maritimeUse.rssNumber = maritimeUse.rssNumber
+      ? maritimeUse.rssNumber
+      : "") +
+    "/" +
+    (maritimeUse.ssrNumber = maritimeUse.ssrNumber
+      ? maritimeUse.ssrNumber
+      : "");
+  rssOrSsrValue =
+    maritimeUse.rssNumber && maritimeUse.ssrNumber
+      ? rssOrSsrValue
+      : rssOrSsrValue.replace("/", "");
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -146,7 +160,7 @@ const VesselIdentification: FunctionComponent<VesselDetailsProps> = ({
       <Grid item xs={6}>
         <div>
           <span className="title">RSS/SSR NUMBER: </span>
-          {maritimeUse.rssNumber} / {maritimeUse.ssrNumber}
+          {rssOrSsrValue}
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -212,8 +226,6 @@ const OwnerDetails: FunctionComponent<OwnerDetailsProps> = ({
         </div>
         <div>
           <span className="title">MOBILES: </span>
-          {/* check for mobile numbers and put them here in a const
-          export function that already does this for single beacon record view */}
         </div>
         <div>
           <span className="title">OTHER/EMAIL: </span>
@@ -269,7 +281,10 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
           <div>OFFICIAL</div>
           <h3>UK Distress & Security Beacon Registration</h3>
         </Grid>
-        <Grid item xs={2}>
+        {/* resize grid item for print screen size
+          what should it be when it's medium/small        
+        */}
+        <Grid className="logoContainer" item xs={2}>
           <img
             src={process.env.PUBLIC_URL + "/mca-logo.png"}
             alt="mca logo"
