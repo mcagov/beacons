@@ -1,5 +1,5 @@
 import { Activities, Environments, IUse, Purposes } from "../entities/IUse";
-import { deepFreeze } from "../utils";
+import { deepFreeze } from "../utils/utils";
 
 const getUseFixture = (id: string, mainUse: boolean): IUse =>
   deepFreeze({

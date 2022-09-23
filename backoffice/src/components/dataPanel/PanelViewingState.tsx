@@ -8,16 +8,9 @@ import {
   Typography,
 } from "@mui/material";
 import React, { FunctionComponent } from "react";
+import { IField } from "utils/IField";
 import { WritingStyle } from "../../utils/writingStyle";
-import { FieldValue, FieldValueTypes } from "./FieldValue";
-
-type IFieldValue = string | undefined;
-
-export interface IField {
-  key: string;
-  value: IFieldValue | IFieldValue[];
-  valueType?: FieldValueTypes;
-}
+import { FieldValue } from "./FieldValue";
 
 export interface IPanelViewingStateProps {
   fields: IField[];

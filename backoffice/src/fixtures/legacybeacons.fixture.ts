@@ -1,6 +1,6 @@
 import { BeaconStatuses, BeaconTypes } from "entities/IBeacon";
 import { ILegacyBeacon } from "../entities/ILegacyBeacon";
-import { deepFreeze } from "../utils";
+import { deepFreeze } from "../utils/utils";
 
 export const legacyBeaconFixture = deepFreeze<ILegacyBeacon>({
   pkBeaconId: 6062,

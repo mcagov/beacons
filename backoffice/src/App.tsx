@@ -3,6 +3,7 @@ import { MsalProvider } from "@azure/msal-react";
 import { RequireAuth } from "components/auth/RequireAuth";
 import { AuthGateway } from "gateways/auth/AuthGateway";
 import { BeaconsGateway } from "gateways/beacons/BeaconsGateway";
+import { ExportsGateway } from "gateways/exports/ExportsGateway";
 import { UsesGateway } from "gateways/uses/UsesGateway";
 import React, { FunctionComponent } from "react";
 import {
@@ -11,6 +12,7 @@ import {
   Switch,
   useParams,
 } from "react-router-dom";
+import { CertificateView } from "views/CertificateView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
@@ -57,27 +59,41 @@ const App: FunctionComponent = () => {
   );
   const usesGateway = new UsesGateway(beaconResponseMapper, authGateway);
   const notesGateway = new NotesGateway(authGateway);
+  const exportsGateway = new ExportsGateway(authGateway);
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return (
-      <SingleBeaconRecordView
-        beaconsGateway={beaconsGateway}
-        usesGateway={usesGateway}
-        notesGateway={notesGateway}
-        beaconId={id}
-      />
+      <div>
+        <Navigation />
+        <SingleBeaconRecordView
+          beaconsGateway={beaconsGateway}
+          usesGateway={usesGateway}
+          notesGateway={notesGateway}
+          beaconId={id}
+        />
+        <Footer />
+      </div>
     );
   };
 
   const SingleLegacyBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return (
-      <SingleLegacyBeaconRecordView
-        beaconsGateway={beaconsGateway}
-        beaconId={id}
-      />
+      <div>
+        <Navigation />
+        <SingleLegacyBeaconRecordView
+          beaconsGateway={beaconsGateway}
+          beaconId={id}
+        />
+        <Footer />
+      </div>
     );
+  };
+
+  const CertificateViewWithParam: FunctionComponent = () => {
+    const { id } = useParams<ResourceParams>();
+    return <CertificateView exportsGateway={exportsGateway} beaconId={id} />;
   };
 
   return (
@@ -85,11 +101,12 @@ const App: FunctionComponent = () => {
       <AuthProvider>
         <UserSettingsProvider>
           <Router basename="/backoffice">
-            <Navigation />
             <RequireAuth>
               <Switch>
                 <Route exact path="/">
+                  <Navigation />
                   <Search beaconsGateway={beaconsGateway} />
+                  <Footer />
                 </Route>
                 <Route path={`/beacons/:id`}>
                   <SingleBeaconRecordViewWithParam />
@@ -98,6 +115,7 @@ const App: FunctionComponent = () => {
                   <SingleLegacyBeaconRecordViewWithParam />
                 </Route>
                 <Route path={`/admin`}>
+                  <Navigation />
                   <PageContent>
                     <AuthenticatedPOSTButton
                       uri={`${applicationConfig.apiUrl}/export/xlsx`}
@@ -105,12 +123,19 @@ const App: FunctionComponent = () => {
                       Trigger export job
                     </AuthenticatedPOSTButton>
                   </PageContent>
+                  <Footer />
                 </Route>
-                <Route>Page not found. Is the address correct?</Route>
+                <Route path={`/certificates/:id`}>
+                  <CertificateViewWithParam />
+                </Route>
+                <Route>
+                  <Navigation />
+                  Page not found. Is the address correct?
+                  <Footer />
+                </Route>
               </Switch>
             </RequireAuth>
           </Router>
-          <Footer />
         </UserSettingsProvider>
       </AuthProvider>
     </MsalProvider>

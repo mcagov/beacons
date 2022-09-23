@@ -1,13 +1,16 @@
 import { Button } from "@mui/material";
 import React, { MouseEventHandler } from "react";
+import { parseFilename } from "utils/FileExportUtils";
 import { useAuthContext } from "./auth/AuthProvider";
 
 export function AuthenticatedDownloadButton({
   url,
   label,
+  isFullWidth,
 }: {
   url: string;
   label: string;
+  isFullWidth: boolean;
 }): JSX.Element | null {
   const link = React.useRef<HTMLAnchorElement>(null);
 
@@ -56,16 +59,9 @@ export function AuthenticatedDownloadButton({
       onClick={downloadFile(user.apiAccessToken)}
       color="inherit"
       variant="outlined"
-      fullWidth
+      fullWidth={isFullWidth}
     >
       {label}
     </Button>
   );
 }
-
-export const parseFilename = (headers: Headers): string | null => {
-  const contentDisposition = headers.get("Content-Disposition");
-  if (!contentDisposition) return null;
-
-  return contentDisposition.split("filename=")[1];
-};

@@ -1,6 +1,12 @@
 package uk.gov.mca.beacons.api.registration.application;
 
+import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +27,7 @@ import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.note.application.NoteService;
+import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.rest.DeleteRegistrationDTO;
 

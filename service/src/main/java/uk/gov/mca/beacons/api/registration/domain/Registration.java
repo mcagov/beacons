@@ -31,6 +31,14 @@ public class Registration implements Comparable<Registration> {
     );
   }
 
+  public BeaconUse getMainUse() {
+    return getBeaconUses()
+      .stream()
+      .filter(bu -> bu.getMainUse())
+      .findFirst()
+      .orElse(null);
+  }
+
   // Sorts by beacon lastModifiedDate in descending order
   @Override
   public int compareTo(@NotNull Registration o) {

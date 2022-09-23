@@ -1,9 +1,7 @@
-import {
-  IField,
-  PanelViewingState,
-} from "components/dataPanel/PanelViewingState";
+import { PanelViewingState } from "components/dataPanel/PanelViewingState";
 import { IUse } from "entities/IUse";
 import { FunctionComponent } from "react";
+import { IField } from "utils/IField";
 
 interface AviationSummaryProps {
   use: IUse;

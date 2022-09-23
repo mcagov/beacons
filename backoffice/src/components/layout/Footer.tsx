@@ -19,7 +19,7 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export const Footer: FunctionComponent = (): JSX.Element => {
+export const Footer: FunctionComponent = (): JSX.Element | null => {
   const classes = useStyles();
 
   return (

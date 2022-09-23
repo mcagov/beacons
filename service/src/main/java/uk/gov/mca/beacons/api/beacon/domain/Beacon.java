@@ -2,6 +2,8 @@ package uk.gov.mca.beacons.api.beacon.domain;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;

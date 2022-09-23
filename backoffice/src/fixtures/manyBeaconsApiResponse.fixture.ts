@@ -1,4 +1,4 @@
-import { deepFreeze } from "../utils";
+import { deepFreeze } from "../utils/utils";
 
 export const manyBeaconsApiResponseFixture = deepFreeze([
   {

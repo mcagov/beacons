@@ -3,7 +3,7 @@ import {
   IRegistrationResponse,
   UseRegistrationResponse,
 } from "../gateways/mappers/IRegistrationResponse";
-import { deepFreeze } from "../utils";
+import { deepFreeze } from "../utils/utils";
 
 const getUseResponseJson = (
   mainUse: boolean,
