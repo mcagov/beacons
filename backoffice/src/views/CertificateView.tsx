@@ -11,9 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
+      backgroundColor: "white",
     },
   })
 );
@@ -48,6 +46,33 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
       <div className={classes.root}>
         <PageContent>
           <Certificate certificate={certificate} />
+          <div className="footerContainer">
+            <div className="footer">
+              <span className="title">
+                In an Emergency, call Falmouth Coastguard, 24 hour Tel: +44
+                (0)1326 317575
+              </span>
+              <p>
+                Proof of Registration from The UK Distress and Security Beacon
+                Registry
+                <br />
+                Falmouth MRCC, Castle Drive, Pendennis Point, Falmouth, Cornwall
+                TR11 4WZ
+                <br />
+                Office Hours Tel: +44 (0)1326 211569 Fax: +44 (0)1326 319264
+                <br />
+                Email:
+                <a className="link" href="mailto:UKBeacons@mcga.gov.uk">
+                  UKBeacons@mcga.gov.uk{" "}
+                </a>
+                <a className="link" href="http://www.gov.uk/406beacon">
+                  {" "}
+                  http://www.gov.uk/406beacon
+                </a>
+              </p>
+              <div>OFFICIAL</div>
+            </div>
+          </div>
         </PageContent>
       </div>
     );

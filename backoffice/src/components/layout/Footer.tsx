@@ -19,31 +19,21 @@ const useStyles = makeStyles(() =>
   })
 );
 
-interface FooterProps {
-  hide?: boolean;
-}
-
-export const Footer: FunctionComponent<FooterProps> = ({
-  hide,
-}): JSX.Element | null => {
+export const Footer: FunctionComponent = (): JSX.Element | null => {
   const classes = useStyles();
 
-  if (hide) {
-    return null;
-  } else {
-    return (
-      <div className={classes.root}>
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <img
-              src={process.env.PUBLIC_URL + "/mca-logo-dark.png"}
-              alt="mca logo"
-              className={classes.mcaLogo}
-            />
-            UK 406MHz Beacon Registry
-          </Toolbar>
-        </AppBar>
-      </div>
-    );
-  }
+  return (
+    <div className={classes.root}>
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar>
+          <img
+            src={process.env.PUBLIC_URL + "/mca-logo-dark.png"}
+            alt="mca logo"
+            className={classes.mcaLogo}
+          />
+          UK 406MHz Beacon Registry
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
 };

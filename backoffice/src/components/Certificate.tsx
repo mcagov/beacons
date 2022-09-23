@@ -237,7 +237,7 @@ const EmergencyContactsSection: FunctionComponent<
   if (emergencyContacts) {
     return (
       <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">EMERGENCY CONTACTS:</span>
           {emergencyContacts.map((emergencyContact, index) => (
             <span>
@@ -275,10 +275,7 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
           <div>OFFICIAL</div>
           <h3>UK Distress & Security Beacon Registration</h3>
         </Grid>
-        {/* resize grid item for print screen size
-          what should it be when it's medium/small        
-        */}
-        <Grid className="logoContainer" item xs={2}>
+        <Grid id="logoContainer" item xs={2}>
           <img
             src={process.env.PUBLIC_URL + "/mca-logo.png"}
             alt="mca logo"
@@ -382,36 +379,6 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
         owner={certificate.owner as IOwner}
         emergencyContacts={certificate.emergencyContacts}
       />
-
-      <Grid className="footer" container spacing={1}>
-        <Grid item xl={12}>
-          <div>
-            <span className="title">
-              In an Emergency, call Falmouth Coastguard, 24 hour Tel: +44
-              (0)1326 317575
-            </span>
-            <p>
-              Proof of Registration from The UK Distress and Security Beacon
-              Registry
-              <br />
-              Falmouth MRCC, Castle Drive, Pendennis Point, Falmouth, Cornwall
-              TR11 4WZ
-              <br />
-              Office Hours Tel: +44 (0)1326 211569 Fax: +44 (0)1326 319264
-              <br />
-              Email:
-              <a className="link" href="mailto:UKBeacons@mcga.gov.uk">
-                UKBeacons@mcga.gov.uk{" "}
-              </a>
-              <a className="link" href="http://www.gov.uk/406beacon">
-                {" "}
-                http://www.gov.uk/406beacon
-              </a>
-            </p>
-          </div>
-          <div>OFFICIAL</div>
-        </Grid>
-      </Grid>
     </Grid>
   );
 };
