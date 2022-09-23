@@ -90,7 +90,6 @@ export const SingleBeaconRecordView: FunctionComponent<
         <span className={classes.button}>
           <Button
             href={certificatePageUrl}
-            target="_blank"
             variant="outlined"
             endIcon={<ContentPrintIcon />}
           >
