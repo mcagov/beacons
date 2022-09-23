@@ -276,7 +276,7 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
           <h3>UK Distress & Security Beacon Registration</h3>
         </Grid>
         {/* resize grid item for print screen size
-          what should it be when it's medium/small        
+          what should it be when it's medium/small
         */}
         <Grid className="logoContainer" item xs={2}>
           <img

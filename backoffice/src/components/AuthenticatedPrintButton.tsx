@@ -51,7 +51,11 @@ export function AuthenticatedPrintButton({
   async function openPrintWindow(result: Response): Promise<void> {
     const file = await result.blob();
     const href = window.URL.createObjectURL(file);
-    window.open(href, "PRINT", "height=800,width=1000");
+    var printTab = window.open(href, "_blank");
+
+    if (printTab) {
+      printTab.print();
+    }
   }
 
   if (user.type !== "loggedInUser") {
