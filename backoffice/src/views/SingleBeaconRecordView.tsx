@@ -88,20 +88,21 @@ export const SingleBeaconRecordView: FunctionComponent<
           />
         </span>
         <span className={classes.button}>
-          <AuthenticatedPrintButton
-            label="Print label"
-            url={printLabelUrl}
-            isFullWidth={false}
-          />
-        </span>
-        <span className={classes.button}>
           <Button
             href={certificatePageUrl}
+            target="_blank"
             variant="outlined"
             endIcon={<ContentPrintIcon />}
           >
             Print certificate
           </Button>
+        </span>
+        <span className={classes.button}>
+          <AuthenticatedPrintButton
+            label="Print label"
+            url={printLabelUrl}
+            isFullWidth={false}
+          />
         </span>
       </PageHeader>
 

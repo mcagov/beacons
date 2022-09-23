@@ -98,15 +98,10 @@ class ExportController {
     }
 
     LabelDTO data = registrationMapper.toLabelDTO(registration);
-
     byte[] file = pdfService.createPdfLabel(data);
 
-    return ResponseEntity
-      .ok()
-      .contentType(MediaType.APPLICATION_PDF)
-      .body(file);
-    //    noteService.createSystemNote(beaconId, "Label Generated");
-    //    return servePdf(file, "Label.pdf");
+    noteService.createSystemNote(beaconId, "Label Generated");
+    return servePdf(file, "Label.pdf");
   }
 
   /**
@@ -142,11 +137,7 @@ class ExportController {
       .stream()
       .forEach(id -> noteService.createSystemNote(id, "Label Generated"));
 
-    //    return servePdf(file, "Label.pdf");
-    return ResponseEntity
-      .ok()
-      .contentType(MediaType.APPLICATION_PDF)
-      .body(file);
+    return servePdf(file, "Labels.pdf");
   }
 
   //  @GetMapping(value = "/letter/data/{uuid}")
