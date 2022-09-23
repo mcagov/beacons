@@ -1,5 +1,5 @@
 import { INote, NoteType } from "../entities/INote";
-import { deepFreeze } from "../utils";
+import { deepFreeze } from "../utils/utils";
 
 export const notesFixture = deepFreeze<INote[]>([
   {

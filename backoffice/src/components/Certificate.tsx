@@ -6,6 +6,8 @@ import { INoteResponseData } from "gateways/mappers/INoteResponseData";
 import { Environments, IUse } from "../entities/IUse";
 import { IOwner } from "entities/IOwner";
 import { IEmergencyContact } from "entities/IEmergencyContact";
+import { getVesselCommunicationsFields } from "../utils/utils";
+import { IField } from "../utils/IField";
 
 interface CertificateProps {
   certificate: ICertificate;
@@ -36,8 +38,8 @@ const NotesSection: FunctionComponent<NotesSectionProps> = ({
   notes,
 }): JSX.Element => {
   return (
-    <Grid item xs={6}>
-      <div>
+    <Grid item xs={12}>
+      <div className="subItem">
         <span className="title">NOTES:</span>
         {notes.map((note, index) => (
           <span key={note.id}>
@@ -73,50 +75,49 @@ const UsesSection: FunctionComponent<UsesSectionProps> = ({
 const VesselDetails: FunctionComponent<VesselDetailsProps> = ({
   maritimeUse,
 }): JSX.Element => {
+  const communicationFields: IField[] = getVesselCommunicationsFields(
+    maritimeUse
+  ).filter((field) => field.key?.includes("Communication"));
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
         <h3>Vessel Details:</h3>
       </Grid>
       <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">VESSEL NAME: </span>
           {maritimeUse.vesselName}
         </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div>
-          <span className="title">HOMEPORT: </span>
-          {maritimeUse.homeport}
+        <div className="subItem">
+          <span className="title">VESSEL: </span>
         </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">VESSEL CALLSIGN: </span>
           {maritimeUse.callSign}
         </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div>
-          <span className="title">MMSI NUMBER: </span>
-          {maritimeUse.cnOrMsnNumber}
+        <div className="subItem">
+          <span className="title">RADIO SYSTEM(S): </span>
+          {communicationFields.map((field, index) => (
+            <span>
+              <div key={field.key}>
+                {field.key}: {field.value}
+              </div>
+            </span>
+          ))}
         </div>
       </Grid>
       <Grid item xs={6}>
-        <div>
-          <span className="title">VESSEL: </span>
+        <div className="subItem">
+          <span className="title">HOMEPORT: </span>
+          {maritimeUse.homeport}
         </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">MAX PERSON ON BOARD: </span>
           {maritimeUse.maxCapacity}
         </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div>
-          {/* // getVesselCommunicationsFields */}
-          <span className="title">RADIO SYSTEM: </span>
+        <div className="subItem">
+          <span className="title">MMSI NUMBER: </span>
           {maritimeUse.fixedVhfRadioValue}
         </div>
       </Grid>
@@ -146,36 +147,29 @@ const VesselIdentification: FunctionComponent<VesselDetailsProps> = ({
         <h3>Vessel Identification:</h3>
       </Grid>
       <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">FISHING VESSEL PORT ID & NUMBERS: </span>
           {maritimeUse.portLetterNumber}
         </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">OFFICIAL NUMBER: </span>
           {maritimeUse.officialNumber}
         </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">RSS/SSR NUMBER: </span>
           {rssOrSsrValue}
         </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">COASTGUARD CG66 REFERENCE NUMBER: </span>
         </div>
       </Grid>
+
       <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">IMO NUMBER: </span>
           {maritimeUse.imoNumber}
         </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">HULL ID NUMBER: </span>
         </div>
       </Grid>
@@ -193,14 +187,14 @@ const OwnerDetails: FunctionComponent<OwnerDetailsProps> = ({
         <h3>Owner Details:</h3>
       </Grid>
       <Grid item xs={6}>
-        <div>
+        <div className="subItem">
           <span className="title">OWNER(S):</span>
           {owner.fullName}
         </div>
-        <div>
+        <div className="subItem">
           <span className="title">COMPANY AGENT: </span>
         </div>
-        <div>
+        <div className="subItem">
           <span className="title">CARE OF: </span>
         </div>
         <div>
@@ -215,19 +209,19 @@ const OwnerDetails: FunctionComponent<OwnerDetailsProps> = ({
             {owner.postcode} <br />
           </p>
         </div>
-        <div>
+        <div className="subItem">
           <span className="title">COUNTRY: </span>
           {owner.country}
         </div>
-        <div>
-          <span className="title">TELs: </span>
-          <p>{owner.telephoneNumber}</p>
+        <div className="subItem">
+          <span className="title">TELS: </span>
+          {owner.telephoneNumber}
           <p>{owner.alternativeTelephoneNumber}</p>
         </div>
-        <div>
+        <div className="subItem">
           <span className="title">MOBILES: </span>
         </div>
-        <div>
+        <div className="subItem">
           <span className="title">OTHER/EMAIL: </span>
           {owner.email}
         </div>
@@ -329,55 +323,51 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
           <h3>Beacon Details:</h3>
         </Grid>
         <Grid item xs={6}>
-          <div>
-            <span className="title">HEX ID: </span>
-            {certificate.beacon.hexId}
+          <div className="subItem">
+            <span className="title">HEX ID: {certificate.beacon.hexId}</span>
           </div>
-        </Grid>
-        <Grid item xs={6}>
-          <div>
+          <div className="subItem">
+            <span className="title">MANUFACTURER: </span>
+            {certificate.beacon.manufacturer}
+          </div>
+          <div className="subItem">
             <span className="title">MANUFACTURER SERIAL NO: </span>
             {certificate.beacon.manufacturerSerialNumber}
           </div>
         </Grid>
         <Grid item xs={6}>
-          <div>
-            <span className="title">MANUFACTURER: </span>
-            {certificate.beacon.manufacturer}
+          <div className="subItem">
+            <span className="title">SERIAL NO: </span>
+            {certificate.beacon.manufacturerSerialNumber}
           </div>
         </Grid>
+      </Grid>
+
+      <Grid container spacing={1}>
         <Grid item xs={6}>
-          <div>
+          <div className="subItem">
             <span className="title">BEACON MODEL: </span>
             {certificate.beacon.model}
           </div>
-        </Grid>
-        <Grid item xs={6}>
-          <div>
+          <div className="subItem">
             <span className="title">BEACON CODING: </span>
             {certificate.beacon.coding}
           </div>
-        </Grid>
-        <Grid item xs={6}>
-          <div>
+          <div className="subItem">
             <span className="title">CODING PROTOCOL: </span>
             {certificate.beacon.protocol}
           </div>
         </Grid>
         <Grid item xs={6}>
-          <div>
+          <div className="subItem">
             <span className="title">BEACON LAST SERVICED: </span>
             {certificate.beacon.lastServicedDate}
           </div>
-        </Grid>
-        <Grid item xs={6}>
-          <div>
+          <div className="subItem">
             <span className="title">BATTERY EXPIRY DATE: </span>
             {certificate.beacon.batteryExpiryDate}
           </div>
-        </Grid>
-        <Grid item xs={6}>
-          <div>
+          <div className="subItem">
             <span className="title">CSTA NUMBER: </span>
             {certificate.beacon.csta}
           </div>

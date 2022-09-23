@@ -1,7 +1,7 @@
 import { BeaconStatuses, IBeacon } from "../entities/IBeacon";
 import { IEmergencyContact } from "../entities/IEmergencyContact";
 import { IUse } from "../entities/IUse";
-import { deepFreeze } from "../utils";
+import { deepFreeze } from "../utils/utils";
 import { emergencyContactsFixture } from "./emergencyContacts.fixture";
 import { testOwners } from "./owner.fixture";
 import { usesFixture } from "./uses.fixture";

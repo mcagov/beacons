@@ -1,5 +1,5 @@
 import { IBeaconSearchResult } from "../entities/IBeaconSearchResult";
-import { deepFreeze } from "../utils";
+import { deepFreeze } from "../utils/utils";
 
 export const beaconSearchResultFixture = deepFreeze<IBeaconSearchResult>({
   page: {

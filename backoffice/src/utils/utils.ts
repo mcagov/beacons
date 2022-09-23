@@ -1,4 +1,4 @@
-import { IField } from "components/dataPanel/PanelViewingState";
+import { IField } from "./IField";
 import { IUse } from "entities/IUse";
 
 export const deepFreeze = <T extends Record<string, any>>(

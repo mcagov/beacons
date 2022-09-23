@@ -1,10 +1,8 @@
-import {
-  IField,
-  PanelViewingState,
-} from "components/dataPanel/PanelViewingState";
+import { PanelViewingState } from "components/dataPanel/PanelViewingState";
 import { IUse } from "entities/IUse";
 import { FunctionComponent } from "react";
-import { getVesselCommunicationsFields } from "utils";
+import { IField } from "../../utils/IField";
+import { getVesselCommunicationsFields } from "../../utils/utils";
 
 interface MaritimeSummaryProps {
   use: IUse;

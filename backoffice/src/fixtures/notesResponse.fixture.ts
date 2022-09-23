@@ -1,5 +1,5 @@
 import { INotesResponse } from "../gateways/mappers/INotesResponse";
-import { deepFreeze } from "../utils";
+import { deepFreeze } from "../utils/utils";
 
 export const notesResponseFixture = deepFreeze<INotesResponse>({
   meta: {
