@@ -41,7 +41,7 @@ const NotesSection: FunctionComponent<NotesSectionProps> = ({
     <Grid item xs={12}>
       <div className="subItem">
         <span className="title">NOTES:</span>
-        {notes.map((note, index) => (
+        {notes.map((note) => (
           <span key={note.id}>
             {note.attributes.createdDate}: {note.attributes.text}.
           </span>
@@ -62,8 +62,8 @@ const UsesSection: FunctionComponent<UsesSectionProps> = ({
         </div>
       </Grid>
       {uses.map((use, index) => (
-        <Grid item xs={12}>
-          <span key={use.id}> {use.environment}</span>
+        <Grid item xs={12} key={use.id}>
+          <span> {use.environment}</span>
           <VesselDetails maritimeUse={use} />
           <VesselIdentification maritimeUse={use} />
         </Grid>
@@ -98,9 +98,9 @@ const VesselDetails: FunctionComponent<VesselDetailsProps> = ({
         </div>
         <div className="subItem">
           <span className="title">RADIO SYSTEM(S): </span>
-          {communicationFields.map((field, index) => (
-            <span>
-              <div key={field.key}>
+          {communicationFields.map((field) => (
+            <span key={field.key}>
+              <div>
                 {field.key}: {field.value}
               </div>
             </span>
@@ -239,9 +239,9 @@ const EmergencyContactsSection: FunctionComponent<
       <Grid item xs={6}>
         <div className="subItem">
           <span className="title">EMERGENCY CONTACTS:</span>
-          {emergencyContacts.map((emergencyContact, index) => (
-            <span>
-              <div key={emergencyContact.id}>
+          {emergencyContacts.map((emergencyContact) => (
+            <span key={emergencyContact.id}>
+              <div>
                 {emergencyContact.fullName}: {emergencyContact.telephoneNumber};{" "}
                 {emergencyContact.alternativeTelephoneNumber}.
               </div>
