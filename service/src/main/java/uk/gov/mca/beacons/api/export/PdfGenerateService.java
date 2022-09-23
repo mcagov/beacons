@@ -63,36 +63,38 @@ public class PdfGenerateService {
     float height = 1.1f * 72;
 
     pdf.setDefaultPageSize(new PageSize(width, height));
-    document.setMargins(2, 4, 2, 4);
-    //    PdfFont arial = PdfFontFactory.register("Arial.tff");
-
-    document.setTextAlignment(TextAlignment.CENTER);
-    //    document.setFont()
+    document.setMargins(6, 0, 4, 12);
+    document.setTextAlignment(TextAlignment.LEFT);
     return document;
   }
 
   private void addLabelToDocument(Document document, LabelDTO data) {
     document.add(
       new Paragraph("UK 406 MHz Beacon Registry")
-        .setFontSize(7)
+        .setFontSize(7f)
         .setBold()
         .setMargin(0)
+        .setPadding(0)
+        .setFixedLeading(7f)
     );
+
     document.add(
       new Paragraph("24 Hr Tel: " + data.getMcaContactNumber())
-        .setFontSize(6.5f)
-        .setUnderline()
+        .setFontSize(6.7f)
+        .setUnderline(0.5f, -2.5f)
         .setBold()
         .setMargin(0)
+        .setPadding(0)
     );
     document.add(
       new Paragraph(data.getBeaconUse())
-        .setFontSize(6.5f)
+        .setFontSize(7.5f)
         .setBold()
-        .setMargins(4, 4, 2, 4)
+        .setTextAlignment(TextAlignment.CENTER)
+        .setMargins(2, 3, 2, 3)
     );
 
-    document.add(getLabelDataLine("Hex ID", data.getHexId()));
+    document.add(getLabelDataLine("Hex Id", data.getHexId()));
     document.add(getLabelDataLine("Coding", data.getCoding()));
     document.add(
       getLabelDataLine(
@@ -103,9 +105,13 @@ public class PdfGenerateService {
   }
 
   private Paragraph getLabelDataLine(String key, String value) {
-    Paragraph p = new Paragraph().setMargin(0).setPadding(0);
-    p.add(new Text(key + ": ").setFontSize(5.5f).setBold());
-    p.add(new Text(value).setFontSize(6.5f).setBold());
+    Paragraph p = new Paragraph()
+      .setMargin(0)
+      .setPadding(0)
+      .setFixedLeading(8.5f);
+    p.setCharacterSpacing(0.5f).setWordSpacing(0.01f);
+    p.add(new Text(key + ": ").setFontSize(5f).setBold());
+    p.add(new Text(value).setFontSize(7.25f).setBold());
     return p;
   }
 }
