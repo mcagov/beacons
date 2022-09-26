@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
@@ -23,7 +24,6 @@ import uk.gov.mca.beacons.api.registration.rest.LabelDTO;
 
 @RestController
 @RequestMapping("/spring-api/export")
-//@PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
 class ExportController {
 
   private final XlsxExporter xlsxExporter;
@@ -48,6 +48,7 @@ class ExportController {
   }
 
   @GetMapping(value = "/xlsx")
+  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Resource> downloadExistingXlsxExport()
     throws IOException {
     Resource latestExport = new FileSystemResource(
@@ -62,6 +63,7 @@ class ExportController {
   }
 
   @PostMapping(value = "/xlsx")
+  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Void> createNewXlsxExport() throws IOException {
     xlsxExporter.export();
 
