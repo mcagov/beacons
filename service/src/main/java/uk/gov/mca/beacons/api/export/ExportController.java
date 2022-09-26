@@ -2,32 +2,28 @@ package uk.gov.mca.beacons.api.export;
 
 import java.io.*;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.note.domain.Note;
-import uk.gov.mca.beacons.api.note.domain.NoteType;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.mappers.RegistrationMapper;
 import uk.gov.mca.beacons.api.registration.rest.CertificateDTO;
 import uk.gov.mca.beacons.api.registration.rest.LabelDTO;
-import uk.gov.mca.beacons.api.registration.rest.RegistrationDTO;
 
 @RestController
 @RequestMapping("/spring-api/export")
-//@PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
 class ExportController {
 
   private final XlsxExporter xlsxExporter;
@@ -52,6 +48,7 @@ class ExportController {
   }
 
   @GetMapping(value = "/xlsx")
+  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Resource> downloadExistingXlsxExport()
     throws IOException {
     Resource latestExport = new FileSystemResource(
@@ -66,6 +63,7 @@ class ExportController {
   }
 
   @PostMapping(value = "/xlsx")
+  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Void> createNewXlsxExport() throws IOException {
     xlsxExporter.export();
 
@@ -83,6 +81,7 @@ class ExportController {
       HttpHeaders.CACHE_CONTROL,
       "no-cache, no-store, must-revalidate"
     );
+    //    headers.add("Access-Control-Allow-Origin", "*");
     return new ResponseEntity<>(resource, headers, HttpStatus.OK);
   }
 
@@ -101,6 +100,11 @@ class ExportController {
     byte[] file = pdfService.createPdfLabel(data);
 
     noteService.createSystemNote(beaconId, "Label Generated");
+    //    return ResponseEntity
+    //          .ok()
+    //          .contentType(MediaType.APPLICATION_PDF)
+    //          .body(file);
+
     return servePdf(file, "Label.pdf");
   }
 
@@ -189,7 +193,6 @@ class ExportController {
 
   private ResponseEntity<byte[]> servePdf(byte[] file, String filename) {
     HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_PDF);
     headers.set(
       HttpHeaders.CONTENT_DISPOSITION,
       "attachment; filename=" + filename
@@ -198,6 +201,11 @@ class ExportController {
       HttpHeaders.CACHE_CONTROL,
       "no-cache, no-store, must-revalidate"
     );
-    return new ResponseEntity<>(file, headers, HttpStatus.OK);
+    //    headers.add("Access-Control-Allow-Origin", "*");
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .headers(headers)
+      .body(file);
   }
 }

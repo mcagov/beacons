@@ -105,6 +105,10 @@ public class PdfGenerateService {
   }
 
   private Paragraph getLabelDataLine(String key, String value) {
+    if (value == null) {
+      value = "N/A";
+    }
+
     Paragraph p = new Paragraph()
       .setMargin(0)
       .setPadding(0)

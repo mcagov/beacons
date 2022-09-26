@@ -15,10 +15,6 @@ import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 @Component("NoteMapperV2")
 public class NoteMapper {
 
-  private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
-    "dd/MM/yyyy"
-  );
-
   public Note fromDTO(CreateNoteDTO dto) {
     var attributes = dto.getAttributes();
     Note note = new Note();
@@ -40,7 +36,7 @@ public class NoteMapper {
       .text(note.getText())
       .type(note.getType())
       .userId(note.getUserId())
-      .createdDate(note.getCreatedDate().format(dtf))
+      .createdDate(note.getCreatedDate())
       .build();
 
     dto.setAttributes(attributes);
