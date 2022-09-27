@@ -21,3 +21,6 @@ service/.metadata
 # Node Modules
 node_modules
 .env
+
+#Test results
+tests/cypress/screenshots/
