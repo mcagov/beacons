@@ -8,6 +8,7 @@ import { IOwner } from "entities/IOwner";
 import { IEmergencyContact } from "entities/IEmergencyContact";
 import { getVesselCommunicationsFields } from "../utils/utils";
 import { IField } from "../utils/IField";
+import { formatDateTime } from "../utils/dateTime";
 
 interface CertificateProps {
   certificate: ICertificate;
@@ -43,7 +44,9 @@ const NotesSection: FunctionComponent<NotesSectionProps> = ({
         <span className="title">NOTES:</span>
         {notes.map((note) => (
           <span key={note.id}>
-            {note.attributes.createdDate}: {note.attributes.text}.
+            <br />
+            {formatDateTime(note.attributes.createdDate)}:{" "}
+            {note.attributes.text}
           </span>
         ))}
       </div>
