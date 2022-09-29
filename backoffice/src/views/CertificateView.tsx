@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { Certificate } from "../components/certificates/Certificate2";
+import { Certificate } from "../components/certificates/Certificate";
 import { IExportsGateway } from "../gateways/exports/IExportsGateway";
 import { ICertificate } from "gateways/exports/ICertificate";
 
