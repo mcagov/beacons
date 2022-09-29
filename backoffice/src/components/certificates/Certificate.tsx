@@ -1,14 +1,14 @@
-import "../certificate.scss";
-import React, { FunctionComponent } from "react";
+import "./certificate.scss";
+import { FunctionComponent } from "react";
 import { Grid } from "@mui/material";
 import { ICertificate } from "gateways/exports/ICertificate";
 import { INoteResponseData } from "gateways/mappers/INoteResponseData";
-import { Environments, IUse } from "../entities/IUse";
+import { Environments, IUse } from "../../entities/IUse";
 import { IOwner } from "entities/IOwner";
 import { IEmergencyContact } from "entities/IEmergencyContact";
-import { getVesselCommunicationsFields } from "../utils/utils";
-import { IField } from "../utils/IField";
-import { formatDateTime } from "../utils/dateTime";
+import { getVesselCommunicationsFields } from "../../utils/utils";
+import { IField } from "../../utils/IField";
+import { formatDateTime } from "../../utils/dateTime";
 
 interface CertificateProps {
   certificate: ICertificate;
@@ -64,8 +64,8 @@ const UsesSection: FunctionComponent<UsesSectionProps> = ({
           <span className="title">BEACON USES:</span>
         </div>
       </Grid>
-      {uses.map((use, index) => (
-        <Grid item xs={12} key={use.id}>
+      {uses.map((use) => (
+        <Grid xs={12} key={use.id}>
           <span> {use.environment}</span>
           <VesselDetails maritimeUse={use} />
           <VesselIdentification maritimeUse={use} />
@@ -202,15 +202,19 @@ const OwnerDetails: FunctionComponent<OwnerDetailsProps> = ({
         </div>
         <div>
           <span className="title">ADDRESS: </span>
-          <p>
-            {owner.addressLine1} <br />
-            {owner.addressLine2} <br />
-            {owner.addressLine3} <br />
-            {owner.addressLine4} <br />
-            {owner.townOrCity} <br />
-            {owner.county} <br />
-            {owner.postcode} <br />
-          </p>
+          <div className="address">
+            {[
+              owner.addressLine1,
+              owner.addressLine2,
+              owner.addressLine3,
+              owner.addressLine4,
+              owner.townOrCity,
+              owner.county,
+              owner.postcode,
+            ].map((line, index) => (
+              <span key={index}>{line}</span>
+            ))}
+          </div>
         </div>
         <div className="subItem">
           <span className="title">COUNTRY: </span>
@@ -242,14 +246,16 @@ const EmergencyContactsSection: FunctionComponent<
       <Grid item xs={6}>
         <div className="subItem">
           <span className="title">EMERGENCY CONTACTS:</span>
-          {emergencyContacts.map((emergencyContact) => (
-            <span key={emergencyContact.id}>
-              <div>
-                {emergencyContact.fullName}: {emergencyContact.telephoneNumber};{" "}
-                {emergencyContact.alternativeTelephoneNumber}.
-              </div>
-            </span>
-          ))}
+          <div className="emergencyContacts">
+            {emergencyContacts.map((emergencyContact) => (
+              <span key={emergencyContact.id}>
+                {emergencyContact.fullName}: {emergencyContact.telephoneNumber}{" "}
+                {emergencyContact.alternativeTelephoneNumber
+                  ? "/" + emergencyContact.alternativeTelephoneNumber
+                  : ""}
+              </span>
+            ))}
+          </div>
         </div>
       </Grid>
     );

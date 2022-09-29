@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const isoDate = (isoDateTime: string) => isoDateTime.slice(0, 10);
 export const formatDateLong = (dateString: string): string => {
   const date = new Date(dateString);
@@ -14,4 +16,17 @@ export const formatDateTime = (dateTimeString: string): string => {
   return dateTimeString
     ? new Date(dateTimeString).toLocaleDateString("en-GB", {})
     : "";
+};
+
+export const customDateStringFormat = (
+  dateTimeString: string | undefined,
+  format: string
+): string => {
+  const date = moment(dateTimeString);
+
+  if (!date.isValid()) {
+    return "";
+  }
+
+  return date.format(format);
 };

@@ -56,21 +56,27 @@
   position: absolute;
 }
 
-@media print {
-  #logoContainer {
-    padding-left: 45%;
-  }
-  .mcaLogo {
-    padding-right: 0%;
-  }
-  .footerContainer {
-    padding-top: 0%;
-    margin-top: 10%;
-  }
-  .footer {
-    width: 100%;
-    position: sticky;
-    top: auto;
-    bottom: 0;
-  }
+div.address span {
+  display: block;
 }
+
+.footer {
+  width: 100%;
+  position: sticky;
+  top: auto;
+  bottom: 0;
+}
+
+// @media print {
+#logoContainer {
+  padding-left: 45%;
+}
+.mcaLogo {
+  padding-right: 0%;
+}
+.footerContainer {
+  padding-top: 0%;
+  margin-top: 10%;
+}
+
+// }
