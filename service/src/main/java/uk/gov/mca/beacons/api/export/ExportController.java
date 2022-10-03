@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -13,14 +14,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
+import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
+import uk.gov.mca.beacons.api.export.rest.CertificateDTO;
+import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
+import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.mappers.RegistrationMapper;
-import uk.gov.mca.beacons.api.registration.rest.CertificateDTO;
-import uk.gov.mca.beacons.api.registration.rest.LabelDTO;
 
 @RestController
 @RequestMapping("/spring-api/export")
@@ -28,7 +33,8 @@ class ExportController {
 
   private final XlsxExporter xlsxExporter;
   private final RegistrationService registrationService;
-  private final RegistrationMapper registrationMapper;
+  private final LegacyBeaconService legacyBeaconService;
+  private final ExportMapper exportMapper;
   private final PdfGenerateService pdfService;
   private final NoteService noteService;
 
@@ -36,13 +42,15 @@ class ExportController {
   public ExportController(
     XlsxExporter xlsxExporter,
     RegistrationService rs,
-    RegistrationMapper rm,
+    LegacyBeaconService lbs,
+    ExportMapper em,
     PdfGenerateService pdfService,
     NoteService ns
   ) {
     this.xlsxExporter = xlsxExporter;
     this.registrationService = rs;
-    this.registrationMapper = rm;
+    this.legacyBeaconService = lbs;
+    this.exportMapper = em;
     this.pdfService = pdfService;
     this.noteService = ns;
   }
@@ -96,7 +104,7 @@ class ExportController {
       throw new ResourceNotFoundException();
     }
 
-    LabelDTO data = registrationMapper.toLabelDTO(registration);
+    LabelDTO data = exportMapper.toLabelDTO(registration);
     byte[] file = pdfService.createPdfLabel(data);
 
     noteService.createSystemNote(beaconId, "Label Generated");
@@ -133,7 +141,7 @@ class ExportController {
 
     List<LabelDTO> dataList = registrations
       .stream()
-      .map(r -> registrationMapper.toLabelDTO(r))
+      .map(r -> exportMapper.toLabelDTO(r))
       .collect(Collectors.toList());
 
     byte[] file = pdfService.createPdfLabels(dataList);
@@ -168,27 +176,33 @@ class ExportController {
   public ResponseEntity<CertificateDTO> getCertificateDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
   ) {
-    BeaconId beaconId = new BeaconId(rawBeaconId);
-    Registration registration = registrationService.getByBeaconId(beaconId);
-
-    if (registration == null) {
-      throw new ResourceNotFoundException();
-    }
-
-    noteService.createSystemNote(beaconId, "Certificate Generated");
-
-    List<Note> manuallyCreatedNotes = noteService
-      .getByBeaconId(beaconId)
-      .stream()
-      .filter((note -> !(note.getFullName().equals("SYSTEM"))))
-      .collect(Collectors.toList());
+    CertificateDTO data = getCertificateDTO(rawBeaconId);
 
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
-      .body(
-        registrationMapper.toCertificateDTO(registration, manuallyCreatedNotes)
+      .body(data);
+  }
+
+  private CertificateDTO getCertificateDTO(UUID rawBeaconId) {
+    BeaconId beaconId = new BeaconId(rawBeaconId);
+
+    try {
+      Registration registration = registrationService.getByBeaconId(beaconId);
+      CertificateDTO data = exportMapper.toCertificateDTO(
+        registration,
+        noteService.getNonSystemNotes(beaconId)
       );
+
+      //Only create note for modern for now.
+      noteService.createSystemNote(beaconId, "Certificate Generated");
+      return data;
+    } catch (ResourceNotFoundException ex) {
+      LegacyBeacon legacyBeacon = legacyBeaconService
+        .findById(new LegacyBeaconId(rawBeaconId))
+        .orElseThrow(ResourceNotFoundException::new);
+      return exportMapper.toLegacyCertificateDTO(legacyBeacon);
+    }
   }
 
   private ResponseEntity<byte[]> servePdf(byte[] file, String filename) {

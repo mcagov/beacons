@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.note.application;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.checkerframework.checker.units.qual.N;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,13 @@ public class NoteService {
 
   public List<Note> getByBeaconId(BeaconId beaconId) {
     return noteRepository.findByBeaconId(beaconId);
+  }
+
+  public List<Note> getNonSystemNotes(BeaconId beaconId) {
+    return getByBeaconId(beaconId)
+      .stream()
+      .filter((note -> !(note.getFullName().equals("SYSTEM"))))
+      .collect(Collectors.toList());
   }
 
   public Note createSystemNote(BeaconId beaconId, String text) {

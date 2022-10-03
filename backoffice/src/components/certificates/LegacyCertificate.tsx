@@ -44,7 +44,7 @@ interface EmergencyContactsSectionProps {
   emergencyContacts: IEmergencyContact[];
 }
 
-export const Certificate: FunctionComponent<CertificateProps> = ({
+export const LegacyCertificate: FunctionComponent<CertificateProps> = ({
   certificate,
 }): JSX.Element => {
   return (
@@ -72,7 +72,7 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
           />
           <CertificateField
             classes="full"
-            title="Beacon Status"
+            title="Legacy Beacon Status"
             value={certificate.beacon.status}
           />
         </div>

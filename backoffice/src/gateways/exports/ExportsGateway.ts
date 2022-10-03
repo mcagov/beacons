@@ -26,6 +26,7 @@ export class ExportsGateway implements IExportsGateway {
         }
       );
       const certificateData = certificateResponse.data;
+      certificateData.type = "Migrated";
       return certificateData;
     } catch (error) {
       logToServer.error(error);

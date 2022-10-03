@@ -15,4 +15,5 @@ export interface ICertificate {
   uses: IUse[];
   emergencyContacts: IEmergencyContact[];
   notes: INoteResponseData[];
+  type: string;
 }

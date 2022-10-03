@@ -14,13 +14,15 @@ import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.beaconuse.rest.BeaconUseDTO;
 import uk.gov.mca.beacons.api.emergencycontact.mappers.EmergencyContactMapper;
+import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
+import uk.gov.mca.beacons.api.export.rest.CertificateDTO;
+import uk.gov.mca.beacons.api.export.rest.LabelDTO;
+import uk.gov.mca.beacons.api.export.rest.OldCertificateDTO;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.note.mappers.NoteMapper;
 import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
-import uk.gov.mca.beacons.api.registration.rest.CertificateDTO;
 import uk.gov.mca.beacons.api.registration.rest.CreateRegistrationDTO;
-import uk.gov.mca.beacons.api.registration.rest.LabelDTO;
 import uk.gov.mca.beacons.api.registration.rest.RegistrationDTO;
 
 @Component("RegistrationMapperV2")
@@ -31,9 +33,7 @@ public class RegistrationMapper {
   private final BeaconOwnerMapper beaconOwnerMapper;
   private final EmergencyContactMapper emergencyContactMapper;
   private final NoteMapper noteMapper;
-  private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
-    "dd/MM/yyyy"
-  );
+  private final ExportMapper certificateMapper;
 
   @Autowired
   public RegistrationMapper(
@@ -41,13 +41,15 @@ public class RegistrationMapper {
     BeaconUseMapper beaconUseMapper,
     BeaconOwnerMapper beaconOwnerMapper,
     EmergencyContactMapper emergencyContactMapper,
-    NoteMapper noteMapper
+    NoteMapper noteMapper,
+    ExportMapper certificateMapper
   ) {
     this.beaconMapper = beaconMapper;
     this.beaconUseMapper = beaconUseMapper;
     this.beaconOwnerMapper = beaconOwnerMapper;
     this.emergencyContactMapper = emergencyContactMapper;
     this.noteMapper = noteMapper;
+    this.certificateMapper = certificateMapper;
   }
 
   public Registration fromDTO(CreateRegistrationDTO dto) {
@@ -99,21 +101,7 @@ public class RegistrationMapper {
       .build();
   }
 
-  public LabelDTO toLabelDTO(Registration registration) {
-    Beacon beacon = registration.getBeacon();
-    BeaconUse mainUse = registration.getMainUse();
-
-    return LabelDTO
-      .builder()
-      .mcaContactNumber("+44 (0)1326 317575")
-      .beaconUse(mainUse.getName())
-      .hexId(beacon.getHexId())
-      .coding(beacon.getCoding())
-      .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
-      .build();
-  }
-
-  public CertificateDTO toCertificateDTO(
+  public OldCertificateDTO toCertificateDTO( //TODO - Remove this.
     Registration registration,
     List<Note> notes
   ) {
@@ -125,13 +113,8 @@ public class RegistrationMapper {
 
     List<NoteDTO> noteDTOs = noteMapper.toOrderedWrapperDTO(notes).getData();
 
-    return CertificateDTO
+    return OldCertificateDTO
       .builder()
-      .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
-      .mcaContactNumber("+44 (0)1326 317575")
-      .beaconCreatedDate(formatDate(beacon.getCreatedDate(), dtf))
-      .beaconLastServicedDate(formatDate(beacon.getLastServicedDate(), dtf))
-      .beaconBatteryExpiryDate(formatDate(beacon.getBatteryExpiryDate(), dtf))
       .beaconDTO(beaconMapper.toRegistrationDTO(registration.getBeacon()))
       .beaconOwnerDTO(
         // special case for handling deleted beacon owners, this won't be necessary with a resource oriented API
@@ -155,13 +138,5 @@ public class RegistrationMapper {
       )
       .noteDTOs(noteDTOs)
       .build();
-  }
-
-  private String formatDate(OffsetDateTime date, DateTimeFormatter dtf) {
-    return date != null ? formatDate(date.toLocalDate(), dtf) : "";
-  }
-
-  private String formatDate(LocalDate date, DateTimeFormatter dtf) {
-    return date != null ? date.format(dtf) : "";
   }
 }

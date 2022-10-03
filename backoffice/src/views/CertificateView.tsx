@@ -1,5 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { Certificate } from "../components/certificates/Certificate";
+import { LegacyCertificate } from "../components/certificates/LegacyCertificate";
 import { IExportsGateway } from "../gateways/exports/IExportsGateway";
 import { ICertificate } from "gateways/exports/ICertificate";
 
@@ -17,23 +18,19 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
   );
 
   useEffect(() => {
-    async function getCertificate(): Promise<void> {
-      const certData = await exportsGateway.getCertificateDataForBeacon(
-        beaconId
-      );
-      setCertificate(certData);
-    }
-
-    getCertificate();
+    exportsGateway.getCertificateDataForBeacon(beaconId).then(setCertificate);
   }, [beaconId, exportsGateway]);
 
-  if (certificate.beacon) {
-    return <Certificate certificate={certificate} />;
-  } else {
-    return (
-      <div>
-        <p>No certificate available</p>
-      </div>
-    );
+  switch (certificate.type) {
+    case "Migrated":
+      return <LegacyCertificate certificate={certificate} />;
+    case "New":
+      return <Certificate certificate={certificate} />;
+    default:
+      return (
+        <div>
+          <p>No certificate available</p>
+        </div>
+      );
   }
 };

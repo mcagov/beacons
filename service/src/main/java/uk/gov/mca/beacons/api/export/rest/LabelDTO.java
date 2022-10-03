@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.registration.rest;
+package uk.gov.mca.beacons.api.export.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
