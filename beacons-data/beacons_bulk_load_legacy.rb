@@ -247,8 +247,8 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 		"note": Faker::Movies::StarWars.quote,
 		"hexId": hex_id,
 		"model": model,
-		"coding": $default_value,
-		"protocol": $default_value,
+		"coding": coding,
+		"protocol": protocol,
 		"isPending": "N",
 		"beaconType": "EPIRB",
 		"isArchived": "N",
@@ -269,7 +269,8 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 		"cospasSarsatNumber": Faker::Base.numerify("######"),
 		"firstRegistrationDate": created_date,
 		"manufacturerSerialNumber": manufacturer_serial_number,
-		"csta": csta
+		"csta": csta,
+		"mti": mti
 	}
 end
 
