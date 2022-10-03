@@ -118,6 +118,7 @@ def buildBeaconUse(environment, activity, main_use,created_date,last_modified_da
 	vessel_name = Faker::Artist.name
 	more_details = Faker::Movies::StarWars.quote
 	purpose = ["PLEASURE", "COMMERCIAL"].sample
+	position = "#{Faker::Address.latitude} #{Faker::Address.longitude}"
 
 	# Maritime only fields
 	if environment == "MARITIME"
@@ -237,6 +238,11 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 	model = Faker::Vehicle.model(make_of_model: manufacturer)
 	manufacturer_serial_number = Faker::Number.number(digits: 5).to_s
 
+	csta = Faker::Number.number(digits: 3).to_s
+	coding = "SN #{Faker::Number.number(digits: 5).to_s}"
+	protocol = "EPIRB, NON-GPS, CSTA, SERIALISED"
+	mti = Faker::Number.number(digits: 4).to_s
+
 	return {
 		"note": Faker::Movies::StarWars.quote,
 		"hexId": hex_id,
@@ -259,10 +265,11 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 		"lastServiceDate": $default_value,
 		"withdrawnReason": $default_value,
 		"lastModifiedDate": last_modified_date,
-		"batteryExpiryDate": $default_value,
+		"batteryExpiryDate": created_date,
 		"cospasSarsatNumber": Faker::Base.numerify("######"),
 		"firstRegistrationDate": created_date,
-		"manufacturerSerialNumber": manufacturer_serial_number
+		"manufacturerSerialNumber": manufacturer_serial_number,
+		"csta": csta
 	}
 end
 
