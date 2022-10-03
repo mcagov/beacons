@@ -1,18 +1,23 @@
 package uk.gov.mca.beacons.api.export.mappers;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
+import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.mappers.BeaconOwnerMapper;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
+import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.mappers.EmergencyContactMapper;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
@@ -20,6 +25,7 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.note.mappers.NoteMapper;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
+import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 
 @Component("CertificateMapper")
@@ -33,7 +39,7 @@ public class ExportMapper {
   private final BeaconUseMapper beaconUseMapper;
   private final BeaconOwnerMapper beaconOwnerMapper;
   private final EmergencyContactMapper emergencyContactMapper;
-  private final NoteMapper noteMapper;
+  private final AddressMapper addressMapper;
 
   @Autowired
   public ExportMapper(
@@ -41,13 +47,13 @@ public class ExportMapper {
     BeaconUseMapper beaconUseMapper,
     BeaconOwnerMapper beaconOwnerMapper,
     EmergencyContactMapper emergencyContactMapper,
-    NoteMapper noteMapper
+    AddressMapper addressMapper
   ) {
     this.beaconMapper = beaconMapper;
     this.beaconUseMapper = beaconUseMapper;
     this.beaconOwnerMapper = beaconOwnerMapper;
     this.emergencyContactMapper = emergencyContactMapper;
-    this.noteMapper = noteMapper;
+    this.addressMapper = addressMapper;
   }
 
   public LabelDTO toLabelDTO(Registration registration) {
@@ -74,9 +80,60 @@ public class ExportMapper {
     Registration registration,
     List<Note> nonSystemNotes
   ) {
-    Beacon beacon = new Beacon();
+    Beacon beacon = registration.getBeacon();
 
-    return CertificateDTO.builder().build();
+    return CertificateDTO
+      .builder()
+      .type("New")
+      .proofOfRegistrationDate(
+        beacon.getLastModifiedDate() != null
+          ? beacon.getLastModifiedDate().toLocalDateTime()
+          : null
+      )
+      .recordCreatedDate(
+        beacon.getCreatedDate() != null
+          ? beacon.getCreatedDate().toLocalDateTime()
+          : null
+      )
+      .beaconStatus(beacon.getBeaconStatus().toString())
+      .hexId(beacon.getHexId())
+      .manufacturer(beacon.getManufacturer())
+      .manufacturerSerialNumber(beacon.getManufacturerSerialNumber())
+      .beaconModel(beacon.getModel())
+      .beaconlastServiced(
+        beacon.getLastServicedDate() != null
+          ? beacon.getLastServicedDate().atStartOfDay()
+          : null
+      )
+      .beaconCoding(beacon.getCoding())
+      .batteryExpiryDate(
+        beacon.getBatteryExpiryDate() != null
+          ? beacon.getBatteryExpiryDate().atStartOfDay()
+          : null
+      )
+      .codingProtocol(beacon.getProtocol())
+      .cstaNumber(beacon.getCsta())
+      .notes(
+        nonSystemNotes
+          .stream()
+          .map(n ->
+            new CertificateNoteDTO(
+              n.getCreatedDate().toLocalDateTime(),
+              n.getText()
+            )
+          )
+          .collect(Collectors.toList())
+      )
+      .uses(toUsesDTO(registration.getBeaconUses()))
+      .owners(toOwnersDTO(registration.getBeaconOwner()))
+      .emergencyContacts(
+        toEmergencyContactsDTO(registration.getEmergencyContacts())
+      )
+      .build();
+  }
+
+  private List<CertificateUseDTO> toUsesDTO(List<BeaconUse> beaconUses) {
+    return new ArrayList<CertificateUseDTO>();
   }
 
   public CertificateDTO toLegacyCertificateDTO(LegacyBeacon beacon) {
@@ -84,9 +141,10 @@ public class ExportMapper {
 
     return CertificateDTO
       .builder()
-      .proofOfRegistrationDate(beacon.getLastModifiedDate())
+      .type("Legacy")
+      .proofOfRegistrationDate(beacon.getLastModifiedDate().toLocalDateTime())
       .departmentReference(details.getDepartRefId())
-      .recordCreatedDate(beacon.getCreatedDate())
+      .recordCreatedDate(dateFromString(details.getFirstRegistrationDate()))
       .beaconStatus(beacon.getBeaconStatus())
       .hexId(beacon.getHexId())
       .manufacturer(details.getManufacturer())
@@ -107,12 +165,50 @@ public class ExportMapper {
       .build();
   }
 
-  private OffsetDateTime dateFromString(String dateString) {
+  private LocalDateTime dateFromString(String dateString) {
     try {
-      return OffsetDateTime.parse(dateString);
+      return LocalDateTime.parse(dateString);
     } catch (Exception e) {
       return null;
     }
+  }
+
+  private List<CertificateOwnerDTO> toOwnersDTO(BeaconOwner owner) {
+    AddressDTO address = addressMapper.toDTO(owner.getAddress());
+
+    return Arrays.asList(
+      CertificateOwnerDTO
+        .builder()
+        .ownerName(owner.getFullName())
+        .address(address)
+        .telephoneNumbers(
+          String.join(
+            " / ",
+            Arrays.asList(
+              owner.getTelephoneNumber(),
+              owner.getAlternativeTelephoneNumber()
+            )
+          )
+        )
+        .email(owner.getEmail())
+        .build()
+    );
+  }
+
+  private List<EmergencyContactDTO> toEmergencyContactsDTO(
+    List<EmergencyContact> emergencyContacts
+  ) {
+    return emergencyContacts
+      .stream()
+      .map(ec ->
+        EmergencyContactDTO
+          .builder()
+          .fullName(ec.getFullName())
+          .telephoneNumber(ec.getTelephoneNumber())
+          .alternativeTelephoneNumber(ec.getAlternativeTelephoneNumber())
+          .build()
+      )
+      .collect(Collectors.toList());
   }
 
   private List<EmergencyContactDTO> toLegacyEmergencyContacts(
@@ -172,22 +268,26 @@ public class ExportMapper {
     for (LegacyUse use : uses) {
       switch (use.getEnvironment()) {
         case "Maritime":
-          usesDTO.add(toLegacyMaritimeUse(use));
+          usesDTO.add(toMaritimeUse(use));
           break;
         case "Aviation":
-          usesDTO.add(toLegacyAviationUse(use));
+          usesDTO.add(toAviationUse(use));
           break;
         case "Land":
-          usesDTO.add(toLegacyLandUse(use));
+          usesDTO.add(toLandUse(use));
+          break;
+        default:
+          usesDTO.add(toLegacyUse(use));
           break;
       }
     }
     return usesDTO;
   }
 
-  private CertificateMaritimeUseDTO toLegacyMaritimeUse(LegacyUse use) {
+  private CertificateMaritimeUseDTO toMaritimeUse(LegacyUse use) {
     return CertificateMaritimeUseDTO
       .builder()
+      .environment(use.getEnvironment())
       .vesselName(use.getVesselName())
       .homePort(use.getHomePort())
       .vessel(use.getVesselType())
@@ -205,9 +305,10 @@ public class ExportMapper {
       .build();
   }
 
-  private CertificateAviationUseDTO toLegacyAviationUse(LegacyUse use) {
+  private CertificateAviationUseDTO toAviationUse(LegacyUse use) {
     return CertificateAviationUseDTO
       .builder()
+      .environment(use.getEnvironment())
       .aircraftType(use.getAircraftType())
       .maxPersonOnBoard(use.getMaxPersons())
       .aircraftRegistrationMark(use.getAircraftRegistrationMark())
@@ -218,9 +319,44 @@ public class ExportMapper {
       .build();
   }
 
-  private CertificateLandUseDTO toLegacyLandUse(LegacyUse use) {
+  private CertificateLandUseDTO toLandUse(LegacyUse use) {
     return CertificateLandUseDTO
       .builder()
+      .environment(use.getEnvironment())
+      .descriptionOfIntendedUse(use.getUseType()) //Unsure
+      .numberOfPersonsOnBoard(use.getMaxPersons())
+      .areaOfUse(use.getAreaOfUse())
+      .tripInformation(use.getTripInfo())
+      .radioSystem(use.getCommunications()) // Unsure on this.
+      .notes(use.getNotes())
+      .build();
+  }
+
+  private CertificateGenericUseDTO toLegacyUse(LegacyUse use) {
+    return CertificateGenericUseDTO
+      .builder()
+      .environment(use.getEnvironment())
+      .vesselName(use.getVesselName())
+      .homePort(use.getHomePort())
+      .vessel(use.getVesselType())
+      .maxPersonOnBoard(use.getMaxPersons())
+      .vesselCallsign(use.getCallSign())
+      .mmsiNumber(use.getMmsiNumber().toString())
+      .radioSystem(use.getCommunications()) // Unsure on this.
+      .notes(use.getNotes())
+      .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
+      .officialNumber(use.getOfficialNumber())
+      .imoNumber(use.getImoNumber())
+      .rssAndSsrNumber(use.getRssSsrNumber())
+      .hullIdNumber(use.getHullIdNumber())
+      .coastguardCGRefNumber(use.getCg66RefNumber())
+      .aircraftType(use.getAircraftType())
+      .maxPersonOnBoard(use.getMaxPersons())
+      .aircraftRegistrationMark(use.getAircraftRegistrationMark())
+      .TwentyFourBitAddressInHex(use.getBit24AddressHex())
+      .principalAirport(use.getPrincipalAirport())
+      .radioSystem(use.getCommunications()) // Unsure on this.
+      .notes(use.getNotes())
       .descriptionOfIntendedUse(use.getUseType()) //Unsure
       .numberOfPersonsOnBoard(use.getMaxPersons())
       .areaOfUse(use.getAreaOfUse())

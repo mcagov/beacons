@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export.rest;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.validation.Valid;
 import lombok.*;
@@ -12,7 +13,7 @@ import lombok.*;
 public class CertificateNoteDTO {
 
   @Valid
-  private Date date;
+  private LocalDateTime date;
 
   @Valid
   private String note;

@@ -22,7 +22,7 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
   }, [beaconId, exportsGateway]);
 
   switch (certificate.type) {
-    case "Migrated":
+    case "Legacy":
       return <LegacyCertificate certificate={certificate} />;
     case "New":
       return <Certificate certificate={certificate} />;

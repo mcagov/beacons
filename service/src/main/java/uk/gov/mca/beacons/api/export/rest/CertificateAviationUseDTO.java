@@ -12,7 +12,7 @@ import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
 public class CertificateAviationUseDTO extends CertificateUseDTO {
 
   @Valid
-  private final Environment environment = Environment.AVIATION;
+  private String environment;
 
   @Valid
   private String aircraftType;

@@ -12,7 +12,7 @@ import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
 public class CertificateLandUseDTO extends CertificateUseDTO {
 
   @Valid
-  private final Environment environment = Environment.LAND;
+  private String environment;
 
   @Valid
   private String descriptionOfIntendedUse;

@@ -1,48 +1,15 @@
 import "./certificate.scss";
 import { FunctionComponent } from "react";
-import { ICertificate } from "gateways/exports/ICertificate";
-import { INoteResponseData } from "gateways/mappers/INoteResponseData";
-import { Environments, IUse } from "../../entities/IUse";
-import { IOwner } from "entities/IOwner";
-import { IEmergencyContact } from "entities/IEmergencyContact";
-import { getVesselCommunicationsFields } from "../../utils/utils";
-import { IField } from "../../utils/IField";
 import { customDateStringFormat } from "../../utils/dateTime";
-import { IRegistrationResponse } from "gateways/mappers/IRegistrationResponse";
 import {
   CertificateHeader,
   CertificateFooter,
   CertificateField,
+  CertificateProps,
+  UseProps,
+  GenericUse,
 } from "./BaseCertificate";
-
-interface CertificateProps {
-  certificate: ICertificate;
-}
-
-interface NotesSectionProps {
-  notes: INoteResponseData[];
-}
-
-interface UsesSectionProps {
-  uses: IUse[];
-}
-
-interface UseSectionProps {
-  use: IUse;
-  index: number;
-}
-
-interface RegistrationProps {
-  registration: IRegistrationResponse;
-}
-
-interface OwnerDetailsProps {
-  owner: IOwner;
-}
-
-interface EmergencyContactsSectionProps {
-  emergencyContacts: IEmergencyContact[];
-}
+import { Environments } from "../../entities/IUse";
 
 export const Certificate: FunctionComponent<CertificateProps> = ({
   certificate,
@@ -58,7 +25,7 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
             classes="half"
             title="Record Created Date"
             value={customDateStringFormat(
-              certificate.beacon.createdDate,
+              certificate.recordCreatedDate,
               "DD MMMM yyyy"
             )}
           />
@@ -66,125 +33,132 @@ export const Certificate: FunctionComponent<CertificateProps> = ({
             classes="half"
             title="Last Modified"
             value={customDateStringFormat(
-              certificate.beacon.lastModifiedDate,
+              certificate.lastModifiedDate,
               "DD MMMM yyyy"
             )}
           />
           <CertificateField
             classes="full"
             title="Beacon Status"
-            value={certificate.beacon.status}
+            value={certificate.beaconStatus}
           />
         </div>
 
-        <RegistrationSection registration={certificate.beacon} />
-        <NotesSection notes={certificate.notes} />
+        <BeaconSection certificate={certificate} />
 
-        <UsesSection uses={certificate.uses} />
+        <NotesSection certificate={certificate} />
 
-        <OwnerDetails owner={certificate.owner as IOwner} />
+        <UsesSection certificate={certificate} />
 
-        <EmergencyContactsSection
-          emergencyContacts={certificate.emergencyContacts}
-        />
+        <OwnersSection certificate={certificate} />
+
+        <EmergencyContactsSection certificate={certificate} />
       </div>
       <CertificateFooter />
     </div>
   );
 };
 
-const RegistrationSection = ({
-  registration,
-}: RegistrationProps): JSX.Element => {
-  const beacon = registration;
+const BeaconSection = ({ certificate }: CertificateProps): JSX.Element => {
   return (
     <div className="section">
       <h3>Beacon Details:</h3>
 
-      <CertificateField classes="full" title="Hex Id" value={beacon.hexId} />
+      <CertificateField
+        classes="full"
+        title="Hex Id"
+        value={certificate.hexId}
+      />
       <CertificateField
         classes="half"
         title="Manufacturer"
-        value={beacon.manufacturer}
+        value={certificate.manufacturer}
       />
       {/* ToDO - Wrong value. */}
       <CertificateField
         classes="half"
         title="SERIAL NO"
-        value={beacon.manufacturerSerialNumber}
+        value={certificate.manufacturerSerialNumber}
       />
       <CertificateField
         classes="full"
         title="Manufacturer Serial No"
-        value={beacon.manufacturerSerialNumber}
+        value={certificate.manufacturerSerialNumber}
       />
       <CertificateField
         classes="half"
         title="Beacon Model"
-        value={beacon.manufacturerSerialNumber}
+        value={certificate.manufacturerSerialNumber}
       />
       <CertificateField
         classes="half"
         title="Beacon Last Serviced"
-        value={beacon.lastServicedDate}
+        value={customDateStringFormat(
+          certificate.beaconlastServiced,
+          "MMMM yyyy"
+        )}
       />
       <CertificateField
         classes="half"
         title="Beacon Coding"
-        value={beacon.coding}
+        value={certificate.beaconCoding}
       />
       <CertificateField
         classes="half"
         title="Beacon Expiry Date"
-        value={customDateStringFormat(beacon.batteryExpiryDate, "MMMM yyyy")}
+        value={customDateStringFormat(
+          certificate.batteryExpiryDate,
+          "MMMM yyyy"
+        )}
       />
       <CertificateField
         classes="half"
         title="Coding Protocol"
-        value={beacon.protocol}
+        value={certificate.codingProtocol}
       />
       <CertificateField
         classes="half"
         title="Csta Number"
-        value={beacon.csta}
+        value={certificate.cstaNumber}
       />
     </div>
   );
 };
-const NotesSection: FunctionComponent<NotesSectionProps> = ({
-  notes,
+const NotesSection: FunctionComponent<CertificateProps> = ({
+  certificate,
 }): JSX.Element => {
   return (
     <div className="section">
-      <span className="title">NOTES:</span>
-      {notes.map((note) => (
-        <span className="note">
-          | {customDateStringFormat(note.attributes.createdDate, "DD/MM/yyyy")}:{" "}
-          {note.attributes.text}
-        </span>
-      ))}
+      <span className="title">NOTES: </span>
+      {certificate.notes &&
+        certificate.notes.map((note, index) => (
+          <span className="note" key={index}>
+            {customDateStringFormat(note.date, "DD/MM/yyyy")}: {note.note}
+          </span>
+        ))}
     </div>
   );
 };
 
-const UsesSection: FunctionComponent<UsesSectionProps> = ({
-  uses,
+const UsesSection: FunctionComponent<CertificateProps> = ({
+  certificate,
 }): JSX.Element => {
   return (
     <div className="section">
       <span className="title">BEACON USES:</span>
 
-      {uses.map((use, index) => (
-        <UseSection use={use} index={index + 1} />
-      ))}
+      {certificate.uses &&
+        certificate.uses.map((use, index) => (
+          <UseSection use={use} index={index + 1} key={index} />
+        ))}
     </div>
   );
 };
 
-const UseSection: FunctionComponent<UseSectionProps> = ({
+const UseSection: FunctionComponent<UseProps> = ({
   use,
   index,
-}: UseSectionProps): JSX.Element => {
+}: UseProps): JSX.Element => {
   switch (use.environment) {
     case Environments.Maritime:
       return <MaritimeUse use={use} index={index} />;
@@ -193,18 +167,14 @@ const UseSection: FunctionComponent<UseSectionProps> = ({
     case Environments.Land:
       return <LandUse use={use} index={index} />;
     default:
-      return <LandUse use={use} index={index} />;
+      return <GenericUse use={use} index={index} />;
   }
 };
 
-const MaritimeUse: FunctionComponent<UseSectionProps> = ({
+const MaritimeUse: FunctionComponent<UseProps> = ({
   use,
   index,
-}: UseSectionProps): JSX.Element => {
-  const communicationFields: IField[] = getVesselCommunicationsFields(
-    use
-  ).filter((field) => field.key?.includes("Communication"));
-
+}: UseProps): JSX.Element => {
   return (
     <div className="use full">
       <h4 className="title use"> {use.environment + ` (${index})`}</h4>
@@ -219,36 +189,29 @@ const MaritimeUse: FunctionComponent<UseSectionProps> = ({
         <CertificateField
           classes="half"
           title="Homeport"
-          value={use.homeport}
+          value={use.homePort}
         />
         <CertificateField classes="half" title="Vessel" value={"TODO"} />
         <CertificateField
           classes="half"
           title="Max Person On Board"
-          value={use.maxCapacity}
+          value={use.maxPersonOnBoard}
         />
         <CertificateField
           classes="half"
           title="Vessel Callsign"
-          value={use.callSign}
+          value={use.vesselCallsign}
         />
         <CertificateField
           classes="half"
           title="MMSI Number"
-          value={use.fixedVhfRadioValue}
+          value={use.mmsiNumber}
         />
-        <CertificateField classes="full" title="Radio System" value={"TODO"} />
-
-        {/* <div className="subItem">
-            <span className="title">RADIO SYSTEM(S): </span>
-            {communicationFields.map((field) => (
-              <span key={field.key}>
-                <div>
-                  {field.key}: {field.value}
-                </div>
-              </span>
-            ))}
-          </div> */}
+        <CertificateField
+          classes="full"
+          title="Radio System"
+          value={use.radioSystem}
+        />
       </div>
 
       <div className="section">
@@ -256,7 +219,7 @@ const MaritimeUse: FunctionComponent<UseSectionProps> = ({
         <CertificateField
           classes="full"
           title="Fishing Vessel Port ID &amp; Numbers"
-          value={use.portLetterNumber}
+          value={use.fishingVesselPortIdAndNumbers}
         />
         <CertificateField
           classes="half"
@@ -271,27 +234,27 @@ const MaritimeUse: FunctionComponent<UseSectionProps> = ({
         <CertificateField
           classes="half"
           title="RSS/SSR Number"
-          value={`${use.rssNumber || "N/A"} / ${use.ssrNumber || "N/A"}`}
+          value={use.rssAndSsrNumber}
         />
         <CertificateField
           classes="half"
           title="Hull ID Number"
-          value={"TODO"}
+          value={use.hullIdNumber}
         />
         <CertificateField
           classes="full"
           title="Coastguard CG66 Reference Number"
-          value={"TODO"}
+          value={use.coastguardCGRefNumber}
         />
       </div>
     </div>
   );
 };
 
-const AviationUse: FunctionComponent<UseSectionProps> = ({
+const AviationUse: FunctionComponent<UseProps> = ({
   use,
   index,
-}: UseSectionProps): JSX.Element => {
+}: UseProps): JSX.Element => {
   return (
     <div className="use full">
       <h4 className="title use"> {use.environment + ` (${index})`}</h4>
@@ -302,17 +265,17 @@ const AviationUse: FunctionComponent<UseSectionProps> = ({
         <CertificateField
           classes="half"
           title="Max Person On Board"
-          value={use.maxCapacity}
+          value={use.maxPersonOnBoard}
         />
         <CertificateField
           classes="full"
           title="Aircraft Registration Mark"
-          value={"TODO"}
+          value={use.aircraftRegistrationMark}
         />
         <CertificateField
           classes="full"
           title="24-Bit Address In Hex"
-          value={"TODO"}
+          value={use.TwentyFourBitAddressInHex}
         />
         <CertificateField
           classes="full"
@@ -323,27 +286,17 @@ const AviationUse: FunctionComponent<UseSectionProps> = ({
         <CertificateField
           classes="full"
           title="Aircraft Operators Designator (AOD) &amp; Serial No"
-          value={"TODO"}
+          value={use.aircraftOperatorsDesignatorAndSerialNo}
         />
-        {/* <div className="subItem">
-            <span className="title">RADIO SYSTEM(S): </span>
-            {communicationFields.map((field) => (
-              <span key={field.key}>
-                <div>
-                  {field.key}: {field.value}
-                </div>
-              </span>
-            ))}
-          </div> */}
       </div>
     </div>
   );
 };
 
-const LandUse: FunctionComponent<UseSectionProps> = ({
+const LandUse: FunctionComponent<UseProps> = ({
   use,
   index,
-}: UseSectionProps): JSX.Element => {
+}: UseProps): JSX.Element => {
   return (
     <div className="use full">
       <h4 className="title use"> {use.environment + ` (${index})`}</h4>
@@ -353,81 +306,96 @@ const LandUse: FunctionComponent<UseSectionProps> = ({
         <CertificateField
           classes="full"
           title="Description Of Intended Use"
-          value={"TODO"}
+          value={use.descriptionOfIntendedUse}
         />
         <CertificateField
           classes="full"
           title="Number Of Persons On Board"
-          value={use.maxCapacity}
+          value={use.maxPersonOnBoard}
         />
         <CertificateField classes="full" title="Area Of Use" value={"TODO"} />
         <CertificateField
           classes="full"
           title="Current/Future Trip Information"
-          value={"TODO"}
+          value={use.tripInformation}
         />
-        <CertificateField classes="full" title="Radio System" value={"TODO"} />
-        {/* <div className="subItem">
-              <span className="title">RADIO SYSTEM(S): </span>
-              {communicationFields.map((field) => (
-                <span key={field.key}>
-                  <div>
-                    {field.key}: {field.value}
-                  </div>
-                </span>
-              ))}
-            </div> */}
+        <CertificateField
+          classes="full"
+          title="Radio System"
+          value={use.radioSystem}
+        />
       </div>
     </div>
   );
 };
 
-const OwnerDetails: FunctionComponent<OwnerDetailsProps> = ({
-  owner,
+const OwnersSection: FunctionComponent<CertificateProps> = ({
+  certificate,
 }): JSX.Element => {
   return (
-    <div className="section">
-      <h3>Owner Details:</h3>
-      {/* This value seems wrong. */}
-      <CertificateField
-        classes="full"
-        title="Owner(s)"
-        value={owner.fullName}
-      />
-      <CertificateField classes="half" title="Company Agent" value={"TODO"} />
-      <CertificateField classes="half" title="Care Of" value={"TODO"} />
+    <div className="owner-details">
+      {certificate.owners &&
+        certificate.owners.map((owner, index) => {
+          <div className="section" key={index}>
+            <h3>Owner Details:</h3>
+            <CertificateField
+              classes="full"
+              title="Owner(s)"
+              value={owner.ownerName}
+            />
+            <CertificateField
+              classes="half"
+              title="Company Agent"
+              value={"TODO"}
+            />
+            <CertificateField classes="half" title="Care Of" value={"TODO"} />
 
-      <div className="half address">
-        <span className="title">Address: </span>
-        <div className="address-fields">
-          {[
-            owner.addressLine1,
-            owner.addressLine2,
-            owner.addressLine3,
-            owner.addressLine4,
-            owner.townOrCity,
-            owner.county,
-            owner.postcode,
-          ].map((line) => (
-            <span>{line}</span>
-          ))}
-        </div>
-      </div>
-      <CertificateField classes="half" title="Country" value={owner.country} />
-      <CertificateField
-        classes="half"
-        title="Tels"
-        value={`${owner.telephoneNumber} / ${owner.alternativeTelephoneNumber}`}
-      />
-      <CertificateField classes="half" title="Mobiles" value={"TODO"} />
-      <CertificateField classes="half" title="Email" value={owner.email} />
+            <div className="half address">
+              <span className="title">Address: </span>
+              <div className="address-fields">
+                {[
+                  owner.addressLine1,
+                  owner.addressLine2,
+                  owner.addressLine3,
+                  owner.addressLine4,
+                  owner.townOrCity,
+                  owner.county,
+                  owner.postcode,
+                ].map((line, index) => (
+                  <span key={index}>{line}</span>
+                ))}
+              </div>
+            </div>
+            <CertificateField
+              classes="half"
+              title="Country"
+              value={owner.country}
+            />
+            <CertificateField
+              classes="half"
+              title="Tels"
+              value={owner.telephoneNumbers}
+            />
+            <CertificateField
+              classes="half"
+              title="Mobiles"
+              value={owner.mobiles}
+            />
+            <CertificateField
+              classes="half"
+              title="Email"
+              value={owner.email}
+            />
+          </div>;
+        })}
     </div>
   );
 };
 
-const EmergencyContactsSection: FunctionComponent<
-  EmergencyContactsSectionProps
-> = ({ emergencyContacts }): JSX.Element => {
+const EmergencyContactsSection: FunctionComponent<CertificateProps> = ({
+  certificate,
+}): JSX.Element => {
+  const emergencyContacts = certificate.emergencyContacts;
   const hasEmergencyContacts =
     emergencyContacts != null && emergencyContacts.length > 0;
   return (

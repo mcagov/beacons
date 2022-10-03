@@ -1,9 +1,11 @@
 package uk.gov.mca.beacons.api.export.rest;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.*;
+import org.joda.time.DateTime;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 
 @Getter
@@ -14,17 +16,20 @@ import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 public class CertificateDTO {
 
   @Valid
-  private OffsetDateTime proofOfRegistrationDate;
+  private String type;
+
+  @Valid
+  private LocalDateTime proofOfRegistrationDate;
 
   @Valid
   //This is only valid for legacy.
   private String departmentReference;
 
   @Valid
-  private OffsetDateTime recordCreatedDate;
+  private LocalDateTime recordCreatedDate;
 
   @Valid
-  private OffsetDateTime lastModifiedDate;
+  private LocalDateTime lastModifiedDate;
 
   @Valid
   private String beaconStatus;
@@ -45,13 +50,13 @@ public class CertificateDTO {
   private String beaconModel;
 
   @Valid
-  private OffsetDateTime beaconlastServiced;
+  private LocalDateTime beaconlastServiced;
 
   @Valid
   private String beaconCoding;
 
   @Valid
-  private OffsetDateTime batteryExpiryDate;
+  private LocalDateTime batteryExpiryDate;
 
   @Valid
   private String codingProtocol;

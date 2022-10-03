@@ -19,7 +19,7 @@ export const formatDateTime = (dateTimeString: string): string => {
 };
 
 export const customDateStringFormat = (
-  dateTimeString: string | undefined,
+  dateTimeString: string | Date | undefined,
   format: string
 ): string => {
   const date = moment(dateTimeString);
