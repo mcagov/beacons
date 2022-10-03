@@ -117,6 +117,15 @@ $7, $8)')
   create_user_id = 1
   update_user_id = 1
 
+  chk_code = "CB#{Faker::Number.number(digits: 2)}F"
+  battery_expiry_date = Faker::Date.between(from: '2012-01-01', to: '2024-07-24')
+  last_service_date = Faker::Date.between(from: '2012-01-01', to: '2022-07-24')
+  reference_number = "#{Faker::String.random(length: 3)}#{Faker::Number.number(digits: 3)}"
+  mti = Faker::Number.number(digits: 5)
+  svdr = Faker::Number.number(digits: 4)
+  csta = Faker::Number.number(digits: 3).to_s
+  protocol = "EPIRB Standard Location, GPS, MMS"
+
   #Insert Beacon & User info:
 
   # Insert account holder
@@ -125,14 +134,16 @@ $7, $8)')
     country, telephone_number, telephone_number, created_date, created_date])
 
     # Insert Beacon
-    conn.exec_prepared('beacon', [ beacon_uuid, created_date,
-  account_holder_uuid, hex_id, beacon_status, manufacturer, model,
-  manufacturer_serial_number, created_date, beacon_type])
+  conn.exec_prepared('beacon', [ beacon_uuid, created_date,
+    account_holder_uuid, hex_id, beacon_status, manufacturer, model,
+    manufacturer_serial_number, created_date, beacon_type, chk_code,
+    battery_expiry_date, last_service_date, reference_number, mti,
+    svdr, csta, protocol])
 
     # Insert beacon owner
-    conn.exec_prepared('beacon_owner', [ beacon_owner_uuid, beacon_uuid,
-  fullname, email, address1, address2, nil, nil, town, postcode, county,
-  country, telephone_number, telephone_number, created_date, created_date])
+  conn.exec_prepared('beacon_owner', [ beacon_owner_uuid, beacon_uuid,
+    fullname, email, address1, address2, nil, nil, town, postcode, county,
+    country, telephone_number, telephone_number, created_date, created_date])
 
 Faker::Number.between(from: 5, to: 6).times do
 
