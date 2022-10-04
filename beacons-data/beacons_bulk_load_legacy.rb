@@ -118,12 +118,18 @@ def buildBeaconUse(environment, activity, main_use,created_date,last_modified_da
 	vessel_name = Faker::Artist.name
 	more_details = Faker::Movies::StarWars.quote
 	purpose = ["PLEASURE", "COMMERCIAL"].sample
+	position = "#{Faker::Address.latitude} #{Faker::Address.longitude}"
+	tripInfo = Faker::Movies::Hobbit.quote
 
 	# Maritime only fields
 	if environment == "MARITIME"
 		homePort = Faker::Address.city
 		vessel_type = purpose
 		beacon_location = ["Cabin", "Hull", "On Life Jacket", "Backpack"].sample
+		area_of_use = "UK AND NORTH SEA COASTAL PORTS"
+		fishing_vessel_pln = Faker::Number.number(digits: 6)
+		hull_id_number = Faker::Alphanumeric.alphanumeric(number: 8)
+		survival_craft_type = "Maritime dinghy"
 	end
 
 	#Aircraft only fields
@@ -133,18 +139,24 @@ def buildBeaconUse(environment, activity, main_use,created_date,last_modified_da
 		aircraft_registration_mark = Faker::Vehicle.vin
 		principal_airport = Faker::Address.city
 		beacon_location = ["Cabin", "Under Seat", "Hold"].sample
+		area_of_use = "UK SKIES"
+		survival_craft_type = "Aircraft parachute"
 	end
 
 	#Rig/Platform only fields
 	if environment == "RIG/PLATFORM"
 		rigName = Faker::Movies::StarWars.vehicle
 		beacon_location = ["On Platform", "ON Rig"].sample
+		area_of_use = "UK RIG AREAS"
+		survival_craft_type = "Rig survival craft"
 	end
 
 	#Land only fields
 	if environment == "LAND"
 		landUse = activity
 		beacon_location = ["In Backpack", "On Person", "In Vehicle"].sample
+		area_of_use = "UK INLAND AREAS"
+		survival_craft_type = "Land buggy"
 	end
 
 	#MOD only fields
@@ -153,22 +165,24 @@ def buildBeaconUse(environment, activity, main_use,created_date,last_modified_da
 		mod_type = Faker::Vehicle.model
 		mod_status = ["ACTIVE","INACTIVE"].sample
 		mod_variant = Faker::Vehicle.manufacture
+		area_of_use = "MOD CLASSIFIED AREA"
+		survival_craft_type = "MOD classified survival craft"
 	end
 
 	return {
 		"note": Faker::Movies::StarWars.quote,
-		"notes": $default_value,
+		"notes": Faker::Movies::HarryPotter.quote,
 		"isMain": main_use,
 		"landUse": landUse,
 		"rigName": rigName,
 		"useType": activity,
 		"callSign": call_sign,
 		"homePort": homePort,
-		"position": $default_value,
-		"tripInfo": $default_value,
-		"areaOfUse": $default_value,
-		"beaconNsn": $default_value,
-		"imoNumber": $default_value,
+		"position": position,
+		"tripInfo": tripInfo,
+		"areaOfUse": area_of_use,
+		"beaconNsn": Faker::Number.number(digits: 3),
+		"imoNumber": Faker::Number.number(digits: 4),
 		"fkBeaconId": 6062,
 		"maxPersons": Faker::Number.between(from: 1, to: 10),
 		"mmsiNumber": Faker::Base.numerify("#########"),
@@ -178,23 +192,23 @@ def buildBeaconUse(environment, activity, main_use,created_date,last_modified_da
 		"createdDate": created_date,
 		"aircraftType": aircraft_type,
 		"createUserId": 2889,
-		"hullIdNumber": $default_value,
-		"rssSsrNumber": $default_value,
+		"hullIdNumber": hull_id_number,
+		"rssSsrNumber": Faker::Alphanumeric.alphanumeric(number: 5),
 		"updateUserId": 2889,
-		"cg66RefNumber": $default_value,
-		"pennantNumber": $default_value,
+		"cg66RefNumber": Faker::Alphanumeric.alphanumeric(number: 3),
+		"pennantNumber": Faker::Alphanumeric.alphanumeric(number: 5),
 		"beaconPosition": beacon_location,
 		"communications": "VHF/DSC",
-		"officialNumber": $default_value,
+		"officialNumber": Faker::Number.number(digits: 3),
 		"pkBeaconUsesId": 6057,
-		"aodSerialNumber": $default_value,
-		"bit24AddressHex": $default_value,
-		"beaconPartNumber": $default_value,
-		"fishingVesselPln": $default_value,
+		"aodSerialNumber": Faker::Number.number(digits: 9),
+		"bit24AddressHex": Faker::Alphanumeric.alphanumeric(number: 10),
+		"beaconPartNumber": Faker::Number.between(from: 1, to: 6),
+		"fishingVesselPln": fishing_vessel_pln,
 		"lastModifiedDate": last_modified_date,
 		"principalAirport": principal_airport,
-		"localManagementId": $default_value,
-		"survivalCraftType": $default_value,
+		"localManagementId": Faker::Number.number(digits: 3),
+		"survivalCraftType": survival_craft_type,
 		"aircraftDescription": aircraft_description,
 		"aircraftRegistrationMark": aircraft_registration_mark,
 		"modType": mod_type,
@@ -237,17 +251,23 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 	model = Faker::Vehicle.model(make_of_model: manufacturer)
 	manufacturer_serial_number = Faker::Number.number(digits: 5).to_s
 
+	csta = Faker::Number.number(digits: 3).to_s
+	coding = "SN #{Faker::Number.number(digits: 5).to_s}"
+	protocol = "EPIRB, NON-GPS, CSTA, SERIALISED"
+	mti = Faker::Number.number(digits: 4).to_s
+
 	return {
 		"note": Faker::Movies::StarWars.quote,
 		"hexId": hex_id,
 		"model": model,
-		"coding": $default_value,
-		"protocol": $default_value,
+		"coding": coding,
+		"protocol": protocol,
 		"isPending": "N",
 		"beaconType": "EPIRB",
 		"isArchived": "N",
 		"pkBeaconId": 6062,
 		"statusCode": "ACTIVE",
+		"beaconStatus": "MIGRATED",
 		"versioning": 0,
 		"createdDate": created_date,
 		"departRefId": "1187/02",
@@ -256,13 +276,15 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 		"manufacturer": manufacturer,
 		"serialNumber": manufacturer_serial_number,
 		"updateUserId": 2889,
-		"lastServiceDate": $default_value,
+		"lastServiceDate": last_modified_date,
 		"withdrawnReason": $default_value,
 		"lastModifiedDate": last_modified_date,
-		"batteryExpiryDate": $default_value,
+		"batteryExpiryDate": created_date,
 		"cospasSarsatNumber": Faker::Base.numerify("######"),
 		"firstRegistrationDate": created_date,
-		"manufacturerSerialNumber": manufacturer_serial_number
+		"manufacturerSerialNumber": manufacturer_serial_number,
+		"csta": csta,
+		"mti": mti
 	}
 end
 
