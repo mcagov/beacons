@@ -74,12 +74,6 @@ const BeaconSection = ({ certificate }: CertificateProps): JSX.Element => {
         title="Manufacturer"
         value={certificate.manufacturer}
       />
-      {/* ToDO - Wrong value. */}
-      <CertificateField
-        classes="half"
-        title="SERIAL NO"
-        value={certificate.manufacturerSerialNumber}
-      />
       <CertificateField
         classes="full"
         title="Manufacturer Serial No"
@@ -191,7 +185,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           title="Homeport"
           value={use.homePort}
         />
-        <CertificateField classes="half" title="Vessel" value={"TODO"} />
+        <CertificateField classes="half" title="Vessel" value={use.vessel} />
         <CertificateField
           classes="half"
           title="Max Person On Board"
@@ -261,7 +255,11 @@ const AviationUse: FunctionComponent<UseProps> = ({
       <div className="section">
         <h3>Aircraft Details:</h3>
 
-        <CertificateField classes="half" title="Aircraft Type" value={"TODO"} />
+        <CertificateField
+          classes="half"
+          title="Aircraft Type"
+          value={use.aircraftType}
+        />
         <CertificateField
           classes="half"
           title="Max Person On Board"
@@ -282,11 +280,10 @@ const AviationUse: FunctionComponent<UseProps> = ({
           title="Principal Airport"
           value={use.principalAirport}
         />
-        <CertificateField classes="full" title="Radio System" value={"TODO"} />
         <CertificateField
           classes="full"
-          title="Aircraft Operators Designator (AOD) &amp; Serial No"
-          value={use.aircraftOperatorsDesignatorAndSerialNo}
+          title="Radio System"
+          value={use.radioSystem}
         />
       </div>
     </div>
@@ -313,7 +310,11 @@ const LandUse: FunctionComponent<UseProps> = ({
           title="Number Of Persons On Board"
           value={use.maxPersonOnBoard}
         />
-        <CertificateField classes="full" title="Area Of Use" value={"TODO"} />
+        <CertificateField
+          classes="full"
+          title="Area Of Use"
+          value={use.areaOfUse}
+        />
         <CertificateField
           classes="full"
           title="Current/Future Trip Information"
@@ -343,12 +344,6 @@ const OwnersSection: FunctionComponent<CertificateProps> = ({
               title="Owner(s)"
               value={owner.ownerName}
             />
-            <CertificateField
-              classes="half"
-              title="Company Agent"
-              value={"TODO"}
-            />
-            <CertificateField classes="half" title="Care Of" value={"TODO"} />
 
             <div className="half address">
               <span className="title">Address: </span>

@@ -1,5 +1,5 @@
 import "./certificate.scss";
-import { Fragment, FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import { customDateStringFormat } from "../../utils/dateTime";
 import {
   CertificateHeader,
@@ -10,8 +10,6 @@ import {
   GenericUse,
 } from "./BaseCertificate";
 import { Environments } from "../../entities/IUse";
-import { json } from "express";
-import { ECDH } from "crypto";
 
 export const LegacyCertificate: FunctionComponent<CertificateProps> = ({
   certificate,
@@ -276,11 +274,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
           classes="full"
           title="Radio System"
           value={use.radioSystem}
-        />
-        <CertificateField
-          classes="full"
-          title="Aircraft Operators Designator (AOD) &amp; Serial No"
-          value={use.aircraftOperatorsDesignatorAndSerialNo}
         />
         <CertificateField classes="full" title="Notes" value={use.notes} />
       </div>

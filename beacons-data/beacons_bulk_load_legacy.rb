@@ -58,8 +58,8 @@ def populateBeacons
 
 		# generate random data
 		uuid = SecureRandom.uuid
-		created_date = Faker::Date.between(from: '2010-09-01', to: '2020-09-01')
-		last_modified_date = Faker::Date.between(from: '2020-09-01', to: '2021-09-01')
+		created_date = Faker::Time.between_dates(from: '2010-09-01', to: '2020-09-01')
+		last_modified_date = Faker::Time.between_dates(from: '2020-09-01', to: '2021-09-01')
 		beacon_status = "MIGRATED"
 
 		person_uuid = SecureRandom.uuid

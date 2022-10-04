@@ -49,10 +49,12 @@ $12, $13, $14, $15, $16, $17)')
 conn.prepare("beacon", 'INSERT INTO beacon (id, created_date,
 account_holder_id, hex_id, beacon_status, manufacturer, model,
 manufacturer_serial_number, last_modified_date, beacon_type,
-chk_code, battery_expiry_date, last_serviced_date, reference_number, 
-mti, svdr, csta, protocol) VALUES ($1,
-$2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13,
-$14, $15, $16, $17, $18)')
+chk_code, battery_expiry_date, last_serviced_date,
+reference_number, mti, svdr, csta, protocol, coding) VALUES ($1, $2,
+$3, $4, $5, $6, $7,
+$8, $9, $10,
+$11, $12, $13,
+$14, $15, $16, $17, $18, $19)')
 
 conn.prepare("beacon_owner", 'INSERT INTO beacon_owner (id, beacon_id,
 full_name, email, address_line_1, address_line_2, address_line_3,
@@ -96,7 +98,8 @@ $7, $8)')
   email = Faker::Internet.email
   fullname = Faker::Name.name
 
-  created_date = Faker::Date.between(from: '2012-01-01', to: '2022-07-24')
+  created_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24')
+  last_modified_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24')
   beacon_status = "NEW"
   person_type_emergency = "EMERGENCY_CONTACT"
   person_type_owner = "OWNER"
@@ -121,13 +124,14 @@ $7, $8)')
   update_user_id = 1
 
   chk_code = "CB#{Faker::Number.number(digits: 2)}F"
-  battery_expiry_date = Faker::Date.between(from: '2012-01-01', to: '2024-07-24')
-  last_serviced_date = Faker::Date.between(from: '2012-01-01', to: '2022-07-24')
+  battery_expiry_date = Faker::Time.between_dates(from: '2012-01-01', to: '2024-07-24')
+  last_serviced_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24')
   reference_number = "ABC#{Faker::Number.number(digits: 3)}"
   mti = Faker::Number.number(digits: 5).to_s
   svdr = false
   csta = Faker::Number.number(digits: 3).to_s
   protocol = "EPIRB Standard Location, GPS, MMS"
+  coding = "SN #{Faker::Number.number(digits: 5).to_s}"
 
   #Insert Beacon & User info:
 
@@ -139,9 +143,9 @@ $7, $8)')
     # Insert Beacon
   conn.exec_prepared('beacon', [ beacon_uuid, created_date,
     account_holder_uuid, hex_id, beacon_status, manufacturer, model,
-    manufacturer_serial_number, created_date, beacon_type, chk_code,
+    manufacturer_serial_number, last_modified_date, beacon_type, chk_code,
     battery_expiry_date, last_serviced_date, reference_number, mti,
-    svdr, csta, protocol])
+    svdr, csta, protocol, coding])
 
     # Insert beacon owner
   conn.exec_prepared('beacon_owner', [ beacon_owner_uuid, beacon_uuid,

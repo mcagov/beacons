@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,7 @@ import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 
+@Slf4j
 @Component("CertificateMapper")
 public class ExportMapper {
 
@@ -36,24 +38,10 @@ public class ExportMapper {
     "dd/MM/yyyy"
   );
 
-  private final BeaconMapper beaconMapper;
-  private final BeaconUseMapper beaconUseMapper;
-  private final BeaconOwnerMapper beaconOwnerMapper;
-  private final EmergencyContactMapper emergencyContactMapper;
   private final AddressMapper addressMapper;
 
   @Autowired
-  public ExportMapper(
-    BeaconMapper beaconMapper,
-    BeaconUseMapper beaconUseMapper,
-    BeaconOwnerMapper beaconOwnerMapper,
-    EmergencyContactMapper emergencyContactMapper,
-    AddressMapper addressMapper
-  ) {
-    this.beaconMapper = beaconMapper;
-    this.beaconUseMapper = beaconUseMapper;
-    this.beaconOwnerMapper = beaconOwnerMapper;
-    this.emergencyContactMapper = emergencyContactMapper;
+  public ExportMapper(AddressMapper addressMapper) {
     this.addressMapper = addressMapper;
   }
 
@@ -181,7 +169,7 @@ public class ExportMapper {
       .builder()
       .environment(use.getEnvironment().toString())
       .aircraftType(use.getAircraftManufacturer()) // Unsure on this.
-      .maxPersonOnBoard(use.getMaxCapacity())
+      .maxPersonOnBoard(use.getMaxCapacity() != null ? use.getMaxCapacity() : 0)
       .aircraftRegistrationMark(use.getRegistrationMark())
       .TwentyFourBitAddressInHex(use.getHexAddress())
       .principalAirport(use.getPrincipalAirport())
@@ -234,6 +222,7 @@ public class ExportMapper {
     try {
       return LocalDateTime.parse(dateString);
     } catch (Exception e) {
+      log.error("Failed to parse date " + dateString);
       return null;
     }
   }
