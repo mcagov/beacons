@@ -7,7 +7,7 @@
 
 ## Prerequisites
 
-- Rbenv
+- [Rbenv](https://github.com/rbenv/rbenv)
 - Set rbenv to use your preferred Ruby version. E.g:
   `rbenv local 2.6.8`
 - You will see at the top of each script we are using the following Ruby gems:
@@ -20,3 +20,9 @@ require 'json'
 ```
 
 Please install these gems locally using your current local Ruby version you've just set with Rbenv.
+
+## How to run the scripts
+
+- Ensure your local dockerised instance of the Postgres DB server is running
+- Run each script using Ruby, e.g:
+  `ruby beacons_bulk_load_legacy.rb`
