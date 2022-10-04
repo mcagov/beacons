@@ -16,6 +16,7 @@ import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.mappers.BeaconOwnerMapper;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
+import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.mappers.EmergencyContactMapper;
@@ -132,8 +133,74 @@ public class ExportMapper {
       .build();
   }
 
-  private List<CertificateUseDTO> toUsesDTO(List<BeaconUse> beaconUses) {
-    return new ArrayList<CertificateUseDTO>();
+  private List<CertificateUseDTO> toUsesDTO(List<BeaconUse> uses) {
+    List<CertificateUseDTO> usesDTO = new ArrayList<>();
+    for (BeaconUse use : uses) {
+      switch (use.getEnvironment()) {
+        case Environment.MARITIME:
+          usesDTO.add(toMaritimeUse(use));
+          break;
+        case Environment.AVIATION:
+          usesDTO.add(toAviationUse(use));
+          break;
+        case Environment.LAND:
+          usesDTO.add(toLandUse(use));
+          break;
+      }
+    }
+    return usesDTO;
+  }
+
+  private CertificateMaritimeUseDTO toMaritimeUse(BeaconUse use) {
+    return CertificateMaritimeUseDTO
+      .builder()
+      .environment(use.getEnvironment().toString())
+      .vesselName(use.getVesselName())
+      .homePort(use.getHomeport())
+      .vessel(use.getVesselName())
+      .maxPersonOnBoard(use.getMaxCapacity())
+      .vesselCallsign(use.getCallSign())
+      .mmsiNumber("This is at the wrong level.")
+      .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
+      .fishingVesselPortIdAndNumbers(use.getPortLetterNumber())
+      .officialNumber(use.getOfficialNumber())
+      .imoNumber(use.getImoNumber())
+      .rssAndSsrNumber(
+        String.join(
+          " / ",
+          Arrays.asList(use.getRssNumber(), use.getSsrNumber())
+        )
+      )
+      .hullIdNumber("TODO - where to get this value?")
+      .coastguardCGRefNumber("TODO - where to get this value?")
+      .build();
+  }
+
+  private CertificateAviationUseDTO toAviationUse(BeaconUse use) {
+    return CertificateAviationUseDTO
+      .builder()
+      .environment(use.getEnvironment().toString())
+      .aircraftType(use.getAircraftType())
+      .maxPersonOnBoard(use.getMaxPersons())
+      .aircraftRegistrationMark(use.getAircraftRegistrationMark())
+      .TwentyFourBitAddressInHex(use.getBit24AddressHex())
+      .principalAirport(use.getPrincipalAirport())
+      .radioSystem(use.getCommunications()) // Unsure on this.
+      .notes(use.getNotes())
+      .build();
+  }
+
+  private CertificateLandUseDTO toLandUse(BeaconUse use) {
+    return CertificateLandUseDTO
+      .builder()
+      .environment(use.getEnvironment().toString())
+      .descriptionOfIntendedUse(use.getUseType()) //Unsure
+      .numberOfPersonsOnBoard(use.getMaxPersons())
+      .areaOfUse(use.getAreaOfUse())
+      .tripInformation(use.getTripInfo())
+      .radioSystem(use.getCommunications()) // Unsure on this.
+      .notes(use.getNotes())
+      .build();
   }
 
   public CertificateDTO toLegacyCertificateDTO(LegacyBeacon beacon) {
@@ -266,16 +333,19 @@ public class ExportMapper {
   private List<CertificateUseDTO> toLegacyUsesDTO(List<LegacyUse> uses) {
     List<CertificateUseDTO> usesDTO = new ArrayList<>();
     for (LegacyUse use : uses) {
-      switch (use.getEnvironment()) {
-        case "Maritime":
+      switch (use.getEnvironment().toUpperCase()) {
+        case "MARITIME":
           usesDTO.add(toMaritimeUse(use));
           break;
-        case "Aviation":
+        case "AVIATION":
+        case "AIRCRAFT":
           usesDTO.add(toAviationUse(use));
           break;
-        case "Land":
+        case "LAND":
           usesDTO.add(toLandUse(use));
           break;
+        case "RIG/PLATFORM":
+        case "MOD":
         default:
           usesDTO.add(toLegacyUse(use));
           break;
