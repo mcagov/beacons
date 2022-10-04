@@ -137,13 +137,13 @@ public class ExportMapper {
     List<CertificateUseDTO> usesDTO = new ArrayList<>();
     for (BeaconUse use : uses) {
       switch (use.getEnvironment()) {
-        case Environment.MARITIME:
+        case MARITIME:
           usesDTO.add(toMaritimeUse(use));
           break;
-        case Environment.AVIATION:
+        case AVIATION:
           usesDTO.add(toAviationUse(use));
           break;
-        case Environment.LAND:
+        case LAND:
           usesDTO.add(toLandUse(use));
           break;
       }
@@ -180,13 +180,12 @@ public class ExportMapper {
     return CertificateAviationUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
-      .aircraftType(use.getAircraftType())
-      .maxPersonOnBoard(use.getMaxPersons())
-      .aircraftRegistrationMark(use.getAircraftRegistrationMark())
-      .TwentyFourBitAddressInHex(use.getBit24AddressHex())
+      .aircraftType(use.getAircraftManufacturer()) // Unsure on this.
+      .maxPersonOnBoard(use.getMaxCapacity())
+      .aircraftRegistrationMark(use.getRegistrationMark())
+      .TwentyFourBitAddressInHex(use.getHexAddress())
       .principalAirport(use.getPrincipalAirport())
-      .radioSystem(use.getCommunications()) // Unsure on this.
-      .notes(use.getNotes())
+      .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
       .build();
   }
 
@@ -194,12 +193,11 @@ public class ExportMapper {
     return CertificateLandUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
-      .descriptionOfIntendedUse(use.getUseType()) //Unsure
-      .numberOfPersonsOnBoard(use.getMaxPersons())
-      .areaOfUse(use.getAreaOfUse())
-      .tripInformation(use.getTripInfo())
-      .radioSystem(use.getCommunications()) // Unsure on this.
-      .notes(use.getNotes())
+      .descriptionOfIntendedUse(use.getActivity().toString()) //Unsure
+      .numberOfPersonsOnBoard(use.getMaxCapacity())
+      .areaOfUse(use.getAreaOfOperation())
+      .tripInformation("TODO - where to get this value?")
+      .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
       .build();
   }
 
