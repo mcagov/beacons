@@ -119,6 +119,7 @@ def buildBeaconUse(environment, activity, main_use,created_date,last_modified_da
 	more_details = Faker::Movies::StarWars.quote
 	purpose = ["PLEASURE", "COMMERCIAL"].sample
 	position = "#{Faker::Address.latitude} #{Faker::Address.longitude}"
+	tripInfo = Faker::Movies::BackToTheFuture.quote
 
 	# Maritime only fields
 	if environment == "MARITIME"
@@ -165,8 +166,8 @@ def buildBeaconUse(environment, activity, main_use,created_date,last_modified_da
 		"useType": activity,
 		"callSign": call_sign,
 		"homePort": homePort,
-		"position": $default_value,
-		"tripInfo": $default_value,
+		"position": position,
+		"tripInfo": tripInfo,
 		"areaOfUse": $default_value,
 		"beaconNsn": $default_value,
 		"imoNumber": $default_value,
@@ -186,7 +187,7 @@ def buildBeaconUse(environment, activity, main_use,created_date,last_modified_da
 		"pennantNumber": $default_value,
 		"beaconPosition": beacon_location,
 		"communications": "VHF/DSC",
-		"officialNumber": $default_value,
+		"officialNumber": Faker::Number.number(digits: 3),
 		"pkBeaconUsesId": 6057,
 		"aodSerialNumber": $default_value,
 		"bit24AddressHex": $default_value,
@@ -262,7 +263,7 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 		"manufacturer": manufacturer,
 		"serialNumber": manufacturer_serial_number,
 		"updateUserId": 2889,
-		"lastServiceDate": $default_value,
+		"lastServiceDate": last_modified_date,
 		"withdrawnReason": $default_value,
 		"lastModifiedDate": last_modified_date,
 		"batteryExpiryDate": created_date,
