@@ -8,6 +8,8 @@
 #        AND ( Lower(b.beacon_status) LIKE '%' )
 #        AND ( Lower(b.use_activities) LIKE '%' );
 
+# reseed dev and stg
+# code review the certificates PR
 
 require 'pg'
 require 'faker'

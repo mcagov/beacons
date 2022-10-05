@@ -33,6 +33,7 @@ require 'json'
 owner_name = ARGV[0] || Faker::Name.name
 owner_email = ARGV[1] || Faker::Internet.email
 
+
 db_host = 'localhost'
 db_password= 'password'
 
