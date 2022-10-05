@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.legacybeacon.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import uk.gov.mca.beacons.api.shared.domain.base.ValueObject;
 import uk.gov.mca.beacons.api.utils.LegacyDataSanitiser;
 
@@ -97,5 +98,15 @@ public class LegacyUse implements ValueObject, Serializable {
     }
 
     return activity;
+  }
+
+  public String getName() {
+    String name = getVesselName();
+
+    if (StringUtils.isBlank(name)) {
+      name = getAircraftRegistrationMark();
+    }
+
+    return name;
   }
 }
