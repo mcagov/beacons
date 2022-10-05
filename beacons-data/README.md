@@ -7,6 +7,8 @@
 
 ## Prerequisites
 
+- Postgresql:
+  `brew install postgresql`
 - [Rbenv](https://github.com/rbenv/rbenv)
 - Set rbenv to use your preferred Ruby version. E.g:
   `rbenv local 2.6.8`
@@ -19,10 +21,55 @@ require 'securerandom'
 require 'json'
 ```
 
-Please install these gems locally using your current local Ruby version you've just set with Rbenv.
+Please install these gems locally using your current local Ruby version you've just set with Rbenv:
+
+```
+xcrun gem install pg
+xcrun gem install faker
+```
 
 ## How to run the scripts
+
+### Local
 
 - Ensure your local dockerised instance of the Postgres DB server is running
 - Run each script using Ruby, e.g:
   `ruby beacons_bulk_load_legacy.rb`
+
+### Other environments
+
+- In AWS, allow public connections and add an inbound connection rule, allowing your IP address to connect to the VPC containing the relevant DB
+- Connect your psql shell or pgAdmin instance to your desired DB server
+- _For legacy beacons_, run the following SQL code to clear the data:
+
+```
+delete from legacy_beacon_claim_event;
+delete from legacy_beacon;
+```
+
+- _For modern beacons_, run the following SQL code to clear the data:
+
+```
+update account_holder set person_id = null;
+update person set beacon_id = null;
+
+delete from note;
+delete from emergency_contact;
+delete from beacon_use;
+delete from beacon_owner;
+delete from beacon;
+delete from account_holder;
+delete from person;
+```
+
+- Obtain the credentials relevant to the environment you're working with from 1Password, and use them to replace the local DB credentials below in the code (only temporarily though: do not commit these sensitive values to source control)
+
+```
+db_host = 'localhost'
+db_password= 'password'
+```
+
+- Run each script using Ruby
+- Remove the sensitive values from your Ruby code and set them back to the local credentials above
+- In AWS, delete the inbound rule you made earlier to the VPC
+- Disallow public connections to the DB

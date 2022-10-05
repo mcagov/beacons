@@ -1,30 +1,3 @@
-#!/usr/bin/env ruby
-
-=begin
- brew install ruby
- brew install postgresql
- export PATH="/usr/local/opt/ruby/bin:$PATH"
-
- gem install pg
- gem install faker
-
- #To clear out existing 'new' beacons:
-
-  update account_holder set person_id = null;
-  update person set beacon_id = null;
-
-  delete from note;
-  delete from emergency_contact;
-  delete from beacon_use;
-  delete from beacon_owner;
-  delete from beacon;
-  delete from account_holder;
-  delete from person;
-
-
- ruby beacons_bulk_register.rb
-=end
-
 require 'pg'
 require 'faker'
 require 'securerandom'
@@ -35,6 +8,7 @@ owner_email = ARGV[1] || Faker::Internet.email
 
 db_host = 'localhost'
 db_password= 'password'
+
 
 conn = PG.connect( dbname: 'beacons', :host => db_host, :port => 5432,
     :user => 'beacons_service', :password => db_password )
