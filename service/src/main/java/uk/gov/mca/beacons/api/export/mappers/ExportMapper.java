@@ -1,31 +1,22 @@
 package uk.gov.mca.beacons.api.export.mappers;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
-import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
-import uk.gov.mca.beacons.api.beaconowner.mappers.BeaconOwnerMapper;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
-import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
-import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
-import uk.gov.mca.beacons.api.emergencycontact.mappers.EmergencyContactMapper;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.note.domain.Note;
-import uk.gov.mca.beacons.api.note.mappers.NoteMapper;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
@@ -81,16 +72,9 @@ public class ExportMapper {
     return CertificateDTO
       .builder()
       .type("New")
-      .proofOfRegistrationDate(
-        beacon.getLastModifiedDate() != null
-          ? beacon.getLastModifiedDate().toLocalDateTime()
-          : null
-      )
-      .recordCreatedDate(
-        beacon.getCreatedDate() != null
-          ? beacon.getCreatedDate().toLocalDateTime()
-          : null
-      )
+      .proofOfRegistrationDate(beacon.getLastModifiedDate())
+      .lastModifiedDate(beacon.getLastModifiedDate())
+      .recordCreatedDate(beacon.getCreatedDate().toString())
       .beaconStatus(beacon.getBeaconStatus().toString())
       .hexId(beacon.getHexId())
       .manufacturer(beacon.getManufacturer())
@@ -98,13 +82,13 @@ public class ExportMapper {
       .beaconModel(beacon.getModel())
       .beaconlastServiced(
         beacon.getLastServicedDate() != null
-          ? beacon.getLastServicedDate().atStartOfDay()
+          ? beacon.getLastServicedDate().toString()
           : null
       )
       .beaconCoding(beacon.getCoding())
       .batteryExpiryDate(
         beacon.getBatteryExpiryDate() != null
-          ? beacon.getBatteryExpiryDate().atStartOfDay()
+          ? beacon.getBatteryExpiryDate().toString()
           : null
       )
       .codingProtocol(beacon.getProtocol())
@@ -202,18 +186,19 @@ public class ExportMapper {
     return CertificateDTO
       .builder()
       .type("Legacy")
-      .proofOfRegistrationDate(beacon.getLastModifiedDate().toLocalDateTime())
+      .proofOfRegistrationDate(beacon.getLastModifiedDate())
+      .lastModifiedDate(beacon.getLastModifiedDate())
       .departmentReference(details.getDepartRefId())
-      .recordCreatedDate(dateFromString(details.getFirstRegistrationDate()))
+      .recordCreatedDate(details.getFirstRegistrationDate())
       .beaconStatus(beacon.getBeaconStatus())
       .hexId(beacon.getHexId())
       .manufacturer(details.getManufacturer())
       .serialNumber(details.getSerialNumber())
       .manufacturerSerialNumber(details.getManufacturerSerialNumber())
       .beaconModel(details.getModel())
-      .beaconlastServiced(dateFromString(details.getLastServiceDate()))
+      .beaconlastServiced(details.getLastServiceDate())
       .beaconCoding(details.getCoding())
-      .batteryExpiryDate(dateFromString(details.getBatteryExpiryDate()))
+      .batteryExpiryDate(details.getBatteryExpiryDate())
       .codingProtocol(details.getProtocol())
       .cstaNumber(details.getCsta())
       .beaconNote(details.getNote())
@@ -225,9 +210,9 @@ public class ExportMapper {
       .build();
   }
 
-  private LocalDateTime dateFromString(String dateString) {
+  private DateTime dateFromString(String dateString) {
     try {
-      return LocalDateTime.parse(dateString);
+      return DateTime.parse(dateString);
     } catch (Exception e) {
       log.error("Failed to parse date " + dateString);
       return null;

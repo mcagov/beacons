@@ -19,17 +19,17 @@ public class CertificateDTO {
   private String type;
 
   @Valid
-  private LocalDateTime proofOfRegistrationDate;
+  private OffsetDateTime proofOfRegistrationDate;
 
   @Valid
   //This is only valid for legacy.
   private String departmentReference;
 
   @Valid
-  private LocalDateTime recordCreatedDate;
+  private String recordCreatedDate;
 
   @Valid
-  private LocalDateTime lastModifiedDate;
+  private OffsetDateTime lastModifiedDate;
 
   @Valid
   private String beaconStatus;
@@ -50,13 +50,13 @@ public class CertificateDTO {
   private String beaconModel;
 
   @Valid
-  private LocalDateTime beaconlastServiced;
+  private String beaconlastServiced;
 
   @Valid
   private String beaconCoding;
 
   @Valid
-  private LocalDateTime batteryExpiryDate;
+  private String batteryExpiryDate;
 
   @Valid
   private String codingProtocol;

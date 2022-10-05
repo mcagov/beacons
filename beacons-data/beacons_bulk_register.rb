@@ -1,3 +1,30 @@
+#!/usr/bin/env ruby
+
+=begin
+ brew install ruby
+ brew install postgresql
+ export PATH="/usr/local/opt/ruby/bin:$PATH"
+
+ gem install pg
+ gem install faker
+
+ #To clear out existing 'new' beacons:
+
+  update account_holder set person_id = null;
+  update person set beacon_id = null;
+
+  delete from note;
+  delete from emergency_contact;
+  delete from beacon_use;
+  delete from beacon_owner;
+  delete from beacon;
+  delete from account_holder;
+  delete from person;
+
+
+ ruby beacons_bulk_register.rb
+=end
+
 require 'pg'
 require 'faker'
 require 'securerandom'
@@ -8,7 +35,6 @@ owner_email = ARGV[1] || Faker::Internet.email
 
 db_host = 'localhost'
 db_password= 'password'
-
 
 conn = PG.connect( dbname: 'beacons', :host => db_host, :port => 5432,
     :user => 'beacons_service', :password => db_password )
@@ -72,8 +98,8 @@ $7, $8)')
   email = Faker::Internet.email
   fullname = Faker::Name.name
 
-  created_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24')
-  last_modified_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24')
+  created_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24').iso8601
+  last_modified_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24').iso8601
   beacon_status = "NEW"
   person_type_emergency = "EMERGENCY_CONTACT"
   person_type_owner = "OWNER"
@@ -98,8 +124,8 @@ $7, $8)')
   update_user_id = 1
 
   chk_code = "CB#{Faker::Number.number(digits: 2)}F"
-  battery_expiry_date = Faker::Time.between_dates(from: '2012-01-01', to: '2024-07-24')
-  last_serviced_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24')
+  battery_expiry_date = Faker::Time.between_dates(from: '2012-01-01', to: '2024-07-24').iso8601
+  last_serviced_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24').iso8601
   reference_number = "ABC#{Faker::Number.number(digits: 3)}"
   mti = Faker::Number.number(digits: 5).to_s
   svdr = false
