@@ -1,30 +1,15 @@
-#!/usr/bin/env ruby
+#
+#  SELECT Count(b)
+#  FROM   beacon_search b
+#  WHERE  ( Lower(b.hex_id) LIKE '%'
+#           OR Lower(b.beacon_status) LIKE '%'
+#           OR Lower(b.owner_name) LIKE '%'
+#           OR Lower(b.use_activities) LIKE '%' )
+#        AND ( Lower(b.beacon_status) LIKE '%' )
+#        AND ( Lower(b.use_activities) LIKE '%' );
 
-=begin
- brew install ruby
- brew install postgresql
- xcrun gem install pg
- xcrun gem install faker
- ruby beacons_bulk_load_legacy.rb <your name> <your email>
-
- or
-
- ruby beacons_bulk_load_legacy.rb
- SELECT Count(b)
- FROM   beacon_search b
- WHERE  ( Lower(b.hex_id) LIKE '%'
-          OR Lower(b.beacon_status) LIKE '%'
-          OR Lower(b.owner_name) LIKE '%'
-          OR Lower(b.use_activities) LIKE '%' )
-       AND ( Lower(b.beacon_status) LIKE '%' )
-       AND ( Lower(b.use_activities) LIKE '%' );
-
-
-	To clear data:
-
-	delete from legacy_beacon_claim_event;
-	delete from legacy_beacon;
-=end
+# reseed dev and stg
+# code review the certificates PR
 
 require 'pg'
 require 'faker'
@@ -37,7 +22,7 @@ def populateBeacons
 	owner_name = ARGV[0] || Faker::Name.name
 	owner_email = ARGV[1] || Faker::Internet.email
 
-  db_host = 'localhost'
+  	db_host = 'localhost'
 	db_password= 'password'
 
 	conn = PG.connect( dbname: 'beacons', :host => db_host, :port => 5432,
@@ -58,8 +43,8 @@ def populateBeacons
 
 		# generate random data
 		uuid = SecureRandom.uuid
-		created_date = Faker::Date.between(from: '2010-09-01', to: '2020-09-01')
-		last_modified_date = Faker::Date.between(from: '2020-09-01', to: '2021-09-01')
+		created_date = Faker::Time.between_dates(from: '2010-09-01', to: '2020-09-01').iso8601
+		last_modified_date = Faker::Time.between_dates(from: '2020-09-01', to: '2021-09-01').iso8601
 		beacon_status = "MIGRATED"
 
 		person_uuid = SecureRandom.uuid
@@ -267,7 +252,6 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 		"isArchived": "N",
 		"pkBeaconId": 6062,
 		"statusCode": "ACTIVE",
-		"beaconStatus": "MIGRATED",
 		"versioning": 0,
 		"createdDate": created_date,
 		"departRefId": "1187/02",

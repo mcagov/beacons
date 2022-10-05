@@ -1,7 +1,9 @@
-import { Grid, Tab, Tabs } from "@mui/material";
+import { Button, Grid, Tab, Tabs } from "@mui/material";
+import ContentPrintIcon from "@mui/icons-material/Print";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
+import { AuthenticatedPrintButton } from "components/AuthenticatedPrintButton";
 import { CopyToClipboardButton } from "components/CopyToClipboardButton";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { LegacyBeaconSummaryPanel } from "panels/legacyBeaconSummaryPanel/LegacyBeaconSummaryPanel";
@@ -15,6 +17,7 @@ import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { logToServer } from "../utils/logger";
+import { applicationConfig } from "config";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -28,6 +31,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       padding: theme.spacing(2),
+    },
+    button: {
+      marginLeft: theme.spacing(2),
     },
   })
 );
@@ -59,12 +65,35 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
+  const printLabelUrl = `${applicationConfig.apiUrl}/export/label/${beaconId}`;
+  const certificatePageUrl = `/backoffice#/certificates/${beaconId}`;
 
   return (
     <div className={classes.root}>
       <PageHeader>
         Hex ID/UIN: {hexId}{" "}
-        <CopyToClipboardButton text={formatForClipboard(beacon)} />
+        <span className={classes.button}>
+          <CopyToClipboardButton
+            text={formatForClipboard(beacon)}
+            variant="outlined"
+          />
+        </span>
+        <span className={classes.button}>
+          <Button
+            href={certificatePageUrl}
+            variant="outlined"
+            endIcon={<ContentPrintIcon />}
+          >
+            Print certificate
+          </Button>
+        </span>
+        <span className={classes.button}>
+          <AuthenticatedPrintButton
+            label="Print label"
+            url={printLabelUrl}
+            isFullWidth={false}
+          />
+        </span>
       </PageHeader>
       <PageContent>
         <LegacyBeaconSummaryPanel legacyBeacon={beacon} />

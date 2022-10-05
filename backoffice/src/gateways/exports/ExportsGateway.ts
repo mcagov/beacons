@@ -25,8 +25,8 @@ export class ExportsGateway implements IExportsGateway {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
-      const certificateData = certificateResponse.data;
-      return certificateData;
+      console.dir(certificateResponse);
+      return certificateResponse.data;
     } catch (error) {
       logToServer.error(error);
       throw error;

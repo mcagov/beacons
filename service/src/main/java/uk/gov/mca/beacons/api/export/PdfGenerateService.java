@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import uk.gov.mca.beacons.api.registration.rest.LabelDTO;
+import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 
 @Service("PdfGenerateService")
 public class PdfGenerateService {

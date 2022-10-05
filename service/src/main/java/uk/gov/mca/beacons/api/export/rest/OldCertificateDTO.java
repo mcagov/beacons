@@ -1,7 +1,6 @@
-package uk.gov.mca.beacons.api.registration.rest;
+package uk.gov.mca.beacons.api.export.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.*;
@@ -16,7 +15,7 @@ import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertificateDTO {
+public class OldCertificateDTO {
 
   @Valid
   @JsonProperty("proofOfRegistrationDate")
