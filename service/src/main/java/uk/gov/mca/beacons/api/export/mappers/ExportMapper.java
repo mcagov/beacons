@@ -1,12 +1,13 @@
 package uk.gov.mca.beacons.api.export.mappers;
 
+import static uk.gov.mca.beacons.api.utils.StringUtils.getMultipleValuesAsString;
+
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
@@ -401,13 +402,5 @@ public class ExportMapper {
       .radioSystem(use.getCommunications()) // Unsure on this.
       .notes(use.getNotes())
       .build();
-  }
-
-  String getMultipleValuesAsString(String delimiter, String... values) {
-    return Arrays
-      .stream(values)
-      .filter(s -> !StringUtils.isBlank(s))
-      .map(s -> s.trim())
-      .collect(Collectors.joining(delimiter));
   }
 }
