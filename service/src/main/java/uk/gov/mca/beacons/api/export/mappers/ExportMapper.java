@@ -111,7 +111,7 @@ public class ExportMapper {
       .build();
   }
 
-  private List<CertificateUseDTO> toUsesDTO(List<BeaconUse> uses) {
+  List<CertificateUseDTO> toUsesDTO(List<BeaconUse> uses) {
     List<CertificateUseDTO> usesDTO = new ArrayList<>();
     for (BeaconUse use : uses) {
       switch (use.getEnvironment()) {
