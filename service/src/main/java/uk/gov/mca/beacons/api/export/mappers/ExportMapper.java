@@ -299,7 +299,7 @@ public class ExportMapper {
       .build();
   }
 
-  private List<CertificateUseDTO> toLegacyUsesDTO(List<LegacyUse> uses) {
+  List<CertificateUseDTO> toLegacyUsesDTO(List<LegacyUse> uses) {
     List<CertificateUseDTO> usesDTO = new ArrayList<>();
     for (LegacyUse use : uses) {
       switch (use.getEnvironment().toUpperCase()) {

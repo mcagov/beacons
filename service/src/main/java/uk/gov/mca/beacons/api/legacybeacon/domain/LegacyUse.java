@@ -20,7 +20,10 @@ public class LegacyUse implements ValueObject, Serializable {
   private String isMain;
   private String landUse;
   private String rigName;
+
+  @Setter
   private String useType;
+
   private String callSign;
   private String homePort;
   private String position;

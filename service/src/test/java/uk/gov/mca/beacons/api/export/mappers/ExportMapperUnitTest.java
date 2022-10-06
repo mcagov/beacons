@@ -22,10 +22,8 @@ import org.mockito.stubbing.OngoingStubbing;
 import uk.gov.mca.beacons.api.beaconuse.domain.Activity;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
-import uk.gov.mca.beacons.api.export.rest.CertificateAviationUseDTO;
-import uk.gov.mca.beacons.api.export.rest.CertificateLandUseDTO;
-import uk.gov.mca.beacons.api.export.rest.CertificateMaritimeUseDTO;
-import uk.gov.mca.beacons.api.export.rest.CertificateUseDTO;
+import uk.gov.mca.beacons.api.export.rest.*;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
 
 class ExportMapperUnitTest {
@@ -134,14 +132,74 @@ class ExportMapperUnitTest {
     beaconUses.add(aviationUse);
 
     List<CertificateUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
-    CertificateAviationUseDTO mappedAviationUseDTO = (CertificateAviationUseDTO) useDTOs.get(
+    CertificateAviationUseDTO mappedAviationUse = (CertificateAviationUseDTO) useDTOs.get(
       0
     );
 
     assertEquals(true, useDTOs.get(0) instanceof CertificateAviationUseDTO);
     assertEquals(
       aviationUse.getEnvironment().toString(),
-      mappedAviationUseDTO.getEnvironment()
+      mappedAviationUse.getEnvironment()
+    );
+  }
+
+  @Test
+  public void toUsesDTO_whenTheGivenUseListHasOneOfEachUse_shouldMapTheBeaconUsesToTheCorrectCertificateUseDTOs() {
+    BeaconUse aviationUse = new BeaconUse();
+    aviationUse.setEnvironment(Environment.AVIATION);
+    aviationUse.setActivity(Activity.HOT_AIR_BALLOON);
+    aviationUse.setMaxCapacity(6);
+    aviationUse.setAreaOfOperation("Floating");
+    aviationUse.setOtherCommunicationValue("Balloon waves");
+
+    BeaconUse landUse = new BeaconUse();
+    landUse.setEnvironment(Environment.LAND);
+    landUse.setActivity(Activity.CLIMBING_MOUNTAINEERING);
+    landUse.setMaxCapacity(1);
+    landUse.setAreaOfOperation("Adventures");
+    landUse.setOtherCommunicationValue("Pigeon");
+
+    BeaconUse maritimeUse = new BeaconUse();
+    maritimeUse.setEnvironment(Environment.MARITIME);
+    maritimeUse.setActivity(Activity.FISHING_VESSEL);
+    maritimeUse.setMaxCapacity(55);
+    maritimeUse.setAreaOfOperation("Shootin and fishin");
+    maritimeUse.setOtherCommunicationValue("Pigeon");
+
+    List<BeaconUse> beaconUses = new ArrayList<>();
+    beaconUses.add(aviationUse);
+    beaconUses.add(landUse);
+    beaconUses.add(maritimeUse);
+
+    List<CertificateUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
+
+    assertEquals(true, useDTOs.get(0) instanceof CertificateAviationUseDTO);
+    assertEquals(true, useDTOs.get(1) instanceof CertificateLandUseDTO);
+    assertEquals(true, useDTOs.get(2) instanceof CertificateMaritimeUseDTO);
+  }
+
+  @Test
+  public void toLegacyUsesDTO_whenTheGivenUseListHasOneAviationUseWhoseEnvironmentIsEmptyString_shouldMapToGenericLegacyUse() {
+    LegacyUse aviationUse = new LegacyUse();
+    aviationUse.setUseType("");
+    aviationUse.setAircraftType("Glider");
+    aviationUse.setMaxPersons(2);
+    aviationUse.setAreaOfUse("Gliding");
+    aviationUse.setCommunications("Smoke signals");
+    aviationUse.setMmsiNumber(3);
+
+    List<LegacyUse> legacyUses = new ArrayList<>();
+    legacyUses.add(aviationUse);
+
+    List<CertificateUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
+    CertificateGenericUseDTO mappedGenericUse = (CertificateGenericUseDTO) useDTOs.get(
+      0
+    );
+
+    assertEquals(true, useDTOs.get(0) instanceof CertificateGenericUseDTO);
+    assertEquals(
+      aviationUse.getEnvironment(),
+      mappedGenericUse.getEnvironment()
     );
   }
 }
