@@ -269,7 +269,7 @@ public class ExportMapper {
     return ownersDTO;
   }
 
-  private CertificateOwnerDTO toLegacyOwnerDTO(LegacyGenericOwner owner) {
+  CertificateOwnerDTO toLegacyOwnerDTO(LegacyGenericOwner owner) {
     AddressDTO address = AddressDTO
       .builder()
       .addressLine1(owner.getAddress1())
@@ -302,7 +302,7 @@ public class ExportMapper {
   List<CertificateUseDTO> toLegacyUsesDTO(List<LegacyUse> uses) {
     List<CertificateUseDTO> usesDTO = new ArrayList<>();
     for (LegacyUse use : uses) {
-      switch (use.getEnvironment().toUpperCase()) {
+      switch (use.getEnvironment().trim().toUpperCase()) {
         case "MARITIME":
           usesDTO.add(toMaritimeUse(use));
           break;

@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.checkerframework.checker.units.qual.A;
@@ -23,8 +24,10 @@ import uk.gov.mca.beacons.api.beaconuse.domain.Activity;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
 import uk.gov.mca.beacons.api.export.rest.*;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyGenericOwner;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
+import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 
 class ExportMapperUnitTest {
 
@@ -201,5 +204,72 @@ class ExportMapperUnitTest {
       aviationUse.getEnvironment(),
       mappedGenericUse.getEnvironment()
     );
+  }
+
+  @Test
+  public void toLegacyUsesDTO_whenTheGivenUseListHasOneMaritimeUseWhoseEnvironmentContainsWhitespace_shouldMapToCertificateMaritimeUseDTO() {
+    LegacyUse maritimeUse = new LegacyUse();
+    maritimeUse.setUseType("maritime ");
+    maritimeUse.setVesselType("Dinghy");
+    maritimeUse.setMaxPersons(10);
+    maritimeUse.setAreaOfUse("Gliding");
+    maritimeUse.setCommunications("Smoke signals");
+    maritimeUse.setMmsiNumber(3);
+
+    List<LegacyUse> legacyUses = new ArrayList<>();
+    legacyUses.add(maritimeUse);
+
+    List<CertificateUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
+    CertificateMaritimeUseDTO mappedMaritimeUse = (CertificateMaritimeUseDTO) useDTOs.get(
+      0
+    );
+
+    assertEquals(true, useDTOs.get(0) instanceof CertificateMaritimeUseDTO);
+    assertEquals(
+      maritimeUse.getEnvironment(),
+      mappedMaritimeUse.getEnvironment()
+    );
+  }
+
+  @Test
+  public void toLegacyOwnerDTO_whenTheGivenLegacyGenericOwnerIsValid_shouldMapToCertificateOwnerDTO() {
+    LegacyGenericOwner legacyOwner = new LegacyGenericOwner();
+    legacyOwner.setOwnerName("Pharoah Sanders");
+    legacyOwner.setPhone1("02833746199");
+    legacyOwner.setPhone2("01477263499");
+    legacyOwner.setMobile1("07899122344");
+    legacyOwner.setMobile2("07344511288");
+    legacyOwner.setAddress1("Jazz House");
+    legacyOwner.setAddress2("Jazz Land");
+
+    CertificateOwnerDTO mappedOwnerDTO = mapper.toLegacyOwnerDTO(legacyOwner);
+
+    assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
+    assertEquals(
+      "02833746199 / 01477263499",
+      mappedOwnerDTO.getTelephoneNumbers()
+    );
+    assertEquals("07899122344 / 07344511288", mappedOwnerDTO.getMobiles());
+  }
+
+  @Test
+  public void toLegacyOwnerDTO_whenTheGivenLegacyGenericOwnersMobilesAreEmptyString_shouldMapToCertificateOwnerDTO() {
+    LegacyGenericOwner legacyOwner = new LegacyGenericOwner();
+    legacyOwner.setOwnerName("Pharoah Sanders");
+    legacyOwner.setPhone1("02833746199");
+    legacyOwner.setPhone2("01477263499");
+    legacyOwner.setMobile1("");
+    legacyOwner.setMobile2("");
+    legacyOwner.setAddress1("Jazz House");
+    legacyOwner.setAddress2("Jazz Land");
+
+    CertificateOwnerDTO mappedOwnerDTO = mapper.toLegacyOwnerDTO(legacyOwner);
+
+    assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
+    assertEquals(
+      "02833746199 / 01477263499",
+      mappedOwnerDTO.getTelephoneNumbers()
+    );
+    assertEquals(" / ", mappedOwnerDTO.getMobiles());
   }
 }
