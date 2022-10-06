@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
@@ -139,7 +138,7 @@ public class ExportMapper {
       .vessel(use.getVesselName())
       .maxPersonOnBoard(use.getMaxCapacity())
       .vesselCallsign(use.getCallSign())
-      .mmsiNumber("This is at the wrong level.")
+      .mmsiNumber(String.join(" / ", use.getMmsiNumbers()))
       .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
       .fishingVesselPortIdAndNumbers(use.getPortLetterNumber())
       .officialNumber(use.getOfficialNumber())
@@ -168,7 +167,7 @@ public class ExportMapper {
       .build();
   }
 
-  private CertificateLandUseDTO toLandUse(BeaconUse use) {
+  CertificateLandUseDTO toLandUse(BeaconUse use) {
     return CertificateLandUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
@@ -208,15 +207,6 @@ public class ExportMapper {
         toLegacyEmergencyContacts(beacon.getData().getEmergencyContact())
       )
       .build();
-  }
-
-  private DateTime dateFromString(String dateString) {
-    try {
-      return DateTime.parse(dateString);
-    } catch (Exception e) {
-      log.error("Failed to parse date " + dateString);
-      return null;
-    }
   }
 
   private List<CertificateOwnerDTO> toOwnersDTO(BeaconOwner owner) {
