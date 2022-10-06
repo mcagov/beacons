@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
@@ -144,10 +145,7 @@ public class ExportMapper {
       .officialNumber(use.getOfficialNumber())
       .imoNumber(use.getImoNumber())
       .rssAndSsrNumber(
-        String.join(
-          " / ",
-          Arrays.asList(use.getRssNumber(), use.getSsrNumber())
-        )
+        getMultipleValuesAsString(" / ", use.getRssNumber(), use.getSsrNumber())
       )
       .hullIdNumber("TODO - where to get this value?")
       .coastguardCGRefNumber("TODO - where to get this value?")
@@ -218,12 +216,10 @@ public class ExportMapper {
         .ownerName(owner.getFullName())
         .address(address)
         .telephoneNumbers(
-          String.join(
+          getMultipleValuesAsString(
             " / ",
-            Arrays.asList(
-              owner.getTelephoneNumber(),
-              owner.getAlternativeTelephoneNumber()
-            )
+            owner.getTelephoneNumber(),
+            owner.getAlternativeTelephoneNumber()
           )
         )
         .email(owner.getEmail())
@@ -241,12 +237,10 @@ public class ExportMapper {
           .builder()
           .fullName(ec.getFullName())
           .telephoneNumber(
-            String.join(
+            getMultipleValuesAsString(
               " / ",
-              Arrays.asList(
-                ec.getTelephoneNumber(),
-                ec.getAlternativeTelephoneNumber()
-              )
+              ec.getTelephoneNumber(),
+              ec.getAlternativeTelephoneNumber()
             )
           )
           .build()
@@ -294,13 +288,10 @@ public class ExportMapper {
       .careOf(owner.getCareOf())
       .address(address)
       .telephoneNumbers(
-        String.join(" / ", Arrays.asList(owner.getPhone1(), owner.getPhone2()))
+        getMultipleValuesAsString(" / ", owner.getPhone1(), owner.getPhone2())
       )
       .mobiles(
-        String.join(
-          " / ",
-          Arrays.asList(owner.getMobile1(), owner.getMobile2())
-        )
+        getMultipleValuesAsString(" / ", owner.getMobile1(), owner.getMobile2())
       )
       .email(owner.getEmail())
       .build();
@@ -410,5 +401,13 @@ public class ExportMapper {
       .radioSystem(use.getCommunications()) // Unsure on this.
       .notes(use.getNotes())
       .build();
+  }
+
+  String getMultipleValuesAsString(String delimiter, String... values) {
+    return Arrays
+      .stream(values)
+      .filter(s -> !StringUtils.isBlank(s))
+      .map(s -> s.trim())
+      .collect(Collectors.joining(delimiter));
   }
 }

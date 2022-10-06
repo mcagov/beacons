@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.checkerframework.checker.units.qual.A;
+import org.junit.Assert;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -271,5 +272,94 @@ class ExportMapperUnitTest {
       mappedOwnerDTO.getTelephoneNumbers()
     );
     assertEquals(" / ", mappedOwnerDTO.getMobiles());
+  }
+
+  @Test
+  public void test_getMultipleValuesAsString_expectValid() {
+    //given
+    String value1 = "test";
+    String value2 = "me";
+    String value3 = "please";
+    String delimiter = " / ";
+    //when
+    String output = mapper.getMultipleValuesAsString(
+      delimiter,
+      value1,
+      value2,
+      value3
+    );
+
+    //then
+    Assert.assertEquals("test / me / please", output);
+  }
+
+  @Test
+  public void test_getMultipleValuesAsString_expectSkippedArg() {
+    //given
+    String value1 = "test";
+    String value2 = null;
+    String value3 = "please";
+    String delimiter = " / ";
+    //when
+    String output = mapper.getMultipleValuesAsString(
+      delimiter,
+      value1,
+      value2,
+      value3
+    );
+
+    //then
+    Assert.assertEquals("test / please", output);
+  }
+
+  @Test
+  public void test_getMultipleValuesAsString_expectSkippedBlankArg() {
+    //given
+    String value1 = "test";
+    String value2 = null;
+    String value3 = " ";
+    String delimiter = " / ";
+    //when
+    String output = mapper.getMultipleValuesAsString(
+      delimiter,
+      value1,
+      value2,
+      value3
+    );
+
+    //then
+    Assert.assertEquals("test", output);
+  }
+
+  @Test
+  public void test_getMultipleValuesAsString_expectNoNulls() {
+    //given
+    String value1 = "test";
+    String value2 = null;
+    String delimiter = " / ";
+    //when
+    String output = mapper.getMultipleValuesAsString(delimiter, value1, value2);
+
+    //then
+    Assert.assertEquals("test", output);
+  }
+
+  @Test
+  public void test_getMultipleValuesAsString_expectTrimmedValues() {
+    //given
+    String value1 = "    test     ";
+    String value2 = "     me      ";
+    String value3 = "    please    ";
+    String delimiter = " / ";
+    //when
+    String output = mapper.getMultipleValuesAsString(
+      delimiter,
+      value1,
+      value2,
+      value3
+    );
+
+    //then
+    Assert.assertEquals("test / me / please", output);
   }
 }
