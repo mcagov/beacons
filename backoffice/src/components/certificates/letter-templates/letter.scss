@@ -1,0 +1,65 @@
+.letter {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+
+  background: pcerwhite;
+  box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+  margin: 20px auto;
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 20px;
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .full {
+    width: 100%;
+  }
+  .half {
+    width: 50%;
+    display: inline;
+    float: left;
+  }
+
+  div.section {
+    clear: both;
+    display: block;
+  }
+
+  div.header {
+    display: inline-block;
+    padding: 10px;
+    margin-bottom: 20px;
+    img {
+      padding-top: 10px;
+      height: 120px;
+    }
+
+    .sender {
+      margin-top: 10px;
+      p {
+        margin: 0;
+        padding: 1px;
+      }
+    }
+  }
+
+  .footer {
+    display: block;
+    margin-top: auto;
+    padding-top: 50px;
+
+    div.text span {
+      display: block;
+    }
+  }
+}
+
+@media print {
+  .certificate {
+    margin: 0;
+    box-shadow: none;
+  }
+}

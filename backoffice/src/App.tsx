@@ -12,7 +12,7 @@ import {
   Switch,
   useParams,
 } from "react-router-dom";
-import { CertificateView } from "views/CertificateView";
+import { CertificateView, LetterView } from "views/CertificateView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
@@ -96,6 +96,11 @@ const App: FunctionComponent = () => {
     return <CertificateView exportsGateway={exportsGateway} beaconId={id} />;
   };
 
+  const LetterViewWithParam: FunctionComponent = () => {
+    const { id } = useParams<ResourceParams>();
+    return <LetterView exportsGateway={exportsGateway} beaconId={id} />;
+  };
+
   return (
     <MsalProvider instance={pca}>
       <AuthProvider>
@@ -127,6 +132,9 @@ const App: FunctionComponent = () => {
                 </Route>
                 <Route path={`/certificates/:id`}>
                   <CertificateViewWithParam />
+                </Route>
+                <Route path={`/letter/:id`}>
+                  <LetterViewWithParam />
                 </Route>
                 <Route>
                   <Navigation />

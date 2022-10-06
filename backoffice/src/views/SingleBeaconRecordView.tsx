@@ -75,7 +75,6 @@ export const SingleBeaconRecordView: FunctionComponent<
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
   const printLabelUrl = `${applicationConfig.apiUrl}/export/label/${beaconId}`;
-  const certificatePageUrl = `/backoffice#/certificates/${beaconId}`;
 
   return (
     <div className={classes.root}>
@@ -89,11 +88,20 @@ export const SingleBeaconRecordView: FunctionComponent<
         </span>
         <span className={classes.button}>
           <Button
-            href={certificatePageUrl}
+            href={`/backoffice#/certificates/${beaconId}`}
             variant="outlined"
             endIcon={<ContentPrintIcon />}
           >
             Print certificate
+          </Button>
+        </span>
+        <span className={classes.button}>
+          <Button
+            href={`/backoffice#/letter/${beaconId}`}
+            variant="outlined"
+            endIcon={<ContentPrintIcon />}
+          >
+            Print letter
           </Button>
         </span>
         <span className={classes.button}>
