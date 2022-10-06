@@ -14,6 +14,10 @@
     font-weight: bold;
   }
 
+  .underline {
+    text-decoration: underline;
+  }
+
   .full {
     width: 100%;
   }
@@ -46,6 +50,14 @@
     }
   }
 
+  .content {
+    .registrationText {
+      p {
+        padding: 2px;
+        margin: 0;
+      }
+    }
+  }
   .footer {
     display: block;
     margin-top: auto;
