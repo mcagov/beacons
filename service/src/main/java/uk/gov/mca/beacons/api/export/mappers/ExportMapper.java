@@ -39,6 +39,9 @@ public class ExportMapper {
   public LabelDTO toLabelDTO(Registration registration) {
     Beacon beacon = registration.getBeacon();
     BeaconUse mainUse = registration.getMainUse();
+    String lastModifiedDate = beacon.getLastModifiedDate() == null
+      ? "01/01/1900"
+      : beacon.getLastModifiedDate().format(dtf);
 
     return LabelDTO
       .builder()
@@ -46,7 +49,7 @@ public class ExportMapper {
       .beaconUse(mainUse.getName())
       .hexId(beacon.getHexId())
       .coding(beacon.getCoding())
-      .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
+      .proofOfRegistrationDate(lastModifiedDate)
       .build();
   }
 
@@ -170,7 +173,9 @@ public class ExportMapper {
       .builder()
       .environment(use.getEnvironment().toString())
       .descriptionOfIntendedUse(use.getActivity().toString()) //Unsure
-      .numberOfPersonsOnBoard(use.getMaxCapacity())
+      .numberOfPersonsOnBoard(
+        use.getMaxCapacity() == null ? 0 : use.getMaxCapacity()
+      )
       .areaOfUse(use.getAreaOfOperation())
       .tripInformation("TODO - where to get this value?")
       .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
