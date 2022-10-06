@@ -240,8 +240,15 @@ public class ExportMapper {
         EmergencyContactDTO
           .builder()
           .fullName(ec.getFullName())
-          .telephoneNumber(ec.getTelephoneNumber())
-          .alternativeTelephoneNumber(ec.getAlternativeTelephoneNumber())
+          .telephoneNumber(
+            String.join(
+              " / ",
+              Arrays.asList(
+                ec.getTelephoneNumber(),
+                ec.getAlternativeTelephoneNumber()
+              )
+            )
+          )
           .build()
       )
       .collect(Collectors.toList());
