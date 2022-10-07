@@ -371,19 +371,6 @@ class ExportMapperUnitTest {
     );
   }
 
-  //  public LabelDTO toLegacyLabelDTO(LegacyBeacon beacon) { //TODO - For Legacy Labels.
-  //    LegacyUse mainUse = beacon.getData().getUses().get(0); //Main use is first use?
-  //
-  //    return LabelDTO
-  //            .builder()
-  //            .mcaContactNumber("+44 (0)1326 317575")
-  //            .beaconUse(mainUse.getName())
-  //            .hexId(beacon.getHexId())
-  //            .coding(beacon.getData().getBeacon().getCoding())
-  //            .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
-  //            .build();
-  //  }
-
   @Test
   public void test_getMultipleValuesAsString_expectValid() {
     //given
