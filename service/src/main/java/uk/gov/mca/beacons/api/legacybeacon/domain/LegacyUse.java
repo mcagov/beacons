@@ -21,7 +21,6 @@ public class LegacyUse implements ValueObject, Serializable {
   private String landUse;
   private String rigName;
 
-  @Setter
   private String useType;
 
   private String callSign;

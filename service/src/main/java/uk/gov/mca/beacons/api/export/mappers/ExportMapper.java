@@ -47,11 +47,15 @@ public class ExportMapper {
       .beaconUse(mainUse.getName())
       .hexId(beacon.getHexId())
       .coding(beacon.getCoding())
-      .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
+      .proofOfRegistrationDate(
+        beacon.getLastModifiedDate() != null
+          ? beacon.getLastModifiedDate().format(dtf)
+          : null
+      )
       .build();
   }
 
-  public LabelDTO toLegacyLabelDTO(LegacyBeacon beacon) { //TODO - For Legacy Labels.
+  public LabelDTO toLegacyLabelDTO(LegacyBeacon beacon) {
     LegacyUse mainUse = beacon.getData().getUses().get(0); //Main use is first use?
 
     return LabelDTO
@@ -60,7 +64,11 @@ public class ExportMapper {
       .beaconUse(mainUse.getName())
       .hexId(beacon.getHexId())
       .coding(beacon.getData().getBeacon().getCoding())
-      .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
+      .proofOfRegistrationDate(
+        beacon.getLastModifiedDate() != null
+          ? beacon.getLastModifiedDate().format(dtf)
+          : null
+      )
       .build();
   }
 
@@ -171,7 +179,9 @@ public class ExportMapper {
       .builder()
       .environment(use.getEnvironment().toString())
       .descriptionOfIntendedUse(use.getActivity().toString()) //Unsure
-      .numberOfPersonsOnBoard(use.getMaxCapacity())
+      .numberOfPersonsOnBoard(
+        use.getMaxCapacity() == null ? 0 : use.getMaxCapacity()
+      )
       .areaOfUse(use.getAreaOfOperation())
       .tripInformation("TODO - where to get this value?")
       .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
