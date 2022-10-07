@@ -1,13 +1,16 @@
 import "./letter.scss";
 import { FunctionComponent } from "react";
-import { CertificateProps } from "../BaseCertificate";
+import { ICertificate } from "gateways/exports/ICertificate";
+export interface CertificateProps {
+  certificate: ICertificate;
+}
 
 export const CoverLetter: FunctionComponent<CertificateProps> = ({
   certificate,
 }): JSX.Element => {
   return (
     <div className="letter">
-      {/* <div className="certificate" onLoad={window.print}> */}
+      {/* <div className="letter" onLoad={window.print}> */}
       <LetterHeader />
 
       <div className="content">

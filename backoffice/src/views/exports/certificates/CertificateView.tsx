@@ -1,9 +1,9 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { Certificate } from "../components/certificates/Certificate";
-import { LegacyCertificate } from "../components/certificates/LegacyCertificate";
-import { IExportsGateway } from "../gateways/exports/IExportsGateway";
+import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import { ICertificate } from "gateways/exports/ICertificate";
-import { CoverLetter } from "../components/certificates/letter-templates/CoverLetter";
+import { CoverLetter } from "views/exports/letters/CoverLetter";
+import { LegacyCertificate } from "views/exports/certificates/LegacyCertificate";
+import { Certificate } from "./Certificate";
 
 interface CertificateViewProps {
   exportsGateway: IExportsGateway;
