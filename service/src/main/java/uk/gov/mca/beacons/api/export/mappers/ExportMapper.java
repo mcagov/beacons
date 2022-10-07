@@ -40,9 +40,6 @@ public class ExportMapper {
   public LabelDTO toLabelDTO(Registration registration) {
     Beacon beacon = registration.getBeacon();
     BeaconUse mainUse = registration.getMainUse();
-    String lastModifiedDate = beacon.getLastModifiedDate() == null
-      ? "01/01/1900"
-      : beacon.getLastModifiedDate().format(dtf);
 
     return LabelDTO
       .builder()
@@ -50,11 +47,15 @@ public class ExportMapper {
       .beaconUse(mainUse.getName())
       .hexId(beacon.getHexId())
       .coding(beacon.getCoding())
-      .proofOfRegistrationDate(lastModifiedDate)
+      .proofOfRegistrationDate(
+        beacon.getLastModifiedDate() != null
+          ? beacon.getLastModifiedDate().format(dtf)
+          : null
+      )
       .build();
   }
 
-  public LabelDTO toLegacyLabelDTO(LegacyBeacon beacon) { //TODO - For Legacy Labels.
+  public LabelDTO toLegacyLabelDTO(LegacyBeacon beacon) {
     LegacyUse mainUse = beacon.getData().getUses().get(0); //Main use is first use?
 
     return LabelDTO
@@ -63,7 +64,11 @@ public class ExportMapper {
       .beaconUse(mainUse.getName())
       .hexId(beacon.getHexId())
       .coding(beacon.getData().getBeacon().getCoding())
-      .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
+      .proofOfRegistrationDate(
+        beacon.getLastModifiedDate() != null
+          ? beacon.getLastModifiedDate().format(dtf)
+          : null
+      )
       .build();
   }
 
