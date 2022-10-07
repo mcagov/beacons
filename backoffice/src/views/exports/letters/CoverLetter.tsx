@@ -1,6 +1,8 @@
 import "./letter.scss";
 import { FunctionComponent } from "react";
 import { ICertificate } from "gateways/exports/ICertificate";
+import { customDateStringFormat } from "utils/dateTime";
+import { ICertificateOwner } from "../../../gateways/exports/ICertificate";
 export interface CertificateProps {
   certificate: ICertificate;
 }
@@ -8,14 +10,45 @@ export interface CertificateProps {
 export const CoverLetter: FunctionComponent<CertificateProps> = ({
   certificate,
 }): JSX.Element => {
+  if (!certificate.owners) {
+    return <p>Could not load owner</p>;
+  }
+
+  const owner = certificate.owners.at(0);
   return (
     <div className="letter">
       {/* <div className="letter" onLoad={window.print}> */}
       <LetterHeader />
 
       <div className="content">
-        <h3 className="bold">UK Distress &amp; Security Beacon Registration</h3>
-
+        <div className="section">
+          {owner && (
+            <div className="half recipient">
+              <h3 className="bold">{owner.ownerName}</h3>
+              <div className="address-fields">
+                {[
+                  owner.addressLine1,
+                  owner.addressLine2,
+                  owner.addressLine3,
+                  owner.addressLine4,
+                  owner.townOrCity,
+                  owner.county,
+                  owner.postcode,
+                  owner.country,
+                ].map((line, index) => (
+                  <span key={index}>{line}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          <div className="half date">
+            {certificate.type == "Legacy" &&
+              certificate.departmentReference && (
+                <p>Dept Ref: {certificate.departmentReference}</p>
+              )}
+            <p>{customDateStringFormat(new Date(), "DD MMMM yyyy")}</p>
+          </div>
+        </div>
         <div className="section">
           <p>Dear Sir or Madam</p>
 
@@ -31,18 +64,7 @@ export const CoverLetter: FunctionComponent<CertificateProps> = ({
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
             id sapien orci. Duis lobortis vitae orci a rutrum. Donec dui ligula,
-            consequat in odio et, scelerisque ultrices erat. Fusce in viverra
-            ex. Aliquam eleifend justo nec nisl eleifend pretium. Vestibulum
-            tristique nulla at ex tincidunt dictum. Aliquam in nisi dolor. In
-            finibus, neque id porttitor elementum, nunc arcu dapibus quam, quis
-            imperdiet nisl dui at magna. Mauris at ornare eros. Fusce vitae
-            ipsum at tellus feugiat vestibulum eu quis est. Sed facilisis orci
-            vitae velit gravida, et lobortis nisi tempus. Aenean eget nisl at
-            eros faucibus varius eu id est. Orci varius natoque penatibus et
-            magnis dis parturient montes, nascetur ridiculus mus. Vestibulum
-            quam lorem, consectetur suscipit mollis cursus, hendrerit non nisl.
-            Etiam ornare, tellus sit amet vestibulum maximus, tortor nisl
-            fringilla lectus, eget suscipit sem enim ut massa.
+            consequat in odio et, scelerisque ultrices erat.
           </p>
           <p>
             Sed lorem libero, volutpat eget elit id, tincidunt tempor dolor.
@@ -54,9 +76,7 @@ export const CoverLetter: FunctionComponent<CertificateProps> = ({
             mattis massa. Donec vitae libero aliquet augue faucibus mollis eu at
             lacus. Nunc varius dolor lacus, in sollicitudin tellus viverra ut.
             Donec eu ex leo. Morbi laoreet purus non libero aliquam, vel aliquam
-            eros sagittis. In sodales massa ut elementum rhoncus. Etiam sed
-            pretium ante. Aliquam erat volutpat. Maecenas in felis ac nunc
-            scelerisque lobortis.
+            eros sagittis.
           </p>
           <p>
             Suspendisse feugiat, eros at tincidunt ullamcorper, augue dui luctus
@@ -69,8 +89,18 @@ export const CoverLetter: FunctionComponent<CertificateProps> = ({
             Duis vel semper ex. Cras vel elit arcu. Nulla ultricies est sed
             ornare semper. Donec vel libero pellentesque, pulvinar ligula ut,
             semper felis. Aliquam erat volutpat. Suspendisse potenti. Ut sit
-            amet est eros.
+            amet est eros. Nulla ultricies est sed ornare semper. Donec vel
+            libero pellentesque, pulvinar ligula ut, semper felis. Aliquam erat
+            volutpat. Suspendisse potenti. Ut sit amet est eros.
           </p>
+        </div>
+
+        <div className="section sign-off">
+          <p>Yours faithfully,</p>
+          <p className="sig">Sam Kendell</p>
+          <p className="bold">UK Distress &amp; Security Beacon Registry</p>
+          <br />
+          <p>Enclosure(s)</p>
         </div>
       </div>
       <LetterFooter />
@@ -90,7 +120,7 @@ export const LetterHeader: FunctionComponent = (): JSX.Element => {
         />
       </div>
       <div className="half sender">
-        <p className="bold">UK Distress &amp; Security Beacon Registration</p>
+        <p className="bold">UK Distress &amp; Security Beacon Registry</p>
         <p>MCA Falmouth</p>
         <p>Pendennis Point, Castle Drive</p>
         <p>Falmouth</p>
@@ -106,7 +136,7 @@ export const LetterHeader: FunctionComponent = (): JSX.Element => {
 const LetterFooter: FunctionComponent = (): JSX.Element => {
   return (
     <div className="footer full">
-      <p>OFFICIAL</p>
+      <p className="bold">OFFICIAL</p>
     </div>
   );
 };

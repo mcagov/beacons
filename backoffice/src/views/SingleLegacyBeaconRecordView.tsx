@@ -83,7 +83,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             variant="outlined"
             endIcon={<ContentPrintIcon />}
           >
-            s Print certificate
+            Print certificate
           </Button>
         </span>
         <span className={classes.button}>

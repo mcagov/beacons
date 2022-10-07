@@ -8,7 +8,7 @@
   margin: 20px auto;
   width: 21cm;
   min-height: 29.7cm;
-  padding: 20px;
+  padding: 30px;
 
   .bold {
     font-weight: bold;
@@ -35,7 +35,7 @@
   div.header {
     display: inline-block;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     img {
       padding-top: 10px;
       height: 120px;
@@ -55,6 +55,39 @@
       p {
         padding: 2px;
         margin: 0;
+      }
+    }
+
+    div.date {
+      margin-top: 100px;
+      p {
+        margin: 2px;
+        padding-right: 50px;
+        text-align: right;
+      }
+    }
+    div.recipient {
+      margin-bottom: 20px;
+
+      .address-fields {
+        display: inline-block;
+        span {
+          display: block;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    .sign-off {
+      p {
+        margin: 0;
+        padding: 0;
+        padding-bottom: 5px;
+        &.sig {
+          font-size: x-large;
+          font-family: cursive;
+        }
       }
     }
   }
