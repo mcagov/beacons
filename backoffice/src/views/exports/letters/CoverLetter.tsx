@@ -62,36 +62,35 @@ export const CoverLetter: FunctionComponent<CertificateProps> = ({
           </div>
 
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-            id sapien orci. Duis lobortis vitae orci a rutrum. Donec dui ligula,
-            consequat in odio et, scelerisque ultrices erat.
+            Thank you for registering your 406 MHz beacon, this is to confirm
+            that it has been recorded on the UK Beacon database and a copy of
+            the record is attached for you to check.
           </p>
           <p>
-            Sed lorem libero, volutpat eget elit id, tincidunt tempor dolor.
-            Phasellus ultrices arcu placerat, commodo velit at, faucibus elit.
-            Donec placerat, leo ac consequat varius, nisl justo tempus odio,
-            eget lacinia magna enim eget massa. Ut aliquet dolor vel tincidunt
-            facilisis. Interdum et malesuada fames ac ante ipsum primis in
-            faucibus. Phasellus eros sapien, placerat tempus metus et, faucibus
-            mattis massa. Donec vitae libero aliquet augue faucibus mollis eu at
-            lacus. Nunc varius dolor lacus, in sollicitudin tellus viverra ut.
-            Donec eu ex leo. Morbi laoreet purus non libero aliquam, vel aliquam
-            eros sagittis.
+            It is a legal requirement to register UK 406 MHz beacons and
+            depending on the size or your vessel or aircraft, you may be
+            required to prove registration, as such we are enclosing two
+            adhesive labels as proof of registration. Please make sure that one
+            of the labels is attached to your beacon and the other is placed in
+            a prominent position e.g. with the vessels' documentation. Please
+            avoid placing a label on the battery cover if there is one because
+            batteries are often replaced during servicing. Should you require
+            further labels, please contact the Registry.
           </p>
           <p>
-            Suspendisse feugiat, eros at tincidunt ullamcorper, augue dui luctus
-            quam, varius fringilla urna enim auctor ipsum. Praesent lobortis
-            hendrerit felis, auctor finibus nisi. Maecenas turpis velit, mattis
-            id elit ut, vulputate hendrerit elit. Donec at risus iaculis,
-            convallis nunc nec, facilisis quam. Proin neque nisl, luctus sed
-            nulla eget, porttitor blandit leo. Integer egestas ultrices turpis
-            eget venenatis. Ut non nibh erat. Donec malesuada aliquam turpis.
-            Duis vel semper ex. Cras vel elit arcu. Nulla ultricies est sed
-            ornare semper. Donec vel libero pellentesque, pulvinar ligula ut,
-            semper felis. Aliquam erat volutpat. Suspendisse potenti. Ut sit
-            amet est eros. Nulla ultricies est sed ornare semper. Donec vel
-            libero pellentesque, pulvinar ligula ut, semper felis. Aliquam erat
-            volutpat. Suspendisse potenti. Ut sit amet est eros.
+            The use of PLBs overland in the UK became legal in 2012 so if you
+            own a PLB and wish to use it overland or if you intend to use your
+            PLB on a variety of vessels, please advise us so we can update the
+            Notes section on your record. For Search & Rescue action to be
+            effective, it is vitally important that you let us know of any
+            errors, omissions or changes affecting your record including the
+            transfer of the beacon to a different vessel or owner, change of
+            vessel name or any changes to any contact telephone numbers, or the
+            loss, loan or theft of your beacon. On the back of the database
+            report is a blank Registration form that you may use to inform us of
+            any future changes, alternatively please send amendments via email,
+            telephone us or our online form at:
+            https://register-406-beacons.service.gov.uk
           </p>
         </div>
 
