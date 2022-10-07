@@ -395,15 +395,16 @@ const EmergencyContactsSection: FunctionComponent<CertificateProps> = ({
     emergencyContacts != null && emergencyContacts.length > 0;
   return (
     <div className="section">
-      <span className="title">EMERGENCY CONTACTS:</span>
+      <span className="title">EMERGENCY CONTACTS: </span>
       {hasEmergencyContacts &&
-        emergencyContacts.map((ec) => {
+        emergencyContacts.map((ec, index) => (
           <CertificateField
+            key={index}
             classes="full"
             title={ec.fullName}
-            value={`${ec.telephoneNumber} / ${ec.alternativeTelephoneNumber}`}
-          />;
-        })}
+            value={ec.telephoneNumber}
+          />
+        ))}
     </div>
   );
 };

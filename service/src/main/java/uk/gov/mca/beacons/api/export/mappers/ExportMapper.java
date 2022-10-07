@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.export.mappers;
 
+import static uk.gov.mca.beacons.api.utils.StringUtils.getMultipleValuesAsString;
+
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,11 +47,15 @@ public class ExportMapper {
       .beaconUse(mainUse.getName())
       .hexId(beacon.getHexId())
       .coding(beacon.getCoding())
-      .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
+      .proofOfRegistrationDate(
+        beacon.getLastModifiedDate() != null
+          ? beacon.getLastModifiedDate().format(dtf)
+          : null
+      )
       .build();
   }
 
-  public LabelDTO toLegacyLabelDTO(LegacyBeacon beacon) { //TODO - For Legacy Labels.
+  public LabelDTO toLegacyLabelDTO(LegacyBeacon beacon) {
     LegacyUse mainUse = beacon.getData().getUses().get(0); //Main use is first use?
 
     return LabelDTO
@@ -58,7 +64,11 @@ public class ExportMapper {
       .beaconUse(mainUse.getName())
       .hexId(beacon.getHexId())
       .coding(beacon.getData().getBeacon().getCoding())
-      .proofOfRegistrationDate(beacon.getLastModifiedDate().format(dtf))
+      .proofOfRegistrationDate(
+        beacon.getLastModifiedDate() != null
+          ? beacon.getLastModifiedDate().format(dtf)
+          : null
+      )
       .build();
   }
 
@@ -111,7 +121,7 @@ public class ExportMapper {
       .build();
   }
 
-  private List<CertificateUseDTO> toUsesDTO(List<BeaconUse> uses) {
+  List<CertificateUseDTO> toUsesDTO(List<BeaconUse> uses) {
     List<CertificateUseDTO> usesDTO = new ArrayList<>();
     for (BeaconUse use : uses) {
       switch (use.getEnvironment()) {
@@ -144,10 +154,7 @@ public class ExportMapper {
       .officialNumber(use.getOfficialNumber())
       .imoNumber(use.getImoNumber())
       .rssAndSsrNumber(
-        String.join(
-          " / ",
-          Arrays.asList(use.getRssNumber(), use.getSsrNumber())
-        )
+        getMultipleValuesAsString(" / ", use.getRssNumber(), use.getSsrNumber())
       )
       .hullIdNumber("TODO - where to get this value?")
       .coastguardCGRefNumber("TODO - where to get this value?")
@@ -172,7 +179,9 @@ public class ExportMapper {
       .builder()
       .environment(use.getEnvironment().toString())
       .descriptionOfIntendedUse(use.getActivity().toString()) //Unsure
-      .numberOfPersonsOnBoard(use.getMaxCapacity())
+      .numberOfPersonsOnBoard(
+        use.getMaxCapacity() == null ? 0 : use.getMaxCapacity()
+      )
       .areaOfUse(use.getAreaOfOperation())
       .tripInformation("TODO - where to get this value?")
       .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
@@ -218,12 +227,10 @@ public class ExportMapper {
         .ownerName(owner.getFullName())
         .address(address)
         .telephoneNumbers(
-          String.join(
+          getMultipleValuesAsString(
             " / ",
-            Arrays.asList(
-              owner.getTelephoneNumber(),
-              owner.getAlternativeTelephoneNumber()
-            )
+            owner.getTelephoneNumber(),
+            owner.getAlternativeTelephoneNumber()
           )
         )
         .email(owner.getEmail())
@@ -240,8 +247,13 @@ public class ExportMapper {
         EmergencyContactDTO
           .builder()
           .fullName(ec.getFullName())
-          .telephoneNumber(ec.getTelephoneNumber())
-          .alternativeTelephoneNumber(ec.getAlternativeTelephoneNumber())
+          .telephoneNumber(
+            getMultipleValuesAsString(
+              " / ",
+              ec.getTelephoneNumber(),
+              ec.getAlternativeTelephoneNumber()
+            )
+          )
           .build()
       )
       .collect(Collectors.toList());
@@ -269,7 +281,7 @@ public class ExportMapper {
     return ownersDTO;
   }
 
-  private CertificateOwnerDTO toLegacyOwnerDTO(LegacyGenericOwner owner) {
+  CertificateOwnerDTO toLegacyOwnerDTO(LegacyGenericOwner owner) {
     AddressDTO address = AddressDTO
       .builder()
       .addressLine1(owner.getAddress1())
@@ -287,22 +299,19 @@ public class ExportMapper {
       .careOf(owner.getCareOf())
       .address(address)
       .telephoneNumbers(
-        String.join(" / ", Arrays.asList(owner.getPhone1(), owner.getPhone2()))
+        getMultipleValuesAsString(" / ", owner.getPhone1(), owner.getPhone2())
       )
       .mobiles(
-        String.join(
-          " / ",
-          Arrays.asList(owner.getMobile1(), owner.getMobile2())
-        )
+        getMultipleValuesAsString(" / ", owner.getMobile1(), owner.getMobile2())
       )
       .email(owner.getEmail())
       .build();
   }
 
-  private List<CertificateUseDTO> toLegacyUsesDTO(List<LegacyUse> uses) {
+  List<CertificateUseDTO> toLegacyUsesDTO(List<LegacyUse> uses) {
     List<CertificateUseDTO> usesDTO = new ArrayList<>();
     for (LegacyUse use : uses) {
-      switch (use.getEnvironment().toUpperCase()) {
+      switch (use.getEnvironment().trim().toUpperCase()) {
         case "MARITIME":
           usesDTO.add(toMaritimeUse(use));
           break;
