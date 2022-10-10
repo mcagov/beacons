@@ -156,8 +156,7 @@ public class ExportMapper {
       .rssAndSsrNumber(
         getMultipleValuesAsString(" / ", use.getRssNumber(), use.getSsrNumber())
       )
-      .hullIdNumber("TODO - where to get this value?")
-      .coastguardCGRefNumber("TODO - where to get this value?")
+      .notes(use.getMoreDetails())
       .build();
   }
 
@@ -171,6 +170,7 @@ public class ExportMapper {
       .TwentyFourBitAddressInHex(use.getHexAddress())
       .principalAirport(use.getPrincipalAirport())
       .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
+      .notes(use.getMoreDetails())
       .build();
   }
 
@@ -183,8 +183,8 @@ public class ExportMapper {
         use.getMaxCapacity() == null ? 0 : use.getMaxCapacity()
       )
       .areaOfUse(use.getAreaOfOperation())
-      .tripInformation("TODO - where to get this value?")
       .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
+      .notes(use.getMoreDetails())
       .build();
   }
 
