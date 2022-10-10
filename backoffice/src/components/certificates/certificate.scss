@@ -1,0 +1,127 @@
+.certificate {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+
+  background: pcerwhite;
+  box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+  margin: 20px auto;
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 20px;
+
+  span {
+    font-size: small;
+    &.title {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    &.note {
+      margin-right: 10px;
+    }
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .full {
+    width: 100%;
+  }
+  .half {
+    width: 50%;
+    display: inline;
+    float: left;
+  }
+
+  div.section {
+    clear: both;
+    display: block;
+
+    &:not(:first-child) {
+      padding-top: 5px;
+    }
+
+    div.field {
+      padding-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: large;
+      margin: 10px 0;
+    }
+
+    div.address {
+      .title {
+        vertical-align: top;
+      }
+      .address-fields {
+        display: inline-block;
+        span {
+          display: block;
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    div.use {
+      margin-top: 8px;
+      border-bottom: 2px solid lightgrey;
+      padding: 8px;
+      h4.use.title {
+        margin: 0;
+      }
+    }
+  }
+
+  div.header {
+    display: inline-block;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid black;
+
+    .content {
+      width: 85%;
+      float: left;
+    }
+
+    .logo {
+      width: 15%;
+      float: left;
+
+      img {
+        height: 90px;
+      }
+    }
+  }
+
+  .footer {
+    display: block;
+    margin-top: auto;
+    padding-top: 50px;
+
+    div.text span {
+      display: block;
+
+      a.link {
+        color: black;
+        font-weight: bold;
+        padding-left: 5px;
+
+        &:not(:first-child) {
+          margin-left: 25px;
+        }
+      }
+    }
+  }
+}
+
+@media print {
+  .certificate {
+    page-break-before: always;
+    margin: 0;
+    box-shadow: none;
+  }
+}

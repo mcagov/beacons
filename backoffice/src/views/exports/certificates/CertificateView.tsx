@@ -48,5 +48,10 @@ export const LetterView: FunctionComponent<CertificateViewProps> = ({
     exportsGateway.getCertificateDataForBeacon(beaconId).then(setCertificate);
   }, [beaconId, exportsGateway]);
 
-  return <CoverLetter certificate={certificate} />;
+  return (
+    <div>
+      <CoverLetter certificate={certificate} type="Registration" />
+      <CoverLetter certificate={certificate} type="Amended" />
+    </div>
+  );
 };

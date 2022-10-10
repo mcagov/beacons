@@ -36,6 +36,11 @@
     display: inline-block;
     padding: 10px;
     margin-bottom: 5px;
+
+    p {
+      margin: 0;
+    }
+
     img {
       padding-top: 10px;
       height: 120px;
@@ -104,6 +109,7 @@
 
 @media print {
   .letter {
+    page-break-before: always;
     margin: 0;
     box-shadow: none;
   }
