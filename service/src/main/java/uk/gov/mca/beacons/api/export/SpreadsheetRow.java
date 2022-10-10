@@ -24,8 +24,6 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 @Setter
 public class SpreadsheetRow {
 
-  // The column attributes and column headers mut be in the same order so that the data is input into fields
-  // with the correct column header.
   public static final List<String> COLUMN_ATTRIBUTES = List.of(
     "id",
     "hexId",
@@ -138,7 +136,7 @@ public class SpreadsheetRow {
     setEmergencyContacts(emergencyContacts);
   }
 
-  private void setOwnerDetails(BeaconOwner beaconOwner) {
+  protected void setOwnerDetails(BeaconOwner beaconOwner) {
     if (beaconOwner != null) {
       this.ownerName = beaconOwner.getFullName();
       this.ownerTelephoneNumber = beaconOwner.getTelephoneNumber();
@@ -147,7 +145,7 @@ public class SpreadsheetRow {
     }
   }
 
-  private void setOwnerDetails(LegacyOwner legacyOwner) {
+  protected void setOwnerDetails(LegacyOwner legacyOwner) {
     this.ownerName = legacyOwner.getOwnerName();
     this.ownerTelephoneNumber =
       concatenateFields(legacyOwner.getPhone1(), legacyOwner.getMobile1());
@@ -156,7 +154,7 @@ public class SpreadsheetRow {
     this.ownerEmail = legacyOwner.getEmail();
   }
 
-  private void setUses(List<BeaconUse> beaconUses) {
+  protected void setUses(List<BeaconUse> beaconUses) {
     // Wasteful implementation, could iterate over beacon uses once and get all the fields, but this is simpler
     // for the time being.
     this.mmsiNumbers =
@@ -201,7 +199,7 @@ public class SpreadsheetRow {
         .collect(Collectors.joining(" / "));
   }
 
-  private void setLegacyUses(List<LegacyUse> legacyUses) {
+  protected void setLegacyUses(List<LegacyUse> legacyUses) {
     this.mmsiNumbers =
       legacyUses
         .stream()
@@ -244,7 +242,9 @@ public class SpreadsheetRow {
         .collect(Collectors.joining(" / "));
   }
 
-  private void setEmergencyContacts(List<EmergencyContact> emergencyContacts) {
+  protected void setEmergencyContacts(
+    List<EmergencyContact> emergencyContacts
+  ) {
     int len = emergencyContacts.size();
 
     if (len > 0) {
@@ -278,7 +278,7 @@ public class SpreadsheetRow {
     }
   }
 
-  private void setEmergencyContact(
+  protected void setEmergencyContact(
     LegacyEmergencyContact legacyEmergencyContact
   ) {
     if (legacyEmergencyContact != null) {
@@ -286,7 +286,7 @@ public class SpreadsheetRow {
     }
   }
 
-  private String concatenateFields(String... fields) {
+  protected String concatenateFields(String... fields) {
     return Arrays
       .stream(fields)
       .filter(Objects::nonNull)

@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api.beacon.application;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,15 @@ public class BeaconService {
       accountHolderId,
       BeaconStatus.NEW
     );
+  }
+
+  public List<Beacon> getBatch(int batchSize, int numberAlreadyTaken) {
+    return beaconRepository
+      .get()
+      .stream()
+      .limit(batchSize)
+      .skip(numberAlreadyTaken)
+      .collect(Collectors.toList());
   }
 
   public Beacon update(BeaconId beaconId, Beacon patch)

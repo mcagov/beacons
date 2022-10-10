@@ -4,16 +4,16 @@ import java.io.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
+import uk.gov.mca.beacons.api.export.csv.SpreadsheetDTO;
+import uk.gov.mca.beacons.api.export.csv.SpreadsheetExportGenerator;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.CertificateDTO;
 import uk.gov.mca.beacons.api.export.rest.LabelDTO;
@@ -22,10 +22,8 @@ import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.note.application.NoteService;
-import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
-import uk.gov.mca.beacons.api.registration.mappers.RegistrationMapper;
 
 @RestController
 @RequestMapping("/spring-api/export")
@@ -56,7 +54,7 @@ class ExportController {
   }
 
   @GetMapping(value = "/xlsx")
-  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+  //  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Resource> downloadExistingXlsxExport()
     throws IOException {
     Resource latestExport = new FileSystemResource(
@@ -71,11 +69,28 @@ class ExportController {
   }
 
   @PostMapping(value = "/xlsx")
-  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+  //  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Void> createNewXlsxExport() throws IOException {
     xlsxExporter.export();
 
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping(value = "/xlsx/data")
+  //  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+  public ResponseEntity<File> createNewXlsxExportData() throws IOException {
+    SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
+      registrationService,
+      legacyBeaconService,
+      noteService,
+      exportMapper
+    );
+    var csvFileRows = csvGenerator.generateCsvExport();
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(csvFileRows);
   }
 
   private ResponseEntity<Resource> serveFile(Resource resource) {

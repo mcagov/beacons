@@ -3,11 +3,7 @@ package uk.gov.mca.beacons.api.registration.application;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +56,20 @@ public class RegistrationService {
     this.emergencyContactService = emergencyContactService;
     this.legacyBeaconService = legacyBeaconService;
     this.noteService = noteService;
+  }
+
+  public ArrayList<Registration> getBatch(
+    int batchSize,
+    int numberAlreadyTaken
+  ) {
+    var beacons = beaconService.getBatch(batchSize, numberAlreadyTaken);
+    ArrayList<Registration> registrations = new ArrayList<Registration>();
+
+    for (Beacon beacon : beacons) {
+      registrations.add(getAssociatedAggregates(beacon));
+    }
+
+    return registrations;
   }
 
   public Registration register(Registration registration) {

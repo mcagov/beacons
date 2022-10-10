@@ -38,13 +38,13 @@ public class XlsxExporter {
    * @throws IOException if there is a problem accessing the file system
    */
   public void export() throws IOException {
-    if (fs.todaysExportExists(ExportFileNamer.FileType.EXCEL_SPREADSHEET)) {
-      log.info(
-        "CsvExporter::exportBeaconsToCsv: export file already exists for today at {}.  Doing nothing...",
-        getMostRecentExport()
-      );
-      return;
-    }
+    //    if (fs.todaysExportExists(ExportFileNamer.FileType.EXCEL_SPREADSHEET)) {
+    //      log.info(
+    //        "CsvExporter::exportBeaconsToCsv: export file already exists for today at {}.  Doing nothing...",
+    //        getMostRecentExport()
+    //      );
+    //      return;
+    //    }
 
     xlsxExportJobManager.export(
       fs.getNextExportDestination(ExportFileNamer.FileType.EXCEL_SPREADSHEET)
