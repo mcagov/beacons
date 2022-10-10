@@ -87,15 +87,20 @@ public class PdfGenerateService {
         .setPadding(0)
     );
     document.add(
-      new Paragraph(data.getBeaconUse())
+      new Paragraph(data.getBeaconUse().toUpperCase())
         .setFontSize(7.5f)
         .setBold()
         .setTextAlignment(TextAlignment.CENTER)
         .setMargins(2, 3, 2, 3)
     );
 
-    document.add(getLabelDataLine("Hex Id", data.getHexId()));
-    document.add(getLabelDataLine("Coding", data.getCoding()));
+    document.add(getLabelDataLine("Hex Id", data.getHexId().toUpperCase()));
+    document.add(
+      getLabelDataLine(
+        "Coding",
+        data.getCoding() != null ? data.getCoding().toUpperCase() : "N/A"
+      )
+    );
     document.add(
       getLabelDataLine(
         "Proof of Registration",
@@ -115,7 +120,7 @@ public class PdfGenerateService {
       .setFixedLeading(8.5f);
     p.setCharacterSpacing(0.5f).setWordSpacing(0.01f);
     p.add(new Text(key + ": ").setFontSize(5f).setBold());
-    p.add(new Text(value).setFontSize(7.25f).setBold());
+    p.add(new Text(value.toUpperCase()).setFontSize(7.25f).setBold());
     return p;
   }
 }
