@@ -206,6 +206,12 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           title="Radio System"
           value={use.radioSystem}
         />
+
+        <CertificateField
+          classes="full"
+          title="More Details"
+          value={use.notes}
+        />
       </div>
 
       <div className="section">
@@ -229,16 +235,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           classes="half"
           title="RSS/SSR Number"
           value={use.rssAndSsrNumber}
-        />
-        <CertificateField
-          classes="half"
-          title="Hull ID Number"
-          value={use.hullIdNumber}
-        />
-        <CertificateField
-          classes="full"
-          title="Coastguard CG66 Reference Number"
-          value={use.coastguardCGRefNumber}
         />
       </div>
     </div>
@@ -285,6 +281,11 @@ const AviationUse: FunctionComponent<UseProps> = ({
           title="Radio System"
           value={use.radioSystem}
         />
+        <CertificateField
+          classes="full"
+          title="More Details"
+          value={use.notes}
+        />
       </div>
     </div>
   );
@@ -317,13 +318,13 @@ const LandUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="full"
-          title="Current/Future Trip Information"
-          value={use.tripInformation}
+          title="Radio System"
+          value={use.radioSystem}
         />
         <CertificateField
           classes="full"
-          title="Radio System"
-          value={use.radioSystem}
+          title="More Details"
+          value={use.notes}
         />
       </div>
     </div>
