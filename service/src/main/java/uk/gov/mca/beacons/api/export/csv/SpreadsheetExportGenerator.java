@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringEscapeUtils;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.CertificateDTO;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
@@ -33,7 +34,7 @@ public class SpreadsheetExportGenerator {
     this.exportMapper = exportMapper;
   }
 
-  private final String delimiter = "|";
+  private final String delimiter = ",";
   private final String separator = "\n";
   private final int batchSize = 10;
   private final List<String> columnHeaders = List.of(
@@ -112,12 +113,29 @@ public class SpreadsheetExportGenerator {
 
   private FileWriter writeToFile(FileWriter file, CertificateDTO mappedBeacon)
     throws IOException {
-    String notes = mappedBeacon.getNotes() != null
-      ? mappedBeacon.getNotes().toString()
+    // format legacy only values
+    String legacyNotes = mappedBeacon.getBeaconNote() != null
+      ? mappedBeacon.getBeaconNote().toString()
       : "";
     String deptRef = mappedBeacon.getDepartmentReference() != null
       ? mappedBeacon.getDepartmentReference()
       : "";
+
+    // check for nulls
+    String notes = mappedBeacon.getNotes() != null
+      ? mappedBeacon.getNotes().toString()
+      : "";
+    String serialNumber = MessageFormat.format(
+      "{0}",
+      mappedBeacon.getSerialNumber()
+    );
+
+    // escape commas
+    String codingProtocol = StringEscapeUtils.escapeCsv(
+      mappedBeacon.getCodingProtocol()
+    );
+    legacyNotes = StringEscapeUtils.escapeCsv(legacyNotes);
+    serialNumber = StringEscapeUtils.escapeCsv(serialNumber);
 
     file.append(
       MessageFormat.format("{0}{1}", mappedBeacon.getType(), delimiter)
@@ -153,9 +171,7 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format("{0}{1}", mappedBeacon.getManufacturer(), delimiter)
     );
-    file.append(
-      MessageFormat.format("{0}{1}", mappedBeacon.getSerialNumber(), delimiter)
-    );
+    file.append(MessageFormat.format("{0}{1}", serialNumber, delimiter));
     file.append(
       MessageFormat.format(
         "{0}{1}",
@@ -183,19 +199,11 @@ public class SpreadsheetExportGenerator {
         delimiter
       )
     );
-    file.append(
-      MessageFormat.format(
-        "{0}{1}",
-        mappedBeacon.getCodingProtocol(),
-        delimiter
-      )
-    );
+    file.append(MessageFormat.format("{0}{1}", codingProtocol, delimiter));
     file.append(
       MessageFormat.format("{0}{1}", mappedBeacon.getCstaNumber(), delimiter)
     );
-    file.append(
-      MessageFormat.format("{0}{1}", mappedBeacon.getBeaconNote(), delimiter)
-    );
+    file.append(MessageFormat.format("{0}{1}", legacyNotes, delimiter));
     // these lists need more thought
     file.append(MessageFormat.format("{0}{1}", notes, delimiter));
     file.append(
