@@ -21,5 +21,5 @@ public interface BeaconRepository extends JpaRepository<Beacon, BeaconId> {
     BeaconStatus beaconStatus
   );
 
-  List<Beacon> get();
+  List<Beacon> findAll();
 }

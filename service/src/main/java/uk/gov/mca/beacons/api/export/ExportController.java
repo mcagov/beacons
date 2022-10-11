@@ -78,18 +78,18 @@ class ExportController {
 
   @GetMapping(value = "/xlsx/data")
   //  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
-  public ResponseEntity<File> createNewXlsxExportData() throws IOException {
+  public ResponseEntity<String> createNewXlsxExportData() throws IOException {
     SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
       registrationService,
       legacyBeaconService,
       noteService,
       exportMapper
     );
-    var csvFileRows = csvGenerator.generateCsvExport();
+    var csvFileRows = csvGenerator.generateCsvExport().toString();
 
     return ResponseEntity
       .ok()
-      .contentType(MediaType.APPLICATION_JSON)
+      .contentType(MediaType.TEXT_PLAIN)
       .body(csvFileRows);
   }
 

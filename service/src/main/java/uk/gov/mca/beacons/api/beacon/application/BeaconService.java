@@ -72,7 +72,7 @@ public class BeaconService {
 
   public List<Beacon> getBatch(int batchSize, int numberAlreadyTaken) {
     return beaconRepository
-      .get()
+      .findAll()
       .stream()
       .limit(batchSize)
       .skip(numberAlreadyTaken)

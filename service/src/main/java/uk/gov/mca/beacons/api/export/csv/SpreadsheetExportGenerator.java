@@ -4,6 +4,7 @@ import com.vladmihalcea.hibernate.util.StringUtils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +47,9 @@ public class SpreadsheetExportGenerator {
     this.exportMapper = exportMapper;
   }
 
-  private final String DELIMITER = ",";
-  private final String SEPARATOR = "\n";
-  private final String[] columnHeaders = {
+  private final String delimiter = ",";
+  private final String separator = "\n";
+  private final List<String> columnHeaders = List.of(
     "type",
     "proof of registration date",
     //This is only valid for legacy.
@@ -72,39 +73,67 @@ public class SpreadsheetExportGenerator {
     "notes",
     "uses",
     "owners",
-    "emergency contacts",
-  };
+    "emergency contacts"
+  );
 
   // need one for modern, one for legacy and put them together
-
-  // take abeacon
-  // put it through the ExportMapper to map to CertificateDTO
-  // use CertificateDTO values as your row values
+  // need another batching findAll for legacyBeaconService/repository
   // later on we want e.g a list of uses as an array of stringified json objects
-  // write all those values to CSV
-  // do it for one beacon first
-  // registrations are modern beacons ONLY
-  public File generateCsvExport() throws IOException {
-    var file = new FileWriter("AlBeaconsExport.csv");
-    //Add header
-    //        String headers = String.join(" ", " ", ',', this.columnHeaders, 5);
-    //        file.append(this.columnHeaders);
-    //Add a new line after the header
-    file.append(SEPARATOR);
+  public FileWriter generateCsvExport() throws IOException {
+    // prepare file
+    var file = new FileWriter("~./AllBeaconsExport.csv");
+
+    String headers = String.join(delimiter, this.columnHeaders);
+    file.append(headers);
+    file.append(separator);
+
+    // just do it for one beacon now
     var id = "b0bc5ca8-eaf3-4ea2-b69a-b52b45e9b912";
     BeaconId beaconId = new BeaconId(UUID.fromString(id));
 
+    // get beacon/l. beacon and map it
+    CertificateDTO mappedBeacon = new CertificateDTO();
+
     try {
       Registration registration = registrationService.getByBeaconId(beaconId);
-      CertificateDTO data = exportMapper.toCertificateDTO(
-        registration,
-        noteService.getNonSystemNotes(beaconId)
-      );
+      mappedBeacon =
+        exportMapper.toCertificateDTO(
+          registration,
+          noteService.getNonSystemNotes(beaconId)
+        );
     } catch (ResourceNotFoundException ex) {
       LegacyBeacon legacyBeacon = legacyBeaconService
         .findById(new LegacyBeaconId(UUID.fromString(id)))
         .orElseThrow(ResourceNotFoundException::new);
+      mappedBeacon = exportMapper.toLegacyCertificateDTO(legacyBeacon);
     }
-    return new File("AlBeaconsExport.csv");
+
+    // write to csv
+    file.append(mappedBeacon.getType());
+    file.append(mappedBeacon.getProofOfRegistrationDate().toString());
+    file.append(mappedBeacon.getDepartmentReference());
+    file.append(mappedBeacon.getRecordCreatedDate());
+    file.append(mappedBeacon.getLastModifiedDate().toString());
+    file.append(mappedBeacon.getBeaconStatus());
+    file.append(mappedBeacon.getHexId());
+    file.append(mappedBeacon.getManufacturer());
+    file.append(MessageFormat.format("{0}", mappedBeacon.getSerialNumber()));
+    file.append(mappedBeacon.getManufacturerSerialNumber());
+    file.append(mappedBeacon.getBeaconModel());
+    file.append(mappedBeacon.getBeaconlastServiced());
+    file.append(mappedBeacon.getBeaconCoding());
+    file.append(mappedBeacon.getBatteryExpiryDate());
+    file.append(mappedBeacon.getCodingProtocol());
+    file.append(mappedBeacon.getCstaNumber());
+    file.append(mappedBeacon.getBeaconNote());
+    // these lists need more thought
+    file.append(mappedBeacon.getNotes().toString());
+    file.append(mappedBeacon.getUses().toString());
+    file.append(mappedBeacon.getOwners().toString());
+    file.append(mappedBeacon.getEmergencyContacts().toString());
+
+    file.close();
+    var stringFromFile = file.toString();
+    return file;
   }
 }
