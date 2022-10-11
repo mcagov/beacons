@@ -1,6 +1,6 @@
 import "./certificate.scss";
 import { FunctionComponent } from "react";
-import { customDateStringFormat } from "../../utils/dateTime";
+import { customDateStringFormat } from "utils/dateTime";
 import {
   CertificateHeader,
   CertificateFooter,
@@ -9,7 +9,7 @@ import {
   UseProps,
   GenericUse,
 } from "./BaseCertificate";
-import { Environments } from "../../entities/IUse";
+import { Environments } from "../../../entities/IUse";
 
 export const LegacyCertificate: FunctionComponent<CertificateProps> = ({
   certificate,

@@ -114,7 +114,7 @@ public class ExportMapper {
           .collect(Collectors.toList())
       )
       .uses(toUsesDTO(registration.getBeaconUses()))
-      .owners(toOwnersDTO(registration.getBeaconOwner()))
+      .owners(Arrays.asList(toOwnerDTO(registration.getBeaconOwner())))
       .emergencyContacts(
         toEmergencyContactsDTO(registration.getEmergencyContacts())
       )
@@ -156,8 +156,7 @@ public class ExportMapper {
       .rssAndSsrNumber(
         getMultipleValuesAsString(" / ", use.getRssNumber(), use.getSsrNumber())
       )
-      .hullIdNumber("TODO - where to get this value?")
-      .coastguardCGRefNumber("TODO - where to get this value?")
+      .notes(use.getMoreDetails())
       .build();
   }
 
@@ -171,6 +170,7 @@ public class ExportMapper {
       .TwentyFourBitAddressInHex(use.getHexAddress())
       .principalAirport(use.getPrincipalAirport())
       .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
+      .notes(use.getMoreDetails())
       .build();
   }
 
@@ -183,8 +183,8 @@ public class ExportMapper {
         use.getMaxCapacity() == null ? 0 : use.getMaxCapacity()
       )
       .areaOfUse(use.getAreaOfOperation())
-      .tripInformation("TODO - where to get this value?")
       .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
+      .notes(use.getMoreDetails())
       .build();
   }
 
@@ -218,24 +218,22 @@ public class ExportMapper {
       .build();
   }
 
-  private List<CertificateOwnerDTO> toOwnersDTO(BeaconOwner owner) {
+  private CertificateOwnerDTO toOwnerDTO(BeaconOwner owner) {
     AddressDTO address = addressMapper.toDTO(owner.getAddress());
 
-    return Arrays.asList(
-      CertificateOwnerDTO
-        .builder()
-        .ownerName(owner.getFullName())
-        .address(address)
-        .telephoneNumbers(
-          getMultipleValuesAsString(
-            " / ",
-            owner.getTelephoneNumber(),
-            owner.getAlternativeTelephoneNumber()
-          )
+    return CertificateOwnerDTO
+      .builder()
+      .ownerName(owner.getFullName())
+      .address(address)
+      .telephoneNumbers(
+        getMultipleValuesAsString(
+          " / ",
+          owner.getTelephoneNumber(),
+          owner.getAlternativeTelephoneNumber()
         )
-        .email(owner.getEmail())
-        .build()
-    );
+      )
+      .email(owner.getEmail())
+      .build();
   }
 
   private List<EmergencyContactDTO> toEmergencyContactsDTO(

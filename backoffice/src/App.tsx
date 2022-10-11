@@ -5,14 +5,17 @@ import { AuthGateway } from "gateways/auth/AuthGateway";
 import { BeaconsGateway } from "gateways/beacons/BeaconsGateway";
 import { ExportsGateway } from "gateways/exports/ExportsGateway";
 import { UsesGateway } from "gateways/uses/UsesGateway";
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import {
   HashRouter as Router,
   Route,
   Switch,
   useParams,
 } from "react-router-dom";
-import { CertificateView } from "views/CertificateView";
+import {
+  CertificateView,
+  LetterView,
+} from "views/exports/certificates/CertificateView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
@@ -96,6 +99,11 @@ const App: FunctionComponent = () => {
     return <CertificateView exportsGateway={exportsGateway} beaconId={id} />;
   };
 
+  const LetterViewWithParam: FunctionComponent = () => {
+    const { id } = useParams<ResourceParams>();
+    return <LetterView exportsGateway={exportsGateway} beaconId={id} />;
+  };
+
   return (
     <MsalProvider instance={pca}>
       <AuthProvider>
@@ -127,6 +135,9 @@ const App: FunctionComponent = () => {
                 </Route>
                 <Route path={`/certificates/:id`}>
                   <CertificateViewWithParam />
+                </Route>
+                <Route path={`/letter/:id`}>
+                  <LetterViewWithParam />
                 </Route>
                 <Route>
                   <Navigation />

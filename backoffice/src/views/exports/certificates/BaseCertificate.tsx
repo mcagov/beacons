@@ -1,6 +1,6 @@
 import "./certificate.scss";
 import { FunctionComponent } from "react";
-import { customDateStringFormat } from "../../utils/dateTime";
+import { customDateStringFormat } from "utils/dateTime";
 import { ICertificate, ICertificateUse } from "gateways/exports/ICertificate";
 
 export interface CertificateProps {

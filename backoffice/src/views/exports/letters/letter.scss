@@ -1,0 +1,116 @@
+.letter {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+
+  background: pcerwhite;
+  box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+  margin: 20px auto;
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 30px;
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .underline {
+    text-decoration: underline;
+  }
+
+  .full {
+    width: 100%;
+  }
+  .half {
+    width: 50%;
+    display: inline;
+    float: left;
+  }
+
+  div.section {
+    clear: both;
+    display: block;
+  }
+
+  div.header {
+    display: inline-block;
+    padding: 10px;
+    margin-bottom: 5px;
+
+    p {
+      margin: 0;
+    }
+
+    img {
+      padding-top: 10px;
+      height: 120px;
+    }
+
+    .sender {
+      margin-top: 10px;
+      p {
+        margin: 0;
+        padding: 1px;
+      }
+    }
+  }
+
+  .content {
+    .registrationText {
+      p {
+        padding: 2px;
+        margin: 0;
+      }
+    }
+
+    div.date {
+      margin-top: 100px;
+      p {
+        margin: 2px;
+        padding-right: 50px;
+        text-align: right;
+      }
+    }
+    div.recipient {
+      margin-bottom: 20px;
+
+      .address-fields {
+        display: inline-block;
+        span {
+          display: block;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    .sign-off {
+      p {
+        margin: 0;
+        padding: 0;
+        padding-bottom: 5px;
+        &.sig {
+          font-size: x-large;
+          font-family: cursive;
+        }
+      }
+    }
+  }
+  .footer {
+    display: block;
+    margin-top: auto;
+    padding-top: 50px;
+
+    div.text span {
+      display: block;
+    }
+  }
+}
+
+@media print {
+  .letter {
+    page-break-before: always;
+    margin: 0;
+    box-shadow: none;
+  }
+}
