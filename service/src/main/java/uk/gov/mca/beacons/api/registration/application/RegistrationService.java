@@ -58,19 +58,19 @@ public class RegistrationService {
     this.noteService = noteService;
   }
 
-  //  public ArrayList<Registration> getBatch(
-  //    int batchSize,
-  //    int numberAlreadyTaken
-  //  ) {
-  //    var beacons = beaconService.getBatch(batchSize, numberAlreadyTaken);
-  //    ArrayList<Registration> registrations = new ArrayList<Registration>();
-  //
-  //    for (Beacon beacon : beacons) {
-  //      registrations.add(getAssociatedAggregates(beacon));
-  //    }
-  //
-  //    return registrations;
-  //  }
+  public ArrayList<Registration> getBatch(
+    int batchSize,
+    int numberAlreadyTaken
+  ) {
+    var beacons = beaconService.getBatch(batchSize, numberAlreadyTaken);
+    ArrayList<Registration> registrations = new ArrayList<Registration>();
+
+    for (Beacon beacon : beacons) {
+      registrations.add(getAssociatedAggregates(beacon));
+    }
+
+    return registrations;
+  }
 
   public Registration register(Registration registration) {
     Beacon savedBeacon = beaconService.create(registration.getBeacon());

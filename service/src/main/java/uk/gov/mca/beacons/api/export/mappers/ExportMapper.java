@@ -146,7 +146,7 @@ public class ExportMapper {
       .vesselName(use.getVesselName())
       .homePort(use.getHomeport())
       .vessel(use.getVesselName())
-      .maxPersonOnBoard(use.getMaxCapacity())
+      .maxPersonOnBoard(use.getMaxCapacity() != null ? use.getMaxCapacity() : 0)
       .vesselCallsign(use.getCallSign())
       .mmsiNumber(String.join(" / ", use.getMmsiNumbers()))
       .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.

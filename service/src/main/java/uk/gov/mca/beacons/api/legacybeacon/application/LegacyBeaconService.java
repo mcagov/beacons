@@ -1,14 +1,18 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
+import uk.gov.mca.beacons.api.registration.domain.Registration;
 
 @Transactional
 @Slf4j
@@ -50,5 +54,14 @@ public class LegacyBeaconService {
     );
 
     return savedLegacyBeacons;
+  }
+
+  public List<LegacyBeacon> getBatch(int batchSize, int numberAlreadyTaken) {
+    return legacyBeaconRepository
+      .findAll()
+      .stream()
+      .limit(batchSize)
+      .skip(numberAlreadyTaken)
+      .collect(Collectors.toList());
   }
 }
