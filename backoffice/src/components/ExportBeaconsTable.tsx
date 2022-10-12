@@ -150,7 +150,7 @@ export const ExportBeaconsTable: FunctionComponent<IBeaconsTableProps> =
     }
 
     return (
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Box sx={{ height: 800 }}>
         <DataGrid
           rows={rows}
           columns={columns}
