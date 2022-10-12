@@ -119,25 +119,6 @@ class ExportController {
     }
   }
 
-  /**
-   * // This needs to be changed to a post, with form. Kept as GET for now for testing
-   * @param rawBeaconIds
-   * @return
-   * @throws Exception
-   */
-  @GetMapping(value = "/labels/{uuids}")
-  public ResponseEntity<byte[]> getLabelsByBeaconIds(
-    @PathVariable("uuids") List<UUID> rawBeaconIds
-  ) throws Exception {
-    List<LabelDTO> dataList = rawBeaconIds
-      .stream()
-      .map(id -> getLabelDTO(id))
-      .collect(Collectors.toList());
-
-    byte[] file = pdfService.createPdfLabels(dataList);
-    return servePdf(file, "Labels.pdf");
-  }
-
   @GetMapping(value = "/certificate/data/{uuid}")
   public ResponseEntity<BeaconExportDTO> getCertificateDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
@@ -150,6 +131,21 @@ class ExportController {
       .body(data);
   }
 
+  @GetMapping(value = "/certificates/data/{uuids}")
+  public ResponseEntity<List<BeaconExportDTO>> getCertificatesDataByBeaconIds(
+    @PathVariable("uuids") List<UUID> rawBeaconIds
+  ) throws Exception {
+    List<BeaconExportDTO> dataList = rawBeaconIds
+      .stream()
+      .map(id -> getBeaconExportDTO(id, "Certificate"))
+      .collect(Collectors.toList());
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(dataList);
+  }
+
   @GetMapping(value = "/letter/data/{uuid}")
   public ResponseEntity<BeaconExportDTO> getLetterDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
@@ -160,6 +156,21 @@ class ExportController {
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(data);
+  }
+
+  @GetMapping(value = "/letters/data/{uuids}")
+  public ResponseEntity<List<BeaconExportDTO>> getLettersDataByBeaconIds(
+    @PathVariable("uuids") List<UUID> rawBeaconIds
+  ) throws Exception {
+    List<BeaconExportDTO> dataList = rawBeaconIds
+      .stream()
+      .map(id -> getBeaconExportDTO(id, "Label"))
+      .collect(Collectors.toList());
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(dataList);
   }
 
   private BeaconExportDTO getBeaconExportDTO(UUID rawBeaconId, String type) {
