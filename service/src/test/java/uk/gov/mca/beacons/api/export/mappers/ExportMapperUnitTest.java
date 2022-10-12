@@ -2,28 +2,14 @@ package uk.gov.mca.beacons.api.export.mappers;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
-import java.nio.file.Path;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import org.checkerframework.checker.units.qual.A;
-import org.hibernate.type.OffsetDateTimeType;
-import org.junit.Assert;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.function.Executable;
-import org.mockito.stubbing.OngoingStubbing;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
 import uk.gov.mca.beacons.api.beaconuse.domain.Activity;
@@ -33,7 +19,6 @@ import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
-import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 
 class ExportMapperUnitTest {
 
@@ -44,7 +29,7 @@ class ExportMapperUnitTest {
   }
 
   @Test
-  public void toLandUse_shouldMapToCertificateLandUseDTOCorrectly() {
+  public void toLandUse_shouldMapToBeaconExportLandUseDTOCorrectly() {
     BeaconUse landUse = new BeaconUse();
     landUse.setEnvironment(Environment.LAND);
     landUse.setActivity(Activity.DRIVING);
@@ -52,7 +37,7 @@ class ExportMapperUnitTest {
     landUse.setAreaOfOperation("I'm here!");
     landUse.setOtherCommunicationValue("Tin can and string");
 
-    CertificateLandUseDTO use = mapper.toLandUse(landUse);
+    BeaconExportLandUseDTO use = mapper.toLandUse(landUse);
 
     assertEquals(use.getEnvironment(), landUse.getEnvironment().toString());
     assertEquals(
@@ -72,13 +57,13 @@ class ExportMapperUnitTest {
     landUse.setAreaOfOperation("I'm here!");
     landUse.setOtherCommunicationValue("Tin can and string");
 
-    CertificateLandUseDTO mappedLandUseDTO = mapper.toLandUse(landUse);
+    BeaconExportLandUseDTO mappedLandUseDTO = mapper.toLandUse(landUse);
 
     assertEquals(0, mappedLandUseDTO.getNumberOfPersonsOnBoard());
   }
 
   @Test
-  public void toUsesDTO_whenTheGivenUseListHasOneMaritimeUse_shouldMapTheBeaconUseToCertificateMaritimeUseDTO() {
+  public void toUsesDTO_whenTheGivenUseListHasOneMaritimeUse_shouldMapTheBeaconUseToBeaconExportMaritimeUseDTO() {
     BeaconUse maritimeUse = new BeaconUse();
     maritimeUse.setEnvironment(Environment.MARITIME);
     maritimeUse.setActivity(Activity.FISHING_VESSEL);
@@ -89,12 +74,12 @@ class ExportMapperUnitTest {
     List<BeaconUse> beaconUses = new ArrayList<>();
     beaconUses.add(maritimeUse);
 
-    List<CertificateUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
-    CertificateMaritimeUseDTO mappedMaritimeUseDTO = (CertificateMaritimeUseDTO) useDTOs.get(
+    List<BeaconExportUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
+    BeaconExportMaritimeUseDTO mappedMaritimeUseDTO = (BeaconExportMaritimeUseDTO) useDTOs.get(
       0
     );
 
-    assertEquals(true, useDTOs.get(0) instanceof CertificateMaritimeUseDTO);
+    assertEquals(true, useDTOs.get(0) instanceof BeaconExportMaritimeUseDTO);
     assertEquals(
       maritimeUse.getEnvironment().toString(),
       mappedMaritimeUseDTO.getEnvironment()
@@ -102,7 +87,7 @@ class ExportMapperUnitTest {
   }
 
   @Test
-  public void toUsesDTO_whenTheGivenUseListHasOneLandUse_shouldMapTheBeaconUseToCertificateLandUseDTO() {
+  public void toUsesDTO_whenTheGivenUseListHasOneLandUse_shouldMapTheBeaconUseToBeaconExportLandUseDTO() {
     BeaconUse landUse = new BeaconUse();
     landUse.setEnvironment(Environment.LAND);
     landUse.setActivity(Activity.CLIMBING_MOUNTAINEERING);
@@ -113,12 +98,12 @@ class ExportMapperUnitTest {
     List<BeaconUse> beaconUses = new ArrayList<>();
     beaconUses.add(landUse);
 
-    List<CertificateUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
-    CertificateLandUseDTO mappedLandUseDTO = (CertificateLandUseDTO) useDTOs.get(
+    List<BeaconExportUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
+    BeaconExportLandUseDTO mappedLandUseDTO = (BeaconExportLandUseDTO) useDTOs.get(
       0
     );
 
-    assertEquals(true, useDTOs.get(0) instanceof CertificateLandUseDTO);
+    assertEquals(true, useDTOs.get(0) instanceof BeaconExportLandUseDTO);
     assertEquals(
       landUse.getEnvironment().toString(),
       mappedLandUseDTO.getEnvironment()
@@ -126,7 +111,7 @@ class ExportMapperUnitTest {
   }
 
   @Test
-  public void toUsesDTO_whenTheGivenUseListHasOneAviationUse_shouldMapTheBeaconUseToCertificateAviationUseDTO() {
+  public void toUsesDTO_whenTheGivenUseListHasOneAviationUse_shouldMapTheBeaconUseToBeaconExportAviationUseDTO() {
     BeaconUse aviationUse = new BeaconUse();
     aviationUse.setEnvironment(Environment.AVIATION);
     aviationUse.setActivity(Activity.HOT_AIR_BALLOON);
@@ -137,12 +122,12 @@ class ExportMapperUnitTest {
     List<BeaconUse> beaconUses = new ArrayList<>();
     beaconUses.add(aviationUse);
 
-    List<CertificateUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
-    CertificateAviationUseDTO mappedAviationUse = (CertificateAviationUseDTO) useDTOs.get(
+    List<BeaconExportUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
+    BeaconExportAviationUseDTO mappedAviationUse = (BeaconExportAviationUseDTO) useDTOs.get(
       0
     );
 
-    assertEquals(true, useDTOs.get(0) instanceof CertificateAviationUseDTO);
+    assertEquals(true, useDTOs.get(0) instanceof BeaconExportAviationUseDTO);
     assertEquals(
       aviationUse.getEnvironment().toString(),
       mappedAviationUse.getEnvironment()
@@ -150,7 +135,7 @@ class ExportMapperUnitTest {
   }
 
   @Test
-  public void toUsesDTO_whenTheGivenUseListHasOneOfEachUse_shouldMapTheBeaconUsesToTheCorrectCertificateUseDTOs() {
+  public void toUsesDTO_whenTheGivenUseListHasOneOfEachUse_shouldMapTheBeaconUsesToTheCorrectBeaconExportUseDTOs() {
     BeaconUse aviationUse = new BeaconUse();
     aviationUse.setEnvironment(Environment.AVIATION);
     aviationUse.setActivity(Activity.HOT_AIR_BALLOON);
@@ -177,11 +162,11 @@ class ExportMapperUnitTest {
     beaconUses.add(landUse);
     beaconUses.add(maritimeUse);
 
-    List<CertificateUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
+    List<BeaconExportUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
 
-    assertEquals(true, useDTOs.get(0) instanceof CertificateAviationUseDTO);
-    assertEquals(true, useDTOs.get(1) instanceof CertificateLandUseDTO);
-    assertEquals(true, useDTOs.get(2) instanceof CertificateMaritimeUseDTO);
+    assertEquals(true, useDTOs.get(0) instanceof BeaconExportAviationUseDTO);
+    assertEquals(true, useDTOs.get(1) instanceof BeaconExportLandUseDTO);
+    assertEquals(true, useDTOs.get(2) instanceof BeaconExportMaritimeUseDTO);
   }
 
   @Test
@@ -197,12 +182,12 @@ class ExportMapperUnitTest {
     List<LegacyUse> legacyUses = new ArrayList<>();
     legacyUses.add(aviationUse);
 
-    List<CertificateUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
-    CertificateGenericUseDTO mappedGenericUse = (CertificateGenericUseDTO) useDTOs.get(
+    List<BeaconExportUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
+    BeaconExportGenericUseDTO mappedGenericUse = (BeaconExportGenericUseDTO) useDTOs.get(
       0
     );
 
-    assertEquals(true, useDTOs.get(0) instanceof CertificateGenericUseDTO);
+    assertEquals(true, useDTOs.get(0) instanceof BeaconExportGenericUseDTO);
     assertEquals(
       aviationUse.getEnvironment(),
       mappedGenericUse.getEnvironment()
@@ -210,7 +195,7 @@ class ExportMapperUnitTest {
   }
 
   @Test
-  public void toLegacyUsesDTO_whenTheGivenUseListHasOneMaritimeUseWhoseEnvironmentContainsWhitespace_shouldMapToCertificateMaritimeUseDTO() {
+  public void toLegacyUsesDTO_whenTheGivenUseListHasOneMaritimeUseWhoseEnvironmentContainsWhitespace_shouldMapToBeaconExportMaritimeUseDTO() {
     LegacyUse maritimeUse = new LegacyUse();
     maritimeUse.setUseType("maritime ");
     maritimeUse.setVesselType("Dinghy");
@@ -222,12 +207,12 @@ class ExportMapperUnitTest {
     List<LegacyUse> legacyUses = new ArrayList<>();
     legacyUses.add(maritimeUse);
 
-    List<CertificateUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
-    CertificateMaritimeUseDTO mappedMaritimeUse = (CertificateMaritimeUseDTO) useDTOs.get(
+    List<BeaconExportUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
+    BeaconExportMaritimeUseDTO mappedMaritimeUse = (BeaconExportMaritimeUseDTO) useDTOs.get(
       0
     );
 
-    assertEquals(true, useDTOs.get(0) instanceof CertificateMaritimeUseDTO);
+    assertEquals(true, useDTOs.get(0) instanceof BeaconExportMaritimeUseDTO);
     assertEquals(
       maritimeUse.getEnvironment(),
       mappedMaritimeUse.getEnvironment()
@@ -235,7 +220,7 @@ class ExportMapperUnitTest {
   }
 
   @Test
-  public void toLegacyOwnerDTO_whenTheGivenLegacyGenericOwnerIsValid_shouldMapToCertificateOwnerDTO() {
+  public void toLegacyOwnerDTO_whenTheGivenLegacyGenericOwnerIsValid_shouldMapToBeaconExportOwnerDTO() {
     LegacyGenericOwner legacyOwner = new LegacyGenericOwner();
     legacyOwner.setOwnerName("Pharoah Sanders");
     legacyOwner.setPhone1("02833746199");
@@ -245,7 +230,7 @@ class ExportMapperUnitTest {
     legacyOwner.setAddress1("Jazz House");
     legacyOwner.setAddress2("Jazz Land");
 
-    CertificateOwnerDTO mappedOwnerDTO = mapper.toLegacyOwnerDTO(legacyOwner);
+    BeaconExportOwnerDTO mappedOwnerDTO = mapper.toLegacyOwnerDTO(legacyOwner);
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
@@ -256,7 +241,7 @@ class ExportMapperUnitTest {
   }
 
   @Test
-  public void toLegacyOwnerDTO_whenTheGivenLegacyGenericOwnersMobilesAreEmptyString_shouldMapToCertificateOwnerDTO() {
+  public void toLegacyOwnerDTO_whenTheGivenLegacyGenericOwnersMobilesAreEmptyString_shouldMapToBeaconExportOwnerDTO() {
     LegacyGenericOwner legacyOwner = new LegacyGenericOwner();
     legacyOwner.setOwnerName("Pharoah Sanders");
     legacyOwner.setPhone1("02833746199");
@@ -266,7 +251,7 @@ class ExportMapperUnitTest {
     legacyOwner.setAddress1("Jazz House");
     legacyOwner.setAddress2("Jazz Land");
 
-    CertificateOwnerDTO mappedOwnerDTO = mapper.toLegacyOwnerDTO(legacyOwner);
+    BeaconExportOwnerDTO mappedOwnerDTO = mapper.toLegacyOwnerDTO(legacyOwner);
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(

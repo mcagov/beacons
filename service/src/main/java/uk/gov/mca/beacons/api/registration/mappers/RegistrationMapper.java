@@ -1,8 +1,5 @@
 package uk.gov.mca.beacons.api.registration.mappers;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +7,10 @@ import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beaconowner.mappers.BeaconOwnerMapper;
-import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.beaconuse.rest.BeaconUseDTO;
 import uk.gov.mca.beacons.api.emergencycontact.mappers.EmergencyContactMapper;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
-import uk.gov.mca.beacons.api.export.rest.CertificateDTO;
-import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 import uk.gov.mca.beacons.api.export.rest.OldCertificateDTO;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.note.mappers.NoteMapper;

@@ -12,13 +12,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.beaconowner.rest.BeaconOwnerDTO;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.csv.SpreadsheetDTO;
 import uk.gov.mca.beacons.api.export.csv.SpreadsheetExportGenerator;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
-import uk.gov.mca.beacons.api.export.rest.CertificateDTO;
-import uk.gov.mca.beacons.api.export.rest.CertificateOwnerDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
 import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
@@ -160,10 +158,10 @@ class ExportController {
   }
 
   @GetMapping(value = "/certificate/data/{uuid}")
-  public ResponseEntity<CertificateDTO> getCertificateDataByBeaconId(
+  public ResponseEntity<BeaconExportDTO> getCertificateDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
   ) {
-    CertificateDTO data = getCertificateDTO(rawBeaconId);
+    BeaconExportDTO data = getBeaconExportDTO(rawBeaconId, "Certificate");
 
     return ResponseEntity
       .ok()
@@ -171,24 +169,36 @@ class ExportController {
       .body(data);
   }
 
-  private CertificateDTO getCertificateDTO(UUID rawBeaconId) {
+  @GetMapping(value = "/letter/data/{uuid}")
+  public ResponseEntity<BeaconExportDTO> getLetterDataByBeaconId(
+    @PathVariable("uuid") UUID rawBeaconId
+  ) {
+    BeaconExportDTO data = getBeaconExportDTO(rawBeaconId, "Letter");
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(data);
+  }
+
+  private BeaconExportDTO getBeaconExportDTO(UUID rawBeaconId, String type) {
     BeaconId beaconId = new BeaconId(rawBeaconId);
 
     try {
       Registration registration = registrationService.getByBeaconId(beaconId);
-      CertificateDTO data = exportMapper.toCertificateDTO(
+      BeaconExportDTO data = exportMapper.toBeaconExportDTO(
         registration,
         noteService.getNonSystemNotes(beaconId)
       );
 
       //Only create note for modern for now.
-      noteService.createSystemNote(beaconId, "Certificate Generated");
+      noteService.createSystemNote(beaconId, type + " Generated");
       return data;
     } catch (ResourceNotFoundException ex) {
       LegacyBeacon legacyBeacon = legacyBeaconService
         .findById(new LegacyBeaconId(rawBeaconId))
         .orElseThrow(ResourceNotFoundException::new);
-      return exportMapper.toLegacyCertificateDTO(legacyBeacon);
+      return exportMapper.toLegacyBeaconExportDTO(legacyBeacon);
     }
   }
 

@@ -8,7 +8,7 @@
   margin: 20px auto;
   width: 21cm;
   min-height: 29.7cm;
-  padding: 30px;
+  padding: 30px 40px;
 
   .bold {
     font-weight: bold;
@@ -34,7 +34,7 @@
 
   div.header {
     display: inline-block;
-    padding: 10px;
+    padding-top: 10px;
     margin-bottom: 5px;
 
     p {
@@ -48,6 +48,7 @@
 
     .sender {
       margin-top: 10px;
+      text-align: right;
       p {
         margin: 0;
         padding: 1px;
@@ -57,9 +58,12 @@
 
   .content {
     .registrationText {
-      p {
-        padding: 2px;
-        margin: 0;
+      text-align: justify;
+      .subject {
+        p {
+          padding: 2px;
+          margin: 0;
+        }
       }
     }
 

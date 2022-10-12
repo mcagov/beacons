@@ -1,11 +1,9 @@
 package uk.gov.mca.beacons.api.export.rest;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.*;
-import org.joda.time.DateTime;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 
 @Getter
@@ -13,7 +11,7 @@ import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertificateDTO {
+public class BeaconExportDTO {
 
   @Valid
   private String type;
@@ -70,13 +68,13 @@ public class CertificateDTO {
 
   @Valid
   //These are only valid for new beacons
-  List<CertificateNoteDTO> notes;
+  List<BeaconExportNoteDTO> notes;
 
   @Valid
-  List<CertificateUseDTO> uses;
+  List<BeaconExportUseDTO> uses;
 
   @Valid
-  List<CertificateOwnerDTO> owners;
+  List<BeaconExportOwnerDTO> owners;
 
   @Valid
   List<EmergencyContactDTO> emergencyContacts;

@@ -23,7 +23,7 @@ import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 
 @Slf4j
-@Component("CertificateMapper")
+@Component("BeaconExportMapper")
 public class ExportMapper {
 
   private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
@@ -72,13 +72,13 @@ public class ExportMapper {
       .build();
   }
 
-  public CertificateDTO toCertificateDTO(
+  public BeaconExportDTO toBeaconExportDTO(
     Registration registration,
     List<Note> nonSystemNotes
   ) {
     Beacon beacon = registration.getBeacon();
 
-    return CertificateDTO
+    return BeaconExportDTO
       .builder()
       .type("New")
       .proofOfRegistrationDate(beacon.getLastModifiedDate())
@@ -106,7 +106,7 @@ public class ExportMapper {
         nonSystemNotes
           .stream()
           .map(n ->
-            new CertificateNoteDTO(
+            new BeaconExportNoteDTO(
               n.getCreatedDate().toLocalDateTime(),
               n.getText()
             )
@@ -121,8 +121,8 @@ public class ExportMapper {
       .build();
   }
 
-  List<CertificateUseDTO> toUsesDTO(List<BeaconUse> uses) {
-    List<CertificateUseDTO> usesDTO = new ArrayList<>();
+  List<BeaconExportUseDTO> toUsesDTO(List<BeaconUse> uses) {
+    List<BeaconExportUseDTO> usesDTO = new ArrayList<>();
     for (BeaconUse use : uses) {
       switch (use.getEnvironment()) {
         case MARITIME:
@@ -139,8 +139,8 @@ public class ExportMapper {
     return usesDTO;
   }
 
-  private CertificateMaritimeUseDTO toMaritimeUse(BeaconUse use) {
-    return CertificateMaritimeUseDTO
+  private BeaconExportMaritimeUseDTO toMaritimeUse(BeaconUse use) {
+    return BeaconExportMaritimeUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
       .vesselName(use.getVesselName())
@@ -160,8 +160,8 @@ public class ExportMapper {
       .build();
   }
 
-  private CertificateAviationUseDTO toAviationUse(BeaconUse use) {
-    return CertificateAviationUseDTO
+  private BeaconExportAviationUseDTO toAviationUse(BeaconUse use) {
+    return BeaconExportAviationUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
       .aircraftType(use.getAircraftManufacturer()) // Unsure on this.
@@ -174,8 +174,8 @@ public class ExportMapper {
       .build();
   }
 
-  CertificateLandUseDTO toLandUse(BeaconUse use) {
-    return CertificateLandUseDTO
+  BeaconExportLandUseDTO toLandUse(BeaconUse use) {
+    return BeaconExportLandUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
       .descriptionOfIntendedUse(use.getActivity().toString()) //Unsure
@@ -188,10 +188,10 @@ public class ExportMapper {
       .build();
   }
 
-  public CertificateDTO toLegacyCertificateDTO(LegacyBeacon beacon) {
+  public BeaconExportDTO toLegacyBeaconExportDTO(LegacyBeacon beacon) {
     LegacyBeaconDetails details = beacon.getData().getBeacon();
 
-    return CertificateDTO
+    return BeaconExportDTO
       .builder()
       .type("Legacy")
       .proofOfRegistrationDate(beacon.getLastModifiedDate())
@@ -218,10 +218,10 @@ public class ExportMapper {
       .build();
   }
 
-  private CertificateOwnerDTO toOwnerDTO(BeaconOwner owner) {
+  private BeaconExportOwnerDTO toOwnerDTO(BeaconOwner owner) {
     AddressDTO address = addressMapper.toDTO(owner.getAddress());
 
-    return CertificateOwnerDTO
+    return BeaconExportOwnerDTO
       .builder()
       .ownerName(owner.getFullName())
       .address(address)
@@ -268,8 +268,8 @@ public class ExportMapper {
     );
   }
 
-  private List<CertificateOwnerDTO> toLegacyOwnersDTO(LegacyData data) {
-    List<CertificateOwnerDTO> ownersDTO = new ArrayList<>();
+  private List<BeaconExportOwnerDTO> toLegacyOwnersDTO(LegacyData data) {
+    List<BeaconExportOwnerDTO> ownersDTO = new ArrayList<>();
 
     ownersDTO.add(toLegacyOwnerDTO(data.getOwner()));
     for (LegacyGenericOwner o : data.getSecondaryOwners()) {
@@ -279,7 +279,7 @@ public class ExportMapper {
     return ownersDTO;
   }
 
-  CertificateOwnerDTO toLegacyOwnerDTO(LegacyGenericOwner owner) {
+  BeaconExportOwnerDTO toLegacyOwnerDTO(LegacyGenericOwner owner) {
     AddressDTO address = AddressDTO
       .builder()
       .addressLine1(owner.getAddress1())
@@ -290,7 +290,7 @@ public class ExportMapper {
       .country(owner.getCountry())
       .build();
 
-    return CertificateOwnerDTO
+    return BeaconExportOwnerDTO
       .builder()
       .ownerName(owner.getOwnerName())
       .companyAgent(owner.getCompanyName()) // Unsure on this.
@@ -306,8 +306,8 @@ public class ExportMapper {
       .build();
   }
 
-  List<CertificateUseDTO> toLegacyUsesDTO(List<LegacyUse> uses) {
-    List<CertificateUseDTO> usesDTO = new ArrayList<>();
+  List<BeaconExportUseDTO> toLegacyUsesDTO(List<LegacyUse> uses) {
+    List<BeaconExportUseDTO> usesDTO = new ArrayList<>();
     for (LegacyUse use : uses) {
       switch (use.getEnvironment().trim().toUpperCase()) {
         case "MARITIME":
@@ -330,8 +330,8 @@ public class ExportMapper {
     return usesDTO;
   }
 
-  private CertificateMaritimeUseDTO toMaritimeUse(LegacyUse use) {
-    return CertificateMaritimeUseDTO
+  private BeaconExportMaritimeUseDTO toMaritimeUse(LegacyUse use) {
+    return BeaconExportMaritimeUseDTO
       .builder()
       .environment(use.getEnvironment())
       .vesselName(use.getVesselName())
@@ -351,8 +351,8 @@ public class ExportMapper {
       .build();
   }
 
-  private CertificateAviationUseDTO toAviationUse(LegacyUse use) {
-    return CertificateAviationUseDTO
+  private BeaconExportAviationUseDTO toAviationUse(LegacyUse use) {
+    return BeaconExportAviationUseDTO
       .builder()
       .environment(use.getEnvironment())
       .aircraftType(use.getAircraftType())
@@ -365,8 +365,8 @@ public class ExportMapper {
       .build();
   }
 
-  private CertificateLandUseDTO toLandUse(LegacyUse use) {
-    return CertificateLandUseDTO
+  private BeaconExportLandUseDTO toLandUse(LegacyUse use) {
+    return BeaconExportLandUseDTO
       .builder()
       .environment(use.getEnvironment())
       .descriptionOfIntendedUse(use.getUseType()) //Unsure
@@ -378,8 +378,8 @@ public class ExportMapper {
       .build();
   }
 
-  private CertificateGenericUseDTO toLegacyUse(LegacyUse use) {
-    return CertificateGenericUseDTO
+  private BeaconExportGenericUseDTO toLegacyUse(LegacyUse use) {
+    return BeaconExportGenericUseDTO
       .builder()
       .environment(use.getEnvironment())
       .vesselName(use.getVesselName())
