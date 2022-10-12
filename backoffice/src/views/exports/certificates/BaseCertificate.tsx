@@ -1,14 +1,17 @@
 import "./certificate.scss";
 import { FunctionComponent } from "react";
 import { customDateStringFormat } from "utils/dateTime";
-import { ICertificate, ICertificateUse } from "gateways/exports/ICertificate";
+import {
+  IBeaconExport,
+  IBeaconExportUse,
+} from "gateways/exports/IBeaconExport";
 
-export interface CertificateProps {
-  certificate: ICertificate;
+export interface BeaconExportProps {
+  beacon: IBeaconExport;
 }
 
 export interface UseProps {
-  use: ICertificateUse;
+  use: IBeaconExportUse;
   index: number;
 }
 interface CertificateFieldProps {
@@ -30,8 +33,8 @@ export function CertificateField({
   );
 }
 
-export const CertificateHeader: FunctionComponent<CertificateProps> = ({
-  certificate,
+export const CertificateHeader: FunctionComponent<BeaconExportProps> = ({
+  beacon,
 }): JSX.Element => {
   return (
     <div className="header full">
@@ -43,16 +46,16 @@ export const CertificateHeader: FunctionComponent<CertificateProps> = ({
           classes="half"
           title="Proof Of Registration"
           value={customDateStringFormat(
-            certificate.proofOfRegistrationDate,
+            beacon.proofOfRegistrationDate,
             "DD MMMM yyyy"
           )}
         />
 
-        {certificate.type == "Legacy" && (
+        {beacon.type == "Legacy" && (
           <CertificateField
             classes="half"
             title="Dept Ref"
-            value={certificate.departmentReference}
+            value={beacon.departmentReference}
           />
         )}
       </div>

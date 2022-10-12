@@ -1,4 +1,4 @@
-export interface ICertificate {
+export interface IBeaconExport {
   type: "Legacy" | "New";
   proofOfRegistrationDate: string;
   departmentReference: string;
@@ -16,18 +16,18 @@ export interface ICertificate {
   codingProtocol: string;
   cstaNumber: string;
   beaconNote: string;
-  notes: ICertificateNote[];
-  uses: ICertificateUse[];
-  owners: ICertificateOwner[];
-  emergencyContacts: ICertificateEmergencyContact[];
+  notes: IBeaconExportNote[];
+  uses: IBeaconExportUse[];
+  owners: IBeaconExportOwner[];
+  emergencyContacts: IBeaconExportEmergencyContact[];
 }
 
-export interface ICertificateNote {
+export interface IBeaconExportNote {
   date: string;
   note: string;
 }
 
-export interface ICertificateOwner {
+export interface IBeaconExportOwner {
   ownerName: string;
   companyAgent: string;
   careOf: string;
@@ -44,7 +44,7 @@ export interface ICertificateOwner {
   email: string;
 }
 
-export interface ICertificateUse {
+export interface IBeaconExportUse {
   //Generic, TODO - split out into types.
   environment: string;
   vesselName: string;
@@ -72,7 +72,7 @@ export interface ICertificateUse {
   tripInformation: string;
 }
 
-export interface ICertificateEmergencyContact {
+export interface IBeaconExportEmergencyContact {
   fullName: string;
   telephoneNumber: string;
   alternativeTelephoneNumber: string;
