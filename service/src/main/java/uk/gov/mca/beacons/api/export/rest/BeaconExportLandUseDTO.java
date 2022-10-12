@@ -2,14 +2,13 @@ package uk.gov.mca.beacons.api.export.rest;
 
 import javax.validation.Valid;
 import lombok.*;
-import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertificateLandUseDTO extends CertificateUseDTO {
+public class BeaconExportLandUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String environment;

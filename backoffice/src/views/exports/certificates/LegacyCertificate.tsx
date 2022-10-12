@@ -5,19 +5,19 @@ import {
   CertificateHeader,
   CertificateFooter,
   CertificateField,
-  CertificateProps,
+  BeaconExportProps,
   UseProps,
   GenericUse,
 } from "./BaseCertificate";
 import { Environments } from "../../../entities/IUse";
 
-export const LegacyCertificate: FunctionComponent<CertificateProps> = ({
-  certificate,
+export const LegacyCertificate: FunctionComponent<BeaconExportProps> = ({
+  beacon,
 }): JSX.Element => {
   return (
     <div className="certificate">
       {/* <div className="certificate" onLoad={window.print}> */}
-      <CertificateHeader certificate={certificate} />
+      <CertificateHeader beacon={beacon} />
 
       <div className="content">
         <div className="section">
@@ -25,7 +25,7 @@ export const LegacyCertificate: FunctionComponent<CertificateProps> = ({
             classes="half"
             title="Record Created Date"
             value={customDateStringFormat(
-              certificate.recordCreatedDate,
+              beacon.recordCreatedDate,
               "DD MMMM yyyy"
             )}
           />
@@ -33,104 +33,94 @@ export const LegacyCertificate: FunctionComponent<CertificateProps> = ({
             classes="half"
             title="Last Modified"
             value={customDateStringFormat(
-              certificate.lastModifiedDate,
+              beacon.lastModifiedDate,
               "DD MMMM yyyy"
             )}
           />
           <CertificateField
             classes="full"
             title="Beacon Status"
-            value={certificate.beaconStatus}
+            value={beacon.beaconStatus}
           />
         </div>
 
-        <BeaconSection certificate={certificate} />
+        <BeaconSection beacon={beacon} />
 
-        <UsesSection certificate={certificate} />
+        <UsesSection beacon={beacon} />
 
-        <OwnersSection certificate={certificate} />
+        <OwnersSection beacon={beacon} />
 
-        <EmergencyContactsSection certificate={certificate} />
+        <EmergencyContactsSection beacon={beacon} />
       </div>
       <CertificateFooter />
     </div>
   );
 };
 
-const BeaconSection = ({ certificate }: CertificateProps): JSX.Element => {
+const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
   return (
     <div className="section">
       <h3>Beacon Details:</h3>
 
-      <CertificateField
-        classes="full"
-        title="Hex Id"
-        value={certificate.hexId}
-      />
+      <CertificateField classes="full" title="Hex Id" value={beacon.hexId} />
       <CertificateField
         classes="half"
         title="Manufacturer"
-        value={certificate.manufacturer}
+        value={beacon.manufacturer}
       />
       <CertificateField
         classes="half"
         title="SERIAL NO"
-        value={certificate.serialNumber}
+        value={beacon.serialNumber}
       />
       <CertificateField
         classes="full"
         title="Manufacturer Serial No"
-        value={certificate.manufacturerSerialNumber}
+        value={beacon.manufacturerSerialNumber}
       />
       <CertificateField
         classes="half"
         title="Beacon Model"
-        value={certificate.manufacturerSerialNumber}
+        value={beacon.manufacturerSerialNumber}
       />
       <CertificateField
         classes="half"
         title="Beacon Last Serviced"
-        value={customDateStringFormat(
-          certificate.beaconlastServiced,
-          "MMMM yyyy"
-        )}
+        value={customDateStringFormat(beacon.beaconlastServiced, "MMMM yyyy")}
       />
       <CertificateField
         classes="half"
         title="Beacon Coding"
-        value={certificate.beaconCoding}
+        value={beacon.beaconCoding}
       />
       <CertificateField
         classes="half"
         title="Beacon Expiry Date"
-        value={customDateStringFormat(
-          certificate.batteryExpiryDate,
-          "MMMM yyyy"
-        )}
+        value={customDateStringFormat(beacon.batteryExpiryDate, "MMMM yyyy")}
       />
       <CertificateField
         classes="half"
         title="Coding Protocol"
-        value={certificate.codingProtocol}
+        value={beacon.codingProtocol}
       />
       <CertificateField
         classes="half"
         title="Csta Number"
-        value={certificate.cstaNumber}
+        value={beacon.cstaNumber}
       />
     </div>
   );
 };
 
-const UsesSection: FunctionComponent<CertificateProps> = ({
-  certificate,
+const UsesSection: FunctionComponent<BeaconExportProps> = ({
+  beacon,
 }): JSX.Element => {
   return (
     <div className="section">
       <span className="title">BEACON USES:</span>
 
-      {certificate.uses &&
-        certificate.uses.map((use, index) => (
+      {beacon.uses &&
+        beacon.uses.map((use, index) => (
           <UseSection use={use} index={index + 1} key={index} />
         ))}
     </div>
@@ -322,13 +312,13 @@ const LandUse: FunctionComponent<UseProps> = ({
   );
 };
 
-const OwnersSection: FunctionComponent<CertificateProps> = ({
-  certificate,
+const OwnersSection: FunctionComponent<BeaconExportProps> = ({
+  beacon,
 }): JSX.Element => {
   return (
     <div className="owner-details">
-      {certificate.owners &&
-        certificate.owners.map((owner, index) => {
+      {beacon.owners &&
+        beacon.owners.map((owner, index) => {
           <div className="section" key={index}>
             <h3>Owner Details:</h3>
             <CertificateField
@@ -389,14 +379,14 @@ const OwnersSection: FunctionComponent<CertificateProps> = ({
   );
 };
 
-const EmergencyContactsSection: FunctionComponent<CertificateProps> = ({
-  certificate,
+const EmergencyContactsSection: FunctionComponent<BeaconExportProps> = ({
+  beacon,
 }): JSX.Element => {
   return (
     <div className="section">
       <span className="title">EMERGENCY CONTACTS: {}</span>
-      {certificate.emergencyContacts &&
-        certificate.emergencyContacts.map((ec, index) => (
+      {beacon.emergencyContacts &&
+        beacon.emergencyContacts.map((ec, index) => (
           <CertificateField
             classes="full"
             title={`${index + 1}`}

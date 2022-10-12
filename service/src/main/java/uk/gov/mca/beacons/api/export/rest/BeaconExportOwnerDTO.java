@@ -10,7 +10,7 @@ import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertificateOwnerDTO {
+public class BeaconExportOwnerDTO {
 
   @Valid
   private String ownerName;

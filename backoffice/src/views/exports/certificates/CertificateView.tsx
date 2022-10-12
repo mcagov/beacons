@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { IExportsGateway } from "gateways/exports/IExportsGateway";
-import { ICertificate } from "gateways/exports/ICertificate";
+import { IBeaconExport } from "gateways/exports/IBeaconExport";
 import { CoverLetter } from "views/exports/letters/CoverLetter";
 import { LegacyCertificate } from "views/exports/certificates/LegacyCertificate";
 import { Certificate } from "./Certificate";
@@ -14,23 +14,21 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
   exportsGateway,
   beaconId,
 }): JSX.Element => {
-  const [certificate, setCertificate] = useState<ICertificate>(
-    {} as ICertificate
-  );
+  const [beacon, setBeacon] = useState<IBeaconExport>({} as IBeaconExport);
 
   useEffect(() => {
-    exportsGateway.getCertificateDataForBeacon(beaconId).then(setCertificate);
+    exportsGateway.getExportDataForBeacon(beaconId).then(setBeacon);
   }, [beaconId, exportsGateway]);
 
-  switch (certificate.type) {
+  switch (beacon.type) {
     case "Legacy":
-      return <LegacyCertificate certificate={certificate} />;
+      return <LegacyCertificate beacon={beacon} />;
     case "New":
-      return <Certificate certificate={certificate} />;
+      return <Certificate beacon={beacon} />;
     default:
       return (
         <div>
-          <p>No certificate available</p>
+          <p>No beacon available</p>
         </div>
       );
   }
@@ -54,18 +52,16 @@ export const LetterView: FunctionComponent<CertificateViewProps> = ({
   exportsGateway,
   beaconId,
 }): JSX.Element => {
-  const [certificate, setCertificate] = useState<ICertificate>(
-    {} as ICertificate
-  );
+  const [beacon, setBeacon] = useState<IBeaconExport>({} as IBeaconExport);
 
   useEffect(() => {
-    exportsGateway.getCertificateDataForBeacon(beaconId).then(setCertificate);
+    exportsGateway.getExportDataForBeacon(beaconId).then(setBeacon);
   }, [beaconId, exportsGateway]);
 
   return (
     <div>
-      <CoverLetter certificate={certificate} type="Registration" />
-      <CoverLetter certificate={certificate} type="Amended" />
+      <CoverLetter beacon={beacon} type="Registration" />
+      <CoverLetter beacon={beacon} type="Amended" />
     </div>
   );
 };

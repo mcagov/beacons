@@ -2,14 +2,13 @@ package uk.gov.mca.beacons.api.export.rest;
 
 import javax.validation.Valid;
 import lombok.*;
-import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertificateMaritimeUseDTO extends CertificateUseDTO {
+public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String environment;
@@ -56,4 +55,31 @@ public class CertificateMaritimeUseDTO extends CertificateUseDTO {
 
   @Valid
   private String coastguardCGRefNumber;
+
+  @Valid
+  private String aircraftType;
+
+  @Valid
+  private String aircraftRegistrationMark;
+
+  @Valid
+  private String TwentyFourBitAddressInHex;
+
+  @Valid
+  private String principalAirport;
+
+  @Valid
+  private String aircraftOperatorsDesignatorAndSerialNo;
+
+  @Valid
+  private String descriptionOfIntendedUse;
+
+  @Valid
+  private int numberOfPersonsOnBoard;
+
+  @Valid
+  private String areaOfUse;
+
+  @Valid
+  private String tripInformation;
 }

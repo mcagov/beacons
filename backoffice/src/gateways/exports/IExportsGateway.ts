@@ -1,5 +1,5 @@
-import { ICertificate } from "./ICertificate";
+import { IBeaconExport } from "./IBeaconExport";
 
 export interface IExportsGateway {
-  getCertificateDataForBeacon(beaconId: string): Promise<ICertificate>;
+  getExportDataForBeacon(beaconId: string): Promise<IBeaconExport>;
 }
