@@ -1,17 +1,12 @@
 package uk.gov.mca.beacons.api.export.csv;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import javax.validation.Valid;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
-import uk.gov.mca.beacons.api.export.rest.CertificateNoteDTO;
-import uk.gov.mca.beacons.api.export.rest.CertificateOwnerDTO;
-import uk.gov.mca.beacons.api.export.rest.CertificateUseDTO;
+import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportNoteDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportOwnerDTO;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 
 public class JsonSerialiser {
@@ -21,10 +16,10 @@ public class JsonSerialiser {
   );
 
   public static JSONArray mapModernBeaconNotesToJsonArray(
-    List<CertificateNoteDTO> notes
+    List<BeaconExportNoteDTO> notes
   ) {
     var jsonArray = new JSONArray();
-    for (CertificateNoteDTO note : notes) {
+    for (BeaconExportNoteDTO note : notes) {
       var json = new JSONObject();
       json.put("date created", note.getDate().format(dateFormatter));
       json.put("note", note.getNote().toUpperCase());
@@ -35,10 +30,10 @@ public class JsonSerialiser {
   }
 
   public static JSONArray mapModernBeaconOwnersToJsonArray(
-    List<CertificateOwnerDTO> owners
+    List<BeaconExportOwnerDTO> owners
   ) {
     var jsonArray = new JSONArray();
-    for (CertificateOwnerDTO owner : owners) {
+    for (BeaconExportOwnerDTO owner : owners) {
       var json = new JSONObject();
       json.put("owner name", owner.getOwnerName().toUpperCase());
       json.put("company agent", owner.getCompanyAgent().toUpperCase());
@@ -109,6 +104,38 @@ public class JsonSerialiser {
     );
 
     return json;
+  }
+
+  public JSONArray mapModernBeaconOwnerEmergencyContactsToJsonArray(
+    List<EmergencyContactDTO> emergencyContacts
+  ) {
+    JSONArray jsonArray = new JSONArray();
+    for (EmergencyContactDTO emergencyContact : emergencyContacts) {
+      var json = new JSONObject();
+      json.put("id", emergencyContact.getId());
+      json.put("full name", emergencyContact.getFullName().toUpperCase());
+      json.put(
+        "telephone number",
+        emergencyContact.getTelephoneNumber() != null
+          ? emergencyContact.getTelephoneNumber()
+          : ""
+      );
+      json.put(
+        "alternative telephone number",
+        emergencyContact.getAlternativeTelephoneNumber() != null
+          ? emergencyContact.getAlternativeTelephoneNumber()
+          : ""
+      );
+      json.put(
+        "beacon id",
+        emergencyContact.getBeaconId() != null
+          ? emergencyContact.getBeaconId()
+          : ""
+      );
+
+      jsonArray.add(json);
+    }
+    return jsonArray;
   }
   // uses
   //  List<CertificateUseDTO> toUsesDTO(List<BeaconUse> uses) {

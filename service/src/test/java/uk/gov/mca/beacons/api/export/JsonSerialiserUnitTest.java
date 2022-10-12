@@ -2,31 +2,26 @@ package uk.gov.mca.beacons.api.export;
 
 import static org.junit.Assert.assertEquals;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import io.swagger.v3.core.util.Json;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
-import javax.validation.Valid;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import org.joda.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import uk.gov.mca.beacons.api.export.csv.JsonSerialiser;
-import uk.gov.mca.beacons.api.export.rest.CertificateDTO;
-import uk.gov.mca.beacons.api.export.rest.CertificateNoteDTO;
-import uk.gov.mca.beacons.api.export.rest.CertificateOwnerDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportNoteDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportOwnerDTO;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 
 public class JsonSerialiserUnitTest {
 
   @Test
   public void mapModernBeaconNotesToJsonArray_shouldSerialiseListOfCertificateNoteDTOsToJsonArray() {
-    CertificateNoteDTO note = new CertificateNoteDTO();
+    BeaconExportNoteDTO note = new BeaconExportNoteDTO();
     note.setDate(LocalDateTime.of(2022, Month.MARCH, 28, 14, 33));
 
     note.setNote("Breakfast Club Coco");
-    List<CertificateNoteDTO> notes = List.of(note);
+    List<BeaconExportNoteDTO> notes = List.of(note);
     JSONArray jsonNotesArray = JsonSerialiser.mapModernBeaconNotesToJsonArray(
       notes
     );
@@ -38,7 +33,7 @@ public class JsonSerialiserUnitTest {
 
   @Test
   public void mapModernBeaconOwnersToJsonArray_shouldCapitaliseAllSentenceCaseText() {
-    CertificateOwnerDTO owner = new CertificateOwnerDTO();
+    BeaconExportOwnerDTO owner = new BeaconExportOwnerDTO();
     AddressDTO ownerAddress = new AddressDTO();
 
     ownerAddress.setAddressLine1("10 Via Coco");
@@ -51,7 +46,7 @@ public class JsonSerialiserUnitTest {
     owner.setMobiles("07782146399 / 07344800934 / 07321873457");
     owner.setEmail("cocomaria@gmail.com");
 
-    List<CertificateOwnerDTO> owners = List.of(owner);
+    List<BeaconExportOwnerDTO> owners = List.of(owner);
     JSONArray jsonOwnersArray = JsonSerialiser.mapModernBeaconOwnersToJsonArray(
       owners
     );
@@ -65,7 +60,7 @@ public class JsonSerialiserUnitTest {
 
   @Test
   public void mapModernBeaconOwnersToJsonArray_shouldSeparateMultiplePhoneNumbersWithASemicolon() {
-    CertificateOwnerDTO owner = new CertificateOwnerDTO();
+    BeaconExportOwnerDTO owner = new BeaconExportOwnerDTO();
     AddressDTO ownerAddress = new AddressDTO();
 
     ownerAddress.setAddressLine1("10 Via Coco");
@@ -78,7 +73,7 @@ public class JsonSerialiserUnitTest {
     owner.setMobiles("07782146399 / 07344800934 / 07321873457");
     owner.setEmail("cocomaria@gmail.com");
 
-    List<CertificateOwnerDTO> owners = List.of(owner);
+    List<BeaconExportOwnerDTO> owners = List.of(owner);
     JSONArray jsonOwnersArray = JsonSerialiser.mapModernBeaconOwnersToJsonArray(
       owners
     );

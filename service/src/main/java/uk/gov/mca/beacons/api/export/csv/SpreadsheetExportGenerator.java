@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringEscapeUtils;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
-import uk.gov.mca.beacons.api.export.rest.CertificateDTO;
-import uk.gov.mca.beacons.api.export.rest.CertificateNoteDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportNoteDTO;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.note.application.NoteService;
@@ -86,7 +85,7 @@ public class SpreadsheetExportGenerator {
     );
 
     for (Registration registration : batchOfBeacons) {
-      CertificateDTO mappedBeacon = exportMapper.toCertificateDTO(
+      BeaconExportDTO mappedBeacon = exportMapper.toBeaconExportDTO(
         registration,
         noteService.getNonSystemNotes(registration.getBeacon().getId())
       );
@@ -94,7 +93,7 @@ public class SpreadsheetExportGenerator {
     }
 
     for (LegacyBeacon legacyBeacon : batchOfLegacyBeacons) {
-      CertificateDTO mappedBeacon = exportMapper.toLegacyCertificateDTO(
+      BeaconExportDTO mappedBeacon = exportMapper.toLegacyBeaconExportDTO(
         legacyBeacon
       );
       file = writeToFile(file, mappedBeacon);
@@ -115,7 +114,7 @@ public class SpreadsheetExportGenerator {
     return file;
   }
 
-  private FileWriter writeToFile(FileWriter file, CertificateDTO mappedBeacon)
+  private FileWriter writeToFile(FileWriter file, BeaconExportDTO mappedBeacon)
     throws IOException {
     // format legacy only values
     String legacyNotes = mappedBeacon.getBeaconNote() != null
