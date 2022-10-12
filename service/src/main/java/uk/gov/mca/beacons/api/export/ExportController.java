@@ -101,6 +101,20 @@ class ExportController {
     return servePdf(file, "Label.pdf");
   }
 
+  @GetMapping(value = "/labels/{uuids}")
+  public ResponseEntity<byte[]> getLabelsByBeaconIds(
+    @PathVariable("uuids") List<UUID> rawBeaconIds
+  ) throws Exception {
+    List<LabelDTO> dataList = rawBeaconIds
+      .stream()
+      .map(id -> getLabelDTO(id))
+      .collect(Collectors.toList());
+
+    byte[] file = pdfService.createPdfLabels(dataList);
+
+    return servePdf(file, "Labels.pdf");
+  }
+
   private LabelDTO getLabelDTO(UUID rawBeaconId) {
     BeaconId beaconId = new BeaconId(rawBeaconId);
 
@@ -164,7 +178,7 @@ class ExportController {
   ) throws Exception {
     List<BeaconExportDTO> dataList = rawBeaconIds
       .stream()
-      .map(id -> getBeaconExportDTO(id, "Label"))
+      .map(id -> getBeaconExportDTO(id, "Letter"))
       .collect(Collectors.toList());
 
     return ResponseEntity

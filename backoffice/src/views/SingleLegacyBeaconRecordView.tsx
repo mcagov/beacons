@@ -79,7 +79,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
         </span>
         <span className={classes.button}>
           <Button
-            href={`/backoffice#/certificates/${beaconId}`}
+            href={`backoffice#/certificates/${beaconId}`}
             variant="outlined"
             endIcon={<ContentPrintIcon />}
           >
@@ -88,7 +88,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
         </span>
         <span className={classes.button}>
           <Button
-            href={`/backoffice#/letter/${beaconId}`}
+            href={`backoffice#/letter/${beaconId}`}
             variant="outlined"
             endIcon={<ContentPrintIcon />}
           >

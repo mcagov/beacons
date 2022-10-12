@@ -15,8 +15,8 @@ import {
 import {
   CertificatesView,
   CertificateView,
-  LetterView,
 } from "views/exports/certificates/CertificateView";
+import { LettersView, LetterView } from "views/exports/certificates/LetterView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
@@ -39,6 +39,10 @@ import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordVi
 
 interface ResourceParams {
   id: string;
+}
+
+interface ResourceListParams {
+  ids: string;
 }
 
 const App: FunctionComponent = () => {
@@ -101,13 +105,24 @@ const App: FunctionComponent = () => {
   };
 
   const CertificatesViewWithParam: FunctionComponent = () => {
-    const { id } = useParams<ResourceParams>();
-    return <CertificatesView exportsGateway={exportsGateway} beaconId={id} />;
+    const { ids } = useParams<ResourceListParams>();
+    let beaconIds = ids.split(",");
+    return (
+      <CertificatesView exportsGateway={exportsGateway} beaconIds={beaconIds} />
+    );
   };
 
   const LetterViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return <LetterView exportsGateway={exportsGateway} beaconId={id} />;
+  };
+
+  const LettersViewWithParam: FunctionComponent = () => {
+    const { ids } = useParams<ResourceListParams>();
+    let beaconIds = ids.split(",");
+    return (
+      <LettersView exportsGateway={exportsGateway} beaconIds={beaconIds} />
+    );
   };
 
   return (
@@ -143,10 +158,13 @@ const App: FunctionComponent = () => {
                   <CertificateViewWithParam />
                 </Route>
                 <Route path={`/certificates/:ids`}>
-                  <CertificateViewWithParam />
+                  <CertificatesViewWithParam />
                 </Route>
                 <Route path={`/letter/:id`}>
                   <LetterViewWithParam />
+                </Route>
+                <Route path={`/letters/:ids`}>
+                  <LettersViewWithParam />
                 </Route>
                 <Route>
                   <Navigation />

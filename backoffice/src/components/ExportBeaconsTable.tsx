@@ -1,18 +1,12 @@
-import { Icons, Query } from "@material-table/core";
 import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
-import React, { forwardRef, FunctionComponent, useState } from "react";
-import { IBeaconSearchResultData } from "../entities/IBeaconSearchResult";
+import React, { FunctionComponent, useState } from "react";
 import Box from "@mui/material/Box";
 import {
   DataGrid,
   GridColDef,
   GridSelectionModel,
-  GridToolbar,
   GridToolbarContainer,
   GridToolbarExport,
-  GridValueFormatterParams,
-  GridValueGetterParams,
-  selectedGridRowsSelector,
 } from "@mui/x-data-grid";
 import { AuthenticatedPrintButton } from "./AuthenticatedPrintButton";
 import { applicationConfig } from "config";
@@ -23,7 +17,7 @@ interface IBeaconsTableProps {
 }
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 90 },
+  { field: "id", headerName: "ID", width: 300 },
   {
     field: "hexId",
     headerName: "Hex ID",
@@ -116,18 +110,7 @@ const rows = [
 export const ExportBeaconsTable: FunctionComponent<IBeaconsTableProps> =
   React.memo(function ({ beaconsGateway }): JSX.Element {
     const [selectionModelItems, setSelectionModel] =
-      React.useState<GridSelectionModel>([]);
-
-    // React.useEffect(() => {
-    //   const parsedArrayFromLocalStorage = JSON.parse(localStorage?.getItem("SelectedOption") || "[]");
-    //   const mappedArray = parsedArrayFromLocalStorage.map((item: any) => {
-    //     return item;
-
-    //   }, [selectionModelItems]);
-    //   console.log("log", mappedArray);
-    //   setSelectionModel(mappedArray);
-
-    // }, []);
+      useState<GridSelectionModel>([]);
 
     function CustomToolbar() {
       if (!selectionModelItems || selectionModelItems.length === 0) {
@@ -136,23 +119,32 @@ export const ExportBeaconsTable: FunctionComponent<IBeaconsTableProps> =
 
       return (
         <GridToolbarContainer>
-          {/* <GridToolbarExport /> */}
-          <p>{JSON.stringify(selectionModelItems)}</p>
           <AuthenticatedPrintButton
-            label="Print labels"
+            label="Print label(s)"
             url={`${
               applicationConfig.apiUrl
             }/export/labels/${selectionModelItems.toString()}`}
             isFullWidth={false}
           />
           <Button
-            href={`/backoffice#/certificates/${selectionModelItems.toString()}`}
+            href={`backoffice#/certificates/${selectionModelItems.toString()}`}
             target="_blank"
             variant="outlined"
+            className="ml-2"
             endIcon={<ContentPrintIcon />}
           >
-            Print certificate
+            Print certificate(s)
           </Button>
+          <Button
+            href={`backoffice#/letters/${selectionModelItems.toString()}`}
+            target="_blank"
+            variant="outlined"
+            className="m-2"
+            endIcon={<ContentPrintIcon />}
+          >
+            Print letter(s)
+          </Button>
+          <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
         </GridToolbarContainer>
       );
     }
@@ -162,11 +154,9 @@ export const ExportBeaconsTable: FunctionComponent<IBeaconsTableProps> =
         <DataGrid
           rows={rows}
           columns={columns}
-          pageSize={3}
-          rowsPerPageOptions={[1, 5, 10, 20]}
+          pageSize={20}
+          rowsPerPageOptions={[20, 50, 100]}
           checkboxSelection
-          // disableSelectionOnClick
-          // selectionModel={selectionModel}
           onSelectionModelChange={(ids) => {
             console.log("ids is : ", ids);
             setSelectionModel(ids);
