@@ -126,9 +126,9 @@ public class SpreadsheetExportGenerator {
       : "";
 
     // check for nulls
-    String notes = mappedBeacon.getNotes() != null
-      ? mappedBeacon.getNotes().toString()
-      : "";
+    JSONArray notes = mappedBeacon.getNotes() != null
+      ? JsonSerialiser.mapModernBeaconNotesToJsonArray(mappedBeacon.getNotes())
+      : null;
     String serialNumber = MessageFormat.format(
       "{0}",
       mappedBeacon.getSerialNumber()

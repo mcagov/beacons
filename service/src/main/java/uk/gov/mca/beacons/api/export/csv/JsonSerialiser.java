@@ -1,24 +1,32 @@
 package uk.gov.mca.beacons.api.export.csv;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.export.rest.CertificateNoteDTO;
 import uk.gov.mca.beacons.api.export.rest.CertificateOwnerDTO;
+import uk.gov.mca.beacons.api.export.rest.CertificateUseDTO;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 
 public class JsonSerialiser {
 
-  public static JSONArray mapModernBeaconNotesToJson(
+  private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
+    "dd/MM/yyyy"
+  );
+
+  public static JSONArray mapModernBeaconNotesToJsonArray(
     List<CertificateNoteDTO> notes
   ) {
     var jsonArray = new JSONArray();
     for (CertificateNoteDTO note : notes) {
       var json = new JSONObject();
-      json.put("date created", note.getDate());
+      json.put("date created", note.getDate().format(dateFormatter));
       json.put("note", note.getNote().toUpperCase());
       jsonArray.add(json);
     }
@@ -26,7 +34,7 @@ public class JsonSerialiser {
     return jsonArray;
   }
 
-  public static JSONArray mapModernBeaconOwnersToJson(
+  public static JSONArray mapModernBeaconOwnersToJsonArray(
     List<CertificateOwnerDTO> owners
   ) {
     var jsonArray = new JSONArray();
@@ -53,42 +61,71 @@ public class JsonSerialiser {
     return jsonArray;
   }
 
-  // want all UK date formats
-  // all uppercase
   public static JSONObject mapModernBeaconOwnerAddressToJson(
     AddressDTO address
   ) {
     var json = new JSONObject();
-    json.put("owner name", owner.getOwnerName());
-    json.put("company agent", owner.getCompanyAgent());
-    json.put("company agent", owner.getCompanyAgent());
-    json.put("care of", owner.getCareOf());
-    json.put("company agent", owner.getCompanyAgent());
-    json.put("company agent", owner.getCompanyAgent());
-    json.put("company agent", owner.getCompanyAgent());
+    json.put(
+      "address line 1",
+      address.getAddressLine1() != null
+        ? address.getAddressLine1().toUpperCase()
+        : ""
+    );
+    json.put(
+      "address line 2",
+      address.getAddressLine2() != null
+        ? address.getAddressLine2().toUpperCase()
+        : ""
+    );
+    json.put(
+      "address line 3",
+      address.getAddressLine3() != null
+        ? address.getAddressLine3().toUpperCase()
+        : ""
+    );
+    json.put(
+      "address line 4",
+      address.getAddressLine4() != null
+        ? address.getAddressLine4().toUpperCase()
+        : ""
+    );
+    json.put(
+      "town or city",
+      address.getTownOrCity() != null
+        ? address.getTownOrCity().toUpperCase()
+        : ""
+    );
+    json.put(
+      "postcode",
+      address.getPostcode() != null ? address.getPostcode().toUpperCase() : ""
+    );
+    json.put(
+      "county",
+      address.getCounty() != null ? address.getCounty().toUpperCase() : ""
+    );
+    json.put(
+      "country",
+      address.getCountry() != null ? address.getCountry().toUpperCase() : ""
+    );
 
     return json;
   }
-
-  @JsonUnwrapped
-  private AddressDTO address;
-
-  private String addressLine1;
-  private String addressLine2;
-  private String addressLine3;
-  private String addressLine4;
-  private String townOrCity;
-  private String postcode;
-  private String county;
-  private String country;
-
-  @Valid
-  // format: telephone / alternativeTelephoneNumber
-  private String telephoneNumbers;
-
-  @Valid
-  private String mobiles;
-
-  @Valid
-  private String email;
+  // uses
+  //  List<CertificateUseDTO> toUsesDTO(List<BeaconUse> uses) {
+  //    List<CertificateUseDTO> usesDTO = new ArrayList<>();
+  //    for (BeaconUse use : uses) {
+  //      switch (use.getEnvironment()) {
+  //        case MARITIME:
+  //          usesDTO.add(toMaritimeUse(use));
+  //          break;
+  //        case AVIATION:
+  //          usesDTO.add(toAviationUse(use));
+  //          break;
+  //        case LAND:
+  //          usesDTO.add(toLandUse(use));
+  //          break;
+  //      }
+  //    }
+  //    return usesDTO;
+  //  }
 }
