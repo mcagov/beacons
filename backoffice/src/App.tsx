@@ -13,6 +13,7 @@ import {
   useParams,
 } from "react-router-dom";
 import {
+  CertificatesView,
   CertificateView,
   LetterView,
 } from "views/exports/certificates/CertificateView";
@@ -99,6 +100,11 @@ const App: FunctionComponent = () => {
     return <CertificateView exportsGateway={exportsGateway} beaconId={id} />;
   };
 
+  const CertificatesViewWithParam: FunctionComponent = () => {
+    const { id } = useParams<ResourceParams>();
+    return <CertificatesView exportsGateway={exportsGateway} beaconId={id} />;
+  };
+
   const LetterViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return <LetterView exportsGateway={exportsGateway} beaconId={id} />;
@@ -133,7 +139,10 @@ const App: FunctionComponent = () => {
                   </PageContent>
                   <Footer />
                 </Route>
-                <Route path={`/certificates/:id`}>
+                <Route path={`/certificate/:id`}>
+                  <CertificateViewWithParam />
+                </Route>
+                <Route path={`/certificates/:ids`}>
                   <CertificateViewWithParam />
                 </Route>
                 <Route path={`/letter/:id`}>

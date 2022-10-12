@@ -36,6 +36,20 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
   }
 };
 
+export const CertificatesView: FunctionComponent<CertificateViewProps> = ({
+  exportsGateway,
+  beaconId,
+}): JSX.Element => {
+  const ids = beaconId.split(",");
+
+  return (
+    <div>
+      {ids.map((id) => (
+        <CertificateView beaconId={id} exportsGateway={exportsGateway} />
+      ))}
+    </div>
+  );
+};
 export const LetterView: FunctionComponent<CertificateViewProps> = ({
   exportsGateway,
   beaconId,
