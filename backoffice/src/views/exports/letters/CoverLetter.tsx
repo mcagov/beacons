@@ -25,9 +25,9 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
         <div className="section">
           {owner && (
             <div className="half recipient">
-              <h3 className="bold">{owner.ownerName}</h3>
               <div className="address-fields">
                 {[
+                  owner.ownerName,
                   owner.addressLine1,
                   owner.addressLine2,
                   owner.addressLine3,
@@ -49,6 +49,10 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
               )}
             <p>{customDateStringFormat(new Date(), "DD MMMM yyyy")}</p>
           </div>
+        </div>
+
+        <div className="section">
+          <p>Dear Sir or Madam</p>
         </div>
 
         {type == "Registration" && (
@@ -75,12 +79,10 @@ export const RegistrationBody: FunctionComponent<LetterProps> = ({
   certificate,
 }): JSX.Element => {
   return (
-    <div className="section">
-      <p>Dear Sir or Madam</p>
-
-      <div className="registrationText">
+    <div className="section registrationText">
+      <div className="subject">
         <p className="bold underline">
-          406 MHz EMERGENCY BEACON REGISTRATION FOR AN ERIPB, PLB OR ELT
+          406 MHz EMERGENCY BEACON REGISTRATION FOR AN EPIRB, PLB OR ELT
         </p>
         <p className="bold underline">
           VESSEL/AIRCRAFT: &nbsp;&nbsp; HEX ID: {certificate.hexId}
@@ -115,7 +117,10 @@ export const RegistrationBody: FunctionComponent<LetterProps> = ({
         the back of the database report is a blank Registration form that you
         may use to inform us of any future changes, alternatively please send
         amendments via email, telephone us or our online form at:
-        https://register-406-beacons.service.gov.uk
+        <span className="underline">
+          {" "}
+          https://www.register-406-beacons.service.gov.uk
+        </span>
       </p>
     </div>
   );
@@ -125,12 +130,10 @@ export const AmendedBody: FunctionComponent<LetterProps> = ({
   certificate,
 }): JSX.Element => {
   return (
-    <div className="section">
-      <p>Dear Sir or Madam</p>
-
-      <div className="registrationText">
+    <div className="section registrationText">
+      <div className="subject">
         <p className="bold underline">
-          406 MHz EMERGENCY POSITION - INDICATING RADIO BEACON (ERIPB)/PLB
+          406 MHz EMERGENCY POSITION - INDICATING RADIO BEACON (EPIRB)/PLB
         </p>
         <p className="bold underline">
           VESSEL/AIRCRAFT: &nbsp;&nbsp; HEX ID: {certificate.hexId}
@@ -146,7 +149,12 @@ export const AmendedBody: FunctionComponent<LetterProps> = ({
         loss, loan or theft of your beacon. On the back of the database report
         is a blank Registration form that you may use to inform us of any future
         changes, alternatively please send amendments via email, telephone us or
-        our online form at: https://register-406-beacons.service.gov.uk.
+        our online form at:
+        <span className="underline">
+          {" "}
+          https://www.register-406-beacons.service.gov.uk
+        </span>
+        .
       </p>
       <p>
         The use of PLBs overland in the UK became legal in 2012 so if you own a
@@ -175,7 +183,7 @@ export const LetterHeader: FunctionComponent = (): JSX.Element => {
         <p>Pendennis Point, Castle Drive</p>
         <p>Falmouth</p>
         <p>Cornwall &nbsp; TR11 4WZ</p>
-        <p>Tel.: &nbsp;&nbsp; 01326 211569</p>
+        <p>Tel: &nbsp;&nbsp; 020 3817 2658</p>
         <p>Fax: &nbsp;&nbsp; 01326 319264</p>
         <p>Email: &nbsp;&nbsp; UKBeacons@mcga.gov.uk</p>
       </div>
