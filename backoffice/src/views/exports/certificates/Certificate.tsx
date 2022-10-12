@@ -327,7 +327,7 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
   return (
     <div className="owner-details">
       {beacon.owners &&
-        beacon.owners.map((owner, index) => {
+        beacon.owners.map((owner, index) => (
           <div className="section" key={index}>
             <h3>Owner Details:</h3>
             <CertificateField
@@ -372,8 +372,8 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
               title="Email"
               value={owner.email}
             />
-          </div>;
-        })}
+          </div>
+        ))}
     </div>
   );
 };

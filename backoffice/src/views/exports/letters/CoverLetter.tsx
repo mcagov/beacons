@@ -43,7 +43,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
             </div>
           )}
           <div className="half date">
-            {beacon.type == "Legacy" && beacon.departmentReference && (
+            {beacon.type === "Legacy" && beacon.departmentReference && (
               <p>Dept Ref: {beacon.departmentReference}</p>
             )}
             <p>{customDateStringFormat(new Date(), "DD MMMM yyyy")}</p>
@@ -54,10 +54,10 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
           <p>Dear Sir or Madam</p>
         </div>
 
-        {type == "Registration" && (
+        {type === "Registration" && (
           <RegistrationBody beacon={beacon} type={type} />
         )}
-        {type == "Amended" && <AmendedBody beacon={beacon} type={type} />}
+        {type === "Amended" && <AmendedBody beacon={beacon} type={type} />}
 
         <div className="section sign-off">
           <p>Yours faithfully,</p>
