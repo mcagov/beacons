@@ -51,7 +51,7 @@ export const CertificateHeader: FunctionComponent<BeaconExportProps> = ({
           )}
         />
 
-        {beacon.type == "Legacy" && (
+        {beacon.type === "Legacy" && (
           <CertificateField
             classes="half"
             title="Dept Ref"
