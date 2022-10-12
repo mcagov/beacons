@@ -28,11 +28,11 @@ public class JsonSerialiserUnitTest {
     JSONObject firstMappedNote = (JSONObject) jsonNotesArray.get(0);
 
     assertEquals("BREAKFAST CLUB COCO", firstMappedNote.get("note"));
-    assertEquals("28/03/2022", firstMappedNote.get("date created"));
+    assertEquals("28-03-2022", firstMappedNote.get("date created"));
   }
 
   @Test
-  public void mapModernBeaconOwnersToJsonArray_shouldCapitaliseAllSentenceCaseText() {
+  public void mapBeaconOwnersToJsonArray_shouldCapitaliseAllSentenceCaseText() {
     BeaconExportOwnerDTO owner = new BeaconExportOwnerDTO();
     AddressDTO ownerAddress = new AddressDTO();
 
@@ -47,7 +47,7 @@ public class JsonSerialiserUnitTest {
     owner.setEmail("cocomaria@gmail.com");
 
     List<BeaconExportOwnerDTO> owners = List.of(owner);
-    JSONArray jsonOwnersArray = JsonSerialiser.mapModernBeaconOwnersToJsonArray(
+    JSONArray jsonOwnersArray = JsonSerialiser.mapBeaconOwnersToJsonArray(
       owners
     );
     JSONObject firstMappedOwner = (JSONObject) jsonOwnersArray.get(0);
@@ -59,7 +59,7 @@ public class JsonSerialiserUnitTest {
   }
 
   @Test
-  public void mapModernBeaconOwnersToJsonArray_shouldSeparateMultiplePhoneNumbersWithASemicolon() {
+  public void mapBeaconOwnersToJsonArray_shouldSeparateMultiplePhoneNumbersWithASemicolon() {
     BeaconExportOwnerDTO owner = new BeaconExportOwnerDTO();
     AddressDTO ownerAddress = new AddressDTO();
 
@@ -74,7 +74,7 @@ public class JsonSerialiserUnitTest {
     owner.setEmail("cocomaria@gmail.com");
 
     List<BeaconExportOwnerDTO> owners = List.of(owner);
-    JSONArray jsonOwnersArray = JsonSerialiser.mapModernBeaconOwnersToJsonArray(
+    JSONArray jsonOwnersArray = JsonSerialiser.mapBeaconOwnersToJsonArray(
       owners
     );
     JSONObject firstMappedOwner = (JSONObject) jsonOwnersArray.get(0);
@@ -90,12 +90,12 @@ public class JsonSerialiserUnitTest {
   }
 
   @Test
-  public void mapModernBeaconOwnerAddressToJson_whenAnAddressLineIsNull_shouldReturnEmptyStringForThatLine() {
+  public void mapBeaconOwnerAddressToJson_whenAnAddressLineIsNull_shouldReturnEmptyStringForThatLine() {
     AddressDTO ownerAddress = new AddressDTO();
 
     ownerAddress.setAddressLine1("10 Via Coco");
 
-    JSONObject mappedAddress = JsonSerialiser.mapModernBeaconOwnerAddressToJson(
+    JSONObject mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToJson(
       ownerAddress
     );
 
@@ -103,14 +103,14 @@ public class JsonSerialiserUnitTest {
   }
 
   @Test
-  public void mapModernBeaconOwnerAddressToJson_shouldCapitaliseAllSentenceCaseText() {
+  public void mapBeaconOwnerAddressToJson_shouldCapitaliseAllSentenceCaseText() {
     AddressDTO ownerAddress = new AddressDTO();
 
     ownerAddress.setAddressLine1("10 Via Coco");
     ownerAddress.setAddressLine2("Ciudad de Mexico");
     ownerAddress.setCountry("Mexico");
 
-    JSONObject mappedAddress = JsonSerialiser.mapModernBeaconOwnerAddressToJson(
+    JSONObject mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToJson(
       ownerAddress
     );
 

@@ -12,7 +12,7 @@ import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 public class JsonSerialiser {
 
   private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
-    "dd/MM/yyyy"
+    "dd-MM-yyyy"
   );
 
   public static JSONArray mapModernBeaconNotesToJsonArray(
@@ -29,26 +29,36 @@ public class JsonSerialiser {
     return jsonArray;
   }
 
-  public static JSONArray mapModernBeaconOwnersToJsonArray(
+  public static JSONArray mapBeaconOwnersToJsonArray(
     List<BeaconExportOwnerDTO> owners
   ) {
     var jsonArray = new JSONArray();
     for (BeaconExportOwnerDTO owner : owners) {
       var json = new JSONObject();
       json.put("owner name", owner.getOwnerName().toUpperCase());
-      json.put("company agent", owner.getCompanyAgent().toUpperCase());
-      json.put("company agent", owner.getCompanyAgent().toUpperCase());
-      json.put("care of", owner.getCareOf().toUpperCase());
       json.put(
-        "address",
-        mapModernBeaconOwnerAddressToJson(owner.getAddress())
+        "company agent",
+        owner.getCompanyAgent() != null
+          ? owner.getCompanyAgent().toUpperCase()
+          : ""
       );
+      json.put(
+        "care of",
+        owner.getCareOf() != null ? owner.getCareOf().toUpperCase() : ""
+      );
+      json.put("address", mapBeaconOwnerAddressToJson(owner.getAddress()));
       json.put(
         "telephone numbers",
         owner.getTelephoneNumbers().replace('/', ';')
       );
-      json.put("mobiles", owner.getMobiles().replace('/', ';'));
-      json.put("email", owner.getEmail().toUpperCase());
+      json.put(
+        "mobiles",
+        owner.getMobiles() != null ? owner.getMobiles().replace('/', ';') : ""
+      );
+      json.put(
+        "email",
+        owner.getEmail() != null ? owner.getEmail().toUpperCase() : ""
+      );
 
       jsonArray.add(json);
     }
@@ -56,9 +66,7 @@ public class JsonSerialiser {
     return jsonArray;
   }
 
-  public static JSONObject mapModernBeaconOwnerAddressToJson(
-    AddressDTO address
-  ) {
+  public static JSONObject mapBeaconOwnerAddressToJson(AddressDTO address) {
     var json = new JSONObject();
     json.put(
       "address line 1",
@@ -106,7 +114,7 @@ public class JsonSerialiser {
     return json;
   }
 
-  public JSONArray mapModernBeaconOwnerEmergencyContactsToJsonArray(
+  public static JSONArray mapEmergencyContactsToJsonArray(
     List<EmergencyContactDTO> emergencyContacts
   ) {
     JSONArray jsonArray = new JSONArray();
@@ -117,13 +125,13 @@ public class JsonSerialiser {
       json.put(
         "telephone number",
         emergencyContact.getTelephoneNumber() != null
-          ? emergencyContact.getTelephoneNumber()
+          ? emergencyContact.getTelephoneNumber().replace('/', ';')
           : ""
       );
       json.put(
         "alternative telephone number",
         emergencyContact.getAlternativeTelephoneNumber() != null
-          ? emergencyContact.getAlternativeTelephoneNumber()
+          ? emergencyContact.getAlternativeTelephoneNumber().replace('/', ';')
           : ""
       );
       json.put(
