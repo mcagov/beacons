@@ -1,21 +1,21 @@
 import "./letter.scss";
 import { FunctionComponent } from "react";
-import { ICertificate } from "gateways/exports/ICertificate";
+import { IBeaconExport } from "gateways/exports/IBeaconExport";
 import { customDateStringFormat } from "utils/dateTime";
 export interface LetterProps {
-  certificate: ICertificate;
+  beacon: IBeaconExport;
   type: "Registration" | "Amended";
 }
 
 export const CoverLetter: FunctionComponent<LetterProps> = ({
-  certificate,
+  beacon,
   type,
 }): JSX.Element => {
-  if (!certificate.owners) {
+  if (!beacon.owners) {
     return <p>Could not load owner</p>;
   }
 
-  const owner = certificate.owners.at(0);
+  const owner = beacon.owners.at(0);
   return (
     <div className="letter">
       {/* <div className="letter" onLoad={window.print}> */}
@@ -43,20 +43,17 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
             </div>
           )}
           <div className="half date">
-            {certificate.type == "Legacy" &&
-              certificate.departmentReference && (
-                <p>Dept Ref: {certificate.departmentReference}</p>
-              )}
+            {beacon.type == "Legacy" && beacon.departmentReference && (
+              <p>Dept Ref: {beacon.departmentReference}</p>
+            )}
             <p>{customDateStringFormat(new Date(), "DD MMMM yyyy")}</p>
           </div>
         </div>
 
         {type == "Registration" && (
-          <RegistrationBody certificate={certificate} type={type} />
+          <RegistrationBody beacon={beacon} type={type} />
         )}
-        {type == "Amended" && (
-          <AmendedBody certificate={certificate} type={type} />
-        )}
+        {type == "Amended" && <AmendedBody beacon={beacon} type={type} />}
 
         <div className="section sign-off">
           <p>Yours faithfully,</p>
@@ -72,7 +69,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
 };
 
 export const RegistrationBody: FunctionComponent<LetterProps> = ({
-  certificate,
+  beacon,
 }): JSX.Element => {
   return (
     <div className="section">
@@ -83,7 +80,7 @@ export const RegistrationBody: FunctionComponent<LetterProps> = ({
           406 MHz EMERGENCY BEACON REGISTRATION FOR AN ERIPB, PLB OR ELT
         </p>
         <p className="bold underline">
-          VESSEL/AIRCRAFT: &nbsp;&nbsp; HEX ID: {certificate.hexId}
+          VESSEL/AIRCRAFT: &nbsp;&nbsp; HEX ID: {beacon.hexId}
         </p>
       </div>
 
@@ -122,7 +119,7 @@ export const RegistrationBody: FunctionComponent<LetterProps> = ({
 };
 
 export const AmendedBody: FunctionComponent<LetterProps> = ({
-  certificate,
+  beacon,
 }): JSX.Element => {
   return (
     <div className="section">
@@ -133,7 +130,7 @@ export const AmendedBody: FunctionComponent<LetterProps> = ({
           406 MHz EMERGENCY POSITION - INDICATING RADIO BEACON (ERIPB)/PLB
         </p>
         <p className="bold underline">
-          VESSEL/AIRCRAFT: &nbsp;&nbsp; HEX ID: {certificate.hexId}
+          VESSEL/AIRCRAFT: &nbsp;&nbsp; HEX ID: {beacon.hexId}
         </p>
       </div>
       <p>
