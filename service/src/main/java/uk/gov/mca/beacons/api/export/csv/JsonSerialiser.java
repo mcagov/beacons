@@ -2,7 +2,6 @@ package uk.gov.mca.beacons.api.export.csv;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import javax.validation.Valid;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -183,7 +182,7 @@ public class JsonSerialiser {
     json.appendField(
       "radio system",
       maritimeUse.getRadioSystem() != null
-        ? maritimeUse.getRadioSystem().toUpperCase()
+        ? maritimeUse.getRadioSystem().toUpperCase().replace('/', ';')
         : ""
     );
     json.appendField(
@@ -234,7 +233,7 @@ public class JsonSerialiser {
     json.put(
       "radio system",
       aviationUse.getRadioSystem() != null
-        ? aviationUse.getRadioSystem().toUpperCase()
+        ? aviationUse.getRadioSystem().toUpperCase().replace('/', ';')
         : ""
     );
     json.put(
@@ -275,7 +274,7 @@ public class JsonSerialiser {
     json.put(
       "radio system",
       landUse.getRadioSystem() != null
-        ? landUse.getRadioSystem().toUpperCase()
+        ? landUse.getRadioSystem().toUpperCase().replace('/', ';')
         : ""
     );
     json.put(
@@ -309,12 +308,12 @@ public class JsonSerialiser {
       "vessel",
       genericUse.getVessel() != null ? genericUse.getVessel().toUpperCase() : ""
     );
-    json.put("vessel callsign", genericUse.getVesselCallsign());
+    json.put("vessel callsign", genericUse.getVesselCallsign().toUpperCase());
     json.put("mmsi number", genericUse.getMmsiNumber());
     json.put(
       "radio system",
       genericUse.getRadioSystem() != null
-        ? genericUse.getRadioSystem().toUpperCase()
+        ? genericUse.getRadioSystem().toUpperCase().replace('/', ';')
         : ""
     );
     json.put(

@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
+import uk.gov.mca.beacons.api.utils.StringUtils;
 
 public class SpreadsheetExportGenerator {
 
@@ -44,7 +46,7 @@ public class SpreadsheetExportGenerator {
 
   private final String delimiter = ",";
   private final String separator = "\n";
-  private final int batchSize = 10;
+  private final int batchSize = 200;
   private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
     "dd-MM-yyyy"
   );
@@ -75,42 +77,20 @@ public class SpreadsheetExportGenerator {
     "emergency contacts"
   );
 
-  public FileWriter generateCsvExport() throws IOException {
-    FileWriter file = prepareFile();
+  public void generateBackupExport(String fileExtension) throws IOException {
+    FileWriter file = prepareFile(fileExtension);
 
-    // do with one small batch first
-    // then do a loop batching the whole lot chunk by chunk
-    // we'll likely need a screen showing the progress of the export
-    ArrayList<Registration> batchOfBeacons = registrationService.getBatch(
-      batchSize,
-      0
-    );
-    List<LegacyBeacon> batchOfLegacyBeacons = legacyBeaconService.getBatch(
-      batchSize,
-      0
-    );
-
-    for (Registration registration : batchOfBeacons) {
-      BeaconExportDTO beaconExport = exportMapper.toBeaconExportDTO(
-        registration,
-        noteService.getNonSystemNotes(registration.getBeacon().getId())
-      );
-      file = writeToFile(file, beaconExport);
-    }
-
-    for (LegacyBeacon legacyBeacon : batchOfLegacyBeacons) {
-      BeaconExportDTO beaconExport = exportMapper.toLegacyBeaconExportDTO(
-        legacyBeacon
-      );
-      file = writeToFile(file, beaconExport);
-    }
+    exportBeaconsInBatches(file);
 
     file.close();
-    return file;
   }
 
-  private FileWriter prepareFile() throws IOException {
-    String fileName = "/Users/evie.skinner/AllBeaconsExport.xlsx";
+  private FileWriter prepareFile(String fileExtension) throws IOException {
+    String fileName = MessageFormat.format(
+      "{0}{1}",
+      "/Users/evie.skinner/AllBeaconsExport",
+      fileExtension
+    );
     var file = new FileWriter(fileName);
 
     String headers = String.join(delimiter, this.columnHeaders);
@@ -120,8 +100,39 @@ public class SpreadsheetExportGenerator {
     return file;
   }
 
+  public void exportBeaconsInBatches(FileWriter file) throws IOException {
+    int numberAlreadyTaken = 0;
+
+    for (int i = 0; i <= batchSize; i++) {
+      ArrayList<Registration> batchOfBeacons = registrationService.getBatch(
+        batchSize,
+        numberAlreadyTaken
+      );
+      List<LegacyBeacon> batchOfLegacyBeacons = legacyBeaconService.getBatch(
+        batchSize,
+        numberAlreadyTaken
+      );
+
+      for (Registration registration : batchOfBeacons) {
+        BeaconExportDTO beaconExport = exportMapper.toBeaconExportDTO(
+          registration,
+          noteService.getNonSystemNotes(registration.getBeacon().getId())
+        );
+        writeToFile(file, beaconExport);
+      }
+
+      for (LegacyBeacon legacyBeacon : batchOfLegacyBeacons) {
+        BeaconExportDTO beaconExport = exportMapper.toLegacyBeaconExportDTO(
+          legacyBeacon
+        );
+        writeToFile(file, beaconExport);
+      }
+      numberAlreadyTaken = numberAlreadyTaken + batchSize;
+    }
+  }
+
   //todo: how do I chunk it down further?
-  private FileWriter writeToFile(FileWriter file, BeaconExportDTO beaconExport)
+  private void writeToFile(FileWriter file, BeaconExportDTO beaconExport)
     throws IOException {
     // format legacy only values
     String legacyNotes = beaconExport.getBeaconNote() != null
@@ -166,24 +177,22 @@ public class SpreadsheetExportGenerator {
     owners = StringEscapeUtils.escapeCsv(owners);
     emergencyContacts = StringEscapeUtils.escapeCsv(emergencyContacts);
 
-    file =
-      appendValuesToFile(
-        file,
-        beaconExport,
-        deptRef,
-        serialNumber,
-        codingProtocol,
-        legacyNotes,
-        notes,
-        uses,
-        owners,
-        emergencyContacts
-      );
-    return file;
+    appendValuesToFile(
+      file,
+      beaconExport,
+      deptRef,
+      serialNumber,
+      codingProtocol,
+      legacyNotes,
+      notes,
+      uses,
+      owners,
+      emergencyContacts
+    );
   }
 
-  // todo: consider using one dictionary of properties instead of loads of sepearate arguments
-  private FileWriter appendValuesToFile(
+  // todo: consider using one dictionary of properties instead of loads of separate arguments
+  private void appendValuesToFile(
     FileWriter file,
     BeaconExportDTO beaconExport,
     String deptRef,
@@ -209,8 +218,10 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        beaconExport.getRecordCreatedDate(),
-        //(OffsetDateTime.parse(beaconExport.getRecordCreatedDate())).format(dateFormatter),
+        StringUtils.formatDate(
+          beaconExport.getRecordCreatedDate(),
+          dateFormatter
+        ),
         delimiter
       )
     );
@@ -256,9 +267,10 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        (LocalDate.parse(beaconExport.getBeaconlastServiced())).format(
-            dateFormatter
-          ),
+        StringUtils.formatDate(
+          beaconExport.getBeaconlastServiced(),
+          dateFormatter
+        ),
         delimiter
       )
     );
@@ -268,9 +280,12 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        (LocalDate.parse(beaconExport.getBatteryExpiryDate())).format(
+        (
+          StringUtils.formatDate(
+            beaconExport.getBatteryExpiryDate(),
             dateFormatter
-          ),
+          )
+        ),
         delimiter
       )
     );
@@ -285,6 +300,5 @@ public class SpreadsheetExportGenerator {
     file.append(MessageFormat.format("{0}{1}", emergencyContacts, delimiter));
 
     file.append(separator);
-    return file;
   }
 }

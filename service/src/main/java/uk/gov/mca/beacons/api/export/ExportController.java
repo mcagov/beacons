@@ -77,21 +77,18 @@ class ExportController {
     return ResponseEntity.ok().build();
   }
 
-  @GetMapping(value = "/xlsx/data")
-  //  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
-  public ResponseEntity<String> createNewXlsxExportData() throws IOException {
+  @GetMapping(value = "/xlsx/backup")
+  //    @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+  public ResponseEntity<String> createXlsxBackupFile() throws IOException {
     SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
       registrationService,
       legacyBeaconService,
       noteService,
       exportMapper
     );
-    var csvFileRows = csvGenerator.generateCsvExport().toString();
+    csvGenerator.generateBackupExport(".csv");
 
-    return ResponseEntity
-      .ok()
-      .contentType(MediaType.TEXT_PLAIN)
-      .body(csvFileRows);
+    return ResponseEntity.ok().build();
   }
 
   private ResponseEntity<Resource> serveFile(Resource resource) {
