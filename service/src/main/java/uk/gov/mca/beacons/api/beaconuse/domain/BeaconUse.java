@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.beaconuse.domain;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -293,6 +294,6 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
       name = getRegistrationMark();
     }
 
-    return name;
+    return Objects.requireNonNullElse(name, "");
   }
 }

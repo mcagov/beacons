@@ -95,12 +95,7 @@ public class PdfGenerateService {
     );
 
     document.add(getLabelDataLine("Hex Id", data.getHexId().toUpperCase()));
-    document.add(
-      getLabelDataLine(
-        "Coding",
-        data.getCoding() != null ? data.getCoding().toUpperCase() : "N/A"
-      )
-    );
+    document.add(getLabelDataLine("Coding", data.getCoding()));
     document.add(
       getLabelDataLine(
         "Proof of Registration",
@@ -111,7 +106,7 @@ public class PdfGenerateService {
 
   private Paragraph getLabelDataLine(String key, String value) {
     if (value == null) {
-      value = "N/A";
+      value = "";
     }
 
     Paragraph p = new Paragraph()
