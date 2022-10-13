@@ -137,7 +137,9 @@ public class SpreadsheetExportGenerator {
         .mapModernBeaconNotesToJsonArray(beaconExport.getNotes())
         .toString()
       : "";
-    // uses will go here
+    String uses = beaconExport.getUses() != null
+      ? JsonSerialiser.mapUsesToJsonArray(beaconExport.getUses()).toString()
+      : "";
     String owners = beaconExport.getOwners() != null
       ? JsonSerialiser
         .mapBeaconOwnersToJsonArray(beaconExport.getOwners())
@@ -160,10 +162,10 @@ public class SpreadsheetExportGenerator {
     legacyNotes = StringEscapeUtils.escapeCsv(legacyNotes);
     serialNumber = StringEscapeUtils.escapeCsv(serialNumber);
     notes = StringEscapeUtils.escapeCsv(notes);
+    uses = StringEscapeUtils.escapeCsv(uses);
     owners = StringEscapeUtils.escapeCsv(owners);
     emergencyContacts = StringEscapeUtils.escapeCsv(emergencyContacts);
 
-    // todo: serialise and add uses
     file =
       appendValuesToFile(
         file,
@@ -173,6 +175,7 @@ public class SpreadsheetExportGenerator {
         codingProtocol,
         legacyNotes,
         notes,
+        uses,
         owners,
         emergencyContacts
       );
@@ -188,6 +191,7 @@ public class SpreadsheetExportGenerator {
     String codingProtocol,
     String legacyNotes,
     String notes,
+    String uses,
     String owners,
     String emergencyContacts
   ) throws IOException {
@@ -276,7 +280,7 @@ public class SpreadsheetExportGenerator {
     );
     file.append(MessageFormat.format("{0}{1}", legacyNotes, delimiter));
     file.append(MessageFormat.format("{0}{1}", notes, delimiter));
-    file.append(MessageFormat.format("{0}{1}", "Uses list", delimiter));
+    file.append(MessageFormat.format("{0}{1}", uses, delimiter));
     file.append(MessageFormat.format("{0}{1}", owners, delimiter));
     file.append(MessageFormat.format("{0}{1}", emergencyContacts, delimiter));
 
