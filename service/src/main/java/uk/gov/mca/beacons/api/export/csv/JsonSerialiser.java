@@ -120,7 +120,6 @@ public class JsonSerialiser {
     JSONArray jsonArray = new JSONArray();
     for (EmergencyContactDTO emergencyContact : emergencyContacts) {
       var json = new JSONObject();
-      json.put("id", emergencyContact.getId());
       json.put("full name", emergencyContact.getFullName().toUpperCase());
       json.put(
         "telephone number",
@@ -132,12 +131,6 @@ public class JsonSerialiser {
         "alternative telephone number",
         emergencyContact.getAlternativeTelephoneNumber() != null
           ? emergencyContact.getAlternativeTelephoneNumber().replace('/', ';')
-          : ""
-      );
-      json.put(
-        "beacon id",
-        emergencyContact.getBeaconId() != null
-          ? emergencyContact.getBeaconId()
           : ""
       );
 

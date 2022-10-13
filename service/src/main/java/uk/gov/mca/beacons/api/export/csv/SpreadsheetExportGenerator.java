@@ -81,7 +81,6 @@ public class SpreadsheetExportGenerator {
     // do with one small batch first
     // then do a loop batching the whole lot chunk by chunk
     // we'll likely need a screen showing the progress of the export
-    // we want all strings to be capitalised
     ArrayList<Registration> batchOfBeacons = registrationService.getBatch(
       batchSize,
       0
@@ -111,7 +110,7 @@ public class SpreadsheetExportGenerator {
   }
 
   private FileWriter prepareFile() throws IOException {
-    String fileName = "/Users/evie.skinner/AllBeaconsExport.csv";
+    String fileName = "/Users/evie.skinner/AllBeaconsExport.xlsx";
     var file = new FileWriter(fileName);
 
     String headers = String.join(delimiter, this.columnHeaders);
