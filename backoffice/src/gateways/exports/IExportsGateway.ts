@@ -10,4 +10,5 @@ export interface IExportsGateway {
   getExportDataForBeacons(beaconId: string[]): Promise<IBeaconExport[]>;
 
   getExportDataForAllBeacons(): Promise<IBeaconExport[]>;
+  searchExportData(searchForm: any): Promise<IBeaconExport[]>;
 }

@@ -22,9 +22,9 @@ export class ExportsGateway implements IExportsGateway {
   public async getCertificateDataForBeacons(
     beaconIds: string[]
   ): Promise<IBeaconExport[]> {
-    var beaconId = beaconIds.toString();
-    return this.getExportDataList(
-      `${applicationConfig.apiUrl}/export/certificates/data/${beaconId}`
+    return this.retrieveExportDataList(
+      `${applicationConfig.apiUrl}/export/certificates/data`,
+      beaconIds
     );
   }
 
@@ -38,9 +38,9 @@ export class ExportsGateway implements IExportsGateway {
   public async getLetterDataForBeacons(
     beaconIds: string[]
   ): Promise<IBeaconExport[]> {
-    var beaconId = beaconIds.toString();
-    return this.getExportDataList(
-      `${applicationConfig.apiUrl}/export/letters/data/${beaconId}`
+    return this.retrieveExportDataList(
+      `${applicationConfig.apiUrl}/export/letters/data`,
+      beaconIds
     );
   }
 
@@ -54,15 +54,35 @@ export class ExportsGateway implements IExportsGateway {
   public async getExportDataForBeacons(
     beaconIds: string[]
   ): Promise<IBeaconExport[]> {
-    var beaconId = beaconIds.toString();
-    return this.getExportDataList(
-      `${applicationConfig.apiUrl}/export/beacons/data/${beaconId}`
+    return this.retrieveExportDataList(
+      `${applicationConfig.apiUrl}/export/beacons/data`,
+      beaconIds
     );
   }
   public async getExportDataForAllBeacons(): Promise<IBeaconExport[]> {
-    return this.getExportDataList(
-      `${applicationConfig.apiUrl}/export/beacons/data`
+    return this.retrieveExportDataList(
+      `${applicationConfig.apiUrl}/export/beacons/all`,
+      []
     );
+  }
+  public async searchExportData(searchForm: any): Promise<IBeaconExport[]> {
+    const accessToken = await this._authGateway.getAccessToken();
+
+    try {
+      const exportResponse = await axios.post<IBeaconExport[]>(
+        `${applicationConfig.apiUrl}/export/beacons/search`,
+        {
+          timeout: applicationConfig.apiTimeoutMs,
+          headers: { Authorization: `Bearer ${accessToken}` },
+          body: searchForm,
+        }
+      );
+      console.dir(exportResponse);
+      return exportResponse.data;
+    } catch (error) {
+      logToServer.error(error);
+      throw error;
+    }
   }
 
   private async getExportData(url: string): Promise<IBeaconExport> {
@@ -81,13 +101,19 @@ export class ExportsGateway implements IExportsGateway {
     }
   }
 
-  private async getExportDataList(url: string): Promise<IBeaconExport[]> {
+  private async retrieveExportDataList(
+    url: string,
+    ids: string[]
+  ): Promise<IBeaconExport[]> {
     const accessToken = await this._authGateway.getAccessToken();
 
     try {
-      const exportResponse = await axios.get<IBeaconExport[]>(url, {
+      const exportResponse = await axios.post<IBeaconExport[]>(url, ids, {
         timeout: applicationConfig.apiTimeoutMs,
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
       });
       console.dir(exportResponse);
       return exportResponse.data;

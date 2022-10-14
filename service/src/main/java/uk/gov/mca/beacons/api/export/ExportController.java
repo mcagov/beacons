@@ -1,9 +1,11 @@
 package uk.gov.mca.beacons.api.export;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -108,6 +110,7 @@ class ExportController {
     List<LabelDTO> dataList = rawBeaconIds
       .stream()
       .map(id -> getLabelDTO(id))
+      .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
     byte[] file = pdfService.createPdfLabels(dataList);
@@ -128,9 +131,54 @@ class ExportController {
     } catch (ResourceNotFoundException ex) {
       LegacyBeacon legacyBeacon = legacyBeaconService
         .findById(new LegacyBeaconId(rawBeaconId))
-        .orElseThrow(ResourceNotFoundException::new);
+        .orElse(null);
+
+      if (legacyBeacon == null) {
+        return null;
+      }
       return exportMapper.toLegacyLabelDTO(legacyBeacon);
     }
+  }
+
+  @PostMapping(value = "/beacons/search")
+  public ResponseEntity<List<BeaconExportDTO>> searchBeacons()
+    throws Exception {
+    List<BeaconExportDTO> dataList = new ArrayList<>();
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(dataList);
+  }
+
+  @GetMapping(value = "/beacons/data/all")
+  public ResponseEntity<List<BeaconExportDTO>> getBeacons() throws Exception {
+    //    List<BeaconExportDTO> dataList = rawBeaconIds
+    //            .stream()
+    //            .map(id -> getBeaconExportDTO(id, null))
+    //            .filter(dto -> dto!=null)
+    //            .collect(Collectors.toList());
+
+    List<BeaconExportDTO> dataList = new ArrayList<>();
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(dataList);
+  }
+
+  @PostMapping(value = "/beacons/data")
+  public ResponseEntity<List<BeaconExportDTO>> getBeacons(
+    @RequestBody @Valid List<UUID> rawBeaconIds
+  ) throws Exception {
+    List<BeaconExportDTO> dataList = rawBeaconIds
+      .stream()
+      .map(id -> getBeaconExportDTO(id, null))
+      .filter(dto -> dto != null)
+      .collect(Collectors.toList());
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(dataList);
   }
 
   @GetMapping(value = "/certificate/data/{uuid}")
@@ -145,13 +193,14 @@ class ExportController {
       .body(data);
   }
 
-  @GetMapping(value = "/certificates/data/{uuids}")
+  @PostMapping(value = "/certificates/data")
   public ResponseEntity<List<BeaconExportDTO>> getCertificatesDataByBeaconIds(
-    @PathVariable("uuids") List<UUID> rawBeaconIds
+    @RequestBody @Valid List<UUID> rawBeaconIds
   ) throws Exception {
     List<BeaconExportDTO> dataList = rawBeaconIds
       .stream()
       .map(id -> getBeaconExportDTO(id, "Certificate"))
+      .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
     return ResponseEntity
@@ -172,13 +221,14 @@ class ExportController {
       .body(data);
   }
 
-  @GetMapping(value = "/letters/data/{uuids}")
-  public ResponseEntity<List<BeaconExportDTO>> getLettersDataByBeaconIds(
-    @PathVariable("uuids") List<UUID> rawBeaconIds
+  @PostMapping(value = "/letters/data")
+  public ResponseEntity<List<BeaconExportDTO>> postRetrieveLettersByBeaconIds(
+    @RequestBody @Valid List<UUID> ids
   ) throws Exception {
-    List<BeaconExportDTO> dataList = rawBeaconIds
+    List<BeaconExportDTO> dataList = ids
       .stream()
       .map(id -> getBeaconExportDTO(id, "Letter"))
+      .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
     return ResponseEntity
@@ -187,7 +237,10 @@ class ExportController {
       .body(dataList);
   }
 
-  private BeaconExportDTO getBeaconExportDTO(UUID rawBeaconId, String type) {
+  private BeaconExportDTO getBeaconExportDTO(
+    UUID rawBeaconId,
+    String noteGeneratedType
+  ) {
     BeaconId beaconId = new BeaconId(rawBeaconId);
 
     try {
@@ -197,13 +250,21 @@ class ExportController {
         noteService.getNonSystemNotes(beaconId)
       );
 
-      //Only create note for modern for now.
-      noteService.createSystemNote(beaconId, type + " Generated");
+      if (noteGeneratedType != null) {
+        //Only create note for modern for now.
+        noteService.createSystemNote(
+          beaconId,
+          noteGeneratedType + " Generated"
+        );
+      }
       return data;
     } catch (ResourceNotFoundException ex) {
       LegacyBeacon legacyBeacon = legacyBeaconService
         .findById(new LegacyBeaconId(rawBeaconId))
-        .orElseThrow(ResourceNotFoundException::new);
+        .orElse(null);
+      if (legacyBeacon == null) {
+        return null;
+      }
       return exportMapper.toLegacyBeaconExportDTO(legacyBeacon);
     }
   }

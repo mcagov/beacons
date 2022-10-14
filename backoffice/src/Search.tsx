@@ -3,7 +3,7 @@ import { SearchErrorBoundary } from "./components/search/SearchErrorBoundary";
 import { BeaconsGateway } from "./gateways/beacons/BeaconsGateway";
 import { useUserSettings } from "./UserSettings";
 import { BeaconRecordsListView as AdvancedSearchView } from "./views/BeaconSearchListView";
-import { BeaconExportRecordsListView as ExportSearchView } from "./views/BeaconExportSearchListView";
+import { BeaconExportRecordsListView as ExportSearchResults } from "./views/BeaconExportSearchListView";
 import { DefaultSearchView } from "./views/DefaultSearchView";
 
 export function Search({
@@ -23,6 +23,6 @@ export function Search({
     case "advanced":
       return <AdvancedSearchView beaconsGateway={beaconsGateway} />;
     case "export":
-      return <ExportSearchView beaconsGateway={beaconsGateway} />;
+      return <ExportSearchResults beaconsGateway={beaconsGateway} />;
   }
 }

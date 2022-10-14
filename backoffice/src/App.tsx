@@ -36,7 +36,7 @@ import { UserSettingsProvider } from "./UserSettings";
 import { logToServer } from "./utils/logger";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
-
+import { BeaconExportRecordsForm } from "./views/BeaconExportSearchForm";
 interface ResourceParams {
   id: string;
 }
@@ -135,6 +135,11 @@ const App: FunctionComponent = () => {
                 <Route exact path="/">
                   <Navigation />
                   <Search beaconsGateway={beaconsGateway} />
+                  <Footer />
+                </Route>
+                <Route path={`/export/search`}>
+                  <Navigation />
+                  <BeaconExportRecordsForm exportsGateway={exportsGateway} />;
                   <Footer />
                 </Route>
                 <Route path={`/beacons/:id`}>
