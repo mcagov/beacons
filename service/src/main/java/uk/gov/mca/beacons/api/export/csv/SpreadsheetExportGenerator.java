@@ -1,18 +1,18 @@
 package uk.gov.mca.beacons.api.export.csv;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.MessageFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tomcat.jni.Local;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
@@ -44,6 +44,8 @@ public class SpreadsheetExportGenerator {
     this.exportMapper = exportMapper;
   }
 
+  // change to env var
+  private final String fileDestination = "/Users/evie.skinner/AllBeaconsExport";
   private final String delimiter = ",";
   private final String separator = "\n";
   private final int batchSize = 200;
@@ -77,18 +79,55 @@ public class SpreadsheetExportGenerator {
     "emergency contacts"
   );
 
-  public void generateBackupExport(String fileExtension) throws IOException {
+  public void generateBackupExport(String fileExtension)
+    throws IOException, InvalidFormatException {
     FileWriter file = prepareFile(fileExtension);
 
     exportBeaconsInBatches(file);
 
     file.close();
+
+    convertCsvToXlsxFile();
+  }
+
+  private void convertCsvToXlsxFile()
+    throws IOException, InvalidFormatException {
+    try {
+      File csv = new File(
+        MessageFormat.format("{0}{1}", fileDestination, ".csv")
+      );
+      XSSFWorkbook workbook = new XSSFWorkbook();
+      XSSFSheet sheet = workbook.createSheet("All exported beacons");
+
+      String currentLine;
+      int rowNumber = 0;
+      BufferedReader fileReader = new BufferedReader(new FileReader(csv));
+
+      while ((currentLine = fileReader.readLine()) != null) {
+        String[] valuesOnCurrentLine = currentLine.split(",");
+        rowNumber++;
+        XSSFRow currentRow = sheet.createRow(rowNumber);
+
+        for (int i = 0; i < valuesOnCurrentLine.length; i++) {
+          valuesOnCurrentLine[i] = valuesOnCurrentLine[i].replaceAll("\"", "");
+          XSSFCell cell = currentRow.createCell(i);
+          cell.setCellValue(valuesOnCurrentLine[i].trim());
+        }
+      }
+      FileOutputStream excelFileOutputStream = new FileOutputStream(
+        MessageFormat.format("{0}{1}", fileDestination, ".xlsx")
+      );
+      workbook.write(excelFileOutputStream);
+      excelFileOutputStream.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   private FileWriter prepareFile(String fileExtension) throws IOException {
     String fileName = MessageFormat.format(
       "{0}{1}",
-      "/Users/evie.skinner/AllBeaconsExport",
+      fileDestination,
       fileExtension
     );
     var file = new FileWriter(fileName);

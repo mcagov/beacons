@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -79,7 +80,8 @@ class ExportController {
 
   @GetMapping(value = "/xlsx/backup")
   //    @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
-  public ResponseEntity<String> createXlsxBackupFile() throws IOException {
+  public ResponseEntity<String> createXlsxBackupFile()
+    throws IOException, InvalidFormatException {
     SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
       registrationService,
       legacyBeaconService,

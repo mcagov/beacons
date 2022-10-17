@@ -56,7 +56,7 @@ public class SpreadsheetRow {
     "Owner alternative telephone number",
     "Owner email",
     "Emergency contact (1)",
-    "Emergency contact (2)",
+    "Emergency conta  ct (2)",
     "Emergency contact (3)",
     "Use activities",
     "MMSI numbers",
