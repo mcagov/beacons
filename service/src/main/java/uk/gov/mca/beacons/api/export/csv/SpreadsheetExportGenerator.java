@@ -44,9 +44,9 @@ public class SpreadsheetExportGenerator {
     this.exportMapper = exportMapper;
   }
 
-  // change to env var
+  // todo: change to env var
   private final String fileDestination = "/Users/evie.skinner/AllBeaconsExport";
-  private final String delimiter = ",";
+  private final String delimiter = "~";
   private final String separator = "\n";
   private final int batchSize = 200;
   private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
@@ -88,40 +88,6 @@ public class SpreadsheetExportGenerator {
     file.close();
 
     convertCsvToXlsxFile();
-  }
-
-  private void convertCsvToXlsxFile()
-    throws IOException, InvalidFormatException {
-    try {
-      File csv = new File(
-        MessageFormat.format("{0}{1}", fileDestination, ".csv")
-      );
-      XSSFWorkbook workbook = new XSSFWorkbook();
-      XSSFSheet sheet = workbook.createSheet("All exported beacons");
-
-      String currentLine;
-      int rowNumber = 0;
-      BufferedReader fileReader = new BufferedReader(new FileReader(csv));
-
-      while ((currentLine = fileReader.readLine()) != null) {
-        String[] valuesOnCurrentLine = currentLine.split(",");
-        rowNumber++;
-        XSSFRow currentRow = sheet.createRow(rowNumber);
-
-        for (int i = 0; i < valuesOnCurrentLine.length; i++) {
-          valuesOnCurrentLine[i] = valuesOnCurrentLine[i].replaceAll("\"", "");
-          XSSFCell cell = currentRow.createCell(i);
-          cell.setCellValue(valuesOnCurrentLine[i].trim());
-        }
-      }
-      FileOutputStream excelFileOutputStream = new FileOutputStream(
-        MessageFormat.format("{0}{1}", fileDestination, ".xlsx")
-      );
-      workbook.write(excelFileOutputStream);
-      excelFileOutputStream.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 
   private FileWriter prepareFile(String fileExtension) throws IOException {
@@ -173,7 +139,7 @@ public class SpreadsheetExportGenerator {
   //todo: how do I chunk it down further?
   private void writeToFile(FileWriter file, BeaconExportDTO beaconExport)
     throws IOException {
-    // format legacy only values
+    // todo: format legacy only values inside appendValuesToFile()
     String legacyNotes = beaconExport.getBeaconNote() != null
       ? beaconExport.getBeaconNote().toUpperCase()
       : "";
@@ -201,27 +167,10 @@ public class SpreadsheetExportGenerator {
         .toString()
       : "";
 
-    // escape commas
-    String serialNumber = MessageFormat.format(
-      "{0}",
-      beaconExport.getSerialNumber()
-    );
-    String codingProtocol = StringEscapeUtils.escapeCsv(
-      beaconExport.getCodingProtocol().toUpperCase()
-    );
-    legacyNotes = StringEscapeUtils.escapeCsv(legacyNotes);
-    serialNumber = StringEscapeUtils.escapeCsv(serialNumber);
-    notes = StringEscapeUtils.escapeCsv(notes);
-    uses = StringEscapeUtils.escapeCsv(uses);
-    owners = StringEscapeUtils.escapeCsv(owners);
-    emergencyContacts = StringEscapeUtils.escapeCsv(emergencyContacts);
-
     appendValuesToFile(
       file,
       beaconExport,
       deptRef,
-      serialNumber,
-      codingProtocol,
       legacyNotes,
       notes,
       uses,
@@ -235,8 +184,6 @@ public class SpreadsheetExportGenerator {
     FileWriter file,
     BeaconExportDTO beaconExport,
     String deptRef,
-    String serialNumber,
-    String codingProtocol,
     String legacyNotes,
     String notes,
     String uses,
@@ -288,7 +235,9 @@ public class SpreadsheetExportGenerator {
         delimiter
       )
     );
-    file.append(MessageFormat.format("{0}{1}", serialNumber, delimiter));
+    file.append(
+      MessageFormat.format("{0}{1}", beaconExport.getSerialNumber(), delimiter)
+    );
     file.append(
       MessageFormat.format(
         "{0}{1}",
@@ -328,7 +277,13 @@ public class SpreadsheetExportGenerator {
         delimiter
       )
     );
-    file.append(MessageFormat.format("{0}{1}", codingProtocol, delimiter));
+    file.append(
+      MessageFormat.format(
+        "{0}{1}",
+        beaconExport.getCodingProtocol().toUpperCase(),
+        delimiter
+      )
+    );
     file.append(
       MessageFormat.format("{0}{1}", beaconExport.getCstaNumber(), delimiter)
     );
@@ -339,5 +294,39 @@ public class SpreadsheetExportGenerator {
     file.append(MessageFormat.format("{0}{1}", emergencyContacts, delimiter));
 
     file.append(separator);
+  }
+
+  private void convertCsvToXlsxFile()
+    throws IOException, InvalidFormatException {
+    try {
+      File csv = new File(
+        MessageFormat.format("{0}{1}", fileDestination, ".csv")
+      );
+      XSSFWorkbook workbook = new XSSFWorkbook();
+      XSSFSheet sheet = workbook.createSheet("All exported beacons");
+
+      String currentLine;
+      int rowNumber = 0;
+      BufferedReader fileReader = new BufferedReader(new FileReader(csv));
+
+      while ((currentLine = fileReader.readLine()) != null) {
+        String[] valuesOnCurrentLine = currentLine.split(delimiter);
+        rowNumber++;
+        XSSFRow currentRow = sheet.createRow(rowNumber);
+
+        for (int i = 0; i < valuesOnCurrentLine.length; i++) {
+          valuesOnCurrentLine[i] = valuesOnCurrentLine[i].replaceAll("\"", "");
+          XSSFCell cell = currentRow.createCell(i);
+          cell.setCellValue(valuesOnCurrentLine[i].trim());
+        }
+      }
+      FileOutputStream excelFileOutputStream = new FileOutputStream(
+        MessageFormat.format("{0}{1}", fileDestination, ".xlsx")
+      );
+      workbook.write(excelFileOutputStream);
+      excelFileOutputStream.close();
+    } catch (Exception e) {
+      throw (e);
+    }
   }
 }
