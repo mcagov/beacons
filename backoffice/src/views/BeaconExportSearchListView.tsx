@@ -6,6 +6,7 @@ import React, { FunctionComponent } from "react";
 import { ExportBeaconsTable } from "../components/ExportBeaconsTable";
 import { PageContent } from "../components/layout/PageContent";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
+import { IExportsGateway } from "../gateways/exports/IExportsGateway";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,19 +19,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface BeaconRecordsProps {
-  beaconsGateway: IBeaconsGateway;
+interface BeaconExportProps {
+  exportsGateway: IExportsGateway;
 }
 
 export const BeaconExportRecordsListView: FunctionComponent<
-  BeaconRecordsProps
-> = ({ beaconsGateway }): JSX.Element => {
+  BeaconExportProps
+> = ({ exportsGateway }): JSX.Element => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
       <PageContent>
         <Paper className={classes.paper}>
-          <ExportBeaconsTable beaconsGateway={beaconsGateway} />
+          <ExportBeaconsTable exportsGateway={exportsGateway} />
         </Paper>
       </PageContent>
     </div>

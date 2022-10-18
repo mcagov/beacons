@@ -2,10 +2,12 @@ package uk.gov.mca.beacons.api.export;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -13,10 +15,13 @@ import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
+import uk.gov.mca.beacons.api.export.application.ExportService;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportSearchForm;
 import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
@@ -31,27 +36,18 @@ import uk.gov.mca.beacons.api.registration.domain.Registration;
 class ExportController {
 
   private final XlsxExporter xlsxExporter;
-  private final RegistrationService registrationService;
-  private final LegacyBeaconService legacyBeaconService;
-  private final ExportMapper exportMapper;
   private final PdfGenerateService pdfService;
-  private final NoteService noteService;
+  private final ExportService exportService;
 
   @Autowired
   public ExportController(
     XlsxExporter xlsxExporter,
-    RegistrationService rs,
-    LegacyBeaconService lbs,
-    ExportMapper em,
     PdfGenerateService pdfService,
-    NoteService ns
+    ExportService es
   ) {
     this.xlsxExporter = xlsxExporter;
-    this.registrationService = rs;
-    this.legacyBeaconService = lbs;
-    this.exportMapper = em;
     this.pdfService = pdfService;
-    this.noteService = ns;
+    this.exportService = es;
   }
 
   @GetMapping(value = "/xlsx")
@@ -96,7 +92,7 @@ class ExportController {
   public ResponseEntity<byte[]> getLabelByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
   ) throws Exception {
-    LabelDTO data = getLabelDTO(rawBeaconId);
+    LabelDTO data = exportService.getLabelDTO(rawBeaconId);
 
     byte[] file = pdfService.createPdfLabel(data);
 
@@ -109,7 +105,7 @@ class ExportController {
   ) throws Exception {
     List<LabelDTO> dataList = rawBeaconIds
       .stream()
-      .map(id -> getLabelDTO(id))
+      .map(id -> exportService.getLabelDTO(id))
       .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
@@ -118,32 +114,30 @@ class ExportController {
     return servePdf(file, "Labels.pdf");
   }
 
-  private LabelDTO getLabelDTO(UUID rawBeaconId) {
-    BeaconId beaconId = new BeaconId(rawBeaconId);
-
-    try {
-      Registration registration = registrationService.getByBeaconId(beaconId);
-      LabelDTO data = exportMapper.toLabelDTO(registration);
-
-      //Only create note for modern for now.
-      noteService.createSystemNote(beaconId, "Label Generated");
-      return data;
-    } catch (ResourceNotFoundException ex) {
-      LegacyBeacon legacyBeacon = legacyBeaconService
-        .findById(new LegacyBeaconId(rawBeaconId))
-        .orElse(null);
-
-      if (legacyBeacon == null) {
-        return null;
-      }
-      return exportMapper.toLegacyLabelDTO(legacyBeacon);
-    }
-  }
-
   @PostMapping(value = "/beacons/search")
-  public ResponseEntity<List<BeaconExportDTO>> searchBeacons()
-    throws Exception {
-    List<BeaconExportDTO> dataList = new ArrayList<>();
+  public ResponseEntity<List<BeaconExportDTO>> searchBeacons(
+    @RequestBody @Valid BeaconExportSearchForm form
+  ) throws Exception {
+    //get all beacons.
+
+    //filter beacons down where..
+    //    beacons = beacons.where lastModified >= form.getLastModifiedFrom() && lastMofified <= form.getLastModifiedTo()
+
+    // For legacy registration date is legacyBeacon.getData().getBeacon()
+    // For modern registation date is just createdDate
+    //    beacons = beacons.where  regDate >= form.getRegistrationFrom() && regDate <= form.getRegistrationTo()
+
+    //filer beacons down by "name"
+    //    This is a wildcard search across: Owner Name(s) & Account Holder Name(s) for legacy and modern.
+
+    //Really bad implementation but giving it a go to test:
+
+    List<BeaconExportDTO> dataList = exportService.getAll();
+
+    //            .stream()
+    //                                      .filter(dto -> dto!=null)
+    //            .filter(b -> new Date(b.getLastModifiedDate()).isBefore(form.getLastModifiedFrom()))
+    //                                      .collect(Collectors.toList());
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
@@ -152,13 +146,12 @@ class ExportController {
 
   @GetMapping(value = "/beacons/data/all")
   public ResponseEntity<List<BeaconExportDTO>> getBeacons() throws Exception {
-    //    List<BeaconExportDTO> dataList = rawBeaconIds
-    //            .stream()
-    //            .map(id -> getBeaconExportDTO(id, null))
-    //            .filter(dto -> dto!=null)
-    //            .collect(Collectors.toList());
+    List<BeaconExportDTO> dataList = exportService
+      .getAll()
+      .stream()
+      .filter(dto -> dto != null)
+      .collect(Collectors.toList());
 
-    List<BeaconExportDTO> dataList = new ArrayList<>();
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
@@ -171,7 +164,7 @@ class ExportController {
   ) throws Exception {
     List<BeaconExportDTO> dataList = rawBeaconIds
       .stream()
-      .map(id -> getBeaconExportDTO(id, null))
+      .map(id -> exportService.getBeaconExportDTO(id, null))
       .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
@@ -185,7 +178,10 @@ class ExportController {
   public ResponseEntity<BeaconExportDTO> getCertificateDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
   ) {
-    BeaconExportDTO data = getBeaconExportDTO(rawBeaconId, "Certificate");
+    BeaconExportDTO data = exportService.getBeaconExportDTO(
+      rawBeaconId,
+      "Certificate"
+    );
 
     return ResponseEntity
       .ok()
@@ -199,7 +195,7 @@ class ExportController {
   ) throws Exception {
     List<BeaconExportDTO> dataList = rawBeaconIds
       .stream()
-      .map(id -> getBeaconExportDTO(id, "Certificate"))
+      .map(id -> exportService.getBeaconExportDTO(id, "Certificate"))
       .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
@@ -213,7 +209,10 @@ class ExportController {
   public ResponseEntity<BeaconExportDTO> getLetterDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
   ) {
-    BeaconExportDTO data = getBeaconExportDTO(rawBeaconId, "Letter");
+    BeaconExportDTO data = exportService.getBeaconExportDTO(
+      rawBeaconId,
+      "Letter"
+    );
 
     return ResponseEntity
       .ok()
@@ -227,7 +226,7 @@ class ExportController {
   ) throws Exception {
     List<BeaconExportDTO> dataList = ids
       .stream()
-      .map(id -> getBeaconExportDTO(id, "Letter"))
+      .map(id -> exportService.getBeaconExportDTO(id, "Letter"))
       .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
@@ -235,38 +234,6 @@ class ExportController {
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(dataList);
-  }
-
-  private BeaconExportDTO getBeaconExportDTO(
-    UUID rawBeaconId,
-    String noteGeneratedType
-  ) {
-    BeaconId beaconId = new BeaconId(rawBeaconId);
-
-    try {
-      Registration registration = registrationService.getByBeaconId(beaconId);
-      BeaconExportDTO data = exportMapper.toBeaconExportDTO(
-        registration,
-        noteService.getNonSystemNotes(beaconId)
-      );
-
-      if (noteGeneratedType != null) {
-        //Only create note for modern for now.
-        noteService.createSystemNote(
-          beaconId,
-          noteGeneratedType + " Generated"
-        );
-      }
-      return data;
-    } catch (ResourceNotFoundException ex) {
-      LegacyBeacon legacyBeacon = legacyBeaconService
-        .findById(new LegacyBeaconId(rawBeaconId))
-        .orElse(null);
-      if (legacyBeacon == null) {
-        return null;
-      }
-      return exportMapper.toLegacyBeaconExportDTO(legacyBeacon);
-    }
   }
 
   private ResponseEntity<byte[]> servePdf(byte[] file, String filename) {

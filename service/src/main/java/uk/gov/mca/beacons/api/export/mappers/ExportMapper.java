@@ -80,6 +80,48 @@ public class ExportMapper {
   }
 
   public BeaconExportDTO toBeaconExportDTO(
+    Beacon beacon,
+    List<Note> nonSystemNotes
+  ) {
+    return BeaconExportDTO
+      .builder()
+      .type("New")
+      .proofOfRegistrationDate(beacon.getLastModifiedDate())
+      .lastModifiedDate(beacon.getLastModifiedDate())
+      .recordCreatedDate(beacon.getCreatedDate().toString())
+      .beaconStatus(beacon.getBeaconStatus().toString())
+      .hexId(beacon.getHexId())
+      .manufacturer(beacon.getManufacturer())
+      .manufacturerSerialNumber(beacon.getManufacturerSerialNumber())
+      .beaconModel(beacon.getModel())
+      .beaconlastServiced(
+        beacon.getLastServicedDate() != null
+          ? beacon.getLastServicedDate().toString()
+          : null
+      )
+      .beaconCoding(beacon.getCoding())
+      .batteryExpiryDate(
+        beacon.getBatteryExpiryDate() != null
+          ? beacon.getBatteryExpiryDate().toString()
+          : null
+      )
+      .codingProtocol(beacon.getProtocol())
+      .cstaNumber(beacon.getCsta())
+      .notes(
+        nonSystemNotes
+          .stream()
+          .map(n ->
+            new BeaconExportNoteDTO(
+              n.getCreatedDate().toLocalDateTime(),
+              n.getText()
+            )
+          )
+          .collect(Collectors.toList())
+      )
+      .build();
+  }
+
+  public BeaconExportDTO toBeaconExportDTO(
     Registration registration,
     List<Note> nonSystemNotes
   ) {

@@ -22,7 +22,5 @@ export function Search({
       );
     case "advanced":
       return <AdvancedSearchView beaconsGateway={beaconsGateway} />;
-    case "export":
-      return <ExportSearchResults beaconsGateway={beaconsGateway} />;
   }
 }

@@ -12,8 +12,10 @@ import { AuthenticatedPrintButton } from "./AuthenticatedPrintButton";
 import { applicationConfig } from "config";
 import { Button } from "@mui/material";
 import ContentPrintIcon from "@mui/icons-material/Print";
-interface IBeaconsTableProps {
-  beaconsGateway: IBeaconsGateway;
+import { IExportsGateway } from "gateways/exports/IExportsGateway";
+import { IBeaconExport } from "gateways/exports/IBeaconExport";
+interface IExportBeaconsTableProps {
+  exportsGateway: IExportsGateway;
 }
 
 const columns: GridColDef[] = [
@@ -107,8 +109,8 @@ const rows = [
   },
 ];
 
-export const ExportBeaconsTable: FunctionComponent<IBeaconsTableProps> =
-  React.memo(function ({ beaconsGateway }): JSX.Element {
+export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
+  React.memo(function ({ exportsGateway }): JSX.Element {
     const [selectionModelItems, setSelectionModel] =
       useState<GridSelectionModel>([]);
 
@@ -149,8 +151,15 @@ export const ExportBeaconsTable: FunctionComponent<IBeaconsTableProps> =
       );
     }
 
+    const [data, setData] = useState<IBeaconExport[]>([]);
+
+    //we need to get all the beacons from the api, then populate the rows property in the datagrid.
+    const loadData = async () => {
+      await exportsGateway.getExportDataForAllBeacons().then(setData);
+    };
+
     return (
-      <Box sx={{ height: 800 }}>
+      <Box sx={{ height: 800 }} onLoad={loadData}>
         <DataGrid
           rows={rows}
           columns={columns}

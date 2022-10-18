@@ -62,20 +62,12 @@ export const BeaconExportRecordsForm: FunctionComponent<
 
   const [data, setData] = useState<IBeaconExport[]>([]);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   const { handleSubmit, reset, control } = useForm();
   const onSubmit = async (formData: any) => {
-    console.dir(formData);
-    await exportsGateway
-      .getCertificateDataForBeacons([
-        "88a581c3-00c7-4986-a380-477cd6af2152",
-        "2bad8f1a-39f5-47f8-83af-81d55fb63e51",
-      ])
-      .then(setData);
+    console.log(JSON.stringify(formData));
 
+    // need to send the search criteria to the api, then retrieve data, and populate the expoer beacons table.
+    // Then should probably be merged to one component.
     await exportsGateway.searchExportData(formData).then(setData);
   };
 
@@ -107,13 +99,13 @@ export const BeaconExportRecordsForm: FunctionComponent<
             <FormField
               control={control}
               labelText="Last Modified From"
-              name="modifiedFrom"
+              name="lastModifiedFrom"
               type="date"
             />
             <FormField
               control={control}
               labelText="Last Modified To"
-              name="modifiedTo"
+              name="lastModifiedTo"
               type="date"
             />
             <FormField

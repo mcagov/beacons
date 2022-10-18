@@ -71,10 +71,10 @@ export class ExportsGateway implements IExportsGateway {
     try {
       const exportResponse = await axios.post<IBeaconExport[]>(
         `${applicationConfig.apiUrl}/export/beacons/search`,
+        searchForm,
         {
           timeout: applicationConfig.apiTimeoutMs,
           headers: { Authorization: `Bearer ${accessToken}` },
-          body: searchForm,
         }
       );
       console.dir(exportResponse);

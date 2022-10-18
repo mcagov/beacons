@@ -88,9 +88,6 @@ export function SettingsDrawer() {
             <ToggleButton value="advanced" aria-label="advanced search">
               Advanced
             </ToggleButton>
-            <ToggleButton value="export" aria-label="export search">
-              Export
-            </ToggleButton>
           </ToggleButtonGroup>
           <OnlyVisibleToUsersWith role={"DATA_EXPORTER"}>
             <Typography
