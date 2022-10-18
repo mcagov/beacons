@@ -151,15 +151,15 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
       );
     }
 
-    const [data, setData] = useState<IBeaconExport[]>([]);
+    // const [data, setData] = useState<IBeaconExport[]>([]);
 
-    //we need to get all the beacons from the api, then populate the rows property in the datagrid.
-    const loadData = async () => {
-      await exportsGateway.getExportDataForAllBeacons().then(setData);
-    };
+    // //we need to get all the beacons from the api, then populate the rows property in the datagrid.
+    // const loadData = async () => {
+    //   await exportsGateway.getExportDataForAllBeacons().then(setData);
+    // };
 
     return (
-      <Box sx={{ height: 800 }} onLoad={loadData}>
+      <Box sx={{ height: 800 }}>
         <DataGrid
           rows={rows}
           columns={columns}

@@ -2,10 +2,9 @@ import { Paper } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import { ExportBeaconsTable } from "../components/ExportBeaconsTable";
 import { PageContent } from "../components/layout/PageContent";
-import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { IExportsGateway } from "../gateways/exports/IExportsGateway";
 
 const useStyles = makeStyles((theme: Theme) =>
