@@ -1,22 +1,17 @@
-package uk.gov.mca.beacons.api.export.csv;
+package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.io.*;
 import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tomcat.jni.Local;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
-import uk.gov.mca.beacons.api.export.rest.BeaconExportNoteDTO;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.note.application.NoteService;
@@ -79,23 +74,19 @@ public class SpreadsheetExportGenerator {
     "emergency contacts"
   );
 
-  public void generateBackupExport(String fileExtension)
+  public void generateXlsxBackupExport()
     throws IOException, InvalidFormatException {
-    FileWriter file = prepareFile(fileExtension);
+    FileWriter csvFile = prepareCsvFile();
 
-    exportBeaconsInBatches(file);
+    exportBeaconsInBatches(csvFile);
 
-    file.close();
+    csvFile.close();
 
     convertCsvToXlsxFile();
   }
 
-  private FileWriter prepareFile(String fileExtension) throws IOException {
-    String fileName = MessageFormat.format(
-      "{0}{1}",
-      fileDestination,
-      fileExtension
-    );
+  private FileWriter prepareCsvFile() throws IOException {
+    String fileName = MessageFormat.format("{0},{1}", fileDestination, ".csv");
     var file = new FileWriter(fileName);
 
     String headers = String.join(delimiter, this.columnHeaders);
@@ -136,18 +127,8 @@ public class SpreadsheetExportGenerator {
     }
   }
 
-  //todo: how do I chunk it down further?
   private void writeToFile(FileWriter file, BeaconExportDTO beaconExport)
     throws IOException {
-    // todo: format legacy only values inside appendValuesToFile()
-    String legacyNotes = beaconExport.getBeaconNote() != null
-      ? beaconExport.getBeaconNote().toUpperCase()
-      : "";
-    String deptRef = beaconExport.getDepartmentReference() != null
-      ? beaconExport.getDepartmentReference()
-      : "";
-
-    // serialise nested lists
     String notes = beaconExport.getNotes() != null
       ? JsonSerialiser
         .mapModernBeaconNotesToJsonArray(beaconExport.getNotes())
@@ -170,8 +151,6 @@ public class SpreadsheetExportGenerator {
     appendValuesToFile(
       file,
       beaconExport,
-      deptRef,
-      legacyNotes,
       notes,
       uses,
       owners,
@@ -179,12 +158,9 @@ public class SpreadsheetExportGenerator {
     );
   }
 
-  // todo: consider using one dictionary of properties instead of loads of separate arguments
   private void appendValuesToFile(
     FileWriter file,
     BeaconExportDTO beaconExport,
-    String deptRef,
-    String legacyNotes,
     String notes,
     String uses,
     String owners,
@@ -200,7 +176,15 @@ public class SpreadsheetExportGenerator {
         delimiter
       )
     );
-    file.append(MessageFormat.format("{0}{1}", deptRef, delimiter));
+    file.append(
+      MessageFormat.format(
+        "{0}{1}",
+        beaconExport.getDepartmentReference() != null
+          ? beaconExport.getDepartmentReference()
+          : "",
+        delimiter
+      )
+    );
     file.append(
       MessageFormat.format(
         "{0}{1}",
@@ -287,7 +271,15 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format("{0}{1}", beaconExport.getCstaNumber(), delimiter)
     );
-    file.append(MessageFormat.format("{0}{1}", legacyNotes, delimiter));
+    file.append(
+      MessageFormat.format(
+        "{0}{1}",
+        beaconExport.getBeaconNote() != null
+          ? beaconExport.getBeaconNote().toUpperCase()
+          : "",
+        delimiter
+      )
+    );
     file.append(MessageFormat.format("{0}{1}", notes, delimiter));
     file.append(MessageFormat.format("{0}{1}", uses, delimiter));
     file.append(MessageFormat.format("{0}{1}", owners, delimiter));

@@ -100,7 +100,7 @@ export function SettingsDrawer() {
             </Typography>
             <AuthenticatedDownloadButton
               label="Export to Excel"
-              url={`${applicationConfig.apiUrl}/export/xlsx`}
+              url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
               isFullWidth={true}
             />
           </OnlyVisibleToUsersWith>

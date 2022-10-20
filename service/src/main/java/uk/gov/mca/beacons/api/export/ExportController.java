@@ -14,12 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
-import uk.gov.mca.beacons.api.export.csv.SpreadsheetDTO;
-import uk.gov.mca.beacons.api.export.csv.SpreadsheetExportGenerator;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
 import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
+import uk.gov.mca.beacons.api.export.xlsx.backup.SpreadsheetExportGenerator;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
@@ -79,7 +78,7 @@ class ExportController {
   }
 
   @GetMapping(value = "/xlsx/backup")
-  //    @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<String> createXlsxBackupFile()
     throws IOException, InvalidFormatException {
     SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(

@@ -6,7 +6,9 @@ import { applicationConfig } from "../config";
 export const AdminView = (): ReactNode => {
   return (
     <PageContent>
-      <AuthenticatedPOSTButton uri={`${applicationConfig.apiUrl}/export/xlsx`}>
+      <AuthenticatedPOSTButton
+        uri={`${applicationConfig.apiUrl}/export/xlsx/backup`}
+      >
         Trigger export job
       </AuthenticatedPOSTButton>
       <AuthenticatedPOSTButton
