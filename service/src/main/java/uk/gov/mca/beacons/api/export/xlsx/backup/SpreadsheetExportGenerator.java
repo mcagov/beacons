@@ -10,6 +10,10 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
@@ -39,8 +43,7 @@ public class SpreadsheetExportGenerator {
     this.exportMapper = exportMapper;
   }
 
-  // todo: change to env var
-  private final String fileDestination = "/Users/evie.skinner/AllBeaconsExport";
+  private String fileDestination = "/tmp/beacons/export";
   private final String delimiter = "~";
   private final String separator = "\n";
   private final int batchSize = 200;
@@ -86,7 +89,11 @@ public class SpreadsheetExportGenerator {
   }
 
   private FileWriter prepareCsvFile() throws IOException {
-    String fileName = MessageFormat.format("{0},{1}", fileDestination, ".csv");
+    String fileName = MessageFormat.format(
+      "{0}{1}",
+      fileDestination,
+      "/AllBeaconsExport.csv"
+    );
     var file = new FileWriter(fileName);
 
     String headers = String.join(delimiter, this.columnHeaders);
@@ -292,7 +299,7 @@ public class SpreadsheetExportGenerator {
     throws IOException, InvalidFormatException {
     try {
       File csv = new File(
-        MessageFormat.format("{0}{1}", fileDestination, ".csv")
+        MessageFormat.format("{0}{1}", fileDestination, "/AllBeaconsExport.csv")
       );
       XSSFWorkbook workbook = new XSSFWorkbook();
       XSSFSheet sheet = workbook.createSheet("All exported beacons");
@@ -313,7 +320,11 @@ public class SpreadsheetExportGenerator {
         }
       }
       FileOutputStream excelFileOutputStream = new FileOutputStream(
-        MessageFormat.format("{0}{1}", fileDestination, ".xlsx")
+        MessageFormat.format(
+          "{0}{1}",
+          fileDestination,
+          "/AllBeaconsExport.xlsx"
+        )
       );
       workbook.write(excelFileOutputStream);
       excelFileOutputStream.close();

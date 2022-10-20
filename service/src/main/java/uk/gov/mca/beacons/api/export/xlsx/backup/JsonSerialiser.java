@@ -168,7 +168,12 @@ public class JsonSerialiser {
     JSONObject json = new JSONObject();
     json.appendField("environment", maritimeUse.getEnvironment());
     json.appendField("vessel name", maritimeUse.getVesselName().toUpperCase());
-    json.appendField("home port", maritimeUse.getHomePort().toUpperCase());
+    json.appendField(
+      "home port",
+      maritimeUse.getHomePort() != null
+        ? maritimeUse.getHomePort().toUpperCase()
+        : ""
+    );
     json.appendField("vessel", maritimeUse.getVessel().toUpperCase());
     json.appendField(
       "max number of persons on board",
@@ -197,7 +202,6 @@ public class JsonSerialiser {
     );
     json.appendField("official number", maritimeUse.getOfficialNumber());
     json.appendField("imo number", maritimeUse.getImoNumber());
-    // might need ot replace slash
     json.appendField("rss and ssr number", maritimeUse.getRssAndSsrNumber());
     json.appendField("hull id number", maritimeUse.getHullIdNumber());
     json.appendField(

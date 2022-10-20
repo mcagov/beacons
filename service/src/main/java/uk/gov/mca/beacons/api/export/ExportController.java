@@ -70,7 +70,7 @@ class ExportController {
   }
 
   @PostMapping(value = "/xlsx")
-  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+  //  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Void> createNewXlsxExport() throws IOException {
     xlsxExporter.export();
 
@@ -78,7 +78,7 @@ class ExportController {
   }
 
   @GetMapping(value = "/xlsx/backup")
-  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+  //  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<String> createXlsxBackupFile()
     throws IOException, InvalidFormatException {
     SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
@@ -87,7 +87,7 @@ class ExportController {
       noteService,
       exportMapper
     );
-    csvGenerator.generateBackupExport(".csv");
+    csvGenerator.generateXlsxBackupExport();
 
     return ResponseEntity.ok().build();
   }
