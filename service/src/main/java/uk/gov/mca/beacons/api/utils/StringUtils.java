@@ -25,7 +25,9 @@ public class StringUtils {
     String date,
     DateTimeFormatter dateTimeFormatter
   ) {
-    if (date.contains("+")) {
+    if (date == null) {
+      return "";
+    } else if (date.contains("+")) {
       int indexOfOffsetChar = date.indexOf("+");
       date = date.substring(0, indexOfOffsetChar);
     }

@@ -5,15 +5,14 @@ import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.filechooser.FileSystemView;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
-import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
@@ -23,6 +22,7 @@ import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.utils.StringUtils;
 
+@Component
 public class SpreadsheetExportGenerator {
 
   private final RegistrationService registrationService;
@@ -43,7 +43,11 @@ public class SpreadsheetExportGenerator {
     this.exportMapper = exportMapper;
   }
 
-  private String fileDestination = "/tmp/beacons/export";
+  private final String fileDestination = FileSystemView
+    .getFileSystemView()
+    .getHomeDirectory()
+    .getAbsoluteFile()
+    .getAbsolutePath();
   private final String delimiter = "~";
   private final String separator = "\n";
   private final int batchSize = 200;
@@ -77,7 +81,7 @@ public class SpreadsheetExportGenerator {
     "emergency contacts"
   );
 
-  public void generateXlsxBackupExport()
+  public FileSystemResource generateXlsxBackupExport()
     throws IOException, InvalidFormatException {
     FileWriter csvFile = prepareCsvFile();
 
@@ -85,16 +89,13 @@ public class SpreadsheetExportGenerator {
 
     csvFile.close();
 
-    convertCsvToXlsxFile();
+    return convertCsvToXlsxFile();
   }
 
   private FileWriter prepareCsvFile() throws IOException {
-    String fileName = MessageFormat.format(
-      "{0}{1}",
-      fileDestination,
-      "/AllBeaconsExport.csv"
+    var file = new FileWriter(
+      MessageFormat.format("{0}{1}", fileDestination, "/AllBeaconsExport.csv")
     );
-    var file = new FileWriter(fileName);
 
     String headers = String.join(delimiter, this.columnHeaders);
     file.append(headers);
@@ -271,12 +272,20 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        beaconExport.getCodingProtocol().toUpperCase(),
+        beaconExport.getCodingProtocol() != null
+          ? beaconExport.getCodingProtocol().toUpperCase()
+          : "",
         delimiter
       )
     );
     file.append(
-      MessageFormat.format("{0}{1}", beaconExport.getCstaNumber(), delimiter)
+      MessageFormat.format(
+        "{0}{1}",
+        beaconExport.getCstaNumber() != null
+          ? beaconExport.getCstaNumber()
+          : "",
+        delimiter
+      )
     );
     file.append(
       MessageFormat.format(
@@ -295,7 +304,7 @@ public class SpreadsheetExportGenerator {
     file.append(separator);
   }
 
-  private void convertCsvToXlsxFile()
+  private FileSystemResource convertCsvToXlsxFile()
     throws IOException, InvalidFormatException {
     try {
       File csv = new File(
@@ -328,6 +337,14 @@ public class SpreadsheetExportGenerator {
       );
       workbook.write(excelFileOutputStream);
       excelFileOutputStream.close();
+
+      return new FileSystemResource(
+        MessageFormat.format(
+          "{0}{1}",
+          fileDestination,
+          "/AllBeaconsExport.xlsx"
+        )
+      );
     } catch (Exception e) {
       throw (e);
     }
