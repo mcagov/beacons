@@ -119,26 +119,6 @@ public class JsonSerialiserUnitTest {
     assertEquals("CIUDAD DE MEXICO", mappedAddress.get("address line 2"));
     assertEquals("MEXICO", mappedAddress.get("country"));
   }
-
-  @Test
-  public void mapUsesToJsonArray_whenTheUsesListHasOneLandUseAndOneMaritimeUse_ShouldMapTheCorrectValues() {
-    BeaconExportLandUseDTO landUse = new BeaconExportLandUseDTO();
-    BeaconExportMaritimeUseDTO maritimeUse = new BeaconExportMaritimeUseDTO();
-
-    landUse.setAreaOfUse("Backpacking");
-    landUse.setDescriptionOfIntendedUse("Going on a trip to Thailand");
-    landUse.setEnvironment("LAND");
-    landUse.setRadioSystem("Vhf");
-
-    List<BeaconExportUseDTO> uses = List.of(landUse, maritimeUse);
-
-    JSONArray mappedUses = JsonSerialiser.mapUsesToJsonArray(uses);
-    JSONObject mappedLandUse = (JSONObject) mappedUses.get(0);
-    JSONObject mappedMaritimeUse = (JSONObject) mappedUses.get(1);
-
-    assertEquals("BACKPACKING", landUse.getAreaOfUse());
-  }
-  // uses
   // to maritime use
   // to land use
   // to aviation use
