@@ -23,7 +23,7 @@ public class LabelDTO {
 
   @Valid
   @JsonProperty("beaconUse")
-  String beaconUse;
+  String beaconUse = "";
 
   @Valid
   @JsonProperty("hexId")

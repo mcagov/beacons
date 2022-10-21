@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class StringUtils {
@@ -19,6 +20,14 @@ public class StringUtils {
       .filter(s -> !org.apache.commons.lang3.StringUtils.isBlank(s))
       .map(s -> s.trim())
       .collect(Collectors.joining(delimiter));
+  }
+
+  public static String valueOrEmpty(String value) {
+    try {
+      return Objects.requireNonNullElse(value, "");
+    } catch (Exception e) {
+      return "";
+    }
   }
 
   public static String formatDate(

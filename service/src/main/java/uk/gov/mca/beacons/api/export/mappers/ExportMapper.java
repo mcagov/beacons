@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
+import uk.gov.mca.beacons.api.utils.StringUtils;
 
 @Slf4j
 @Component("BeaconExportMapper")
@@ -44,9 +46,11 @@ public class ExportMapper {
     return LabelDTO
       .builder()
       .mcaContactNumber("+44 (0)1326 317575")
-      .beaconUse(mainUse.getName())
+      .beaconUse(
+        mainUse != null ? StringUtils.valueOrEmpty(mainUse.getName()) : ""
+      )
       .hexId(beacon.getHexId())
-      .coding(beacon.getCoding())
+      .coding(StringUtils.valueOrEmpty(beacon.getCoding()))
       .proofOfRegistrationDate(
         beacon.getLastModifiedDate() != null
           ? beacon.getLastModifiedDate().format(dtf)
@@ -57,13 +61,16 @@ public class ExportMapper {
 
   public LabelDTO toLegacyLabelDTO(LegacyBeacon beacon) {
     LegacyUse mainUse = beacon.getData().getUses().get(0); //Main use is first use?
+    LegacyBeaconDetails beaconData = beacon.getData().getBeacon();
 
     return LabelDTO
       .builder()
       .mcaContactNumber("+44 (0)1326 317575")
-      .beaconUse(mainUse.getName())
+      .beaconUse(
+        mainUse != null ? StringUtils.valueOrEmpty(mainUse.getName()) : ""
+      )
       .hexId(beacon.getHexId())
-      .coding(beacon.getData().getBeacon().getCoding())
+      .coding(StringUtils.valueOrEmpty(beaconData.getCoding()))
       .proofOfRegistrationDate(
         beacon.getLastModifiedDate() != null
           ? beacon.getLastModifiedDate().format(dtf)
