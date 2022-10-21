@@ -30,8 +30,6 @@ public class JsonSerialiserUnitTest {
     assertEquals("28-03-2022", firstMappedNote.get("date created"));
   }
 
-  // legacy notes
-
   @Test
   public void mapBeaconOwnersToJsonArray_shouldCapitaliseAllSentenceCaseText() {
     BeaconExportOwnerDTO owner = new BeaconExportOwnerDTO();

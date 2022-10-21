@@ -30,6 +30,14 @@ public class StringUtils {
     }
   }
 
+  public static String getUppercaseValueOrEmpty(String value) {
+    try {
+      return Objects.requireNonNullElse(value.toUpperCase(), "");
+    } catch (Exception e) {
+      return "";
+    }
+  }
+
   public static String formatDate(
     String date,
     DateTimeFormatter dateTimeFormatter

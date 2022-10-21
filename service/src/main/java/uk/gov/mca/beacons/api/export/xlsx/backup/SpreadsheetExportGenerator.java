@@ -180,16 +180,18 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        beaconExport.getProofOfRegistrationDate().format(dateFormatter),
+        StringUtils.getUppercaseValueOrEmpty(
+          beaconExport.getProofOfRegistrationDate().format(dateFormatter)
+        ),
         delimiter
       )
     );
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        beaconExport.getDepartmentReference() != null
-          ? beaconExport.getDepartmentReference()
-          : "",
+        StringUtils.getUppercaseValueOrEmpty(
+          beaconExport.getDepartmentReference()
+        ),
         delimiter
       )
     );
@@ -223,7 +225,7 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        beaconExport.getManufacturer().toUpperCase(),
+        StringUtils.getUppercaseValueOrEmpty(beaconExport.getManufacturer()),
         delimiter
       )
     );
@@ -233,14 +235,16 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        beaconExport.getManufacturerSerialNumber(),
+        StringUtils.getUppercaseValueOrEmpty(
+          beaconExport.getManufacturerSerialNumber()
+        ),
         delimiter
       )
     );
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        beaconExport.getBeaconModel().toUpperCase(),
+        StringUtils.getUppercaseValueOrEmpty(beaconExport.getBeaconModel()),
         delimiter
       )
     );
@@ -255,7 +259,11 @@ public class SpreadsheetExportGenerator {
       )
     );
     file.append(
-      MessageFormat.format("{0}{1}", beaconExport.getBeaconCoding(), delimiter)
+      MessageFormat.format(
+        "{0}{1}",
+        StringUtils.getUppercaseValueOrEmpty(beaconExport.getBeaconCoding()),
+        delimiter
+      )
     );
     file.append(
       MessageFormat.format(
@@ -272,27 +280,21 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        beaconExport.getCodingProtocol() != null
-          ? beaconExport.getCodingProtocol().toUpperCase()
-          : "",
+        StringUtils.getUppercaseValueOrEmpty(beaconExport.getCodingProtocol()),
         delimiter
       )
     );
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        beaconExport.getCstaNumber() != null
-          ? beaconExport.getCstaNumber()
-          : "",
+        StringUtils.getUppercaseValueOrEmpty(beaconExport.getCstaNumber()),
         delimiter
       )
     );
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        beaconExport.getBeaconNote() != null
-          ? beaconExport.getBeaconNote().toUpperCase()
-          : "",
+        StringUtils.getUppercaseValueOrEmpty(beaconExport.getBeaconNote()),
         delimiter
       )
     );

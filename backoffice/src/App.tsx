@@ -18,7 +18,7 @@ import {
 } from "views/exports/certificates/CertificateView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
-import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
+import { AuthenticatedDownloadButton } from "./components/AuthenticatedDownloadButton";
 import { ErrorState } from "./components/dataPanel/PanelErrorState";
 import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { Footer } from "./components/layout/Footer";
@@ -125,11 +125,11 @@ const App: FunctionComponent = () => {
                 <Route path={`/admin`}>
                   <Navigation />
                   <PageContent>
-                    <AuthenticatedPOSTButton
-                      uri={`${applicationConfig.apiUrl}/export/xlsx`}
-                    >
-                      Trigger export job
-                    </AuthenticatedPOSTButton>
+                    <AuthenticatedDownloadButton
+                      url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
+                      label={"Trigger export job"}
+                      isFullWidth={true}
+                    />
                   </PageContent>
                   <Footer />
                 </Route>
