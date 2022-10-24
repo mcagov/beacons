@@ -46,13 +46,16 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
             {beacon.type === "Legacy" && beacon.departmentReference && (
               <p>Dept Ref: {beacon.departmentReference}</p>
             )}
+            <p className="underline">www.gov.uk/mca</p>
             <p>{customDateStringFormat(new Date(), "DD MMMM yyyy")}</p>
           </div>
         </div>
 
-        <div className="section">
-          <p>Dear Sir or Madam</p>
-        </div>
+        {owner && (
+          <div className="section">
+            <p>Dear {owner.ownerName}</p>
+          </div>
+        )}
 
         {type === "Registration" && (
           <RegistrationBody beacon={beacon} type={type} />
@@ -60,8 +63,8 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
         {type === "Amended" && <AmendedBody beacon={beacon} type={type} />}
 
         <div className="section sign-off">
-          <p>Yours faithfully,</p>
-          <p className="sig">Sam Kendell</p>
+          <p>Yours sincerely,</p>
+          <p className="sig"></p>
           <p className="bold">UK Distress &amp; Security Beacon Registry</p>
           <br />
           <p>Enclosure(s)</p>
@@ -103,20 +106,15 @@ export const RegistrationBody: FunctionComponent<LetterProps> = ({
         Registry.
       </p>
       <p>
-        The use of PLBs overland in the UK became legal in 2012 so if you own a
-        PLB and wish to use it overland or if you intend to use your PLB on a
-        variety of vessels, please advise us so we can update the Notes section
-        on your record. For Search & Rescue action to be effective, it is
-        vitally important that you let us know of any errors, omissions or
-        changes affecting your record including the transfer of the beacon to a
-        different vessel or owner, change of vessel name or any changes to any
-        contact telephone numbers, or the loss, loan or theft of your beacon. On
-        the back of the database report is a blank Registration form that you
-        may use to inform us of any future changes, alternatively please send
-        amendments via email, telephone us or our online form at:
+        The use of PLBs overland in the UK became legal in 2012. If you own a
+        PLB, and wish to use it overland, or if you intend to use your PLB on a
+        variety of vessels, please sign-in to your online account and add
+        additional uses. For Search & Rescue action to be effective, it is
+        vitally important that your record(s) are kept up-to-date in your online
+        account at:
         <span className="underline">
           {" "}
-          https://www.register-406-beacons.service.gov.uk
+          https://register-406-beacons.service.gov.uk/
         </span>
       </p>
     </div>
@@ -180,7 +178,7 @@ export const LetterHeader: FunctionComponent = (): JSX.Element => {
         <p>Pendennis Point, Castle Drive</p>
         <p>Falmouth</p>
         <p>Cornwall &nbsp; TR11 4WZ</p>
-        <p>Tel: &nbsp;&nbsp; 020 3817 2658</p>
+        <p>Tel: &nbsp;&nbsp; 020 3817 2006</p>
         <p>Fax: &nbsp;&nbsp; 01326 319264</p>
         <p>Email: &nbsp;&nbsp; UKBeacons@mcga.gov.uk</p>
       </div>
