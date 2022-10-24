@@ -1,13 +1,10 @@
 package uk.gov.mca.beacons.api.export;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -15,21 +12,11 @@ import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
-import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.application.ExportService;
-import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportSearchForm;
 import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
-import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
-import uk.gov.mca.beacons.api.note.application.NoteService;
-import uk.gov.mca.beacons.api.registration.application.RegistrationService;
-import uk.gov.mca.beacons.api.registration.domain.Registration;
 
 @RestController
 @RequestMapping("/spring-api/export")
@@ -43,11 +30,11 @@ class ExportController {
   public ExportController(
     XlsxExporter xlsxExporter,
     PdfGenerateService pdfService,
-    ExportService es
+    ExportService exportService
   ) {
     this.xlsxExporter = xlsxExporter;
+    this.exportService = exportService;
     this.pdfService = pdfService;
-    this.exportService = es;
   }
 
   @GetMapping(value = "/xlsx")

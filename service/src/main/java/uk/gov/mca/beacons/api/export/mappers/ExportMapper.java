@@ -6,11 +6,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
@@ -79,10 +79,7 @@ public class ExportMapper {
       .build();
   }
 
-  public BeaconExportDTO toBeaconExportDTO(
-    Beacon beacon,
-    List<Note> nonSystemNotes
-  ) {
+  public BeaconExportDTO toBeaconExportDTO(Beacon beacon) {
     return BeaconExportDTO
       .builder()
       .type("New")
@@ -107,22 +104,12 @@ public class ExportMapper {
       )
       .codingProtocol(beacon.getProtocol())
       .cstaNumber(beacon.getCsta())
-      .notes(
-        nonSystemNotes
-          .stream()
-          .map(n ->
-            new BeaconExportNoteDTO(
-              n.getCreatedDate().toLocalDateTime(),
-              n.getText()
-            )
-          )
-          .collect(Collectors.toList())
-      )
       .build();
   }
 
   public BeaconExportDTO toBeaconExportDTO(
     Registration registration,
+    AccountHolder accountHolder,
     List<Note> nonSystemNotes
   ) {
     Beacon beacon = registration.getBeacon();
@@ -164,6 +151,7 @@ public class ExportMapper {
       )
       .uses(toUsesDTO(registration.getBeaconUses()))
       .owners(Arrays.asList(toOwnerDTO(registration.getBeaconOwner())))
+      .accountHolder(toAccountHolderDTO(accountHolder))
       .emergencyContacts(
         toEmergencyContactsDTO(registration.getEmergencyContacts())
       )
@@ -197,13 +185,14 @@ public class ExportMapper {
       .vessel(use.getVesselName())
       .maxPersonOnBoard(use.getMaxCapacity() != null ? use.getMaxCapacity() : 0)
       .vesselCallsign(use.getCallSign())
-      .mmsiNumber(String.join(" / ", use.getMmsiNumbers()))
-      .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
+      .mmsiNumber(String.join("   ", use.getMmsiNumbers()))
+      .radioSystem(String.join(", ", use.getCommunicationTypes()))
       .fishingVesselPortIdAndNumbers(use.getPortLetterNumber())
       .officialNumber(use.getOfficialNumber())
       .imoNumber(use.getImoNumber())
+      .areaOfOperation(use.getAreaOfOperation())
       .rssAndSsrNumber(
-        getMultipleValuesAsString(" / ", use.getRssNumber(), use.getSsrNumber())
+        getMultipleValuesAsString("   ", use.getRssNumber(), use.getSsrNumber())
       )
       .notes(use.getMoreDetails())
       .build();
@@ -218,7 +207,8 @@ public class ExportMapper {
       .aircraftRegistrationMark(use.getRegistrationMark())
       .TwentyFourBitAddressInHex(use.getHexAddress())
       .principalAirport(use.getPrincipalAirport())
-      .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
+      .secondaryAirport(use.getSecondaryAirport())
+      .radioSystem(String.join(", ", use.getCommunicationTypes()))
       .notes(use.getMoreDetails())
       .build();
   }
@@ -232,7 +222,7 @@ public class ExportMapper {
         use.getMaxCapacity() == null ? 0 : use.getMaxCapacity()
       )
       .areaOfUse(use.getAreaOfOperation())
-      .radioSystem(use.getOtherCommunicationValue()) // Unsure on this.
+      .radioSystem(String.join(", ", use.getCommunicationTypes()))
       .notes(use.getMoreDetails())
       .build();
   }
@@ -267,6 +257,24 @@ public class ExportMapper {
       .build();
   }
 
+  private BeaconExportAccountHolderDTO toAccountHolderDTO(AccountHolder ah) {
+    AddressDTO address = addressMapper.toDTO(ah.getAddress());
+
+    return BeaconExportAccountHolderDTO
+      .builder()
+      .fullName(ah.getFullName())
+      .address(address)
+      .telephoneNumbers(
+        getMultipleValuesAsString(
+          "   ",
+          ah.getTelephoneNumber(),
+          ah.getAlternativeTelephoneNumber()
+        )
+      )
+      .email(ah.getEmail())
+      .build();
+  }
+
   private BeaconExportOwnerDTO toOwnerDTO(BeaconOwner owner) {
     AddressDTO address = addressMapper.toDTO(owner.getAddress());
 
@@ -276,7 +284,7 @@ public class ExportMapper {
       .address(address)
       .telephoneNumbers(
         getMultipleValuesAsString(
-          " / ",
+          "   ",
           owner.getTelephoneNumber(),
           owner.getAlternativeTelephoneNumber()
         )
@@ -296,7 +304,7 @@ public class ExportMapper {
           .fullName(ec.getFullName())
           .telephoneNumber(
             getMultipleValuesAsString(
-              " / ",
+              "   ",
               ec.getTelephoneNumber(),
               ec.getAlternativeTelephoneNumber()
             )
@@ -346,10 +354,10 @@ public class ExportMapper {
       .careOf(owner.getCareOf())
       .address(address)
       .telephoneNumbers(
-        getMultipleValuesAsString(" / ", owner.getPhone1(), owner.getPhone2())
+        getMultipleValuesAsString("   ", owner.getPhone1(), owner.getPhone2())
       )
       .mobiles(
-        getMultipleValuesAsString(" / ", owner.getMobile1(), owner.getMobile2())
+        getMultipleValuesAsString("   ", owner.getMobile1(), owner.getMobile2())
       )
       .email(owner.getEmail())
       .build();
@@ -389,7 +397,7 @@ public class ExportMapper {
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .vesselCallsign(use.getCallSign())
       .mmsiNumber(use.getMmsiNumber().toString())
-      .radioSystem(use.getCommunications()) // Unsure on this.
+      .radioSystem(use.getCommunications())
       .notes(use.getNotes())
       .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
       .officialNumber(use.getOfficialNumber())
@@ -405,11 +413,11 @@ public class ExportMapper {
       .builder()
       .environment(use.getEnvironment())
       .aircraftType(use.getAircraftType())
-      .maxPersonOnBoard(use.getMaxPersons())
+      .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .aircraftRegistrationMark(use.getAircraftRegistrationMark())
       .TwentyFourBitAddressInHex(use.getBit24AddressHex())
       .principalAirport(use.getPrincipalAirport())
-      .radioSystem(use.getCommunications()) // Unsure on this.
+      .radioSystem(use.getCommunications())
       .notes(use.getNotes())
       .build();
   }
@@ -418,11 +426,13 @@ public class ExportMapper {
     return BeaconExportLandUseDTO
       .builder()
       .environment(use.getEnvironment())
-      .descriptionOfIntendedUse(use.getUseType()) //Unsure
-      .numberOfPersonsOnBoard(use.getMaxPersons())
+      .descriptionOfIntendedUse(use.getUseType())
+      .numberOfPersonsOnBoard(
+        use.getMaxPersons() != null ? use.getMaxPersons() : 0
+      )
       .areaOfUse(use.getAreaOfUse())
       .tripInformation(use.getTripInfo())
-      .radioSystem(use.getCommunications()) // Unsure on this.
+      .radioSystem(use.getCommunications())
       .notes(use.getNotes())
       .build();
   }
@@ -434,10 +444,10 @@ public class ExportMapper {
       .vesselName(use.getVesselName())
       .homePort(use.getHomePort())
       .vessel(use.getVesselType())
-      .maxPersonOnBoard(use.getMaxPersons())
+      .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .vesselCallsign(use.getCallSign())
       .mmsiNumber(use.getMmsiNumber().toString())
-      .radioSystem(use.getCommunications()) // Unsure on this.
+      .radioSystem(use.getCommunications())
       .notes(use.getNotes())
       .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
       .officialNumber(use.getOfficialNumber())
@@ -446,17 +456,16 @@ public class ExportMapper {
       .hullIdNumber(use.getHullIdNumber())
       .coastguardCGRefNumber(use.getCg66RefNumber())
       .aircraftType(use.getAircraftType())
-      .maxPersonOnBoard(use.getMaxPersons())
       .aircraftRegistrationMark(use.getAircraftRegistrationMark())
       .TwentyFourBitAddressInHex(use.getBit24AddressHex())
       .principalAirport(use.getPrincipalAirport())
-      .radioSystem(use.getCommunications()) // Unsure on this.
       .notes(use.getNotes())
       .descriptionOfIntendedUse(use.getUseType()) //Unsure
-      .numberOfPersonsOnBoard(use.getMaxPersons())
+      .numberOfPersonsOnBoard(
+        use.getMaxPersons() != null ? use.getMaxPersons() : 0
+      )
       .areaOfUse(use.getAreaOfUse())
       .tripInformation(use.getTripInfo())
-      .radioSystem(use.getCommunications()) // Unsure on this.
       .notes(use.getNotes())
       .build();
   }

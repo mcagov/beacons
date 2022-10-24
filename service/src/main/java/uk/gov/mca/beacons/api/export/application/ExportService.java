@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
+import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
@@ -29,6 +31,7 @@ public class ExportService {
   private final LegacyBeaconService legacyBeaconService;
   private final ExportMapper exportMapper;
   private final NoteService noteService;
+  private final AccountHolderService accountHolderService;
 
   @Autowired
   public ExportService(
@@ -36,13 +39,15 @@ public class ExportService {
     RegistrationService registrationService,
     LegacyBeaconService legacyBeaconService,
     ExportMapper exportMapper,
-    NoteService ns
+    NoteService ns,
+    AccountHolderService accountHolderService
   ) {
     this.beaconService = beaconService;
     this.registrationService = registrationService;
     this.legacyBeaconService = legacyBeaconService;
     this.exportMapper = exportMapper;
     this.noteService = ns;
+    this.accountHolderService = accountHolderService;
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
@@ -53,7 +58,7 @@ public class ExportService {
         .findAll()
         .stream()
         //This should be registration, not beacon for other objects.
-        .map(b -> exportMapper.toBeaconExportDTO(b, null))
+        .map(b -> exportMapper.toBeaconExportDTO(b))
         .collect(Collectors.toList())
     );
     beacons.addAll(
@@ -74,8 +79,13 @@ public class ExportService {
 
     try {
       Registration registration = registrationService.getByBeaconId(beaconId);
+      AccountHolder accountHolder = accountHolderService
+        .getAccountHolder(registration.getBeacon().getAccountHolderId())
+        .orElse(null);
+
       BeaconExportDTO data = exportMapper.toBeaconExportDTO(
         registration,
+        accountHolder,
         noteService.getNonSystemNotes(beaconId)
       );
 
