@@ -234,10 +234,10 @@ class ExportMapperUnitTest {
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
-      "02833746199 / 01477263499",
+      "02833746199   01477263499",
       mappedOwnerDTO.getTelephoneNumbers()
     );
-    assertEquals("07899122344 / 07344511288", mappedOwnerDTO.getMobiles());
+    assertEquals("07899122344   07344511288", mappedOwnerDTO.getMobiles());
   }
 
   @Test
@@ -255,7 +255,7 @@ class ExportMapperUnitTest {
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
-      "02833746199 / 01477263499",
+      "02833746199   01477263499",
       mappedOwnerDTO.getTelephoneNumbers()
     );
     assertEquals("", mappedOwnerDTO.getMobiles());

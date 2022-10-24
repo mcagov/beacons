@@ -48,6 +48,9 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String imoNumber;
 
   @Valid
+  private String areaOfOperation;
+
+  @Valid
   private String rssAndSsrNumber;
 
   @Valid
@@ -67,6 +70,9 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String principalAirport;
+
+  @Valid
+  private String secondaryAirport;
 
   @Valid
   private String aircraftOperatorsDesignatorAndSerialNo;

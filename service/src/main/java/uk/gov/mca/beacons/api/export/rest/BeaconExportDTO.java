@@ -77,5 +77,8 @@ public class BeaconExportDTO {
   List<BeaconExportOwnerDTO> owners;
 
   @Valid
+  BeaconExportAccountHolderDTO accountHolder;
+
+  @Valid
   List<EmergencyContactDTO> emergencyContacts;
 }
