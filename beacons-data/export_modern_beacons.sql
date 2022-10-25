@@ -1,4 +1,6 @@
-SELECT beacon.hex_id, 
+SELECT 
+    beacon.hex_id,
+    NULL as dept_ref, 
     UPPER(beacon.beacon_status) as beacon_status, 
     TO_CHAR(beacon.created_date :: DATE, 'dd/mm/yyyy') as created_date,
     TO_CHAR(beacon.last_modified_date :: DATE, 'dd/mm/yyyy') as last_modified_date,
