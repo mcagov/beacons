@@ -17,7 +17,7 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
   const [beacon, setBeacon] = useState<IBeaconExport>({} as IBeaconExport);
 
   useEffect(() => {
-    exportsGateway.getExportDataForBeacon(beaconId).then(setBeacon);
+    exportsGateway.getCertificateDataForBeacon(beaconId).then(setBeacon);
   }, [beaconId, exportsGateway]);
 
   switch (beacon.type) {
@@ -31,38 +31,5 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
           <p>No beacon available</p>
         </div>
       );
-  }
-};
-
-interface LetterViewProps {
-  exportsGateway: IExportsGateway;
-  beaconId: string;
-  letterType: string;
-}
-
-export const LetterView: FunctionComponent<LetterViewProps> = ({
-  exportsGateway,
-  beaconId,
-  letterType,
-}): JSX.Element => {
-  const [beacon, setBeacon] = useState<IBeaconExport>({} as IBeaconExport);
-  console.log(letterType);
-
-  useEffect(() => {
-    exportsGateway.getExportDataForBeacon(beaconId).then(setBeacon);
-  }, [beaconId, exportsGateway]);
-
-  if (letterType === "registration") {
-    return (
-      <div>
-        <CoverLetter beacon={beacon} type="Registration" />
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <CoverLetter beacon={beacon} type="Amended" />
-      </div>
-    );
   }
 };

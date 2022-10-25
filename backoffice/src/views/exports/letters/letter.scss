@@ -40,8 +40,10 @@
     }
 
     img {
+      float: left;
+      clear: right;
       padding-top: 10px;
-      height: 120px;
+      height: 100px;
     }
 
     .sender {
@@ -50,6 +52,21 @@
       p {
         margin: 0;
         padding: 1px;
+      }
+    }
+
+    div.recipient {
+      clear: left;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      .address-fields {
+        display: inline-block;
+        span {
+          display: block;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
       }
     }
   }
@@ -70,18 +87,6 @@
       p {
         margin: 2px;
         text-align: right;
-      }
-    }
-    div.recipient {
-      margin-bottom: 20px;
-
-      .address-fields {
-        display: inline-block;
-        span {
-          display: block;
-          font-weight: bold;
-          text-transform: uppercase;
-        }
       }
     }
 

@@ -12,10 +12,8 @@ import {
   Switch,
   useParams,
 } from "react-router-dom";
-import {
-  CertificateView,
-  LetterView,
-} from "views/exports/certificates/CertificateView";
+import { CertificateView } from "views/exports/certificates/CertificateView";
+import { LetterView } from "views/exports/letters/LetterView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
@@ -102,7 +100,6 @@ const App: FunctionComponent = () => {
 
   const LetterViewWithParam: FunctionComponent = () => {
     const { id, letterType } = useParams<ResourceParams>();
-    console.log(letterType);
     return (
       <LetterView
         exportsGateway={exportsGateway}
