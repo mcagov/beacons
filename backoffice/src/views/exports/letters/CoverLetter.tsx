@@ -189,7 +189,12 @@ export const LetterHeader: FunctionComponent = (): JSX.Element => {
 const LetterFooter: FunctionComponent = (): JSX.Element => {
   return (
     <div className="footer full">
-      <p className="bold">OFFICIAL</p>
+      <span className="bold">OFFICIAL</span>
+      <img
+        src={process.env.PUBLIC_URL + "/footer-images.png"}
+        alt="Investors in People silver logo"
+        className="investors-in-people-logo"
+      />
     </div>
   );
 };
