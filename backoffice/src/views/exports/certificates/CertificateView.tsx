@@ -17,7 +17,7 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
   const [beacon, setBeacon] = useState<IBeaconExport>({} as IBeaconExport);
 
   useEffect(() => {
-    exportsGateway.getExportDataForBeacon(beaconId).then(setBeacon);
+    exportsGateway.getCertificateDataForBeacon(beaconId).then(setBeacon);
   }, [beaconId, exportsGateway]);
 
   switch (beacon.type) {
@@ -32,22 +32,4 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
         </div>
       );
   }
-};
-
-export const LetterView: FunctionComponent<CertificateViewProps> = ({
-  exportsGateway,
-  beaconId,
-}): JSX.Element => {
-  const [beacon, setBeacon] = useState<IBeaconExport>({} as IBeaconExport);
-
-  useEffect(() => {
-    exportsGateway.getExportDataForBeacon(beaconId).then(setBeacon);
-  }, [beaconId, exportsGateway]);
-
-  return (
-    <div>
-      <CoverLetter beacon={beacon} type="Registration" />
-      <CoverLetter beacon={beacon} type="Amended" />
-    </div>
-  );
 };

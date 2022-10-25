@@ -12,10 +12,8 @@ import {
   Switch,
   useParams,
 } from "react-router-dom";
-import {
-  CertificateView,
-  LetterView,
-} from "views/exports/certificates/CertificateView";
+import { CertificateView } from "views/exports/certificates/CertificateView";
+import { LetterView } from "views/exports/letters/LetterView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
@@ -38,6 +36,7 @@ import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordVi
 
 interface ResourceParams {
   id: string;
+  letterType: string;
 }
 
 const App: FunctionComponent = () => {
@@ -100,8 +99,14 @@ const App: FunctionComponent = () => {
   };
 
   const LetterViewWithParam: FunctionComponent = () => {
-    const { id } = useParams<ResourceParams>();
-    return <LetterView exportsGateway={exportsGateway} beaconId={id} />;
+    const { id, letterType } = useParams<ResourceParams>();
+    return (
+      <LetterView
+        exportsGateway={exportsGateway}
+        beaconId={id}
+        letterType={letterType}
+      />
+    );
   };
 
   return (
@@ -136,7 +141,7 @@ const App: FunctionComponent = () => {
                 <Route path={`/certificates/:id`}>
                   <CertificateViewWithParam />
                 </Route>
-                <Route path={`/letter/:id`}>
+                <Route path={`/letters/:letterType/:id/`}>
                   <LetterViewWithParam />
                 </Route>
                 <Route>

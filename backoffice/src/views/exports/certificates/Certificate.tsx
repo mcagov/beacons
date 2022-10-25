@@ -14,8 +14,7 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
   beacon,
 }): JSX.Element => {
   return (
-    <div className="certificate">
-      {/* <div className="certificate" onLoad={window.print}> */}
+    <div className="certificate" onLoad={window.print}>
       <CertificateHeader beacon={beacon} />
 
       <div className="content">
@@ -353,34 +352,8 @@ const AccountHolderSection: FunctionComponent<BeaconExportProps> = ({
     <div className="account-holder-details">
       <div className="section">
         <h3>Account Holder:</h3>
-        <CertificateField
-          classes="full"
-          title="Full Name"
-          value={ah.fullName}
-        />
+        <CertificateField classes="half" title="Name" value={ah.fullName} />
 
-        <div className="half address">
-          <span className="title">Address:</span>
-          <div className="address-fields">
-            {[
-              ah.addressLine1,
-              ah.addressLine2,
-              ah.addressLine3,
-              ah.addressLine4,
-              ah.townOrCity,
-              ah.county,
-              ah.postcode,
-              ah.country,
-            ].map((line, index) => (
-              <span key={index}>{line}</span>
-            ))}
-          </div>
-        </div>
-        <CertificateField
-          classes="half"
-          title="Tels"
-          value={ah.telephoneNumbers}
-        />
         <CertificateField classes="half" title="Email" value={ah.email} />
       </div>
     </div>

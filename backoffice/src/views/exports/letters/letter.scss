@@ -34,16 +34,16 @@
 
   div.header {
     display: inline-block;
-    padding-top: 10px;
-    margin-bottom: 5px;
 
     p {
       margin: 0;
     }
 
     img {
+      float: left;
+      clear: right;
       padding-top: 10px;
-      height: 120px;
+      height: 100px;
     }
 
     .sender {
@@ -52,6 +52,21 @@
       p {
         margin: 0;
         padding: 1px;
+      }
+    }
+
+    div.recipient {
+      clear: left;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      .address-fields {
+        display: inline-block;
+        span {
+          display: block;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
       }
     }
   }
@@ -71,20 +86,7 @@
       margin-top: 100px;
       p {
         margin: 2px;
-        padding-right: 50px;
         text-align: right;
-      }
-    }
-    div.recipient {
-      margin-bottom: 20px;
-
-      .address-fields {
-        display: inline-block;
-        span {
-          display: block;
-          font-weight: bold;
-          text-transform: uppercase;
-        }
       }
     }
 
@@ -107,6 +109,11 @@
 
     div.text span {
       display: block;
+    }
+
+    .investors-in-people-logo {
+      width: 25%;
+      float: right;
     }
   }
 }
