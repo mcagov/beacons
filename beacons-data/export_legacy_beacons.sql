@@ -1,7 +1,7 @@
 SELECT 
 	hex_id, 
 	UPPER(data -> 'beacon' ->> 'departRefId')AS dept_ref, 
-	UPPER(beacon_status),
+	UPPER(beacon_status) AS beacon_status,
 	TO_CHAR(TO_TIMESTAMP(data -> 'beacon' ->> 'firstRegistrationDate', 'YYYY-MM-DDXHH24:MI:SS.MS'), 'dd/mm/yyyy') AS created_date, 
 	TO_CHAR(last_modified_date :: DATE, 'dd/mm/yyyy') AS last_modified_date,
 	UPPER(data -> 'owner' ->> 'ownerName')AS owner_full_name,
