@@ -35,7 +35,7 @@ class ExportMapperUnitTest {
     landUse.setActivity(Activity.DRIVING);
     landUse.setMaxCapacity(55);
     landUse.setAreaOfOperation("I'm here!");
-    landUse.setOtherCommunicationValue("Tin can and string");
+    landUse.setOtherCommunication(true);
 
     BeaconExportLandUseDTO use = mapper.toLandUse(landUse);
 
@@ -44,7 +44,7 @@ class ExportMapperUnitTest {
       use.getDescriptionOfIntendedUse(),
       landUse.getActivity().toString()
     );
-    assertEquals(landUse.getOtherCommunicationValue(), use.getRadioSystem());
+    assertEquals("Other", use.getRadioSystem());
     assertEquals(landUse.getMaxCapacity(), use.getNumberOfPersonsOnBoard());
     assertEquals(landUse.getAreaOfOperation(), use.getAreaOfUse());
   }
