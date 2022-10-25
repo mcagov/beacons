@@ -17,7 +17,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
 
   const owner = beacon.owners.at(0);
   return (
-    <div className="letter">
+    <div className="letter" onLoad={window.print}>
       <div className="header full">
         <div className="half">
           <p className="bold">OFFICIAL</p>

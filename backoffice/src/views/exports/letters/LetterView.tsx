@@ -19,7 +19,7 @@ export const LetterView: FunctionComponent<LetterViewProps> = ({
     exportsGateway.getLetterDataForBeacon(beaconId).then(setBeacon);
   }, [beaconId, exportsGateway]);
   return (
-    <div onLoad={window.print}>
+    <div>
       {letterType === "registration" && (
         <CoverLetter beacon={beacon} type="Registration" />
       )}
