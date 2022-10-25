@@ -19,6 +19,7 @@ export interface IBeaconExport {
   notes: IBeaconExportNote[];
   uses: IBeaconExportUse[];
   owners: IBeaconExportOwner[];
+  accountHolder: IBeaconExportAccountHolder;
   emergencyContacts: IBeaconExportEmergencyContact[];
 }
 
@@ -44,6 +45,20 @@ export interface IBeaconExportOwner {
   email: string;
 }
 
+export interface IBeaconExportAccountHolder {
+  fullName: string;
+  addressLine1: string;
+  addressLine2: string;
+  addressLine3: string;
+  addressLine4: string;
+  townOrCity: string;
+  postcode: string;
+  county: string;
+  country: string;
+  telephoneNumbers: string;
+  email: string;
+}
+
 export interface IBeaconExportUse {
   //Generic, TODO - split out into types.
   environment: string;
@@ -65,11 +80,13 @@ export interface IBeaconExportUse {
   aircraftRegistrationMark: string;
   TwentyFourBitAddressInHex: string;
   principalAirport: string;
+  secondaryAirport: string;
   aircraftOperatorsDesignatorAndSerialNo: string;
   descriptionOfIntendedUse: string;
   numberOfPersonsOnBoard: string;
   areaOfUse: string;
   tripInformation: string;
+  areaOfOperation: string;
 }
 
 export interface IBeaconExportEmergencyContact {

@@ -55,4 +55,7 @@ public class BeaconExportMaritimeUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String coastguardCGRefNumber;
+
+  @Valid
+  private String areaOfOperation;
 }

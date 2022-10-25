@@ -29,6 +29,9 @@ public class BeaconExportAviationUseDTO extends BeaconExportUseDTO {
   private String principalAirport;
 
   @Valid
+  private String secondaryAirport;
+
+  @Valid
   private String radioSystem;
 
   @Valid

@@ -35,6 +35,18 @@
     float: left;
   }
 
+  .account-holder-details {
+    div.address-fields {
+      padding-left: 15px;
+    }
+  }
+
+  .owner-details {
+    div.address-fields {
+      padding-left: 6px;
+    }
+  }
+
   div.section {
     clear: both;
     display: block;
@@ -46,6 +58,14 @@
     div.field {
       padding-bottom: 5px;
       text-transform: uppercase;
+
+      &.bold {
+        font-weight: bold;
+      }
+
+      &.uppercase {
+        text-transform: uppercase;
+      }
     }
 
     h3 {
@@ -59,6 +79,7 @@
       }
       .address-fields {
         display: inline-block;
+
         span {
           display: block;
           text-transform: uppercase;

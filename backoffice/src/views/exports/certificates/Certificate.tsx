@@ -7,7 +7,6 @@ import {
   CertificateField,
   BeaconExportProps,
   UseProps,
-  GenericUse,
 } from "./BaseCertificate";
 import { Environments } from "../../../entities/IUse";
 
@@ -44,6 +43,8 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
           />
         </div>
 
+        <AccountHolderSection beacon={beacon} />
+
         <BeaconSection beacon={beacon} />
 
         <NotesSection beacon={beacon} />
@@ -64,7 +65,11 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
     <div className="section">
       <h3>Beacon Details:</h3>
 
-      <CertificateField classes="full" title="Hex Id" value={beacon.hexId} />
+      <CertificateField
+        classes="full bold"
+        title="Hex Id"
+        value={beacon.hexId}
+      />
       <CertificateField
         classes="half"
         title="Manufacturer"
@@ -96,7 +101,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
         value={customDateStringFormat(beacon.batteryExpiryDate, "MMMM yyyy")}
       />
       <CertificateField
-        classes="half"
+        classes="full"
         title="Coding Protocol"
         value={beacon.codingProtocol}
       />
@@ -129,8 +134,6 @@ const UsesSection: FunctionComponent<BeaconExportProps> = ({
 }): JSX.Element => {
   return (
     <div className="section">
-      <span className="title">BEACON USES:</span>
-
       {beacon.uses &&
         beacon.uses.map((use, index) => (
           <UseSection use={use} index={index + 1} key={index} />
@@ -151,7 +154,7 @@ const UseSection: FunctionComponent<UseProps> = ({
     case Environments.Land:
       return <LandUse use={use} index={index} />;
     default:
-      return <GenericUse use={use} index={index} />;
+      return <div>Unknown Use</div>;
   }
 };
 
@@ -161,7 +164,10 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
 }: UseProps): JSX.Element => {
   return (
     <div className="use full">
-      <h4 className="title use"> {use.environment + ` (${index})`}</h4>
+      <h4 className="title use">
+        {" "}
+        {`#${index} Beacon Use - ` + use.environment}
+      </h4>
       <div className="section">
         <h3>Vessel Details:</h3>
 
@@ -175,15 +181,19 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           title="Homeport"
           value={use.homePort}
         />
-        <CertificateField classes="half" title="Vessel" value={use.vessel} />
         <CertificateField
           classes="half"
-          title="Max Person On Board"
+          title="Type Of Vessel"
+          value={use.vessel}
+        />
+        <CertificateField
+          classes="half"
+          title="Max Persons On Board"
           value={use.maxPersonOnBoard}
         />
         <CertificateField
           classes="half"
-          title="Vessel Callsign"
+          title="Vessel Call Sign"
           value={use.vesselCallsign}
         />
         <CertificateField
@@ -197,15 +207,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           value={use.radioSystem}
         />
 
-        <CertificateField
-          classes="full"
-          title="More Details"
-          value={use.notes}
-        />
-      </div>
-
-      <div className="section">
-        <h3>Vessel Identification:</h3>
         <CertificateField
           classes="full"
           title="Fishing Vessel Port ID &amp; Numbers"
@@ -226,6 +227,16 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           title="RSS/SSR Number"
           value={use.rssAndSsrNumber}
         />
+        <CertificateField
+          classes="half"
+          title="Area Of Operation"
+          value={use.areaOfOperation}
+        />
+        <CertificateField
+          classes="full"
+          title="More Details"
+          value={use.notes}
+        />
       </div>
     </div>
   );
@@ -237,7 +248,10 @@ const AviationUse: FunctionComponent<UseProps> = ({
 }: UseProps): JSX.Element => {
   return (
     <div className="use full">
-      <h4 className="title use"> {use.environment + ` (${index})`}</h4>
+      <h4 className="title use">
+        {" "}
+        {`#${index} Beacon Use - ` + use.environment}
+      </h4>
       <div className="section">
         <h3>Aircraft Details:</h3>
 
@@ -248,23 +262,29 @@ const AviationUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="half"
-          title="Max Person On Board"
+          title="Max Persons On Board"
           value={use.maxPersonOnBoard}
         />
         <CertificateField
-          classes="full"
+          classes="half"
           title="Aircraft Registration Mark"
           value={use.aircraftRegistrationMark}
         />
         <CertificateField
-          classes="full"
+          classes="half"
           title="24-Bit Address In Hex"
           value={use.TwentyFourBitAddressInHex}
         />
         <CertificateField
-          classes="full"
+          classes="half"
           title="Principal Airport"
           value={use.principalAirport}
+        />
+
+        <CertificateField
+          classes="half"
+          title="Secondary Airport"
+          value={use.secondaryAirport}
         />
         <CertificateField
           classes="full"
@@ -287,7 +307,10 @@ const LandUse: FunctionComponent<UseProps> = ({
 }: UseProps): JSX.Element => {
   return (
     <div className="use full">
-      <h4 className="title use"> {use.environment + ` (${index})`}</h4>
+      <h4 className="title use">
+        {" "}
+        {`#${index} Beacon Use - ` + use.environment}
+      </h4>
       <div className="section">
         <h3>Land Details:</h3>
 
@@ -321,6 +344,49 @@ const LandUse: FunctionComponent<UseProps> = ({
   );
 };
 
+const AccountHolderSection: FunctionComponent<BeaconExportProps> = ({
+  beacon,
+}): JSX.Element => {
+  const ah = beacon.accountHolder;
+
+  return (
+    <div className="account-holder-details">
+      <div className="section">
+        <h3>Account Holder:</h3>
+        <CertificateField
+          classes="full"
+          title="Full Name"
+          value={ah.fullName}
+        />
+
+        <div className="half address">
+          <span className="title">Address:</span>
+          <div className="address-fields">
+            {[
+              ah.addressLine1,
+              ah.addressLine2,
+              ah.addressLine3,
+              ah.addressLine4,
+              ah.townOrCity,
+              ah.county,
+              ah.postcode,
+              ah.country,
+            ].map((line, index) => (
+              <span key={index}>{line}</span>
+            ))}
+          </div>
+        </div>
+        <CertificateField
+          classes="half"
+          title="Tels"
+          value={ah.telephoneNumbers}
+        />
+        <CertificateField classes="half" title="Email" value={ah.email} />
+      </div>
+    </div>
+  );
+};
+
 const OwnersSection: FunctionComponent<BeaconExportProps> = ({
   beacon,
 }): JSX.Element => {
@@ -347,16 +413,12 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
                   owner.townOrCity,
                   owner.county,
                   owner.postcode,
+                  owner.country,
                 ].map((line, index) => (
                   <span key={index}>{line}</span>
                 ))}
               </div>
             </div>
-            <CertificateField
-              classes="half"
-              title="Country"
-              value={owner.country}
-            />
             <CertificateField
               classes="half"
               title="Tels"
