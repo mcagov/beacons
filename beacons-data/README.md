@@ -1,9 +1,11 @@
-# Beacons Data Seeding Scripts
+# Beacons Data Scripts
+
+## Beacons Data Seeding Scripts
 
 ## Why do we need this code?
 
 - During local development, you will need records in your local Postgres DB in all the tables
-- These scripts seed the DB tables with dummy data to help you get started
+- These _Ruby_ scripts seed the DB tables with dummy data to help you get started
 
 ## Prerequisites
 
@@ -73,3 +75,10 @@ db_password= 'password'
 - Remove the sensitive values from your Ruby code and set them back to the local credentials above
 - In AWS, delete the inbound rule you made earlier to the VPC
 - Disallow public connections to the DB
+
+## Beacons Data Export Scripts
+
+## Why do we need this code?
+
+- The P.O requires an export of the beacons data, with these specific fields (not all of them) on an infrequent basis
+- These _PostgreSQL_ scripts select the relevant modern and legacy beacon data, transforming text to uppercase and formatting the dates to dd/mm/yyyy.
