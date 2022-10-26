@@ -17,6 +17,9 @@ public class BeaconExportDTO {
   private String type;
 
   @Valid
+  private String name;
+
+  @Valid
   private OffsetDateTime proofOfRegistrationDate;
 
   @Valid
