@@ -63,6 +63,7 @@
       .address-fields {
         display: inline-block;
         span {
+          line-height: 0.95;
           display: block;
           font-weight: bold;
           text-transform: uppercase;
@@ -95,10 +96,6 @@
         margin: 0;
         padding: 0;
         padding-bottom: 5px;
-        &.sig {
-          font-size: x-large;
-          font-family: cursive;
-        }
       }
     }
   }
@@ -107,8 +104,9 @@
     margin-top: auto;
     padding-top: 50px;
 
-    div.text span {
-      display: block;
+    div.text {
+      width: 50%;
+      float: left;
     }
 
     .investors-in-people-logo {
@@ -123,5 +121,11 @@
     page-break-before: always;
     margin: 0;
     box-shadow: none;
+    height: 100%;
+  }
+
+  .footer {
+    display: fixed;
+    bottom: 0;
   }
 }

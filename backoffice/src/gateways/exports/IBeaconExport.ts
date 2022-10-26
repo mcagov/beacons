@@ -1,5 +1,6 @@
 export interface IBeaconExport {
   type: "Legacy" | "New";
+  name: string;
   proofOfRegistrationDate: string;
   departmentReference: string;
   recordCreatedDate: string;

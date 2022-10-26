@@ -19,4 +19,14 @@ public class LegacyData implements ValueObject, Serializable {
   private List<LegacyUse> uses;
   private List<LegacySecondaryOwner> secondaryOwners;
   private LegacyEmergencyContact emergencyContact;
+
+  public LegacyUse getMainUse() {
+    return getUses()
+      .stream()
+      .filter(bu ->
+        bu.getIsMain() != null && bu.getIsMain().toUpperCase().startsWith("Y")
+      )
+      .findFirst()
+      .orElse(null);
+  }
 }
