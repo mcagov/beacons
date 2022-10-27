@@ -333,6 +333,7 @@ class ExportMapperUnitTest {
     legacyBeacon.setLastModifiedDate(OffsetDateTime.now());
 
     legacyUse.setAircraftRegistrationMark("Spitfire");
+    legacyUse.setIsMain("Yes");
     legacyUses.add(legacyUse);
     legacyData.setUses(legacyUses);
 
