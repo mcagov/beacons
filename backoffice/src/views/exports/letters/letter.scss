@@ -7,8 +7,8 @@
   box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
   margin: 20px auto;
   width: 21cm;
-  min-height: 29.7cm;
-  padding: 30px 40px;
+  min-height: 30cm;
+  padding: 30px 40px 20px 40px;
 
   .bold {
     font-weight: bold;
@@ -16,6 +16,10 @@
 
   .underline {
     text-decoration: underline;
+  }
+
+  .uppercase {
+    text-transform: uppercase;
   }
 
   .full {
@@ -63,7 +67,7 @@
       .address-fields {
         display: inline-block;
         span {
-          line-height: 0.95;
+          line-height: 1;
           display: block;
           font-weight: bold;
           text-transform: uppercase;
@@ -112,6 +116,7 @@
     .investors-in-people-logo {
       width: 25%;
       float: right;
+      margin-top: 50px;
     }
   }
 }
@@ -121,7 +126,6 @@
     page-break-before: always;
     margin: 0;
     box-shadow: none;
-    height: 100%;
   }
 
   .footer {

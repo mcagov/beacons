@@ -62,7 +62,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
           {beacon.type === "Legacy" && beacon.departmentReference && (
             <p>Dept Ref: {beacon.departmentReference}</p>
           )}
-          <p className="bold">www.gov.uk/mca</p>
+          <p className="underline">www.gov.uk/mca</p>
           <p>{customDateStringFormat(new Date(), "DD MMMM yyyy")}</p>
         </div>
       </div>
@@ -79,7 +79,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
             <p className="bold underline">
               406 MHz EMERGENCY BEACON REGISTRATION FOR AN EPIRB, PLB OR ELT.
             </p>
-            <p className="bold underline">
+            <p className="bold underline uppercase">
               VESSEL/AIRCRAFT: {beacon.name} &nbsp; HEX ID: {beacon.hexId}
             </p>
           </div>
@@ -127,7 +127,9 @@ export const RegistrationBody: FunctionComponent = (): JSX.Element => {
       <p>
         For Search & Rescue action to be effective, it is vitally important that
         your record(s) are kept up-to-date in your online account at:{" "}
-        <span className="bold">https://www.gov.uk/register-406-beacons</span>
+        <span className="underline">
+          https://www.gov.uk/register-406-beacons
+        </span>
       </p>
     </div>
   );
@@ -151,7 +153,9 @@ export const AmendedBody: FunctionComponent = (): JSX.Element => {
       <p>
         For Search & Rescue action to be effective, it is vitally important that
         your record(s) are kept up-to-date in your online account at:{" "}
-        <span className="bold">https://www.gov.uk/register-406-beacons</span>
+        <span className="underline">
+          https://www.gov.uk/register-406-beacons
+        </span>
       </p>
     </div>
   );
@@ -168,7 +172,7 @@ const LetterFooter: FunctionComponent = (): JSX.Element => {
       <img
         src={
           process.env.PUBLIC_URL +
-          "/assets/letter/Investors-in-People-Silver.jpeg"
+          "/assets/letter/Investors-in-People-Silver.png"
         }
         alt="Investors in People silver logo"
         className="investors-in-people-logo"
