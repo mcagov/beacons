@@ -23,13 +23,7 @@ public class LegacyData implements ValueObject, Serializable {
   public LegacyUse getMainUse() {
     return getUses()
       .stream()
-      .filter(bu ->
-        bu.getIsMain() != null &&
-        (
-          bu.getIsMain().toUpperCase().startsWith("Y") ||
-          bu.getIsMain().toUpperCase().equals("TRUE")
-        )
-      )
+      .filter(bu -> bu.isMain())
       .findFirst()
       .orElse(null);
   }
