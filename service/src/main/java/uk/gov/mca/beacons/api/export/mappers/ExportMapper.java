@@ -93,6 +93,7 @@ public class ExportMapper {
       .name(mainUse != null ? StringUtils.valueOrEmpty(mainUse.getName()) : "")
       .proofOfRegistrationDate(beacon.getLastModifiedDate())
       .lastModifiedDate(beacon.getLastModifiedDate())
+      .referenceNumber(beacon.getReferenceNumber())
       .recordCreatedDate(beacon.getCreatedDate().toString())
       .beaconStatus(beacon.getBeaconStatus().toString())
       .hexId(beacon.getHexId())
