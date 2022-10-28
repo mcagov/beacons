@@ -140,8 +140,40 @@
 }
 
 @media print {
+  body {
+    position: relative;
+    border: 2px solid orange;
+    height: 100%;
+  }
+
   .certificate {
     margin: 0;
     box-shadow: none;
+    position: inherit;
+    border: 2px solid red;
+    min-height: 100%;
   }
+
+  .emergency-contacts {
+    padding-bottom: 30px;
+  }
+
+  #footer-spacer {
+    border: 2px solid green;
+    // not working
+    // page-break-after: always;
+  }
+
+  .footer {
+    page-break-before: always;
+    display: block;
+    position: sticky;
+    bottom: 0;
+    border: 2px solid blue;
+    height: 150px;
+  }
+
+  // .footer:not(:last-child) {
+  //   border: 2px solid orange;
+  // }
 }

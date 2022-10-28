@@ -54,6 +54,9 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
 
         <EmergencyContactsSection beacon={beacon} />
       </div>
+      <div id="footer-spacer">
+        <p></p>
+      </div>
       <CertificateFooter />
     </div>
   );
@@ -420,7 +423,7 @@ const EmergencyContactsSection: FunctionComponent<BeaconExportProps> = ({
   const hasEmergencyContacts =
     emergencyContacts != null && emergencyContacts.length > 0;
   return (
-    <div className="section">
+    <div className="section emergency-contacts">
       <span className="title">EMERGENCY CONTACTS: </span>
       {hasEmergencyContacts &&
         emergencyContacts.map((ec, index) => (
