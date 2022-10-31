@@ -55,7 +55,7 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
         <EmergencyContactsSection beacon={beacon} />
       </div>
       <div id="footer-spacer">
-        <p></p>
+        <div></div>
       </div>
       <CertificateFooter />
     </div>

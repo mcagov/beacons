@@ -151,17 +151,19 @@
     box-shadow: none;
     position: inherit;
     border: 2px solid red;
-    min-height: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .emergency-contacts {
-    padding-bottom: 30px;
+    page-break-after: always;
   }
 
   #footer-spacer {
     border: 2px solid green;
-    // not working
-    // page-break-after: always;
+    padding-bottom: 50px;
+    page-break-after: always;
   }
 
   .footer {
@@ -170,7 +172,9 @@
     position: sticky;
     bottom: 0;
     border: 2px solid blue;
-    height: 150px;
+    width: 100%;
+    flex: 1;
+    // height: 150px;
   }
 
   // .footer:not(:last-child) {
