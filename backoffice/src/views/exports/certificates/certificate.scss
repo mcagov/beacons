@@ -142,42 +142,18 @@
 @media print {
   body {
     position: relative;
-    border: 2px solid orange;
-    height: 100%;
   }
 
   .certificate {
     margin: 0;
     box-shadow: none;
-    position: inherit;
-    border: 2px solid red;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .emergency-contacts {
-    page-break-after: always;
-  }
-
-  #footer-spacer {
-    border: 2px solid green;
-    padding-bottom: 50px;
-    page-break-after: always;
+    background-color: white;
   }
 
   .footer {
-    page-break-before: always;
-    display: block;
-    position: sticky;
+    position: fixed;
     bottom: 0;
-    border: 2px solid blue;
     width: 100%;
-    flex: 1;
-    // height: 150px;
+    z-index: -1;
   }
-
-  // .footer:not(:last-child) {
-  //   border: 2px solid orange;
-  // }
 }

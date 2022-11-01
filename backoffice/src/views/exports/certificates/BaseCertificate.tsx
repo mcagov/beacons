@@ -72,7 +72,7 @@ export const CertificateHeader: FunctionComponent<BeaconExportProps> = ({
 
 export const CertificateFooter: FunctionComponent = (): JSX.Element => {
   return (
-    <div className="footer full">
+    <div className="footer full" id="footer">
       <div className="text">
         <span className="bold">
           In an Emergency, call Falmouth Coastguard, 24 hour Tel: +44 (0)1326
