@@ -15,4 +15,4 @@ SELECT
     UPPER(beacon_owner.town_or_city) as owner_town_or_city, 
     UPPER(beacon_owner.country) as owner_country
 FROM beacon_owner
-JOIN beacon ON beacon_owner.beacon_id = beacon.id;
+RIGHT JOIN beacon ON beacon_owner.beacon_id = beacon.id;
