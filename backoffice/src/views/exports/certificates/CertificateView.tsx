@@ -1,7 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import { IBeaconExport } from "gateways/exports/IBeaconExport";
-import { CoverLetter } from "views/exports/letters/CoverLetter";
 import { LegacyCertificate } from "views/exports/certificates/LegacyCertificate";
 import { Certificate } from "./Certificate";
 

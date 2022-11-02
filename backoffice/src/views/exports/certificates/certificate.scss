@@ -140,8 +140,21 @@
 }
 
 @media print {
+  body {
+    position: relative;
+  }
+
   .certificate {
     margin: 0;
     box-shadow: none;
+    background-color: white;
+    min-height: 100%;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: -1;
   }
 }
