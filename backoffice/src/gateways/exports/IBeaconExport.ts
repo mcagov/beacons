@@ -3,6 +3,7 @@ export interface IBeaconExport {
   name: string;
   proofOfRegistrationDate: string;
   departmentReference: string;
+  referenceNumber: string;
   recordCreatedDate: string;
   lastModifiedDate: string;
   beaconStatus: string;

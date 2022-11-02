@@ -58,6 +58,14 @@ export const CertificateHeader: FunctionComponent<BeaconExportProps> = ({
             value={beacon.departmentReference}
           />
         )}
+
+        {beacon.type === "New" && (
+          <CertificateField
+            classes="half"
+            title="Reference"
+            value={beacon.referenceNumber}
+          />
+        )}
       </div>
       <div className="logo">
         <img
