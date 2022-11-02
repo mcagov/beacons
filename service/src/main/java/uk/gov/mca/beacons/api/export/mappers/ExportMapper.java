@@ -60,7 +60,7 @@ public class ExportMapper {
   }
 
   public LabelDTO toLegacyLabelDTO(LegacyBeacon beacon) {
-    LegacyUse mainUse = beacon.getData().getUses().get(0); //Main use is first use?
+    LegacyUse mainUse = beacon.getData().getMainUse();
     LegacyBeaconDetails beaconData = beacon.getData().getBeacon();
 
     return LabelDTO
@@ -85,10 +85,12 @@ public class ExportMapper {
     List<Note> nonSystemNotes
   ) {
     Beacon beacon = registration.getBeacon();
+    BeaconUse mainUse = registration.getMainUse();
 
     return BeaconExportDTO
       .builder()
       .type("New")
+      .name(mainUse != null ? StringUtils.valueOrEmpty(mainUse.getName()) : "")
       .proofOfRegistrationDate(beacon.getLastModifiedDate())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .recordCreatedDate(beacon.getCreatedDate().toString())
@@ -201,10 +203,12 @@ public class ExportMapper {
 
   public BeaconExportDTO toLegacyBeaconExportDTO(LegacyBeacon beacon) {
     LegacyBeaconDetails details = beacon.getData().getBeacon();
+    LegacyUse mainUse = beacon.getData().getMainUse();
 
     return BeaconExportDTO
       .builder()
       .type("Legacy")
+      .name(mainUse != null ? StringUtils.valueOrEmpty(mainUse.getName()) : "")
       .proofOfRegistrationDate(beacon.getLastModifiedDate())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .departmentReference(details.getDepartRefId())

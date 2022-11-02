@@ -17,7 +17,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
 
   const owner = beacon.owners.at(0);
   return (
-    <div className="letter" onLoad={window.print}>
+    <div className="letter">
       <div className="header full">
         <div className="half">
           <p className="bold">OFFICIAL</p>
@@ -74,17 +74,23 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
           </div>
         )}
 
-        {type === "Registration" && (
-          <RegistrationBody beacon={beacon} type={type} />
-        )}
-        {type === "Amended" && <AmendedBody beacon={beacon} type={type} />}
-
+        <div className="section registrationText">
+          <div className="subject">
+            <p className="bold underline">
+              406 MHz EMERGENCY BEACON REGISTRATION FOR AN EPIRB, PLB OR ELT.
+            </p>
+            <p className="bold underline uppercase">
+              VESSEL/AIRCRAFT: {beacon.name} &nbsp; HEX ID: {beacon.hexId}
+            </p>
+          </div>
+          {type === "Registration" && <RegistrationBody />}
+          {type === "Amended" && <AmendedBody />}
+        </div>
         <div className="section sign-off">
           <p>Yours sincerely,</p>
-          <p className="sig">UK Distress &amp; Security Beacon Registry</p>
-          <p className="bold">UK Distress &amp; Security Beacon Registry</p>
-          <br />
-          <p>Enclosure(s)</p>
+          <p className="bold">
+            The UK Distress &amp; Security Beacon Registry Team
+          </p>
         </div>
       </div>
       <LetterFooter />
@@ -92,20 +98,9 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
   );
 };
 
-export const RegistrationBody: FunctionComponent<LetterProps> = ({
-  beacon,
-}): JSX.Element => {
+export const RegistrationBody: FunctionComponent = (): JSX.Element => {
   return (
-    <div className="section registrationText">
-      <div className="subject">
-        <p className="bold underline">
-          406 MHz EMERGENCY BEACON REGISTRATION FOR AN EPIRB, PLB OR ELT
-        </p>
-        <p className="bold underline">
-          VESSEL/AIRCRAFT: &nbsp;&nbsp; HEX ID: {beacon.hexId}
-        </p>
-      </div>
-
+    <div>
       <p>
         Thank you for registering your 406 MHz beacon, this is to confirm that
         it has been recorded on the UK Beacon database and a copy of the record
@@ -135,26 +130,14 @@ export const RegistrationBody: FunctionComponent<LetterProps> = ({
         <span className="underline">
           https://www.gov.uk/register-406-beacons
         </span>
-        .
       </p>
     </div>
   );
 };
 
-export const AmendedBody: FunctionComponent<LetterProps> = ({
-  beacon,
-}): JSX.Element => {
+export const AmendedBody: FunctionComponent = (): JSX.Element => {
   return (
-    <div className="section registrationText">
-      <div className="subject">
-        <p className="bold underline">
-          406 MHz EMERGENCY POSITION - INDICATING RADIO BEACON (EPIRB)/PLB
-        </p>
-        <p className="bold underline">
-          VESSEL/AIRCRAFT: &nbsp;&nbsp; HEX ID: {beacon.hexId}
-        </p>
-      </div>
-
+    <div>
       <p>
         Thank you for informing us of a change in details for your 406 MHz
         beacon, attached is an updated report for you to check.
@@ -173,7 +156,6 @@ export const AmendedBody: FunctionComponent<LetterProps> = ({
         <span className="underline">
           https://www.gov.uk/register-406-beacons
         </span>
-        .
       </p>
     </div>
   );
@@ -181,12 +163,16 @@ export const AmendedBody: FunctionComponent<LetterProps> = ({
 
 const LetterFooter: FunctionComponent = (): JSX.Element => {
   return (
-    <div className="footer full">
-      <span className="bold">OFFICIAL</span>
+    <div className="footer full" onLoad={window.print}>
+      <div className="text">
+        <p>Enclosure(s)</p>
+        <br />
+        <span className="bold">OFFICIAL</span>
+      </div>
       <img
         src={
           process.env.PUBLIC_URL +
-          "/assets/letter/Investors-in-People-Silver.jpeg"
+          "/assets/letter/Investors-in-People-Silver.png"
         }
         alt="Investors in People silver logo"
         className="investors-in-people-logo"
