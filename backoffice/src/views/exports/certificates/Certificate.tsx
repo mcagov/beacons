@@ -116,7 +116,7 @@ const NotesSection: FunctionComponent<BeaconExportProps> = ({
   beacon,
 }): JSX.Element => {
   return (
-    <div className="section">
+    <div className="section beacon-notes">
       <span className="title">NOTES: </span>
       {beacon.notes &&
         beacon.notes.map((note, index) => (
