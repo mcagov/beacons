@@ -15,4 +15,4 @@ SELECT
 	UPPER(data -> 'owner' ->> 'townOrCity')AS owner_town_or_city,
 	UPPER(data -> 'owner' ->> 'country')AS owner_country
 FROM legacy_beacon
-WHERE last_modified_date >= '2013/01/01';
+WHERE last_modified_date >= NOW() - INTERVAL '8 YEARS';
