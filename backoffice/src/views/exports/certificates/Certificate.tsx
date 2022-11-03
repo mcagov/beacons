@@ -9,6 +9,7 @@ import {
   UseProps,
 } from "./BaseCertificate";
 import { Environments } from "../../../entities/IUse";
+import { json } from "express";
 
 export const Certificate: FunctionComponent<BeaconExportProps> = ({
   beacon,
@@ -145,6 +146,7 @@ const UseSection: FunctionComponent<UseProps> = ({
   use,
   index,
 }: UseProps): JSX.Element => {
+  // repeat inside each use rather than passing in prop
   const hasCommunicationTypes = use.radioSystem && use.radioSystem.length > 0;
 
   switch (use.environment) {
@@ -225,8 +227,9 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         />
 
         <span className="title">RADIO SYSTEMS: </span>
-        {hasCommunicationTypes &&
-          communicationTypes.map((c, index) => (
+        <p>{JSON.stringify(use.radioSystem)}</p>
+        {/* {hasCommunicationTypes &&
+          communicationTypes.filter.map((c, index) => (
             <div>
               <CertificateField
                 key={index}
@@ -241,7 +244,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
                 value={c.number}
               />
             </div>
-          ))}
+          ))} */}
 
         <CertificateField
           classes="full"

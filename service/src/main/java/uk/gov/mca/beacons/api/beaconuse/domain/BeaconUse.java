@@ -296,23 +296,11 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
     return Objects.requireNonNullElse(name, "");
   }
 
-  public ArrayList<HashMap<String, String>> getCommunicationTypes() {
-    ArrayList<HashMap<String, String>> communicationTypes = new ArrayList<HashMap<String, String>>();
+  public Map<String, String> getCommunicationTypes() {
+    Map<String, String> communicationTypes = new HashMap<String, String>();
 
-    if (BooleanUtils.isTrue(vhfRadio)) {
-      HashMap<String, String> vhfRadio = new HashMap<>();
-      vhfRadio.put("Type", "VHF Radio");
-      // get vhf radio? whre's that?
-      vhfRadio.put("Number", "");
-
-      communicationTypes.add(vhfRadio);
-    }
     if (BooleanUtils.isTrue(fixedVhfRadio)) {
-      HashMap<String, String> fixedVhfRadio = new HashMap<>();
-      fixedVhfRadio.put("Type", "Fixed VHF/DSC Radio");
-      fixedVhfRadio.put("Number", getFixedVhfRadioValue());
-
-      communicationTypes.add(fixedVhfRadio);
+      communicationTypes.put("Fixed VHF/DSC Radio", getFixedVhfRadioValue());
     }
     if (BooleanUtils.isTrue(portableVhfRadio)) {
       HashMap<String, String> portableVhfRadio = new HashMap<>();

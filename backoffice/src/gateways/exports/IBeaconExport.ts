@@ -93,7 +93,7 @@ export interface IBeaconExportUse {
 
 export interface ICommunicationType {
   type: string;
-  number: string;
+  value: string;
 }
 
 export interface IBeaconExportEmergencyContact {
