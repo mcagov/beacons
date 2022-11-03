@@ -28,7 +28,7 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
             )}
           />
           <CertificateField
-            classes="half"
+            classes="half right-side"
             title="Last Modified"
             value={customDateStringFormat(
               beacon.lastModifiedDate,
@@ -145,13 +145,33 @@ const UseSection: FunctionComponent<UseProps> = ({
   use,
   index,
 }: UseProps): JSX.Element => {
+  const hasCommunicationTypes = use.radioSystem && use.radioSystem.length > 0;
+
   switch (use.environment) {
     case Environments.Maritime:
-      return <MaritimeUse use={use} index={index} />;
+      return (
+        <MaritimeUse
+          use={use}
+          index={index}
+          hasCommunicationTypes={hasCommunicationTypes}
+        />
+      );
     case Environments.Aviation:
-      return <AviationUse use={use} index={index} />;
+      return (
+        <AviationUse
+          use={use}
+          index={index}
+          hasCommunicationTypes={hasCommunicationTypes}
+        />
+      );
     case Environments.Land:
-      return <LandUse use={use} index={index} />;
+      return (
+        <LandUse
+          use={use}
+          index={index}
+          hasCommunicationTypes={hasCommunicationTypes}
+        />
+      );
     default:
       return <div>Unknown Use</div>;
   }
@@ -160,7 +180,10 @@ const UseSection: FunctionComponent<UseProps> = ({
 const MaritimeUse: FunctionComponent<UseProps> = ({
   use,
   index,
+  hasCommunicationTypes,
 }: UseProps): JSX.Element => {
+  const communicationTypes = use.radioSystem;
+
   return (
     <div className="use full">
       <h4 className="title use">
@@ -200,6 +223,26 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           title="MMSI Number"
           value={use.mmsiNumber}
         />
+
+        <span className="title">RADIO SYSTEMS: </span>
+        {hasCommunicationTypes &&
+          communicationTypes.map((c, index) => (
+            <div>
+              <CertificateField
+                key={index}
+                classes="full"
+                title={"Type"}
+                value={c.type}
+              />
+              <CertificateField
+                key={index}
+                classes="full"
+                title={"Number"}
+                value={c.number}
+              />
+            </div>
+          ))}
+
         <CertificateField
           classes="full"
           title="Radio System"

@@ -2,7 +2,9 @@ package uk.gov.mca.beacons.api.legacybeacon.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import uk.gov.mca.beacons.api.shared.domain.base.ValueObject;
@@ -121,5 +123,14 @@ public class LegacyUse implements ValueObject, Serializable {
     return Arrays
       .asList("Y", "YES", "T", "TRUE")
       .contains(getIsMain().trim().toUpperCase());
+  }
+
+  public ArrayList<HashMap<String, String>> getCommunicationTypes() {
+    ArrayList<HashMap<String, String>> communicationTypesList = new ArrayList<HashMap<String, String>>();
+    HashMap<String, String> communicationTypes = new HashMap<>();
+    communicationTypes.put("Name", getCommunications());
+    communicationTypesList.add(communicationTypes);
+
+    return communicationTypesList;
   }
 }

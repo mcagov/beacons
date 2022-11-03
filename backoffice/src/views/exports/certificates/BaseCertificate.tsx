@@ -13,6 +13,7 @@ export interface BeaconExportProps {
 export interface UseProps {
   use: IBeaconExportUse;
   index: number;
+  hasCommunicationTypes?: boolean;
 }
 interface CertificateFieldProps {
   classes: string;
@@ -48,7 +49,7 @@ export const CertificateHeader: FunctionComponent<BeaconExportProps> = ({
           value={customDateStringFormat(
             beacon.proofOfRegistrationDate,
             "DD/MM/yyyy"
-          )}
+          ).toUpperCase()}
         />
 
         {beacon.type === "Legacy" && (

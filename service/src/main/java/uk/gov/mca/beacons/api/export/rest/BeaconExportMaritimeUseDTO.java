@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.export.rest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.validation.Valid;
 import lombok.*;
 
@@ -32,7 +34,7 @@ public class BeaconExportMaritimeUseDTO extends BeaconExportUseDTO {
   private String mmsiNumber;
 
   @Valid
-  private String radioSystem;
+  private ArrayList<HashMap<String, String>> radioSystem;
 
   @Valid
   //Only used for legacy

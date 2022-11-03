@@ -161,7 +161,7 @@ public class ExportMapper {
       .maxPersonOnBoard(use.getMaxCapacity() != null ? use.getMaxCapacity() : 0)
       .vesselCallsign(use.getCallSign())
       .mmsiNumber(String.join("   ", use.getMmsiNumbers()))
-      .radioSystem(String.join(", ", use.getCommunicationTypes()))
+      .radioSystem(use.getCommunicationTypes())
       .fishingVesselPortIdAndNumbers(use.getPortLetterNumber())
       .officialNumber(use.getOfficialNumber())
       .imoNumber(use.getImoNumber())
@@ -183,7 +183,7 @@ public class ExportMapper {
       .TwentyFourBitAddressInHex(use.getHexAddress())
       .principalAirport(use.getPrincipalAirport())
       .secondaryAirport(use.getSecondaryAirport())
-      .radioSystem(String.join(", ", use.getCommunicationTypes()))
+      .radioSystem(use.getCommunicationTypes())
       .notes(use.getMoreDetails())
       .build();
   }
@@ -197,7 +197,7 @@ public class ExportMapper {
         use.getMaxCapacity() == null ? 0 : use.getMaxCapacity()
       )
       .areaOfUse(use.getAreaOfOperation())
-      .radioSystem(String.join(", ", use.getCommunicationTypes()))
+      .radioSystem(use.getCommunicationTypes())
       .notes(use.getMoreDetails())
       .build();
   }
@@ -374,7 +374,7 @@ public class ExportMapper {
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .vesselCallsign(use.getCallSign())
       .mmsiNumber(use.getMmsiNumber().toString())
-      .radioSystem(use.getCommunications())
+      .radioSystem(use.getCommunicationTypes())
       .notes(use.getNotes())
       .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
       .officialNumber(use.getOfficialNumber())
@@ -394,7 +394,7 @@ public class ExportMapper {
       .aircraftRegistrationMark(use.getAircraftRegistrationMark())
       .TwentyFourBitAddressInHex(use.getBit24AddressHex())
       .principalAirport(use.getPrincipalAirport())
-      .radioSystem(use.getCommunications())
+      .radioSystem(use.getCommunicationTypes())
       .notes(use.getNotes())
       .build();
   }
@@ -409,7 +409,7 @@ public class ExportMapper {
       )
       .areaOfUse(use.getAreaOfUse())
       .tripInformation(use.getTripInfo())
-      .radioSystem(use.getCommunications())
+      .radioSystem(use.getCommunicationTypes())
       .notes(use.getNotes())
       .build();
   }
