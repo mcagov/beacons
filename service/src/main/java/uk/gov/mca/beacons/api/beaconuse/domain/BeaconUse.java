@@ -298,17 +298,9 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
 
   public Map<String, String> getCommunicationTypes() {
     Map<String, String> communicationTypes = new HashMap<String, String>();
-    communicationTypes.put("fixedVhfRadio", null);
-    communicationTypes.put("portableVhfRadio", null);
-    communicationTypes.put("satelliteTelephone", null);
-    communicationTypes.put("mobileTelephones", null);
-    communicationTypes.put("other", null);
 
-    if (BooleanUtils.isTrue(fixedVhfRadio)) {
-      communicationTypes.put("fixedVhfRadio", getFixedVhfRadioValue());
-    }
     if (BooleanUtils.isTrue(portableVhfRadio)) {
-      communicationTypes.put("portableVhfRadio", getPortableVhfRadioValue());
+      communicationTypes.put("PortableVhfRadio", getPortableVhfRadioValue());
     }
     if (BooleanUtils.isTrue(satelliteTelephone)) {
       communicationTypes.put(

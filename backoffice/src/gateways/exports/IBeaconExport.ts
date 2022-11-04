@@ -70,7 +70,7 @@ export interface IBeaconExportUse {
   maxPersonOnBoard: string;
   vesselCallsign: string;
   mmsiNumber: string;
-  radioSystem: ICommunicationTypes;
+  radioSystem: Record<string, string>;
   notes: string;
   fishingVesselPortIdAndNumbers: string;
   officialNumber: string;
