@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api.export.rest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import javax.validation.Valid;
 import lombok.*;
 
@@ -28,7 +29,7 @@ public class BeaconExportLandUseDTO extends BeaconExportUseDTO {
   private String tripInformation;
 
   @Valid
-  private ArrayList<HashMap<String, String>> radioSystem;
+  private Map<String, String> radioSystem;
 
   @Valid
   //Only used for legacy

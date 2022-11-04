@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import uk.gov.mca.beacons.api.shared.domain.base.ValueObject;
@@ -125,12 +126,9 @@ public class LegacyUse implements ValueObject, Serializable {
       .contains(getIsMain().trim().toUpperCase());
   }
 
-  public ArrayList<HashMap<String, String>> getCommunicationTypes() {
-    ArrayList<HashMap<String, String>> communicationTypesList = new ArrayList<HashMap<String, String>>();
-    HashMap<String, String> communicationTypes = new HashMap<>();
-    communicationTypes.put("Name", getCommunications());
-    communicationTypesList.add(communicationTypes);
-
-    return communicationTypesList;
+  public Map<String, String> getCommunicationTypes() {
+    Map<String, String> communicationTypes = new HashMap<String, String>();
+    communicationTypes.put("Communication Types", getCommunications());
+    return communicationTypes;
   }
 }
