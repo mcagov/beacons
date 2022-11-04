@@ -298,25 +298,27 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
 
   public Map<String, String> getCommunicationTypes() {
     Map<String, String> communicationTypes = new HashMap<String, String>();
+    communicationTypes.put("fixedVhfRadio", null);
+    communicationTypes.put("portableVhfRadio", null);
+    communicationTypes.put("satelliteTelephone", null);
+    communicationTypes.put("mobileTelephones", null);
+    communicationTypes.put("other", null);
 
     if (BooleanUtils.isTrue(fixedVhfRadio)) {
-      communicationTypes.put("Fixed VHF/DSC Radio", getFixedVhfRadioValue());
+      communicationTypes.put("fixedVhfRadio", getFixedVhfRadioValue());
     }
     if (BooleanUtils.isTrue(portableVhfRadio)) {
-      communicationTypes.put(
-        "Portable VHF/DSC Radio",
-        getPortableVhfRadioValue()
-      );
+      communicationTypes.put("portableVhfRadio", getPortableVhfRadioValue());
     }
     if (BooleanUtils.isTrue(satelliteTelephone)) {
       communicationTypes.put(
-        "Satellite Telephone",
+        "satelliteTelephone",
         getSatelliteTelephoneValue()
       );
     }
     if (BooleanUtils.isTrue(mobileTelephone)) {
       communicationTypes.put(
-        "Mobile Telephone(s)",
+        "mobileTelephones",
         uk.gov.mca.beacons.api.utils.StringUtils.getMultipleValuesAsString(
           "-",
           getMobileTelephone1(),
@@ -325,7 +327,7 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
       );
     }
     if (BooleanUtils.isTrue(otherCommunication)) {
-      communicationTypes.put("Other", getOtherCommunicationValue());
+      communicationTypes.put("other", getOtherCommunicationValue());
     }
 
     return communicationTypes;

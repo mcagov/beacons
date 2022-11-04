@@ -70,7 +70,7 @@ export interface IBeaconExportUse {
   maxPersonOnBoard: string;
   vesselCallsign: string;
   mmsiNumber: string;
-  radioSystem: ICommunicationType[];
+  radioSystem: ICommunicationTypes;
   notes: string;
   fishingVesselPortIdAndNumbers: string;
   officialNumber: string;
@@ -91,9 +91,12 @@ export interface IBeaconExportUse {
   areaOfOperation: string;
 }
 
-export interface ICommunicationType {
-  type: string;
-  value: string;
+export interface ICommunicationTypes {
+  fixedVhfRadio?: string;
+  portableVhfRadio?: string;
+  satelliteTelephone?: string;
+  mobileTelephones?: string;
+  other?: string;
 }
 
 export interface IBeaconExportEmergencyContact {

@@ -9,7 +9,6 @@ import {
   UseProps,
 } from "./BaseCertificate";
 import { Environments } from "../../../entities/IUse";
-import { json } from "express";
 
 export const Certificate: FunctionComponent<BeaconExportProps> = ({
   beacon,
@@ -146,34 +145,13 @@ const UseSection: FunctionComponent<UseProps> = ({
   use,
   index,
 }: UseProps): JSX.Element => {
-  // repeat inside each use rather than passing in prop
-  const hasCommunicationTypes = use.radioSystem && use.radioSystem.length > 0;
-
   switch (use.environment) {
     case Environments.Maritime:
-      return (
-        <MaritimeUse
-          use={use}
-          index={index}
-          hasCommunicationTypes={hasCommunicationTypes}
-        />
-      );
+      return <MaritimeUse use={use} index={index} />;
     case Environments.Aviation:
-      return (
-        <AviationUse
-          use={use}
-          index={index}
-          hasCommunicationTypes={hasCommunicationTypes}
-        />
-      );
+      return <AviationUse use={use} index={index} />;
     case Environments.Land:
-      return (
-        <LandUse
-          use={use}
-          index={index}
-          hasCommunicationTypes={hasCommunicationTypes}
-        />
-      );
+      return <LandUse use={use} index={index} />;
     default:
       return <div>Unknown Use</div>;
   }
@@ -182,7 +160,6 @@ const UseSection: FunctionComponent<UseProps> = ({
 const MaritimeUse: FunctionComponent<UseProps> = ({
   use,
   index,
-  hasCommunicationTypes,
 }: UseProps): JSX.Element => {
   const communicationTypes = use.radioSystem;
 
@@ -228,29 +205,52 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
 
         <span className="title">RADIO SYSTEMS: </span>
         <p>{JSON.stringify(use.radioSystem)}</p>
-        {/* {hasCommunicationTypes &&
-          communicationTypes.filter.map((c, index) => (
-            <div>
-              <CertificateField
-                key={index}
-                classes="full"
-                title={"Type"}
-                value={c.type}
-              />
-              <CertificateField
-                key={index}
-                classes="full"
-                title={"Number"}
-                value={c.number}
-              />
-            </div>
-          ))} */}
+        {/* {communicationTypes.fixedVhfRadio &&
+       <CertificateField
+              key={index}
+              classes="full"
+              title={"FIXED VHF/DSC RADIO"}
+              value={communicationTypes.fixedVhfRadio}
+            />}
+
+{communicationTypes.portableVhfRadio &&
+       <CertificateField
+              key={index}
+              classes="full"
+              title={"PORTABLE VHF/DSC RADIO"}
+              value={communicationTypes.portableVhfRadio}
+            />}
+
+{communicationTypes.satelliteTelephone &&
+       <CertificateField
+              key={index}
+              classes="full"
+              title={"SATELLITE TELEPHONE"}
+              value={communicationTypes.satelliteTelephone}
+            />}
+
+{communicationTypes.mobileTelephones &&
+       <CertificateField
+              key={index}
+              classes="full"
+              title={"MOBILE TELEPHONE(S)"}
+              value={communicationTypes.mobileTelephones}
+            />}
+
+{communicationTypes.other &&
+       <CertificateField
+              key={index}
+              classes="full"
+              title={"OTHER"}
+              value={communicationTypes.other}
+            />}
+              
 
         <CertificateField
           classes="full"
           title="Radio System"
           value={use.radioSystem}
-        />
+        /> */}
 
         <CertificateField
           classes="full"

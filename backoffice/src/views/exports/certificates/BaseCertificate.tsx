@@ -13,7 +13,6 @@ export interface BeaconExportProps {
 export interface UseProps {
   use: IBeaconExportUse;
   index: number;
-  hasCommunicationTypes?: boolean;
 }
 interface CertificateFieldProps {
   classes: string;
