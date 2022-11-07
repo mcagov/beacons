@@ -3,7 +3,6 @@ import ContentPrintIcon from "@mui/icons-material/Print";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
-import { AuthenticatedPrintButton } from "components/AuthenticatedPrintButton";
 import { CopyToClipboardButton } from "components/CopyToClipboardButton";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { LegacyBeaconSummaryPanel } from "panels/legacyBeaconSummaryPanel/LegacyBeaconSummaryPanel";
@@ -17,7 +16,6 @@ import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { logToServer } from "../utils/logger";
-import { applicationConfig } from "config";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -65,8 +63,6 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
-  const printLabelUrl = `${applicationConfig.apiUrl}/export/label/${beaconId}`;
-
   return (
     <div className={classes.root}>
       <PageHeader>
@@ -105,11 +101,13 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
           </Button>
         </span>
         <span className={classes.button}>
-          <AuthenticatedPrintButton
-            label="Print label"
-            url={printLabelUrl}
-            isFullWidth={false}
-          />
+          <Button
+            href={`/backoffice#/label/${beaconId}`}
+            variant="outlined"
+            endIcon={<ContentPrintIcon />}
+          >
+            Print label
+          </Button>
         </span>
       </PageHeader>
       <PageContent>

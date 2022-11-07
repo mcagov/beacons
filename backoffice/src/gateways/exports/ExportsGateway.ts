@@ -20,6 +20,14 @@ export class ExportsGateway implements IExportsGateway {
     );
   }
 
+  public async getLabelForBeacon(beaconId: string): Promise<Blob> {
+    const accessToken = await this._authGateway.getAccessToken();
+
+    return fetch(`${applicationConfig.apiUrl}/export/label/${beaconId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }).then((response) => response.blob());
+  }
+
   public async getLetterDataForBeacon(
     beaconId: string
   ): Promise<IBeaconExport> {
