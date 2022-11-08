@@ -1,6 +1,6 @@
 package uk.gov.mca.beacons.api.beaconuse.domain;
 
-import static uk.gov.mca.beacons.api.utils.MCAStringUtils.getMultipleValuesAsString;
+import static uk.gov.mca.beacons.api.utils.StringUtils.getMultipleValuesAsString;
 
 import java.time.OffsetDateTime;
 import java.util.*;
