@@ -28,7 +28,7 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
             )}
           />
           <CertificateField
-            classes="half right-side"
+            classes="half"
             title="Last Modified"
             value={customDateStringFormat(
               beacon.lastModifiedDate,

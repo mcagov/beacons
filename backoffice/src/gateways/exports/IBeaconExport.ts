@@ -91,15 +91,6 @@ export interface IBeaconExportUse {
   tripInformation: string;
   areaOfOperation: string;
 }
-
-export interface ICommunicationTypes {
-  fixedVhfRadio?: string;
-  portableVhfRadio?: string;
-  satelliteTelephone?: string;
-  mobileTelephones?: string;
-  other?: string;
-}
-
 export interface IBeaconExportEmergencyContact {
   fullName: string;
   telephoneNumber: string;

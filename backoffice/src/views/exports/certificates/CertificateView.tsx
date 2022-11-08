@@ -19,8 +19,6 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
     exportsGateway.getCertificateDataForBeacon(beaconId).then(setBeacon);
   }, [beaconId, exportsGateway]);
 
-  console.log(beacon);
-
   switch (beacon.type) {
     case "Legacy":
       return <LegacyCertificate beacon={beacon} />;
