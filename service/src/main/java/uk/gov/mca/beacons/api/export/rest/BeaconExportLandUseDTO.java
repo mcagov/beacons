@@ -29,7 +29,7 @@ public class BeaconExportLandUseDTO extends BeaconExportUseDTO {
   private String tripInformation;
 
   @Valid
-  private Map<String, String> radioSystem;
+  private Map<String, String> radioSystems;
 
   @Valid
   //Only used for legacy

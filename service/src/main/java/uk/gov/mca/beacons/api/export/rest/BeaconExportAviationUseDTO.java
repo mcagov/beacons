@@ -35,7 +35,10 @@ public class BeaconExportAviationUseDTO extends BeaconExportUseDTO {
   private String secondaryAirport;
 
   @Valid
-  private Map<String, String> radioSystem;
+  private String isDongle;
+
+  @Valid
+  private Map<String, String> radioSystems;
 
   @Valid
   private String aircraftOperatorsDesignatorAndSerialNo;

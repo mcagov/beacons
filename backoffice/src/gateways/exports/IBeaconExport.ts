@@ -70,7 +70,7 @@ export interface IBeaconExportUse {
   maxPersonOnBoard: string;
   vesselCallsign: string;
   mmsiNumber: string;
-  radioSystem: Record<string, string>;
+  radioSystems: Record<string, string>;
   notes: string;
   fishingVesselPortIdAndNumbers: string;
   officialNumber: string;
@@ -83,6 +83,7 @@ export interface IBeaconExportUse {
   TwentyFourBitAddressInHex: string;
   principalAirport: string;
   secondaryAirport: string;
+  isDongle: string;
   aircraftOperatorsDesignatorAndSerialNo: string;
   descriptionOfIntendedUse: string;
   numberOfPersonsOnBoard: string;
