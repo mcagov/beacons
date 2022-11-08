@@ -27,6 +27,9 @@ public class BeaconExportDTO {
   private String departmentReference;
 
   @Valid
+  private String referenceNumber;
+
+  @Valid
   private String recordCreatedDate;
 
   @Valid

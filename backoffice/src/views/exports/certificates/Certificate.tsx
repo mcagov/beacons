@@ -87,7 +87,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
       <CertificateField
         classes="half"
         title="Beacon Last Serviced"
-        value={customDateStringFormat(beacon.beaconlastServiced, "MMMM yyyy")}
+        value={customDateStringFormat(beacon.beaconlastServiced, "DD/MM/yyyy")}
       />
       <CertificateField
         classes="half"
@@ -96,8 +96,8 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
       />
       <CertificateField
         classes="half"
-        title="Beacon Expiry Date"
-        value={customDateStringFormat(beacon.batteryExpiryDate, "MMMM yyyy")}
+        title="Battery Expiry Date"
+        value={customDateStringFormat(beacon.batteryExpiryDate, "DD/MM/yyyy")}
       />
       <CertificateField
         classes="full"
@@ -116,7 +116,7 @@ const NotesSection: FunctionComponent<BeaconExportProps> = ({
   beacon,
 }): JSX.Element => {
   return (
-    <div className="section">
+    <div className="section beacon-notes">
       <span className="title">NOTES: </span>
       {beacon.notes &&
         beacon.notes.map((note, index) => (
@@ -200,14 +200,20 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           title="MMSI Number"
           value={use.mmsiNumber}
         />
-        <CertificateField
-          classes="full"
-          title="Radio System"
-          value={use.radioSystem}
-        />
+
+        <CertificateField classes="full" title="Radio Systems" value={""} />
+        {Object.keys(use.radioSystems).map((key, index) => (
+          <CertificateField
+            key={index}
+            classes="half"
+            title={key}
+            value={use.radioSystems[key]}
+          />
+        ))}
+        <br />
 
         <CertificateField
-          classes="full"
+          classes="half"
           title="Fishing Vessel Port ID &amp; Numbers"
           value={use.fishingVesselPortIdAndNumbers}
         />
@@ -286,15 +292,25 @@ const AviationUse: FunctionComponent<UseProps> = ({
           value={use.secondaryAirport}
         />
         <CertificateField
-          classes="full"
-          title="Radio System"
-          value={use.radioSystem}
+          classes="half"
+          title="Is This A Dongle?"
+          value={use.isDongle}
         />
         <CertificateField
           classes="full"
           title="More Details"
           value={use.notes}
         />
+        <CertificateField classes="full" title="Radio Systems" value={""} />
+        {Object.keys(use.radioSystems).map((key, index) => (
+          <CertificateField
+            key={index}
+            classes="half"
+            title={key}
+            value={use.radioSystems[key]}
+          />
+        ))}
+        <br />
       </div>
     </div>
   );
@@ -320,7 +336,7 @@ const LandUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="full"
-          title="Number Of Persons On Board"
+          title="People Count"
           value={use.maxPersonOnBoard}
         />
         <CertificateField
@@ -330,14 +346,19 @@ const LandUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="full"
-          title="Radio System"
-          value={use.radioSystem}
-        />
-        <CertificateField
-          classes="full"
           title="More Details"
           value={use.notes}
         />
+        <CertificateField classes="full" title="Radio Systems" value={""} />
+        {Object.keys(use.radioSystems).map((key, index) => (
+          <CertificateField
+            key={index}
+            classes="half"
+            title={key}
+            value={use.radioSystems[key]}
+          />
+        ))}
+        <br />
       </div>
     </div>
   );
@@ -396,11 +417,6 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
               classes="half"
               title="Tels"
               value={owner.telephoneNumbers}
-            />
-            <CertificateField
-              classes="half"
-              title="Mobiles"
-              value={owner.mobiles}
             />
             <CertificateField
               classes="half"

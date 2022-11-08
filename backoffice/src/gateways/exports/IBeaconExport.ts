@@ -3,6 +3,7 @@ export interface IBeaconExport {
   name: string;
   proofOfRegistrationDate: string;
   departmentReference: string;
+  referenceNumber: string;
   recordCreatedDate: string;
   lastModifiedDate: string;
   beaconStatus: string;
@@ -69,7 +70,7 @@ export interface IBeaconExportUse {
   maxPersonOnBoard: string;
   vesselCallsign: string;
   mmsiNumber: string;
-  radioSystem: string;
+  radioSystems: Record<string, string>;
   notes: string;
   fishingVesselPortIdAndNumbers: string;
   officialNumber: string;
@@ -82,6 +83,7 @@ export interface IBeaconExportUse {
   TwentyFourBitAddressInHex: string;
   principalAirport: string;
   secondaryAirport: string;
+  isDongle: string;
   aircraftOperatorsDesignatorAndSerialNo: string;
   descriptionOfIntendedUse: string;
   numberOfPersonsOnBoard: string;
@@ -89,7 +91,6 @@ export interface IBeaconExportUse {
   tripInformation: string;
   areaOfOperation: string;
 }
-
 export interface IBeaconExportEmergencyContact {
   fullName: string;
   telephoneNumber: string;

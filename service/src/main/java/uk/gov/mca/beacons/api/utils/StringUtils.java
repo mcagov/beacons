@@ -3,8 +3,9 @@ package uk.gov.mca.beacons.api.utils;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
-public class StringUtils {
+public class MCAStringUtils extends org.apache.commons.lang3.StringUtils {
 
   public static String getMultipleValuesAsString(
     String delimiter,

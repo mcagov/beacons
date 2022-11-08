@@ -1,10 +1,7 @@
 package uk.gov.mca.beacons.api.beaconuse.domain;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -299,26 +296,33 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
     return Objects.requireNonNullElse(name, "");
   }
 
-  public List<String> getCommunicationTypes() {
-    List<String> communicationTypes = new ArrayList<>();
+  public Map<String, String> getCommunicationTypes() {
+    Map<String, String> communicationTypes = new HashMap<String, String>();
 
-    if (BooleanUtils.isTrue(vhfRadio)) {
-      communicationTypes.add("VHF Radio");
-    }
-    if (BooleanUtils.isTrue(fixedVhfRadio)) {
-      communicationTypes.add("Fixed VHF/DSC Radio");
-    }
     if (BooleanUtils.isTrue(portableVhfRadio)) {
-      communicationTypes.add("Portable VHF/DSC Radio");
+      communicationTypes.put(
+        "Portable VHF/DSC Radio",
+        getPortableVhfRadioValue()
+      );
     }
     if (BooleanUtils.isTrue(satelliteTelephone)) {
-      communicationTypes.add("Satellite Telephone");
+      communicationTypes.put(
+        "Satellite Telephone",
+        getSatelliteTelephoneValue()
+      );
     }
     if (BooleanUtils.isTrue(mobileTelephone)) {
-      communicationTypes.add("Mobile Telephone(s)");
+      communicationTypes.put(
+        "Mobile Telephone(s)",
+        uk.gov.mca.beacons.api.utils.StringUtils.getMultipleValuesAsString(
+          "-",
+          getMobileTelephone1(),
+          getMobileTelephone2()
+        )
+      );
     }
     if (BooleanUtils.isTrue(otherCommunication)) {
-      communicationTypes.add("Other");
+      communicationTypes.put("Other", getOtherCommunicationValue());
     }
 
     return communicationTypes;
