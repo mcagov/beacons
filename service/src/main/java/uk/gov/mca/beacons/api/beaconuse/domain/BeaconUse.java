@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.beaconuse.domain;
 
+import static uk.gov.mca.beacons.api.utils.MCAStringUtils.getMultipleValuesAsString;
+
 import java.time.OffsetDateTime;
 import java.util.*;
 import javax.persistence.*;
@@ -314,7 +316,7 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
     if (BooleanUtils.isTrue(mobileTelephone)) {
       communicationTypes.put(
         "Mobile Telephone(s)",
-        uk.gov.mca.beacons.api.utils.StringUtils.getMultipleValuesAsString(
+        getMultipleValuesAsString(
           "-",
           getMobileTelephone1(),
           getMobileTelephone2()
