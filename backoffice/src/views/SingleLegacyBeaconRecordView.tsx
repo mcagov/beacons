@@ -77,36 +77,36 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
           <Button
             href={`/backoffice#/certificates/${beaconId}`}
             variant="outlined"
-            endIcon={<ContentPrintIcon />}
+            startIcon={<ContentPrintIcon />}
           >
-            Print certificate
+            certificate
           </Button>
         </span>
         <span className={classes.button}>
           <Button
             href={`/backoffice#/letters/registration/${beaconId}`}
             variant="outlined"
-            endIcon={<ContentPrintIcon />}
+            startIcon={<ContentPrintIcon />}
           >
-            Print registration letter
+            Registration letter
           </Button>
         </span>
         <span className={classes.button}>
           <Button
             href={`/backoffice#/letters/amended/${beaconId}`}
             variant="outlined"
-            endIcon={<ContentPrintIcon />}
+            startIcon={<ContentPrintIcon />}
           >
-            Print amended letter
+            Amended letter
           </Button>
         </span>
         <span className={classes.button}>
           <Button
             href={`/backoffice#/label/${beaconId}`}
             variant="outlined"
-            endIcon={<ContentPrintIcon />}
+            startIcon={<ContentPrintIcon />}
           >
-            Print label
+            Label
           </Button>
         </span>
       </PageHeader>

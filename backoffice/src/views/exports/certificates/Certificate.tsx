@@ -296,11 +296,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
           title="Is This A Dongle?"
           value={use.isDongle}
         />
-        <CertificateField
-          classes="full"
-          title="More Details"
-          value={use.notes}
-        />
         <CertificateField classes="full" title="Radio Systems" value={""} />
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
@@ -310,7 +305,11 @@ const AviationUse: FunctionComponent<UseProps> = ({
             value={use.radioSystems[key]}
           />
         ))}
-        <br />
+        <CertificateField
+          classes="full"
+          title="More Details"
+          value={use.notes}
+        />
       </div>
     </div>
   );
@@ -344,11 +343,7 @@ const LandUse: FunctionComponent<UseProps> = ({
           title="Area Of Use"
           value={use.areaOfUse}
         />
-        <CertificateField
-          classes="full"
-          title="More Details"
-          value={use.notes}
-        />
+
         <CertificateField classes="full" title="Radio Systems" value={""} />
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
@@ -358,7 +353,11 @@ const LandUse: FunctionComponent<UseProps> = ({
             value={use.radioSystems[key]}
           />
         ))}
-        <br />
+        <CertificateField
+          classes="full"
+          title="More Details"
+          value={use.notes}
+        />
       </div>
     </div>
   );
