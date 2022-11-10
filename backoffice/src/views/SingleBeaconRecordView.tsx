@@ -83,7 +83,7 @@ export const SingleBeaconRecordView: FunctionComponent<
             variant="outlined"
           />
         </span>
-        {/* <span className={classes.button}>
+        <span className={classes.button}>
           <Button
             href={`/backoffice#/certificates/${beaconId}`}
             variant="outlined"
@@ -118,7 +118,7 @@ export const SingleBeaconRecordView: FunctionComponent<
           >
             Label
           </Button>
-        </span> */}
+        </span>
       </PageHeader>
       <PageContent>
         <BeaconSummaryPanel
