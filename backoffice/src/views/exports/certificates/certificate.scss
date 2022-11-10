@@ -143,11 +143,20 @@
       }
     }
   }
+
+  .certificate .footer-space {
+    height: 175px;
+    background-color: red !important;
+  }
 }
 
 @media print {
   body {
     position: relative;
+  }
+
+  .use {
+    break-inside: avoid;
   }
 
   .certificate {
@@ -158,6 +167,7 @@
   }
 
   .footer {
+    break-before: always;
     position: fixed;
     bottom: 0;
     width: 100%;

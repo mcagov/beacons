@@ -91,6 +91,10 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
           <p className="bold">
             The UK Distress &amp; Security Beacon Registry Team
           </p>
+          <br />
+          <br />
+          <br />
+          <p>Enclosure(s)</p>
         </div>
       </div>
       <LetterFooter />
@@ -100,7 +104,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
 
 export const RegistrationBody: FunctionComponent = (): JSX.Element => {
   return (
-    <div>
+    <div className="letter-content">
       <p>
         Thank you for registering your 406 MHz beacon, this is to confirm that
         it has been recorded on the UK Beacon database and a copy of the record
@@ -137,7 +141,7 @@ export const RegistrationBody: FunctionComponent = (): JSX.Element => {
 
 export const AmendedBody: FunctionComponent = (): JSX.Element => {
   return (
-    <div>
+    <div className="letter-content">
       <p>
         Thank you for informing us of a change in details for your 406 MHz
         beacon, attached is an updated report for you to check.
@@ -164,11 +168,7 @@ export const AmendedBody: FunctionComponent = (): JSX.Element => {
 const LetterFooter: FunctionComponent = (): JSX.Element => {
   return (
     <div className="footer full" onLoad={window.print}>
-      <div className="text">
-        <p>Enclosure(s)</p>
-        <br />
-        <span className="bold">OFFICIAL</span>
-      </div>
+      <div className="text"></div>
       <img
         src={
           process.env.PUBLIC_URL +

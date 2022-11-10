@@ -77,6 +77,8 @@
   }
 
   .content {
+    margin-top: 40px;
+
     .registrationText {
       text-align: justify;
       .subject {
@@ -93,6 +95,9 @@
         margin: 2px;
         text-align: right;
       }
+    }
+    .letter-content {
+      margin-top: 40px;
     }
 
     .sign-off {

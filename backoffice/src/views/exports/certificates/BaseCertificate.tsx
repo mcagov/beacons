@@ -105,7 +105,6 @@ export const CertificateFooter: FunctionComponent = (): JSX.Element => {
           </a>
         </span>
       </div>
-      <p>OFFICIAL</p>
     </div>
   );
 };

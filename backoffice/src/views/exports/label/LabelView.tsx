@@ -25,6 +25,13 @@ export const LabelView: FunctionComponent<LabelViewProps> = ({
     }
   }, [label, isLoading]);
 
+  useEffect(() => {
+    if (url.length > 0) {
+      var printTab = window.open(url, "_blank");
+      printTab?.print();
+    }
+  }, [url]);
+
   return (
     <object
       className="label"

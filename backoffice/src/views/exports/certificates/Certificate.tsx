@@ -435,7 +435,7 @@ const EmergencyContactsSection: FunctionComponent<BeaconExportProps> = ({
   const hasEmergencyContacts =
     emergencyContacts != null && emergencyContacts.length > 0;
   return (
-    <div className="section">
+    <div className="section emergency-contacts">
       <span className="title">EMERGENCY CONTACTS: </span>
       {hasEmergencyContacts &&
         emergencyContacts.map((ec, index) => (
