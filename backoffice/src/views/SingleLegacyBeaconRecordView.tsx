@@ -73,42 +73,44 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             variant="outlined"
           />
         </span>
-        {/* <span className={classes.button}>
-          <Button
-            href={`/backoffice#/certificates/${beaconId}`}
-            variant="outlined"
-            startIcon={<ContentPrintIcon />}
-          >
-            certificate
-          </Button>
-        </span>
-        <span className={classes.button}>
-          <Button
-            href={`/backoffice#/letters/registration/${beaconId}`}
-            variant="outlined"
-            startIcon={<ContentPrintIcon />}
-          >
-            Registration letter
-          </Button>
-        </span>
-        <span className={classes.button}>
-          <Button
-            href={`/backoffice#/letters/amended/${beaconId}`}
-            variant="outlined"
-            startIcon={<ContentPrintIcon />}
-          >
-            Amended letter
-          </Button>
-        </span>
-        <span className={classes.button}>
-          <Button
-            href={`/backoffice#/label/${beaconId}`}
-            variant="outlined"
-            startIcon={<ContentPrintIcon />}
-          >
-            Label
-          </Button>
-        </span> */}
+        <div className="print-buttons">
+          <span className={classes.button}>
+            <Button
+              href={`/backoffice#/certificates/${beaconId}`}
+              variant="outlined"
+              startIcon={<ContentPrintIcon />}
+            >
+              certificate
+            </Button>
+          </span>
+          <span className={classes.button}>
+            <Button
+              href={`/backoffice#/letters/registration/${beaconId}`}
+              variant="outlined"
+              startIcon={<ContentPrintIcon />}
+            >
+              Registration letter
+            </Button>
+          </span>
+          <span className={classes.button}>
+            <Button
+              href={`/backoffice#/letters/amended/${beaconId}`}
+              variant="outlined"
+              startIcon={<ContentPrintIcon />}
+            >
+              Amended letter
+            </Button>
+          </span>
+          <span className={classes.button}>
+            <Button
+              href={`/backoffice#/label/${beaconId}`}
+              variant="outlined"
+              startIcon={<ContentPrintIcon />}
+            >
+              Label
+            </Button>
+          </span>
+        </div>
       </PageHeader>
       <PageContent>
         <LegacyBeaconSummaryPanel legacyBeacon={beacon} />
