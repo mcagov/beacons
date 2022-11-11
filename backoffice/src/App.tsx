@@ -15,6 +15,7 @@ import {
 import { CertificateView } from "views/exports/certificates/CertificateView";
 import { LabelView } from "views/exports/label/LabelView";
 import { LetterView } from "views/exports/letters/LetterView";
+import { UserRolesView } from "views/UserRolesView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
@@ -127,6 +128,13 @@ const App: FunctionComponent = () => {
                   <Search beaconsGateway={beaconsGateway} />
                   <Footer />
                 </Route>
+                <Route path={`/roles`}>
+                  <Navigation />
+                  <PageContent>
+                    <UserRolesView />
+                  </PageContent>
+                  <Footer />
+                </Route>
                 <Route path={`/beacons/:id`}>
                   <SingleBeaconRecordViewWithParam />
                 </Route>
@@ -151,7 +159,9 @@ const App: FunctionComponent = () => {
                   <LetterViewWithParam />
                 </Route>
                 <Route path={`/label/:id`}>
+                  <Navigation />
                   <LabelViewWithParam />
+                  <Footer />
                 </Route>
                 <Route>
                   <Navigation />
