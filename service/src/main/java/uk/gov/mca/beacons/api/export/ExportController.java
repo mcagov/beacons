@@ -89,9 +89,9 @@ class ExportController {
       .body(file);
   }
 
-  @GetMapping(value = "/labels/{uuids}")
+  @PostMapping(value = "/labels")
   public ResponseEntity<byte[]> getLabelsByBeaconIds(
-    @PathVariable("uuids") List<UUID> rawBeaconIds
+    @RequestBody @Valid List<UUID> rawBeaconIds
   ) throws Exception {
     List<LabelDTO> dataList = rawBeaconIds
       .stream()
@@ -101,7 +101,10 @@ class ExportController {
 
     byte[] file = pdfService.createPdfLabels(dataList);
 
-    return servePdf(file, "Labels.pdf");
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(file);
   }
 
   @PostMapping(value = "/beacons/search")

@@ -17,7 +17,7 @@ import {
   CertificateView,
 } from "views/exports/certificates/CertificateView";
 import { LettersView, LetterView } from "views/exports/letters/LetterView";
-import { LabelView } from "views/exports/label/LabelView";
+import { LabelsView, LabelView } from "views/exports/label/LabelView";
 import { UserRolesView } from "views/UserRolesView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
@@ -123,6 +123,12 @@ const App: FunctionComponent = () => {
     return <LabelView exportsGateway={exportsGateway} beaconId={id} />;
   };
 
+  const LabelsViewWithParam: FunctionComponent = () => {
+    const { ids } = useParams<ResourceListParams>();
+    let beaconIds = ids.split(",");
+    return <LabelsView exportsGateway={exportsGateway} beaconIds={beaconIds} />;
+  };
+
   const LetterViewWithParam: FunctionComponent = () => {
     const { id, letterType } = useParams<ResourceParams>();
     return (
@@ -206,6 +212,11 @@ const App: FunctionComponent = () => {
                 <Route path={`/label/:id`}>
                   <Navigation />
                   <LabelViewWithParam />
+                  <Footer />
+                </Route>
+                <Route path={`/labels/:ids`}>
+                  <Navigation />
+                  <LabelsViewWithParam />
                   <Footer />
                 </Route>
                 <Route>
