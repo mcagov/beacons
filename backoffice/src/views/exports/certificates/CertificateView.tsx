@@ -54,7 +54,7 @@ export const CertificatesView: FunctionComponent<CertificatesViewProps> = ({
     <div>
       {beacons.map((beacon: IBeaconExport, index) => (
         <div key={index}>
-          {isType(beacon, "LEGACY") && <LegacyCertificate beacon={beacon} />}
+          {isType(beacon, "Legacy") && <LegacyCertificate beacon={beacon} />}
           {isType(beacon, "New") && <Certificate beacon={beacon} />}
         </div>
       ))}
