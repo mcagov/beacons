@@ -83,7 +83,10 @@ class ExportController {
 
     byte[] file = pdfService.createPdfLabel(data);
 
-    return servePdf(file, "Label.pdf");
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(file);
   }
 
   @GetMapping(value = "/labels/{uuids}")

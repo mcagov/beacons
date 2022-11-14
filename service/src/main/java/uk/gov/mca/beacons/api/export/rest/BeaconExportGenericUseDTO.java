@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export.rest;
 
+import java.util.Map;
 import javax.validation.Valid;
 import lombok.*;
 
@@ -32,7 +33,7 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String mmsiNumber;
 
   @Valid
-  private String radioSystem;
+  private Map<String, String> radioSystems;
 
   @Valid
   //Only used for legacy
@@ -67,6 +68,9 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String TwentyFourBitAddressInHex;
+
+  @Valid
+  private boolean isDongle = false;
 
   @Valid
   private String principalAirport;

@@ -18,11 +18,15 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
   const owner = beacon.owners.at(0);
   return (
     <div className="letter">
-      {/* <div className="letter" onLoad={window.print}> */}
-      <LetterHeader />
+      <div className="header full">
+        <div className="half">
+          <p className="bold">OFFICIAL</p>
+          <img
+            src={process.env.PUBLIC_URL + "/mca-logo.png"}
+            alt="Maritime &amp; Coastguard Agency"
+            className="mcaLogo"
+          />
 
-      <div className="content">
-        <div className="section">
           {owner && (
             <div className="half recipient">
               <div className="address-fields">
@@ -42,27 +46,53 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
               </div>
             </div>
           )}
-          <div className="half date">
-            {beacon.type === "Legacy" && beacon.departmentReference && (
-              <p>Dept Ref: {beacon.departmentReference}</p>
-            )}
-            <p>{customDateStringFormat(new Date(), "DD MMMM yyyy")}</p>
-          </div>
         </div>
 
-        <div className="section">
-          <p>Dear Sir or Madam</p>
-        </div>
-
-        {type === "Registration" && (
-          <RegistrationBody beacon={beacon} type={type} />
-        )}
-        {type === "Amended" && <AmendedBody beacon={beacon} type={type} />}
-
-        <div className="section sign-off">
-          <p>Yours faithfully,</p>
-          <p className="sig">Sam Kendell</p>
+        <div className="half sender">
           <p className="bold">UK Distress &amp; Security Beacon Registry</p>
+          <p>MCA Falmouth</p>
+          <p>Pendennis Point, Castle Drive</p>
+          <p>Falmouth</p>
+          <p>Cornwall &nbsp; TR11 4WZ</p>
+          <p>Tel: &nbsp;&nbsp; 020 3817 2006</p>
+          <p>Fax: &nbsp;&nbsp; 01326 319264</p>
+          <p>Email: &nbsp;&nbsp; UKBeacons@mcga.gov.uk</p>
+          <br />
+          <br />
+          {beacon.type === "Legacy" && beacon.departmentReference && (
+            <p>Dept Ref: {beacon.departmentReference}</p>
+          )}
+          <p className="underline">www.gov.uk/mca</p>
+          <p>{customDateStringFormat(new Date(), "DD MMMM yyyy")}</p>
+        </div>
+      </div>
+
+      <div className="content">
+        {owner && (
+          <div className="section">
+            <p>Dear {owner.ownerName}</p>
+          </div>
+        )}
+
+        <div className="section registrationText">
+          <div className="subject">
+            <p className="bold underline">
+              406 MHz EMERGENCY BEACON REGISTRATION FOR AN EPIRB, PLB OR ELT.
+            </p>
+            <p className="bold underline uppercase">
+              VESSEL/AIRCRAFT: {beacon.name} &nbsp; HEX ID: {beacon.hexId}
+            </p>
+          </div>
+          {type === "Registration" && <RegistrationBody />}
+          {type === "Amended" && <AmendedBody />}
+        </div>
+        <div className="section sign-off">
+          <p>Yours sincerely,</p>
+          <p className="bold">
+            The UK Distress &amp; Security Beacon Registry Team
+          </p>
+          <br />
+          <br />
           <br />
           <p>Enclosure(s)</p>
         </div>
@@ -72,20 +102,9 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
   );
 };
 
-export const RegistrationBody: FunctionComponent<LetterProps> = ({
-  beacon,
-}): JSX.Element => {
+export const RegistrationBody: FunctionComponent = (): JSX.Element => {
   return (
-    <div className="section registrationText">
-      <div className="subject">
-        <p className="bold underline">
-          406 MHz EMERGENCY BEACON REGISTRATION FOR AN EPIRB, PLB OR ELT
-        </p>
-        <p className="bold underline">
-          VESSEL/AIRCRAFT: &nbsp;&nbsp; HEX ID: {beacon.hexId}
-        </p>
-      </div>
-
+    <div className="letter-content">
       <p>
         Thank you for registering your 406 MHz beacon, this is to confirm that
         it has been recorded on the UK Beacon database and a copy of the record
@@ -103,95 +122,61 @@ export const RegistrationBody: FunctionComponent<LetterProps> = ({
         Registry.
       </p>
       <p>
-        The use of PLBs overland in the UK became legal in 2012 so if you own a
-        PLB and wish to use it overland or if you intend to use your PLB on a
-        variety of vessels, please advise us so we can update the Notes section
-        on your record. For Search & Rescue action to be effective, it is
-        vitally important that you let us know of any errors, omissions or
-        changes affecting your record including the transfer of the beacon to a
-        different vessel or owner, change of vessel name or any changes to any
-        contact telephone numbers, or the loss, loan or theft of your beacon. On
-        the back of the database report is a blank Registration form that you
-        may use to inform us of any future changes, alternatively please send
-        amendments via email, telephone us or our online form at:
+        The use of PLBs overland in the UK became legal in 2012. If you own a
+        PLB, and wish to use it overland, or if you intend to use your PLB on a
+        variety of vessels, please sign-in to your online account and add
+        additional uses.
+      </p>
+
+      <p>
+        For Search & Rescue action to be effective, it is vitally important that
+        your record(s) are kept up-to-date in your online account at:{" "}
         <span className="underline">
-          {" "}
-          https://www.register-406-beacons.service.gov.uk
+          https://www.gov.uk/register-406-beacons
         </span>
       </p>
     </div>
   );
 };
 
-export const AmendedBody: FunctionComponent<LetterProps> = ({
-  beacon,
-}): JSX.Element => {
+export const AmendedBody: FunctionComponent = (): JSX.Element => {
   return (
-    <div className="section registrationText">
-      <div className="subject">
-        <p className="bold underline">
-          406 MHz EMERGENCY POSITION - INDICATING RADIO BEACON (EPIRB)/PLB
-        </p>
-        <p className="bold underline">
-          VESSEL/AIRCRAFT: &nbsp;&nbsp; HEX ID: {beacon.hexId}
-        </p>
-      </div>
+    <div className="letter-content">
       <p>
         Thank you for informing us of a change in details for your 406 MHz
-        beacon, attached is an updated report for you to check. For Search &
-        Rescue action to be effective, it is vitally important that you let us
-        know of any errors, omissions or changes affecting your record including
-        the transfer of the beacon to a different vessel or owner, change of
-        vessel name or any changes to any contact telephone numbers, or the
-        loss, loan or theft of your beacon. On the back of the database report
-        is a blank Registration form that you may use to inform us of any future
-        changes, alternatively please send amendments via email, telephone us or
-        our online form at:
-        <span className="underline">
-          {" "}
-          https://www.register-406-beacons.service.gov.uk
-        </span>
-        .
+        beacon, attached is an updated report for you to check.
       </p>
+
       <p>
         The use of PLBs overland in the UK became legal in 2012 so if you own a
         PLB and wish to use it overland or if you intend to use your PLB on a
-        variety of vessels, please advise us so we can update the Notes section
-        on your record.
+        variety of vessels, please sign-in to your online account and add
+        additional uses.
       </p>
-    </div>
-  );
-};
 
-export const LetterHeader: FunctionComponent = (): JSX.Element => {
-  return (
-    <div className="header full">
-      <div className="half">
-        <p className="bold">OFFICIAL</p>
-        <img
-          src={process.env.PUBLIC_URL + "/mca-logo.png"}
-          alt="Maritime &amp; Coastguard Agency"
-          className="mcaLogo"
-        />
-      </div>
-      <div className="half sender">
-        <p className="bold">UK Distress &amp; Security Beacon Registry</p>
-        <p>MCA Falmouth</p>
-        <p>Pendennis Point, Castle Drive</p>
-        <p>Falmouth</p>
-        <p>Cornwall &nbsp; TR11 4WZ</p>
-        <p>Tel: &nbsp;&nbsp; 020 3817 2658</p>
-        <p>Fax: &nbsp;&nbsp; 01326 319264</p>
-        <p>Email: &nbsp;&nbsp; UKBeacons@mcga.gov.uk</p>
-      </div>
+      <p>
+        For Search & Rescue action to be effective, it is vitally important that
+        your record(s) are kept up-to-date in your online account at:{" "}
+        <span className="underline">
+          https://www.gov.uk/register-406-beacons
+        </span>
+      </p>
     </div>
   );
 };
 
 const LetterFooter: FunctionComponent = (): JSX.Element => {
   return (
-    <div className="footer full">
-      <p className="bold">OFFICIAL</p>
+    <div className="footer full" onLoad={window.print}>
+      <div className="text"></div>
+      <img
+        src={
+          process.env.PUBLIC_URL +
+          "/assets/letter/Investors-in-People-Silver.png"
+        }
+        alt="Investors in People silver logo"
+        className="investors-in-people-logo"
+      />
     </div>
   );
 };

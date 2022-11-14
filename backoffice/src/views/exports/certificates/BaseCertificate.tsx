@@ -48,7 +48,7 @@ export const CertificateHeader: FunctionComponent<BeaconExportProps> = ({
           value={customDateStringFormat(
             beacon.proofOfRegistrationDate,
             "DD/MM/yyyy"
-          )}
+          ).toUpperCase()}
         />
 
         {beacon.type === "Legacy" && (
@@ -56,6 +56,14 @@ export const CertificateHeader: FunctionComponent<BeaconExportProps> = ({
             classes="half"
             title="Dept Ref"
             value={beacon.departmentReference}
+          />
+        )}
+
+        {beacon.type === "New" && (
+          <CertificateField
+            classes="half"
+            title="Reference"
+            value={beacon.referenceNumber}
           />
         )}
       </div>
@@ -86,7 +94,7 @@ export const CertificateFooter: FunctionComponent = (): JSX.Element => {
           Falmouth MRCC, Castle Drive, Pendennis Point, Falmouth, Cornwall TR11
           4WZ
         </span>
-        <span>Office Hours Tel: 020 3817 2658 Fax: +44 (0)1326 319264</span>
+        <span>Office Hours Tel: 020 3817 2006 Fax: +44 (0)1326 319264</span>
         <span>
           Email:
           <a className="link" href="mailto:UKBeacons@mcga.gov.uk">
@@ -97,7 +105,6 @@ export const CertificateFooter: FunctionComponent = (): JSX.Element => {
           </a>
         </span>
       </div>
-      <p>OFFICIAL</p>
     </div>
   );
 };

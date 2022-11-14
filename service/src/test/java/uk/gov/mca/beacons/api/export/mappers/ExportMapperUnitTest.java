@@ -35,7 +35,12 @@ class ExportMapperUnitTest {
     landUse.setActivity(Activity.DRIVING);
     landUse.setMaxCapacity(55);
     landUse.setAreaOfOperation("I'm here!");
-    landUse.setOtherCommunicationValue("Tin can and string");
+    landUse.setOtherCommunication(true);
+    landUse.setOtherCommunicationValue("Smoke Signal");
+    landUse.setPortableVhfRadio(true);
+    landUse.setPortableVhfRadioValue("0123 456");
+    landUse.setSatelliteTelephone(false);
+    landUse.setMobileTelephone(false);
 
     BeaconExportLandUseDTO use = mapper.toLandUse(landUse);
 
@@ -44,7 +49,13 @@ class ExportMapperUnitTest {
       use.getDescriptionOfIntendedUse(),
       landUse.getActivity().toString()
     );
-    assertEquals(landUse.getOtherCommunicationValue(), use.getRadioSystem());
+    assertEquals(2, use.getRadioSystems().size());
+    assertEquals("Smoke Signal", use.getRadioSystems().get("Other"));
+    assertEquals(
+      "0123 456",
+      use.getRadioSystems().get("Portable VHF/DSC Radio")
+    );
+
     assertEquals(landUse.getMaxCapacity(), use.getNumberOfPersonsOnBoard());
     assertEquals(landUse.getAreaOfOperation(), use.getAreaOfUse());
   }
@@ -234,10 +245,10 @@ class ExportMapperUnitTest {
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
-      "02833746199   01477263499",
+      "02833746199 - 01477263499",
       mappedOwnerDTO.getTelephoneNumbers()
     );
-    assertEquals("07899122344   07344511288", mappedOwnerDTO.getMobiles());
+    assertEquals("07899122344 - 07344511288", mappedOwnerDTO.getMobiles());
   }
 
   @Test
@@ -255,7 +266,7 @@ class ExportMapperUnitTest {
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
-      "02833746199   01477263499",
+      "02833746199 - 01477263499",
       mappedOwnerDTO.getTelephoneNumbers()
     );
     assertEquals("", mappedOwnerDTO.getMobiles());
@@ -333,6 +344,7 @@ class ExportMapperUnitTest {
     legacyBeacon.setLastModifiedDate(OffsetDateTime.now());
 
     legacyUse.setAircraftRegistrationMark("Spitfire");
+    legacyUse.setIsMain("Yes");
     legacyUses.add(legacyUse);
     legacyData.setUses(legacyUses);
 

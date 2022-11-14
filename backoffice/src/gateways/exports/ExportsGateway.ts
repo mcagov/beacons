@@ -28,6 +28,38 @@ export class ExportsGateway implements IExportsGateway {
     );
   }
 
+  public async getLabelForBeacon(beaconId: string): Promise<Blob> {
+    const accessToken = await this._authGateway.getAccessToken();
+
+    // return fetch(`${applicationConfig.apiUrl}/export/label/${beaconId}`, {
+    //   headers: { Authorization: `Bearer ${accessToken}` },
+    // }).then((response) => response.blob());
+
+    return await axios
+      .get(`${applicationConfig.apiUrl}/export/label/${beaconId}`, {
+        timeout: applicationConfig.apiTimeoutMs,
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => new Blob([response.data]));
+  }
+
+  public async getLabelsForBeacons(beaconIds: string[]): Promise<Blob> {
+    const accessToken = await this._authGateway.getAccessToken();
+
+    return await axios
+      .post<Blob>(`${applicationConfig.apiUrl}/export/labels`, beaconIds, {
+        timeout: applicationConfig.apiTimeoutMs,
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => new Blob([response.data]));
+  }
+
   public async getLetterDataForBeacon(
     beaconId: string
   ): Promise<IBeaconExport> {
@@ -93,7 +125,6 @@ export class ExportsGateway implements IExportsGateway {
         timeout: applicationConfig.apiTimeoutMs,
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      console.dir(exportResponse);
       return exportResponse.data;
     } catch (error) {
       logToServer.error(error);

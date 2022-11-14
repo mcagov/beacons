@@ -3,7 +3,6 @@ import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import { IBeaconExport } from "gateways/exports/IBeaconExport";
 import { LegacyCertificate } from "views/exports/certificates/LegacyCertificate";
 import { Certificate } from "./Certificate";
-import { IBeacon } from "../../../entities/IBeacon";
 
 interface CertificateViewProps {
   exportsGateway: IExportsGateway;

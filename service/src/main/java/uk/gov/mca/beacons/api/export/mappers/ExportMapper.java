@@ -60,7 +60,7 @@ public class ExportMapper {
   }
 
   public LabelDTO toLegacyLabelDTO(LegacyBeacon beacon) {
-    LegacyUse mainUse = beacon.getData().getUses().get(0); //Main use is first use?
+    LegacyUse mainUse = beacon.getData().getMainUse();
     LegacyBeaconDetails beaconData = beacon.getData().getBeacon();
 
     return LabelDTO
@@ -113,12 +113,15 @@ public class ExportMapper {
     List<Note> nonSystemNotes
   ) {
     Beacon beacon = registration.getBeacon();
+    BeaconUse mainUse = registration.getMainUse();
 
     return BeaconExportDTO
       .builder()
       .type("New")
+      .name(mainUse != null ? StringUtils.valueOrEmpty(mainUse.getName()) : "")
       .proofOfRegistrationDate(beacon.getLastModifiedDate())
       .lastModifiedDate(beacon.getLastModifiedDate())
+      .referenceNumber(beacon.getReferenceNumber())
       .recordCreatedDate(beacon.getCreatedDate().toString())
       .beaconStatus(beacon.getBeaconStatus().toString())
       .hexId(beacon.getHexId())
@@ -185,14 +188,14 @@ public class ExportMapper {
       .vessel(use.getVesselName())
       .maxPersonOnBoard(use.getMaxCapacity() != null ? use.getMaxCapacity() : 0)
       .vesselCallsign(use.getCallSign())
-      .mmsiNumber(String.join("   ", use.getMmsiNumbers()))
-      .radioSystem(String.join(", ", use.getCommunicationTypes()))
+      .mmsiNumber(String.join(" - ", use.getMmsiNumbers()))
+      .radioSystems(use.getCommunicationTypes())
       .fishingVesselPortIdAndNumbers(use.getPortLetterNumber())
       .officialNumber(use.getOfficialNumber())
       .imoNumber(use.getImoNumber())
       .areaOfOperation(use.getAreaOfOperation())
       .rssAndSsrNumber(
-        getMultipleValuesAsString("   ", use.getRssNumber(), use.getSsrNumber())
+        getMultipleValuesAsString(" - ", use.getRssNumber(), use.getSsrNumber())
       )
       .notes(use.getMoreDetails())
       .build();
@@ -208,7 +211,8 @@ public class ExportMapper {
       .TwentyFourBitAddressInHex(use.getHexAddress())
       .principalAirport(use.getPrincipalAirport())
       .secondaryAirport(use.getSecondaryAirport())
-      .radioSystem(String.join(", ", use.getCommunicationTypes()))
+      .radioSystems(use.getCommunicationTypes())
+      .isDongle(Boolean.TRUE.equals(use.getDongle()) ? "YES" : "NO")
       .notes(use.getMoreDetails())
       .build();
   }
@@ -222,17 +226,19 @@ public class ExportMapper {
         use.getMaxCapacity() == null ? 0 : use.getMaxCapacity()
       )
       .areaOfUse(use.getAreaOfOperation())
-      .radioSystem(String.join(", ", use.getCommunicationTypes()))
+      .radioSystems(use.getCommunicationTypes())
       .notes(use.getMoreDetails())
       .build();
   }
 
   public BeaconExportDTO toLegacyBeaconExportDTO(LegacyBeacon beacon) {
     LegacyBeaconDetails details = beacon.getData().getBeacon();
+    LegacyUse mainUse = beacon.getData().getMainUse();
 
     return BeaconExportDTO
       .builder()
       .type("Legacy")
+      .name(mainUse != null ? StringUtils.valueOrEmpty(mainUse.getName()) : "")
       .proofOfRegistrationDate(beacon.getLastModifiedDate())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .departmentReference(details.getDepartRefId())
@@ -266,7 +272,7 @@ public class ExportMapper {
       .address(address)
       .telephoneNumbers(
         getMultipleValuesAsString(
-          "   ",
+          " - ",
           ah.getTelephoneNumber(),
           ah.getAlternativeTelephoneNumber()
         )
@@ -284,7 +290,7 @@ public class ExportMapper {
       .address(address)
       .telephoneNumbers(
         getMultipleValuesAsString(
-          "   ",
+          " - ",
           owner.getTelephoneNumber(),
           owner.getAlternativeTelephoneNumber()
         )
@@ -304,7 +310,7 @@ public class ExportMapper {
           .fullName(ec.getFullName())
           .telephoneNumber(
             getMultipleValuesAsString(
-              "   ",
+              " - ",
               ec.getTelephoneNumber(),
               ec.getAlternativeTelephoneNumber()
             )
@@ -354,10 +360,10 @@ public class ExportMapper {
       .careOf(owner.getCareOf())
       .address(address)
       .telephoneNumbers(
-        getMultipleValuesAsString("   ", owner.getPhone1(), owner.getPhone2())
+        getMultipleValuesAsString(" - ", owner.getPhone1(), owner.getPhone2())
       )
       .mobiles(
-        getMultipleValuesAsString("   ", owner.getMobile1(), owner.getMobile2())
+        getMultipleValuesAsString(" - ", owner.getMobile1(), owner.getMobile2())
       )
       .email(owner.getEmail())
       .build();
@@ -397,7 +403,7 @@ public class ExportMapper {
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .vesselCallsign(use.getCallSign())
       .mmsiNumber(use.getMmsiNumber().toString())
-      .radioSystem(use.getCommunications())
+      .radioSystems(use.getCommunicationTypes())
       .notes(use.getNotes())
       .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
       .officialNumber(use.getOfficialNumber())
@@ -417,7 +423,7 @@ public class ExportMapper {
       .aircraftRegistrationMark(use.getAircraftRegistrationMark())
       .TwentyFourBitAddressInHex(use.getBit24AddressHex())
       .principalAirport(use.getPrincipalAirport())
-      .radioSystem(use.getCommunications())
+      .radioSystems(use.getCommunicationTypes())
       .notes(use.getNotes())
       .build();
   }
@@ -432,7 +438,7 @@ public class ExportMapper {
       )
       .areaOfUse(use.getAreaOfUse())
       .tripInformation(use.getTripInfo())
-      .radioSystem(use.getCommunications())
+      .radioSystems(use.getCommunicationTypes())
       .notes(use.getNotes())
       .build();
   }
@@ -447,7 +453,7 @@ public class ExportMapper {
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .vesselCallsign(use.getCallSign())
       .mmsiNumber(use.getMmsiNumber().toString())
-      .radioSystem(use.getCommunications())
+      .radioSystems(use.getCommunicationTypes())
       .notes(use.getNotes())
       .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
       .officialNumber(use.getOfficialNumber())

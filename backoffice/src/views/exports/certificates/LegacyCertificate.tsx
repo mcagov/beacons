@@ -14,8 +14,7 @@ export const LegacyCertificate: FunctionComponent<BeaconExportProps> = ({
   beacon,
 }): JSX.Element => {
   return (
-    <div className="certificate">
-      {/* <div className="certificate" onLoad={window.print}> */}
+    <div className="certificate" onLoad={window.print}>
       <CertificateHeader beacon={beacon} />
 
       <div className="content">
@@ -89,7 +88,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
       <CertificateField
         classes="half"
         title="Beacon Last Serviced"
-        value={customDateStringFormat(beacon.beaconlastServiced, "MMMM yyyy")}
+        value={customDateStringFormat(beacon.beaconlastServiced, "DD/MM/yyyy")}
       />
       <CertificateField
         classes="half"
@@ -98,8 +97,8 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
       />
       <CertificateField
         classes="half"
-        title="Beacon Expiry Date"
-        value={customDateStringFormat(beacon.batteryExpiryDate, "MMMM yyyy")}
+        title="Battery Expiry Date"
+        value={customDateStringFormat(beacon.batteryExpiryDate, "DD/MM/yyyy")}
       />
       <CertificateField
         classes="full"
@@ -132,7 +131,18 @@ const UseSection: FunctionComponent<UseProps> = ({
   use,
   index,
 }: UseProps): JSX.Element => {
-  switch (use.environment) {
+  var type = use.environment;
+
+  if (
+    type.toUpperCase().startsWith("AVIATION") ||
+    type.toUpperCase().startsWith("AIRCRAFT")
+  ) {
+    type = Environments.Aviation;
+  } else if (type.toUpperCase().startsWith("MARITIME")) {
+    type = Environments.Maritime;
+  }
+
+  switch (type) {
     case Environments.Maritime:
       return <MaritimeUse use={use} index={index} />;
     case Environments.Aviation:
@@ -187,14 +197,19 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           title="MMSI Number"
           value={use.mmsiNumber}
         />
-        <CertificateField
-          classes="full"
-          title="Radio System"
-          value={use.radioSystem}
-        />
+        <CertificateField classes="full" title="Radio Systems" value={""} />
+        {Object.keys(use.radioSystems).map((key, index) => (
+          <CertificateField
+            key={index}
+            classes="half"
+            title={key}
+            value={use.radioSystems[key]}
+          />
+        ))}
+        <br />
 
         <CertificateField
-          classes="full"
+          classes="half"
           title="Fishing Vessel Port ID &amp; Numbers"
           value={use.fishingVesselPortIdAndNumbers}
         />
@@ -269,11 +284,16 @@ const AviationUse: FunctionComponent<UseProps> = ({
           title="Secondary Airport"
           value={use.secondaryAirport}
         />
-        <CertificateField
-          classes="full"
-          title="Radio System"
-          value={use.radioSystem}
-        />
+        <CertificateField classes="full" title="Radio Systems" value={""} />
+        {Object.keys(use.radioSystems).map((key, index) => (
+          <CertificateField
+            key={index}
+            classes="half"
+            title={key}
+            value={use.radioSystems[key]}
+          />
+        ))}
+        <br />
         <CertificateField classes="full" title="Notes" value={use.notes} />
       </div>
     </div>
@@ -313,11 +333,16 @@ const LandUse: FunctionComponent<UseProps> = ({
           title="Current/Future Trip Information"
           value={use.tripInformation}
         />
-        <CertificateField
-          classes="full"
-          title="Radio System"
-          value={use.radioSystem}
-        />
+        <CertificateField classes="full" title="Radio Systems" value={""} />
+        {Object.keys(use.radioSystems).map((key, index) => (
+          <CertificateField
+            key={index}
+            classes="half"
+            title={key}
+            value={use.radioSystems[key]}
+          />
+        ))}
+        <br />
         <CertificateField classes="full" title="Notes" value={use.notes} />
       </div>
     </div>
@@ -367,11 +392,16 @@ export const GenericUse: FunctionComponent<UseProps> = ({
           title="MMSI Number"
           value={use.mmsiNumber}
         />
-        <CertificateField
-          classes="full"
-          title="Radio System"
-          value={use.radioSystem}
-        />
+        <CertificateField classes="full" title="Radio Systems" value={""} />
+        {Object.keys(use.radioSystems).map((key, index) => (
+          <CertificateField
+            key={index}
+            classes="half"
+            title={key}
+            value={use.radioSystems[key]}
+          />
+        ))}
+        <br />
 
         <CertificateField
           classes="full"
@@ -512,11 +542,6 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
               classes="half"
               title="Tels"
               value={owner.telephoneNumbers}
-            />
-            <CertificateField
-              classes="half"
-              title="Mobiles"
-              value={owner.mobiles}
             />
             <CertificateField
               classes="half"

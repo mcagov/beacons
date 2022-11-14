@@ -4,10 +4,12 @@ export interface IExportsGateway {
   getCertificateDataForBeacon(beaconId: string): Promise<IBeaconExport>;
   getLetterDataForBeacon(beaconId: string): Promise<IBeaconExport>;
   getExportDataForBeacon(beaconId: string): Promise<IBeaconExport>;
+  getLabelForBeacon(beaconId: string): Promise<Blob>;
 
   getCertificateDataForBeacons(beaconIds: string[]): Promise<IBeaconExport[]>;
-  getLetterDataForBeacons(beaconId: string[]): Promise<IBeaconExport[]>;
-  getExportDataForBeacons(beaconId: string[]): Promise<IBeaconExport[]>;
+  getLetterDataForBeacons(beaconIds: string[]): Promise<IBeaconExport[]>;
+  getExportDataForBeacons(beaconIds: string[]): Promise<IBeaconExport[]>;
+  getLabelsForBeacons(beaconIds: string[]): Promise<Blob>;
 
   getExportDataForAllBeacons(): Promise<IBeaconExport[]>;
   searchExportData(searchForm: any): Promise<IBeaconExport[]>;

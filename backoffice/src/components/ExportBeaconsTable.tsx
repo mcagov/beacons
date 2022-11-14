@@ -8,7 +8,6 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
 } from "@mui/x-data-grid";
-import { AuthenticatedPrintButton } from "./AuthenticatedPrintButton";
 import { applicationConfig } from "config";
 import { Button } from "@mui/material";
 import ContentPrintIcon from "@mui/icons-material/Print";
@@ -121,13 +120,15 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
 
       return (
         <GridToolbarContainer>
-          <AuthenticatedPrintButton
-            label="Print label(s)"
-            url={`${
-              applicationConfig.apiUrl
-            }/export/labels/${selectionModelItems.toString()}`}
-            isFullWidth={false}
-          />
+          <Button
+            href={`backoffice#/labels/${selectionModelItems.toString()}`}
+            target="_blank"
+            variant="outlined"
+            className="ml-2"
+            endIcon={<ContentPrintIcon />}
+          >
+            Print label(s)
+          </Button>
           <Button
             href={`backoffice#/certificates/${selectionModelItems.toString()}`}
             target="_blank"

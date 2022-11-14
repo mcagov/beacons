@@ -7,8 +7,8 @@
   box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
   margin: 20px auto;
   width: 21cm;
-  min-height: 29.7cm;
-  padding: 30px 40px;
+  min-height: 30cm;
+  padding: 30px 40px 20px 40px;
 
   .bold {
     font-weight: bold;
@@ -16,6 +16,10 @@
 
   .underline {
     text-decoration: underline;
+  }
+
+  .uppercase {
+    text-transform: uppercase;
   }
 
   .full {
@@ -34,16 +38,16 @@
 
   div.header {
     display: inline-block;
-    padding-top: 10px;
-    margin-bottom: 5px;
 
     p {
       margin: 0;
     }
 
     img {
+      float: left;
+      clear: right;
       padding-top: 10px;
-      height: 120px;
+      height: 100px;
     }
 
     .sender {
@@ -54,9 +58,27 @@
         padding: 1px;
       }
     }
+
+    div.recipient {
+      clear: left;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      .address-fields {
+        display: inline-block;
+        span {
+          line-height: 1;
+          display: block;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+      }
+    }
   }
 
   .content {
+    margin-top: 70px;
+
     .registrationText {
       text-align: justify;
       .subject {
@@ -71,21 +93,11 @@
       margin-top: 100px;
       p {
         margin: 2px;
-        padding-right: 50px;
         text-align: right;
       }
     }
-    div.recipient {
-      margin-bottom: 20px;
-
-      .address-fields {
-        display: inline-block;
-        span {
-          display: block;
-          font-weight: bold;
-          text-transform: uppercase;
-        }
-      }
+    .letter-content {
+      margin-top: 20px;
     }
 
     .sign-off {
@@ -93,10 +105,6 @@
         margin: 0;
         padding: 0;
         padding-bottom: 5px;
-        &.sig {
-          font-size: x-large;
-          font-family: cursive;
-        }
       }
     }
   }
@@ -105,8 +113,16 @@
     margin-top: auto;
     padding-top: 50px;
 
-    div.text span {
-      display: block;
+    div.text {
+      width: 50%;
+      float: left;
+    }
+
+    .investors-in-people-logo {
+      width: 25%;
+      float: right;
+      margin-top: 50px;
+      margin-right: 50px;
     }
   }
 }
@@ -116,5 +132,10 @@
     page-break-before: always;
     margin: 0;
     box-shadow: none;
+  }
+
+  .footer {
+    display: fixed;
+    bottom: 0;
   }
 }

@@ -28,6 +28,7 @@
 
   .full {
     width: 100%;
+    clear: left;
   }
   .half {
     width: 50%;
@@ -45,6 +46,11 @@
     div.address-fields {
       padding-left: 6px;
     }
+  }
+
+  .beacon-notes {
+    border-bottom: 2px solid lightgrey;
+    padding-bottom: 8px;
   }
 
   div.section {
@@ -137,11 +143,34 @@
       }
     }
   }
+
+  .certificate .footer-space {
+    height: 175px;
+    background-color: red !important;
+  }
 }
 
 @media print {
+  body {
+    position: relative;
+  }
+
+  .use {
+    break-inside: avoid;
+  }
+
   .certificate {
     margin: 0;
     box-shadow: none;
+    background-color: white;
+    min-height: 100%;
+  }
+
+  .footer {
+    break-before: always;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: -1;
   }
 }

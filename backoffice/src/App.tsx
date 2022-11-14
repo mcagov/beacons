@@ -16,7 +16,9 @@ import {
   CertificatesView,
   CertificateView,
 } from "views/exports/certificates/CertificateView";
-import { LettersView, LetterView } from "views/exports/certificates/LetterView";
+import { LettersView, LetterView } from "views/exports/letters/LetterView";
+import { LabelView } from "views/exports/label/LabelView";
+import { UserRolesView } from "views/UserRolesView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
@@ -38,12 +40,15 @@ import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { BeaconExportRecordsForm } from "./views/BeaconExportSearchForm";
 import { BeaconExportRecordsListView } from "views/BeaconExportSearchListView";
+
 interface ResourceParams {
   id: string;
+  letterType: string;
 }
 
 interface ResourceListParams {
   ids: string;
+  letterType: string;
 }
 
 const App: FunctionComponent = () => {
@@ -113,16 +118,31 @@ const App: FunctionComponent = () => {
     );
   };
 
-  const LetterViewWithParam: FunctionComponent = () => {
+  const LabelViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
-    return <LetterView exportsGateway={exportsGateway} beaconId={id} />;
+    return <LabelView exportsGateway={exportsGateway} beaconId={id} />;
+  };
+
+  const LetterViewWithParam: FunctionComponent = () => {
+    const { id, letterType } = useParams<ResourceParams>();
+    return (
+      <LetterView
+        exportsGateway={exportsGateway}
+        beaconId={id}
+        letterType={letterType}
+      />
+    );
   };
 
   const LettersViewWithParam: FunctionComponent = () => {
-    const { ids } = useParams<ResourceListParams>();
+    const { ids, letterType } = useParams<ResourceListParams>();
     let beaconIds = ids.split(",");
     return (
-      <LettersView exportsGateway={exportsGateway} beaconIds={beaconIds} />
+      <LettersView
+        exportsGateway={exportsGateway}
+        beaconIds={beaconIds}
+        lettersType={letterType}
+      />
     );
   };
 
@@ -140,11 +160,18 @@ const App: FunctionComponent = () => {
                 </Route>
                 <Route path={`/export/search`}>
                   <Navigation />
-                  <BeaconExportRecordsForm exportsGateway={exportsGateway} />;
-                  <BeaconExportRecordsListView
-                    exportsGateway={exportsGateway}
-                  />
-                  ;
+                  <PageContent>
+                    <BeaconExportRecordsForm exportsGateway={exportsGateway} />;
+                    <BeaconExportRecordsListView
+                      exportsGateway={exportsGateway}
+                    />
+                  </PageContent>
+                </Route>
+                <Route path={`/roles`}>
+                  <Navigation />
+                  <PageContent>
+                    <UserRolesView />
+                  </PageContent>
                   <Footer />
                 </Route>
                 <Route path={`/beacons/:id`}>
@@ -175,6 +202,14 @@ const App: FunctionComponent = () => {
                 </Route>
                 <Route path={`/letters/:ids`}>
                   <LettersViewWithParam />
+                </Route>
+                <Route path={`/letters/:letterType/:id/`}>
+                  <LetterViewWithParam />
+                </Route>
+                <Route path={`/label/:id`}>
+                  <Navigation />
+                  <LabelViewWithParam />
+                  <Footer />
                 </Route>
                 <Route>
                   <Navigation />
