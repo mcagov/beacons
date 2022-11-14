@@ -1,6 +1,10 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { IExportsGateway } from "gateways/exports/IExportsGateway";
 
+interface LabelProps {
+  label: Blob;
+}
+
 interface LabelViewProps {
   exportsGateway: IExportsGateway;
   beaconId: string;
@@ -11,17 +15,9 @@ interface LabelsViewProps {
   beaconIds: string[];
 }
 
-export const LabelView: FunctionComponent<LabelViewProps> = ({
-  exportsGateway,
-  beaconId,
-}): JSX.Element => {
-  const [label, setLabel] = useState<Blob>({} as Blob);
+const RenderLabel: FunctionComponent<LabelProps> = ({ label }): JSX.Element => {
   const [url, setUrl] = useState<string>("");
   const [isLoading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    exportsGateway.getLabelForBeacon(beaconId).then(setLabel);
-  }, [beaconId]);
 
   useEffect(() => {
     if (label.size > 0 && !isLoading) {
@@ -48,39 +44,28 @@ export const LabelView: FunctionComponent<LabelViewProps> = ({
   );
 };
 
+export const LabelView: FunctionComponent<LabelViewProps> = ({
+  exportsGateway,
+  beaconId,
+}): JSX.Element => {
+  const [label, setLabel] = useState<Blob>({} as Blob);
+
+  useEffect(() => {
+    exportsGateway.getLabelForBeacon(beaconId).then(setLabel);
+  }, [beaconId]);
+
+  return <RenderLabel label={label} />;
+};
+
 export const LabelsView: FunctionComponent<LabelsViewProps> = ({
   exportsGateway,
   beaconIds,
 }): JSX.Element => {
   const [label, setLabel] = useState<Blob>({} as Blob);
-  const [url, setUrl] = useState<string>("");
-  const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     exportsGateway.getLabelsForBeacons(beaconIds).then(setLabel);
   }, [beaconIds]);
 
-  useEffect(() => {
-    if (label.size > 0 && !isLoading) {
-      setLoading(true);
-      setUrl(URL.createObjectURL(label));
-    }
-  }, [label, isLoading]);
-
-  useEffect(() => {
-    if (url.length > 0) {
-      var printTab = window.open(url, "_blank");
-      printTab?.print();
-    }
-  }, [url]);
-
-  return (
-    <object
-      className="label"
-      width="100%"
-      height="800"
-      data={url + "#zoom=500"}
-      type="application/pdf"
-    />
-  );
+  return <RenderLabel label={label} />;
 };
