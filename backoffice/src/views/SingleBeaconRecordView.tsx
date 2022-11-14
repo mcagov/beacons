@@ -86,7 +86,7 @@ export const SingleBeaconRecordView: FunctionComponent<
         <div className="print-buttons">
           <span className={classes.button}>
             <Button
-              href={`/backoffice#/certificates/${beaconId}`}
+              href={`/backoffice#/certificate/${beaconId}`}
               variant="outlined"
               startIcon={<ContentPrintIcon />}
             >
@@ -95,7 +95,7 @@ export const SingleBeaconRecordView: FunctionComponent<
           </span>
           <span className={classes.button}>
             <Button
-              href={`/backoffice#/letters/registration/${beaconId}`}
+              href={`/backoffice#/letter/registration/${beaconId}`}
               variant="outlined"
               startIcon={<ContentPrintIcon />}
             >
@@ -104,7 +104,7 @@ export const SingleBeaconRecordView: FunctionComponent<
           </span>
           <span className={classes.button}>
             <Button
-              href={`/backoffice#/letters/amended/${beaconId}`}
+              href={`/backoffice#/letter/amended/${beaconId}`}
               variant="outlined"
               startIcon={<ContentPrintIcon />}
             >

@@ -48,7 +48,7 @@ interface ResourceParams {
 
 interface ResourceListParams {
   ids: string;
-  letterType: string;
+  lettersType: string;
 }
 
 const App: FunctionComponent = () => {
@@ -135,13 +135,13 @@ const App: FunctionComponent = () => {
   };
 
   const LettersViewWithParam: FunctionComponent = () => {
-    const { ids, letterType } = useParams<ResourceListParams>();
+    const { ids, lettersType } = useParams<ResourceListParams>();
     let beaconIds = ids.split(",");
     return (
       <LettersView
         exportsGateway={exportsGateway}
         beaconIds={beaconIds}
-        lettersType={letterType}
+        lettersType={lettersType}
       />
     );
   };
@@ -197,14 +197,11 @@ const App: FunctionComponent = () => {
                 <Route path={`/certificates/:ids`}>
                   <CertificatesViewWithParam />
                 </Route>
-                <Route path={`/letter/:id`}>
+                <Route path={`/letter/:letterType/:id/`}>
                   <LetterViewWithParam />
                 </Route>
-                <Route path={`/letters/:ids`}>
+                <Route path={`/letters/:lettersType/:ids/`}>
                   <LettersViewWithParam />
-                </Route>
-                <Route path={`/letters/:letterType/:id/`}>
-                  <LetterViewWithParam />
                 </Route>
                 <Route path={`/label/:id`}>
                   <Navigation />

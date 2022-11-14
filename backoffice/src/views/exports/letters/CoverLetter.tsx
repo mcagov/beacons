@@ -167,7 +167,7 @@ export const AmendedBody: FunctionComponent = (): JSX.Element => {
 
 const LetterFooter: FunctionComponent = (): JSX.Element => {
   return (
-    <div className="footer full" onLoad={window.print}>
+    <div className="footer full">
       <div className="text"></div>
       <img
         src={
