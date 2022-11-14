@@ -30,11 +30,6 @@ export class ExportsGateway implements IExportsGateway {
 
   public async getLabelForBeacon(beaconId: string): Promise<Blob> {
     const accessToken = await this._authGateway.getAccessToken();
-
-    // return fetch(`${applicationConfig.apiUrl}/export/label/${beaconId}`, {
-    //   headers: { Authorization: `Bearer ${accessToken}` },
-    // }).then((response) => response.blob());
-
     return await axios
       .get(`${applicationConfig.apiUrl}/export/label/${beaconId}`, {
         timeout: applicationConfig.apiTimeoutMs,
@@ -43,7 +38,7 @@ export class ExportsGateway implements IExportsGateway {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then((response) => new Blob([response.data]));
+      .then((response) => response.data);
   }
 
   public async getLabelsForBeacons(beaconIds: string[]): Promise<Blob> {
@@ -57,7 +52,7 @@ export class ExportsGateway implements IExportsGateway {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then((response) => new Blob([response.data]));
+      .then((response) => response.data);
   }
 
   public async getLetterDataForBeacon(
