@@ -2,7 +2,10 @@ SELECT
 	legacy_beacon.hex_id, 
 	UPPER(legacy_beacon.data -> 'beacon' ->> 'departRefId')AS dept_ref, 
 	CASE 
-		WHEN legacy_beacon_claim_event.claim_event_type IS NOT NULL THEN 'DELETED (CLAIMED)' 
+		WHEN legacy_beacon_claim_event.claim_event_type IS NOT NULL AND legacy_beacon_claim_event.claim_event_type = 'claim' 
+			THEN 'DELETED (CLAIMED)' 
+		WHEN legacy_beacon_claim_event.claim_event_type IS NOT NULL AND legacy_beacon_claim_event.claim_event_type = 'reject' 
+			THEN 'DELETED (REJECTED)'
 		ELSE legacy_beacon.beacon_status 
 	END as beacon_status,
 	TO_CHAR(TO_TIMESTAMP(legacy_beacon.data -> 'beacon' ->> 'firstRegistrationDate', 'YYYY-MM-DDXHH24:MI:SS.MS'), 'dd/mm/yyyy') AS created_date, 
