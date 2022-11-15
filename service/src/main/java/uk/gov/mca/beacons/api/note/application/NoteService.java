@@ -67,4 +67,9 @@ public class NoteService {
 
     return noteRepository.save(note);
   }
+
+  public void deleteByBeaconId(BeaconId beaconId) {
+    noteRepository.deleteAllByBeaconId(beaconId);
+    noteRepository.flush();
+  }
 }

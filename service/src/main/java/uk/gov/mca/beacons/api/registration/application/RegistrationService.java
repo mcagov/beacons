@@ -71,7 +71,7 @@ public class RegistrationService {
 
   public Registration update(BeaconId beaconId, Registration registration)
     throws ResourceNotFoundException {
-    deleteAssociatedAggregates(beaconId);
+    deleteAssociatedAggregates(beaconId, false);
 
     Beacon updatedBeacon = beaconService.update(
       beaconId,
@@ -89,7 +89,7 @@ public class RegistrationService {
     return getAssociatedAggregates(beacon);
   }
 
-  public void delete(DeleteRegistrationDTO dto) {
+  public void softDelete(DeleteRegistrationDTO dto) {
     AccountHolder accountHolder = accountHolderService
       .getAccountHolder(new AccountHolderId(dto.getUserId()))
       .orElseThrow(ResourceNotFoundException::new);
@@ -97,12 +97,21 @@ public class RegistrationService {
     BeaconId beaconId = new BeaconId(dto.getBeaconId());
     Beacon deletedBeacon = beaconService.softDelete(beaconId);
 
-    deleteAssociatedAggregates(beaconId);
+    deleteAssociatedAggregates(beaconId, false);
     noteService.createNoteForDeletedRegistration(
       accountHolder,
       deletedBeacon,
       dto.getReason()
     );
+  }
+
+  //bool deleteNotes. Uncle Bob would say no youcan do better
+  // maybe a strategy pattern but that can be phase 2 once it's working
+  public Beacon permanentDelete(BeaconId beaconId) {
+    deleteAssociatedAggregates(beaconId, true);
+    Beacon beacon = beaconService.permanentDelete(beaconId);
+
+    return beacon;
   }
 
   /**
@@ -188,10 +197,17 @@ public class RegistrationService {
       .build();
   }
 
-  private void deleteAssociatedAggregates(BeaconId beaconId) {
+  private void deleteAssociatedAggregates(
+    BeaconId beaconId,
+    boolean deleteNotes
+  ) {
     beaconOwnerService.deleteByBeaconId(beaconId);
     beaconUseService.deleteByBeaconId(beaconId);
     emergencyContactService.deleteByBeaconId(beaconId);
+
+    if (deleteNotes) {
+      noteService.deleteByBeaconId(beaconId);
+    }
   }
 
   private void claimLegacyBeacon(Beacon beacon) {

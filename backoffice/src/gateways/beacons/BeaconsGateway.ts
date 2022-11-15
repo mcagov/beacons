@@ -86,6 +86,15 @@ export class BeaconsGateway implements IBeaconsGateway {
     }
   }
 
+  public async permanentlyDeleteBeacon(beaconId: string): Promise<void> {
+    try {
+      const response = await axios.delete(`/registrations/${beaconId}`);
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   private async _makeGetRequest(path: string): Promise<AxiosResponse> {
     const accessToken = await this._authGateway.getAccessToken();
 

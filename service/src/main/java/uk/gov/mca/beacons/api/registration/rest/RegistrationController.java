@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
+import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
+import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
+import uk.gov.mca.beacons.api.dto.WrapperDTO;
 import uk.gov.mca.beacons.api.exceptions.InvalidBeaconDeleteException;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
@@ -113,7 +116,7 @@ public class RegistrationController {
   }
 
   @PatchMapping(value = "/{uuid}/delete")
-  public ResponseEntity<Void> deleteRegistration(
+  public ResponseEntity<Void> softDeleteRegistration(
     @PathVariable("uuid") UUID beaconId,
     @RequestBody @Valid DeleteRegistrationDTO dto
   ) {
@@ -121,8 +124,17 @@ public class RegistrationController {
       !beaconId.equals(dto.getBeaconId())
     ) throw new InvalidBeaconDeleteException();
 
-    registrationService.delete(dto);
+    registrationService.softDelete(dto);
 
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @DeleteMapping(value = "/{uuid}")
+  //  @PreAuthorize("hasAuthority('APPROLE_UPDATE_RECORDS')")
+  public ResponseEntity<Void> permanentlyDeleteRegistration(
+    @PathVariable("uuid") UUID id
+  ) {
+    registrationService.permanentDelete(new BeaconId(id));
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

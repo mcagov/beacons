@@ -93,6 +93,15 @@ public class BeaconService {
     return beaconRepository.save(beacon);
   }
 
+  public Beacon permanentDelete(BeaconId beaconId) {
+    Beacon beacon = beaconRepository
+      .findById(beaconId)
+      .orElseThrow(ResourceNotFoundException::new);
+
+    beaconRepository.delete(beacon);
+    return beacon;
+  }
+
   private ModelPatcher<Beacon> getPatcher() {
     return beaconModelPatcherFactory
       .getModelPatcher()
