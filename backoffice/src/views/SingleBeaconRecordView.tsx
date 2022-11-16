@@ -179,7 +179,7 @@ export const SingleBeaconRecordView: FunctionComponent<
           <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
         </TabPanel>
         <DialogueBox
-          isOpen={isOpen}
+          isOpen={true}
           dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
           action="Yes"
           dismissal="No"
