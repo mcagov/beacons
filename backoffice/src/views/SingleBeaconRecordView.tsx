@@ -20,6 +20,7 @@ import { BeaconSummaryPanel } from "../panels/beaconSummaryPanel/BeaconSummaryPa
 import { EmergencyContactPanel } from "../panels/emergencyContactPanel/EmergencyContactPanel";
 import { NotesPanel } from "../panels/notesPanel/NotesPanel";
 import { logToServer } from "../utils/logger";
+import { DialogueBox } from "components/DialogueBox";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -54,6 +55,7 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   const [beacon, setBeacon] = useState<IBeacon>({} as IBeacon);
   const [notes, setNotes] = useState<INote[]>([] as INote[]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect((): void => {
     const fetchBeacon = async (id: string) => {
@@ -69,6 +71,13 @@ export const SingleBeaconRecordView: FunctionComponent<
 
     fetchBeacon(beaconId);
   }, [beaconId, beaconsGateway, notesGateway]);
+
+  //resueable modal are you sure?
+  //if yes then delete and redirect back to the beacon list
+  const openDialogueBox = async () => {
+    setIsOpen(true);
+    console.log(isOpen);
+  };
 
   const deleteRecord = async () => {
     try {
@@ -130,7 +139,7 @@ export const SingleBeaconRecordView: FunctionComponent<
           </span>
         </div>
         <span className="permanentDeleteButton">
-          <Button variant="outlined" color="error" onClick={deleteRecord}>
+          <Button variant="outlined" color="error" onClick={openDialogueBox}>
             delete record
           </Button>
         </span>
@@ -169,6 +178,12 @@ export const SingleBeaconRecordView: FunctionComponent<
         <TabPanel value={selectedTab} index={2}>
           <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
         </TabPanel>
+        <DialogueBox
+          isOpen={isOpen}
+          dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
+          action="Yes"
+          dismissal="No"
+        />
       </PageContent>
     </div>
   );
