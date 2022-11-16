@@ -31,5 +31,5 @@ export interface IBeaconsGateway {
     beaconId: string,
     updatedFields: Partial<IBeacon>
   ) => Promise<IBeacon>;
-  deleteBeacon: (beaconId: string) => Promise<IBeacon>;
+  permanentlyDeleteBeacon: (beaconId: string) => Promise<void>;
 }

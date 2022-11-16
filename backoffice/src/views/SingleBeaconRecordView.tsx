@@ -70,6 +70,14 @@ export const SingleBeaconRecordView: FunctionComponent<
     fetchBeacon(beaconId);
   }, [beaconId, beaconsGateway, notesGateway]);
 
+  const deleteRecord = async () => {
+    try {
+      await beaconsGateway.permanentlyDeleteBeacon(beaconId);
+    } catch (error) {
+      logToServer.error(error);
+    }
+  };
+
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
 
@@ -121,6 +129,11 @@ export const SingleBeaconRecordView: FunctionComponent<
             </Button>
           </span>
         </div>
+        <span className="permanentDeleteButton">
+          <Button variant="outlined" color="error" onClick={deleteRecord}>
+            delete record
+          </Button>
+        </span>
       </PageHeader>
       <PageContent>
         <BeaconSummaryPanel

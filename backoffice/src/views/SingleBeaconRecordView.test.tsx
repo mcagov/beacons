@@ -19,6 +19,7 @@ describe("Beacon record page", () => {
       getAllBeacons: jest.fn(),
       updateBeacon: jest.fn(),
       getLegacyBeacon: jest.fn(),
+      permanentlyDeleteBeacon: jest.fn(),
     };
 
     usesGatewayDouble = {

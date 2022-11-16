@@ -88,7 +88,9 @@ export class BeaconsGateway implements IBeaconsGateway {
 
   public async permanentlyDeleteBeacon(beaconId: string): Promise<void> {
     try {
-      const response = await axios.delete(`/registrations/${beaconId}`);
+      const response = await axios.delete(
+        `${applicationConfig.apiUrl}/registrations/${beaconId}`
+      );
       return response.data;
     } catch (e) {
       throw e;

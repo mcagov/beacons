@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
@@ -130,7 +131,7 @@ public class RegistrationController {
   }
 
   @DeleteMapping(value = "/{uuid}")
-  //  @PreAuthorize("hasAuthority('APPROLE_UPDATE_RECORDS')")
+  @PreAuthorize("hasAuthority('APPROLE_UPDATE_RECORDS')")
   public ResponseEntity<Void> permanentlyDeleteRegistration(
     @PathVariable("uuid") UUID id
   ) {
