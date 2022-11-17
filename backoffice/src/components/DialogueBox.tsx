@@ -8,43 +8,44 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 interface IDialogueBoxProps {
   isOpen: boolean;
+  dialogueTitle: string;
   dialogueContentText: string;
   action: string;
   dismissal: string;
+  // yuck how do I improve
+  selectOption: any;
 }
 
 export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   isOpen,
+  dialogueTitle,
   dialogueContentText,
   action,
   dismissal,
+  selectOption,
 }): JSX.Element => {
   const [open, setOpen] = useState(isOpen);
 
-  const handleClose = () => {
+  function handleClick(isActionOption: boolean): void {
     setOpen(false);
-  };
-
-  // emit event up to the parent saying the user's decision
+    selectOption(isActionOption);
+  }
 
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        {"Are you sure you want to permanently delete this record?"}
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">{dialogueTitle}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           {dialogueContentText}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>{dismissal}</Button>
-        <Button onClick={handleClose} autoFocus>
+        <Button onClick={() => handleClick(false)}>{dismissal}</Button>
+        <Button onClick={() => handleClick(true)} autoFocus>
           {action}
         </Button>
       </DialogActions>

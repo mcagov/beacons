@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +34,7 @@ import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.rest.DeleteRegistrationDTO;
+import uk.gov.mca.beacons.api.search.jobs.JobService;
 
 @Transactional
 @Service("CreateRegistrationServiceV2")
@@ -42,6 +47,7 @@ public class RegistrationService {
   private final EmergencyContactService emergencyContactService;
   private final LegacyBeaconService legacyBeaconService;
   private final NoteService noteService;
+  private final JobService jobService;
 
   @Autowired
   public RegistrationService(
@@ -51,7 +57,8 @@ public class RegistrationService {
     BeaconUseService beaconUseService,
     EmergencyContactService emergencyContactService,
     LegacyBeaconService legacyBeaconService,
-    NoteService noteService
+    NoteService noteService,
+    JobService jobService
   ) {
     this.accountHolderService = accountHolderService;
     this.beaconService = beaconService;
@@ -60,6 +67,7 @@ public class RegistrationService {
     this.emergencyContactService = emergencyContactService;
     this.legacyBeaconService = legacyBeaconService;
     this.noteService = noteService;
+    this.jobService = jobService;
   }
 
   public Registration register(Registration registration) {
@@ -107,10 +115,11 @@ public class RegistrationService {
 
   //bool deleteNotes. Uncle Bob would say no youcan do better
   // maybe a strategy pattern but that can be phase 2 once it's working
-  public Beacon permanentDelete(BeaconId beaconId) {
+  public Beacon permanentDelete(BeaconId beaconId)
+    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
     deleteAssociatedAggregates(beaconId, true);
     Beacon beacon = beaconService.permanentDelete(beaconId);
-
+    jobService.startReindexSearchJob();
     return beacon;
   }
 

@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -131,10 +135,10 @@ public class RegistrationController {
   }
 
   @DeleteMapping(value = "/{uuid}")
-  @PreAuthorize("hasAuthority('APPROLE_UPDATE_RECORDS')")
   public ResponseEntity<Void> permanentlyDeleteRegistration(
     @PathVariable("uuid") UUID id
-  ) {
+  )
+    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
     registrationService.permanentDelete(new BeaconId(id));
     return new ResponseEntity<>(HttpStatus.OK);
   }

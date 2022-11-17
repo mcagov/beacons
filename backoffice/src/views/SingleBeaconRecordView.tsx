@@ -21,6 +21,7 @@ import { EmergencyContactPanel } from "../panels/emergencyContactPanel/Emergency
 import { NotesPanel } from "../panels/notesPanel/NotesPanel";
 import { logToServer } from "../utils/logger";
 import { DialogueBox } from "components/DialogueBox";
+import { useHistory } from "react-router-dom";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -47,6 +48,7 @@ export const SingleBeaconRecordView: FunctionComponent<
   ISingleBeaconRecordViewProps
 > = ({ beaconsGateway, usesGateway, notesGateway, beaconId }): JSX.Element => {
   const classes = useStyles();
+  const routerHistory = useHistory();
 
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const handleChange = (event: React.ChangeEvent<{}>, tab: number) => {
@@ -77,6 +79,13 @@ export const SingleBeaconRecordView: FunctionComponent<
   const openDialogueBox = async () => {
     setIsOpen(true);
     console.log(isOpen);
+  };
+
+  const handleSelectedOption = async (selectOption: boolean) => {
+    if (selectOption) {
+      await deleteRecord();
+      routerHistory.push("/backoffice");
+    }
   };
 
   const deleteRecord = async () => {
@@ -180,9 +189,11 @@ export const SingleBeaconRecordView: FunctionComponent<
         </TabPanel>
         <DialogueBox
           isOpen={true}
+          dialogueTitle="Are you sure you want to permanently delete this record?"
           dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
           action="Yes"
           dismissal="No"
+          selectOption={handleSelectedOption}
         />
       </PageContent>
     </div>
