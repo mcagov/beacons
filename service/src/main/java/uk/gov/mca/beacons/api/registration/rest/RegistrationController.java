@@ -133,13 +133,4 @@ public class RegistrationController {
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
-
-  @DeleteMapping(value = "/{uuid}")
-  public ResponseEntity<Void> permanentlyDeleteRegistration(
-    @PathVariable("uuid") UUID id
-  )
-    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-    registrationService.permanentDelete(new BeaconId(id));
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
 }

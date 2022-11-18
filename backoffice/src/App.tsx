@@ -30,6 +30,7 @@ import { BeaconResponseMapper } from "./gateways/mappers/BeaconResponseMapper";
 import { LegacyBeaconResponseMapper } from "./gateways/mappers/LegacyBeaconResponseMapper";
 import { NotesGateway } from "./gateways/notes/NotesGateway";
 import { useGetAuthState } from "./lib/useGetAuthState";
+import { useAuthContext } from "./components/auth/AuthProvider";
 import { Search } from "./Search";
 import { UserSettingsProvider } from "./UserSettings";
 import { logToServer } from "./utils/logger";
@@ -67,10 +68,13 @@ const App: FunctionComponent = () => {
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
+    const authContext = useAuthContext();
+
     return (
       <div>
         <Navigation />
         <SingleBeaconRecordView
+          authContext={authContext}
           beaconsGateway={beaconsGateway}
           usesGateway={usesGateway}
           notesGateway={notesGateway}

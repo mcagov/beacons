@@ -35,6 +35,7 @@ import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.rest.DeleteRegistrationDTO;
 import uk.gov.mca.beacons.api.search.jobs.JobService;
+import uk.gov.mca.beacons.api.shared.domain.user.User;
 
 @Transactional
 @Service("CreateRegistrationServiceV2")
@@ -98,29 +99,33 @@ public class RegistrationService {
   }
 
   public void softDelete(DeleteRegistrationDTO dto) {
+    Registration registration = getByBeaconId(new BeaconId(dto.getBeaconId()));
     AccountHolder accountHolder = accountHolderService
-      .getAccountHolder(new AccountHolderId(dto.getUserId()))
+      .getAccountHolder(registration.getBeacon().getAccountHolderId())
       .orElseThrow(ResourceNotFoundException::new);
 
     BeaconId beaconId = new BeaconId(dto.getBeaconId());
     Beacon deletedBeacon = beaconService.softDelete(beaconId);
 
-    deleteAssociatedAggregates(beaconId, false);
-    noteService.createNoteForDeletedRegistration(
-      accountHolder,
-      deletedBeacon,
-      dto.getReason()
-    );
-  }
-
-  //bool deleteNotes. Uncle Bob would say no youcan do better
-  // maybe a strategy pattern but that can be phase 2 once it's working
-  public Beacon permanentDelete(BeaconId beaconId)
-    throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-    deleteAssociatedAggregates(beaconId, true);
-    Beacon beacon = beaconService.permanentDelete(beaconId);
-    jobService.startReindexSearchJob();
-    return beacon;
+    if (accountHolder.getId() == new AccountHolderId(dto.getDeletingUserId())) {
+      deleteAssociatedAggregates(beaconId, false);
+      noteService.createNoteForDeletedRegistration(
+        accountHolder,
+        deletedBeacon,
+        dto.getReason(),
+        "Account Holder",
+        "The account holder deleted the record with reason: '%s'"
+      );
+    } else {
+      deleteAssociatedAggregates(beaconId, true);
+      noteService.createNoteForDeletedRegistration(
+        accountHolder,
+        deletedBeacon,
+        dto.getReason(),
+        accountHolder.getFullName(),
+        "The Beacon Registry Team deleted the record with reason: '%s'"
+      );
+    }
   }
 
   /**

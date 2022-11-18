@@ -1,4 +1,5 @@
 import { IBeaconSearchResult } from "entities/IBeaconSearchResult";
+import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { BeaconRowData } from "../../components/BeaconsTable";
 import { IBeacon } from "../../entities/IBeacon";
@@ -31,5 +32,5 @@ export interface IBeaconsGateway {
     beaconId: string,
     updatedFields: Partial<IBeacon>
   ) => Promise<IBeacon>;
-  permanentlyDeleteBeacon: (beaconId: string) => Promise<void>;
+  deleteBeacon: (deleteBeaconDto: IDeleteBeaconDto) => Promise<void>;
 }

@@ -22,8 +22,13 @@ import { NotesPanel } from "../panels/notesPanel/NotesPanel";
 import { logToServer } from "../utils/logger";
 import { DialogueBox } from "components/DialogueBox";
 import { useHistory } from "react-router-dom";
+import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
+// consider passing this in as a prop
+import { IAuthContext } from "../components/auth/AuthProvider";
+import { LoggedInUser } from "lib/User";
 
 interface ISingleBeaconRecordViewProps {
+  authContext: IAuthContext;
   beaconsGateway: IBeaconsGateway;
   usesGateway: IUsesGateway;
   notesGateway: INotesGateway;
@@ -46,9 +51,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const SingleBeaconRecordView: FunctionComponent<
   ISingleBeaconRecordViewProps
-> = ({ beaconsGateway, usesGateway, notesGateway, beaconId }): JSX.Element => {
+> = ({
+  authContext,
+  beaconsGateway,
+  usesGateway,
+  notesGateway,
+  beaconId,
+}): JSX.Element => {
   const classes = useStyles();
   const routerHistory = useHistory();
+  // need the deleting user id how do I get this?
+  const user = authContext.user as LoggedInUser;
 
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const handleChange = (event: React.ChangeEvent<{}>, tab: number) => {
@@ -83,14 +96,19 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   const handleSelectedOption = async (selectOption: boolean) => {
     if (selectOption) {
-      await deleteRecord();
-      routerHistory.push("/backoffice");
+      routerHistory.push("/delete");
     }
   };
 
+  // capture reason in form
   const deleteRecord = async () => {
     try {
-      await beaconsGateway.permanentlyDeleteBeacon(beaconId);
+      const deleteBeaconDto: IDeleteBeaconDto = {
+        beaconId: beaconId,
+        deletingUserId: undefined,
+        reason: "BRT deleting",
+      };
+      await beaconsGateway.deleteBeacon(deleteBeaconDto);
     } catch (error) {
       logToServer.error(error);
     }

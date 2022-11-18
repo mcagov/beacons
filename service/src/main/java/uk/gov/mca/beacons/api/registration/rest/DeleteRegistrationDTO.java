@@ -12,7 +12,7 @@ import lombok.*;
 public class DeleteRegistrationDTO {
 
   private UUID beaconId;
-  private UUID userId;
+  private UUID deletingUserId;
 
   @NotNull(message = "Reason for deleting a beacon must be defined")
   private String reason;

@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { applicationConfig } from "config";
 import { IBeacon } from "entities/IBeacon";
+import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 import { IBeaconSearchResult } from "entities/IBeaconSearchResult";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
@@ -86,10 +87,12 @@ export class BeaconsGateway implements IBeaconsGateway {
     }
   }
 
-  public async permanentlyDeleteBeacon(beaconId: string): Promise<void> {
+  public async deleteBeacon(deleteBeaconDto: IDeleteBeaconDto): Promise<void> {
     try {
-      const response = await axios.delete(
-        `${applicationConfig.apiUrl}/registrations/${beaconId}`
+      const beaconId = deleteBeaconDto.beaconId;
+      const response = await axios.patch(
+        `${applicationConfig.apiUrl}/registrations/${beaconId}/delete`,
+        deleteBeaconDto
       );
       return response.data;
     } catch (e) {
