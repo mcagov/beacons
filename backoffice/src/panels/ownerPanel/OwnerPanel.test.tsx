@@ -13,7 +13,7 @@ describe("Owner Summary Panel", () => {
       getAllBeacons: jest.fn(),
       updateBeacon: jest.fn(),
       getLegacyBeacon: jest.fn(),
-      permanentlyDeleteBeacon: jest.fn(),
+      deleteBeacon: jest.fn(),
     };
   });
 

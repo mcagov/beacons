@@ -30,12 +30,12 @@ import { BeaconResponseMapper } from "./gateways/mappers/BeaconResponseMapper";
 import { LegacyBeaconResponseMapper } from "./gateways/mappers/LegacyBeaconResponseMapper";
 import { NotesGateway } from "./gateways/notes/NotesGateway";
 import { useGetAuthState } from "./lib/useGetAuthState";
-import { useAuthContext } from "./components/auth/AuthProvider";
 import { Search } from "./Search";
 import { UserSettingsProvider } from "./UserSettings";
 import { logToServer } from "./utils/logger";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
+import { DeleteBeaconView } from "views/DeleteBeaconView";
 
 interface ResourceParams {
   id: string;
@@ -68,13 +68,11 @@ const App: FunctionComponent = () => {
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
-    const authContext = useAuthContext();
 
     return (
       <div>
         <Navigation />
         <SingleBeaconRecordView
-          authContext={authContext}
           beaconsGateway={beaconsGateway}
           usesGateway={usesGateway}
           notesGateway={notesGateway}
@@ -94,6 +92,17 @@ const App: FunctionComponent = () => {
           beaconsGateway={beaconsGateway}
           beaconId={id}
         />
+        <Footer />
+      </div>
+    );
+  };
+
+  const DeleteBeaconViewWithParam: FunctionComponent = () => {
+    const { id } = useParams<ResourceParams>();
+    return (
+      <div>
+        <Navigation />
+        <DeleteBeaconView beaconsGateway={beaconsGateway} beaconId={id} />
         <Footer />
       </div>
     );
@@ -144,6 +153,9 @@ const App: FunctionComponent = () => {
                 </Route>
                 <Route path={`/legacy-beacons/:id`}>
                   <SingleLegacyBeaconRecordViewWithParam />
+                </Route>
+                <Route path={`/delete/:id`}>
+                  <DeleteBeaconViewWithParam />
                 </Route>
                 <Route path={`/admin`}>
                   <Navigation />

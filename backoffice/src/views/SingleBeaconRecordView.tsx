@@ -22,13 +22,8 @@ import { NotesPanel } from "../panels/notesPanel/NotesPanel";
 import { logToServer } from "../utils/logger";
 import { DialogueBox } from "components/DialogueBox";
 import { useHistory } from "react-router-dom";
-import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
-// consider passing this in as a prop
-import { IAuthContext } from "../components/auth/AuthProvider";
-import { LoggedInUser } from "lib/User";
 
 interface ISingleBeaconRecordViewProps {
-  authContext: IAuthContext;
   beaconsGateway: IBeaconsGateway;
   usesGateway: IUsesGateway;
   notesGateway: INotesGateway;
@@ -51,17 +46,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const SingleBeaconRecordView: FunctionComponent<
   ISingleBeaconRecordViewProps
-> = ({
-  authContext,
-  beaconsGateway,
-  usesGateway,
-  notesGateway,
-  beaconId,
-}): JSX.Element => {
+> = ({ beaconsGateway, usesGateway, notesGateway, beaconId }): JSX.Element => {
   const classes = useStyles();
   const routerHistory = useHistory();
-  // need the deleting user id how do I get this?
-  const user = authContext.user as LoggedInUser;
 
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const handleChange = (event: React.ChangeEvent<{}>, tab: number) => {
@@ -97,20 +84,6 @@ export const SingleBeaconRecordView: FunctionComponent<
   const handleSelectedOption = async (selectOption: boolean) => {
     if (selectOption) {
       routerHistory.push("/delete");
-    }
-  };
-
-  // capture reason in form
-  const deleteRecord = async () => {
-    try {
-      const deleteBeaconDto: IDeleteBeaconDto = {
-        beaconId: beaconId,
-        deletingUserId: undefined,
-        reason: "BRT deleting",
-      };
-      await beaconsGateway.deleteBeacon(deleteBeaconDto);
-    } catch (error) {
-      logToServer.error(error);
     }
   };
 
@@ -165,9 +138,13 @@ export const SingleBeaconRecordView: FunctionComponent<
             </Button>
           </span>
         </div>
-        <span className="permanentDeleteButton">
-          <Button variant="outlined" color="error" onClick={openDialogueBox}>
-            delete record
+        <span className="delete-record">
+          <Button
+            href={`/backoffice#/delete/${beaconId}`}
+            variant="outlined"
+            color="error"
+          >
+            Delete record
           </Button>
         </span>
       </PageHeader>
@@ -205,14 +182,6 @@ export const SingleBeaconRecordView: FunctionComponent<
         <TabPanel value={selectedTab} index={2}>
           <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
         </TabPanel>
-        <DialogueBox
-          isOpen={true}
-          dialogueTitle="Are you sure you want to permanently delete this record?"
-          dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
-          action="Yes"
-          dismissal="No"
-          selectOption={handleSelectedOption}
-        />
       </PageContent>
     </div>
   );

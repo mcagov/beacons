@@ -107,6 +107,9 @@ public class RegistrationService {
     BeaconId beaconId = new BeaconId(dto.getBeaconId());
     Beacon deletedBeacon = beaconService.softDelete(beaconId);
 
+    // if account holder id is null
+    // we know it's brt team deleting it
+    // change name back to accountHolderId
     if (accountHolder.getId() == new AccountHolderId(dto.getDeletingUserId())) {
       deleteAssociatedAggregates(beaconId, false);
       noteService.createNoteForDeletedRegistration(
