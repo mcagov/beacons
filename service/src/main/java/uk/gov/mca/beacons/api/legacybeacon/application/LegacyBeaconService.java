@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyData;
 import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 
 @Transactional
@@ -61,6 +63,15 @@ public class LegacyBeaconService {
       email
     );
     legacyBeacons.forEach(LegacyBeacon::softDelete);
+
+    LegacyBeacon legacyBeacon = legacyBeacons.get(0);
+    LegacyData blankLegacyData = new LegacyData();
+
+    legacyBeacon.setData(blankLegacyData);
+    legacyBeacon.setOwnerEmail("");
+    legacyBeacon.setOwnerName("");
+    legacyBeacon.setLastModifiedDate(OffsetDateTime.now());
+
     List<LegacyBeacon> savedLegacyBeacons = legacyBeaconRepository.saveAll(
       legacyBeacons
     );
