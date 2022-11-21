@@ -1,5 +1,5 @@
 export interface IDeleteBeaconDto {
   beaconId: string;
-  deletingUserId?: string;
+  accountHolderId?: string;
   reason: string;
 }

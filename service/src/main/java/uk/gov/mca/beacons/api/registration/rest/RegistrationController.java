@@ -123,13 +123,13 @@ public class RegistrationController {
   @PatchMapping(value = "/{uuid}/delete")
   public ResponseEntity<Void> softDeleteRegistration(
     @PathVariable("uuid") UUID beaconId,
-    @RequestBody @Valid DeleteRegistrationDTO dto
+    @RequestBody @Valid DeleteBeaconDTO dto
   ) {
     if (
       !beaconId.equals(dto.getBeaconId())
     ) throw new InvalidBeaconDeleteException();
 
-    registrationService.softDelete(dto);
+    registrationService.delete(dto);
 
     return new ResponseEntity<>(HttpStatus.OK);
   }

@@ -177,7 +177,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
       DeleteRegistrationDTO
         .builder()
         .beaconId(UUID.fromString(beaconId))
-        .userId(UUID.fromString(accountHolderId))
+        .accountHolderId(UUID.fromString(accountHolderId))
         .reason("I don't want it")
         .build()
     );

@@ -242,7 +242,7 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
       DeleteRegistrationDTO dto = DeleteRegistrationDTO
         .builder()
         .beaconId(UUID.fromString(beaconId))
-        .userId(UUID.fromString(accountHolderId))
+        .accountHolderId(UUID.fromString(accountHolderId))
         .reason(reason)
         .build();
 

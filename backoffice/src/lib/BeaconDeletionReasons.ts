@@ -1,8 +1,8 @@
 export enum BeaconDeletionReasons {
-  SOLD = "SOLD",
-  DESTROYED = "DESTROYED",
-  REPLACED = "REPLACED",
-  INCORRECTLY_REGISTERED = "INCORRECTLY_REGISTERED",
-  DUPLICATE = "DUPLICATE",
-  OTHER = "OTHER",
+  SOLD = "Sold",
+  DESTROYED = "Destroyed",
+  REPLACED = "Replaced",
+  INCORRECTLY_REGISTERED = "Incorrectly registered",
+  DUPLICATE = "Duplicate",
+  OTHER = "Other",
 }

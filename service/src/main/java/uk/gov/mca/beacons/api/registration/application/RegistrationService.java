@@ -1,24 +1,15 @@
 package uk.gov.mca.beacons.api.registration.application;
 
-import java.text.SimpleDateFormat;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.batch.core.JobParametersInvalidException;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
+import uk.gov.mca.beacons.api.auth.application.GetUserService;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
@@ -31,10 +22,8 @@ import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.note.application.NoteService;
-import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
-import uk.gov.mca.beacons.api.registration.rest.DeleteRegistrationDTO;
-import uk.gov.mca.beacons.api.search.jobs.JobService;
+import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 import uk.gov.mca.beacons.api.shared.domain.user.User;
 
 @Transactional
@@ -48,7 +37,7 @@ public class RegistrationService {
   private final EmergencyContactService emergencyContactService;
   private final LegacyBeaconService legacyBeaconService;
   private final NoteService noteService;
-  private final JobService jobService;
+  private final GetUserService getUserService;
 
   @Autowired
   public RegistrationService(
@@ -59,7 +48,7 @@ public class RegistrationService {
     EmergencyContactService emergencyContactService,
     LegacyBeaconService legacyBeaconService,
     NoteService noteService,
-    JobService jobService
+    GetUserService getUserService
   ) {
     this.accountHolderService = accountHolderService;
     this.beaconService = beaconService;
@@ -68,7 +57,7 @@ public class RegistrationService {
     this.emergencyContactService = emergencyContactService;
     this.legacyBeaconService = legacyBeaconService;
     this.noteService = noteService;
-    this.jobService = jobService;
+    this.getUserService = getUserService;
   }
 
   public Registration register(Registration registration) {
@@ -98,19 +87,15 @@ public class RegistrationService {
     return getAssociatedAggregates(beacon);
   }
 
-  public void softDelete(DeleteRegistrationDTO dto) {
-    Registration registration = getByBeaconId(new BeaconId(dto.getBeaconId()));
-    AccountHolder accountHolder = accountHolderService
-      .getAccountHolder(registration.getBeacon().getAccountHolderId())
-      .orElseThrow(ResourceNotFoundException::new);
-
+  public void delete(DeleteBeaconDTO dto) {
     BeaconId beaconId = new BeaconId(dto.getBeaconId());
     Beacon deletedBeacon = beaconService.softDelete(beaconId);
 
-    // if account holder id is null
-    // we know it's brt team deleting it
-    // change name back to accountHolderId
-    if (accountHolder.getId() == new AccountHolderId(dto.getDeletingUserId())) {
+    if (dto.getAccountHolderId() != null) {
+      AccountHolder accountHolder = accountHolderService
+        .getAccountHolder(new AccountHolderId(dto.getAccountHolderId()))
+        .orElseThrow(ResourceNotFoundException::new);
+
       deleteAssociatedAggregates(beaconId, false);
       noteService.createNoteForDeletedRegistration(
         accountHolder,
@@ -120,12 +105,13 @@ public class RegistrationService {
         "The account holder deleted the record with reason: '%s'"
       );
     } else {
+      User brtUser = getUserService.getUser();
       deleteAssociatedAggregates(beaconId, true);
       noteService.createNoteForDeletedRegistration(
-        accountHolder,
+        brtUser,
         deletedBeacon,
         dto.getReason(),
-        accountHolder.getFullName(),
+        brtUser.getFullName(),
         "The Beacon Registry Team deleted the record with reason: '%s'"
       );
     }
@@ -236,5 +222,15 @@ public class RegistrationService {
       beacon.getHexId(),
       accountHolder.getEmail()
     );
+  }
+
+  // not sure this should be here
+  public void deleteLegacyBeacon(DeleteBeaconDTO dto) {
+    Beacon beacon = getByBeaconId(new BeaconId(dto.getBeaconId())).getBeacon();
+    AccountHolder accountHolder = accountHolderService
+      .getAccountHolder(beacon.getAccountHolderId())
+      .orElseThrow(ResourceNotFoundException::new);
+
+    legacyBeaconService.delete(beacon.getHexId(), accountHolder.getEmail());
   }
 }

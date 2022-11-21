@@ -55,7 +55,7 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
     try {
       const deleteBeaconDto: IDeleteBeaconDto = {
         beaconId: beaconId,
-        deletingUserId: "",
+        accountHolderId: "",
         reason: reason,
       };
       await beaconsGateway.deleteBeacon(deleteBeaconDto);

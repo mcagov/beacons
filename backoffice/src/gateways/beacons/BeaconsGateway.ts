@@ -90,9 +90,15 @@ export class BeaconsGateway implements IBeaconsGateway {
   public async deleteBeacon(deleteBeaconDto: IDeleteBeaconDto): Promise<void> {
     try {
       const beaconId = deleteBeaconDto.beaconId;
+      const accessToken = await this._authGateway.getAccessToken();
+
       const response = await axios.patch(
         `${applicationConfig.apiUrl}/registrations/${beaconId}/delete`,
-        deleteBeaconDto
+        deleteBeaconDto,
+        {
+          timeout: applicationConfig.apiTimeoutMs,
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
       );
       return response.data;
     } catch (e) {
