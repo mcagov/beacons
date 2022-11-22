@@ -20,6 +20,7 @@ import uk.gov.mca.beacons.api.emergencycontact.application.EmergencyContactServi
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
@@ -225,11 +226,22 @@ public class RegistrationService {
 
   // not sure this should be here
   public void deleteLegacyBeacon(DeleteBeaconDTO dto) {
-    Beacon beacon = getByBeaconId(new BeaconId(dto.getBeaconId())).getBeacon();
-    AccountHolder accountHolder = accountHolderService
-      .getAccountHolder(beacon.getAccountHolderId())
+    // create this method
+    // BeaconService can get at legacy beacons I think
+    // check the account holder table: do LBs match with any account holder ids?
+    // does a legacy beaco have a ref to an account holder in the table?
+    Beacon legacyBeacon = beaconService
+      .getByBeaconIdWhereStatusIsMigrated(new BeaconId(dto.getBeaconId()))
       .orElseThrow(ResourceNotFoundException::new);
 
-    legacyBeaconService.delete(beacon.getHexId(), accountHolder.getEmail());
+    // want the lb account holder
+    AccountHolder accountHolder = accountHolderService
+      .getAccountHolder(legacyBeacon.getAccountHolderId())
+      .orElseThrow(ResourceNotFoundException::new);
+
+    legacyBeaconService.delete(
+      legacyBeacon.getHexId(),
+      accountHolder.getEmail()
+    );
   }
 }

@@ -11,6 +11,7 @@ import { FunctionComponent } from "react";
 import { PageHeader } from "../components/layout/PageHeader";
 import { PageContent } from "components/layout/PageContent";
 import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
+import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 import { DeleteBeaconFormValues } from "lib/DeleteBeaconFormValues";
 import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
 
@@ -26,7 +27,13 @@ const reasonsForLegacyDeletion: string[] = Object.values(BeaconDeletionReasons);
 export const DeleteLegacyBeaconView: FunctionComponent<
   IDeleteLegacyBeaconViewProps
 > = ({ beaconsGateway, beaconId }): JSX.Element => {
-  const handleSave = () => console.log("Beacon deleted");
+  const deleteLegacyBeaconDto: IDeleteBeaconDto = {
+    beaconId: beaconId,
+    accountHolderId: undefined,
+    reason: "Need 2 delete dis",
+  };
+  const handleSave = async () =>
+    await beaconsGateway.deleteLegacyBeacon(deleteLegacyBeaconDto);
   const handleCancel = () => console.log("Cancelled deleting");
 
   return (
