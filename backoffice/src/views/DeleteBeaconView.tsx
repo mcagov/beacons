@@ -9,15 +9,12 @@ import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
 import { logToServer } from "../utils/logger";
 import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
+import { DeleteBeaconFormValues } from "lib/DeleteBeaconFormValues";
 
 interface IDeleteBeaconViewProps {
   beaconsGateway: IBeaconsGateway;
   beaconId: string;
 }
-
-type DeleteBeaconInputs = {
-  reason: string;
-};
 
 export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
   beaconsGateway,
@@ -42,12 +39,11 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<DeleteBeaconInputs>({
+  } = useForm<DeleteBeaconFormValues>({
     mode: "onChange",
   });
-  // const routerHistory = useHistory();
 
-  const submitReasonHandler: SubmitHandler<DeleteBeaconInputs> = async (
+  const submitReasonHandler: SubmitHandler<DeleteBeaconFormValues> = async (
     formInputs
   ) => await deleteRecord(formInputs.reason);
 

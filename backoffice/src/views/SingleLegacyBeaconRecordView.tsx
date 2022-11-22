@@ -111,6 +111,15 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             </Button>
           </span>
         </div>
+        <span className="delete-record">
+          <Button
+            href={`/backoffice#/legacy-delete/${beaconId}`}
+            variant="outlined"
+            color="error"
+          >
+            Delete record
+          </Button>
+        </span>
       </PageHeader>
       <PageContent>
         <LegacyBeaconSummaryPanel legacyBeacon={beacon} />

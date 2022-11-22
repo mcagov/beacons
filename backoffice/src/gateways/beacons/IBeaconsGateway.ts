@@ -3,6 +3,7 @@ import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { BeaconRowData } from "../../components/BeaconsTable";
 import { IBeacon } from "../../entities/IBeacon";
+import { AxiosResponse } from "axios";
 
 export type GetAllBeaconsFilters = Partial<
   Pick<
@@ -32,5 +33,8 @@ export interface IBeaconsGateway {
     beaconId: string,
     updatedFields: Partial<IBeacon>
   ) => Promise<IBeacon>;
-  deleteBeacon: (deleteBeaconDto: IDeleteBeaconDto) => Promise<void>;
+  deleteBeacon: (deleteBeaconDto: IDeleteBeaconDto) => Promise<AxiosResponse>;
+  deleteLegacyBeacon: (
+    deleteBeaconDto: IDeleteBeaconDto
+  ) => Promise<AxiosResponse>;
 }

@@ -46,7 +46,7 @@ public class LegacyBeaconController {
     return legacyBeaconMapper.toWrapperDTO(legacyBeacon);
   }
 
-  @PatchMapping(value = "/{uuid}/delete")
+  @PatchMapping(value = "backoffice/{uuid}/delete")
   public ResponseEntity<Void> delete(
     @PathVariable("uuid") UUID beaconId,
     @RequestBody @Valid DeleteBeaconDTO dto

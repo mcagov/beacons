@@ -17,6 +17,7 @@ describe("BeaconSummaryPanel", () => {
       getAllBeacons: jest.fn(),
       updateBeacon: jest.fn(),
       deleteBeacon: jest.fn(),
+      deleteLegacyBeacon: jest.fn(),
     };
   });
 

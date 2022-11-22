@@ -87,7 +87,9 @@ export class BeaconsGateway implements IBeaconsGateway {
     }
   }
 
-  public async deleteBeacon(deleteBeaconDto: IDeleteBeaconDto): Promise<void> {
+  public async deleteBeacon(
+    deleteBeaconDto: IDeleteBeaconDto
+  ): Promise<AxiosResponse> {
     try {
       const data = {
         beaconId: deleteBeaconDto.beaconId,
@@ -95,10 +97,34 @@ export class BeaconsGateway implements IBeaconsGateway {
         reason: deleteBeaconDto.reason,
       };
       const accessToken = await this._authGateway.getAccessToken();
-      console.log(accessToken);
 
       const response = await axios.patch(
         `${applicationConfig.apiUrl}/registrations/backoffice/${data.beaconId}/delete`,
+        data,
+        {
+          timeout: applicationConfig.apiTimeoutMs,
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async deleteLegacyBeacon(
+    deleteBeaconDto: IDeleteBeaconDto
+  ): Promise<AxiosResponse> {
+    try {
+      const data = {
+        beaconId: deleteBeaconDto.beaconId,
+        accountHolderId: deleteBeaconDto.accountHolderId,
+        reason: deleteBeaconDto.reason,
+      };
+      const accessToken = await this._authGateway.getAccessToken();
+
+      const response = await axios.patch(
+        `${applicationConfig.apiUrl}/legacy-beacon/backoffice/${data.beaconId}/delete`,
         data,
         {
           timeout: applicationConfig.apiTimeoutMs,

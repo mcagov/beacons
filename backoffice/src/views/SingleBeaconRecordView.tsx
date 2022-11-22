@@ -20,8 +20,6 @@ import { BeaconSummaryPanel } from "../panels/beaconSummaryPanel/BeaconSummaryPa
 import { EmergencyContactPanel } from "../panels/emergencyContactPanel/EmergencyContactPanel";
 import { NotesPanel } from "../panels/notesPanel/NotesPanel";
 import { logToServer } from "../utils/logger";
-import { DialogueBox } from "components/DialogueBox";
-import { useHistory } from "react-router-dom";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -48,7 +46,6 @@ export const SingleBeaconRecordView: FunctionComponent<
   ISingleBeaconRecordViewProps
 > = ({ beaconsGateway, usesGateway, notesGateway, beaconId }): JSX.Element => {
   const classes = useStyles();
-  const routerHistory = useHistory();
 
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const handleChange = (event: React.ChangeEvent<{}>, tab: number) => {
@@ -57,7 +54,6 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   const [beacon, setBeacon] = useState<IBeacon>({} as IBeacon);
   const [notes, setNotes] = useState<INote[]>([] as INote[]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect((): void => {
     const fetchBeacon = async (id: string) => {
@@ -73,19 +69,6 @@ export const SingleBeaconRecordView: FunctionComponent<
 
     fetchBeacon(beaconId);
   }, [beaconId, beaconsGateway, notesGateway]);
-
-  //resueable modal are you sure?
-  //if yes then delete and redirect back to the beacon list
-  const openDialogueBox = async () => {
-    setIsOpen(true);
-    console.log(isOpen);
-  };
-
-  const handleSelectedOption = async (selectOption: boolean) => {
-    if (selectOption) {
-      routerHistory.push("/delete");
-    }
-  };
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
