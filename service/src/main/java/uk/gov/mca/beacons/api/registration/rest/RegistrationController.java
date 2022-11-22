@@ -5,24 +5,18 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-import org.springframework.batch.core.JobParametersInvalidException;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
+import uk.gov.mca.beacons.api.auth.application.GetUserService;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
-import uk.gov.mca.beacons.api.dto.WrapperDTO;
 import uk.gov.mca.beacons.api.exceptions.InvalidBeaconDeleteException;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.mappers.RegistrationMapper;
+import uk.gov.mca.beacons.api.shared.domain.user.User;
 
 @RestController
 @RequestMapping("/spring-api/registrations")
@@ -31,14 +25,17 @@ public class RegistrationController {
 
   private final RegistrationService registrationService;
   private final RegistrationMapper registrationMapper;
+  private final GetUserService getUserService;
 
   @Autowired
   public RegistrationController(
     RegistrationService createRegistrationService,
-    RegistrationMapper registrationMapper
+    RegistrationMapper registrationMapper,
+    GetUserService getUserService
   ) {
     this.registrationService = createRegistrationService;
     this.registrationMapper = registrationMapper;
+    this.getUserService = getUserService;
   }
 
   @PostMapping(value = "/register")
@@ -130,6 +127,21 @@ public class RegistrationController {
     ) throw new InvalidBeaconDeleteException();
 
     registrationService.delete(dto);
+
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PatchMapping(value = "/backoffice/{uuid}/delete")
+  public ResponseEntity<Void> softDeleteRecord(
+    @PathVariable("uuid") UUID beaconId,
+    @RequestBody @Valid DeleteBeaconDTO dto
+  ) {
+    if (
+      !beaconId.equals(dto.getBeaconId())
+    ) throw new InvalidBeaconDeleteException();
+
+    User brtUser = getUserService.getUser();
+    registrationService.delete(dto, brtUser);
 
     return new ResponseEntity<>(HttpStatus.OK);
   }

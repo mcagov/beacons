@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
-import uk.gov.mca.beacons.api.auth.application.GetUserService;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
@@ -37,7 +36,6 @@ public class RegistrationService {
   private final EmergencyContactService emergencyContactService;
   private final LegacyBeaconService legacyBeaconService;
   private final NoteService noteService;
-  private final GetUserService getUserService;
 
   @Autowired
   public RegistrationService(
@@ -47,8 +45,7 @@ public class RegistrationService {
     BeaconUseService beaconUseService,
     EmergencyContactService emergencyContactService,
     LegacyBeaconService legacyBeaconService,
-    NoteService noteService,
-    GetUserService getUserService
+    NoteService noteService
   ) {
     this.accountHolderService = accountHolderService;
     this.beaconService = beaconService;
@@ -57,7 +54,6 @@ public class RegistrationService {
     this.emergencyContactService = emergencyContactService;
     this.legacyBeaconService = legacyBeaconService;
     this.noteService = noteService;
-    this.getUserService = getUserService;
   }
 
   public Registration register(Registration registration) {
@@ -87,7 +83,7 @@ public class RegistrationService {
     return getAssociatedAggregates(beacon);
   }
 
-  public void delete(DeleteBeaconDTO dto) {
+  public void delete(DeleteBeaconDTO dto, User brtUser) {
     BeaconId beaconId = new BeaconId(dto.getBeaconId());
     Beacon deletedBeacon = beaconService.softDelete(beaconId);
 
@@ -104,8 +100,7 @@ public class RegistrationService {
         "Account Holder",
         "The account holder deleted the record with reason: '%s'"
       );
-    } else {
-      User brtUser = getUserService.getUser();
+    } else if (brtUser != null) {
       deleteAssociatedAggregates(beaconId, true);
       noteService.createNoteForDeletedRegistration(
         brtUser,
@@ -115,6 +110,10 @@ public class RegistrationService {
         "The Beacon Registry Team deleted the record with reason: '%s'"
       );
     }
+  }
+
+  public void delete(DeleteBeaconDTO dto) {
+    delete(dto, null);
   }
 
   /**

@@ -71,7 +71,7 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
     const url = `${this.apiUrl}/registrations/${json.beaconId}/delete`;
     const data = {
       beaconId: json.beaconId,
-      deletingUserId: json.accountHolderId,
+      accountHolderId: json.accountHolderId,
       reason: json.reason,
     };
 
