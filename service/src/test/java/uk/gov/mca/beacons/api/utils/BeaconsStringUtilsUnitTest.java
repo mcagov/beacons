@@ -2,8 +2,9 @@ package uk.gov.mca.beacons.api.utils;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import uk.gov.mca.beacons.api.beaconuse.domain.Activity;
 
-public class StringUtilsUnitTest {
+public class BeaconsStringUtilsUnitTest {
 
   @Test
   public void test_getMultipleValuesAsString_expectValid() {
@@ -13,7 +14,7 @@ public class StringUtilsUnitTest {
     String value3 = "please";
     String delimiter = " / ";
     //when
-    String output = StringUtils.getMultipleValuesAsString(
+    String output = BeaconsStringUtils.getMultipleValuesAsString(
       delimiter,
       value1,
       value2,
@@ -32,7 +33,7 @@ public class StringUtilsUnitTest {
     String value3 = "please";
     String delimiter = " / ";
     //when
-    String output = StringUtils.getMultipleValuesAsString(
+    String output = BeaconsStringUtils.getMultipleValuesAsString(
       delimiter,
       value1,
       value2,
@@ -51,7 +52,7 @@ public class StringUtilsUnitTest {
     String value3 = " ";
     String delimiter = " / ";
     //when
-    String output = StringUtils.getMultipleValuesAsString(
+    String output = BeaconsStringUtils.getMultipleValuesAsString(
       delimiter,
       value1,
       value2,
@@ -69,7 +70,7 @@ public class StringUtilsUnitTest {
     String value2 = null;
     String delimiter = " / ";
     //when
-    String output = StringUtils.getMultipleValuesAsString(
+    String output = BeaconsStringUtils.getMultipleValuesAsString(
       delimiter,
       value1,
       value2
@@ -87,7 +88,7 @@ public class StringUtilsUnitTest {
     String value3 = "    please    ";
     String delimiter = " / ";
     //when
-    String output = StringUtils.getMultipleValuesAsString(
+    String output = BeaconsStringUtils.getMultipleValuesAsString(
       delimiter,
       value1,
       value2,
@@ -96,5 +97,35 @@ public class StringUtilsUnitTest {
 
     //then
     Assert.assertEquals("test / me / please", output);
+  }
+
+  @Test
+  public void test_getActivityCARGO_AIRPLANEAsString_expectReadableValue() {
+    //given
+    Activity activity = Activity.CARGO_AIRPLANE;
+
+    String activityName = BeaconsStringUtils.enumAsString(activity);
+    //then
+    Assert.assertEquals("Cargo Airplane", activityName);
+  }
+
+  @Test
+  public void test_getActivityHOT_AIR_BALLOONAsString_expectReadableValue() {
+    //given
+    Activity activity = Activity.HOT_AIR_BALLOON;
+
+    String activityName = BeaconsStringUtils.enumAsString(activity);
+    //then
+    Assert.assertEquals("Hot Air Balloon", activityName);
+  }
+
+  @Test
+  public void test_getActivityCYCLINGAsString_expectReadableValue() {
+    //given
+    Activity activity = Activity.CYCLING;
+
+    String activityName = BeaconsStringUtils.enumAsString(activity);
+    //then
+    Assert.assertEquals("Cycling", activityName);
   }
 }

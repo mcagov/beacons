@@ -3,8 +3,9 @@ package uk.gov.mca.beacons.api.utils;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
-public class StringUtils {
+public class BeaconsStringUtils {
 
   public static String getMultipleValuesAsString(
     String delimiter,
@@ -23,5 +24,12 @@ public class StringUtils {
     } catch (Exception e) {
       return "";
     }
+  }
+
+  public static String enumAsString(Enum value) {
+    return Arrays
+      .stream(value.name().split("_"))
+      .map(s -> StringUtils.capitalize(s.toLowerCase()))
+      .collect(Collectors.joining(" "));
   }
 }

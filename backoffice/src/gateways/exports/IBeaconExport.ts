@@ -17,6 +17,7 @@ export interface IBeaconExport {
   batteryExpiryDate: string;
   codingProtocol: string;
   cstaNumber: string;
+  chkCode: string;
   beaconNote: string;
   notes: IBeaconExportNote[];
   uses: IBeaconExportUse[];
@@ -64,9 +65,13 @@ export interface IBeaconExportAccountHolder {
 export interface IBeaconExportUse {
   //Generic, TODO - split out into types.
   environment: string;
+  typeOfUse: string;
+  beaconLocation: string;
+  beaconPosition: string;
+  windfarmLocation: string;
+  rigPlatformLocation: string;
   vesselName: string;
   homePort: string;
-  vessel: string;
   maxPersonOnBoard: string;
   vesselCallsign: string;
   mmsiNumber: string;
@@ -80,7 +85,8 @@ export interface IBeaconExportUse {
   coastguardCGRefNumber: string;
   aircraftType: string;
   aircraftRegistrationMark: string;
-  TwentyFourBitAddressInHex: string;
+  aircraftManufacturer: string;
+  twentyFourBitAddressInHex: string;
   principalAirport: string;
   secondaryAirport: string;
   isDongle: string;

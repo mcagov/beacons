@@ -1,7 +1,5 @@
 package uk.gov.mca.beacons.api.beaconuse.domain;
 
-import static uk.gov.mca.beacons.api.utils.StringUtils.getMultipleValuesAsString;
-
 import java.time.OffsetDateTime;
 import java.util.*;
 import javax.persistence.*;
@@ -15,6 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
+import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
 /**
  * TODO: We are knowingly avoiding refactoring tech debt by continuing to use a single BeaconUse class
@@ -316,7 +315,7 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
     if (BooleanUtils.isTrue(mobileTelephone)) {
       communicationTypes.put(
         "Mobile Telephone(s)",
-        getMultipleValuesAsString(
+        BeaconsStringUtils.getMultipleValuesAsString(
           "-",
           getMobileTelephone1(),
           getMobileTelephone2()
@@ -328,5 +327,15 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
     }
 
     return communicationTypes;
+  }
+
+  public String getUseType() {
+    String activityName = getActivity() == Activity.OTHER
+      ? BeaconsStringUtils.valueOrEmpty(otherActivity)
+      : BeaconsStringUtils.valueOrEmpty(
+        BeaconsStringUtils.enumAsString(activity)
+      );
+
+    return String.format("%s (%s)", activityName, purpose.name());
   }
 }
