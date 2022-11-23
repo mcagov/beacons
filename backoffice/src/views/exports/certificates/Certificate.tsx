@@ -193,11 +193,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
 
         <CertificateField
           classes="half"
-          title="Beacon Location"
-          value={use.beaconLocation}
-        />
-        <CertificateField
-          classes="half"
           title="Beacon Position"
           value={use.beaconPosition}
         />
@@ -313,11 +308,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
 
         <CertificateField
           classes="half"
-          title="Beacon Location"
-          value={use.beaconLocation}
-        />
-        <CertificateField
-          classes="half"
           title="Beacon Position"
           value={use.beaconPosition}
         />
@@ -391,11 +381,6 @@ const LandUse: FunctionComponent<UseProps> = ({
           value={use.typeOfUse}
         />
 
-        <CertificateField
-          classes="half"
-          title="Beacon Location"
-          value={use.beaconLocation}
-        />
         <CertificateField
           classes="half"
           title="Beacon Position"
