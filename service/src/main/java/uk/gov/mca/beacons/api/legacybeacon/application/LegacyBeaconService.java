@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -9,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyData;
+import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 
 @Transactional
@@ -65,9 +63,13 @@ public class LegacyBeaconService {
     legacyBeacons.forEach(LegacyBeacon::softDelete);
 
     LegacyBeacon legacyBeacon = legacyBeacons.get(0);
-    LegacyData blankLegacyData = new LegacyData();
+    LegacyData legacyBeaconData = legacyBeacon.getData();
 
-    legacyBeacon.setData(blankLegacyData);
+    legacyBeaconData.setOwner(new LegacyOwner());
+    legacyBeaconData.setUses(new ArrayList<LegacyUse>());
+    legacyBeaconData.setEmergencyContact(new LegacyEmergencyContact());
+    legacyBeaconData.setSecondaryOwners(new ArrayList<LegacySecondaryOwner>());
+
     legacyBeacon.setOwnerEmail("");
     legacyBeacon.setOwnerName("");
     legacyBeacon.setLastModifiedDate(OffsetDateTime.now());

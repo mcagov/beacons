@@ -14,6 +14,7 @@ import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
 import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 import { DeleteBeaconFormValues } from "lib/DeleteBeaconFormValues";
 import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
+import { Redirect, useHistory } from "react-router-dom";
 
 // is there a way we can make this reuseable and pass in the different lists of reasons from outside?
 // how will it know which gateway method to call?
@@ -27,18 +28,27 @@ const reasonsForLegacyDeletion: string[] = Object.values(BeaconDeletionReasons);
 export const DeleteLegacyBeaconView: FunctionComponent<
   IDeleteLegacyBeaconViewProps
 > = ({ beaconsGateway, beaconId }): JSX.Element => {
-  const deleteLegacyBeaconDto: IDeleteBeaconDto = {
-    beaconId: beaconId,
-    accountHolderId: undefined,
-    reason: "Need 2 delete dis",
+  const history = useHistory();
+
+  const handleSave = async (values: DeleteBeaconFormValues) => {
+    await deleteLegacyRecord(values.reason);
+    history.push("/");
   };
-  const handleSave = async () =>
+
+  const deleteLegacyRecord = async (reason: string) => {
+    const deleteLegacyBeaconDto: IDeleteBeaconDto = {
+      beaconId: beaconId,
+      accountHolderId: undefined,
+      reason: reason,
+    };
     await beaconsGateway.deleteLegacyBeacon(deleteLegacyBeaconDto);
-  const handleCancel = () => console.log("Cancelled deleting");
+  };
+
+  const handleCancel = () => history.goBack();
 
   return (
     <div>
-      <PageHeader>Delete beacon</PageHeader>
+      <PageHeader>Delete migrated beacon record</PageHeader>
       <PageContent>
         <h2>
           Are you sure you want to permanently delete this migrated record?
@@ -73,17 +83,19 @@ const DeleteLegacyBeaconReasonForm = (props: DeleteLegacyBeaconFormProps) => {
             Why do you want to delete this record? (Required)
           </FormLabel>
           <RadioGroup aria-label="note type" name="radio-buttons-group">
-            <label>
-              <Field
-                as={Radio}
-                type="radio"
-                id="reason"
-                name="reason"
-                value={reasonsForLegacyDeletion[0]}
-                data-testid="deletion-reason"
-              />
-              {reasonsForLegacyDeletion[0]}
-            </label>
+            {reasonsForLegacyDeletion.map((r, index) => (
+              <label key={index}>
+                <Field
+                  as={Radio}
+                  type="radio"
+                  id="reason"
+                  name="reason"
+                  value={r}
+                  data-testid="deletion-reason"
+                />
+                {r}
+              </label>
+            ))}
           </RadioGroup>
         </FormControl>
         <Box mt={2} mr={2}>

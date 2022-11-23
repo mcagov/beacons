@@ -1,86 +1,53 @@
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
+import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import { FunctionComponent } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import createStyles from "@mui/styles/createStyles";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
 import { PageHeader } from "../components/layout/PageHeader";
 import { PageContent } from "components/layout/PageContent";
 import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
-import { logToServer } from "../utils/logger";
 import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
-import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
 import { DeleteBeaconFormValues } from "lib/DeleteBeaconFormValues";
+import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
+import { useHistory } from "react-router-dom";
 
 interface IDeleteBeaconViewProps {
   beaconsGateway: IBeaconsGateway;
   beaconId: string;
 }
 
+const reasonsForDeletion: string[] = Object.values(BeaconDeletionReasons);
+
 export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
   beaconsGateway,
   beaconId,
 }): JSX.Element => {
-  const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-      root: {
-        flexGrow: 1,
-      },
-      paper: {
-        padding: theme.spacing(2),
-      },
-      button: {
-        marginLeft: theme.spacing(2),
-      },
-    })
-  );
+  const history = useHistory();
 
-  const classes = useStyles();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<DeleteBeaconFormValues>({
-    mode: "onChange",
-  });
-
-  const submitReasonHandler: SubmitHandler<DeleteBeaconFormValues> = async (
-    formInputs
-  ) => await deleteRecord(formInputs.reason);
-
-  const deleteRecord = async (reason: string) => {
-    try {
-      const deleteBeaconDto: IDeleteBeaconDto = {
-        beaconId: beaconId,
-        accountHolderId: "",
-        reason: reason,
-      };
-      await beaconsGateway.deleteBeacon(deleteBeaconDto);
-    } catch (error) {
-      logToServer.error(error);
-    }
+  const handleSave = async (values: DeleteBeaconFormValues) => {
+    await deleteLegacyRecord(values.reason);
+    history.push("/");
   };
 
-  const reasonsForDeletion: string[] = Object.values(BeaconDeletionReasons);
+  const deleteLegacyRecord = async (reason: string) => {
+    const deleteLegacyBeaconDto: IDeleteBeaconDto = {
+      beaconId: beaconId,
+      accountHolderId: undefined,
+      reason: reason,
+    };
+    await beaconsGateway.deleteLegacyBeacon(deleteLegacyBeaconDto);
+  };
 
-  const reasonsSection =
-    reasonsForDeletion && reasonsForDeletion.length > 0 ? (
-      <div className={classes.root}>
-        {reasonsForDeletion.map((r, index) => (
-          <div>
-            <input
-              type="radio"
-              value={r}
-              {...register("reason", { required: true })}
-            ></input>
-            <label htmlFor="reason">{r}</label>
-          </div>
-        ))}
-      </div>
-    ) : null;
+  const handleCancel = () => history.goBack();
 
   return (
     <div>
-      <PageHeader>Delete beacon</PageHeader>
+      <PageHeader>Delete beacon record</PageHeader>
       <PageContent>
         <h2>Are you sure you want to permanently delete this record?</h2>
         <p>
@@ -88,12 +55,85 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
           associated information.
         </p>
         <h2>Please enter a reason for deleting this beacon</h2>
-        <form onSubmit={handleSubmit(submitReasonHandler)}>
-          {reasonsSection}
-          {errors.reason && "Please enter a reason for deletion"}
-          <button disabled={!isValid}>Delete beacon</button>
-        </form>
+        <DeleteBeaconSection onSave={handleSave} onCancel={handleCancel} />
       </PageContent>
     </div>
   );
 };
+
+interface DeleteBeaconFormProps extends FormikProps<DeleteBeaconFormValues> {
+  onCancel: () => void;
+}
+
+const DeleteBeaconReasonForm = (props: DeleteBeaconFormProps) => {
+  const { errors, isSubmitting, onCancel } = props;
+
+  return (
+    <>
+      <Form>
+        <FormControl component="fieldset">
+          <FormLabel component="legend">
+            Why do you want to delete this record? (Required)
+          </FormLabel>
+          <RadioGroup aria-label="note type" name="radio-buttons-group">
+            {reasonsForDeletion.map((r, index) => (
+              <label key={index}>
+                <Field
+                  as={Radio}
+                  type="radio"
+                  id="reason"
+                  name="reason"
+                  value={r}
+                  data-testid="deletion-reason"
+                />
+                {r}
+              </label>
+            ))}
+          </RadioGroup>
+        </FormControl>
+        <Box mt={2} mr={2}>
+          <Button
+            name="save"
+            type="submit"
+            color="secondary"
+            data-testid="save"
+            variant="contained"
+            disabled={isSubmitting || !!errors.reason}
+          >
+            Delete beacon
+          </Button>
+          <Button name="cancel" onClick={onCancel} data-testid="cancel">
+            Cancel
+          </Button>
+        </Box>
+      </Form>
+    </>
+  );
+};
+
+export const DeleteBeaconSection = withFormik<
+  {
+    onSave: (reason: DeleteBeaconFormValues) => void;
+    onCancel: () => void;
+  },
+  DeleteBeaconFormValues
+>({
+  mapPropsToErrors: () => {
+    return {
+      reason: "Required",
+    };
+  },
+
+  validate: (values: DeleteBeaconFormValues) => {
+    let errors: FormikErrors<DeleteBeaconFormValues> = {};
+    if (!values.reason) {
+      errors.reason = "Required";
+    }
+    return errors;
+  },
+
+  handleSubmit: (values: DeleteBeaconFormValues, { setSubmitting, props }) => {
+    props.onSave(values);
+    setSubmitting(false);
+  },
+})(DeleteBeaconReasonForm);
