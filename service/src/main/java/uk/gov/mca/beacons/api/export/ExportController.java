@@ -127,10 +127,10 @@ class ExportController {
 
     List<BeaconExportDTO> dataList = exportService.getAll();
 
-    //            .stream()
-    //                                      .filter(dto -> dto!=null)
-    //            .filter(b -> new Date(b.getLastModifiedDate()).isBefore(form.getLastModifiedFrom()))
-    //                                      .collect(Collectors.toList());
+    //    dataList = dataList.stream()
+    //                .filter(dto -> dto!=null)
+    //                .filter(b -> new Date(b.getLastModifiedDate()).isBefore(form.getLastModifiedFrom()))
+    //                .collect(Collectors.toList());
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_JSON)

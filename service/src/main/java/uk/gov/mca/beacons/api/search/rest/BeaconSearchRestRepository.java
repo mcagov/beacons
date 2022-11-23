@@ -1,8 +1,10 @@
 package uk.gov.mca.beacons.api.search.rest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import javax.validation.Valid;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.web.bind.annotation.RequestBody;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportSearchForm;
 import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
 
 /**
@@ -79,5 +83,19 @@ interface BeaconSearchRestRepository
     @Param("cospasSarsatNumber") String cospasSarsatNumber,
     @Param("manufacturerSerialNumber") String manufacturerSerialNumber,
     Pageable page
+  );
+
+  @RestResource(path = "export-search", rel = "findAllBeaconsForExport")
+  @Query(
+    "SELECT b FROM BeaconSearchEntity b WHERE" +
+    "(COALESCE(LOWER(b.ownerName), '') LIKE LOWER(CONCAT('%', :name, '%')) " +
+    " OR COALESCE(LOWER(b.accountHolderName), '') LIKE LOWER(CONCAT('%', :name, '%'))) "
+  )
+  List<BeaconSearchEntity> findAllBeaconsForExport(
+    @Param("name") String name
+    //            @Param("registrationFrom")  Date registrationFrom,
+    //            @Param("registrationTo")  Date registrationTo,
+    //            @Param("lastModifiedFrom")  Date lastModifiedFrom,
+    //            @Param("lastModifiedTo")  Date lastModifiedTo
   );
 }
