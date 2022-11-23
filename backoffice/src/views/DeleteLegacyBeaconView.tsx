@@ -14,7 +14,7 @@ import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
 import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 import { DeleteBeaconFormValues } from "lib/DeleteBeaconFormValues";
 import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 // is there a way we can make this reuseable and pass in the different lists of reasons from outside?
 // how will it know which gateway method to call?

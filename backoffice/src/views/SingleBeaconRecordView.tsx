@@ -73,6 +73,21 @@ export const SingleBeaconRecordView: FunctionComponent<
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
 
+  const deleteBeaconButton =
+    beacon.status.trim().toUpperCase() === "DELETED" ? (
+      <span></span>
+    ) : (
+      <span className="delete-record">
+        <Button
+          href={`/backoffice#/delete/${beaconId}`}
+          variant="outlined"
+          color="error"
+        >
+          Delete record
+        </Button>
+      </span>
+    );
+
   return (
     <div className={classes.root}>
       <PageHeader>
@@ -121,15 +136,7 @@ export const SingleBeaconRecordView: FunctionComponent<
             </Button>
           </span>
         </div>
-        <span className="delete-record">
-          <Button
-            href={`/backoffice#/delete/${beaconId}`}
-            variant="outlined"
-            color="error"
-          >
-            Delete record
-          </Button>
-        </span>
+        {deleteBeaconButton}
       </PageHeader>
       <PageContent>
         <BeaconSummaryPanel

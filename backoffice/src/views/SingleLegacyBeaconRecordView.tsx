@@ -16,6 +16,7 @@ import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { logToServer } from "../utils/logger";
+import { BeaconStatuses } from "entities/IBeacon";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -63,6 +64,22 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
+
+  const deleteLegacyBeaconButton =
+    beacon.beaconStatus === BeaconStatuses.Deleted ? (
+      <span></span>
+    ) : (
+      <span className="delete-record">
+        <Button
+          href={`/backoffice#/legacy-delete/${beaconId}`}
+          variant="outlined"
+          color="error"
+        >
+          Delete record
+        </Button>
+      </span>
+    );
+
   return (
     <div className={classes.root}>
       <PageHeader>
@@ -111,15 +128,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             </Button>
           </span>
         </div>
-        <span className="delete-record">
-          <Button
-            href={`/backoffice#/legacy-delete/${beaconId}`}
-            variant="outlined"
-            color="error"
-          >
-            Delete record
-          </Button>
-        </span>
+        {deleteLegacyBeaconButton}
       </PageHeader>
       <PageContent>
         <LegacyBeaconSummaryPanel legacyBeacon={beacon} />
