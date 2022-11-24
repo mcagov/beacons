@@ -83,7 +83,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
       <CertificateField
         classes="half"
         title="Beacon Model"
-        value={beacon.manufacturerSerialNumber}
+        value={beacon.beaconModel}
       />
       <CertificateField
         classes="half"
@@ -179,8 +179,8 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="half"
-          title="Type Of Vessel"
-          value={use.vessel}
+          title="Type Of Use"
+          value={use.typeOfUse}
         />
         <CertificateField
           classes="half"
@@ -271,7 +271,7 @@ const AviationUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="half"
           title="24-Bit Address In Hex"
-          value={use.TwentyFourBitAddressInHex}
+          value={use.twentyFourBitAddressInHex}
         />
         <CertificateField
           classes="half"
@@ -374,8 +374,8 @@ export const GenericUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="half"
-          title="Type Of Vessel"
-          value={use.vessel}
+          title="Type Of Use"
+          value={use.typeOfUse}
         />
         <CertificateField
           classes="half"
@@ -446,8 +446,13 @@ export const GenericUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="half"
+          title="Aircraft Manufacturer & Model"
+          value={use.aircraftManufacturer}
+        />
+        <CertificateField
+          classes="half"
           title="24-Bit Address In Hex"
-          value={use.TwentyFourBitAddressInHex}
+          value={use.twentyFourBitAddressInHex}
         />
         <CertificateField
           classes="half"
