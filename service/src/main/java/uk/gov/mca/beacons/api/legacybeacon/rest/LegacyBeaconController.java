@@ -46,16 +46,8 @@ public class LegacyBeaconController {
     return legacyBeaconMapper.toWrapperDTO(legacyBeacon);
   }
 
-  @PatchMapping(value = "/backoffice/{uuid}/delete")
-  public ResponseEntity<Void> delete(
-    @PathVariable("uuid") UUID beaconId,
-    @RequestBody @Valid DeleteBeaconDTO dto
-  ) {
-    if (
-      !beaconId.equals(dto.getBeaconId())
-    ) throw new InvalidBeaconDeleteException();
-
-    // yuck
+  @PatchMapping(value = "/backoffice/delete")
+  public ResponseEntity<Void> delete(@RequestBody @Valid DeleteBeaconDTO dto) {
     registrationService.deleteLegacyBeacon(dto);
 
     return new ResponseEntity<>(HttpStatus.OK);

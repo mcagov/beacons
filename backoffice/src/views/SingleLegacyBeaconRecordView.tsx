@@ -65,20 +65,20 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
 
-  const deleteLegacyBeaconButton =
-    beacon.beaconStatus === BeaconStatuses.Deleted ? (
-      <span></span>
-    ) : (
-      <span className="delete-record">
-        <Button
-          href={`/backoffice#/legacy-delete/${beaconId}`}
-          variant="outlined"
-          color="error"
-        >
-          Delete record
-        </Button>
-      </span>
-    );
+  const deleteLegacyBeaconButton = (
+    // beacon.beaconStatus === BeaconStatuses.Deleted ? (
+    //   <span></span>
+    // ) :
+    <span className="delete-record">
+      <Button
+        href={`/backoffice#/legacy-delete/${beaconId}`}
+        variant="outlined"
+        color="error"
+      >
+        Delete record
+      </Button>
+    </span>
+  );
 
   return (
     <div className={classes.root}>

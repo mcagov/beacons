@@ -99,7 +99,7 @@ export class BeaconsGateway implements IBeaconsGateway {
       const accessToken = await this._authGateway.getAccessToken();
 
       const response = await axios.patch(
-        `${applicationConfig.apiUrl}/registrations/backoffice/${data.beaconId}/delete`,
+        `${applicationConfig.apiUrl}/registrations/backoffice/delete`,
         data,
         {
           timeout: applicationConfig.apiTimeoutMs,
@@ -124,7 +124,7 @@ export class BeaconsGateway implements IBeaconsGateway {
       const accessToken = await this._authGateway.getAccessToken();
 
       const response = await axios.patch(
-        `${applicationConfig.apiUrl}/legacy-beacon/backoffice/${data.beaconId}/delete`,
+        `${applicationConfig.apiUrl}/legacy-beacon/backoffice/delete`,
         data,
         {
           timeout: applicationConfig.apiTimeoutMs,

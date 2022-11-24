@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
-import uk.gov.mca.beacons.api.registration.rest.DeleteRegistrationDTO;
 
 @AutoConfigureWebTestClient
 public abstract class WebIntegrationTest extends BaseIntegrationTest {

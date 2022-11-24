@@ -30,17 +30,17 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
   const history = useHistory();
 
   const handleSave = async (values: DeleteBeaconFormValues) => {
-    await deleteLegacyRecord(values.reason);
+    await deleteRecord(values.reason);
     history.push("/");
   };
 
-  const deleteLegacyRecord = async (reason: string) => {
+  const deleteRecord = async (reason: string) => {
     const deleteLegacyBeaconDto: IDeleteBeaconDto = {
       beaconId: beaconId,
       accountHolderId: undefined,
       reason: reason,
     };
-    await beaconsGateway.deleteLegacyBeacon(deleteLegacyBeaconDto);
+    await beaconsGateway.deleteBeacon(deleteLegacyBeaconDto);
   };
 
   const handleCancel = () => history.goBack();

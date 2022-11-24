@@ -131,15 +131,10 @@ public class RegistrationController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @PatchMapping(value = "/backoffice/{uuid}/delete")
+  @PatchMapping(value = "/backoffice/delete")
   public ResponseEntity<Void> softDeleteRecord(
-    @PathVariable("uuid") UUID beaconId,
     @RequestBody @Valid DeleteBeaconDTO dto
   ) {
-    if (
-      !beaconId.equals(dto.getBeaconId())
-    ) throw new InvalidBeaconDeleteException();
-
     User brtUser = getUserService.getUser();
     registrationService.delete(dto, brtUser);
 
