@@ -335,7 +335,8 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
       : BeaconsStringUtils.valueOrEmpty(
         BeaconsStringUtils.enumAsString(activity)
       );
+    String purposeName = purpose != null ? purpose.name() : "UNKNOWN";
 
-    return String.format("%s (%s)", activityName, purpose.name());
+    return String.format("%s (%s)", activityName, purposeName);
   }
 }

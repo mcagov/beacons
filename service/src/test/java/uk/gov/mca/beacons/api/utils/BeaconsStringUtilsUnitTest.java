@@ -110,7 +110,7 @@ public class BeaconsStringUtilsUnitTest {
   }
 
   @Test
-  public void test_getActivityHOT_AIR_BALLOONAsString_expectReadableValue() {
+  public void test_getActivity_HOT_AIR_BALLOON_AsString_expectReadableValue() {
     //given
     Activity activity = Activity.HOT_AIR_BALLOON;
 
@@ -120,12 +120,22 @@ public class BeaconsStringUtilsUnitTest {
   }
 
   @Test
-  public void test_getActivityCYCLINGAsString_expectReadableValue() {
+  public void test_getActivity_CYCLING_AsString_expectReadableValue() {
     //given
     Activity activity = Activity.CYCLING;
 
     String activityName = BeaconsStringUtils.enumAsString(activity);
     //then
     Assert.assertEquals("Cycling", activityName);
+  }
+
+  @Test
+  public void test_getActivity_DRIVING_AsString_expectReadableValue() {
+    //given
+    Activity activity = Activity.DRIVING;
+
+    String activityName = BeaconsStringUtils.enumAsString(activity);
+    //then
+    Assert.assertEquals("Driving", activityName);
   }
 }

@@ -200,7 +200,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         {use.windfarmLocation && (
           <CertificateField
             classes="half"
-            title="Winffarm Location"
+            title="Windfarm Location"
             value={use.windfarmLocation}
           />
         )}
@@ -208,7 +208,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         {use.rigPlatformLocation && (
           <CertificateField
             classes="half"
-            title="Winffarm Location"
+            title="Windfarm Location"
             value={use.windfarmLocation}
           />
         )}
@@ -390,7 +390,7 @@ const LandUse: FunctionComponent<UseProps> = ({
         {use.windfarmLocation && (
           <CertificateField
             classes="half"
-            title="Winffarm Location"
+            title="Windfarm Location"
             value={use.windfarmLocation}
           />
         )}
@@ -398,7 +398,7 @@ const LandUse: FunctionComponent<UseProps> = ({
         {use.rigPlatformLocation && (
           <CertificateField
             classes="half"
-            title="Winffarm Location"
+            title="Windfarm Location"
             value={use.windfarmLocation}
           />
         )}
