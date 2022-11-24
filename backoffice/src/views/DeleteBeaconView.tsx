@@ -16,6 +16,7 @@ import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
 interface IDeleteBeaconViewProps {
   beaconsGateway: IBeaconsGateway;
   beaconId: string;
+  deleteRecord: any;
 }
 
 const reasonsForDeletion: string[] = Object.values(BeaconDeletionReasons);
@@ -23,19 +24,11 @@ const reasonsForDeletion: string[] = Object.values(BeaconDeletionReasons);
 export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
   beaconsGateway,
   beaconId,
+  deleteRecord,
 }): JSX.Element => {
   const handleSave = async (values: DeleteBeaconFormValues) => {
-    await deleteRecord(values.reason);
+    deleteRecord(values.reason);
     // emit event to parent saying it's been saved
-  };
-
-  const deleteRecord = async (reason: string) => {
-    const deleteLegacyBeaconDto: IDeleteBeaconDto = {
-      beaconId: beaconId,
-      accountHolderId: undefined,
-      reason: reason,
-    };
-    await beaconsGateway.deleteBeacon(deleteLegacyBeaconDto);
   };
 
   const handleCancel = () => console.log("cancel"); // emit event to parent saying cancelled

@@ -45,6 +45,11 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
     selectOption(isActionOption);
   }
 
+  const handleDeleteRecord = async (reason: string) => {
+    const beaconsGateway = gateway as IBeaconsGateway;
+    await beaconsGateway.deleteBeacon();
+  };
+
   return (
     <Dialog
       open={open}
@@ -56,6 +61,7 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
           beaconId={resourceId}
           beaconsGateway={gateway as IBeaconsGateway}
           // listen for the submit form event
+          deleteRecord={handleDeleteRecord}
         />
       )}
       <DialogTitle id="alert-dialog-title">{dialogueTitle}</DialogTitle>
