@@ -5,6 +5,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { DeleteBeaconView } from "views/DeleteBeaconView";
+import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
+import { IAccountHolderGateway } from "gateways/account-holder/IAccountHolderGateway";
 
 interface IDialogueBoxProps {
   isOpen: boolean;
@@ -14,17 +17,28 @@ interface IDialogueBoxProps {
   dismissal: string;
   // yuck how do I improve
   selectOption: any;
+  reasonsForAction?: string[];
+  resourceId: string;
+  gateway: IBeaconsGateway | IAccountHolderGateway;
 }
 
 export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   isOpen,
   dialogueTitle,
   dialogueContentText,
+  // e.g delete beacon
   action,
   dismissal,
   selectOption,
+  reasonsForAction,
+  resourceId,
+  gateway,
 }): JSX.Element => {
   const [open, setOpen] = useState(isOpen);
+  const isDeleteBeaconDialogue =
+    dialogueContentText.includes("beacon") ||
+    dialogueContentText.includes("record") ||
+    dialogueTitle.includes("record");
 
   function handleClick(isActionOption: boolean): void {
     setOpen(false);
@@ -37,6 +51,13 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
+      {isDeleteBeaconDialogue && (
+        <DeleteBeaconView
+          beaconId={resourceId}
+          beaconsGateway={gateway as IBeaconsGateway}
+          // listen for the submit form event
+        />
+      )}
       <DialogTitle id="alert-dialog-title">{dialogueTitle}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">

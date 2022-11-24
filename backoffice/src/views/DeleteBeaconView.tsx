@@ -8,13 +8,10 @@ import {
 } from "@mui/material";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import { FunctionComponent } from "react";
-import { PageHeader } from "../components/layout/PageHeader";
-import { PageContent } from "components/layout/PageContent";
 import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
 import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 import { DeleteBeaconFormValues } from "lib/DeleteBeaconFormValues";
 import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
-import { useHistory } from "react-router-dom";
 
 interface IDeleteBeaconViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -27,11 +24,9 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
   beaconsGateway,
   beaconId,
 }): JSX.Element => {
-  const history = useHistory();
-
   const handleSave = async (values: DeleteBeaconFormValues) => {
     await deleteRecord(values.reason);
-    history.push("/");
+    // emit event to parent saying it's been saved
   };
 
   const deleteRecord = async (reason: string) => {
@@ -43,20 +38,17 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
     await beaconsGateway.deleteBeacon(deleteLegacyBeaconDto);
   };
 
-  const handleCancel = () => history.goBack();
+  const handleCancel = () => console.log("cancel"); // emit event to parent saying cancelled
 
   return (
     <div>
-      <PageHeader>Delete beacon record</PageHeader>
-      <PageContent>
-        <h2>Are you sure you want to permanently delete this record?</h2>
-        <p>
-          This will delete the beacon record, its owner(s), and all other
-          associated information.
-        </p>
-        <h2>Please enter a reason for deleting this beacon</h2>
-        <DeleteBeaconSection onSave={handleSave} onCancel={handleCancel} />
-      </PageContent>
+      <h2>Are you sure you want to permanently delete this record?</h2>
+      <p>
+        This will delete the beacon record, its owner(s), and all other
+        associated information.
+      </p>
+      <h2>Please enter a reason for deleting this beacon</h2>
+      <DeleteBeaconSection onSave={handleSave} onCancel={handleCancel} />
     </div>
   );
 };
