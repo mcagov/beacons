@@ -31,7 +31,7 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
   };
 
   return (
-    <div>
+    <div className="delete-beacon-container">
       <h2>Are you sure you want to permanently delete this record?</h2>
       <p>
         This will delete the beacon record, its owner(s), and all other
@@ -57,7 +57,7 @@ const DeleteBeaconReasonForm = (props: DeleteBeaconFormProps) => {
 
   return (
     <>
-      <Form>
+      <Form className="delete-beacon-form">
         <FormControl component="fieldset">
           <FormLabel component="legend">
             Why do you want to delete this record? (Required)
