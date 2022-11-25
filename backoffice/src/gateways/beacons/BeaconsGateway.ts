@@ -112,31 +112,6 @@ export class BeaconsGateway implements IBeaconsGateway {
     }
   }
 
-  public async deleteLegacyBeacon(
-    deleteBeaconDto: IDeleteBeaconDto
-  ): Promise<AxiosResponse> {
-    try {
-      const data = {
-        beaconId: deleteBeaconDto.beaconId,
-        accountHolderId: deleteBeaconDto.accountHolderId,
-        reason: deleteBeaconDto.reason,
-      };
-      const accessToken = await this._authGateway.getAccessToken();
-
-      const response = await axios.patch(
-        `${applicationConfig.apiUrl}/legacy-beacon/backoffice/delete`,
-        data,
-        {
-          timeout: applicationConfig.apiTimeoutMs,
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      );
-      return response.data;
-    } catch (e) {
-      throw e;
-    }
-  }
-
   private async _makeGetRequest(path: string): Promise<AxiosResponse> {
     const accessToken = await this._authGateway.getAccessToken();
 

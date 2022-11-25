@@ -1,5 +1,6 @@
 import { Button, Grid, Tab, Tabs } from "@mui/material";
 import ContentPrintIcon from "@mui/icons-material/Print";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
@@ -16,8 +17,11 @@ import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { logToServer } from "../utils/logger";
-import { BeaconStatuses } from "entities/IBeacon";
-import { DeleteButton } from "components/DeleteButton";
+import { BeaconStatuses } from "../entities/IBeacon";
+import { IDeleteBeaconDto } from "../entities/IDeleteBeaconDto";
+import { useHistory } from "react-router-dom";
+import { DialogueBox } from "components/DialogueBox";
+import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -42,6 +46,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
   ISingleLegacyBeaconRecordViewProps
 > = ({ beaconsGateway, beaconId }): JSX.Element => {
   const classes = useStyles();
+  const routerHistory = useHistory();
 
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const handleChange = (event: React.ChangeEvent<{}>, tab: number) => {
@@ -49,6 +54,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
   };
 
   const [beacon, setBeacon] = useState<ILegacyBeacon>({} as ILegacyBeacon);
+  const [dialogueIsOpen, setDialogueIsOpen] = useState<boolean>(false);
 
   useEffect((): void => {
     const fetchBeacon = async (id: string) => {
@@ -65,6 +71,28 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
+  const reasonsForLegacyDeletion: string[] | undefined = Object.values(
+    BeaconDeletionReasons
+  );
+
+  const openDialogueBox = () => {
+    setDialogueIsOpen(true);
+  };
+
+  const handleDeleteDialogueAction = async (
+    actionOptionSelected: boolean,
+    reasonForAction: string
+  ) => {
+    if (actionOptionSelected) {
+      const deleteLegacyBeaconDto: IDeleteBeaconDto = {
+        beaconId: beaconId,
+        accountHolderId: "",
+        reason: reasonForAction,
+      };
+      await beaconsGateway.deleteBeacon(deleteLegacyBeaconDto);
+      routerHistory.goBack();
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -114,13 +142,18 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             </Button>
           </span>
         </div>
-        {/* {beacon.beaconStatus === BeaconStatuses.Deleted &&  */}
-        <DeleteButton
-          href={`/backoffice#/delete/${beaconId}`}
-          variant="outlined"
-          color="error"
-          resourceToDelete="record"
-        />
+        {beacon.beaconStatus !== BeaconStatuses.Deleted && (
+          <span className={classes.button}>
+            <Button
+              onClick={openDialogueBox}
+              variant="outlined"
+              color="error"
+              startIcon={<DeleteIcon />}
+            >
+              Delete record
+            </Button>
+          </span>
+        )}
       </PageHeader>
       <PageContent>
         <LegacyBeaconSummaryPanel legacyBeacon={beacon} />
@@ -151,6 +184,15 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
         <TabPanel value={selectedTab} index={1}>
           <LegacyUsesListPanel uses={beacon.uses} />
         </TabPanel>
+        <DialogueBox
+          isOpen={dialogueIsOpen}
+          dialogueTitle="Are you sure you want to permanently delete this migrated record?"
+          dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
+          action="Yes"
+          dismissal="No"
+          selectOption={handleDeleteDialogueAction}
+          reasonsForAction={reasonsForLegacyDeletion}
+        />
       </PageContent>
     </div>
   );

@@ -14,7 +14,6 @@ describe("Owner Summary Panel", () => {
       updateBeacon: jest.fn(),
       getLegacyBeacon: jest.fn(),
       deleteBeacon: jest.fn(),
-      deleteLegacyBeacon: jest.fn(),
     };
   });
 

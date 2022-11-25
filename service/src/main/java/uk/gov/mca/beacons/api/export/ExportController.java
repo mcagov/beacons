@@ -70,7 +70,6 @@ class ExportController {
       HttpHeaders.CACHE_CONTROL,
       "no-cache, no-store, must-revalidate"
     );
-    //    headers.add("Access-Control-Allow-Origin", "*");
     return new ResponseEntity<>(resource, headers, HttpStatus.OK);
   }
 

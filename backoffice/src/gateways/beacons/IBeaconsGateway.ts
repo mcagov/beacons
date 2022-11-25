@@ -34,7 +34,4 @@ export interface IBeaconsGateway {
     updatedFields: Partial<IBeacon>
   ) => Promise<IBeacon>;
   deleteBeacon: (deleteBeaconDto: IDeleteBeaconDto) => Promise<AxiosResponse>;
-  deleteLegacyBeacon: (
-    deleteBeaconDto: IDeleteBeaconDto
-  ) => Promise<AxiosResponse>;
 }

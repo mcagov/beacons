@@ -225,7 +225,6 @@ public class RegistrationService {
     );
   }
 
-  // not sure this should be here
   public void deleteLegacyBeacon(DeleteBeaconDTO dto) {
     LegacyBeacon legacyBeacon = legacyBeaconService
       .findById(new LegacyBeaconId(dto.getBeaconId()))

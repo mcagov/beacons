@@ -13,6 +13,7 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.auth.application.GetUserService;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.InvalidBeaconDeleteException;
+import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.mappers.RegistrationMapper;
@@ -136,7 +137,14 @@ public class RegistrationController {
     @RequestBody @Valid DeleteBeaconDTO dto
   ) {
     User brtUser = getUserService.getUser();
-    registrationService.delete(dto, brtUser);
+    BeaconId beaconId = new BeaconId(dto.getBeaconId());
+
+    try {
+      Registration registration = registrationService.getByBeaconId(beaconId);
+      registrationService.delete(dto, brtUser);
+    } catch (ResourceNotFoundException ex) {
+      registrationService.deleteLegacyBeacon(dto);
+    }
 
     return new ResponseEntity<>(HttpStatus.OK);
   }

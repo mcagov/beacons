@@ -45,11 +45,4 @@ public class LegacyBeaconController {
 
     return legacyBeaconMapper.toWrapperDTO(legacyBeacon);
   }
-
-  @PatchMapping(value = "/backoffice/delete")
-  public ResponseEntity<Void> delete(@RequestBody @Valid DeleteBeaconDTO dto) {
-    registrationService.deleteLegacyBeacon(dto);
-
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
 }

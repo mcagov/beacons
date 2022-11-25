@@ -1,5 +1,6 @@
 import { Button, Grid, Tab, Tabs } from "@mui/material";
 import ContentPrintIcon from "@mui/icons-material/Print";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
@@ -85,7 +86,6 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   const openDialogueBox = () => {
     setDialogueIsOpen(true);
-    console.log(dialogueIsOpen);
   };
 
   const handleDeleteDialogueAction = async (
@@ -99,7 +99,6 @@ export const SingleBeaconRecordView: FunctionComponent<
         reason: reasonForAction,
       };
       await beaconsGateway.deleteBeacon(deleteBeaconDto);
-      console.log("user selected delete option from dialogue");
       routerHistory.goBack();
     }
   };
@@ -153,8 +152,13 @@ export const SingleBeaconRecordView: FunctionComponent<
           </span>
         </div>
         {beacon.status !== BeaconStatuses.Deleted && (
-          <span className="delete-record">
-            <Button onClick={openDialogueBox} variant="outlined" color="error">
+          <span className={classes.button}>
+            <Button
+              onClick={openDialogueBox}
+              variant="outlined"
+              color="error"
+              startIcon={<DeleteIcon />}
+            >
               Delete record
             </Button>
           </span>

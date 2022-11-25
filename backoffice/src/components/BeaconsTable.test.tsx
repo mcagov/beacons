@@ -14,7 +14,6 @@ describe("<BeaconsTable>", () => {
       getLegacyBeacon: jest.fn(),
       updateBeacon: jest.fn(),
       deleteBeacon: jest.fn(),
-      deleteLegacyBeacon: jest.fn(),
     };
   });
 
