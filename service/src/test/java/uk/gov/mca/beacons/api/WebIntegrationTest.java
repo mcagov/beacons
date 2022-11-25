@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
+import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 
 @AutoConfigureWebTestClient
 public abstract class WebIntegrationTest extends BaseIntegrationTest {
@@ -173,7 +174,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
     throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     String deleteRegistrationRequestBody = objectMapper.writeValueAsString(
-      DeleteRegistrationDTO
+      DeleteBeaconDTO
         .builder()
         .beaconId(UUID.fromString(beaconId))
         .accountHolderId(UUID.fromString(accountHolderId))
