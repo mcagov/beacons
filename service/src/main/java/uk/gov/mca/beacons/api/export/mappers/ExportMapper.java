@@ -255,7 +255,9 @@ public class ExportMapper {
       .beaconStatus(beacon.getBeaconStatus())
       .hexId(beacon.getHexId())
       .manufacturer(details.getManufacturer())
-      .serialNumber(details.getSerialNumber())
+      .serialNumber(
+        details.getSerialNumber() != null ? details.getSerialNumber() : 0
+      )
       .manufacturerSerialNumber(details.getManufacturerSerialNumber())
       .beaconModel(details.getModel())
       .beaconlastServiced(details.getLastServiceDate())
@@ -422,7 +424,9 @@ public class ExportMapper {
       .beaconPosition(use.getBeaconPosition())
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .vesselCallsign(use.getCallSign())
-      .mmsiNumber(use.getMmsiNumber().toString())
+      .mmsiNumber(
+        use.getMmsiNumber() != null ? use.getMmsiNumber().toString() : null
+      )
       .radioSystems(use.getCommunicationTypes())
       .notes(use.getNotes())
       .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
@@ -479,7 +483,9 @@ public class ExportMapper {
       .beaconPosition(use.getBeaconPosition())
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .vesselCallsign(use.getCallSign())
-      .mmsiNumber(use.getMmsiNumber().toString())
+      .mmsiNumber(
+        use.getMmsiNumber() != null ? use.getMmsiNumber().toString() : null
+      )
       .radioSystems(use.getCommunicationTypes())
       .notes(use.getNotes())
       .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
