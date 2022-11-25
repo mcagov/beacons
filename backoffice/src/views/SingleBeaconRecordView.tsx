@@ -4,7 +4,7 @@ import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 import { CopyToClipboardButton } from "components/CopyToClipboardButton";
-import { IBeacon } from "entities/IBeacon";
+import { BeaconStatuses, IBeacon } from "../entities/IBeacon";
 import { INote } from "entities/INote";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import { OwnerPanel } from "panels/ownerPanel/OwnerPanel";
@@ -22,7 +22,8 @@ import { NotesPanel } from "../panels/notesPanel/NotesPanel";
 import { logToServer } from "../utils/logger";
 import { DialogueBox } from "components/DialogueBox";
 import { useHistory } from "react-router-dom";
-import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
+import { IDeleteBeaconDto } from "../entities/IDeleteBeaconDto";
+import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -55,6 +56,10 @@ export const SingleBeaconRecordView: FunctionComponent<
   const handleChange = (event: React.ChangeEvent<{}>, tab: number) => {
     setSelectedTab(tab);
   };
+
+  const reasonsForDeletion: string[] | undefined = Object.values(
+    BeaconDeletionReasons
+  );
 
   const [beacon, setBeacon] = useState<IBeacon>({} as IBeacon);
   const [notes, setNotes] = useState<INote[]>([] as INote[]);
@@ -147,11 +152,13 @@ export const SingleBeaconRecordView: FunctionComponent<
             </Button>
           </span>
         </div>
-        <span className="delete-record">
-          <Button onClick={openDialogueBox} variant="outlined" color="error">
-            Delete record
-          </Button>
-        </span>
+        {beacon.status !== BeaconStatuses.Deleted && (
+          <span className="delete-record">
+            <Button onClick={openDialogueBox} variant="outlined" color="error">
+              Delete record
+            </Button>
+          </span>
+        )}
       </PageHeader>
       <PageContent>
         <BeaconSummaryPanel
@@ -188,13 +195,13 @@ export const SingleBeaconRecordView: FunctionComponent<
           <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
         </TabPanel>
         <DialogueBox
-          isOpen={true}
+          isOpen={dialogueIsOpen}
           dialogueTitle="Are you sure you want to permanently delete this record?"
           dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
           action="Yes"
           dismissal="No"
           selectOption={handleDeleteDialogueAction}
-          resourceId={beaconId}
+          reasonsForAction={reasonsForDeletion}
         />
       </PageContent>
     </div>

@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import { FunctionComponent } from "react";
-import { PageHeader } from "../components/layout/PageHeader";
+import { PageHeader } from "../../components/layout/PageHeader";
 import { PageContent } from "components/layout/PageContent";
 import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
 import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";

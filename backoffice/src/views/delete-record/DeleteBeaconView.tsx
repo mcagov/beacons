@@ -1,29 +1,24 @@
+import "./delete-record.scss";
 import {
   Box,
   Button,
-  createStyles,
   FormControl,
   FormLabel,
-  makeStyles,
   Radio,
   RadioGroup,
-  Theme,
 } from "@mui/material";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import { FunctionComponent } from "react";
 import { DeleteBeaconFormValues } from "lib/DeleteBeaconFormValues";
-import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
 
 interface IDeleteBeaconViewProps {
-  beaconId: string;
+  reasonsForDeletion: string[] | undefined;
   reasonSubmitted: any;
   cancelled: any;
 }
 
-const reasonsForDeletion: string[] = Object.values(BeaconDeletionReasons);
-
 export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
-  beaconId,
+  reasonsForDeletion,
   reasonSubmitted,
   cancelled,
 }): JSX.Element => {
@@ -43,17 +38,22 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
         associated information.
       </p>
       <h2>Please enter a reason for deleting this beacon</h2>
-      <DeleteBeaconSection onSave={handleSave} onCancel={handleCancel} />
+      <DeleteBeaconSection
+        onSave={handleSave}
+        onCancel={handleCancel}
+        reasonsForDeletion={reasonsForDeletion}
+      />
     </div>
   );
 };
 
 interface DeleteBeaconFormProps extends FormikProps<DeleteBeaconFormValues> {
   onCancel: () => void;
+  reasonsForDeletion: string[] | undefined;
 }
 
 const DeleteBeaconReasonForm = (props: DeleteBeaconFormProps) => {
-  const { errors, isSubmitting, onCancel } = props;
+  const { errors, isSubmitting, onCancel, reasonsForDeletion } = props;
 
   return (
     <>
@@ -63,19 +63,20 @@ const DeleteBeaconReasonForm = (props: DeleteBeaconFormProps) => {
             Why do you want to delete this record? (Required)
           </FormLabel>
           <RadioGroup aria-label="note type" name="radio-buttons-group">
-            {reasonsForDeletion.map((r, index) => (
-              <label key={index}>
-                <Field
-                  as={Radio}
-                  type="radio"
-                  id="reason"
-                  name="reason"
-                  value={r}
-                  data-testid="deletion-reason"
-                />
-                {r}
-              </label>
-            ))}
+            {reasonsForDeletion !== undefined &&
+              reasonsForDeletion.map((r, index) => (
+                <label key={index}>
+                  <Field
+                    as={Radio}
+                    type="radio"
+                    id="reason"
+                    name="reason"
+                    value={r}
+                    data-testid="deletion-reason"
+                  />
+                  {r}
+                </label>
+              ))}
           </RadioGroup>
         </FormControl>
         <Box mt={2} mr={2}>
@@ -102,6 +103,7 @@ export const DeleteBeaconSection = withFormik<
   {
     onSave: (reason: DeleteBeaconFormValues) => void;
     onCancel: () => void;
+    reasonsForDeletion: string[] | undefined;
   },
   DeleteBeaconFormValues
 >({

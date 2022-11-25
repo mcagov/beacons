@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -14,8 +14,7 @@ interface IDialogueBoxProps {
   action: string;
   dismissal: string;
   selectOption: any;
-  reasonsForAction?: string[];
-  resourceId: string;
+  reasonsForAction?: string[] | undefined;
 }
 
 export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
@@ -26,7 +25,6 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   dismissal,
   selectOption,
   reasonsForAction,
-  resourceId,
 }): JSX.Element => {
   const [open, setOpen] = useState(isOpen);
   const [reasonForAction, setReasonForAction] = useState("");
@@ -36,6 +34,10 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
     dialogueContentText.includes("beacon") ||
     dialogueContentText.includes("record") ||
     dialogueTitle.includes("record");
+
+  useEffect((): void => {
+    setOpen(isOpen);
+  }, [isOpen]);
 
   const handleReasonSubmitted = (reason: string) => {
     setReasonForAction(reason);
@@ -59,7 +61,7 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
     >
       {isDeleteBeaconDialogue && !reasonSubmitted && (
         <DeleteBeaconView
-          beaconId={resourceId}
+          reasonsForDeletion={reasonsForAction}
           reasonSubmitted={handleReasonSubmitted}
           cancelled={handleCancelled}
         />
