@@ -20,9 +20,9 @@ import { BeaconSummaryPanel } from "../panels/beaconSummaryPanel/BeaconSummaryPa
 import { EmergencyContactPanel } from "../panels/emergencyContactPanel/EmergencyContactPanel";
 import { NotesPanel } from "../panels/notesPanel/NotesPanel";
 import { logToServer } from "../utils/logger";
-import { DeleteButton } from "components/DeleteButton";
 import { DialogueBox } from "components/DialogueBox";
 import { useHistory } from "react-router-dom";
+import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -78,14 +78,22 @@ export const SingleBeaconRecordView: FunctionComponent<
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
 
-  const openDialogueBox = async () => {
+  const openDialogueBox = () => {
     setDialogueIsOpen(true);
     console.log(dialogueIsOpen);
   };
 
-  const handleDeleteDialogueAction = async (actionOptionSelected: boolean) => {
+  const handleDeleteDialogueAction = async (
+    actionOptionSelected: boolean,
+    reasonForAction: string
+  ) => {
     if (actionOptionSelected) {
-      //  await deleteRecord();
+      const deleteBeaconDto: IDeleteBeaconDto = {
+        beaconId: beaconId,
+        accountHolderId: "",
+        reason: reasonForAction,
+      };
+      await beaconsGateway.deleteBeacon(deleteBeaconDto);
       console.log("user selected delete option from dialogue");
       routerHistory.goBack();
     }
@@ -187,7 +195,6 @@ export const SingleBeaconRecordView: FunctionComponent<
           dismissal="No"
           selectOption={handleDeleteDialogueAction}
           resourceId={beaconId}
-          gateway={beaconsGateway}
         />
       </PageContent>
     </div>

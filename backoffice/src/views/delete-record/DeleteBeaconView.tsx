@@ -1,37 +1,39 @@
 import {
   Box,
   Button,
+  createStyles,
   FormControl,
   FormLabel,
+  makeStyles,
   Radio,
   RadioGroup,
+  Theme,
 } from "@mui/material";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import { FunctionComponent } from "react";
-import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
-import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 import { DeleteBeaconFormValues } from "lib/DeleteBeaconFormValues";
 import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
 
 interface IDeleteBeaconViewProps {
-  beaconsGateway: IBeaconsGateway;
   beaconId: string;
-  deleteRecord: any;
+  reasonSubmitted: any;
+  cancelled: any;
 }
 
 const reasonsForDeletion: string[] = Object.values(BeaconDeletionReasons);
 
 export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
-  beaconsGateway,
   beaconId,
-  deleteRecord,
+  reasonSubmitted,
+  cancelled,
 }): JSX.Element => {
   const handleSave = async (values: DeleteBeaconFormValues) => {
-    deleteRecord(values.reason);
-    // emit event to parent saying it's been saved
+    reasonSubmitted(values.reason);
   };
 
-  const handleCancel = () => console.log("cancel"); // emit event to parent saying cancelled
+  const handleCancel = () => {
+    cancelled(true);
+  };
 
   return (
     <div>

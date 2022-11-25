@@ -5,9 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { DeleteBeaconView } from "views/DeleteBeaconView";
-import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
-import { IAccountHolderGateway } from "gateways/account-holder/IAccountHolderGateway";
+import { DeleteBeaconView } from "views/delete-record/DeleteBeaconView";
 
 interface IDialogueBoxProps {
   isOpen: boolean;
@@ -15,40 +13,43 @@ interface IDialogueBoxProps {
   dialogueContentText: string;
   action: string;
   dismissal: string;
-  // yuck how do I improve
   selectOption: any;
   reasonsForAction?: string[];
   resourceId: string;
-  gateway: IBeaconsGateway | IAccountHolderGateway;
 }
 
 export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   isOpen,
   dialogueTitle,
   dialogueContentText,
-  // e.g delete beacon
   action,
   dismissal,
   selectOption,
   reasonsForAction,
   resourceId,
-  gateway,
 }): JSX.Element => {
   const [open, setOpen] = useState(isOpen);
+  const [reasonForAction, setReasonForAction] = useState("");
+  const [reasonSubmitted, setReasonSubmitted] = useState(false);
+
   const isDeleteBeaconDialogue =
     dialogueContentText.includes("beacon") ||
     dialogueContentText.includes("record") ||
     dialogueTitle.includes("record");
 
-  function handleClick(isActionOption: boolean): void {
-    setOpen(false);
-    selectOption(isActionOption);
-  }
-
-  const handleDeleteRecord = async (reason: string) => {
-    const beaconsGateway = gateway as IBeaconsGateway;
-    await beaconsGateway.deleteBeacon();
+  const handleReasonSubmitted = (reason: string) => {
+    setReasonForAction(reason);
+    setReasonSubmitted(true);
   };
+
+  const handleCancelled = () => {
+    handleClick(false);
+  };
+
+  async function handleClick(isActionOption: boolean): Promise<void> {
+    setOpen(false);
+    selectOption(isActionOption, reasonForAction);
+  }
 
   return (
     <Dialog
@@ -56,26 +57,29 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      {isDeleteBeaconDialogue && (
+      {isDeleteBeaconDialogue && !reasonSubmitted && (
         <DeleteBeaconView
           beaconId={resourceId}
-          beaconsGateway={gateway as IBeaconsGateway}
-          // listen for the submit form event
-          deleteRecord={handleDeleteRecord}
+          reasonSubmitted={handleReasonSubmitted}
+          cancelled={handleCancelled}
         />
       )}
-      <DialogTitle id="alert-dialog-title">{dialogueTitle}</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {dialogueContentText}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => handleClick(false)}>{dismissal}</Button>
-        <Button onClick={() => handleClick(true)} autoFocus>
-          {action}
-        </Button>
-      </DialogActions>
+      {reasonSubmitted && (
+        <div>
+          <DialogTitle id="alert-dialog-title">{dialogueTitle}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {dialogueContentText}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => handleClick(false)}>{dismissal}</Button>
+            <Button onClick={() => handleClick(true)} autoFocus>
+              {action}
+            </Button>
+          </DialogActions>
+        </div>
+      )}
     </Dialog>
   );
 };

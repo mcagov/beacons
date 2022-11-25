@@ -35,8 +35,6 @@ import { UserSettingsProvider } from "./UserSettings";
 import { logToServer } from "./utils/logger";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
-import { DeleteBeaconView } from "views/DeleteBeaconView";
-import { DeleteLegacyBeaconView } from "views/DeleteLegacyBeaconView";
 
 interface ResourceParams {
   id: string;
@@ -98,28 +96,6 @@ const App: FunctionComponent = () => {
     );
   };
 
-  const DeleteBeaconViewWithParam: FunctionComponent = () => {
-    const { id } = useParams<ResourceParams>();
-    return (
-      <div>
-        <Navigation />
-        <DeleteBeaconView beaconsGateway={beaconsGateway} beaconId={id} />
-        <Footer />
-      </div>
-    );
-  };
-
-  const DeleteLegacyBeaconViewWithParam: FunctionComponent = () => {
-    const { id } = useParams<ResourceParams>();
-    return (
-      <div>
-        <Navigation />
-        <DeleteLegacyBeaconView beaconsGateway={beaconsGateway} beaconId={id} />
-        <Footer />
-      </div>
-    );
-  };
-
   const CertificateViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return <CertificateView exportsGateway={exportsGateway} beaconId={id} />;
@@ -165,12 +141,6 @@ const App: FunctionComponent = () => {
                 </Route>
                 <Route path={`/legacy-beacons/:id`}>
                   <SingleLegacyBeaconRecordViewWithParam />
-                </Route>
-                <Route path={`/delete/:id`}>
-                  <DeleteBeaconViewWithParam />
-                </Route>
-                <Route path={`/legacy-delete/:id`}>
-                  <DeleteLegacyBeaconViewWithParam />
                 </Route>
                 <Route path={`/admin`}>
                   <Navigation />
