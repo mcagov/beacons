@@ -18,10 +18,22 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String vesselName;
 
   @Valid
-  private String homePort;
+  private String typeOfUse;
 
   @Valid
-  private String vessel;
+  private String beaconPosition;
+
+  @Valid
+  private String beaconLocation;
+
+  @Valid
+  private String windfarmLocation;
+
+  @Valid
+  private String rigPlatformLocation;
+
+  @Valid
+  private String homePort;
 
   @Valid
   private int maxPersonOnBoard;
@@ -67,10 +79,16 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String aircraftRegistrationMark;
 
   @Valid
-  private String TwentyFourBitAddressInHex;
+  private String aircraftModel;
 
   @Valid
-  private boolean isDongle = false;
+  private String aircraftManufacturer;
+
+  @Valid
+  private String twentyFourBitAddressInHex;
+
+  @Valid
+  private boolean isDongle;
 
   @Valid
   private String principalAirport;

@@ -86,25 +86,37 @@ public class PdfGenerateService {
         .setMargin(0)
         .setPadding(0)
     );
+
     document.add(
-      new Paragraph(data.getBeaconUse().toUpperCase())
+      new Paragraph(
+        data
+          .getBeaconUse()
+          .toUpperCase()
+          .substring(
+            0,
+            Math.min(data.getBeaconUse().toUpperCase().length() - 1, 40)
+          )
+      )
         .setFontSize(7.5f)
         .setBold()
         .setTextAlignment(TextAlignment.CENTER)
         .setMargins(2, 3, 2, 3)
     );
 
-    document.add(getLabelDataLine("Hex Id", data.getHexId().toUpperCase()));
-    document.add(getLabelDataLine("Coding", data.getCoding()));
+    document.add(
+      getLabelDataLine("Hex Id", data.getHexId().toUpperCase(), 7.5f)
+    );
+    document.add(getLabelDataLine("Coding", data.getCoding(), 7.25f));
     document.add(
       getLabelDataLine(
         "Proof of Registration",
-        data.getProofOfRegistrationDate()
+        data.getProofOfRegistrationDate(),
+        7.25f
       )
     );
   }
 
-  private Paragraph getLabelDataLine(String key, String value) {
+  private Paragraph getLabelDataLine(String key, String value, float fontSize) {
     if (value == null) {
       value = "";
     }
@@ -115,7 +127,7 @@ public class PdfGenerateService {
       .setFixedLeading(8.5f);
     p.setCharacterSpacing(0.5f).setWordSpacing(0.01f);
     p.add(new Text(key + ": ").setFontSize(5f).setBold());
-    p.add(new Text(value.toUpperCase()).setFontSize(7.25f).setBold());
+    p.add(new Text(value.toUpperCase()).setFontSize(fontSize).setBold());
     return p;
   }
 }

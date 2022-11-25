@@ -69,6 +69,9 @@ public class BeaconExportDTO {
   private String cstaNumber;
 
   @Valid
+  private String chkCode;
+
+  @Valid
   //This is only valid for legacy.
   private String beaconNote;
 
