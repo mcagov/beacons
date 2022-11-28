@@ -1,6 +1,8 @@
 package uk.gov.mca.beacons.api.search.rest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -88,14 +90,18 @@ interface BeaconSearchRestRepository
   @RestResource(path = "export-search", rel = "findAllBeaconsForExport")
   @Query(
     "SELECT b FROM BeaconSearchEntity b WHERE" +
-    "(COALESCE(LOWER(b.ownerName), '') LIKE LOWER(CONCAT('%', :name, '%')) " +
-    " OR COALESCE(LOWER(b.accountHolderName), '') LIKE LOWER(CONCAT('%', :name, '%'))) "
+    "((COALESCE(:name , '') ='') OR COALESCE(LOWER(b.ownerName), '') LIKE LOWER(CONCAT('%', :name, '%')) " +
+    "OR COALESCE(LOWER(b.accountHolderName), '') LIKE LOWER(CONCAT('%', :name, '%'))) " +
+    "AND ((COALESCE(:registrationFrom, '') ='') OR b.createdDate >= :registrationFrom) " +
+    "AND ((COALESCE(:registrationTo, '') = '') OR b.createdDate <= :registrationTo) " +
+    "AND ((COALESCE(:lastModifiedFrom, '') = '') OR b.lastModifiedDate >= :lastModifiedFrom) " +
+    "AND ((COALESCE(:lastModifiedTo, '') = '') OR b.lastModifiedDate <= :lastModifiedTo) "
   )
   List<BeaconSearchEntity> findAllBeaconsForExport(
-    @Param("name") String name
-    //            @Param("registrationFrom")  Date registrationFrom,
-    //            @Param("registrationTo")  Date registrationTo,
-    //            @Param("lastModifiedFrom")  Date lastModifiedFrom,
-    //            @Param("lastModifiedTo")  Date lastModifiedTo
+    @Param("name") String name,
+    @Param("registrationFrom") Instant registrationFrom,
+    @Param("registrationTo") Instant registrationTo,
+    @Param("lastModifiedFrom") Instant lastModifiedFrom,
+    @Param("lastModifiedTo") Instant lastModifiedTo
   );
 }
