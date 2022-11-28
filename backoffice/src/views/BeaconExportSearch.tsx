@@ -3,11 +3,11 @@ import { Box, Button, Paper, TextField } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { PageContent } from "../components/layout/PageContent";
 import { Controller, useForm } from "react-hook-form";
 import { IExportsGateway } from "../gateways/exports/IExportsGateway";
-import { IBeaconExport } from "../gateways/exports/IBeaconExport";
+import { ExportBeaconsTable } from "components/ExportBeaconsTable";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,16 +24,29 @@ interface BeaconExportRecordsProps {
   exportsGateway: IExportsGateway;
 }
 
-interface ExportSearchFormProps {
+export interface ExportSearchFormProps {
   name: string;
-  registrationFrom: date;
-  registrationTo: date;
-  lastModifiedFrom: date;
-  lastModifiedTo: date;
+  registrationFrom: Date;
+  registrationTo: Date;
+  lastModifiedFrom: Date;
+  lastModifiedTo: Date;
 }
 
-interface BeaconExportsProps {
-  data: IBeaconExport[];
+export interface IBeaconExportResult {
+  id: string;
+  createdDate: Date;
+  lastModifiedDate: Date;
+  beaconStatus: string;
+  hexId: string;
+  ownerName: string;
+  ownerEmail: string;
+  accountHolderId: string;
+  accountHolderName: string;
+  accountHolderEmail: string;
+  useActivities: string;
+  beaconType: string;
+  manufacturerSerialNumber: string;
+  cospasSarsatNumber: string;
 }
 
 function FormField({ control, labelText, name, type }: any): JSX.Element {
@@ -55,21 +68,22 @@ function FormField({ control, labelText, name, type }: any): JSX.Element {
   );
 }
 
-export const BeaconExportRecordsForm: FunctionComponent<
+export const BeaconExportSearch: FunctionComponent<
   BeaconExportRecordsProps
 > = ({ exportsGateway }): JSX.Element => {
   const classes = useStyles();
 
-  const [data, setData] = useState<IBeaconExport[]>([]);
+  const [data, setData] = useState<IBeaconExportResult[]>([]);
 
   const { handleSubmit, reset, control } = useForm();
   const onSubmit = async (formData: any) => {
-    console.log(JSON.stringify(formData));
-
-    // need to send the search criteria to the api, then retrieve data, and populate the expoer beacons table.
-    // Then should probably be merged to one component.
+    // console.log(JSON.stringify(formData));
     await exportsGateway.searchExportData(formData).then(setData);
   };
+
+  useEffect(() => {
+    console.dir(data);
+  }, [data]);
 
   return (
     <div className={classes.root}>
@@ -120,6 +134,7 @@ export const BeaconExportRecordsForm: FunctionComponent<
               Reset
             </Button>
           </Box>
+          <ExportBeaconsTable exportsGateway={exportsGateway} data={data} />
         </Paper>
       </PageContent>
     </div>

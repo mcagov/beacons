@@ -1,6 +1,9 @@
 import axios from "axios";
 import { applicationConfig } from "config";
+import { urlencoded } from "express";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
+import { customDateStringFormat } from "utils/dateTime";
+import { ExportSearchFormProps } from "views/BeaconExportSearch";
 import { logToServer } from "../../utils/logger";
 import { IBeaconExport } from "./IBeaconExport";
 import { IExportsGateway } from "./IExportsGateway";
@@ -92,20 +95,58 @@ export class ExportsGateway implements IExportsGateway {
       []
     );
   }
-  public async searchExportData(searchForm: any): Promise<IBeaconExport[]> {
+
+  public async searchExportData(
+    searchForm: ExportSearchFormProps
+  ): Promise<[]> {
     const accessToken = await this._authGateway.getAccessToken();
 
+    let url = `${
+      applicationConfig.apiUrl
+    }/beacon-search/search/export-search?name=${encodeURIComponent(
+      searchForm.name || ""
+    )}`;
+
+    if (searchForm.registrationFrom) {
+      url += `&registrationFrom=${encodeURIComponent(
+        customDateStringFormat(
+          searchForm.registrationFrom,
+          "yyyy-MM-DDTHH:mm:ss.SSSZ"
+        )
+      )}`;
+    }
+    if (searchForm.registrationTo) {
+      url += `&registrationTo=${encodeURIComponent(
+        customDateStringFormat(
+          searchForm.registrationTo,
+          "yyyy-MM-DDTHH:mm:ss.SSSZ"
+        )
+      )}`;
+    }
+    if (searchForm.lastModifiedFrom) {
+      url += `&lastModifiedFrom=${encodeURIComponent(
+        customDateStringFormat(
+          searchForm.lastModifiedFrom,
+          "yyyy-MM-DDTHH:mm:ss.SSSZ"
+        )
+      )}`;
+    }
+    if (searchForm.lastModifiedTo) {
+      url += `&lastModifiedTo=${encodeURIComponent(
+        customDateStringFormat(
+          searchForm.lastModifiedTo,
+          "yyyy-MM-DDTHH:mm:ss.SSSZ"
+        )
+      )}`;
+    }
+
     try {
-      const exportResponse = await axios.post<IBeaconExport[]>(
-        `${applicationConfig.apiUrl}/export/beacons/search`,
-        searchForm,
-        {
-          timeout: applicationConfig.apiTimeoutMs,
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      );
-      console.dir(exportResponse);
-      return exportResponse.data;
+      const exportResponse = await axios.get<any>(url, {
+        timeout: applicationConfig.apiTimeoutMs,
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      // console.dir(exportResponse.data._embedded.beaconSearch);
+      return exportResponse.data._embedded.beaconSearch;
     } catch (error) {
       logToServer.error(error);
       throw error;
