@@ -18,6 +18,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportSearchForm;
 import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
 
@@ -90,27 +91,37 @@ interface BeaconSearchRestRepository
 
   @RestResource(path = "export-search", rel = "findAllBeaconsForExport")
   @Query(
-    "SELECT b FROM BeaconSearchEntity b WHERE" +
-    "((COALESCE(:name , '') ='') OR COALESCE(LOWER(b.ownerName), '') LIKE LOWER(CONCAT('%', :name, '%')) " +
-    "OR COALESCE(LOWER(b.accountHolderName), '') LIKE LOWER(CONCAT('%', :name, '%'))) " +
+    "SELECT b FROM BeaconSearchEntity b WHERE " +
+    "(" +
+    "COALESCE(:name , '') = '' OR " +
+    "(" +
+    "LOWER(COALESCE(b.ownerName, '')) LIKE LOWER(CONCAT('%',:name, '%')) " +
+    "OR " +
+    "LOWER(COALESCE(b.accountHolderName, '')) LIKE LOWER(CONCAT('%', :name, '%'))" +
+    ") " +
+    ") " +
     "AND ((COALESCE(:registrationFrom, '') ='') OR b.createdDate >= :registrationFrom) " +
     "AND ((COALESCE(:registrationTo, '') = '') OR b.createdDate <= :registrationTo) " +
     "AND ((COALESCE(:lastModifiedFrom, '') = '') OR b.lastModifiedDate >= :lastModifiedFrom) " +
     "AND ((COALESCE(:lastModifiedTo, '') = '') OR b.lastModifiedDate <= :lastModifiedTo) "
   )
   List<BeaconSearchEntity> findAllBeaconsForExport(
-    @Param("name") String name,
-    @Param("registrationFrom") @DateTimeFormat(
-      pattern = "yyyy-MM-dd"
+    @RequestParam(required = false, defaultValue = "") String name,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
     ) OffsetDateTime registrationFrom,
-    @Param("registrationTo") @DateTimeFormat(
-      pattern = "yyyy-MM-dd"
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
     ) OffsetDateTime registrationTo,
-    @Param("lastModifiedFrom") @DateTimeFormat(
-      pattern = "yyyy-MM-dd"
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
     ) OffsetDateTime lastModifiedFrom,
-    @Param("lastModifiedTo") @DateTimeFormat(
-      pattern = "yyyy-MM-dd"
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
     ) OffsetDateTime lastModifiedTo
   );
 }
