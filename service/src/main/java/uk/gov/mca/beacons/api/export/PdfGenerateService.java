@@ -94,7 +94,7 @@ public class PdfGenerateService {
           .toUpperCase()
           .substring(
             0,
-            Math.min(data.getBeaconUse().toUpperCase().length() - 1, 40)
+            Math.min(data.getBeaconUse().toUpperCase().length(), 40)
           )
       )
         .setFontSize(7.5f)
