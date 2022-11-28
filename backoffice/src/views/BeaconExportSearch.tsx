@@ -77,12 +77,11 @@ export const BeaconExportSearch: FunctionComponent<
 
   const { handleSubmit, reset, control } = useForm();
   const onSubmit = async (formData: any) => {
-    // console.log(JSON.stringify(formData));
     await exportsGateway.searchExportData(formData).then(setData);
   };
 
   useEffect(() => {
-    console.dir(data);
+    // console.dir(data);
   }, [data]);
 
   return (

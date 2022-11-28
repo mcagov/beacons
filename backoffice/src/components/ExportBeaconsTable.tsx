@@ -13,6 +13,7 @@ import { Button } from "@mui/material";
 import ContentPrintIcon from "@mui/icons-material/Print";
 import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import { IBeaconExportResult } from "views/BeaconExportSearch";
+import { customDateStringFormat } from "../utils/dateTime";
 interface IExportBeaconsTableProps {
   exportsGateway: IExportsGateway;
   data: IBeaconExportResult[];
@@ -38,50 +39,40 @@ const columns: GridColDef[] = [
   {
     field: "createdDate",
     headerName: "Created date",
-    width: 250,
+    width: 150,
     editable: false,
     type: "date",
-    // valueFormatter: (params: GridValueFormatterParams) => {
-    //   // first converts to JS Date, then to locale option through date-fns
-    //   return formatDate(params.value);
-    // },
-    // // valueGetter for filtering
-    // valueGetter: (params: GridValueGetterParams) => {
-    //   return formatDate(params.value);
-    // },
+    valueFormatter: (params: GridValueFormatterParams) => {
+      return customDateStringFormat(params.value, "DD/MM/yyyy");
+    },
   },
   {
     field: "lastModifiedDate",
     headerName: "Last modified date",
-    width: 250,
+    width: 150,
     editable: false,
     type: "date",
-    // valueFormatter: (params: GridValueFormatterParams) => {
-    //   // first converts to JS Date, then to locale option through date-fns
-    //   return formatDate(params.value);
-    // },
-    // // valueGetter for filtering
-    // valueGetter: (params: GridValueGetterParams) => {
-    //   return formatDate(params.value);
-    // },
+    valueFormatter: (params: GridValueFormatterParams) => {
+      return customDateStringFormat(params.value, "DD/MM/yyyy");
+    },
   },
 
   {
     field: "ownerName",
     headerName: "Owner",
-    width: 150,
+    width: 200,
     editable: false,
   },
   {
     field: "accountHolderName",
     headerName: "Account Holder",
-    width: 150,
+    width: 200,
     editable: false,
   },
   {
     field: "useActivities",
     headerName: "Uses",
-    width: 250,
+    width: 300,
     editable: false,
     type: "array",
   },

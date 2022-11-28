@@ -1,6 +1,5 @@
 import axios from "axios";
 import { applicationConfig } from "config";
-import { urlencoded } from "express";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
 import { customDateStringFormat } from "utils/dateTime";
 import { ExportSearchFormProps } from "views/BeaconExportSearch";
@@ -145,7 +144,6 @@ export class ExportsGateway implements IExportsGateway {
         timeout: applicationConfig.apiTimeoutMs,
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      // console.dir(exportResponse.data._embedded.beaconSearch);
       return exportResponse.data._embedded.beaconSearch;
     } catch (error) {
       logToServer.error(error);
