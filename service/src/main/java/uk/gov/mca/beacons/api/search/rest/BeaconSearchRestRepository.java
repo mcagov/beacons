@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestBody;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportSearchForm;
 import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
@@ -99,9 +100,17 @@ interface BeaconSearchRestRepository
   )
   List<BeaconSearchEntity> findAllBeaconsForExport(
     @Param("name") String name,
-    @Param("registrationFrom") Instant registrationFrom,
-    @Param("registrationTo") Instant registrationTo,
-    @Param("lastModifiedFrom") Instant lastModifiedFrom,
-    @Param("lastModifiedTo") Instant lastModifiedTo
+    @Param("registrationFrom") @DateTimeFormat(
+      pattern = "yyyy-MM-dd"
+    ) OffsetDateTime registrationFrom,
+    @Param("registrationTo") @DateTimeFormat(
+      pattern = "yyyy-MM-dd"
+    ) OffsetDateTime registrationTo,
+    @Param("lastModifiedFrom") @DateTimeFormat(
+      pattern = "yyyy-MM-dd"
+    ) OffsetDateTime lastModifiedFrom,
+    @Param("lastModifiedTo") @DateTimeFormat(
+      pattern = "yyyy-MM-dd"
+    ) OffsetDateTime lastModifiedTo
   );
 }
