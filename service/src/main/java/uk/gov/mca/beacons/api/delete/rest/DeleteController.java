@@ -36,7 +36,7 @@ public class DeleteController {
   }
 
   @PatchMapping(value = "/backoffice")
-  //    @PreAuthorize("hasAuthority('APPROLE_DELETE_BEACON')")
+  @PreAuthorize("hasAuthority('APPROLE_DELETE_BEACONS')")
   public ResponseEntity<Void> softDeleteRecord(
     @RequestBody @Valid DeleteBeaconDTO dto
   ) {

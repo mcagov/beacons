@@ -22,6 +22,7 @@ import { IDeleteBeaconDto } from "../entities/IDeleteBeaconDto";
 import { useHistory } from "react-router-dom";
 import { DialogueBox } from "components/DialogueBox";
 import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
+import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -143,18 +144,20 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             </Button>
           </span>
         </div>
-        {beacon.beaconStatus !== BeaconStatuses.Deleted && (
-          <span className={classes.button}>
-            <Button
-              onClick={openDialogueBox}
-              variant="outlined"
-              color="error"
-              startIcon={<DeleteIcon />}
-            >
-              Delete record
-            </Button>
-          </span>
-        )}
+        <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
+          {beacon.beaconStatus !== BeaconStatuses.Deleted && (
+            <span className={classes.button}>
+              <Button
+                onClick={openDialogueBox}
+                variant="outlined"
+                color="error"
+                startIcon={<DeleteIcon />}
+              >
+                Delete record
+              </Button>
+            </span>
+          )}
+        </OnlyVisibleToUsersWith>
       </PageHeader>
       <PageContent>
         <LegacyBeaconSummaryPanel legacyBeacon={beacon} />

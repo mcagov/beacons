@@ -4,7 +4,7 @@ export function UserRolesView(): JSX.Element {
   const { user } = useAuthContext();
 
   if (user.type !== "loggedInUser") {
-    return <p>User not logged ins.</p>;
+    return <p>User not logged in.</p>;
   }
 
   return (
