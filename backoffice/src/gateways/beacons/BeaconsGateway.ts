@@ -99,7 +99,7 @@ export class BeaconsGateway implements IBeaconsGateway {
       const accessToken = await this._authGateway.getAccessToken();
 
       const response = await axios.patch(
-        `${applicationConfig.apiUrl}/registrations/backoffice/delete`,
+        `${applicationConfig.apiUrl}/delete/backoffice`,
         data,
         {
           timeout: applicationConfig.apiTimeoutMs,

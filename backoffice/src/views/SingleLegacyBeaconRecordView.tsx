@@ -83,6 +83,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
     actionOptionSelected: boolean,
     reasonForAction: string
   ) => {
+    setDialogueIsOpen(false);
     if (actionOptionSelected) {
       const deleteLegacyBeaconDto: IDeleteBeaconDto = {
         beaconId: beaconId,

@@ -13,8 +13,8 @@ interface IDialogueBoxProps {
   dialogueContentText: string;
   action: string;
   dismissal: string;
-  selectOption: any;
   reasonsForAction?: string[] | undefined;
+  selectOption: (isActionOption: boolean, reasonForAction: string) => void;
 }
 
 export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
@@ -23,8 +23,8 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   dialogueContentText,
   action,
   dismissal,
-  selectOption,
   reasonsForAction,
+  selectOption,
 }): JSX.Element => {
   const [open, setOpen] = useState(isOpen);
   const [reasonForAction, setReasonForAction] = useState("");
@@ -45,11 +45,14 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   };
 
   const handleCancelled = () => {
+    setReasonForAction("");
+    setReasonSubmitted(false);
     handleClick(false);
   };
 
   async function handleClick(isActionOption: boolean): Promise<void> {
     setOpen(false);
+    setReasonSubmitted(isActionOption);
     selectOption(isActionOption, reasonForAction);
   }
 

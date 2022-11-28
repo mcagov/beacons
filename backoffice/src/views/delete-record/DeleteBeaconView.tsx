@@ -13,8 +13,8 @@ import { DeleteBeaconFormValues } from "lib/DeleteBeaconFormValues";
 
 interface IDeleteBeaconViewProps {
   reasonsForDeletion: string[] | undefined;
-  reasonSubmitted: any;
-  cancelled: any;
+  reasonSubmitted: (reason: string) => void;
+  cancelled: (cancelled: boolean) => void;
 }
 
 export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({

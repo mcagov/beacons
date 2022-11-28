@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.auth.application.GetUserService;
@@ -128,23 +129,6 @@ public class RegistrationController {
     ) throw new InvalidBeaconDeleteException();
 
     registrationService.delete(dto);
-
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
-
-  @PatchMapping(value = "/backoffice/delete")
-  public ResponseEntity<Void> softDeleteRecord(
-    @RequestBody @Valid DeleteBeaconDTO dto
-  ) {
-    User brtUser = getUserService.getUser();
-    BeaconId beaconId = new BeaconId(dto.getBeaconId());
-
-    try {
-      Registration registration = registrationService.getByBeaconId(beaconId);
-      registrationService.delete(dto, brtUser);
-    } catch (ResourceNotFoundException ex) {
-      registrationService.deleteLegacyBeacon(dto);
-    }
 
     return new ResponseEntity<>(HttpStatus.OK);
   }

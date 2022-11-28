@@ -92,6 +92,7 @@ export const SingleBeaconRecordView: FunctionComponent<
     actionOptionSelected: boolean,
     reasonForAction: string
   ) => {
+    setDialogueIsOpen(false);
     if (actionOptionSelected) {
       const deleteBeaconDto: IDeleteBeaconDto = {
         beaconId: beaconId,
@@ -204,8 +205,8 @@ export const SingleBeaconRecordView: FunctionComponent<
           dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
           action="Yes"
           dismissal="No"
-          selectOption={handleDeleteDialogueAction}
           reasonsForAction={reasonsForDeletion}
+          selectOption={handleDeleteDialogueAction}
         />
       </PageContent>
     </div>
