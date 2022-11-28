@@ -93,7 +93,6 @@ export class BeaconsGateway implements IBeaconsGateway {
     try {
       const data = {
         beaconId: deleteBeaconDto.beaconId,
-        accountHolderId: deleteBeaconDto.accountHolderId,
         reason: deleteBeaconDto.reason,
       };
       const accessToken = await this._authGateway.getAccessToken();
@@ -108,6 +107,7 @@ export class BeaconsGateway implements IBeaconsGateway {
       );
       return response.data;
     } catch (e) {
+      logToServer.error(e);
       throw e;
     }
   }

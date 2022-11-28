@@ -9,12 +9,15 @@ import {
 } from "@mui/material";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import { FunctionComponent } from "react";
-import { DeleteBeaconFormValues } from "lib/DeleteBeaconFormValues";
 
 interface IDeleteBeaconViewProps {
   reasonsForDeletion: string[] | undefined;
   reasonSubmitted: (reason: string) => void;
   cancelled: (cancelled: boolean) => void;
+}
+
+interface DeleteBeaconFormValues {
+  reason: string;
 }
 
 export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({

@@ -6,9 +6,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { DeleteBeaconView } from "views/delete-record/DeleteBeaconView";
+import { DialogueType } from "lib/DialogueType";
 
 interface IDialogueBoxProps {
   isOpen: boolean;
+  dialogueType: DialogueType;
   dialogueTitle: string;
   dialogueContentText: string;
   action: string;
@@ -19,6 +21,7 @@ interface IDialogueBoxProps {
 
 export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   isOpen,
+  dialogueType,
   dialogueTitle,
   dialogueContentText,
   action,
@@ -29,11 +32,6 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   const [open, setOpen] = useState(isOpen);
   const [reasonForAction, setReasonForAction] = useState("");
   const [reasonSubmitted, setReasonSubmitted] = useState(false);
-
-  const isDeleteBeaconDialogue =
-    dialogueContentText.includes("beacon") ||
-    dialogueContentText.includes("record") ||
-    dialogueTitle.includes("record");
 
   useEffect((): void => {
     setOpen(isOpen);
@@ -62,7 +60,7 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      {isDeleteBeaconDialogue && !reasonSubmitted && (
+      {dialogueType === DialogueType.DeleteBeacon && !reasonSubmitted && (
         <DeleteBeaconView
           reasonsForDeletion={reasonsForAction}
           reasonSubmitted={handleReasonSubmitted}

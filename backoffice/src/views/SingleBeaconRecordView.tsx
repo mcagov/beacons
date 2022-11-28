@@ -26,6 +26,7 @@ import { useHistory } from "react-router-dom";
 import { IDeleteBeaconDto } from "../entities/IDeleteBeaconDto";
 import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
+import { DialogueType } from "lib/DialogueType";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -97,7 +98,6 @@ export const SingleBeaconRecordView: FunctionComponent<
     if (actionOptionSelected) {
       const deleteBeaconDto: IDeleteBeaconDto = {
         beaconId: beaconId,
-        accountHolderId: "",
         reason: reasonForAction,
       };
       await beaconsGateway.deleteBeacon(deleteBeaconDto);
@@ -204,6 +204,7 @@ export const SingleBeaconRecordView: FunctionComponent<
         </TabPanel>
         <DialogueBox
           isOpen={dialogueIsOpen}
+          dialogueType={DialogueType.DeleteBeacon}
           dialogueTitle="Are you sure you want to permanently delete this record?"
           dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
           action="Yes"

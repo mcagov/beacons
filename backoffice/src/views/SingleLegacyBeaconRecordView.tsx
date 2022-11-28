@@ -23,6 +23,7 @@ import { useHistory } from "react-router-dom";
 import { DialogueBox } from "components/DialogueBox";
 import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
+import { DialogueType } from "lib/DialogueType";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -88,7 +89,6 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
     if (actionOptionSelected) {
       const deleteLegacyBeaconDto: IDeleteBeaconDto = {
         beaconId: beaconId,
-        accountHolderId: "",
         reason: reasonForAction,
       };
       await beaconsGateway.deleteBeacon(deleteLegacyBeaconDto);
@@ -190,6 +190,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
         </TabPanel>
         <DialogueBox
           isOpen={dialogueIsOpen}
+          dialogueType={DialogueType.DeleteBeacon}
           dialogueTitle="Are you sure you want to permanently delete this migrated record?"
           dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
           action="Yes"
