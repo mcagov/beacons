@@ -134,27 +134,4 @@ export class BeaconsGateway implements IBeaconsGateway {
 &ownerName=${ownerName}&cospasSarsatNumber=${cospasSarsatNumber}\
 &manufacturerSerialNumber=${manufacturerSerialNumber}&page=${page}&size=${size}&sort=${sortString}`;
   }
-
-  private static _makeSearchExportBeaconsQuery(
-    term: string = "",
-    filters: GetAllBeaconsFilters,
-    page: number = 0,
-    size: number = 20,
-    sort: GetAllBeaconsSort
-  ): string {
-    const {
-      hexId = "",
-      ownerName = "",
-      useActivities: uses = "",
-      beaconStatus: status = "",
-      cospasSarsatNumber = "",
-      manufacturerSerialNumber = "",
-    } = filters;
-
-    const sortString = sort ? `${sort[0]},${sort[1]}` : "";
-
-    return `/beacon-search/search/find-allv2?term=${term}&status=${status}&uses=${uses}&hexId=${hexId}\
-&ownerName=${ownerName}&cospasSarsatNumber=${cospasSarsatNumber}\
-&manufacturerSerialNumber=${manufacturerSerialNumber}&page=${page}&size=${size}&sort=${sortString}`;
-  }
 }
