@@ -24,9 +24,10 @@ import { logToServer } from "../utils/logger";
 import { DialogueBox } from "components/DialogueBox";
 import { useHistory } from "react-router-dom";
 import { IDeleteBeaconDto } from "../entities/IDeleteBeaconDto";
-import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
+import { reasonsForDeletion } from "lib/BeaconDeletionReasons";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { DialogueType } from "lib/DialogueType";
+import { IConfirmDialogueModel } from "components/ConfirmDialogue";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -60,10 +61,6 @@ export const SingleBeaconRecordView: FunctionComponent<
     setSelectedTab(tab);
   };
 
-  const reasonsForDeletion: string[] | undefined = Object.values(
-    BeaconDeletionReasons
-  );
-
   const [beacon, setBeacon] = useState<IBeacon>({} as IBeacon);
   const [notes, setNotes] = useState<INote[]>([] as INote[]);
   const [dialogueIsOpen, setDialogueIsOpen] = useState<boolean>(false);
@@ -85,6 +82,13 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
+  const modernConfirmDialogueModel: IConfirmDialogueModel = {
+    dialogueTitle: "Are you sure you want to permanently delete this record?",
+    dialogueContentText:
+      "This will delete the beacon record, its owner(s), and all other associated information.",
+    action: "Yes",
+    dismissal: "No",
+  };
 
   const openDialogueBox = () => {
     setDialogueIsOpen(true);
@@ -205,11 +209,8 @@ export const SingleBeaconRecordView: FunctionComponent<
         <DialogueBox
           isOpen={dialogueIsOpen}
           dialogueType={DialogueType.DeleteBeacon}
-          dialogueTitle="Are you sure you want to permanently delete this record?"
-          dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
-          action="Yes"
-          dismissal="No"
           reasonsForAction={reasonsForDeletion}
+          confirmDialogueModel={modernConfirmDialogueModel}
           selectOption={handleDeleteDialogueAction}
         />
       </PageContent>

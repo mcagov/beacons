@@ -49,9 +49,7 @@ public class AuthGatewayImpl implements AuthGateway {
   }
 
   private Authentication getAuthentication() {
-    var authContext = SecurityContextHolder.getContext();
-    var auth = authContext.getAuthentication();
-    return auth;
+    return SecurityContextHolder.getContext().getAuthentication();
   }
 
   private SupportedPermissions SupportedPermissionsFromString(

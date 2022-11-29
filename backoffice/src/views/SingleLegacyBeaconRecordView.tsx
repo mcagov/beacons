@@ -21,9 +21,10 @@ import { BeaconStatuses } from "../entities/IBeacon";
 import { IDeleteBeaconDto } from "../entities/IDeleteBeaconDto";
 import { useHistory } from "react-router-dom";
 import { DialogueBox } from "components/DialogueBox";
-import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
+import { reasonsForDeletion } from "lib/BeaconDeletionReasons";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { DialogueType } from "lib/DialogueType";
+import { IConfirmDialogueModel } from "components/ConfirmDialogue";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -73,9 +74,14 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
-  const reasonsForLegacyDeletion: string[] | undefined = Object.values(
-    BeaconDeletionReasons
-  );
+  const legacyConfirmDialogueModel: IConfirmDialogueModel = {
+    dialogueTitle:
+      "Are you sure you want to permanently delete this migrated record?",
+    dialogueContentText:
+      "This will delete the beacon record, its owner(s), and all other associated information.",
+    action: "Yes",
+    dismissal: "No",
+  };
 
   const openDialogueBox = () => {
     setDialogueIsOpen(true);
@@ -191,12 +197,9 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
         <DialogueBox
           isOpen={dialogueIsOpen}
           dialogueType={DialogueType.DeleteBeacon}
-          dialogueTitle="Are you sure you want to permanently delete this migrated record?"
-          dialogueContentText="This will delete the beacon record, its owner(s), and all other associated information."
-          action="Yes"
-          dismissal="No"
+          reasonsForAction={reasonsForDeletion}
+          confirmDialogueModel={legacyConfirmDialogueModel}
           selectOption={handleDeleteDialogueAction}
-          reasonsForAction={reasonsForLegacyDeletion}
         />
       </PageContent>
     </div>

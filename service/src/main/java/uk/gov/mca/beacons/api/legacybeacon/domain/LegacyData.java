@@ -28,7 +28,7 @@ public class LegacyData implements ValueObject, Serializable {
         .findFirst()
         .orElse(null);
     } else {
-      return new LegacyUse();
+      return null;
     }
   }
 }

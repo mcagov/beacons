@@ -1,32 +1,22 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import { DeleteBeaconView } from "views/delete-record/DeleteBeaconView";
 import { DialogueType } from "lib/DialogueType";
+import { ConfirmDialogue, IConfirmDialogueModel } from "./ConfirmDialogue";
 
 interface IDialogueBoxProps {
   isOpen: boolean;
   dialogueType: DialogueType;
-  dialogueTitle: string;
-  dialogueContentText: string;
-  action: string;
-  dismissal: string;
   reasonsForAction?: string[] | undefined;
+  confirmDialogueModel: IConfirmDialogueModel;
   selectOption: (isActionOption: boolean, reasonForAction: string) => void;
 }
 
 export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   isOpen,
   dialogueType,
-  dialogueTitle,
-  dialogueContentText,
-  action,
-  dismissal,
   reasonsForAction,
+  confirmDialogueModel,
   selectOption,
 }): JSX.Element => {
   const [open, setOpen] = useState(isOpen);
@@ -35,7 +25,8 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
 
   useEffect((): void => {
     setOpen(isOpen);
-  }, [isOpen]);
+    setReasonSubmitted(reasonSubmitted);
+  }, [isOpen, reasonSubmitted]);
 
   const handleReasonSubmitted = (reason: string) => {
     setReasonForAction(reason);
@@ -43,15 +34,23 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   };
 
   const handleCancelled = () => {
-    setReasonForAction("");
-    setReasonSubmitted(false);
-    handleClick(false);
+    console.log("cancelled");
+    cancelReasonDialogue();
+    handleConfirmOption(false);
   };
 
-  async function handleClick(isActionOption: boolean): Promise<void> {
+  function handleConfirmOption(isActionOption: boolean): void {
     setOpen(false);
     setReasonSubmitted(isActionOption);
+    if (!isActionOption) {
+      cancelReasonDialogue();
+    }
     selectOption(isActionOption, reasonForAction);
+  }
+
+  function cancelReasonDialogue(): void {
+    setReasonForAction("");
+    setReasonSubmitted(false);
   }
 
   return (
@@ -67,21 +66,11 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
           cancelled={handleCancelled}
         />
       )}
-      {reasonSubmitted && (
-        <div>
-          <DialogTitle id="alert-dialog-title">{dialogueTitle}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {dialogueContentText}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => handleClick(false)}>{dismissal}</Button>
-            <Button onClick={() => handleClick(true)} autoFocus>
-              {action}
-            </Button>
-          </DialogActions>
-        </div>
+      {confirmDialogueModel && reasonSubmitted && (
+        <ConfirmDialogue
+          confirmDialogueModel={confirmDialogueModel}
+          confirmOption={handleConfirmOption}
+        />
       )}
     </Dialog>
   );

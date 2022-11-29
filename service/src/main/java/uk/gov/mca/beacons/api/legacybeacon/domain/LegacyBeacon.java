@@ -45,7 +45,7 @@ public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
   private String ownerEmail;
 
   @Setter
-  @Getter(AccessLevel.NONE)
+  @Getter
   private String beaconStatus;
 
   @Setter
@@ -74,10 +74,6 @@ public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
   @Setter
   @NotNull
   private OffsetDateTime lastModifiedDate;
-
-  public String getBeaconStatus() {
-    return beaconStatus;
-  }
 
   public boolean isClaimed() {
     if (actions == null) {

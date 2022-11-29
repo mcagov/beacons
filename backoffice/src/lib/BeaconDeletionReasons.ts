@@ -6,3 +6,7 @@ export enum BeaconDeletionReasons {
   DUPLICATE = "Duplicate",
   OTHER = "Other",
 }
+
+export const reasonsForDeletion: string[] | undefined = Object.values(
+  BeaconDeletionReasons
+);

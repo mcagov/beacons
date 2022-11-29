@@ -25,7 +25,7 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
   reasonSubmitted,
   cancelled,
 }): JSX.Element => {
-  const handleSave = async (values: DeleteBeaconFormValues) => {
+  const handleSave = (values: DeleteBeaconFormValues) => {
     reasonSubmitted(values.reason);
   };
 
