@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.export.application.ExportService;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
-import uk.gov.mca.beacons.api.export.rest.BeaconExportSearchForm;
 import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 
@@ -105,36 +104,6 @@ class ExportController {
       .ok()
       .contentType(MediaType.APPLICATION_PDF)
       .body(file);
-  }
-
-  @PostMapping(value = "/beacons/search")
-  public ResponseEntity<List<BeaconExportDTO>> searchBeacons(
-    @RequestBody @Valid BeaconExportSearchForm form
-  ) throws Exception {
-    //get all beacons.
-
-    //filter beacons down where..
-    //    beacons = beacons.where lastModified >= form.getLastModifiedFrom() && lastMofified <= form.getLastModifiedTo()
-
-    // For legacy registration date is legacyBeacon.getData().getBeacon()
-    // For modern registation date is just createdDate
-    //    beacons = beacons.where  regDate >= form.getRegistrationFrom() && regDate <= form.getRegistrationTo()
-
-    //filer beacons down by "name"
-    //    This is a wildcard search across: Owner Name(s) & Account Holder Name(s) for legacy and modern.
-
-    //Really bad implementation but giving it a go to test:
-
-    List<BeaconExportDTO> dataList = exportService.getAll();
-
-    //    dataList = dataList.stream()
-    //                .filter(dto -> dto!=null)
-    //                .filter(b -> new Date(b.getLastModifiedDate()).isBefore(form.getLastModifiedFrom()))
-    //                .collect(Collectors.toList());
-    return ResponseEntity
-      .ok()
-      .contentType(MediaType.APPLICATION_JSON)
-      .body(dataList);
   }
 
   @GetMapping(value = "/beacons/data/all")
