@@ -106,20 +106,6 @@ class ExportController {
       .body(file);
   }
 
-  @GetMapping(value = "/beacons/data/all")
-  public ResponseEntity<List<BeaconExportDTO>> getBeacons() throws Exception {
-    List<BeaconExportDTO> dataList = exportService
-      .getAll()
-      .stream()
-      .filter(dto -> dto != null)
-      .collect(Collectors.toList());
-
-    return ResponseEntity
-      .ok()
-      .contentType(MediaType.APPLICATION_JSON)
-      .body(dataList);
-  }
-
   @PostMapping(value = "/beacons/data")
   public ResponseEntity<List<BeaconExportDTO>> getBeacons(
     @RequestBody @Valid List<UUID> rawBeaconIds
