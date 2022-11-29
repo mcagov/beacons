@@ -20,6 +20,7 @@ import { BeaconSummaryPanel } from "../panels/beaconSummaryPanel/BeaconSummaryPa
 import { EmergencyContactPanel } from "../panels/emergencyContactPanel/EmergencyContactPanel";
 import { NotesPanel } from "../panels/notesPanel/NotesPanel";
 import { logToServer } from "../utils/logger";
+import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -83,44 +84,46 @@ export const SingleBeaconRecordView: FunctionComponent<
             variant="outlined"
           />
         </span>
-        <div className="print-buttons">
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/certificate/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              certificate
-            </Button>
-          </span>
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/letter/registration/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              Registration letter
-            </Button>
-          </span>
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/letter/amended/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              Amended letter
-            </Button>
-          </span>
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/label/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              Label
-            </Button>
-          </span>
-        </div>
+        <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
+          <div className="print-buttons">
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/certificate/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                certificate
+              </Button>
+            </span>
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/letter/registration/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                Registration letter
+              </Button>
+            </span>
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/letter/amended/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                Amended letter
+              </Button>
+            </span>
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/label/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                Label
+              </Button>
+            </span>
+          </div>
+        </OnlyVisibleToUsersWith>
       </PageHeader>
       <PageContent>
         <BeaconSummaryPanel
