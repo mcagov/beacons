@@ -94,7 +94,7 @@ public class PdfGenerateService {
           .toUpperCase()
           .substring(
             0,
-            Math.min(data.getBeaconUse().toUpperCase().length(), 40)
+            Math.min(data.getBeaconUse().toUpperCase().length(), 30)
           )
       )
         .setFontSize(7.5f)
@@ -106,7 +106,16 @@ public class PdfGenerateService {
     document.add(
       getLabelDataLine("Hex Id", data.getHexId().toUpperCase(), 7.5f)
     );
-    document.add(getLabelDataLine("Coding", data.getCoding(), 7.25f));
+    document.add(
+      getLabelDataLine(
+        "Coding",
+        data
+          .getCoding()
+          .toUpperCase()
+          .substring(0, Math.min(data.getCoding().toUpperCase().length(), 12)),
+        7.25f
+      )
+    );
     document.add(
       getLabelDataLine(
         "Proof of Registration",
