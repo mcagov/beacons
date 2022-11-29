@@ -11,12 +11,12 @@ import {
 import { Button, Chip, Theme } from "@mui/material";
 import { makeStyles, createStyles } from "@mui/styles";
 import ContentPrintIcon from "@mui/icons-material/Print";
-import { IExportsGateway } from "gateways/exports/IExportsGateway";
-import { IBeaconExportResult } from "views/BeaconExportSearch";
+import { IBeaconExportSearchResult } from "views/BeaconExportSearch";
 import { customDateStringFormat } from "../utils/dateTime";
 interface IExportBeaconsTableProps {
-  exportsGateway: IExportsGateway;
-  data: IBeaconExportResult[];
+  result: IBeaconExportSearchResult;
+  setPage: any;
+  setPageSize: any;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -90,11 +90,17 @@ const columns: GridColDef[] = [
 ];
 
 export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
-  React.memo(function ({ data }): JSX.Element {
+  React.memo(function ({ result, setPage, setPageSize }): JSX.Element {
     const [selectionModelItems, setSelectionModel] =
       useState<GridSelectionModel>([]);
 
     const classes = useStyles();
+
+    let rows = result?._embedded?.beaconSearch || [];
+    let page = result.page || {};
+
+    console.log("rows: ", rows);
+    console.log("page: ", page);
 
     function CustomToolbar() {
       if (!selectionModelItems || selectionModelItems.length === 0) {
@@ -147,15 +153,19 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
 
     return (
       <Box sx={{ height: 850 }}>
+        <p>{JSON.stringify(rows)}</p>
+
         <DataGrid
-          rows={data}
+          rows={rows}
           columns={columns}
-          rowsPerPageOptions={[20, 50, 100]}
+          rowsPerPageOptions={[10, 20, 50, 100]}
+          pageSize={page.size}
+          page={page.number}
+          rowCount={page.totalElements}
           checkboxSelection
-          onSelectionModelChange={(ids) => {
-            console.log("ids is : ", ids);
-            setSelectionModel(ids);
-          }}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          onSelectionModelChange={setSelectionModel}
           components={{ Toolbar: CustomToolbar }}
         />
       </Box>

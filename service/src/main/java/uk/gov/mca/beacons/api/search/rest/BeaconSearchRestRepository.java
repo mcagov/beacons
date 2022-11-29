@@ -100,7 +100,7 @@ interface BeaconSearchRestRepository
     "AND ((COALESCE(:lastModifiedFrom, '') = '') OR b.lastModifiedDate >= :lastModifiedFrom) " +
     "AND ((COALESCE(:lastModifiedTo, '') = '') OR b.lastModifiedDate <= :lastModifiedTo) "
   )
-  List<BeaconSearchEntity> findAllBeaconsForExport(
+  Page<BeaconSearchEntity> findAllBeaconsForExport(
     @RequestParam(required = false, defaultValue = "") String name,
     @RequestParam(required = false) @DateTimeFormat(
       iso = DateTimeFormat.ISO.DATE_TIME,
@@ -117,6 +117,7 @@ interface BeaconSearchRestRepository
     @RequestParam(required = false) @DateTimeFormat(
       iso = DateTimeFormat.ISO.DATE_TIME,
       fallbackPatterns = { "yyyy-MM-dd" }
-    ) OffsetDateTime lastModifiedTo
+    ) OffsetDateTime lastModifiedTo,
+    Pageable page
   );
 }

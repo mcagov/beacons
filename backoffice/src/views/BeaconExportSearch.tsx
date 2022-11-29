@@ -33,6 +33,18 @@ export interface ExportSearchFormProps {
   registrationTo: Date;
   lastModifiedFrom: Date;
   lastModifiedTo: Date;
+  page: number;
+  pageSize: number;
+}
+
+export interface IBeaconExportSearchResult {
+  page: {
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    number: number;
+  };
+  _embedded: { beaconSearch: IBeaconExportResult[] };
 }
 
 export interface IBeaconExportResult {
@@ -76,14 +88,25 @@ export const BeaconExportSearch: FunctionComponent<
 > = ({ exportsGateway }): JSX.Element => {
   const classes = useStyles();
 
-  const [data, setData] = useState<IBeaconExportResult[]>([]);
+  const [result, setResult] = useState<IBeaconExportSearchResult>(
+    {} as IBeaconExportSearchResult
+  );
+  const [form, setForm] = useState<any>({});
+  const [page, setPage] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(20);
 
   const { handleSubmit, reset, control } = useForm();
   const onSubmit = async (formData: any) => {
-    await exportsGateway.searchExportData(formData).then(setData);
+    formData.page = page;
+    formData.pageSize = pageSize;
+    setForm(formData);
+
+    await exportsGateway.searchExportData(formData).then(setResult);
   };
 
-  onSubmit({});
+  useEffect(() => {
+    onSubmit(form);
+  }, [page, pageSize]);
 
   return (
     <div className={classes.root}>
@@ -144,7 +167,11 @@ export const BeaconExportSearch: FunctionComponent<
               Clear
             </Button>
           </Box>
-          <ExportBeaconsTable exportsGateway={exportsGateway} data={data} />
+          <ExportBeaconsTable
+            result={result}
+            setPage={setPage}
+            setPageSize={setPageSize}
+          />
         </Paper>
       </PageContent>
     </div>
