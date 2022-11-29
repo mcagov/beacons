@@ -7,9 +7,9 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
   GridValueFormatterParams,
-  GridValueGetterParams,
 } from "@mui/x-data-grid";
-import { Button } from "@mui/material";
+import { Button, Chip, Theme } from "@mui/material";
+import { makeStyles, createStyles } from "@mui/styles";
 import ContentPrintIcon from "@mui/icons-material/Print";
 import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import { IBeaconExportResult } from "views/BeaconExportSearch";
@@ -18,6 +18,20 @@ interface IExportBeaconsTableProps {
   exportsGateway: IExportsGateway;
   data: IBeaconExportResult[];
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing(2),
+    },
+    button: {
+      marginLeft: theme.spacing(2),
+    },
+  })
+);
 
 const columns: GridColDef[] = [
   // { field: "id", headerName: "ID", width: 300 },
@@ -32,9 +46,6 @@ const columns: GridColDef[] = [
     headerName: "Status",
     width: 150,
     editable: false,
-    // valueFormatter: (params: GridValueFormatterParams) => {
-    //   return <Chip label={params.value} color={params.value === "MIGRATED"?"secondary":"primary"} />;
-    // }
   },
   {
     field: "createdDate",
@@ -83,6 +94,8 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
     const [selectionModelItems, setSelectionModel] =
       useState<GridSelectionModel>([]);
 
+    const classes = useStyles();
+
     function CustomToolbar() {
       if (!selectionModelItems || selectionModelItems.length === 0) {
         return null;
@@ -90,11 +103,13 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
 
       return (
         <GridToolbarContainer>
+          <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+
           <Button
             href={`backoffice#/labels/${selectionModelItems.toString()}`}
             target="_blank"
             variant="outlined"
-            className="ml-2"
+            className={classes.button}
             endIcon={<ContentPrintIcon />}
           >
             Label(s)
@@ -103,7 +118,7 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
             href={`backoffice#/certificates/${selectionModelItems.toString()}`}
             target="_blank"
             variant="outlined"
-            className="ml-2"
+            className={classes.button}
             endIcon={<ContentPrintIcon />}
           >
             Certificate(s)
@@ -112,7 +127,7 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
             href={`backoffice#/letters/registration/${selectionModelItems.toString()}`}
             target="_blank"
             variant="outlined"
-            className="m-2"
+            className={classes.button}
             endIcon={<ContentPrintIcon />}
           >
             Registration Letter(s)
@@ -121,18 +136,17 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
             href={`backoffice#/letters/amended/${selectionModelItems.toString()}`}
             target="_blank"
             variant="outlined"
-            className="m-2"
+            className={classes.button}
             endIcon={<ContentPrintIcon />}
           >
             Amended Letter(s)
           </Button>
-          <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
         </GridToolbarContainer>
       );
     }
 
     return (
-      <Box sx={{ height: 800 }}>
+      <Box sx={{ height: 850 }}>
         <DataGrid
           rows={data}
           columns={columns}

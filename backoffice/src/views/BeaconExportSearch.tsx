@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       padding: theme.spacing(2),
     },
+    button: {
+      marginLeft: theme.spacing(2),
+    },
   })
 );
 
@@ -80,9 +83,7 @@ export const BeaconExportSearch: FunctionComponent<
     await exportsGateway.searchExportData(formData).then(setData);
   };
 
-  useEffect(() => {
-    // console.dir(data);
-  }, [data]);
+  onSubmit({});
 
   return (
     <div className={classes.root}>
@@ -128,9 +129,19 @@ export const BeaconExportSearch: FunctionComponent<
               type="text"
             />
 
-            <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
-            <Button onClick={() => reset()} variant={"outlined"}>
-              Reset
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              variant={"outlined"}
+              className={classes.button}
+            >
+              Search
+            </Button>
+            <Button
+              onClick={() => reset()}
+              variant={"outlined"}
+              className={classes.button}
+            >
+              Clear
             </Button>
           </Box>
           <ExportBeaconsTable exportsGateway={exportsGateway} data={data} />

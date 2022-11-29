@@ -166,7 +166,7 @@ const App: FunctionComponent = () => {
                 <Route path={`/export/search`}>
                   <Navigation />
                   <PageContent>
-                    <BeaconExportSearch exportsGateway={exportsGateway} />;
+                    <BeaconExportSearch exportsGateway={exportsGateway} />
                   </PageContent>
                 </Route>
                 <Route path={`/roles`}>
