@@ -17,6 +17,21 @@ public class BeaconExportLandUseDTO extends BeaconExportUseDTO {
   private String environment;
 
   @Valid
+  private String typeOfUse;
+
+  @Valid
+  private String beaconPosition;
+
+  @Valid
+  private String beaconLocation;
+
+  @Valid
+  private String windfarmLocation;
+
+  @Valid
+  private String rigPlatformLocation;
+
+  @Valid
   private String descriptionOfIntendedUse;
 
   @Valid

@@ -117,7 +117,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             <Button
               href={`/backoffice#/certificates/${beaconId}`}
               variant="outlined"
-              startIcon={<ContentPrintIcon />}
+              endIcon={<ContentPrintIcon />}
             >
               certificate
             </Button>
@@ -126,7 +126,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             <Button
               href={`/backoffice#/letters/registration/${beaconId}`}
               variant="outlined"
-              startIcon={<ContentPrintIcon />}
+              endIcon={<ContentPrintIcon />}
             >
               Registration letter
             </Button>
@@ -135,7 +135,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             <Button
               href={`/backoffice#/letters/amended/${beaconId}`}
               variant="outlined"
-              startIcon={<ContentPrintIcon />}
+              endIcon={<ContentPrintIcon />}
             >
               Amended letter
             </Button>
@@ -144,7 +144,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             <Button
               href={`/backoffice#/label/${beaconId}`}
               variant="outlined"
-              startIcon={<ContentPrintIcon />}
+              endIcon={<ContentPrintIcon />}
             >
               Label
             </Button>

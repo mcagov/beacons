@@ -17,7 +17,22 @@ public class BeaconExportAviationUseDTO extends BeaconExportUseDTO {
   private String environment;
 
   @Valid
+  private String typeOfUse;
+
+  @Valid
+  private String beaconPosition;
+
+  @Valid
+  private String beaconLocation;
+
+  @Valid
   private String aircraftType;
+
+  @Valid
+  private String aircraftModel;
+
+  @Valid
+  private String aircraftManufacturer;
 
   @Valid
   private int maxPersonOnBoard;
@@ -26,7 +41,7 @@ public class BeaconExportAviationUseDTO extends BeaconExportUseDTO {
   private String aircraftRegistrationMark;
 
   @Valid
-  private String TwentyFourBitAddressInHex;
+  private String twentyFourBitAddressInHex;
 
   @Valid
   private String principalAirport;
