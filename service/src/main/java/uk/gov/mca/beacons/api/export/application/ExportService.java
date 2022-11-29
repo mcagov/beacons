@@ -50,27 +50,6 @@ public class ExportService {
     this.accountHolderService = accountHolderService;
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
-  public List<BeaconExportDTO> getAll() {
-    List<BeaconExportDTO> beacons = new ArrayList<>();
-    beacons.addAll(
-      beaconService
-        .findAll()
-        .stream()
-        //This should be registration, not beacon for other objects.
-        .map(b -> exportMapper.toBeaconExportDTO(b))
-        .collect(Collectors.toList())
-    );
-    beacons.addAll(
-      legacyBeaconService
-        .findAll()
-        .stream()
-        .map(lb -> exportMapper.toLegacyBeaconExportDTO(lb))
-        .collect(Collectors.toList())
-    );
-    return beacons;
-  }
-
   public BeaconExportDTO getBeaconExportDTO(
     UUID rawBeaconId,
     String noteGeneratedType
@@ -90,7 +69,6 @@ public class ExportService {
       );
 
       if (noteGeneratedType != null) {
-        //Only create note for modern for now.
         noteService.createSystemNote(
           beaconId,
           noteGeneratedType + " Generated"
