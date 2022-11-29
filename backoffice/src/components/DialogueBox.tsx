@@ -22,11 +22,16 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   const [open, setOpen] = useState(isOpen);
   const [reasonForAction, setReasonForAction] = useState("");
   const [reasonSubmitted, setReasonSubmitted] = useState(false);
+  const [showReasonDialogue, setShowReasonDialogue] = useState(true);
 
   useEffect((): void => {
     setOpen(isOpen);
-    setReasonSubmitted(reasonSubmitted);
-  }, [isOpen, reasonSubmitted]);
+    setShowReasonDialogue(true);
+  }, [isOpen]);
+
+  useEffect((): void => {
+    setShowReasonDialogue(false);
+  }, [reasonSubmitted]);
 
   const handleReasonSubmitted = (reason: string) => {
     setReasonForAction(reason);
@@ -34,21 +39,17 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
   };
 
   const handleCancelled = () => {
-    console.log("cancelled");
-    cancelReasonDialogue();
     handleConfirmOption(false);
+    resetReasonDialogue();
   };
 
   function handleConfirmOption(isActionOption: boolean): void {
     setOpen(false);
-    setReasonSubmitted(isActionOption);
-    if (!isActionOption) {
-      cancelReasonDialogue();
-    }
+    resetReasonDialogue();
     selectOption(isActionOption, reasonForAction);
   }
 
-  function cancelReasonDialogue(): void {
+  function resetReasonDialogue(): void {
     setReasonForAction("");
     setReasonSubmitted(false);
   }
@@ -59,7 +60,7 @@ export const DialogueBox: FunctionComponent<IDialogueBoxProps> = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      {dialogueType === DialogueType.DeleteBeacon && !reasonSubmitted && (
+      {dialogueType === DialogueType.DeleteBeacon && showReasonDialogue && (
         <DeleteBeaconView
           reasonsForDeletion={reasonsForAction}
           reasonSubmitted={handleReasonSubmitted}
