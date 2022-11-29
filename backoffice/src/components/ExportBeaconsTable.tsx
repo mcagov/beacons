@@ -38,7 +38,7 @@ const columns: GridColDef[] = [
   {
     field: "hexId",
     headerName: "Hex ID",
-    width: 150,
+    width: 175,
     editable: false,
   },
   {
@@ -153,14 +153,13 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
 
     return (
       <Box sx={{ height: 850 }}>
-        <p>{JSON.stringify(rows)}</p>
-
         <DataGrid
           rows={rows}
           columns={columns}
           rowsPerPageOptions={[10, 20, 50, 100]}
           pageSize={page.size}
           page={page.number}
+          paginationMode="server"
           rowCount={page.totalElements}
           checkboxSelection
           onPageChange={setPage}

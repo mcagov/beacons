@@ -1,8 +1,4 @@
-import {
-  ExportSearchFormProps,
-  IBeaconExportResult,
-  IBeaconExportSearchResult,
-} from "views/BeaconExportSearch";
+import { ExportSearchFormProps } from "views/BeaconExportSearch";
 import { IBeaconExport } from "./IBeaconExport";
 
 export interface IExportsGateway {
