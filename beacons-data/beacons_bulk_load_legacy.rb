@@ -1,16 +1,3 @@
-#
-#  SELECT Count(b)
-#  FROM   beacon_search b
-#  WHERE  ( Lower(b.hex_id) LIKE '%'
-#           OR Lower(b.beacon_status) LIKE '%'
-#           OR Lower(b.owner_name) LIKE '%'
-#           OR Lower(b.use_activities) LIKE '%' )
-#        AND ( Lower(b.beacon_status) LIKE '%' )
-#        AND ( Lower(b.use_activities) LIKE '%' );
-
-# reseed dev and stg
-# code review the certificates PR
-
 require 'pg'
 require 'faker'
 require 'securerandom'

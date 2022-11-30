@@ -21,10 +21,14 @@ public class LegacyData implements ValueObject, Serializable {
   private LegacyEmergencyContact emergencyContact;
 
   public LegacyUse getMainUse() {
-    return getUses()
-      .stream()
-      .filter(bu -> bu.isMain())
-      .findFirst()
-      .orElse(null);
+    if (uses != null) {
+      return getUses()
+        .stream()
+        .filter(bu -> bu.isMain())
+        .findFirst()
+        .orElse(null);
+    } else {
+      return null;
+    }
   }
 }

@@ -76,6 +76,7 @@ const App: FunctionComponent = () => {
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
+
     return (
       <div>
         <Navigation />

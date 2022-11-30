@@ -1,14 +1,17 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
+import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
+import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
+import uk.gov.mca.beacons.api.legacybeacon.domain.*;
+import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 
 @Transactional
 @Slf4j
@@ -24,6 +27,10 @@ public class LegacyBeaconService {
 
   public LegacyBeacon create(LegacyBeacon legacyBeacon) {
     return this.legacyBeaconRepository.save(legacyBeacon);
+  }
+
+  public List<LegacyBeacon> findAll() {
+    return legacyBeaconRepository.findAll();
   }
 
   public Optional<LegacyBeacon> findById(LegacyBeaconId legacyBeaconId) {
@@ -52,7 +59,33 @@ public class LegacyBeaconService {
     return savedLegacyBeacons;
   }
 
-  public List<LegacyBeacon> findAll() {
-    return legacyBeaconRepository.findAll();
+  public List<LegacyBeacon> delete(
+    String hexId,
+    String email,
+    String reasonForDeletion
+  ) {
+    List<LegacyBeacon> legacyBeacons = legacyBeaconRepository.findByHexIdAndOwnerEmail(
+      hexId,
+      email
+    );
+    legacyBeacons.forEach(LegacyBeacon::softDelete);
+
+    LegacyBeacon legacyBeacon = legacyBeacons.get(0);
+    LegacyData legacyBeaconData = legacyBeacon.getData();
+
+    LegacyBeaconDetails beaconData = legacyBeaconData.getBeacon();
+    beaconData.setIsWithdrawn("Y");
+    beaconData.setWithdrawnReason(reasonForDeletion);
+
+    legacyBeaconData.setOwner(new LegacyOwner());
+    legacyBeaconData.setUses(new ArrayList<LegacyUse>());
+    legacyBeaconData.setEmergencyContact(new LegacyEmergencyContact());
+    legacyBeaconData.setSecondaryOwners(new ArrayList<LegacySecondaryOwner>());
+
+    legacyBeacon.setOwnerEmail("");
+    legacyBeacon.setOwnerName("");
+    legacyBeacon.setLastModifiedDate(OffsetDateTime.now());
+
+    return legacyBeaconRepository.saveAll(legacyBeacons);
   }
 }

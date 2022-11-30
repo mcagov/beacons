@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { applicationConfig } from "config";
 import { IBeacon } from "entities/IBeacon";
+import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
 import { IBeaconSearchResult } from "entities/IBeaconSearchResult";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
@@ -82,6 +83,31 @@ export class BeaconsGateway implements IBeaconsGateway {
       );
       return response.data;
     } catch (e) {
+      throw e;
+    }
+  }
+
+  public async deleteBeacon(
+    deleteBeaconDto: IDeleteBeaconDto
+  ): Promise<AxiosResponse> {
+    try {
+      const data = {
+        beaconId: deleteBeaconDto.beaconId,
+        reason: deleteBeaconDto.reason,
+      };
+      const accessToken = await this._authGateway.getAccessToken();
+
+      const response = await axios.patch(
+        `${applicationConfig.apiUrl}/delete/backoffice`,
+        data,
+        {
+          timeout: applicationConfig.apiTimeoutMs,
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+      return response.data;
+    } catch (e) {
+      logToServer.error(e);
       throw e;
     }
   }

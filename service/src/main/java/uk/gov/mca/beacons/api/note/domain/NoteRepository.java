@@ -6,4 +6,5 @@ import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 
 public interface NoteRepository extends JpaRepository<Note, NoteId> {
   List<Note> findByBeaconId(BeaconId beaconId);
+  Long deleteAllByBeaconId(BeaconId beaconId);
 }
