@@ -4,10 +4,10 @@ import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 import { FunctionComponent, useEffect, useState } from "react";
-import { PageContent } from "../components/layout/PageContent";
+import { PageContent } from "../../components/layout/PageContent";
 import { Controller, useForm } from "react-hook-form";
-import { IExportsGateway } from "../gateways/exports/IExportsGateway";
-import { ExportBeaconsTable } from "components/ExportBeaconsTable";
+import { IExportsGateway } from "../../gateways/exports/IExportsGateway";
+import { ExportBeaconsTable } from "components/export/ExportBeaconsTable";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

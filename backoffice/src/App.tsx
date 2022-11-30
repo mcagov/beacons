@@ -38,7 +38,7 @@ import { UserSettingsProvider } from "./UserSettings";
 import { logToServer } from "./utils/logger";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
-import { BeaconExportSearch } from "./views/BeaconExportSearch";
+import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 
 interface ResourceParams {
   id: string;

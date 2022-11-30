@@ -5,7 +5,7 @@ import { customDateStringFormat } from "utils/dateTime";
 import {
   ExportSearchFormProps,
   IBeaconExportSearchResult,
-} from "views/BeaconExportSearch";
+} from "views/exports/BeaconExportSearch";
 import { logToServer } from "../../utils/logger";
 import { IBeaconExport } from "./IBeaconExport";
 import { IExportsGateway } from "./IExportsGateway";
@@ -143,7 +143,7 @@ export class ExportsGateway implements IExportsGateway {
     }
 
     try {
-      const exportResponse = await axios.get<any>(url, {
+      const exportResponse = await axios.get<IBeaconExportSearchResult>(url, {
         timeout: applicationConfig.apiTimeoutMs,
         headers: { Authorization: `Bearer ${accessToken}` },
       });

@@ -11,8 +11,8 @@ import {
 import { Button, Chip, Theme } from "@mui/material";
 import { makeStyles, createStyles } from "@mui/styles";
 import ContentPrintIcon from "@mui/icons-material/Print";
-import { IBeaconExportSearchResult } from "views/BeaconExportSearch";
-import { customDateStringFormat } from "../utils/dateTime";
+import { IBeaconExportSearchResult } from "views/exports/BeaconExportSearch";
+import { customDateStringFormat } from "../../utils/dateTime";
 interface IExportBeaconsTableProps {
   result: IBeaconExportSearchResult;
   setPage: any;
@@ -98,9 +98,6 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
 
     let rows = result?._embedded?.beaconSearch || [];
     let page = result.page || {};
-
-    console.log("rows: ", rows);
-    console.log("page: ", page);
 
     function CustomToolbar() {
       if (!selectionModelItems || selectionModelItems.length === 0) {
