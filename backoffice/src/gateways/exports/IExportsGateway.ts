@@ -1,7 +1,7 @@
 import {
   ExportSearchFormProps,
-  IBeaconExportResult,
-} from "views/BeaconExportSearch";
+  IBeaconExportSearchResult,
+} from "views/exports/BeaconExportSearch";
 import { IBeaconExport } from "./IBeaconExport";
 
 export interface IExportsGateway {
@@ -16,5 +16,7 @@ export interface IExportsGateway {
   getLabelsForBeacons(beaconIds: string[]): Promise<Blob>;
 
   getExportDataForAllBeacons(): Promise<IBeaconExport[]>;
-  searchExportData(searchForm: ExportSearchFormProps): Promise<[]>;
+  searchExportData(
+    searchForm: ExportSearchFormProps
+  ): Promise<IBeaconExportSearchResult>;
 }

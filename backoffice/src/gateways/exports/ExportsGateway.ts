@@ -2,7 +2,10 @@ import axios from "axios";
 import { applicationConfig } from "config";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
 import { customDateStringFormat } from "utils/dateTime";
-import { ExportSearchFormProps } from "views/BeaconExportSearch";
+import {
+  ExportSearchFormProps,
+  IBeaconExportSearchResult,
+} from "views/exports/BeaconExportSearch";
 import { logToServer } from "../../utils/logger";
 import { IBeaconExport } from "./IBeaconExport";
 import { IExportsGateway } from "./IExportsGateway";
@@ -97,14 +100,14 @@ export class ExportsGateway implements IExportsGateway {
 
   public async searchExportData(
     searchForm: ExportSearchFormProps
-  ): Promise<[]> {
+  ): Promise<IBeaconExportSearchResult> {
     const accessToken = await this._authGateway.getAccessToken();
 
     let url = `${
       applicationConfig.apiUrl
     }/beacon-search/search/export-search?name=${encodeURIComponent(
       searchForm.name || ""
-    )}`;
+    )}&page=${searchForm.page || 0}&size=${searchForm.pageSize || 20}`;
 
     if (searchForm.registrationFrom) {
       url += `&registrationFrom=${encodeURIComponent(
@@ -140,11 +143,12 @@ export class ExportsGateway implements IExportsGateway {
     }
 
     try {
-      const exportResponse = await axios.get<any>(url, {
+      const exportResponse = await axios.get<IBeaconExportSearchResult>(url, {
         timeout: applicationConfig.apiTimeoutMs,
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      return exportResponse.data._embedded.beaconSearch;
+      console.dir(exportResponse.data);
+      return exportResponse.data;
     } catch (error) {
       logToServer.error(error);
       throw error;
