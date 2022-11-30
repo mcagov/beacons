@@ -20,7 +20,9 @@ export type Role =
   | "DEFAULT_ACCESS"
   | "ADD_BEACON_NOTES"
   | "UPDATE_RECORDS"
-  | "DATA_EXPORTER";
+  | "DATA_EXPORTER"
+  | "DELETE_BEACONS"
+  | "ADMIN_EXPORT";
 
 export type UserActions = LoginAction | SetApiAccessTokenAction;
 

@@ -9,6 +9,11 @@ interface CertificateViewProps {
   beaconId: string;
 }
 
+interface CertificatesViewProps {
+  exportsGateway: IExportsGateway;
+  beaconIds: string[];
+}
+
 export const CertificateView: FunctionComponent<CertificateViewProps> = ({
   exportsGateway,
   beaconId,
@@ -30,5 +35,33 @@ export const CertificateView: FunctionComponent<CertificateViewProps> = ({
           <p>No beacon available</p>
         </div>
       );
+  }
+};
+
+export const CertificatesView: FunctionComponent<CertificatesViewProps> = ({
+  exportsGateway,
+  beaconIds,
+}): JSX.Element => {
+  const [beacons, setBeacons] = useState<IBeaconExport[]>(
+    [] as IBeaconExport[]
+  );
+
+  useEffect(() => {
+    exportsGateway.getCertificateDataForBeacons(beaconIds).then(setBeacons);
+  }, [beaconIds, exportsGateway]);
+
+  return (
+    <div>
+      {beacons.map((beacon: IBeaconExport, index) => (
+        <div key={index}>
+          {isType(beacon, "Legacy") && <LegacyCertificate beacon={beacon} />}
+          {isType(beacon, "New") && <Certificate beacon={beacon} />}
+        </div>
+      ))}
+    </div>
+  );
+
+  function isType(beacon: IBeaconExport, type: string) {
+    return beacon.type === type;
   }
 };

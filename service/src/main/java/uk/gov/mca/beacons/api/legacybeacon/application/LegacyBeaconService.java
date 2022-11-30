@@ -51,4 +51,8 @@ public class LegacyBeaconService {
 
     return savedLegacyBeacons;
   }
+
+  public List<LegacyBeacon> findAll() {
+    return legacyBeaconRepository.findAll();
+  }
 }

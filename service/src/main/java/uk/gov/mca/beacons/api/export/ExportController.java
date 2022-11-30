@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -22,7 +23,6 @@ class ExportController {
 
   private final XlsxExporter xlsxExporter;
   private final PdfGenerateService pdfService;
-
   private final ExportService exportService;
 
   @Autowired
@@ -88,23 +88,38 @@ class ExportController {
       .body(file);
   }
 
-  /**
-   * // This needs to be changed to a post, with form. Kept as GET for now for testing
-   * @param rawBeaconIds
-   * @return
-   * @throws Exception
-   */
-  @GetMapping(value = "/labels/{uuids}")
+  @PostMapping(value = "/labels")
   public ResponseEntity<byte[]> getLabelsByBeaconIds(
-    @PathVariable("uuids") List<UUID> rawBeaconIds
+    @RequestBody @Valid List<UUID> rawBeaconIds
   ) throws Exception {
     List<LabelDTO> dataList = rawBeaconIds
       .stream()
       .map(id -> exportService.getLabelDTO(id))
+      .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
     byte[] file = pdfService.createPdfLabels(dataList);
-    return servePdf(file, "Labels.pdf");
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(file);
+  }
+
+  @PostMapping(value = "/beacons/data")
+  public ResponseEntity<List<BeaconExportDTO>> getBeacons(
+    @RequestBody @Valid List<UUID> rawBeaconIds
+  ) throws Exception {
+    List<BeaconExportDTO> dataList = rawBeaconIds
+      .stream()
+      .map(id -> exportService.getBeaconExportDTO(id, null))
+      .filter(dto -> dto != null)
+      .collect(Collectors.toList());
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(dataList);
   }
 
   @GetMapping(value = "/certificate/data/{uuid}")
@@ -122,6 +137,22 @@ class ExportController {
       .body(data);
   }
 
+  @PostMapping(value = "/certificates/data")
+  public ResponseEntity<List<BeaconExportDTO>> getCertificatesDataByBeaconIds(
+    @RequestBody @Valid List<UUID> rawBeaconIds
+  ) throws Exception {
+    List<BeaconExportDTO> dataList = rawBeaconIds
+      .stream()
+      .map(id -> exportService.getBeaconExportDTO(id, "Certificate"))
+      .filter(dto -> dto != null)
+      .collect(Collectors.toList());
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(dataList);
+  }
+
   @GetMapping(value = "/letter/data/{uuid}")
   public ResponseEntity<BeaconExportDTO> getLetterDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
@@ -135,6 +166,22 @@ class ExportController {
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(data);
+  }
+
+  @PostMapping(value = "/letters/data")
+  public ResponseEntity<List<BeaconExportDTO>> postRetrieveLettersByBeaconIds(
+    @RequestBody @Valid List<UUID> ids
+  ) throws Exception {
+    List<BeaconExportDTO> dataList = ids
+      .stream()
+      .map(id -> exportService.getBeaconExportDTO(id, "Letter"))
+      .filter(dto -> dto != null)
+      .collect(Collectors.toList());
+
+    return ResponseEntity
+      .ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(dataList);
   }
 
   private ResponseEntity<byte[]> servePdf(byte[] file, String filename) {

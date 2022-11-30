@@ -1,4 +1,3 @@
-import React from "react";
 import { SearchErrorBoundary } from "./components/search/SearchErrorBoundary";
 import { BeaconsGateway } from "./gateways/beacons/BeaconsGateway";
 import { useUserSettings } from "./UserSettings";
