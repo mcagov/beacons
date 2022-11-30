@@ -147,7 +147,6 @@ export class ExportsGateway implements IExportsGateway {
         timeout: applicationConfig.apiTimeoutMs,
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      console.dir(exportResponse.data);
       return exportResponse.data;
     } catch (error) {
       logToServer.error(error);
@@ -184,7 +183,6 @@ export class ExportsGateway implements IExportsGateway {
           "Content-Type": "application/json",
         },
       });
-      console.dir(exportResponse);
       return exportResponse.data;
     } catch (error) {
       logToServer.error(error);
