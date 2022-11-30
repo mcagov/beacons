@@ -82,6 +82,34 @@ public class ExportMapper {
       .build();
   }
 
+  public BeaconExportDTO toBeaconExportDTO(Beacon beacon) {
+    return BeaconExportDTO
+      .builder()
+      .type("New")
+      .proofOfRegistrationDate(beacon.getLastModifiedDate())
+      .lastModifiedDate(beacon.getLastModifiedDate())
+      .recordCreatedDate(beacon.getCreatedDate().toString())
+      .beaconStatus(beacon.getBeaconStatus().toString())
+      .hexId(beacon.getHexId())
+      .manufacturer(beacon.getManufacturer())
+      .manufacturerSerialNumber(beacon.getManufacturerSerialNumber())
+      .beaconModel(beacon.getModel())
+      .beaconlastServiced(
+        beacon.getLastServicedDate() != null
+          ? beacon.getLastServicedDate().toString()
+          : null
+      )
+      .beaconCoding(beacon.getCoding())
+      .batteryExpiryDate(
+        beacon.getBatteryExpiryDate() != null
+          ? beacon.getBatteryExpiryDate().toString()
+          : null
+      )
+      .codingProtocol(beacon.getProtocol())
+      .cstaNumber(beacon.getCsta())
+      .build();
+  }
+
   public BeaconExportDTO toBeaconExportDTO(
     Registration registration,
     AccountHolder accountHolder,

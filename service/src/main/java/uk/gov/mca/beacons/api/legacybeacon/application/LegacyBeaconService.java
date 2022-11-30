@@ -29,6 +29,10 @@ public class LegacyBeaconService {
     return this.legacyBeaconRepository.save(legacyBeacon);
   }
 
+  public List<LegacyBeacon> findAll() {
+    return legacyBeaconRepository.findAll();
+  }
+
   public Optional<LegacyBeacon> findById(LegacyBeaconId legacyBeaconId) {
     return legacyBeaconRepository.findById(legacyBeaconId);
   }

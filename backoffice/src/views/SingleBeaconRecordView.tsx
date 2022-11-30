@@ -119,44 +119,46 @@ export const SingleBeaconRecordView: FunctionComponent<
             variant="outlined"
           />
         </span>
-        <div className="print-buttons">
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/certificates/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              certificate
-            </Button>
-          </span>
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/letters/registration/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              Registration letter
-            </Button>
-          </span>
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/letters/amended/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              Amended letter
-            </Button>
-          </span>
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/label/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              Label
-            </Button>
-          </span>
-        </div>
+        <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
+          <div className="print-buttons">
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/certificate/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                certificate
+              </Button>
+            </span>
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/letter/registration/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                Registration letter
+              </Button>
+            </span>
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/letter/amended/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                Amended letter
+              </Button>
+            </span>
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/label/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                Label
+              </Button>
+            </span>
+          </div>
+        </OnlyVisibleToUsersWith>
         <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
           {beacon.status !== BeaconStatuses.Deleted && (
             <span className={classes.button}>
