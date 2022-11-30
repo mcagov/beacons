@@ -1,19 +1,19 @@
 package uk.gov.mca.beacons.api.beaconuse.domain;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
+import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
 /**
  * TODO: We are knowingly avoiding refactoring tech debt by continuing to use a single BeaconUse class
@@ -295,5 +295,48 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
     }
 
     return Objects.requireNonNullElse(name, "");
+  }
+
+  public Map<String, String> getCommunicationTypes() {
+    Map<String, String> communicationTypes = new HashMap<String, String>();
+
+    if (BooleanUtils.isTrue(portableVhfRadio)) {
+      communicationTypes.put(
+        "Portable VHF/DSC Radio",
+        getPortableVhfRadioValue()
+      );
+    }
+    if (BooleanUtils.isTrue(satelliteTelephone)) {
+      communicationTypes.put(
+        "Satellite Telephone",
+        getSatelliteTelephoneValue()
+      );
+    }
+    if (BooleanUtils.isTrue(mobileTelephone)) {
+      communicationTypes.put(
+        "Mobile Telephone(s)",
+        BeaconsStringUtils.getMultipleValuesAsString(
+          "-",
+          getMobileTelephone1(),
+          getMobileTelephone2()
+        )
+      );
+    }
+    if (BooleanUtils.isTrue(otherCommunication)) {
+      communicationTypes.put("Other", getOtherCommunicationValue());
+    }
+
+    return communicationTypes;
+  }
+
+  public String getUseType() {
+    String activityName = getActivity() == Activity.OTHER
+      ? BeaconsStringUtils.valueOrEmpty(otherActivity)
+      : BeaconsStringUtils.valueOrEmpty(
+        BeaconsStringUtils.enumAsString(activity)
+      );
+    String purposeName = purpose != null ? purpose.name() : "UNKNOWN";
+
+    return String.format("%s (%s)", activityName, purposeName);
   }
 }

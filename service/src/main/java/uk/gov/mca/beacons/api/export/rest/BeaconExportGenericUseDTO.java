@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export.rest;
 
+import java.util.Map;
 import javax.validation.Valid;
 import lombok.*;
 
@@ -17,10 +18,22 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String vesselName;
 
   @Valid
-  private String homePort;
+  private String typeOfUse;
 
   @Valid
-  private String vessel;
+  private String beaconPosition;
+
+  @Valid
+  private String beaconLocation;
+
+  @Valid
+  private String windfarmLocation;
+
+  @Valid
+  private String rigPlatformLocation;
+
+  @Valid
+  private String homePort;
 
   @Valid
   private int maxPersonOnBoard;
@@ -32,7 +45,7 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String mmsiNumber;
 
   @Valid
-  private String radioSystem;
+  private Map<String, String> radioSystems;
 
   @Valid
   //Only used for legacy
@@ -46,6 +59,9 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String imoNumber;
+
+  @Valid
+  private String areaOfOperation;
 
   @Valid
   private String rssAndSsrNumber;
@@ -63,10 +79,22 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String aircraftRegistrationMark;
 
   @Valid
-  private String TwentyFourBitAddressInHex;
+  private String aircraftModel;
+
+  @Valid
+  private String aircraftManufacturer;
+
+  @Valid
+  private String twentyFourBitAddressInHex;
+
+  @Valid
+  private boolean isDongle;
 
   @Valid
   private String principalAirport;
+
+  @Valid
+  private String secondaryAirport;
 
   @Valid
   private String aircraftOperatorsDesignatorAndSerialNo;

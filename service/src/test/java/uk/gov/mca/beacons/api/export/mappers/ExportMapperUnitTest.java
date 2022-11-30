@@ -15,10 +15,12 @@ import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
 import uk.gov.mca.beacons.api.beaconuse.domain.Activity;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
+import uk.gov.mca.beacons.api.beaconuse.domain.Purpose;
 import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
+import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
 class ExportMapperUnitTest {
 
@@ -33,18 +35,38 @@ class ExportMapperUnitTest {
     BeaconUse landUse = new BeaconUse();
     landUse.setEnvironment(Environment.LAND);
     landUse.setActivity(Activity.DRIVING);
+    landUse.setPurpose(Purpose.COMMERCIAL);
     landUse.setMaxCapacity(55);
     landUse.setAreaOfOperation("I'm here!");
-    landUse.setOtherCommunicationValue("Tin can and string");
+    landUse.setOtherCommunication(true);
+    landUse.setOtherCommunicationValue("Smoke Signal");
+    landUse.setPortableVhfRadio(true);
+    landUse.setPortableVhfRadioValue("0123 456");
+    landUse.setSatelliteTelephone(false);
+    landUse.setMobileTelephone(false);
+    landUse.setWindfarmLocation("On a Wind Farm");
+    landUse.setRigPlatformLocation("On a Rig Platform");
+    landUse.setBeaconPosition("In a field");
 
     BeaconExportLandUseDTO use = mapper.toLandUse(landUse);
 
     assertEquals(use.getEnvironment(), landUse.getEnvironment().toString());
     assertEquals(
       use.getDescriptionOfIntendedUse(),
-      landUse.getActivity().toString()
+      BeaconsStringUtils.enumAsString(landUse.getActivity())
     );
-    assertEquals(landUse.getOtherCommunicationValue(), use.getRadioSystem());
+
+    assertEquals("Driving (COMMERCIAL)", use.getTypeOfUse());
+    assertEquals("On a Wind Farm", use.getWindfarmLocation());
+    assertEquals("On a Rig Platform", use.getRigPlatformLocation());
+    assertEquals("In a field", use.getBeaconPosition());
+    assertEquals(2, use.getRadioSystems().size());
+    assertEquals("Smoke Signal", use.getRadioSystems().get("Other"));
+    assertEquals(
+      "0123 456",
+      use.getRadioSystems().get("Portable VHF/DSC Radio")
+    );
+
     assertEquals(landUse.getMaxCapacity(), use.getNumberOfPersonsOnBoard());
     assertEquals(landUse.getAreaOfOperation(), use.getAreaOfUse());
   }
@@ -67,9 +89,12 @@ class ExportMapperUnitTest {
     BeaconUse maritimeUse = new BeaconUse();
     maritimeUse.setEnvironment(Environment.MARITIME);
     maritimeUse.setActivity(Activity.FISHING_VESSEL);
+    maritimeUse.setPurpose(Purpose.PLEASURE);
     maritimeUse.setMaxCapacity(55);
     maritimeUse.setAreaOfOperation("Shootin and fishin");
     maritimeUse.setOtherCommunicationValue("Pigeon");
+    maritimeUse.setRigPlatformLocation("Atlantic Ocean");
+    maritimeUse.setBeaconPosition("Port Gunwale");
 
     List<BeaconUse> beaconUses = new ArrayList<>();
     beaconUses.add(maritimeUse);
@@ -84,6 +109,16 @@ class ExportMapperUnitTest {
       maritimeUse.getEnvironment().toString(),
       mappedMaritimeUseDTO.getEnvironment()
     );
+
+    assertEquals(
+      "Fishing Vessel (PLEASURE)",
+      mappedMaritimeUseDTO.getTypeOfUse()
+    );
+    assertEquals(
+      "Atlantic Ocean",
+      mappedMaritimeUseDTO.getRigPlatformLocation()
+    );
+    assertEquals("Port Gunwale", mappedMaritimeUseDTO.getBeaconPosition());
   }
 
   @Test
@@ -118,6 +153,10 @@ class ExportMapperUnitTest {
     aviationUse.setMaxCapacity(6);
     aviationUse.setAreaOfOperation("Floating");
     aviationUse.setOtherCommunicationValue("Balloon waves");
+    aviationUse.setBeaconPosition("Left wing");
+    aviationUse.setPurpose(Purpose.PLEASURE);
+    aviationUse.setHexAddress("H3XADDR");
+    aviationUse.setAircraftManufacturer("Cameron Balloons");
 
     List<BeaconUse> beaconUses = new ArrayList<>();
     beaconUses.add(aviationUse);
@@ -131,6 +170,17 @@ class ExportMapperUnitTest {
     assertEquals(
       aviationUse.getEnvironment().toString(),
       mappedAviationUse.getEnvironment()
+    );
+
+    assertEquals("H3XADDR", mappedAviationUse.getTwentyFourBitAddressInHex());
+    assertEquals(
+      "Hot Air Balloon (PLEASURE)",
+      mappedAviationUse.getTypeOfUse()
+    );
+    assertEquals("Left wing", mappedAviationUse.getBeaconPosition());
+    assertEquals(
+      "Cameron Balloons",
+      mappedAviationUse.getAircraftManufacturer()
     );
   }
 
@@ -234,10 +284,10 @@ class ExportMapperUnitTest {
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
-      "02833746199 / 01477263499",
+      "02833746199 - 01477263499",
       mappedOwnerDTO.getTelephoneNumbers()
     );
-    assertEquals("07899122344 / 07344511288", mappedOwnerDTO.getMobiles());
+    assertEquals("07899122344 - 07344511288", mappedOwnerDTO.getMobiles());
   }
 
   @Test
@@ -255,7 +305,7 @@ class ExportMapperUnitTest {
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
-      "02833746199 / 01477263499",
+      "02833746199 - 01477263499",
       mappedOwnerDTO.getTelephoneNumbers()
     );
     assertEquals("", mappedOwnerDTO.getMobiles());
@@ -333,6 +383,7 @@ class ExportMapperUnitTest {
     legacyBeacon.setLastModifiedDate(OffsetDateTime.now());
 
     legacyUse.setAircraftRegistrationMark("Spitfire");
+    legacyUse.setIsMain("Yes");
     legacyUses.add(legacyUse);
     legacyData.setUses(legacyUses);
 

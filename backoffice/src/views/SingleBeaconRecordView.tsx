@@ -3,9 +3,7 @@ import ContentPrintIcon from "@mui/icons-material/Print";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
-import { AuthenticatedPrintButton } from "components/AuthenticatedPrintButton";
 import { CopyToClipboardButton } from "components/CopyToClipboardButton";
-import { applicationConfig } from "config";
 import { IBeacon } from "entities/IBeacon";
 import { INote } from "entities/INote";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
@@ -74,7 +72,6 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
-  const printLabelUrl = `${applicationConfig.apiUrl}/export/label/${beaconId}`;
 
   return (
     <div className={classes.root}>
@@ -86,33 +83,45 @@ export const SingleBeaconRecordView: FunctionComponent<
             variant="outlined"
           />
         </span>
-        <span className={classes.button}>
-          <Button
-            href={`/backoffice#/certificates/${beaconId}`}
-            variant="outlined"
-            endIcon={<ContentPrintIcon />}
-          >
-            Print certificate
-          </Button>
-        </span>
-        <span className={classes.button}>
-          <Button
-            href={`/backoffice#/letter/${beaconId}`}
-            variant="outlined"
-            endIcon={<ContentPrintIcon />}
-          >
-            Print letter
-          </Button>
-        </span>
-        <span className={classes.button}>
-          <AuthenticatedPrintButton
-            label="Print label"
-            url={printLabelUrl}
-            isFullWidth={false}
-          />
-        </span>
+        <div className="print-buttons">
+          <span className={classes.button}>
+            <Button
+              href={`/backoffice#/certificates/${beaconId}`}
+              variant="outlined"
+              endIcon={<ContentPrintIcon />}
+            >
+              certificate
+            </Button>
+          </span>
+          <span className={classes.button}>
+            <Button
+              href={`/backoffice#/letters/registration/${beaconId}`}
+              variant="outlined"
+              endIcon={<ContentPrintIcon />}
+            >
+              Registration letter
+            </Button>
+          </span>
+          <span className={classes.button}>
+            <Button
+              href={`/backoffice#/letters/amended/${beaconId}`}
+              variant="outlined"
+              endIcon={<ContentPrintIcon />}
+            >
+              Amended letter
+            </Button>
+          </span>
+          <span className={classes.button}>
+            <Button
+              href={`/backoffice#/label/${beaconId}`}
+              variant="outlined"
+              endIcon={<ContentPrintIcon />}
+            >
+              Label
+            </Button>
+          </span>
+        </div>
       </PageHeader>
-
       <PageContent>
         <BeaconSummaryPanel
           beaconsGateway={beaconsGateway}

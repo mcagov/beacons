@@ -13,6 +13,10 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
+import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
+import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
+import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
@@ -20,7 +24,7 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
-import uk.gov.mca.beacons.api.utils.StringUtils;
+import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
 @Component
 public class SpreadsheetExportGenerator {
@@ -28,6 +32,7 @@ public class SpreadsheetExportGenerator {
   private final RegistrationService registrationService;
   private final LegacyBeaconService legacyBeaconService;
   private final NoteService noteService;
+  private final AccountHolderService accountHolderService;
 
   private final ExportMapper exportMapper;
 
@@ -35,11 +40,13 @@ public class SpreadsheetExportGenerator {
     RegistrationService registrationService,
     LegacyBeaconService legacyBeaconService,
     NoteService noteService,
+    AccountHolderService accountHolderService,
     ExportMapper exportMapper
   ) {
     this.registrationService = registrationService;
     this.legacyBeaconService = legacyBeaconService;
     this.noteService = noteService;
+    this.accountHolderService = accountHolderService;
     this.exportMapper = exportMapper;
   }
 
@@ -118,8 +125,16 @@ public class SpreadsheetExportGenerator {
       );
 
       for (Registration registration : batchOfBeacons) {
+        AccountHolderId accountHolderId = registration
+          .getBeacon()
+          .getAccountHolderId();
+        AccountHolder accountHolder = accountHolderService
+          .getAccountHolder(accountHolderId)
+          .orElseThrow(new ResourceNotFoundException());
+
         BeaconExportDTO beaconExport = exportMapper.toBeaconExportDTO(
           registration,
+          accountHolder,
           noteService.getNonSystemNotes(registration.getBeacon().getId())
         );
         writeToFile(file, beaconExport);
@@ -180,7 +195,7 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.getUppercaseValueOrEmpty(
+        BeaconsStringUtils.getUppercaseValueOrEmpty(
           beaconExport.getProofOfRegistrationDate().format(dateFormatter)
         ),
         delimiter
@@ -189,7 +204,7 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.getUppercaseValueOrEmpty(
+        BeaconsStringUtils.getUppercaseValueOrEmpty(
           beaconExport.getDepartmentReference()
         ),
         delimiter
@@ -198,7 +213,7 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.formatDate(
+        BeaconsStringUtils.formatDate(
           beaconExport.getRecordCreatedDate(),
           dateFormatter
         ),
@@ -225,7 +240,9 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.getUppercaseValueOrEmpty(beaconExport.getManufacturer()),
+        BeaconsStringUtils.getUppercaseValueOrEmpty(
+          beaconExport.getManufacturer()
+        ),
         delimiter
       )
     );
@@ -235,7 +252,7 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.getUppercaseValueOrEmpty(
+        BeaconsStringUtils.getUppercaseValueOrEmpty(
           beaconExport.getManufacturerSerialNumber()
         ),
         delimiter
@@ -244,14 +261,16 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.getUppercaseValueOrEmpty(beaconExport.getBeaconModel()),
+        BeaconsStringUtils.getUppercaseValueOrEmpty(
+          beaconExport.getBeaconModel()
+        ),
         delimiter
       )
     );
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.formatDate(
+        BeaconsStringUtils.formatDate(
           beaconExport.getBeaconlastServiced(),
           dateFormatter
         ),
@@ -261,7 +280,9 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.getUppercaseValueOrEmpty(beaconExport.getBeaconCoding()),
+        BeaconsStringUtils.getUppercaseValueOrEmpty(
+          beaconExport.getBeaconCoding()
+        ),
         delimiter
       )
     );
@@ -269,7 +290,7 @@ public class SpreadsheetExportGenerator {
       MessageFormat.format(
         "{0}{1}",
         (
-          StringUtils.formatDate(
+          BeaconsStringUtils.formatDate(
             beaconExport.getBatteryExpiryDate(),
             dateFormatter
           )
@@ -280,21 +301,27 @@ public class SpreadsheetExportGenerator {
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.getUppercaseValueOrEmpty(beaconExport.getCodingProtocol()),
+        BeaconsStringUtils.getUppercaseValueOrEmpty(
+          beaconExport.getCodingProtocol()
+        ),
         delimiter
       )
     );
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.getUppercaseValueOrEmpty(beaconExport.getCstaNumber()),
+        BeaconsStringUtils.getUppercaseValueOrEmpty(
+          beaconExport.getCstaNumber()
+        ),
         delimiter
       )
     );
     file.append(
       MessageFormat.format(
         "{0}{1}",
-        StringUtils.getUppercaseValueOrEmpty(beaconExport.getBeaconNote()),
+        BeaconsStringUtils.getUppercaseValueOrEmpty(
+          beaconExport.getBeaconNote()
+        ),
         delimiter
       )
     );

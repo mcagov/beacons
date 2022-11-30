@@ -17,11 +17,17 @@ public class BeaconExportDTO {
   private String type;
 
   @Valid
+  private String name;
+
+  @Valid
   private OffsetDateTime proofOfRegistrationDate;
 
   @Valid
   //This is only valid for legacy.
   private String departmentReference;
+
+  @Valid
+  private String referenceNumber;
 
   @Valid
   private String recordCreatedDate;
@@ -63,6 +69,9 @@ public class BeaconExportDTO {
   private String cstaNumber;
 
   @Valid
+  private String chkCode;
+
+  @Valid
   //This is only valid for legacy.
   private String beaconNote;
 
@@ -75,6 +84,9 @@ public class BeaconExportDTO {
 
   @Valid
   List<BeaconExportOwnerDTO> owners;
+
+  @Valid
+  BeaconExportAccountHolderDTO accountHolder;
 
   @Valid
   List<EmergencyContactDTO> emergencyContacts;

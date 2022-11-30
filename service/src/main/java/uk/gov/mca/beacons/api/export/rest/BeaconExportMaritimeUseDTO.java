@@ -1,5 +1,8 @@
 package uk.gov.mca.beacons.api.export.rest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.validation.Valid;
 import lombok.*;
 
@@ -14,13 +17,25 @@ public class BeaconExportMaritimeUseDTO extends BeaconExportUseDTO {
   private String environment;
 
   @Valid
+  private String typeOfUse;
+
+  @Valid
+  private String beaconPosition;
+
+  @Valid
+  private String beaconLocation;
+
+  @Valid
+  private String windfarmLocation;
+
+  @Valid
+  private String rigPlatformLocation;
+
+  @Valid
   private String vesselName;
 
   @Valid
   private String homePort;
-
-  @Valid
-  private String vessel;
 
   @Valid
   private int maxPersonOnBoard;
@@ -32,7 +47,7 @@ public class BeaconExportMaritimeUseDTO extends BeaconExportUseDTO {
   private String mmsiNumber;
 
   @Valid
-  private String radioSystem;
+  private Map<String, String> radioSystems;
 
   @Valid
   //Only used for legacy
@@ -55,4 +70,7 @@ public class BeaconExportMaritimeUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String coastguardCGRefNumber;
+
+  @Valid
+  private String areaOfOperation;
 }

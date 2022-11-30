@@ -1,5 +1,8 @@
 package uk.gov.mca.beacons.api.export.rest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.validation.Valid;
 import lombok.*;
 
@@ -14,6 +17,21 @@ public class BeaconExportLandUseDTO extends BeaconExportUseDTO {
   private String environment;
 
   @Valid
+  private String typeOfUse;
+
+  @Valid
+  private String beaconPosition;
+
+  @Valid
+  private String beaconLocation;
+
+  @Valid
+  private String windfarmLocation;
+
+  @Valid
+  private String rigPlatformLocation;
+
+  @Valid
   private String descriptionOfIntendedUse;
 
   @Valid
@@ -26,7 +44,7 @@ public class BeaconExportLandUseDTO extends BeaconExportUseDTO {
   private String tripInformation;
 
   @Valid
-  private String radioSystem;
+  private Map<String, String> radioSystems;
 
   @Valid
   //Only used for legacy

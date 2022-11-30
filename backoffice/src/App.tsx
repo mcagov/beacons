@@ -12,10 +12,10 @@ import {
   Switch,
   useParams,
 } from "react-router-dom";
-import {
-  CertificateView,
-  LetterView,
-} from "views/exports/certificates/CertificateView";
+import { CertificateView } from "views/exports/certificates/CertificateView";
+import { LabelView } from "views/exports/label/LabelView";
+import { LetterView } from "views/exports/letters/LetterView";
+import { UserRolesView } from "views/UserRolesView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { AuthenticatedDownloadButton } from "./components/AuthenticatedDownloadButton";
@@ -38,6 +38,7 @@ import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordVi
 
 interface ResourceParams {
   id: string;
+  letterType: string;
 }
 
 const App: FunctionComponent = () => {
@@ -99,9 +100,20 @@ const App: FunctionComponent = () => {
     return <CertificateView exportsGateway={exportsGateway} beaconId={id} />;
   };
 
-  const LetterViewWithParam: FunctionComponent = () => {
+  const LabelViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
-    return <LetterView exportsGateway={exportsGateway} beaconId={id} />;
+    return <LabelView exportsGateway={exportsGateway} beaconId={id} />;
+  };
+
+  const LetterViewWithParam: FunctionComponent = () => {
+    const { id, letterType } = useParams<ResourceParams>();
+    return (
+      <LetterView
+        exportsGateway={exportsGateway}
+        beaconId={id}
+        letterType={letterType}
+      />
+    );
   };
 
   return (
@@ -114,6 +126,13 @@ const App: FunctionComponent = () => {
                 <Route exact path="/">
                   <Navigation />
                   <Search beaconsGateway={beaconsGateway} />
+                  <Footer />
+                </Route>
+                <Route path={`/roles`}>
+                  <Navigation />
+                  <PageContent>
+                    <UserRolesView />
+                  </PageContent>
                   <Footer />
                 </Route>
                 <Route path={`/beacons/:id`}>
@@ -136,8 +155,13 @@ const App: FunctionComponent = () => {
                 <Route path={`/certificates/:id`}>
                   <CertificateViewWithParam />
                 </Route>
-                <Route path={`/letter/:id`}>
+                <Route path={`/letters/:letterType/:id/`}>
                   <LetterViewWithParam />
+                </Route>
+                <Route path={`/label/:id`}>
+                  <Navigation />
+                  <LabelViewWithParam />
+                  <Footer />
                 </Route>
                 <Route>
                   <Navigation />
