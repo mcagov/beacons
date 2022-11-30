@@ -52,5 +52,4 @@ public class DeleteController {
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
-  // get deeltion reaons
 }

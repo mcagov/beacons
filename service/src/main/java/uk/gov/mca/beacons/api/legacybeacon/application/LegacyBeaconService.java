@@ -55,7 +55,11 @@ public class LegacyBeaconService {
     return savedLegacyBeacons;
   }
 
-  public void delete(String hexId, String email) {
+  public List<LegacyBeacon> delete(
+    String hexId,
+    String email,
+    String reasonForDeletion
+  ) {
     List<LegacyBeacon> legacyBeacons = legacyBeaconRepository.findByHexIdAndOwnerEmail(
       hexId,
       email
@@ -64,6 +68,10 @@ public class LegacyBeaconService {
 
     LegacyBeacon legacyBeacon = legacyBeacons.get(0);
     LegacyData legacyBeaconData = legacyBeacon.getData();
+
+    LegacyBeaconDetails beaconData = legacyBeaconData.getBeacon();
+    beaconData.setIsWithdrawn("Y");
+    beaconData.setWithdrawnReason(reasonForDeletion);
 
     legacyBeaconData.setOwner(new LegacyOwner());
     legacyBeaconData.setUses(new ArrayList<LegacyUse>());
@@ -74,8 +82,6 @@ public class LegacyBeaconService {
     legacyBeacon.setOwnerName("");
     legacyBeacon.setLastModifiedDate(OffsetDateTime.now());
 
-    List<LegacyBeacon> savedLegacyBeacons = legacyBeaconRepository.saveAll(
-      legacyBeacons
-    );
+    return legacyBeaconRepository.saveAll(legacyBeacons);
   }
 }

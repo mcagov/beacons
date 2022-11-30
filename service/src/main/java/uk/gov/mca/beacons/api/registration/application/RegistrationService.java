@@ -230,9 +230,15 @@ public class RegistrationService {
       .findById(new LegacyBeaconId(dto.getBeaconId()))
       .orElseThrow(ResourceNotFoundException::new);
 
+    String reasonForDeletion = String.format(
+      "The Beacon Registry Team deleted the record with reason: '%s'",
+      dto.getReason()
+    );
+
     legacyBeaconService.delete(
       legacyBeacon.getHexId(),
-      legacyBeacon.getOwnerEmail()
+      legacyBeacon.getOwnerEmail(),
+      reasonForDeletion
     );
   }
 }
