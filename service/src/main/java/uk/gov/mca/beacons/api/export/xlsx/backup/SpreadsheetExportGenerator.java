@@ -130,7 +130,7 @@ public class SpreadsheetExportGenerator {
           .getAccountHolderId();
         AccountHolder accountHolder = accountHolderService
           .getAccountHolder(accountHolderId)
-          .orElseThrow(new ResourceNotFoundException());
+          .orElseThrow(ResourceNotFoundException::new);
 
         BeaconExportDTO beaconExport = exportMapper.toBeaconExportDTO(
           registration,
