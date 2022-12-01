@@ -46,8 +46,8 @@ public class SecurityConfiguration {
            *
            * The path to the Backoffice SPA's static assets is configured in build.gradle.
            */
-          "/backoffice/**",
-          "/spring-api/export/**" // remove before push
+          "/backoffice/**"
+          // DO NOT ADD ANYTHING HERE
         );
     }
   }

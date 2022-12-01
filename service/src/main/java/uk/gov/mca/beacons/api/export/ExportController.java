@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.*;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +32,7 @@ import uk.gov.mca.beacons.api.registration.domain.Registration;
 
 @RestController
 @RequestMapping("/spring-api/export")
+@Tag(name = "Export Controller")
 class ExportController {
 
   private final XlsxExporter xlsxExporter;
@@ -89,7 +91,7 @@ class ExportController {
     return ResponseEntity.ok().build();
   }
 
-  @GetMapping(value = "/xlsx/backup")
+  @GetMapping(value = "/sar-export")
   @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Resource> getXlsxBackupFile()
     throws IOException, InvalidFormatException {

@@ -178,7 +178,7 @@ export class ExportsGateway implements IExportsGateway {
     //   });
 
     const res = await axios.get(
-      `${applicationConfig.apiUrl}/export/xlsx/backup`,
+      `${applicationConfig.apiUrl}/export/xlsx/test`,
       {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
