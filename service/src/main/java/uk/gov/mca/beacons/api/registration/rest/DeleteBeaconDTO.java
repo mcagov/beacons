@@ -9,10 +9,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteRegistrationDTO {
+public class DeleteBeaconDTO {
 
   private UUID beaconId;
-  private UUID userId;
+  private UUID accountHolderId;
 
   @NotNull(message = "Reason for deleting a beacon must be defined")
   private String reason;

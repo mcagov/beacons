@@ -13,6 +13,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import uk.gov.mca.beacons.api.legacybeacon.domain.events.LegacyBeaconClaimed;
+import uk.gov.mca.beacons.api.legacybeacon.domain.events.LegacyBeaconDeleted;
 import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
 
 @Getter
@@ -44,7 +45,7 @@ public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
   private String ownerEmail;
 
   @Setter
-  @Getter(AccessLevel.NONE)
+  @Getter
   private String beaconStatus;
 
   @Setter
@@ -88,15 +89,13 @@ public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
       LegacyBeaconClaimAction claimAction = new LegacyBeaconClaimAction();
       actions.add(claimAction);
       this.registerEvent(new LegacyBeaconClaimed(this));
+      this.setBeaconStatus("CLAIMED");
     }
   }
 
-  public String getBeaconStatus() {
-    if (isClaimed()) {
-      return "CLAIMED";
-    }
-
-    return beaconStatus;
+  public void softDelete() {
+    this.setBeaconStatus("DELETED");
+    this.registerEvent(new LegacyBeaconDeleted(this));
   }
 
   // TODO: Add constructor to initialize list of actions

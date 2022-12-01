@@ -1,8 +1,13 @@
 package uk.gov.mca.beacons.api.export.application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
@@ -64,7 +69,6 @@ public class ExportService {
       );
 
       if (noteGeneratedType != null) {
-        //Only create note for modern for now.
         noteService.createSystemNote(
           beaconId,
           noteGeneratedType + " Generated"

@@ -12,9 +12,12 @@ import {
   Switch,
   useParams,
 } from "react-router-dom";
-import { CertificateView } from "views/exports/certificates/CertificateView";
-import { LabelView } from "views/exports/label/LabelView";
-import { LetterView } from "views/exports/letters/LetterView";
+import {
+  CertificatesView,
+  CertificateView,
+} from "views/exports/certificates/CertificateView";
+import { LettersView, LetterView } from "views/exports/letters/LetterView";
+import { LabelsView, LabelView } from "views/exports/label/LabelView";
 import { UserRolesView } from "views/UserRolesView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
@@ -35,10 +38,16 @@ import { UserSettingsProvider } from "./UserSettings";
 import { logToServer } from "./utils/logger";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
+import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 
 interface ResourceParams {
   id: string;
   letterType: string;
+}
+
+interface ResourceListParams {
+  ids: string;
+  lettersType: string;
 }
 
 const App: FunctionComponent = () => {
@@ -67,6 +76,7 @@ const App: FunctionComponent = () => {
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
+
     return (
       <div>
         <Navigation exportsGateway={exportsGateway} />
@@ -100,9 +110,23 @@ const App: FunctionComponent = () => {
     return <CertificateView exportsGateway={exportsGateway} beaconId={id} />;
   };
 
+  const CertificatesViewWithParam: FunctionComponent = () => {
+    const { ids } = useParams<ResourceListParams>();
+    let beaconIds = ids.split(",");
+    return (
+      <CertificatesView exportsGateway={exportsGateway} beaconIds={beaconIds} />
+    );
+  };
+
   const LabelViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return <LabelView exportsGateway={exportsGateway} beaconId={id} />;
+  };
+
+  const LabelsViewWithParam: FunctionComponent = () => {
+    const { ids } = useParams<ResourceListParams>();
+    let beaconIds = ids.split(",");
+    return <LabelsView exportsGateway={exportsGateway} beaconIds={beaconIds} />;
   };
 
   const LetterViewWithParam: FunctionComponent = () => {
@@ -112,6 +136,18 @@ const App: FunctionComponent = () => {
         exportsGateway={exportsGateway}
         beaconId={id}
         letterType={letterType}
+      />
+    );
+  };
+
+  const LettersViewWithParam: FunctionComponent = () => {
+    const { ids, lettersType } = useParams<ResourceListParams>();
+    let beaconIds = ids.split(",");
+    return (
+      <LettersView
+        exportsGateway={exportsGateway}
+        beaconIds={beaconIds}
+        lettersType={lettersType}
       />
     );
   };
@@ -127,6 +163,12 @@ const App: FunctionComponent = () => {
                   <Navigation exportsGateway={exportsGateway} />
                   <Search beaconsGateway={beaconsGateway} />
                   <Footer />
+                </Route>
+                <Route path={`/export/search`}>
+                  <Navigation exportsGateway={exportsGateway} />
+                  <PageContent>
+                    <BeaconExportSearch exportsGateway={exportsGateway} />
+                  </PageContent>
                 </Route>
                 <Route path={`/roles`}>
                   <Navigation exportsGateway={exportsGateway} />
@@ -152,15 +194,26 @@ const App: FunctionComponent = () => {
                   </PageContent>
                   <Footer />
                 </Route>
-                <Route path={`/certificates/:id`}>
+                <Route path={`/certificate/:id`}>
                   <CertificateViewWithParam />
                 </Route>
-                <Route path={`/letters/:letterType/:id/`}>
+                <Route path={`/certificates/:ids`}>
+                  <CertificatesViewWithParam />
+                </Route>
+                <Route path={`/letter/:letterType/:id/`}>
                   <LetterViewWithParam />
+                </Route>
+                <Route path={`/letters/:lettersType/:ids/`}>
+                  <LettersViewWithParam />
                 </Route>
                 <Route path={`/label/:id`}>
                   <Navigation exportsGateway={exportsGateway} />
                   <LabelViewWithParam />
+                  <Footer />
+                </Route>
+                <Route path={`/labels/:ids`}>
+                  <Navigation exportsGateway={exportsGateway} />
+                  <LabelsViewWithParam />
                   <Footer />
                 </Route>
                 <Route>

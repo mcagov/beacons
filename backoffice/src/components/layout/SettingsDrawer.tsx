@@ -11,14 +11,12 @@ import Drawer from "@mui/material/Drawer";
 import { Box } from "@mui/system";
 import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import * as React from "react";
-import { applicationConfig } from "../../config";
 import {
   SearchMode,
   updateSearchMode,
   useUserSettings,
 } from "../../UserSettings";
 import { OnlyVisibleToUsersWith } from "../auth/OnlyVisibleToUsersWith";
-import { AuthenticatedDownloadButton } from "../AuthenticatedDownloadButton";
 import { FeedbackButton } from "../FeedbackButton";
 
 interface ISettingsDrawerProps {
@@ -119,6 +117,24 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               BACKUP EXPORT
             </Button>
           </OnlyVisibleToUsersWith>
+          <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
+            <Typography
+              gutterBottom={true}
+              component={"p"}
+              variant={"subtitle2"}
+              id="feedback"
+            >
+              Export Search
+            </Typography>
+            <Button
+              href={`backoffice#/export/search`}
+              variant="outlined"
+              fullWidth
+            >
+              Beacon Export Search
+            </Button>
+          </OnlyVisibleToUsersWith>
+
           <Typography
             gutterBottom={true}
             component={"p"}

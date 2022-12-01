@@ -19,10 +19,9 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
       pkBeaconId: beaconApiResponse.data.attributes.beacon.pkBeaconId,
       hexId: beaconApiResponse.data.attributes.beacon.hexId,
       statusCode: beaconApiResponse.data.attributes.beacon.statusCode,
-      beaconStatus:
-        beaconApiResponse.data.attributes.claimStatus === "CLAIMED"
-          ? BeaconStatuses.Claimed
-          : BeaconStatuses.Migrated,
+      beaconStatus: this.mapStatus(
+        beaconApiResponse.data.attributes.claimStatus
+      ),
       manufacturer: beaconApiResponse.data.attributes.beacon.manufacturer,
       model: beaconApiResponse.data.attributes.beacon.model,
       manufacturerSerialNumber:
@@ -61,6 +60,17 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
       emergencyContact: this.mapEmergencyContacts(beaconApiResponse),
       uses: this.mapUses(beaconApiResponse),
     };
+  }
+
+  private mapStatus(claimStatus: string): BeaconStatuses {
+    switch (claimStatus.trim().toUpperCase()) {
+      case "CLAIMED":
+        return BeaconStatuses.Claimed;
+      case "DELETED":
+        return BeaconStatuses.Deleted;
+      default:
+        return BeaconStatuses.Migrated;
+    }
   }
 
   private mapOwner(beaconApiResponse: ILegacyBeaconResponse): ILegacyOwner {

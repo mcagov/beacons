@@ -17,9 +17,6 @@ import uk.gov.mca.beacons.api.shared.domain.user.User;
 @Service("NoteServiceV2")
 public class NoteService {
 
-  private static final String TEMPLATE_REASON_TEXT =
-    "The account holder deleted the record with reason: '%s'";
-
   private final NoteRepository noteRepository;
 
   @Autowired
@@ -56,15 +53,22 @@ public class NoteService {
   public Note createNoteForDeletedRegistration(
     User user,
     Beacon beacon,
-    String reason
+    String reason,
+    String fullNameOfDeletingUser,
+    String templateReasonText
   ) {
     Note note = new Note();
-    note.setFullName("Account Holder");
+    note.setFullName(fullNameOfDeletingUser);
     note.setUserId(user.getUserId());
     note.setType(NoteType.RECORD_HISTORY);
-    note.setText(String.format(TEMPLATE_REASON_TEXT, reason));
+    note.setText(String.format(templateReasonText, reason));
     note.setBeaconId(beacon.getId());
 
     return noteRepository.save(note);
+  }
+
+  public void deleteByBeaconId(BeaconId beaconId) {
+    noteRepository.deleteAllByBeaconId(beaconId);
+    noteRepository.flush();
   }
 }

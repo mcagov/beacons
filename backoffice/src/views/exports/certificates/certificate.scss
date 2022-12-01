@@ -155,22 +155,22 @@
     position: relative;
   }
 
-  .use {
-    break-inside: avoid;
-  }
-
   .certificate {
     margin: 0;
     box-shadow: none;
     background-color: white;
     min-height: 100%;
-  }
+    page-break-before: always;
 
-  .footer {
-    break-before: always;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: -1;
+    .use {
+      break-inside: avoid;
+    }
+    .footer {
+      break-before: always;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: -1;
+    }
   }
 }

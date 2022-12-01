@@ -1,10 +1,11 @@
 import { Button, Grid, Tab, Tabs } from "@mui/material";
 import ContentPrintIcon from "@mui/icons-material/Print";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 import { CopyToClipboardButton } from "components/CopyToClipboardButton";
-import { IBeacon } from "entities/IBeacon";
+import { BeaconStatuses, IBeacon } from "../entities/IBeacon";
 import { INote } from "entities/INote";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
 import { OwnerPanel } from "panels/ownerPanel/OwnerPanel";
@@ -20,6 +21,13 @@ import { BeaconSummaryPanel } from "../panels/beaconSummaryPanel/BeaconSummaryPa
 import { EmergencyContactPanel } from "../panels/emergencyContactPanel/EmergencyContactPanel";
 import { NotesPanel } from "../panels/notesPanel/NotesPanel";
 import { logToServer } from "../utils/logger";
+import { DialogueBox } from "components/DialogueBox";
+import { useHistory } from "react-router-dom";
+import { IDeleteBeaconDto } from "../entities/IDeleteBeaconDto";
+import { reasonsForDeletion } from "lib/BeaconDeletionReasons";
+import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
+import { DialogueType } from "lib/DialogueType";
+import { IConfirmDialogueModel } from "components/ConfirmDialogue";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -46,6 +54,7 @@ export const SingleBeaconRecordView: FunctionComponent<
   ISingleBeaconRecordViewProps
 > = ({ beaconsGateway, usesGateway, notesGateway, beaconId }): JSX.Element => {
   const classes = useStyles();
+  const routerHistory = useHistory();
 
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const handleChange = (event: React.ChangeEvent<{}>, tab: number) => {
@@ -54,6 +63,7 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   const [beacon, setBeacon] = useState<IBeacon>({} as IBeacon);
   const [notes, setNotes] = useState<INote[]>([] as INote[]);
+  const [dialogueIsOpen, setDialogueIsOpen] = useState<boolean>(false);
 
   useEffect((): void => {
     const fetchBeacon = async (id: string) => {
@@ -72,6 +82,32 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
+  const modernConfirmDialogueModel: IConfirmDialogueModel = {
+    dialogueTitle: "Are you sure you want to permanently delete this record?",
+    dialogueContentText:
+      "This will delete the beacon record, its owner(s), and all other associated information.",
+    action: "Yes",
+    dismissal: "No",
+  };
+
+  const openDialogueBox = () => {
+    setDialogueIsOpen(true);
+  };
+
+  const handleDeleteDialogueAction = async (
+    actionOptionSelected: boolean,
+    reasonForAction: string
+  ) => {
+    setDialogueIsOpen(false);
+    if (actionOptionSelected) {
+      const deleteBeaconDto: IDeleteBeaconDto = {
+        beaconId: beaconId,
+        reason: reasonForAction,
+      };
+      await beaconsGateway.deleteBeacon(deleteBeaconDto);
+      routerHistory.goBack();
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -83,44 +119,60 @@ export const SingleBeaconRecordView: FunctionComponent<
             variant="outlined"
           />
         </span>
-        <div className="print-buttons">
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/certificates/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              certificate
-            </Button>
-          </span>
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/letters/registration/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              Registration letter
-            </Button>
-          </span>
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/letters/amended/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              Amended letter
-            </Button>
-          </span>
-          <span className={classes.button}>
-            <Button
-              href={`/backoffice#/label/${beaconId}`}
-              variant="outlined"
-              endIcon={<ContentPrintIcon />}
-            >
-              Label
-            </Button>
-          </span>
-        </div>
+        <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
+          <div className="print-buttons">
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/certificate/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                certificate
+              </Button>
+            </span>
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/letter/registration/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                Registration letter
+              </Button>
+            </span>
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/letter/amended/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                Amended letter
+              </Button>
+            </span>
+            <span className={classes.button}>
+              <Button
+                href={`/backoffice#/label/${beaconId}`}
+                variant="outlined"
+                endIcon={<ContentPrintIcon />}
+              >
+                Label
+              </Button>
+            </span>
+          </div>
+        </OnlyVisibleToUsersWith>
+        <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
+          {beacon.status !== BeaconStatuses.Deleted && (
+            <span className={classes.button}>
+              <Button
+                onClick={openDialogueBox}
+                variant="outlined"
+                color="error"
+                startIcon={<DeleteIcon />}
+              >
+                Delete record
+              </Button>
+            </span>
+          )}
+        </OnlyVisibleToUsersWith>
       </PageHeader>
       <PageContent>
         <BeaconSummaryPanel
@@ -156,6 +208,13 @@ export const SingleBeaconRecordView: FunctionComponent<
         <TabPanel value={selectedTab} index={2}>
           <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
         </TabPanel>
+        <DialogueBox
+          isOpen={dialogueIsOpen}
+          dialogueType={DialogueType.DeleteBeacon}
+          reasonsForAction={reasonsForDeletion}
+          confirmDialogueModel={modernConfirmDialogueModel}
+          selectOption={handleDeleteDialogueAction}
+        />
       </PageContent>
     </div>
   );

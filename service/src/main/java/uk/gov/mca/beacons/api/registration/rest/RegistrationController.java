@@ -8,13 +8,17 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
+import uk.gov.mca.beacons.api.auth.application.GetUserService;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.exceptions.InvalidBeaconDeleteException;
+import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.registration.mappers.RegistrationMapper;
+import uk.gov.mca.beacons.api.shared.domain.user.User;
 
 @RestController
 @RequestMapping("/spring-api/registrations")
@@ -23,14 +27,17 @@ public class RegistrationController {
 
   private final RegistrationService registrationService;
   private final RegistrationMapper registrationMapper;
+  private final GetUserService getUserService;
 
   @Autowired
   public RegistrationController(
     RegistrationService createRegistrationService,
-    RegistrationMapper registrationMapper
+    RegistrationMapper registrationMapper,
+    GetUserService getUserService
   ) {
     this.registrationService = createRegistrationService;
     this.registrationMapper = registrationMapper;
+    this.getUserService = getUserService;
   }
 
   @PostMapping(value = "/register")
@@ -113,9 +120,9 @@ public class RegistrationController {
   }
 
   @PatchMapping(value = "/{uuid}/delete")
-  public ResponseEntity<Void> deleteRegistration(
+  public ResponseEntity<Void> softDeleteRegistration(
     @PathVariable("uuid") UUID beaconId,
-    @RequestBody @Valid DeleteRegistrationDTO dto
+    @RequestBody @Valid DeleteBeaconDTO dto
   ) {
     if (
       !beaconId.equals(dto.getBeaconId())

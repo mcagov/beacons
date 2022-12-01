@@ -239,10 +239,10 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
       String beaconId,
       String reason
     ) throws Exception {
-      DeleteRegistrationDTO dto = DeleteRegistrationDTO
+      DeleteBeaconDTO dto = DeleteBeaconDTO
         .builder()
         .beaconId(UUID.fromString(beaconId))
-        .userId(UUID.fromString(accountHolderId))
+        .accountHolderId(UUID.fromString(accountHolderId))
         .reason(reason)
         .build();
 
