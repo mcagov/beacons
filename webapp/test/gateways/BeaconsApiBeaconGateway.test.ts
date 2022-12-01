@@ -117,7 +117,7 @@ describe("Beacons API Gateway", () => {
       const expectedUrl = `${apiUrl}/registrations/1234/delete`;
       const expectedJson = {
         beaconId: "1234",
-        userId: "0987",
+        accountHolderId: "0987",
         reason: "Unused on my boat anymore",
       };
 
