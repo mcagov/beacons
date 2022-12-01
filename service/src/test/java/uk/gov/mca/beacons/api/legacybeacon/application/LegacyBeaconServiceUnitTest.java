@@ -42,6 +42,7 @@ public class LegacyBeaconServiceUnitTest {
       "The Beacon Registry Team deleted the record with reason: 'Duplicate'"
     );
 
+    assert deletedLegacyBeacons.size() == 1;
     assert deletedLegacyBeacons.get(0).getBeaconStatus() == "DELETED";
   }
 
@@ -70,6 +71,7 @@ public class LegacyBeaconServiceUnitTest {
     LegacyBeacon deletedLegacyBeacon = deletedLegacyBeacons.get(0);
     LegacyBeaconDetails beaconDetails = legacyBeacon.getData().getBeacon();
 
+    assert deletedLegacyBeacons.size() == 1;
     assert beaconDetails.getIsWithdrawn() == "Y";
     assert beaconDetails.getWithdrawnReason() ==
     "The Beacon Registry Team deleted the record with reason: 'Incorrectly registered'";
@@ -100,6 +102,7 @@ public class LegacyBeaconServiceUnitTest {
     LegacyBeacon deletedLegacyBeacon = deletedLegacyBeacons.get(0);
     LegacyOwner ownerData = legacyBeacon.getData().getOwner();
 
+    assert deletedLegacyBeacons.size() == 1;
     assert ownerData.getAddress1() == null;
     assert ownerData.getOwnerName() == null;
     assert ownerData.getEmail() == null;
@@ -132,6 +135,7 @@ public class LegacyBeaconServiceUnitTest {
       .getData()
       .getSecondaryOwners();
 
+    assert deletedLegacyBeacons.size() == 1;
     assert secondaryOwners.isEmpty();
   }
 
@@ -162,6 +166,7 @@ public class LegacyBeaconServiceUnitTest {
       .getData()
       .getEmergencyContact();
 
+    assert deletedLegacyBeacons.size() == 1;
     assert emergencyContact.getDetails() == null;
   }
 }

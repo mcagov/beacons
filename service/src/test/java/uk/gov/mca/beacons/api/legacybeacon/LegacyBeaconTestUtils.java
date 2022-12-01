@@ -20,8 +20,12 @@ public class LegacyBeaconTestUtils {
     legacyBeacon.setOwnerName(legacyData.getOwner().getOwnerName());
     legacyBeacon.setUseActivities("Testing testing 123");
     legacyBeacon.setData(legacyData);
-    legacyBeacon.setCreatedDate(OffsetDateTime.now());
-    legacyBeacon.setLastModifiedDate(OffsetDateTime.now());
+    legacyBeacon.setCreatedDate(
+      OffsetDateTime.parse("2021-12-03T10:15:30+01:00")
+    );
+    legacyBeacon.setLastModifiedDate(
+      OffsetDateTime.parse("2022-10-03T10:15:30+01:00")
+    );
 
     return legacyBeacon;
   }
