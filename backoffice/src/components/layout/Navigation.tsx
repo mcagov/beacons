@@ -4,6 +4,7 @@ import { Theme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
+import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import React, { FunctionComponent } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserMenu } from "../auth/UserMenu";
@@ -23,7 +24,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Navigation: FunctionComponent = (): JSX.Element => {
+interface INavigationProps {
+  exportsGateway: IExportsGateway;
+}
+
+export const Navigation: FunctionComponent<INavigationProps> = ({
+  exportsGateway,
+}): JSX.Element => {
   const classes = useStyles();
 
   return (
@@ -35,7 +42,7 @@ export const Navigation: FunctionComponent = (): JSX.Element => {
           </Button>
           <Box ml="auto">
             <UserMenu />
-            <SettingsDrawer />
+            <SettingsDrawer exportsGateway={exportsGateway} />
           </Box>
         </Toolbar>
       </AppBar>

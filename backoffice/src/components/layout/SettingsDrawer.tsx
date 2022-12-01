@@ -1,5 +1,6 @@
 import { Close, Settings as SettingsIcon } from "@mui/icons-material";
 import {
+  Button,
   Divider,
   IconButton,
   ToggleButton,
@@ -8,6 +9,7 @@ import {
 } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import { Box } from "@mui/system";
+import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import * as React from "react";
 import { applicationConfig } from "../../config";
 import {
@@ -19,7 +21,13 @@ import { OnlyVisibleToUsersWith } from "../auth/OnlyVisibleToUsersWith";
 import { AuthenticatedDownloadButton } from "../AuthenticatedDownloadButton";
 import { FeedbackButton } from "../FeedbackButton";
 
-export function SettingsDrawer() {
+interface ISettingsDrawerProps {
+  exportsGateway: IExportsGateway;
+}
+
+export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
+  exportsGateway,
+}): JSX.Element => {
   const [settings, dispatch] = useUserSettings();
   const [open, setOpen] = React.useState(false);
 
@@ -34,6 +42,11 @@ export function SettingsDrawer() {
     if (searchMode != null) {
       updateSearchMode(dispatch, searchMode);
     }
+  };
+
+  const getBackupContingencyFile = async () => {
+    const file = await exportsGateway.getBackupExportFile();
+    console.log(file);
   };
 
   return (
@@ -98,11 +111,13 @@ export function SettingsDrawer() {
             >
               Export
             </Typography>
-            <AuthenticatedDownloadButton
-              label="Export to Excel"
-              url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
-              isFullWidth={true}
-            />
+            <Button
+              onClick={getBackupContingencyFile}
+              color="inherit"
+              variant="outlined"
+            >
+              BACKUP EXPORT
+            </Button>
           </OnlyVisibleToUsersWith>
           <Typography
             gutterBottom={true}
@@ -117,4 +132,4 @@ export function SettingsDrawer() {
       </Drawer>
     </React.Fragment>
   );
-}
+};

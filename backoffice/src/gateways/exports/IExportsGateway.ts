@@ -5,4 +5,5 @@ export interface IExportsGateway {
   getLetterDataForBeacon(beaconId: string): Promise<IBeaconExport>;
   getExportDataForBeacon(beaconId: string): Promise<IBeaconExport>;
   getLabelForBeacon(beaconId: string): Promise<Blob>;
+  getBackupExportFile(): Promise<Blob>;
 }

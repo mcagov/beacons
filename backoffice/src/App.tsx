@@ -69,7 +69,7 @@ const App: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return (
       <div>
-        <Navigation />
+        <Navigation exportsGateway={exportsGateway} />
         <SingleBeaconRecordView
           beaconsGateway={beaconsGateway}
           usesGateway={usesGateway}
@@ -85,7 +85,7 @@ const App: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return (
       <div>
-        <Navigation />
+        <Navigation exportsGateway={exportsGateway} />
         <SingleLegacyBeaconRecordView
           beaconsGateway={beaconsGateway}
           beaconId={id}
@@ -124,12 +124,12 @@ const App: FunctionComponent = () => {
             <RequireAuth>
               <Switch>
                 <Route exact path="/">
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   <Search beaconsGateway={beaconsGateway} />
                   <Footer />
                 </Route>
                 <Route path={`/roles`}>
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   <PageContent>
                     <UserRolesView />
                   </PageContent>
@@ -142,7 +142,7 @@ const App: FunctionComponent = () => {
                   <SingleLegacyBeaconRecordViewWithParam />
                 </Route>
                 <Route path={`/admin`}>
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   <PageContent>
                     <AuthenticatedDownloadButton
                       url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
@@ -159,12 +159,12 @@ const App: FunctionComponent = () => {
                   <LetterViewWithParam />
                 </Route>
                 <Route path={`/label/:id`}>
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   <LabelViewWithParam />
                   <Footer />
                 </Route>
                 <Route>
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   Page not found. Is the address correct?
                   <Footer />
                 </Route>

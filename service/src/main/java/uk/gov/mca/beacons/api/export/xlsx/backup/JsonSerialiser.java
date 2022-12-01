@@ -174,7 +174,7 @@ public class JsonSerialiser {
         ? maritimeUse.getHomePort().toUpperCase()
         : ""
     );
-    json.appendField("vessel", maritimeUse.getVessel().toUpperCase());
+    json.appendField("use type", maritimeUse.getTypeOfUse().toUpperCase());
     json.appendField(
       "max number of persons on board",
       maritimeUse.getMaxPersonOnBoard()
@@ -186,8 +186,8 @@ public class JsonSerialiser {
     json.appendField("mmsi number", maritimeUse.getMmsiNumber());
     json.appendField(
       "radio system",
-      maritimeUse.getRadioSystem() != null
-        ? maritimeUse.getRadioSystem().toUpperCase().replace('/', ';')
+      maritimeUse.getRadioSystems() != null
+        ? maritimeUse.getRadioSystems().toString()
         : ""
     );
     json.appendField(
@@ -236,8 +236,8 @@ public class JsonSerialiser {
     );
     json.put(
       "radio system",
-      aviationUse.getRadioSystem() != null
-        ? aviationUse.getRadioSystem().toUpperCase().replace('/', ';')
+      aviationUse.getRadioSystems() != null
+        ? aviationUse.getRadioSystems().toString()
         : ""
     );
     json.put(
@@ -277,8 +277,8 @@ public class JsonSerialiser {
     );
     json.put(
       "radio system",
-      landUse.getRadioSystem() != null
-        ? landUse.getRadioSystem().toUpperCase().replace('/', ';')
+      landUse.getRadioSystems() != null
+        ? landUse.getRadioSystems().toString()
         : ""
     );
     json.put(
@@ -309,15 +309,17 @@ public class JsonSerialiser {
         : ""
     );
     json.put(
-      "vessel",
-      genericUse.getVessel() != null ? genericUse.getVessel().toUpperCase() : ""
+      "use type",
+      genericUse.getTypeOfUse() != null
+        ? genericUse.getTypeOfUse().toUpperCase()
+        : ""
     );
     json.put("vessel callsign", genericUse.getVesselCallsign().toUpperCase());
     json.put("mmsi number", genericUse.getMmsiNumber());
     json.put(
       "radio system",
-      genericUse.getRadioSystem() != null
-        ? genericUse.getRadioSystem().toUpperCase().replace('/', ';')
+      genericUse.getRadioSystems() != null
+        ? genericUse.getRadioSystems().toString()
         : ""
     );
     json.put(

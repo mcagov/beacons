@@ -13,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
+import uk.gov.mca.beacons.api.auth.application.GetUserService;
+import uk.gov.mca.beacons.api.auth.gateway.AuthGatewayImpl;
 import uk.gov.mca.beacons.api.export.application.ExportService;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
@@ -39,6 +41,7 @@ class ExportController {
   private final NoteService noteService;
   private final AccountHolderService accountHolderService;
   private final ExportMapper exportMapper;
+  private final GetUserService getUserService;
 
   @Autowired
   public ExportController(
@@ -49,7 +52,8 @@ class ExportController {
     LegacyBeaconService legacyBeaconService,
     NoteService noteService,
     AccountHolderService accountHolderService,
-    ExportMapper exportMapper
+    ExportMapper exportMapper,
+    GetUserService getUserService
   ) {
     this.xlsxExporter = xlsxExporter;
     this.exportService = exportService;
@@ -59,6 +63,7 @@ class ExportController {
     this.noteService = noteService;
     this.accountHolderService = accountHolderService;
     this.exportMapper = exportMapper;
+    this.getUserService = getUserService;
   }
 
   @GetMapping(value = "/xlsx")
@@ -86,7 +91,7 @@ class ExportController {
 
   @GetMapping(value = "/xlsx/backup")
   @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
-  public ResponseEntity<Resource> createXlsxBackupFile()
+  public ResponseEntity<Resource> getXlsxBackupFile()
     throws IOException, InvalidFormatException {
     SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
       registrationService,
@@ -96,6 +101,12 @@ class ExportController {
       exportMapper
     );
     return serveFile(csvGenerator.generateXlsxBackupExport());
+  }
+
+  @GetMapping(value = "/xlsx/test")
+  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+  public ResponseEntity<String> testXlsx() {
+    return ResponseEntity.ok("Hello world");
   }
 
   private ResponseEntity<Resource> serveFile(Resource resource) {
