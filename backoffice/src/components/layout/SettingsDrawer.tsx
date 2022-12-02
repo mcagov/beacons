@@ -113,6 +113,7 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               onClick={getBackupContingencyFile}
               color="inherit"
               variant="outlined"
+              fullWidth
             >
               BACKUP EXPORT
             </Button>
