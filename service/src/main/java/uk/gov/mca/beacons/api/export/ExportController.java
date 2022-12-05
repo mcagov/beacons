@@ -91,7 +91,7 @@ class ExportController {
     return ResponseEntity.ok().build();
   }
 
-  @GetMapping(value = "/sar-export")
+  @GetMapping(value = "/backup")
   @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Resource> getXlsxBackupFile()
     throws IOException, InvalidFormatException {
@@ -103,12 +103,6 @@ class ExportController {
       exportMapper
     );
     return serveFile(csvGenerator.generateXlsxBackupExport());
-  }
-
-  @GetMapping(value = "/xlsx/test")
-  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
-  public ResponseEntity<String> testXlsx() {
-    return ResponseEntity.ok("Hello world");
   }
 
   private ResponseEntity<Resource> serveFile(Resource resource) {

@@ -264,6 +264,7 @@ public class ExportMapper {
       .build();
   }
 
+  // unit test for deleted beacons
   public BeaconExportDTO toLegacyBeaconExportDTO(LegacyBeacon beacon) {
     LegacyBeaconDetails details = beacon.getData().getBeacon();
     LegacyUse mainUse = beacon.getData().getMainUse();

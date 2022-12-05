@@ -111,6 +111,7 @@ public class SpreadsheetExportGenerator {
     return file;
   }
 
+  // set some legacy beacons to claimed on your local
   public void exportBeaconsInBatches(FileWriter file) throws IOException {
     int numberAlreadyTaken = 0;
 
@@ -141,6 +142,9 @@ public class SpreadsheetExportGenerator {
       }
 
       for (LegacyBeacon legacyBeacon : batchOfLegacyBeacons) {
+        if (legacyBeacon.getData().getBeacon() == null) {
+          continue;
+        }
         BeaconExportDTO beaconExport = exportMapper.toLegacyBeaconExportDTO(
           legacyBeacon
         );

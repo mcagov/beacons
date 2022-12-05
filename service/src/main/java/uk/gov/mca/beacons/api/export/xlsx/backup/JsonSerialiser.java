@@ -33,34 +33,46 @@ public class JsonSerialiser {
     List<BeaconExportOwnerDTO> owners
   ) {
     var jsonArray = new JSONArray();
-    for (BeaconExportOwnerDTO owner : owners) {
-      var json = new JSONObject();
-      json.put("owner name", owner.getOwnerName().toUpperCase());
-      json.put(
-        "company agent",
-        owner.getCompanyAgent() != null
-          ? owner.getCompanyAgent().toUpperCase()
-          : ""
-      );
-      json.put(
-        "care of",
-        owner.getCareOf() != null ? owner.getCareOf().toUpperCase() : ""
-      );
-      json.put("address", mapBeaconOwnerAddressToJson(owner.getAddress()));
-      json.put(
-        "telephone numbers",
-        owner.getTelephoneNumbers().replace('/', ';')
-      );
-      json.put(
-        "mobiles",
-        owner.getMobiles() != null ? owner.getMobiles().replace('/', ';') : ""
-      );
-      json.put(
-        "email",
-        owner.getEmail() != null ? owner.getEmail().toUpperCase() : ""
-      );
+    if (owners.size() > 0) {
+      for (BeaconExportOwnerDTO owner : owners) {
+        var json = new JSONObject();
+        json.put(
+          "owner name",
+          owner.getOwnerName() != null ? owner.getOwnerName().toUpperCase() : ""
+        );
+        json.put(
+          "company agent",
+          owner.getCompanyAgent() != null
+            ? owner.getCompanyAgent().toUpperCase()
+            : ""
+        );
+        json.put(
+          "care of",
+          owner.getCareOf() != null ? owner.getCareOf().toUpperCase() : ""
+        );
+        json.put(
+          "address",
+          owner.getAddress() != null
+            ? mapBeaconOwnerAddressToJson(owner.getAddress())
+            : ""
+        );
+        json.put(
+          "telephone numbers",
+          owner.getTelephoneNumbers() != null
+            ? owner.getTelephoneNumbers().replace('/', ';')
+            : ""
+        );
+        json.put(
+          "mobiles",
+          owner.getMobiles() != null ? owner.getMobiles().replace('/', ';') : ""
+        );
+        json.put(
+          "email",
+          owner.getEmail() != null ? owner.getEmail().toUpperCase() : ""
+        );
 
-      jsonArray.add(json);
+        jsonArray.add(json);
+      }
     }
 
     return jsonArray;

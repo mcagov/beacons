@@ -1,7 +1,9 @@
 package uk.gov.mca.beacons.api.export;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
+import io.swagger.v3.core.util.Json;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
@@ -89,6 +91,45 @@ public class JsonSerialiserUnitTest {
   }
 
   @Test
+  public void mapBeaconOwnersToJsonArray_whenTheOwnersInformationIsBlank_shouldLeaveTheOwnersBlank() {
+    BeaconExportOwnerDTO blankOwner = new BeaconExportOwnerDTO();
+    AddressDTO blankOwnerAddress = new AddressDTO();
+    blankOwner.setAddress(blankOwnerAddress);
+
+    List<BeaconExportOwnerDTO> owners = List.of(blankOwner);
+    JSONArray jsonOwnersArray = JsonSerialiser.mapBeaconOwnersToJsonArray(
+      owners
+    );
+
+    JSONObject firstMappedOwner = (JSONObject) jsonOwnersArray.get(0);
+    String stringifiedMappedAddress = firstMappedOwner
+      .get("address")
+      .toString();
+
+    assertEquals("", firstMappedOwner.get("owner name"));
+    assertEquals("", firstMappedOwner.get("company agent"));
+    assertEquals("", firstMappedOwner.get("care of"));
+    assertEquals(
+      "{\"address line 1\":\"\",\"country\":\"\",\"address line 2\":\"\",\"address line 3\":\"\",\"address line 4\":\"\",\"postcode\":\"\",\"county\":\"\",\"town or city\":\"\"}",
+      stringifiedMappedAddress
+    );
+  }
+
+  @Test
+  public void mapBeaconOwnersToJsonArray_whenTheOwnersAddressIsNull_shouldReturnEmptyString() {
+    BeaconExportOwnerDTO blankOwner = new BeaconExportOwnerDTO();
+
+    List<BeaconExportOwnerDTO> owners = List.of(blankOwner);
+    JSONArray jsonOwnersArray = JsonSerialiser.mapBeaconOwnersToJsonArray(
+      owners
+    );
+
+    JSONObject firstMappedOwner = (JSONObject) jsonOwnersArray.get(0);
+
+    assertEquals("", firstMappedOwner.get("address"));
+  }
+
+  @Test
   public void mapBeaconOwnerAddressToJson_whenAnAddressLineIsNull_shouldReturnEmptyStringForThatLine() {
     AddressDTO ownerAddress = new AddressDTO();
 
@@ -99,6 +140,34 @@ public class JsonSerialiserUnitTest {
     );
 
     assertEquals("", mappedAddress.get("address line 2"));
+  }
+
+  @Test
+  public void mapBeaconOwnerAddressToJson_whenTheAddressIsBlank_shouldLeaveTheAddressBlank() {
+    AddressDTO blankOwnerAddress = new AddressDTO();
+
+    JSONObject mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToJson(
+      blankOwnerAddress
+    );
+
+    assertEquals("", mappedAddress.get("address line 2"));
+    assertEquals("", mappedAddress.get("county"));
+    assertEquals("", mappedAddress.get("postcode"));
+  }
+
+  @Test
+  public void mapBeaconOwnerAddressToJson_whenTheAddressIsNull_shouldThrowANullPointerException() {
+    NullPointerException nullException = assertThrows(
+      NullPointerException.class,
+      () -> {
+        JsonSerialiser.mapBeaconOwnerAddressToJson(null);
+      }
+    );
+
+    assertEquals(
+      "Cannot invoke \"uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO.getAddressLine1()\" because \"address\" is null",
+      nullException.getMessage()
+    );
   }
 
   @Test
