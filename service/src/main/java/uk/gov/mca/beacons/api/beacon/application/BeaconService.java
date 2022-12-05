@@ -75,8 +75,8 @@ public class BeaconService {
     return beaconRepository
       .findAll()
       .stream()
-      .limit(batchSize)
       .skip(numberAlreadyTaken)
+      .limit(batchSize)
       .collect(Collectors.toList());
   }
 

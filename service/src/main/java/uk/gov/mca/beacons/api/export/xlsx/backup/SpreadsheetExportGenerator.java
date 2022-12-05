@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
+import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
@@ -30,6 +31,7 @@ import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 public class SpreadsheetExportGenerator {
 
   private final RegistrationService registrationService;
+  private final BeaconService beaconService;
   private final LegacyBeaconService legacyBeaconService;
   private final NoteService noteService;
   private final AccountHolderService accountHolderService;
@@ -38,12 +40,14 @@ public class SpreadsheetExportGenerator {
 
   public SpreadsheetExportGenerator(
     RegistrationService registrationService,
+    BeaconService beaconService,
     LegacyBeaconService legacyBeaconService,
     NoteService noteService,
     AccountHolderService accountHolderService,
     ExportMapper exportMapper
   ) {
     this.registrationService = registrationService;
+    this.beaconService = beaconService;
     this.legacyBeaconService = legacyBeaconService;
     this.noteService = noteService;
     this.accountHolderService = accountHolderService;
@@ -112,13 +116,54 @@ public class SpreadsheetExportGenerator {
   }
 
   // set some legacy beacons to claimed on your local
+  // not DRY at all how can I chunk this down/generally improve?
   public void exportBeaconsInBatches(FileWriter file) throws IOException {
+    // feels yuck but not sure how I can avoid doing this
+    // since we need to know the total no in order to calculate how many are remaining to process
+    int totalNumberOfBeaconsToExport =
+      beaconService.findAll().size() + legacyBeaconService.findAll().size();
     int numberAlreadyTaken = 0;
-    int numberRemaining = 0;
+    int numberRemaining = totalNumberOfBeaconsToExport;
 
-    for (int i = 0; i <= batchSize; i++) {
+    if (numberRemaining > batchSize) {
+      while (numberRemaining > 0) {
+        ArrayList<Registration> batchOfBeacons = registrationService.getBatch(
+          batchSize,
+          numberAlreadyTaken
+        );
+        List<LegacyBeacon> batchOfLegacyBeacons = legacyBeaconService.getBatch(
+          batchSize,
+          numberAlreadyTaken
+        );
+
+        for (Registration registration : batchOfBeacons) {
+          AccountHolderId accountHolderId = registration
+            .getBeacon()
+            .getAccountHolderId();
+          AccountHolder accountHolder = accountHolderService
+            .getAccountHolder(accountHolderId)
+            .orElseThrow(ResourceNotFoundException::new);
+
+          BeaconExportDTO beaconExport = exportMapper.toBeaconExportDTO(
+            registration,
+            accountHolder,
+            noteService.getNonSystemNotes(registration.getBeacon().getId())
+          );
+          writeToFile(file, beaconExport);
+        }
+
+        for (LegacyBeacon legacyBeacon : batchOfLegacyBeacons) {
+          BeaconExportDTO beaconExport = exportMapper.toLegacyBeaconExportDTO(
+            legacyBeacon
+          );
+          writeToFile(file, beaconExport);
+        }
+        numberAlreadyTaken = numberAlreadyTaken + batchSize;
+        numberRemaining = numberRemaining - batchSize;
+      }
+    } else {
       ArrayList<Registration> batchOfBeacons = registrationService.getBatch(
-        batchSize,
+        numberRemaining,
         numberAlreadyTaken
       );
       List<LegacyBeacon> batchOfLegacyBeacons = legacyBeaconService.getBatch(
@@ -151,8 +196,6 @@ public class SpreadsheetExportGenerator {
         );
         writeToFile(file, beaconExport);
       }
-      numberAlreadyTaken = numberAlreadyTaken + batchSize;
-      numberRemaining = numberRemaining - batchSize;
     }
   }
 
@@ -166,7 +209,10 @@ public class SpreadsheetExportGenerator {
     String uses = beaconExport.getUses() != null
       ? JsonSerialiser.mapUsesToJsonArray(beaconExport.getUses()).toString()
       : "";
-    String owners = beaconExport.getOwners() != null
+    String owners = (
+        beaconExport.getOwners() != null &&
+        beaconExport.getOwners().get(0) != null
+      )
       ? JsonSerialiser
         .mapBeaconOwnersToJsonArray(beaconExport.getOwners())
         .toString()

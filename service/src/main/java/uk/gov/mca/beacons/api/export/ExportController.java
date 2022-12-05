@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
 import uk.gov.mca.beacons.api.auth.application.GetUserService;
 import uk.gov.mca.beacons.api.auth.gateway.AuthGatewayImpl;
+import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.export.application.ExportService;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
@@ -39,6 +40,7 @@ class ExportController {
   private final PdfGenerateService pdfService;
   private final ExportService exportService;
   private final RegistrationService registrationService;
+  private final BeaconService beaconService;
   private final LegacyBeaconService legacyBeaconService;
   private final NoteService noteService;
   private final AccountHolderService accountHolderService;
@@ -51,6 +53,7 @@ class ExportController {
     PdfGenerateService pdfService,
     ExportService exportService,
     RegistrationService registrationService,
+    BeaconService beaconService,
     LegacyBeaconService legacyBeaconService,
     NoteService noteService,
     AccountHolderService accountHolderService,
@@ -61,6 +64,7 @@ class ExportController {
     this.exportService = exportService;
     this.pdfService = pdfService;
     this.registrationService = registrationService;
+    this.beaconService = beaconService;
     this.legacyBeaconService = legacyBeaconService;
     this.noteService = noteService;
     this.accountHolderService = accountHolderService;
@@ -97,6 +101,7 @@ class ExportController {
     throws IOException, InvalidFormatException {
     SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
       registrationService,
+      beaconService,
       legacyBeaconService,
       noteService,
       accountHolderService,

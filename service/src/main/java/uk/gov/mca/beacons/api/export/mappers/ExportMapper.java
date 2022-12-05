@@ -117,6 +117,7 @@ public class ExportMapper {
   ) {
     Beacon beacon = registration.getBeacon();
     BeaconUse mainUse = registration.getMainUse();
+    BeaconOwner owner = registration.getBeaconOwner();
 
     return BeaconExportDTO
       .builder()
@@ -161,7 +162,11 @@ public class ExportMapper {
           .collect(Collectors.toList())
       )
       .uses(toUsesDTO(registration.getBeaconUses()))
-      .owners(Arrays.asList(toOwnerDTO(registration.getBeaconOwner())))
+      .owners(
+        Arrays.asList(
+          owner != null ? toOwnerDTO(registration.getBeaconOwner()) : null
+        )
+      )
       .accountHolder(toAccountHolderDTO(accountHolder))
       .emergencyContacts(
         toEmergencyContactsDTO(registration.getEmergencyContacts())

@@ -69,8 +69,8 @@ public class LegacyBeaconService {
     return legacyBeaconRepository
       .findAll()
       .stream()
-      .limit(batchSize)
       .skip(numberAlreadyTaken)
+      .limit(batchSize)
       .collect(Collectors.toList());
   }
 

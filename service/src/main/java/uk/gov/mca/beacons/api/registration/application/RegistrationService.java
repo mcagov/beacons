@@ -68,10 +68,7 @@ public class RegistrationService {
       batchSize,
       numberAlreadyTaken
     );
-    List<Beacon> deletedModernBeacons = beacons
-      .stream()
-      .filter(b -> b.getBeaconStatus() == BeaconStatus.DELETED)
-      .toList();
+
     ArrayList<Registration> registrations = new ArrayList<Registration>();
 
     for (Beacon beacon : beacons) {
