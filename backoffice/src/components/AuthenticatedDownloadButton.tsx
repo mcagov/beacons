@@ -15,7 +15,6 @@ export function AuthenticatedDownloadButton({
   const link = React.useRef<HTMLAnchorElement>(null);
 
   const { user } = useAuthContext();
-  console.log(user);
 
   const downloadFile =
     (accessToken: string | unknown): MouseEventHandler<HTMLAnchorElement> =>

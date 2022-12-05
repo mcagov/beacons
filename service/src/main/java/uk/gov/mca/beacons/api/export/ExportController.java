@@ -95,7 +95,7 @@ class ExportController {
     return ResponseEntity.ok().build();
   }
 
-  @GetMapping(value = "/backup")
+  @GetMapping(value = "/xlsx/backup")
   @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Resource> getXlsxBackupFile()
     throws IOException, InvalidFormatException {
