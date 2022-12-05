@@ -42,9 +42,10 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
     }
   };
 
+  // to-do
+  // add download functionality from AuthenticatedDownloadButton
   const getBackupContingencyFile = async () => {
-    const file = await exportsGateway.getBackupExportFile();
-    console.log(file);
+    await exportsGateway.getBackupExportFile();
   };
 
   return (

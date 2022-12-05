@@ -19,11 +19,14 @@ public class JsonSerialiser {
     List<BeaconExportNoteDTO> notes
   ) {
     var jsonArray = new JSONArray();
-    for (BeaconExportNoteDTO note : notes) {
-      var json = new JSONObject();
-      json.put("date created", note.getDate().format(dateFormatter));
-      json.put("note", note.getNote().toUpperCase());
-      jsonArray.add(json);
+
+    if (notes.size() > 0) {
+      for (BeaconExportNoteDTO note : notes) {
+        var json = new JSONObject();
+        json.put("date created", note.getDate().format(dateFormatter));
+        json.put("note", note.getNote().toUpperCase());
+        jsonArray.add(json);
+      }
     }
 
     return jsonArray;
@@ -130,47 +133,64 @@ public class JsonSerialiser {
     List<EmergencyContactDTO> emergencyContacts
   ) {
     JSONArray jsonArray = new JSONArray();
-    for (EmergencyContactDTO emergencyContact : emergencyContacts) {
-      var json = new JSONObject();
-      json.put("full name", emergencyContact.getFullName().toUpperCase());
-      json.put(
-        "telephone number",
-        emergencyContact.getTelephoneNumber() != null
-          ? emergencyContact.getTelephoneNumber().replace('/', ';')
-          : ""
-      );
-      json.put(
-        "alternative telephone number",
-        emergencyContact.getAlternativeTelephoneNumber() != null
-          ? emergencyContact.getAlternativeTelephoneNumber().replace('/', ';')
-          : ""
-      );
 
-      jsonArray.add(json);
+    if (emergencyContacts.size() > 0) {
+      for (EmergencyContactDTO emergencyContact : emergencyContacts) {
+        var json = new JSONObject();
+        json.put(
+          "full name",
+          emergencyContact.getFullName() != null
+            ? emergencyContact.getFullName().toUpperCase()
+            : ""
+        );
+        json.put(
+          "telephone number",
+          emergencyContact.getTelephoneNumber() != null
+            ? emergencyContact.getTelephoneNumber().replace('/', ';')
+            : ""
+        );
+        json.put(
+          "alternative telephone number",
+          emergencyContact.getAlternativeTelephoneNumber() != null
+            ? emergencyContact.getAlternativeTelephoneNumber().replace('/', ';')
+            : ""
+        );
+
+        jsonArray.add(json);
+      }
     }
+
     return jsonArray;
   }
 
   public static JSONArray mapUsesToJsonArray(List<BeaconExportUseDTO> uses) {
     JSONArray jsonArray = new JSONArray();
-    for (BeaconExportUseDTO use : uses) {
-      switch (use.getEnvironment().trim()) {
-        case "MARITIME":
-          jsonArray.add(mapMaritimeUseToJson((BeaconExportMaritimeUseDTO) use));
-          break;
-        case "AVIATION":
-          jsonArray.add(mapAviationUseToJson((BeaconExportAviationUseDTO) use));
-          break;
-        case "LAND":
-          jsonArray.add(mapLandUseToJson((BeaconExportLandUseDTO) use));
-          break;
-        case "RIG/PLATFORM":
-        case "MOD":
-        default:
-          jsonArray.add(mapGenericUseToJson((BeaconExportGenericUseDTO) use));
-          break;
+
+    if (uses.size() > 0) {
+      for (BeaconExportUseDTO use : uses) {
+        switch (use.getEnvironment().trim()) {
+          case "MARITIME":
+            jsonArray.add(
+              mapMaritimeUseToJson((BeaconExportMaritimeUseDTO) use)
+            );
+            break;
+          case "AVIATION":
+            jsonArray.add(
+              mapAviationUseToJson((BeaconExportAviationUseDTO) use)
+            );
+            break;
+          case "LAND":
+            jsonArray.add(mapLandUseToJson((BeaconExportLandUseDTO) use));
+            break;
+          case "RIG/PLATFORM":
+          case "MOD":
+          default:
+            jsonArray.add(mapGenericUseToJson((BeaconExportGenericUseDTO) use));
+            break;
+        }
       }
     }
+
     return jsonArray;
   }
 

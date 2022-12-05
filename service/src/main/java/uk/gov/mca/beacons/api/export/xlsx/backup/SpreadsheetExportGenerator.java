@@ -114,6 +114,7 @@ public class SpreadsheetExportGenerator {
   // set some legacy beacons to claimed on your local
   public void exportBeaconsInBatches(FileWriter file) throws IOException {
     int numberAlreadyTaken = 0;
+    int numberRemaining = 0;
 
     for (int i = 0; i <= batchSize; i++) {
       ArrayList<Registration> batchOfBeacons = registrationService.getBatch(
@@ -151,6 +152,7 @@ public class SpreadsheetExportGenerator {
         writeToFile(file, beaconExport);
       }
       numberAlreadyTaken = numberAlreadyTaken + batchSize;
+      numberRemaining = numberRemaining - batchSize;
     }
   }
 
