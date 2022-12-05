@@ -9,9 +9,9 @@ import {
 } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import { Box } from "@mui/system";
+import { AuthenticatedDownloadButton } from "components/AuthenticatedDownloadButton";
 import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import * as React from "react";
-import { parseFilename } from "utils/FileExportUtils";
 import {
   SearchMode,
   updateSearchMode,
@@ -29,7 +29,6 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
 }): JSX.Element => {
   const [settings, dispatch] = useUserSettings();
   const [open, setOpen] = React.useState(false);
-  const backupExportLink = React.useRef<HTMLAnchorElement>(null);
 
   const toggleDrawer = () => {
     setOpen((open) => !open);
@@ -42,39 +41,6 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
     if (searchMode != null) {
       updateSearchMode(dispatch, searchMode);
     }
-  };
-
-  // to-do
-  // add download functionality from AuthenticatedDownloadButton
-
-  const downloadBackupContingencyFile = async () => {
-    console.log("click");
-    if (!backupExportLink.current || backupExportLink.current.href) {
-      return;
-    }
-
-    const response = await exportsGateway.getBackupExportFile();
-    console.log(response);
-
-    if (response.status === 503) {
-      window.alert("There was an error while downloading.");
-      return;
-    }
-
-    const filename = parseFilename(response.headers as Headers);
-
-    if (!filename) {
-      window.alert("There was an error while downloading.");
-      return;
-    }
-
-    const blob = response.data.blob;
-    const href = window.URL.createObjectURL(blob);
-
-    backupExportLink.current.download = filename;
-    backupExportLink.current.href = href;
-
-    backupExportLink.current.click();
   };
 
   return (
@@ -139,15 +105,11 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
             >
               Export
             </Typography>
-            <Button
-              onClick={downloadBackupContingencyFile}
-              component="a"
-              color="inherit"
-              variant="outlined"
-              fullWidth
-            >
-              BACKUP EXPORT
-            </Button>
+            <AuthenticatedDownloadButton
+              label="BACKUP EXPORT"
+              url="/exports/xlsx/backup"
+              isFullWidth={true}
+            />
           </OnlyVisibleToUsersWith>
           <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
             <Typography
