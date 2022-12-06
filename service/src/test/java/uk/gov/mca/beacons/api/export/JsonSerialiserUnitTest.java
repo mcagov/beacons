@@ -156,21 +156,6 @@ public class JsonSerialiserUnitTest {
   }
 
   @Test
-  public void mapBeaconOwnerAddressToJson_whenTheAddressIsNull_shouldThrowANullPointerException() {
-    NullPointerException nullException = assertThrows(
-      NullPointerException.class,
-      () -> {
-        JsonSerialiser.mapBeaconOwnerAddressToJson(null);
-      }
-    );
-
-    assertEquals(
-      "Cannot invoke \"uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO.getAddressLine1()\" because \"address\" is null",
-      nullException.getMessage()
-    );
-  }
-
-  @Test
   public void mapBeaconOwnerAddressToJson_shouldCapitaliseAllSentenceCaseText() {
     AddressDTO ownerAddress = new AddressDTO();
 
@@ -186,11 +171,4 @@ public class JsonSerialiserUnitTest {
     assertEquals("CIUDAD DE MEXICO", mappedAddress.get("address line 2"));
     assertEquals("MEXICO", mappedAddress.get("country"));
   }
-  // to maritime use
-  // to land use
-  // to aviation use
-  // to generic use
-  // when environment is null/empty string
-  // when environment is something weird
-  // emerg contacts less imp
 }
