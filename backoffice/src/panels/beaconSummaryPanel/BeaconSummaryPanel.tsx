@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
+import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { FunctionComponent, useEffect, useState } from "react";
 import { EditPanelButton } from "../../components/dataPanel/EditPanelButton";
 import { ErrorState } from "../../components/dataPanel/PanelErrorState";
@@ -61,22 +62,24 @@ export const BeaconSummaryPanel: FunctionComponent<IBeaconSummaryProps> = ({
     switch (state) {
       case DataPanelStates.Viewing:
         return (
-          <>
+          <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
             <EditPanelButton
               onClick={() => setUserState(DataPanelStates.Editing)}
             >
               Edit summary
             </EditPanelButton>
             <BeaconSummaryViewing beacon={beacon} />
-          </>
+          </OnlyVisibleToUsersWith>
         );
       case DataPanelStates.Editing:
         return (
-          <BeaconSummaryEditing
-            beacon={beacon}
-            onSave={handleSave}
-            onCancel={() => setUserState(DataPanelStates.Viewing)}
-          />
+          <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
+            <BeaconSummaryEditing
+              beacon={beacon}
+              onSave={handleSave}
+              onCancel={() => setUserState(DataPanelStates.Viewing)}
+            />
+          </OnlyVisibleToUsersWith>
         );
       default:
         setError(true);

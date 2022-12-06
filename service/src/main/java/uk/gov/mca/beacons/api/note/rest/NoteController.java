@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.auth.application.GetUserService;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
@@ -36,6 +37,7 @@ public class NoteController {
   }
 
   @PostMapping
+  @PreAuthorize("hasAuthority('APPROLE_ADD_BEACON_NOTES')")
   @ResponseStatus(HttpStatus.CREATED)
   public WrapperDTO<NoteDTO> createNote(
     @RequestBody @Valid WrapperDTO<CreateNoteDTO> dto

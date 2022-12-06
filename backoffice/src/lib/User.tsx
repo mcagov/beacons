@@ -19,6 +19,9 @@ export type UserAttributes = {
 export type Role =
   | "DEFAULT_ACCESS"
   | "ADD_BEACON_NOTES"
+  // is it UPDATE_RECORDS or UPDATE_BEACONS in Azure?
+  // if not created yet I would go with UPDATE_BEACONS because that's consistnet
+  // it's APPROLE_UPDATE_RECORDS in the Java
   | "UPDATE_RECORDS"
   | "DATA_EXPORTER"
   | "DELETE_BEACONS"
