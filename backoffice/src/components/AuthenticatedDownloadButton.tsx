@@ -7,10 +7,14 @@ export function AuthenticatedDownloadButton({
   url,
   label,
   isFullWidth,
+  downloadStarted,
+  downloadComplete,
 }: {
   url: string;
   label: string;
   isFullWidth: boolean;
+  downloadStarted?: () => void;
+  downloadComplete?: (complete: boolean) => void;
 }): JSX.Element | null {
   const link = React.useRef<HTMLAnchorElement>(null);
 
@@ -21,6 +25,10 @@ export function AuthenticatedDownloadButton({
     async () => {
       if (!link.current || link.current.href) {
         return;
+      }
+
+      if (downloadStarted) {
+        downloadStarted();
       }
 
       const result = await fetch(url, {
@@ -46,6 +54,10 @@ export function AuthenticatedDownloadButton({
       link.current.href = href;
 
       link.current.click();
+
+      if (downloadComplete) {
+        downloadComplete(true);
+      }
     };
 
   if (user.type !== "loggedInUser") {

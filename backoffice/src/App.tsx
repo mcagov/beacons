@@ -21,7 +21,6 @@ import { LabelsView, LabelView } from "views/exports/label/LabelView";
 import { UserRolesView } from "views/UserRolesView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
-import { AuthenticatedDownloadButton } from "./components/AuthenticatedDownloadButton";
 import { ErrorState } from "./components/dataPanel/PanelErrorState";
 import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { Footer } from "./components/layout/Footer";
@@ -39,6 +38,7 @@ import { logToServer } from "./utils/logger";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
+import { AuthenticatedPOSTButton } from "components/AuthenticatedPOSTButton";
 
 interface ResourceParams {
   id: string;
@@ -186,11 +186,11 @@ const App: FunctionComponent = () => {
                 <Route path={`/admin`}>
                   <Navigation exportsGateway={exportsGateway} />
                   <PageContent>
-                    <AuthenticatedDownloadButton
-                      url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
-                      label={"Trigger export job"}
-                      isFullWidth={true}
-                    />
+                    <AuthenticatedPOSTButton
+                      uri={`${applicationConfig.apiUrl}/export/xlsx`}
+                    >
+                      Trigger export job
+                    </AuthenticatedPOSTButton>
                   </PageContent>
                   <Footer />
                 </Route>

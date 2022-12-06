@@ -1,6 +1,7 @@
 import { Close, Settings as SettingsIcon } from "@mui/icons-material";
 import {
   Button,
+  CircularProgress,
   Divider,
   IconButton,
   ToggleButton,
@@ -10,6 +11,7 @@ import {
 import Drawer from "@mui/material/Drawer";
 import { Box } from "@mui/system";
 import { AuthenticatedDownloadButton } from "components/AuthenticatedDownloadButton";
+import { applicationConfig } from "config";
 import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import * as React from "react";
 import {
@@ -29,6 +31,7 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
 }): JSX.Element => {
   const [settings, dispatch] = useUserSettings();
   const [open, setOpen] = React.useState(false);
+  const [showProgressCircle, setShowProgressCirlce] = React.useState(false);
 
   const toggleDrawer = () => {
     setOpen((open) => !open);
@@ -41,6 +44,14 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
     if (searchMode != null) {
       updateSearchMode(dispatch, searchMode);
     }
+  };
+
+  const handleDownloadStarted = () => {
+    setShowProgressCirlce(true);
+  };
+
+  const handleDownloadComplete = (complete: boolean) => {
+    setShowProgressCirlce(false);
   };
 
   return (
@@ -106,9 +117,26 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               Export
             </Typography>
             <AuthenticatedDownloadButton
-              label="BACKUP EXPORT"
-              url="/exports/xlsx/backup"
+              label="Export to Excel"
+              url={`${applicationConfig.apiUrl}/export/xlsx`}
               isFullWidth={true}
+              downloadStarted={handleDownloadStarted}
+              downloadComplete={handleDownloadComplete}
+            />
+            <Typography
+              gutterBottom={true}
+              component={"p"}
+              variant={"subtitle2"}
+              id="feedback"
+            >
+              Backup
+            </Typography>
+            <AuthenticatedDownloadButton
+              label="Backup export"
+              url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
+              isFullWidth={true}
+              downloadStarted={handleDownloadStarted}
+              downloadComplete={handleDownloadComplete}
             />
           </OnlyVisibleToUsersWith>
           <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
@@ -139,6 +167,9 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
           </Typography>
           <FeedbackButton variant={"outlined"} color={"inherit"} fullWidth />
         </Box>
+        {showProgressCircle && (
+          <CircularProgress id="download-progress-circle" />
+        )}
       </Drawer>
     </React.Fragment>
   );
