@@ -78,7 +78,8 @@ export const Feedback: FunctionComponent<DraftRegistrationPageProps> = ({
       <TextareaCharacterCount
         id="howCouldWeImproveThisService"
         label="How could we improve this service?"
-        hintText="Please provide a contact at the end, e.g. telephone or email address, if you would like the Beacon team to respond, as this isn’t automatically captured."
+        hintText="Please provide a contact at the end, e.g. telephone or email address, if you would like the Beacon team to respond."
+        boldText="Your telephone and email address are not automatically captured in this form."
         maxCharacters={1200}
         rows={4}
       />
