@@ -161,7 +161,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
                 onClick={openDialogueBox}
                 variant="outlined"
                 color="error"
-                startIcon={<DeleteIcon />}
+                endIcon={<DeleteIcon />}
               >
                 Delete record
               </Button>
