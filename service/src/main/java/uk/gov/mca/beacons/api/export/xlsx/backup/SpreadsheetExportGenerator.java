@@ -65,16 +65,19 @@ public class SpreadsheetExportGenerator {
   private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
     "dd-MM-yyyy"
   );
+
   private final List<String> columnHeaders = List.of(
     "ID",
+    "Hex ID",
+    "Beacon Status",
+    "Last-modified date",
+    //This is only valid for legacy.
+    "Cospas-Sarsat Number",
     "Type",
     "Proof of registration date",
     //This is only valid for legacy.
     "Department reference",
     "Record created date",
-    "Last modified date",
-    "Beacon Status",
-    "Hex ID",
     "Manufacturer",
     "Serial number",
     "Manufacturer serial number",
@@ -84,8 +87,6 @@ public class SpreadsheetExportGenerator {
     "Battery expiry date",
     "Coding protocol",
     "CSTA number",
-    //This is only valid for legacy.
-    "Cospas-Sarsat number",
     //This is only valid for legacy.
     "Beacon note",
     //These are only valid for new beacons
@@ -244,6 +245,30 @@ public class SpreadsheetExportGenerator {
       MessageFormat.format("{0}{1}", beaconExport.getId(), delimiter)
     );
     file.append(
+      MessageFormat.format("{0}{1}", beaconExport.getHexId(), delimiter)
+    );
+    file.append(
+      MessageFormat.format(
+        "{0}{1}",
+        beaconExport.getBeaconStatus().toUpperCase(),
+        delimiter
+      )
+    );
+    file.append(
+      MessageFormat.format(
+        "{0}{1}",
+        beaconExport.getLastModifiedDate().format(dateFormatter),
+        delimiter
+      )
+    );
+    file.append(
+      MessageFormat.format(
+        "{0}{1}",
+        beaconExport.getCospasSarsatNumber(),
+        delimiter
+      )
+    );
+    file.append(
       MessageFormat.format("{0}{1}", beaconExport.getType(), delimiter)
     );
     file.append(
@@ -273,23 +298,6 @@ public class SpreadsheetExportGenerator {
         ),
         delimiter
       )
-    );
-    file.append(
-      MessageFormat.format(
-        "{0}{1}",
-        beaconExport.getLastModifiedDate().format(dateFormatter),
-        delimiter
-      )
-    );
-    file.append(
-      MessageFormat.format(
-        "{0}{1}",
-        beaconExport.getBeaconStatus().toUpperCase(),
-        delimiter
-      )
-    );
-    file.append(
-      MessageFormat.format("{0}{1}", beaconExport.getHexId(), delimiter)
     );
     file.append(
       MessageFormat.format(
@@ -367,13 +375,6 @@ public class SpreadsheetExportGenerator {
         BeaconsStringUtils.getUppercaseValueOrEmpty(
           beaconExport.getCstaNumber()
         ),
-        delimiter
-      )
-    );
-    file.append(
-      MessageFormat.format(
-        "{0}{1}",
-        beaconExport.getCospasSarsatNumber(),
         delimiter
       )
     );
