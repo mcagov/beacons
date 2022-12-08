@@ -405,7 +405,7 @@ public class SpreadsheetExportGenerator {
       XSSFSheet sheet = workbook.createSheet("All exported beacons");
 
       String currentLine;
-      int rowNumber = 0;
+      int rowNumber = -1;
       BufferedReader fileReader = new BufferedReader(new FileReader(csv));
 
       while ((currentLine = fileReader.readLine()) != null) {
