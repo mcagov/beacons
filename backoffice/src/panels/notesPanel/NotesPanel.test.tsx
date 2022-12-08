@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { AuthProvider } from "components/auth/AuthProvider";
 import { INotesGateway } from "../../gateways/notes/INotesGateway";
 import { Placeholders } from "../../utils/writingStyle";
 import { NotesPanel } from "./NotesPanel";
@@ -42,7 +43,11 @@ describe("NotesPanel", () => {
   });
 
   it("fetches notes data on state change", async () => {
-    render(<NotesPanel notesGateway={notesGateway} beaconId={beaconId} />);
+    render(
+      <AuthProvider>
+        <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
+      </AuthProvider>
+    );
     expect(notesGateway.getNotes).toHaveBeenCalledTimes(1);
 
     const addNoteButton = await screen.findByText(/add a new note/i);

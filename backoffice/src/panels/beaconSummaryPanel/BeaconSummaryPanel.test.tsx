@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beaconFixture } from "../../fixtures/beacons.fixture";
 import { IBeaconsGateway } from "../../gateways/beacons/IBeaconsGateway";
+import { AuthProvider } from "components/auth/AuthProvider";
 import { Placeholders } from "../../utils/writingStyle";
 import { BeaconSummaryPanel } from "./BeaconSummaryPanel";
 
@@ -53,10 +54,12 @@ describe("BeaconSummaryPanel", () => {
 
   it("fetches beacon data on state change", async () => {
     render(
-      <BeaconSummaryPanel
-        beaconsGateway={beaconsGatewayDouble}
-        beaconId={beaconFixture.id}
-      />
+      <AuthProvider>
+        <BeaconSummaryPanel
+          beaconsGateway={beaconsGatewayDouble}
+          beaconId={beaconFixture.id}
+        />
+      </AuthProvider>
     );
     expect(beaconsGatewayDouble.getBeacon).toHaveBeenCalledTimes(1);
 
