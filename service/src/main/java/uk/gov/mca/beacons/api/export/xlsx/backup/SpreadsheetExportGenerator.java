@@ -66,30 +66,33 @@ public class SpreadsheetExportGenerator {
     "dd-MM-yyyy"
   );
   private final List<String> columnHeaders = List.of(
-    "type",
-    "proof of registration date",
+    "ID",
+    "Type",
+    "Proof of registration date",
     //This is only valid for legacy.
-    "department reference",
-    "record created date",
-    "last modified date",
-    "beacon status",
-    "hexId",
-    "manufacturer",
-    "serial number",
-    "manufacturer serial number",
-    "beacon model",
-    "beacon last serviced",
-    "beacon coding",
-    "battery expiry date",
-    "coding protocol",
-    "csta number",
+    "Department reference",
+    "Record created date",
+    "Last modified date",
+    "Beacon Status",
+    "Hex ID",
+    "Manufacturer",
+    "Serial number",
+    "Manufacturer serial number",
+    "Beacon model",
+    "Beacon last serviced",
+    "Beacon coding",
+    "Battery expiry date",
+    "Coding protocol",
+    "CSTA number",
     //This is only valid for legacy.
-    "beacon note",
+    "Cospas-Sarsat number",
+    //This is only valid for legacy.
+    "Beacon note",
     //These are only valid for new beacons
-    "notes",
-    "uses",
-    "owners",
-    "emergency contacts"
+    "Notes",
+    "Uses",
+    "Owners",
+    "Emergency contacts"
   );
 
   public FileSystemResource generateXlsxBackupExport()
@@ -115,11 +118,7 @@ public class SpreadsheetExportGenerator {
     return file;
   }
 
-  // set some legacy beacons to claimed on your local
-  // not DRY at all how can I chunk this down/generally improve?
   public void exportBeaconsInBatches(FileWriter file) throws IOException {
-    // feels yuck but not sure how I can avoid doing this
-    // since we need to know the total no in order to calculate how many are remaining to process
     int totalNumberOfBeaconsToExport =
       beaconService.findAll().size() + legacyBeaconService.findAll().size();
     int numberAlreadyTaken = 0;
@@ -144,7 +143,7 @@ public class SpreadsheetExportGenerator {
             .getAccountHolder(accountHolderId)
             .orElseThrow(ResourceNotFoundException::new);
 
-          BeaconExportDTO beaconExport = exportMapper.toBeaconExportDTO(
+          BeaconExportDTO beaconExport = exportMapper.toBeaconBackupExportDTO(
             registration,
             accountHolder,
             noteService.getNonSystemNotes(registration.getBeacon().getId())
@@ -153,7 +152,7 @@ public class SpreadsheetExportGenerator {
         }
 
         for (LegacyBeacon legacyBeacon : batchOfLegacyBeacons) {
-          BeaconExportDTO beaconExport = exportMapper.toLegacyBeaconExportDTO(
+          BeaconExportDTO beaconExport = exportMapper.toLegacyBeaconBackupExportDTO(
             legacyBeacon
           );
           writeToFile(file, beaconExport);
@@ -241,6 +240,9 @@ public class SpreadsheetExportGenerator {
     String owners,
     String emergencyContacts
   ) throws IOException {
+    file.append(
+      MessageFormat.format("{0}{1}", beaconExport.getId(), delimiter)
+    );
     file.append(
       MessageFormat.format("{0}{1}", beaconExport.getType(), delimiter)
     );
@@ -365,6 +367,13 @@ public class SpreadsheetExportGenerator {
         BeaconsStringUtils.getUppercaseValueOrEmpty(
           beaconExport.getCstaNumber()
         ),
+        delimiter
+      )
+    );
+    file.append(
+      MessageFormat.format(
+        "{0}{1}",
+        beaconExport.getCospasSarsatNumber(),
         delimiter
       )
     );

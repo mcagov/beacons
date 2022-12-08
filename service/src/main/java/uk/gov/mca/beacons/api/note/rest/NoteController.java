@@ -49,7 +49,6 @@ public class NoteController {
   }
 
   @GetMapping
-  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public WrapperDTO<List<NoteDTO>> getNotesByBeaconId(
     @RequestParam("beaconId") UUID rawBeaconId
   ) {
