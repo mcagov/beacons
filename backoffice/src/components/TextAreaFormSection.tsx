@@ -1,16 +1,16 @@
-import "./delete-record.scss";
-import { Box, Button, FormControl, FormLabel, TextField } from "@mui/material";
+import "./text-area-form.scss";
+import { Box, Button, FormControl, TextField } from "@mui/material";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import { FunctionComponent } from "react";
 
 interface ITextAreaFormSectionProps {
-  formSectionTitle: string;
+  formSectionTitle?: string;
   entityToSubmit: string;
   textSubmitted: (reason: string) => void;
   cancelled: (cancelled: boolean) => void;
 }
 
-export interface TextAreaFormValues {
+interface TextAreaFormValues {
   text: string;
 }
 
@@ -23,6 +23,7 @@ export const TextAreaFormSection: FunctionComponent<
   cancelled,
 }): JSX.Element => {
   const handleSave = (values: TextAreaFormValues) => {
+    console.log(values.text);
     textSubmitted(values.text);
   };
 
@@ -32,7 +33,7 @@ export const TextAreaFormSection: FunctionComponent<
 
   return (
     <div className="text-area-form-container">
-      <h2>{formSectionTitle}</h2>
+      {formSectionTitle && <h2>{formSectionTitle}</h2>}
       <TextAreaSection
         entityToSubmit={entityToSubmit}
         onSave={handleSave}
@@ -43,28 +44,18 @@ export const TextAreaFormSection: FunctionComponent<
 };
 
 interface TextAreaFormProps extends FormikProps<TextAreaFormValues> {
-  entityToSubmit: string;
-  formQuestion: string;
-  textAreaId: string;
   onCancel: () => void;
+  entityToSubmit: string;
 }
 
 const TextAreaForm = (props: TextAreaFormProps) => {
-  const {
-    errors,
-    isSubmitting,
-    entityToSubmit,
-    formQuestion,
-    textAreaId,
-    onCancel,
-  } = props;
+  const { errors, isSubmitting, entityToSubmit, onCancel } = props;
 
   return (
     <>
-      <Form className="delete-beacon-form">
-        <FormControl component="fieldset">
-          <FormLabel component="legend">{formQuestion} (Required)</FormLabel>
-          <Box mr={75}>
+      <Form className="textarea-form">
+        <FormControl component="fieldset" fullWidth>
+          <Box>
             <Field
               as={TextField}
               id="text"
@@ -72,8 +63,8 @@ const TextAreaForm = (props: TextAreaFormProps) => {
               type="string"
               multiline
               fullWidth
-              rows={4}
-              data-testid={textAreaId}
+              rows={11}
+              data-testid={`${entityToSubmit}-text`}
             />
           </Box>
         </FormControl>
@@ -99,9 +90,9 @@ const TextAreaForm = (props: TextAreaFormProps) => {
 
 export const TextAreaSection = withFormik<
   {
-    entityToSubmit: string;
     onSave: (text: TextAreaFormValues) => void;
     onCancel: () => void;
+    entityToSubmit: string;
   },
   TextAreaFormValues
 >({
@@ -115,6 +106,16 @@ export const TextAreaSection = withFormik<
     let errors: FormikErrors<TextAreaFormValues> = {};
     if (!values.text) {
       errors.text = "Required";
+    }
+    if (values.text) {
+      // turn into regex to exclude any code and uppercase letters
+      // show the error text
+      const textHasInvalidChars =
+        values.text.includes("<") ||
+        values.text.includes(">") ||
+        values.text.includes("{") ||
+        values.text.includes("}");
+      errors.text = textHasInvalidChars ? "Invalid text" : undefined;
     }
     return errors;
   },

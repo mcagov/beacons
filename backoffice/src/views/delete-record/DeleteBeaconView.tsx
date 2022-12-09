@@ -9,10 +9,7 @@ import {
 } from "@mui/material";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import { FunctionComponent, useState } from "react";
-import {
-  TextAreaFormSection,
-  TextAreaFormValues,
-} from "components/TextAreaFormSection";
+import { TextAreaFormSection } from "components/TextAreaFormSection";
 
 interface IDeleteBeaconViewProps {
   reasonsForDeletion: string[] | undefined;
@@ -40,9 +37,10 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
     }
   };
 
-  const handleSaveOtherReason = (values: TextAreaFormValues) => {
-    if (values.text) {
-      reasonSubmitted(values.text);
+  const handleSaveOtherReason = (otherReason: string) => {
+    if (otherReason) {
+      console.log(otherReason);
+      reasonSubmitted(otherReason);
     }
   };
 
@@ -71,7 +69,6 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
       )}
       {showOtherReasonForm && (
         <TextAreaFormSection
-          formSectionTitle="Please enter another reason for deleting this beacon"
           entityToSubmit="reason"
           textSubmitted={handleSaveOtherReason}
           cancelled={handleCancelOtherReason}
