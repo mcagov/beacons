@@ -24,6 +24,7 @@ import { reasonsForDeletion } from "lib/BeaconDeletionReasons";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { DialogueType } from "lib/DialogueType";
 import { IConfirmDialogueModel } from "components/ConfirmDialogue";
+import { SingleBeaconExportButtons } from "./exports/SingleBeaconExportButtons";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -111,9 +112,15 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             variant="outlined"
           />
         </span>
+        <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
+          <SingleBeaconExportButtons
+            beaconId={beaconId}
+            buttonClasses={classes.button}
+          />
+        </OnlyVisibleToUsersWith>
         <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
-          {beacon.beaconStatus !== BeaconStatuses.Deleted && (
-            <span className={classes.button + " hidden-feature"}>
+          {false && beacon.beaconStatus !== BeaconStatuses.Deleted && (
+            <span className={classes.button}>
               <Button
                 onClick={openDialogueBox}
                 variant="outlined"
