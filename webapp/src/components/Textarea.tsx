@@ -21,6 +21,7 @@ interface TextareaCharacterCountProps {
   label?: string;
   defaultValue?: string;
   hintText?: string;
+  boldText?: string;
   name?: string;
   rows?: number;
   htmlAttributes?: InputHTMLAttributes<Element>;
@@ -66,6 +67,7 @@ export const TextareaCharacterCount: FunctionComponent<
   label = null,
   defaultValue = "",
   hintText = null,
+  boldText = null,
   name = null,
   rows = 3,
   htmlAttributes = {},
@@ -81,6 +83,15 @@ export const TextareaCharacterCount: FunctionComponent<
     hintComponent = <FormHint forId={id}>{hintText}</FormHint>;
   }
 
+  let boldTextComponent: ReactNode;
+  if (boldText) {
+    boldTextComponent = (
+      <FormHint forId={id} className="govuk-!-font-weight-bold">
+        {boldText}
+      </FormHint>
+    );
+  }
+
   return (
     <div
       className="govuk-character-count"
@@ -90,6 +101,7 @@ export const TextareaCharacterCount: FunctionComponent<
       <FormGroup errorMessages={errorMessages}>
         {labelComponent}
         {hintComponent}
+        {boldTextComponent}
         <textarea
           className="govuk-textarea govuk-js-character-count"
           id={id}
