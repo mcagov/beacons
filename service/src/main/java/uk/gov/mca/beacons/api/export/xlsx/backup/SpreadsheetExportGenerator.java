@@ -70,9 +70,9 @@ public class SpreadsheetExportGenerator {
     "ID",
     "Hex ID",
     "Beacon Status",
-    "Last-modified date",
+    "Last modified date",
     //This is only valid for legacy.
-    "Cospas-Sarsat Number",
+    "Cospas Sarsat Number",
     "Type",
     "Proof of registration date",
     //This is only valid for legacy.

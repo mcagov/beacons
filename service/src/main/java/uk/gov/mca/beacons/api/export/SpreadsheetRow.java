@@ -49,21 +49,21 @@ public class SpreadsheetRow {
     "ID",
     "Hex ID",
     "Beacon Status",
-    "Last-modified date",
-    "Cospas-Sarsat Number",
+    "Last modified date",
+    "Cospas Sarsat Number",
     "Owner name",
     "Owner telephone number",
     "Owner alternative telephone number",
     "Owner email",
-    "Emergency contact (1)",
-    "Emergency contact (2)",
-    "Emergency contact (3)",
+    "Emergency contact 1",
+    "Emergency contact 2",
+    "Emergency contact 3",
     "Use activities",
     "MMSI numbers",
     "Vessel names",
     "Vessel call signs",
     "Aircraft tail mark",
-    "Aircraft 24-bit hex address"
+    "Aircraft 24 bit hex address"
   );
 
   @NotNull
