@@ -4,7 +4,9 @@ import java.io.*;
 import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.filechooser.FileSystemView;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -127,10 +129,15 @@ public class SpreadsheetExportGenerator {
 
     if (numberRemaining > batchSize) {
       while (numberRemaining > 0) {
-        ArrayList<Registration> batchOfBeacons = registrationService.getBatch(
-          batchSize,
-          numberAlreadyTaken
-        );
+        // to-do: ask Sam
+        ArrayList<Registration> batchOfBeacons = registrationService
+          .getBatch(batchSize, numberAlreadyTaken)
+          .sort(
+            Comparator
+              .comparing(r -> r.getBeacon().getLastModifiedDate())
+              .reversed()
+          );
+
         List<LegacyBeacon> batchOfLegacyBeacons = legacyBeaconService.getBatch(
           batchSize,
           numberAlreadyTaken
