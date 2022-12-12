@@ -111,6 +111,7 @@ export function SettingsDrawer() {
               component={"p"}
               variant={"subtitle2"}
               id="feedback"
+              className="hidden-feature"
             >
               Export Search
             </Typography>
@@ -118,6 +119,7 @@ export function SettingsDrawer() {
               href={`backoffice#/export/search`}
               variant="outlined"
               fullWidth
+              className="hidden-feature"
             >
               Beacon Export Search
             </Button>

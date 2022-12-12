@@ -161,7 +161,7 @@ export const SingleBeaconRecordView: FunctionComponent<
         </OnlyVisibleToUsersWith>
         <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
           {beacon.status !== BeaconStatuses.Deleted && (
-            <span className={classes.button}>
+            <span className="hidden-feature">
               <Button
                 onClick={openDialogueBox}
                 variant="outlined"
