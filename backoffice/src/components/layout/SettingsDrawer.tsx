@@ -139,23 +139,25 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               downloadComplete={handleDownloadComplete}
             />
           </OnlyVisibleToUsersWith>
-          <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
-            <Typography
-              gutterBottom={true}
-              component={"p"}
-              variant={"subtitle2"}
-              id="feedback"
-            >
-              Export Search
-            </Typography>
-            <Button
-              href={`backoffice#/export/search`}
-              variant="outlined"
-              fullWidth
-            >
-              Beacon Export Search
-            </Button>
-          </OnlyVisibleToUsersWith>
+          {false && (
+            <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
+              <Typography
+                gutterBottom={true}
+                component={"p"}
+                variant={"subtitle2"}
+                id="export-search-btn"
+              >
+                Export Search
+              </Typography>
+              <Button
+                href={`backoffice#/export/search`}
+                variant="outlined"
+                fullWidth
+              >
+                Beacon Export Search
+              </Button>
+            </OnlyVisibleToUsersWith>
+          )}
 
           <Typography
             gutterBottom={true}

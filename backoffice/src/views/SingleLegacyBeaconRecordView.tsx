@@ -1,5 +1,4 @@
 import { Button, Grid, Tab, Tabs } from "@mui/material";
-import ContentPrintIcon from "@mui/icons-material/Print";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
@@ -25,6 +24,7 @@ import { reasonsForDeletion } from "lib/BeaconDeletionReasons";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { DialogueType } from "lib/DialogueType";
 import { IConfirmDialogueModel } from "components/ConfirmDialogue";
+import { SingleBeaconExportButtons } from "./exports/SingleBeaconExportButtons";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -113,49 +113,13 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
           />
         </span>
         <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
-          {beacon.beaconStatus !== BeaconStatuses.Deleted && (
-            <div className="print-buttons">
-              <span className={classes.button}>
-                <Button
-                  href={`/backoffice#/certificate/${beaconId}`}
-                  variant="outlined"
-                  endIcon={<ContentPrintIcon />}
-                >
-                  certificate
-                </Button>
-              </span>
-              <span className={classes.button}>
-                <Button
-                  href={`/backoffice#/letter/registration/${beaconId}`}
-                  variant="outlined"
-                  endIcon={<ContentPrintIcon />}
-                >
-                  Registration letter
-                </Button>
-              </span>
-              <span className={classes.button}>
-                <Button
-                  href={`/backoffice#/letter/amended/${beaconId}`}
-                  variant="outlined"
-                  endIcon={<ContentPrintIcon />}
-                >
-                  Amended letter
-                </Button>
-              </span>
-              <span className={classes.button}>
-                <Button
-                  href={`/backoffice#/label/${beaconId}`}
-                  variant="outlined"
-                  endIcon={<ContentPrintIcon />}
-                >
-                  Label
-                </Button>
-              </span>
-            </div>
-          )}
+          <SingleBeaconExportButtons
+            beaconId={beaconId}
+            buttonClasses={classes.button}
+          />
         </OnlyVisibleToUsersWith>
         <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
-          {beacon.beaconStatus !== BeaconStatuses.Deleted && (
+          {false && beacon.beaconStatus !== BeaconStatuses.Deleted && (
             <span className={classes.button}>
               <Button
                 onClick={openDialogueBox}
