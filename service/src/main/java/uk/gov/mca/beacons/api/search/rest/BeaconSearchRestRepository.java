@@ -98,7 +98,8 @@ interface BeaconSearchRestRepository
     "AND ((COALESCE(:registrationFrom, '') ='') OR b.createdDate >= :registrationFrom) " +
     "AND ((COALESCE(:registrationTo, '') = '') OR b.createdDate <= :registrationTo) " +
     "AND ((COALESCE(:lastModifiedFrom, '') = '') OR b.lastModifiedDate >= :lastModifiedFrom) " +
-    "AND ((COALESCE(:lastModifiedTo, '') = '') OR b.lastModifiedDate <= :lastModifiedTo) "
+    "AND ((COALESCE(:lastModifiedTo, '') = '') OR b.lastModifiedDate <= :lastModifiedTo) " +
+    "AND b.beaconStatus IS NOT 'DELETED'"
   )
   Page<BeaconSearchEntity> findAllBeaconsForExport(
     @RequestParam(required = false, defaultValue = "") String name,

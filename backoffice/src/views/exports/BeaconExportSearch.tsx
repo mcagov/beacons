@@ -1,4 +1,3 @@
-import { date } from "@appbaseio/reactivesearch/lib/types";
 import { Box, Button, Paper, TextField } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
