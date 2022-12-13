@@ -62,7 +62,7 @@ const TextAreaForm = (props: TextAreaFormProps) => {
     onCancel,
     onSave,
   } = props;
-  const sayHi = () => {
+  const submit = () => {
     onSave(props.values);
   };
 
@@ -94,7 +94,7 @@ const TextAreaForm = (props: TextAreaFormProps) => {
             data-testid="save"
             variant="contained"
             disabled={isSubmitting || !!errors.text}
-            onClick={sayHi}
+            onClick={submit}
           >
             {submitButtonText}
           </Button>
