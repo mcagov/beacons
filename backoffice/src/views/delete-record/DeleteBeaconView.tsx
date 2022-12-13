@@ -10,6 +10,7 @@ import {
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import { FunctionComponent, useState } from "react";
 import { TextAreaFormSection } from "components/TextAreaFormSection";
+import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
 
 interface IDeleteBeaconViewProps {
   reasonsForDeletion: string[] | undefined;
@@ -29,22 +30,22 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
   const [showOtherReasonForm, setShowOtherReasonForm] = useState(false);
 
   const handleSave = (values: DeleteBeaconFormValues) => {
-    // ( can you use string to select enum value)
-    if (values.reason === "Other") {
+    if (values.reason === BeaconDeletionReasons.OTHER) {
       setShowOtherReasonForm(true);
     } else {
       reasonSubmitted(values.reason);
     }
   };
 
-  const handleSaveOtherReason = (otherReason: string) => {
-    if (otherReason) {
-      console.log(otherReason);
-      reasonSubmitted(otherReason);
+  const handleSaveOtherReason = (text: string) => {
+    if (text) {
+      console.log(text);
+      reasonSubmitted(text);
     }
   };
 
   const handleCancelOtherReason = () => {
+    console.log("cancelled other reason");
     setShowOtherReasonForm(false);
   };
 
@@ -70,6 +71,7 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
       {showOtherReasonForm && (
         <TextAreaFormSection
           submitButtonText="Delete beacon"
+          numberOfRowsForTextArea={13}
           textSubmitted={handleSaveOtherReason}
           cancelled={handleCancelOtherReason}
         />

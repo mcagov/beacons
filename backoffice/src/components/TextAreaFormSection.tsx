@@ -1,11 +1,12 @@
 import "./text-area-form.scss";
 import { Box, Button, FormControl, TextField } from "@mui/material";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent } from "react";
 
 interface ITextAreaFormSectionProps {
   formSectionTitle?: string;
   submitButtonText: string;
+  numberOfRowsForTextArea: number;
   textSubmitted: (text: string) => void;
   cancelled: (cancelled: boolean) => void;
 }
@@ -19,15 +20,13 @@ export const TextAreaFormSection: FunctionComponent<
 > = ({
   formSectionTitle,
   submitButtonText,
+  numberOfRowsForTextArea,
   textSubmitted,
   cancelled,
 }): JSX.Element => {
-  const [text, setText] = useState("");
-
   const handleSave = (values: TextAreaFormValues) => {
     console.log(values.text);
-    setText(values.text);
-    textSubmitted(text);
+    textSubmitted(values.text);
   };
 
   const handleCancel = () => {
@@ -39,6 +38,7 @@ export const TextAreaFormSection: FunctionComponent<
       {formSectionTitle && <h2>{formSectionTitle}</h2>}
       <TextAreaSection
         submitButtonText={submitButtonText}
+        numberOfRowsForTextArea={numberOfRowsForTextArea}
         onSave={handleSave}
         onCancel={handleCancel}
       />
@@ -47,12 +47,24 @@ export const TextAreaFormSection: FunctionComponent<
 };
 
 interface TextAreaFormProps extends FormikProps<TextAreaFormValues> {
+  onSave: (values: TextAreaFormValues) => void;
   onCancel: () => void;
   submitButtonText: string;
+  numberOfRowsForTextArea: number;
 }
 
 const TextAreaForm = (props: TextAreaFormProps) => {
-  const { errors, isSubmitting, submitButtonText, onCancel } = props;
+  const {
+    errors,
+    isSubmitting,
+    submitButtonText,
+    numberOfRowsForTextArea,
+    onCancel,
+    onSave,
+  } = props;
+  const sayHi = () => {
+    onSave(props.values);
+  };
 
   return (
     <>
@@ -66,7 +78,7 @@ const TextAreaForm = (props: TextAreaFormProps) => {
               type="string"
               multiline
               fullWidth
-              rows={11}
+              rows={numberOfRowsForTextArea}
               data-testid="textarea-form-field"
               placeholder="Add your text here"
               error={props.touched && errors.text}
@@ -82,6 +94,7 @@ const TextAreaForm = (props: TextAreaFormProps) => {
             data-testid="save"
             variant="contained"
             disabled={isSubmitting || !!errors.text}
+            onClick={sayHi}
           >
             {submitButtonText}
           </Button>
@@ -96,9 +109,10 @@ const TextAreaForm = (props: TextAreaFormProps) => {
 
 export const TextAreaSection = withFormik<
   {
-    onSave: (text: TextAreaFormValues) => void;
+    onSave: (values: TextAreaFormValues) => void;
     onCancel: () => void;
     submitButtonText: string;
+    numberOfRowsForTextArea: number;
   },
   TextAreaFormValues
 >({
