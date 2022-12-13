@@ -112,26 +112,28 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
             variant="outlined"
           />
         </span>
-        <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
-          <SingleBeaconExportButtons
-            beaconId={beaconId}
-            buttonClasses={classes.button}
-          />
-        </OnlyVisibleToUsersWith>
-        <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
-          {false && beacon.beaconStatus !== BeaconStatuses.Deleted && (
-            <span className={classes.button}>
-              <Button
-                onClick={openDialogueBox}
-                variant="outlined"
-                color="error"
-                endIcon={<DeleteIcon />}
-              >
-                Delete record
-              </Button>
-            </span>
-          )}
-        </OnlyVisibleToUsersWith>
+        {beacon.beaconStatus !== BeaconStatuses.Deleted && (
+          <span>
+            <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
+              <SingleBeaconExportButtons
+                beaconId={beaconId}
+                buttonClasses={classes.button}
+              />
+            </OnlyVisibleToUsersWith>
+            <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
+              <span className={classes.button}>
+                <Button
+                  onClick={openDialogueBox}
+                  variant="outlined"
+                  color="error"
+                  endIcon={<DeleteIcon />}
+                >
+                  Delete record
+                </Button>
+              </span>
+            </OnlyVisibleToUsersWith>
+          </span>
+        )}
       </PageHeader>
       <PageContent>
         <LegacyBeaconSummaryPanel legacyBeacon={beacon} />
