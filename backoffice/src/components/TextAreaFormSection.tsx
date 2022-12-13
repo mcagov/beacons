@@ -1,12 +1,12 @@
 import "./text-area-form.scss";
 import { Box, Button, FormControl, TextField } from "@mui/material";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 
 interface ITextAreaFormSectionProps {
   formSectionTitle?: string;
-  entityToSubmit: string;
-  textSubmitted: (reason: string) => void;
+  submitButtonText: string;
+  textSubmitted: (text: string) => void;
   cancelled: (cancelled: boolean) => void;
 }
 
@@ -18,13 +18,16 @@ export const TextAreaFormSection: FunctionComponent<
   ITextAreaFormSectionProps
 > = ({
   formSectionTitle,
-  entityToSubmit,
+  submitButtonText,
   textSubmitted,
   cancelled,
 }): JSX.Element => {
+  const [text, setText] = useState("");
+
   const handleSave = (values: TextAreaFormValues) => {
     console.log(values.text);
-    textSubmitted(values.text);
+    setText(values.text);
+    textSubmitted(text);
   };
 
   const handleCancel = () => {
@@ -35,7 +38,7 @@ export const TextAreaFormSection: FunctionComponent<
     <div className="text-area-form-container">
       {formSectionTitle && <h2>{formSectionTitle}</h2>}
       <TextAreaSection
-        entityToSubmit={entityToSubmit}
+        submitButtonText={submitButtonText}
         onSave={handleSave}
         onCancel={handleCancel}
       />
@@ -45,11 +48,11 @@ export const TextAreaFormSection: FunctionComponent<
 
 interface TextAreaFormProps extends FormikProps<TextAreaFormValues> {
   onCancel: () => void;
-  entityToSubmit: string;
+  submitButtonText: string;
 }
 
 const TextAreaForm = (props: TextAreaFormProps) => {
-  const { errors, isSubmitting, entityToSubmit, onCancel } = props;
+  const { errors, isSubmitting, submitButtonText, onCancel } = props;
 
   return (
     <>
@@ -64,7 +67,10 @@ const TextAreaForm = (props: TextAreaFormProps) => {
               multiline
               fullWidth
               rows={11}
-              data-testid={`${entityToSubmit}-text`}
+              data-testid="textarea-form-field"
+              placeholder="Add your text here"
+              error={props.touched && errors.text}
+              helperText={props.touched && errors.text}
             />
           </Box>
         </FormControl>
@@ -77,7 +83,7 @@ const TextAreaForm = (props: TextAreaFormProps) => {
             variant="contained"
             disabled={isSubmitting || !!errors.text}
           >
-            Submit {entityToSubmit}
+            {submitButtonText}
           </Button>
           <Button name="cancel" onClick={onCancel} data-testid="cancel">
             Cancel
@@ -92,7 +98,7 @@ export const TextAreaSection = withFormik<
   {
     onSave: (text: TextAreaFormValues) => void;
     onCancel: () => void;
-    entityToSubmit: string;
+    submitButtonText: string;
   },
   TextAreaFormValues
 >({
@@ -108,13 +114,15 @@ export const TextAreaSection = withFormik<
       errors.text = "Required";
     }
     if (values.text) {
-      // turn into regex to exclude any code and uppercase letters
-      // show the error text
       const textHasInvalidChars =
         values.text.includes("<") ||
         values.text.includes(">") ||
         values.text.includes("{") ||
-        values.text.includes("}");
+        values.text.includes("}") ||
+        values.text.includes("/") ||
+        values.text.includes("\\") ||
+        values.text.includes("&") ||
+        values.text.includes("$");
       errors.text = textHasInvalidChars ? "Invalid text" : undefined;
     }
     return errors;
@@ -122,6 +130,7 @@ export const TextAreaSection = withFormik<
 
   handleSubmit: (values: TextAreaFormValues, { setSubmitting, props }) => {
     props.onSave(values);
+    console.log(values.text);
     setSubmitting(false);
   },
 })(TextAreaForm);
