@@ -139,7 +139,7 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               downloadComplete={handleDownloadComplete}
             />
           </OnlyVisibleToUsersWith>
-          {false && (
+          {
             <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
               <Typography
                 gutterBottom={true}
@@ -157,7 +157,7 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
                 Beacon Export Search
               </Button>
             </OnlyVisibleToUsersWith>
-          )}
+          }
 
           <Typography
             gutterBottom={true}

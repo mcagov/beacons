@@ -129,13 +129,15 @@ public class SpreadsheetExportGenerator {
 
     if (numberRemaining > batchSize) {
       while (numberRemaining > 0) {
-        ArrayList<Registration> batchOfBeacons = registrationService
-          .getBatch(batchSize, numberAlreadyTaken)
-          .sort(
-            Comparator
-              .comparing(r -> r.getBeacon().getLastModifiedDate())
-              .reversed()
-          );
+        ArrayList<Registration> batchOfBeacons = registrationService.getBatch(
+          batchSize,
+          numberAlreadyTaken
+        );
+        //          .sort(
+        //            Comparator
+        //              .comparing(r -> r.getBeacon().getLastModifiedDate())
+        //              .reversed()
+        //          );
 
         List<LegacyBeacon> batchOfLegacyBeacons = legacyBeaconService.getBatch(
           batchSize,
