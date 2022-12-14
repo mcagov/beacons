@@ -438,7 +438,7 @@ public class JsonSerialiser {
 
   public static String mapArrayToString(JSONArray array) {
     if (array == null || array.size() == 0) {
-      return "";
+      return " ";
     } else {
       return array.toString();
     }

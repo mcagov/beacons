@@ -213,24 +213,24 @@ public class SpreadsheetExportGenerator {
       ? JsonSerialiser.mapArrayToString(
         JsonSerialiser.mapModernBeaconNotesToJsonArray(beaconExport.getNotes())
       )
-      : "";
+      : " ";
     String uses = beaconExport.getUses() != null
       ? JsonSerialiser.mapArrayToString(
         JsonSerialiser.mapUsesToJsonArray(beaconExport.getUses())
       )
-      : "";
+      : " ";
     String owners = beaconExport.getOwners() != null
       ? JsonSerialiser.mapArrayToString(
         JsonSerialiser.mapBeaconOwnersToJsonArray(beaconExport.getOwners())
       )
-      : "";
+      : " ";
     String emergencyContacts = beaconExport.getEmergencyContacts() != null
       ? JsonSerialiser.mapArrayToString(
         JsonSerialiser.mapEmergencyContactsToJsonArray(
           beaconExport.getEmergencyContacts()
         )
       )
-      : "";
+      : " ";
 
     appendValuesToFile(
       file,
