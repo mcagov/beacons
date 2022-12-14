@@ -210,25 +210,26 @@ public class SpreadsheetExportGenerator {
   private void writeToFile(FileWriter file, BeaconExportDTO beaconExport)
     throws IOException {
     String notes = beaconExport.getNotes() != null
-      ? JsonSerialiser
-        .mapModernBeaconNotesToJsonArray(beaconExport.getNotes())
-        .toString()
+      ? JsonSerialiser.mapArrayToString(
+        JsonSerialiser.mapModernBeaconNotesToJsonArray(beaconExport.getNotes())
+      )
       : "";
     String uses = beaconExport.getUses() != null
-      ? JsonSerialiser.mapUsesToJsonArray(beaconExport.getUses()).toString()
-      : "";
-    String owners = (
-        beaconExport.getOwners() != null &&
-        beaconExport.getOwners().get(0) != null
+      ? JsonSerialiser.mapArrayToString(
+        JsonSerialiser.mapUsesToJsonArray(beaconExport.getUses())
       )
-      ? JsonSerialiser
-        .mapBeaconOwnersToJsonArray(beaconExport.getOwners())
-        .toString()
+      : "";
+    String owners = beaconExport.getOwners() != null
+      ? JsonSerialiser.mapArrayToString(
+        JsonSerialiser.mapBeaconOwnersToJsonArray(beaconExport.getOwners())
+      )
       : "";
     String emergencyContacts = beaconExport.getEmergencyContacts() != null
-      ? JsonSerialiser
-        .mapEmergencyContactsToJsonArray(beaconExport.getEmergencyContacts())
-        .toString()
+      ? JsonSerialiser.mapArrayToString(
+        JsonSerialiser.mapEmergencyContactsToJsonArray(
+          beaconExport.getEmergencyContacts()
+        )
+      )
       : "";
 
     appendValuesToFile(

@@ -22,6 +22,10 @@ public class JsonSerialiser {
 
     if (notes.size() > 0) {
       for (BeaconExportNoteDTO note : notes) {
+        if (note == null) {
+          continue;
+        }
+
         var json = new JSONObject();
         json.put("date created", note.getDate().format(dateFormatter));
         json.put("note", note.getNote().toUpperCase());
@@ -36,8 +40,13 @@ public class JsonSerialiser {
     List<BeaconExportOwnerDTO> owners
   ) {
     var jsonArray = new JSONArray();
+
     if (owners.size() > 0) {
       for (BeaconExportOwnerDTO owner : owners) {
+        if (owner == null) {
+          continue;
+        }
+
         var json = new JSONObject();
         json.put(
           "owner name",
@@ -136,6 +145,10 @@ public class JsonSerialiser {
 
     if (emergencyContacts.size() > 0) {
       for (EmergencyContactDTO emergencyContact : emergencyContacts) {
+        if (emergencyContact == null) {
+          continue;
+        }
+
         var json = new JSONObject();
         json.put(
           "full name",
@@ -168,6 +181,10 @@ public class JsonSerialiser {
 
     if (uses.size() > 0) {
       for (BeaconExportUseDTO use : uses) {
+        if (use == null) {
+          continue;
+        }
+
         switch (use.getEnvironment().trim()) {
           case "MARITIME":
             jsonArray.add(
@@ -417,5 +434,13 @@ public class JsonSerialiser {
     );
 
     return json;
+  }
+
+  public static String mapArrayToString(JSONArray array) {
+    if (array == null || array.size() == 0) {
+      return "";
+    } else {
+      return array.toString();
+    }
   }
 }

@@ -171,4 +171,8 @@ public class JsonSerialiserUnitTest {
     assertEquals("CIUDAD DE MEXICO", mappedAddress.get("address line 2"));
     assertEquals("MEXICO", mappedAddress.get("country"));
   }
+  // owners: for deleted records, owners is just blank rather than []
+  // might be better for them all to be blank to save some bytes
+  // uses
+  // emergency contacts
 }
