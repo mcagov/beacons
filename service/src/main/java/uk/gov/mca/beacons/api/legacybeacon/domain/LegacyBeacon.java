@@ -45,7 +45,6 @@ public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
   private String ownerEmail;
 
   @Setter
-  @Getter
   private String beaconStatus;
 
   @Setter
@@ -75,6 +74,7 @@ public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
   @NotNull
   private OffsetDateTime lastModifiedDate;
 
+  // delete story
   public boolean isClaimed() {
     if (actions == null) {
       return false;
@@ -91,6 +91,26 @@ public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
       this.registerEvent(new LegacyBeaconClaimed(this));
       this.setBeaconStatus("CLAIMED");
     }
+  }
+
+  // before delete story
+
+  public void claim() {
+    initActions();
+    if (!isClaimed()) {
+      LegacyBeaconClaimAction claimAction = new LegacyBeaconClaimAction();
+      actions.add(claimAction);
+      this.registerEvent(new LegacyBeaconClaimed(this));
+    }
+  }
+
+  // reinstate this and remove the default getter from beaconStatus
+  public String getBeaconStatus() {
+    if (isClaimed()) {
+      return "CLAIMED";
+    }
+
+    return beaconStatus;
   }
 
   public void softDelete() {
