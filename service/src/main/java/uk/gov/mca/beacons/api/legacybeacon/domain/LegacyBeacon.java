@@ -45,7 +45,6 @@ public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
   private String ownerEmail;
 
   @Setter
-  @Getter
   private String beaconStatus;
 
   @Setter
@@ -89,7 +88,6 @@ public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
       LegacyBeaconClaimAction claimAction = new LegacyBeaconClaimAction();
       actions.add(claimAction);
       this.registerEvent(new LegacyBeaconClaimed(this));
-      this.setBeaconStatus("CLAIMED");
     }
   }
 
