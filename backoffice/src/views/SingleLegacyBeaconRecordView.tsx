@@ -71,7 +71,6 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
 
     fetchBeacon(beaconId);
   }, [beaconId, beaconsGateway]);
-
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
   const legacyConfirmDialogueModel: IConfirmDialogueModel = {
@@ -119,7 +118,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
           />
         </OnlyVisibleToUsersWith>
         <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
-          {false && beacon.beaconStatus !== BeaconStatuses.Deleted && (
+          {beacon.beaconStatus !== BeaconStatuses.Deleted && (
             <span className={classes.button}>
               <Button
                 onClick={openDialogueBox}

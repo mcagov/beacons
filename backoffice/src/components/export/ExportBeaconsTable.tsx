@@ -15,8 +15,6 @@ import { IBeaconExportSearchResult } from "views/exports/BeaconExportSearch";
 import { customDateStringFormat } from "../../utils/dateTime";
 interface IExportBeaconsTableProps {
   result: IBeaconExportSearchResult;
-  setPage: any;
-  setPageSize: any;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,18 +37,21 @@ const columns: GridColDef[] = [
     field: "hexId",
     headerName: "Hex ID",
     width: 175,
+    resizable: true,
     editable: false,
   },
   {
     field: "beaconStatus",
     headerName: "Status",
     width: 150,
+    resizable: true,
     editable: false,
   },
   {
     field: "createdDate",
     headerName: "Created date",
     width: 150,
+    resizable: true,
     editable: false,
     type: "date",
     valueFormatter: (params: GridValueFormatterParams) => {
@@ -61,6 +62,7 @@ const columns: GridColDef[] = [
     field: "lastModifiedDate",
     headerName: "Last modified date",
     width: 150,
+    resizable: true,
     editable: false,
     type: "date",
     valueFormatter: (params: GridValueFormatterParams) => {
@@ -72,32 +74,50 @@ const columns: GridColDef[] = [
     field: "ownerName",
     headerName: "Owner",
     width: 200,
+    resizable: true,
     editable: false,
   },
   {
     field: "accountHolderName",
     headerName: "Account Holder",
     width: 200,
+    resizable: true,
     editable: false,
   },
   {
     field: "useActivities",
     headerName: "Uses",
-    width: 300,
+    width: 450,
+    resizable: true,
     editable: false,
-    type: "array",
+    type: "string",
+  },
+  {
+    field: "vesselNames",
+    headerName: "Vessel Names",
+    width: 450,
+    resizable: true,
+    editable: false,
+    type: "string",
+  },
+  {
+    field: "registrationMarks",
+    headerName: "Aircraft Reg Marks",
+    width: 400,
+    resizable: true,
+    editable: false,
+    type: "string",
   },
 ];
 
 export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
-  React.memo(function ({ result, setPage, setPageSize }): JSX.Element {
+  React.memo(function ({ result }): JSX.Element {
     const [selectionModelItems, setSelectionModel] =
       useState<GridSelectionModel>([]);
 
     const classes = useStyles();
 
     let rows = result?._embedded?.beaconSearch || [];
-    let page = result.page || {};
 
     function CustomToolbar() {
       if (!selectionModelItems || selectionModelItems.length === 0) {
@@ -148,19 +168,18 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
       );
     }
 
+    const isRowSelectable = (row: any) => {
+      return !row.beaconStatus || row.beaconStatus.toUpperCase() != "DELETED";
+    };
+
     return (
       <Box sx={{ height: 850 }}>
         <DataGrid
           rows={rows}
           columns={columns}
           rowsPerPageOptions={[10, 20, 50, 100]}
-          pageSize={page.size}
-          page={page.number}
-          paginationMode="server"
-          rowCount={page.totalElements}
           checkboxSelection
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
+          isRowSelectable={(params) => isRowSelectable(params.row)}
           onSelectionModelChange={setSelectionModel}
           components={{ Toolbar: CustomToolbar }}
         />
