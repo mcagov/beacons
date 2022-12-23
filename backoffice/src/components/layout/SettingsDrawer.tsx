@@ -105,25 +105,23 @@ export function SettingsDrawer() {
               isFullWidth={true}
             />
           </OnlyVisibleToUsersWith>
-          {false && (
-            <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
-              <Typography
-                gutterBottom={true}
-                component={"p"}
-                variant={"subtitle2"}
-                id="export-search-btn"
-              >
-                Export Search
-              </Typography>
-              <Button
-                href={`backoffice#/export/search`}
-                variant="outlined"
-                fullWidth
-              >
-                Beacon Export Search
-              </Button>
-            </OnlyVisibleToUsersWith>
-          )}
+          <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
+            <Typography
+              gutterBottom={true}
+              component={"p"}
+              variant={"subtitle2"}
+              id="export-search-btn"
+            >
+              Export Search
+            </Typography>
+            <Button
+              href={`backoffice#/export/search`}
+              variant="outlined"
+              fullWidth
+            >
+              Beacon Export Search
+            </Button>
+          </OnlyVisibleToUsersWith>
 
           <Typography
             gutterBottom={true}

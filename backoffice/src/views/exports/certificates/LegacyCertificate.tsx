@@ -14,7 +14,7 @@ export const LegacyCertificate: FunctionComponent<BeaconExportProps> = ({
   beacon,
 }): JSX.Element => {
   return (
-    <div className="certificate" onLoad={window.print}>
+    <div className="certificate">
       <CertificateHeader beacon={beacon} />
 
       <div className="content">
