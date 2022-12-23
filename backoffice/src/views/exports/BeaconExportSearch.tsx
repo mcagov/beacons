@@ -96,7 +96,7 @@ export const BeaconExportSearch: FunctionComponent<
     };
 
     getResponse().catch(console.error);
-  }, [form]);
+  }, [form, exportsGateway]);
 
   const resetForm = async () => {
     reset();

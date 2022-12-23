@@ -1,10 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import {
-  AuthContext,
-  AuthProvider,
-  IAuthContext,
-} from "components/auth/AuthProvider";
+import { AuthContext, IAuthContext } from "components/auth/AuthProvider";
 import { INotesGateway } from "../../gateways/notes/INotesGateway";
 import { Placeholders } from "../../utils/writingStyle";
 import { NotesPanel } from "./NotesPanel";

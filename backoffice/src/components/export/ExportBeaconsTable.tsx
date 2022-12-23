@@ -169,7 +169,7 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
     }
 
     const isRowSelectable = (row: any) => {
-      return !row.beaconStatus || row.beaconStatus.toUpperCase() != "DELETED";
+      return !row.beaconStatus || row.beaconStatus.toUpperCase() !== "DELETED";
     };
 
     return (
