@@ -32,6 +32,7 @@ export const BeaconSummaryPanel: FunctionComponent<IBeaconSummaryProps> = ({
   useEffect((): void => {
     const fetchBeacon = async (id: string) => {
       try {
+        setError(false);
         setLoading(true);
         const beacon = await beaconsGateway.getBeacon(id);
         setBeacon(beacon);
@@ -62,14 +63,17 @@ export const BeaconSummaryPanel: FunctionComponent<IBeaconSummaryProps> = ({
     switch (state) {
       case DataPanelStates.Viewing:
         return (
-          <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
-            <EditPanelButton
-              onClick={() => setUserState(DataPanelStates.Editing)}
-            >
-              Edit summary
-            </EditPanelButton>
+          <>
+            <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
+              <EditPanelButton
+                onClick={() => setUserState(DataPanelStates.Editing)}
+              >
+                Edit summary
+              </EditPanelButton>
+            </OnlyVisibleToUsersWith>
+
             <BeaconSummaryViewing beacon={beacon} />
-          </OnlyVisibleToUsersWith>
+          </>
         );
       case DataPanelStates.Editing:
         return (
