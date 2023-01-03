@@ -34,7 +34,11 @@ describe("NotesPanel", () => {
   });
 
   it("calls the injected NotesGateway", async () => {
-    render(<NotesPanel notesGateway={notesGateway} beaconId={beaconId} />);
+    render(
+      <AuthContext.Provider value={authContext}>
+        <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
+      </AuthContext.Provider>
+    );
 
     await waitFor(() => {
       expect(notesGateway.getNotes).toHaveBeenCalled();
@@ -47,7 +51,9 @@ describe("NotesPanel", () => {
     });
     jest.spyOn(console, "error").mockImplementation(() => {}); // Avoid console error failing test
     render(
-      <NotesPanel notesGateway={notesGateway} beaconId={"does not exist"} />
+      <AuthContext.Provider value={authContext}>
+        <NotesPanel notesGateway={notesGateway} beaconId={"does not exist"} />
+      </AuthContext.Provider>
     );
 
     expect(await screen.findByRole("alert")).toBeVisible();
