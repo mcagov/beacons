@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@mui/material";
+import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { PanelButton } from "../../components/dataPanel/EditPanelButton";
 import { ErrorState } from "../../components/dataPanel/PanelErrorState";
@@ -58,19 +59,21 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
     switch (state) {
       case DataPanelStates.Viewing:
         return (
-          <>
+          <OnlyVisibleToUsersWith role={"ADD_BEACON_NOTES"}>
             <PanelButton onClick={() => setUserState(DataPanelStates.Editing)}>
               Add a new note
             </PanelButton>
             <NotesViewing notes={notes} />
-          </>
+          </OnlyVisibleToUsersWith>
         );
       case DataPanelStates.Editing:
         return (
-          <NotesEditing
-            onSave={handleSave}
-            onCancel={() => setUserState(DataPanelStates.Viewing)}
-          />
+          <OnlyVisibleToUsersWith role={"ADD_BEACON_NOTES"}>
+            <NotesEditing
+              onSave={handleSave}
+              onCancel={() => setUserState(DataPanelStates.Viewing)}
+            />
+          </OnlyVisibleToUsersWith>
         );
       default:
         setError(true);

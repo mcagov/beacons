@@ -71,7 +71,6 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
 
     fetchBeacon(beaconId);
   }, [beaconId, beaconsGateway]);
-
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
   const legacyConfirmDialogueModel: IConfirmDialogueModel = {

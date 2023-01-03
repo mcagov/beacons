@@ -32,17 +32,9 @@ export interface ExportSearchFormProps {
   registrationTo: Date;
   lastModifiedFrom: Date;
   lastModifiedTo: Date;
-  page: number;
-  pageSize: number;
 }
 
 export interface IBeaconExportSearchResult {
-  page: {
-    size: number;
-    totalElements: number;
-    totalPages: number;
-    number: number;
-  };
   _embedded: { beaconSearch: IBeaconExportResult[] };
 }
 
@@ -91,21 +83,25 @@ export const BeaconExportSearch: FunctionComponent<
     {} as IBeaconExportSearchResult
   );
   const [form, setForm] = useState<any>({});
-  const [page, setPage] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(20);
 
   const { handleSubmit, reset, control } = useForm();
-  const onSubmit = async (formData: any) => {
-    formData.page = page;
-    formData.pageSize = pageSize;
-    setForm(formData);
 
-    await exportsGateway.searchExportData(formData).then(setResult);
+  const onSubmit = async (formData: any) => {
+    setForm(formData);
   };
 
   useEffect(() => {
-    onSubmit(form);
-  }, [page, pageSize]);
+    const getResponse = async () => {
+      await exportsGateway.searchExportData(form).then(setResult);
+    };
+
+    getResponse().catch(console.error);
+  }, [form, exportsGateway]);
+
+  const resetForm = async () => {
+    reset();
+    onSubmit({});
+  };
 
   return (
     <div className={classes.root}>
@@ -159,18 +155,14 @@ export const BeaconExportSearch: FunctionComponent<
               Search
             </Button>
             <Button
-              onClick={() => reset()}
+              onClick={() => resetForm()}
               variant={"outlined"}
               className={classes.button}
             >
               Clear
             </Button>
           </Box>
-          <ExportBeaconsTable
-            result={result}
-            setPage={setPage}
-            setPageSize={setPageSize}
-          />
+          <ExportBeaconsTable result={result} />
         </Paper>
       </PageContent>
     </div>

@@ -27,6 +27,8 @@ public class BeaconSearchEntity {
   private String accountHolderName;
   private String accountHolderEmail;
   private String useActivities;
+  private String vesselNames;
+  private String registrationMarks;
   private String beaconType;
   private String manufacturerSerialNumber;
   private String cospasSarsatNumber;

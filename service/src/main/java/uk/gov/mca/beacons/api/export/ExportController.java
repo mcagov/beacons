@@ -124,6 +124,7 @@ class ExportController {
     return new ResponseEntity<>(resource, headers, HttpStatus.OK);
   }
 
+  @PreAuthorize("hasAuthority('APPROLE_ADMIN_EXPORT')")
   @GetMapping(value = "/label/{uuid}")
   public ResponseEntity<byte[]> getLabelByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
@@ -138,6 +139,7 @@ class ExportController {
       .body(file);
   }
 
+  @PreAuthorize("hasAuthority('APPROLE_ADMIN_EXPORT')")
   @PostMapping(value = "/labels")
   public ResponseEntity<byte[]> getLabelsByBeaconIds(
     @RequestBody @Valid List<UUID> rawBeaconIds
@@ -156,6 +158,7 @@ class ExportController {
       .body(file);
   }
 
+  @PreAuthorize("hasAuthority('APPROLE_ADMIN_EXPORT')")
   @PostMapping(value = "/beacons/data")
   public ResponseEntity<List<BeaconExportDTO>> getBeacons(
     @RequestBody @Valid List<UUID> rawBeaconIds
@@ -172,6 +175,7 @@ class ExportController {
       .body(dataList);
   }
 
+  @PreAuthorize("hasAuthority('APPROLE_ADMIN_EXPORT')")
   @GetMapping(value = "/certificate/data/{uuid}")
   public ResponseEntity<BeaconExportDTO> getCertificateDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
@@ -187,6 +191,7 @@ class ExportController {
       .body(data);
   }
 
+  @PreAuthorize("hasAuthority('APPROLE_ADMIN_EXPORT')")
   @PostMapping(value = "/certificates/data")
   public ResponseEntity<List<BeaconExportDTO>> getCertificatesDataByBeaconIds(
     @RequestBody @Valid List<UUID> rawBeaconIds
@@ -203,6 +208,7 @@ class ExportController {
       .body(dataList);
   }
 
+  @PreAuthorize("hasAuthority('APPROLE_ADMIN_EXPORT')")
   @GetMapping(value = "/letter/data/{uuid}")
   public ResponseEntity<BeaconExportDTO> getLetterDataByBeaconId(
     @PathVariable("uuid") UUID rawBeaconId
@@ -218,6 +224,7 @@ class ExportController {
       .body(data);
   }
 
+  @PreAuthorize("hasAuthority('APPROLE_ADMIN_EXPORT')")
   @PostMapping(value = "/letters/data")
   public ResponseEntity<List<BeaconExportDTO>> postRetrieveLettersByBeaconIds(
     @RequestBody @Valid List<UUID> ids
@@ -232,23 +239,5 @@ class ExportController {
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(dataList);
-  }
-
-  private ResponseEntity<byte[]> servePdf(byte[] file, String filename) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.set(
-      HttpHeaders.CONTENT_DISPOSITION,
-      "attachment; filename=" + filename
-    );
-    headers.set(
-      HttpHeaders.CACHE_CONTROL,
-      "no-cache, no-store, must-revalidate"
-    );
-    //    headers.add("Access-Control-Allow-Origin", "*");
-    return ResponseEntity
-      .ok()
-      .contentType(MediaType.APPLICATION_PDF)
-      .headers(headers)
-      .body(file);
   }
 }

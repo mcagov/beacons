@@ -120,4 +120,43 @@ interface BeaconSearchRestRepository
     ) OffsetDateTime lastModifiedTo,
     Pageable page
   );
+
+  @RestResource(
+    path = "full-export-search",
+    rel = "findAllBeaconsForFullExport"
+  )
+  @Query(
+    "SELECT b FROM BeaconSearchEntity b WHERE " +
+    "(" +
+    "COALESCE(:name , '') = '' OR " +
+    "(" +
+    "LOWER(COALESCE(b.ownerName, '')) LIKE LOWER(CONCAT('%',:name, '%')) " +
+    "OR " +
+    "LOWER(COALESCE(b.accountHolderName, '')) LIKE LOWER(CONCAT('%', :name, '%'))" +
+    ") " +
+    ") " +
+    "AND ((COALESCE(:registrationFrom, '') ='') OR b.createdDate >= :registrationFrom) " +
+    "AND ((COALESCE(:registrationTo, '') = '') OR b.createdDate <= :registrationTo) " +
+    "AND ((COALESCE(:lastModifiedFrom, '') = '') OR b.lastModifiedDate >= :lastModifiedFrom) " +
+    "AND ((COALESCE(:lastModifiedTo, '') = '') OR b.lastModifiedDate <= :lastModifiedTo) "
+  )
+  List<BeaconSearchEntity> findAllBeaconsForFullExport(
+    @RequestParam(required = false, defaultValue = "") String name,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime registrationFrom,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime registrationTo,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime lastModifiedFrom,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime lastModifiedTo
+  );
 }

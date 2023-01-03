@@ -105,9 +105,9 @@ export class ExportsGateway implements IExportsGateway {
 
     let url = `${
       applicationConfig.apiUrl
-    }/beacon-search/search/export-search?name=${encodeURIComponent(
+    }/beacon-search/search/full-export-search?name=${encodeURIComponent(
       searchForm.name || ""
-    )}&page=${searchForm.page || 0}&size=${searchForm.pageSize || 20}`;
+    )}`;
 
     if (searchForm.registrationFrom) {
       url += `&registrationFrom=${encodeURIComponent(
