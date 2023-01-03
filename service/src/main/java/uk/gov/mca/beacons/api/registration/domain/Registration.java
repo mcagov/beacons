@@ -39,11 +39,9 @@ public class Registration implements Comparable<Registration> {
       .orElse(null);
   }
 
-  // Sorts by beacon lastModifiedDate in descending order
+  // Sorts by beacon created date in descending order
   @Override
   public int compareTo(@NotNull Registration o) {
-    return -beacon
-      .getLastModifiedDate()
-      .compareTo(o.beacon.getLastModifiedDate());
+    return -beacon.getCreatedDate().compareTo(o.beacon.getCreatedDate());
   }
 }
