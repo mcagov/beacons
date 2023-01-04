@@ -123,6 +123,8 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               downloadStarted={handleDownloadStarted}
               downloadComplete={handleDownloadComplete}
             />
+          </OnlyVisibleToUsersWith>
+          <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
             <Typography
               gutterBottom={true}
               component={"p"}
@@ -138,8 +140,6 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               downloadStarted={handleDownloadStarted}
               downloadComplete={handleDownloadComplete}
             />
-          </OnlyVisibleToUsersWith>
-          <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
             <Typography
               gutterBottom={true}
               component={"p"}
