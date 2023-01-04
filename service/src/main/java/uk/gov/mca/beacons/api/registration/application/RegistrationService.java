@@ -1,6 +1,5 @@
 package uk.gov.mca.beacons.api.registration.application;
 
-import java.util.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,7 +12,6 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
 import uk.gov.mca.beacons.api.beaconowner.application.BeaconOwnerService;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
@@ -58,24 +56,6 @@ public class RegistrationService {
     this.emergencyContactService = emergencyContactService;
     this.legacyBeaconService = legacyBeaconService;
     this.noteService = noteService;
-  }
-
-  public ArrayList<Registration> getBatch(
-    int batchSize,
-    int numberAlreadyTaken
-  ) {
-    List<Beacon> beacons = beaconService.getBatch(
-      batchSize,
-      numberAlreadyTaken
-    );
-
-    ArrayList<Registration> registrations = new ArrayList<Registration>();
-
-    for (Beacon beacon : beacons) {
-      registrations.add(getAssociatedAggregates(beacon));
-    }
-
-    return registrations;
   }
 
   public Registration register(Registration registration) {

@@ -1,20 +1,14 @@
-import React from "react";
-import { AuthenticatedDownloadButton } from "../components/AuthenticatedDownloadButton";
+import React, { ReactNode } from "react";
 import { AuthenticatedPOSTButton } from "../components/AuthenticatedPOSTButton";
 import { PageContent } from "../components/layout/PageContent";
 import { applicationConfig } from "../config";
 
-export const AdminView = (): JSX.Element => {
+export const AdminView = (): ReactNode => {
   return (
     <PageContent>
       <AuthenticatedPOSTButton uri={`${applicationConfig.apiUrl}/export/xlsx`}>
         Trigger export job
       </AuthenticatedPOSTButton>
-      <AuthenticatedDownloadButton
-        url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
-        label={"Backup export"}
-        isFullWidth={true}
-      />
       <AuthenticatedPOSTButton
         uri={`${applicationConfig.apiUrl}/search/job/reindexSearch`}
       >
