@@ -2,8 +2,10 @@ package uk.gov.mca.beacons.api.export.rest;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.*;
+import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 
 @Getter
@@ -12,6 +14,9 @@ import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BeaconExportDTO {
+
+  @Valid
+  private String id;
 
   @Valid
   private String type;
@@ -67,6 +72,10 @@ public class BeaconExportDTO {
 
   @Valid
   private String cstaNumber;
+
+  //This is only valid for legacy.
+  @Valid
+  private String cospasSarsatNumber;
 
   @Valid
   private String chkCode;

@@ -21,7 +21,6 @@ import { LabelsView, LabelView } from "views/exports/label/LabelView";
 import { UserRolesView } from "views/UserRolesView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
-import { AuthenticatedPOSTButton } from "./components/AuthenticatedPOSTButton";
 import { ErrorState } from "./components/dataPanel/PanelErrorState";
 import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { Footer } from "./components/layout/Footer";
@@ -39,6 +38,7 @@ import { logToServer } from "./utils/logger";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
+import { AuthenticatedPOSTButton } from "components/AuthenticatedPOSTButton";
 
 interface ResourceParams {
   id: string;
@@ -79,7 +79,7 @@ const App: FunctionComponent = () => {
 
     return (
       <div>
-        <Navigation />
+        <Navigation exportsGateway={exportsGateway} />
         <SingleBeaconRecordView
           beaconsGateway={beaconsGateway}
           usesGateway={usesGateway}
@@ -95,7 +95,7 @@ const App: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
     return (
       <div>
-        <Navigation />
+        <Navigation exportsGateway={exportsGateway} />
         <SingleLegacyBeaconRecordView
           beaconsGateway={beaconsGateway}
           beaconId={id}
@@ -160,18 +160,18 @@ const App: FunctionComponent = () => {
             <RequireAuth>
               <Switch>
                 <Route exact path="/">
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   <Search beaconsGateway={beaconsGateway} />
                   <Footer />
                 </Route>
                 <Route path={`/export/search`}>
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   <PageContent>
                     <BeaconExportSearch exportsGateway={exportsGateway} />
                   </PageContent>
                 </Route>
                 <Route path={`/roles`}>
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   <PageContent>
                     <UserRolesView />
                   </PageContent>
@@ -184,7 +184,7 @@ const App: FunctionComponent = () => {
                   <SingleLegacyBeaconRecordViewWithParam />
                 </Route>
                 <Route path={`/admin`}>
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   <PageContent>
                     <AuthenticatedPOSTButton
                       uri={`${applicationConfig.apiUrl}/export/xlsx`}
@@ -207,17 +207,17 @@ const App: FunctionComponent = () => {
                   <LettersViewWithParam />
                 </Route>
                 <Route path={`/label/:id`}>
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   <LabelViewWithParam />
                   <Footer />
                 </Route>
                 <Route path={`/labels/:ids`}>
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   <LabelsViewWithParam />
                   <Footer />
                 </Route>
                 <Route>
-                  <Navigation />
+                  <Navigation exportsGateway={exportsGateway} />
                   Page not found. Is the address correct?
                   <Footer />
                 </Route>
