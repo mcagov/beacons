@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -24,9 +25,7 @@ import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
   query = "select b from LegacyBeacon b order by lastModifiedDate",
   hints = @QueryHint(name = "org.hibernate.readOnly", value = "true")
 )
-public class LegacyBeacon
-  extends BaseAggregateRoot<LegacyBeaconId>
-  implements Comparable<LegacyBeacon> {
+public class LegacyBeacon extends BaseAggregateRoot<LegacyBeaconId> {
 
   public static final String ID_GENERATOR_NAME = "legacybeacon-id-generator";
 
@@ -110,14 +109,5 @@ public class LegacyBeacon
     if (actions == null) {
       actions = new ArrayList<>();
     }
-  }
-
-  // Sorts by beacon created date in descending order
-  @Override
-  public int compareTo(LegacyBeacon l) {
-    return -data
-      .getBeacon()
-      .getCreatedDate()
-      .compareTo(l.getData().getBeacon().getCreatedDate());
   }
 }

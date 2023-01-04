@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import {
   ExportSearchFormProps,
   IBeaconExportSearchResult,
@@ -10,6 +9,7 @@ export interface IExportsGateway {
   getLetterDataForBeacon(beaconId: string): Promise<IBeaconExport>;
   getExportDataForBeacon(beaconId: string): Promise<IBeaconExport>;
   getLabelForBeacon(beaconId: string): Promise<Blob>;
+
   getCertificateDataForBeacons(beaconIds: string[]): Promise<IBeaconExport[]>;
   getLetterDataForBeacons(beaconIds: string[]): Promise<IBeaconExport[]>;
   getExportDataForBeacons(beaconIds: string[]): Promise<IBeaconExport[]>;
@@ -19,5 +19,4 @@ export interface IExportsGateway {
   searchExportData(
     searchForm: ExportSearchFormProps
   ): Promise<IBeaconExportSearchResult>;
-  getBackupExportFile(): Promise<AxiosResponse>;
 }

@@ -8,9 +8,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
-import { FunctionComponent, useState } from "react";
-import { TextAreaFormSection } from "components/TextAreaFormSection";
-import { BeaconDeletionReasons } from "lib/BeaconDeletionReasons";
+import { FunctionComponent } from "react";
 
 interface IDeleteBeaconViewProps {
   reasonsForDeletion: string[] | undefined;
@@ -27,26 +25,8 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
   reasonSubmitted,
   cancelled,
 }): JSX.Element => {
-  const [showOtherReasonForm, setShowOtherReasonForm] = useState(false);
-
   const handleSave = (values: DeleteBeaconFormValues) => {
-    if (values.reason === BeaconDeletionReasons.OTHER) {
-      setShowOtherReasonForm(true);
-    } else {
-      reasonSubmitted(values.reason);
-    }
-  };
-
-  const handleSaveOtherReason = (text: string) => {
-    if (text) {
-      console.log(text);
-      reasonSubmitted(text);
-    }
-  };
-
-  const handleCancelOtherReason = () => {
-    console.log("cancelled other reason");
-    setShowOtherReasonForm(false);
+    reasonSubmitted(values.reason);
   };
 
   const handleCancel = () => {
@@ -61,21 +41,11 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
         associated information.
       </p>
       <h2>Please enter a reason for deleting this beacon</h2>
-      {!showOtherReasonForm && (
-        <DeleteBeaconSection
-          onSave={handleSave}
-          onCancel={handleCancel}
-          reasonsForDeletion={reasonsForDeletion}
-        />
-      )}
-      {showOtherReasonForm && (
-        <TextAreaFormSection
-          submitButtonText="Delete beacon"
-          numberOfRowsForTextArea={13}
-          textSubmitted={handleSaveOtherReason}
-          cancelled={handleCancelOtherReason}
-        />
-      )}
+      <DeleteBeaconSection
+        onSave={handleSave}
+        onCancel={handleCancel}
+        reasonsForDeletion={reasonsForDeletion}
+      />
     </div>
   );
 };
