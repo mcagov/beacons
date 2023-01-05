@@ -24,7 +24,8 @@ def populateBeacons
 	useLookup["RIG/PLATFORM"] = ["RIG_USE"]
 	useLookup["MOD"] = ["MOD_USE"]
 
-	20.times do |count|
+	# to-do: chunk this down to make it reuseable with an option to exclude hex id
+	500.times do |count|
 
 		Faker::Config.locale = 'en-GB'
 
@@ -260,3 +261,4 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 end
 
 populateBeacons
+#populateBeaconsWithNoHexIds
