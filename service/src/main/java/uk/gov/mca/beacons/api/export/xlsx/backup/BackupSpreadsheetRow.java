@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.export.backup;
+package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,8 +45,7 @@ public class BackupSpreadsheetRow {
     "aircraft24BitHexAddresses"
   );
 
-  // column headers we want for backup
-  private final List<String> columnHeaders = List.of(
+  public static final List<String> COLUMN_HEADINGS = List.of(
     "ID",
     "Hex ID",
     "Beacon Status",
@@ -76,27 +75,6 @@ public class BackupSpreadsheetRow {
     "Emergency contacts"
   );
 
-  public static final List<String> COLUMN_HEADINGS = List.of(
-    "ID",
-    "Hex ID",
-    "Beacon Status",
-    "Last modified date",
-    "Cospas Sarsat Number",
-    "Owner name",
-    "Owner telephone number",
-    "Owner alternative telephone number",
-    "Owner email",
-    "Emergency contact 1",
-    "Emergency contact 2",
-    "Emergency contact 3",
-    "Use activities",
-    "MMSI numbers",
-    "Vessel names",
-    "Vessel call signs",
-    "Aircraft tail mark",
-    "Aircraft 24 bit hex address"
-  );
-
   @NotNull
   private final UUID id;
 
@@ -118,7 +96,7 @@ public class BackupSpreadsheetRow {
   private String aircraftTailMarks;
   private String aircraft24BitHexAddresses;
 
-  public SpreadsheetRow(LegacyBeacon legacyBeacon) {
+  public BackupSpreadsheetRow(LegacyBeacon legacyBeacon) {
     this.id = Objects.requireNonNull(legacyBeacon.getId()).unwrap();
 
     // Beacon details
@@ -144,7 +122,7 @@ public class BackupSpreadsheetRow {
     setEmergencyContact(legacyBeacon.getData().getEmergencyContact());
   }
 
-  public SpreadsheetRow(
+  public BackupSpreadsheetRow(
     Beacon beacon,
     @Nullable BeaconOwner beaconOwner,
     List<BeaconUse> beaconUses,

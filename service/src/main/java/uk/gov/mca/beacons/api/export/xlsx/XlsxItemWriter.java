@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.batch.item.ItemWriter;
-import uk.gov.mca.beacons.api.export.SpreadsheetRow;
 
 public class XlsxItemWriter implements ItemWriter<SpreadsheetRow> {
 
