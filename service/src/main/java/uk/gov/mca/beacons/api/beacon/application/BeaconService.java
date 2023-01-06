@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.beacon.application;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -78,6 +79,10 @@ public class BeaconService {
       .skip(numberAlreadyTaken)
       .limit(batchSize)
       .collect(Collectors.toList());
+  }
+
+  public List<Beacon> getSinceDate(OffsetDateTime sinceDate) {
+    return beaconRepository.findAllWithCreatedDateSince(sinceDate);
   }
 
   public Beacon update(BeaconId beaconId, Beacon patch)

@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.io.*;
 import java.text.MessageFormat;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -102,7 +103,8 @@ public class SpreadsheetExportGenerator {
     throws IOException, InvalidFormatException {
     FileWriter csvFile = prepareCsvFile();
 
-    exportBeaconsInBatches(csvFile);
+    OffsetDateTime dateOneYearAgo = OffsetDateTime.now().minusYears(1);
+    exportBeaconsCreatedSinceDateInBatches(csvFile, dateOneYearAgo);
 
     csvFile.close();
 
@@ -121,9 +123,15 @@ public class SpreadsheetExportGenerator {
     return file;
   }
 
-  public void exportBeaconsInBatches(FileWriter file) throws IOException {
+  // give it the last year hard coded
+  // then feed that date range in from the http request
+  public void exportBeaconsCreatedSinceDateInBatches(
+    FileWriter file,
+    OffsetDateTime createdSinceDate
+  ) throws IOException {
     int totalNumberOfBeaconsToExport =
-      beaconService.findAll().size() + legacyBeaconService.findAll().size();
+      beaconService.getSinceDate(createdSinceDate).size() +
+      legacyBeaconService.getSinceDate(createdSinceDate).size();
     int numberAlreadyTaken = 0;
     int numberRemaining = totalNumberOfBeaconsToExport;
 
@@ -142,6 +150,9 @@ public class SpreadsheetExportGenerator {
           .collect(Collectors.toList());
 
         for (Registration registration : batchOfBeacons) {
+          // modern created date
+          //          OffsetDateTime createdDate = registration.getBeacon().getCreatedDate();
+
           AccountHolderId accountHolderId = registration
             .getBeacon()
             .getAccountHolderId();

@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.beacon.domain;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +21,8 @@ public interface BeaconRepository extends JpaRepository<Beacon, BeaconId> {
     AccountHolderId accountHolderId,
     BeaconStatus beaconStatus
   );
+
+  List<Beacon> findAllWithCreatedDateSince(OffsetDateTime createdDateSince);
 
   List<Beacon> findAll();
 }
