@@ -22,7 +22,7 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
  */
 @Getter
 @Setter
-public class SpreadsheetRow {
+public class ExportSpreadsheetRow implements SpreadsheetRow {
 
   public static final List<String> COLUMN_ATTRIBUTES = List.of(
     "id",
@@ -87,7 +87,7 @@ public class SpreadsheetRow {
   private String aircraftTailMarks;
   private String aircraft24BitHexAddresses;
 
-  public SpreadsheetRow(LegacyBeacon legacyBeacon) {
+  public ExportSpreadsheetRow(LegacyBeacon legacyBeacon) {
     this.id = Objects.requireNonNull(legacyBeacon.getId()).unwrap();
 
     // Beacon details
@@ -113,7 +113,7 @@ public class SpreadsheetRow {
     setEmergencyContact(legacyBeacon.getData().getEmergencyContact());
   }
 
-  public SpreadsheetRow(
+  public ExportSpreadsheetRow(
     Beacon beacon,
     @Nullable BeaconOwner beaconOwner,
     List<BeaconUse> beaconUses,

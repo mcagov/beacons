@@ -35,6 +35,9 @@ class BeaconToSpreadsheetRowItemProcessor
     this.emergencyContactRepository = emergencyContactRepository;
   }
 
+  // no reply from Linda yet
+  // start doing the date range thing if she doesn't reply cos that will be quicker
+  // then if still no reply, checkout another branch to do the Zack way
   @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
   @Override
   public SpreadsheetRow process(Beacon beacon) {
