@@ -125,21 +125,23 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
             />
           </OnlyVisibleToUsersWith>
           <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
-            <Typography
-              gutterBottom={true}
-              component={"p"}
-              variant={"subtitle2"}
-              id="feedback"
-            >
-              Backup
-            </Typography>
-            <AuthenticatedDownloadButton
-              label="Backup export"
-              url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
-              isFullWidth={true}
-              downloadStarted={handleDownloadStarted}
-              downloadComplete={handleDownloadComplete}
-            />
+            <div className="hidden-button">
+              <Typography
+                gutterBottom={true}
+                component={"p"}
+                variant={"subtitle2"}
+                id="feedback"
+              >
+                Backup
+              </Typography>
+              <AuthenticatedDownloadButton
+                label="Backup export"
+                url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
+                isFullWidth={true}
+                downloadStarted={handleDownloadStarted}
+                downloadComplete={handleDownloadComplete}
+              />
+            </div>
             <Typography
               gutterBottom={true}
               component={"p"}
