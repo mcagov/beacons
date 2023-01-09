@@ -146,21 +146,6 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               gutterBottom={true}
               component={"p"}
               variant={"subtitle2"}
-              id="feedback"
-            >
-              Backup
-            </Typography>
-            <AuthenticatedDownloadButton
-              label="Backup export"
-              url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
-              isFullWidth={true}
-              downloadStarted={handleDownloadStarted}
-              downloadComplete={handleDownloadComplete}
-            />
-            <Typography
-              gutterBottom={true}
-              component={"p"}
-              variant={"subtitle2"}
               id="export-search-btn"
             >
               Export Search
