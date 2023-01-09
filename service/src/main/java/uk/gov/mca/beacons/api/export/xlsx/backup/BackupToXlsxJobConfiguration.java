@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
-import uk.gov.mca.beacons.api.export.ExportSpreadsheetRow;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxItemWriter;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;

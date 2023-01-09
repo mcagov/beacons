@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
-import uk.gov.mca.beacons.api.export.ExportSpreadsheetRow;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
@@ -82,10 +81,10 @@ public class ExportToXlsxJobConfiguration {
   }
 
   @Bean
-  public ItemWriter<SpreadsheetRow> xlsxItemWriter(
+  public ItemWriter<ExportSpreadsheetRow> xlsxItemWriter(
     BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
-    return new XlsxItemWriter(beaconsDataWorkbookRepository);
+    return new ExportXlsxItemWriter(beaconsDataWorkbookRepository);
   }
 
   @Bean("exportToXlsxJobListener")

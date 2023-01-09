@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.export.xlsx;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.Objects;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
@@ -22,16 +23,18 @@ import uk.gov.mca.beacons.api.export.ExportFailedException;
 public class XlsxExportJobManager {
 
   private final JobLauncher jobLauncher;
-  private final Job exportToXlsxJob;
+
+  // how do I decide at runtime which job I want to run
+  @Setter
+  private Job xlsxJob;
 
   private enum logMessages {
     SPREADSHEET_EXPORT_FAILED,
   }
 
   @Autowired
-  public XlsxExportJobManager(JobLauncher jobLauncher, Job exportToXlsxJob) {
+  public XlsxExportJobManager(JobLauncher jobLauncher) {
     this.jobLauncher = jobLauncher;
-    this.exportToXlsxJob = exportToXlsxJob;
   }
 
   /**
@@ -47,7 +50,7 @@ public class XlsxExportJobManager {
     throws ExportFailedException {
     try {
       JobExecution jobExecution = jobLauncher.run(
-        exportToXlsxJob,
+        xlsxJob,
         getExportJobParameters(destination.toString())
       );
       BatchStatus jobExecutionStatus = jobExecution.getStatus();
@@ -59,7 +62,7 @@ public class XlsxExportJobManager {
     } catch (Exception e) {
       log.error(
         "[{}]: Tried to launch {} with jobLauncher {} but failed",
-        exportToXlsxJob.getName(),
+        xlsxJob.getName(),
         logMessages.SPREADSHEET_EXPORT_FAILED,
         jobLauncher.getClass()
       );
