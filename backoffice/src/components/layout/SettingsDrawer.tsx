@@ -106,6 +106,23 @@ export function SettingsDrawer() {
             />
           </OnlyVisibleToUsersWith>
           <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
+            <div className="hidden-button">
+              <Typography
+                gutterBottom={true}
+                component={"p"}
+                variant={"subtitle2"}
+                id="feedback"
+              >
+                Backup
+              </Typography>
+              <AuthenticatedDownloadButton
+                label="Backup export"
+                url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
+                isFullWidth={true}
+                downloadStarted={handleDownloadStarted}
+                downloadComplete={handleDownloadComplete}
+              />
+            </div>
             <Typography
               gutterBottom={true}
               component={"p"}
