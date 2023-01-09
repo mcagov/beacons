@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { applicationConfig } from "config";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
 import { customDateStringFormat } from "utils/dateTime";
@@ -148,6 +148,23 @@ export class ExportsGateway implements IExportsGateway {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       return exportResponse.data;
+    } catch (error) {
+      logToServer.error(error);
+      throw error;
+    }
+  }
+
+  public async getBackupExportFile(): Promise<AxiosResponse> {
+    const accessToken = await this._authGateway.getAccessToken();
+
+    try {
+      const backupResponse = await axios.get(
+        `${applicationConfig.apiUrl}/export/xlsx/backup`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+      return backupResponse;
     } catch (error) {
       logToServer.error(error);
       throw error;

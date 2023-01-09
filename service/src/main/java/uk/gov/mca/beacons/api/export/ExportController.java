@@ -1,10 +1,12 @@
 package uk.gov.mca.beacons.api.export;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -12,28 +14,62 @@ import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
+import uk.gov.mca.beacons.api.auth.application.GetUserService;
+import uk.gov.mca.beacons.api.auth.gateway.AuthGatewayImpl;
+import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.export.application.ExportService;
+import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
 import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
+import uk.gov.mca.beacons.api.export.xlsx.backup.SpreadsheetExportGenerator;
+import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
+import uk.gov.mca.beacons.api.note.application.NoteService;
+import uk.gov.mca.beacons.api.registration.application.RegistrationService;
+import uk.gov.mca.beacons.api.registration.domain.Registration;
 
 @RestController
 @RequestMapping("/spring-api/export")
+@Tag(name = "Export Controller")
 class ExportController {
 
   private final XlsxExporter xlsxExporter;
   private final PdfGenerateService pdfService;
   private final ExportService exportService;
+  private final RegistrationService registrationService;
+  private final BeaconService beaconService;
+  private final LegacyBeaconService legacyBeaconService;
+  private final NoteService noteService;
+  private final AccountHolderService accountHolderService;
+  private final ExportMapper exportMapper;
+  private final GetUserService getUserService;
 
   @Autowired
   public ExportController(
     XlsxExporter xlsxExporter,
     PdfGenerateService pdfService,
-    ExportService exportService
+    ExportService exportService,
+    RegistrationService registrationService,
+    BeaconService beaconService,
+    LegacyBeaconService legacyBeaconService,
+    NoteService noteService,
+    AccountHolderService accountHolderService,
+    ExportMapper exportMapper,
+    GetUserService getUserService
   ) {
     this.xlsxExporter = xlsxExporter;
     this.exportService = exportService;
     this.pdfService = pdfService;
+    this.registrationService = registrationService;
+    this.beaconService = beaconService;
+    this.legacyBeaconService = legacyBeaconService;
+    this.noteService = noteService;
+    this.accountHolderService = accountHolderService;
+    this.exportMapper = exportMapper;
+    this.getUserService = getUserService;
   }
 
   @GetMapping(value = "/xlsx")
@@ -57,6 +93,21 @@ class ExportController {
     xlsxExporter.export();
 
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping(value = "/xlsx/backup")
+  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+  public ResponseEntity<Resource> getXlsxBackupFile()
+    throws IOException, InvalidFormatException {
+    SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
+      registrationService,
+      beaconService,
+      legacyBeaconService,
+      noteService,
+      accountHolderService,
+      exportMapper
+    );
+    return serveFile(csvGenerator.generateXlsxBackupExport());
   }
 
   private ResponseEntity<Resource> serveFile(Resource resource) {

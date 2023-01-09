@@ -1,9 +1,10 @@
 export enum BeaconDeletionReasons {
-  SOLD = "Sold",
-  DESTROYED = "Destroyed",
+  DECOMMISSIONED = "Decommissioned",
+  GDPR_REQUEST = "GDPR request",
+  LEGACY_UNABLE_TO_CLAIM = "Legacy unable to claim",
+  QUERY_RESOLVED = "Query resolved",
   REPLACED = "Replaced",
-  INCORRECTLY_REGISTERED = "Incorrectly registered",
-  DUPLICATE = "Duplicate",
+  SOLD = "Sold",
   OTHER = "Other",
 }
 

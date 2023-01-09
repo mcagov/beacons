@@ -1,6 +1,7 @@
 import { Close, Settings as SettingsIcon } from "@mui/icons-material";
 import {
   Button,
+  CircularProgress,
   Divider,
   IconButton,
   ToggleButton,
@@ -9,20 +10,28 @@ import {
 } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import { Box } from "@mui/system";
+import { AuthenticatedDownloadButton } from "components/AuthenticatedDownloadButton";
+import { applicationConfig } from "config";
+import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import * as React from "react";
-import { applicationConfig } from "../../config";
 import {
   SearchMode,
   updateSearchMode,
   useUserSettings,
 } from "../../UserSettings";
 import { OnlyVisibleToUsersWith } from "../auth/OnlyVisibleToUsersWith";
-import { AuthenticatedDownloadButton } from "../AuthenticatedDownloadButton";
 import { FeedbackButton } from "../FeedbackButton";
 
-export function SettingsDrawer() {
+interface ISettingsDrawerProps {
+  exportsGateway: IExportsGateway;
+}
+
+export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
+  exportsGateway,
+}): JSX.Element => {
   const [settings, dispatch] = useUserSettings();
   const [open, setOpen] = React.useState(false);
+  const [showProgressCircle, setShowProgressCirlce] = React.useState(false);
 
   const toggleDrawer = () => {
     setOpen((open) => !open);
@@ -35,6 +44,14 @@ export function SettingsDrawer() {
     if (searchMode != null) {
       updateSearchMode(dispatch, searchMode);
     }
+  };
+
+  const handleDownloadStarted = () => {
+    setShowProgressCirlce(true);
+  };
+
+  const handleDownloadComplete = (complete: boolean) => {
+    setShowProgressCirlce(false);
   };
 
   return (
@@ -103,6 +120,8 @@ export function SettingsDrawer() {
               label="Export to Excel"
               url={`${applicationConfig.apiUrl}/export/xlsx`}
               isFullWidth={true}
+              downloadStarted={handleDownloadStarted}
+              downloadComplete={handleDownloadComplete}
             />
           </OnlyVisibleToUsersWith>
           <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
@@ -127,6 +146,21 @@ export function SettingsDrawer() {
               gutterBottom={true}
               component={"p"}
               variant={"subtitle2"}
+              id="feedback"
+            >
+              Backup
+            </Typography>
+            <AuthenticatedDownloadButton
+              label="Backup export"
+              url={`${applicationConfig.apiUrl}/export/xlsx/backup`}
+              isFullWidth={true}
+              downloadStarted={handleDownloadStarted}
+              downloadComplete={handleDownloadComplete}
+            />
+            <Typography
+              gutterBottom={true}
+              component={"p"}
+              variant={"subtitle2"}
               id="export-search-btn"
             >
               Export Search
@@ -139,7 +173,6 @@ export function SettingsDrawer() {
               Beacon Export Search
             </Button>
           </OnlyVisibleToUsersWith>
-
           <Typography
             gutterBottom={true}
             component={"p"}
@@ -150,7 +183,10 @@ export function SettingsDrawer() {
           </Typography>
           <FeedbackButton variant={"outlined"} color={"inherit"} fullWidth />
         </Box>
+        {showProgressCircle && (
+          <CircularProgress id="download-progress-circle" />
+        )}
       </Drawer>
     </React.Fragment>
   );
-}
+};
