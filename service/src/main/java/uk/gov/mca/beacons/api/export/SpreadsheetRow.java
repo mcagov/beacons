@@ -24,6 +24,8 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 @Setter
 public class SpreadsheetRow {
 
+  // The column attributes and column headers mut be in the same order so that the data is input into fields
+  // with the correct column header.
   public static final List<String> COLUMN_ATTRIBUTES = List.of(
     "id",
     "hexId",
@@ -49,21 +51,21 @@ public class SpreadsheetRow {
     "ID",
     "Hex ID",
     "Beacon Status",
-    "Last modified date",
-    "Cospas Sarsat Number",
+    "Last-modified date",
+    "Cospas-Sarsat Number",
     "Owner name",
     "Owner telephone number",
     "Owner alternative telephone number",
     "Owner email",
-    "Emergency contact 1",
-    "Emergency contact 2",
-    "Emergency contact 3",
+    "Emergency contact (1)",
+    "Emergency contact (2)",
+    "Emergency contact (3)",
     "Use activities",
     "MMSI numbers",
     "Vessel names",
     "Vessel call signs",
     "Aircraft tail mark",
-    "Aircraft 24 bit hex address"
+    "Aircraft 24-bit hex address"
   );
 
   @NotNull
@@ -136,7 +138,7 @@ public class SpreadsheetRow {
     setEmergencyContacts(emergencyContacts);
   }
 
-  protected void setOwnerDetails(BeaconOwner beaconOwner) {
+  private void setOwnerDetails(BeaconOwner beaconOwner) {
     if (beaconOwner != null) {
       this.ownerName = beaconOwner.getFullName();
       this.ownerTelephoneNumber = beaconOwner.getTelephoneNumber();
@@ -145,7 +147,7 @@ public class SpreadsheetRow {
     }
   }
 
-  protected void setOwnerDetails(LegacyOwner legacyOwner) {
+  private void setOwnerDetails(LegacyOwner legacyOwner) {
     this.ownerName = legacyOwner.getOwnerName();
     this.ownerTelephoneNumber =
       concatenateFields(legacyOwner.getPhone1(), legacyOwner.getMobile1());
@@ -154,7 +156,7 @@ public class SpreadsheetRow {
     this.ownerEmail = legacyOwner.getEmail();
   }
 
-  protected void setUses(List<BeaconUse> beaconUses) {
+  private void setUses(List<BeaconUse> beaconUses) {
     // Wasteful implementation, could iterate over beacon uses once and get all the fields, but this is simpler
     // for the time being.
     this.mmsiNumbers =
@@ -199,7 +201,7 @@ public class SpreadsheetRow {
         .collect(Collectors.joining(" / "));
   }
 
-  protected void setLegacyUses(List<LegacyUse> legacyUses) {
+  private void setLegacyUses(List<LegacyUse> legacyUses) {
     this.mmsiNumbers =
       legacyUses
         .stream()
@@ -242,9 +244,7 @@ public class SpreadsheetRow {
         .collect(Collectors.joining(" / "));
   }
 
-  protected void setEmergencyContacts(
-    List<EmergencyContact> emergencyContacts
-  ) {
+  private void setEmergencyContacts(List<EmergencyContact> emergencyContacts) {
     int len = emergencyContacts.size();
 
     if (len > 0) {
@@ -278,7 +278,7 @@ public class SpreadsheetRow {
     }
   }
 
-  protected void setEmergencyContact(
+  private void setEmergencyContact(
     LegacyEmergencyContact legacyEmergencyContact
   ) {
     if (legacyEmergencyContact != null) {
@@ -286,7 +286,7 @@ public class SpreadsheetRow {
     }
   }
 
-  protected String concatenateFields(String... fields) {
+  private String concatenateFields(String... fields) {
     return Arrays
       .stream(fields)
       .filter(Objects::nonNull)

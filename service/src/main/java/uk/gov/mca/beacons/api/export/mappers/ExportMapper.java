@@ -4,7 +4,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -118,7 +117,6 @@ public class ExportMapper {
   ) {
     Beacon beacon = registration.getBeacon();
     BeaconUse mainUse = registration.getMainUse();
-    BeaconOwner owner = registration.getBeaconOwner();
 
     return BeaconExportDTO
       .builder()
@@ -163,77 +161,7 @@ public class ExportMapper {
           .collect(Collectors.toList())
       )
       .uses(toUsesDTO(registration.getBeaconUses()))
-      .owners(
-        Arrays.asList(
-          owner != null ? toOwnerDTO(registration.getBeaconOwner()) : null
-        )
-      )
-      .accountHolder(toAccountHolderDTO(accountHolder))
-      .emergencyContacts(
-        toEmergencyContactsDTO(registration.getEmergencyContacts())
-      )
-      .build();
-  }
-
-  public BeaconExportDTO toBeaconBackupExportDTO(
-    Registration registration,
-    AccountHolder accountHolder,
-    List<Note> nonSystemNotes
-  ) {
-    Beacon beacon = registration.getBeacon();
-    BeaconUse mainUse = registration.getMainUse();
-    BeaconOwner owner = registration.getBeaconOwner();
-    String id = beacon.getId().unwrap().toString();
-
-    return BeaconExportDTO
-      .builder()
-      .id(id)
-      .type("New")
-      .name(
-        mainUse != null
-          ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
-          : ""
-      )
-      .proofOfRegistrationDate(beacon.getLastModifiedDate())
-      .lastModifiedDate(beacon.getLastModifiedDate())
-      .referenceNumber(beacon.getReferenceNumber())
-      .recordCreatedDate(beacon.getCreatedDate().toString())
-      .beaconStatus(beacon.getBeaconStatus().toString())
-      .hexId(beacon.getHexId())
-      .manufacturer(beacon.getManufacturer())
-      .manufacturerSerialNumber(beacon.getManufacturerSerialNumber())
-      .beaconModel(beacon.getModel())
-      .beaconlastServiced(
-        beacon.getLastServicedDate() != null
-          ? beacon.getLastServicedDate().toString()
-          : null
-      )
-      .beaconCoding(beacon.getCoding())
-      .batteryExpiryDate(
-        beacon.getBatteryExpiryDate() != null
-          ? beacon.getBatteryExpiryDate().toString()
-          : null
-      )
-      .codingProtocol(beacon.getProtocol())
-      .cstaNumber(beacon.getCsta())
-      .chkCode(beacon.getChkCode())
-      .notes(
-        nonSystemNotes
-          .stream()
-          .map(n ->
-            new BeaconExportNoteDTO(
-              n.getCreatedDate().toLocalDateTime(),
-              n.getText()
-            )
-          )
-          .collect(Collectors.toList())
-      )
-      .uses(toUsesDTO(registration.getBeaconUses()))
-      .owners(
-        Arrays.asList(
-          owner != null ? toOwnerDTO(registration.getBeaconOwner()) : null
-        )
-      )
+      .owners(Arrays.asList(toOwnerDTO(registration.getBeaconOwner())))
       .accountHolder(toAccountHolderDTO(accountHolder))
       .emergencyContacts(
         toEmergencyContactsDTO(registration.getEmergencyContacts())
@@ -365,48 +293,6 @@ public class ExportMapper {
       .batteryExpiryDate(details.getBatteryExpiryDate())
       .codingProtocol(details.getProtocol())
       .cstaNumber(details.getCsta())
-      .chkCode(null)
-      .beaconNote(details.getNote())
-      .uses(toLegacyUsesDTO(beacon.getData().getUses()))
-      .owners(toLegacyOwnersDTO(beacon.getData()))
-      .emergencyContacts(
-        toLegacyEmergencyContacts(beacon.getData().getEmergencyContact())
-      )
-      .build();
-  }
-
-  public BeaconExportDTO toLegacyBeaconBackupExportDTO(LegacyBeacon beacon) {
-    LegacyBeaconDetails details = beacon.getData().getBeacon();
-    LegacyUse mainUse = beacon.getData().getMainUse();
-    String id = beacon.getId().unwrap().toString();
-
-    return BeaconExportDTO
-      .builder()
-      .id(id)
-      .type("Legacy")
-      .name(
-        mainUse != null
-          ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
-          : ""
-      )
-      .proofOfRegistrationDate(beacon.getLastModifiedDate())
-      .lastModifiedDate(beacon.getLastModifiedDate())
-      .departmentReference(details.getDepartRefId())
-      .recordCreatedDate(details.getFirstRegistrationDate())
-      .beaconStatus(beacon.getBeaconStatus())
-      .hexId(beacon.getHexId())
-      .manufacturer(details.getManufacturer())
-      .serialNumber(
-        details.getSerialNumber() != null ? details.getSerialNumber() : 0
-      )
-      .manufacturerSerialNumber(details.getManufacturerSerialNumber())
-      .beaconModel(details.getModel())
-      .beaconlastServiced(details.getLastServiceDate())
-      .beaconCoding(details.getCoding())
-      .batteryExpiryDate(details.getBatteryExpiryDate())
-      .codingProtocol(details.getProtocol())
-      .cstaNumber(details.getCsta())
-      .cospasSarsatNumber(details.getCospasSarsatNumber().toString())
       .chkCode(null)
       .beaconNote(details.getNote())
       .uses(toLegacyUsesDTO(beacon.getData().getUses()))

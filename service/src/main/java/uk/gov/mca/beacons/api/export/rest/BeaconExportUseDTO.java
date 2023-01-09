@@ -8,8 +8,4 @@ public abstract class BeaconExportUseDTO {
 
   String environment;
   String notes;
-
-  public String getEnvironment() {
-    return environment;
-  }
 }
