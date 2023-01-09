@@ -50,4 +50,8 @@ public class XlsxExporter {
       fs.getNextExportDestination(ExportFileNamer.FileType.EXCEL_SPREADSHEET)
     );
   }
+
+  public void setExportDirectory(Path exportDirectory) {
+    this.fs.setExportDirectory(exportDirectory);
+  }
 }

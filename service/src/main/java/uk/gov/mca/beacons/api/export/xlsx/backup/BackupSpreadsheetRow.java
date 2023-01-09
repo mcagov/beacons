@@ -10,10 +10,12 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
+import uk.gov.mca.beacons.api.export.xlsx.SpreadsheetRow;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyEmergencyContact;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyOwner;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
+import uk.gov.mca.beacons.api.note.domain.Note;
 
 /**
  * Represents the contents of a backup export file
@@ -22,7 +24,7 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
  */
 @Getter
 @Setter
-public class BackupSpreadsheetRow {
+public class BackupSpreadsheetRow implements SpreadsheetRow {
 
   public static final List<String> COLUMN_ATTRIBUTES = List.of(
     "id",
@@ -95,6 +97,7 @@ public class BackupSpreadsheetRow {
   private String vesselCallsigns;
   private String aircraftTailMarks;
   private String aircraft24BitHexAddresses;
+  private String notes;
 
   public BackupSpreadsheetRow(LegacyBeacon legacyBeacon) {
     this.id = Objects.requireNonNull(legacyBeacon.getId()).unwrap();
@@ -112,36 +115,32 @@ public class BackupSpreadsheetRow {
       this.cospasSarsatNumber = cospasSarsatNumber.toString();
     }
 
-    // Beacon owner
     setOwnerDetails(legacyBeacon.getData().getOwner());
 
-    // Beacon uses
     setLegacyUses(legacyBeacon.getData().getUses());
 
-    // Emergency Contacts
     setEmergencyContact(legacyBeacon.getData().getEmergencyContact());
+
+    setNotes(legacyBeacon.getData().getBeacon().getNote());
   }
 
   public BackupSpreadsheetRow(
     Beacon beacon,
     @Nullable BeaconOwner beaconOwner,
     List<BeaconUse> beaconUses,
-    List<EmergencyContact> emergencyContacts
+    List<EmergencyContact> emergencyContacts,
+    List<Note> notes
   ) {
     this.id = Objects.requireNonNull(beacon.getId()).unwrap();
 
-    // Beacon details;
     this.hexId = beacon.getHexId();
     this.lastModifiedDate = beacon.getLastModifiedDate().toString();
     this.beaconStatus = beacon.getBeaconStatus().toString();
 
-    // Beacon owner
     setOwnerDetails(beaconOwner);
 
-    // Beacon uses
     setUses(beaconUses);
 
-    // Emergency contacts
     setEmergencyContacts(emergencyContacts);
   }
 

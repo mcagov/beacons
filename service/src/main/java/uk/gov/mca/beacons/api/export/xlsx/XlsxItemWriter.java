@@ -14,7 +14,9 @@ public class XlsxItemWriter implements ItemWriter<SpreadsheetRow> {
 
   BeaconsDataWorkbookRepository beaconsDataWorkbookRepository;
 
-  XlsxItemWriter(BeaconsDataWorkbookRepository beaconsDataWorkbookRepository) {
+  public XlsxItemWriter(
+    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
+  ) {
     this.beaconsDataWorkbookRepository = beaconsDataWorkbookRepository;
   }
 

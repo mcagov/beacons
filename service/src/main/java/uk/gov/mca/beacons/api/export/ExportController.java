@@ -2,12 +2,14 @@ package uk.gov.mca.beacons.api.export;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.*;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -99,6 +101,9 @@ class ExportController {
   @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
   public ResponseEntity<Resource> getXlsxBackupFile()
     throws IOException, InvalidFormatException {
+    xlsxExporter.setExportDirectory(Path.of("/var/backup"));
+    xlsxExporter.export();
+
     SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
       registrationService,
       beaconService,
