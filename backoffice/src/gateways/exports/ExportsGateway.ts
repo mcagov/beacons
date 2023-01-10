@@ -154,11 +154,28 @@ export class ExportsGateway implements IExportsGateway {
     }
   }
 
-  public async getBackupExportFile(): Promise<AxiosResponse> {
+  public async downloadExistingBackupFile(): Promise<AxiosResponse> {
     const accessToken = await this._authGateway.getAccessToken();
 
     try {
       const backupResponse = await axios.get(
+        `${applicationConfig.apiUrl}/export/xlsx/backup`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+      return backupResponse;
+    } catch (error) {
+      logToServer.error(error);
+      throw error;
+    }
+  }
+
+  public async createNewBackupFile(): Promise<AxiosResponse> {
+    const accessToken = await this._authGateway.getAccessToken();
+
+    try {
+      const backupResponse = await axios.post(
         `${applicationConfig.apiUrl}/export/xlsx/backup`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },

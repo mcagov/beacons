@@ -24,7 +24,6 @@ public class XlsxExportJobManager {
 
   private final JobLauncher jobLauncher;
 
-  // how do I decide at runtime which job I want to run
   @Setter
   private Job xlsxJob;
 

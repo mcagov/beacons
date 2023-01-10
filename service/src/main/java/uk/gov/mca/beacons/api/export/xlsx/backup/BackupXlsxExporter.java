@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Clock;
 import java.util.Optional;
+import javax.swing.filechooser.FileSystemView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,12 @@ public class BackupXlsxExporter {
   private final BackupToXlsxJobManager backupToXlsxJobManager;
   private final FileSystemRepository fileSystemRepository;
 
+  private final String fileDestination = FileSystemView
+    .getFileSystemView()
+    .getHomeDirectory()
+    .getAbsoluteFile()
+    .getAbsolutePath();
+
   @Autowired
   public BackupXlsxExporter(
     BackupToXlsxJobManager backupToXlsxJobManager,
@@ -30,7 +37,7 @@ public class BackupXlsxExporter {
     this.fileSystemRepository = fileSystemRepository;
     // todo: use config from yml file
     //        this.fileSystemRepository.setExportDirectory(@Value("${backup.directory}");
-    this.fileSystemRepository.setExportDirectory(Path.of("/var/backup"));
+    this.fileSystemRepository.setExportDirectory(Path.of(fileDestination));
   }
 
   public Optional<Path> getMostRecentBackup() throws IOException {
@@ -63,8 +70,4 @@ public class BackupXlsxExporter {
       )
     );
   }
-  //
-  //    public void setExportDirectory(Path exportDirectory) {
-  //        this.fileSystemRepository.setExportDirectory(exportDirectory);
-  //    }
 }

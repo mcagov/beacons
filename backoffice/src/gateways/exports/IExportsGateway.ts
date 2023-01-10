@@ -19,5 +19,6 @@ export interface IExportsGateway {
   searchExportData(
     searchForm: ExportSearchFormProps
   ): Promise<IBeaconExportSearchResult>;
-  getBackupExportFile(): Promise<AxiosResponse>;
+  downloadExistingBackupFile(): Promise<AxiosResponse>;
+  downloadExistingBackupFile(): Promise<AxiosResponse>;
 }
