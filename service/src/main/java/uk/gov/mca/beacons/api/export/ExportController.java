@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -18,20 +17,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
 import uk.gov.mca.beacons.api.auth.application.GetUserService;
-import uk.gov.mca.beacons.api.auth.gateway.AuthGatewayImpl;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.export.application.ExportService;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
 import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
+import uk.gov.mca.beacons.api.export.xlsx.backup.BackupXlsxExporter;
 import uk.gov.mca.beacons.api.export.xlsx.backup.SpreadsheetExportGenerator;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
-import uk.gov.mca.beacons.api.registration.domain.Registration;
 
 @RestController
 @RequestMapping("/spring-api/export")
@@ -39,6 +35,7 @@ import uk.gov.mca.beacons.api.registration.domain.Registration;
 class ExportController {
 
   private final XlsxExporter xlsxExporter;
+  private final BackupXlsxExporter backupXlsxExporter;
   private final PdfGenerateService pdfService;
   private final ExportService exportService;
   private final RegistrationService registrationService;
@@ -52,6 +49,7 @@ class ExportController {
   @Autowired
   public ExportController(
     XlsxExporter xlsxExporter,
+    BackupXlsxExporter backupXlsxExporter,
     PdfGenerateService pdfService,
     ExportService exportService,
     RegistrationService registrationService,
@@ -63,6 +61,7 @@ class ExportController {
     GetUserService getUserService
   ) {
     this.xlsxExporter = xlsxExporter;
+    this.backupXlsxExporter = backupXlsxExporter;
     this.exportService = exportService;
     this.pdfService = pdfService;
     this.registrationService = registrationService;
@@ -99,20 +98,36 @@ class ExportController {
 
   @GetMapping(value = "/xlsx/backup")
   @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
-  public ResponseEntity<Resource> getXlsxBackupFile()
-    throws IOException, InvalidFormatException {
-    xlsxExporter.setExportDirectory(Path.of("/var/backup"));
-    xlsxExporter.export();
-
-    SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
-      registrationService,
-      beaconService,
-      legacyBeaconService,
-      noteService,
-      accountHolderService,
-      exportMapper
+  public ResponseEntity<Resource> downloadExistingXlsxBackup()
+    throws IOException {
+    Resource latestBackup = new FileSystemResource(
+      backupXlsxExporter
+        .getMostRecentBackup()
+        .orElseThrow(() ->
+          new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE)
+        )
     );
-    return serveFile(csvGenerator.generateXlsxBackupExport());
+
+    return serveFile(latestBackup);
+  }
+
+  @PostMapping(value = "/xlsx/backup")
+  @PreAuthorize("hasAuthority('APPROLE_DATA_EXPORTER')")
+  public ResponseEntity<Resource> createNewXlsxBackup()
+    throws IOException, InvalidFormatException {
+    backupXlsxExporter.backup();
+
+    return ResponseEntity.ok().build();
+    //    SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
+    //      registrationService,
+    //      beaconService,
+    //      legacyBeaconService,
+    //      noteService,
+    //      accountHolderService,
+    //      exportMapper
+    //    );
+    //    return serveFile(csvGenerator.generateXlsxBackupExport());
+
   }
 
   private ResponseEntity<Resource> serveFile(Resource resource) {

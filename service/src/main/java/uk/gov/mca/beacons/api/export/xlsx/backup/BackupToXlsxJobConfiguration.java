@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Configuration;
 import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
-import uk.gov.mca.beacons.api.export.xlsx.XlsxItemWriter;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
@@ -54,48 +53,46 @@ public class BackupToXlsxJobConfiguration {
 
   @Bean
   public Step backupBeaconToXlsxStep(
-    ItemReader<Beacon> exportXlsxBeaconItemReader,
-    ItemProcessor<Beacon, ExportSpreadsheetRow> exportXlsxBeaconToSpreadsheetRowItemProcessor,
-    ItemWriter<ExportSpreadsheetRow> xlsxItemWriter
+    ItemReader<Beacon> backupXlsxBeaconItemReader,
+    ItemProcessor<Beacon, BackupSpreadsheetRow> backupBeaconToSpreadsheetRowItemProcessor,
+    ItemWriter<BackupSpreadsheetRow> xlsxItemWriter
   ) {
     return stepBuilderFactory
       .get("backupBeaconToXlsxStep")
-      .<Beacon, ExportSpreadsheetRow>chunk(CHUNK_SIZE)
-      .reader(exportXlsxBeaconItemReader)
-      .processor(exportXlsxBeaconToSpreadsheetRowItemProcessor)
+      .<Beacon, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
+      .reader(backupXlsxBeaconItemReader)
+      .processor(backupBeaconToSpreadsheetRowItemProcessor)
       .writer(xlsxItemWriter)
       .build();
   }
 
   @Bean
   public Step backupLegacyBeaconToXlsxStep(
-    ItemReader<LegacyBeacon> exportXlsxLegacyBeaconItemReader,
-    ItemProcessor<LegacyBeacon, ExportSpreadsheetRow> exportXlsxLegacyBeaconToSpreadsheetRowItemProcessor,
-    ItemWriter<ExportSpreadsheetRow> xlsxItemWriter
+    ItemReader<LegacyBeacon> backupLegacyBeaconItemReader,
+    ItemProcessor<LegacyBeacon, BackupSpreadsheetRow> backupLegacyBeaconToSpreadsheetRowItemProcessor,
+    ItemWriter<BackupSpreadsheetRow> xlsxItemWriter
   ) {
     return stepBuilderFactory
       .get("backupLegacyBeaconToXlsxStep")
-      .<LegacyBeacon, ExportSpreadsheetRow>chunk(CHUNK_SIZE)
-      .reader(exportXlsxLegacyBeaconItemReader)
-      .processor(exportXlsxLegacyBeaconToSpreadsheetRowItemProcessor)
+      .<LegacyBeacon, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
+      .reader(backupLegacyBeaconItemReader)
+      .processor(backupLegacyBeaconToSpreadsheetRowItemProcessor)
       .writer(xlsxItemWriter)
       .build();
   }
 
-  // retrieve old spreadsheetrow
-  // come back here and make it implement the interface
   @Bean
   public ItemWriter<BackupSpreadsheetRow> xlsxItemWriter(
     BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
-    return new XlsxItemWriter(beaconsDataWorkbookRepository);
+    return new BackupXlsxItemWriter(beaconsDataWorkbookRepository);
   }
 
   @Bean("backupToXlsxJobListener")
-  ExportToXlsxJobListener jobListener(
+  BackupToXlsxJobListener jobListener(
     BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
-    return new ExportToXlsxJobListener(beaconsDataWorkbookRepository);
+    return new BackupToXlsxJobListener(beaconsDataWorkbookRepository);
   }
 
   @Bean(value = "backupToXlsxJob")

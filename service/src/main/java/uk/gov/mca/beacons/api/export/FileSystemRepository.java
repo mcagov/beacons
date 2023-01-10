@@ -22,6 +22,7 @@ public class FileSystemRepository {
   @Setter
   private Path exportDirectory;
 
+  // todo: how do I pass in a different exportDir if the class is autowired
   @Autowired
   public FileSystemRepository(
     ExportFileNamer fileNamer,
