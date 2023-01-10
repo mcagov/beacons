@@ -25,7 +25,6 @@ public class BackupToXlsxJobManager {
   private final JobLauncher jobLauncher;
 
   // todo: how do I reuse one XlsxJobManager and decide at runtime which job I want to run
-  @Setter
   private Job backupToXlsxJob;
 
   private enum logMessages {
@@ -33,8 +32,9 @@ public class BackupToXlsxJobManager {
   }
 
   @Autowired
-  public BackupToXlsxJobManager(JobLauncher jobLauncher) {
+  public BackupToXlsxJobManager(JobLauncher jobLauncher, Job backupToXlsxJob) {
     this.jobLauncher = jobLauncher;
+    this.backupToXlsxJob = backupToXlsxJob;
   }
 
   /**

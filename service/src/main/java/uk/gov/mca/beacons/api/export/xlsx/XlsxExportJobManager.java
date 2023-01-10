@@ -24,15 +24,14 @@ public class XlsxExportJobManager {
 
   private final JobLauncher jobLauncher;
 
-  @Setter
-  private Job xlsxJob;
+  private Job exportToXlsxJob;
 
   private enum logMessages {
     SPREADSHEET_EXPORT_FAILED,
   }
 
   @Autowired
-  public XlsxExportJobManager(JobLauncher jobLauncher) {
+  public XlsxExportJobManager(JobLauncher jobLauncher, Job exportToXlsxJob) {
     this.jobLauncher = jobLauncher;
   }
 
@@ -49,7 +48,7 @@ public class XlsxExportJobManager {
     throws ExportFailedException {
     try {
       JobExecution jobExecution = jobLauncher.run(
-        xlsxJob,
+        exportToXlsxJob,
         getExportJobParameters(destination.toString())
       );
       BatchStatus jobExecutionStatus = jobExecution.getStatus();
@@ -61,7 +60,7 @@ public class XlsxExportJobManager {
     } catch (Exception e) {
       log.error(
         "[{}]: Tried to launch {} with jobLauncher {} but failed",
-        xlsxJob.getName(),
+        exportToXlsxJob.getName(),
         logMessages.SPREADSHEET_EXPORT_FAILED,
         jobLauncher.getClass()
       );
