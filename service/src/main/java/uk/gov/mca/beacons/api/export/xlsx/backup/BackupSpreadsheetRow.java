@@ -162,6 +162,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     this.ownerEmail = legacyOwner.getEmail();
   }
 
+  // todo: set these and the notes as JSON with the JsonSerialiser
   protected void setUses(List<BeaconUse> beaconUses) {
     // Wasteful implementation, could iterate over beacon uses once and get all the fields, but this is simpler
     // for the time being.
