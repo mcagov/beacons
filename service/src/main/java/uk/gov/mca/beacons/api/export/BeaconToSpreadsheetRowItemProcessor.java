@@ -14,6 +14,7 @@ import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseReadOnlyRepository;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContactReadOnlyRepository;
+import uk.gov.mca.beacons.api.export.xlsx.ExportSpreadsheetRow;
 
 @Component
 class BeaconToSpreadsheetRowItemProcessor

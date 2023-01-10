@@ -47,7 +47,7 @@ public class BackupToXlsxJobConfiguration {
   }
 
   @Bean("backupXlsxLegacyBeaconItemReader")
-  public JpaPagingItemReader<LegacyBeacon> exportXlsxLegacyBeaconItemReader() {
+  public JpaPagingItemReader<LegacyBeacon> backupXlsxLegacyBeaconItemReader() {
     return LegacyBeaconItemReaderFactory.getItemReader(entityManagerFactory);
   }
 
@@ -82,14 +82,14 @@ public class BackupToXlsxJobConfiguration {
   }
 
   @Bean
-  public ItemWriter<BackupSpreadsheetRow> xlsxItemWriter(
+  public ItemWriter<BackupSpreadsheetRow> backupToXlsxItemWriter(
     BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
     return new BackupXlsxItemWriter(beaconsDataWorkbookRepository);
   }
 
   @Bean("backupToXlsxJobListener")
-  BackupToXlsxJobListener jobListener(
+  BackupToXlsxJobListener backupToXlsxJobListener(
     BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
     return new BackupToXlsxJobListener(beaconsDataWorkbookRepository);

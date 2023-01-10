@@ -2,11 +2,9 @@ package uk.gov.mca.beacons.api.export.xlsx;
 
 import java.lang.ref.WeakReference;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Component;
-import uk.gov.mca.beacons.api.export.SpreadsheetRow;
 
 /**
  * Provide a reference to a Workbook whose lifecycle can be managed
