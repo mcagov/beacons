@@ -22,11 +22,12 @@ public class BackupXlsxExporter {
   private final BackupToXlsxJobManager backupToXlsxJobManager;
   private final FileSystemRepository fileSystemRepository;
 
-  private final String fileDestination = FileSystemView
-    .getFileSystemView()
-    .getHomeDirectory()
-    .getAbsoluteFile()
-    .getAbsolutePath();
+  //  private final String fileDestination =
+  //          FileSystemView
+  //    .getFileSystemView()
+  //    .getHomeDirectory()
+  //    .getAbsoluteFile()
+  //    .getAbsolutePath();
 
   @Autowired
   public BackupXlsxExporter(
@@ -35,15 +36,18 @@ public class BackupXlsxExporter {
   ) {
     this.backupToXlsxJobManager = backupToXlsxJobManager;
     this.fileSystemRepository = fileSystemRepository;
-    // todo: use config from yml file
-    //        this.fileSystemRepository.setExportDirectory(@Value("${backup.directory}");
-    this.fileSystemRepository.setExportDirectory(Path.of(fileDestination));
+    //     todo: use config from yml file
+    this.fileSystemRepository.setExportDirectory(
+        Path.of("/tmp/beacons/backup")
+      );
+    //    this.fileSystemRepository.setExportDirectory(Path.of(fileDestination));
   }
 
   public Optional<Path> getMostRecentBackup() throws IOException {
-    return fileSystemRepository.findMostRecentExport(
+    var file = fileSystemRepository.findMostRecentExport(
       ExportFileNamer.FileType.EXCEL_SPREADSHEET
     );
+    return file;
   }
 
   /**
