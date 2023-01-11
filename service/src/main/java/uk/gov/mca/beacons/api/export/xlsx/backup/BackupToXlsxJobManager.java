@@ -25,20 +25,23 @@ public class BackupToXlsxJobManager {
   private final JobLauncher jobLauncher;
 
   // todo: how do I reuse one XlsxJobManager and decide at runtime which job I want to run
-  private Job backupToXlsxJob;
+  private final Job backupToSpreadsheetJob;
 
   private enum logMessages {
     SPREADSHEET_EXPORT_FAILED,
   }
 
   @Autowired
-  public BackupToXlsxJobManager(JobLauncher jobLauncher, Job backupToXlsxJob) {
+  public BackupToXlsxJobManager(
+    JobLauncher jobLauncher,
+    Job backupToSpreadsheetJob
+  ) {
     this.jobLauncher = jobLauncher;
-    this.backupToXlsxJob = backupToXlsxJob;
+    this.backupToSpreadsheetJob = backupToSpreadsheetJob;
   }
 
   /**
-   * Synchronously start the exportToCsvJob using the default JobLauncher.
+   * Synchronously start the backupToSpreadsheetJob using the default JobLauncher.
    *
    * @throws ExportFailedException if the export fails
    */
@@ -50,7 +53,7 @@ public class BackupToXlsxJobManager {
     throws ExportFailedException {
     try {
       JobExecution jobExecution = jobLauncher.run(
-        backupToXlsxJob,
+        backupToSpreadsheetJob,
         getBackupJobParameters(destination.toString())
       );
       BatchStatus jobExecutionStatus = jobExecution.getStatus();
@@ -62,7 +65,7 @@ public class BackupToXlsxJobManager {
     } catch (Exception e) {
       log.error(
         "[{}]: Tried to launch {} with jobLauncher {} but failed",
-        backupToXlsxJob.getName(),
+        backupToSpreadsheetJob.getName(),
         logMessages.SPREADSHEET_EXPORT_FAILED,
         jobLauncher.getClass()
       );
