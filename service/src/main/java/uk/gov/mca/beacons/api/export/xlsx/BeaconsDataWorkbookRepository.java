@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.export.xlsx.backup.BackupSpreadsheetRow;
 
 /**
  * Provide a reference to a Workbook whose lifecycle can be managed
@@ -23,14 +24,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class BeaconsDataWorkbookRepository {
 
+  public enum OperationType {
+    EXPORT,
+    BACKUP,
+  }
+
   private static final int WORKBOOK_WINDOW_SIZE = 256;
   private SXSSFWorkbook workbook;
 
   public BeaconsDataWorkbookRepository() {}
 
-  public WeakReference<SXSSFWorkbook> getWorkbook() {
+  public WeakReference<SXSSFWorkbook> getWorkbook(OperationType operationType) {
     if (workbook == null) {
-      initialiseWorkbook();
+      initialiseWorkbook(operationType);
     }
 
     return new WeakReference<>(workbook);
@@ -42,16 +48,33 @@ public class BeaconsDataWorkbookRepository {
     return success;
   }
 
-  private void initialiseWorkbook() {
+  // todo: refactor to make it DRY
+  private void initialiseWorkbook(OperationType operationType) {
     workbook = new SXSSFWorkbook(WORKBOOK_WINDOW_SIZE);
-    SXSSFSheet sheet = workbook.createSheet("Beacons Data");
-    sheet.trackAllColumnsForAutoSizing();
-    Row row = sheet.createRow(0);
 
-    int cellNum = 0;
-    for (String header : SpreadsheetRow.COLUMN_HEADINGS) {
-      row.createCell(cellNum).setCellValue(header);
-      cellNum++;
+    switch (operationType) {
+      case EXPORT:
+        SXSSFSheet exportSheet = workbook.createSheet("Beacons Export Data");
+        exportSheet.trackAllColumnsForAutoSizing();
+        Row exportRow = exportSheet.createRow(0);
+
+        int exportCellNum = 0;
+        for (String header : ExportSpreadsheetRow.COLUMN_HEADINGS) {
+          exportRow.createCell(exportCellNum).setCellValue(header);
+          exportCellNum++;
+        }
+        break;
+      case BACKUP:
+        SXSSFSheet backupSheet = workbook.createSheet("Beacons Backup Data");
+        backupSheet.trackAllColumnsForAutoSizing();
+        Row backupRow = backupSheet.createRow(0);
+
+        int backupCellNum = 0;
+        for (String header : BackupSpreadsheetRow.COLUMN_HEADINGS) {
+          backupRow.createCell(backupCellNum).setCellValue(header);
+          backupCellNum++;
+        }
+        break;
     }
   }
 }

@@ -36,10 +36,12 @@ public class ExportToXlsxJobListener implements JobExecutionListener {
       try {
         OutputStream fileOutputStream = Files.newOutputStream(destination);
         SXSSFWorkbook workbook = Objects.requireNonNull(
-          beaconsDataWorkbookRepository.getWorkbook().get()
+          beaconsDataWorkbookRepository
+            .getWorkbook(BeaconsDataWorkbookRepository.OperationType.EXPORT)
+            .get()
         );
 
-        SXSSFSheet sheet = workbook.getSheet("Beacons Data");
+        SXSSFSheet sheet = workbook.getSheet("Beacons Export Data");
 
         for (Integer i : sheet.getTrackedColumnsForAutoSizing()) {
           sheet.autoSizeColumn(i);

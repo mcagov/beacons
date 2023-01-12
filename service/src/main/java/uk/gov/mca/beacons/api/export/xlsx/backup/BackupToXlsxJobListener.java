@@ -37,10 +37,12 @@ public class BackupToXlsxJobListener implements JobExecutionListener {
       try {
         OutputStream fileOutputStream = Files.newOutputStream(destination);
         SXSSFWorkbook workbook = Objects.requireNonNull(
-          beaconsDataWorkbookRepository.getWorkbook().get()
+          beaconsDataWorkbookRepository
+            .getWorkbook(BeaconsDataWorkbookRepository.OperationType.BACKUP)
+            .get()
         );
 
-        SXSSFSheet sheet = workbook.getSheet("Beacons Data");
+        SXSSFSheet sheet = workbook.getSheet("Beacons Backup Data");
 
         for (Integer i : sheet.getTrackedColumnsForAutoSizing()) {
           sheet.autoSizeColumn(i);

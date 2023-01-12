@@ -27,8 +27,12 @@ public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
   public void write(List<? extends BackupSpreadsheetRow> list)
     throws NullPointerException {
     Sheet sheet = Objects
-      .requireNonNull(beaconsDataWorkbookRepository.getWorkbook().get())
-      .getSheet("Beacons Data");
+      .requireNonNull(
+        beaconsDataWorkbookRepository
+          .getWorkbook(BeaconsDataWorkbookRepository.OperationType.BACKUP)
+          .get()
+      )
+      .getSheet("Beacons Backup Data");
 
     // returns -1 if there are no rows;
     int currentRowNum = sheet.getLastRowNum() + 1;
@@ -51,8 +55,8 @@ public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
     }
   }
 
-  private List<String> prepareValues(SpreadsheetRow row) {
-    return SpreadsheetRow.COLUMN_ATTRIBUTES
+  private List<String> prepareValues(BackupSpreadsheetRow row) {
+    return BackupSpreadsheetRow.COLUMN_ATTRIBUTES
       .stream()
       .map(attribute -> {
         try {
