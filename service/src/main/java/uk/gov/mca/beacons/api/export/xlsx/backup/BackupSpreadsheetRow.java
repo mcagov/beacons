@@ -31,8 +31,6 @@ import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 @Setter
 public class BackupSpreadsheetRow implements SpreadsheetRow {
 
-  private final ExportMapper exportMapper;
-
   public static final List<String> COLUMN_ATTRIBUTES = List.of(
     "id",
     "hexId",
@@ -143,15 +141,16 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
       this.cospasSarsatNumber = cospasSarsatNumber.toString();
     }
 
-    setOwnerDetails(legacyBeacon.getData().getOwner());
-
-    setLegacyUses(legacyBeacon.getData().getUses());
-
-    setEmergencyContact(legacyBeacon.getData().getEmergencyContact());
+    //    setOwnerDetails(legacyBeacon.getData().getOwner());
+    //
+    //    setLegacyUses(legacyBeacon.getData().getUses());
+    //
+    //    setEmergencyContact(legacyBeacon.getData().getEmergencyContact());
 
     setNotes(legacyBeacon.getData().getBeacon().getNote());
   }
 
+  // todo: is the performance issue coming from all the formatting we're doing on most of the values?
   public BackupSpreadsheetRow(
     Beacon beacon,
     @Nullable BeaconOwner beaconOwner,
@@ -181,165 +180,206 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     this.serialNumber =
       MessageFormat.format("{0}", mappedBeacon.getSerialNumber());
     this.manufacturerSerialNumber = mappedBeacon.getManufacturerSerialNumber();
-    this.beaconModel = mappedBeacon.getBeaconModel().toUpperCase();
+    this.beaconModel =
+      BeaconsStringUtils.getUppercaseValueOrEmpty(
+        mappedBeacon.getBeaconModel()
+      );
+    this.beaconLastServiced =
+      BeaconsStringUtils.formatDate(
+        mappedBeacon.getBeaconlastServiced(),
+        dateFormatter
+      );
+    this.beaconCoding =
+      BeaconsStringUtils.getUppercaseValueOrEmpty(
+        mappedBeacon.getBeaconCoding()
+      );
+    this.batteryExpiryDate =
+      BeaconsStringUtils.formatDate(
+        mappedBeacon.getBatteryExpiryDate(),
+        dateFormatter
+      );
+    this.codingProtocol =
+      BeaconsStringUtils.getUppercaseValueOrEmpty(
+        mappedBeacon.getCodingProtocol()
+      );
 
-    setOwnerDetails(beaconOwner);
+    this.cstaNumber =
+      BeaconsStringUtils.getUppercaseValueOrEmpty(mappedBeacon.getCstaNumber());
 
-    setUses(beaconUses);
-
-    setEmergencyContacts(emergencyContacts);
+    this.notes =
+      mappedBeacon.getNotes() != null
+        ? JsonSerialiser
+          .mapModernBeaconNotesToJsonArray(mappedBeacon.getNotes())
+          .toString()
+        : "";
+    this.uses =
+      mappedBeacon.getUses() != null
+        ? JsonSerialiser.mapUsesToJsonArray(mappedBeacon.getUses()).toString()
+        : "";
+    this.owners =
+      mappedBeacon.getOwners() != null
+        ? JsonSerialiser
+          .mapBeaconOwnersToJsonArray(mappedBeacon.getOwners())
+          .toString()
+        : "";
+    this.emergencyContacts =
+      mappedBeacon.getEmergencyContacts() != null
+        ? JsonSerialiser
+          .mapEmergencyContactsToJsonArray(mappedBeacon.getEmergencyContacts())
+          .toString()
+        : "";
   }
 
-  protected void setOwnerDetails(BeaconOwner beaconOwner) {
-    if (beaconOwner != null) {
-      this.ownerName = beaconOwner.getFullName();
-      this.ownerTelephoneNumber = beaconOwner.getTelephoneNumber();
-      this.ownerAlternativeTelephoneNumber =
-        beaconOwner.getAlternativeTelephoneNumber();
-    }
-  }
+  //  protected void setOwnerDetails(BeaconOwner beaconOwner) {
+  //    if (beaconOwner != null) {
+  //      this.ownerName = beaconOwner.getFullName();
+  //      this.ownerTelephoneNumber = beaconOwner.getTelephoneNumber();
+  //      this.ownerAlternativeTelephoneNumber =
+  //        beaconOwner.getAlternativeTelephoneNumber();
+  //    }
+  //  }
+  //
+  //  protected void setOwnerDetails(LegacyOwner legacyOwner) {
+  //    this.ownerName = legacyOwner.getOwnerName();
+  //    this.ownerTelephoneNumber =
+  //      concatenateFields(legacyOwner.getPhone1(), legacyOwner.getMobile1());
+  //    this.ownerAlternativeTelephoneNumber =
+  //      concatenateFields(legacyOwner.getPhone2(), legacyOwner.getMobile2());
+  //    this.ownerEmail = legacyOwner.getEmail();
+  //  }
+  //
+  //  // todo: set these and the notes as JSON with the JsonSerialiser
+  //  protected void setUses(List<BeaconUse> beaconUses) {
+  //    // Wasteful implementation, could iterate over beacon uses once and get all the fields, but this is simpler
+  //    // for the time being.
+  //    this.mmsiNumbers =
+  //      beaconUses
+  //        .stream()
+  //        .map(BeaconUse::getMmsiNumbers)
+  //        .flatMap(Collection::stream)
+  //        .filter(Objects::nonNull)
+  //        .filter(s -> !s.isBlank())
+  //        .collect(Collectors.joining(" / "));
+  //
+  //    this.vesselNames =
+  //      beaconUses
+  //        .stream()
+  //        .map(BeaconUse::getVesselName)
+  //        .filter(Objects::nonNull)
+  //        .filter(s -> !s.isBlank())
+  //        .collect(Collectors.joining(" / "));
+  //
+  //    this.vesselCallsigns =
+  //      beaconUses
+  //        .stream()
+  //        .map(BeaconUse::getCallSign)
+  //        .filter(Objects::nonNull)
+  //        .filter(s -> !s.isBlank())
+  //        .collect(Collectors.joining());
+  //
+  //    this.aircraftTailMarks =
+  //      beaconUses
+  //        .stream()
+  //        .map(BeaconUse::getRegistrationMark)
+  //        .filter(Objects::nonNull)
+  //        .filter(s -> !s.isBlank())
+  //        .collect(Collectors.joining(" / "));
+  //
+  //    this.aircraft24BitHexAddresses =
+  //      beaconUses
+  //        .stream()
+  //        .map(BeaconUse::getHexAddress)
+  //        .filter(Objects::nonNull)
+  //        .filter(s -> !s.isBlank())
+  //        .collect(Collectors.joining(" / "));
+  //  }
 
-  protected void setOwnerDetails(LegacyOwner legacyOwner) {
-    this.ownerName = legacyOwner.getOwnerName();
-    this.ownerTelephoneNumber =
-      concatenateFields(legacyOwner.getPhone1(), legacyOwner.getMobile1());
-    this.ownerAlternativeTelephoneNumber =
-      concatenateFields(legacyOwner.getPhone2(), legacyOwner.getMobile2());
-    this.ownerEmail = legacyOwner.getEmail();
-  }
+  //  protected void setLegacyUses(List<LegacyUse> legacyUses) {
+  //    this.mmsiNumbers =
+  //      legacyUses
+  //        .stream()
+  //        .map(LegacyUse::getMmsiNumber)
+  //        .filter(Objects::nonNull)
+  //        .map(Number::toString)
+  //        .filter(s -> !s.isBlank())
+  //        .collect(Collectors.joining(" / "));
+  //
+  //    this.vesselNames =
+  //      legacyUses
+  //        .stream()
+  //        .map(LegacyUse::getVesselName)
+  //        .filter(Objects::nonNull)
+  //        .filter(s -> !s.isBlank())
+  //        .collect(Collectors.joining(" / "));
+  //
+  //    this.vesselCallsigns =
+  //      legacyUses
+  //        .stream()
+  //        .map(LegacyUse::getCallSign)
+  //        .filter(Objects::nonNull)
+  //        .filter(s -> !s.isBlank())
+  //        .collect(Collectors.joining(" / "));
+  //
+  //    this.aircraftTailMarks =
+  //      legacyUses
+  //        .stream()
+  //        .map(LegacyUse::getAircraftRegistrationMark)
+  //        .filter(Objects::nonNull)
+  //        .filter(s -> !s.isBlank())
+  //        .collect(Collectors.joining(" / "));
+  //
+  //    this.aircraft24BitHexAddresses =
+  //      legacyUses
+  //        .stream()
+  //        .map(LegacyUse::getBit24AddressHex)
+  //        .filter(Objects::nonNull)
+  //        .filter(s -> !s.isBlank())
+  //        .collect(Collectors.joining(" / "));
+  //  }
 
-  // todo: set these and the notes as JSON with the JsonSerialiser
-  protected void setUses(List<BeaconUse> beaconUses) {
-    // Wasteful implementation, could iterate over beacon uses once and get all the fields, but this is simpler
-    // for the time being.
-    this.mmsiNumbers =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getMmsiNumbers)
-        .flatMap(Collection::stream)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
-
-    this.vesselNames =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getVesselName)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
-
-    this.vesselCallsigns =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getCallSign)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining());
-
-    this.aircraftTailMarks =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getRegistrationMark)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
-
-    this.aircraft24BitHexAddresses =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getHexAddress)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
-  }
-
-  protected void setLegacyUses(List<LegacyUse> legacyUses) {
-    this.mmsiNumbers =
-      legacyUses
-        .stream()
-        .map(LegacyUse::getMmsiNumber)
-        .filter(Objects::nonNull)
-        .map(Number::toString)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
-
-    this.vesselNames =
-      legacyUses
-        .stream()
-        .map(LegacyUse::getVesselName)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
-
-    this.vesselCallsigns =
-      legacyUses
-        .stream()
-        .map(LegacyUse::getCallSign)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
-
-    this.aircraftTailMarks =
-      legacyUses
-        .stream()
-        .map(LegacyUse::getAircraftRegistrationMark)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
-
-    this.aircraft24BitHexAddresses =
-      legacyUses
-        .stream()
-        .map(LegacyUse::getBit24AddressHex)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
-  }
-
-  protected void setEmergencyContacts(
-    List<EmergencyContact> emergencyContacts
-  ) {
-    int len = emergencyContacts.size();
-
-    if (len > 0) {
-      EmergencyContact emergencyContact = emergencyContacts.get(0);
-      this.emergencyContact_1 =
-        concatenateFields(
-          emergencyContact.getFullName(),
-          emergencyContact.getTelephoneNumber(),
-          emergencyContact.getAlternativeTelephoneNumber()
-        );
-    }
-
-    if (len > 1) {
-      EmergencyContact emergencyContact = emergencyContacts.get(1);
-      this.emergencyContact_2 =
-        concatenateFields(
-          emergencyContact.getFullName(),
-          emergencyContact.getTelephoneNumber(),
-          emergencyContact.getAlternativeTelephoneNumber()
-        );
-    }
-
-    if (len > 2) {
-      EmergencyContact emergencyContact = emergencyContacts.get(2);
-      this.emergencyContact_3 =
-        concatenateFields(
-          emergencyContact.getFullName(),
-          emergencyContact.getTelephoneNumber(),
-          emergencyContact.getAlternativeTelephoneNumber()
-        );
-    }
-  }
-
-  protected void setEmergencyContact(
-    LegacyEmergencyContact legacyEmergencyContact
-  ) {
-    if (legacyEmergencyContact != null) {
-      this.emergencyContact_1 = legacyEmergencyContact.getDetails();
-    }
-  }
+  //  protected void setEmergencyContacts(
+  //    List<EmergencyContact> emergencyContacts
+  //  ) {
+  //    int len = emergencyContacts.size();
+  //
+  //    if (len > 0) {
+  //      EmergencyContact emergencyContact = emergencyContacts.get(0);
+  //      this.emergencyContact_1 =
+  //        concatenateFields(
+  //          emergencyContact.getFullName(),
+  //          emergencyContact.getTelephoneNumber(),
+  //          emergencyContact.getAlternativeTelephoneNumber()
+  //        );
+  //    }
+  //
+  //    if (len > 1) {
+  //      EmergencyContact emergencyContact = emergencyContacts.get(1);
+  //      this.emergencyContact_2 =
+  //        concatenateFields(
+  //          emergencyContact.getFullName(),
+  //          emergencyContact.getTelephoneNumber(),
+  //          emergencyContact.getAlternativeTelephoneNumber()
+  //        );
+  //    }
+  //
+  //    if (len > 2) {
+  //      EmergencyContact emergencyContact = emergencyContacts.get(2);
+  //      this.emergencyContact_3 =
+  //        concatenateFields(
+  //          emergencyContact.getFullName(),
+  //          emergencyContact.getTelephoneNumber(),
+  //          emergencyContact.getAlternativeTelephoneNumber()
+  //        );
+  //    }
+  //  }
+  //
+  //  protected void setEmergencyContact(
+  //    LegacyEmergencyContact legacyEmergencyContact
+  //  ) {
+  //    if (legacyEmergencyContact != null) {
+  //      this.emergencyContact_1 = legacyEmergencyContact.getDetails();
+  //    }
+  //  }
 
   protected String concatenateFields(String... fields) {
     return Arrays

@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
+import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
 public class JsonSerialiser {
 
@@ -28,7 +29,10 @@ public class JsonSerialiser {
 
         var json = new JSONObject();
         json.put("date created", note.getDate().format(dateFormatter));
-        json.put("note", note.getNote().toUpperCase());
+        json.put(
+          "note",
+          BeaconsStringUtils.getUppercaseValueOrEmpty(note.getNote())
+        );
         jsonArray.add(json);
       }
     }
