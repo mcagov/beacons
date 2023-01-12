@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseReadOnlyRepository;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContactReadOnlyRepository;
+import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.note.domain.Note;
 
@@ -26,17 +28,25 @@ class BackupBeaconToSpreadsheetRowItemProcessor
   private final EmergencyContactReadOnlyRepository emergencyContactRepository;
   private final NoteService noteService;
 
+  private final ExportMapper exportMapper;
+
+  private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
+    "dd-MM-yyyy"
+  );
+
   @Autowired
   public BackupBeaconToSpreadsheetRowItemProcessor(
     BeaconOwnerReadOnlyRepository beaconOwnerRepository,
     BeaconUseReadOnlyRepository beaconUseRepository,
     EmergencyContactReadOnlyRepository emergencyContactRepository,
-    NoteService noteService
+    NoteService noteService,
+    ExportMapper exportMapper
   ) {
     this.beaconOwnerRepository = beaconOwnerRepository;
     this.beaconUseRepository = beaconUseRepository;
     this.emergencyContactRepository = emergencyContactRepository;
     this.noteService = noteService;
+    this.exportMapper = exportMapper;
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
@@ -59,7 +69,9 @@ class BackupBeaconToSpreadsheetRowItemProcessor
       beaconOwner,
       beaconUses,
       emergencyContacts,
-      notes
+      notes,
+      exportMapper,
+      dateFormatter
     );
   }
 }

@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
+import java.text.MessageFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
@@ -10,12 +12,15 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
+import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
 import uk.gov.mca.beacons.api.export.xlsx.SpreadsheetRow;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyEmergencyContact;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyOwner;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
 /**
  * Represents the contents of a backup export file
@@ -26,25 +31,36 @@ import uk.gov.mca.beacons.api.note.domain.Note;
 @Setter
 public class BackupSpreadsheetRow implements SpreadsheetRow {
 
+  private final ExportMapper exportMapper;
+
   public static final List<String> COLUMN_ATTRIBUTES = List.of(
     "id",
     "hexId",
     "beaconStatus",
     "lastModifiedDate",
+    //This is only valid for legacy.
     "cospasSarsatNumber",
-    "ownerName",
-    "ownerTelephoneNumber",
-    "ownerAlternativeTelephoneNumber",
-    "ownerEmail",
-    "emergencyContact_1",
-    "emergencyContact_2",
-    "emergencyContact_3",
-    "useActivities",
-    "mmsiNumbers",
-    "vesselNames",
-    "vesselCallsigns",
-    "aircraftTailMarks",
-    "aircraft24BitHexAddresses"
+    "type",
+    "proofOfRegistrationDate",
+    //This is only valid for legacy.
+    "departmentReference",
+    "recordCreatedDate",
+    "manufacturer",
+    "serialNumber",
+    "manufacturerSerialNumber",
+    "beaconModel",
+    "beaconLastServiced",
+    "beaconCoding",
+    "batteryExpiryDate",
+    "codingProtocol",
+    "cstaNumber",
+    //This is only valid for legacy.
+    "beaconNote",
+    //These are only valid for new beacons
+    "notes",
+    "uses",
+    "owners",
+    "emergencyContacts"
   );
 
   public static final List<String> COLUMN_HEADINGS = List.of(
@@ -81,25 +97,37 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
   private final UUID id;
 
   private String hexId;
-  private String ownerName;
   private String beaconStatus;
   private String lastModifiedDate;
+  //This is only valid for legacy.
   private String cospasSarsatNumber;
-  private String ownerTelephoneNumber;
-  private String ownerAlternativeTelephoneNumber;
-  private String ownerEmail;
-  private String emergencyContact_1;
-  private String emergencyContact_2;
-  private String emergencyContact_3;
-  private String useActivities;
-  private String mmsiNumbers;
-  private String vesselNames;
-  private String vesselCallsigns;
-  private String aircraftTailMarks;
-  private String aircraft24BitHexAddresses;
+  private String type;
+  private String proofOfRegistrationDate;
+  //This is only valid for legacy.
+  private String departmentReference;
+  private String recordCreatedDate;
+  private String manufacturer;
+  private String serialNumber;
+  private String manufacturerSerialNumber;
+  private String beaconModel;
+  private String beaconLastServiced;
+  private String beaconCoding;
+  private String batteryExpiryDate;
+  private String codingProtocol;
+  private String cstaNumber;
+  //This is only valid for legacy.
+  private String beaconNote;
+  //These are only valid for new beacons
   private String notes;
+  private String uses;
+  private String owners;
+  private String emergencyContacts;
 
-  public BackupSpreadsheetRow(LegacyBeacon legacyBeacon) {
+  public BackupSpreadsheetRow(
+    LegacyBeacon legacyBeacon,
+    ExportMapper exportMapper,
+    DateTimeFormatter dateTimeFormatter
+  ) {
     this.id = Objects.requireNonNull(legacyBeacon.getId()).unwrap();
 
     // Beacon details
@@ -129,13 +157,31 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     @Nullable BeaconOwner beaconOwner,
     List<BeaconUse> beaconUses,
     List<EmergencyContact> emergencyContacts,
-    List<Note> notes
+    List<Note> notes,
+    ExportMapper exportMapper,
+    DateTimeFormatter dateFormatter
   ) {
+    BeaconExportDTO mappedBeacon = exportMapper.toBeaconExportDTO(beacon);
+
     this.id = Objects.requireNonNull(beacon.getId()).unwrap();
 
-    this.hexId = beacon.getHexId();
-    this.lastModifiedDate = beacon.getLastModifiedDate().toString();
-    this.beaconStatus = beacon.getBeaconStatus().toString();
+    this.hexId = mappedBeacon.getHexId();
+    this.beaconStatus = mappedBeacon.getBeaconStatus().toUpperCase();
+    this.lastModifiedDate =
+      mappedBeacon.getLastModifiedDate().format(dateFormatter);
+    this.type = mappedBeacon.getType().toUpperCase();
+    this.proofOfRegistrationDate =
+      mappedBeacon.getProofOfRegistrationDate().format(dateFormatter);
+    this.recordCreatedDate =
+      BeaconsStringUtils.formatDate(
+        mappedBeacon.getRecordCreatedDate(),
+        dateFormatter
+      );
+    this.manufacturer = mappedBeacon.getManufacturer().toUpperCase();
+    this.serialNumber =
+      MessageFormat.format("{0}", mappedBeacon.getSerialNumber());
+    this.manufacturerSerialNumber = mappedBeacon.getManufacturerSerialNumber();
+    this.beaconModel = mappedBeacon.getBeaconModel().toUpperCase();
 
     setOwnerDetails(beaconOwner);
 

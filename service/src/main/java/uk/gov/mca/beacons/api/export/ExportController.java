@@ -118,16 +118,6 @@ class ExportController {
     backupXlsxExporter.backup();
 
     return ResponseEntity.ok().build();
-    //    SpreadsheetExportGenerator csvGenerator = new SpreadsheetExportGenerator(
-    //      registrationService,
-    //      beaconService,
-    //      legacyBeaconService,
-    //      noteService,
-    //      accountHolderService,
-    //      exportMapper
-    //    );
-    //    return serveFile(csvGenerator.generateXlsxBackupExport());
-
   }
 
   private ResponseEntity<Resource> serveFile(Resource resource) {
