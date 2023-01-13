@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
+import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
@@ -15,18 +17,23 @@ import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseReadOnlyRepository;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContactReadOnlyRepository;
+import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.registration.application.RegistrationService;
+import uk.gov.mca.beacons.api.registration.domain.Registration;
 
 @Component
 class BackupBeaconToSpreadsheetRowItemProcessor
   implements ItemProcessor<Beacon, BackupSpreadsheetRow> {
 
-  private final BeaconOwnerReadOnlyRepository beaconOwnerRepository;
-  private final BeaconUseReadOnlyRepository beaconUseRepository;
-  private final EmergencyContactReadOnlyRepository emergencyContactRepository;
+  private final RegistrationService registrationService;
+  //  private final BeaconOwnerReadOnlyRepository beaconOwnerRepository;
+  //  private final BeaconUseReadOnlyRepository beaconUseRepository;
+  //  private final EmergencyContactReadOnlyRepository emergencyContactRepository;
   private final NoteService noteService;
+  private final AccountHolderService accountHolderService;
 
   private final ExportMapper exportMapper;
 
@@ -36,16 +43,20 @@ class BackupBeaconToSpreadsheetRowItemProcessor
 
   @Autowired
   public BackupBeaconToSpreadsheetRowItemProcessor(
-    BeaconOwnerReadOnlyRepository beaconOwnerRepository,
-    BeaconUseReadOnlyRepository beaconUseRepository,
-    EmergencyContactReadOnlyRepository emergencyContactRepository,
+    RegistrationService registrationService,
+    //BeaconOwnerReadOnlyRepository beaconOwnerRepository,
+    //          BeaconUseReadOnlyRepository beaconUseRepository,
+    //          EmergencyContactReadOnlyRepository emergencyContactRepository,
     NoteService noteService,
+    AccountHolderService accountHolderService,
     ExportMapper exportMapper
   ) {
-    this.beaconOwnerRepository = beaconOwnerRepository;
-    this.beaconUseRepository = beaconUseRepository;
-    this.emergencyContactRepository = emergencyContactRepository;
+    this.registrationService = registrationService;
+    //    this.beaconOwnerRepository = beaconOwnerRepository;
+    //    this.beaconUseRepository = beaconUseRepository;
+    //    this.emergencyContactRepository = emergencyContactRepository;
     this.noteService = noteService;
+    this.accountHolderService = accountHolderService;
     this.exportMapper = exportMapper;
   }
 
@@ -53,22 +64,17 @@ class BackupBeaconToSpreadsheetRowItemProcessor
   @Override
   public BackupSpreadsheetRow process(Beacon beacon) {
     BeaconId beaconId = beacon.getId();
-    BeaconOwner beaconOwner = beaconOwnerRepository
-      .findBeaconOwnerByBeaconId(beaconId)
-      .orElse(null);
-    List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
-      beaconId
-    );
-    List<EmergencyContact> emergencyContacts = emergencyContactRepository.findEmergencyContactsByBeaconId(
-      beaconId
-    );
+    Registration registration = registrationService.getByBeaconId(beaconId);
+
+    AccountHolder accountHolder = accountHolderService
+      .getAccountHolder(beacon.getAccountHolderId())
+      .orElseThrow(ResourceNotFoundException::new);
+
     List<Note> notes = noteService.getNonSystemNotes(beaconId);
 
     return new BackupSpreadsheetRow(
-      beacon,
-      beaconOwner,
-      beaconUses,
-      emergencyContacts,
+      registration,
+      accountHolder,
       notes,
       exportMapper,
       dateFormatter

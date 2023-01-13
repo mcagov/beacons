@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
+import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
@@ -20,6 +21,7 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyEmergencyContact;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyOwner;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
 /**
@@ -152,23 +154,24 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
 
   // todo: is the performance issue coming from all the formatting we're doing on most of the values?
   public BackupSpreadsheetRow(
-    Beacon beacon,
-    @Nullable BeaconOwner beaconOwner,
-    List<BeaconUse> beaconUses,
-    List<EmergencyContact> emergencyContacts,
+    Registration registration,
+    AccountHolder accountHolder,
     List<Note> notes,
     ExportMapper exportMapper,
     DateTimeFormatter dateFormatter
   ) {
-    BeaconExportDTO mappedBeacon = exportMapper.toBeaconExportDTO(beacon);
+    BeaconExportDTO mappedBeacon = exportMapper.toBeaconBackupExportDTO(
+      registration,
+      accountHolder,
+      notes
+    );
 
-    this.id = Objects.requireNonNull(beacon.getId()).unwrap();
-
+    this.id = registration.getBeacon().getId().unwrap();
     this.hexId = mappedBeacon.getHexId();
-    this.beaconStatus = mappedBeacon.getBeaconStatus().toUpperCase();
+    this.beaconStatus = mappedBeacon.getBeaconStatus();
     this.lastModifiedDate =
       mappedBeacon.getLastModifiedDate().format(dateFormatter);
-    this.type = mappedBeacon.getType().toUpperCase();
+    this.type = mappedBeacon.getType();
     this.proofOfRegistrationDate =
       mappedBeacon.getProofOfRegistrationDate().format(dateFormatter);
     this.recordCreatedDate =
@@ -176,35 +179,21 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
         mappedBeacon.getRecordCreatedDate(),
         dateFormatter
       );
-    this.manufacturer = mappedBeacon.getManufacturer().toUpperCase();
+    this.manufacturer = mappedBeacon.getManufacturer();
     this.serialNumber =
       MessageFormat.format("{0}", mappedBeacon.getSerialNumber());
     this.manufacturerSerialNumber = mappedBeacon.getManufacturerSerialNumber();
-    this.beaconModel =
-      BeaconsStringUtils.getUppercaseValueOrEmpty(
-        mappedBeacon.getBeaconModel()
-      );
-    this.beaconLastServiced =
-      BeaconsStringUtils.formatDate(
-        mappedBeacon.getBeaconlastServiced(),
-        dateFormatter
-      );
-    this.beaconCoding =
-      BeaconsStringUtils.getUppercaseValueOrEmpty(
-        mappedBeacon.getBeaconCoding()
-      );
-    this.batteryExpiryDate =
-      BeaconsStringUtils.formatDate(
-        mappedBeacon.getBatteryExpiryDate(),
-        dateFormatter
-      );
-    this.codingProtocol =
-      BeaconsStringUtils.getUppercaseValueOrEmpty(
-        mappedBeacon.getCodingProtocol()
-      );
+    this.beaconModel = mappedBeacon.getBeaconModel();
 
-    this.cstaNumber =
-      BeaconsStringUtils.getUppercaseValueOrEmpty(mappedBeacon.getCstaNumber());
+    this.beaconLastServiced = mappedBeacon.getBeaconlastServiced();
+
+    this.beaconCoding = mappedBeacon.getBeaconCoding();
+
+    this.batteryExpiryDate = mappedBeacon.getBatteryExpiryDate();
+
+    this.codingProtocol = mappedBeacon.getCodingProtocol();
+
+    this.cstaNumber = mappedBeacon.getCstaNumber();
 
     this.notes =
       mappedBeacon.getNotes() != null
