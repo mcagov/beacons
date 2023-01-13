@@ -54,8 +54,6 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     "batteryExpiryDate",
     "codingProtocol",
     "cstaNumber",
-    //This is only valid for legacy.
-    "beaconNote",
     //These are only valid for new beacons
     "notes",
     "uses",
@@ -84,8 +82,6 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     "Battery expiry date",
     "Coding protocol",
     "CSTA number",
-    //This is only valid for legacy.
-    "Beacon note",
     //These are only valid for new beacons
     "Notes",
     "Uses",
@@ -115,8 +111,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
   private String batteryExpiryDate;
   private String codingProtocol;
   private String cstaNumber;
-  //This is only valid for legacy.
-  private String beaconNote;
+
   //These are only valid for new beacons
   private String notes;
   private String uses;
@@ -126,30 +121,81 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
   public BackupSpreadsheetRow(
     LegacyBeacon legacyBeacon,
     ExportMapper exportMapper,
-    DateTimeFormatter dateTimeFormatter
+    DateTimeFormatter dateFormatter
   ) {
+    BeaconExportDTO mappedLegacyBeacon = exportMapper.toLegacyBeaconBackupExportDTO(
+      legacyBeacon
+    );
     this.id = Objects.requireNonNull(legacyBeacon.getId()).unwrap();
 
     // Beacon details
-    this.hexId = legacyBeacon.getHexId();
-    this.beaconStatus = legacyBeacon.getBeaconStatus();
-    this.lastModifiedDate = legacyBeacon.getLastModifiedDate().toString();
+    this.hexId = mappedLegacyBeacon.getHexId();
+    this.beaconStatus = mappedLegacyBeacon.getBeaconStatus();
+    this.lastModifiedDate =
+      mappedLegacyBeacon.getLastModifiedDate().format(dateFormatter);
+    this.cospasSarsatNumber = mappedLegacyBeacon.getCospasSarsatNumber();
+    this.type = mappedLegacyBeacon.getType();
+    this.proofOfRegistrationDate =
+      mappedLegacyBeacon.getProofOfRegistrationDate().format(dateFormatter);
+    this.departmentReference = mappedLegacyBeacon.getDepartmentReference();
+    this.recordCreatedDate =
+      BeaconsStringUtils.formatDate(
+        mappedLegacyBeacon.getRecordCreatedDate(),
+        dateFormatter
+      );
+    this.manufacturer = mappedLegacyBeacon.getManufacturer();
+    this.serialNumber =
+      MessageFormat.format("{0}", mappedLegacyBeacon.getSerialNumber());
+    this.manufacturerSerialNumber =
+      mappedLegacyBeacon.getManufacturerSerialNumber();
+    this.beaconModel = mappedLegacyBeacon.getBeaconModel();
 
-    Integer cospasSarsatNumber = legacyBeacon
-      .getData()
-      .getBeacon()
-      .getCospasSarsatNumber();
-    if (cospasSarsatNumber != null) {
-      this.cospasSarsatNumber = cospasSarsatNumber.toString();
-    }
+    this.beaconLastServiced =
+      BeaconsStringUtils.formatDate(
+        mappedLegacyBeacon.getBeaconlastServiced(),
+        dateFormatter
+      );
 
+    this.beaconCoding = mappedLegacyBeacon.getBeaconCoding();
+
+    this.batteryExpiryDate =
+      BeaconsStringUtils.formatDate(
+        mappedLegacyBeacon.getBatteryExpiryDate(),
+        dateFormatter
+      );
+
+    this.codingProtocol = mappedLegacyBeacon.getCodingProtocol();
+
+    this.cstaNumber = mappedLegacyBeacon.getCstaNumber();
+
+    setNotes(legacyBeacon.getData().getBeacon().getNote());
+
+    this.uses =
+      mappedLegacyBeacon.getUses() != null
+        ? JsonSerialiser
+          .mapUsesToJsonArray(mappedLegacyBeacon.getUses())
+          .toString()
+        : "";
+    this.owners =
+      mappedLegacyBeacon.getOwners() != null
+        ? JsonSerialiser
+          .mapBeaconOwnersToJsonArray(mappedLegacyBeacon.getOwners())
+          .toString()
+        : "";
+    this.emergencyContacts =
+      mappedLegacyBeacon.getEmergencyContacts() != null
+        ? JsonSerialiser
+          .mapEmergencyContactsToJsonArray(
+            mappedLegacyBeacon.getEmergencyContacts()
+          )
+          .toString()
+        : "";
     //    setOwnerDetails(legacyBeacon.getData().getOwner());
     //
     //    setLegacyUses(legacyBeacon.getData().getUses());
     //
     //    setEmergencyContact(legacyBeacon.getData().getEmergencyContact());
 
-    setNotes(legacyBeacon.getData().getBeacon().getNote());
   }
 
   // todo: is the performance issue coming from all the formatting we're doing on most of the values?
@@ -185,11 +231,19 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     this.manufacturerSerialNumber = mappedBeacon.getManufacturerSerialNumber();
     this.beaconModel = mappedBeacon.getBeaconModel();
 
-    this.beaconLastServiced = mappedBeacon.getBeaconlastServiced();
+    this.beaconLastServiced =
+      BeaconsStringUtils.formatDate(
+        mappedBeacon.getBeaconlastServiced(),
+        dateFormatter
+      );
 
     this.beaconCoding = mappedBeacon.getBeaconCoding();
 
-    this.batteryExpiryDate = mappedBeacon.getBatteryExpiryDate();
+    this.batteryExpiryDate =
+      BeaconsStringUtils.formatDate(
+        mappedBeacon.getBatteryExpiryDate(),
+        dateFormatter
+      );
 
     this.codingProtocol = mappedBeacon.getCodingProtocol();
 
