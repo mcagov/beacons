@@ -13,14 +13,19 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
+import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportNoteDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportOwnerDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportUseDTO;
 import uk.gov.mca.beacons.api.export.xlsx.SpreadsheetRow;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyEmergencyContact;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyOwner;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
@@ -126,8 +131,44 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     BeaconExportDTO mappedLegacyBeacon = exportMapper.toLegacyBeaconBackupExportDTO(
       legacyBeacon
     );
+
     this.id = Objects.requireNonNull(legacyBeacon.getId()).unwrap();
 
+    setLegacyBeaconDetails(mappedLegacyBeacon, dateFormatter);
+
+    setNotes(legacyBeacon.getData().getBeacon().getNote());
+    setUses(mappedLegacyBeacon.getUses());
+    setOwners(mappedLegacyBeacon.getOwners());
+    setEmergencyContacts(mappedLegacyBeacon.getEmergencyContacts());
+  }
+
+  public BackupSpreadsheetRow(
+    Registration registration,
+    AccountHolder accountHolder,
+    List<Note> notes,
+    ExportMapper exportMapper,
+    DateTimeFormatter dateFormatter
+  ) {
+    BeaconExportDTO mappedBeacon = exportMapper.toBeaconBackupExportDTO(
+      registration,
+      accountHolder,
+      notes
+    );
+
+    this.id = registration.getBeacon().getId().unwrap();
+
+    setModernBeaconDetails(mappedBeacon, dateFormatter);
+
+    setNotes(getStringifiedNotes(mappedBeacon.getNotes()));
+    setUses(mappedBeacon.getUses());
+    setOwners(mappedBeacon.getOwners());
+    setEmergencyContacts(mappedBeacon.getEmergencyContacts());
+  }
+
+  protected void setLegacyBeaconDetails(
+    BeaconExportDTO mappedLegacyBeacon,
+    DateTimeFormatter dateFormatter
+  ) {
     this.hexId = mappedLegacyBeacon.getHexId();
     this.beaconStatus = mappedLegacyBeacon.getBeaconStatus();
     this.lastModifiedDate =
@@ -166,45 +207,12 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     this.codingProtocol = mappedLegacyBeacon.getCodingProtocol();
 
     this.cstaNumber = mappedLegacyBeacon.getCstaNumber();
-
-    setNotes(legacyBeacon.getData().getBeacon().getNote());
-
-    this.uses =
-      mappedLegacyBeacon.getUses() != null
-        ? JsonSerialiser
-          .mapUsesToJsonArray(mappedLegacyBeacon.getUses())
-          .toString()
-        : "";
-    this.owners =
-      mappedLegacyBeacon.getOwners() != null
-        ? JsonSerialiser
-          .mapBeaconOwnersToJsonArray(mappedLegacyBeacon.getOwners())
-          .toString()
-        : "";
-    this.emergencyContacts =
-      mappedLegacyBeacon.getEmergencyContacts() != null
-        ? JsonSerialiser
-          .mapEmergencyContactsToJsonArray(
-            mappedLegacyBeacon.getEmergencyContacts()
-          )
-          .toString()
-        : "";
   }
 
-  public BackupSpreadsheetRow(
-    Registration registration,
-    AccountHolder accountHolder,
-    List<Note> notes,
-    ExportMapper exportMapper,
+  protected void setModernBeaconDetails(
+    BeaconExportDTO mappedBeacon,
     DateTimeFormatter dateFormatter
   ) {
-    BeaconExportDTO mappedBeacon = exportMapper.toBeaconBackupExportDTO(
-      registration,
-      accountHolder,
-      notes
-    );
-
-    this.id = registration.getBeacon().getId().unwrap();
     this.hexId = mappedBeacon.getHexId();
     this.beaconStatus = mappedBeacon.getBeaconStatus();
     this.lastModifiedDate =
@@ -240,27 +248,35 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     this.codingProtocol = mappedBeacon.getCodingProtocol();
 
     this.cstaNumber = mappedBeacon.getCstaNumber();
+  }
 
-    this.notes =
-      mappedBeacon.getNotes() != null
-        ? JsonSerialiser
-          .mapModernBeaconNotesToJsonArray(mappedBeacon.getNotes())
-          .toString()
-        : "";
-    this.uses =
-      mappedBeacon.getUses() != null
-        ? JsonSerialiser.mapUsesToJsonArray(mappedBeacon.getUses()).toString()
-        : "";
+  protected String getStringifiedNotes(List<BeaconExportNoteDTO> notes) {
+    return notes != null
+      ? JsonSerialiser.mapModernBeaconNotesToJsonArray(notes).toString()
+      : "";
+  }
+
+  protected void setOwners(List<BeaconExportOwnerDTO> beaconOwners) {
     this.owners =
-      mappedBeacon.getOwners() != null
-        ? JsonSerialiser
-          .mapBeaconOwnersToJsonArray(mappedBeacon.getOwners())
-          .toString()
+      beaconOwners != null
+        ? JsonSerialiser.mapBeaconOwnersToJsonArray(beaconOwners).toString()
         : "";
+  }
+
+  protected void setUses(List<BeaconExportUseDTO> beaconUses) {
+    this.uses =
+      beaconUses != null
+        ? JsonSerialiser.mapUsesToJsonArray(beaconUses).toString()
+        : "";
+  }
+
+  protected void setEmergencyContacts(
+    List<EmergencyContactDTO> emergencyContacts
+  ) {
     this.emergencyContacts =
-      mappedBeacon.getEmergencyContacts() != null
+      emergencyContacts != null
         ? JsonSerialiser
-          .mapEmergencyContactsToJsonArray(mappedBeacon.getEmergencyContacts())
+          .mapEmergencyContactsToJsonArray(emergencyContacts)
           .toString()
         : "";
   }
