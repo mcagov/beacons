@@ -53,9 +53,9 @@ public class JsonSerialiser {
           owner.getOwnerName() != null ? owner.getOwnerName().toUpperCase() : ""
         );
         json.put(
-          "company agent",
-          owner.getCompanyAgent() != null
-            ? owner.getCompanyAgent().toUpperCase()
+          "company name",
+          owner.getCompanyName() != null
+            ? owner.getCompanyName().toUpperCase()
             : ""
         );
         json.put(

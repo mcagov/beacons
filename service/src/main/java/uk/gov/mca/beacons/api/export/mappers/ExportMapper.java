@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export.mappers;
 
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,11 +54,7 @@ public class ExportMapper {
       )
       .hexId(beacon.getHexId())
       .coding(BeaconsStringUtils.valueOrEmpty(beacon.getCoding()))
-      .proofOfRegistrationDate(
-        beacon.getLastModifiedDate() != null
-          ? beacon.getLastModifiedDate().format(dtf)
-          : null
-      )
+      .proofOfRegistrationDate(OffsetDateTime.now().format(dtf))
       .build();
   }
 
@@ -75,11 +72,7 @@ public class ExportMapper {
       )
       .hexId(beacon.getHexId())
       .coding(BeaconsStringUtils.valueOrEmpty(beaconData.getCoding()))
-      .proofOfRegistrationDate(
-        beacon.getLastModifiedDate() != null
-          ? beacon.getLastModifiedDate().format(dtf)
-          : null
-      )
+      .proofOfRegistrationDate(OffsetDateTime.now().format(dtf))
       .build();
   }
 
@@ -87,7 +80,7 @@ public class ExportMapper {
     return BeaconExportDTO
       .builder()
       .type("New")
-      .proofOfRegistrationDate(beacon.getLastModifiedDate())
+      .proofOfRegistrationDate(OffsetDateTime.now())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .recordCreatedDate(beacon.getCreatedDate().toString())
       .beaconStatus(beacon.getBeaconStatus().toString())
@@ -128,7 +121,7 @@ public class ExportMapper {
           ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
           : ""
       )
-      .proofOfRegistrationDate(beacon.getLastModifiedDate())
+      .proofOfRegistrationDate(OffsetDateTime.now())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .referenceNumber(beacon.getReferenceNumber())
       .recordCreatedDate(beacon.getCreatedDate().toString())
@@ -194,7 +187,7 @@ public class ExportMapper {
           ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
           : ""
       )
-      .proofOfRegistrationDate(beacon.getLastModifiedDate())
+      .proofOfRegistrationDate(OffsetDateTime.now())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .referenceNumber(beacon.getReferenceNumber())
       .recordCreatedDate(beacon.getCreatedDate().toString())
@@ -348,7 +341,7 @@ public class ExportMapper {
           ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
           : ""
       )
-      .proofOfRegistrationDate(beacon.getLastModifiedDate())
+      .proofOfRegistrationDate(OffsetDateTime.now())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .departmentReference(details.getDepartRefId())
       .recordCreatedDate(details.getFirstRegistrationDate())
@@ -389,7 +382,7 @@ public class ExportMapper {
           ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
           : ""
       )
-      .proofOfRegistrationDate(beacon.getLastModifiedDate())
+      .proofOfRegistrationDate(OffsetDateTime.now())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .departmentReference(details.getDepartRefId())
       .recordCreatedDate(details.getFirstRegistrationDate())
@@ -510,19 +503,14 @@ public class ExportMapper {
     return BeaconExportOwnerDTO
       .builder()
       .ownerName(owner.getOwnerName())
-      .companyAgent(owner.getCompanyName()) // Unsure on this.
+      .companyName(owner.getCompanyName())
       .careOf(owner.getCareOf())
       .address(address)
       .telephoneNumbers(
         BeaconsStringUtils.getMultipleValuesAsString(
           " - ",
           owner.getPhone1(),
-          owner.getPhone2()
-        )
-      )
-      .mobiles(
-        BeaconsStringUtils.getMultipleValuesAsString(
-          " - ",
+          owner.getPhone2(),
           owner.getMobile1(),
           owner.getMobile2()
         )
@@ -536,6 +524,7 @@ public class ExportMapper {
     for (LegacyUse use : uses) {
       switch (use.getEnvironment().trim().toUpperCase()) {
         case "MARITIME":
+        case "RIG/PLATFORM":
           usesDTO.add(toMaritimeUse(use));
           break;
         case "AVIATION":
@@ -545,7 +534,6 @@ public class ExportMapper {
         case "LAND":
           usesDTO.add(toLandUse(use));
           break;
-        case "RIG/PLATFORM":
         case "MOD":
         default:
           usesDTO.add(toLegacyUse(use));
@@ -559,9 +547,10 @@ public class ExportMapper {
     return BeaconExportMaritimeUseDTO
       .builder()
       .environment(use.getEnvironment())
-      .vesselName(use.getVesselName())
-      .homePort(use.getHomePort())
       .typeOfUse(use.getUseType())
+      .vesselName(use.getVesselName())
+      .rigName(use.getRigName())
+      .homePort(use.getHomePort())
       .beaconLocation(use.getBeaconPosition())
       .beaconPosition(use.getBeaconPosition())
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
@@ -570,7 +559,7 @@ public class ExportMapper {
         use.getMmsiNumber() != null ? use.getMmsiNumber().toString() : null
       )
       .radioSystems(use.getCommunicationTypes())
-      .notes(use.getNotes())
+      .notes(use.getNotes() + " - " + use.getNote())
       .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
       .officialNumber(use.getOfficialNumber())
       .imoNumber(use.getImoNumber())
@@ -584,6 +573,7 @@ public class ExportMapper {
     return BeaconExportAviationUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .typeOfUse(use.getUseType())
       .beaconLocation(use.getBeaconPosition())
       .beaconPosition(use.getBeaconPosition())
       .aircraftManufacturer(use.getAircraftDescription())
@@ -593,7 +583,7 @@ public class ExportMapper {
       .twentyFourBitAddressInHex(use.getBit24AddressHex())
       .principalAirport(use.getPrincipalAirport())
       .radioSystems(use.getCommunicationTypes())
-      .notes(use.getNotes())
+      .notes(use.getNotes() + " - " + use.getNote())
       .build();
   }
 
@@ -601,6 +591,7 @@ public class ExportMapper {
     return BeaconExportLandUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .typeOfUse(use.getUseType())
       .beaconLocation(use.getBeaconPosition())
       .beaconPosition(use.getBeaconPosition())
       .descriptionOfIntendedUse(use.getUseType())
@@ -610,7 +601,7 @@ public class ExportMapper {
       .areaOfUse(use.getAreaOfUse())
       .tripInformation(use.getTripInfo())
       .radioSystems(use.getCommunicationTypes())
-      .notes(use.getNotes())
+      .notes(use.getNotes() + " - " + use.getNote())
       .build();
   }
 
@@ -618,9 +609,10 @@ public class ExportMapper {
     return BeaconExportGenericUseDTO
       .builder()
       .environment(use.getEnvironment())
-      .vesselName(use.getVesselName())
-      .homePort(use.getHomePort())
       .typeOfUse(use.getUseType())
+      .vesselName(use.getVesselName())
+      .rigName(use.getRigName())
+      .homePort(use.getHomePort())
       .beaconLocation(use.getBeaconPosition())
       .beaconPosition(use.getBeaconPosition())
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
@@ -629,7 +621,6 @@ public class ExportMapper {
         use.getMmsiNumber() != null ? use.getMmsiNumber().toString() : null
       )
       .radioSystems(use.getCommunicationTypes())
-      .notes(use.getNotes())
       .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
       .officialNumber(use.getOfficialNumber())
       .imoNumber(use.getImoNumber())
@@ -640,14 +631,13 @@ public class ExportMapper {
       .aircraftRegistrationMark(use.getAircraftRegistrationMark())
       .twentyFourBitAddressInHex(use.getBit24AddressHex())
       .principalAirport(use.getPrincipalAirport())
-      .notes(use.getNotes())
       .descriptionOfIntendedUse(use.getUseType()) //Unsure
       .numberOfPersonsOnBoard(
         use.getMaxPersons() != null ? use.getMaxPersons() : 0
       )
       .areaOfUse(use.getAreaOfUse())
       .tripInformation(use.getTripInfo())
-      .notes(use.getNotes())
+      .notes(use.getNotes() + " - " + use.getNote())
       .build();
   }
 }

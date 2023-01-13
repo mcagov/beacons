@@ -16,7 +16,7 @@ public class BeaconExportOwnerDTO {
   private String ownerName;
 
   @Valid
-  private String companyAgent;
+  private String companyName;
 
   @Valid
   private String careOf;
@@ -25,7 +25,7 @@ public class BeaconExportOwnerDTO {
   private AddressDTO address;
 
   @Valid
-  // format: telephone / alternativeTelephoneNumber
+  // format: telephone / alternativeTelephoneNumber / mobiles
   private String telephoneNumbers;
 
   @Valid

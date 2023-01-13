@@ -219,6 +219,11 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           value={use.maxPersonOnBoard}
         />
         <CertificateField
+          classes="full"
+          title="Radio Systems"
+          value={Object.keys(use.radioSystems)}
+        />
+        <CertificateField
           classes="half"
           title="Vessel Call Sign"
           value={use.vesselCallsign}
@@ -228,8 +233,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           title="MMSI Number"
           value={use.mmsiNumber}
         />
-
-        <CertificateField classes="full" title="Radio Systems" value={""} />
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -343,7 +346,11 @@ const AviationUse: FunctionComponent<UseProps> = ({
           title="Is This A Dongle?"
           value={use.isDongle}
         />
-        <CertificateField classes="full" title="Radio Systems" value={""} />
+        <CertificateField
+          classes="full"
+          title="Radio Systems"
+          value={Object.keys(use.radioSystems)}
+        />
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -419,7 +426,11 @@ const LandUse: FunctionComponent<UseProps> = ({
           value={use.areaOfUse}
         />
 
-        <CertificateField classes="full" title="Radio Systems" value={""} />
+        <CertificateField
+          classes="full"
+          title="Radio Systems"
+          value={Object.keys(use.radioSystems)}
+        />
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -469,7 +480,11 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
               title="Owner(s)"
               value={owner.ownerName}
             />
-
+            <CertificateField
+              classes="full"
+              title="Tels"
+              value={owner.telephoneNumbers}
+            />
             <div className="half address">
               <span className="title">Address: </span>
               <div className="address-fields">
@@ -487,11 +502,7 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
                 ))}
               </div>
             </div>
-            <CertificateField
-              classes="half"
-              title="Tels"
-              value={owner.telephoneNumbers}
-            />
+
             <CertificateField
               classes="half"
               title="Email"

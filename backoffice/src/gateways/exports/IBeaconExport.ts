@@ -9,7 +9,7 @@ export interface IBeaconExport {
   beaconStatus: string;
   hexId: string;
   manufacturer: string;
-  serialNumber: string;
+  serialNumber: number;
   manufacturerSerialNumber: string;
   beaconModel: string;
   beaconlastServiced: string;
@@ -33,7 +33,7 @@ export interface IBeaconExportNote {
 
 export interface IBeaconExportOwner {
   ownerName: string;
-  companyAgent: string;
+  companyName: string;
   careOf: string;
   addressLine1: string;
   addressLine2: string;
@@ -71,6 +71,7 @@ export interface IBeaconExportUse {
   windfarmLocation: string;
   rigPlatformLocation: string;
   vesselName: string;
+  rigName: string;
   homePort: string;
   maxPersonOnBoard: string;
   vesselCallsign: string;
