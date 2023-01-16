@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api.export.mappers;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -9,6 +10,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
@@ -25,6 +27,9 @@ import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 class ExportMapperUnitTest {
 
   private ExportMapper mapper;
+  private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
+    "dd/MM/yyyy"
+  );
 
   public ExportMapperUnitTest() {
     mapper = new ExportMapper(new AddressMapper());
@@ -284,10 +289,9 @@ class ExportMapperUnitTest {
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
-      "02833746199 - 01477263499",
+      "02833746199 - 01477263499 - 07899122344 - 07344511288",
       mappedOwnerDTO.getTelephoneNumbers()
     );
-    assertEquals("07899122344 - 07344511288", mappedOwnerDTO.getMobiles());
   }
 
   @Test
@@ -308,7 +312,7 @@ class ExportMapperUnitTest {
       "02833746199 - 01477263499",
       mappedOwnerDTO.getTelephoneNumbers()
     );
-    assertEquals("", mappedOwnerDTO.getMobiles());
+    Assertions.assertNull(mappedOwnerDTO.getMobiles());
   }
 
   @Test
@@ -333,7 +337,10 @@ class ExportMapperUnitTest {
 
     LabelDTO mappedLabelDTO = mapper.toLabelDTO(registration);
 
-    assertEquals(null, mappedLabelDTO.getProofOfRegistrationDate());
+    assertEquals(
+      OffsetDateTime.now().format(dateFormatter),
+      mappedLabelDTO.getProofOfRegistrationDate()
+    );
   }
 
   @Test
