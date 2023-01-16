@@ -33,9 +33,10 @@ require 'json'
 owner_name = ARGV[0] || Faker::Name.name
 owner_email = ARGV[1] || Faker::Internet.email
 
-
 db_host = 'localhost'
 db_password= 'password'
+
+puts("host is #{db_host}")
 
 conn = PG.connect( dbname: 'beacons', :host => db_host, :port => 5432,
     :user => 'beacons_service', :password => db_password )
