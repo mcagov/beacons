@@ -35,6 +35,9 @@ public class BeaconExportMaritimeUseDTO extends BeaconExportUseDTO {
   private String vesselName;
 
   @Valid
+  private String rigName;
+
+  @Valid
   private String homePort;
 
   @Valid
