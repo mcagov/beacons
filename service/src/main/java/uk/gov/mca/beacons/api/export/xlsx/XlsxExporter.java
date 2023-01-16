@@ -47,7 +47,10 @@ public class XlsxExporter {
     }
 
     xlsxExportJobManager.export(
-      fs.getNextExportDestination(ExportFileNamer.FileType.EXCEL_SPREADSHEET)
+      fs.getNextExportDestination(
+        ExportFileNamer.FileType.EXCEL_SPREADSHEET,
+        BeaconsDataWorkbookRepository.OperationType.EXPORT
+      )
     );
   }
 }

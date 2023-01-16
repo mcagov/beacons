@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.export.ExportFileNamer;
 import uk.gov.mca.beacons.api.export.FileSystemRepository;
+import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
 
 /**
  * Back up beacons data to .xlsx.
@@ -22,13 +23,6 @@ public class BackupXlsxExporter {
   private final BackupToXlsxJobManager backupToXlsxJobManager;
   private final FileSystemRepository fileSystemRepository;
 
-  //  private final String fileDestination =
-  //          FileSystemView
-  //    .getFileSystemView()
-  //    .getHomeDirectory()
-  //    .getAbsoluteFile()
-  //    .getAbsolutePath();
-
   @Autowired
   public BackupXlsxExporter(
     BackupToXlsxJobManager backupToXlsxJobManager,
@@ -36,11 +30,6 @@ public class BackupXlsxExporter {
   ) {
     this.backupToXlsxJobManager = backupToXlsxJobManager;
     this.fileSystemRepository = fileSystemRepository;
-    //     todo: use config from yml file
-    this.fileSystemRepository.setExportDirectory(
-        Path.of("/tmp/beacons/backup")
-      );
-    //    this.fileSystemRepository.setExportDirectory(Path.of(fileDestination));
   }
 
   public Optional<Path> getMostRecentBackup() throws IOException {
@@ -70,7 +59,8 @@ public class BackupXlsxExporter {
 
     backupToXlsxJobManager.backup(
       fileSystemRepository.getNextExportDestination(
-        ExportFileNamer.FileType.EXCEL_SPREADSHEET
+        ExportFileNamer.FileType.EXCEL_SPREADSHEET,
+        BeaconsDataWorkbookRepository.OperationType.BACKUP
       )
     );
   }

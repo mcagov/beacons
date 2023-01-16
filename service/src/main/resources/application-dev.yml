@@ -8,6 +8,3 @@ opensearch:
 
 export:
   directory: ${EXPORT_DIRECTORY:/tmp/beacons/export}
-
-backup:
-  directory: ${BACKUP_DIRECTORY:/tmp/beacons/backup}

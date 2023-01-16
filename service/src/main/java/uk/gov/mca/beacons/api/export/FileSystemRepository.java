@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
 
 /**
  * Encapsulates file system access for the export package
@@ -19,10 +20,8 @@ public class FileSystemRepository {
 
   private final ExportFileNamer fileNamer;
 
-  @Setter
   private Path exportDirectory;
 
-  // todo: how do I pass in a different exportDir if the class is autowired
   @Autowired
   public FileSystemRepository(
     ExportFileNamer fileNamer,
@@ -66,9 +65,12 @@ public class FileSystemRepository {
    * @param fileType The file type of the export
    * @return Path the path where the next export should be exported
    */
-  public Path getNextExportDestination(ExportFileNamer.FileType fileType) {
+  public Path getNextExportDestination(
+    ExportFileNamer.FileType fileType,
+    BeaconsDataWorkbookRepository.OperationType operationType
+  ) {
     Path destination = exportDirectory.resolve(
-      fileNamer.constructTodaysExportFilename(fileType)
+      fileNamer.constructTodaysExportFilename(fileType, operationType)
     );
 
     assert Files.notExists(destination);

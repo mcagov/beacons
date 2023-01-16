@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
 
 @ExtendWith(MockitoExtension.class)
 class FileSystemRepositoryUnitTest {
@@ -30,7 +31,8 @@ class FileSystemRepositoryUnitTest {
       .format(Date.from(Instant.EPOCH));
 
     String filename = exportFileNamer.constructTodaysExportFilename(
-      ExportFileNamer.FileType.EXCEL_SPREADSHEET
+      ExportFileNamer.FileType.EXCEL_SPREADSHEET,
+      BeaconsDataWorkbookRepository.OperationType.EXPORT
     );
 
     assertThat(filename, startsWith(yyyyMMdd));

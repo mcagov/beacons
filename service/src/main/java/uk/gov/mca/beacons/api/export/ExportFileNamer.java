@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
 
 /**
  * Creates filenames for exports and parses data from filenames.
@@ -26,7 +27,6 @@ public class ExportFileNamer {
   private final SimpleDateFormat filenameDatePrefixFormat = new SimpleDateFormat(
     "yyyyMMdd"
   );
-  private final String filename = "Beacons_Data";
   private final String protectiveMarking = "Official-Sensitive_Personal";
 
   public enum FileType {
@@ -51,15 +51,34 @@ public class ExportFileNamer {
    * @param fileType The desired filetype of filename
    * @return String file name using the correct naming convention
    */
-  public String constructTodaysExportFilename(FileType fileType) {
+  public String constructTodaysExportFilename(
+    FileType fileType,
+    BeaconsDataWorkbookRepository.OperationType operationType
+  ) {
     return (
       todaysDateFilenamePrefix() +
       "-" +
-      filename +
+      getFilename(operationType) +
       "-" +
       protectiveMarking +
       fileType.extension
     );
+  }
+
+  private String getFilename(
+    BeaconsDataWorkbookRepository.OperationType operationType
+  ) {
+    String filename = "Beacons_Data";
+
+    switch (operationType) {
+      case EXPORT:
+        filename = "Beacons_Export_Data";
+        break;
+      case BACKUP:
+        filename = "Beacons_Backup_Data";
+    }
+
+    return filename;
   }
 
   public boolean isDatedToday(Path exportPath) {
