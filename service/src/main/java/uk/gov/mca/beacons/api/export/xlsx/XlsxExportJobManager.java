@@ -33,6 +33,7 @@ public class XlsxExportJobManager {
   @Autowired
   public XlsxExportJobManager(JobLauncher jobLauncher, Job exportToXlsxJob) {
     this.jobLauncher = jobLauncher;
+    this.exportToXlsxJob = exportToXlsxJob;
   }
 
   /**
