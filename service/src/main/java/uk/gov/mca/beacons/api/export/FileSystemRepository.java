@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.stream.Stream;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,17 @@ public class FileSystemRepository {
    * @return An Optional Path to the most recent export.
    * @throws IOException if there is a problem accessing the file system
    */
-  public Optional<Path> findMostRecentExport(ExportFileNamer.FileType fileType)
-    throws IOException {
-    return fileNamer.mostRecentFile(Files.list(exportDirectory));
+  public Optional<Path> findMostRecentExport(
+    ExportFileNamer.FileType fileType,
+    String operationName
+  ) throws IOException {
+    Stream<Path> allFilesOfGivenType = Files
+      .list(exportDirectory)
+      .filter(f -> f.endsWith(fileType.extension));
+    Stream<Path> filesForOperation = allFilesOfGivenType.filter(f ->
+      f.getFileName().toString().contains(operationName)
+    );
+    return fileNamer.mostRecentFile(filesForOperation);
   }
 
   /**
@@ -50,12 +59,17 @@ public class FileSystemRepository {
    * @return boolean
    * @throws IOException if there is a problem accessing the file system
    */
-  public boolean todaysExportExists(ExportFileNamer.FileType fileType)
-    throws IOException {
+  public boolean todaysExportExists(
+    ExportFileNamer.FileType fileType,
+    String operationName
+  ) throws IOException {
     return Files
       .list(exportDirectory)
       .filter(path -> !Files.isDirectory(path))
-      .filter(path -> path.getFileName().endsWith(fileType.extension))
+      .filter(path ->
+        path.getFileName().endsWith(fileType.extension) &&
+        path.getFileName().toString().contains(operationName)
+      )
       .anyMatch(fileNamer::isDatedToday);
   }
 

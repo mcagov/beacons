@@ -29,7 +29,11 @@ public class XlsxExporter {
   }
 
   public Optional<Path> getMostRecentExport() throws IOException {
-    return fs.findMostRecentExport(ExportFileNamer.FileType.EXCEL_SPREADSHEET);
+    var file = fs.findMostRecentExport(
+      ExportFileNamer.FileType.EXCEL_SPREADSHEET,
+      "Export"
+    );
+    return file;
   }
 
   /**
@@ -38,7 +42,12 @@ public class XlsxExporter {
    * @throws IOException if there is a problem accessing the file system
    */
   public void export() throws IOException {
-    if (fs.todaysExportExists(ExportFileNamer.FileType.EXCEL_SPREADSHEET)) {
+    if (
+      fs.todaysExportExists(
+        ExportFileNamer.FileType.EXCEL_SPREADSHEET,
+        "Export"
+      )
+    ) {
       log.info(
         "CsvExporter::exportBeaconsToCsv: export file already exists for today at {}.  Doing nothing...",
         getMostRecentExport()

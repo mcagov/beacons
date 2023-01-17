@@ -34,7 +34,8 @@ public class BackupXlsxExporter {
 
   public Optional<Path> getMostRecentBackup() throws IOException {
     var file = fileSystemRepository.findMostRecentExport(
-      ExportFileNamer.FileType.EXCEL_SPREADSHEET
+      ExportFileNamer.FileType.EXCEL_SPREADSHEET,
+      "Backup"
     );
     return file;
   }
@@ -47,7 +48,8 @@ public class BackupXlsxExporter {
   public void backup() throws IOException {
     if (
       fileSystemRepository.todaysExportExists(
-        ExportFileNamer.FileType.EXCEL_SPREADSHEET
+        ExportFileNamer.FileType.EXCEL_SPREADSHEET,
+        "Backup"
       )
     ) {
       log.info(
