@@ -128,7 +128,7 @@ public class LegacyUse implements ValueObject, Serializable {
 
   public Map<String, String> getCommunicationTypes() {
     Map<String, String> communicationTypes = new HashMap<String, String>();
-    communicationTypes.put("Communications", getCommunications());
+    communicationTypes.put("Radio Systems", getCommunications());
     return communicationTypes;
   }
 }

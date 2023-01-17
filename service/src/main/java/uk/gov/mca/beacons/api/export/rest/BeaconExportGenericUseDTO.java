@@ -18,6 +18,9 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String vesselName;
 
   @Valid
+  private String rigName;
+
+  @Valid
   private String typeOfUse;
 
   @Valid

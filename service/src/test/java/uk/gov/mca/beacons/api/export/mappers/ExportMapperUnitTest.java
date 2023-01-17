@@ -9,6 +9,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
@@ -284,10 +285,9 @@ class ExportMapperUnitTest {
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
-      "02833746199 - 01477263499",
+      "02833746199 - 01477263499 - 07899122344 - 07344511288",
       mappedOwnerDTO.getTelephoneNumbers()
     );
-    assertEquals("07899122344 - 07344511288", mappedOwnerDTO.getMobiles());
   }
 
   @Test
@@ -296,8 +296,8 @@ class ExportMapperUnitTest {
     legacyOwner.setOwnerName("Pharoah Sanders");
     legacyOwner.setPhone1("02833746199");
     legacyOwner.setPhone2("01477263499");
-    legacyOwner.setMobile1("");
-    legacyOwner.setMobile2("");
+    legacyOwner.setMobile1("mob1");
+    legacyOwner.setMobile2("mob2");
     legacyOwner.setAddress1("Jazz House");
     legacyOwner.setAddress2("Jazz Land");
 
@@ -305,10 +305,9 @@ class ExportMapperUnitTest {
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
-      "02833746199 - 01477263499",
+      "02833746199 - 01477263499 - mob1 - mob2",
       mappedOwnerDTO.getTelephoneNumbers()
     );
-    assertEquals("", mappedOwnerDTO.getMobiles());
   }
 
   @Test
@@ -333,7 +332,10 @@ class ExportMapperUnitTest {
 
     LabelDTO mappedLabelDTO = mapper.toLabelDTO(registration);
 
-    assertEquals(null, mappedLabelDTO.getProofOfRegistrationDate());
+    assertEquals(
+      OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+      mappedLabelDTO.getProofOfRegistrationDate()
+    );
   }
 
   @Test
