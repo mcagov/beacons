@@ -52,7 +52,7 @@ export const LabelView: FunctionComponent<LabelViewProps> = ({
 
   useEffect(() => {
     exportsGateway.getLabelForBeacon(beaconId).then(setLabel);
-  }, [beaconId]);
+  }, [beaconId, exportsGateway]);
 
   return <RenderLabel label={label} />;
 };
@@ -65,7 +65,7 @@ export const LabelsView: FunctionComponent<LabelsViewProps> = ({
 
   useEffect(() => {
     exportsGateway.getLabelsForBeacons(beaconIds).then(setLabel);
-  }, [beaconIds]);
+  }, [beaconIds, exportsGateway]);
 
   return <RenderLabel label={label} />;
 };

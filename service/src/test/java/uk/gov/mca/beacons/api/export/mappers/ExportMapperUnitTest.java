@@ -300,8 +300,8 @@ class ExportMapperUnitTest {
     legacyOwner.setOwnerName("Pharoah Sanders");
     legacyOwner.setPhone1("02833746199");
     legacyOwner.setPhone2("01477263499");
-    legacyOwner.setMobile1("");
-    legacyOwner.setMobile2("");
+    legacyOwner.setMobile1("mob1");
+    legacyOwner.setMobile2("mob2");
     legacyOwner.setAddress1("Jazz House");
     legacyOwner.setAddress2("Jazz Land");
 
@@ -309,7 +309,7 @@ class ExportMapperUnitTest {
 
     assertEquals(legacyOwner.getOwnerName(), mappedOwnerDTO.getOwnerName());
     assertEquals(
-      "02833746199 - 01477263499",
+      "02833746199 - 01477263499 - mob1 - mob2",
       mappedOwnerDTO.getTelephoneNumbers()
     );
     Assertions.assertNull(mappedOwnerDTO.getMobiles());
@@ -338,7 +338,7 @@ class ExportMapperUnitTest {
     LabelDTO mappedLabelDTO = mapper.toLabelDTO(registration);
 
     assertEquals(
-      OffsetDateTime.now().format(dateFormatter),
+      OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
       mappedLabelDTO.getProofOfRegistrationDate()
     );
   }
