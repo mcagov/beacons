@@ -40,6 +40,7 @@ public class JsonSerialiserUnitTest {
     ownerAddress.setAddressLine1("10 Via Coco");
 
     owner.setOwnerName("Coco Maria");
+    owner.setCompanyName("Cocositos");
     owner.setCareOf("Haseeb Iqbal");
     owner.setAddress(ownerAddress);
     owner.setTelephoneNumbers("01577836277 / 01179822366");
@@ -53,6 +54,8 @@ public class JsonSerialiserUnitTest {
     JSONObject firstMappedOwner = (JSONObject) jsonOwnersArray.get(0);
 
     assertEquals("COCO MARIA", firstMappedOwner.get("owner name"));
+    assertEquals("COCOSITOS", firstMappedOwner.get("company name"));
+    assertEquals("HASEEB IQBAL", firstMappedOwner.get("care of"));
     assertEquals("COCOMARIA@GMAIL.COM", firstMappedOwner.get("email"));
   }
 
@@ -64,6 +67,7 @@ public class JsonSerialiserUnitTest {
     ownerAddress.setAddressLine1("10 Via Coco");
 
     owner.setOwnerName("Coco Maria");
+    owner.setCompanyName("Cocositos");
     owner.setCareOf("Haseeb Iqbal");
     owner.setAddress(ownerAddress);
     owner.setTelephoneNumbers("01577836277 / 01179822366");
@@ -103,6 +107,8 @@ public class JsonSerialiserUnitTest {
       .toString();
 
     assertEquals("", firstMappedOwner.get("owner name"));
+    assertEquals("", firstMappedOwner.get("company name"));
+    assertEquals("", firstMappedOwner.get("care of"));
     assertEquals(
       "{\"address line 1\":\"\",\"country\":\"\",\"address line 2\":\"\",\"address line 3\":\"\",\"address line 4\":\"\",\"postcode\":\"\",\"county\":\"\",\"town or city\":\"\"}",
       stringifiedMappedAddress
