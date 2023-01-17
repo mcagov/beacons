@@ -8,7 +8,7 @@ import {
   GridToolbarExport,
   GridValueFormatterParams,
 } from "@mui/x-data-grid";
-import { Button, Chip, Theme } from "@mui/material";
+import { Button, Theme } from "@mui/material";
 import { makeStyles, createStyles } from "@mui/styles";
 import ContentPrintIcon from "@mui/icons-material/Print";
 import { IBeaconExportSearchResult } from "views/exports/BeaconExportSearch";
