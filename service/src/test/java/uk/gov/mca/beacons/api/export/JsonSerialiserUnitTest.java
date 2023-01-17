@@ -40,7 +40,7 @@ public class JsonSerialiserUnitTest {
     ownerAddress.setAddressLine1("10 Via Coco");
 
     owner.setOwnerName("Coco Maria");
-    owner.setCompanyAgent("Cocositos");
+    owner.setCompanyName("Cocositos");
     owner.setCareOf("Haseeb Iqbal");
     owner.setAddress(ownerAddress);
     owner.setTelephoneNumbers("01577836277 / 01179822366");
@@ -67,7 +67,7 @@ public class JsonSerialiserUnitTest {
     ownerAddress.setAddressLine1("10 Via Coco");
 
     owner.setOwnerName("Coco Maria");
-    owner.setCompanyAgent("Cocositos");
+    owner.setCompanyName("Cocositos");
     owner.setCareOf("Haseeb Iqbal");
     owner.setAddress(ownerAddress);
     owner.setTelephoneNumbers("01577836277 / 01179822366");
