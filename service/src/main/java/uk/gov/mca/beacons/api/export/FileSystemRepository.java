@@ -3,7 +3,9 @@ package uk.gov.mca.beacons.api.export;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -46,10 +48,22 @@ public class FileSystemRepository {
     Stream<Path> allFilesOfGivenType = Files
       .list(exportDirectory)
       .filter(f -> f.endsWith(fileType.extension));
-    Stream<Path> filesForOperation = allFilesOfGivenType.filter(f ->
-      f.getFileName().toString().contains(operationName)
-    );
-    return fileNamer.mostRecentFile(filesForOperation);
+
+    List<String> filenamesForOperation = allFilesOfGivenType
+      .filter(f -> f.getFileName().toString().contains(operationName))
+      .map(f -> f.getFileName().toString())
+      .collect(Collectors.toList());
+
+    List<String> allFilenames = Files
+      .list(exportDirectory)
+      .filter(f -> f.endsWith(fileType.extension))
+      .map(f -> f.getFileName().toString())
+      .collect(Collectors.toList());
+
+    //    Stream<Path> filesForOperation = allFilesOfGivenType.filter(f ->
+    //      f.getFileName().toString().contains(operationName)
+    //    );
+    return fileNamer.mostRecentFile(allFilesOfGivenType);
   }
 
   /**
