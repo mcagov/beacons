@@ -42,30 +42,18 @@ public class FileSystemRepository {
    * @throws IOException if there is a problem accessing the file system
    */
 
-  // unit test with a .txt file can it retreive that?
   public Optional<Path> findMostRecentExport(
     ExportFileNamer.FileType fileType,
     String operationName
   ) throws IOException {
-    Stream<Path> allFilesOfGivenType = Files
+    Stream<Path> allFilesOfGivenTypeForOperation = Files
       .list(exportDirectory)
-      .filter(f -> f.endsWith(fileType.extension));
+      .filter(f ->
+        f.toString().contains(operationName) &&
+        f.toString().endsWith(fileType.extension)
+      );
 
-    List<String> filenamesForOperation = allFilesOfGivenType
-      .filter(f -> f.getFileName().toString().contains(operationName))
-      .map(f -> f.getFileName().toString())
-      .collect(Collectors.toList());
-
-    List<String> allFilenames = Files
-      .list(exportDirectory)
-      .filter(f -> f.endsWith(fileType.extension))
-      .map(f -> f.getFileName().toString())
-      .collect(Collectors.toList());
-
-    //    Stream<Path> filesForOperation = allFilesOfGivenType.filter(f ->
-    //      f.getFileName().toString().contains(operationName)
-    //    );
-    return fileNamer.mostRecentFile(allFilesOfGivenType);
+    return fileNamer.mostRecentFile(allFilesOfGivenTypeForOperation);
   }
 
   /**
