@@ -24,7 +24,6 @@ public class BackupToXlsxJobManager {
 
   private final JobLauncher jobLauncher;
 
-  // todo: how do I reuse one XlsxJobManager and decide at runtime which job I want to run
   private final Job backupToSpreadsheetJob;
 
   private enum logMessages {

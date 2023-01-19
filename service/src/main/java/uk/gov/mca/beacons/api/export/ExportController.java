@@ -2,7 +2,6 @@ package uk.gov.mca.beacons.api.export;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.*;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,7 +23,6 @@ import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
 import uk.gov.mca.beacons.api.export.rest.LabelDTO;
 import uk.gov.mca.beacons.api.export.xlsx.XlsxExporter;
 import uk.gov.mca.beacons.api.export.xlsx.backup.BackupXlsxExporter;
-import uk.gov.mca.beacons.api.export.xlsx.backup.SpreadsheetExportGenerator;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;

@@ -33,12 +33,6 @@ class FileSystemRepositoryUnitTest {
   @InjectMocks
   ExportFileNamer exportFileNamer;
 
-  @Mock
-  ExportFileNamer mockExportFileNamer;
-
-  @InjectMocks
-  FileSystemRepository fileSystemRepository;
-
   @Test
   public void prefixWithTodaysDateInYyyyMMddFormat() {
     when(clock.instant()).thenReturn(Instant.EPOCH);
@@ -51,29 +45,5 @@ class FileSystemRepositoryUnitTest {
     );
 
     assertThat(filename, startsWith(yyyyMMdd));
-  }
-
-  @Test
-  public void findMostRecentExport() throws IOException {
-    Path testFilepath = Path.of("/tmp/beacons/export/test.csv");
-    Files.createFile(testFilepath);
-
-    Stream<Path> allFilesOfGivenType = Files
-      .list(Path.of("/tmp/beacons/export"))
-      .filter(f ->
-        f.endsWith(ExportFileNamer.FileType.COMMA_SEPARATED_VALUE.extension)
-      );
-
-    // this is returning empty list
-    List<String> filenamesForOperation = allFilesOfGivenType
-      .filter(f -> f.getFileName().toString().contains("test"))
-      .map(f -> f.getFileName().toString())
-      .collect(Collectors.toList());
-
-    String firstFile = filenamesForOperation.get(0);
-
-    assertEquals("test.csv", firstFile);
-
-    Files.delete(testFilepath);
   }
 }

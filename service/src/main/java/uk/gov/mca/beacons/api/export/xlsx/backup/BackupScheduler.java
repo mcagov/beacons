@@ -20,7 +20,7 @@ public class BackupScheduler {
   @SchedulerLock(
     name = "xlsxBackup_scheduledTask",
     lockAtLeastFor = "15m", // 15 minutes
-    lockAtMostFor = "30m" // 30 minutes
+    lockAtMostFor = "60m" // 60 minutes
   )
   public void createNewXlsxBackup() throws IOException {
     backupXlsxExporter.backup();

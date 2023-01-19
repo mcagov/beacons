@@ -29,9 +29,6 @@ class BackupBeaconToSpreadsheetRowItemProcessor
   implements ItemProcessor<Beacon, BackupSpreadsheetRow> {
 
   private final RegistrationService registrationService;
-  //  private final BeaconOwnerReadOnlyRepository beaconOwnerRepository;
-  //  private final BeaconUseReadOnlyRepository beaconUseRepository;
-  //  private final EmergencyContactReadOnlyRepository emergencyContactRepository;
   private final NoteService noteService;
   private final AccountHolderService accountHolderService;
 
@@ -44,17 +41,11 @@ class BackupBeaconToSpreadsheetRowItemProcessor
   @Autowired
   public BackupBeaconToSpreadsheetRowItemProcessor(
     RegistrationService registrationService,
-    //BeaconOwnerReadOnlyRepository beaconOwnerRepository,
-    //          BeaconUseReadOnlyRepository beaconUseRepository,
-    //          EmergencyContactReadOnlyRepository emergencyContactRepository,
     NoteService noteService,
     AccountHolderService accountHolderService,
     ExportMapper exportMapper
   ) {
     this.registrationService = registrationService;
-    //    this.beaconOwnerRepository = beaconOwnerRepository;
-    //    this.beaconUseRepository = beaconUseRepository;
-    //    this.emergencyContactRepository = emergencyContactRepository;
     this.noteService = noteService;
     this.accountHolderService = accountHolderService;
     this.exportMapper = exportMapper;

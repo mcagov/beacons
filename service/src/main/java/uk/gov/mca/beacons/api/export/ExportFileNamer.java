@@ -68,17 +68,14 @@ public class ExportFileNamer {
   private String getFilename(
     BeaconsDataWorkbookRepository.OperationType operationType
   ) {
-    String filename = "Beacons_Data";
-
     switch (operationType) {
       case EXPORT:
-        filename = "Beacons_Export_Data";
-        break;
+        return "Beacons_Export_Data";
       case BACKUP:
-        filename = "Beacons_Backup_Data";
+        return "Beacons_Backup_Data";
+      default:
+        return "Beacons_Data";
     }
-
-    return filename;
   }
 
   public boolean isDatedToday(Path exportPath) {
