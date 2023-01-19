@@ -3,11 +3,16 @@ package uk.gov.mca.beacons.api.export;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
 
 /**
  * Encapsulates file system access for the export package
@@ -17,7 +22,8 @@ import org.springframework.stereotype.Component;
 public class FileSystemRepository {
 
   private final ExportFileNamer fileNamer;
-  private final Path exportDirectory;
+
+  private Path exportDirectory;
 
   @Autowired
   public FileSystemRepository(
@@ -35,9 +41,19 @@ public class FileSystemRepository {
    * @return An Optional Path to the most recent export.
    * @throws IOException if there is a problem accessing the file system
    */
-  public Optional<Path> findMostRecentExport(ExportFileNamer.FileType fileType)
-    throws IOException {
-    return fileNamer.mostRecentFile(Files.list(exportDirectory));
+
+  public Optional<Path> findMostRecentExport(
+    ExportFileNamer.FileType fileType,
+    String operationName
+  ) throws IOException {
+    Stream<Path> allFilesOfGivenTypeForOperation = Files
+      .list(exportDirectory)
+      .filter(f ->
+        f.toString().contains(operationName) &&
+        f.toString().endsWith(fileType.extension)
+      );
+
+    return fileNamer.mostRecentFile(allFilesOfGivenTypeForOperation);
   }
 
   /**
@@ -47,12 +63,17 @@ public class FileSystemRepository {
    * @return boolean
    * @throws IOException if there is a problem accessing the file system
    */
-  public boolean todaysExportExists(ExportFileNamer.FileType fileType)
-    throws IOException {
+  public boolean todaysExportExists(
+    ExportFileNamer.FileType fileType,
+    String operationName
+  ) throws IOException {
     return Files
       .list(exportDirectory)
       .filter(path -> !Files.isDirectory(path))
-      .filter(path -> path.getFileName().endsWith(fileType.extension))
+      .filter(path ->
+        path.getFileName().endsWith(fileType.extension) &&
+        path.getFileName().toString().contains(operationName)
+      )
       .anyMatch(fileNamer::isDatedToday);
   }
 
@@ -62,9 +83,12 @@ public class FileSystemRepository {
    * @param fileType The file type of the export
    * @return Path the path where the next export should be exported
    */
-  public Path getNextExportDestination(ExportFileNamer.FileType fileType) {
+  public Path getNextExportDestination(
+    ExportFileNamer.FileType fileType,
+    BeaconsDataWorkbookRepository.OperationType operationType
+  ) {
     Path destination = exportDirectory.resolve(
-      fileNamer.constructTodaysExportFilename(fileType)
+      fileNamer.constructTodaysExportFilename(fileType, operationType)
     );
 
     assert Files.notExists(destination);

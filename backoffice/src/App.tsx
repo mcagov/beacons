@@ -26,7 +26,6 @@ import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { Footer } from "./components/layout/Footer";
 import { Navigation } from "./components/layout/Navigation";
 import { PageContent } from "./components/layout/PageContent";
-import { applicationConfig } from "./config";
 import { BeaconRequestMapper } from "./gateways/mappers/BeaconRequestMapper";
 import { BeaconResponseMapper } from "./gateways/mappers/BeaconResponseMapper";
 import { LegacyBeaconResponseMapper } from "./gateways/mappers/LegacyBeaconResponseMapper";
@@ -38,7 +37,7 @@ import { logToServer } from "./utils/logger";
 import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
-import { AuthenticatedPOSTButton } from "components/AuthenticatedPOSTButton";
+import { AdminView } from "views/AdminView";
 
 interface ResourceParams {
   id: string;
@@ -185,13 +184,7 @@ const App: FunctionComponent = () => {
                 </Route>
                 <Route path={`/admin`}>
                   <Navigation exportsGateway={exportsGateway} />
-                  <PageContent>
-                    <AuthenticatedPOSTButton
-                      uri={`${applicationConfig.apiUrl}/export/xlsx`}
-                    >
-                      Trigger export job
-                    </AuthenticatedPOSTButton>
-                  </PageContent>
+                  <AdminView />
                   <Footer />
                 </Route>
                 <Route path={`/certificate/:id`}>

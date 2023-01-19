@@ -33,9 +33,10 @@ require 'json'
 owner_name = ARGV[0] || Faker::Name.name
 owner_email = ARGV[1] || Faker::Internet.email
 
-
 db_host = 'localhost'
 db_password= 'password'
+
+puts("host is #{db_host}")
 
 conn = PG.connect( dbname: 'beacons', :host => db_host, :port => 5432,
     :user => 'beacons_service', :password => db_password )
@@ -83,7 +84,7 @@ conn.prepare("note", 'INSERT INTO note (id, beacon_id, text, type,
 created_date, user_id, full_name, email) VALUES ($1, $2, $3, $4, $5, $6,
 $7, $8)')
 
-50.times do |count|
+10000.times do |count|
 
 #Setup beacon with dummy data
 

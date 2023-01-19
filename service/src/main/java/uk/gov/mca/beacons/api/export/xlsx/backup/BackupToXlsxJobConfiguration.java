@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.export.xlsx;
+package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import javax.persistence.EntityManagerFactory;
 import org.springframework.batch.core.Job;
@@ -17,12 +17,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
+import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
 @Configuration
 @EnableBatchProcessing
-public class ExportToXlsxJobConfiguration {
+public class BackupToXlsxJobConfiguration {
 
   private final EntityManagerFactory entityManagerFactory;
   private final StepBuilderFactory stepBuilderFactory;
@@ -30,7 +31,7 @@ public class ExportToXlsxJobConfiguration {
   private static final int CHUNK_SIZE = 256;
 
   @Autowired
-  public ExportToXlsxJobConfiguration(
+  public BackupToXlsxJobConfiguration(
     EntityManagerFactory entityManagerFactory,
     StepBuilderFactory stepBuilderFactory,
     JobBuilderFactory jobBuilderFactory
@@ -40,77 +41,77 @@ public class ExportToXlsxJobConfiguration {
     this.jobBuilderFactory = jobBuilderFactory;
   }
 
-  @Bean("exportXlsxBeaconItemReader")
-  public JpaPagingItemReader<Beacon> exportXlsxBeaconItemReader() {
+  @Bean("backupSpreadsheetBeaconItemReader")
+  public JpaPagingItemReader<Beacon> backupSpreadsheetBeaconItemReader() {
     return BeaconItemReaderFactory.getItemReader(entityManagerFactory);
   }
 
-  @Bean("exportXlsxLegacyBeaconItemReader")
-  public JpaPagingItemReader<LegacyBeacon> exportXlsxLegacyBeaconItemReader() {
+  @Bean("backupSpreadsheetLegacyBeaconItemReader")
+  public JpaPagingItemReader<LegacyBeacon> backupSpreadsheetLegacyBeaconItemReader() {
     return LegacyBeaconItemReaderFactory.getItemReader(entityManagerFactory);
   }
 
-  @Bean
-  public Step exportBeaconToXlsxStep(
-    ItemReader<Beacon> exportXlsxBeaconItemReader,
-    ItemProcessor<Beacon, ExportSpreadsheetRow> exportXlsxBeaconToSpreadsheetRowItemProcessor,
-    ItemWriter<ExportSpreadsheetRow> xlsxItemWriter
+  @Bean("backupBeaconToSpreadsheetStep")
+  public Step backupBeaconToSpreadsheetStep(
+    ItemReader<Beacon> backupSpreadsheetBeaconItemReader,
+    ItemProcessor<Beacon, BackupSpreadsheetRow> backupBeaconToSpreadsheetRowItemProcessor,
+    ItemWriter<BackupSpreadsheetRow> xlsxItemWriter
   ) {
     return stepBuilderFactory
-      .get("exportBeaconToXlsxStep")
-      .<Beacon, ExportSpreadsheetRow>chunk(CHUNK_SIZE)
-      .reader(exportXlsxBeaconItemReader)
-      .processor(exportXlsxBeaconToSpreadsheetRowItemProcessor)
+      .get("backupBeaconToSpreadsheetStep")
+      .<Beacon, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
+      .reader(backupSpreadsheetBeaconItemReader)
+      .processor(backupBeaconToSpreadsheetRowItemProcessor)
       .writer(xlsxItemWriter)
       .build();
   }
 
   @Bean
-  public Step exportLegacyBeaconToXlsxStep(
-    ItemReader<LegacyBeacon> exportXlsxLegacyBeaconItemReader,
-    ItemProcessor<LegacyBeacon, ExportSpreadsheetRow> exportXlsxLegacyBeaconToSpreadsheetRowItemProcessor,
-    ItemWriter<ExportSpreadsheetRow> xlsxItemWriter
+  public Step backupLegacyBeaconToSpreadsheetStep(
+    ItemReader<LegacyBeacon> backupSpreadsheetLegacyBeaconItemReader,
+    ItemProcessor<LegacyBeacon, BackupSpreadsheetRow> backupLegacyBeaconToSpreadsheetRowItemProcessor,
+    ItemWriter<BackupSpreadsheetRow> xlsxItemWriter
   ) {
     return stepBuilderFactory
-      .get("exportLegacyBeaconToXlsxStep")
-      .<LegacyBeacon, ExportSpreadsheetRow>chunk(CHUNK_SIZE)
-      .reader(exportXlsxLegacyBeaconItemReader)
-      .processor(exportXlsxLegacyBeaconToSpreadsheetRowItemProcessor)
+      .get("backupLegacyBeaconToSpreadsheetStep")
+      .<LegacyBeacon, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
+      .reader(backupSpreadsheetLegacyBeaconItemReader)
+      .processor(backupLegacyBeaconToSpreadsheetRowItemProcessor)
       .writer(xlsxItemWriter)
       .build();
   }
 
   @Bean
-  public ItemWriter<ExportSpreadsheetRow> xlsxItemWriter(
+  public ItemWriter<BackupSpreadsheetRow> backupToXlsxItemWriter(
     BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
-    return new ExportXlsxItemWriter(beaconsDataWorkbookRepository);
+    return new BackupXlsxItemWriter(beaconsDataWorkbookRepository);
   }
 
-  @Bean("exportToXlsxJobListener")
-  ExportToXlsxJobListener jobListener(
+  @Bean("backupToXlsxJobListener")
+  BackupToXlsxJobListener backupToXlsxJobListener(
     BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
-    return new ExportToXlsxJobListener(beaconsDataWorkbookRepository);
+    return new BackupToXlsxJobListener(beaconsDataWorkbookRepository);
   }
 
-  @Bean(value = "exportToXlsxJob")
-  public Job exportToXlsxJob(
-    Step exportBeaconToXlsxStep,
-    Step exportLegacyBeaconToXlsxStep,
+  @Bean(value = "backupToSpreadsheetJob")
+  public Job backupToSpreadsheetJob(
+    Step backupBeaconToSpreadsheetStep,
+    Step backupLegacyBeaconToSpreadsheetStep,
     @Qualifier(
       "jobExecutionLoggingListener"
     ) JobExecutionListener jobExecutionLoggingListener,
     @Qualifier(
-      "exportToXlsxJobListener"
+      "backupToXlsxJobListener"
     ) JobExecutionListener jobExecutionListener
   ) {
     return jobBuilderFactory
-      .get("exportToXlsxJob")
+      .get("backupToSpreadsheetJob")
       .listener(jobExecutionLoggingListener)
       .listener(jobExecutionListener)
-      .start(exportBeaconToXlsxStep)
-      .next(exportLegacyBeaconToXlsxStep)
+      .start(backupBeaconToSpreadsheetStep)
+      .next(backupLegacyBeaconToSpreadsheetStep)
       .build();
   }
 }

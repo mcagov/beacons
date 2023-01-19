@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.export.xlsx;
+package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -9,27 +9,35 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.batch.item.ItemWriter;
-import uk.gov.mca.beacons.api.export.SpreadsheetRow;
+import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
+import uk.gov.mca.beacons.api.export.xlsx.SpreadsheetRow;
+import uk.gov.mca.beacons.api.export.xlsx.backup.BackupSpreadsheetRow;
 
-public class XlsxItemWriter implements ItemWriter<SpreadsheetRow> {
+public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
 
   BeaconsDataWorkbookRepository beaconsDataWorkbookRepository;
 
-  XlsxItemWriter(BeaconsDataWorkbookRepository beaconsDataWorkbookRepository) {
+  public BackupXlsxItemWriter(
+    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
+  ) {
     this.beaconsDataWorkbookRepository = beaconsDataWorkbookRepository;
   }
 
   @Override
-  public void write(List<? extends SpreadsheetRow> list)
+  public void write(List<? extends BackupSpreadsheetRow> list)
     throws NullPointerException {
     Sheet sheet = Objects
-      .requireNonNull(beaconsDataWorkbookRepository.getWorkbook().get())
-      .getSheet("Beacons Data");
+      .requireNonNull(
+        beaconsDataWorkbookRepository
+          .getWorkbook(BeaconsDataWorkbookRepository.OperationType.BACKUP)
+          .get()
+      )
+      .getSheet("Beacons Backup Data");
 
     // returns -1 if there are no rows;
     int currentRowNum = sheet.getLastRowNum() + 1;
 
-    for (SpreadsheetRow row : list) {
+    for (BackupSpreadsheetRow row : list) {
       writeRow(sheet, currentRowNum, row);
       currentRowNum++;
     }
@@ -38,7 +46,7 @@ public class XlsxItemWriter implements ItemWriter<SpreadsheetRow> {
   private void writeRow(
     Sheet sheet,
     int currentRowNumber,
-    SpreadsheetRow data
+    BackupSpreadsheetRow data
   ) {
     List<String> values = prepareValues(data);
     Row row = sheet.createRow(currentRowNumber);
@@ -47,8 +55,8 @@ public class XlsxItemWriter implements ItemWriter<SpreadsheetRow> {
     }
   }
 
-  private List<String> prepareValues(SpreadsheetRow row) {
-    return SpreadsheetRow.COLUMN_ATTRIBUTES
+  private List<String> prepareValues(BackupSpreadsheetRow row) {
+    return BackupSpreadsheetRow.COLUMN_ATTRIBUTES
       .stream()
       .map(attribute -> {
         try {

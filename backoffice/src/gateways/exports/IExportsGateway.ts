@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import {
   ExportSearchFormProps,
   IBeaconExportSearchResult,
@@ -19,5 +18,4 @@ export interface IExportsGateway {
   searchExportData(
     searchForm: ExportSearchFormProps
   ): Promise<IBeaconExportSearchResult>;
-  getBackupExportFile(): Promise<AxiosResponse>;
 }

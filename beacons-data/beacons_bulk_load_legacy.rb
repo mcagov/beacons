@@ -12,6 +12,8 @@ def populateBeacons
   	db_host = 'localhost'
 	db_password= 'password'
 
+	puts("host is #{db_host}")
+
 	conn = PG.connect( dbname: 'beacons', :host => db_host, :port => 5432,
 		 :user => 'beacons_service', :password => db_password )
 
@@ -24,7 +26,7 @@ def populateBeacons
 	useLookup["RIG/PLATFORM"] = ["RIG_USE"]
 	useLookup["MOD"] = ["MOD_USE"]
 
-	20.times do |count|
+	10000.times do |count|
 
 		Faker::Config.locale = 'en-GB'
 
@@ -37,7 +39,7 @@ def populateBeacons
 		person_uuid = SecureRandom.uuid
 		account_holder_uuid = SecureRandom.uuid
 		beacon_uuid = SecureRandom.uuid
-		hex_id = Faker::Base.regexify("1D[A-F1-9]{13}")
+		hex_id =  Faker::Base.regexify("1D[A-F1-9]{13}")
 		person_type_emergency = "EMERGENCY_CONTACT"
 		person_type_owner = "OWNER"
 		auth_id = SecureRandom.uuid
@@ -260,3 +262,4 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 end
 
 populateBeacons
+#populateBeaconsWithNoHexIds

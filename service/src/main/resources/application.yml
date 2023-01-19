@@ -66,3 +66,6 @@ opensearch:
 
 export:
   directory: /var/export
+
+backup:
+  directory: /var/backup

@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.export.xlsx;
+package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -20,37 +20,40 @@ import uk.gov.mca.beacons.api.export.ExportFailedException;
  */
 @Component
 @Slf4j
-public class XlsxExportJobManager {
+public class BackupToXlsxJobManager {
 
   private final JobLauncher jobLauncher;
 
-  private Job exportToXlsxJob;
+  private final Job backupToSpreadsheetJob;
 
   private enum logMessages {
     SPREADSHEET_EXPORT_FAILED,
   }
 
   @Autowired
-  public XlsxExportJobManager(JobLauncher jobLauncher, Job exportToXlsxJob) {
+  public BackupToXlsxJobManager(
+    JobLauncher jobLauncher,
+    Job backupToSpreadsheetJob
+  ) {
     this.jobLauncher = jobLauncher;
-    this.exportToXlsxJob = exportToXlsxJob;
+    this.backupToSpreadsheetJob = backupToSpreadsheetJob;
   }
 
   /**
-   * Synchronously start the exportToCsvJob using the default JobLauncher.
+   * Synchronously start the backupToSpreadsheetJob using the default JobLauncher.
    *
    * @throws ExportFailedException if the export fails
    */
-  public void export(Path destination) throws ExportFailedException {
-    export(jobLauncher, destination);
+  public void backup(Path destination) throws ExportFailedException {
+    backup(jobLauncher, destination);
   }
 
-  private void export(JobLauncher jobLauncher, Path destination)
+  private void backup(JobLauncher jobLauncher, Path destination)
     throws ExportFailedException {
     try {
       JobExecution jobExecution = jobLauncher.run(
-        exportToXlsxJob,
-        getExportJobParameters(destination.toString())
+        backupToSpreadsheetJob,
+        getBackupJobParameters(destination.toString())
       );
       BatchStatus jobExecutionStatus = jobExecution.getStatus();
       if (!Objects.equals(jobExecutionStatus, BatchStatus.COMPLETED)) {
@@ -61,7 +64,7 @@ public class XlsxExportJobManager {
     } catch (Exception e) {
       log.error(
         "[{}]: Tried to launch {} with jobLauncher {} but failed",
-        exportToXlsxJob.getName(),
+        backupToSpreadsheetJob.getName(),
         logMessages.SPREADSHEET_EXPORT_FAILED,
         jobLauncher.getClass()
       );
@@ -69,7 +72,7 @@ public class XlsxExportJobManager {
     }
   }
 
-  private JobParameters getExportJobParameters(String destination)
+  private JobParameters getBackupJobParameters(String destination)
     throws ExportFailedException {
     JobParametersBuilder builder = new JobParametersBuilder();
     builder.addDate("date", new Date());

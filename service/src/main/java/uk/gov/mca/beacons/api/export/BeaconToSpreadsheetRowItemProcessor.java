@@ -14,11 +14,11 @@ import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseReadOnlyRepository;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContactReadOnlyRepository;
-import uk.gov.mca.beacons.api.export.SpreadsheetRow;
+import uk.gov.mca.beacons.api.export.xlsx.ExportSpreadsheetRow;
 
 @Component
 class BeaconToSpreadsheetRowItemProcessor
-  implements ItemProcessor<Beacon, SpreadsheetRow> {
+  implements ItemProcessor<Beacon, ExportSpreadsheetRow> {
 
   private final BeaconOwnerReadOnlyRepository beaconOwnerRepository;
   private final BeaconUseReadOnlyRepository beaconUseRepository;
@@ -37,7 +37,7 @@ class BeaconToSpreadsheetRowItemProcessor
 
   @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
   @Override
-  public SpreadsheetRow process(Beacon beacon) {
+  public ExportSpreadsheetRow process(Beacon beacon) {
     BeaconId beaconId = beacon.getId();
     BeaconOwner beaconOwner = beaconOwnerRepository
       .findBeaconOwnerByBeaconId(beaconId)
@@ -49,7 +49,7 @@ class BeaconToSpreadsheetRowItemProcessor
       beaconId
     );
 
-    return new SpreadsheetRow(
+    return new ExportSpreadsheetRow(
       beacon,
       beaconOwner,
       beaconUses,

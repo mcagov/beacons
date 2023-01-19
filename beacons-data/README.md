@@ -42,14 +42,14 @@ xcrun gem install faker
 
 - In AWS, allow public connections and add an inbound connection rule, allowing your IP address to connect to the VPC containing the relevant DB
 - Connect your psql shell or pgAdmin instance to your desired DB server
-- _For legacy beacons_, run the following SQL code to clear the data:
+- _For legacy beacons_, run the following SQL code to clear the data if you need to:
 
 ```
 delete from legacy_beacon_claim_event;
 delete from legacy_beacon;
 ```
 
-- _For modern beacons_, run the following SQL code to clear the data:
+- _For modern beacons_, run the following SQL code to clear the data if you need to:
 
 ```
 update account_holder set person_id = null;
@@ -64,7 +64,7 @@ delete from account_holder;
 delete from person;
 ```
 
-- Obtain the credentials relevant to the environment you're working with from 1Password, and use them to replace the local DB credentials below in the code (only temporarily though: do not commit these sensitive values to source control)
+- Obtain the DB credentials relevant to the environment you're working with from 1Password, and use them to replace the local DB credentials below in the code (only temporarily though: do not commit these sensitive values to source control)
 
 ```
 db_host = 'localhost'

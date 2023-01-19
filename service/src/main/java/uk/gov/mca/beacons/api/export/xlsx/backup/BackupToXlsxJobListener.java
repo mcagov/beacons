@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.export.xlsx;
+package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,13 +12,14 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
+import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
 
 @Slf4j
-public class ExportToXlsxJobListener implements JobExecutionListener {
+public class BackupToXlsxJobListener implements JobExecutionListener {
 
   private final BeaconsDataWorkbookRepository beaconsDataWorkbookRepository;
 
-  ExportToXlsxJobListener(
+  BackupToXlsxJobListener(
     BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
     this.beaconsDataWorkbookRepository = beaconsDataWorkbookRepository;
@@ -37,11 +38,11 @@ public class ExportToXlsxJobListener implements JobExecutionListener {
         OutputStream fileOutputStream = Files.newOutputStream(destination);
         SXSSFWorkbook workbook = Objects.requireNonNull(
           beaconsDataWorkbookRepository
-            .getWorkbook(BeaconsDataWorkbookRepository.OperationType.EXPORT)
+            .getWorkbook(BeaconsDataWorkbookRepository.OperationType.BACKUP)
             .get()
         );
 
-        SXSSFSheet sheet = workbook.getSheet("Beacons Export Data");
+        SXSSFSheet sheet = workbook.getSheet("Beacons Backup Data");
 
         for (Integer i : sheet.getTrackedColumnsForAutoSizing()) {
           sheet.autoSizeColumn(i);
