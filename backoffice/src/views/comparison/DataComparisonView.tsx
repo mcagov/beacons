@@ -1,4 +1,3 @@
-import { useAuthContext } from "components/auth/AuthProvider";
 import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import { FunctionComponent, useEffect, useState } from "react";
 
