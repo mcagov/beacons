@@ -1,7 +1,10 @@
 package uk.gov.mca.beacons.api.search;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
@@ -12,11 +15,11 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseRepository;
-import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
+import uk.gov.mca.beacons.api.search.domain.BeaconOverview;
 import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
 
 @Service
@@ -84,5 +87,58 @@ public class BeaconSearchService {
     );
 
     return beaconSearchRepository.save(beaconSearchDocument);
+  }
+
+  public List<BeaconOverview> getBeaconOverviews() {
+    List<BeaconOverview> overviews = beaconRepository
+      .findAll()
+      .stream()
+      .map(b ->
+        new BeaconOverview(
+          b.getId().unwrap(),
+          b.getHexId(),
+          b.getLastModifiedDate()
+        )
+      )
+      .collect(Collectors.toList());
+    List<BeaconOverview> legacyOverviews = legacyBeaconRepository
+      .findAll()
+      .stream()
+      .map(lb ->
+        new BeaconOverview(
+          lb.getId().unwrap(),
+          lb.getHexId(),
+          lb.getLastModifiedDate()
+        )
+      )
+      .collect(Collectors.toList());
+
+    overviews.addAll(legacyOverviews);
+
+    return overviews;
+  }
+
+  public List<BeaconOverview> getBeaconSearchOverviews() {
+    List<BeaconOverview> overviews = new ArrayList<>();
+    beaconSearchRepository
+      .findAll()
+      .forEach(bsd ->
+        overviews.add(
+          new BeaconOverview(
+            bsd.getId(),
+            bsd.getHexId(),
+            bsd.getLastModifiedDate()
+          )
+        )
+      );
+
+    return overviews;
+  }
+
+  public List<UUID> getBeaconSearchIds() {
+    List<UUID> searchIds = new ArrayList<>();
+    beaconSearchRepository.findAll().forEach(bsd -> searchIds.add(bsd.getId()));
+
+    return searchIds;
   }
 }
