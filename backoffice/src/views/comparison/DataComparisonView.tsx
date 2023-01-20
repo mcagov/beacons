@@ -34,7 +34,9 @@ export const DataComparisonView: FunctionComponent<
       <li>DB Count : {result.dbCount}</li>
       <li>Open Search Count : {result.openSearchCount}</li>
       <li>Open Search Missing Count : {result.missingCount}</li>
-      {result.missing.length > 0 && <li>Open Search Missing Beacons :</li>}
+      {result.missing && result.missing.length > 0 && (
+        <li>Open Search Missing Beacons :</li>
+      )}
       {result.missing &&
         result.missing.map((missingBeacon, index) => (
           <li key={index}>
