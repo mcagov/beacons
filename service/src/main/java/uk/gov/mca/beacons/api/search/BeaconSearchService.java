@@ -89,7 +89,25 @@ public class BeaconSearchService {
     return beaconSearchRepository.save(beaconSearchDocument);
   }
 
-  public List<BeaconOverview> getBeaconOverviews() {
+  public ComparisonResult compareDataSources() {
+    List<BeaconOverview> dbBeacons = getBeaconOverviews();
+    List<UUID> opensearchBeaconIds = getBeaconSearchIds();
+
+    List<BeaconOverview> missingBeacons = dbBeacons
+      .stream()
+      .filter(bo -> !opensearchBeaconIds.contains(bo.getId()))
+      .collect(Collectors.toList());
+
+    ComparisonResult result = new ComparisonResult();
+    result.setDbCount(dbBeacons.size());
+    result.setOpenSearchCount(opensearchBeaconIds.size());
+    result.setMissingCount(missingBeacons.size());
+    result.setMissing(missingBeacons);
+
+    return result;
+  }
+
+  private List<BeaconOverview> getBeaconOverviews() {
     List<BeaconOverview> overviews = beaconRepository
       .findAll()
       .stream()
@@ -118,47 +136,12 @@ public class BeaconSearchService {
     return overviews;
   }
 
-  public List<BeaconOverview> getBeaconSearchOverviews() {
-    List<BeaconOverview> overviews = new ArrayList<>();
-    beaconSearchRepository
-      .findAll()
-      .forEach(bsd ->
-        overviews.add(
-          new BeaconOverview(
-            bsd.getId(),
-            bsd.getHexId(),
-            bsd.getLastModifiedDate()
-          )
-        )
-      );
-
-    return overviews;
-  }
-
-  public List<UUID> getBeaconSearchIds() {
+  private List<UUID> getBeaconSearchIds() {
     List<UUID> searchIds = new ArrayList<>();
     Iterable<BeaconSearchDocument> response = beaconSearchRepository.findAll();
 
     response.forEach(bsd -> searchIds.add(bsd.getId()));
 
     return searchIds;
-  }
-
-  public ComparisonResult compareDataSources() {
-    List<BeaconOverview> dbBeacons = getBeaconOverviews();
-    List<UUID> opensearchBeaconIds = getBeaconSearchIds();
-
-    List<BeaconOverview> missingBeacons = dbBeacons
-      .stream()
-      .filter(bo -> !opensearchBeaconIds.contains(bo.getId()))
-      .collect(Collectors.toList());
-
-    ComparisonResult result = new ComparisonResult();
-    result.setDbCount(dbBeacons.size());
-    result.setOpenSearchCount(opensearchBeaconIds.size());
-    result.setMissingCount(missingBeacons.size());
-    result.setMissing(missingBeacons);
-
-    return result;
   }
 }
