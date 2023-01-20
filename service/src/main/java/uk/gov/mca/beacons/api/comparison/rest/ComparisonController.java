@@ -25,24 +25,11 @@ public class ComparisonController {
 
   @GetMapping(value = "/missing")
   public ResponseEntity<ComparisonResult> get() {
-    List<BeaconOverview> dbBeacons = beaconSearchService.getBeaconOverviews();
-    List<UUID> opensearchBeaconIds = beaconSearchService.getBeaconSearchIds();
-
-    List<BeaconOverview> missingBeacons = dbBeacons
-      .stream()
-      .filter(bo -> !opensearchBeaconIds.contains(bo.getId()))
-      .collect(Collectors.toList());
-
-    ComparisonResult response = new ComparisonResult();
-
-    response.setDbCount(dbBeacons.size());
-    response.setOpenSearchCount(opensearchBeaconIds.size());
-    response.setMissingCount(missingBeacons.size());
-    response.setMissing(missingBeacons);
+    ComparisonResult result = beaconSearchService.compareDataSources();
 
     return ResponseEntity
       .ok()
       .contentType(MediaType.APPLICATION_JSON)
-      .body(response);
+      .body(result);
   }
 }

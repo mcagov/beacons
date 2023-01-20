@@ -9,6 +9,7 @@ import {
 import { logToServer } from "../../utils/logger";
 import { IBeaconExport } from "./IBeaconExport";
 import { IExportsGateway } from "./IExportsGateway";
+import { IDataComparison } from "views/comparison/DataComparisonView";
 
 export class ExportsGateway implements IExportsGateway {
   private _authGateway;
@@ -182,6 +183,22 @@ export class ExportsGateway implements IExportsGateway {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
+      });
+      return exportResponse.data;
+    } catch (error) {
+      logToServer.error(error);
+      throw error;
+    }
+  }
+
+  public async getDataComparison(): Promise<IDataComparison> {
+    const accessToken = await this._authGateway.getAccessToken();
+    const url = `${applicationConfig.apiUrl}/comparison/missing`;
+
+    try {
+      const exportResponse = await axios.get<IDataComparison>(url, {
+        timeout: applicationConfig.apiTimeoutMs,
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
       return exportResponse.data;
     } catch (error) {

@@ -3,6 +3,7 @@ import {
   IBeaconExportSearchResult,
 } from "views/exports/BeaconExportSearch";
 import { IBeaconExport } from "./IBeaconExport";
+import { IDataComparison } from "views/comparison/DataComparisonView";
 
 export interface IExportsGateway {
   getCertificateDataForBeacon(beaconId: string): Promise<IBeaconExport>;
@@ -18,4 +19,6 @@ export interface IExportsGateway {
   searchExportData(
     searchForm: ExportSearchFormProps
   ): Promise<IBeaconExportSearchResult>;
+
+  getDataComparison(): Promise<IDataComparison>;
 }

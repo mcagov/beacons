@@ -38,6 +38,7 @@ import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 import { AdminView } from "views/AdminView";
+import { DataComparisonView } from "views/comparison/DataComparisonView";
 
 interface ResourceParams {
   id: string;
@@ -173,6 +174,13 @@ const App: FunctionComponent = () => {
                   <Navigation exportsGateway={exportsGateway} />
                   <PageContent>
                     <UserRolesView />
+                  </PageContent>
+                  <Footer />
+                </Route>
+                <Route path={`/comparison/missing`}>
+                  <Navigation exportsGateway={exportsGateway} />
+                  <PageContent>
+                    <DataComparisonView exportsGateway={exportsGateway} />
                   </PageContent>
                   <Footer />
                 </Route>
