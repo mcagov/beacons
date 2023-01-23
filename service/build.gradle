@@ -57,7 +57,7 @@ dependencies {
 
     runtimeOnly 'org.postgresql:postgresql:42.3.4'
 
-    developmentOnly('org.springframework.boot:spring-boot-devtools:2.6.6')
+    developmentOnly('org.springframework.boot:spring-boot-devtools:3.0.2')
 
     implementation("com.github.javafaker:javafaker:1.0.2")
 
