@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconRepository;
@@ -15,6 +16,7 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseRepository;
 import uk.gov.mca.beacons.api.comparison.rest.ComparisonResult;
+import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
@@ -31,19 +33,27 @@ public class BeaconSearchService {
   BeaconUseRepository beaconUseRepository;
   LegacyBeaconRepository legacyBeaconRepository;
 
+  BeaconService beaconService;
+  LegacyBeaconService legacyBeaconService;
+  private final int batchSize = 200;
+
   @Autowired
   public BeaconSearchService(
     BeaconSearchRepository beaconSearchRepository,
     BeaconRepository beaconRepository,
     BeaconOwnerRepository beaconOwnerRepository,
     BeaconUseRepository beaconUseRepository,
-    LegacyBeaconRepository legacyBeaconRepository
+    LegacyBeaconRepository legacyBeaconRepository,
+    BeaconService beaconService,
+    LegacyBeaconService legacyBeaconService
   ) {
     this.beaconSearchRepository = beaconSearchRepository;
     this.beaconRepository = beaconRepository;
     this.beaconOwnerRepository = beaconOwnerRepository;
     this.beaconUseRepository = beaconUseRepository;
     this.legacyBeaconRepository = legacyBeaconRepository;
+    this.beaconService = beaconService;
+    this.legacyBeaconService = legacyBeaconService;
   }
 
   /**
@@ -108,6 +118,18 @@ public class BeaconSearchService {
   }
 
   private List<BeaconOverview> getBeaconOverviews() {
+    // todo: batch
+    //    List<BeaconOverview>
+    int totalNumberOfBeacons = beaconRepository.findAll().size();
+    int numberProcessedSoFar = 0;
+    while (totalNumberOfBeacons < this.batchSize) {
+      List<Beacon> batchOfBeacons = beaconService.getBatch(
+        this.batchSize,
+        numberProcessedSoFar
+      );
+      numberProcessedSoFar += this.batchSize;
+    }
+
     List<BeaconOverview> overviews = beaconRepository
       .findAll()
       .stream()
@@ -119,6 +141,8 @@ public class BeaconSearchService {
         )
       )
       .collect(Collectors.toList());
+
+    // todo: batch
     List<BeaconOverview> legacyOverviews = legacyBeaconRepository
       .findAll()
       .stream()
@@ -136,6 +160,7 @@ public class BeaconSearchService {
     return overviews;
   }
 
+  // todo: batch
   private List<UUID> getBeaconSearchIds() {
     List<UUID> searchIds = new ArrayList<>();
     Iterable<BeaconSearchDocument> response = beaconSearchRepository.findAll();
