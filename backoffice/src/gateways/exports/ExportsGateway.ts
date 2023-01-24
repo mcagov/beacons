@@ -197,7 +197,7 @@ export class ExportsGateway implements IExportsGateway {
 
     try {
       const exportResponse = await axios.get<IDataComparison>(url, {
-        timeout: applicationConfig.apiTimeoutMs,
+        timeout: 400000,
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       return exportResponse.data;

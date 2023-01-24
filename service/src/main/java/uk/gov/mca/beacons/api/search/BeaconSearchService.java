@@ -101,7 +101,7 @@ public class BeaconSearchService {
 
   public ComparisonResult compareDataSources() {
     List<BeaconOverview> dbBeacons = getBeaconOverviews();
-    List<UUID> opensearchBeaconIds = getBeaconSearchIds();
+    List<UUID> opensearchBeaconIds = List.of(UUID.randomUUID()); //getBeaconSearchIds();
 
     List<BeaconOverview> missingBeacons = dbBeacons
       .stream()
@@ -118,49 +118,52 @@ public class BeaconSearchService {
   }
 
   private List<BeaconOverview> getBeaconOverviews() {
-    // todo: batch
-    //    List<BeaconOverview>
-    int totalNumberOfBeacons = beaconRepository.findAll().size();
+    // todo: try increasing axios timeout for this request
+    //  if that doesn't work, use Spring batch instead
+    ArrayList<BeaconOverview> beaconOverviews = new ArrayList<>();
+
+    int totalNumberOfModernBeacons = beaconRepository.findAll().size();
     int numberProcessedSoFar = 0;
-    while (totalNumberOfBeacons < this.batchSize) {
+    while (totalNumberOfModernBeacons > this.batchSize) {
       List<Beacon> batchOfBeacons = beaconService.getBatch(
         this.batchSize,
         numberProcessedSoFar
       );
       numberProcessedSoFar += this.batchSize;
+
+      beaconOverviews.addAll(
+        batchOfBeacons
+          .stream()
+          .map(b ->
+            new BeaconOverview(
+              b.getId().unwrap(),
+              b.getHexId(),
+              b.getLastModifiedDate()
+            )
+          )
+          .collect(Collectors.toList())
+      );
     }
 
-    List<BeaconOverview> overviews = beaconRepository
-      .findAll()
-      .stream()
-      .map(b ->
-        new BeaconOverview(
-          b.getId().unwrap(),
-          b.getHexId(),
-          b.getLastModifiedDate()
-        )
-      )
-      .collect(Collectors.toList());
-
     // todo: batch
-    List<BeaconOverview> legacyOverviews = legacyBeaconRepository
-      .findAll()
-      .stream()
-      .map(lb ->
-        new BeaconOverview(
-          lb.getId().unwrap(),
-          lb.getHexId(),
-          lb.getLastModifiedDate()
-        )
-      )
-      .collect(Collectors.toList());
+    //    List<BeaconOverview> legacyOverviews = legacyBeaconRepository
+    //      .findAll()
+    //      .stream()
+    //      .map(lb ->
+    //        new BeaconOverview(
+    //          lb.getId().unwrap(),
+    //          lb.getHexId(),
+    //          lb.getLastModifiedDate()
+    //        )
+    //      )
+    //      .collect(Collectors.toList());
+    //
+    //    overviews.addAll(legacyOverviews);
 
-    overviews.addAll(legacyOverviews);
-
-    return overviews;
+    return beaconOverviews;
   }
 
-  // todo: batch
+  // todo: batch using the scroll api because 'window is too large, from + size must be less than or equal to: [10000] but was [24329]'
   private List<UUID> getBeaconSearchIds() {
     List<UUID> searchIds = new ArrayList<>();
     Iterable<BeaconSearchDocument> response = beaconSearchRepository.findAll();
