@@ -118,21 +118,45 @@ public class BeaconSearchService {
   }
 
   private List<BeaconOverview> getBeaconOverviews() {
-    // todo: try increasing axios timeout for this request
-    //  if that doesn't work, use Spring batch instead
-    ArrayList<BeaconOverview> beaconOverviews = new ArrayList<>();
+    // todo: Sam's original code with a timeout of 100000 mostly works
+    // only thing that doesn't is opensearch results
+    ArrayList<BeaconOverview> overviews = new ArrayList<>();
 
     int totalNumberOfModernBeacons = beaconRepository.findAll().size();
     int numberProcessedSoFar = 0;
-    while (totalNumberOfModernBeacons > this.batchSize) {
-      List<Beacon> batchOfBeacons = beaconService.getBatch(
-        this.batchSize,
+    int numberLeftToProcess = totalNumberOfModernBeacons;
+
+    if (numberLeftToProcess > this.batchSize) {
+      while (numberLeftToProcess > 0) {
+        List<Beacon> batchOfBeacons = beaconService.getBatch(
+          this.batchSize,
+          numberProcessedSoFar
+        );
+
+        overviews.addAll(
+          batchOfBeacons
+            .stream()
+            .map(b ->
+              new BeaconOverview(
+                b.getId().unwrap(),
+                b.getHexId(),
+                b.getLastModifiedDate()
+              )
+            )
+            .collect(Collectors.toList())
+        );
+
+        numberProcessedSoFar += this.batchSize;
+        numberLeftToProcess -= this.batchSize;
+      }
+    } else {
+      List<Beacon> remainingBeacons = beaconService.getBatch(
+        numberLeftToProcess,
         numberProcessedSoFar
       );
-      numberProcessedSoFar += this.batchSize;
 
-      beaconOverviews.addAll(
-        batchOfBeacons
+      overviews.addAll(
+        remainingBeacons
           .stream()
           .map(b ->
             new BeaconOverview(
@@ -145,22 +169,21 @@ public class BeaconSearchService {
       );
     }
 
-    // todo: batch
-    //    List<BeaconOverview> legacyOverviews = legacyBeaconRepository
-    //      .findAll()
-    //      .stream()
-    //      .map(lb ->
-    //        new BeaconOverview(
-    //          lb.getId().unwrap(),
-    //          lb.getHexId(),
-    //          lb.getLastModifiedDate()
-    //        )
-    //      )
-    //      .collect(Collectors.toList());
-    //
-    //    overviews.addAll(legacyOverviews);
+    List<BeaconOverview> legacyOverviews = legacyBeaconRepository
+      .findAll()
+      .stream()
+      .map(lb ->
+        new BeaconOverview(
+          lb.getId().unwrap(),
+          lb.getHexId(),
+          lb.getLastModifiedDate()
+        )
+      )
+      .collect(Collectors.toList());
 
-    return beaconOverviews;
+    overviews.addAll(legacyOverviews);
+
+    return overviews;
   }
 
   // todo: batch using the scroll api because 'window is too large, from + size must be less than or equal to: [10000] but was [24329]'
