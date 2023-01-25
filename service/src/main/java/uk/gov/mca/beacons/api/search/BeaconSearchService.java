@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.search;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -123,18 +124,21 @@ public class BeaconSearchService {
     return result;
   }
 
+  // todo: do we want one HashMap or a list of HashMaps?
   private List<BeaconOverview> getBeaconOverviews() {
-    // todo: Sam's original code with a timeout of 100000 mostly works
-    // only thing that doesn't is opensearch results
-    List<BeaconOverview> overviews = beaconRepository
+    HashMap overviews = beaconRepository
       .findAll()
       .stream()
       .map(b ->
-        new BeaconOverview(
-          b.getId().unwrap(),
-          b.getHexId(),
-          b.getLastModifiedDate()
-        )
+        new HashMap<UUID, BeaconOverview>()
+          .put(
+            b.getId().unwrap(),
+            new BeaconOverview(
+              b.getId().unwrap(),
+              b.getHexId(),
+              b.getLastModifiedDate()
+            )
+          )
       )
       .collect(Collectors.toList());
 
@@ -155,15 +159,8 @@ public class BeaconSearchService {
     return overviews;
   }
 
-  // todo: batch using the scroll api because 'window is too large, from + size must be less than or equal to: [10000] but was [24329]'
-  // limit, offset and orderby like a DB
-  // .skip
   private List<UUID> getBeaconSearchIds() {
     List<UUID> searchIds = new ArrayList<>();
-    // was
-    //    Iterable<BeaconSearchDocument> response = beaconSearchRepository.findAll();
-    // while loop increment page no
-    // add no of ids returned to an incrementing total
 
     int currentPageNumber = 0;
     int maxNumberOfBeaconsPerPage = 10000;
@@ -177,6 +174,7 @@ public class BeaconSearchService {
       results.forEach(bsd -> searchIds.add(bsd.getId()));
 
       currentPageNumber++;
+      numberOfPagesLeft--;
     }
     return searchIds;
   }
