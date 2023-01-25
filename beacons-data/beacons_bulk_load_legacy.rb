@@ -26,7 +26,7 @@ def populateBeacons
 	useLookup["RIG/PLATFORM"] = ["RIG_USE"]
 	useLookup["MOD"] = ["MOD_USE"]
 
-	10000.times do |count|
+	70000.times do |count|
 
 		Faker::Config.locale = 'en-GB'
 
