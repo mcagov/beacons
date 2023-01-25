@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.collections.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
@@ -104,6 +108,7 @@ public class BeaconSearchService {
     List<BeaconOverview> dbBeacons = getBeaconOverviews();
     List<UUID> opensearchBeaconIds = getBeaconSearchIds(); // List.of(UUID.randomUUID());
 
+    // hash map isntead
     List<BeaconOverview> missingBeacons = dbBeacons
       .stream()
       .filter(bo -> !opensearchBeaconIds.contains(bo.getId()))
@@ -151,12 +156,28 @@ public class BeaconSearchService {
   }
 
   // todo: batch using the scroll api because 'window is too large, from + size must be less than or equal to: [10000] but was [24329]'
+  // limit, offset and orderby like a DB
+  // .skip
   private List<UUID> getBeaconSearchIds() {
     List<UUID> searchIds = new ArrayList<>();
-    Stream<BeaconSearchDocument> response = beaconSearchRepository.findBy();
+    // was
+    //    Iterable<BeaconSearchDocument> response = beaconSearchRepository.findAll();
+    // while loop increment page no
+    // add no of ids returned to an incrementing total
 
-    response.forEach(bsd -> searchIds.add(bsd.getId()));
+    int currentPageNumber = 0;
+    int maxNumberOfBeaconsPerPage = 10000;
+    long numberOfPagesLeft =
+      beaconSearchRepository.count() / maxNumberOfBeaconsPerPage;
 
+    while (numberOfPagesLeft > 0) {
+      Page<BeaconSearchDocument> results = beaconSearchRepository.findAll(
+        PageRequest.of(currentPageNumber, 10000, Sort.DEFAULT_DIRECTION)
+      );
+      results.forEach(bsd -> searchIds.add(bsd.getId()));
+
+      currentPageNumber++;
+    }
     return searchIds;
   }
 }
