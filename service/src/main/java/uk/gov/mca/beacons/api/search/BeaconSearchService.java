@@ -1,9 +1,6 @@
 package uk.gov.mca.beacons.api.search;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.collections.IteratorUtils;
@@ -106,11 +103,13 @@ public class BeaconSearchService {
   }
 
   public ComparisonResult compareDataSources() {
-    List<BeaconOverview> dbBeacons = getBeaconOverviews();
-    List<UUID> opensearchBeaconIds = getBeaconSearchIds(); // List.of(UUID.randomUUID());
+    Map<UUID, BeaconOverview> dbBeacons = getBeaconOverviews();
+    List<UUID> opensearchBeaconIds = getBeaconSearchIds();
 
-    // hash map isntead
-    List<BeaconOverview> missingBeacons = dbBeacons
+    int totalNumberOfBeacons = dbBeacons.size();
+
+    var missingBeacons = dbBeacons
+      .values()
       .stream()
       .filter(bo -> !opensearchBeaconIds.contains(bo.getId()))
       .collect(Collectors.toList());
@@ -124,39 +123,27 @@ public class BeaconSearchService {
     return result;
   }
 
-  // todo: do we want one HashMap or a list of HashMaps?
-  private List<BeaconOverview> getBeaconOverviews() {
-    HashMap overviews = beaconRepository
+  private HashMap<UUID, BeaconOverview> getBeaconOverviews() {
+    Map<UUID, BeaconOverview> overviews = beaconRepository
       .findAll()
       .stream()
-      .map(b ->
-        new HashMap<UUID, BeaconOverview>()
-          .put(
-            b.getId().unwrap(),
-            new BeaconOverview(
-              b.getId().unwrap(),
-              b.getHexId(),
-              b.getLastModifiedDate()
-            )
-          )
-      )
-      .collect(Collectors.toList());
+      .collect(
+        Collectors.toMap(Beacon::getUnwrappedId, b -> b.getBeaconOverview())
+      );
 
-    List<BeaconOverview> legacyOverviews = legacyBeaconRepository
+    Map<UUID, BeaconOverview> legacyOverviews = legacyBeaconRepository
       .findAll()
       .stream()
-      .map(lb ->
-        new BeaconOverview(
-          lb.getId().unwrap(),
-          lb.getHexId(),
-          lb.getLastModifiedDate()
+      .collect(
+        Collectors.toMap(
+          LegacyBeacon::getUnwrappedId,
+          b -> b.getBeaconOverview()
         )
-      )
-      .collect(Collectors.toList());
+      );
 
-    overviews.addAll(legacyOverviews);
+    overviews.putAll(legacyOverviews);
 
-    return overviews;
+    return (HashMap<UUID, BeaconOverview>) overviews;
   }
 
   private List<UUID> getBeaconSearchIds() {
