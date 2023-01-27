@@ -107,13 +107,14 @@ public class BeaconSearchService {
     List<UUID> opensearchBeaconIds = getBeaconSearchIds();
 
     for (UUID id : opensearchBeaconIds) {
+      // if we remove the ones that correspond to ones in opensearch
+      // we'll be left with those that have no equivalent in opensearch and are therefore missing
       dbBeacons.remove(id);
     }
 
-    var missingBeacons = dbBeacons
+    List<BeaconOverview> missingBeacons = dbBeacons
       .values()
       .stream()
-      .filter(bo -> !opensearchBeaconIds.contains(bo.getId()))
       .collect(Collectors.toList());
 
     ComparisonResult result = new ComparisonResult();
@@ -155,18 +156,14 @@ public class BeaconSearchService {
     int maxNumberOfBeaconsPerPage = 10000;
     boolean currentPageHasMaxNoOfBeaconsPerPage = true;
 
-    while (currentPageHasMaxNoOfBeaconsPerPage) {
-      Page<BeaconSearchDocument> results = beaconSearchRepository.findAll(
-        PageRequest.of(currentPageNumber, maxNumberOfBeaconsPerPage)
-      );
-      results.forEach(bsd -> searchIds.add(bsd.getId()));
-      results.getPageable().next();
+    Page<BeaconSearchDocument> results = beaconSearchRepository.findAll(
+      PageRequest.of(currentPageNumber, maxNumberOfBeaconsPerPage)
+    );
+    results.forEach(bsd -> searchIds.add(bsd.getId()));
 
-      currentPageNumber++;
+    currentPageHasMaxNoOfBeaconsPerPage =
+      results.getSize() == maxNumberOfBeaconsPerPage;
 
-      currentPageHasMaxNoOfBeaconsPerPage =
-        results.getSize() == maxNumberOfBeaconsPerPage;
-    }
     return searchIds;
   }
 }
