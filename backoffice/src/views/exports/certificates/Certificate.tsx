@@ -170,7 +170,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use - ` + use.environment}
+        {`#${index} Beacon Use - ${use.environment} (${use.typeOfUse})`}
       </h4>
       <div className="section">
         <h3>Vessel Details:</h3>
@@ -184,11 +184,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           classes="half"
           title="Homeport"
           value={use.homePort}
-        />
-        <CertificateField
-          classes="half"
-          title="Type Of Use"
-          value={use.typeOfUse}
         />
 
         <CertificateField
@@ -215,12 +210,12 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
 
         <CertificateField
           classes="half"
-          title="Max Persons On Board"
+          title="Max Persons Onboard"
           value={use.maxPersonOnBoard}
         />
         <CertificateField
           classes="full"
-          title="Radio Systems"
+          title="Communications"
           value={Object.keys(use.radioSystems)}
         />
         <CertificateField
@@ -286,7 +281,7 @@ const AviationUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use - ` + use.environment}
+        {`#${index} Beacon Use - ${use.environment} (${use.typeOfUse})`}
       </h4>
       <div className="section">
         <h3>Aircraft Details:</h3>
@@ -305,19 +300,13 @@ const AviationUse: FunctionComponent<UseProps> = ({
 
         <CertificateField
           classes="half"
-          title="Type Of Use"
-          value={use.typeOfUse}
-        />
-
-        <CertificateField
-          classes="half"
           title="Beacon Position"
           value={use.beaconPosition}
         />
 
         <CertificateField
           classes="half"
-          title="Max Persons On Board"
+          title="Max Persons Onboard"
           value={use.maxPersonOnBoard}
         />
         <CertificateField
@@ -348,7 +337,7 @@ const AviationUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="full"
-          title="Radio Systems"
+          title="Communications"
           value={Object.keys(use.radioSystems)}
         />
         {Object.keys(use.radioSystems).map((key, index) => (
@@ -377,16 +366,10 @@ const LandUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use - ` + use.environment}
+        {`#${index} Beacon Use - ${use.environment} (${use.typeOfUse})`}
       </h4>
       <div className="section">
         <h3>Land Details:</h3>
-
-        <CertificateField
-          classes="half"
-          title="Type Of Use"
-          value={use.typeOfUse}
-        />
 
         <CertificateField
           classes="half"
@@ -428,7 +411,7 @@ const LandUse: FunctionComponent<UseProps> = ({
 
         <CertificateField
           classes="full"
-          title="Radio Systems"
+          title="Communications"
           value={Object.keys(use.radioSystems)}
         />
         {Object.keys(use.radioSystems).map((key, index) => (

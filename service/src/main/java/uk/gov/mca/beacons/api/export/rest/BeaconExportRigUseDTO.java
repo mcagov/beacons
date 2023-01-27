@@ -9,16 +9,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
+public class BeaconExportRigUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String environment;
-
-  @Valid
-  private String vesselName;
-
-  @Valid
-  private String rigName;
 
   @Valid
   private String typeOfUse;
@@ -34,6 +28,12 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String rigPlatformLocation;
+
+  @Valid
+  private String vesselName;
+
+  @Valid
+  private String rigName;
 
   @Valid
   private String homePort;
@@ -64,9 +64,6 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String imoNumber;
 
   @Valid
-  private String areaOfOperation;
-
-  @Valid
   private String rssAndSsrNumber;
 
   @Valid
@@ -76,44 +73,5 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String coastguardCGRefNumber;
 
   @Valid
-  private String aircraftType;
-
-  @Valid
-  private String aircraftRegistrationMark;
-
-  @Valid
-  private String aircraftModel;
-
-  @Valid
-  private String aircraftManufacturer;
-
-  @Valid
-  private String twentyFourBitAddressInHex;
-
-  @Valid
-  private String aodSerialNumber;
-
-  @Valid
-  private boolean isDongle;
-
-  @Valid
-  private String principalAirport;
-
-  @Valid
-  private String secondaryAirport;
-
-  @Valid
-  private String aircraftOperatorsDesignatorAndSerialNo;
-
-  @Valid
-  private String descriptionOfIntendedUse;
-
-  @Valid
-  private int numberOfPersonsOnBoard;
-
-  @Valid
-  private String areaOfUse;
-
-  @Valid
-  private String tripInformation;
+  private String areaOfOperation;
 }

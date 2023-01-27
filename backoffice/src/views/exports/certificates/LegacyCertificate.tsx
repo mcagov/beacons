@@ -110,6 +110,13 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
         title="Csta Number"
         value={beacon.cstaNumber}
       />
+      {beacon.cospasSarsatNumber && (
+        <CertificateField
+          classes="half"
+          title="Cospas Sarsat Serial Number"
+          value={beacon.cospasSarsatNumber}
+        />
+      )}
     </div>
   );
 };
@@ -184,14 +191,22 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="half"
-          title="Type Of Use"
-          value={use.typeOfUse}
-        />
-        <CertificateField
-          classes="half"
-          title="Max Persons On Board"
+          title="Max Persons Onboard"
           value={use.maxPersonOnBoard}
         />
+
+        <CertificateField
+          classes="half"
+          title="Beacon Position"
+          value={use.beaconPosition}
+        />
+
+        <CertificateField
+          classes="half"
+          title="Position"
+          value={use.beaconLocation}
+        />
+
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -265,7 +280,7 @@ const AviationUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="half"
-          title="Max Persons On Board"
+          title="Max Persons Onboard"
           value={use.maxPersonOnBoard}
         />
         <CertificateField
@@ -278,6 +293,25 @@ const AviationUse: FunctionComponent<UseProps> = ({
           title="24-Bit Address In Hex"
           value={use.twentyFourBitAddressInHex}
         />
+
+        <CertificateField
+          classes="half"
+          title="AOD Serial Number"
+          value={use.aodSerialNumber}
+        />
+
+        <CertificateField
+          classes="half"
+          title="Beacon Position"
+          value={use.beaconPosition}
+        />
+
+        <CertificateField
+          classes="half"
+          title="Position"
+          value={use.beaconLocation}
+        />
+
         <CertificateField
           classes="half"
           title="Principal Airport"
@@ -338,6 +372,18 @@ const LandUse: FunctionComponent<UseProps> = ({
           title="Current/Future Trip Information"
           value={use.tripInformation}
         />
+
+        <CertificateField
+          classes="half"
+          title="Beacon Position"
+          value={use.beaconPosition}
+        />
+
+        <CertificateField
+          classes="half"
+          title="Position"
+          value={use.beaconLocation}
+        />
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -392,17 +438,24 @@ export const GenericUse: FunctionComponent<UseProps> = ({
 
         <CertificateField
           classes="half"
+          title="Beacon Position"
+          value={use.beaconPosition}
+        />
+
+        <CertificateField
+          classes="half"
+          title="Position"
+          value={use.beaconLocation}
+        />
+
+        <CertificateField
+          classes="half"
           title="Homeport"
           value={use.homePort}
         />
         <CertificateField
           classes="half"
-          title="Type Of Use"
-          value={use.typeOfUse}
-        />
-        <CertificateField
-          classes="half"
-          title="Max Persons On Board"
+          title="Max Persons Onboard"
           value={use.maxPersonOnBoard}
         />
         {Object.keys(use.radioSystems).map((key, index) => (
@@ -459,7 +512,7 @@ export const GenericUse: FunctionComponent<UseProps> = ({
         />
         <CertificateField
           classes="half"
-          title="Max Persons On Board"
+          title="Max Persons Onboard"
           value={use.maxPersonOnBoard}
         />
         <CertificateField
@@ -477,6 +530,13 @@ export const GenericUse: FunctionComponent<UseProps> = ({
           title="24-Bit Address In Hex"
           value={use.twentyFourBitAddressInHex}
         />
+
+        <CertificateField
+          classes="half"
+          title="AOD Serial Number"
+          value={use.aodSerialNumber}
+        />
+
         <CertificateField
           classes="half"
           title="Principal Airport"
@@ -575,6 +635,8 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
               title="Email"
               value={owner.email}
             />
+
+            <CertificateField classes="half" title="Fax" value={owner.fax} />
           </div>
         ))}
     </div>
