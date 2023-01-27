@@ -156,13 +156,15 @@ public class BeaconSearchService {
     int maxNumberOfBeaconsPerPage = 10000;
     boolean currentPageHasMaxNoOfBeaconsPerPage = true;
 
-    Page<BeaconSearchDocument> results = beaconSearchRepository.findAll(
-      PageRequest.of(currentPageNumber, maxNumberOfBeaconsPerPage)
-    );
-    results.forEach(bsd -> searchIds.add(bsd.getId()));
+    // not sure how we'll know when we've reached the last page (the page with <10,000
+    // what do we do then?
+    while (currentPageHasMaxNoOfBeaconsPerPage) {
+      Stream<BeaconSearchDocument> results = beaconSearchRepository.findBy();
+      results.forEach(bsd -> searchIds.add(bsd.getId()));
 
-    currentPageHasMaxNoOfBeaconsPerPage =
-      results.getSize() == maxNumberOfBeaconsPerPage;
+      currentPageHasMaxNoOfBeaconsPerPage =
+        results.count() == maxNumberOfBeaconsPerPage;
+    }
 
     return searchIds;
   }
