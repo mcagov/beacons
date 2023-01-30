@@ -145,11 +145,10 @@ const UseSection: FunctionComponent<UseProps> = ({
     type.toUpperCase().startsWith("AIRCRAFT")
   ) {
     type = Environments.Aviation;
-  } else if (
-    type.toUpperCase().startsWith("MARITIME") ||
-    type.toUpperCase().startsWith("RIG")
-  ) {
+  } else if (type.toUpperCase().startsWith("MARITIME")) {
     type = Environments.Maritime;
+  } else if (type.toUpperCase().startsWith("RIG")) {
+    type = "RIG";
   } else {
     type = Environments.Land;
   }
@@ -161,6 +160,8 @@ const UseSection: FunctionComponent<UseProps> = ({
       return <AviationUse use={use} index={index} />;
     case Environments.Land:
       return <LandUse use={use} index={index} />;
+    case "RIG":
+      return <RigUse use={use} index={index} />;
     default:
       return <GenericUse use={use} index={index} />;
   }
@@ -174,7 +175,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use -  ${use.environment} (${use.typeOfUse})`}
+        {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
         <h3>Vessel Details:</h3>
@@ -260,6 +261,82 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
   );
 };
 
+const RigUse: FunctionComponent<UseProps> = ({
+  use,
+  index,
+}: UseProps): JSX.Element => {
+  return (
+    <div className="use full">
+      <h4 className="title use">
+        {" "}
+        {`#${index} Beacon Use -  ${use.environment} `}
+      </h4>
+      <div className="section">
+        <h3>Rig/Platform Details:</h3>
+
+        {use.rigName && (
+          <CertificateField
+            classes="half"
+            title="Rig Name"
+            value={use.rigName}
+          />
+        )}
+
+        <CertificateField
+          classes="half"
+          title="No. Persons In Group"
+          value={use.maxPersonOnBoard}
+        />
+
+        <CertificateField
+          classes="half"
+          title="Beacon Position"
+          value={use.beaconPosition}
+        />
+
+        <CertificateField
+          classes="half"
+          title="Position (If fixed, not floating)"
+          value={use.beaconLocation}
+        />
+
+        {Object.keys(use.radioSystems).map((key, index) => (
+          <CertificateField
+            key={index}
+            classes="full"
+            title={key}
+            value={use.radioSystems[key]}
+          />
+        ))}
+
+        {use.vesselCallsign && (
+          <CertificateField
+            classes="half"
+            title="Callsign"
+            value={use.vesselCallsign}
+          />
+        )}
+
+        <CertificateField
+          classes="half"
+          title="MMSI Number"
+          value={use.mmsiNumber}
+        />
+
+        {use.imoNumber && (
+          <CertificateField
+            classes="half"
+            title="IMO Number"
+            value={use.imoNumber}
+          />
+        )}
+
+        <CertificateField classes="full" title="Notes" value={use.notes} />
+      </div>
+    </div>
+  );
+};
+
 const AviationUse: FunctionComponent<UseProps> = ({
   use,
   index,
@@ -268,7 +345,7 @@ const AviationUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use -  ${use.environment} (${use.typeOfUse})`}
+        {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
         <h3>Aircraft Details:</h3>
@@ -347,7 +424,7 @@ const LandUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use -  ${use.environment} (${use.typeOfUse})`}
+        {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
         <h3>Land Details:</h3>
@@ -407,7 +484,7 @@ export const GenericUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use -  ${use.environment} (${use.typeOfUse})`}
+        {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
         <h3>Use Details:</h3>

@@ -623,14 +623,8 @@ public class ExportMapper {
         use.getMmsiNumber() != null ? use.getMmsiNumber().toString() : null
       )
       .radioSystems(use.getCommunicationTypes())
+      .imoNumber(use.getImoNumber())
       .notes(use.getNotes() + " - " + use.getNote())
-      .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
-      .officialNumber(use.getOfficialNumber())
-      .imoNumber(use.getImoNumber())
-      .imoNumber(use.getImoNumber())
-      .rssAndSsrNumber(use.getRssSsrNumber())
-      .hullIdNumber(use.getHullIdNumber())
-      .coastguardCGRefNumber(use.getCg66RefNumber())
       .build();
   }
 

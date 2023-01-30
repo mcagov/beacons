@@ -30,9 +30,6 @@ public class BeaconExportRigUseDTO extends BeaconExportUseDTO {
   private String rigPlatformLocation;
 
   @Valid
-  private String vesselName;
-
-  @Valid
   private String rigName;
 
   @Valid
@@ -48,29 +45,14 @@ public class BeaconExportRigUseDTO extends BeaconExportUseDTO {
   private String mmsiNumber;
 
   @Valid
+  private String imoNumber;
+
+  @Valid
   private Map<String, String> radioSystems;
 
   @Valid
   //Only used for legacy
   private String notes;
-
-  @Valid
-  private String fishingVesselPortIdAndNumbers;
-
-  @Valid
-  private String officialNumber;
-
-  @Valid
-  private String imoNumber;
-
-  @Valid
-  private String rssAndSsrNumber;
-
-  @Valid
-  private String hullIdNumber;
-
-  @Valid
-  private String coastguardCGRefNumber;
 
   @Valid
   private String areaOfOperation;
