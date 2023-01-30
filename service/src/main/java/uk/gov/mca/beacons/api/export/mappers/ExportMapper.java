@@ -515,6 +515,7 @@ public class ExportMapper {
           owner.getMobile2()
         )
       )
+      .fax(owner.getFax())
       .email(owner.getEmail())
       .build();
   }
@@ -524,7 +525,6 @@ public class ExportMapper {
     for (LegacyUse use : uses) {
       switch (use.getEnvironment().trim().toUpperCase()) {
         case "MARITIME":
-        case "RIG/PLATFORM":
           usesDTO.add(toMaritimeUse(use));
           break;
         case "AVIATION":
@@ -533,6 +533,9 @@ public class ExportMapper {
           break;
         case "LAND":
           usesDTO.add(toLandUse(use));
+          break;
+        case "RIG/PLATFORM":
+          usesDTO.add(toRigUse(use));
           break;
         case "MOD":
         default:
@@ -547,11 +550,10 @@ public class ExportMapper {
     return BeaconExportMaritimeUseDTO
       .builder()
       .environment(use.getEnvironment())
-      .typeOfUse(use.getUseType())
+      .typeOfUse(use.getPurpose())
       .vesselName(use.getVesselName())
-      .rigName(use.getRigName())
       .homePort(use.getHomePort())
-      .beaconLocation(use.getBeaconPosition())
+      .beaconLocation(use.getPosition())
       .beaconPosition(use.getBeaconPosition())
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .vesselCallsign(use.getCallSign())
@@ -573,14 +575,15 @@ public class ExportMapper {
     return BeaconExportAviationUseDTO
       .builder()
       .environment(use.getEnvironment())
-      .typeOfUse(use.getUseType())
-      .beaconLocation(use.getBeaconPosition())
+      .typeOfUse(use.getPurpose())
+      .beaconLocation(use.getPosition())
       .beaconPosition(use.getBeaconPosition())
       .aircraftManufacturer(use.getAircraftDescription())
       .aircraftType(use.getAircraftType())
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .aircraftRegistrationMark(use.getAircraftRegistrationMark())
       .twentyFourBitAddressInHex(use.getBit24AddressHex())
+      .aodSerialNumber(use.getAodSerialNumber())
       .principalAirport(use.getPrincipalAirport())
       .radioSystems(use.getCommunicationTypes())
       .notes(use.getNotes() + " - " + use.getNote())
@@ -591,10 +594,10 @@ public class ExportMapper {
     return BeaconExportLandUseDTO
       .builder()
       .environment(use.getEnvironment())
-      .typeOfUse(use.getUseType())
-      .beaconLocation(use.getBeaconPosition())
+      .typeOfUse(use.getPurpose())
+      .beaconLocation(use.getPosition())
       .beaconPosition(use.getBeaconPosition())
-      .descriptionOfIntendedUse(use.getUseType())
+      .descriptionOfIntendedUse(use.getActivity())
       .numberOfPersonsOnBoard(
         use.getMaxPersons() != null ? use.getMaxPersons() : 0
       )
@@ -605,11 +608,31 @@ public class ExportMapper {
       .build();
   }
 
+  private BeaconExportRigUseDTO toRigUse(LegacyUse use) {
+    return BeaconExportRigUseDTO
+      .builder()
+      .environment(use.getEnvironment())
+      .typeOfUse(use.getPurpose())
+      .rigName(use.getRigName())
+      .homePort(use.getHomePort())
+      .beaconLocation(use.getBeaconPosition())
+      .beaconPosition(use.getBeaconPosition())
+      .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
+      .vesselCallsign(use.getCallSign())
+      .mmsiNumber(
+        use.getMmsiNumber() != null ? use.getMmsiNumber().toString() : null
+      )
+      .radioSystems(use.getCommunicationTypes())
+      .imoNumber(use.getImoNumber())
+      .notes(use.getNotes() + " - " + use.getNote())
+      .build();
+  }
+
   private BeaconExportGenericUseDTO toLegacyUse(LegacyUse use) {
     return BeaconExportGenericUseDTO
       .builder()
       .environment(use.getEnvironment())
-      .typeOfUse(use.getUseType())
+      .typeOfUse(use.getPurpose())
       .vesselName(use.getVesselName())
       .rigName(use.getRigName())
       .homePort(use.getHomePort())
@@ -630,8 +653,9 @@ public class ExportMapper {
       .aircraftType(use.getAircraftType())
       .aircraftRegistrationMark(use.getAircraftRegistrationMark())
       .twentyFourBitAddressInHex(use.getBit24AddressHex())
+      .aodSerialNumber(use.getAodSerialNumber())
       .principalAirport(use.getPrincipalAirport())
-      .descriptionOfIntendedUse(use.getUseType()) //Unsure
+      .descriptionOfIntendedUse(use.getActivity())
       .numberOfPersonsOnBoard(
         use.getMaxPersons() != null ? use.getMaxPersons() : 0
       )

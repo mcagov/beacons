@@ -29,7 +29,7 @@ public class BeaconExportOwnerDTO {
   private String telephoneNumbers;
 
   @Valid
-  private String mobiles;
+  private String fax;
 
   @Valid
   private String email;

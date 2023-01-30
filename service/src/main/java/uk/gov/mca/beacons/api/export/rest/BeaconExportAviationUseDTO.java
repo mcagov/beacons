@@ -44,6 +44,9 @@ public class BeaconExportAviationUseDTO extends BeaconExportUseDTO {
   private String twentyFourBitAddressInHex;
 
   @Valid
+  private String aodSerialNumber;
+
+  @Valid
   private String principalAirport;
 
   @Valid
