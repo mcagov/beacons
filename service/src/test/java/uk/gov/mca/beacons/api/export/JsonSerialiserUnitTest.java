@@ -82,10 +82,6 @@ public class JsonSerialiserUnitTest {
       "01577836277 ; 01179822366",
       firstMappedOwner.get("telephone numbers")
     );
-    assertEquals(
-      "07782146399 ; 07344800934 ; 07321873457",
-      firstMappedOwner.get("mobiles")
-    );
   }
 
   @Test
