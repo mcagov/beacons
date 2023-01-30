@@ -147,7 +147,7 @@ const UseSection: FunctionComponent<UseProps> = ({
     type = Environments.Aviation;
   } else if (type.toUpperCase().startsWith("MARITIME")) {
     type = Environments.Maritime;
-  } else if (type.toUpperCase().startsWith("RIG")) {
+  } else if (type.toUpperCase().indexOf("RIG") > -1) {
     type = "RIG";
   } else {
     type = Environments.Land;
