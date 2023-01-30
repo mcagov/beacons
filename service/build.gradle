@@ -21,7 +21,7 @@ repositories {
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
         if(details.requested.group == "org.elasticsearch" && details.requested.name == "elasticsearch") {
-            details.useVersion '7.14.0'
+            details.useVersion '7.13.4'
             details.because('compatibility with Lucene version 8.8.2')
         }
     }

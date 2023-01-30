@@ -1,9 +1,17 @@
 package uk.gov.mca.beacons.api.search;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.collections.IteratorUtils;
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.*;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -102,7 +110,7 @@ public class BeaconSearchService {
     return beaconSearchRepository.save(beaconSearchDocument);
   }
 
-  public ComparisonResult compareDataSources() {
+  public ComparisonResult compareDataSources() throws IOException {
     Map<UUID, BeaconOverview> dbBeacons = getBeaconOverviews();
     List<UUID> opensearchBeaconIds = getBeaconSearchIds();
 
@@ -149,23 +157,35 @@ public class BeaconSearchService {
     return (HashMap<UUID, BeaconOverview>) overviews;
   }
 
-  public List<UUID> getBeaconSearchIds() {
+  public List<UUID> getBeaconSearchIds() throws IOException {
     List<UUID> searchIds = new ArrayList<>();
 
     int currentPageNumber = 0;
     int maxNumberOfBeaconsPerPage = 10000;
     boolean currentPageHasMaxNoOfBeaconsPerPage = true;
 
-    // not sure how we'll know when we've reached the last page (the page with <10,000
-    // what do we do then?
-    while (currentPageHasMaxNoOfBeaconsPerPage) {
-      Stream<BeaconSearchDocument> results = beaconSearchRepository.findBy();
-      results.forEach(bsd -> searchIds.add(bsd.getId()));
+    RestClientBuilder clientBuilder = RestClient.builder(
+      new HttpHost("localhost", 9200, "https")
+    );
+    RestHighLevelClient opensearchClient = new RestHighLevelClient(
+      clientBuilder
+    );
 
-      currentPageHasMaxNoOfBeaconsPerPage =
-        results.count() == maxNumberOfBeaconsPerPage;
-    }
+    SearchRequest searchRequest = new SearchRequest("beacons");
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.query();
+    int size = 10000;
 
+    searchSourceBuilder.size(size);
+    searchRequest.source(searchSourceBuilder);
+    searchRequest.scroll(TimeValue.timeValueMinutes(1L));
+    SearchResponse searchResponse = opensearchClient.search(
+      searchRequest,
+      RequestOptions.DEFAULT
+    );
+
+    String scrollId = searchResponse.getScrollId();
+    SearchHits hits = searchResponse.getHits();
     return searchIds;
   }
 }
