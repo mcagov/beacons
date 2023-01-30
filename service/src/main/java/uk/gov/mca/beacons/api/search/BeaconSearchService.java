@@ -171,10 +171,10 @@ public class BeaconSearchService {
       clientBuilder
     );
 
-    SearchRequest searchRequest = new SearchRequest("beacons");
+    SearchRequest searchRequest = new SearchRequest("beacon-search");
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
     searchSourceBuilder.query();
-    int size = 10000;
+    int size = 5;
 
     searchSourceBuilder.size(size);
     searchRequest.source(searchSourceBuilder);
