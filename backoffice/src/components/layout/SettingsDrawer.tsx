@@ -107,6 +107,7 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               Advanced
             </ToggleButton>
           </ToggleButtonGroup>
+          {/* TODO - Remove once Backup Contingency open to SAR. */}
           <OnlyVisibleToUsersWith role={"DATA_EXPORTER"}>
             <Typography
               gutterBottom={true}
@@ -140,7 +141,8 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               downloadStarted={handleDownloadStarted}
               downloadComplete={handleDownloadComplete}
             />
-            <Typography
+            {/* TODO - Fix loading issue, remove button for now. */}
+            {/* <Typography
               gutterBottom={true}
               component={"p"}
               variant={"subtitle2"}
@@ -154,7 +156,7 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               fullWidth
             >
               Beacon Export Search
-            </Button>
+            </Button> */}
           </OnlyVisibleToUsersWith>
           <Typography
             gutterBottom={true}

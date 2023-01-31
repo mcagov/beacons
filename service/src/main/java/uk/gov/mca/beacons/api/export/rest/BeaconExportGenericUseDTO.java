@@ -91,6 +91,9 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String twentyFourBitAddressInHex;
 
   @Valid
+  private String aodSerialNumber;
+
+  @Valid
   private boolean isDongle;
 
   @Valid

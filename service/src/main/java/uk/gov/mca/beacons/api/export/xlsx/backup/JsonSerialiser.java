@@ -79,10 +79,6 @@ public class JsonSerialiser {
             : ""
         );
         json.put(
-          "mobiles",
-          owner.getMobiles() != null ? owner.getMobiles().replace('/', ';') : ""
-        );
-        json.put(
           "email",
           owner.getEmail() != null ? owner.getEmail().toUpperCase() : ""
         );

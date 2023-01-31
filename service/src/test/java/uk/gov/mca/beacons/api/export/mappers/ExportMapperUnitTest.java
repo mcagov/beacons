@@ -312,7 +312,6 @@ class ExportMapperUnitTest {
       "02833746199 - 01477263499 - mob1 - mob2",
       mappedOwnerDTO.getTelephoneNumbers()
     );
-    Assertions.assertNull(mappedOwnerDTO.getMobiles());
   }
 
   @Test

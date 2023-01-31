@@ -17,6 +17,7 @@ export interface IBeaconExport {
   batteryExpiryDate: string;
   codingProtocol: string;
   cstaNumber: string;
+  cospasSarsatNumber: string;
   chkCode: string;
   beaconNote: string;
   notes: IBeaconExportNote[];
@@ -44,8 +45,8 @@ export interface IBeaconExportOwner {
   county: string;
   country: string;
   telephoneNumbers: string;
-  mobiles: string;
   email: string;
+  fax: string;
 }
 
 export interface IBeaconExportAccountHolder {
@@ -88,6 +89,7 @@ export interface IBeaconExportUse {
   aircraftRegistrationMark: string;
   aircraftManufacturer: string;
   twentyFourBitAddressInHex: string;
+  aodSerialNumber: string;
   principalAirport: string;
   secondaryAirport: string;
   isDongle: string;
