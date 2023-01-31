@@ -11,6 +11,7 @@ import {
   parseBeaconSearchItem,
 } from "../../entities/BeaconSearch";
 import { Alert, Box } from "@mui/material";
+import { IComparisonGateway } from "gateways/comparison/IComparisonGateway";
 
 export interface IDataComparison {
   dbCount: number;
@@ -26,18 +27,41 @@ export interface IBeaconOverview {
 }
 interface BeaconExportRecordsProps {
   exportsGateway: IExportsGateway;
+  comparisonGateway: IComparisonGateway;
 }
 
 export const DataComparisonView: FunctionComponent<
   BeaconExportRecordsProps
-> = ({ exportsGateway }): JSX.Element => {
+> = ({ exportsGateway, comparisonGateway }): JSX.Element => {
   const [result, setResult] = useState<IDataComparison>({} as IDataComparison);
+  const [opensearchBeaconIds, setOpensearchBeaconIds] = useState<string[]>([]);
+
   useEffect(() => {
     const getResponse = async () => {
       await exportsGateway.getDataComparison().then(setResult);
     };
+
+    const getBeaconsFromOpenSearch = async () => {
+      const response = await comparisonGateway.getBeaconsFromOpenSearch();
+      const opensearchIds = response.map((beacon) => {
+        return beacon._id;
+      });
+      setOpensearchBeaconIds(opensearchIds);
+      console.log(response);
+    };
+
+    const findMissingBeaconsFromOpenSearch = () => {
+      console.log("hello");
+      // removing the ones that are in opensearch will leave us with the ones missing from thats
+      //    for (UUID id : opensearchBeaconIds) {
+      //      dbBeacons.remove(id);
+      //    }
+    };
+
     getResponse().catch(console.error);
-  }, [exportsGateway]);
+    getBeaconsFromOpenSearch().catch(console.error);
+    findMissingBeaconsFromOpenSearch();
+  }, [exportsGateway, comparisonGateway]);
 
   return (
     <div>
@@ -55,6 +79,8 @@ export const DataComparisonView: FunctionComponent<
             </li>
           ))}
       </ul>
+      {/* <Button onClick={getBeaconsFromOpenSearch}>Get beacons from opensearch</Button>
+      <Button onClick={findMissingBeaconsFromOpenSearch}>Find beacons missing from opensearch</Button> */}
       <ReactiveBase
         app="beacon_search"
         url={searchUrl(window.location.hostname)}
@@ -72,13 +98,14 @@ export const DataComparisonView: FunctionComponent<
             and: ["searchbox"],
           }}
           dataField="_id"
-          size={5}
+          size={10}
           defaultQuery={() => ({ track_total_hits: true })}
           render={({ data, error }) => (
             <Box sx={gridContainer}>
               {error && <Alert severity="error">Error: {error}</Alert>}
               {data.map((item: BeaconSearchItem) => {
                 const result = parseBeaconSearchItem(item);
+                opensearchBeaconIds.push(result._id);
                 return <div key={result._id}>{result._id}</div>;
               })}
             </Box>

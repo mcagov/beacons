@@ -1,6 +1,8 @@
 package uk.gov.mca.beacons.api.comparison.rest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import uk.gov.mca.beacons.api.search.domain.BeaconOverview;
@@ -10,7 +12,5 @@ import uk.gov.mca.beacons.api.search.domain.BeaconOverview;
 public class ComparisonResult {
 
   private int dbCount;
-  private int openSearchCount;
-  private int missingCount;
-  private List<BeaconOverview> missing;
+  private HashMap<UUID, BeaconOverview> dbBeacons;
 }

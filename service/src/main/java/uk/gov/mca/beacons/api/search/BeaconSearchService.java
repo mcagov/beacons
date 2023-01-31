@@ -111,23 +111,11 @@ public class BeaconSearchService {
   }
 
   public ComparisonResult compareDataSources() throws IOException {
-    Map<UUID, BeaconOverview> dbBeacons = getBeaconOverviews();
-    //    List<UUID> opensearchBeaconIds = getBeaconSearchIds();
-
-    //    for (UUID id : opensearchBeaconIds) {
-    //      dbBeacons.remove(id);
-    //    }
-
-    //    List<BeaconOverview> missingBeacons = dbBeacons
-    //      .values()
-    //      .stream()
-    //      .collect(Collectors.toList());
+    HashMap<UUID, BeaconOverview> dbBeacons = getBeaconOverviews();
 
     ComparisonResult result = new ComparisonResult();
     result.setDbCount(dbBeacons.size());
-    //    result.setOpenSearchCount(opensearchBeaconIds.size());
-    //    result.setMissingCount(missingBeacons.size());
-    //    result.setMissing(missingBeacons);
+    result.setDbBeacons(dbBeacons);
 
     return result;
   }
@@ -153,37 +141,5 @@ public class BeaconSearchService {
     overviews.putAll(legacyOverviews);
 
     return (HashMap<UUID, BeaconOverview>) overviews;
-  }
-
-  public List<UUID> getBeaconSearchIds() throws IOException {
-    List<UUID> searchIds = new ArrayList<>();
-
-    int currentPageNumber = 0;
-    int maxNumberOfBeaconsPerPage = 10000;
-    boolean currentPageHasMaxNoOfBeaconsPerPage = true;
-
-    RestClientBuilder clientBuilder = RestClient.builder(
-      new HttpHost("localhost", 9200, "https")
-    );
-    RestHighLevelClient opensearchClient = new RestHighLevelClient(
-      clientBuilder
-    );
-
-    SearchRequest searchRequest = new SearchRequest("beacon-search");
-    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-    searchSourceBuilder.query();
-    int size = 5;
-
-    searchSourceBuilder.size(size);
-    searchRequest.source(searchSourceBuilder);
-    searchRequest.scroll(TimeValue.timeValueMinutes(1L));
-    SearchResponse searchResponse = opensearchClient.search(
-      searchRequest,
-      RequestOptions.DEFAULT
-    );
-
-    String scrollId = searchResponse.getScrollId();
-    SearchHits hits = searchResponse.getHits();
-    return searchIds;
   }
 }
