@@ -177,6 +177,13 @@ const App: FunctionComponent = () => {
                   </PageContent>
                   <Footer />
                 </Route>
+                <Route path={`/comparison/missing`}>
+                  <Navigation exportsGateway={exportsGateway} />
+                  <PageContent>
+                    <DataComparisonView exportsGateway={exportsGateway} />
+                  </PageContent>
+                  <Footer />
+                </Route>
                 <Route path={`/beacons/:id`}>
                   <SingleBeaconRecordViewWithParam />
                 </Route>

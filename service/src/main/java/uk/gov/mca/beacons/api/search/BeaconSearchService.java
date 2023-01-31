@@ -112,24 +112,22 @@ public class BeaconSearchService {
 
   public ComparisonResult compareDataSources() throws IOException {
     Map<UUID, BeaconOverview> dbBeacons = getBeaconOverviews();
-    List<UUID> opensearchBeaconIds = getBeaconSearchIds();
+    //    List<UUID> opensearchBeaconIds = getBeaconSearchIds();
 
-    for (UUID id : opensearchBeaconIds) {
-      // if we remove the ones that correspond to ones in opensearch
-      // we'll be left with those that have no equivalent in opensearch and are therefore missing
-      dbBeacons.remove(id);
-    }
+    //    for (UUID id : opensearchBeaconIds) {
+    //      dbBeacons.remove(id);
+    //    }
 
-    List<BeaconOverview> missingBeacons = dbBeacons
-      .values()
-      .stream()
-      .collect(Collectors.toList());
+    //    List<BeaconOverview> missingBeacons = dbBeacons
+    //      .values()
+    //      .stream()
+    //      .collect(Collectors.toList());
 
     ComparisonResult result = new ComparisonResult();
     result.setDbCount(dbBeacons.size());
-    result.setOpenSearchCount(opensearchBeaconIds.size());
-    result.setMissingCount(missingBeacons.size());
-    result.setMissing(missingBeacons);
+    //    result.setOpenSearchCount(opensearchBeaconIds.size());
+    //    result.setMissingCount(missingBeacons.size());
+    //    result.setMissing(missingBeacons);
 
     return result;
   }

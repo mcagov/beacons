@@ -1,6 +1,5 @@
 import { Close, Settings as SettingsIcon } from "@mui/icons-material";
 import {
-  Button,
   CircularProgress,
   Divider,
   IconButton,
