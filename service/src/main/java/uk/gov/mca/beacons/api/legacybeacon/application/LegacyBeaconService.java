@@ -87,6 +87,7 @@ public class LegacyBeaconService {
 
     LegacyBeacon legacyBeacon = legacyBeacons.get(0);
     LegacyData legacyBeaconData = legacyBeacon.getData();
+    LegacyBeaconDetails legacyDataBeaconDetails = legacyBeaconData.getBeacon();
 
     LegacyBeaconDetails beaconData = legacyBeaconData.getBeacon();
     beaconData.setIsWithdrawn("Y");
@@ -96,9 +97,11 @@ public class LegacyBeaconService {
     legacyBeaconData.setUses(new ArrayList<LegacyUse>());
     legacyBeaconData.setEmergencyContact(new LegacyEmergencyContact());
     legacyBeaconData.setSecondaryOwners(new ArrayList<LegacySecondaryOwner>());
+    legacyDataBeaconDetails.setNote(null);
 
-    legacyBeacon.setOwnerEmail("");
-    legacyBeacon.setOwnerName("");
+    legacyBeacon.setOwnerEmail(null);
+    legacyBeacon.setOwnerName(null);
+    legacyBeacon.setUseActivities(null);
     legacyBeacon.setLastModifiedDate(OffsetDateTime.now());
 
     return legacyBeaconRepository.saveAll(legacyBeacons);
