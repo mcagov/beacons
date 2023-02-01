@@ -13,8 +13,9 @@ export class ComparisonGateway implements IComparisonGateway {
   }
 
   public async getBeaconsFromOpenSearch(): Promise<BeaconSearchItem[]> {
+    // payload being sent by the ReactiveList form
     //     {"preference":"results"}
-    // const requestData: RequestInit = {
+    //{
     //     body : {
     //     query:{match_all:{}},
     //     size:10,

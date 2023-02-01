@@ -51,11 +51,9 @@ export const DataComparisonView: FunctionComponent<
     };
 
     const findMissingBeaconsFromOpenSearch = () => {
-      console.log("hello");
-      // removing the ones that are in opensearch will leave us with the ones missing from thats
-      //    for (UUID id : opensearchBeaconIds) {
-      //      dbBeacons.remove(id);
-      //    }
+      const missingBeacons = opensearchBeaconIds.forEach(() => {
+        // remove the beacons that are in openseearch
+      });
     };
 
     getResponse().catch(console.error);
@@ -79,8 +77,6 @@ export const DataComparisonView: FunctionComponent<
             </li>
           ))}
       </ul>
-      {/* <Button onClick={getBeaconsFromOpenSearch}>Get beacons from opensearch</Button>
-      <Button onClick={findMissingBeaconsFromOpenSearch}>Find beacons missing from opensearch</Button> */}
       <ReactiveBase
         app="beacon_search"
         url={searchUrl(window.location.hostname)}
