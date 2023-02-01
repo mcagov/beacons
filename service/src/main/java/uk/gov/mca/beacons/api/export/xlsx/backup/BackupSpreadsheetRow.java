@@ -15,10 +15,7 @@ import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
-import uk.gov.mca.beacons.api.export.rest.BeaconExportDTO;
-import uk.gov.mca.beacons.api.export.rest.BeaconExportNoteDTO;
-import uk.gov.mca.beacons.api.export.rest.BeaconExportOwnerDTO;
-import uk.gov.mca.beacons.api.export.rest.BeaconExportUseDTO;
+import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.export.xlsx.SpreadsheetRow;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyEmergencyContact;
@@ -106,6 +103,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
   private String proofOfRegistrationDate;
   //This is only valid for legacy.
   private String departmentReference;
+  private String referenceNumber;
   private String recordCreatedDate;
   private String manufacturer;
   private String serialNumber;
@@ -149,7 +147,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     ExportMapper exportMapper,
     DateTimeFormatter dateFormatter
   ) {
-    BeaconExportDTO mappedBeacon = exportMapper.toBeaconBackupExportDTO(
+    BeaconBackupExportDTO mappedBeacon = exportMapper.toBeaconBackupExportDTO(
       registration,
       accountHolder,
       notes
@@ -178,6 +176,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     this.proofOfRegistrationDate =
       mappedLegacyBeacon.getProofOfRegistrationDate().format(dateFormatter);
     this.departmentReference = mappedLegacyBeacon.getDepartmentReference();
+    this.referenceNumber = mappedLegacyBeacon.getReferenceNumber();
     this.recordCreatedDate =
       BeaconsStringUtils.formatDate(
         mappedLegacyBeacon.getRecordCreatedDate(),
@@ -210,7 +209,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
   }
 
   protected void setModernBeaconDetails(
-    BeaconExportDTO mappedBeacon,
+    BeaconBackupExportDTO mappedBeacon,
     DateTimeFormatter dateFormatter
   ) {
     this.hexId = mappedBeacon.getHexId();
@@ -220,6 +219,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     this.type = mappedBeacon.getType();
     this.proofOfRegistrationDate =
       mappedBeacon.getProofOfRegistrationDate().format(dateFormatter);
+    this.referenceNumber = mappedBeacon.getReferenceNumber();
     this.recordCreatedDate =
       BeaconsStringUtils.formatDate(
         mappedBeacon.getRecordCreatedDate(),
@@ -250,7 +250,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     this.cstaNumber = mappedBeacon.getCstaNumber();
   }
 
-  protected String getStringifiedNotes(List<BeaconExportNoteDTO> notes) {
+  protected String getStringifiedNotes(List<Note> notes) {
     return notes != null
       ? JsonSerialiser.mapModernBeaconNotesToJsonArray(notes).toString()
       : "";

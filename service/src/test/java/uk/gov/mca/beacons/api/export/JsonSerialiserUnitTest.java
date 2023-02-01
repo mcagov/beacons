@@ -12,24 +12,41 @@ import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.export.xlsx.backup.JsonSerialiser;
+import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 
 public class JsonSerialiserUnitTest {
 
   @Test
-  public void mapModernBeaconNotesToJsonArray_shouldSerialiseListOfCertificateNoteDTOsToJsonArray() {
-    BeaconExportNoteDTO note = new BeaconExportNoteDTO();
-    note.setDate(LocalDateTime.of(2022, Month.MARCH, 28, 14, 33));
+  public void mapModernBeaconNotesToJsonArray_shouldSerialiseListOfNotesToJsonArray() {
+    Note note = new Note();
 
-    note.setNote("Breakfast Club Coco");
-    List<BeaconExportNoteDTO> notes = List.of(note);
+    note.setText("Breakfast Club Coco");
+    note.setFullName("Coco Maria");
+    List<Note> notes = List.of(note);
     JSONArray jsonNotesArray = JsonSerialiser.mapModernBeaconNotesToJsonArray(
       notes
     );
     JSONObject firstMappedNote = (JSONObject) jsonNotesArray.get(0);
 
     assertEquals("BREAKFAST CLUB COCO", firstMappedNote.get("note"));
-    assertEquals("28-03-2022", firstMappedNote.get("date created"));
+    assertEquals("COCO MARIA", firstMappedNote.get("noted by"));
+  }
+
+  @Test
+  public void mapModernBeaconNotesToJsonArray_whenTheNoteTextContainsEllipsis_shouldSerialiseEllipsisAsIs() {
+    Note note = new Note();
+
+    note.setText("I love beacons...");
+    note.setFullName("Coco Maria");
+    List<Note> notes = List.of(note);
+    JSONArray jsonNotesArray = JsonSerialiser.mapModernBeaconNotesToJsonArray(
+      notes
+    );
+    JSONObject firstMappedNote = (JSONObject) jsonNotesArray.get(0);
+
+    assertEquals("I LOVE BEACONS...", firstMappedNote.get("note"));
+    assertEquals("COCO MARIA", firstMappedNote.get("noted by"));
   }
 
   @Test
@@ -144,9 +161,7 @@ public class JsonSerialiserUnitTest {
       blankOwnerAddress
     );
 
-    assertEquals("", mappedAddress.get("address line 2"));
-    assertEquals("", mappedAddress.get("county"));
-    assertEquals("", mappedAddress.get("postcode"));
+    assertEquals("", mappedAddress.get("address"));
   }
 
   @Test

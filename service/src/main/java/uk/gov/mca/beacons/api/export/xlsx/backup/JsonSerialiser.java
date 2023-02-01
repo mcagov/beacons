@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
+import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import net.minidev.json.JSONArray;
@@ -7,6 +8,7 @@ import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringEscapeUtils;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
+import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
@@ -16,23 +18,30 @@ public class JsonSerialiser {
     "dd-MM-yyyy"
   );
 
-  public static JSONArray mapModernBeaconNotesToJsonArray(
-    List<BeaconExportNoteDTO> notes
-  ) {
+  public static JSONArray mapModernBeaconNotesToJsonArray(List<Note> notes) {
     var jsonArray = new JSONArray();
 
     if (notes.size() > 0) {
-      for (BeaconExportNoteDTO note : notes) {
+      for (Note note : notes) {
         if (note == null) {
           continue;
         }
 
         var json = new JSONObject();
-        json.put("date created", note.getDate().format(dateFormatter));
+        json.put("type of note", note.getType());
         json.put(
           "note",
-          BeaconsStringUtils.getUppercaseValueOrEmpty(note.getNote())
+          BeaconsStringUtils.getUppercaseValueOrEmpty(note.getText())
         );
+        json.put(
+          "noted by",
+          BeaconsStringUtils.getUppercaseValueOrEmpty(note.getFullName())
+        );
+        json.put(
+          "noted by email address",
+          BeaconsStringUtils.getUppercaseValueOrEmpty(note.getEmail())
+        );
+        json.put("date", note.getCreatedDate());
         jsonArray.add(json);
       }
     }
@@ -92,48 +101,50 @@ public class JsonSerialiser {
 
   public static JSONObject mapBeaconOwnerAddressToJson(AddressDTO address) {
     var json = new JSONObject();
-    json.put(
-      "address line 1",
-      address.getAddressLine1() != null
-        ? address.getAddressLine1().toUpperCase()
-        : ""
-    );
-    json.put(
-      "address line 2",
-      address.getAddressLine2() != null
-        ? address.getAddressLine2().toUpperCase()
-        : ""
-    );
-    json.put(
-      "address line 3",
-      address.getAddressLine3() != null
-        ? address.getAddressLine3().toUpperCase()
-        : ""
-    );
-    json.put(
-      "address line 4",
-      address.getAddressLine4() != null
-        ? address.getAddressLine4().toUpperCase()
-        : ""
-    );
-    json.put(
-      "town or city",
-      address.getTownOrCity() != null
-        ? address.getTownOrCity().toUpperCase()
-        : ""
-    );
-    json.put(
-      "postcode",
-      address.getPostcode() != null ? address.getPostcode().toUpperCase() : ""
-    );
-    json.put(
-      "county",
-      address.getCounty() != null ? address.getCounty().toUpperCase() : ""
-    );
-    json.put(
-      "country",
-      address.getCountry() != null ? address.getCountry().toUpperCase() : ""
-    );
+
+    String amalgamatedAddress = new StringBuilder()
+      .append(
+        address.getAddressLine1() != null
+          ? address.getAddressLine1().toUpperCase()
+          : ""
+      )
+      .append(
+        address.getAddressLine2() != null
+          ? address.getAddressLine2().toUpperCase()
+          : ""
+      )
+      .append(
+        address.getAddressLine3() != null
+          ? address.getAddressLine3().toUpperCase()
+          : ""
+      )
+      .append(
+        address.getAddressLine4() != null
+          ? address.getAddressLine4().toUpperCase()
+          : ""
+      )
+      .append(
+        address.getTownOrCity() != null
+          ? address.getTownOrCity().toUpperCase()
+          : ""
+      )
+      .append(
+        address.getPostcode() != null ? address.getPostcode().toUpperCase() : ""
+      )
+      .append(
+        address.getTownOrCity() != null
+          ? address.getTownOrCity().toUpperCase()
+          : ""
+      )
+      .append(
+        address.getCounty() != null ? address.getCounty().toUpperCase() : ""
+      )
+      .append(
+        address.getCountry() != null ? address.getCountry().toUpperCase() : ""
+      )
+      .toString();
+
+    json.put("address", amalgamatedAddress);
 
     return json;
   }
@@ -160,12 +171,6 @@ public class JsonSerialiser {
           "telephone number",
           emergencyContact.getTelephoneNumber() != null
             ? emergencyContact.getTelephoneNumber().replace('/', ';')
-            : ""
-        );
-        json.put(
-          "alternative telephone number",
-          emergencyContact.getAlternativeTelephoneNumber() != null
-            ? emergencyContact.getAlternativeTelephoneNumber().replace('/', ';')
             : ""
         );
 

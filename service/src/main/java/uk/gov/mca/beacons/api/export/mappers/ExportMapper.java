@@ -20,6 +20,7 @@ import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
@@ -168,17 +169,17 @@ public class ExportMapper {
       .build();
   }
 
-  public BeaconExportDTO toBeaconBackupExportDTO(
+  public BeaconBackupExportDTO toBeaconBackupExportDTO(
     Registration registration,
     AccountHolder accountHolder,
-    List<Note> nonSystemNotes
+    List<Note> allNotes
   ) {
     Beacon beacon = registration.getBeacon();
     BeaconUse mainUse = registration.getMainUse();
     BeaconOwner owner = registration.getBeaconOwner();
     String id = beacon.getId().unwrap().toString();
 
-    return BeaconExportDTO
+    return BeaconBackupExportDTO
       .builder()
       .id(id)
       .type("New")
@@ -210,17 +211,7 @@ public class ExportMapper {
       .codingProtocol(beacon.getProtocol())
       .cstaNumber(beacon.getCsta())
       .chkCode(beacon.getChkCode())
-      .notes(
-        nonSystemNotes
-          .stream()
-          .map(n ->
-            new BeaconExportNoteDTO(
-              n.getCreatedDate().toLocalDateTime(),
-              n.getText()
-            )
-          )
-          .collect(Collectors.toList())
-      )
+      .notes(allNotes)
       .uses(toUsesDTO(registration.getBeaconUses()))
       .owners(
         Arrays.asList(
