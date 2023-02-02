@@ -323,45 +323,6 @@ public class ExportMapper {
   public BeaconExportDTO toLegacyBeaconExportDTO(LegacyBeacon beacon) {
     LegacyBeaconDetails details = beacon.getData().getBeacon();
     LegacyUse mainUse = beacon.getData().getMainUse();
-
-    return BeaconExportDTO
-      .builder()
-      .type("Legacy")
-      .name(
-        mainUse != null
-          ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
-          : ""
-      )
-      .proofOfRegistrationDate(OffsetDateTime.now())
-      .lastModifiedDate(beacon.getLastModifiedDate())
-      .departmentReference(details.getDepartRefId())
-      .recordCreatedDate(details.getFirstRegistrationDate())
-      .beaconStatus(beacon.getBeaconStatus())
-      .hexId(beacon.getHexId())
-      .manufacturer(details.getManufacturer())
-      .serialNumber(
-        details.getSerialNumber() != null ? details.getSerialNumber() : 0
-      )
-      .manufacturerSerialNumber(details.getManufacturerSerialNumber())
-      .beaconModel(details.getModel())
-      .beaconlastServiced(details.getLastServiceDate())
-      .beaconCoding(details.getCoding())
-      .batteryExpiryDate(details.getBatteryExpiryDate())
-      .codingProtocol(details.getProtocol())
-      .cstaNumber(details.getCsta())
-      .chkCode(null)
-      .beaconNote(details.getNote())
-      .uses(toLegacyUsesDTO(beacon.getData().getUses()))
-      .owners(toLegacyOwnersDTO(beacon.getData()))
-      .emergencyContacts(
-        toLegacyEmergencyContacts(beacon.getData().getEmergencyContact())
-      )
-      .build();
-  }
-
-  public BeaconExportDTO toLegacyBeaconBackupExportDTO(LegacyBeacon beacon) {
-    LegacyBeaconDetails details = beacon.getData().getBeacon();
-    LegacyUse mainUse = beacon.getData().getMainUse();
     String id = beacon.getId().unwrap().toString();
 
     return BeaconExportDTO

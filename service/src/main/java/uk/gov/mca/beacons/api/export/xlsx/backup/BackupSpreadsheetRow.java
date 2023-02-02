@@ -126,7 +126,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     ExportMapper exportMapper,
     DateTimeFormatter dateFormatter
   ) {
-    BeaconExportDTO mappedLegacyBeacon = exportMapper.toLegacyBeaconBackupExportDTO(
+    BeaconExportDTO mappedLegacyBeacon = exportMapper.toLegacyBeaconExportDTO(
       legacyBeacon
     );
 
@@ -251,10 +251,9 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
   }
 
   protected String getStringifiedNotes(List<Note> notes) {
-    //    return notes != null
-    //      ? JsonSerialiser.mapModernBeaconNotesToJsonArray(notes).toString()
-    //      : "";
-    return "";
+    return notes != null
+      ? JsonSerialiser.mapModernBeaconNotesToJsonArray(notes).toString()
+      : "";
   }
 
   protected void setOwners(List<BeaconExportOwnerDTO> beaconOwners) {

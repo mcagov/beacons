@@ -120,7 +120,7 @@ public class JsonSerialiserUnitTest {
     assertEquals("", firstMappedOwner.get("owner name"));
     assertEquals("", firstMappedOwner.get("company name"));
     assertEquals("", firstMappedOwner.get("care of"));
-    assertEquals("{\"address\":\"\"}", stringifiedMappedAddress);
+    assertEquals("", stringifiedMappedAddress);
   }
 
   @Test
@@ -138,43 +138,53 @@ public class JsonSerialiserUnitTest {
   }
 
   @Test
-  public void mapBeaconOwnerAddressToJson_whenTheAddressIsNull_shouldReturnEmptyJSONObject() {
+  public void mapBeaconOwnerAddressToString_whenTheAddressIsNull_shouldReturnEmptyJSONObject() {
     AddressDTO ownerAddress = null;
 
-    JSONObject mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToJson(
+    String mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToString(
       ownerAddress
     );
 
-    assertEquals("{}", mappedAddress.toJSONString());
+    assertEquals("", mappedAddress);
   }
 
   @Test
-  public void mapBeaconOwnerAddressToJson_whenTheAddressIsBlank_shouldLeaveTheAddressBlank() {
+  public void mapBeaconOwnerAddressToString_whenTheAddressIsBlank_shouldLeaveTheAddressBlank() {
     AddressDTO blankOwnerAddress = new AddressDTO();
 
-    JSONObject mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToJson(
+    String mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToString(
       blankOwnerAddress
     );
 
-    assertEquals("", mappedAddress.get("address"));
+    assertEquals("", mappedAddress);
   }
 
   @Test
-  public void mapBeaconOwnerAddressToJson_shouldCapitaliseAllSentenceCaseText() {
+  public void mapBeaconOwnerAddressToString_shouldCapitaliseAllSentenceCaseText() {
     AddressDTO ownerAddress = new AddressDTO();
 
     ownerAddress.setAddressLine1("10 Via Coco");
     ownerAddress.setAddressLine2("Ciudad de Mexico");
     ownerAddress.setCountry("Mexico");
 
-    JSONObject mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToJson(
+    String mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToString(
       ownerAddress
     );
 
-    assertEquals(
-      "10 VIA COCO CIUDAD DE MEXICO MEXICO",
-      mappedAddress.get("address")
-    );
+    assertEquals("10 VIA COCO-CIUDAD DE MEXICO-MEXICO", mappedAddress);
+  }
+
+  @Test
+  public void mapUseToJson_whenTheUseIsAnAviationUse_shouldMapAllAviationFields() {
+    BeaconExportAviationUseDTO aviationUse = new BeaconExportAviationUseDTO();
+
+    aviationUse.setEnvironment("AVIATION");
+    aviationUse.setBeaconLocation("On the nose of my plane");
+    aviationUse.setAircraftManufacturer("Boeing");
+
+    JSONObject mappedUse = JsonSerialiser.mapUseToJson(aviationUse);
+
+    assertEquals("10 VIA COCO-CIUDAD DE MEXICO-MEXICO", mappedUse);
   }
   // owners: for deleted records, owners is just blank rather than []
   // might be better for them all to be blank to save some bytes
