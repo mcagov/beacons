@@ -341,6 +341,7 @@ public class ExportMapper {
           ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
           : ""
       )
+      .id(beacon.getId().toString())
       .proofOfRegistrationDate(OffsetDateTime.now())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .departmentReference(details.getDepartRefId())
@@ -350,6 +351,11 @@ public class ExportMapper {
       .manufacturer(details.getManufacturer())
       .serialNumber(
         details.getSerialNumber() != null ? details.getSerialNumber() : 0
+      )
+      .cospasSarsatNumber(
+        details.getCospasSarsatNumber() != null
+          ? details.getCospasSarsatNumber().toString()
+          : ""
       )
       .manufacturerSerialNumber(details.getManufacturerSerialNumber())
       .beaconModel(details.getModel())
@@ -399,7 +405,11 @@ public class ExportMapper {
       .batteryExpiryDate(details.getBatteryExpiryDate())
       .codingProtocol(details.getProtocol())
       .cstaNumber(details.getCsta())
-      .cospasSarsatNumber(details.getCospasSarsatNumber().toString())
+      .cospasSarsatNumber(
+        details.getCospasSarsatNumber() != null
+          ? details.getCospasSarsatNumber().toString()
+          : ""
+      )
       .chkCode(null)
       .beaconNote(details.getNote())
       .uses(toLegacyUsesDTO(beacon.getData().getUses()))

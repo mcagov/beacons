@@ -16,7 +16,6 @@ export const LegacyCertificate: FunctionComponent<BeaconExportProps> = ({
   return (
     <div className="certificate">
       <CertificateHeader beacon={beacon} />
-
       <div className="content">
         <div className="section">
           <CertificateField
@@ -65,16 +64,25 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
         title="Hex Id"
         value={beacon.hexId}
       />
+
+      <CertificateField
+        classes="half"
+        title="Cospas-Sarsat No"
+        value={beacon.cospasSarsatNumber}
+      />
+
+      <CertificateField
+        classes="half"
+        title="Serial No"
+        value={beacon.serialNumber > 0 ? beacon.serialNumber : ""}
+      />
+
       <CertificateField
         classes="half"
         title="Manufacturer"
         value={beacon.manufacturer}
       />
-      <CertificateField
-        classes="half"
-        title="SERIAL NO"
-        value={beacon.serialNumber > 0 ? beacon.serialNumber : ""}
-      />
+
       <CertificateField
         classes="full"
         title="Manufacturer Serial No"
@@ -110,13 +118,6 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
         title="Csta Number"
         value={beacon.cstaNumber}
       />
-      {beacon.cospasSarsatNumber && (
-        <CertificateField
-          classes="half"
-          title="Cospas Sarsat Serial Number"
-          value={beacon.cospasSarsatNumber}
-        />
-      )}
     </div>
   );
 };
