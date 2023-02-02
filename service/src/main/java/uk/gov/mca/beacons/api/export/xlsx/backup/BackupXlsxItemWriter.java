@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -10,8 +11,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.batch.item.ItemWriter;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
-import uk.gov.mca.beacons.api.export.xlsx.SpreadsheetRow;
-import uk.gov.mca.beacons.api.export.xlsx.backup.BackupSpreadsheetRow;
+import uk.gov.mca.beacons.api.note.domain.Note;
 
 public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
 
@@ -24,7 +24,7 @@ public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
   }
 
   @Override
-  public void write(List<? extends BackupSpreadsheetRow> list)
+  public void write(List<? extends BackupSpreadsheetRow> backupRows)
     throws NullPointerException {
     Sheet sheet = Objects
       .requireNonNull(
@@ -37,7 +37,18 @@ public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
     // returns -1 if there are no rows;
     int currentRowNum = sheet.getLastRowNum() + 1;
 
-    for (BackupSpreadsheetRow row : list) {
+    backupRows =
+      backupRows
+        .stream()
+        .sorted(
+          Comparator.comparing(
+            BackupSpreadsheetRow::getLastModifiedDate,
+            Comparator.reverseOrder()
+          )
+        )
+        .collect(Collectors.toList());
+
+    for (BackupSpreadsheetRow row : backupRows) {
       writeRow(sheet, currentRowNum, row);
       currentRowNum++;
     }

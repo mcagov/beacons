@@ -33,7 +33,7 @@ import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
  */
 @Getter
 @Setter
-public class BackupSpreadsheetRow implements SpreadsheetRow {
+public class BackupSpreadsheetRow {
 
   public static final List<String> COLUMN_ATTRIBUTES = List.of(
     "id",
