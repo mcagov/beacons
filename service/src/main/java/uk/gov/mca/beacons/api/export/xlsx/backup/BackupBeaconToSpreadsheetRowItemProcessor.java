@@ -61,12 +61,12 @@ class BackupBeaconToSpreadsheetRowItemProcessor
       .getAccountHolder(beacon.getAccountHolderId())
       .orElseThrow(ResourceNotFoundException::new);
 
-    List<Note> notes = noteService.getByBeaconId(beaconId);
+    List<Note> nonSystemNotes = noteService.getNonSystemNotes(beaconId);
 
     return new BackupSpreadsheetRow(
       registration,
       accountHolder,
-      notes,
+      nonSystemNotes,
       exportMapper,
       dateFormatter
     );

@@ -143,14 +143,14 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
   public BackupSpreadsheetRow(
     Registration registration,
     AccountHolder accountHolder,
-    List<Note> notes,
+    List<Note> nonSystemNotes,
     ExportMapper exportMapper,
     DateTimeFormatter dateFormatter
   ) {
     BeaconBackupExportDTO mappedBeacon = exportMapper.toBeaconBackupExportDTO(
       registration,
       accountHolder,
-      notes
+      nonSystemNotes
     );
 
     this.id = registration.getBeacon().getId().unwrap();
@@ -251,9 +251,10 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
   }
 
   protected String getStringifiedNotes(List<Note> notes) {
-    return notes != null
-      ? JsonSerialiser.mapModernBeaconNotesToJsonArray(notes).toString()
-      : "";
+    //    return notes != null
+    //      ? JsonSerialiser.mapModernBeaconNotesToJsonArray(notes).toString()
+    //      : "";
+    return "";
   }
 
   protected void setOwners(List<BeaconExportOwnerDTO> beaconOwners) {

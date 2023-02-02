@@ -120,10 +120,7 @@ public class JsonSerialiserUnitTest {
     assertEquals("", firstMappedOwner.get("owner name"));
     assertEquals("", firstMappedOwner.get("company name"));
     assertEquals("", firstMappedOwner.get("care of"));
-    assertEquals(
-      "{\"address line 1\":\"\",\"country\":\"\",\"address line 2\":\"\",\"address line 3\":\"\",\"address line 4\":\"\",\"postcode\":\"\",\"county\":\"\",\"town or city\":\"\"}",
-      stringifiedMappedAddress
-    );
+    assertEquals("{\"address\":\"\"}", stringifiedMappedAddress);
   }
 
   @Test
@@ -141,16 +138,14 @@ public class JsonSerialiserUnitTest {
   }
 
   @Test
-  public void mapBeaconOwnerAddressToJson_whenAnAddressLineIsNull_shouldReturnEmptyStringForThatLine() {
-    AddressDTO ownerAddress = new AddressDTO();
-
-    ownerAddress.setAddressLine1("10 Via Coco");
+  public void mapBeaconOwnerAddressToJson_whenTheAddressIsNull_shouldReturnEmptyJSONObject() {
+    AddressDTO ownerAddress = null;
 
     JSONObject mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToJson(
       ownerAddress
     );
 
-    assertEquals("", mappedAddress.get("address line 2"));
+    assertEquals("{}", mappedAddress.toJSONString());
   }
 
   @Test
@@ -176,9 +171,10 @@ public class JsonSerialiserUnitTest {
       ownerAddress
     );
 
-    assertEquals("10 VIA COCO", mappedAddress.get("address line 1"));
-    assertEquals("CIUDAD DE MEXICO", mappedAddress.get("address line 2"));
-    assertEquals("MEXICO", mappedAddress.get("country"));
+    assertEquals(
+      "10 VIA COCO CIUDAD DE MEXICO MEXICO",
+      mappedAddress.get("address")
+    );
   }
   // owners: for deleted records, owners is just blank rather than []
   // might be better for them all to be blank to save some bytes

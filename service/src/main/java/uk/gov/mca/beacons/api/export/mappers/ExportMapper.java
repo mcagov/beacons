@@ -172,7 +172,7 @@ public class ExportMapper {
   public BeaconBackupExportDTO toBeaconBackupExportDTO(
     Registration registration,
     AccountHolder accountHolder,
-    List<Note> allNotes
+    List<Note> nonSystemNotes
   ) {
     Beacon beacon = registration.getBeacon();
     BeaconUse mainUse = registration.getMainUse();
@@ -211,7 +211,7 @@ public class ExportMapper {
       .codingProtocol(beacon.getProtocol())
       .cstaNumber(beacon.getCsta())
       .chkCode(beacon.getChkCode())
-      .notes(allNotes)
+      .notes(nonSystemNotes)
       .uses(toUsesDTO(registration.getBeaconUses()))
       .owners(
         Arrays.asList(

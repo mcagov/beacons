@@ -102,49 +102,72 @@ public class JsonSerialiser {
   public static JSONObject mapBeaconOwnerAddressToJson(AddressDTO address) {
     var json = new JSONObject();
 
-    String amalgamatedAddress = new StringBuilder()
-      .append(
-        address.getAddressLine1() != null
-          ? address.getAddressLine1().toUpperCase()
-          : ""
-      )
-      .append(
-        address.getAddressLine2() != null
-          ? address.getAddressLine2().toUpperCase()
-          : ""
-      )
-      .append(
-        address.getAddressLine3() != null
-          ? address.getAddressLine3().toUpperCase()
-          : ""
-      )
-      .append(
-        address.getAddressLine4() != null
-          ? address.getAddressLine4().toUpperCase()
-          : ""
-      )
-      .append(
-        address.getTownOrCity() != null
-          ? address.getTownOrCity().toUpperCase()
-          : ""
-      )
-      .append(
-        address.getPostcode() != null ? address.getPostcode().toUpperCase() : ""
-      )
-      .append(
-        address.getTownOrCity() != null
-          ? address.getTownOrCity().toUpperCase()
-          : ""
-      )
-      .append(
-        address.getCounty() != null ? address.getCounty().toUpperCase() : ""
-      )
-      .append(
-        address.getCountry() != null ? address.getCountry().toUpperCase() : ""
-      )
-      .toString();
+    if (address != null) {
+      String amalgamatedAddress = new StringBuilder()
+        .append(
+          address.getAddressLine1() != null
+            ? address.getAddressLine1().toUpperCase()
+            : ""
+        )
+        .append(
+          address.getAddressLine2() != null
+            ? MessageFormat.format(
+              " {0}",
+              address.getAddressLine2().toUpperCase()
+            )
+            : ""
+        )
+        .append(
+          address.getAddressLine3() != null
+            ? MessageFormat.format(
+              " {0}",
+              address.getAddressLine3().toUpperCase()
+            )
+            : ""
+        )
+        .append(
+          address.getAddressLine4() != null
+            ? MessageFormat.format(
+              " {0}",
+              address.getAddressLine4().toUpperCase()
+            )
+            : ""
+        )
+        .append(
+          address.getTownOrCity() != null
+            ? MessageFormat.format(
+              " {0}",
+              address.getTownOrCity().toUpperCase()
+            )
+            : ""
+        )
+        .append(
+          address.getPostcode() != null
+            ? MessageFormat.format(" {0}", address.getPostcode().toUpperCase())
+            : ""
+        )
+        .append(
+          address.getTownOrCity() != null
+            ? MessageFormat.format(
+              " {0}",
+              address.getTownOrCity().toUpperCase()
+            )
+            : ""
+        )
+        .append(
+          address.getCounty() != null
+            ? MessageFormat.format(" {0}", address.getCounty().toUpperCase())
+            : ""
+        )
+        .append(
+          address.getCountry() != null
+            ? MessageFormat.format(" {0}", address.getCountry().toUpperCase())
+            : ""
+        )
+        .toString();
 
-    json.put("address", amalgamatedAddress);
+      json.put("address", amalgamatedAddress);
+    }
 
     return json;
   }
