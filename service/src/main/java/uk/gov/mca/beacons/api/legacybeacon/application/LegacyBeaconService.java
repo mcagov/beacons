@@ -97,7 +97,11 @@ public class LegacyBeaconService {
     legacyBeaconData.setUses(new ArrayList<LegacyUse>());
     legacyBeaconData.setEmergencyContact(new LegacyEmergencyContact());
     legacyBeaconData.setSecondaryOwners(new ArrayList<LegacySecondaryOwner>());
+
     legacyDataBeaconDetails.setNote(null);
+    legacyDataBeaconDetails.setLastModifiedDate(
+      OffsetDateTime.now().toString()
+    );
 
     legacyBeacon.setOwnerEmail(null);
     legacyBeacon.setOwnerName(null);
