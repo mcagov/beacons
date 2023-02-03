@@ -43,12 +43,18 @@ public class BackupToXlsxJobConfiguration {
 
   @Bean("backupSpreadsheetBeaconItemReader")
   public JpaPagingItemReader<Beacon> backupSpreadsheetBeaconItemReader() {
-    return BeaconItemReaderFactory.getItemReader(entityManagerFactory);
+    JpaPagingItemReader<Beacon> reader = BeaconItemReaderFactory.getBackupItemReader(
+      entityManagerFactory
+    );
+    return reader;
   }
 
   @Bean("backupSpreadsheetLegacyBeaconItemReader")
   public JpaPagingItemReader<LegacyBeacon> backupSpreadsheetLegacyBeaconItemReader() {
-    return LegacyBeaconItemReaderFactory.getItemReader(entityManagerFactory);
+    JpaPagingItemReader<LegacyBeacon> reader = LegacyBeaconItemReaderFactory.getLegacyBackupItemReader(
+      entityManagerFactory
+    );
+    return reader;
   }
 
   @Bean("backupBeaconToSpreadsheetStep")

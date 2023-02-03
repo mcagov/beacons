@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.batch.item.ItemWriter;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
-import uk.gov.mca.beacons.api.note.domain.Note;
 
 public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
 
@@ -37,21 +36,24 @@ public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
     // returns -1 if there are no rows;
     int currentRowNum = sheet.getLastRowNum() + 1;
 
-    backupRows =
-      backupRows
-        .stream()
-        .sorted(
-          Comparator.comparing(
-            BackupSpreadsheetRow::getLastModifiedDate,
-            Comparator.reverseOrder()
-          )
-        )
-        .collect(Collectors.toList());
-
     for (BackupSpreadsheetRow row : backupRows) {
       writeRow(sheet, currentRowNum, row);
       currentRowNum++;
     }
+  }
+
+  public List<BackupSpreadsheetRow> orderBeaconsByLastModifiedDate(
+    List<BackupSpreadsheetRow> beacons
+  ) {
+    return beacons
+      .stream()
+      .sorted(
+        Comparator.comparing(
+          BackupSpreadsheetRow::getLastModifiedDate,
+          Comparator.reverseOrder()
+        )
+      )
+      .collect(Collectors.toList());
   }
 
   private void writeRow(
