@@ -43,7 +43,6 @@ public class BackupSpreadsheetRow {
     //This is only valid for legacy.
     "cospasSarsatNumber",
     "type",
-    "proofOfRegistrationDate",
     //This is only valid for legacy.
     "departmentReference",
     "recordCreatedDate",
@@ -71,7 +70,6 @@ public class BackupSpreadsheetRow {
     //This is only valid for legacy.
     "Cospas Sarsat Number",
     "Type",
-    "Proof of registration date",
     //This is only valid for legacy.
     "Department reference",
     "Record created date",
@@ -100,9 +98,9 @@ public class BackupSpreadsheetRow {
   //This is only valid for legacy.
   private String cospasSarsatNumber;
   private String type;
-  private String proofOfRegistrationDate;
   //This is only valid for legacy.
   private String departmentReference;
+  // add col name
   private String referenceNumber;
   private String recordCreatedDate;
   private String manufacturer;
@@ -140,6 +138,14 @@ public class BackupSpreadsheetRow {
     setEmergencyContacts(mappedLegacyBeacon.getEmergencyContacts());
   }
 
+  public static BackupSpreadsheetRow createEmptyRow(UUID id) {
+    return new BackupSpreadsheetRow(id);
+  }
+
+  private BackupSpreadsheetRow(UUID id) {
+    this.id = id;
+  }
+
   public BackupSpreadsheetRow(
     Registration registration,
     AccountHolder accountHolder,
@@ -173,8 +179,6 @@ public class BackupSpreadsheetRow {
       mappedLegacyBeacon.getLastModifiedDate().format(dateFormatter);
     this.cospasSarsatNumber = mappedLegacyBeacon.getCospasSarsatNumber();
     this.type = mappedLegacyBeacon.getType();
-    this.proofOfRegistrationDate =
-      mappedLegacyBeacon.getProofOfRegistrationDate().format(dateFormatter);
     this.departmentReference = mappedLegacyBeacon.getDepartmentReference();
     this.referenceNumber = mappedLegacyBeacon.getReferenceNumber();
     this.recordCreatedDate =
@@ -217,8 +221,6 @@ public class BackupSpreadsheetRow {
     this.lastModifiedDate =
       mappedBeacon.getLastModifiedDate().format(dateFormatter);
     this.type = mappedBeacon.getType();
-    this.proofOfRegistrationDate =
-      mappedBeacon.getProofOfRegistrationDate().format(dateFormatter);
     this.referenceNumber = mappedBeacon.getReferenceNumber();
     this.recordCreatedDate =
       BeaconsStringUtils.formatDate(

@@ -42,10 +42,10 @@ public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
     }
   }
 
-  public List<BackupSpreadsheetRow> orderBeaconsByLastModifiedDate(
-    List<BackupSpreadsheetRow> beacons
+  public List<BackupSpreadsheetRow> orderBeaconRowsByLastModifiedDateDescending(
+    List<BackupSpreadsheetRow> beaconRows
   ) {
-    return beacons
+    return beaconRows
       .stream()
       .sorted(
         Comparator.comparing(
