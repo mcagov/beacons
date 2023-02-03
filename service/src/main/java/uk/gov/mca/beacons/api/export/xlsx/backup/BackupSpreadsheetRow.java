@@ -128,7 +128,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     ExportMapper exportMapper,
     DateTimeFormatter dateFormatter
   ) {
-    BeaconExportDTO mappedLegacyBeacon = exportMapper.toLegacyBeaconBackupExportDTO(
+    BeaconExportDTO mappedLegacyBeacon = exportMapper.toLegacyBeaconExportDTO(
       legacyBeacon
     );
 
@@ -149,7 +149,7 @@ public class BackupSpreadsheetRow implements SpreadsheetRow {
     ExportMapper exportMapper,
     DateTimeFormatter dateFormatter
   ) {
-    BeaconExportDTO mappedBeacon = exportMapper.toBeaconBackupExportDTO(
+    BeaconExportDTO mappedBeacon = exportMapper.toBeaconExportDTO(
       registration,
       accountHolder,
       notes

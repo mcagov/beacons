@@ -170,7 +170,9 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use - ${use.environment} (${use.typeOfUse})`}
+        {`#${index} Beacon Use - ${use.environment} ${
+          use.typeOfUse ? `(${use.typeOfUse})` : ""
+        }`}
       </h4>
       <div className="section">
         <h3>Vessel Details:</h3>
@@ -203,8 +205,8 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         {use.rigPlatformLocation && (
           <CertificateField
             classes="half"
-            title="Windfarm Location"
-            value={use.windfarmLocation}
+            title="Rig/Platform Location"
+            value={use.rigPlatformLocation}
           />
         )}
 
@@ -216,7 +218,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="full"
           title="Communications"
-          value={Object.keys(use.radioSystems)}
+          value={Object.keys(use.radioSystems).join(", ")}
         />
         <CertificateField
           classes="half"
@@ -281,7 +283,9 @@ const AviationUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use - ${use.environment} (${use.typeOfUse})`}
+        {`#${index} Beacon Use - ${use.environment} ${
+          use.typeOfUse ? `(${use.typeOfUse})` : ""
+        }`}
       </h4>
       <div className="section">
         <h3>Aircraft Details:</h3>
@@ -366,7 +370,9 @@ const LandUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use - ${use.environment} (${use.typeOfUse})`}
+        {`#${index} Beacon Use - ${use.environment} ${
+          use.typeOfUse ? `(${use.typeOfUse})` : ""
+        }`}
       </h4>
       <div className="section">
         <h3>Land Details:</h3>
@@ -388,8 +394,8 @@ const LandUse: FunctionComponent<UseProps> = ({
         {use.rigPlatformLocation && (
           <CertificateField
             classes="half"
-            title="Windfarm Location"
-            value={use.windfarmLocation}
+            title="Rig/Platform Location"
+            value={use.rigPlatformLocation}
           />
         )}
 

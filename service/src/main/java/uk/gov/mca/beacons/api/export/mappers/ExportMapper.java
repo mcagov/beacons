@@ -76,34 +76,6 @@ public class ExportMapper {
       .build();
   }
 
-  public BeaconExportDTO toBeaconExportDTO(Beacon beacon) {
-    return BeaconExportDTO
-      .builder()
-      .type("New")
-      .proofOfRegistrationDate(OffsetDateTime.now())
-      .lastModifiedDate(beacon.getLastModifiedDate())
-      .recordCreatedDate(beacon.getCreatedDate().toString())
-      .beaconStatus(beacon.getBeaconStatus().toString())
-      .hexId(beacon.getHexId())
-      .manufacturer(beacon.getManufacturer())
-      .manufacturerSerialNumber(beacon.getManufacturerSerialNumber())
-      .beaconModel(beacon.getModel())
-      .beaconlastServiced(
-        beacon.getLastServicedDate() != null
-          ? beacon.getLastServicedDate().toString()
-          : null
-      )
-      .beaconCoding(beacon.getCoding())
-      .batteryExpiryDate(
-        beacon.getBatteryExpiryDate() != null
-          ? beacon.getBatteryExpiryDate().toString()
-          : null
-      )
-      .codingProtocol(beacon.getProtocol())
-      .cstaNumber(beacon.getCsta())
-      .build();
-  }
-
   public BeaconExportDTO toBeaconExportDTO(
     Registration registration,
     AccountHolder accountHolder,
@@ -116,72 +88,7 @@ public class ExportMapper {
     return BeaconExportDTO
       .builder()
       .type("New")
-      .name(
-        mainUse != null
-          ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
-          : ""
-      )
-      .proofOfRegistrationDate(OffsetDateTime.now())
-      .lastModifiedDate(beacon.getLastModifiedDate())
-      .referenceNumber(beacon.getReferenceNumber())
-      .recordCreatedDate(beacon.getCreatedDate().toString())
-      .beaconStatus(beacon.getBeaconStatus().toString())
-      .hexId(beacon.getHexId())
-      .manufacturer(beacon.getManufacturer())
-      .manufacturerSerialNumber(beacon.getManufacturerSerialNumber())
-      .beaconModel(beacon.getModel())
-      .beaconlastServiced(
-        beacon.getLastServicedDate() != null
-          ? beacon.getLastServicedDate().toString()
-          : null
-      )
-      .beaconCoding(beacon.getCoding())
-      .batteryExpiryDate(
-        beacon.getBatteryExpiryDate() != null
-          ? beacon.getBatteryExpiryDate().toString()
-          : null
-      )
-      .codingProtocol(beacon.getProtocol())
-      .cstaNumber(beacon.getCsta())
-      .chkCode(beacon.getChkCode())
-      .notes(
-        nonSystemNotes
-          .stream()
-          .map(n ->
-            new BeaconExportNoteDTO(
-              n.getCreatedDate().toLocalDateTime(),
-              n.getText()
-            )
-          )
-          .collect(Collectors.toList())
-      )
-      .uses(toUsesDTO(registration.getBeaconUses()))
-      .owners(
-        Arrays.asList(
-          owner != null ? toOwnerDTO(registration.getBeaconOwner()) : null
-        )
-      )
-      .accountHolder(toAccountHolderDTO(accountHolder))
-      .emergencyContacts(
-        toEmergencyContactsDTO(registration.getEmergencyContacts())
-      )
-      .build();
-  }
-
-  public BeaconExportDTO toBeaconBackupExportDTO(
-    Registration registration,
-    AccountHolder accountHolder,
-    List<Note> nonSystemNotes
-  ) {
-    Beacon beacon = registration.getBeacon();
-    BeaconUse mainUse = registration.getMainUse();
-    BeaconOwner owner = registration.getBeaconOwner();
-    String id = beacon.getId().unwrap().toString();
-
-    return BeaconExportDTO
-      .builder()
-      .id(id)
-      .type("New")
+      .id(beacon.getId().unwrap().toString())
       .name(
         mainUse != null
           ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
@@ -296,7 +203,7 @@ public class ExportMapper {
       .beaconPosition(use.getBeaconPosition())
       .beaconLocation(use.getBeaconLocation())
       .aircraftManufacturer(use.getAircraftManufacturer())
-      .aircraftType(use.getAircraftManufacturer()) // Unsure on this.
+      .aircraftType(use.getUseType())
       .maxPersonOnBoard(use.getMaxCapacity() != null ? use.getMaxCapacity() : 0)
       .aircraftRegistrationMark(use.getRegistrationMark())
       .twentyFourBitAddressInHex(use.getHexAddress())
@@ -341,7 +248,7 @@ public class ExportMapper {
           ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
           : ""
       )
-      .id(beacon.getId().toString())
+      .id(beacon.getId().unwrap().toString())
       .proofOfRegistrationDate(OffsetDateTime.now())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .departmentReference(details.getDepartRefId())
@@ -364,53 +271,6 @@ public class ExportMapper {
       .batteryExpiryDate(details.getBatteryExpiryDate())
       .codingProtocol(details.getProtocol())
       .cstaNumber(details.getCsta())
-      .chkCode(null)
-      .beaconNote(details.getNote())
-      .uses(toLegacyUsesDTO(beacon.getData().getUses()))
-      .owners(toLegacyOwnersDTO(beacon.getData()))
-      .emergencyContacts(
-        toLegacyEmergencyContacts(beacon.getData().getEmergencyContact())
-      )
-      .build();
-  }
-
-  public BeaconExportDTO toLegacyBeaconBackupExportDTO(LegacyBeacon beacon) {
-    LegacyBeaconDetails details = beacon.getData().getBeacon();
-    LegacyUse mainUse = beacon.getData().getMainUse();
-    String id = beacon.getId().unwrap().toString();
-
-    return BeaconExportDTO
-      .builder()
-      .id(id)
-      .type("Legacy")
-      .name(
-        mainUse != null
-          ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
-          : ""
-      )
-      .proofOfRegistrationDate(OffsetDateTime.now())
-      .lastModifiedDate(beacon.getLastModifiedDate())
-      .departmentReference(details.getDepartRefId())
-      .recordCreatedDate(details.getFirstRegistrationDate())
-      .beaconStatus(beacon.getBeaconStatus())
-      .hexId(beacon.getHexId())
-      .manufacturer(details.getManufacturer())
-      .serialNumber(
-        details.getSerialNumber() != null ? details.getSerialNumber() : 0
-      )
-      .manufacturerSerialNumber(details.getManufacturerSerialNumber())
-      .beaconModel(details.getModel())
-      .beaconlastServiced(details.getLastServiceDate())
-      .beaconCoding(details.getCoding())
-      .batteryExpiryDate(details.getBatteryExpiryDate())
-      .codingProtocol(details.getProtocol())
-      .cstaNumber(details.getCsta())
-      .cospasSarsatNumber(
-        details.getCospasSarsatNumber() != null
-          ? details.getCospasSarsatNumber().toString()
-          : ""
-      )
-      .chkCode(null)
       .beaconNote(details.getNote())
       .uses(toLegacyUsesDTO(beacon.getData().getUses()))
       .owners(toLegacyOwnersDTO(beacon.getData()))
@@ -571,7 +431,13 @@ public class ExportMapper {
         use.getMmsiNumber() != null ? use.getMmsiNumber().toString() : null
       )
       .radioSystems(use.getCommunicationTypes())
-      .notes(use.getNotes() + " - " + use.getNote())
+      .notes(
+        BeaconsStringUtils.getMultipleValuesAsString(
+          " - ",
+          use.getNotes(),
+          use.getNote()
+        )
+      )
       .fishingVesselPortIdAndNumbers(use.getFishingVesselPln())
       .officialNumber(use.getOfficialNumber())
       .imoNumber(use.getImoNumber())
@@ -596,7 +462,13 @@ public class ExportMapper {
       .aodSerialNumber(use.getAodSerialNumber())
       .principalAirport(use.getPrincipalAirport())
       .radioSystems(use.getCommunicationTypes())
-      .notes(use.getNotes() + " - " + use.getNote())
+      .notes(
+        BeaconsStringUtils.getMultipleValuesAsString(
+          " - ",
+          use.getNotes(),
+          use.getNote()
+        )
+      )
       .build();
   }
 
@@ -614,7 +486,13 @@ public class ExportMapper {
       .areaOfUse(use.getAreaOfUse())
       .tripInformation(use.getTripInfo())
       .radioSystems(use.getCommunicationTypes())
-      .notes(use.getNotes() + " - " + use.getNote())
+      .notes(
+        BeaconsStringUtils.getMultipleValuesAsString(
+          " - ",
+          use.getNotes(),
+          use.getNote()
+        )
+      )
       .build();
   }
 
@@ -625,7 +503,7 @@ public class ExportMapper {
       .typeOfUse(use.getPurpose())
       .rigName(use.getRigName())
       .homePort(use.getHomePort())
-      .beaconLocation(use.getBeaconPosition())
+      .beaconLocation(use.getPosition())
       .beaconPosition(use.getBeaconPosition())
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .vesselCallsign(use.getCallSign())
@@ -634,7 +512,13 @@ public class ExportMapper {
       )
       .radioSystems(use.getCommunicationTypes())
       .imoNumber(use.getImoNumber())
-      .notes(use.getNotes() + " - " + use.getNote())
+      .notes(
+        BeaconsStringUtils.getMultipleValuesAsString(
+          " - ",
+          use.getNotes(),
+          use.getNote()
+        )
+      )
       .build();
   }
 
@@ -646,7 +530,7 @@ public class ExportMapper {
       .vesselName(use.getVesselName())
       .rigName(use.getRigName())
       .homePort(use.getHomePort())
-      .beaconLocation(use.getBeaconPosition())
+      .beaconLocation(use.getPosition())
       .beaconPosition(use.getBeaconPosition())
       .maxPersonOnBoard(use.getMaxPersons() != null ? use.getMaxPersons() : 0)
       .vesselCallsign(use.getCallSign())
@@ -671,7 +555,13 @@ public class ExportMapper {
       )
       .areaOfUse(use.getAreaOfUse())
       .tripInformation(use.getTripInfo())
-      .notes(use.getNotes() + " - " + use.getNote())
+      .notes(
+        BeaconsStringUtils.getMultipleValuesAsString(
+          " - ",
+          use.getNotes(),
+          use.getNote()
+        )
+      )
       .build();
   }
 }

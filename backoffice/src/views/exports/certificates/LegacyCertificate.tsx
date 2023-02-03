@@ -84,7 +84,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
       />
 
       <CertificateField
-        classes="full"
+        classes="half"
         title="Manufacturer Serial No"
         value={beacon.manufacturerSerialNumber}
       />
@@ -109,7 +109,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
         value={customDateStringFormat(beacon.batteryExpiryDate, "DD/MM/yyyy")}
       />
       <CertificateField
-        classes="full"
+        classes="half"
         title="Coding Protocol"
         value={beacon.codingProtocol}
       />
@@ -117,6 +117,12 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
         classes="half"
         title="Csta Number"
         value={beacon.cstaNumber}
+      />
+
+      <CertificateField
+        classes="full"
+        title="Notes"
+        value={beacon.beaconNote}
       />
     </div>
   );
@@ -280,6 +286,22 @@ const RigUse: FunctionComponent<UseProps> = ({
             classes="half"
             title="Rig Name"
             value={use.rigName}
+          />
+        )}
+
+        {use.windfarmLocation && (
+          <CertificateField
+            classes="half"
+            title="Windfarm Location"
+            value={use.windfarmLocation}
+          />
+        )}
+
+        {use.rigPlatformLocation && (
+          <CertificateField
+            classes="half"
+            title="Rig/Platform Location"
+            value={use.rigPlatformLocation}
           />
         )}
 
@@ -506,10 +528,18 @@ export const GenericUse: FunctionComponent<UseProps> = ({
           />
         )}
 
+        {use.windfarmLocation && (
+          <CertificateField
+            classes="half"
+            title="Windfarm Location"
+            value={use.windfarmLocation}
+          />
+        )}
+
         {use.rigPlatformLocation && (
           <CertificateField
             classes="half"
-            title="Rig Platform Location"
+            title="Rig/Platform Location"
             value={use.rigPlatformLocation}
           />
         )}
