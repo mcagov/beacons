@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.batch.item.ItemProcessor;
@@ -15,6 +16,7 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerReadOnlyRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseReadOnlyRepository;
+import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContactReadOnlyRepository;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
@@ -34,6 +36,8 @@ class BackupBeaconToSpreadsheetRowItemProcessor
 
   private final ExportMapper exportMapper;
 
+  private final BeaconUseMapper beaconUseMapper;
+
   private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
     "dd-MM-yyyy"
   );
@@ -43,17 +47,20 @@ class BackupBeaconToSpreadsheetRowItemProcessor
     RegistrationService registrationService,
     NoteService noteService,
     AccountHolderService accountHolderService,
-    ExportMapper exportMapper
+    ExportMapper exportMapper,
+    BeaconUseMapper beaconUseMapper
   ) {
     this.registrationService = registrationService;
     this.noteService = noteService;
     this.accountHolderService = accountHolderService;
     this.exportMapper = exportMapper;
+    this.beaconUseMapper = beaconUseMapper;
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
   @Override
-  public BackupSpreadsheetRow process(Beacon beacon) {
+  public BackupSpreadsheetRow process(Beacon beacon)
+    throws JsonProcessingException {
     BeaconId beaconId = beacon.getId();
     Registration registration = registrationService.getByBeaconId(beaconId);
 
@@ -68,6 +75,7 @@ class BackupBeaconToSpreadsheetRowItemProcessor
       accountHolder,
       nonSystemNotes,
       exportMapper,
+      beaconUseMapper,
       dateFormatter
     );
   }

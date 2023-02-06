@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.MessageFormat;
@@ -10,6 +11,8 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringEscapeUtils;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
+import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
+import uk.gov.mca.beacons.api.beaconuse.rest.BeaconUseDTO;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.note.domain.Note;
@@ -161,60 +164,51 @@ public class JsonSerialiser {
     return jsonArray;
   }
 
-  public static JSONArray mapUsesToJsonArray(List<BeaconUse> uses) {
+  public static JSONArray mapModernUsesToJsonArray(List<BeaconUseDTO> uses)
+    throws JsonProcessingException {
     JSONArray jsonArray = new JSONArray();
 
-    // todo: I don't want to bloat the file by having all
-    // fields when some uses only need some fields
-    // however, looks like we do want all use fields even if they
-    // are irrelevant based on Louise's feedback
     if (uses.size() > 0) {
-      for (BeaconUse use : uses) {
+      for (BeaconUseDTO use : uses) {
         if (use == null) {
           continue;
         }
-        jsonArray.add(mapUseToJson(use));
+        jsonArray.add(mapModernUseToJson(use));
       }
     }
 
     return jsonArray;
   }
 
-  public static JSONArray mapBeaconExportUsesToJsonArray(
+  public static JSONArray mapLegacyUsesToJsonArray(
     List<BeaconExportUseDTO> uses
   ) {
     JSONArray jsonArray = new JSONArray();
 
-    // todo: I don't want to bloat the file by having all
-    // fields when some uses only need some fields
-    // however, looks like we do want all use fields even if they
-    // are irrelevant based on Louise's feedback
     if (uses.size() > 0) {
       for (BeaconExportUseDTO use : uses) {
         if (use == null) {
           continue;
         }
-        jsonArray.add(mapBeaconExportUseToJson(use));
+        jsonArray.add(mapLegacyUseToJson(use));
       }
     }
 
     return jsonArray;
   }
 
-  // environment specific objects with a common parent BeaconUse which we pass here
-  // reflection takes only the relevant properties
-  // new specific uses inherit from
-  public static JSONObject mapUseToJson(BeaconUse use) {
+  public static JSONObject mapModernUseToJson(BeaconUseDTO use)
+    throws JsonProcessingException {
     JSONObject json = new JSONObject();
+
     ObjectMapper objectMapper = new ObjectMapper();
     Map<String, Object> useMap = objectMapper.convertValue(use, Map.class);
 
     json.putAll(useMap);
-
     return json;
   }
 
-  public static JSONObject mapBeaconExportUseToJson(BeaconExportUseDTO use) {
+  public static JSONObject mapLegacyUseToJson(BeaconExportUseDTO use) {
     JSONObject json = new JSONObject();
     ObjectMapper objectMapper = new ObjectMapper();
     Map<String, Object> useMap = objectMapper.convertValue(use, Map.class);

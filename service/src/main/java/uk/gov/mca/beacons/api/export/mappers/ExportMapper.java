@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export.mappers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
+import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
+import uk.gov.mca.beacons.api.beaconuse.rest.BeaconUseDTO;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
@@ -172,10 +175,18 @@ public class ExportMapper {
   public BeaconBackupExportDTO toBeaconBackupExportDTO(
     Registration registration,
     AccountHolder accountHolder,
-    List<Note> nonSystemNotes
-  ) {
+    List<Note> nonSystemNotes,
+    BeaconUseMapper beaconUseMapper
+  ) throws JsonProcessingException {
     Beacon beacon = registration.getBeacon();
+
     BeaconUse mainUse = registration.getMainUse();
+    List<BeaconUseDTO> useDTOs = registration
+      .getBeaconUses()
+      .stream()
+      .map(u -> beaconUseMapper.toDTO(u))
+      .collect(Collectors.toList());
+
     BeaconOwner owner = registration.getBeaconOwner();
     String id = beacon.getId().unwrap().toString();
 
@@ -212,7 +223,7 @@ public class ExportMapper {
       .cstaNumber(beacon.getCsta())
       .chkCode(beacon.getChkCode())
       .notes(nonSystemNotes)
-      .uses(JsonSerialiser.mapUsesToJsonArray(registration.getBeaconUses()))
+      .uses(JsonSerialiser.mapModernUsesToJsonArray(useDTOs))
       .owners(
         Arrays.asList(
           owner != null ? toOwnerDTO(registration.getBeaconOwner()) : null

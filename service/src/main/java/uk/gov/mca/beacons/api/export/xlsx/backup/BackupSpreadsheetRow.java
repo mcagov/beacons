@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minidev.json.JSONArray;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
+import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.*;
@@ -102,9 +104,10 @@ public class BackupSpreadsheetRow {
   private String referenceNumber;
   private String recordCreatedDate;
   private String manufacturer;
-  // only relevant to legacy beacons
+  // only valid for legacy beacons
   private String serialNumber;
   private String manufacturerSerialNumber;
+  // only valid for modern
   private String chkCode;
   private String beaconModel;
   private String beaconLastServiced;
@@ -153,12 +156,14 @@ public class BackupSpreadsheetRow {
     AccountHolder accountHolder,
     List<Note> nonSystemNotes,
     ExportMapper exportMapper,
+    BeaconUseMapper beaconUseMapper,
     DateTimeFormatter dateFormatter
-  ) {
+  ) throws JsonProcessingException {
     BeaconBackupExportDTO mappedBeacon = exportMapper.toBeaconBackupExportDTO(
       registration,
       accountHolder,
-      nonSystemNotes
+      nonSystemNotes,
+      beaconUseMapper
     );
 
     this.id = registration.getBeacon().getId().unwrap();
@@ -193,7 +198,6 @@ public class BackupSpreadsheetRow {
       MessageFormat.format("{0}", mappedLegacyBeacon.getSerialNumber());
     this.manufacturerSerialNumber =
       mappedLegacyBeacon.getManufacturerSerialNumber();
-    this.chkCode = mappedLegacyBeacon.getChkCode();
 
     this.mti = mappedLegacyBeacon.getMti();
 
@@ -238,11 +242,7 @@ public class BackupSpreadsheetRow {
       MessageFormat.format("{0}", mappedBeacon.getManufacturerSerialNumber());
     this.manufacturerSerialNumber = mappedBeacon.getManufacturerSerialNumber();
     this.chkCode = mappedBeacon.getChkCode();
-    // todo add to BeaconBackupExportDTO
-    // if we want all the fields do we need to use an ExportDTO? why not just map
-    // straight from Beacon?
-    // for modern we need more so we need a BeaconBackupExportDTO composed of all the objects
-    // legacy we can probs just use the LegacyBeacon
+
     this.mti = mappedBeacon.getMti();
     this.svdr = String.valueOf(mappedBeacon.getSvdr());
     this.beaconModel = mappedBeacon.getBeaconModel();
@@ -286,7 +286,7 @@ public class BackupSpreadsheetRow {
   protected void setLegacyUses(List<BeaconExportUseDTO> legacyUses) {
     this.uses =
       legacyUses != null
-        ? JsonSerialiser.mapBeaconExportUsesToJsonArray(legacyUses).toString()
+        ? JsonSerialiser.mapLegacyUsesToJsonArray(legacyUses).toString()
         : "";
   }
 

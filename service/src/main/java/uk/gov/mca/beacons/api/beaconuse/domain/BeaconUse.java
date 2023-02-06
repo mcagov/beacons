@@ -339,4 +339,8 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
 
     return String.format("%s (%s)", activityName, purposeName);
   }
+
+  public void setRandomId(BeaconUseId id) {
+    this.id = id;
+  }
 }
