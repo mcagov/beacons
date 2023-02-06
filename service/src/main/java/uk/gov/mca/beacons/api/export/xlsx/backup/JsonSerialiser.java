@@ -9,6 +9,7 @@ import java.util.Map;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringEscapeUtils;
+import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.note.domain.Note;
@@ -160,11 +161,15 @@ public class JsonSerialiser {
     return jsonArray;
   }
 
-  public static JSONArray mapUsesToJsonArray(List<BeaconExportUseDTO> uses) {
+  public static JSONArray mapUsesToJsonArray(List<BeaconUse> uses) {
     JSONArray jsonArray = new JSONArray();
 
+    // todo: I don't want to bloat the file by having all
+    // fields when some uses only need some fields
+    // however, looks like we do want all use fields even if they
+    // are irrelevant based on Louise's feedback
     if (uses.size() > 0) {
-      for (BeaconExportUseDTO use : uses) {
+      for (BeaconUse use : uses) {
         if (use == null) {
           continue;
         }
@@ -175,7 +180,41 @@ public class JsonSerialiser {
     return jsonArray;
   }
 
-  public static JSONObject mapUseToJson(BeaconExportUseDTO use) {
+  public static JSONArray mapBeaconExportUsesToJsonArray(
+    List<BeaconExportUseDTO> uses
+  ) {
+    JSONArray jsonArray = new JSONArray();
+
+    // todo: I don't want to bloat the file by having all
+    // fields when some uses only need some fields
+    // however, looks like we do want all use fields even if they
+    // are irrelevant based on Louise's feedback
+    if (uses.size() > 0) {
+      for (BeaconExportUseDTO use : uses) {
+        if (use == null) {
+          continue;
+        }
+        jsonArray.add(mapBeaconExportUseToJson(use));
+      }
+    }
+
+    return jsonArray;
+  }
+
+  // environment specific objects with a common parent BeaconUse which we pass here
+  // reflection takes only the relevant properties
+  // new specific uses inherit from
+  public static JSONObject mapUseToJson(BeaconUse use) {
+    JSONObject json = new JSONObject();
+    ObjectMapper objectMapper = new ObjectMapper();
+    Map<String, Object> useMap = objectMapper.convertValue(use, Map.class);
+
+    json.putAll(useMap);
+
+    return json;
+  }
+
+  public static JSONObject mapBeaconExportUseToJson(BeaconExportUseDTO use) {
     JSONObject json = new JSONObject();
     ObjectMapper objectMapper = new ObjectMapper();
     Map<String, Object> useMap = objectMapper.convertValue(use, Map.class);

@@ -10,6 +10,10 @@ import java.util.List;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import uk.gov.mca.beacons.api.beaconuse.domain.Activity;
+import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
+import uk.gov.mca.beacons.api.beaconuse.domain.Environment;
+import uk.gov.mca.beacons.api.beaconuse.domain.Purpose;
 import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.export.xlsx.backup.JsonSerialiser;
 import uk.gov.mca.beacons.api.note.domain.Note;
@@ -175,16 +179,20 @@ public class JsonSerialiserUnitTest {
   }
 
   @Test
-  public void mapUseToJson_whenTheUseIsAnAviationUse_shouldMapAllAviationFields() {
-    BeaconExportAviationUseDTO aviationUse = new BeaconExportAviationUseDTO();
+  public void mapUseToJson_whenTheEnvironmentIsAviation_shouldMapAllAviationFields() {
+    BeaconUse aviationUse = new BeaconUse();
 
-    aviationUse.setEnvironment("AVIATION");
+    aviationUse.setEnvironment(Environment.AVIATION);
     aviationUse.setBeaconLocation("On the nose of my plane");
     aviationUse.setAircraftManufacturer("Boeing");
+    aviationUse.setPurpose(Purpose.PLEASURE);
+    aviationUse.setActivity(Activity.LIGHT_AIRCRAFT);
 
     JSONObject mappedUse = JsonSerialiser.mapUseToJson(aviationUse);
 
-    assertEquals("10 VIA COCO-CIUDAD DE MEXICO-MEXICO", mappedUse);
+    assertEquals("Light Aircraft (PLEASURE)", mappedUse.get("useType"));
+    assertEquals("Boeing", mappedUse.get("aircraftManufacturer"));
+    assertEquals("AVIATION", mappedUse.get("environment"));
   }
   // owners: for deleted records, owners is just blank rather than []
   // might be better for them all to be blank to save some bytes

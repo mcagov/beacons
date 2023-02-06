@@ -27,7 +27,7 @@ class BackupXlsxItemWriterUnitTest {
       UUID.randomUUID()
     );
     newMaritimeBeaconRow.setBeaconStatus("NEW");
-    newMaritimeBeaconRow.setType("Modern");
+    newMaritimeBeaconRow.setBeaconType("Modern");
     newMaritimeBeaconRow.setLastModifiedDate(
       OffsetDateTime.now().minusDays(1).toString()
     );
@@ -36,14 +36,14 @@ class BackupXlsxItemWriterUnitTest {
       UUID.randomUUID()
     );
     deletedLegacyLandBeaconRow.setBeaconStatus("DELETED");
-    deletedLegacyLandBeaconRow.setType("Legacy");
+    deletedLegacyLandBeaconRow.setBeaconType("Legacy");
     deletedLegacyLandBeaconRow.setLastModifiedDate(todaysDate);
 
     BackupSpreadsheetRow claimedLegacyLandBeacon = BackupSpreadsheetRow.createEmptyRow(
       UUID.randomUUID()
     );
     claimedLegacyLandBeacon.setBeaconStatus("CLAIMED");
-    claimedLegacyLandBeacon.setType("Legacy");
+    claimedLegacyLandBeacon.setBeaconType("Legacy");
     claimedLegacyLandBeacon.setLastModifiedDate(
       OffsetDateTime.now().minusDays(7).toString()
     );

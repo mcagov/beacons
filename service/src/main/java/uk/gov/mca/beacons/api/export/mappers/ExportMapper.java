@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -18,9 +17,10 @@ import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
+import uk.gov.mca.beacons.api.export.rest.backup.BeaconBackupExportDTO;
+import uk.gov.mca.beacons.api.export.xlsx.backup.JsonSerialiser;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.note.domain.Note;
-import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.shared.mappers.person.AddressMapper;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
@@ -212,7 +212,7 @@ public class ExportMapper {
       .cstaNumber(beacon.getCsta())
       .chkCode(beacon.getChkCode())
       .notes(nonSystemNotes)
-      .uses(toUsesDTO(registration.getBeaconUses()))
+      .uses(JsonSerialiser.mapUsesToJsonArray(registration.getBeaconUses()))
       .owners(
         Arrays.asList(
           owner != null ? toOwnerDTO(registration.getBeaconOwner()) : null
@@ -613,6 +613,8 @@ public class ExportMapper {
       )
       .areaOfUse(use.getAreaOfUse())
       .tripInformation(use.getTripInfo())
+      .modType(use.getModType())
+      .modVariant(use.getModVariant())
       .notes(use.getNotes() + " - " + use.getNote())
       .build();
   }

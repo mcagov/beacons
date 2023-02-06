@@ -3,26 +3,17 @@ package uk.gov.mca.beacons.api.export.xlsx.backup;
 import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.lang.Nullable;
+import net.minidev.json.JSONArray;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
-import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
-import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
-import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.*;
-import uk.gov.mca.beacons.api.export.xlsx.SpreadsheetRow;
+import uk.gov.mca.beacons.api.export.rest.backup.BeaconBackupExportDTO;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyEmergencyContact;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyOwner;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyUse;
 import uk.gov.mca.beacons.api.note.domain.Note;
-import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
@@ -42,19 +33,23 @@ public class BackupSpreadsheetRow {
     "lastModifiedDate",
     //This is only valid for legacy.
     "cospasSarsatNumber",
-    "type",
+    "beaconType",
     //This is only valid for legacy.
     "departmentReference",
+    "referenceNumber",
     "recordCreatedDate",
     "manufacturer",
     "serialNumber",
     "manufacturerSerialNumber",
+    "chkCode",
     "beaconModel",
     "beaconLastServiced",
     "beaconCoding",
     "batteryExpiryDate",
     "codingProtocol",
     "cstaNumber",
+    "mti",
+    "svdr",
     //These are only valid for new beacons
     "notes",
     "uses",
@@ -69,19 +64,23 @@ public class BackupSpreadsheetRow {
     "Last modified date",
     //This is only valid for legacy.
     "Cospas Sarsat Number",
-    "Type",
+    "Beacon type",
     //This is only valid for legacy.
     "Department reference",
+    "Reference number",
     "Record created date",
     "Manufacturer",
     "Serial number",
     "Manufacturer serial number",
+    "Chk code",
     "Beacon model",
     "Beacon last serviced",
     "Beacon coding",
     "Battery expiry date",
     "Coding protocol",
     "CSTA number",
+    "MTI",
+    "SVDR",
     //These are only valid for new beacons
     "Notes",
     "Uses",
@@ -97,21 +96,24 @@ public class BackupSpreadsheetRow {
   private String lastModifiedDate;
   //This is only valid for legacy.
   private String cospasSarsatNumber;
-  private String type;
+  private String beaconType;
   //This is only valid for legacy.
   private String departmentReference;
-  // add col name
   private String referenceNumber;
   private String recordCreatedDate;
   private String manufacturer;
+  // only relevant to legacy beacons
   private String serialNumber;
   private String manufacturerSerialNumber;
+  private String chkCode;
   private String beaconModel;
   private String beaconLastServiced;
   private String beaconCoding;
   private String batteryExpiryDate;
   private String codingProtocol;
   private String cstaNumber;
+  private String mti;
+  private String svdr;
 
   //These are only valid for new beacons
   private String notes;
@@ -133,7 +135,7 @@ public class BackupSpreadsheetRow {
     setLegacyBeaconDetails(mappedLegacyBeacon, dateFormatter);
 
     setNotes(legacyBeacon.getData().getBeacon().getNote());
-    setUses(mappedLegacyBeacon.getUses());
+    setLegacyUses(mappedLegacyBeacon.getUses());
     setOwners(mappedLegacyBeacon.getOwners());
     setEmergencyContacts(mappedLegacyBeacon.getEmergencyContacts());
   }
@@ -178,7 +180,7 @@ public class BackupSpreadsheetRow {
     this.lastModifiedDate =
       mappedLegacyBeacon.getLastModifiedDate().format(dateFormatter);
     this.cospasSarsatNumber = mappedLegacyBeacon.getCospasSarsatNumber();
-    this.type = mappedLegacyBeacon.getType();
+    this.beaconType = mappedLegacyBeacon.getType();
     this.departmentReference = mappedLegacyBeacon.getDepartmentReference();
     this.referenceNumber = mappedLegacyBeacon.getReferenceNumber();
     this.recordCreatedDate =
@@ -191,6 +193,10 @@ public class BackupSpreadsheetRow {
       MessageFormat.format("{0}", mappedLegacyBeacon.getSerialNumber());
     this.manufacturerSerialNumber =
       mappedLegacyBeacon.getManufacturerSerialNumber();
+    this.chkCode = mappedLegacyBeacon.getChkCode();
+
+    this.mti = mappedLegacyBeacon.getMti();
+
     this.beaconModel = mappedLegacyBeacon.getBeaconModel();
 
     this.beaconLastServiced =
@@ -217,10 +223,10 @@ public class BackupSpreadsheetRow {
     DateTimeFormatter dateFormatter
   ) {
     this.hexId = mappedBeacon.getHexId();
-    this.beaconStatus = mappedBeacon.getBeaconStatus();
+    this.beaconStatus = String.valueOf(mappedBeacon.getBeaconStatus());
     this.lastModifiedDate =
       mappedBeacon.getLastModifiedDate().format(dateFormatter);
-    this.type = mappedBeacon.getType();
+    this.beaconType = mappedBeacon.getType();
     this.referenceNumber = mappedBeacon.getReferenceNumber();
     this.recordCreatedDate =
       BeaconsStringUtils.formatDate(
@@ -229,8 +235,16 @@ public class BackupSpreadsheetRow {
       );
     this.manufacturer = mappedBeacon.getManufacturer();
     this.serialNumber =
-      MessageFormat.format("{0}", mappedBeacon.getSerialNumber());
+      MessageFormat.format("{0}", mappedBeacon.getManufacturerSerialNumber());
     this.manufacturerSerialNumber = mappedBeacon.getManufacturerSerialNumber();
+    this.chkCode = mappedBeacon.getChkCode();
+    // todo add to BeaconBackupExportDTO
+    // if we want all the fields do we need to use an ExportDTO? why not just map
+    // straight from Beacon?
+    // for modern we need more so we need a BeaconBackupExportDTO composed of all the objects
+    // legacy we can probs just use the LegacyBeacon
+    this.mti = mappedBeacon.getMti();
+    this.svdr = String.valueOf(mappedBeacon.getSvdr());
     this.beaconModel = mappedBeacon.getBeaconModel();
 
     this.beaconLastServiced =
@@ -265,10 +279,14 @@ public class BackupSpreadsheetRow {
         : "";
   }
 
-  protected void setUses(List<BeaconExportUseDTO> beaconUses) {
+  protected void setUses(JSONArray beaconUses) {
+    this.uses = beaconUses != null ? beaconUses.toString() : "";
+  }
+
+  protected void setLegacyUses(List<BeaconExportUseDTO> legacyUses) {
     this.uses =
-      beaconUses != null
-        ? JsonSerialiser.mapUsesToJsonArray(beaconUses).toString()
+      legacyUses != null
+        ? JsonSerialiser.mapBeaconExportUsesToJsonArray(legacyUses).toString()
         : "";
   }
 

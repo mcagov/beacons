@@ -1,12 +1,16 @@
-package uk.gov.mca.beacons.api.export.rest;
+package uk.gov.mca.beacons.api.export.rest.backup;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.*;
+import net.minidev.json.JSONArray;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
+import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportAccountHolderDTO;
+import uk.gov.mca.beacons.api.export.rest.BeaconExportOwnerDTO;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 
@@ -75,6 +79,12 @@ public class BeaconBackupExportDTO {
   @Valid
   private String cstaNumber;
 
+  @Valid
+  private String mti;
+
+  @Valid
+  private Boolean svdr;
+
   //This is only valid for legacy.
   @Valid
   private String cospasSarsatNumber;
@@ -91,7 +101,7 @@ public class BeaconBackupExportDTO {
   List<Note> notes;
 
   @Valid
-  List<BeaconExportUseDTO> uses;
+  JSONArray uses;
 
   @Valid
   List<BeaconExportOwnerDTO> owners;
