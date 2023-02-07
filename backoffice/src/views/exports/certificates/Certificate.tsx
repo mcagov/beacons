@@ -175,7 +175,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         }`}
       </h4>
       <div className="section">
-        <h3>Vessel Details:</h3>
+        <h3>Details:</h3>
 
         <CertificateField
           classes="half"

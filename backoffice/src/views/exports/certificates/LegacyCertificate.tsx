@@ -203,18 +203,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           value={use.maxPersonOnBoard}
         />
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Position"
-          value={use.beaconLocation}
-        />
-
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -311,18 +299,6 @@ const RigUse: FunctionComponent<UseProps> = ({
           value={use.maxPersonOnBoard}
         />
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Position (If fixed, not floating)"
-          value={use.beaconLocation}
-        />
-
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -402,18 +378,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
 
         <CertificateField
           classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Position"
-          value={use.beaconLocation}
-        />
-
-        <CertificateField
-          classes="half"
           title="Principal Airport"
           value={use.principalAirport}
         />
@@ -460,7 +424,7 @@ const LandUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="full"
           title="Number Of Persons In Group"
-          value={use.maxPersonOnBoard}
+          value={use.numberOfPersonsOnBoard}
         />
         <CertificateField
           classes="full"
@@ -473,17 +437,6 @@ const LandUse: FunctionComponent<UseProps> = ({
           value={use.tripInformation}
         />
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Position"
-          value={use.beaconLocation}
-        />
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -543,18 +496,6 @@ export const GenericUse: FunctionComponent<UseProps> = ({
             value={use.rigPlatformLocation}
           />
         )}
-
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Position"
-          value={use.beaconLocation}
-        />
 
         <CertificateField
           classes="half"

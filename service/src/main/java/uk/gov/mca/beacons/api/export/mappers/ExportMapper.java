@@ -480,7 +480,7 @@ public class ExportMapper {
       .typeOfUse(use.getPurpose())
       .beaconLocation(use.getPosition())
       .beaconPosition(use.getBeaconPosition())
-      .descriptionOfIntendedUse(use.getActivity())
+      .descriptionOfIntendedUse(use.getLandUse())
       .numberOfPersonsOnBoard(
         use.getMaxPersons() != null ? use.getMaxPersons() : 0
       )
