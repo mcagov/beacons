@@ -39,6 +39,7 @@ import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordVi
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 import { AdminView } from "views/AdminView";
 import { DataComparisonView } from "views/comparison/DataComparisonView";
+import { ComparisonGateway } from "gateways/comparison/ComparisonGateway";
 
 interface ResourceParams {
   id: string;
@@ -73,6 +74,7 @@ const App: FunctionComponent = () => {
   const usesGateway = new UsesGateway(beaconResponseMapper, authGateway);
   const notesGateway = new NotesGateway(authGateway);
   const exportsGateway = new ExportsGateway(authGateway);
+  const comparisonGateway = new ComparisonGateway(authGateway);
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
@@ -174,6 +176,16 @@ const App: FunctionComponent = () => {
                   <Navigation exportsGateway={exportsGateway} />
                   <PageContent>
                     <UserRolesView />
+                  </PageContent>
+                  <Footer />
+                </Route>
+                <Route path={`/comparison/missing`}>
+                  <Navigation exportsGateway={exportsGateway} />
+                  <PageContent>
+                    <DataComparisonView
+                      exportsGateway={exportsGateway}
+                      comparisonGateway={comparisonGateway}
+                    />
                   </PageContent>
                   <Footer />
                 </Route>

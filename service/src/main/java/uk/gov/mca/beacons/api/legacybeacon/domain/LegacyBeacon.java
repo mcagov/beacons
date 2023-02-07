@@ -4,6 +4,7 @@ import com.vladmihalcea.hibernate.type.json.JsonType;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import uk.gov.mca.beacons.api.legacybeacon.domain.events.LegacyBeaconClaimed;
 import uk.gov.mca.beacons.api.legacybeacon.domain.events.LegacyBeaconDeleted;
+import uk.gov.mca.beacons.api.search.domain.BeaconOverview;
 import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
 
 @Getter
@@ -119,5 +121,17 @@ public class LegacyBeacon
       .getBeacon()
       .getCreatedDate()
       .compareTo(l.getData().getBeacon().getCreatedDate());
+  }
+
+  public UUID getUnwrappedId() {
+    return getId().unwrap();
+  }
+
+  public BeaconOverview getBeaconOverview() {
+    return new BeaconOverview(
+      this.getId().unwrap(),
+      this.getHexId(),
+      this.getLastModifiedDate()
+    );
   }
 }

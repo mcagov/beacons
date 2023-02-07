@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import uk.gov.mca.beacons.api.beacon.domain.events.BeaconCreated;
 import uk.gov.mca.beacons.api.beacon.domain.events.BeaconDeleted;
 import uk.gov.mca.beacons.api.beacon.domain.events.BeaconUpdated;
 import uk.gov.mca.beacons.api.mappers.ModelPatcher;
+import uk.gov.mca.beacons.api.search.domain.BeaconOverview;
 import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
 
 @Getter
@@ -113,5 +115,17 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
   public void softDelete() {
     setBeaconStatus(BeaconStatus.DELETED);
     this.registerEvent(new BeaconDeleted(this));
+  }
+
+  public UUID getUnwrappedId() {
+    return getId().unwrap();
+  }
+
+  public BeaconOverview getBeaconOverview() {
+    return new BeaconOverview(
+      this.getId().unwrap(),
+      this.getHexId(),
+      this.getLastModifiedDate()
+    );
   }
 }

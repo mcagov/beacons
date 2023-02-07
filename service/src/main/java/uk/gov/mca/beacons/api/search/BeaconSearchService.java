@@ -1,12 +1,24 @@
 package uk.gov.mca.beacons.api.search;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.collections.IteratorUtils;
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.*;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconRepository;
@@ -15,6 +27,7 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseRepository;
 import uk.gov.mca.beacons.api.comparison.rest.ComparisonResult;
+import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
@@ -31,19 +44,27 @@ public class BeaconSearchService {
   BeaconUseRepository beaconUseRepository;
   LegacyBeaconRepository legacyBeaconRepository;
 
+  BeaconService beaconService;
+  LegacyBeaconService legacyBeaconService;
+  private final int batchSize = 200;
+
   @Autowired
   public BeaconSearchService(
     BeaconSearchRepository beaconSearchRepository,
     BeaconRepository beaconRepository,
     BeaconOwnerRepository beaconOwnerRepository,
     BeaconUseRepository beaconUseRepository,
-    LegacyBeaconRepository legacyBeaconRepository
+    LegacyBeaconRepository legacyBeaconRepository,
+    BeaconService beaconService,
+    LegacyBeaconService legacyBeaconService
   ) {
     this.beaconSearchRepository = beaconSearchRepository;
     this.beaconRepository = beaconRepository;
     this.beaconOwnerRepository = beaconOwnerRepository;
     this.beaconUseRepository = beaconUseRepository;
     this.legacyBeaconRepository = legacyBeaconRepository;
+    this.beaconService = beaconService;
+    this.legacyBeaconService = legacyBeaconService;
   }
 
   /**
@@ -89,59 +110,36 @@ public class BeaconSearchService {
     return beaconSearchRepository.save(beaconSearchDocument);
   }
 
-  public ComparisonResult compareDataSources() {
-    List<BeaconOverview> dbBeacons = getBeaconOverviews();
-    List<UUID> opensearchBeaconIds = getBeaconSearchIds();
-
-    List<BeaconOverview> missingBeacons = dbBeacons
-      .stream()
-      .filter(bo -> !opensearchBeaconIds.contains(bo.getId()))
-      .collect(Collectors.toList());
+  public ComparisonResult compareDataSources() throws IOException {
+    HashMap<UUID, BeaconOverview> dbBeacons = getBeaconOverviews();
 
     ComparisonResult result = new ComparisonResult();
     result.setDbCount(dbBeacons.size());
-    result.setOpenSearchCount(opensearchBeaconIds.size());
-    result.setMissingCount(missingBeacons.size());
-    result.setMissing(missingBeacons);
+    result.setDbBeacons(dbBeacons);
 
     return result;
   }
 
-  private List<BeaconOverview> getBeaconOverviews() {
-    List<BeaconOverview> overviews = beaconRepository
+  private HashMap<UUID, BeaconOverview> getBeaconOverviews() {
+    Map<UUID, BeaconOverview> overviews = beaconRepository
       .findAll()
       .stream()
-      .map(b ->
-        new BeaconOverview(
-          b.getId().unwrap(),
-          b.getHexId(),
-          b.getLastModifiedDate()
-        )
-      )
-      .collect(Collectors.toList());
-    List<BeaconOverview> legacyOverviews = legacyBeaconRepository
+      .collect(
+        Collectors.toMap(Beacon::getUnwrappedId, b -> b.getBeaconOverview())
+      );
+
+    Map<UUID, BeaconOverview> legacyOverviews = legacyBeaconRepository
       .findAll()
       .stream()
-      .map(lb ->
-        new BeaconOverview(
-          lb.getId().unwrap(),
-          lb.getHexId(),
-          lb.getLastModifiedDate()
+      .collect(
+        Collectors.toMap(
+          LegacyBeacon::getUnwrappedId,
+          b -> b.getBeaconOverview()
         )
-      )
-      .collect(Collectors.toList());
+      );
 
-    overviews.addAll(legacyOverviews);
+    overviews.putAll(legacyOverviews);
 
-    return overviews;
-  }
-
-  private List<UUID> getBeaconSearchIds() {
-    List<UUID> searchIds = new ArrayList<>();
-    Iterable<BeaconSearchDocument> response = beaconSearchRepository.findAll();
-
-    response.forEach(bsd -> searchIds.add(bsd.getId()));
-
-    return searchIds;
+    return (HashMap<UUID, BeaconOverview>) overviews;
   }
 }
