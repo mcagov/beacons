@@ -17,8 +17,9 @@ public class BeaconsStringUtils {
   ) {
     return Arrays
       .stream(values)
-      .filter(s -> !org.apache.commons.lang3.StringUtils.isBlank(s))
+      .filter(s -> s != null)
       .map(s -> s.trim())
+      .filter(s -> !StringUtils.isBlank(s))
       .collect(Collectors.joining(delimiter));
   }
 

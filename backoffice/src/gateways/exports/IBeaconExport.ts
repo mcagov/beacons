@@ -88,6 +88,7 @@ export interface IBeaconExportUse {
   aircraftType: string;
   aircraftRegistrationMark: string;
   aircraftManufacturer: string;
+  coreSerialNumber: string;
   twentyFourBitAddressInHex: string;
   aodSerialNumber: string;
   principalAirport: string;
