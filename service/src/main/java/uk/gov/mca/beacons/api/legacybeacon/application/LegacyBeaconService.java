@@ -1,6 +1,9 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +28,9 @@ import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 public class LegacyBeaconService {
 
   private final LegacyBeaconRepository legacyBeaconRepository;
+  private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
+    "yyyy-MM-dd-HH:mm:ss"
+  );
 
   @Autowired
   public LegacyBeaconService(LegacyBeaconRepository legacyBeaconRepository) {
@@ -79,6 +85,10 @@ public class LegacyBeaconService {
     String email,
     String reasonForDeletion
   ) {
+    OffsetDateTime todaysDate = OffsetDateTime
+      .now()
+      .truncatedTo(ChronoUnit.MINUTES);
+
     List<LegacyBeacon> legacyBeacons = legacyBeaconRepository.findByHexIdAndOwnerEmail(
       hexId,
       email
@@ -89,10 +99,6 @@ public class LegacyBeaconService {
     LegacyData legacyBeaconData = legacyBeacon.getData();
     LegacyBeaconDetails legacyDataBeaconDetails = legacyBeaconData.getBeacon();
 
-    LegacyBeaconDetails beaconData = legacyBeaconData.getBeacon();
-    beaconData.setIsWithdrawn("Y");
-    beaconData.setWithdrawnReason(reasonForDeletion);
-
     legacyBeaconData.setOwner(new LegacyOwner());
     legacyBeaconData.setUses(new ArrayList<LegacyUse>());
     legacyBeaconData.setEmergencyContact(new LegacyEmergencyContact());
@@ -100,13 +106,15 @@ public class LegacyBeaconService {
 
     legacyDataBeaconDetails.setNote(null);
     legacyDataBeaconDetails.setLastModifiedDate(
-      OffsetDateTime.now().toString()
+      todaysDate.format(dateTimeFormatter)
     );
+    legacyDataBeaconDetails.setIsWithdrawn("Y");
+    legacyDataBeaconDetails.setWithdrawnReason(reasonForDeletion);
 
     legacyBeacon.setOwnerEmail(null);
     legacyBeacon.setOwnerName(null);
     legacyBeacon.setUseActivities(null);
-    legacyBeacon.setLastModifiedDate(OffsetDateTime.now());
+    legacyBeacon.setLastModifiedDate(todaysDate);
 
     return legacyBeaconRepository.saveAll(legacyBeacons);
   }
