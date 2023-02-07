@@ -300,11 +300,12 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   public Map<String, String> getCommunicationTypes() {
     Map<String, String> communicationTypes = new HashMap<String, String>();
 
+    if (BooleanUtils.isTrue(fixedVhfRadio)) {
+      communicationTypes.put("Fixed VHF/DSC", "");
+    }
+
     if (BooleanUtils.isTrue(portableVhfRadio)) {
-      communicationTypes.put(
-        "Portable VHF/DSC Radio",
-        getPortableVhfRadioValue()
-      );
+      communicationTypes.put("Portable VHF/DSC", getPortableVhfRadioValue());
     }
     if (BooleanUtils.isTrue(satelliteTelephone)) {
       communicationTypes.put(
@@ -335,9 +336,10 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
       : BeaconsStringUtils.valueOrEmpty(
         BeaconsStringUtils.enumAsString(activity)
       );
-    String purposeName = purpose != null ? purpose.name() : "UNKNOWN";
 
-    return String.format("%s (%s)", activityName, purposeName);
+    return purpose != null
+      ? String.format("%s (%s)", activityName, purpose.name())
+      : activityName;
   }
 
   public void setRandomId(BeaconUseId id) {

@@ -166,6 +166,13 @@ public class BackupSpreadsheetRow {
       beaconUseMapper
     );
 
+    BeaconBackupRecord beaconBackupRecord = new BeaconBackupRecord(
+      registration,
+      accountHolder,
+      nonSystemNotes,
+      beaconUseMapper
+    );
+
     this.id = registration.getBeacon().getId().unwrap();
 
     setModernBeaconDetails(mappedBeacon, dateFormatter);

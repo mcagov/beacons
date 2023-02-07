@@ -88,6 +88,9 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
   private String aircraftManufacturer;
 
   @Valid
+  private String coreSerialNumber;
+
+  @Valid
   private String twentyFourBitAddressInHex;
 
   @Valid
