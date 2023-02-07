@@ -284,7 +284,7 @@ const RigUse: FunctionComponent<UseProps> = ({
         {use.rigName && (
           <CertificateField
             classes="half"
-            title="Rig Name"
+            title="Rig/Platform Name"
             value={use.rigName}
           />
         )}
@@ -523,7 +523,7 @@ export const GenericUse: FunctionComponent<UseProps> = ({
         {use.rigName && (
           <CertificateField
             classes="half"
-            title="Rig Name"
+            title="Rig/Platform Name"
             value={use.rigName}
           />
         )}

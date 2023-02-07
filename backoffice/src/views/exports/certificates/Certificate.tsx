@@ -182,6 +182,15 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           title="Vessel Name"
           value={use.vesselName}
         />
+
+        {use.rigName && (
+          <CertificateField
+            classes="half"
+            title="Rig/Platform Name"
+            value={use.rigName}
+          />
+        )}
+
         <CertificateField
           classes="half"
           title="Homeport"
@@ -230,14 +239,9 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           title="MMSI Number"
           value={use.mmsiNumber}
         />
-        {Object.keys(use.radioSystems).map((key, index) => (
-          <CertificateField
-            key={index}
-            classes="half"
-            title={key}
-            value={use.radioSystems[key]}
-          />
-        ))}
+
+        <RadioSystems use={use} index={index} />
+
         <br />
 
         <CertificateField
@@ -304,6 +308,12 @@ const AviationUse: FunctionComponent<UseProps> = ({
 
         <CertificateField
           classes="half"
+          title="Core Serial Number"
+          value={use.coreSerialNumber}
+        />
+
+        <CertificateField
+          classes="half"
           title="Beacon Position"
           value={use.beaconPosition}
         />
@@ -344,14 +354,9 @@ const AviationUse: FunctionComponent<UseProps> = ({
           title="Communications"
           value={Object.keys(use.radioSystems)}
         />
-        {Object.keys(use.radioSystems).map((key, index) => (
-          <CertificateField
-            key={index}
-            classes="half"
-            title={key}
-            value={use.radioSystems[key]}
-          />
-        ))}
+
+        <RadioSystems use={use} index={index} />
+
         <CertificateField
           classes="full"
           title="More Details"
@@ -420,14 +425,9 @@ const LandUse: FunctionComponent<UseProps> = ({
           title="Communications"
           value={Object.keys(use.radioSystems)}
         />
-        {Object.keys(use.radioSystems).map((key, index) => (
-          <CertificateField
-            key={index}
-            classes="half"
-            title={key}
-            value={use.radioSystems[key]}
-          />
-        ))}
+
+        <RadioSystems use={use} index={index} />
+
         <CertificateField
           classes="full"
           title="More Details"
@@ -499,6 +499,27 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
             />
           </div>
         ))}
+    </div>
+  );
+};
+
+const RadioSystems: FunctionComponent<UseProps> = ({
+  use,
+  index,
+}: UseProps): JSX.Element => {
+  return (
+    <div>
+      {Object.keys(use.radioSystems).map((key, index) => (
+        <div key={index}>
+          {use.radioSystems[key] && (
+            <CertificateField
+              classes="half"
+              title={key}
+              value={use.radioSystems[key]}
+            />
+          )}
+        </div>
+      ))}
     </div>
   );
 };

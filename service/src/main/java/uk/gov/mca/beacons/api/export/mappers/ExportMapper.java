@@ -211,6 +211,7 @@ public class ExportMapper {
       .secondaryAirport(use.getSecondaryAirport())
       .radioSystems(use.getCommunicationTypes())
       .isDongle(Boolean.TRUE.equals(use.getDongle()) ? "YES" : "NO")
+      .coreSerialNumber(use.getCnOrMsnNumber())
       .notes(use.getMoreDetails())
       .build();
   }
