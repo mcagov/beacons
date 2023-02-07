@@ -67,10 +67,7 @@ class ExportMapperUnitTest {
     assertEquals("In a field", use.getBeaconPosition());
     assertEquals(2, use.getRadioSystems().size());
     assertEquals("Smoke Signal", use.getRadioSystems().get("Other"));
-    assertEquals(
-      "0123 456",
-      use.getRadioSystems().get("Portable VHF/DSC Radio")
-    );
+    assertEquals("0123 456", use.getRadioSystems().get("Portable VHF/DSC"));
 
     assertEquals(landUse.getMaxCapacity(), use.getNumberOfPersonsOnBoard());
     assertEquals(landUse.getAreaOfOperation(), use.getAreaOfUse());

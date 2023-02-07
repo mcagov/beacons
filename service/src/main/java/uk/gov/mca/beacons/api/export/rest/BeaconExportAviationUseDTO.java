@@ -62,6 +62,9 @@ public class BeaconExportAviationUseDTO extends BeaconExportUseDTO {
   private String aircraftOperatorsDesignatorAndSerialNo;
 
   @Valid
+  private String coreSerialNumber;
+
+  @Valid
   //Only used for legacy
   private String notes;
 }

@@ -16,7 +16,6 @@ export const LegacyCertificate: FunctionComponent<BeaconExportProps> = ({
   return (
     <div className="certificate">
       <CertificateHeader beacon={beacon} />
-
       <div className="content">
         <div className="section">
           <CertificateField
@@ -65,18 +64,27 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
         title="Hex Id"
         value={beacon.hexId}
       />
+
+      <CertificateField
+        classes="half"
+        title="Cospas-Sarsat No"
+        value={beacon.cospasSarsatNumber}
+      />
+
+      <CertificateField
+        classes="half"
+        title="Serial No"
+        value={beacon.serialNumber > 0 ? beacon.serialNumber : ""}
+      />
+
       <CertificateField
         classes="half"
         title="Manufacturer"
         value={beacon.manufacturer}
       />
+
       <CertificateField
         classes="half"
-        title="SERIAL NO"
-        value={beacon.serialNumber > 0 ? beacon.serialNumber : ""}
-      />
-      <CertificateField
-        classes="full"
         title="Manufacturer Serial No"
         value={beacon.manufacturerSerialNumber}
       />
@@ -101,7 +109,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
         value={customDateStringFormat(beacon.batteryExpiryDate, "DD/MM/yyyy")}
       />
       <CertificateField
-        classes="full"
+        classes="half"
         title="Coding Protocol"
         value={beacon.codingProtocol}
       />
@@ -110,13 +118,12 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
         title="Csta Number"
         value={beacon.cstaNumber}
       />
-      {beacon.cospasSarsatNumber && (
-        <CertificateField
-          classes="half"
-          title="Cospas Sarsat Serial Number"
-          value={beacon.cospasSarsatNumber}
-        />
-      )}
+
+      <CertificateField
+        classes="full"
+        title="Notes"
+        value={beacon.beaconNote}
+      />
     </div>
   );
 };
@@ -196,18 +203,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           value={use.maxPersonOnBoard}
         />
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Position"
-          value={use.beaconLocation}
-        />
-
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -277,8 +272,24 @@ const RigUse: FunctionComponent<UseProps> = ({
         {use.rigName && (
           <CertificateField
             classes="half"
-            title="Rig Name"
+            title="Rig/Platform Name"
             value={use.rigName}
+          />
+        )}
+
+        {use.windfarmLocation && (
+          <CertificateField
+            classes="half"
+            title="Windfarm Location"
+            value={use.windfarmLocation}
+          />
+        )}
+
+        {use.rigPlatformLocation && (
+          <CertificateField
+            classes="half"
+            title="Rig/Platform Location"
+            value={use.rigPlatformLocation}
           />
         )}
 
@@ -286,18 +297,6 @@ const RigUse: FunctionComponent<UseProps> = ({
           classes="half"
           title="No. Persons In Group"
           value={use.maxPersonOnBoard}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Position (If fixed, not floating)"
-          value={use.beaconLocation}
         />
 
         {Object.keys(use.radioSystems).map((key, index) => (
@@ -379,18 +378,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
 
         <CertificateField
           classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Position"
-          value={use.beaconLocation}
-        />
-
-        <CertificateField
-          classes="half"
           title="Principal Airport"
           value={use.principalAirport}
         />
@@ -437,7 +424,7 @@ const LandUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="full"
           title="Number Of Persons In Group"
-          value={use.maxPersonOnBoard}
+          value={use.numberOfPersonsOnBoard}
         />
         <CertificateField
           classes="full"
@@ -450,17 +437,6 @@ const LandUse: FunctionComponent<UseProps> = ({
           value={use.tripInformation}
         />
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Position"
-          value={use.beaconLocation}
-        />
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -500,30 +476,26 @@ export const GenericUse: FunctionComponent<UseProps> = ({
         {use.rigName && (
           <CertificateField
             classes="half"
-            title="Rig Name"
+            title="Rig/Platform Name"
             value={use.rigName}
+          />
+        )}
+
+        {use.windfarmLocation && (
+          <CertificateField
+            classes="half"
+            title="Windfarm Location"
+            value={use.windfarmLocation}
           />
         )}
 
         {use.rigPlatformLocation && (
           <CertificateField
             classes="half"
-            title="Rig Platform Location"
+            title="Rig/Platform Location"
             value={use.rigPlatformLocation}
           />
         )}
-
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Position"
-          value={use.beaconLocation}
-        />
 
         <CertificateField
           classes="half"

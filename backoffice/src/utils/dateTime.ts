@@ -25,7 +25,7 @@ export const customDateStringFormat = (
   const date = moment(dateTimeString);
 
   if (!date.isValid()) {
-    return "";
+    return typeof dateTimeString === "string" ? dateTimeString : "";
   }
 
   return date.format(format);
