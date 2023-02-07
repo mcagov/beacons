@@ -5,7 +5,10 @@ require 'json'
 
 $default_value = ""
 
+Faker::Config.locale = 'tr'
+
 def populateBeacons
+	
 	owner_name = ARGV[0] || Faker::Name.name
 	owner_email = ARGV[1] || Faker::Internet.email
 
@@ -26,10 +29,7 @@ def populateBeacons
 	useLookup["RIG/PLATFORM"] = ["RIG_USE"]
 	useLookup["MOD"] = ["MOD_USE"]
 
-	70000.times do |count|
-
-		Faker::Config.locale = 'en-GB'
-
+	10000.times do |count|
 		# generate random data
 		uuid = SecureRandom.uuid
 		created_date = Faker::Time.between_dates(from: '2010-09-01', to: '2020-09-01').iso8601
@@ -205,7 +205,8 @@ def buildOwner(is_main,owner_name,created_date,last_modified_date)
 		"address1": Faker::Address.street_name,
 		"address2": Faker::Address.street_address,
 		"address3": Faker::Address.city,
-		"address4": Faker::Address.county,
+		# for CH locale
+		"address4": Faker::Address.state,
 		"postCode": Faker::Address.postcode,
 		"ownerName": owner_name,
 		"fkBeaconId": 6062,
