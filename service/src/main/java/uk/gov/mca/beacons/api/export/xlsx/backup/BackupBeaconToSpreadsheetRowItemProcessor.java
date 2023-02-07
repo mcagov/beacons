@@ -64,17 +64,11 @@ class BackupBeaconToSpreadsheetRowItemProcessor
     BeaconId beaconId = beacon.getId();
     Registration registration = registrationService.getByBeaconId(beaconId);
 
-    AccountHolder accountHolder = accountHolderService
-      .getAccountHolder(beacon.getAccountHolderId())
-      .orElseThrow(ResourceNotFoundException::new);
-
     List<Note> nonSystemNotes = noteService.getNonSystemNotes(beaconId);
 
     return new BackupSpreadsheetRow(
       registration,
-      accountHolder,
       nonSystemNotes,
-      exportMapper,
       beaconUseMapper,
       dateFormatter
     );

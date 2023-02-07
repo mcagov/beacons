@@ -4,12 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import net.minidev.json.JSONArray;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
+import uk.gov.mca.beacons.api.beacon.domain.Beacon;
+import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
+import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
+import uk.gov.mca.beacons.api.beaconuse.rest.BeaconUseDTO;
+import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.*;
@@ -139,8 +145,8 @@ public class BackupSpreadsheetRow {
 
     setNotes(legacyBeacon.getData().getBeacon().getNote());
     setLegacyUses(mappedLegacyBeacon.getUses());
-    setOwners(mappedLegacyBeacon.getOwners());
-    setEmergencyContacts(mappedLegacyBeacon.getEmergencyContacts());
+    setLegacyOwners(mappedLegacyBeacon.getOwners());
+    setLegacyEmergencyContacts(mappedLegacyBeacon.getEmergencyContacts());
   }
 
   public static BackupSpreadsheetRow createEmptyRow(UUID id) {
@@ -153,34 +159,19 @@ public class BackupSpreadsheetRow {
 
   public BackupSpreadsheetRow(
     Registration registration,
-    AccountHolder accountHolder,
     List<Note> nonSystemNotes,
-    ExportMapper exportMapper,
     BeaconUseMapper beaconUseMapper,
     DateTimeFormatter dateFormatter
   ) throws JsonProcessingException {
-    BeaconBackupExportDTO mappedBeacon = exportMapper.toBeaconBackupExportDTO(
-      registration,
-      accountHolder,
-      nonSystemNotes,
-      beaconUseMapper
-    );
-
-    BeaconBackupRecord beaconBackupRecord = new BeaconBackupRecord(
-      registration,
-      accountHolder,
-      nonSystemNotes,
-      beaconUseMapper
-    );
-
+    Beacon beacon = registration.getBeacon();
     this.id = registration.getBeacon().getId().unwrap();
 
-    setModernBeaconDetails(mappedBeacon, dateFormatter);
+    setModernBeaconDetails(beacon, dateFormatter);
 
-    setNotes(getStringifiedNotes(mappedBeacon.getNotes()));
-    setUses(mappedBeacon.getUses());
-    setOwners(mappedBeacon.getOwners());
-    setEmergencyContacts(mappedBeacon.getEmergencyContacts());
+    setNotes(getStringifiedNotes(nonSystemNotes));
+    setUses(registration.getBeaconUses(), beaconUseMapper);
+    setModernOwners(List.of(registration.getBeaconOwner()));
+    setModernEmergencyContacts(registration.getEmergencyContacts());
   }
 
   protected void setLegacyBeaconDetails(
@@ -230,47 +221,41 @@ public class BackupSpreadsheetRow {
   }
 
   protected void setModernBeaconDetails(
-    BeaconBackupExportDTO mappedBeacon,
+    Beacon beacon,
     DateTimeFormatter dateFormatter
   ) {
-    this.hexId = mappedBeacon.getHexId();
-    this.beaconStatus = String.valueOf(mappedBeacon.getBeaconStatus());
-    this.lastModifiedDate =
-      mappedBeacon.getLastModifiedDate().format(dateFormatter);
-    this.beaconType = mappedBeacon.getType();
-    this.referenceNumber = mappedBeacon.getReferenceNumber();
-    this.recordCreatedDate =
-      BeaconsStringUtils.formatDate(
-        mappedBeacon.getRecordCreatedDate(),
-        dateFormatter
-      );
-    this.manufacturer = mappedBeacon.getManufacturer();
-    this.serialNumber =
-      MessageFormat.format("{0}", mappedBeacon.getManufacturerSerialNumber());
-    this.manufacturerSerialNumber = mappedBeacon.getManufacturerSerialNumber();
-    this.chkCode = mappedBeacon.getChkCode();
+    this.hexId = beacon.getHexId();
+    this.beaconStatus = String.valueOf(beacon.getBeaconStatus());
+    this.lastModifiedDate = beacon.getLastModifiedDate().format(dateFormatter);
+    this.beaconType = beacon.getBeaconType();
+    this.referenceNumber = beacon.getReferenceNumber();
+    this.recordCreatedDate = dateFormatter.format(beacon.getCreatedDate());
 
-    this.mti = mappedBeacon.getMti();
-    this.svdr = String.valueOf(mappedBeacon.getSvdr());
-    this.beaconModel = mappedBeacon.getBeaconModel();
+    this.manufacturer = beacon.getManufacturer();
+    this.serialNumber =
+      MessageFormat.format("{0}", beacon.getManufacturerSerialNumber());
+    this.manufacturerSerialNumber = beacon.getManufacturerSerialNumber();
+    this.chkCode = beacon.getChkCode();
+
+    this.mti = beacon.getMti();
+    this.svdr = String.valueOf(beacon.getSvdr());
+    this.beaconModel = beacon.getModel();
 
     this.beaconLastServiced =
-      BeaconsStringUtils.formatDate(
-        mappedBeacon.getBeaconlastServiced(),
-        dateFormatter
-      );
+      beacon.getLastServicedDate() != null
+        ? dateFormatter.format(beacon.getLastServicedDate())
+        : "";
 
-    this.beaconCoding = mappedBeacon.getBeaconCoding();
+    this.beaconCoding = beacon.getCoding();
 
     this.batteryExpiryDate =
-      BeaconsStringUtils.formatDate(
-        mappedBeacon.getBatteryExpiryDate(),
-        dateFormatter
-      );
+      beacon.getBatteryExpiryDate() != null
+        ? dateFormatter.format(beacon.getBatteryExpiryDate())
+        : "";
 
-    this.codingProtocol = mappedBeacon.getCodingProtocol();
+    this.codingProtocol = beacon.getProtocol();
 
-    this.cstaNumber = mappedBeacon.getCstaNumber();
+    this.cstaNumber = beacon.getCsta();
   }
 
   protected String getStringifiedNotes(List<Note> notes) {
@@ -279,15 +264,40 @@ public class BackupSpreadsheetRow {
       : "";
   }
 
-  protected void setOwners(List<BeaconExportOwnerDTO> beaconOwners) {
+  protected void setModernOwners(List<BeaconOwner> beaconOwners) {
     this.owners =
       beaconOwners != null
-        ? JsonSerialiser.mapBeaconOwnersToJsonArray(beaconOwners).toString()
+        ? JsonSerialiser
+          .mapModernBeaconOwnersToJsonArray(beaconOwners)
+          .toString()
         : "";
   }
 
-  protected void setUses(JSONArray beaconUses) {
-    this.uses = beaconUses != null ? beaconUses.toString() : "";
+  protected void setUses(
+    List<BeaconUse> beaconUses,
+    BeaconUseMapper beaconUseMapper
+  ) throws JsonProcessingException {
+    List<BeaconUseDTO> beaconUseDTOs = beaconUses != null
+      ? beaconUses
+        .stream()
+        .map(u -> beaconUseMapper.toDTO(u))
+        .collect(Collectors.toList())
+      : new ArrayList<>();
+    this.uses =
+      beaconUses != null
+        ? JsonSerialiser.mapModernUsesToJsonArray(beaconUseDTOs).toString()
+        : "";
+  }
+
+  protected void setModernEmergencyContacts(
+    List<EmergencyContact> emergencyContacts
+  ) {
+    this.emergencyContacts =
+      emergencyContacts != null
+        ? JsonSerialiser
+          .mapModernEmergencyContactsToJsonArray(emergencyContacts)
+          .toString()
+        : "";
   }
 
   protected void setLegacyUses(List<BeaconExportUseDTO> legacyUses) {
@@ -297,7 +307,16 @@ public class BackupSpreadsheetRow {
         : "";
   }
 
-  protected void setEmergencyContacts(
+  protected void setLegacyOwners(List<BeaconExportOwnerDTO> legacyOwners) {
+    this.owners =
+      legacyOwners != null
+        ? JsonSerialiser
+          .mapLegacyBeaconOwnersToJsonArray(legacyOwners)
+          .toString()
+        : "";
+  }
+
+  protected void setLegacyEmergencyContacts(
     List<EmergencyContactDTO> emergencyContacts
   ) {
     this.emergencyContacts =
