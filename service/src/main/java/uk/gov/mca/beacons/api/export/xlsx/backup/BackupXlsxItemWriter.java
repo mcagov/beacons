@@ -10,8 +10,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.batch.item.ItemWriter;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
-import uk.gov.mca.beacons.api.export.xlsx.SpreadsheetRow;
-import uk.gov.mca.beacons.api.export.xlsx.backup.BackupSpreadsheetRow;
 
 public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
 
