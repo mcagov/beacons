@@ -63,7 +63,6 @@ class ExportMapperUnitTest {
 
     assertEquals("Driving (COMMERCIAL)", use.getTypeOfUse());
     assertEquals("On a Wind Farm", use.getWindfarmLocation());
-    assertEquals("On a Rig Platform", use.getRigPlatformLocation());
     assertEquals("In a field", use.getBeaconPosition());
     assertEquals(2, use.getRadioSystems().size());
     assertEquals("Smoke Signal", use.getRadioSystems().get("Other"));

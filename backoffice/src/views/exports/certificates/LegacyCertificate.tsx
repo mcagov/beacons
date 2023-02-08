@@ -382,12 +382,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
           value={use.principalAirport}
         />
 
-        <CertificateField
-          classes="half"
-          title="Secondary Airport"
-          value={use.secondaryAirport}
-        />
-
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -590,12 +584,6 @@ export const GenericUse: FunctionComponent<UseProps> = ({
           classes="half"
           title="Principal Airport"
           value={use.principalAirport}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Secondary Airport"
-          value={use.secondaryAirport}
         />
 
         <CertificateField

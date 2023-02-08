@@ -29,10 +29,22 @@ public class BeaconExportLandUseDTO extends BeaconExportUseDTO {
   private String windfarmLocation;
 
   @Valid
-  private String rigPlatformLocation;
+  private String workingRemotelyLocation;
+
+  @Valid
+  private String otherActivityLocation;
 
   @Valid
   private String descriptionOfIntendedUse;
+
+  @Valid
+  private String windfarmPeopleCount;
+
+  @Valid
+  private String workingRemotelyPeopleCount;
+
+  @Valid
+  private String otherActivityPeopleCount;
 
   @Valid
   private int numberOfPersonsOnBoard;

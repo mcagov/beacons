@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -224,12 +223,16 @@ public class ExportMapper {
       .beaconPosition(use.getBeaconPosition())
       .beaconLocation(use.getBeaconLocation())
       .windfarmLocation(use.getWindfarmLocation())
-      .rigPlatformLocation(use.getRigPlatformLocation())
+      .workingRemotelyLocation(use.getWorkingRemotelyLocation())
+      .otherActivityLocation(use.getOtherActivityLocation())
       .descriptionOfIntendedUse(
         BeaconsStringUtils.enumAsString(use.getActivity())
       )
+      .workingRemotelyPeopleCount(use.getWorkingRemotelyPeopleCount())
+      .windfarmPeopleCount(use.getWindfarmPeopleCount())
+      .otherActivityPeopleCount(use.getOtherActivityPeopleCount())
       .numberOfPersonsOnBoard(
-        use.getMaxCapacity() == null ? 0 : use.getMaxCapacity()
+        use.getMaxCapacity() != null ? use.getMaxCapacity() : 0
       )
       .areaOfUse(use.getAreaOfOperation())
       .radioSystems(use.getCommunicationTypes())

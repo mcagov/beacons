@@ -352,7 +352,7 @@ const AviationUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="full"
           title="Communications"
-          value={Object.keys(use.radioSystems)}
+          value={Object.keys(use.radioSystems).join(", ")}
         />
 
         <RadioSystems use={use} index={index} />
@@ -396,26 +396,54 @@ const LandUse: FunctionComponent<UseProps> = ({
           />
         )}
 
-        {use.rigPlatformLocation && (
+        {use.workingRemotelyLocation && (
           <CertificateField
             classes="half"
-            title="Rig/Platform Location"
-            value={use.rigPlatformLocation}
+            title="Working Remotely Location"
+            value={use.workingRemotelyLocation}
+          />
+        )}
+
+        {use.otherActivityLocation && (
+          <CertificateField
+            classes="half"
+            title="Other Activity Location"
+            value={use.otherActivityLocation}
           />
         )}
 
         <CertificateField
-          classes="full"
+          classes="half"
           title="Description Of Intended Use"
           value={use.descriptionOfIntendedUse}
         />
+
+        {use.workingRemotelyPeopleCount && (
+          <CertificateField
+            classes="half"
+            title="Working Remotely People Count"
+            value={use.workingRemotelyPeopleCount}
+          />
+        )}
+
+        {use.otherActivityPeopleCount && (
+          <CertificateField
+            classes="half"
+            title="Other Activity People Count"
+            value={use.otherActivityPeopleCount}
+          />
+        )}
+
+        {use.numberOfPersonsOnBoard > 0 && (
+          <CertificateField
+            classes="half"
+            title="People Count"
+            value={use.numberOfPersonsOnBoard}
+          />
+        )}
+
         <CertificateField
-          classes="full"
-          title="People Count"
-          value={use.maxPersonOnBoard}
-        />
-        <CertificateField
-          classes="full"
+          classes="half"
           title="Area Of Use"
           value={use.areaOfUse}
         />
@@ -423,7 +451,7 @@ const LandUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="full"
           title="Communications"
-          value={Object.keys(use.radioSystems)}
+          value={Object.keys(use.radioSystems).join(", ")}
         />
 
         <RadioSystems use={use} index={index} />
