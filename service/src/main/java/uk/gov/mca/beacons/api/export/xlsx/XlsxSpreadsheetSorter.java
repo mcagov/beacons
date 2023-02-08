@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.compress.utils.Lists;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.export.ExportFileNamer;
 import uk.gov.mca.beacons.api.export.FileSystemRepository;
+import uk.gov.mca.beacons.api.export.xlsx.backup.BackupSpreadsheetRow;
 
 @Component
 public class XlsxSpreadsheetSorter {
@@ -55,16 +57,29 @@ public class XlsxSpreadsheetSorter {
       "Last modified date"
     );
 
-    for (Row row : sheet) {
-      Cell lastModifiedDateCellForCurrentRow = CellUtil.getCell(
-        row,
-        indexOfLastModifiedDateCol
-      );
-      rowsByLastModifiedDate.put(
-        row.getRowNum(),
-        lastModifiedDateCellForCurrentRow.getStringCellValue()
-      );
-    }
+    // turn each row into an item in a list
+    // sort that list by last mod date
+    // rewrite the rows to the sheet
+    List<Row> allRows = Lists.newArrayList(sheet.rowIterator());
+    allRows.sort(
+      Comparator
+        .comparing(r ->
+          (
+            CellUtil.getCell((Row) r, indexOfLastModifiedDateCol)
+          ).getStringCellValue()
+        )
+        .reversed()
+    );
+    //    for (Row row : sheet) {
+    //      Cell lastModifiedDateCellForCurrentRow = CellUtil.getCell(
+    //        row,
+    //        indexOfLastModifiedDateCol
+    //      );
+    //      rowsByLastModifiedDate.put(
+    //        row.getRowNum(),
+    //        lastModifiedDateCellForCurrentRow.getStringCellValue()
+    //      );
+    //    }
   }
 
   private void writeRow(
