@@ -68,7 +68,6 @@ public class BackupXlsxExporter {
         BeaconsDataWorkbookRepository.OperationType.BACKUP
       )
     );
-
-    spreadsheetSorter.sortRowsByBeaconDateLastModifiedDesc("Backup");
+    //    spreadsheetSorter.sortRowsByBeaconDateLastModifiedDesc("Backup");
   }
 }

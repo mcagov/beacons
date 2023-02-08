@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
+import uk.gov.mca.beacons.api.export.xlsx.XlsxSpreadsheetSorter;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
@@ -96,9 +97,13 @@ public class BackupToXlsxJobConfiguration {
 
   @Bean("backupToXlsxJobListener")
   BackupToXlsxJobListener backupToXlsxJobListener(
-    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
+    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository,
+    XlsxSpreadsheetSorter spreadsheetSorter
   ) {
-    return new BackupToXlsxJobListener(beaconsDataWorkbookRepository);
+    return new BackupToXlsxJobListener(
+      beaconsDataWorkbookRepository,
+      spreadsheetSorter
+    );
   }
 
   @Bean(value = "backupToSpreadsheetJob")

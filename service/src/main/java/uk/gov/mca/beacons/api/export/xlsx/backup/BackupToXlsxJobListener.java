@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.jetbrains.annotations.NotNull;
@@ -13,16 +14,20 @@ import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
+import uk.gov.mca.beacons.api.export.xlsx.XlsxSpreadsheetSorter;
 
 @Slf4j
 public class BackupToXlsxJobListener implements JobExecutionListener {
 
   private final BeaconsDataWorkbookRepository beaconsDataWorkbookRepository;
+  private final XlsxSpreadsheetSorter spreadsheetSorter;
 
   BackupToXlsxJobListener(
-    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
+    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository,
+    XlsxSpreadsheetSorter spreadsheetSorter
   ) {
     this.beaconsDataWorkbookRepository = beaconsDataWorkbookRepository;
+    this.spreadsheetSorter = spreadsheetSorter;
   }
 
   @Override
@@ -42,7 +47,10 @@ public class BackupToXlsxJobListener implements JobExecutionListener {
             .get()
         );
 
-        SXSSFSheet sheet = workbook.getSheet("Beacons Backup Data");
+        SXSSFSheet sheet = spreadsheetSorter.sortRowsByBeaconDateLastModifiedDesc(
+          workbook.getSheet("Beacons Backup Data"),
+          "Backup"
+        );
 
         for (Integer i : sheet.getTrackedColumnsForAutoSizing()) {
           sheet.autoSizeColumn(i);
@@ -59,6 +67,8 @@ public class BackupToXlsxJobListener implements JobExecutionListener {
           log.error("Failed to dispose of workbook");
         }
       } catch (IOException e) {
+        log.error(e.getMessage(), e);
+      } catch (InvalidFormatException e) {
         log.error(e.getMessage(), e);
       }
     }
