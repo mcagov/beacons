@@ -3,10 +3,10 @@ import { FunctionComponent } from "react";
 import { customDateStringFormat } from "utils/dateTime";
 import {
   CertificateHeader,
-  CertificateFooter,
   CertificateField,
   BeaconExportProps,
   UseProps,
+  CertificateInformation,
 } from "./BaseCertificate";
 import { Environments } from "../../../entities/IUse";
 
@@ -18,6 +18,8 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
       <CertificateHeader beacon={beacon} />
 
       <div className="content">
+        <CertificateInformation />
+
         <div className="section">
           <CertificateField
             classes="half"
@@ -54,7 +56,6 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
 
         <EmergencyContactsSection beacon={beacon} />
       </div>
-      <CertificateFooter />
     </div>
   );
 };

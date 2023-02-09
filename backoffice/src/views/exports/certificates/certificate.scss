@@ -124,11 +124,10 @@
     }
   }
 
-  .footer {
+  .certificate-information {
     display: block;
     margin-top: auto;
-    padding-top: 50px;
-
+    margin-bottom: 10px;
     div.text span {
       display: block;
 
@@ -144,10 +143,25 @@
     }
   }
 
-  .certificate .footer-space {
-    height: 175px;
-    background-color: red !important;
-  }
+  // .footer {
+  //   display: block;
+  //   margin-top: auto;
+  //   padding-top: 50px;
+
+  //   div.text span {
+  //     display: block;
+
+  //     a.link {
+  //       color: black;
+  //       font-weight: bold;
+  //       padding-left: 5px;
+
+  //       &:not(:first-child) {
+  //         margin-left: 25px;
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 @media print {
@@ -165,12 +179,12 @@
     .use {
       break-inside: avoid;
     }
-    .footer {
-      break-before: always;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      z-index: -1;
-    }
+    // .footer {
+    //   break-before: always;
+    //   position: fixed;
+    //   bottom: 0;
+    //   width: 100%;
+    //   z-index: -1;
+    // }
   }
 }
