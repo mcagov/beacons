@@ -277,6 +277,22 @@ const RigUse: FunctionComponent<UseProps> = ({
           />
         )}
 
+        {use.beaconPosition && (
+          <CertificateField
+            classes="half"
+            title="Beacon Position"
+            value={use.beaconPosition}
+          />
+        )}
+
+        {use.beaconLocation && (
+          <CertificateField
+            classes="full"
+            title="Position (if fixed, not floating)"
+            value={use.beaconLocation}
+          />
+        )}
+
         {use.windfarmLocation && (
           <CertificateField
             classes="half"

@@ -197,24 +197,34 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           value={use.homePort}
         />
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
+        {use.beaconPosition && (
+          <CertificateField
+            classes="half"
+            title="Beacon Position"
+            value={use.beaconPosition}
+          />
+        )}
+
+        {use.beaconLocation && (
+          <CertificateField
+            classes="full"
+            title="Location"
+            value={use.beaconLocation}
+          />
+        )}
 
         {use.windfarmLocation && (
           <CertificateField
-            classes="half"
-            title="Windfarm Location"
+            classes="full"
+            title="Location"
             value={use.windfarmLocation}
           />
         )}
 
         {use.rigPlatformLocation && (
           <CertificateField
-            classes="half"
-            title="Rig/Platform Location"
+            classes="full"
+            title="Location"
             value={use.rigPlatformLocation}
           />
         )}
@@ -296,12 +306,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
 
         <CertificateField
           classes="half"
-          title="Aircraft Type"
-          value={use.aircraftType}
-        />
-
-        <CertificateField
-          classes="half"
           title="Aircraft Manufacturer & Model"
           value={use.aircraftManufacturer}
         />
@@ -312,11 +316,21 @@ const AviationUse: FunctionComponent<UseProps> = ({
           value={use.coreSerialNumber}
         />
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
+        {use.beaconPosition && (
+          <CertificateField
+            classes="half"
+            title="Beacon Position"
+            value={use.beaconPosition}
+          />
+        )}
+
+        {use.beaconLocation && (
+          <CertificateField
+            classes="full"
+            title="Location"
+            value={use.beaconLocation}
+          />
+        )}
 
         <CertificateField
           classes="half"
@@ -382,41 +396,45 @@ const LandUse: FunctionComponent<UseProps> = ({
       <div className="section">
         <h3>Land Details:</h3>
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
+        {use.beaconPosition && (
+          <CertificateField
+            classes="half"
+            title="Beacon Position"
+            value={use.beaconPosition}
+          />
+        )}
+
+        {use.beaconLocation && (
+          <CertificateField
+            classes="full"
+            title="Location"
+            value={use.beaconLocation}
+          />
+        )}
 
         {use.windfarmLocation && (
           <CertificateField
-            classes="half"
-            title="Windfarm Location"
+            classes="full"
+            title="Location"
             value={use.windfarmLocation}
           />
         )}
 
         {use.workingRemotelyLocation && (
           <CertificateField
-            classes="half"
-            title="Working Remotely Location"
+            classes="full"
+            title="Location"
             value={use.workingRemotelyLocation}
           />
         )}
 
         {use.otherActivityLocation && (
           <CertificateField
-            classes="half"
-            title="Other Activity Location"
+            classes="full"
+            title="Location"
             value={use.otherActivityLocation}
           />
         )}
-
-        <CertificateField
-          classes="half"
-          title="Description Of Intended Use"
-          value={use.descriptionOfIntendedUse}
-        />
 
         {use.workingRemotelyPeopleCount && (
           <CertificateField
@@ -442,11 +460,13 @@ const LandUse: FunctionComponent<UseProps> = ({
           />
         )}
 
-        <CertificateField
-          classes="half"
-          title="Area Of Use"
-          value={use.areaOfUse}
-        />
+        {use.areaOfUse && (
+          <CertificateField
+            classes="half"
+            title="Area Of Use"
+            value={use.areaOfUse}
+          />
+        )}
 
         <CertificateField
           classes="full"
