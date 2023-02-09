@@ -14,6 +14,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.export.ExportFailedException;
+import uk.gov.mca.beacons.api.export.FileSystemRepository;
 
 /**
  * Initiates export jobs using Spring Batch.

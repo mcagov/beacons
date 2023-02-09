@@ -38,14 +38,10 @@ public class XlsxSpreadsheetSorter {
     this.fileSystemRepository = fileSystemRepository;
   }
 
-  public SXSSFSheet sortRowsByBeaconDateLastModifiedDesc(
-    SXSSFSheet sheet,
+  public Sheet sortRowsByBeaconDateLastModifiedDesc(
+    Sheet sheet,
     String operationName
   ) throws IOException, InvalidFormatException {
-    // returns -1 if there are no rows;
-    // skips row 0 which is header row
-    int currentRowNum = sheet.getFirstRowNum() + 1;
-
     Row headerRow = sheet.getRow(0);
     List<Cell> cellsInHeaderRow = Lists.newArrayList(headerRow.cellIterator());
     List<String> cellValuesInHeaderRow = cellsInHeaderRow
@@ -57,8 +53,6 @@ public class XlsxSpreadsheetSorter {
       "Last modified date"
     );
 
-    // rewrite the rows to the sheet
-    // ensure header row is still at top of the list
     List<Row> allDataRows = Lists.newArrayList(sheet.rowIterator());
     allDataRows.remove(headerRow);
 
@@ -82,24 +76,22 @@ public class XlsxSpreadsheetSorter {
 
     removeAllRows(sheet);
 
-    for (int i = 0; i < allDataRows.size(); i++) {
-      Row newRow = sheet.createRow(i);
-      Row sourceRow = allDataRows.get(i);
-      // Loop through source columns to add to new row
-      for (int j = 0; j < sourceRow.getLastCellNum(); j++) {
-        // Grab a copy of the old/new cell
-        Cell oldCell = sourceRow.getCell(j);
-        Cell newCell = newRow.createCell(j);
+    int currentRowNum = 0;
 
-        // If the old cell is null jump to next cell
-        if (oldCell == null) {
-          newCell = null;
-          continue;
-        }
-
-        newCell.setCellValue(oldCell.getStringCellValue());
-      }
+    for (Row row : allDataRows) {
+      writeRow(sheet, currentRowNum, row);
+      currentRowNum++;
     }
+    //    for (int i = 0; i < allDataRows.size(); i++) {
+    //      Row sortedRow = allDataRows.get(i);
+    //      List<Cell> cellsInSortedRow = Lists.newArrayList(sortedRow.cellIterator());
+    //
+    //      Row newRow = sheet.createRow(i);
+    //
+    //      for (int j = 0; j < cellsInSortedRow.size(); j++) {
+    //        newRow.createCell(j).setCellValue(sortedRow.getCell(j).getStringCellValue());
+    //      }
+    //    }
 
     return sheet;
   }
@@ -108,5 +100,26 @@ public class XlsxSpreadsheetSorter {
     for (int i = 0; i < sheet.getLastRowNum(); i++) {
       sheet.removeRow(sheet.getRow(i));
     }
+  }
+
+  private void writeRow(Sheet sheet, int currentRowNumber, Row sortedRow) {
+    List<String> values = getValuesForSortedRow(sortedRow);
+    Row newRow = sheet.createRow(currentRowNumber);
+    for (int i = 0; i < values.size(); i++) {
+      writeCell(newRow, i, values.get(i));
+    }
+  }
+
+  private List<String> getValuesForSortedRow(Row sortedRow) {
+    List<Cell> cellsInSortedRow = Lists.newArrayList(sortedRow.cellIterator());
+    return cellsInSortedRow
+      .stream()
+      .map(c -> c.getStringCellValue())
+      .collect(Collectors.toList());
+  }
+
+  private void writeCell(Row newRow, int currentColumnNumber, String value) {
+    Cell cell = newRow.createCell(currentColumnNumber);
+    cell.setCellValue(value);
   }
 }

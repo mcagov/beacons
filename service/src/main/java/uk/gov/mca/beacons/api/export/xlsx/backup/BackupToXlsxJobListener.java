@@ -20,14 +20,11 @@ import uk.gov.mca.beacons.api.export.xlsx.XlsxSpreadsheetSorter;
 public class BackupToXlsxJobListener implements JobExecutionListener {
 
   private final BeaconsDataWorkbookRepository beaconsDataWorkbookRepository;
-  private final XlsxSpreadsheetSorter spreadsheetSorter;
 
   BackupToXlsxJobListener(
-    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository,
-    XlsxSpreadsheetSorter spreadsheetSorter
+    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
     this.beaconsDataWorkbookRepository = beaconsDataWorkbookRepository;
-    this.spreadsheetSorter = spreadsheetSorter;
   }
 
   @Override
@@ -47,10 +44,7 @@ public class BackupToXlsxJobListener implements JobExecutionListener {
             .get()
         );
 
-        SXSSFSheet sheet = spreadsheetSorter.sortRowsByBeaconDateLastModifiedDesc(
-          workbook.getSheet("Beacons Backup Data"),
-          "Backup"
-        );
+        SXSSFSheet sheet = workbook.getSheet("Beacons Backup Data");
 
         for (Integer i : sheet.getTrackedColumnsForAutoSizing()) {
           sheet.autoSizeColumn(i);
@@ -67,8 +61,6 @@ public class BackupToXlsxJobListener implements JobExecutionListener {
           log.error("Failed to dispose of workbook");
         }
       } catch (IOException e) {
-        log.error(e.getMessage(), e);
-      } catch (InvalidFormatException e) {
         log.error(e.getMessage(), e);
       }
     }

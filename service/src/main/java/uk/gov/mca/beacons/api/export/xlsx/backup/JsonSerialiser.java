@@ -10,12 +10,15 @@ import java.util.Map;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringEscapeUtils;
+import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.beaconuse.rest.BeaconUseDTO;
+import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
 import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.shared.domain.person.Address;
 import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
@@ -59,7 +62,75 @@ public class JsonSerialiser {
     return jsonArray;
   }
 
-  public static JSONArray mapBeaconOwnersToJsonArray(
+  public static JSONArray mapModernBeaconOwnersToJsonArray(
+    List<BeaconOwner> owners
+  ) {
+    var jsonArray = new JSONArray();
+
+    if (owners.size() > 0) {
+      for (BeaconOwner owner : owners) {
+        if (owner == null) {
+          continue;
+        }
+
+        var json = new JSONObject();
+        json.put(
+          "owner name",
+          owner.getFullName() != null ? owner.getFullName().toUpperCase() : ""
+        );
+
+        json.put(
+          "address",
+          owner.getAddress() != null
+            ? mapModernBeaconOwnerAddressToString(owner.getAddress())
+            : ""
+        );
+        json.put(
+          "telephone numbers",
+          (
+            BeaconsStringUtils.getMultipleValuesAsString(
+              " - ",
+              owner.getTelephoneNumber(),
+              owner.getAlternativeTelephoneNumber()
+            )
+          )
+        );
+        json.put(
+          "email",
+          owner.getEmail() != null ? owner.getEmail().toUpperCase() : ""
+        );
+
+        jsonArray.add(json);
+      }
+    }
+
+    return jsonArray;
+  }
+
+  public static String mapModernBeaconOwnerAddressToString(Address address) {
+    String amalgamatedAddress = "";
+
+    if (address != null) {
+      amalgamatedAddress =
+        BeaconsStringUtils
+          .getMultipleValuesAsString(
+            "-",
+            address.getAddressLine1(),
+            address.getAddressLine2(),
+            address.getAddressLine3(),
+            address.getAddressLine4(),
+            address.getTownOrCity(),
+            address.getPostcode(),
+            address.getCounty(),
+            address.getCountry()
+          )
+          .toUpperCase();
+    }
+
+    return amalgamatedAddress;
+  }
+
+  public static JSONArray mapLegacyBeaconOwnersToJsonArray(
     List<BeaconExportOwnerDTO> owners
   ) {
     var jsonArray = new JSONArray();
@@ -88,7 +159,7 @@ public class JsonSerialiser {
         json.put(
           "address",
           owner.getAddress() != null
-            ? mapBeaconOwnerAddressToString(owner.getAddress())
+            ? mapLegacyBeaconOwnerAddressToString(owner.getAddress())
             : ""
         );
         json.put(
@@ -109,7 +180,7 @@ public class JsonSerialiser {
     return jsonArray;
   }
 
-  public static String mapBeaconOwnerAddressToString(AddressDTO address) {
+  public static String mapLegacyBeaconOwnerAddressToString(AddressDTO address) {
     String amalgamatedAddress = "";
 
     if (address != null) {
@@ -132,7 +203,39 @@ public class JsonSerialiser {
     return amalgamatedAddress;
   }
 
-  public static JSONArray mapEmergencyContactsToJsonArray(
+  public static JSONArray mapModernEmergencyContactsToJsonArray(
+    List<EmergencyContact> emergencyContacts
+  ) {
+    JSONArray jsonArray = new JSONArray();
+
+    if (emergencyContacts.size() > 0) {
+      for (EmergencyContact emergencyContact : emergencyContacts) {
+        if (emergencyContact == null) {
+          continue;
+        }
+
+        var json = new JSONObject();
+        json.put(
+          "full name",
+          emergencyContact.getFullName() != null
+            ? emergencyContact.getFullName().toUpperCase()
+            : ""
+        );
+        json.put(
+          "telephone number",
+          emergencyContact.getTelephoneNumber() != null
+            ? emergencyContact.getTelephoneNumber().replace('/', ';')
+            : ""
+        );
+
+        jsonArray.add(json);
+      }
+    }
+
+    return jsonArray;
+  }
+
+  public static JSONArray mapLegacyEmergencyContactsToJsonArray(
     List<EmergencyContactDTO> emergencyContacts
   ) {
     JSONArray jsonArray = new JSONArray();

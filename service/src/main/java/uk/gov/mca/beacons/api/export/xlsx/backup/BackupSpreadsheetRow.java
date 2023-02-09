@@ -269,12 +269,12 @@ public class BackupSpreadsheetRow {
   }
 
   protected void setModernOwners(List<BeaconOwner> beaconOwners) {
-    this.owners = "";
-    //      beaconOwners != null
-    //        ? JsonSerialiser
-    //          .mapModernBeaconOwnersToJsonArray(beaconOwners)
-    //          .toString()
-    //        : "";
+    this.owners =
+      beaconOwners != null
+        ? JsonSerialiser
+          .mapModernBeaconOwnersToJsonArray(beaconOwners)
+          .toString()
+        : "";
   }
 
   protected void setUses(
@@ -296,12 +296,12 @@ public class BackupSpreadsheetRow {
   protected void setModernEmergencyContacts(
     List<EmergencyContact> emergencyContacts
   ) {
-    this.emergencyContacts = "";
-    //      emergencyContacts != null
-    //        ? JsonSerialiser
-    //          .mapModernEmergencyContactsToJsonArray(emergencyContacts)
-    //          .toString()
-    //        : "";
+    this.emergencyContacts =
+      emergencyContacts != null
+        ? JsonSerialiser
+          .mapModernEmergencyContactsToJsonArray(emergencyContacts)
+          .toString()
+        : "";
   }
 
   protected void setLegacyUses(List<BeaconExportUseDTO> legacyUses) {
@@ -312,12 +312,12 @@ public class BackupSpreadsheetRow {
   }
 
   protected void setLegacyOwners(List<BeaconExportOwnerDTO> legacyOwners) {
-    this.owners = "";
-    //      legacyOwners != null
-    //        ? JsonSerialiser
-    //          .mapLegacyBeaconOwnersToJsonArray(legacyOwners)
-    //          .toString()
-    //        : "";
+    this.owners =
+      legacyOwners != null
+        ? JsonSerialiser
+          .mapLegacyBeaconOwnersToJsonArray(legacyOwners)
+          .toString()
+        : "";
   }
 
   protected void setLegacyEmergencyContacts(
@@ -326,7 +326,7 @@ public class BackupSpreadsheetRow {
     this.emergencyContacts =
       emergencyContacts != null
         ? JsonSerialiser
-          .mapEmergencyContactsToJsonArray(emergencyContacts)
+          .mapLegacyEmergencyContactsToJsonArray(emergencyContacts)
           .toString()
         : "";
   }

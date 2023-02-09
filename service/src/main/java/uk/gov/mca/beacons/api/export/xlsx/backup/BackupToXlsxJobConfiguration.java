@@ -97,13 +97,9 @@ public class BackupToXlsxJobConfiguration {
 
   @Bean("backupToXlsxJobListener")
   BackupToXlsxJobListener backupToXlsxJobListener(
-    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository,
-    XlsxSpreadsheetSorter spreadsheetSorter
+    BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
-    return new BackupToXlsxJobListener(
-      beaconsDataWorkbookRepository,
-      spreadsheetSorter
-    );
+    return new BackupToXlsxJobListener(beaconsDataWorkbookRepository);
   }
 
   @Bean(value = "backupToSpreadsheetJob")

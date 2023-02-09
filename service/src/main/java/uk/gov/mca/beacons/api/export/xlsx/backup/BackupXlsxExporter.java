@@ -1,10 +1,15 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.export.ExportFileNamer;
@@ -68,6 +73,26 @@ public class BackupXlsxExporter {
         BeaconsDataWorkbookRepository.OperationType.BACKUP
       )
     );
-    //    spreadsheetSorter.sortRowsByBeaconDateLastModifiedDesc("Backup");
+
+    File mostRecentExport = fileSystemRepository
+      .findMostRecentExport(
+        ExportFileNamer.FileType.EXCEL_SPREADSHEET,
+        "Backup"
+      )
+      .orElseThrow()
+      .toFile();
+
+    Sheet sheet = new XSSFWorkbook(mostRecentExport)
+      .getSheet("Beacons Backup Data");
+
+    sheet =
+      spreadsheetSorter.sortRowsByBeaconDateLastModifiedDesc(sheet, "Backup");
+
+    // write sheet back to file
+    OutputStream fileOutputStream = Files.newOutputStream(
+      mostRecentExport.toPath()
+    );
+    //    XSSFWorkbook workbookFromSortedSheet = (XSSFWorkbook) sheet.getWorkbook();
+    //    workbookFromSortedSheet.write(fileOutputStream);
   }
 }
