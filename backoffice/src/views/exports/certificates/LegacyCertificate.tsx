@@ -295,15 +295,15 @@ const RigUse: FunctionComponent<UseProps> = ({
 
         {use.windfarmLocation && (
           <CertificateField
-            classes="half"
-            title="Windfarm Location"
+            classes="full"
+            title="Location"
             value={use.windfarmLocation}
           />
         )}
 
         {use.rigPlatformLocation && (
           <CertificateField
-            classes="half"
+            classes="full"
             title="Rig/Platform Location"
             value={use.rigPlatformLocation}
           />
@@ -493,16 +493,16 @@ export const GenericUse: FunctionComponent<UseProps> = ({
 
         {use.windfarmLocation && (
           <CertificateField
-            classes="half"
-            title="Windfarm Location"
+            classes="full"
+            title="Location"
             value={use.windfarmLocation}
           />
         )}
 
         {use.rigPlatformLocation && (
           <CertificateField
-            classes="half"
-            title="Rig/Platform Location"
+            classes="full"
+            title="Location"
             value={use.rigPlatformLocation}
           />
         )}
