@@ -15,6 +15,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
@@ -23,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.export.ExportFileNamer;
 import uk.gov.mca.beacons.api.export.FileSystemRepository;
-import uk.gov.mca.beacons.api.export.xlsx.backup.BackupSpreadsheetRow;
 
 @Component
 public class XlsxSpreadsheetSorter {
@@ -37,6 +37,11 @@ public class XlsxSpreadsheetSorter {
   public XlsxSpreadsheetSorter(FileSystemRepository fileSystemRepository) {
     this.fileSystemRepository = fileSystemRepository;
   }
+
+  //  public Sheet sortUsingSpire() {
+  //
+  //    workbook.loa
+  //  }
 
   public Sheet sortRowsByBeaconDateLastModifiedDesc(
     Sheet sheet,
