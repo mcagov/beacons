@@ -1,6 +1,8 @@
 package uk.gov.mca.beacons.api.export.application;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
@@ -15,6 +17,9 @@ import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.note.application.NoteService;
+import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.note.domain.NoteType;
+import uk.gov.mca.beacons.api.note.rest.NoteDTO;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 
@@ -57,10 +62,16 @@ public class ExportService {
         .getAccountHolder(registration.getBeacon().getAccountHolderId())
         .orElse(null);
 
+      List<Note> notes = noteService
+        .getNonSystemNotes(beaconId)
+        .stream()
+        .filter(n -> n.getType() != NoteType.INCIDENT)
+        .collect(Collectors.toList());
+
       BeaconExportDTO data = exportMapper.toBeaconExportDTO(
         registration,
         accountHolder,
-        noteService.getNonSystemNotes(beaconId)
+        notes
       );
 
       if (noteGeneratedType != null) {
