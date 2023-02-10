@@ -17,9 +17,6 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerReadOnlyRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseReadOnlyRepository;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
-import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
-import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContactReadOnlyRepository;
-import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.note.domain.Note;
@@ -28,7 +25,7 @@ import uk.gov.mca.beacons.api.registration.domain.Registration;
 
 @Component
 class BackupBeaconToSpreadsheetRowItemProcessor
-  implements ItemProcessor<Beacon, BackupSpreadsheetRow> {
+  implements ItemProcessor<BeaconBackupItem, BackupSpreadsheetRow> {
 
   private final RegistrationService registrationService;
   private final NoteService noteService;
@@ -59,8 +56,11 @@ class BackupBeaconToSpreadsheetRowItemProcessor
 
   @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
   @Override
-  public BackupSpreadsheetRow process(Beacon beacon)
+  public BackupSpreadsheetRow process(BeaconBackupItem beacon)
     throws JsonProcessingException {
+    // is it a modern beacon?
+    // if so, grab the registration and notes
+    // otherwise we have what we need for legacy beacons
     BeaconId beaconId = beacon.getId();
     Registration registration = registrationService.getByBeaconId(beaconId);
 

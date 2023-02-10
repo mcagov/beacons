@@ -11,7 +11,7 @@ import org.springframework.batch.item.database.orm.JpaQueryProvider;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 
 /**
- * Creates ItemReaders for use in Spring Batch jobs that use LegacyBeacons
+ * Creates ItemReaders for use in Spring Batch jobs that use Beacons
  */
 public class BeaconItemReaderFactory {
 
@@ -32,7 +32,6 @@ public class BeaconItemReaderFactory {
       .build();
   }
 
-  // todo: is this right for the factory pattern?
   public static JpaPagingItemReader<Beacon> getBackupItemReader(
     EntityManagerFactory entityManagerFactory
   ) {
