@@ -176,8 +176,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         }`}
       </h4>
       <div className="section">
-        <h3>Details:</h3>
-
         <CertificateField
           classes="half"
           title="Vessel Name"
@@ -304,8 +302,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
         }`}
       </h4>
       <div className="section">
-        <h3>Aircraft Details:</h3>
-
         <CertificateField
           classes="half"
           title="Aircraft Manufacturer & Model"
@@ -396,8 +392,6 @@ const LandUse: FunctionComponent<UseProps> = ({
         }`}
       </h4>
       <div className="section">
-        <h3>Land Details:</h3>
-
         {use.beaconPosition && (
           <CertificateField
             classes="half"

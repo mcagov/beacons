@@ -186,8 +186,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
-        <h3>Vessel Details:</h3>
-
         <CertificateField
           classes="half"
           title="Vessel Name"
@@ -268,8 +266,6 @@ const RigUse: FunctionComponent<UseProps> = ({
         {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
-        <h3>Rig/Platform Details:</h3>
-
         {use.rigName && (
           <CertificateField
             classes="half"
@@ -364,8 +360,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
         {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
-        <h3>Aircraft Details:</h3>
-
         <CertificateField
           classes="half"
           title="Aircraft Type"
@@ -425,8 +419,6 @@ const LandUse: FunctionComponent<UseProps> = ({
         {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
-        <h3>Land Details:</h3>
-
         <CertificateField
           classes="full"
           title="Description Of Intended Use"
@@ -474,8 +466,6 @@ export const GenericUse: FunctionComponent<UseProps> = ({
         {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
-        <h3>Use Details:</h3>
-
         {use.vesselName && (
           <CertificateField
             classes="half"
