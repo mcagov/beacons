@@ -317,7 +317,7 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
       communicationTypes.put(
         "Mobile Telephone(s)",
         BeaconsStringUtils.getMultipleValuesAsString(
-          "-",
+          " - ",
           getMobileTelephone1(),
           getMobileTelephone2()
         )

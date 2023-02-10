@@ -206,10 +206,11 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           />
         )}
 
+        {/* Aware this is the wrong label, but done to match the backoffice */}
         {use.beaconLocation && (
           <CertificateField
             classes="full"
-            title="Location"
+            title="Beacon Position"
             value={use.beaconLocation}
           />
         )}
@@ -562,7 +563,7 @@ const RadioSystems: FunctionComponent<UseProps> = ({
         <div key={index}>
           {use.radioSystems[key] && (
             <CertificateField
-              classes="half"
+              classes={key === "Other" ? "full" : "half"}
               title={key}
               value={use.radioSystems[key]}
             />
