@@ -38,33 +38,41 @@ public class BackupLegacyBeacon {
   @Setter
   private OffsetDateTime lastModifiedDate;
 
-  // todo: add status, and dates to complete this
   public static BackupLegacyBeacon createFromBeaconBackupItem(
     BeaconBackupItem beaconBackupItem
   ) {
     return new BackupLegacyBeacon(
       new LegacyBeaconId(beaconBackupItem.getId()),
       beaconBackupItem.getHexId(),
+      beaconBackupItem.getBeaconStatus(),
       beaconBackupItem.getData(),
       beaconBackupItem.getOwnerName(),
       beaconBackupItem.getOwnerEmail(),
-      beaconBackupItem.getUseActivities()
+      beaconBackupItem.getUseActivities(),
+      beaconBackupItem.getCreatedDate(),
+      beaconBackupItem.getLastModifiedDate()
     );
   }
 
   private BackupLegacyBeacon(
     LegacyBeaconId id,
     String hexId,
+    String beaconStatus,
     LegacyData data,
     String ownerName,
     String ownerEmail,
-    String useActivities
+    String useActivities,
+    OffsetDateTime createdDate,
+    OffsetDateTime lastModifiedDate
   ) {
     setId(id);
     setHexId(hexId);
+    setBeaconStatus(beaconStatus);
     setData(data);
     setOwnerName(ownerName);
     setOwnerEmail(ownerEmail);
     setUseActivities(useActivities);
+    setCreatedDate(createdDate);
+    setLastModifiedDate(lastModifiedDate);
   }
 }

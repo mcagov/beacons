@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
+import uk.gov.mca.beacons.api.export.xlsx.ExportSpreadsheetRow;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
 @Configuration
 @EnableBatchProcessing
@@ -49,12 +51,12 @@ public class BackupToXlsxJobConfiguration {
   @Bean("backupBeaconToSpreadsheetStep")
   public Step backupBeaconToSpreadsheetStep(
     ItemReader<BeaconBackupItem> beaconBackupItemReader,
-    ItemProcessor<Beacon, BackupSpreadsheetRow> backupBeaconToSpreadsheetRowItemProcessor,
+    ItemProcessor<BeaconBackupItem, BackupSpreadsheetRow> backupBeaconToSpreadsheetRowItemProcessor,
     ItemWriter<BackupSpreadsheetRow> xlsxItemWriter
   ) {
     return stepBuilderFactory
       .get("backupBeaconToSpreadsheetStep")
-      .<Beacon, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
+      .<BeaconBackupItem, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
       .reader(beaconBackupItemReader)
       .processor(backupBeaconToSpreadsheetRowItemProcessor)
       .writer(xlsxItemWriter)
@@ -78,7 +80,6 @@ public class BackupToXlsxJobConfiguration {
   @Bean(value = "backupToSpreadsheetJob")
   public Job backupToSpreadsheetJob(
     Step backupBeaconToSpreadsheetStep,
-    Step backupLegacyBeaconToSpreadsheetStep,
     @Qualifier(
       "jobExecutionLoggingListener"
     ) JobExecutionListener jobExecutionLoggingListener,

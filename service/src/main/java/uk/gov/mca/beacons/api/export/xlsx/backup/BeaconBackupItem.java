@@ -18,6 +18,11 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyData;
 @EntityListeners(AuditingEntityListener.class)
 @Entity(name = "beaconBackupItem")
 @Table(name = "beacon_backup")
+@NamedNativeQuery(
+  name = "PagingBeaconBackupItemReader",
+  query = "select b from beaconBackupItem",
+  hints = @QueryHint(name = "org.hibernate.readOnly", value = "true")
+)
 public class BeaconBackupItem {
 
   public static final String ID_GENERATOR_NAME = "beacon-id-generator";
