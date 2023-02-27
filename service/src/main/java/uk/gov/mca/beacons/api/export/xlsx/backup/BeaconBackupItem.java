@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -11,8 +12,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
-import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyData;
 
 @Getter
@@ -30,7 +29,7 @@ public class BeaconBackupItem {
     strategy = GenerationType.AUTO,
     generator = "beacon-id-generator"
   )
-  private BeaconId id;
+  private UUID id;
 
   @Setter
   @NotNull

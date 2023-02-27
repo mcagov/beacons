@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.legacybeacon.rest.dto;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.*;
+import uk.gov.mca.beacons.api.beacon.mappers.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.dto.DomainDTO;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 

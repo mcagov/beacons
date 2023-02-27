@@ -15,12 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
-import uk.gov.mca.beacons.api.export.xlsx.XlsxSpreadsheetSorter;
-import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
 @Configuration
 @EnableBatchProcessing
@@ -95,7 +91,6 @@ public class BackupToXlsxJobConfiguration {
       .listener(jobExecutionLoggingListener)
       .listener(jobExecutionListener)
       .start(backupBeaconToSpreadsheetStep)
-      .next(backupLegacyBeaconToSpreadsheetStep)
       .build();
   }
 }

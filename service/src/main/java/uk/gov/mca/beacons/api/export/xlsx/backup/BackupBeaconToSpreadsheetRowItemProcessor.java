@@ -3,21 +3,17 @@ package uk.gov.mca.beacons.api.export.xlsx.backup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
-import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
-import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerReadOnlyRepository;
-import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
-import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseReadOnlyRepository;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
+import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
+import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
@@ -28,10 +24,9 @@ class BackupBeaconToSpreadsheetRowItemProcessor
   implements ItemProcessor<BeaconBackupItem, BackupSpreadsheetRow> {
 
   private final RegistrationService registrationService;
+  private final LegacyBeaconService legacyBeaconService;
   private final NoteService noteService;
-  private final AccountHolderService accountHolderService;
-
-  private final ExportMapper exportMapper;
+  private ExportMapper exportMapper;
 
   private final BeaconUseMapper beaconUseMapper;
 
@@ -42,35 +37,45 @@ class BackupBeaconToSpreadsheetRowItemProcessor
   @Autowired
   public BackupBeaconToSpreadsheetRowItemProcessor(
     RegistrationService registrationService,
+    LegacyBeaconService legacyBeaconService,
     NoteService noteService,
-    AccountHolderService accountHolderService,
     ExportMapper exportMapper,
     BeaconUseMapper beaconUseMapper
   ) {
     this.registrationService = registrationService;
     this.noteService = noteService;
-    this.accountHolderService = accountHolderService;
+    this.legacyBeaconService = legacyBeaconService;
     this.exportMapper = exportMapper;
     this.beaconUseMapper = beaconUseMapper;
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
   @Override
-  public BackupSpreadsheetRow process(BeaconBackupItem beacon)
+  public BackupSpreadsheetRow process(BeaconBackupItem beaconBackupItem)
     throws JsonProcessingException {
-    // is it a modern beacon?
-    // if so, grab the registration and notes
-    // otherwise we have what we need for legacy beacons
-    BeaconId beaconId = beacon.getId();
-    Registration registration = registrationService.getByBeaconId(beaconId);
+    UUID beaconItemId = beaconBackupItem.getId();
+    try {
+      BeaconId modernBeaconId = new BeaconId(beaconItemId);
+      Registration registration = registrationService.getByBeaconId(
+        modernBeaconId
+      );
+      List<Note> nonSystemNotes = noteService.getNonSystemNotes(modernBeaconId);
 
-    List<Note> nonSystemNotes = noteService.getNonSystemNotes(beaconId);
-
-    return new BackupSpreadsheetRow(
-      registration,
-      nonSystemNotes,
-      beaconUseMapper,
-      dateFormatter
-    );
+      return new BackupSpreadsheetRow(
+        registration,
+        nonSystemNotes,
+        beaconUseMapper,
+        dateFormatter
+      );
+    } catch (ResourceNotFoundException exception) {
+      BackupLegacyBeacon legacyBeacon = BackupLegacyBeacon.createFromBeaconBackupItem(
+        beaconBackupItem
+      );
+      return new BackupSpreadsheetRow(
+        legacyBeacon,
+        exportMapper,
+        dateFormatter
+      );
+    }
   }
 }

@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +17,7 @@ import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
+import uk.gov.mca.beacons.api.export.xlsx.backup.BackupLegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
@@ -238,6 +238,50 @@ public class ExportMapper {
   }
 
   public BeaconExportDTO toLegacyBeaconExportDTO(LegacyBeacon beacon) {
+    LegacyBeaconDetails details = beacon.getData().getBeacon();
+    LegacyUse mainUse = beacon.getData().getMainUse();
+
+    return BeaconExportDTO
+      .builder()
+      .type("Legacy")
+      .name(
+        mainUse != null
+          ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
+          : ""
+      )
+      .id(beacon.getId().unwrap().toString())
+      .proofOfRegistrationDate(OffsetDateTime.now())
+      .lastModifiedDate(beacon.getLastModifiedDate())
+      .departmentReference(details.getDepartRefId())
+      .recordCreatedDate(details.getFirstRegistrationDate())
+      .beaconStatus(beacon.getBeaconStatus())
+      .hexId(beacon.getHexId())
+      .manufacturer(details.getManufacturer())
+      .serialNumber(
+        details.getSerialNumber() != null ? details.getSerialNumber() : 0
+      )
+      .cospasSarsatNumber(
+        details.getCospasSarsatNumber() != null
+          ? details.getCospasSarsatNumber().toString()
+          : ""
+      )
+      .manufacturerSerialNumber(details.getManufacturerSerialNumber())
+      .beaconModel(details.getModel())
+      .beaconlastServiced(details.getLastServiceDate())
+      .beaconCoding(details.getCoding())
+      .batteryExpiryDate(details.getBatteryExpiryDate())
+      .codingProtocol(details.getProtocol())
+      .cstaNumber(details.getCsta())
+      .beaconNote(details.getNote())
+      .uses(toLegacyUsesDTO(beacon.getData().getUses()))
+      .owners(toLegacyOwnersDTO(beacon.getData()))
+      .emergencyContacts(
+        toLegacyEmergencyContacts(beacon.getData().getEmergencyContact())
+      )
+      .build();
+  }
+
+  public BeaconExportDTO toLegacyBeaconExportDTO(BackupLegacyBeacon beacon) {
     LegacyBeaconDetails details = beacon.getData().getBeacon();
     LegacyUse mainUse = beacon.getData().getMainUse();
 

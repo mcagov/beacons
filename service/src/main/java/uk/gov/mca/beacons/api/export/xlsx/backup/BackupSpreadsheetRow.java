@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import net.minidev.json.JSONArray;
-import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
@@ -19,8 +17,6 @@ import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.export.rest.*;
-import uk.gov.mca.beacons.api.export.rest.backup.BeaconBackupExportDTO;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
@@ -131,7 +127,7 @@ public class BackupSpreadsheetRow {
   private String emergencyContacts;
 
   public BackupSpreadsheetRow(
-    LegacyBeacon legacyBeacon,
+    BackupLegacyBeacon legacyBeacon,
     ExportMapper exportMapper,
     DateTimeFormatter dateFormatter
   ) {
