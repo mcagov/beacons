@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,18 +17,18 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyData;
 
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-@Entity(name = "beaconBackupItem")
+@Entity
 @Table(name = "beacon_backup")
-@NamedNativeQuery(
+@NamedQuery(
   name = "PagingBeaconBackupItemReader",
-  query = "select b from beaconBackupItem",
+  query = "select b from BeaconBackupItem b",
   hints = @QueryHint(name = "org.hibernate.readOnly", value = "true")
 )
 public class BeaconBackupItem {
 
   public static final String ID_GENERATOR_NAME = "beacon-id-generator";
 
-  @Type(type = "uk.gov.mca.beacons.api.beacon.domain.BeaconId")
+  @Type(type = "java.util.UUID")
   @Column(nullable = false)
   @Id
   @GeneratedValue(

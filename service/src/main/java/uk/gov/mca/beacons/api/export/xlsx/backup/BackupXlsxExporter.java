@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.gov.mca.beacons.api.export.ExportFailedException;
 import uk.gov.mca.beacons.api.export.ExportFileNamer;
 import uk.gov.mca.beacons.api.export.FileSystemRepository;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
@@ -67,12 +68,16 @@ public class BackupXlsxExporter {
       return;
     }
 
-    backupToXlsxJobManager.backup(
-      fileSystemRepository.getNextExportDestination(
-        ExportFileNamer.FileType.EXCEL_SPREADSHEET,
-        BeaconsDataWorkbookRepository.OperationType.BACKUP
-      )
-    );
+    try {
+      backupToXlsxJobManager.backup(
+        fileSystemRepository.getNextExportDestination(
+          ExportFileNamer.FileType.EXCEL_SPREADSHEET,
+          BeaconsDataWorkbookRepository.OperationType.BACKUP
+        )
+      );
+    } catch (Exception e) {
+      Exception ex = e;
+    }
 
     File mostRecentExport = fileSystemRepository
       .findMostRecentExport(

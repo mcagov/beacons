@@ -7,6 +7,7 @@ import org.springframework.batch.item.database.PagingQueryProvider;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.batch.item.database.orm.AbstractJpaQueryProvider;
 import org.springframework.batch.item.database.orm.JpaNamedQueryProvider;
+import org.springframework.batch.item.database.orm.JpaNativeQueryProvider;
 import org.springframework.batch.item.database.orm.JpaQueryProvider;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 
