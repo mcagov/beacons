@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -9,6 +11,7 @@ import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -119,5 +122,21 @@ public class LegacyBeaconService {
     legacyBeacon.setLastModifiedDate(todaysOffsetDate);
 
     return legacyBeaconRepository.saveAll(legacyBeacons);
+  }
+
+  public Map<String, Long> findHexIdsWithDuplicates() {
+    Map<String, Long> hexIdsAndDuplicateCounts = legacyBeaconRepository
+      .findAll()
+      .stream()
+      .collect(groupingBy(LegacyBeacon::getHexId, Collectors.counting()))
+      .entrySet()
+      .stream()
+      .filter(m -> m.getValue() > 1)
+      .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+    return hexIdsAndDuplicateCounts;
+  }
+
+  public List<LegacyBeacon> findByHexId(String hexId) {
+    return legacyBeaconRepository.findByHexId(hexId);
   }
 }
