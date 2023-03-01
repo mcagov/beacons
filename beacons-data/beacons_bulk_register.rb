@@ -84,7 +84,7 @@ conn.prepare("note", 'INSERT INTO note (id, beacon_id, text, type,
 created_date, user_id, full_name, email) VALUES ($1, $2, $3, $4, $5, $6,
 $7, $8)')
 
-50000.times do |count|
+5.times do |count|
 
 #Setup beacon with dummy data
 
