@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.auth.application.GetUserService;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.duplicates.application.DuplicatesService;
@@ -31,7 +28,7 @@ public class DuplicatesController {
     this.duplicatesService = duplicatesService;
   }
 
-  @PatchMapping(value = "/")
+  @GetMapping(value = "/")
   @PreAuthorize("hasAuthority('APPROLE_DELETE_BEACONS')")
   public ResponseEntity<DuplicatesSummaryDTO> getDuplicates() {
     DuplicatesSummaryDTO duplicatesSummaryDTO;
@@ -46,7 +43,7 @@ public class DuplicatesController {
     return ResponseEntity.ok(duplicatesSummaryDTO);
   }
 
-  @PatchMapping(value = "/{hexId}")
+  @GetMapping(value = "/{hexId}")
   @PreAuthorize("hasAuthority('APPROLE_DELETE_BEACONS')")
   public ResponseEntity<DuplicateBeaconsDTO> getDuplicatesForHexId(
     String hexId

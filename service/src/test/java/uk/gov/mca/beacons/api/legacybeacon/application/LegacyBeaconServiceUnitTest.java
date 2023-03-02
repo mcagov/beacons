@@ -250,4 +250,7 @@ public class LegacyBeaconServiceUnitTest {
 
     Assertions.assertEquals(todaysDate, lastModifiedDate);
   }
+
+  @Test
+  void findHexIdsWithDuplicates_shouldOnlyReturnHexIdsThatMatchMoreThanOneBeacon() {}
 }
