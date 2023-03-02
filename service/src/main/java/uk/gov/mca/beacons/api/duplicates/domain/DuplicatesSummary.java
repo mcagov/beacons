@@ -8,5 +8,5 @@ import lombok.Setter;
 public class DuplicatesSummary {
 
   public String hexId;
-  public Long numberOfBeacons;
+  public Integer numberOfBeacons;
 }

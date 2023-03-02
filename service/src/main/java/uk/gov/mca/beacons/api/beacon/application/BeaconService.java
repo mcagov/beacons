@@ -128,15 +128,15 @@ public class BeaconService {
       .withMapping(Beacon::getModel, Beacon::setModel);
   }
 
-  public Map<String, Long> findHexIdsWithDuplicates() {
-    Map<String, Long> hexIdsAndDuplicateCounts = beaconRepository
+  public Map<String, Integer> findHexIdsWithDuplicates() {
+    Map<String, Integer> hexIdsAndDuplicateCounts = beaconRepository
       .findAll()
       .stream()
       .collect(groupingBy(Beacon::getHexId, Collectors.counting()))
       .entrySet()
       .stream()
       .filter(m -> m.getValue() > 1)
-      .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+      .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue().intValue()));
     return hexIdsAndDuplicateCounts;
   }
 

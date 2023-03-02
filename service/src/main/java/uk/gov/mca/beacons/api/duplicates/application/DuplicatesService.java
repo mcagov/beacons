@@ -31,8 +31,8 @@ public class DuplicatesService {
 
   public List<DuplicatesSummary> getDuplicateSummaries() {
     List<DuplicatesSummary> duplicateSummaries = new ArrayList<>();
-    Map<String, Long> beaconHexIdsWithDuplicateCounts = beaconService.findHexIdsWithDuplicates();
-    Map<String, Long> legacyBeaconHexIdsWithDuplicateCounts = legacyBeaconService.findHexIdsWithDuplicates();
+    Map<String, Integer> beaconHexIdsWithDuplicateCounts = beaconService.findHexIdsWithDuplicates();
+    Map<String, Integer> legacyBeaconHexIdsWithDuplicateCounts = legacyBeaconService.findHexIdsWithDuplicates();
 
     beaconHexIdsWithDuplicateCounts.putAll(
       legacyBeaconHexIdsWithDuplicateCounts
