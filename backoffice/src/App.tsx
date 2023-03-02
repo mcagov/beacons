@@ -39,6 +39,8 @@ import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordVi
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 import { AdminView } from "views/AdminView";
 import { DataComparisonView } from "views/comparison/DataComparisonView";
+import { DuplicateSummaryView } from "./views/DuplicatesSummaryView";
+import { DuplicatesGateway } from "./gateways/duplicates/DuplicatesGateway";
 
 interface ResourceParams {
   id: string;
@@ -73,6 +75,7 @@ const App: FunctionComponent = () => {
   const usesGateway = new UsesGateway(beaconResponseMapper, authGateway);
   const notesGateway = new NotesGateway(authGateway);
   const exportsGateway = new ExportsGateway(authGateway);
+  const duplicatesGateway = new DuplicatesGateway(authGateway);
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
@@ -162,6 +165,11 @@ const App: FunctionComponent = () => {
                 <Route exact path="/">
                   <Navigation exportsGateway={exportsGateway} />
                   <Search beaconsGateway={beaconsGateway} />
+                  <Footer />
+                </Route>
+                <Route path={`/duplicates`}>
+                  <Navigation exportsGateway={exportsGateway} />
+                  <DuplicateSummaryView duplicatesGateway={duplicatesGateway} />
                   <Footer />
                 </Route>
                 <Route path={`/export/search`}>
