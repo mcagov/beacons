@@ -126,7 +126,7 @@ public class LegacyBeaconService {
 
   public Map<String, Long> findHexIdsWithDuplicates() {
     Map<String, Long> hexIdsAndDuplicateCounts = legacyBeaconRepository
-      .findAll()
+      .findByHexIdNotNull()
       .stream()
       .collect(groupingBy(LegacyBeacon::getHexId, Collectors.counting()))
       .entrySet()
