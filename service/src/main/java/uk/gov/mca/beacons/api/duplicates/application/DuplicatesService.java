@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.duplicates.domain.DuplicateBeacon;
@@ -12,11 +14,13 @@ import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
+@Service("DuplicatesService")
 public class DuplicatesService {
 
   private final BeaconService beaconService;
   private final LegacyBeaconService legacyBeaconService;
 
+  @Autowired
   public DuplicatesService(
     BeaconService beaconService,
     LegacyBeaconService legacyBeaconService
