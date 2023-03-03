@@ -23,5 +23,21 @@ export const DuplicateSummaryView: FunctionComponent<
 
   console.log(duplicateSummaries);
 
-  return <p>Bababooey</p>;
+  const summaries = duplicateSummaries.map((summary) => {
+    return (
+      <li>
+        hexId:{summary.hexId}- - - - -duplicate number:{summary.numberOfBeacons}
+      </li>
+    );
+  });
+
+  if (duplicateSummaries.length > 0) {
+    return (
+      <div>
+        <ul>{summaries}</ul>
+      </div>
+    );
+  } else {
+    return <p>foo</p>;
+  }
 };
