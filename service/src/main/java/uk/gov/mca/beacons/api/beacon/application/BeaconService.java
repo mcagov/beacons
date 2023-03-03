@@ -74,15 +74,6 @@ public class BeaconService {
     );
   }
 
-  public List<Beacon> getBatch(int batchSize, int numberAlreadyTaken) {
-    return beaconRepository
-      .findAll()
-      .stream()
-      .skip(numberAlreadyTaken)
-      .limit(batchSize)
-      .collect(Collectors.toList());
-  }
-
   public Beacon update(BeaconId beaconId, Beacon patch)
     throws ResourceNotFoundException {
     Beacon beacon = beaconRepository
@@ -128,9 +119,14 @@ public class BeaconService {
       .withMapping(Beacon::getModel, Beacon::setModel);
   }
 
-  public Map<String, Integer> findHexIdsWithDuplicates() {
-    Map<String, Integer> hexIdsAndDuplicateCounts = beaconRepository
-      .findAll()
+  public Map<String, Integer> findHexIdsWithDuplicates(
+    int batchSize,
+    int numberAlreadyTaken
+  ) {
+    Map<String, Integer> hexIdsAndDuplicateCounts = getBatch(
+      batchSize,
+      numberAlreadyTaken
+    )
       .stream()
       .collect(groupingBy(Beacon::getHexId, Collectors.counting()))
       .entrySet()
@@ -138,6 +134,15 @@ public class BeaconService {
       .filter(m -> m.getValue() > 1)
       .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue().intValue()));
     return hexIdsAndDuplicateCounts;
+  }
+
+  public List<Beacon> getBatch(int batchSize, int numberAlreadyTaken) {
+    return beaconRepository
+      .findAll()
+      .stream()
+      .skip(numberAlreadyTaken)
+      .limit(batchSize)
+      .collect(Collectors.toList());
   }
 
   public List<Beacon> findByHexId(String hexId) {
