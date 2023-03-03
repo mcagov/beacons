@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.duplicates.rest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.auth.application.GetUserService;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.duplicates.application.DuplicatesService;
+import uk.gov.mca.beacons.api.duplicates.domain.DuplicatesSummary;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
@@ -30,17 +32,16 @@ public class DuplicatesController {
 
   @GetMapping(value = "/")
   @PreAuthorize("hasAuthority('APPROLE_DELETE_BEACONS')")
-  public ResponseEntity<DuplicatesSummaryDTO> getDuplicates() {
-    DuplicatesSummaryDTO duplicatesSummaryDTO;
+  public ResponseEntity<List<DuplicatesSummary>> getDuplicates() {
+    List<DuplicatesSummary> duplicateSummaries;
 
     try {
-      duplicatesSummaryDTO =
-        new DuplicatesSummaryDTO(duplicatesService.getDuplicateSummaries());
+      duplicateSummaries = duplicatesService.getDuplicateSummaries();
     } catch (Exception ex) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    return ResponseEntity.ok(duplicatesSummaryDTO);
+    return ResponseEntity.ok(duplicateSummaries);
   }
 
   @GetMapping(value = "/{hexId}")
