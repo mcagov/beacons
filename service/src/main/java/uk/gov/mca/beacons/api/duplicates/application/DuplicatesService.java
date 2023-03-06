@@ -29,10 +29,23 @@ public class DuplicatesService {
     this.legacyBeaconService = legacyBeaconService;
   }
 
-  public List<DuplicatesSummary> getDuplicateSummaries() {
+  public List<DuplicatesSummary> getDuplicateSummaries(
+    int pageNumber,
+    int numberPerPage
+  ) {
     List<DuplicatesSummary> duplicateSummaries = new ArrayList<>();
-    Map<String, Integer> beaconHexIdsWithDuplicateCounts = beaconService.findHexIdsWithDuplicates();
-    Map<String, Integer> legacyBeaconHexIdsWithDuplicateCounts = legacyBeaconService.findHexIdsWithDuplicates();
+
+    int numberAlreadyTaken = pageNumber * numberPerPage;
+    double numberOfEachCategoryPerPage = Math.floor((double) numberPerPage / 2);
+
+    Map<String, Integer> beaconHexIdsWithDuplicateCounts = beaconService.findHexIdsWithDuplicates(
+      (int) numberOfEachCategoryPerPage,
+      numberAlreadyTaken
+    );
+    Map<String, Integer> legacyBeaconHexIdsWithDuplicateCounts = legacyBeaconService.findHexIdsWithDuplicates(
+      (int) numberOfEachCategoryPerPage,
+      numberAlreadyTaken
+    );
 
     beaconHexIdsWithDuplicateCounts.putAll(
       legacyBeaconHexIdsWithDuplicateCounts

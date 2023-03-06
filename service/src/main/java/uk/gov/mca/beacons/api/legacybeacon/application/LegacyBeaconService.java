@@ -124,9 +124,14 @@ public class LegacyBeaconService {
     return legacyBeaconRepository.saveAll(legacyBeacons);
   }
 
-  public Map<String, Integer> findHexIdsWithDuplicates() {
-    Map<String, Integer> hexIdsAndDuplicateCounts = legacyBeaconRepository
-      .findByHexIdNotNull()
+  public Map<String, Integer> findHexIdsWithDuplicates(
+    int batchSize,
+    int numberAlreadyTaken
+  ) {
+    Map<String, Integer> hexIdsAndDuplicateCounts = getBatchWhereHexIdIsNotNull(
+      batchSize,
+      numberAlreadyTaken
+    )
       .stream()
       .collect(groupingBy(LegacyBeacon::getHexId, Collectors.counting()))
       .entrySet()
@@ -134,6 +139,18 @@ public class LegacyBeaconService {
       .filter(m -> m.getValue() > 1)
       .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue().intValue()));
     return hexIdsAndDuplicateCounts;
+  }
+
+  public List<LegacyBeacon> getBatchWhereHexIdIsNotNull(
+    int batchSize,
+    int numberAlreadyTaken
+  ) {
+    return legacyBeaconRepository
+      .findByHexIdNotNull()
+      .stream()
+      .skip(numberAlreadyTaken)
+      .limit(batchSize)
+      .collect(Collectors.toList());
   }
 
   public List<LegacyBeacon> findByHexId(String hexId) {
