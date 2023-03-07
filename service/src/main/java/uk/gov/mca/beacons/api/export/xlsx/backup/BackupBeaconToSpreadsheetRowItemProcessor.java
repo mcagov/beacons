@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
@@ -55,27 +56,39 @@ class BackupBeaconToSpreadsheetRowItemProcessor
     throws JsonProcessingException {
     UUID beaconItemId = beaconBackupItem.getId();
     try {
-      BeaconId modernBeaconId = new BeaconId(beaconItemId);
-      Registration registration = registrationService.getByBeaconId(
-        modernBeaconId
-      );
-      List<Note> nonSystemNotes = noteService.getNonSystemNotes(modernBeaconId);
+      try {
+        BeaconId modernBeaconId = new BeaconId(beaconItemId);
+        Registration registration = registrationService.getByBeaconId(
+          modernBeaconId
+        );
+        List<Note> nonSystemNotes = noteService.getNonSystemNotes(
+          modernBeaconId
+        );
 
-      return new BackupSpreadsheetRow(
-        registration,
-        nonSystemNotes,
-        beaconUseMapper,
-        dateFormatter
-      );
-    } catch (ResourceNotFoundException exception) {
-      BackupLegacyBeacon legacyBeacon = BackupLegacyBeacon.createFromBeaconBackupItem(
-        beaconBackupItem
-      );
-      return new BackupSpreadsheetRow(
-        legacyBeacon,
-        exportMapper,
-        dateFormatter
-      );
+        return new BackupSpreadsheetRow(
+          registration,
+          nonSystemNotes,
+          beaconUseMapper,
+          dateFormatter
+        );
+      } catch (ResourceNotFoundException exception) {
+        BackupLegacyBeacon legacyBeacon = BackupLegacyBeacon.createFromBeaconBackupItem(
+          beaconBackupItem
+        );
+        return new BackupSpreadsheetRow(
+          legacyBeacon,
+          exportMapper,
+          dateFormatter
+        );
+      }
+    } catch (UnexpectedRollbackException e) {
+      Exception ex = e;
     }
+
+    return new BackupSpreadsheetRow(
+      BackupLegacyBeacon.createFromBeaconBackupItem(beaconBackupItem),
+      exportMapper,
+      dateFormatter
+    );
   }
 }
