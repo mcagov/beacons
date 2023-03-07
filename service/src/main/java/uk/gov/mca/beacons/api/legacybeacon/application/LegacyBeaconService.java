@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -128,11 +129,13 @@ public class LegacyBeaconService {
     int batchSize,
     int numberAlreadyTaken
   ) {
-    Map<String, Integer> hexIdsAndDuplicateCounts = getBatchWhereHexIdIsNotNull(
+    Stream<LegacyBeacon> lbsWithHexIds = getBatchWhereHexIdIsNotNull(
       batchSize,
       numberAlreadyTaken
     )
-      .stream()
+      .stream();
+
+    Map<String, Integer> hexIdsAndDuplicateCounts = lbsWithHexIds
       .collect(groupingBy(LegacyBeacon::getHexId, Collectors.counting()))
       .entrySet()
       .stream()
@@ -145,12 +148,16 @@ public class LegacyBeaconService {
     int batchSize,
     int numberAlreadyTaken
   ) {
-    return legacyBeaconRepository
+    Stream<LegacyBeacon> lbs = legacyBeaconRepository
       .findByHexIdNotNull()
-      .stream()
+      .stream();
+
+    List<LegacyBeacon> listLbs = lbs
       .skip(numberAlreadyTaken)
       .limit(batchSize)
       .collect(Collectors.toList());
+
+    return listLbs;
   }
 
   public List<LegacyBeacon> findByHexId(String hexId) {

@@ -65,7 +65,10 @@ public class BeaconServiceUnitTest {
     );
     when(mockBeaconRepository.findAll()).thenReturn(beaconsInBeaconRepository);
 
-    Map<String, Integer> hexIdsAndNumberOfBeacons = beaconService.findHexIdsWithDuplicates();
+    Map<String, Integer> hexIdsAndNumberOfBeacons = beaconService.findHexIdsWithDuplicates(
+      10,
+      0
+    );
     List<String> hexIdsWithDuplicates = hexIdsAndNumberOfBeacons
       .keySet()
       .stream()
@@ -96,7 +99,10 @@ public class BeaconServiceUnitTest {
     );
     when(mockBeaconRepository.findAll()).thenReturn(beaconsInBeaconRepository);
 
-    Map<String, Integer> hexIdsAndNumberOfBeacons = beaconService.findHexIdsWithDuplicates();
+    Map<String, Integer> hexIdsAndNumberOfBeacons = beaconService.findHexIdsWithDuplicates(
+      10,
+      0
+    );
     List<String> hexIdsWithDuplicates = hexIdsAndNumberOfBeacons
       .keySet()
       .stream()
@@ -149,7 +155,10 @@ public class BeaconServiceUnitTest {
 
     when(mockBeaconRepository.findAll()).thenReturn(largeNumberOfBeacons);
 
-    Map<String, Integer> hexIdsAndNumberOfBeacons = beaconService.findHexIdsWithDuplicates();
+    Map<String, Integer> hexIdsAndNumberOfBeacons = beaconService.findHexIdsWithDuplicates(
+      10,
+      0
+    );
     List<String> hexIdsWithDuplicates = hexIdsAndNumberOfBeacons
       .keySet()
       .stream()

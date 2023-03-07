@@ -16,19 +16,13 @@ export class DuplicatesGateway implements IDuplicatesGateway {
     duplicateSummariesPerPage: number
   ): Promise<IDuplicateSummary[]> {
     const accessToken = await this._authGateway.getAccessToken();
-    const url = `${applicationConfig.apiUrl}/duplicates/`;
+    const url = `${applicationConfig.apiUrl}/duplicates/?pageNumber=${pageNumber}&duplicateSummariesPerPage=${duplicateSummariesPerPage}`;
 
     const res = await axios.get<IDuplicateSummary[]>(url, {
       timeout: applicationConfig.apiTimeoutMs,
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
-      },
-      params: {
-        searchOptions: {
-          pageNumber: pageNumber,
-          duplicateSummariesPerPage: duplicateSummariesPerPage,
-        },
       },
     });
 

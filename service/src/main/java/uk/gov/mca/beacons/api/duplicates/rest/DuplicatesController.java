@@ -33,15 +33,16 @@ public class DuplicatesController {
   @GetMapping(value = "/")
   @PreAuthorize("hasAuthority('APPROLE_DELETE_BEACONS')")
   public ResponseEntity<List<DuplicatesSummary>> getDuplicates(
-    @RequestBody DuplicateSummarySearchOptions searchOptions
+    @RequestParam int pageNumber,
+    @RequestParam int duplicateSummariesPerPage
   ) {
     List<DuplicatesSummary> duplicateSummaries;
 
     try {
       duplicateSummaries =
         duplicatesService.getDuplicateSummaries(
-          searchOptions.pageNumber,
-          searchOptions.duplicateSummariesPerPage
+          pageNumber,
+          duplicateSummariesPerPage
         );
     } catch (Exception ex) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
