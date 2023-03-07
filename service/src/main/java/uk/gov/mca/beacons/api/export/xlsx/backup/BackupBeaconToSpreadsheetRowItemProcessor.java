@@ -50,7 +50,10 @@ class BackupBeaconToSpreadsheetRowItemProcessor
     this.beaconUseMapper = beaconUseMapper;
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
+  @Transactional(
+    readOnly = true,
+    noRollbackFor = ResourceNotFoundException.class
+  )
   @Override
   public BackupSpreadsheetRow process(BeaconBackupItem beaconBackupItem)
     throws JsonProcessingException {
