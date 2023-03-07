@@ -1,8 +1,8 @@
-import {
-  IDuplicatesSummaryDTO,
-  IDuplicateSummary,
-} from "./IDuplicatesSummaryDTO";
+import { IDuplicateSummary } from "./IDuplicatesSummaryDTO";
 
 export interface IDuplicatesGateway {
-  getDuplicates: () => Promise<IDuplicateSummary[]>;
+  getDuplicates: (
+    pageNumber: number,
+    duplicateSummariesPerPage: number
+  ) => Promise<IDuplicateSummary[]>;
 }

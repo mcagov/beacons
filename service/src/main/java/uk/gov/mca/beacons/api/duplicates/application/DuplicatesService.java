@@ -36,6 +36,7 @@ public class DuplicatesService {
     List<DuplicatesSummary> duplicateSummaries = new ArrayList<>();
 
     int numberAlreadyTaken = pageNumber * numberPerPage;
+    // how can i improve?
     double numberOfEachCategoryPerPage = Math.floor((double) numberPerPage / 2);
 
     Map<String, Integer> beaconHexIdsWithDuplicateCounts = beaconService.findHexIdsWithDuplicates(

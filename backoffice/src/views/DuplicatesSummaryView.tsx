@@ -15,7 +15,7 @@ export const DuplicateSummaryView: FunctionComponent<
 
   useEffect((): void => {
     const getDuplicates = async () => {
-      const duplicates = await duplicatesGateway.getDuplicates();
+      const duplicates = await duplicatesGateway.getDuplicates(1, 20);
       setDuplicateSummaries(duplicates);
     };
 

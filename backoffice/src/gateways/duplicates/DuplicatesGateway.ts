@@ -1,10 +1,7 @@
 import axios from "axios";
 import { applicationConfig } from "config";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
-import {
-  IDuplicatesSummaryDTO,
-  IDuplicateSummary,
-} from "./IDuplicatesSummaryDTO";
+import { IDuplicateSummary } from "./IDuplicatesSummaryDTO";
 import { IDuplicatesGateway } from "./IDuplicatesGateway";
 
 export class DuplicatesGateway implements IDuplicatesGateway {
@@ -14,7 +11,10 @@ export class DuplicatesGateway implements IDuplicatesGateway {
     this._authGateway = authGateway;
   }
 
-  public async getDuplicates(): Promise<IDuplicateSummary[]> {
+  public async getDuplicates(
+    pageNumber: number,
+    duplicateSummariesPerPage: number
+  ): Promise<IDuplicateSummary[]> {
     const accessToken = await this._authGateway.getAccessToken();
     const url = `${applicationConfig.apiUrl}/duplicates/`;
 
@@ -23,6 +23,12 @@ export class DuplicatesGateway implements IDuplicatesGateway {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
+      },
+      params: {
+        searchOptions: {
+          pageNumber: pageNumber,
+          duplicateSummariesPerPage: duplicateSummariesPerPage,
+        },
       },
     });
 
