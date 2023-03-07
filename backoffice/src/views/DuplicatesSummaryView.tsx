@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { IDuplicatesGateway } from "../gateways/duplicates/IDuplicatesGateway";
 import { IDuplicateSummary } from "../gateways/duplicates/IDuplicatesSummaryDTO";
+import { DuplicatesTable } from "../components/DuplicatesTables";
 
 interface IDuplicatesSummaryProps {
   duplicatesGateway: IDuplicatesGateway;
@@ -34,7 +35,7 @@ export const DuplicateSummaryView: FunctionComponent<
   if (duplicateSummaries.length > 0) {
     return (
       <div>
-        <ul>{summaries}</ul>
+        <DuplicatesTable duplicateSummaries={duplicateSummaries} />
       </div>
     );
   } else {
