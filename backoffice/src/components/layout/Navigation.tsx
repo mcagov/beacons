@@ -40,9 +40,6 @@ export const Navigation: FunctionComponent<INavigationProps> = ({
           <Button color="inherit" component={RouterLink} to="/">
             Beacon records
           </Button>
-          <Button color="inherit" component={RouterLink} to="/duplicates">
-            Duplicate records
-          </Button>
           <Box ml="auto">
             <UserMenu />
             <SettingsDrawer exportsGateway={exportsGateway} />
