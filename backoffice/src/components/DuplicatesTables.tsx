@@ -29,7 +29,7 @@ import { Placeholders } from "../utils/writingStyle";
 import { IDuplicatesGateway } from "../gateways/duplicates/IDuplicatesGateway";
 
 interface IDuplicatesTableProps {
-  duplicateSummaries: IDuplicateSummary[];
+  duplicatesGateway: IDuplicatesGateway;
 }
 
 export type DuplicateRowData = Record<
@@ -91,19 +91,39 @@ const columns: Column<DuplicateRowData>[] = [
 ];
 
 export const DuplicatesTable: FunctionComponent<IDuplicatesTableProps> =
-  React.memo(function ({ duplicateSummaries }): JSX.Element {
+  React.memo(function ({ duplicatesGateway }): JSX.Element {
     return (
       <MaterialTable
         icons={tableIcons}
         columns={columns}
-        data={duplicateSummaries}
+        data={(query: Query<IDuplicateSummary>) =>
+          await getPaginatedDuplicateSummaries(query)
+        }
         title=""
         options={{
           filtering: true,
           search: false,
           searchFieldVariant: "outlined",
-          pageSize: 20,
+          paging: true,
+          paginationType: "normal",
+          paginationPosition: "bottom",
+          pageSize: 5,
         }}
       />
     );
+
+    async function getPaginatedDuplicateSummaries(
+      query: Query<IDuplicateSummary>
+    ): Promise<DuplicateRowData[]> {
+      const duplicateSummaries = await duplicatesGateway.getDuplicates(
+        query.page,
+        query.pageSize
+      );
+      return duplicateSummaries.map(
+        (item: IDuplicateSummary): DuplicateRowData => ({
+          hexId: item.hexId,
+          numberOfBeacons: item.numberOfBeacons.toString(),
+        })
+      );
+    }
   });
