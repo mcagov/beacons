@@ -123,10 +123,10 @@ public class BeaconService {
     int batchSize,
     int numberAlreadyTaken
   ) {
-    Map<String, Integer> hexIdsAndDuplicateCounts = getBatch(
-      batchSize,
-      numberAlreadyTaken
-    )
+    List<Beacon> batchOfBeacons = getBatch(batchSize, numberAlreadyTaken);
+
+    Map<String, Integer> hexIdsAndDuplicateCounts = batchOfBeacons
+      //    Map<String, Integer> hexIdsAndDuplicateCounts = beaconRepository.findAll()
       .stream()
       .collect(groupingBy(Beacon::getHexId, Collectors.counting()))
       .entrySet()

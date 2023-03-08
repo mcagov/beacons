@@ -134,6 +134,8 @@ public class LegacyBeaconService {
       numberAlreadyTaken
     )
       .stream();
+    //    Stream<LegacyBeacon> lbsWithHexIds = legacyBeaconRepository.findByHexIdNotNull()
+    //            .stream();
 
     Map<String, Integer> hexIdsAndDuplicateCounts = lbsWithHexIds
       .collect(groupingBy(LegacyBeacon::getHexId, Collectors.counting()))
