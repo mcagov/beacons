@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { IDuplicatesGateway } from "../gateways/duplicates/IDuplicatesGateway";
-import { IDuplicateSummary } from "../gateways/duplicates/IDuplicatesSummaryDTO";
-import { DuplicatesTable } from "../components/DuplicatesTables";
+import { IDuplicatesGateway } from "../../gateways/duplicates/IDuplicatesGateway";
+import { IDuplicateSummary } from "../../gateways/duplicates/IDuplicatesSummaryDTO";
+import { DuplicatesTable } from "../../components/duplicates/DuplicatesTables";
 
 interface IDuplicatesSummaryProps {
   duplicatesGateway: IDuplicatesGateway;
