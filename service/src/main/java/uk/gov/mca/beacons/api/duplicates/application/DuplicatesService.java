@@ -2,13 +2,13 @@ package uk.gov.mca.beacons.api.duplicates.application;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.duplicates.domain.DuplicateBeacon;
+import uk.gov.mca.beacons.api.duplicates.domain.DuplicatesRepository;
 import uk.gov.mca.beacons.api.duplicates.domain.DuplicatesSummary;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
@@ -17,14 +17,17 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 @Service("DuplicatesService")
 public class DuplicatesService {
 
+  private final DuplicatesRepository duplicatesRepository;
   private final BeaconService beaconService;
   private final LegacyBeaconService legacyBeaconService;
 
   @Autowired
   public DuplicatesService(
+    DuplicatesRepository duplicatesRepository,
     BeaconService beaconService,
     LegacyBeaconService legacyBeaconService
   ) {
+    this.duplicatesRepository = duplicatesRepository;
     this.beaconService = beaconService;
     this.legacyBeaconService = legacyBeaconService;
   }
@@ -33,34 +36,26 @@ public class DuplicatesService {
     int pageNumber,
     int numberPerPage
   ) {
-    List<DuplicatesSummary> duplicateSummaries = new ArrayList<>();
-
     int numberAlreadyTaken = pageNumber * numberPerPage;
-    // how can i improve?
-    double numberOfEachCategoryPerPage = Math.floor((double) numberPerPage / 2);
 
-    Map<String, Integer> beaconHexIdsWithDuplicateCounts = beaconService.findHexIdsWithDuplicates(
-      (int) numberOfEachCategoryPerPage,
+    List<DuplicatesSummary> duplicateSummaries = getBatch(
+      numberPerPage,
       numberAlreadyTaken
     );
-    Map<String, Integer> legacyBeaconHexIdsWithDuplicateCounts = legacyBeaconService.findHexIdsWithDuplicates(
-      (int) numberOfEachCategoryPerPage,
-      numberAlreadyTaken
-    );
-
-    beaconHexIdsWithDuplicateCounts.putAll(
-      legacyBeaconHexIdsWithDuplicateCounts
-    );
-
-    for (String hexId : beaconHexIdsWithDuplicateCounts.keySet()) {
-      DuplicatesSummary summary = new DuplicatesSummary();
-      summary.setHexId(hexId);
-      summary.setNumberOfBeacons(beaconHexIdsWithDuplicateCounts.get(hexId));
-
-      duplicateSummaries.add(summary);
-    }
 
     return duplicateSummaries;
+  }
+
+  private List<DuplicatesSummary> getBatch(
+    int numberPerPage,
+    int numberAlreadyTaken
+  ) {
+    return duplicatesRepository
+      .findAll()
+      .stream()
+      .skip(numberAlreadyTaken)
+      .limit(numberPerPage)
+      .collect(Collectors.toList());
   }
 
   public List<DuplicateBeacon> getDuplicatesForHexId(String hexId) {
