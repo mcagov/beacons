@@ -39,7 +39,7 @@ import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordVi
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 import { AdminView } from "views/AdminView";
 import { DataComparisonView } from "views/comparison/DataComparisonView";
-import { DuplicateSummaryView } from "./views/DuplicatesSummaryView";
+import { DuplicateSummaryView } from "./views/duplicates/DuplicatesSummaryView";
 import { DuplicatesGateway } from "./gateways/duplicates/DuplicatesGateway";
 
 interface ResourceParams {
