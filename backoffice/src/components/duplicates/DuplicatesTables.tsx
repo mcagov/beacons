@@ -23,12 +23,13 @@ import {
 } from "@mui/icons-material";
 import React, { forwardRef, FunctionComponent } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { IDuplicateSummary } from "../gateways/duplicates/IDuplicatesSummaryDTO";
-import { TextFilter } from "./tableComponents/TextFilter";
-import { Placeholders } from "../utils/writingStyle";
-import { IDuplicatesGateway } from "../gateways/duplicates/IDuplicatesGateway";
+import { IDuplicateSummary } from "../../gateways/duplicates/IDuplicatesSummaryDTO";
+import { TextFilter } from "../tableComponents/TextFilter";
+import { Placeholders } from "../../utils/writingStyle";
+import { IDuplicatesGateway } from "../../gateways/duplicates/IDuplicatesGateway";
 
 interface IDuplicatesTableProps {
+  duplicateSummaries: IDuplicateSummary[];
   duplicatesGateway: IDuplicatesGateway;
 }
 
@@ -91,13 +92,20 @@ const columns: Column<DuplicateRowData>[] = [
 ];
 
 export const DuplicatesTable: FunctionComponent<IDuplicatesTableProps> =
-  React.memo(function ({ duplicatesGateway }): JSX.Element {
+  React.memo(function ({ duplicateSummaries, duplicatesGateway }): JSX.Element {
     return (
       <MaterialTable
         icons={tableIcons}
         columns={columns}
-        data={(query: Query<IDuplicateSummary>) =>
-          await getPaginatedDuplicateSummaries(query)
+        data={(query) =>
+          new Promise(async (resolve, _reject) => {
+            const duplicateRows = await getPaginatedDuplicateSummaries(query);
+            resolve({
+              data: duplicateRows,
+              page: query.page,
+              totalCount: 23000,
+            });
+          })
         }
         title=""
         options={{

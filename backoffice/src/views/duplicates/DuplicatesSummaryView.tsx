@@ -22,23 +22,16 @@ export const DuplicateSummaryView: FunctionComponent<
     getDuplicates();
   }, [duplicatesGateway]);
 
-  console.log(duplicateSummaries);
-
-  const summaries = duplicateSummaries.map((summary) => {
-    return (
-      <li>
-        hexId:{summary.hexId}- - - - -duplicate number:{summary.numberOfBeacons}
-      </li>
-    );
-  });
-
   if (duplicateSummaries.length > 0) {
     return (
       <div>
-        <DuplicatesTable duplicateSummaries={duplicateSummaries} />
+        <DuplicatesTable
+          duplicateSummaries={duplicateSummaries}
+          duplicatesGateway={duplicatesGateway}
+        />
       </div>
     );
   } else {
-    return <p>foo</p>;
+    return <p></p>;
   }
 };
