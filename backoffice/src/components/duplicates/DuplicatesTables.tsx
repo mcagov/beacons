@@ -27,6 +27,7 @@ import { IDuplicateSummary } from "../../gateways/duplicates/IDuplicatesSummaryD
 import { TextFilter } from "../tableComponents/TextFilter";
 import { Placeholders } from "../../utils/writingStyle";
 import { IDuplicatesGateway } from "../../gateways/duplicates/IDuplicatesGateway";
+import { Link } from "@mui/material";
 
 interface IDuplicatesTableProps {
   duplicateSummaries: IDuplicateSummary[];
@@ -66,16 +67,24 @@ const columns: Column<DuplicateRowData>[] = [
   {
     title: "Hex ID",
     field: "hexId",
-    filterComponent: ({ columnDef, onFilterChanged }) => (
-      <TextFilter
-        columnDef={columnDef}
-        onFilterChanged={onFilterChanged}
-        icons={tableIcons}
-        filterTooltip="Filter hex id"
-      />
-    ),
+    // filterComponent: ({ columnDef, onFilterChanged }) => (
+    //   <TextFilter
+    //     columnDef={columnDef}
+    //     onFilterChanged={onFilterChanged}
+    //     icons={tableIcons}
+    //     filterTooltip="Filter hex id"
+    //   />
+    // ),
     render: (rowData: DuplicateRowData) => {
-      return rowData.hexId ? rowData.hexId : <i>{Placeholders.NoData}</i>;
+      return (
+        <Link
+          component={RouterLink}
+          to={"/duplicates/" + rowData.hexId}
+          underline="hover"
+        >
+          {rowData.hexId ? rowData.hexId : <i>{Placeholders.NoData}</i>}
+        </Link>
+      );
     },
   },
   {
@@ -109,7 +118,7 @@ export const DuplicatesTable: FunctionComponent<IDuplicatesTableProps> =
         }
         title=""
         options={{
-          filtering: true,
+          // filtering: true,
           search: false,
           searchFieldVariant: "outlined",
           paging: true,

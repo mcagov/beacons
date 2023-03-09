@@ -160,12 +160,10 @@ const App: FunctionComponent = () => {
     const { hexId } = useParams<ResourceParams>();
     return (
       <div>
-        <Navigation exportsGateway={exportsGateway} />
         <DuplicatesForHexIdView
           duplicatesGateway={duplicatesGateway}
           hexId={hexId}
         />
-        <Footer />
       </div>
     );
   };
@@ -182,14 +180,14 @@ const App: FunctionComponent = () => {
                   <Search beaconsGateway={beaconsGateway} />
                   <Footer />
                 </Route>
-                <Route path={`/duplicates`}>
-                  <Navigation exportsGateway={exportsGateway} />
-                  <DuplicateSummaryView duplicatesGateway={duplicatesGateway} />
-                  <Footer />
-                </Route>
                 <Route path={`/duplicates/:hexId`}>
                   <Navigation exportsGateway={exportsGateway} />
                   <DuplicatesForHexIdViewWithParam />
+                  <Footer />
+                </Route>
+                <Route path={`/duplicates`}>
+                  <Navigation exportsGateway={exportsGateway} />
+                  <DuplicateSummaryView duplicatesGateway={duplicatesGateway} />
                   <Footer />
                 </Route>
                 <Route path={`/export/search`}>

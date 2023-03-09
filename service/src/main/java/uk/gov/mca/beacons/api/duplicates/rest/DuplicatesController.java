@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.auth.application.GetUserService;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.duplicates.application.DuplicatesService;
+import uk.gov.mca.beacons.api.duplicates.domain.DuplicateBeacon;
 import uk.gov.mca.beacons.api.duplicates.domain.DuplicatesSummary;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
@@ -53,18 +54,17 @@ public class DuplicatesController {
 
   @GetMapping(value = "/{hexId}")
   @PreAuthorize("hasAuthority('APPROLE_DELETE_BEACONS')")
-  public ResponseEntity<DuplicateBeaconsDTO> getDuplicatesForHexId(
-    String hexId
+  public ResponseEntity<List<DuplicateBeaconDTO>> getDuplicatesForHexId(
+    @PathVariable String hexId
   ) {
-    DuplicateBeaconsDTO duplicateBeaconsDTO;
+    List<DuplicateBeaconDTO> duplicatesForHexId;
 
     try {
-      duplicateBeaconsDTO =
-        new DuplicateBeaconsDTO(duplicatesService.getDuplicatesForHexId(hexId));
+      duplicatesForHexId = duplicatesService.getDuplicatesForHexId(hexId);
     } catch (Exception ex) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    return ResponseEntity.ok(duplicateBeaconsDTO);
+    return ResponseEntity.ok(duplicatesForHexId);
   }
 }

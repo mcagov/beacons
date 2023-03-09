@@ -2,6 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { IDuplicatesGateway } from "../../gateways/duplicates/IDuplicatesGateway";
 import { IDuplicateSummary } from "../../gateways/duplicates/IDuplicatesSummaryDTO";
 import { DuplicatesTable } from "../../components/duplicates/DuplicatesTables";
+import { IDuplicateBeacon } from "../../entities/IDuplicateBeacon";
 
 interface IDuplicatesForHexIdViewProps {
   hexId: string;
@@ -10,20 +11,18 @@ interface IDuplicatesForHexIdViewProps {
 export const DuplicatesForHexIdView: FunctionComponent<
   IDuplicatesForHexIdViewProps
 > = ({ hexId, duplicatesGateway }) => {
-  const [duplicateSummaries, setDuplicateSummaries] = useState<
-    IDuplicateSummary[]
-  >([]);
+  const [duplicates, setDuplicates] = useState<IDuplicateBeacon[]>([]);
 
-  // useEffect((): void => {
-  //   const getDuplicates = async () => {
-  //     const duplicates = await duplicatesGateway.getDuplicates(0, 20);
-  //     setDuplicateSummaries(duplicates);
-  //   };
+  useEffect((): void => {
+    const getDuplicates = async () => {
+      const duplicatesForHexId = await duplicatesGateway.getDuplicatesForHexId(
+        hexId
+      );
+      setDuplicates(duplicatesForHexId);
+    };
 
-  //   getDuplicates();
-  // }, [duplicatesGateway]);
-
-  console.log(duplicateSummaries);
+    getDuplicates();
+  }, [duplicatesGateway]);
 
   // const summaries = duplicateSummaries.map((summary) => {
   //   return (

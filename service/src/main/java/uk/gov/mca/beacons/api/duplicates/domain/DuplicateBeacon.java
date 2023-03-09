@@ -2,7 +2,9 @@ package uk.gov.mca.beacons.api.duplicates.domain;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
+import lombok.Getter;
 
+@Getter
 public class DuplicateBeacon {
 
   private final UUID beaconId;

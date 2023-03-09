@@ -10,6 +10,7 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.duplicates.domain.DuplicateBeacon;
 import uk.gov.mca.beacons.api.duplicates.domain.DuplicatesRepository;
 import uk.gov.mca.beacons.api.duplicates.domain.DuplicatesSummary;
+import uk.gov.mca.beacons.api.duplicates.rest.DuplicateBeaconDTO;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
@@ -58,8 +59,9 @@ public class DuplicatesService {
       .collect(Collectors.toList());
   }
 
-  public List<DuplicateBeacon> getDuplicatesForHexId(String hexId) {
+  public List<DuplicateBeaconDTO> getDuplicatesForHexId(String hexId) {
     List<DuplicateBeacon> duplicateBeaconsForHexId = new ArrayList<>();
+    List<DuplicateBeaconDTO> duplicateBeaconDTOs = new ArrayList<>();
 
     try {
       List<Beacon> duplicateModernBeacons = beaconService.findByHexId(hexId);
@@ -97,6 +99,24 @@ public class DuplicatesService {
       );
     }
 
-    return duplicateBeaconsForHexId;
+    return mapToDuplicateBeaconDTOs(duplicateBeaconsForHexId);
+  }
+
+  public List<DuplicateBeaconDTO> mapToDuplicateBeaconDTOs(
+    List<DuplicateBeacon> duplicateBeacons
+  ) {
+    List<DuplicateBeaconDTO> duplicateBeaconDTOS = new ArrayList<>();
+    for (DuplicateBeacon beacon : duplicateBeacons) {
+      DuplicateBeaconDTO dto = DuplicateBeaconDTO
+        .builder()
+        .beaconId(beacon.getBeaconId())
+        .status(beacon.getStatus())
+        .category(beacon.getCategory())
+        .lastModifiedDate(beacon.getLastModifiedDate())
+        .hexId(beacon.getHexId())
+        .build();
+      duplicateBeaconDTOS.add(dto);
+    }
+    return duplicateBeaconDTOS;
   }
 }
