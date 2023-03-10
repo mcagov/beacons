@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+// do we need this or will the view be run afresh every time we generate a new backup
+// via the existing cron job?
 @Component
 public class BeaconBackupViewScheduler {
 

@@ -1,22 +1,15 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.gov.mca.beacons.api.export.ExportFailedException;
 import uk.gov.mca.beacons.api.export.ExportFileNamer;
 import uk.gov.mca.beacons.api.export.FileSystemRepository;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
-import uk.gov.mca.beacons.api.export.xlsx.XlsxSpreadsheetSorter;
 
 /**
  * Back up beacons data to .xlsx.
@@ -28,17 +21,13 @@ public class BackupXlsxExporter {
   private final BackupToXlsxJobManager backupToXlsxJobManager;
   private final FileSystemRepository fileSystemRepository;
 
-  private final XlsxSpreadsheetSorter spreadsheetSorter;
-
   @Autowired
   public BackupXlsxExporter(
     BackupToXlsxJobManager backupToXlsxJobManager,
-    FileSystemRepository fileSystemRepository,
-    XlsxSpreadsheetSorter spreadsheetSorter
+    FileSystemRepository fileSystemRepository
   ) {
     this.backupToXlsxJobManager = backupToXlsxJobManager;
     this.fileSystemRepository = fileSystemRepository;
-    this.spreadsheetSorter = spreadsheetSorter;
   }
 
   public Optional<Path> getMostRecentBackup() throws IOException {
@@ -78,26 +67,5 @@ public class BackupXlsxExporter {
     } catch (Exception e) {
       Exception ex = e;
     }
-
-    File mostRecentExport = fileSystemRepository
-      .findMostRecentExport(
-        ExportFileNamer.FileType.EXCEL_SPREADSHEET,
-        "Backup"
-      )
-      .orElseThrow()
-      .toFile();
-
-    Sheet sheet = new XSSFWorkbook(mostRecentExport)
-      .getSheet("Beacons Backup Data");
-
-    sheet =
-      spreadsheetSorter.sortRowsByBeaconDateLastModifiedDesc(sheet, "Backup");
-
-    // write sheet back to file
-    OutputStream fileOutputStream = Files.newOutputStream(
-      mostRecentExport.toPath()
-    );
-    //    XSSFWorkbook workbookFromSortedSheet = (XSSFWorkbook) sheet.getWorkbook();
-    //    workbookFromSortedSheet.write(fileOutputStream);
   }
 }

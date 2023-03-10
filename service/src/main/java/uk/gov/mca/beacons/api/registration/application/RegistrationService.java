@@ -104,6 +104,10 @@ public class RegistrationService {
     return getAssociatedAggregates(beacon);
   }
 
+  public boolean modernBeaconExists(BeaconId beaconId) {
+    return beaconService.findById(beaconId).isPresent();
+  }
+
   public void delete(DeleteBeaconDTO dto, User brtUser) {
     BeaconId beaconId = new BeaconId(dto.getBeaconId());
     Beacon deletedBeacon = beaconService.softDelete(beaconId);

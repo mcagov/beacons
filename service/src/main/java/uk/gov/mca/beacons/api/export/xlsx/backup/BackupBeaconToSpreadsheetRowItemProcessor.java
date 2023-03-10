@@ -58,40 +58,29 @@ class BackupBeaconToSpreadsheetRowItemProcessor
   public BackupSpreadsheetRow process(BeaconBackupItem beaconBackupItem)
     throws JsonProcessingException {
     UUID beaconItemId = beaconBackupItem.getId();
-    try {
-      try {
-        BeaconId modernBeaconId = new BeaconId(beaconItemId);
-        Registration registration = registrationService.getByBeaconId(
-          modernBeaconId
-        );
-        List<Note> nonSystemNotes = noteService.getNonSystemNotes(
-          modernBeaconId
-        );
 
-        return new BackupSpreadsheetRow(
-          registration,
-          nonSystemNotes,
-          beaconUseMapper,
-          dateFormatter
-        );
-      } catch (ResourceNotFoundException exception) {
-        BackupLegacyBeacon legacyBeacon = BackupLegacyBeacon.createFromBeaconBackupItem(
-          beaconBackupItem
-        );
-        return new BackupSpreadsheetRow(
-          legacyBeacon,
-          exportMapper,
-          dateFormatter
-        );
-      }
-    } catch (UnexpectedRollbackException e) {
-      Exception ex = e;
+    BeaconId modernBeaconId = new BeaconId(beaconItemId);
+    if (registrationService.modernBeaconExists(modernBeaconId)) {
+      Registration registration = registrationService.getByBeaconId(
+        modernBeaconId
+      );
+      List<Note> nonSystemNotes = noteService.getNonSystemNotes(modernBeaconId);
+
+      return new BackupSpreadsheetRow(
+        registration,
+        nonSystemNotes,
+        beaconUseMapper,
+        dateFormatter
+      );
+    } else {
+      BackupLegacyBeacon legacyBeacon = BackupLegacyBeacon.createFromBeaconBackupItem(
+        beaconBackupItem
+      );
+      return new BackupSpreadsheetRow(
+        legacyBeacon,
+        exportMapper,
+        dateFormatter
+      );
     }
-
-    return new BackupSpreadsheetRow(
-      BackupLegacyBeacon.createFromBeaconBackupItem(beaconBackupItem),
-      exportMapper,
-      dateFormatter
-    );
   }
 }

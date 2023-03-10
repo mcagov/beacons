@@ -65,7 +65,6 @@ public class JsonSerialiserUnitTest {
     Address ownerAddress = new Address();
 
     owner.setFullName("Coco Maria");
-    owner.setEmail("cocositos@gmail.com");
     owner.setAddress(ownerAddress);
     owner.setEmail("cocomaria@gmail.com");
 
@@ -76,107 +75,8 @@ public class JsonSerialiserUnitTest {
     JSONObject firstMappedOwner = (JSONObject) jsonOwnersArray.get(0);
 
     assertEquals("COCO MARIA", firstMappedOwner.get("owner name"));
-    assertEquals("COCOSITOS@GMAIL.COM", firstMappedOwner.get("email"));
+    assertEquals("COCOMARIA@GMAIL.COM", firstMappedOwner.get("email"));
   }
-
-  //  @Test
-  //  public void mapModernBeaconOwnersToJsonArray_shouldSeparateMultiplePhoneNumbersWithASemicolon() {
-  //    BeaconExportOwnerDTO owner = new BeaconExportOwnerDTO();
-  //    AddressDTO ownerAddress = new AddressDTO();
-  //
-  //    ownerAddress.setAddressLine1("10 Via Coco");
-  //
-  //    owner.setOwnerName("Coco Maria");
-  //    owner.setCompanyName("Cocositos");
-  //    owner.setCareOf("Haseeb Iqbal");
-  //    owner.setAddress(ownerAddress);
-  //    owner.setTelephoneNumbers("01577836277 / 01179822366");
-  //    owner.setEmail("cocomaria@gmail.com");
-  //
-  //    List<BeaconExportOwnerDTO> owners = List.of(owner);
-  //    JSONArray jsonOwnersArray = JsonSerialiser.mapBeaconOwnersToJsonArray(
-  //      owners
-  //    );
-  //    JSONObject firstMappedOwner = (JSONObject) jsonOwnersArray.get(0);
-  //
-  //    assertEquals(
-  //      "01577836277 ; 01179822366",
-  //      firstMappedOwner.get("telephone numbers")
-  //    );
-  //  }
-  //
-  //  @Test
-  //  public void mapBeaconOwnersToJsonArray_whenTheOwnersInformationIsBlank_shouldLeaveTheOwnersBlank() {
-  //    BeaconExportOwnerDTO blankOwner = new BeaconExportOwnerDTO();
-  //    AddressDTO blankOwnerAddress = new AddressDTO();
-  //    blankOwner.setAddress(blankOwnerAddress);
-  //
-  //    List<BeaconExportOwnerDTO> owners = List.of(blankOwner);
-  //    JSONArray jsonOwnersArray = JsonSerialiser.mapBeaconOwnersToJsonArray(
-  //      owners
-  //    );
-  //
-  //    JSONObject firstMappedOwner = (JSONObject) jsonOwnersArray.get(0);
-  //    String stringifiedMappedAddress = firstMappedOwner
-  //      .get("address")
-  //      .toString();
-  //
-  //    assertEquals("", firstMappedOwner.get("owner name"));
-  //    assertEquals("", firstMappedOwner.get("company name"));
-  //    assertEquals("", firstMappedOwner.get("care of"));
-  //    assertEquals("", stringifiedMappedAddress);
-  //  }
-  //
-  //  @Test
-  //  public void mapBeaconOwnersToJsonArray_whenTheOwnersAddressIsNull_shouldReturnEmptyString() {
-  //    BeaconExportOwnerDTO blankOwner = new BeaconExportOwnerDTO();
-  //
-  //    List<BeaconExportOwnerDTO> owners = List.of(blankOwner);
-  //    JSONArray jsonOwnersArray = JsonSerialiser.mapBeaconOwnersToJsonArray(
-  //      owners
-  //    );
-  //
-  //    JSONObject firstMappedOwner = (JSONObject) jsonOwnersArray.get(0);
-  //
-  //    assertEquals("", firstMappedOwner.get("address"));
-  //  }
-  //
-  //  @Test
-  //  public void mapBeaconOwnerAddressToString_whenTheAddressIsNull_shouldReturnEmptyJSONObject() {
-  //    AddressDTO ownerAddress = null;
-  //
-  //    String mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToString(
-  //      ownerAddress
-  //    );
-  //
-  //    assertEquals("", mappedAddress);
-  //  }
-  //
-  //  @Test
-  //  public void mapBeaconOwnerAddressToString_whenTheAddressIsBlank_shouldLeaveTheAddressBlank() {
-  //    AddressDTO blankOwnerAddress = new AddressDTO();
-  //
-  //    String mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToString(
-  //      blankOwnerAddress
-  //    );
-  //
-  //    assertEquals("", mappedAddress);
-  //  }
-  //
-  //  @Test
-  //  public void mapBeaconOwnerAddressToString_shouldCapitaliseAllSentenceCaseText() {
-  //    AddressDTO ownerAddress = new AddressDTO();
-  //
-  //    ownerAddress.setAddressLine1("10 Via Coco");
-  //    ownerAddress.setAddressLine2("Ciudad de Mexico");
-  //    ownerAddress.setCountry("Mexico");
-  //
-  //    String mappedAddress = JsonSerialiser.mapBeaconOwnerAddressToString(
-  //      ownerAddress
-  //    );
-  //
-  //    assertEquals("10 VIA COCO-CIUDAD DE MEXICO-MEXICO", mappedAddress);
-  //  }
 
   @Test
   public void mapModernUseToJson_whenTheEnvironmentIsAviation_shouldMapAllAviationFields()
@@ -205,8 +105,4 @@ public class JsonSerialiserUnitTest {
     assertEquals("Boeing", mappedUse.get("aircraftManufacturer"));
     assertEquals("AVIATION", mappedUse.get("environment"));
   }
-  // owners: for deleted records, owners is just blank rather than []
-  // might be better for them all to be blank to save some bytes
-  // uses
-  // emergency contacts
 }
