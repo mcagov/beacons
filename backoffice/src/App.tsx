@@ -163,6 +163,8 @@ const App: FunctionComponent = () => {
         <DuplicatesForHexIdView
           duplicatesGateway={duplicatesGateway}
           hexId={hexId}
+          beaconsGateway={beaconsGateway}
+          usesGateway={usesGateway}
         />
       </div>
     );
