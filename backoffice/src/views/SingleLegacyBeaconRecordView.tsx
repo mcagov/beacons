@@ -119,7 +119,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
                 buttonClasses={classes.button}
               />
             </OnlyVisibleToUsersWith>
-            <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
+            {/* <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
               <span className={classes.button}>
                 <Button
                   onClick={openDialogueBox}
@@ -130,7 +130,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
                   Delete record
                 </Button>
               </span>
-            </OnlyVisibleToUsersWith>
+            </OnlyVisibleToUsersWith> */}
           </span>
         )}
       </PageHeader>
