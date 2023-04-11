@@ -232,7 +232,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="half"
           title="Max Persons Onboard"
-          value={use.maxPersonOnBoard}
+          value={use.maxPersonOnBoard > 0 ? use.maxPersonOnBoard : ""}
         />
         <CertificateField
           classes="full"
@@ -333,7 +333,7 @@ const AviationUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="half"
           title="Max Persons Onboard"
-          value={use.maxPersonOnBoard}
+          value={use.maxPersonOnBoard > 0 ? use.maxPersonOnBoard : ""}
         />
         <CertificateField
           classes="half"

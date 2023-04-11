@@ -371,7 +371,9 @@ public class ExportMapper {
 
     ownersDTO.add(toLegacyOwnerDTO(data.getOwner()));
     for (LegacyGenericOwner o : data.getSecondaryOwners()) {
-      ownersDTO.add(toLegacyOwnerDTO(o));
+      if (!StringUtils.isBlank(o.getOwnerName())) {
+        ownersDTO.add(toLegacyOwnerDTO(o));
+      }
     }
 
     return ownersDTO;
@@ -448,6 +450,7 @@ public class ExportMapper {
       .builder()
       .environment(use.getEnvironment())
       .isMainUse(use.isMain())
+      .vesselType(use.getVesselType())
       .typeOfUse(use.getPurpose())
       .vesselName(use.getVesselName())
       .homePort(use.getHomePort())

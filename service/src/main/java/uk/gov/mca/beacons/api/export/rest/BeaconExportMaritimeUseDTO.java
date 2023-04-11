@@ -11,6 +11,9 @@ import lombok.experimental.SuperBuilder;
 public class BeaconExportMaritimeUseDTO extends BeaconExportUseDTO {
 
   @Valid
+  private String vesselType;
+
+  @Valid
   private String windfarmLocation;
 
   @Valid

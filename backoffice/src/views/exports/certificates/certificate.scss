@@ -49,7 +49,6 @@
   }
 
   .beacon-notes {
-    border-bottom: 2px solid lightgrey;
     padding-bottom: 8px;
   }
 
@@ -91,6 +90,10 @@
           text-transform: uppercase;
         }
       }
+    }
+
+    div.use:first-of-type {
+      border-top: 2px solid lightgrey;
     }
 
     div.use {
