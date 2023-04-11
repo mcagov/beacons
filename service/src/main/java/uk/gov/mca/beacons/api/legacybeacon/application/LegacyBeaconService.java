@@ -88,7 +88,9 @@ public class LegacyBeaconService {
     LocalDateTime todaysDate = LocalDateTime
       .now()
       .truncatedTo(ChronoUnit.SECONDS);
-    OffsetDateTime todaysOffsetDate = todaysDate.atOffset(ZoneOffset.UTC);
+    OffsetDateTime todaysOffsetDate = todaysDate.atOffset(
+      ZoneOffset.of(ZoneOffset.systemDefault().toString())
+    );
 
     legacyBeaconToDelete.softDelete();
 

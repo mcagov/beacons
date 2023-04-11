@@ -127,7 +127,7 @@ export const SingleBeaconRecordView: FunctionComponent<
                 buttonClasses={classes.button}
               />
             </OnlyVisibleToUsersWith>
-            {/* <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
+            <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
               <span className={classes.button}>
                 <Button
                   onClick={openDialogueBox}
@@ -138,7 +138,7 @@ export const SingleBeaconRecordView: FunctionComponent<
                   Delete record
                 </Button>
               </span>
-            </OnlyVisibleToUsersWith> */}
+            </OnlyVisibleToUsersWith>
           </span>
         )}
       </PageHeader>
