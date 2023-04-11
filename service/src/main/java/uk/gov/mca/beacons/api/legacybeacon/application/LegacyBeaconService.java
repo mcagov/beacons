@@ -1,9 +1,6 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
@@ -89,7 +86,7 @@ public class LegacyBeaconService {
       .now()
       .truncatedTo(ChronoUnit.SECONDS);
     OffsetDateTime todaysOffsetDate = todaysDate.atOffset(
-      ZoneOffset.of(ZoneOffset.systemDefault().toString())
+      ZoneOffset.ofTotalSeconds(1)
     );
 
     legacyBeaconToDelete.softDelete();
