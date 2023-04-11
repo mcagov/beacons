@@ -246,9 +246,6 @@ public class RegistrationService {
   }
 
   public void deleteLegacyBeacon(DeleteBeaconDTO dto) {
-    // CHANGE
-    // does it exist?
-    // .isPresent()
     LegacyBeacon legacyBeacon = legacyBeaconService
       .findById(new LegacyBeaconId(dto.getBeaconId()))
       .orElseThrow(ResourceNotFoundException::new);
