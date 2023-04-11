@@ -271,6 +271,32 @@ class ExportMapperUnitTest {
   }
 
   @Test
+  public void toLegacyUsesDTO_whenTheGivenUseList_MainUseShouldBeFirst() {
+    LegacyUse maritimeUse = new LegacyUse();
+    maritimeUse.setUseType("maritime ");
+    maritimeUse.setVesselType("Dinghy");
+    maritimeUse.setMaxPersons(10);
+    maritimeUse.setAreaOfUse("Gliding");
+    maritimeUse.setCommunications("Smoke signals");
+    maritimeUse.setMmsiNumber(3);
+    maritimeUse.setIsMain("Y");
+
+    LegacyUse aviationUse = new LegacyUse();
+    aviationUse.setUseType("aviation ");
+    aviationUse.setIsMain("N");
+
+    List<LegacyUse> legacyUses = new ArrayList<>();
+    legacyUses.add(aviationUse);
+    legacyUses.add(maritimeUse);
+
+    List<BeaconExportUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
+
+    assertEquals(maritimeUse.getEnvironment(), useDTOs.get(0).getEnvironment());
+
+    assertEquals(aviationUse.getEnvironment(), useDTOs.get(1).getEnvironment());
+  }
+
+  @Test
   public void toLegacyOwnerDTO_whenTheGivenLegacyGenericOwnerIsValid_shouldMapToBeaconExportOwnerDTO() {
     LegacyGenericOwner legacyOwner = new LegacyGenericOwner();
     legacyOwner.setOwnerName("Pharoah Sanders");

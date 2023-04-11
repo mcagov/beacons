@@ -275,7 +275,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           value={use.rssAndSsrNumber}
         />
         <CertificateField
-          classes="half"
+          classes="full"
           title="Area Of Operation"
           value={use.areaOfOperation}
         />

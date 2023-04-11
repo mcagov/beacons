@@ -5,25 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.validation.Valid;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@SuperBuilder
 public class BeaconExportLandUseDTO extends BeaconExportUseDTO {
-
-  @Valid
-  private String environment;
-
-  @Valid
-  private String typeOfUse;
-
-  @Valid
-  private String beaconPosition;
-
-  @Valid
-  private String beaconLocation;
 
   @Valid
   private String windfarmLocation;
@@ -54,11 +41,4 @@ public class BeaconExportLandUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String tripInformation;
-
-  @Valid
-  private Map<String, String> radioSystems;
-
-  @Valid
-  //Only used for legacy
-  private String notes;
 }
