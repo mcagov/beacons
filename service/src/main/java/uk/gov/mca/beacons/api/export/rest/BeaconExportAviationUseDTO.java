@@ -1,12 +1,9 @@
 package uk.gov.mca.beacons.api.export.rest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.validation.Valid;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import net.bytebuddy.implementation.bind.annotation.Super;
 
 @Getter
 @Setter
