@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -82,12 +83,8 @@ public class LegacyBeaconService {
     LegacyBeacon legacyBeaconToDelete,
     String reasonForDeletion
   ) {
-    LocalDateTime todaysDate = LocalDateTime
-      .now()
-      .truncatedTo(ChronoUnit.SECONDS);
-
-    ZoneOffset systemTimezone = OffsetDateTime.now().getOffset();
-    OffsetDateTime todaysOffsetDate = todaysDate.atOffset(systemTimezone);
+    OffsetDateTime today = OffsetDateTime.now();
+    String localFormat = "uuuu-MM-dd'T'HH:mm:ss";
 
     legacyBeaconToDelete.softDelete();
 
@@ -100,14 +97,16 @@ public class LegacyBeaconService {
     legacyBeaconData.setSecondaryOwners(new ArrayList<LegacySecondaryOwner>());
 
     legacyDataBeaconDetails.setNote(null);
-    legacyDataBeaconDetails.setLastModifiedDate(todaysDate.toString());
+    legacyDataBeaconDetails.setLastModifiedDate(
+      today.parse(localFormat).toString()
+    );
     legacyDataBeaconDetails.setIsWithdrawn("Y");
     legacyDataBeaconDetails.setWithdrawnReason(reasonForDeletion);
 
     legacyBeaconToDelete.setOwnerEmail(null);
     legacyBeaconToDelete.setOwnerName(null);
     legacyBeaconToDelete.setUseActivities(null);
-    legacyBeaconToDelete.setLastModifiedDate(todaysOffsetDate);
+    legacyBeaconToDelete.setLastModifiedDate(today);
 
     return legacyBeaconRepository.save(legacyBeaconToDelete);
   }
