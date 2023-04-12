@@ -1,9 +1,11 @@
 package uk.gov.mca.beacons.api.export.mappers;
 
+import com.github.javafaker.Bool;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -156,13 +158,23 @@ public class ExportMapper {
           break;
       }
     }
-    return usesDTO;
+
+    return usesDTO
+      .stream()
+      .sorted(
+        Comparator.comparing(
+          BeaconExportUseDTO::isMainUse,
+          Comparator.reverseOrder()
+        )
+      )
+      .collect(Collectors.toList());
   }
 
   private BeaconExportMaritimeUseDTO toMaritimeUse(BeaconUse use) {
     return BeaconExportMaritimeUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
+      .isMainUse(Boolean.TRUE.equals(use.getMainUse()))
       .typeOfUse(use.getUseType())
       .beaconPosition(use.getBeaconPosition())
       .beaconLocation(use.getBeaconLocation())
@@ -199,6 +211,7 @@ public class ExportMapper {
     return BeaconExportAviationUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
+      .isMainUse(Boolean.TRUE.equals(use.getMainUse()))
       .typeOfUse(use.getUseType())
       .beaconPosition(use.getBeaconPosition())
       .beaconLocation(use.getBeaconLocation())
@@ -220,6 +233,7 @@ public class ExportMapper {
     return BeaconExportLandUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
+      .isMainUse(Boolean.TRUE.equals(use.getMainUse()))
       .typeOfUse(use.getUseType())
       .beaconPosition(use.getBeaconPosition())
       .beaconLocation(use.getBeaconLocation())
@@ -402,7 +416,9 @@ public class ExportMapper {
 
     ownersDTO.add(toLegacyOwnerDTO(data.getOwner()));
     for (LegacyGenericOwner o : data.getSecondaryOwners()) {
-      ownersDTO.add(toLegacyOwnerDTO(o));
+      if (!StringUtils.isBlank(o.getOwnerName())) {
+        ownersDTO.add(toLegacyOwnerDTO(o));
+      }
     }
 
     return ownersDTO;
@@ -462,13 +478,24 @@ public class ExportMapper {
           break;
       }
     }
-    return usesDTO;
+
+    return usesDTO
+      .stream()
+      .sorted(
+        Comparator.comparing(
+          BeaconExportUseDTO::isMainUse,
+          Comparator.reverseOrder()
+        )
+      )
+      .collect(Collectors.toList());
   }
 
   private BeaconExportMaritimeUseDTO toMaritimeUse(LegacyUse use) {
     return BeaconExportMaritimeUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .isMainUse(use.isMain())
+      .vesselType(use.getVesselType())
       .typeOfUse(use.getPurpose())
       .vesselName(use.getVesselName())
       .homePort(use.getHomePort())
@@ -500,6 +527,7 @@ public class ExportMapper {
     return BeaconExportAviationUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
       .beaconLocation(use.getPosition())
       .beaconPosition(use.getBeaconPosition())
@@ -525,6 +553,7 @@ public class ExportMapper {
     return BeaconExportLandUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
       .beaconLocation(use.getPosition())
       .beaconPosition(use.getBeaconPosition())
@@ -549,6 +578,7 @@ public class ExportMapper {
     return BeaconExportRigUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
       .rigName(use.getRigName())
       .homePort(use.getHomePort())
@@ -575,6 +605,7 @@ public class ExportMapper {
     return BeaconExportGenericUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
       .vesselName(use.getVesselName())
       .rigName(use.getRigName())

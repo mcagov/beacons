@@ -1,15 +1,12 @@
 package uk.gov.mca.beacons.api.export.mappers;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
@@ -270,6 +267,32 @@ class ExportMapperUnitTest {
   }
 
   @Test
+  public void toLegacyUsesDTO_whenTheGivenUseList_MainUseShouldBeFirst() {
+    LegacyUse maritimeUse = new LegacyUse();
+    maritimeUse.setUseType("maritime ");
+    maritimeUse.setVesselType("Dinghy");
+    maritimeUse.setMaxPersons(10);
+    maritimeUse.setAreaOfUse("Gliding");
+    maritimeUse.setCommunications("Smoke signals");
+    maritimeUse.setMmsiNumber(3);
+    maritimeUse.setIsMain("Y");
+
+    LegacyUse aviationUse = new LegacyUse();
+    aviationUse.setUseType("aviation ");
+    aviationUse.setIsMain("N");
+
+    List<LegacyUse> legacyUses = new ArrayList<>();
+    legacyUses.add(aviationUse);
+    legacyUses.add(maritimeUse);
+
+    List<BeaconExportUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
+
+    assertEquals(maritimeUse.getEnvironment(), useDTOs.get(0).getEnvironment());
+
+    assertEquals(aviationUse.getEnvironment(), useDTOs.get(1).getEnvironment());
+  }
+
+  @Test
   public void toLegacyOwnerDTO_whenTheGivenLegacyGenericOwnerIsValid_shouldMapToBeaconExportOwnerDTO() {
     LegacyGenericOwner legacyOwner = new LegacyGenericOwner();
     legacyOwner.setOwnerName("Pharoah Sanders");
@@ -406,5 +429,84 @@ class ExportMapperUnitTest {
       legacyBeacon.getLastModifiedDate().format(dtf),
       mappedLegacyLabelDTO.getProofOfRegistrationDate()
     );
+  }
+
+  @Test
+  public void toCommunicationTypes_whenTheFullSetIsPopulated_shouldContainAllData() {
+    //Given
+    BeaconUse use = new BeaconUse();
+
+    use.setVhfRadio(true);
+
+    use.setFixedVhfRadio(true);
+
+    use.setPortableVhfRadio(true);
+    use.setPortableVhfRadioValue("Portable Val");
+
+    use.setSatelliteTelephone(true);
+    use.setSatelliteTelephoneValue("Satellite Val");
+
+    use.setMobileTelephone(true);
+    use.setMobileTelephone1("Mob1");
+    use.setMobileTelephone2("Mob2");
+
+    use.setOtherCommunication(true);
+    use.setOtherCommunicationValue("Other Val");
+
+    //When
+
+    Map<String, String> communicationTypes = use.getCommunicationTypes();
+
+    //Then
+
+    assertEquals(6, communicationTypes.size());
+    assertEquals("", communicationTypes.get("VHF"));
+    assertEquals("", communicationTypes.get("Fixed VHF/DSC"));
+    assertEquals("Portable Val", communicationTypes.get("Portable VHF/DSC"));
+    assertEquals(
+      "Satellite Val",
+      communicationTypes.get("Satellite Telephone")
+    );
+    assertEquals("Mob1 - Mob2", communicationTypes.get("Mobile Telephone(s)"));
+    assertEquals("Other Val", communicationTypes.get("Other"));
+  }
+
+  @Test
+  public void toCommunicationTypes_whenAPartialSetIsPopulated_shouldContainCorrectData() {
+    //Given
+    BeaconUse use = new BeaconUse();
+
+    use.setVhfRadio(true);
+
+    use.setFixedVhfRadio(false);
+
+    use.setPortableVhfRadio(false);
+    use.setPortableVhfRadioValue("Portable Val");
+
+    use.setSatelliteTelephone(true);
+    use.setSatelliteTelephoneValue("Satellite Val");
+
+    use.setMobileTelephone(true);
+    use.setMobileTelephone1("Mob1");
+
+    use.setOtherCommunication(true);
+    use.setOtherCommunicationValue(null);
+
+    //When
+
+    Map<String, String> communicationTypes = use.getCommunicationTypes();
+
+    //Then
+
+    assertEquals(4, communicationTypes.size());
+    assertEquals("", communicationTypes.get("VHF"));
+    assertEquals(null, communicationTypes.get("Fixed VHF/DSC"));
+    assertEquals(null, communicationTypes.get("Portable VHF/DSC"));
+    assertEquals(
+      "Satellite Val",
+      communicationTypes.get("Satellite Telephone")
+    );
+    assertEquals("Mob1", communicationTypes.get("Mobile Telephone(s)"));
+    assertEquals(null, communicationTypes.get("Other"));
   }
 }
