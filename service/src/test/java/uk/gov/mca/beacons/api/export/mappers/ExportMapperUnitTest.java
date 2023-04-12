@@ -9,7 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.apache.commons.lang3.BooleanUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
@@ -433,5 +436,84 @@ class ExportMapperUnitTest {
       legacyBeacon.getLastModifiedDate().format(dtf),
       mappedLegacyLabelDTO.getProofOfRegistrationDate()
     );
+  }
+
+  @Test
+  public void toCommunicationTypes_whenTheFullSetIsPopulated_shouldContainAllData() {
+    //Given
+    BeaconUse use = new BeaconUse();
+
+    use.setVhfRadio(true);
+
+    use.setFixedVhfRadio(true);
+
+    use.setPortableVhfRadio(true);
+    use.setPortableVhfRadioValue("Portable Val");
+
+    use.setSatelliteTelephone(true);
+    use.setSatelliteTelephoneValue("Satellite Val");
+
+    use.setMobileTelephone(true);
+    use.setMobileTelephone1("Mob1");
+    use.setMobileTelephone2("Mob2");
+
+    use.setOtherCommunication(true);
+    use.setOtherCommunicationValue("Other Val");
+
+    //When
+
+    Map<String, String> communicationTypes = use.getCommunicationTypes();
+
+    //Then
+
+    assertEquals(6, communicationTypes.size());
+    assertEquals("", communicationTypes.get("VHF"));
+    assertEquals("", communicationTypes.get("Fixed VHF/DSC"));
+    assertEquals("Portable Val", communicationTypes.get("Portable VHF/DSC"));
+    assertEquals(
+      "Satellite Val",
+      communicationTypes.get("Satellite Telephone")
+    );
+    assertEquals("Mob1 - Mob2", communicationTypes.get("Mobile Telephone(s)"));
+    assertEquals("Other Val", communicationTypes.get("Other"));
+  }
+
+  @Test
+  public void toCommunicationTypes_whenAPartialSetIsPopulated_shouldContainCorrectData() {
+    //Given
+    BeaconUse use = new BeaconUse();
+
+    use.setVhfRadio(true);
+
+    use.setFixedVhfRadio(false);
+
+    use.setPortableVhfRadio(false);
+    use.setPortableVhfRadioValue("Portable Val");
+
+    use.setSatelliteTelephone(true);
+    use.setSatelliteTelephoneValue("Satellite Val");
+
+    use.setMobileTelephone(true);
+    use.setMobileTelephone1("Mob1");
+
+    use.setOtherCommunication(true);
+    use.setOtherCommunicationValue(null);
+
+    //When
+
+    Map<String, String> communicationTypes = use.getCommunicationTypes();
+
+    //Then
+
+    assertEquals(4, communicationTypes.size());
+    assertEquals("", communicationTypes.get("VHF"));
+    assertEquals(null, communicationTypes.get("Fixed VHF/DSC"));
+    assertEquals(null, communicationTypes.get("Portable VHF/DSC"));
+    assertEquals(
+      "Satellite Val",
+      communicationTypes.get("Satellite Telephone")
+    );
+    assertEquals("Mob1", communicationTypes.get("Mobile Telephone(s)"));
+    assertEquals(null, communicationTypes.get("Other"));
   }
 }
