@@ -28,7 +28,7 @@ public class LegacyBeaconService {
 
   private final LegacyBeaconRepository legacyBeaconRepository;
   private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
-    "yyyy-MM-dd-HH:mm:ss"
+    "uuuu-MM-dd'T'HH:mm:ss"
   );
 
   @Autowired
@@ -84,7 +84,6 @@ public class LegacyBeaconService {
     String reasonForDeletion
   ) {
     OffsetDateTime today = OffsetDateTime.now();
-    String localFormat = "uuuu-MM-dd'T'HH:mm:ss";
 
     legacyBeaconToDelete.softDelete();
 
@@ -98,7 +97,7 @@ public class LegacyBeaconService {
 
     legacyDataBeaconDetails.setNote(null);
     legacyDataBeaconDetails.setLastModifiedDate(
-      today.parse(localFormat).toString()
+      today.format(dateTimeFormatter)
     );
     legacyDataBeaconDetails.setIsWithdrawn("Y");
     legacyDataBeaconDetails.setWithdrawnReason(reasonForDeletion);
