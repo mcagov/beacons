@@ -71,6 +71,11 @@ export interface IBeaconExportUse {
   beaconPosition: string;
   windfarmLocation: string;
   rigPlatformLocation: string;
+  workingRemotelyLocation: string;
+  otherActivityLocation: string;
+  windfarmPeopleCount: string;
+  workingRemotelyPeopleCount: string;
+  otherActivityPeopleCount: string;
   vesselName: string;
   rigName: string;
   homePort: string;
@@ -96,7 +101,7 @@ export interface IBeaconExportUse {
   isDongle: string;
   aircraftOperatorsDesignatorAndSerialNo: string;
   descriptionOfIntendedUse: string;
-  numberOfPersonsOnBoard: string;
+  numberOfPersonsOnBoard: number;
   areaOfUse: string;
   tripInformation: string;
   areaOfOperation: string;

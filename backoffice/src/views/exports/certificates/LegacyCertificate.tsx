@@ -3,10 +3,10 @@ import { FunctionComponent } from "react";
 import { customDateStringFormat } from "utils/dateTime";
 import {
   CertificateHeader,
-  CertificateFooter,
   CertificateField,
   BeaconExportProps,
   UseProps,
+  CertificateInformation,
 } from "./BaseCertificate";
 import { Environments } from "../../../entities/IUse";
 
@@ -17,6 +17,8 @@ export const LegacyCertificate: FunctionComponent<BeaconExportProps> = ({
     <div className="certificate">
       <CertificateHeader beacon={beacon} />
       <div className="content">
+        <CertificateInformation />
+
         <div className="section">
           <CertificateField
             classes="half"
@@ -49,7 +51,6 @@ export const LegacyCertificate: FunctionComponent<BeaconExportProps> = ({
 
         <EmergencyContactsSection beacon={beacon} />
       </div>
-      <CertificateFooter />
     </div>
   );
 };
@@ -185,8 +186,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
-        <h3>Vessel Details:</h3>
-
         <CertificateField
           classes="half"
           title="Vessel Name"
@@ -267,8 +266,6 @@ const RigUse: FunctionComponent<UseProps> = ({
         {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
-        <h3>Rig/Platform Details:</h3>
-
         {use.rigName && (
           <CertificateField
             classes="half"
@@ -277,17 +274,33 @@ const RigUse: FunctionComponent<UseProps> = ({
           />
         )}
 
-        {use.windfarmLocation && (
+        {use.beaconPosition && (
           <CertificateField
             classes="half"
-            title="Windfarm Location"
+            title="Beacon Position"
+            value={use.beaconPosition}
+          />
+        )}
+
+        {use.beaconLocation && (
+          <CertificateField
+            classes="full"
+            title="Position (if fixed, not floating)"
+            value={use.beaconLocation}
+          />
+        )}
+
+        {use.windfarmLocation && (
+          <CertificateField
+            classes="full"
+            title="Location"
             value={use.windfarmLocation}
           />
         )}
 
         {use.rigPlatformLocation && (
           <CertificateField
-            classes="half"
+            classes="full"
             title="Rig/Platform Location"
             value={use.rigPlatformLocation}
           />
@@ -347,8 +360,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
         {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
-        <h3>Aircraft Details:</h3>
-
         <CertificateField
           classes="half"
           title="Aircraft Type"
@@ -382,12 +393,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
           value={use.principalAirport}
         />
 
-        <CertificateField
-          classes="half"
-          title="Secondary Airport"
-          value={use.secondaryAirport}
-        />
-
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
             key={index}
@@ -414,8 +419,6 @@ const LandUse: FunctionComponent<UseProps> = ({
         {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
-        <h3>Land Details:</h3>
-
         <CertificateField
           classes="full"
           title="Description Of Intended Use"
@@ -463,8 +466,6 @@ export const GenericUse: FunctionComponent<UseProps> = ({
         {`#${index} Beacon Use -  ${use.environment} `}
       </h4>
       <div className="section">
-        <h3>Use Details:</h3>
-
         {use.vesselName && (
           <CertificateField
             classes="half"
@@ -483,16 +484,16 @@ export const GenericUse: FunctionComponent<UseProps> = ({
 
         {use.windfarmLocation && (
           <CertificateField
-            classes="half"
-            title="Windfarm Location"
+            classes="full"
+            title="Location"
             value={use.windfarmLocation}
           />
         )}
 
         {use.rigPlatformLocation && (
           <CertificateField
-            classes="half"
-            title="Rig/Platform Location"
+            classes="full"
+            title="Location"
             value={use.rigPlatformLocation}
           />
         )}
@@ -590,12 +591,6 @@ export const GenericUse: FunctionComponent<UseProps> = ({
           classes="half"
           title="Principal Airport"
           value={use.principalAirport}
-        />
-
-        <CertificateField
-          classes="half"
-          title="Secondary Airport"
-          value={use.secondaryAirport}
         />
 
         <CertificateField

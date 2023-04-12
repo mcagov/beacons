@@ -94,11 +94,11 @@
     }
 
     div.use {
-      margin-top: 8px;
       border-bottom: 2px solid lightgrey;
       padding: 8px;
       h4.use.title {
         margin: 0;
+        padding-bottom: 5px;
       }
     }
   }
@@ -106,7 +106,7 @@
   div.header {
     display: inline-block;
     padding-bottom: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-bottom: 2px solid black;
 
     .content {
@@ -124,11 +124,10 @@
     }
   }
 
-  .footer {
+  .certificate-information {
     display: block;
     margin-top: auto;
-    padding-top: 50px;
-
+    margin-bottom: 10px;
     div.text span {
       display: block;
 
@@ -142,11 +141,6 @@
         }
       }
     }
-  }
-
-  .certificate .footer-space {
-    height: 175px;
-    background-color: red !important;
   }
 }
 
@@ -162,15 +156,10 @@
     min-height: 100%;
     page-break-before: always;
 
-    .use {
+    .use,
+    .emergency-contacts,
+    .owner-details {
       break-inside: avoid;
-    }
-    .footer {
-      break-before: always;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      z-index: -1;
     }
   }
 }

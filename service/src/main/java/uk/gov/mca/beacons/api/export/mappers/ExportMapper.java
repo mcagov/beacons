@@ -224,12 +224,16 @@ public class ExportMapper {
       .beaconPosition(use.getBeaconPosition())
       .beaconLocation(use.getBeaconLocation())
       .windfarmLocation(use.getWindfarmLocation())
-      .rigPlatformLocation(use.getRigPlatformLocation())
+      .workingRemotelyLocation(use.getWorkingRemotelyLocation())
+      .otherActivityLocation(use.getOtherActivityLocation())
       .descriptionOfIntendedUse(
         BeaconsStringUtils.enumAsString(use.getActivity())
       )
+      .workingRemotelyPeopleCount(use.getWorkingRemotelyPeopleCount())
+      .windfarmPeopleCount(use.getWindfarmPeopleCount())
+      .otherActivityPeopleCount(use.getOtherActivityPeopleCount())
       .numberOfPersonsOnBoard(
-        use.getMaxCapacity() == null ? 0 : use.getMaxCapacity()
+        use.getMaxCapacity() != null ? use.getMaxCapacity() : 0
       )
       .areaOfUse(use.getAreaOfOperation())
       .radioSystems(use.getCommunicationTypes())

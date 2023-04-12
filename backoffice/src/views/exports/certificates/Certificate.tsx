@@ -3,10 +3,10 @@ import { FunctionComponent } from "react";
 import { customDateStringFormat } from "utils/dateTime";
 import {
   CertificateHeader,
-  CertificateFooter,
   CertificateField,
   BeaconExportProps,
   UseProps,
+  CertificateInformation,
 } from "./BaseCertificate";
 import { Environments } from "../../../entities/IUse";
 
@@ -18,6 +18,8 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
       <CertificateHeader beacon={beacon} />
 
       <div className="content">
+        <CertificateInformation />
+
         <div className="section">
           <CertificateField
             classes="half"
@@ -54,7 +56,6 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
 
         <EmergencyContactsSection beacon={beacon} />
       </div>
-      <CertificateFooter />
     </div>
   );
 };
@@ -175,8 +176,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         }`}
       </h4>
       <div className="section">
-        <h3>Details:</h3>
-
         <CertificateField
           classes="half"
           title="Vessel Name"
@@ -197,24 +196,35 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           value={use.homePort}
         />
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
+        {use.beaconPosition && (
+          <CertificateField
+            classes="half"
+            title="Beacon Position"
+            value={use.beaconPosition}
+          />
+        )}
+
+        {/* Aware this is the wrong label, but done to match the backoffice */}
+        {use.beaconLocation && (
+          <CertificateField
+            classes="full"
+            title="Beacon Position"
+            value={use.beaconLocation}
+          />
+        )}
 
         {use.windfarmLocation && (
           <CertificateField
-            classes="half"
-            title="Windfarm Location"
+            classes="full"
+            title="Location"
             value={use.windfarmLocation}
           />
         )}
 
         {use.rigPlatformLocation && (
           <CertificateField
-            classes="half"
-            title="Rig/Platform Location"
+            classes="full"
+            title="Location"
             value={use.rigPlatformLocation}
           />
         )}
@@ -292,14 +302,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
         }`}
       </h4>
       <div className="section">
-        <h3>Aircraft Details:</h3>
-
-        <CertificateField
-          classes="half"
-          title="Aircraft Type"
-          value={use.aircraftType}
-        />
-
         <CertificateField
           classes="half"
           title="Aircraft Manufacturer & Model"
@@ -312,11 +314,21 @@ const AviationUse: FunctionComponent<UseProps> = ({
           value={use.coreSerialNumber}
         />
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
+        {use.beaconPosition && (
+          <CertificateField
+            classes="half"
+            title="Beacon Position"
+            value={use.beaconPosition}
+          />
+        )}
+
+        {use.beaconLocation && (
+          <CertificateField
+            classes="full"
+            title="Location"
+            value={use.beaconLocation}
+          />
+        )}
 
         <CertificateField
           classes="half"
@@ -352,7 +364,7 @@ const AviationUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="full"
           title="Communications"
-          value={Object.keys(use.radioSystems)}
+          value={Object.keys(use.radioSystems).join(", ")}
         />
 
         <RadioSystems use={use} index={index} />
@@ -380,50 +392,82 @@ const LandUse: FunctionComponent<UseProps> = ({
         }`}
       </h4>
       <div className="section">
-        <h3>Land Details:</h3>
+        {use.beaconPosition && (
+          <CertificateField
+            classes="half"
+            title="Beacon Position"
+            value={use.beaconPosition}
+          />
+        )}
 
-        <CertificateField
-          classes="half"
-          title="Beacon Position"
-          value={use.beaconPosition}
-        />
+        {use.beaconLocation && (
+          <CertificateField
+            classes="full"
+            title="Location"
+            value={use.beaconLocation}
+          />
+        )}
 
         {use.windfarmLocation && (
           <CertificateField
-            classes="half"
-            title="Windfarm Location"
+            classes="full"
+            title="Location"
             value={use.windfarmLocation}
           />
         )}
 
-        {use.rigPlatformLocation && (
+        {use.workingRemotelyLocation && (
+          <CertificateField
+            classes="full"
+            title="Location"
+            value={use.workingRemotelyLocation}
+          />
+        )}
+
+        {use.otherActivityLocation && (
+          <CertificateField
+            classes="full"
+            title="Location"
+            value={use.otherActivityLocation}
+          />
+        )}
+
+        {use.workingRemotelyPeopleCount && (
           <CertificateField
             classes="half"
-            title="Rig/Platform Location"
-            value={use.rigPlatformLocation}
+            title="Working Remotely People Count"
+            value={use.workingRemotelyPeopleCount}
+          />
+        )}
+
+        {use.otherActivityPeopleCount && (
+          <CertificateField
+            classes="half"
+            title="Other Activity People Count"
+            value={use.otherActivityPeopleCount}
+          />
+        )}
+
+        {use.numberOfPersonsOnBoard > 0 && (
+          <CertificateField
+            classes="half"
+            title="People Count"
+            value={use.numberOfPersonsOnBoard}
+          />
+        )}
+
+        {use.areaOfUse && (
+          <CertificateField
+            classes="half"
+            title="Area Of Use"
+            value={use.areaOfUse}
           />
         )}
 
         <CertificateField
           classes="full"
-          title="Description Of Intended Use"
-          value={use.descriptionOfIntendedUse}
-        />
-        <CertificateField
-          classes="full"
-          title="People Count"
-          value={use.maxPersonOnBoard}
-        />
-        <CertificateField
-          classes="full"
-          title="Area Of Use"
-          value={use.areaOfUse}
-        />
-
-        <CertificateField
-          classes="full"
           title="Communications"
-          value={Object.keys(use.radioSystems)}
+          value={Object.keys(use.radioSystems).join(", ")}
         />
 
         <RadioSystems use={use} index={index} />
@@ -513,7 +557,7 @@ const RadioSystems: FunctionComponent<UseProps> = ({
         <div key={index}>
           {use.radioSystems[key] && (
             <CertificateField
-              classes="half"
+              classes={key === "Other" ? "full" : "half"}
               title={key}
               value={use.radioSystems[key]}
             />

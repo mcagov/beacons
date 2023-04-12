@@ -258,10 +258,6 @@ public class RegistrationService {
       dto.getReason()
     );
 
-    legacyBeaconService.delete(
-      legacyBeacon.getHexId(),
-      legacyBeacon.getOwnerEmail(),
-      reasonForDeletion
-    );
+    legacyBeaconService.delete(legacyBeacon, reasonForDeletion);
   }
 }
