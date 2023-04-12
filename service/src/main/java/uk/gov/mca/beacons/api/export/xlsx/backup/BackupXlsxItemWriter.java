@@ -42,20 +42,6 @@ public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
     }
   }
 
-  public List<BackupSpreadsheetRow> orderBeaconRowsByLastModifiedDateDescending(
-    List<BackupSpreadsheetRow> beaconRows
-  ) {
-    return beaconRows
-      .stream()
-      .sorted(
-        Comparator.comparing(
-          BackupSpreadsheetRow::getLastModifiedDate,
-          Comparator.reverseOrder()
-        )
-      )
-      .collect(Collectors.toList());
-  }
-
   private void writeRow(
     Sheet sheet,
     int currentRowNumber,

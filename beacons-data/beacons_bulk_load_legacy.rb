@@ -39,7 +39,7 @@ def populateBeacons
 		person_uuid = SecureRandom.uuid
 		account_holder_uuid = SecureRandom.uuid
 		beacon_uuid = SecureRandom.uuid
-		hex_id =  Faker::Base.regexify("1D[A-F1-9]{13}")
+		hex_id = Faker::Base.regexify("1D[A-F1-9]{13}")
 		person_type_emergency = "EMERGENCY_CONTACT"
 		person_type_owner = "OWNER"
 		auth_id = SecureRandom.uuid
