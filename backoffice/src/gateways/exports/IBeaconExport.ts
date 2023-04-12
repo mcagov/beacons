@@ -67,6 +67,7 @@ export interface IBeaconExportUse {
   //Generic, TODO - split out into types.
   environment: string;
   typeOfUse: string;
+  vesselType: string;
   beaconLocation: string;
   beaconPosition: string;
   windfarmLocation: string;
@@ -79,7 +80,7 @@ export interface IBeaconExportUse {
   vesselName: string;
   rigName: string;
   homePort: string;
-  maxPersonOnBoard: string;
+  maxPersonOnBoard: number;
   vesselCallsign: string;
   mmsiNumber: string;
   radioSystems: Record<string, string>;

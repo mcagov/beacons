@@ -183,7 +183,9 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use -  ${use.environment} `}
+        {`#${index} Beacon Use -  ${use.environment.toUpperCase()} ${
+          use.vesselType ? `(${use.vesselType})` : ""
+        }`}
       </h4>
       <div className="section">
         <CertificateField
@@ -199,7 +201,7 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="half"
           title="Max Persons Onboard"
-          value={use.maxPersonOnBoard}
+          value={use.maxPersonOnBoard > 0 ? use.maxPersonOnBoard : ""}
         />
 
         {Object.keys(use.radioSystems).map((key, index) => (
@@ -263,7 +265,7 @@ const RigUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use -  ${use.environment} `}
+        {`#${index} Beacon Use -  ${use.environment.toUpperCase()} `}
       </h4>
       <div className="section">
         {use.rigName && (
@@ -309,7 +311,7 @@ const RigUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="half"
           title="No. Persons In Group"
-          value={use.maxPersonOnBoard}
+          value={use.maxPersonOnBoard > 0 ? use.maxPersonOnBoard : ""}
         />
 
         {Object.keys(use.radioSystems).map((key, index) => (
@@ -357,18 +359,15 @@ const AviationUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use -  ${use.environment} `}
+        {`#${index} Beacon Use -  ${use.environment.toUpperCase()} ${
+          use.aircraftType ? `(${use.aircraftType})` : ""
+        }`}
       </h4>
       <div className="section">
         <CertificateField
           classes="half"
-          title="Aircraft Type"
-          value={use.aircraftType}
-        />
-        <CertificateField
-          classes="half"
           title="Max Persons Onboard"
-          value={use.maxPersonOnBoard}
+          value={use.maxPersonOnBoard > 0 ? use.maxPersonOnBoard : ""}
         />
         <CertificateField
           classes="half"
@@ -416,18 +415,19 @@ const LandUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use -  ${use.environment} `}
+        {`#${index} Beacon Use -  ${use.environment.toUpperCase()} ${
+          use.descriptionOfIntendedUse
+            ? `(${use.descriptionOfIntendedUse})`
+            : ""
+        }`}
       </h4>
       <div className="section">
         <CertificateField
           classes="full"
-          title="Description Of Intended Use"
-          value={use.descriptionOfIntendedUse}
-        />
-        <CertificateField
-          classes="full"
           title="Number Of Persons In Group"
-          value={use.numberOfPersonsOnBoard}
+          value={
+            use.numberOfPersonsOnBoard > 0 ? use.numberOfPersonsOnBoard : ""
+          }
         />
         <CertificateField
           classes="full"
@@ -463,7 +463,7 @@ export const GenericUse: FunctionComponent<UseProps> = ({
     <div className="use full">
       <h4 className="title use">
         {" "}
-        {`#${index} Beacon Use -  ${use.environment} `}
+        {`#${index} Beacon Use -  ${use.environment.toUpperCase()} `}
       </h4>
       <div className="section">
         {use.vesselName && (
@@ -506,7 +506,7 @@ export const GenericUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="half"
           title="Max Persons Onboard"
-          value={use.maxPersonOnBoard}
+          value={use.maxPersonOnBoard > 0 ? use.maxPersonOnBoard : ""}
         />
         {Object.keys(use.radioSystems).map((key, index) => (
           <CertificateField
@@ -563,7 +563,7 @@ export const GenericUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="half"
           title="Max Persons Onboard"
-          value={use.maxPersonOnBoard}
+          value={use.maxPersonOnBoard > 0 ? use.maxPersonOnBoard : ""}
         />
         <CertificateField
           classes="half"
@@ -607,7 +607,7 @@ export const GenericUse: FunctionComponent<UseProps> = ({
         <CertificateField
           classes="full"
           title="Number Of Persons In Group"
-          value={use.maxPersonOnBoard}
+          value={use.maxPersonOnBoard > 0 ? use.maxPersonOnBoard : ""}
         />
         <CertificateField
           classes="full"
@@ -696,7 +696,6 @@ const EmergencyContactsSection: FunctionComponent<BeaconExportProps> = ({
       {beacon.emergencyContacts &&
         beacon.emergencyContacts.map((ec, index) => (
           <div key={index} className={"full field"}>
-            <span>{index + 1}: </span>
             <span>{ec.fullName}</span>
           </div>
         ))}

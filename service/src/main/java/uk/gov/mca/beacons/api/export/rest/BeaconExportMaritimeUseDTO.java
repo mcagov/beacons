@@ -1,29 +1,17 @@
 package uk.gov.mca.beacons.api.export.rest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.validation.Valid;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@SuperBuilder
 public class BeaconExportMaritimeUseDTO extends BeaconExportUseDTO {
 
   @Valid
-  private String environment;
-
-  @Valid
-  private String typeOfUse;
-
-  @Valid
-  private String beaconPosition;
-
-  @Valid
-  private String beaconLocation;
+  private String vesselType;
 
   @Valid
   private String windfarmLocation;
@@ -48,13 +36,6 @@ public class BeaconExportMaritimeUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String mmsiNumber;
-
-  @Valid
-  private Map<String, String> radioSystems;
-
-  @Valid
-  //Only used for legacy
-  private String notes;
 
   @Valid
   private String fishingVesselPortIdAndNumbers;
