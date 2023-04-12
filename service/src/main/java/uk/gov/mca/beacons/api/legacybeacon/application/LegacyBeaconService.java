@@ -1,29 +1,17 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
-import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
-import uk.gov.mca.beacons.api.registration.domain.Registration;
-import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 
 @Transactional
 @Slf4j
@@ -32,7 +20,7 @@ public class LegacyBeaconService {
 
   private final LegacyBeaconRepository legacyBeaconRepository;
   private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
-    "yyyy-MM-dd-HH:mm:ss"
+    "uuuu-MM-dd'T'HH:mm:ss"
   );
 
   @Autowired
@@ -83,24 +71,15 @@ public class LegacyBeaconService {
       .collect(Collectors.toList());
   }
 
-  public List<LegacyBeacon> delete(
-    String hexId,
-    String email,
+  public LegacyBeacon delete(
+    LegacyBeacon legacyBeaconToDelete,
     String reasonForDeletion
   ) {
-    LocalDateTime todaysDate = LocalDateTime
-      .now()
-      .truncatedTo(ChronoUnit.SECONDS);
-    OffsetDateTime todaysOffsetDate = todaysDate.atOffset(ZoneOffset.UTC);
+    OffsetDateTime today = OffsetDateTime.now();
 
-    List<LegacyBeacon> legacyBeacons = legacyBeaconRepository.findByHexIdAndOwnerEmail(
-      hexId,
-      email
-    );
-    legacyBeacons.forEach(LegacyBeacon::softDelete);
+    legacyBeaconToDelete.softDelete();
 
-    LegacyBeacon legacyBeacon = legacyBeacons.get(0);
-    LegacyData legacyBeaconData = legacyBeacon.getData();
+    LegacyData legacyBeaconData = legacyBeaconToDelete.getData();
     LegacyBeaconDetails legacyDataBeaconDetails = legacyBeaconData.getBeacon();
 
     legacyBeaconData.setOwner(new LegacyOwner());
@@ -109,15 +88,17 @@ public class LegacyBeaconService {
     legacyBeaconData.setSecondaryOwners(new ArrayList<LegacySecondaryOwner>());
 
     legacyDataBeaconDetails.setNote(null);
-    legacyDataBeaconDetails.setLastModifiedDate(todaysDate.toString());
+    legacyDataBeaconDetails.setLastModifiedDate(
+      today.format(dateTimeFormatter)
+    );
     legacyDataBeaconDetails.setIsWithdrawn("Y");
     legacyDataBeaconDetails.setWithdrawnReason(reasonForDeletion);
 
-    legacyBeacon.setOwnerEmail(null);
-    legacyBeacon.setOwnerName(null);
-    legacyBeacon.setUseActivities(null);
-    legacyBeacon.setLastModifiedDate(todaysOffsetDate);
+    legacyBeaconToDelete.setOwnerEmail(null);
+    legacyBeaconToDelete.setOwnerName(null);
+    legacyBeaconToDelete.setUseActivities(null);
+    legacyBeaconToDelete.setLastModifiedDate(today);
 
-    return legacyBeaconRepository.saveAll(legacyBeacons);
+    return legacyBeaconRepository.save(legacyBeaconToDelete);
   }
 }
