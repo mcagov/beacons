@@ -5,6 +5,7 @@
 ## Why do we need this code?
 
 - During local development, you will need records in your local Postgres DB in all the tables
+- During testing, you might need to manipulate the data in the staging DB to prepare a realistic testing precondition: e.g seeding the DB with legacy beacons that have no hex ID.
 - These _Ruby_ scripts seed the DB tables with dummy data to help you get started
 
 ## Prerequisites
