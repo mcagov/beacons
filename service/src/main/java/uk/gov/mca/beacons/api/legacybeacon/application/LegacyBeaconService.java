@@ -1,25 +1,17 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
-import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
-import uk.gov.mca.beacons.api.registration.domain.Registration;
-import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 
 @Transactional
 @Slf4j
