@@ -1,6 +1,8 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import javax.persistence.EntityManagerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
@@ -21,6 +23,7 @@ import uk.gov.mca.beacons.api.export.xlsx.ExportSpreadsheetRow;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
 @Configuration
+@Slf4j
 @EnableBatchProcessing
 public class BackupToXlsxJobConfiguration {
 
@@ -28,6 +31,8 @@ public class BackupToXlsxJobConfiguration {
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
   private static final int CHUNK_SIZE = 500;
+
+  private int totalProcessed = 0;
 
   @Autowired
   public BackupToXlsxJobConfiguration(
@@ -52,14 +57,18 @@ public class BackupToXlsxJobConfiguration {
   public Step backupBeaconToSpreadsheetStep(
     ItemReader<BeaconBackupItem> beaconBackupItemReader,
     ItemProcessor<BeaconBackupItem, BackupSpreadsheetRow> backupBeaconToSpreadsheetRowItemProcessor,
+    ChunkListener backupChunkListener,
     ItemWriter<BackupSpreadsheetRow> xlsxItemWriter
   ) {
+    totalProcessed += CHUNK_SIZE;
+    log.info("Number of beacons processed: " + totalProcessed);
     return stepBuilderFactory
       .get("backupBeaconToSpreadsheetStep")
       .<BeaconBackupItem, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
       .reader(beaconBackupItemReader)
       .processor(backupBeaconToSpreadsheetRowItemProcessor)
       .writer(xlsxItemWriter)
+      .listener(backupChunkListener)
       .build();
   }
 
@@ -75,6 +84,11 @@ public class BackupToXlsxJobConfiguration {
     BeaconsDataWorkbookRepository beaconsDataWorkbookRepository
   ) {
     return new BackupToXlsxJobListener(beaconsDataWorkbookRepository);
+  }
+
+  @Bean("backupChunkListener")
+  BackupChunkListener backupChunkListener() {
+    return new BackupChunkListener();
   }
 
   @Bean(value = "backupToSpreadsheetJob")
