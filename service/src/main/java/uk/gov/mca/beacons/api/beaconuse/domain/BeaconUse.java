@@ -35,6 +35,7 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
     strategy = GenerationType.AUTO,
     generator = "beaconuse-id-generator"
   )
+  @Setter
   private BeaconUseId id;
 
   @Setter
@@ -344,9 +345,5 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
     return purpose != null
       ? String.format("%s (%s)", activityName, purpose.name())
       : activityName;
-  }
-
-  public void setRandomId(BeaconUseId id) {
-    this.id = id;
   }
 }

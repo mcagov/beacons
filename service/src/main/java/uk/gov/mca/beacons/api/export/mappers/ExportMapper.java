@@ -1,6 +1,5 @@
 package uk.gov.mca.beacons.api.export.mappers;
 
-import com.github.javafaker.Bool;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
-import uk.gov.mca.beacons.api.export.xlsx.backup.BackupLegacyBeacon;
+import uk.gov.mca.beacons.api.export.xlsx.backup.BeaconBackupItem;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
@@ -299,7 +298,7 @@ public class ExportMapper {
       .build();
   }
 
-  public BeaconExportDTO toLegacyBeaconExportDTO(BackupLegacyBeacon beacon) {
+  public BeaconExportDTO toLegacyBeaconExportDTO(BeaconBackupItem beacon) {
     LegacyBeaconDetails details = beacon.getData().getBeacon();
     LegacyUse mainUse = beacon.getData().getMainUse();
 
@@ -311,7 +310,7 @@ public class ExportMapper {
           ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
           : ""
       )
-      .id(beacon.getId().unwrap().toString())
+      .id(beacon.getId().toString())
       .proofOfRegistrationDate(OffsetDateTime.now())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .departmentReference(details.getDepartRefId())

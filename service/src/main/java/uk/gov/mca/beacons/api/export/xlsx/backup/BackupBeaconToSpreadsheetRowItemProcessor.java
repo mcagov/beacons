@@ -60,7 +60,9 @@ class BackupBeaconToSpreadsheetRowItemProcessor
     UUID beaconItemId = beaconBackupItem.getId();
 
     BeaconId modernBeaconId = new BeaconId(beaconItemId);
-    if (registrationService.modernBeaconExists(modernBeaconId)) {
+
+    // probs should be an enum value
+    if (beaconBackupItem.getCategory() == "MODERN") {
       Registration registration = registrationService.getByBeaconId(
         modernBeaconId
       );
@@ -73,11 +75,8 @@ class BackupBeaconToSpreadsheetRowItemProcessor
         dateFormatter
       );
     } else {
-      BackupLegacyBeacon legacyBeacon = BackupLegacyBeacon.createFromBeaconBackupItem(
-        beaconBackupItem
-      );
       return new BackupSpreadsheetRow(
-        legacyBeacon,
+        beaconBackupItem,
         exportMapper,
         dateFormatter
       );

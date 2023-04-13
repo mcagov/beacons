@@ -127,7 +127,7 @@ public class BackupSpreadsheetRow {
   private String emergencyContacts;
 
   public BackupSpreadsheetRow(
-    BackupLegacyBeacon legacyBeacon,
+    BeaconBackupItem legacyBeacon,
     ExportMapper exportMapper,
     DateTimeFormatter dateFormatter
   ) {
@@ -135,7 +135,7 @@ public class BackupSpreadsheetRow {
       legacyBeacon
     );
 
-    this.id = Objects.requireNonNull(legacyBeacon.getId()).unwrap();
+    this.id = Objects.requireNonNull(legacyBeacon.getId());
 
     setLegacyBeaconDetails(mappedLegacyBeacon, dateFormatter);
 
@@ -143,14 +143,6 @@ public class BackupSpreadsheetRow {
     setLegacyUses(mappedLegacyBeacon.getUses());
     setLegacyOwners(mappedLegacyBeacon.getOwners());
     setLegacyEmergencyContacts(mappedLegacyBeacon.getEmergencyContacts());
-  }
-
-  public static BackupSpreadsheetRow createEmptyRow(UUID id) {
-    return new BackupSpreadsheetRow(id);
-  }
-
-  private BackupSpreadsheetRow(UUID id) {
-    this.id = id;
   }
 
   public BackupSpreadsheetRow(

@@ -84,7 +84,7 @@ public class JsonSerialiserUnitTest {
     BeaconUseMapper beaconUseMapper = new BeaconUseMapper();
     BeaconUse aviationUse = new BeaconUse();
 
-    aviationUse.setRandomId(new BeaconUseId(UUID.randomUUID()));
+    aviationUse.setId(new BeaconUseId(UUID.randomUUID()));
     aviationUse.setBeaconId(new BeaconId(UUID.randomUUID()));
     aviationUse.setEnvironment(Environment.AVIATION);
     aviationUse.setBeaconLocation("On the nose of my plane");

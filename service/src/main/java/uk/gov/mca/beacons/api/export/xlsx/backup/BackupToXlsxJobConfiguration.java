@@ -27,7 +27,7 @@ public class BackupToXlsxJobConfiguration {
   private final EntityManagerFactory entityManagerFactory;
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
-  private static final int CHUNK_SIZE = 256;
+  private static final int CHUNK_SIZE = 500;
 
   @Autowired
   public BackupToXlsxJobConfiguration(
