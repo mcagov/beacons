@@ -1,29 +1,14 @@
 package uk.gov.mca.beacons.api.export.rest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.validation.Valid;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@SuperBuilder
 public class BeaconExportAviationUseDTO extends BeaconExportUseDTO {
-
-  @Valid
-  private String environment;
-
-  @Valid
-  private String typeOfUse;
-
-  @Valid
-  private String beaconPosition;
-
-  @Valid
-  private String beaconLocation;
 
   @Valid
   private String aircraftType;
@@ -56,15 +41,8 @@ public class BeaconExportAviationUseDTO extends BeaconExportUseDTO {
   private String isDongle;
 
   @Valid
-  private Map<String, String> radioSystems;
-
-  @Valid
   private String aircraftOperatorsDesignatorAndSerialNo;
 
   @Valid
   private String coreSerialNumber;
-
-  @Valid
-  //Only used for legacy
-  private String notes;
 }

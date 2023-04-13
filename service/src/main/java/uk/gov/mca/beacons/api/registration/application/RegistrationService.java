@@ -13,7 +13,6 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
 import uk.gov.mca.beacons.api.beaconowner.application.BeaconOwnerService;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
@@ -255,10 +254,6 @@ public class RegistrationService {
       dto.getReason()
     );
 
-    legacyBeaconService.delete(
-      legacyBeacon.getHexId(),
-      legacyBeacon.getOwnerEmail(),
-      reasonForDeletion
-    );
+    legacyBeaconService.delete(legacyBeacon, reasonForDeletion);
   }
 }
