@@ -61,8 +61,7 @@ class BackupBeaconToSpreadsheetRowItemProcessor
 
     BeaconId modernBeaconId = new BeaconId(beaconItemId);
 
-    // probs should be an enum value
-    if (beaconBackupItem.getCategory() == "MODERN") {
+    if (beaconBackupItem.getCategory() == BeaconCategory.MODERN) {
       Registration registration = registrationService.getByBeaconId(
         modernBeaconId
       );

@@ -43,7 +43,8 @@ public class BeaconBackupItem {
   private String beaconStatus;
 
   @Setter
-  private String category;
+  @Enumerated(EnumType.STRING)
+  private BeaconCategory category;
 
   @CreatedDate
   private OffsetDateTime createdDate;
