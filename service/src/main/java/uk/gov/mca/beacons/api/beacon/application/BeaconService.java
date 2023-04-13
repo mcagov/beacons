@@ -1,6 +1,10 @@
 package uk.gov.mca.beacons.api.beacon.application;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.groupingByConcurrent;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,15 +74,6 @@ public class BeaconService {
     );
   }
 
-  public List<Beacon> getBatch(int batchSize, int numberAlreadyTaken) {
-    return beaconRepository
-      .findAll()
-      .stream()
-      .skip(numberAlreadyTaken)
-      .limit(batchSize)
-      .collect(Collectors.toList());
-  }
-
   public Beacon update(BeaconId beaconId, Beacon patch)
     throws ResourceNotFoundException {
     Beacon beacon = beaconRepository
@@ -124,7 +119,33 @@ public class BeaconService {
       .withMapping(Beacon::getModel, Beacon::setModel);
   }
 
-  public List<Beacon> findAll() {
-    return beaconRepository.findAll();
+  public Map<String, Integer> findHexIdsWithDuplicates(
+    int batchSize,
+    int numberAlreadyTaken
+  ) {
+    List<Beacon> batchOfBeacons = getBatch(batchSize, numberAlreadyTaken);
+
+    Map<String, Integer> hexIdsAndDuplicateCounts = batchOfBeacons
+      //    Map<String, Integer> hexIdsAndDuplicateCounts = beaconRepository.findAll()
+      .stream()
+      .collect(groupingBy(Beacon::getHexId, Collectors.counting()))
+      .entrySet()
+      .stream()
+      .filter(m -> m.getValue() > 1)
+      .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue().intValue()));
+    return hexIdsAndDuplicateCounts;
+  }
+
+  public List<Beacon> getBatch(int batchSize, int numberAlreadyTaken) {
+    return beaconRepository
+      .findAll()
+      .stream()
+      .skip(numberAlreadyTaken)
+      .limit(batchSize)
+      .collect(Collectors.toList());
+  }
+
+  public List<Beacon> findByHexId(String hexId) {
+    return beaconRepository.findByHexId(hexId);
   }
 }

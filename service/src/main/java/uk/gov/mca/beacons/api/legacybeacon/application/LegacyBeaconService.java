@@ -1,17 +1,20 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
-import java.time.*;
+import static java.util.stream.Collectors.groupingBy;
+
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
 
 @Transactional
 @Slf4j
@@ -100,5 +103,44 @@ public class LegacyBeaconService {
     legacyBeaconToDelete.setLastModifiedDate(today);
 
     return legacyBeaconRepository.save(legacyBeaconToDelete);
+  }
+
+  public Map<String, Integer> findHexIdsWithDuplicates(
+    int batchSize,
+    int numberAlreadyTaken
+  ) {
+    Stream<LegacyBeacon> lbsWithHexIds = getBatchWhereHexIdIsNotNull(
+      batchSize,
+      numberAlreadyTaken
+    )
+      .stream();
+
+    Map<String, Integer> hexIdsAndDuplicateCounts = lbsWithHexIds
+      .collect(groupingBy(LegacyBeacon::getHexId, Collectors.counting()))
+      .entrySet()
+      .stream()
+      .filter(m -> m.getValue() > 1)
+      .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue().intValue()));
+    return hexIdsAndDuplicateCounts;
+  }
+
+  public List<LegacyBeacon> getBatchWhereHexIdIsNotNull(
+    int batchSize,
+    int numberAlreadyTaken
+  ) {
+    Stream<LegacyBeacon> lbs = legacyBeaconRepository
+      .findByHexIdNotNull()
+      .stream();
+
+    List<LegacyBeacon> listLbs = lbs
+      .skip(numberAlreadyTaken)
+      .limit(batchSize)
+      .collect(Collectors.toList());
+
+    return listLbs;
+  }
+
+  public List<LegacyBeacon> findByHexId(String hexId) {
+    return legacyBeaconRepository.findByHexId(hexId);
   }
 }

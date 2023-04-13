@@ -1,7 +1,6 @@
 package uk.gov.mca.beacons.api.legacybeacon.domain;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface LegacyBeaconRepository
   extends JpaRepository<LegacyBeacon, LegacyBeaconId> {
   List<LegacyBeacon> findByHexIdAndOwnerEmail(String hexId, String ownerEmail);
+  List<LegacyBeacon> findByHexId(String hexId);
+  List<LegacyBeacon> findByHexIdNotNull();
 }

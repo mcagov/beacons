@@ -38,10 +38,13 @@ import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 import { AdminView } from "views/AdminView";
-import { DataComparisonView } from "views/comparison/DataComparisonView";
+import { DuplicateSummaryView } from "./views/duplicates/DuplicatesSummaryView";
+import { DuplicatesForHexIdView } from "./views/duplicates/DuplicatesForHexIdView";
+import { DuplicatesGateway } from "./gateways/duplicates/DuplicatesGateway";
 
 interface ResourceParams {
   id: string;
+  hexId: string;
   letterType: string;
 }
 
@@ -73,6 +76,7 @@ const App: FunctionComponent = () => {
   const usesGateway = new UsesGateway(beaconResponseMapper, authGateway);
   const notesGateway = new NotesGateway(authGateway);
   const exportsGateway = new ExportsGateway(authGateway);
+  const duplicatesGateway = new DuplicatesGateway(authGateway);
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
@@ -152,6 +156,20 @@ const App: FunctionComponent = () => {
     );
   };
 
+  const DuplicatesForHexIdViewWithParam: FunctionComponent = () => {
+    const { hexId } = useParams<ResourceParams>();
+    return (
+      <div>
+        <DuplicatesForHexIdView
+          duplicatesGateway={duplicatesGateway}
+          hexId={hexId}
+          beaconsGateway={beaconsGateway}
+          usesGateway={usesGateway}
+        />
+      </div>
+    );
+  };
+
   return (
     <MsalProvider instance={pca}>
       <AuthProvider>
@@ -162,6 +180,16 @@ const App: FunctionComponent = () => {
                 <Route exact path="/">
                   <Navigation exportsGateway={exportsGateway} />
                   <Search beaconsGateway={beaconsGateway} />
+                  <Footer />
+                </Route>
+                <Route path={`/duplicates/:hexId`}>
+                  <Navigation exportsGateway={exportsGateway} />
+                  <DuplicatesForHexIdViewWithParam />
+                  <Footer />
+                </Route>
+                <Route path={`/duplicates`}>
+                  <Navigation exportsGateway={exportsGateway} />
+                  <DuplicateSummaryView duplicatesGateway={duplicatesGateway} />
                   <Footer />
                 </Route>
                 <Route path={`/export/search`}>

@@ -14,6 +14,7 @@ import { AuthenticatedDownloadButton } from "components/AuthenticatedDownloadBut
 import { applicationConfig } from "config";
 import { IExportsGateway } from "gateways/exports/IExportsGateway";
 import * as React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   SearchMode,
   updateSearchMode,
@@ -141,22 +142,6 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               downloadStarted={handleDownloadStarted}
               downloadComplete={handleDownloadComplete}
             />
-            {/* TODO - Fix loading issue, remove button for now. */}
-            {/* <Typography
-              gutterBottom={true}
-              component={"p"}
-              variant={"subtitle2"}
-              id="export-search-btn"
-            >
-              Export Search
-            </Typography>
-            <Button
-              href={`backoffice#/export/search`}
-              variant="outlined"
-              fullWidth
-            >
-              Beacon Export Search
-            </Button> */}
           </OnlyVisibleToUsersWith>
           <Typography
             gutterBottom={true}
@@ -167,6 +152,25 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
             Feedback
           </Typography>
           <FeedbackButton variant={"outlined"} color={"inherit"} fullWidth />
+          <OnlyVisibleToUsersWith role={"DELETE_BEACONS"}>
+            <Typography
+              gutterBottom={true}
+              component={"p"}
+              variant={"subtitle2"}
+              id="duplicate-records"
+            >
+              Duplicates
+            </Typography>
+            <Button
+              variant="outlined"
+              color="inherit"
+              fullWidth={true}
+              component={RouterLink}
+              to="/duplicates"
+            >
+              Duplicate records
+            </Button>
+          </OnlyVisibleToUsersWith>
         </Box>
         {showProgressCircle && (
           <CircularProgress id="download-progress-circle" />

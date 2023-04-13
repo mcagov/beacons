@@ -22,4 +22,6 @@ public interface BeaconRepository extends JpaRepository<Beacon, BeaconId> {
   );
 
   List<Beacon> findAll();
+
+  List<Beacon> findByHexId(String hexId);
 }
