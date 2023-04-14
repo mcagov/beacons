@@ -42,6 +42,7 @@ class BeaconToSpreadsheetRowItemProcessor
     BeaconOwner beaconOwner = beaconOwnerRepository
       .findBeaconOwnerByBeaconId(beaconId)
       .orElse(null);
+
     List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
       beaconId
     );
