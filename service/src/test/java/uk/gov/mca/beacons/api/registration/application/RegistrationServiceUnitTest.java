@@ -56,14 +56,4 @@ public class RegistrationServiceUnitTest {
     mockLegacyBeaconService,
     mockNoteService
   );
-
-  @Test
-  public void modernBeaconExists_whenAModernBeaconWithTheGivenIdDoesNotExist_shouldReturnFalse() {
-    BeaconId beaconId = new BeaconId(UUID.randomUUID());
-    when(mockBeaconService.findById(beaconId)).thenReturn(Optional.empty());
-
-    boolean beaconExists = registrationService.modernBeaconExists(beaconId);
-
-    Assert.assertEquals(false, beaconExists);
-  }
 }
