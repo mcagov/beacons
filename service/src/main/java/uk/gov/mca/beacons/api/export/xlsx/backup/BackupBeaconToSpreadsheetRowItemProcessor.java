@@ -17,6 +17,7 @@ import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.registration.application.RegistrationReadOnlyService;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 
@@ -24,7 +25,7 @@ import uk.gov.mca.beacons.api.registration.domain.Registration;
 class BackupBeaconToSpreadsheetRowItemProcessor
   implements ItemProcessor<BeaconBackupItem, BackupSpreadsheetRow> {
 
-  private final RegistrationService registrationService;
+  private final RegistrationReadOnlyService registrationService;
   private final LegacyBeaconService legacyBeaconService;
   private final NoteService noteService;
   private ExportMapper exportMapper;
@@ -37,7 +38,7 @@ class BackupBeaconToSpreadsheetRowItemProcessor
 
   @Autowired
   public BackupBeaconToSpreadsheetRowItemProcessor(
-    RegistrationService registrationService,
+    RegistrationReadOnlyService registrationService,
     LegacyBeaconService legacyBeaconService,
     NoteService noteService,
     ExportMapper exportMapper,
@@ -65,7 +66,9 @@ class BackupBeaconToSpreadsheetRowItemProcessor
       Registration registration = registrationService.getByBeaconId(
         modernBeaconId
       );
-      List<Note> nonSystemNotes = noteService.getNonSystemNotes(modernBeaconId);
+      List<Note> nonSystemNotes = registrationService.getNonSyetemNotesByBeaconId(
+        modernBeaconId
+      );
 
       return new BackupSpreadsheetRow(
         registration,
