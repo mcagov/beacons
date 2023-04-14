@@ -54,7 +54,7 @@ public class RegistrationReadOnlyService {
   }
 
   public Registration getByBeaconId(BeaconId beaconId) {
-    Beacon beacon = beaconRepository.findByBeaconId(beaconId).orElse(null);
+    Beacon beacon = beaconRepository.findById(beaconId).orElse(null);
 
     if (beacon == null) {
       return null;

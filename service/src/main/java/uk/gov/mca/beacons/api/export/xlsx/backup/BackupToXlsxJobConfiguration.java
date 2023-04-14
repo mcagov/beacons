@@ -30,9 +30,7 @@ public class BackupToXlsxJobConfiguration {
   private final EntityManagerFactory entityManagerFactory;
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
-  private static final int CHUNK_SIZE = 500;
-
-  private int totalProcessed = 0;
+  private static final int CHUNK_SIZE = 50;
 
   @Autowired
   public BackupToXlsxJobConfiguration(
@@ -60,8 +58,6 @@ public class BackupToXlsxJobConfiguration {
     ChunkListener backupChunkListener,
     ItemWriter<BackupSpreadsheetRow> xlsxItemWriter
   ) {
-    totalProcessed += CHUNK_SIZE;
-    log.info("Number of beacons processed: " + totalProcessed);
     return stepBuilderFactory
       .get("backupBeaconToSpreadsheetStep")
       .<BeaconBackupItem, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
