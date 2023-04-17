@@ -8,6 +8,7 @@ import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
+import uk.gov.mca.beacons.api.export.xlsx.backup.BeaconBackupItem;
 
 @Getter
 @Setter
@@ -38,6 +39,14 @@ public class Registration implements Comparable<Registration> {
       .findFirst()
       .orElse(null);
   }
+
+  //  public void hydrateBeaconFromBeaconBackupItem(BeaconBackupItem beaconBackupItem) {
+  //    Beacon beacon = Beacon.builder()
+  //                    .id(new BeaconId(beaconBackupItem.getId()))
+  //                    .hexId()
+  //
+  //    setBeacon(beacon);
+  //  }
 
   // Sorts by beacon created date in descending order
   @Override

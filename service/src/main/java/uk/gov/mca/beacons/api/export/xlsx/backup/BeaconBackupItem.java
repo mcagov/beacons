@@ -70,7 +70,9 @@ public class BeaconBackupItem {
   @Setter
   private String referenceNumber;
 
+  @Type(type = "uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId")
   @Setter
+  @NotNull
   private AccountHolderId accountHolderId;
 
   @Setter

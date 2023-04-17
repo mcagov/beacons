@@ -8,6 +8,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
@@ -56,10 +57,11 @@ class BackupBeaconToSpreadsheetRowItemProcessor
     BeaconId modernBeaconId = new BeaconId(beaconItemId);
 
     if (beaconBackupItem.getCategory() == BeaconCategory.MODERN) {
-      Registration registration = registrationService.getByBeaconId(
-        modernBeaconId
+      Registration registration = registrationService.getRegistrationFromBeaconBackupItem(
+        beaconBackupItem
       );
-      List<Note> nonSystemNotes = registrationService.getNonSyetemNotesByBeaconId(
+
+      List<Note> nonSystemNotes = registrationService.getNonSystemNotesByBeaconId(
         modernBeaconId
       );
 

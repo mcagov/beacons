@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -31,6 +32,7 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
 
   public static final String ID_GENERATOR_NAME = "beacon-id-generator";
 
+  @Setter
   @Type(type = "uk.gov.mca.beacons.api.beacon.domain.BeaconId")
   @Column(nullable = false)
   @Id
@@ -90,9 +92,11 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
   @Enumerated(EnumType.STRING)
   private BeaconStatus beaconStatus;
 
+  @Setter
   @CreatedDate
   private OffsetDateTime createdDate;
 
+  @Setter
   @LastModifiedDate
   private OffsetDateTime lastModifiedDate;
 
