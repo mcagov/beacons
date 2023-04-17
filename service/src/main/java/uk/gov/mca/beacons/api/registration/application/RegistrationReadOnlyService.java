@@ -71,32 +71,28 @@ public class RegistrationReadOnlyService {
   private Beacon buildBeaconFromBeaconBackupItem(
     BeaconBackupItem beaconBackupItem
   ) {
-    Beacon beacon = new Beacon();
-    beacon.setId(new BeaconId(beaconBackupItem.getId()));
-    beacon.setHexId(beaconBackupItem.getHexId());
-    beacon.setBeaconType(beaconBackupItem.getBeaconType());
-    beacon.setBeaconStatus(
-      BeaconStatus.valueOf(beaconBackupItem.getBeaconStatus())
-    );
-    beacon.setCsta(beaconBackupItem.getCsta());
-    beacon.setModel(beaconBackupItem.getModel());
-    beacon.setMti(beaconBackupItem.getMti());
-    beacon.setAccountHolderId(beaconBackupItem.getAccountHolderId());
-    beacon.setChkCode(beaconBackupItem.getChkCode());
-    beacon.setCoding(beaconBackupItem.getCoding());
-    beacon.setCreatedDate(beaconBackupItem.getCreatedDate());
-    beacon.setLastModifiedDate(beaconBackupItem.getLastModifiedDate());
-    beacon.setLastServicedDate(beaconBackupItem.getLastServicedDate());
-    beacon.setSvdr(beaconBackupItem.getSvdr());
-    beacon.setBatteryExpiryDate(beaconBackupItem.getBatteryExpiryDate());
-    beacon.setManufacturer(beaconBackupItem.getManufacturer());
-    beacon.setManufacturerSerialNumber(
-      beaconBackupItem.getManufacturerSerialNumber()
-    );
-    beacon.setProtocol(beaconBackupItem.getProtocol());
-    beacon.setReferenceNumber(beaconBackupItem.getReferenceNumber());
-
-    return beacon;
+    return Beacon
+      .builder()
+      .id(new BeaconId(beaconBackupItem.getId()))
+      .hexId(beaconBackupItem.getHexId())
+      .beaconType(beaconBackupItem.getBeaconType())
+      .beaconStatus(BeaconStatus.valueOf(beaconBackupItem.getBeaconStatus()))
+      .csta(beaconBackupItem.getCsta())
+      .model(beaconBackupItem.getModel())
+      .mti(beaconBackupItem.getMti())
+      .accountHolderId(beaconBackupItem.getAccountHolderId())
+      .chkCode(beaconBackupItem.getChkCode())
+      .coding(beaconBackupItem.getCoding())
+      .createdDate(beaconBackupItem.getCreatedDate())
+      .lastModifiedDate(beaconBackupItem.getLastModifiedDate())
+      .lastServicedDate(beaconBackupItem.getLastServicedDate())
+      .svdr(beaconBackupItem.getSvdr())
+      .batteryExpiryDate(beaconBackupItem.getBatteryExpiryDate())
+      .manufacturer(beaconBackupItem.getManufacturer())
+      .manufacturerSerialNumber(beaconBackupItem.getManufacturerSerialNumber())
+      .protocol(beaconBackupItem.getProtocol())
+      .referenceNumber(beaconBackupItem.getReferenceNumber())
+      .build();
   }
 
   public List<Note> getNonSystemNotesByBeaconId(BeaconId beaconId) {

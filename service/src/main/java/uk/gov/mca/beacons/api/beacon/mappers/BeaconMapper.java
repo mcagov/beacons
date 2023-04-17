@@ -15,7 +15,7 @@ import uk.gov.mca.beacons.api.dto.WrapperDTO;
 public class BeaconMapper {
 
   public Beacon fromDTO(CreateBeaconDTO dto) {
-    Beacon beacon = new Beacon();
+    Beacon beacon = Beacon.builder().build();
     beacon.setHexId(dto.getHexId());
     beacon.setManufacturer(dto.getManufacturer());
     beacon.setModel(dto.getModel());
@@ -92,7 +92,7 @@ public class BeaconMapper {
   }
 
   public Beacon fromDTO(UpdateBeaconDTO dto) {
-    Beacon beacon = new Beacon();
+    Beacon beacon = Beacon.builder().build();
     var attributes = dto.getAttributes();
 
     beacon.setHexId(attributes.getHexId());

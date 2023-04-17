@@ -97,7 +97,7 @@ public class DataSeeder implements CommandLineRunner {
   }
 
   Beacon seedBeacon(AccountHolderId accountHolderId) {
-    Beacon beacon = new Beacon();
+    Beacon beacon = Beacon.builder().build();
     beacon.setBeaconStatus(BeaconStatus.NEW);
     beacon.setAccountHolderId(accountHolderId);
     beacon.setHexId(faker.regexify("1D[A-F0-9]{13}"));

@@ -335,7 +335,7 @@ class ExportMapperUnitTest {
   @Test
   public void toLabelDTO_whenTheGivenRegistrationHasNoLastModifiedDate_shouldMapProofOfRegistrationDateAsDefaultDate() {
     Registration registration = new Registration();
-    Beacon beacon = new Beacon();
+    Beacon beacon = Beacon.builder().build();
     BeaconUse mainUse = new BeaconUse();
     ArrayList<BeaconUse> uses = new ArrayList<>();
 
@@ -363,7 +363,7 @@ class ExportMapperUnitTest {
   @Test
   public void toLabelDTO_whenTheGivenRegistrationIsValid_shouldMapToLabelDTO() {
     Registration registration = new Registration();
-    Beacon beacon = new Beacon();
+    Beacon beacon = Beacon.builder().build();
     BeaconUse mainUse = new BeaconUse();
     ArrayList<BeaconUse> uses = new ArrayList<BeaconUse>();
 
