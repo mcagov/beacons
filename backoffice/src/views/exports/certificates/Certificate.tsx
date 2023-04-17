@@ -432,6 +432,14 @@ const LandUse: FunctionComponent<UseProps> = ({
           />
         )}
 
+        {use.windfarmPeopleCount && (
+          <CertificateField
+            classes="half"
+            title="Windfarm People Count"
+            value={use.windfarmPeopleCount}
+          />
+        )}
+
         {use.workingRemotelyPeopleCount && (
           <CertificateField
             classes="half"

@@ -223,8 +223,6 @@ const MaritimeUse: FunctionComponent<UseProps> = ({
           value={use.mmsiNumber}
         />
 
-        <br />
-
         <CertificateField
           classes="half"
           title="Fishing Vessel Port ID &amp; Numbers"
@@ -400,7 +398,6 @@ const AviationUse: FunctionComponent<UseProps> = ({
             value={use.radioSystems[key]}
           />
         ))}
-        <br />
         <CertificateField classes="full" title="Notes" value={use.notes} />
       </div>
     </div>
@@ -448,7 +445,6 @@ const LandUse: FunctionComponent<UseProps> = ({
             value={use.radioSystems[key]}
           />
         ))}
-        <br />
         <CertificateField classes="full" title="Notes" value={use.notes} />
       </div>
     </div>
@@ -526,8 +522,6 @@ export const GenericUse: FunctionComponent<UseProps> = ({
           title="MMSI Number"
           value={use.mmsiNumber}
         />
-
-        <br />
 
         <CertificateField
           classes="full"
