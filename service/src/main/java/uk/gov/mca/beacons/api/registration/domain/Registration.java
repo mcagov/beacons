@@ -40,14 +40,6 @@ public class Registration implements Comparable<Registration> {
       .orElse(null);
   }
 
-  //  public void hydrateBeaconFromBeaconBackupItem(BeaconBackupItem beaconBackupItem) {
-  //    Beacon beacon = Beacon.builder()
-  //                    .id(new BeaconId(beaconBackupItem.getId()))
-  //                    .hexId()
-  //
-  //    setBeacon(beacon);
-  //  }
-
   // Sorts by beacon created date in descending order
   @Override
   public int compareTo(@NotNull Registration o) {

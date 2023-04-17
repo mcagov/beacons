@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.beacon.domain.BeaconReadOnlyRepository;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerReadOnlyRepository;
@@ -26,14 +25,12 @@ public class RegistrationReadOnlyService {
 
   private final BeaconOwnerReadOnlyRepository beaconOwnerRepository;
   private final BeaconUseReadOnlyRepository beaconUseRepository;
-  private final BeaconReadOnlyRepository beaconRepository;
   private final EmergencyContactReadOnlyRepository emergencyContactRepository;
 
   private final NoteReadOnlyRepository noteRepository;
 
   @Autowired
   public RegistrationReadOnlyService(
-    BeaconReadOnlyRepository beaconRepository,
     BeaconOwnerReadOnlyRepository beaconOwnerRepository,
     BeaconUseReadOnlyRepository beaconUseRepository,
     EmergencyContactReadOnlyRepository emergencyContactRepository,
@@ -41,53 +38,14 @@ public class RegistrationReadOnlyService {
   ) {
     this.beaconOwnerRepository = beaconOwnerRepository;
     this.beaconUseRepository = beaconUseRepository;
-    this.beaconRepository = beaconRepository;
     this.emergencyContactRepository = emergencyContactRepository;
     this.noteRepository = noteRepository;
-  }
-
-  public List<Registration> getByBeaconIds(List<BeaconId> beaconIds) {
-    List<Registration> registrations = beaconIds
-      .stream()
-      .map(id -> getByBeaconId(id))
-      .collect(Collectors.toList());
-
-    return registrations;
-  }
-
-  public Registration getByBeaconId(BeaconId beaconId) {
-    Beacon beacon = beaconRepository.findById(beaconId).orElse(null);
-
-    if (beacon == null) {
-      return null;
-    }
-
-    BeaconOwner beaconOwner = beaconOwnerRepository
-      .findBeaconOwnerByBeaconId(beaconId)
-      .orElse(null);
-    List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
-      beaconId
-    );
-    List<EmergencyContact> emergencyContacts = emergencyContactRepository.findEmergencyContactsByBeaconId(
-      beaconId
-    );
-
-    return Registration
-      .builder()
-      .beacon(beacon)
-      .beaconOwner(beaconOwner)
-      .beaconUses(beaconUses)
-      .emergencyContacts(emergencyContacts)
-      .build();
   }
 
   public Registration getRegistrationFromBeaconBackupItem(
     BeaconBackupItem beaconBackupItem
   ) {
-    Registration registration = Registration.builder().build();
-    registration =
-      hydrateBeaconFromBeaconBackupItem(registration, beaconBackupItem);
-    BeaconId beaconId = registration.getBeacon().getId();
+    BeaconId beaconId = new BeaconId(beaconBackupItem.getId());
 
     BeaconOwner beaconOwner = beaconOwnerRepository
       .findBeaconOwnerByBeaconId(beaconId)
@@ -99,15 +57,18 @@ public class RegistrationReadOnlyService {
       beaconId
     );
 
-    registration.setBeaconOwner(beaconOwner);
-    registration.setBeaconUses(beaconUses);
-    registration.setEmergencyContacts(emergencyContacts);
+    Registration registration = Registration
+      .builder()
+      .beacon(buildBeaconFromBeaconBackupItem(beaconBackupItem))
+      .beaconOwner(beaconOwner)
+      .beaconUses(beaconUses)
+      .emergencyContacts(emergencyContacts)
+      .build();
 
     return registration;
   }
 
-  private Registration hydrateBeaconFromBeaconBackupItem(
-    Registration registration,
+  private Beacon buildBeaconFromBeaconBackupItem(
     BeaconBackupItem beaconBackupItem
   ) {
     Beacon beacon = new Beacon();
@@ -135,9 +96,7 @@ public class RegistrationReadOnlyService {
     beacon.setProtocol(beaconBackupItem.getProtocol());
     beacon.setReferenceNumber(beaconBackupItem.getReferenceNumber());
 
-    registration.setBeacon(beacon);
-
-    return registration;
+    return beacon;
   }
 
   public List<Note> getNonSystemNotesByBeaconId(BeaconId beaconId) {
