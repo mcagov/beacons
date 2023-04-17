@@ -52,6 +52,8 @@ public class BeaconBackupItem {
   @LastModifiedDate
   private OffsetDateTime lastModifiedDate;
 
+  // modern beacon fields
+
   // legacy beacon fields
   @Setter
   @Type(type = "json")
