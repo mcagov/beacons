@@ -299,7 +299,7 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
   }
 
   public Map<String, String> getCommunicationTypes() {
-    Map<String, String> communicationTypes = new HashMap<String, String>();
+    Map<String, String> communicationTypes = new LinkedHashMap<>();
 
     if (BooleanUtils.isTrue(vhfRadio)) {
       communicationTypes.put("VHF", "");
