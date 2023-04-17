@@ -54,14 +54,17 @@ public class EmergencyContactIntegrationTest extends BaseIntegrationTest {
   }
 
   private BeaconId createBeacon(AccountHolderId accountHolderId) {
-    Beacon beacon = Beacon.builder().build();
-    beacon.setBeaconType("SSAS");
-    beacon.setBeaconStatus(BeaconStatus.NEW);
-    beacon.setHexId("1D1234123412345");
-    beacon.setManufacturer("Test Manufacturer");
-    beacon.setModel("Test model");
-    beacon.setManufacturerSerialNumber("Test serial number");
-    beacon.setAccountHolderId(accountHolderId);
+    Beacon beacon = Beacon
+      .builder()
+      .beaconStatus(BeaconStatus.NEW)
+      .beaconType("SSAS")
+      .hexId("1D1234123412345")
+      .manufacturer("Test Manufacturer")
+      .accountHolderId(accountHolderId)
+      .manufacturerSerialNumber("Test serial number")
+      .model("Test model")
+      .accountHolderId(accountHolderId)
+      .build();
 
     Beacon savedBeacon = beaconRepository.save(beacon);
     return savedBeacon.getId();

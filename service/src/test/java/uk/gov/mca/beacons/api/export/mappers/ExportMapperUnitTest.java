@@ -335,14 +335,17 @@ class ExportMapperUnitTest {
   @Test
   public void toLabelDTO_whenTheGivenRegistrationHasNoLastModifiedDate_shouldMapProofOfRegistrationDateAsDefaultDate() {
     Registration registration = new Registration();
-    Beacon beacon = Beacon.builder().build();
     BeaconUse mainUse = new BeaconUse();
     ArrayList<BeaconUse> uses = new ArrayList<>();
 
-    beacon.setBeaconStatus(BeaconStatus.DELETED);
-    beacon.setBeaconType("LAND");
-    beacon.setCoding("1246483935");
-    beacon.setManufacturer("HONDA");
+    Beacon beacon = Beacon
+      .builder()
+      .beaconStatus(BeaconStatus.DELETED)
+      .beaconType("LAND")
+      .coding("1246483935")
+      .manufacturer("HONDA")
+      .hexId("1DHF648485N")
+      .build();
 
     mainUse.setMainUse(true);
     mainUse.setBeaconLocation("In my backpack");
@@ -363,15 +366,17 @@ class ExportMapperUnitTest {
   @Test
   public void toLabelDTO_whenTheGivenRegistrationIsValid_shouldMapToLabelDTO() {
     Registration registration = new Registration();
-    Beacon beacon = Beacon.builder().build();
     BeaconUse mainUse = new BeaconUse();
     ArrayList<BeaconUse> uses = new ArrayList<BeaconUse>();
 
-    beacon.setBeaconStatus(BeaconStatus.DELETED);
-    beacon.setBeaconType("LAND");
-    beacon.setCoding("1246483935");
-    beacon.setManufacturer("HONDA");
-    beacon.setHexId("1DHF648485N");
+    Beacon beacon = Beacon
+      .builder()
+      .beaconStatus(BeaconStatus.DELETED)
+      .beaconType("LAND")
+      .coding("1246483935")
+      .manufacturer("HONDA")
+      .hexId("1DHF648485N")
+      .build();
 
     mainUse.setMainUse(true);
     mainUse.setBeaconLocation("In my backpack");
