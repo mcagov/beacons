@@ -300,16 +300,10 @@ public class ExportMapper {
 
   public BeaconExportDTO toLegacyBeaconExportDTO(BeaconBackupItem beacon) {
     LegacyBeaconDetails details = beacon.getData().getBeacon();
-    //    LegacyUse mainUse = beacon.getData().getMainUse();
 
     return BeaconExportDTO
       .builder()
       .type("Legacy")
-      //      .name(
-      //        mainUse != null
-      //          ? BeaconsStringUtils.valueOrEmpty(mainUse.getName())
-      //          : ""
-      //      )
       .id(beacon.getId().toString())
       .proofOfRegistrationDate(OffsetDateTime.now())
       .lastModifiedDate(beacon.getLastModifiedDate())
