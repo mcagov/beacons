@@ -48,7 +48,7 @@ def populateBeacons
 
 		use_activities = ["Maritime", "Sailing", "Climbing"].sample
 
-		Faker::Number.between(from: 1, to: 3).times do |useIndex|
+		Faker::Number.between(from: 1, to: 2).times do |useIndex|
 			environment = ["MARITIME","AIRCRAFT","RIG/PLATFORM","LAND","MOD"].sample
 			use_activities = "#{environment} (#{useLookup[environment].sample})"
 			main_use = true

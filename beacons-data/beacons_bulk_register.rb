@@ -171,8 +171,8 @@ Faker::Number.between(from: 5, to: 6).times do
   emergency_contact_telephone_2, created_date, created_date])
 end
 
-Faker::Number.between(from: 3, to: 5).times do
-        # setup dummy beacon use(s) (do 1-3 times)
+Faker::Number.between(from: 1, to: 2).times do
+        # setup dummy beacon use(s) (do 1-2 times)
         environment = ["AVIATION", "MARITIME", "LAND"].sample
 
         if environment == "AVIATION"
