@@ -58,16 +58,15 @@ public class BeaconUseIntegrationTest extends BaseIntegrationTest {
   }
 
   private BeaconId createBeacon(AccountHolderId accountHolderId) {
-    Beacon beacon = Beacon
-      .builder()
-      .beaconType("SSAS")
-      .beaconStatus(BeaconStatus.NEW)
-      .hexId("1D1234123412345")
-      .manufacturer("Test Manufacturer")
-      .model("Test model")
-      .manufacturerSerialNumber("Test serial number")
-      .accountHolderId(accountHolderId)
-      .build();
+    Beacon beacon = new Beacon();
+
+    beacon.setBeaconType("SSAS");
+    beacon.setBeaconStatus(BeaconStatus.NEW);
+    beacon.setHexId("1D1234123412345");
+    beacon.setManufacturer("Test Manufacturer");
+    beacon.setModel("Test model");
+    beacon.setManufacturerSerialNumber("Test serial number");
+    beacon.setAccountHolderId(accountHolderId);
 
     Beacon savedBeacon = beaconRepository.save(beacon);
     return savedBeacon.getId();

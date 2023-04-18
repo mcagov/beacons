@@ -97,17 +97,15 @@ public class DataSeeder implements CommandLineRunner {
   }
 
   Beacon seedBeacon(AccountHolderId accountHolderId) {
-    Beacon beacon = Beacon
-      .builder()
-      .beaconStatus(BeaconStatus.NEW)
-      .beaconType("LAND")
-      .coding(faker.ancient().primordial())
-      .hexId(faker.regexify("1D[A-F0-9]{13}"))
-      .manufacturer(faker.gameOfThrones().house())
-      .accountHolderId(accountHolderId)
-      .manufacturerSerialNumber(faker.bothify("#?#?#?#?#?#???##"))
-      .model(faker.gameOfThrones().dragon())
-      .build();
+    Beacon beacon = new Beacon();
+    beacon.setBeaconStatus(BeaconStatus.NEW);
+    beacon.setBeaconType("LAND");
+    beacon.setCoding(faker.ancient().primordial());
+    beacon.setHexId(faker.regexify("1D[A-F0-9]{13}"));
+    beacon.setManufacturer(faker.gameOfThrones().house());
+    beacon.setAccountHolderId(accountHolderId);
+    beacon.setManufacturerSerialNumber(faker.bothify("#?#?#?#?#?#???##"));
+    beacon.setModel(faker.gameOfThrones().dragon());
 
     beacon.registerCreatedEvent();
 

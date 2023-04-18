@@ -21,7 +21,6 @@ import uk.gov.mca.beacons.api.mappers.ModelPatcher;
 import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
 
 @Getter
-@Builder
 @EntityListeners(AuditingEntityListener.class)
 @Entity(name = "beacon")
 @NamedQuery(
@@ -33,6 +32,7 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
 
   public static final String ID_GENERATOR_NAME = "beacon-id-generator";
 
+  @Setter
   @Type(type = "uk.gov.mca.beacons.api.beacon.domain.BeaconId")
   @Column(nullable = false)
   @Id
@@ -92,9 +92,11 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
   @Enumerated(EnumType.STRING)
   private BeaconStatus beaconStatus;
 
+  @Setter
   @CreatedDate
   private OffsetDateTime createdDate;
 
+  @Setter
   @LastModifiedDate
   private OffsetDateTime lastModifiedDate;
 

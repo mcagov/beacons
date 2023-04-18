@@ -21,7 +21,7 @@ public class BeaconIntegrationTest extends BaseIntegrationTest {
     // setup
     AccountHolderId accountHolderId = createAccountHolder();
 
-    Beacon beacon = Beacon.builder().build();
+    Beacon beacon = new Beacon();
     beacon.setBeaconType("SSAS");
     beacon.setBeaconStatus(BeaconStatus.NEW);
     beacon.setHexId("1D1234123412345");

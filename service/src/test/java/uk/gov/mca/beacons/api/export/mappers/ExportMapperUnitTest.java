@@ -338,14 +338,14 @@ class ExportMapperUnitTest {
     BeaconUse mainUse = new BeaconUse();
     ArrayList<BeaconUse> uses = new ArrayList<>();
 
-    Beacon beacon = Beacon
-      .builder()
-      .beaconStatus(BeaconStatus.DELETED)
-      .beaconType("LAND")
-      .coding("1246483935")
-      .manufacturer("HONDA")
-      .hexId("1DHF648485N")
-      .build();
+    Beacon beacon = new Beacon();
+
+    beacon.setBeaconType("SSAS");
+    beacon.setBeaconStatus(BeaconStatus.NEW);
+    beacon.setHexId("1D1234123412345");
+    beacon.setManufacturer("Test Manufacturer");
+    beacon.setModel("Test model");
+    beacon.setManufacturerSerialNumber("Test serial number");
 
     mainUse.setMainUse(true);
     mainUse.setBeaconLocation("In my backpack");
@@ -368,15 +368,15 @@ class ExportMapperUnitTest {
     Registration registration = new Registration();
     BeaconUse mainUse = new BeaconUse();
     ArrayList<BeaconUse> uses = new ArrayList<BeaconUse>();
+    Beacon beacon = new Beacon();
 
-    Beacon beacon = Beacon
-      .builder()
-      .beaconStatus(BeaconStatus.DELETED)
-      .beaconType("LAND")
-      .coding("1246483935")
-      .manufacturer("HONDA")
-      .hexId("1DHF648485N")
-      .build();
+    beacon.setBeaconType("SSAS");
+    beacon.setBeaconStatus(BeaconStatus.NEW);
+    beacon.setHexId("1D1234123412345");
+    beacon.setManufacturer("Test Manufacturer");
+    beacon.setModel("Test model");
+    beacon.setManufacturerSerialNumber("Test serial number");
+    beacon.setCoding("738248246");
 
     mainUse.setMainUse(true);
     mainUse.setBeaconLocation("In my backpack");
