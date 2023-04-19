@@ -17,7 +17,7 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
  */
 public class BeaconBackupItemReaderFactory {
 
-  private static final int chunkSize = 50;
+  private static final int chunkSize = 500;
 
   public static JpaPagingItemReader<BeaconBackupItem> getItemReader(
     EntityManagerFactory entityManagerFactory
