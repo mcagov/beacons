@@ -1,8 +1,6 @@
 package uk.gov.mca.beacons.api.registration.application;
 
-import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,6 @@ import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.note.domain.NoteReadOnlyRepository;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 
-@Slf4j
 @Transactional
 @Service("RegistrationReadOnlyService")
 public class RegistrationReadOnlyService {
@@ -50,46 +47,17 @@ public class RegistrationReadOnlyService {
     BeaconBackupItem beaconBackupItem
   ) {
     BeaconId beaconId = new BeaconId(beaconBackupItem.getId());
-    UUID unwrappedBeaconId = beaconId.unwrap();
 
-    log.info(
-      "start findBeaconOwnerByBeaconId " +
-      unwrappedBeaconId +
-      OffsetDateTime.now()
-    );
     BeaconOwner beaconOwner = beaconOwnerRepository
       .findBeaconOwnerByBeaconId(beaconId)
       .orElse(null);
-    log.info(
-      "end findBeaconOwnerByBeaconId " +
-      unwrappedBeaconId +
-      OffsetDateTime.now()
-    );
 
-    log.info(
-      "start findBeaconUsesByBeaconId " +
-      unwrappedBeaconId +
-      OffsetDateTime.now()
-    );
     List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
       beaconId
     );
-    log.info(
-      "end findBeaconUsesByBeaconId " + unwrappedBeaconId + OffsetDateTime.now()
-    );
 
-    log.info(
-      "start findEmergencyContactsByBeaconId " +
-      unwrappedBeaconId +
-      OffsetDateTime.now()
-    );
     List<EmergencyContact> emergencyContacts = emergencyContactRepository.findEmergencyContactsByBeaconId(
       beaconId
-    );
-    log.info(
-      "end findEmergencyContactsByBeaconId " +
-      unwrappedBeaconId +
-      OffsetDateTime.now()
     );
 
     Registration registration = Registration

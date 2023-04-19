@@ -1,7 +1,6 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +9,6 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
@@ -20,7 +18,6 @@ import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.application.RegistrationReadOnlyService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 
-@Slf4j
 @Component
 class BackupBeaconToSpreadsheetRowItemProcessor
   implements ItemProcessor<BeaconBackupItem, BackupSpreadsheetRow> {
@@ -64,16 +61,8 @@ class BackupBeaconToSpreadsheetRowItemProcessor
         beaconBackupItem
       );
 
-      log.info(
-        "start getNonSystemNotesByBeaconId " +
-        beaconItemId +
-        OffsetDateTime.now()
-      );
       List<Note> nonSystemNotes = registrationService.getNonSystemNotesByBeaconId(
         modernBeaconId
-      );
-      log.info(
-        "end getNonSystemNotesByBeaconId " + beaconItemId + OffsetDateTime.now()
       );
 
       return new BackupSpreadsheetRow(
