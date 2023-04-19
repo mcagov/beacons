@@ -137,12 +137,12 @@ public class BackupSpreadsheetRow {
 
     this.id = Objects.requireNonNull(legacyBeacon.getId());
 
-    setLegacyBeaconDetails(mappedLegacyBeacon, dateFormatter);
+    populateLegacyBeaconDetails(mappedLegacyBeacon, dateFormatter);
 
     setNotes(legacyBeacon.getData().getBeacon().getNote());
-    setLegacyUses(mappedLegacyBeacon.getUses());
-    setLegacyOwners(mappedLegacyBeacon.getOwners());
-    setLegacyEmergencyContacts(mappedLegacyBeacon.getEmergencyContacts());
+    populateLegacyUses(mappedLegacyBeacon.getUses());
+    populateLegacyOwners(mappedLegacyBeacon.getOwners());
+    populateLegacyEmergencyContacts(mappedLegacyBeacon.getEmergencyContacts());
   }
 
   public BackupSpreadsheetRow(
@@ -158,15 +158,15 @@ public class BackupSpreadsheetRow {
 
     this.id = registration.getBeacon().getId().unwrap();
 
-    setModernBeaconDetails(beacon, dateFormatter);
+    populateModernBeaconDetails(beacon, dateFormatter);
 
     setNotes(getStringifiedNotes(nonSystemNotes));
-    setUses(registration.getBeaconUses(), beaconUseMapper);
-    setModernOwners(owners);
-    setModernEmergencyContacts(registration.getEmergencyContacts());
+    populateUses(registration.getBeaconUses(), beaconUseMapper);
+    populateModernOwners(owners);
+    populateModernEmergencyContacts(registration.getEmergencyContacts());
   }
 
-  protected void setLegacyBeaconDetails(
+  protected void populateLegacyBeaconDetails(
     BeaconExportDTO mappedLegacyBeacon,
     DateTimeFormatter dateFormatter
   ) {
@@ -212,7 +212,7 @@ public class BackupSpreadsheetRow {
     this.cstaNumber = mappedLegacyBeacon.getCstaNumber();
   }
 
-  protected void setModernBeaconDetails(
+  protected void populateModernBeaconDetails(
     Beacon beacon,
     DateTimeFormatter dateFormatter
   ) {
@@ -256,7 +256,7 @@ public class BackupSpreadsheetRow {
       : "";
   }
 
-  protected void setModernOwners(List<BeaconOwner> beaconOwners) {
+  protected void populateModernOwners(List<BeaconOwner> beaconOwners) {
     this.owners =
       beaconOwners != null
         ? JsonSerialiser
@@ -265,7 +265,7 @@ public class BackupSpreadsheetRow {
         : "";
   }
 
-  protected void setUses(
+  protected void populateUses(
     List<BeaconUse> beaconUses,
     BeaconUseMapper beaconUseMapper
   ) throws JsonProcessingException {
@@ -281,7 +281,7 @@ public class BackupSpreadsheetRow {
         : "";
   }
 
-  protected void setModernEmergencyContacts(
+  protected void populateModernEmergencyContacts(
     List<EmergencyContact> emergencyContacts
   ) {
     this.emergencyContacts =
@@ -292,14 +292,14 @@ public class BackupSpreadsheetRow {
         : "";
   }
 
-  protected void setLegacyUses(List<BeaconExportUseDTO> legacyUses) {
+  protected void populateLegacyUses(List<BeaconExportUseDTO> legacyUses) {
     this.uses =
       legacyUses != null
         ? JsonSerialiser.mapLegacyUsesToJsonArray(legacyUses).toString()
         : "";
   }
 
-  protected void setLegacyOwners(List<BeaconExportOwnerDTO> legacyOwners) {
+  protected void populateLegacyOwners(List<BeaconExportOwnerDTO> legacyOwners) {
     this.owners =
       legacyOwners != null
         ? JsonSerialiser
@@ -308,7 +308,7 @@ public class BackupSpreadsheetRow {
         : "";
   }
 
-  protected void setLegacyEmergencyContacts(
+  protected void populateLegacyEmergencyContacts(
     List<EmergencyContactDTO> emergencyContacts
   ) {
     this.emergencyContacts =

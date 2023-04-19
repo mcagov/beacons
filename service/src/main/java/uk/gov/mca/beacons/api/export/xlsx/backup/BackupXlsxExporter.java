@@ -65,7 +65,7 @@ public class BackupXlsxExporter {
         )
       );
     } catch (Exception e) {
-      Exception ex = e;
+      log.error(e.getMessage());
     }
   }
 }

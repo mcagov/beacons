@@ -36,19 +36,4 @@ public class BeaconExportRigUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String areaOfOperation;
-
-  @Valid
-  private String nsn;
-
-  @Valid
-  private String beaconPartNumber;
-
-  @Valid
-  private String pennantNumber;
-
-  @Valid
-  private String aircraftDescription;
-
-  @Valid
-  private String survivalCraftType;
 }

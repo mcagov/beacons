@@ -7,8 +7,6 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 @Slf4j
 public class BackupChunkListener implements ChunkListener {
 
-  private final int loggingInterval = 1000;
-
   @Override
   public void beforeChunk(ChunkContext chunkContext) {}
 
