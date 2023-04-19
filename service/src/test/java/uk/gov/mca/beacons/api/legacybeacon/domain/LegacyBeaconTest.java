@@ -1,11 +1,6 @@
 package uk.gov.mca.beacons.api.legacybeacon.domain;
 
-import static uk.gov.mca.beacons.api.legacybeacon.LegacyBeaconTestUtils.initLegacyBeacon;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.mca.beacons.api.legacybeacon.LegacyBeaconTestUtils;
 
 public class LegacyBeaconTest {

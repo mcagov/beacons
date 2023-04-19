@@ -8,6 +8,7 @@ import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
+import uk.gov.mca.beacons.api.export.xlsx.backup.BeaconBackupItem;
 
 @Getter
 @Setter

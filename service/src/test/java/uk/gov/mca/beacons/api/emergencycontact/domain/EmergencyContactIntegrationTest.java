@@ -55,6 +55,7 @@ public class EmergencyContactIntegrationTest extends BaseIntegrationTest {
 
   private BeaconId createBeacon(AccountHolderId accountHolderId) {
     Beacon beacon = new Beacon();
+
     beacon.setBeaconType("SSAS");
     beacon.setBeaconStatus(BeaconStatus.NEW);
     beacon.setHexId("1D1234123412345");

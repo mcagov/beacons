@@ -1,38 +1,32 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
-import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
-import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerReadOnlyRepository;
-import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
-import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseReadOnlyRepository;
-import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
-import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContactReadOnlyRepository;
+import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
-import uk.gov.mca.beacons.api.note.application.NoteService;
+import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.note.domain.Note;
-import uk.gov.mca.beacons.api.registration.application.RegistrationService;
+import uk.gov.mca.beacons.api.registration.application.RegistrationReadOnlyService;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
 
 @Component
 class BackupBeaconToSpreadsheetRowItemProcessor
-  implements ItemProcessor<Beacon, BackupSpreadsheetRow> {
+  implements ItemProcessor<BeaconBackupItem, BackupSpreadsheetRow> {
 
-  private final RegistrationService registrationService;
-  private final NoteService noteService;
-  private final AccountHolderService accountHolderService;
+  private final RegistrationReadOnlyService registrationService;
+  private final LegacyBeaconService legacyBeaconService;
+  private ExportMapper exportMapper;
 
-  private final ExportMapper exportMapper;
+  private final BeaconUseMapper beaconUseMapper;
 
   private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
     "dd-MM-yyyy"
@@ -40,35 +34,49 @@ class BackupBeaconToSpreadsheetRowItemProcessor
 
   @Autowired
   public BackupBeaconToSpreadsheetRowItemProcessor(
-    RegistrationService registrationService,
-    NoteService noteService,
-    AccountHolderService accountHolderService,
-    ExportMapper exportMapper
+    RegistrationReadOnlyService registrationService,
+    LegacyBeaconService legacyBeaconService,
+    ExportMapper exportMapper,
+    BeaconUseMapper beaconUseMapper
   ) {
     this.registrationService = registrationService;
-    this.noteService = noteService;
-    this.accountHolderService = accountHolderService;
+    this.legacyBeaconService = legacyBeaconService;
     this.exportMapper = exportMapper;
+    this.beaconUseMapper = beaconUseMapper;
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
+  @Transactional(
+    readOnly = true,
+    noRollbackFor = ResourceNotFoundException.class
+  )
   @Override
-  public BackupSpreadsheetRow process(Beacon beacon) {
-    BeaconId beaconId = beacon.getId();
-    Registration registration = registrationService.getByBeaconId(beaconId);
+  public BackupSpreadsheetRow process(BeaconBackupItem beaconBackupItem)
+    throws JsonProcessingException {
+    UUID beaconItemId = beaconBackupItem.getId();
 
-    AccountHolder accountHolder = accountHolderService
-      .getAccountHolder(beacon.getAccountHolderId())
-      .orElseThrow(ResourceNotFoundException::new);
+    BeaconId modernBeaconId = new BeaconId(beaconItemId);
 
-    List<Note> notes = noteService.getNonSystemNotes(beaconId);
+    if (beaconBackupItem.getCategory() == BeaconCategory.MODERN) {
+      Registration registration = registrationService.getRegistrationFromBeaconBackupItem(
+        beaconBackupItem
+      );
 
-    return new BackupSpreadsheetRow(
-      registration,
-      accountHolder,
-      notes,
-      exportMapper,
-      dateFormatter
-    );
+      List<Note> nonSystemNotes = registrationService.getNonSystemNotesByBeaconId(
+        modernBeaconId
+      );
+
+      return new BackupSpreadsheetRow(
+        registration,
+        nonSystemNotes,
+        beaconUseMapper,
+        dateFormatter
+      );
+    } else {
+      return new BackupSpreadsheetRow(
+        beaconBackupItem,
+        exportMapper,
+        dateFormatter
+      );
+    }
   }
 }

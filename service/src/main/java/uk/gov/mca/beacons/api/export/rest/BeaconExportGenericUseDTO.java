@@ -108,4 +108,10 @@ public class BeaconExportGenericUseDTO extends BeaconExportUseDTO {
 
   @Valid
   private String tripInformation;
+
+  @Valid
+  private String modType;
+
+  @Valid
+  private String modVariant;
 }

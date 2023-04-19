@@ -24,6 +24,11 @@ import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
   query = "select b from LegacyBeacon b order by lastModifiedDate",
   hints = @QueryHint(name = "org.hibernate.readOnly", value = "true")
 )
+@NamedQuery(
+  name = "BackupPagingLegacyBeaconReader",
+  query = "select b from LegacyBeacon b order by lastModifiedDate desc",
+  hints = @QueryHint(name = "org.hibernate.readOnly", value = "true")
+)
 public class LegacyBeacon
   extends BaseAggregateRoot<LegacyBeaconId>
   implements Comparable<LegacyBeacon> {

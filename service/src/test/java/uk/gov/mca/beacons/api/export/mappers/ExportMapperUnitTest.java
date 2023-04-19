@@ -1,19 +1,12 @@
 package uk.gov.mca.beacons.api.export.mappers;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang3.BooleanUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
@@ -342,14 +335,17 @@ class ExportMapperUnitTest {
   @Test
   public void toLabelDTO_whenTheGivenRegistrationHasNoLastModifiedDate_shouldMapProofOfRegistrationDateAsDefaultDate() {
     Registration registration = new Registration();
-    Beacon beacon = new Beacon();
     BeaconUse mainUse = new BeaconUse();
     ArrayList<BeaconUse> uses = new ArrayList<>();
 
-    beacon.setBeaconStatus(BeaconStatus.DELETED);
-    beacon.setBeaconType("LAND");
-    beacon.setCoding("1246483935");
-    beacon.setManufacturer("HONDA");
+    Beacon beacon = new Beacon();
+
+    beacon.setBeaconType("SSAS");
+    beacon.setBeaconStatus(BeaconStatus.NEW);
+    beacon.setHexId("1D1234123412345");
+    beacon.setManufacturer("Test Manufacturer");
+    beacon.setModel("Test model");
+    beacon.setManufacturerSerialNumber("Test serial number");
 
     mainUse.setMainUse(true);
     mainUse.setBeaconLocation("In my backpack");
@@ -370,15 +366,17 @@ class ExportMapperUnitTest {
   @Test
   public void toLabelDTO_whenTheGivenRegistrationIsValid_shouldMapToLabelDTO() {
     Registration registration = new Registration();
-    Beacon beacon = new Beacon();
     BeaconUse mainUse = new BeaconUse();
     ArrayList<BeaconUse> uses = new ArrayList<BeaconUse>();
+    Beacon beacon = new Beacon();
 
-    beacon.setBeaconStatus(BeaconStatus.DELETED);
-    beacon.setBeaconType("LAND");
-    beacon.setCoding("1246483935");
-    beacon.setManufacturer("HONDA");
-    beacon.setHexId("1DHF648485N");
+    beacon.setBeaconType("SSAS");
+    beacon.setBeaconStatus(BeaconStatus.NEW);
+    beacon.setHexId("1D1234123412345");
+    beacon.setManufacturer("Test Manufacturer");
+    beacon.setModel("Test model");
+    beacon.setManufacturerSerialNumber("Test serial number");
+    beacon.setCoding("738248246");
 
     mainUse.setMainUse(true);
     mainUse.setBeaconLocation("In my backpack");

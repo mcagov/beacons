@@ -30,11 +30,15 @@ require 'faker'
 require 'securerandom'
 require 'json'
 
+Faker::Config.locale = 'fr-CH'
+
+
 owner_name = ARGV[0] || Faker::Name.name
 owner_email = ARGV[1] || Faker::Internet.email
 
 db_host = 'localhost'
 db_password= 'password'
+
 
 puts("host is #{db_host}")
 
@@ -84,7 +88,7 @@ conn.prepare("note", 'INSERT INTO note (id, beacon_id, text, type,
 created_date, user_id, full_name, email) VALUES ($1, $2, $3, $4, $5, $6,
 $7, $8)')
 
-50000.times do |count|
+10000.times do |count|
 
 #Setup beacon with dummy data
 
@@ -167,8 +171,8 @@ Faker::Number.between(from: 5, to: 6).times do
   emergency_contact_telephone_2, created_date, created_date])
 end
 
-Faker::Number.between(from: 3, to: 5).times do
-        # setup dummy beacon use(s) (do 1-3 times)
+Faker::Number.between(from: 1, to: 2).times do
+        # setup dummy beacon use(s) (do 1-2 times)
         environment = ["AVIATION", "MARITIME", "LAND"].sample
 
         if environment == "AVIATION"

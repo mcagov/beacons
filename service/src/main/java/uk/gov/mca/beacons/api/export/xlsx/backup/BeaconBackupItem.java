@@ -1,12 +1,10 @@
-package uk.gov.mca.beacons.api.beacon.domain;
+package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -14,38 +12,49 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
-import uk.gov.mca.beacons.api.beacon.domain.events.BeaconCreated;
-import uk.gov.mca.beacons.api.beacon.domain.events.BeaconDeleted;
-import uk.gov.mca.beacons.api.beacon.domain.events.BeaconUpdated;
-import uk.gov.mca.beacons.api.mappers.ModelPatcher;
-import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
+import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyData;
 
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-@Entity(name = "beacon")
+@Entity
+@Table(name = "beacon_backup")
 @NamedQuery(
-  name = "PagingBeaconReader",
-  query = "select b from beacon b order by lastModifiedDate",
+  name = "PagingBeaconBackupItemReader",
+  query = "select b from BeaconBackupItem b",
   hints = @QueryHint(name = "org.hibernate.readOnly", value = "true")
 )
-public class Beacon extends BaseAggregateRoot<BeaconId> {
+public class BeaconBackupItem {
 
   public static final String ID_GENERATOR_NAME = "beacon-id-generator";
 
-  @Setter
-  @Type(type = "uk.gov.mca.beacons.api.beacon.domain.BeaconId")
+  @Type(type = "java.util.UUID")
   @Column(nullable = false)
   @Id
   @GeneratedValue(
     strategy = GenerationType.AUTO,
     generator = "beacon-id-generator"
   )
-  private BeaconId id;
+  // fields shared by modern and legacy
+  private UUID id;
 
   @Setter
   @NotNull
   private String hexId;
 
+  @Setter
+  private String beaconStatus;
+
+  @Setter
+  @Enumerated(EnumType.STRING)
+  private BeaconCategory category;
+
+  @CreatedDate
+  private OffsetDateTime createdDate;
+
+  @LastModifiedDate
+  private OffsetDateTime lastModifiedDate;
+
+  // modern beacon fields
   @Setter
   @NotNull
   private String manufacturer;
@@ -60,6 +69,11 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
 
   @Setter
   private String referenceNumber;
+
+  @Type(type = "uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId")
+  @Setter
+  @NotNull
+  private AccountHolderId accountHolderId;
 
   @Setter
   private String chkCode;
@@ -88,34 +102,18 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
   @Setter
   private String coding;
 
+  // legacy beacon fields
   @Setter
-  @Enumerated(EnumType.STRING)
-  private BeaconStatus beaconStatus;
-
-  @Setter
-  @CreatedDate
-  private OffsetDateTime createdDate;
+  @Type(type = "json")
+  @Column(columnDefinition = "jsonb")
+  private LegacyData data;
 
   @Setter
-  @LastModifiedDate
-  private OffsetDateTime lastModifiedDate;
+  private String ownerName;
 
-  @Type(type = "uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId")
   @Setter
-  @NotNull
-  private AccountHolderId accountHolderId;
+  private String ownerEmail;
 
-  public void registerCreatedEvent() {
-    this.registerEvent(new BeaconCreated(this));
-  }
-
-  public void update(Beacon patch, ModelPatcher<Beacon> patcher) {
-    patcher.patchModel(this, patch);
-    this.registerEvent(new BeaconUpdated(this));
-  }
-
-  public void softDelete() {
-    setBeaconStatus(BeaconStatus.DELETED);
-    this.registerEvent(new BeaconDeleted(this));
-  }
+  @Setter
+  private String useActivities;
 }

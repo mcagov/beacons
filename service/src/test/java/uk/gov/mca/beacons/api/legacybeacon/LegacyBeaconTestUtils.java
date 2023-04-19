@@ -2,7 +2,6 @@ package uk.gov.mca.beacons.api.legacybeacon;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.OffsetDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.mca.beacons.api.FixtureHelper;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyData;
