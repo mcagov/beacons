@@ -116,7 +116,7 @@ describe("BeaconSummaryEditing", () => {
       const modelField = await screen.findByLabelText(/model/i);
       const manufacturer = "Ocean Signal";
       const model =
-        "CSTA 332, EPIRB1 & EPIRB1 Pro (Float Free / non-Float Free) EPIRB";
+        "CSTA 1362, EPIRB3 (non-Float Free), EPIRB3 Pro (Float Free / non-Float Free)";
 
       userEvent.selectOptions(manufacturerField, manufacturer);
       userEvent.selectOptions(modelField, model);
