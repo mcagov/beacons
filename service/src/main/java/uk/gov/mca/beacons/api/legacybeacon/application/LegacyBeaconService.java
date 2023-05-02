@@ -42,6 +42,30 @@ public class LegacyBeaconService {
     return legacyBeaconRepository.findById(legacyBeaconId);
   }
 
+  public List<LegacyBeacon> claimByHexIdAndClaimantEmail(
+    String hexId,
+    String claimantEmail
+  ) {
+    // todo: abstract to avoid duplication
+    List<LegacyBeacon> legacyBeacons = legacyBeaconRepository.findByHexIdAndClaimantEmail(
+      hexId,
+      claimantEmail
+    );
+
+    legacyBeacons.forEach(LegacyBeacon::claim);
+    List<LegacyBeacon> savedLegacyBeacons = legacyBeaconRepository.saveAll(
+      legacyBeacons
+    );
+
+    log.info(
+      "Claimed {} legacy beacon(s) with HexID {}",
+      savedLegacyBeacons.size(),
+      hexId
+    );
+
+    return savedLegacyBeacons;
+  }
+
   public List<LegacyBeacon> claimByHexIdAndAccountHolderEmail(
     String hexId,
     String email
@@ -64,13 +88,12 @@ public class LegacyBeaconService {
     return savedLegacyBeacons;
   }
 
-  public List<LegacyBeacon> getBatch(int batchSize, int numberAlreadyTaken) {
-    return legacyBeaconRepository
-      .findAll()
-      .stream()
-      .skip(numberAlreadyTaken)
-      .limit(batchSize)
-      .collect(Collectors.toList());
+  public void updateClaimantEmailByBeaconId(
+    String claimantEmail,
+    LegacyBeaconId id
+  ) {
+    LegacyBeacon legacyBeacon = legacyBeaconRepository.getById(id);
+    legacyBeacon.setClaimantEmail(claimantEmail);
   }
 
   public LegacyBeacon delete(

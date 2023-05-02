@@ -238,6 +238,11 @@ public class RegistrationService {
       .getAccountHolder(beacon.getAccountHolderId())
       .orElseThrow(ResourceNotFoundException::new);
 
+    // can't get l.b by id at this point
+    // beacon.id refers to a modern beacon id which is irrelevant
+
+    // do we have to find by HexIdAndAccountHolderEmail and then claim by HexIdAndClaimantEmail?
+
     legacyBeaconService.claimByHexIdAndAccountHolderEmail(
       beacon.getHexId(),
       accountHolder.getEmail()

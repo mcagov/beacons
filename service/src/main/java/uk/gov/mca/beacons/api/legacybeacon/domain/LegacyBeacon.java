@@ -51,6 +51,9 @@ public class LegacyBeacon
   private String ownerEmail;
 
   @Setter
+  private String claimantEmail;
+
+  @Setter
   private String beaconStatus;
 
   @Setter
