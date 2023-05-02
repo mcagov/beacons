@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.emergencycontact.domain.EmergencyContact;
 import uk.gov.mca.beacons.api.emergencycontact.rest.EmergencyContactDTO;
 import uk.gov.mca.beacons.api.export.rest.*;
+import uk.gov.mca.beacons.api.export.xlsx.backup.BeaconBackupItem;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.registration.domain.Registration;
@@ -155,13 +157,23 @@ public class ExportMapper {
           break;
       }
     }
-    return usesDTO;
+
+    return usesDTO
+      .stream()
+      .sorted(
+        Comparator.comparing(
+          BeaconExportUseDTO::isMainUse,
+          Comparator.reverseOrder()
+        )
+      )
+      .collect(Collectors.toList());
   }
 
   private BeaconExportMaritimeUseDTO toMaritimeUse(BeaconUse use) {
     return BeaconExportMaritimeUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
+      .isMainUse(Boolean.TRUE.equals(use.getMainUse()))
       .typeOfUse(use.getUseType())
       .beaconPosition(use.getBeaconPosition())
       .beaconLocation(use.getBeaconLocation())
@@ -198,6 +210,7 @@ public class ExportMapper {
     return BeaconExportAviationUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
+      .isMainUse(Boolean.TRUE.equals(use.getMainUse()))
       .typeOfUse(use.getUseType())
       .beaconPosition(use.getBeaconPosition())
       .beaconLocation(use.getBeaconLocation())
@@ -219,6 +232,7 @@ public class ExportMapper {
     return BeaconExportLandUseDTO
       .builder()
       .environment(use.getEnvironment().toString())
+      .isMainUse(Boolean.TRUE.equals(use.getMainUse()))
       .typeOfUse(use.getUseType())
       .beaconPosition(use.getBeaconPosition())
       .beaconLocation(use.getBeaconLocation())
@@ -253,6 +267,44 @@ public class ExportMapper {
           : ""
       )
       .id(beacon.getId().unwrap().toString())
+      .proofOfRegistrationDate(OffsetDateTime.now())
+      .lastModifiedDate(beacon.getLastModifiedDate())
+      .departmentReference(details.getDepartRefId())
+      .recordCreatedDate(details.getFirstRegistrationDate())
+      .beaconStatus(beacon.getBeaconStatus())
+      .hexId(beacon.getHexId())
+      .manufacturer(details.getManufacturer())
+      .serialNumber(
+        details.getSerialNumber() != null ? details.getSerialNumber() : 0
+      )
+      .cospasSarsatNumber(
+        details.getCospasSarsatNumber() != null
+          ? details.getCospasSarsatNumber().toString()
+          : ""
+      )
+      .manufacturerSerialNumber(details.getManufacturerSerialNumber())
+      .beaconModel(details.getModel())
+      .beaconlastServiced(details.getLastServiceDate())
+      .beaconCoding(details.getCoding())
+      .batteryExpiryDate(details.getBatteryExpiryDate())
+      .codingProtocol(details.getProtocol())
+      .cstaNumber(details.getCsta())
+      .beaconNote(details.getNote())
+      .uses(toLegacyUsesDTO(beacon.getData().getUses()))
+      .owners(toLegacyOwnersDTO(beacon.getData()))
+      .emergencyContacts(
+        toLegacyEmergencyContacts(beacon.getData().getEmergencyContact())
+      )
+      .build();
+  }
+
+  public BeaconExportDTO toLegacyBeaconExportDTO(BeaconBackupItem beacon) {
+    LegacyBeaconDetails details = beacon.getData().getBeacon();
+
+    return BeaconExportDTO
+      .builder()
+      .type("Legacy")
+      .id(beacon.getId().toString())
       .proofOfRegistrationDate(OffsetDateTime.now())
       .lastModifiedDate(beacon.getLastModifiedDate())
       .departmentReference(details.getDepartRefId())
@@ -357,7 +409,9 @@ public class ExportMapper {
 
     ownersDTO.add(toLegacyOwnerDTO(data.getOwner()));
     for (LegacyGenericOwner o : data.getSecondaryOwners()) {
-      ownersDTO.add(toLegacyOwnerDTO(o));
+      if (!StringUtils.isBlank(o.getOwnerName())) {
+        ownersDTO.add(toLegacyOwnerDTO(o));
+      }
     }
 
     return ownersDTO;
@@ -417,13 +471,24 @@ public class ExportMapper {
           break;
       }
     }
-    return usesDTO;
+
+    return usesDTO
+      .stream()
+      .sorted(
+        Comparator.comparing(
+          BeaconExportUseDTO::isMainUse,
+          Comparator.reverseOrder()
+        )
+      )
+      .collect(Collectors.toList());
   }
 
   private BeaconExportMaritimeUseDTO toMaritimeUse(LegacyUse use) {
     return BeaconExportMaritimeUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .isMainUse(use.isMain())
+      .vesselType(use.getVesselType())
       .typeOfUse(use.getPurpose())
       .vesselName(use.getVesselName())
       .homePort(use.getHomePort())
@@ -455,6 +520,7 @@ public class ExportMapper {
     return BeaconExportAviationUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
       .beaconLocation(use.getPosition())
       .beaconPosition(use.getBeaconPosition())
@@ -480,6 +546,7 @@ public class ExportMapper {
     return BeaconExportLandUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
       .beaconLocation(use.getPosition())
       .beaconPosition(use.getBeaconPosition())
@@ -504,6 +571,7 @@ public class ExportMapper {
     return BeaconExportRigUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
       .rigName(use.getRigName())
       .homePort(use.getHomePort())
@@ -530,6 +598,7 @@ public class ExportMapper {
     return BeaconExportGenericUseDTO
       .builder()
       .environment(use.getEnvironment())
+      .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
       .vesselName(use.getVesselName())
       .rigName(use.getRigName())

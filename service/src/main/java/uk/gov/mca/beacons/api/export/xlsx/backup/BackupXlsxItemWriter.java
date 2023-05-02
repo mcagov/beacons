@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
   }
 
   @Override
-  public void write(List<? extends BackupSpreadsheetRow> list)
+  public void write(List<? extends BackupSpreadsheetRow> backupRows)
     throws NullPointerException {
     Sheet sheet = Objects
       .requireNonNull(
@@ -35,7 +36,7 @@ public class BackupXlsxItemWriter implements ItemWriter<BackupSpreadsheetRow> {
     // returns -1 if there are no rows;
     int currentRowNum = sheet.getLastRowNum() + 1;
 
-    for (BackupSpreadsheetRow row : list) {
+    for (BackupSpreadsheetRow row : backupRows) {
       writeRow(sheet, currentRowNum, row);
       currentRowNum++;
     }

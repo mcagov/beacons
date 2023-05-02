@@ -99,12 +99,13 @@ public class DataSeeder implements CommandLineRunner {
   Beacon seedBeacon(AccountHolderId accountHolderId) {
     Beacon beacon = new Beacon();
     beacon.setBeaconStatus(BeaconStatus.NEW);
-    beacon.setAccountHolderId(accountHolderId);
+    beacon.setCoding(faker.ancient().primordial());
     beacon.setHexId(faker.regexify("1D[A-F0-9]{13}"));
     beacon.setManufacturer(faker.gameOfThrones().house());
+    beacon.setAccountHolderId(accountHolderId);
     beacon.setManufacturerSerialNumber(faker.bothify("#?#?#?#?#?#???##"));
     beacon.setModel(faker.gameOfThrones().dragon());
-    beacon.setCoding(faker.ancient().primordial());
+
     beacon.registerCreatedEvent();
 
     return beaconRepository.save(beacon);

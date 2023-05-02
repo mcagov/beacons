@@ -2,20 +2,15 @@ package uk.gov.mca.beacons.api.legacybeacon.rest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.dto.WrapperDTO;
-import uk.gov.mca.beacons.api.exceptions.InvalidBeaconDeleteException;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.mappers.LegacyBeaconMapper;
 import uk.gov.mca.beacons.api.legacybeacon.rest.dto.LegacyBeaconDTO;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
-import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 
 @RestController
 @RequestMapping("/spring-api/legacy-beacon")

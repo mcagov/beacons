@@ -5,7 +5,6 @@ import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.mca.beacons.api.BaseIntegrationTest;
-import uk.gov.mca.beacons.api.FixtureHelper;
 
 public class LegacyBeaconIntegrationTest extends BaseIntegrationTest {
 

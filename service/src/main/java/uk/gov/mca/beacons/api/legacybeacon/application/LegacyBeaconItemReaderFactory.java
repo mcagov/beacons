@@ -27,4 +27,19 @@ public class LegacyBeaconItemReaderFactory {
       .pageSize(chunkSize)
       .build();
   }
+
+  public static JpaPagingItemReader<LegacyBeacon> getLegacyBackupItemReader(
+    EntityManagerFactory entityManagerFactory
+  ) {
+    JpaNamedQueryProvider<LegacyBeacon> queryProvider = new JpaNamedQueryProvider<>();
+    queryProvider.setEntityClass(LegacyBeacon.class);
+    queryProvider.setNamedQuery("BackupPagingLegacyBeaconReader");
+
+    return new JpaPagingItemReaderBuilder<LegacyBeacon>()
+      .name("legacyBeaconReader")
+      .entityManagerFactory(entityManagerFactory)
+      .queryProvider(queryProvider)
+      .pageSize(chunkSize)
+      .build();
+  }
 }

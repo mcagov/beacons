@@ -2,12 +2,10 @@ package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.Clock;
 import java.util.Optional;
-import javax.swing.filechooser.FileSystemView;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.export.ExportFileNamer;
 import uk.gov.mca.beacons.api.export.FileSystemRepository;
@@ -45,7 +43,7 @@ public class BackupXlsxExporter {
    *
    * @throws IOException if there is a problem accessing the file system
    */
-  public void backup() throws IOException {
+  public void backup() throws IOException, InvalidFormatException {
     if (
       fileSystemRepository.todaysExportExists(
         ExportFileNamer.FileType.EXCEL_SPREADSHEET,
@@ -59,11 +57,15 @@ public class BackupXlsxExporter {
       return;
     }
 
-    backupToXlsxJobManager.backup(
-      fileSystemRepository.getNextExportDestination(
-        ExportFileNamer.FileType.EXCEL_SPREADSHEET,
-        BeaconsDataWorkbookRepository.OperationType.BACKUP
-      )
-    );
+    try {
+      backupToXlsxJobManager.backup(
+        fileSystemRepository.getNextExportDestination(
+          ExportFileNamer.FileType.EXCEL_SPREADSHEET,
+          BeaconsDataWorkbookRepository.OperationType.BACKUP
+        )
+      );
+    } catch (Exception e) {
+      log.error(e.getMessage());
+    }
   }
 }

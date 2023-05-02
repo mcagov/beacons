@@ -1,6 +1,8 @@
 package uk.gov.mca.beacons.api.export.xlsx.backup;
 
 import javax.persistence.EntityManagerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
@@ -15,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import uk.gov.mca.beacons.api.beacon.application.BeaconItemReaderFactory;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
-import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconItemReaderFactory;
+import uk.gov.mca.beacons.api.export.xlsx.ExportSpreadsheetRow;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
 @Configuration
+@Slf4j
 @EnableBatchProcessing
 public class BackupToXlsxJobConfiguration {
 
   private final EntityManagerFactory entityManagerFactory;
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
-  private static final int CHUNK_SIZE = 256;
+  private static final int CHUNK_SIZE = 100;
 
   @Autowired
   public BackupToXlsxJobConfiguration(
@@ -41,43 +43,28 @@ public class BackupToXlsxJobConfiguration {
     this.jobBuilderFactory = jobBuilderFactory;
   }
 
-  @Bean("backupSpreadsheetBeaconItemReader")
-  public JpaPagingItemReader<Beacon> backupSpreadsheetBeaconItemReader() {
-    return BeaconItemReaderFactory.getItemReader(entityManagerFactory);
-  }
-
-  @Bean("backupSpreadsheetLegacyBeaconItemReader")
-  public JpaPagingItemReader<LegacyBeacon> backupSpreadsheetLegacyBeaconItemReader() {
-    return LegacyBeaconItemReaderFactory.getItemReader(entityManagerFactory);
+  @Bean("beaconBackupItemReader")
+  public JpaPagingItemReader<BeaconBackupItem> backupSpreadsheetBeaconItemReader() {
+    JpaPagingItemReader<BeaconBackupItem> reader = BeaconBackupItemReaderFactory.getItemReader(
+      entityManagerFactory
+    );
+    return reader;
   }
 
   @Bean("backupBeaconToSpreadsheetStep")
   public Step backupBeaconToSpreadsheetStep(
-    ItemReader<Beacon> backupSpreadsheetBeaconItemReader,
-    ItemProcessor<Beacon, BackupSpreadsheetRow> backupBeaconToSpreadsheetRowItemProcessor,
+    ItemReader<BeaconBackupItem> beaconBackupItemReader,
+    ItemProcessor<BeaconBackupItem, BackupSpreadsheetRow> backupBeaconToSpreadsheetRowItemProcessor,
+    ChunkListener backupChunkListener,
     ItemWriter<BackupSpreadsheetRow> xlsxItemWriter
   ) {
     return stepBuilderFactory
       .get("backupBeaconToSpreadsheetStep")
-      .<Beacon, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
-      .reader(backupSpreadsheetBeaconItemReader)
+      .<BeaconBackupItem, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
+      .reader(beaconBackupItemReader)
       .processor(backupBeaconToSpreadsheetRowItemProcessor)
       .writer(xlsxItemWriter)
-      .build();
-  }
-
-  @Bean
-  public Step backupLegacyBeaconToSpreadsheetStep(
-    ItemReader<LegacyBeacon> backupSpreadsheetLegacyBeaconItemReader,
-    ItemProcessor<LegacyBeacon, BackupSpreadsheetRow> backupLegacyBeaconToSpreadsheetRowItemProcessor,
-    ItemWriter<BackupSpreadsheetRow> xlsxItemWriter
-  ) {
-    return stepBuilderFactory
-      .get("backupLegacyBeaconToSpreadsheetStep")
-      .<LegacyBeacon, BackupSpreadsheetRow>chunk(CHUNK_SIZE)
-      .reader(backupSpreadsheetLegacyBeaconItemReader)
-      .processor(backupLegacyBeaconToSpreadsheetRowItemProcessor)
-      .writer(xlsxItemWriter)
+      .listener(backupChunkListener)
       .build();
   }
 
@@ -95,10 +82,14 @@ public class BackupToXlsxJobConfiguration {
     return new BackupToXlsxJobListener(beaconsDataWorkbookRepository);
   }
 
+  @Bean("backupChunkListener")
+  BackupChunkListener backupChunkListener() {
+    return new BackupChunkListener();
+  }
+
   @Bean(value = "backupToSpreadsheetJob")
   public Job backupToSpreadsheetJob(
     Step backupBeaconToSpreadsheetStep,
-    Step backupLegacyBeaconToSpreadsheetStep,
     @Qualifier(
       "jobExecutionLoggingListener"
     ) JobExecutionListener jobExecutionLoggingListener,
@@ -111,7 +102,6 @@ public class BackupToXlsxJobConfiguration {
       .listener(jobExecutionLoggingListener)
       .listener(jobExecutionListener)
       .start(backupBeaconToSpreadsheetStep)
-      .next(backupLegacyBeaconToSpreadsheetStep)
       .build();
   }
 }
