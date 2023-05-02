@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { FieldValueTypes } from "../../components/dataPanel/FieldValue";
 import { ErrorState } from "../../components/dataPanel/PanelErrorState";
@@ -79,7 +79,23 @@ export const AccountHolderPanel: FunctionComponent<
   return (
     <Card>
       <CardContent>
-        <CardHeader title="Account Holder" />
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-end"
+        >
+          <CardHeader title="Account Holder" />
+
+          <Button
+            target="_blank"
+            href={`/backoffice#/account-holder/${accountHolder.id}`}
+            variant="outlined"
+            sx={{ marginY: "auto" }}
+          >
+            View
+          </Button>
+        </Grid>
         <>
           {error && <ErrorState message={Placeholders.UnspecifiedError} />}
           {loading && <LoadingState />}

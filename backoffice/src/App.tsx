@@ -39,6 +39,8 @@ import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordVi
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 import { AdminView } from "views/AdminView";
 import { DataComparisonView } from "views/comparison/DataComparisonView";
+import { AccountHolderView } from "views/AccountHolderView";
+import { AccountHolderGateway } from "gateways/account-holder/AccountHolderGateway";
 
 interface ResourceParams {
   id: string;
@@ -73,6 +75,7 @@ const App: FunctionComponent = () => {
   const usesGateway = new UsesGateway(beaconResponseMapper, authGateway);
   const notesGateway = new NotesGateway(authGateway);
   const exportsGateway = new ExportsGateway(authGateway);
+  const accountHolderGateway = new AccountHolderGateway(authGateway);
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
@@ -99,6 +102,21 @@ const App: FunctionComponent = () => {
         <SingleLegacyBeaconRecordView
           beaconsGateway={beaconsGateway}
           beaconId={id}
+        />
+        <Footer />
+      </div>
+    );
+  };
+
+  const AccountHolderViewWithParam: FunctionComponent = () => {
+    const { id } = useParams<ResourceParams>();
+
+    return (
+      <div>
+        <Navigation exportsGateway={exportsGateway} />
+        <AccountHolderView
+          accountHolderGateway={accountHolderGateway}
+          accountHolderId={id}
         />
         <Footer />
       </div>
@@ -182,6 +200,9 @@ const App: FunctionComponent = () => {
                 </Route>
                 <Route path={`/legacy-beacons/:id`}>
                   <SingleLegacyBeaconRecordViewWithParam />
+                </Route>
+                <Route path={`/account-holder/:id`}>
+                  <AccountHolderViewWithParam />
                 </Route>
                 <Route path={`/admin`}>
                   <Navigation exportsGateway={exportsGateway} />

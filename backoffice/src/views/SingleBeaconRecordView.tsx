@@ -179,10 +179,19 @@ export const SingleBeaconRecordView: FunctionComponent<
           <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
         </TabPanel>
         <TabPanel value={selectedTab} index={3}>
-          <AccountHolderPanel
-            beaconsGateway={beaconsGateway}
-            beaconId={beaconId}
-          />
+          <Grid
+            direction="row"
+            container
+            justifyContent="space-between"
+            spacing={1}
+          >
+            <Grid item xs={6}>
+              <AccountHolderPanel
+                beaconsGateway={beaconsGateway}
+                beaconId={beaconId}
+              />
+            </Grid>
+          </Grid>
         </TabPanel>
         <DialogueBox
           isOpen={dialogueIsOpen}

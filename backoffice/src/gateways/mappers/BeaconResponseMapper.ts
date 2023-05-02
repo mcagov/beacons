@@ -87,19 +87,19 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
   ): IAccountHolder {
     return {
       id: accountHolder.id,
-      fullName: accountHolder.fullName || "",
-      email: accountHolder.email || "",
-      telephoneNumber: accountHolder.telephoneNumber || "",
+      fullName: accountHolder.attributes.fullName || "",
+      email: accountHolder.attributes.email || "",
+      telephoneNumber: accountHolder.attributes.telephoneNumber || "",
       alternativeTelephoneNumber:
-        accountHolder.alternativeTelephoneNumber || "",
-      addressLine1: accountHolder.addressLine1 || "",
-      addressLine2: accountHolder.addressLine2 || "",
-      addressLine3: accountHolder.addressLine3 || "",
-      addressLine4: accountHolder.addressLine4 || "",
-      townOrCity: accountHolder.townOrCity || "",
-      county: accountHolder.county || "",
-      postcode: accountHolder.postcode || "",
-      country: accountHolder.country || "",
+        accountHolder.attributes.alternativeTelephoneNumber || "",
+      addressLine1: accountHolder.attributes.addressLine1 || "",
+      addressLine2: accountHolder.attributes.addressLine2 || "",
+      addressLine3: accountHolder.attributes.addressLine3 || "",
+      addressLine4: accountHolder.attributes.addressLine4 || "",
+      townOrCity: accountHolder.attributes.townOrCity || "",
+      county: accountHolder.attributes.county || "",
+      postcode: accountHolder.attributes.postcode || "",
+      country: accountHolder.attributes.country || "",
     };
   }
 

@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.accountholder.rest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,9 @@ import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.accountholder.mappers.AccountHolderMapper;
+import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
+import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.dto.WrapperDTO;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 
@@ -56,6 +59,18 @@ public class AccountHolderController {
       .orElseThrow(ResourceNotFoundException::new);
 
     return accountHolderMapper.toWrapperDTO(accountHolder);
+  }
+
+  @GetMapping(value = "/{id}/beacons")
+  public List<BeaconDTO> getBeaconsForAccountHolderId(
+    @PathVariable("id") UUID id
+  ) {
+    final AccountHolderId accountHolderId = new AccountHolderId(id);
+    List<BeaconDTO> beacons = accountHolderService.getBeaconsByAccountHolderId(
+      accountHolderId
+    );
+
+    return beacons;
   }
 
   @GetMapping
