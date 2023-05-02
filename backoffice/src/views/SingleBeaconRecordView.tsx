@@ -28,6 +28,7 @@ import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { DialogueType } from "lib/DialogueType";
 import { IConfirmDialogueModel } from "components/ConfirmDialogue";
 import { SingleBeaconExportButtons } from "./exports/SingleBeaconExportButtons";
+import { AccountHolderPanel } from "../panels/accountHolderPanel/AccountHolderPanel";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -151,6 +152,7 @@ export const SingleBeaconRecordView: FunctionComponent<
           <Tab label="Owner & Emergency Contacts" />
           <Tab label={`${numberOfUses} Registered Uses`} />
           <Tab label={`Notes`} />
+          <Tab label="Account Holder" />
         </Tabs>
         <TabPanel value={selectedTab} index={0}>
           <Grid
@@ -175,6 +177,12 @@ export const SingleBeaconRecordView: FunctionComponent<
         </TabPanel>
         <TabPanel value={selectedTab} index={2}>
           <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
+        </TabPanel>
+        <TabPanel value={selectedTab} index={3}>
+          <AccountHolderPanel
+            beaconsGateway={beaconsGateway}
+            beaconId={beaconId}
+          />
         </TabPanel>
         <DialogueBox
           isOpen={dialogueIsOpen}

@@ -187,12 +187,17 @@ public class RegistrationService {
       beacon.getId()
     );
 
+    Optional<AccountHolder> accountHolder = accountHolderService.getAccountHolder(
+      beacon.getAccountHolderId()
+    );
+
     return Registration
       .builder()
       .beacon(beacon)
       .beaconOwner(beaconOwner.orElse(null))
       .beaconUses(beaconUses)
       .emergencyContacts(emergencyContacts)
+      .accountHolder(accountHolder.orElse(null))
       .build();
   }
 

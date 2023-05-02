@@ -3,7 +3,9 @@ import { IEmergencyContact } from "../../entities/IEmergencyContact";
 import { IOwner } from "../../entities/IOwner";
 import { IUse } from "../../entities/IUse";
 import { formatDateTime } from "../../utils/dateTime";
+import { IAccountHolder } from "../../entities/IAccountHolder";
 import {
+  AccountHolderRegistrationResponse,
   EmergencyContactRegistrationResponse,
   IRegistrationResponse,
   OwnerRegistrationResponse,
@@ -50,6 +52,9 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
       owners: beaconApiResponse.owner
         ? this.mapOwners(beaconApiResponse.owner)
         : [],
+      accountHolder: beaconApiResponse.accountHolder
+        ? this.mapAccountHolder(beaconApiResponse.accountHolder)
+        : null,
       emergencyContacts: beaconApiResponse.emergencyContacts
         ? this.mapEmergencyContacts(beaconApiResponse.emergencyContacts)
         : [],
@@ -75,6 +80,27 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
         country: owner.country || "",
       },
     ];
+  }
+
+  private mapAccountHolder(
+    accountHolder: AccountHolderRegistrationResponse
+  ): IAccountHolder {
+    return {
+      id: accountHolder.id,
+      fullName: accountHolder.fullName || "",
+      email: accountHolder.email || "",
+      telephoneNumber: accountHolder.telephoneNumber || "",
+      alternativeTelephoneNumber:
+        accountHolder.alternativeTelephoneNumber || "",
+      addressLine1: accountHolder.addressLine1 || "",
+      addressLine2: accountHolder.addressLine2 || "",
+      addressLine3: accountHolder.addressLine3 || "",
+      addressLine4: accountHolder.addressLine4 || "",
+      townOrCity: accountHolder.townOrCity || "",
+      county: accountHolder.county || "",
+      postcode: accountHolder.postcode || "",
+      country: accountHolder.country || "",
+    };
   }
 
   private mapEmergencyContacts(

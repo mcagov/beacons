@@ -4,6 +4,7 @@ import { IUse } from "../entities/IUse";
 import { deepFreeze } from "../utils/utils";
 import { emergencyContactsFixture } from "./emergencyContacts.fixture";
 import { testOwners } from "./owner.fixture";
+import { testAccountHolder } from "./accountHolder.fixture";
 import { usesFixture } from "./uses.fixture";
 
 export const beaconFixture = deepFreeze<IBeacon>({
@@ -27,5 +28,6 @@ export const beaconFixture = deepFreeze<IBeacon>({
   lastModifiedDate: "01/02/2021",
   uses: usesFixture as IUse[],
   owners: testOwners,
+  accountHolder: testAccountHolder,
   emergencyContacts: emergencyContactsFixture as IEmergencyContact[],
 });

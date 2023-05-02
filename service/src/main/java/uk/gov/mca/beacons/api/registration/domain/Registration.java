@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.registration.domain;
 import java.util.List;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
+import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
@@ -20,6 +21,8 @@ public class Registration implements Comparable<Registration> {
   private Beacon beacon;
   private List<BeaconUse> beaconUses;
   private BeaconOwner beaconOwner;
+
+  private AccountHolder accountHolder;
   private List<EmergencyContact> emergencyContacts;
 
   public void setBeaconId(BeaconId beaconId) {
