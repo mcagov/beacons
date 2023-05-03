@@ -107,6 +107,8 @@ export const singleBeaconApiResponseFixture: IRegistrationResponse =
         county: "Yorkshire",
         postcode: "BS8 7NW",
         country: "United Kingdom",
+        createdDate: "2023-05-02T00:00",
+        lastModifiedDate: "2023-05-03T00:00",
       },
     },
     emergencyContacts: [
