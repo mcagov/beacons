@@ -217,7 +217,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
           spacing={2}
         >
           {beacons.map((beacon) => (
-            <Grid item xs={4} key={beacon.id}>
+            <Grid item xs={beacons.length > 2 ? 4 : 6} key={beacon.id}>
               <Card>
                 <CardContent>
                   <Grid
