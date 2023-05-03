@@ -5,15 +5,18 @@ import { IUse } from "../../entities/IUse";
 import { formatDateTime } from "../../utils/dateTime";
 import { IAccountHolder } from "../../entities/IAccountHolder";
 import {
-  AccountHolderRegistrationResponse,
   EmergencyContactRegistrationResponse,
   IRegistrationResponse,
   OwnerRegistrationResponse,
   UseRegistrationResponse,
 } from "./IRegistrationResponse";
+import { IBeaconResponseAttributes } from "./IBeaconResponse";
+import { IAccountHolderResponse } from "./IAccountHolderResponse";
 
 export interface IBeaconResponseMapper {
   map: (beaconApiResponse: IRegistrationResponse) => IBeacon;
+  mapAccountHolder: (accountHolder: IAccountHolderResponse) => IAccountHolder;
+  mapBeacon: (beacon: IBeaconResponseAttributes) => IBeacon;
 }
 
 export class BeaconResponseMapper implements IBeaconResponseMapper {
@@ -82,8 +85,8 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
     ];
   }
 
-  private mapAccountHolder(
-    accountHolder: AccountHolderRegistrationResponse
+  public mapAccountHolder(
+    accountHolder: IAccountHolderResponse
   ): IAccountHolder {
     return {
       id: accountHolder.id,
@@ -100,6 +103,49 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
       county: accountHolder.attributes.county || "",
       postcode: accountHolder.attributes.postcode || "",
       country: accountHolder.attributes.country || "",
+      createdDate: formatDateTime(accountHolder.attributes.createdDate || ""),
+      lastModifiedDate: formatDateTime(
+        accountHolder.attributes.lastModifiedDate || ""
+      ),
+    };
+  }
+
+  public mapBeacon(beaconApiResponse: IBeaconResponseAttributes): IBeacon {
+    return {
+      id: beaconApiResponse.id,
+      hexId: beaconApiResponse.hexId,
+      status: beaconApiResponse.status || "",
+      manufacturer: beaconApiResponse.manufacturer || "",
+      model: beaconApiResponse.model || "",
+      manufacturerSerialNumber:
+        beaconApiResponse.manufacturerSerialNumber || "",
+      chkCode: beaconApiResponse.chkCode || "",
+      beaconType: beaconApiResponse.beaconType || "",
+      protocol: beaconApiResponse.protocol || "",
+      coding: beaconApiResponse.coding || "",
+      csta: beaconApiResponse.csta || "",
+      mti: beaconApiResponse.mti || "",
+      svdr:
+        beaconApiResponse.svdr == null
+          ? ""
+          : beaconApiResponse.svdr
+          ? "true"
+          : "false",
+      batteryExpiryDate: formatDateTime(
+        beaconApiResponse.batteryExpiryDate || ""
+      ),
+      lastServicedDate: formatDateTime(
+        beaconApiResponse.lastServicedDate || ""
+      ),
+      registeredDate: formatDateTime(beaconApiResponse.createdDate || ""),
+      lastModifiedDate: formatDateTime(
+        beaconApiResponse.lastModifiedDate || ""
+      ),
+      referenceNumber: beaconApiResponse.referenceNumber,
+      uses: [],
+      owners: [],
+      emergencyContacts: [],
+      accountHolder: null,
     };
   }
 

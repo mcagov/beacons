@@ -67,6 +67,7 @@ public class BeaconMapper {
 
     var attributes = BeaconDTO.Attributes
       .builder()
+      .id(dto.getId())
       .hexId(beacon.getHexId())
       .manufacturer(beacon.getManufacturer())
       .model(beacon.getModel())

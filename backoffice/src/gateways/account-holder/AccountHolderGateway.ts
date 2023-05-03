@@ -5,47 +5,29 @@ import { logToServer } from "../../utils/logger";
 import { IAccountHolder } from "../../entities/IAccountHolder";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
 import { IAccountHolderGateway } from "./IAccountHolderGateway";
+import { IBeaconResponseMapper } from "gateways/mappers/BeaconResponseMapper";
 
 export class AccountHolderGateway implements IAccountHolderGateway {
   private _authGateway;
+  private _beaconResponseMapper;
 
-  public constructor(authGateway: IAuthGateway) {
+  public constructor(
+    beaconResponseMapper: IBeaconResponseMapper,
+    authGateway: IAuthGateway
+  ) {
+    this._beaconResponseMapper = beaconResponseMapper;
     this._authGateway = authGateway;
   }
+
   public async getAccountHolder(
     accountHolderId: string
   ): Promise<IAccountHolder> {
     try {
-      console.log(
-        `Calling... http://localhost:8080/spring-api//account-holder/${accountHolderId}`
-      );
       const response = await this._makeGetRequest(
         `/account-holder/${accountHolderId}`
       );
-      console.log("response:");
-      console.log(response.data);
-      // return this._accountHolderResponseMapper.map(response.data);
-      const accountHolderResponse = response.data.data;
 
-      const accountHolder = {
-        id: accountHolderResponse.id,
-        fullName: accountHolderResponse.attributes.fullName || "",
-        email: accountHolderResponse.attributes.email || "",
-        telephoneNumber: accountHolderResponse.attributes.telephoneNumber || "",
-        alternativeTelephoneNumber:
-          accountHolderResponse.attributes.alternativeTelephoneNumber || "",
-        addressLine1: accountHolderResponse.attributes.addressLine1 || "",
-        addressLine2: accountHolderResponse.attributes.addressLine2 || "",
-        addressLine3: accountHolderResponse.attributes.addressLine3 || "",
-        addressLine4: accountHolderResponse.attributes.addressLine4 || "",
-        townOrCity: accountHolderResponse.attributes.townOrCity || "",
-        county: accountHolderResponse.attributes.county || "",
-        postcode: accountHolderResponse.attributes.postcode || "",
-        country: accountHolderResponse.attributes.country || "",
-      };
-
-      console.log(accountHolder);
-      return accountHolder;
+      return this._beaconResponseMapper.mapAccountHolder(response.data);
     } catch (e) {
       throw e;
     }
@@ -58,12 +40,9 @@ export class AccountHolderGateway implements IAccountHolderGateway {
       const response = await this._makeGetRequest(
         `/account-holder/${accountHolderId}/beacons`
       );
-
-      const beacons = response.data.data;
-      console.log("ah beacons response:");
-      console.log(response.data);
-
-      return [];
+      return response.data.map((b: any) =>
+        this._beaconResponseMapper.mapBeacon(b.attributes)
+      );
     } catch (e) {
       throw e;
     }

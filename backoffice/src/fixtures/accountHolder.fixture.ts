@@ -15,6 +15,8 @@ export const accountHolderFixture: IAccountHolder = deepFreeze<IAccountHolder>({
   county: "Yorkshire",
   postcode: "BS8 7NW",
   country: "United Kingdom",
+  createdDate: "02/05/2023",
+  lastModifiedDate: "03/05/2023",
 });
 
 export const testAccountHolder: IAccountHolder = accountHolderFixture;

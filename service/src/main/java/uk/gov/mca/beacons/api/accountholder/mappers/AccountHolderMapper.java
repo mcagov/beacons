@@ -55,12 +55,15 @@ public class AccountHolderMapper {
 
     final var attributes = AccountHolderDTO.Attributes
       .builder()
+      .id(dto.getId())
       .authId(accountHolder.getAuthId())
       .email(accountHolder.getEmail())
       .fullName(accountHolder.getFullName())
       .telephoneNumber(accountHolder.getTelephoneNumber())
       .alternativeTelephoneNumber(accountHolder.getAlternativeTelephoneNumber())
       .addressDTO(addressMapper.toDTO(accountHolder.getAddress()))
+      .createdDate(accountHolder.getCreatedDate())
+      .lastModifiedDate(accountHolder.getLastModifiedDate())
       .build();
 
     dto.setAttributes(attributes);

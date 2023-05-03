@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
@@ -50,7 +51,7 @@ public class AccountHolderController {
   }
 
   @GetMapping(value = "/{id}")
-  public WrapperDTO<AccountHolderDTO> getAccountHolder(
+  public ResponseEntity<AccountHolderDTO> getAccountHolder(
     @PathVariable("id") UUID id
   ) {
     final AccountHolderId accountHolderId = new AccountHolderId(id);
@@ -58,11 +59,11 @@ public class AccountHolderController {
       .getAccountHolder(accountHolderId)
       .orElseThrow(ResourceNotFoundException::new);
 
-    return accountHolderMapper.toWrapperDTO(accountHolder);
+    return ResponseEntity.ok(accountHolderMapper.toDTO(accountHolder));
   }
 
   @GetMapping(value = "/{id}/beacons")
-  public List<BeaconDTO> getBeaconsForAccountHolderId(
+  public ResponseEntity<List<BeaconDTO>> getBeaconsForAccountHolderId(
     @PathVariable("id") UUID id
   ) {
     final AccountHolderId accountHolderId = new AccountHolderId(id);
@@ -70,7 +71,7 @@ public class AccountHolderController {
       accountHolderId
     );
 
-    return beacons;
+    return ResponseEntity.ok(beacons);
   }
 
   @GetMapping

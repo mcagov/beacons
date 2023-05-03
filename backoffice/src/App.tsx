@@ -75,7 +75,10 @@ const App: FunctionComponent = () => {
   const usesGateway = new UsesGateway(beaconResponseMapper, authGateway);
   const notesGateway = new NotesGateway(authGateway);
   const exportsGateway = new ExportsGateway(authGateway);
-  const accountHolderGateway = new AccountHolderGateway(authGateway);
+  const accountHolderGateway = new AccountHolderGateway(
+    beaconResponseMapper,
+    authGateway
+  );
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
