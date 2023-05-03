@@ -233,20 +233,35 @@ public class RegistrationService {
     }
   }
 
+  // we can make this more efficient because currently it does findByHexIdAndAccountHolderEmail loads of times
+  // can we just claim from here rather than looking it up again
   private void claimLegacyBeacon(Beacon beacon) {
     AccountHolder accountHolder = accountHolderService
       .getAccountHolder(beacon.getAccountHolderId())
       .orElseThrow(ResourceNotFoundException::new);
 
-    // can't get l.b by id at this point
-    // beacon.id refers to a modern beacon id which is irrelevant
-
-    // do we have to find by HexIdAndAccountHolderEmail and then claim by HexIdAndClaimantEmail?
-
-    legacyBeaconService.claimByHexIdAndAccountHolderEmail(
+    // get the L.B using hex id and account holder email
+    // there could be more than one :s
+    List<LegacyBeacon> legacyBeacons = legacyBeaconService.findByHexIdAndAccountHolderEmail(
       beacon.getHexId(),
       accountHolder.getEmail()
     );
+
+    // legacyBeacon.recoveryEmail is present?
+    for (LegacyBeacon legacyBeacon : legacyBeacons) {
+      if (legacyBeacon.getRecoveryEmail() != null) {
+        legacyBeaconService.claimByHexIdAndRecoveryEmail(
+          beacon.getHexId(),
+          legacyBeacon.getRecoveryEmail()
+        );
+      } else {
+        legacyBeaconService.claimByHexIdAndAccountHolderEmail(
+          beacon.getHexId(),
+          accountHolder.getEmail()
+        );
+      }
+    }
+    // what if the legacy beacon has no account holder email (ownerEmail) or recovery email?
   }
 
   public void deleteLegacyBeacon(DeleteBeaconDTO dto) {

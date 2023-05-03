@@ -42,14 +42,24 @@ public class LegacyBeaconService {
     return legacyBeaconRepository.findById(legacyBeaconId);
   }
 
-  public List<LegacyBeacon> claimByHexIdAndClaimantEmail(
+  public List<LegacyBeacon> findByHexIdAndAccountHolderEmail(
     String hexId,
-    String claimantEmail
+    String accountHolderEmail
+  ) {
+    return legacyBeaconRepository.findByHexIdAndOwnerEmail(
+      hexId,
+      accountHolderEmail
+    );
+  }
+
+  public List<LegacyBeacon> claimByHexIdAndRecoveryEmail(
+    String hexId,
+    String recoveryEmail
   ) {
     // todo: abstract to avoid duplication
-    List<LegacyBeacon> legacyBeacons = legacyBeaconRepository.findByHexIdAndClaimantEmail(
+    List<LegacyBeacon> legacyBeacons = legacyBeaconRepository.findByHexIdAndRecoveryEmail(
       hexId,
-      claimantEmail
+      recoveryEmail
     );
 
     legacyBeacons.forEach(LegacyBeacon::claim);
@@ -88,12 +98,13 @@ public class LegacyBeaconService {
     return savedLegacyBeacons;
   }
 
-  public void updateClaimantEmailByBeaconId(
-    String claimantEmail,
+  public void updateRecoveryEmailByBeaconId(
+    String recoveryEmail,
     LegacyBeaconId id
   ) {
     LegacyBeacon legacyBeacon = legacyBeaconRepository.getById(id);
-    legacyBeacon.setClaimantEmail(claimantEmail);
+    legacyBeacon.setRecoveryEmail(recoveryEmail);
+    legacyBeaconRepository.save(legacyBeacon);
   }
 
   public LegacyBeacon delete(
