@@ -51,7 +51,7 @@ public class AccountHolderController {
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<AccountHolderDTO> getAccountHolder(
+  public ResponseEntity<WrapperDTO<AccountHolderDTO>> getAccountHolder(
     @PathVariable("id") UUID id
   ) {
     final AccountHolderId accountHolderId = new AccountHolderId(id);
@@ -59,7 +59,7 @@ public class AccountHolderController {
       .getAccountHolder(accountHolderId)
       .orElseThrow(ResourceNotFoundException::new);
 
-    return ResponseEntity.ok(accountHolderMapper.toDTO(accountHolder));
+    return ResponseEntity.ok(accountHolderMapper.toWrapperDTO(accountHolder));
   }
 
   @GetMapping(value = "/{id}/beacons")

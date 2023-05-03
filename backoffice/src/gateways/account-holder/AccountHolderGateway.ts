@@ -27,7 +27,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
         `/account-holder/${accountHolderId}`
       );
 
-      return this._beaconResponseMapper.mapAccountHolder(response.data);
+      return this._beaconResponseMapper.mapAccountHolder(response.data.data);
     } catch (e) {
       throw e;
     }
