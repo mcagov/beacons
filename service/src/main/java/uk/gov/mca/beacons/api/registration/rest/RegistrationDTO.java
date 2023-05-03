@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 import jdk.jfr.Name;
 import lombok.*;
+import uk.gov.mca.beacons.api.accountholder.rest.AccountHolderDTO;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconRegistrationDTO;
 import uk.gov.mca.beacons.api.beaconowner.rest.BeaconOwnerDTO;
 import uk.gov.mca.beacons.api.beaconuse.rest.BeaconUseDTO;
@@ -25,6 +26,10 @@ public class RegistrationDTO {
   @Valid
   @JsonProperty("owner")
   public BeaconOwnerDTO beaconOwnerDTO;
+
+  @Valid
+  @JsonProperty("accountHolder")
+  public AccountHolderDTO accountHolderDTO;
 
   @Valid
   @JsonProperty("uses")

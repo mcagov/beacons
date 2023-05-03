@@ -4,25 +4,7 @@ export interface IBeaconResponse extends IApiResponse {
   data: {
     type: string;
     id: string;
-    attributes: {
-      hexId: string;
-      status?: string;
-      beaconType?: string;
-      manufacturer?: string;
-      createdDate?: string;
-      lastModifiedDate?: string;
-      model?: string;
-      manufacturerSerialNumber?: string;
-      chkCode?: string;
-      mti?: string;
-      svdr?: boolean;
-      csta?: string;
-      protocol?: string;
-      coding?: string;
-      batteryExpiryDate?: string;
-      lastServicedDate?: string;
-      referenceNumber: string;
-    };
+    attributes: IBeaconResponseAttributes;
     links: { verb: string; path: string }[];
     relationships: {
       uses: {
@@ -36,4 +18,25 @@ export interface IBeaconResponse extends IApiResponse {
       };
     };
   };
+}
+
+export interface IBeaconResponseAttributes {
+  id: string;
+  hexId: string;
+  status?: string;
+  beaconType?: string;
+  manufacturer?: string;
+  createdDate?: string;
+  lastModifiedDate?: string;
+  model?: string;
+  manufacturerSerialNumber?: string;
+  chkCode?: string;
+  mti?: string;
+  svdr?: boolean;
+  csta?: string;
+  protocol?: string;
+  coding?: string;
+  batteryExpiryDate?: string;
+  lastServicedDate?: string;
+  referenceNumber: string;
 }

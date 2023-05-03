@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.registration.mappers;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.mca.beacons.api.accountholder.mappers.AccountHolderMapper;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beaconowner.mappers.BeaconOwnerMapper;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
@@ -19,6 +20,7 @@ public class RegistrationMapper {
   private final BeaconMapper beaconMapper;
   private final BeaconUseMapper beaconUseMapper;
   private final BeaconOwnerMapper beaconOwnerMapper;
+  private final AccountHolderMapper accountHolderMapper;
   private final EmergencyContactMapper emergencyContactMapper;
   private final NoteMapper noteMapper;
   private final ExportMapper certificateMapper;
@@ -28,6 +30,7 @@ public class RegistrationMapper {
     BeaconMapper beaconMapper,
     BeaconUseMapper beaconUseMapper,
     BeaconOwnerMapper beaconOwnerMapper,
+    AccountHolderMapper accountHolderMapper,
     EmergencyContactMapper emergencyContactMapper,
     NoteMapper noteMapper,
     ExportMapper certificateMapper
@@ -35,6 +38,7 @@ public class RegistrationMapper {
     this.beaconMapper = beaconMapper;
     this.beaconUseMapper = beaconUseMapper;
     this.beaconOwnerMapper = beaconOwnerMapper;
+    this.accountHolderMapper = accountHolderMapper;
     this.emergencyContactMapper = emergencyContactMapper;
     this.noteMapper = noteMapper;
     this.certificateMapper = certificateMapper;
@@ -71,6 +75,11 @@ public class RegistrationMapper {
         registration.getBeaconOwner() == null
           ? null
           : beaconOwnerMapper.toDTO(registration.getBeaconOwner())
+      )
+      .accountHolderDTO(
+        registration.getAccountHolder() == null
+          ? null
+          : accountHolderMapper.toDTO(registration.getAccountHolder())
       )
       .beaconUseDTOs(
         registration

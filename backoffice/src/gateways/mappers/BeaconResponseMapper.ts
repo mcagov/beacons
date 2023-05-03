@@ -3,15 +3,20 @@ import { IEmergencyContact } from "../../entities/IEmergencyContact";
 import { IOwner } from "../../entities/IOwner";
 import { IUse } from "../../entities/IUse";
 import { formatDateTime } from "../../utils/dateTime";
+import { IAccountHolder } from "../../entities/IAccountHolder";
 import {
   EmergencyContactRegistrationResponse,
   IRegistrationResponse,
   OwnerRegistrationResponse,
   UseRegistrationResponse,
 } from "./IRegistrationResponse";
+import { IBeaconResponseAttributes } from "./IBeaconResponse";
+import { IAccountHolderResponse } from "./IAccountHolderResponse";
 
 export interface IBeaconResponseMapper {
   map: (beaconApiResponse: IRegistrationResponse) => IBeacon;
+  mapAccountHolder: (accountHolder: IAccountHolderResponse) => IAccountHolder;
+  mapBeacon: (beacon: IBeaconResponseAttributes) => IBeacon;
 }
 
 export class BeaconResponseMapper implements IBeaconResponseMapper {
@@ -50,6 +55,9 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
       owners: beaconApiResponse.owner
         ? this.mapOwners(beaconApiResponse.owner)
         : [],
+      accountHolder: beaconApiResponse.accountHolder
+        ? this.mapAccountHolder(beaconApiResponse.accountHolder)
+        : null,
       emergencyContacts: beaconApiResponse.emergencyContacts
         ? this.mapEmergencyContacts(beaconApiResponse.emergencyContacts)
         : [],
@@ -75,6 +83,70 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
         country: owner.country || "",
       },
     ];
+  }
+
+  public mapAccountHolder(
+    accountHolder: IAccountHolderResponse
+  ): IAccountHolder {
+    return {
+      id: accountHolder.id,
+      fullName: accountHolder.attributes.fullName || "",
+      email: accountHolder.attributes.email || "",
+      telephoneNumber: accountHolder.attributes.telephoneNumber || "",
+      alternativeTelephoneNumber:
+        accountHolder.attributes.alternativeTelephoneNumber || "",
+      addressLine1: accountHolder.attributes.addressLine1 || "",
+      addressLine2: accountHolder.attributes.addressLine2 || "",
+      addressLine3: accountHolder.attributes.addressLine3 || "",
+      addressLine4: accountHolder.attributes.addressLine4 || "",
+      townOrCity: accountHolder.attributes.townOrCity || "",
+      county: accountHolder.attributes.county || "",
+      postcode: accountHolder.attributes.postcode || "",
+      country: accountHolder.attributes.country || "",
+      createdDate: formatDateTime(accountHolder.attributes.createdDate || ""),
+      lastModifiedDate: formatDateTime(
+        accountHolder.attributes.lastModifiedDate || ""
+      ),
+    };
+  }
+
+  public mapBeacon(beaconApiResponse: IBeaconResponseAttributes): IBeacon {
+    return {
+      id: beaconApiResponse.id,
+      hexId: beaconApiResponse.hexId,
+      status: beaconApiResponse.status || "",
+      manufacturer: beaconApiResponse.manufacturer || "",
+      model: beaconApiResponse.model || "",
+      manufacturerSerialNumber:
+        beaconApiResponse.manufacturerSerialNumber || "",
+      chkCode: beaconApiResponse.chkCode || "",
+      beaconType: beaconApiResponse.beaconType || "",
+      protocol: beaconApiResponse.protocol || "",
+      coding: beaconApiResponse.coding || "",
+      csta: beaconApiResponse.csta || "",
+      mti: beaconApiResponse.mti || "",
+      svdr:
+        beaconApiResponse.svdr == null
+          ? ""
+          : beaconApiResponse.svdr
+          ? "true"
+          : "false",
+      batteryExpiryDate: formatDateTime(
+        beaconApiResponse.batteryExpiryDate || ""
+      ),
+      lastServicedDate: formatDateTime(
+        beaconApiResponse.lastServicedDate || ""
+      ),
+      registeredDate: formatDateTime(beaconApiResponse.createdDate || ""),
+      lastModifiedDate: formatDateTime(
+        beaconApiResponse.lastModifiedDate || ""
+      ),
+      referenceNumber: beaconApiResponse.referenceNumber,
+      uses: [],
+      owners: [],
+      emergencyContacts: [],
+      accountHolder: null,
+    };
   }
 
   private mapEmergencyContacts(

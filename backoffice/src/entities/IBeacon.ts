@@ -1,6 +1,7 @@
 import { IEmergencyContact } from "./IEmergencyContact";
 import { IOwner } from "./IOwner";
 import { IUse } from "./IUse";
+import { IAccountHolder } from "./IAccountHolder";
 
 export interface IBeacon {
   id: string;
@@ -23,6 +24,7 @@ export interface IBeacon {
   referenceNumber: string;
   uses: IUse[];
   owners: IOwner[];
+  accountHolder: IAccountHolder | null;
   emergencyContacts: IEmergencyContact[];
 }
 

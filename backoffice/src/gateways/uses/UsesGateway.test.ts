@@ -20,6 +20,8 @@ describe("UsesGateway", () => {
   beforeEach(() => {
     beaconResponseMapper = {
       map: jest.fn(),
+      mapAccountHolder: jest.fn(),
+      mapBeacon: jest.fn(),
     };
     accessToken = "LET.ME.IN";
     authGateway = {
