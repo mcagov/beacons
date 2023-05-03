@@ -75,6 +75,102 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     fetchAccountHolder(accountHolderId);
   }, [accountHolderId, accountHolderGateway]);
 
+  const accountHolderFields = [
+    { key: "Name", value: accountHolder?.fullName },
+    { key: "Telephone", value: accountHolder?.telephoneNumber },
+    {
+      key: "Alternative Telephone",
+      value: accountHolder?.alternativeTelephoneNumber,
+    },
+    { key: "Email", value: accountHolder?.email },
+    {
+      key: "Address",
+      value: [
+        accountHolder?.addressLine1,
+        accountHolder?.addressLine2,
+        accountHolder?.addressLine3,
+        accountHolder?.addressLine4,
+        accountHolder?.townOrCity,
+        accountHolder?.county,
+        accountHolder?.postcode,
+        accountHolder?.country || "United Kingdom",
+      ],
+      valueType: FieldValueTypes.MULTILINE,
+    },
+    { key: "Created", value: accountHolder?.createdDate },
+    {
+      key: "Last Modified",
+      value: accountHolder?.lastModifiedDate,
+    },
+  ];
+
+  const getBeaconFields = (beacon: IBeacon) => [
+    {
+      key: "Beacon status",
+      value: beacon?.status,
+    },
+    {
+      key: "Manufacturer",
+      value: beacon?.manufacturer,
+    },
+    {
+      key: "Model",
+      value: beacon?.model,
+    },
+    {
+      key: "Serial number",
+      value: beacon?.manufacturerSerialNumber,
+    },
+    {
+      key: "CHK code",
+      value: beacon?.chkCode,
+    },
+    {
+      key: "Beacon type",
+      value: beacon?.beaconType,
+    },
+    {
+      key: "Protocol",
+      value: beacon?.protocol,
+    },
+    {
+      key: "Coding",
+      value: beacon?.coding,
+    },
+    {
+      key: "CSTA / TAC",
+      value: beacon?.csta,
+    },
+    {
+      key: "MTI",
+      value: beacon?.mti,
+    },
+    {
+      key: "SVDR",
+      value: formatSvdr(beacon?.svdr),
+    },
+    {
+      key: "Battery expiry date",
+      value: beacon?.batteryExpiryDate,
+    },
+    {
+      key: "Last serviced date",
+      value: beacon?.lastServicedDate,
+    },
+    {
+      key: "Created date",
+      value: beacon?.registeredDate,
+    },
+    {
+      key: "Last modified date",
+      value: beacon?.lastModifiedDate,
+    },
+    {
+      key: "Reference",
+      value: beacon?.referenceNumber,
+    },
+  ];
+
   // const modernConfirmDialogueModel: IConfirmDialogueModel = {
   //   dialogueTitle: "Are you sure you want to permanently delete this account holder?",
   //   dialogueContentText:
@@ -108,36 +204,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       <PageContent>
         <Card>
           <CardContent>
-            <PanelViewingState
-              fields={[
-                { key: "Name", value: accountHolder?.fullName },
-                { key: "Telephone", value: accountHolder?.telephoneNumber },
-                {
-                  key: "Alternative Telephone",
-                  value: accountHolder?.alternativeTelephoneNumber,
-                },
-                { key: "Email", value: accountHolder?.email },
-                {
-                  key: "Address",
-                  value: [
-                    accountHolder?.addressLine1,
-                    accountHolder?.addressLine2,
-                    accountHolder?.addressLine3,
-                    accountHolder?.addressLine4,
-                    accountHolder?.townOrCity,
-                    accountHolder?.county,
-                    accountHolder?.postcode,
-                    accountHolder?.country || "United Kingdom",
-                  ],
-                  valueType: FieldValueTypes.MULTILINE,
-                },
-                { key: "Created", value: accountHolder?.createdDate },
-                {
-                  key: "Last Modified",
-                  value: accountHolder?.lastModifiedDate,
-                },
-              ]}
-            />
+            <PanelViewingState fields={accountHolderFields} />
           </CardContent>
         </Card>
 
@@ -170,74 +237,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
                       View
                     </Button>
                   </Grid>
-                  <PanelViewingState
-                    fields={[
-                      {
-                        key: "Beacon status",
-                        value: beacon?.status,
-                      },
-                      {
-                        key: "Manufacturer",
-                        value: beacon?.manufacturer,
-                      },
-                      {
-                        key: "Model",
-                        value: beacon?.model,
-                      },
-                      {
-                        key: "Serial number",
-                        value: beacon?.manufacturerSerialNumber,
-                      },
-                      {
-                        key: "CHK code",
-                        value: beacon?.chkCode,
-                      },
-                      {
-                        key: "Beacon type",
-                        value: beacon?.beaconType,
-                      },
-                      {
-                        key: "Protocol",
-                        value: beacon?.protocol,
-                      },
-                      {
-                        key: "Coding",
-                        value: beacon?.coding,
-                      },
-                      {
-                        key: "CSTA / TAC",
-                        value: beacon?.csta,
-                      },
-                      {
-                        key: "MTI",
-                        value: beacon?.mti,
-                      },
-                      {
-                        key: "SVDR",
-                        value: formatSvdr(beacon?.svdr),
-                      },
-                      {
-                        key: "Battery expiry date",
-                        value: beacon?.batteryExpiryDate,
-                      },
-                      {
-                        key: "Last serviced date",
-                        value: beacon?.lastServicedDate,
-                      },
-                      {
-                        key: "Created date",
-                        value: beacon?.registeredDate,
-                      },
-                      {
-                        key: "Last modified date",
-                        value: beacon?.lastModifiedDate,
-                      },
-                      {
-                        key: "Reference",
-                        value: beacon?.referenceNumber,
-                      },
-                    ]}
-                  />
+                  <PanelViewingState fields={getBeaconFields(beacon)} />
                 </CardContent>
               </Card>
             </Grid>
