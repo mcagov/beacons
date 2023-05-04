@@ -45,7 +45,7 @@ public class LegacyBeaconController {
   }
 
   @PreAuthorize("hasAuthority('APPROLE_UPDATE_RECORDS')")
-  @PatchMapping(value = "/{uuid}")
+  @PatchMapping(value = "/recovery-email/{uuid}")
   public WrapperDTO<UpdateRecoveryEmailDTO> updateRecoveryEmail(
     @PathVariable("uuid") UUID id,
     @RequestBody WrapperDTO<UpdateRecoveryEmailDTO> dto

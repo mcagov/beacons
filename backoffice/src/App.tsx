@@ -38,7 +38,7 @@ import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 import { AdminView } from "views/AdminView";
-import { DataComparisonView } from "views/comparison/DataComparisonView";
+import { LegacyBeaconsGateway } from "gateways/legacy-beacons/LegacyBeaconsGateway";
 
 interface ResourceParams {
   id: string;
@@ -60,16 +60,22 @@ const App: FunctionComponent = () => {
     return <ErrorState>Error loading authentication configuration</ErrorState>;
   }
   const pca = new PublicClientApplication(authState.config);
+
   const beaconResponseMapper = new BeaconResponseMapper();
   const legacyBeaconResponseMapper = new LegacyBeaconResponseMapper();
   const authGateway = new AuthGateway(pca);
   const beaconRequestMapper = new BeaconRequestMapper();
+
   const beaconsGateway = new BeaconsGateway(
     beaconResponseMapper,
-    legacyBeaconResponseMapper,
     beaconRequestMapper,
     authGateway
   );
+  const legacyBeaconsGateway = new LegacyBeaconsGateway(
+    legacyBeaconResponseMapper,
+    authGateway
+  );
+
   const usesGateway = new UsesGateway(beaconResponseMapper, authGateway);
   const notesGateway = new NotesGateway(authGateway);
   const exportsGateway = new ExportsGateway(authGateway);
@@ -98,6 +104,7 @@ const App: FunctionComponent = () => {
         <Navigation exportsGateway={exportsGateway} />
         <SingleLegacyBeaconRecordView
           beaconsGateway={beaconsGateway}
+          legacyBeaconsGateway={legacyBeaconsGateway}
           beaconId={id}
         />
         <Footer />

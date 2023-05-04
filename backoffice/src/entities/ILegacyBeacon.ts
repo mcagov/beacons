@@ -1,6 +1,7 @@
 import { BeaconStatuses, BeaconTypes } from "./IBeacon";
 
 export interface ILegacyBeacon {
+  id: string;
   pkBeaconId: number;
   hexId: string;
   statusCode: string;

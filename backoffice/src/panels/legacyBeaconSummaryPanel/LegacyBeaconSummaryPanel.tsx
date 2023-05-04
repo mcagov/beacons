@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { Placeholders } from "utils/writingStyle";
 import { ErrorState } from "../../components/dataPanel/PanelErrorState";
 import { DataPanelStates } from "../../components/dataPanel/States";
@@ -9,22 +9,28 @@ import { LegacyBeaconRecoveryEmailViewing } from "./LegacyBeaconRecoveryEmailVie
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { EditPanelButton } from "components/dataPanel/EditPanelButton";
 import { LegacyBeaconRecoveryEmailEditing } from "./LegacyBeaconRecoveryEmailEditing";
+import { ILegacyBeaconsGateway } from "gateways/legacy-beacons/ILegacyBeaconsGateway";
 
 interface ILegacyBeaconSummaryProps {
   legacyBeacon: ILegacyBeacon;
+  legacyBeaconsGateway: ILegacyBeaconsGateway;
 }
 
 export const LegacyBeaconSummaryPanel: FunctionComponent<
   ILegacyBeaconSummaryProps
-> = ({ legacyBeacon }): JSX.Element => {
+> = ({ legacyBeacon, legacyBeaconsGateway }): JSX.Element => {
   const [userState, setUserState] = useState<DataPanelStates>(
     DataPanelStates.Viewing
   );
   const [error, setError] = useState(false);
 
-  useEffect((): void => {
-    setUserState(DataPanelStates.Viewing);
-  }, [userState, legacyBeacon]);
+  const handleEditButtonClick = () => {
+    setUserState(DataPanelStates.Editing);
+    legacyBeaconsGateway.updateRecoveryEmail(
+      legacyBeacon.id,
+      "gracinoir@gmail.com"
+    );
+  };
 
   const renderState = (state: DataPanelStates) => {
     switch (state) {
@@ -33,9 +39,7 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
           <>
             <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
             <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
-              <EditPanelButton
-                onClick={() => setUserState(DataPanelStates.Editing)}
-              >
+              <EditPanelButton onClick={() => handleEditButtonClick()}>
                 Edit recovery email
               </EditPanelButton>
             </OnlyVisibleToUsersWith>
