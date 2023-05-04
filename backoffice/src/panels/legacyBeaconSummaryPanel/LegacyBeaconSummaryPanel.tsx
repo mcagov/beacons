@@ -5,6 +5,7 @@ import { Placeholders } from "utils/writingStyle";
 import { ErrorState } from "../../components/dataPanel/PanelErrorState";
 import { DataPanelStates } from "../../components/dataPanel/States";
 import { LegacyBeaconSummaryViewing } from "./LegacyBeaconSummaryViewing";
+import { LegacyBeaconRecoveryEmailViewing } from "./LegacyBeaconRecoveryEmailViewing";
 
 interface ILegacyBeaconSummaryProps {
   legacyBeacon: ILegacyBeacon;
@@ -28,6 +29,9 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
         return (
           <>
             <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
+            <LegacyBeaconRecoveryEmailViewing
+              recoveryEmail={legacyBeacon.recoveryEmail}
+            />
           </>
         );
       default:
