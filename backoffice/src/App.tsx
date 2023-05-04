@@ -41,6 +41,7 @@ import { AdminView } from "views/AdminView";
 import { DataComparisonView } from "views/comparison/DataComparisonView";
 import { AccountHolderView } from "views/AccountHolderView";
 import { AccountHolderGateway } from "gateways/account-holder/AccountHolderGateway";
+import { AccountHolderListView } from "./views/AccountHolderListView";
 
 interface ResourceParams {
   id: string;
@@ -206,6 +207,15 @@ const App: FunctionComponent = () => {
                 </Route>
                 <Route path={`/account-holder/:id`}>
                   <AccountHolderViewWithParam />
+                </Route>
+                <Route path={`/account-holders`}>
+                  <div>
+                    <Navigation exportsGateway={exportsGateway} />
+                    <AccountHolderListView
+                      accountHolderGateway={accountHolderGateway}
+                    />
+                    <Footer />
+                  </div>
                 </Route>
                 <Route path={`/admin`}>
                   <Navigation exportsGateway={exportsGateway} />

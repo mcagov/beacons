@@ -6,6 +6,10 @@ import { IAccountHolder } from "../../entities/IAccountHolder";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
 import { IAccountHolderGateway } from "./IAccountHolderGateway";
 import { IBeaconResponseMapper } from "gateways/mappers/BeaconResponseMapper";
+import {
+  IAccountHolderSearchResult,
+  IAccountHolderSearchResultData,
+} from "../../entities/IAccountHolderSearchResult";
 
 export class AccountHolderGateway implements IAccountHolderGateway {
   private _authGateway;
@@ -43,6 +47,18 @@ export class AccountHolderGateway implements IAccountHolderGateway {
       return response.data.map((b: any) =>
         this._beaconResponseMapper.mapBeacon(b.attributes)
       );
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getAllAccountHolders(): Promise<IAccountHolderSearchResult> {
+    try {
+      const response = await this._makeGetRequest(
+        `/account-holder-search/search/find-all`
+      );
+
+      return response.data;
     } catch (e) {
       throw e;
     }
