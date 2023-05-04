@@ -32,11 +32,6 @@ export const LegacyBeaconSummaryViewing: FunctionComponent<{
       key: "Beacon type",
       value: legacyBeacon?.beaconType,
     },
-    // {
-    //   key: "CHK code",
-    //   value: beacon?.chkCode,
-    // },
-
     {
       key: "Coding",
       value: legacyBeacon?.coding,
@@ -88,6 +83,10 @@ export const LegacyBeaconSummaryViewing: FunctionComponent<{
     {
       key: "Withdrawn reason",
       value: legacyBeacon?.withdrawnReason,
+    },
+    {
+      key: "Recovery email address",
+      value: legacyBeacon?.recoveryEmail,
     },
     {
       key: "Owner(s)",

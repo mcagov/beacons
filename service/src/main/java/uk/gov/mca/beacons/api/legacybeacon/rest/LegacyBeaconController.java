@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.legacybeacon.rest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.beacon.rest.UpdateBeaconDTO;
 import uk.gov.mca.beacons.api.dto.WrapperDTO;
@@ -43,6 +44,7 @@ public class LegacyBeaconController {
     return legacyBeaconMapper.toWrapperDTO(legacyBeacon);
   }
 
+  @PreAuthorize("hasAuthority('APPROLE_UPDATE_RECORDS')")
   @PatchMapping(value = "/{uuid}")
   public WrapperDTO<UpdateRecoveryEmailDTO> updateRecoveryEmail(
     @PathVariable("uuid") UUID id,

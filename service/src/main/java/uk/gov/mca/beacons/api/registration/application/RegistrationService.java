@@ -240,14 +240,11 @@ public class RegistrationService {
       .getAccountHolder(beacon.getAccountHolderId())
       .orElseThrow(ResourceNotFoundException::new);
 
-    // get the L.B using hex id and account holder email
-    // there could be more than one :s
     List<LegacyBeacon> legacyBeacons = legacyBeaconService.findByHexIdAndAccountHolderEmail(
       beacon.getHexId(),
       accountHolder.getEmail()
     );
 
-    // legacyBeacon.recoveryEmail is present?
     for (LegacyBeacon legacyBeacon : legacyBeacons) {
       if (legacyBeacon.getRecoveryEmail() != null) {
         legacyBeaconService.claimByHexIdAndRecoveryEmail(
