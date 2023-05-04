@@ -6,6 +6,9 @@ import { ErrorState } from "../../components/dataPanel/PanelErrorState";
 import { DataPanelStates } from "../../components/dataPanel/States";
 import { LegacyBeaconSummaryViewing } from "./LegacyBeaconSummaryViewing";
 import { LegacyBeaconRecoveryEmailViewing } from "./LegacyBeaconRecoveryEmailViewing";
+import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
+import { EditPanelButton } from "components/dataPanel/EditPanelButton";
+import { LegacyBeaconRecoveryEmailEditing } from "./LegacyBeaconRecoveryEmailEditing";
 
 interface ILegacyBeaconSummaryProps {
   legacyBeacon: ILegacyBeacon;
@@ -29,7 +32,23 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
         return (
           <>
             <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
+            <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
+              <EditPanelButton
+                onClick={() => setUserState(DataPanelStates.Editing)}
+              >
+                Edit recovery email
+              </EditPanelButton>
+            </OnlyVisibleToUsersWith>
             <LegacyBeaconRecoveryEmailViewing
+              recoveryEmail={legacyBeacon.recoveryEmail}
+            />
+          </>
+        );
+      case DataPanelStates.Editing:
+        return (
+          <>
+            <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
+            <LegacyBeaconRecoveryEmailEditing
               recoveryEmail={legacyBeacon.recoveryEmail}
             />
           </>

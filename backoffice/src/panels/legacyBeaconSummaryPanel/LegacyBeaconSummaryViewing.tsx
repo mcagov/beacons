@@ -85,10 +85,6 @@ export const LegacyBeaconSummaryViewing: FunctionComponent<{
       value: legacyBeacon?.withdrawnReason,
     },
     {
-      key: "Recovery email address",
-      value: legacyBeacon?.recoveryEmail,
-    },
-    {
       key: "Owner(s)",
       value: formatLegacyOwners(
         legacyBeacon.owner || [],

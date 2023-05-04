@@ -21,6 +21,7 @@ export const legacyBeaconFixture = deepFreeze<ILegacyBeacon>({
   lastServiceDate: "None",
   batteryExpiryDate: "None",
   withdrawnReason: "None",
+  recoveryEmail: "testy@gmail.com",
   isArchived: "N",
   createUserId: 2889,
   createdDate: "2020-08-01T21:33:13",

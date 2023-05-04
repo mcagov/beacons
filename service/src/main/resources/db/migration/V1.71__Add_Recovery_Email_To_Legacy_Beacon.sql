@@ -1,3 +1,2 @@
-
 ALTER TABLE legacy_beacon
-ADD COLUMN recovery_email text;
+ADD COLUMN IF NOT EXISTS recovery_email text;
