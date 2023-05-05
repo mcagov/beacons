@@ -86,7 +86,7 @@ const TextAreaForm = (props: TextAreaFormProps) => {
               rows={numberOfRowsForTextArea}
               data-testid="textarea-form-field"
               placeholder="Add your text here"
-              value={initialValue}
+              defaultValue={initialValue}
               error={props.touched && errors.text}
               helperText={props.touched && errors.text}
             />

@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
 import { ILegacyBeacon } from "entities/ILegacyBeacon";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { Placeholders } from "utils/writingStyle";
 import { ErrorState } from "../../components/dataPanel/PanelErrorState";
 import { DataPanelStates } from "../../components/dataPanel/States";
@@ -10,22 +10,52 @@ import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { EditPanelButton } from "components/dataPanel/EditPanelButton";
 import { LegacyBeaconRecoveryEmailEditing } from "./LegacyBeaconRecoveryEmailEditing";
 import { ILegacyBeaconsGateway } from "gateways/legacy-beacons/ILegacyBeaconsGateway";
+import { logToServer } from "../../utils/logger";
+import { LegacyBeaconsGateway } from "../../gateways/legacy-beacons/LegacyBeaconsGateway";
 
 interface ILegacyBeaconSummaryProps {
-  legacyBeacon: ILegacyBeacon;
+  legacyBeaconId: string;
   legacyBeaconsGateway: ILegacyBeaconsGateway;
 }
 
 export const LegacyBeaconSummaryPanel: FunctionComponent<
   ILegacyBeaconSummaryProps
-> = ({ legacyBeacon, legacyBeaconsGateway }): JSX.Element => {
+> = ({ legacyBeaconId, legacyBeaconsGateway }): JSX.Element => {
   const [userState, setUserState] = useState<DataPanelStates>(
     DataPanelStates.Viewing
   );
   const [error, setError] = useState(false);
+  const [legacyBeacon, setLegacyBeacon] = useState<ILegacyBeacon>(
+    {} as ILegacyBeacon
+  );
 
-  const handleSaveRecoveryEmail = (updatedRecoveryEmail: string) => {
-    console.log("New recovery email: " + updatedRecoveryEmail);
+  useEffect(() => {
+    const fetchLegacyBeacon = async (id: string) => {
+      try {
+        setError(false);
+        const beacon = await legacyBeaconsGateway.getLegacyBeacon(id);
+        setLegacyBeacon(beacon);
+      } catch (error) {
+        logToServer.error(error);
+        setError(true);
+      }
+    };
+
+    fetchLegacyBeacon(legacyBeaconId);
+  }, [userState, legacyBeaconId, legacyBeaconsGateway]);
+
+  const handleSaveRecoveryEmail = async (updatedRecoveryEmail: string) => {
+    try {
+      await legacyBeaconsGateway.updateRecoveryEmail(
+        legacyBeacon.id,
+        updatedRecoveryEmail
+      );
+      console.log("New recovery email: " + updatedRecoveryEmail);
+      setUserState(DataPanelStates.Viewing);
+    } catch (err) {
+      logToServer.error(err);
+      setError(true);
+    }
   };
 
   const handleCancelRecoveryEmail = () => {
