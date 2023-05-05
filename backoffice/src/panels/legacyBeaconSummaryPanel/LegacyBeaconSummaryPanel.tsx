@@ -84,11 +84,13 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
         return (
           <>
             <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
-            <LegacyBeaconRecoveryEmailEditing
-              currentRecoveryEmail={legacyBeacon.recoveryEmail}
-              onSave={handleSaveRecoveryEmail}
-              onCancel={handleCancelRecoveryEmail}
-            />
+            <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
+              <LegacyBeaconRecoveryEmailEditing
+                currentRecoveryEmail={legacyBeacon.recoveryEmail}
+                onSave={handleSaveRecoveryEmail}
+                onCancel={handleCancelRecoveryEmail}
+              />
+            </OnlyVisibleToUsersWith>
           </>
         );
       default:
