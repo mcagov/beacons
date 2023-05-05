@@ -258,7 +258,6 @@ public class RegistrationService {
         );
       }
     }
-    // what if the legacy beacon has no account holder email (ownerEmail) or recovery email?
   }
 
   public void deleteLegacyBeacon(DeleteBeaconDTO dto) {
