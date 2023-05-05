@@ -7,6 +7,7 @@ interface ITextAreaFormSectionProps {
   formSectionTitle?: string;
   submitButtonText: string;
   numberOfRowsForTextArea: number;
+  initialValue?: string;
   textSubmitted: (text: string) => void;
   cancelled: (cancelled: boolean) => void;
 }
@@ -21,6 +22,7 @@ export const TextAreaFormSection: FunctionComponent<
   formSectionTitle,
   submitButtonText,
   numberOfRowsForTextArea,
+  initialValue,
   textSubmitted,
   cancelled,
 }): JSX.Element => {
@@ -39,6 +41,7 @@ export const TextAreaFormSection: FunctionComponent<
       <TextAreaSection
         submitButtonText={submitButtonText}
         numberOfRowsForTextArea={numberOfRowsForTextArea}
+        initialValue={initialValue}
         onSave={handleSave}
         onCancel={handleCancel}
       />
@@ -51,6 +54,7 @@ interface TextAreaFormProps extends FormikProps<TextAreaFormValues> {
   onCancel: () => void;
   submitButtonText: string;
   numberOfRowsForTextArea: number;
+  initialValue?: string;
 }
 
 const TextAreaForm = (props: TextAreaFormProps) => {
@@ -59,6 +63,7 @@ const TextAreaForm = (props: TextAreaFormProps) => {
     isSubmitting,
     submitButtonText,
     numberOfRowsForTextArea,
+    initialValue,
     onCancel,
     onSave,
   } = props;
@@ -81,6 +86,7 @@ const TextAreaForm = (props: TextAreaFormProps) => {
               rows={numberOfRowsForTextArea}
               data-testid="textarea-form-field"
               placeholder="Add your text here"
+              value={initialValue}
               error={props.touched && errors.text}
               helperText={props.touched && errors.text}
             />
@@ -113,6 +119,7 @@ export const TextAreaSection = withFormik<
     onCancel: () => void;
     submitButtonText: string;
     numberOfRowsForTextArea: number;
+    initialValue?: string;
   },
   TextAreaFormValues
 >({

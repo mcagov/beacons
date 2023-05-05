@@ -24,12 +24,12 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
   );
   const [error, setError] = useState(false);
 
-  const handleEditButtonClick = () => {
-    setUserState(DataPanelStates.Editing);
-    legacyBeaconsGateway.updateRecoveryEmail(
-      legacyBeacon.id,
-      "gracinoir@gmail.com"
-    );
+  const handleSaveRecoveryEmail = (updatedRecoveryEmail: string) => {
+    console.log("New recovery email: " + updatedRecoveryEmail);
+  };
+
+  const handleCancelRecoveryEmail = () => {
+    console.log("Cancelled");
   };
 
   const renderState = (state: DataPanelStates) => {
@@ -39,7 +39,9 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
           <>
             <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
             <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
-              <EditPanelButton onClick={() => handleEditButtonClick()}>
+              <EditPanelButton
+                onClick={() => setUserState(DataPanelStates.Editing)}
+              >
                 Edit recovery email
               </EditPanelButton>
             </OnlyVisibleToUsersWith>
@@ -53,7 +55,9 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
           <>
             <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
             <LegacyBeaconRecoveryEmailEditing
-              recoveryEmail={legacyBeacon.recoveryEmail}
+              currentRecoveryEmail={legacyBeacon.recoveryEmail}
+              onSave={handleSaveRecoveryEmail}
+              onCancel={handleCancelRecoveryEmail}
             />
           </>
         );
