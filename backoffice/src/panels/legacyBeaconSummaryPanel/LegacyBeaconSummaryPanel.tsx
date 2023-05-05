@@ -11,7 +11,6 @@ import { EditPanelButton } from "components/dataPanel/EditPanelButton";
 import { LegacyBeaconRecoveryEmailEditing } from "./LegacyBeaconRecoveryEmailEditing";
 import { ILegacyBeaconsGateway } from "gateways/legacy-beacons/ILegacyBeaconsGateway";
 import { logToServer } from "../../utils/logger";
-import { LegacyBeaconsGateway } from "../../gateways/legacy-beacons/LegacyBeaconsGateway";
 
 interface ILegacyBeaconSummaryProps {
   legacyBeaconId: string;
@@ -59,6 +58,7 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
   };
 
   const handleCancelRecoveryEmail = () => {
+    setUserState(DataPanelStates.Viewing);
     console.log("Cancelled");
   };
 
