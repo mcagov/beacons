@@ -6,6 +6,7 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.RepositoryDetectionStrategy;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import uk.gov.mca.beacons.api.search.domain.AccountHolderSearchEntity;
 import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
 
 @Configuration
@@ -20,7 +21,10 @@ public class SpringDataRestRepositoryConfiguration
     RepositoryRestConfiguration config,
     CorsRegistry cors
   ) {
-    config.exposeIdsFor(BeaconSearchEntity.class);
+    config.exposeIdsFor(
+      BeaconSearchEntity.class,
+      AccountHolderSearchEntity.class
+    );
 
     if (allowedOrigins != null && allowedOrigins.length > 0) {
       cors.addMapping("/**").allowedMethods("*").allowedOrigins(allowedOrigins);

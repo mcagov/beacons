@@ -20,7 +20,6 @@ export const LetterView: FunctionComponent<LetterViewProps> = ({
   beaconId,
   letterType,
 }): JSX.Element => {
-  console.log(beaconId);
   const [beacon, setBeacon] = useState<IBeaconExport>({} as IBeaconExport);
   useEffect(() => {
     exportsGateway.getLetterDataForBeacon(beaconId).then(setBeacon);
