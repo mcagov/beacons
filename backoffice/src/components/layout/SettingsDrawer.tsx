@@ -157,6 +157,22 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
             >
               Beacon Export Search
             </Button> */}
+
+            <Typography
+              gutterBottom={true}
+              component={"p"}
+              variant={"subtitle2"}
+              id="account-holder-search-btn"
+            >
+              Account Holders
+            </Typography>
+            <Button
+              href={`backoffice#/account-holders`}
+              variant="outlined"
+              fullWidth
+            >
+              Account Holder Search
+            </Button>
           </OnlyVisibleToUsersWith>
           <Typography
             gutterBottom={true}
