@@ -214,7 +214,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
           direction="row"
           container
           justifyContent="space-between"
-          spacing={2}
+          spacing={1.5}
         >
           {beacons.map((beacon) => (
             <Grid item xs={beacons.length > 2 ? 4 : 6} key={beacon.id}>
