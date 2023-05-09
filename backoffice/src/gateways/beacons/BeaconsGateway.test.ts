@@ -22,6 +22,8 @@ describe("BeaconsGateway", () => {
   beforeEach(() => {
     beaconResponseMapper = {
       map: jest.fn(),
+      mapAccountHolder: jest.fn(),
+      mapBeacon: jest.fn(),
     };
     beaconRequestMapper = {
       map: jest.fn(),

@@ -1,6 +1,7 @@
 import { IEmergencyContact } from "../../entities/IEmergencyContact";
 import { IOwner } from "../../entities/IOwner";
 import { IUse } from "../../entities/IUse";
+import { IAccountHolderResponse } from "./IAccountHolderResponse";
 
 export interface IRegistrationResponse {
   id: string;
@@ -22,6 +23,7 @@ export interface IRegistrationResponse {
   lastServicedDate?: string;
   referenceNumber: string;
   owner?: OwnerRegistrationResponse;
+  accountHolder?: IAccountHolderResponse;
   uses?: UseRegistrationResponse[];
   emergencyContacts?: EmergencyContactRegistrationResponse[];
 }

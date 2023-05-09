@@ -39,6 +39,9 @@ import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordVi
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 import { AdminView } from "views/AdminView";
 import { LegacyBeaconsGateway } from "gateways/legacy-beacons/LegacyBeaconsGateway";
+import { AccountHolderView } from "views/AccountHolderView";
+import { AccountHolderGateway } from "gateways/account-holder/AccountHolderGateway";
+import { AccountHolderListView } from "./views/AccountHolderListView";
 
 interface ResourceParams {
   id: string;
@@ -79,6 +82,10 @@ const App: FunctionComponent = () => {
   const usesGateway = new UsesGateway(beaconResponseMapper, authGateway);
   const notesGateway = new NotesGateway(authGateway);
   const exportsGateway = new ExportsGateway(authGateway);
+  const accountHolderGateway = new AccountHolderGateway(
+    beaconResponseMapper,
+    authGateway
+  );
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {
     const { id } = useParams<ResourceParams>();
@@ -106,6 +113,21 @@ const App: FunctionComponent = () => {
           beaconsGateway={beaconsGateway}
           legacyBeaconsGateway={legacyBeaconsGateway}
           beaconId={id}
+        />
+        <Footer />
+      </div>
+    );
+  };
+
+  const AccountHolderViewWithParam: FunctionComponent = () => {
+    const { id } = useParams<ResourceParams>();
+
+    return (
+      <div>
+        <Navigation exportsGateway={exportsGateway} />
+        <AccountHolderView
+          accountHolderGateway={accountHolderGateway}
+          accountHolderId={id}
         />
         <Footer />
       </div>
@@ -189,6 +211,18 @@ const App: FunctionComponent = () => {
                 </Route>
                 <Route path={`/legacy-beacons/:id`}>
                   <SingleLegacyBeaconRecordViewWithParam />
+                </Route>
+                <Route path={`/account-holder/:id`}>
+                  <AccountHolderViewWithParam />
+                </Route>
+                <Route path={`/account-holders`}>
+                  <div>
+                    <Navigation exportsGateway={exportsGateway} />
+                    <AccountHolderListView
+                      accountHolderGateway={accountHolderGateway}
+                    />
+                    <Footer />
+                  </div>
                 </Route>
                 <Route path={`/admin`}>
                   <Navigation exportsGateway={exportsGateway} />
