@@ -14,16 +14,13 @@ public class LegacyBeaconServiceIntegrationTest extends BaseIntegrationTest {
 
   @Test
   void shouldClaimLegacyBeacon() throws Exception {
-    final String hexId = "9D0E1D1B8C00001";
-    final String email = "ownerbeacon@beacons.com";
     LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
     legacyBeaconService.create(legacyBeacon);
 
-    List<LegacyBeacon> claimedLegacyBeacons = legacyBeaconService.claimByHexIdAndAccountHolderEmail(
-      hexId,
-      email
+    LegacyBeacon claimedLegacyBeacon = legacyBeaconService.claimByHexIdAndAccountHolderEmail(
+      legacyBeacon
     );
 
-    assert claimedLegacyBeacons.get(0).isClaimed();
+    assert claimedLegacyBeacon.isClaimed();
   }
 }

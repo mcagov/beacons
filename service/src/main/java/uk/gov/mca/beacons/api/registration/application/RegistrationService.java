@@ -248,19 +248,8 @@ public class RegistrationService {
       accountHolder.getEmail()
     );
 
-    // todo: we can then claim directly from here instead of finding them all over again
     for (LegacyBeacon legacyBeacon : legacyBeacons) {
-      if (legacyBeacon.getRecoveryEmail() != null) {
-        legacyBeaconService.claimByHexIdAndRecoveryEmail(
-          beacon.getHexId(),
-          legacyBeacon.getRecoveryEmail()
-        );
-      } else {
-        legacyBeaconService.claimByHexIdAndAccountHolderEmail(
-          beacon.getHexId(),
-          accountHolder.getEmail()
-        );
-      }
+      legacyBeaconService.claim(legacyBeacon);
     }
   }
 

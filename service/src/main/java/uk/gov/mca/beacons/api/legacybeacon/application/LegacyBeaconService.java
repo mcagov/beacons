@@ -62,50 +62,13 @@ public class LegacyBeaconService {
     return beaconsMatchingAccountHolderEmail;
   }
 
-  public List<LegacyBeacon> claimByHexIdAndRecoveryEmail(
-    String hexId,
-    String recoveryEmail
-  ) {
-    // todo: abstract to avoid duplication
-    List<LegacyBeacon> legacyBeacons = legacyBeaconRepository.findByHexIdAndRecoveryEmail(
-      hexId,
-      recoveryEmail
-    );
+  public LegacyBeacon claim(LegacyBeacon legacyBeacon) {
+    legacyBeacon.claim();
+    LegacyBeacon savedLegacyBeacon = legacyBeaconRepository.save(legacyBeacon);
 
-    legacyBeacons.forEach(LegacyBeacon::claim);
-    List<LegacyBeacon> savedLegacyBeacons = legacyBeaconRepository.saveAll(
-      legacyBeacons
-    );
+    log.info("Claimed legacy beacon with HexID {}", legacyBeacon.getHexId());
 
-    log.info(
-      "Claimed {} legacy beacon(s) with HexID {}",
-      savedLegacyBeacons.size(),
-      hexId
-    );
-
-    return savedLegacyBeacons;
-  }
-
-  public List<LegacyBeacon> claimByHexIdAndAccountHolderEmail(
-    String hexId,
-    String email
-  ) {
-    List<LegacyBeacon> legacyBeacons = legacyBeaconRepository.findByHexIdAndOwnerEmail(
-      hexId,
-      email
-    );
-    legacyBeacons.forEach(LegacyBeacon::claim);
-    List<LegacyBeacon> savedLegacyBeacons = legacyBeaconRepository.saveAll(
-      legacyBeacons
-    );
-
-    log.info(
-      "Claimed {} legacy beacon(s) with HexID {}",
-      savedLegacyBeacons.size(),
-      hexId
-    );
-
-    return savedLegacyBeacons;
+    return savedLegacyBeacon;
   }
 
   public void updateRecoveryEmailByBeaconId(
