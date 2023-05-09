@@ -17,9 +17,7 @@ public class LegacyBeaconServiceIntegrationTest extends BaseIntegrationTest {
     LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
     legacyBeaconService.create(legacyBeacon);
 
-    LegacyBeacon claimedLegacyBeacon = legacyBeaconService.claimByHexIdAndAccountHolderEmail(
-      legacyBeacon
-    );
+    LegacyBeacon claimedLegacyBeacon = legacyBeaconService.claim(legacyBeacon);
 
     assert claimedLegacyBeacon.isClaimed();
   }
