@@ -233,13 +233,12 @@ public class RegistrationService {
     }
   }
 
-  // we can make this more efficient because currently it does findByHexIdAndAccountHolderEmail loads of times
-  // can we just claim from here rather than looking it up again
   private void claimLegacyBeacon(Beacon beacon) {
     AccountHolder accountHolder = accountHolderService
       .getAccountHolder(beacon.getAccountHolderId())
       .orElseThrow(ResourceNotFoundException::new);
 
+    // does either email address on the legacybeacon match AccountHolder.email?
     List<LegacyBeacon> legacyBeacons = legacyBeaconService.findByHexIdAndAccountHolderEmail(
       beacon.getHexId(),
       accountHolder.getEmail()

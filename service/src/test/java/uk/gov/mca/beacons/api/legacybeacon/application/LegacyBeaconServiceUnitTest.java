@@ -198,4 +198,155 @@ public class LegacyBeaconServiceUnitTest {
 
     Assertions.assertEquals(todaysDate, lastModifiedDate);
   }
+
+  @Test
+  void findByHexIdAndAccountHolderEmail_whenOwnerEmailMatchesTheAccountHolderEmail_shouldReturnAListOfOneLegacyBeaconWithAnOwnerEmailMatchingAccountHolderEmail()
+    throws Exception {
+    String accountHolderEmail = "gracinoir@gmail.com";
+    LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
+    legacyBeacon.setOwnerEmail("gracinoir@gmail.com");
+    legacyBeacon.setRecoveryEmail("barry@hotmail.com");
+
+    when(
+      mockLegacyBeaconRepository.findByHexIdAndOwnerEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      )
+    )
+      .thenReturn(List.of(legacyBeacon));
+
+    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndOwnerEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
+      legacyBeacon.getHexId(),
+      accountHolderEmail
+    );
+
+    Assertions.assertEquals(
+      1,
+      beaconsWhereAccountHolderEmailAndOwnerEmailMatch.size()
+    );
+  }
+
+  @Test
+  void findByHexIdAndAccountHolderEmail_whenRecoveryEmailMatchesTheAccountHolderEmail_shouldReturnAListOfOneLegacyBeaconWithARecoveryEmailMatchingAccountHolderEmail()
+    throws Exception {
+    String accountHolderEmail = "cooldude@gmail.com";
+    LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
+    legacyBeacon.setOwnerEmail("barry@gmail.com");
+    legacyBeacon.setRecoveryEmail("cooldude@gmail.com");
+
+    when(
+      mockLegacyBeaconRepository.findByHexIdAndRecoveryEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      )
+    )
+      .thenReturn(List.of(legacyBeacon));
+
+    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
+      legacyBeacon.getHexId(),
+      accountHolderEmail
+    );
+
+    Assertions.assertEquals(
+      1,
+      beaconsWhereAccountHolderEmailAndRecoveryEmailMatch.size()
+    );
+  }
+
+  @Test
+  void findByHexIdAndAccountHolderEmail_whenOwnerEmailIsNullButThereIsARecoveryEmail_shouldReturnAListOfOneLegacyBeaconWithARecoveryEmailMatchingAccountHolderEmail()
+    throws Exception {
+    String accountHolderEmail = "cooldude@gmail.com";
+    LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
+    legacyBeacon.setOwnerEmail(null);
+    legacyBeacon.setRecoveryEmail("cooldude@gmail.com");
+
+    when(
+      mockLegacyBeaconRepository.findByHexIdAndRecoveryEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      )
+    )
+      .thenReturn(List.of(legacyBeacon));
+
+    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
+      legacyBeacon.getHexId(),
+      accountHolderEmail
+    );
+
+    Assertions.assertEquals(
+      1,
+      beaconsWhereAccountHolderEmailAndRecoveryEmailMatch.size()
+    );
+  }
+
+  @Test
+  void findByHexIdAndAccountHolderEmail_whenNeitherEmailMatchesAccountHolderEmail_shouldReturnAnEmptyList()
+    throws Exception {
+    String accountHolderEmail = "gracinoir@gmail.com";
+    LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
+    legacyBeacon.setOwnerEmail("barry@gmail.com");
+    legacyBeacon.setRecoveryEmail("cooldude@gmail.com");
+
+    List<LegacyBeacon> beaconsWithNoMatchOnEitherEmailAddress = legacyBeaconService.findByHexIdAndAccountHolderEmail(
+      legacyBeacon.getHexId(),
+      accountHolderEmail
+    );
+
+    Assertions.assertEquals(0, beaconsWithNoMatchOnEitherEmailAddress.size());
+  }
+
+  @Test
+  void findByHexIdAndAccountHolderEmail_whenTheAccountHolderEmailIsNull_shouldReturnAnEmptyList()
+    throws Exception {
+    String accountHolderEmail = null;
+    LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
+    legacyBeacon.setOwnerEmail("barry@gmail.com");
+    legacyBeacon.setRecoveryEmail("cooldude@gmail.com");
+
+    List<LegacyBeacon> beaconsWithNoMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
+      legacyBeacon.getHexId(),
+      accountHolderEmail
+    );
+
+    Assertions.assertEquals(0, beaconsWithNoMatch.size());
+  }
+
+  @Test
+  void findByHexIdAndAccountHolderEmail_whenRecoveryEmailIsNullAndOwnerEmailDoesNotMatchTheAccountHolderEmail_shouldReturnAnEmptyList()
+    throws Exception {
+    String accountHolderEmail = "cooldude@gmail.com";
+    LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
+    legacyBeacon.setOwnerEmail("charliep@hotmail.com");
+    legacyBeacon.setRecoveryEmail(null);
+
+    List<LegacyBeacon> beaconsWithNoOwnerEmailMatchAndNoRecoveryEmail = legacyBeaconService.findByHexIdAndAccountHolderEmail(
+      legacyBeacon.getHexId(),
+      accountHolderEmail
+    );
+
+    Assertions.assertEquals(
+      0,
+      beaconsWithNoOwnerEmailMatchAndNoRecoveryEmail.size()
+    );
+  }
+
+  @Test
+  void findByHexIdAndAccountHolderEmail_whenBothRecoveryEmailAndOwnerEmailAreNull_shouldReturnAnEmptyList()
+    throws Exception {
+    String accountHolderEmail = "cooldude@gmail.com";
+    LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
+    legacyBeacon.setOwnerEmail(null);
+    legacyBeacon.setRecoveryEmail(null);
+
+    List<LegacyBeacon> beaconsWithNoOwnerEmailAndNoRecoveryEmail = legacyBeaconService.findByHexIdAndAccountHolderEmail(
+      legacyBeacon.getHexId(),
+      accountHolderEmail
+    );
+
+    Assertions.assertEquals(
+      0,
+      beaconsWithNoOwnerEmailAndNoRecoveryEmail.size()
+    );
+  }
 }

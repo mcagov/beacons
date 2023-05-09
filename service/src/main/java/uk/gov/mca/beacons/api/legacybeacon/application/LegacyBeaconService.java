@@ -46,10 +46,20 @@ public class LegacyBeaconService {
     String hexId,
     String accountHolderEmail
   ) {
-    return legacyBeaconRepository.findByHexIdAndOwnerEmail(
+    List<LegacyBeacon> beaconsMatchingAccountHolderEmail = legacyBeaconRepository.findByHexIdAndOwnerEmail(
       hexId,
       accountHolderEmail
     );
+
+    if (beaconsMatchingAccountHolderEmail.size() == 0) {
+      beaconsMatchingAccountHolderEmail =
+        legacyBeaconRepository.findByHexIdAndRecoveryEmail(
+          hexId,
+          accountHolderEmail
+        );
+    }
+
+    return beaconsMatchingAccountHolderEmail;
   }
 
   public List<LegacyBeacon> claimByHexIdAndRecoveryEmail(
