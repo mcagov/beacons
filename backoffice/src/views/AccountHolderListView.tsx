@@ -54,9 +54,9 @@ export const AccountHolderListView: FunctionComponent<
 
   return (
     <div className={classes.root}>
-      <PageHeader>Account Holders</PageHeader>
       <PageContent>
         <Paper className={classes.paper}>
+          <h2>Account Holders</h2>
           <AccountHolderTable result={response} />
         </Paper>
       </PageContent>

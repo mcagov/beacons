@@ -11,24 +11,11 @@ import { makeStyles, createStyles } from "@mui/styles";
 import { customDateStringFormat } from "../../utils/dateTime";
 import { IAccountHolderSearchResult } from "entities/IAccountHolderSearchResult";
 import { Link as RouterLink } from "react-router-dom";
+import { LoadingState } from "components/dataPanel/PanelLoadingState";
 
 interface IAccountHolderTableProps {
   result: IAccountHolderSearchResult;
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-    },
-    button: {
-      marginLeft: theme.spacing(2),
-    },
-  })
-);
 
 const columns: GridColDef[] = [
   // { field: "id", headerName: "ID", width: 300 },
@@ -110,7 +97,9 @@ const columns: GridColDef[] = [
 
 export const AccountHolderTable: FunctionComponent<IAccountHolderTableProps> =
   React.memo(function ({ result }): JSX.Element {
-    const classes = useStyles();
+    if (!result?._embedded) {
+      return <LoadingState />;
+    }
 
     let rows = result?._embedded?.accountHolderSearch || [];
 
