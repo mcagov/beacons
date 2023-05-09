@@ -39,13 +39,11 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
 
   const handleSaveOtherReason = (text: string) => {
     if (text) {
-      console.log(text);
       reasonSubmitted(text);
     }
   };
 
   const handleCancelOtherReason = () => {
-    console.log("cancelled other reason");
     setShowOtherReasonForm(false);
   };
 
