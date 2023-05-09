@@ -243,12 +243,12 @@ public class RegistrationService {
       .getAccountHolder(beacon.getAccountHolderId())
       .orElseThrow(ResourceNotFoundException::new);
 
-    // does either email address on the legacybeacon match AccountHolder.email?
     List<LegacyBeacon> legacyBeacons = legacyBeaconService.findByHexIdAndAccountHolderEmail(
       beacon.getHexId(),
       accountHolder.getEmail()
     );
 
+    // todo: we can then claim directly from here instead of finding them all over again
     for (LegacyBeacon legacyBeacon : legacyBeacons) {
       if (legacyBeacon.getRecoveryEmail() != null) {
         legacyBeaconService.claimByHexIdAndRecoveryEmail(
