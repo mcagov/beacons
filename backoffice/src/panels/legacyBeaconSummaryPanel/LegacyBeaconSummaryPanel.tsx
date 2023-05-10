@@ -67,7 +67,6 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
       case DataPanelStates.Viewing:
         return (
           <>
-            <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
             <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
               <EditPanelButton
                 onClick={() => setUserState(DataPanelStates.Editing)}
@@ -75,18 +74,15 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
                 Edit recovery email
               </EditPanelButton>
             </OnlyVisibleToUsersWith>
-            <LegacyBeaconRecoveryEmailViewing
-              recoveryEmail={legacyBeacon.recoveryEmail}
-            />
+            <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
           </>
         );
       case DataPanelStates.Editing:
         return (
           <>
-            <LegacyBeaconSummaryViewing legacyBeacon={legacyBeacon} />
             <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
               <LegacyBeaconRecoveryEmailEditing
-                currentRecoveryEmail={legacyBeacon.recoveryEmail}
+                legacyBeacon={legacyBeacon}
                 onSave={handleSaveRecoveryEmail}
                 onCancel={handleCancelRecoveryEmail}
               />

@@ -105,6 +105,11 @@ export const LegacyBeaconSummaryViewing: FunctionComponent<{
       value: legacyBeacon?.note || "",
       valueType: FieldValueTypes.MULTILINE,
     },
+    {
+      key: "Recovery Email",
+      value: legacyBeacon?.recoveryEmail || "",
+      valueType: FieldValueTypes.MULTILINE,
+    },
   ];
 
   return <PanelViewingState fields={fields} columns={2} splitAfter={20} />;
