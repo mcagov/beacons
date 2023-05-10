@@ -27,6 +27,7 @@ import {
 } from "@mui/material";
 import { TabulatedRow } from "components/dataPanel/TabulatedRow";
 import { PanelViewingState } from "../../components/dataPanel/PanelViewingState";
+import { validate } from "uuid";
 
 interface LegacyBeaconRecoveryEmailFormProps
   extends FormikProps<ILegacyBeacon> {
@@ -179,14 +180,11 @@ export const LegacyBeaconRecoveryEmailForm: FunctionComponent<
                             id="recoveryEmail"
                             name="recoveryEmail"
                             type="string"
-                            multiline
                             fullWidth
-                            rows={2}
-                            data-testid="textarea-form-field"
-                            placeholder="Add your text here"
+                            placeholder="Email address"
+                            onChange={validate}
+                            validate={validate}
                             // defaultValue={legacyBeacon.recoveryEmail? legacyBeacon.recoveryEmail : ""}
-                            error={props.touched && !errors.recoveryEmail}
-                            helperText={errors.recoveryEmail}
                           ></Field>
                           <Button
                             name="save"
@@ -194,7 +192,8 @@ export const LegacyBeaconRecoveryEmailForm: FunctionComponent<
                             color="secondary"
                             data-testid="save"
                             variant="contained"
-                            disabled={isSubmitting || !!errors.recoveryEmail}
+                            // disabled={isSubmitting || !!errors.recoveryEmail}
+                            disabled={legacyBeacon.recoveryEmail ? false : true}
                           >
                             Save
                           </Button>
@@ -234,21 +233,16 @@ export const LegacyBeaconRecoveryEmailEditing = withFormik<
   },
 
   validate: (legacyBeacon: ILegacyBeacon) => {
+    console.log(legacyBeacon.recoveryEmail);
     let errors: FormikErrors<ILegacyBeacon> = {};
     if (!legacyBeacon.recoveryEmail) {
+      console.log("recovery email required");
       errors.recoveryEmail = "Required";
     }
     if (legacyBeacon.recoveryEmail) {
-      const textHasInvalidChars =
-        legacyBeacon.recoveryEmail.includes("<") ||
-        legacyBeacon.recoveryEmail.includes(">") ||
-        legacyBeacon.recoveryEmail.includes("{") ||
-        legacyBeacon.recoveryEmail.includes("}") ||
-        legacyBeacon.recoveryEmail.includes("/") ||
-        legacyBeacon.recoveryEmail.includes("\\") ||
-        legacyBeacon.recoveryEmail.includes("&") ||
-        legacyBeacon.recoveryEmail.includes("$");
-      errors.recoveryEmail = textHasInvalidChars ? "Invalid text" : undefined;
+      errors.recoveryEmail = legacyBeacon.recoveryEmail
+        ? "Invalid text"
+        : undefined;
     }
     return errors;
   },
