@@ -151,7 +151,6 @@ export const TextAreaSection = withFormik<
 
   handleSubmit: (values: TextAreaFormValues, { setSubmitting, props }) => {
     props.onSave(values);
-    console.log(values.text);
     setSubmitting(false);
   },
 })(TextAreaForm);

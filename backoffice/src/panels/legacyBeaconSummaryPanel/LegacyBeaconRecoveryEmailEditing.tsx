@@ -1,8 +1,20 @@
 import React, { FunctionComponent } from "react";
 import { ILegacyBeacon } from "../../entities/ILegacyBeacon";
-import { formatLegacyOwners, formatLegacyUses } from "../../utils/writingStyle";
+import {
+  Placeholders,
+  formatLegacyOwners,
+  formatLegacyUses,
+} from "../../utils/writingStyle";
 import { FieldValueTypes } from "../../components/dataPanel/FieldValue";
-import { Field, Form, Formik, FormikHelpers } from "formik";
+import {
+  Field,
+  Form,
+  Formik,
+  FormikErrors,
+  FormikHelpers,
+  FormikProps,
+  withFormik,
+} from "formik";
 import {
   Button,
   Grid,
@@ -10,16 +22,23 @@ import {
   Table,
   TableBody,
   TableContainer,
+  TextField,
   Typography,
 } from "@mui/material";
 import { TabulatedRow } from "components/dataPanel/TabulatedRow";
 import { PanelViewingState } from "../../components/dataPanel/PanelViewingState";
 
-export const LegacyBeaconRecoveryEmailEditing: FunctionComponent<{
+interface LegacyBeaconRecoveryEmailFormProps
+  extends FormikProps<ILegacyBeacon> {
   legacyBeacon: ILegacyBeacon;
   onSave: (recoveryEmail: string) => void;
   onCancel: () => void;
-}> = ({ legacyBeacon, onSave, onCancel }) => {
+}
+
+export const LegacyBeaconRecoveryEmailForm: FunctionComponent<
+  LegacyBeaconRecoveryEmailFormProps
+> = (props: LegacyBeaconRecoveryEmailFormProps) => {
+  const { errors, isSubmitting, legacyBeacon, onSave, onCancel } = props;
   return (
     <Formik
       initialValues={legacyBeacon}
@@ -27,7 +46,6 @@ export const LegacyBeaconRecoveryEmailEditing: FunctionComponent<{
         values: ILegacyBeacon,
         { setSubmitting }: FormikHelpers<ILegacyBeacon>
       ) => {
-        console.log(values.recoveryEmail);
         onSave(values.recoveryEmail);
         setSubmitting(false);
       }}
@@ -157,7 +175,7 @@ export const LegacyBeaconRecoveryEmailEditing: FunctionComponent<{
                       value={
                         <>
                           <Field
-                            as={Input}
+                            as={TextField}
                             id="recoveryEmail"
                             name="recoveryEmail"
                             type="string"
@@ -166,9 +184,9 @@ export const LegacyBeaconRecoveryEmailEditing: FunctionComponent<{
                             rows={2}
                             data-testid="textarea-form-field"
                             placeholder="Add your text here"
-                            defaultValue={legacyBeacon.recoveryEmail}
-                            // error={props.touched && errors.text}
-                            // helperText={props.touched && errors.text}
+                            // defaultValue={legacyBeacon.recoveryEmail? legacyBeacon.recoveryEmail : ""}
+                            error={props.touched && !errors.recoveryEmail}
+                            helperText={errors.recoveryEmail}
                           ></Field>
                           <Button
                             name="save"
@@ -176,7 +194,7 @@ export const LegacyBeaconRecoveryEmailEditing: FunctionComponent<{
                             color="secondary"
                             data-testid="save"
                             variant="contained"
-                            // disabled={isSubmitting || !!errors.text}
+                            disabled={isSubmitting || !!errors.recoveryEmail}
                           >
                             Save
                           </Button>
@@ -200,3 +218,43 @@ export const LegacyBeaconRecoveryEmailEditing: FunctionComponent<{
     </Formik>
   );
 };
+
+export const LegacyBeaconRecoveryEmailEditing = withFormik<
+  {
+    legacyBeacon: ILegacyBeacon;
+    onSave: (recoveryEmail: string) => void;
+    onCancel: () => void;
+  },
+  ILegacyBeacon
+>({
+  mapPropsToErrors: () => {
+    return {
+      recoveryEmail: "Required",
+    };
+  },
+
+  validate: (legacyBeacon: ILegacyBeacon) => {
+    let errors: FormikErrors<ILegacyBeacon> = {};
+    if (!legacyBeacon.recoveryEmail) {
+      errors.recoveryEmail = "Required";
+    }
+    if (legacyBeacon.recoveryEmail) {
+      const textHasInvalidChars =
+        legacyBeacon.recoveryEmail.includes("<") ||
+        legacyBeacon.recoveryEmail.includes(">") ||
+        legacyBeacon.recoveryEmail.includes("{") ||
+        legacyBeacon.recoveryEmail.includes("}") ||
+        legacyBeacon.recoveryEmail.includes("/") ||
+        legacyBeacon.recoveryEmail.includes("\\") ||
+        legacyBeacon.recoveryEmail.includes("&") ||
+        legacyBeacon.recoveryEmail.includes("$");
+      errors.recoveryEmail = textHasInvalidChars ? "Invalid text" : undefined;
+    }
+    return errors;
+  },
+
+  handleSubmit: (legacyBeacon: ILegacyBeacon, { setSubmitting, props }) => {
+    props.onSave(legacyBeacon.recoveryEmail);
+    setSubmitting(false);
+  },
+})(LegacyBeaconRecoveryEmailForm);

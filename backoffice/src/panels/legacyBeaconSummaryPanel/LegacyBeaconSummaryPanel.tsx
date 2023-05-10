@@ -5,7 +5,6 @@ import { Placeholders } from "utils/writingStyle";
 import { ErrorState } from "../../components/dataPanel/PanelErrorState";
 import { DataPanelStates } from "../../components/dataPanel/States";
 import { LegacyBeaconSummaryViewing } from "./LegacyBeaconSummaryViewing";
-import { LegacyBeaconRecoveryEmailViewing } from "./LegacyBeaconRecoveryEmailViewing";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { EditPanelButton } from "components/dataPanel/EditPanelButton";
 import { LegacyBeaconRecoveryEmailEditing } from "./LegacyBeaconRecoveryEmailEditing";
@@ -59,7 +58,6 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
 
   const handleCancelRecoveryEmail = () => {
     setUserState(DataPanelStates.Viewing);
-    console.log("Cancelled");
   };
 
   const renderState = (state: DataPanelStates) => {
