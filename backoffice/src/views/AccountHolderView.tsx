@@ -1,4 +1,12 @@
-import { Box, Button, Card, CardContent, Link, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Link,
+  Paper,
+} from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
@@ -113,6 +121,15 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
         >
           {row.hexId}
         </Link>
+      ),
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      editable: false,
+      renderCell: ({ row }: Partial<GridRowParams>) => (
+        <Chip label={row.status} color="primary" />
       ),
     },
     {
