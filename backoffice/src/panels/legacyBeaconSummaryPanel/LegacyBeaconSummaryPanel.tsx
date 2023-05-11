@@ -80,12 +80,7 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
         return (
           <>
             <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
-              {/* <LegacyBeaconRecoveryEmailEditing
-                legacyBeacon={legacyBeacon}
-                onSave={handleSaveRecoveryEmail}
-                onCancel={handleCancelRecoveryEmail}
-              /> */}
-              <LegacyBeaconRecoveryEmailChanging
+              <LegacyBeaconRecoveryEmailEditing
                 legacyBeacon={legacyBeacon}
                 onSave={handleSaveRecoveryEmail}
                 onCancel={handleCancelRecoveryEmail}

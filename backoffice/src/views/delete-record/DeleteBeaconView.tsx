@@ -69,6 +69,7 @@ export const DeleteBeaconView: FunctionComponent<IDeleteBeaconViewProps> = ({
       {showOtherReasonForm && (
         <TextAreaFormSection
           submitButtonText="Delete beacon"
+          textType="string"
           numberOfRowsForTextArea={13}
           textSubmitted={handleSaveOtherReason}
           cancelled={handleCancelOtherReason}
