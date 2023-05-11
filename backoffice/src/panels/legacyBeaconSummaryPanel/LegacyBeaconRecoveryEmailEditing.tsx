@@ -1,28 +1,12 @@
 import React, { FunctionComponent } from "react";
 import { ILegacyBeacon } from "../../entities/ILegacyBeacon";
-import {
-  Placeholders,
-  formatLegacyOwners,
-  formatLegacyUses,
-} from "../../utils/writingStyle";
+import { formatLegacyOwners, formatLegacyUses } from "../../utils/writingStyle";
 import { FieldValueTypes } from "../../components/dataPanel/FieldValue";
 import {
-  Field,
-  Form,
-  Formik,
-  FormikErrors,
-  FormikHelpers,
-  FormikProps,
-  withFormik,
-} from "formik";
-import {
-  Button,
   Grid,
-  Input,
   Table,
   TableBody,
   TableContainer,
-  TextField,
   Typography,
 } from "@mui/material";
 import { TabulatedRow } from "components/dataPanel/TabulatedRow";

@@ -10,7 +10,6 @@ import { EditPanelButton } from "components/dataPanel/EditPanelButton";
 import { LegacyBeaconRecoveryEmailEditing } from "./LegacyBeaconRecoveryEmailEditing";
 import { ILegacyBeaconsGateway } from "gateways/legacy-beacons/ILegacyBeaconsGateway";
 import { logToServer } from "../../utils/logger";
-import { LegacyBeaconRecoveryEmailChanging } from "./LegacyBeaconRecoveryEmailChanging";
 
 interface ILegacyBeaconSummaryProps {
   legacyBeaconId: string;

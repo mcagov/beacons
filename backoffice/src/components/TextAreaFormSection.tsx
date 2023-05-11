@@ -1,16 +1,7 @@
 import "./text-area-form.scss";
 import { Box, Button, FormControl, TextField } from "@mui/material";
-import {
-  Field,
-  Form,
-  Formik,
-  FormikErrors,
-  FormikProps,
-  withFormik,
-} from "formik";
-import * as Yup from "yup";
-import { FunctionComponent, Props } from "react";
-import { validate } from "uuid";
+import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
+import { FunctionComponent } from "react";
 
 interface ITextAreaFormSectionProps {
   formSectionTitle?: string;
@@ -25,10 +16,6 @@ interface ITextAreaFormSectionProps {
 interface TextAreaFormValues {
   text: string;
 }
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Required"),
-});
 
 export const TextAreaFormSection: FunctionComponent<
   ITextAreaFormSectionProps
@@ -89,41 +76,8 @@ const TextAreaForm = (props: TextAreaFormProps) => {
     onSave(props.values);
   };
 
-  function validateText(text: string): FormikErrors<TextAreaFormValues> {
-    let errors: FormikErrors<TextAreaFormValues> = {};
-    if (!text) {
-      errors.text = "Required";
-    }
-    if (text) {
-      const textHasInvalidChars =
-        text.includes("<") ||
-        text.includes(">") ||
-        text.includes("{") ||
-        text.includes("}") ||
-        text.includes("/") ||
-        text.includes("\\") ||
-        text.includes("&") ||
-        text.includes("$");
-      errors.text = textHasInvalidChars ? "Invalid text" : undefined;
-    }
-
-    if (text && textType === "email") {
-      const validationResult = validationSchema.validate(text);
-      validationResult.then((valid) => {
-        errors.text = "Invalid email";
-      });
-    }
-    console.log(errors);
-
-    return errors;
-  }
-
   return (
     <>
-      {/* <Formik
-        validationSchema={validationSchema}
-        initialValues={values}
-        onSubmit={props.onSave}> */}
       <Form className="textarea-form">
         <FormControl component="fieldset" fullWidth>
           <Box>
@@ -138,7 +92,6 @@ const TextAreaForm = (props: TextAreaFormProps) => {
               data-testid="textarea-form-field"
               placeholder="Add your text here"
               defaultValue={initialValue}
-              validate={validateText}
               error={props.touched && Boolean(errors.text)}
               helperText={props.touched && errors.text}
             />
@@ -161,7 +114,6 @@ const TextAreaForm = (props: TextAreaFormProps) => {
           </Button>
         </Box>
       </Form>
-      {/* </Formik> */}
     </>
   );
 };
@@ -183,29 +135,44 @@ export const TextAreaSection = withFormik<
     };
   },
 
-  // validate: (values: TextAreaFormValues) => {
-  //   let errors: FormikErrors<TextAreaFormValues> = {};
-  //   if (!values.text) {
-  //     errors.text = "Required";
-  //   }
-  //   if (values.text) {
-  //     const textHasInvalidChars =
-  //       values.text.includes("<") ||
-  //       values.text.includes(">") ||
-  //       values.text.includes("{") ||
-  //       values.text.includes("}") ||
-  //       values.text.includes("/") ||
-  //       values.text.includes("\\") ||
-  //       values.text.includes("&") ||
-  //       values.text.includes("$");
-  //     errors.text = textHasInvalidChars ? "Invalid text" : undefined;
-  //   }
+  validate: (
+    values: TextAreaFormValues,
+    {
+      submitButtonText,
+      numberOfRowsForTextArea,
+      initialValue,
+      textType,
+      onCancel,
+      onSave,
+    }
+  ) => {
+    let errors: FormikErrors<TextAreaFormValues> = {};
+    if (!values.text) {
+      errors.text = "Required";
+    }
+    if (values.text) {
+      const textHasInvalidChars =
+        values.text.includes("<") ||
+        values.text.includes(">") ||
+        values.text.includes("{") ||
+        values.text.includes("}") ||
+        values.text.includes("/") ||
+        values.text.includes("\\") ||
+        values.text.includes("&") ||
+        values.text.includes("$");
+      errors.text = textHasInvalidChars ? "Invalid text" : undefined;
+    }
 
-  //   // enum
-  //   if( === )
-  //   return errors;
-  // },
-  //},
+    // this needs more rules is there a library we can use?
+    if (values.text && textType === "email") {
+      errors.text =
+        values.text.includes("@") && values.text.includes(".")
+          ? errors.text
+          : "Invalid email";
+    }
+
+    return errors;
+  },
 
   handleSubmit: (values: TextAreaFormValues, { setSubmitting, props }) => {
     props.onSave(values);
