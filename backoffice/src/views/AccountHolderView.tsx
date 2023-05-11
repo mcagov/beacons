@@ -1,30 +1,24 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  Tab,
-  Tabs,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Box, Button, Card, CardContent, Link, Paper } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 import { IBeacon } from "../entities/IBeacon";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { PageContent } from "../components/layout/PageContent";
 import { PageHeader } from "../components/layout/PageHeader";
-import { BeaconSummaryPanel } from "../panels/beaconSummaryPanel/BeaconSummaryPanel";
 import { logToServer } from "../utils/logger";
-import { DialogueBox } from "components/DialogueBox";
-import { useHistory } from "react-router-dom";
-import { AccountHolderPanel } from "../panels/accountHolderPanel/AccountHolderPanel";
 import { IAccountHolder } from "../entities/IAccountHolder";
 import { IAccountHolderGateway } from "gateways/account-holder/IAccountHolderGateway";
 import { PanelViewingState } from "components/dataPanel/PanelViewingState";
 import { FieldValueTypes } from "components/dataPanel/FieldValue";
-import { formatSvdr } from "utils/writingStyle";
+import {
+  DataGrid,
+  GridColDef,
+  GridRowParams,
+  GridValueFormatterParams,
+} from "@mui/x-data-grid";
+import { Link as RouterLink } from "react-router-dom";
+import { customDateStringFormat } from "utils/dateTime";
 
 interface IAccountHolderViewProps {
   accountHolderGateway: IAccountHolderGateway;
@@ -38,6 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       padding: theme.spacing(2),
+      marginTop: theme.spacing(2),
     },
     button: {
       marginLeft: theme.spacing(2),
@@ -50,13 +45,11 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   accountHolderId,
 }): JSX.Element => {
   const classes = useStyles();
-  // const routerHistory = useHistory();
 
   const [accountHolder, setAccountHolder] = useState<IAccountHolder>(
     {} as IAccountHolder
   );
   const [beacons, setBeacons] = useState<IBeacon[]>([] as IBeacon[]);
-  // const [dialogueIsOpen, setDialogueIsOpen] = useState<boolean>(false);
 
   useEffect((): void => {
     const fetchAccountHolder = async (id: string) => {
@@ -104,153 +97,94 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     },
   ];
 
-  const getBeaconFields = (beacon: IBeacon) => [
+  const columns: GridColDef[] = [
+    // { field: "id", headerName: "ID", width: 300 },
+
     {
-      key: "Beacon status",
-      value: beacon?.status,
+      field: "hexId",
+      headerName: "Hex ID",
+      width: 200,
+      editable: false,
+      renderCell: ({ row }: Partial<GridRowParams>) => (
+        <Link
+          component={RouterLink}
+          to={`/beacons/${row.id}`}
+          underline="hover"
+        >
+          {row.hexId}
+        </Link>
+      ),
     },
     {
-      key: "Manufacturer",
-      value: beacon?.manufacturer,
+      field: "mainUseName",
+      headerName: "Main Use",
+      width: 175,
+      editable: false,
+      type: "string",
     },
     {
-      key: "Model",
-      value: beacon?.model,
+      field: "coding",
+      headerName: "Coding",
+      width: 175,
+      editable: false,
+      type: "string",
     },
     {
-      key: "Serial number",
-      value: beacon?.manufacturerSerialNumber,
+      field: "createdDate",
+      headerName: "Created",
+      width: 175,
+      editable: false,
+      type: "date",
+      valueFormatter: (params: GridValueFormatterParams) => {
+        return customDateStringFormat(params.value, "DD/MM/yyyy");
+      },
     },
     {
-      key: "CHK code",
-      value: beacon?.chkCode,
+      field: "lastModifiedDate",
+      headerName: "Last Modified",
+      width: 175,
+      editable: false,
+      type: "date",
+      valueFormatter: (params: GridValueFormatterParams) => {
+        return customDateStringFormat(params.value, "DD/MM/yyyy");
+      },
     },
     {
-      key: "Beacon type",
-      value: beacon?.beaconType,
-    },
-    {
-      key: "Protocol",
-      value: beacon?.protocol,
-    },
-    {
-      key: "Coding",
-      value: beacon?.coding,
-    },
-    {
-      key: "CSTA / TAC",
-      value: beacon?.csta,
-    },
-    {
-      key: "MTI",
-      value: beacon?.mti,
-    },
-    {
-      key: "SVDR",
-      value: formatSvdr(beacon?.svdr),
-    },
-    {
-      key: "Battery expiry date",
-      value: beacon?.batteryExpiryDate,
-    },
-    {
-      key: "Last serviced date",
-      value: beacon?.lastServicedDate,
-    },
-    {
-      key: "Created date",
-      value: beacon?.registeredDate,
-    },
-    {
-      key: "Last modified date",
-      value: beacon?.lastModifiedDate,
-    },
-    {
-      key: "Reference",
-      value: beacon?.referenceNumber,
+      field: "actions",
+      headerName: "Actions",
+      width: 200,
+      sortable: false,
+      renderCell: ({ row }: Partial<GridRowParams>) => (
+        <Button
+          href={`/backoffice#/beacons/${row.id}`}
+          variant="outlined"
+          sx={{ marginX: "auto" }}
+        >
+          View
+        </Button>
+      ),
     },
   ];
 
-  // const modernConfirmDialogueModel: IConfirmDialogueModel = {
-  //   dialogueTitle: "Are you sure you want to permanently delete this account holder?",
-  //   dialogueContentText:
-  //     "This will delete the account holder, and all associated information.",
-  //   action: "Yes",
-  //   dismissal: "No",
-  // };
-
-  // const openDialogueBox = () => {
-  //   setDialogueIsOpen(true);
-  // };
-
-  // const handleDeleteDialogueAction = async (
-  //   actionOptionSelected: boolean,
-  //   reasonForAction: string
-  // ) => {
-  //   setDialogueIsOpen(false);
-  //   if (actionOptionSelected) {
-  //     const deleteAccountHolderDto: IDeleteAccountHolderDto = {
-  //       accountHolderId: accountHolderId,
-  //       reason: reasonForAction,
-  //     };
-  //     await beaconsGateway.deleteAccountHolder(deleteAccountHolderDto);
-  //     routerHistory.goBack();
-  //   }
-  // };
-
   return (
     <div className={classes.root}>
-      <PageHeader>Account Holder: {accountHolder?.fullName}</PageHeader>
       <PageContent>
-        <Card>
-          <CardContent>
-            <PanelViewingState fields={accountHolderFields} />
-          </CardContent>
-        </Card>
+        <Paper className={classes.paper}>
+          <h2>Account Holder: {accountHolder?.fullName}</h2>
+          <PanelViewingState fields={accountHolderFields} />
+        </Paper>
 
-        <PageHeader>Beacons ({beacons.length}): </PageHeader>
-
-        <Grid
-          direction="row"
-          container
-          justifyContent="space-between"
-          spacing={1.5}
-        >
-          {beacons.map((beacon) => (
-            <Grid item xs={beacons.length > 2 ? 4 : 6} key={beacon.id}>
-              <Card>
-                <CardContent>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="flex-end"
-                  >
-                    <CardHeader title={`Hex ID/UIN: ${beacon.hexId}`} />
-
-                    <Button
-                      target="_blank"
-                      href={`/backoffice#/beacons/${beacon.id}`}
-                      variant="outlined"
-                      sx={{ marginY: "auto" }}
-                    >
-                      View
-                    </Button>
-                  </Grid>
-                  <PanelViewingState fields={getBeaconFields(beacon)} />
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* <DialogueBox
-          isOpen={dialogueIsOpen}
-          dialogueType={DialogueType.DeleteBeacon}
-          reasonsForAction={reasonsForDeletion}
-          confirmDialogueModel={modernConfirmDialogueModel}
-          selectOption={handleDeleteDialogueAction}
-        /> */}
+        <Paper className={classes.paper}>
+          <h2>Beacons ({beacons.length})</h2>
+          <Box sx={{ height: 850 }}>
+            <DataGrid
+              rows={beacons}
+              columns={columns}
+              disableSelectionOnClick={true}
+              rowsPerPageOptions={[10, 20, 50, 100]}
+            />
+          </Box>
+        </Paper>
       </PageContent>
     </div>
   );
