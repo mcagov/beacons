@@ -10,6 +10,7 @@ import { EditPanelButton } from "components/dataPanel/EditPanelButton";
 import { LegacyBeaconRecoveryEmailEditing } from "./LegacyBeaconRecoveryEmailEditing";
 import { ILegacyBeaconsGateway } from "gateways/legacy-beacons/ILegacyBeaconsGateway";
 import { logToServer } from "../../utils/logger";
+import { LegacyBeaconRecoveryEmailChanging } from "./LegacyBeaconRecoveryEmailChanging";
 
 interface ILegacyBeaconSummaryProps {
   legacyBeaconId: string;
@@ -79,7 +80,12 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
         return (
           <>
             <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
-              <LegacyBeaconRecoveryEmailEditing
+              {/* <LegacyBeaconRecoveryEmailEditing
+                legacyBeacon={legacyBeacon}
+                onSave={handleSaveRecoveryEmail}
+                onCancel={handleCancelRecoveryEmail}
+              /> */}
+              <LegacyBeaconRecoveryEmailChanging
                 legacyBeacon={legacyBeacon}
                 onSave={handleSaveRecoveryEmail}
                 onCancel={handleCancelRecoveryEmail}

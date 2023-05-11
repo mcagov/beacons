@@ -13,6 +13,7 @@ import {
   FormikErrors,
   FormikHelpers,
   FormikProps,
+  useFormik,
   withFormik,
 } from "formik";
 import {
@@ -34,17 +35,28 @@ const emailValidationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
 });
 
-interface LegacyBeaconRecoveryEmailFormProps
-  extends FormikProps<ILegacyBeacon> {
+// const formik = useFormik({
+//     initialValues: {
+//       email: 'foobar@example.com',
+//       password: 'foobar',
+//     },
+//     validationSchema: validationSchema,
+//     onSubmit: (values) => {
+//       alert(JSON.stringify(values, null, 2));
+//     },
+//   });
+
+interface LegacyBeaconRecoveryEmailChangingProps {
   legacyBeacon: ILegacyBeacon;
   onSave: (recoveryEmail: string) => void;
   onCancel: () => void;
+  handleChange: () => void;
 }
 
-export const LegacyBeaconRecoveryEmailForm: FunctionComponent<
-  LegacyBeaconRecoveryEmailFormProps
-> = (props: LegacyBeaconRecoveryEmailFormProps) => {
-  const { errors, isSubmitting, legacyBeacon, onSave, onCancel } = props;
+export const LegacyBeaconRecoveryEmailChanging: FunctionComponent<
+  LegacyBeaconRecoveryEmailChangingProps
+> = (props: LegacyBeaconRecoveryEmailChangingProps) => {
+  const { legacyBeacon, onSave, onCancel, handleChange } = props;
   return (
     <Formik
       initialValues={legacyBeacon}
@@ -189,9 +201,7 @@ export const LegacyBeaconRecoveryEmailForm: FunctionComponent<
                             type="string"
                             fullWidth
                             placeholder="Email address"
-                            onChange={validate}
-                            validate={validate}
-                            // defaultValue={legacyBeacon.recoveryEmail? legacyBeacon.recoveryEmail : ""}
+                            onChange={handleChange}
                           ></Field>
                           <Button
                             name="save"
@@ -199,8 +209,8 @@ export const LegacyBeaconRecoveryEmailForm: FunctionComponent<
                             color="secondary"
                             data-testid="save"
                             variant="contained"
-                            disabled={isSubmitting || !!errors.recoveryEmail}
-                            // disabled={legacyBeacon.recoveryEmail ? false : true}
+                            // disabled={isSubmitting || !!errors.recoveryEmail}
+                            disabled={legacyBeacon.recoveryEmail ? false : true}
                           >
                             Save
                           </Button>
@@ -224,38 +234,3 @@ export const LegacyBeaconRecoveryEmailForm: FunctionComponent<
     </Formik>
   );
 };
-
-export const LegacyBeaconRecoveryEmailEditing = withFormik<
-  {
-    legacyBeacon: ILegacyBeacon;
-    onSave: (recoveryEmail: string) => void;
-    onCancel: () => void;
-  },
-  ILegacyBeacon
->({
-  mapPropsToErrors: () => {
-    return {
-      recoveryEmail: "Required",
-    };
-  },
-
-  validate: (legacyBeacon: ILegacyBeacon) => {
-    console.log(legacyBeacon.recoveryEmail);
-    let errors: FormikErrors<ILegacyBeacon> = {};
-    if (!legacyBeacon.recoveryEmail) {
-      console.log("recovery email required");
-      errors.recoveryEmail = "Required";
-    }
-    if (legacyBeacon.recoveryEmail) {
-      errors.recoveryEmail = legacyBeacon.recoveryEmail
-        ? "Invalid text"
-        : undefined;
-    }
-    return errors;
-  },
-
-  handleSubmit: (legacyBeacon: ILegacyBeacon, { setSubmitting, props }) => {
-    props.onSave(legacyBeacon.recoveryEmail);
-    setSubmitting(false);
-  },
-})(LegacyBeaconRecoveryEmailForm);
