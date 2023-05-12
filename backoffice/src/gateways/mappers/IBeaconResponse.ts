@@ -39,4 +39,5 @@ export interface IBeaconResponseAttributes {
   batteryExpiryDate?: string;
   lastServicedDate?: string;
   referenceNumber: string;
+  mainUseName: string;
 }

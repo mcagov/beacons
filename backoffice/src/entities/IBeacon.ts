@@ -26,6 +26,7 @@ export interface IBeacon {
   owners: IOwner[];
   accountHolder: IAccountHolder | null;
   emergencyContacts: IEmergencyContact[];
+  mainUseName: string;
 }
 
 export enum BeaconStatuses {

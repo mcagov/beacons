@@ -9,6 +9,7 @@ import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconRegistrationDTO;
 import uk.gov.mca.beacons.api.beacon.rest.CreateBeaconDTO;
 import uk.gov.mca.beacons.api.beacon.rest.UpdateBeaconDTO;
+import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.dto.WrapperDTO;
 
 @Component("BeaconMapperV2")
@@ -86,6 +87,38 @@ public class BeaconMapper {
       .status(beacon.getBeaconStatus())
       .createdDate(beacon.getCreatedDate())
       .lastModifiedDate(beacon.getLastModifiedDate())
+      .build();
+    dto.setAttributes(attributes);
+
+    return dto;
+  }
+
+  public BeaconDTO toDTO(Beacon beacon, BeaconUse mainUse) {
+    BeaconDTO dto = new BeaconDTO();
+    dto.setId(Objects.requireNonNull(beacon.getId()).unwrap());
+
+    var attributes = BeaconDTO.Attributes
+      .builder()
+      .id(dto.getId())
+      .hexId(beacon.getHexId())
+      .manufacturer(beacon.getManufacturer())
+      .model(beacon.getModel())
+      .manufacturerSerialNumber(beacon.getManufacturerSerialNumber())
+      .referenceNumber(beacon.getReferenceNumber())
+      .chkCode(beacon.getChkCode())
+      .batteryExpiryDate(beacon.getBatteryExpiryDate())
+      .lastServicedDate(beacon.getLastServicedDate())
+      .mti(beacon.getMti())
+      .svdr(beacon.getSvdr())
+      .csta(beacon.getCsta())
+      .beaconType(beacon.getBeaconType())
+      .protocol(beacon.getProtocol())
+      .coding(beacon.getCoding())
+      .accountHolderId(beacon.getAccountHolderId().unwrap())
+      .status(beacon.getBeaconStatus())
+      .createdDate(beacon.getCreatedDate())
+      .lastModifiedDate(beacon.getLastModifiedDate())
+      .mainUseName(mainUse != null ? mainUse.getName() : "")
       .build();
     dto.setAttributes(attributes);
 
