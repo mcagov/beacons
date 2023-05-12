@@ -62,6 +62,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
         ? this.mapEmergencyContacts(beaconApiResponse.emergencyContacts)
         : [],
       uses: beaconApiResponse.uses ? this.mapUses(beaconApiResponse.uses) : [],
+      mainUseName: beaconApiResponse.mainUseName || "",
     };
   }
 
@@ -146,6 +147,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
       owners: [],
       emergencyContacts: [],
       accountHolder: null,
+      mainUseName: beaconApiResponse.mainUseName || "",
     };
   }
 

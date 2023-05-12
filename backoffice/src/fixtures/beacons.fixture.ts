@@ -30,4 +30,5 @@ export const beaconFixture = deepFreeze<IBeacon>({
   owners: testOwners,
   accountHolder: testAccountHolder,
   emergencyContacts: emergencyContactsFixture as IEmergencyContact[],
+  mainUseName: "Some beacon use",
 });

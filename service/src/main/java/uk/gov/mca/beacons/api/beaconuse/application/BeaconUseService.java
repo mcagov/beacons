@@ -27,6 +27,14 @@ public class BeaconUseService {
     return beaconUseRepository.getBeaconUseByBeaconId(beaconId);
   }
 
+  public BeaconUse getMainUseByBeaconId(BeaconId beaconId) {
+    return getByBeaconId(beaconId)
+      .stream()
+      .filter(bu -> bu != null && Boolean.TRUE.equals(bu.getMainUse()))
+      .findFirst()
+      .orElse(null);
+  }
+
   public void deleteByBeaconId(BeaconId beaconId) {
     beaconUseRepository.deleteAllByBeaconId(beaconId);
     beaconUseRepository.flush();

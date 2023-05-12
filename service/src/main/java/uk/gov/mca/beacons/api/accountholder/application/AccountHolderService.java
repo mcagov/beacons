@@ -13,6 +13,8 @@ import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
+import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
+import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
 
 @Transactional
@@ -23,18 +25,21 @@ public class AccountHolderService {
   private final ModelPatcherFactory<AccountHolder> accountHolderPatcherFactory;
   private final BeaconService beaconService;
   private final BeaconMapper beaconMapper;
+  private final BeaconUseService beaconUseService;
 
   @Autowired
   public AccountHolderService(
     AccountHolderRepository accountHolderRepository,
     ModelPatcherFactory<AccountHolder> accountHolderPatcherFactory,
     BeaconService beaconService,
-    BeaconMapper beaconMapper
+    BeaconMapper beaconMapper,
+    BeaconUseService beaconUseService
   ) {
     this.accountHolderRepository = accountHolderRepository;
     this.accountHolderPatcherFactory = accountHolderPatcherFactory;
     this.beaconService = beaconService;
     this.beaconMapper = beaconMapper;
+    this.beaconUseService = beaconUseService;
   }
 
   public AccountHolder create(AccountHolder accountHolder) {
@@ -81,9 +86,12 @@ public class AccountHolderService {
     AccountHolderId accountHolderId
   ) {
     List<Beacon> beacons = beaconService.getByAccountHolderId(accountHolderId);
+
     return beacons
       .stream()
-      .map(b -> beaconMapper.toDTO(b))
+      .map(b ->
+        beaconMapper.toDTO(b, beaconUseService.getMainUseByBeaconId(b.getId()))
+      )
       .collect(Collectors.toList());
   }
 }

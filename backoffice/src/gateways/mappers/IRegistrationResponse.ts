@@ -26,6 +26,7 @@ export interface IRegistrationResponse {
   accountHolder?: IAccountHolderResponse;
   uses?: UseRegistrationResponse[];
   emergencyContacts?: EmergencyContactRegistrationResponse[];
+  mainUseName?: string;
 }
 
 export type OwnerRegistrationResponse = IOwner;

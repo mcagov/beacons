@@ -68,5 +68,7 @@ public class BeaconDTO extends DomainDTO<BeaconDTO.Attributes> {
 
     @NotNull
     private UUID accountHolderId;
+
+    private String mainUseName;
   }
 }
