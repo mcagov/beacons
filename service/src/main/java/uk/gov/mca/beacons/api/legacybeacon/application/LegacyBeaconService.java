@@ -75,16 +75,9 @@ public class LegacyBeaconService {
     String recoveryEmail,
     LegacyBeaconId id
   ) {
-    OffsetDateTime today = OffsetDateTime.now();
-
     LegacyBeacon legacyBeacon = legacyBeaconRepository.getById(id);
 
     legacyBeacon.setRecoveryEmail(recoveryEmail);
-    legacyBeacon.setLastModifiedDate(today);
-    legacyBeacon
-      .getData()
-      .getBeacon()
-      .setLastModifiedDate(today.format(dateTimeFormatter));
 
     legacyBeaconRepository.save(legacyBeacon);
   }
