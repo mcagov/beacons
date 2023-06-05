@@ -6,6 +6,7 @@ import { IAccountHolder } from "../../entities/IAccountHolder";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
 import { IAccountHolderGateway } from "./IAccountHolderGateway";
 import { IBeaconResponseMapper } from "gateways/mappers/BeaconResponseMapper";
+import { accountHolderFixture } from "../../fixtures/accountHolder.fixture";
 import {
   IAccountHolderSearchResult,
   IAccountHolderSearchResultData,
@@ -32,6 +33,28 @@ export class AccountHolderGateway implements IAccountHolderGateway {
       );
 
       return this._beaconResponseMapper.mapAccountHolder(response.data.data);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async updateAccountHolder(
+    accountHolderId: string,
+    updatedFields: Partial<IAccountHolder>
+  ): Promise<IAccountHolder> {
+    try {
+      const data = {
+        data: {
+          id: accountHolderId,
+          attributes: updatedFields,
+        },
+      };
+
+      const response = await this._makePatchRequest(
+        `/account-holder/${accountHolderId}`,
+        data
+      );
+      return response.data;
     } catch (e) {
       throw e;
     }
@@ -68,6 +91,18 @@ export class AccountHolderGateway implements IAccountHolderGateway {
     const accessToken = await this._authGateway.getAccessToken();
 
     return await axios.get(`${applicationConfig.apiUrl}${path}`, {
+      timeout: applicationConfig.apiTimeoutMs,
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  }
+
+  private async _makePatchRequest(
+    path: string,
+    payload: {}
+  ): Promise<AxiosResponse> {
+    const accessToken = await this._authGateway.getAccessToken();
+
+    return await axios.patch(`${applicationConfig.apiUrl}${path}`, payload, {
       timeout: applicationConfig.apiTimeoutMs,
       headers: { Authorization: `Bearer ${accessToken}` },
     });

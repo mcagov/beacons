@@ -39,9 +39,9 @@ import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordVi
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 import { AdminView } from "views/AdminView";
 import { DataComparisonView } from "views/comparison/DataComparisonView";
-import { AccountHolderView } from "views/AccountHolderView";
+import { AccountHolderView } from "views/accountHolder/AccountHolderView";
 import { AccountHolderGateway } from "gateways/account-holder/AccountHolderGateway";
-import { AccountHolderListView } from "./views/AccountHolderListView";
+import { AccountHolderListView } from "./views/accountHolder/AccountHolderListView";
 
 interface ResourceParams {
   id: string;

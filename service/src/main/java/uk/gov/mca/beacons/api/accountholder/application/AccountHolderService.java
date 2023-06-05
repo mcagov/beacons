@@ -67,6 +67,7 @@ public class AccountHolderService {
     final var patcher = accountHolderPatcherFactory
       .getModelPatcher()
       .withMapping(AccountHolder::getFullName, AccountHolder::setFullName)
+      .withMapping(AccountHolder::getEmail, AccountHolder::setEmail)
       .withMapping(
         AccountHolder::getTelephoneNumber,
         AccountHolder::setTelephoneNumber
