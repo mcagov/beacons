@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
+import com.nimbusds.openid.connect.sdk.federation.policy.operations.PolicyOperationFactory;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -7,6 +8,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.xmlbeans.impl.regex.RegularExpression;
+import org.elasticsearch.common.regex.Regex;
+import org.owasp.encoder.Encode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +84,37 @@ public class LegacyBeaconService {
     legacyBeacon.setRecoveryEmail(recoveryEmail);
 
     legacyBeaconRepository.save(legacyBeacon);
+  }
+
+  public String sanitiseRecoveryEmail(String recoveryEmail) {
+    RegularExpression javascriptRegex = new RegularExpression(
+      "<script>(.*?)<\\/script>"
+    );
+
+    boolean textContainsJavaScript = javascriptRegex.matches(recoveryEmail);
+    boolean textContainsOtherTags =
+      recoveryEmail.contains("<") || recoveryEmail.contains(">");
+    boolean textContainsCurlyBraces =
+      recoveryEmail.contains("{") || recoveryEmail.contains("}");
+    boolean textContainsSlashes =
+      recoveryEmail.contains("/") || recoveryEmail.contains("\\");
+    boolean textContainsOtherCharacters =
+      recoveryEmail.contains("&") || recoveryEmail.contains("$");
+
+    //    recoveryEmail = textContainsScriptTags? recoveryEmail.replace("<", "") &&
+    //
+    //       if (textHasInvalidChars) {
+    //         recoveryEmail = ;
+    //         recoveryEmail = recoveryEmail.replace(">", "");
+    //         recoveryEmail = recoveryEmail.replace("{", "");
+    //         recoveryEmail = recoveryEmail.replace("}", "");
+    //         recoveryEmail = recoveryEmail.replace("/", "");
+    //         recoveryEmail = recoveryEmail.replace("\\", "");
+    //         recoveryEmail = recoveryEmail.replace("&", "");
+    //         recoveryEmail = recoveryEmail.replace("$", "");
+    //       }
+
+    return recoveryEmail;
   }
 
   public LegacyBeacon delete(

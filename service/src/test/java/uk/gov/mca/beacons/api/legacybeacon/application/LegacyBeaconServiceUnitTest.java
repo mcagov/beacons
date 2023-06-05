@@ -349,4 +349,15 @@ public class LegacyBeaconServiceUnitTest {
       beaconsWithNoOwnerEmailAndNoRecoveryEmail.size()
     );
   }
+
+  @Test
+  void sanitiseRecoveryEmail_whenTheRecoveryEmailContainsHtmlTags_shouldRemoveHtmlTags() {
+    String recoveryEmail = "furry<h1>chicken</h1>@gmail.com";
+
+    String sanitisedEmail = legacyBeaconService.sanitiseRecoveryEmail(
+      recoveryEmail
+    );
+
+    Assertions.assertEquals("furryh1chickenh1@gmail.com", sanitisedEmail);
+  }
 }
