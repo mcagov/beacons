@@ -351,6 +351,28 @@ public class LegacyBeaconServiceUnitTest {
   }
 
   @Test
+  void sanitiseRecoveryEmail_whenTheRecoveryEmailContainsJavaScript_shouldRemoveJavaScript() {
+    String recoveryEmail = "<script><alert>Hello!</alert></script>";
+
+    String sanitisedEmail = legacyBeaconService.sanitiseRecoveryEmail(
+      recoveryEmail
+    );
+
+    Assertions.assertEquals("", sanitisedEmail);
+  }
+
+  @Test
+  void sanitiseRecoveryEmail_whenTheRecoveryEmailContainsAlertTags_shouldRemoveTheAlertTags() {
+    String recoveryEmail = "<alert>Hello!</alert>";
+
+    String sanitisedEmail = legacyBeaconService.sanitiseRecoveryEmail(
+      recoveryEmail
+    );
+
+    Assertions.assertEquals("", sanitisedEmail);
+  }
+
+  @Test
   void sanitiseRecoveryEmail_whenTheRecoveryEmailContainsHtmlTags_shouldRemoveHtmlTags() {
     String recoveryEmail = "furry<h1>chicken</h1>@gmail.com";
 
@@ -358,6 +380,50 @@ public class LegacyBeaconServiceUnitTest {
       recoveryEmail
     );
 
-    Assertions.assertEquals("furryh1chickenh1@gmail.com", sanitisedEmail);
+    Assertions.assertEquals("furry@gmail.com", sanitisedEmail);
+  }
+
+  @Test
+  void sanitiseRecoveryEmail_whenTheRecoveryEmailContainsCurlyBraces_shouldRemoveCurlyBraces() {
+    String recoveryEmail = "{const cheese = 'cheddar';}";
+
+    String sanitisedEmail = legacyBeaconService.sanitiseRecoveryEmail(
+      recoveryEmail
+    );
+
+    Assertions.assertEquals("const cheese = 'cheddar';", sanitisedEmail);
+  }
+
+  @Test
+  void sanitiseRecoveryEmail_whenTheRecoveryEmailContainsADollarSign_shouldRemoveDollarSign() {
+    String recoveryEmail = "barry$attack@gmail.com";
+
+    String sanitisedEmail = legacyBeaconService.sanitiseRecoveryEmail(
+      recoveryEmail
+    );
+
+    Assertions.assertEquals("barryattack@gmail.com", sanitisedEmail);
+  }
+
+  @Test
+  void sanitiseRecoveryEmail_whenTheRecoveryEmailContainsAnAmpersand_shouldRemoveAmpersand() {
+    String recoveryEmail = "hey&@hotmail.com";
+
+    String sanitisedEmail = legacyBeaconService.sanitiseRecoveryEmail(
+      recoveryEmail
+    );
+
+    Assertions.assertEquals("hey@hotmail.com", sanitisedEmail);
+  }
+
+  @Test
+  void sanitiseRecoveryEmail_whenTheRecoveryEmailIsValid_shouldNotRemoveAnything() {
+    String recoveryEmail = "eviesandsam@hotmail.com";
+
+    String sanitisedEmail = legacyBeaconService.sanitiseRecoveryEmail(
+      recoveryEmail
+    );
+
+    Assertions.assertEquals("eviesandsam@hotmail.com", sanitisedEmail);
   }
 }

@@ -80,20 +80,19 @@ public class LegacyBeaconService {
     LegacyBeaconId id
   ) {
     LegacyBeacon legacyBeacon = legacyBeaconRepository.getById(id);
+    String sanitisedRecoveryEmail = sanitiseRecoveryEmail(recoveryEmail);
 
-    legacyBeacon.setRecoveryEmail(recoveryEmail);
+    legacyBeacon.setRecoveryEmail(sanitisedRecoveryEmail);
 
     legacyBeaconRepository.save(legacyBeacon);
   }
 
   public String sanitiseRecoveryEmail(String recoveryEmail) {
-    RegularExpression javascriptRegex = new RegularExpression(
-      "<script>(.*?)<\\/script>"
+    String maliciousCodePattern = "<(.*)>(.*)<\\/(.*)>";
+    RegularExpression maliciousCodeRegex = new RegularExpression(
+      maliciousCodePattern
     );
 
-    boolean textContainsJavaScript = javascriptRegex.matches(recoveryEmail);
-    boolean textContainsOtherTags =
-      recoveryEmail.contains("<") || recoveryEmail.contains(">");
     boolean textContainsCurlyBraces =
       recoveryEmail.contains("{") || recoveryEmail.contains("}");
     boolean textContainsSlashes =
@@ -101,18 +100,21 @@ public class LegacyBeaconService {
     boolean textContainsOtherCharacters =
       recoveryEmail.contains("&") || recoveryEmail.contains("$");
 
-    //    recoveryEmail = textContainsScriptTags? recoveryEmail.replace("<", "") &&
-    //
-    //       if (textHasInvalidChars) {
-    //         recoveryEmail = ;
-    //         recoveryEmail = recoveryEmail.replace(">", "");
-    //         recoveryEmail = recoveryEmail.replace("{", "");
-    //         recoveryEmail = recoveryEmail.replace("}", "");
-    //         recoveryEmail = recoveryEmail.replace("/", "");
-    //         recoveryEmail = recoveryEmail.replace("\\", "");
-    //         recoveryEmail = recoveryEmail.replace("&", "");
-    //         recoveryEmail = recoveryEmail.replace("$", "");
-    //       }
+    if (maliciousCodeRegex.matches(recoveryEmail)) {
+      recoveryEmail = recoveryEmail.replaceAll(maliciousCodePattern, "");
+    }
+    if (textContainsSlashes) {
+      recoveryEmail = recoveryEmail.replace("/", "");
+      recoveryEmail = recoveryEmail.replace("\\", "");
+    }
+    if (textContainsCurlyBraces) {
+      recoveryEmail = recoveryEmail.replace("{", "");
+      recoveryEmail = recoveryEmail.replace("}", "");
+    }
+    if (textContainsOtherCharacters) {
+      recoveryEmail = recoveryEmail.replace("$", "");
+      recoveryEmail = recoveryEmail.replace("&", "");
+    }
 
     return recoveryEmail;
   }
