@@ -6,11 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.xmlbeans.impl.regex.RegularExpression;
-import org.elasticsearch.common.regex.Regex;
-import org.owasp.encoder.Encode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,7 +99,7 @@ public class LegacyBeaconService {
 
     if (maliciousCodeRegex.matches(recoveryEmail)) {
       recoveryEmail = recoveryEmail.replaceAll(maliciousCodePattern, "");
-    }
+    } // replace all instances of teh naughty ones into blanks
     if (textContainsSlashes) {
       recoveryEmail = recoveryEmail.replace("/", "");
       recoveryEmail = recoveryEmail.replace("\\", "");
