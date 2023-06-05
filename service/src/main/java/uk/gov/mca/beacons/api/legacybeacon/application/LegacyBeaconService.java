@@ -14,6 +14,7 @@ import org.owasp.encoder.Encode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
@@ -93,28 +94,11 @@ public class LegacyBeaconService {
       maliciousCodePattern
     );
 
-    boolean textContainsCurlyBraces =
-      recoveryEmail.contains("{") || recoveryEmail.contains("}");
-    boolean textContainsSlashes =
-      recoveryEmail.contains("/") || recoveryEmail.contains("\\");
-    boolean textContainsOtherCharacters =
-      recoveryEmail.contains("&") || recoveryEmail.contains("$");
-
     if (maliciousCodeRegex.matches(recoveryEmail)) {
       recoveryEmail = recoveryEmail.replaceAll(maliciousCodePattern, "");
     }
-    if (textContainsSlashes) {
-      recoveryEmail = recoveryEmail.replace("/", "");
-      recoveryEmail = recoveryEmail.replace("\\", "");
-    }
-    if (textContainsCurlyBraces) {
-      recoveryEmail = recoveryEmail.replace("{", "");
-      recoveryEmail = recoveryEmail.replace("}", "");
-    }
-    if (textContainsOtherCharacters) {
-      recoveryEmail = recoveryEmail.replace("$", "");
-      recoveryEmail = recoveryEmail.replace("&", "");
-    }
+
+    recoveryEmail = StringUtils.deleteAny(recoveryEmail, "/\\{}$&");
 
     return recoveryEmail;
   }
