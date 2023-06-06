@@ -4,8 +4,10 @@ import com.nimbusds.openid.connect.sdk.federation.policy.operations.PolicyOperat
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.xmlbeans.impl.regex.RegularExpression;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,30 +50,33 @@ public class LegacyBeaconService {
     String hexId,
     String accountHolderEmail
   ) {
-    List<LegacyBeacon> beaconsMatchingAccountHolderEmail = legacyBeaconRepository.findByHexIdAndOwnerEmail(
-      hexId,
-      accountHolderEmail
+    List<LegacyBeacon> beaconsMatchingHexId = legacyBeaconRepository.findByHexId(
+      hexId
     );
-
-    if (beaconsMatchingAccountHolderEmail.size() == 0) {
-      beaconsMatchingAccountHolderEmail.addAll(
-        legacyBeaconRepository.findByHexIdAndRecoveryEmail(
-          hexId,
-          accountHolderEmail
-        )
-      );
-    }
-
-    return beaconsMatchingAccountHolderEmail;
+    return beaconsMatchingHexId
+      .stream()
+      .filter(l ->
+        Arrays
+          .asList(l.getRecoveryEmail(), l.getOwnerEmail())
+          .contains(accountHolderEmail)
+      )
+      .collect(Collectors.toList());
   }
 
   public LegacyBeacon claim(LegacyBeacon legacyBeacon) {
-    legacyBeacon.claim();
-    LegacyBeacon savedLegacyBeacon = legacyBeaconRepository.save(legacyBeacon);
-
-    log.info("Claimed legacy beacon with HexID {}", legacyBeacon.getHexId());
-
-    return savedLegacyBeacon;
+    if (legacyBeacon.claim()) {
+      LegacyBeacon savedLegacyBeacon = legacyBeaconRepository.save(
+        legacyBeacon
+      );
+      log.info("Claimed legacy beacon with HexID {}", legacyBeacon.getHexId());
+      return savedLegacyBeacon;
+    } else {
+      log.info(
+        "Legacy beacon with HexID {} has already been claimed",
+        legacyBeacon.getHexId()
+      );
+      return legacyBeacon;
+    }
   }
 
   public void updateRecoveryEmailByBeaconId(

@@ -207,12 +207,7 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail("gracinoir@gmail.com");
     legacyBeacon.setRecoveryEmail("barry@hotmail.com");
 
-    when(
-      mockLegacyBeaconRepository.findByHexIdAndOwnerEmail(
-        legacyBeacon.getHexId(),
-        accountHolderEmail
-      )
-    )
+    when(mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId()))
       .thenReturn(List.of(legacyBeacon));
 
     List<LegacyBeacon> beaconsWhereAccountHolderEmailAndOwnerEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
@@ -234,12 +229,7 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail("barry@gmail.com");
     legacyBeacon.setRecoveryEmail("cooldude@gmail.com");
 
-    when(
-      mockLegacyBeaconRepository.findByHexIdAndRecoveryEmail(
-        legacyBeacon.getHexId(),
-        accountHolderEmail
-      )
-    )
+    when(mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId()))
       .thenReturn(List.of(legacyBeacon));
 
     List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
@@ -261,12 +251,7 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail(null);
     legacyBeacon.setRecoveryEmail("cooldude@gmail.com");
 
-    when(
-      mockLegacyBeaconRepository.findByHexIdAndRecoveryEmail(
-        legacyBeacon.getHexId(),
-        accountHolderEmail
-      )
-    )
+    when(mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId()))
       .thenReturn(List.of(legacyBeacon));
 
     List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(

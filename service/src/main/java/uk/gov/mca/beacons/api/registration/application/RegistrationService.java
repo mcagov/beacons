@@ -248,9 +248,7 @@ public class RegistrationService {
       accountHolder.getEmail()
     );
 
-    for (LegacyBeacon legacyBeacon : legacyBeacons) {
-      legacyBeaconService.claim(legacyBeacon);
-    }
+    legacyBeacons.stream().forEach(l -> legacyBeaconService.claim(l));
   }
 
   public void deleteLegacyBeacon(DeleteBeaconDTO dto) {

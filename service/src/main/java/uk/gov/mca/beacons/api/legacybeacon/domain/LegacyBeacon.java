@@ -99,9 +99,9 @@ public class LegacyBeacon
       this.registerEvent(new LegacyBeaconClaimed(this));
 
       return true;
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   public String getBeaconStatus() {

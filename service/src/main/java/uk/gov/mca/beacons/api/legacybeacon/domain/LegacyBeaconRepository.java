@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LegacyBeaconRepository
   extends JpaRepository<LegacyBeacon, LegacyBeaconId> {
+  List<LegacyBeacon> findByHexId(String hexId);
   List<LegacyBeacon> findByHexIdAndOwnerEmail(String hexId, String ownerEmail);
   List<LegacyBeacon> findByHexIdAndRecoveryEmail(
     String hexId,
