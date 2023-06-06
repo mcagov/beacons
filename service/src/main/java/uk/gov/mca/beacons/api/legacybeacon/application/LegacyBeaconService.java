@@ -1,15 +1,19 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
+import com.nimbusds.openid.connect.sdk.federation.policy.operations.PolicyOperationFactory;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.xmlbeans.impl.regex.RegularExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
@@ -42,35 +46,64 @@ public class LegacyBeaconService {
     return legacyBeaconRepository.findById(legacyBeaconId);
   }
 
-  public List<LegacyBeacon> claimByHexIdAndAccountHolderEmail(
+  public List<LegacyBeacon> findByHexIdAndAccountHolderEmail(
     String hexId,
-    String email
+    String accountHolderEmail
   ) {
-    List<LegacyBeacon> legacyBeacons = legacyBeaconRepository.findByHexIdAndOwnerEmail(
-      hexId,
-      email
-    );
-    legacyBeacons.forEach(LegacyBeacon::claim);
-    List<LegacyBeacon> savedLegacyBeacons = legacyBeaconRepository.saveAll(
-      legacyBeacons
-    );
-
-    log.info(
-      "Claimed {} legacy beacon(s) with HexID {}",
-      savedLegacyBeacons.size(),
+    List<LegacyBeacon> beaconsMatchingHexId = legacyBeaconRepository.findByHexId(
       hexId
     );
-
-    return savedLegacyBeacons;
+    return beaconsMatchingHexId
+      .stream()
+      .filter(l ->
+        Arrays
+          .asList(l.getRecoveryEmail(), l.getOwnerEmail())
+          .contains(accountHolderEmail)
+      )
+      .collect(Collectors.toList());
   }
 
-  public List<LegacyBeacon> getBatch(int batchSize, int numberAlreadyTaken) {
-    return legacyBeaconRepository
-      .findAll()
-      .stream()
-      .skip(numberAlreadyTaken)
-      .limit(batchSize)
-      .collect(Collectors.toList());
+  public LegacyBeacon claim(LegacyBeacon legacyBeacon) {
+    if (legacyBeacon.claim()) {
+      LegacyBeacon savedLegacyBeacon = legacyBeaconRepository.save(
+        legacyBeacon
+      );
+      log.info("Claimed legacy beacon with HexID {}", legacyBeacon.getHexId());
+      return savedLegacyBeacon;
+    } else {
+      log.info(
+        "Legacy beacon with HexID {} has already been claimed",
+        legacyBeacon.getHexId()
+      );
+      return legacyBeacon;
+    }
+  }
+
+  public void updateRecoveryEmailByBeaconId(
+    String recoveryEmail,
+    LegacyBeaconId id
+  ) {
+    LegacyBeacon legacyBeacon = legacyBeaconRepository.getById(id);
+    String sanitisedRecoveryEmail = sanitiseRecoveryEmail(recoveryEmail);
+
+    legacyBeacon.setRecoveryEmail(sanitisedRecoveryEmail);
+
+    legacyBeaconRepository.save(legacyBeacon);
+  }
+
+  public String sanitiseRecoveryEmail(String recoveryEmail) {
+    String maliciousCodePattern = "<(.*)>(.*)<\\/(.*)>";
+    RegularExpression maliciousCodeRegex = new RegularExpression(
+      maliciousCodePattern
+    );
+
+    if (maliciousCodeRegex.matches(recoveryEmail)) {
+      recoveryEmail = recoveryEmail.replaceAll(maliciousCodePattern, "");
+    }
+
+    recoveryEmail = StringUtils.deleteAny(recoveryEmail, "/\\{}$&");
+
+    return recoveryEmail;
   }
 
   public LegacyBeacon delete(

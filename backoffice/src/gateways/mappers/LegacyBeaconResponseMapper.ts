@@ -14,8 +14,8 @@ export interface ILegacyBeaconResponseMapper {
 
 export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
   public map(beaconApiResponse: ILegacyBeaconResponse): ILegacyBeacon {
-    debugger;
     return {
+      id: beaconApiResponse.data.id,
       pkBeaconId: beaconApiResponse.data.attributes.beacon.pkBeaconId,
       hexId: beaconApiResponse.data.attributes.beacon.hexId,
       statusCode: beaconApiResponse.data.attributes.beacon.statusCode,
@@ -49,6 +49,7 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
       departRefId: beaconApiResponse.data.attributes.beacon.departRefId,
       isWithdrawn: beaconApiResponse.data.attributes.beacon.isWithdrawn,
       withdrawnReason: beaconApiResponse.data.attributes.beacon.withdrawnReason,
+      recoveryEmail: beaconApiResponse.data.attributes.recoveryEmail,
       isPending: beaconApiResponse.data.attributes.beacon.isPending,
       isArchived: beaconApiResponse.data.attributes.beacon.isArchived,
       createUserId: beaconApiResponse.data.attributes.beacon.createUserId,

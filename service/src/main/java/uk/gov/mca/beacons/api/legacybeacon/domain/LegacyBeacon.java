@@ -51,6 +51,9 @@ public class LegacyBeacon
   private String ownerEmail;
 
   @Setter
+  private String recoveryEmail;
+
+  @Setter
   private String beaconStatus;
 
   @Setter
@@ -88,13 +91,17 @@ public class LegacyBeacon
     return actions.stream().anyMatch(LegacyBeaconClaimAction.class::isInstance);
   }
 
-  public void claim() {
+  public boolean claim() {
     initActions();
     if (!isClaimed()) {
       LegacyBeaconClaimAction claimAction = new LegacyBeaconClaimAction();
       actions.add(claimAction);
       this.registerEvent(new LegacyBeaconClaimed(this));
+
+      return true;
     }
+
+    return false;
   }
 
   public String getBeaconStatus() {

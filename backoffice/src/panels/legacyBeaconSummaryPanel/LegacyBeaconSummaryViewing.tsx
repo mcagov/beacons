@@ -32,11 +32,6 @@ export const LegacyBeaconSummaryViewing: FunctionComponent<{
       key: "Beacon type",
       value: legacyBeacon?.beaconType,
     },
-    // {
-    //   key: "CHK code",
-    //   value: beacon?.chkCode,
-    // },
-
     {
       key: "Coding",
       value: legacyBeacon?.coding,
@@ -108,6 +103,11 @@ export const LegacyBeaconSummaryViewing: FunctionComponent<{
     {
       key: "Notes",
       value: legacyBeacon?.note || "",
+      valueType: FieldValueTypes.MULTILINE,
+    },
+    {
+      key: "Recovery Email",
+      value: legacyBeacon?.recoveryEmail || "",
       valueType: FieldValueTypes.MULTILINE,
     },
   ];
