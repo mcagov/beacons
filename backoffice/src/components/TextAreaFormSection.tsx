@@ -151,24 +151,18 @@ export const TextAreaSection = withFormik<
       errors.text = "Required";
     }
     if (values.text) {
-      const textHasInvalidChars =
-        values.text.includes("<") ||
-        values.text.includes(">") ||
-        values.text.includes("{") ||
-        values.text.includes("}") ||
-        values.text.includes("/") ||
-        values.text.includes("\\") ||
-        values.text.includes("&") ||
-        values.text.includes("$");
-      errors.text = textHasInvalidChars ? "Invalid text" : undefined;
-    }
-
-    // this needs more rules is there a library we can use?
-    if (values.text && textType === "email") {
+      const maliciousCodeRegex = /<(.*)>(.*)<\/(.*)>/;
+      const maliciousCharsRegex = /[<>$£{}()[\]\\]/;
       errors.text =
-        values.text.includes("@") && values.text.includes(".")
-          ? errors.text
-          : "Invalid email";
+        values.text.match(maliciousCodeRegex) ||
+        values.text.match(maliciousCharsRegex)
+          ? "Invalid text"
+          : undefined;
+    }
+    if (values.text && textType.toLowerCase() === "email") {
+      const emailRegex =
+        /^(([^<>$£{}()[\]\\.,;:\s@"]+(\.[^<>$£{}()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      errors.text = values.text.match(emailRegex) ? "" : "Invalid email";
     }
 
     return errors;
