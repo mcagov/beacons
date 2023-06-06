@@ -15,7 +15,6 @@ describe("BeaconSummaryPanel", () => {
   beforeEach(() => {
     beaconsGatewayDouble = {
       getBeacon: jest.fn().mockResolvedValue(beaconFixture),
-      getLegacyBeacon: jest.fn(),
       getAllBeacons: jest.fn(),
       updateBeacon: jest.fn(),
       deleteBeacon: jest.fn(),

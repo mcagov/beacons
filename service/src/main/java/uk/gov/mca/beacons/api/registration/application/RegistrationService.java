@@ -243,10 +243,12 @@ public class RegistrationService {
       .getAccountHolder(beacon.getAccountHolderId())
       .orElseThrow(ResourceNotFoundException::new);
 
-    legacyBeaconService.claimByHexIdAndAccountHolderEmail(
+    List<LegacyBeacon> legacyBeacons = legacyBeaconService.findByHexIdAndAccountHolderEmail(
       beacon.getHexId(),
       accountHolder.getEmail()
     );
+
+    legacyBeacons.stream().forEach(l -> legacyBeaconService.claim(l));
   }
 
   public void deleteLegacyBeacon(DeleteBeaconDTO dto) {

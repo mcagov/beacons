@@ -3,6 +3,7 @@ import { ILegacyBeacon } from "../entities/ILegacyBeacon";
 import { deepFreeze } from "../utils/utils";
 
 export const legacyBeaconFixture = deepFreeze<ILegacyBeacon>({
+  id: "39479587346573",
   pkBeaconId: 6062,
   statusCode: "ACTIVE",
   isWithdrawn: "N",
@@ -21,6 +22,7 @@ export const legacyBeaconFixture = deepFreeze<ILegacyBeacon>({
   lastServiceDate: "None",
   batteryExpiryDate: "None",
   withdrawnReason: "None",
+  recoveryEmail: "testy@gmail.com",
   isArchived: "N",
   createUserId: 2889,
   createdDate: "2020-08-01T21:33:13",
