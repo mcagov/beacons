@@ -23,6 +23,8 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
     this.authGateway = authGateway;
   }
 
+  // why do we search for acc holder id and email?
+  // why not just get account holder by id and take the email from the resulting acc holder?
   public async getBeaconsByAccountHolderAndEmail(
     accountHolderId: string,
     email: string,

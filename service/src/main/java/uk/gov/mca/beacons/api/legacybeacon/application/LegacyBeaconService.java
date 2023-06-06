@@ -54,11 +54,12 @@ public class LegacyBeaconService {
     );
 
     if (beaconsMatchingAccountHolderEmail.size() == 0) {
-      beaconsMatchingAccountHolderEmail =
+      beaconsMatchingAccountHolderEmail.addAll(
         legacyBeaconRepository.findByHexIdAndRecoveryEmail(
           hexId,
           accountHolderEmail
-        );
+        )
+      );
     }
 
     return beaconsMatchingAccountHolderEmail;

@@ -91,12 +91,16 @@ public class LegacyBeacon
     return actions.stream().anyMatch(LegacyBeaconClaimAction.class::isInstance);
   }
 
-  public void claim() {
+  public boolean claim() {
     initActions();
     if (!isClaimed()) {
       LegacyBeaconClaimAction claimAction = new LegacyBeaconClaimAction();
       actions.add(claimAction);
       this.registerEvent(new LegacyBeaconClaimed(this));
+
+      return true;
+    } else {
+      return false;
     }
   }
 
