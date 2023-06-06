@@ -104,26 +104,6 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
 
                     <TabulatedRow
                       displayKey={
-                        <label htmlFor="email">
-                          <Typography>
-                            {"Email Address" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="email"
-                          name="email"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
-                    />
-
-                    <TabulatedRow
-                      displayKey={
                         <label htmlFor="addressLine1">
                           <Typography>
                             {"Address Line 1" + WritingStyle.KeyValueSeparator}
