@@ -24,6 +24,7 @@ import {
   Placeholders,
   WritingStyle,
 } from "../../utils/writingStyle";
+import { TabulatedRowEditField } from "views/TabulatedRowEditField";
 
 export const BeaconSummaryEditing: FunctionComponent<{
   beacon: IBeacon;
@@ -119,44 +120,15 @@ export const BeaconSummaryEditing: FunctionComponent<{
                       }
                     />
 
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="manufacturerSerialNumber">
-                          <Typography>
-                            {"Serial number" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="manufacturerSerialNumber"
-                          name="manufacturerSerialNumber"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"Serial number"}
+                      fieldName={"manufacturerSerialNumber"}
+                      type={"string"}
                     />
-
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="chkCode">
-                          <Typography>
-                            {"CHK code" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="chkCode"
-                          name="chkCode"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"CHK code"}
+                      fieldName={"chkCode"}
+                      type={"string"}
                     />
 
                     <TabulatedRow
@@ -212,42 +184,15 @@ export const BeaconSummaryEditing: FunctionComponent<{
                       }
                     />
 
-                    <TabulatedRow
-                      displayKey={
-                        <Typography>
-                          {"Coding" + WritingStyle.KeyValueSeparator}
-                        </Typography>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="coding"
-                          name="coding"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"Coding"}
+                      fieldName={"coding"}
+                      type={"string"}
                     />
-
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="csta">
-                          <Typography>
-                            {"CSTA" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="csta"
-                          name="csta"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"CSTA"}
+                      fieldName={"csta"}
+                      type={"string"}
                     />
 
                     <TabulatedRow
@@ -301,45 +246,15 @@ export const BeaconSummaryEditing: FunctionComponent<{
                       }
                     />
 
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="batteryExpiryDate">
-                          <Typography>
-                            {"Battery expiry date" +
-                              WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="batteryExpiryDate"
-                          name="batteryExpiryDate"
-                          type="date"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"Battery expiry date"}
+                      fieldName={"batteryExpiryDate"}
+                      type={"date"}
                     />
-
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="lastServicedDate">
-                          <Typography>
-                            {"Last serviced date" +
-                              WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="lastServicedDate"
-                          name="lastServicedDate"
-                          type="date"
-                          fullWidth
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"Last serviced date"}
+                      fieldName={"lastServicedDate"}
+                      type={"date"}
                     />
                   </TableBody>
                 </Table>

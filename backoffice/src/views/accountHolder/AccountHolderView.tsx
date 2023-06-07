@@ -10,15 +10,13 @@ import {
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
-import { IBeacon } from "../entities/IBeacon";
+import { IBeacon } from "../../entities/IBeacon";
 import { FunctionComponent, useEffect, useState } from "react";
-import { PageContent } from "../components/layout/PageContent";
-import { PageHeader } from "../components/layout/PageHeader";
-import { logToServer } from "../utils/logger";
-import { IAccountHolder } from "../entities/IAccountHolder";
+import { PageContent } from "../../components/layout/PageContent";
+import { logToServer } from "../../utils/logger";
+import { IAccountHolder } from "../../entities/IAccountHolder";
 import { IAccountHolderGateway } from "gateways/account-holder/IAccountHolderGateway";
-import { PanelViewingState } from "components/dataPanel/PanelViewingState";
-import { FieldValueTypes } from "components/dataPanel/FieldValue";
+import { AccountHolderSummaryView } from "./AccountHolderSummaryView";
 import {
   DataGrid,
   GridColDef,
@@ -27,6 +25,14 @@ import {
 } from "@mui/x-data-grid";
 import { Link as RouterLink } from "react-router-dom";
 import { customDateStringFormat } from "utils/dateTime";
+import { DataPanelStates } from "components/dataPanel/States";
+import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
+import { EditPanelButton } from "components/dataPanel/EditPanelButton";
+import { diffObjValues } from "utils/core";
+import { Placeholders } from "utils/writingStyle";
+import { ErrorState } from "components/dataPanel/PanelErrorState";
+import { LoadingState } from "components/dataPanel/PanelLoadingState";
+import { AccountHolderSummaryEdit } from "./AccountHolderSummaryEdit";
 
 interface IAccountHolderViewProps {
   accountHolderGateway: IAccountHolderGateway;
@@ -58,52 +64,82 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     {} as IAccountHolder
   );
   const [beacons, setBeacons] = useState<IBeacon[]>([] as IBeacon[]);
+  const [userState, setUserState] = useState<DataPanelStates>(
+    DataPanelStates.Viewing
+  );
+
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect((): void => {
     const fetchAccountHolder = async (id: string) => {
       try {
+        setError(false);
+        setLoading(true);
+
         const accountHolder = await accountHolderGateway.getAccountHolder(id);
         const beacons = await accountHolderGateway.getBeaconsForAccountHolderId(
           id
         );
         setAccountHolder(accountHolder);
         setBeacons(beacons);
+
+        setLoading(false);
       } catch (error) {
         logToServer.error(error);
+        setError(true);
       }
     };
 
     fetchAccountHolder(accountHolderId);
-  }, [accountHolderId, accountHolderGateway]);
+  }, [userState, accountHolderId, accountHolderGateway]);
 
-  const accountHolderFields = [
-    { key: "Name", value: accountHolder?.fullName },
-    { key: "Telephone", value: accountHolder?.telephoneNumber },
-    {
-      key: "Alternative Telephone",
-      value: accountHolder?.alternativeTelephoneNumber,
-    },
-    { key: "Email", value: accountHolder?.email },
-    {
-      key: "Address",
-      value: [
-        accountHolder?.addressLine1,
-        accountHolder?.addressLine2,
-        accountHolder?.addressLine3,
-        accountHolder?.addressLine4,
-        accountHolder?.townOrCity,
-        accountHolder?.county,
-        accountHolder?.postcode,
-        accountHolder?.country || "United Kingdom",
-      ],
-      valueType: FieldValueTypes.MULTILINE,
-    },
-    { key: "Created", value: accountHolder?.createdDate },
-    {
-      key: "Last Modified",
-      value: accountHolder?.lastModifiedDate,
-    },
-  ];
+  const handleSave = async (
+    updatedAccountHolder: Partial<IAccountHolder>
+  ): Promise<void> => {
+    try {
+      console.log(updatedAccountHolder);
+      await accountHolderGateway.updateAccountHolder(
+        accountHolder.id,
+        updatedAccountHolder
+      );
+      setUserState(DataPanelStates.Viewing);
+    } catch (error) {
+      logToServer.error(error);
+      setError(true);
+    }
+  };
+
+  const renderState = (state: DataPanelStates) => {
+    switch (state) {
+      case DataPanelStates.Viewing:
+        return (
+          <>
+            <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
+              <EditPanelButton
+                onClick={() => setUserState(DataPanelStates.Editing)}
+              >
+                Edit Account Holder
+              </EditPanelButton>
+            </OnlyVisibleToUsersWith>
+
+            <AccountHolderSummaryView accountHolder={accountHolder} />
+          </>
+        );
+      case DataPanelStates.Editing:
+        return (
+          <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
+            <AccountHolderSummaryEdit
+              accountHolder={accountHolder}
+              onSave={handleSave}
+              onCancel={() => setUserState(DataPanelStates.Viewing)}
+            />
+          </OnlyVisibleToUsersWith>
+        );
+      default:
+        setError(true);
+    }
+  };
 
   const columns: GridColDef[] = [
     // { field: "id", headerName: "ID", width: 300 },
@@ -188,7 +224,9 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       <PageContent>
         <Paper className={classes.paper}>
           <h2>Account Holder: {accountHolder?.fullName}</h2>
-          <PanelViewingState fields={accountHolderFields} />
+          {error && <ErrorState message={Placeholders.UnspecifiedError} />}
+          {loading && <LoadingState />}
+          {error || loading || renderState(userState)}
         </Paper>
 
         <Paper className={classes.paper}>

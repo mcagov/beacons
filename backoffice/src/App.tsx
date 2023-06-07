@@ -38,10 +38,10 @@ import { SingleBeaconRecordView } from "./views/SingleBeaconRecordView";
 import { SingleLegacyBeaconRecordView } from "./views/SingleLegacyBeaconRecordView";
 import { BeaconExportSearch } from "./views/exports/BeaconExportSearch";
 import { AdminView } from "views/AdminView";
+import { AccountHolderView } from "views/accountHolder/AccountHolderView";
 import { LegacyBeaconsGateway } from "gateways/legacy-beacons/LegacyBeaconsGateway";
-import { AccountHolderView } from "views/AccountHolderView";
 import { AccountHolderGateway } from "gateways/account-holder/AccountHolderGateway";
-import { AccountHolderListView } from "./views/AccountHolderListView";
+import { AccountHolderListView } from "./views/accountHolder/AccountHolderListView";
 
 interface ResourceParams {
   id: string;
