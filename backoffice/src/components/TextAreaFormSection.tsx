@@ -7,6 +7,8 @@ interface ITextAreaFormSectionProps {
   formSectionTitle?: string;
   submitButtonText: string;
   numberOfRowsForTextArea: number;
+  initialValue?: string;
+  textType: string;
   textSubmitted: (text: string) => void;
   cancelled: (cancelled: boolean) => void;
 }
@@ -21,6 +23,8 @@ export const TextAreaFormSection: FunctionComponent<
   formSectionTitle,
   submitButtonText,
   numberOfRowsForTextArea,
+  initialValue,
+  textType,
   textSubmitted,
   cancelled,
 }): JSX.Element => {
@@ -39,6 +43,8 @@ export const TextAreaFormSection: FunctionComponent<
       <TextAreaSection
         submitButtonText={submitButtonText}
         numberOfRowsForTextArea={numberOfRowsForTextArea}
+        initialValue={initialValue}
+        textType={textType}
         onSave={handleSave}
         onCancel={handleCancel}
       />
@@ -51,6 +57,8 @@ interface TextAreaFormProps extends FormikProps<TextAreaFormValues> {
   onCancel: () => void;
   submitButtonText: string;
   numberOfRowsForTextArea: number;
+  initialValue?: string;
+  textType: string;
 }
 
 const TextAreaForm = (props: TextAreaFormProps) => {
@@ -59,6 +67,8 @@ const TextAreaForm = (props: TextAreaFormProps) => {
     isSubmitting,
     submitButtonText,
     numberOfRowsForTextArea,
+    initialValue,
+    textType,
     onCancel,
     onSave,
   } = props;
@@ -75,13 +85,14 @@ const TextAreaForm = (props: TextAreaFormProps) => {
               as={TextField}
               id="text"
               name="text"
-              type="string"
+              type={textType}
               multiline
               fullWidth
               rows={numberOfRowsForTextArea}
               data-testid="textarea-form-field"
               placeholder="Add your text here"
-              error={props.touched && errors.text}
+              defaultValue={initialValue}
+              error={props.touched && Boolean(errors.text)}
               helperText={props.touched && errors.text}
             />
           </Box>
@@ -113,6 +124,8 @@ export const TextAreaSection = withFormik<
     onCancel: () => void;
     submitButtonText: string;
     numberOfRowsForTextArea: number;
+    initialValue?: string;
+    textType: string;
   },
   TextAreaFormValues
 >({
@@ -122,29 +135,41 @@ export const TextAreaSection = withFormik<
     };
   },
 
-  validate: (values: TextAreaFormValues) => {
+  validate: (
+    values: TextAreaFormValues,
+    {
+      submitButtonText,
+      numberOfRowsForTextArea,
+      initialValue,
+      textType,
+      onCancel,
+      onSave,
+    }
+  ) => {
     let errors: FormikErrors<TextAreaFormValues> = {};
     if (!values.text) {
       errors.text = "Required";
     }
     if (values.text) {
-      const textHasInvalidChars =
-        values.text.includes("<") ||
-        values.text.includes(">") ||
-        values.text.includes("{") ||
-        values.text.includes("}") ||
-        values.text.includes("/") ||
-        values.text.includes("\\") ||
-        values.text.includes("&") ||
-        values.text.includes("$");
-      errors.text = textHasInvalidChars ? "Invalid text" : undefined;
+      const maliciousCodeRegex = /<(.*)>(.*)<\/(.*)>/;
+      const maliciousCharsRegex = /[<>$£{}()[\]\\]/;
+      errors.text =
+        values.text.match(maliciousCodeRegex) ||
+        values.text.match(maliciousCharsRegex)
+          ? "Invalid text"
+          : undefined;
     }
+    if (values.text && textType.toLowerCase() === "email") {
+      const emailRegex =
+        /^(([^<>$£{}()[\]\\.,;:\s@"]+(\.[^<>$£{}()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      errors.text = values.text.match(emailRegex) ? "" : "Invalid email";
+    }
+
     return errors;
   },
 
   handleSubmit: (values: TextAreaFormValues, { setSubmitting, props }) => {
     props.onSave(values);
-    console.log(values.text);
     setSubmitting(false);
   },
 })(TextAreaForm);

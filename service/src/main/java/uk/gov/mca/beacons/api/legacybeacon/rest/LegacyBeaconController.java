@@ -3,13 +3,16 @@ package uk.gov.mca.beacons.api.legacybeacon.rest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import uk.gov.mca.beacons.api.beacon.rest.UpdateBeaconDTO;
 import uk.gov.mca.beacons.api.dto.WrapperDTO;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.legacybeacon.application.LegacyBeaconService;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.mappers.LegacyBeaconMapper;
 import uk.gov.mca.beacons.api.legacybeacon.rest.dto.LegacyBeaconDTO;
+import uk.gov.mca.beacons.api.legacybeacon.rest.dto.UpdateRecoveryEmailDTO;
 import uk.gov.mca.beacons.api.registration.application.RegistrationService;
 
 @RestController
@@ -39,5 +42,20 @@ public class LegacyBeaconController {
       .orElseThrow(ResourceNotFoundException::new);
 
     return legacyBeaconMapper.toWrapperDTO(legacyBeacon);
+  }
+
+  @PreAuthorize("hasAuthority('APPROLE_UPDATE_RECORDS')")
+  @PatchMapping(value = "/recovery-email/{uuid}")
+  public WrapperDTO<UpdateRecoveryEmailDTO> updateRecoveryEmail(
+    @PathVariable("uuid") UUID id,
+    @RequestBody WrapperDTO<UpdateRecoveryEmailDTO> dto
+  ) {
+    LegacyBeaconId legacyBeaconId = new LegacyBeaconId(id);
+    legacyBeaconService.updateRecoveryEmailByBeaconId(
+      dto.getData().getRecoveryEmail(),
+      legacyBeaconId
+    );
+
+    return dto;
   }
 }

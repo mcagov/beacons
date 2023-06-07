@@ -6,7 +6,6 @@ import { singleBeaconApiResponseFixture } from "fixtures/singleBeaconApiResponse
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
 import { IBeaconRequestMapper } from "gateways/mappers/BeaconRequestMapper";
 import { IBeaconResponseMapper } from "gateways/mappers/BeaconResponseMapper";
-import { ILegacyBeaconResponseMapper } from "gateways/mappers/LegacyBeaconResponseMapper";
 import { BeaconsGateway } from "./BeaconsGateway";
 
 jest.mock("axios");
@@ -14,7 +13,6 @@ jest.useFakeTimers();
 
 describe("BeaconsGateway", () => {
   let beaconResponseMapper: IBeaconResponseMapper;
-  let legacyBeaconResponseMapper: ILegacyBeaconResponseMapper;
   let beaconRequestMapper: IBeaconRequestMapper;
   let accessToken: string;
   let authGateway: IAuthGateway;
@@ -26,9 +24,6 @@ describe("BeaconsGateway", () => {
       map: jest.fn(),
       mapAccountHolder: jest.fn(),
       mapBeacon: jest.fn(),
-    };
-    legacyBeaconResponseMapper = {
-      map: jest.fn(),
     };
     beaconRequestMapper = {
       map: jest.fn(),
@@ -50,7 +45,6 @@ describe("BeaconsGateway", () => {
     it("queries the correct endpoint", async () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
-        legacyBeaconResponseMapper,
         beaconRequestMapper,
         authGateway
       );
@@ -70,7 +64,6 @@ describe("BeaconsGateway", () => {
     it("handles errors", async () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
-        legacyBeaconResponseMapper,
         beaconRequestMapper,
         authGateway
       );
@@ -86,7 +79,6 @@ describe("BeaconsGateway", () => {
     it("queries the correct endpoint", async () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
-        legacyBeaconResponseMapper,
         beaconRequestMapper,
         authGateway
       );
@@ -105,7 +97,6 @@ describe("BeaconsGateway", () => {
     it("handles errors", async () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
-        legacyBeaconResponseMapper,
         beaconRequestMapper,
         authGateway
       );
@@ -119,7 +110,6 @@ describe("BeaconsGateway", () => {
     it("calls its mapper to translate the API response to a domain object", async () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
-        legacyBeaconResponseMapper,
         beaconRequestMapper,
         authGateway
       );
@@ -187,7 +177,6 @@ describe("BeaconsGateway", () => {
       beaconRequestMapper.map = jest.fn().mockReturnValue(updateBeaconRequest);
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
-        legacyBeaconResponseMapper,
         beaconRequestMapper,
         authGateway
       );
@@ -207,7 +196,6 @@ describe("BeaconsGateway", () => {
     it("calls its mapper to translate the domain object to a valid API request", async () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
-        legacyBeaconResponseMapper,
         beaconRequestMapper,
         authGateway
       );
@@ -229,7 +217,6 @@ describe("BeaconsGateway", () => {
     it("handles errors", async () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
-        legacyBeaconResponseMapper,
         beaconRequestMapper,
         authGateway
       );

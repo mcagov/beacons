@@ -14,7 +14,6 @@ import { formatForClipboard } from "utils/writingStyle";
 import { PageContent } from "../components/layout/PageContent";
 import { PageHeader } from "../components/layout/PageHeader";
 import { TabPanel } from "../components/layout/TabPanel";
-import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { logToServer } from "../utils/logger";
 import { BeaconStatuses } from "../entities/IBeacon";
 import { IDeleteBeaconDto } from "../entities/IDeleteBeaconDto";
@@ -25,9 +24,12 @@ import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { DialogueType } from "lib/DialogueType";
 import { IConfirmDialogueModel } from "components/ConfirmDialogue";
 import { SingleBeaconExportButtons } from "./exports/SingleBeaconExportButtons";
+import { ILegacyBeaconsGateway } from "gateways/legacy-beacons/ILegacyBeaconsGateway";
+import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
+  legacyBeaconsGateway: ILegacyBeaconsGateway;
   beaconId: string;
 }
 
@@ -47,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const SingleLegacyBeaconRecordView: FunctionComponent<
   ISingleLegacyBeaconRecordViewProps
-> = ({ beaconsGateway, beaconId }): JSX.Element => {
+> = ({ beaconsGateway, legacyBeaconsGateway, beaconId }): JSX.Element => {
   const classes = useStyles();
   const routerHistory = useHistory();
 
@@ -62,7 +64,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
   useEffect((): void => {
     const fetchBeacon = async (id: string) => {
       try {
-        const beacon = await beaconsGateway.getLegacyBeacon(id);
+        const beacon = await legacyBeaconsGateway.getLegacyBeacon(id);
         setBeacon(beacon);
       } catch (error) {
         logToServer.error(error);
@@ -70,7 +72,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
     };
 
     fetchBeacon(beaconId);
-  }, [beaconId, beaconsGateway]);
+  }, [beaconId, legacyBeaconsGateway]);
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
   const legacyConfirmDialogueModel: IConfirmDialogueModel = {
@@ -135,7 +137,10 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
         )}
       </PageHeader>
       <PageContent>
-        <LegacyBeaconSummaryPanel legacyBeacon={beacon} />
+        <LegacyBeaconSummaryPanel
+          legacyBeaconId={beacon.id}
+          legacyBeaconsGateway={legacyBeaconsGateway}
+        />
         <Tabs value={selectedTab} onChange={handleChange}>
           <Tab label="Owner & Emergency Contacts" />
           <Tab label={`${numberOfUses} Registered Uses`} />

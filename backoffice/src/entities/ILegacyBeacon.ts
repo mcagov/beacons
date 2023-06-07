@@ -1,6 +1,7 @@
 import { BeaconStatuses, BeaconTypes } from "./IBeacon";
 
 export interface ILegacyBeacon {
+  id: string;
   pkBeaconId: number;
   hexId: string;
   statusCode: string;
@@ -23,6 +24,7 @@ export interface ILegacyBeacon {
   departRefId: string;
   isWithdrawn: string;
   withdrawnReason: string;
+  recoveryEmail: string;
   isPending: string;
   isArchived: string;
   createUserId: number;

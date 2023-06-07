@@ -23,6 +23,7 @@ public class BeaconSearchEntity {
   private String hexId;
   private String ownerName;
   private String ownerEmail;
+  private String legacyBeaconRecoveryEmail;
   private UUID accountHolderId;
   private String accountHolderName;
   private String accountHolderEmail;

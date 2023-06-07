@@ -1,6 +1,5 @@
 import { IBeaconSearchResult } from "entities/IBeaconSearchResult";
 import { IDeleteBeaconDto } from "entities/IDeleteBeaconDto";
-import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { BeaconRowData } from "../../components/BeaconsTable";
 import { IBeacon } from "../../entities/IBeacon";
 import { AxiosResponse } from "axios";
@@ -28,7 +27,6 @@ export interface IBeaconsGateway {
     sort: GetAllBeaconsSort
   ) => Promise<IBeaconSearchResult>;
   getBeacon: (id: string) => Promise<IBeacon>;
-  getLegacyBeacon: (id: string) => Promise<ILegacyBeacon>;
   updateBeacon: (
     beaconId: string,
     updatedFields: Partial<IBeacon>

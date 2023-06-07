@@ -11,7 +11,6 @@ describe("<BeaconsTable>", () => {
     beaconsGatewayDouble = {
       getAllBeacons: jest.fn().mockResolvedValue(beaconSearchResultFixture),
       getBeacon: jest.fn(),
-      getLegacyBeacon: jest.fn(),
       updateBeacon: jest.fn(),
       deleteBeacon: jest.fn(),
     };
