@@ -17,6 +17,8 @@ import { IAccountHolder } from "../../entities/IAccountHolder";
 import countriesJson from "../../lib/countries/countries.json";
 
 import { Placeholders, WritingStyle } from "../../utils/writingStyle";
+import { FieldValue } from "../../components/dataPanel/FieldValue";
+import { TabulatedRowEditField } from "views/TabulatedRowEditField";
 
 export const AccountHolderSummaryEdit: FunctionComponent<{
   accountHolder: IAccountHolder;
@@ -41,200 +43,59 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
               <TableContainer>
                 <Table size="small">
                   <TableBody>
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="fullName">
-                          <Typography>
-                            {"Full name" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="fullName"
-                          name="fullName"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"Full Name"}
+                      fieldName={"fullName"}
+                      type={"string"}
+                    />
+                    <TabulatedRowEditField
+                      label={"Telephone Number"}
+                      fieldName={"telephoneNumber"}
+                      type={"string"}
+                    />
+                    <TabulatedRowEditField
+                      label={"Alternative Telephone Number"}
+                      fieldName={"alternativeTelephoneNumber"}
+                      type={"string"}
                     />
 
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="telephoneNumber">
-                          <Typography>
-                            {"Telephone Number" +
-                              WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="telephoneNumber"
-                          name="telephoneNumber"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"Address Line 1"}
+                      fieldName={"addressLine1"}
+                      type={"string"}
                     />
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="alternativeTelephoneNumber">
-                          <Typography>
-                            {"Alternative Telephone Number" +
-                              WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="alternativeTelephoneNumber"
-                          name="alternativeTelephoneNumber"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"Address Line 2"}
+                      fieldName={"addressLine2"}
+                      type={"string"}
+                    />
+                    <TabulatedRowEditField
+                      label={"Address Line 3"}
+                      fieldName={"addressLine3"}
+                      type={"string"}
+                    />
+                    <TabulatedRowEditField
+                      label={"Address Line 4"}
+                      fieldName={"addressLine4"}
+                      type={"string"}
                     />
 
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="addressLine1">
-                          <Typography>
-                            {"Address Line 1" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="addressLine1"
-                          name="addressLine1"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"Town / City"}
+                      fieldName={"townOrCity"}
+                      type={"string"}
                     />
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="addressLine2">
-                          <Typography>
-                            {"Address Line 2" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="addressLine2"
-                          name="addressLine2"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"County"}
+                      fieldName={"county"}
+                      type={"string"}
                     />
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="addressLine3">
-                          <Typography>
-                            {"Address Line 3" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="addressLine3"
-                          name="addressLine3"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
+                    <TabulatedRowEditField
+                      label={"Postcode"}
+                      fieldName={"postcode"}
+                      type={"string"}
                     />
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="addressLine4">
-                          <Typography>
-                            {"Address Line 4" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="addressLine4"
-                          name="addressLine4"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
-                    />
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="townOrCity">
-                          <Typography>
-                            {"Town / City" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="townOrCity"
-                          name="townOrCity"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
-                    />
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="county">
-                          <Typography>
-                            {"County" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="county"
-                          name="county"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
-                    />
-                    <TabulatedRow
-                      displayKey={
-                        <label htmlFor="postcode">
-                          <Typography>
-                            {"Postcode" + WritingStyle.KeyValueSeparator}
-                          </Typography>
-                        </label>
-                      }
-                      value={
-                        <Field
-                          as={Input}
-                          id="postcode"
-                          name="postcode"
-                          type="string"
-                          fullWidth
-                          placeholder={Placeholders.NoData}
-                        />
-                      }
-                    />
+
                     <TabulatedRow
                       displayKey={
                         <label htmlFor="country">
