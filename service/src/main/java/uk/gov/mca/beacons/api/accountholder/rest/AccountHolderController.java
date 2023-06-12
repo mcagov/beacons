@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
+import uk.gov.mca.beacons.api.accountholder.application.MicrosoftGraphClient;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.accountholder.mappers.AccountHolderMapper;
@@ -70,6 +71,9 @@ public class AccountHolderController {
     List<BeaconDTO> beacons = accountHolderService.getBeaconsByAccountHolderId(
       accountHolderId
     );
+
+    final MicrosoftGraphClient graphClient = new MicrosoftGraphClient();
+    graphClient.getUser();
 
     return ResponseEntity.ok(beacons);
   }
