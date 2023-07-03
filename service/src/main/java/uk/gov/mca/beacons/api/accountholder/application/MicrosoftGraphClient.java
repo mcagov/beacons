@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MicrosoftGraphClient {
 
   // how do I inject env vars in Spring?
-  List<String> scopes = List.of("User.ReadWrite.All");
+  List<String> scopes = List.of("https://graph.microsoft.com/.default");
 
   final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
     .clientId("485d79d6-4691-4287-a100-0d8eb1fcd4c4")
@@ -21,6 +21,7 @@ public class MicrosoftGraphClient {
     .tenantId("513fb495-9a90-425b-a49a-bc6ebe2a429e")
     .build();
 
+  // step through to check it's getting a valid token
   final TokenCredentialAuthProvider tokenCredAuthProvider = new TokenCredentialAuthProvider(
     scopes,
     clientSecretCredential
