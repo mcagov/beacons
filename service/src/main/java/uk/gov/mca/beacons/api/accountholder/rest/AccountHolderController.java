@@ -73,7 +73,8 @@ public class AccountHolderController {
     );
 
     final MicrosoftGraphClient graphClient = new MicrosoftGraphClient();
-    graphClient.getUser();
+    String eviesUserId = "b96c194c-9e1c-4869-abdf-3d0e854c111d";
+    graphClient.getUser(eviesUserId);
 
     return ResponseEntity.ok(beacons);
   }

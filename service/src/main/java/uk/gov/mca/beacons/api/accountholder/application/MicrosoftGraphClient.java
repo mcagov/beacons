@@ -31,10 +31,35 @@ public class MicrosoftGraphClient {
     .authenticationProvider(tokenCredAuthProvider)
     .buildClient();
 
-  public void getUser() {
+  // don't silently fail or log
+  // throw custom exception if coldn't update
+  // build up a User in the form and pass in
+  // User azureAdUser
+  public void updateUser() {
     String eviesUserId = "b96c194c-9e1c-4869-abdf-3d0e854c111d";
-    User user = graphClient.users(eviesUserId).buildRequest().get();
+    User user = new User();
+    user.mailNickname = "EVIE";
+
+    graphClient.users(eviesUserId).buildRequest().patch(user);
 
     log.info(user.displayName);
+  }
+
+  public User getUser(String id) {
+    User user = graphClient.users(id).buildRequest().get();
+
+    log.info(user.displayName);
+
+    return user;
+  }
+
+  // custom exception
+  public void deleteUser(String id) {
+    try {
+      graphClient.users(id).buildRequest().delete();
+    } catch (Exception error) {
+      log.error(error.getMessage());
+      throw error;
+    }
   }
 }
