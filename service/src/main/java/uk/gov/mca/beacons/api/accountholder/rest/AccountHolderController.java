@@ -101,6 +101,9 @@ public class AccountHolderController {
       wrapperDTO.getData()
     );
 
+    // if azure update ok
+    // save updated account holder in postgres
+
     final AccountHolder accountHolder = accountHolderService
       .updateAccountHolder(new AccountHolderId(id), accountHolderUpdate)
       .orElseThrow(ResourceNotFoundException::new);

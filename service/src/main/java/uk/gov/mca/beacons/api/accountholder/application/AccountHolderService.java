@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api.accountholder.application;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,6 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
-import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
 
 @Transactional
@@ -26,6 +26,7 @@ public class AccountHolderService {
   private final BeaconService beaconService;
   private final BeaconMapper beaconMapper;
   private final BeaconUseService beaconUseService;
+  private final AuthClient microsoftGraphClient;
 
   @Autowired
   public AccountHolderService(
@@ -33,13 +34,15 @@ public class AccountHolderService {
     ModelPatcherFactory<AccountHolder> accountHolderPatcherFactory,
     BeaconService beaconService,
     BeaconMapper beaconMapper,
-    BeaconUseService beaconUseService
+    BeaconUseService beaconUseService,
+    AuthClient microsoftGraphClient
   ) {
     this.accountHolderRepository = accountHolderRepository;
     this.accountHolderPatcherFactory = accountHolderPatcherFactory;
     this.beaconService = beaconService;
     this.beaconMapper = beaconMapper;
     this.beaconUseService = beaconUseService;
+    this.microsoftGraphClient = microsoftGraphClient;
   }
 
   public AccountHolder create(AccountHolder accountHolder) {
@@ -55,10 +58,22 @@ public class AccountHolderService {
     return accountHolderRepository.findAccountHolderByAuthId(authId);
   }
 
+  // update in azure in here
+  // D.I a graph client
+  // is this doing it in the webapp?
   public Optional<AccountHolder> updateAccountHolder(
     AccountHolderId id,
     AccountHolder accountHolderUpdate
   ) {
+    AzureAdAccountHolder azAdAccountHolder = AzureAdAccountHolder
+      .builder()
+      .azureAdUserId(UUID.fromString(accountHolderUpdate.getAuthId()))
+      .displayName(accountHolderUpdate.getFullName())
+      .email(accountHolderUpdate.getEmail())
+      .build();
+
+    microsoftGraphClient.updateUser(azAdAccountHolder);
+
     AccountHolder accountHolder = accountHolderRepository
       .findById(id)
       .orElse(null);

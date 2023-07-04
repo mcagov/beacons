@@ -5,14 +5,14 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
-import com.microsoft.graph.requests.UserCollectionRequest;
 import java.util.List;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 
 @Slf4j
-public class MicrosoftGraphClient {
+public class MicrosoftGraphClient implements AuthClient {
 
-  // how do I inject env vars in Spring?
   List<String> scopes = List.of("https://graph.microsoft.com/.default");
 
   final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
@@ -21,7 +21,6 @@ public class MicrosoftGraphClient {
     .tenantId("513fb495-9a90-425b-a49a-bc6ebe2a429e")
     .build();
 
-  // step through to check it's getting a valid token
   final TokenCredentialAuthProvider tokenCredAuthProvider = new TokenCredentialAuthProvider(
     scopes,
     clientSecretCredential
@@ -32,29 +31,48 @@ public class MicrosoftGraphClient {
     .authenticationProvider(tokenCredAuthProvider)
     .buildClient();
 
-  // don't silently fail or log
-  // throw custom exception if coldn't update
-  // build up a User in the form and pass in
-  // User azureAdUser
-  public void updateUser() {
-    String eviesUserId = "b96c194c-9e1c-4869-abdf-3d0e854c111d";
-    User user = new User();
-    user.mailNickname = "EVIE";
+  // edit an AccountHolder in the form and pass in
+  public void updateUser(AzureAdAccountHolder accountHolder) {
+    try {
+      User user = new User();
+      user.displayName = accountHolder.getFullName();
+      user.mail = accountHolder.getEmail();
 
-    graphClient.users(eviesUserId).buildRequest().patch(user);
+      graphClient
+        .users(accountHolder.getUserId().toString())
+        .buildRequest()
+        .patch(user);
 
-    log.info(user.displayName);
+      log.info(user.displayName);
+    } catch (Exception error) {
+      log.error(error.getMessage());
+      throw error;
+    }
   }
 
-  public User getUser(String id) {
-    User user = graphClient.users(id).buildRequest().get();
+  //  @Override
+  //  public void updateUser(uk.gov.mca.beacons.api.shared.domain.user.User user) {
+  //    updateUser(user);
+  //  }
 
-    log.info(user.displayName);
+  public AzureAdAccountHolder getUser(String id) {
+    try {
+      User user = graphClient.users(id).buildRequest().get();
 
-    return user;
+      log.info(user.displayName);
+
+      return AzureAdAccountHolder
+        .builder()
+        .azureAdUserId(UUID.fromString(user.id))
+        .displayName(user.displayName)
+        .email(user.mail)
+        .build();
+    } catch (Exception error) {
+      log.error(error.getMessage());
+      throw error;
+    }
   }
 
-  // custom exception
   public void deleteUser(String id) {
     try {
       graphClient.users(id).buildRequest().delete();
