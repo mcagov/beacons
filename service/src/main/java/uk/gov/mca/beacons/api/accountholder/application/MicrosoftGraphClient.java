@@ -8,9 +8,11 @@ import com.microsoft.graph.requests.GraphServiceClient;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 
 @Slf4j
+@Component("microsoftGraphClient")
 public class MicrosoftGraphClient implements AuthClient {
 
   List<String> scopes = List.of("https://graph.microsoft.com/.default");
@@ -32,7 +34,7 @@ public class MicrosoftGraphClient implements AuthClient {
     .buildClient();
 
   // edit an AccountHolder in the form and pass in
-  public void updateUser(AzureAdAccountHolder accountHolder) {
+  public void updateUser(AccountHolder accountHolder) {
     try {
       User user = new User();
       user.displayName = accountHolder.getFullName();
@@ -49,11 +51,6 @@ public class MicrosoftGraphClient implements AuthClient {
       throw error;
     }
   }
-
-  //  @Override
-  //  public void updateUser(uk.gov.mca.beacons.api.shared.domain.user.User user) {
-  //    updateUser(user);
-  //  }
 
   public AzureAdAccountHolder getUser(String id) {
     try {

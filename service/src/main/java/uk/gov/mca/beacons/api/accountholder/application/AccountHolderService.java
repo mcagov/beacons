@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
@@ -17,6 +19,7 @@ import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
 
+@Slf4j
 @Transactional
 @Service("AccountHolderServiceV2")
 public class AccountHolderService {
@@ -26,7 +29,9 @@ public class AccountHolderService {
   private final BeaconService beaconService;
   private final BeaconMapper beaconMapper;
   private final BeaconUseService beaconUseService;
-  private final AuthClient microsoftGraphClient;
+
+  @Qualifier("fakeGraphClient")
+  private final AuthClient fakeGraphClient;
 
   @Autowired
   public AccountHolderService(
@@ -35,14 +40,14 @@ public class AccountHolderService {
     BeaconService beaconService,
     BeaconMapper beaconMapper,
     BeaconUseService beaconUseService,
-    AuthClient microsoftGraphClient
+    AuthClient fakeGraphClient
   ) {
     this.accountHolderRepository = accountHolderRepository;
     this.accountHolderPatcherFactory = accountHolderPatcherFactory;
     this.beaconService = beaconService;
     this.beaconMapper = beaconMapper;
     this.beaconUseService = beaconUseService;
-    this.microsoftGraphClient = microsoftGraphClient;
+    this.fakeGraphClient = fakeGraphClient;
   }
 
   public AccountHolder create(AccountHolder accountHolder) {
@@ -58,44 +63,39 @@ public class AccountHolderService {
     return accountHolderRepository.findAccountHolderByAuthId(authId);
   }
 
-  // update in azure in here
-  // D.I a graph client
-  // is this doing it in the webapp?
   public Optional<AccountHolder> updateAccountHolder(
     AccountHolderId id,
     AccountHolder accountHolderUpdate
   ) {
-    AzureAdAccountHolder azAdAccountHolder = AzureAdAccountHolder
-      .builder()
-      .azureAdUserId(UUID.fromString(accountHolderUpdate.getAuthId()))
-      .displayName(accountHolderUpdate.getFullName())
-      .email(accountHolderUpdate.getEmail())
-      .build();
+    try {
+      fakeGraphClient.updateUser(accountHolderUpdate);
 
-    microsoftGraphClient.updateUser(azAdAccountHolder);
+      AccountHolder accountHolder = accountHolderRepository
+        .findById(id)
+        .orElse(null);
+      if (accountHolder == null) return Optional.empty();
 
-    AccountHolder accountHolder = accountHolderRepository
-      .findById(id)
-      .orElse(null);
-    if (accountHolder == null) return Optional.empty();
+      final var patcher = accountHolderPatcherFactory
+        .getModelPatcher()
+        .withMapping(AccountHolder::getFullName, AccountHolder::setFullName)
+        .withMapping(AccountHolder::getEmail, AccountHolder::setEmail)
+        .withMapping(
+          AccountHolder::getTelephoneNumber,
+          AccountHolder::setTelephoneNumber
+        )
+        .withMapping(
+          AccountHolder::getAlternativeTelephoneNumber,
+          AccountHolder::setAlternativeTelephoneNumber
+        )
+        .withMapping(AccountHolder::getAddress, AccountHolder::setAddress);
 
-    final var patcher = accountHolderPatcherFactory
-      .getModelPatcher()
-      .withMapping(AccountHolder::getFullName, AccountHolder::setFullName)
-      .withMapping(AccountHolder::getEmail, AccountHolder::setEmail)
-      .withMapping(
-        AccountHolder::getTelephoneNumber,
-        AccountHolder::setTelephoneNumber
-      )
-      .withMapping(
-        AccountHolder::getAlternativeTelephoneNumber,
-        AccountHolder::setAlternativeTelephoneNumber
-      )
-      .withMapping(AccountHolder::getAddress, AccountHolder::setAddress);
+      accountHolder.update(accountHolderUpdate, patcher);
 
-    accountHolder.update(accountHolderUpdate, patcher);
-
-    return Optional.of(accountHolderRepository.save(accountHolder));
+      return Optional.of(accountHolderRepository.save(accountHolder));
+    } catch (Exception error) {
+      log.error("Couldn't update account holder in Azure");
+      return null;
+    }
   }
 
   public List<BeaconDTO> getBeaconsByAccountHolderId(
