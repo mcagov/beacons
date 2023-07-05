@@ -14,7 +14,10 @@ coverage/
 # JetBrains
 .idea/
 *.iml
-service/.run/
+service/.run
+
+#Local API config
+service/src/main/resources/application-dev.yml
 
 #Eclipse
 service/.metadata

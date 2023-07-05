@@ -8,3 +8,11 @@ opensearch:
 
 export:
   directory: ${EXPORT_DIRECTORY:/tmp/beacons/export}
+
+backup:
+  directory: /var/backup
+
+microsoft-graph:
+  client-id: ${MICROSOFT_GRAPH_CLIENT_ID:}
+  client-secret: ${MICROSOFT_GRAPH_CLIENT_SECRET:}
+  b2c-tenant-id: ${MICROSOFT_GRAPH_B2C_TENANT_ID:}
