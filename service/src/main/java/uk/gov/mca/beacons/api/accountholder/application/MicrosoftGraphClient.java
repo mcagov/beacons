@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
@@ -18,22 +19,18 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 @Component("microsoftGraphClient")
 public class MicrosoftGraphClient implements AuthClient {
 
+  @Value("${microsoft-graph.client-id}}")
   private String clientId;
+
+  @Value("${microsoft-graph.client-secret}}")
   private String clientSecret;
+
+  @Value("${microsoft-graph.b2c-tenant-id}}")
   private String b2cTenantId;
+
   private final List<String> scopes = List.of(
     "https://graph.microsoft.com/.default"
   );
-
-  public MicrosoftGraphClient(
-    @Value("${microsoft-graph.client-id}}") String clientId,
-    @Value("${microsoft-graph.client-secret}}") String clientSecret,
-    @Value("${microsoft-graph.b2c-tenant-id}}") String b2cTenantId
-  ) {
-    this.clientId = clientId;
-    this.clientSecret = clientSecret;
-    this.b2cTenantId = b2cTenantId;
-  }
 
   final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
     .clientId(clientId)
