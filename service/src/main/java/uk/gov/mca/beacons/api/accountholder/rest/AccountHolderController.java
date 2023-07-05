@@ -70,10 +70,6 @@ public class AccountHolderController {
       accountHolderId
     );
 
-    final MicrosoftGraphClient graphClient = new MicrosoftGraphClient();
-    String eviesUserId = "b96c194c-9e1c-4869-abdf-3d0e854c111d";
-    graphClient.getUser(eviesUserId);
-
     return ResponseEntity.ok(beacons);
   }
 
@@ -98,9 +94,6 @@ public class AccountHolderController {
     final AccountHolder accountHolderUpdate = accountHolderMapper.fromDTO(
       wrapperDTO.getData()
     );
-
-    // if azure update ok
-    // save updated account holder in postgres
 
     final AccountHolder accountHolder = accountHolderService
       .updateAccountHolder(new AccountHolderId(id), accountHolderUpdate)

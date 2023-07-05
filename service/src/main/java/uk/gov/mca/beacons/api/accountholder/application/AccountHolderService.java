@@ -30,8 +30,8 @@ public class AccountHolderService {
   private final BeaconMapper beaconMapper;
   private final BeaconUseService beaconUseService;
 
-  @Qualifier("fakeGraphClient")
-  private final AuthClient fakeGraphClient;
+  @Qualifier("microsoftGraphClient")
+  private final AuthClient microsoftGraphClient;
 
   @Autowired
   public AccountHolderService(
@@ -40,14 +40,14 @@ public class AccountHolderService {
     BeaconService beaconService,
     BeaconMapper beaconMapper,
     BeaconUseService beaconUseService,
-    AuthClient fakeGraphClient
+    AuthClient microsoftGraphClient
   ) {
     this.accountHolderRepository = accountHolderRepository;
     this.accountHolderPatcherFactory = accountHolderPatcherFactory;
     this.beaconService = beaconService;
     this.beaconMapper = beaconMapper;
     this.beaconUseService = beaconUseService;
-    this.fakeGraphClient = fakeGraphClient;
+    this.microsoftGraphClient = microsoftGraphClient;
   }
 
   public AccountHolder create(AccountHolder accountHolder) {
@@ -68,7 +68,9 @@ public class AccountHolderService {
     AccountHolder accountHolderUpdate
   ) {
     try {
-      fakeGraphClient.updateUser(accountHolderUpdate);
+      String eviesUserId = "b96c194c-9e1c-4869-abdf-3d0e854c111d";
+      accountHolderUpdate.setAuthId(eviesUserId);
+      microsoftGraphClient.updateUser(accountHolderUpdate);
 
       AccountHolder accountHolder = accountHolderRepository
         .findById(id)
@@ -93,7 +95,11 @@ public class AccountHolderService {
 
       return Optional.of(accountHolderRepository.save(accountHolder));
     } catch (Exception error) {
-      log.error("Couldn't update account holder in Azure");
+      log.error(
+        "Couldn't update account holder with auth ID" +
+        accountHolderUpdate.getAuthId() +
+        " in Azure"
+      );
       return null;
     }
   }

@@ -5,6 +5,8 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -33,19 +35,18 @@ public class MicrosoftGraphClient implements AuthClient {
     .authenticationProvider(tokenCredAuthProvider)
     .buildClient();
 
-  // edit an AccountHolder in the form and pass in
   public void updateUser(AccountHolder accountHolder) {
     try {
-      User user = new User();
-      user.displayName = accountHolder.getFullName();
-      user.mail = accountHolder.getEmail();
+      User azAdUser = new User();
+
+      azAdUser.displayName = accountHolder.getFullName();
+      azAdUser.userPrincipalName = accountHolder.getEmail();
+      azAdUser.mail = accountHolder.getEmail();
 
       graphClient
-        .users(accountHolder.getUserId().toString())
+        .users(accountHolder.getAuthId().toString())
         .buildRequest()
-        .patch(user);
-
-      log.info(user.displayName);
+        .patch(azAdUser);
     } catch (Exception error) {
       log.error(error.getMessage());
       throw error;
@@ -54,15 +55,13 @@ public class MicrosoftGraphClient implements AuthClient {
 
   public AzureAdAccountHolder getUser(String id) {
     try {
-      User user = graphClient.users(id).buildRequest().get();
-
-      log.info(user.displayName);
+      User azAdUser = graphClient.users(id).buildRequest().get();
 
       return AzureAdAccountHolder
         .builder()
-        .azureAdUserId(UUID.fromString(user.id))
-        .displayName(user.displayName)
-        .email(user.mail)
+        .azureAdUserId(UUID.fromString(azAdUser.id))
+        .displayName(azAdUser.displayName)
+        .email(azAdUser.mail)
         .build();
     } catch (Exception error) {
       log.error(error.getMessage());
