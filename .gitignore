@@ -16,8 +16,6 @@ coverage/
 *.iml
 service/.run
 
-#Local API config
-service/src/main/resources/application-dev.yml
 
 #Eclipse
 service/.metadata
