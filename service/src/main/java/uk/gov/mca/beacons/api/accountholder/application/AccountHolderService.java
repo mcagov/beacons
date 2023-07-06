@@ -2,7 +2,6 @@ package uk.gov.mca.beacons.api.accountholder.application;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +67,6 @@ public class AccountHolderService {
     AccountHolder accountHolderUpdate
   ) {
     try {
-      String eviesUserId = "b96c194c-9e1c-4869-abdf-3d0e854c111d";
-      accountHolderUpdate.setAuthId(eviesUserId);
       microsoftGraphClient.updateUser(accountHolderUpdate);
 
       AccountHolder accountHolder = accountHolderRepository
