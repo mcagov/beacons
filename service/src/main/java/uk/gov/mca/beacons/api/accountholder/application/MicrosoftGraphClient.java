@@ -46,11 +46,9 @@ public class MicrosoftGraphClient implements AuthClient {
       User azAdUser = new User();
 
       azAdUser.displayName = accountHolder.getFullName();
-      azAdUser.userPrincipalName = accountHolder.getEmail();
       azAdUser.mail = accountHolder.getEmail();
 
-      graphClient
-        .users(accountHolder.getAuthId().toString())
+      this.graphClient.users(accountHolder.getAuthId().toString())
         .buildRequest()
         .patch(azAdUser);
     } catch (Exception error) {
