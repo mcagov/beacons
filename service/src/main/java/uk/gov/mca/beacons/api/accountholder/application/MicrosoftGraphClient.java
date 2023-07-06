@@ -8,43 +8,38 @@ import com.microsoft.graph.requests.GraphServiceClient;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
+import uk.gov.mca.beacons.api.configuration.MicrosoftGraphConfiguration;
 
 @Slf4j
 @Component("microsoftGraphClient")
 public class MicrosoftGraphClient implements AuthClient {
 
-  @Value("${microsoft-graph.client-id}}")
-  private String clientId;
-
-  @Value("${microsoft-graph.client-secret}}")
-  private String clientSecret;
-
-  @Value("${microsoft-graph.b2c-tenant-id}}")
-  private String b2cTenantId;
-
+  private final ClientSecretCredential clientSecretCredential;
+  private final TokenCredentialAuthProvider tokenCredAuthProvider;
   private final List<String> scopes = List.of(
     "https://graph.microsoft.com/.default"
   );
+  private final GraphServiceClient graphClient;
 
-  final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-    .clientId(clientId)
-    .clientSecret(clientSecret)
-    .tenantId(b2cTenantId)
-    .build();
-
-  final TokenCredentialAuthProvider tokenCredAuthProvider = new TokenCredentialAuthProvider(
-    scopes,
-    clientSecretCredential
-  );
-
-  final GraphServiceClient graphClient = GraphServiceClient
-    .builder()
-    .authenticationProvider(tokenCredAuthProvider)
-    .buildClient();
+  @Autowired
+  public MicrosoftGraphClient(MicrosoftGraphConfiguration config) {
+    this.clientSecretCredential =
+      new ClientSecretCredentialBuilder()
+        .clientId(config.getClientId())
+        .clientSecret(config.getClientSecret())
+        .tenantId(config.getB2cTenantId())
+        .build();
+    this.tokenCredAuthProvider =
+      new TokenCredentialAuthProvider(scopes, clientSecretCredential);
+    this.graphClient =
+      GraphServiceClient
+        .builder()
+        .authenticationProvider(tokenCredAuthProvider)
+        .buildClient();
+  }
 
   public void updateUser(AccountHolder accountHolder) {
     try {
