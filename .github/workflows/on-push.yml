@@ -152,3 +152,4 @@ jobs:
       opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
       opensearch_proxy_sso_client_id: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_ID }}
       opensearch_proxy_sso_client_secret: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_SECRET }}
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}

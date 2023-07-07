@@ -41,7 +41,12 @@ public class MicrosoftGraphClient implements AuthClient {
         .buildClient();
   }
 
-  public void updateUser(AccountHolder accountHolder) {
+  public void updateUser(AccountHolder accountHolder) throws Exception {
+    //    if (accountHolder.getAuthId() == null){
+    //      throw new Exception("authId for accountHolderId" + accountHolder.getId() + "was null");
+    //    } else {
+    //
+    //    }
     try {
       User azAdUser = new User();
 
