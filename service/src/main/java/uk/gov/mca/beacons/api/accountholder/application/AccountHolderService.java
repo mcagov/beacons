@@ -107,8 +107,7 @@ public class AccountHolderService {
     } catch (Exception error) {
       log.error(
         "Couldn't update account holder with ID" +
-        accountHolderUpdate.getId() +
-        ". Error message"
+        accountHolderUpdate.getId().unwrap()
       );
       return null;
     }
@@ -120,7 +119,7 @@ public class AccountHolderService {
     try {
       accountHolder = microsoftGraphClient.getUser(id.unwrap().toString());
     } catch (Exception azureAdError) {
-      log.error("Couldn't find account holder id " + id + "in Azure");
+      log.error("Couldn't find account holder id " + id.unwrap() + "in Azure");
       throw azureAdError;
     }
 
