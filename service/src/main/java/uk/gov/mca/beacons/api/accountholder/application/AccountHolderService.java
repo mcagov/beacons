@@ -67,8 +67,6 @@ public class AccountHolderService {
     AccountHolder accountHolderUpdate
   ) {
     try {
-      microsoftGraphClient.updateUser(accountHolderUpdate);
-
       AccountHolder accountHolder = accountHolderRepository
         .findById(id)
         .orElse(null);
@@ -89,16 +87,24 @@ public class AccountHolderService {
         .withMapping(AccountHolder::getAddress, AccountHolder::setAddress);
 
       accountHolder.update(accountHolderUpdate, patcher);
+      Optional<AccountHolder> savedAccountHolder = Optional.of(
+        accountHolderRepository.save(accountHolder)
+      );
+      if (savedAccountHolder.isPresent()) {
+        microsoftGraphClient.updateUser(accountHolderUpdate);
+      }
 
-      return Optional.of(accountHolderRepository.save(accountHolder));
+      return savedAccountHolder;
     } catch (Exception error) {
       log.error(
-        "Couldn't update account holder with auth ID" +
-        accountHolderUpdate.getAuthId() +
-        " in Azure"
+        "Couldn't update account holder with ID" +
+        accountHolderUpdate.getId() +
+        ". Error message"
       );
       return null;
     }
+
+    try {} catch (Exception azureAdError) {}
   }
 
   public List<BeaconDTO> getBeaconsByAccountHolderId(
