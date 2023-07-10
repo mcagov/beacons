@@ -218,11 +218,11 @@ resource "aws_ecs_task_definition" "service" {
         name : "MICROSOFT_GRAPH_CLIENT_ID",
         value : var.microsoft_graph_client_id
       },
-            {
+      {
         name : "MICROSOFT_GRAPH_CLIENT_SECRET",
         value : var.microsoft_graph_client_secret
       },
-            {
+      {
         name : "MICROSOFT_GRAPH_B2C_TENANT_ID",
         value : var.microsoft_graph_b2c_tenant_id
       }
