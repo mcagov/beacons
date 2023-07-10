@@ -17,6 +17,7 @@ import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
+import uk.gov.mca.beacons.api.shared.domain.user.User;
 
 @Slf4j
 @Transactional
@@ -67,10 +68,18 @@ public class AccountHolderService {
     AccountHolder accountHolderUpdate
   ) {
     try {
+      Optional<User> accountHolderInAzure = getAccountHolderFromAzureAd(id);
+
+      if (accountHolderInAzure.isEmpty()) {
+        return Optional.empty();
+      }
+
       AccountHolder accountHolder = accountHolderRepository
         .findById(id)
         .orElse(null);
-      if (accountHolder == null) return Optional.empty();
+      if (accountHolder == null) {
+        return Optional.empty();
+      }
 
       final var patcher = accountHolderPatcherFactory
         .getModelPatcher()
@@ -103,8 +112,19 @@ public class AccountHolderService {
       );
       return null;
     }
+  }
 
-    try {} catch (Exception azureAdError) {}
+  public Optional<User> getAccountHolderFromAzureAd(AccountHolderId id) {
+    User accountHolder;
+
+    try {
+      accountHolder = microsoftGraphClient.getUser(id.unwrap().toString());
+    } catch (Exception azureAdError) {
+      log.error("Couldn't find account holder id " + id + "in Azure");
+      throw azureAdError;
+    }
+
+    return Optional.of(accountHolder);
   }
 
   public List<BeaconDTO> getBeaconsByAccountHolderId(
