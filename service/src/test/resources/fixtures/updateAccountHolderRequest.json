@@ -6,6 +6,7 @@
     "type": "accountHolder",
     "relationships": {},
     "attributes": {
+      "authId": "replace-with-test-auth-id",
       "fullName": "Updatey McUpdateface",
       "telephoneNumber": "01178 919191",
       "addressLine1": "Number 44",

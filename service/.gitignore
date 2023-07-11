@@ -44,3 +44,4 @@ service/.run/
 .DS_Store
 schemacrawler/beacons-schema.html
 /src/main/resources/application-dev.yml
+/src/test/resources/application.yml

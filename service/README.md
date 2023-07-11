@@ -44,6 +44,15 @@ command `docker compose up`.
 
 ## Testing
 
+### Configuration for Integration Tests
+
+- Create a file in ./src/test/resources called application.yml
+- Fill it with the contents of 'Beacons service local test application.yml file' in 1Password
+- Follow the formatting step as above for Local Development Configuration
+- This is so the integration tests can set up the environment correctly and can do things like run the API in a Docker container
+- There is a test Azure AD B2C user set up in the testmcga Azure AD B2C tenant: Integration Test User
+- Some of the integration tests use this to check that a user can be updated in Azure alongisde being updated in the DB.
+
 Integration tests use the naming convention `<name>IntegrationTest`. Unit tests use the naming convention
 `<name>UnitTest`.
 

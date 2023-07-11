@@ -43,7 +43,7 @@ public class MicrosoftGraphClient implements AuthClient {
         .buildClient();
   }
 
-  public void updateUser(AccountHolder accountHolder) throws Exception {
+  public void updateUser(AccountHolder accountHolder) {
     try {
       User azAdUser = new User();
 

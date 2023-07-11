@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.event.ApplicationEvents;
@@ -32,6 +34,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   ApplicationEvents events;
 
+  @InjectMocks
   @Autowired
   AccountHolderService accountHolderService;
 
@@ -59,12 +62,15 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @Test
   public void whenUpdatingAccountHolder_ShouldPublishEvent() {
     AccountHolder accountHolder = new AccountHolder();
-    accountHolder.setAuthId("test@test.com");
+    String testAuthId = "478879a5-03c7-42cd-a466-442ecf6dc2b7";
+
+    accountHolder.setAuthId(testAuthId);
     accountHolder.setFullName("Wrong Name");
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
 
     AccountHolder accountHolderUpdate = new AccountHolder();
-    accountHolderUpdate.setFullName("Right Name");
+    accountHolderUpdate.setAuthId(testAuthId);
+    accountHolderUpdate.setFullName("Integration Test User");
 
     accountHolderService.updateAccountHolder(id, accountHolderUpdate);
     List<AccountHolderUpdated> accountHolderUpdatedEvents = events

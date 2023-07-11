@@ -4,7 +4,7 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.shared.domain.user.User;
 
 public interface AuthClient {
-  void updateUser(AccountHolder accountHolder) throws Exception;
+  void updateUser(AccountHolder accountHolder);
   User getUser(String id);
   void deleteUser(String id);
 }
