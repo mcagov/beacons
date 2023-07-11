@@ -16,6 +16,7 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
+import uk.gov.mca.beacons.api.mappers.ModelPatcher;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
 import uk.gov.mca.beacons.api.shared.domain.user.User;
 
@@ -24,8 +25,8 @@ import uk.gov.mca.beacons.api.shared.domain.user.User;
 @Service("AccountHolderServiceV2")
 public class AccountHolderService {
 
-  private final AccountHolderRepository accountHolderRepository;
-  private final ModelPatcherFactory<AccountHolder> accountHolderPatcherFactory;
+  private AccountHolderRepository accountHolderRepository;
+  private ModelPatcherFactory<AccountHolder> accountHolderPatcherFactory;
   private final BeaconService beaconService;
   private final BeaconMapper beaconMapper;
   private final BeaconUseService beaconUseService;
@@ -68,37 +69,19 @@ public class AccountHolderService {
     AccountHolder accountHolderUpdate
   ) {
     try {
-      Optional<User> accountHolderInAzure = getAccountHolderFromAzureAd(id);
+      Optional<User> accountHolderInAzure = getAccountHolderFromAzureAd(
+        accountHolderUpdate.getAuthId()
+      );
 
       if (accountHolderInAzure.isEmpty()) {
         return Optional.empty();
       }
 
-      AccountHolder accountHolder = accountHolderRepository
-        .findById(id)
-        .orElse(null);
-      if (accountHolder == null) {
-        return Optional.empty();
-      }
-
-      final var patcher = accountHolderPatcherFactory
-        .getModelPatcher()
-        .withMapping(AccountHolder::getFullName, AccountHolder::setFullName)
-        .withMapping(AccountHolder::getEmail, AccountHolder::setEmail)
-        .withMapping(
-          AccountHolder::getTelephoneNumber,
-          AccountHolder::setTelephoneNumber
-        )
-        .withMapping(
-          AccountHolder::getAlternativeTelephoneNumber,
-          AccountHolder::setAlternativeTelephoneNumber
-        )
-        .withMapping(AccountHolder::getAddress, AccountHolder::setAddress);
-
-      accountHolder.update(accountHolderUpdate, patcher);
-      Optional<AccountHolder> savedAccountHolder = Optional.of(
-        accountHolderRepository.save(accountHolder)
+      Optional<AccountHolder> savedAccountHolder = updateAccountHolderInDb(
+        id,
+        accountHolderUpdate
       );
+
       if (savedAccountHolder.isPresent()) {
         microsoftGraphClient.updateUser(accountHolderUpdate);
       }
@@ -106,24 +89,55 @@ public class AccountHolderService {
       return savedAccountHolder;
     } catch (Exception error) {
       log.error(
-        "Couldn't update account holder with ID" +
-        accountHolderUpdate.getId().unwrap()
+        "Couldn't update account holder with id" +
+        accountHolderUpdate.getId().unwrap() +
+        " in the DB"
       );
       return null;
     }
   }
 
-  public Optional<User> getAccountHolderFromAzureAd(AccountHolderId id) {
-    User accountHolder;
+  public Optional<User> getAccountHolderFromAzureAd(String authId) {
+    AzureAdAccountHolder accountHolderInAzAd;
 
     try {
-      accountHolder = microsoftGraphClient.getUser(id.unwrap().toString());
+      accountHolderInAzAd =
+        (AzureAdAccountHolder) microsoftGraphClient.getUser(authId);
     } catch (Exception azureAdError) {
-      log.error("Couldn't find account holder id " + id.unwrap() + "in Azure");
+      log.error("Couldn't find account holder authId " + authId + "in Azure");
       throw azureAdError;
     }
 
-    return Optional.of(accountHolder);
+    return Optional.of(accountHolderInAzAd);
+  }
+
+  private Optional<AccountHolder> updateAccountHolderInDb(
+    AccountHolderId id,
+    AccountHolder accountHolderUpdate
+  ) {
+    AccountHolder accountHolder = accountHolderRepository
+      .findById(id)
+      .orElse(null);
+    if (accountHolder == null) {
+      return Optional.empty();
+    }
+
+    final ModelPatcher<AccountHolder> patcher = accountHolderPatcherFactory
+      .getModelPatcher()
+      .withMapping(AccountHolder::getFullName, AccountHolder::setFullName)
+      .withMapping(AccountHolder::getEmail, AccountHolder::setEmail)
+      .withMapping(
+        AccountHolder::getTelephoneNumber,
+        AccountHolder::setTelephoneNumber
+      )
+      .withMapping(
+        AccountHolder::getAlternativeTelephoneNumber,
+        AccountHolder::setAlternativeTelephoneNumber
+      )
+      .withMapping(AccountHolder::getAddress, AccountHolder::setAddress);
+
+    accountHolder.update(accountHolderUpdate, patcher);
+    return Optional.of(accountHolderRepository.save(accountHolder));
   }
 
   public List<BeaconDTO> getBeaconsByAccountHolderId(
