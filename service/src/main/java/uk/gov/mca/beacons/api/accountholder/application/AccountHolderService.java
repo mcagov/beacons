@@ -69,6 +69,10 @@ public class AccountHolderService {
     AccountHolder accountHolderUpdate
   ) {
     try {
+      log.info(
+        "HELLO Account holder authId is " + accountHolderUpdate.getAuthId()
+      );
+
       Optional<User> accountHolderInAzure = getAccountHolderFromAzureAd(
         accountHolderUpdate.getAuthId()
       );

@@ -20,6 +20,9 @@ public class UpdateAccountHolderDTO
   }
 
   @Getter
+  private String authId;
+
+  @Getter
   @Setter
   @Builder
   @NoArgsConstructor

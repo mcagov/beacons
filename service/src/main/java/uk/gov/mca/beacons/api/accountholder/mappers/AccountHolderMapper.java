@@ -38,6 +38,8 @@ public class AccountHolderMapper {
   public AccountHolder fromDTO(UpdateAccountHolderDTO dto) {
     final var attributes = dto.getAttributes();
     AccountHolder accountHolder = new AccountHolder();
+
+    accountHolder.setAuthId(dto.getAuthId());
     accountHolder.setFullName(attributes.getFullName());
     accountHolder.setEmail(attributes.getEmail());
     accountHolder.setTelephoneNumber(attributes.getTelephoneNumber());

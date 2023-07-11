@@ -1,5 +1,6 @@
 export interface IAccountHolder {
   id: string;
+  authId: string;
   fullName: string;
   email: string;
   telephoneNumber: string;
