@@ -3,7 +3,6 @@
   "included": [],
   "data": {
     "id": "replace-with-test-account-id",
-    "authId": "replace-with-test-auth-id",
     "type": "accountHolder",
     "relationships": {},
     "attributes": {
@@ -13,6 +12,9 @@
       "addressLine2": "Updatey Towers",
       "addressLine3": "Updatey Test",
       "addressLine4": "",
+      "townOrCity": "Testville",
+      "postcode": "UP1 23A",
+      "county": "Testershire",
       "postcode": "UP1 23A"
     }
   }
