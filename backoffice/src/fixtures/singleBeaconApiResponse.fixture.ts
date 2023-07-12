@@ -77,6 +77,7 @@ export const singleBeaconApiResponseFixture: IRegistrationResponse =
     batteryExpiryDate: "2020-02-01T00:00",
     lastServicedDate: "2020-02-01T00:00",
     lastModifiedDate: "2021-02-01T00:00",
+    mainUseName: "Some beacon use",
     uses: [
       getUseResponseJson(true, "e00036c4-e3f4-46bb-aa9e-1d91870d9172"),
       getUseResponseJson(false, "e00036c4-e3f4-46bb-aa9e-1d91870d9173"),
