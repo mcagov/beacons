@@ -60,7 +60,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   }
 
   @Test
-  public void whenUpdatingAccountHolder_ShouldPublishEvent() {
+  public void whenUpdatingAccountHolder_ShouldPublishEvent() throws Exception {
     AccountHolder accountHolder = new AccountHolder();
     String testAuthId = "478879a5-03c7-42cd-a466-442ecf6dc2b7";
 

@@ -91,7 +91,6 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
   ): IAccountHolder {
     return {
       id: accountHolder.id,
-      authId: accountHolder.attributes.authId,
       fullName: accountHolder.attributes.fullName || "",
       email: accountHolder.attributes.email || "",
       telephoneNumber: accountHolder.attributes.telephoneNumber || "",

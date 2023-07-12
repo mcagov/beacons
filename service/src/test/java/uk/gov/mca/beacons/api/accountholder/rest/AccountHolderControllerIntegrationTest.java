@@ -67,7 +67,10 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
     String testAuthId = "478879a5-03c7-42cd-a466-442ecf6dc2b7";
     String id = seedAccountHolder(testAuthId);
 
-    String updateAccountHolderRequest = updateAccountHolderRequest(id);
+    String updateAccountHolderRequest = updateAccountHolderRequest(
+      id,
+      testAuthId
+    );
     String updateAccountHolderResponse = updateAccountHolderResponse(id);
 
     webTestClient
@@ -96,10 +99,14 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
     );
   }
 
-  private String updateAccountHolderRequest(String id) throws Exception {
+  private String updateAccountHolderRequest(String id, String authId)
+    throws Exception {
     return fixtureHelper.getFixture(
       "src/test/resources/fixtures/updateAccountHolderRequest.json",
-      fixture -> fixture.replace("replace-with-test-account-id", id)
+      fixture ->
+        fixture
+          .replace("replace-with-test-account-id", id)
+          .replace("replace-with-test-auth-id", authId)
     );
   }
 

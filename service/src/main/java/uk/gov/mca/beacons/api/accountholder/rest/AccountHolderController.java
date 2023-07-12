@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.accountholder.rest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.dto.WrapperDTO;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 
+@Slf4j
 @RestController
 @RequestMapping("/spring-api/account-holder")
 @Tag(name = "Account Holder")
@@ -90,7 +92,15 @@ public class AccountHolderController {
   public WrapperDTO<AccountHolderDTO> updateAccountHolderDetails(
     @PathVariable UUID id,
     @RequestBody WrapperDTO<UpdateAccountHolderDTO> wrapperDTO
-  ) {
+  ) throws Exception {
+    log.info(
+      "HELLO CONTROLLER Account holder county is " +
+      wrapperDTO.getData().getAttributes().getAddressDTO().getCounty()
+    );
+    log.info(
+      "HELLO CONTROLLER Account holder town or city is " +
+      wrapperDTO.getData().getAttributes().getAddressDTO().getTownOrCity()
+    );
     final AccountHolder accountHolderUpdate = accountHolderMapper.fromDTO(
       wrapperDTO.getData()
     );

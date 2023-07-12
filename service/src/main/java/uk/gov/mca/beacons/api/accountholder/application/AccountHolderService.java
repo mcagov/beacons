@@ -25,8 +25,8 @@ import uk.gov.mca.beacons.api.shared.domain.user.User;
 @Service("AccountHolderServiceV2")
 public class AccountHolderService {
 
-  private AccountHolderRepository accountHolderRepository;
-  private ModelPatcherFactory<AccountHolder> accountHolderPatcherFactory;
+  private final AccountHolderRepository accountHolderRepository;
+  private final ModelPatcherFactory<AccountHolder> accountHolderPatcherFactory;
   private final BeaconService beaconService;
   private final BeaconMapper beaconMapper;
   private final BeaconUseService beaconUseService;
@@ -64,41 +64,56 @@ public class AccountHolderService {
     return accountHolderRepository.findAccountHolderByAuthId(authId);
   }
 
+  @Transactional(rollbackFor = Exception.class)
   public Optional<AccountHolder> updateAccountHolder(
     AccountHolderId id,
     AccountHolder accountHolderUpdate
-  ) {
+  ) throws Exception {
+    AccountHolder accountHolder = accountHolderRepository
+      .findById(id)
+      .orElse(null);
+
+    if (accountHolder == null) {
+      throw new Exception(
+        "No account holder with id " + id.unwrap() + " found in the DB"
+      );
+    }
+
+    Optional<User> accountHolderInAzure = getAccountHolderFromAzureAd(
+      accountHolder.getAuthId()
+    );
+
+    if (accountHolderInAzure.isEmpty()) {
+      throw new Exception(
+        "No account holder with authId " +
+        accountHolder.getAuthId() +
+        " found in Azure"
+      );
+    }
+
+    Optional<AccountHolder> savedAccountHolder;
+
     try {
-      log.info(
-        "HELLO Account holder authId is " + accountHolderUpdate.getAuthId()
-      );
-
-      Optional<User> accountHolderInAzure = getAccountHolderFromAzureAd(
-        accountHolderUpdate.getAuthId()
-      );
-
-      if (accountHolderInAzure.isEmpty()) {
-        return Optional.empty();
-      }
-
-      Optional<AccountHolder> savedAccountHolder = updateAccountHolderInDb(
-        id,
-        accountHolderUpdate
-      );
-
-      if (savedAccountHolder.isPresent()) {
-        microsoftGraphClient.updateUser(accountHolderUpdate);
-      }
-
-      return savedAccountHolder;
-    } catch (Exception error) {
+      savedAccountHolder =
+        updateAccountHolderInDb(accountHolder, accountHolderUpdate);
+    } catch (Exception dbError) {
       log.error(
         "Couldn't update account holder with id" +
         accountHolderUpdate.getId().unwrap() +
         " in the DB"
       );
-      return null;
+      throw dbError;
     }
+
+    if (savedAccountHolder.isPresent()) {
+      try {
+        microsoftGraphClient.updateUser(savedAccountHolder.get());
+      } catch (Exception azAdError) {
+        throw azAdError;
+      }
+    }
+
+    return savedAccountHolder;
   }
 
   public Optional<User> getAccountHolderFromAzureAd(String authId) {
@@ -115,17 +130,11 @@ public class AccountHolderService {
     return Optional.of(accountHolderInAzAd);
   }
 
+  @Transactional(rollbackFor = Exception.class)
   private Optional<AccountHolder> updateAccountHolderInDb(
-    AccountHolderId id,
+    AccountHolder accountHolder,
     AccountHolder accountHolderUpdate
   ) {
-    AccountHolder accountHolder = accountHolderRepository
-      .findById(id)
-      .orElse(null);
-    if (accountHolder == null) {
-      return Optional.empty();
-    }
-
     final ModelPatcher<AccountHolder> patcher = accountHolderPatcherFactory
       .getModelPatcher()
       .withMapping(AccountHolder::getFullName, AccountHolder::setFullName)

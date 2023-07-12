@@ -1,8 +1,5 @@
 import { IAccountHolder } from "entities/IAccountHolder";
-import {
-  IAccountHolderSearchResult,
-  IAccountHolderSearchResultData,
-} from "entities/IAccountHolderSearchResult";
+import { IAccountHolderSearchResult } from "entities/IAccountHolderSearchResult";
 import { IBeacon } from "entities/IBeacon";
 
 export interface IAccountHolderGateway {

@@ -1,7 +1,6 @@
 export interface IAccountHolderResponse {
   id: string;
   attributes: {
-    authId: string;
     fullName: string;
     email: string;
     telephoneNumber: string;

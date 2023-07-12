@@ -98,7 +98,6 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     updatedAccountHolder: Partial<IAccountHolder>
   ): Promise<void> => {
     try {
-      updatedAccountHolder.authId = accountHolder.authId;
       console.log(updatedAccountHolder);
 
       await accountHolderGateway.updateAccountHolder(
