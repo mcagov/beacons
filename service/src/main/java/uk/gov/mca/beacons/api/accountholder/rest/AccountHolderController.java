@@ -93,14 +93,6 @@ public class AccountHolderController {
     @PathVariable UUID id,
     @RequestBody WrapperDTO<UpdateAccountHolderDTO> wrapperDTO
   ) throws Exception {
-    log.info(
-      "HELLO CONTROLLER Account holder county is " +
-      wrapperDTO.getData().getAttributes().getAddressDTO().getCounty()
-    );
-    log.info(
-      "HELLO CONTROLLER Account holder town or city is " +
-      wrapperDTO.getData().getAttributes().getAddressDTO().getTownOrCity()
-    );
     final AccountHolder accountHolderUpdate = accountHolderMapper.fromDTO(
       wrapperDTO.getData()
     );
