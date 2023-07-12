@@ -13,6 +13,10 @@ public class AzureAdAccountHolder implements User {
 
   private String email;
 
+  private String mailNickname;
+
+  private String userPrincipalName;
+
   @Override
   public UUID getUserId() {
     return azureAdUserId;
@@ -26,5 +30,13 @@ public class AzureAdAccountHolder implements User {
   @Override
   public String getEmail() {
     return email;
+  }
+
+  public String getMailNickname() {
+    return mailNickname;
+  }
+
+  public String getUserPrincipalName() {
+    return userPrincipalName;
   }
 }

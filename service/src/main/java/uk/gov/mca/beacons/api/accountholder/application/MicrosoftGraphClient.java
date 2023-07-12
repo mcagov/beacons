@@ -3,10 +3,9 @@ package uk.gov.mca.beacons.api.accountholder.application;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
-import com.microsoft.graph.models.ProfilePhoto;
+import com.microsoft.graph.models.PasswordProfile;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
-import com.microsoft.graph.requests.ProfilePhotoCollectionPage;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +40,44 @@ public class MicrosoftGraphClient implements AuthClient {
         .builder()
         .authenticationProvider(tokenCredAuthProvider)
         .buildClient();
+  }
+
+  @Override
+  public uk.gov.mca.beacons.api.shared.domain.user.User createUser(
+    uk.gov.mca.beacons.api.shared.domain.user.User user
+  ) {
+    return null;
+  }
+
+  @Override
+  public uk.gov.mca.beacons.api.shared.domain.user.User createAzureAdUser(
+    AzureAdAccountHolder user
+  ) {
+    try {
+      User azAdUser = new User();
+      azAdUser.accountEnabled = true;
+      azAdUser.displayName = user.getFullName();
+      azAdUser.mail = user.getEmail();
+      azAdUser.mailNickname = user.getMailNickname();
+      azAdUser.userPrincipalName = user.getUserPrincipalName();
+
+      PasswordProfile passwordProfile = new PasswordProfile();
+      passwordProfile.forceChangePasswordNextSignIn = true;
+      passwordProfile.password = "xWwvJ]6NMw+bWH-d";
+      azAdUser.passwordProfile = passwordProfile;
+
+      User createdAzAdUser = graphClient.users().buildRequest().post(azAdUser);
+
+      return AzureAdAccountHolder
+        .builder()
+        .azureAdUserId(UUID.fromString(createdAzAdUser.id))
+        .displayName(createdAzAdUser.displayName)
+        .email(createdAzAdUser.mail)
+        .build();
+    } catch (Exception error) {
+      log.error(error.getMessage());
+      throw error;
+    }
   }
 
   public void updateUser(AccountHolder accountHolder) {
