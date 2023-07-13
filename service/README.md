@@ -33,7 +33,7 @@ Install node packages (needed for code formatting): `npm install`
 
 - Create a file in ./src/main/resources called application-dev.yml
 - Fill it with the contents of the 'Beacons service local application-dev.yml' entry in 1Password
-- Copying and pasting this into your new application-dev.yml will format the configuration incorrectly: please see the existing application.yml file for the pattern to follow
+  - Copying and pasting this into your new application-dev.yml can sometimes format the configuration incorrectly: please see the existing application.yml file for the pattern to follow
 - In IntelliJ, ensure your run configuration Environment variables include `spring_profiles_active=dev`. This will enable the IDE to use your new application-dev.yml configuration settings.
 
 The service can be run either locally in your IDE of choice or from the command line by
@@ -44,14 +44,13 @@ command `docker compose up`.
 
 ## Testing
 
-### Configuration for Integration Tests
+### Configuration for Tests
 
 - Create a file in ./src/test/resources called application.yml
 - Fill it with the contents of 'Beacons service local test application.yml file' in 1Password
-- Follow the formatting step as above for Local Development Configuration
-- This is so the integration tests can set up the environment correctly and can do things like run the API in a Docker container
-- There is a test Azure AD B2C user set up in the testmcga Azure AD B2C tenant: Integration Test User
-- Some of the integration tests use this to check that a user can be updated in Azure alongisde being updated in the DB.
+- If needed, follow the formatting step as above for Local Development Configuration
+- The integration tests need these settings in order to set up the environment correctly, and do things like run the API in a Docker container
+- Some of the unit tests also require settings in this file to instantiate an AzureAdSecurityConfiguration object
 
 Integration tests use the naming convention `<name>IntegrationTest`. Unit tests use the naming convention
 `<name>UnitTest`.
