@@ -91,6 +91,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setFullName("Wrong Name");
     accountHolder.setAuthId(createdAzAdUser.getUserId().toString());
+
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
 
     AccountHolder accountHolderUpdate = new AccountHolder();
