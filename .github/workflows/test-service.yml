@@ -2,6 +2,13 @@ name: Publish Service image
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        description:
+          The environment to which the application should be deployed.  Must be one of development/staging/production
+          and must match the terraform_workspace input.
+        type: string
+        required: true
     secrets:
       microsoft_graph_client_id:
         description: The Azure AD B2C client id required for the beacons service API to call Microsoft Graph
@@ -57,6 +64,7 @@ jobs:
   integration_tests:
     name: Integration test
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
 
     services:
       postgres:
