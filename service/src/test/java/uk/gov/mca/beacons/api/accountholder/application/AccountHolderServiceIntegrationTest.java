@@ -14,6 +14,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.ApplicationEventsTestExecutionListener;
 import org.springframework.test.context.event.RecordApplicationEvents;
@@ -24,6 +25,7 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.accountholder.domain.events.AccountHolderCreated;
 import uk.gov.mca.beacons.api.accountholder.domain.events.AccountHolderUpdated;
 
+@TestPropertySource(locations = "file:main/resources/application.yml")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestExecutionListeners(
   value = { ApplicationEventsTestExecutionListener.class },
