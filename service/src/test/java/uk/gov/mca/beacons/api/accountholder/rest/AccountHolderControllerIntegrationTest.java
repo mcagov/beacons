@@ -8,7 +8,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.reactive.function.BodyInserters;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
-@TestPropertySource(locations = "file:main/resources/application.yml")
 public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
 
   @Test

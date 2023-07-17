@@ -25,7 +25,6 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.accountholder.domain.events.AccountHolderCreated;
 import uk.gov.mca.beacons.api.accountholder.domain.events.AccountHolderUpdated;
 
-@TestPropertySource(locations = "file:main/resources/application.yml")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestExecutionListeners(
   value = { ApplicationEventsTestExecutionListener.class },

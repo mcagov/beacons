@@ -46,11 +46,9 @@ command `docker compose up`.
 
 ### Configuration for Tests
 
-- Create a file in ./src/test/resources called application.yml
-- Fill it with the contents of 'Beacons service local test application.yml file' in 1Password
-- If needed, follow the formatting step as above for Local Development Configuration
-- The integration tests need these settings in order to set up the environment correctly, and do things like run the API in a Docker container
-- Some of the unit tests also require settings in this file to instantiate an AzureAdSecurityConfiguration object
+- The test project has its own application.yml file containing several sensitive MICROSOFT_GRAPH environment variables
+- These do not have values in the actual file as they are secrets. To ensure these variables have values at runtime, make a .sh file on your machine and fill it with the contents of 'Set Microsoft Graph sensitive values as local Bash env vars' in 1Password.
+- The integration tests need these settings in order to create, update and delete a user in the test Azure AD B2C environment.
 
 Integration tests use the naming convention `<name>IntegrationTest`. Unit tests use the naming convention
 `<name>UnitTest`.
