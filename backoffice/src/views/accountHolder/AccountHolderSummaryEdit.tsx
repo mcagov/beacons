@@ -3,21 +3,18 @@ import {
   Button,
   Divider,
   Grid,
-  Input,
   Table,
   TableBody,
   TableContainer,
   Typography,
 } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import React, { FunctionComponent } from "react";
-import { PanelViewingState } from "../../components/dataPanel/PanelViewingState";
+import { FunctionComponent } from "react";
 import { TabulatedRow } from "../../components/dataPanel/TabulatedRow";
 import { IAccountHolder } from "../../entities/IAccountHolder";
 import countriesJson from "../../lib/countries/countries.json";
 
 import { Placeholders, WritingStyle } from "../../utils/writingStyle";
-import { FieldValue } from "../../components/dataPanel/FieldValue";
 import { TabulatedRowEditField } from "views/TabulatedRowEditField";
 
 export const AccountHolderSummaryEdit: FunctionComponent<{
