@@ -61,11 +61,6 @@ public class MicrosoftGraphClient implements AuthClient {
       azAdUser.mailNickname = user.getMailNickname();
       azAdUser.userPrincipalName = user.getUserPrincipalName();
 
-      PasswordProfile passwordProfile = new PasswordProfile();
-      passwordProfile.forceChangePasswordNextSignIn = true;
-      passwordProfile.password = "xWwvJ]6NMw+bWH-d";
-      azAdUser.passwordProfile = passwordProfile;
-
       User createdAzAdUser = graphClient.users().buildRequest().post(azAdUser);
 
       return AzureAdAccountHolder
