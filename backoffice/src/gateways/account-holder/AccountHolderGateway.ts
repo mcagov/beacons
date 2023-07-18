@@ -6,11 +6,7 @@ import { IAccountHolder } from "../../entities/IAccountHolder";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
 import { IAccountHolderGateway } from "./IAccountHolderGateway";
 import { IBeaconResponseMapper } from "gateways/mappers/BeaconResponseMapper";
-import { accountHolderFixture } from "../../fixtures/accountHolder.fixture";
-import {
-  IAccountHolderSearchResult,
-  IAccountHolderSearchResultData,
-} from "../../entities/IAccountHolderSearchResult";
+import { IAccountHolderSearchResult } from "../../entities/IAccountHolderSearchResult";
 
 export class AccountHolderGateway implements IAccountHolderGateway {
   private _authGateway;
@@ -34,6 +30,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
 
       return this._beaconResponseMapper.mapAccountHolder(response.data.data);
     } catch (e) {
+      logToServer.error(e);
       throw e;
     }
   }
@@ -56,6 +53,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
       );
       return response.data;
     } catch (e) {
+      logToServer.error(e);
       throw e;
     }
   }
@@ -83,6 +81,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
 
       return response.data;
     } catch (e) {
+      logToServer.error(e);
       throw e;
     }
   }
