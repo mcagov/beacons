@@ -4,7 +4,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 
+import com.microsoft.graph.models.PasswordProfile;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterAll;
@@ -55,6 +57,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
       .displayName("Wrong Name")
       .mailNickname("WrongN")
       .userPrincipalName("Wrong.Name@testmcga.onmicrosoft.com")
+      .passwordProfile(new PasswordProfile())
       .build();
 
     createdAzAdUser =

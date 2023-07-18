@@ -1,10 +1,13 @@
 package uk.gov.mca.beacons.api.accountholder.application;
 
+import com.microsoft.graph.models.PasswordProfile;
 import java.util.UUID;
 import lombok.Builder;
+import lombok.Setter;
 import uk.gov.mca.beacons.api.shared.domain.user.User;
 
 @Builder
+@Setter
 public class AzureAdAccountHolder implements User {
 
   private UUID azureAdUserId;
@@ -16,6 +19,8 @@ public class AzureAdAccountHolder implements User {
   private String mailNickname;
 
   private String userPrincipalName;
+
+  private PasswordProfile passwordProfile;
 
   @Override
   public UUID getUserId() {
@@ -38,5 +43,9 @@ public class AzureAdAccountHolder implements User {
 
   public String getUserPrincipalName() {
     return userPrincipalName;
+  }
+
+  public PasswordProfile getPasswordProfile() {
+    return passwordProfile;
   }
 }

@@ -60,6 +60,7 @@ public class MicrosoftGraphClient implements AuthClient {
       azAdUser.mail = user.getEmail();
       azAdUser.mailNickname = user.getMailNickname();
       azAdUser.userPrincipalName = user.getUserPrincipalName();
+      azAdUser.passwordProfile = user.getPasswordProfile();
 
       User createdAzAdUser = graphClient.users().buildRequest().post(azAdUser);
 
@@ -68,6 +69,7 @@ public class MicrosoftGraphClient implements AuthClient {
         .azureAdUserId(UUID.fromString(createdAzAdUser.id))
         .displayName(createdAzAdUser.displayName)
         .email(createdAzAdUser.mail)
+        .passwordProfile(createdAzAdUser.passwordProfile)
         .build();
     } catch (Exception error) {
       log.error(error.getMessage());
