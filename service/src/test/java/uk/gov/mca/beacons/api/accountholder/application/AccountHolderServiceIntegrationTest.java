@@ -51,13 +51,16 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
   @BeforeAll
   public void setUpAzureAdUser() {
+    PasswordProfile passwordProfile = new PasswordProfile();
+    passwordProfile.password = UUID.randomUUID().toString();
+
     AzureAdAccountHolder azAdUser = AzureAdAccountHolder
       .builder()
       .email("testuser@test.com")
       .displayName("Wrong Name")
       .mailNickname("WrongN")
       .userPrincipalName("Wrong.Name@testmcga.onmicrosoft.com")
-      .passwordProfile(new PasswordProfile())
+      .passwordProfile(passwordProfile)
       .build();
 
     createdAzAdUser =
