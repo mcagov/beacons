@@ -44,6 +44,12 @@ jobs:
   test_service:
     name: Test Service
     uses: ./.github/workflows/test-service.yml
+    with:
+      environment: development
+    secrets:
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
+      microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
+      microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
 
   test_backoffice:
     name: Test Backoffice
@@ -109,6 +115,7 @@ jobs:
       image-tag: ${{ github.sha }}
       test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
       test_azure_ad_tenant_id: 513fb495-9a90-425b-a49a-bc6ebe2a429e
+      environment: development
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -117,6 +124,9 @@ jobs:
       test_webapp_azure_b2c_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_CLIENT_SECRET }}
       test_webapp_azure_ad_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_AD_CLIENT_SECRET }}
       test_webapp_gov_notify_api_key: ${{ secrets.TEST_GOV_NOTIFY_API_KEY }}
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
+      microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
+      microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
 
   deploy_dev:
     name: Development
