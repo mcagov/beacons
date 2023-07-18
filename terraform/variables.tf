@@ -386,3 +386,21 @@ variable "opensearch_proxy_sso_client_secret" {
   type        = string
   description = "Client secret for OpenSearch Proxy single sign-on"
 }
+
+variable "microsoft_graph_client_id" {
+  type        = string
+  description = "Client id for the beacons service API to call the Microsoft Graph API"
+  sensitive   = true
+}
+
+variable "microsoft_graph_client_secret" {
+  type        = string
+  description = "Client secret for the beacons service API to call the Microsoft Graph API"
+  sensitive   = true
+}
+
+variable "microsoft_graph_b2c_tenant_id" {
+  type        = string
+  description = "Id of the Azure AD B2C tenant. Used by the beacons service API to call the Microsoft Graph API"
+  sensitive   = true
+}

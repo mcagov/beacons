@@ -7,9 +7,14 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.ApplicationEventsTestExecutionListener;
 import org.springframework.test.context.event.RecordApplicationEvents;
@@ -20,6 +25,7 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.accountholder.domain.events.AccountHolderCreated;
 import uk.gov.mca.beacons.api.accountholder.domain.events.AccountHolderUpdated;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestExecutionListeners(
   value = { ApplicationEventsTestExecutionListener.class },
   mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS
@@ -34,6 +40,31 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
   @Autowired
   AccountHolderService accountHolderService;
+
+  @Autowired
+  @Qualifier("microsoftGraphClient")
+  AuthClient microsoftGraphClient;
+
+  AzureAdAccountHolder createdAzAdUser;
+
+  @BeforeAll
+  public void setUpAzureAdUser() {
+    AzureAdAccountHolder azAdUser = AzureAdAccountHolder
+      .builder()
+      .email("testuser@test.com")
+      .displayName("Wrong Name")
+      .mailNickname("WrongN")
+      .userPrincipalName("Wrong.Name@testmcga.onmicrosoft.com")
+      .build();
+
+    createdAzAdUser =
+      (AzureAdAccountHolder) microsoftGraphClient.createAzureAdUser(azAdUser);
+  }
+
+  @AfterAll
+  public void tearDownAzureAdUser() {
+    microsoftGraphClient.deleteUser(createdAzAdUser.getUserId().toString());
+  }
 
   @Test
   public void whenCreatingAccountHolder_ShouldPublishEvent() {
@@ -57,14 +88,16 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   }
 
   @Test
-  public void whenUpdatingAccountHolder_ShouldPublishEvent() {
+  public void whenUpdatingAccountHolder_ShouldPublishEvent() throws Exception {
     AccountHolder accountHolder = new AccountHolder();
-    accountHolder.setAuthId("test@test.com");
     accountHolder.setFullName("Wrong Name");
+    accountHolder.setAuthId(createdAzAdUser.getUserId().toString());
+
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
 
     AccountHolder accountHolderUpdate = new AccountHolder();
-    accountHolderUpdate.setFullName("Right Name");
+    accountHolderUpdate.setFullName("Integration Test User");
+    accountHolderUpdate.setAuthId(createdAzAdUser.getUserId().toString());
 
     accountHolderService.updateAccountHolder(id, accountHolderUpdate);
     List<AccountHolderUpdated> accountHolderUpdatedEvents = events

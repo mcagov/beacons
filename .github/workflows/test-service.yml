@@ -2,6 +2,23 @@ name: Publish Service image
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        description:
+          The environment to which the application should be deployed.  Must be one of development/staging/production
+          and must match the terraform_workspace input.
+        type: string
+        required: true
+    secrets:
+      microsoft_graph_client_id:
+        description: The Azure AD B2C client id required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_client_secret:
+        description: The Azure AD B2C client secret required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_b2c_tenant_id:
+        description: The Azure AD B2C tenant id required for the beacons service API to call Microsoft Graph
+        required: true
 
 defaults:
   run:
@@ -40,11 +57,14 @@ jobs:
           distribution: "adopt"
           java-version: 11
       - name: Unit tests
+        env:
+          BEACONS_CORS_ALLOWED_ORIGINS: "*"
         run: ./gradlew clean test
 
   integration_tests:
     name: Integration test
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
 
     services:
       postgres:
@@ -63,4 +83,8 @@ jobs:
           distribution: "adopt"
           java-version: 11
       - name: Integration tests
+        env:
+          MICROSOFT_GRAPH_CLIENT_ID: ${{ secrets.microsoft_graph_client_id }}
+          MICROSOFT_GRAPH_CLIENT_SECRET: ${{ secrets.microsoft_graph_client_secret }}
+          MICROSOFT_GRAPH_B2C_TENANT_ID: ${{ secrets.microsoft_graph_b2c_tenant_id }}
         run: ./gradlew clean integrationTest

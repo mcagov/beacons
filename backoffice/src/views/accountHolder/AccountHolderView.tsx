@@ -99,6 +99,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   ): Promise<void> => {
     try {
       console.log(updatedAccountHolder);
+
       await accountHolderGateway.updateAccountHolder(
         accountHolder.id,
         updatedAccountHolder

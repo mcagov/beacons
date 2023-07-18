@@ -4,6 +4,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.reactive.function.BodyInserters;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
@@ -64,10 +65,13 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
   @Test
   public void shouldRespondWithTheUpdateAccountHolderDetails()
     throws Exception {
-    final String authId = UUID.randomUUID().toString();
-    String id = seedAccountHolder(authId);
+    String testAuthId = "478879a5-03c7-42cd-a466-442ecf6dc2b7";
+    String id = seedAccountHolder(testAuthId);
 
-    String updateAccountHolderRequest = updateAccountHolderRequest(id);
+    String updateAccountHolderRequest = updateAccountHolderRequest(
+      id,
+      testAuthId
+    );
     String updateAccountHolderResponse = updateAccountHolderResponse(id);
 
     webTestClient
@@ -96,10 +100,14 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
     );
   }
 
-  private String updateAccountHolderRequest(String id) throws Exception {
+  private String updateAccountHolderRequest(String id, String authId)
+    throws Exception {
     return fixtureHelper.getFixture(
-      "src/test/resources/fixtures/updateAccountHolderResponse.json",
-      fixture -> fixture.replace("replace-with-test-account-id", id)
+      "src/test/resources/fixtures/updateAccountHolderRequest.json",
+      fixture ->
+        fixture
+          .replace("replace-with-test-account-id", id)
+          .replace("replace-with-test-auth-id", authId)
     );
   }
 

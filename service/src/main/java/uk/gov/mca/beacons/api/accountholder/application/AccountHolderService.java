@@ -3,7 +3,9 @@ package uk.gov.mca.beacons.api.accountholder.application;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
@@ -14,9 +16,11 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
-import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
+import uk.gov.mca.beacons.api.mappers.ModelPatcher;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
+import uk.gov.mca.beacons.api.shared.domain.user.User;
 
+@Slf4j
 @Transactional
 @Service("AccountHolderServiceV2")
 public class AccountHolderService {
@@ -27,19 +31,24 @@ public class AccountHolderService {
   private final BeaconMapper beaconMapper;
   private final BeaconUseService beaconUseService;
 
+  @Qualifier("microsoftGraphClient")
+  private final AuthClient microsoftGraphClient;
+
   @Autowired
   public AccountHolderService(
     AccountHolderRepository accountHolderRepository,
     ModelPatcherFactory<AccountHolder> accountHolderPatcherFactory,
     BeaconService beaconService,
     BeaconMapper beaconMapper,
-    BeaconUseService beaconUseService
+    BeaconUseService beaconUseService,
+    AuthClient microsoftGraphClient
   ) {
     this.accountHolderRepository = accountHolderRepository;
     this.accountHolderPatcherFactory = accountHolderPatcherFactory;
     this.beaconService = beaconService;
     this.beaconMapper = beaconMapper;
     this.beaconUseService = beaconUseService;
+    this.microsoftGraphClient = microsoftGraphClient;
   }
 
   public AccountHolder create(AccountHolder accountHolder) {
@@ -55,16 +64,78 @@ public class AccountHolderService {
     return accountHolderRepository.findAccountHolderByAuthId(authId);
   }
 
+  @Transactional(rollbackFor = Exception.class)
   public Optional<AccountHolder> updateAccountHolder(
     AccountHolderId id,
     AccountHolder accountHolderUpdate
-  ) {
+  ) throws Exception {
     AccountHolder accountHolder = accountHolderRepository
       .findById(id)
       .orElse(null);
-    if (accountHolder == null) return Optional.empty();
 
-    final var patcher = accountHolderPatcherFactory
+    if (accountHolder == null) {
+      throw new Exception(
+        "No account holder with id " + id.unwrap() + " found in the DB"
+      );
+    }
+
+    Optional<User> accountHolderInAzure = getAccountHolderFromAzureAd(
+      accountHolder.getAuthId()
+    );
+
+    if (accountHolderInAzure.isEmpty()) {
+      throw new Exception(
+        "No account holder with authId " +
+        accountHolder.getAuthId() +
+        " found in Azure"
+      );
+    }
+
+    Optional<AccountHolder> savedAccountHolder;
+
+    try {
+      savedAccountHolder =
+        updateAccountHolderInDb(accountHolder, accountHolderUpdate);
+    } catch (Exception dbError) {
+      log.error(
+        "Couldn't update account holder with id" +
+        accountHolderUpdate.getId().unwrap() +
+        " in the DB"
+      );
+      throw dbError;
+    }
+
+    if (savedAccountHolder.isPresent()) {
+      try {
+        microsoftGraphClient.updateUser(savedAccountHolder.get());
+      } catch (Exception azAdError) {
+        throw azAdError;
+      }
+    }
+
+    return savedAccountHolder;
+  }
+
+  public Optional<User> getAccountHolderFromAzureAd(String authId) {
+    AzureAdAccountHolder accountHolderInAzAd;
+
+    try {
+      accountHolderInAzAd =
+        (AzureAdAccountHolder) microsoftGraphClient.getUser(authId);
+    } catch (Exception azureAdError) {
+      log.error("Couldn't find account holder authId " + authId + "in Azure");
+      throw azureAdError;
+    }
+
+    return Optional.of(accountHolderInAzAd);
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  private Optional<AccountHolder> updateAccountHolderInDb(
+    AccountHolder accountHolder,
+    AccountHolder accountHolderUpdate
+  ) {
+    final ModelPatcher<AccountHolder> patcher = accountHolderPatcherFactory
       .getModelPatcher()
       .withMapping(AccountHolder::getFullName, AccountHolder::setFullName)
       .withMapping(
@@ -78,7 +149,6 @@ public class AccountHolderService {
       .withMapping(AccountHolder::getAddress, AccountHolder::setAddress);
 
     accountHolder.update(accountHolderUpdate, patcher);
-
     return Optional.of(accountHolderRepository.save(accountHolder));
   }
 
