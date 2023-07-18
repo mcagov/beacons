@@ -102,6 +102,9 @@ jobs:
           WEBAPP_CLIENT_SECRET: ${{ secrets.test_webapp_azure_ad_client_secret }}
           AAD_API_ID: 5cdcbb41-958a-43b6-baa1-bbafd80b4f70
           API_URL: http://localhost:8080/spring-api
+          MICROSOFT_GRAPH_CLIENT_ID: ${{ secrets.microsoft_graph_client_id }}
+          MICROSOFT_GRAPH_CLIENT_SECRET: ${{ secrets.microsoft_graph_client_secret }}
+          MICROSOFT_GRAPH_B2C_TENANT_ID: ${{ secrets.microsoft_graph_b2c_tenant_id }}
         with:
           working-directory: tests
           spec: cypress/endToEnd/*
