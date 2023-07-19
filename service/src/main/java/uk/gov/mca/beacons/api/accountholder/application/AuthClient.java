@@ -8,7 +8,7 @@ public interface AuthClient {
 
   User createAzureAdUser(AzureAdAccountHolder user);
 
-  void updateUser(AccountHolder accountHolder);
-  User getUser(String id);
+  void updateUser(AccountHolder accountHolder) throws Exception;
+  User getUser(String id) throws Exception;
   void deleteUser(String id);
 }

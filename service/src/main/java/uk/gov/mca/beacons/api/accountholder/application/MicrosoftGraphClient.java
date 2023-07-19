@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.accountholder.application;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
+import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
 import java.util.List;
@@ -81,7 +82,8 @@ public class MicrosoftGraphClient implements AuthClient {
     }
   }
 
-  public void updateUser(AccountHolder accountHolder) {
+  public void updateUser(AccountHolder accountHolder)
+    throws UpdateAzAdUserError {
     try {
       User azAdUser = new User();
 
@@ -91,13 +93,13 @@ public class MicrosoftGraphClient implements AuthClient {
       this.graphClient.users(accountHolder.getAuthId())
         .buildRequest()
         .patch(azAdUser);
-    } catch (Exception error) {
+    } catch (UpdateAzAdUserError error) {
       log.error(error.getMessage());
       throw error;
     }
   }
 
-  public AzureAdAccountHolder getUser(String id) {
+  public AzureAdAccountHolder getUser(String id) throws GetAzAdUserError {
     try {
       User azAdUser = graphClient.users(id).buildRequest().get();
 
@@ -107,7 +109,7 @@ public class MicrosoftGraphClient implements AuthClient {
         .displayName(azAdUser.displayName)
         .email(azAdUser.mail)
         .build();
-    } catch (Exception error) {
+    } catch (GetAzAdUserError error) {
       log.error(error.getMessage());
       throw error;
     }

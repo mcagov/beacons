@@ -39,22 +39,29 @@ export class AccountHolderGateway implements IAccountHolderGateway {
     accountHolderId: string,
     updatedFields: Partial<IAccountHolder>
   ): Promise<IAccountHolder> {
-    try {
-      const data = {
-        data: {
-          id: accountHolderId,
-          attributes: updatedFields,
-        },
-      };
+    const data = {
+      data: {
+        id: accountHolderId,
+        attributes: updatedFields,
+      },
+    };
 
-      const response = await this._makePatchRequest(
-        `/account-holder/${accountHolderId}`,
-        data
+    const response = await this._makePatchRequest(
+      `/account-holder/${accountHolderId}`,
+      data
+    );
+
+    // switch
+    if (response.status === 500) {
+      throw new Error(
+        `500 error: could not update account holder ${accountHolderId} in Azure`
       );
+    } else if (response.status === 404) {
+      throw new Error(
+        `404 error: could not get account holder ${accountHolderId} in Azure`
+      );
+    } else {
       return response.data;
-    } catch (e) {
-      logToServer.error(e);
-      throw e;
     }
   }
 

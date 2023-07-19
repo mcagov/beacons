@@ -108,7 +108,7 @@ public class AccountHolderService {
     if (savedAccountHolder.isPresent()) {
       try {
         microsoftGraphClient.updateUser(savedAccountHolder.get());
-      } catch (Exception azAdError) {
+      } catch (UpdateAzAdUserError azAdError) {
         throw azAdError;
       }
     }

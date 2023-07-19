@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
+import uk.gov.mca.beacons.api.accountholder.application.GetAzAdUserError;
+import uk.gov.mca.beacons.api.accountholder.application.UpdateAzAdUserError;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.accountholder.mappers.AccountHolderMapper;
@@ -88,7 +90,7 @@ public class AccountHolderController {
   @PatchMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasAuthority('APPROLE_UPDATE_RECORDS')")
-  public WrapperDTO<AccountHolderDTO> updateAccountHolderDetails(
+  public ResponseEntity updateAccountHolderDetails(
     @PathVariable UUID id,
     @RequestBody WrapperDTO<UpdateAccountHolderDTO> wrapperDTO
   ) throws Exception {
@@ -96,10 +98,18 @@ public class AccountHolderController {
       wrapperDTO.getData()
     );
 
-    final AccountHolder accountHolder = accountHolderService
-      .updateAccountHolder(new AccountHolderId(id), accountHolderUpdate)
-      .orElseThrow(ResourceNotFoundException::new);
+    try {
+      final AccountHolder accountHolder = accountHolderService
+        .updateAccountHolder(new AccountHolderId(id), accountHolderUpdate)
+        .orElseThrow(ResourceNotFoundException::new);
 
-    return accountHolderMapper.toWrapperDTO(accountHolder);
+      return ResponseEntity.ok(accountHolderMapper.toWrapperDTO(accountHolder));
+    } catch (UpdateAzAdUserError updateAzAdUserError) {
+      return ResponseEntity
+        .internalServerError()
+        .body(accountHolderMapper.toWrapperDTO(accountHolderUpdate));
+    } catch (GetAzAdUserError getAzAdUserError) {
+      return ResponseEntity.notFound().build();
+    }
   }
 }

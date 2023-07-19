@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Link,
-  Paper,
-} from "@mui/material";
+import { Box, Button, Chip, Link, Paper } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
@@ -28,7 +20,6 @@ import { customDateStringFormat } from "utils/dateTime";
 import { DataPanelStates } from "components/dataPanel/States";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { EditPanelButton } from "components/dataPanel/EditPanelButton";
-import { diffObjValues } from "utils/core";
 import { Placeholders } from "utils/writingStyle";
 import { ErrorState } from "components/dataPanel/PanelErrorState";
 import { LoadingState } from "components/dataPanel/PanelLoadingState";
@@ -69,6 +60,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   );
 
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect((): void => {
@@ -88,6 +80,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       } catch (error) {
         logToServer.error(error);
         setError(true);
+        setErrorMessage((error as Error).message);
       }
     };
 
@@ -138,13 +131,12 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
           </OnlyVisibleToUsersWith>
         );
       default:
+        setErrorMessage(errorMessage);
         setError(true);
     }
   };
 
   const columns: GridColDef[] = [
-    // { field: "id", headerName: "ID", width: 300 },
-
     {
       field: "hexId",
       headerName: "Hex ID",
@@ -225,7 +217,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       <PageContent>
         <Paper className={classes.paper}>
           <h2>Account Holder: {accountHolder?.fullName}</h2>
-          {error && <ErrorState message={Placeholders.UnspecifiedError} />}
+          {error && <ErrorState message={errorMessage} />}
           {loading && <LoadingState />}
           {error || loading || renderState(userState)}
         </Paper>
