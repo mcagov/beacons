@@ -3,7 +3,6 @@ package uk.gov.mca.beacons.api.accountholder.application;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
-import com.microsoft.graph.models.PasswordProfile;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
 import java.util.List;
@@ -18,28 +17,33 @@ import uk.gov.mca.beacons.api.configuration.MicrosoftGraphConfiguration;
 @Component("microsoftGraphClient")
 public class MicrosoftGraphClient implements AuthClient {
 
-  private final ClientSecretCredential clientSecretCredential;
-  private final TokenCredentialAuthProvider tokenCredAuthProvider;
   private final List<String> scopes = List.of(
     "https://graph.microsoft.com/.default"
   );
-  private final GraphServiceClient graphClient;
+  private GraphServiceClient graphClient;
 
   @Autowired
   public MicrosoftGraphClient(MicrosoftGraphConfiguration config) {
-    this.clientSecretCredential =
-      new ClientSecretCredentialBuilder()
+    try {
+      ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
         .clientId(config.getClientId())
         .clientSecret(config.getClientSecret())
         .tenantId(config.getB2cTenantId())
         .build();
-    this.tokenCredAuthProvider =
-      new TokenCredentialAuthProvider(scopes, clientSecretCredential);
-    this.graphClient =
-      GraphServiceClient
-        .builder()
-        .authenticationProvider(tokenCredAuthProvider)
-        .buildClient();
+      TokenCredentialAuthProvider tokenCredAuthProvider = new TokenCredentialAuthProvider(
+        scopes,
+        clientSecretCredential
+      );
+      this.graphClient =
+        GraphServiceClient
+          .builder()
+          .authenticationProvider(tokenCredAuthProvider)
+          .buildClient();
+    } catch (Exception ex) {
+      log.info(config.getClientId());
+      log.error("Unable to create graph client", ex);
+      this.graphClient = null;
+    }
   }
 
   @Override
