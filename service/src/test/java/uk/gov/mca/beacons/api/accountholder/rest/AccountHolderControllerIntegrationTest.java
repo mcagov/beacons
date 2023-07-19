@@ -10,11 +10,16 @@ import uk.gov.mca.beacons.api.WebIntegrationTest;
 
 public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
 
+  private final String testAuthId = UUID.randomUUID().toString();
+
   @Test
   public void shouldRespondWithTheCreatedAccountHolder() throws Exception {
-    final String authId = UUID.randomUUID().toString();
-    final var createAccountHolderRequest = createAccountHolderRequest(authId);
-    final var createAccountHolderResponse = createAccountHolderResponse(authId);
+    final var createAccountHolderRequest = createAccountHolderRequest(
+      testAuthId
+    );
+    final var createAccountHolderResponse = createAccountHolderResponse(
+      testAuthId
+    );
 
     webTestClient
       .post()
@@ -32,9 +37,10 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
 
   @Test
   public void shouldFindTheCreatedAccountHolderById() throws Exception {
-    final String authId = UUID.randomUUID().toString();
-    final String id = seedAccountHolder(authId);
-    final var createAccountHolderResponse = createAccountHolderResponse(authId);
+    final String id = seedAccountHolder(testAuthId);
+    final var createAccountHolderResponse = createAccountHolderResponse(
+      testAuthId
+    );
 
     webTestClient
       .get()
@@ -48,13 +54,14 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
 
   @Test
   public void shouldFindTheAccountHolderByAuthId() throws Exception {
-    final String authId = UUID.randomUUID().toString();
-    seedAccountHolder(authId);
-    final var createAccountHolderResponse = createAccountHolderResponse(authId);
+    seedAccountHolder(testAuthId);
+    final var createAccountHolderResponse = createAccountHolderResponse(
+      testAuthId
+    );
 
     webTestClient
       .get()
-      .uri(Endpoints.AccountHolder.value + "?authId=" + authId)
+      .uri(Endpoints.AccountHolder.value + "?authId=" + testAuthId)
       .exchange()
       .expectStatus()
       .isOk()
@@ -65,7 +72,6 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
   @Test
   public void shouldRespondWithTheUpdateAccountHolderDetails()
     throws Exception {
-    String testAuthId = UUID.randomUUID().toString();
     String id = seedAccountHolder(testAuthId);
     String updateAccountHolderRequest = updateAccountHolderRequest(
       id,
