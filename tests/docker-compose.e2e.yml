@@ -34,6 +34,9 @@ services:
       OPENSEARCH_PORT: 9200
       # 'dev' profile is necessary to allow Spring to connect to local OpenSearch container without authenticating
       SPRING_PROFILES_ACTIVE: dev
+      MICROSOFT_GRAPH_CLIENT_ID: ${MICROSOFT_GRAPH_CLIENT_ID}
+      MICROSOFT_GRAPH_CLIENT_SECRET: ${MICROSOFT_GRAPH_CLIENT_SECRET}
+      MICROSOFT_GRAPH_B2C_TENANT_ID: ${MICROSOFT_GRAPH_B2C_TENANT_ID}
     ports:
       - "8080:8080"
     links:
