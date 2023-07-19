@@ -65,15 +65,14 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
   @Test
   public void shouldRespondWithTheUpdateAccountHolderDetails()
     throws Exception {
-    String testAuthId = "478879a5-03c7-42cd-a466-442ecf6dc2b7";
+    String testAuthId = UUID.randomUUID().toString();
     String id = seedAccountHolder(testAuthId);
-
     String updateAccountHolderRequest = updateAccountHolderRequest(
       id,
       testAuthId
     );
-    String updateAccountHolderResponse = updateAccountHolderResponse(id);
 
+    String updateAccountHolderResponse = updateAccountHolderResponse(id);
     webTestClient
       .patch()
       .uri(Endpoints.AccountHolder.value + "/" + id)
