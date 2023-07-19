@@ -8,11 +8,13 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.reactive.function.BodyInserters;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
 
   private final String testAuthId = UUID.randomUUID().toString();
 
   @Test
+  @Order(1)
   public void shouldRespondWithTheCreatedAccountHolder() throws Exception {
     final var createAccountHolderRequest = createAccountHolderRequest(
       testAuthId
@@ -36,6 +38,7 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
   }
 
   @Test
+  @Order(2)
   public void shouldFindTheCreatedAccountHolderById() throws Exception {
     final String id = seedAccountHolder(testAuthId);
     final var createAccountHolderResponse = createAccountHolderResponse(
@@ -53,6 +56,7 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
   }
 
   @Test
+  @Order(3)
   public void shouldFindTheAccountHolderByAuthId() throws Exception {
     seedAccountHolder(testAuthId);
     final var createAccountHolderResponse = createAccountHolderResponse(
@@ -70,6 +74,7 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
   }
 
   @Test
+  @Order(4)
   public void shouldRespondWithTheUpdateAccountHolderDetails()
     throws Exception {
     String id = seedAccountHolder(testAuthId);
