@@ -55,6 +55,11 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
                       fieldName={"alternativeTelephoneNumber"}
                       type={"string"}
                     />
+                    <TabulatedRowEditField
+                      label={"Email"}
+                      fieldName={"email"}
+                      type={"string"}
+                    />
 
                     <TabulatedRowEditField
                       label={"Address Line 1"}

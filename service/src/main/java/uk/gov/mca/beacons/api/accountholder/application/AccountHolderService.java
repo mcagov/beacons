@@ -138,6 +138,7 @@ public class AccountHolderService {
     final ModelPatcher<AccountHolder> patcher = accountHolderPatcherFactory
       .getModelPatcher()
       .withMapping(AccountHolder::getFullName, AccountHolder::setFullName)
+      .withMapping(AccountHolder::getEmail, AccountHolder::setEmail)
       .withMapping(
         AccountHolder::getTelephoneNumber,
         AccountHolder::setTelephoneNumber
