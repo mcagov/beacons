@@ -93,7 +93,7 @@ public class AccountHolderController {
   public ResponseEntity updateAccountHolderDetails(
     @PathVariable UUID id,
     @RequestBody WrapperDTO<UpdateAccountHolderDTO> wrapperDTO
-  ) throws Exception {
+  ) throws UpdateAzAdUserError, GetAzAdUserError {
     final AccountHolder accountHolderUpdate = accountHolderMapper.fromDTO(
       wrapperDTO.getData()
     );
@@ -109,6 +109,8 @@ public class AccountHolderController {
         .body(accountHolderMapper.toWrapperDTO(accountHolderUpdate));
     } catch (GetAzAdUserError getAzAdUserError) {
       return ResponseEntity.notFound().build();
+    } catch (Exception e) {
+      throw new ResourceNotFoundException();
     }
   }
 }

@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.accountholder.application;
 
+import com.azure.core.annotation.Get;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class AccountHolderService {
   public Optional<AccountHolder> updateAccountHolder(
     AccountHolderId id,
     AccountHolder accountHolderUpdate
-  ) throws Exception {
+  ) throws UpdateAzAdUserError, GetAzAdUserError, Exception {
     AccountHolder accountHolder = accountHolderRepository
       .findById(id)
       .orElse(null);
