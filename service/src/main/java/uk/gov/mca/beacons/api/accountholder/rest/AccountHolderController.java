@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.mca.beacons.api.accountholder.application.AccountHolderService;
 import uk.gov.mca.beacons.api.accountholder.application.GetAzAdUserError;
 import uk.gov.mca.beacons.api.accountholder.application.UpdateAzAdUserError;
@@ -101,16 +102,19 @@ public class AccountHolderController {
     try {
       final AccountHolder accountHolder = accountHolderService
         .updateAccountHolder(new AccountHolderId(id), accountHolderUpdate)
-        .orElseThrow(ResourceNotFoundException::new);
+        .orElseThrow(Exception::new);
       return ResponseEntity.ok(accountHolderMapper.toWrapperDTO(accountHolder));
-    } catch (UpdateAzAdUserError updateAzAdUserError) {
+    } catch (UpdateAzAdUserError e) {
+      log.error("UpdateAzAdUserError trying to update Azure user", e);
       return ResponseEntity
         .internalServerError()
         .body(accountHolderMapper.toWrapperDTO(accountHolderUpdate));
-    } catch (GetAzAdUserError getAzAdUserError) {
-      return ResponseEntity.notFound().build();
+    } catch (GetAzAdUserError e) {
+      log.error("GetAzAdUserError trying to update Azure user", e);
+      return ResponseEntity.badRequest().build();
     } catch (Exception e) {
-      throw new ResourceNotFoundException();
+      log.error("Error trying to update Azure user", e);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
   }
 }
