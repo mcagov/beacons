@@ -79,15 +79,24 @@ public class AccountHolderService {
       );
     }
 
-    Optional<User> accountHolderInAzure = getAccountHolderFromAzureAd(
-      accountHolder.getAuthId()
-    );
-
-    if (accountHolderInAzure.isEmpty()) {
-      throw new Exception(
+    try {
+      Optional<User> accountHolderInAzure = getAccountHolderFromAzureAd(
+        accountHolder.getAuthId()
+      );
+      if (accountHolderInAzure.isEmpty()) {
+        throw new GetAzAdUserError(
+          "No account holder with authId " +
+          accountHolder.getAuthId() +
+          " found in Azure",
+          null
+        );
+      }
+    } catch (GetAzAdUserError getAzAdUserError) {
+      throw new GetAzAdUserError(
         "No account holder with authId " +
         accountHolder.getAuthId() +
-        " found in Azure"
+        " found in Azure",
+        null
       );
     }
 
@@ -116,15 +125,18 @@ public class AccountHolderService {
     return savedAccountHolder;
   }
 
-  public Optional<User> getAccountHolderFromAzureAd(String authId) {
+  public Optional<User> getAccountHolderFromAzureAd(String authId)
+    throws GetAzAdUserError {
     AzureAdAccountHolder accountHolderInAzAd;
 
     try {
       accountHolderInAzAd =
         (AzureAdAccountHolder) microsoftGraphClient.getUser(authId);
-    } catch (Exception azureAdError) {
+    } catch (GetAzAdUserError azureAdError) {
       log.error("Couldn't find account holder authId " + authId + "in Azure");
       throw azureAdError;
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
 
     return Optional.of(accountHolderInAzAd);

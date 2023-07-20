@@ -102,7 +102,6 @@ public class AccountHolderController {
       final AccountHolder accountHolder = accountHolderService
         .updateAccountHolder(new AccountHolderId(id), accountHolderUpdate)
         .orElseThrow(ResourceNotFoundException::new);
-
       return ResponseEntity.ok(accountHolderMapper.toWrapperDTO(accountHolder));
     } catch (UpdateAzAdUserError updateAzAdUserError) {
       return ResponseEntity
