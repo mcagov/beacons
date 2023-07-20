@@ -4,6 +4,7 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
 import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.http.GraphServiceException;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
 import java.util.List;
@@ -86,16 +87,16 @@ public class MicrosoftGraphClient implements AuthClient {
     throws UpdateAzAdUserError {
     try {
       User azAdUser = new User();
-
+      azAdUser.id = accountHolder.getAuthId();
       azAdUser.displayName = accountHolder.getFullName();
       azAdUser.mail = accountHolder.getEmail();
 
       this.graphClient.users(accountHolder.getAuthId())
         .buildRequest()
         .patch(azAdUser);
-    } catch (UpdateAzAdUserError error) {
+    } catch (GraphServiceException error) {
       log.error(error.getMessage());
-      throw error;
+      throw new UpdateAzAdUserError("Error updating Azure AD user", error);
     }
   }
 
