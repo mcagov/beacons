@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Divider,
   Grid,
   Table,
   TableBody,
@@ -35,7 +34,7 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
     >
       {({ values, setValues, initialValues }) => (
         <Form>
-          <Grid container direction="row" justifyContent={"flex-start"}>
+          <Grid container direction="column">
             <Grid item xs={12} sm={6}>
               <TableContainer>
                 <Table size="small">
@@ -132,21 +131,24 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
                 </Table>
               </TableContainer>
             </Grid>
-            <Divider />
-            <Box mt={2} mr={2}>
-              <Button
-                name="save"
-                type="submit"
-                color="secondary"
-                variant="contained"
-                disableElevation
-              >
-                Save
-              </Button>
-            </Box>
-            <Box mt={2}>
-              <Button onClick={onCancel}>Cancel</Button>
-            </Box>
+            <Grid item xs={12} sm={6} alignSelf="flex-end">
+              <Box mt={2} display="flex" justifyContent="flex-end">
+                <Box mx={2}>
+                  <Button
+                    name="save"
+                    type="submit"
+                    color="secondary"
+                    variant="contained"
+                    disableElevation
+                  >
+                    Save
+                  </Button>
+                </Box>
+                <Box mx={2}>
+                  <Button onClick={onCancel}>Cancel</Button>
+                </Box>
+              </Box>
+            </Grid>
           </Grid>
         </Form>
       )}
