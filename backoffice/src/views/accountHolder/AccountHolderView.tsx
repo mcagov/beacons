@@ -20,7 +20,6 @@ import { customDateStringFormat } from "utils/dateTime";
 import { DataPanelStates } from "components/dataPanel/States";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { EditPanelButton } from "components/dataPanel/EditPanelButton";
-import { Placeholders } from "utils/writingStyle";
 import { ErrorState } from "components/dataPanel/PanelErrorState";
 import { LoadingState } from "components/dataPanel/PanelLoadingState";
 import { AccountHolderSummaryEdit } from "./AccountHolderSummaryEdit";
@@ -63,7 +62,9 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
-  useEffect((): void => {
+  useEffect(() => {
+    let isMounted = true;
+
     const fetchAccountHolder = async (id: string) => {
       try {
         setError(false);
@@ -73,34 +74,43 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
         const beacons = await accountHolderGateway.getBeaconsForAccountHolderId(
           id
         );
-        setAccountHolder(accountHolder);
-        setBeacons(beacons);
 
-        setLoading(false);
+        if (isMounted) {
+          setAccountHolder(accountHolder);
+          setBeacons(beacons);
+          setLoading(false);
+        }
       } catch (error) {
         logToServer.error(error);
-        setError(true);
-        setErrorMessage((error as Error).message);
+
+        if (isMounted) {
+          setError(true);
+          setErrorMessage((error as Error).message);
+          setLoading(false);
+        }
       }
     };
 
     fetchAccountHolder(accountHolderId);
-  }, [userState, accountHolderId, accountHolderGateway]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [accountHolderId, accountHolderGateway]);
 
   const handleSave = async (
     updatedAccountHolder: Partial<IAccountHolder>
   ): Promise<void> => {
     try {
-      console.log(updatedAccountHolder);
-
       await accountHolderGateway.updateAccountHolder(
         accountHolder.id,
         updatedAccountHolder
       );
       setUserState(DataPanelStates.Viewing);
-    } catch (error) {
+    } catch (error: any) {
       logToServer.error(error);
       setError(true);
+      setErrorMessage(error.message || "An unexpected error occurred");
     }
   };
 
@@ -216,22 +226,26 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     <div className={classes.root}>
       <PageContent>
         <Paper className={classes.paper}>
-          <h2>Account Holder: {accountHolder?.fullName}</h2>
-          {error && <ErrorState message={errorMessage} />}
-          {loading && <LoadingState />}
-          {error || loading || renderState(userState)}
+          <div>
+            <h2>Account Holder: {accountHolder?.fullName}</h2>
+            {error && <ErrorState message={errorMessage} />}
+            {loading && <LoadingState />}
+            {error || loading || renderState(userState)}
+          </div>
         </Paper>
 
         <Paper className={classes.paper}>
-          <h2>Beacons ({beacons.length})</h2>
-          <Box sx={{ height: 850 }}>
-            <DataGrid
-              rows={beacons}
-              columns={columns}
-              disableSelectionOnClick={true}
-              rowsPerPageOptions={[10, 20, 50, 100]}
-            />
-          </Box>
+          <div>
+            <h2>Beacons ({beacons.length})</h2>
+            <Box sx={{ height: 850 }}>
+              <DataGrid
+                rows={beacons}
+                columns={columns}
+                disableSelectionOnClick={true}
+                rowsPerPageOptions={[10, 20, 50, 100]}
+              />
+            </Box>
+          </div>
         </Paper>
       </PageContent>
     </div>

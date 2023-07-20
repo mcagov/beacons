@@ -46,22 +46,28 @@ export class AccountHolderGateway implements IAccountHolderGateway {
       },
     };
 
-    const response = await this._makePatchRequest(
-      `/account-holder/${accountHolderId}`,
-      data
-    );
+    try {
+      const response = await this._makePatchRequest(
+        `/account-holder/${accountHolderId}`,
+        data
+      );
 
-    // switch
-    if (response.status === 500) {
-      throw new Error(
-        `500 error: could not update account holder ${accountHolderId} in Azure`
-      );
-    } else if (response.status === 404) {
-      throw new Error(
-        `404 error: could not get account holder ${accountHolderId} in Azure`
-      );
-    } else {
       return response.data;
+    } catch (error: any) {
+      switch (error?.response?.status) {
+        case 500:
+          throw new Error("Could not update the Account Holder");
+        case 404:
+          throw new Error(
+            "Could not get the Account Holder's user from Azure B2C"
+          );
+        default:
+          throw new Error(
+            `An unexpected error occurred (Status Code: ${
+              error?.response?.status || "Unknown"
+            })`
+          );
+      }
     }
   }
 
