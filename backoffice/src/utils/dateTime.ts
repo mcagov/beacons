@@ -22,7 +22,11 @@ export const customDateStringFormat = (
   dateTimeString: string | Date | undefined,
   format: string
 ): string => {
-  const date = moment(dateTimeString, format);
+  var date = moment(dateTimeString, format);
+
+  if (!date.isValid()) {
+    date = moment(dateTimeString);
+  }
 
   if (!date.isValid()) {
     return typeof dateTimeString === "string" ? dateTimeString : "";
