@@ -184,7 +184,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     },
     {
       field: "registeredDate",
-      headerName: "Registered Date",
+      headerName: "Registered",
       width: 175,
       editable: false,
       type: "date",
