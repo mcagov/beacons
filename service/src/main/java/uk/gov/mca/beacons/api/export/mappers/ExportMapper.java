@@ -104,6 +104,7 @@ public class ExportMapper {
       .manufacturer(beacon.getManufacturer())
       .manufacturerSerialNumber(beacon.getManufacturerSerialNumber())
       .beaconModel(beacon.getModel())
+      .beaconType(beacon.getBeaconType())
       .beaconlastServiced(
         beacon.getLastServicedDate() != null
           ? beacon.getLastServicedDate().toString()
@@ -118,6 +119,7 @@ public class ExportMapper {
       .codingProtocol(beacon.getProtocol())
       .cstaNumber(beacon.getCsta())
       .chkCode(beacon.getChkCode())
+      .mti(beacon.getMti())
       .notes(
         nonSystemNotes
           .stream()
@@ -282,8 +284,11 @@ public class ExportMapper {
           ? details.getCospasSarsatNumber().toString()
           : ""
       )
+      .recoveryEmail(beacon.getRecoveryEmail())
       .manufacturerSerialNumber(details.getManufacturerSerialNumber())
+      .mti(details.getMti())
       .beaconModel(details.getModel())
+      .beaconType(details.getBeaconType())
       .beaconlastServiced(details.getLastServiceDate())
       .beaconCoding(details.getCoding())
       .batteryExpiryDate(details.getBatteryExpiryDate())
@@ -316,12 +321,15 @@ public class ExportMapper {
         details.getSerialNumber() != null ? details.getSerialNumber() : 0
       )
       .cospasSarsatNumber(
-        details.getCospasSarsatNumber() != null
+        beacon.getCospasSarsatNumber() != null
           ? details.getCospasSarsatNumber().toString()
           : ""
       )
+      .recoveryEmail(beacon.getRecoveryEmail())
       .manufacturerSerialNumber(details.getManufacturerSerialNumber())
+      .mti(details.getMti())
       .beaconModel(details.getModel())
+      .beaconType(details.getBeaconType())
       .beaconlastServiced(details.getLastServiceDate())
       .beaconCoding(details.getCoding())
       .batteryExpiryDate(details.getBatteryExpiryDate())

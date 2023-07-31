@@ -1,7 +1,7 @@
 package uk.gov.mca.beacons.api;
 
 import com.github.javafaker.Faker;
-import java.util.UUID;
+import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -34,6 +34,7 @@ public class DataSeeder implements CommandLineRunner {
   private final BeaconUseRepository beaconUseRepository;
   private final EmergencyContactRepository emergencyContactRepository;
   private final Faker faker = new Faker();
+  private final List<String> beaconTypes;
 
   @Autowired
   public DataSeeder(
@@ -48,6 +49,8 @@ public class DataSeeder implements CommandLineRunner {
     this.beaconOwnerRepository = beaconOwnerRepository;
     this.beaconUseRepository = beaconUseRepository;
     this.emergencyContactRepository = emergencyContactRepository;
+
+    beaconTypes = Arrays.asList("EPIRB", "ELT", "SSAS", "PLB");
   }
 
   @Override
@@ -105,6 +108,10 @@ public class DataSeeder implements CommandLineRunner {
     beacon.setAccountHolderId(accountHolderId);
     beacon.setManufacturerSerialNumber(faker.bothify("#?#?#?#?#?#???##"));
     beacon.setModel(faker.gameOfThrones().dragon());
+    beacon.setMti(faker.number().digits(5));
+    beacon.setBeaconType(
+      beaconTypes.get(faker.random().nextInt(beaconTypes.size()))
+    );
 
     beacon.registerCreatedEvent();
 
