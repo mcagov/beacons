@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent } from "react";
 import Box from "@mui/material/Box";
 import {
   DataGrid,
@@ -6,18 +6,12 @@ import {
   GridRowParams,
   GridValueFormatterParams,
 } from "@mui/x-data-grid";
-import { Button, IconButton, Link, Pagination, Theme } from "@mui/material";
+import { Button, Link } from "@mui/material";
 import { TablePaginationActions } from "../TablePaginationActions";
 import { customDateStringFormat } from "../../utils/dateTime";
 import { IAccountHolderSearchResult } from "entities/IAccountHolderSearchResult";
 import { Link as RouterLink } from "react-router-dom";
 import { LoadingState } from "components/dataPanel/PanelLoadingState";
-import {
-  KeyboardArrowLeft,
-  KeyboardArrowRight,
-  LastPage,
-  FirstPage,
-} from "@mui/icons-material";
 
 interface IAccountHolderTableProps {
   result: IAccountHolderSearchResult;
