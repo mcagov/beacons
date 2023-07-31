@@ -105,7 +105,7 @@ $7, $8)')
   fullname = Faker::Name.name
 
   created_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24').iso8601
-  last_modified_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24').iso8601
+  last_modified_date = Faker::Time.between_dates(from: '2023-05-01', to: '2023-07-31').iso8601
   beacon_status = "NEW"
   person_type_emergency = "EMERGENCY_CONTACT"
   person_type_owner = "OWNER"
