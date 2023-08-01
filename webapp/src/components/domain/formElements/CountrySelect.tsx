@@ -1,5 +1,6 @@
 import React from "react";
 import { Select, SelectOption } from "../../Select";
+import countriesJson from "../../../lib/countries/countries.json";
 
 interface CountrySelectProps {
   id: string;
@@ -19,8 +20,8 @@ export const CountrySelect = ({
     <option disabled selected value={undefined}>
       Select your country
     </option>
-    {countries.map((country) => (
-      <SelectOption key={country} value={country}>
+    {countriesJson.map((country: string, index) => (
+      <SelectOption key={index} value={country}>
         {country}
       </SelectOption>
     ))}
