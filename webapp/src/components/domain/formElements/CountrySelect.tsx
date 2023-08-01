@@ -17,7 +17,7 @@ export const CountrySelect = ({
     name={name}
     defaultValue={defaultValue || "Select your country"}
   >
-    <option disabled selected value={undefined}>
+    <option disabled value={undefined}>
       Select your country
     </option>
     {countriesJson.map((country: string, index) => (
