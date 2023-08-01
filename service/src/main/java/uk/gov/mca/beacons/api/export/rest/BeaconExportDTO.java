@@ -59,6 +59,9 @@ public class BeaconExportDTO {
   private String beaconModel;
 
   @Valid
+  private String beaconType;
+
+  @Valid
   private String beaconlastServiced;
 
   @Valid
@@ -76,6 +79,10 @@ public class BeaconExportDTO {
   //This is only valid for legacy.
   @Valid
   private String cospasSarsatNumber;
+
+  //This is only valid for legacy.
+  @Valid
+  private String recoveryEmail;
 
   @Valid
   private String chkCode;
