@@ -40,9 +40,9 @@ export class AccountHolderGateway implements IAccountHolderGateway {
 
   public async deleteAccountHolder(accountHolderId: string): Promise<void> {
     try {
-      logToServer.info("Deleting account holder " + accountHolderId);
-      // await this._makeDeleteRequest(`/account-holder/${accountHolderId}`);
+      await this._makeDeleteRequest(`/account-holder/${accountHolderId}`);
     } catch (e) {
+      logToServer.error("Error deleting account holder " + e);
       throw e;
     }
   }

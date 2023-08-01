@@ -102,4 +102,23 @@ public class AccountHolderController {
 
     return accountHolderMapper.toWrapperDTO(accountHolder);
   }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('APPROLE_UPDATE_RECORDS')")
+  public ResponseEntity<String> deleteAccountHolder(@PathVariable UUID id) {
+    final AccountHolderId accountHolderId = new AccountHolderId(id);
+    try {
+      accountHolderService.deleteAccountHolder(accountHolderId);
+      return ResponseEntity.ok("Account holder successfully deleted.");
+    } catch (IllegalStateException ex) {
+      return ResponseEntity
+        .status(HttpStatus.CONFLICT)
+        .body("Error: " + ex.getMessage());
+    } catch (Exception ex) {
+      return ResponseEntity
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body("An error occurred while deleting the account holder");
+    }
+  }
 }

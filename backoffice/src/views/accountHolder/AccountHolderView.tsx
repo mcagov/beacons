@@ -77,6 +77,8 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   );
 
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
@@ -121,7 +123,9 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
 
   const handleDeleteAccountHolder = async () => {
     if (beacons.length > 0) {
-      alert("Cannot delete an account holder with associated beacons");
+      setErrorMessage(
+        "Cannot delete an account holder with associated beacons"
+      );
       return;
     }
 
@@ -136,6 +140,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     } catch (error) {
       logToServer.error(error);
       setError(true);
+      setErrorMessage("An error occurred while deleting the account holder.");
     } finally {
       setOpenDeleteDialog(false);
     }
@@ -247,6 +252,12 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       <PageContent>
         <Paper className={classes.paper}>
           <>
+            {errorMessage && (
+              <Box mt={2} color="red">
+                {errorMessage}
+              </Box>
+            )}
+
             <div className={classes.flexContainer}>
               <h2 className={classes.h2}>
                 Account Holder: {accountHolder?.fullName}
@@ -304,14 +315,14 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
             <Button
               onClick={handleCancelDelete}
               color="primary"
-              variant="contained"
+              variant="outlined"
             >
               Cancel
             </Button>
             <Button
               onClick={handleConfirmDelete}
-              color="primary"
-              variant="contained"
+              color="error"
+              variant="outlined"
             >
               Delete
             </Button>
