@@ -124,7 +124,7 @@ $7, $8)')
   postcode = Faker::Address.postcode
   migrated_status = "F"
 
-  beacon_type = "EPIRB"
+  beacon_type = ["EPIRB", "ELT", "SSAS", "PLB"].sample
 
   create_user_id = 1
   update_user_id = 1

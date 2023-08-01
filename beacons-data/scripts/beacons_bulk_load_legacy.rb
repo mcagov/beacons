@@ -8,7 +8,7 @@ $default_value = ""
 Faker::Config.locale = 'tr'
 
 def populateBeacons
-	
+
 	owner_name = ARGV[0] || Faker::Name.name
 	owner_email = ARGV[1] || Faker::Internet.email
 
@@ -238,7 +238,7 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 		"coding": coding,
 		"protocol": protocol,
 		"isPending": "N",
-		"beaconType": "EPIRB",
+		"beaconType": ["EPIRB", "ELT", "SSAS", "PLB"].sample,
 		"isArchived": "N",
 		"pkBeaconId": 6062,
 		"statusCode": "ACTIVE",
