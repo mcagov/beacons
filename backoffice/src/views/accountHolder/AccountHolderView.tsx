@@ -77,7 +77,9 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   );
 
   const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
 
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -123,6 +125,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
 
   const handleDeleteAccountHolder = async () => {
     if (beacons.length > 0) {
+      setError(true);
       setErrorMessage(
         "Cannot delete an account holder with associated beacons"
       );
@@ -170,8 +173,6 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   };
 
   const columns: GridColDef[] = [
-    // { field: "id", headerName: "ID", width: 300 },
-
     {
       field: "hexId",
       headerName: "Hex ID",
@@ -252,12 +253,6 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       <PageContent>
         <Paper className={classes.paper}>
           <>
-            {errorMessage && (
-              <Box mt={2} color="red">
-                {errorMessage}
-              </Box>
-            )}
-
             <div className={classes.flexContainer}>
               <h2 className={classes.h2}>
                 Account Holder: {accountHolder?.fullName}
@@ -284,7 +279,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
               )}
             </div>
 
-            {error && <ErrorState message={Placeholders.UnspecifiedError} />}
+            {error && <ErrorState message={errorMessage} />}
             {loading && <LoadingState />}
             {error || loading || renderState(userState)}
           </>
@@ -292,7 +287,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
 
         <Paper className={classes.paper}>
           <h2>Beacons ({beacons.length})</h2>
-          <Box sx={{ height: 850 }}>
+          <Box sx={{ height: beacons.length > 5 ? 1000 : 500 }}>
             <DataGrid
               rows={beacons}
               columns={columns}
