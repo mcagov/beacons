@@ -1,14 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import {
-  GridColDef,
-  GridRowParams,
-  GridValueFormatterParams,
-} from "@mui/x-data-grid";
-import { Button, IconButton, Link } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { customDateStringFormat } from "../utils/dateTime";
-import { Link as RouterLink } from "react-router-dom";
 import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
@@ -95,81 +88,3 @@ export function TablePaginationActions(props: TablePaginationActionsProps) {
     </Box>
   );
 }
-
-const columns: GridColDef[] = [
-  // { field: "id", headerName: "ID", width: 300 },
-
-  {
-    field: "fullName",
-    headerName: "Account Holder",
-    width: 200,
-    editable: false,
-    renderCell: ({ row }: Partial<GridRowParams>) => (
-      <Link
-        component={RouterLink}
-        to={`/account-holder/${row.id}`}
-        underline="hover"
-      >
-        {row.fullName}
-      </Link>
-    ),
-  },
-  {
-    field: "email",
-    headerName: "Email Address",
-    width: 400,
-    editable: false,
-    renderCell: ({ row }: Partial<GridRowParams>) => (
-      <Link
-        component={RouterLink}
-        to={`/account-holder/${row.id}`}
-        underline="hover"
-      >
-        {row.email}
-      </Link>
-    ),
-  },
-  {
-    field: "createdDate",
-    headerName: "Created",
-    width: 175,
-    editable: false,
-    type: "date",
-    valueFormatter: (params: GridValueFormatterParams) => {
-      return customDateStringFormat(params.value, "DD/MM/yyyy");
-    },
-  },
-  {
-    field: "lastModifiedDate",
-    headerName: "Last Modified",
-    width: 175,
-    editable: false,
-    type: "date",
-    valueFormatter: (params: GridValueFormatterParams) => {
-      return customDateStringFormat(params.value, "DD/MM/yyyy");
-    },
-  },
-  {
-    field: "beaconCount",
-    headerName: "Beacon Count",
-    width: 150,
-    align: "center",
-    editable: false,
-    type: "string",
-  },
-  {
-    field: "actions",
-    headerName: "Actions",
-    width: 200,
-    sortable: false,
-    renderCell: ({ row }: Partial<GridRowParams>) => (
-      <Button
-        href={`/backoffice#/account-holder/${row.id}`}
-        variant="outlined"
-        sx={{ marginX: "auto" }}
-      >
-        View
-      </Button>
-    ),
-  },
-];
