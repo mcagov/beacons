@@ -58,7 +58,9 @@ public class BackupSpreadsheetRow {
     "notes",
     "uses",
     "owners",
-    "emergencyContacts"
+    "emergencyContacts",
+    //This is only valid for legacy.
+    "recoveryEmail"
   );
 
   public static final List<String> COLUMN_HEADINGS = List.of(
@@ -89,7 +91,9 @@ public class BackupSpreadsheetRow {
     "Notes",
     "Uses",
     "Owners",
-    "Emergency contacts"
+    "Emergency contacts",
+    //This is only valid for legacy.
+    "Recovery email"
   );
 
   @NotNull
@@ -125,6 +129,8 @@ public class BackupSpreadsheetRow {
   private String uses;
   private String owners;
   private String emergencyContacts;
+  //legacy Only
+  private String recoveryEmail;
 
   public BackupSpreadsheetRow(
     BeaconBackupItem legacyBeacon,
@@ -175,7 +181,7 @@ public class BackupSpreadsheetRow {
     this.lastModifiedDate =
       mappedLegacyBeacon.getLastModifiedDate().format(dateFormatter);
     this.cospasSarsatNumber = mappedLegacyBeacon.getCospasSarsatNumber();
-    this.beaconType = mappedLegacyBeacon.getType();
+    this.beaconType = mappedLegacyBeacon.getBeaconType();
     this.departmentReference = mappedLegacyBeacon.getDepartmentReference();
     this.referenceNumber = mappedLegacyBeacon.getReferenceNumber();
     this.recordCreatedDate =
@@ -184,8 +190,10 @@ public class BackupSpreadsheetRow {
         dateFormatter
       );
     this.manufacturer = mappedLegacyBeacon.getManufacturer();
-    this.serialNumber =
-      MessageFormat.format("{0}", mappedLegacyBeacon.getSerialNumber());
+
+    int serialNumber = mappedLegacyBeacon.getSerialNumber();
+    this.serialNumber = (serialNumber > 0) ? String.valueOf(serialNumber) : "";
+
     this.manufacturerSerialNumber =
       mappedLegacyBeacon.getManufacturerSerialNumber();
 
@@ -210,6 +218,7 @@ public class BackupSpreadsheetRow {
     this.codingProtocol = mappedLegacyBeacon.getCodingProtocol();
 
     this.cstaNumber = mappedLegacyBeacon.getCstaNumber();
+    this.recoveryEmail = mappedLegacyBeacon.getRecoveryEmail();
   }
 
   protected void populateModernBeaconDetails(
