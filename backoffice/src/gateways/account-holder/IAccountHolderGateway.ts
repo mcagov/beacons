@@ -13,4 +13,5 @@ export interface IAccountHolderGateway {
     accountHolderId: string,
     updatedFields: Partial<IAccountHolder>
   ) => Promise<IAccountHolder>;
+  deleteAccountHolder: (accountHolderId: string) => Promise<void>;
 }

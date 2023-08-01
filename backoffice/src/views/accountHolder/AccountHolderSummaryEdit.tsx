@@ -1,23 +1,19 @@
 import {
   Box,
   Button,
-  Divider,
   Grid,
-  Input,
   Table,
   TableBody,
   TableContainer,
   Typography,
 } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import React, { FunctionComponent } from "react";
-import { PanelViewingState } from "../../components/dataPanel/PanelViewingState";
+import { FunctionComponent } from "react";
 import { TabulatedRow } from "../../components/dataPanel/TabulatedRow";
 import { IAccountHolder } from "../../entities/IAccountHolder";
 import countriesJson from "../../lib/countries/countries.json";
 
 import { Placeholders, WritingStyle } from "../../utils/writingStyle";
-import { FieldValue } from "../../components/dataPanel/FieldValue";
 import { TabulatedRowEditField } from "views/TabulatedRowEditField";
 
 export const AccountHolderSummaryEdit: FunctionComponent<{
@@ -38,7 +34,7 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
     >
       {({ values, setValues, initialValues }) => (
         <Form>
-          <Grid container direction="row" justifyContent={"flex-start"}>
+          <Grid container direction="column">
             <Grid item xs={12} sm={6}>
               <TableContainer>
                 <Table size="small">
@@ -58,6 +54,11 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
                       fieldName={"alternativeTelephoneNumber"}
                       type={"string"}
                     />
+                    {/* <TabulatedRowEditField
+                      label={"Email"}
+                      fieldName={"email"}
+                      type={"email"}
+                    /> */}
 
                     <TabulatedRowEditField
                       label={"Address Line 1"}
@@ -128,21 +129,24 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
                 </Table>
               </TableContainer>
             </Grid>
-            <Divider />
-            <Box mt={2} mr={2}>
-              <Button
-                name="save"
-                type="submit"
-                color="secondary"
-                variant="contained"
-                disableElevation
-              >
-                Save
-              </Button>
-            </Box>
-            <Box mt={2}>
-              <Button onClick={onCancel}>Cancel</Button>
-            </Box>
+            <Grid item xs={12} sm={6} alignSelf="flex-end">
+              <Box mt={2} display="flex" justifyContent="flex-end">
+                <Box mx={2}>
+                  <Button
+                    name="save"
+                    type="submit"
+                    color="secondary"
+                    variant="contained"
+                    disableElevation
+                  >
+                    Save
+                  </Button>
+                </Box>
+                <Box mx={2}>
+                  <Button onClick={onCancel}>Cancel</Button>
+                </Box>
+              </Box>
+            </Grid>
           </Grid>
         </Form>
       )}

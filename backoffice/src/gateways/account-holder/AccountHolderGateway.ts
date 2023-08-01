@@ -38,6 +38,15 @@ export class AccountHolderGateway implements IAccountHolderGateway {
     }
   }
 
+  public async deleteAccountHolder(accountHolderId: string): Promise<void> {
+    try {
+      logToServer.info("Deleting account holder " + accountHolderId);
+      // await this._makeDeleteRequest(`/account-holder/${accountHolderId}`);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   public async updateAccountHolder(
     accountHolderId: string,
     updatedFields: Partial<IAccountHolder>
@@ -91,6 +100,15 @@ export class AccountHolderGateway implements IAccountHolderGateway {
     const accessToken = await this._authGateway.getAccessToken();
 
     return await axios.get(`${applicationConfig.apiUrl}${path}`, {
+      timeout: applicationConfig.apiTimeoutMs,
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  }
+
+  private async _makeDeleteRequest(path: string): Promise<AxiosResponse> {
+    const accessToken = await this._authGateway.getAccessToken();
+
+    return await axios.delete(`${applicationConfig.apiUrl}${path}`, {
       timeout: applicationConfig.apiTimeoutMs,
       headers: { Authorization: `Bearer ${accessToken}` },
     });
