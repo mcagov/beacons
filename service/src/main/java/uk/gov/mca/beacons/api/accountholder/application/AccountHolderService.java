@@ -94,4 +94,17 @@ public class AccountHolderService {
       )
       .collect(Collectors.toList());
   }
+
+  public void deleteAccountHolder(AccountHolderId accountHolderId) {
+    List<BeaconDTO> beacons = getBeaconsByAccountHolderId(accountHolderId);
+
+    if (!beacons.isEmpty()) {
+      throw new IllegalStateException(
+        "Cannot delete an account holder with associated beacons"
+      );
+    }
+
+    accountHolderRepository.deleteById(accountHolderId);
+    //Future... this should probably also clean up removing the user from azure.
+  }
 }
