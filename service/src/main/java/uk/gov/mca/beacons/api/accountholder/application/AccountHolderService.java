@@ -2,11 +2,13 @@ package uk.gov.mca.beacons.api.accountholder.application;
 
 import com.azure.core.annotation.Get;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
@@ -177,5 +179,32 @@ public class AccountHolderService {
         beaconMapper.toDTO(b, beaconUseService.getMainUseByBeaconId(b.getId()))
       )
       .collect(Collectors.toList());
+  }
+
+  public void deleteAccountHolder(AccountHolderId accountHolderId) {
+    AccountHolder accountHolder = getAccountHolder(accountHolderId)
+      .orElseThrow(NoSuchElementException::new);
+
+    List<BeaconDTO> beacons = getBeaconsByAccountHolderId(accountHolderId);
+
+    if (!beacons.isEmpty()) {
+      throw new IllegalStateException(
+        "Cannot delete an account holder with associated beacons"
+      );
+    }
+
+    try {
+      microsoftGraphClient.deleteUser(accountHolder.getAuthId());
+    } catch (Exception e) {
+      log.error(
+        String.format(
+          "Unable to delete Azure user with AuthID %s",
+          accountHolder.getAuthId()
+        ),
+        e
+      );
+    }
+
+    accountHolderRepository.deleteById(accountHolderId);
   }
 }

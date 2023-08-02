@@ -7,6 +7,7 @@ import {
   GridValueFormatterParams,
 } from "@mui/x-data-grid";
 import { Button, Link } from "@mui/material";
+import { TablePaginationActions } from "../TablePaginationActions";
 import { customDateStringFormat } from "../../utils/dateTime";
 import { IAccountHolderSearchResult } from "entities/IAccountHolderSearchResult";
 import { Link as RouterLink } from "react-router-dom";
@@ -96,6 +97,8 @@ const columns: GridColDef[] = [
 
 export const AccountHolderTable: FunctionComponent<IAccountHolderTableProps> =
   React.memo(function ({ result }): JSX.Element {
+    const [pageSize, setPageSize] = React.useState<number>(20);
+
     if (!result?._embedded) {
       return <LoadingState />;
     }
@@ -107,8 +110,16 @@ export const AccountHolderTable: FunctionComponent<IAccountHolderTableProps> =
         <DataGrid
           rows={rows}
           columns={columns}
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           disableSelectionOnClick={true}
           rowsPerPageOptions={[10, 20, 50, 100]}
+          pagination
+          componentsProps={{
+            pagination: {
+              ActionsComponent: TablePaginationActions,
+            },
+          }}
         />
       </Box>
     );

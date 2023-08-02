@@ -8,7 +8,7 @@ $default_value = ""
 Faker::Config.locale = 'tr'
 
 def populateBeacons
-	
+
 	owner_name = ARGV[0] || Faker::Name.name
 	owner_email = ARGV[1] || Faker::Internet.email
 
@@ -29,17 +29,17 @@ def populateBeacons
 	useLookup["RIG/PLATFORM"] = ["RIG_USE"]
 	useLookup["MOD"] = ["MOD_USE"]
 
-	10000.times do |count|
+	1000.times do |count|
 		# generate random data
 		uuid = SecureRandom.uuid
 		created_date = Faker::Time.between_dates(from: '2010-09-01', to: '2020-09-01').iso8601
-		last_modified_date = Faker::Time.between_dates(from: '2020-09-01', to: '2021-09-01').iso8601
+		last_modified_date = Faker::Time.between_dates(from: '2023-05-01', to: '2023-07-31').iso8601
 		beacon_status = "MIGRATED"
 
 		person_uuid = SecureRandom.uuid
 		account_holder_uuid = SecureRandom.uuid
 		beacon_uuid = SecureRandom.uuid
-		hex_id = Faker::Base.regexify("1D[A-F1-9]{13}")
+		hex_id = Faker::Base.regexify("1D0[A-F1-9]{12}")
 		person_type_emergency = "EMERGENCY_CONTACT"
 		person_type_owner = "OWNER"
 		auth_id = SecureRandom.uuid
@@ -238,7 +238,7 @@ def buildBeacon(hex_id,created_date,last_modified_date)
 		"coding": coding,
 		"protocol": protocol,
 		"isPending": "N",
-		"beaconType": "EPIRB",
+		"beaconType": ["EPIRB", "ELT", "SSAS", "PLB"].sample,
 		"isArchived": "N",
 		"pkBeaconId": 6062,
 		"statusCode": "ACTIVE",

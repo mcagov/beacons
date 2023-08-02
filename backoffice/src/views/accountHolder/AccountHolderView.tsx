@@ -1,4 +1,14 @@
-import { Box, Button, Chip, Link, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Link,
+  Paper,
+} from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
@@ -15,7 +25,7 @@ import {
   GridRowParams,
   GridValueFormatterParams,
 } from "@mui/x-data-grid";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 import { customDateStringFormat } from "utils/dateTime";
 import { DataPanelStates } from "components/dataPanel/States";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
@@ -23,6 +33,7 @@ import { EditPanelButton } from "components/dataPanel/EditPanelButton";
 import { ErrorState } from "components/dataPanel/PanelErrorState";
 import { LoadingState } from "components/dataPanel/PanelLoadingState";
 import { AccountHolderSummaryEdit } from "./AccountHolderSummaryEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface IAccountHolderViewProps {
   accountHolderGateway: IAccountHolderGateway;
@@ -38,9 +49,14 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2),
       marginTop: theme.spacing(2),
     },
-    button: {
-      marginLeft: theme.spacing(2),
+    flexContainer: {
+      display: "flex",
+      alignItems: "end",
     },
+    h2: {
+      flexGrow: 1,
+    },
+    buttons: {},
   })
 );
 
@@ -49,6 +65,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   accountHolderId,
 }): JSX.Element => {
   const classes = useStyles();
+  const history = useHistory();
 
   const [accountHolder, setAccountHolder] = useState<IAccountHolder>(
     {} as IAccountHolder
@@ -61,6 +78,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -114,22 +132,40 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     }
   };
 
+  const handleDeleteAccountHolder = async () => {
+    if (beacons.length > 0) {
+      setError(true);
+      setErrorMessage(
+        "Cannot delete an account holder with associated beacons"
+      );
+      return;
+    }
+
+    setOpenDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await accountHolderGateway.deleteAccountHolder(accountHolder.id);
+      setOpenDeleteDialog(false);
+      history.push("/account-holders");
+    } catch (error) {
+      logToServer.error(error);
+      setError(true);
+      setErrorMessage("An error occurred while deleting the account holder.");
+    } finally {
+      setOpenDeleteDialog(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setOpenDeleteDialog(false);
+  };
+
   const renderState = (state: DataPanelStates) => {
     switch (state) {
       case DataPanelStates.Viewing:
-        return (
-          <>
-            <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
-              <EditPanelButton
-                onClick={() => setUserState(DataPanelStates.Editing)}
-              >
-                Edit Account Holder
-              </EditPanelButton>
-            </OnlyVisibleToUsersWith>
-
-            <AccountHolderSummaryView accountHolder={accountHolder} />
-          </>
-        );
+        return <AccountHolderSummaryView accountHolder={accountHolder} />;
       case DataPanelStates.Editing:
         return (
           <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
@@ -186,8 +222,8 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       type: "string",
     },
     {
-      field: "createdDate",
-      headerName: "Created",
+      field: "registeredDate",
+      headerName: "Registered",
       width: 175,
       editable: false,
       type: "date",
@@ -246,7 +282,77 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
               />
             </Box>
           </div>
+          <>
+            <div className={classes.flexContainer}>
+              <h2 className={classes.h2}>
+                Account Holder: {accountHolder?.fullName}
+              </h2>
+              {userState === DataPanelStates.Viewing && (
+                <OnlyVisibleToUsersWith role={"UPDATE_RECORDS"}>
+                  <EditPanelButton
+                    onClick={() => setUserState(DataPanelStates.Editing)}
+                  >
+                    Edit Account Holder
+                  </EditPanelButton>
+                  {beacons.length === 0 && (
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      endIcon={<DeleteIcon />}
+                      onClick={handleDeleteAccountHolder}
+                      className={classes.buttons}
+                    >
+                      Delete Account Holder
+                    </Button>
+                  )}
+                </OnlyVisibleToUsersWith>
+              )}
+            </div>
+
+            {error && <ErrorState message={errorMessage} />}
+            {loading && <LoadingState />}
+            {error || loading || renderState(userState)}
+          </>
         </Paper>
+
+        <Paper className={classes.paper}>
+          <h2>Beacons ({beacons.length})</h2>
+          <Box sx={{ height: beacons.length > 5 ? 1000 : 500 }}>
+            <DataGrid
+              rows={beacons}
+              columns={columns}
+              disableSelectionOnClick={true}
+              rowsPerPageOptions={[10, 20, 50, 100]}
+            />
+          </Box>
+        </Paper>
+        <Dialog
+          open={openDeleteDialog}
+          onClose={handleCancelDelete}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogContent>
+            <Box>Are you sure you want to delete this account holder?</Box>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleCancelDelete}
+              color="primary"
+              variant="outlined"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleConfirmDelete}
+              color="error"
+              variant="outlined"
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </PageContent>
     </div>
   );

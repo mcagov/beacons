@@ -116,4 +116,10 @@ public class BeaconBackupItem {
 
   @Setter
   private String useActivities;
+
+  @Setter
+  private String recoveryEmail;
+
+  @Setter
+  private String cospasSarsatNumber;
 }
