@@ -3,12 +3,12 @@ package uk.gov.mca.beacons.api.accountholder.application;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
-import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.http.GraphServiceException;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
 import java.util.List;
 import java.util.UUID;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,9 +23,15 @@ public class MicrosoftGraphClient implements AuthClient {
     "https://graph.microsoft.com/.default"
   );
   private GraphServiceClient graphClient;
+  private MicrosoftGraphConfiguration config;
 
   @Autowired
   public MicrosoftGraphClient(MicrosoftGraphConfiguration config) {
+    this.config = config;
+  }
+
+  @PostConstruct
+  public void initialize() {
     try {
       ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
         .clientId(config.getClientId())
@@ -42,7 +48,6 @@ public class MicrosoftGraphClient implements AuthClient {
           .authenticationProvider(tokenCredAuthProvider)
           .buildClient();
     } catch (Exception ex) {
-      log.info(config.getClientId());
       log.error("Unable to create graph client", ex);
       this.graphClient = null;
     }

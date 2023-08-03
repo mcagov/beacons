@@ -1,14 +1,18 @@
 package uk.gov.mca.beacons.api.configuration;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "microsoft-graph")
 public class MicrosoftGraphConfiguration {
 
+  @Value("${microsoft-graph.client-id}")
   private String clientId;
+
+  @Value("${microsoft-graph.client-secret}")
   private String clientSecret;
+
+  @Value("${microsoft-graph.b2c-tenant-id}")
   private String b2cTenantId;
 
   public String getClientId() {
@@ -22,18 +26,4 @@ public class MicrosoftGraphConfiguration {
   public String getB2cTenantId() {
     return b2cTenantId;
   }
-
-  public void setClientId(String clientId) {
-    this.clientId = clientId;
-  }
-
-  public void setClientSecret(String clientSecret) {
-    this.clientSecret = clientSecret;
-  }
-
-  public void setB2cTenantId(String b2cTenantId) {
-    this.b2cTenantId = b2cTenantId;
-  }
-
-  public MicrosoftGraphConfiguration() {}
 }
