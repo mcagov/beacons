@@ -28,9 +28,9 @@ spring:
     azure:
       active-directory:
         enabled: true
+        app-id-uri: ${AZURE_AD_API_ID_URI:api://5cdcbb41-958a-43b6-baa1-bbafd80b4f70}
         credential:
           client-id: ${AZURE_AD_API_CLIENT_ID:5cdcbb41-958a-43b6-baa1-bbafd80b4f70}
-          app-id-uri: ${AZURE_AD_API_ID_URI:api://5cdcbb41-958a-43b6-baa1-bbafd80b4f70}
 
 server:
   compression:
