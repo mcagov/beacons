@@ -22,7 +22,7 @@
   "homepage": "https://github.com/mcagov/beacons#readme",
   "devDependencies": {
     "adr-log": "^2.2.0",
-    "cypress": "^9.5.3",
+    "cypress": "^12.7.0",
     "dotenv": "^16.0.0",
     "husky": "^8.0.3",
     "prettier": "2.6.2",
