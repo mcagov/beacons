@@ -1,5 +1,4 @@
-name: Publish Webapp image
-
+name: Test Webapp
 on:
   workflow_call:
     secrets:
@@ -32,7 +31,7 @@ jobs:
       - name: Code linting
         run: npm run lint
       - name: Docker linting
-        uses: brpaz/hadolint-action@v1.5.0
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: webapp/Dockerfile
 

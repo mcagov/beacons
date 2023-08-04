@@ -1,4 +1,4 @@
-name: Publish Backoffice image
+name: Test Backoffice
 
 on:
   workflow_call:
@@ -22,7 +22,7 @@ jobs:
       - name: Npm linter
         run: npm run lint
       - name: Docker lint
-        uses: brpaz/hadolint-action@v1.5.0
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: backoffice/Dockerfile
 
