@@ -24,7 +24,7 @@
     "adr-log": "^2.2.0",
     "cypress": "^12.7.0",
     "dotenv": "^16.0.0",
-    "husky": "^8.0.3",
+    "husky": "^7.0.4",
     "prettier": "2.6.2",
     "prettier-plugin-java": "^1.6.1",
     "prettier-plugin-organize-imports": "^3.2.2",
