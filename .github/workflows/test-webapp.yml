@@ -1,5 +1,4 @@
-name: Publish Webapp image
-
+name: Test Webapp
 on:
   workflow_call:
     secrets:
@@ -22,7 +21,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v3.1.1
+        uses: actions/setup-node@v3
         with:
           node-version: "16.17.0"
       - name: Install npm dependencies
@@ -32,7 +31,7 @@ jobs:
       - name: Code linting
         run: npm run lint
       - name: Docker linting
-        uses: brpaz/hadolint-action@v1.5.0
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: webapp/Dockerfile
 
@@ -41,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3.1.1
+      - uses: actions/setup-node@v3
         with:
           node-version: "16.17.0"
       - name: Install npm dependencies
@@ -66,7 +65,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v3.1.1
+        uses: actions/setup-node@v3
         with:
           node-version: "16.17.0"
       - name: Install npm dependencies
@@ -76,7 +75,7 @@ jobs:
       - name: Copy env vars
         run: cp .env.example .env.local
       - name: Run Cypress UI tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           working-directory: webapp
           spec: cypress/integration/**/*.spec.ts

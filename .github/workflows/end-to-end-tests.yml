@@ -65,7 +65,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3.1.1
+      - uses: actions/setup-node@v3
         with:
           node-version: "16.17.0"
       - name: Install npm dependencies
@@ -73,7 +73,7 @@ jobs:
         env:
           CYPRESS_INSTALL_BINARY: 0
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.aws_access_key_id }}
           aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
@@ -94,7 +94,7 @@ jobs:
           MICROSOFT_GRAPH_B2C_TENANT_ID=${{ secrets.microsoft_graph_b2c_tenant_id }} \
           docker compose --verbose -f docker-compose.e2e.yml -f docker-compose.ci.yml up --detach
       - name: Run Cypress end to end tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         env:
           CYPRESS_SESSION_TOKEN: ${{ secrets.test_webapp_azure_b2c_session_token }}
           AAD_TENANT_ID: 513fb495-9a90-425b-a49a-bc6ebe2a429e
