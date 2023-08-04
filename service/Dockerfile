@@ -5,7 +5,7 @@ COPY . ./
 RUN ./gradlew clean assemble
 
 # Run the service
-FROM adoptopenjdk:11-jre-hotspot AS beacons-service
+FROM adoptopenjdk:13-jre-hotspot AS beacons-service
 WORKDIR /opt/app
 COPY --from=build /opt/app/build/libs/*.jar app.jar
 
