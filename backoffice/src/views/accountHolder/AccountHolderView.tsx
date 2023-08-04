@@ -30,7 +30,6 @@ import { customDateStringFormat } from "utils/dateTime";
 import { DataPanelStates } from "components/dataPanel/States";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { EditPanelButton } from "components/dataPanel/EditPanelButton";
-import { Placeholders } from "utils/writingStyle";
 import { ErrorState } from "components/dataPanel/PanelErrorState";
 import { LoadingState } from "components/dataPanel/PanelLoadingState";
 import { AccountHolderSummaryEdit } from "./AccountHolderSummaryEdit";
