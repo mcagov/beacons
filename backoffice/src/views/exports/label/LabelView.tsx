@@ -40,6 +40,7 @@ const RenderLabel: FunctionComponent<LabelProps> = ({ label }): JSX.Element => {
       height="800"
       data={url + "#zoom=500"}
       type="application/pdf"
+      aria-label="Label PDF"
     />
   );
 };

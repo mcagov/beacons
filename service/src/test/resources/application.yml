@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: test, migration
+    active: test,migration
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/beacons}
     username: ${SPRING_DATASOURCE_USER:beacons_service}
@@ -49,8 +49,8 @@ opensearch:
 
 export:
   directory: /tmp/beacons/export
-  backup:
-    directory: /var/backup
+backup:
+  directory: /tmp/beacons/backup
 
 microsoft-graph:
   client-id: ${MICROSOFT_GRAPH_CLIENT_ID:default}

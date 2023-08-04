@@ -1,6 +1,6 @@
 import { Input, Typography } from "@mui/material";
 import { TabulatedRow } from "components/dataPanel/TabulatedRow";
-import { Field, ErrorMessage } from "formik"; // Import the ErrorMessage component
+import { Field } from "formik";
 import { FunctionComponent } from "react";
 import { Placeholders, WritingStyle } from "utils/writingStyle";
 
