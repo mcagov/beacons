@@ -30,7 +30,6 @@ jobs:
   docker_build:
     name: Build and Push Docker image
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
@@ -42,7 +41,7 @@ jobs:
           username: ${{ secrets.aws_access_key_id }}
           password: ${{ secrets.aws_secret_access_key }}
       - name: Build and Push
-        uses: docker/build-push-action@v2.10.0
+        uses: docker/build-push-action@v4
         with:
           context: service
           push: true
