@@ -1,7 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { IconButton } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
@@ -20,7 +19,6 @@ interface TablePaginationActionsProps {
 }
 
 export function TablePaginationActions(props: TablePaginationActionsProps) {
-  const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
 
   const handleFirstPageButtonClick = (
