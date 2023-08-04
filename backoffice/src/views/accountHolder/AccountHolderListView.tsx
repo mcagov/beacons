@@ -4,7 +4,6 @@ import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 import { FunctionComponent, useEffect, useState } from "react";
 import { PageContent } from "../../components/layout/PageContent";
-import { PageHeader } from "../../components/layout/PageHeader";
 import { logToServer } from "../../utils/logger";
 import { IAccountHolderGateway } from "gateways/account-holder/IAccountHolderGateway";
 import { IAccountHolderSearchResult } from "../../entities/IAccountHolderSearchResult";

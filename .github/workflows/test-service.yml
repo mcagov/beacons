@@ -1,4 +1,4 @@
-name: Publish Service image
+name: Test Service
 
 on:
   workflow_call:
@@ -14,18 +14,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3.1.1
+      - uses: actions/setup-node@v3
         with:
           node-version: "16.17.0"
       - name: Install npm dependencies
         run: npm ci
       - name: Cache dependencies
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Docker lint
-        uses: brpaz/hadolint-action@v1.5.0
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: service/Dockerfile
 
