@@ -80,6 +80,7 @@ jobs:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       feedback_email_addresses: ${{ secrets.BACKOFFICE_FEEDBACK_EMAIL_ADDRESSES }}
+      mui_pro_license_key: ${{ secrets.MUI_PRO_LICENSE_KEY }}
     needs: [test_backoffice]
 
   publish_opensearch_proxy_image:
