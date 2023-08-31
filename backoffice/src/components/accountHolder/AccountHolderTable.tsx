@@ -1,6 +1,11 @@
 import React, { FunctionComponent } from "react";
 import Box from "@mui/material/Box";
-import { DataGridPro, GridColDef, GridRowParams } from "@mui/x-data-grid-pro";
+import {
+  DataGridPro,
+  GridColDef,
+  GridRowParams,
+  GridToolbar,
+} from "@mui/x-data-grid-pro";
 import { Button, Link } from "@mui/material";
 import { TablePaginationActions } from "../TablePaginationActions";
 import { IAccountHolderSearchResult } from "entities/IAccountHolderSearchResult";
@@ -77,6 +82,7 @@ const columns: GridColDef[] = [
     headerName: "Actions",
     width: 200,
     sortable: false,
+    disableExport: true,
     renderCell: ({ row }: Partial<GridRowParams>) => (
       <Button
         href={`/backoffice#/account-holder/${row.id}`}
@@ -113,6 +119,9 @@ export const AccountHolderTable: FunctionComponent<IAccountHolderTableProps> =
             pagination: {
               ActionsComponent: TablePaginationActions,
             },
+          }}
+          components={{
+            Toolbar: GridToolbar,
           }}
         />
       </Box>
