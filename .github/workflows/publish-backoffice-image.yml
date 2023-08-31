@@ -53,6 +53,6 @@ jobs:
           context: backoffice
           push: true
           tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
-          build-args: feedback_email_addresses=${{ secrets.feedback_email_addresses }}
-        env:
-          REACT_APP_MUI_PRO_LICENSE_KEY: ${{ secrets.mui_pro_license_key }}
+          build-args: |
+            feedback_email_addresses=${{ secrets.feedback_email_addresses }}
+            mui_pro_license_key=${{ secrets.mui_pro_license_key }}
