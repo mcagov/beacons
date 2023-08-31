@@ -6,13 +6,16 @@ import {
   GridSelectionModel,
   GridToolbarContainer,
   GridToolbarExport,
-  GridValueFormatterParams,
 } from "@mui/x-data-grid";
 import { Button, Theme } from "@mui/material";
 import { makeStyles, createStyles } from "@mui/styles";
 import ContentPrintIcon from "@mui/icons-material/Print";
 import { IBeaconExportSearchResult } from "views/exports/BeaconExportSearch";
-import { customDateStringFormat } from "../../utils/dateTime";
+import {
+  dateSortComparator,
+  customDateValueFormatter,
+} from "../../utils/DataGridUtils";
+
 interface IExportBeaconsTableProps {
   result: IBeaconExportSearchResult;
 }
@@ -51,9 +54,8 @@ const columns: GridColDef[] = [
     width: 150,
     editable: false,
     type: "date",
-    valueFormatter: (params: GridValueFormatterParams) => {
-      return customDateStringFormat(params.value, "DD/MM/yyyy");
-    },
+    valueFormatter: (params) => customDateValueFormatter(params),
+    sortComparator: dateSortComparator,
   },
   {
     field: "lastModifiedDate",
@@ -61,9 +63,8 @@ const columns: GridColDef[] = [
     width: 150,
     editable: false,
     type: "date",
-    valueFormatter: (params: GridValueFormatterParams) => {
-      return customDateStringFormat(params.value, "DD/MM/yyyy");
-    },
+    valueFormatter: (params) => customDateValueFormatter(params),
+    sortComparator: dateSortComparator,
   },
 
   {

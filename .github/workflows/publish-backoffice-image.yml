@@ -24,6 +24,9 @@ on:
       feedback_email_addresses:
         description: The email address(es) to which feedback should be sent.  E.g. "a@b.com" or "a@b.com,c@d.com".
         required: true
+      mui_pro_license_key:
+        description: The license key for MUI Pro
+        required: true
 
 defaults:
   run:
@@ -51,3 +54,5 @@ jobs:
           push: true
           tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
           build-args: feedback_email_addresses=${{ secrets.feedback_email_addresses }}
+        env:
+          REACT_APP_MUI_PRO_LICENSE_KEY: ${{ secrets.mui_pro_license_key }}

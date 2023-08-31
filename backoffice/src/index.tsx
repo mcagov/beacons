@@ -10,6 +10,9 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.scss";
 import reportWebVitals from "./reportWebVitals";
+import { LicenseInfo } from "@mui/x-license-pro";
+
+LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_PRO_LICENSE_KEY || "");
 
 const theme: Theme = createTheme({
   palette: {
