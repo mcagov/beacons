@@ -20,13 +20,12 @@ import { IAccountHolder } from "../../entities/IAccountHolder";
 import { IAccountHolderGateway } from "gateways/account-holder/IAccountHolderGateway";
 import { AccountHolderSummaryView } from "./AccountHolderSummaryView";
 import {
-  DataGrid,
-  GridColDef,
-  GridRowParams,
-  GridValueFormatterParams,
-} from "@mui/x-data-grid";
+  dateSortComparator,
+  customDateValueFormatter,
+} from "../../utils/DataGridUtils";
+
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { Link as RouterLink, useHistory } from "react-router-dom";
-import { customDateStringFormat } from "utils/dateTime";
 import { DataPanelStates } from "components/dataPanel/States";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { EditPanelButton } from "components/dataPanel/EditPanelButton";
@@ -216,9 +215,8 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 175,
       editable: false,
       type: "date",
-      valueFormatter: (params: GridValueFormatterParams) => {
-        return customDateStringFormat(params.value, "DD/MM/yyyy");
-      },
+      valueFormatter: (params) => customDateValueFormatter(params),
+      sortComparator: dateSortComparator,
     },
     {
       field: "lastModifiedDate",
@@ -226,9 +224,8 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 175,
       editable: false,
       type: "date",
-      valueFormatter: (params: GridValueFormatterParams) => {
-        return customDateStringFormat(params.value, "DD/MM/yyyy");
-      },
+      valueFormatter: (params) => customDateValueFormatter(params),
+      sortComparator: dateSortComparator,
     },
     {
       field: "actions",
