@@ -13,7 +13,7 @@ describe("CountrySelect Component", () => {
       <CountrySelect
         id="country"
         name="country"
-        defaultValue="United Kingdom"
+        defaultValue="Wales, United Kingdom"
       />
     );
     const countrySelect = screen.getByRole("combobox");
@@ -25,11 +25,11 @@ describe("CountrySelect Component", () => {
       <CountrySelect
         id="country"
         name="country"
-        defaultValue="United Kingdom"
+        defaultValue="Wales, United Kingdom"
       />
     );
     const countrySelect = screen.getByRole("combobox");
-    expect(countrySelect).toHaveValue("United Kingdom");
+    expect(countrySelect).toHaveValue("Wales, United Kingdom");
   });
 
   it("displays the correct country options", () => {
@@ -37,7 +37,7 @@ describe("CountrySelect Component", () => {
       <CountrySelect
         id="country"
         name="country"
-        defaultValue="United Kingdom"
+        defaultValue="Wales, United Kingdom"
       />
     );
     countriesJson.forEach((country) => {
@@ -51,7 +51,7 @@ describe("CountrySelect Component", () => {
       <CountrySelect
         id="country"
         name="country"
-        defaultValue="United Kingdom"
+        defaultValue="Wales, United Kingdom"
       />
     );
     const countrySelect = screen.getByRole("combobox");
