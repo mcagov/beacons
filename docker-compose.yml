@@ -73,6 +73,7 @@ services:
       context: ./backoffice
       args:
         feedback_email_addresses: dev@mcga.gov.uk,dev@madetech.com
+        mui_pro_license_key: ""
     image: beacons-backoffice
     ports:
       - "3001:80"

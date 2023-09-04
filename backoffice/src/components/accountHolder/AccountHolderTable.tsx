@@ -1,25 +1,26 @@
 import React, { FunctionComponent } from "react";
 import Box from "@mui/material/Box";
 import {
-  DataGrid,
+  DataGridPro,
   GridColDef,
   GridRowParams,
-  GridValueFormatterParams,
-} from "@mui/x-data-grid";
+  GridToolbar,
+} from "@mui/x-data-grid-pro";
 import { Button, Link } from "@mui/material";
 import { TablePaginationActions } from "../TablePaginationActions";
-import { customDateStringFormat } from "../../utils/dateTime";
 import { IAccountHolderSearchResult } from "entities/IAccountHolderSearchResult";
 import { Link as RouterLink } from "react-router-dom";
 import { LoadingState } from "components/dataPanel/PanelLoadingState";
+import {
+  dateSortComparator,
+  customDateValueFormatter,
+} from "../../utils/DataGridUtils";
 
 interface IAccountHolderTableProps {
   result: IAccountHolderSearchResult;
 }
 
 const columns: GridColDef[] = [
-  // { field: "id", headerName: "ID", width: 300 },
-
   {
     field: "fullName",
     headerName: "Account Holder",
@@ -56,9 +57,8 @@ const columns: GridColDef[] = [
     width: 175,
     editable: false,
     type: "date",
-    valueFormatter: (params: GridValueFormatterParams) => {
-      return customDateStringFormat(params.value, "DD/MM/yyyy");
-    },
+    valueFormatter: (params) => customDateValueFormatter(params),
+    sortComparator: dateSortComparator,
   },
   {
     field: "lastModifiedDate",
@@ -66,9 +66,8 @@ const columns: GridColDef[] = [
     width: 175,
     editable: false,
     type: "date",
-    valueFormatter: (params: GridValueFormatterParams) => {
-      return customDateStringFormat(params.value, "DD/MM/yyyy");
-    },
+    valueFormatter: (params) => customDateValueFormatter(params),
+    sortComparator: dateSortComparator,
   },
   {
     field: "beaconCount",
@@ -76,13 +75,14 @@ const columns: GridColDef[] = [
     width: 150,
     align: "center",
     editable: false,
-    type: "string",
+    type: "number",
   },
   {
     field: "actions",
     headerName: "Actions",
     width: 200,
     sortable: false,
+    disableExport: true,
     renderCell: ({ row }: Partial<GridRowParams>) => (
       <Button
         href={`/backoffice#/account-holder/${row.id}`}
@@ -107,7 +107,7 @@ export const AccountHolderTable: FunctionComponent<IAccountHolderTableProps> =
 
     return (
       <Box sx={{ height: 850 }}>
-        <DataGrid
+        <DataGridPro
           rows={rows}
           columns={columns}
           pageSize={pageSize}
@@ -119,6 +119,9 @@ export const AccountHolderTable: FunctionComponent<IAccountHolderTableProps> =
             pagination: {
               ActionsComponent: TablePaginationActions,
             },
+          }}
+          components={{
+            Toolbar: GridToolbar,
           }}
         />
       </Box>
