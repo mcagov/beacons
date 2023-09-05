@@ -108,7 +108,7 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
             </ToggleButton>
           </ToggleButtonGroup>
           {/* TODO - Remove once Backup Contingency open to SAR. */}
-          <OnlyVisibleToUsersWith role={"DATA_EXPORTER"}>
+          <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
             <Typography
               gutterBottom={true}
               component={"p"}
@@ -125,7 +125,7 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               downloadComplete={handleDownloadComplete}
             />
           </OnlyVisibleToUsersWith>
-          <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
+          <OnlyVisibleToUsersWith role={"DATA_EXPORTER"}>
             <Typography
               gutterBottom={true}
               component={"p"}
