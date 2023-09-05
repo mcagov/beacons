@@ -34,8 +34,7 @@ public class AccountHolderService {
   private final BeaconMapper beaconMapper;
   private final BeaconUseService beaconUseService;
 
-  @Qualifier("microsoftGraphClient")
-  private final AuthClient microsoftGraphClient;
+  private final MicrosoftGraphService graphService;
 
   @Autowired
   public AccountHolderService(
@@ -44,14 +43,14 @@ public class AccountHolderService {
     BeaconService beaconService,
     BeaconMapper beaconMapper,
     BeaconUseService beaconUseService,
-    AuthClient microsoftGraphClient
+    MicrosoftGraphService graphService
   ) {
     this.accountHolderRepository = accountHolderRepository;
     this.accountHolderPatcherFactory = accountHolderPatcherFactory;
     this.beaconService = beaconService;
     this.beaconMapper = beaconMapper;
     this.beaconUseService = beaconUseService;
-    this.microsoftGraphClient = microsoftGraphClient;
+    this.graphService = graphService;
   }
 
   public AccountHolder create(AccountHolder accountHolder) {
@@ -119,7 +118,7 @@ public class AccountHolderService {
 
     if (savedAccountHolder.isPresent()) {
       try {
-        microsoftGraphClient.updateUser(savedAccountHolder.get());
+        graphService.updateUser(savedAccountHolder.get());
       } catch (UpdateAzAdUserError azAdError) {
         throw azAdError;
       }
@@ -133,8 +132,7 @@ public class AccountHolderService {
     AzureAdAccountHolder accountHolderInAzAd;
 
     try {
-      accountHolderInAzAd =
-        (AzureAdAccountHolder) microsoftGraphClient.getUser(authId);
+      accountHolderInAzAd = (AzureAdAccountHolder) graphService.getUser(authId);
     } catch (GetAzAdUserError azureAdError) {
       log.error("Couldn't find account holder authId " + authId + "in Azure");
       throw azureAdError;
@@ -146,7 +144,7 @@ public class AccountHolderService {
   }
 
   @Transactional(rollbackFor = Exception.class)
-  private Optional<AccountHolder> updateAccountHolderInDb(
+  Optional<AccountHolder> updateAccountHolderInDb(
     AccountHolder accountHolder,
     AccountHolder accountHolderUpdate
   ) {
@@ -194,7 +192,7 @@ public class AccountHolderService {
     }
 
     try {
-      microsoftGraphClient.deleteUser(accountHolder.getAuthId());
+      graphService.deleteUser(accountHolder.getAuthId());
     } catch (Exception e) {
       log.error(
         String.format(

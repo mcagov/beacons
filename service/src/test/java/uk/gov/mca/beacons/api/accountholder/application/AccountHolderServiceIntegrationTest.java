@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.ApplicationEventsTestExecutionListener;
@@ -49,8 +48,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   private BeaconRepository beaconRepository;
 
   @Autowired
-  @Qualifier("microsoftGraphClient")
-  private AuthClient microsoftGraphClient;
+  private MicrosoftGraphService graphService;
 
   private AzureAdAccountHolder createdAzAdUser;
 
@@ -68,13 +66,13 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
       .build();
 
     createdAzAdUser =
-      (AzureAdAccountHolder) microsoftGraphClient.createAzureAdUser(azAdUser);
+      (AzureAdAccountHolder) graphService.createAzureAdUser(azAdUser);
   }
 
   @AfterEach
   public void tearDownAzureAdUser() {
     if (createdAzAdUser != null) {
-      microsoftGraphClient.deleteUser(createdAzAdUser.getUserId().toString());
+      graphService.deleteUser(createdAzAdUser.getUserId().toString());
     }
   }
 
@@ -147,9 +145,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     accountHolder.setFullName("Test Holder 2");
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
 
-    var adUser = microsoftGraphClient.getUser(
-      accountHolder.getAuthId().toString()
-    );
+    var adUser = graphService.getUser(accountHolder.getAuthId().toString());
     Assert.assertNotNull(adUser);
 
     accountHolderService.deleteAccountHolder(id);
@@ -158,7 +154,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
     assertThrows(
       GraphServiceException.class,
-      () -> microsoftGraphClient.getUser(accountHolder.getAuthId().toString())
+      () -> graphService.getUser(accountHolder.getAuthId().toString())
     );
 
     createdAzAdUser = null;
@@ -173,9 +169,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     accountHolder.setFullName("Test Holder");
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
 
-    var adUser = microsoftGraphClient.getUser(
-      accountHolder.getAuthId().toString()
-    );
+    var adUser = graphService.getUser(accountHolder.getAuthId().toString());
     Assert.assertNotNull(adUser);
 
     Beacon beacon = new Beacon();
@@ -199,7 +193,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
       () -> accountHolderService.deleteAccountHolder(id)
     );
 
-    var retainedAdUser = microsoftGraphClient.getUser(
+    var retainedAdUser = graphService.getUser(
       accountHolder.getAuthId().toString()
     );
     Assert.assertNotNull(retainedAdUser);

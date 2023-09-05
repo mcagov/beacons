@@ -17,7 +17,7 @@ import uk.gov.mca.beacons.api.configuration.MicrosoftGraphConfiguration;
 
 @Slf4j
 @Component("microsoftGraphClient")
-public class MicrosoftGraphClient implements AuthClient {
+public class MicrosoftGraphClient {
 
   private final List<String> scopes = List.of(
     "https://graph.microsoft.com/.default"
@@ -33,34 +33,46 @@ public class MicrosoftGraphClient implements AuthClient {
   @PostConstruct
   public void initialize() {
     try {
-      ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-        .clientId(config.getClientId())
-        .clientSecret(config.getClientSecret())
-        .tenantId(config.getB2cTenantId())
-        .build();
-      TokenCredentialAuthProvider tokenCredAuthProvider = new TokenCredentialAuthProvider(
-        scopes,
-        clientSecretCredential
-      );
-      this.graphClient =
-        GraphServiceClient
-          .builder()
-          .authenticationProvider(tokenCredAuthProvider)
-          .buildClient();
+      if (
+        config.getClientId() == null ||
+        config.getClientSecret() == null ||
+        config.getB2cTenantId() == null
+      ) {
+        log.error(
+          "Missing credentials: Client ID={}, Client Secret={}, B2C Tenant ID={}",
+          config.getClientId(),
+          config.getClientSecret(),
+          config.getB2cTenantId()
+        );
+        this.graphClient = null;
+      } else {
+        ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
+          .clientId(config.getClientId())
+          .clientSecret(config.getClientSecret())
+          .tenantId(config.getB2cTenantId())
+          .build();
+        TokenCredentialAuthProvider tokenCredAuthProvider = new TokenCredentialAuthProvider(
+          scopes,
+          clientSecretCredential
+        );
+        this.graphClient =
+          GraphServiceClient
+            .builder()
+            .authenticationProvider(tokenCredAuthProvider)
+            .buildClient();
+      }
     } catch (Exception ex) {
       log.error("Unable to create graph client", ex);
       this.graphClient = null;
     }
   }
 
-  @Override
   public uk.gov.mca.beacons.api.shared.domain.user.User createUser(
     uk.gov.mca.beacons.api.shared.domain.user.User user
   ) {
     return null;
   }
 
-  @Override
   public uk.gov.mca.beacons.api.shared.domain.user.User createAzureAdUser(
     AzureAdAccountHolder user
   ) {

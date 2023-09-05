@@ -124,6 +124,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
         updatedAccountHolder
       );
       setUserState(DataPanelStates.Viewing);
+      window.location.reload();
     } catch (error: any) {
       logToServer.error(error);
       setError(true);
@@ -259,26 +260,6 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     <div className={classes.root}>
       <PageContent>
         <Paper className={classes.paper}>
-          <div>
-            <h2>Account Holder: {accountHolder?.fullName}</h2>
-            {error && <ErrorState message={errorMessage} />}
-            {loading && <LoadingState />}
-            {error || loading || renderState(userState)}
-          </div>
-        </Paper>
-
-        <Paper className={classes.paper}>
-          <div>
-            <h2>Beacons ({beacons.length})</h2>
-            <Box sx={{ height: 850 }}>
-              <DataGrid
-                rows={beacons}
-                columns={columns}
-                disableSelectionOnClick={true}
-                rowsPerPageOptions={[10, 20, 50, 100]}
-              />
-            </Box>
-          </div>
           <>
             <div className={classes.flexContainer}>
               <h2 className={classes.h2}>
