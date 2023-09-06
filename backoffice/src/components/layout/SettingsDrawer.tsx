@@ -141,6 +141,8 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
               downloadStarted={handleDownloadStarted}
               downloadComplete={handleDownloadComplete}
             />
+          </OnlyVisibleToUsersWith>
+          <OnlyVisibleToUsersWith role={"ADMIN_EXPORT"}>
             {/* TODO - Fix loading issue, remove button for now. */}
             {/* <Typography
               gutterBottom={true}
