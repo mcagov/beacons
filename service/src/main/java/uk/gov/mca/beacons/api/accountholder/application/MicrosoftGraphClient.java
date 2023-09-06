@@ -4,8 +4,10 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
 import com.microsoft.graph.http.GraphServiceException;
+import com.microsoft.graph.models.ObjectIdentity;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
@@ -36,13 +38,15 @@ public class MicrosoftGraphClient {
       if (
         config.getClientId() == null ||
         config.getClientSecret() == null ||
-        config.getB2cTenantId() == null
+        config.getB2cTenantId() == null ||
+        config.getB2cTenantName() == null
       ) {
         log.error(
-          "Missing credentials: Client ID={}, Client Secret={}, B2C Tenant ID={}",
+          "Missing credentials: Client ID={}, Client Secret={}, B2C Tenant ID={}, B2C Tenant Name={}",
           config.getClientId(),
           config.getClientSecret(),
-          config.getB2cTenantId()
+          config.getB2cTenantId(),
+          config.getB2cTenantName()
         );
         this.graphClient = null;
       } else {
@@ -85,6 +89,13 @@ public class MicrosoftGraphClient {
       azAdUser.userPrincipalName = user.getUserPrincipalName();
       azAdUser.passwordProfile = user.getPasswordProfile();
 
+      ObjectIdentity azAdIdentity = new ObjectIdentity();
+      azAdIdentity.signInType = "emailAddress";
+      azAdIdentity.issuer = config.getB2cTenantDomain();
+      azAdIdentity.issuerAssignedId = user.getEmail();
+
+      azAdUser.identities = Arrays.asList(azAdIdentity);
+
       User createdAzAdUser = graphClient.users().buildRequest().post(azAdUser);
 
       return AzureAdAccountHolder
@@ -103,10 +114,21 @@ public class MicrosoftGraphClient {
   public void updateUser(AccountHolder accountHolder)
     throws UpdateAzAdUserError {
     try {
-      User azAdUser = new User();
+      User azAdUser = graphClient
+        .users(accountHolder.getAuthId())
+        .buildRequest()
+        .get();
+
       azAdUser.id = accountHolder.getAuthId();
       azAdUser.displayName = accountHolder.getFullName();
       azAdUser.mail = accountHolder.getEmail();
+
+      ObjectIdentity azAdIdentity = new ObjectIdentity();
+      azAdIdentity.signInType = "emailAddress";
+      azAdIdentity.issuer = config.getB2cTenantDomain();
+      azAdIdentity.issuerAssignedId = accountHolder.getEmail();
+
+      azAdUser.identities = Arrays.asList(azAdIdentity);
 
       this.graphClient.users(accountHolder.getAuthId())
         .buildRequest()

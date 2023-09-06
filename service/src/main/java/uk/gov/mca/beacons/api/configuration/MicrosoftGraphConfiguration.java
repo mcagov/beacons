@@ -15,6 +15,9 @@ public class MicrosoftGraphConfiguration {
   @Value("${microsoft-graph.b2c-tenant-id}")
   private String b2cTenantId;
 
+  @Value("${microsoft-graph.b2c-tenant-name}")
+  private String b2cTenantName;
+
   public String getClientId() {
     return clientId;
   }
@@ -25,5 +28,13 @@ public class MicrosoftGraphConfiguration {
 
   public String getB2cTenantId() {
     return b2cTenantId;
+  }
+
+  public String getB2cTenantName() {
+    return b2cTenantName;
+  }
+
+  public String getB2cTenantDomain() {
+    return b2cTenantName + ".onmicrosoft.com";
   }
 }

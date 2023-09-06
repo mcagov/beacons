@@ -19,6 +19,9 @@ on:
       microsoft_graph_b2c_tenant_id:
         description: The Azure AD B2C tenant id required for the beacons service API to call Microsoft Graph
         required: true
+      microsoft_graph_b2c_tenant_name:
+        description: The Azure AD B2C tenant name required for the beacons service API to call Microsoft Graph
+        required: true
 
 defaults:
   run:
@@ -85,4 +88,5 @@ jobs:
           MICROSOFT_GRAPH_CLIENT_ID: ${{ secrets.microsoft_graph_client_id }}
           MICROSOFT_GRAPH_CLIENT_SECRET: ${{ secrets.microsoft_graph_client_secret }}
           MICROSOFT_GRAPH_B2C_TENANT_ID: ${{ secrets.microsoft_graph_b2c_tenant_id }}
+          MICROSOFT_GRAPH_B2C_TENANT_NAME: ${{ secrets.microsoft_graph_b2c_tenant_name }}
         run: ./gradlew clean integrationTest

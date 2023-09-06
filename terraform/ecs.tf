@@ -225,6 +225,10 @@ resource "aws_ecs_task_definition" "service" {
       {
         name : "MICROSOFT_GRAPH_B2C_TENANT_ID",
         value : var.microsoft_graph_b2c_tenant_id
+      },
+      {
+        name : "MICROSOFT_GRAPH_B2C_TENANT_NAME",
+        value : var.microsoft_graph_b2c_tenant_name
       }
     ],
     logConfiguration : {
