@@ -86,7 +86,6 @@ public class MicrosoftGraphClient {
       azAdUser.displayName = user.getFullName();
       azAdUser.mail = user.getEmail();
       azAdUser.mailNickname = user.getMailNickname();
-      azAdUser.userPrincipalName = user.getUserPrincipalName();
       azAdUser.passwordProfile = user.getPasswordProfile();
 
       ObjectIdentity azAdIdentity = new ObjectIdentity();

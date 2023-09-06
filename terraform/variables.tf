@@ -404,3 +404,9 @@ variable "microsoft_graph_b2c_tenant_id" {
   description = "Id of the Azure AD B2C tenant. Used by the beacons service API to call the Microsoft Graph API"
   sensitive   = true
 }
+
+variable "microsoft_graph_b2c_tenant_name" {
+  type        = string
+  description = "Name of the Azure AD B2C tenant. Used by the beacons service API to call the Microsoft Graph API"
+  sensitive   = true
+}
