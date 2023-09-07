@@ -65,7 +65,9 @@ export class AccountHolderGateway implements IAccountHolderGateway {
     } catch (error: any) {
       switch (error?.response?.status) {
         case 500:
-          throw new Error("Could not update the Account Holder");
+          throw new Error(
+            "Could not update the Account Holder - " + error?.response?.data
+          );
         case 404:
           throw new Error(
             "Could not get the Account Holder's user from Azure B2C"

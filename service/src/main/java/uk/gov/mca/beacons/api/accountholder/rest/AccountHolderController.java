@@ -106,9 +106,7 @@ public class AccountHolderController {
       return ResponseEntity.ok(accountHolderMapper.toWrapperDTO(accountHolder));
     } catch (UpdateAzAdUserError e) {
       log.error("UpdateAzAdUserError trying to update Azure user", e);
-      return ResponseEntity
-        .internalServerError()
-        .body(accountHolderMapper.toWrapperDTO(accountHolderUpdate));
+      return ResponseEntity.internalServerError().body(e.getMessage());
     } catch (GetAzAdUserError e) {
       log.error("GetAzAdUserError trying to update Azure user", e);
       return ResponseEntity.badRequest().build();

@@ -133,7 +133,15 @@ public class MicrosoftGraphClient {
         .buildRequest()
         .patch(azAdUser);
     } catch (GraphServiceException error) {
-      log.error(error.getMessage());
+      String errorMessage = error.getMessage();
+      log.error(errorMessage);
+      if (errorMessage.contains("already exists")) {
+        throw new UpdateAzAdUserError(
+          "A user with this email address already exists",
+          error
+        );
+      }
+
       throw new UpdateAzAdUserError("Error updating Azure AD user", error);
     }
   }
