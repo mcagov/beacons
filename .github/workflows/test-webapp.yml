@@ -75,7 +75,7 @@ jobs:
       - name: Copy env vars
         run: cp .env.example .env.local
       - name: Run Cypress UI tests
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           working-directory: webapp
           spec: cypress/integration/**/*.spec.ts
