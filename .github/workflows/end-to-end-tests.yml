@@ -3,6 +3,12 @@ name: E2E tests
 on:
   workflow_call:
     inputs:
+      environment:
+        description:
+          The environment to which the application should be deployed.  Must be one of development/staging/production
+          and must match the terraform_workspace input.
+        type: string
+        required: true
       image-tag:
         description: The tag of the release to test
         required: true
@@ -37,6 +43,18 @@ on:
       test_webapp_gov_notify_api_key:
         description: API key for the Webapp to send test emails
         required: true
+      microsoft_graph_client_id:
+        description: The Azure AD B2C client id required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_client_secret:
+        description: The Azure AD B2C client secret required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_b2c_tenant_id:
+        description: The Azure AD B2C tenant id required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_b2c_tenant_name:
+        description: The Azure AD B2C tenant name required for the beacons service API to call Microsoft Graph
+        required: true
 
 defaults:
   run:
@@ -46,6 +64,7 @@ jobs:
   end_to_end_tests:
     name: End to end tests
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
 
     steps:
       - uses: actions/checkout@v3
@@ -73,6 +92,10 @@ jobs:
           JWT_SECRET=${{ secrets.test_webapp_azure_b2c_jwt_secret }} \
           WEBAPP_CLIENT_SECRET=${{ secrets.test_webapp_azure_ad_client_secret }} \
           GOV_NOTIFY_API_KEY=${{ secrets.test_webapp_gov_notify_api_key }} \
+          MICROSOFT_GRAPH_CLIENT_ID=${{ secrets.microsoft_graph_client_id }} \
+          MICROSOFT_GRAPH_CLIENT_SECRET=${{ secrets.microsoft_graph_client_secret }} \
+          MICROSOFT_GRAPH_B2C_TENANT_ID=${{ secrets.microsoft_graph_b2c_tenant_id }} \
+          MICROSOFT_GRAPH_B2C_TENANT_NAME=${{ secrets.microsoft_graph_b2c_tenant_name }} \
           docker compose --verbose -f docker-compose.e2e.yml -f docker-compose.ci.yml up --detach
       - name: Run Cypress end to end tests
         uses: cypress-io/github-action@v5
@@ -83,6 +106,11 @@ jobs:
           WEBAPP_CLIENT_SECRET: ${{ secrets.test_webapp_azure_ad_client_secret }}
           AAD_API_ID: 5cdcbb41-958a-43b6-baa1-bbafd80b4f70
           API_URL: http://localhost:8080/spring-api
+          MICROSOFT_GRAPH_CLIENT_ID: ${{ secrets.microsoft_graph_client_id }}
+          MICROSOFT_GRAPH_CLIENT_SECRET: ${{ secrets.microsoft_graph_client_secret }}
+          MICROSOFT_GRAPH_B2C_TENANT_ID: ${{ secrets.microsoft_graph_b2c_tenant_id }}
+          MICROSOFT_GRAPH_B2C_TENANT_NAME: ${{ secrets.microsoft_graph_b2c_tenant_name }}
+
         with:
           working-directory: tests
           spec: cypress/endToEnd/*

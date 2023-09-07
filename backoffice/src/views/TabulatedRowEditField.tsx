@@ -8,7 +8,8 @@ export const TabulatedRowEditField: FunctionComponent<{
   label: string;
   fieldName: string;
   type: string;
-}> = ({ label, fieldName, type }) => {
+  required?: boolean;
+}> = ({ label, fieldName, type, required = false }) => {
   return (
     <TabulatedRow
       displayKey={
@@ -17,14 +18,17 @@ export const TabulatedRowEditField: FunctionComponent<{
         </label>
       }
       value={
-        <Field
-          as={Input}
-          id={fieldName}
-          name={fieldName}
-          type={type}
-          fullWidth
-          placeholder={Placeholders.NoData}
-        />
+        <>
+          <Field
+            as={Input}
+            id={fieldName}
+            name={fieldName}
+            type={type}
+            fullWidth
+            placeholder={Placeholders.NoData}
+            {...(required ? { required: true } : {})}
+          />
+        </>
       }
     />
   );

@@ -43,6 +43,7 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
                       label={"Full Name"}
                       fieldName={"fullName"}
                       type={"string"}
+                      required
                     />
                     <TabulatedRowEditField
                       label={"Telephone Number"}
@@ -54,11 +55,12 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
                       fieldName={"alternativeTelephoneNumber"}
                       type={"string"}
                     />
-                    {/* <TabulatedRowEditField
+                    <TabulatedRowEditField
                       label={"Email"}
                       fieldName={"email"}
                       type={"email"}
-                    /> */}
+                      required
+                    />
 
                     <TabulatedRowEditField
                       label={"Address Line 1"}

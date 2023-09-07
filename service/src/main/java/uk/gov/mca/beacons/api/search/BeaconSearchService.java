@@ -24,11 +24,11 @@ import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
 @Service
 public class BeaconSearchService {
 
-  BeaconSearchRepository beaconSearchRepository;
-  BeaconRepository beaconRepository;
-  BeaconOwnerRepository beaconOwnerRepository;
-  BeaconUseRepository beaconUseRepository;
-  LegacyBeaconRepository legacyBeaconRepository;
+  private BeaconSearchRepository beaconSearchRepository;
+  private BeaconRepository beaconRepository;
+  private BeaconOwnerRepository beaconOwnerRepository;
+  private BeaconUseRepository beaconUseRepository;
+  private LegacyBeaconRepository legacyBeaconRepository;
 
   @Autowired
   public BeaconSearchService(
