@@ -24,11 +24,13 @@ import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveA
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { withAdditionalProps } from "../../router/withAdditionalProps";
+import { CheckboxListItem } from "../../components/Checkbox";
 
 interface CheckBeaconDetailsForm {
   manufacturer: string;
   model: string;
   hexId: string;
+  isSecondGeneration: boolean;
 }
 
 const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
@@ -62,6 +64,8 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
         value={form.fields.model.value}
         errorMessages={form.fields.model.errorMessages}
       />
+
+      <BeaconIsSecondGenerationCheckbox />
       <BeaconHexIdInput
         value={form.fields.hexId.value}
         errorMessages={form.fields.hexId.errorMessages}
@@ -70,6 +74,16 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   );
 };
 
+const BeaconIsSecondGenerationCheckbox: FunctionComponent = (): JSX.Element => (
+  <FormGroup>
+    <CheckboxListItem
+      id="isSecondGeneration"
+      defaultChecked={false}
+      label="Is Second Generation HEX ID"
+    />
+  </FormGroup>
+);
+
 const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   value = "",
   errorMessages,
@@ -77,8 +91,8 @@ const BeaconHexIdInput: FunctionComponent<FormInputProps> = ({
   <FormGroup errorMessages={errorMessages}>
     <Input
       id="hexId"
-      label="Enter the 15 character beacon HEX ID or UIN number"
-      hintText="This will be on your beacon. It must be 15 characters long and use
+      label="Enter the beacon HEX ID or UIN number"
+      hintText="This will be on your beacon. It must use
       characters 0 to 9 and letters A to F"
       htmlAttributes={{ spellCheck: false }}
       defaultValue={value}
@@ -116,7 +130,12 @@ export const getServerSideProps: GetServerSideProps = withContainer(
           nextPageUrl
         ),
       ]),
-      { previousPageUrl }
+      {
+        previousPageUrl,
+        draftRegistration: {
+          isSecondGeneration: false,
+        },
+      }
     );
   })
 );
@@ -126,12 +145,14 @@ export const mapper: DraftRegistrationFormMapper<CheckBeaconDetailsForm> = {
     manufacturer: form.manufacturer,
     model: form.model,
     hexId: toUpperCase(form.hexId),
+    isSecondGeneration: form.isSecondGeneration,
     uses: [],
   }),
   draftRegistrationToForm: (draftRegistration) => ({
     manufacturer: draftRegistration?.manufacturer,
     model: draftRegistration?.model,
     hexId: draftRegistration?.hexId,
+    isSecondGeneration: draftRegistration?.isSecondGeneration,
   }),
 };
 
@@ -139,7 +160,9 @@ export const validationRules = ({
   manufacturer,
   model,
   hexId,
+  isSecondGeneration,
 }: CheckBeaconDetailsForm): FormManager => {
+  const hexIdLength = isSecondGeneration ? 23 : 15;
   return new FormManager({
     manufacturer: new FieldManager(manufacturer, [
       Validators.required("Beacon manufacturer is a required field"),
@@ -150,8 +173,8 @@ export const validationRules = ({
     hexId: new FieldManager(hexId, [
       Validators.required("Beacon HEX ID is a required field"),
       Validators.isLength(
-        "Beacon HEX ID or UIN must be 15 characters long",
-        15
+        `Beacon HEX ID or UIN must be ${hexIdLength} characters long`,
+        hexIdLength
       ),
       Validators.hexadecimalString(
         "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"

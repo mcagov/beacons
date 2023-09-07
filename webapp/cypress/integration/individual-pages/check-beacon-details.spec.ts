@@ -8,6 +8,7 @@ import {
   thenTheUrlShouldContain,
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
+  whenISelect,
   whenIType,
 } from "../../common/selectors-and-assertions.spec";
 
@@ -79,6 +80,20 @@ describe("As a beacon owner, I want to enter my initial beacon information", () 
       const expectedErrorMessage = ["15 characters"];
 
       whenIType("0123456789ABCDEF", "#hexId");
+
+      whenIClickContinue();
+      thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
+      thenIShouldSeeAnErrorMessageThatContains(...expectedErrorMessage);
+
+      whenIClickOnTheErrorSummaryLinkContaining(...expectedErrorMessage);
+      thenMyFocusMovesTo(hexIdFieldSelector);
+    });
+
+    it("errors if I submit a string 15 characters long when 23 Hex Id box is checked", () => {
+      const expectedErrorMessage = ["15 characters"];
+
+      whenIType("0123456789ABCDE", "#hexId");
+      whenISelect("#isSecondGeneration");
 
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(...expectedErrorMessage);
