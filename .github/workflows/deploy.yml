@@ -80,6 +80,18 @@ on:
       opensearch_proxy_sso_client_secret:
         description: The Azure AD client secret required for authenticating OpenSearch users at the load balancer
         required: true
+      microsoft_graph_client_id:
+        description: The Azure AD B2C client id required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_client_secret:
+        description: The Azure AD B2C client secret required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_b2c_tenant_id:
+        description: The Azure AD B2C tenant id required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_b2c_tenant_name:
+        description: The Azure AD B2C tenant name required for the beacons service API to call Microsoft Graph
+        required: true
 
 defaults:
   run:
@@ -129,4 +141,8 @@ jobs:
           TF_VAR_opensearch_master_user_password: ${{ secrets.opensearch_master_user_password }}
           TF_VAR_opensearch_proxy_sso_client_id: ${{ secrets.opensearch_proxy_sso_client_id }}
           TF_VAR_opensearch_proxy_sso_client_secret: ${{ secrets.opensearch_proxy_sso_client_secret }}
+          TF_VAR_microsoft_graph_client_id: ${{ secrets.microsoft_graph_client_id }}
+          TF_VAR_microsoft_graph_client_secret: ${{ secrets.microsoft_graph_client_secret }}
+          TF_VAR_microsoft_graph_b2c_tenant_id: ${{ secrets.microsoft_graph_b2c_tenant_id }}
+          TF_VAR_microsoft_graph_b2c_tenant_name: ${{ secrets.microsoft_graph_b2c_tenant_name }}
         run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars

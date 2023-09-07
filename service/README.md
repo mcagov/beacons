@@ -23,13 +23,18 @@ Gradle is the build tool for the application. See
 the [docs](https://docs.gradle.org/current/userguide/gradle_wrapper.html#sec:upgrading_wrapper) for updating the Gradle
 Wrapper.
 
-## Development
+## Local development
 
 Set the Node environment using `nvm use` (having installed [nvm](https://github.com/nvm-sh/nvm))
 
 Install node packages (needed for code formatting): `npm install`
 
-## Local development
+### Configuration
+
+- Create a file in ./src/main/resources called application-dev.yml
+- Fill it with the contents of the 'Beacons service local application-dev.yml' entry in 1Password
+  - Copying and pasting this into your new application-dev.yml can sometimes format the configuration incorrectly: please see the existing application.yml file for the pattern to follow
+- In IntelliJ, ensure your run configuration Environment variables include `spring_profiles_active=dev`. This will enable the IDE to use your new application-dev.yml configuration settings.
 
 The service can be run either locally in your IDE of choice or from the command line by
 running: `./gradlew bootRun --args='--spring.profiles.active=dev'`
@@ -38,6 +43,13 @@ Local development instances of the backing services, such as PostgreSQL and Open
 command `docker compose up`.
 
 ## Testing
+
+### Configuration for Tests
+
+- The test project has its own application.yml file containing several sensitive MICROSOFT_GRAPH environment variables
+- These do not have values in the actual file as they are secrets. To ensure these variables have values at runtime, make a .sh file on your machine and fill it with the contents of 'Set Microsoft Graph sensitive values as local Bash env vars' in 1Password.
+- Run this file from the /service directory: `source set_microsoft_graph_values.sh`
+- The integration tests need these settings in order to create, update and delete a user in the test Azure AD B2C environment.
 
 Integration tests use the naming convention `<name>IntegrationTest`. Unit tests use the naming convention
 `<name>UnitTest`.

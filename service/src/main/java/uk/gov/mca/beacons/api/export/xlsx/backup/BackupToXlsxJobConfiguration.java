@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
-import uk.gov.mca.beacons.api.export.xlsx.ExportSpreadsheetRow;
-import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 
 @Configuration
 @Slf4j

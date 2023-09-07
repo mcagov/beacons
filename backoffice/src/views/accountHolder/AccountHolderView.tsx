@@ -75,14 +75,13 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   );
 
   const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    undefined
-  );
-
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  useEffect((): void => {
+  useEffect(() => {
+    let isMounted = true;
+
     const fetchAccountHolder = async (id: string) => {
       try {
         setError(false);
@@ -92,32 +91,44 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
         const beacons = await accountHolderGateway.getBeaconsForAccountHolderId(
           id
         );
-        setAccountHolder(accountHolder);
-        setBeacons(beacons);
 
-        setLoading(false);
+        if (isMounted) {
+          setAccountHolder(accountHolder);
+          setBeacons(beacons);
+          setLoading(false);
+        }
       } catch (error) {
         logToServer.error(error);
-        setError(true);
+
+        if (isMounted) {
+          setError(true);
+          setErrorMessage((error as Error).message);
+          setLoading(false);
+        }
       }
     };
 
     fetchAccountHolder(accountHolderId);
-  }, [userState, accountHolderId, accountHolderGateway]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [accountHolderId, accountHolderGateway]);
 
   const handleSave = async (
     updatedAccountHolder: Partial<IAccountHolder>
   ): Promise<void> => {
     try {
-      console.log(updatedAccountHolder);
       await accountHolderGateway.updateAccountHolder(
         accountHolder.id,
         updatedAccountHolder
       );
       setUserState(DataPanelStates.Viewing);
-    } catch (error) {
+      window.location.reload();
+    } catch (error: any) {
       logToServer.error(error);
       setError(true);
+      setErrorMessage(error.message || "An unexpected error occurred");
     }
   };
 
@@ -166,6 +177,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
           </OnlyVisibleToUsersWith>
         );
       default:
+        setErrorMessage(errorMessage);
         setError(true);
     }
   };

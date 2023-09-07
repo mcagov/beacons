@@ -30,6 +30,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
 
       return this._beaconResponseMapper.mapAccountHolder(response.data.data);
     } catch (e) {
+      logToServer.error(e);
       throw e;
     }
   }
@@ -47,21 +48,37 @@ export class AccountHolderGateway implements IAccountHolderGateway {
     accountHolderId: string,
     updatedFields: Partial<IAccountHolder>
   ): Promise<IAccountHolder> {
-    try {
-      const data = {
-        data: {
-          id: accountHolderId,
-          attributes: updatedFields,
-        },
-      };
+    const data = {
+      data: {
+        id: accountHolderId,
+        attributes: updatedFields,
+      },
+    };
 
+    try {
       const response = await this._makePatchRequest(
         `/account-holder/${accountHolderId}`,
         data
       );
+
       return response.data;
-    } catch (e) {
-      throw e;
+    } catch (error: any) {
+      switch (error?.response?.status) {
+        case 500:
+          throw new Error(
+            "Could not update the Account Holder - " + error?.response?.data
+          );
+        case 404:
+          throw new Error(
+            "Could not get the Account Holder's user from Azure B2C"
+          );
+        default:
+          throw new Error(
+            `An unexpected error occurred (Status Code: ${
+              error?.response?.status || "Unknown"
+            })`
+          );
+      }
     }
   }
 
@@ -88,6 +105,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
 
       return response.data;
     } catch (e) {
+      logToServer.error(e);
       throw e;
     }
   }

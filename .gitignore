@@ -14,7 +14,8 @@ coverage/
 # JetBrains
 .idea/
 *.iml
-service/.run/
+service/.run
+
 
 #Eclipse
 service/.metadata

@@ -38,3 +38,7 @@ jobs:
       opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
       opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
       opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
+      microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
+      microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
+      microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}

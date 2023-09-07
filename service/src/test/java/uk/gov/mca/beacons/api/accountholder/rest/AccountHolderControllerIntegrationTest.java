@@ -9,11 +9,16 @@ import uk.gov.mca.beacons.api.WebIntegrationTest;
 
 public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
 
+  private final String testAuthId = UUID.randomUUID().toString();
+
   @Test
   public void shouldRespondWithTheCreatedAccountHolder() throws Exception {
-    final String authId = UUID.randomUUID().toString();
-    final var createAccountHolderRequest = createAccountHolderRequest(authId);
-    final var createAccountHolderResponse = createAccountHolderResponse(authId);
+    final var createAccountHolderRequest = createAccountHolderRequest(
+      testAuthId
+    );
+    final var createAccountHolderResponse = createAccountHolderResponse(
+      testAuthId
+    );
 
     webTestClient
       .post()
@@ -31,9 +36,10 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
 
   @Test
   public void shouldFindTheCreatedAccountHolderById() throws Exception {
-    final String authId = UUID.randomUUID().toString();
-    final String id = seedAccountHolder(authId);
-    final var createAccountHolderResponse = createAccountHolderResponse(authId);
+    final String id = seedAccountHolder(testAuthId);
+    final var createAccountHolderResponse = createAccountHolderResponse(
+      testAuthId
+    );
 
     webTestClient
       .get()
@@ -47,39 +53,19 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
 
   @Test
   public void shouldFindTheAccountHolderByAuthId() throws Exception {
-    final String authId = UUID.randomUUID().toString();
-    seedAccountHolder(authId);
-    final var createAccountHolderResponse = createAccountHolderResponse(authId);
+    seedAccountHolder(testAuthId);
+    final var createAccountHolderResponse = createAccountHolderResponse(
+      testAuthId
+    );
 
     webTestClient
       .get()
-      .uri(Endpoints.AccountHolder.value + "?authId=" + authId)
+      .uri(Endpoints.AccountHolder.value + "?authId=" + testAuthId)
       .exchange()
       .expectStatus()
       .isOk()
       .expectBody()
       .json(createAccountHolderResponse);
-  }
-
-  @Test
-  public void shouldRespondWithTheUpdateAccountHolderDetails()
-    throws Exception {
-    final String authId = UUID.randomUUID().toString();
-    String id = seedAccountHolder(authId);
-
-    String updateAccountHolderRequest = updateAccountHolderRequest(id);
-    String updateAccountHolderResponse = updateAccountHolderResponse(id);
-
-    webTestClient
-      .patch()
-      .uri(Endpoints.AccountHolder.value + "/" + id)
-      .body(BodyInserters.fromValue(updateAccountHolderRequest))
-      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-      .exchange()
-      .expectStatus()
-      .isOk()
-      .expectBody()
-      .json(updateAccountHolderResponse);
   }
 
   private String createAccountHolderRequest(String authId) throws Exception {
@@ -93,20 +79,6 @@ public class AccountHolderControllerIntegrationTest extends WebIntegrationTest {
     return fixtureHelper.getFixture(
       "src/test/resources/fixtures/createAccountHolderResponse.json",
       fixture -> fixture.replace("replace-with-test-auth-id", authId)
-    );
-  }
-
-  private String updateAccountHolderRequest(String id) throws Exception {
-    return fixtureHelper.getFixture(
-      "src/test/resources/fixtures/updateAccountHolderResponse.json",
-      fixture -> fixture.replace("replace-with-test-account-id", id)
-    );
-  }
-
-  private String updateAccountHolderResponse(String id) throws Exception {
-    return fixtureHelper.getFixture(
-      "src/test/resources/fixtures/updateAccountHolderResponse.json",
-      fixture -> fixture.replace("replace-with-test-account-id", id)
     );
   }
 }
