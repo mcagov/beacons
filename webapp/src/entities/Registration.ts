@@ -7,6 +7,7 @@ export interface Registration {
   manufacturer: string;
   model: string;
   hexId: string;
+  isSecondGeneration: string;
   referenceNumber: string;
   accountHolderId: string;
 
