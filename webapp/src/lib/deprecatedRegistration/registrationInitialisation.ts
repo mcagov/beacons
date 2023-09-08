@@ -11,6 +11,7 @@ export const initBeacon = (): Registration => {
     manufacturer: "",
     model: "",
     hexId: "",
+    isSecondGeneration: false,
     accountHolderId: "",
 
     referenceNumber: "",

@@ -5,6 +5,7 @@ export const registrationFixture: Registration = {
   manufacturer: "Ocean Signal",
   model: "Excelsior",
   hexId: "1D0EA08C52FFBFF",
+  isSecondGeneration: false,
   referenceNumber: "A1B2C3B4",
   accountHolderId: "b32deeb3-031f-4be7-ab16-681a8cac7ddd",
   registeredDate: "2018-06-08",
