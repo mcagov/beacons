@@ -2,7 +2,10 @@ import { DraftRegistration } from "../entities/DraftRegistration";
 import { FormSubmission } from "../presenters/formSubmission";
 import { FormJSON, FormManager } from "./form/FormManager";
 
-export type FormManagerFactory = (formData: FormSubmission) => FormManager;
+export type FormManagerFactory = (
+  formData: FormSubmission,
+  secondGeneration: boolean
+) => FormManager;
 
 export interface DraftRegistrationPageProps {
   form: FormJSON;

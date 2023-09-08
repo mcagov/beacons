@@ -88,7 +88,7 @@ conn.prepare("note", 'INSERT INTO note (id, beacon_id, text, type,
 created_date, user_id, full_name, email) VALUES ($1, $2, $3, $4, $5, $6,
 $7, $8)')
 
-1000.times do |count|
+5.times do |count|
 
 #Setup beacon with dummy data
 
@@ -99,7 +99,8 @@ $7, $8)')
   beacon_owner_uuid = SecureRandom.uuid
 
   beacon_uuid = SecureRandom.uuid
-  hex_id = Faker::Base.regexify("1D[A-F1-9]{13}")
+  hex_id_length = [13,13,21].sample
+  hex_id = Faker::Base.regexify("1D[A-F1-9]{#{hex_id_length}}")
 
   email = Faker::Internet.email
   fullname = Faker::Name.name

@@ -16,7 +16,6 @@ export class GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm
   private readonly validationRules: FormManagerFactory;
   private readonly mapper: DraftRegistrationFormMapper<T>;
   private readonly additionalProps: Record<string, any>;
-
   constructor(
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
