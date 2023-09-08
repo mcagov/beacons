@@ -3,6 +3,6 @@ import { DraftBeaconUse } from "./DraftBeaconUse";
 import { Registration } from "./Registration";
 
 export interface DraftRegistration extends RecursivePartial<Registration> {
-  isSecondGeneration: boolean;
+  isSecondGeneration: string;
   uses: DraftBeaconUse[];
 }

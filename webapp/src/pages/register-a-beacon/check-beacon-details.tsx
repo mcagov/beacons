@@ -25,18 +25,20 @@ import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } f
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { withAdditionalProps } from "../../router/withAdditionalProps";
 import { CheckboxListItem } from "../../components/Checkbox";
+import { parseFormDataAs } from "../../lib/middleware";
 
 interface CheckBeaconDetailsForm {
   manufacturer: string;
   model: string;
   hexId: string;
-  isSecondGeneration: boolean;
+  isSecondGeneration: string;
 }
 
 const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   form,
   showCookieBanner,
   previousPageUrl,
+  draftRegistration,
 }: DraftRegistrationPageProps): JSX.Element => {
   const pageHeading = "Check beacon details";
   const pageText = (
@@ -65,7 +67,10 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
         errorMessages={form.fields.model.errorMessages}
       />
 
-      <BeaconIsSecondGenerationCheckbox />
+      <BeaconIsSecondGenerationCheckbox
+        value={draftRegistration.isSecondGeneration}
+      />
+
       <BeaconHexIdInput
         value={form.fields.hexId.value}
         errorMessages={form.fields.hexId.errorMessages}
@@ -74,11 +79,13 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   );
 };
 
-const BeaconIsSecondGenerationCheckbox: FunctionComponent = (): JSX.Element => (
+const BeaconIsSecondGenerationCheckbox: FunctionComponent<FormInputProps> = ({
+  value = "",
+}: FormInputProps): JSX.Element => (
   <FormGroup>
     <CheckboxListItem
       id="isSecondGeneration"
-      defaultChecked={false}
+      defaultChecked={value == "true"}
       label="Is Second Generation HEX ID"
     />
   </FormGroup>
@@ -107,6 +114,8 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const previousPageUrl =
       context.query.previous ?? AccountPageURLs.accountHome;
 
+    const formData = await parseFormDataAs<CheckBeaconDetailsForm>(context.req);
+
     return withAdditionalProps(
       new BeaconsPageRouter([
         new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
@@ -133,7 +142,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       {
         previousPageUrl,
         draftRegistration: {
-          isSecondGeneration: false,
+          isSecondGeneration: formData?.isSecondGeneration || "false",
         },
       }
     );
@@ -145,7 +154,7 @@ export const mapper: DraftRegistrationFormMapper<CheckBeaconDetailsForm> = {
     manufacturer: form.manufacturer,
     model: form.model,
     hexId: toUpperCase(form.hexId),
-    isSecondGeneration: form.isSecondGeneration,
+    isSecondGeneration: form.isSecondGeneration || "false",
     uses: [],
   }),
   draftRegistrationToForm: (draftRegistration) => ({
@@ -162,7 +171,7 @@ export const validationRules = ({
   hexId,
   isSecondGeneration,
 }: CheckBeaconDetailsForm): FormManager => {
-  const hexIdLength = isSecondGeneration ? 23 : 15;
+  const hexIdLength = isSecondGeneration == "true" ? 23 : 15;
   return new FormManager({
     manufacturer: new FieldManager(manufacturer, [
       Validators.required("Beacon manufacturer is a required field"),
