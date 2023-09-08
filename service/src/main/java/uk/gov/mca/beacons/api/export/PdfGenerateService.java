@@ -99,25 +99,15 @@ public class PdfGenerateService {
             0,
             Math.min(
               data.getBeaconUse().toUpperCase().length(),
-              isLongHexId ? 50 : 30
+              isLongHexId ? 40 : 30
             )
           )
       )
-        .setFontSize(isLongHexId ? 5.75f : 7.5f)
+        .setFontSize(isLongHexId ? 6f : 7.5f)
         .setBold()
         .setTextAlignment(TextAlignment.CENTER)
-        .setMargins(isLongHexId ? 1 : 2, 3, isLongHexId ? 0 : 2, 3)
+        .setMargins(2, 3, 2, 3)
     );
-
-    if (isLongHexId) {
-      document.add(
-        new Paragraph("Hex Id: ")
-          .setFontSize(5f)
-          .setBold()
-          .setTextAlignment(TextAlignment.LEFT)
-          .setMargin(0)
-      );
-    }
 
     document.add(
       getLabelDataLine(
