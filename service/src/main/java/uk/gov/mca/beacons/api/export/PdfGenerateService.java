@@ -69,6 +69,9 @@ public class PdfGenerateService {
   }
 
   private void addLabelToDocument(Document document, LabelDTO data) {
+    boolean isLongHexId =
+      data.getHexId() != null && data.getHexId().length() > 15;
+
     document.add(
       new Paragraph("UK 406 MHz Beacon Registry")
         .setFontSize(7f)
@@ -94,18 +97,36 @@ public class PdfGenerateService {
           .toUpperCase()
           .substring(
             0,
-            Math.min(data.getBeaconUse().toUpperCase().length(), 30)
+            Math.min(
+              data.getBeaconUse().toUpperCase().length(),
+              isLongHexId ? 50 : 30
+            )
           )
       )
-        .setFontSize(7.5f)
+        .setFontSize(isLongHexId ? 5.75f : 7.5f)
         .setBold()
         .setTextAlignment(TextAlignment.CENTER)
-        .setMargins(2, 3, 2, 3)
+        .setMargins(isLongHexId ? 1 : 2, 3, isLongHexId ? 0 : 2, 3)
     );
 
+    if (isLongHexId) {
+      document.add(
+        new Paragraph("Hex Id: ")
+          .setFontSize(5f)
+          .setBold()
+          .setTextAlignment(TextAlignment.LEFT)
+          .setMargin(0)
+      );
+    }
+
     document.add(
-      getLabelDataLine("Hex Id", data.getHexId().toUpperCase(), 7.5f)
+      getLabelDataLine(
+        isLongHexId ? null : "Hex Id",
+        data.getHexId().toUpperCase(),
+        isLongHexId ? 6.25f : 7.5f
+      )
     );
+
     document.add(
       getLabelDataLine(
         "Coding",
@@ -113,14 +134,14 @@ public class PdfGenerateService {
           .getCoding()
           .toUpperCase()
           .substring(0, Math.min(data.getCoding().toUpperCase().length(), 12)),
-        7.25f
+        isLongHexId ? 6.25f : 7.25f
       )
     );
     document.add(
       getLabelDataLine(
         "Proof of Registration",
         data.getProofOfRegistrationDate(),
-        7.25f
+        isLongHexId ? 6.25f : 7.25f
       )
     );
   }
@@ -135,7 +156,10 @@ public class PdfGenerateService {
       .setPadding(0)
       .setFixedLeading(8.5f);
     p.setCharacterSpacing(0.5f).setWordSpacing(0.01f);
-    p.add(new Text(key + ": ").setFontSize(5f).setBold());
+
+    if (key != null && !key.isEmpty()) {
+      p.add(new Text(key + ": ").setFontSize(5f).setBold());
+    }
     p.add(new Text(value.toUpperCase()).setFontSize(fontSize).setBold());
     return p;
   }
