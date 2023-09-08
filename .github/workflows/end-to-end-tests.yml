@@ -84,6 +84,8 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: "true"
       - name: Bring up published containers
         run: |
           IMAGE_TAG=${{ inputs.image-tag }} \
