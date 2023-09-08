@@ -31,7 +31,7 @@ interface CheckBeaconDetailsForm {
   manufacturer: string;
   model: string;
   hexId: string;
-  isSecondGeneration: string;
+  isSecondGeneration: boolean;
 }
 
 const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
@@ -68,7 +68,7 @@ const CheckBeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
       />
 
       <BeaconIsSecondGenerationCheckbox
-        value={draftRegistration.isSecondGeneration}
+        value={draftRegistration.isSecondGeneration ? "true" : "false"}
       />
 
       <BeaconHexIdInput
@@ -142,7 +142,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       {
         previousPageUrl,
         draftRegistration: {
-          isSecondGeneration: formData?.isSecondGeneration || "false",
+          isSecondGeneration: formData?.isSecondGeneration || false,
         },
       }
     );
@@ -154,7 +154,7 @@ export const mapper: DraftRegistrationFormMapper<CheckBeaconDetailsForm> = {
     manufacturer: form.manufacturer,
     model: form.model,
     hexId: toUpperCase(form.hexId),
-    isSecondGeneration: form.isSecondGeneration || "false",
+    isSecondGeneration: form.isSecondGeneration || false,
     uses: [],
   }),
   draftRegistrationToForm: (draftRegistration) => ({
@@ -171,7 +171,7 @@ export const validationRules = ({
   hexId,
   isSecondGeneration,
 }: CheckBeaconDetailsForm): FormManager => {
-  const hexIdLength = isSecondGeneration == "true" ? 23 : 15;
+  const hexIdLength = isSecondGeneration ? 23 : 15;
   return new FormManager({
     manufacturer: new FieldManager(manufacturer, [
       Validators.required("Beacon manufacturer is a required field"),
