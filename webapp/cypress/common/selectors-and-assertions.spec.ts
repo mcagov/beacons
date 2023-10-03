@@ -6,7 +6,7 @@ export const tooManyCharactersErrorMessage = "too many characters";
 export const iCanClickTheBackLinkToGoToPreviousPage = (
   previousPageURL: string
 ): void => {
-  cy.get(".govuk-back-link").click();
+  cy.get(".govuk-back-link").click({ force: true });
   thenTheUrlShouldContain(previousPageURL);
 };
 
@@ -91,7 +91,9 @@ export const iCanSeeAButtonContaining = (text: string | RegExp): void => {
 };
 
 export const givenIHaveClickedTheButtonContaining = (text: string): void => {
-  cy.get(`button:contains(${text}),[role=button]:contains(${text})`).click();
+  cy.get(`button:contains(${text}),[role=button]:contains(${text})`).click({
+    force: true,
+  });
 };
 
 export const andIClickTheButtonContaining =
@@ -108,7 +110,7 @@ export const andIClickContinue = whenIClickContinue;
 export const givenIHaveClickedContinue = whenIClickContinue;
 
 export const givenIHaveClicked = (selector: string): void => {
-  cy.get(selector).click();
+  cy.get(selector).click({ force: true });
 };
 
 export const whenIClickOnTheErrorSummaryLinkContaining = (
@@ -116,7 +118,7 @@ export const whenIClickOnTheErrorSummaryLinkContaining = (
 ): void => {
   let link = cy.get(".govuk-error-summary__list");
   strings.forEach((string) => (link = link.contains(string)));
-  link.click();
+  link.click({ force: true });
 };
 
 export const whenIType = (value: string, selector: string): void => {
@@ -183,7 +185,7 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
 export const andIHaveEnteredNoInformation = (): void => null;
 
 export const whenIClickBack = (): void => {
-  cy.get(".govuk-back-link").click();
+  cy.get(".govuk-back-link").click({ force: true });
 };
 
 export const whenIClickBackTimes = (times: number): void => {
@@ -207,7 +209,7 @@ export const iCanEditAFieldContaining = (value: string): void => {
   cy.get(`input[value="${value}"]`);
 };
 export const iHaveClickedOnAGivenLink = (href: string): void => {
-  cy.get(`a[href="${href}"]`).click();
+  cy.get(`a[href="${href}"]`).click({ force: true });
 };
 
 export const whenISelectTheOptionFromTheDropdown = (

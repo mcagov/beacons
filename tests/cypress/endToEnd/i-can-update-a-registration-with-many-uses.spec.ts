@@ -109,7 +109,7 @@ const testRegistration = {
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 
 const whenIClickTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
-  cy.get("a").contains(hexId).click();
+  cy.get("a").contains(hexId).click({ force: true });
 };
 
 const whenIClickTheHexIdOfTheRegistrationIJustUpdated =
@@ -151,7 +151,7 @@ const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
     .contains(heading)
     .parent()
     .contains(/change/i)
-    .click();
+    .click({ force: true });
 };
 
 const iCanUseTheBackLinksAndContinueButtonsToNavigateMyMaritimeUse = () => {

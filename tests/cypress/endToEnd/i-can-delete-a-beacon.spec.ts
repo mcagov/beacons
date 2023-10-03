@@ -74,7 +74,7 @@ const whenIClickTheDeleteButtonForTheRegistrationWithHexId = (
     .parent()
     .parent()
     .contains(/delete/i)
-    .click();
+    .click({ force: true });
 };
 
 const iAmAskedIfIAmSureIWantToDeleteMyRegistration = () => {

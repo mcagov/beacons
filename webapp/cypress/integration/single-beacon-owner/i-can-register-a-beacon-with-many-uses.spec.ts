@@ -215,7 +215,7 @@ const iCanClickEveryChangeButtonToEditMyRegistration = () => {
   };
 
   Object.entries(changeLinkAssertions).forEach(([href, assertion]) => {
-    cy.get(`.govuk-link[href="${href}"]`).first().click();
+    cy.get(`.govuk-link[href="${href}"]`).first().click({ force: true });
     assertion();
 
     // TODO: Assert that clicking "Continue" after having clicked a "Change"

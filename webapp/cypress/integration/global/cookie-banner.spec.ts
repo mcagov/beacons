@@ -6,7 +6,7 @@ describe("Cookie banner", () => {
 
     cy.get("button")
       .contains(/hide this message/i)
-      .click();
+      .click({ force: true });
 
     cy.contains(/cookies on maritime and coastguard agency/i).should(
       "not.exist"

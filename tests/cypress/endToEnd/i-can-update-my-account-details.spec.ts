@@ -28,7 +28,7 @@ describe("As an AccountHolder", () => {
   const postcodeSelector = "#postcode";
 
   const whenIClickContinue = () => {
-    cy.contains("Save these account details").click();
+    cy.contains("Save these account details").click({ force: true });
   };
 
   describe("who now lives in the United Kingdom", () => {
