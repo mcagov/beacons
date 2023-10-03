@@ -73,9 +73,10 @@ const columns: GridColDef[] = [
     field: "beaconCount",
     headerName: "Beacon Count",
     width: 150,
-    align: "center",
+    align: "left",
     editable: false,
     type: "number",
+    headerAlign: "left",
   },
   {
     field: "actions",
