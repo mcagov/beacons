@@ -91,9 +91,7 @@ export const iCanSeeAButtonContaining = (text: string | RegExp): void => {
 };
 
 export const givenIHaveClickedTheButtonContaining = (text: string): void => {
-  cy.get(`button:contains(${text}),[role=button]:contains(${text})`).click({
-    force: true,
-  });
+  cy.get(`button:contains(${text}),[role=button]:contains(${text})`).click();
 };
 
 export const andIClickTheButtonContaining =
@@ -110,7 +108,7 @@ export const andIClickContinue = whenIClickContinue;
 export const givenIHaveClickedContinue = whenIClickContinue;
 
 export const givenIHaveClicked = (selector: string): void => {
-  cy.get(selector).click({ force: true });
+  cy.get(selector).click();
 };
 
 export const whenIClickOnTheErrorSummaryLinkContaining = (
@@ -118,7 +116,7 @@ export const whenIClickOnTheErrorSummaryLinkContaining = (
 ): void => {
   let link = cy.get(".govuk-error-summary__list");
   strings.forEach((string) => (link = link.contains(string)));
-  link.click({ force: true });
+  link.click();
 };
 
 export const whenITypeInAnEmptyField = (
@@ -229,7 +227,7 @@ export const iPerformOperationAndWaitForNewPageToLoad = (
 };
 
 export const whenIClickBack = (): void => {
-  cy.get(".govuk-back-link").click({ force: true });
+  cy.get(".govuk-back-link").click();
 };
 
 export const iCannotSee = (selector: string): void => {
@@ -248,7 +246,7 @@ export const iCanEditAFieldContaining = (value: string): void => {
 };
 
 export const iHaveClickedOnALinkWithText = (text: string): void => {
-  cy.get(`a[href]:contains(${text})`).click({ force: true });
+  cy.get(`a[href]:contains(${text})`).click();
 };
 
 export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
@@ -274,7 +272,7 @@ export const whenIClickTheActionLinkInATableRowContaining = (
     .parent()
     .parent()
     .contains(actionLinkText)
-    .click({ force: true });
+    .click();
 };
 
 export const whenISelectTheOptionFromTheDropdown = (

@@ -322,7 +322,7 @@ const firstUpdatedRegistration = {
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 
 const whenIClickTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
-  cy.get("a").contains(hexId).click({ force: true });
+  cy.get("a").contains(hexId).click();
 };
 
 const whenIClickTheHexIdOfTheRegistrationIJustUpdated =
@@ -513,7 +513,7 @@ const whenIClickTheChangeLinkForTheSummaryListRowWithHeading = (
     .contains(heading)
     .parent()
     .contains(/change/i)
-    .click({ force: true });
+    .click();
 };
 
 const iCannotSeeTextInSummaryListRowWithHeading = (
@@ -528,7 +528,7 @@ const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
     .contains(heading)
     .parent()
     .contains(/change/i)
-    .click({ force: true });
+    .click();
 };
 
 export const iEditMyBeaconManufacturerAndModel = (

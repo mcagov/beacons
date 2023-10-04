@@ -11,7 +11,7 @@ describe("Service start page", () => {
 
   it("Accepts the cookie policy if the user selects `Hide this message`", () => {
     cy.visit("/");
-    cy.get("button").contains("Hide this message").click({ force: true });
+    cy.get("button").contains("Hide this message").click();
     cy.getCookie(acceptRejectCookieId).should("exist");
   });
 });

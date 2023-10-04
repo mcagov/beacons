@@ -69,9 +69,7 @@ const givenIHaveClickedToGoBackToMyAccount = () => {
 };
 
 const whenIClickOnTheBeaconIHaveJustRegistered = () => {
-  cy.get("a")
-    .contains(testBeaconAndOwnerData.beaconDetails.hexId)
-    .click({ force: true });
+  cy.get("a").contains(testBeaconAndOwnerData.beaconDetails.hexId).click();
 };
 
 const iCanSeeAllTheDataIEntered = () => {
