@@ -34,5 +34,3 @@ const setTestEnvVarsFromSystem = (config) => {
   config.env.API_URL = process.env.API_URL;
   config.env.SESSION_TOKEN = process.env.SESSION_TOKEN;
 };
-
-module.exports.setupNodeEvents = setTestEnvVarsFromSystem;
