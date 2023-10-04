@@ -26,7 +26,7 @@ module.exports = (on, config) => {
   return config;
 };
 
-const setTestEnvVarsFromSystem = (config) => {
+export const setTestEnvVarsFromSystem = (config) => {
   config.env.WEBAPP_CLIENT_ID = process.env.WEBAPP_CLIENT_ID;
   config.env.WEBAPP_CLIENT_SECRET = process.env.WEBAPP_CLIENT_SECRET;
   config.env.AAD_TENANT_ID = process.env.AAD_TENANT_ID;
