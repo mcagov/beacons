@@ -272,17 +272,16 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
                   >
                     Edit Account Holder
                   </EditPanelButton>
-                  {beacons.length === 0 && (
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      endIcon={<DeleteIcon />}
-                      onClick={handleDeleteAccountHolder}
-                      className={classes.buttons}
-                    >
-                      Delete Account Holder
-                    </Button>
-                  )}
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    endIcon={<DeleteIcon />}
+                    onClick={handleDeleteAccountHolder}
+                    className={classes.buttons}
+                    disabled={beacons.length !== 0}
+                  >
+                    Delete Account Holder
+                  </Button>
                 </OnlyVisibleToUsersWith>
               )}
             </div>
