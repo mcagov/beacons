@@ -1,5 +1,5 @@
 import { defineConfig } from "cypress";
-import { setTestEnvVarsFromSystem } from "./cypress/plugins";
+import { setTestEnvVarsFromSystem } from "./cypress/plugins/index.js";
 
 export default defineConfig({
   chromeWebSecurity: false,
