@@ -1,6 +1,4 @@
 import { defineConfig } from "cypress";
-import "./cypress/plugins/index.js";
-require("dotenv").config({ path: ".env.local" });
 
 export default defineConfig({
   chromeWebSecurity: false,
@@ -11,6 +9,7 @@ export default defineConfig({
 
   e2e: {
     setupNodeEvents(on, config) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       return require("./cypress/plugins/index.js")(on, config);
     },
     baseUrl: "http://127.0.0.1:3000",
