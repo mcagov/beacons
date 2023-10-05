@@ -14,5 +14,6 @@ export default defineConfig({
     },
     baseUrl: "http://127.0.0.1:3000",
     specPattern: "cypress/endToEnd/**/*.spec.ts",
+    experimentalRunAllSpecs: true,
   },
 });
