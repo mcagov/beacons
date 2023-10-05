@@ -156,8 +156,9 @@ const props = async (
 
   const useId = context.query.useId as string;
   return {
-    environment: draftRegistration?.uses[useId]?.environment as Environment,
-    useId: useId,
+    environment:
+      (draftRegistration?.uses[useId]?.environment as Environment) || null,
+    useId: useId || null,
   };
 };
 
