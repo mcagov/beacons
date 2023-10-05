@@ -1,4 +1,5 @@
 import { defineConfig } from "cypress";
+import "./cypress/plugins/index.js";
 require("dotenv").config({ path: ".env.local" });
 
 export default defineConfig({
