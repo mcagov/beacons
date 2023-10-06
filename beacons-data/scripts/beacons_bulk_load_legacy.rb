@@ -21,6 +21,7 @@ def populateBeacons
 		 :user => 'beacons_service', :password => db_password )
 
 	conn.prepare("statement", 'INSERT INTO legacy_beacon (id, hex_id, owner_email, owner_name, created_date, beacon_status, data, last_modified_date, use_activities) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)')
+	conn.prepare("claim_statement", 'INSERT INTO legacy_beacon_claim_event (id, claim_event_type, legacy_beacon_id, account_holder_id, when_happened, reason) VALUES ($1, $2, $3, $4, $5, $6)')
 
 	useLookup = {}
 	useLookup["MARITIME"] = ["SAILING","MOTOR","ROWING","SMALL_UNPOWERED","FISHING_VESSEL","MERCHANT_VESSEL","FLOATING_PLATFORM","OFFSHORE_WINDFARM","OFFSHORE_RIG_PLATFORM"]
@@ -83,7 +84,48 @@ def populateBeacons
 
 		# run SQL
 		conn.exec_prepared('statement', [ uuid, hex_id, owner_email, owner_name, created_date, beacon_status, data, last_modified_date, use_activities])
+
+
+		claim_beacon = rand(1..5) == 1
+
+		if claim_beacon
+
+			claim_date = Faker::Time.between_dates(from: created_date, to: '2022-10-06').iso8601
+			claim_uuid = SecureRandom.uuid
+			claim_event_type = "claim"
+			account_holder_id = getAccountHolderId(conn)
+			reason = "Test data"
+
+			if account_holder_id
+				conn.exec_prepared('claim_statement', [ claim_uuid, claim_event_type, uuid, account_holder_id, claim_date, reason])
+
+				if rand(1..100) == 1 # for 1 in 100, add a second claim
+					second_claim_date = Faker::Time.between_dates(from: claim_date, to: '2023-10-06').iso8601
+					conn.exec_prepared('claim_statement', [ SecureRandom.uuid, claim_event_type, uuid, account_holder_id, second_claim_date, "Second claim"])
+				end
+
+			else
+				puts "No account holder IDs found in the database."
+			end
+
+		end
+
 	end
+end
+
+
+def getAccountHolderId(conn)
+  # Execute a query to retrieve a random account holder ID from the table
+  result = conn.exec('SELECT id FROM account_holder ORDER BY RANDOM() LIMIT 1')
+
+  if result.num_tuples.zero?
+    return nil  # No records found
+  end
+
+  # Extract the ID from the first (and only) row
+  account_holder_id = result[0]['id']
+
+  return account_holder_id
 end
 
 def buildBeaconUse(environment, activity, main_use,created_date,last_modified_date)
