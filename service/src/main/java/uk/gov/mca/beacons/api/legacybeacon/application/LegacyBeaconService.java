@@ -134,6 +134,8 @@ public class LegacyBeaconService {
     legacyBeaconToDelete.setUseActivities(null);
     legacyBeaconToDelete.setLastModifiedDate(today);
 
+    legacyBeaconToDelete.setRecoveryEmail(null);
+
     return legacyBeaconRepository.save(legacyBeaconToDelete);
   }
 }

@@ -63,7 +63,7 @@ export class HexIdParser {
   public static countryCode(hexId: string): number {
     const countryCodeBitRange = [1, 11];
     return this.binaryToDecimal(
-      this.hexToBinary(hexId).slice(...countryCodeBitRange)
+      this.hexToBinary(hexId.substring(0, 15)).slice(...countryCodeBitRange)
     );
   }
 
