@@ -110,6 +110,39 @@ export class AccountHolderGateway implements IAccountHolderGateway {
     }
   }
 
+  public async transferBeaconsToAccountHolder(
+    beaconIds: string[],
+    recipientAccountHolderId: string
+  ): Promise<void> {
+    const data = {
+      beaconIds: beaconIds,
+      recipientAccountHolderId: recipientAccountHolderId,
+    };
+
+    try {
+      const response = await this._makePatchRequest(
+        `/account-holder/transferBeacons`,
+        data
+      );
+
+      return response.data;
+    } catch (error: any) {
+      switch (error?.response?.status) {
+        case 500:
+          throw new Error(
+            "Could not transfer the Beacons to account Holder - " +
+              error?.response?.data
+          );
+        default:
+          throw new Error(
+            `An unexpected error occurred (Status Code: ${
+              error?.response?.status || "Unknown"
+            })`
+          );
+      }
+    }
+  }
+
   private async _makeGetRequest(path: string): Promise<AxiosResponse> {
     const accessToken = await this._authGateway.getAccessToken();
 

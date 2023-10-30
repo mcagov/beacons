@@ -30,6 +30,7 @@ import {
 import {
   DataGrid,
   GridColDef,
+  GridRowId,
   GridRowParams,
   GridSelectionModel,
   GridToolbarContainer,
@@ -198,11 +199,13 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
 
   const handleConfirmTransfer = async () => {
     try {
-      console.log("Transfering beacons... " + beaconsToTransfer.toString());
-      console.log(
-        "Transfering to account holder... " + transferAccountHolder.id
+      const beaconIds = beaconsToTransfer.map((row: GridRowId) =>
+        row.toString()
       );
-
+      await accountHolderGateway.transferBeaconsToAccountHolder(
+        beaconIds,
+        transferAccountHolder.id
+      );
       window.location.reload();
     } catch (error) {
       logToServer.error(error);

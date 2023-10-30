@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.accountholder.application;
 
 import com.azure.core.annotation.Get;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -16,11 +17,13 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderRepository;
 import uk.gov.mca.beacons.api.beacon.application.BeaconService;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
+import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
 import uk.gov.mca.beacons.api.mappers.ModelPatcher;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
+import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.shared.domain.user.User;
 
 @Slf4j
@@ -33,7 +36,7 @@ public class AccountHolderService {
   private final BeaconService beaconService;
   private final BeaconMapper beaconMapper;
   private final BeaconUseService beaconUseService;
-
+  private final NoteService noteService;
   private final MicrosoftGraphService graphService;
 
   @Autowired
@@ -43,7 +46,8 @@ public class AccountHolderService {
     BeaconService beaconService,
     BeaconMapper beaconMapper,
     BeaconUseService beaconUseService,
-    MicrosoftGraphService graphService
+    MicrosoftGraphService graphService,
+    NoteService noteService
   ) {
     this.accountHolderRepository = accountHolderRepository;
     this.accountHolderPatcherFactory = accountHolderPatcherFactory;
@@ -51,6 +55,7 @@ public class AccountHolderService {
     this.beaconMapper = beaconMapper;
     this.beaconUseService = beaconUseService;
     this.graphService = graphService;
+    this.noteService = noteService;
   }
 
   public AccountHolder create(AccountHolder accountHolder) {
@@ -144,7 +149,7 @@ public class AccountHolderService {
   }
 
   @Transactional(rollbackFor = Exception.class)
-  Optional<AccountHolder> updateAccountHolderInDb(
+  public Optional<AccountHolder> updateAccountHolderInDb(
     AccountHolder accountHolder,
     AccountHolder accountHolderUpdate
   ) {
@@ -204,5 +209,49 @@ public class AccountHolderService {
     }
 
     accountHolderRepository.deleteById(accountHolderId);
+  }
+
+  public void transferBeacons(
+    AccountHolderId recipientAccountHolderId,
+    List<BeaconId> beaconsToTransfer
+  ) {
+    AccountHolder recipientAccountHolder = getAccountHolder(
+      recipientAccountHolderId
+    )
+      .orElseThrow(NoSuchElementException::new);
+
+    beaconsToTransfer.forEach(beaconId ->
+      transferBeacon(recipientAccountHolder, beaconId)
+    );
+  }
+
+  private void transferBeacon(
+    AccountHolder recipientAccountHolder,
+    BeaconId beaconIdToTransfer
+  ) {
+    Beacon beaconToTransfer = beaconService
+      .findById(beaconIdToTransfer)
+      .orElseThrow(NoSuchElementException::new);
+
+    AccountHolder currentAccountHolder = getAccountHolder(
+      beaconToTransfer.getAccountHolderId()
+    )
+      .orElseThrow(NoSuchElementException::new);
+
+    beaconToTransfer.setAccountHolderId(recipientAccountHolder.getId());
+    beaconToTransfer.setLastModifiedDate(OffsetDateTime.now());
+
+    beaconService.update(beaconIdToTransfer, beaconToTransfer);
+
+    noteService.createSystemNote(
+      beaconToTransfer.getId(),
+      String.format(
+        "Beacon transferred from Account Holder %s (%s) to Account Holder %s (%s)",
+        currentAccountHolder.getFullName(),
+        currentAccountHolder.getEmail(),
+        recipientAccountHolder.getFullName(),
+        recipientAccountHolder.getEmail()
+      )
+    );
   }
 }
