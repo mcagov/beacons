@@ -145,7 +145,11 @@ export class Validators {
   public static ukEncodedBeacon(errorMessage: string): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       if (Validators.required("").applies(value)) return false;
-      if (Validators.isLength("", 15).applies(value)) return false;
+      if (
+        Validators.isLength("", 15).applies(value) &&
+        Validators.isLength("", 23).applies(value)
+      )
+        return false;
       if (Validators.hexadecimalString("").applies(value)) return false;
 
       const ukCountryCodes = [232, 233, 234, 235];
