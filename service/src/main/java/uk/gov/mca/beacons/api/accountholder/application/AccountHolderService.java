@@ -214,7 +214,7 @@ public class AccountHolderService {
   public void transferBeacons(
     AccountHolderId recipientAccountHolderId,
     List<BeaconId> beaconsToTransfer
-  ) {
+  ) throws NoSuchElementException {
     AccountHolder recipientAccountHolder = getAccountHolder(
       recipientAccountHolderId
     )
@@ -228,7 +228,7 @@ public class AccountHolderService {
   private void transferBeacon(
     AccountHolder recipientAccountHolder,
     BeaconId beaconIdToTransfer
-  ) {
+  ) throws NoSuchElementException {
     Beacon beaconToTransfer = beaconService
       .findById(beaconIdToTransfer)
       .orElseThrow(NoSuchElementException::new);

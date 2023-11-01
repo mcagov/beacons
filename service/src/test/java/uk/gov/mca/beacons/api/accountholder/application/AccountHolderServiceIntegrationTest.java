@@ -8,9 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.microsoft.graph.http.GraphServiceException;
 import com.microsoft.graph.models.PasswordProfile;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +28,10 @@ import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.accountholder.domain.events.AccountHolderCreated;
 import uk.gov.mca.beacons.api.accountholder.domain.events.AccountHolderUpdated;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
+import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconRepository;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
+import uk.gov.mca.beacons.api.note.application.NoteService;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestExecutionListeners(
@@ -43,6 +48,9 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
   @Autowired
   private AccountHolderService accountHolderService;
+
+  @Autowired
+  private NoteService noteService;
 
   @Autowired
   private BeaconRepository beaconRepository;
@@ -173,12 +181,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     var adUser = graphService.getUser(accountHolder.getAuthId().toString());
     Assert.assertNotNull(adUser);
 
-    Beacon beacon = new Beacon();
-    beacon.setHexId("testHexId");
-    beacon.setManufacturer("testManufacturer");
-    beacon.setModel("testModel");
-    beacon.setManufacturerSerialNumber("testSerialNumber");
-    beacon.setBeaconStatus(BeaconStatus.NEW);
+    Beacon beacon = generateBeacon();
     beacon.setAccountHolderId(id);
 
     beaconRepository.save(beacon);
@@ -198,5 +201,152 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
       accountHolder.getAuthId().toString()
     );
     Assert.assertNotNull(retainedAdUser);
+  }
+
+  @Test
+  public void whenTransferringABeaconToANewAccountHolder_ShouldSucceed()
+    throws Exception {
+    AccountHolder accountHolder = generateAccountHolder(UUID.randomUUID());
+    AccountHolderId id = accountHolderService.create(accountHolder).getId();
+
+    AccountHolder accountHolder2 = generateAccountHolder(UUID.randomUUID());
+    AccountHolderId id2 = accountHolderService.create(accountHolder2).getId();
+
+    Beacon beacon = generateBeacon();
+    beacon.setAccountHolderId(id);
+
+    beaconRepository.save(beacon);
+
+    List<BeaconId> beaconsToTransfer = new ArrayList<>();
+    beaconsToTransfer.add(beacon.getId());
+
+    accountHolderService.transferBeacons(id2, beaconsToTransfer);
+
+    assertFalse(
+      accountHolderService
+        .getBeaconsByAccountHolderId(accountHolder2.getId())
+        .isEmpty()
+    );
+  }
+
+  @Test
+  public void whenTransferringMultipleBeaconsToANewAccountHolder_ShouldSucceed()
+    throws Exception {
+    AccountHolder accountHolder = generateAccountHolder(UUID.randomUUID());
+    AccountHolderId id = accountHolderService.create(accountHolder).getId();
+
+    AccountHolder accountHolder2 = generateAccountHolder(UUID.randomUUID());
+    AccountHolderId id2 = accountHolderService.create(accountHolder2).getId();
+
+    Beacon beacon = generateBeacon();
+    beacon.setAccountHolderId(id);
+    Beacon beaconTwo = generateBeacon();
+
+    beaconTwo.setAccountHolderId(id);
+    Beacon beaconThree = generateBeacon();
+
+    beaconThree.setAccountHolderId(id);
+    beaconRepository.save(beacon);
+
+    beaconRepository.save(beaconTwo);
+    beaconRepository.save(beaconThree);
+    List<BeaconId> beaconsToTransfer = new ArrayList<>();
+
+    beaconsToTransfer.add(beacon.getId());
+    beaconsToTransfer.add(beaconTwo.getId());
+    beaconsToTransfer.add(beaconThree.getId());
+    accountHolderService.transferBeacons(id2, beaconsToTransfer);
+
+    assertThat(
+      accountHolderService
+        .getBeaconsByAccountHolderId(accountHolder2.getId())
+        .size(),
+      equalTo(3)
+    );
+  }
+
+  @Test
+  public void whenTransferringBeaconsToANewAccountHolder_ShouldKeepAssociatedNotes()
+    throws Exception {
+    AccountHolder accountHolder = generateAccountHolder(UUID.randomUUID());
+    AccountHolderId id = accountHolderService.create(accountHolder).getId();
+
+    AccountHolder accountHolder2 = generateAccountHolder(UUID.randomUUID());
+    AccountHolderId id2 = accountHolderService.create(accountHolder2).getId();
+
+    Beacon beacon = generateBeacon();
+    beacon.setAccountHolderId(id);
+
+    beaconRepository.save(beacon);
+
+    noteService.createSystemNote(beacon.getId(), "A Note");
+
+    List<BeaconId> beaconsToTransfer = new ArrayList<>();
+    beaconsToTransfer.add(beacon.getId());
+
+    accountHolderService.transferBeacons(id2, beaconsToTransfer);
+
+    assertThat(
+      noteService.getByBeaconId(beacon.getId()).get(0).getText(),
+      equalTo("A Note")
+    );
+  }
+
+  @Test
+  public void whenTransferringAnUnknownBeacon_ShouldError() throws Exception {
+    AccountHolder accountHolder2 = generateAccountHolder(UUID.randomUUID());
+    AccountHolderId id2 = accountHolderService.create(accountHolder2).getId();
+
+    List<BeaconId> beaconsToTransfer = new ArrayList<>();
+    beaconsToTransfer.add(new BeaconId(UUID.randomUUID()));
+
+    assertThrows(
+      NoSuchElementException.class,
+      () -> accountHolderService.transferBeacons(id2, beaconsToTransfer)
+    );
+  }
+
+  @Test
+  public void whenTransferringToAnUnknownAccountHolder_ShouldError()
+    throws Exception {
+    AccountHolder accountHolder = generateAccountHolder(UUID.randomUUID());
+    AccountHolderId id = accountHolderService.create(accountHolder).getId();
+
+    Beacon beacon = generateBeacon();
+    beacon.setAccountHolderId(id);
+
+    beaconRepository.save(beacon);
+
+    List<BeaconId> beaconsToTransfer = new ArrayList<>();
+    beaconsToTransfer.add(beacon.getId());
+
+    assertThrows(
+      NoSuchElementException.class,
+      () ->
+        accountHolderService.transferBeacons(
+          new AccountHolderId(UUID.randomUUID()),
+          beaconsToTransfer
+        )
+    );
+  }
+
+  @NotNull
+  private static Beacon generateBeacon() {
+    Beacon beacon = new Beacon();
+    beacon.setHexId("testHexId");
+    beacon.setManufacturer("testManufacturer");
+    beacon.setModel("testModel");
+    beacon.setManufacturerSerialNumber("testSerialNumber");
+    beacon.setBeaconStatus(BeaconStatus.NEW);
+    return beacon;
+  }
+
+  private static AccountHolder generateAccountHolder(UUID authId) {
+    AccountHolder accountHolder = new AccountHolder();
+    accountHolder.setAuthId(authId.toString());
+    accountHolder.setEmail(authId + "@mt-test.com");
+    accountHolder.setFullName("Test Holder");
+
+    return accountHolder;
   }
 }
