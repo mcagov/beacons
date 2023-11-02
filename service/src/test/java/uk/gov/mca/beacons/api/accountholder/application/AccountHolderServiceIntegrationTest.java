@@ -291,7 +291,6 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
       noteService.getByBeaconId(beacon.getId()).get(0).getText(),
       containsString(accountHolder2.getFullName())
     );
-    //assertion on note?
   }
 
   @Test
