@@ -210,7 +210,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       logToServer.error(error);
       setError(true);
       setErrorMessage(
-        "An error occurred while transfering the account holder's beacons."
+        "An error occurred while transferring the account holder's beacons."
       );
     } finally {
       setOpenTransferDialog(false);
@@ -421,7 +421,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
             <Box>Are you sure you want to transfer these Beacons?</Box>
             <Box>
               <br />
-              You are transfering the following Beacons:
+              You are transferring the following Beacons:
               <ul>
                 {beaconsToTransfer.map((beaconId, index) => {
                   const beacon = beacons.find((b) => b.id === beaconId);
