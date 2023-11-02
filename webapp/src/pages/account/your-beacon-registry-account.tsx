@@ -59,23 +59,21 @@ export const YourBeaconRegistryAccount: FunctionComponent<
       showCookieBanner={false}
       signOutUri={signOutUri}
     >
-      <Grid
-        mainContent={
-          <>
-            <PageHeading>{pageHeading}</PageHeading>
-            <YourDetails accountHolderDetails={accountHolderDetails} />
-            {legacyBeacons.length > 0 && (
-              <LegacyBeaconsNotification
-                beacons={legacyBeacons}
-                accountHolderDetails={accountHolderDetails}
-              />
-            )}
-            <YourBeacons beacons={beacons} />
-            <RegisterANewBeacon />
-            <Contact />
-          </>
-        }
-      />
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-three-thirds">
+          <PageHeading>{pageHeading}</PageHeading>
+          <YourDetails accountHolderDetails={accountHolderDetails} />
+          {legacyBeacons.length > 0 && (
+            <LegacyBeaconsNotification
+              beacons={legacyBeacons}
+              accountHolderDetails={accountHolderDetails}
+            />
+          )}
+          <YourBeacons beacons={beacons} />
+          <RegisterANewBeacon />
+          <Contact />
+        </div>
+      </div>
     </Layout>
   );
 };
@@ -224,6 +222,9 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
             Used for
           </th>
           <th scope="col" className="govuk-table__header">
+            Main use
+          </th>
+          <th scope="col" className="govuk-table__header">
             First registered
           </th>
           <th scope="col" className="govuk-table__header">
@@ -280,6 +281,9 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
           {beacon.ownerName ? beacon.ownerName : "-"}
         </td>
         <td className="govuk-table__cell">{beacon.uses ? beacon.uses : "-"}</td>
+        <td className="govuk-table__cell">
+          {beacon.mainUse ? beacon.mainUse : "-"}
+        </td>
         <td className="govuk-table__cell">{beacon.createdDate}</td>
         <td className="govuk-table__cell">{beacon.lastModifiedDate}</td>
         <td className="govuk-table__cell">

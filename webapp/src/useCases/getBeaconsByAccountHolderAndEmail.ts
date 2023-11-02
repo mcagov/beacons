@@ -36,6 +36,10 @@ export const getBeaconsForAccountHolder =
           beaconStatus: beacon.beaconStatus,
           hexId: beacon.hexId,
           ownerName: beacon.beaconStatus === "NEW" ? beacon.ownerName : null,
+          mainUse: []
+            .concat(beacon.registrationMarks || [], beacon.vesselNames || [])
+            .filter(Boolean)
+            .join(", "),
           uses:
             beacon.beaconStatus === "NEW"
               ? titleCase(beacon.useActivities)

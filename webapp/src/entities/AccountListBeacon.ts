@@ -6,4 +6,5 @@ export interface AccountListBeacon {
   hexId: string;
   ownerName: string;
   uses: string;
+  mainUse: string;
 }

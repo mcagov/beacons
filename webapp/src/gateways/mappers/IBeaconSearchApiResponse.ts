@@ -14,4 +14,6 @@ export interface IBeaconSearchApiResponseBody {
   ownerEmail: string;
   accountHolderId: string;
   useActivities: string;
+  registrationMarks: string[];
+  vesselNames: string[];
 }
