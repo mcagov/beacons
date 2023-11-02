@@ -207,10 +207,16 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @Test
   public void whenTransferringABeaconToANewAccountHolder_ShouldSucceed()
     throws Exception {
-    AccountHolder accountHolder = generateAccountHolder(UUID.randomUUID());
+    AccountHolder accountHolder = generateAccountHolder(
+      UUID.randomUUID(),
+      "Old Owner"
+    );
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
 
-    AccountHolder accountHolder2 = generateAccountHolder(UUID.randomUUID());
+    AccountHolder accountHolder2 = generateAccountHolder(
+      UUID.randomUUID(),
+      "New Owner"
+    );
     AccountHolderId id2 = accountHolderService.create(accountHolder2).getId();
 
     Beacon beacon = generateBeacon();
@@ -233,10 +239,16 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @Test
   public void whenTransferringMultipleBeaconsToANewAccountHolder_ShouldSucceed()
     throws Exception {
-    AccountHolder accountHolder = generateAccountHolder(UUID.randomUUID());
+    AccountHolder accountHolder = generateAccountHolder(
+      UUID.randomUUID(),
+      "Old Owner"
+    );
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
 
-    AccountHolder accountHolder2 = generateAccountHolder(UUID.randomUUID());
+    AccountHolder accountHolder2 = generateAccountHolder(
+      UUID.randomUUID(),
+      "New Owner"
+    );
     AccountHolderId id2 = accountHolderService.create(accountHolder2).getId();
 
     Beacon beacon = generateBeacon();
@@ -269,10 +281,16 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @Test
   public void whenTransferringBeaconsToANewAccountHolder_ShouldGenerateTransferNote()
     throws Exception {
-    AccountHolder accountHolder = generateAccountHolder(UUID.randomUUID());
+    AccountHolder accountHolder = generateAccountHolder(
+      UUID.randomUUID(),
+      "Old Owner"
+    );
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
 
-    AccountHolder accountHolder2 = generateAccountHolder(UUID.randomUUID());
+    AccountHolder accountHolder2 = generateAccountHolder(
+      UUID.randomUUID(),
+      "New Owner"
+    );
     AccountHolderId id2 = accountHolderService.create(accountHolder2).getId();
 
     Beacon beacon = generateBeacon();
@@ -287,15 +305,26 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
     assertThat(noteService.getByBeaconId(beacon.getId()).size(), equalTo(1));
 
+    String expectedNoteText = String.format(
+      "Beacon transferred from Account Holder %s (%s) to Account Holder %s (%s)",
+      accountHolder.getFullName(),
+      accountHolder.getEmail(),
+      accountHolder2.getFullName(),
+      accountHolder2.getEmail()
+    );
+
     assertThat(
       noteService.getByBeaconId(beacon.getId()).get(0).getText(),
-      containsString(accountHolder2.getFullName())
+      equalTo(expectedNoteText)
     );
   }
 
   @Test
   public void whenTransferringAnUnknownBeacon_ShouldError() throws Exception {
-    AccountHolder accountHolder2 = generateAccountHolder(UUID.randomUUID());
+    AccountHolder accountHolder2 = generateAccountHolder(
+      UUID.randomUUID(),
+      "foo"
+    );
     AccountHolderId id2 = accountHolderService.create(accountHolder2).getId();
 
     List<BeaconId> beaconsToTransfer = new ArrayList<>();
@@ -310,7 +339,10 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @Test
   public void whenTransferringToAnUnknownAccountHolder_ShouldError()
     throws Exception {
-    AccountHolder accountHolder = generateAccountHolder(UUID.randomUUID());
+    AccountHolder accountHolder = generateAccountHolder(
+      UUID.randomUUID(),
+      "foo"
+    );
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
 
     Beacon beacon = generateBeacon();
@@ -342,11 +374,14 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     return beacon;
   }
 
-  private static AccountHolder generateAccountHolder(UUID authId) {
+  private static AccountHolder generateAccountHolder(
+    UUID authId,
+    String fullName
+  ) {
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setAuthId(authId.toString());
     accountHolder.setEmail(authId + "@mt-test.com");
-    accountHolder.setFullName("Test Holder");
+    accountHolder.setFullName(fullName);
 
     return accountHolder;
   }
