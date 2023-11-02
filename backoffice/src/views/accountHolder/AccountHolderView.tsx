@@ -120,7 +120,6 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
         );
 
         if (isMounted) {
-          console.dir(accountHolders._embedded.accountHolderSearch);
           setAccountHolder(accountHolder);
           setBeacons(beacons);
           setAccountHolders(accountHolders._embedded.accountHolderSearch);
