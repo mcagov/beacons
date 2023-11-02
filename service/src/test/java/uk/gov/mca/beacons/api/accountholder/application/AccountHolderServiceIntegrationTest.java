@@ -1,6 +1,7 @@
 package uk.gov.mca.beacons.api.accountholder.application;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -266,7 +267,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   }
 
   @Test
-  public void whenTransferringBeaconsToANewAccountHolder_ShouldKeepAssociatedNotes()
+  public void whenTransferringBeaconsToANewAccountHolder_ShouldGenerateTransferNote()
     throws Exception {
     AccountHolder accountHolder = generateAccountHolder(UUID.randomUUID());
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
@@ -279,17 +280,18 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
     beaconRepository.save(beacon);
 
-    noteService.createSystemNote(beacon.getId(), "A Note");
-
     List<BeaconId> beaconsToTransfer = new ArrayList<>();
     beaconsToTransfer.add(beacon.getId());
 
     accountHolderService.transferBeacons(id2, beaconsToTransfer);
 
+    assertThat(noteService.getByBeaconId(beacon.getId()).size(), equalTo(1));
+
     assertThat(
       noteService.getByBeaconId(beacon.getId()).get(0).getText(),
-      equalTo("A Note")
+      containsString(accountHolder2.getFullName())
     );
+    //assertion on note?
   }
 
   @Test
