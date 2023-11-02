@@ -321,10 +321,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
   @Test
   public void whenTransferringAnUnknownBeacon_ShouldError() throws Exception {
-    AccountHolder accountHolder2 = generateAccountHolder(
-      UUID.randomUUID(),
-      "foo"
-    );
+    AccountHolder accountHolder2 = generateAccountHolder(UUID.randomUUID());
     AccountHolderId id2 = accountHolderService.create(accountHolder2).getId();
 
     List<BeaconId> beaconsToTransfer = new ArrayList<>();
@@ -339,10 +336,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @Test
   public void whenTransferringToAnUnknownAccountHolder_ShouldError()
     throws Exception {
-    AccountHolder accountHolder = generateAccountHolder(
-      UUID.randomUUID(),
-      "foo"
-    );
+    AccountHolder accountHolder = generateAccountHolder(UUID.randomUUID());
     AccountHolderId id = accountHolderService.create(accountHolder).getId();
 
     Beacon beacon = generateBeacon();
@@ -384,5 +378,9 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     accountHolder.setFullName(fullName);
 
     return accountHolder;
+  }
+
+  private static AccountHolder generateAccountHolder(UUID authId) {
+    return generateAccountHolder(authId, "Test Holder");
   }
 }
