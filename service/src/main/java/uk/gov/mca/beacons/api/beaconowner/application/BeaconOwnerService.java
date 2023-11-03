@@ -37,6 +37,10 @@ public class BeaconOwnerService {
     return Optional.of(beaconOwners.get(0));
   }
 
+  public List<BeaconOwner> getOwnersByBeaconId(BeaconId beaconId) {
+    return beaconOwnerRepository.getByBeaconId(beaconId);
+  }
+
   public void deleteByBeaconId(BeaconId beaconId) {
     beaconOwnerRepository.deleteAllByBeaconId(beaconId);
     beaconOwnerRepository.flush();
