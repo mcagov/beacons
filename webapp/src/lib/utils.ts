@@ -36,3 +36,7 @@ const isRecord = (object: any) =>
   typeof object === "object" && !isArray(object);
 
 const isArray = (object: any) => object instanceof Array;
+
+export function pluralize(count: number, singular: string, plural = null) {
+  return count === 1 ? singular : plural || `${singular}s`;
+}

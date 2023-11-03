@@ -3,7 +3,6 @@ import React, { FunctionComponent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { LinkButton } from "../../components/Button";
 import LegacyBeaconsNotification from "../../components/domain/LegacyBeaconsNotification";
-import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { BeaconRegistryContactInfo } from "../../components/Mca";
 import {
@@ -33,6 +32,7 @@ import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { Rule } from "../../router/rules/Rule";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails } from "../../router/rules/WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails";
+import { pluralize } from "../../lib/utils";
 
 export interface YourBeaconRegistryAccountPageProps {
   id?: string;
@@ -69,7 +69,18 @@ export const YourBeaconRegistryAccount: FunctionComponent<
               accountHolderDetails={accountHolderDetails}
             />
           )}
-          <YourBeacons beacons={beacons} />
+
+          <YourBeacons
+            beacons={beacons.filter(
+              ({ beaconStatus }) => beaconStatus === "NEW"
+            )}
+            filter="NEW"
+          />
+
+          {legacyBeacons && legacyBeacons.length > 0 && (
+            <YourBeacons beacons={legacyBeacons} filter="MIGRATED" />
+          )}
+
           <RegisterANewBeacon />
           <Contact />
         </div>
@@ -200,15 +211,25 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
 
 interface IYourBeaconsProps {
   beacons: AccountListBeacon[];
+  filter: string;
 }
 
 const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
   beacons,
+  filter,
 }: IYourBeaconsProps): JSX.Element => (
   <>
     <table className="govuk-table">
       <caption className="govuk-table__caption govuk-table__caption--m">
-        You have {beacons ? beacons.length : 0} registered beacons
+        {filter === "MIGRATED"
+          ? `You have ${beacons ? beacons.length : 0} ${pluralize(
+              beacons.length,
+              "beacon"
+            )} that have not yet been claimed`
+          : `You have ${beacons ? beacons.length : 0} registered ${pluralize(
+              beacons.length,
+              "beacon"
+            )}`}
       </caption>
       <thead className="govuk-table__head">
         <tr className="govuk-table__row">

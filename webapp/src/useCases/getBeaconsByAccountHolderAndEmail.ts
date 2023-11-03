@@ -35,15 +35,9 @@ export const getBeaconsForAccountHolder =
           lastModifiedDate: formatDateTruncated(beacon.lastModifiedDate),
           beaconStatus: beacon.beaconStatus,
           hexId: beacon.hexId,
-          ownerName: beacon.beaconStatus === "NEW" ? beacon.ownerName : null,
-          mainUse: []
-            .concat(beacon.registrationMarks || [], beacon.vesselNames || [])
-            .filter(Boolean)
-            .join(", "),
-          uses:
-            beacon.beaconStatus === "NEW"
-              ? titleCase(beacon.useActivities)
-              : null,
+          ownerName: titleCase(beacon.ownerName),
+          mainUse: beacon.mainUseName,
+          uses: titleCase(beacon.useActivities),
         }))
     );
   };
