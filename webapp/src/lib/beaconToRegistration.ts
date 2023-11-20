@@ -94,7 +94,7 @@ const mapUseToBeaconUse = (use: Use): BeaconUse => {
     registrationMark: use.registrationMark,
     hexAddress: use.hexAddress,
     cnOrMsnNumber: use.cnOrMsnNumber,
-    dongle: use.dongle.toString(),
+    dongle: use.dongle + "",
     beaconPosition: use.beaconPosition,
     workingRemotelyLocation: use.workingRemotelyLocation,
     workingRemotelyPeopleCount: use.workingRemotelyPeopleCount.toString(),

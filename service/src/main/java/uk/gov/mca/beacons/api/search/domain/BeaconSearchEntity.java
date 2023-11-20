@@ -33,4 +33,5 @@ public class BeaconSearchEntity {
   private String beaconType;
   private String manufacturerSerialNumber;
   private String cospasSarsatNumber;
+  private String mainUseName;
 }
