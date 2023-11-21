@@ -115,6 +115,7 @@ describe("formatOwners()", () => {
           id: "1",
           fullName: "Steve Stevington",
           email: "steve@thestevingtons.com",
+          isMain: true,
           telephoneNumber: "07826 543728",
           addressLine1: "FFF",
           addressLine2: "59 Stevenswood Road",
@@ -132,6 +133,7 @@ describe("formatOwners()", () => {
           id: "1",
           fullName: "Steve Stevington",
           email: "steve@thestevingtons.com",
+          isMain: true,
           telephoneNumber: "07826 543728",
           addressLine1: "FFF",
           addressLine2: "59 Stevenswood Road",
@@ -144,6 +146,7 @@ describe("formatOwners()", () => {
           id: "2",
           fullName: "Prunella Stevington",
           email: "prunella@thestevingtons.com",
+          isMain: false,
           telephoneNumber: "07826 543728",
           addressLine1: "FFF",
           addressLine2: "59 Stevenswood Road",
@@ -153,7 +156,7 @@ describe("formatOwners()", () => {
           country: "United Kingdom",
         },
       ],
-      out: "Steve Stevington, Prunella Stevington",
+      out: "Steve Stevington (Main), Prunella Stevington",
     },
   ];
 

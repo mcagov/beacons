@@ -21,20 +21,29 @@ public class BeaconOwnerService {
   }
 
   public BeaconOwner create(BeaconOwner beaconOwner) {
+    beaconOwner.setMain(true); // For now, all owners created (1) is the main one.
     return beaconOwnerRepository.save(beaconOwner);
   }
 
-  //TODO: Refactor this code
   public Optional<BeaconOwner> getByBeaconId(BeaconId beaconId) {
-    // There is a one to zero or one mapping between beacons and beacon owners, therefore we either return null
-    // or the first element in the beacon owners list (there should only be one element)
     List<BeaconOwner> beaconOwners = beaconOwnerRepository.getByBeaconId(
       beaconId
     );
-    if (beaconOwners.size() == 0) {
+
+    return getMainOwner(beaconOwners);
+  }
+
+  public Optional<BeaconOwner> getMainOwner(List<BeaconOwner> beaconOwners) {
+    if (beaconOwners.isEmpty()) {
       return Optional.empty();
     }
-    return Optional.of(beaconOwners.get(0));
+
+    Optional<BeaconOwner> mainBeaconOwner = beaconOwners
+      .stream()
+      .filter(BeaconOwner::isMain)
+      .findFirst();
+
+    return mainBeaconOwner.or(() -> Optional.of(beaconOwners.get(0)));
   }
 
   public List<BeaconOwner> getOwnersByBeaconId(BeaconId beaconId) {

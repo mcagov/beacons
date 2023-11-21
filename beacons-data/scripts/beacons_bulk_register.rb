@@ -65,8 +65,8 @@ $14, $15, $16, $17, $18, $19)')
 conn.prepare("beacon_owner", 'INSERT INTO beacon_owner (id, beacon_id,
 full_name, email, address_line_1, address_line_2, address_line_3,
 address_line_4, town_or_city, postcode, county, country, telephone_number,
-alternative_telephone_number, created_date, last_modified_date) VALUES
-($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)')
+alternative_telephone_number, created_date, last_modified_date, is_main) VALUES
+($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)')
 
 conn.prepare("beaconuse", 'INSERT INTO beacon_use (id, beacon_id,
 main_use, created_date, vessel_name, homeport, area_of_operation,
@@ -88,7 +88,7 @@ conn.prepare("note", 'INSERT INTO note (id, beacon_id, text, type,
 created_date, user_id, full_name, email) VALUES ($1, $2, $3, $4, $5, $6,
 $7, $8)')
 
-5.times do |count|
+100.times do |count|
 
 #Setup beacon with dummy data
 
@@ -96,7 +96,6 @@ $7, $8)')
 
   person_uuid = SecureRandom.uuid
   account_holder_uuid = SecureRandom.uuid
-  beacon_owner_uuid = SecureRandom.uuid
 
   beacon_uuid = SecureRandom.uuid
   hex_id_length = [13,13,21].sample
@@ -154,10 +153,22 @@ $7, $8)')
     battery_expiry_date, last_serviced_date, reference_number, mti,
     svdr, csta, protocol, coding])
 
-    # Insert beacon owner
-  conn.exec_prepared('beacon_owner', [ beacon_owner_uuid, beacon_uuid,
+    # Insert beacon owner(s)
+
+
+    #first main owner
+
+    conn.exec_prepared('beacon_owner', [ SecureRandom.uuid, beacon_uuid,
     fullname, email, address1, address2, nil, nil, town, postcode, county,
-    country, telephone_number, telephone_number, created_date, created_date])
+    country, telephone_number, telephone_number, created_date, created_date, true])
+
+    count_secondary_owners = rand(4) #0-3 secondary owners
+
+    count_secondary_owners.times do
+      conn.exec_prepared('beacon_owner', [ SecureRandom.uuid, beacon_uuid,
+        fullname, email, address1, address2, nil, nil, town, postcode, county,
+        country, telephone_number, telephone_number, created_date, created_date, false])
+    end
 
 Faker::Number.between(from: 5, to: 6).times do
 
