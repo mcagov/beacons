@@ -102,6 +102,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       context.query.registrationId as string,
       context.query.useId as string
     );
+    ("");
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, StartButton } from "../../../../components/Button";
+import { BackButton, Button, StartButton } from "../../../../components/Button";
 import { AdditionalBeaconUseSummary } from "../../../../components/domain/AdditionalBeaconUseSummary";
 import { CheckYourAnswersBeaconEmergencyContactsSummary } from "../../../../components/domain/CheckYourAnswersBeaconEmergencyContactsSummary";
 import { CheckYourAnswersBeaconInformationSummary } from "../../../../components/domain/CheckYourAnswersBeaconInformationSummary";
@@ -19,12 +19,17 @@ import {
   GovUKBody,
   PageHeading,
   SectionHeading,
+  WarningLink,
 } from "../../../../components/Typography";
 import { Registration } from "../../../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { AccountPageURLs } from "../../../../lib/urls";
+import {
+  AccountPageURLs,
+  DeleteRegistrationPageURLs,
+  queryParams,
+} from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
@@ -48,6 +53,12 @@ const RegistrationSummaryPage: FunctionComponent<
   userHasEdited,
 }: RegistrationSummaryPageProps): JSX.Element => {
   const pageHeading = `Your registered beacon with Hex ID/UIN: ${registration.hexId}`;
+
+  const confirmBeforeDelete = (registrationId: string) =>
+    DeleteRegistrationPageURLs.deleteRegistration +
+    queryParams({
+      id: registrationId,
+    });
 
   return (
     <Layout
@@ -144,6 +155,15 @@ const RegistrationSummaryPage: FunctionComponent<
                 />
               </>
             )}
+
+            <div>
+              <a
+                className="govuk-button govuk-button--warning"
+                href={confirmBeforeDelete(registration.id)}
+              >
+                Delete this registration
+              </a>
+            </div>
 
             <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
             <GovUKBody>
