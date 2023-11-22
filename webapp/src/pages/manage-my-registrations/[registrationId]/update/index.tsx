@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent } from "react";
-import { BackButton, Button, StartButton } from "../../../../components/Button";
+import { BackButton, StartButton } from "../../../../components/Button";
 import { AdditionalBeaconUseSummary } from "../../../../components/domain/AdditionalBeaconUseSummary";
 import { CheckYourAnswersBeaconEmergencyContactsSummary } from "../../../../components/domain/CheckYourAnswersBeaconEmergencyContactsSummary";
 import { CheckYourAnswersBeaconInformationSummary } from "../../../../components/domain/CheckYourAnswersBeaconInformationSummary";
@@ -19,7 +19,6 @@ import {
   GovUKBody,
   PageHeading,
   SectionHeading,
-  WarningLink,
 } from "../../../../components/Typography";
 import { Registration } from "../../../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
