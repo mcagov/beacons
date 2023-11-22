@@ -9,6 +9,7 @@ import {
   AnchorLink,
   PageHeading,
   SectionHeading,
+  WarningLink,
 } from "../../components/Typography";
 import { AccountHolder } from "../../entities/AccountHolder";
 import { AccountListBeacon } from "../../entities/AccountListBeacon";
@@ -310,30 +311,31 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
         <td className="govuk-table__cell">
           {beacon.beaconStatus === "NEW" ? (
             <>
-              <AnchorLink
-                href={UrlBuilder.buildRegistrationUrl(
-                  Actions.update,
-                  Pages.summary,
-                  beacon.id
-                )}
-                classes="govuk-link--no-visited-state"
-              >
-                Update
-              </AnchorLink>{" "}
-              <AnchorLink
-                href={confirmBeforeDelete(beacon.id)}
-                classes="govuk-link--no-visited-state"
-              >
-                Delete
-              </AnchorLink>
+              <div style={{ marginBottom: "8px" }}>
+                <AnchorLink
+                  href={UrlBuilder.buildRegistrationUrl(
+                    Actions.update,
+                    Pages.summary,
+                    beacon.id
+                  )}
+                  classes="govuk-link--no-visited-state"
+                >
+                  Update
+                </AnchorLink>
+              </div>
+              <div>
+                <WarningLink href={confirmBeforeDelete(beacon.id)}>
+                  Delete
+                </WarningLink>
+              </div>
             </>
           ) : (
-            <AnchorLink
+            <a
               href={`${ClaimPageURLs.claimBeacon}/${beacon.id}`}
-              classes="govuk-link--no-visited-state"
+              className="govuk-link--no-visited-state"
             >
               Claim this beacon
-            </AnchorLink>
+            </a>
           )}
         </td>
       </tr>
