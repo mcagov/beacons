@@ -91,7 +91,7 @@ const RegistrationSummaryPage: FunctionComponent<
               <dd className="govuk-summary-list__actions">
                 <a
                   className="govuk-link"
-                  style={{ color: "#d4351c", "font-size": "1.1875rem" }}
+                  style={{ color: "#d4351c", fontSize: "1.1875rem" }}
                   href={confirmBeforeDelete(registration.id)}
                 >
                   Delete this registration
