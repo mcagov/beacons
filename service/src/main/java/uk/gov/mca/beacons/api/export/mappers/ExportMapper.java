@@ -133,9 +133,11 @@ public class ExportMapper {
       )
       .uses(toUsesDTO(registration.getBeaconUses()))
       .owners(
-        Arrays.asList(
-          owner != null ? toOwnerDTO(registration.getBeaconOwner()) : null
-        )
+        registration
+          .getBeaconOwners()
+          .stream()
+          .map(o -> toOwnerDTO(o))
+          .collect(Collectors.toList())
       )
       .accountHolder(toAccountHolderDTO(accountHolder))
       .emergencyContacts(
@@ -368,6 +370,7 @@ public class ExportMapper {
     return BeaconExportOwnerDTO
       .builder()
       .ownerName(owner.getFullName())
+      .isMain(owner.isMain())
       .address(address)
       .telephoneNumbers(
         BeaconsStringUtils.getMultipleValuesAsString(

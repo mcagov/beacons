@@ -156,7 +156,7 @@ describe("formatOwners()", () => {
           country: "United Kingdom",
         },
       ],
-      out: "Steve Stevington (Main), Prunella Stevington",
+      out: "Steve Stevington, Prunella Stevington",
     },
   ];
 

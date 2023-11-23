@@ -517,9 +517,14 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
           <div className="section" key={index}>
             <h3>Owner Details:</h3>
             <CertificateField
-              classes="full"
+              classes="half"
               title="Owner(s)"
               value={owner.ownerName}
+            />
+            <CertificateField
+              classes="half"
+              title="Is Main"
+              value={owner.isMain ? "Yes" : "No"}
             />
             <CertificateField
               classes="full"

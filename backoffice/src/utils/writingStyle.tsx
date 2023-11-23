@@ -58,11 +58,7 @@ export const formatOwners = (owners: IOwner[]): string => {
     return owners[0].fullName;
   }
 
-  return owners
-    .map((owner) =>
-      owner.isMain ? owner.fullName + " (Main)" : owner.fullName
-    )
-    .join(", ");
+  return owners.map((owner) => owner.fullName).join(", ");
 };
 
 export const formatSvdr = (svdr: string): string => {
@@ -152,6 +148,8 @@ export function formatForClipboard(entity: Record<any, any>): string {
         return `\n=====${_.startCase(
           key
         ).toUpperCase()}=====\n${formatForClipboard(value)}`;
+      } else if (typeof value === "boolean") {
+        return `${_.startCase(key)}:    ${value ? "Yes" : "No"}\n`;
       } else if (!_.isNumber(value) && _.isEmpty(value)) {
         return `${_.startCase(key)}:    N/A\n`;
       } else {

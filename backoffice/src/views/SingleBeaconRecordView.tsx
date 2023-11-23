@@ -7,7 +7,6 @@ import { CopyToClipboardButton } from "components/CopyToClipboardButton";
 import { BeaconStatuses, IBeacon } from "../entities/IBeacon";
 import { INote } from "entities/INote";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
-import { OwnerPanel } from "panels/ownerPanel/OwnerPanel";
 import { UsesListPanel } from "panels/usesPanel/UsesListPanel";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { formatForClipboardWithNotes } from "utils/writingStyle";
