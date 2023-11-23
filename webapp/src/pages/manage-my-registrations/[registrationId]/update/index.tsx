@@ -19,6 +19,7 @@ import {
   GovUKBody,
   PageHeading,
   SectionHeading,
+  WarningLink,
 } from "../../../../components/Typography";
 import { Registration } from "../../../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
@@ -82,7 +83,24 @@ const RegistrationSummaryPage: FunctionComponent<
                 />
               </SummaryListItem>
             </SummaryList>
-            <SectionHeading>About the beacon</SectionHeading>
+
+            <div className="govuk-summary-list__row">
+              <dt className="govuk-summary-list__key">
+                <SectionHeading>About the beacon</SectionHeading>
+              </dt>
+              <dd className="govuk-summary-list__actions">
+                <a
+                  className="govuk-link"
+                  style={{ color: "#d4351c", "font-size": "1.1875rem" }}
+                  href={confirmBeforeDelete(registration.id)}
+                >
+                  Delete this registration
+                  <span className="govuk-visually-hidden">
+                    Delete this registration
+                  </span>
+                </a>
+              </dd>
+            </div>
             <SummaryList>
               <SummaryListItem
                 labelText="Beacon information"
@@ -154,15 +172,6 @@ const RegistrationSummaryPage: FunctionComponent<
                 />
               </>
             )}
-
-            <div>
-              <a
-                className="govuk-button govuk-button--warning"
-                href={confirmBeforeDelete(registration.id)}
-              >
-                Delete this registration
-              </a>
-            </div>
 
             <SectionHeading>Contact the Beacon Registry Team</SectionHeading>
             <GovUKBody>
