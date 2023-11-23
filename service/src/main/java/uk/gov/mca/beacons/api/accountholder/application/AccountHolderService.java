@@ -245,13 +245,7 @@ public class AccountHolderService {
 
     noteService.createSystemNote(
       beaconToTransfer.getId(),
-      String.format(
-        "Beacon transferred from Account Holder %s (%s) to Account Holder %s (%s)",
-        currentAccountHolder.getFullName(),
-        currentAccountHolder.getEmail(),
-        recipientAccountHolder.getFullName(),
-        recipientAccountHolder.getEmail()
-      )
+      "Beacon transferred from another account"
     );
   }
 }
