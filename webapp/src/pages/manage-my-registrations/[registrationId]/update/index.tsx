@@ -19,7 +19,6 @@ import {
   GovUKBody,
   PageHeading,
   SectionHeading,
-  WarningLink,
 } from "../../../../components/Typography";
 import { Registration } from "../../../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
