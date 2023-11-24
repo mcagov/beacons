@@ -226,6 +226,7 @@ public class RegistrationService {
       .builder()
       .beacon(savedBeacon)
       .beaconOwner(savedBeaconOwner)
+      .beaconOwners(Arrays.asList(savedBeaconOwner))
       .beaconUses(savedBeaconUses)
       .emergencyContacts(savedEmergencyContacts)
       .build();
