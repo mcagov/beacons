@@ -63,11 +63,10 @@ public class BeaconSearchServiceUnitTest {
     given(beaconRepository.findById(any(BeaconId.class)))
       .willReturn(Optional.of(mockBeacon));
     BeaconOwner mockBeaconOwner = createMockBeaconOwner();
-    given(beaconOwnerRepository.findBeaconOwnerByBeaconId(any(BeaconId.class)))
-      .willReturn(Optional.of(mockBeaconOwner));
 
     given(beaconOwnerRepository.getByBeaconId(any(BeaconId.class)))
       .willReturn(List.of(mockBeaconOwner));
+
     BeaconUse mockBeaconUse = createMockBeaconUse();
 
     given(beaconUseRepository.getBeaconUseByBeaconId(any(BeaconId.class)))
@@ -104,8 +103,6 @@ public class BeaconSearchServiceUnitTest {
     Beacon mockBeacon = createMockBeacon(BeaconStatus.DELETED);
     given(beaconRepository.findById(any(BeaconId.class)))
       .willReturn(Optional.of(mockBeacon));
-    given(beaconOwnerRepository.findBeaconOwnerByBeaconId(any(BeaconId.class)))
-      .willReturn(Optional.empty());
     given(beaconOwnerRepository.getByBeaconId(any(BeaconId.class)))
       .willReturn(List.of());
     given(beaconUseRepository.getBeaconUseByBeaconId(any(BeaconId.class)))

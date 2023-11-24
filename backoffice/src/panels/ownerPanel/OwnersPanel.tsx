@@ -7,9 +7,6 @@ import { PanelViewingState } from "../../components/dataPanel/PanelViewingState"
 import { IOwner } from "../../entities/IOwner";
 import { IBeaconsGateway } from "../../gateways/beacons/IBeaconsGateway";
 import { Placeholders } from "../../utils/writingStyle";
-import { IBeaconExport } from "../../gateways/exports/IBeaconExport";
-import { LegacyCertificate } from "../../views/exports/certificates/LegacyCertificate";
-import { Certificate } from "../../views/exports/certificates/Certificate";
 
 interface OwnerSummaryPanelProps {
   beaconsGateway: IBeaconsGateway;
