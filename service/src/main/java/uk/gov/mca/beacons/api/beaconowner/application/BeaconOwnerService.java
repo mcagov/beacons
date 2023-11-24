@@ -34,16 +34,7 @@ public class BeaconOwnerService {
   }
 
   public Optional<BeaconOwner> getMainOwner(List<BeaconOwner> beaconOwners) {
-    if (beaconOwners.isEmpty()) {
-      return Optional.empty();
-    }
-
-    Optional<BeaconOwner> mainBeaconOwner = beaconOwners
-      .stream()
-      .filter(BeaconOwner::isMain)
-      .findFirst();
-
-    return mainBeaconOwner.or(() -> Optional.of(beaconOwners.get(0)));
+    return BeaconOwnerHelper.getMainOwner(beaconOwners);
   }
 
   public List<BeaconOwner> getOwnersByBeaconId(BeaconId beaconId) {
