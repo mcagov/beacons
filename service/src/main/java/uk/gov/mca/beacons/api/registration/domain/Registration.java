@@ -31,7 +31,10 @@ public class Registration implements Comparable<Registration> {
       beaconOwner.setBeaconId(beaconId);
     }
 
-    beaconOwners.forEach(bo -> bo.setBeaconId(beaconId));
+    if (beaconOwners != null && !beaconOwners.isEmpty()) {
+      beaconOwners.forEach(bo -> bo.setBeaconId(beaconId));
+    }
+
     beaconUses.forEach(use -> use.setBeaconId(beaconId));
     emergencyContacts.forEach(emergencyContact ->
       emergencyContact.setBeaconId(beaconId)

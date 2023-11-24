@@ -21,7 +21,6 @@ public class BeaconOwnerService {
   }
 
   public BeaconOwner create(BeaconOwner beaconOwner) {
-    beaconOwner.setMain(true); // For now, all owners created (1) is the main one.
     return beaconOwnerRepository.save(beaconOwner);
   }
 

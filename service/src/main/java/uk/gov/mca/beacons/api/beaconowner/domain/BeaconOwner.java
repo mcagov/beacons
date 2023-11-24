@@ -36,7 +36,7 @@ public class BeaconOwner extends BaseAggregateRoot<BeaconOwnerId> {
 
   @Setter
   @NotNull
-  private boolean isMain;
+  private boolean isMain = true;
 
   @Setter
   @NotNull

@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.registration.mappers;
 
+import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -77,8 +79,10 @@ public class RegistrationMapper {
           : beaconOwnerMapper.toDTO(registration.getBeaconOwner())
       )
       .beaconOwnerDTOs(
-        registration
-          .getBeaconOwners()
+        Optional
+          .ofNullable(registration)
+          .map(Registration::getBeaconOwners)
+          .orElse(Collections.emptyList())
           .stream()
           .map(beaconOwnerMapper::toDTO)
           .collect(Collectors.toList())
