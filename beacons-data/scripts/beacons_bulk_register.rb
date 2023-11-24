@@ -39,7 +39,6 @@ owner_email = ARGV[1] || Faker::Internet.email
 db_host = 'localhost'
 db_password= 'password'
 
-
 puts("host is #{db_host}")
 
 conn = PG.connect( dbname: 'beacons', :host => db_host, :port => 5432,
@@ -183,7 +182,7 @@ Faker::Number.between(from: 5, to: 6).times do
   emergency_contact_telephone_2, created_date, created_date])
 end
 
-Faker::Number.between(from: 1, to: 2).times do
+Faker::Number.between(from: 1, to: 2).times do |index|
         # setup dummy beacon use(s) (do 1-2 times)
         environment = ["AVIATION", "MARITIME", "LAND"].sample
 
@@ -234,7 +233,7 @@ Faker::Number.between(from: 1, to: 2).times do
 
         beacon_use_uuid = SecureRandom.uuid
         mobile_telephone = true
-        main_use = true
+        main_use = (index == 0)
         vessel_name = Faker::Name.name
         area_of_operation = Faker::Address.state
         call_sign = Faker::Artist.name
