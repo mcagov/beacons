@@ -73,7 +73,6 @@ export const SingleBeaconRecordView: FunctionComponent<
         const notes = await notesGateway.getNotes(beaconId);
         setNotes(notes);
         setBeacon(beacon);
-        console.dir(beacon);
       } catch (error) {
         logToServer.error(error);
       }

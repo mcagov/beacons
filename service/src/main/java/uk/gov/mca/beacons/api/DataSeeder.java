@@ -88,7 +88,7 @@ public class DataSeeder implements CommandLineRunner {
         int secondaryOwnerCount = faker.random().nextInt(4);
 
         IntStream
-          .range(1, secondaryOwnerCount)
+          .range(0, secondaryOwnerCount)
           .forEach(j -> seedBeaconOwner(beacon.getId(), false));
 
         seedEmergencyContact(beacon.getId());
