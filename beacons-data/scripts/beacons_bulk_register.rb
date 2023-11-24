@@ -101,8 +101,6 @@ $7, $8)')
   hex_id_length = [13,13,21].sample
   hex_id = Faker::Base.regexify("1D[A-F1-9]{#{hex_id_length}}")
 
-  email = Faker::Internet.email
-  fullname = Faker::Name.name
 
   created_date = Faker::Time.between_dates(from: '2012-01-01', to: '2022-07-24').iso8601
   last_modified_date = Faker::Time.between_dates(from: '2023-05-01', to: '2023-07-31').iso8601
@@ -114,6 +112,8 @@ $7, $8)')
   manufacturer_serial_number = Faker::Base.bothify("#?#?#?#?#?#???##")
   auth_id = SecureRandom.uuid
 
+  email = Faker::Internet.email
+  fullname = Faker::Name.name
   telephone_number = Faker::PhoneNumber.phone_number
   is_main = "YES"
   county = Faker::Address.county
@@ -166,8 +166,8 @@ $7, $8)')
 
     count_secondary_owners.times do
       conn.exec_prepared('beacon_owner', [ SecureRandom.uuid, beacon_uuid,
-        fullname, email, address1, address2, nil, nil, town, postcode, county,
-        country, telephone_number, telephone_number, created_date, created_date, false])
+        Faker::Name.name, Faker::Internet.email, Faker::Address.street_name, Faker::Address.street_address, nil, nil, Faker::Address.city, Faker::Address.postcode, Faker::Address.county,
+        "UK", Faker::PhoneNumber.phone_number, Faker::PhoneNumber.phone_number, created_date, created_date, false])
     end
 
 Faker::Number.between(from: 5, to: 6).times do
