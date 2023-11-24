@@ -158,9 +158,6 @@ public class BackupSpreadsheetRow {
     DateTimeFormatter dateFormatter
   ) throws JsonProcessingException {
     Beacon beacon = registration.getBeacon();
-    List<BeaconOwner> owners = registration.getBeaconOwner() != null
-      ? List.of(registration.getBeaconOwner())
-      : new ArrayList<>();
 
     this.id = registration.getBeacon().getId().unwrap();
 
@@ -168,7 +165,7 @@ public class BackupSpreadsheetRow {
 
     setNotes(getStringifiedNotes(nonSystemNotes));
     populateUses(registration.getBeaconUses(), beaconUseMapper);
-    populateModernOwners(owners);
+    populateModernOwners(registration.getBeaconOwners());
     populateModernEmergencyContacts(registration.getEmergencyContacts());
   }
 
@@ -267,7 +264,7 @@ public class BackupSpreadsheetRow {
 
   protected void populateModernOwners(List<BeaconOwner> beaconOwners) {
     this.owners =
-      beaconOwners != null
+      beaconOwners != null && !beaconOwners.isEmpty()
         ? JsonSerialiser
           .mapModernBeaconOwnersToJsonArray(beaconOwners)
           .toString()

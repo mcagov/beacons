@@ -79,6 +79,8 @@ public class JsonSerialiser {
           owner.getFullName() != null ? owner.getFullName().toUpperCase() : ""
         );
 
+        json.put("is main", owner.isMain() ? "Yes" : "No");
+
         json.put(
           "address",
           owner.getAddress() != null

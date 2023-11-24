@@ -36,6 +36,10 @@ public class BeaconOwner extends BaseAggregateRoot<BeaconOwnerId> {
 
   @Setter
   @NotNull
+  private boolean isMain;
+
+  @Setter
+  @NotNull
   private String email;
 
   @Setter

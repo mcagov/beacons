@@ -21,6 +21,7 @@ public class Registration implements Comparable<Registration> {
   private Beacon beacon;
   private List<BeaconUse> beaconUses;
   private BeaconOwner beaconOwner;
+  private List<BeaconOwner> beaconOwners;
 
   private AccountHolder accountHolder;
   private List<EmergencyContact> emergencyContacts;
@@ -29,6 +30,8 @@ public class Registration implements Comparable<Registration> {
     if (beaconOwner != null) {
       beaconOwner.setBeaconId(beaconId);
     }
+
+    beaconOwners.forEach(bo -> bo.setBeaconId(beaconId));
     beaconUses.forEach(use -> use.setBeaconId(beaconId));
     emergencyContacts.forEach(emergencyContact ->
       emergencyContact.setBeaconId(beaconId)

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconRepository;
+import uk.gov.mca.beacons.api.beaconowner.application.BeaconOwnerHelper;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
@@ -61,9 +62,13 @@ public class BeaconSearchService {
     Beacon beacon = beaconRepository
       .findById(beaconId)
       .orElseThrow(IllegalArgumentException::new);
-    BeaconOwner owner = beaconOwnerRepository
-      .findBeaconOwnerByBeaconId(beacon.getId())
-      .orElse(null);
+
+    List<BeaconOwner> owners = beaconOwnerRepository.getByBeaconId(
+      beacon.getId()
+    );
+
+    BeaconOwner owner = BeaconOwnerHelper.getMainOwner(owners).orElse(null);
+
     List<BeaconUse> uses = beaconUseRepository.getBeaconUseByBeaconId(
       beacon.getId()
     );

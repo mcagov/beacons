@@ -7,7 +7,6 @@ import { CopyToClipboardButton } from "components/CopyToClipboardButton";
 import { BeaconStatuses, IBeacon } from "../entities/IBeacon";
 import { INote } from "entities/INote";
 import { IUsesGateway } from "gateways/uses/IUsesGateway";
-import { OwnerPanel } from "panels/ownerPanel/OwnerPanel";
 import { UsesListPanel } from "panels/usesPanel/UsesListPanel";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { formatForClipboardWithNotes } from "utils/writingStyle";
@@ -29,6 +28,7 @@ import { DialogueType } from "lib/DialogueType";
 import { IConfirmDialogueModel } from "components/ConfirmDialogue";
 import { SingleBeaconExportButtons } from "./exports/SingleBeaconExportButtons";
 import { AccountHolderPanel } from "../panels/accountHolderPanel/AccountHolderPanel";
+import { OwnersPanel } from "../panels/ownerPanel/OwnersPanel";
 
 interface ISingleBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -149,7 +149,8 @@ export const SingleBeaconRecordView: FunctionComponent<
           beaconId={beaconId}
         />
         <Tabs value={selectedTab} onChange={handleChange}>
-          <Tab label="Owner & Emergency Contacts" />
+          <Tab label="Owners" />
+          <Tab label="Emergency Contacts" />
           <Tab label={`${numberOfUses} Registered Uses`} />
           <Tab label={`Notes`} />
           <Tab label="Account Holder" />
@@ -161,9 +162,16 @@ export const SingleBeaconRecordView: FunctionComponent<
             justifyContent="space-between"
             spacing={1}
           >
-            <Grid item xs={6}>
-              <OwnerPanel beaconsGateway={beaconsGateway} beaconId={beaconId} />
-            </Grid>
+            <OwnersPanel beaconsGateway={beaconsGateway} beaconId={beaconId} />
+          </Grid>
+        </TabPanel>
+        <TabPanel value={selectedTab} index={1}>
+          <Grid
+            direction="row"
+            container
+            justifyContent="space-between"
+            spacing={1}
+          >
             <Grid item xs={6}>
               <EmergencyContactPanel
                 beaconsGateway={beaconsGateway}
@@ -172,13 +180,13 @@ export const SingleBeaconRecordView: FunctionComponent<
             </Grid>
           </Grid>
         </TabPanel>
-        <TabPanel value={selectedTab} index={1}>
+        <TabPanel value={selectedTab} index={2}>
           <UsesListPanel usesGateway={usesGateway} beaconId={beaconId} />
         </TabPanel>
-        <TabPanel value={selectedTab} index={2}>
+        <TabPanel value={selectedTab} index={3}>
           <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
         </TabPanel>
-        <TabPanel value={selectedTab} index={3}>
+        <TabPanel value={selectedTab} index={4}>
           <Grid
             direction="row"
             container

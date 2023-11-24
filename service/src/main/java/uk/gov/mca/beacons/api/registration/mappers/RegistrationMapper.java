@@ -76,6 +76,13 @@ public class RegistrationMapper {
           ? null
           : beaconOwnerMapper.toDTO(registration.getBeaconOwner())
       )
+      .beaconOwnerDTOs(
+        registration
+          .getBeaconOwners()
+          .stream()
+          .map(beaconOwnerMapper::toDTO)
+          .collect(Collectors.toList())
+      )
       .accountHolderDTO(
         registration.getAccountHolder() == null
           ? null
