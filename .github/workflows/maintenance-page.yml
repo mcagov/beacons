@@ -20,7 +20,7 @@ jobs:
     env:
       TF_WORKSPACE: production
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v2
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
