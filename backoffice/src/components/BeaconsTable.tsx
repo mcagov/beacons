@@ -91,10 +91,17 @@ const columns: Column<BeaconRowData>[] = [
   {
     title: "Status",
     field: "beaconStatus",
-    lookup: { NEW: "NEW", MIGRATED: "MIGRATED", DELETED: "DELETED" },
+    lookup: {
+      NEW: "NEW",
+      CHANGE: "CHANGE",
+      MIGRATED: "MIGRATED",
+      DELETED: "DELETED",
+    },
     render: (rowData: BeaconRowData) => {
       if (rowData.beaconStatus === "MIGRATED") {
         return <Chip label={rowData.beaconStatus} color="secondary" />;
+      } else if (rowData.beaconStatus === "CHANGE") {
+        return <Chip label={rowData.beaconStatus} color="warning" />;
       } else {
         return <Chip label={rowData.beaconStatus} color="primary" />;
       }

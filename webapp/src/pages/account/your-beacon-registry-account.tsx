@@ -50,10 +50,9 @@ export const YourBeaconRegistryAccount: FunctionComponent<
   signOutUri,
 }: YourBeaconRegistryAccountPageProps): JSX.Element => {
   const pageHeading = "Your Beacon Registry Account";
-  const legacyBeacons = beacons.filter((beacon) => {
-    return beacon.beaconStatus === "MIGRATED";
-  });
-
+  const legacyBeacons = beacons.filter(
+    (beacon) => beacon.beaconStatus === "MIGRATED"
+  );
   return (
     <Layout
       title={pageHeading}
@@ -72,10 +71,10 @@ export const YourBeaconRegistryAccount: FunctionComponent<
           )}
 
           <YourBeacons
-            beacons={beacons.filter(
-              ({ beaconStatus }) => beaconStatus === "NEW"
+            beacons={beacons.filter(({ beaconStatus }) =>
+              ["NEW", "CHANGE"].includes(beaconStatus)
             )}
-            filter="NEW"
+            filter="MODERN"
           />
 
           {legacyBeacons && legacyBeacons.length > 0 && (
@@ -282,7 +281,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
   return (
     <>
       <tr className="govuk-table__row">
-        {beacon.beaconStatus === "NEW" ? (
+        {["NEW", "CHANGE"].includes(beacon.beaconStatus) ? (
           <th scope="row" className="govuk-table__header">
             <AnchorLink
               href={UrlBuilder.buildRegistrationUrl(
@@ -309,7 +308,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
         <td className="govuk-table__cell">{beacon.createdDate}</td>
         <td className="govuk-table__cell">{beacon.lastModifiedDate}</td>
         <td className="govuk-table__cell">
-          {beacon.beaconStatus === "NEW" ? (
+          {["NEW", "CHANGE"].includes(beacon.beaconStatus) ? (
             <>
               <div style={{ marginBottom: "8px" }}>
                 <AnchorLink
@@ -348,7 +347,6 @@ const RegisterANewBeacon: FunctionComponent = (): JSX.Element => (
     <SectionHeading>Register a new beacon</SectionHeading>
     <LinkButton
       buttonText="Register a new beacon"
-      // href={CreateRegistrationPageURLs.checkBeaconDetails}
       href={ActionURLs.clearAndCheckBeaconDetails}
     />
   </>
