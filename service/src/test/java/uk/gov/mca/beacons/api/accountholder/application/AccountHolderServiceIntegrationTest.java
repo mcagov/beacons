@@ -305,17 +305,9 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
     assertThat(noteService.getByBeaconId(beacon.getId()).size(), equalTo(1));
 
-    String expectedNoteText = String.format(
-      "Beacon transferred from Account Holder %s (%s) to Account Holder %s (%s)",
-      accountHolder.getFullName(),
-      accountHolder.getEmail(),
-      accountHolder2.getFullName(),
-      accountHolder2.getEmail()
-    );
-
     assertThat(
       noteService.getByBeaconId(beacon.getId()).get(0).getText(),
-      equalTo(expectedNoteText)
+      equalTo("Beacon transferred from another account")
     );
   }
 

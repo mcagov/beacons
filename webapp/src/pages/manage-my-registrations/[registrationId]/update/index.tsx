@@ -24,7 +24,11 @@ import { Registration } from "../../../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { AccountPageURLs } from "../../../../lib/urls";
+import {
+  AccountPageURLs,
+  DeleteRegistrationPageURLs,
+  queryParams,
+} from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
@@ -49,6 +53,12 @@ const RegistrationSummaryPage: FunctionComponent<
 }: RegistrationSummaryPageProps): JSX.Element => {
   const pageHeading = `Your registered beacon with Hex ID/UIN: ${registration.hexId}`;
 
+  const confirmBeforeDelete = (registrationId: string) =>
+    DeleteRegistrationPageURLs.deleteRegistration +
+    queryParams({
+      id: registrationId,
+    });
+
   return (
     <Layout
       navigation={<BackButton href={AccountPageURLs.accountHome} />}
@@ -72,7 +82,24 @@ const RegistrationSummaryPage: FunctionComponent<
                 />
               </SummaryListItem>
             </SummaryList>
-            <SectionHeading>About the beacon</SectionHeading>
+
+            <div className="govuk-summary-list__row">
+              <dt className="govuk-summary-list__key">
+                <SectionHeading>About the beacon</SectionHeading>
+              </dt>
+              <dd className="govuk-summary-list__actions">
+                <a
+                  className="govuk-link"
+                  style={{ color: "#d4351c", fontSize: "1.1875rem" }}
+                  href={confirmBeforeDelete(registration.id)}
+                >
+                  Delete this registration
+                  <span className="govuk-visually-hidden">
+                    Delete this registration
+                  </span>
+                </a>
+              </dd>
+            </div>
             <SummaryList>
               <SummaryListItem
                 labelText="Beacon information"

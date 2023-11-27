@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
+import uk.gov.mca.beacons.api.beaconowner.application.BeaconOwnerHelper;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerReadOnlyRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
@@ -39,8 +40,12 @@ class BeaconToSpreadsheetRowItemProcessor
   @Override
   public ExportSpreadsheetRow process(Beacon beacon) {
     BeaconId beaconId = beacon.getId();
-    BeaconOwner beaconOwner = beaconOwnerRepository
-      .findBeaconOwnerByBeaconId(beaconId)
+    List<BeaconOwner> beaconOwners = beaconOwnerRepository.getByBeaconId(
+      beaconId
+    );
+
+    BeaconOwner beaconMainOwner = BeaconOwnerHelper
+      .getMainOwner(beaconOwners)
       .orElse(null);
 
     List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
@@ -52,7 +57,7 @@ class BeaconToSpreadsheetRowItemProcessor
 
     return new ExportSpreadsheetRow(
       beacon,
-      beaconOwner,
+      beaconMainOwner,
       beaconUses,
       emergencyContacts
     );

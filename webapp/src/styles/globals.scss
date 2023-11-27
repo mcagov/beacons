@@ -11,3 +11,7 @@ body {
   background: govuk-colour("red");
   border: 5px solid govuk-colour("red");
 }
+
+.govuk-link--warning {
+  color: govuk-colour("red");
+}

@@ -5,6 +5,7 @@ export const ownerFixture: IOwner = deepFreeze<IOwner>({
   id: "cb2e9fd2-45bb-4865-a04c-add5bb7c34a7",
   fullName: "Steve Stevington",
   email: "steve@beaconowner.com",
+  isMain: true,
   telephoneNumber: "07872536271",
   alternativeTelephoneNumber: "07543889534",
   addressLine1: "1 Beacon Square",

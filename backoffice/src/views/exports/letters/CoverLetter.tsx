@@ -11,11 +11,14 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
   beacon,
   type,
 }): JSX.Element => {
-  if (!beacon.owners) {
+  if (!beacon.owners || beacon.owners.length === 0) {
     return <p>Could not load owner</p>;
   }
 
-  const owner = beacon.owners.at(0);
+  const mainOwners = beacon.owners.filter((owner) => owner.isMain);
+
+  const owner = mainOwners.length > 0 ? mainOwners[0] : beacon.owners[0];
+
   return (
     <div className="letter">
       <div className="header full">

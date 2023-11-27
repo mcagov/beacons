@@ -179,9 +179,14 @@ public class RegistrationService {
   }
 
   private Registration getAssociatedAggregates(Beacon beacon) {
-    Optional<BeaconOwner> beaconOwner = beaconOwnerService.getByBeaconId(
+    List<BeaconOwner> beaconOwners = beaconOwnerService.getOwnersByBeaconId(
       beacon.getId()
     );
+
+    Optional<BeaconOwner> mainBeaconOwner = beaconOwnerService.getMainOwner(
+      beaconOwners
+    );
+
     List<BeaconUse> beaconUses = beaconUseService.getByBeaconId(beacon.getId());
     List<EmergencyContact> emergencyContacts = emergencyContactService.getByBeaconId(
       beacon.getId()
@@ -194,7 +199,8 @@ public class RegistrationService {
     return Registration
       .builder()
       .beacon(beacon)
-      .beaconOwner(beaconOwner.orElse(null))
+      .beaconOwner(mainBeaconOwner.orElse(null))
+      .beaconOwners(beaconOwners)
       .beaconUses(beaconUses)
       .emergencyContacts(emergencyContacts)
       .accountHolder(accountHolder.orElse(null))
@@ -220,6 +226,7 @@ public class RegistrationService {
       .builder()
       .beacon(savedBeacon)
       .beaconOwner(savedBeaconOwner)
+      .beaconOwners(Arrays.asList(savedBeaconOwner))
       .beaconUses(savedBeaconUses)
       .emergencyContacts(savedEmergencyContacts)
       .build();

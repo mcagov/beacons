@@ -23,6 +23,7 @@ export interface IRegistrationResponse {
   lastServicedDate?: string;
   referenceNumber: string;
   owner?: OwnerRegistrationResponse;
+  owners?: OwnersRegistrationResponse;
   accountHolder?: IAccountHolderResponse;
   uses?: UseRegistrationResponse[];
   emergencyContacts?: EmergencyContactRegistrationResponse[];
@@ -30,6 +31,8 @@ export interface IRegistrationResponse {
 }
 
 export type OwnerRegistrationResponse = IOwner;
+
+export type OwnersRegistrationResponse = IOwner[];
 
 export type UseRegistrationResponse = IUse;
 

@@ -1,6 +1,5 @@
 import {
   Autocomplete,
-  AutocompleteRenderInputParams,
   Box,
   Button,
   Chip,
@@ -16,7 +15,7 @@ import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 import { IBeacon } from "../../entities/IBeacon";
-import { FunctionComponent, ReactNode, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { PageContent } from "../../components/layout/PageContent";
 import { logToServer } from "../../utils/logger";
 import { IAccountHolder } from "../../entities/IAccountHolder";
@@ -43,12 +42,7 @@ import { ErrorState } from "components/dataPanel/PanelErrorState";
 import { LoadingState } from "components/dataPanel/PanelLoadingState";
 import { AccountHolderSummaryEdit } from "./AccountHolderSummaryEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  IAccountHolderSearchResult,
-  IAccountHolderSearchResultData,
-} from "entities/IAccountHolderSearchResult";
-import Toolbar from "@mui/material/Toolbar";
-
+import { IAccountHolderSearchResultData } from "entities/IAccountHolderSearchResult";
 interface IAccountHolderViewProps {
   accountHolderGateway: IAccountHolderGateway;
   accountHolderId: string;

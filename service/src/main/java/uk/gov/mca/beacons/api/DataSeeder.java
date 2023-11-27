@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api;
 
 import com.github.javafaker.Faker;
 import java.util.*;
+import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -82,7 +83,14 @@ public class DataSeeder implements CommandLineRunner {
         } else {
           seedAviationUse(beacon.getId());
         }
-        seedBeaconOwner(beacon.getId());
+        seedBeaconOwner(beacon.getId(), true);
+
+        int secondaryOwnerCount = faker.random().nextInt(4);
+
+        IntStream
+          .range(0, secondaryOwnerCount)
+          .forEach(j -> seedBeaconOwner(beacon.getId(), false));
+
         seedEmergencyContact(beacon.getId());
       }
     }
@@ -150,9 +158,10 @@ public class DataSeeder implements CommandLineRunner {
     return beaconUseRepository.save(beaconUse);
   }
 
-  BeaconOwner seedBeaconOwner(BeaconId beaconId) {
+  BeaconOwner seedBeaconOwner(BeaconId beaconId, boolean isMain) {
     BeaconOwner beaconOwner = new BeaconOwner();
     beaconOwner.setBeaconId(beaconId);
+    beaconOwner.setMain(isMain);
     beaconOwner.setFullName(faker.name().fullName());
     beaconOwner.setTelephoneNumber(faker.phoneNumber().phoneNumber());
     beaconOwner.setEmail(faker.internet().emailAddress());

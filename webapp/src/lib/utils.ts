@@ -37,6 +37,10 @@ const isRecord = (object: any) =>
 
 const isArray = (object: any) => object instanceof Array;
 
-export function pluralize(count: number, singular: string, plural = null) {
+export function pluralize(
+  count: number,
+  singular: string,
+  plural = null
+): string {
   return count === 1 ? singular : plural || `${singular}s`;
 }
