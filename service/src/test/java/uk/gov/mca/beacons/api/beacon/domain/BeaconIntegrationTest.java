@@ -1,6 +1,5 @@
 package uk.gov.mca.beacons.api.beacon.domain;
 
-import java.util.Optional;
 import java.util.UUID;
 import javax.validation.constraints.NotNull;
 import org.junit.jupiter.api.Test;
