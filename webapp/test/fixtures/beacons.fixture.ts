@@ -24,7 +24,6 @@ export const beaconFixtures: Beacon = deepFreeze([
       {
         id: "cb2e9fd2-45bb-4865-a04c-add5bb7c34a7",
         fullName: "Steve Stevington",
-        isMain: true,
         email: "steve@beaconowner.com",
         telephoneNumber1: "07872536271",
         telephoneNumber2: "",
@@ -124,7 +123,6 @@ export const beaconFixtures: Beacon = deepFreeze([
       {
         id: "cb2e9fd2-45bb-4865-a04c-add5bb7c34a7",
         fullName: "Steve Stevington",
-        isMain: true,
         email: "steve@beaconowner.com",
         telephoneNumber1: "07872536271",
         telephoneNumber2: "",

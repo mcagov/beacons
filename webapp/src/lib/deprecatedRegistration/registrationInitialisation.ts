@@ -27,7 +27,6 @@ export const initBeacon = (): Registration => {
     lastServicedDateYear: "",
 
     ownerFullName: "",
-    ownerIsMain: true,
     ownerEmail: "",
     ownerTelephoneNumber: "",
     ownerAlternativeTelephoneNumber: "",

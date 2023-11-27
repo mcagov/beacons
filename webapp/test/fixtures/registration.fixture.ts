@@ -20,7 +20,6 @@ export const registrationFixture: Registration = {
   lastServicedDateMonth: "02",
   lastServicedDateYear: "2020",
   ownerFullName: "Steve Stevington",
-  ownerIsMain: true,
   ownerEmail: "steve@beaconowner.com",
   ownerTelephoneNumber: "07872536271",
   ownerAlternativeTelephoneNumber: "",

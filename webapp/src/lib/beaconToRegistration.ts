@@ -27,7 +27,6 @@ export const beaconToRegistration = (beacon: Beacon): Registration => {
     lastServicedDateMonth: beacon.lastServicedDate.slice(5, 7),
     lastServicedDateYear: beacon.lastServicedDate.slice(0, 4),
     ownerFullName: beacon.owners[0].fullName,
-    ownerIsMain: beacon.owners[0].isMain,
     ownerEmail: beacon.owners[0].email,
     ownerTelephoneNumber: beacon.owners[0].telephoneNumber1,
     ownerAlternativeTelephoneNumber: beacon.owners[0].telephoneNumber2,

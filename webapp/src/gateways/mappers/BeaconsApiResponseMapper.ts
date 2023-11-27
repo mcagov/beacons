@@ -55,7 +55,6 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
       {
         id: beaconOwner.id,
         fullName: beaconOwner.fullName || "",
-        isMain: beaconOwner.isMain || true,
         email: beaconOwner.email || "",
         telephoneNumber1: beaconOwner.telephoneNumber || "",
         telephoneNumber2: beaconOwner.alternativeTelephoneNumber || "",

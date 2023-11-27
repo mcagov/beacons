@@ -6,7 +6,6 @@ describe("saveDraftRegistration", () => {
   it("only mutates the cache with the updated fields", async () => {
     const existingDraftRegistration: DraftRegistration = {
       ownerFullName: "Steve Stevington",
-      ownerIsMain: true,
       ownerEmail: "steve@stevington.com",
       ownerTelephoneNumber: "07283 726182",
       uses: [],
@@ -34,7 +33,6 @@ describe("saveDraftRegistration", () => {
       "test-id",
       {
         ownerFullName: "Steve Stevington",
-        ownerIsMain: true,
         ownerEmail: "steve@stevington.com",
         ownerTelephoneNumber: "07283 726182",
         manufacturer: "ACME Inc.",

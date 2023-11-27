@@ -120,7 +120,6 @@ export class DeprecatedRegistration {
 
     return {
       fullName: registration.ownerFullName,
-      isMain: registration.ownerIsMain,
       email: registration.ownerEmail,
       telephoneNumber: registration.ownerTelephoneNumber,
       alternativeTelephoneNumber: registration.ownerAlternativeTelephoneNumber,

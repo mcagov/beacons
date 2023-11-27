@@ -21,7 +21,6 @@ export const testBeaconAndOwnerData = {
   },
   ownerDetails: {
     fullName: "Steve Stevington",
-    isMain: true,
     telephoneNumber: "0303 123 7300",
     alternativeTelephoneNumber: "0303 123 7301",
     email: "steve@royal.uk",
@@ -62,7 +61,6 @@ export const testBeaconAndOwnerDataRestOfWorld = {
   },
   ownerDetails: {
     fullName: "Steve Stevington",
-    isMain: true,
     telephoneNumber: "0303 123 7300",
     alternativeTelephoneNumber: "0303 123 7301",
     email: "steve@royal.uk",

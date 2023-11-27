@@ -22,7 +22,6 @@ export interface Registration {
   lastServicedDateYear: string;
 
   ownerFullName: string;
-  ownerIsMain: boolean;
   ownerEmail: string;
   ownerTelephoneNumber: string;
   ownerAlternativeTelephoneNumber: string;

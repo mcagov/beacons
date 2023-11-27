@@ -16,7 +16,6 @@ export interface IBeaconRequestBody {
 export interface IOwnerRequestBody {
   fullName: string;
   email: string;
-  isMain: boolean;
   telephoneNumber: string;
   alternativeTelephoneNumber: string;
   addressLine1: string;
