@@ -1,5 +1,5 @@
 import { BeaconSearchSortOptions } from "../../src/gateways/interfaces/BeaconSearchGateway";
-import { getBeaconsForAccountHolder } from "./../../src/useCases/getBeaconsByAccountHolderAndEmail";
+import { getBeaconsForAccountHolder } from "../../src/useCases/getBeaconsByAccountHolderAndEmail";
 describe("getBeaconsForAccountHolder", () => {
   const getBeaconsByAccountHolderEmailMock = jest.fn();
   const beaconSearchGateway = {
@@ -12,7 +12,7 @@ describe("getBeaconsForAccountHolder", () => {
     direction: "desc",
   };
 
-  it("should return only new and migrated registered beacons", async () => {
+  it("should return only new, change and migrated registered beacons", async () => {
     getBeaconsByAccountHolderEmailMock.mockImplementation(() => [
       {
         beaconStatus: "MIGRATED",
@@ -21,6 +21,11 @@ describe("getBeaconsForAccountHolder", () => {
       },
       {
         beaconStatus: "NEW",
+        createdDate: "2021-03-20",
+        lastModifiedDate: "2021-09-02",
+      },
+      {
+        beaconStatus: "CHANGE",
         createdDate: "2021-03-20",
         lastModifiedDate: "2021-09-02",
       },
@@ -35,7 +40,7 @@ describe("getBeaconsForAccountHolder", () => {
       beaconSearchGateway,
     } as any)(accountHolderId, email, sortOptions);
 
-    expect(result.length).toBe(2);
+    expect(result.length).toBe(3);
   });
 
   it("should format the dates", async () => {
@@ -92,7 +97,7 @@ describe("getBeaconsForAccountHolder", () => {
   it("should format a use with an activity that has an underscore", async () => {
     getBeaconsByAccountHolderEmailMock.mockImplementation(() => [
       {
-        beaconStatus: "NEW",
+        beaconStatus: "CHANGE",
         createdDate: "2021-03-20",
         lastModifiedDate: "2021-09-02",
         useActivities: "SAILING, CLIMBING_MOUNTAINEERING",

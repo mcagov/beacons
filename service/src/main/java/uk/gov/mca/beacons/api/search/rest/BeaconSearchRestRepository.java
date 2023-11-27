@@ -55,7 +55,7 @@ interface BeaconSearchRestRepository
   @Query(
     "SELECT b FROM BeaconSearchEntity b WHERE " +
     "((b.ownerEmail = :email OR b.legacyBeaconRecoveryEmail = :email) AND b.beaconStatus = 'MIGRATED') OR " +
-    "(b.accountHolderId = :accountHolderId AND b.beaconStatus = 'NEW')"
+    "(b.accountHolderId = :accountHolderId AND b.beaconStatus IN ('NEW', 'CHANGE'))"
   )
   List<BeaconSearchEntity> findALlByAccountHolderIdAndEmail(
     @Param("email") String email,

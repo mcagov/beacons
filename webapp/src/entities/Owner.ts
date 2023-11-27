@@ -2,6 +2,7 @@ export interface Owner {
   id: string;
   fullName: string;
   email: string;
+  isMain: boolean;
   telephoneNumber1: string;
   telephoneNumber2: string;
   addressLine1: string;
