@@ -113,7 +113,7 @@ export const SingleBeaconRecordView: FunctionComponent<
   return (
     <div className={classes.root}>
       <PageHeader>
-        Hex ID/UIN: {hexId}
+        <span>Hex ID/UIN: {hexId}</span>
         <span className={classes.button}>
           <CopyToClipboardButton
             text={formatForClipboardWithNotes(beacon, notes)}

@@ -45,11 +45,9 @@ describe("Beacon record page", () => {
       </ThemeProvider>
     );
     const hexId = beaconFixture.hexId;
-    const heading = screen.getByRole("heading");
+    const hexIdElement = screen.getByText(`Hex ID/UIN: ${hexId}`);
 
-    expect(
-      await within(heading).findByText(`Hex ID/UIN: ${hexId}`, { exact: false })
-    ).toBeVisible();
+    expect(hexIdElement).toBeVisible();
   });
 
   it("Displays the number of uses a beacon has", async () => {
