@@ -101,7 +101,7 @@ const columns: Column<BeaconRowData>[] = [
       if (rowData.beaconStatus === "MIGRATED") {
         return <Chip label={rowData.beaconStatus} color="secondary" />;
       } else if (rowData.beaconStatus === "CHANGE") {
-        return <Chip label={rowData.beaconStatus} color="warning" />;
+        return <Chip label={rowData.beaconStatus} color="info" />;
       } else {
         return <Chip label={rowData.beaconStatus} color="primary" />;
       }

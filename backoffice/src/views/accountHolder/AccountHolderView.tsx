@@ -263,7 +263,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       renderCell: ({ row }: Partial<GridRowParams>) => (
         <Chip
           label={row.status}
-          color={row.status === "CHANGE" ? "warning" : "primary"}
+          color={row.status === "CHANGE" ? "info" : "primary"}
         />
       ),
     },
