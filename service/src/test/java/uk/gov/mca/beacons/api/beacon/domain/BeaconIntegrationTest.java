@@ -59,6 +59,28 @@ public class BeaconIntegrationTest extends BaseIntegrationTest {
     assert retrievedBeacon.getBeaconStatus() == BeaconStatus.CHANGE;
   }
 
+  @Test
+  public void shouldNotUpdateDeletedBeaconStatusToChange() {
+    // setup
+    AccountHolderId accountHolderId = createAccountHolder();
+
+    Beacon beacon = generateBeacon();
+    beacon.setAccountHolderId(accountHolderId);
+    beacon.setBeaconStatus(BeaconStatus.DELETED);
+
+    // act
+    Beacon savedBeacon = beaconRepository.save(beacon);
+    assert savedBeacon.getBeaconStatus() == BeaconStatus.DELETED;
+    savedBeacon.setModel("Different");
+    beaconService.update(savedBeacon.getId(), savedBeacon);
+    Beacon retrievedBeacon = beaconService
+      .findById(savedBeacon.getId())
+      .orElse(null);
+    //assert
+    assert retrievedBeacon != null;
+    assert retrievedBeacon.getBeaconStatus() == BeaconStatus.DELETED;
+  }
+
   private AccountHolderId createAccountHolder() {
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setAuthId(UUID.randomUUID().toString());

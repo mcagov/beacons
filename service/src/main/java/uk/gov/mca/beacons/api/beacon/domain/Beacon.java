@@ -111,7 +111,9 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
 
   public void update(Beacon patch, ModelPatcher<Beacon> patcher) {
     patcher.patchModel(this, patch);
-    setBeaconStatus(BeaconStatus.CHANGE);
+    if (this.beaconStatus == BeaconStatus.NEW) {
+      setBeaconStatus(BeaconStatus.CHANGE);
+    }
     this.registerEvent(new BeaconUpdated(this));
   }
 
