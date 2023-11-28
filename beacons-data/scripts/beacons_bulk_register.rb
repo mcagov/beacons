@@ -161,7 +161,7 @@ $7, $8)')
     fullname, email, address1, address2, nil, nil, town, postcode, county,
     country, telephone_number, telephone_number, created_date, created_date, true])
 
-    count_secondary_owners = rand(4) #0-3 secondary owners
+    count_secondary_owners = rand(5) #0-3 secondary owners
 
     count_secondary_owners.times do
       conn.exec_prepared('beacon_owner', [ SecureRandom.uuid, beacon_uuid,

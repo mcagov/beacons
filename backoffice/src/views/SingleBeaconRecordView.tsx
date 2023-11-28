@@ -149,8 +149,7 @@ export const SingleBeaconRecordView: FunctionComponent<
           beaconId={beaconId}
         />
         <Tabs value={selectedTab} onChange={handleChange}>
-          <Tab label="Owners" />
-          <Tab label="Emergency Contacts" />
+          <Tab label="Owners & Emergency Contacts" />
           <Tab label={`${numberOfUses} Registered Uses`} />
           <Tab label={`Notes`} />
           <Tab label="Account Holder" />
@@ -162,16 +161,12 @@ export const SingleBeaconRecordView: FunctionComponent<
             justifyContent="space-between"
             spacing={1}
           >
-            <OwnersPanel beaconsGateway={beaconsGateway} beaconId={beaconId} />
-          </Grid>
-        </TabPanel>
-        <TabPanel value={selectedTab} index={1}>
-          <Grid
-            direction="row"
-            container
-            justifyContent="space-between"
-            spacing={1}
-          >
+            <Grid item xs={6}>
+              <OwnersPanel
+                beaconsGateway={beaconsGateway}
+                beaconId={beaconId}
+              />
+            </Grid>
             <Grid item xs={6}>
               <EmergencyContactPanel
                 beaconsGateway={beaconsGateway}
@@ -180,13 +175,13 @@ export const SingleBeaconRecordView: FunctionComponent<
             </Grid>
           </Grid>
         </TabPanel>
-        <TabPanel value={selectedTab} index={2}>
+        <TabPanel value={selectedTab} index={1}>
           <UsesListPanel usesGateway={usesGateway} beaconId={beaconId} />
         </TabPanel>
-        <TabPanel value={selectedTab} index={3}>
+        <TabPanel value={selectedTab} index={2}>
           <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
         </TabPanel>
-        <TabPanel value={selectedTab} index={4}>
+        <TabPanel value={selectedTab} index={3}>
           <Grid
             direction="row"
             container
