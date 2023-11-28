@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { FieldValueTypes } from "../../components/dataPanel/FieldValue";
 import { ErrorState } from "../../components/dataPanel/PanelErrorState";
@@ -14,10 +7,9 @@ import { PanelViewingState } from "../../components/dataPanel/PanelViewingState"
 import { IOwner } from "../../entities/IOwner";
 import { IBeaconsGateway } from "../../gateways/beacons/IBeaconsGateway";
 import { Placeholders } from "../../utils/writingStyle";
-import makeStyles from "@mui/styles/makeStyles";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
-
+import makeStyles from "@mui/styles/makeStyles";
 interface OwnerSummaryPanelProps {
   beaconsGateway: IBeaconsGateway;
   beaconId: string;
@@ -62,15 +54,11 @@ export const OwnersPanel: FunctionComponent<OwnerSummaryPanelProps> = ({
 
   if (!owners) {
     return (
-      <Card>
-        <CardContent>
-          <CardHeader title="No owners associated" />
-          <>
-            {error && <ErrorState message={Placeholders.UnspecifiedError} />}
-            {loading && <LoadingState />}
-          </>
-        </CardContent>
-      </Card>
+      <Paper elevation={0} variant="outlined" className={classes.paper}>
+        <Typography variant="h6">No owners associated</Typography>
+        {error && <ErrorState message={Placeholders.UnspecifiedError} />}
+        {loading && <LoadingState />}
+      </Paper>
     );
   }
 
