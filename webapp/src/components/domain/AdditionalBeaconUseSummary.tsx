@@ -39,15 +39,15 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
 
         <div>
           {changeUri && (
-            <AnchorLink
-              href={changeUri}
-              description={useRank}
-              classes={`govuk-link--no-visited-state ${
-                deleteUri ? "govuk-!-margin-right-4" : ""
-              }`}
-            >
-              Change
-            </AnchorLink>
+            <div style={{ marginBottom: "8px" }}>
+              <AnchorLink
+                href={changeUri}
+                description={useRank}
+                classes={`govuk-link--no-visited-state`}
+              >
+                Change
+              </AnchorLink>
+            </div>
           )}
           {deleteUri && (
             <WarningLink href={deleteUri} description={useRank}>

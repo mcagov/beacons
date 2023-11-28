@@ -91,6 +91,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                       <AdditionalBeaconUseSummary
                         index={index}
                         use={use}
+                        changeUri={"xxx"}
                         deleteUri={confirmBeforeDelete(
                           use,
                           index,
