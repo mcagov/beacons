@@ -52,7 +52,7 @@ export const OwnersPanel: FunctionComponent<OwnerSummaryPanelProps> = ({
     fetchBeacon(beaconId);
   }, [beaconId, beaconsGateway]);
 
-  if (!owners) {
+  if (!owners || owners.length === 0) {
     return (
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h6">No owners associated</Typography>

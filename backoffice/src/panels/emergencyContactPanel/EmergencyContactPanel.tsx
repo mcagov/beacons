@@ -55,7 +55,7 @@ export const EmergencyContactPanel: FunctionComponent<
     },
   ]);
 
-  if (!fields || fields.length == 0) {
+  if (!fields || fields.length === 0) {
     return (
       <Paper elevation={0} variant="outlined" className={classes.paper}>
         <Typography variant="h6">No emergency contacts</Typography>
