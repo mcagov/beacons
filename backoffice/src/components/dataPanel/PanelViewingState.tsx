@@ -42,7 +42,7 @@ const OneColumn: FunctionComponent<IPanelViewingStateProps> = ({ fields }) => (
             field.value instanceof Array ? field.value : [field.value];
           return (
             <TableRow key={index}>
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" style={{ width: "30%" }}>
                 <Typography>
                   {field.key + WritingStyle.KeyValueSeparator}
                 </Typography>
