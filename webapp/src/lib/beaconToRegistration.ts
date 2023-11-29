@@ -64,6 +64,7 @@ const mapUseToBeaconUse = (use: Use): BeaconUse => {
     activity: use.activity,
     otherActivityText: use.otherActivity,
     moreDetails: use.moreDetails,
+    mainUse: use.mainUse,
     callSign: use.callSign,
     vhfRadio: use.vhfRadio.toString(),
     fixedVhfRadio: use.fixedVhfRadio.toString(),

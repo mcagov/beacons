@@ -61,6 +61,7 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
         <AboutThisUse use={use} />
         <Communications use={use} />
         <MoreDetailsSubSection use={use} />
+        <IsMainUseSubSection use={use} />
       </SummaryList>
     </>
   );
@@ -280,5 +281,15 @@ const MoreDetailsSubSection: FunctionComponent<{ use: DraftBeaconUse }> = ({
 }): JSX.Element => (
   <SummaryListItem labelText="More details">
     <DataRowItem value={use.moreDetails} />
+  </SummaryListItem>
+);
+
+const IsMainUseSubSection: FunctionComponent<{ use: DraftBeaconUse }> = ({
+  use,
+}: {
+  use: BeaconUse;
+}): JSX.Element => (
+  <SummaryListItem labelText="Is Main Use">
+    <DataRowItem value={use.mainUse ? "Yes" : "No"} />
   </SummaryListItem>
 );

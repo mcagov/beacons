@@ -8,6 +8,7 @@ import {
 } from "./IRegistrationRequestBody";
 import { initBeacon, initBeaconUse } from "./registrationInitialisation";
 import { Activity } from "./types";
+import { Main } from "next/document";
 
 type Indexes = {
   useId: number;
@@ -183,8 +184,12 @@ export class DeprecatedRegistration {
   private _serialiseUses() {
     const uses = this.registration.uses;
 
+    let mainUse = false;
+
     return uses.map((use, index) => {
-      const mainUse = index === 0;
+      if (!mainUse && use.mainUse) {
+        mainUse = true;
+      }
       return this._serialiseUse(use, mainUse);
     });
   }

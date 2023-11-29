@@ -62,7 +62,6 @@ export interface IUseRequestBody {
   rssNumber: string;
   officialNumber: string;
   rigPlatformLocation: string;
-  mainUse: boolean;
   aircraftManufacturer: string;
   principalAirport: string;
   secondaryAirport: string;
@@ -78,5 +77,6 @@ export interface IUseRequestBody {
   otherActivityLocation: string;
   otherActivityPeopleCount: string;
   moreDetails: string;
+  mainUse: boolean;
   maxCapacity?: string;
 }
