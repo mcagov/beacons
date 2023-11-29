@@ -12,8 +12,6 @@ import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.beaconuse.domain.events.BeaconUseUpdated;
-import uk.gov.mca.beacons.api.mappers.ModelPatcher;
 import uk.gov.mca.beacons.api.shared.domain.base.BaseAggregateRoot;
 import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 

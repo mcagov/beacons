@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
-import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseId;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseRepository;
-import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
-import uk.gov.mca.beacons.api.mappers.ModelPatcher;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
 
 @Transactional
