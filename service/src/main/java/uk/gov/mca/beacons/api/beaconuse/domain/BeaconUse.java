@@ -348,9 +348,4 @@ public class BeaconUse extends BaseAggregateRoot<BeaconUseId> {
       ? String.format("%s (%s)", activityName, purpose.name())
       : activityName;
   }
-
-  public void update(BeaconUse patch, ModelPatcher<BeaconUse> patcher) {
-    patcher.patchModel(this, patch);
-    this.registerEvent(new BeaconUseUpdated(this));
-  }
 }

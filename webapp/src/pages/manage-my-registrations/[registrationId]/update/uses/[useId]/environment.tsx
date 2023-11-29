@@ -84,6 +84,10 @@ const UpdateBeaconUsePage: FunctionComponent<DraftBeaconUsePageProps> = ({
               defaultChecked={
                 form.fields.environment.value === Environment.MARITIME
               }
+              disabled={
+                form.fields.environment.value &&
+                form.fields.environment.value !== Environment.MARITIME
+              }
             />
 
             <RadioListItem
@@ -95,6 +99,10 @@ const UpdateBeaconUsePage: FunctionComponent<DraftBeaconUsePageProps> = ({
               defaultChecked={
                 form.fields.environment.value === Environment.AVIATION
               }
+              disabled={
+                form.fields.environment.value &&
+                form.fields.environment.value !== Environment.AVIATION
+              }
             />
 
             <RadioListItem
@@ -105,6 +113,10 @@ const UpdateBeaconUsePage: FunctionComponent<DraftBeaconUsePageProps> = ({
               value={Environment.LAND}
               defaultChecked={
                 form.fields.environment.value === Environment.LAND
+              }
+              disabled={
+                form.fields.environment.value &&
+                form.fields.environment.value !== Environment.LAND
               }
             />
           </RadioList>

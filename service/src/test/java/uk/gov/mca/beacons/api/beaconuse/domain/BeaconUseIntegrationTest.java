@@ -43,24 +43,6 @@ public class BeaconUseIntegrationTest extends BaseIntegrationTest {
     assert savedBeaconUse.getBeaconId().equals(beaconId);
   }
 
-  @Test
-  void shouldUpdateBeaconUse() {
-    // assemble
-    AccountHolderId accountHolderId = createAccountHolder();
-    BeaconId beaconId = createBeacon(accountHolderId);
-    BeaconUse beaconUse = createBeaconUse(beaconId);
-    BeaconUse savedBeaconUse = beaconUseRepository.save(beaconUse);
-    // act
-    savedBeaconUse.setEnvironment(Environment.LAND);
-    BeaconUse updatedBeaconUse = beaconUseService.update(
-      savedBeaconUse.getId(),
-      savedBeaconUse
-    );
-    // assert
-    assert updatedBeaconUse.getEnvironment() == Environment.LAND;
-    assert updatedBeaconUse.getId() == savedBeaconUse.getId();
-  }
-
   private AccountHolderId createAccountHolder() {
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setAuthId(UUID.randomUUID().toString());
