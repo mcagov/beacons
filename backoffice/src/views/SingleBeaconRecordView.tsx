@@ -113,7 +113,7 @@ export const SingleBeaconRecordView: FunctionComponent<
   return (
     <div className={classes.root}>
       <PageHeader>
-        Hex ID/UIN: {hexId}
+        <span>Hex ID/UIN: {hexId}</span>
         <span className={classes.button}>
           <CopyToClipboardButton
             text={formatForClipboardWithNotes(beacon, notes)}
@@ -149,11 +149,10 @@ export const SingleBeaconRecordView: FunctionComponent<
           beaconId={beaconId}
         />
         <Tabs value={selectedTab} onChange={handleChange}>
-          <Tab label="Owners" />
-          <Tab label="Emergency Contacts" />
+          <Tab label="Owners & Emergency Contacts" />
           <Tab label={`${numberOfUses} Registered Uses`} />
+          <Tab label={`Account Holder`} />
           <Tab label={`Notes`} />
-          <Tab label="Account Holder" />
         </Tabs>
         <TabPanel value={selectedTab} index={0}>
           <Grid
@@ -162,16 +161,12 @@ export const SingleBeaconRecordView: FunctionComponent<
             justifyContent="space-between"
             spacing={1}
           >
-            <OwnersPanel beaconsGateway={beaconsGateway} beaconId={beaconId} />
-          </Grid>
-        </TabPanel>
-        <TabPanel value={selectedTab} index={1}>
-          <Grid
-            direction="row"
-            container
-            justifyContent="space-between"
-            spacing={1}
-          >
+            <Grid item xs={6}>
+              <OwnersPanel
+                beaconsGateway={beaconsGateway}
+                beaconId={beaconId}
+              />
+            </Grid>
             <Grid item xs={6}>
               <EmergencyContactPanel
                 beaconsGateway={beaconsGateway}
@@ -180,26 +175,26 @@ export const SingleBeaconRecordView: FunctionComponent<
             </Grid>
           </Grid>
         </TabPanel>
-        <TabPanel value={selectedTab} index={2}>
+        <TabPanel value={selectedTab} index={1}>
           <UsesListPanel usesGateway={usesGateway} beaconId={beaconId} />
         </TabPanel>
-        <TabPanel value={selectedTab} index={3}>
-          <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
-        </TabPanel>
-        <TabPanel value={selectedTab} index={4}>
+        <TabPanel value={selectedTab} index={2}>
           <Grid
             direction="row"
             container
             justifyContent="space-between"
             spacing={1}
           >
-            <Grid item xs={6}>
+            <Grid item xs={8}>
               <AccountHolderPanel
                 beaconsGateway={beaconsGateway}
                 beaconId={beaconId}
               />
             </Grid>
           </Grid>
+        </TabPanel>
+        <TabPanel value={selectedTab} index={3}>
+          <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
         </TabPanel>
         <DialogueBox
           isOpen={dialogueIsOpen}

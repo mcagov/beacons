@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { FieldValueTypes } from "../../components/dataPanel/FieldValue";
 import { ErrorState } from "../../components/dataPanel/PanelErrorState";
@@ -7,11 +7,22 @@ import { PanelViewingState } from "../../components/dataPanel/PanelViewingState"
 import { IOwner } from "../../entities/IOwner";
 import { IBeaconsGateway } from "../../gateways/beacons/IBeaconsGateway";
 import { Placeholders } from "../../utils/writingStyle";
-
+import { Theme } from "@mui/material/styles";
+import createStyles from "@mui/styles/createStyles";
+import makeStyles from "@mui/styles/makeStyles";
 interface OwnerSummaryPanelProps {
   beaconsGateway: IBeaconsGateway;
   beaconId: string;
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+      marginBottom: theme.spacing(0.5),
+    },
+  })
+);
 
 export const OwnersPanel: FunctionComponent<OwnerSummaryPanelProps> = ({
   beaconsGateway,
@@ -20,6 +31,8 @@ export const OwnersPanel: FunctionComponent<OwnerSummaryPanelProps> = ({
   const [owners, setOwners] = useState<IOwner[]>();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const classes = useStyles();
 
   useEffect((): void => {
     const fetchBeacon = async (id: string) => {
@@ -39,17 +52,13 @@ export const OwnersPanel: FunctionComponent<OwnerSummaryPanelProps> = ({
     fetchBeacon(beaconId);
   }, [beaconId, beaconsGateway]);
 
-  if (!owners) {
+  if (!owners || owners.length === 0) {
     return (
-      <Card>
-        <CardContent>
-          <CardHeader title="No owners associated" />
-          <>
-            {error && <ErrorState message={Placeholders.UnspecifiedError} />}
-            {loading && <LoadingState />}
-          </>
-        </CardContent>
-      </Card>
+      <Paper elevation={0} variant="outlined" className={classes.paper}>
+        <Typography variant="h6">No owners associated</Typography>
+        {error && <ErrorState message={Placeholders.UnspecifiedError} />}
+        {loading && <LoadingState />}
+      </Paper>
     );
   }
 
@@ -83,26 +92,19 @@ export const OwnersPanel: FunctionComponent<OwnerSummaryPanelProps> = ({
   return (
     <>
       {owners.map((owner: IOwner, index) => (
-        <Grid item xs={6} key={index}>
-          <Card>
-            <CardContent>
-              <CardHeader
-                title={`${owner.isMain ? "Primary " : ""}Owner : ${
-                  owner?.fullName
-                }`}
-              />
-              <>
-                {error && (
-                  <ErrorState message={Placeholders.UnspecifiedError} />
-                )}
-                {loading && <LoadingState />}
-                {error || loading || (
-                  <PanelViewingState fields={fields(owner)} />
-                )}
-              </>
-            </CardContent>
-          </Card>
-        </Grid>
+        <Paper
+          key={index}
+          elevation={0}
+          variant="outlined"
+          className={classes.paper}
+        >
+          <Typography variant="h6">
+            {`${owner.isMain ? "Primary " : ""}Owner: ${owner?.fullName}`}
+          </Typography>
+          {error && <ErrorState message={Placeholders.UnspecifiedError} />}
+          {loading && <LoadingState />}
+          {!error && !loading && <PanelViewingState fields={fields(owner)} />}
+        </Paper>
       ))}
     </>
   );

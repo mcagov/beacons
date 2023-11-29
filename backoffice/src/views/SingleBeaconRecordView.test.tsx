@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/styles";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { AuthProvider } from "components/auth/AuthProvider";
 import { beaconFixture } from "../fixtures/beacons.fixture";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
@@ -31,7 +31,7 @@ describe("Beacon record page", () => {
     };
   });
 
-  it("Displays beacon's hex ID in the header", async () => {
+  it("Displays beacon's hex ID", async () => {
     render(
       <ThemeProvider theme={createTheme()}>
         <AuthProvider>
@@ -45,11 +45,10 @@ describe("Beacon record page", () => {
       </ThemeProvider>
     );
     const hexId = beaconFixture.hexId;
-    const heading = screen.getByRole("heading");
-
-    expect(
-      await within(heading).findByText(`Hex ID/UIN: ${hexId}`, { exact: false })
-    ).toBeVisible();
+    await waitFor(() => {
+      const hexIdElement = screen.getByText(`Hex ID/UIN: ${hexId}`);
+      expect(hexIdElement).toBeVisible();
+    });
   });
 
   it("Displays the number of uses a beacon has", async () => {
