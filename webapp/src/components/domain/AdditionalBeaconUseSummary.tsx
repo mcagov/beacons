@@ -290,6 +290,6 @@ const IsMainUseSubSection: FunctionComponent<{ use: DraftBeaconUse }> = ({
   use: BeaconUse;
 }): JSX.Element => (
   <SummaryListItem labelText="Is Main Use">
-    <DataRowItem value={use.mainUse ? "Yes" : "No"} />
+    <DataRowItem value={use.mainUse == true ? "Yes" : "No"} />
   </SummaryListItem>
 );

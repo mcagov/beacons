@@ -61,6 +61,7 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
     [Environment.LAND]: UsePages.landCommunications,
   };
 
+  console.dir(form.fields);
   const pageHeading = "Provide more details that could help in a search";
   const pageText = (
     <>
@@ -102,7 +103,7 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
         id="moreDetails"
       />
 
-      <MainUse value={form.fields.mainUse?.value ? "true" : "false"} />
+      <MainUse value={form.fields.mainUse.toString()} />
     </BeaconsForm>
   );
 };

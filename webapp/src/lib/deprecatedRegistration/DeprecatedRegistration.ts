@@ -9,6 +9,7 @@ import {
 import { initBeacon, initBeaconUse } from "./registrationInitialisation";
 import { Activity } from "./types";
 import { Main } from "next/document";
+import { string } from "prop-types";
 
 type Indexes = {
   useId: number;
@@ -187,9 +188,7 @@ export class DeprecatedRegistration {
     let mainUse = false;
 
     return uses.map((use, index) => {
-      if (!mainUse && use.mainUse) {
-        mainUse = true;
-      }
+      mainUse = mainUse === false && use.mainUse;
       return this._serialiseUse(use, mainUse);
     });
   }
