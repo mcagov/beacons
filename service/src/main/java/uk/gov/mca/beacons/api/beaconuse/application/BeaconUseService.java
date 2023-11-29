@@ -6,7 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
+import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseId;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseRepository;
+import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
+import uk.gov.mca.beacons.api.mappers.ModelPatcher;
 
 @Transactional
 @Service("BeaconUseServiceV2")
@@ -39,4 +42,18 @@ public class BeaconUseService {
     beaconUseRepository.deleteAllByBeaconId(beaconId);
     beaconUseRepository.flush();
   }
+  // Todo
+  //    public BeaconUse update(BeaconUseId beaconUseId, BeaconUse patch)
+  //    throws ResourceNotFoundException {
+  //    BeaconUse beaconUse = beaconUseRepository
+  //      .findById(beaconUseId)
+  //      .orElseThrow(ResourceNotFoundException::new);
+  //
+  //    final ModelPatcher<BeaconUse> patcher = getPatcher();
+  //
+  //    beaconUse.update(patch, patcher);
+  //    auditingHandler.markModified(beaconUse);
+  //
+  //    return beaconUseRepository.save(beaconUse);
+  //  }
 }
