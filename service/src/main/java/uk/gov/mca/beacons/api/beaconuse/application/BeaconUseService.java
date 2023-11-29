@@ -15,20 +15,10 @@ import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
 public class BeaconUseService {
 
   private final BeaconUseRepository beaconUseRepository;
-  private final ModelPatcherFactory<BeaconUse> beaconUseModelPatcherFactory;
-  private final AuditingHandler auditingHandler;
 
   @Autowired
-  public BeaconUseService(
-    BeaconUseRepository beaconUseRepository,
-    ModelPatcherFactory<BeaconUse> beaconUseModelPatcherFactory,
-    @SuppressWarnings(
-      "SpringJavaInjectionPointsAutowiringInspection"
-    ) AuditingHandler auditingHandler
-  ) {
+  public BeaconUseService(BeaconUseRepository beaconUseRepository) {
     this.beaconUseRepository = beaconUseRepository;
-    this.beaconUseModelPatcherFactory = beaconUseModelPatcherFactory;
-    this.auditingHandler = auditingHandler;
   }
 
   public List<BeaconUse> createAll(List<BeaconUse> beaconUses) {
