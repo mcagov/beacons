@@ -244,6 +244,50 @@ public class LegacyBeaconServiceUnitTest {
   }
 
   @Test
+  void findByHexIdAndAccountHolderEmail_whenOwnerEmailMatchesTheAccountHolderEmailCaseInsensitive_shouldReturnAListOfOneLegacyBeaconWithAnOwnerEmailMatchingAccountHolderEmail()
+    throws Exception {
+    String accountHolderEmail = "Sam.Kendell@madetech.com";
+    LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
+    legacyBeacon.setOwnerEmail("sam.kendell@MadeTech.com");
+    legacyBeacon.setRecoveryEmail("barry@hotmail.com");
+
+    when(mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId()))
+      .thenReturn(List.of(legacyBeacon));
+
+    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndOwnerEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
+      legacyBeacon.getHexId(),
+      accountHolderEmail
+    );
+
+    Assertions.assertEquals(
+      1,
+      beaconsWhereAccountHolderEmailAndOwnerEmailMatch.size()
+    );
+  }
+
+  @Test
+  void findByHexIdAndAccountHolderEmail_whenRecoveryEmailMatchesTheAccountHolderEmailCaseInsensitive_shouldReturnAListOfOneLegacyBeaconWithARecoveryEmailMatchingAccountHolderEmail()
+    throws Exception {
+    String accountHolderEmail = "Sam.Kendell@madetech.com";
+    LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
+    legacyBeacon.setOwnerEmail("barry@gmail.com");
+    legacyBeacon.setRecoveryEmail("sam.kendell@MadeTech.com");
+
+    when(mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId()))
+      .thenReturn(List.of(legacyBeacon));
+
+    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
+      legacyBeacon.getHexId(),
+      accountHolderEmail
+    );
+
+    Assertions.assertEquals(
+      1,
+      beaconsWhereAccountHolderEmailAndRecoveryEmailMatch.size()
+    );
+  }
+
+  @Test
   void findByHexIdAndAccountHolderEmail_whenOwnerEmailIsNullButThereIsARecoveryEmail_shouldReturnAListOfOneLegacyBeaconWithARecoveryEmailMatchingAccountHolderEmail()
     throws Exception {
     String accountHolderEmail = "cooldude@gmail.com";
