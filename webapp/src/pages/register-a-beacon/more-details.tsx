@@ -28,13 +28,8 @@ import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveA
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-import { FormInputProps } from "../../components/Input";
-import { FormFieldset, FormGroup, FormLegend } from "../../components/Form";
-import { RadioList, RadioListItem } from "../../components/RadioList";
-
 interface MoreDetailsForm {
   moreDetails: string;
-  mainUse: boolean;
 }
 
 interface MoreDetailsPageProps extends DraftBeaconUsePageProps {
@@ -92,8 +87,6 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
         errorMessages={form.fields.moreDetails.errorMessages}
         id="moreDetails"
       />
-
-      <MainUse value={form.fields.mainUse.value.toString()} />
     </BeaconsForm>
   );
 };
@@ -117,33 +110,6 @@ const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
     errorMessages={errorMessages}
   />
 );
-
-const MainUse: FunctionComponent<FormInputProps> = ({
-  value = "",
-}: FormInputProps): JSX.Element => (
-  <FormGroup>
-    <FormFieldset>
-      <FormLegend>Is this the main use of the Beacon?</FormLegend>
-      <RadioList small={true}>
-        <RadioListItem
-          id="mainUse-yes"
-          name="mainUse"
-          value="true"
-          label="Yes"
-          defaultChecked={value === "true"}
-        />
-        <RadioListItem
-          id="mainUse-no"
-          name="mainUse"
-          value="false"
-          label="No"
-          defaultChecked={value === "false"}
-        />
-      </RadioList>
-    </FormFieldset>
-  </FormGroup>
-);
-
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([
@@ -200,11 +166,9 @@ const mapper = (
   const beaconUseMapper: BeaconUseFormMapper<MoreDetailsForm> = {
     formToDraftBeaconUse: (form) => ({
       moreDetails: form.moreDetails,
-      mainUse: form.mainUse,
     }),
     beaconUseToForm: (draftBeaconUse) => ({
       moreDetails: draftBeaconUse.moreDetails,
-      mainUse: draftBeaconUse.mainUse,
     }),
   };
 
@@ -213,10 +177,7 @@ const mapper = (
   return makeDraftRegistrationMapper<MoreDetailsForm>(useId, beaconUseMapper);
 };
 
-const validationRules = ({
-  moreDetails,
-  mainUse,
-}: FormSubmission): FormManager => {
+const validationRules = ({ moreDetails }: FormSubmission): FormManager => {
   return new FormManager({
     moreDetails: new FieldManager(moreDetails, [
       Validators.required("More details is a required field"),
@@ -225,7 +186,6 @@ const validationRules = ({
         250
       ),
     ]),
-    mainUse: new FieldManager(mainUse),
   });
 };
 

@@ -24,12 +24,14 @@ import { updateAccountHolder } from "../useCases/updateAccountHolder";
 import { updateRegistration } from "../useCases/updateRegistration";
 import { IAppContainer } from "./IAppContainer";
 import { parseFormDataAs } from "./middleware";
+import { makeCachedUseMain } from "../useCases/makeCachedUseMain";
 
 // "overrides" is spread over the default appContainer at the bottom of this method to enable injecting mocks et al.
 export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
   return {
     /* Simple use cases */
     deleteCachedUse: deleteCachedUse,
+    makeCachedUseMain: makeCachedUseMain,
 
     /* Composite use cases requiring access to other use cases */
     get getDraftRegistration() {

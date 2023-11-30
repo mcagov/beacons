@@ -5,12 +5,19 @@ import { ordinal, prettyUseName, sentenceCase } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { AnchorLink, SectionHeading, WarningLink } from "../Typography";
 import { DataRowItem } from "./DataRowItem";
+import { Button, LinkButton } from "../Button";
+import { ActionURLs, queryParams } from "../../lib/urls";
+import { UrlBuilder } from "../../lib/URLs/UrlBuilder";
+import { Actions } from "../../lib/URLs/Actions";
+import { UsePages } from "../../lib/URLs/UsePages";
+import { Pages } from "../../lib/URLs/Pages";
 
 interface BeaconUseSectionProps {
   index: number;
   use: DraftBeaconUse;
   changeUri?: string;
   deleteUri?: string;
+  makeMainUseUri?: string;
 }
 
 export const AdditionalBeaconUseSummary: FunctionComponent<
@@ -20,6 +27,7 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
   use,
   changeUri,
   deleteUri,
+  makeMainUseUri,
 }: BeaconUseSectionProps): JSX.Element => {
   const useRank = sentenceCase(ordinal(index + 1)) + " use";
 
@@ -49,6 +57,7 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
               </AnchorLink>
             </div>
           )}
+
           {deleteUri && (
             <WarningLink href={deleteUri} description={useRank}>
               Delete
@@ -61,7 +70,7 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
         <AboutThisUse use={use} />
         <Communications use={use} />
         <MoreDetailsSubSection use={use} />
-        <IsMainUseSubSection use={use} />
+        <IsMainUseSubSection use={use} makeMainUseUri={makeMainUseUri} />
       </SummaryList>
     </>
   );
@@ -284,12 +293,29 @@ const MoreDetailsSubSection: FunctionComponent<{ use: DraftBeaconUse }> = ({
   </SummaryListItem>
 );
 
-const IsMainUseSubSection: FunctionComponent<{ use: DraftBeaconUse }> = ({
+const IsMainUseSubSection: FunctionComponent<{
+  use: DraftBeaconUse;
+  makeMainUseUri: string;
+}> = ({
   use,
+  makeMainUseUri,
 }: {
   use: BeaconUse;
+  makeMainUseUri: string;
 }): JSX.Element => (
-  <SummaryListItem labelText="Is Main Use">
-    <DataRowItem value={use.mainUse == true ? "Yes" : "No"} />
+  <SummaryListItem
+    labelText="Is Main Use"
+    actions={
+      !makeMainUseUri || use.mainUse == true
+        ? []
+        : [
+            {
+              text: "Make this the main use",
+              href: makeMainUseUri,
+            },
+          ]
+    }
+  >
+    <DataRowItem value={use.mainUse === true ? "Yes" : "No"} />
   </SummaryListItem>
 );

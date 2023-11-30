@@ -102,6 +102,17 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           index,
                           draftRegistration.id
                         )}
+                        makeMainUseUri={
+                          ActionURLs.mainCachedUseMain +
+                          queryParams({
+                            useId: index,
+                            onSuccess: UrlBuilder.buildUseSummaryUrl(
+                              Actions.update,
+                              draftRegistration.id
+                            ),
+                            onFailure: ErrorPageURLs.serverError,
+                          })
+                        }
                         key={`row${index}`}
                       />
                     );

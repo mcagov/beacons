@@ -10,6 +10,7 @@ import { initBeacon, initBeaconUse } from "./registrationInitialisation";
 import { Activity } from "./types";
 import { Main } from "next/document";
 import { string } from "prop-types";
+import { has } from "immutable";
 
 type Indexes = {
   useId: number;
@@ -185,15 +186,18 @@ export class DeprecatedRegistration {
   private _serialiseUses() {
     const uses = this.registration.uses;
 
-    let mainUse = false;
+    const hasMainUse = uses.filter((u) => u.mainUse).length > 0;
 
     return uses.map((use, index) => {
-      mainUse = mainUse === false && use.mainUse;
-      return this._serialiseUse(use, mainUse);
+      if (!hasMainUse && index === 0) {
+        use.mainUse = true;
+      }
+
+      return this._serialiseUse(use);
     });
   }
 
-  private _serialiseUse(use: BeaconUse, mainUse: boolean): IUseRequestBody {
+  private _serialiseUse(use: BeaconUse): IUseRequestBody {
     const serialisedUse = {
       environment: use.environment,
       purpose: use.purpose ? use.purpose : null,
@@ -229,7 +233,7 @@ export class DeprecatedRegistration {
       rssNumber: use.rssNumber,
       officialNumber: use.officialNumber,
       rigPlatformLocation: use.rigPlatformLocation,
-      mainUse,
+      mainUse: use.mainUse,
       aircraftManufacturer: use.aircraftManufacturer,
       principalAirport: use.principalAirport,
       secondaryAirport: use.secondaryAirport,
