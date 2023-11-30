@@ -213,7 +213,10 @@ const mapper = (
   return makeDraftRegistrationMapper<MoreDetailsForm>(useId, beaconUseMapper);
 };
 
-const validationRules = ({ moreDetails }: FormSubmission): FormManager => {
+const validationRules = ({
+  moreDetails,
+  mainUse,
+}: FormSubmission): FormManager => {
   return new FormManager({
     moreDetails: new FieldManager(moreDetails, [
       Validators.required("More details is a required field"),
@@ -222,6 +225,7 @@ const validationRules = ({ moreDetails }: FormSubmission): FormManager => {
         250
       ),
     ]),
+    mainUse: new FieldManager(mainUse),
   });
 };
 
