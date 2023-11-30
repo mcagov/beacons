@@ -93,7 +93,7 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
         id="moreDetails"
       />
 
-      <MainUse value={form.fields.mainUse.toString()} />
+      <MainUse value={form.fields.mainUse.value.toString()} />
     </BeaconsForm>
   );
 };
