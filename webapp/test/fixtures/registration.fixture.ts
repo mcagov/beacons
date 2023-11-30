@@ -42,7 +42,6 @@ export const registrationFixture: Registration = {
   emergencyContact3AlternativeTelephoneNumber: "",
   uses: [
     {
-      id: "e00036c4-e3f4-46bb-aa9e-1d91870d9173",
       environment: "MARITIME",
       purpose: "COMMERCIAL",
       activity: "FISHING_VESSEL",
