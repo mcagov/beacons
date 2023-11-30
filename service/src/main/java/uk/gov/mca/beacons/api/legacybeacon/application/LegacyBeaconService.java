@@ -1,6 +1,5 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
-import com.nimbusds.openid.connect.sdk.federation.policy.operations.PolicyOperationFactory;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
