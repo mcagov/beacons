@@ -10,7 +10,7 @@ export const prettyUseName = (use: DraftBeaconUse): string =>
 
 export const ordinal = (number: number): string => {
   const map = {
-    1: "main",
+    1: "first",
     2: "second",
     3: "third",
     4: "fourth",

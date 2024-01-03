@@ -28,7 +28,6 @@ import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveA
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 import { GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse } from "../../router/rules/GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-
 interface MoreDetailsForm {
   moreDetails: string;
 }
@@ -111,7 +110,6 @@ const MoreDetailsTextArea: FunctionComponent<MoreDetailsTextAreaProps> = ({
     errorMessages={errorMessages}
   />
 );
-
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     return await new BeaconsPageRouter([

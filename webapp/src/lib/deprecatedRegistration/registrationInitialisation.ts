@@ -118,5 +118,6 @@ export const initBeaconUse = (): BeaconUse => {
 
     moreDetails: "",
     additionalBeaconUse: "",
+    mainUse: false,
   };
 };

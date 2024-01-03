@@ -110,6 +110,7 @@ export const testAviationUseData = {
     otherCommunication: "Carrier pigeon, goes by the name of Keith",
   },
   moreDetails: "My aircraft is neon pink",
+  mainUse: true,
 };
 
 export const testAviationPleasureUseData = {
@@ -162,6 +163,7 @@ export const testMaritimeUseData = {
     otherCommunication: "Carrier pigeon, goes by the name of Birdseye",
   },
   moreDetails: "My vessel is stuck",
+  mainUse: true,
 };
 
 export const testMaritimePleasureUseData = {
@@ -201,4 +203,5 @@ export const testLandUseData = {
     otherCommunication: "Carrier pigeon, goes by the name of Raleigh",
   },
   moreDetails: "My bicycle is blue and red.",
+  mainUse: true,
 };

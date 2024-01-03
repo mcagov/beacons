@@ -91,11 +91,28 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                       <AdditionalBeaconUseSummary
                         index={index}
                         use={use}
+                        changeUri={UrlBuilder.buildUseUrl(
+                          Actions.update,
+                          UsePages.environment,
+                          draftRegistration.id,
+                          index.toString()
+                        )}
                         deleteUri={confirmBeforeDelete(
                           use,
                           index,
                           draftRegistration.id
                         )}
+                        makeMainUseUri={
+                          ActionURLs.mainCachedUseMain +
+                          queryParams({
+                            useId: index,
+                            onSuccess: UrlBuilder.buildUseSummaryUrl(
+                              Actions.update,
+                              draftRegistration.id
+                            ),
+                            onFailure: ErrorPageURLs.serverError,
+                          })
+                        }
                         key={`row${index}`}
                       />
                     );

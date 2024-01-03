@@ -11,6 +11,7 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconRepository;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
+import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
 
 public class BeaconUseIntegrationTest extends BaseIntegrationTest {
 
@@ -23,19 +24,16 @@ public class BeaconUseIntegrationTest extends BaseIntegrationTest {
   @Autowired
   BeaconUseRepository beaconUseRepository;
 
+  @Autowired
+  BeaconUseService beaconUseService;
+
   @Test
   void shouldSaveBeaconUse() {
     // set up
     AccountHolderId accountHolderId = createAccountHolder();
     BeaconId beaconId = createBeacon(accountHolderId);
 
-    BeaconUse beaconUse = new BeaconUse();
-    beaconUse.setEnvironment(Environment.AVIATION);
-    beaconUse.setActivity(Activity.CARGO_AIRPLANE);
-    beaconUse.setPurpose(Purpose.COMMERCIAL);
-    beaconUse.setMainUse(true);
-    beaconUse.setBeaconId(beaconId);
-    beaconUse.setMoreDetails("Not sure why this is mandatory :(");
+    BeaconUse beaconUse = createBeaconUse(beaconId);
 
     // act
     BeaconUse savedBeaconUse = beaconUseRepository.save(beaconUse);
@@ -70,5 +68,17 @@ public class BeaconUseIntegrationTest extends BaseIntegrationTest {
 
     Beacon savedBeacon = beaconRepository.save(beacon);
     return savedBeacon.getId();
+  }
+
+  private BeaconUse createBeaconUse(BeaconId beaconId) {
+    BeaconUse beaconUse = new BeaconUse();
+    beaconUse.setEnvironment(Environment.AVIATION);
+    beaconUse.setActivity(Activity.CARGO_AIRPLANE);
+    beaconUse.setPurpose(Purpose.COMMERCIAL);
+    beaconUse.setMainUse(true);
+    beaconUse.setBeaconId(beaconId);
+    beaconUse.setMoreDetails("Not sure why this is mandatory :(");
+
+    return beaconUse;
   }
 }
