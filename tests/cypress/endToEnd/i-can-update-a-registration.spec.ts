@@ -692,7 +692,7 @@ const iCanViewTheUpdatedAdditionalBeaconInformation = (
   iCanSeeAPageHeadingThatContains("Beacon information");
 };
 
-const thenIShouldBeOnTheRegistrationSummaryPageForHexId = (hexId) => {
+export const thenIShouldBeOnTheRegistrationSummaryPageForHexId = (hexId) => {
   iCanSeeAPageHeadingThatContains("Your registered beacon with Hex ID/UIN");
   iCanSeeAPageHeadingThatContains(hexId);
 };
