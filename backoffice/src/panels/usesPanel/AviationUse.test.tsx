@@ -42,10 +42,12 @@ describe("Aviation Use", () => {
 
     const rowWithDongleLabel = screen.getByText("Is this a dongle?:");
     expect(rowWithDongleLabel).toBeInTheDocument();
+    // eslint-disable-next-line testing-library/no-node-access
     const rowElement = rowWithDongleLabel.closest("tr");
     expect(rowElement).toBeInTheDocument();
     if (rowElement) {
       const noValueInRow = within(rowElement).queryByText("NO");
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(noValueInRow).toBeInTheDocument();
     }
   });
