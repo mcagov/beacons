@@ -87,6 +87,8 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
               {draftRegistration.uses.length > 0 && (
                 <>
                   {draftRegistration.uses.map((use, index) => {
+                    if (use.environment.toLowerCase() == "marine") {
+                    }
                     return (
                       <AdditionalBeaconUseSummary
                         index={index}
