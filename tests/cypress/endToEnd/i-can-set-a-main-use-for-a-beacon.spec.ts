@@ -4,7 +4,6 @@ import {
   iHaveClickedOnALinkWithText,
   theClosestTextToACertainTextIsCorrect,
   whenIClickContinue,
-  whenIClickTheButtonContaining,
   whenIHaveVisited,
 } from "../common/selectors-and-assertions.spec";
 import {
@@ -27,7 +26,7 @@ describe("As an account holder", () => {
 
     // check it is set as main use
     theClosestTextToACertainTextIsCorrect(
-      "Maritime",
+      /Maritime/i,
       "Is Main Use",
       "govuk-summary-list__value",
       "Yes"
@@ -43,7 +42,7 @@ describe("As an account holder", () => {
 
     // check it is not main use
     theClosestTextToACertainTextIsCorrect(
-      "Land",
+      /Land/i,
       "Is Main Use",
       "govuk-summary-list__value",
       "No"
@@ -54,7 +53,7 @@ describe("As an account holder", () => {
 
     // check it is now the main use
     theClosestTextToACertainTextIsCorrect(
-      "Land",
+      /Land/i,
       "Is Main Use",
       "govuk-summary-list__value",
       "Yes"

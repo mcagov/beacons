@@ -290,7 +290,7 @@ export const iCanSeeTextInSummaryListRowWithHeading = (
 };
 
 export const theClosestTextToACertainTextIsCorrect = (
-  parentText: string,
+  parentText: string | RegExp,
   currentElement: string,
   selector: string,
   closestText: string
