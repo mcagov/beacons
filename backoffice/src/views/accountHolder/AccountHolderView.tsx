@@ -369,7 +369,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
                 option.email || "Start typing to search for an account holder.."
               }
               filterOptions={(options, { inputValue }) => {
-                if (inputValue == "---") {
+                if (inputValue === "---") {
                   return accountHolders;
                 }
                 if (inputValue.length < 2) {

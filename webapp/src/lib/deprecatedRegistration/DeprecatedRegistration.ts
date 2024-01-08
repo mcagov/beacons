@@ -8,9 +8,6 @@ import {
 } from "./IRegistrationRequestBody";
 import { initBeacon, initBeaconUse } from "./registrationInitialisation";
 import { Activity } from "./types";
-import { Main } from "next/document";
-import { string } from "prop-types";
-import { has } from "immutable";
 
 type Indexes = {
   useId: number;

@@ -109,9 +109,21 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
     this.registerEvent(new BeaconCreated(this));
   }
 
+  public boolean isChange() {
+    if (this.createdDate == null) {
+      return false;
+    }
+
+    if (this.beaconStatus != BeaconStatus.NEW) {
+      return false;
+    }
+
+    return OffsetDateTime.now().isAfter(this.createdDate.plusDays(1));
+  }
+
   public void update(Beacon patch, ModelPatcher<Beacon> patcher) {
     patcher.patchModel(this, patch);
-    if (this.beaconStatus == BeaconStatus.NEW) {
+    if (isChange()) {
       setBeaconStatus(BeaconStatus.CHANGE);
     }
     this.registerEvent(new BeaconUpdated(this));
