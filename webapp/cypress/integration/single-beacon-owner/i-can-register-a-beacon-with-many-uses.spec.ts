@@ -111,7 +111,7 @@ describe("As a single beacon owner with many uses", () => {
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
-    iCanSeeASectionHeadingThatContains("Main use");
+    iCanSeeASectionHeadingThatContains("First use");
     iCanSeeMyLandUse();
     iCanSeeASectionHeadingThatContains("Second use");
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);
