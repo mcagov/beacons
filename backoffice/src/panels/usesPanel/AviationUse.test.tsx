@@ -41,16 +41,11 @@ describe("Aviation Use", () => {
     render(<AviationUse use={use} />);
 
     const rowWithDongleLabel = screen.getByText("Is this a dongle?:");
-    // Ensure the label is found before accessing the row
     expect(rowWithDongleLabel).toBeInTheDocument();
-    // Find the closest row parent of the label element
-    // eslint-disable-next-line testing-library/no-node-access
     const rowElement = rowWithDongleLabel.closest("tr");
-    // Check if the row element exists and then check for "NO" within the row
     expect(rowElement).toBeInTheDocument();
     if (rowElement) {
       const noValueInRow = within(rowElement).queryByText("NO");
-      // eslint-disable-next-line jest/no-conditional-expect
       expect(noValueInRow).toBeInTheDocument();
     }
   });
