@@ -54,19 +54,19 @@ describe("As a beacon owner with several uses", () => {
     iCanSeeMyLandUse();
     iCanSeeMyAviationUse(Purpose.COMMERCIAL);
 
-    whenIGoToDeleteMy(/main use/i);
+    whenIGoToDeleteMy(/first use/i);
     andIClickTheButtonContaining("Yes");
     theNumberOfUsesIs(1);
-    myAviationCommercialUseIsNowMyMainUse();
+    myAviationCommercialUseIsNowMyFirstUse();
 
-    whenIGoToDeleteMy(/main use/i);
+    whenIGoToDeleteMy(/first use/i);
     whenIClickTheButtonContaining("Yes");
     theNumberOfUsesIs(0);
   });
 });
 
-const myAviationCommercialUseIsNowMyMainUse = () =>
-  cy.get("h2").contains(/(?=.*main use)(?=.*aviation)(?=.*commercial)/i);
+const myAviationCommercialUseIsNowMyFirstUse = () =>
+  cy.get("h2").contains(/(?=.*first use)(?=.*aviation)(?=.*commercial)/i);
 
 const iCannotSeeMyMaritimePleasureUseBecauseItIsDeleted = () =>
   cy
