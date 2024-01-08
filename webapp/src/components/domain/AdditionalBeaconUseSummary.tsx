@@ -5,12 +5,6 @@ import { ordinal, prettyUseName, sentenceCase } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { AnchorLink, SectionHeading, WarningLink } from "../Typography";
 import { DataRowItem } from "./DataRowItem";
-import { Button, LinkButton } from "../Button";
-import { ActionURLs, queryParams } from "../../lib/urls";
-import { UrlBuilder } from "../../lib/URLs/UrlBuilder";
-import { Actions } from "../../lib/URLs/Actions";
-import { UsePages } from "../../lib/URLs/UsePages";
-import { Pages } from "../../lib/URLs/Pages";
 
 interface BeaconUseSectionProps {
   index: number;
