@@ -15,7 +15,7 @@ describe("AdditionalBeaconUseSummary", () => {
 
     render(<AdditionalBeaconUseSummary use={use} index={0} />);
 
-    expect(screen.getByText(/main use/i)).toBeVisible();
+    expect(screen.getByText(/first use/i)).toBeVisible();
   });
 
   it("displays the environment, activity and purpose in the heading", () => {

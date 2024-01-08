@@ -33,7 +33,7 @@ describe("As a beacon owner with several uses", () => {
     givenIHaveEnteredMyMaritimeUse(Purpose.PLEASURE);
     theNumberOfUsesIs(2);
 
-    whenIGoToDeleteMy(/main use/i);
+    whenIGoToDeleteMy(/first use/i);
     thenIAmPromptedToConfirmDeletionOfMyLandUse();
 
     whenIClickTheButtonContaining("Cancel");
