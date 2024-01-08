@@ -77,7 +77,7 @@ describe("As a single beacon owner with many uses", () => {
   it("I can register my beacon for a land, maritime pleasure, and aviation pleasure use", () => {
     givenIHaveSignedIn();
     givenIHaveEnteredMyBeaconDetails();
-    iCanSeeAPageHeadingThatContains("main use");
+    iCanSeeAPageHeadingThatContains("first use");
     givenIHaveEnteredMyLandUse();
     iCanEditMyNUses(1);
     andIHaveAnotherUse();
