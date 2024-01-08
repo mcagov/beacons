@@ -12,8 +12,6 @@ import {
   randomUkEncodedHexId,
 } from "../common/i-have-previously-registered-a-beacon.spec";
 import singleBeaconRegistration from "../fixtures/singleBeaconRegistration.json";
-import { anotherBeaconRegistration } from "../fixtures/anotherBeaconRegistration";
-import { givenIHaveEnteredMyMaritimeUse } from "../common/i-can-enter-use-information/maritime.spec";
 import { givenIHaveEnteredMyLandUse } from "../common/i-can-enter-use-information/land.spec";
 import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
 import { thenIShouldBeOnTheRegistrationSummaryPageForHexId } from "./i-can-update-a-registration.spec";

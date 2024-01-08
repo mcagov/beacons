@@ -48,7 +48,7 @@ describe("As an account holder", () => {
     whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
     iCanSeeUseInformation(testRegistration);
 
-    whenIGoToDeleteMy(/main use/i);
+    whenIGoToDeleteMy(/first use/i);
     thenIAmPromptedToConfirmDeletionOfMyUse(testRegistration.uses[0]);
 
     whenIClickTheButtonContaining("Cancel");
