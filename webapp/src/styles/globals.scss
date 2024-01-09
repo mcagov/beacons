@@ -15,3 +15,7 @@ body {
 .govuk-link--warning {
   color: govuk-colour("red");
 }
+
+.govuk-custom-link {
+  @include govuk-font($size: 19);
+}

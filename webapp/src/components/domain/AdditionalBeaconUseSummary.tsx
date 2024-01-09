@@ -5,6 +5,8 @@ import { ordinal, prettyUseName, sentenceCase } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { AnchorLink, SectionHeading, WarningLink } from "../Typography";
 import { DataRowItem } from "./DataRowItem";
+import { LinkButton } from "../Button";
+import Link from "next/link";
 
 interface BeaconUseSectionProps {
   index: number;
@@ -60,11 +62,22 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
         </div>
       </div>
 
+      <div style={{ float: "right" }}>
+        {makeMainUseUri && use.mainUse !== true && (
+          <AnchorLink
+            href={makeMainUseUri}
+            classes={`govuk-link--no-visited-state govuk-custom-link`}
+          >
+            Make this the main use
+          </AnchorLink>
+        )}
+      </div>
+
       <SummaryList>
         <AboutThisUse use={use} />
         <Communications use={use} />
         <MoreDetailsSubSection use={use} />
-        <IsMainUseSubSection use={use} makeMainUseUri={makeMainUseUri} />
+        <IsMainUseSubSection use={use} />
       </SummaryList>
     </>
   );
@@ -289,27 +302,10 @@ const MoreDetailsSubSection: FunctionComponent<{ use: DraftBeaconUse }> = ({
 
 const IsMainUseSubSection: FunctionComponent<{
   use: DraftBeaconUse;
-  makeMainUseUri: string;
-}> = ({
-  use,
-  makeMainUseUri,
-}: {
-  use: BeaconUse;
-  makeMainUseUri: string;
-}): JSX.Element => (
-  <SummaryListItem
-    labelText="Is Main Use"
-    actions={
-      !makeMainUseUri || use.mainUse == true
-        ? []
-        : [
-            {
-              text: "Make this the main use",
-              href: makeMainUseUri,
-            },
-          ]
-    }
-  >
-    <DataRowItem value={use.mainUse === true ? "Yes" : "No"} />
-  </SummaryListItem>
+}> = ({ use }: { use: BeaconUse }): JSX.Element => (
+  <>
+    <SummaryListItem labelText="Is Main Use">
+      <DataRowItem value={use.mainUse === true ? "Yes" : "No"} />
+    </SummaryListItem>
+  </>
 );

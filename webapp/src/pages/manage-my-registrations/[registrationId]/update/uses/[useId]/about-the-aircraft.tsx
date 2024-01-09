@@ -89,7 +89,7 @@ const AboutTheAircraft: FunctionComponent<DraftBeaconUsePageProps> = ({
         value={form.fields.cnOrMsnNumber.value}
       />
 
-      <Dongle value={form.fields.dongle.value} />
+      <Dongle value={form.fields.dongle.value || "false"} />
 
       <BeaconPosition
         value={form.fields.beaconPosition.value}

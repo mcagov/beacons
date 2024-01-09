@@ -186,9 +186,7 @@ export class DeprecatedRegistration {
     const hasMainUse = uses.filter((u) => u.mainUse).length > 0;
 
     return uses.map((use, index) => {
-      if (!hasMainUse && index === 0) {
-        use.mainUse = true;
-      }
+      use.mainUse = !hasMainUse && index === 0;
 
       return this._serialiseUse(use);
     });
