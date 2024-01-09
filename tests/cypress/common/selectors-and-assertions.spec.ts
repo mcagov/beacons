@@ -288,27 +288,3 @@ export const iCanSeeTextInSummaryListRowWithHeading = (
 ): void => {
   cy.get("dt").contains(heading).parent().contains(text);
 };
-
-export const theClosestTextToACertainTextIsCorrect = (
-  parentText: string | RegExp,
-  currentElement: string,
-  selector: string,
-  closestText: string
-): void => {
-  cy.contains(currentElement)
-    .parent()
-    .contains(parentText)
-    .as("targetTextElement");
-
-  cy.contains(closestText).as("closestElement");
-
-  cy.get("@targetTextElement").should("exist");
-
-  cy.get("@closestElement").should("exist");
-
-  cy.get("@targetTextElement")
-    .closest(selector)
-    .as("closestToTargetTextElement");
-
-  cy.get("@closestToTargetTextElement").should("contain", "Expected Text");
-};
