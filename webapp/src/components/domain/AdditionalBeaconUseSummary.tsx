@@ -27,6 +27,9 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
 }: BeaconUseSectionProps): JSX.Element => {
   const useRank = sentenceCase(ordinal(index + 1)) + " use";
 
+  if (use.mainUse === undefined) {
+    use.mainUse = index === 0;
+  }
   return (
     <>
       <div

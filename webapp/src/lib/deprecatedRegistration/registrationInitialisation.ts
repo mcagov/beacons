@@ -7,6 +7,9 @@ import { Registration } from "../../entities/Registration";
  * @returns {Registration}   JSON representation of a beacon registration
  */
 export const initBeacon = (): Registration => {
+  const beaconUse: BeaconUse = initBeaconUse();
+  beaconUse.mainUse = true;
+
   return {
     manufacturer: "",
     model: "",
@@ -47,7 +50,7 @@ export const initBeacon = (): Registration => {
     emergencyContact3TelephoneNumber: "",
     emergencyContact3AlternativeTelephoneNumber: "",
 
-    uses: [initBeaconUse()],
+    uses: [beaconUse],
   };
 };
 
