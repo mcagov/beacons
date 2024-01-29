@@ -39,6 +39,11 @@ export class DeprecatedRegistration {
 
   public createUse(): void {
     const use = initBeaconUse();
+
+    if (this.registration.uses.length === 0) {
+      use.mainUse = true;
+    }
+
     this.registration.uses.push(use);
   }
 
@@ -186,7 +191,9 @@ export class DeprecatedRegistration {
     const hasMainUse = uses.filter((u) => u.mainUse).length > 0;
 
     return uses.map((use, index) => {
-      use.mainUse = !hasMainUse && index === 0;
+      if (!hasMainUse) {
+        use.mainUse = index === 0;
+      }
 
       return this._serialiseUse(use);
     });
