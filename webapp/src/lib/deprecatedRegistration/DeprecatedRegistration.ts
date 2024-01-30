@@ -242,18 +242,21 @@ export class DeprecatedRegistration {
       dongle: stringToBoolean(use.dongle),
       beaconPosition: use.beaconPosition,
       workingRemotelyLocation: use.workingRemotelyLocation,
-      workingRemotelyPeopleCount: use.workingRemotelyPeopleCount,
+      workingRemotelyPeopleCount: use.workingRemotelyPeopleCount || "1",
       windfarmLocation: use.windfarmLocation,
-      windfarmPeopleCount: use.windfarmPeopleCount,
+      windfarmPeopleCount: use.windfarmPeopleCount || "1",
       otherActivityLocation:
         use.activity === Activity.OTHER ? use.otherActivityLocation : "",
       otherActivityPeopleCount:
-        use.activity === Activity.OTHER ? use.otherActivityPeopleCount : "",
+        use.activity === Activity.OTHER
+          ? use.otherActivityPeopleCount || "1"
+          : "",
       moreDetails: use.moreDetails,
     };
 
-    if (Number.isInteger(+use.maxCapacity))
-      serialisedUse["maxCapacity"] = +use.maxCapacity;
+    serialisedUse["maxCapacity"] = Number.isInteger(+use.maxCapacity)
+      ? +use.maxCapacity
+      : 1;
 
     return serialisedUse;
   }
