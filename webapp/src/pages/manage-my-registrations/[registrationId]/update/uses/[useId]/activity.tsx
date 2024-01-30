@@ -515,7 +515,7 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
         >
           <Input
             id="workingRemotelyPeopleCount"
-            label="What is the typical/maximum number of people with you?"
+            label="What is the typical/maximum number of people?"
             defaultValue={form.fields.workingRemotelyPeopleCount.value}
           />
         </FormGroup>
@@ -541,7 +541,7 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
         >
           <Input
             id="windfarmPeopleCount"
-            label="What is the typical/maximum number of people with you?"
+            label="What is the typical/maximum number of people?"
             defaultValue={form.fields.windfarmPeopleCount.value}
           />
         </FormGroup>
@@ -576,7 +576,7 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
         >
           <Input
             id="otherActivityPeopleCount"
-            label="What is the typical/max number of people with you?"
+            label="What is the typical/max number of people?"
             defaultValue={form.fields.otherActivityPeopleCount.value}
           />
         </FormGroup>
@@ -662,11 +662,11 @@ const mapper = (
         activity: form.activity || "",
         otherActivityText: form.otherActivityText || "",
         otherActivityLocation: form.otherActivityLocation || "",
-        otherActivityPeopleCount: form.otherActivityPeopleCount || "",
+        otherActivityPeopleCount: form.otherActivityPeopleCount || "1",
         workingRemotelyLocation: form.workingRemotelyLocation || "",
-        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount || "",
+        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount || "1",
         windfarmLocation: form.windfarmLocation || "",
-        windfarmPeopleCount: form.windfarmPeopleCount || "",
+        windfarmPeopleCount: form.windfarmPeopleCount || "1",
       };
     },
     beaconUseToForm: (draftRegistration) => ({
@@ -675,12 +675,12 @@ const mapper = (
       otherActivityText: draftRegistration.otherActivityText || "",
       otherActivityLocation: draftRegistration.otherActivityLocation || "",
       otherActivityPeopleCount:
-        draftRegistration.otherActivityPeopleCount || "",
+        draftRegistration.otherActivityPeopleCount || "1",
       workingRemotelyLocation: draftRegistration.workingRemotelyLocation || "",
       workingRemotelyPeopleCount:
-        draftRegistration.workingRemotelyPeopleCount || "",
+        draftRegistration.workingRemotelyPeopleCount || "1",
       windfarmLocation: draftRegistration.windfarmLocation || "",
-      windfarmPeopleCount: draftRegistration.windfarmPeopleCount || "",
+      windfarmPeopleCount: draftRegistration.windfarmPeopleCount || "1",
       purpose: draftRegistration.purpose,
     }),
   };
@@ -737,14 +737,7 @@ const validationRules = ({
     ),
     otherActivityPeopleCount: new FieldManager(
       otherActivityPeopleCount,
-      [
-        Validators.required(
-          "Enter how many people tend to be with you when you use your beacon"
-        ),
-        Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you when you use your beacon"
-        ),
-      ],
+      [],
       [
         activityMatchingCondition(Activity.OTHER),
         environmentIsLandMatchingCondition,
@@ -757,14 +750,7 @@ const validationRules = ({
     ),
     workingRemotelyPeopleCount: new FieldManager(
       workingRemotelyPeopleCount,
-      [
-        Validators.required(
-          "Enter how many people tend to be with you when you work remotely"
-        ),
-        Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you when you work remotely"
-        ),
-      ],
+      [],
       [activityMatchingCondition(Activity.WORKING_REMOTELY)]
     ),
     windfarmLocation: new FieldManager(
@@ -774,14 +760,7 @@ const validationRules = ({
     ),
     windfarmPeopleCount: new FieldManager(
       windfarmPeopleCount,
-      [
-        Validators.required(
-          "Enter how many people tend to be with you when you work at a windfarm"
-        ),
-        Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you are at the windfarm"
-        ),
-      ],
+      [],
       [activityMatchingCondition(Activity.WINDFARM)]
     ),
   });
