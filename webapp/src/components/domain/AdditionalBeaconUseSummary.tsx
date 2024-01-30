@@ -5,8 +5,6 @@ import { ordinal, prettyUseName, sentenceCase } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { AnchorLink, SectionHeading, WarningLink } from "../Typography";
 import { DataRowItem } from "./DataRowItem";
-import { LinkButton } from "../Button";
-import Link from "next/link";
 
 interface BeaconUseSectionProps {
   index: number;
