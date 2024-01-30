@@ -132,6 +132,8 @@ export const whenIClearAndType = (value: string, selector: string): void => {
 
 export const givenIHaveTypedInAnEmptyField = whenITypeInAnEmptyField;
 
+export const givenIHaveClearedAndTypedInAField = whenIClearAndType;
+
 export const whenIClearTheInput = (selector: string): void => {
   cy.get(selector).clear();
 };
@@ -248,6 +250,8 @@ export const iCanEditAFieldContaining = (value: string): void => {
 export const iHaveClickedOnALinkWithText = (text: string): void => {
   cy.get(`a[href]:contains(${text})`).click();
 };
+
+export const whenIClickTheLinkContaining = iHaveClickedOnALinkWithText;
 
 export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
   hexId: string
