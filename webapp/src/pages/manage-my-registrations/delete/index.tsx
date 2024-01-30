@@ -4,7 +4,7 @@ import {
   BeaconsForm,
   BeaconsFormHeading,
 } from "../../../components/BeaconsForm";
-import { Button, LinkButton } from "../../../components/Button";
+import { Button } from "../../../components/Button";
 import { FormFieldset, FormGroup, FormLegend } from "../../../components/Form";
 import { Input } from "../../../components/Input";
 import { RadioList, RadioListItem } from "../../../components/RadioList";
