@@ -24,12 +24,14 @@ import {
   givenIHaveSelected,
   givenIHaveSignedIn,
   iCanSeeAPageHeadingThatContains,
+  iHaveClickedOnALinkWithText,
   iPerformOperationAndWaitForNewPageToLoad,
   theBackLinkContains,
   thenTheUrlShouldContain,
   whenIClickBack,
   whenIClickContinue,
   whenIClickTheButtonContaining,
+  whenIClickTheLinkContaining,
   whenIHaveVisited,
 } from "../common/selectors-and-assertions.spec";
 import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
@@ -51,7 +53,7 @@ describe("As an account holder", () => {
     whenIGoToDeleteMy(/first use/i);
     thenIAmPromptedToConfirmDeletionOfMyUse(testRegistration.uses[0]);
 
-    whenIClickTheButtonContaining("Cancel");
+    whenIClickTheLinkContaining("Cancel");
     theNumberOfUsesIs(1);
     iCanSeeMyUse(testRegistration.uses[0]);
 
