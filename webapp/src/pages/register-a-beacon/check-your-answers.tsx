@@ -48,7 +48,7 @@ const CheckYourAnswersPage: FunctionComponent<CheckYourAnswersProps> = ({
             <>
               <PageHeading>{pageHeading}</PageHeading>
               <GovUKBody>
-                Please check you answer before sending in your registration
+                Please check your answer before sending in your registration
                 application
               </GovUKBody>
               <CheckYourAnswersBeaconDetailsSummary
