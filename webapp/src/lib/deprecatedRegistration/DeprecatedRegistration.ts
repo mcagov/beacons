@@ -188,13 +188,10 @@ export class DeprecatedRegistration {
   private _serialiseUses() {
     const uses = this.registration.uses;
 
-    const hasMainUse = uses.filter((u) => u.mainUse).length > 0;
+    const hasMainUse = uses.some((u) => u.mainUse);
 
     return uses.map((use, index) => {
-      if (!hasMainUse) {
-        use.mainUse = index === 0;
-      }
-
+      use.mainUse = hasMainUse ? use.mainUse || false : index === 0;
       return this._serialiseUse(use);
     });
   }
