@@ -2,7 +2,6 @@ import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveSignedIn,
   givenIHaveTyped,
-  requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
