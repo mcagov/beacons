@@ -9,7 +9,6 @@ import {
   givenIHaveSelected,
   givenIHaveTypedInAnEmptyField,
   iCanSeeAPageHeadingThatContains,
-  whenIClearAndType,
 } from "../selectors-and-assertions.spec";
 import { makeEnumValueUserFriendly } from "../writing-style.spec";
 
