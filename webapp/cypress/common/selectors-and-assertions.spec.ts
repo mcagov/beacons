@@ -123,6 +123,12 @@ export const whenIType = (value: string, selector: string): void => {
   cy.get(selector).should("be.empty").type(value);
 };
 
+export const whenIClearAndType = (value: string, selector: string): void => {
+  cy.get(selector).clear().type(value);
+};
+
+export const givenIHaveClearedAndTyped = whenIClearAndType;
+
 export const givenIHaveTyped = whenIType;
 export const andIType = whenIType;
 
