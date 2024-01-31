@@ -86,6 +86,13 @@ export const iCanSeeNLinksContaining = (n: number, text: string): void => {
   cy.get(`a[href]:contains(${text})`).should("have.length", n);
 };
 
+export const ICanSeeAFieldContaining = (
+  selector: string,
+  expectedValue: string
+): void => {
+  cy.get(selector).should("have.value", expectedValue);
+};
+
 export const iCanSeeAButtonContaining = (text: string | RegExp): void => {
   cy.get(`button:contains(${text}),[role=button]:contains(${text})`);
 };

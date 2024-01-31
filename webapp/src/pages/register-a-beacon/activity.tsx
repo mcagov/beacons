@@ -727,9 +727,6 @@ const validationRules = ({
     otherActivityPeopleCount: new FieldManager(
       otherActivityPeopleCount,
       [
-        Validators.required(
-          "Enter how many people tend to be with you when you use your beacon"
-        ),
         Validators.wholeNumber(
           "Enter a whole number for the typical/maximum number of people that tend to be with you when you use your beacon"
         ),
@@ -747,9 +744,6 @@ const validationRules = ({
     workingRemotelyPeopleCount: new FieldManager(
       workingRemotelyPeopleCount,
       [
-        Validators.required(
-          "Enter how many people tend to be with you when you work remotely"
-        ),
         Validators.wholeNumber(
           "Enter a whole number for the typical/maximum number of people that tend to be with you when you work remotely"
         ),
@@ -764,9 +758,6 @@ const validationRules = ({
     windfarmPeopleCount: new FieldManager(
       windfarmPeopleCount,
       [
-        Validators.required(
-          "Enter how many people tend to be with you when you work at a windfarm"
-        ),
         Validators.wholeNumber(
           "Enter a whole number for the typical/maximum number of people that tend to be with you are at the windfarm"
         ),

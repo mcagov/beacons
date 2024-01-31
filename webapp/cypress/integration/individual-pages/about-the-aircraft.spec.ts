@@ -1,11 +1,13 @@
 import {
+  andIClickContinue,
   givenIHaveACookieSetAndIVisit,
   givenIHaveSignedIn,
-  givenIHaveTyped,
+  ICanSeeAFieldContaining,
   thenIShouldSeeAnErrorMessageThatContains,
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
   tooManyCharactersErrorMessage,
+  whenIClearAndType,
   whenIClickContinue,
   whenIClickOnTheErrorSummaryLinkContaining,
   whenIType,
@@ -24,10 +26,34 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
   });
 
   it("should route to the next page if there are no errors with the form submission", () => {
-    whenIType("42", aircraftMaxCapacitySelector);
+    whenIClearAndType("42", aircraftMaxCapacitySelector);
     whenIClickContinue();
 
     thenTheUrlShouldContain(nextPageUrl);
+  });
+
+  describe("maximum capacity field", () => {
+    it("displays 1 in max capacity field by default", () => {
+      ICanSeeAFieldContaining(aircraftMaxCapacitySelector, "1");
+      andIClickContinue();
+
+      thenTheUrlShouldContain(nextPageUrl);
+    });
+
+    it("displays errors if no the value is not a whole number", () => {
+      whenIClearAndType("1.3", aircraftMaxCapacitySelector);
+      whenIClickContinue();
+      thenIShouldSeeAnErrorMessageThatContains(
+        "Maximum number of persons",
+        "whole number"
+      );
+
+      whenIClickOnTheErrorSummaryLinkContaining(
+        "Maximum number of persons",
+        "whole number"
+      );
+      thenMyFocusMovesTo(aircraftMaxCapacitySelector);
+    });
   });
 
   describe("the beacon position", () => {
@@ -52,7 +78,7 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
 
     it("submits if less than 100 characters are submitted", () => {
       const requiredFieldValue = "42";
-      givenIHaveTyped(requiredFieldValue, aircraftMaxCapacitySelector);
+      whenIClearAndType(requiredFieldValue, aircraftMaxCapacitySelector);
 
       whenIType("a".repeat(99), beaconPositionSelector);
       whenIClickContinue();
