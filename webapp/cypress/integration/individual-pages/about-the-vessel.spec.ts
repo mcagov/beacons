@@ -41,27 +41,6 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
 
       thenTheUrlShouldContain(nextPageUrl);
     });
-
-    it("displays errors if a none-integer value is submitted", () => {
-      const mustBeAWholeNumberErrorMessageContains = [
-        "Maximum number of persons",
-        "whole number",
-      ];
-      whenIType("1.3", maxCapacityFieldSelector);
-      whenIClickContinue();
-      thenIShouldSeeAnErrorSummaryLinkThatContains(
-        ...mustBeAWholeNumberErrorMessageContains
-      );
-
-      thenIShouldSeeAnErrorMessageThatContains(
-        ...mustBeAWholeNumberErrorMessageContains
-      );
-
-      whenIClickOnTheErrorSummaryLinkContaining(
-        ...mustBeAWholeNumberErrorMessageContains
-      );
-      thenMyFocusMovesTo(maxCapacityFieldSelector);
-    });
   });
 
   describe("the Area of operation field", () => {

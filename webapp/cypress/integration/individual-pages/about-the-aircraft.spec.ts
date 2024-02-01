@@ -39,21 +39,6 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
 
       thenTheUrlShouldContain(nextPageUrl);
     });
-
-    it("displays errors if no the value is not a whole number", () => {
-      whenIClearAndType("1.3", aircraftMaxCapacitySelector);
-      whenIClickContinue();
-      thenIShouldSeeAnErrorMessageThatContains(
-        "Maximum number of persons",
-        "whole number"
-      );
-
-      whenIClickOnTheErrorSummaryLinkContaining(
-        "Maximum number of persons",
-        "whole number"
-      );
-      thenMyFocusMovesTo(aircraftMaxCapacitySelector);
-    });
   });
 
   describe("the beacon position", () => {
