@@ -4,6 +4,7 @@ import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveSelected,
   givenIHaveSignedIn,
+  ICanSeeAFieldContaining,
   requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
@@ -199,11 +200,8 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
 
         givenIHaveSelected(workingRemotelySelector);
 
-        whenIType(" ", workingRemotelyPeopleCountSelector);
+        ICanSeeAFieldContaining(workingRemotelyLocationSelector, "1");
         andIClickContinue();
-        whenIClickOnTheErrorSummaryLinkContaining(...requiredFieldErrorMessage);
-        thenIShouldSeeFormErrors(...requiredFieldErrorMessage);
-        thenMyFocusMovesTo(workingRemotelyPeopleCountSelector);
 
         whenIType("not a number", workingRemotelyPeopleCountSelector);
         andIClickContinue();
@@ -239,11 +237,8 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
 
         givenIHaveSelected(windfarmSelector);
 
-        whenIType(" ", windfarmPeopleCountSelector);
+        ICanSeeAFieldContaining(windfarmPeopleCountSelector, "1");
         andIClickContinue();
-        thenIShouldSeeFormErrors(...requiredFieldErrorMessage);
-        whenIClickOnTheErrorSummaryLinkContaining(...requiredFieldErrorMessage);
-        thenMyFocusMovesTo(windfarmPeopleCountSelector);
 
         whenIType("not a number", windfarmPeopleCountSelector);
         andIClickContinue();
@@ -290,11 +285,8 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
 
         givenIHaveSelected(otherActivitySelector);
 
-        whenIType(" ", otherActivityPeopleCountSelector);
+        ICanSeeAFieldContaining(otherActivityPeopleCountSelector, "1");
         andIClickContinue();
-        thenIShouldSeeFormErrors(...requiredFieldErrorMessage);
-        whenIClickOnTheErrorSummaryLinkContaining(...requiredFieldErrorMessage);
-        thenMyFocusMovesTo(otherActivityPeopleCountSelector);
 
         whenIType("not a number", otherActivityPeopleCountSelector);
         andIClickContinue();

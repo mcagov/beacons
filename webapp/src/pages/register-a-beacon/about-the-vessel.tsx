@@ -340,7 +340,11 @@ const validationRules = ({
   rigPlatformLocation,
 }: FormSubmission): FormManager => {
   return new FormManager({
-    maxCapacity: new FieldManager(maxCapacity, []),
+    maxCapacity: new FieldManager(maxCapacity, [
+      Validators.wholeNumber(
+        "Maximum number of persons onboard must be a whole number"
+      ),
+    ]),
     vesselName: new FieldManager(vesselName),
     beaconLocation: new FieldManager(beaconLocation, [
       Validators.maxLength(

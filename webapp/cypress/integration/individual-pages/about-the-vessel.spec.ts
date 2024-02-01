@@ -1,7 +1,9 @@
 import {
+  andIClickContinue,
   givenIHaveACookieSetAndIVisit,
   givenIHaveSignedIn,
   givenIHaveTyped,
+  ICanSeeAFieldContaining,
   thenIShouldSeeAnErrorMessageThatContains,
   thenIShouldSeeAnErrorSummaryLinkThatContains,
   thenMyFocusMovesTo,
@@ -30,6 +32,15 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
     whenIClickContinue();
 
     thenTheUrlShouldContain(nextPageUrl);
+  });
+
+  describe("the Maximum capacity field", () => {
+    it("displays 1 if no maximum vessel capacity is submitted", () => {
+      ICanSeeAFieldContaining(maxCapacityFieldSelector, "1");
+      andIClickContinue();
+
+      thenTheUrlShouldContain(nextPageUrl);
+    });
   });
 
   describe("the Area of operation field", () => {

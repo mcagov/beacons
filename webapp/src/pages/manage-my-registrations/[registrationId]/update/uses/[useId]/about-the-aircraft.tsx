@@ -329,7 +329,11 @@ const validationRules = ({
   beaconPosition,
 }: FormSubmission): FormManager => {
   return new FormManager({
-    maxCapacity: new FieldManager(maxCapacity, []),
+    maxCapacity: new FieldManager(maxCapacity, [
+      Validators.wholeNumber(
+        "Maximum number of persons onboard must be a whole number"
+      ),
+    ]),
     aircraftManufacturer: new FieldManager(aircraftManufacturer),
     principalAirport: new FieldManager(principalAirport),
     secondaryAirport: new FieldManager(secondaryAirport),
