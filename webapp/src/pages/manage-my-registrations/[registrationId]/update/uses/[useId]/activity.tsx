@@ -662,11 +662,11 @@ const mapper = (
         activity: form.activity || "",
         otherActivityText: form.otherActivityText || "",
         otherActivityLocation: form.otherActivityLocation || "",
-        otherActivityPeopleCount: form.otherActivityPeopleCount || "1",
+        otherActivityPeopleCount: form.otherActivityPeopleCount || "",
         workingRemotelyLocation: form.workingRemotelyLocation || "",
-        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount || "1",
+        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount || "",
         windfarmLocation: form.windfarmLocation || "",
-        windfarmPeopleCount: form.windfarmPeopleCount || "1",
+        windfarmPeopleCount: form.windfarmPeopleCount || "",
       };
     },
     beaconUseToForm: (draftRegistration) => ({
@@ -675,12 +675,12 @@ const mapper = (
       otherActivityText: draftRegistration.otherActivityText || "",
       otherActivityLocation: draftRegistration.otherActivityLocation || "",
       otherActivityPeopleCount:
-        draftRegistration.otherActivityPeopleCount || "1",
+        draftRegistration.otherActivityPeopleCount || "",
       workingRemotelyLocation: draftRegistration.workingRemotelyLocation || "",
       workingRemotelyPeopleCount:
-        draftRegistration.workingRemotelyPeopleCount || "1",
+        draftRegistration.workingRemotelyPeopleCount || "",
       windfarmLocation: draftRegistration.windfarmLocation || "",
-      windfarmPeopleCount: draftRegistration.windfarmPeopleCount || "1",
+      windfarmPeopleCount: draftRegistration.windfarmPeopleCount || "",
       purpose: draftRegistration.purpose,
     }),
   };
@@ -737,7 +737,14 @@ const validationRules = ({
     ),
     otherActivityPeopleCount: new FieldManager(
       otherActivityPeopleCount,
-      [],
+      [
+        Validators.required(
+          "Enter how many people tend to be with you when you use your beacon"
+        ),
+        Validators.wholeNumber(
+          "Enter a whole number for the typical/maximum number of people that tend to be with you when you use your beacon"
+        ),
+      ],
       [
         activityMatchingCondition(Activity.OTHER),
         environmentIsLandMatchingCondition,
@@ -750,7 +757,14 @@ const validationRules = ({
     ),
     workingRemotelyPeopleCount: new FieldManager(
       workingRemotelyPeopleCount,
-      [],
+      [
+        Validators.required(
+          "Enter how many people tend to be with you when you work remotely"
+        ),
+        Validators.wholeNumber(
+          "Enter a whole number for the typical/maximum number of people that tend to be with you when you work remotely"
+        ),
+      ],
       [activityMatchingCondition(Activity.WORKING_REMOTELY)]
     ),
     windfarmLocation: new FieldManager(
@@ -760,7 +774,14 @@ const validationRules = ({
     ),
     windfarmPeopleCount: new FieldManager(
       windfarmPeopleCount,
-      [],
+      [
+        Validators.required(
+          "Enter how many people tend to be with you when you work at a windfarm"
+        ),
+        Validators.wholeNumber(
+          "Enter a whole number for the typical/maximum number of people that tend to be with you are at the windfarm"
+        ),
+      ],
       [activityMatchingCondition(Activity.WINDFARM)]
     ),
   });

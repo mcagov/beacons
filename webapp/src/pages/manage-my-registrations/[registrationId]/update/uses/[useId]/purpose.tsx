@@ -146,7 +146,7 @@ const props = async (
 const mapper = (context: BeaconsGetServerSidePropsContext) => {
   const beaconUseMapper: BeaconUseFormMapper<PurposeForm> = {
     formToDraftBeaconUse: (form: PurposeForm): DraftBeaconUse => ({
-      purpose: form.purpose,
+      purpose: form.purpose || "",
     }),
     beaconUseToForm: (draftBeaconUse: DraftBeaconUse): PurposeForm => ({
       purpose: draftBeaconUse.purpose as Purpose,

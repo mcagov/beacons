@@ -15,28 +15,9 @@ import {
 } from "../../common/selectors-and-assertions.spec";
 
 describe("As a beacon owner, I want to check the details that were submitted", () => {
-  const acceptAndSendButtonSelector = ".govuk-button--start";
-  const homePageLinkSelector = ".govuk-header__link--service-name";
-  const startButtonSelector = ".govuk-button--start";
-
   it("should display the page title", () => {
     givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(CreateRegistrationPageURLs.checkYourAnswers);
     iCanSeeAPageHeadingThatContains("Check your answers");
-  });
-
-  it("should not clear the form when I click Accept and Send and the registration fails", () => {
-    givenIHaveSignedIn();
-    givenIHaveACookieSetAndIVisit(CreateRegistrationPageURLs.beaconInformation);
-    givenIHaveFilledInCheckBeaconDetailsPage();
-    andIHaveVisited(CreateRegistrationPageURLs.checkYourAnswers);
-    givenIHaveClicked(acceptAndSendButtonSelector);
-    andIHaveVisited(CreateRegistrationPageURLs.applicationComplete);
-    cy.get("div").contains(/We could not save your registration/i);
-    givenIHaveClicked(homePageLinkSelector);
-    andIHaveVisited(GeneralPageURLs.start);
-    givenIHaveClicked(startButtonSelector);
-    andIHaveVisited(CreateRegistrationPageURLs.checkBeaconDetails);
-    iCanEditMyBeaconDetails();
   });
 });

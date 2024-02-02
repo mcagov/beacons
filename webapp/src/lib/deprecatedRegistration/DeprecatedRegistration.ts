@@ -242,9 +242,9 @@ export class DeprecatedRegistration {
       dongle: stringToBoolean(use.dongle),
       beaconPosition: use.beaconPosition,
       workingRemotelyLocation: use.workingRemotelyLocation,
-      workingRemotelyPeopleCount: use.workingRemotelyPeopleCount || "1",
+      workingRemotelyPeopleCount: use.workingRemotelyPeopleCount || "",
       windfarmLocation: use.windfarmLocation,
-      windfarmPeopleCount: use.windfarmPeopleCount || "1",
+      windfarmPeopleCount: use.windfarmPeopleCount || "",
       otherActivityLocation:
         use.activity === Activity.OTHER ? use.otherActivityLocation : "",
       otherActivityPeopleCount:
@@ -254,9 +254,8 @@ export class DeprecatedRegistration {
       moreDetails: use.moreDetails,
     };
 
-    serialisedUse["maxCapacity"] = Number.isInteger(+use.maxCapacity)
-      ? +use.maxCapacity
-      : 1;
+    if (Number.isInteger(+use.maxCapacity))
+      serialisedUse["maxCapacity"] = +use.maxCapacity;
 
     return serialisedUse;
   }
