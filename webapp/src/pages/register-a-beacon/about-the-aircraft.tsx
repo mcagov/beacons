@@ -278,7 +278,7 @@ const mapper = (
 ): DraftRegistrationFormMapper<AboutTheAircraftForm> => {
   const beaconUseMapper: BeaconUseFormMapper<AboutTheAircraftForm> = {
     formToDraftBeaconUse: (form) => ({
-      maxCapacity: form.maxCapacity || "",
+      maxCapacity: form.maxCapacity?.trim() || "1",
       aircraftManufacturer: form.aircraftManufacturer,
       principalAirport: form.principalAirport,
       secondaryAirport: form.secondaryAirport,
@@ -322,9 +322,6 @@ const validationRules = ({
 }: FormSubmission): FormManager => {
   return new FormManager({
     maxCapacity: new FieldManager(maxCapacity, [
-      Validators.required(
-        "Maximum number of persons onboard is a required field"
-      ),
       Validators.wholeNumber(
         "Maximum number of persons onboard must be a whole number"
       ),

@@ -2,7 +2,6 @@ import {
   givenIHaveACookieSetAndIVisit,
   givenIHaveSignedIn,
   givenIHaveTyped,
-  requiredFieldErrorMessage,
   thenIShouldSeeAnErrorMessageThatContains,
   thenMyFocusMovesTo,
   thenTheUrlShouldContain,
@@ -32,17 +31,6 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
   });
 
   describe("maximum capacity field", () => {
-    it("displays errors if no maximum aircraft capacity is submitted", () => {
-      whenIClickContinue();
-      thenIShouldSeeAnErrorMessageThatContains(
-        "Maximum number of persons",
-        requiredFieldErrorMessage
-      );
-
-      whenIClickOnTheErrorSummaryLinkContaining("Maximum number of persons");
-      thenMyFocusMovesTo(aircraftMaxCapacitySelector);
-    });
-
     it("displays errors if no the value is not a whole number", () => {
       whenIType("1.3", aircraftMaxCapacitySelector);
       whenIClickContinue();
