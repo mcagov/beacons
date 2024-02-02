@@ -1,15 +1,6 @@
+import { CreateRegistrationPageURLs } from "../../../src/lib/urls";
 import {
-  CreateRegistrationPageURLs,
-  GeneralPageURLs,
-} from "../../../src/lib/urls";
-import {
-  givenIHaveFilledInCheckBeaconDetailsPage,
-  iCanEditMyBeaconDetails,
-} from "../../common/i-can-enter-beacon-information.spec";
-import {
-  andIHaveVisited,
   givenIHaveACookieSetAndIVisit,
-  givenIHaveClicked,
   givenIHaveSignedIn,
   iCanSeeAPageHeadingThatContains,
 } from "../../common/selectors-and-assertions.spec";
