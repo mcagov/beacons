@@ -175,22 +175,6 @@ export class Validators {
     return Validators.pattern(errorMessage, wholeNumberRegex);
   }
 
-  public static wholeNumberIfExistsValidator(
-    errorMessage: string
-  ): ValidationRule {
-    const applies: ValidatorFn = (value: string) =>
-      value !== null &&
-      value !== undefined &&
-      value !== "" &&
-      value.length !== 0;
-
-    if (applies) {
-      return Validators.wholeNumber(errorMessage);
-    }
-
-    return undefined;
-  }
-
   /**
    * Validator that requires the form input value to be a valid email; proxies through to the {@link Validators.pattern()}.
    *

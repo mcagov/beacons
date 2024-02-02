@@ -1,5 +1,4 @@
-import { ValidatorFn } from "../../../../src/lib/form/Validators";
-import { Validators } from "../../../../src/lib/form/Validators";
+import { Validators, ValidatorFn } from "../../../../src/lib/form/Validators";
 
 describe("isValidDate validator", () => {
   const expectedErrorMessage = "Hex ID is a validated field";

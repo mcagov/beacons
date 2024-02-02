@@ -322,7 +322,7 @@ const validationRules = ({
 }: FormSubmission): FormManager => {
   return new FormManager({
     maxCapacity: new FieldManager(maxCapacity, [
-      Validators.wholeNumberIfExistsValidator(
+      Validators.wholeNumber(
         "Maximum number of persons onboard must be a whole number"
       ),
     ]),
