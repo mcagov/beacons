@@ -1,4 +1,5 @@
-import { ValidatorFn, Validators } from "../../../../src/lib/form/Validators";
+import { ValidatorFn } from "../../../../src/lib/form/Validators";
+import { Validators } from "../../../../src/lib/form/Validators";
 
 describe("phoneNumber validator", () => {
   const expectedErrorMessage = "Hex ID is a validated field";

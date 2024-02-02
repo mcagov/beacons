@@ -641,6 +641,18 @@ const props = async (
   };
 };
 
+const conditionalPeopleCount = (
+  value: string | undefined,
+  activity: string,
+  matchingActivity: Activity
+): string => {
+  if (activity !== matchingActivity) {
+    return value || "";
+  }
+
+  return value?.trim() || "1";
+};
+
 const mapper = (
   context: BeaconsGetServerSidePropsContext
 ): DraftRegistrationFormMapper<ActivityForm> => {
@@ -651,11 +663,23 @@ const mapper = (
         activity: form.activity || "",
         otherActivityText: form.otherActivityText || "",
         otherActivityLocation: form.otherActivityLocation || "",
-        otherActivityPeopleCount: form.otherActivityPeopleCount || "",
+        otherActivityPeopleCount: conditionalPeopleCount(
+          form.otherActivityPeopleCount,
+          form.activity,
+          Activity.OTHER
+        ),
         workingRemotelyLocation: form.workingRemotelyLocation || "",
-        workingRemotelyPeopleCount: form.workingRemotelyPeopleCount || "",
+        workingRemotelyPeopleCount: conditionalPeopleCount(
+          form.workingRemotelyPeopleCount,
+          form.activity,
+          Activity.WORKING_REMOTELY
+        ),
         windfarmLocation: form.windfarmLocation || "",
-        windfarmPeopleCount: form.windfarmPeopleCount || "",
+        windfarmPeopleCount: conditionalPeopleCount(
+          form.windfarmPeopleCount,
+          form.activity,
+          Activity.WINDFARM
+        ),
       };
     },
     beaconUseToForm: (draftRegistration) => ({
@@ -727,10 +751,7 @@ const validationRules = ({
     otherActivityPeopleCount: new FieldManager(
       otherActivityPeopleCount,
       [
-        Validators.required(
-          "Enter how many people tend to be present when you use your beacon"
-        ),
-        Validators.wholeNumber(
+        Validators.wholeNumberIfExistsValidator(
           "Enter a whole number for the typical/maximum number of people that tend to be present when you use your beacon"
         ),
       ],
@@ -747,10 +768,7 @@ const validationRules = ({
     workingRemotelyPeopleCount: new FieldManager(
       workingRemotelyPeopleCount,
       [
-        Validators.required(
-          "Enter how many people tend to be present when you work remotely"
-        ),
-        Validators.wholeNumber(
+        Validators.wholeNumberIfExistsValidator(
           "Enter a whole number for the typical/maximum number of people that tend to be present when you work remotely"
         ),
       ],
@@ -764,10 +782,7 @@ const validationRules = ({
     windfarmPeopleCount: new FieldManager(
       windfarmPeopleCount,
       [
-        Validators.required(
-          "Enter how many people tend to be present when you work at a windfarm"
-        ),
-        Validators.wholeNumber(
+        Validators.wholeNumberIfExistsValidator(
           "Enter a whole number for the typical/maximum number of people that tend to be present at the windfarm"
         ),
       ],
