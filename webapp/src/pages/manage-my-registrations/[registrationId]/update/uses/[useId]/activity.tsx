@@ -739,10 +739,10 @@ const validationRules = ({
       otherActivityPeopleCount,
       [
         Validators.required(
-          "Enter how many people tend to be with you when you use your beacon"
+          "Enter the total number of individuals typically present when you use your beacon."
         ),
         Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you when you use your beacon"
+          "Enter a whole number for the total number of individuals typically present when you use your beacon."
         ),
       ],
       [
@@ -759,10 +759,10 @@ const validationRules = ({
       workingRemotelyPeopleCount,
       [
         Validators.required(
-          "Enter how many people tend to be with you when you work remotely"
+          "Enter how many people are typically present when you work remotely"
         ),
         Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you when you work remotely"
+          "Enter a whole number for the typical/maximum number of people that tend to be present when you work remotely"
         ),
       ],
       [activityMatchingCondition(Activity.WORKING_REMOTELY)]
@@ -776,10 +776,10 @@ const validationRules = ({
       windfarmPeopleCount,
       [
         Validators.required(
-          "Enter how many people tend to be with you when you work at a windfarm"
+          "Enter how many people tend to be present when you work at a windfarm"
         ),
         Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you are at the windfarm"
+          "Enter a whole number for the typical/maximum number of people that tend to be present at the windfarm"
         ),
       ],
       [activityMatchingCondition(Activity.WINDFARM)]

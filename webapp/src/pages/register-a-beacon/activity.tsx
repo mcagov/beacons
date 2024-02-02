@@ -500,7 +500,7 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
         >
           <Input
             id="workingRemotelyPeopleCount"
-            label="What is the typical/maximum number of people with you?"
+            label="What is the typical/maximum number of people?"
             defaultValue={form.fields.workingRemotelyPeopleCount.value}
           />
         </FormGroup>
@@ -526,7 +526,7 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
         >
           <Input
             id="windfarmPeopleCount"
-            label="What is the typical/maximum number of people with you?"
+            label="What is the typical/maximum number of people?"
             defaultValue={form.fields.windfarmPeopleCount.value}
           />
         </FormGroup>
@@ -561,7 +561,7 @@ const LandOptions: FunctionComponent<OptionsProps> = ({
         >
           <Input
             id="otherActivityPeopleCount"
-            label="What is the typical/max number of people with you?"
+            label="What is the typical/max number of people?"
             defaultValue={form.fields.otherActivityPeopleCount.value}
           />
         </FormGroup>
@@ -728,10 +728,10 @@ const validationRules = ({
       otherActivityPeopleCount,
       [
         Validators.required(
-          "Enter how many people tend to be with you when you use your beacon"
+          "Enter how many people tend to be present when you use your beacon"
         ),
         Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you when you use your beacon"
+          "Enter a whole number for the typical/maximum number of people that tend to be present when you use your beacon"
         ),
       ],
       [
@@ -748,10 +748,10 @@ const validationRules = ({
       workingRemotelyPeopleCount,
       [
         Validators.required(
-          "Enter how many people tend to be with you when you work remotely"
+          "Enter how many people tend to be present when you work remotely"
         ),
         Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you when you work remotely"
+          "Enter a whole number for the typical/maximum number of people that tend to be present when you work remotely"
         ),
       ],
       [activityMatchingCondition(Activity.WORKING_REMOTELY)]
@@ -765,10 +765,10 @@ const validationRules = ({
       windfarmPeopleCount,
       [
         Validators.required(
-          "Enter how many people tend to be with you when you work at a windfarm"
+          "Enter how many people tend to be present when you work at a windfarm"
         ),
         Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be with you are at the windfarm"
+          "Enter a whole number for the typical/maximum number of people that tend to be present at the windfarm"
         ),
       ],
       [activityMatchingCondition(Activity.WINDFARM)]
