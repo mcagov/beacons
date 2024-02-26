@@ -87,14 +87,14 @@ conn.prepare("note", 'INSERT INTO note (id, beacon_id, text, type,
 created_date, user_id, full_name, email) VALUES ($1, $2, $3, $4, $5, $6,
 $7, $8)')
 
-100.times do |count|
+1000.times do |count|
 
 #Setup beacon with dummy data
 
   Faker::Config.locale = 'en-GB'
 
   person_uuid = SecureRandom.uuid
-  account_holder_uuid = SecureRandom.uuid
+  account_holder_uuid = '72a9f998-34b4-41a5-8998-af547ae554f9'
 
   beacon_uuid = SecureRandom.uuid
   hex_id_length = [13,13,21].sample
@@ -140,10 +140,10 @@ $7, $8)')
 
   #Insert Beacon & User info:
 
-  # Insert account holder
-  conn.exec_prepared('accountholder', [ account_holder_uuid, auth_id, nil,
-    fullname, email, address1, address2, nil, nil, town, postcode, county,
-    country, telephone_number, telephone_number, created_date, created_date])
+  # # Insert account holder
+  # conn.exec_prepared('accountholder', [ account_holder_uuid, auth_id, nil,
+  #   fullname, email, address1, address2, nil, nil, town, postcode, county,
+  #   country, telephone_number, telephone_number, created_date, created_date])
 
     # Insert Beacon
   conn.exec_prepared('beacon', [ beacon_uuid, created_date,
