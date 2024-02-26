@@ -14,7 +14,10 @@ import { deleteDraftRegistration } from "../useCases/deleteDraftRegistration";
 import { getAccountHolderId } from "../useCases/getAccountHolderId";
 import { getAccountHoldersRegistration } from "../useCases/getAccountHoldersRegistration";
 import { getBeaconsForAccountHolder } from "../useCases/getBeaconsByAccountHolderAndEmail";
-import { getBeaconsByAccountHolderId } from "../useCases/getBeaconsByAccountHolderId";
+import {
+  getBeaconByAccountHolderId,
+  getBeaconsByAccountHolderId,
+} from "../useCases/getBeaconsByAccountHolderId";
 import { getDraftRegistration } from "../useCases/getDraftRegistration";
 import { getOrCreateAccountHolder } from "../useCases/getOrCreateAccountHolder";
 import { saveDraftRegistration } from "../useCases/saveDraftRegistration";
@@ -58,6 +61,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get getAccountHolderId() {
       return getAccountHolderId(this);
+    },
+    get getBeaconByAccountHolderId() {
+      return getBeaconByAccountHolderId(this);
     },
     get getBeaconsByAccountHolderId() {
       return getBeaconsByAccountHolderId(this);

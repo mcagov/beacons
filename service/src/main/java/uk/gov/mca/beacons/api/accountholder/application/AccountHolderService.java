@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.swing.text.html.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,9 +22,11 @@ import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
+import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.mappers.ModelPatcher;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
 import uk.gov.mca.beacons.api.note.application.NoteService;
+import uk.gov.mca.beacons.api.registration.domain.Registration;
 import uk.gov.mca.beacons.api.shared.domain.user.User;
 
 @Slf4j
