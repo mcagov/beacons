@@ -87,8 +87,6 @@ services:
     image: redis:6
     ports:
       - "6379:6379"
-    cpu_shares: 1024 # Assign 1 CPU share
-    mem_limit: 0.5g # Limit memory to 1 GB
 
   webapp:
     build:
