@@ -72,7 +72,7 @@ const mapUseToBeaconUse = (use: Use): BeaconUse => {
     portableVhfRadio: use.portableVhfRadio.toString(),
     portableVhfRadioInput: use.portableVhfRadioValue,
     satelliteTelephone: use.satelliteTelephone.toString(),
-    satelliteTelephoneInput: use.satelliteTelephoneValue,
+    satelliteTelephoneInput: use.satelliteTelephoneValue.toString(),
     mobileTelephone: use.mobileTelephone.toString(),
     mobileTelephoneInput1: use.mobileTelephone1.toString(),
     mobileTelephoneInput2: use.mobileTelephone2.toString(),
