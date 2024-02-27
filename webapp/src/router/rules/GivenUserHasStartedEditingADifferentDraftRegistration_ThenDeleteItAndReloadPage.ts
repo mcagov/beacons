@@ -3,8 +3,13 @@ import { clearFormSubmissionCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
-import { deleteCachedRegistrationsForAccountHolder } from "../../useCases/deleteCachedRegistrationsForAccountHolder";
+import {
+  deleteCachedRegistrationForAccountHolder,
+  deleteCachedRegistrationsForAccountHolder,
+} from "../../useCases/deleteCachedRegistrationsForAccountHolder";
 import { Rule } from "./Rule";
+import { getDraftRegistration } from "../../useCases/getDraftRegistration";
+import logger from "../../logger";
 
 export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage
   implements Rule
@@ -34,10 +39,13 @@ export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItA
       this.context.req.cookies[formSubmissionCookieId]
     );
 
-    await deleteCachedRegistrationsForAccountHolder(
+    const registrationId: string = this.context.params.registrationId as string;
+
+    await deleteCachedRegistrationForAccountHolder(
       draftRegistrationGateway,
       accountHolderGateway,
-      accountHolderId
+      accountHolderId,
+      registrationId
     );
 
     clearFormSubmissionCookie(this.context);
