@@ -39,7 +39,9 @@ export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItA
       this.context.req.cookies[formSubmissionCookieId]
     );
 
-    const registrationId: string = this.context.params.registrationId as string;
+    const registrationId: string = this.context.req.cookies[
+      formSubmissionCookieId
+    ] as string;
 
     await deleteCachedRegistrationForAccountHolder(
       draftRegistrationGateway,
