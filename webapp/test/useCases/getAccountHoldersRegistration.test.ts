@@ -14,6 +14,7 @@ describe("getAccountHoldersRegistration", () => {
     const container: Partial<IAppContainer> = {
       accountHolderGateway: {
         getAccountBeacons: jest.fn().mockResolvedValue([existingBeacon]),
+        getAccountBeacon: jest.fn().mockResolvedValue(existingBeacon),
       } as any,
     };
 
