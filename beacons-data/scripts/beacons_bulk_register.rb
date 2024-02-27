@@ -138,7 +138,7 @@ $7, $8)')
   protocol = "EPIRB Standard Location, GPS, MMS"
   coding = "SN #{Faker::Number.number(digits: 5).to_s}"
 
-  #Insert Beacon & User info:
+  # Insert Beacon & User info:
 
   # Insert account holder
   conn.exec_prepared('accountholder', [ account_holder_uuid, auth_id, nil,

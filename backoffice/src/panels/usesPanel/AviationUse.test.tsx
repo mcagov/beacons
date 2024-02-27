@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { IUse } from "entities/IUse";
 import React from "react";
 import { Placeholders } from "utils/writingStyle";
@@ -40,7 +40,16 @@ describe("Aviation Use", () => {
     } as IUse;
     render(<AviationUse use={use} />);
 
-    expect(await screen.findByText("NO")).toBeVisible();
+    const rowWithDongleLabel = screen.getByText("Is this a dongle?:");
+    expect(rowWithDongleLabel).toBeInTheDocument();
+    // eslint-disable-next-line testing-library/no-node-access
+    const rowElement = rowWithDongleLabel.closest("tr");
+    expect(rowElement).toBeInTheDocument();
+    if (rowElement) {
+      const noValueInRow = within(rowElement).queryByText("NO");
+      // eslint-disable-next-line jest/no-conditional-expect
+      expect(noValueInRow).toBeInTheDocument();
+    }
   });
 
   it("should display the aircraft communications", async () => {

@@ -19,9 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "16.17.0"
       - name: Install npm dependencies
@@ -39,8 +39,8 @@ jobs:
     name: Unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "16.17.0"
       - name: Install npm dependencies
@@ -63,9 +63,9 @@ jobs:
       JWT_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "16.17.0"
       - name: Install npm dependencies
@@ -75,7 +75,7 @@ jobs:
       - name: Copy env vars
         run: cp .env.example .env.local
       - name: Run Cypress UI tests
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           working-directory: webapp
           spec: cypress/integration/**/*.spec.ts
@@ -83,7 +83,7 @@ jobs:
           start: npm run start
           build: npm run build
           wait-on: "http://localhost:3000"
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots

@@ -69,6 +69,7 @@ export const getMockUse = (): BeaconUse => ({
   otherActivityLocation: "Taunton",
   otherActivityPeopleCount: "35",
   moreDetails: "Blue boat, tracked in SafeTrx",
+  mainUse: false,
   additionalBeaconUse: "false",
 });
 

@@ -54,4 +54,17 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
 
     await this.update(submissionId, registrationMinusDeletedUse);
   }
+
+  public async makeUseMain(submissionId: string, useId: number): Promise<void> {
+    const registration: DraftRegistration = await this.read(submissionId);
+
+    const updatedUses = {
+      ...registration,
+      uses: registration.uses.map((use, i) => {
+        return { ...use, mainUse: i === useId };
+      }),
+    };
+
+    await this.update(submissionId, updatedUses);
+  }
 }

@@ -11,6 +11,7 @@ import { UserSessionGateway } from "../gateways/interfaces/UserSessionGateway";
 import { AddNewUseToDraftRegistrationFn } from "../useCases/addNewUseToDraftRegistration";
 import { DeleteBeaconFn } from "../useCases/deleteBeacon";
 import { DeleteCachedUseFn } from "../useCases/deleteCachedUse";
+import { MakeCachedUseMainFn } from "../useCases/makeCachedUseMain";
 import { GetAccountHolderIdFn } from "../useCases/getAccountHolderId";
 import { GetBeaconsForAccountHolderFn } from "../useCases/getBeaconsByAccountHolderAndEmail";
 import { GetBeaconsByAccountHolderIdFn } from "../useCases/getBeaconsByAccountHolderId";
@@ -35,6 +36,7 @@ export interface IAppContainer {
   ) => Promise<void>;
   deleteDraftRegistration: (id: string) => Promise<void>;
   deleteCachedUse: DeleteCachedUseFn;
+  makeCachedUseMain: MakeCachedUseMainFn;
 
   parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
 

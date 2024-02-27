@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.beacon.domain;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import javax.validation.constraints.NotNull;
 import org.junit.jupiter.api.Test;
@@ -39,27 +40,6 @@ public class BeaconIntegrationTest extends BaseIntegrationTest {
   }
 
   @Test
-  public void shouldUpdateBeaconStatusToChange() {
-    // setup
-    AccountHolderId accountHolderId = createAccountHolder();
-
-    Beacon beacon = generateBeacon();
-    beacon.setAccountHolderId(accountHolderId);
-
-    // act
-    Beacon savedBeacon = beaconRepository.save(beacon);
-    assert savedBeacon.getBeaconStatus() == BeaconStatus.NEW;
-    savedBeacon.setModel("Different");
-    beaconService.update(savedBeacon.getId(), savedBeacon);
-    Beacon retrievedBeacon = beaconService
-      .findById(savedBeacon.getId())
-      .orElse(null);
-    //assert
-    assert retrievedBeacon != null;
-    assert retrievedBeacon.getBeaconStatus() == BeaconStatus.CHANGE;
-  }
-
-  @Test
   public void shouldNotUpdateDeletedBeaconStatusToChange() {
     // setup
     AccountHolderId accountHolderId = createAccountHolder();
@@ -79,6 +59,45 @@ public class BeaconIntegrationTest extends BaseIntegrationTest {
     //assert
     assert retrievedBeacon != null;
     assert retrievedBeacon.getBeaconStatus() == BeaconStatus.DELETED;
+  }
+
+  @Test
+  public void shouldNotUpdateNewBeaconStatusToChangeIfChangedWithinADay() {
+    // setup
+    AccountHolderId accountHolderId = createAccountHolder();
+
+    Beacon beacon = generateBeacon();
+    beacon.setAccountHolderId(accountHolderId);
+    beacon.setCreatedDate(OffsetDateTime.now().minusHours(6));
+
+    // act
+    Beacon savedBeacon = beaconRepository.save(beacon);
+    assert savedBeacon.getBeaconStatus() == BeaconStatus.NEW;
+    savedBeacon.setModel("Different");
+    beaconService.update(savedBeacon.getId(), savedBeacon);
+    Beacon retrievedBeacon = beaconService
+      .findById(savedBeacon.getId())
+      .orElse(null);
+    //assert
+    assert retrievedBeacon != null;
+    assert retrievedBeacon.getBeaconStatus() == BeaconStatus.NEW;
+  }
+
+  @Test
+  public void shouldUpdateNewBeaconStatusToChangeIfChangedAfterADay() {
+    // setup
+    AccountHolderId accountHolderId = createAccountHolder();
+
+    Beacon beacon = generateBeacon();
+    beacon.setAccountHolderId(accountHolderId);
+    beacon.setCreatedDate(OffsetDateTime.now().minusDays(2));
+    // act
+
+    boolean shouldChange = beacon.isChange();
+
+    //assert
+
+    assert shouldChange;
   }
 
   private AccountHolderId createAccountHolder() {

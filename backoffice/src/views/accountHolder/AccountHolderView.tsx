@@ -216,6 +216,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   };
 
   const handleCancelTransfer = () => {
+    setTransferAccountHolder({} as IAccountHolderSearchResultData);
     setOpenTransferDialog(false);
   };
 
@@ -330,6 +331,140 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     );
   }
 
+  function TransferDialog() {
+    return (
+      <Dialog
+        open={openTransferDialog}
+        onClose={handleCancelTransfer}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>Confirm Transfer</DialogTitle>
+        <DialogContent>
+          <Box>Are you sure you want to transfer these Beacons?</Box>
+          <Box>
+            <br />
+            You are transferring the following Beacons:
+            <ul>
+              {beaconsToTransfer.map((beaconId, index) => {
+                const beacon = beacons.find((b) => b.id === beaconId);
+                return (
+                  <li key={index}>
+                    {beacon && `${beacon.hexId} - (${beacon.mainUseName})`}
+                  </li>
+                );
+              })}
+            </ul>
+          </Box>
+          <Box>
+            <Autocomplete
+              value={transferAccountHolder}
+              onChange={(event, newValue) => {
+                if (newValue !== null) {
+                  setTransferAccountHolder(newValue);
+                }
+              }}
+              options={accountHolders}
+              getOptionLabel={(option) =>
+                option.email || "Start typing to search for an account holder.."
+              }
+              filterOptions={(options, { inputValue }) => {
+                if (inputValue === "---") {
+                  return accountHolders;
+                }
+                if (inputValue.length < 2) {
+                  return [];
+                }
+                return options.filter(
+                  (option) =>
+                    (option.email &&
+                      option.email
+                        .toLowerCase()
+                        .includes(inputValue.toLowerCase())) ||
+                    (option.fullName &&
+                      option.fullName
+                        .toLowerCase()
+                        .includes(inputValue.toLowerCase()))
+                );
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Account Holder"
+                  variant="outlined"
+                />
+              )}
+              renderOption={(props, option) => (
+                <li {...props}>
+                  {option.fullName} - ({option.email})
+                </li>
+              )}
+            />
+            {transferAccountHolder && transferAccountHolder.email && (
+              <div>
+                <h4>To the following account holder:</h4>
+                <p>Name: {transferAccountHolder.fullName}</p>
+                <p>Email: {transferAccountHolder.email}</p>
+                {/* Add more details as needed */}
+              </div>
+            )}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleCancelTransfer}
+            color="secondary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleConfirmTransfer}
+            color="primary"
+            variant="outlined"
+            disabled={
+              transferAccountHolder == null ||
+              transferAccountHolder.email == null
+            }
+          >
+            Transfer Beacons
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+
+  function DeleteDialog() {
+    return (
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleCancelDelete}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Box>Are you sure you want to delete this account holder?</Box>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleCancelDelete}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleConfirmDelete}
+            color="error"
+            variant="outlined"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
   return (
     <div className={classes.root}>
       <PageContent>
@@ -379,113 +514,9 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
             />
           </Box>
         </Paper>
-        <Dialog
-          open={openDeleteDialog}
-          onClose={handleCancelDelete}
-          maxWidth="sm"
-          fullWidth
-        >
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogContent>
-            <Box>Are you sure you want to delete this account holder?</Box>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={handleCancelDelete}
-              color="primary"
-              variant="outlined"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleConfirmDelete}
-              color="error"
-              variant="outlined"
-            >
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
 
-        <Dialog
-          open={openTransferDialog}
-          onClose={handleCancelTransfer}
-          maxWidth="sm"
-          fullWidth
-        >
-          <DialogTitle>Confirm Transfer</DialogTitle>
-          <DialogContent>
-            <Box>Are you sure you want to transfer these Beacons?</Box>
-            <Box>
-              <br />
-              You are transferring the following Beacons:
-              <ul>
-                {beaconsToTransfer.map((beaconId, index) => {
-                  const beacon = beacons.find((b) => b.id === beaconId);
-                  return (
-                    <li key={index}>
-                      {beacon && `${beacon.hexId} - (${beacon.mainUseName})`}
-                    </li>
-                  );
-                })}
-              </ul>
-            </Box>
-            <Box>
-              <Autocomplete
-                value={transferAccountHolder}
-                onChange={(event, newValue) => {
-                  if (newValue !== null) {
-                    setTransferAccountHolder(newValue);
-                  }
-                }}
-                options={accountHolders}
-                getOptionLabel={(option) =>
-                  option.email || "Please select an account holder"
-                }
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Select Account Holder"
-                    variant="outlined"
-                  />
-                )}
-                renderOption={(props, option) => (
-                  <li {...props}>
-                    {option.email} - ({option.fullName})
-                  </li>
-                )}
-              />
-              {transferAccountHolder && transferAccountHolder.email && (
-                <div>
-                  <h4>To the following account holder:</h4>
-                  <p>Name: {transferAccountHolder.fullName}</p>
-                  <p>Email: {transferAccountHolder.email}</p>
-                  {/* Add more details as needed */}
-                </div>
-              )}
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={handleCancelTransfer}
-              color="secondary"
-              variant="outlined"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleConfirmTransfer}
-              color="primary"
-              variant="outlined"
-              disabled={
-                transferAccountHolder == null ||
-                transferAccountHolder.email == null
-              }
-            >
-              Transfer Beacons
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <DeleteDialog />
+        <TransferDialog />
       </PageContent>
     </div>
   );

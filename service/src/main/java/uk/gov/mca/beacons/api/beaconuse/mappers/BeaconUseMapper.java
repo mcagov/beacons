@@ -57,6 +57,7 @@ public class BeaconUseMapper {
     beaconUse.setOtherActivityLocation(dto.getOtherActivityLocation());
     beaconUse.setOtherActivityPeopleCount(dto.getOtherActivityPeopleCount());
     beaconUse.setMoreDetails(dto.getMoreDetails());
+    beaconUse.setMainUse(dto.getMainUse());
 
     return beaconUse;
   }
@@ -109,6 +110,7 @@ public class BeaconUseMapper {
       .otherActivityLocation(beaconUse.getOtherActivityLocation())
       .otherActivityPeopleCount(beaconUse.getOtherActivityPeopleCount())
       .moreDetails(beaconUse.getMoreDetails())
+      .mainUse(beaconUse.getMainUse())
       .beaconId(beaconUse.getBeaconId().unwrap())
       .build();
   }
