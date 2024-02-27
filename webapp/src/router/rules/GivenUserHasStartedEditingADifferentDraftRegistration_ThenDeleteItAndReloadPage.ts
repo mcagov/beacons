@@ -3,14 +3,8 @@ import { clearFormSubmissionCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
-import {
-  deleteCachedRegistrationForAccountHolder,
-  deleteCachedRegistrationsForAccountHolder,
-} from "../../useCases/deleteCachedRegistrationsForAccountHolder";
+import { deleteCachedRegistrationForAccountHolder } from "../../useCases/deleteCachedRegistrationsForAccountHolder";
 import { Rule } from "./Rule";
-import { getDraftRegistration } from "../../useCases/getDraftRegistration";
-import logger from "../../logger";
-
 export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage
   implements Rule
 {
