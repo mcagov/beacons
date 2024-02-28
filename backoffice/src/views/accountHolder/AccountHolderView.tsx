@@ -380,11 +380,11 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
                     (option.email &&
                       option.email
                         .toLowerCase()
-                        .includes(inputValue.toLowerCase())) ||
+                        .startsWith(inputValue.toLowerCase())) ||
                     (option.fullName &&
                       option.fullName
                         .toLowerCase()
-                        .includes(inputValue.toLowerCase()))
+                        .startsWith(inputValue.toLowerCase()))
                 );
               }}
               renderInput={(params) => (
