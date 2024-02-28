@@ -23,6 +23,9 @@ export const useGetAuthState = (): AuthState => {
                 clientId: clientId,
                 authority: `https://login.microsoftonline.com/${tenantId}`,
               },
+              cache: {
+                cacheLocation: "localStorage",
+              },
             },
           });
         })
