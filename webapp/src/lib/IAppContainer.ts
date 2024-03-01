@@ -46,7 +46,7 @@ export interface IAppContainer {
   getAccountHoldersRegistration: GetAccountHoldersRegistrationFn;
   getBeaconsForAccountHolder: GetBeaconsForAccountHolderFn;
   getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
-  getBeaconByAccountHolderIdFn: GetBeaconByAccountHolderIdFn;
+  getBeaconByAccountHolderId: GetBeaconByAccountHolderIdFn;
 
   deleteBeacon: DeleteBeaconFn;
   addNewUseToDraftRegistration: AddNewUseToDraftRegistrationFn;
