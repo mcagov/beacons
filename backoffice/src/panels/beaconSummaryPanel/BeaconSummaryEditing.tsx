@@ -193,6 +193,27 @@ export const BeaconSummaryEditing: FunctionComponent<{
                       fieldName={"csta"}
                       type={"string"}
                     />
+                    <TabulatedRow
+                      displayKey={
+                        <label htmlFor="mod">
+                          <Typography>
+                            {"MOD" + WritingStyle.KeyValueSeparator}
+                          </Typography>
+                        </label>
+                      }
+                      value={
+                        <>
+                          <label>
+                            <Field name="mod" type="radio" value="true" />
+                            Yes
+                          </label>
+                          <label>
+                            <Field name="mod" type="radio" value="false" />
+                            No
+                          </label>
+                        </>
+                      }
+                    />
 
                     <TabulatedRow
                       displayKey={

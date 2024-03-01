@@ -114,6 +114,7 @@ public class BeaconService {
       .withMapping(Beacon::getManufacturer, Beacon::setManufacturer)
       .withMapping(Beacon::getMti, Beacon::setMti)
       .withMapping(Beacon::getSvdr, Beacon::setSvdr)
+      .withMapping(Beacon::getMod, Beacon::setMod)
       .withMapping(Beacon::getCsta, Beacon::setCsta)
       .withMapping(Beacon::getBeaconType, Beacon::setBeaconType)
       .withMapping(Beacon::getProtocol, Beacon::setProtocol)

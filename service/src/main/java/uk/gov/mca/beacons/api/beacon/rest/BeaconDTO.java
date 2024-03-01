@@ -52,6 +52,8 @@ public class BeaconDTO extends DomainDTO<BeaconDTO.Attributes> {
 
     private Boolean svdr;
 
+    private Boolean mod;
+
     private String csta;
 
     private String beaconType;

@@ -27,6 +27,7 @@ public class BeaconMapper {
     beacon.setLastServicedDate(dto.getLastServicedDate());
     beacon.setMti(dto.getMti());
     beacon.setSvdr(dto.getSvdr());
+    beacon.setMod(dto.getMod());
     beacon.setCsta(dto.getCsta());
     beacon.setBeaconType(dto.getBeaconType());
     beacon.setProtocol(dto.getProtocol());
@@ -51,6 +52,7 @@ public class BeaconMapper {
       .lastServicedDate(beacon.getLastServicedDate())
       .mti(beacon.getMti())
       .svdr(beacon.getSvdr())
+      .mod(beacon.getMod())
       .csta(beacon.getCsta())
       .beaconType(beacon.getBeaconType())
       .protocol(beacon.getProtocol())
@@ -79,6 +81,7 @@ public class BeaconMapper {
       .lastServicedDate(beacon.getLastServicedDate())
       .mti(beacon.getMti())
       .svdr(beacon.getSvdr())
+      .mod(beacon.getMod())
       .csta(beacon.getCsta())
       .beaconType(beacon.getBeaconType())
       .protocol(beacon.getProtocol())
@@ -110,6 +113,7 @@ public class BeaconMapper {
       .lastServicedDate(beacon.getLastServicedDate())
       .mti(beacon.getMti())
       .svdr(beacon.getSvdr())
+      .mod(beacon.getMod())
       .csta(beacon.getCsta())
       .beaconType(beacon.getBeaconType())
       .protocol(beacon.getProtocol())
@@ -141,6 +145,8 @@ public class BeaconMapper {
     beacon.setLastServicedDate(attributes.getLastServicedDate());
     beacon.setMti(attributes.getMti());
     beacon.setSvdr(attributes.getSvdr());
+    beacon.setMod(attributes.getMod());
+
     beacon.setCsta(attributes.getCsta());
     beacon.setBeaconType(attributes.getBeaconType());
     beacon.setProtocol(attributes.getProtocol());

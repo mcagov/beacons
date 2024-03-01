@@ -89,6 +89,9 @@ public class Beacon extends BaseAggregateRoot<BeaconId> {
   private String coding;
 
   @Setter
+  private Boolean mod;
+
+  @Setter
   @Enumerated(EnumType.STRING)
   private BeaconStatus beaconStatus;
 
