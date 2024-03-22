@@ -291,7 +291,11 @@ function buildTableQuery(
   const filters: Partial<Record<keyof BeaconRowData, string>> = {};
   query.filters.forEach((filter) => {
     if (filter.column.field) {
-      filters[filter.column.field as keyof BeaconRowData] = filter.value;
+      if (filter.column.lookup && Array.isArray(filter.value)) {
+        filters[filter.column.field as keyof BeaconRowData] = filter.value[0];
+      } else {
+        filters[filter.column.field as keyof BeaconRowData] = filter.value;
+      }
     }
   });
 
