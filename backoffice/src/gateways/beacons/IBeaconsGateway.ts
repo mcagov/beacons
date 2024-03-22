@@ -13,6 +13,7 @@ export type GetAllBeaconsFilters = Partial<
     | "useActivities"
     | "cospasSarsatNumber"
     | "manufacturerSerialNumber"
+    | "mod"
   >
 >;
 

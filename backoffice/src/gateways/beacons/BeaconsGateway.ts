@@ -134,6 +134,7 @@ export class BeaconsGateway implements IBeaconsGateway {
       ownerName = "",
       useActivities: uses = "",
       beaconStatus: status = "",
+      mod = "",
       cospasSarsatNumber = "",
       manufacturerSerialNumber = "",
     } = filters;
@@ -141,7 +142,7 @@ export class BeaconsGateway implements IBeaconsGateway {
     const sortString = sort ? `${sort[0]},${sort[1]}` : "";
 
     return `/beacon-search/search/find-allv2?term=${term}&status=${status}&uses=${uses}&hexId=${hexId}\
-&ownerName=${ownerName}&cospasSarsatNumber=${cospasSarsatNumber}\
+&ownerName=${ownerName}&cospasSarsatNumber=${cospasSarsatNumber}&mod=${mod}\
 &manufacturerSerialNumber=${manufacturerSerialNumber}&page=${page}&size=${size}&sort=${sortString}`;
   }
 }

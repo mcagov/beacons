@@ -29,7 +29,7 @@ import {
 } from "gateways/beacons/IBeaconsGateway";
 import React, { forwardRef, FunctionComponent } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Placeholders } from "utils/writingStyle";
+import { formatBoolean, Placeholders } from "utils/writingStyle";
 import { IBeaconSearchResultData } from "../entities/IBeaconSearchResult";
 import { replaceNone } from "../lib/legacyData/replaceNone";
 import { logToServer } from "../utils/logger";
@@ -52,6 +52,7 @@ export type BeaconRowData = Record<
     | "beaconType"
     | "cospasSarsatNumber"
     | "manufacturerSerialNumber"
+    | "mod"
   >,
   string
 >;
@@ -167,6 +168,17 @@ const columns: Column<BeaconRowData>[] = [
     },
   },
   {
+    title: "MoD Beacon",
+    field: "mod",
+    lookup: {
+      YES: "YES",
+      NO: "NO",
+    },
+    render: (rowData: BeaconRowData) => {
+      return rowData.mod ? rowData.mod.toUpperCase() : "";
+    },
+  },
+  {
     title: "Beacon use",
     field: "useActivities",
     filterComponent: ({ columnDef, onFilterChanged }) => (
@@ -229,6 +241,7 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
                   beaconStatus: item.beaconStatus,
                   hexId: item.hexId,
                   ownerName: item.ownerName ?? "N/A",
+                  mod: formatBoolean(item.mod.toString()),
                   useActivities: item.useActivities ?? "N/A",
                   id: item.id,
                   beaconType: item.beaconType,

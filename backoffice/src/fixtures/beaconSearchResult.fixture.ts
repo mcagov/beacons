@@ -16,6 +16,7 @@ export const beaconSearchResultFixture = deepFreeze<IBeaconSearchResult>({
         beaconStatus: "NEW",
         createdDate: "2020-02-01T00:00",
         lastModifiedDate: "2020-02-01T00:00",
+        mod: true,
         useActivities: "SAILING, KAYAKING",
         ownerName: "Vice-Admiral Horatio Nelson, 1st Viscount Nelson",
         ownerEmail: "nelson@royalnavy.mod.uk",
@@ -38,6 +39,8 @@ export const beaconSearchResultFixture = deepFreeze<IBeaconSearchResult>({
         beaconStatus: "NEW",
         createdDate: "2020-02-01T00:00",
         lastModifiedDate: "2020-02-01T00:00",
+        mod: false,
+
         useActivities: "MOTORING",
         ownerName: "Vice-Admiral Horatio Nelson, 1st Viscount Nelson",
         ownerEmail: "nelson@royalnavy.mod.uk",
@@ -60,6 +63,8 @@ export const beaconSearchResultFixture = deepFreeze<IBeaconSearchResult>({
         beaconStatus: "NEW",
         createdDate: "2020-02-01T00:00",
         lastModifiedDate: "2020-02-01T00:00",
+        mod: false,
+
         useActivities: "VESSELING",
         ownerName: "Vice-Admiral Horatio Nelson, 1st Viscount Nelson",
         ownerEmail: "nelson@royalnavy.mod.uk",
@@ -80,6 +85,7 @@ export const beaconSearchResultFixture = deepFreeze<IBeaconSearchResult>({
         id: "efeea9c2-85fc-4d3a-90ba-299e95f8114e",
         createdDate: "2015-04-07T00:00:00Z",
         lastModifiedDate: "2021-09-22T15:13:26Z",
+        mod: true,
         beaconStatus: "MIGRATED",
         hexId: "9D68175034D34D1",
         ownerName: "ULTRASHIP APS",

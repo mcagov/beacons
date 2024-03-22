@@ -34,12 +34,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
       protocol: beaconApiResponse.protocol || "",
       coding: beaconApiResponse.coding || "",
       csta: beaconApiResponse.csta || "",
-      mod:
-        beaconApiResponse.mod == null
-          ? ""
-          : beaconApiResponse.mod
-          ? "true"
-          : "false",
+      mod: beaconApiResponse.mod ? "true" : "false",
       mti: beaconApiResponse.mti || "",
       svdr:
         beaconApiResponse.svdr == null
