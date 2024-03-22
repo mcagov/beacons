@@ -34,6 +34,7 @@ import { IBeaconSearchResultData } from "../entities/IBeaconSearchResult";
 import { replaceNone } from "../lib/legacyData/replaceNone";
 import { logToServer } from "../utils/logger";
 import { TextFilter } from "./tableComponents/TextFilter";
+import { SelectFilter } from "./tableComponents/SelectFilter";
 
 interface IBeaconsTableProps {
   beaconsGateway: IBeaconsGateway;
@@ -168,12 +169,26 @@ const columns: Column<BeaconRowData>[] = [
     },
   },
   {
-    title: "MoD Beacon",
+    title: "Mod",
     field: "mod",
     lookup: {
-      YES: "YES",
-      NO: "NO",
+      Yes: "Yes",
+      No: "No",
+      Any: "Any",
     },
+    filterComponent: ({ columnDef, onFilterChanged }) => (
+      <SelectFilter
+        columnDef={columnDef}
+        onFilterChanged={onFilterChanged}
+        icons={tableIcons}
+        options={[
+          { label: "Yes", value: "true" },
+          { label: "No", value: "false" },
+          { label: "Any", value: "" },
+        ]}
+        filterTooltip="Filter Mod"
+      />
+    ),
     render: (rowData: BeaconRowData) => {
       return rowData.mod ? rowData.mod.toUpperCase() : "";
     },
