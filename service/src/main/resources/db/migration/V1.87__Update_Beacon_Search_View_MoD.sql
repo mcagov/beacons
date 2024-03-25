@@ -1,3 +1,5 @@
+UPDATE beacon SET mod = true WHERE id IN (SELECT bo.beacon_id FROM beacon_owner bo WHERE bo.email ILIKE '%@mod.gov.uk');
+
 DROP VIEW beacon_search;
 
 CREATE OR REPLACE VIEW beacon_search AS
@@ -7,7 +9,15 @@ SELECT l.id,
         l.last_modified_date,
         COALESCE(c.beacon_status, l.beacon_status) AS beacon_status,
         l.hex_id,
-        FALSE::bool AS mod,
+         CASE
+            WHEN EXISTS (
+                SELECT 1
+                FROM jsonb_array_elements(l.data -> 'uses') AS us
+                WHERE us->>'useType' ILIKE '%mod%'
+                LIMIT 1
+            ) THEN true
+            ELSE false
+        END AS mod,
         l.owner_name,
         l.owner_email,
         l.recovery_email AS legacy_beacon_recovery_email,
@@ -19,7 +29,7 @@ SELECT l.id,
         NULL::text AS registration_marks,
         (
         SELECT COALESCE(us->>'vesselName', us->>'aircraftRegistrationMark')
-        FROM jsonb_array_elements(l.data -> 'useThen s') AS us
+        FROM jsonb_array_elements(l.data -> 'uses') AS us
         WHERE us->>'isMain' = 'true'
         LIMIT 1
         ) AS main_use_name,
