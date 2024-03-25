@@ -64,6 +64,35 @@ public class BeaconMapper {
       .build();
   }
 
+  public BeaconRegistrationDTO toRegistrationDTO(
+    Beacon beacon,
+    BeaconUse mainUse
+  ) {
+    return BeaconRegistrationDTO
+      .builder()
+      .id(Objects.requireNonNull(beacon.getId()).unwrap())
+      .hexId(beacon.getHexId())
+      .manufacturer(beacon.getManufacturer())
+      .model(beacon.getModel())
+      .manufacturerSerialNumber(beacon.getManufacturerSerialNumber())
+      .referenceNumber(beacon.getReferenceNumber())
+      .chkCode(beacon.getChkCode())
+      .batteryExpiryDate(beacon.getBatteryExpiryDate())
+      .lastServicedDate(beacon.getLastServicedDate())
+      .mti(beacon.getMti())
+      .svdr(beacon.getSvdr())
+      .csta(beacon.getCsta())
+      .beaconType(beacon.getBeaconType())
+      .protocol(beacon.getProtocol())
+      .coding(beacon.getCoding())
+      .accountHolderId(beacon.getAccountHolderId().unwrap())
+      .status(beacon.getBeaconStatus())
+      .createdDate(beacon.getCreatedDate())
+      .lastModifiedDate(beacon.getLastModifiedDate())
+      .mainUseName(mainUse != null ? mainUse.getName() : "")
+      .build();
+  }
+
   public BeaconDTO toDTO(Beacon beacon) {
     BeaconDTO dto = new BeaconDTO();
     dto.setId(Objects.requireNonNull(beacon.getId()).unwrap());
