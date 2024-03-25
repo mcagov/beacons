@@ -21,7 +21,7 @@ public class BeaconSearchEntity {
   private OffsetDateTime lastModifiedDate;
   private String beaconStatus;
   private String hexId;
-  private Boolean mod;
+  private boolean mod;
   private String ownerName;
   private String ownerEmail;
   private String legacyBeaconRecoveryEmail;

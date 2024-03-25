@@ -73,7 +73,7 @@ interface BeaconSearchRestRepository
     "AND (COALESCE(LOWER(b.ownerName), '') LIKE LOWER(CONCAT('%', :ownerName, '%'))) " +
     "AND (COALESCE(LOWER(b.cospasSarsatNumber), '') LIKE LOWER(CONCAT('%', :cospasSarsatNumber, '%'))) " +
     "AND (COALESCE(LOWER(b.manufacturerSerialNumber), '') LIKE LOWER(CONCAT('%', :manufacturerSerialNumber, '%')))" +
-    "AND ( :mod IS NULL OR b.mod = :mod)"
+    "AND ( :mod = null OR (b.mod = :mod))"
   )
   Page<BeaconSearchEntity> findALlv2(
     @Param("status") String status,
