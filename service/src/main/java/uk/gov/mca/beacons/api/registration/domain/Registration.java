@@ -49,6 +49,15 @@ public class Registration implements Comparable<Registration> {
       .orElse(null);
   }
 
+  public String getModEmail(List<BeaconOwner> beaconOwners) {
+    return beaconOwners
+      .stream()
+      .map(BeaconOwner::getEmail) // Assuming getEmail returns a String
+      .filter(email -> email != null && email.endsWith("@madetech.com")) // Filter based on email ending
+      .findFirst()
+      .orElse(null);
+  }
+
   // Sorts by beacon created date in descending order
   @Override
   public int compareTo(@NotNull Registration o) {

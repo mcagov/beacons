@@ -61,11 +61,11 @@ export const formatOwners = (owners: IOwner[]): string => {
   return owners.map((owner) => owner.fullName).join(", ");
 };
 
-export const formatSvdr = (svdr: string): string => {
-  if (!svdr) {
+export const formatBoolean = (boolean: string): string => {
+  if (!boolean) {
     return "";
   }
-  return svdr === "true" ? "YES" : "NO";
+  return boolean === "true" ? "YES" : "NO";
 };
 
 export const formatLegacyOwners = (...owners: ILegacyOwner[]): string =>

@@ -29,6 +29,7 @@ export class BeaconRequestMapper {
     if (beacon.mti != null) attributes.mti = beacon.mti;
     if (beacon.svdr != null) attributes.svdr = beacon.svdr;
     if (beacon.csta != null) attributes.csta = beacon.csta;
+    if (beacon.mod != null) attributes.mod = beacon.mod;
 
     return {
       data: {

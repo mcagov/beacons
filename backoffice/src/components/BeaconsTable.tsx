@@ -29,11 +29,12 @@ import {
 } from "gateways/beacons/IBeaconsGateway";
 import React, { forwardRef, FunctionComponent } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Placeholders } from "utils/writingStyle";
+import { formatBoolean, Placeholders } from "utils/writingStyle";
 import { IBeaconSearchResultData } from "../entities/IBeaconSearchResult";
 import { replaceNone } from "../lib/legacyData/replaceNone";
 import { logToServer } from "../utils/logger";
 import { TextFilter } from "./tableComponents/TextFilter";
+import { SelectFilter } from "./tableComponents/SelectFilter";
 
 interface IBeaconsTableProps {
   beaconsGateway: IBeaconsGateway;
@@ -52,6 +53,7 @@ export type BeaconRowData = Record<
     | "beaconType"
     | "cospasSarsatNumber"
     | "manufacturerSerialNumber"
+    | "mod"
   >,
   string
 >;
@@ -167,6 +169,31 @@ const columns: Column<BeaconRowData>[] = [
     },
   },
   {
+    title: "Mod",
+    field: "mod",
+    lookup: {
+      Yes: "Yes",
+      No: "No",
+      Any: "Any",
+    },
+    filterComponent: ({ columnDef, onFilterChanged }) => (
+      <SelectFilter
+        columnDef={columnDef}
+        onFilterChanged={onFilterChanged}
+        icons={tableIcons}
+        options={[
+          { label: "Yes", value: "true" },
+          { label: "No", value: "false" },
+          { label: "Any", value: "" },
+        ]}
+        filterTooltip="Filter Mod"
+      />
+    ),
+    render: (rowData: BeaconRowData) => {
+      return rowData.mod ? rowData.mod.toUpperCase() : "";
+    },
+  },
+  {
     title: "Beacon use",
     field: "useActivities",
     filterComponent: ({ columnDef, onFilterChanged }) => (
@@ -229,6 +256,7 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
                   beaconStatus: item.beaconStatus,
                   hexId: item.hexId,
                   ownerName: item.ownerName ?? "N/A",
+                  mod: formatBoolean(item.mod.toString()),
                   useActivities: item.useActivities ?? "N/A",
                   id: item.id,
                   beaconType: item.beaconType,
@@ -278,7 +306,11 @@ function buildTableQuery(
   const filters: Partial<Record<keyof BeaconRowData, string>> = {};
   query.filters.forEach((filter) => {
     if (filter.column.field) {
-      filters[filter.column.field as keyof BeaconRowData] = filter.value;
+      if (filter.column.lookup && Array.isArray(filter.value)) {
+        filters[filter.column.field as keyof BeaconRowData] = filter.value[0];
+      } else {
+        filters[filter.column.field as keyof BeaconRowData] = filter.value;
+      }
     }
   });
 
