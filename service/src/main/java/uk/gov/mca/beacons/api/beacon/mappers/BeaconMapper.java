@@ -81,6 +81,7 @@ public class BeaconMapper {
       .lastServicedDate(beacon.getLastServicedDate())
       .mti(beacon.getMti())
       .svdr(beacon.getSvdr())
+      .mod(beacon.getMod())
       .csta(beacon.getCsta())
       .beaconType(beacon.getBeaconType())
       .protocol(beacon.getProtocol())
