@@ -40,6 +40,15 @@ public class BeaconOwnerService {
     return beaconOwnerRepository.getByBeaconId(beaconId);
   }
 
+  public String getModEmailByBeaconId(BeaconId beaconId) {
+    return getByBeaconId(beaconId)
+      .stream()
+      .map(BeaconOwner::getEmail) // Assuming getEmail returns a String
+      .filter(email -> email != null && email.endsWith("@madetech.com")) // Filter based on email ending
+      .findFirst()
+      .orElse(null);
+  }
+
   public void deleteByBeaconId(BeaconId beaconId) {
     beaconOwnerRepository.deleteAllByBeaconId(beaconId);
     beaconOwnerRepository.flush();

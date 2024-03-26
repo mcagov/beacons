@@ -66,7 +66,8 @@ public class BeaconMapper {
 
   public BeaconRegistrationDTO toRegistrationDTO(
     Beacon beacon,
-    BeaconUse mainUse
+    BeaconUse mainUse,
+    String ModEmail
   ) {
     return BeaconRegistrationDTO
       .builder()
@@ -81,7 +82,7 @@ public class BeaconMapper {
       .lastServicedDate(beacon.getLastServicedDate())
       .mti(beacon.getMti())
       .svdr(beacon.getSvdr())
-      .mod(beacon.getMod())
+      .mod(ModEmail != null)
       .csta(beacon.getCsta())
       .beaconType(beacon.getBeaconType())
       .protocol(beacon.getProtocol())
@@ -126,7 +127,7 @@ public class BeaconMapper {
     return dto;
   }
 
-  public BeaconDTO toDTO(Beacon beacon, BeaconUse mainUse) {
+  public BeaconDTO toDTO(Beacon beacon, BeaconUse mainUse, String ModEmail) {
     BeaconDTO dto = new BeaconDTO();
     dto.setId(Objects.requireNonNull(beacon.getId()).unwrap());
 
@@ -143,7 +144,7 @@ public class BeaconMapper {
       .lastServicedDate(beacon.getLastServicedDate())
       .mti(beacon.getMti())
       .svdr(beacon.getSvdr())
-      .mod(beacon.getMod())
+      .mod(ModEmail != null)
       .csta(beacon.getCsta())
       .beaconType(beacon.getBeaconType())
       .protocol(beacon.getProtocol())

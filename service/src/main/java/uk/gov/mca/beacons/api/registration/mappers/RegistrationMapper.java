@@ -75,7 +75,8 @@ public class RegistrationMapper {
       .beaconDTO(
         beaconMapper.toRegistrationDTO(
           registration.getBeacon(),
-          registration.getMainUse()
+          registration.getMainUse(),
+          registration.getModEmail(registration.getBeaconOwners())
         )
       )
       .beaconOwnerDTO(

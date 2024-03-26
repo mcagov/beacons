@@ -17,6 +17,7 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
+import uk.gov.mca.beacons.api.beaconowner.application.BeaconOwnerService;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
 import uk.gov.mca.beacons.api.mappers.ModelPatcher;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
@@ -33,6 +34,7 @@ public class AccountHolderService {
   private final BeaconService beaconService;
   private final BeaconMapper beaconMapper;
   private final BeaconUseService beaconUseService;
+  private final BeaconOwnerService beaconOwnerService;
   private final NoteService noteService;
   private final MicrosoftGraphService graphService;
 
@@ -43,6 +45,7 @@ public class AccountHolderService {
     BeaconService beaconService,
     BeaconMapper beaconMapper,
     BeaconUseService beaconUseService,
+    BeaconOwnerService beaconOwnerService,
     MicrosoftGraphService graphService,
     NoteService noteService
   ) {
@@ -51,6 +54,7 @@ public class AccountHolderService {
     this.beaconService = beaconService;
     this.beaconMapper = beaconMapper;
     this.beaconUseService = beaconUseService;
+    this.beaconOwnerService = beaconOwnerService;
     this.graphService = graphService;
     this.noteService = noteService;
   }
@@ -176,7 +180,11 @@ public class AccountHolderService {
     return beacons
       .stream()
       .map(b ->
-        beaconMapper.toDTO(b, beaconUseService.getMainUseByBeaconId(b.getId()))
+        beaconMapper.toDTO(
+          b,
+          beaconUseService.getMainUseByBeaconId(b.getId()),
+          beaconOwnerService.getModEmailByBeaconId(b.getId())
+        )
       )
       .collect(Collectors.toList());
   }
