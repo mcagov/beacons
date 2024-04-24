@@ -5,6 +5,10 @@ import { ordinal, prettyUseName, sentenceCase } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";
 import { AnchorLink, SectionHeading, WarningLink } from "../Typography";
 import { DataRowItem } from "./DataRowItem";
+import { UrlBuilder } from "../../lib/URLs/UrlBuilder";
+import { Actions } from "../../lib/URLs/Actions";
+import { UsePages } from "../../lib/URLs/UsePages";
+import {useRouter} from "next/router";
 
 interface BeaconUseSectionProps {
   index: number;
@@ -12,6 +16,7 @@ interface BeaconUseSectionProps {
   changeUri?: string;
   deleteUri?: string;
   makeMainUseUri?: string;
+  id?: string;
 }
 
 export const AdditionalBeaconUseSummary: FunctionComponent<
@@ -22,12 +27,14 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
   changeUri,
   deleteUri,
   makeMainUseUri,
+  id
 }: BeaconUseSectionProps): JSX.Element => {
   const useRank = sentenceCase(ordinal(index + 1)) + " use";
 
   if (use.mainUse === undefined) {
     use.mainUse = index === 0;
   }
+
   return (
     <>
       <div
@@ -63,33 +70,49 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
         </div>
       </div>
 
-      <div style={{ float: "right" }}>
-        {makeMainUseUri && use.mainUse !== true && (
-          <AnchorLink
-            href={makeMainUseUri}
-            classes={`govuk-link--no-visited-state govuk-custom-link`}
-          >
-            Make this the main use
-          </AnchorLink>
-        )}
-      </div>
-
       <SummaryList>
-        <AboutThisUse use={use} />
-        <Communications use={use} />
-        <MoreDetailsSubSection use={use} />
-        <IsMainUseSubSection use={use} />
+        <AboutThisUse use={use} changeUrl={
+          UrlBuilder.buildUseUrl(
+          Actions.update,
+          UsePages.aboutTheVessel,
+          id,
+          index.toString()
+        )} />
+        <Communications use={use} changeUrl={
+          UrlBuilder.buildUseUrl(
+            Actions.update,
+            UsePages.vesselCommunications,
+            id,
+            index.toString()
+          )
+        }  />
+        <MoreDetailsSubSection use={use} changeUrl={
+          UrlBuilder.buildUseUrl(
+            Actions.update,
+            UsePages.moreDetails,
+            id,
+            index.toString()
+          )
+        } />
+        {makeMainUseUri && use.mainUse !== true && (
+          <IsMainUseSubSection use={use} makeMainUseUrl={makeMainUseUri} />
+        )}
+        {use.mainUse && (
+          <IsMainUseSubSection use={use} />
+        )}
       </SummaryList>
     </>
   );
 };
 
-const AboutThisUse: FunctionComponent<{ use: DraftBeaconUse }> = ({
-  use,
+const AboutThisUse: FunctionComponent<{ use: DraftBeaconUse , changeUrl: string }> = ({
+  use, changeUrl
 }: {
   use: BeaconUse;
+  changeUrl: string;
 }): JSX.Element => (
-  <SummaryListItem labelText="About this use">
+  <SummaryListItem labelText="About this use" actions={useRouter().pathname === '/manage-my-registrations/[registrationId]/update/uses' ? [{ text: "Change", href: changeUrl }] : []}
+  >
     {use.vesselName && <DataRowItem label="Name" value={use.vesselName} />}
     {use.maxCapacity && (
       <DataRowItem label="Max persons onboard" value={use.maxCapacity} />
@@ -228,13 +251,14 @@ const AboutThisUse: FunctionComponent<{ use: DraftBeaconUse }> = ({
   </SummaryListItem>
 );
 
-const Communications: FunctionComponent<{ use: DraftBeaconUse }> = ({
-  use,
+const Communications: FunctionComponent<{ use: DraftBeaconUse , changeUrl: string}> = ({
+  use, changeUrl
 }: {
   use: BeaconUse;
+  changeUrl: string
 }): JSX.Element => {
   return (
-    <SummaryListItem labelText="Communications">
+    <SummaryListItem labelText="Communications" actions={useRouter().pathname === '/manage-my-registrations/[registrationId]/update/uses' ? [{ text: "Change", href: changeUrl }] : []}>
       {use.callSign && <DataRowItem label="Callsign" value={use.callSign} />}
       {use.fixedVhfRadio === "true" && (
         <>
@@ -291,22 +315,33 @@ const Communications: FunctionComponent<{ use: DraftBeaconUse }> = ({
   );
 };
 
-const MoreDetailsSubSection: FunctionComponent<{ use: DraftBeaconUse }> = ({
-  use,
+const MoreDetailsSubSection: FunctionComponent<{ use: DraftBeaconUse , changeUrl: string}> = ({
+  use, changeUrl
 }: {
   use: BeaconUse;
+  changeUrl: string;
 }): JSX.Element => (
-  <SummaryListItem labelText="More details">
+  <SummaryListItem labelText="More details" actions={useRouter().pathname === '/manage-my-registrations/[registrationId]/update/uses' ? [{ text: "Change", href: changeUrl }] : []}>
     <DataRowItem value={use.moreDetails} />
   </SummaryListItem>
 );
 
-const IsMainUseSubSection: FunctionComponent<{
-  use: DraftBeaconUse;
-}> = ({ use }: { use: BeaconUse }): JSX.Element => (
+const IsMainUseSubSection: FunctionComponent<{ use: DraftBeaconUse, makeMainUseUrl?: string }> = ({
+  use, makeMainUseUrl
+}: {
+  use: BeaconUse;
+  makeMainUseUrl?: string;
+}): JSX.Element => (
   <>
-    <SummaryListItem labelText="Is Main Use">
-      <DataRowItem value={use.mainUse === true ? "Yes" : "No"} />
-    </SummaryListItem>
+    {makeMainUseUrl && (
+      <SummaryListItem labelText="Is Main Use" actions={[{ text: "Make this the main use", href: makeMainUseUrl }]}>
+        <DataRowItem value={use.mainUse === true ? "Yes" : "No"} />
+      </SummaryListItem>
+    )}
+    {!makeMainUseUrl && (
+      <SummaryListItem labelText="Is Main Use" >
+        <DataRowItem value={use.mainUse === true ? "Yes" : "No"} />
+      </SummaryListItem>
+    )}
   </>
 );

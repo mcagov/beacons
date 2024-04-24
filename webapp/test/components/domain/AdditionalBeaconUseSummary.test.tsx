@@ -9,7 +9,16 @@ import { BeaconUse } from "../../../src/entities/BeaconUse";
 import { Environment } from "../../../src/lib/deprecatedRegistration/types";
 import { getMockUse } from "../../mocks";
 
+jest.mock("next/router", () => ({
+  useRouter() {
+    return {
+      pathname: '/'
+    }
+  }
+}));
+
 describe("AdditionalBeaconUseSummary", () => {
+
   it("displays the use's ranking in user friendly terms", () => {
     const use: BeaconUse = getMockUse();
 

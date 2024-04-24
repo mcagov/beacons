@@ -20,6 +20,14 @@ import AdditionalBeaconUse, {
 } from "../../../src/pages/register-a-beacon/additional-beacon-use";
 import { getMockUse } from "../../mocks";
 
+jest.mock("next/router", () => ({
+  useRouter() {
+    return {
+      pathname: '/'
+    }
+  }
+}));
+
 describe("AdditionalBeaconUse page", () => {
   it("given there are no uses, displays a 'no assigned uses' message", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseId={0} />);
