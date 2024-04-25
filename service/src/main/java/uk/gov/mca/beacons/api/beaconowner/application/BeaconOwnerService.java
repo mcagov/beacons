@@ -44,7 +44,7 @@ public class BeaconOwnerService {
     return getByBeaconId(beaconId)
       .stream()
       .map(BeaconOwner::getEmail) // Assuming getEmail returns a String
-      .filter(email -> email != null && email.endsWith("@madetech.com")) // Filter based on email ending
+      .filter(email -> email != null && email.endsWith("@mod.gov.uk")) // Filter based on email ending
       .findFirst()
       .orElse(null);
   }

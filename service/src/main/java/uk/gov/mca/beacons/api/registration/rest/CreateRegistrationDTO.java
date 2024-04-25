@@ -35,7 +35,7 @@ public class CreateRegistrationDTO {
 
   public boolean isMod() {
     var email = createBeaconOwnerDTO.getEmail();
-    if (email.endsWith("@changeme.com")) {
+    if (email.endsWith("@mod.gov.uk")) {
       return true;
     } else return false;
   }
