@@ -39,6 +39,9 @@ import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDr
 import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { SendYourApplication } from "../../../register-a-beacon/check-your-answers";
+import {
+  GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm
+} from "../../../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;
@@ -132,7 +135,7 @@ const RegistrationSummaryPage: FunctionComponent<
             />
             <UpdateUseSection registrationId={registration.id} />
             {registration.uses.map((use, index) => (
-              <AdditionalBeaconUseSummary index={index} use={use} key={index} />
+              <AdditionalBeaconUseSummary index={index} use={use} key={index} id={registration.id} />
             ))}
             <CheckYourAnswersBeaconOwnerSummary
               registration={registration}

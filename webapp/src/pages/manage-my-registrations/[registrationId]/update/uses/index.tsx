@@ -99,12 +99,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                       <AdditionalBeaconUseSummary
                         index={index}
                         use={use}
-                        changeUri={UrlBuilder.buildUseUrl(
-                          Actions.update,
-                          UsePages.environment,
-                          draftRegistration.id,
-                          index.toString()
-                        )}
+                        id={draftRegistration.id}
                         deleteUri={confirmBeforeDelete(
                           use,
                           index,
