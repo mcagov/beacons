@@ -44,9 +44,11 @@ public class RegistrationController {
   public ResponseEntity<RegistrationDTO> register(
     @Valid @RequestBody CreateRegistrationDTO createRegistrationDTO
   ) {
+    boolean isMod = createRegistrationDTO.isMod();
     Registration registration = registrationMapper.fromDTO(
       createRegistrationDTO
     );
+    registration.getBeacon().setMod(isMod);
     Registration savedRegistration = registrationService.register(registration);
     return new ResponseEntity<>(
       registrationMapper.toDTO(savedRegistration),

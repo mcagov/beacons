@@ -17,6 +17,7 @@ export interface IRegistrationResponse {
   mti?: string;
   svdr?: boolean;
   csta?: string;
+  mod?: boolean;
   protocol?: string;
   coding?: string;
   batteryExpiryDate?: string;
