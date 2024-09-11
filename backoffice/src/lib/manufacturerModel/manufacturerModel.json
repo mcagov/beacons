@@ -26,7 +26,7 @@
     "CSTA 143, Aquafix/Aerofix PLB",
     "CSTA 144, Aquafix/Aerofix PLB",
     "CSTA 156, Aquafix/Aerofix Plb200",
-    "CSTA 157, Aquafix/Aerofix Plb201",
+    "CSTA 157, Aquafix/Aerofix PLB201",
     "CSTA 169, PLB 300 GPS",
     "CSTA 173, RLB 35 Globalfix EPIRB",
     "CSTA 174, PLB 200",
@@ -66,7 +66,7 @@
     "CSTA 254, PLB 375 ResQLink, GPS",
     "CSTA 257, ACR, PLB 375 ResQLink, GPS",
     "CSTA 257, PLB 375 ResQLink, GPS",
-    "CSTA 258, RLB 36-40, Globalfix iPro EPIRB (RLB 37 see note)",
+    "CSTA 258, RLB 36-40, Globalfix iPro EPIRB",
     "CSTA 265, PLB 375, ResQLink / ResQlink +",
     "CSTA 266, Aqualink PLB350B",
     "CSTA 266, Aqualink PLB350C",
@@ -92,7 +92,7 @@
     "CSTA 316, PLB 400",
     "CSTA 316, PLB 425",
     "CSTA 317, Artex ELT 345",
-    "CSTA 319, RLB 41 EPIRB (Float Free / non-Float Free)",
+    "CSTA 319, RLB 41 V4 EPIRB (Float Free / non-Float Free)",
     "CSTA 320, RLB 36-40 Float Free EPIRB",
     "CSTA 320, RLB 37M Float Free EPIRB",
     "CSTA 323, Artex ELT 1000 Auto Fixed",
@@ -166,8 +166,10 @@
     "CSTA 188, ME 406 ELT",
     "CSTA 67, ELT 110-406"
   ],
-  "Astronics": ["CSTA 133, SRB 406 ELT"],
-  "Astronics, DME Corporation": ["CSTA 303, SRB 406G Single Antenna, ELT"],
+  "Astronics, DME Corporation": [
+    "CSTA 133, SRB 406 ELT",
+    "CSTA 303, SRB 406G Single Antenna, ELT"
+  ],
   "Breitling SA": ["CSTA 717, Breitling watch, PLB"],
   "BriarTek Inc": ["CSTA 325, Orca 406"],
   "Caledonian": ["CSTA 8, CPT-600M EPIRB", "CSTA 33, CPT 600N EPIRB"],
@@ -191,11 +193,14 @@
     "CSTA 347, Crewsaver Crewfind G8 (Z702)"
   ],
   "Dowty": ["RN ECB Type 699(1) EPIRB"],
-  "DRS": ["CSTA 121, BAU 35 / 35-A ELT", "CSTA 727, DFIRU (UNIT 2) MUP"],
+  "DRS Technologies": [
+    "CSTA 121, BAU 35 / 35-A ELT",
+    "CSTA 727, DFIRU (UNIT 2) MUP"
+  ],
   "ELTA": [
     "CSTA 131, ADT 406 AF/AP ELT",
     "CSTA 153, ADT 406 S ELT",
-    "CSTA 20, AO6 / SO6 ELT",
+    "CSTA 20, A06 / S06 ELT",
     "CSTA 291, ELiTe (AF) ELT",
     "CSTA 291, ELiTe (S) ELT"
   ],
@@ -205,7 +210,10 @@
   ],
   "GEC Marconi": ["CSTA 100, 639 SIU, EPIRB"],
   "General EPIRB (unknown)": ["General (unknown) oddcodings, EPIRB"],
-  "GME Pty Ltd.": ["CSTA 385, MT600G Non FF EPIRB"],
+  "GME Pty Ltd. / Standard Communications Pty Ltd.": [
+    "CSTA 300, MT603G EPIRB",
+    "CSTA 385, MT600G Non FF EPIRB"
+  ],
   "Haotong (SH) Technology Co Ltd": ["CSTA 240, STB910, EPIRB"],
   "Honeywell": [
     "CSTA 124, Rescu 406 AF ELT",
@@ -395,16 +403,15 @@
     "CSTA 2, RB 406",
     "CSTA 200, Fastfind 200 non-GPS PLB",
     "CSTA 200, Fastfind 210 GPS PLB",
-    "CSTA 200, McMurdo Fastfind 200 non-GPS PLB",
     "CSTA 201, McMurdo, FF210 PLB",
     "CSTA 203, Fastfind 210 GPS PLB",
     "CSTA 204, E5 non-GPS (100-xxx) EPIRB",
     "CSTA 204, G5 (200-xxx) EPIRB",
     "CSTA 216, McMurdo MaxG PLB ",
     "CSTA 216, McMurdo, Safelink Pro GPS PLB",
-    "CSTA 217, McMurdo Fastfind PLB200 non-GPS ",
-    "CSTA 217, McMurdo SafeLink Solo PLB",
-    "CSTA 217, McMurdo, CSTA 217, Fastfind PLB210 GPS",
+    "CSTA 217, McMurdo, Fastfind PLB200 non-GPS ",
+    "CSTA 217, McMurdo, SafeLink Solo PLB",
+    "CSTA 217, McMurdo, Fastfind PLB210 GPS",
     "CSTA 229, (210-xxxx) PLB",
     "CSTA 289, McMurdo Smartfind E8 (Z704) non-GPS EPIRB",
     "CSTA 289, McMurdo Smartfind G8 (Z702) EPIRB",
@@ -432,6 +439,7 @@
     "CSTA 258, 3Si Guardian EPIRB",
     "CSTA 271, 3Si Guardian PLB",
     "CSTA 276, 3Si Guardian PLB",
+    "CSTA 284, 3Si Guardian EPIRB",
     "CSTA 287, 3Si Guardian Buoyant PLB",
     "CSTA 294, 3Si Guardian PLB",
     "CSTA 301, 3Si Guardian PLB",
@@ -482,9 +490,9 @@
     "CSTA 377, EPIRB2 (non-Float Free), EPIRB2 Pro (Float Free / non-Float Free)",
     "CSTA 379, RLB43 GLOBALFIX V6",
     "CSTA 381, RLB45 GLOBALFIX V6",
-    "CSTA 384, EPIRB1 (non-Float Free), EPIRB1 Pro (Float Free / non-Float Free)"
+    "CSTA 384, EPIRB1 (non-Float Free), EPIRB1 Pro (Float Free / non-Float Free)",
+    "CSTA 393, rescueME PLB1, Artex PLB"
   ],
-  "Ocean Signal (ACR)": ["CSTA 284, 3Si Guardian EPIRB"],
   "Orolia": [
     "CSTA 159, G2R ELT",
     "CSTA 163, A5 Smartfind (Manual Act) EPIRB",
@@ -524,7 +532,7 @@
     "CSTA 336, Fastfind Ranger, Z424 (424-xxx)",
     "CSTA 336, Safelink Solo, Z424 (424-xxx)",
     "CSTA 350, KANNAD ULTIMA-S-03",
-    "CSTA 361, KANNAD ULTIMA-DT-05"
+    "CSTA 361, KANNAD ULTIMA-DT-05, ULTIMA-DT-06"
   ],
   "Raytheon": ["CSTA 21, JQE-2A EPIRB"],
   "Refer to UKMCC": ["Nat.Loc.s/ns: 4100 to 14201 PLB"],
@@ -535,11 +543,10 @@
   "Saracom": ["CSTA 94, EB-10 EPIRB"],
   "Sartech": [
     "MTI 85, CSTA 139 (non-TAC) non-GPS GME MT400/401/402/403",
-    "MTI 1202, CSTA 139, non-GPS, TAC coded MT400/401/402/403 ",
+    "MTI 1202, CSTA 139, non-GPS, TAC coded MT400/401/402/403",
     "CSTA 139, GPS MT400 to 403 EPIRB",
     "CSTA 176, GME MT410 PLB non-GPS",
     "CSTA 176, GPS GME MT410 PLB",
-    "CSTA 176, non-GPS PLB",
     "CSTA 186, GPS MT403/G/FF/FG EPIRB",
     "CSTA 186, MT403 non-GPS EPIRB",
     "CSTA 273, GPS GME MT410G PLB",
@@ -571,7 +578,6 @@
     "CSTA 285 EG50, GPS EPIRB"
   ],
   "Skanti": ["CSTA 77, TP2 I & II EPIRB"],
-  "Standard Communications Pty Ltd": ["CSTA 300, MT603G EPIRB"],
   "Taiyo Musen Co Ltd": [
     "CSTA 164, Teb700 / JQE-103 EPIRB",
     "CSTA 164, GPS, Teb700/JQE-103 EPIRB"
@@ -584,7 +590,7 @@
     "CSTA 111, non-GPS 500-12Y ELT",
     "CSTA 111, PLB GPS & non-GPS 500-27",
     "CSTA 111, PLB non-GPS 500-12 or 500-12Y",
-    "CSTA 223, 500-32 ELT / PLB",
+    "CSTA 223, 500-32 ELT",
     "CSTA 223, 500-32 PLB",
     "CSTA 244, GPS/non-GPS, 503.16 & variants",
     "CSTA 372, 500-12() PLB",
