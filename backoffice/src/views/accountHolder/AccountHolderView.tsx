@@ -21,10 +21,7 @@ import { logToServer } from "../../utils/logger";
 import { IAccountHolder } from "../../entities/IAccountHolder";
 import { IAccountHolderGateway } from "gateways/account-holder/IAccountHolderGateway";
 import { AccountHolderSummaryView } from "./AccountHolderSummaryView";
-import {
-  dateSortComparator,
-  customDateValueFormatter,
-} from "../../utils/DataGridUtils";
+import { dateSortComparator } from "../../utils/DataGridUtils";
 
 import {
   DataGrid,
@@ -43,6 +40,7 @@ import { LoadingState } from "components/dataPanel/PanelLoadingState";
 import { AccountHolderSummaryEdit } from "./AccountHolderSummaryEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IAccountHolderSearchResultData } from "entities/IAccountHolderSearchResult";
+import { formatDateTime } from "../../utils/dateTime";
 interface IAccountHolderViewProps {
   accountHolderGateway: IAccountHolderGateway;
   accountHolderId: string;
@@ -288,7 +286,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 175,
       editable: false,
       type: "date",
-      valueFormatter: (params) => customDateValueFormatter(params),
+      valueSetter: (params): string => params.value.toString(),
       sortComparator: dateSortComparator,
     },
     {
@@ -297,7 +295,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 175,
       editable: false,
       type: "date",
-      valueFormatter: (params) => customDateValueFormatter(params),
+      valueSetter: (params): string => params.value.toString(),
       sortComparator: dateSortComparator,
     },
     {
