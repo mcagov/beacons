@@ -1,6 +1,6 @@
 import "./certificate.scss";
 import { FunctionComponent } from "react";
-import { customDateStringFormat } from "utils/dateTime";
+import { formatDateLong, formatDateTime } from "utils/dateTime";
 import {
   CertificateHeader,
   CertificateField,
@@ -23,18 +23,12 @@ export const LegacyCertificate: FunctionComponent<BeaconExportProps> = ({
           <CertificateField
             classes="half"
             title="First Registration Date"
-            value={customDateStringFormat(
-              beacon.recordCreatedDate,
-              "DD MMMM yyyy"
-            )}
+            value={formatDateLong(beacon.recordCreatedDate)}
           />
           <CertificateField
             classes="half"
             title="Last Modified"
-            value={customDateStringFormat(
-              beacon.lastModifiedDate,
-              "DD MMMM yyyy"
-            )}
+            value={formatDateLong(beacon.lastModifiedDate)}
           />
           <CertificateField
             classes="full"
@@ -97,7 +91,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
       <CertificateField
         classes="half"
         title="Beacon Last Serviced"
-        value={customDateStringFormat(beacon.beaconlastServiced, "DD/MM/yyyy")}
+        value={formatDateTime(beacon.beaconlastServiced)}
       />
       <CertificateField
         classes="half"
@@ -107,7 +101,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
       <CertificateField
         classes="half"
         title="Battery Expiry Date"
-        value={customDateStringFormat(beacon.batteryExpiryDate, "DD/MM/yyyy")}
+        value={formatDateTime(beacon.batteryExpiryDate)}
       />
       <CertificateField
         classes="half"

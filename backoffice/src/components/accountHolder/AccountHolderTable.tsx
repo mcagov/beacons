@@ -11,10 +11,8 @@ import { TablePaginationActions } from "../TablePaginationActions";
 import { IAccountHolderSearchResult } from "entities/IAccountHolderSearchResult";
 import { Link as RouterLink } from "react-router-dom";
 import { LoadingState } from "components/dataPanel/PanelLoadingState";
-import {
-  dateSortComparator,
-  customDateValueFormatter,
-} from "../../utils/DataGridUtils";
+import { dateSortComparator } from "../../utils/DataGridUtils";
+import { formatDateTime } from "../../utils/dateTime";
 
 interface IAccountHolderTableProps {
   result: IAccountHolderSearchResult;
@@ -57,7 +55,7 @@ const columns: GridColDef[] = [
     width: 175,
     editable: false,
     type: "date",
-    valueFormatter: (params) => customDateValueFormatter(params),
+    valueFormatter: (params) => formatDateTime(params.value),
     sortComparator: dateSortComparator,
   },
   {
@@ -66,7 +64,7 @@ const columns: GridColDef[] = [
     width: 175,
     editable: false,
     type: "date",
-    valueFormatter: (params) => customDateValueFormatter(params),
+    valueFormatter: (params) => formatDateTime(params.value),
     sortComparator: dateSortComparator,
   },
   {

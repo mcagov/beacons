@@ -1,6 +1,6 @@
 import "./certificate.scss";
 import { FunctionComponent } from "react";
-import { customDateStringFormat } from "utils/dateTime";
+import { formatDateTime } from "utils/dateTime";
 import {
   IBeaconExport,
   IBeaconExportUse,
@@ -45,10 +45,7 @@ export const CertificateHeader: FunctionComponent<BeaconExportProps> = ({
         <CertificateField
           classes="half uppercase"
           title="Proof Of Registration"
-          value={customDateStringFormat(
-            beacon.proofOfRegistrationDate,
-            "DD/MM/yyyy"
-          ).toUpperCase()}
+          value={formatDateTime(beacon.proofOfRegistrationDate).toUpperCase()}
         />
 
         {beacon.type === "Legacy" && (
