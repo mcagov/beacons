@@ -40,7 +40,6 @@ import { LoadingState } from "components/dataPanel/PanelLoadingState";
 import { AccountHolderSummaryEdit } from "./AccountHolderSummaryEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IAccountHolderSearchResultData } from "entities/IAccountHolderSearchResult";
-import { formatDateTime } from "../../utils/dateTime";
 interface IAccountHolderViewProps {
   accountHolderGateway: IAccountHolderGateway;
   accountHolderId: string;
