@@ -32,4 +32,11 @@ public class CreateRegistrationDTO {
   @Valid
   @JsonProperty("emergencyContacts")
   private List<CreateEmergencyContactDTO> createEmergencyContactDTOs;
+
+  public boolean isMod() {
+    var email = createBeaconOwnerDTO.getEmail();
+    if (email.endsWith("@mod.gov.uk")) {
+      return true;
+    } else return false;
+  }
 }

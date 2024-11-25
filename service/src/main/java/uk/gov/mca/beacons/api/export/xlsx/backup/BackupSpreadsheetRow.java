@@ -54,6 +54,7 @@ public class BackupSpreadsheetRow {
     "cstaNumber",
     "mti",
     "svdr",
+    "mod",
     //These are only valid for new beacons
     "notes",
     "uses",
@@ -87,6 +88,7 @@ public class BackupSpreadsheetRow {
     "CSTA number",
     "MTI",
     "SVDR",
+    "MOD",
     //These are only valid for new beacons
     "Notes",
     "Uses",
@@ -123,6 +125,7 @@ public class BackupSpreadsheetRow {
   private String cstaNumber;
   private String mti;
   private String svdr;
+  private String mod;
 
   //These are only valid for new beacons
   private String notes;
@@ -237,6 +240,8 @@ public class BackupSpreadsheetRow {
 
     this.mti = beacon.getMti();
     this.svdr = String.valueOf(beacon.getSvdr());
+    this.mod = String.valueOf(beacon.getMod());
+
     this.beaconModel = beacon.getModel();
 
     this.beaconLastServiced =

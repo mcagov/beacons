@@ -15,6 +15,7 @@ export interface IBeacon {
   protocol: string;
   coding: string;
   csta: string;
+  mod: string;
   mti: string;
   svdr: string;
   batteryExpiryDate: string;
