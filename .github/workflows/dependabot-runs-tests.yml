@@ -22,14 +22,51 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           echo 'docker compose --compatibility "$@"' >> $HOME/.local/bin/docker-compose
           chmod +x $HOME/.local/bin/docker-compose
-  back-office-tests:
-    uses: ./.github/workflows/test-backoffice.yml
-    secrets: inherit
-  web-app-tests:
+  terraform_lint:
+    name: Terraform lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.0.0
+      - name: Terraform Lint
+        run: terraform fmt --recursive --check
+
+  prettier_check:
+    name: Prettier check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "16.17.0"
+      - name: Prettier check
+        run: |
+          npm ci
+          npm run format:check
+
+  test_webapp:
+    name: Test Webapp
     uses: ./.github/workflows/test-webapp.yml
-    secrets: inherit
-  service-tests:
+    secrets:
+      test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
+      test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
+
+  test_service:
+    name: Test Service
     uses: ./.github/workflows/test-service.yml
-    secrets: inherit
     with:
-      environment: development      
+      environment: development
+    secrets:
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
+      microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
+      microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
+      microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
+
+  test_backoffice:
+    name: Test Backoffice
+    uses: ./.github/workflows/test-backoffice.yml
