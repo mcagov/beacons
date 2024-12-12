@@ -1,0 +1,35 @@
+name: Dependabot Tests
+on:
+  push:
+    branches:
+      - dependabot/**
+jobs:
+  docker:
+    env:
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: docker-compose backwards compat
+        run: |
+          mkdir -p $HOME/.local/bin
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo 'docker compose --compatibility "$@"' >> $HOME/.local/bin/docker-compose
+          chmod +x $HOME/.local/bin/docker-compose
+  back-office-tests:
+    uses: ./.github/workflows/test-backoffice.yml
+    secrets: inherit
+  web-app-tests:
+    uses: ./.github/workflows/test-webapp.yml
+    secrets: inherit
+  service-tests:
+    uses: ./.github/workflows/test-service.yml
+    secrets: inherit
+    with:
+      environment: development      
