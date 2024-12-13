@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.aws_access_key_id }}
           password: ${{ secrets.aws_secret_access_key }}
       - name: Build and Push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: service
           push: true
