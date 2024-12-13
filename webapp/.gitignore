@@ -13,7 +13,7 @@ node_modules/
 .next/
 .idea/
 .eslintcache
-.env.local
+.env
 .env
 
 # Cypress

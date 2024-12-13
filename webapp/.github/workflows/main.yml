@@ -84,7 +84,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
       - name: Copy env vars
-        run: cp .env.example .env.local
+        run: cp .env.example .env
       - name: Run Cypress UI tests
         uses: cypress-io/github-action@v2
         with:
@@ -137,7 +137,7 @@ jobs:
         run: |
           SERVICE_COMMIT_HASH=${{ steps.get_service_commit_hash.outputs.service_commit_hash }} docker compose --verbose -f docker-compose.e2e.yml up --detach
       - name: Copy env vars
-        run: cp .env.example .env.local
+        run: cp .env.example .env
       - name: Checkout node
         uses: actions/setup-node@v2.4.0
         with:
