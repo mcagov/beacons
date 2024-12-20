@@ -31,7 +31,7 @@ jobs:
           node-version: "16.17.0"
       - name: Prettier check
         run: |
-          npm ci
+          npm install
           npm run format:check
 
   test_webapp:
