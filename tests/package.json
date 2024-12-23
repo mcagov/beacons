@@ -17,6 +17,12 @@
   "homepage": "https://github.com/mcagov/beacons#readme",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "cypress": "^9.7.0",
+    "dotenv": "^16.0.0",
+    "eslint": "^8.13.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.26.0",
+    "typescript": "^4.6.3",
     "@typescript-eslint/parser": "^5.20.0"
   },
   "engines": {
