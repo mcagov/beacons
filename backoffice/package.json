@@ -35,7 +35,7 @@
     "@types/react-router-dom": "^5.1.8",
     "axios": "^0.21.1",
     "css-select": "^5.1.0",
-    "date-fns": "^2.21.3",
+    "date-fns": "^4.1.0",
     "eslint": "^8.23.0",
     "formik": "^2.2.9",
     "inflected": "^2.1.0",
