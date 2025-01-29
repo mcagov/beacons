@@ -64,10 +64,6 @@ const UpdateBeaconUsePage: FunctionComponent<DraftBeaconUsePageProps> = ({
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
-      previousPageUrl={UrlBuilder.buildUseSummaryUrl(
-        Actions.update,
-        draftRegistration.id
-      )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
     >
