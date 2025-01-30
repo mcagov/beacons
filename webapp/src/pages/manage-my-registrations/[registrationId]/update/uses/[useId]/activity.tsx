@@ -89,21 +89,6 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl={
-        environment === Environment.LAND
-          ? UrlBuilder.buildUseUrl(
-              Actions.update,
-              UsePages.environment,
-              draftRegistration.id,
-              useId
-            )
-          : UrlBuilder.buildUseUrl(
-              Actions.update,
-              UsePages.purpose,
-              draftRegistration.id,
-              useId
-            )
-      }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}

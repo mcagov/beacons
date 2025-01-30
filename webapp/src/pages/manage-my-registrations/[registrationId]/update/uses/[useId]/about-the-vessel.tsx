@@ -60,12 +60,6 @@ const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
 
   return (
     <BeaconsForm
-      previousPageUrl={UrlBuilder.buildUseUrl(
-        Actions.update,
-        UsePages.activity,
-        draftRegistration.id,
-        useId
-      )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}

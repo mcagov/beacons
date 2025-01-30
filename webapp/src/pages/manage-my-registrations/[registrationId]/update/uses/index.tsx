@@ -105,11 +105,15 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           draftRegistration.id,
                           index.toString()
                         )}
-                        deleteUri={confirmBeforeDelete(
-                          use,
-                          index,
-                          draftRegistration.id
-                        )}
+                        deleteUri={
+                          draftRegistration.uses.length > 1
+                            ? confirmBeforeDelete(
+                                use,
+                                index,
+                                draftRegistration.id
+                              )
+                            : undefined
+                        }
                         makeMainUseUri={
                           ActionURLs.mainCachedUseMain +
                           queryParams({

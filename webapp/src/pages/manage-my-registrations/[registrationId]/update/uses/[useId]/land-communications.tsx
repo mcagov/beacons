@@ -71,12 +71,6 @@ const LandCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
   return (
     <BeaconsForm
       pageHeading={pageHeading}
-      previousPageUrl={UrlBuilder.buildUseUrl(
-        Actions.update,
-        UsePages.activity,
-        draftRegistration.id,
-        useId
-      )}
       formErrors={form.errorSummary}
       showCookieBanner={showCookieBanner}
     >
