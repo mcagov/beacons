@@ -39,12 +39,15 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
 
     const registrationWithNewUse = {
       ...registration,
-      uses: [...(registration?.uses || []), {
+      uses: [
+        ...(registration?.uses || []),
+        {
           environment: "",
           purpose: "",
           activity: "",
           moreDetails: "",
-      }],
+        },
+      ],
     };
 
     await this.update(submissionId, registrationWithNewUse);
@@ -71,7 +74,6 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
 
     await this.update(submissionId, registrationMinusInvalidUse);
   }
-
 
   public async makeUseMain(submissionId: string, useId: number): Promise<void> {
     const registration: DraftRegistration = await this.read(submissionId);

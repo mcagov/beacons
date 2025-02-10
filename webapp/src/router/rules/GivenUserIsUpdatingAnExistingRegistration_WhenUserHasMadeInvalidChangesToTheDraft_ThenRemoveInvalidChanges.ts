@@ -20,15 +20,14 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidCha
   }
 
   public async condition(): Promise<boolean> {
-
     const draftRegistration: DraftRegistration = await this.draftRegistration();
 
-    return !!draftRegistration
+    return !!draftRegistration;
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
     if (await this.formIsInvalid()) {
-        await this.removeCachedInvalidUse();
+      await this.removeCachedInvalidUse();
     }
 
     return {
@@ -41,7 +40,10 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidCha
   }
 
   private async formIsInvalid(): Promise<boolean> {
-    return ((await this.draftRegistration())?.uses?.filter((use) => !isValidUse(use)).length > 0);
+    return (
+      (await this.draftRegistration())?.uses?.filter((use) => !isValidUse(use))
+        .length > 0
+    );
   }
 
   private async draftRegistration(): Promise<DraftRegistration> {

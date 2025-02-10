@@ -92,17 +92,17 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
       previousPageUrl={
         environment === Environment.LAND
           ? UrlBuilder.buildUseUrl(
-            Actions.update,
-            UsePages.environment,
-            draftRegistration.id,
-            useId
-          )
+              Actions.update,
+              UsePages.environment,
+              draftRegistration.id,
+              useId
+            )
           : UrlBuilder.buildUseUrl(
-            Actions.update,
-            UsePages.purpose,
-            draftRegistration.id,
-            useId
-          )
+              Actions.update,
+              UsePages.purpose,
+              draftRegistration.id,
+              useId
+            )
       }
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
