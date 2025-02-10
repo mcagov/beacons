@@ -1,4 +1,5 @@
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
+import { isEmpty } from "lodash";
 
 export const isValidUse = (use: DraftBeaconUse): boolean => {
   const useProperties = Object.keys(use);
@@ -6,6 +7,10 @@ export const isValidUse = (use: DraftBeaconUse): boolean => {
   if (!useProperties.includes("environment")) return false;
   if (!useProperties.includes("activity")) return false;
   if (!useProperties.includes("moreDetails")) return false;
+
+  if (isEmpty(use.environment)) return false;
+  if (isEmpty(use.activity)) return false;
+  if (isEmpty(use.moreDetails)) return false;
 
   if (use["activity"] === "OTHER" && use["environment"] !== "LAND")
     return useProperties.includes("otherActivityText");

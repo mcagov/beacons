@@ -39,9 +39,9 @@ import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDr
 import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { SendYourApplication } from "../../../register-a-beacon/check-your-answers";
-import { DraftRegistration } from "../../../../entities/DraftRegistration";
-import { isValidUse } from "../../../../lib/helpers/isValidUse";
-import { deleteCachedUse } from "../../../../useCases/deleteCachedUse";
+import {
+  GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges
+} from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;
@@ -218,22 +218,15 @@ const UpdateUseSection = ({
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     const registrationId = context.query.registrationId as string;
-    const { getDraftRegistration } = context.container;
-
-    const exsistingDraftRegistration: DraftRegistration =
-      await getDraftRegistration(registrationId);
-
-    for (const use of exsistingDraftRegistration.uses) {
-      const index = exsistingDraftRegistration.uses.indexOf(use);
-      if (!isValidUse(use)) {
-        await deleteCachedUse(exsistingDraftRegistration.id, index);
-      }
-    }
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
         context
+      ),
+      new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges(
+        context,
+        registrationId
       ),
       new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
         context,
