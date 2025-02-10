@@ -57,13 +57,15 @@ describe("isValidUse", () => {
     };
 
     const emptyInput: DraftBeaconUse = {
-      mainUse: true,
+      environment: "",
+      activity: "",
+      moreDetails: "",
     };
 
     const maritimeResponse = isValidUse(maritimeInput);
     const aviationResponse = isValidUse(aviationInput);
     const landResponse = isValidUse(landInput);
-    const emptyResponse = isValidUse(landInput);
+    const emptyResponse = isValidUse(emptyInput);
 
     expect(maritimeResponse).toBeFalsy();
     expect(aviationResponse).toBeFalsy();

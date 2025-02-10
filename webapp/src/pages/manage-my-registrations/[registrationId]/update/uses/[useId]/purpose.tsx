@@ -59,6 +59,12 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
   return (
     <BeaconsForm
       formErrors={form.errorSummary}
+      previousPageUrl={UrlBuilder.buildUseUrl(
+        Actions.update,
+        UsePages.environment,
+        draftRegistration.id,
+        useId
+      )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
     >

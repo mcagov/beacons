@@ -72,6 +72,12 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
 
   return (
     <BeaconsForm
+      previousPageUrl={UrlBuilder.buildUseUrl(
+        Actions.update,
+        previousPageUrlMap[environment],
+        draftRegistration.id,
+        useId
+      )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
       formErrors={form.errorSummary}
