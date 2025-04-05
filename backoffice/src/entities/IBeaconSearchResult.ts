@@ -15,6 +15,7 @@ export interface IBeaconSearchResultData {
   createdDate: string;
   lastModifiedDate: string;
   beaconStatus: string;
+  mod: boolean;
   beaconType: string;
   ownerName: string | null;
   ownerEmail: string | null;
