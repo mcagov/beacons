@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@appbaseio/reactivesearch": "^3.39.0-alpha.4",
-    "@azure/msal-browser": "^4.2.1",
-    "@azure/msal-react": "^1.0.0",
+    "@azure/msal-browser": "^4.11.0",
+    "@azure/msal-react": "^3.0.10",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@fontsource/roboto": "^4.0.0",
