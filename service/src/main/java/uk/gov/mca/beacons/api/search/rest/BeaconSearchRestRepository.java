@@ -67,12 +67,12 @@ interface BeaconSearchRestRepository
   @RestResource(path = "find-allv2", rel = "findAllBeacons")
   @Query(
     "SELECT b FROM BeaconSearchEntity b WHERE " +
-    "(COALESCE(LOWER(b.beaconStatus), '') LIKE LOWER(CONCAT('%', :status, '%'))) " +
-    "AND (COALESCE(LOWER(b.useActivities), '') LIKE LOWER(CONCAT('%', :uses, '%'))) " +
-    "AND (COALESCE(LOWER(b.hexId), '') LIKE LOWER(CONCAT('%', :hexId, '%'))) " +
-    "AND (COALESCE(LOWER(b.ownerName), '') LIKE LOWER(CONCAT('%', :ownerName, '%'))) " +
-    "AND (COALESCE(LOWER(b.cospasSarsatNumber), '') LIKE LOWER(CONCAT('%', :cospasSarsatNumber, '%'))) " +
-    "AND (COALESCE(LOWER(b.manufacturerSerialNumber), '') LIKE LOWER(CONCAT('%', :manufacturerSerialNumber, '%')))"
+    "(:status IS NULL OR b.beaconStatus IS NULL OR LOWER(b.beaconStatus) = LOWER(:status)) " +
+    "AND (:uses IS NULL OR b.useActivities IS NULL OR LOWER(b.useActivities) LIKE LOWER(CONCAT('%', :uses, '%'))) " +
+    "AND (:hexId IS NULL OR b.hexId IS NULL OR LOWER(b.hexId) LIKE LOWER(CONCAT('%', :hexId, '%'))) " +
+    "AND (:ownerName IS NULL OR b.ownerName IS NULL OR LOWER(b.ownerName) LIKE LOWER(CONCAT('%', :ownerName, '%'))) " +
+    "AND (:cospasSarsatNumber IS NULL OR b.cospasSarsatNumber IS NULL OR LOWER(b.cospasSarsatNumber) LIKE LOWER(CONCAT('%', :cospasSarsatNumber, '%'))) " +
+    "AND (:manufacturerSerialNumber IS NULL OR b.manufacturerSerialNumber IS NULL OR LOWER(b.manufacturerSerialNumber) LIKE LOWER(CONCAT('%', :manufacturerSerialNumber, '%')))"
   )
   Page<BeaconSearchEntity> findALlv2(
     @Param("status") String status,
