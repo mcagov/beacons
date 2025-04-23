@@ -62,6 +62,8 @@ Both unit and integration tests go in [src/test/java/uk/gov/mca/beacons/api](src
 - `./gradlew integrationTest` runs integration tests
 - `./gradlew check` runs both unit and integration tests
 
+You can run the tests in Intellij for better click through, debugging etc. For the integration tests to work, make sure the run command in the run configuration starts with `:integretionTest`, not `:test`.
+
 ## Style guide
 
 We use [Prettier-Java](https://github.com/jhipster/prettier-java/tree/c1f867092f74ebfdf68ccb843f8186c943bfdeca) to

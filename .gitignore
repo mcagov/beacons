@@ -16,7 +16,6 @@ coverage/
 *.iml
 service/.run
 
-
 #Eclipse
 service/.metadata
 
@@ -26,3 +25,5 @@ node_modules
 
 #Test results
 tests/cypress/screenshots/
+
+.envrc
