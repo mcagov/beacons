@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "target": "es6",
-    "lib": ["esnext", "dom"],
-    "types": ["cypress"],
-    "moduleResolution": "Node"
-  },
-  "include": ["**/*.ts"]
-}
