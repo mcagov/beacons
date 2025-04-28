@@ -9,10 +9,43 @@
   ],
   "testRunner": "jest",
   "jest": {
-    "projectType": "create-react-app"
+    "projectType": "create-react-app",
+    "config": {
+      "roots": [
+        "<rootDir>"
+      ],
+      "setupFilesAfterEnv": [
+        "<rootDir>/test/setupTests.ts"
+      ],
+      "transform": {
+        ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform",
+        "^.+\\.(ts|tsx|js|jsx)?$": "babel-jest"
+      },
+      "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json"
+      ],
+      "testPathIgnorePatterns": [
+        "/node_modules/",
+        "/.next/",
+        "/cypress"
+      ],
+      "transformIgnorePatterns": [
+        "/node_modules/",
+        "/.next/",
+        "/cypress"
+      ],
+      "testEnvironment": "@stryker-mutator/jest-runner/jest-env/node",
+      "verbose": true
+    }
   },
-  "checkers": ["typescript"],
+  "checkers": [
+    "typescript"
+  ],
   "tsconfigFile": "tsconfig.json",
   "testRunner_comment": "Take a look at (missing 'homepage' URL in package.json) for information about the jest plugin.",
-  "coverageAnalysis": "perTest"
+  "coverageAnalysis": "off"
 }

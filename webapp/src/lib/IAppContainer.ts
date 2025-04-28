@@ -38,6 +38,8 @@ export interface IAppContainer {
   deleteCachedUse: DeleteCachedUseFn;
   makeCachedUseMain: MakeCachedUseMainFn;
 
+  getAccessToken: () => Promise<string>
+
   parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
 
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;

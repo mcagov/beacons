@@ -1,7 +1,7 @@
 import { AccountHolder } from "../entities/AccountHolder";
-import { AccountHolderGateway } from "../../src/gateways/AccountHolderGateway";
 import { IAppContainer } from "../lib/IAppContainer";
 import { getOrCreateAccountHolder } from "./getOrCreateAccountHolder";
+import { AccountHolderGateway } from "../gateways/interfaces/AccountHolderGateway";
 
 describe("The getOrCreateAccountHolder use case", () => {
   it("returns the existing account holder for a given auth id", async () => {

@@ -1,6 +1,6 @@
-import { AccountHolderGateway } from "../../src/gateways/AccountHolderGateway";
 import { IAppContainer } from "../lib/IAppContainer";
 import { getAccountHolderId } from "./getAccountHolderId";
+import { AccountHolderGateway } from "../gateways/interfaces/AccountHolderGateway";
 
 describe("The getAccountHolderId use case", () => {
   it("returns the existing account holder id a given auth id", async () => {

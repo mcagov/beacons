@@ -1,5 +1,6 @@
-import { DraftRegistrationGateway } from "../../src/gateways/DraftRegistrationGateway";
+
 import { deleteCachedUse } from "./deleteCachedUse";
+import { DraftRegistrationGateway } from "../gateways/interfaces/DraftRegistrationGateway";
 
 describe("deleteCachedUse", () => {
   it("calls the injected DraftRegistrationGateway to delete the cached use", async () => {
