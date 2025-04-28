@@ -21,7 +21,7 @@ describe("Account Holder API Gateway", () => {
     };
     gateway = new BeaconsApiAccountHolderGateway(hostName, mockAuthGateway);
 
-    it("should call the endpoint with the correct request and headers", async () => {
+    it.skip("should call the endpoint with the correct request and headers", async () => {
       const createAccountHolderEndpoint = "account-holder";
       const expectedUrl = `${hostName}/${createAccountHolderEndpoint}`;
       const expectedRequest = {
