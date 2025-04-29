@@ -1,13 +1,8 @@
-name: Tests
+name: Run tests
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
   push:
-    branches:
-      - dependabot/**
+    branches-ignore:
+      - main
 jobs:
   docker:
     env:
