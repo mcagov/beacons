@@ -55,6 +55,8 @@ jobs:
 
   publish_webapp_image:
     name: Webapp
+    needs:
+      - test_webapp
     uses: ./.github/workflows/publish-webapp-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
@@ -62,10 +64,11 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    needs: [test_webapp]
 
   publish_service_image:
     name: Service
+    needs:
+      - test_service
     uses: ./.github/workflows/publish-service-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
@@ -73,10 +76,11 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    needs: [test_service]
 
   publish_backoffice_image:
     name: Publish Backoffice
+    needs:
+      - test_backoffice
     uses: ./.github/workflows/publish-backoffice-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
@@ -86,7 +90,6 @@ jobs:
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       feedback_email_addresses: ${{ secrets.BACKOFFICE_FEEDBACK_EMAIL_ADDRESSES }}
       mui_pro_license_key: ${{ secrets.MUI_PRO_LICENSE_KEY }}
-    needs: [test_backoffice]
 
   publish_opensearch_proxy_image:
     name: OpenSearch proxy
@@ -101,12 +104,10 @@ jobs:
   end_to_end_tests:
     name: End-to-end tests
     needs:
-      [
-        publish_webapp_image,
-        publish_service_image,
-        publish_backoffice_image,
-        publish_opensearch_proxy_image,
-      ]
+      - publish_webapp_image
+      - publish_service_image
+      - publish_backoffice_image
+      - publish_opensearch_proxy_image
     uses: ./.github/workflows/end-to-end-tests.yml
     with:
       image-tag: ${{ github.sha }}
@@ -148,7 +149,10 @@ jobs:
 
   deploy_staging:
     name: Staging
-    needs: [end_to_end_tests, terraform_lint, prettier_check]
+    needs:
+      - end_to_end_tests
+      - terraform_lint
+      - prettier_check
     uses: ./.github/workflows/deploy.yml
     with:
       environment: staging
