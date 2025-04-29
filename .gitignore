@@ -29,4 +29,4 @@ tests/cypress/screenshots/
 
 # Mutation testing
 .stryker-tmp
-reports/mutation/mutation.html
+*/reports/mutation
