@@ -63,8 +63,6 @@ jobs:
   test_service:
     name: Test Service
     uses: ./.github/workflows/test-service.yml
-    with:
-      environment: staging
     secrets:
       microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
       microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
