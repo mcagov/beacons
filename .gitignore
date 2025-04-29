@@ -16,7 +16,6 @@ coverage/
 *.iml
 service/.run
 
-
 #Eclipse
 service/.metadata
 
@@ -30,3 +29,5 @@ tests/cypress/screenshots/
 # Mutation testing
 .stryker-tmp
 */reports/mutation
+
+.envrc
