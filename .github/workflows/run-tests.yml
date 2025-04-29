@@ -1,8 +1,8 @@
-name: Dependabot Tests
+name: Run tests
 on:
   push:
-    branches:
-      - dependabot/**
+    branches-ignore:
+      - main
 jobs:
   docker:
     env:
@@ -59,3 +59,14 @@ jobs:
   test_backoffice:
     name: Test Backoffice
     uses: ./.github/workflows/test-backoffice.yml
+
+  test_service:
+    name: Test Service
+    uses: ./.github/workflows/test-service.yml
+    secrets:
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
+      microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
+      microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
+      microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
+
+  # Todo: We should probably run the end-to-end tests before merging
