@@ -48,7 +48,7 @@ command `docker compose up`.
 
 - The test project has its own application.yml file containing several sensitive MICROSOFT_GRAPH environment variables
 - These do not have values in the actual file as they are secrets. To ensure these variables have values at runtime, make a .sh file on your machine and fill it with the contents of 'Set Microsoft Graph sensitive values as local Bash env vars' in 1Password.
-- Run this file from the /service directory: `source set_microsoft_graph_values.sh`
+- Make sure your environment includes the variables in the `.envrc.sample` file in the root of this repository.
 - The integration tests need these settings in order to create, update and delete a user in the test Azure AD B2C environment.
 
 Integration tests use the naming convention `<name>IntegrationTest`. Unit tests use the naming convention
@@ -61,6 +61,8 @@ Both unit and integration tests go in [src/test/java/uk/gov/mca/beacons/api](src
 - `./gradlew test` runs unit tests
 - `./gradlew integrationTest` runs integration tests
 - `./gradlew check` runs both unit and integration tests
+
+You can run the tests in Intellij for better click through, debugging etc. For the integration tests to work, make sure the run command in the run configuration starts with `:integretionTest`, not `:test`.
 
 ## Style guide
 
