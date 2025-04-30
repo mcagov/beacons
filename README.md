@@ -27,6 +27,12 @@ unsure.
 
 ## Local development
 
+Before you start...
+
+```bash
+$ make setup-all # Install all the things, setup commit hooks etc.
+```
+
 | **dependency**                                                    | **version** |
 | ----------------------------------------------------------------- | ----------- |
 | [java](https://openjdk.java.net/projects/jdk/11/)                 | 11.x        |
@@ -35,7 +41,7 @@ unsure.
 | [Docker desktop](https://www.docker.com/products/docker-desktop/) | Latest      |
 
 ```bash
-$ make       # Start up the applications in development mode, with backing services
+$ make # Start up the applications in development mode, with backing services
 ```
 
 ## Infrastructure-as-code

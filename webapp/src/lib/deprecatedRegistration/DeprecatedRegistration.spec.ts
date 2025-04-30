@@ -1,15 +1,8 @@
 import { BeaconUse } from "../../entities/BeaconUse";
 import { DeprecatedRegistration } from "./DeprecatedRegistration";
 import { IUseRequestBody } from "./IRegistrationRequestBody";
-import {
-  initBeacon,
-  initBeaconUse,
-} from "./registrationInitialisation";
-import {
-  Activity,
-  Environment,
-  Purpose,
-} from "./types";
+import { initBeacon, initBeaconUse } from "./registrationInitialisation";
+import { Activity, Environment, Purpose } from "./types";
 import {
   getMockBeacon,
   getMockEmergencyContact,
