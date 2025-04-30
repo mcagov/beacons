@@ -26,4 +26,8 @@ node_modules
 #Test results
 tests/cypress/screenshots/
 
+# Mutation testing
+.stryker-tmp
+*/reports/mutation
+
 .envrc
