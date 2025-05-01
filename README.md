@@ -30,7 +30,7 @@ unsure.
 Before you start...
 
 ```bash
-$ make setup-all # Install all the things, setup commit hooks etc.
+$ make setup # Install all the things, setup commit hooks etc.
 ```
 
 | **dependency**                                                    | **version** |

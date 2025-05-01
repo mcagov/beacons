@@ -8,8 +8,8 @@
 # Run jobs in parallel so we can see log output
 MAKEFLAGS += -j
 
-.PHONY: setup-all
-setup-all: setup-root setup-backoffice setup-webapp
+.PHONY: setup
+setup: setup-root setup-backoffice setup-webapp
 
 .PHONY: setup-root
 setup-root:
