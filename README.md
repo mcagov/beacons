@@ -11,12 +11,18 @@ The Beacons registration service enables:
 It comprises three applications:
 
 1. A public-facing frontend that uses [NextJS](https://nextjs.org/) and the [GOV.UK Design System]
-   (https://design-system.service.gov.uk/). Source code is in the `webapp/` directory.
+   (https://design-system.service.gov.uk/).
+   - Source code is in the `webapp/` directory.
+   - Application specific documentation is in the [README](./webapp/README.md).
 2. An API that uses [Spring Boot](https://spring.io/projects/spring-boot), [Postgres](https://www.postgresql.org/)
-   and [OpenSearch](https://opensearch.org/). Source code is in the `service/` directory.
+   and [OpenSearch](https://opensearch.org/).
+   - Source code is in the `service/` directory.
+   - Application specific documentation is in the [README](./service/README.md).
 3. A backoffice single-page application (SPA) that uses [React](https://reactjs.org/docs/create-a-new-react-app.html)
-   to allow users in MCA to query and perform operations on beacon registrations. Source code is in
-   `service/src/main/backoffice`. The SPA is served by Spring Boot.
+   to allow users in MCA to query and perform operations on beacon registrations.
+   - Source code is in `service/src/main/backoffice`.
+   - The SPA is served by Spring Boot.
+   - Application specific documentation is in the [README](./backoffice/README.md).
 
 ## Architecture
 
