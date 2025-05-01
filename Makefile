@@ -29,30 +29,30 @@ setup-webapp:
 ##
 # Applications
 ##
-.PHONY: all
-all: backing-services webapp service backoffice backoffice-stubs
+.PHONY: serve
+serve: serve-backing-services serve-webapp serve-service serve-backoffice serve-backoffice-stubs
 
-.PHONY: webapp
-webapp:
+.PHONY: serve-webapp
+serve-webapp:
 	@echo "⏭ Starting the NextJS Webapp in dev mode..."
 	@cd ./webapp && npm run dev
 
-.PHONY: backoffice
-backoffice:
+.PHONY: serve-backoffice
+serve-backoffice:
 	@echo "💅 Starting the Backoffice in dev mode..."
 	@cd ./backoffice && npm run start
 
 ##
 # Backing services
 ##
-.PHONY: backing-services
-backing-services:
+.PHONY: serve-backing-services
+serve-backing-services:
 	@echo "🐳 Starting Postgres, Redis and OpenSearch..."
 	# Don't try separating these. Docker compose does not like working in parallel, so they all need to come up at once
 	@docker compose up postgres redis opensearch opensearch-proxy opensearch-dashboards service --build
 
-.PHONY: backoffice-stubs
-backoffice-stubs:
+.PHONY: serve-backoffice-stubs
+serve-backoffice-stubs:
 	@echo "🎫 Starting the Backoffice stub server..."
 	@node ./backoffice/stubs.js
 
