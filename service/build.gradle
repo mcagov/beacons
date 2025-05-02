@@ -3,7 +3,13 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'com.adarshr.test-logger' version '3.2.0'
-    id "io.freefair.lombok" version "6.4.2"
+    id 'io.freefair.lombok' version '6.4.2'
+    id 'info.solidsoft.pitest' version '1.15.0'
+}
+
+pitest {
+    // adds dependency to org.pitest:pitest-junit5-plugin and sets "testPlugin" to "junit5"
+    junit5PluginVersion = '1.0.0'
 }
 
 group = 'uk.gov.mca'
@@ -20,7 +26,7 @@ repositories {
 
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if(details.requested.group == "org.elasticsearch" && details.requested.name == "elasticsearch") {
+        if (details.requested.group == "org.elasticsearch" && details.requested.name == "elasticsearch") {
             details.useVersion '7.13.4'
             details.because('compatibility with Lucene version 8.8.2')
         }
@@ -47,7 +53,8 @@ dependencies {
     implementation 'org.apache.poi:poi:5.2.2' // Writing to Excel files
     implementation 'org.apache.poi:poi-ooxml:5.2.2' // Writing to Excel files (additional for .xlsx)
     implementation 'net.javacrumbs.shedlock:shedlock-spring:4.34.+' // Scheduling jobs in a distributed system
-    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.33.+' // Scheduling jobs in a distributed system
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.33.+'
+    // Scheduling jobs in a distributed system
     implementation 'commons-beanutils:commons-beanutils:1.9.4'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
