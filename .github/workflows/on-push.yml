@@ -58,6 +58,8 @@ jobs:
 
   publish_webapp_image:
     name: Publish Webapp
+    needs:
+      - test_webapp
     uses: ./.github/workflows/publish-webapp-image.yml
     with:
       tag: ${{ github.sha }}
@@ -68,6 +70,8 @@ jobs:
 
   publish_service_image:
     name: Publish Service
+    needs:
+      - test_service
     uses: ./.github/workflows/publish-service-image.yml
     with:
       tag: ${{ github.sha }}
@@ -78,6 +82,8 @@ jobs:
 
   publish_backoffice_image:
     name: Publish Backoffice
+    needs:
+      - test_backoffice
     uses: ./.github/workflows/publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
@@ -101,17 +107,15 @@ jobs:
   end_to_end_tests:
     name: End-to-end tests
     needs:
-      [
-        terraform_lint,
-        prettier_check,
-        test_webapp,
-        test_service,
-        test_backoffice,
-        publish_webapp_image,
-        publish_service_image,
-        publish_backoffice_image,
-        publish_opensearch_proxy_image,
-      ]
+      - terraform_lint
+      - prettier_check
+      - test_webapp
+      - test_service
+      - test_backoffice
+      - publish_webapp_image
+      - publish_service_image
+      - publish_backoffice_image
+      - publish_opensearch_proxy_image
     uses: ./.github/workflows/end-to-end-tests.yml
     with:
       image-tag: ${{ github.sha }}
@@ -134,12 +138,10 @@ jobs:
   deploy_dev:
     name: Development
     needs:
-      [
-        publish_backoffice_image,
-        publish_webapp_image,
-        publish_service_image,
-        publish_opensearch_proxy_image,
-      ]
+      - publish_backoffice_image
+      - publish_webapp_image
+      - publish_service_image
+      - publish_opensearch_proxy_image
     uses: ./.github/workflows/deploy.yml
     with:
       environment: development
