@@ -52,18 +52,18 @@ jobs:
 
   test_webapp:
     name: Test Webapp
-    uses: ./.github/workflows/reusable/test-webapp.yml
+    uses: _reusable-test-webapp.yml
     secrets:
       test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
       test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
 
   test_backoffice:
     name: Test Backoffice
-    uses: ./.github/workflows/reusable/test-backoffice.yml
+    uses: _reusable-test-backoffice.yml
 
   test_service:
     name: Test Service
-    uses: ./.github/workflows/reusable/test-service.yml
+    uses: _reusable-test-service.yml
     with:
       environment: ci-test
     secrets:
