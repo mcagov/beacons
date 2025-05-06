@@ -1,14 +1,8 @@
-name: Run tests
+name: Run tests against branch
 on:
   push:
     branches-ignore:
       - main
-  pull_request:
-    types:
-      - opened
-      - edited
-      - reopened
-      - synchronize
 jobs:
   docker:
     env:
