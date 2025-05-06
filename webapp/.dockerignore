@@ -6,4 +6,7 @@ docker-compose.yml
 .git/
 .gitignore
 README.md
-.env.local
+.env
+
+# Don't copy the test files into the image, it causes problems with Babel
+**/*.test.*

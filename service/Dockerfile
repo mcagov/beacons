@@ -1,11 +1,11 @@
 # Build the service
-FROM gradle:jdk11-hotspot AS build
+FROM gradle:jdk17 AS build
 WORKDIR /opt/app
 COPY . ./
 RUN ./gradlew clean assemble
 
 # Run the service
-FROM adoptopenjdk:11-jre-hotspot AS beacons-service
+FROM eclipse-temurin:17 AS beacons-service
 WORKDIR /opt/app
 COPY --from=build /opt/app/build/libs/*.jar app.jar
 
