@@ -35,14 +35,14 @@ jobs:
 
   test_webapp:
     name: Test Webapp
-    uses: ./.github/workflows/test-webapp.yml
+    uses: ./.github/workflows/reusabletest-webapp.yml
     secrets:
       test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
       test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
 
   test_service:
     name: Test Service
-    uses: ./.github/workflows/test-service.yml
+    uses: ./.github/workflows/reusabletest-service.yml
     with:
       environment: staging
     secrets:
@@ -53,13 +53,13 @@ jobs:
 
   test_backoffice:
     name: Test Backoffice
-    uses: ./.github/workflows/test-backoffice.yml
+    uses: ./.github/workflows/reusabletest-backoffice.yml
 
   publish_webapp_image:
     name: Webapp
     needs:
       - test_webapp
-    uses: ./.github/workflows/publish-webapp-image.yml
+    uses: ./.github/workflows/reusablepublish-webapp-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
@@ -71,7 +71,7 @@ jobs:
     name: Service
     needs:
       - test_service
-    uses: ./.github/workflows/publish-service-image.yml
+    uses: ./.github/workflows/reusablepublish-service-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
@@ -83,7 +83,7 @@ jobs:
     name: Publish Backoffice
     needs:
       - test_backoffice
-    uses: ./.github/workflows/publish-backoffice-image.yml
+    uses: ./.github/workflows/reusablepublish-backoffice-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
@@ -95,7 +95,7 @@ jobs:
 
   publish_opensearch_proxy_image:
     name: OpenSearch proxy
-    uses: ./.github/workflows/publish-opensearch-proxy-image.yml
+    uses: ./.github/workflows/reusablepublish-opensearch-proxy-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
@@ -110,7 +110,7 @@ jobs:
       - publish_service_image
       - publish_backoffice_image
       - publish_opensearch_proxy_image
-    uses: ./.github/workflows/end-to-end-tests.yml
+    uses: ./.github/workflows/reusableend-to-end-tests.yml
     with:
       image-tag: ${{ github.sha }}
       test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
@@ -155,7 +155,7 @@ jobs:
       - end_to_end_tests
       - terraform_lint
       - prettier_check
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/reusabledeploy.yml
     with:
       environment: staging
       terraform_workspace: staging

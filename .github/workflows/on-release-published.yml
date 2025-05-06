@@ -8,7 +8,7 @@ on:
 jobs:
   deploy_production:
     name: Production
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/reusabledeploy.yml
     with:
       environment: production
       terraform_workspace: production
