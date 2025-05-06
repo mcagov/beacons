@@ -22,6 +22,7 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           echo 'docker compose --compatibility "$@"' >> $HOME/.local/bin/docker-compose
           chmod +x $HOME/.local/bin/docker-compose
+
   terraform_lint:
     name: Terraform lint
     runs-on: ubuntu-latest
@@ -70,5 +71,3 @@ jobs:
       microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
       microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
       microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
-
-  # Todo: We should probably run the end-to-end tests before merging
