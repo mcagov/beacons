@@ -93,7 +93,7 @@
     "@svgr/webpack": "^6.3.1",
     "@types/uuid": "^8.3.1",
     "enhanced-resolve": "^5.9.0",
-    "express": "^4.17.3",
+    "express": "^5.1.0",
     "sass": "^1.54.5"
   },
   "proxy": "http://localhost:3005"
