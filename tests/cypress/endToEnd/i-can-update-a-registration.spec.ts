@@ -28,6 +28,7 @@ import { whenIGoToDeleteMy } from "../common/when-i-go-to-delete-my.spec";
 import { formatDateLong, formatMonth } from "../common/writing-style.spec";
 import anotherBeaconRegistration from "../fixtures/anotherBeaconRegistration.json";
 import singleBeaconRegistration from "../fixtures/singleBeaconRegistration.json";
+import { iCanSeeMyExistingRegistrationMainUse } from "../common/i-can-see-my-existing-registration-main-use.spec";
 
 describe("As an account holder", () => {
   it("I can update one of my registrations", () => {
@@ -37,6 +38,9 @@ describe("As an account holder", () => {
 
     whenIHaveVisited("/account/your-beacon-registry-account");
     iCanSeeMyExistingRegistrationHexId(firstRegistrationToUpdate.hexId);
+    iCanSeeMyExistingRegistrationMainUse(
+      firstRegistrationToUpdate.uses[0].vesselName
+    );
     iCanClickTheUpdateLinkToUpdateARegistration(firstRegistrationToUpdate);
 
     whenIClickTheHexIdOfTheRegistrationIWantToUpdate(
@@ -333,6 +337,7 @@ const whenIClickOnTheHexIdOfTheRegistrationIUpdated =
 
 const iCanSeeTheDetailsOfMyRegistration = (registration) => {
   iCanSeeMyExistingRegistrationHexId(registration.hexId);
+  iCanSeeMyExistingRegistrationMainUse(registration.vesselName);
   const dateRegistered = formatDateLong(new Date().toDateString()); // Assume test user registered beacon on same day for ease)
   iCanSeeTheHistoryOfMyRegistration(dateRegistered, dateRegistered);
   iCanSeeMyBeaconInformation(registration);
