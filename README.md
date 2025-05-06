@@ -24,6 +24,12 @@ It comprises three applications:
    - The SPA is served by Spring Boot.
    - Application specific documentation is in the [README](./backoffice/README.md).
 
+## Testing
+
+Application specific tests are covered in the READMEs linked to above.
+
+If you are working towards a release, look at the [end-to-end and smoke test documentation](./tests/README.md).
+
 ## Architecture
 
 ![Architecture diagram](docs/architecture_diagram.svg)
