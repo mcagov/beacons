@@ -142,6 +142,7 @@ jobs:
       - publish_webapp_image
       - publish_service_image
       - publish_opensearch_proxy_image
+      - end_to_end_tests
     uses: ./.github/workflows/_reusable-deploy.yml
     with:
       environment: development
