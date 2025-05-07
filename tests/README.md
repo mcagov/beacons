@@ -5,7 +5,7 @@ the Beacons system, see the `../webapp/`, `../service/` and `../backoffice/` dir
 
 ## End-to-end testing
 
-Automated end-to-end tests use [Cypress](https://www.cypress.io/) and are run in GitHub Actions after deploying to the `dev` and `staging` environments.
+Automated end-to-end tests use [Cypress](https://www.cypress.io/) and are run in GitHub Actions against the publish images before deploying to the `dev` and `staging` environments.
 
 To run end-to-end tests locally:
 
