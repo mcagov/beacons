@@ -1,4 +1,4 @@
-name: Deploy to dev
+name: Test then deploy to dev
 
 on:
   push:
@@ -36,14 +36,14 @@ jobs:
 
   test_webapp:
     name: Test Webapp
-    uses: ./.github/workflows/test-webapp.yml
+    uses: ./.github/workflows/_reusable-test-webapp.yml
     secrets:
       test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
       test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
 
   test_service:
     name: Test Service
-    uses: ./.github/workflows/test-service.yml
+    uses: ./.github/workflows/_reusable-test-service.yml
     with:
       environment: development
     secrets:
@@ -54,11 +54,13 @@ jobs:
 
   test_backoffice:
     name: Test Backoffice
-    uses: ./.github/workflows/test-backoffice.yml
+    uses: ./.github/workflows/_reusable-test-backoffice.yml
 
   publish_webapp_image:
     name: Publish Webapp
-    uses: ./.github/workflows/publish-webapp-image.yml
+    needs:
+      - test_webapp
+    uses: ./.github/workflows/_reusable-publish-webapp-image.yml
     with:
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
@@ -68,7 +70,9 @@ jobs:
 
   publish_service_image:
     name: Publish Service
-    uses: ./.github/workflows/publish-service-image.yml
+    needs:
+      - test_service
+    uses: ./.github/workflows/_reusable-publish-service-image.yml
     with:
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
@@ -78,7 +82,9 @@ jobs:
 
   publish_backoffice_image:
     name: Publish Backoffice
-    uses: ./.github/workflows/publish-backoffice-image.yml
+    needs:
+      - test_backoffice
+    uses: ./.github/workflows/_reusable-publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
@@ -90,7 +96,7 @@ jobs:
 
   publish_opensearch_proxy_image:
     name: OpenSearch proxy
-    uses: ./.github/workflows/publish-opensearch-proxy-image.yml
+    uses: ./.github/workflows/_reusable-publish-opensearch-proxy-image.yml
     with:
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
@@ -101,18 +107,16 @@ jobs:
   end_to_end_tests:
     name: End-to-end tests
     needs:
-      [
-        terraform_lint,
-        prettier_check,
-        test_webapp,
-        test_service,
-        test_backoffice,
-        publish_webapp_image,
-        publish_service_image,
-        publish_backoffice_image,
-        publish_opensearch_proxy_image,
-      ]
-    uses: ./.github/workflows/end-to-end-tests.yml
+      - terraform_lint
+      - prettier_check
+      - test_webapp
+      - test_service
+      - test_backoffice
+      - publish_webapp_image
+      - publish_service_image
+      - publish_backoffice_image
+      - publish_opensearch_proxy_image
+    uses: ./.github/workflows/_reusable-end-to-end-tests.yml
     with:
       image-tag: ${{ github.sha }}
       test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
@@ -134,13 +138,11 @@ jobs:
   deploy_dev:
     name: Development
     needs:
-      [
-        publish_backoffice_image,
-        publish_webapp_image,
-        publish_service_image,
-        publish_opensearch_proxy_image,
-      ]
-    uses: ./.github/workflows/deploy.yml
+      - publish_backoffice_image
+      - publish_webapp_image
+      - publish_service_image
+      - publish_opensearch_proxy_image
+    uses: ./.github/workflows/_reusable-deploy.yml
     with:
       environment: development
       terraform_workspace: dev
