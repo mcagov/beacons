@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.beaconowner.rest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -22,6 +23,10 @@ public class BeaconOwnerDTO {
 
   @NotNull
   private String email;
+
+  @NotNull
+  @JsonProperty("isMain")
+  private boolean isMain;
 
   private String telephoneNumber;
 

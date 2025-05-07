@@ -3,5 +3,5 @@ export const whenIGoToDeleteMy = (selector: string | RegExp): void => {
     .contains(selector)
     .siblings()
     .contains(/delete/i)
-    .click({ force: true });
+    .click();
 };

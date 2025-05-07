@@ -24,12 +24,14 @@ import {
   givenIHaveSelected,
   givenIHaveSignedIn,
   iCanSeeAPageHeadingThatContains,
+  iHaveClickedOnALinkWithText,
   iPerformOperationAndWaitForNewPageToLoad,
   theBackLinkContains,
   thenTheUrlShouldContain,
   whenIClickBack,
   whenIClickContinue,
   whenIClickTheButtonContaining,
+  whenIClickTheLinkContaining,
   whenIHaveVisited,
 } from "../common/selectors-and-assertions.spec";
 import { theNumberOfUsesIs } from "../common/there-are-n-uses.spec";
@@ -48,10 +50,10 @@ describe("As an account holder", () => {
     whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
     iCanSeeUseInformation(testRegistration);
 
-    whenIGoToDeleteMy(/main use/i);
+    whenIGoToDeleteMy(/first use/i);
     thenIAmPromptedToConfirmDeletionOfMyUse(testRegistration.uses[0]);
 
-    whenIClickTheButtonContaining("Cancel");
+    whenIClickTheLinkContaining("Cancel");
     theNumberOfUsesIs(1);
     iCanSeeMyUse(testRegistration.uses[0]);
 
@@ -109,7 +111,7 @@ const testRegistration = {
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 
 const whenIClickTheHexIdOfTheRegistrationIWantToUpdate = (hexId: string) => {
-  cy.get("a").contains(hexId).click({ force: true });
+  cy.get("a").contains(hexId).click();
 };
 
 const whenIClickTheHexIdOfTheRegistrationIJustUpdated =
@@ -151,7 +153,7 @@ const whenIClickTheChangeLinkForTheSectionWithHeading = (heading: string) => {
     .contains(heading)
     .parent()
     .contains(/change/i)
-    .click({ force: true });
+    .click();
 };
 
 const iCanUseTheBackLinksAndContinueButtonsToNavigateMyMaritimeUse = () => {

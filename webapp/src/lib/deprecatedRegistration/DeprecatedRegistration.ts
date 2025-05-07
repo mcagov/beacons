@@ -39,6 +39,11 @@ export class DeprecatedRegistration {
 
   public createUse(): void {
     const use = initBeaconUse();
+
+    if (this.registration.uses.length === 0) {
+      use.mainUse = true;
+    }
+
     this.registration.uses.push(use);
   }
 
@@ -183,13 +188,15 @@ export class DeprecatedRegistration {
   private _serialiseUses() {
     const uses = this.registration.uses;
 
+    const hasMainUse = uses.some((u) => u.mainUse);
+
     return uses.map((use, index) => {
-      const mainUse = index === 0;
-      return this._serialiseUse(use, mainUse);
+      use.mainUse = hasMainUse ? use.mainUse || false : index === 0;
+      return this._serialiseUse(use);
     });
   }
 
-  private _serialiseUse(use: BeaconUse, mainUse: boolean): IUseRequestBody {
+  private _serialiseUse(use: BeaconUse): IUseRequestBody {
     const serialisedUse = {
       environment: use.environment,
       purpose: use.purpose ? use.purpose : null,
@@ -225,7 +232,7 @@ export class DeprecatedRegistration {
       rssNumber: use.rssNumber,
       officialNumber: use.officialNumber,
       rigPlatformLocation: use.rigPlatformLocation,
-      mainUse,
+      mainUse: use.mainUse,
       aircraftManufacturer: use.aircraftManufacturer,
       principalAirport: use.principalAirport,
       secondaryAirport: use.secondaryAirport,
@@ -235,13 +242,15 @@ export class DeprecatedRegistration {
       dongle: stringToBoolean(use.dongle),
       beaconPosition: use.beaconPosition,
       workingRemotelyLocation: use.workingRemotelyLocation,
-      workingRemotelyPeopleCount: use.workingRemotelyPeopleCount,
+      workingRemotelyPeopleCount: use.workingRemotelyPeopleCount || "",
       windfarmLocation: use.windfarmLocation,
-      windfarmPeopleCount: use.windfarmPeopleCount,
+      windfarmPeopleCount: use.windfarmPeopleCount || "",
       otherActivityLocation:
         use.activity === Activity.OTHER ? use.otherActivityLocation : "",
       otherActivityPeopleCount:
-        use.activity === Activity.OTHER ? use.otherActivityPeopleCount : "",
+        use.activity === Activity.OTHER
+          ? use.otherActivityPeopleCount || "1"
+          : "",
       moreDetails: use.moreDetails,
     };
 

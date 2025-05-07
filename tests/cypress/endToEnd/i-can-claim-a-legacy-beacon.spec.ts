@@ -168,7 +168,7 @@ const whenIClickOnTheHexIdOfTheLegacyBeaconAssignedToMe = (hexId: string) => {
     .contains(hexId)
     .parent()
     .contains(/Claim this beacon/i)
-    .click({ force: true });
+    .click();
 };
 
 const iAmGivenTheOptionToClaimOrRejectTheLegacyBeacon = () => {

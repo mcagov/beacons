@@ -11,15 +11,17 @@ import { UserSessionGateway } from "../gateways/interfaces/UserSessionGateway";
 import { AddNewUseToDraftRegistrationFn } from "../useCases/addNewUseToDraftRegistration";
 import { DeleteBeaconFn } from "../useCases/deleteBeacon";
 import { DeleteCachedUseFn } from "../useCases/deleteCachedUse";
+import { MakeCachedUseMainFn } from "../useCases/makeCachedUseMain";
 import { GetAccountHolderIdFn } from "../useCases/getAccountHolderId";
-import { GetAccountHoldersRegistrationFn } from "../useCases/getAccountHoldersRegistration";
 import { GetBeaconsForAccountHolderFn } from "../useCases/getBeaconsByAccountHolderAndEmail";
 import { GetBeaconsByAccountHolderIdFn } from "../useCases/getBeaconsByAccountHolderId";
+import { GetBeaconByAccountHolderIdFn } from "../useCases/getBeaconsByAccountHolderId";
 import { GetOrCreateAccountHolderFn } from "../useCases/getOrCreateAccountHolder";
 import { SendConfirmationEmailFn } from "../useCases/sendConfirmationEmail";
 import { SubmitRegistrationFn } from "../useCases/submitRegistration";
 import { UpdateAccountHolderFn } from "../useCases/updateAccountHolder";
 import { UpdateRegistrationFn } from "../useCases/updateRegistration";
+import { GetAccountHoldersRegistrationFn } from "../useCases/getAccountHoldersRegistration";
 
 export interface IAppContainer {
   /* Use cases */
@@ -34,15 +36,18 @@ export interface IAppContainer {
   ) => Promise<void>;
   deleteDraftRegistration: (id: string) => Promise<void>;
   deleteCachedUse: DeleteCachedUseFn;
+  makeCachedUseMain: MakeCachedUseMainFn;
 
   parseFormDataAs<T>(request: IncomingMessage): Promise<T>;
 
   getOrCreateAccountHolder: GetOrCreateAccountHolderFn;
   updateAccountHolder: UpdateAccountHolderFn;
   getAccountHolderId: GetAccountHolderIdFn;
-  getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
-  getBeaconsForAccountHolder: GetBeaconsForAccountHolderFn;
   getAccountHoldersRegistration: GetAccountHoldersRegistrationFn;
+  getBeaconsForAccountHolder: GetBeaconsForAccountHolderFn;
+  getBeaconsByAccountHolderId: GetBeaconsByAccountHolderIdFn;
+  getBeaconByAccountHolderId: GetBeaconByAccountHolderIdFn;
+
   deleteBeacon: DeleteBeaconFn;
   addNewUseToDraftRegistration: AddNewUseToDraftRegistrationFn;
 

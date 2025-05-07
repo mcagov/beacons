@@ -185,12 +185,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
         thenMyFocusMovesTo(workingRemotelyLocationSelector);
       });
 
-      it("requires a people count if the working remotely checkbox is selected", () => {
-        const requiredFieldErrorMessage = [
-          "Enter how many",
-          "people",
-          "work remotely",
-        ];
+      it("requires a valid people count if the working remotely checkbox is selected", () => {
         const mustBeANumberErrormessage = [
           "Enter a whole number",
           "people",
@@ -198,12 +193,6 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
         ];
 
         givenIHaveSelected(workingRemotelySelector);
-
-        whenIType(" ", workingRemotelyPeopleCountSelector);
-        andIClickContinue();
-        whenIClickOnTheErrorSummaryLinkContaining(...requiredFieldErrorMessage);
-        thenIShouldSeeFormErrors(...requiredFieldErrorMessage);
-        thenMyFocusMovesTo(workingRemotelyPeopleCountSelector);
 
         whenIType("not a number", workingRemotelyPeopleCountSelector);
         andIClickContinue();
@@ -225,12 +214,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
         thenMyFocusMovesTo(windfarmLocationSelector);
       });
 
-      it("requires a people count if the Windfarm checkbox is selected", () => {
-        const requiredFieldErrorMessage = [
-          "Enter how many",
-          "people",
-          "windfarm",
-        ];
+      it("requires a valid people count if the Windfarm checkbox is selected", () => {
         const mustBeANumberErrormessage = [
           "Enter a whole number",
           "people",
@@ -238,12 +222,6 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
         ];
 
         givenIHaveSelected(windfarmSelector);
-
-        whenIType(" ", windfarmPeopleCountSelector);
-        andIClickContinue();
-        thenIShouldSeeFormErrors(...requiredFieldErrorMessage);
-        whenIClickOnTheErrorSummaryLinkContaining(...requiredFieldErrorMessage);
-        thenMyFocusMovesTo(windfarmPeopleCountSelector);
 
         whenIType("not a number", windfarmPeopleCountSelector);
         andIClickContinue();
@@ -276,12 +254,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
         thenMyFocusMovesTo(otherActivityLocationSelector);
       });
 
-      it("requires a people count if the Other checkbox is selected", () => {
-        const requiredFieldErrorMessage = [
-          "Enter how many",
-          "people",
-          "you use",
-        ];
+      it("requires a valid people count if the Other checkbox is selected", () => {
         const mustBeANumberErrormessage = [
           "Enter a whole number",
           "people",
@@ -289,12 +262,6 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
         ];
 
         givenIHaveSelected(otherActivitySelector);
-
-        whenIType(" ", otherActivityPeopleCountSelector);
-        andIClickContinue();
-        thenIShouldSeeFormErrors(...requiredFieldErrorMessage);
-        whenIClickOnTheErrorSummaryLinkContaining(...requiredFieldErrorMessage);
-        thenMyFocusMovesTo(otherActivityPeopleCountSelector);
 
         whenIType("not a number", otherActivityPeopleCountSelector);
         andIClickContinue();

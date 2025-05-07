@@ -8,10 +8,12 @@ import {
   givenIHaveACookieSetAndHaveSignedInIVisit,
   givenIHaveSignedIn,
   iCanSeeAButtonContaining,
+  iCanSeeNLinksContaining,
   iHaveVisited,
   iPerformOperationAndWaitForNewPageToLoad,
   thenIShouldSeeFormErrors,
   whenIClickTheButtonContaining,
+  whenIClickTheLinkContaining,
 } from "../common/selectors-and-assertions.spec";
 import { prettyUseName } from "../common/writing-style.spec";
 import singleBeaconRegistration from "../fixtures/singleBeaconRegistration.json";
@@ -38,7 +40,7 @@ describe("As an account holder", () => {
       testRegistration
     );
 
-    whenIClickTheButtonContaining("Cancel");
+    whenIClickTheLinkContaining("Cancel");
     iHaveVisited("/account/your-beacon-registry-account");
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
@@ -74,12 +76,12 @@ const whenIClickTheDeleteButtonForTheRegistrationWithHexId = (
     .parent()
     .parent()
     .contains(/delete/i)
-    .click({ force: true });
+    .click();
 };
 
 const iAmAskedIfIAmSureIWantToDeleteMyRegistration = () => {
   cy.get("h1").contains(/Are you sure/i);
-  iCanSeeAButtonContaining("Cancel");
+  iCanSeeNLinksContaining(1, "Cancel");
   iCanSeeAButtonContaining("Delete");
 };
 

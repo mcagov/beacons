@@ -89,7 +89,7 @@ const AboutTheAircraft: FunctionComponent<DraftBeaconUsePageProps> = ({
         value={form.fields.cnOrMsnNumber.value}
       />
 
-      <Dongle value={form.fields.dongle.value} />
+      <Dongle value={form.fields.dongle.value || "false"} />
 
       <BeaconPosition
         value={form.fields.beaconPosition.value}
@@ -176,7 +176,7 @@ const HexAddress: FunctionComponent<FormInputProps> = ({
   <FormGroup>
     <Input
       id="hexAddress"
-      label="Enter the Aircraft 24-bit HEXADECIMAL address (optional)"
+      label="Enter the Aircraft 24-bit address, as a 6 character Hex code (optional)"
       hintText="The 24-bit address is used to provide a unique identity normally allocated to an individual aircraft or registration. E.g. AC82EC"
       defaultValue={value}
     />
@@ -201,11 +201,10 @@ const Dongle: FunctionComponent<FormInputProps> = ({
 }: FormInputProps): JSX.Element => (
   <FormGroup>
     <FormFieldset>
-      <FormLegend>Is the beacon a USB dongle? (optional)</FormLegend>
+      <FormLegend>Is the beacon a dongle? (optional)</FormLegend>
       <FormHint forId="typesOfCommunication">
-        A dongle is a small USB stick beacon that can be moved between different
-        aircraft. Knowing if it might used on a different aircraft will help
-        Search and Rescue in an emergency
+        A dongle is fitted on an aircraft and is coded with the aircraft
+        identifier, once connected, an ELT takes on that dongle coding
       </FormHint>
       <RadioList small={true}>
         <RadioListItem
@@ -287,7 +286,7 @@ const mapper = (
 ): DraftRegistrationFormMapper<AboutTheAircraftForm> => {
   const beaconUseMapper: BeaconUseFormMapper<AboutTheAircraftForm> = {
     formToDraftBeaconUse: (form) => ({
-      maxCapacity: form.maxCapacity,
+      maxCapacity: form.maxCapacity?.trim() || "1",
       aircraftManufacturer: form.aircraftManufacturer,
       principalAirport: form.principalAirport,
       secondaryAirport: form.secondaryAirport,
@@ -298,7 +297,7 @@ const mapper = (
       beaconPosition: form.beaconPosition,
     }),
     beaconUseToForm: (draftRegistration) => ({
-      maxCapacity: draftRegistration.maxCapacity,
+      maxCapacity: draftRegistration.maxCapacity || "",
       aircraftManufacturer: draftRegistration.aircraftManufacturer,
       principalAirport: draftRegistration.principalAirport,
       secondaryAirport: draftRegistration.secondaryAirport,
@@ -331,9 +330,6 @@ const validationRules = ({
 }: FormSubmission): FormManager => {
   return new FormManager({
     maxCapacity: new FieldManager(maxCapacity, [
-      Validators.required(
-        "Maximum number of persons onboard is a required field"
-      ),
       Validators.wholeNumber(
         "Maximum number of persons onboard must be a whole number"
       ),

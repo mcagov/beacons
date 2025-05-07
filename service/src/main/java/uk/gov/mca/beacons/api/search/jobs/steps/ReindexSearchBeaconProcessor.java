@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
+import uk.gov.mca.beacons.api.beaconowner.application.BeaconOwnerHelper;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerReadOnlyRepository;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
@@ -36,13 +37,19 @@ public class ReindexSearchBeaconProcessor
   @Override
   public BeaconSearchDocument process(Beacon beacon) {
     BeaconId beaconId = beacon.getId();
-    BeaconOwner beaconOwner = beaconOwnerRepository
-      .findBeaconOwnerByBeaconId(beaconId)
+
+    List<BeaconOwner> beaconOwners = beaconOwnerRepository.getByBeaconId(
+      beaconId
+    );
+
+    BeaconOwner beaconMainOwner = BeaconOwnerHelper
+      .getMainOwner(beaconOwners)
       .orElse(null);
+
     List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
       beaconId
     );
 
-    return new BeaconSearchDocument(beacon, beaconOwner, beaconUses);
+    return new BeaconSearchDocument(beacon, beaconMainOwner, beaconUses);
   }
 }

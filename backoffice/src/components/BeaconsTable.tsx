@@ -47,6 +47,7 @@ export type BeaconRowData = Record<
     | "useActivities"
     | "id"
     | "lastModifiedDate"
+    | "createdDate"
     | "beaconStatus"
     | "beaconType"
     | "cospasSarsatNumber"
@@ -81,6 +82,14 @@ const tableIcons: Icons = {
 
 const columns: Column<BeaconRowData>[] = [
   {
+    title: "Created date",
+    field: "createdDate",
+    filtering: false,
+    defaultSort: "desc",
+    type: "datetime",
+    dateSetting: { format: "dd MM yyyy", locale: "en-GB" },
+  },
+  {
     title: "Last modified date",
     field: "lastModifiedDate",
     filtering: false,
@@ -91,10 +100,17 @@ const columns: Column<BeaconRowData>[] = [
   {
     title: "Status",
     field: "beaconStatus",
-    lookup: { NEW: "NEW", MIGRATED: "MIGRATED", DELETED: "DELETED" },
+    lookup: {
+      NEW: "NEW",
+      CHANGE: "CHANGE",
+      MIGRATED: "MIGRATED",
+      DELETED: "DELETED",
+    },
     render: (rowData: BeaconRowData) => {
       if (rowData.beaconStatus === "MIGRATED") {
         return <Chip label={rowData.beaconStatus} color="secondary" />;
+      } else if (rowData.beaconStatus === "CHANGE") {
+        return <Chip label={rowData.beaconStatus} color="info" />;
       } else {
         return <Chip label={rowData.beaconStatus} color="primary" />;
       }
@@ -208,6 +224,7 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
               );
               const beacons = response._embedded.beaconSearch.map(
                 (item: IBeaconSearchResultData): BeaconRowData => ({
+                  createdDate: item.createdDate,
                   lastModifiedDate: item.lastModifiedDate,
                   beaconStatus: item.beaconStatus,
                   hexId: item.hexId,

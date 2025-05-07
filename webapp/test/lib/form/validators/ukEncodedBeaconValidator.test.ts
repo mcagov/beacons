@@ -1,4 +1,4 @@
-import { ValidatorFn, Validators } from "../../../../src/lib/form/Validators";
+import { Validators, ValidatorFn } from "../../../../src/lib/form/Validators";
 
 describe("ukEncodedBeacon validator", () => {
   const expectedErrorMessage = "Hex ID is a validated field";
@@ -20,13 +20,23 @@ describe("ukEncodedBeacon validator", () => {
     expect(applies("ABCDEF012")).toBe(false); // Hexadecimal but not 15 characters
   });
 
-  it("should not have an error if a valid UK-encoded beacon is provided", () => {
+  it("should not have an error if a 15 hex id valid UK-encoded beacon is provided", () => {
     const validUkEncodedHexId = "1D0EA08C52FFBFF";
     expect(applies(validUkEncodedHexId)).toBe(false);
   });
 
-  it("should error if a valid but not UK-encoded beacon is provided", () => {
+  it("should not have an error if a valid 23 hex id UK-encoded beacon is provided", () => {
+    const validUkEncodedHexId = "1D0EA08C52FFBFF12345678";
+    expect(applies(validUkEncodedHexId)).toBe(false);
+  });
+
+  it("should error if a valid 15 hex id but not UK-encoded beacon is provided", () => {
     const validOtherCountryEncodedHexId = "C00F429578002C1";
+    expect(applies(validOtherCountryEncodedHexId)).toBe(true);
+  });
+
+  it("should error if a valid 23 hex id but not UK-encoded beacon is provided", () => {
+    const validOtherCountryEncodedHexId = "C00F429578002C187654321";
     expect(applies(validOtherCountryEncodedHexId)).toBe(true);
   });
 

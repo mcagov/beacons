@@ -1,8 +1,10 @@
 package uk.gov.mca.beacons.api.accountholder.rest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import uk.gov.mca.beacons.api.accountholder.application.UpdateAzAdUserError;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolderId;
 import uk.gov.mca.beacons.api.accountholder.mappers.AccountHolderMapper;
+import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.rest.BeaconDTO;
 import uk.gov.mca.beacons.api.dto.WrapperDTO;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
@@ -132,6 +135,29 @@ public class AccountHolderController {
       return ResponseEntity
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body("An error occurred while deleting the account holder");
+    }
+  }
+
+  @PatchMapping("/transferBeacons")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('APPROLE_UPDATE_RECORDS')")
+  public ResponseEntity transferBeaconsToAccountHolder(
+    @RequestBody TransferBeaconsDTO dto
+  ) {
+    AccountHolderId accountHolderId = new AccountHolderId(
+      dto.getRecipientAccountHolderId()
+    );
+    List<BeaconId> beaconIds = Arrays
+      .stream(dto.getBeaconIds())
+      .map(id -> new BeaconId(id))
+      .collect(Collectors.toList());
+
+    try {
+      accountHolderService.transferBeacons(accountHolderId, beaconIds);
+      return ResponseEntity.ok("Beacons successfully transferred");
+    } catch (Exception e) {
+      log.error("Error trying to transfer Beacons to account holder", e);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
   }
 }

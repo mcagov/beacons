@@ -24,6 +24,7 @@ import {
 import {
   andIClickContinue,
   andIHaveVisited,
+  givenIHaveClearedAndTyped,
   givenIHaveSelected,
   givenIHaveTyped,
   givenIHaveUnselected,
@@ -217,7 +218,7 @@ export const iCanSeeMySingleAviationUse = (purpose: Purpose): void => {
 };
 
 export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
-  givenIHaveTyped(
+  givenIHaveClearedAndTyped(
     testAviationPleasureUseData.aircraft.maxCapacity,
     "#maxCapacity"
   );

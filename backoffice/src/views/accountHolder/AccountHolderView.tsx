@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   Button,
   Chip,
@@ -8,6 +9,7 @@ import {
   DialogTitle,
   Link,
   Paper,
+  TextField,
 } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
@@ -19,12 +21,16 @@ import { logToServer } from "../../utils/logger";
 import { IAccountHolder } from "../../entities/IAccountHolder";
 import { IAccountHolderGateway } from "gateways/account-holder/IAccountHolderGateway";
 import { AccountHolderSummaryView } from "./AccountHolderSummaryView";
-import {
-  dateSortComparator,
-  customDateValueFormatter,
-} from "../../utils/DataGridUtils";
+import { dateSortComparator } from "../../utils/DataGridUtils";
 
-import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridRowId,
+  GridRowParams,
+  GridSelectionModel,
+  GridToolbarContainer,
+} from "@mui/x-data-grid";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { DataPanelStates } from "components/dataPanel/States";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
@@ -33,7 +39,7 @@ import { ErrorState } from "components/dataPanel/PanelErrorState";
 import { LoadingState } from "components/dataPanel/PanelLoadingState";
 import { AccountHolderSummaryEdit } from "./AccountHolderSummaryEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import { IAccountHolderSearchResultData } from "entities/IAccountHolderSearchResult";
 interface IAccountHolderViewProps {
   accountHolderGateway: IAccountHolderGateway;
   accountHolderId: string;
@@ -78,6 +84,16 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openTransferDialog, setOpenTransferDialog] = useState(false);
+  const [beaconsToTransfer, setBeaconsToTransfer] =
+    useState<GridSelectionModel>([]);
+  const [accountHolders, setAccountHolders] = useState<
+    IAccountHolderSearchResultData[]
+  >([] as IAccountHolderSearchResultData[]);
+  const [transferAccountHolder, setTransferAccountHolder] =
+    useState<IAccountHolderSearchResultData>(
+      {} as IAccountHolderSearchResultData
+    );
 
   useEffect(() => {
     let isMounted = true;
@@ -87,6 +103,8 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
         setError(false);
         setLoading(true);
 
+        const accountHolders =
+          await accountHolderGateway.getAllAccountHolders();
         const accountHolder = await accountHolderGateway.getAccountHolder(id);
         const beacons = await accountHolderGateway.getBeaconsForAccountHolderId(
           id
@@ -95,6 +113,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
         if (isMounted) {
           setAccountHolder(accountHolder);
           setBeacons(beacons);
+          setAccountHolders(accountHolders._embedded.accountHolderSearch);
           setLoading(false);
         }
       } catch (error) {
@@ -144,6 +163,16 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     setOpenDeleteDialog(true);
   };
 
+  const handleTransferBeacons = async () => {
+    if (beaconsToTransfer.length < 1) {
+      setError(true);
+      setErrorMessage("Cannot transfer zero Beacons");
+      return;
+    }
+
+    setOpenTransferDialog(true);
+  };
+
   const handleConfirmDelete = async () => {
     try {
       await accountHolderGateway.deleteAccountHolder(accountHolder.id);
@@ -158,8 +187,34 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     }
   };
 
+  const handleConfirmTransfer = async () => {
+    try {
+      const beaconIds = beaconsToTransfer.map((row: GridRowId) =>
+        row.toString()
+      );
+      await accountHolderGateway.transferBeaconsToAccountHolder(
+        beaconIds,
+        transferAccountHolder.id
+      );
+      window.location.reload();
+    } catch (error) {
+      logToServer.error(error);
+      setError(true);
+      setErrorMessage(
+        "An error occurred while transferring the account holder's beacons."
+      );
+    } finally {
+      setOpenTransferDialog(false);
+    }
+  };
+
   const handleCancelDelete = () => {
     setOpenDeleteDialog(false);
+  };
+
+  const handleCancelTransfer = () => {
+    setTransferAccountHolder({} as IAccountHolderSearchResultData);
+    setOpenTransferDialog(false);
   };
 
   const renderState = (state: DataPanelStates) => {
@@ -204,7 +259,10 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 150,
       editable: false,
       renderCell: ({ row }: Partial<GridRowParams>) => (
-        <Chip label={row.status} color="primary" />
+        <Chip
+          label={row.status}
+          color={row.status === "CHANGE" ? "info" : "primary"}
+        />
       ),
     },
     {
@@ -227,7 +285,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 175,
       editable: false,
       type: "date",
-      valueFormatter: (params) => customDateValueFormatter(params),
+      valueSetter: (params): string => params.value.toString(),
       sortComparator: dateSortComparator,
     },
     {
@@ -236,7 +294,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 175,
       editable: false,
       type: "date",
-      valueFormatter: (params) => customDateValueFormatter(params),
+      valueSetter: (params): string => params.value.toString(),
       sortComparator: dateSortComparator,
     },
     {
@@ -256,6 +314,154 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     },
   ];
 
+  function BeaconToolbar() {
+    if (!beaconsToTransfer || beaconsToTransfer.length === 0) {
+      return null;
+    }
+
+    return (
+      <GridToolbarContainer>
+        <Button onClick={handleTransferBeacons} variant="outlined">
+          Transfer
+        </Button>
+      </GridToolbarContainer>
+    );
+  }
+
+  function TransferDialog() {
+    return (
+      <Dialog
+        open={openTransferDialog}
+        onClose={handleCancelTransfer}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>Confirm Transfer</DialogTitle>
+        <DialogContent>
+          <Box>Are you sure you want to transfer these Beacons?</Box>
+          <Box>
+            <br />
+            You are transferring the following Beacons:
+            <ul>
+              {beaconsToTransfer.map((beaconId, index) => {
+                const beacon = beacons.find((b) => b.id === beaconId);
+                return (
+                  <li key={index}>
+                    {beacon && `${beacon.hexId} - (${beacon.mainUseName})`}
+                  </li>
+                );
+              })}
+            </ul>
+          </Box>
+          <Box>
+            <Autocomplete
+              value={transferAccountHolder}
+              onChange={(event, newValue) => {
+                if (newValue !== null) {
+                  setTransferAccountHolder(newValue);
+                }
+              }}
+              options={accountHolders}
+              getOptionLabel={(option) =>
+                option.email || "Start typing to search for an account holder.."
+              }
+              filterOptions={(options, { inputValue }) => {
+                if (inputValue === "---") {
+                  return accountHolders;
+                }
+                if (inputValue.length < 2) {
+                  return [];
+                }
+                return options.filter(
+                  (option) =>
+                    (option.email &&
+                      option.email
+                        .toLowerCase()
+                        .startsWith(inputValue.toLowerCase())) ||
+                    (option.fullName &&
+                      option.fullName
+                        .toLowerCase()
+                        .startsWith(inputValue.toLowerCase()))
+                );
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Account Holder"
+                  variant="outlined"
+                />
+              )}
+              renderOption={(props, option) => (
+                <li {...props}>
+                  {option.fullName} - ({option.email})
+                </li>
+              )}
+            />
+            {transferAccountHolder && transferAccountHolder.email && (
+              <div>
+                <h4>To the following account holder:</h4>
+                <p>Name: {transferAccountHolder.fullName}</p>
+                <p>Email: {transferAccountHolder.email}</p>
+                {/* Add more details as needed */}
+              </div>
+            )}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleCancelTransfer}
+            color="secondary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleConfirmTransfer}
+            color="primary"
+            variant="outlined"
+            disabled={
+              transferAccountHolder == null ||
+              transferAccountHolder.email == null
+            }
+          >
+            Transfer Beacons
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+
+  function DeleteDialog() {
+    return (
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleCancelDelete}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Box>Are you sure you want to delete this account holder?</Box>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleCancelDelete}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleConfirmDelete}
+            color="error"
+            variant="outlined"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
   return (
     <div className={classes.root}>
       <PageContent>
@@ -298,38 +504,16 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
             <DataGrid
               rows={beacons}
               columns={columns}
-              disableSelectionOnClick={true}
               rowsPerPageOptions={[10, 20, 50, 100]}
+              checkboxSelection
+              onSelectionModelChange={setBeaconsToTransfer}
+              components={{ Toolbar: BeaconToolbar }}
             />
           </Box>
         </Paper>
-        <Dialog
-          open={openDeleteDialog}
-          onClose={handleCancelDelete}
-          maxWidth="sm"
-          fullWidth
-        >
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogContent>
-            <Box>Are you sure you want to delete this account holder?</Box>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={handleCancelDelete}
-              color="primary"
-              variant="outlined"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleConfirmDelete}
-              color="error"
-              variant="outlined"
-            >
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
+
+        <DeleteDialog />
+        <TransferDialog />
       </PageContent>
     </div>
   );

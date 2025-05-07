@@ -4,7 +4,7 @@ import {
   BeaconsForm,
   BeaconsFormHeading,
 } from "../../../components/BeaconsForm";
-import { Button, LinkButton } from "../../../components/Button";
+import { Button } from "../../../components/Button";
 import { FormFieldset, FormGroup, FormLegend } from "../../../components/Form";
 import { Input } from "../../../components/Input";
 import { RadioList, RadioListItem } from "../../../components/RadioList";
@@ -24,6 +24,7 @@ import { GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_ThenShow
 import { GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteTheRegistration } from "../../../router/rules/GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteTheRegistration";
 import { GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage } from "../../../router/rules/GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+import { AnchorLink } from "../../../components/Typography";
 
 export interface DeleteRegistrationProps {
   form: FormJSON;
@@ -56,11 +57,12 @@ export const DeleteRegistration: FunctionComponent<DeleteRegistrationProps> = ({
         />
       }
       cancelLink={
-        <LinkButton
-          buttonText="Cancel"
+        <AnchorLink
           href={AccountPageURLs.accountHome}
-          classes="govuk-button--secondary govuk-!-margin-right-8"
-        />
+          classes="govuk-link--no-visited-state govuk-!-margin-right-8"
+        >
+          Cancel
+        </AnchorLink>
       }
     >
       <BeaconsFormHeading pageHeading="Are you sure you want to delete this beacon registration from your account?" />

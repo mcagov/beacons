@@ -24,7 +24,11 @@ import { Registration } from "../../../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
-import { AccountPageURLs } from "../../../../lib/urls";
+import {
+  AccountPageURLs,
+  DeleteRegistrationPageURLs,
+  queryParams,
+} from "../../../../lib/urls";
 import { Actions } from "../../../../lib/URLs/Actions";
 import { Pages } from "../../../../lib/URLs/Pages";
 import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
@@ -35,6 +39,7 @@ import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDr
 import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { SendYourApplication } from "../../../register-a-beacon/check-your-answers";
+import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;
@@ -48,6 +53,12 @@ const RegistrationSummaryPage: FunctionComponent<
   userHasEdited,
 }: RegistrationSummaryPageProps): JSX.Element => {
   const pageHeading = `Your registered beacon with Hex ID/UIN: ${registration.hexId}`;
+
+  const confirmBeforeDelete = (registrationId: string) =>
+    DeleteRegistrationPageURLs.deleteRegistration +
+    queryParams({
+      id: registrationId,
+    });
 
   return (
     <Layout
@@ -72,7 +83,24 @@ const RegistrationSummaryPage: FunctionComponent<
                 />
               </SummaryListItem>
             </SummaryList>
-            <SectionHeading>About the beacon</SectionHeading>
+
+            <div className="govuk-summary-list__row">
+              <dt className="govuk-summary-list__key">
+                <SectionHeading>About the beacon</SectionHeading>
+              </dt>
+              <dd className="govuk-summary-list__actions">
+                <a
+                  className="govuk-link"
+                  style={{ color: "#d4351c", fontSize: "1.1875rem" }}
+                  href={confirmBeforeDelete(registration.id)}
+                >
+                  Delete this registration
+                  <span className="govuk-visually-hidden">
+                    Delete this registration
+                  </span>
+                </a>
+              </dd>
+            </div>
             <SummaryList>
               <SummaryListItem
                 labelText="Beacon information"
@@ -193,6 +221,10 @@ export const getServerSideProps: GetServerSideProps = withSession(
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
         context
+      ),
+      new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges(
+        context,
+        registrationId
       ),
       new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
         context,

@@ -6,7 +6,7 @@ export const tooManyCharactersErrorMessage = "too many characters";
 export const iCanClickTheBackLinkToGoToPreviousPage = (
   previousPageURL: string
 ): void => {
-  cy.get(".govuk-back-link").click({ force: true });
+  cy.get(".govuk-back-link").click();
   thenTheUrlShouldContain(previousPageURL);
 };
 
@@ -91,9 +91,7 @@ export const iCanSeeAButtonContaining = (text: string | RegExp): void => {
 };
 
 export const givenIHaveClickedTheButtonContaining = (text: string): void => {
-  cy.get(`button:contains(${text}),[role=button]:contains(${text})`).click({
-    force: true,
-  });
+  cy.get(`button:contains(${text}),[role=button]:contains(${text})`).click();
 };
 
 export const andIClickTheButtonContaining =
@@ -110,7 +108,7 @@ export const andIClickContinue = whenIClickContinue;
 export const givenIHaveClickedContinue = whenIClickContinue;
 
 export const givenIHaveClicked = (selector: string): void => {
-  cy.get(selector).click({ force: true });
+  cy.get(selector).click();
 };
 
 export const whenIClickOnTheErrorSummaryLinkContaining = (
@@ -118,12 +116,18 @@ export const whenIClickOnTheErrorSummaryLinkContaining = (
 ): void => {
   let link = cy.get(".govuk-error-summary__list");
   strings.forEach((string) => (link = link.contains(string)));
-  link.click({ force: true });
+  link.click();
 };
 
 export const whenIType = (value: string, selector: string): void => {
   cy.get(selector).should("be.empty").type(value);
 };
+
+export const whenIClearAndType = (value: string, selector: string): void => {
+  cy.get(selector).clear().type(value);
+};
+
+export const givenIHaveClearedAndTyped = whenIClearAndType;
 
 export const givenIHaveTyped = whenIType;
 export const andIType = whenIType;
@@ -185,7 +189,7 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
 export const andIHaveEnteredNoInformation = (): void => null;
 
 export const whenIClickBack = (): void => {
-  cy.get(".govuk-back-link").click({ force: true });
+  cy.get(".govuk-back-link").click();
 };
 
 export const whenIClickBackTimes = (times: number): void => {
@@ -209,7 +213,7 @@ export const iCanEditAFieldContaining = (value: string): void => {
   cy.get(`input[value="${value}"]`);
 };
 export const iHaveClickedOnAGivenLink = (href: string): void => {
-  cy.get(`a[href="${href}"]`).click({ force: true });
+  cy.get(`a[href="${href}"]`).click();
 };
 
 export const whenISelectTheOptionFromTheDropdown = (

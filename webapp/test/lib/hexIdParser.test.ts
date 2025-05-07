@@ -9,7 +9,9 @@ describe("HexIdParser", () => {
       { hexId: "ADC268F8E0D3780", countryCode: 366 },
       { hexId: "ADCD0228C500401", countryCode: 366 },
       { hexId: "C00F429578002C1", countryCode: 512 },
+      { hexId: "C00F429578002C187654321", countryCode: 512 },
       { hexId: "1D0EA08C52FFBFF", countryCode: 232 }, // UK-encoded
+      { hexId: "1D0EA08C52FFBFF12345678", countryCode: 232 }, // UK-encoded
     ];
 
     expectations.forEach((expectation) => {

@@ -28,6 +28,10 @@ public class RegistrationDTO {
   public BeaconOwnerDTO beaconOwnerDTO;
 
   @Valid
+  @JsonProperty("owners")
+  public List<BeaconOwnerDTO> beaconOwnerDTOs;
+
+  @Valid
   @JsonProperty("accountHolder")
   public AccountHolderDTO accountHolderDTO;
 

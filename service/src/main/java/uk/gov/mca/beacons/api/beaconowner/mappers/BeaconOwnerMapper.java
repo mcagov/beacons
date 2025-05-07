@@ -23,6 +23,7 @@ public class BeaconOwnerMapper {
 
     beaconOwner.setFullName(dto.getFullName());
     beaconOwner.setEmail(dto.getEmail());
+    beaconOwner.setMain(true); // Always true for now.
     beaconOwner.setTelephoneNumber(dto.getTelephoneNumber());
     beaconOwner.setAlternativeTelephoneNumber(
       dto.getAlternativeTelephoneNumber()
@@ -38,6 +39,7 @@ public class BeaconOwnerMapper {
       .id(Objects.requireNonNull(beaconOwner.getId()).unwrap())
       .fullName(beaconOwner.getFullName())
       .email(beaconOwner.getEmail())
+      .isMain(beaconOwner.isMain())
       .telephoneNumber(beaconOwner.getTelephoneNumber())
       .alternativeTelephoneNumber(beaconOwner.getAlternativeTelephoneNumber())
       .addressDTO(addressMapper.toDTO(beaconOwner.getAddress()))

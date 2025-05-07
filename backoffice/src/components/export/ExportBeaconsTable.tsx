@@ -11,10 +11,8 @@ import { Button, Theme } from "@mui/material";
 import { makeStyles, createStyles } from "@mui/styles";
 import ContentPrintIcon from "@mui/icons-material/Print";
 import { IBeaconExportSearchResult } from "views/exports/BeaconExportSearch";
-import {
-  dateSortComparator,
-  customDateValueFormatter,
-} from "../../utils/DataGridUtils";
+import { dateSortComparator } from "../../utils/DataGridUtils";
+import { formatDateTime } from "../../utils/dateTime";
 
 interface IExportBeaconsTableProps {
   result: IBeaconExportSearchResult;
@@ -54,7 +52,7 @@ const columns: GridColDef[] = [
     width: 150,
     editable: false,
     type: "date",
-    valueFormatter: (params) => customDateValueFormatter(params),
+    valueFormatter: (params) => formatDateTime(params.value),
     sortComparator: dateSortComparator,
   },
   {
@@ -63,7 +61,7 @@ const columns: GridColDef[] = [
     width: 150,
     editable: false,
     type: "date",
-    valueFormatter: (params) => customDateValueFormatter(params),
+    valueFormatter: (params) => formatDateTime(params.value),
     sortComparator: dateSortComparator,
   },
 

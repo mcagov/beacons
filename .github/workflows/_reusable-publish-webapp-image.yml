@@ -1,4 +1,4 @@
-name: Publish OpenSearch proxy image
+name: Publish Webapp image
 
 on:
   workflow_call:
@@ -14,7 +14,7 @@ on:
       repository_name:
         description: The name of the image to be published
         required: false
-        default: opensearch-proxy
+        default: beacons-webapp
         type: string
     secrets:
       aws_access_key_id:
@@ -22,24 +22,27 @@ on:
       aws_secret_access_key:
         required: true
 
+defaults:
+  run:
+    working-directory: webapp
+
 jobs:
-  publish_opensearch_proxy_image:
+  docker_build:
     name: Build and Push Docker image
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - uses: actions/checkout@v4
+      - name: Set up Docker Build
+        uses: docker/setup-buildx-action@v3
       - name: Login to ECR
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ inputs.registry_url }}
           username: ${{ secrets.aws_access_key_id }}
           password: ${{ secrets.aws_secret_access_key }}
-      - name: Build and push
-        uses: docker/build-push-action@v4
+      - name: Build and Push
+        uses: docker/build-push-action@v5
         with:
-          context: ./opensearch/proxy
+          context: webapp
           push: true
           tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}

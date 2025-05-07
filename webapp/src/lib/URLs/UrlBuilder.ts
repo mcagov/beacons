@@ -17,9 +17,16 @@ export class UrlBuilder {
     action: Actions,
     page: UsePages,
     registrationId: string,
-    useId: string
+    useIndex: string
   ): string {
-    return `${this.topLevelPath}/${registrationId}/${action}/uses/${useId}/${page}`;
+    return `${this.topLevelPath}/${registrationId}/${action}/uses/${useIndex}/${page}`;
+  }
+
+  public static buildMakeUseMainUrl(
+    registrationId: string,
+    useIndex: string
+  ): string {
+    return `${this.topLevelPath}/${registrationId}/update/uses/${useIndex}/makeMainUse`;
   }
 
   public static buildUseSummaryUrl(

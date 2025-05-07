@@ -14,4 +14,8 @@ export interface AccountHolderGateway {
   ): Promise<AccountHolder>;
 
   getAccountBeacons(accountHolderId: string): Promise<Beacon[]>;
+  getAccountBeacon(
+    accountHolderId: string,
+    registrationId: string
+  ): Promise<Beacon>;
 }

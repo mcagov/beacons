@@ -1,4 +1,4 @@
-name: Publish Backoffice image
+name: Publish Service image
 
 on:
   workflow_call:
@@ -14,45 +14,35 @@ on:
       repository_name:
         description: The name of the image to be published
         required: false
-        default: beacons-backoffice
+        default: beacons-service
         type: string
     secrets:
       aws_access_key_id:
         required: true
       aws_secret_access_key:
         required: true
-      feedback_email_addresses:
-        description: The email address(es) to which feedback should be sent.  E.g. "a@b.com" or "a@b.com,c@d.com".
-        required: true
-      mui_pro_license_key:
-        description: The license key for MUI Pro
-        required: true
 
 defaults:
   run:
-    working-directory: backoffice
+    working-directory: service
 
 jobs:
   docker_build:
     name: Build and Push Docker image
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - name: Login to ECR
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ inputs.registry_url }}
           username: ${{ secrets.aws_access_key_id }}
           password: ${{ secrets.aws_secret_access_key }}
       - name: Build and Push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
-          context: backoffice
+          context: service
           push: true
           tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
-          build-args: |
-            feedback_email_addresses=${{ secrets.feedback_email_addresses }}
-            mui_pro_license_key=${{ secrets.mui_pro_license_key }}

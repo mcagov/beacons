@@ -312,6 +312,22 @@ describe("DeprecatedRegistration", () => {
       expect(json.uses[0]["maxCapacity"]).not.toBeDefined();
     });
 
+    // it("should serialise the max capacity as 1 if it is not a number", () => {
+    //   registration.update({ maxCapacity: "not a number" });
+    //   delete use.maxCapacity;
+    //   const json = registration.serialiseToAPI();
+    //
+    //   expect(json.uses[0]["maxCapacity"]).toBe(1);
+    // });
+    //
+    // it("should serialise the max capacity as 1 if it is not a whole number", () => {
+    //   registration.update({ maxCapacity: "0.112" });
+    //   delete use.maxCapacity;
+    //   const json = registration.serialiseToAPI();
+    //
+    //   expect(json.uses[0]["maxCapacity"]).toBe(1);
+    // });
+
     it("should serialise all the communication information if selected", () => {
       registration.update({
         vhfRadio: "true",
