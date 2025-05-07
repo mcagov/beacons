@@ -5,7 +5,7 @@ the Beacons system, see the `../webapp/`, `../service/` and `../backoffice/` dir
 
 ## End-to-end testing
 
-Automated end-to-end tests use [Cypress](https://www.cypress.io/) and are run in GitHub Actions after deploying to the `dev` and `staging` environments.
+Automated end-to-end tests use [Cypress](https://www.cypress.io/) and are run in GitHub Actions against the publish images before deploying to the `dev` and `staging` environments.
 
 To run end-to-end tests locally:
 
@@ -18,7 +18,7 @@ $ npm run test:e2e
 
 The smoke tests are currently manual. We are looking to automate these.
 
-- [Pre-release testing scenarios](pre-release-testing-scenarios.md) must be performed after drafting a pre-release
-  to the staging environment and before releasing to production.
-- [Post-release testing scenarios](post-release-testing-scenarios.md) must be performed immediately after releasing
-  to production.
+- [Pre-release testing scenarios](pre-release-testing-scenarios.md) must be performed:
+  - before drafting a release, against the dev environment.
+  - after drafting a release, against the staging environment, before publishing the release.
+- [Post-release testing scenarios](post-release-testing-scenarios.md) must be performed immediately after a published release has been deployed to production.
