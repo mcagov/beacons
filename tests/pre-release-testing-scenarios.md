@@ -12,7 +12,7 @@ production release.
 - [ ] As an AccountHolder, I can sign in to my account at https://staging.406beacons.com/
 - [ ] As an AccountHolder, I can register a new Beacon
 - [ ] As an AccountHolder, I can see the newly-registered Beacon in my account home
-- [ ] As a BackofficeUser, I check if I can see a list of beacons in default search mode.
-- [ ] As a BackofficeUser, I check if I can see a list of beacons in advanced search mode.
+- [ ] As a BackofficeUser, I check if I can see a list of beacons in default search mode
+- [ ] As a BackofficeUser, I check if I can see a list of beacons in advanced search mode
 - [ ] As a BackofficeUser, I can search for the AccountHolder's newly-registered Beacon by HexID
 - [ ] As a BackofficeUser, I can view the details of the AccountHolder's newly-registered Beacon
