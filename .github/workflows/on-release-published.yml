@@ -41,11 +41,3 @@ jobs:
       microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
       microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
       microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
-
-  manual_testing:
-    name: Manual testing
-    runs-on: ubuntu-latest
-    steps:
-      - name: Link to manual testing document
-        run: |
-          echo "::notice file=tests/post-release-testing-scenarios.md,title={Remember to run through the post-release testing scenarios immediately after pushing to production}::This should be automated soon."
