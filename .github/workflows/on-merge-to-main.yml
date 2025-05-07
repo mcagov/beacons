@@ -1,9 +1,10 @@
-name: Deploy to staging
+name: Test then deploy to dev
 
 on:
-  release:
-    types:
-      - prereleased
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   terraform_lint:
@@ -30,21 +31,21 @@ jobs:
           node-version: "16.17.0"
       - name: Prettier check
         run: |
-          npm ci
+          npm install
           npm run format:check
 
   test_webapp:
     name: Test Webapp
-    uses: ./.github/workflows/test-webapp.yml
+    uses: ./.github/workflows/_reusable-test-webapp.yml
     secrets:
       test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
       test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
 
   test_service:
     name: Test Service
-    uses: ./.github/workflows/test-service.yml
+    uses: ./.github/workflows/_reusable-test-service.yml
     with:
-      environment: staging
+      environment: development
     secrets:
       microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
       microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
@@ -53,48 +54,51 @@ jobs:
 
   test_backoffice:
     name: Test Backoffice
-    uses: ./.github/workflows/test-backoffice.yml
+    uses: ./.github/workflows/_reusable-test-backoffice.yml
 
   publish_webapp_image:
-    name: Webapp
-    uses: ./.github/workflows/publish-webapp-image.yml
+    name: Publish Webapp
+    needs:
+      - test_webapp
+    uses: ./.github/workflows/_reusable-publish-webapp-image.yml
     with:
-      tag: ${{ github.event.release.tag_name }}
+      tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    needs: [test_webapp]
 
   publish_service_image:
-    name: Service
-    uses: ./.github/workflows/publish-service-image.yml
+    name: Publish Service
+    needs:
+      - test_service
+    uses: ./.github/workflows/_reusable-publish-service-image.yml
     with:
-      tag: ${{ github.event.release.tag_name }}
+      tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    needs: [test_service]
 
   publish_backoffice_image:
     name: Publish Backoffice
-    uses: ./.github/workflows/publish-backoffice-image.yml
+    needs:
+      - test_backoffice
+    uses: ./.github/workflows/_reusable-publish-backoffice-image.yml
     with:
-      tag: ${{ github.event.release.tag_name }}
+      tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       feedback_email_addresses: ${{ secrets.BACKOFFICE_FEEDBACK_EMAIL_ADDRESSES }}
       mui_pro_license_key: ${{ secrets.MUI_PRO_LICENSE_KEY }}
-    needs: [test_backoffice]
 
   publish_opensearch_proxy_image:
     name: OpenSearch proxy
-    uses: ./.github/workflows/publish-opensearch-proxy-image.yml
+    uses: ./.github/workflows/_reusable-publish-opensearch-proxy-image.yml
     with:
-      tag: ${{ github.event.release.tag_name }}
+      tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -103,18 +107,21 @@ jobs:
   end_to_end_tests:
     name: End-to-end tests
     needs:
-      [
-        publish_webapp_image,
-        publish_service_image,
-        publish_backoffice_image,
-        publish_opensearch_proxy_image,
-      ]
-    uses: ./.github/workflows/end-to-end-tests.yml
+      - terraform_lint
+      - prettier_check
+      - test_webapp
+      - test_service
+      - test_backoffice
+      - publish_webapp_image
+      - publish_service_image
+      - publish_backoffice_image
+      - publish_opensearch_proxy_image
+    uses: ./.github/workflows/_reusable-end-to-end-tests.yml
     with:
       image-tag: ${{ github.sha }}
       test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
       test_azure_ad_tenant_id: 513fb495-9a90-425b-a49a-bc6ebe2a429e
-      environment: staging
+      environment: development
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -128,34 +135,18 @@ jobs:
       microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
       microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
 
-  codeql:
-    name: CodeQL check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          config-file: .github/codeql/codeql-config.yml
-          languages: java, typescript
-      - uses: actions/setup-java@v4
-        with:
-          distribution: "adopt"
-          java-version: 11
-      - name: Compile code
-        working-directory: service
-        run: ./gradlew clean assemble
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-
-  deploy_staging:
-    name: Staging
-    needs: [end_to_end_tests, terraform_lint, prettier_check]
-    uses: ./.github/workflows/deploy.yml
+  deploy_dev:
+    name: Development
+    needs:
+      - publish_backoffice_image
+      - publish_webapp_image
+      - publish_service_image
+      - publish_opensearch_proxy_image
+    uses: ./.github/workflows/_reusable-deploy.yml
     with:
-      environment: staging
-      terraform_workspace: staging
-      version: ${{ github.event.release.tag_name }}
+      environment: development
+      terraform_workspace: dev
+      version: ${{ github.sha }}
       trello_list_id: 6157064b4d7e1b3b1ea839ad
     secrets:
       alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
@@ -180,11 +171,3 @@ jobs:
       microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
       microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
       microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
-
-  manual_testing:
-    name: Manual testing
-    runs-on: ubuntu-latest
-    steps:
-      - name: Link to manual testing document
-        run: |
-          echo "::notice file=tests/pre-release-testing-scenarios.md,title={Remember to run through the pre-release testing scenarios before pushing to production}::This should be automated soon."
