@@ -1,5 +1,9 @@
 name: Deploy to production
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   release:
     types:
