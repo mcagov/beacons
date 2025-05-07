@@ -1,11 +1,14 @@
 package uk.gov.mca.beacons.api.registration.mappers;
 
+import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.accountholder.mappers.AccountHolderMapper;
 import uk.gov.mca.beacons.api.beacon.mappers.BeaconMapper;
 import uk.gov.mca.beacons.api.beaconowner.mappers.BeaconOwnerMapper;
+import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.mappers.BeaconUseMapper;
 import uk.gov.mca.beacons.api.emergencycontact.mappers.EmergencyContactMapper;
 import uk.gov.mca.beacons.api.export.mappers.ExportMapper;
@@ -69,12 +72,26 @@ public class RegistrationMapper {
   public RegistrationDTO toDTO(Registration registration) {
     return RegistrationDTO
       .builder()
-      .beaconDTO(beaconMapper.toRegistrationDTO(registration.getBeacon()))
+      .beaconDTO(
+        beaconMapper.toRegistrationDTO(
+          registration.getBeacon(),
+          registration.getMainUse()
+        )
+      )
       .beaconOwnerDTO(
         // special case for handling deleted beacon owners, this won't be necessary with a resource oriented API
         registration.getBeaconOwner() == null
           ? null
           : beaconOwnerMapper.toDTO(registration.getBeaconOwner())
+      )
+      .beaconOwnerDTOs(
+        Optional
+          .ofNullable(registration)
+          .map(Registration::getBeaconOwners)
+          .orElse(Collections.emptyList())
+          .stream()
+          .map(beaconOwnerMapper::toDTO)
+          .collect(Collectors.toList())
       )
       .accountHolderDTO(
         registration.getAccountHolder() == null

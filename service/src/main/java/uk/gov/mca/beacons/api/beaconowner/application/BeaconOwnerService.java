@@ -24,17 +24,20 @@ public class BeaconOwnerService {
     return beaconOwnerRepository.save(beaconOwner);
   }
 
-  //TODO: Refactor this code
   public Optional<BeaconOwner> getByBeaconId(BeaconId beaconId) {
-    // There is a one to zero or one mapping between beacons and beacon owners, therefore we either return null
-    // or the first element in the beacon owners list (there should only be one element)
     List<BeaconOwner> beaconOwners = beaconOwnerRepository.getByBeaconId(
       beaconId
     );
-    if (beaconOwners.size() == 0) {
-      return Optional.empty();
-    }
-    return Optional.of(beaconOwners.get(0));
+
+    return getMainOwner(beaconOwners);
+  }
+
+  public Optional<BeaconOwner> getMainOwner(List<BeaconOwner> beaconOwners) {
+    return BeaconOwnerHelper.getMainOwner(beaconOwners);
+  }
+
+  public List<BeaconOwner> getOwnersByBeaconId(BeaconId beaconId) {
+    return beaconOwnerRepository.getByBeaconId(beaconId);
   }
 
   public void deleteByBeaconId(BeaconId beaconId) {

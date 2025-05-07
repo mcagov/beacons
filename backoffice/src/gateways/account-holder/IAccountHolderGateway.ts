@@ -11,4 +11,8 @@ export interface IAccountHolderGateway {
     updatedFields: Partial<IAccountHolder>
   ) => Promise<IAccountHolder>;
   deleteAccountHolder: (accountHolderId: string) => Promise<void>;
+  transferBeaconsToAccountHolder: (
+    beaconIds: string[],
+    recipientAccountHolderId: string
+  ) => Promise<void>;
 }

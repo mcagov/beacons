@@ -23,6 +23,10 @@ const getAviationFields = (use: IUse): IField[] => {
       key: "More details",
       value: use?.moreDetails,
     },
+    {
+      key: "Is Main Use",
+      value: use?.mainUse ? "Yes" : "No",
+    },
   ];
 };
 

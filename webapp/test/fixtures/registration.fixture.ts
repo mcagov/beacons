@@ -47,6 +47,7 @@ export const registrationFixture: Registration = {
       activity: "FISHING_VESSEL",
       otherActivityText: "Zorbing",
       moreDetails: "I take people out in my yacht.",
+      mainUse: true,
       callSign: "Call me",
       vhfRadio: "true",
       fixedVhfRadio: "true",

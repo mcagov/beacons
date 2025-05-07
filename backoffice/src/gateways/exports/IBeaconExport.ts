@@ -34,6 +34,7 @@ export interface IBeaconExportNote {
 
 export interface IBeaconExportOwner {
   ownerName: string;
+  isMain: boolean;
   companyName: string;
   careOf: string;
   addressLine1: string;

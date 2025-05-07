@@ -52,9 +52,12 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
         beaconApiResponse.lastModifiedDate || ""
       ),
       referenceNumber: beaconApiResponse.referenceNumber,
-      owners: beaconApiResponse.owner
-        ? this.mapOwners(beaconApiResponse.owner)
-        : [],
+      owners:
+        beaconApiResponse.owners && beaconApiResponse.owners.length > 0
+          ? this.mapOwners(beaconApiResponse.owners)
+          : beaconApiResponse.owner
+          ? [this.mapOwner(beaconApiResponse.owner)]
+          : [],
       accountHolder: beaconApiResponse.accountHolder
         ? this.mapAccountHolder(beaconApiResponse.accountHolder)
         : null,
@@ -66,24 +69,26 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
     };
   }
 
-  private mapOwners(owner: OwnerRegistrationResponse): IOwner[] {
-    return [
-      {
-        id: owner.id,
-        fullName: owner.fullName || "",
-        email: owner.email || "",
-        telephoneNumber: owner.telephoneNumber || "",
-        alternativeTelephoneNumber: owner.alternativeTelephoneNumber || "",
-        addressLine1: owner.addressLine1 || "",
-        addressLine2: owner.addressLine2 || "",
-        addressLine3: owner.addressLine3 || "",
-        addressLine4: owner.addressLine4 || "",
-        townOrCity: owner.townOrCity || "",
-        county: owner.county || "",
-        postcode: owner.postcode || "",
-        country: owner.country || "",
-      },
-    ];
+  private mapOwners(owners: OwnerRegistrationResponse[]): IOwner[] {
+    return owners.map(this.mapOwner);
+  }
+  private mapOwner(owner: OwnerRegistrationResponse): IOwner {
+    return {
+      id: owner.id,
+      fullName: owner.fullName || "",
+      email: owner.email || "",
+      isMain: owner.isMain || false,
+      telephoneNumber: owner.telephoneNumber || "",
+      alternativeTelephoneNumber: owner.alternativeTelephoneNumber || "",
+      addressLine1: owner.addressLine1 || "",
+      addressLine2: owner.addressLine2 || "",
+      addressLine3: owner.addressLine3 || "",
+      addressLine4: owner.addressLine4 || "",
+      townOrCity: owner.townOrCity || "",
+      county: owner.county || "",
+      postcode: owner.postcode || "",
+      country: owner.country || "",
+    };
   }
 
   public mapAccountHolder(

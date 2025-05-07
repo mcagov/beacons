@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.beacon.domain;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,6 +20,17 @@ public interface BeaconRepository extends JpaRepository<Beacon, BeaconId> {
     BeaconId beaconId,
     AccountHolderId accountHolderId,
     BeaconStatus beaconStatus
+  );
+
+  List<Beacon> getByAccountHolderIdAndBeaconStatusIn(
+    AccountHolderId accountHolderId,
+    Collection<BeaconStatus> beaconStatuses
+  );
+
+  Optional<Beacon> getByIdAndAccountHolderIdAndBeaconStatusIn(
+    BeaconId beaconId,
+    AccountHolderId accountHolderId,
+    Collection<BeaconStatus> beaconStatuses
   );
 
   List<Beacon> findAll();

@@ -11,6 +11,7 @@ interface BeaconUseSectionProps {
   use: DraftBeaconUse;
   changeUri?: string;
   deleteUri?: string;
+  makeMainUseUri?: string;
 }
 
 export const AdditionalBeaconUseSummary: FunctionComponent<
@@ -20,9 +21,13 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
   use,
   changeUri,
   deleteUri,
+  makeMainUseUri,
 }: BeaconUseSectionProps): JSX.Element => {
   const useRank = sentenceCase(ordinal(index + 1)) + " use";
 
+  if (use.mainUse === undefined) {
+    use.mainUse = index === 0;
+  }
   return (
     <>
       <div
@@ -39,16 +44,17 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
 
         <div>
           {changeUri && (
-            <AnchorLink
-              href={changeUri}
-              description={useRank}
-              classes={`govuk-link--no-visited-state ${
-                deleteUri ? "govuk-!-margin-right-4" : ""
-              }`}
-            >
-              Change
-            </AnchorLink>
+            <div style={{ marginBottom: "8px" }}>
+              <AnchorLink
+                href={changeUri}
+                description={useRank}
+                classes={`govuk-link--no-visited-state`}
+              >
+                Change
+              </AnchorLink>
+            </div>
           )}
+
           {deleteUri && (
             <WarningLink href={deleteUri} description={useRank}>
               Delete
@@ -57,10 +63,22 @@ export const AdditionalBeaconUseSummary: FunctionComponent<
         </div>
       </div>
 
+      <div style={{ float: "right" }}>
+        {makeMainUseUri && use.mainUse !== true && (
+          <AnchorLink
+            href={makeMainUseUri}
+            classes={`govuk-link--no-visited-state govuk-custom-link`}
+          >
+            Make this the main use
+          </AnchorLink>
+        )}
+      </div>
+
       <SummaryList>
         <AboutThisUse use={use} />
         <Communications use={use} />
         <MoreDetailsSubSection use={use} />
+        <IsMainUseSubSection use={use} />
       </SummaryList>
     </>
   );
@@ -281,4 +299,14 @@ const MoreDetailsSubSection: FunctionComponent<{ use: DraftBeaconUse }> = ({
   <SummaryListItem labelText="More details">
     <DataRowItem value={use.moreDetails} />
   </SummaryListItem>
+);
+
+const IsMainUseSubSection: FunctionComponent<{
+  use: DraftBeaconUse;
+}> = ({ use }: { use: BeaconUse }): JSX.Element => (
+  <>
+    <SummaryListItem labelText="Is Main Use">
+      <DataRowItem value={use.mainUse === true ? "Yes" : "No"} />
+    </SummaryListItem>
+  </>
 );

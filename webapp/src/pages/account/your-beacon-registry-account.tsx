@@ -3,13 +3,13 @@ import React, { FunctionComponent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { LinkButton } from "../../components/Button";
 import LegacyBeaconsNotification from "../../components/domain/LegacyBeaconsNotification";
-import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import { BeaconRegistryContactInfo } from "../../components/Mca";
 import {
   AnchorLink,
   PageHeading,
   SectionHeading,
+  WarningLink,
 } from "../../components/Typography";
 import { AccountHolder } from "../../entities/AccountHolder";
 import { AccountListBeacon } from "../../entities/AccountListBeacon";
@@ -33,6 +33,7 @@ import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
 import { Rule } from "../../router/rules/Rule";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails } from "../../router/rules/WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails";
+import { pluralize } from "../../lib/utils";
 
 export interface YourBeaconRegistryAccountPageProps {
   id?: string;
@@ -49,33 +50,41 @@ export const YourBeaconRegistryAccount: FunctionComponent<
   signOutUri,
 }: YourBeaconRegistryAccountPageProps): JSX.Element => {
   const pageHeading = "Your Beacon Registry Account";
-  const legacyBeacons = beacons.filter((beacon) => {
-    return beacon.beaconStatus === "MIGRATED";
-  });
-
+  const legacyBeacons = beacons.filter(
+    (beacon) => beacon.beaconStatus === "MIGRATED"
+  );
   return (
     <Layout
       title={pageHeading}
       showCookieBanner={false}
       signOutUri={signOutUri}
     >
-      <Grid
-        mainContent={
-          <>
-            <PageHeading>{pageHeading}</PageHeading>
-            <YourDetails accountHolderDetails={accountHolderDetails} />
-            {legacyBeacons.length > 0 && (
-              <LegacyBeaconsNotification
-                beacons={legacyBeacons}
-                accountHolderDetails={accountHolderDetails}
-              />
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-three-thirds">
+          <PageHeading>{pageHeading}</PageHeading>
+          <YourDetails accountHolderDetails={accountHolderDetails} />
+          {legacyBeacons.length > 0 && (
+            <LegacyBeaconsNotification
+              beacons={legacyBeacons}
+              accountHolderDetails={accountHolderDetails}
+            />
+          )}
+
+          <YourBeacons
+            beacons={beacons.filter(({ beaconStatus }) =>
+              ["NEW", "CHANGE"].includes(beaconStatus)
             )}
-            <YourBeacons beacons={beacons} />
-            <RegisterANewBeacon />
-            <Contact />
-          </>
-        }
-      />
+            filter="MODERN"
+          />
+
+          {legacyBeacons && legacyBeacons.length > 0 && (
+            <YourBeacons beacons={legacyBeacons} filter="MIGRATED" />
+          )}
+
+          <RegisterANewBeacon />
+          <Contact />
+        </div>
+      </div>
     </Layout>
   );
 };
@@ -202,15 +211,25 @@ const YourDetails: FunctionComponent<IYourDetailsProps> = ({
 
 interface IYourBeaconsProps {
   beacons: AccountListBeacon[];
+  filter: string;
 }
 
 const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
   beacons,
+  filter,
 }: IYourBeaconsProps): JSX.Element => (
   <>
     <table className="govuk-table">
       <caption className="govuk-table__caption govuk-table__caption--m">
-        You have {beacons ? beacons.length : 0} registered beacons
+        {filter === "MIGRATED"
+          ? `You have ${beacons ? beacons.length : 0} ${pluralize(
+              beacons.length,
+              "beacon"
+            )} that have not yet been claimed`
+          : `You have ${beacons ? beacons.length : 0} registered ${pluralize(
+              beacons.length,
+              "beacon"
+            )}`}
       </caption>
       <thead className="govuk-table__head">
         <tr className="govuk-table__row">
@@ -222,6 +241,9 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
           </th>
           <th scope="col" className="govuk-table__header">
             Used for
+          </th>
+          <th scope="col" className="govuk-table__header">
+            Main use
           </th>
           <th scope="col" className="govuk-table__header">
             First registered
@@ -259,7 +281,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
   return (
     <>
       <tr className="govuk-table__row">
-        {beacon.beaconStatus === "NEW" ? (
+        {["NEW", "CHANGE"].includes(beacon.beaconStatus) ? (
           <th scope="row" className="govuk-table__header">
             <AnchorLink
               href={UrlBuilder.buildRegistrationUrl(
@@ -280,35 +302,39 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
           {beacon.ownerName ? beacon.ownerName : "-"}
         </td>
         <td className="govuk-table__cell">{beacon.uses ? beacon.uses : "-"}</td>
+        <td className="govuk-table__cell">
+          {beacon.mainUse ? beacon.mainUse : "-"}
+        </td>
         <td className="govuk-table__cell">{beacon.createdDate}</td>
         <td className="govuk-table__cell">{beacon.lastModifiedDate}</td>
         <td className="govuk-table__cell">
-          {beacon.beaconStatus === "NEW" ? (
+          {["NEW", "CHANGE"].includes(beacon.beaconStatus) ? (
             <>
-              <AnchorLink
-                href={UrlBuilder.buildRegistrationUrl(
-                  Actions.update,
-                  Pages.summary,
-                  beacon.id
-                )}
-                classes="govuk-link--no-visited-state"
-              >
-                Update
-              </AnchorLink>{" "}
-              <AnchorLink
-                href={confirmBeforeDelete(beacon.id)}
-                classes="govuk-link--no-visited-state"
-              >
-                Delete
-              </AnchorLink>
+              <div style={{ marginBottom: "8px" }}>
+                <AnchorLink
+                  href={UrlBuilder.buildRegistrationUrl(
+                    Actions.update,
+                    Pages.summary,
+                    beacon.id
+                  )}
+                  classes="govuk-link--no-visited-state"
+                >
+                  Update
+                </AnchorLink>
+              </div>
+              <div>
+                <WarningLink href={confirmBeforeDelete(beacon.id)}>
+                  Delete
+                </WarningLink>
+              </div>
             </>
           ) : (
-            <AnchorLink
+            <a
               href={`${ClaimPageURLs.claimBeacon}/${beacon.id}`}
-              classes="govuk-link--no-visited-state"
+              className="govuk-link--no-visited-state"
             >
               Claim this beacon
-            </AnchorLink>
+            </a>
           )}
         </td>
       </tr>
@@ -321,7 +347,6 @@ const RegisterANewBeacon: FunctionComponent = (): JSX.Element => (
     <SectionHeading>Register a new beacon</SectionHeading>
     <LinkButton
       buttonText="Register a new beacon"
-      // href={CreateRegistrationPageURLs.checkBeaconDetails}
       href={ActionURLs.clearAndCheckBeaconDetails}
     />
   </>

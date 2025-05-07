@@ -1,6 +1,6 @@
 import "./certificate.scss";
 import { FunctionComponent } from "react";
-import { customDateStringFormat } from "utils/dateTime";
+import { formatDateLong, formatDateTime } from "utils/dateTime";
 import {
   CertificateHeader,
   CertificateField,
@@ -24,18 +24,12 @@ export const Certificate: FunctionComponent<BeaconExportProps> = ({
           <CertificateField
             classes="half"
             title="Record Created Date"
-            value={customDateStringFormat(
-              beacon.recordCreatedDate,
-              "DD MMMM yyyy"
-            )}
+            value={formatDateLong(beacon.recordCreatedDate)}
           />
           <CertificateField
             classes="half"
             title="Last Modified"
-            value={customDateStringFormat(
-              beacon.lastModifiedDate,
-              "DD MMMM yyyy"
-            )}
+            value={formatDateLong(beacon.lastModifiedDate)}
           />
           <CertificateField
             classes="full"
@@ -88,7 +82,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
       <CertificateField
         classes="half"
         title="Beacon Last Serviced"
-        value={customDateStringFormat(beacon.beaconlastServiced, "DD/MM/yyyy")}
+        value={formatDateTime(beacon.beaconlastServiced)}
       />
       <CertificateField
         classes="half"
@@ -98,7 +92,7 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
       <CertificateField
         classes="half"
         title="Battery Expiry Date"
-        value={customDateStringFormat(beacon.batteryExpiryDate, "DD/MM/yyyy")}
+        value={formatDateTime(beacon.batteryExpiryDate)}
       />
       <CertificateField
         classes="full"
@@ -127,7 +121,7 @@ const NotesSection: FunctionComponent<BeaconExportProps> = ({
       {beacon.notes &&
         beacon.notes.map((note, index) => (
           <span className="note" key={index}>
-            {customDateStringFormat(note.date, "DD/MM/yyyy")}: {note.note}
+            {formatDateTime(note.date)}: {note.note}
           </span>
         ))}
     </div>
@@ -517,9 +511,14 @@ const OwnersSection: FunctionComponent<BeaconExportProps> = ({
           <div className="section" key={index}>
             <h3>Owner Details:</h3>
             <CertificateField
-              classes="full"
+              classes="half"
               title="Owner(s)"
               value={owner.ownerName}
+            />
+            <CertificateField
+              classes="half"
+              title="Is Main"
+              value={owner.isMain ? "Yes" : "No"}
             />
             <CertificateField
               classes="full"

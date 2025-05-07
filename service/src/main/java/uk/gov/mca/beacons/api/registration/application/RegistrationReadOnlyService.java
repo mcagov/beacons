@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
+import uk.gov.mca.beacons.api.beaconowner.application.BeaconOwnerHelper;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwner;
 import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerReadOnlyRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
@@ -48,8 +49,12 @@ public class RegistrationReadOnlyService {
   ) {
     BeaconId beaconId = new BeaconId(beaconBackupItem.getId());
 
-    BeaconOwner beaconOwner = beaconOwnerRepository
-      .findBeaconOwnerByBeaconId(beaconId)
+    List<BeaconOwner> beaconOwners = beaconOwnerRepository.getByBeaconId(
+      beaconId
+    );
+
+    BeaconOwner beaconMainOwner = BeaconOwnerHelper
+      .getMainOwner(beaconOwners)
       .orElse(null);
 
     List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
@@ -63,7 +68,8 @@ public class RegistrationReadOnlyService {
     Registration registration = Registration
       .builder()
       .beacon(buildBeaconFromBeaconBackupItem(beaconBackupItem))
-      .beaconOwner(beaconOwner)
+      .beaconOwners(beaconOwners)
+      .beaconOwner(beaconMainOwner)
       .beaconUses(beaconUses)
       .emergencyContacts(emergencyContacts)
       .build();

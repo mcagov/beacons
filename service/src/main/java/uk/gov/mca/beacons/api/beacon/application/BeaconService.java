@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.beacon.application;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,9 +54,9 @@ public class BeaconService {
   public List<Beacon> getByAccountHolderIdWhereStatusIsNew(
     AccountHolderId accountHolderId
   ) {
-    return beaconRepository.getByAccountHolderIdAndBeaconStatus(
+    return beaconRepository.getByAccountHolderIdAndBeaconStatusIn(
       accountHolderId,
-      BeaconStatus.NEW
+      Arrays.asList(BeaconStatus.NEW, BeaconStatus.CHANGE)
     );
   }
 
@@ -63,10 +64,10 @@ public class BeaconService {
     BeaconId beaconId,
     AccountHolderId accountHolderId
   ) {
-    return beaconRepository.getByIdAndAccountHolderIdAndBeaconStatus(
+    return beaconRepository.getByIdAndAccountHolderIdAndBeaconStatusIn(
       beaconId,
       accountHolderId,
-      BeaconStatus.NEW
+      Arrays.asList(BeaconStatus.NEW, BeaconStatus.CHANGE)
     );
   }
 

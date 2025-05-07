@@ -77,7 +77,7 @@ describe("As a single beacon owner with many uses", () => {
   it("I can register my beacon for a land, maritime pleasure, and aviation pleasure use", () => {
     givenIHaveSignedIn();
     givenIHaveEnteredMyBeaconDetails();
-    iCanSeeAPageHeadingThatContains("main use");
+    iCanSeeAPageHeadingThatContains("first use");
     givenIHaveEnteredMyLandUse();
     iCanEditMyNUses(1);
     andIHaveAnotherUse();
@@ -111,7 +111,7 @@ describe("As a single beacon owner with many uses", () => {
     thenTheUrlShouldContain(CreateRegistrationPageURLs.checkYourAnswers);
     iCanSeeMyBeaconDetails();
     iCanSeeMyAdditionalBeaconInformation();
-    iCanSeeASectionHeadingThatContains("Main use");
+    iCanSeeASectionHeadingThatContains("First use");
     iCanSeeMyLandUse();
     iCanSeeASectionHeadingThatContains("Second use");
     iCanSeeMyMaritimeUse(Purpose.PLEASURE);

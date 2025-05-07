@@ -6,7 +6,6 @@ import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGe
 import { AccountPageURLs } from "../../lib/urls";
 import { DeleteRegistrationProps } from "../../pages/manage-my-registrations/delete";
 import { Rule } from "./Rule";
-
 export class GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage
   implements Rule
 {
@@ -26,13 +25,16 @@ export class GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage
   }
 
   async action(): Promise<GetServerSidePropsResult<DeleteRegistrationProps>> {
-    const { getBeaconsByAccountHolderId, getOrCreateAccountHolder } =
+    const { getBeaconByAccountHolderId, getOrCreateAccountHolder } =
       this.context.container;
 
     const accountHolder = await getOrCreateAccountHolder(this.context.session);
-    const registrationToBeDeleted = (
-      await getBeaconsByAccountHolderId(accountHolder.id)
-    ).find((beacon) => beacon.id == this.context.query.id);
+    const registrationId = this.context.query.id as string;
+
+    const registrationToBeDeleted = await getBeaconByAccountHolderId(
+      accountHolder.id,
+      registrationId
+    );
 
     return {
       props: {

@@ -5,6 +5,7 @@ import {
 } from "../happy-path-test-data.spec";
 import {
   andIClickContinue,
+  givenIHaveClearedAndTypedInAField,
   givenIHaveSelected,
   givenIHaveTypedInAnEmptyField,
   iCanSeeAPageHeadingThatContains,
@@ -77,7 +78,7 @@ export const iCanSeeMyAviationUse = (purpose: string): void => {
 };
 
 export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
-  givenIHaveTypedInAnEmptyField(
+  givenIHaveClearedAndTypedInAField(
     testAviationPleasureUseData.aircraft.maxCapacity,
     "#maxCapacity"
   );

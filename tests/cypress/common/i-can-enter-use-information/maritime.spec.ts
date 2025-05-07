@@ -5,6 +5,7 @@ import {
 } from "../happy-path-test-data.spec";
 import {
   andIClickContinue,
+  givenIHaveClearedAndTypedInAField,
   givenIHaveSelected,
   givenIHaveTypedInAnEmptyField,
   iCanSeeAPageHeadingThatContains,
@@ -73,7 +74,7 @@ export const iCanSeeMyMaritimeUse = (purpose): void => {
 
 export const givenIHaveEnteredInformationAboutMyVessel = (): void => {
   const vessel = testMaritimeUseData.vessel;
-  givenIHaveTypedInAnEmptyField(vessel.maxCapacity, "#maxCapacity");
+  givenIHaveClearedAndTypedInAField(vessel.maxCapacity, "#maxCapacity");
   givenIHaveTypedInAnEmptyField(vessel.name, "#vesselName");
   givenIHaveTypedInAnEmptyField(vessel.beaconPosition, "#beaconLocation");
   givenIHaveTypedInAnEmptyField(vessel.pln, "#portLetterNumber");

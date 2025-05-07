@@ -102,6 +102,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       context.query.registrationId as string,
       context.query.useId as string
     );
+    ("");
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
@@ -145,7 +146,7 @@ const props = async (
 const mapper = (context: BeaconsGetServerSidePropsContext) => {
   const beaconUseMapper: BeaconUseFormMapper<PurposeForm> = {
     formToDraftBeaconUse: (form: PurposeForm): DraftBeaconUse => ({
-      purpose: form.purpose,
+      purpose: form.purpose || "",
     }),
     beaconUseToForm: (draftBeaconUse: DraftBeaconUse): PurposeForm => ({
       purpose: draftBeaconUse.purpose as Purpose,

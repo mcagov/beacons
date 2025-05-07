@@ -39,6 +39,14 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
 }: UseSummaryProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
 
+  const hasMainUse = draftRegistration.uses.filter((u) => u.mainUse).length > 0;
+
+  if (!hasMainUse) {
+    draftRegistration.uses.forEach((use, index) => {
+      use.mainUse = index === 0;
+    });
+  }
+
   return (
     <>
       <Layout
@@ -91,11 +99,28 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                       <AdditionalBeaconUseSummary
                         index={index}
                         use={use}
+                        changeUri={UrlBuilder.buildUseUrl(
+                          Actions.update,
+                          UsePages.environment,
+                          draftRegistration.id,
+                          index.toString()
+                        )}
                         deleteUri={confirmBeforeDelete(
                           use,
                           index,
                           draftRegistration.id
                         )}
+                        makeMainUseUri={
+                          ActionURLs.mainCachedUseMain +
+                          queryParams({
+                            useId: index,
+                            onSuccess: UrlBuilder.buildUseSummaryUrl(
+                              Actions.update,
+                              draftRegistration.id
+                            ),
+                            onFailure: ErrorPageURLs.serverError,
+                          })
+                        }
                         key={`row${index}`}
                       />
                     );

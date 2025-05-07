@@ -16,6 +16,7 @@ interface RadioListItemProps {
   conditional?: boolean;
   hintText?: string;
   defaultChecked?: boolean;
+  disabled?: boolean;
   inputHtmlAttributes?: Record<string, string | boolean>;
 }
 
@@ -47,6 +48,7 @@ export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
   conditional = false,
   hintText = null,
   defaultChecked = false,
+  disabled = false,
   inputHtmlAttributes = {},
 }: RadioListItemProps): JSX.Element => {
   name = name ? name : id;
@@ -98,6 +100,7 @@ export const RadioListItem: FunctionComponent<RadioListItemProps> = ({
           name={name}
           type="radio"
           value={value}
+          disabled={disabled}
           {...inputHtmlAttributes}
         />
         <FormLabel className="govuk-radios__label" htmlFor={id}>

@@ -26,7 +26,7 @@ resource "aws_security_group" "elasticache" {
 resource "aws_elasticache_cluster" "main" {
   cluster_id           = "${terraform.workspace}-mca-beacons-elasticache-cluster"
   engine               = "redis"
-  node_type            = "cache.t2.micro"
+  node_type            = "cache.t2.small"
   num_cache_nodes      = 1
   parameter_group_name = "default.redis6.x"
   engine_version       = "6.x"

@@ -14,7 +14,10 @@ import { deleteDraftRegistration } from "../useCases/deleteDraftRegistration";
 import { getAccountHolderId } from "../useCases/getAccountHolderId";
 import { getAccountHoldersRegistration } from "../useCases/getAccountHoldersRegistration";
 import { getBeaconsForAccountHolder } from "../useCases/getBeaconsByAccountHolderAndEmail";
-import { getBeaconsByAccountHolderId } from "../useCases/getBeaconsByAccountHolderId";
+import {
+  getBeaconByAccountHolderId,
+  getBeaconsByAccountHolderId,
+} from "../useCases/getBeaconsByAccountHolderId";
 import { getDraftRegistration } from "../useCases/getDraftRegistration";
 import { getOrCreateAccountHolder } from "../useCases/getOrCreateAccountHolder";
 import { saveDraftRegistration } from "../useCases/saveDraftRegistration";
@@ -24,12 +27,14 @@ import { updateAccountHolder } from "../useCases/updateAccountHolder";
 import { updateRegistration } from "../useCases/updateRegistration";
 import { IAppContainer } from "./IAppContainer";
 import { parseFormDataAs } from "./middleware";
+import { makeCachedUseMain } from "../useCases/makeCachedUseMain";
 
 // "overrides" is spread over the default appContainer at the bottom of this method to enable injecting mocks et al.
 export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
   return {
     /* Simple use cases */
     deleteCachedUse: deleteCachedUse,
+    makeCachedUseMain: makeCachedUseMain,
 
     /* Composite use cases requiring access to other use cases */
     get getDraftRegistration() {
@@ -58,6 +63,9 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     },
     get getAccountHolderId() {
       return getAccountHolderId(this);
+    },
+    get getBeaconByAccountHolderId() {
+      return getBeaconByAccountHolderId(this);
     },
     get getBeaconsByAccountHolderId() {
       return getBeaconsByAccountHolderId(this);
