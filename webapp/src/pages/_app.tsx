@@ -1,4 +1,4 @@
-import { Provider as AuthProvider } from "next-auth/client";
+import { Provider as AuthProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import { AppProps } from "next/app";
 import Head from "next/head";
