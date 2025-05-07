@@ -155,6 +155,7 @@ jobs:
       - end_to_end_tests
       - terraform_lint
       - prettier_check
+      - end_to_end_tests
     uses: ./.github/workflows/_reusable-deploy.yml
     with:
       environment: staging
