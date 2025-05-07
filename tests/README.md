@@ -18,7 +18,7 @@ $ npm run test:e2e
 
 The smoke tests are currently manual. We are looking to automate these.
 
-- [Pre-release testing scenarios](pre-release-testing-scenarios.md) must be performed after drafting a pre-release
-  to the staging environment and before releasing to production.
-- [Post-release testing scenarios](post-release-testing-scenarios.md) must be performed immediately after releasing
-  to production.
+- [Pre-release testing scenarios](pre-release-testing-scenarios.md) must be performed:
+  - drafting a release against the dev environment.
+  - after drafting a release against the staging environment, before publishing the release.
+- [Post-release testing scenarios](post-release-testing-scenarios.md) must be performed immediately after a published release has been deployed to production.
