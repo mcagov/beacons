@@ -117,7 +117,6 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
   }
 
   public async getAccountBeacons(accountHolderId: string): Promise<Beacon[]> {
-    // This method should really be moved to a different gateway in the future.
     const url = `${this.apiUrl}/${this.registrationControllerRoute}?accountHolderId=${accountHolderId}`;
     try {
       const response = await axios.get<
@@ -130,6 +129,26 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
       return new BeaconsApiResponseMapper().mapList(response.data);
     } catch (error) {
       logger.error("getAccountBeacons:", error);
+      throw error;
+    }
+  }
+
+  public async getAccountBeacon(
+    accountHolderId: string,
+    registrationId: string
+  ): Promise<Beacon> {
+    const url = `${this.apiUrl}/${this.registrationControllerRoute}/${accountHolderId}/registration/${registrationId}`;
+    try {
+      const response = await axios.get<
+        any,
+        AxiosResponse<RegistrationResponse>
+      >(url, {
+        headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
+      });
+      logger.info("Account beacon retrieved");
+      return new BeaconsApiResponseMapper().map(response.data);
+    } catch (error) {
+      logger.error("getAccountBeacon:", error);
       throw error;
     }
   }

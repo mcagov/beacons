@@ -1,10 +1,8 @@
 package uk.gov.mca.beacons.api.legacybeacon.application;
 
-import com.nimbusds.openid.connect.sdk.federation.policy.operations.PolicyOperationFactory;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,17 +48,30 @@ public class LegacyBeaconService {
     String hexId,
     String accountHolderEmail
   ) {
-    List<LegacyBeacon> beaconsMatchingHexId = legacyBeaconRepository.findByHexId(
-      hexId
-    );
-    return beaconsMatchingHexId
+    if (accountHolderEmail == null || accountHolderEmail.isBlank()) {
+      return new ArrayList<>();
+    }
+
+    String lowerAccountHolderEmail = accountHolderEmail.toLowerCase();
+
+    return legacyBeaconRepository
+      .findByHexId(hexId)
       .stream()
       .filter(l ->
-        Arrays
-          .asList(l.getRecoveryEmail(), l.getOwnerEmail())
-          .contains(accountHolderEmail)
+        emailMatches(lowerAccountHolderEmail, l.getRecoveryEmail()) ||
+        emailMatches(lowerAccountHolderEmail, l.getOwnerEmail())
       )
       .collect(Collectors.toList());
+  }
+
+  private boolean emailMatches(
+    String lowerAccountHolderEmail,
+    String emailToMatch
+  ) {
+    return (
+      emailToMatch != null &&
+      emailToMatch.toLowerCase().equals(lowerAccountHolderEmail)
+    );
   }
 
   public LegacyBeacon claim(LegacyBeacon legacyBeacon) {
@@ -133,6 +144,8 @@ public class LegacyBeaconService {
     legacyBeaconToDelete.setOwnerName(null);
     legacyBeaconToDelete.setUseActivities(null);
     legacyBeaconToDelete.setLastModifiedDate(today);
+
+    legacyBeaconToDelete.setRecoveryEmail(null);
 
     return legacyBeaconRepository.save(legacyBeaconToDelete);
   }

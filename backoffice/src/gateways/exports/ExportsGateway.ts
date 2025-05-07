@@ -1,7 +1,6 @@
 import axios from "axios";
 import { applicationConfig } from "config";
 import { IAuthGateway } from "gateways/auth/IAuthGateway";
-import { customDateStringFormat } from "utils/dateTime";
 import {
   ExportSearchFormProps,
   IBeaconExportSearchResult,
@@ -112,34 +111,22 @@ export class ExportsGateway implements IExportsGateway {
 
     if (searchForm.registrationFrom) {
       url += `&registrationFrom=${encodeURIComponent(
-        customDateStringFormat(
-          searchForm.registrationFrom,
-          "yyyy-MM-DDTHH:mm:ss.SSSZ"
-        )
+        new Date(searchForm.registrationFrom).toISOString()
       )}`;
     }
     if (searchForm.registrationTo) {
       url += `&registrationTo=${encodeURIComponent(
-        customDateStringFormat(
-          searchForm.registrationTo,
-          "yyyy-MM-DDTHH:mm:ss.SSSZ"
-        )
+        new Date(searchForm.registrationTo).toISOString()
       )}`;
     }
     if (searchForm.lastModifiedFrom) {
       url += `&lastModifiedFrom=${encodeURIComponent(
-        customDateStringFormat(
-          searchForm.lastModifiedFrom,
-          "yyyy-MM-DDTHH:mm:ss.SSSZ"
-        )
+        new Date(searchForm.lastModifiedFrom).toISOString()
       )}`;
     }
     if (searchForm.lastModifiedTo) {
       url += `&lastModifiedTo=${encodeURIComponent(
-        customDateStringFormat(
-          searchForm.lastModifiedTo,
-          "yyyy-MM-DDTHH:mm:ss.SSSZ"
-        )
+        new Date(searchForm.lastModifiedTo).toISOString()
       )}`;
     }
 

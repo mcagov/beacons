@@ -1,10 +1,10 @@
-import { formatDateLong, formatMonth } from "./dateTime";
+import { formatDateLong, formatDateTime, formatMonth } from "./dateTime";
 
 describe("formatDateLong()", () => {
   const expectations = [
-    { in: "1 April 2021", out: "1 Apr 21" },
-    { in: "1 April 2022", out: "1 Apr 22" },
-    { in: "31 October 2028", out: "31 Oct 28" },
+    { in: "2024-03-22T10:28:35.537234Z", out: "22 March 2024" },
+    { in: "2023-04-10", out: "10 April 2023" },
+    { in: "2012-01-01", out: "1 January 2012" },
   ];
 
   expectations.forEach((expectation) => {
@@ -27,6 +27,22 @@ describe("formatMonth()", () => {
       expectation.out
     }`, () => {
       expect(formatMonth(expectation.in)).toEqual(expectation.out);
+    });
+  });
+});
+
+describe("formatDateTime()", () => {
+  const expectations = [
+    { in: "2024-03-22T10:28:35.537234Z", out: "22/03/2024" },
+    { in: "2023-04-10", out: "10/04/2023" },
+    { in: "2012-01-01", out: "01/01/2012" },
+  ];
+
+  expectations.forEach((expectation) => {
+    it(`formats ${JSON.stringify(expectation.in)} ==> ${
+      expectation.out
+    }`, () => {
+      expect(formatDateTime(expectation.in)).toEqual(expectation.out);
     });
   });
 });

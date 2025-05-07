@@ -133,7 +133,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
             windfarmPeopleCount: use.windfarmPeopleCount || "",
             otherActivityLocation: use.otherActivityLocation || "",
             otherActivityPeopleCount: use.otherActivityPeopleCount || "",
-            mainUse: use.mainUse,
+            mainUse: use.mainUse || false,
             // Writing this makes me really unhappy, but it is for compatibility with what was here before.
           } as Record<string, any> as Use)
       )

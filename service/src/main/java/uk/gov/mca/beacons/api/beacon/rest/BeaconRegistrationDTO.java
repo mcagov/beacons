@@ -58,4 +58,6 @@ public class BeaconRegistrationDTO {
 
   @NotNull
   private UUID accountHolderId;
+
+  private String mainUseName;
 }

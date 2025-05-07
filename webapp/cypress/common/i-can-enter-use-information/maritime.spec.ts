@@ -24,6 +24,7 @@ import {
 import {
   andIClickContinue,
   andIHaveVisited,
+  givenIHaveClearedAndTyped,
   givenIHaveSelected,
   givenIHaveTyped,
   givenIHaveUnselected,
@@ -272,7 +273,7 @@ export const iCanEditMyMaritimePurpose = (purpose: Purpose): void => {
 
 export const givenIHaveEnteredInformationAboutMyVessel = (): void => {
   const vessel = testMaritimeUseData.vessel;
-  givenIHaveTyped(vessel.maxCapacity, "#maxCapacity");
+  givenIHaveClearedAndTyped(vessel.maxCapacity, "#maxCapacity");
   givenIHaveTyped(vessel.name, "#vesselName");
   givenIHaveTyped(vessel.beaconPosition, "#beaconLocation");
   givenIHaveTyped(vessel.pln, "#portLetterNumber");
@@ -287,7 +288,7 @@ export const givenIHaveEnteredInformationAboutMyVessel = (): void => {
 
 export const givenIHaveEnteredRequiredInformationAboutMyVessel = (): void => {
   const vessel = testMaritimeUseData.vessel;
-  givenIHaveTyped(vessel.maxCapacity, "#maxCapacity");
+  givenIHaveClearedAndTyped(vessel.maxCapacity, "#maxCapacity");
 };
 
 export const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {

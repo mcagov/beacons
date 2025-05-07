@@ -373,7 +373,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (registration) => {
 
   whenIClickTheChangeLinkForTheSectionWithHeading("How this beacon is used");
   theBackLinkContains("manage-my-registrations", "update");
-  whenIGoToDeleteMy(/main use/i);
+  whenIGoToDeleteMy(/first use/i);
   iAmPromptedToConfirm(
     registration.uses[0].environment,
     registration.uses[0].purpose,
@@ -382,7 +382,7 @@ const iCanUpdateTheDetailsOfMyExistingRegistration = (registration) => {
   whenIClickTheButtonContaining("Yes");
   theNumberOfUsesIs(0);
   andIClickTheButtonContaining("Add a use");
-  iCanSeeAPageHeadingThatContains("main use");
+  iCanSeeAPageHeadingThatContains("first use");
   theBackLinkContains("manage-my-registrations", "update", "use");
   givenIHaveEnteredMyMaritimeUse("PLEASURE");
   theNumberOfUsesIs(1);
@@ -692,7 +692,7 @@ const iCanViewTheUpdatedAdditionalBeaconInformation = (
   iCanSeeAPageHeadingThatContains("Beacon information");
 };
 
-const thenIShouldBeOnTheRegistrationSummaryPageForHexId = (hexId) => {
+export const thenIShouldBeOnTheRegistrationSummaryPageForHexId = (hexId) => {
   iCanSeeAPageHeadingThatContains("Your registered beacon with Hex ID/UIN");
   iCanSeeAPageHeadingThatContains(hexId);
 };

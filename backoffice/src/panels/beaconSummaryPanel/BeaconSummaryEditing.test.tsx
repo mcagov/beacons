@@ -66,7 +66,7 @@ describe("BeaconSummaryEditing", () => {
     );
 
     const dropdownField = await screen.findByLabelText(/protocol/i);
-    const protocol = "EPIRB non-GPS, non-CSTA, UK Serialised";
+    const protocol = "EPIRB, non-GPS, non-CSTA, UK Serialised";
 
     userEvent.selectOptions(dropdownField, protocol);
     userEvent.click(screen.getByRole("button", { name: "Save" }));

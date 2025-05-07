@@ -1,4 +1,4 @@
-import { ValidatorFn, Validators } from "../../../../src/lib/form/Validators";
+import { Validators, ValidatorFn } from "../../../../src/lib/form/Validators";
 
 describe("isLength validator", () => {
   const expectedErrorMessage = "is a validated field";

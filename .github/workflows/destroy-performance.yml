@@ -1,5 +1,9 @@
 name: Destroy Performance
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_dispatch:
 
@@ -20,10 +24,10 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       TF_WORKSPACE: performance
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: main
-      - uses: hashicorp/setup-terraform@v2
+      - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
       - name: Terraform Init

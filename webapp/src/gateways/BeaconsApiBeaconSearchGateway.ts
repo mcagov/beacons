@@ -41,6 +41,7 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
           sort,
         },
       });
+
       logger.info("Beacons retrieved by account holder id & email address");
       return response.data._embedded.beaconSearch;
     } catch (error) {

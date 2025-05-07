@@ -1,7 +1,7 @@
 import "./letter.scss";
 import { FunctionComponent } from "react";
 import { IBeaconExport } from "gateways/exports/IBeaconExport";
-import { customDateStringFormat } from "utils/dateTime";
+import { formatDateLong } from "utils/dateTime";
 export interface LetterProps {
   beacon: IBeaconExport;
   type: "Registration" | "Amended";
@@ -11,11 +11,14 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
   beacon,
   type,
 }): JSX.Element => {
-  if (!beacon.owners) {
+  if (!beacon.owners || beacon.owners.length === 0) {
     return <p>Could not load owner</p>;
   }
 
-  const owner = beacon.owners.at(0);
+  const mainOwners = beacon.owners.filter((owner) => owner.isMain);
+
+  const owner = mainOwners.length > 0 ? mainOwners[0] : beacon.owners[0];
+
   return (
     <div className="letter">
       <div className="header full">
@@ -63,7 +66,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
             <p>Dept Ref: {beacon.departmentReference}</p>
           )}
           <p className="underline">www.gov.uk/mca</p>
-          <p>{customDateStringFormat(new Date(), "DD MMMM yyyy")}</p>
+          <p>{formatDateLong(new Date().toString())}</p>
         </div>
       </div>
 

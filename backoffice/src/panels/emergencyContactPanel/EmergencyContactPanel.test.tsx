@@ -4,6 +4,8 @@ import { emergencyContactsFixture } from "fixtures/emergencyContacts.fixture";
 import * as _ from "lodash";
 import { IBeaconsGateway } from "../../gateways/beacons/IBeaconsGateway";
 import { EmergencyContactPanel } from "./EmergencyContactPanel";
+import { createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/styles";
 
 describe("Emergency Contact Summary Panel", () => {
   let beaconsGatewayDouble: IBeaconsGateway;
@@ -23,10 +25,12 @@ describe("Emergency Contact Summary Panel", () => {
     getBeaconDouble.mockResolvedValue(beaconFixture);
 
     render(
-      <EmergencyContactPanel
-        beaconsGateway={beaconsGatewayDouble}
-        beaconId={beaconFixture.id}
-      />
+      <ThemeProvider theme={createTheme()}>
+        <EmergencyContactPanel
+          beaconsGateway={beaconsGatewayDouble}
+          beaconId={beaconFixture.id}
+        />
+      </ThemeProvider>
     );
 
     expect(await screen.findByText(/Lady Hamilton/i)).toBeInTheDocument();
@@ -41,10 +45,12 @@ describe("Emergency Contact Summary Panel", () => {
     getBeaconDouble.mockResolvedValue(twoEmergencyContactBeacon);
 
     render(
-      <EmergencyContactPanel
-        beaconsGateway={beaconsGatewayDouble}
-        beaconId={beaconFixture.id}
-      />
+      <ThemeProvider theme={createTheme()}>
+        <EmergencyContactPanel
+          beaconsGateway={beaconsGatewayDouble}
+          beaconId={beaconFixture.id}
+        />
+      </ThemeProvider>
     );
 
     expect(await screen.findByText(/Emergency Contact 1/i)).toBeInTheDocument();
@@ -58,10 +64,12 @@ describe("Emergency Contact Summary Panel", () => {
     getBeaconDouble.mockResolvedValue(noEmergencyContactBeacon);
 
     render(
-      <EmergencyContactPanel
-        beaconsGateway={beaconsGatewayDouble}
-        beaconId={beaconFixture.id}
-      />
+      <ThemeProvider theme={createTheme()}>
+        <EmergencyContactPanel
+          beaconsGateway={beaconsGatewayDouble}
+          beaconId={beaconFixture.id}
+        />
+      </ThemeProvider>
     );
 
     expect(

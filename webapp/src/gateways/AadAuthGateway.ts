@@ -7,7 +7,7 @@ import logger from "../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
 
 export class AadAuthGateway implements AuthGateway {
-  private config: { auth: NodeAuthOptions; apiId: string };
+  private config: { auth: NodeAuthOptions; apiId: string; cache: any };
 
   public constructor(
     config = {
@@ -17,6 +17,9 @@ export class AadAuthGateway implements AuthGateway {
         clientSecret: process.env.WEBAPP_CLIENT_SECRET,
       },
       apiId: process.env.AAD_API_ID,
+      cache: {
+        cacheLocation: "localStorage",
+      },
     }
   ) {
     this.config = config;

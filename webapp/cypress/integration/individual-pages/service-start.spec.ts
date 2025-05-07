@@ -6,7 +6,7 @@ describe("Service start page", () => {
     cy.contains("Maritime and Coastguard Agency: Register a beacon").click({
       force: true,
     });
-    cy.url().should("eq", "http://localhost:3000/");
+    cy.url().should("eq", "http://127.0.0.1:3000/");
   });
 
   it("Accepts the cookie policy if the user selects `Hide this message`", () => {

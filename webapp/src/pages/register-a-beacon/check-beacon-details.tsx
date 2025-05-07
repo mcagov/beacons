@@ -86,7 +86,7 @@ const BeaconIsSecondGenerationCheckbox: FunctionComponent<FormInputProps> = ({
     <CheckboxListItem
       id="isSecondGeneration"
       defaultChecked={value == "true"}
-      label="Is Second Generation HEX ID"
+      label="Is Second Generation (23 Character) HEX ID"
     />
   </FormGroup>
 );
