@@ -23,7 +23,7 @@
   "devDependencies": {
     "adr-log": "^2.2.0",
     "cypress": "^9.5.3",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.5.0",
     "husky": "^9.1.7",
     "prettier": "2.6.2",
     "prettier-plugin-java": "^1.6.1",
