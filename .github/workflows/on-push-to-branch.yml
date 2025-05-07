@@ -1,27 +1,15 @@
-name: Dependabot Tests
+name: Run tests against branch
+
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   push:
-    branches:
-      - dependabot/**
+    branches-ignore:
+      - main
+
 jobs:
-  docker:
-    env:
-      DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
-
-    timeout-minutes: 20
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: docker-compose backwards compat
-        run: |
-          mkdir -p $HOME/.local/bin
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          echo 'docker compose --compatibility "$@"' >> $HOME/.local/bin/docker-compose
-          chmod +x $HOME/.local/bin/docker-compose
   terraform_lint:
     name: Terraform lint
     runs-on: ubuntu-latest
@@ -51,22 +39,22 @@ jobs:
 
   test_webapp:
     name: Test Webapp
-    uses: ./.github/workflows/test-webapp.yml
+    uses: ./.github/workflows/_reusable-test-webapp.yml
     secrets:
       test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
       test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
 
+  test_backoffice:
+    name: Test Backoffice
+    uses: ./.github/workflows/_reusable-test-backoffice.yml
+
   test_service:
     name: Test Service
-    uses: ./.github/workflows/test-service.yml
+    uses: ./.github/workflows/_reusable-test-service.yml
     with:
-      environment: development
+      environment: ci-test
     secrets:
       microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
       microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
       microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
       microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
-
-  test_backoffice:
-    name: Test Backoffice
-    uses: ./.github/workflows/test-backoffice.yml
