@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import React, { forwardRef } from "react";
 import { TextFilter, TextFilterProps } from "./TextFilter";
 
-const tableIcons: Icons<any> = {
+const tableIcons: Icons = {
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
 };
 

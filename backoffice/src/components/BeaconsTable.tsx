@@ -56,7 +56,7 @@ export type BeaconRowData = Record<
   string
 >;
 
-const tableIcons: Icons<any> = {
+const tableIcons: Icons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
