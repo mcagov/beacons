@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 import React, { forwardRef } from "react";
 import { SearchBar, SearchbarProps } from "./SearchBar";
 
-const tableIcons: Icons = {
+const tableIcons: Icons<any> = {
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
 };

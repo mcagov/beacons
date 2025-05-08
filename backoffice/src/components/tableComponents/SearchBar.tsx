@@ -56,7 +56,7 @@ export interface SearchbarProps {
   searchFieldStyle: React.CSSProperties;
   dataManager: { changeSearchText: (searchText: string) => void };
   onSearchChanged: (searchText: string) => void;
-  icons: Icons;
+  icons: Icons<any>;
   classes: Record<keyof ReturnType<typeof styles>, string>;
 }
 

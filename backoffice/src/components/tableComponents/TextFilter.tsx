@@ -14,8 +14,8 @@ type ColumnDef<T extends Record<string, any>> = Column<T> & {
 // columnDef, onFilterChanged, and icons are types defined by @material-table/core
 export interface TextFilterProps<T extends Record<string, any>> {
   columnDef: Column<T>;
-  onFilterChanged: (rowId: string, value: any) => void;
-  icons: Icons;
+  onFilterChanged: (rowId: number, value: any) => void;
+  icons: Icons<any>;
   filterTooltip: string;
 }
 
