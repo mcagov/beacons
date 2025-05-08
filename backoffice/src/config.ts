@@ -2,5 +2,5 @@ import { serviceUrl } from "./utils/urls";
 
 export const applicationConfig = {
   apiUrl: serviceUrl(window.location.hostname),
-  apiTimeoutMs: 60000,
+  apiTimeoutMs: 120000,
 };
