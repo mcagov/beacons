@@ -95,13 +95,13 @@ const ActivityPage: FunctionComponent<ActivityPageProps> = ({
               Actions.update,
               UsePages.environment,
               draftRegistration.id,
-              useId
+              useId,
             )
           : UrlBuilder.buildUseUrl(
               Actions.update,
               UsePages.purpose,
               draftRegistration.id,
-              useId
+              useId,
             )
       }
       pageHeading={pageHeading}
@@ -157,7 +157,7 @@ export const ActivityOptions: FunctionComponent<ActivityOptionsProps> = ({
     return <LandOptions form={form} listItemName={listItemName} />;
 
   throw new Error(
-    "Environment or purpose not found.  User needs to enter environment and purpose on previous pages."
+    "Environment or purpose not found.  User needs to enter environment and purpose on previous pages.",
   );
 };
 
@@ -593,30 +593,30 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<ActivityForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<ActivityForm>(
         context,
         validationRules,
         mapper(context),
-        await nextPage(context)
+        await nextPage(context),
       ),
     ]).execute();
-  })
+  }),
 );
 
 const nextPage = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<string> => {
   const environment = (
     await context.container.getDraftRegistration(
-      context.req.cookies[formSubmissionCookieId]
+      context.req.cookies[formSubmissionCookieId],
     )
   ).uses[context.query.useId as string]?.environment;
 
@@ -632,16 +632,16 @@ const nextPage = async (
     Actions.update,
     nextPageInFlow[environment],
     registrationId as string,
-    useId as string
+    useId as string,
   );
 };
 
 const props = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<Partial<ActivityPageProps>> => {
   const use: DraftBeaconUse = (
     await context.container.getDraftRegistration(
-      context.req.cookies[formSubmissionCookieId]
+      context.req.cookies[formSubmissionCookieId],
     )
   ).uses[context.query.useId as string];
 
@@ -655,7 +655,7 @@ const props = async (
 const conditionalPeopleCount = (
   value: string | undefined,
   activity: string,
-  matchingActivity: Activity
+  matchingActivity: Activity,
 ): string => {
   if (activity !== matchingActivity) {
     return value || "";
@@ -665,7 +665,7 @@ const conditionalPeopleCount = (
 };
 
 const mapper = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): DraftRegistrationFormMapper<ActivityForm> => {
   const beaconUseMapper: BeaconUseFormMapper<ActivityForm> = {
     formToDraftBeaconUse: (form) => {
@@ -677,19 +677,19 @@ const mapper = (
         otherActivityPeopleCount: conditionalPeopleCount(
           form.otherActivityPeopleCount,
           form.activity,
-          Activity.OTHER
+          Activity.OTHER,
         ),
         workingRemotelyLocation: form.workingRemotelyLocation || "",
         workingRemotelyPeopleCount: conditionalPeopleCount(
           form.workingRemotelyPeopleCount,
           form.activity,
-          Activity.WORKING_REMOTELY
+          Activity.WORKING_REMOTELY,
         ),
         windfarmLocation: form.windfarmLocation || "",
         windfarmPeopleCount: conditionalPeopleCount(
           form.windfarmPeopleCount,
           form.activity,
-          Activity.WINDFARM
+          Activity.WINDFARM,
         ),
       };
     },
@@ -744,12 +744,12 @@ const validationRules = ({
       activity,
       [Validators.required("Activity is a required field")],
       [],
-      fieldToFocus(environment, purpose)
+      fieldToFocus(environment, purpose),
     ),
     otherActivityText: new FieldManager(
       otherActivityText,
       [Validators.required("Enter a description for your activity")],
-      [activityMatchingCondition(Activity.OTHER)]
+      [activityMatchingCondition(Activity.OTHER)],
     ),
     otherActivityLocation: new FieldManager(
       otherActivityLocation,
@@ -757,54 +757,54 @@ const validationRules = ({
       [
         activityMatchingCondition(Activity.OTHER),
         environmentIsLandMatchingCondition,
-      ]
+      ],
     ),
     otherActivityPeopleCount: new FieldManager(
       otherActivityPeopleCount,
       [
         Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be present when you use your beacon"
+          "Enter a whole number for the typical/maximum number of people that tend to be present when you use your beacon",
         ),
       ],
       [
         activityMatchingCondition(Activity.OTHER),
         environmentIsLandMatchingCondition,
-      ]
+      ],
     ),
     workingRemotelyLocation: new FieldManager(
       workingRemotelyLocation,
       [Validators.required("Enter the location where you work remotely")],
-      [activityMatchingCondition(Activity.WORKING_REMOTELY)]
+      [activityMatchingCondition(Activity.WORKING_REMOTELY)],
     ),
     workingRemotelyPeopleCount: new FieldManager(
       workingRemotelyPeopleCount,
       [
         Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be present when you work remotely"
+          "Enter a whole number for the typical/maximum number of people that tend to be present when you work remotely",
         ),
       ],
-      [activityMatchingCondition(Activity.WORKING_REMOTELY)]
+      [activityMatchingCondition(Activity.WORKING_REMOTELY)],
     ),
     windfarmLocation: new FieldManager(
       windfarmLocation,
       [Validators.required("Enter the location of the windfarm")],
-      [activityMatchingCondition(Activity.WINDFARM)]
+      [activityMatchingCondition(Activity.WINDFARM)],
     ),
     windfarmPeopleCount: new FieldManager(
       windfarmPeopleCount,
       [
         Validators.wholeNumber(
-          "Enter a whole number for the typical/maximum number of people that tend to be present at the windfarm"
+          "Enter a whole number for the typical/maximum number of people that tend to be present at the windfarm",
         ),
       ],
-      [activityMatchingCondition(Activity.WINDFARM)]
+      [activityMatchingCondition(Activity.WINDFARM)],
     ),
   });
 };
 
 const fieldToFocus = (
   environment: Environment | undefined,
-  purpose: Purpose | undefined
+  purpose: Purpose | undefined,
 ) => {
   switch (environment) {
     case Environment.MARITIME:

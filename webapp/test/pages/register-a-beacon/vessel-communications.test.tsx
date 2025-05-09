@@ -73,7 +73,7 @@ describe("VesselCommunications", () => {
         form={emptyVesselCommunicationsForm}
         useId={0}
         showCookieBanner={false}
-      />
+      />,
     );
 
     const mobilePhoneInput1 = container.querySelector("#mobileTelephoneInput1");
@@ -91,11 +91,11 @@ describe("VesselCommunications", () => {
         form={emptyVesselCommunicationsForm}
         useId={0}
         showCookieBanner={false}
-      />
+      />,
     );
 
     const satelliteTelephoneNumberInput = container.querySelector(
-      "#satelliteTelephoneInput"
+      "#satelliteTelephoneInput",
     );
 
     expect(satelliteTelephoneNumberInput).not.toHaveAttribute("autocomplete");

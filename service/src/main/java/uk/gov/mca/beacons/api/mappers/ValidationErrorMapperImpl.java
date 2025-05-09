@@ -15,8 +15,7 @@ public class ValidationErrorMapperImpl implements ValidationErrorMapper {
     final var errorResponse = new ErrorResponseDTO();
 
     for (FieldError fieldError : errors.getFieldErrors()) {
-      final var validationError = ValidationError
-        .builder()
+      final var validationError = ValidationError.builder()
         .field(fieldError.getField())
         .description(fieldError.getDefaultMessage())
         .build();

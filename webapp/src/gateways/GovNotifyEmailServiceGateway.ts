@@ -7,7 +7,7 @@ export class GovNotifyEmailServiceGateway implements EmailServiceGateway {
   constructor(apiKey: string) {
     if (!apiKey) {
       logger.info(
-        "GOV_NOTIFY_API_KEY not set on instantiation of GovNotifyEmailServiceGateway.  I'm not going to send any Gov Notify emails."
+        "GOV_NOTIFY_API_KEY not set on instantiation of GovNotifyEmailServiceGateway.  I'm not going to send any Gov Notify emails.",
       );
     } else {
       this.api = new NotifyClient(apiKey);
@@ -17,7 +17,7 @@ export class GovNotifyEmailServiceGateway implements EmailServiceGateway {
   public async sendEmail(
     emailTemplateId: string,
     email: string,
-    personalisation = {}
+    personalisation = {},
   ): Promise<boolean> {
     for (const key in personalisation) {
       if (typeof personalisation[key] == "undefined") personalisation[key] = "";

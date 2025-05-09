@@ -138,26 +138,26 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<BeaconOwnerAddressForm>(
         context,
         validationRules,
-        mapper
+        mapper,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<BeaconOwnerAddressForm>(
         context,
         validationRules,
-        mapper
+        mapper,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<BeaconOwnerAddressForm>(
         context,
         validationRules,
         mapper,
-        nextPageUrl
+        nextPageUrl,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const mapper: DraftRegistrationFormMapper<BeaconOwnerAddressForm> = {
@@ -212,7 +212,7 @@ const validationRules = ({
     ]),
     ownerAddressLine2: new FieldManager(ownerAddressLine2, [
       Validators.required(
-        "Enter the second line of the beacon owner's address"
+        "Enter the second line of the beacon owner's address",
       ),
     ]),
     ownerAddressLine3: new FieldManager(ownerAddressLine3),

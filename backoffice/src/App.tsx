@@ -72,11 +72,11 @@ const App: FunctionComponent = () => {
   const beaconsGateway = new BeaconsGateway(
     beaconResponseMapper,
     beaconRequestMapper,
-    authGateway
+    authGateway,
   );
   const legacyBeaconsGateway = new LegacyBeaconsGateway(
     legacyBeaconResponseMapper,
-    authGateway
+    authGateway,
   );
 
   const usesGateway = new UsesGateway(beaconResponseMapper, authGateway);
@@ -84,7 +84,7 @@ const App: FunctionComponent = () => {
   const exportsGateway = new ExportsGateway(authGateway);
   const accountHolderGateway = new AccountHolderGateway(
     beaconResponseMapper,
-    authGateway
+    authGateway,
   );
 
   const SingleBeaconRecordViewWithParam: FunctionComponent = () => {

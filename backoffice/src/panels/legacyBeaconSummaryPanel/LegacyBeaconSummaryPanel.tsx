@@ -20,11 +20,11 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
   ILegacyBeaconSummaryProps
 > = ({ legacyBeaconId, legacyBeaconsGateway }): JSX.Element => {
   const [userState, setUserState] = useState<DataPanelStates>(
-    DataPanelStates.Viewing
+    DataPanelStates.Viewing,
   );
   const [error, setError] = useState(false);
   const [legacyBeacon, setLegacyBeacon] = useState<ILegacyBeacon>(
-    {} as ILegacyBeacon
+    {} as ILegacyBeacon,
   );
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export const LegacyBeaconSummaryPanel: FunctionComponent<
     try {
       await legacyBeaconsGateway.updateRecoveryEmail(
         legacyBeacon.id,
-        updatedRecoveryEmail
+        updatedRecoveryEmail,
       );
       console.log("New recovery email: " + updatedRecoveryEmail);
       setUserState(DataPanelStates.Viewing);

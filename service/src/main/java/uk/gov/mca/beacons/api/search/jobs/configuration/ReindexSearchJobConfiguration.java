@@ -78,7 +78,10 @@ public class ReindexSearchJobConfiguration {
   @Bean
   public Step reindexSearchLegacyBeaconStep(
     ItemReader<LegacyBeacon> searchLegacyBeaconItemReader,
-    ItemProcessor<LegacyBeacon, BeaconSearchDocument> reindexSearchLegacyBeaconProcessor,
+    ItemProcessor<
+      LegacyBeacon,
+      BeaconSearchDocument
+    > reindexSearchLegacyBeaconProcessor,
     ItemWriter<BeaconSearchDocument> beaconSearchDocumentItemWriter
   ) {
     return stepBuilderFactory

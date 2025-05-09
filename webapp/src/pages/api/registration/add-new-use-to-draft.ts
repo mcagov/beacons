@@ -16,7 +16,7 @@ export const handler = withApiContainer(async (req: BeaconsApiRequest, res) => {
     nextPage
       ? (nextPage as string)
       : CreateRegistrationPageURLs.environment +
-          queryParams({ useId: newUseId })
+          queryParams({ useId: newUseId }),
   );
 });
 

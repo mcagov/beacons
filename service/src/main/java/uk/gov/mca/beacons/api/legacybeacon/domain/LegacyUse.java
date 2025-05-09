@@ -121,9 +121,9 @@ public class LegacyUse implements ValueObject, Serializable {
       return false;
     }
 
-    return Arrays
-      .asList("Y", "YES", "T", "TRUE")
-      .contains(getIsMain().trim().toUpperCase());
+    return Arrays.asList("Y", "YES", "T", "TRUE").contains(
+      getIsMain().trim().toUpperCase()
+    );
   }
 
   public Map<String, String> getCommunicationTypes() {

@@ -5,7 +5,7 @@ jest.mock("uuid", () => ({
 }));
 
 jest.mock("urlencoded-body-parser", () =>
-  jest.fn(() => Promise.resolve({ model: "ASOS" }))
+  jest.fn(() => Promise.resolve({ model: "ASOS" })),
 );
 
 describe("Middleware Functions", () => {
@@ -26,7 +26,7 @@ describe("Middleware Functions", () => {
 
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
-        "submissionId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict"
+        "submissionId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict",
       );
     };
 

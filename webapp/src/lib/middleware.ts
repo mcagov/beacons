@@ -8,7 +8,7 @@ export const setCookie = (
   res: ServerResponse,
   cookieName: string,
   cookieValue: string,
-  options: Partial<CookieSerializeOptions> = {}
+  options: Partial<CookieSerializeOptions> = {},
 ): void => {
   const cookieSerializeOptions: CookieSerializeOptions = {
     path: "/",
@@ -19,12 +19,12 @@ export const setCookie = (
 
   res.setHeader(
     "Set-Cookie",
-    serialize(cookieName, cookieValue, cookieSerializeOptions)
+    serialize(cookieName, cookieValue, cookieSerializeOptions),
   );
 };
 
 export function clearFormSubmissionCookie(
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): void {
   const res = context.res;
   const options: CookieSerializeOptions = {

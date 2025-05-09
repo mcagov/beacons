@@ -20,22 +20,21 @@ export class AadAuthGateway implements AuthGateway {
       cache: {
         cacheLocation: "localStorage",
       },
-    }
+    },
   ) {
     this.config = config;
   }
 
   public async getAccessToken(
-    cca = new ConfidentialClientApplication({ auth: this.config.auth })
+    cca = new ConfidentialClientApplication({ auth: this.config.auth }),
   ): Promise<string> {
     try {
       const accessTokenRequest: ClientCredentialRequest = {
         scopes: [`api://${this.config.apiId}/.default`],
       };
 
-      const authResult = await cca.acquireTokenByClientCredential(
-        accessTokenRequest
-      );
+      const authResult =
+        await cca.acquireTokenByClientCredential(accessTokenRequest);
       logger.info("Access token retrieved");
       return authResult.accessToken;
     } catch (error) {

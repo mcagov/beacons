@@ -34,8 +34,7 @@ public class BeaconOwnerIntegrationTest extends BaseIntegrationTest {
     beaconOwner.setFullName("Test Testsson");
     beaconOwner.setTelephoneNumber("07825996445");
     beaconOwner.setAddress(
-      Address
-        .builder()
+      Address.builder()
         .addressLine1("123 Test")
         .addressLine2("Testgatan")
         .townOrCity("Karlstad")

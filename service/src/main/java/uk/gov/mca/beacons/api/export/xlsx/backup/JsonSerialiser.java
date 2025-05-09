@@ -24,9 +24,8 @@ import uk.gov.mca.beacons.api.utils.BeaconsStringUtils;
 
 public class JsonSerialiser {
 
-  private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
-    "dd-MM-yyyy"
-  );
+  private static final DateTimeFormatter dateFormatter =
+    DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
   public static JSONArray mapModernBeaconNotesToJsonArray(List<Note> notes) {
     var jsonArray = new JSONArray();
@@ -89,13 +88,11 @@ public class JsonSerialiser {
         );
         json.put(
           "telephone numbers",
-          (
-            BeaconsStringUtils.getMultipleValuesAsString(
+          (BeaconsStringUtils.getMultipleValuesAsString(
               " - ",
               owner.getTelephoneNumber(),
               owner.getAlternativeTelephoneNumber()
-            )
-          )
+            ))
         );
         json.put(
           "email",
@@ -113,20 +110,17 @@ public class JsonSerialiser {
     String amalgamatedAddress = "";
 
     if (address != null) {
-      amalgamatedAddress =
-        BeaconsStringUtils
-          .getMultipleValuesAsString(
-            "-",
-            address.getAddressLine1(),
-            address.getAddressLine2(),
-            address.getAddressLine3(),
-            address.getAddressLine4(),
-            address.getTownOrCity(),
-            address.getPostcode(),
-            address.getCounty(),
-            address.getCountry()
-          )
-          .toUpperCase();
+      amalgamatedAddress = BeaconsStringUtils.getMultipleValuesAsString(
+        "-",
+        address.getAddressLine1(),
+        address.getAddressLine2(),
+        address.getAddressLine3(),
+        address.getAddressLine4(),
+        address.getTownOrCity(),
+        address.getPostcode(),
+        address.getCounty(),
+        address.getCountry()
+      ).toUpperCase();
     }
 
     return amalgamatedAddress;
@@ -186,20 +180,17 @@ public class JsonSerialiser {
     String amalgamatedAddress = "";
 
     if (address != null) {
-      amalgamatedAddress =
-        BeaconsStringUtils
-          .getMultipleValuesAsString(
-            "-",
-            address.getAddressLine1(),
-            address.getAddressLine2(),
-            address.getAddressLine3(),
-            address.getAddressLine4(),
-            address.getTownOrCity(),
-            address.getPostcode(),
-            address.getCounty(),
-            address.getCountry()
-          )
-          .toUpperCase();
+      amalgamatedAddress = BeaconsStringUtils.getMultipleValuesAsString(
+        "-",
+        address.getAddressLine1(),
+        address.getAddressLine2(),
+        address.getAddressLine3(),
+        address.getAddressLine4(),
+        address.getTownOrCity(),
+        address.getPostcode(),
+        address.getCounty(),
+        address.getCountry()
+      ).toUpperCase();
     }
 
     return amalgamatedAddress;

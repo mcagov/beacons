@@ -41,15 +41,15 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIType("1.3", maxCapacityFieldSelector);
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        ...mustBeAWholeNumberErrorMessageContains
+        ...mustBeAWholeNumberErrorMessageContains,
       );
 
       thenIShouldSeeAnErrorMessageThatContains(
-        ...mustBeAWholeNumberErrorMessageContains
+        ...mustBeAWholeNumberErrorMessageContains,
       );
 
       whenIClickOnTheErrorSummaryLinkContaining(
-        ...mustBeAWholeNumberErrorMessageContains
+        ...mustBeAWholeNumberErrorMessageContains,
       );
       thenMyFocusMovesTo(maxCapacityFieldSelector);
     });
@@ -64,7 +64,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIType("z".repeat(251), areaOfOperationFieldSelector);
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        ...tooLongErrorMessageContains
+        ...tooLongErrorMessageContains,
       );
 
       thenIShouldSeeAnErrorMessageThatContains(...tooLongErrorMessageContains);
@@ -92,7 +92,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIType("z".repeat(101), beaconLocationFieldSelector);
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        ...tooLongErrorMessageContains
+        ...tooLongErrorMessageContains,
       );
 
       thenIShouldSeeAnErrorMessageThatContains(...tooLongErrorMessageContains);

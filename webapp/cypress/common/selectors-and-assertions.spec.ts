@@ -4,7 +4,7 @@ export const requiredFieldErrorMessage = "required field";
 export const tooManyCharactersErrorMessage = "too many characters";
 
 export const iCanClickTheBackLinkToGoToPreviousPage = (
-  previousPageURL: string
+  previousPageURL: string,
 ): void => {
   cy.get(".govuk-back-link").click();
   thenTheUrlShouldContain(previousPageURL);
@@ -44,7 +44,7 @@ export const ifIAmAskedForAccountHolderDetailsIProvideThem = (): void => {
 };
 
 export const givenIHaveACookieSetAndHaveSignedInIVisit = (
-  url: string
+  url: string,
 ): void => {
   givenIHaveACookieSetAndHaveSignedIn();
   cy.visit(url);
@@ -142,7 +142,7 @@ export const thenTheUrlShouldContain = (urlPath: string): void => {
 
 export const thenTheInputShouldOnlyContain = (
   expectedValue: string,
-  selector: string
+  selector: string,
 ): void => {
   cy.get(selector).should("have.value", expectedValue);
 };
@@ -159,7 +159,7 @@ export const thenIShouldSeeAnErrorMessageThatContains = (
   ...strings: string[]
 ): void => {
   strings.every((string) =>
-    cy.get(".govuk-error-message").should("contain", string)
+    cy.get(".govuk-error-message").should("contain", string),
   );
 };
 
@@ -218,7 +218,7 @@ export const iHaveClickedOnAGivenLink = (href: string): void => {
 
 export const whenISelectTheOptionFromTheDropdown = (
   option: string,
-  selector: string
+  selector: string,
 ): void => {
   cy.get(selector).select(option);
 };

@@ -16,7 +16,7 @@ export class GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDelete
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
-    validationRules: FormManagerFactory
+    validationRules: FormManagerFactory,
   ) {
     this.context = context;
     this.validationRules = validationRules;
@@ -38,20 +38,20 @@ export class GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDelete
       await deleteBeacon(
         await this.reasonForDeletion(),
         this.registrationId(),
-        await this.accountHolderId()
+        await this.accountHolderId(),
       )
     ).success;
 
     if (success)
       return redirectUserTo(
-        DeleteRegistrationPageURLs.deleteRegistrationSuccess
+        DeleteRegistrationPageURLs.deleteRegistrationSuccess,
       );
     else redirectUserTo(DeleteRegistrationPageURLs.deleteRegistrationFailure);
   }
 
   private async form(): Promise<DeleteRegistrationForm> {
     return await this.context.container.parseFormDataAs<DeleteRegistrationForm>(
-      this.context.req
+      this.context.req,
     );
   }
 
@@ -62,7 +62,7 @@ export class GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDelete
   private async accountHolderId(): Promise<string> {
     return (
       await this.context.container.getOrCreateAccountHolder(
-        this.context.session
+        this.context.session,
       )
     ).id;
   }

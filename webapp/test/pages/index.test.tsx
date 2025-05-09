@@ -13,7 +13,7 @@ describe("ServiceStartPage", () => {
 
     expect(screen.getByRole("button")).toHaveAttribute(
       "href",
-      "/account/sign-up-or-sign-in"
+      "/account/sign-up-or-sign-in",
     );
   });
 

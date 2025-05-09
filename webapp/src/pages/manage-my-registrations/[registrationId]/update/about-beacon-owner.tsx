@@ -135,45 +135,45 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const nextPageUrl = UrlBuilder.buildRegistrationUrl(
       Actions.update,
       Pages.summary,
-      context.query.registrationId as string
+      context.query.registrationId as string,
     );
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-        context
+        context,
       ),
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
         context,
-        registrationId
+        registrationId,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<AboutBeaconOwnerForm>(
         context,
         validationRules,
         mapper,
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<AboutBeaconOwnerForm>(
         context,
         validationRules,
         mapper,
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<AboutBeaconOwnerForm>(
         context,
         validationRules,
         mapper,
-        nextPageUrl
+        nextPageUrl,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<Partial<AboutBeaconOwnerFormProps>> => {
   const previousPageUrl = UrlBuilder.buildUpdateRegistrationSummaryUrl(
-    context.query.registrationId as string
+    context.query.registrationId as string,
   );
 
   return {
@@ -212,7 +212,7 @@ const validationRules = ({
       Validators.required("Telephone number is a required field"),
     ]),
     ownerAlternativeTelephoneNumber: new FieldManager(
-      ownerAlternativeTelephoneNumber
+      ownerAlternativeTelephoneNumber,
     ),
     ownerEmail: new FieldManager(ownerEmail, [
       Validators.required("Email address is a required field"),

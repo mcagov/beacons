@@ -14,7 +14,7 @@ describe("Given I have submitted invalid data to a registration form,", () => {
     it("I can still see my invalid data", () => {
       givenIHaveSignedIn();
       givenIHaveACookieSetAndIVisit(
-        CreateRegistrationPageURLs.checkBeaconDetails
+        CreateRegistrationPageURLs.checkBeaconDetails,
       );
       whenIType("ACME Inc.", "#manufacturer");
       whenIType("Excelsior", "#model");

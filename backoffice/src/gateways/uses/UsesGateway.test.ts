@@ -57,7 +57,7 @@ describe("UsesGateway", () => {
 
       expect(axios.get).toHaveBeenCalledWith(
         `${applicationConfig.apiUrl}/registrations/${beaconId}`,
-        config
+        config,
       );
     });
 

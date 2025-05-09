@@ -44,7 +44,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
         registrationResponse.manufacturerSerialNumber || "",
       owners: this.mapOwners(registrationResponse.owner),
       emergencyContacts: this.mapEmergencyContacts(
-        registrationResponse.emergencyContacts
+        registrationResponse.emergencyContacts,
       ),
       uses: this.mapUses(registrationResponse.uses),
     };
@@ -71,7 +71,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
   }
 
   private mapEmergencyContacts(
-    emergencyContacts: EmergencyContactResponse[]
+    emergencyContacts: EmergencyContactResponse[],
   ): EmergencyContact[] {
     return emergencyContacts.map((emergencyContact) => {
       return {
@@ -135,7 +135,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
             otherActivityPeopleCount: use.otherActivityPeopleCount || "",
             mainUse: use.mainUse || false,
             // Writing this makes me really unhappy, but it is for compatibility with what was here before.
-          } as Record<string, any> as Use)
+          }) as Record<string, any> as Use,
       )
       .sort((firstUse, secondUse) => this.mainUseSortFn(firstUse, secondUse));
   }

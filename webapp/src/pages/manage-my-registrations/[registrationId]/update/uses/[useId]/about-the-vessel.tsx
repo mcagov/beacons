@@ -64,7 +64,7 @@ const AboutTheVessel: FunctionComponent<DraftBeaconUsePageProps> = ({
         Actions.update,
         UsePages.activity,
         draftRegistration.id,
-        useId
+        useId,
       )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -259,7 +259,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       Actions.update,
       UsePages.vesselCommunications,
       registrationId as string,
-      useId as string
+      useId as string,
     );
 
     return await new BeaconsPageRouter([
@@ -268,32 +268,32 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<AboutTheVesselForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<AboutTheVesselForm>(
         context,
         validationRules,
         mapper(context),
-        nextPage
+        nextPage,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Partial<DraftBeaconUsePageProps> => ({
   useId: context.query.useId as string,
 });
 
 const mapper = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): DraftRegistrationFormMapper<AboutTheVesselForm> => {
   const beaconUseMapper: BeaconUseFormMapper<AboutTheVesselForm> = {
     formToDraftBeaconUse: (form) => ({
@@ -328,7 +328,7 @@ const mapper = (
 
   return makeDraftRegistrationMapper<AboutTheVesselForm>(
     useId,
-    beaconUseMapper
+    beaconUseMapper,
   );
 };
 
@@ -348,14 +348,14 @@ const validationRules = ({
   return new FormManager({
     maxCapacity: new FieldManager(maxCapacity, [
       Validators.wholeNumber(
-        "Maximum number of persons onboard must be a whole number"
+        "Maximum number of persons onboard must be a whole number",
       ),
     ]),
     vesselName: new FieldManager(vesselName),
     beaconLocation: new FieldManager(beaconLocation, [
       Validators.maxLength(
         "Where the beacon is kept has too many characters",
-        100
+        100,
       ),
     ]),
     portLetterNumber: new FieldManager(portLetterNumber),
@@ -363,7 +363,7 @@ const validationRules = ({
     areaOfOperation: new FieldManager(areaOfOperation, [
       Validators.maxLength(
         "Typical area of operation has too many characters",
-        250
+        250,
       ),
     ]),
     imoNumber: new FieldManager(imoNumber),

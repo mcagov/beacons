@@ -144,5 +144,5 @@ export const manyBeaconsApiResponseFixture: RegistrationResponse[] = deepFreeze(
         },
       ],
     },
-  ]
+  ],
 );

@@ -23,8 +23,7 @@ public class ComparisonController {
   @GetMapping("/missing")
   public ResponseEntity<ComparisonResult> getMissingBeacons() {
     ComparisonResult result = beaconSearchService.compareDataSources();
-    return ResponseEntity
-      .ok()
+    return ResponseEntity.ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(result);
   }
