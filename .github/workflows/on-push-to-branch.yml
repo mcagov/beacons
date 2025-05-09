@@ -1,0 +1,60 @@
+name: Run tests against branch
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  terraform_lint:
+    name: Terraform lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.0.0
+      - name: Terraform Lint
+        run: terraform fmt --recursive --check
+
+  prettier_check:
+    name: Prettier check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "16.17.0"
+      - name: Prettier check
+        run: |
+          npm ci
+          npm run format:check
+
+  test_webapp:
+    name: Test Webapp
+    uses: ./.github/workflows/_reusable-test-webapp.yml
+    secrets:
+      test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
+      test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
+
+  test_backoffice:
+    name: Test Backoffice
+    uses: ./.github/workflows/_reusable-test-backoffice.yml
+
+  test_service:
+    name: Test Service
+    uses: ./.github/workflows/_reusable-test-service.yml
+    with:
+      environment: ci-test
+    secrets:
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
+      microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
+      microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
+      microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
