@@ -3,6 +3,10 @@
 ##
 name: Deploy a version of the application
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_dispatch:
     inputs:
