@@ -21,36 +21,36 @@ describe("Owner Summary Panel", () => {
       <OwnerPanel
         beaconsGateway={beaconsGatewayDouble}
         beaconId={beaconFixture.id}
-      />
+      />,
     );
     const owner = beaconFixture.owners[0];
 
     expect(
-      await screen.findByText(new RegExp(owner.fullName, "i"))
+      await screen.findByText(new RegExp(owner.fullName, "i")),
     ).toBeVisible();
     expect(await screen.findByText(new RegExp(owner.email, "i"))).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(owner.telephoneNumber, "i"))
+      await screen.findByText(new RegExp(owner.telephoneNumber, "i")),
     ).toBeVisible();
     expect(
       await screen.findByText(
-        new RegExp(owner.alternativeTelephoneNumber!, "i")
-      )
+        new RegExp(owner.alternativeTelephoneNumber!, "i"),
+      ),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(owner.addressLine1, "i"))
+      await screen.findByText(new RegExp(owner.addressLine1, "i")),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(owner.townOrCity!, "i"))
+      await screen.findByText(new RegExp(owner.townOrCity!, "i")),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(owner.county!, "i"))
+      await screen.findByText(new RegExp(owner.county!, "i")),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(owner.postcode!, "i"))
+      await screen.findByText(new RegExp(owner.postcode!, "i")),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(owner.country!, "i"))
+      await screen.findByText(new RegExp(owner.country!, "i")),
     ).toBeVisible();
   });
 
@@ -59,7 +59,7 @@ describe("Owner Summary Panel", () => {
       <OwnerPanel
         beaconsGateway={beaconsGatewayDouble}
         beaconId={beaconFixture.id}
-      />
+      />,
     );
 
     await waitFor(() => {
@@ -72,7 +72,7 @@ describe("Owner Summary Panel", () => {
       <OwnerPanel
         beaconsGateway={beaconsGatewayDouble}
         beaconId={beaconFixture.id}
-      />
+      />,
     );
 
     expect(await screen.findByText(/Steve Stevington/i)).toBeVisible();
@@ -87,12 +87,12 @@ describe("Owner Summary Panel", () => {
       <OwnerPanel
         beaconsGateway={beaconsGatewayDouble}
         beaconId={"doesn't exist"}
-      />
+      />,
     );
 
     expect(await screen.findByRole("alert")).toBeVisible();
     expect(
-      await screen.findByText(Placeholders.UnspecifiedError)
+      await screen.findByText(Placeholders.UnspecifiedError),
     ).toBeVisible();
   });
 });

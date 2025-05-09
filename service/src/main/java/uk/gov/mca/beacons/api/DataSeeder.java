@@ -87,9 +87,9 @@ public class DataSeeder implements CommandLineRunner {
 
         int secondaryOwnerCount = faker.random().nextInt(4);
 
-        IntStream
-          .range(0, secondaryOwnerCount)
-          .forEach(j -> seedBeaconOwner(beacon.getId(), false));
+        IntStream.range(0, secondaryOwnerCount).forEach(j ->
+          seedBeaconOwner(beacon.getId(), false)
+        );
 
         seedEmergencyContact(beacon.getId());
       }
@@ -182,8 +182,7 @@ public class DataSeeder implements CommandLineRunner {
   }
 
   Address fakeAddress() {
-    return Address
-      .builder()
+    return Address.builder()
       .addressLine1(faker.address().streetAddressNumber())
       .addressLine2(faker.address().streetAddress())
       .townOrCity(faker.address().city())

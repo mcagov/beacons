@@ -38,7 +38,7 @@ const BeaconUse: FunctionComponent<DraftBeaconUsePageProps> = ({
   useId,
 }: DraftBeaconUsePageProps): JSX.Element => {
   const pageHeading = `What is the ${ordinal(
-    parseInt(useId) + 1
+    parseInt(useId) + 1,
   )} use for this beacon?`;
   const pageText = (
     <>
@@ -117,22 +117,22 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<BeaconUseForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<BeaconUseForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<BeaconUseForm>(
         context,
@@ -140,21 +140,21 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         mapper(context),
         nextPageWithUseIdHelper(
           parseInt(context.query.useId as string),
-          await nextPage(context)
-        )
+          await nextPage(context),
+        ),
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Partial<DraftBeaconUsePageProps> => ({
   useId: context.query.useId as string,
 });
 
 const nextPage = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<CreateRegistrationPageURLs> => {
   const { environment } =
     await context.container.parseFormDataAs<BeaconUseForm>(context.req);
@@ -188,7 +188,7 @@ const validationRules = ({ environment }) => {
       environment,
       [Validators.required("Where the beacon will be used is required")],
       [],
-      "maritime"
+      "maritime",
     ),
   });
 };

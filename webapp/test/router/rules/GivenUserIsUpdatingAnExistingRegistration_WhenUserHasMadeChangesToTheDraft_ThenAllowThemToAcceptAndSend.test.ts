@@ -25,7 +25,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
       const rule =
         new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
           context,
-          context.query.registrationId as string
+          context.query.registrationId as string,
         );
 
       const triggered = await rule.condition();
@@ -56,7 +56,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
       const rule =
         new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
           context,
-          context.query.registrationId as string
+          context.query.registrationId as string,
         );
 
       const triggered = await rule.condition();
@@ -89,7 +89,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
       const rule =
         new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
           context,
-          context.query.registrationId as string
+          context.query.registrationId as string,
         );
 
       const triggered = await rule.condition();
@@ -118,7 +118,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
       const rule =
         new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
           context,
-          registrationId
+          registrationId,
         );
 
       const result = (await rule.action()) as any;

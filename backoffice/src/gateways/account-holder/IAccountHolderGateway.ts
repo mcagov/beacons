@@ -8,11 +8,11 @@ export interface IAccountHolderGateway {
   getAllAccountHolders: () => Promise<IAccountHolderSearchResult>;
   updateAccountHolder: (
     accountHolderId: string,
-    updatedFields: Partial<IAccountHolder>
+    updatedFields: Partial<IAccountHolder>,
   ) => Promise<IAccountHolder>;
   deleteAccountHolder: (accountHolderId: string) => Promise<void>;
   transferBeaconsToAccountHolder: (
     beaconIds: string[],
-    recipientAccountHolderId: string
+    recipientAccountHolderId: string,
   ) => Promise<void>;
 }

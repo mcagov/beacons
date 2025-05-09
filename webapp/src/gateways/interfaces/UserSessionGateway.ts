@@ -3,6 +3,6 @@ import { BeaconsSession } from "../NextAuthUserSessionGateway";
 
 export interface UserSessionGateway {
   getSession: (
-    context: GetServerSidePropsContext
+    context: GetServerSidePropsContext,
   ) => Promise<BeaconsSession | null>;
 }

@@ -6,7 +6,7 @@ export interface BeaconGateway {
 
   updateRegistration: (
     draftRegistration: DraftRegistration,
-    registrationId: string
+    registrationId: string,
   ) => Promise<boolean>;
 
   deleteBeacon: (json: IDeleteBeaconRequest) => Promise<boolean>;

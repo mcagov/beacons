@@ -48,12 +48,12 @@ export const givenIHaveEnteredMyAviationUse = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
       givenIHaveSelected(
-        "#" + testAviationCommercialUseData.type.activity.toLowerCase()
+        "#" + testAviationCommercialUseData.type.activity.toLowerCase(),
       );
       break;
     case Purpose.PLEASURE:
       givenIHaveSelected(
-        "#" + testAviationPleasureUseData.type.activity.toLowerCase()
+        "#" + testAviationPleasureUseData.type.activity.toLowerCase(),
       );
       break;
   }
@@ -108,11 +108,11 @@ export const andIHaveEnteredMyAviationUse = givenIHaveEnteredMyAviationUse;
 export const iCanEditMyAircraftCommunications = (): void => {
   const comms = testAviationUseData.communications;
   comms.checkedFields.forEach((field) =>
-    cy.get(`#${field}`).should("be.checked")
+    cy.get(`#${field}`).should("be.checked"),
   );
   cy.get("#satelliteTelephoneInput").should(
     "have.value",
-    comms.satelliteTelephone
+    comms.satelliteTelephone,
   );
   cy.get("#mobileTelephoneInput1").should("have.value", comms.mobileTelephone1);
   cy.get("#mobileTelephoneInput2").should("have.value", comms.mobileTelephone2);
@@ -128,7 +128,7 @@ export const iCanViewMyChangedAircraftCommunications = (): void => {
   const comms = testAviationUseData.communications;
 
   comms.checkedFields.forEach((field) =>
-    cy.get(`#${field}`).should("not.be.checked")
+    cy.get(`#${field}`).should("not.be.checked"),
   );
   cy.get("#satelliteTelephoneInput").should("not.be.visible");
   cy.get("#mobileTelephoneInput1").should("not.be.visible");
@@ -139,10 +139,10 @@ export const iCanViewMyChangedAircraftCommunications = (): void => {
   Object.values(comms)
     .filter((value) => typeof value === "string")
     .forEach((value: string) =>
-      cy.get(".govuk-summary-list__value").should("not.contain", value)
+      cy.get(".govuk-summary-list__value").should("not.contain", value),
     );
   andIHaveVisited(
-    CreateRegistrationPageURLs.aircraftCommunications + "?useId=0"
+    CreateRegistrationPageURLs.aircraftCommunications + "?useId=0",
   );
 };
 
@@ -161,7 +161,7 @@ export const iCanEditMyAircraftDetails = (): void => {
 
 export const iCanEditMyAviationActivity = (): void => {
   cy.get(`input[value="${testAviationPleasureUseData.type.activity}"]`).should(
-    "be.checked"
+    "be.checked",
   );
 };
 
@@ -173,12 +173,12 @@ export const iCanEditMyAviationPurpose = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
       cy.get(
-        `input[value="${testAviationCommercialUseData.type.purpose}"]`
+        `input[value="${testAviationCommercialUseData.type.purpose}"]`,
       ).should("be.checked");
       break;
     case Purpose.PLEASURE:
       cy.get(
-        `input[value="${testAviationPleasureUseData.type.purpose}"]`
+        `input[value="${testAviationPleasureUseData.type.purpose}"]`,
       ).should("be.checked");
       break;
   }
@@ -201,12 +201,12 @@ export const iCanSeeMyAviationUse = (purpose: Purpose): void => {
     cy.get("main").contains(value);
   });
   cy.get("main").contains(
-    testAviationUseData.communications.satelliteTelephone
+    testAviationUseData.communications.satelliteTelephone,
   );
   cy.get("main").contains(testAviationUseData.communications.mobileTelephone1);
   cy.get("main").contains(testAviationUseData.communications.mobileTelephone2);
   cy.get("main").contains(
-    testAviationUseData.communications.otherCommunication
+    testAviationUseData.communications.otherCommunication,
   );
   cy.get("main").contains(testAviationUseData.moreDetails);
   cy.get("main").contains("dongle");
@@ -220,36 +220,36 @@ export const iCanSeeMySingleAviationUse = (purpose: Purpose): void => {
 export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   givenIHaveClearedAndTyped(
     testAviationPleasureUseData.aircraft.maxCapacity,
-    "#maxCapacity"
+    "#maxCapacity",
   );
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.manufacturer,
-    "#aircraftManufacturer"
+    "#aircraftManufacturer",
   );
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.principalAirport,
-    "#principalAirport"
+    "#principalAirport",
   );
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.secondaryAirport,
-    "#secondaryAirport"
+    "#secondaryAirport",
   );
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.registrationMark,
-    "#registrationMark"
+    "#registrationMark",
   );
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.hexAddress,
-    "#hexAddress"
+    "#hexAddress",
   );
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.cnOrMsnNumber,
-    "#cnOrMsnNumber"
+    "#cnOrMsnNumber",
   );
   givenIHaveSelected("#dongle-yes");
   givenIHaveTyped(
     testAviationPleasureUseData.aircraft.beaconPosition,
-    "#beaconPosition"
+    "#beaconPosition",
   );
 };
 
@@ -258,21 +258,21 @@ export const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
   givenIHaveSelected("#satelliteTelephone");
   givenIHaveTyped(
     testAviationUseData.communications.satelliteTelephone,
-    "#satelliteTelephoneInput"
+    "#satelliteTelephoneInput",
   );
   givenIHaveSelected("#mobileTelephone");
   givenIHaveTyped(
     testAviationUseData.communications.mobileTelephone1,
-    "#mobileTelephoneInput1"
+    "#mobileTelephoneInput1",
   );
   givenIHaveTyped(
     testAviationUseData.communications.mobileTelephone2,
-    "#mobileTelephoneInput2"
+    "#mobileTelephoneInput2",
   );
   givenIHaveSelected("#otherCommunication");
   givenIHaveTyped(
     testAviationUseData.communications.otherCommunication,
-    "#otherCommunicationInput"
+    "#otherCommunicationInput",
   );
 };
 

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       marginLeft: theme.spacing(2),
     },
-  })
+  }),
 );
 
 export const AccountHolderListView: FunctionComponent<
@@ -33,7 +33,7 @@ export const AccountHolderListView: FunctionComponent<
   const classes = useStyles();
 
   const [response, setResponse] = useState<IAccountHolderSearchResult>(
-    {} as IAccountHolderSearchResult
+    {} as IAccountHolderSearchResult,
   );
 
   useEffect((): void => {

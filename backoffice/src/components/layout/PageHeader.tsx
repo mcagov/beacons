@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "left",
       padding: theme.spacing(3),
     },
-  })
+  }),
 );
 
 export const PageHeader: FunctionComponent<PageHeaderProps> = ({

@@ -1,7 +1,7 @@
 import { IAppContainer } from "../lib/IAppContainer";
 
 export type AddNewUseToDraftRegistrationFn = (
-  submissionId: string
+  submissionId: string,
 ) => Promise<void>;
 
 export const addNewUseToDraftRegistration =

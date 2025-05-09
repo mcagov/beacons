@@ -41,7 +41,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
 
   public async createAccountHolder(
     authId: string,
-    email: string
+    email: string,
   ): Promise<AccountHolder> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}`;
     try {
@@ -66,7 +66,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
   }
 
   public async getAccountHolderDetails(
-    accountHolderId: string
+    accountHolderId: string,
   ): Promise<AccountHolder> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}`;
     try {
@@ -89,7 +89,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
 
   public async updateAccountHolderDetails(
     accountHolderId: string,
-    update: AccountHolder
+    update: AccountHolder,
   ): Promise<AccountHolder> {
     const url = `${this.apiUrl}/${this.accountHolderControllerRoute}/${accountHolderId}`;
     try {
@@ -135,7 +135,7 @@ export class BeaconsApiAccountHolderGateway implements AccountHolderGateway {
 
   public async getAccountBeacon(
     accountHolderId: string,
-    registrationId: string
+    registrationId: string,
   ): Promise<Beacon> {
     const url = `${this.apiUrl}/${this.registrationControllerRoute}/${accountHolderId}/registration/${registrationId}`;
     try {

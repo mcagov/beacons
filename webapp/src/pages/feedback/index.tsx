@@ -93,7 +93,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       new WhenUserSubmitsFeedback(context, validationRules),
       new WhenUserViewsPage_ThenDisplayPage(context),
     ]).execute();
-  })
+  }),
 );
 
 export const validationRules = ({
@@ -103,7 +103,7 @@ export const validationRules = ({
   return new FormManager({
     satisfactionRating: new FieldManager(satisfactionRating),
     howCouldWeImproveThisService: new FieldManager(
-      howCouldWeImproveThisService
+      howCouldWeImproveThisService,
     ),
   });
 };

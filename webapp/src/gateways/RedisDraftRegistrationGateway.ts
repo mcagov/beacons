@@ -6,7 +6,7 @@ import { isValidUse } from "../lib/helpers/isValidUse";
 
 export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
   private cache = new JSONCache<DraftRegistration>(
-    new Redis(process.env.REDIS_URI)
+    new Redis(process.env.REDIS_URI),
   );
   private static instance: DraftRegistrationGateway;
 
@@ -25,7 +25,7 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
 
   public async update(
     id: string,
-    draftRegistration: DraftRegistration
+    draftRegistration: DraftRegistration,
   ): Promise<void> {
     await this.cache.set(id, draftRegistration);
   }

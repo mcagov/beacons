@@ -20,7 +20,7 @@ describe("ApplicationCompletePage", () => {
         registrationSuccess={true}
         confirmationEmailSuccess={true}
         reference="Test"
-      />
+      />,
     );
   });
 
@@ -88,7 +88,7 @@ describe("ApplicationCompletePage", () => {
 
       expect(mockSubmitRegistration).toHaveBeenCalledWith(
         expect.objectContaining(mockDraftRegistration),
-        accountHolderId
+        accountHolderId,
       );
     });
 

@@ -174,8 +174,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
     throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     String deleteRegistrationRequestBody = objectMapper.writeValueAsString(
-      DeleteBeaconDTO
-        .builder()
+      DeleteBeaconDTO.builder()
         .beaconId(UUID.fromString(beaconId))
         .accountHolderId(UUID.fromString(accountHolderId))
         .reason("I don't want it")
@@ -204,16 +203,13 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
 
     @SuppressWarnings("unchecked")
     final Map<String, Map<String, Object>> registrationMap = mapper.readValue(
-      fixtureHelper.getFixture(
-        REGISTRATION_JSON_RESOURCE,
-        fixture -> {
-          String withAccountHolderId = fixture.replace(
-            "replace-with-test-account-holder-id",
-            accountHolderId
-          );
-          return replacer.apply(withAccountHolderId);
-        }
-      ),
+      fixtureHelper.getFixture(REGISTRATION_JSON_RESOURCE, fixture -> {
+        String withAccountHolderId = fixture.replace(
+          "replace-with-test-account-holder-id",
+          accountHolderId
+        );
+        return replacer.apply(withAccountHolderId);
+      }),
       HashMap.class
     );
 

@@ -12,7 +12,7 @@ describe("Land Use", () => {
     render(<LandUse use={use} />);
 
     expect(
-      await screen.findByText("IN THE HIGHLANDS OF SCOTLAND")
+      await screen.findByText("IN THE HIGHLANDS OF SCOTLAND"),
     ).toBeVisible();
   });
 
@@ -87,7 +87,7 @@ describe("Land Use", () => {
     expect(await screen.findByText("Communication type 4:")).toBeVisible();
     expect(await screen.findByText("OTHER")).toBeVisible();
     expect(
-      await screen.findByText("YOU CAN CONTACT ME VIA MY PARTNER")
+      await screen.findByText("YOU CAN CONTACT ME VIA MY PARTNER"),
     ).toBeVisible();
   });
 });

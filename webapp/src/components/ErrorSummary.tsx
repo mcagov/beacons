@@ -38,7 +38,7 @@ export const FormErrorSummary: FunctionComponent<FormErrorSummaryProps> = ({
               href={`#${fieldId}`}
               errorMessage={errorMessage}
             />
-          ))
+          )),
         )}
       </>
     );

@@ -29,7 +29,7 @@ export class FieldManager extends AbstractFormNode {
     value: string,
     public readonly validators: ValidationRule[] = [],
     public readonly conditions: ValidationCondition[] = [],
-    fieldId?: string
+    fieldId?: string,
   ) {
     super(value);
     this._value = value ? value : "";
@@ -71,7 +71,7 @@ export class FieldManager extends AbstractFormNode {
     }
 
     return this.validators.some((rule: ValidationRule) =>
-      rule.applies(this.value)
+      rule.applies(this.value),
     );
   }
 
@@ -87,7 +87,7 @@ export class FieldManager extends AbstractFormNode {
       const dependsOnField = this.parent.fields[validationCondition.dependsOn];
       if (dependsOnField === undefined) {
         throw ReferenceError(
-          `${validationCondition.dependsOn} not found in parent form.  Is the field name correct?`
+          `${validationCondition.dependsOn} not found in parent form.  Is the field name correct?`,
         );
       }
       const meetsCondition = validationCondition.meetingCondition;
@@ -105,7 +105,7 @@ export class FieldManager extends AbstractFormNode {
       if (keywordRegex.test(errorMessage))
         return errorMessage.replace(
           keywordRegex,
-          this._keywordMap[keyword](this.value)
+          this._keywordMap[keyword](this.value),
         );
 
       return errorMessage;

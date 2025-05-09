@@ -42,9 +42,9 @@ public class ReindexSearchBeaconProcessor
       beaconId
     );
 
-    BeaconOwner beaconMainOwner = BeaconOwnerHelper
-      .getMainOwner(beaconOwners)
-      .orElse(null);
+    BeaconOwner beaconMainOwner = BeaconOwnerHelper.getMainOwner(
+      beaconOwners
+    ).orElse(null);
 
     List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
       beaconId

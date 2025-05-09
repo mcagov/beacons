@@ -10,12 +10,12 @@ export interface AccountHolderGateway {
 
   updateAccountHolderDetails(
     accountHolderId: string,
-    update: AccountHolder
+    update: AccountHolder,
   ): Promise<AccountHolder>;
 
   getAccountBeacons(accountHolderId: string): Promise<Beacon[]>;
   getAccountBeacon(
     accountHolderId: string,
-    registrationId: string
+    registrationId: string,
   ): Promise<Beacon>;
 }

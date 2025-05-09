@@ -76,7 +76,7 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
         Actions.update,
         previousPageUrlMap[environment],
         draftRegistration.id,
-        useId
+        useId,
       )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -119,7 +119,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
 
     const nextPage = UrlBuilder.buildUseSummaryUrl(
       Actions.update,
-      registrationId as string
+      registrationId as string,
     );
 
     return await new BeaconsPageRouter([
@@ -128,29 +128,29 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<MoreDetailsForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<MoreDetailsForm>(
         context,
         validationRules,
         mapper(context),
-        nextPage
+        nextPage,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<Partial<MoreDetailsPageProps>> => {
   const draftRegistration = await context.container.getDraftRegistration(
-    context.req.cookies[formSubmissionCookieId]
+    context.req.cookies[formSubmissionCookieId],
   );
 
   const useId = context.query.useId as string;
@@ -162,7 +162,7 @@ const props = async (
 };
 
 const mapper = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): DraftRegistrationFormMapper<MoreDetailsForm> => {
   const beaconUseMapper: BeaconUseFormMapper<MoreDetailsForm> = {
     formToDraftBeaconUse: (form) => ({
@@ -184,7 +184,7 @@ const validationRules = ({ moreDetails }: FormSubmission): FormManager => {
       Validators.required("More details is a required field"),
       Validators.maxLength(
         "More details must be less than 250 characters",
-        250
+        250,
       ),
     ]),
   });
