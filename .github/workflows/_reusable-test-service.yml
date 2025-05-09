@@ -33,6 +33,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "16.17.0"
+      - name: Install npm dependencies
+        run: npm ci
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Docker lint
         uses: hadolint/hadolint-action@v3.1.0
         with:
