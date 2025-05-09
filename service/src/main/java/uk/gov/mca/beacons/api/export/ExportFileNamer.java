@@ -24,9 +24,8 @@ import uk.gov.mca.beacons.api.export.xlsx.BeaconsDataWorkbookRepository;
 public class ExportFileNamer {
 
   private Clock clock;
-  private final SimpleDateFormat filenameDatePrefixFormat = new SimpleDateFormat(
-    "yyyyMMdd"
-  );
+  private final SimpleDateFormat filenameDatePrefixFormat =
+    new SimpleDateFormat("yyyyMMdd");
   private final String protectiveMarking = "Official-Sensitive_Personal";
 
   public enum FileType {

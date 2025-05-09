@@ -23,9 +23,8 @@ import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
 public class LegacyBeaconService {
 
   private final LegacyBeaconRepository legacyBeaconRepository;
-  private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
-    "uuuu-MM-dd'T'HH:mm:ss"
-  );
+  private final DateTimeFormatter dateTimeFormatter =
+    DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss");
 
   @Autowired
   public LegacyBeaconService(LegacyBeaconRepository legacyBeaconRepository) {
@@ -57,9 +56,10 @@ public class LegacyBeaconService {
     return legacyBeaconRepository
       .findByHexId(hexId)
       .stream()
-      .filter(l ->
-        emailMatches(lowerAccountHolderEmail, l.getRecoveryEmail()) ||
-        emailMatches(lowerAccountHolderEmail, l.getOwnerEmail())
+      .filter(
+        l ->
+          emailMatches(lowerAccountHolderEmail, l.getRecoveryEmail()) ||
+          emailMatches(lowerAccountHolderEmail, l.getOwnerEmail())
       )
       .collect(Collectors.toList());
   }

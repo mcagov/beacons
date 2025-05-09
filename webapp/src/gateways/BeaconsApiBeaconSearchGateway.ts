@@ -26,7 +26,7 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
   public async getBeaconsByAccountHolderAndEmail(
     accountHolderId: string,
     email: string,
-    sortOptions: BeaconSearchSortOptions
+    sortOptions: BeaconSearchSortOptions,
   ): Promise<IBeaconSearchApiResponseBody[]> {
     try {
       const url = `${this.apiUrl}/${this.beaconSearchControllerRoute}/${this.beaconsByAccountHolderAndEmailEndpoint}`;

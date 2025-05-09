@@ -50,20 +50,17 @@ public class MicrosoftGraphClient {
         );
         this.graphClient = null;
       } else {
-        ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-          .clientId(config.getClientId())
-          .clientSecret(config.getClientSecret())
-          .tenantId(config.getB2cTenantId())
-          .build();
-        TokenCredentialAuthProvider tokenCredAuthProvider = new TokenCredentialAuthProvider(
-          scopes,
-          clientSecretCredential
-        );
-        this.graphClient =
-          GraphServiceClient
-            .builder()
-            .authenticationProvider(tokenCredAuthProvider)
-            .buildClient();
+        ClientSecretCredential clientSecretCredential =
+          new ClientSecretCredentialBuilder()
+            .clientId(config.getClientId())
+            .clientSecret(config.getClientSecret())
+            .tenantId(config.getB2cTenantId())
+            .build();
+        TokenCredentialAuthProvider tokenCredAuthProvider =
+          new TokenCredentialAuthProvider(scopes, clientSecretCredential);
+        this.graphClient = GraphServiceClient.builder()
+          .authenticationProvider(tokenCredAuthProvider)
+          .buildClient();
       }
     } catch (Exception ex) {
       log.error("Unable to create graph client", ex);
@@ -97,8 +94,7 @@ public class MicrosoftGraphClient {
 
       User createdAzAdUser = graphClient.users().buildRequest().post(azAdUser);
 
-      return AzureAdAccountHolder
-        .builder()
+      return AzureAdAccountHolder.builder()
         .azureAdUserId(UUID.fromString(createdAzAdUser.id))
         .displayName(createdAzAdUser.displayName)
         .email(createdAzAdUser.mail)
@@ -150,8 +146,7 @@ public class MicrosoftGraphClient {
     try {
       User azAdUser = graphClient.users(id).buildRequest().get();
 
-      return AzureAdAccountHolder
-        .builder()
+      return AzureAdAccountHolder.builder()
         .azureAdUserId(UUID.fromString(azAdUser.id))
         .displayName(azAdUser.displayName)
         .email(azAdUser.mail)

@@ -22,9 +22,10 @@ export class AuthGateway implements IAuthGateway {
         account: account,
       };
 
-      const response = await this.publicClientApplication.acquireTokenSilent(
-        accessTokenRequest
-      );
+      const response =
+        await this.publicClientApplication.acquireTokenSilent(
+          accessTokenRequest,
+        );
 
       return response.accessToken;
     } catch (error) {

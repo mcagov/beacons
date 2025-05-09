@@ -17,7 +17,7 @@ const UserSettingsContext = React.createContext<
 
 function userSettingsReducer(
   settings: UserSettings,
-  action: UserSettingsAction
+  action: UserSettingsAction,
 ): UserSettings {
   switch (action.action) {
     case "update_searchMode":
@@ -44,12 +44,12 @@ export function UserSettingsProvider({
 
 export function useUserSettings(): [
   UserSettings,
-  React.Dispatch<UserSettingsAction>
+  React.Dispatch<UserSettingsAction>,
 ] {
   const context = React.useContext(UserSettingsContext);
   if (context == null) {
     throw new Error(
-      "useUserSettings must be used in a child of UserSettingsContext"
+      "useUserSettings must be used in a child of UserSettingsContext",
     );
   }
   return context;
@@ -57,7 +57,7 @@ export function useUserSettings(): [
 
 export function updateSearchMode(
   dispatch: React.Dispatch<UserSettingsAction>,
-  searchMode: SearchMode
+  searchMode: SearchMode,
 ): void {
   dispatch({ action: "update_searchMode", payload: searchMode });
 }

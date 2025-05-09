@@ -2,12 +2,12 @@ import { GetServerSidePropsContext } from "next";
 import { acceptRejectCookieId, formSubmissionCookieId } from "./types";
 
 export const verifyFormSubmissionCookieIsSet = (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): boolean =>
   !!context.req.cookies && !!context.req.cookies[formSubmissionCookieId];
 
 export const userHasHiddenCookieBanner = (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): boolean =>
   !!context.req.cookies && !!context.req.cookies[acceptRejectCookieId];
 

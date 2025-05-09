@@ -18,8 +18,7 @@ public class LegacyBeaconMapper {
   public LegacyBeacon fromDTO(LegacyBeaconDTO legacyBeaconDTO) {
     LegacyBeacon legacyBeacon = new LegacyBeacon();
     var attributes = legacyBeaconDTO.getAttributes();
-    LegacyData data = LegacyData
-      .builder()
+    LegacyData data = LegacyData.builder()
       .beacon(attributes.getBeacon())
       .uses(attributes.getUses())
       .owner(attributes.getOwner())
@@ -57,8 +56,7 @@ public class LegacyBeaconMapper {
     final var dto = new LegacyBeaconDTO();
     dto.setId(Objects.requireNonNull(legacyBeacon.getId()).unwrap());
     final var data = legacyBeacon.getData();
-    final var attributes = LegacyBeaconDTO.Attributes
-      .builder()
+    final var attributes = LegacyBeaconDTO.Attributes.builder()
       .beacon(data.getBeacon())
       .owner(data.getOwner())
       .uses(data.getUses())

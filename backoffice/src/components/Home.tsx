@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       padding: theme.spacing(2),
     },
-  })
+  }),
 );
 
 export const Home: FunctionComponent = (): JSX.Element => {

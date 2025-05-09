@@ -62,7 +62,7 @@ const AircraftCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
         Actions.update,
         UsePages.aboutTheAircraft,
         draftRegistration.id,
-        useId
+        useId,
       )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -168,7 +168,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       Actions.update,
       UsePages.moreDetails,
       registrationId as string,
-      useId as string
+      useId as string,
     );
 
     return await new BeaconsPageRouter([
@@ -177,32 +177,32 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<AircraftCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<AircraftCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
-        nextPage
+        nextPage,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Partial<DraftBeaconUsePageProps> => ({
   useId: context.query.useId as string,
 });
 
 const mapper = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): DraftRegistrationFormMapper<AircraftCommunicationsForm> => {
   const beaconUseMapper: BeaconUseFormMapper<AircraftCommunicationsForm> = {
     formToDraftBeaconUse: (form) => ({
@@ -231,7 +231,7 @@ const mapper = (
 
   return makeDraftRegistrationMapper<AircraftCommunicationsForm>(
     useId,
-    beaconUseMapper
+    beaconUseMapper,
   );
 };
 
@@ -257,26 +257,26 @@ const validationRules = ({
       satelliteTelephoneInput,
       [
         Validators.required(
-          "We need your phone number if you have a satellite telephone"
+          "We need your phone number if you have a satellite telephone",
         ),
         Validators.phoneNumber(
-          "Enter a satellite telephone number in the correct format"
+          "Enter a satellite telephone number in the correct format",
         ),
       ],
-      [matchingConditionIsTrueForKey("satelliteTelephone")]
+      [matchingConditionIsTrueForKey("satelliteTelephone")],
     ),
     mobileTelephone: new FieldManager(mobileTelephone),
     mobileTelephoneInput1: new FieldManager(
       mobileTelephoneInput1,
       [
         Validators.required(
-          "We need your telephone number if you have a mobile telephone"
+          "We need your telephone number if you have a mobile telephone",
         ),
         Validators.phoneNumber(
-          "Enter a mobile telephone number, like 07700 982736 or +447700912738"
+          "Enter a mobile telephone number, like 07700 982736 or +447700912738",
         ),
       ],
-      [matchingConditionIsTrueForKey("mobileTelephone")]
+      [matchingConditionIsTrueForKey("mobileTelephone")],
     ),
     mobileTelephoneInput2: new FieldManager(mobileTelephoneInput2),
     otherCommunication: new FieldManager(otherCommunication),
@@ -286,10 +286,10 @@ const validationRules = ({
         Validators.required("We need your other communication"),
         Validators.maxLength(
           "Other communication has too many characters",
-          250
+          250,
         ),
       ],
-      [matchingConditionIsTrueForKey("otherCommunication")]
+      [matchingConditionIsTrueForKey("otherCommunication")],
     ),
   });
 };

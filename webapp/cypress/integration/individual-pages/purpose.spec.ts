@@ -19,7 +19,7 @@ describe("As a beacon owner, I want to submit the purpose for my beacon", () => 
 
     whenIClickOnTheErrorSummaryLinkContaining(
       "purpose",
-      requiredFieldErrorMessage
+      requiredFieldErrorMessage,
     );
     thenMyFocusMovesTo("#pleasure");
   });

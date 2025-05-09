@@ -32,7 +32,7 @@ export const CheckYourAnswersBeaconInformationSummary: FunctionComponent<
           value={
             registration.batteryExpiryDateMonth
               ? formatMonth(
-                  `${registration.batteryExpiryDateYear}-${registration.batteryExpiryDateMonth}`
+                  `${registration.batteryExpiryDateYear}-${registration.batteryExpiryDateMonth}`,
                 )
               : registration.batteryExpiryDateYear
           }
@@ -42,7 +42,7 @@ export const CheckYourAnswersBeaconInformationSummary: FunctionComponent<
           value={
             registration.lastServicedDateMonth
               ? formatMonth(
-                  `${registration.lastServicedDateYear}-${registration.lastServicedDateMonth}`
+                  `${registration.lastServicedDateYear}-${registration.lastServicedDateMonth}`,
                 )
               : registration.lastServicedDateYear
           }

@@ -3,7 +3,7 @@ import Chainable = Cypress.Chainable;
 
 export const getOrCreateAccountHolder = (
   authId: string,
-  email: string
+  email: string,
 ): Chainable => {
   cy.log(`Attempting to get AccountHolder for authId ${authId}`);
   return makeAuthenticatedRequest<{ data: { id: string } }>({
@@ -12,7 +12,7 @@ export const getOrCreateAccountHolder = (
   }).then((getAccountHolderResponse) => {
     if (getAccountHolderResponse.status === 404) {
       cy.log(
-        `AccountHolder for authId ${authId} and email ${email} not found; creating...`
+        `AccountHolder for authId ${authId} and email ${email} not found; creating...`,
       );
 
       return makeAuthenticatedRequest<{ data: { id: string } }>({

@@ -38,7 +38,7 @@ export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_
 
     await this.context.container.saveDraftRegistration(
       this.cookieId(),
-      blankDraftRegistration
+      blankDraftRegistration,
     );
   }
 
@@ -56,7 +56,7 @@ export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_
 
   private async draftRegistrationDoesNotExist() {
     return !(await this.context.container.getDraftRegistration(
-      this.cookieId()
+      this.cookieId(),
     ));
   }
 }

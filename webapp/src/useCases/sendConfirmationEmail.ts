@@ -4,7 +4,7 @@ import { joinStrings } from "../lib/writingStyle";
 
 export type SendConfirmationEmailFn = (
   registration: Registration,
-  email: string
+  email: string,
 ) => Promise<boolean>;
 
 interface Dependencies {

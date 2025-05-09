@@ -2,12 +2,12 @@ import { Beacon } from "../entities/Beacon";
 import { IAppContainer } from "../lib/IAppContainer";
 
 export type GetBeaconsByAccountHolderIdFn = (
-  accountId: string
+  accountId: string,
 ) => Promise<Beacon[]>;
 
 export type GetBeaconByAccountHolderIdFn = (
   accountId: string,
-  registrationId: string
+  registrationId: string,
 ) => Promise<Beacon>;
 
 // Update to getBeaconByAccountHolderId
@@ -22,6 +22,6 @@ export const getBeaconByAccountHolderId =
   async (accountId: string, registrationId: string) => {
     return await accountHolderGateway.getAccountBeacon(
       accountId,
-      registrationId
+      registrationId,
     );
   };

@@ -13,7 +13,7 @@ describe("WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails", () => {
     };
 
     const rule = new WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails(
-      context as any
+      context as any,
     );
 
     const condition = await rule.condition();

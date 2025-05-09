@@ -10,7 +10,7 @@ import { makeAuthenticatedRequest } from "./make-authenticated-request.spec";
  * submits a web form from the browser.
  */
 export const iHavePreviouslyRegisteredABeacon = async (
-  registration: any
+  registration: any,
 ): Promise<void> => {
   cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
     log: false,
@@ -24,7 +24,7 @@ export const iHavePreviouslyRegisteredABeacon = async (
 
       getOrCreateAccountHolder(authId, email).then((accountHolderId) => {
         cy.log(
-          `Seeding a registration for AccountHolder with id ${accountHolderId}...`
+          `Seeding a registration for AccountHolder with id ${accountHolderId}...`,
         );
         cy.log(JSON.stringify({ ...registration, accountHolderId }));
         makeAuthenticatedRequest({
@@ -33,7 +33,7 @@ export const iHavePreviouslyRegisteredABeacon = async (
           body: { ...registration, accountHolderId },
         });
       });
-    }
+    },
   );
 };
 

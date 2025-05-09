@@ -18,7 +18,7 @@ describe("Date Input Components", () => {
       render(
         <DateListInput id="1" label="Enter the month" hintText={hintText}>
           Enter month
-        </DateListInput>
+        </DateListInput>,
       );
       expect(screen.getByText(hintText)).toBeDefined();
     });
@@ -27,7 +27,7 @@ describe("Date Input Components", () => {
       render(
         <DateListInput id="1" label="Enter the month">
           Enter month
-        </DateListInput>
+        </DateListInput>,
       );
       expect(screen.queryByText(hintText)).toBeNull();
     });

@@ -18,5 +18,7 @@ Instead, post a message on the "#maritime-and-coastguard-agency" Slack channel a
 - [ ] As the test AccountHolder of the Beacon with HexId 1D0E9B07CEFFBFF, I can sign in to my account at
       https://register-406-beacons.service.gov.uk/
 - [ ] As an AccountHolder, I can see Beacon with HexId 1D0E9B07CEFFBFF in my account home
+- [ ] As a BackofficeUser, I check if I can see a list of Beacons in default search mode
+- [ ] As a BackofficeUser, I check if I can see a list of Beacons in advanced search mode
 - [ ] As a BackofficeUser, I can search for the Beacon with HexID 1D0E9B07CEFFBFF
 - [ ] As a BackofficeUser, I can view the details of the Beacon with HexID 1D0E9B07CEFFBFF

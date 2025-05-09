@@ -22,12 +22,12 @@ describe("GovNotifyEmailServiceGateway", () => {
 
   it("should return true if the email is a success", async () => {
     NotifyClient.mock.instances[0].sendEmail.mockImplementation(() =>
-      Promise.resolve(true)
+      Promise.resolve(true),
     );
     const result = await gateway.sendEmail(
       emailTemplateId,
       email,
-      personalisation
+      personalisation,
     );
     expect(result).toBe(true);
   });
@@ -39,7 +39,7 @@ describe("GovNotifyEmailServiceGateway", () => {
     const result = await gateway.sendEmail(
       emailTemplateId,
       email,
-      personalisation
+      personalisation,
     );
     expect(result).toBe(false);
   });

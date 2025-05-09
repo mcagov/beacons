@@ -53,7 +53,7 @@ export const makeEnumValueUserFriendly = (value: string): string => {
  */
 export const padNumberWithLeadingZeros = (
   value: string,
-  targetLength = 2
+  targetLength = 2,
 ): string => {
   const valueAsNumber = parseInt(value);
   if (isNaN(valueAsNumber)) {

@@ -107,8 +107,10 @@ public class AccountHolderService {
     Optional<AccountHolder> savedAccountHolder;
 
     try {
-      savedAccountHolder =
-        updateAccountHolderInDb(accountHolder, accountHolderUpdate);
+      savedAccountHolder = updateAccountHolderInDb(
+        accountHolder,
+        accountHolderUpdate
+      );
     } catch (Exception dbError) {
       log.error(
         "Couldn't update account holder with id" +
@@ -182,8 +184,9 @@ public class AccountHolderService {
   }
 
   public void deleteAccountHolder(AccountHolderId accountHolderId) {
-    AccountHolder accountHolder = getAccountHolder(accountHolderId)
-      .orElseThrow(NoSuchElementException::new);
+    AccountHolder accountHolder = getAccountHolder(accountHolderId).orElseThrow(
+      NoSuchElementException::new
+    );
 
     List<BeaconDTO> beacons = getBeaconsByAccountHolderId(accountHolderId);
 
@@ -214,8 +217,7 @@ public class AccountHolderService {
   ) throws NoSuchElementException {
     AccountHolder recipientAccountHolder = getAccountHolder(
       recipientAccountHolderId
-    )
-      .orElseThrow(NoSuchElementException::new);
+    ).orElseThrow(NoSuchElementException::new);
 
     beaconsToTransfer.forEach(beaconId ->
       transferBeacon(recipientAccountHolder, beaconId)
@@ -232,8 +234,7 @@ public class AccountHolderService {
 
     AccountHolder currentAccountHolder = getAccountHolder(
       beaconToTransfer.getAccountHolderId()
-    )
-      .orElseThrow(NoSuchElementException::new);
+    ).orElseThrow(NoSuchElementException::new);
 
     beaconToTransfer.setAccountHolderId(recipientAccountHolder.getId());
     beaconToTransfer.setLastModifiedDate(OffsetDateTime.now());

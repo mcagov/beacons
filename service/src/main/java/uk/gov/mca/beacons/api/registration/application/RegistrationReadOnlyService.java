@@ -53,20 +53,18 @@ public class RegistrationReadOnlyService {
       beaconId
     );
 
-    BeaconOwner beaconMainOwner = BeaconOwnerHelper
-      .getMainOwner(beaconOwners)
-      .orElse(null);
+    BeaconOwner beaconMainOwner = BeaconOwnerHelper.getMainOwner(
+      beaconOwners
+    ).orElse(null);
 
     List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
       beaconId
     );
 
-    List<EmergencyContact> emergencyContacts = emergencyContactRepository.findEmergencyContactsByBeaconId(
-      beaconId
-    );
+    List<EmergencyContact> emergencyContacts =
+      emergencyContactRepository.findEmergencyContactsByBeaconId(beaconId);
 
-    Registration registration = Registration
-      .builder()
+    Registration registration = Registration.builder()
       .beacon(buildBeaconFromBeaconBackupItem(beaconBackupItem))
       .beaconOwners(beaconOwners)
       .beaconOwner(beaconMainOwner)

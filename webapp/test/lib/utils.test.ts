@@ -84,7 +84,7 @@ describe("pad number with leading zeros function", () => {
       const numberAsString = `${i}`;
       const leadingZero = "0";
       expect(padNumberWithLeadingZeros(numberAsString)).toBe(
-        `${leadingZero}${numberAsString}`
+        `${leadingZero}${numberAsString}`,
       );
     }
   });
@@ -224,7 +224,7 @@ describe("diffObjValues()", () => {
   testCases.forEach((test) => {
     it(`${test.description}`, () => {
       expect(diffObjValues(test.base, test.comparator as any)).toStrictEqual(
-        test.expectedOutput
+        test.expectedOutput,
       );
     });
   });
