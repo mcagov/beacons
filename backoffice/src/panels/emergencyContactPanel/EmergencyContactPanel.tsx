@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2),
       marginBottom: theme.spacing(0.5),
     },
-  })
+  }),
 );
 
 export const EmergencyContactPanel: FunctionComponent<

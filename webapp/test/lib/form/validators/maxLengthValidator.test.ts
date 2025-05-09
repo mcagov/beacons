@@ -8,7 +8,7 @@ describe("maxLength validator", () => {
   beforeEach(() => {
     ({ errorMessage, applies } = Validators.maxLength(
       expectedErrorMessage,
-      10
+      10,
     ));
   });
 

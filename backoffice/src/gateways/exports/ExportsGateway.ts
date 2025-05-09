@@ -18,18 +18,18 @@ export class ExportsGateway implements IExportsGateway {
   }
 
   public async getCertificateDataForBeacon(
-    beaconId: string
+    beaconId: string,
   ): Promise<IBeaconExport> {
     return this.getExportData(
-      `${applicationConfig.apiUrl}/export/certificate/data/${beaconId}`
+      `${applicationConfig.apiUrl}/export/certificate/data/${beaconId}`,
     );
   }
   public async getCertificateDataForBeacons(
-    beaconIds: string[]
+    beaconIds: string[],
   ): Promise<IBeaconExport[]> {
     return this.retrieveExportDataList(
       `${applicationConfig.apiUrl}/export/certificates/data`,
-      beaconIds
+      beaconIds,
     );
   }
 
@@ -61,72 +61,72 @@ export class ExportsGateway implements IExportsGateway {
   }
 
   public async getLetterDataForBeacon(
-    beaconId: string
+    beaconId: string,
   ): Promise<IBeaconExport> {
     return this.getExportData(
-      `${applicationConfig.apiUrl}/export/letter/data/${beaconId}`
+      `${applicationConfig.apiUrl}/export/letter/data/${beaconId}`,
     );
   }
   public async getLetterDataForBeacons(
-    beaconIds: string[]
+    beaconIds: string[],
   ): Promise<IBeaconExport[]> {
     return this.retrieveExportDataList(
       `${applicationConfig.apiUrl}/export/letters/data`,
-      beaconIds
+      beaconIds,
     );
   }
 
   public async getExportDataForBeacon(
-    beaconId: string
+    beaconId: string,
   ): Promise<IBeaconExport> {
     return this.getExportData(
-      `${applicationConfig.apiUrl}/export/beacon/data/${beaconId}`
+      `${applicationConfig.apiUrl}/export/beacon/data/${beaconId}`,
     );
   }
   public async getExportDataForBeacons(
-    beaconIds: string[]
+    beaconIds: string[],
   ): Promise<IBeaconExport[]> {
     return this.retrieveExportDataList(
       `${applicationConfig.apiUrl}/export/beacons/data`,
-      beaconIds
+      beaconIds,
     );
   }
   public async getExportDataForAllBeacons(): Promise<IBeaconExport[]> {
     return this.retrieveExportDataList(
       `${applicationConfig.apiUrl}/export/beacons/all`,
-      []
+      [],
     );
   }
 
   public async searchExportData(
-    searchForm: ExportSearchFormProps
+    searchForm: ExportSearchFormProps,
   ): Promise<IBeaconExportSearchResult> {
     const accessToken = await this._authGateway.getAccessToken();
 
     let url = `${
       applicationConfig.apiUrl
     }/beacon-search/search/full-export-search?name=${encodeURIComponent(
-      searchForm.name || ""
+      searchForm.name || "",
     )}`;
 
     if (searchForm.registrationFrom) {
       url += `&registrationFrom=${encodeURIComponent(
-        new Date(searchForm.registrationFrom).toISOString()
+        new Date(searchForm.registrationFrom).toISOString(),
       )}`;
     }
     if (searchForm.registrationTo) {
       url += `&registrationTo=${encodeURIComponent(
-        new Date(searchForm.registrationTo).toISOString()
+        new Date(searchForm.registrationTo).toISOString(),
       )}`;
     }
     if (searchForm.lastModifiedFrom) {
       url += `&lastModifiedFrom=${encodeURIComponent(
-        new Date(searchForm.lastModifiedFrom).toISOString()
+        new Date(searchForm.lastModifiedFrom).toISOString(),
       )}`;
     }
     if (searchForm.lastModifiedTo) {
       url += `&lastModifiedTo=${encodeURIComponent(
-        new Date(searchForm.lastModifiedTo).toISOString()
+        new Date(searchForm.lastModifiedTo).toISOString(),
       )}`;
     }
 
@@ -159,7 +159,7 @@ export class ExportsGateway implements IExportsGateway {
 
   private async retrieveExportDataList(
     url: string,
-    ids: string[]
+    ids: string[],
   ): Promise<IBeaconExport[]> {
     const accessToken = await this._authGateway.getAccessToken();
 

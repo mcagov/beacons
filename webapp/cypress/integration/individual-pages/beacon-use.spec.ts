@@ -17,7 +17,7 @@ describe("As a beacon owner, I want to submit uses for my beacon", () => {
 
   it("should route to the previous page", () => {
     iCanClickTheBackLinkToGoToPreviousPage(
-      CreateRegistrationPageURLs.beaconInformation
+      CreateRegistrationPageURLs.beaconInformation,
     );
   });
 

@@ -166,13 +166,13 @@ const RestOfWorldAccountHolderAddress: FunctionComponent<{
 );
 
 const userDidSubmitForm = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): boolean => context.req.method === "POST";
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
-      context
+      context,
     );
     if (await rule.condition()) {
       return rule.action();
@@ -183,21 +183,21 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
     if (!userDidSubmitForm(context)) {
       const accountHolder: AccountHolder = await getOrCreateAccountHolder(
-        context.session
+        context.session,
       );
       return {
         props: {
           form: restOfWorldFormManager(
             accountHolderToRestOfWorldUpdateFields(
-              resetAddressFields(accountHolder)
-            )
+              resetAddressFields(accountHolder),
+            ),
           ).serialise(),
         },
       };
     }
 
     const formData = await parseFormDataAs<RestOfWorldAccountUpdateFields>(
-      context.req
+      context.req,
     );
     const formManager = restOfWorldFormManager(formData).asDirty();
     if (formManager.hasErrors()) {
@@ -211,11 +211,11 @@ export const getServerSideProps: GetServerSideProps = withSession(
     const accountHolder = await getOrCreateAccountHolder(context.session);
     await updateAccountHolder(
       accountHolder.id,
-      formDataToRestOfWorldAccountHolder(formData)
+      formDataToRestOfWorldAccountHolder(formData),
     );
 
     return redirectUserTo(AccountPageURLs.accountHome);
-  })
+  }),
 );
 
 const resetAddressFields = (accountHolder: AccountHolder): AccountHolder => {
@@ -244,7 +244,7 @@ export default RestOfWorld;
  * @returns {RestOfWorldAccountUpdateFields} update field values from accountHolder or properties are undefined (to allow for obj diffing)
  */
 const accountHolderToRestOfWorldUpdateFields = (
-  accountHolder: AccountHolder
+  accountHolder: AccountHolder,
 ): RestOfWorldAccountUpdateFields => ({
   fullName: accountHolder.fullName || undefined,
   telephoneNumber: accountHolder.telephoneNumber || undefined,
@@ -258,7 +258,7 @@ const accountHolderToRestOfWorldUpdateFields = (
 });
 
 const formDataToRestOfWorldAccountHolder = (
-  formData: RestOfWorldAccountUpdateFields
+  formData: RestOfWorldAccountUpdateFields,
 ): AccountHolder => {
   const emptyFields = {
     county: "",
@@ -297,7 +297,7 @@ export const restOfWorldFormManager: FormManagerFactory = ({
     telephoneNumber: new FieldManager(telephoneNumber, [
       Validators.required("Enter your telephone number"),
       Validators.phoneNumber(
-        "Enter a telephone number, like 07700 982736 or +447700912738"
+        "Enter a telephone number, like 07700 982736 or +447700912738",
       ),
     ]),
     addressLine1: new FieldManager(addressLine1, [

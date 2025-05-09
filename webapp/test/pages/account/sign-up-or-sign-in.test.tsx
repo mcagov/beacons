@@ -22,12 +22,12 @@ describe("SignUpOrSignIn", () => {
     };
 
     render(
-      <SignUpOrSignIn form={signUpOrSignInForm} showCookieBanner={false} />
+      <SignUpOrSignIn form={signUpOrSignInForm} showCookieBanner={false} />,
     );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      GeneralPageURLs.start
+      GeneralPageURLs.start,
     );
   });
 });

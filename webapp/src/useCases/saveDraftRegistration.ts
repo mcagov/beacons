@@ -10,6 +10,6 @@ export const saveDraftRegistration =
 
     await draftRegistrationGateway.update(
       id,
-      _.merge(existingDraftRegistration, updates)
+      _.merge(existingDraftRegistration, updates),
     );
   };

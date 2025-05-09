@@ -28,7 +28,7 @@ describe("AadAuthGateway", () => {
         .mockResolvedValue(mockAuthenticationResult);
 
       const accessToken = await gateway.getAccessToken(
-        mockConfidentialClientApplication as ConfidentialClientApplication
+        mockConfidentialClientApplication as ConfidentialClientApplication,
       );
 
       expect(accessToken).toEqual(mockAccessToken);
@@ -44,8 +44,8 @@ describe("AadAuthGateway", () => {
 
       await expect(
         gateway.getAccessToken(
-          mockConfidentialClientApplication as ConfidentialClientApplication
-        )
+          mockConfidentialClientApplication as ConfidentialClientApplication,
+        ),
       ).rejects.toThrowError();
     });
   });

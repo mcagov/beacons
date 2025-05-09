@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.default,
       marginBottom: "100px",
     },
-  })
+  }),
 );
 
 export const PageContent: FunctionComponent<PageContentProps> = ({

@@ -141,8 +141,7 @@ class ExportController {
 
     byte[] file = pdfService.createPdfLabel(data);
 
-    return ResponseEntity
-      .ok()
+    return ResponseEntity.ok()
       .contentType(MediaType.APPLICATION_PDF)
       .body(file);
   }
@@ -160,8 +159,7 @@ class ExportController {
 
     byte[] file = pdfService.createPdfLabels(dataList);
 
-    return ResponseEntity
-      .ok()
+    return ResponseEntity.ok()
       .contentType(MediaType.APPLICATION_PDF)
       .body(file);
   }
@@ -177,8 +175,7 @@ class ExportController {
       .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
-    return ResponseEntity
-      .ok()
+    return ResponseEntity.ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(dataList);
   }
@@ -193,8 +190,7 @@ class ExportController {
       "Certificate"
     );
 
-    return ResponseEntity
-      .ok()
+    return ResponseEntity.ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(data);
   }
@@ -210,8 +206,7 @@ class ExportController {
       .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
-    return ResponseEntity
-      .ok()
+    return ResponseEntity.ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(dataList);
   }
@@ -226,8 +221,7 @@ class ExportController {
       "Letter"
     );
 
-    return ResponseEntity
-      .ok()
+    return ResponseEntity.ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(data);
   }
@@ -243,8 +237,7 @@ class ExportController {
       .filter(dto -> dto != null)
       .collect(Collectors.toList());
 
-    return ResponseEntity
-      .ok()
+    return ResponseEntity.ok()
       .contentType(MediaType.APPLICATION_JSON)
       .body(dataList);
   }

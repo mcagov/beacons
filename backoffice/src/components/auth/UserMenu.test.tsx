@@ -25,11 +25,11 @@ describe("UserMenu", () => {
     render(
       <AuthContext.Provider value={authContext}>
         <UserMenu />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
 
     expect(
-      screen.getByRole("button", { name: "Steve Stevington" })
+      screen.getByRole("button", { name: "Steve Stevington" }),
     ).toBeVisible();
   });
 
@@ -37,7 +37,7 @@ describe("UserMenu", () => {
     render(
       <AuthContext.Provider value={authContext}>
         <UserMenu />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
     const expandMenuButton = screen.getByRole("button", {
       name: "Steve Stevington",
@@ -51,7 +51,7 @@ describe("UserMenu", () => {
     render(
       <AuthContext.Provider value={authContext}>
         <UserMenu />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
     const expandMenuButton = screen.getByRole("button", {
       name: "Steve Stevington",

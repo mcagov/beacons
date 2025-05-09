@@ -19,15 +19,15 @@ public class AuthGatewayImpl implements AuthGateway {
   @Override
   public User getUser() {
     final var authentication = getAuthentication();
-    final var user = (AadOAuth2AuthenticatedPrincipal) authentication.getPrincipal();
+    final var user =
+      (AadOAuth2AuthenticatedPrincipal) authentication.getPrincipal();
     final var userAttributes = user.getAttributes();
 
     final UUID userId = UUID.fromString((String) userAttributes.get("oid"));
     final String name = (String) userAttributes.get("name");
     final String email = (String) userAttributes.get("email");
 
-    return BackOfficeUser
-      .builder()
+    return BackOfficeUser.builder()
       .id(userId)
       .fullName(name)
       .email(email)

@@ -130,37 +130,37 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<AboutBeaconOwnerForm>(
         context,
         validationRules,
         mapper,
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<AboutBeaconOwnerForm>(
         context,
         validationRules,
         mapper,
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<AboutBeaconOwnerForm>(
         context,
         validationRules,
         mapper,
-        nextPageUrl
+        nextPageUrl,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<Partial<AboutBeaconOwnerFormProps>> => {
   const uses =
     (
       await context.container.getDraftRegistration(
-        context.req.cookies[formSubmissionCookieId]
+        context.req.cookies[formSubmissionCookieId],
       )
     )?.uses || [];
 
@@ -204,7 +204,7 @@ const validationRules = ({
       Validators.required("Telephone number is a required field"),
     ]),
     ownerAlternativeTelephoneNumber: new FieldManager(
-      ownerAlternativeTelephoneNumber
+      ownerAlternativeTelephoneNumber,
     ),
     ownerEmail: new FieldManager(ownerEmail, [
       Validators.required("Email address is a required field"),

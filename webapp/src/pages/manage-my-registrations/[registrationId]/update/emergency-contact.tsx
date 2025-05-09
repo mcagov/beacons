@@ -196,43 +196,43 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const nextPageUrl = UrlBuilder.buildRegistrationUrl(
       Actions.update,
       Pages.summary,
-      context.query.registrationId as string
+      context.query.registrationId as string,
     );
 
     const previousPageUrl = UrlBuilder.buildUpdateRegistrationSummaryUrl(
-      context.query.registrationId as string
+      context.query.registrationId as string,
     );
 
     return withAdditionalProps(
       new BeaconsPageRouter([
         new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-          context
+          context,
         ),
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context,
-          context.query.registrationId as string
+          context.query.registrationId as string,
         ),
         new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<EmergencyContactForm>(
           context,
           validationRules,
-          mapper
+          mapper,
         ),
         new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<EmergencyContactForm>(
           context,
           validationRules,
-          mapper
+          mapper,
         ),
         new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<EmergencyContactForm>(
           context,
           validationRules,
           mapper,
-          nextPageUrl
+          nextPageUrl,
         ),
       ]),
-      { previousPageUrl }
+      { previousPageUrl },
     );
-  })
+  }),
 );
 
 const mapper: DraftRegistrationFormMapper<EmergencyContactForm> = {
@@ -282,7 +282,7 @@ const validationRules = ({
   emergencyContact3AlternativeTelephoneNumber,
 }: FormSubmission): FormManager => {
   const phoneValidator = Validators.phoneNumber(
-    "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
+    "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192",
   );
 
   return new FormManager({
@@ -293,32 +293,32 @@ const validationRules = ({
       emergencyContact1TelephoneNumber,
       [
         Validators.required(
-          "Emergency contact telephone number is a required field"
+          "Emergency contact telephone number is a required field",
         ),
         phoneValidator,
-      ]
+      ],
     ),
     emergencyContact1AlternativeTelephoneNumber: new FieldManager(
       emergencyContact1AlternativeTelephoneNumber,
-      [phoneValidator]
+      [phoneValidator],
     ),
     emergencyContact2FullName: new FieldManager(emergencyContact2FullName),
     emergencyContact2TelephoneNumber: new FieldManager(
       emergencyContact2TelephoneNumber,
-      [phoneValidator]
+      [phoneValidator],
     ),
     emergencyContact2AlternativeTelephoneNumber: new FieldManager(
       emergencyContact2AlternativeTelephoneNumber,
-      [phoneValidator]
+      [phoneValidator],
     ),
     emergencyContact3FullName: new FieldManager(emergencyContact3FullName),
     emergencyContact3TelephoneNumber: new FieldManager(
       emergencyContact3TelephoneNumber,
-      [phoneValidator]
+      [phoneValidator],
     ),
     emergencyContact3AlternativeTelephoneNumber: new FieldManager(
       emergencyContact3AlternativeTelephoneNumber,
-      [phoneValidator]
+      [phoneValidator],
     ),
   });
 };

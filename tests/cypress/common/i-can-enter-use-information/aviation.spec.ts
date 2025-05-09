@@ -25,12 +25,12 @@ export const givenIHaveEnteredMyAviationUse = (purpose: string): void => {
   switch (purpose) {
     case "COMMERCIAL":
       givenIHaveSelected(
-        "#" + testAviationCommercialUseData.type.activity.toLowerCase()
+        "#" + testAviationCommercialUseData.type.activity.toLowerCase(),
       );
       break;
     case "PLEASURE":
       givenIHaveSelected(
-        "#" + testAviationPleasureUseData.type.activity.toLowerCase()
+        "#" + testAviationPleasureUseData.type.activity.toLowerCase(),
       );
       break;
   }
@@ -66,12 +66,12 @@ export const iCanSeeMyAviationUse = (purpose: string): void => {
     cy.get("main").contains(value);
   });
   cy.get("main").contains(
-    testAviationUseData.communications.satelliteTelephone
+    testAviationUseData.communications.satelliteTelephone,
   );
   cy.get("main").contains(testAviationUseData.communications.mobileTelephone1);
   cy.get("main").contains(testAviationUseData.communications.mobileTelephone2);
   cy.get("main").contains(
-    testAviationUseData.communications.otherCommunication
+    testAviationUseData.communications.otherCommunication,
   );
   cy.get("main").contains(testAviationUseData.moreDetails);
   cy.get("main").contains("dongle");
@@ -80,36 +80,36 @@ export const iCanSeeMyAviationUse = (purpose: string): void => {
 export const givenIHaveEnteredInformationAboutMyAircraft = (): void => {
   givenIHaveClearedAndTypedInAField(
     testAviationPleasureUseData.aircraft.maxCapacity,
-    "#maxCapacity"
+    "#maxCapacity",
   );
   givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.manufacturer,
-    "#aircraftManufacturer"
+    "#aircraftManufacturer",
   );
   givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.principalAirport,
-    "#principalAirport"
+    "#principalAirport",
   );
   givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.secondaryAirport,
-    "#secondaryAirport"
+    "#secondaryAirport",
   );
   givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.registrationMark,
-    "#registrationMark"
+    "#registrationMark",
   );
   givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.hexAddress,
-    "#hexAddress"
+    "#hexAddress",
   );
   givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.cnOrMsnNumber,
-    "#cnOrMsnNumber"
+    "#cnOrMsnNumber",
   );
   givenIHaveSelected("#dongle-yes");
   givenIHaveTypedInAnEmptyField(
     testAviationPleasureUseData.aircraft.beaconPosition,
-    "#beaconPosition"
+    "#beaconPosition",
   );
 };
 
@@ -118,27 +118,27 @@ export const givenIHaveEnteredMyAircraftCommunicationDetails = (): void => {
   givenIHaveSelected("#satelliteTelephone");
   givenIHaveTypedInAnEmptyField(
     testAviationUseData.communications.satelliteTelephone,
-    "#satelliteTelephoneInput"
+    "#satelliteTelephoneInput",
   );
   givenIHaveSelected("#mobileTelephone");
   givenIHaveTypedInAnEmptyField(
     testAviationUseData.communications.mobileTelephone1,
-    "#mobileTelephoneInput1"
+    "#mobileTelephoneInput1",
   );
   givenIHaveTypedInAnEmptyField(
     testAviationUseData.communications.mobileTelephone2,
-    "#mobileTelephoneInput2"
+    "#mobileTelephoneInput2",
   );
   givenIHaveSelected("#otherCommunication");
   givenIHaveTypedInAnEmptyField(
     testAviationUseData.communications.otherCommunication,
-    "#otherCommunicationInput"
+    "#otherCommunicationInput",
   );
 };
 
 const givenIHaveEnteredMoreDetailsAboutMyAircraft = (): void => {
   givenIHaveTypedInAnEmptyField(
     testAviationUseData.moreDetails,
-    "#moreDetails"
+    "#moreDetails",
   );
 };

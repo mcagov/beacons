@@ -90,7 +90,7 @@ const getAircraftCommunicationsFields = (use: IUse): IField[] => {
       {
         key: "Phone number",
         value: use?.satelliteTelephoneValue,
-      }
+      },
     );
     typeOfCommunicationIndex++;
   }
@@ -104,7 +104,7 @@ const getAircraftCommunicationsFields = (use: IUse): IField[] => {
       {
         key: "Number",
         value: [use?.mobileTelephone1, use?.mobileTelephone2],
-      }
+      },
     );
     typeOfCommunicationIndex++;
   }
@@ -118,7 +118,7 @@ const getAircraftCommunicationsFields = (use: IUse): IField[] => {
       {
         key: "Details",
         value: use?.otherCommunicationValue,
-      }
+      },
     );
     typeOfCommunicationIndex++;
   }

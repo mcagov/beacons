@@ -186,13 +186,13 @@ describe("formatFieldValue()", () => {
   it(`formats ${FieldValueTypes.MULTILINE} values correctly i.e. will not show ${Placeholders.NoData} if value is missing`, () => {
     expect(formatFieldValue("", FieldValueTypes.MULTILINE)).toEqual(<></>);
     expect(formatFieldValue(undefined, FieldValueTypes.MULTILINE)).toEqual(
-      <></>
+      <></>,
     );
   });
 
   it("shows the multiline value if value exists", () => {
     expect(formatFieldValue("anything", FieldValueTypes.MULTILINE)).toEqual(
-      <b>ANYTHING</b>
+      <b>ANYTHING</b>,
     );
   });
 
@@ -214,7 +214,7 @@ describe("formatForClipboard", () => {
     const dynamicLegacyBeaconData = { secondaryOwners: [] };
 
     expect(formatForClipboard(dynamicLegacyBeaconData)).toEqual(
-      "Secondary Owners:    N/A\n"
+      "Secondary Owners:    N/A\n",
     );
   });
 
@@ -222,7 +222,7 @@ describe("formatForClipboard", () => {
     const dynamicLegacyBeaconData = { owner: {} };
 
     expect(formatForClipboard(dynamicLegacyBeaconData)).toEqual(
-      "Owner:    N/A\n"
+      "Owner:    N/A\n",
     );
   });
 
@@ -230,7 +230,7 @@ describe("formatForClipboard", () => {
     const nestedData = { owner: { name: "Steve", email: "steve@mail.com" } };
 
     expect(formatForClipboard(nestedData)).toEqual(
-      "\n=====OWNER=====\nName:    Steve\nEmail:    steve@mail.com\n"
+      "\n=====OWNER=====\nName:    Steve\nEmail:    steve@mail.com\n",
     );
   });
 });

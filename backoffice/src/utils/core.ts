@@ -3,7 +3,7 @@ import * as _ from "lodash";
 
 export const diffObjValues = (
   base: Record<any, any>,
-  comparator: Record<any, any>
+  comparator: Record<any, any>,
 ): Record<string, any> => {
   if (noRecursionNeeded(base, comparator)) return comparator;
 

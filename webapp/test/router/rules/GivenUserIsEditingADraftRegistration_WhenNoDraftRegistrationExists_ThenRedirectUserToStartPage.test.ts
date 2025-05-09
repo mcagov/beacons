@@ -19,7 +19,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
       };
       const rule =
         new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-          context as any
+          context as any,
         );
 
       const result = await rule.condition();
@@ -41,7 +41,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
       };
       const rule =
         new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-          context as any
+          context as any,
         );
 
       const result = await rule.condition();
@@ -70,7 +70,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
       };
       const rule =
         new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-          context as any
+          context as any,
         );
 
       const result = await rule.condition();
@@ -91,7 +91,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
       };
       const rule =
         new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-          context as any
+          context as any,
         );
 
       const result: GetServerSidePropsResult<any> = await rule.action();
@@ -118,7 +118,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
       };
       const rule =
         new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-          context as any
+          context as any,
         );
       const blankRegistration: DraftRegistration = {
         uses: [],
@@ -128,7 +128,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
 
       expect(context.container.saveDraftRegistration).toHaveBeenCalledWith(
         "test-draft-registration-id",
-        blankRegistration
+        blankRegistration,
       );
       expect(result).toMatchObject({
         redirect: {

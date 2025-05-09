@@ -55,7 +55,7 @@ export type BeaconSearchResult = {
 };
 
 export function parseBeaconSearchItem(
-  item: BeaconSearchItem
+  item: BeaconSearchItem,
 ): BeaconSearchResult {
   return {
     _id: item._id,

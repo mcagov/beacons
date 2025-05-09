@@ -33,7 +33,7 @@ function renderSearchBar({
         searchText={searchText}
         dataManager={dataManager}
       />
-    </ThemeProvider>
+    </ThemeProvider>,
   );
 }
 

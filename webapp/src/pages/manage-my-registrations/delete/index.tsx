@@ -163,18 +163,18 @@ export const getServerSideProps: GetServerSideProps = withSession(
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage(
         context,
-        validationRules
+        validationRules,
       ),
       new GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_ThenShowErrorMessage(
         context,
-        validationRules
+        validationRules,
       ),
       new GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteTheRegistration(
         context,
-        validationRules
+        validationRules,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const validationRules = ({

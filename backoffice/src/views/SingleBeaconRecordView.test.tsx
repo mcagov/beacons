@@ -42,7 +42,7 @@ describe("Beacon record page", () => {
             notesGateway={notesGatewayDouble}
           />
         </AuthProvider>
-      </ThemeProvider>
+      </ThemeProvider>,
     );
     const hexId = beaconFixture.hexId;
     await waitFor(() => {
@@ -62,12 +62,12 @@ describe("Beacon record page", () => {
             notesGateway={notesGatewayDouble}
           />
         </AuthProvider>
-      </ThemeProvider>
+      </ThemeProvider>,
     );
     const numberOfUses = beaconFixture.uses.length;
 
     expect(
-      await screen.findByText(`${numberOfUses} Registered Uses`)
+      await screen.findByText(`${numberOfUses} Registered Uses`),
     ).toBeDefined();
   });
 });

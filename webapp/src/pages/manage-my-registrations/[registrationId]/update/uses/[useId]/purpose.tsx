@@ -63,7 +63,7 @@ const PurposePage: FunctionComponent<PurposeFormProps> = ({
         Actions.update,
         UsePages.environment,
         draftRegistration.id,
-        useId
+        useId,
       )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -100,7 +100,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       Actions.update,
       UsePages.activity,
       context.query.registrationId as string,
-      context.query.useId as string
+      context.query.useId as string,
     );
     ("");
 
@@ -110,29 +110,29 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<PurposeForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<PurposeForm>(
         context,
         validationRules,
         mapper(context),
-        nextPage
+        nextPage,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<Partial<PurposeFormProps>> => {
   const draftRegistration = await context.container.getDraftRegistration(
-    context.req.cookies[formSubmissionCookieId]
+    context.req.cookies[formSubmissionCookieId],
   );
 
   const useId = context.query.useId as string;
@@ -164,7 +164,7 @@ const validationRules = ({ purpose }: FormSubmission): FormManager => {
       purpose,
       [Validators.required("Beacon use purpose is a required field")],
       [],
-      "pleasure"
+      "pleasure",
     ),
   });
 };
