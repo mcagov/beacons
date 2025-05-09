@@ -6,7 +6,7 @@ describe("BeaconRequestMapper", () => {
 
     const mappedBeaconRequest = beaconRequestMapper.map(
       "9d7eb567-2212-4d71-8932-95536dd0b84e",
-      {}
+      {},
     );
 
     expect(mappedBeaconRequest).toStrictEqual({
@@ -25,7 +25,7 @@ describe("BeaconRequestMapper", () => {
       "9d7eb567-2212-4d71-8932-95536dd0b84e",
       {
         batteryExpiryDate: "2021-04-20",
-      }
+      },
     );
 
     expect(mappedBeaconRequest).toStrictEqual({
@@ -47,7 +47,7 @@ describe("BeaconRequestMapper", () => {
       {
         batteryExpiryDate: "2021-04-20",
         model: "Beaconater 3000",
-      }
+      },
     );
 
     expect(mappedBeaconRequest).toStrictEqual({
@@ -81,7 +81,7 @@ describe("BeaconRequestMapper", () => {
         chkCode: "45YU",
         batteryExpiryDate: "2021-04-20",
         lastServicedDate: "20-04-2021",
-      }
+      },
     );
 
     expect(mappedBeaconRequest).toStrictEqual({

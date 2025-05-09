@@ -4,12 +4,12 @@ import { DraftRegistrationGateway } from "../gateways/interfaces/DraftRegistrati
 export const deleteCachedRegistrationsForAccountHolder = async (
   draftRegistrationGateway: DraftRegistrationGateway,
   accountHolderGateway: AccountHolderGateway,
-  accountHolderId: string
+  accountHolderId: string,
 ): Promise<void> => {
   const beacons = await accountHolderGateway.getAccountBeacons(accountHolderId);
 
   await Promise.all(
-    beacons.map((beacon) => draftRegistrationGateway.delete(beacon.id))
+    beacons.map((beacon) => draftRegistrationGateway.delete(beacon.id)),
   );
 };
 
@@ -17,7 +17,7 @@ export const deleteCachedRegistrationForAccountHolder = async (
   draftRegistrationGateway: DraftRegistrationGateway,
   accountHolderGateway: AccountHolderGateway,
   accountHolderId: string,
-  registrationId: string
+  registrationId: string,
 ): Promise<void> => {
   await draftRegistrationGateway.delete(registrationId);
 };

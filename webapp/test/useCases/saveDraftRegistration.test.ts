@@ -26,7 +26,7 @@ describe("saveDraftRegistration", () => {
 
     await saveDraftRegistration(container as any)(
       "test-id",
-      updatesTodraftRegistration
+      updatesTodraftRegistration,
     );
 
     expect(container.draftRegistrationGateway.update).toHaveBeenCalledWith(
@@ -39,7 +39,7 @@ describe("saveDraftRegistration", () => {
         model: "Excelsior",
         hexId: "1D0...",
         uses: [],
-      }
+      },
     );
   });
 
@@ -64,14 +64,14 @@ describe("saveDraftRegistration", () => {
 
     await saveDraftRegistration(container as any)(
       "test-id",
-      updatesTodraftRegistration
+      updatesTodraftRegistration,
     );
 
     expect(container.draftRegistrationGateway.update).toHaveBeenCalledWith(
       "test-id",
       {
         uses: [{ environment: Environment.MARITIME, vesselName: "SS Fedora" }],
-      }
+      },
     );
   });
 });

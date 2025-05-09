@@ -9,5 +9,5 @@ export enum BeaconDeletionReasons {
 }
 
 export const reasonsForDeletion: string[] | undefined = Object.values(
-  BeaconDeletionReasons
+  BeaconDeletionReasons,
 );

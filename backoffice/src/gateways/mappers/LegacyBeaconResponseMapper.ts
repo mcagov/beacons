@@ -20,7 +20,7 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
       hexId: beaconApiResponse.data.attributes.beacon.hexId,
       statusCode: beaconApiResponse.data.attributes.beacon.statusCode,
       beaconStatus: this.mapStatus(
-        beaconApiResponse.data.attributes.claimStatus
+        beaconApiResponse.data.attributes.claimStatus,
       ),
       manufacturer: beaconApiResponse.data.attributes.beacon.manufacturer,
       model: beaconApiResponse.data.attributes.beacon.model,
@@ -36,13 +36,13 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
         beaconApiResponse.data.attributes.beacon.batteryExpiryDate,
       lastServiceDate: beaconApiResponse.data.attributes.beacon.lastServiceDate,
       firstRegistrationDate: formatDateTime(
-        beaconApiResponse.data.attributes.beacon.firstRegistrationDate
+        beaconApiResponse.data.attributes.beacon.firstRegistrationDate,
       ),
       createdDate:
         formatDateTime(beaconApiResponse.data.attributes.beacon.createdDate) ||
         "",
       lastModifiedDate: formatDateTime(
-        beaconApiResponse.data.attributes.beacon.lastModifiedDate
+        beaconApiResponse.data.attributes.beacon.lastModifiedDate,
       ),
       cospasSarsatNumber:
         beaconApiResponse.data.attributes.beacon.cospasSarsatNumber,
@@ -105,7 +105,7 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
   }
 
   private mapSecondaryOwners(
-    beaconApiResponse: ILegacyBeaconResponse
+    beaconApiResponse: ILegacyBeaconResponse,
   ): ILegacyOwner[] {
     const mappedSecondaryOwners: ILegacyOwner[] = [];
     beaconApiResponse.data.attributes.secondaryOwners.forEach(
@@ -136,13 +136,13 @@ export class LegacyBeaconResponseMapper implements ILegacyBeaconResponseMapper {
             formatDateTime(secondaryOwner.lastModifiedDate) || "",
           versioning: secondaryOwner.versioning || 0,
         });
-      }
+      },
     );
     return mappedSecondaryOwners;
   }
 
   private mapEmergencyContacts(
-    beaconApiResponse: ILegacyBeaconResponse
+    beaconApiResponse: ILegacyBeaconResponse,
   ): ILegacyEmergencyContact {
     return {
       details: beaconApiResponse.data.attributes.emergencyContact.details,

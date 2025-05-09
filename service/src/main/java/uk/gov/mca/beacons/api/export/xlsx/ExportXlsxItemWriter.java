@@ -23,13 +23,11 @@ public class ExportXlsxItemWriter implements ItemWriter<ExportSpreadsheetRow> {
   @Override
   public void write(List<? extends ExportSpreadsheetRow> list)
     throws NullPointerException {
-    Sheet sheet = Objects
-      .requireNonNull(
-        beaconsDataWorkbookRepository
-          .getWorkbook(BeaconsDataWorkbookRepository.OperationType.EXPORT)
-          .get()
-      )
-      .getSheet("Beacons Export Data");
+    Sheet sheet = Objects.requireNonNull(
+      beaconsDataWorkbookRepository
+        .getWorkbook(BeaconsDataWorkbookRepository.OperationType.EXPORT)
+        .get()
+    ).getSheet("Beacons Export Data");
 
     // returns -1 if there are no rows;
     int currentRowNum = sheet.getLastRowNum() + 1;
@@ -53,8 +51,7 @@ public class ExportXlsxItemWriter implements ItemWriter<ExportSpreadsheetRow> {
   }
 
   private List<String> prepareValues(ExportSpreadsheetRow row) {
-    return ExportSpreadsheetRow.COLUMN_ATTRIBUTES
-      .stream()
+    return ExportSpreadsheetRow.COLUMN_ATTRIBUTES.stream()
       .map(attribute -> {
         try {
           Object property = PropertyUtils.getProperty(row, attribute);

@@ -39,7 +39,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       thenIShouldSeeFormErrors(requiredFieldErrorMessage);
       thenIShouldSeeAnErrorSummaryLinkThatContains(
         "Activity",
-        requiredFieldErrorMessage
+        requiredFieldErrorMessage,
       );
       whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);
       thenMyFocusMovesTo("#motor-vessel");
@@ -50,7 +50,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       whenIClickContinue();
       thenIShouldSeeFormErrors(...otherActivityTextRequiredErrorMessage);
       whenIClickOnTheErrorSummaryLinkContaining(
-        ...otherActivityTextRequiredErrorMessage
+        ...otherActivityTextRequiredErrorMessage,
       );
       thenMyFocusMovesTo("#otherActivityText");
     });
@@ -69,7 +69,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       thenIShouldSeeFormErrors(requiredFieldErrorMessage);
       thenIShouldSeeAnErrorSummaryLinkThatContains(
         "Activity",
-        requiredFieldErrorMessage
+        requiredFieldErrorMessage,
       );
       whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);
       thenMyFocusMovesTo("#fishing-vessel");
@@ -80,7 +80,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       whenIClickContinue();
       thenIShouldSeeFormErrors(...otherActivityTextRequiredErrorMessage);
       whenIClickOnTheErrorSummaryLinkContaining(
-        ...otherActivityTextRequiredErrorMessage
+        ...otherActivityTextRequiredErrorMessage,
       );
       thenMyFocusMovesTo("#otherActivityText");
     });
@@ -99,7 +99,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       thenIShouldSeeFormErrors(requiredFieldErrorMessage);
       thenIShouldSeeAnErrorSummaryLinkThatContains(
         "Activity",
-        requiredFieldErrorMessage
+        requiredFieldErrorMessage,
       );
       whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);
       thenMyFocusMovesTo("#jet-aircraft");
@@ -110,7 +110,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       whenIClickContinue();
       thenIShouldSeeFormErrors(...otherActivityTextRequiredErrorMessage);
       whenIClickOnTheErrorSummaryLinkContaining(
-        ...otherActivityTextRequiredErrorMessage
+        ...otherActivityTextRequiredErrorMessage,
       );
       thenMyFocusMovesTo("#otherActivityText");
     });
@@ -129,7 +129,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       thenIShouldSeeFormErrors(requiredFieldErrorMessage);
       thenIShouldSeeAnErrorSummaryLinkThatContains(
         "Activity",
-        requiredFieldErrorMessage
+        requiredFieldErrorMessage,
       );
       whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);
       thenMyFocusMovesTo("#passenger-plane");
@@ -140,7 +140,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       whenIClickContinue();
       thenIShouldSeeFormErrors(...otherActivityTextRequiredErrorMessage);
       whenIClickOnTheErrorSummaryLinkContaining(
-        ...otherActivityTextRequiredErrorMessage
+        ...otherActivityTextRequiredErrorMessage,
       );
       thenMyFocusMovesTo("#otherActivityText");
     });
@@ -167,7 +167,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
       thenIShouldSeeFormErrors(requiredFieldErrorMessage);
       thenIShouldSeeAnErrorSummaryLinkThatContains(
         "Activity",
-        requiredFieldErrorMessage
+        requiredFieldErrorMessage,
       );
       whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);
       thenMyFocusMovesTo("#driving");
@@ -278,7 +278,7 @@ describe("As a beacon owner, I want to submit the primary activity for my beacon
     thenIShouldSeeAnErrorMessageThatContains(requiredFieldErrorMessage);
     thenIShouldSeeAnErrorSummaryLinkThatContains(
       "Maritime pleasure use",
-      requiredFieldErrorMessage
+      requiredFieldErrorMessage,
     );
 
     whenIClickOnTheErrorSummaryLinkContaining(requiredFieldErrorMessage);

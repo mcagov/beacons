@@ -15,7 +15,7 @@ describe("The getAccountHolderId use case", () => {
     const session = { user: { authId: "a-session-id" } };
 
     const result = await getAccountHolderId(container as IAppContainer)(
-      session
+      session,
     );
 
     expect(result).toEqual(testId);
@@ -34,7 +34,7 @@ describe("The getAccountHolderId use case", () => {
     await getAccountHolderId(container as IAppContainer)(session);
 
     expect(
-      container.accountHolderGateway.getAccountHolderId
+      container.accountHolderGateway.getAccountHolderId,
     ).toHaveBeenCalledTimes(1);
   });
 });

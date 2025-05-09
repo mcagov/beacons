@@ -41,7 +41,7 @@ describe("Activity", () => {
     function assertPageHeadingContains(
       expected: string,
       environment: Environment,
-      purpose: Purpose
+      purpose: Purpose,
     ): void {
       render(
         <ActivityPage
@@ -50,7 +50,7 @@ describe("Activity", () => {
           useId={0}
           environment={environment}
           purpose={purpose}
-        />
+        />,
       );
 
       expect(screen.getByText(expected, { exact: false })).toBeDefined();
@@ -60,7 +60,7 @@ describe("Activity", () => {
       assertPageHeadingContains(
         "select the land activity",
         Environment.LAND,
-        Purpose.PLEASURE
+        Purpose.PLEASURE,
       );
     });
 
@@ -68,7 +68,7 @@ describe("Activity", () => {
       assertPageHeadingContains(
         "select the pleasure maritime activity",
         Environment.MARITIME,
-        Purpose.PLEASURE
+        Purpose.PLEASURE,
       );
     });
 
@@ -76,7 +76,7 @@ describe("Activity", () => {
       assertPageHeadingContains(
         "select the commercial maritime activity",
         Environment.MARITIME,
-        Purpose.COMMERCIAL
+        Purpose.COMMERCIAL,
       );
     });
 
@@ -84,7 +84,7 @@ describe("Activity", () => {
       assertPageHeadingContains(
         "select the pleasure aviation activity",
         Environment.AVIATION,
-        Purpose.PLEASURE
+        Purpose.PLEASURE,
       );
     });
 
@@ -92,7 +92,7 @@ describe("Activity", () => {
       assertPageHeadingContains(
         "select the commercial aviation activity",
         Environment.AVIATION,
-        Purpose.COMMERCIAL
+        Purpose.COMMERCIAL,
       );
     });
   });

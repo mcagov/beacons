@@ -36,12 +36,12 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
       whenIClickContinue();
       thenIShouldSeeAnErrorMessageThatContains(
         "Maximum number of persons",
-        "whole number"
+        "whole number",
       );
 
       whenIClickOnTheErrorSummaryLinkContaining(
         "Maximum number of persons",
-        "whole number"
+        "whole number",
       );
       thenMyFocusMovesTo(aircraftMaxCapacitySelector);
     });
@@ -58,11 +58,11 @@ describe("As a beacon owner, I want to submit information about my aircraft", ()
       whenIClickContinue();
 
       thenIShouldSeeAnErrorMessageThatContains(
-        ...tooManyCharactersErrorMessageContains
+        ...tooManyCharactersErrorMessageContains,
       );
 
       whenIClickOnTheErrorSummaryLinkContaining(
-        ...tooManyCharactersErrorMessageContains
+        ...tooManyCharactersErrorMessageContains,
       );
       thenMyFocusMovesTo(beaconPositionSelector);
     });

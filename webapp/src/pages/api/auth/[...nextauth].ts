@@ -81,5 +81,5 @@ const options: NextAuthOptions = {
 
 export default (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ): ReturnType<NextApiHandler> => NextAuth(req, res, options);

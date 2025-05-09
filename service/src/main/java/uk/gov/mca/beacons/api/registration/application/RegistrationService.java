@@ -188,16 +188,13 @@ public class RegistrationService {
     );
 
     List<BeaconUse> beaconUses = beaconUseService.getByBeaconId(beacon.getId());
-    List<EmergencyContact> emergencyContacts = emergencyContactService.getByBeaconId(
-      beacon.getId()
-    );
+    List<EmergencyContact> emergencyContacts =
+      emergencyContactService.getByBeaconId(beacon.getId());
 
-    Optional<AccountHolder> accountHolder = accountHolderService.getAccountHolder(
-      beacon.getAccountHolderId()
-    );
+    Optional<AccountHolder> accountHolder =
+      accountHolderService.getAccountHolder(beacon.getAccountHolderId());
 
-    return Registration
-      .builder()
+    return Registration.builder()
       .beacon(beacon)
       .beaconOwner(mainBeaconOwner.orElse(null))
       .beaconOwners(beaconOwners)
@@ -218,12 +215,10 @@ public class RegistrationService {
     List<BeaconUse> savedBeaconUses = beaconUseService.createAll(
       registration.getBeaconUses()
     );
-    List<EmergencyContact> savedEmergencyContacts = emergencyContactService.createAll(
-      registration.getEmergencyContacts()
-    );
+    List<EmergencyContact> savedEmergencyContacts =
+      emergencyContactService.createAll(registration.getEmergencyContacts());
 
-    return Registration
-      .builder()
+    return Registration.builder()
       .beacon(savedBeacon)
       .beaconOwner(savedBeaconOwner)
       .beaconOwners(Arrays.asList(savedBeaconOwner))
@@ -250,10 +245,11 @@ public class RegistrationService {
       .getAccountHolder(beacon.getAccountHolderId())
       .orElseThrow(ResourceNotFoundException::new);
 
-    List<LegacyBeacon> legacyBeacons = legacyBeaconService.findByHexIdAndAccountHolderEmail(
-      beacon.getHexId(),
-      accountHolder.getEmail()
-    );
+    List<LegacyBeacon> legacyBeacons =
+      legacyBeaconService.findByHexIdAndAccountHolderEmail(
+        beacon.getHexId(),
+        accountHolder.getEmail()
+      );
 
     legacyBeacons.stream().forEach(l -> legacyBeaconService.claim(l));
   }

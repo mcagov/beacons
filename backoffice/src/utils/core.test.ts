@@ -96,7 +96,7 @@ describe("diffObjValues()", () => {
   testCases.forEach((test) => {
     it(`${test.description}`, () => {
       expect(diffObjValues(test.base, test.comparator)).toStrictEqual(
-        test.expectedOutput
+        test.expectedOutput,
       );
     });
   });

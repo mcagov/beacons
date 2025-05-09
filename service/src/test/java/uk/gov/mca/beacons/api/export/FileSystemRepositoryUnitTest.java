@@ -36,8 +36,9 @@ class FileSystemRepositoryUnitTest {
   @Test
   public void prefixWithTodaysDateInYyyyMMddFormat() {
     when(clock.instant()).thenReturn(Instant.EPOCH);
-    String yyyyMMdd = new SimpleDateFormat("yyyyMMdd")
-      .format(Date.from(Instant.EPOCH));
+    String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(
+      Date.from(Instant.EPOCH)
+    );
 
     String filename = exportFileNamer.constructTodaysExportFilename(
       ExportFileNamer.FileType.EXCEL_SPREADSHEET,

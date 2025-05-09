@@ -65,8 +65,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   public void setUpAzureAdUser() {
     PasswordProfile passwordProfile = new PasswordProfile();
     passwordProfile.password = UUID.randomUUID().toString();
-    AzureAdAccountHolder azAdUser = AzureAdAccountHolder
-      .builder()
+    AzureAdAccountHolder azAdUser = AzureAdAccountHolder.builder()
       .email(UUID.randomUUID() + "@mt-test.com")
       .displayName("Wrong Name")
       .mailNickname("WrongN")
@@ -74,8 +73,9 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
       .passwordProfile(passwordProfile)
       .build();
 
-    createdAzAdUser =
-      (AzureAdAccountHolder) graphService.createAzureAdUser(azAdUser);
+    createdAzAdUser = (AzureAdAccountHolder) graphService.createAzureAdUser(
+      azAdUser
+    );
   }
 
   @AfterEach
@@ -162,9 +162,8 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
     assertFalse(accountHolderService.getAccountHolder(id).isPresent());
 
-    assertThrows(
-      GraphServiceException.class,
-      () -> graphService.getUser(accountHolder.getAuthId().toString())
+    assertThrows(GraphServiceException.class, () ->
+      graphService.getUser(accountHolder.getAuthId().toString())
     );
 
     createdAzAdUser = null;
@@ -193,9 +192,8 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
         .isEmpty()
     );
 
-    assertThrows(
-      IllegalStateException.class,
-      () -> accountHolderService.deleteAccountHolder(id)
+    assertThrows(IllegalStateException.class, () ->
+      accountHolderService.deleteAccountHolder(id)
     );
 
     var retainedAdUser = graphService.getUser(
@@ -319,9 +317,8 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     List<BeaconId> beaconsToTransfer = new ArrayList<>();
     beaconsToTransfer.add(new BeaconId(UUID.randomUUID()));
 
-    assertThrows(
-      NoSuchElementException.class,
-      () -> accountHolderService.transferBeacons(id2, beaconsToTransfer)
+    assertThrows(NoSuchElementException.class, () ->
+      accountHolderService.transferBeacons(id2, beaconsToTransfer)
     );
   }
 
@@ -339,13 +336,11 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     List<BeaconId> beaconsToTransfer = new ArrayList<>();
     beaconsToTransfer.add(beacon.getId());
 
-    assertThrows(
-      NoSuchElementException.class,
-      () ->
-        accountHolderService.transferBeacons(
-          new AccountHolderId(UUID.randomUUID()),
-          beaconsToTransfer
-        )
+    assertThrows(NoSuchElementException.class, () ->
+      accountHolderService.transferBeacons(
+        new AccountHolderId(UUID.randomUUID()),
+        beaconsToTransfer
+      )
     );
   }
 

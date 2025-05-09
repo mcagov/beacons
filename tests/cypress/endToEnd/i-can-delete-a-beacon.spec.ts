@@ -28,16 +28,16 @@ describe("As an account holder", () => {
     givenIHaveSignedIn();
     andIHavePreviouslyRegisteredABeacon(testRegistration);
     givenIHaveACookieSetAndHaveSignedInIVisit(
-      "/account/your-beacon-registry-account"
+      "/account/your-beacon-registry-account",
     );
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
-      testRegistration.hexId
+      testRegistration.hexId,
     );
     iAmAskedIfIAmSureIWantToDeleteMyRegistration();
     iAmPresentedWithSomeRegistrationInformation_SoICanMakeSureIAmDeletingTheCorrectRegistration(
-      testRegistration
+      testRegistration,
     );
 
     whenIClickTheLinkContaining("Cancel");
@@ -45,7 +45,7 @@ describe("As an account holder", () => {
     iCanSeeMyExistingRegistrationHexId(testRegistration.hexId);
 
     whenIClickTheDeleteButtonForTheRegistrationWithHexId(
-      testRegistration.hexId
+      testRegistration.hexId,
     );
     andIDontSelectAReason();
     andIClickTheButtonContaining("Delete");
@@ -57,7 +57,7 @@ describe("As an account holder", () => {
 
     whenIEnterMyReasonInTheResultingTextbox("Lost overboard");
     iPerformOperationAndWaitForNewPageToLoad(() =>
-      andIClickTheButtonContaining("Delete")
+      andIClickTheButtonContaining("Delete"),
     );
     iAmGivenAConfirmationMessage();
 
@@ -69,7 +69,7 @@ describe("As an account holder", () => {
 const andIHavePreviouslyRegisteredABeacon = iHavePreviouslyRegisteredABeacon;
 
 const whenIClickTheDeleteButtonForTheRegistrationWithHexId = (
-  hexId: string
+  hexId: string,
 ) => {
   cy.get("tr")
     .contains(hexId)

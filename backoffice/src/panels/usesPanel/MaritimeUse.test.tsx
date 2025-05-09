@@ -80,7 +80,7 @@ describe("Maritime Use", () => {
     expect(await screen.findByText("Communication type 6:")).toBeVisible();
     expect(await screen.findByText("OTHER")).toBeVisible();
     expect(
-      await screen.findByText("YOU CAN CONTACT ME VIA MY PARTNER")
+      await screen.findByText("YOU CAN CONTACT ME VIA MY PARTNER"),
     ).toBeVisible();
   });
 
@@ -88,7 +88,7 @@ describe("Maritime Use", () => {
     const use: IUse = {} as IUse;
     render(<MaritimeUse use={use} />);
     expect(await (await screen.findAllByText(Placeholders.NoData)).length).toBe(
-      13
+      13,
     );
   });
 });

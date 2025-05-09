@@ -42,7 +42,7 @@ export const LettersView: FunctionComponent<LettersViewProps> = ({
   lettersType,
 }): JSX.Element => {
   const [beacons, setBeacons] = useState<IBeaconExport[]>(
-    [] as IBeaconExport[]
+    [] as IBeaconExport[],
   );
   useEffect(() => {
     exportsGateway.getLetterDataForBeacons(beaconIds).then(setBeacons);

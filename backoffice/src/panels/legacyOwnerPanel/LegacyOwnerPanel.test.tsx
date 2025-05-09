@@ -10,7 +10,7 @@ describe("Owner Summary Panel", () => {
       <LegacyOwnerPanel
         legacyOwner={legacyBeaconFixture.owner}
         secondaryLegacyOwners={legacyBeaconFixture.secondaryOwners}
-      />
+      />,
     );
 
     expect(await screen.findByText(/Dr Beacon/i)).toBeVisible();
@@ -21,7 +21,7 @@ describe("Owner Summary Panel", () => {
       <LegacyOwnerPanel
         legacyOwner={legacyBeaconFixture.owner}
         secondaryLegacyOwners={legacyBeaconFixture.secondaryOwners}
-      />
+      />,
     );
 
     expect(await screen.findByText(/Mr Beacon/i)).toBeVisible();
