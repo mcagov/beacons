@@ -1,11 +1,11 @@
 # Build the service
-FROM gradle:jdk17 AS build
+FROM gradle:jdk21 AS build
 WORKDIR /opt/app
 COPY . ./
 RUN ./gradlew clean assemble
 
 # Run the service
-FROM eclipse-temurin:17 AS beacons-service
+FROM eclipse-temurin:21 AS beacons-service
 WORKDIR /opt/app
 COPY --from=build /opt/app/build/libs/*.jar app.jar
 
