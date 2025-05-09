@@ -159,22 +159,22 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<AircraftCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<AircraftCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<AircraftCommunicationsForm>(
         context,
@@ -182,21 +182,21 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         mapper(context),
         nextPageWithUseIdHelper(
           parseInt(context.query.useId as string),
-          CreateRegistrationPageURLs.moreDetails
-        )
+          CreateRegistrationPageURLs.moreDetails,
+        ),
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Partial<DraftBeaconUsePageProps> => ({
   useId: context.query.useId as string,
 });
 
 const mapper = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): DraftRegistrationFormMapper<AircraftCommunicationsForm> => {
   const beaconUseMapper: BeaconUseFormMapper<AircraftCommunicationsForm> = {
     formToDraftBeaconUse: (form) => ({
@@ -225,7 +225,7 @@ const mapper = (
 
   return makeDraftRegistrationMapper<AircraftCommunicationsForm>(
     useId,
-    beaconUseMapper
+    beaconUseMapper,
   );
 };
 
@@ -251,26 +251,26 @@ const validationRules = ({
       satelliteTelephoneInput,
       [
         Validators.required(
-          "We need your phone number if you have a satellite telephone"
+          "We need your phone number if you have a satellite telephone",
         ),
         Validators.phoneNumber(
-          "Enter a satellite telephone number in the correct format"
+          "Enter a satellite telephone number in the correct format",
         ),
       ],
-      [matchingConditionIsTrueForKey("satelliteTelephone")]
+      [matchingConditionIsTrueForKey("satelliteTelephone")],
     ),
     mobileTelephone: new FieldManager(mobileTelephone),
     mobileTelephoneInput1: new FieldManager(
       mobileTelephoneInput1,
       [
         Validators.required(
-          "We need your telephone number if you have a mobile telephone"
+          "We need your telephone number if you have a mobile telephone",
         ),
         Validators.phoneNumber(
-          "Enter a mobile telephone number, like 07700 982736 or +447700912738"
+          "Enter a mobile telephone number, like 07700 982736 or +447700912738",
         ),
       ],
-      [matchingConditionIsTrueForKey("mobileTelephone")]
+      [matchingConditionIsTrueForKey("mobileTelephone")],
     ),
     mobileTelephoneInput2: new FieldManager(mobileTelephoneInput2),
     otherCommunication: new FieldManager(otherCommunication),
@@ -280,10 +280,10 @@ const validationRules = ({
         Validators.required("We need your other communication"),
         Validators.maxLength(
           "Other communication has too many characters",
-          250
+          250,
         ),
       ],
-      [matchingConditionIsTrueForKey("otherCommunication")]
+      [matchingConditionIsTrueForKey("otherCommunication")],
     ),
   });
 };

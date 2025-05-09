@@ -236,7 +236,7 @@ describe("As a beacon owner and maritime pleasure vessel user", () => {
 
   it("sends me to the previous page when I click the back link", () => {
     iCanClickTheBackLinkToGoToPreviousPage(
-      "/register-a-beacon/about-the-vessel"
+      "/register-a-beacon/about-the-vessel",
     );
   });
 });

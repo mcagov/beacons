@@ -19,14 +19,14 @@ describe("getAccountHoldersRegistration", () => {
     };
 
     const registration = await getAccountHoldersRegistration(
-      container as IAppContainer
+      container as IAppContainer,
     )(existingBeacon.id, existingBeacon.accountHolderId);
 
     expect(registration).toEqual(
       expect.objectContaining({
         id: existingBeacon.id,
         accountHolderId: existingBeacon.accountHolderId,
-      })
+      }),
     );
   });
 });

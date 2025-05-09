@@ -14,7 +14,7 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
-    registrationId: string
+    registrationId: string,
   ) {
     this.context = context;
     this.registrationId = registrationId;
@@ -38,7 +38,7 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
     const accountHolderId = await getAccountHolderId(this.context.session);
     const registration: Registration = await getAccountHoldersRegistration(
       this.registrationId,
-      accountHolderId
+      accountHolderId,
     );
 
     await saveDraftRegistration(this.registrationId, registration);

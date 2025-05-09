@@ -51,7 +51,7 @@ describe("WhenUserSubmitsFeedback", () => {
         satisfactionRating,
         howCouldWeImproveThisService,
         referenceId,
-      })
+      }),
     );
     expect(result).toStrictEqual({
       redirect: {
@@ -100,7 +100,7 @@ describe("WhenUserSubmitsFeedback", () => {
         satisfactionRating,
         howCouldWeImproveThisService,
         referenceId,
-      })
+      }),
     );
     expect(result).toStrictEqual({
       redirect: {

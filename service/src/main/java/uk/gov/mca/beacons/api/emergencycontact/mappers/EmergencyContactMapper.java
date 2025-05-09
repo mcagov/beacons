@@ -21,8 +21,7 @@ public class EmergencyContactMapper {
   }
 
   public EmergencyContactDTO toDTO(EmergencyContact emergencyContact) {
-    return EmergencyContactDTO
-      .builder()
+    return EmergencyContactDTO.builder()
       .id(Objects.requireNonNull(emergencyContact.getId()).unwrap())
       .fullName(emergencyContact.getFullName())
       .telephoneNumber(emergencyContact.getTelephoneNumber())

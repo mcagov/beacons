@@ -106,11 +106,10 @@ public class BeaconSearchDocument {
       this.beaconOwner = new NestedBeaconOwner(beaconOwner);
     }
     setBeaconRegistrationIdentifiers(beacon, beaconOwner, beaconUses);
-    this.beaconUses =
-      beaconUses
-        .stream()
-        .map(NestedBeaconUse::new)
-        .collect(Collectors.toList());
+    this.beaconUses = beaconUses
+      .stream()
+      .map(NestedBeaconUse::new)
+      .collect(Collectors.toList());
     this.isLegacy = false;
   }
 
@@ -121,16 +120,17 @@ public class BeaconSearchDocument {
     this.beaconStatus = legacyBeacon.getBeaconStatus();
     this.createdDate = legacyBeacon.getCreatedDate();
     this.lastModifiedDate = legacyBeacon.getLastModifiedDate();
-    this.manufacturerSerialNumber =
-      legacyBeacon.getData().getBeacon().getManufacturerSerialNumber();
+    this.manufacturerSerialNumber = legacyBeacon
+      .getData()
+      .getBeacon()
+      .getManufacturerSerialNumber();
     this.beaconOwner = new NestedBeaconOwner(legacyBeacon.getData().getOwner());
-    this.beaconUses =
-      legacyBeacon
-        .getData()
-        .getUses()
-        .stream()
-        .map(NestedBeaconUse::new)
-        .collect(Collectors.toList());
+    this.beaconUses = legacyBeacon
+      .getData()
+      .getUses()
+      .stream()
+      .map(NestedBeaconUse::new)
+      .collect(Collectors.toList());
     setBeaconRegistrationIdentifiers(legacyBeacon);
   }
 
@@ -145,36 +145,31 @@ public class BeaconSearchDocument {
     List<BeaconUse> beaconUses
   ) {
     this.hexId = beacon.getHexId();
-    this.vesselMmsiNumbers =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getMmsiNumbers)
-        .flatMap(Collection::stream)
-        .collect(Collectors.toList());
-    this.vesselNames =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getVesselName)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
-    this.vesselCallsigns =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getCallSign)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
-    this.aircraftRegistrationMarks =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getRegistrationMark)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
-    this.aircraft24bitHexAddresses =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getHexAddress)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
+    this.vesselMmsiNumbers = beaconUses
+      .stream()
+      .map(BeaconUse::getMmsiNumbers)
+      .flatMap(Collection::stream)
+      .collect(Collectors.toList());
+    this.vesselNames = beaconUses
+      .stream()
+      .map(BeaconUse::getVesselName)
+      .filter(Objects::nonNull)
+      .collect(Collectors.toList());
+    this.vesselCallsigns = beaconUses
+      .stream()
+      .map(BeaconUse::getCallSign)
+      .filter(Objects::nonNull)
+      .collect(Collectors.toList());
+    this.aircraftRegistrationMarks = beaconUses
+      .stream()
+      .map(BeaconUse::getRegistrationMark)
+      .filter(Objects::nonNull)
+      .collect(Collectors.toList());
+    this.aircraft24bitHexAddresses = beaconUses
+      .stream()
+      .map(BeaconUse::getHexAddress)
+      .filter(Objects::nonNull)
+      .collect(Collectors.toList());
   }
 
   private void setBeaconRegistrationIdentifiers(LegacyBeacon legacyBeacon) {
@@ -189,36 +184,31 @@ public class BeaconSearchDocument {
     }
 
     var uses = legacyBeacon.getData().getUses();
-    this.vesselMmsiNumbers =
-      uses
-        .stream()
-        .map(LegacyUse::getMmsiNumber)
-        .filter(Objects::nonNull)
-        .map(Number::toString)
-        .collect(Collectors.toList());
-    this.vesselNames =
-      uses
-        .stream()
-        .map(LegacyUse::getVesselName)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
-    this.vesselCallsigns =
-      uses
-        .stream()
-        .map(LegacyUse::getCallSign)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
-    this.aircraftRegistrationMarks =
-      uses
-        .stream()
-        .map(LegacyUse::getAircraftRegistrationMark)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
-    this.aircraft24bitHexAddresses =
-      uses
-        .stream()
-        .map(LegacyUse::getBit24AddressHex)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
+    this.vesselMmsiNumbers = uses
+      .stream()
+      .map(LegacyUse::getMmsiNumber)
+      .filter(Objects::nonNull)
+      .map(Number::toString)
+      .collect(Collectors.toList());
+    this.vesselNames = uses
+      .stream()
+      .map(LegacyUse::getVesselName)
+      .filter(Objects::nonNull)
+      .collect(Collectors.toList());
+    this.vesselCallsigns = uses
+      .stream()
+      .map(LegacyUse::getCallSign)
+      .filter(Objects::nonNull)
+      .collect(Collectors.toList());
+    this.aircraftRegistrationMarks = uses
+      .stream()
+      .map(LegacyUse::getAircraftRegistrationMark)
+      .filter(Objects::nonNull)
+      .collect(Collectors.toList());
+    this.aircraft24bitHexAddresses = uses
+      .stream()
+      .map(LegacyUse::getBit24AddressHex)
+      .filter(Objects::nonNull)
+      .collect(Collectors.toList());
   }
 }

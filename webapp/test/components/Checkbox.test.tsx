@@ -22,7 +22,7 @@ describe("Checkbox Components", () => {
       render(
         <CheckboxList>
           <CheckboxListItem id={id} value="" label={label} />
-        </CheckboxList>
+        </CheckboxList>,
       );
       expect(screen.getByLabelText(label)).toBeDefined();
       expect(screen.queryByText(hintText)).toBeNull();
@@ -37,7 +37,7 @@ describe("Checkbox Components", () => {
             label={label}
             hintText={hintText}
           />
-        </CheckboxList>
+        </CheckboxList>,
       );
       expect(screen.getByText(hintText)).toBeDefined();
     });
@@ -50,7 +50,7 @@ describe("Checkbox Components", () => {
           <CheckboxListItem id={id} value="" label={label} conditional={true}>
             {conditionalText}
           </CheckboxListItem>
-        </CheckboxList>
+        </CheckboxList>,
       );
       expect(screen.getByText(conditionalText)).toBeDefined();
     });
@@ -63,7 +63,7 @@ describe("Checkbox Components", () => {
           <CheckboxListItem id={id} value="" label={label}>
             {conditionalText}
           </CheckboxListItem>
-        </CheckboxList>
+        </CheckboxList>,
       );
       expect(screen.queryByText(conditionalText)).toBeNull();
     });

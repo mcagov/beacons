@@ -4,7 +4,7 @@ import { FormJSON } from "./FormManager";
 
 export function isValid(
   form: FormSubmission,
-  rules: FormManagerFactory
+  rules: FormManagerFactory,
 ): boolean {
   const formManager = rules(form);
 
@@ -15,12 +15,12 @@ export function isValid(
 
 export const isInvalid = (
   form: FormSubmission,
-  rules: FormManagerFactory
+  rules: FormManagerFactory,
 ): boolean => !isValid(form, rules);
 
 export function withErrorMessages(
   form: FormSubmission,
-  rules: FormManagerFactory
+  rules: FormManagerFactory,
 ): FormJSON {
   const formManager = rules(form);
 
@@ -31,7 +31,7 @@ export function withErrorMessages(
 
 export function withoutErrorMessages(
   form: FormSubmission,
-  rules: FormManagerFactory
+  rules: FormManagerFactory,
 ): FormJSON {
   return rules(form).serialise();
 }

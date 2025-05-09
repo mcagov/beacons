@@ -39,25 +39,25 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
         beaconApiResponse.svdr == null
           ? ""
           : beaconApiResponse.svdr
-          ? "true"
-          : "false",
+            ? "true"
+            : "false",
       batteryExpiryDate: formatDateTime(
-        beaconApiResponse.batteryExpiryDate || ""
+        beaconApiResponse.batteryExpiryDate || "",
       ),
       lastServicedDate: formatDateTime(
-        beaconApiResponse.lastServicedDate || ""
+        beaconApiResponse.lastServicedDate || "",
       ),
       registeredDate: formatDateTime(beaconApiResponse.createdDate || ""),
       lastModifiedDate: formatDateTime(
-        beaconApiResponse.lastModifiedDate || ""
+        beaconApiResponse.lastModifiedDate || "",
       ),
       referenceNumber: beaconApiResponse.referenceNumber,
       owners:
         beaconApiResponse.owners && beaconApiResponse.owners.length > 0
           ? this.mapOwners(beaconApiResponse.owners)
           : beaconApiResponse.owner
-          ? [this.mapOwner(beaconApiResponse.owner)]
-          : [],
+            ? [this.mapOwner(beaconApiResponse.owner)]
+            : [],
       accountHolder: beaconApiResponse.accountHolder
         ? this.mapAccountHolder(beaconApiResponse.accountHolder)
         : null,
@@ -92,7 +92,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
   }
 
   public mapAccountHolder(
-    accountHolder: IAccountHolderResponse
+    accountHolder: IAccountHolderResponse,
   ): IAccountHolder {
     return {
       id: accountHolder.id,
@@ -111,7 +111,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
       country: accountHolder.attributes.country || "",
       createdDate: formatDateTime(accountHolder.attributes.createdDate || ""),
       lastModifiedDate: formatDateTime(
-        accountHolder.attributes.lastModifiedDate || ""
+        accountHolder.attributes.lastModifiedDate || "",
       ),
     };
   }
@@ -135,17 +135,17 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
         beaconApiResponse.svdr == null
           ? ""
           : beaconApiResponse.svdr
-          ? "true"
-          : "false",
+            ? "true"
+            : "false",
       batteryExpiryDate: formatDateTime(
-        beaconApiResponse.batteryExpiryDate || ""
+        beaconApiResponse.batteryExpiryDate || "",
       ),
       lastServicedDate: formatDateTime(
-        beaconApiResponse.lastServicedDate || ""
+        beaconApiResponse.lastServicedDate || "",
       ),
       registeredDate: formatDateTime(beaconApiResponse.createdDate || ""),
       lastModifiedDate: formatDateTime(
-        beaconApiResponse.lastModifiedDate || ""
+        beaconApiResponse.lastModifiedDate || "",
       ),
       referenceNumber: beaconApiResponse.referenceNumber,
       uses: [],
@@ -157,7 +157,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
   }
 
   private mapEmergencyContacts(
-    emergencyContacts: EmergencyContactRegistrationResponse[]
+    emergencyContacts: EmergencyContactRegistrationResponse[],
   ): IEmergencyContact[] {
     return emergencyContacts.map((emergencyContact) => {
       return {
@@ -221,7 +221,7 @@ export class BeaconResponseMapper implements IBeaconResponseMapper {
             otherActivityPeopleCount: use.otherActivityPeopleCount || "",
             mainUse: use.mainUse,
             // This makes me sad but is necessary due to previously incorrect code
-          } as Record<string, any> as IUse)
+          }) as Record<string, any> as IUse,
       )
       .sort((firstUse, secondUse) => this.mainUseSortFn(firstUse, secondUse));
   }

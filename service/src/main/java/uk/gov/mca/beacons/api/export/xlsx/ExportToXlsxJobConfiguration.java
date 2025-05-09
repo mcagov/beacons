@@ -53,7 +53,10 @@ public class ExportToXlsxJobConfiguration {
   @Bean
   public Step exportBeaconToXlsxStep(
     ItemReader<Beacon> exportXlsxBeaconItemReader,
-    ItemProcessor<Beacon, ExportSpreadsheetRow> exportXlsxBeaconToSpreadsheetRowItemProcessor,
+    ItemProcessor<
+      Beacon,
+      ExportSpreadsheetRow
+    > exportXlsxBeaconToSpreadsheetRowItemProcessor,
     ItemWriter<ExportSpreadsheetRow> xlsxItemWriter
   ) {
     return stepBuilderFactory
@@ -68,7 +71,10 @@ public class ExportToXlsxJobConfiguration {
   @Bean
   public Step exportLegacyBeaconToXlsxStep(
     ItemReader<LegacyBeacon> exportXlsxLegacyBeaconItemReader,
-    ItemProcessor<LegacyBeacon, ExportSpreadsheetRow> exportXlsxLegacyBeaconToSpreadsheetRowItemProcessor,
+    ItemProcessor<
+      LegacyBeacon,
+      ExportSpreadsheetRow
+    > exportXlsxLegacyBeaconToSpreadsheetRowItemProcessor,
     ItemWriter<ExportSpreadsheetRow> xlsxItemWriter
   ) {
     return stepBuilderFactory

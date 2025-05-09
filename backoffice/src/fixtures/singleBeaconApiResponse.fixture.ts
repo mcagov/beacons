@@ -7,7 +7,7 @@ import { deepFreeze } from "../utils/utils";
 
 const getUseResponseJson = (
   mainUse: boolean,
-  id: string
+  id: string,
 ): UseRegistrationResponse =>
   deepFreeze({
     id,

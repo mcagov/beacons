@@ -24,7 +24,7 @@ export const BeaconSummaryPanel: FunctionComponent<IBeaconSummaryProps> = ({
 }): JSX.Element => {
   const [beacon, setBeacon] = useState<IBeacon>({} as IBeacon);
   const [userState, setUserState] = useState<DataPanelStates>(
-    DataPanelStates.Viewing
+    DataPanelStates.Viewing,
   );
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -50,7 +50,7 @@ export const BeaconSummaryPanel: FunctionComponent<IBeaconSummaryProps> = ({
     try {
       await beaconsGateway.updateBeacon(
         beacon.id,
-        diffObjValues(beacon, updatedBeacon)
+        diffObjValues(beacon, updatedBeacon),
       );
       setUserState(DataPanelStates.Viewing);
     } catch (error) {

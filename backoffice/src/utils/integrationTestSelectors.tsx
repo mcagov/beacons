@@ -11,7 +11,7 @@ export const iClickButtonFoundByText = async (buttonText: string | RegExp) => {
 };
 
 export const iClickButtonFoundByTestId = async (
-  testIdText: string | RegExp
+  testIdText: string | RegExp,
 ) => {
   const button = await screen.findByTestId(testIdText);
   userEvent.click(button);

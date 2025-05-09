@@ -8,7 +8,7 @@ import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationF
 import { Rule } from "./Rule";
 
 export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<
-  T
+  T,
 > implements Rule
 {
   private readonly context: BeaconsGetServerSidePropsContext;
@@ -20,7 +20,7 @@ export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_The
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
     mapper: DraftRegistrationFormMapper<T>,
-    additionalProps?: Record<string, any>
+    additionalProps?: Record<string, any>,
   ) {
     this.context = context;
     this.validationRules = validationRules;
@@ -46,17 +46,17 @@ export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_The
     return !isValid(
       this.mapper.draftRegistrationToForm(
         this.mapper.formToDraftRegistration(
-          await this.context.container.parseFormDataAs(this.context.req)
-        )
+          await this.context.container.parseFormDataAs(this.context.req),
+        ),
       ),
-      this.validationRules
+      this.validationRules,
     );
   }
 
   private async saveDraftRegistration(): Promise<void> {
     await this.context.container.saveDraftRegistration(
       this.draftRegistrationId(),
-      await this.mapper.formToDraftRegistration(await this.form())
+      await this.mapper.formToDraftRegistration(await this.form()),
     );
   }
 
@@ -64,14 +64,14 @@ export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_The
     GetServerSidePropsResult<any>
   > {
     const draftRegistration = await this.context.container.getDraftRegistration(
-      this.draftRegistrationId()
+      this.draftRegistrationId(),
     );
 
     return {
       props: {
         form: withErrorMessages(
           this.mapper.draftRegistrationToForm(draftRegistration),
-          this.validationRules
+          this.validationRules,
         ),
         ...(await this.additionalProps),
         showCookieBanner: showCookieBanner(this.context),

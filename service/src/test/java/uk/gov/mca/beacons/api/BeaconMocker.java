@@ -29,10 +29,12 @@ public class BeaconMocker {
     AccountHolder accountHolder = mock(AccountHolder.class);
     given(accountHolder.getFullName()).willReturn((faker.name().fullName()));
     given(accountHolder.getAuthId()).willReturn((UUID.randomUUID().toString()));
-    given(accountHolder.getTelephoneNumber())
-      .willReturn((faker.phoneNumber().phoneNumber()));
-    given(accountHolder.getEmail())
-      .willReturn((faker.internet().emailAddress()));
+    given(accountHolder.getTelephoneNumber()).willReturn(
+      (faker.phoneNumber().phoneNumber())
+    );
+    given(accountHolder.getEmail()).willReturn(
+      (faker.internet().emailAddress())
+    );
     given(accountHolder.getAddress()).willReturn((fakeAddress()));
 
     return accountHolder;
@@ -49,17 +51,17 @@ public class BeaconMocker {
     given(beacon.getAccountHolderId()).willReturn(accountHolderId);
     given(beacon.getHexId()).willReturn(faker.regexify("1D[A-F1-9]{13}"));
     given(beacon.getManufacturer()).willReturn(faker.gameOfThrones().house());
-    given(beacon.getManufacturerSerialNumber())
-      .willReturn(faker.bothify("#?#?#?#?#?#???##"));
+    given(beacon.getManufacturerSerialNumber()).willReturn(
+      faker.bothify("#?#?#?#?#?#???##")
+    );
     given(beacon.getModel()).willReturn(faker.gameOfThrones().dragon());
     given(beacon.getCoding()).willReturn(faker.ancient().primordial());
-    given(beacon.getLastModifiedDate())
-      .willReturn(
-        OffsetDateTime.ofInstant(
-          faker.date().past(30, TimeUnit.DAYS).toInstant(),
-          ZoneId.of("Z")
-        )
-      );
+    given(beacon.getLastModifiedDate()).willReturn(
+      OffsetDateTime.ofInstant(
+        faker.date().past(30, TimeUnit.DAYS).toInstant(),
+        ZoneId.of("Z")
+      )
+    );
 
     return beacon;
   }
@@ -73,12 +75,15 @@ public class BeaconMocker {
     given(beaconUse.getActivity()).willReturn(Activity.MERCHANT_VESSEL);
     given(beaconUse.getCallSign()).willReturn(faker.letterify("?????", true));
     given(beaconUse.getFixedVhfRadio()).willReturn(true);
-    given(beaconUse.getFixedVhfRadioValue())
-      .willReturn(faker.numerify("### ####"));
-    given(beaconUse.getVesselName())
-      .willReturn(faker.lordOfTheRings().character());
-    given(beaconUse.getMoreDetails())
-      .willReturn(faker.hitchhikersGuideToTheGalaxy().marvinQuote());
+    given(beaconUse.getFixedVhfRadioValue()).willReturn(
+      faker.numerify("### ####")
+    );
+    given(beaconUse.getVesselName()).willReturn(
+      faker.lordOfTheRings().character()
+    );
+    given(beaconUse.getMoreDetails()).willReturn(
+      faker.hitchhikersGuideToTheGalaxy().marvinQuote()
+    );
 
     return beaconUse;
   }
@@ -87,8 +92,9 @@ public class BeaconMocker {
     BeaconOwner beaconOwner = mock(BeaconOwner.class);
     given(beaconOwner.getBeaconId()).willReturn(beaconId);
     given(beaconOwner.getFullName()).willReturn(faker.name().fullName());
-    given(beaconOwner.getTelephoneNumber())
-      .willReturn(faker.phoneNumber().phoneNumber());
+    given(beaconOwner.getTelephoneNumber()).willReturn(
+      faker.phoneNumber().phoneNumber()
+    );
     given(beaconOwner.getEmail()).willReturn(faker.internet().emailAddress());
     given(beaconOwner.getAddress()).willReturn(fakeAddress());
 
@@ -99,15 +105,15 @@ public class BeaconMocker {
     EmergencyContact emergencyContact = mock(EmergencyContact.class);
     given(emergencyContact.getBeaconId()).willReturn(beaconId);
     given(emergencyContact.getFullName()).willReturn(faker.name().fullName());
-    given(emergencyContact.getTelephoneNumber())
-      .willReturn(faker.phoneNumber().phoneNumber());
+    given(emergencyContact.getTelephoneNumber()).willReturn(
+      faker.phoneNumber().phoneNumber()
+    );
 
     return emergencyContact;
   }
 
   private static Address fakeAddress() {
-    return Address
-      .builder()
+    return Address.builder()
       .addressLine1(faker.address().streetAddressNumber())
       .addressLine2(faker.address().streetAddress())
       .townOrCity(faker.address().city())

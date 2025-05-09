@@ -1,7 +1,7 @@
 import { makeAuthenticatedRequest } from "./make-authenticated-request.spec";
 
 export const iHavePreviouslyRegisteredALegacyBeacon = (
-  legacyBeaconRequest
+  legacyBeaconRequest,
 ): void => {
   const apiUrl = `${Cypress.env("API_URL")}/migrate/legacy-beacon`;
 

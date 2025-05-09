@@ -128,13 +128,13 @@ public class AccountHolderController {
       accountHolderService.deleteAccountHolder(accountHolderId);
       return ResponseEntity.ok("Account holder successfully deleted.");
     } catch (IllegalStateException ex) {
-      return ResponseEntity
-        .status(HttpStatus.CONFLICT)
-        .body("Error: " + ex.getMessage());
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(
+        "Error: " + ex.getMessage()
+      );
     } catch (Exception ex) {
-      return ResponseEntity
-        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body("An error occurred while deleting the account holder");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+        "An error occurred while deleting the account holder"
+      );
     }
   }
 
@@ -147,8 +147,7 @@ public class AccountHolderController {
     AccountHolderId accountHolderId = new AccountHolderId(
       dto.getRecipientAccountHolderId()
     );
-    List<BeaconId> beaconIds = Arrays
-      .stream(dto.getBeaconIds())
+    List<BeaconId> beaconIds = Arrays.stream(dto.getBeaconIds())
       .map(id -> new BeaconId(id))
       .collect(Collectors.toList());
 

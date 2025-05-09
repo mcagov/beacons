@@ -115,7 +115,7 @@ export interface ILegacyBeaconRequest {
           aircraftType: string;
           landUse: string;
           note: string;
-        }
+        },
       ];
       owner: {
         pkBeaconOwnerId: number;
@@ -192,7 +192,7 @@ export interface ILegacyBeaconRequest {
           updateUserId: string;
           lastModifiedDate: string;
           versioning: number;
-        }
+        },
       ];
       emergencyContact: {
         details: string;

@@ -18,21 +18,20 @@ class ModelPatcherTest {
 
   @BeforeEach
   public void before() {
-    patcher =
-      new ModelPatcherFactory<FakeModel>()
-        .getModelPatcher()
-        .withMapping(FakeModel::getFirstDate, FakeModel::setFirstDate)
-        .withMapping(FakeModel::getSecondDate, FakeModel::setSecondDate)
-        .withMapping(FakeModel::getThirdDate, FakeModel::setThirdDate)
-        .withMapping(FakeModel::getFirstString, FakeModel::setFirstString)
-        .withMapping(FakeModel::getSecondString, FakeModel::setSecondString)
-        .withMapping(FakeModel::getThirdString, FakeModel::setThirdString)
-        .withMapping(FakeModel::getFirstInt, FakeModel::setFirstInt)
-        .withMapping(FakeModel::getSecondInt, FakeModel::setSecondInt)
-        .withMapping(FakeModel::getThirdInt, FakeModel::setThirdInt)
-        .withMapping(FakeModel::getFirstBoolean, FakeModel::setFirstBoolean)
-        .withMapping(FakeModel::getSecondBoolean, FakeModel::setSecondBoolean)
-        .withMapping(FakeModel::getThirdBoolean, FakeModel::setThirdBoolean);
+    patcher = new ModelPatcherFactory<FakeModel>()
+      .getModelPatcher()
+      .withMapping(FakeModel::getFirstDate, FakeModel::setFirstDate)
+      .withMapping(FakeModel::getSecondDate, FakeModel::setSecondDate)
+      .withMapping(FakeModel::getThirdDate, FakeModel::setThirdDate)
+      .withMapping(FakeModel::getFirstString, FakeModel::setFirstString)
+      .withMapping(FakeModel::getSecondString, FakeModel::setSecondString)
+      .withMapping(FakeModel::getThirdString, FakeModel::setThirdString)
+      .withMapping(FakeModel::getFirstInt, FakeModel::setFirstInt)
+      .withMapping(FakeModel::getSecondInt, FakeModel::setSecondInt)
+      .withMapping(FakeModel::getThirdInt, FakeModel::setThirdInt)
+      .withMapping(FakeModel::getFirstBoolean, FakeModel::setFirstBoolean)
+      .withMapping(FakeModel::getSecondBoolean, FakeModel::setSecondBoolean)
+      .withMapping(FakeModel::getThirdBoolean, FakeModel::setThirdBoolean);
   }
 
   @Test

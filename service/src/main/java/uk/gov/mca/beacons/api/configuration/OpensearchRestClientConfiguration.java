@@ -49,8 +49,7 @@ public class OpensearchRestClientConfiguration
   }
 
   private ClientConfiguration clientConfigurationWithBasicAuthAndSslEnabled() {
-    return ClientConfiguration
-      .builder()
+    return ClientConfiguration.builder()
       .connectedTo(host + ":" + port)
       .usingSsl()
       .withBasicAuth(user, password)

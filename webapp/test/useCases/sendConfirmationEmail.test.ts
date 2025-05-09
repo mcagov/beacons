@@ -15,7 +15,7 @@ describe("sendConfirmationEmail", () => {
 
     const result = await sendConfirmationEmail(container)(
       registration as Registration,
-      email
+      email,
     );
 
     expect(container.emailServiceGateway.sendEmail).toHaveBeenCalledTimes(1);

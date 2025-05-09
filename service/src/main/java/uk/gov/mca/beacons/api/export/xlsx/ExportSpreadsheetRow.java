@@ -147,99 +147,93 @@ public class ExportSpreadsheetRow implements SpreadsheetRow {
 
   protected void setOwnerDetails(LegacyOwner legacyOwner) {
     this.ownerName = legacyOwner.getOwnerName();
-    this.ownerTelephoneNumber =
-      concatenateFields(legacyOwner.getPhone1(), legacyOwner.getMobile1());
-    this.ownerAlternativeTelephoneNumber =
-      concatenateFields(legacyOwner.getPhone2(), legacyOwner.getMobile2());
+    this.ownerTelephoneNumber = concatenateFields(
+      legacyOwner.getPhone1(),
+      legacyOwner.getMobile1()
+    );
+    this.ownerAlternativeTelephoneNumber = concatenateFields(
+      legacyOwner.getPhone2(),
+      legacyOwner.getMobile2()
+    );
     this.ownerEmail = legacyOwner.getEmail();
   }
 
   protected void setUses(List<BeaconUse> beaconUses) {
     // Wasteful implementation, could iterate over beacon uses once and get all the fields, but this is simpler
     // for the time being.
-    this.mmsiNumbers =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getMmsiNumbers)
-        .flatMap(Collection::stream)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
+    this.mmsiNumbers = beaconUses
+      .stream()
+      .map(BeaconUse::getMmsiNumbers)
+      .flatMap(Collection::stream)
+      .filter(Objects::nonNull)
+      .filter(s -> !s.isBlank())
+      .collect(Collectors.joining(" / "));
 
-    this.vesselNames =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getVesselName)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
+    this.vesselNames = beaconUses
+      .stream()
+      .map(BeaconUse::getVesselName)
+      .filter(Objects::nonNull)
+      .filter(s -> !s.isBlank())
+      .collect(Collectors.joining(" / "));
 
-    this.vesselCallsigns =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getCallSign)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining());
+    this.vesselCallsigns = beaconUses
+      .stream()
+      .map(BeaconUse::getCallSign)
+      .filter(Objects::nonNull)
+      .filter(s -> !s.isBlank())
+      .collect(Collectors.joining());
 
-    this.aircraftTailMarks =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getRegistrationMark)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
+    this.aircraftTailMarks = beaconUses
+      .stream()
+      .map(BeaconUse::getRegistrationMark)
+      .filter(Objects::nonNull)
+      .filter(s -> !s.isBlank())
+      .collect(Collectors.joining(" / "));
 
-    this.aircraft24BitHexAddresses =
-      beaconUses
-        .stream()
-        .map(BeaconUse::getHexAddress)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
+    this.aircraft24BitHexAddresses = beaconUses
+      .stream()
+      .map(BeaconUse::getHexAddress)
+      .filter(Objects::nonNull)
+      .filter(s -> !s.isBlank())
+      .collect(Collectors.joining(" / "));
   }
 
   protected void setLegacyUses(List<LegacyUse> legacyUses) {
-    this.mmsiNumbers =
-      legacyUses
-        .stream()
-        .map(LegacyUse::getMmsiNumber)
-        .filter(Objects::nonNull)
-        .map(Number::toString)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
+    this.mmsiNumbers = legacyUses
+      .stream()
+      .map(LegacyUse::getMmsiNumber)
+      .filter(Objects::nonNull)
+      .map(Number::toString)
+      .filter(s -> !s.isBlank())
+      .collect(Collectors.joining(" / "));
 
-    this.vesselNames =
-      legacyUses
-        .stream()
-        .map(LegacyUse::getVesselName)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
+    this.vesselNames = legacyUses
+      .stream()
+      .map(LegacyUse::getVesselName)
+      .filter(Objects::nonNull)
+      .filter(s -> !s.isBlank())
+      .collect(Collectors.joining(" / "));
 
-    this.vesselCallsigns =
-      legacyUses
-        .stream()
-        .map(LegacyUse::getCallSign)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
+    this.vesselCallsigns = legacyUses
+      .stream()
+      .map(LegacyUse::getCallSign)
+      .filter(Objects::nonNull)
+      .filter(s -> !s.isBlank())
+      .collect(Collectors.joining(" / "));
 
-    this.aircraftTailMarks =
-      legacyUses
-        .stream()
-        .map(LegacyUse::getAircraftRegistrationMark)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
+    this.aircraftTailMarks = legacyUses
+      .stream()
+      .map(LegacyUse::getAircraftRegistrationMark)
+      .filter(Objects::nonNull)
+      .filter(s -> !s.isBlank())
+      .collect(Collectors.joining(" / "));
 
-    this.aircraft24BitHexAddresses =
-      legacyUses
-        .stream()
-        .map(LegacyUse::getBit24AddressHex)
-        .filter(Objects::nonNull)
-        .filter(s -> !s.isBlank())
-        .collect(Collectors.joining(" / "));
+    this.aircraft24BitHexAddresses = legacyUses
+      .stream()
+      .map(LegacyUse::getBit24AddressHex)
+      .filter(Objects::nonNull)
+      .filter(s -> !s.isBlank())
+      .collect(Collectors.joining(" / "));
   }
 
   protected void setEmergencyContacts(
@@ -249,32 +243,29 @@ public class ExportSpreadsheetRow implements SpreadsheetRow {
 
     if (len > 0) {
       EmergencyContact emergencyContact = emergencyContacts.get(0);
-      this.emergencyContact_1 =
-        concatenateFields(
-          emergencyContact.getFullName(),
-          emergencyContact.getTelephoneNumber(),
-          emergencyContact.getAlternativeTelephoneNumber()
-        );
+      this.emergencyContact_1 = concatenateFields(
+        emergencyContact.getFullName(),
+        emergencyContact.getTelephoneNumber(),
+        emergencyContact.getAlternativeTelephoneNumber()
+      );
     }
 
     if (len > 1) {
       EmergencyContact emergencyContact = emergencyContacts.get(1);
-      this.emergencyContact_2 =
-        concatenateFields(
-          emergencyContact.getFullName(),
-          emergencyContact.getTelephoneNumber(),
-          emergencyContact.getAlternativeTelephoneNumber()
-        );
+      this.emergencyContact_2 = concatenateFields(
+        emergencyContact.getFullName(),
+        emergencyContact.getTelephoneNumber(),
+        emergencyContact.getAlternativeTelephoneNumber()
+      );
     }
 
     if (len > 2) {
       EmergencyContact emergencyContact = emergencyContacts.get(2);
-      this.emergencyContact_3 =
-        concatenateFields(
-          emergencyContact.getFullName(),
-          emergencyContact.getTelephoneNumber(),
-          emergencyContact.getAlternativeTelephoneNumber()
-        );
+      this.emergencyContact_3 = concatenateFields(
+        emergencyContact.getFullName(),
+        emergencyContact.getTelephoneNumber(),
+        emergencyContact.getAlternativeTelephoneNumber()
+      );
     }
   }
 
@@ -287,8 +278,7 @@ public class ExportSpreadsheetRow implements SpreadsheetRow {
   }
 
   protected String concatenateFields(String... fields) {
-    return Arrays
-      .stream(fields)
+    return Arrays.stream(fields)
       .filter(Objects::nonNull)
       .filter(s -> !s.isBlank())
       .collect(Collectors.joining(" / "));

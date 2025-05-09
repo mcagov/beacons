@@ -3,7 +3,7 @@ import { IAppContainer } from "../lib/IAppContainer";
 
 export type UpdateRegistrationFn = (
   draftRegistration: DraftRegistration,
-  registrationId: string
+  registrationId: string,
 ) => Promise<IUpdateRegistrationResult>;
 
 export interface IUpdateRegistrationResult {
@@ -15,11 +15,11 @@ export const updateRegistration =
   ({ beaconGateway }: IAppContainer): UpdateRegistrationFn =>
   async (
     draftRegistration: DraftRegistration,
-    registrationId: string
+    registrationId: string,
   ): Promise<IUpdateRegistrationResult> => {
     const beaconUpdated = await beaconGateway.updateRegistration(
       draftRegistration,
-      registrationId
+      registrationId,
     );
 
     return {
