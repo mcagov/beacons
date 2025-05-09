@@ -1,5 +1,5 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-![CI/CD Pipeline](https://github.com/mcagov/beacons/actions/workflows/on-push.yml/badge.svg)
+![CI/CD Pipeline](https://github.com/mcagov/beacons/actions/workflows/on-merge-to-main.yml/badge.svg)
 
 # Beacons registration service
 
@@ -23,6 +23,12 @@ It comprises three applications:
    - Source code is in `service/src/main/backoffice`.
    - The SPA is served by Spring Boot.
    - Application specific documentation is in the [README](./backoffice/README.md).
+
+## Testing
+
+Application specific tests are covered in the READMEs linked to above.
+
+If you are working towards a release, look at the [end-to-end and smoke test documentation](./tests/README.md).
 
 ## Architecture
 
