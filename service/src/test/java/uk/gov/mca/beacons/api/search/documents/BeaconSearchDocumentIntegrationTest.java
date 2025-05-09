@@ -56,9 +56,8 @@ public class BeaconSearchDocumentIntegrationTest extends BaseIntegrationTest {
       beaconSearchDocument
     );
 
-    BeaconSearchDocument retrievedDocument = beaconSearchRepository.findBeaconSearchDocumentByHexId(
-      hexId
-    );
+    BeaconSearchDocument retrievedDocument =
+      beaconSearchRepository.findBeaconSearchDocumentByHexId(hexId);
 
     // assert
     assertThat(retrievedDocument.getHexId(), equalTo(hexId));

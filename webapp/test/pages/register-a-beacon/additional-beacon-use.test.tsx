@@ -25,7 +25,7 @@ describe("AdditionalBeaconUse page", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseId={0} />);
 
     expect(
-      screen.getByText(/have not assigned any uses to this beacon yet/i)
+      screen.getByText(/have not assigned any uses to this beacon yet/i),
     ).toBeVisible();
   });
 
@@ -40,7 +40,7 @@ describe("AdditionalBeaconUse page", () => {
 
     expect(screen.getByRole("button", { name: /add a use/i })).toHaveAttribute(
       "href",
-      ActionURLs.addNewUseToDraftRegistration
+      ActionURLs.addNewUseToDraftRegistration,
     );
   });
 
@@ -86,11 +86,11 @@ describe("AdditionalBeaconUse page", () => {
       <AdditionalBeaconUse
         uses={[getMockUse(), getMockUse()]}
         currentUseId={0}
-      />
+      />,
     );
 
     expect(
-      screen.getByRole("button", { name: /add another use/i })
+      screen.getByRole("button", { name: /add another use/i }),
     ).toHaveAttribute("href", ActionURLs.addNewUseToDraftRegistration);
   });
 
@@ -100,13 +100,13 @@ describe("AdditionalBeaconUse page", () => {
       <AdditionalBeaconUse
         uses={[getMockUse(), getMockUse()]}
         currentUseId={currentUseId}
-      />
+      />,
     );
 
     expect(screen.getByRole("link", { name: "Back" })).toHaveAttribute(
       "href",
       CreateRegistrationPageURLs.moreDetails +
-        queryParams({ useId: currentUseId })
+        queryParams({ useId: currentUseId }),
     );
   });
 

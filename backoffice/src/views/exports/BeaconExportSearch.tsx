@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       marginLeft: theme.spacing(2),
     },
-  })
+  }),
 );
 
 interface BeaconExportRecordsProps {
@@ -80,7 +80,7 @@ export const BeaconExportSearch: FunctionComponent<
   const classes = useStyles();
 
   const [result, setResult] = useState<IBeaconExportSearchResult>(
-    {} as IBeaconExportSearchResult
+    {} as IBeaconExportSearchResult,
   );
   const [form, setForm] = useState<any>({});
 

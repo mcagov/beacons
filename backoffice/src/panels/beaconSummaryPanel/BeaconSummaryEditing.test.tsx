@@ -14,10 +14,10 @@ describe("BeaconSummaryEditing", () => {
         beacon={beaconFixture}
         onSave={onSave}
         onCancel={jest.fn()}
-      />
+      />,
     );
     const editableField = await screen.findByDisplayValue(
-      beaconFixture.chkCode as string
+      beaconFixture.chkCode as string,
     );
 
     const chkCode = "X675F";
@@ -40,7 +40,7 @@ describe("BeaconSummaryEditing", () => {
         beacon={beaconFixture}
         onSave={onSave}
         onCancel={jest.fn()}
-      />
+      />,
     );
 
     const dropdownField = await screen.findByLabelText(/mti/i);
@@ -49,7 +49,7 @@ describe("BeaconSummaryEditing", () => {
     userEvent.click(screen.getByRole("button", { name: "Save" }));
     await waitFor(() => {
       expect(onSave).toHaveBeenCalledWith(
-        expect.objectContaining({ mti: "TEST_EPIRB" })
+        expect.objectContaining({ mti: "TEST_EPIRB" }),
       );
     });
   });
@@ -62,7 +62,7 @@ describe("BeaconSummaryEditing", () => {
         beacon={beaconFixture}
         onSave={onSave}
         onCancel={jest.fn()}
-      />
+      />,
     );
 
     const dropdownField = await screen.findByLabelText(/protocol/i);
@@ -72,7 +72,7 @@ describe("BeaconSummaryEditing", () => {
     userEvent.click(screen.getByRole("button", { name: "Save" }));
     await waitFor(() => {
       expect(onSave).toHaveBeenCalledWith(
-        expect.objectContaining({ protocol })
+        expect.objectContaining({ protocol }),
       );
     });
   });
@@ -84,10 +84,10 @@ describe("BeaconSummaryEditing", () => {
         beacon={beaconFixture}
         onSave={jest.fn()}
         onCancel={onCancel}
-      />
+      />,
     );
     const editableField = await screen.findByDisplayValue(
-      beaconFixture.chkCode as string
+      beaconFixture.chkCode as string,
     );
     userEvent.clear(editableField);
     userEvent.type(editableField, "ZXFG7");
@@ -109,7 +109,7 @@ describe("BeaconSummaryEditing", () => {
           beacon={beaconFixture}
           onSave={onSave}
           onCancel={jest.fn()}
-        />
+        />,
       );
 
       const manufacturerField = await screen.findByLabelText(/manufacturer/i);
@@ -127,7 +127,7 @@ describe("BeaconSummaryEditing", () => {
           expect.objectContaining({
             manufacturer,
             model,
-          })
+          }),
         );
       });
     });
@@ -140,7 +140,7 @@ describe("BeaconSummaryEditing", () => {
           beacon={beaconFixture}
           onSave={onSave}
           onCancel={jest.fn()}
-        />
+        />,
       );
 
       const manufacturerField = await screen.findByLabelText(/manufacturer/i);
@@ -156,7 +156,7 @@ describe("BeaconSummaryEditing", () => {
           expect.objectContaining({
             manufacturer,
             model: "",
-          })
+          }),
         );
       });
     });
@@ -178,14 +178,14 @@ describe("BeaconSummaryEditing", () => {
             beacon={beaconFixtureWithFreeManufacturerAndModel}
             onSave={onSave}
             onCancel={jest.fn()}
-          />
+          />,
         );
 
         expect(
-          await screen.findByLabelText(/manufacturer/i)
+          await screen.findByLabelText(/manufacturer/i),
         ).toHaveDisplayValue(manufacturerValue);
         expect(await screen.findByLabelText(/model/i)).toHaveDisplayValue(
-          modelValue
+          modelValue,
         );
       });
     });

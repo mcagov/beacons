@@ -30,7 +30,7 @@ describe("Emergency Contact Summary Panel", () => {
           beaconsGateway={beaconsGatewayDouble}
           beaconId={beaconFixture.id}
         />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     expect(await screen.findByText(/Lady Hamilton/i)).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe("Emergency Contact Summary Panel", () => {
   it("should change the index of the emergency contact", async () => {
     const twoEmergencyContactBeacon = _.cloneDeep(beaconFixture);
     twoEmergencyContactBeacon.emergencyContacts.push(
-      ...emergencyContactsFixture
+      ...emergencyContactsFixture,
     );
 
     getBeaconDouble.mockResolvedValue(twoEmergencyContactBeacon);
@@ -50,7 +50,7 @@ describe("Emergency Contact Summary Panel", () => {
           beaconsGateway={beaconsGatewayDouble}
           beaconId={beaconFixture.id}
         />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     expect(await screen.findByText(/Emergency Contact 1/i)).toBeInTheDocument();
@@ -69,11 +69,11 @@ describe("Emergency Contact Summary Panel", () => {
           beaconsGateway={beaconsGatewayDouble}
           beaconId={beaconFixture.id}
         />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     expect(
-      await screen.findByText(/No emergency contacts/)
+      await screen.findByText(/No emergency contacts/),
     ).toBeInTheDocument();
   });
 });

@@ -21,7 +21,7 @@ describe("submitRegistration()", () => {
 
     await submitRegistration(container)(
       mockDraftRegistration,
-      "accountHolderId"
+      "accountHolderId",
     );
 
     expect(mockSendRegistrationToApi).toHaveBeenCalledTimes(1);
@@ -43,11 +43,11 @@ describe("submitRegistration()", () => {
 
     await submitRegistration(container)(
       mockDraftRegistration,
-      "accountHolderId"
+      "accountHolderId",
     );
 
     expect(container.beaconGateway.sendRegistration).toHaveBeenCalledWith(
-      expect.objectContaining({ referenceNumber: expect.any(String) })
+      expect.objectContaining({ referenceNumber: expect.any(String) }),
     );
   });
 
@@ -66,11 +66,11 @@ describe("submitRegistration()", () => {
 
     await submitRegistration(container)(
       mockDraftRegistration,
-      "accountHolderId"
+      "accountHolderId",
     );
 
     expect(container.beaconGateway.sendRegistration).toHaveBeenCalledWith(
-      expect.objectContaining({ accountHolderId: "accountHolderId" })
+      expect.objectContaining({ accountHolderId: "accountHolderId" }),
     );
   });
 
@@ -90,7 +90,7 @@ describe("submitRegistration()", () => {
     await submitRegistration(container)(mockDraftRegistration, null);
 
     expect(container.beaconGateway.sendRegistration).toHaveBeenCalledWith(
-      expect.objectContaining({ accountHolderId: null })
+      expect.objectContaining({ accountHolderId: null }),
     );
   });
 
@@ -111,12 +111,12 @@ describe("submitRegistration()", () => {
 
     await submitRegistration(container)(
       mockDraftRegistration,
-      "accountHolderId"
+      "accountHolderId",
     );
 
     expect(mockSendConfirmationEmail).toHaveBeenCalledWith(
       expect.anything(),
-      email
+      email,
     );
   });
 
@@ -135,7 +135,7 @@ describe("submitRegistration()", () => {
 
     const result = await submitRegistration(container)(
       mockDraftRegistration,
-      "accountHolderId"
+      "accountHolderId",
     );
 
     expect(result).toStrictEqual({
@@ -160,7 +160,7 @@ describe("submitRegistration()", () => {
 
     const result = await submitRegistration(container)(
       mockDraftRegistration,
-      "accountHolderId"
+      "accountHolderId",
     );
 
     expect(result).toStrictEqual({
@@ -185,7 +185,7 @@ describe("submitRegistration()", () => {
 
     const result = await submitRegistration(container)(
       mockDraftRegistration,
-      "accountHolderId"
+      "accountHolderId",
     );
 
     expect(result.referenceNumber.length).toBeDefined();
@@ -206,7 +206,7 @@ describe("submitRegistration()", () => {
 
     const result = await submitRegistration(container)(
       mockDraftRegistration,
-      "accountHolderId"
+      "accountHolderId",
     );
 
     expect(result.referenceNumber).toEqual("");

@@ -40,26 +40,26 @@ export const givenIHaveEnteredMyLandCommunicationDetails = (): void => {
   givenIHaveSelected("#portableVhfRadio");
   givenIHaveTypedInAnEmptyField(
     testLandUseData.communications.portableMMSI,
-    "#portableVhfRadioInput"
+    "#portableVhfRadioInput",
   );
   givenIHaveSelected("#satelliteTelephone");
   givenIHaveTypedInAnEmptyField(
     testLandUseData.communications.satelliteTelephone,
-    "#satelliteTelephoneInput"
+    "#satelliteTelephoneInput",
   );
   givenIHaveSelected("#mobileTelephone");
   givenIHaveTypedInAnEmptyField(
     testLandUseData.communications.mobileTelephone1,
-    "#mobileTelephoneInput1"
+    "#mobileTelephoneInput1",
   );
   givenIHaveTypedInAnEmptyField(
     testLandUseData.communications.mobileTelephone2,
-    "#mobileTelephoneInput2"
+    "#mobileTelephoneInput2",
   );
   givenIHaveSelected("#otherCommunication");
   givenIHaveTypedInAnEmptyField(
     testLandUseData.communications.otherCommunication,
-    "#otherCommunicationInput"
+    "#otherCommunicationInput",
   );
 };
 

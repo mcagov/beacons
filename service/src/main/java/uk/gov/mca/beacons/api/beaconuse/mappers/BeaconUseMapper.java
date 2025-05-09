@@ -63,8 +63,7 @@ public class BeaconUseMapper {
   }
 
   public BeaconUseDTO toDTO(BeaconUse beaconUse) {
-    return BeaconUseDTO
-      .builder()
+    return BeaconUseDTO.builder()
       .id(Objects.requireNonNull(beaconUse.getId()).unwrap())
       .environment(beaconUse.getEnvironment())
       .purpose(beaconUse.getPurpose())

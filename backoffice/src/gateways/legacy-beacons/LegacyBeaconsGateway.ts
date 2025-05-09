@@ -15,7 +15,7 @@ export class LegacyBeaconsGateway implements ILegacyBeaconsGateway {
 
   public constructor(
     legacyBeaconResponseMapper: ILegacyBeaconResponseMapper,
-    authGateway: IAuthGateway
+    authGateway: IAuthGateway,
   ) {
     this._legacyBeaconResponseMapper = legacyBeaconResponseMapper;
     this._authGateway = authGateway;
@@ -30,7 +30,7 @@ export class LegacyBeaconsGateway implements ILegacyBeaconsGateway {
         {
           timeout: applicationConfig.apiTimeoutMs,
           headers: { Authorization: `Bearer ${accessToken}` },
-        }
+        },
       );
 
       return this._legacyBeaconResponseMapper.map(response.data);
@@ -41,7 +41,7 @@ export class LegacyBeaconsGateway implements ILegacyBeaconsGateway {
 
   public async updateRecoveryEmail(
     beaconId: string,
-    updatedRecoveryEmail: string
+    updatedRecoveryEmail: string,
   ): Promise<IUpdateRecoveryEmailData> {
     try {
       const accessToken = await this._authGateway.getAccessToken();
@@ -57,7 +57,7 @@ export class LegacyBeaconsGateway implements ILegacyBeaconsGateway {
         {
           timeout: applicationConfig.apiTimeoutMs,
           headers: { Authorization: `Bearer ${accessToken}` },
-        }
+        },
       );
       return response.data;
     } catch (e) {

@@ -14,7 +14,7 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
-    registrationId: string
+    registrationId: string,
   ) {
     this.context = context;
     this.registrationId = registrationId;
@@ -29,14 +29,13 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges
 
     const registrationId = this.context.params.registrationId as string;
 
-    const draftRegistration: DraftRegistration = await getDraftRegistration(
-      registrationId
-    );
+    const draftRegistration: DraftRegistration =
+      await getDraftRegistration(registrationId);
 
     if (!draftRegistration) return true;
 
     const accountHolderId: string = await getAccountHolderId(
-      this.context.session
+      this.context.session,
     );
 
     const existingRegistration: Registration =
@@ -52,7 +51,7 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges
     const registrationId = this.context.params.registrationId as string;
 
     const accountHolderId: string = await getAccountHolderId(
-      this.context.session
+      this.context.session,
     );
 
     const existingRegistration: Registration =

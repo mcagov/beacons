@@ -24,7 +24,7 @@ export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
       });
       logger.info("Legacy beacon retrieved");
       return BeaconsApiLegacyBeaconGateway.legacyBeaconResponseToLegacyBeacon(
-        response.data
+        response.data,
       );
     } catch (error) {
       logger.error("getLegacyBeacon:", error);
@@ -33,7 +33,7 @@ export class BeaconsApiLegacyBeaconGateway implements LegacyBeaconGateway {
   }
 
   private static legacyBeaconResponseToLegacyBeacon(
-    legacyBeaconResponse: any
+    legacyBeaconResponse: any,
   ): LegacyBeacon {
     return {
       id: legacyBeaconResponse.data.id,

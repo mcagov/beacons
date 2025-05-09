@@ -12,8 +12,10 @@ public class BeaconControllerIntegrationTest extends WebIntegrationTest {
   @BeforeEach
   void init() throws Exception {
     String accountHolderId = seedAccountHolder();
-    beaconId =
-      seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId);
+    beaconId = seedRegistration(
+      RegistrationUseCase.SINGLE_BEACON,
+      accountHolderId
+    );
   }
 
   @Test

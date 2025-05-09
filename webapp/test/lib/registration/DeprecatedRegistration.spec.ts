@@ -74,7 +74,7 @@ describe("DeprecatedRegistration", () => {
       registration.createUse();
 
       expect(registration.registration.uses[0].environment).toBe(
-        Environment.MARITIME
+        Environment.MARITIME,
       );
     });
   });
@@ -86,7 +86,7 @@ describe("DeprecatedRegistration", () => {
 
       expect(registration.registration.uses.length).toBe(1);
       expect(registration.registration.uses[0].environment).toBe(
-        Environment.MARITIME
+        Environment.MARITIME,
       );
     });
 
@@ -97,7 +97,7 @@ describe("DeprecatedRegistration", () => {
 
       expect(registration.registration.uses.length).toBe(2);
       expect(registration.registration.uses[0].environment).toBe(
-        Environment.MARITIME
+        Environment.MARITIME,
       );
     });
 
@@ -110,7 +110,7 @@ describe("DeprecatedRegistration", () => {
 
       expect(registration.registration.uses.length).toBe(1);
       expect(registration.registration.uses[0].environment).toBe(
-        Environment.MARITIME
+        Environment.MARITIME,
       );
     });
   });
@@ -121,7 +121,7 @@ describe("DeprecatedRegistration", () => {
       registration.update(formData);
 
       expect(
-        registration.getFlattenedRegistration({ useId: null }).environment
+        registration.getFlattenedRegistration({ useId: null }).environment,
       ).toBe(Environment.MARITIME);
     });
 
@@ -130,7 +130,7 @@ describe("DeprecatedRegistration", () => {
       registration.update(formData);
 
       expect(
-        registration.getFlattenedRegistration({ useId: 0 }).environment
+        registration.getFlattenedRegistration({ useId: 0 }).environment,
       ).toBe(Environment.MARITIME);
     });
 
@@ -140,13 +140,13 @@ describe("DeprecatedRegistration", () => {
       registration.update(formData);
 
       expect(
-        registration.getFlattenedRegistration({ useId: 100 }).environment
+        registration.getFlattenedRegistration({ useId: 100 }).environment,
       ).toBe(Environment.MARITIME);
     });
 
     it("should remove the uses key from the flattened object", () => {
       expect(
-        registration.getFlattenedRegistration({ useId: 0 }).uses
+        registration.getFlattenedRegistration({ useId: 0 }).uses,
       ).toBeUndefined();
     });
   });
@@ -347,14 +347,14 @@ describe("DeprecatedRegistration", () => {
       expect(firstUse.portableVhfRadioValue).toBe(use.portableVhfRadioInput);
       expect(firstUse.satelliteTelephone).toBe(true);
       expect(firstUse.satelliteTelephoneValue).toBe(
-        use.satelliteTelephoneInput
+        use.satelliteTelephoneInput,
       );
       expect(firstUse.mobileTelephone).toBe(true);
       expect(firstUse.mobileTelephone1).toBe(use.mobileTelephoneInput1);
       expect(firstUse.mobileTelephone2).toBe(use.mobileTelephoneInput2);
       expect(firstUse.otherCommunication).toBe(true);
       expect(firstUse.otherCommunicationValue).toBe(
-        use.otherCommunicationInput
+        use.otherCommunicationInput,
       );
     });
   });

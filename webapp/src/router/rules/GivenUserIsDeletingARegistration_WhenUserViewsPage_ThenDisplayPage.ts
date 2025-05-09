@@ -14,7 +14,7 @@ export class GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
-    validationRules: FormManagerFactory
+    validationRules: FormManagerFactory,
   ) {
     this.context = context;
     this.validationRules = validationRules;
@@ -33,7 +33,7 @@ export class GivenUserIsDeletingARegistration_WhenUserViewsPage_ThenDisplayPage
 
     const registrationToBeDeleted = await getBeaconByAccountHolderId(
       accountHolder.id,
-      registrationId
+      registrationId,
     );
 
     return {

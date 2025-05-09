@@ -8,7 +8,7 @@ import RequestBody = Cypress.RequestBody;
 
 export const makeAuthenticatedPOSTRequest = async (
   body: RequestBody,
-  url: string
+  url: string,
 ): Promise<void> => {
   const tenant = Cypress.env("AAD_TENANT_ID");
   const authUrl = `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/token`;
@@ -46,6 +46,6 @@ export const makeAuthenticatedPOSTRequest = async (
         url,
         body,
       });
-    }
+    },
   );
 };

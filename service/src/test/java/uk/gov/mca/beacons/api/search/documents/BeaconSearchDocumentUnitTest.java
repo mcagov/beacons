@@ -62,8 +62,9 @@ public class BeaconSearchDocumentUnitTest {
       beacon.getId()
     );
     String mmsiNumber = "123 456789";
-    given(useWithOneMmsiNumber.getMmsiNumbers())
-      .willReturn(List.of(mmsiNumber));
+    given(useWithOneMmsiNumber.getMmsiNumbers()).willReturn(
+      List.of(mmsiNumber)
+    );
     List<BeaconUse> uses = List.of(useWithOneMmsiNumber);
 
     BeaconSearchDocument doc = new BeaconSearchDocument(

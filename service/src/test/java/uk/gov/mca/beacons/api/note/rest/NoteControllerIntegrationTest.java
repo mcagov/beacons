@@ -17,8 +17,7 @@ public class NoteControllerIntegrationTest extends WebIntegrationTest {
 
   private String beaconId;
 
-  private final BackOfficeUser user = BackOfficeUser
-    .builder()
+  private final BackOfficeUser user = BackOfficeUser.builder()
     .id(UUID.fromString("344848b9-8a5d-4818-a57d-1815528d543e"))
     .fullName("Jean ValJean")
     .email("24601@jail.fr")
@@ -30,8 +29,10 @@ public class NoteControllerIntegrationTest extends WebIntegrationTest {
   @BeforeEach
   void init() throws Exception {
     String accountHolderId = seedAccountHolder();
-    beaconId =
-      seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId);
+    beaconId = seedRegistration(
+      RegistrationUseCase.SINGLE_BEACON,
+      accountHolderId
+    );
   }
 
   @Test

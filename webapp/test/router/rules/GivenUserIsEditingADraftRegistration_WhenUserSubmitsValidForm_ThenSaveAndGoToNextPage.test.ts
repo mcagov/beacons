@@ -31,7 +31,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSave
         context as any,
         validationRules,
         mapper,
-        nextPageUrl
+        nextPageUrl,
       );
 
     const result = await rule.condition();
@@ -63,7 +63,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSave
         context as any,
         validationRules,
         mapper,
-        nextPageUrl
+        nextPageUrl,
       );
 
     const result = await rule.condition();
@@ -95,7 +95,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSave
         context as any,
         validationRules,
         mapper,
-        nextPageUrl
+        nextPageUrl,
       );
 
     const result = await rule.action();

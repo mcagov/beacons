@@ -237,22 +237,22 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
+        context,
       ),
       new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<AboutTheAircraftForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<AboutTheAircraftForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<AboutTheAircraftForm>(
         context,
@@ -260,21 +260,21 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         mapper(context),
         nextPageWithUseIdHelper(
           parseInt(context.query.useId as string),
-          CreateRegistrationPageURLs.aircraftCommunications
-        )
+          CreateRegistrationPageURLs.aircraftCommunications,
+        ),
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Partial<DraftBeaconUsePageProps> => ({
   useId: context.query.useId as string,
 });
 
 const mapper = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): DraftRegistrationFormMapper<AboutTheAircraftForm> => {
   const beaconUseMapper: BeaconUseFormMapper<AboutTheAircraftForm> = {
     formToDraftBeaconUse: (form) => ({
@@ -305,7 +305,7 @@ const mapper = (
 
   return makeDraftRegistrationMapper<AboutTheAircraftForm>(
     useId,
-    beaconUseMapper
+    beaconUseMapper,
   );
 };
 
@@ -323,7 +323,7 @@ const validationRules = ({
   return new FormManager({
     maxCapacity: new FieldManager(maxCapacity, [
       Validators.wholeNumber(
-        "Maximum number of persons onboard must be a whole number"
+        "Maximum number of persons onboard must be a whole number",
       ),
     ]),
     aircraftManufacturer: new FieldManager(aircraftManufacturer),
@@ -336,7 +336,7 @@ const validationRules = ({
     beaconPosition: new FieldManager(beaconPosition, [
       Validators.maxLength(
         "Where the beacon will be positioned has too many characters",
-        100
+        100,
       ),
     ]),
   });

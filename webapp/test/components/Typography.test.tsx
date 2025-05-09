@@ -12,7 +12,7 @@ describe("Typography Components", () => {
       const { getByTestId } = render(
         <AnchorLink href="#" description="Description">
           Text
-        </AnchorLink>
+        </AnchorLink>,
       );
 
       expect(getByTestId("anchor-link-description")).toBeDefined();

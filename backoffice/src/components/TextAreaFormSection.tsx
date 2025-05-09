@@ -144,7 +144,7 @@ export const TextAreaSection = withFormik<
       textType,
       onCancel,
       onSave,
-    }
+    },
   ) => {
     let errors: FormikErrors<TextAreaFormValues> = {};
     if (!values.text) {

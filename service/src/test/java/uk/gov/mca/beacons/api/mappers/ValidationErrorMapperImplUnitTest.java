@@ -20,22 +20,22 @@ class ValidationErrorMapperImplUnitTest {
 
   @Test
   void shouldBuildTheErrorResponseDTO() {
-    given(errors.getFieldErrors())
-      .willReturn(
-        Arrays.asList(
-          new FieldError(
-            "BeaconDTO",
-            "data.attributes.hexId",
-            "Hex ID must not be null"
-          ),
-          new FieldError(
-            "BeaconDTO",
-            "data.attributes.manufacturer",
-            "Manufacturer must not be null"
-          )
+    given(errors.getFieldErrors()).willReturn(
+      Arrays.asList(
+        new FieldError(
+          "BeaconDTO",
+          "data.attributes.hexId",
+          "Hex ID must not be null"
+        ),
+        new FieldError(
+          "BeaconDTO",
+          "data.attributes.manufacturer",
+          "Manufacturer must not be null"
         )
-      );
-    final var getValidationErrorResponseService = new ValidationErrorMapperImpl();
+      )
+    );
+    final var getValidationErrorResponseService =
+      new ValidationErrorMapperImpl();
 
     final var result = getValidationErrorResponseService.fromBindingErrors(
       errors

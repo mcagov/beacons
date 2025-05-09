@@ -20,7 +20,7 @@ describe("NextAuthUserSessionGateway", () => {
     const userSessionGateway = new NextAuthUserSessionGateway();
 
     const result = await userSessionGateway.getSession(
-      context as GetServerSidePropsContext
+      context as GetServerSidePropsContext,
     );
 
     expect(result).toStrictEqual(mockSession);
@@ -33,7 +33,7 @@ describe("NextAuthUserSessionGateway", () => {
     const userSessionGateway = new NextAuthUserSessionGateway();
 
     const result = await userSessionGateway.getSession(
-      context as GetServerSidePropsContext
+      context as GetServerSidePropsContext,
     );
     expect(result).toStrictEqual(null);
   });

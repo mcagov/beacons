@@ -25,7 +25,7 @@ describe("GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteThe
       const rule =
         new GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteTheRegistration(
           context as any,
-          emptyValidationRules
+          emptyValidationRules,
         );
 
       await rule.action();
@@ -33,7 +33,7 @@ describe("GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteThe
       expect(context.container.deleteBeacon).toHaveBeenCalledWith(
         ReasonsForDeletingARegistration.DESTROYED,
         expect.anything(),
-        expect.anything()
+        expect.anything(),
       );
     });
 
@@ -57,7 +57,7 @@ describe("GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteThe
       const rule =
         new GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteTheRegistration(
           context as any,
-          emptyValidationRules
+          emptyValidationRules,
         );
 
       await rule.action();
@@ -65,7 +65,7 @@ describe("GivenUserIsDeletingARegistration_WhenUserProvidesAReason_ThenDeleteThe
       expect(context.container.deleteBeacon).toHaveBeenCalledWith(
         "Lost overboard",
         expect.anything(),
-        expect.anything()
+        expect.anything(),
       );
     });
   });

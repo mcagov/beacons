@@ -57,7 +57,7 @@ describe("LandOtherCommunications", () => {
         form={emptyLandOtherCommunicationsForm}
         useId={0}
         showCookieBanner={false}
-      />
+      />,
     );
 
     const mobilePhoneInput1 = container.querySelector("#mobileTelephoneInput1");
@@ -75,11 +75,11 @@ describe("LandOtherCommunications", () => {
         form={emptyLandOtherCommunicationsForm}
         useId={0}
         showCookieBanner={false}
-      />
+      />,
     );
 
     const satelliteTelephoneNumberInput = container.querySelector(
-      "#satelliteTelephoneInput"
+      "#satelliteTelephoneInput",
     );
 
     expect(satelliteTelephoneNumberInput).not.toHaveAttribute("autocomplete");
