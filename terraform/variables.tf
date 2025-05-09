@@ -361,12 +361,12 @@ variable "backoffice_health_check_path" {
 variable "backoffice_fargate_cpu" {
   type        = number
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the Backoffice app"
-  default     = 256
+  default     = 1024
 }
 variable "backoffice_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Backoffice app"
-  default     = 512
+  default     = 2048
 }
 
 /**

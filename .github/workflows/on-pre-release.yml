@@ -1,5 +1,9 @@
 name: Test then deploy to staging
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   release:
     types:
@@ -58,6 +62,8 @@ jobs:
   publish_webapp_image:
     name: Webapp
     needs:
+      - test_backoffice
+      - test_service
       - test_webapp
     uses: ./.github/workflows/_reusable-publish-webapp-image.yml
     with:
@@ -70,7 +76,9 @@ jobs:
   publish_service_image:
     name: Service
     needs:
+      - test_backoffice
       - test_service
+      - test_webapp
     uses: ./.github/workflows/_reusable-publish-service-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
@@ -83,6 +91,8 @@ jobs:
     name: Publish Backoffice
     needs:
       - test_backoffice
+      - test_service
+      - test_webapp
     uses: ./.github/workflows/_reusable-publish-backoffice-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
@@ -95,6 +105,10 @@ jobs:
 
   publish_opensearch_proxy_image:
     name: OpenSearch proxy
+    needs:
+      - test_backoffice
+      - test_service
+      - test_webapp
     uses: ./.github/workflows/_reusable-publish-opensearch-proxy-image.yml
     with:
       tag: ${{ github.event.release.tag_name }}
@@ -155,6 +169,7 @@ jobs:
       - end_to_end_tests
       - terraform_lint
       - prettier_check
+      - end_to_end_tests
     uses: ./.github/workflows/_reusable-deploy.yml
     with:
       environment: staging
@@ -184,11 +199,3 @@ jobs:
       microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
       microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
       microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
-
-  manual_testing:
-    name: Manual testing
-    runs-on: ubuntu-latest
-    steps:
-      - name: Link to manual testing document
-        run: |
-          echo "::notice file=tests/pre-release-testing-scenarios.md,title={Remember to run through the pre-release testing scenarios before pushing to production}::This should be automated soon."
