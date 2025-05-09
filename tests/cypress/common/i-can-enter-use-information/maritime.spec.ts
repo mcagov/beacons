@@ -62,12 +62,12 @@ export const iCanSeeMyMaritimeUse = (purpose): void => {
   cy.get("main").contains(testMaritimeUseData.communications.fixedMMSI);
   cy.get("main").contains(testMaritimeUseData.communications.portableMMSI);
   cy.get("main").contains(
-    testMaritimeUseData.communications.satelliteTelephone
+    testMaritimeUseData.communications.satelliteTelephone,
   );
   cy.get("main").contains(testMaritimeUseData.communications.mobileTelephone1);
   cy.get("main").contains(testMaritimeUseData.communications.mobileTelephone2);
   cy.get("main").contains(
-    testMaritimeUseData.communications.otherCommunication
+    testMaritimeUseData.communications.otherCommunication,
   );
   cy.get("main").contains(testMaritimeUseData.moreDetails);
 };
@@ -86,7 +86,7 @@ export const givenIHaveEnteredInformationAboutMyVessel = (): void => {
   givenIHaveTypedInAnEmptyField(vessel.officialNumber, "#officialNumber");
   givenIHaveTypedInAnEmptyField(
     vessel.rigPlatformLocation,
-    "#rigPlatformLocation"
+    "#rigPlatformLocation",
   );
 };
 
@@ -101,27 +101,27 @@ export const givenIHaveEnteredMyVesselCommunicationDetails = (): void => {
   givenIHaveSelected("#satelliteTelephone");
   givenIHaveTypedInAnEmptyField(
     comms.satelliteTelephone,
-    "#satelliteTelephoneInput"
+    "#satelliteTelephoneInput",
   );
   givenIHaveSelected("#mobileTelephone");
   givenIHaveTypedInAnEmptyField(
     comms.mobileTelephone1,
-    "#mobileTelephoneInput1"
+    "#mobileTelephoneInput1",
   );
   givenIHaveTypedInAnEmptyField(
     comms.mobileTelephone2,
-    "#mobileTelephoneInput2"
+    "#mobileTelephoneInput2",
   );
   givenIHaveSelected("#otherCommunication");
   givenIHaveTypedInAnEmptyField(
     comms.otherCommunication,
-    "#otherCommunicationInput"
+    "#otherCommunicationInput",
   );
 };
 
 export const givenIHaveEnteredMoreDetailsAboutMyVessel = (): void => {
   givenIHaveTypedInAnEmptyField(
     testMaritimeUseData.moreDetails,
-    "#moreDetails"
+    "#moreDetails",
   );
 };

@@ -195,26 +195,26 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<EmergencyContactForm>(
         context,
         validationRules,
-        mapper
+        mapper,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<EmergencyContactForm>(
         context,
         validationRules,
-        mapper
+        mapper,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<EmergencyContactForm>(
         context,
         validationRules,
         mapper,
-        nextPageUrl
+        nextPageUrl,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const mapper: DraftRegistrationFormMapper<EmergencyContactForm> = {
@@ -271,29 +271,29 @@ const validationRules = ({
       emergencyContact1TelephoneNumber,
       [
         Validators.required(
-          "Emergency contact telephone number is a required field"
+          "Emergency contact telephone number is a required field",
         ),
         Validators.phoneNumber(
-          "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
+          "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192",
         ),
-      ]
+      ],
     ),
     emergencyContact1AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact1AlternativeTelephoneNumber
+      emergencyContact1AlternativeTelephoneNumber,
     ),
     emergencyContact2FullName: new FieldManager(emergencyContact2FullName),
     emergencyContact2TelephoneNumber: new FieldManager(
-      emergencyContact2TelephoneNumber
+      emergencyContact2TelephoneNumber,
     ),
     emergencyContact2AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact2AlternativeTelephoneNumber
+      emergencyContact2AlternativeTelephoneNumber,
     ),
     emergencyContact3FullName: new FieldManager(emergencyContact3FullName),
     emergencyContact3TelephoneNumber: new FieldManager(
-      emergencyContact3TelephoneNumber
+      emergencyContact3TelephoneNumber,
     ),
     emergencyContact3AlternativeTelephoneNumber: new FieldManager(
-      emergencyContact3AlternativeTelephoneNumber
+      emergencyContact3AlternativeTelephoneNumber,
     ),
   });
 };

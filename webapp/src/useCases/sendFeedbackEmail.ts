@@ -4,7 +4,7 @@ import { FormSubmission } from "../presenters/formSubmission";
 
 export const sendFeedbackEmail = async (
   emailServiceGateway: EmailServiceGateway,
-  feedback: FormSubmission
+  feedback: FormSubmission,
 ): Promise<boolean> => {
   const feedbackEmailTemplateId = "87dc177e-942f-4484-95ba-18580e937280";
   const feedbackDestinationEmailAddress =
@@ -17,6 +17,6 @@ export const sendFeedbackEmail = async (
       referenceId: uuidv4(),
       satisfactionRating: feedback.satisfactionRating,
       howCouldWeImproveThisService: feedback.howCouldWeImproveThisService,
-    }
+    },
   );
 };

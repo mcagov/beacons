@@ -69,7 +69,7 @@ export const givenIHaveEnteredMyMaritimeUse = (purpose: Purpose): void => {
 };
 
 export const givenIHaveEnteredMyRequiredMaritimeUse = (
-  purpose: Purpose
+  purpose: Purpose,
 ): void => {
   thenTheUrlShouldContain(CreateRegistrationPageURLs.environment);
   givenIHaveSelected("#maritime");
@@ -125,12 +125,12 @@ export const iCanSeeMyMaritimeUse = (purpose: Purpose): void => {
   cy.get("main").contains(testMaritimeUseData.communications.fixedMMSI);
   cy.get("main").contains(testMaritimeUseData.communications.portableMMSI);
   cy.get("main").contains(
-    testMaritimeUseData.communications.satelliteTelephone
+    testMaritimeUseData.communications.satelliteTelephone,
   );
   cy.get("main").contains(testMaritimeUseData.communications.mobileTelephone1);
   cy.get("main").contains(testMaritimeUseData.communications.mobileTelephone2);
   cy.get("main").contains(
-    testMaritimeUseData.communications.otherCommunication
+    testMaritimeUseData.communications.otherCommunication,
   );
   cy.get("main").contains(testMaritimeUseData.moreDetails);
 };
@@ -191,14 +191,14 @@ export const iCanGoBackAndEditMyMaritimeUse = (purpose: Purpose): void => {
 export const iCanEditMyVesselCommunications = (): void => {
   const comms = testMaritimeUseData.communications;
   comms.checkedFields.forEach((field) =>
-    cy.get(`#${field}`).should("be.checked")
+    cy.get(`#${field}`).should("be.checked"),
   );
   cy.get("#callSign").should("have.value", comms.callSign);
   cy.get("#fixedVhfRadioInput").should("have.value", comms.fixedMMSI);
   cy.get("#portableVhfRadioInput").should("have.value", comms.portableMMSI);
   cy.get("#satelliteTelephoneInput").should(
     "have.value",
-    comms.satelliteTelephone
+    comms.satelliteTelephone,
   );
   cy.get("#mobileTelephoneInput1").should("have.value", comms.mobileTelephone1);
   cy.get("#mobileTelephoneInput2").should("have.value", comms.mobileTelephone2);
@@ -215,7 +215,7 @@ export const iCanViewMyChangedVesselCommunications = (): void => {
   const comms = testMaritimeUseData.communications;
 
   comms.checkedFields.forEach((field) =>
-    cy.get(`#${field}`).should("not.be.checked")
+    cy.get(`#${field}`).should("not.be.checked"),
   );
   cy.get("#fixedVhfRadioInput").should("not.be.visible");
   cy.get("#portableVhfRadioInput").should("not.be.visible");
@@ -228,7 +228,7 @@ export const iCanViewMyChangedVesselCommunications = (): void => {
   Object.values(comms)
     .filter((value) => typeof value === "string")
     .forEach((value: string) =>
-      cy.get(".govuk-summary-list__value").should("not.contain", value)
+      cy.get(".govuk-summary-list__value").should("not.contain", value),
     );
   andIHaveVisited(CreateRegistrationPageURLs.vesselCommunications + "?useId=0");
 };
@@ -246,13 +246,13 @@ export const iCanEditMyVesselDetails = (): void => {
   cy.get("#officialNumber").should("have.value", vessel.officialNumber);
   cy.get("#rigPlatformLocation").should(
     "have.value",
-    vessel.rigPlatformLocation
+    vessel.rigPlatformLocation,
   );
 };
 
 export const iCanEditMyMaritimeActivity = (): void => {
   cy.get(
-    `input[value="${testMaritimeCommercialUseData.type.activity}"]`
+    `input[value="${testMaritimeCommercialUseData.type.activity}"]`,
   ).should("be.checked");
 };
 
@@ -260,12 +260,12 @@ export const iCanEditMyMaritimePurpose = (purpose: Purpose): void => {
   switch (purpose) {
     case Purpose.COMMERCIAL:
       cy.get(
-        `input[value="${testMaritimeCommercialUseData.type.purpose}"]`
+        `input[value="${testMaritimeCommercialUseData.type.purpose}"]`,
       ).should("be.checked");
       break;
     case Purpose.PLEASURE:
       cy.get(
-        `input[value="${testMaritimePleasureUseData.type.purpose}"]`
+        `input[value="${testMaritimePleasureUseData.type.purpose}"]`,
       ).should("be.checked");
       break;
   }

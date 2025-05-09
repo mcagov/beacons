@@ -35,7 +35,7 @@ export const BeaconSummaryEditing: FunctionComponent<{
       initialValues={beacon}
       onSubmit={(
         values: IBeacon,
-        { setSubmitting }: FormikHelpers<IBeacon>
+        { setSubmitting }: FormikHelpers<IBeacon>,
       ) => {
         onSave(values);
         setSubmitting(false);
@@ -62,7 +62,7 @@ export const BeaconSummaryEditing: FunctionComponent<{
                           name="manufacturer"
                           as="select"
                           onChange={(
-                            e: React.ChangeEvent<HTMLSelectElement>
+                            e: React.ChangeEvent<HTMLSelectElement>,
                           ) => {
                             setValues((values) => ({
                               ...values,
@@ -85,7 +85,7 @@ export const BeaconSummaryEditing: FunctionComponent<{
                                   {manufacturer}
                                 </option>
                               );
-                            }
+                            },
                           )}
                         </Field>
                       }
@@ -148,7 +148,7 @@ export const BeaconSummaryEditing: FunctionComponent<{
                                   {beaconType}
                                 </option>
                               );
-                            }
+                            },
                           )}
                         </Field>
                       }
@@ -177,7 +177,7 @@ export const BeaconSummaryEditing: FunctionComponent<{
                                   {protocol}
                                 </option>
                               );
-                            }
+                            },
                           )}
                         </Field>
                       }
@@ -217,7 +217,7 @@ export const BeaconSummaryEditing: FunctionComponent<{
                                   {protocol}
                                 </option>
                               );
-                            }
+                            },
                           )}
                         </Field>
                       }

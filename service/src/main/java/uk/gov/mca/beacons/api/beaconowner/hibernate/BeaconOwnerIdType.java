@@ -7,7 +7,9 @@ import uk.gov.mca.beacons.api.shared.hibernate.DomainObjectIdTypeDescriptor;
 
 public class BeaconOwnerIdType extends DomainObjectIdCustomType<BeaconOwnerId> {
 
-  private static final DomainObjectIdTypeDescriptor<BeaconOwnerId> TYPE_DESCRIPTOR = new DomainObjectIdTypeDescriptor<>(
+  private static final DomainObjectIdTypeDescriptor<
+    BeaconOwnerId
+  > TYPE_DESCRIPTOR = new DomainObjectIdTypeDescriptor<>(
     BeaconOwnerId.class,
     BeaconOwnerId::new
   );

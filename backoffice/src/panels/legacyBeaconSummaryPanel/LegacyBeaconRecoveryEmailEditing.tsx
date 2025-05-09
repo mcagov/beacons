@@ -109,7 +109,7 @@ export const LegacyBeaconRecoveryEmailEditing: FunctionComponent<
               key: "Owner(s)",
               value: formatLegacyOwners(
                 legacyBeacon.owner || [],
-                ...(legacyBeacon.secondaryOwners || [])
+                ...(legacyBeacon.secondaryOwners || []),
               ),
             },
           ]}

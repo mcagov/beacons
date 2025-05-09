@@ -99,7 +99,7 @@ export class Validators {
    */
   public static minDateYear(
     errorMessage: string,
-    year: number
+    year: number,
   ): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       if (Validators.isValidDate("").applies(value)) return false;
@@ -207,7 +207,7 @@ export class Validators {
    */
   public static shouldNotContain(
     errorMessage: string,
-    forbiddenValue: string
+    forbiddenValue: string,
   ): ValidationRule {
     const applies: ValidatorFn = (value: string) =>
       value.includes(forbiddenValue);
@@ -266,7 +266,7 @@ export class Validators {
    */
   private static pattern(
     errorMessage: string,
-    pattern: RegExp
+    pattern: RegExp,
   ): ValidationRule {
     const applies: ValidatorFn = (value: string) => {
       if (Validators.required("").applies(value)) return false;

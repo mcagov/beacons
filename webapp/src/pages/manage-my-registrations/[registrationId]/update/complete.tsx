@@ -71,7 +71,7 @@ const ApplicationCompletePage = (props: {
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
-      context
+      context,
     );
 
     if (await rule.condition()) {
@@ -85,20 +85,20 @@ export const getServerSideProps: GetServerSideProps = withSession(
       return redirectUserTo(GeneralPageURLs.start);
 
     const draftRegistration: DraftRegistration = await getDraftRegistration(
-      context.req.cookies[formSubmissionCookieId]
+      context.req.cookies[formSubmissionCookieId],
     );
 
     try {
       const result = await updateRegistration(
         draftRegistration,
-        draftRegistration.id
+        draftRegistration.id,
       );
 
       clearFormSubmissionCookie(context);
 
       if (!result.beaconUpdated) {
         logger.error(
-          `Failed to update beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`
+          `Failed to update beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
         );
       }
 
@@ -110,7 +110,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
       };
     } catch (e) {
       logger.error(
-        `Threw error ${e} when updating beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`
+        `Threw error ${e} when updating beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
       );
       return {
         props: {
@@ -118,7 +118,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
         },
       };
     }
-  })
+  }),
 );
 
 export default ApplicationCompletePage;

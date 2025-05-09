@@ -24,7 +24,7 @@ describe("Layout", () => {
         container: document.head,
       });
       expect(document.title).toBe(
-        `${title} - Beacon Registration Service - GOV.UK`
+        `${title} - Beacon Registration Service - GOV.UK`,
       );
     });
 
@@ -33,7 +33,7 @@ describe("Layout", () => {
         container: document.head,
       });
       expect(document.title).toBe(
-        `Error: ${title} - Beacon Registration Service - GOV.UK`
+        `Error: ${title} - Beacon Registration Service - GOV.UK`,
       );
     });
   });

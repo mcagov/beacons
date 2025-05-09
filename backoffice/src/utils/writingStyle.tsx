@@ -72,12 +72,12 @@ export const formatLegacyOwners = (...owners: ILegacyOwner[]): string =>
   (owners || []).map((owner) => owner.ownerName).join(", ");
 
 export const formatEmergencyContacts = (
-  emergencyContacts: IEmergencyContact[]
+  emergencyContacts: IEmergencyContact[],
 ): string => `${emergencyContacts.length} listed`;
 
 export const formatFieldValue = (
   value: string | number | undefined | null,
-  valueType?: FieldValueTypes
+  valueType?: FieldValueTypes,
 ): JSX.Element => {
   if (typeof value === "number") return <b>{value.toString()}</b>;
   if (value) return <b>{value.toLocaleUpperCase()}</b>;
@@ -98,7 +98,7 @@ function lookupFieldName(fieldName: string): string {
 
 export function formatForClipboardWithNotes(
   beacon: Record<any, any>,
-  notes: INote[]
+  notes: INote[],
 ): string {
   const text = formatForClipboard(beacon);
 
@@ -146,7 +146,7 @@ export function formatForClipboard(entity: Record<any, any>): string {
         );
       } else if (isKeyValueObject(value)) {
         return `\n=====${_.startCase(
-          key
+          key,
         ).toUpperCase()}=====\n${formatForClipboard(value)}`;
       } else if (typeof value === "boolean") {
         return `${_.startCase(key)}:    ${value ? "Yes" : "No"}\n`;

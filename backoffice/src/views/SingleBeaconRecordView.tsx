@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       marginLeft: theme.spacing(2),
     },
-  })
+  }),
 );
 
 export const SingleBeaconRecordView: FunctionComponent<
@@ -97,7 +97,7 @@ export const SingleBeaconRecordView: FunctionComponent<
 
   const handleDeleteDialogueAction = async (
     actionOptionSelected: boolean,
-    reasonForAction: string
+    reasonForAction: string,
   ) => {
     setDialogueIsOpen(false);
     if (actionOptionSelected) {

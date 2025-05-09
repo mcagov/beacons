@@ -44,7 +44,7 @@ export class NotesGateway implements INotesGateway {
 
   private async _makePostRequest(
     path: string,
-    note: Partial<INote>
+    note: Partial<INote>,
   ): Promise<AxiosResponse> {
     const accessToken = await this._authGateway.getAccessToken();
 
@@ -54,7 +54,7 @@ export class NotesGateway implements INotesGateway {
       {
         timeout: applicationConfig.apiTimeoutMs,
         headers: { Authorization: `Bearer ${accessToken}` },
-      }
+      },
     );
   }
 
@@ -77,12 +77,12 @@ export class NotesGateway implements INotesGateway {
 }
 
 export function mapNotesListResponseToNotes(
-  notesResponse: INotesResponse
+  notesResponse: INotesResponse,
 ): INote[] {
   if (!notesResponse.data || notesResponse.data.length === 0) return [];
 
   return notesResponse.data.map((noteResponseData) =>
-    mapData(noteResponseData)
+    mapData(noteResponseData),
   );
 }
 

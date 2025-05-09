@@ -34,7 +34,7 @@ describe("AdditionalBeaconUseSummary", () => {
     const index = 0;
 
     render(
-      <AdditionalBeaconUseSummary use={use} index={index} changeUri={"#"} />
+      <AdditionalBeaconUseSummary use={use} index={index} changeUri={"#"} />,
     );
 
     const changeLink = screen.getByRole("link", { name: /change/i });
@@ -46,7 +46,7 @@ describe("AdditionalBeaconUseSummary", () => {
     const useId = 0;
 
     render(
-      <AdditionalBeaconUseSummary use={use} index={useId} deleteUri={"#"} />
+      <AdditionalBeaconUseSummary use={use} index={useId} deleteUri={"#"} />,
     );
 
     const deleteLink = screen.getByRole("link", { name: /delete/i });

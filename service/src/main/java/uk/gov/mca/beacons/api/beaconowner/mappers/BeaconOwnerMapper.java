@@ -34,8 +34,7 @@ public class BeaconOwnerMapper {
   }
 
   public BeaconOwnerDTO toDTO(BeaconOwner beaconOwner) {
-    return BeaconOwnerDTO
-      .builder()
+    return BeaconOwnerDTO.builder()
       .id(Objects.requireNonNull(beaconOwner.getId()).unwrap())
       .fullName(beaconOwner.getFullName())
       .email(beaconOwner.getEmail())

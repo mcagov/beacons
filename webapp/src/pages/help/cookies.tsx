@@ -66,7 +66,7 @@ const EssentialCookies: FunctionComponent = (): JSX.Element => (
 );
 
 export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ) => {
   const showCookieBanner = !context.req.cookies[acceptRejectCookieId];
 

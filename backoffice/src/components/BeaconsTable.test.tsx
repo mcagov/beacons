@@ -22,7 +22,7 @@ describe("<BeaconsTable>", () => {
     render(
       <BrowserRouter>
         <BeaconsTable beaconsGateway={beaconsGatewayDouble} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {
@@ -34,7 +34,7 @@ describe("<BeaconsTable>", () => {
     render(
       <BrowserRouter>
         <BeaconsTable beaconsGateway={beaconsGatewayDouble} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(await screen.findByText("Hex me difficultly")).toBeVisible();
@@ -44,11 +44,11 @@ describe("<BeaconsTable>", () => {
     render(
       <BrowserRouter>
         <BeaconsTable beaconsGateway={beaconsGatewayDouble} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(await screen.findAllByTestId("beacons-table-row")).toHaveLength(
-      numberOfMockedBeacons
+      numberOfMockedBeacons,
     );
   });
 });

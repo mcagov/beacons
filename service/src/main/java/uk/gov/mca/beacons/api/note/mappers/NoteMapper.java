@@ -28,8 +28,7 @@ public class NoteMapper {
     final NoteDTO dto = new NoteDTO();
     dto.setId(Objects.requireNonNull(note.getId()).unwrap());
 
-    var attributes = NoteDTO.Attributes
-      .builder()
+    var attributes = NoteDTO.Attributes.builder()
       .beaconId(note.getBeaconId().unwrap())
       .email(note.getEmail())
       .fullName(note.getFullName())

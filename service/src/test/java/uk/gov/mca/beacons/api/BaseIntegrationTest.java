@@ -36,24 +36,24 @@ public abstract class BaseIntegrationTest {
     }
   }
 
-  static final PostgreSQLContainer<?> POSTGRE_SQL_CONTAINER = new PostgreSQLContainer<>(
-    DockerImageName.parse("postgres:12")
-  )
-    .withDatabaseName("beacons")
-    .withUsername("beacons_service")
-    .withPassword("password");
+  static final PostgreSQLContainer<?> POSTGRE_SQL_CONTAINER =
+    new PostgreSQLContainer<>(DockerImageName.parse("postgres:12"))
+      .withDatabaseName("beacons")
+      .withUsername("beacons_service")
+      .withPassword("password");
 
-  protected static final ElasticsearchContainer OPENSEARCH_CONTAINER = new ElasticsearchContainer(
-    DockerImageName
-      .parse("opensearchproject/opensearch:1.1.0")
-      .asCompatibleSubstituteFor(
+  protected static final ElasticsearchContainer OPENSEARCH_CONTAINER =
+    new ElasticsearchContainer(
+      DockerImageName.parse(
+        "opensearchproject/opensearch:1.1.0"
+      ).asCompatibleSubstituteFor(
         "docker.elastic.co/elasticsearch/elasticsearch"
       )
-  )
-    .withEnv(
-      Map.of("plugins.security.disabled", "true", "network.host", "0.0.0.0")
     )
-    .withExposedPorts(9200);
+      .withEnv(
+        Map.of("plugins.security.disabled", "true", "network.host", "0.0.0.0")
+      )
+      .withExposedPorts(9200);
 
   static {
     POSTGRE_SQL_CONTAINER.start();
@@ -108,9 +108,9 @@ public abstract class BaseIntegrationTest {
     FileUtils.cleanDirectory(tempDir.toFile());
   }
 
-  static RestClient restClient = RestClient
-    .builder(HttpHost.create(OPENSEARCH_CONTAINER.getHttpHostAddress()))
-    .build();
+  static RestClient restClient = RestClient.builder(
+    HttpHost.create(OPENSEARCH_CONTAINER.getHttpHostAddress())
+  ).build();
 
   @AfterEach
   public void cleanElasticSearch() throws Exception {
