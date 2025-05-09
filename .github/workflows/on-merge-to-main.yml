@@ -1,5 +1,9 @@
 name: Test then deploy to dev
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   push:
     branches:
@@ -59,6 +63,8 @@ jobs:
   publish_webapp_image:
     name: Publish Webapp
     needs:
+      - test_backoffice
+      - test_service
       - test_webapp
     uses: ./.github/workflows/_reusable-publish-webapp-image.yml
     with:
@@ -71,7 +77,9 @@ jobs:
   publish_service_image:
     name: Publish Service
     needs:
+      - test_backoffice
       - test_service
+      - test_webapp
     uses: ./.github/workflows/_reusable-publish-service-image.yml
     with:
       tag: ${{ github.sha }}
@@ -84,6 +92,8 @@ jobs:
     name: Publish Backoffice
     needs:
       - test_backoffice
+      - test_service
+      - test_webapp
     uses: ./.github/workflows/_reusable-publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
@@ -96,6 +106,10 @@ jobs:
 
   publish_opensearch_proxy_image:
     name: OpenSearch proxy
+    needs:
+      - test_backoffice
+      - test_service
+      - test_webapp
     uses: ./.github/workflows/_reusable-publish-opensearch-proxy-image.yml
     with:
       tag: ${{ github.sha }}
@@ -142,6 +156,7 @@ jobs:
       - publish_webapp_image
       - publish_service_image
       - publish_opensearch_proxy_image
+      - end_to_end_tests
     uses: ./.github/workflows/_reusable-deploy.yml
     with:
       environment: development
