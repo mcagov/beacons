@@ -24,12 +24,12 @@ export interface IBeaconsGateway {
     filters: GetAllBeaconsFilters,
     page: number,
     pageSize: number,
-    sort: GetAllBeaconsSort
+    sort: GetAllBeaconsSort,
   ) => Promise<IBeaconSearchResult>;
   getBeacon: (id: string) => Promise<IBeacon>;
   updateBeacon: (
     beaconId: string,
-    updatedFields: Partial<IBeacon>
+    updatedFields: Partial<IBeacon>,
   ) => Promise<IBeacon>;
   deleteBeacon: (deleteBeaconDto: IDeleteBeaconDto) => Promise<AxiosResponse>;
 }

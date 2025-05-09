@@ -83,10 +83,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       new WhenUserViewsPage_ThenDisplayPage(context),
       new WhenUserSubmitsBeaconOwnerLocationChoiceForm_RedirectAccordingly(
         context,
-        validationRules
+        validationRules,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const validationRules = ({ beaconOwnerLocation }) => {
@@ -95,7 +95,7 @@ const validationRules = ({ beaconOwnerLocation }) => {
       beaconOwnerLocation,
       [Validators.required("Select an option")],
       [],
-      "unitedKingdom"
+      "unitedKingdom",
     ),
   });
 };

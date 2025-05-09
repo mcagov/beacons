@@ -4,7 +4,7 @@ import { IAppContainer } from "../lib/IAppContainer";
 
 export type SubmitRegistrationFn = (
   draftRegistration: DraftRegistration,
-  accountHolderId: string
+  accountHolderId: string,
 ) => Promise<ISubmitRegistrationResult>;
 
 export interface ISubmitRegistrationResult {
@@ -28,7 +28,7 @@ export const submitRegistration =
       };
 
     const beaconRegistered = await beaconGateway.sendRegistration(
-      draftRegistrationWithReferenceAndAccountHolderId
+      draftRegistrationWithReferenceAndAccountHolderId,
     );
 
     const { email: accountHolderEmail } =
@@ -37,7 +37,7 @@ export const submitRegistration =
     const confirmationEmailSent = beaconRegistered
       ? await sendConfirmationEmail(
           draftRegistrationWithReferenceAndAccountHolderId as Registration,
-          accountHolderEmail
+          accountHolderEmail,
         )
       : false;
 

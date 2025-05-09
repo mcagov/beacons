@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       marginLeft: theme.spacing(2),
     },
-  })
+  }),
 );
 
 const columns: GridColDef[] = [

@@ -38,8 +38,7 @@ public class BeaconMapper {
   }
 
   public BeaconRegistrationDTO toRegistrationDTO(Beacon beacon) {
-    return BeaconRegistrationDTO
-      .builder()
+    return BeaconRegistrationDTO.builder()
       .id(Objects.requireNonNull(beacon.getId()).unwrap())
       .hexId(beacon.getHexId())
       .manufacturer(beacon.getManufacturer())
@@ -66,8 +65,7 @@ public class BeaconMapper {
     Beacon beacon,
     BeaconUse mainUse
   ) {
-    return BeaconRegistrationDTO
-      .builder()
+    return BeaconRegistrationDTO.builder()
       .id(Objects.requireNonNull(beacon.getId()).unwrap())
       .hexId(beacon.getHexId())
       .manufacturer(beacon.getManufacturer())
@@ -95,8 +93,7 @@ public class BeaconMapper {
     BeaconDTO dto = new BeaconDTO();
     dto.setId(Objects.requireNonNull(beacon.getId()).unwrap());
 
-    var attributes = BeaconDTO.Attributes
-      .builder()
+    var attributes = BeaconDTO.Attributes.builder()
       .id(dto.getId())
       .hexId(beacon.getHexId())
       .manufacturer(beacon.getManufacturer())
@@ -126,8 +123,7 @@ public class BeaconMapper {
     BeaconDTO dto = new BeaconDTO();
     dto.setId(Objects.requireNonNull(beacon.getId()).unwrap());
 
-    var attributes = BeaconDTO.Attributes
-      .builder()
+    var attributes = BeaconDTO.Attributes.builder()
       .id(dto.getId())
       .hexId(beacon.getHexId())
       .manufacturer(beacon.getManufacturer())

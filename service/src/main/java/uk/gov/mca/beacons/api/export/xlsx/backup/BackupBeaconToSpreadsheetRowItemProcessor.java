@@ -28,9 +28,8 @@ class BackupBeaconToSpreadsheetRowItemProcessor
 
   private final BeaconUseMapper beaconUseMapper;
 
-  private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(
-    "dd-MM-yyyy"
-  );
+  private static final DateTimeFormatter dateFormatter =
+    DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
   @Autowired
   public BackupBeaconToSpreadsheetRowItemProcessor(
@@ -57,13 +56,13 @@ class BackupBeaconToSpreadsheetRowItemProcessor
     BeaconId modernBeaconId = new BeaconId(beaconItemId);
 
     if (beaconBackupItem.getCategory() == BeaconCategory.MODERN) {
-      Registration registration = registrationService.getRegistrationFromBeaconBackupItem(
-        beaconBackupItem
-      );
+      Registration registration =
+        registrationService.getRegistrationFromBeaconBackupItem(
+          beaconBackupItem
+        );
 
-      List<Note> nonSystemNotes = registrationService.getNonSystemNotesByBeaconId(
-        modernBeaconId
-      );
+      List<Note> nonSystemNotes =
+        registrationService.getNonSystemNotesByBeaconId(modernBeaconId);
 
       return new BackupSpreadsheetRow(
         registration,

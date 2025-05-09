@@ -13,11 +13,11 @@ describe("AreYouSure", () => {
         actionText={"go to Chelsea"}
         redirectUriIfYes={"#"}
         redirectUriIfCancel={"#"}
-      />
+      />,
     );
 
     expect(
-      screen.getByText(/are you sure you want to go to chelsea\?/i)
+      screen.getByText(/are you sure you want to go to chelsea\?/i),
     ).toBeVisible();
   });
 
@@ -30,7 +30,7 @@ describe("AreYouSure", () => {
         redirectUriIfYes={"#"}
         redirectUriIfCancel={"#"}
         consequencesText={consequencesOfGoingToChelsea}
-      />
+      />,
     );
 
     expect(screen.getByText(consequencesOfGoingToChelsea)).toBeVisible();
@@ -43,7 +43,7 @@ describe("AreYouSure", () => {
         actionText="go to Chelsea"
         redirectUriIfYes="#"
         redirectUriIfCancel={redirectUriIfCancel}
-      />
+      />,
     );
 
     const cancelButton = screen.getByRole("button", { name: "Cancel" });
@@ -58,7 +58,7 @@ describe("AreYouSure", () => {
         actionText="go to Chelsea"
         redirectUriIfYes={redirectUriIfYes}
         redirectUriIfCancel="#"
-      />
+      />,
     );
 
     const yesButton = screen.getByRole("button", { name: "Yes" });

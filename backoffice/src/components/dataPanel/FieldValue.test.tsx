@@ -13,7 +13,7 @@ describe("FieldValue", () => {
     render(<FieldValue>Actual beacon data field</FieldValue>);
 
     expect(screen.getByText(/Actual beacon data field/i)).toHaveStyle(
-      "font-weight: bold"
+      "font-weight: bold",
     );
   });
 

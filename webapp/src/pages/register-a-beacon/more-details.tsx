@@ -115,22 +115,22 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<MoreDetailsForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<MoreDetailsForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<MoreDetailsForm>(
         context,
@@ -138,18 +138,18 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         mapper(context),
         nextPageWithUseIdHelper(
           parseInt(context.query.useId as string),
-          CreateRegistrationPageURLs.additionalUse
-        )
+          CreateRegistrationPageURLs.additionalUse,
+        ),
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<Partial<MoreDetailsPageProps>> => {
   const draftRegistration = await context.container.getDraftRegistration(
-    context.req.cookies[formSubmissionCookieId]
+    context.req.cookies[formSubmissionCookieId],
   );
 
   const useId = context.query.useId as string;
@@ -161,7 +161,7 @@ const props = async (
 };
 
 const mapper = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): DraftRegistrationFormMapper<MoreDetailsForm> => {
   const beaconUseMapper: BeaconUseFormMapper<MoreDetailsForm> = {
     formToDraftBeaconUse: (form) => ({
@@ -183,7 +183,7 @@ const validationRules = ({ moreDetails }: FormSubmission): FormManager => {
       Validators.required("More details is a required field"),
       Validators.maxLength(
         "More details must be less than 250 characters",
-        250
+        250,
       ),
     ]),
   });

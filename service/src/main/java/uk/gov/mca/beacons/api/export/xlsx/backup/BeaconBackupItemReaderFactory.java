@@ -22,7 +22,8 @@ public class BeaconBackupItemReaderFactory {
   public static JpaPagingItemReader<BeaconBackupItem> getItemReader(
     EntityManagerFactory entityManagerFactory
   ) {
-    JpaNamedQueryProvider<BeaconBackupItem> queryProvider = new JpaNamedQueryProvider<>();
+    JpaNamedQueryProvider<BeaconBackupItem> queryProvider =
+      new JpaNamedQueryProvider<>();
     queryProvider.setEntityClass(BeaconBackupItem.class);
     queryProvider.setNamedQuery("PagingBeaconBackupItemReader");
 

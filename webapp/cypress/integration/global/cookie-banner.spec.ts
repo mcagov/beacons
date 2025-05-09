@@ -9,7 +9,7 @@ describe("Cookie banner", () => {
       .click();
 
     cy.contains(/cookies on maritime and coastguard agency/i).should(
-      "not.exist"
+      "not.exist",
     );
   });
 });

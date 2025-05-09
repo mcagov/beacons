@@ -37,7 +37,7 @@ describe("NotesPanel", () => {
     render(
       <AuthContext.Provider value={authContext}>
         <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
 
     await waitFor(() => {
@@ -53,12 +53,12 @@ describe("NotesPanel", () => {
     render(
       <AuthContext.Provider value={authContext}>
         <NotesPanel notesGateway={notesGateway} beaconId={"does not exist"} />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
 
     expect(await screen.findByRole("alert")).toBeVisible();
     expect(
-      await screen.findByText(Placeholders.UnspecifiedError)
+      await screen.findByText(Placeholders.UnspecifiedError),
     ).toBeVisible();
   });
 
@@ -66,7 +66,7 @@ describe("NotesPanel", () => {
     render(
       <AuthContext.Provider value={authContext}>
         <NotesPanel notesGateway={notesGateway} beaconId={beaconId} />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
     expect(notesGateway.getNotes).toHaveBeenCalledTimes(1);
 

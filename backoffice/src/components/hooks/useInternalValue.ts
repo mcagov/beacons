@@ -36,7 +36,7 @@ function reducer(state: InternalState, action: Action) {
 }
 
 export function useInternalValue(
-  initialValue: string
+  initialValue: string,
 ): [InternalState, React.Dispatch<Action>] {
   return React.useReducer(reducer, {
     editing: false,
@@ -46,14 +46,14 @@ export function useInternalValue(
 
 export function setEditing(
   dispatch: React.Dispatch<Action>,
-  editing: boolean
+  editing: boolean,
 ): void {
   dispatch({ type: "set_editing", payload: { editing } });
 }
 
 export function setInternalValue(
   dispatch: React.Dispatch<Action>,
-  internalValue: string
+  internalValue: string,
 ): void {
   dispatch({ type: "set_value", payload: { internalValue } });
 }

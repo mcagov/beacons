@@ -8,7 +8,7 @@ describe("minDateYear validator", () => {
   beforeEach(() => {
     ({ errorMessage, applies } = Validators.minDateYear(
       expectedErrorMessage,
-      2000
+      2000,
     ));
   });
 

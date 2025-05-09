@@ -54,8 +54,7 @@ public class AccountHolderMapper {
     final var dto = new AccountHolderDTO();
     dto.setId(Objects.requireNonNull(accountHolder.getId()).unwrap());
 
-    final var attributes = AccountHolderDTO.Attributes
-      .builder()
+    final var attributes = AccountHolderDTO.Attributes.builder()
       .id(dto.getId())
       .authId(accountHolder.getAuthId())
       .email(accountHolder.getEmail())

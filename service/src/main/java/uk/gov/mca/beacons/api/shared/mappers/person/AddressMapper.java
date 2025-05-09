@@ -8,8 +8,7 @@ import uk.gov.mca.beacons.api.shared.rest.person.dto.AddressDTO;
 public class AddressMapper {
 
   public Address fromDTO(AddressDTO addressDTO) {
-    return Address
-      .builder()
+    return Address.builder()
       .addressLine1(addressDTO.getAddressLine1())
       .addressLine2(addressDTO.getAddressLine2())
       .addressLine3(addressDTO.getAddressLine3())
@@ -26,8 +25,7 @@ public class AddressMapper {
       return new AddressDTO("", "", "", "", "", "", "", "");
     }
 
-    return AddressDTO
-      .builder()
+    return AddressDTO.builder()
       .addressLine1(address.getAddressLine1())
       .addressLine2(address.getAddressLine2())
       .addressLine3(address.getAddressLine3())

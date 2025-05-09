@@ -32,8 +32,9 @@ public class JobControllerUnitTest {
   void givenNoRunningJob_whenDeleteRequestIsReceived_thenReturnNotFound()
     throws Exception {
     long nonexistentJobId = 5L;
-    given(jobService.cancel(nonexistentJobId))
-      .willThrow(NoSuchJobExecutionException.class);
+    given(jobService.cancel(nonexistentJobId)).willThrow(
+      NoSuchJobExecutionException.class
+    );
 
     mvc
       .perform(delete("/spring-api/search/job/" + nonexistentJobId))

@@ -44,16 +44,15 @@ class BeaconToSpreadsheetRowItemProcessor
       beaconId
     );
 
-    BeaconOwner beaconMainOwner = BeaconOwnerHelper
-      .getMainOwner(beaconOwners)
-      .orElse(null);
+    BeaconOwner beaconMainOwner = BeaconOwnerHelper.getMainOwner(
+      beaconOwners
+    ).orElse(null);
 
     List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
       beaconId
     );
-    List<EmergencyContact> emergencyContacts = emergencyContactRepository.findEmergencyContactsByBeaconId(
-      beaconId
-    );
+    List<EmergencyContact> emergencyContacts =
+      emergencyContactRepository.findEmergencyContactsByBeaconId(beaconId);
 
     return new ExportSpreadsheetRow(
       beacon,

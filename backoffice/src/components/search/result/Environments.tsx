@@ -17,8 +17,8 @@ export function Environments({
     new Set(
       beaconUses
         .map((beaconUse) => beaconUse.environment)
-        .filter((environment) => environment.length > 0)
-    )
+        .filter((environment) => environment.length > 0),
+    ),
   );
   return (
     <Stack direction={"row"} spacing={1}>

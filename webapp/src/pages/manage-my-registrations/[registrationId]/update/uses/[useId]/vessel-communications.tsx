@@ -78,7 +78,7 @@ const VesselCommunications: FunctionComponent<DraftBeaconUsePageProps> = ({
         Actions.update,
         UsePages.aboutTheVessel,
         draftRegistration.id,
-        useId
+        useId,
       )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -241,7 +241,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       Actions.update,
       UsePages.moreDetails,
       registrationId as string,
-      useId as string
+      useId as string,
     );
 
     return await new BeaconsPageRouter([
@@ -250,32 +250,32 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<VesselCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<VesselCommunicationsForm>(
         context,
         validationRules,
         mapper(context),
-        nextPage
+        nextPage,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Partial<DraftBeaconUsePageProps> => ({
   useId: context.query.useId as string,
 });
 
 const mapper = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): DraftRegistrationFormMapper<VesselCommunicationsForm> => {
   const beaconUseMapper: BeaconUseFormMapper<VesselCommunicationsForm> = {
     formToDraftBeaconUse: (form) => ({
@@ -314,7 +314,7 @@ const mapper = (
 
   return makeDraftRegistrationMapper<VesselCommunicationsForm>(
     useId,
-    beaconUseMapper
+    beaconUseMapper,
   );
 };
 
@@ -346,60 +346,60 @@ const validationRules = ({
       fixedVhfRadioInput,
       [
         Validators.required(
-          "We need your MMSI number if you have a fixed VHF/DSC radio"
+          "We need your MMSI number if you have a fixed VHF/DSC radio",
         ),
         Validators.wholeNumber(
-          "Your fixed MMSI number must only include numbers 0 to 9, with no letters or other characters"
+          "Your fixed MMSI number must only include numbers 0 to 9, with no letters or other characters",
         ),
         Validators.isLength(
           "Your fixed MMSI number must be exactly nine digits long",
-          9
+          9,
         ),
       ],
-      [matchingConditionIsTrueForKey("fixedVhfRadio")]
+      [matchingConditionIsTrueForKey("fixedVhfRadio")],
     ),
     portableVhfRadio: new FieldManager(portableVhfRadio),
     portableVhfRadioInput: new FieldManager(
       portableVhfRadioInput,
       [
         Validators.required(
-          "We need your portable MMSI number if you have a portable VHF/DSC radio"
+          "We need your portable MMSI number if you have a portable VHF/DSC radio",
         ),
         Validators.wholeNumber(
-          "Your portable MMSI number must only include numbers 0 to 9, with no letters or other characters"
+          "Your portable MMSI number must only include numbers 0 to 9, with no letters or other characters",
         ),
         Validators.isLength(
           "Your portable MMSI number must be exactly nine digits long",
-          9
+          9,
         ),
       ],
-      [matchingConditionIsTrueForKey("portableVhfRadio")]
+      [matchingConditionIsTrueForKey("portableVhfRadio")],
     ),
     satelliteTelephone: new FieldManager(satelliteTelephone),
     satelliteTelephoneInput: new FieldManager(
       satelliteTelephoneInput,
       [
         Validators.required(
-          "We need your phone number if you have a satellite telephone"
+          "We need your phone number if you have a satellite telephone",
         ),
         Validators.phoneNumber(
-          "Enter a satellite telephone number in the correct format"
+          "Enter a satellite telephone number in the correct format",
         ),
       ],
-      [matchingConditionIsTrueForKey("satelliteTelephone")]
+      [matchingConditionIsTrueForKey("satelliteTelephone")],
     ),
     mobileTelephone: new FieldManager(mobileTelephone),
     mobileTelephoneInput1: new FieldManager(
       mobileTelephoneInput1,
       [
         Validators.required(
-          "We need your telephone number if you have a mobile telephone"
+          "We need your telephone number if you have a mobile telephone",
         ),
         Validators.phoneNumber(
-          "Enter a mobile telephone number, like 07700 982736 or +447700912738"
+          "Enter a mobile telephone number, like 07700 982736 or +447700912738",
         ),
       ],
-      [matchingConditionIsTrueForKey("mobileTelephone")]
+      [matchingConditionIsTrueForKey("mobileTelephone")],
     ),
     mobileTelephoneInput2: new FieldManager(mobileTelephoneInput2),
     otherCommunication: new FieldManager(otherCommunication),
@@ -409,10 +409,10 @@ const validationRules = ({
         Validators.required("We need your other communication"),
         Validators.maxLength(
           "Other communication has too many characters",
-          250
+          250,
         ),
       ],
-      [matchingConditionIsTrueForKey("otherCommunication")]
+      [matchingConditionIsTrueForKey("otherCommunication")],
     ),
   });
 };

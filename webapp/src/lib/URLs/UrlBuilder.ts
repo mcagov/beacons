@@ -8,7 +8,7 @@ export class UrlBuilder {
   public static buildRegistrationUrl(
     action: Actions,
     page: Pages,
-    registrationId: string
+    registrationId: string,
   ): string {
     return `${this.topLevelPath}/${registrationId}/${action}/${page}`;
   }
@@ -17,27 +17,27 @@ export class UrlBuilder {
     action: Actions,
     page: UsePages,
     registrationId: string,
-    useIndex: string
+    useIndex: string,
   ): string {
     return `${this.topLevelPath}/${registrationId}/${action}/uses/${useIndex}/${page}`;
   }
 
   public static buildMakeUseMainUrl(
     registrationId: string,
-    useIndex: string
+    useIndex: string,
   ): string {
     return `${this.topLevelPath}/${registrationId}/update/uses/${useIndex}/makeMainUse`;
   }
 
   public static buildUseSummaryUrl(
     action: Actions,
-    registrationId: string
+    registrationId: string,
   ): string {
     return `${this.topLevelPath}/${registrationId}/${action}/uses/${UsePages.summary}`;
   }
 
   public static buildUpdateRegistrationSummaryUrl(
-    registrationId: string
+    registrationId: string,
   ): string {
     return `${this.topLevelPath}/${registrationId}/update`;
   }

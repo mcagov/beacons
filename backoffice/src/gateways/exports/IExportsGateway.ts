@@ -17,7 +17,7 @@ export interface IExportsGateway {
 
   getExportDataForAllBeacons(): Promise<IBeaconExport[]>;
   searchExportData(
-    searchForm: ExportSearchFormProps
+    searchForm: ExportSearchFormProps,
   ): Promise<IBeaconExportSearchResult>;
 
   getDataComparison(): Promise<IDataComparison>;

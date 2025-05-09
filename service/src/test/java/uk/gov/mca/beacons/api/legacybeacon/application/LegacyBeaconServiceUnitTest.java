@@ -29,10 +29,12 @@ public class LegacyBeaconServiceUnitTest {
   void delete_shouldMarkLegacyBeaconStatusAsDeleted() throws Exception {
     LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
 
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
 
     legacyBeaconService.create(legacyBeacon);
 
@@ -49,10 +51,12 @@ public class LegacyBeaconServiceUnitTest {
     throws Exception {
     LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
 
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
 
     legacyBeaconService.create(legacyBeacon);
 
@@ -73,10 +77,12 @@ public class LegacyBeaconServiceUnitTest {
     throws Exception {
     LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
 
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
 
     legacyBeaconService.create(legacyBeacon);
 
@@ -97,10 +103,12 @@ public class LegacyBeaconServiceUnitTest {
     throws Exception {
     LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
 
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
 
     legacyBeaconService.create(legacyBeacon);
 
@@ -121,10 +129,12 @@ public class LegacyBeaconServiceUnitTest {
     throws Exception {
     LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
 
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
 
     legacyBeaconService.create(legacyBeacon);
 
@@ -147,10 +157,12 @@ public class LegacyBeaconServiceUnitTest {
 
     LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
 
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
 
     legacyBeaconService.create(legacyBeacon);
 
@@ -176,10 +188,12 @@ public class LegacyBeaconServiceUnitTest {
 
     LegacyBeacon legacyBeacon = LegacyBeaconTestUtils.initLegacyBeacon();
 
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
-    when(mockLegacyBeaconRepository.save(legacyBeacon))
-      .thenReturn(legacyBeacon);
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
+    when(mockLegacyBeaconRepository.save(legacyBeacon)).thenReturn(
+      legacyBeacon
+    );
 
     legacyBeaconService.create(legacyBeacon);
 
@@ -207,13 +221,15 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail("gracinoir@gmail.com");
     legacyBeacon.setRecoveryEmail("barry@hotmail.com");
 
-    when(mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId()))
-      .thenReturn(List.of(legacyBeacon));
+    when(
+      mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId())
+    ).thenReturn(List.of(legacyBeacon));
 
-    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndOwnerEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
-      legacyBeacon.getHexId(),
-      accountHolderEmail
-    );
+    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndOwnerEmailMatch =
+      legacyBeaconService.findByHexIdAndAccountHolderEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      );
 
     Assertions.assertEquals(
       1,
@@ -229,13 +245,15 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail("barry@gmail.com");
     legacyBeacon.setRecoveryEmail("cooldude@gmail.com");
 
-    when(mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId()))
-      .thenReturn(List.of(legacyBeacon));
+    when(
+      mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId())
+    ).thenReturn(List.of(legacyBeacon));
 
-    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
-      legacyBeacon.getHexId(),
-      accountHolderEmail
-    );
+    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch =
+      legacyBeaconService.findByHexIdAndAccountHolderEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      );
 
     Assertions.assertEquals(
       1,
@@ -251,13 +269,15 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail("sam.kendell@MadeTech.com");
     legacyBeacon.setRecoveryEmail("barry@hotmail.com");
 
-    when(mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId()))
-      .thenReturn(List.of(legacyBeacon));
+    when(
+      mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId())
+    ).thenReturn(List.of(legacyBeacon));
 
-    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndOwnerEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
-      legacyBeacon.getHexId(),
-      accountHolderEmail
-    );
+    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndOwnerEmailMatch =
+      legacyBeaconService.findByHexIdAndAccountHolderEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      );
 
     Assertions.assertEquals(
       1,
@@ -273,13 +293,15 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail("barry@gmail.com");
     legacyBeacon.setRecoveryEmail("sam.kendell@MadeTech.com");
 
-    when(mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId()))
-      .thenReturn(List.of(legacyBeacon));
+    when(
+      mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId())
+    ).thenReturn(List.of(legacyBeacon));
 
-    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
-      legacyBeacon.getHexId(),
-      accountHolderEmail
-    );
+    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch =
+      legacyBeaconService.findByHexIdAndAccountHolderEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      );
 
     Assertions.assertEquals(
       1,
@@ -295,13 +317,15 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail(null);
     legacyBeacon.setRecoveryEmail("cooldude@gmail.com");
 
-    when(mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId()))
-      .thenReturn(List.of(legacyBeacon));
+    when(
+      mockLegacyBeaconRepository.findByHexId(legacyBeacon.getHexId())
+    ).thenReturn(List.of(legacyBeacon));
 
-    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
-      legacyBeacon.getHexId(),
-      accountHolderEmail
-    );
+    List<LegacyBeacon> beaconsWhereAccountHolderEmailAndRecoveryEmailMatch =
+      legacyBeaconService.findByHexIdAndAccountHolderEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      );
 
     Assertions.assertEquals(
       1,
@@ -317,10 +341,11 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail("barry@gmail.com");
     legacyBeacon.setRecoveryEmail("cooldude@gmail.com");
 
-    List<LegacyBeacon> beaconsWithNoMatchOnEitherEmailAddress = legacyBeaconService.findByHexIdAndAccountHolderEmail(
-      legacyBeacon.getHexId(),
-      accountHolderEmail
-    );
+    List<LegacyBeacon> beaconsWithNoMatchOnEitherEmailAddress =
+      legacyBeaconService.findByHexIdAndAccountHolderEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      );
 
     Assertions.assertEquals(0, beaconsWithNoMatchOnEitherEmailAddress.size());
   }
@@ -333,10 +358,11 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail("barry@gmail.com");
     legacyBeacon.setRecoveryEmail("cooldude@gmail.com");
 
-    List<LegacyBeacon> beaconsWithNoMatch = legacyBeaconService.findByHexIdAndAccountHolderEmail(
-      legacyBeacon.getHexId(),
-      accountHolderEmail
-    );
+    List<LegacyBeacon> beaconsWithNoMatch =
+      legacyBeaconService.findByHexIdAndAccountHolderEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      );
 
     Assertions.assertEquals(0, beaconsWithNoMatch.size());
   }
@@ -349,10 +375,11 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail("charliep@hotmail.com");
     legacyBeacon.setRecoveryEmail(null);
 
-    List<LegacyBeacon> beaconsWithNoOwnerEmailMatchAndNoRecoveryEmail = legacyBeaconService.findByHexIdAndAccountHolderEmail(
-      legacyBeacon.getHexId(),
-      accountHolderEmail
-    );
+    List<LegacyBeacon> beaconsWithNoOwnerEmailMatchAndNoRecoveryEmail =
+      legacyBeaconService.findByHexIdAndAccountHolderEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      );
 
     Assertions.assertEquals(
       0,
@@ -368,10 +395,11 @@ public class LegacyBeaconServiceUnitTest {
     legacyBeacon.setOwnerEmail(null);
     legacyBeacon.setRecoveryEmail(null);
 
-    List<LegacyBeacon> beaconsWithNoOwnerEmailAndNoRecoveryEmail = legacyBeaconService.findByHexIdAndAccountHolderEmail(
-      legacyBeacon.getHexId(),
-      accountHolderEmail
-    );
+    List<LegacyBeacon> beaconsWithNoOwnerEmailAndNoRecoveryEmail =
+      legacyBeaconService.findByHexIdAndAccountHolderEmail(
+        legacyBeacon.getHexId(),
+        accountHolderEmail
+      );
 
     Assertions.assertEquals(
       0,
