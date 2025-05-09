@@ -97,9 +97,8 @@ class ExportMapperUnitTest {
     beaconUses.add(maritimeUse);
 
     List<BeaconExportUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
-    BeaconExportMaritimeUseDTO mappedMaritimeUseDTO = (BeaconExportMaritimeUseDTO) useDTOs.get(
-      0
-    );
+    BeaconExportMaritimeUseDTO mappedMaritimeUseDTO =
+      (BeaconExportMaritimeUseDTO) useDTOs.get(0);
 
     assertEquals(true, useDTOs.get(0) instanceof BeaconExportMaritimeUseDTO);
     assertEquals(
@@ -131,9 +130,8 @@ class ExportMapperUnitTest {
     beaconUses.add(landUse);
 
     List<BeaconExportUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
-    BeaconExportLandUseDTO mappedLandUseDTO = (BeaconExportLandUseDTO) useDTOs.get(
-      0
-    );
+    BeaconExportLandUseDTO mappedLandUseDTO =
+      (BeaconExportLandUseDTO) useDTOs.get(0);
 
     assertEquals(true, useDTOs.get(0) instanceof BeaconExportLandUseDTO);
     assertEquals(
@@ -159,9 +157,8 @@ class ExportMapperUnitTest {
     beaconUses.add(aviationUse);
 
     List<BeaconExportUseDTO> useDTOs = mapper.toUsesDTO(beaconUses);
-    BeaconExportAviationUseDTO mappedAviationUse = (BeaconExportAviationUseDTO) useDTOs.get(
-      0
-    );
+    BeaconExportAviationUseDTO mappedAviationUse =
+      (BeaconExportAviationUseDTO) useDTOs.get(0);
 
     assertEquals(true, useDTOs.get(0) instanceof BeaconExportAviationUseDTO);
     assertEquals(
@@ -230,9 +227,8 @@ class ExportMapperUnitTest {
     legacyUses.add(aviationUse);
 
     List<BeaconExportUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
-    BeaconExportGenericUseDTO mappedGenericUse = (BeaconExportGenericUseDTO) useDTOs.get(
-      0
-    );
+    BeaconExportGenericUseDTO mappedGenericUse =
+      (BeaconExportGenericUseDTO) useDTOs.get(0);
 
     assertEquals(true, useDTOs.get(0) instanceof BeaconExportGenericUseDTO);
     assertEquals(
@@ -255,9 +251,8 @@ class ExportMapperUnitTest {
     legacyUses.add(maritimeUse);
 
     List<BeaconExportUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
-    BeaconExportMaritimeUseDTO mappedMaritimeUse = (BeaconExportMaritimeUseDTO) useDTOs.get(
-      0
-    );
+    BeaconExportMaritimeUseDTO mappedMaritimeUse =
+      (BeaconExportMaritimeUseDTO) useDTOs.get(0);
 
     assertEquals(true, useDTOs.get(0) instanceof BeaconExportMaritimeUseDTO);
     assertEquals(

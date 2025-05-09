@@ -88,7 +88,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       new WhenUserViewsPage_ThenDisplayPage(context),
       new IfUserSubmittedSignUpOrSignInForm(context, validationRules),
     ]).execute();
-  })
+  }),
 );
 
 const validationRules = ({ signUpOrSignIn }) => {
@@ -97,11 +97,11 @@ const validationRules = ({ signUpOrSignIn }) => {
       signUpOrSignIn,
       [
         Validators.required(
-          "Select an option to sign in or to create an account"
+          "Select an option to sign in or to create an account",
         ),
       ],
       [],
-      "signUp"
+      "signUp",
     ),
   });
 };

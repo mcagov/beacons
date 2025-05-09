@@ -16,7 +16,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOr
       };
       const rule =
         new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
-          context as any
+          context as any,
         );
 
       const result = await rule.condition();
@@ -35,7 +35,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOr
       };
       const rule =
         new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
-          context as any
+          context as any,
         );
 
       const result = await rule.condition();
@@ -67,7 +67,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOr
       };
       const rule =
         new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
-          context as any
+          context as any,
         );
 
       const result = await rule.action();
@@ -97,13 +97,13 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOr
       };
       const rule =
         new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
-          context as any
+          context as any,
         );
 
       const result = await rule.action();
 
       expect(
-        context.container.addNewUseToDraftRegistration
+        context.container.addNewUseToDraftRegistration,
       ).toHaveBeenCalledWith("test-draft-registration-id");
       expect(result).toMatchObject({
         redirect: {

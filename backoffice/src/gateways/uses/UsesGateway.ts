@@ -11,7 +11,7 @@ export class UsesGateway implements IUsesGateway {
 
   public constructor(
     usesResponseMapper: IBeaconResponseMapper,
-    authGateway: IAuthGateway
+    authGateway: IAuthGateway,
   ) {
     this._usesResponseMapper = usesResponseMapper;
     this._authGateway = authGateway;

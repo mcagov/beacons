@@ -24,7 +24,7 @@ describe("/api/registration/delete-use", () => {
 
     expect(req.container.deleteCachedUse).toHaveBeenCalledWith(
       req.cookies[formSubmissionCookieId],
-      0
+      0,
     );
   });
 
@@ -48,7 +48,7 @@ describe("/api/registration/delete-use", () => {
 
     expect(req.container.deleteCachedUse).toHaveBeenCalledWith(
       req.cookies[formSubmissionCookieId],
-      12
+      12,
     );
   });
 

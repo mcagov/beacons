@@ -7,7 +7,9 @@ import uk.gov.mca.beacons.api.shared.hibernate.DomainObjectIdTypeDescriptor;
 public class EmergencyContactIdType
   extends DomainObjectIdCustomType<EmergencyContactId> {
 
-  private static final DomainObjectIdTypeDescriptor<EmergencyContactId> TYPE_DESCRIPTOR = new DomainObjectIdTypeDescriptor<>(
+  private static final DomainObjectIdTypeDescriptor<
+    EmergencyContactId
+  > TYPE_DESCRIPTOR = new DomainObjectIdTypeDescriptor<>(
     EmergencyContactId.class,
     EmergencyContactId::new
   );

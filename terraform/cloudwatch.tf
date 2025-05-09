@@ -1,6 +1,6 @@
 module "aws-rds-alarms" {
   source                               = "lorenzoaiello/rds-alarms/aws"
-  version                              = "2.2.0"
+  version                              = "2.4.1"
   db_instance_id                       = aws_db_instance.postgres.id
   db_instance_class                    = var.db_instance_class
   actions_alarm                        = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []

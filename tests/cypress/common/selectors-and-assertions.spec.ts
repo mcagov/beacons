@@ -43,7 +43,7 @@ export const ifIAmAskedForAccountHolderDetailsIProvideThem = (): void => {
 };
 
 export const givenIHaveACookieSetAndHaveSignedInIVisit = (
-  url: string
+  url: string,
 ): void => {
   givenIHaveACookieSetAndHaveSignedIn();
   cy.visit(url);
@@ -65,7 +65,7 @@ export const givenIHaveSignedIn = (): void => {
       const { authId, email } = session.body.user;
 
       getOrCreateAccountHolder(authId, email);
-    }
+    },
   );
 };
 
@@ -121,7 +121,7 @@ export const whenIClickOnTheErrorSummaryLinkContaining = (
 
 export const whenITypeInAnEmptyField = (
   value: string,
-  selector: string
+  selector: string,
 ): void => {
   cy.get(selector).should("have.value", "").type(value);
 };
@@ -148,7 +148,7 @@ export const thenTheUrlPathShouldBe = (urlPath: string): void => {
 
 export const thenTheInputShouldOnlyContain = (
   expectedValue: string,
-  selector: string
+  selector: string,
 ): void => {
   cy.get(selector).should("have.value", expectedValue);
 };
@@ -158,7 +158,7 @@ export const thenTheInputShouldBeEmpty = (selector: string): void => {
 };
 
 export const thenTheDropdownShouldHaveTheFirstOptionSelected = (
-  selector: string
+  selector: string,
 ): void => {
   cy.get(selector)
     .children()
@@ -180,7 +180,7 @@ export const thenIShouldSeeAnErrorMessageThatContains = (
   ...strings: string[]
 ): void => {
   strings.every((string) =>
-    cy.get(".govuk-error-message").should("contain", string)
+    cy.get(".govuk-error-message").should("contain", string),
   );
 };
 
@@ -217,13 +217,13 @@ export const givenIHaveWaitedForAzureB2C = (): void => {
  */
 export const iPerformOperationAndWaitForNewPageToLoad = (
   operation: () => void,
-  maxTimeoutMs = 20000
+  maxTimeoutMs = 20000,
 ): void => {
   cy.location().then((previousPage) => {
     operation();
     cy.location("pathname", { timeout: maxTimeoutMs }).should(
       "not.equal",
-      previousPage.pathname
+      previousPage.pathname,
     );
   });
 };
@@ -238,7 +238,7 @@ export const iCannotSee = (selector: string): void => {
 
 export const thenICanSeeAnInputWithPlaceholder = (
   inputId: string,
-  placeholderText: string
+  placeholderText: string,
 ): void => {
   cy.get(inputId).should("have.attr", "placeholder", placeholderText);
 };
@@ -254,7 +254,7 @@ export const iHaveClickedOnALinkWithText = (text: string): void => {
 export const whenIClickTheLinkContaining = iHaveClickedOnALinkWithText;
 
 export const iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress = (
-  hexId: string
+  hexId: string,
 ): void => {
   cy.contains(hexId);
 };
@@ -269,7 +269,7 @@ export const iCannotSeeText = (text: string | RegExp): void => {
 
 export const whenIClickTheActionLinkInATableRowContaining = (
   pattern: string | RegExp,
-  actionLinkText: string | RegExp
+  actionLinkText: string | RegExp,
 ): void => {
   cy.get("main")
     .contains(pattern)
@@ -281,14 +281,14 @@ export const whenIClickTheActionLinkInATableRowContaining = (
 
 export const whenISelectTheOptionFromTheDropdown = (
   option: string,
-  selector: string
+  selector: string,
 ): void => {
   cy.get(selector).select(option);
 };
 
 export const iCanSeeTextInSummaryListRowWithHeading = (
   text: string,
-  heading: string
+  heading: string,
 ): void => {
   cy.get("dt").contains(heading).parent().contains(text);
 };

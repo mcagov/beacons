@@ -43,12 +43,13 @@ public class FileSystemRepository {
     ExportFileNamer.FileType fileType,
     String operationName
   ) throws IOException {
-    Stream<Path> allFilesOfGivenTypeForOperation = Files
-      .list(exportDirectory)
-      .filter(f ->
+    Stream<Path> allFilesOfGivenTypeForOperation = Files.list(
+      exportDirectory
+    ).filter(
+      f ->
         f.toString().contains(operationName) &&
         f.toString().endsWith(fileType.extension)
-      );
+    );
 
     return fileNamer.mostRecentFile(allFilesOfGivenTypeForOperation);
   }
@@ -64,12 +65,12 @@ public class FileSystemRepository {
     ExportFileNamer.FileType fileType,
     String operationName
   ) throws IOException {
-    return Files
-      .list(exportDirectory)
+    return Files.list(exportDirectory)
       .filter(path -> !Files.isDirectory(path))
-      .filter(path ->
-        path.getFileName().endsWith(fileType.extension) &&
-        path.getFileName().toString().contains(operationName)
+      .filter(
+        path ->
+          path.getFileName().endsWith(fileType.extension) &&
+          path.getFileName().toString().contains(operationName)
       )
       .anyMatch(fileNamer::isDatedToday);
   }

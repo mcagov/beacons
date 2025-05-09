@@ -97,8 +97,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
       var pseudoUniqueLegacyBeaconCospasSarsatNumber = random.nextInt(
         Integer.MAX_VALUE
       );
-      var uniqueLegacyBeaconManufacturerSerialNumber = UUID
-        .randomUUID()
+      var uniqueLegacyBeaconManufacturerSerialNumber = UUID.randomUUID()
         .toString();
 
       createLegacyBeacon(request ->
@@ -290,8 +289,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
   private String createAccountHolder(String testAuthId) throws Exception {
     final String newAccountHolderRequest = readFile(
       "src/test/resources/fixtures/createAccountHolderRequest.json"
-    )
-      .replace("replace-with-test-auth-id", testAuthId);
+    ).replace("replace-with-test-auth-id", testAuthId);
 
     return webTestClient
       .post()

@@ -23,7 +23,7 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
 }: NotesPanelProps): JSX.Element => {
   const [notes, setNotes] = useState<INote[]>([]);
   const [userState, setUserState] = useState<DataPanelStates>(
-    DataPanelStates.Viewing
+    DataPanelStates.Viewing,
   );
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);

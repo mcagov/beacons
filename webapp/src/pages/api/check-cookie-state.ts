@@ -1,4 +1,4 @@
-import { CookieSerializeOptions, serialize } from "cookie";
+import { SerializeOptions, serialize } from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 import { acceptRejectCookieId } from "../../lib/types";
 
@@ -8,7 +8,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
   oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
 
   if (!cookies || !cookies[acceptRejectCookieId]) {
-    const options: CookieSerializeOptions = {
+    const options: SerializeOptions = {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
@@ -17,7 +17,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
     res.setHeader(
       "Set-Cookie",
-      serialize(acceptRejectCookieId, "accepted-cookies", options)
+      serialize(acceptRejectCookieId, "accepted-cookies", options),
     );
   }
 

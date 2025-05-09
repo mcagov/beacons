@@ -43,7 +43,7 @@ describe("Account Holder API Gateway", () => {
       expect(mockedAxios.post).toHaveBeenCalledWith(
         expectedUrl,
         expectedRequest,
-        expectedHeaders
+        expectedHeaders,
       );
     });
 
@@ -69,7 +69,7 @@ describe("Account Holder API Gateway", () => {
 
       const createdAccountHolder = await gateway.createAccountHolder(
         authId,
-        email
+        email,
       );
       expect(createdAccountHolder).toEqual(expectedAccountHolder);
     });
@@ -261,13 +261,13 @@ describe("Account Holder API Gateway", () => {
       });
       await gateway.updateAccountHolderDetails(
         accountHolderId,
-        mockUpdate as AccountHolder
+        mockUpdate as AccountHolder,
       );
 
       expect(mockedAxios.patch).toHaveBeenLastCalledWith(
         expectedUrl,
         { data: { ...expectedPatch } },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
     });
 
@@ -310,7 +310,7 @@ describe("Account Holder API Gateway", () => {
 
       const result = await gateway.updateAccountHolderDetails(
         accountHolderId,
-        {} as AccountHolder
+        {} as AccountHolder,
       );
       expect(result).toMatchObject<AccountHolder>(expectedResult);
     });
@@ -318,12 +318,12 @@ describe("Account Holder API Gateway", () => {
     it("should allow errors to bubble up", async () => {
       jest.spyOn(console, "error").mockReturnValue();
       mockedAxios.patch.mockImplementationOnce(() =>
-        Promise.reject(new Error())
+        Promise.reject(new Error()),
       );
       const call = () =>
         gateway.updateAccountHolderDetails(
           accountHolderId,
-          {} as AccountHolder
+          {} as AccountHolder,
         );
 
       await expect(call).rejects.toThrow();

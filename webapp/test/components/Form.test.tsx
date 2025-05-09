@@ -16,7 +16,7 @@ describe("Form Components", () => {
         <>
           <FormLabel htmlFor={id}>{label}</FormLabel>{" "}
           <input id={id} type="text" />
-        </>
+        </>,
       );
       expect(screen.getByLabelText(label)).toBeDefined();
     });
@@ -35,7 +35,7 @@ describe("Form Components", () => {
       render(
         <FormGroup errorMessages={errorMessages}>
           <p>Hello world!</p>
-        </FormGroup>
+        </FormGroup>,
       );
       expect(screen.getByText(errorMessage)).toBeDefined();
     });
@@ -44,7 +44,7 @@ describe("Form Components", () => {
       render(
         <FormGroup errorMessages={[]}>
           <p>Hello world!</p>
-        </FormGroup>
+        </FormGroup>,
       );
       expect(screen.queryByText(errorMessage)).toBeNull();
     });

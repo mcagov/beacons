@@ -18,7 +18,7 @@ describe("The getOrCreateAccountHolder use case", () => {
     const session = { user: { authId: "a-session-id" } };
 
     const result = await getOrCreateAccountHolder(container as IAppContainer)(
-      session
+      session,
     );
 
     expect(result).toEqual(testAccountHolder);
@@ -38,7 +38,7 @@ describe("The getOrCreateAccountHolder use case", () => {
     await getOrCreateAccountHolder(container as IAppContainer)(session);
 
     expect(
-      container.accountHolderGateway.createAccountHolder
+      container.accountHolderGateway.createAccountHolder,
     ).toHaveBeenCalledTimes(1);
   });
 });

@@ -24,7 +24,7 @@ function renderTextFilter({
       onFilterChanged={onFilterChanged}
       icons={tableIcons}
       filterTooltip=""
-    />
+    />,
   );
 }
 

@@ -7,7 +7,7 @@ import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationF
 import { Rule } from "./Rule";
 
 export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<
-  T
+  T,
 > implements Rule
 {
   protected readonly context: BeaconsGetServerSidePropsContext;
@@ -19,7 +19,7 @@ export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenS
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
     mapper: DraftRegistrationFormMapper<T>,
-    nextPage: string | Promise<string>
+    nextPage: string | Promise<string>,
   ) {
     this.context = context;
     this.validationRules = validationRules;
@@ -34,9 +34,9 @@ export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenS
       this.context.req.method === "POST" &&
       isValid(
         this.mapper.draftRegistrationToForm(
-          this.mapper.formToDraftRegistration(form as T)
+          this.mapper.formToDraftRegistration(form as T),
         ),
-        this.validationRules
+        this.validationRules,
       )
     );
   }
@@ -46,7 +46,7 @@ export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenS
 
     await this.context.container.saveDraftRegistration(
       this.context.req.cookies["submissionId"],
-      this.mapper.formToDraftRegistration(form as T)
+      this.mapper.formToDraftRegistration(form as T),
     );
 
     return redirectUserTo(await this.nextPage);

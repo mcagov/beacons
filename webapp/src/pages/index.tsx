@@ -177,7 +177,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new IfUserViewedIndexPage(context),
     ]).execute();
-  }
+  },
 );
 
 class IfUserViewedIndexPage implements Rule {

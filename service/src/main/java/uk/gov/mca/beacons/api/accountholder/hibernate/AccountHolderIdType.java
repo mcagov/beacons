@@ -7,7 +7,9 @@ import uk.gov.mca.beacons.api.shared.hibernate.DomainObjectIdTypeDescriptor;
 public class AccountHolderIdType
   extends DomainObjectIdCustomType<AccountHolderId> {
 
-  private static final DomainObjectIdTypeDescriptor<AccountHolderId> TYPE_DESCRIPTOR = new DomainObjectIdTypeDescriptor<>(
+  private static final DomainObjectIdTypeDescriptor<
+    AccountHolderId
+  > TYPE_DESCRIPTOR = new DomainObjectIdTypeDescriptor<>(
     AccountHolderId.class,
     AccountHolderId::new
   );
