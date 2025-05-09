@@ -1,9 +1,9 @@
 import { GetServerSidePropsContext } from "next";
-import client from "next-auth/client";
+import * as nextAuthReact from "next-auth/react";
 import { NextAuthUserSessionGateway } from "../../src/gateways/NextAuthUserSessionGateway";
 
-jest.mock("next-auth/client");
-const mockedNextAuthClient = client as jest.Mocked<typeof client>;
+jest.mock("next-auth/react");
+const mockedNextAuthClient = nextAuthReact as jest.Mocked<typeof nextAuthReact>;
 
 describe("NextAuthUserSessionGateway", () => {
   it("returns the user's session using the context provided", async () => {
