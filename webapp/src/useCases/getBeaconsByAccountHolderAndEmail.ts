@@ -6,7 +6,7 @@ import { BeaconSearchSortOptions } from "../gateways/interfaces/BeaconSearchGate
 export type GetBeaconsForAccountHolderFn = (
   accountId: string,
   email: string,
-  sortOptions: BeaconSearchSortOptions
+  sortOptions: BeaconSearchSortOptions,
 ) => Promise<AccountListBeacon[]>;
 
 export const getBeaconsForAccountHolder =
@@ -14,17 +14,17 @@ export const getBeaconsForAccountHolder =
   async (
     accountId: string,
     email: string,
-    sortOptions: BeaconSearchSortOptions
+    sortOptions: BeaconSearchSortOptions,
   ): Promise<AccountListBeacon[]> => {
     const beacons = await beaconSearchGateway.getBeaconsByAccountHolderAndEmail(
       accountId,
       email,
-      sortOptions
+      sortOptions,
     );
 
     return beacons
       .filter(({ beaconStatus }) =>
-        ["NEW", "CHANGE", "MIGRATED"].includes(beaconStatus)
+        ["NEW", "CHANGE", "MIGRATED"].includes(beaconStatus),
       )
       .map((beacon) => ({
         id: beacon.id,

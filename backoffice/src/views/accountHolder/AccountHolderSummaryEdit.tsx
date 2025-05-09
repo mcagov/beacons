@@ -26,7 +26,7 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
       initialValues={accountHolder}
       onSubmit={(
         values: IAccountHolder,
-        { setSubmitting }: FormikHelpers<IAccountHolder>
+        { setSubmitting }: FormikHelpers<IAccountHolder>,
       ) => {
         onSave(values);
         setSubmitting(false);
@@ -122,7 +122,7 @@ export const AccountHolderSummaryEdit: FunctionComponent<{
                                   {country}
                                 </option>
                               );
-                            }
+                            },
                           )}
                         </Field>
                       }

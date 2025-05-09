@@ -2,6 +2,6 @@ export interface EmailServiceGateway {
   sendEmail: (
     emailTemplateId: string,
     email: string,
-    personalisation?: any
+    personalisation?: any,
   ) => Promise<boolean>;
 }

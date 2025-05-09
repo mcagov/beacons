@@ -120,23 +120,23 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       new BeaconsPageRouter([
         new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
         new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-          context
+          context,
         ),
         new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
           context,
           validationRules,
-          mapper
+          mapper,
         ),
         new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
           context,
           validationRules,
-          mapper
+          mapper,
         ),
         new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
           context,
           validationRules,
           mapper,
-          nextPageUrl
+          nextPageUrl,
         ),
       ]),
       {
@@ -144,9 +144,9 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         draftRegistration: {
           isSecondGeneration: formData?.isSecondGeneration || false,
         },
-      }
+      },
     );
-  })
+  }),
 );
 
 export const mapper: DraftRegistrationFormMapper<CheckBeaconDetailsForm> = {
@@ -183,17 +183,17 @@ export const validationRules = ({
       Validators.required("Beacon HEX ID is a required field"),
       Validators.isLength(
         `Beacon HEX ID or UIN must be ${hexIdLength} characters long`,
-        hexIdLength
+        hexIdLength,
       ),
       Validators.hexadecimalString(
-        "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F"
+        "Beacon HEX ID or UIN must use numbers 0 to 9 and letters A to F",
       ),
       Validators.ukEncodedBeacon(
-        "You entered a beacon encoded with a Hex ID from %HEX_ID_COUNTRY%.  Your beacon must be UK-encoded to use this service."
+        "You entered a beacon encoded with a Hex ID from %HEX_ID_COUNTRY%.  Your beacon must be UK-encoded to use this service.",
       ),
       Validators.shouldNotContain(
         'Your HEX ID should not contain the letter "O".  Did you mean the number zero?',
-        "O"
+        "O",
       ),
     ]),
   });

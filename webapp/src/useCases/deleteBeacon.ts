@@ -3,7 +3,7 @@ import { IAppContainer } from "../lib/IAppContainer";
 export type DeleteBeaconFn = (
   reason: string,
   beaconId: string,
-  accountHolderId: string
+  accountHolderId: string,
 ) => Promise<IDeleteBeaconResult>;
 
 export interface IDeleteBeaconResult {

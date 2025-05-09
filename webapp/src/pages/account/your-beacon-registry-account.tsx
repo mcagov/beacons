@@ -51,7 +51,7 @@ export const YourBeaconRegistryAccount: FunctionComponent<
 }: YourBeaconRegistryAccountPageProps): JSX.Element => {
   const pageHeading = "Your Beacon Registry Account";
   const legacyBeacons = beacons.filter(
-    (beacon) => beacon.beaconStatus === "MIGRATED"
+    (beacon) => beacon.beaconStatus === "MIGRATED",
   );
   return (
     <Layout
@@ -72,7 +72,7 @@ export const YourBeaconRegistryAccount: FunctionComponent<
 
           <YourBeacons
             beacons={beacons.filter(({ beaconStatus }) =>
-              ["NEW", "CHANGE"].includes(beaconStatus)
+              ["NEW", "CHANGE"].includes(beaconStatus),
             )}
             filter="MODERN"
           />
@@ -224,11 +224,11 @@ const YourBeacons: FunctionComponent<IYourBeaconsProps> = ({
         {filter === "MIGRATED"
           ? `You have ${beacons ? beacons.length : 0} ${pluralize(
               beacons.length,
-              "beacon"
+              "beacon",
             )} that have not yet been claimed`
           : `You have ${beacons ? beacons.length : 0} registered ${pluralize(
               beacons.length,
-              "beacon"
+              "beacon",
             )}`}
       </caption>
       <thead className="govuk-table__head">
@@ -287,7 +287,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
               href={UrlBuilder.buildRegistrationUrl(
                 Actions.update,
                 Pages.summary,
-                beacon.id
+                beacon.id,
               )}
               classes="govuk-link--no-visited-state"
             >
@@ -315,7 +315,7 @@ const BeaconRow: FunctionComponent<BeaconRowProps> = ({
                   href={UrlBuilder.buildRegistrationUrl(
                     Actions.update,
                     Pages.summary,
-                    beacon.id
+                    beacon.id,
                   )}
                   classes="govuk-link--no-visited-state"
                 >
@@ -366,7 +366,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
       new WhenWeDoNotKnowUserDetails_ThenAskUserForTheirDetails(context),
       new IfUserIsSignedInAndHasValidAccountDetails(context),
     ]).execute();
-  })
+  }),
 );
 
 class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
@@ -380,7 +380,7 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
     const accountHolderDetails = await this.getAccountHolderDetails();
     const beacons = await this.getBeacons(
       accountHolderDetails.id,
-      accountHolderDetails.email
+      accountHolderDetails.email,
     );
     await this.createDraftRegistrationIfNoneForUser();
 
@@ -395,7 +395,7 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
 
   private async getBeacons(
     accountHolderId: string,
-    email: string
+    email: string,
   ): Promise<AccountListBeacon[]> {
     const { getBeaconsForAccountHolder } = this.context.container;
 

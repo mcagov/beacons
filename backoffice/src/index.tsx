@@ -73,7 +73,7 @@ ReactDOM.render(
       <App />
     </ThemeProvider>
   </StyledEngineProvider>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 
 reportWebVitals();

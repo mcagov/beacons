@@ -20,12 +20,12 @@ export const accountDetailsFormManager: FormManagerFactory = ({
     telephoneNumber: new FieldManager(telephoneNumber, [
       Validators.required("Telephone number is a required field"),
       Validators.phoneNumber(
-        "Enter a telephone number, like 07700 982736 or +447700912738"
+        "Enter a telephone number, like 07700 982736 or +447700912738",
       ),
     ]),
     addressLine1: new FieldManager(addressLine1, [
       Validators.required(
-        "Address line one (building number and street name) is a required field"
+        "Address line one (building number and street name) is a required field",
       ),
     ]),
     addressLine2: new FieldManager(addressLine2),

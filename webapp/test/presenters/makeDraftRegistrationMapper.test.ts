@@ -20,7 +20,7 @@ describe("makeDraftRegistrationMapper", () => {
       };
       const draftRegistrationMapper = makeDraftRegistrationMapper(
         useId,
-        beaconUseFormMapper
+        beaconUseFormMapper,
       );
       const draftRegistration: DraftRegistration =
         draftRegistrationMapper.formToDraftRegistration(beaconUseForm);
@@ -45,7 +45,7 @@ describe("makeDraftRegistrationMapper", () => {
       };
       const draftRegistrationMapper = makeDraftRegistrationMapper(
         useId,
-        beaconUseFormMapper
+        beaconUseFormMapper,
       );
       const draftRegistration: DraftRegistration =
         draftRegistrationMapper.formToDraftRegistration(beaconUseForm);
@@ -70,7 +70,7 @@ describe("makeDraftRegistrationMapper", () => {
       };
       const draftRegistrationMapper = makeDraftRegistrationMapper(
         useId,
-        beaconUseFormMapper
+        beaconUseFormMapper,
       );
       const draftRegistration: DraftRegistration =
         draftRegistrationMapper.formToDraftRegistration(beaconUseForm);

@@ -39,7 +39,7 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
 
   const handleSelectSearchMode = (
     event: React.MouseEvent<HTMLElement>,
-    searchMode: SearchMode | null
+    searchMode: SearchMode | null,
   ) => {
     if (searchMode != null) {
       updateSearchMode(dispatch, searchMode);

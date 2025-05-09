@@ -40,7 +40,7 @@ describe("BeaconsForm Component", () => {
         showCookieBanner={showCookieBanner}
       >
         {children}
-      </BeaconsForm>
+      </BeaconsForm>,
     );
 
     expect(screen.getByText("Beacons for life")).toBeDefined();
@@ -55,12 +55,12 @@ describe("BeaconsForm Component", () => {
         includeUseId={true}
       >
         {children}
-      </BeaconsForm>
+      </BeaconsForm>,
     );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      previousPageUrl
+      previousPageUrl,
     );
   });
 
@@ -73,12 +73,12 @@ describe("BeaconsForm Component", () => {
         includeUseId={false}
       >
         {children}
-      </BeaconsForm>
+      </BeaconsForm>,
     );
 
     expect(screen.getByText("Back", { exact: true })).toHaveAttribute(
       "href",
-      previousPageUrl
+      previousPageUrl,
     );
   });
 
@@ -91,7 +91,7 @@ describe("BeaconsForm Component", () => {
         errorMessages={errorMessages}
       >
         {children}
-      </BeaconsForm>
+      </BeaconsForm>,
     );
 
     expect(screen.queryByText("This is an error")).not.toBeNull();
@@ -105,7 +105,7 @@ describe("BeaconsForm Component", () => {
         showCookieBanner={showCookieBanner}
       >
         {children}
-      </BeaconsForm>
+      </BeaconsForm>,
     );
 
     expect(screen.queryByText("This is an error")).toBeNull();
@@ -115,7 +115,7 @@ describe("BeaconsForm Component", () => {
     render(
       <BeaconsFormFieldsetAndLegend pageHeading={pageHeading}>
         <p>lorem</p>
-      </BeaconsFormFieldsetAndLegend>
+      </BeaconsFormFieldsetAndLegend>,
     );
   });
 
@@ -126,7 +126,7 @@ describe("BeaconsForm Component", () => {
         ariaDescribedBy="aria-example"
       >
         <p>lorem</p>
-      </BeaconsFormFieldsetAndLegend>
+      </BeaconsFormFieldsetAndLegend>,
     );
   });
 
@@ -136,7 +136,7 @@ describe("BeaconsForm Component", () => {
 
   it("should render the FormLabelHeading", () => {
     render(
-      <BeaconsFormLabelHeading id="id-example" pageHeading={pageHeading} />
+      <BeaconsFormLabelHeading id="id-example" pageHeading={pageHeading} />,
     );
   });
 });

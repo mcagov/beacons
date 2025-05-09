@@ -53,7 +53,7 @@ export function useAuthContext(): IAuthContext {
   const context = React.useContext(AuthContext);
   if (context == null) {
     throw new Error(
-      "useAuthContext needs to be used within an AuthContextProvider"
+      "useAuthContext needs to be used within an AuthContextProvider",
     );
   }
 
@@ -69,7 +69,7 @@ const getUserAttributes = (accountInfo: AccountInfo): UserAttributes => {
 };
 
 const getApiAccessToken = async (
-  pca: IPublicClientApplication
+  pca: IPublicClientApplication,
 ): Promise<string> => {
   const account = pca.getAllAccounts()[0];
 

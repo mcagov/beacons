@@ -12,7 +12,7 @@ describe("Edit Panel Button", () => {
         ]}
       >
         edit something
-      </EditPanelButton>
+      </EditPanelButton>,
     );
 
     expect(await screen.findByText(/edit something/i)).toBeVisible();
@@ -28,7 +28,7 @@ describe("Edit Panel Button", () => {
         ]}
       >
         edit something
-      </EditPanelButton>
+      </EditPanelButton>,
     );
 
     expect(screen.queryByText(/edit something/i)).toBeNull();
@@ -36,7 +36,7 @@ describe("Edit Panel Button", () => {
 
   it("show the button when the links array is null", async () => {
     render(
-      <EditPanelButton onClick={() => {}}>edit something</EditPanelButton>
+      <EditPanelButton onClick={() => {}}>edit something</EditPanelButton>,
     );
 
     expect(await screen.findByText(/edit something/i)).toBeVisible();

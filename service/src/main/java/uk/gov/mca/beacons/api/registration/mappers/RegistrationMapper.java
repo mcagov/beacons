@@ -48,8 +48,7 @@ public class RegistrationMapper {
   }
 
   public Registration fromDTO(CreateRegistrationDTO dto) {
-    return Registration
-      .builder()
+    return Registration.builder()
       .beacon(beaconMapper.fromDTO(dto.getCreateBeaconDTO()))
       .beaconUses(
         dto
@@ -70,8 +69,7 @@ public class RegistrationMapper {
   }
 
   public RegistrationDTO toDTO(Registration registration) {
-    return RegistrationDTO
-      .builder()
+    return RegistrationDTO.builder()
       .beaconDTO(
         beaconMapper.toRegistrationDTO(
           registration.getBeacon(),
@@ -85,8 +83,7 @@ public class RegistrationMapper {
           : beaconOwnerMapper.toDTO(registration.getBeaconOwner())
       )
       .beaconOwnerDTOs(
-        Optional
-          .ofNullable(registration)
+        Optional.ofNullable(registration)
           .map(Registration::getBeaconOwners)
           .orElse(Collections.emptyList())
           .stream()

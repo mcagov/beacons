@@ -232,28 +232,28 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context,
         validationRules,
         mapper,
-        { previousPageUrl }
+        { previousPageUrl },
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
         context,
         validationRules,
         mapper,
-        { previousPageUrl }
+        { previousPageUrl },
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
         context,
         validationRules,
         mapper,
-        nextPageUrl
+        nextPageUrl,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
@@ -263,13 +263,13 @@ const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
     csta: form.csta,
     batteryExpiryDate: toIsoDateString(
       form.batteryExpiryDateYear,
-      form.batteryExpiryDateMonth
+      form.batteryExpiryDateMonth,
     ),
     batteryExpiryDateYear: form.batteryExpiryDateYear,
     batteryExpiryDateMonth: form.batteryExpiryDateMonth,
     lastServicedDate: toIsoDateString(
       form.lastServicedDateYear,
-      form.lastServicedDateMonth
+      form.lastServicedDateMonth,
     ),
     lastServicedDateYear: form.lastServicedDateYear,
     lastServicedDateMonth: form.lastServicedDateMonth,
@@ -281,19 +281,19 @@ const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
     csta: draftRegistration?.csta,
     batteryExpiryDate: draftRegistration?.batteryExpiryDate,
     batteryExpiryDateMonth: padNumberWithLeadingZeros(
-      draftRegistration?.batteryExpiryDateMonth
+      draftRegistration?.batteryExpiryDateMonth,
     ),
     batteryExpiryDateYear: padNumberWithLeadingZeros(
       draftRegistration?.batteryExpiryDateYear,
-      4
+      4,
     ),
     lastServicedDate: draftRegistration?.lastServicedDate,
     lastServicedDateMonth: padNumberWithLeadingZeros(
-      draftRegistration?.lastServicedDateMonth
+      draftRegistration?.lastServicedDateMonth,
     ),
     lastServicedDateYear: padNumberWithLeadingZeros(
       draftRegistration?.lastServicedDateYear,
-      4
+      4,
     ),
   }),
 };
@@ -312,7 +312,7 @@ const validationRules = ({
   return new FormManager({
     manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber, [
       Validators.required(
-        "Beacon manufacturer serial number is a required field"
+        "Beacon manufacturer serial number is a required field",
       ),
     ]),
     chkCode: new FieldManager(chkCode),
@@ -329,7 +329,7 @@ const validationRules = ({
           meetingCondition: () =>
             batteryExpiryDateYear !== "" || batteryExpiryDateMonth !== "",
         },
-      ]
+      ],
     ),
     batteryExpiryDateMonth: new FieldManager(batteryExpiryDateMonth),
     batteryExpiryDateYear: new FieldManager(batteryExpiryDateYear),
@@ -346,7 +346,7 @@ const validationRules = ({
           meetingCondition: () =>
             lastServicedDateYear !== "" || lastServicedDateMonth !== "",
         },
-      ]
+      ],
     ),
     lastServicedDateMonth: new FieldManager(lastServicedDateMonth),
     lastServicedDateYear: new FieldManager(lastServicedDateYear),

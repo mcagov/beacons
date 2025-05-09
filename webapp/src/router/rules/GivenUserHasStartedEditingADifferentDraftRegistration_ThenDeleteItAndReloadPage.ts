@@ -30,7 +30,7 @@ export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItA
     const accountHolderId = await getAccountHolderId(this.context.session);
 
     await this.context.container.deleteDraftRegistration(
-      this.context.req.cookies[formSubmissionCookieId]
+      this.context.req.cookies[formSubmissionCookieId],
     );
 
     const registrationId: string = this.context.req.cookies[
@@ -41,7 +41,7 @@ export class GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItA
       draftRegistrationGateway,
       accountHolderGateway,
       accountHolderId,
-      registrationId
+      registrationId,
     );
 
     clearFormSubmissionCookie(this.context);

@@ -15,8 +15,7 @@ public class BeaconsStringUtils {
     String delimiter,
     String... values
   ) {
-    return Arrays
-      .stream(values)
+    return Arrays.stream(values)
       .filter(s -> s != null)
       .map(s -> s.trim())
       .filter(s -> !StringUtils.isBlank(s))
@@ -40,8 +39,7 @@ public class BeaconsStringUtils {
   }
 
   public static String enumAsString(Enum value) {
-    return Arrays
-      .stream(value.name().split("_"))
+    return Arrays.stream(value.name().split("_"))
       .map(s -> StringUtils.capitalize(s.toLowerCase()))
       .collect(Collectors.joining(" "));
   }

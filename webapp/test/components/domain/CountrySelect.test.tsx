@@ -14,7 +14,7 @@ describe("CountrySelect Component", () => {
         id="country"
         name="country"
         defaultValue="Wales, United Kingdom"
-      />
+      />,
     );
     const countrySelect = screen.getByRole("combobox");
     expect(countrySelect).toBeInTheDocument();
@@ -26,7 +26,7 @@ describe("CountrySelect Component", () => {
         id="country"
         name="country"
         defaultValue="Wales, United Kingdom"
-      />
+      />,
     );
     const countrySelect = screen.getByRole("combobox");
     expect(countrySelect).toHaveValue("Wales, United Kingdom");
@@ -38,7 +38,7 @@ describe("CountrySelect Component", () => {
         id="country"
         name="country"
         defaultValue="Wales, United Kingdom"
-      />
+      />,
     );
     countriesJson.forEach((country) => {
       const countryOption = screen.getByText(country);
@@ -52,7 +52,7 @@ describe("CountrySelect Component", () => {
         id="country"
         name="country"
         defaultValue="Wales, United Kingdom"
-      />
+      />,
     );
     const countrySelect = screen.getByRole("combobox");
     fireEvent.change(countrySelect, { target: { value: "Germany" } });

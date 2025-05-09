@@ -17,7 +17,7 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
     res.setHeader(
       "Set-Cookie",
-      serialize(acceptRejectCookieId, "accepted-cookies", options)
+      serialize(acceptRejectCookieId, "accepted-cookies", options),
     );
   }
 

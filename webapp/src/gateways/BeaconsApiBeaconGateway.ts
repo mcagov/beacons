@@ -23,13 +23,13 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
   }
 
   public async sendRegistration(
-    draftRegistration: DraftRegistration
+    draftRegistration: DraftRegistration,
   ): Promise<boolean> {
     const url = `${this.apiUrl}/${this.registrationsEndpoint}`;
 
     const requestBody =
       BeaconsApiBeaconGateway.draftRegistrationToApiRequestBody(
-        draftRegistration
+        draftRegistration,
       );
 
     try {
@@ -46,13 +46,13 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
 
   public async updateRegistration(
     draftRegistration: DraftRegistration,
-    registrationId: string
+    registrationId: string,
   ): Promise<boolean> {
     const url = `${this.apiUrl}/${this.registrationsEndpoint}/${registrationId}`;
 
     const requestBody =
       BeaconsApiBeaconGateway.draftRegistrationToApiRequestBody(
-        draftRegistration
+        draftRegistration,
       );
 
     try {
@@ -88,10 +88,10 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
   }
 
   private static draftRegistrationToApiRequestBody(
-    draftRegistration: DraftRegistration
+    draftRegistration: DraftRegistration,
   ) {
     return new DeprecatedRegistration(
-      draftRegistration as Registration
+      draftRegistration as Registration,
     ).serialiseToAPI();
   }
 

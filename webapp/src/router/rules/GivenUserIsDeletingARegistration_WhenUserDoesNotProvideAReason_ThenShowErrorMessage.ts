@@ -12,7 +12,7 @@ export class GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_Then
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
-    validationRules: FormManagerFactory
+    validationRules: FormManagerFactory,
   ) {
     this.context = context;
     this.validationRules = validationRules;
@@ -34,7 +34,7 @@ export class GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_Then
 
     const registrationToBeDeleted = await getBeaconByAccountHolderId(
       accountHolder.id,
-      registrationId
+      registrationId,
     );
 
     return {
@@ -48,7 +48,7 @@ export class GivenUserIsDeletingARegistration_WhenUserDoesNotProvideAReason_Then
 
   private async form(): Promise<FormJSON> {
     return await this.context.container.parseFormDataAs<FormJSON>(
-      this.context.req
+      this.context.req,
     );
   }
 }

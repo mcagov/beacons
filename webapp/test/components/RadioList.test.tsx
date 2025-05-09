@@ -22,7 +22,7 @@ describe("RadioList Components", () => {
       render(
         <RadioList>
           <RadioListItem id={id} value="" label={label} />
-        </RadioList>
+        </RadioList>,
       );
       expect(screen.queryByLabelText(label)).toBeDefined();
       expect(screen.queryByText(hintText)).toBeNull();
@@ -32,7 +32,7 @@ describe("RadioList Components", () => {
       render(
         <RadioList>
           <RadioListItem id={id} value="" label={label} hintText={hintText} />
-        </RadioList>
+        </RadioList>,
       );
       expect(screen.findByText(hintText)).toBeDefined();
     });
@@ -45,7 +45,7 @@ describe("RadioList Components", () => {
           <RadioListItem id={id} value="" label={label} conditional={true}>
             {conditionalText}
           </RadioListItem>
-        </RadioList>
+        </RadioList>,
       );
       expect(screen.getByText(conditionalText)).toBeDefined();
     });
@@ -58,7 +58,7 @@ describe("RadioList Components", () => {
           <RadioListItem id={id} value="" label={label} conditional={false}>
             {conditionalText}
           </RadioListItem>
-        </RadioList>
+        </RadioList>,
       );
       expect(screen.queryByText(conditionalText)).toBeNull();
     });

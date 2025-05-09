@@ -59,11 +59,11 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(
         "manufacturer serial number",
-        requiredFieldErrorMessage
+        requiredFieldErrorMessage,
       );
       thenIShouldSeeAnErrorMessageThatContains(
         "manufacturer serial number",
-        requiredFieldErrorMessage
+        requiredFieldErrorMessage,
       );
 
       whenIClickOnTheErrorSummaryLinkContaining("manufacturer", "required");
@@ -86,7 +86,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        batteryExpiryDateErrorMessage
+        batteryExpiryDateErrorMessage,
       );
       thenIShouldSeeAnErrorMessageThatContains(batteryExpiryDateErrorMessage);
     });
@@ -97,7 +97,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        batteryExpiryDateErrorMessage
+        batteryExpiryDateErrorMessage,
       );
       thenIShouldSeeAnErrorMessageThatContains(batteryExpiryDateErrorMessage);
     });
@@ -117,7 +117,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIType(validYear, batteryExpiryDateYearFieldSelector);
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        batteryExpiryDateErrorMessage
+        batteryExpiryDateErrorMessage,
       );
       thenIShouldSeeAnErrorMessageThatContains(batteryExpiryDateErrorMessage);
 
@@ -132,7 +132,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIType(invalidYear, batteryExpiryDateYearFieldSelector);
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        batteryExpiryDateErrorMessage
+        batteryExpiryDateErrorMessage,
       );
       thenIShouldSeeAnErrorMessageThatContains(batteryExpiryDateErrorMessage);
 
@@ -156,7 +156,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        lastServicedDateErrorMessage
+        lastServicedDateErrorMessage,
       );
       thenIShouldSeeAnErrorMessageThatContains(lastServicedDateErrorMessage);
     });
@@ -167,7 +167,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIClickContinue();
 
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        lastServicedDateErrorMessage
+        lastServicedDateErrorMessage,
       );
       thenIShouldSeeAnErrorMessageThatContains(lastServicedDateErrorMessage);
     });
@@ -198,7 +198,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIType(validYear, batteryExpiryDateYearFieldSelector);
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        lastServicedDateErrorMessage
+        lastServicedDateErrorMessage,
       );
       thenIShouldSeeAnErrorMessageThatContains(lastServicedDateErrorMessage);
 
@@ -213,7 +213,7 @@ describe("As a beacon owner, I want to submit information about my beacon", () =
       whenIType(invalidYear, batteryExpiryDateYearFieldSelector);
       whenIClickContinue();
       thenIShouldSeeAnErrorSummaryLinkThatContains(
-        lastServicedDateErrorMessage
+        lastServicedDateErrorMessage,
       );
       thenIShouldSeeAnErrorMessageThatContains(lastServicedDateErrorMessage);
 

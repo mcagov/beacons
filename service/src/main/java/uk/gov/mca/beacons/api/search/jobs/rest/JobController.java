@@ -22,8 +22,7 @@ public class JobController {
   @PostMapping("/reindexSearch")
   public ResponseEntity<JobAcceptanceDTO> reindexSearch() throws Exception {
     Long jobExecutionId = jobService.startReindexSearchJobAsync();
-    JobAcceptanceDTO jobAcceptanceDTO = JobAcceptanceDTO
-      .builder()
+    JobAcceptanceDTO jobAcceptanceDTO = JobAcceptanceDTO.builder()
       .location("/spring-api/search/job/reindexSearch/" + jobExecutionId)
       .build();
 
@@ -34,8 +33,7 @@ public class JobController {
   public ResponseEntity<JobOutputDTO> getReindexSearchOutput(
     @PathVariable("id") Long jobExecutionId
   ) {
-    JobOutputDTO jobOutputDTO = JobOutputDTO
-      .builder()
+    JobOutputDTO jobOutputDTO = JobOutputDTO.builder()
       .status(jobService.getJobStatus(jobExecutionId))
       .build();
     return ResponseEntity.ok().body(jobOutputDTO);

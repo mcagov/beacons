@@ -73,7 +73,7 @@ const ApplicationCompletePage = (props: {
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
-      context
+      context,
     );
 
     if (await rule.condition()) {
@@ -88,20 +88,20 @@ export const getServerSideProps: GetServerSideProps = withSession(
       return redirectUserTo(GeneralPageURLs.start);
 
     const draftRegistration: DraftRegistration = await getDraftRegistration(
-      context.req.cookies[formSubmissionCookieId]
+      context.req.cookies[formSubmissionCookieId],
     );
 
     try {
       const result = await submitRegistration(
         draftRegistration,
-        await getAccountHolderId(context.session)
+        await getAccountHolderId(context.session),
       );
 
       clearFormSubmissionCookie(context);
 
       if (!result.beaconRegistered) {
         logger.error(
-          `Failed to register beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`
+          `Failed to register beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
         );
       }
 
@@ -115,7 +115,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
     } catch (e) {
       logger.error(e);
       logger.error(
-        `Threw error when registering beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`
+        `Threw error when registering beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
       );
       return {
         props: {
@@ -124,7 +124,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
         },
       };
     }
-  })
+  }),
 );
 
 export default ApplicationCompletePage;

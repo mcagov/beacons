@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     buttons: {},
-  })
+  }),
 );
 
 export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
@@ -73,11 +73,11 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   const history = useHistory();
 
   const [accountHolder, setAccountHolder] = useState<IAccountHolder>(
-    {} as IAccountHolder
+    {} as IAccountHolder,
   );
   const [beacons, setBeacons] = useState<IBeacon[]>([] as IBeacon[]);
   const [userState, setUserState] = useState<DataPanelStates>(
-    DataPanelStates.Viewing
+    DataPanelStates.Viewing,
   );
 
   const [error, setError] = useState(false);
@@ -92,7 +92,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   >([] as IAccountHolderSearchResultData[]);
   const [transferAccountHolder, setTransferAccountHolder] =
     useState<IAccountHolderSearchResultData>(
-      {} as IAccountHolderSearchResultData
+      {} as IAccountHolderSearchResultData,
     );
 
   useEffect(() => {
@@ -106,9 +106,8 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
         const accountHolders =
           await accountHolderGateway.getAllAccountHolders();
         const accountHolder = await accountHolderGateway.getAccountHolder(id);
-        const beacons = await accountHolderGateway.getBeaconsForAccountHolderId(
-          id
-        );
+        const beacons =
+          await accountHolderGateway.getBeaconsForAccountHolderId(id);
 
         if (isMounted) {
           setAccountHolder(accountHolder);
@@ -135,12 +134,12 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   }, [accountHolderId, accountHolderGateway]);
 
   const handleSave = async (
-    updatedAccountHolder: Partial<IAccountHolder>
+    updatedAccountHolder: Partial<IAccountHolder>,
   ): Promise<void> => {
     try {
       await accountHolderGateway.updateAccountHolder(
         accountHolder.id,
-        updatedAccountHolder
+        updatedAccountHolder,
       );
       setUserState(DataPanelStates.Viewing);
       window.location.reload();
@@ -155,7 +154,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
     if (beacons.length > 0) {
       setError(true);
       setErrorMessage(
-        "Cannot delete an account holder with associated beacons"
+        "Cannot delete an account holder with associated beacons",
       );
       return;
     }
@@ -190,18 +189,18 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
   const handleConfirmTransfer = async () => {
     try {
       const beaconIds = beaconsToTransfer.map((row: GridRowId) =>
-        row.toString()
+        row.toString(),
       );
       await accountHolderGateway.transferBeaconsToAccountHolder(
         beaconIds,
-        transferAccountHolder.id
+        transferAccountHolder.id,
       );
       window.location.reload();
     } catch (error) {
       logToServer.error(error);
       setError(true);
       setErrorMessage(
-        "An error occurred while transferring the account holder's beacons."
+        "An error occurred while transferring the account holder's beacons.",
       );
     } finally {
       setOpenTransferDialog(false);
@@ -381,7 +380,7 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
                     (option.fullName &&
                       option.fullName
                         .toLowerCase()
-                        .startsWith(inputValue.toLowerCase()))
+                        .startsWith(inputValue.toLowerCase())),
                 );
               }}
               renderInput={(params) => (

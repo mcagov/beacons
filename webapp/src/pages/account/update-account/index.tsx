@@ -90,10 +90,10 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       new WhenUserViewsPage_ThenDisplayPage(context),
       new WhenUserSubmitsUpdateAccountLocationChoiceForm_RedirectAccordingly(
         context,
-        validationRules
+        validationRules,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const validationRules = ({ accountHolderLocation }) => {
@@ -102,7 +102,7 @@ const validationRules = ({ accountHolderLocation }) => {
       accountHolderLocation,
       [Validators.required("Select an option")],
       [],
-      "unitedKingdom"
+      "unitedKingdom",
     ),
   });
 };

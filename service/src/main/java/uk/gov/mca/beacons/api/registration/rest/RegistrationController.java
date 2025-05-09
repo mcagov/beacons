@@ -82,10 +82,11 @@ public class RegistrationController {
   ) {
     BeaconId beaconId = new BeaconId(rawBeaconId);
     AccountHolderId accountHolderId = new AccountHolderId(rawAccountHolderId);
-    Registration registration = registrationService.getByBeaconIdAndAccountHolderId(
-      beaconId,
-      accountHolderId
-    );
+    Registration registration =
+      registrationService.getByBeaconIdAndAccountHolderId(
+        beaconId,
+        accountHolderId
+      );
 
     return ResponseEntity.ok(registrationMapper.toDTO(registration));
   }
@@ -104,9 +105,9 @@ public class RegistrationController {
    * @return List of registrations where beacon status is new
    */
   @GetMapping
-  public ResponseEntity<List<RegistrationDTO>> getRegistrationsByAccountHolderId(
-    @RequestParam UUID accountHolderId
-  ) {
+  public ResponseEntity<
+    List<RegistrationDTO>
+  > getRegistrationsByAccountHolderId(@RequestParam UUID accountHolderId) {
     List<Registration> registrations = registrationService.getByAccountHolderId(
       new AccountHolderId(accountHolderId)
     );

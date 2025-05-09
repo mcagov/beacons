@@ -43,7 +43,7 @@ export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseI
         this.context.req.url +
           queryParams({
             useId: (await this.draftRegistration()).uses.length - 1,
-          }).replace("?", "&")
+          }).replace("?", "&"),
       );
     }
 
@@ -51,7 +51,7 @@ export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseI
       this.context.req.url +
         queryParams({
           useId: (await this.draftRegistration()).uses.length - 1,
-        })
+        }),
     );
   }
 
@@ -61,7 +61,7 @@ export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseI
     const { addNewUseToDraftRegistration } = this.context.container;
 
     await addNewUseToDraftRegistration(
-      this.context.req.cookies[formSubmissionCookieId]
+      this.context.req.cookies[formSubmissionCookieId],
     );
 
     return redirectUserTo(this.context.req.url + queryParams({ useId: 0 }));
@@ -69,7 +69,7 @@ export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseI
 
   private async draftRegistration(): Promise<DraftRegistration> {
     return await this.context.container.getDraftRegistration(
-      this.context.req.cookies[formSubmissionCookieId]
+      this.context.req.cookies[formSubmissionCookieId],
     );
   }
 }

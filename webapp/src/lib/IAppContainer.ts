@@ -32,7 +32,7 @@ export interface IAppContainer {
   getDraftRegistration: (id: string) => Promise<DraftRegistration>;
   saveDraftRegistration: (
     id: string,
-    updates: DraftRegistration
+    updates: DraftRegistration,
   ) => Promise<void>;
   deleteDraftRegistration: (id: string) => Promise<void>;
   deleteCachedUse: DeleteCachedUseFn;
