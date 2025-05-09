@@ -14,7 +14,7 @@ export interface BeaconsSession {
 
 export class NextAuthUserSessionGateway implements UserSessionGateway {
   public async getSession(
-    context: GetServerSidePropsContext
+    context: GetServerSidePropsContext,
   ): Promise<BeaconsSession | null> {
     return await getSession(context);
   }

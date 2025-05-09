@@ -174,7 +174,7 @@ describe("FormManager", () => {
               dependsOn: "hexId",
               meetingCondition: () => false,
             },
-          ]
+          ],
         ),
       });
       formManager.markAsDirty();

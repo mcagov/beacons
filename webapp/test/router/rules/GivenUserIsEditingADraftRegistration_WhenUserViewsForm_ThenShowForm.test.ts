@@ -17,7 +17,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm", 
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context as any,
         validationRules,
-        mapper
+        mapper,
       );
 
     const result = await rule.condition();
@@ -35,7 +35,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm", 
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context as any,
         validationRules,
-        mapper
+        mapper,
       );
 
     const result = await rule.condition();
@@ -73,7 +73,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm", 
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context as any,
         validationRules,
-        mapper
+        mapper,
       );
 
     const result = (await rule.action()) as any;
@@ -95,7 +95,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm", 
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context as any,
         validationRules,
-        mapper
+        mapper,
       );
 
     const result = (await rule.action()) as any;

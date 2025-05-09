@@ -78,7 +78,7 @@ describe("FieldManager", () => {
       fieldManager = new FieldManager(newZealandEncodedHexId, [
         validationRule(
           true,
-          "You entered a beacon encoded with a Hex ID from %HEX_ID_COUNTRY%."
+          "You entered a beacon encoded with a Hex ID from %HEX_ID_COUNTRY%.",
         ),
       ]);
       fieldManager.markAsDirty();
@@ -93,7 +93,7 @@ describe("FieldManager", () => {
       fieldManager = new FieldManager(newZealandEncodedHexId, [
         validationRule(
           true,
-          "Your %HEX_ID_COUNTRY% beacon is invalid because it is from %HEX_ID_COUNTRY%."
+          "Your %HEX_ID_COUNTRY% beacon is invalid because it is from %HEX_ID_COUNTRY%.",
         ),
       ]);
       fieldManager.markAsDirty();
@@ -142,12 +142,12 @@ describe("FieldManager", () => {
       ];
       const formManager = new FormManager({
         radioButton: new FieldManager(
-          "A value that doesn't meet the OtherTextInput's condition"
+          "A value that doesn't meet the OtherTextInput's condition",
         ),
         OtherTextInput: new FieldManager(
           "",
           [validationRule(true)],
-          conditions
+          conditions,
         ),
       });
       formManager.markAsDirty();
@@ -169,7 +169,7 @@ describe("FieldManager", () => {
         OtherTextInput: new FieldManager(
           "",
           [validationRule(true)],
-          conditions
+          conditions,
         ),
       });
       formManager.markAsDirty();
@@ -191,7 +191,7 @@ describe("FieldManager", () => {
         otherTextInput: new FieldManager(
           "",
           [validationRule(true)],
-          conditions
+          conditions,
         ),
       });
       formManager.markAsDirty();

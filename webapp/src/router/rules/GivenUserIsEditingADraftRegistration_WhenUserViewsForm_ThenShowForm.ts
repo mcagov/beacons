@@ -9,7 +9,7 @@ import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationF
 import { Rule } from "./Rule";
 
 export class GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<
-  T
+  T,
 > implements Rule
 {
   private readonly context: BeaconsGetServerSidePropsContext;
@@ -20,7 +20,7 @@ export class GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
     mapper: DraftRegistrationFormMapper<T>,
-    additionalProps?: Record<string, any>
+    additionalProps?: Record<string, any>,
   ) {
     this.context = context;
     this.validationRules = validationRules;
@@ -48,7 +48,7 @@ export class GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm
       props: {
         form: withoutErrorMessages(
           this.mapper.draftRegistrationToForm(draftRegistration),
-          this.validationRules
+          this.validationRules,
         ),
         showCookieBanner: showCookieBanner(this.context),
         ...(await this.additionalProps),
@@ -59,7 +59,7 @@ export class GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm
 
   private async draftRegistration(): Promise<DraftRegistration> {
     return await this.context.container.getDraftRegistration(
-      this.draftRegistrationId()
+      this.draftRegistrationId(),
     );
   }
 

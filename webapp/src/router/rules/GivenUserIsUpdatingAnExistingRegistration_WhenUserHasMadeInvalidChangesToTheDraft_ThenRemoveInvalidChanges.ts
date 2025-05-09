@@ -13,7 +13,7 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidCha
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
-    registrationId: string
+    registrationId: string,
   ) {
     this.context = context;
     this.registrationId = registrationId;
@@ -48,13 +48,13 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidCha
 
   private async draftRegistration(): Promise<DraftRegistration> {
     return await this.context.container.getDraftRegistration(
-      this.registrationId
+      this.registrationId,
     );
   }
 
   private async removeCachedInvalidUse(): Promise<void> {
     await this.context.container.draftRegistrationGateway.removeInvalidUse(
-      this.registrationId
+      this.registrationId,
     );
   }
 }

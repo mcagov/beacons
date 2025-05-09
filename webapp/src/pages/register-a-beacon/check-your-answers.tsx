@@ -108,22 +108,22 @@ export const getServerSideProps: GetServerSideProps = withSession(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
+        context,
       ),
       new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges(
         context,
-        context.req.cookies[formSubmissionCookieId]
+        context.req.cookies[formSubmissionCookieId],
       ),
       new WhenUserViewsPage_ThenDisplayPage(context, props(context)),
     ]).execute();
-  })
+  }),
 );
 
 const props = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<Partial<CheckYourAnswersProps>> => {
   const draftRegistration = await context.container.getDraftRegistration(
-    context.req.cookies[formSubmissionCookieId]
+    context.req.cookies[formSubmissionCookieId],
   );
 
   return {

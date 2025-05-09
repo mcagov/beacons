@@ -23,7 +23,7 @@ export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
   givenIHaveACookieSetAndIVisit(CreateRegistrationPageURLs.checkBeaconDetails);
   givenIHaveTyped(
     testBeaconAndOwnerData.beaconDetails.manufacturer,
-    "#manufacturer"
+    "#manufacturer",
   );
   givenIHaveTyped(testBeaconAndOwnerData.beaconDetails.model, "#model");
   givenIHaveTyped(testBeaconAndOwnerData.beaconDetails.hexId, "#hexId");
@@ -38,7 +38,7 @@ export const givenIHaveFilledInBeaconInformationPage = (): void => {
   givenIHaveTyped(beaconInfo.csta, "#csta");
   givenIHaveTyped(
     beaconInfo.batteryExpiryMonth.input,
-    "#batteryExpiryDateMonth"
+    "#batteryExpiryDateMonth",
   );
   givenIHaveTyped(beaconInfo.batteryExpiryYear, "#batteryExpiryDateYear");
   givenIHaveTyped(beaconInfo.lastServicedMonth.input, "#lastServicedDateMonth");
@@ -82,7 +82,7 @@ export const asALandBeaconOwner = (): void => {
 
 export const iCanEditMyBeaconDetails = (): void =>
   Object.values(testBeaconAndOwnerData.beaconDetails).forEach((value) =>
-    cy.get(`input[value="${value}"]`)
+    cy.get(`input[value="${value}"]`),
   );
 
 export const iCanEditMyAdditionalBeaconInformation = (): void => {
@@ -101,7 +101,7 @@ export const iCanEditMyAdditionalBeaconInformation = (): void => {
 
 export const iCanSeeMyBeaconDetails = (): void =>
   Object.values(testBeaconAndOwnerData.beaconDetails).forEach((value) =>
-    cy.contains(value)
+    cy.contains(value),
   );
 
 export const iCanSeeMyAdditionalBeaconInformation = (): void => {
@@ -126,5 +126,5 @@ export const iCanSeeMyRequiredAdditionalBeaconInformationOrDash = (): void =>
       cy.contains("Additional beacon information")
         .parent()
         .contains(new RegExp(value + "|-"));
-    }
+    },
   );

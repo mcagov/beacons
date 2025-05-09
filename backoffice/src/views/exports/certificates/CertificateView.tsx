@@ -43,7 +43,7 @@ export const CertificatesView: FunctionComponent<CertificatesViewProps> = ({
   beaconIds,
 }): JSX.Element => {
   const [beacons, setBeacons] = useState<IBeaconExport[]>(
-    [] as IBeaconExport[]
+    [] as IBeaconExport[],
   );
 
   useEffect(() => {

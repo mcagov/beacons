@@ -91,38 +91,38 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOrCreateNewUse(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
-        context
+        context,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<PurposeForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<PurposeForm>(
         context,
         validationRules,
         mapper(context),
-        props(context)
+        props(context),
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<PurposeForm>(
         context,
         validationRules,
         mapper(context),
-        nextPage
+        nextPage,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const props = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<Partial<PurposeFormProps>> => {
   const draftRegistration = await context.container.getDraftRegistration(
-    context.req.cookies[formSubmissionCookieId]
+    context.req.cookies[formSubmissionCookieId],
   );
 
   const useId = parseInt(context.query.useId as string);
@@ -154,7 +154,7 @@ const validationRules = ({ purpose }: FormSubmission): FormManager => {
       purpose,
       [Validators.required("Beacon use purpose is a required field")],
       [],
-      "pleasure"
+      "pleasure",
     ),
   });
 };

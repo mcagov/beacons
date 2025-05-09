@@ -12,7 +12,7 @@ describe("Delete beacon use case", () => {
     const result = await deleteBeacon(container as any)(
       "Unused on my boat",
       "1234",
-      "0987"
+      "0987",
     );
 
     expect(result).toStrictEqual({ success: true });
@@ -33,7 +33,7 @@ describe("Delete beacon use case", () => {
     const result = await deleteBeacon(container as any)(
       "Unused on my boat",
       "1234",
-      "0987"
+      "0987",
     );
 
     expect(result).toStrictEqual({ success: false });

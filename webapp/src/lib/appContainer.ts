@@ -87,13 +87,13 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get beaconGateway() {
       return new BeaconsApiBeaconGateway(
         process.env.API_URL,
-        new AadAuthGateway()
+        new AadAuthGateway(),
       );
     },
     get beaconSearchGateway() {
       return new BeaconsApiBeaconSearchGateway(
         process.env.API_URL,
-        new AadAuthGateway()
+        new AadAuthGateway(),
       );
     },
     get emailServiceGateway() {
@@ -102,7 +102,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get accountHolderGateway() {
       return new BeaconsApiAccountHolderGateway(
         process.env.API_URL,
-        new AadAuthGateway()
+        new AadAuthGateway(),
       );
     },
     get draftRegistrationGateway() {
@@ -114,7 +114,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get legacyBeaconGateway() {
       return new BeaconsApiLegacyBeaconGateway(
         process.env.API_URL,
-        new AadAuthGateway()
+        new AadAuthGateway(),
       );
     },
     get b2CGateway() {

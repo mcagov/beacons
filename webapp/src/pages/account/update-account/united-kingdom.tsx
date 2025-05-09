@@ -153,13 +153,13 @@ const AccountHolderAddress: FunctionComponent<{ form: FormJSON }> = ({
 );
 
 const userDidSubmitForm = (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): boolean => context.req.method === "POST";
 
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
-      context
+      context,
     );
     if (await rule.condition()) {
       return rule.action();
@@ -173,7 +173,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
       return {
         props: {
           form: accountDetailsFormManager(
-            accountHolderToFormFields(resetAddressFields(accountHolder))
+            accountHolderToFormFields(resetAddressFields(accountHolder)),
           ).serialise(),
         },
       };
@@ -193,11 +193,11 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
     await updateAccountHolder(
       accountHolder.id,
-      formDataToUnitedKingdomAccountHolder(formData)
+      formDataToUnitedKingdomAccountHolder(formData),
     );
 
     return redirectUserTo(AccountPageURLs.accountHome);
-  })
+  }),
 );
 
 export default UnitedKingdom;
@@ -208,7 +208,7 @@ export default UnitedKingdom;
  * @returns {AccountUpdateFields} update field values from accountHolder or properties are undefined (to allow for obj diffing)
  */
 const accountHolderToFormFields = (
-  accountHolder: AccountHolder
+  accountHolder: AccountHolder,
 ): AccountUpdateFields => ({
   fullName: accountHolder.fullName || undefined,
   telephoneNumber: accountHolder.telephoneNumber || undefined,
@@ -239,7 +239,7 @@ const resetAddressFields = (accountHolder: AccountHolder): AccountHolder => {
 };
 
 const formDataToUnitedKingdomAccountHolder = (
-  formData: AccountUpdateFields
+  formData: AccountUpdateFields,
 ): AccountHolder => {
   const emptyFields = {
     addressLine3: "",

@@ -38,7 +38,7 @@ describe("As user with an account", () => {
     givenIHaveEnteredMyUnitedKingdomAddressDetails();
     givenIHaveEnteredMyEmergencyContactDetails();
     iPerformOperationAndWaitForNewPageToLoad(() =>
-      givenIHaveClickedTheButtonContaining("Accept and send")
+      givenIHaveClickedTheButtonContaining("Accept and send"),
     );
     thenTheUrlShouldContain("/register-a-beacon/application-complete");
 
@@ -75,51 +75,51 @@ const whenIClickOnTheBeaconIHaveJustRegistered = () => {
 const iCanSeeAllTheDataIEntered = () => {
   iCanSeeDataInSummaryListRowWithHeading(
     Object.values(testBeaconAndOwnerData.beaconDetails),
-    "Beacon information"
+    "Beacon information",
   );
 
   iCanSeeTextInSummaryListRowWithHeading(
     testBeaconAndOwnerData.additionalBeaconInformation.serialNumber,
-    "Additional beacon information"
+    "Additional beacon information",
   );
   iCanSeeTextInSummaryListRowWithHeading(
     testBeaconAndOwnerData.additionalBeaconInformation.chkCode,
-    "Additional beacon information"
+    "Additional beacon information",
   );
   iCanSeeTextInSummaryListRowWithHeading(
     testBeaconAndOwnerData.additionalBeaconInformation.csta,
-    "Additional beacon information"
+    "Additional beacon information",
   );
 
   iCanSeeDataInSummaryListRowWithHeading(
     Object.values(testBeaconAndOwnerData.ownerDetails),
-    "Owner details"
+    "Owner details",
   );
 
   iCanSeeDataInSummaryListRowWithHeading(
     [...Object.values(testBeaconAndOwnerData.ownerAddress), "United Kingdom"],
-    "Address"
+    "Address",
   );
 
   iCanSeeDataInSummaryListRowWithHeading(
     Object.values(testBeaconAndOwnerData.emergencyContacts).slice(0, 3),
-    "Contact 1"
+    "Contact 1",
   );
 
   iCanSeeDataInSummaryListRowWithHeading(
     Object.values(testBeaconAndOwnerData.emergencyContacts).slice(3, 6),
-    "Contact 2"
+    "Contact 2",
   );
 
   iCanSeeDataInSummaryListRowWithHeading(
     Object.values(testBeaconAndOwnerData.emergencyContacts).slice(6, 9),
-    "Contact 3"
+    "Contact 3",
   );
 };
 
 const iCanSeeDataInSummaryListRowWithHeading = (
   data: string[],
-  heading: string
+  heading: string,
 ): void => {
   data.forEach((data) => {
     iCanSeeTextInSummaryListRowWithHeading(data, heading);

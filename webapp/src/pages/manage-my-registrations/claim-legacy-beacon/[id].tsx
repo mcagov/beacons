@@ -130,15 +130,15 @@ export const getServerSideProps: GetServerSideProps = withSession(
       new WhenUserSubmitsInvalidForm_ThenShowErrors(
         context,
         validationRules,
-        props(context)
+        props(context),
       ),
       new GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateTheirClaimedBeacon(
         context,
-        legacyBeaconId
+        legacyBeaconId,
       ),
       // new WhenUserRejectsBeacon_ThenReturnToAccountHome(),
     ]).execute();
-  })
+  }),
 );
 
 const validationRules = ({ claimResponse }) => {
@@ -147,19 +147,18 @@ const validationRules = ({ claimResponse }) => {
       claimResponse,
       [Validators.required("Select an option")],
       [],
-      "claimResponse"
+      "claimResponse",
     ),
   });
 };
 
 const props = async (
-  context: BeaconsGetServerSidePropsContext
+  context: BeaconsGetServerSidePropsContext,
 ): Promise<any> => {
   const legacyBeaconId = context.query.id as string;
   return {
-    legacyBeacon: await context.container.legacyBeaconGateway.getById(
-      legacyBeaconId
-    ),
+    legacyBeacon:
+      await context.container.legacyBeaconGateway.getById(legacyBeaconId),
   };
 };
 

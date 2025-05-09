@@ -39,21 +39,21 @@ export const iCanEditMyNUses = (n: number): void => {
 
 export const whenIGoToEditTheUseNumber = (useNumber: number): void => {
   iHaveClickedOnAGivenLink(
-    `${CreateRegistrationPageURLs.environment}?useId=${useNumber}`
+    `${CreateRegistrationPageURLs.environment}?useId=${useNumber}`,
   );
   whenIClickContinue();
 };
 
 export const iAmOnTheLandBranchForUseNumber = (useNumber: number): void => {
   thenTheUrlShouldContain(
-    `${CreateRegistrationPageURLs.activity}?useId=${useNumber}`
+    `${CreateRegistrationPageURLs.activity}?useId=${useNumber}`,
   );
 };
 
 export const iAmOnTheMaritimeOrAviationBranchForUseNumber = (
-  useNumber: number
+  useNumber: number,
 ): void => {
   thenTheUrlShouldContain(
-    `${CreateRegistrationPageURLs.purpose}?useId=${useNumber}`
+    `${CreateRegistrationPageURLs.purpose}?useId=${useNumber}`,
   );
 };

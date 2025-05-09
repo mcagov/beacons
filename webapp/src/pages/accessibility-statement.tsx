@@ -110,7 +110,8 @@ const AccessibilityStatementPage: FunctionComponent = () => {
             <GovUKBody>
               The MCA Beacons Registry Team is committed to making its website
               accessible, in accordance with the Public Sector Bodies (Websites
-              and Mobile Applications) (No. 2) Accessibility Regulations 2018.{" "}
+              and Mobile Applications) (No. 2) Accessibility Regulations
+              2018.{" "}
             </GovUKBody>
             <SectionHeading>Compliance status</SectionHeading>
             <GovUKBody>

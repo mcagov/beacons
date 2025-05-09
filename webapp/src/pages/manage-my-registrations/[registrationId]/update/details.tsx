@@ -44,7 +44,7 @@ const BeaconDetails: FunctionComponent<DraftRegistrationPageProps> = ({
   return (
     <BeaconsForm
       previousPageUrl={UrlBuilder.buildUpdateRegistrationSummaryUrl(
-        draftRegistration.id
+        draftRegistration.id,
       )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -96,36 +96,36 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const nextPageUrl = UrlBuilder.buildRegistrationUrl(
       Actions.update,
       Pages.summary,
-      context.query.registrationId as string
+      context.query.registrationId as string,
     );
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-        context
+        context,
       ),
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
         context,
-        context.query.registrationId as string
+        context.query.registrationId as string,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context,
         validationRules,
-        mapper
+        mapper,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
         context,
         validationRules,
-        mapper
+        mapper,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
         context,
         validationRules,
         mapper,
-        nextPageUrl
+        nextPageUrl,
       ),
     ]).execute();
-  })
+  }),
 );
 
 export const mapper: DraftRegistrationFormMapper<UpdateBeaconDetailsForm> = {

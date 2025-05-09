@@ -1,7 +1,7 @@
 import { GetServerSidePropsResult } from "next";
 
 export const redirectUserTo = (
-  url: string
+  url: string,
 ): GetServerSidePropsResult<null> => ({
   redirect: {
     statusCode: 303,

@@ -11,7 +11,7 @@ export class WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError
 
   public async condition(): Promise<boolean> {
     const session = await this.context.container.sessionGateway.getSession(
-      this.context
+      this.context,
     );
 
     return session == null;
