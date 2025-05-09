@@ -9,7 +9,7 @@
     "adr": "adr-log -d docs/adr -i",
     "format": "prettier --write './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
     "format:check": "prettier --check './**/*.{java,md,json,yml,js,jsx,json,ts,tsx,yml,md,html,scss,css}'",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,7 @@
     "typescript": "^5.8.3"
   },
   "engines": {
-    "node": "16.17.x",
-    "npm": "8.15.x"
+    "node": "^20.19.1",
+    "npm": "8^10.8.2"
   }
 }
