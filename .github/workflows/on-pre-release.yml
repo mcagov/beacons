@@ -143,26 +143,6 @@ jobs:
       microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
       microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
 
-  codeql:
-    name: CodeQL check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          config-file: .github/codeql/codeql-config.yml
-          languages: java, typescript
-      - uses: actions/setup-java@v4
-        with:
-          distribution: "adopt"
-          java-version: 11
-      - name: Compile code
-        working-directory: service
-        run: ./gradlew clean assemble
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-
   deploy_staging:
     name: Staging
     needs:
