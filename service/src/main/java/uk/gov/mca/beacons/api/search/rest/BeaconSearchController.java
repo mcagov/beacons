@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -55,34 +56,7 @@ public class BeaconSearchController {
       pageable
     );
 
-    Link selfLink = WebMvcLinkBuilder
-      .linkTo(
-        WebMvcLinkBuilder
-          .methodOn(BeaconSearchController.class)
-          .findAllBeacons(
-            status,
-            uses,
-            hexId,
-            ownerName,
-            cospasSarsatNumber,
-            manufacturerSerialNumber,
-            pageable
-          )
-      )
-      .withRel("findAllBeacons");
-
-    var pagedModel = pagedAssembler.toModel(
-      results,
-      beacon ->
-        EntityModel.of(
-          beacon,
-          WebMvcLinkBuilder
-            .linkTo(BeaconSearchController.class)
-            .slash(beacon.getId())
-            .withSelfRel()
-        ),
-      selfLink
-    );
+    var pagedModel = pagedAssembler.toModel(results);
 
     return ResponseEntity.ok(pagedModel);
   }
