@@ -46,7 +46,7 @@ describe("BeaconsGateway", () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
         beaconRequestMapper,
-        authGateway,
+        authGateway
       );
 
       // @ts-ignore
@@ -55,9 +55,9 @@ describe("BeaconsGateway", () => {
       await gateway.getAllBeacons("", {}, 0, 20, null);
 
       expect(axios.get).toHaveBeenCalledWith(
-        `${applicationConfig.apiUrl}/beacon-search/search/find-allv2?term=&status=&uses=\
+        `${applicationConfig.apiUrl}/beacon-search/search/find-all?term=&status=&uses=\
 &hexId=&ownerName=&cospasSarsatNumber=&manufacturerSerialNumber=&page=0&size=20&sort=`,
-        config,
+        config
       );
     });
 
@@ -65,7 +65,7 @@ describe("BeaconsGateway", () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
         beaconRequestMapper,
-        authGateway,
+        authGateway
       );
 
       // @ts-ignore
@@ -80,7 +80,7 @@ describe("BeaconsGateway", () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
         beaconRequestMapper,
-        authGateway,
+        authGateway
       );
       const beaconId = "f48e8212-2e10-4154-95c7-bdfd061bcfd2";
       // @ts-ignore
@@ -90,7 +90,7 @@ describe("BeaconsGateway", () => {
 
       expect(axios.get).toHaveBeenCalledWith(
         `${applicationConfig.apiUrl}/registrations/${beaconId}`,
-        config,
+        config
       );
     });
 
@@ -98,7 +98,7 @@ describe("BeaconsGateway", () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
         beaconRequestMapper,
-        authGateway,
+        authGateway
       );
 
       // @ts-ignore
@@ -111,19 +111,19 @@ describe("BeaconsGateway", () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
         beaconRequestMapper,
-        authGateway,
+        authGateway
       );
       const beaconId = "f48e8212-2e10-4154-95c7-bdfd061bcfd2";
 
       // @ts-ignore
       axios.get.mockImplementation(() =>
-        Promise.resolve({ data: singleBeaconApiResponseFixture }),
+        Promise.resolve({ data: singleBeaconApiResponseFixture })
       );
 
       await gateway.getBeacon(beaconId);
 
       expect(beaconResponseMapper.map).toHaveBeenCalledWith(
-        singleBeaconApiResponseFixture,
+        singleBeaconApiResponseFixture
       );
     });
   });
@@ -178,7 +178,7 @@ describe("BeaconsGateway", () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
         beaconRequestMapper,
-        authGateway,
+        authGateway
       );
       const updatedFieldsOnly: Partial<IBeacon> = { manufacturer: "ACME Inc." };
       // @ts-ignore
@@ -189,7 +189,7 @@ describe("BeaconsGateway", () => {
       expect(axios.patch).toHaveBeenCalledWith(
         `${applicationConfig.apiUrl}/beacons/${beaconFixture.id}`,
         updateBeaconRequest,
-        config,
+        config
       );
     });
 
@@ -197,7 +197,7 @@ describe("BeaconsGateway", () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
         beaconRequestMapper,
-        authGateway,
+        authGateway
       );
       const updatedFieldsOnly: Partial<IBeacon> = { manufacturer: "ACME Inc." };
       // @ts-ignore
@@ -210,7 +210,7 @@ describe("BeaconsGateway", () => {
 
       expect(beaconRequestMapper.map).toHaveBeenCalledWith(
         beaconFixture.id,
-        updatedFieldsOnly,
+        updatedFieldsOnly
       );
     });
 
@@ -218,13 +218,13 @@ describe("BeaconsGateway", () => {
       const gateway = new BeaconsGateway(
         beaconResponseMapper,
         beaconRequestMapper,
-        authGateway,
+        authGateway
       );
       // @ts-ignore
       axios.patch.mockImplementationOnce(() => Promise.reject(new Error()));
 
       await expect(
-        gateway.updateBeacon(beaconFixture.id, { model: "iBeacon" }),
+        gateway.updateBeacon(beaconFixture.id, { model: "iBeacon" })
       ).rejects.toThrow();
     });
   });

@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
-import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
+import uk.gov.mca.beacons.api.search.repositories.BeaconElasticSearchRepository;
 
 public class ReindexSearchJobConfigurationIntegrationTest
   extends WebIntegrationTest {
@@ -30,7 +30,7 @@ public class ReindexSearchJobConfigurationIntegrationTest
   private JobRepositoryTestUtils jobRepositoryTestUtils;
 
   @Autowired
-  BeaconSearchRepository beaconSearchRepository;
+  BeaconElasticSearchRepository beaconElasticSearchRepository;
 
   @Autowired
   @Qualifier("reindexSearchJob")
@@ -56,7 +56,7 @@ public class ReindexSearchJobConfigurationIntegrationTest
     );
     ExitStatus exitStatus = jobExecution.getExitStatus();
     List<BeaconSearchDocument> beaconSearchDocuments = new ArrayList<>();
-    beaconSearchRepository
+    beaconElasticSearchRepository
       .findAll()
       .iterator()
       .forEachRemaining(beaconSearchDocuments::add);

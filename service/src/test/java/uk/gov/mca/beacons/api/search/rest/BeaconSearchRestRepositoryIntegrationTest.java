@@ -3,17 +3,14 @@ package uk.gov.mca.beacons.api.search.rest;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Function;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
@@ -23,7 +20,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
   class GetBeaconSearchResults {
 
     private static final String FIND_ALL_URI =
-      "/spring-api/beacon-search/search/find-allv2";
+      "/spring-api/beacon-search/search/find-all";
 
     @Test
     void shouldFindTheLegacyBeaconByHexIdStatusAndUses() throws Exception {
@@ -47,7 +44,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
         .expectStatus()
         .isOk()
         .expectBody()
-        .jsonPath("_embedded.beaconSearch[0].hexId")
+        .jsonPath("_embedded.beaconSearchEntities[0].hexId")
         .isEqualTo(randomHexId)
         .jsonPath("page.totalElements")
         .isEqualTo(1);
@@ -76,7 +73,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
         .expectStatus()
         .isOk()
         .expectBody()
-        .jsonPath("_embedded.beaconSearch[0].hexId")
+        .jsonPath("_embedded.beaconSearchEntities[0].hexId")
         .isEqualTo(randomHexId)
         .jsonPath("page.totalElements")
         .isEqualTo(1);
@@ -97,7 +94,8 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
       var pseudoUniqueLegacyBeaconCospasSarsatNumber = random.nextInt(
         Integer.MAX_VALUE
       );
-      var uniqueLegacyBeaconManufacturerSerialNumber = UUID.randomUUID()
+      var uniqueLegacyBeaconManufacturerSerialNumber = UUID
+        .randomUUID()
         .toString();
 
       createLegacyBeacon(request ->
@@ -139,7 +137,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
         .expectBody()
         .jsonPath("page.totalElements")
         .isEqualTo(1)
-        .jsonPath("_embedded.beaconSearch[0].hexId")
+        .jsonPath("_embedded.beaconSearchEntities[0].hexId")
         .isEqualTo(uniqueLegacyBeaconHexId);
     }
   }
@@ -289,7 +287,8 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
   private String createAccountHolder(String testAuthId) throws Exception {
     final String newAccountHolderRequest = readFile(
       "src/test/resources/fixtures/createAccountHolderRequest.json"
-    ).replace("replace-with-test-auth-id", testAuthId);
+    )
+      .replace("replace-with-test-auth-id", testAuthId);
 
     return webTestClient
       .post()

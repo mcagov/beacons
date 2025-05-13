@@ -21,7 +21,7 @@ export class BeaconsGateway implements IBeaconsGateway {
   public constructor(
     beaconResponseMapper: IBeaconResponseMapper,
     beaconRequestMapper: IBeaconRequestMapper,
-    authGateway: IAuthGateway,
+    authGateway: IAuthGateway
   ) {
     this._beaconRequestMapper = beaconRequestMapper;
     this._beaconResponseMapper = beaconResponseMapper;
@@ -33,11 +33,11 @@ export class BeaconsGateway implements IBeaconsGateway {
     filters: GetAllBeaconsFilters = {},
     page: number = 0,
     size: number = 20,
-    sort: GetAllBeaconsSort = null,
+    sort: GetAllBeaconsSort = null
   ): Promise<IBeaconSearchResult> {
     try {
       const response = await this._makeGetRequest(
-        BeaconsGateway._makeGetAllBeaconsQuery(term, filters, page, size, sort),
+        BeaconsGateway._makeGetAllBeaconsQuery(term, filters, page, size, sort)
       );
       return response.data;
     } catch (e) {
@@ -57,13 +57,13 @@ export class BeaconsGateway implements IBeaconsGateway {
 
   public async updateBeacon(
     beaconId: string,
-    updatedFields: Partial<IBeacon>,
+    updatedFields: Partial<IBeacon>
   ): Promise<IBeacon> {
     try {
       const response = await this._makePatchRequest(
         `/beacons/${beaconId}`,
         beaconId,
-        updatedFields,
+        updatedFields
       );
       return response.data;
     } catch (e) {
@@ -72,7 +72,7 @@ export class BeaconsGateway implements IBeaconsGateway {
   }
 
   public async deleteBeacon(
-    deleteBeaconDto: IDeleteBeaconDto,
+    deleteBeaconDto: IDeleteBeaconDto
   ): Promise<AxiosResponse> {
     try {
       const data = {
@@ -87,7 +87,7 @@ export class BeaconsGateway implements IBeaconsGateway {
         {
           timeout: applicationConfig.apiTimeoutMs,
           headers: { Authorization: `Bearer ${accessToken}` },
-        },
+        }
       );
       return response.data;
     } catch (e) {
@@ -108,7 +108,7 @@ export class BeaconsGateway implements IBeaconsGateway {
   private async _makePatchRequest(
     path: string,
     beaconId: string,
-    updatedFields: Partial<IBeacon>,
+    updatedFields: Partial<IBeacon>
   ): Promise<AxiosResponse> {
     const accessToken = await this._authGateway.getAccessToken();
 
@@ -118,7 +118,7 @@ export class BeaconsGateway implements IBeaconsGateway {
       {
         timeout: applicationConfig.apiTimeoutMs,
         headers: { Authorization: `Bearer ${accessToken}` },
-      },
+      }
     );
   }
 
@@ -127,7 +127,7 @@ export class BeaconsGateway implements IBeaconsGateway {
     filters: GetAllBeaconsFilters,
     page: number = 0,
     size: number = 20,
-    sort: GetAllBeaconsSort,
+    sort: GetAllBeaconsSort
   ): string {
     const {
       hexId = "",
@@ -140,7 +140,7 @@ export class BeaconsGateway implements IBeaconsGateway {
 
     const sortString = sort ? `${sort[0]},${sort[1]}` : "";
 
-    return `/beacon-search/search/find-allv2?term=${term}&status=${status}&uses=${uses}&hexId=${hexId}\
+    return `/beacon-search/search/find-all?term=${term}&status=${status}&uses=${uses}&hexId=${hexId}\
 &ownerName=${ownerName}&cospasSarsatNumber=${cospasSarsatNumber}\
 &manufacturerSerialNumber=${manufacturerSerialNumber}&page=${page}&size=${size}&sort=${sortString}`;
   }

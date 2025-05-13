@@ -6,7 +6,7 @@ export interface IBeaconSearchResult {
     number: number;
   };
 
-  _embedded: { beaconSearch: IBeaconSearchResultData[] };
+  _embedded: { beaconSearchEntities: IBeaconSearchResultData[] };
 }
 
 export interface IBeaconSearchResultData {

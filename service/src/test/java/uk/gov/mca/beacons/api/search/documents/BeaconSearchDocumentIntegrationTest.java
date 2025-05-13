@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -12,15 +11,14 @@ import org.apache.commons.collections.IteratorUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.mca.beacons.api.BaseIntegrationTest;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconOwner;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconUse;
-import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
+import uk.gov.mca.beacons.api.search.repositories.BeaconElasticSearchRepository;
 
 public class BeaconSearchDocumentIntegrationTest extends BaseIntegrationTest {
 
   @Autowired
-  BeaconSearchRepository beaconSearchRepository;
+  BeaconElasticSearchRepository beaconElasticSearchRepository;
 
   @Test
   void shouldSaveAndRetrieveTheBeaconSearchDocument() {
@@ -52,12 +50,13 @@ public class BeaconSearchDocumentIntegrationTest extends BaseIntegrationTest {
     beaconSearchDocument.setBeaconOwner(beaconOwner);
 
     // act
-    BeaconSearchDocument savedDocument = beaconSearchRepository.save(
+    BeaconSearchDocument savedDocument = beaconElasticSearchRepository.save(
       beaconSearchDocument
     );
 
-    BeaconSearchDocument retrievedDocument =
-      beaconSearchRepository.findBeaconSearchDocumentByHexId(hexId);
+    BeaconSearchDocument retrievedDocument = beaconElasticSearchRepository.findBeaconSearchDocumentByHexId(
+      hexId
+    );
 
     // assert
     assertThat(retrievedDocument.getHexId(), equalTo(hexId));
@@ -93,11 +92,11 @@ public class BeaconSearchDocumentIntegrationTest extends BaseIntegrationTest {
     beaconSearchDocument.setBeaconOwner(beaconOwner);
 
     // act
-    BeaconSearchDocument savedDocument = beaconSearchRepository.save(
+    BeaconSearchDocument savedDocument = beaconElasticSearchRepository.save(
       beaconSearchDocument
     );
 
-    Iterator records = beaconSearchRepository.findAll().iterator();
+    Iterator records = beaconElasticSearchRepository.findAll().iterator();
     List<BeaconSearchDocument> retrievedDocuments = IteratorUtils.toList(
       records
     );
