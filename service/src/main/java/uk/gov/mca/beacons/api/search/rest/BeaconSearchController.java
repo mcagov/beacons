@@ -19,8 +19,8 @@ import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
 
 @Slf4j
 @RestController
-@RequestMapping("/spring-api/find-all-beacons/search")
-@Tag(name = "BeaconSearch")
+@RequestMapping("/spring-api/find-all-beacons")
+@Tag(name = "FindAllBeacons")
 public class BeaconSearchController {
 
   private final BeaconSearchService beaconSearchService;
@@ -35,7 +35,7 @@ public class BeaconSearchController {
   }
 
   @Cacheable(value = "find-all-beacons")
-  @GetMapping("/")
+  @GetMapping("/search")
   @Operation(summary = "Find all beacons matching specific fields (paginated)")
   public ResponseEntity<
     PagedModel<EntityModel<BeaconSearchEntity>>
