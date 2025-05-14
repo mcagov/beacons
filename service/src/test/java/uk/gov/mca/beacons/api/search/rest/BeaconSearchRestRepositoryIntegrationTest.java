@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.util.UriBuilder;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
 class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
@@ -23,7 +24,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
   class GetBeaconSearchResults {
 
     private static final String FIND_ALL_URI =
-      "/spring-api/beacon-search/search/find-allv2";
+      "/spring-api/beacon-search/search/find-all";
 
     @Test
     void shouldFindTheLegacyBeaconByHexIdStatusAndUses() throws Exception {
@@ -141,6 +142,60 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
         .isEqualTo(1)
         .jsonPath("_embedded.beaconSearch[0].hexId")
         .isEqualTo(uniqueLegacyBeaconHexId);
+    }
+
+    @Test
+    void shouldFindTheHATEOASLink() throws Exception {
+      final String accountHolderId = seedAccountHolder();
+      final var randomHexId = UUID.randomUUID().toString();
+      createBeacon(randomHexId, accountHolderId);
+
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(FIND_ALL_URI)
+            .queryParam("status", "new")
+            .queryParam("uses", "fishing vessel")
+            .queryParam("hexId", randomHexId)
+            .queryParam("ownerName", "")
+            .queryParam("cospasSarsatNumber", "")
+            .queryParam("manufacturerSerialNumber", "")
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("_links.self.href")
+        .isNotEmpty();
+    }
+
+    @Test
+    void shouldFindTheHATEOASEntityLink() throws Exception {
+      final String accountHolderId = seedAccountHolder();
+      final var randomHexId = UUID.randomUUID().toString();
+      createBeacon(randomHexId, accountHolderId);
+
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(FIND_ALL_URI)
+            .queryParam("status", "new")
+            .queryParam("uses", "fishing vessel")
+            .queryParam("hexId", randomHexId)
+            .queryParam("ownerName", "")
+            .queryParam("cospasSarsatNumber", "")
+            .queryParam("manufacturerSerialNumber", "")
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("_embedded.beaconSearch[0]._links.self.href")
+        .isNotEmpty();
     }
   }
 
