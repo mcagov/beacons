@@ -24,7 +24,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
   class GetBeaconSearchResults {
 
     private static final String FIND_ALL_URI =
-      "/spring-api/beacon-search/search/find-all";
+      "/spring-api/find-all-beacons/search";
 
     @Test
     void shouldFindTheLegacyBeaconByHexIdStatusAndUses() throws Exception {
@@ -194,7 +194,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
         .expectStatus()
         .isOk()
         .expectBody()
-        .jsonPath("_embedded.beaconSearch[0]._links.self.href")
+        .jsonPath("_embedded.beaconSearch[0]._links.beaconSearchEntity.href")
         .isNotEmpty();
     }
   }

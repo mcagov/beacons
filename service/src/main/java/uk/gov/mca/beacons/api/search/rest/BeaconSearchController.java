@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
 
 @Slf4j
 @RestController
-@RequestMapping("/spring-api/beacon-search/search")
+@RequestMapping("/spring-api/find-all-beacons/search")
 @Tag(name = "BeaconSearch")
 public class BeaconSearchController {
 
@@ -33,8 +34,8 @@ public class BeaconSearchController {
     this.pagedAssembler = pagedAssembler;
   }
 
-  @Cacheable(value = "beacons-search")
-  @GetMapping("/find-all")
+  @Cacheable(value = "find-all-beacons")
+  @GetMapping("/")
   @Operation(summary = "Find all beacons matching specific fields (paginated)")
   public ResponseEntity<
     PagedModel<EntityModel<BeaconSearchEntity>>
@@ -63,11 +64,31 @@ public class BeaconSearchController {
       pageable
     );
 
-    var pagedModel = pagedAssembler.toModel(results, beacon ->
-      EntityModel.of(
-        beacon,
-        linkTo(BeaconSearchController.class).slash(beacon.getId()).withSelfRel()
+    Link relLink = linkTo(
+      methodOn(BeaconSearchController.class).findAllBeacons(
+        status,
+        uses,
+        hexId,
+        ownerName,
+        cospasSarsatNumber,
+        manufacturerSerialNumber,
+        pageable
       )
+    ).withRel("beaconSearch");
+
+    var pagedModel = pagedAssembler.toModel(
+      results,
+      beacon ->
+        EntityModel.of(
+          beacon,
+          linkTo(BeaconSearchController.class)
+            .slash(beacon.getId())
+            .withSelfRel(),
+          linkTo(BeaconSearchController.class)
+            .slash(beacon.getId())
+            .withRel("beaconSearchEntity")
+        ),
+      relLink
     );
 
     return ResponseEntity.ok(pagedModel);
