@@ -9,7 +9,7 @@ export const beaconSearchResultFixture = deepFreeze<IBeaconSearchResult>({
     number: 0,
   },
   _embedded: {
-    beaconSearch: [
+    beaconSearchEntities: [
       {
         id: "97b306aa-cbd0-4f09-aa24-2d876b983efb",
         hexId: "Hex me",
