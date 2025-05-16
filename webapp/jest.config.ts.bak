@@ -9,6 +9,7 @@ const config: Config.InitialOptions = {
     "^.+\\.(ts|tsx|js|jsx)?$": "babel-jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
+  testMatch: [ "**/test/**/*.test.ts" ],
   testPathIgnorePatterns: [
     "/node_modules/",
     "/.next/",
