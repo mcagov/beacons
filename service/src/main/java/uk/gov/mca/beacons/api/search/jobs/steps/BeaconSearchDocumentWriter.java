@@ -6,23 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
-import uk.gov.mca.beacons.api.search.repositories.BeaconElasticSearchRepository;
+import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
 
 @Component
 public class BeaconSearchDocumentWriter
   implements ItemWriter<BeaconSearchDocument> {
 
-  private final BeaconElasticSearchRepository beaconElasticSearchRepository;
+  private final BeaconSearchRepository beaconSearchRepository;
 
   @Autowired
   public BeaconSearchDocumentWriter(
-    BeaconElasticSearchRepository beaconElasticSearchRepository
+    BeaconSearchRepository beaconSearchRepository
   ) {
-    this.beaconElasticSearchRepository = beaconElasticSearchRepository;
+    this.beaconSearchRepository = beaconSearchRepository;
   }
 
   @Override
   public void write(@NonNull List<? extends BeaconSearchDocument> documents) {
-    beaconElasticSearchRepository.saveAll(documents);
+    beaconSearchRepository.saveAll(documents);
   }
 }

@@ -89,7 +89,6 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
       var legacyBeaconFixtureCospasSarsatNumberValue = 476899;
       var legacyBeaconFixtureManufacturerSerialNumber =
         "manufacturer_serial_number_value";
-      var legacyBeaconFixtureSerialNumber = 1763;
 
       var random = new Random();
       var uniqueLegacyBeaconHexId = UUID.randomUUID().toString();

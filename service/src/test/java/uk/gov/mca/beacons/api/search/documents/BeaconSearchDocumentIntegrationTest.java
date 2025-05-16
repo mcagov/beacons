@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.mca.beacons.api.BaseIntegrationTest;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconOwner;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconUse;
-import uk.gov.mca.beacons.api.search.repositories.BeaconElasticSearchRepository;
+import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
 
 public class BeaconSearchDocumentIntegrationTest extends BaseIntegrationTest {
 
   @Autowired
-  BeaconElasticSearchRepository beaconElasticSearchRepository;
+  BeaconSearchRepository beaconSearchRepository;
 
   @Test
   void shouldSaveAndRetrieveTheBeaconSearchDocument() {
@@ -50,12 +50,12 @@ public class BeaconSearchDocumentIntegrationTest extends BaseIntegrationTest {
     beaconSearchDocument.setBeaconOwner(beaconOwner);
 
     // act
-    BeaconSearchDocument savedDocument = beaconElasticSearchRepository.save(
+    BeaconSearchDocument savedDocument = beaconSearchRepository.save(
       beaconSearchDocument
     );
 
     BeaconSearchDocument retrievedDocument =
-      beaconElasticSearchRepository.findBeaconSearchDocumentByHexId(hexId);
+      beaconSearchRepository.findBeaconSearchDocumentByHexId(hexId);
 
     // assert
     assertThat(retrievedDocument.getHexId(), equalTo(hexId));
@@ -91,11 +91,11 @@ public class BeaconSearchDocumentIntegrationTest extends BaseIntegrationTest {
     beaconSearchDocument.setBeaconOwner(beaconOwner);
 
     // act
-    BeaconSearchDocument savedDocument = beaconElasticSearchRepository.save(
+    BeaconSearchDocument savedDocument = beaconSearchRepository.save(
       beaconSearchDocument
     );
 
-    Iterator records = beaconElasticSearchRepository.findAll().iterator();
+    Iterator records = beaconSearchRepository.findAll().iterator();
     List<BeaconSearchDocument> retrievedDocuments = IteratorUtils.toList(
       records
     );

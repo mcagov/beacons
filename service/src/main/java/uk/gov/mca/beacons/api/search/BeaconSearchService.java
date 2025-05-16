@@ -1,7 +1,6 @@
 package uk.gov.mca.beacons.api.search;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,18 +21,18 @@ import uk.gov.mca.beacons.api.comparison.rest.ComparisonResult;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
-import uk.gov.mca.beacons.api.search.beacons.repositories.BeaconSearchRepository;
+import uk.gov.mca.beacons.api.search.beacons.repositories.BeaconSearchSpecificationRepository;
 import uk.gov.mca.beacons.api.search.beacons.rest.BeaconSearchSpecification;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
 import uk.gov.mca.beacons.api.search.domain.BeaconOverview;
 import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
-import uk.gov.mca.beacons.api.search.repositories.BeaconElasticSearchRepository;
+import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
 
 @Service
 public class BeaconSearchService {
 
-  private final BeaconElasticSearchRepository beaconElasticSearchRepository;
   private final BeaconSearchRepository beaconSearchRepository;
+  private final BeaconSearchSpecificationRepository beaconSearchSpecificationRepository;
   private final BeaconRepository beaconRepository;
   private final BeaconOwnerRepository beaconOwnerRepository;
   private final BeaconUseRepository beaconUseRepository;
@@ -41,15 +40,16 @@ public class BeaconSearchService {
 
   @Autowired
   public BeaconSearchService(
-    BeaconElasticSearchRepository beaconElasticSearchRepository,
-    BeaconSearchRepository beaconSearchRepository,
+    BeaconSearchRepository beaconElasticSearchRepository,
+    BeaconSearchSpecificationRepository beaconSearchSpecificationRepository,
     BeaconRepository beaconRepository,
     BeaconOwnerRepository beaconOwnerRepository,
     BeaconUseRepository beaconUseRepository,
     LegacyBeaconRepository legacyBeaconRepository
   ) {
-    this.beaconElasticSearchRepository = beaconElasticSearchRepository;
-    this.beaconSearchRepository = beaconSearchRepository;
+    this.beaconSearchRepository = beaconElasticSearchRepository;
+    this.beaconSearchSpecificationRepository =
+      beaconSearchSpecificationRepository;
     this.beaconRepository = beaconRepository;
     this.beaconOwnerRepository = beaconOwnerRepository;
     this.beaconUseRepository = beaconUseRepository;
@@ -88,7 +88,7 @@ public class BeaconSearchService {
       owner,
       uses
     );
-    return beaconElasticSearchRepository.save(beaconSearchDocument);
+    return beaconSearchRepository.save(beaconSearchDocument);
   }
 
   public BeaconSearchDocument index(LegacyBeaconId legacyBeaconId) {
@@ -100,7 +100,7 @@ public class BeaconSearchService {
       legacyBeacon
     );
 
-    return beaconElasticSearchRepository.save(beaconSearchDocument);
+    return beaconSearchRepository.save(beaconSearchDocument);
   }
 
   public ComparisonResult compareDataSources() {
@@ -143,10 +143,8 @@ public class BeaconSearchService {
         )
       );
 
-    Page<BeaconSearchEntity> results = beaconSearchRepository.findAll(
-      spec,
-      pageable
-    );
+    Page<BeaconSearchEntity> results =
+      beaconSearchSpecificationRepository.findAll(spec, pageable);
 
     return results.getContent().isEmpty() ? Page.empty(pageable) : results;
   }
@@ -182,8 +180,7 @@ public class BeaconSearchService {
 
   private List<UUID> getBeaconSearchIds() {
     List<UUID> searchIds = new ArrayList<>();
-    Iterable<BeaconSearchDocument> response =
-      beaconElasticSearchRepository.findAll();
+    Iterable<BeaconSearchDocument> response = beaconSearchRepository.findAll();
 
     response.forEach(bsd -> searchIds.add(bsd.getId()));
 
