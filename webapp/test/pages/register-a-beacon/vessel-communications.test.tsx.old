@@ -1,17 +1,33 @@
 /**
- * @jest-environment jsdom
+ * @jest-environment @stryker-mutator/jest-runner/jest-env/jsdom
  */
 
 import { render } from "@testing-library/react";
 import React from "react";
 import { FormJSON } from "../../../src/lib/form/FormManager";
-import LandCommunications from "../../../src/pages/register-a-beacon/land-communications";
+import VesselCommunications from "../../../src/pages/register-a-beacon/vessel-communications";
 
-describe("LandOtherCommunications", () => {
-  const emptyLandOtherCommunicationsForm: FormJSON = {
+describe("VesselCommunications", () => {
+  const emptyVesselCommunicationsForm: FormJSON = {
     hasErrors: false,
     errorSummary: [],
     fields: {
+      callSign: {
+        value: "",
+        errorMessages: [],
+      },
+      vhfRadio: {
+        value: "",
+        errorMessages: [],
+      },
+      fixedVhfRadio: {
+        value: "",
+        errorMessages: [],
+      },
+      fixedVhfRadioInput: {
+        value: "",
+        errorMessages: [],
+      },
       portableVhfRadio: {
         value: "",
         errorMessages: [],
@@ -53,8 +69,8 @@ describe("LandOtherCommunications", () => {
 
   it("should have an autocomplete attribute on the mobile telephone number field", () => {
     const { container } = render(
-      <LandCommunications
-        form={emptyLandOtherCommunicationsForm}
+      <VesselCommunications
+        form={emptyVesselCommunicationsForm}
         useId={0}
         showCookieBanner={false}
       />,
@@ -71,8 +87,8 @@ describe("LandOtherCommunications", () => {
     // Because this is likely to result in users' mobile and other more commonly used
     // numbers being autocompleted into the satellite number field.  We don't want this.
     const { container } = render(
-      <LandCommunications
-        form={emptyLandOtherCommunicationsForm}
+      <VesselCommunications
+        form={emptyVesselCommunicationsForm}
         useId={0}
         showCookieBanner={false}
       />,

@@ -1,7 +1,5 @@
-// See: https://jestjs.io/docs/en/configuration for a full list of configuration options
-import type { Config } from "@jest/types";
-
-const config: Config.InitialOptions = {
+/** @type {import("@jest/types").Config.InitialOptions } */
+const config = {
   roots: ["<rootDir>"],
   setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"],
   transform: {
@@ -10,7 +8,7 @@ const config: Config.InitialOptions = {
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
   testPathIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
-  transformIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
+  transformIgnorePatterns: ["<rootDir>/node_modules", "<rootDir>/.next/", "<rootDir>/cypress"],
   verbose: true,
 };
 
