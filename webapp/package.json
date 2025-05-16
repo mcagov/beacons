@@ -47,6 +47,8 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@stryker-mutator/core": "^7.3.0",
+    "@stryker-mutator/jest-runner": "^7.3.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@types/cookie": "^0.4.0",

@@ -29,5 +29,6 @@ tests/cypress/screenshots/
 # Mutation testing
 .stryker-tmp
 */reports/mutation
+stryker.log
 
 .envrc

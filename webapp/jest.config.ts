@@ -9,7 +9,12 @@ const config: Config.InitialOptions = {
     "^.+\\.(ts|tsx|js|jsx)?$": "babel-jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
-  testPathIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/.next/",
+    "/cypress",
+    "/.stryker-tmp",
+  ],
   transformIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
   verbose: true,
 };
