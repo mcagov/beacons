@@ -1,5 +1,4 @@
-// See: https://jestjs.io/docs/en/configuration for a full list of configuration options
-
+/** @type {import("@jest/types").Config.InitialOptions } */
 const config = {
   roots: ["<rootDir>"],
   setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"],
@@ -8,15 +7,12 @@ const config = {
     "^.+\\.(ts|tsx|js|jsx)?$": "babel-jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
-  testMatch: ["**/test/**/*.test.ts"],
-  testPathIgnorePatterns: [
-    "/node_modules/",
-    "/.next/",
-    "/cypress",
-    // "/.stryker-tmp",
-    // "/stryker-tmp",
+  testPathIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
+  transformIgnorePatterns: [
+    "<rootDir>/node_modules",
+    "<rootDir>/.next/",
+    "<rootDir>/cypress",
   ],
-  transformIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
   verbose: true,
 };
 

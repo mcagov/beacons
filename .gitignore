@@ -28,7 +28,6 @@ tests/cypress/screenshots/
 
 # Mutation testing
 .stryker-tmp
-stryker-tmp
 */reports/mutation
 stryker.log
 

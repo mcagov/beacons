@@ -4,14 +4,5 @@
   "packageManager": "npm",
   "reporters": ["html", "clear-text", "progress"],
   "testRunner": "jest",
-  "jest": {
-    "configFile": "jest.config.js"
-  },
-  "testRunner_comment": "Take a look at (missing 'homepage' URL in package.json) for information about the jest plugin.",
-  "testRunnerNodeArgs": ["--require", "ts-node/register"],
-  "checkers_comment": ["typescript"],
-  "tsconfigFile": "tsconfig.json",
-  "coverageAnalysis": "off",
-  "disableTypeChecks_comment": "**/*.ts",
-  "tempDirName": "stryker-tmp"
+  "coverageAnalysis": "perTest"
 }

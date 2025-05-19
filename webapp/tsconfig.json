@@ -15,6 +15,20 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "jest.config.js",
+    "test/router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage.test.ts.old",
+    "test/pages/register-a-beacon/activity.test.tsx_old",
+    "test/pages/account/sign-up-or-sign-in.test.tsx_old",
+    "test/pages/register-a-beacon/application-complete.test.tsx_old",
+    "test/pages/register-a-beacon/land-communications.test.tsx_old",
+    "test/pages/register-a-beacon/additional-beacon-use.test.tsx.old",
+    "test/pages/register-a-beacon/vessel-communications.test.tsx.old",
+    "test/router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache.test.ts.old",
+    "test/pages/index.test.tsx.old"
+  ],
   "exclude": ["node_modules", "cypress.config.ts"]
 }
