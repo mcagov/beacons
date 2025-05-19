@@ -14,62 +14,48 @@ public class BeaconSearchSpecification {
   public static @Nullable Specification<BeaconSearchEntity> hasStatus(
     String status
   ) {
-    if (StringUtils.hasText(status)) {
-      return (root, query, cb) ->
-        likeLower(cb, root.get("beaconStatus"), status);
-    }
-    return null;
+    return hasFuzzySearchCriteria(status, "beaconStatus");
   }
 
   public static @Nullable Specification<BeaconSearchEntity> hasUses(
     String uses
   ) {
-    if (StringUtils.hasText(uses)) {
-      return (root, query, cb) ->
-        likeLower(cb, root.get("useActivities"), uses);
-    }
-    return null;
+    return hasFuzzySearchCriteria(uses, "useActivities");
   }
 
   public static @Nullable Specification<BeaconSearchEntity> hasHexId(
     String hexId
   ) {
-    if (StringUtils.hasText(hexId)) {
-      return (root, query, cb) -> likeLower(cb, root.get("hexId"), hexId);
-    }
-    return null;
+    return hasFuzzySearchCriteria(hexId, "hexId");
   }
 
   public static @Nullable Specification<BeaconSearchEntity> hasOwnerName(
     String ownerName
   ) {
-    if (StringUtils.hasText(ownerName)) {
-      return (root, query, cb) ->
-        likeLower(cb, root.get("ownerName"), ownerName);
-    }
-    return null;
+    return hasFuzzySearchCriteria(ownerName, "ownerName");
   }
 
   public static @Nullable Specification<
     BeaconSearchEntity
   > hasCospasSarsatNumber(String cospasSarsatNumber) {
-    if (StringUtils.hasText(cospasSarsatNumber)) {
-      return (root, query, cb) ->
-        likeLower(cb, root.get("cospasSarsatNumber"), cospasSarsatNumber);
-    }
-    return null;
+    return hasFuzzySearchCriteria(cospasSarsatNumber, "cospasSarsatNumber");
   }
 
   public static @Nullable Specification<
     BeaconSearchEntity
   > hasManufacturerSerialNumber(String manufacturerSerialNumber) {
-    if (StringUtils.hasText(manufacturerSerialNumber)) {
+    return hasFuzzySearchCriteria(
+      manufacturerSerialNumber,
+      "manufacturerSerialNumber"
+    );
+  }
+
+  private static @Nullable Specification<
+    BeaconSearchEntity
+  > hasFuzzySearchCriteria(String searchValue, String criteriaName) {
+    if (StringUtils.hasText(searchValue)) {
       return (root, query, cb) ->
-        likeLower(
-          cb,
-          root.get("manufacturerSerialNumber"),
-          manufacturerSerialNumber
-        );
+        likeLower(cb, root.get(criteriaName), searchValue);
     }
     return null;
   }
