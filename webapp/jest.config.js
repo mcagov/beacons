@@ -7,10 +7,6 @@ if (!process.cwd().includes("stryker-tmp")) {
   ]);
 }
 
-console.log(process.cwd());
-console.log(!process.cwd().includes("stryker-tmp"));
-console.log(testPathIgnorePatterns);
-
 /** @type {import("@jest/types").Config.InitialOptions } */
 const config = {
   roots: ["<rootDir>"],
