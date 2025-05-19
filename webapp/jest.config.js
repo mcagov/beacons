@@ -9,16 +9,18 @@ if (!process.cwd().includes("stryker-tmp")) {
 
 /** @type {import("@jest/types").Config.InitialOptions } */
 const config = {
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
+  preset: "ts-jest/presets/js-with-ts",
   roots: ["<rootDir>"],
   setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"],
+  testPathIgnorePatterns,
   transform: {
     ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform",
-    "^.+\\.(ts|tsx|js|jsx)?$": "babel-jest",
+    "\\.[jt]sx?$": "babel-jest",
   },
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
-  testPathIgnorePatterns,
   transformIgnorePatterns: [
-    "<rootDir>/node_modules",
+    "<rootDir>/node_modules(?!(@azure/msal-node))",
+    "<rootDir>/node_modules(?!(@azure/msal-node/node_modules/uuid))",
     "<rootDir>/.next/",
     "<rootDir>/cypress",
   ],
