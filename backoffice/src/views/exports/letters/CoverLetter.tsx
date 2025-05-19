@@ -25,7 +25,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
         <div className="half">
           <p className="bold">OFFICIAL</p>
           <img
-            src={process.env.PUBLIC_URL + "/mca-logo.png"}
+            src="/mca-logo.png"
             alt="Maritime &amp; Coastguard Agency"
             className="mcaLogo"
           />
@@ -173,10 +173,7 @@ const LetterFooter: FunctionComponent = (): JSX.Element => {
     <div className="footer full">
       <div className="text"></div>
       <img
-        src={
-          process.env.PUBLIC_URL +
-          "/assets/letter/Investors-in-People-Silver.png"
-        }
+        src="/assets/letter/Investors-in-People-Silver.png"
         alt="Investors in People silver logo"
         className="investors-in-people-logo"
       />
