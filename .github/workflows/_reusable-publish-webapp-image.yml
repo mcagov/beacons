@@ -16,6 +16,11 @@ on:
         required: false
         default: beacons-webapp
         type: string
+      push_to_ecr:
+        description: Whether the image should be published to ECR or not.
+        default: true
+        required: true
+        type: boolean
     secrets:
       aws_access_key_id:
         required: true
@@ -44,5 +49,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: webapp
-          push: true
+          push: ${{ inputs.push_to_ecr }}
           tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}

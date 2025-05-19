@@ -69,6 +69,7 @@ jobs:
     with:
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+      push_to_ecr: false
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -83,6 +84,7 @@ jobs:
     with:
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+      push_to_ecr: false
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -97,6 +99,7 @@ jobs:
     with:
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+      push_to_ecr: false
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -113,6 +116,7 @@ jobs:
     with:
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+      push_to_ecr: false
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -134,7 +138,7 @@ jobs:
       image-tag: ${{ github.sha }}
       test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
       test_azure_ad_tenant_id: 513fb495-9a90-425b-a49a-bc6ebe2a429e
-      environment: development
+      environment: ci
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
