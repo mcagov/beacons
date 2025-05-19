@@ -89,7 +89,7 @@ public class BeaconSearchController {
             manufacturerSerialNumber,
             pageable
           )
-        ).withSelfRel()
+        ).withRel("beaconSearch")
       );
       return ResponseEntity.ok(pagedModel);
     } catch (Exception ex) {

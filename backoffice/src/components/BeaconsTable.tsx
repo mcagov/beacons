@@ -223,7 +223,7 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
                 ...buildTableQuery(query),
               );
               const beacons =
-                response._embedded?.beaconSearchEntities?.map(
+                response._embedded?.beaconSearch?.map(
                   (item: IBeaconSearchResultData): BeaconRowData => ({
                     createdDate: item.createdDate,
                     lastModifiedDate: item.lastModifiedDate,
