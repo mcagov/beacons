@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
 
 @Repository
-public interface BeaconSearchRepository
+public interface BeaconSearchSpecificationRepository
   extends
     JpaRepository<BeaconSearchEntity, UUID>,
     JpaSpecificationExecutor<BeaconSearchEntity> {}
