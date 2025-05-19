@@ -1,3 +1,16 @@
+let testPathIgnorePatterns = ["/node_modules/", "/.next/", "/cypress"];
+// Make sure we don't try running tests etc. in temporary Stryker Mutator directories
+if (!process.cwd().includes("stryker-tmp")) {
+  testPathIgnorePatterns = testPathIgnorePatterns.concat([
+    "./.stryker-tmp",
+    "./stryker-tmp",
+  ]);
+}
+
+console.log(process.cwd());
+console.log(!process.cwd().includes("stryker-tmp"));
+console.log(testPathIgnorePatterns);
+
 /** @type {import("@jest/types").Config.InitialOptions } */
 const config = {
   roots: ["<rootDir>"],
@@ -7,7 +20,7 @@ const config = {
     "^.+\\.(ts|tsx|js|jsx)?$": "babel-jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
-  testPathIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
+  testPathIgnorePatterns,
   transformIgnorePatterns: [
     "<rootDir>/node_modules",
     "<rootDir>/.next/",
