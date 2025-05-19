@@ -17,7 +17,7 @@ describe("As a new user who wants to register a beacon", () => {
     givenIHaveSelected("#signUp");
     givenIHaveClickedContinue();
     thenTheUrlShouldContain(
-      "testb2cmcga.b2clogin.com/TESTB2CMCGA.onmicrosoft.com/B2C_1_signup_beacons"
+      "testb2cmcga.b2clogin.com/TESTB2CMCGA.onmicrosoft.com/B2C_1_signup_beacons",
     );
     givenIHaveWaitedForAzureB2C();
     iCanSeeAPageHeadingThatContains("Create a Beacon Registry Account");
@@ -25,7 +25,7 @@ describe("As a new user who wants to register a beacon", () => {
     thenICanSeeAnInputWithPlaceholder("#newPassword", "New Password");
     thenICanSeeAnInputWithPlaceholder(
       "#reenterPassword",
-      "Confirm New Password"
+      "Confirm New Password",
     );
   });
 
@@ -47,7 +47,7 @@ describe("As user with an account", () => {
     givenIHaveSelected("#signIn");
     givenIHaveClickedContinue();
     thenTheUrlShouldContain(
-      "testb2cmcga.b2clogin.com/TESTB2CMCGA.onmicrosoft.com/B2C_1_login_beacons"
+      "testb2cmcga.b2clogin.com/TESTB2CMCGA.onmicrosoft.com/B2C_1_login_beacons",
     );
     givenIHaveWaitedForAzureB2C();
     iCanSeeAPageHeadingThatContains("Sign In using my Beacon Registry Account");

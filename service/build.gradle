@@ -1,6 +1,6 @@
 plugins {
     id 'org.springframework.boot' version '2.5.4'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'com.adarshr.test-logger' version '3.2.0'
     id "io.freefair.lombok" version "6.4.2"
@@ -38,7 +38,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:8.5.7'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.6'
     implementation 'com.vladmihalcea:hibernate-types-55:2.15.1'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.7'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
     implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.7'
     implementation 'com.azure.spring:azure-spring-boot-starter-active-directory:4.0.+'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:2.6.6'

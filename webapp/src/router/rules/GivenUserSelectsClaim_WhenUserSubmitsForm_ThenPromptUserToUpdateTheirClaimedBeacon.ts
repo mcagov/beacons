@@ -15,7 +15,7 @@ export class GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateThe
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
-    legacyBeaconId: string
+    legacyBeaconId: string,
   ) {
     this.context = context;
     this.legacyBeaconId = legacyBeaconId;
@@ -23,7 +23,7 @@ export class GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateThe
 
   public async condition(): Promise<boolean> {
     const form = (await this.context.container.parseFormDataAs(
-      this.context.req
+      this.context.req,
     )) as any;
 
     return form.claimResponse === "claim";
@@ -40,12 +40,12 @@ export class GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateThe
       CreateRegistrationPageURLs.checkBeaconDetails +
         queryParams({
           previous: UrlBuilder.buildClaimLegacyBeaconUrl(legacyBeacon.id),
-        })
+        }),
     );
   }
 
   private async prePopulateTheDraftRegistrationWithMigratedDetails(
-    legacyBeacon: LegacyBeacon
+    legacyBeacon: LegacyBeacon,
   ): Promise<void> {
     const migratedDraftRegistration: DraftRegistration = {
       hexId: legacyBeacon.hexId,
@@ -59,7 +59,7 @@ export class GivenUserSelectsClaim_WhenUserSubmitsForm_ThenPromptUserToUpdateThe
 
     await this.context.container.saveDraftRegistration(
       this.cookieId(),
-      migratedDraftRegistration
+      migratedDraftRegistration,
     );
   }
 

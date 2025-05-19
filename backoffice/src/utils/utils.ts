@@ -2,7 +2,7 @@ import { IField } from "./IField";
 import { IUse } from "entities/IUse";
 
 export const deepFreeze = <T extends Record<string, any>>(
-  object: T
+  object: T,
 ): Readonly<T> => {
   const propNames = Object.getOwnPropertyNames(object);
 
@@ -40,7 +40,7 @@ export const getVesselCommunicationsFields = (use: IUse): IField[] => {
         key: `Communication type ${typeOfCommunicationIndex}`,
         value: "fixed vhf/dsc",
       },
-      { key: "MMSI", value: use?.fixedVhfRadioValue }
+      { key: "MMSI", value: use?.fixedVhfRadioValue },
     );
     typeOfCommunicationIndex++;
   }
@@ -51,7 +51,7 @@ export const getVesselCommunicationsFields = (use: IUse): IField[] => {
         key: `Communication type ${typeOfCommunicationIndex}`,
         value: "portable vhf/dsc",
       },
-      { key: "Portable MMSI", value: use?.portableVhfRadioValue }
+      { key: "Portable MMSI", value: use?.portableVhfRadioValue },
     );
     typeOfCommunicationIndex++;
   }
@@ -65,7 +65,7 @@ export const getVesselCommunicationsFields = (use: IUse): IField[] => {
       {
         key: "Phone number",
         value: use?.satelliteTelephoneValue,
-      }
+      },
     );
     typeOfCommunicationIndex++;
   }
@@ -79,7 +79,7 @@ export const getVesselCommunicationsFields = (use: IUse): IField[] => {
       {
         key: "Number",
         value: [use?.mobileTelephone1, use?.mobileTelephone2],
-      }
+      },
     );
     typeOfCommunicationIndex++;
   }
@@ -93,7 +93,7 @@ export const getVesselCommunicationsFields = (use: IUse): IField[] => {
       {
         key: "Details",
         value: use?.otherCommunicationValue,
-      }
+      },
     );
     typeOfCommunicationIndex++;
   }

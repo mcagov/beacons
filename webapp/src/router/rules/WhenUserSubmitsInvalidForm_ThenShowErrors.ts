@@ -11,7 +11,7 @@ export class WhenUserSubmitsInvalidForm_ThenShowErrors implements Rule {
   constructor(
     context: BeaconsGetServerSidePropsContext,
     validationRules: FormManagerFactory,
-    additionalProps?: Record<string, any>
+    additionalProps?: Record<string, any>,
   ) {
     this.context = context;
     this.validationRules = validationRules;

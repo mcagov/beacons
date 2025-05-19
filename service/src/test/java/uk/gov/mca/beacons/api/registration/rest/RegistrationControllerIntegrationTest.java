@@ -50,8 +50,10 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
 
     @BeforeEach
     void init() throws Exception {
-      beaconId =
-        seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId);
+      beaconId = seedRegistration(
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId
+      );
     }
 
     @Test
@@ -90,8 +92,10 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
 
     @BeforeEach
     void init() throws Exception {
-      beaconId =
-        seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId);
+      beaconId = seedRegistration(
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId
+      );
     }
 
     @Test
@@ -120,10 +124,14 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
 
     @BeforeEach
     void init() throws Exception {
-      firstBeaconId =
-        seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId);
-      secondBeaconId =
-        seedRegistration(RegistrationUseCase.BEACON_TO_UPDATE, accountHolderId);
+      firstBeaconId = seedRegistration(
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId
+      );
+      secondBeaconId = seedRegistration(
+        RegistrationUseCase.BEACON_TO_UPDATE,
+        accountHolderId
+      );
     }
 
     @Test
@@ -181,8 +189,10 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
 
     @BeforeEach
     void init() throws Exception {
-      beaconId =
-        seedRegistration(RegistrationUseCase.SINGLE_BEACON, accountHolderId);
+      beaconId = seedRegistration(
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId
+      );
     }
 
     @Test
@@ -239,8 +249,7 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
       String beaconId,
       String reason
     ) throws Exception {
-      DeleteBeaconDTO dto = DeleteBeaconDTO
-        .builder()
+      DeleteBeaconDTO dto = DeleteBeaconDTO.builder()
         .beaconId(UUID.fromString(beaconId))
         .accountHolderId(UUID.fromString(accountHolderId))
         .reason(reason)

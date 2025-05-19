@@ -143,44 +143,44 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const nextPageUrl = UrlBuilder.buildRegistrationUrl(
       Actions.update,
       Pages.summary,
-      registrationId
+      registrationId,
     );
     const previousPageUrl = UrlBuilder.buildRegistrationUrl(
       Actions.update,
       Pages.beaconOwnerAddress,
-      registrationId
+      registrationId,
     );
 
     return withAdditionalProps(
       new BeaconsPageRouter([
         new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-          context
+          context,
         ),
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context,
-          context.query.registrationId as string
+          context.query.registrationId as string,
         ),
         new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm<BeaconOwnerAddressForm>(
           context,
           validationRules,
-          mapper
+          mapper,
         ),
         new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors<BeaconOwnerAddressForm>(
           context,
           validationRules,
-          mapper
+          mapper,
         ),
         new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage<BeaconOwnerAddressForm>(
           context,
           validationRules,
           mapper,
-          nextPageUrl
+          nextPageUrl,
         ),
       ]),
-      { previousPageUrl }
+      { previousPageUrl },
     );
-  })
+  }),
 );
 
 const mapper: DraftRegistrationFormMapper<BeaconOwnerAddressForm> = {
@@ -235,7 +235,7 @@ const validationRules = ({
     ]),
     ownerAddressLine2: new FieldManager(ownerAddressLine2, [
       Validators.required(
-        "Enter the second line of the beacon owner's address"
+        "Enter the second line of the beacon owner's address",
       ),
     ]),
     ownerAddressLine3: new FieldManager(ownerAddressLine3),

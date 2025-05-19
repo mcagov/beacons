@@ -35,7 +35,7 @@ export const SearchResult = ({ item }: { item: any }): JSX.Element => {
         {exists(item.beaconUses) && (
           <Environments
             environments={item.beaconUses.map(
-              (use: { environment: any }) => use.environment
+              (use: { environment: any }) => use.environment,
             )}
           />
         )}

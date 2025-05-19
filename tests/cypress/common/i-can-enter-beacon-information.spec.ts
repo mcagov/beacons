@@ -16,15 +16,15 @@ export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
   givenIHaveACookieSetAndIVisit("/register-a-beacon/check-beacon-details");
   givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.beaconDetails.manufacturer,
-    "#manufacturer"
+    "#manufacturer",
   );
   givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.beaconDetails.model,
-    "#model"
+    "#model",
   );
   givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.beaconDetails.hexId,
-    "#hexId"
+    "#hexId",
   );
   givenIHaveClickedContinue();
 };
@@ -37,19 +37,19 @@ export const givenIHaveFilledInBeaconInformationPage = (): void => {
   givenIHaveTypedInAnEmptyField(beaconInfo.csta, "#csta");
   givenIHaveTypedInAnEmptyField(
     beaconInfo.batteryExpiryMonth.input,
-    "#batteryExpiryDateMonth"
+    "#batteryExpiryDateMonth",
   );
   givenIHaveTypedInAnEmptyField(
     beaconInfo.batteryExpiryYear,
-    "#batteryExpiryDateYear"
+    "#batteryExpiryDateYear",
   );
   givenIHaveTypedInAnEmptyField(
     beaconInfo.lastServicedMonth.input,
-    "#lastServicedDateMonth"
+    "#lastServicedDateMonth",
   );
   givenIHaveTypedInAnEmptyField(
     beaconInfo.lastServicedYear,
-    "#lastServicedDateYear"
+    "#lastServicedDateYear",
   );
   givenIHaveClickedContinue();
 };

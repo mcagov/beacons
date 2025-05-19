@@ -85,7 +85,7 @@ const BeaconOwnerAddressLocationForm: FunctionComponent<
 export const getServerSideProps: GetServerSideProps = withContainer(
   withSession(async (context: BeaconsGetServerSidePropsContext) => {
     const previousPageUrl = UrlBuilder.buildUpdateRegistrationSummaryUrl(
-      context.query.registrationId as string
+      context.query.registrationId as string,
     );
 
     return withAdditionalProps(
@@ -93,12 +93,12 @@ export const getServerSideProps: GetServerSideProps = withContainer(
         new WhenUserViewsPage_ThenDisplayPage(context),
         new WhenUserSubmitsBeaconOwnerLocationChoiceForm_RedirectAccordingly(
           context,
-          validationRules
+          validationRules,
         ),
       ]),
-      { previousPageUrl }
+      { previousPageUrl },
     );
-  })
+  }),
 );
 
 const validationRules = ({ beaconOwnerLocation }) => {
@@ -107,7 +107,7 @@ const validationRules = ({ beaconOwnerLocation }) => {
       beaconOwnerLocation,
       [Validators.required("Select an option")],
       [],
-      "unitedKingdom"
+      "unitedKingdom",
     ),
   });
 };
@@ -147,13 +147,13 @@ class WhenUserSubmitsBeaconOwnerLocationChoiceForm_RedirectAccordingly
         return UrlBuilder.buildRegistrationUrl(
           Actions.update,
           Pages.beaconOwnerAddressUnitedKingdom,
-          this.context.query.registrationId as string
+          this.context.query.registrationId as string,
         );
       case "restOfWorld":
         return UrlBuilder.buildRegistrationUrl(
           Actions.update,
           Pages.beaconOwnerAddressRestOfWorld,
-          this.context.query.registrationId as string
+          this.context.query.registrationId as string,
         );
     }
   }

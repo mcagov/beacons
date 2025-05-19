@@ -1,5 +1,5 @@
 # Base Docker image for multi-stage build
-FROM node:16.17 AS base
+FROM node:20.19 AS base
 
 WORKDIR /usr/app
 

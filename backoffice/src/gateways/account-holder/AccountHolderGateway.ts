@@ -14,18 +14,18 @@ export class AccountHolderGateway implements IAccountHolderGateway {
 
   public constructor(
     beaconResponseMapper: IBeaconResponseMapper,
-    authGateway: IAuthGateway
+    authGateway: IAuthGateway,
   ) {
     this._beaconResponseMapper = beaconResponseMapper;
     this._authGateway = authGateway;
   }
 
   public async getAccountHolder(
-    accountHolderId: string
+    accountHolderId: string,
   ): Promise<IAccountHolder> {
     try {
       const response = await this._makeGetRequest(
-        `/account-holder/${accountHolderId}`
+        `/account-holder/${accountHolderId}`,
       );
 
       return this._beaconResponseMapper.mapAccountHolder(response.data.data);
@@ -46,7 +46,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
 
   public async updateAccountHolder(
     accountHolderId: string,
-    updatedFields: Partial<IAccountHolder>
+    updatedFields: Partial<IAccountHolder>,
   ): Promise<IAccountHolder> {
     const data = {
       data: {
@@ -58,7 +58,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
     try {
       const response = await this._makePatchRequest(
         `/account-holder/${accountHolderId}`,
-        data
+        data,
       );
 
       return response.data;
@@ -66,31 +66,31 @@ export class AccountHolderGateway implements IAccountHolderGateway {
       switch (error?.response?.status) {
         case 500:
           throw new Error(
-            "Could not update the Account Holder - " + error?.response?.data
+            "Could not update the Account Holder - " + error?.response?.data,
           );
         case 404:
           throw new Error(
-            "Could not get the Account Holder's user from Azure B2C"
+            "Could not get the Account Holder's user from Azure B2C",
           );
         default:
           throw new Error(
             `An unexpected error occurred (Status Code: ${
               error?.response?.status || "Unknown"
-            })`
+            })`,
           );
       }
     }
   }
 
   public async getBeaconsForAccountHolderId(
-    accountHolderId: string
+    accountHolderId: string,
   ): Promise<IBeacon[]> {
     try {
       const response = await this._makeGetRequest(
-        `/account-holder/${accountHolderId}/beacons`
+        `/account-holder/${accountHolderId}/beacons`,
       );
       return response.data.map((b: any) =>
-        this._beaconResponseMapper.mapBeacon(b.attributes)
+        this._beaconResponseMapper.mapBeacon(b.attributes),
       );
     } catch (e) {
       throw e;
@@ -100,7 +100,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
   public async getAllAccountHolders(): Promise<IAccountHolderSearchResult> {
     try {
       const response = await this._makeGetRequest(
-        `/account-holder-search/search/find-all`
+        `/account-holder-search/search/find-all`,
       );
 
       return response.data;
@@ -112,7 +112,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
 
   public async transferBeaconsToAccountHolder(
     beaconIds: string[],
-    recipientAccountHolderId: string
+    recipientAccountHolderId: string,
   ): Promise<void> {
     const data = {
       beaconIds: beaconIds,
@@ -122,7 +122,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
     try {
       const response = await this._makePatchRequest(
         `/account-holder/transferBeacons`,
-        data
+        data,
       );
 
       return response.data;
@@ -131,13 +131,13 @@ export class AccountHolderGateway implements IAccountHolderGateway {
         case 500:
           throw new Error(
             "Could not transfer the Beacons to account Holder - " +
-              error?.response?.data
+              error?.response?.data,
           );
         default:
           throw new Error(
             `An unexpected error occurred (Status Code: ${
               error?.response?.status || "Unknown"
-            })`
+            })`,
           );
       }
     }
@@ -163,7 +163,7 @@ export class AccountHolderGateway implements IAccountHolderGateway {
 
   private async _makePatchRequest(
     path: string,
-    payload: {}
+    payload: {},
   ): Promise<AxiosResponse> {
     const accessToken = await this._authGateway.getAccessToken();
 

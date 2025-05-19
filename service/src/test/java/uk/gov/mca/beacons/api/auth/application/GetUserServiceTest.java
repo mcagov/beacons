@@ -28,8 +28,7 @@ class GetUserServiceTest {
     final UUID userId = UUID.randomUUID();
     final String name = "Cher Horowitz";
     final String email = "this.is@an.alaia";
-    final BackOfficeUser user = BackOfficeUser
-      .builder()
+    final BackOfficeUser user = BackOfficeUser.builder()
       .id(userId)
       .fullName(name)
       .email(email)

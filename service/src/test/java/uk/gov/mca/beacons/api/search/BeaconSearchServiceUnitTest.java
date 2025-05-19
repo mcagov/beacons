@@ -1,15 +1,11 @@
 package uk.gov.mca.beacons.api.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +17,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconRepository;
@@ -30,14 +31,19 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseRepository;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
+import uk.gov.mca.beacons.api.search.beacons.repositories.BeaconSearchRepository;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
-import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
+import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
+import uk.gov.mca.beacons.api.search.repositories.BeaconElasticSearchRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class BeaconSearchServiceUnitTest {
 
   @InjectMocks
   BeaconSearchService beaconSearchService;
+
+  @Mock
+  BeaconElasticSearchRepository beaconElasticSearchRepository;
 
   @Mock
   BeaconSearchRepository beaconSearchRepository;
@@ -56,24 +62,28 @@ public class BeaconSearchServiceUnitTest {
 
   @Test
   public void givenABeaconId_thenSaveACorrespondingBeaconSearchDocument() {
-    ArgumentCaptor<BeaconSearchDocument> argumentCaptor = ArgumentCaptor.forClass(
-      BeaconSearchDocument.class
-    );
+    ArgumentCaptor<BeaconSearchDocument> argumentCaptor =
+      ArgumentCaptor.forClass(BeaconSearchDocument.class);
     Beacon mockBeacon = createMockBeacon(BeaconStatus.NEW);
-    given(beaconRepository.findById(any(BeaconId.class)))
-      .willReturn(Optional.of(mockBeacon));
+    given(beaconRepository.findById(any(BeaconId.class))).willReturn(
+      Optional.of(mockBeacon)
+    );
     BeaconOwner mockBeaconOwner = createMockBeaconOwner();
 
-    given(beaconOwnerRepository.getByBeaconId(any(BeaconId.class)))
-      .willReturn(List.of(mockBeaconOwner));
+    given(beaconOwnerRepository.getByBeaconId(any(BeaconId.class))).willReturn(
+      List.of(mockBeaconOwner)
+    );
 
     BeaconUse mockBeaconUse = createMockBeaconUse();
 
-    given(beaconUseRepository.getBeaconUseByBeaconId(any(BeaconId.class)))
-      .willReturn(List.of(mockBeaconUse));
+    given(
+      beaconUseRepository.getBeaconUseByBeaconId(any(BeaconId.class))
+    ).willReturn(List.of(mockBeaconUse));
     beaconSearchService.index(mockBeacon.getId());
 
-    verify(beaconSearchRepository, times(1)).save(argumentCaptor.capture());
+    verify(beaconElasticSearchRepository, times(1)).save(
+      argumentCaptor.capture()
+    );
 
     BeaconSearchDocument beaconSearchDocument = argumentCaptor.getValue();
     assertThat(
@@ -97,19 +107,23 @@ public class BeaconSearchServiceUnitTest {
 
   @Test
   public void givenABeaconId_whenThatBeaconIdIsForADeletedBeacon_thenSaveACorrespondingBeaconSearchDocument() {
-    ArgumentCaptor<BeaconSearchDocument> argumentCaptor = ArgumentCaptor.forClass(
-      BeaconSearchDocument.class
-    );
+    ArgumentCaptor<BeaconSearchDocument> argumentCaptor =
+      ArgumentCaptor.forClass(BeaconSearchDocument.class);
     Beacon mockBeacon = createMockBeacon(BeaconStatus.DELETED);
-    given(beaconRepository.findById(any(BeaconId.class)))
-      .willReturn(Optional.of(mockBeacon));
-    given(beaconOwnerRepository.getByBeaconId(any(BeaconId.class)))
-      .willReturn(List.of());
-    given(beaconUseRepository.getBeaconUseByBeaconId(any(BeaconId.class)))
-      .willReturn(List.of());
+    given(beaconRepository.findById(any(BeaconId.class))).willReturn(
+      Optional.of(mockBeacon)
+    );
+    given(beaconOwnerRepository.getByBeaconId(any(BeaconId.class))).willReturn(
+      List.of()
+    );
+    given(
+      beaconUseRepository.getBeaconUseByBeaconId(any(BeaconId.class))
+    ).willReturn(List.of());
     beaconSearchService.index(mockBeacon.getId());
 
-    verify(beaconSearchRepository, times(1)).save(argumentCaptor.capture());
+    verify(beaconElasticSearchRepository, times(1)).save(
+      argumentCaptor.capture()
+    );
 
     BeaconSearchDocument beaconSearchDocument = argumentCaptor.getValue();
     assertThat(
@@ -127,24 +141,25 @@ public class BeaconSearchServiceUnitTest {
 
   @Test
   public void givenABeaconId_whenTheBeaconIdIsNotFound_thenThrowException() {
-    assertThrows(
-      IllegalArgumentException.class,
-      () -> beaconSearchService.index(new BeaconId(UUID.randomUUID()))
+    assertThrows(IllegalArgumentException.class, () ->
+      beaconSearchService.index(new BeaconId(UUID.randomUUID()))
     );
   }
 
   @Test
   public void givenALegacyBeaconId_thenSaveACorrespondingBeaconSearchDocument() {
-    ArgumentCaptor<BeaconSearchDocument> argumentCaptor = ArgumentCaptor.forClass(
-      BeaconSearchDocument.class
-    );
+    ArgumentCaptor<BeaconSearchDocument> argumentCaptor =
+      ArgumentCaptor.forClass(BeaconSearchDocument.class);
     LegacyBeacon mockLegacyBeacon = createMockLegacyBeacon();
-    given(legacyBeaconRepository.findById(any(LegacyBeaconId.class)))
-      .willReturn(Optional.of(mockLegacyBeacon));
+    given(
+      legacyBeaconRepository.findById(any(LegacyBeaconId.class))
+    ).willReturn(Optional.of(mockLegacyBeacon));
 
     beaconSearchService.index(mockLegacyBeacon.getId());
 
-    verify(beaconSearchRepository, times(1)).save(argumentCaptor.capture());
+    verify(beaconElasticSearchRepository, times(1)).save(
+      argumentCaptor.capture()
+    );
 
     BeaconSearchDocument beaconSearchDocument = argumentCaptor.getValue();
     assertThat(
@@ -159,10 +174,83 @@ public class BeaconSearchServiceUnitTest {
 
   @Test
   public void givenALegacyBeaconId_whenTheLegacyBeaconIdIsNotFound_thenThrowException() {
-    assertThrows(
-      IllegalArgumentException.class,
-      () -> beaconSearchService.index(new LegacyBeaconId(UUID.randomUUID()))
+    assertThrows(IllegalArgumentException.class, () ->
+      beaconSearchService.index(new LegacyBeaconId(UUID.randomUUID()))
     );
+  }
+
+  @Test
+  public void givenFindAllBeacons_WithValidFilters_ThenShouldCallRepositoryWithSpecificationAndPageable() {
+    String status = "status";
+    String uses = "uses";
+    String hexID = "hexID";
+    String ownerName = "ownerName";
+    String cospasSarsatNumber = "cospasSarsatNumber";
+    String manufacturerSerialNumber = "manufacturerSerialNumber";
+
+    Pageable pageable = PageRequest.of(0, 20);
+
+    List<BeaconSearchEntity> beacons = List.of(new BeaconSearchEntity());
+    Page<BeaconSearchEntity> expectedPage = new PageImpl<>(
+      beacons,
+      pageable,
+      1
+    );
+
+    when(
+      beaconSearchRepository.findAll(any(Specification.class), eq(pageable))
+    ).thenReturn(expectedPage);
+
+    Page<BeaconSearchEntity> result = beaconSearchService.findAllBeacons(
+      status,
+      uses,
+      hexID,
+      ownerName,
+      cospasSarsatNumber,
+      manufacturerSerialNumber,
+      pageable
+    );
+
+    assertThat(result, equalTo(expectedPage));
+    assertThat(result.getContent(), hasSize(1));
+    verify(beaconSearchRepository, times(1)).findAll(
+      any(Specification.class),
+      eq(pageable)
+    );
+  }
+
+  @Test
+  public void givenFindAllBeacons_WithInvalidFilters_ThenShouldReturnEmptyPageable() {
+    String status = "status";
+    String uses = "uses";
+    String hexID = "hexID";
+    String ownerName = "ownerName";
+    String cospasSarsatNumber = "cospasSarsatNumber";
+    String manufacturerSerialNumber = "manufacturerSerialNumber";
+
+    Pageable pageable = PageRequest.of(0, 20);
+
+    Page<BeaconSearchEntity> expectedPage = Page.empty(pageable);
+
+    when(
+      beaconSearchRepository.findAll(any(Specification.class), eq(pageable))
+    ).thenReturn(expectedPage);
+
+    Page<BeaconSearchEntity> result = beaconSearchService.findAllBeacons(
+      status,
+      uses,
+      hexID,
+      ownerName,
+      cospasSarsatNumber,
+      manufacturerSerialNumber,
+      pageable
+    );
+
+    assertThat(result, equalTo(expectedPage));
+    assertThat(result.getContent(), empty());
+    assertThat(result.getSize(), equalTo(20));
+    assertThat(result.getTotalPages(), equalTo(0));
+    assertThat(result.getNumber(), equalTo(0));
   }
 
   private Beacon createMockBeacon(BeaconStatus status) {
@@ -199,8 +287,9 @@ public class BeaconSearchServiceUnitTest {
     given(legacyData.getBeacon()).willReturn(legacyBeaconDetails);
     given(legacyData.getUses()).willReturn(List.of(legacyUse));
     given(legacyData.getOwner()).willReturn(legacyOwner);
-    given(legacyBeacon.getId())
-      .willReturn(new LegacyBeaconId(UUID.randomUUID()));
+    given(legacyBeacon.getId()).willReturn(
+      new LegacyBeaconId(UUID.randomUUID())
+    );
     given(legacyBeacon.getData()).willReturn(legacyData);
     given(legacyBeacon.getHexId()).willReturn("1D0EA08C52FFBFF");
     given(legacyBeacon.getBeaconStatus()).willReturn("CLAIMED");

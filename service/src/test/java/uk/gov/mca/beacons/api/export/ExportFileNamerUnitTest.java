@@ -30,8 +30,9 @@ class ExportFileNamerUnitTest {
   @Test
   public void prefixWithTodaysDateInYyyyMMddFormat() {
     when(clock.instant()).thenReturn(Instant.EPOCH);
-    String yyyyMMdd = new SimpleDateFormat("yyyyMMdd")
-      .format(Date.from(Instant.EPOCH));
+    String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(
+      Date.from(Instant.EPOCH)
+    );
 
     String filename = fileNamer.constructTodaysExportFilename(
       ExportFileNamer.FileType.EXCEL_SPREADSHEET,

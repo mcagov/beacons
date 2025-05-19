@@ -82,10 +82,10 @@ describe("As an account holder", () => {
     iCanSeeMyLandUse();
 
     iPerformOperationAndWaitForNewPageToLoad(() =>
-      whenIClickTheButtonContaining("Accept and send")
+      whenIClickTheButtonContaining("Accept and send"),
     );
     iCanSeeAPageHeadingThatContains(
-      "Your beacon registration has been updated"
+      "Your beacon registration has been updated",
     );
 
     whenIClickTheButtonContaining("Return to your Beacon Registry Account");
@@ -123,8 +123,8 @@ const thenIAmPromptedToConfirmDeletionOfMyUse = (use) =>
     .contains(
       new RegExp(
         `(?=.*are you sure)(?=.*${use.environment})(?=.*${use.activity})`,
-        "i"
-      )
+        "i",
+      ),
     );
 
 const iCanSeeMyUse = (use): void => {
@@ -171,7 +171,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyMaritimeUse = () => {
     "update",
     "use",
     "/2/",
-    "environment"
+    "environment",
   );
 
   givenIHaveSelected("#commercial");
@@ -182,7 +182,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyMaritimeUse = () => {
     "update",
     "use",
     "/2/",
-    "purpose"
+    "purpose",
   );
 
   givenIHaveSelected("#motor-vessel");
@@ -193,7 +193,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyMaritimeUse = () => {
     "update",
     "use",
     "/2/",
-    "activity"
+    "activity",
   );
 
   givenIHaveEnteredInformationAboutMyVessel();
@@ -204,7 +204,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyMaritimeUse = () => {
     "update",
     "use",
     "/2/",
-    "about-the-vessel"
+    "about-the-vessel",
   );
 
   givenIHaveEnteredMyVesselCommunicationDetails();
@@ -215,7 +215,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyMaritimeUse = () => {
     "update",
     "use",
     "/2/",
-    "vessel-communications"
+    "vessel-communications",
   );
 
   whenIClickBack();
@@ -240,7 +240,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyAviationUse = () => {
     "update",
     "use",
     "/3/",
-    "environment"
+    "environment",
   );
 
   givenIHaveSelected("#pleasure");
@@ -251,7 +251,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyAviationUse = () => {
     "update",
     "use",
     "/3/",
-    "purpose"
+    "purpose",
   );
 
   givenIHaveSelected("#glider");
@@ -262,7 +262,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyAviationUse = () => {
     "update",
     "use",
     "/3/",
-    "activity"
+    "activity",
   );
 
   givenIHaveEnteredInformationAboutMyAircraft();
@@ -273,7 +273,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyAviationUse = () => {
     "update",
     "use",
     "/3/",
-    "about-the-aircraft"
+    "about-the-aircraft",
   );
 
   givenIHaveEnteredMyAircraftCommunicationDetails();
@@ -284,7 +284,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyAviationUse = () => {
     "update",
     "use",
     "/3/",
-    "aircraft-communications"
+    "aircraft-communications",
   );
 
   whenIClickBack();
@@ -309,7 +309,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyLandUse = () => {
     "update",
     "use",
     "/4/",
-    "environment"
+    "environment",
   );
 
   givenIHaveSelected("#driving");
@@ -320,7 +320,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyLandUse = () => {
     "update",
     "use",
     "/4/",
-    "activity"
+    "activity",
   );
 
   givenIHaveEnteredMyLandCommunicationDetails();
@@ -331,7 +331,7 @@ const iCanUseTheBackLinksAndContinueButtonsToNavigateMyLandUse = () => {
     "update",
     "use",
     "/4/",
-    "land-communications"
+    "land-communications",
   );
 
   whenIClickBack();

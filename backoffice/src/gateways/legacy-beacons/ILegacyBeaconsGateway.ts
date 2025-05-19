@@ -5,6 +5,6 @@ export interface ILegacyBeaconsGateway {
   getLegacyBeacon: (id: string) => Promise<ILegacyBeacon>;
   updateRecoveryEmail: (
     id: string,
-    updatedRecoveryEmail: string
+    updatedRecoveryEmail: string,
   ) => Promise<IUpdateRecoveryEmailData>;
 }

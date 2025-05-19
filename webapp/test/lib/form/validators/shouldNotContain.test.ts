@@ -8,7 +8,7 @@ describe("shouldNotContain validator", () => {
   it("should error if value contains something it shouldn't", () => {
     ({ errorMessage, applies } = Validators.shouldNotContain(
       expectedErrorMessage,
-      "O"
+      "O",
     ));
 
     expect(applies("contains an O")).toBe(true);
@@ -17,7 +17,7 @@ describe("shouldNotContain validator", () => {
   it("should error if value contains something else it shouldn't", () => {
     ({ errorMessage, applies } = Validators.shouldNotContain(
       expectedErrorMessage,
-      "XXX"
+      "XXX",
     ));
 
     expect(applies("contains XXX")).toBe(true);
@@ -26,7 +26,7 @@ describe("shouldNotContain validator", () => {
   it("should error if value contains something else it shouldn't", () => {
     ({ errorMessage, applies } = Validators.shouldNotContain(
       expectedErrorMessage,
-      "verboten string"
+      "verboten string",
     ));
 
     expect(applies("verboten string is a great restaurant")).toBe(true);

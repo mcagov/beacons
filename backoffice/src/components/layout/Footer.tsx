@@ -16,7 +16,7 @@ const useStyles = makeStyles(() =>
     mcaLogo: {
       height: "100px",
     },
-  })
+  }),
 );
 
 export const Footer: FunctionComponent = (): JSX.Element | null => {
