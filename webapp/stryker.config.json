@@ -8,6 +8,5 @@
     "progress"
   ],
   "testRunner": "jest",
-  "inPlace": true,
   "coverageAnalysis": "perTest"
 }

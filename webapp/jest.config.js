@@ -7,7 +7,7 @@ const config = {
     "^.+\\.(ts|tsx|js|jsx)?$": "babel-jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
-  testPathIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
+  testPathIgnorePatterns: ["/node_modules/", "/.next/", "/cypress", "./.stryker-tmp/"],
   transformIgnorePatterns: ["<rootDir>/node_modules", "<rootDir>/.next/", "<rootDir>/cypress"],
   verbose: true,
 };
