@@ -3,10 +3,10 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 ARG feedback_email_addresses
-ENV REACT_APP_FEEDBACK_EMAIL_ADDRESSES=$feedback_email_addresses
+ENV VITE_APP_FEEDBACK_EMAIL_ADDRESSES=$feedback_email_addresses
 
 ARG mui_pro_license_key
-ENV REACT_APP_MUI_PRO_LICENSE_KEY=$mui_pro_license_key
+ENV VITE_APP_MUI_PRO_LICENSE_KEY=$mui_pro_license_key
 
 COPY . ./
 RUN npm ci && npm run build

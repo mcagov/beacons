@@ -12,7 +12,7 @@ import "./index.scss";
 import reportWebVitals from "./reportWebVitals";
 import { LicenseInfo } from "@mui/x-license-pro";
 
-LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_PRO_LICENSE_KEY || "");
+LicenseInfo.setLicenseKey(import.meta.env.VITE_APP_MUI_PRO_LICENSE_KEY || "");
 
 const theme: Theme = createTheme({
   palette: {
