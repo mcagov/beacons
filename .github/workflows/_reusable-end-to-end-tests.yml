@@ -118,6 +118,7 @@ jobs:
           spec: cypress/endToEnd/*
           browser: chrome
           wait-on: "http://localhost:8080/spring-api/actuator/health"
+          wait-on-timeout: 120
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
