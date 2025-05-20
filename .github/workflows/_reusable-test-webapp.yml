@@ -84,6 +84,7 @@ jobs:
           build: npm run build
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
+          install: false
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
