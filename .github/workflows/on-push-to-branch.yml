@@ -59,8 +59,8 @@ jobs:
       microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
       microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
 
-  publish_webapp_image:
-    name: Publish Webapp
+  build_webapp_image:
+    name: Build Webapp image
     needs:
       - test_backoffice
       - test_service
