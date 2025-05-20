@@ -9,18 +9,23 @@ on:
         type: string
       registry_url:
         description: The URL of the registry where the image should be published
-        required: true
+        required: false
         type: string
       repository_name:
         description: The name of the image to be published
         required: false
         default: opensearch-proxy
         type: string
+      push_to_ecr:
+        description: Whether the image should be published to ECR or not.
+        default: true
+        required: true
+        type: boolean
     secrets:
       aws_access_key_id:
-        required: true
+        required: false
       aws_secret_access_key:
-        required: true
+        required: false
 
 jobs:
   publish_opensearch_proxy_image:
@@ -32,6 +37,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to ECR
+        if: inputs.registry_url != ''
         uses: docker/login-action@v3
         with:
           registry: ${{ inputs.registry_url }}
@@ -41,5 +47,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./opensearch/proxy
-          push: true
+          push: ${{ inputs.push_to_ecr }}
           tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
