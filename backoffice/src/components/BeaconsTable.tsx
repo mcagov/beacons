@@ -222,21 +222,22 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
               const response = await beaconsGateway.getAllBeacons(
                 ...buildTableQuery(query),
               );
-              const beacons = response._embedded.beaconSearch.map(
-                (item: IBeaconSearchResultData): BeaconRowData => ({
-                  createdDate: item.createdDate,
-                  lastModifiedDate: item.lastModifiedDate,
-                  beaconStatus: item.beaconStatus,
-                  hexId: item.hexId,
-                  ownerName: item.ownerName ?? "N/A",
-                  useActivities: item.useActivities ?? "N/A",
-                  id: item.id,
-                  beaconType: item.beaconType,
-                  cospasSarsatNumber: item.cospasSarsatNumber ?? "N/A",
-                  manufacturerSerialNumber:
-                    item.manufacturerSerialNumber ?? "N/A",
-                }),
-              );
+              const beacons =
+                response._embedded?.beaconSearch?.map(
+                  (item: IBeaconSearchResultData): BeaconRowData => ({
+                    createdDate: item.createdDate,
+                    lastModifiedDate: item.lastModifiedDate,
+                    beaconStatus: item.beaconStatus,
+                    hexId: item.hexId,
+                    ownerName: item.ownerName ?? "N/A",
+                    useActivities: item.useActivities ?? "N/A",
+                    id: item.id,
+                    beaconType: item.beaconType,
+                    cospasSarsatNumber: item.cospasSarsatNumber ?? "N/A",
+                    manufacturerSerialNumber:
+                      item.manufacturerSerialNumber ?? "N/A",
+                  }),
+                ) ?? [];
               resolve({
                 data: beacons,
                 page: response.page.number,

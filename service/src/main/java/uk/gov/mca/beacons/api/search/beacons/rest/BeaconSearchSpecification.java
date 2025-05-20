@@ -1,0 +1,73 @@
+package uk.gov.mca.beacons.api.search.beacons.rest;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
+import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
+
+public class BeaconSearchSpecification {
+
+  public static @Nullable Specification<BeaconSearchEntity> hasStatus(
+    String status
+  ) {
+    return hasFuzzySearchCriteria(status, "beaconStatus");
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> hasUses(
+    String uses
+  ) {
+    return hasFuzzySearchCriteria(uses, "useActivities");
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> hasHexId(
+    String hexId
+  ) {
+    return hasFuzzySearchCriteria(hexId, "hexId");
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> hasOwnerName(
+    String ownerName
+  ) {
+    return hasFuzzySearchCriteria(ownerName, "ownerName");
+  }
+
+  public static @Nullable Specification<
+    BeaconSearchEntity
+  > hasCospasSarsatNumber(String cospasSarsatNumber) {
+    return hasFuzzySearchCriteria(cospasSarsatNumber, "cospasSarsatNumber");
+  }
+
+  public static @Nullable Specification<
+    BeaconSearchEntity
+  > hasManufacturerSerialNumber(String manufacturerSerialNumber) {
+    return hasFuzzySearchCriteria(
+      manufacturerSerialNumber,
+      "manufacturerSerialNumber"
+    );
+  }
+
+  private static @Nullable Specification<
+    BeaconSearchEntity
+  > hasFuzzySearchCriteria(String searchValue, String criteriaName) {
+    if (StringUtils.hasText(searchValue)) {
+      return (root, query, cb) ->
+        likeLower(cb, root.get(criteriaName), searchValue);
+    }
+    return null;
+  }
+
+  private static Predicate likeLower(
+    @NotNull CriteriaBuilder cb,
+    Expression<String> expression,
+    @NotNull String pattern
+  ) {
+    return cb.like(
+      cb.lower(cb.coalesce(expression, "")),
+      "%" + pattern.toLowerCase() + "%"
+    );
+  }
+}
