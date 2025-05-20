@@ -83,6 +83,7 @@ jobs:
           start: npm run start
           build: npm run build
           wait-on: "http://localhost:3000"
+          wait-on-timeout: 120
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
