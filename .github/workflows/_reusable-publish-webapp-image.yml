@@ -9,7 +9,7 @@ on:
         type: string
       registry_url:
         description: The URL of the registry where the image should be published
-        required: true
+        required: false
         type: string
       repository_name:
         description: The name of the image to be published
@@ -23,9 +23,9 @@ on:
         type: boolean
     secrets:
       aws_access_key_id:
-        required: true
+        required: false
       aws_secret_access_key:
-        required: true
+        required: false
 
 defaults:
   run:

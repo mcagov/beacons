@@ -68,14 +68,10 @@ jobs:
     uses: ./.github/workflows/_reusable-publish-webapp-image.yml
     with:
       tag: ${{ github.sha }}
-      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
       push_to_ecr: false
-    secrets:
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-  publish_service_image:
-    name: Publish Service
+  build_service_image:
+    name: Build Service image
     needs:
       - test_backoffice
       - test_service
@@ -83,14 +79,10 @@ jobs:
     uses: ./.github/workflows/_reusable-publish-service-image.yml
     with:
       tag: ${{ github.sha }}
-      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
       push_to_ecr: false
-    secrets:
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-  publish_backoffice_image:
-    name: Publish Backoffice
+  build_backoffice_image:
+    name: Publish Backoffice image
     needs:
       - test_backoffice
       - test_service
@@ -98,16 +90,13 @@ jobs:
     uses: ./.github/workflows/_reusable-publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
-      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
       push_to_ecr: false
     secrets:
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       feedback_email_addresses: ${{ secrets.BACKOFFICE_FEEDBACK_EMAIL_ADDRESSES }}
       mui_pro_license_key: ${{ secrets.MUI_PRO_LICENSE_KEY }}
 
-  publish_opensearch_proxy_image:
-    name: OpenSearch proxy
+  build_opensearch_proxy_image:
+    name: Build OpenSearch proxy image
     needs:
       - test_backoffice
       - test_service
@@ -115,11 +104,7 @@ jobs:
     uses: ./.github/workflows/_reusable-publish-opensearch-proxy-image.yml
     with:
       tag: ${{ github.sha }}
-      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
       push_to_ecr: false
-    secrets:
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   end_to_end_tests:
     name: End-to-end tests
@@ -129,10 +114,10 @@ jobs:
       - test_webapp
       - test_service
       - test_backoffice
-      - publish_webapp_image
-      - publish_service_image
-      - publish_backoffice_image
-      - publish_opensearch_proxy_image
+      - build_webapp_image
+      - build_service_image
+      - build_backoffice_image
+      - build_opensearch_proxy_image
     uses: ./.github/workflows/_reusable-end-to-end-tests.yml
     with:
       image-tag: ${{ github.sha }}
