@@ -138,7 +138,7 @@ jobs:
       image-tag: ${{ github.sha }}
       test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
       test_azure_ad_tenant_id: 513fb495-9a90-425b-a49a-bc6ebe2a429e
-      environment: ci
+      environment: ci-test
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
