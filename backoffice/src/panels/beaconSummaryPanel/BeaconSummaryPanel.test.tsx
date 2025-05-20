@@ -80,13 +80,13 @@ describe("BeaconSummaryPanel", () => {
     expect(beaconsGatewayDouble.getBeacon).toHaveBeenCalledTimes(1);
 
     const editButton = await screen.findByText(/edit summary/i);
-    userEvent.click(editButton);
+    await userEvent.click(editButton);
     expect(beaconsGatewayDouble.getBeacon).toHaveBeenCalledTimes(2);
 
     const cancelButton = await screen.findByRole("button", {
       name: "Cancel",
     });
-    userEvent.click(cancelButton);
+    await userEvent.click(cancelButton);
     expect(beaconsGatewayDouble.getBeacon).toHaveBeenCalledTimes(3);
   });
 
