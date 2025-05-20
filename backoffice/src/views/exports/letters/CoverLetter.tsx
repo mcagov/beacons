@@ -113,6 +113,7 @@ export const RegistrationBody: FunctionComponent = (): JSX.Element => {
         it has been recorded on the UK Beacon database and a copy of the record
         is attached for you to check.
       </p>
+      {/*eslint react/no-unescaped-entities: "warn"*/}
       <p>
         It is a legal requirement to register UK 406 MHz beacons and depending
         on the size or your vessel or aircraft, you may be required to prove

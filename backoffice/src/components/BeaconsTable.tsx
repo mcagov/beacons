@@ -216,6 +216,7 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
       <MaterialTable
         icons={tableIcons}
         columns={columns}
+        /*eslint no-async-promise-executor: "warn"*/
         data={(query) =>
           new Promise(async (resolve, _reject) => {
             try {

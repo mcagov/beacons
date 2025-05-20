@@ -63,9 +63,12 @@
     "plugins": [
       "react"
     ],
+    "ignores": [
+      "dist"
+    ],
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "eslint:recommended",
+      "plugin:react/recommended"
     ]
   },
   "lint-staged": {
@@ -114,8 +117,11 @@
   },
   "devDependencies": {
     "@types/uuid": "^8.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@vitejs/plugin-react": "^4.4.1",
     "enhanced-resolve": "^5.9.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "express": "^5.1.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
