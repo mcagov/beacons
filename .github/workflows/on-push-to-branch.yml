@@ -90,6 +90,7 @@ jobs:
     uses: ./.github/workflows/_reusable-publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
+      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
       push_to_ecr: false
     secrets:
       feedback_email_addresses: ${{ secrets.BACKOFFICE_FEEDBACK_EMAIL_ADDRESSES }}
