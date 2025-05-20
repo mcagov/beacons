@@ -5,6 +5,6 @@
   "reporters": ["progress", "clear-text", "html"],
   "coverageAnalysis": "off",
   "jest": {
-    "projectType": "create-react-app"
+    "projectType": "custom"
   }
 }

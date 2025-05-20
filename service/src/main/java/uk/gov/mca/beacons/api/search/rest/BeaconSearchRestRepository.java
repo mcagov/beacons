@@ -20,7 +20,7 @@ import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
 /**
  * This {@link RepositoryRestResource} exposes controller endpoints to enable searching across beacon records using JPA's built in pagination/sorting capability.
  * <p>
- * See the docs: https://docs.spring.io/spring-data/rest/docs/current/reference/html/#reference for more info
+ * See the docs: <a href="https://docs.spring.io/spring-data/rest/docs/current/reference/html/#reference">...</a> for more info
  */
 @RepositoryRestResource(
   path = "beacon-search",
