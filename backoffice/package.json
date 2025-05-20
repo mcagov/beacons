@@ -35,11 +35,9 @@
     "axios": "^1.9.0",
     "css-select": "^5.1.0",
     "date-fns": "^4.1.0",
-    "eslint": "^8.23.0",
     "formik": "^2.2.9",
     "inflected": "^2.1.0",
     "jest-canvas-mock": "^2.3.1",
-    "lint-staged": "^11.1.2",
     "lodash": "^4.17.21",
     "polished": "^4.2.2",
     "react": "^17.0.2",
@@ -58,18 +56,6 @@
   "engines": {
     "node": "20.19.x",
     "npm": "10.8.x"
-  },
-  "eslintConfig": {
-    "plugins": [
-      "react"
-    ],
-    "ignores": [
-      "dist"
-    ],
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended"
-    ]
   },
   "lint-staged": {
     "*.{js, jsx, ts, tsx}": "eslint --cache --fix"
@@ -116,17 +102,23 @@
     ]
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.9",
+    "@eslint/js": "^9.27.0",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@vitejs/plugin-react": "^4.4.1",
     "enhanced-resolve": "^5.9.0",
+    "eslint": "^9.27.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "express": "^5.1.0",
+    "globals": "^16.1.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "lint-staged": "^16.0.0",
     "sass": "^1.54.5",
     "ts-jest": "^29.3.4",
+    "typescript-eslint": "^8.32.1",
     "vite": "^6.3.5",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4"
