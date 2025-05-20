@@ -5,7 +5,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +26,6 @@ public class BeaconSearchController {
   private final BeaconSearchService beaconSearchService;
   private final PagedResourcesAssembler<BeaconSearchEntity> pagedAssembler;
 
-  @Autowired
   public BeaconSearchController(
     BeaconSearchService beaconSearchService,
     PagedResourcesAssembler<BeaconSearchEntity> pagedAssembler
