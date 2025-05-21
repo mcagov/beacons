@@ -16,7 +16,7 @@ describe("<BeaconsTable>", () => {
     };
   });
 
-  const numberOfMockedBeacons = beaconSearchResultFixture.page.totalElements;
+  const numberOfMockedBeacons = beaconSearchResultFixture.totalElements;
 
   it("queries the injected gateway for beacon data", async () => {
     render(
