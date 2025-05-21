@@ -68,7 +68,11 @@ jobs:
     uses: ./.github/workflows/_reusable-publish-webapp-image.yml
     with:
       tag: ${{ github.sha }}
+      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
       push_to_ecr: false
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   build_service_image:
     name: Build Service image
@@ -80,9 +84,13 @@ jobs:
     with:
       tag: ${{ github.sha }}
       push_to_ecr: false
+      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   build_backoffice_image:
-    name: Publish Backoffice image
+    name: Build Backoffice image
     needs:
       - test_backoffice
       - test_service
@@ -90,10 +98,13 @@ jobs:
     uses: ./.github/workflows/_reusable-publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
+      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
       push_to_ecr: false
     secrets:
       feedback_email_addresses: ${{ secrets.BACKOFFICE_FEEDBACK_EMAIL_ADDRESSES }}
       mui_pro_license_key: ${{ secrets.MUI_PRO_LICENSE_KEY }}
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   build_opensearch_proxy_image:
     name: Build OpenSearch proxy image
@@ -105,6 +116,10 @@ jobs:
     with:
       tag: ${{ github.sha }}
       push_to_ecr: false
+      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   end_to_end_tests:
     name: End-to-end tests
