@@ -17,11 +17,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconRepository;
@@ -31,9 +26,7 @@ import uk.gov.mca.beacons.api.beaconowner.domain.BeaconOwnerRepository;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUse;
 import uk.gov.mca.beacons.api.beaconuse.domain.BeaconUseRepository;
 import uk.gov.mca.beacons.api.legacybeacon.domain.*;
-import uk.gov.mca.beacons.api.search.beacons.repositories.BeaconSearchSpecificationRepository;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
-import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
 import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,9 +37,6 @@ public class BeaconSearchServiceUnitTest {
 
   @Mock
   BeaconSearchRepository beaconSearchRepository;
-
-  @Mock
-  BeaconSearchSpecificationRepository beaconSearchSpecificationRepository;
 
   @Mock
   BeaconRepository beaconRepository;
@@ -171,86 +161,6 @@ public class BeaconSearchServiceUnitTest {
     assertThrows(IllegalArgumentException.class, () ->
       beaconSearchService.index(new LegacyBeaconId(UUID.randomUUID()))
     );
-  }
-
-  @Test
-  public void givenFindAllBeacons_WithValidFilters_ThenShouldCallRepositoryWithSpecificationAndPageable() {
-    String status = "status";
-    String uses = "uses";
-    String hexID = "hexID";
-    String ownerName = "ownerName";
-    String cospasSarsatNumber = "cospasSarsatNumber";
-    String manufacturerSerialNumber = "manufacturerSerialNumber";
-
-    Pageable pageable = PageRequest.of(0, 20);
-
-    List<BeaconSearchEntity> beacons = List.of(new BeaconSearchEntity());
-    Page<BeaconSearchEntity> expectedPage = new PageImpl<>(
-      beacons,
-      pageable,
-      1
-    );
-
-    when(
-      beaconSearchSpecificationRepository.findAll(
-        any(Specification.class),
-        eq(pageable)
-      )
-    ).thenReturn(expectedPage);
-
-    Page<BeaconSearchEntity> result = beaconSearchService.findAllBeacons(
-      status,
-      uses,
-      hexID,
-      ownerName,
-      cospasSarsatNumber,
-      manufacturerSerialNumber,
-      pageable
-    );
-
-    assertThat(result, equalTo(expectedPage));
-    assertThat(result.getContent(), hasSize(1));
-    verify(beaconSearchSpecificationRepository, times(1)).findAll(
-      any(Specification.class),
-      eq(pageable)
-    );
-  }
-
-  @Test
-  public void givenFindAllBeacons_WithInvalidFilters_ThenShouldReturnEmptyPageable() {
-    String status = "status";
-    String uses = "uses";
-    String hexID = "hexID";
-    String ownerName = "ownerName";
-    String cospasSarsatNumber = "cospasSarsatNumber";
-    String manufacturerSerialNumber = "manufacturerSerialNumber";
-
-    Pageable pageable = PageRequest.of(0, 20);
-
-    Page<BeaconSearchEntity> expectedPage = Page.empty(pageable);
-
-    when(
-      beaconSearchSpecificationRepository.findAll(
-        any(Specification.class),
-        eq(pageable)
-      )
-    ).thenReturn(expectedPage);
-
-    Page<BeaconSearchEntity> result = beaconSearchService.findAllBeacons(
-      status,
-      uses,
-      hexID,
-      ownerName,
-      cospasSarsatNumber,
-      manufacturerSerialNumber,
-      pageable
-    );
-
-    assertThat(result, equalTo(expectedPage));
-    assertThat(result.getContent(), empty());
-    assertThat(result.getSize(), equalTo(20));
-    assertThat(result.getTotalPages(), equalTo(0));
-    assertThat(result.getNumber(), equalTo(0));
   }
 
   private Beacon createMockBeacon(BeaconStatus status) {

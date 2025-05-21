@@ -10,6 +10,10 @@ public class RetryUtils {
       return run.get();
     } catch (Throwable e) {
       if (retries > 0) {
+        System.out.printf(
+          "⚠️  Test failed. Retrying... (%d retries left)%n",
+          retries
+        );
         Thread.sleep(5000);
         return runWithRetries(retries - 1, run);
       } else {
