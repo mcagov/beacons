@@ -26,6 +26,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
     AccountHolder("/spring-api/account-holder"),
     Beacon("/spring-api/beacons"),
     LegacyBeacon("/spring-api/legacy-beacon"),
+    BeaconSearch("/spring-api/search/beacons"),
     Migration("/spring-api/migrate"),
     Note("/spring-api/note"),
     Registration("/spring-api/registrations"),

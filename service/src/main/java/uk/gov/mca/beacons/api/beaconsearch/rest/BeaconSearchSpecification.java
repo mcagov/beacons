@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.search.beacons.rest;
+package uk.gov.mca.beacons.api.beaconsearch.rest;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;

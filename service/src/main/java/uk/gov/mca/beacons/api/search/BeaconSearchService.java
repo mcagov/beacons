@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
@@ -21,18 +18,14 @@ import uk.gov.mca.beacons.api.comparison.rest.ComparisonResult;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeacon;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconId;
 import uk.gov.mca.beacons.api.legacybeacon.domain.LegacyBeaconRepository;
-import uk.gov.mca.beacons.api.search.beacons.repositories.BeaconSearchSpecificationRepository;
-import uk.gov.mca.beacons.api.search.beacons.rest.BeaconSearchSpecification;
 import uk.gov.mca.beacons.api.search.documents.BeaconSearchDocument;
 import uk.gov.mca.beacons.api.search.domain.BeaconOverview;
-import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
 import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
 
 @Service
 public class BeaconSearchService {
 
   private final BeaconSearchRepository beaconSearchRepository;
-  private final BeaconSearchSpecificationRepository beaconSearchSpecificationRepository;
   private final BeaconRepository beaconRepository;
   private final BeaconOwnerRepository beaconOwnerRepository;
   private final BeaconUseRepository beaconUseRepository;
@@ -41,15 +34,12 @@ public class BeaconSearchService {
   @Autowired
   public BeaconSearchService(
     BeaconSearchRepository beaconElasticSearchRepository,
-    BeaconSearchSpecificationRepository beaconSearchSpecificationRepository,
     BeaconRepository beaconRepository,
     BeaconOwnerRepository beaconOwnerRepository,
     BeaconUseRepository beaconUseRepository,
     LegacyBeaconRepository legacyBeaconRepository
   ) {
     this.beaconSearchRepository = beaconElasticSearchRepository;
-    this.beaconSearchSpecificationRepository =
-      beaconSearchSpecificationRepository;
     this.beaconRepository = beaconRepository;
     this.beaconOwnerRepository = beaconOwnerRepository;
     this.beaconUseRepository = beaconUseRepository;
@@ -119,34 +109,6 @@ public class BeaconSearchService {
     result.setMissing(missingBeacons);
 
     return result;
-  }
-
-  public Page<BeaconSearchEntity> findAllBeacons(
-    String status,
-    String uses,
-    String hexId,
-    String ownerName,
-    String cospasSarsatNumber,
-    String manufacturerSerialNumber,
-    Pageable pageable
-  ) {
-    Specification<BeaconSearchEntity> spec = Specification.where(
-      BeaconSearchSpecification.hasStatus(status)
-    )
-      .and(BeaconSearchSpecification.hasUses(uses))
-      .and(BeaconSearchSpecification.hasHexId(hexId))
-      .and(BeaconSearchSpecification.hasOwnerName(ownerName))
-      .and(BeaconSearchSpecification.hasCospasSarsatNumber(cospasSarsatNumber))
-      .and(
-        BeaconSearchSpecification.hasManufacturerSerialNumber(
-          manufacturerSerialNumber
-        )
-      );
-
-    Page<BeaconSearchEntity> results =
-      beaconSearchSpecificationRepository.findAll(spec, pageable);
-
-    return results.getContent().isEmpty() ? Page.empty(pageable) : results;
   }
 
   private List<BeaconOverview> getBeaconOverviews() {

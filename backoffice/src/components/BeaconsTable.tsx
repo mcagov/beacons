@@ -224,7 +224,7 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
                 ...buildTableQuery(query),
               );
               const beacons =
-                response._embedded?.beaconSearch?.map(
+                response.content?.map(
                   (item: IBeaconSearchResultData): BeaconRowData => ({
                     createdDate: item.createdDate,
                     lastModifiedDate: item.lastModifiedDate,
@@ -241,8 +241,8 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
                 ) ?? [];
               resolve({
                 data: beacons,
-                page: response.page.number,
-                totalCount: response.page.totalElements,
+                page: response.number,
+                totalCount: response.totalElements,
               });
             } catch (error) {
               logToServer.error(
