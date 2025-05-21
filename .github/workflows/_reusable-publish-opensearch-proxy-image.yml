@@ -19,7 +19,7 @@ on:
       push_to_ecr:
         description: Whether the image should be published to ECR or not.
         default: true
-        required: true
+        required: false
         type: boolean
     secrets:
       aws_access_key_id:
