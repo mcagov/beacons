@@ -25,7 +25,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
         <div className="half">
           <p className="bold">OFFICIAL</p>
           <img
-            src={process.env.PUBLIC_URL + "/mca-logo.png"}
+            src="/mca-logo.png"
             alt="Maritime &amp; Coastguard Agency"
             className="mcaLogo"
           />
@@ -113,6 +113,7 @@ export const RegistrationBody: FunctionComponent = (): JSX.Element => {
         it has been recorded on the UK Beacon database and a copy of the record
         is attached for you to check.
       </p>
+      {/*eslint react/no-unescaped-entities: "warn"*/}
       <p>
         It is a legal requirement to register UK 406 MHz beacons and depending
         on the size or your vessel or aircraft, you may be required to prove
@@ -173,10 +174,7 @@ const LetterFooter: FunctionComponent = (): JSX.Element => {
     <div className="footer full">
       <div className="text"></div>
       <img
-        src={
-          process.env.PUBLIC_URL +
-          "/assets/letter/Investors-in-People-Silver.png"
-        }
+        src="/assets/letter/Investors-in-People-Silver.png"
         alt="Investors in People silver logo"
         className="investors-in-people-logo"
       />

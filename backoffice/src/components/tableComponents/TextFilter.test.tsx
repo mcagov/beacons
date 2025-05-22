@@ -29,7 +29,7 @@ function renderTextFilter({
 }
 
 describe("TextFilter", () => {
-  it("Should call onFilterChanged after blur", () => {
+  it("Should call onFilterChanged after blur", async () => {
     const columnDef = {
       tableData: {
         id: "test id",
@@ -43,14 +43,14 @@ describe("TextFilter", () => {
     renderTextFilter({ columnDef, onFilterChanged });
     const inputNode = screen.getByTestId("text-filter-input");
 
-    userEvent.type(inputNode, "testing 123");
+    await userEvent.type(inputNode, "testing 123");
     inputNode.blur();
 
     expect(onFilterChanged).toHaveBeenCalledWith("test id", "testing 123");
     expect(onFilterChanged).toHaveBeenCalledTimes(1);
   });
 
-  it("Should not call onFilterChanged if the value does not change", () => {
+  it("Should not call onFilterChanged if the value does not change", async () => {
     const columnDef = {
       tableData: {
         id: "test id",
@@ -64,8 +64,8 @@ describe("TextFilter", () => {
 
     const inputNode = screen.getByTestId("text-filter-input");
 
-    userEvent.clear(inputNode);
-    userEvent.type(inputNode, "Already filled");
+    await userEvent.clear(inputNode);
+    await userEvent.type(inputNode, "Already filled");
     inputNode.blur();
 
     expect(onFilterChanged).toHaveBeenCalledTimes(0);

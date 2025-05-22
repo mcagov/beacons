@@ -1,4 +1,4 @@
-import { BeaconStatuses, BeaconTypes } from "entities/IBeacon";
+import { BeaconStatuses, BeaconTypes } from "../entities/IBeacon";
 import { ILegacyBeacon } from "../entities/ILegacyBeacon";
 import { deepFreeze } from "../utils/utils";
 

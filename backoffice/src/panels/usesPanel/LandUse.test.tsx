@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Activities, IUse } from "entities/IUse";
+import { Activities, IUse } from "../../entities/IUse";
 import React from "react";
 import { LandUse } from "./LandUse";
 

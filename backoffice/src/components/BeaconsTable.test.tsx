@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
+import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { BrowserRouter } from "react-router-dom";
 import { beaconSearchResultFixture } from "../fixtures/beaconSearchResult.fixture";
 import { BeaconsTable } from "./BeaconsTable";
