@@ -51,8 +51,8 @@ We have decided to migrate the `backoffice/` codebase from Create React App to V
 
 ## Supporting Documentation
 
-- [Vite Documentation](https://vitejs.dev/)
-- [Migration Guide: CRA to Vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project)
+- [Vite Documentation](https://vitejs.dev/guide/#scaffolding-your-first-vite-project)
+- [Migration Guide: CRA to Vite](https://dev.to/henriquejensen/migrating-from-create-react-app-to-vite-a-quick-and-easy-guide-5e72)
 - [Create React App repository (deprecated)](https://github.com/facebook/create-react-app)
 - [React documentation: Creating a React App](https://react.dev/learn/creating-a-react-app)
 - [Known vulnerabilities in CRA](https://github.com/facebook/create-react-app/issues/17040)
