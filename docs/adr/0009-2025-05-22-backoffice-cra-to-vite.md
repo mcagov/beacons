@@ -57,4 +57,3 @@ We have decided to migrate the `backoffice/` codebase from Create React App to V
 - [React documentation: Creating a React App](https://react.dev/learn/creating-a-react-app)
 - [Known vulnerabilities in CRA](https://github.com/facebook/create-react-app/issues/17040)
 - [Unmerged dependency bumps in CRA](https://github.com/facebook/create-react-app/pull/13778)
-- [Related Trello card: Migrate backoffice to Vite](https://trello.com/)
