@@ -8,12 +8,17 @@ import java.util.UUID;
 import java.util.function.Function;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
 class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
+
+  @Autowired
+  private WebTestClient webTestClient;
 
   @Nested
   class GetBeaconSearchResults {
