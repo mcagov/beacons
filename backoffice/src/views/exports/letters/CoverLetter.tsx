@@ -25,7 +25,7 @@ export const CoverLetter: FunctionComponent<LetterProps> = ({
         <div className="half">
           <p className="bold">OFFICIAL</p>
           <img
-            src="/mca-logo.png"
+            src={import.meta.env.BASE_URL + "/mca-logo.png"}
             alt="Maritime &amp; Coastguard Agency"
             className="mcaLogo"
           />
