@@ -58,6 +58,8 @@ Both unit and integration tests go in [src/test/java/uk/gov/mca/beacons/api](src
 
 ### Running tests
 
+Note that the integration tests require Docker to be running on your local development environment.
+
 - `./gradlew clean test` runs unit tests
 - `./gradlew clean integrationTest` runs integration tests
 - `./gradlew clean check` runs both unit and integration tests
