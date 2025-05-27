@@ -27,7 +27,7 @@ export const Footer: FunctionComponent = (): JSX.Element | null => {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <img
-            src="/mca-logo-dark.png"
+            src={import.meta.env.BASE_URL + "/mca-logo-dark.png"}
             alt="mca logo"
             className={classes.mcaLogo}
           />

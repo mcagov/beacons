@@ -66,7 +66,7 @@ export const CertificateHeader: FunctionComponent<BeaconExportProps> = ({
       </div>
       <div className="logo">
         <img
-          src="/mca-logo.png"
+          src={import.meta.env.BASE_URL + "/mca-logo.png"}
           alt="Maritime &amp; Coastguard Agency"
           className="mcaLogo"
         />
