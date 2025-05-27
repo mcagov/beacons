@@ -78,7 +78,6 @@ jobs:
     environment: ${{ inputs.environment }}
     strategy:
       fail-fast: false
-      max-parallel: 64
       matrix:
         specs: ${{ fromJson(needs.build-cypress-matrix.outputs.specs) }}
 
@@ -130,6 +129,7 @@ jobs:
           MICROSOFT_GRAPH_B2C_TENANT_NAME: ${{ secrets.microsoft_graph_b2c_tenant_name }}
 
         with:
+          working-directory: tests
           spec: ${{ matrix.specs }}
           browser: chrome
           wait-on: "http://localhost:8080/spring-api/actuator/health"

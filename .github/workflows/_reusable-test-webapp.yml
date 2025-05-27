@@ -50,7 +50,18 @@ jobs:
       - name: Run tests
         run: npm run test
 
+  build-cypress-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+      - id: set-matrix
+        run: echo "specs=$(node cypress/support/locateCypressSpecsToRun.js)" >> $GITHUB_OUTPUT
+    outputs:
+      specs: ${{ steps.set-matrix.outputs.specs }}
+
   ui_tests:
+    needs: [build-cypress-matrix]
     name: User interface tests
     runs-on: ubuntu-latest
     services:
@@ -78,7 +89,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: webapp
-          spec: cypress/integration/**/*.spec.ts
+          spec: ${{ matrix.specs }}
           browser: chrome
           start: npm run start
           build: npm run build
