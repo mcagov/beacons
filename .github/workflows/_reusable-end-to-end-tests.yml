@@ -61,6 +61,25 @@ defaults:
     working-directory: tests
 
 jobs:
+  build-cypress-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+      - id: set-matrix
+        run: echo "specs=$(node cypress/support/locateCypressSpecsToRun.js)" >> $GITHUB_OUTPUT
+    outputs:
+      specs: ${{ steps.set-matrix.outputs.specs }}
+
+  regression:
+    needs: [build-cypress-matrix]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 64
+      matrix:
+        specs: ${{ fromJson(needs.build-cypress-matrix.outputs.specs) }}
+
   end_to_end_tests:
     name: End to end tests
     runs-on: ubuntu-latest
@@ -114,8 +133,7 @@ jobs:
           MICROSOFT_GRAPH_B2C_TENANT_NAME: ${{ secrets.microsoft_graph_b2c_tenant_name }}
 
         with:
-          working-directory: tests
-          spec: cypress/endToEnd/*
+          spec: ${{ matrix.specs }}
           browser: chrome
           wait-on: "http://localhost:8080/spring-api/actuator/health"
       - uses: actions/upload-artifact@v4
