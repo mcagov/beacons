@@ -71,19 +71,16 @@ jobs:
     outputs:
       specs: ${{ steps.set-matrix.outputs.specs }}
 
-  regression:
+  end_to_end_tests:
     needs: [build-cypress-matrix]
+    name: End to end tests
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     strategy:
       fail-fast: false
       max-parallel: 64
       matrix:
         specs: ${{ fromJson(needs.build-cypress-matrix.outputs.specs) }}
-
-  end_to_end_tests:
-    name: End to end tests
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
 
     steps:
       - uses: actions/checkout@v4
