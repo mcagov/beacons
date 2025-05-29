@@ -86,8 +86,10 @@ services:
       - opensearch
       - postgres
     depends_on:
-      - opensearch
-      - postgres
+      opensearch:
+        condition: service_healthy
+      postgres:
+        condition: service_started
     healthcheck:
       test:
         [
