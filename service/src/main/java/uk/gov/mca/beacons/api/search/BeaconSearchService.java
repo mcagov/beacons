@@ -33,13 +33,13 @@ public class BeaconSearchService {
 
   @Autowired
   public BeaconSearchService(
-    BeaconSearchRepository beaconElasticSearchRepository,
+    BeaconSearchRepository beaconSearchRepository,
     BeaconRepository beaconRepository,
     BeaconOwnerRepository beaconOwnerRepository,
     BeaconUseRepository beaconUseRepository,
     LegacyBeaconRepository legacyBeaconRepository
   ) {
-    this.beaconSearchRepository = beaconElasticSearchRepository;
+    this.beaconSearchRepository = beaconSearchRepository;
     this.beaconRepository = beaconRepository;
     this.beaconOwnerRepository = beaconOwnerRepository;
     this.beaconUseRepository = beaconUseRepository;
