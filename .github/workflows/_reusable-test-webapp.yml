@@ -1,4 +1,9 @@
 name: Test Webapp
+
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_call:
     secrets:

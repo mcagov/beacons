@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import javax.batch.runtime.BatchStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 
 @AutoConfigureWebTestClient
+@Slf4j
 public abstract class WebIntegrationTest extends BaseIntegrationTest {
 
   @Autowired
