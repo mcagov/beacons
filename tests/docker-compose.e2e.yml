@@ -19,6 +19,9 @@ services:
       - "DISABLE_SECURITY_PLUGIN=true" # disables security plugin entirely in OpenSearch by setting plugins.security.disabled: true in opensearch.yml
     ports:
       - 9200:9200
+    depends_on:
+      postgres:
+        condition: service_started
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200"]
       interval: 10s
@@ -86,10 +89,8 @@ services:
       - opensearch
       - postgres
     depends_on:
-      opensearch:
+      service:
         condition: service_healthy
-      postgres:
-        condition: service_started
     healthcheck:
       test:
         [
