@@ -10,19 +10,13 @@ import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.util.UriBuilder;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
 @Slf4j
 class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
-
-  @Autowired
-  private WebTestClient webTestClient;
 
   @Nested
   class GetBeaconSearchResults {
