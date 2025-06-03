@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { signIn } from "next-auth/client";
+import { signIn } from "next-auth/react";
 import React, { FunctionComponent, useEffect } from "react";
 import { AccountPageURLs } from "../../lib/urls";
 
@@ -11,7 +11,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({
   callbackUrl,
 }: SignInPageProps): JSX.Element => {
   useEffect(() => {
-    signIn("azureb2c", { callbackUrl });
+    signIn("azure-ad-b2c", { callbackUrl });
   });
   return <></>;
 };

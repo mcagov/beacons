@@ -55,7 +55,7 @@ describe("LandOtherCommunications", () => {
     const { container } = render(
       <LandCommunications
         form={emptyLandOtherCommunicationsForm}
-        useId={0}
+        useId={"0"}
         showCookieBanner={false}
       />,
     );
@@ -73,7 +73,7 @@ describe("LandOtherCommunications", () => {
     const { container } = render(
       <LandCommunications
         form={emptyLandOtherCommunicationsForm}
-        useId={0}
+        useId={"0"}
         showCookieBanner={false}
       />,
     );

@@ -1,5 +1,5 @@
 import { AccountHolder } from "../../src/entities/AccountHolder";
-import { AccountHolderGateway } from "../../src/gateways/AccountHolderGateway";
+import { AccountHolderGateway } from "../../src/gateways/interfaces/AccountHolderGateway";
 import { IAppContainer } from "../../src/lib/IAppContainer";
 import { getOrCreateAccountHolder } from "../../src/useCases/getOrCreateAccountHolder";
 

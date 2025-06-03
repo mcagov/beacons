@@ -1,4 +1,4 @@
-import { AccountHolderGateway } from "../../src/gateways/AccountHolderGateway";
+import { AccountHolderGateway } from "../../src/gateways/interfaces/AccountHolderGateway";
 import { IAppContainer } from "../../src/lib/IAppContainer";
 import { getAccountHolderId } from "../../src/useCases/getAccountHolderId";
 
