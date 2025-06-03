@@ -68,6 +68,11 @@ services:
       MICROSOFT_GRAPH_B2C_TENANT_NAME: TESTB2CMCGA
     volumes:
       - /tmp/beacons:/var/export
+    depends_on:
+      opensearch:
+        condition: service_healthy
+      postgres:
+        condition: service_started
 
   backoffice:
     build:
@@ -114,8 +119,10 @@ services:
       - opensearch
       - postgres
     depends_on:
-      - opensearch
-      - postgres
+      opensearch:
+        condition: service_healthy
+      postgres:
+        condition: service_started
     healthcheck:
       test:
         [
