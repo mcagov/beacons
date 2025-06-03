@@ -39,7 +39,7 @@
     "next": "^13.5.11",
     "next-auth": "^4.24.11",
     "nextjs-basic-auth-middleware": "^0.2.0",
-    "notifications-node-client": "^5.1.1",
+    "notifications-node-client": "^8.2.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "redis-json": "^6.0.3",
