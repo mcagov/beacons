@@ -19,6 +19,7 @@ const options: NextAuthOptions = {
   debug,
   providers: [
     AzureADB2CProvider({
+      id: "azureb2c",
       tenantId: tenantName,
       clientId,
       clientSecret,
@@ -35,7 +36,6 @@ const options: NextAuthOptions = {
           id: profile.sub,
           name: `${profile.given_name ?? ""} ${profile.family_name ?? ""}`.trim(),
           email: emails[0],
-          // Add any other custom fields if needed
         };
       },
     }),

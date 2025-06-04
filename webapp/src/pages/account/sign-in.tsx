@@ -11,7 +11,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({
   callbackUrl,
 }: SignInPageProps): JSX.Element => {
   useEffect(() => {
-    signIn("azure-ad-b2c", { callbackUrl });
+    signIn("azureb2c", { callbackUrl });
   });
   return <></>;
 };
