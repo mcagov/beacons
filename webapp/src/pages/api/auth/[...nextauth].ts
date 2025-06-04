@@ -1,11 +1,9 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import AzureADB2CProvider from "next-auth/providers/azure-ad-b2c";
 import { toArray } from "../../../lib/utils";
 
 const debug = process.env.NODE_ENV !== "production";
 const tenantName = process.env.AZURE_B2C_TENANT_NAME;
-const tenantId = process.env.AZURE_B2C_TENANT_ID;
 const userFlow = process.env.AZURE_B2C_LOGIN_FLOW;
 const clientId = process.env.AZURE_B2C_CLIENT_ID;
 const clientSecret = process.env.AZURE_B2C_CLIENT_SECRET;
@@ -42,10 +40,6 @@ const options: NextAuthOptions = {
       },
     }),
   ],
-  pages: {
-    signOut: "/account/sign-out",
-    signIn: "/account/sign-in",
-  },
   callbacks: {
     async session({ session, token }) {
       // Map authId for your app

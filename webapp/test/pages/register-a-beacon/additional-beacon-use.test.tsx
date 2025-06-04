@@ -19,7 +19,6 @@ import AdditionalBeaconUse, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/additional-beacon-use";
 import { getMockUse } from "../../mocks";
-import { getDraftRegistration } from "../../../src/useCases/getDraftRegistration";
 
 // Mock getSession from next-auth/react
 jest.mock("next-auth/react", () => ({
