@@ -19,6 +19,12 @@ import AdditionalBeaconUse, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/additional-beacon-use";
 import { getMockUse } from "../../mocks";
+import { getDraftRegistration } from "../../../src/useCases/getDraftRegistration";
+
+// Mock getSession from next-auth/react
+jest.mock("next-auth/react", () => ({
+  getSession: jest.fn(),
+}));
 
 describe("AdditionalBeaconUse page", () => {
   it("given there are no uses, displays a 'no assigned uses' message", () => {
@@ -128,7 +134,7 @@ describe("AdditionalBeaconUse page", () => {
           useId: nonExistentUseId,
         },
         container: {
-          getCachedRegistration: jest.fn().mockResolvedValue(mockRegistration),
+          getDraftRegistration: jest.fn().mockResolvedValue(mockRegistration),
           sessionGateway: mockSessionGateway,
         },
         req: {
