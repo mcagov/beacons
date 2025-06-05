@@ -120,7 +120,7 @@ services:
       - postgres
     depends_on:
       opensearch:
-        condition: service_healthy
+        condition: service_started
       postgres:
         condition: service_started
     healthcheck:
