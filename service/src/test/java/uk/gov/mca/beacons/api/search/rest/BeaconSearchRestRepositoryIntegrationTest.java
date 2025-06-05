@@ -1,18 +1,22 @@
 package uk.gov.mca.beacons.api.search.rest;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.util.UriBuilder;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
 
+@Slf4j
 class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
 
   @Nested
@@ -177,7 +181,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
           uriBuilder
             .path(FIND_BY_ACCOUNT_HOLDER)
             .queryParam("email", randomEmailAddress)
-            .queryParam("accountHolderId", UUID.randomUUID().toString())
+            .queryParam("accountHolderId", "")
             .build()
         )
         .exchange()
@@ -192,8 +196,15 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
 
     @Test
     void shouldFindTheBeaconByAccountHolderId() throws Exception {
-      final var accountHolderId = createAccountHolder(
-        UUID.randomUUID().toString()
+      String testAuthId = UUID.randomUUID().toString();
+      log.error(
+        "WJKG shouldFindTheBeaconByAccountHolderId testAuthId with ID {}",
+        testAuthId
+      );
+      final var accountHolderId = createAccountHolder(testAuthId);
+      log.error(
+        "WJKG shouldFindTheBeaconByAccountHolderId accountHolderId with ID {}",
+        accountHolderId
       );
       createBeacon(request ->
         request.replace("account-holder-id-placeholder", accountHolderId)
@@ -201,13 +212,16 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
 
       webTestClient
         .get()
-        .uri(uriBuilder ->
-          uriBuilder
+        .uri(uriBuilder -> {
+          URI uri = uriBuilder
             .path(FIND_BY_ACCOUNT_HOLDER)
             .queryParam("email", "")
             .queryParam("accountHolderId", accountHolderId)
-            .build()
-        )
+            .build();
+
+          log.error("WJKG URI {}", uri);
+          return uri;
+        })
         .exchange()
         .expectStatus()
         .isOk()
@@ -271,6 +285,7 @@ class BeaconSearchRestRepositoryIntegrationTest extends WebIntegrationTest {
   }
 
   private String createAccountHolder(String testAuthId) throws Exception {
+    log.error("WJKG createAccountHolder with ID {}", testAuthId);
     final String newAccountHolderRequest = readFile(
       "src/test/resources/fixtures/createAccountHolderRequest.json"
     ).replace("replace-with-test-auth-id", testAuthId);
