@@ -132,6 +132,9 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSh
 
     const result = await rule.action();
 
-    expect(result.props.draftRegistration).toStrictEqual(registrationFixture);
+    expect("props" in result).toBe(true);
+    if ("props" in result) {
+      expect(result.props.draftRegistration).toStrictEqual(registrationFixture);
+    }
   });
 });
