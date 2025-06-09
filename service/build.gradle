@@ -41,7 +41,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
     implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.7'
     implementation 'com.azure.spring:azure-spring-boot-starter-active-directory:4.0.+'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.5.0'
     implementation 'org.jetbrains:annotations:23.0.+'
     implementation 'org.springframework.data:spring-data-elasticsearch:4.3.3'
     implementation 'org.apache.poi:poi:5.2.2' // Writing to Excel files
