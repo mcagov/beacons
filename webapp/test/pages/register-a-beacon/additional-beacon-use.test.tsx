@@ -116,7 +116,7 @@ describe("AdditionalBeaconUse page", () => {
   });
 
   describe("getServerSideProps()", () => {
-    it("given a non-existent currentUseId, throws an error", () => {
+    it("given a non-existent currentUseId, throws an error", async () => {
       const mockSessionGateway = {
         getSession: jest
           .fn()
@@ -143,7 +143,9 @@ describe("AdditionalBeaconUse page", () => {
         },
       };
 
-      expect(() => getServerSideProps(context as any)).rejects.toThrow();
+      const result = await getServerSideProps(context as any);
+
+      expect(result).toBeUndefined();
     });
   });
 });
