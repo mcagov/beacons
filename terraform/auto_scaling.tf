@@ -1,7 +1,6 @@
 # Apply Autoscaling to the 'webapp'
 module "webapp_autoscaling" {
-  source    = "./modules/ecs-autoscaling"
-  workspace = terraform.workspace
+  source = "./modules/ecs-autoscaling"
 
   service_name            = aws_ecs_service.webapp.name
   cluster_name            = aws_ecs_cluster.main.name
@@ -13,8 +12,7 @@ module "webapp_autoscaling" {
 
 # Apply Autoscaling to the 'service'
 module "service_autoscaling" {
-  source    = "./modules/ecs-autoscaling"
-  workspace = terraform.workspace
+  source = "./modules/ecs-autoscaling"
 
   service_name            = aws_ecs_service.service.name
   cluster_name            = aws_ecs_cluster.main.name
