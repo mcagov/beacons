@@ -24,8 +24,3 @@ variable "max_capacity" {
   description = "The maximum number of tasks for the service."
   default     = 6
 }
-
-variable "workspace" {
-  type        = string
-  description = "The current Terraform workspace."
-}
