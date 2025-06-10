@@ -66,32 +66,31 @@ jobs:
       - name: Unit tests
         run: ./gradlew clean test
 
-  # Todo: Reinstate these once we have figured out the flakiness
-  # integration_tests:
-  #   name: Integration test
-  #   runs-on: ubuntu-latest
-  #   environment: ${{ inputs.environment }}
-  #
-  #   services:
-  #     postgres:
-  #       image: postgres:17
-  #       env:
-  #         POSTGRES_PASSWORD: password
-  #         POSTGRES_USER: beacons_service
-  #         POSTGRES_DB: beacons
-  #       ports:
-  #         - 5432:5432
-  #
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: actions/setup-java@v4
-  #       with:
-  #         distribution: "adopt"
-  #         java-version: 17
-  #     - name: Integration tests
-  #       env:
-  #         MICROSOFT_GRAPH_CLIENT_ID: ${{ secrets.microsoft_graph_client_id }}
-  #         MICROSOFT_GRAPH_CLIENT_SECRET: ${{ secrets.microsoft_graph_client_secret }}
-  #         MICROSOFT_GRAPH_B2C_TENANT_ID: ${{ secrets.microsoft_graph_b2c_tenant_id }}
-  #         MICROSOFT_GRAPH_B2C_TENANT_NAME: ${{ secrets.microsoft_graph_b2c_tenant_name }}
-  #       run: ./gradlew clean integrationTest
+  integration_tests:
+    name: Integration test
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: beacons_service
+          POSTGRES_DB: beacons
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "adopt"
+          java-version: 17
+      - name: Integration tests
+        env:
+          MICROSOFT_GRAPH_CLIENT_ID: ${{ secrets.microsoft_graph_client_id }}
+          MICROSOFT_GRAPH_CLIENT_SECRET: ${{ secrets.microsoft_graph_client_secret }}
+          MICROSOFT_GRAPH_B2C_TENANT_ID: ${{ secrets.microsoft_graph_b2c_tenant_id }}
+          MICROSOFT_GRAPH_B2C_TENANT_NAME: ${{ secrets.microsoft_graph_b2c_tenant_name }}
+        run: ./gradlew clean integrationTest

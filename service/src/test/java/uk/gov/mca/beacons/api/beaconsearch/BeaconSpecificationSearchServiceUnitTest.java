@@ -6,15 +6,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import uk.gov.mca.beacons.api.beaconsearch.repositories.BeaconSearchSpecificationRepository;
 import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
@@ -108,5 +106,45 @@ public class BeaconSpecificationSearchServiceUnitTest {
     assertThat(result.getSize(), equalTo(20));
     assertThat(result.getTotalPages(), equalTo(0));
     assertThat(result.getNumber(), equalTo(0));
+  }
+
+  @Test
+  void givenEmailAndAccountHolder_ThenShouldCallRepositoryWithSpecificationAndSort() {
+    String email = "test@example.com";
+    UUID accountId = UUID.randomUUID();
+    Sort sort = Sort.by("hexId");
+    BeaconSearchEntity entity1 = createDummyEntity(UUID.randomUUID());
+    BeaconSearchEntity entity2 = createDummyEntity(UUID.randomUUID());
+    List<BeaconSearchEntity> expectedList = List.of(entity1, entity2);
+
+    when(
+      beaconSearchSpecificationRepository.findAll(
+        any(Specification.class),
+        any(Sort.class)
+      )
+    ).thenReturn(expectedList);
+
+    List<BeaconSearchEntity> actualList =
+      beaconSpecificationSearchService.findAllByAccountHolderIdAndEmail(
+        email,
+        accountId,
+        sort
+      );
+
+    assertThat(actualList, equalTo(expectedList));
+    assertThat(actualList, hasSize(2));
+
+    verify(beaconSearchSpecificationRepository).findAll(
+      any(Specification.class),
+      any(Sort.class)
+    );
+  }
+
+  private BeaconSearchEntity createDummyEntity(UUID id) {
+    BeaconSearchEntity entity = new BeaconSearchEntity();
+    entity.setId(id);
+    entity.setHexId("1D123456789ABCD");
+    entity.setBeaconStatus("NEW");
+    return entity;
   }
 }
