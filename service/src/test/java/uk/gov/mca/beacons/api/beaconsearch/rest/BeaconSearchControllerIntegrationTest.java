@@ -1,7 +1,6 @@
 package uk.gov.mca.beacons.api.beaconsearch.rest;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
@@ -18,7 +17,7 @@ import uk.gov.mca.beacons.api.WebIntegrationTest;
 class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
 
   @Nested
-  class GetFindAllBeaconsResults {
+  class GetBeaconSearchResults {
 
     @Test
     void shouldFindTheLegacyBeaconByHexIdStatusAndUses() throws Throwable {
@@ -147,16 +146,16 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
   @Nested
   class GetBeaconSearchResultsForAccountHolder {
 
-    private static final String FIND_BY_ACCOUNT_HOLDER =
-      "/spring-api/search/beacons/find-all-by-account-holder-and-email";
-
     @Test
     void shouldNotFindAnyBeaconsIfEmptyQueryParamsSubmitted() {
       webTestClient
         .get()
         .uri(uriBuilder ->
           uriBuilder
-            .path(FIND_BY_ACCOUNT_HOLDER)
+            .path(
+              Endpoints.BeaconSearch.value +
+              "/find-all-by-account-holder-and-email"
+            )
             .queryParam("email", "")
             .queryParam("accountHolderId", "")
             .build()
@@ -180,7 +179,10 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
         .get()
         .uri(uriBuilder ->
           uriBuilder
-            .path(FIND_BY_ACCOUNT_HOLDER)
+            .path(
+              Endpoints.BeaconSearch.value +
+              "/find-all-by-account-holder-and-email"
+            )
             .queryParam("email", randomEmailAddress)
             .queryParam("accountHolderId", "")
             .build()
@@ -208,7 +210,10 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
         .get()
         .uri(uriBuilder ->
           uriBuilder
-            .path(FIND_BY_ACCOUNT_HOLDER)
+            .path(
+              Endpoints.BeaconSearch.value +
+              "/find-all-by-account-holder-and-email"
+            )
             .queryParam("email", "")
             .queryParam("accountHolderId", accountHolderId)
             .build()
