@@ -1,8 +1,4 @@
-export interface IBeaconSearchApiResponse {
-  _embedded: {
-    beaconSearch: IBeaconSearchApiResponseBody[];
-  };
-}
+export type IBeaconSearchApiResponse = IBeaconSearchApiResponseBody[];
 
 export interface IBeaconSearchApiResponseBody {
   id: string;
