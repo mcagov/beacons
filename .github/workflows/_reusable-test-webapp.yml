@@ -66,6 +66,7 @@ jobs:
     env:
       SESSION_TOKEN: ${{ secrets.test_azure_b2c_session_token }}
       JWT_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}
+      AUTH_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
