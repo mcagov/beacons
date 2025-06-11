@@ -15,7 +15,7 @@ resource "aws_appautoscaling_policy" "up" {
 
   step_scaling_policy_configuration {
     adjustment_type         = "ChangeInCapacity"
-    cooldown                = 120
+    cooldown                = 60
     metric_aggregation_type = "Average"
 
     step_adjustment {
