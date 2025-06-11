@@ -30,7 +30,6 @@ const options: NextAuthOptions = {
         },
       },
       profile(profile) {
-        // Map the profile to your app's user object
         const emails = toArray(profile.emails as any);
         return {
           id: profile.sub,
@@ -42,7 +41,6 @@ const options: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      // Map authId for your app
       session.user["authId"] = token.sub;
       return session;
     },
