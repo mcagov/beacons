@@ -12,6 +12,12 @@ import {
 import { FormJSON } from "../../../src/lib/form/FormManager";
 import ActivityPage from "../../../src/pages/register-a-beacon/activity";
 
+jest.mock("next/router", () => ({
+  useRouter: jest.fn().mockImplementation(() => ({
+    query: { useId: "1" },
+  })),
+}));
+
 describe("Activity", () => {
   const activityFormTestData: FormJSON = {
     hasErrors: false,

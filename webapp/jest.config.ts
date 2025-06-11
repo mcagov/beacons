@@ -11,6 +11,11 @@ const config: Config.InitialOptions = {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
   testPathIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
   transformIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
+  moduleNameMapper: {
+    // Force module uuid to resolve with the CJS entry point, because Jest does not support package.json.exports. See https://github.com/uuidjs/uuid/issues/451
+    uuid: require.resolve("uuid"),
+  },
+  globals: { fetch },
   verbose: true,
 };
 
