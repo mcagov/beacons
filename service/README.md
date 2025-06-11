@@ -58,9 +58,11 @@ Both unit and integration tests go in [src/test/java/uk/gov/mca/beacons/api](src
 
 ### Running tests
 
-- `./gradlew test` runs unit tests
-- `./gradlew integrationTest` runs integration tests
-- `./gradlew check` runs both unit and integration tests
+Note that the integration tests require Docker to be running on your local development environment.
+
+- `./gradlew clean test` runs unit tests
+- `./gradlew clean integrationTest` runs integration tests
+- `./gradlew clean check` runs both unit and integration tests
 
 You can run the tests in Intellij for better click through, debugging etc. For the integration tests to work, make sure the run command in the run configuration starts with `:integretionTest`, not `:test`.
 

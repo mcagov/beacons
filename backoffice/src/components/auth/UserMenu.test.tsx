@@ -33,7 +33,7 @@ describe("UserMenu", () => {
     ).toBeVisible();
   });
 
-  it("Displays a logout button when menu is expanded", () => {
+  it("Displays a logout button when menu is expanded", async () => {
     render(
       <AuthContext.Provider value={authContext}>
         <UserMenu />
@@ -42,12 +42,12 @@ describe("UserMenu", () => {
     const expandMenuButton = screen.getByRole("button", {
       name: "Steve Stevington",
     });
-    userEvent.click(expandMenuButton);
+    await userEvent.click(expandMenuButton);
 
     expect(screen.getByText(/logout/i)).toBeVisible();
   });
 
-  it("Calls logout action when user clicks 'logout'", () => {
+  it("Calls logout action when user clicks 'logout'", async () => {
     render(
       <AuthContext.Provider value={authContext}>
         <UserMenu />
@@ -56,9 +56,9 @@ describe("UserMenu", () => {
     const expandMenuButton = screen.getByRole("button", {
       name: "Steve Stevington",
     });
-    userEvent.click(expandMenuButton);
+    await userEvent.click(expandMenuButton);
     const logoutOption = screen.getByText(/logout/i);
-    userEvent.click(logoutOption);
+    await userEvent.click(logoutOption);
 
     expect(authContext.logout).toHaveBeenCalled();
   });
