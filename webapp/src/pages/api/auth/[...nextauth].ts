@@ -12,9 +12,6 @@ const options: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  jwt: {
-    secret: process.env.JWT_SECRET,
-  },
   secret: process.env.JWT_SECRET,
   debug,
   providers: [
