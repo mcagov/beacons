@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,7 +30,6 @@ public class BeaconSearchController {
     this.beaconSpecificationSearchService = beaconSpecificationSearchService;
   }
 
-  @Cacheable(value = "find-all-beacons")
   @GetMapping("/find-all")
   @Operation(summary = "Find all beacons matching specific fields (paginated)")
   public ResponseEntity<Page<BeaconSearchEntity>> findAllBeacons(
