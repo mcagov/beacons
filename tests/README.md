@@ -16,7 +16,7 @@ $ npm run test:e2e
 
 ### Occasional Failures
 
-- Automated end-to-end tests require the `SESSION_TOKEN`, and may fail unexpectedly, due to rotating session tokens. To resolve this, log into local/dev/staging. Locate the session token in dev tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
+- Automated end-to-end tests require the `SESSION_TOKEN`, and may fail unexpectedly, due to rotating session tokens. To resolve this, log into local/dev/staging webapp using the test account. Locate the session token in dev tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
 - Copy this value and update the corresponding secret in the GitHub repository.
 
 ## Smoke testing
