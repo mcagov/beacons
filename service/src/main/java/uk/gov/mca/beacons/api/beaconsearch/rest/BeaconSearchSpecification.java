@@ -22,7 +22,7 @@ public class BeaconSearchSpecification {
   public static @Nullable Specification<BeaconSearchEntity> hasUses(
     String uses
   ) {
-    return hasFuzzySearchCriteria(uses, "useActivities");
+    return (root, query, cb) -> cb.equal(root.get("useActivities"), uses);
   }
 
   public static @Nullable Specification<BeaconSearchEntity> hasHexId(
