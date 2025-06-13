@@ -16,13 +16,13 @@ public class BeaconSearchSpecification {
   public static @Nullable Specification<BeaconSearchEntity> hasStatus(
     String status
   ) {
-    return hasFuzzySearchCriteria(status, "beaconStatus");
+    return (root, query, cb) -> cb.equal(root.get("beaconStatus"), status);
   }
 
   public static @Nullable Specification<BeaconSearchEntity> hasUses(
     String uses
   ) {
-    return (root, query, cb) -> cb.equal(root.get("useActivities"), uses);
+    return hasFuzzySearchCriteria(uses, "useActivities");
   }
 
   public static @Nullable Specification<BeaconSearchEntity> hasHexId(
