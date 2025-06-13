@@ -18,10 +18,8 @@ public class BeaconSearchSpecification {
   ) {
     if (StringUtils.hasText(status)) {
       return (root, query, cb) -> cb.equal(root.get("beaconStatus"), status);
-    } else {
-      return (root, query, cb) ->
-        likeLower(cb, root.get("beaconStatus"), status);
     }
+    return null;
   }
 
   public static @Nullable Specification<BeaconSearchEntity> hasUses(
