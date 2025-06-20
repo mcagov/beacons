@@ -16,7 +16,9 @@ export const formatMonth = (dateString: string): string => {
 };
 
 export const formatDateTime = (dateTimeString: string): string => {
-  return dateTimeString
-    ? new Date(dateTimeString).toLocaleDateString("en-GB", {})
-    : "";
+  if (!dateTimeString) return "";
+
+  return /^(\d{2}\/\d{2}\/\d{4}|\d{2}\/\d{4})$/.test(dateTimeString)
+    ? dateTimeString
+    : new Date(dateTimeString).toLocaleDateString("en-GB", {});
 };
