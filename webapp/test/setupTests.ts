@@ -2,7 +2,7 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 
 process.env.WEBAPP_CLIENT_ID = "test_client_id";
 process.env.WEBAPP_CLIENT_SECRET = "test_client_secret";

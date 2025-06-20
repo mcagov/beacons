@@ -7,6 +7,12 @@ import React from "react";
 import { FormJSON } from "../../../src/lib/form/FormManager";
 import LandCommunications from "../../../src/pages/register-a-beacon/land-communications";
 
+jest.mock("next/router", () => ({
+  useRouter: jest.fn().mockImplementation(() => ({
+    query: { useId: "1" },
+  })),
+}));
+
 describe("LandOtherCommunications", () => {
   const emptyLandOtherCommunicationsForm: FormJSON = {
     hasErrors: false,
@@ -55,7 +61,7 @@ describe("LandOtherCommunications", () => {
     const { container } = render(
       <LandCommunications
         form={emptyLandOtherCommunicationsForm}
-        useId={0}
+        useId={"0"}
         showCookieBanner={false}
       />,
     );
@@ -73,7 +79,7 @@ describe("LandOtherCommunications", () => {
     const { container } = render(
       <LandCommunications
         form={emptyLandOtherCommunicationsForm}
-        useId={0}
+        useId={"0"}
         showCookieBanner={false}
       />,
     );
