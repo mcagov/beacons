@@ -28,20 +28,20 @@ configurations.all {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.5.3'
     implementation 'org.springframework.boot:spring-boot-starter-web:3.5.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest:3.5.0'
     implementation 'org.springframework.boot:spring-boot-starter-validation:3.5.0'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.5.3'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas:3.5.0'
     implementation 'org.springframework.boot:spring-boot-starter-batch:3.5.0'
     implementation 'org.flywaydb:flyway-core:8.5.7'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.5.3'
     implementation 'com.vladmihalcea:hibernate-types-55:2.15.1'
     implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
     implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.7'
     implementation 'com.azure.spring:azure-spring-boot-starter-active-directory:4.0.+'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.5.3'
     implementation 'org.jetbrains:annotations:23.0.+'
     implementation 'org.springframework.data:spring-data-elasticsearch:4.3.3'
     implementation 'org.apache.poi:poi:5.2.2' // Writing to Excel files
@@ -66,7 +66,7 @@ dependencies {
         runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.107.Final:osx-aarch_64'
     }
 
-    developmentOnly('org.springframework.boot:spring-boot-devtools:2.6.6')
+    developmentOnly('org.springframework.boot:spring-boot-devtools:3.5.3')
 
     implementation("com.github.javafaker:javafaker:1.0.2")
 
