@@ -25,13 +25,11 @@
   },
   "dependencies": {
     "@azure/msal-node": "^1.3.0",
-    "@types/ioredis": "^4.26.7",
     "@types/jest": "^29.0.0",
     "axios": "^0.21.1",
     "cookie": "^1.0.2",
     "google-libphonenumber": "3.2.32",
     "govuk-frontend": "^4.10.0",
-    "ioredis": "^4.27.3",
     "isodate": "^0.1.4",
     "jest": "^27.2.0",
     "lodash": "^4.17.21",
@@ -41,7 +39,7 @@
     "notifications-node-client": "^5.1.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "redis-json": "^6.0.3",
+    "redis": "^5.5.6",
     "urlencoded-body-parser": "^3.0.0",
     "uuid": "^8.3.2",
     "winston": "^3.3.3"
