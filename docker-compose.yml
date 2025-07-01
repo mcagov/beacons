@@ -89,7 +89,7 @@ services:
       VITE_APP_FEEDBACK_EMAIL_ADDRESSES: "x@y.com,y@z.com"
 
   redis:
-    image: redis:6
+    image: redis:8
     ports:
       - "6379:6379"
 
