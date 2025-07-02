@@ -54,7 +54,7 @@ describe("<BeaconRecordsListView />", () => {
       {},
       0,
       20,
-      null,
+      ["createdDate", "desc"],
     );
   });
 
@@ -67,7 +67,6 @@ describe("<BeaconRecordsListView />", () => {
 
     const callOptions: any = (beaconsGatewayDouble.getAllBeacons as jest.Mock)
       .mock.calls[0];
-    console.log("*** callOptions ---> ", callOptions);
-    expect(callOptions[4]).toBe("createdDate,desc");
+    expect(callOptions[4]).toEqual(["createdDate", "desc"]);
   });
 });
