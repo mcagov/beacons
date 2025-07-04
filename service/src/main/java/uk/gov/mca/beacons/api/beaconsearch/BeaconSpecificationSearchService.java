@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.beaconsearch;
 
+import java.time.OffsetDateTime;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -63,6 +64,63 @@ public class BeaconSpecificationSearchService {
 
     List<BeaconSearchEntity> results =
       beaconSearchSpecificationRepository.findAll(spec, sort);
+
+    return results.isEmpty() ? Collections.emptyList() : results;
+  }
+
+  public List<BeaconSearchEntity> findAllByAccountHolderIdAndEmail(
+    String email,
+    UUID accountHolderId,
+    Sort sort
+  ) {
+    Specification<BeaconSearchEntity> spec = Specification.where(
+      BeaconSearchSpecification.hasEmailOrRecoveryEmail(email)
+    ).or(BeaconSearchSpecification.hasAccountHolder(accountHolderId));
+
+    List<BeaconSearchEntity> results =
+      beaconSearchSpecificationRepository.findAll(spec, sort);
+
+    return results.isEmpty() ? Collections.emptyList() : results;
+  }
+
+  public List<BeaconSearchEntity> findAllBeaconsForFullExport(
+    String name,
+    OffsetDateTime registrationFrom,
+    OffsetDateTime registrationTo,
+    OffsetDateTime lastModifiedFrom,
+    OffsetDateTime lastModifiedTo
+  ) {
+    Specification<BeaconSearchEntity> spec = Specification.where(
+      BeaconSearchSpecification.hasOwnerName(name)
+    )
+      .or(BeaconSearchSpecification.hasAccountHolderName(name))
+      .and(
+        BeaconSearchSpecification.isGreaterThanOrEqualTo(
+          registrationFrom,
+          "createdDate"
+        )
+      )
+      .and(
+        BeaconSearchSpecification.isLessThanOrEqualTo(
+          registrationTo,
+          "createdDate"
+        )
+      )
+      .and(
+        BeaconSearchSpecification.isGreaterThanOrEqualTo(
+          lastModifiedFrom,
+          "lastModifiedDate"
+        )
+      )
+      .and(
+        BeaconSearchSpecification.isLessThanOrEqualTo(
+          lastModifiedTo,
+          "lastModifiedDate"
+        )
+      );
+
+    List<BeaconSearchEntity> results =
+      beaconSearchSpecificationRepository.findAll(spec);
 
     return results.isEmpty() ? Collections.emptyList() : results;
   }

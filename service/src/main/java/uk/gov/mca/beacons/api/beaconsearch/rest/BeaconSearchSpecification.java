@@ -1,6 +1,9 @@
 package uk.gov.mca.beacons.api.beaconsearch.rest;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Arrays;
+import java.util.UUID;
 import java.util.UUID;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -78,6 +81,50 @@ public class BeaconSearchSpecification {
       );
   }
 
+  public static @Nullable Specification<
+    BeaconSearchEntity
+  > hasEmailOrRecoveryEmail(String email) {
+    return (root, query, cb) ->
+      cb.and(
+        cb.or(
+          cb.equal(root.get("ownerEmail"), email),
+          cb.equal(root.get("legacyBeaconRecoveryEmail"), email)
+        ),
+        cb.equal(root.get("beaconStatus"), "MIGRATED")
+      );
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> hasAccountHolder(
+    UUID accountHolderId
+  ) {
+    return (root, query, cb) ->
+      cb.and(
+        cb.equal(root.get("accountHolderId"), accountHolderId),
+        root.get("beaconStatus").in(Arrays.asList("NEW", "CHANGE"))
+      );
+  }
+
+  public static @Nullable Specification<
+    BeaconSearchEntity
+  > isGreaterThanOrEqualTo(OffsetDateTime dateTime, String criteriaName) {
+    if (dateTime != null) {
+      return (root, query, cb) ->
+        greaterThanOrEqualTo(cb, root.get(criteriaName), dateTime);
+    }
+    return null;
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> isLessThanOrEqualTo(
+    OffsetDateTime dateTime,
+    String criteriaName
+  ) {
+    if (dateTime != null) {
+      return (root, query, cb) ->
+        lessThanOrEqualTo(cb, root.get(criteriaName), dateTime);
+    }
+    return null;
+  }
+
   private static @Nullable Specification<
     BeaconSearchEntity
   > hasFuzzySearchCriteria(String searchValue, String criteriaName) {
@@ -97,5 +144,21 @@ public class BeaconSearchSpecification {
       cb.lower(cb.coalesce(expression, "")),
       "%" + pattern.toLowerCase() + "%"
     );
+  }
+
+  private static Predicate greaterThanOrEqualTo(
+    @NotNull CriteriaBuilder cb,
+    Expression<OffsetDateTime> expression,
+    @NotNull OffsetDateTime pattern
+  ) {
+    return cb.greaterThanOrEqualTo(expression, pattern);
+  }
+
+  private static Predicate lessThanOrEqualTo(
+    @NotNull CriteriaBuilder cb,
+    Expression<OffsetDateTime> expression,
+    @NotNull OffsetDateTime pattern
+  ) {
+    return cb.lessThanOrEqualTo(expression, pattern);
   }
 }

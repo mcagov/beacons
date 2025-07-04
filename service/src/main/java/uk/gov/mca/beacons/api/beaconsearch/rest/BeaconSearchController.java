@@ -88,4 +88,36 @@ public class BeaconSearchController {
       );
     return ResponseEntity.ok(results);
   }
+
+  @GetMapping("/full-export-search")
+  @Operation(summary = "Find all beacons matching export criteria")
+  public ResponseEntity<List<BeaconSearchEntity>> findAllBeaconsForFullExport(
+    @RequestParam(required = false, defaultValue = "") String name,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime registrationFrom,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime registrationTo,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime lastModifiedFrom,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime lastModifiedTo
+  ) {
+    List<BeaconSearchEntity> results =
+      beaconSpecificationSearchService.findAllBeaconsForFullExport(
+        name,
+        registrationFrom,
+        registrationTo,
+        lastModifiedFrom,
+        lastModifiedTo
+      );
+    return ResponseEntity.ok(results);
+  }
 }
