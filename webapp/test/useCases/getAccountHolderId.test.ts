@@ -1,4 +1,4 @@
-import { AccountHolderGateway } from "../../src/gateways/AccountHolderGateway";
+import { AccountHolderGateway } from "../../src/gateways/interfaces/AccountHolderGateway";
 import { IAppContainer } from "../../src/lib/IAppContainer";
 import { getAccountHolderId } from "../../src/useCases/getAccountHolderId";
 
@@ -10,7 +10,6 @@ describe("The getAccountHolderId use case", () => {
     };
     const container: Partial<IAppContainer> = {
       accountHolderGateway: gateway as AccountHolderGateway,
-      getAccessToken: jest.fn(),
     };
     const session = { user: { authId: "a-session-id" } };
 
@@ -27,7 +26,6 @@ describe("The getAccountHolderId use case", () => {
     };
     const container: Partial<IAppContainer> = {
       accountHolderGateway: gateway as AccountHolderGateway,
-      getAccessToken: jest.fn(),
     };
     const session = { user: { authId: "a-session-id" } };
 

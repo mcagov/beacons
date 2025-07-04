@@ -8,6 +8,12 @@ import { FormJSON } from "../../../src/lib/form/FormManager";
 import { GeneralPageURLs } from "../../../src/lib/urls";
 import SignUpOrSignIn from "../../../src/pages/account/sign-up-or-sign-in";
 
+jest.mock("next/router", () => ({
+  useRouter: jest.fn().mockImplementation(() => ({
+    query: { useId: "1" },
+  })),
+}));
+
 describe("SignUpOrSignIn", () => {
   it("should have a back button which directs the user to the service start page", () => {
     const signUpOrSignInForm: FormJSON = {
