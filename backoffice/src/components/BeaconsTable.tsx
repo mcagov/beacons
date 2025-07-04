@@ -284,7 +284,7 @@ function buildTableQuery(
     }
   });
 
-  let sort: GetAllBeaconsSort = null;
+  let sort: GetAllBeaconsSort = ["createdDate", "desc"];
   if (query.orderBy && query.orderBy.field && query.orderDirection) {
     sort = [query.orderBy.field as keyof BeaconRowData, query.orderDirection];
   }
