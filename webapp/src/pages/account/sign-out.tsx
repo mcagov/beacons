@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { signOut } from "next-auth/react";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { Layout } from "../../components/Layout";
 import { GovUKBody, PageHeading } from "../../components/Typography";
 import { AccountPageURLs, GeneralPageURLs } from "../../lib/urls";

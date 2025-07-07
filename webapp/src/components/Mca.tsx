@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { Details } from "./Details";
 import { AnchorLink, GovUKList } from "./Typography";
 

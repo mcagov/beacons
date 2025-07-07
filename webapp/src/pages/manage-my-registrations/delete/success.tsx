@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { ReturnToYourAccountSection } from "../../../components/domain/ReturnToYourAccountSection";
 import { Grid } from "../../../components/Grid";
 import { Layout } from "../../../components/Layout";
