@@ -38,8 +38,8 @@ const NextJSLink: FunctionComponent<AnchorProps> = ({
   children,
   link,
 }: AnchorProps) => (
-  <Link href={link}>
-    <a className="govuk-breadcrumbs__link">{children}</a>
+  <Link href={link} className="govuk-breadcrumbs__link">
+    {children}
   </Link>
 );
 

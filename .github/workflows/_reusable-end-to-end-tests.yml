@@ -106,6 +106,7 @@ jobs:
           GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS=${{ inputs.test_gov_notify_feedback_email_address }} \
           AZURE_B2C_CLIENT_SECRET=${{ secrets.test_webapp_azure_b2c_client_secret }} \
           JWT_SECRET=${{ secrets.test_webapp_azure_b2c_jwt_secret }} \
+          AUTH_SECRET=${{ secrets.test_webapp_azure_b2c_jwt_secret }} \
           WEBAPP_CLIENT_SECRET=${{ secrets.test_webapp_azure_ad_client_secret }} \
           GOV_NOTIFY_API_KEY=${{ secrets.test_webapp_gov_notify_api_key }} \
           MICROSOFT_GRAPH_CLIENT_ID=${{ secrets.microsoft_graph_client_id }} \
