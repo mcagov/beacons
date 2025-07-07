@@ -12,7 +12,7 @@ on:
     inputs:
       git-reference:
         type: string
-        description: "(Optional) branch, tag or commit to test and deploy"
+        description: "(Optional) branch, tag or commit to test and deploy. Communicate with the rest of the team if you are using this."
 
 jobs:
   terraform_lint:
