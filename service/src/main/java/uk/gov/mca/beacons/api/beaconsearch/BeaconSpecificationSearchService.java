@@ -1,8 +1,10 @@
 package uk.gov.mca.beacons.api.beaconsearch;
 
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import uk.gov.mca.beacons.api.beaconsearch.repositories.BeaconSearchSpecificationRepository;
@@ -48,5 +50,20 @@ public class BeaconSpecificationSearchService {
       beaconSearchSpecificationRepository.findAll(spec, pageable);
 
     return results.getContent().isEmpty() ? Page.empty(pageable) : results;
+  }
+
+  public List<BeaconSearchEntity> findAllByAccountHolderIdAndEmail(
+    String email,
+    UUID accountHolderId,
+    Sort sort
+  ) {
+    Specification<BeaconSearchEntity> spec = Specification.where(
+      BeaconSearchSpecification.hasEmailOrRecoveryEmail(email)
+    ).or(BeaconSearchSpecification.hasAccountHolder(accountHolderId));
+
+    List<BeaconSearchEntity> results =
+      beaconSearchSpecificationRepository.findAll(spec, sort);
+
+    return results.isEmpty() ? Collections.emptyList() : results;
   }
 }

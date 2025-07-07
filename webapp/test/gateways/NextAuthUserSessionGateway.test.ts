@@ -1,9 +1,11 @@
 import { GetServerSidePropsContext } from "next";
-import client from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { NextAuthUserSessionGateway } from "../../src/gateways/NextAuthUserSessionGateway";
 
-jest.mock("next-auth/client");
-const mockedNextAuthClient = client as jest.Mocked<typeof client>;
+// Mock getSession from next-auth/react
+jest.mock("next-auth/react", () => ({
+  getSession: jest.fn(),
+}));
 
 describe("NextAuthUserSessionGateway", () => {
   it("returns the user's session using the context provided", async () => {
@@ -15,7 +17,9 @@ describe("NextAuthUserSessionGateway", () => {
       },
       expires: "never",
     };
-    mockedNextAuthClient.getSession.mockResolvedValue(mockSession);
+    // Type assertion needed for TS to recognize the mock
+    (getSession as jest.Mock).mockResolvedValue(mockSession);
+
     const context = {};
     const userSessionGateway = new NextAuthUserSessionGateway();
 
@@ -24,11 +28,12 @@ describe("NextAuthUserSessionGateway", () => {
     );
 
     expect(result).toStrictEqual(mockSession);
-    expect(mockedNextAuthClient.getSession).toHaveBeenCalledWith(context);
+    expect(getSession).toHaveBeenCalledWith(context);
   });
 
   it("returns null if there is no session", async () => {
-    mockedNextAuthClient.getSession.mockResolvedValue(null);
+    (getSession as jest.Mock).mockResolvedValue(null);
+
     const context = {};
     const userSessionGateway = new NextAuthUserSessionGateway();
 
