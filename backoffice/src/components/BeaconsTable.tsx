@@ -216,35 +216,37 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
       <MaterialTable
         icons={tableIcons}
         columns={columns}
+        /*eslint no-async-promise-executor: "warn"*/
         data={(query) =>
           new Promise(async (resolve, _reject) => {
             try {
               const response = await beaconsGateway.getAllBeacons(
-                ...buildTableQuery(query)
+                ...buildTableQuery(query),
               );
-              const beacons = response._embedded.beaconSearch.map(
-                (item: IBeaconSearchResultData): BeaconRowData => ({
-                  createdDate: item.createdDate,
-                  lastModifiedDate: item.lastModifiedDate,
-                  beaconStatus: item.beaconStatus,
-                  hexId: item.hexId,
-                  ownerName: item.ownerName ?? "N/A",
-                  useActivities: item.useActivities ?? "N/A",
-                  id: item.id,
-                  beaconType: item.beaconType,
-                  cospasSarsatNumber: item.cospasSarsatNumber ?? "N/A",
-                  manufacturerSerialNumber:
-                    item.manufacturerSerialNumber ?? "N/A",
-                })
-              );
+              const beacons =
+                response.content?.map(
+                  (item: IBeaconSearchResultData): BeaconRowData => ({
+                    createdDate: item.createdDate,
+                    lastModifiedDate: item.lastModifiedDate,
+                    beaconStatus: item.beaconStatus,
+                    hexId: item.hexId,
+                    ownerName: item.ownerName ?? "N/A",
+                    useActivities: item.useActivities ?? "N/A",
+                    id: item.id,
+                    beaconType: item.beaconType,
+                    cospasSarsatNumber: item.cospasSarsatNumber ?? "N/A",
+                    manufacturerSerialNumber:
+                      item.manufacturerSerialNumber ?? "N/A",
+                  }),
+                ) ?? [];
               resolve({
                 data: beacons,
-                page: response.page.number,
-                totalCount: response.page.totalElements,
+                page: response.number,
+                totalCount: response.totalElements,
               });
             } catch (error) {
               logToServer.error(
-                "Could not fetch beacons: " + JSON.stringify(error)
+                "Could not fetch beacons: " + JSON.stringify(error),
               );
               alert("Search timed out, please try refreshing in 30 seconds");
             }
@@ -265,11 +267,11 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
         }}
       />
     );
-  }
+  },
 );
 
 function buildTableQuery(
-  query: Query<BeaconRowData>
+  query: Query<BeaconRowData>,
 ): Parameters<IBeaconsGateway["getAllBeacons"]> {
   const term = query.search;
 
@@ -282,7 +284,7 @@ function buildTableQuery(
     }
   });
 
-  let sort: GetAllBeaconsSort = null;
+  let sort: GetAllBeaconsSort = ["createdDate", "desc"];
   if (query.orderBy && query.orderBy.field && query.orderDirection) {
     sort = [query.orderBy.field as keyof BeaconRowData, query.orderDirection];
   }

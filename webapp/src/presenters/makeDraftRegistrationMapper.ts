@@ -42,7 +42,7 @@ import { DraftRegistrationFormMapper } from "./DraftRegistrationFormMapper";
  */
 export const makeDraftRegistrationMapper = <T>(
   useId: number,
-  beaconUseFormMapper: BeaconUseFormMapper<T>
+  beaconUseFormMapper: BeaconUseFormMapper<T>,
 ): DraftRegistrationFormMapper<T> => ({
   formToDraftRegistration: (form) => {
     const emptyUse = {};

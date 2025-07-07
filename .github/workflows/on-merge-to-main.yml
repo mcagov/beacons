@@ -1,0 +1,210 @@
+name: Test then deploy to dev
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy. Please communicate with the rest of the team if you are using this."
+
+jobs:
+  terraform_lint:
+    name: Terraform lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.git-reference }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Lint
+        run: terraform fmt --recursive --check
+
+  prettier_check:
+    name: Prettier check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.git-reference }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "16.17.0"
+
+      - name: Prettier check
+        run: |
+          npm install
+          npm run format:check
+
+  test_webapp:
+    name: Test Webapp
+    uses: ./.github/workflows/_reusable-test-webapp.yml
+    with:
+      git-reference: ${{ inputs.git-reference }}
+    secrets:
+      test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN_V4 }}
+      test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
+
+  test_service:
+    name: Test Service
+    uses: ./.github/workflows/_reusable-test-service.yml
+    with:
+      environment: development
+      git-reference: ${{ inputs.git-reference }}
+    secrets:
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
+      microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
+      microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
+      microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
+
+  test_backoffice:
+    name: Test Backoffice
+    uses: ./.github/workflows/_reusable-test-backoffice.yml
+    with:
+      git-reference: ${{ inputs.git-reference }}
+
+  publish_webapp_image:
+    name: Publish Webapp
+    needs:
+      - test_backoffice
+      - test_service
+      - test_webapp
+    uses: ./.github/workflows/_reusable-publish-webapp-image.yml
+    with:
+      git-reference: ${{ inputs.git-reference }}
+      tag: ${{ github.sha }}
+      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  publish_service_image:
+    name: Publish Service
+    needs:
+      - test_backoffice
+      - test_service
+      - test_webapp
+    uses: ./.github/workflows/_reusable-publish-service-image.yml
+    with:
+      git-reference: ${{ inputs.git-reference }}
+      tag: ${{ github.sha }}
+      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  publish_backoffice_image:
+    name: Publish Backoffice
+    needs:
+      - test_backoffice
+      - test_service
+      - test_webapp
+    uses: ./.github/workflows/_reusable-publish-backoffice-image.yml
+    with:
+      git-reference: ${{ inputs.git-reference }}
+      tag: ${{ github.sha }}
+      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      feedback_email_addresses: ${{ secrets.BACKOFFICE_FEEDBACK_EMAIL_ADDRESSES }}
+      mui_pro_license_key: ${{ secrets.MUI_PRO_LICENSE_KEY }}
+
+  publish_opensearch_proxy_image:
+    name: OpenSearch proxy
+    needs:
+      - test_backoffice
+      - test_service
+      - test_webapp
+    uses: ./.github/workflows/_reusable-publish-opensearch-proxy-image.yml
+    with:
+      git-reference: ${{ inputs.git-reference }}
+      tag: ${{ github.sha }}
+      registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  end_to_end_tests:
+    name: End-to-end tests
+    needs:
+      - terraform_lint
+      - prettier_check
+      - test_webapp
+      - test_service
+      - test_backoffice
+      - publish_webapp_image
+      - publish_service_image
+      - publish_backoffice_image
+      - publish_opensearch_proxy_image
+    uses: ./.github/workflows/_reusable-end-to-end-tests.yml
+    with:
+      git-reference: ${{ inputs.git-reference }}
+      image-tag: ${{ github.sha }}
+      test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
+      test_azure_ad_tenant_id: 513fb495-9a90-425b-a49a-bc6ebe2a429e
+      environment: development
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      test_webapp_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN_V4 }}
+      test_webapp_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
+      test_webapp_azure_b2c_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_CLIENT_SECRET }}
+      test_webapp_azure_ad_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_AD_CLIENT_SECRET }}
+      test_webapp_gov_notify_api_key: ${{ secrets.TEST_GOV_NOTIFY_API_KEY }}
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
+      microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
+      microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
+      microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
+
+  deploy_dev:
+    name: Development
+    needs:
+      - publish_backoffice_image
+      - publish_webapp_image
+      - publish_service_image
+      - publish_opensearch_proxy_image
+      - end_to_end_tests
+    uses: ./.github/workflows/_reusable-deploy.yml
+    with:
+      environment: development
+      terraform_workspace: dev
+      version: ${{ github.sha }}
+      trello_list_id: 6157064b4d7e1b3b1ea839ad
+    secrets:
+      alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      db_password: ${{ secrets.DB_PASSWORD }}
+      gov_notify_api_key: ${{ secrets.TEST_GOV_NOTIFY_API_KEY }}
+      webapp_azure_ad_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_AD_CLIENT_SECRET }}
+      webapp_azure_b2c_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_CLIENT_SECRET }}
+      webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
+      service_basic_auth_username: ${{ secrets.SERVICE_BASIC_AUTH_USERNAME }}
+      service_basic_auth_password: ${{ secrets.SERVICE_BASIC_AUTH_PASSWORD }}
+      aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+      trello_api_key: ${{ secrets.TRELLO_API_KEY }}
+      trello_board_email_address: ${{ secrets.TRELLO_BOARD_EMAIL_ADDRESS }}
+      trello_token: ${{ secrets.TRELLO_TOKEN }}
+      opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
+      opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
+      opensearch_proxy_sso_client_id: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_ID }}
+      opensearch_proxy_sso_client_secret: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_SECRET }}
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
+      microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
+      microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
+      microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}

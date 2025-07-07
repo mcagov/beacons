@@ -7,6 +7,12 @@ import React from "react";
 import { FormJSON } from "../../../src/lib/form/FormManager";
 import VesselCommunications from "../../../src/pages/register-a-beacon/vessel-communications";
 
+jest.mock("next/router", () => ({
+  useRouter: jest.fn().mockImplementation(() => ({
+    query: { useId: "1" },
+  })),
+}));
+
 describe("VesselCommunications", () => {
   const emptyVesselCommunicationsForm: FormJSON = {
     hasErrors: false,
@@ -71,9 +77,9 @@ describe("VesselCommunications", () => {
     const { container } = render(
       <VesselCommunications
         form={emptyVesselCommunicationsForm}
-        useId={0}
+        useId={"0"}
         showCookieBanner={false}
-      />
+      />,
     );
 
     const mobilePhoneInput1 = container.querySelector("#mobileTelephoneInput1");
@@ -89,13 +95,13 @@ describe("VesselCommunications", () => {
     const { container } = render(
       <VesselCommunications
         form={emptyVesselCommunicationsForm}
-        useId={0}
+        useId={"0"}
         showCookieBanner={false}
-      />
+      />,
     );
 
     const satelliteTelephoneNumberInput = container.querySelector(
-      "#satelliteTelephoneInput"
+      "#satelliteTelephoneInput",
     );
 
     expect(satelliteTelephoneNumberInput).not.toHaveAttribute("autocomplete");

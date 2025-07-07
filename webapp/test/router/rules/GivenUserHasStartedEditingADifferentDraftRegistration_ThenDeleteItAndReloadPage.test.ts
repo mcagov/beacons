@@ -1,4 +1,3 @@
-import { stringContaining } from "expect/build/asymmetricMatchers";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../src/router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
@@ -18,7 +17,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
       } as any;
       const rule =
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-          context
+          context,
         );
 
       const triggered = await rule.condition();
@@ -39,7 +38,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
       } as any;
       const rule =
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-          context
+          context,
         );
 
       const triggered = await rule.condition();
@@ -67,7 +66,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
       } as any;
       const rule =
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-          context
+          context,
         );
 
       const triggered = await rule.condition();
@@ -96,7 +95,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
       } as any;
       const rule =
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-          context
+          context,
         );
 
       const triggered = await rule.condition();
@@ -128,13 +127,13 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
       } as any;
       const rule =
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-          context
+          context,
         );
 
       await rule.action();
 
       expect(context.container.deleteDraftRegistration).toHaveBeenCalledWith(
-        existingDraftRegistrationId
+        existingDraftRegistrationId,
       );
     });
 
@@ -160,14 +159,14 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
       } as any;
       const rule =
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-          context
+          context,
         );
 
       await rule.action();
 
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
-        stringContaining("submissionId=;")
+        expect.stringContaining("submissionId=;"),
       );
     });
 
@@ -194,7 +193,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
       } as any;
       const rule =
         new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-          context
+          context,
         );
 
       const props = (await rule.action()) as any;

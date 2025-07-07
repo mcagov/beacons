@@ -1,4 +1,5 @@
-import { Provider as AuthProvider } from "next-auth/client";
+import { SessionProvider as AuthProvider } from "next-auth/react";
+import { Session } from "next-auth";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import React, { FunctionComponent, useEffect } from "react";
@@ -7,7 +8,7 @@ import "../styles/globals.scss";
 const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
   Component,
   pageProps,
-}: AppProps): JSX.Element => {
+}: AppProps<{ session: Session }>): JSX.Element => {
   useEffect(() => {
     document.body.className = document.body.className
       ? document.body.className + " js-enabled"

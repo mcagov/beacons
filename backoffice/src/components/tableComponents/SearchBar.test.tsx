@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 import React, { forwardRef } from "react";
 import { SearchBar, SearchbarProps } from "./SearchBar";
 
-const tableIcons: Icons = {
+const tableIcons: Icons<any> = {
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
 };
@@ -33,12 +33,12 @@ function renderSearchBar({
         searchText={searchText}
         dataManager={dataManager}
       />
-    </ThemeProvider>
+    </ThemeProvider>,
   );
 }
 
 describe("SearchBar", () => {
-  it("Should only call prop change handlers after blur", () => {
+  it("Should only call prop change handlers after blur", async () => {
     const onSearchChanged = jest.fn();
     const changeSearchText = jest.fn();
 
@@ -48,8 +48,10 @@ describe("SearchBar", () => {
       searchText: "",
     });
 
-    const inputNode = screen.getByPlaceholderText(/search/i);
-    userEvent.type(inputNode, "A query");
+    const inputNode = screen.getByRole("textbox", {
+      name: /search/i,
+    });
+    await userEvent.type(inputNode, "A query");
     inputNode.blur();
 
     expect(onSearchChanged).toHaveBeenCalledWith("A query");
@@ -59,7 +61,7 @@ describe("SearchBar", () => {
     expect(changeSearchText).toHaveBeenCalledTimes(1);
   });
 
-  it("Should not call the change handlers if the value does not change", () => {
+  it("Should not call the change handlers if the value does not change", async () => {
     const onSearchChanged = jest.fn();
     const changeSearchText = jest.fn();
 
@@ -70,15 +72,15 @@ describe("SearchBar", () => {
     });
 
     const inputNode = screen.getByPlaceholderText(/search/i);
-    userEvent.clear(inputNode);
-    userEvent.type(inputNode, "Prefilled");
-    inputNode.blur();
+    await userEvent.clear(inputNode);
+    await userEvent.type(inputNode, "Prefilled");
+    await inputNode.blur();
 
     expect(changeSearchText).toHaveBeenCalledTimes(0);
     expect(onSearchChanged).toHaveBeenCalledTimes(0);
   });
 
-  it("Should call the change handlers once if the user types something and then presses the reset search button", () => {
+  it("Should call the change handlers once if the user types something and then presses the reset search button", async () => {
     const onSearchChanged = jest.fn();
     const changeSearchText = jest.fn();
 
@@ -88,11 +90,11 @@ describe("SearchBar", () => {
       searchText: "Prefilled",
     });
 
-    const inputNode = screen.getByPlaceholderText(/search/i);
+    const inputNode = screen.getByRole("textbox", { name: /search/i });
     const buttonNode = screen.getByTestId("reset-search");
 
-    userEvent.type(inputNode, "More");
-    userEvent.click(buttonNode);
+    await userEvent.type(inputNode, "More");
+    await userEvent.click(buttonNode);
 
     expect(changeSearchText).toHaveBeenCalledWith("");
     expect(onSearchChanged).toHaveBeenCalledWith("");

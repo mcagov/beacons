@@ -4,13 +4,13 @@ import { RedisDraftRegistrationGateway } from "../gateways/RedisDraftRegistratio
 export type MakeCachedUseMainFn = (
   submissionId: string,
   useId: number,
-  cachedRegistrationGateway?: DraftRegistrationGateway
+  cachedRegistrationGateway?: DraftRegistrationGateway,
 ) => Promise<void>;
 
 export const makeCachedUseMain: MakeCachedUseMainFn = async (
   submissionId,
   useId,
-  cachedRegistrationGateway = new RedisDraftRegistrationGateway()
+  cachedRegistrationGateway = new RedisDraftRegistrationGateway(),
 ) => {
   await cachedRegistrationGateway.makeUseMain(submissionId, useId);
 };

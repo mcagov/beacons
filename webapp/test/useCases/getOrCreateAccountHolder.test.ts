@@ -1,5 +1,5 @@
 import { AccountHolder } from "../../src/entities/AccountHolder";
-import { AccountHolderGateway } from "../../src/gateways/AccountHolderGateway";
+import { AccountHolderGateway } from "../../src/gateways/interfaces/AccountHolderGateway";
 import { IAppContainer } from "../../src/lib/IAppContainer";
 import { getOrCreateAccountHolder } from "../../src/useCases/getOrCreateAccountHolder";
 
@@ -13,12 +13,11 @@ describe("The getOrCreateAccountHolder use case", () => {
     };
     const container: Partial<IAppContainer> = {
       accountHolderGateway: gateway as AccountHolderGateway,
-      getAccessToken: jest.fn(),
     };
     const session = { user: { authId: "a-session-id" } };
 
     const result = await getOrCreateAccountHolder(container as IAppContainer)(
-      session
+      session,
     );
 
     expect(result).toEqual(testAccountHolder);
@@ -31,14 +30,13 @@ describe("The getOrCreateAccountHolder use case", () => {
     };
     const container: Partial<IAppContainer> = {
       accountHolderGateway: gateway as AccountHolderGateway,
-      getAccessToken: jest.fn(),
     };
     const session = { user: { authId: "a-session-id" } };
 
     await getOrCreateAccountHolder(container as IAppContainer)(session);
 
     expect(
-      container.accountHolderGateway.createAccountHolder
+      container.accountHolderGateway.createAccountHolder,
     ).toHaveBeenCalledTimes(1);
   });
 });

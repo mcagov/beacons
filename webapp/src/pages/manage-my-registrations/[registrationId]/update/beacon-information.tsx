@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React, { FunctionComponent } from "react";
 import {
   BeaconsForm,
@@ -68,7 +68,7 @@ const UpdateBeaconInformationPage: FunctionComponent<
   return (
     <BeaconsForm
       previousPageUrl={UrlBuilder.buildUpdateRegistrationSummaryUrl(
-        draftRegistration.id
+        draftRegistration.id,
       )}
       pageHeading={pageHeading}
       showCookieBanner={showCookieBanner}
@@ -239,36 +239,36 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     const nextPageUrl = UrlBuilder.buildRegistrationUrl(
       Actions.update,
       Pages.summary,
-      context.query.registrationId as string
+      context.query.registrationId as string,
     );
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-        context
+        context,
       ),
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
         context,
-        registrationId
+        registrationId,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(
         context,
         validationRules,
-        mapper
+        mapper,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
         context,
         validationRules,
-        mapper
+        mapper,
       ),
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage(
         context,
         validationRules,
         mapper,
-        nextPageUrl
+        nextPageUrl,
       ),
     ]).execute();
-  })
+  }),
 );
 
 const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
@@ -278,13 +278,13 @@ const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
     csta: form.csta,
     batteryExpiryDate: toIsoDateString(
       form.batteryExpiryDateYear,
-      form.batteryExpiryDateMonth
+      form.batteryExpiryDateMonth,
     ),
     batteryExpiryDateYear: form.batteryExpiryDateYear,
     batteryExpiryDateMonth: form.batteryExpiryDateMonth,
     lastServicedDate: toIsoDateString(
       form.lastServicedDateYear,
-      form.lastServicedDateMonth
+      form.lastServicedDateMonth,
     ),
     lastServicedDateYear: form.lastServicedDateYear,
     lastServicedDateMonth: form.lastServicedDateMonth,
@@ -296,19 +296,19 @@ const mapper: DraftRegistrationFormMapper<BeaconInformationForm> = {
     csta: draftRegistration?.csta,
     batteryExpiryDate: draftRegistration?.batteryExpiryDate,
     batteryExpiryDateMonth: padNumberWithLeadingZeros(
-      draftRegistration?.batteryExpiryDateMonth
+      draftRegistration?.batteryExpiryDateMonth,
     ),
     batteryExpiryDateYear: padNumberWithLeadingZeros(
       draftRegistration?.batteryExpiryDateYear,
-      4
+      4,
     ),
     lastServicedDate: draftRegistration?.lastServicedDate,
     lastServicedDateMonth: padNumberWithLeadingZeros(
-      draftRegistration?.lastServicedDateMonth
+      draftRegistration?.lastServicedDateMonth,
     ),
     lastServicedDateYear: padNumberWithLeadingZeros(
       draftRegistration?.lastServicedDateYear,
-      4
+      4,
     ),
   }),
 };
@@ -327,7 +327,7 @@ const validationRules = ({
   return new FormManager({
     manufacturerSerialNumber: new FieldManager(manufacturerSerialNumber, [
       Validators.required(
-        "Beacon manufacturer serial number is a required field"
+        "Beacon manufacturer serial number is a required field",
       ),
     ]),
     chkCode: new FieldManager(chkCode),
@@ -344,7 +344,7 @@ const validationRules = ({
           meetingCondition: () =>
             batteryExpiryDateYear !== "" || batteryExpiryDateMonth !== "",
         },
-      ]
+      ],
     ),
     batteryExpiryDateMonth: new FieldManager(batteryExpiryDateMonth),
     batteryExpiryDateYear: new FieldManager(batteryExpiryDateYear),
@@ -361,7 +361,7 @@ const validationRules = ({
           meetingCondition: () =>
             lastServicedDateYear !== "" || lastServicedDateMonth !== "",
         },
-      ]
+      ],
     ),
     lastServicedDateMonth: new FieldManager(lastServicedDateMonth),
     lastServicedDateYear: new FieldManager(lastServicedDateYear),

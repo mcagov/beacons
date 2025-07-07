@@ -1,0 +1,145 @@
+name: "[reusable] E2E tests"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description:
+          The environment to which the application should be deployed.  Must be one of development/staging/production
+          and must match the terraform_workspace input.
+        type: string
+        required: true
+      image-tag:
+        description: The tag of the release to test
+        required: true
+        type: string
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy"
+      test_gov_notify_feedback_email_address:
+        description: The email address to use to test email alerts against
+        required: true
+        type: string
+      test_azure_ad_tenant_id:
+        description: The Azure Active Directory tenant used to protect the Service
+        required: true
+        type: string
+    secrets:
+      aws_access_key_id:
+        description: Required to download the test images from ECR
+        required: true
+      aws_secret_access_key:
+        description: Required to download the test images from ECR
+        required: true
+      test_webapp_azure_b2c_session_token:
+        description: The session token of a logged in user to allow Cypress to test behind auth
+        required: true
+      test_webapp_azure_b2c_jwt_secret:
+        description: Permits Cypress to authenticate with Azure B2C to perform logged-in tests
+        required: true
+      test_webapp_azure_b2c_client_secret:
+        description: The OAuth2.0 client secret for the Webapp app registration in Azure B2C
+        required: true
+      test_webapp_azure_ad_client_secret:
+        description: Permits the Webapp to authenticate with the Service
+        required: true
+      test_webapp_gov_notify_api_key:
+        description: API key for the Webapp to send test emails
+        required: true
+      microsoft_graph_client_id:
+        description: The Azure AD B2C client id required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_client_secret:
+        description: The Azure AD B2C client secret required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_b2c_tenant_id:
+        description: The Azure AD B2C tenant id required for the beacons service API to call Microsoft Graph
+        required: true
+      microsoft_graph_b2c_tenant_name:
+        description: The Azure AD B2C tenant name required for the beacons service API to call Microsoft Graph
+        required: true
+
+defaults:
+  run:
+    working-directory: tests
+
+jobs:
+  end_to_end_tests:
+    name: End to end tests
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.git-reference}}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "16.17.0"
+
+      - name: Install npm dependencies
+        run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.aws_access_key_id }}
+          aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
+          aws-region: eu-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: "true"
+
+      - name: Bring up published containers
+        run: |
+          IMAGE_TAG=${{ inputs.image-tag }} \
+          GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS=${{ inputs.test_gov_notify_feedback_email_address }} \
+          AZURE_B2C_CLIENT_SECRET=${{ secrets.test_webapp_azure_b2c_client_secret }} \
+          JWT_SECRET=${{ secrets.test_webapp_azure_b2c_jwt_secret }} \
+          AUTH_SECRET=${{ secrets.test_webapp_azure_b2c_jwt_secret }} \
+          WEBAPP_CLIENT_SECRET=${{ secrets.test_webapp_azure_ad_client_secret }} \
+          GOV_NOTIFY_API_KEY=${{ secrets.test_webapp_gov_notify_api_key }} \
+          MICROSOFT_GRAPH_CLIENT_ID=${{ secrets.microsoft_graph_client_id }} \
+          MICROSOFT_GRAPH_CLIENT_SECRET=${{ secrets.microsoft_graph_client_secret }} \
+          MICROSOFT_GRAPH_B2C_TENANT_ID=${{ secrets.microsoft_graph_b2c_tenant_id }} \
+          MICROSOFT_GRAPH_B2C_TENANT_NAME=${{ secrets.microsoft_graph_b2c_tenant_name }} \
+          docker compose --verbose -f docker-compose.e2e.yml -f docker-compose.ci.yml up --detach
+
+      - name: Run Cypress end to end tests
+        uses: cypress-io/github-action@v6
+        env:
+          CYPRESS_SESSION_TOKEN: ${{ secrets.test_webapp_azure_b2c_session_token }}
+          AAD_TENANT_ID: 513fb495-9a90-425b-a49a-bc6ebe2a429e
+          WEBAPP_CLIENT_ID: 1ccbe14d-00e3-43ac-a434-8f7a38e03366
+          WEBAPP_CLIENT_SECRET: ${{ secrets.test_webapp_azure_ad_client_secret }}
+          AAD_API_ID: 5cdcbb41-958a-43b6-baa1-bbafd80b4f70
+          API_URL: http://localhost:8080/spring-api
+          MICROSOFT_GRAPH_CLIENT_ID: ${{ secrets.microsoft_graph_client_id }}
+          MICROSOFT_GRAPH_CLIENT_SECRET: ${{ secrets.microsoft_graph_client_secret }}
+          MICROSOFT_GRAPH_B2C_TENANT_ID: ${{ secrets.microsoft_graph_b2c_tenant_id }}
+          MICROSOFT_GRAPH_B2C_TENANT_NAME: ${{ secrets.microsoft_graph_b2c_tenant_name }}
+        with:
+          working-directory: tests
+          spec: cypress/endToEnd/*
+          browser: chrome
+          wait-on: "http://localhost:8080/spring-api/actuator/health"
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: tests/cypress/screenshots/
+
+      - name: Stop containers
+        if: always()
+        run: docker compose --file "docker-compose.e2e.yml" down

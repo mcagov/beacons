@@ -5,16 +5,25 @@ the Beacons system, see the `../webapp/`, `../service/` and `../backoffice/` dir
 
 ## End-to-end testing
 
-Automated end-to-end tests use [Cypress](https://www.cypress.io/). To run end-to-end tests locally:
+Automated end-to-end tests use [Cypress](https://www.cypress.io/) and are run in GitHub Actions against the publish images before deploying to the `dev` and `staging` environments.
+
+To run end-to-end tests locally:
 
 ```sh
 $ docker compose -f docker-compose.e2e.yml up
 $ npm run test:e2e
 ```
 
+### Occasional Failures
+
+- Automated end-to-end tests require the `SESSION_TOKEN`, and may fail unexpectedly, due to rotating session tokens. To resolve this, log into local/dev/staging webapp using the test account. Locate the session token in dev tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
+- Copy this value and update the corresponding secret in the GitHub repository.
+
 ## Smoke testing
 
-- [Pre-release testing scenarios](pre-release-testing-scenarios.md) must be performed after drafting a pre-release
-  to the staging environment and before releasing to production.
-- [Post-release testing scenarios](post-release-testing-scenarios.md) must be performed immediately after releasing
-  to production.
+The smoke tests are currently manual. We are looking to automate these.
+
+- [Pre-release testing scenarios](pre-release-testing-scenarios.md) must be performed:
+  - before drafting a release, against the dev environment.
+  - after drafting a release, against the staging environment, before publishing the release.
+- [Post-release testing scenarios](post-release-testing-scenarios.md) must be performed immediately after a published release has been deployed to production.

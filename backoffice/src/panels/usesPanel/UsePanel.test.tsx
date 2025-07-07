@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Activities, IUse, Purposes } from "entities/IUse";
+import { Activities, IUse, Purposes } from "../../entities/IUse";
 import React from "react";
 import { UsePanel } from "./UsePanel";
 
@@ -12,7 +12,7 @@ describe("UsePanel", () => {
     render(<UsePanel use={use} titlePrefix="Primary" />);
 
     expect(
-      await screen.findByText("Primary use: SAILING VESSEL (PLEASURE)")
+      await screen.findByText("Primary use: SAILING VESSEL (PLEASURE)"),
     ).toBeVisible();
   });
 
@@ -24,7 +24,7 @@ describe("UsePanel", () => {
     render(<UsePanel use={use} titlePrefix="Primary" />);
 
     expect(
-      await screen.findByText("Primary use: GLIDER (PLEASURE)")
+      await screen.findByText("Primary use: GLIDER (PLEASURE)"),
     ).toBeVisible();
   });
 
@@ -38,7 +38,7 @@ describe("UsePanel", () => {
     render(<UsePanel use={use} titlePrefix="Primary" />);
 
     expect(
-      await screen.findByText("Primary use: GLIDING IN THE SEA (PLEASURE)")
+      await screen.findByText("Primary use: GLIDING IN THE SEA (PLEASURE)"),
     ).toBeVisible();
   });
 });

@@ -1,0 +1,75 @@
+name: "[reusable] Publish Backoffice image"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  workflow_call:
+    inputs:
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy"
+      tag:
+        description: The tag to add to the published Docker image, e.g. "v1.0.1"
+        required: true
+        type: string
+      registry_url:
+        description: The URL of the registry where the image should be published
+        required: false
+        type: string
+      repository_name:
+        description: The name of the image to be published
+        required: false
+        default: beacons-backoffice
+        type: string
+      push_to_ecr:
+        description: Whether the image should be published to ECR or not.
+        default: true
+        required: false
+        type: boolean
+    secrets:
+      aws_access_key_id:
+        required: false
+      aws_secret_access_key:
+        required: false
+      feedback_email_addresses:
+        description: The email address(es) to which feedback should be sent.  E.g. "a@b.com" or "a@b.com,c@d.com".
+        required: true
+      mui_pro_license_key:
+        description: The license key for MUI Pro
+        required: true
+
+defaults:
+  run:
+    working-directory: backoffice
+
+jobs:
+  docker_build:
+    name: Build and Push Docker image
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.git-reference}}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to ECR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ inputs.registry_url }}
+          username: ${{ secrets.aws_access_key_id }}
+          password: ${{ secrets.aws_secret_access_key }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v6
+        with:
+          context: backoffice
+          push: ${{ inputs.push_to_ecr }}
+          tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
+          build-args: |
+            feedback_email_addresses=${{ secrets.feedback_email_addresses }}
+            mui_pro_license_key=${{ secrets.mui_pro_license_key }}

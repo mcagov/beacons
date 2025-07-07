@@ -12,7 +12,7 @@ export function FeedbackButton({
       variant={variant}
       fullWidth={fullWidth}
       component="a"
-      href={`mailto:${process.env.REACT_APP_FEEDBACK_EMAIL_ADDRESSES}`}
+      href={`mailto:${import.meta.env.VITE_APP_FEEDBACK_EMAIL_ADDRESSES}`}
       target="_blank"
     >
       Submit feedback

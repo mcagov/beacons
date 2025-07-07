@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { UserSessionGateway } from "./interfaces/UserSessionGateway";
 
 export interface BeaconsSession {
@@ -14,7 +14,7 @@ export interface BeaconsSession {
 
 export class NextAuthUserSessionGateway implements UserSessionGateway {
   public async getSession(
-    context: GetServerSidePropsContext
+    context: GetServerSidePropsContext,
   ): Promise<BeaconsSession | null> {
     return await getSession(context);
   }

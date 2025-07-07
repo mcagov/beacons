@@ -1,4 +1,3 @@
-import { stringContaining } from "expect/build/asymmetricMatchers";
 import { v4 } from "uuid";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { formSubmissionCookieId } from "../../../src/lib/types";
@@ -23,7 +22,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context as any,
-          registrationId
+          registrationId,
         );
 
       const result = await rule.condition();
@@ -45,7 +44,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context as any,
-          registrationId
+          registrationId,
         );
 
       const result = await rule.condition();
@@ -67,7 +66,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context as any,
-          registrationId
+          registrationId,
         );
 
       const result = await rule.condition();
@@ -87,7 +86,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context as any,
-          registrationId
+          registrationId,
         );
 
       const result = await rule.condition();
@@ -122,13 +121,13 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context as any,
-          registration.id
+          registration.id,
         );
 
       await rule.action();
 
       expect(
-        context.container.getAccountHoldersRegistration
+        context.container.getAccountHoldersRegistration,
       ).toHaveBeenCalledWith(registration.id, registration.accountHolderId);
     });
 
@@ -158,14 +157,14 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context as any,
-          registration.id
+          registration.id,
         );
 
       await rule.action();
 
       expect(context.container.saveDraftRegistration).toHaveBeenCalledWith(
         registration.id,
-        registration
+        registration,
       );
     });
 
@@ -195,14 +194,14 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context as any,
-          registration.id
+          registration.id,
         );
 
       await rule.action();
 
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
-        stringContaining(`submissionId=${registration.id};`)
+        expect.stringContaining(`submissionId=${registration.id};`),
       );
     });
 
@@ -226,7 +225,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
           context as any,
-          registration.id
+          registration.id,
         );
 
       const props = await rule.action();

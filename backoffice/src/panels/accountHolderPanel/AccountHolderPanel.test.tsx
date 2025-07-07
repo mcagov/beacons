@@ -21,7 +21,7 @@ describe("Account Holder Summary Panel", () => {
       <AccountHolderPanel
         beaconsGateway={beaconsGatewayDouble}
         beaconId={beaconFixture.id}
-      />
+      />,
     );
     const accountHolder = beaconFixture.accountHolder;
 
@@ -31,33 +31,33 @@ describe("Account Holder Summary Panel", () => {
     }
 
     expect(
-      await screen.findByText(new RegExp(accountHolder.fullName, "i"))
+      await screen.findByText(new RegExp(accountHolder.fullName, "i")),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(accountHolder.email, "i"))
+      await screen.findByText(new RegExp(accountHolder.email, "i")),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(accountHolder.telephoneNumber, "i"))
+      await screen.findByText(new RegExp(accountHolder.telephoneNumber, "i")),
     ).toBeVisible();
     expect(
       await screen.findByText(
-        new RegExp(accountHolder.alternativeTelephoneNumber!, "i")
-      )
+        new RegExp(accountHolder.alternativeTelephoneNumber!, "i"),
+      ),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(accountHolder.addressLine1, "i"))
+      await screen.findByText(new RegExp(accountHolder.addressLine1, "i")),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(accountHolder.townOrCity!, "i"))
+      await screen.findByText(new RegExp(accountHolder.townOrCity!, "i")),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(accountHolder.county!, "i"))
+      await screen.findByText(new RegExp(accountHolder.county!, "i")),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(accountHolder.postcode!, "i"))
+      await screen.findByText(new RegExp(accountHolder.postcode!, "i")),
     ).toBeVisible();
     expect(
-      await screen.findByText(new RegExp(accountHolder.country!, "i"))
+      await screen.findByText(new RegExp(accountHolder.country!, "i")),
     ).toBeVisible();
   });
 
@@ -66,7 +66,7 @@ describe("Account Holder Summary Panel", () => {
       <AccountHolderPanel
         beaconsGateway={beaconsGatewayDouble}
         beaconId={beaconFixture.id}
-      />
+      />,
     );
 
     await waitFor(() => {
@@ -79,7 +79,7 @@ describe("Account Holder Summary Panel", () => {
       <AccountHolderPanel
         beaconsGateway={beaconsGatewayDouble}
         beaconId={beaconFixture.id}
-      />
+      />,
     );
 
     expect(await screen.findByText(/Steve Stevington/i)).toBeVisible();
@@ -94,12 +94,12 @@ describe("Account Holder Summary Panel", () => {
       <AccountHolderPanel
         beaconsGateway={beaconsGatewayDouble}
         beaconId={"doesn't exist"}
-      />
+      />,
     );
 
     expect(await screen.findByRole("alert")).toBeVisible();
     expect(
-      await screen.findByText(Placeholders.UnspecifiedError)
+      await screen.findByText(Placeholders.UnspecifiedError),
     ).toBeVisible();
   });
 });

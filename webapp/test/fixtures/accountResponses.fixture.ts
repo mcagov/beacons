@@ -8,7 +8,7 @@ export const accountIdFromAuthIdResponseJson: IAccountHolderIdResponseBody =
   });
 
 export const accountDetailsResponseJson = (
-  fullName: string
+  fullName: string,
 ): IAccountHolderDetailsResponse =>
   deepFreeze({
     data: {

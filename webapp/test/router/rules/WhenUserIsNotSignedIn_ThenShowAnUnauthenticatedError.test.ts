@@ -16,7 +16,7 @@ describe("WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError", () => {
     };
 
     const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
-      context as any
+      context as any,
     );
 
     const condition = await rule.condition();
@@ -55,7 +55,7 @@ describe("WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError", () => {
     };
 
     const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
-      context as any
+      context as any,
     );
 
     const condition = await rule.condition();

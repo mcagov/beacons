@@ -40,7 +40,7 @@ describe("BeaconSummaryPanel", () => {
           beaconsGateway={beaconsGatewayDouble}
           beaconId={beaconFixture.id}
         />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
 
     await waitFor(() => {
@@ -59,12 +59,12 @@ describe("BeaconSummaryPanel", () => {
           beaconsGateway={beaconsGatewayDouble}
           beaconId={"doesn't exist"}
         />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
 
     expect(await screen.findByRole("alert")).toBeVisible();
     expect(
-      await screen.findByText(Placeholders.UnspecifiedError)
+      await screen.findByText(Placeholders.UnspecifiedError),
     ).toBeVisible();
   });
 
@@ -75,18 +75,18 @@ describe("BeaconSummaryPanel", () => {
           beaconsGateway={beaconsGatewayDouble}
           beaconId={beaconFixture.id}
         />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
     expect(beaconsGatewayDouble.getBeacon).toHaveBeenCalledTimes(1);
 
     const editButton = await screen.findByText(/edit summary/i);
-    userEvent.click(editButton);
+    await userEvent.click(editButton);
     expect(beaconsGatewayDouble.getBeacon).toHaveBeenCalledTimes(2);
 
     const cancelButton = await screen.findByRole("button", {
       name: "Cancel",
     });
-    userEvent.click(cancelButton);
+    await userEvent.click(cancelButton);
     expect(beaconsGatewayDouble.getBeacon).toHaveBeenCalledTimes(3);
   });
 
@@ -110,7 +110,7 @@ describe("BeaconSummaryPanel", () => {
           beaconsGateway={beaconsGatewayDouble}
           beaconId={beaconFixture.id}
         />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
     const editButton = await screen.findByText(/edit summary/i);
 

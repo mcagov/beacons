@@ -1,7 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/styles";
 import { render, screen, waitFor } from "@testing-library/react";
-import { AuthProvider } from "components/auth/AuthProvider";
+import { AuthProvider } from "../components/auth/AuthProvider";
 import { beaconFixture } from "../fixtures/beacons.fixture";
 import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { INotesGateway } from "../gateways/notes/INotesGateway";
@@ -42,7 +42,7 @@ describe("Beacon record page", () => {
             notesGateway={notesGatewayDouble}
           />
         </AuthProvider>
-      </ThemeProvider>
+      </ThemeProvider>,
     );
     const hexId = beaconFixture.hexId;
     await waitFor(() => {
@@ -62,12 +62,12 @@ describe("Beacon record page", () => {
             notesGateway={notesGatewayDouble}
           />
         </AuthProvider>
-      </ThemeProvider>
+      </ThemeProvider>,
     );
     const numberOfUses = beaconFixture.uses.length;
 
     expect(
-      await screen.findByText(`${numberOfUses} Registered Uses`)
+      await screen.findByText(`${numberOfUses} Registered Uses`),
     ).toBeDefined();
   });
 });

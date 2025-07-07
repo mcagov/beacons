@@ -48,7 +48,7 @@ describe("Beacons API Gateway", () => {
       expect((axios as any).post).toHaveBeenLastCalledWith(
         expectedUrl,
         expect.anything(),
-        expect.anything()
+        expect.anything(),
       );
     });
   });
@@ -83,7 +83,7 @@ describe("Beacons API Gateway", () => {
       expect((axios as any).patch).toHaveBeenLastCalledWith(
         expectedUrl,
         expect.anything(),
-        expect.anything()
+        expect.anything(),
       );
     });
   });
@@ -125,7 +125,7 @@ describe("Beacons API Gateway", () => {
       expect((axios as any).patch).toHaveBeenLastCalledWith(
         expectedUrl,
         expectedJson,
-        expect.anything()
+        expect.anything(),
       );
     });
   });

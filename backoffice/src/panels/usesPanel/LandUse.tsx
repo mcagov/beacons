@@ -39,7 +39,7 @@ const getLandSummaryFields = (use: IUse): IField[] => {
       {
         key: "Typical number of people with you",
         value: `${use.workingRemotelyPeopleCount || ""}`,
-      }
+      },
     );
   }
 
@@ -52,7 +52,7 @@ const getLandSummaryFields = (use: IUse): IField[] => {
       {
         key: "Typical number of people with you",
         value: `${use.windfarmPeopleCount || ""}`,
-      }
+      },
     );
   }
 
@@ -66,7 +66,7 @@ const getLandSummaryFields = (use: IUse): IField[] => {
       {
         key: "Typical number of people with you",
         value: `${use.otherActivityPeopleCount || ""}`,
-      }
+      },
     );
   }
 
@@ -83,7 +83,7 @@ const getLandCommunicationsFields = (use: IUse): IField[] => {
         key: `Communication type ${typeOfCommunicationIndex}`,
         value: "portable vhf/dsc",
       },
-      { key: "Portable MMSI", value: use?.portableVhfRadioValue }
+      { key: "Portable MMSI", value: use?.portableVhfRadioValue },
     );
     typeOfCommunicationIndex++;
   }
@@ -97,7 +97,7 @@ const getLandCommunicationsFields = (use: IUse): IField[] => {
       {
         key: "Phone number",
         value: use?.satelliteTelephoneValue,
-      }
+      },
     );
     typeOfCommunicationIndex++;
   }
@@ -111,7 +111,7 @@ const getLandCommunicationsFields = (use: IUse): IField[] => {
       {
         key: "Number",
         value: [use?.mobileTelephone1, use?.mobileTelephone2],
-      }
+      },
     );
     typeOfCommunicationIndex++;
   }
@@ -125,7 +125,7 @@ const getLandCommunicationsFields = (use: IUse): IField[] => {
       {
         key: "Details",
         value: use?.otherCommunicationValue,
-      }
+      },
     );
     typeOfCommunicationIndex++;
   }

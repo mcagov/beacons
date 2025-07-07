@@ -29,7 +29,7 @@ describe("Aviation Use", () => {
     expect(await screen.findByText("M-ZYXW")).toBeVisible();
     expect(await screen.findByText("YES")).toBeVisible();
     expect(
-      await screen.findByText("STOWED INSIDE THE NOSE OF THE AIRCRAFT")
+      await screen.findByText("STOWED INSIDE THE NOSE OF THE AIRCRAFT"),
     ).toBeVisible();
     expect(await screen.findByText("IN MY CARRY BAG")).toBeVisible();
   });
@@ -42,12 +42,10 @@ describe("Aviation Use", () => {
 
     const rowWithDongleLabel = screen.getByText("Is this a dongle?:");
     expect(rowWithDongleLabel).toBeInTheDocument();
-    // eslint-disable-next-line testing-library/no-node-access
     const rowElement = rowWithDongleLabel.closest("tr");
     expect(rowElement).toBeInTheDocument();
     if (rowElement) {
       const noValueInRow = within(rowElement).queryByText("NO");
-      // eslint-disable-next-line jest/no-conditional-expect
       expect(noValueInRow).toBeInTheDocument();
     }
   });
@@ -81,7 +79,7 @@ describe("Aviation Use", () => {
     expect(await screen.findByText("Communication type 4:")).toBeVisible();
     expect(await screen.findByText("OTHER")).toBeVisible();
     expect(
-      await screen.findByText("YOU CAN CONTACT ME VIA MY PARTNER")
+      await screen.findByText("YOU CAN CONTACT ME VIA MY PARTNER"),
     ).toBeVisible();
   });
 
@@ -89,7 +87,7 @@ describe("Aviation Use", () => {
     const use: IUse = {} as IUse;
     render(<AviationUse use={use} />);
     expect(await (await screen.findAllByText(Placeholders.NoData)).length).toBe(
-      9
+      9,
     );
   });
 });

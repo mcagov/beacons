@@ -8,9 +8,13 @@ production release.
 
 ## Checklist
 
-- [ ] Only the newly deployed images of the application are running (check the [AWS Console](https://eu-west-2.console.aws.amazon.com/ecs/v2/clusters/staging-mca-beacons-cluster/services?region=eu-west-2)
-- [ ] As an AccountHolder, I can sign in to my account at https://staging.406beacons.com/
+Example beacon ID `1D0E9B07CEFFBFF`.
+
+- [ ] Only the newly deployed images of the application are running (check the [AWS Console](https://eu-west-2.console.aws.amazon.com/ecs/v2/clusters/staging-mca-beacons-cluster/services?region=eu-west-2))
+- [ ] As an AccountHolder, I can sign in to my account at https://dev.register-406-beacons.service.gov.uk/ or https://staging.register-406-beacons.service.gov.uk/
 - [ ] As an AccountHolder, I can register a new Beacon
 - [ ] As an AccountHolder, I can see the newly-registered Beacon in my account home
+- [ ] As a BackofficeUser, I check if I can see a list of Beacons in default search mode
+- [ ] As a BackofficeUser, I check if I can see a list of Beacons in advanced search mode
 - [ ] As a BackofficeUser, I can search for the AccountHolder's newly-registered Beacon by HexID
 - [ ] As a BackofficeUser, I can view the details of the AccountHolder's newly-registered Beacon

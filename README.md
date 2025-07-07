@@ -1,5 +1,5 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-![CI/CD Pipeline](https://github.com/mcagov/beacons/actions/workflows/on-push.yml/badge.svg)
+![CI/CD Pipeline](https://github.com/mcagov/beacons/actions/workflows/on-merge-to-main.yml/badge.svg)
 
 # Beacons registration service
 
@@ -11,12 +11,24 @@ The Beacons registration service enables:
 It comprises three applications:
 
 1. A public-facing frontend that uses [NextJS](https://nextjs.org/) and the [GOV.UK Design System]
-   (https://design-system.service.gov.uk/). Source code is in the `webapp/` directory.
+   (https://design-system.service.gov.uk/).
+   - Source code is in the `webapp/` directory.
+   - Application specific documentation is in the [README](./webapp/README.md).
 2. An API that uses [Spring Boot](https://spring.io/projects/spring-boot), [Postgres](https://www.postgresql.org/)
-   and [OpenSearch](https://opensearch.org/). Source code is in the `service/` directory.
+   and [OpenSearch](https://opensearch.org/).
+   - Source code is in the `service/` directory.
+   - Application specific documentation is in the [README](./service/README.md).
 3. A backoffice single-page application (SPA) that uses [React](https://reactjs.org/docs/create-a-new-react-app.html)
-   to allow users in MCA to query and perform operations on beacon registrations. Source code is in
-   `service/src/main/backoffice`. The SPA is served by Spring Boot.
+   to allow users in MCA to query and perform operations on beacon registrations.
+   - Source code is in `service/src/main/backoffice`.
+   - The SPA is served by Spring Boot.
+   - Application specific documentation is in the [README](./backoffice/README.md).
+
+## Testing
+
+Application specific tests are covered in the READMEs linked to above.
+
+If you are working towards a release, look at the [end-to-end and smoke test documentation](./tests/README.md).
 
 ## Architecture
 
@@ -27,16 +39,16 @@ unsure.
 
 ## Local development
 
-| **dependency**                                                    | **version** |
-| ----------------------------------------------------------------- | ----------- |
-| [java](https://openjdk.java.net/projects/jdk/11/)                 | 11.x        |
-| [nvm](https://github.com/nvm-sh/nvm)                              | 0.38        |
-| [terraform](https://www.terraform.io/)                            | 1.0.X       |
-| [Docker desktop](https://www.docker.com/products/docker-desktop/) | Latest      |
+Before you start...
 
-```bash
-$ make       # Start up the applications in development mode, with backing services
-```
+- Make sure you have the required versions of things installed. We recommend using [asdf](asdf-vm.com) to manage this. See the `.tool-versions` if you want to manage them some other way.
+- Copy `webapp/.env.sample` as `webapp/.env.local` and populate it with the contents of the "Beacons Backoffice Local .env.local config" secure note in 1Password.
+- ```bash
+  $ make setup # Install all the things, setup commit hooks etc.
+  ```
+- ```bash
+  $ make # Start up the applications in development mode, with backing services
+  ```
 
 ## Infrastructure-as-code
 

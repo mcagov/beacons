@@ -57,7 +57,7 @@ describe("As an account holder", () => {
     ifIAmAskedForAccountHolderDetailsIProvideThem();
 
     iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(
-      legacyBeaconRequestFixture.data.attributes.beacon.hexId
+      legacyBeaconRequestFixture.data.attributes.beacon.hexId,
     );
     iCanSeeTheBeaconHexIdThatIsAssociatedWithMyEmailAddress(fixture.hexId);
   });
@@ -148,15 +148,15 @@ const theBeaconListedForHexIdIsNotALegacyBeacon = (hexId: string) => {
 const whenIClickContinueWithNoOptionsSelected = whenIClickContinue;
 
 const iCanSeeHighLevelInformationAboutTheLegacyBeacon = (
-  legacyBeaconRequest
+  legacyBeaconRequest,
 ) => {
   cy.contains(
     formatDateLong(
-      legacyBeaconRequest.data.attributes.beacon.firstRegistrationDate
-    )
+      legacyBeaconRequest.data.attributes.beacon.firstRegistrationDate,
+    ),
   );
   cy.contains(
-    formatDateLong(legacyBeaconRequest.data.attributes.beacon.lastModifiedDate)
+    formatDateLong(legacyBeaconRequest.data.attributes.beacon.lastModifiedDate),
   );
   cy.contains(legacyBeaconRequest.data.attributes.beacon.hexId);
   cy.contains(legacyBeaconRequest.data.attributes.beacon.manufacturer);

@@ -56,7 +56,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
               href={UrlBuilder.buildRegistrationUrl(
                 Actions.update,
                 Pages.summary,
-                draftRegistration.id
+                draftRegistration.id,
               )}
             />
           )
@@ -84,7 +84,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           Actions.update,
                           UsePages.environment,
                           draftRegistration.id,
-                          draftRegistration.uses.length.toString()
+                          draftRegistration.uses.length.toString(),
                         ),
                       })
                     }
@@ -103,12 +103,12 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           Actions.update,
                           UsePages.environment,
                           draftRegistration.id,
-                          index.toString()
+                          index.toString(),
                         )}
                         deleteUri={confirmBeforeDelete(
                           use,
                           index,
-                          draftRegistration.id
+                          draftRegistration.id,
                         )}
                         makeMainUseUri={
                           ActionURLs.mainCachedUseMain +
@@ -116,7 +116,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                             useId: index,
                             onSuccess: UrlBuilder.buildUseSummaryUrl(
                               Actions.update,
-                              draftRegistration.id
+                              draftRegistration.id,
                             ),
                             onFailure: ErrorPageURLs.serverError,
                           })
@@ -134,7 +134,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           Actions.update,
                           UsePages.environment,
                           draftRegistration.id,
-                          draftRegistration.uses.length.toString()
+                          draftRegistration.uses.length.toString(),
                         ),
                       })
                     }
@@ -145,7 +145,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                   <LinkButton
                     buttonText="Continue"
                     href={UrlBuilder.buildUpdateRegistrationSummaryUrl(
-                      draftRegistration.id
+                      draftRegistration.id,
                     )}
                   />
                 </>
@@ -161,7 +161,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
 const confirmBeforeDelete = (
   use: DraftBeaconUse,
   index: number,
-  registrationId: string
+  registrationId: string,
 ) =>
   GeneralPageURLs.areYouSure +
   queryParams({
@@ -172,7 +172,7 @@ const confirmBeforeDelete = (
         useId: index,
         onSuccess: UrlBuilder.buildUseSummaryUrl(
           Actions.update,
-          registrationId
+          registrationId,
         ),
         onFailure: ErrorPageURLs.serverError,
       }),
@@ -186,17 +186,17 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-        context
+        context,
       ),
       new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
         context,
-        registrationId
+        registrationId,
       ),
       new GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAvailable(
-        context
+        context,
       ),
     ]).execute();
-  })
+  }),
 );
 
 export default AdditionalBeaconUse;

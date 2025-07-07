@@ -14,7 +14,7 @@ node_modules/
 .idea/
 .eslintcache
 .env
-.env
+.env.local
 
 # Cypress
 screenshots

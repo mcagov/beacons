@@ -45,8 +45,7 @@ public class ExportMapper {
     Beacon beacon = registration.getBeacon();
     BeaconUse mainUse = registration.getMainUse();
 
-    return LabelDTO
-      .builder()
+    return LabelDTO.builder()
       .mcaContactNumber("+44 (0)1326 317575")
       .beaconUse(
         mainUse != null
@@ -63,8 +62,7 @@ public class ExportMapper {
     LegacyUse mainUse = beacon.getData().getMainUse();
     LegacyBeaconDetails beaconData = beacon.getData().getBeacon();
 
-    return LabelDTO
-      .builder()
+    return LabelDTO.builder()
       .mcaContactNumber("+44 (0)1326 317575")
       .beaconUse(
         mainUse != null
@@ -86,8 +84,7 @@ public class ExportMapper {
     BeaconUse mainUse = registration.getMainUse();
     BeaconOwner owner = registration.getBeaconOwner();
 
-    return BeaconExportDTO
-      .builder()
+    return BeaconExportDTO.builder()
       .type("New")
       .id(beacon.getId().unwrap().toString())
       .name(
@@ -174,8 +171,7 @@ public class ExportMapper {
   }
 
   private BeaconExportMaritimeUseDTO toMaritimeUse(BeaconUse use) {
-    return BeaconExportMaritimeUseDTO
-      .builder()
+    return BeaconExportMaritimeUseDTO.builder()
       .environment(use.getEnvironment().toString())
       .isMainUse(Boolean.TRUE.equals(use.getMainUse()))
       .typeOfUse(use.getUseType())
@@ -211,8 +207,7 @@ public class ExportMapper {
   }
 
   private BeaconExportAviationUseDTO toAviationUse(BeaconUse use) {
-    return BeaconExportAviationUseDTO
-      .builder()
+    return BeaconExportAviationUseDTO.builder()
       .environment(use.getEnvironment().toString())
       .isMainUse(Boolean.TRUE.equals(use.getMainUse()))
       .typeOfUse(use.getUseType())
@@ -233,8 +228,7 @@ public class ExportMapper {
   }
 
   BeaconExportLandUseDTO toLandUse(BeaconUse use) {
-    return BeaconExportLandUseDTO
-      .builder()
+    return BeaconExportLandUseDTO.builder()
       .environment(use.getEnvironment().toString())
       .isMainUse(Boolean.TRUE.equals(use.getMainUse()))
       .typeOfUse(use.getUseType())
@@ -262,8 +256,7 @@ public class ExportMapper {
     LegacyBeaconDetails details = beacon.getData().getBeacon();
     LegacyUse mainUse = beacon.getData().getMainUse();
 
-    return BeaconExportDTO
-      .builder()
+    return BeaconExportDTO.builder()
       .type("Legacy")
       .name(
         mainUse != null
@@ -308,8 +301,7 @@ public class ExportMapper {
   public BeaconExportDTO toLegacyBeaconExportDTO(BeaconBackupItem beacon) {
     LegacyBeaconDetails details = beacon.getData().getBeacon();
 
-    return BeaconExportDTO
-      .builder()
+    return BeaconExportDTO.builder()
       .type("Legacy")
       .id(beacon.getId().toString())
       .proofOfRegistrationDate(OffsetDateTime.now())
@@ -349,8 +341,7 @@ public class ExportMapper {
   private BeaconExportAccountHolderDTO toAccountHolderDTO(AccountHolder ah) {
     AddressDTO address = addressMapper.toDTO(ah.getAddress());
 
-    return BeaconExportAccountHolderDTO
-      .builder()
+    return BeaconExportAccountHolderDTO.builder()
       .fullName(ah.getFullName())
       .address(address)
       .telephoneNumbers(
@@ -367,8 +358,7 @@ public class ExportMapper {
   private BeaconExportOwnerDTO toOwnerDTO(BeaconOwner owner) {
     AddressDTO address = addressMapper.toDTO(owner.getAddress());
 
-    return BeaconExportOwnerDTO
-      .builder()
+    return BeaconExportOwnerDTO.builder()
       .ownerName(owner.getFullName())
       .isMain(owner.isMain())
       .address(address)
@@ -389,8 +379,7 @@ public class ExportMapper {
     return emergencyContacts
       .stream()
       .map(ec ->
-        EmergencyContactDTO
-          .builder()
+        EmergencyContactDTO.builder()
           .fullName(ec.getFullName())
           .telephoneNumber(
             BeaconsStringUtils.getMultipleValuesAsString(
@@ -408,8 +397,7 @@ public class ExportMapper {
     LegacyEmergencyContact emergencyContact
   ) {
     return Arrays.asList(
-      EmergencyContactDTO
-        .builder()
+      EmergencyContactDTO.builder()
         .fullName(emergencyContact.getDetails())
         .build()
     );
@@ -429,8 +417,7 @@ public class ExportMapper {
   }
 
   BeaconExportOwnerDTO toLegacyOwnerDTO(LegacyGenericOwner owner) {
-    AddressDTO address = AddressDTO
-      .builder()
+    AddressDTO address = AddressDTO.builder()
       .addressLine1(owner.getAddress1())
       .addressLine2(owner.getAddress2())
       .addressLine3(owner.getAddress3())
@@ -439,8 +426,7 @@ public class ExportMapper {
       .country(owner.getCountry())
       .build();
 
-    return BeaconExportOwnerDTO
-      .builder()
+    return BeaconExportOwnerDTO.builder()
       .ownerName(owner.getOwnerName())
       .companyName(owner.getCompanyName())
       .careOf(owner.getCareOf())
@@ -495,8 +481,7 @@ public class ExportMapper {
   }
 
   private BeaconExportMaritimeUseDTO toMaritimeUse(LegacyUse use) {
-    return BeaconExportMaritimeUseDTO
-      .builder()
+    return BeaconExportMaritimeUseDTO.builder()
       .environment(use.getEnvironment())
       .isMainUse(use.isMain())
       .vesselType(use.getVesselType())
@@ -528,8 +513,7 @@ public class ExportMapper {
   }
 
   private BeaconExportAviationUseDTO toAviationUse(LegacyUse use) {
-    return BeaconExportAviationUseDTO
-      .builder()
+    return BeaconExportAviationUseDTO.builder()
       .environment(use.getEnvironment())
       .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
@@ -554,8 +538,7 @@ public class ExportMapper {
   }
 
   private BeaconExportLandUseDTO toLandUse(LegacyUse use) {
-    return BeaconExportLandUseDTO
-      .builder()
+    return BeaconExportLandUseDTO.builder()
       .environment(use.getEnvironment())
       .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
@@ -579,8 +562,7 @@ public class ExportMapper {
   }
 
   private BeaconExportRigUseDTO toRigUse(LegacyUse use) {
-    return BeaconExportRigUseDTO
-      .builder()
+    return BeaconExportRigUseDTO.builder()
       .environment(use.getEnvironment())
       .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())
@@ -606,8 +588,7 @@ public class ExportMapper {
   }
 
   private BeaconExportGenericUseDTO toLegacyUse(LegacyUse use) {
-    return BeaconExportGenericUseDTO
-      .builder()
+    return BeaconExportGenericUseDTO.builder()
       .environment(use.getEnvironment())
       .isMainUse(use.isMain())
       .typeOfUse(use.getPurpose())

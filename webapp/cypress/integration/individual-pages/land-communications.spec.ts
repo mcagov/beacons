@@ -27,7 +27,7 @@ describe("As a beacon owner and land or other use user", () => {
   beforeEach(() => {
     givenIHaveSignedIn();
     givenIHaveACookieSetAndIVisit(
-      CreateRegistrationPageURLs.landCommunications
+      CreateRegistrationPageURLs.landCommunications,
     );
   });
 
@@ -182,19 +182,19 @@ describe("As a beacon owner and land or other use user", () => {
 
     whenIType(
       testLandUseData.communications.portableMMSI,
-      portableVhfDscRadioInputSelector
+      portableVhfDscRadioInputSelector,
     );
     whenIType(
       testLandUseData.communications.satelliteTelephone,
-      satelliteTelephoneInputSelector
+      satelliteTelephoneInputSelector,
     );
     whenIType(
       testLandUseData.communications.mobileTelephone1,
-      mobileTelephoneInputSelector
+      mobileTelephoneInputSelector,
     );
     whenIType(
       testLandUseData.communications.otherCommunication,
-      otherCommunicationInputSelector
+      otherCommunicationInputSelector,
     );
     andIClickContinue();
 

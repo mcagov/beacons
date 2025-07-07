@@ -6,13 +6,13 @@ describe("filename()", () => {
       get: jest
         .fn()
         .mockReturnValue(
-          "attachment; filename=19700101-Beacons_Data-Official Sensitive - Personal.csv"
+          "attachment; filename=19700101-Beacons_Data-Official Sensitive - Personal.csv",
         ),
     };
     const parsed = parseFilename(headers as any as Headers);
 
     expect(parsed).toBe(
-      "19700101-Beacons_Data-Official Sensitive - Personal.csv"
+      "19700101-Beacons_Data-Official Sensitive - Personal.csv",
     );
   });
 
@@ -21,13 +21,13 @@ describe("filename()", () => {
       get: jest
         .fn()
         .mockReturnValue(
-          "attachment; filename=19700102-Beacons_Data-Official Sensitive - Personal.csv"
+          "attachment; filename=19700102-Beacons_Data-Official Sensitive - Personal.csv",
         ),
     };
     const parsed = parseFilename(headers as any as Headers);
 
     expect(parsed).toBe(
-      "19700102-Beacons_Data-Official Sensitive - Personal.csv"
+      "19700102-Beacons_Data-Official Sensitive - Personal.csv",
     );
   });
 
@@ -36,13 +36,13 @@ describe("filename()", () => {
       get: jest
         .fn()
         .mockReturnValue(
-          "attachment; filename=20220329-Beacons_Data-Official Sensitive - Personal.csv"
+          "attachment; filename=20220329-Beacons_Data-Official Sensitive - Personal.csv",
         ),
     };
     const parsed = parseFilename(headers as any as Headers);
 
     expect(parsed).toBe(
-      "20220329-Beacons_Data-Official Sensitive - Personal.csv"
+      "20220329-Beacons_Data-Official Sensitive - Personal.csv",
     );
   });
 });

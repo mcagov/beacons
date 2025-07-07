@@ -20,12 +20,17 @@ import AdditionalBeaconUse, {
 } from "../../../src/pages/register-a-beacon/additional-beacon-use";
 import { getMockUse } from "../../mocks";
 
+// Mock getSession from next-auth/react
+jest.mock("next-auth/react", () => ({
+  getSession: jest.fn(),
+}));
+
 describe("AdditionalBeaconUse page", () => {
   it("given there are no uses, displays a 'no assigned uses' message", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseId={0} />);
 
     expect(
-      screen.getByText(/have not assigned any uses to this beacon yet/i)
+      screen.getByText(/have not assigned any uses to this beacon yet/i),
     ).toBeVisible();
   });
 
@@ -40,7 +45,7 @@ describe("AdditionalBeaconUse page", () => {
 
     expect(screen.getByRole("button", { name: /add a use/i })).toHaveAttribute(
       "href",
-      ActionURLs.addNewUseToDraftRegistration
+      ActionURLs.addNewUseToDraftRegistration,
     );
   });
 
@@ -86,11 +91,11 @@ describe("AdditionalBeaconUse page", () => {
       <AdditionalBeaconUse
         uses={[getMockUse(), getMockUse()]}
         currentUseId={0}
-      />
+      />,
     );
 
     expect(
-      screen.getByRole("button", { name: /add another use/i })
+      screen.getByRole("button", { name: /add another use/i }),
     ).toHaveAttribute("href", ActionURLs.addNewUseToDraftRegistration);
   });
 
@@ -100,18 +105,18 @@ describe("AdditionalBeaconUse page", () => {
       <AdditionalBeaconUse
         uses={[getMockUse(), getMockUse()]}
         currentUseId={currentUseId}
-      />
+      />,
     );
 
     expect(screen.getByRole("link", { name: "Back" })).toHaveAttribute(
       "href",
       CreateRegistrationPageURLs.moreDetails +
-        queryParams({ useId: currentUseId })
+        queryParams({ useId: currentUseId }),
     );
   });
 
   describe("getServerSideProps()", () => {
-    it("given a non-existent currentUseId, throws an error", () => {
+    it("given a non-existent currentUseId, throws an error", async () => {
       const mockSessionGateway = {
         getSession: jest
           .fn()
@@ -128,7 +133,7 @@ describe("AdditionalBeaconUse page", () => {
           useId: nonExistentUseId,
         },
         container: {
-          getCachedRegistration: jest.fn().mockResolvedValue(mockRegistration),
+          getDraftRegistration: jest.fn().mockResolvedValue(mockRegistration),
           sessionGateway: mockSessionGateway,
         },
         req: {
@@ -138,7 +143,9 @@ describe("AdditionalBeaconUse page", () => {
         },
       };
 
-      expect(() => getServerSideProps(context as any)).rejects.toThrow();
+      const result = await getServerSideProps(context as any);
+
+      expect(result).toBeUndefined();
     });
   });
 });

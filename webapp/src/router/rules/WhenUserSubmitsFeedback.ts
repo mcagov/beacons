@@ -15,7 +15,7 @@ export class WhenUserSubmitsFeedback implements Rule {
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
-    validationRules: FormManagerFactory
+    validationRules: FormManagerFactory,
   ) {
     this.context = context;
     this.validationRules = validationRules;

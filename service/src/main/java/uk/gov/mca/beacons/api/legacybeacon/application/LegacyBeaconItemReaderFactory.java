@@ -16,7 +16,8 @@ public class LegacyBeaconItemReaderFactory {
   public static JpaPagingItemReader<LegacyBeacon> getItemReader(
     EntityManagerFactory entityManagerFactory
   ) {
-    JpaNamedQueryProvider<LegacyBeacon> queryProvider = new JpaNamedQueryProvider<>();
+    JpaNamedQueryProvider<LegacyBeacon> queryProvider =
+      new JpaNamedQueryProvider<>();
     queryProvider.setEntityClass(LegacyBeacon.class);
     queryProvider.setNamedQuery("PagingLegacyBeaconReader");
 
@@ -31,7 +32,8 @@ public class LegacyBeaconItemReaderFactory {
   public static JpaPagingItemReader<LegacyBeacon> getLegacyBackupItemReader(
     EntityManagerFactory entityManagerFactory
   ) {
-    JpaNamedQueryProvider<LegacyBeacon> queryProvider = new JpaNamedQueryProvider<>();
+    JpaNamedQueryProvider<LegacyBeacon> queryProvider =
+      new JpaNamedQueryProvider<>();
     queryProvider.setEntityClass(LegacyBeacon.class);
     queryProvider.setNamedQuery("BackupPagingLegacyBeaconReader");
 

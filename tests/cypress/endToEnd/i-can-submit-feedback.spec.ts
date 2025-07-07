@@ -16,7 +16,7 @@ describe("As any user", () => {
     whenISelect("#verySatisfied");
     whenITypeInAnEmptyField(
       "Should have used Ruby on Rails",
-      "#howCouldWeImproveThisService"
+      "#howCouldWeImproveThisService",
     );
     andIClickTheButtonContaining("Send feedback");
     iCanSeeAPageHeadingThatContains("Feedback submitted");

@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import javax.batch.runtime.BatchStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import uk.gov.mca.beacons.api.registration.rest.DeleteBeaconDTO;
 
 @AutoConfigureWebTestClient
+@Slf4j
 public abstract class WebIntegrationTest extends BaseIntegrationTest {
 
   @Autowired
@@ -26,6 +28,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
     AccountHolder("/spring-api/account-holder"),
     Beacon("/spring-api/beacons"),
     LegacyBeacon("/spring-api/legacy-beacon"),
+    BeaconSearch("/spring-api/search/beacons"),
     Migration("/spring-api/migrate"),
     Note("/spring-api/note"),
     Registration("/spring-api/registrations"),
@@ -174,8 +177,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
     throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     String deleteRegistrationRequestBody = objectMapper.writeValueAsString(
-      DeleteBeaconDTO
-        .builder()
+      DeleteBeaconDTO.builder()
         .beaconId(UUID.fromString(beaconId))
         .accountHolderId(UUID.fromString(accountHolderId))
         .reason("I don't want it")
@@ -204,16 +206,13 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
 
     @SuppressWarnings("unchecked")
     final Map<String, Map<String, Object>> registrationMap = mapper.readValue(
-      fixtureHelper.getFixture(
-        REGISTRATION_JSON_RESOURCE,
-        fixture -> {
-          String withAccountHolderId = fixture.replace(
-            "replace-with-test-account-holder-id",
-            accountHolderId
-          );
-          return replacer.apply(withAccountHolderId);
-        }
-      ),
+      fixtureHelper.getFixture(REGISTRATION_JSON_RESOURCE, fixture -> {
+        String withAccountHolderId = fixture.replace(
+          "replace-with-test-account-holder-id",
+          accountHolderId
+        );
+        return replacer.apply(withAccountHolderId);
+      }),
       HashMap.class
     );
 

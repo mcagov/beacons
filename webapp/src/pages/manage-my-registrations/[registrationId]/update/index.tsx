@@ -39,6 +39,7 @@ import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDr
 import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { SendYourApplication } from "../../../register-a-beacon/check-your-answers";
+import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;
@@ -109,7 +110,7 @@ const RegistrationSummaryPage: FunctionComponent<
                     href: UrlBuilder.buildRegistrationUrl(
                       Actions.update,
                       Pages.beaconDetails,
-                      registration.id
+                      registration.id,
                     ),
                   },
                 ]}
@@ -127,7 +128,7 @@ const RegistrationSummaryPage: FunctionComponent<
               changeUrl={UrlBuilder.buildRegistrationUrl(
                 Actions.update,
                 Pages.beaconInformation,
-                registration.id
+                registration.id,
               )}
             />
             <UpdateUseSection registrationId={registration.id} />
@@ -139,7 +140,7 @@ const RegistrationSummaryPage: FunctionComponent<
               changeUrl={UrlBuilder.buildRegistrationUrl(
                 Actions.update,
                 Pages.aboutBeaconOwner,
-                registration.id
+                registration.id,
               )}
             />
             <CheckYourAnswersBeaconOwnerAddressSummary
@@ -147,7 +148,7 @@ const RegistrationSummaryPage: FunctionComponent<
               changeUrl={UrlBuilder.buildRegistrationUrl(
                 Actions.update,
                 Pages.beaconOwnerAddress,
-                registration.id
+                registration.id,
               )}
             />
             <CheckYourAnswersBeaconEmergencyContactsSummary
@@ -155,7 +156,7 @@ const RegistrationSummaryPage: FunctionComponent<
               changeUrl={UrlBuilder.buildRegistrationUrl(
                 Actions.update,
                 Pages.emergencyContact,
-                registration.id
+                registration.id,
               )}
             />
             {userHasEdited && (
@@ -166,7 +167,7 @@ const RegistrationSummaryPage: FunctionComponent<
                   href={UrlBuilder.buildRegistrationUrl(
                     Actions.update,
                     Pages.complete,
-                    registration.id
+                    registration.id,
                   )}
                 />
               </>
@@ -219,18 +220,22 @@ export const getServerSideProps: GetServerSideProps = withSession(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-        context
+        context,
+      ),
+      new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges(
+        context,
+        registrationId,
       ),
       new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend(
         context,
-        registrationId
+        registrationId,
       ),
       new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration(
         context,
-        registrationId
+        registrationId,
       ),
     ]).execute();
-  })
+  }),
 );
 
 export default RegistrationSummaryPage;

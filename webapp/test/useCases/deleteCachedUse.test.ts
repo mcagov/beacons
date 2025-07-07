@@ -1,4 +1,4 @@
-import { DraftRegistrationGateway } from "../../src/gateways/DraftRegistrationGateway";
+import { DraftRegistrationGateway } from "../../src/gateways/interfaces/DraftRegistrationGateway";
 import { deleteCachedUse } from "../../src/useCases/deleteCachedUse";
 
 describe("deleteCachedUse", () => {
@@ -13,7 +13,7 @@ describe("deleteCachedUse", () => {
 
     expect(cachedRegistrationGateway.deleteUse).toHaveBeenCalledWith(
       submissionId,
-      useId
+      useId,
     );
   });
 
@@ -27,7 +27,7 @@ describe("deleteCachedUse", () => {
     } as any;
 
     await expect(
-      deleteCachedUse(submissionId, useId, cachedRegistrationGateway)
+      deleteCachedUse(submissionId, useId, cachedRegistrationGateway),
     ).rejects.toThrow();
   });
 });

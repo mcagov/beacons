@@ -25,40 +25,40 @@ describe("UserMenu", () => {
     render(
       <AuthContext.Provider value={authContext}>
         <UserMenu />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
 
     expect(
-      screen.getByRole("button", { name: "Steve Stevington" })
+      screen.getByRole("button", { name: "Steve Stevington" }),
     ).toBeVisible();
   });
 
-  it("Displays a logout button when menu is expanded", () => {
+  it("Displays a logout button when menu is expanded", async () => {
     render(
       <AuthContext.Provider value={authContext}>
         <UserMenu />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
     const expandMenuButton = screen.getByRole("button", {
       name: "Steve Stevington",
     });
-    userEvent.click(expandMenuButton);
+    await userEvent.click(expandMenuButton);
 
     expect(screen.getByText(/logout/i)).toBeVisible();
   });
 
-  it("Calls logout action when user clicks 'logout'", () => {
+  it("Calls logout action when user clicks 'logout'", async () => {
     render(
       <AuthContext.Provider value={authContext}>
         <UserMenu />
-      </AuthContext.Provider>
+      </AuthContext.Provider>,
     );
     const expandMenuButton = screen.getByRole("button", {
       name: "Steve Stevington",
     });
-    userEvent.click(expandMenuButton);
+    await userEvent.click(expandMenuButton);
     const logoutOption = screen.getByText(/logout/i);
-    userEvent.click(logoutOption);
+    await userEvent.click(logoutOption);
 
     expect(authContext.logout).toHaveBeenCalled();
   });

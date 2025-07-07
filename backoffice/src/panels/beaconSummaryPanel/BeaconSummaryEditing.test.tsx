@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { cloneDeep } from "lodash";
 import { IBeacon } from "../../entities/IBeacon";
@@ -14,19 +14,22 @@ describe("BeaconSummaryEditing", () => {
         beacon={beaconFixture}
         onSave={onSave}
         onCancel={jest.fn()}
-      />
+      />,
     );
     const editableField = await screen.findByDisplayValue(
-      beaconFixture.chkCode as string
+      beaconFixture.chkCode as string,
     );
 
     const chkCode = "X675F";
-
-    userEvent.clear(editableField);
-    userEvent.type(editableField, chkCode);
+    await act(async () => {
+      await userEvent.clear(editableField);
+      await userEvent.type(editableField, chkCode);
+    });
 
     expect(await screen.findByDisplayValue(chkCode)).toBeVisible();
-    userEvent.click(screen.getByRole("button", { name: "Save" }));
+    await act(async () => {
+      await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    });
     await waitFor(() => {
       expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ chkCode }));
     });
@@ -40,16 +43,17 @@ describe("BeaconSummaryEditing", () => {
         beacon={beaconFixture}
         onSave={onSave}
         onCancel={jest.fn()}
-      />
+      />,
     );
 
     const dropdownField = await screen.findByLabelText(/mti/i);
-
-    userEvent.selectOptions(dropdownField, "TEST_EPIRB");
-    userEvent.click(screen.getByRole("button", { name: "Save" }));
+    await act(async () => {
+      await userEvent.selectOptions(dropdownField, "TEST_EPIRB");
+      await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    });
     await waitFor(() => {
       expect(onSave).toHaveBeenCalledWith(
-        expect.objectContaining({ mti: "TEST_EPIRB" })
+        expect.objectContaining({ mti: "TEST_EPIRB" }),
       );
     });
   });
@@ -62,39 +66,46 @@ describe("BeaconSummaryEditing", () => {
         beacon={beaconFixture}
         onSave={onSave}
         onCancel={jest.fn()}
-      />
+      />,
     );
 
     const dropdownField = await screen.findByLabelText(/protocol/i);
     const protocol = "EPIRB, non-GPS, non-CSTA, UK Serialised";
 
-    userEvent.selectOptions(dropdownField, protocol);
-    userEvent.click(screen.getByRole("button", { name: "Save" }));
+    await act(async () => {
+      await userEvent.selectOptions(dropdownField, protocol);
+      await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    });
     await waitFor(() => {
       expect(onSave).toHaveBeenCalledWith(
-        expect.objectContaining({ protocol })
+        expect.objectContaining({ protocol }),
       );
     });
   });
 
   it("calls the cancel callback to abort the edit", async () => {
     const onCancel = jest.fn();
-    render(
-      <BeaconSummaryEditing
-        beacon={beaconFixture}
-        onSave={jest.fn()}
-        onCancel={onCancel}
-      />
-    );
+    act(() => {
+      render(
+        <BeaconSummaryEditing
+          beacon={beaconFixture}
+          onSave={jest.fn()}
+          onCancel={onCancel}
+        />,
+      );
+    });
     const editableField = await screen.findByDisplayValue(
-      beaconFixture.chkCode as string
+      beaconFixture.chkCode as string,
     );
-    userEvent.clear(editableField);
-    userEvent.type(editableField, "ZXFG7");
+    await act(async () => {
+      await userEvent.clear(editableField);
+      await userEvent.type(editableField, "ZXFG7");
+    });
     const cancelButton = screen.getByRole("button", { name: "Cancel" });
 
-    userEvent.click(cancelButton);
-
+    await act(async () => {
+      await userEvent.click(cancelButton);
+    });
     await waitFor(() => {
       expect(onCancel).toHaveBeenCalled();
     });
@@ -109,7 +120,7 @@ describe("BeaconSummaryEditing", () => {
           beacon={beaconFixture}
           onSave={onSave}
           onCancel={jest.fn()}
-        />
+        />,
       );
 
       const manufacturerField = await screen.findByLabelText(/manufacturer/i);
@@ -118,16 +129,18 @@ describe("BeaconSummaryEditing", () => {
       const model =
         "CSTA 1362, EPIRB3 (non-Float Free), EPIRB3 Pro (Float Free / non-Float Free)";
 
-      userEvent.selectOptions(manufacturerField, manufacturer);
-      userEvent.selectOptions(modelField, model);
+      await act(async () => {
+        await userEvent.selectOptions(manufacturerField, manufacturer);
+        await userEvent.selectOptions(modelField, model);
 
-      userEvent.click(screen.getByRole("button", { name: "Save" }));
+        await userEvent.click(screen.getByRole("button", { name: "Save" }));
+      });
       await waitFor(() => {
         expect(onSave).toHaveBeenCalledWith(
           expect.objectContaining({
             manufacturer,
             model,
-          })
+          }),
         );
       });
     });
@@ -140,23 +153,28 @@ describe("BeaconSummaryEditing", () => {
           beacon={beaconFixture}
           onSave={onSave}
           onCancel={jest.fn()}
-        />
+        />,
       );
 
       const manufacturerField = await screen.findByLabelText(/manufacturer/i);
       const manufacturer = "Ocean Signal";
 
-      userEvent.selectOptions(manufacturerField, manufacturer);
+      await act(async () => {
+        await userEvent.selectOptions(manufacturerField, manufacturer);
+      });
 
       expect(await screen.findByLabelText(/model/i)).toHaveDisplayValue("N/A");
 
-      userEvent.click(screen.getByRole("button", { name: "Save" }));
+      await act(async () => {
+        await userEvent.click(screen.getByRole("button", { name: "Save" }));
+      });
+
       await waitFor(() => {
         expect(onSave).toHaveBeenCalledWith(
           expect.objectContaining({
             manufacturer,
             model: "",
-          })
+          }),
         );
       });
     });
@@ -178,14 +196,14 @@ describe("BeaconSummaryEditing", () => {
             beacon={beaconFixtureWithFreeManufacturerAndModel}
             onSave={onSave}
             onCancel={jest.fn()}
-          />
+          />,
         );
 
         expect(
-          await screen.findByLabelText(/manufacturer/i)
+          await screen.findByLabelText(/manufacturer/i),
         ).toHaveDisplayValue(manufacturerValue);
         expect(await screen.findByLabelText(/model/i)).toHaveDisplayValue(
-          modelValue
+          modelValue,
         );
       });
     });

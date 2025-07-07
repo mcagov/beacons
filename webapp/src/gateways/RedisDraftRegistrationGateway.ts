@@ -2,10 +2,11 @@ import Redis from "ioredis";
 import JSONCache from "redis-json";
 import { DraftRegistration } from "../entities/DraftRegistration";
 import { DraftRegistrationGateway } from "./interfaces/DraftRegistrationGateway";
+import { isValidUse } from "../lib/helpers/isValidUse";
 
 export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
   private cache = new JSONCache<DraftRegistration>(
-    new Redis(process.env.REDIS_URI)
+    new Redis(process.env.REDIS_URI),
   );
   private static instance: DraftRegistrationGateway;
 
@@ -24,7 +25,7 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
 
   public async update(
     id: string,
-    draftRegistration: DraftRegistration
+    draftRegistration: DraftRegistration,
   ): Promise<void> {
     await this.cache.set(id, draftRegistration);
   }
@@ -38,7 +39,15 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
 
     const registrationWithNewUse = {
       ...registration,
-      uses: [...(registration?.uses || []), {}],
+      uses: [
+        ...(registration?.uses || []),
+        {
+          environment: "",
+          purpose: "",
+          activity: "",
+          moreDetails: "",
+        },
+      ],
     };
 
     await this.update(submissionId, registrationWithNewUse);
@@ -53,6 +62,17 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
     };
 
     await this.update(submissionId, registrationMinusDeletedUse);
+  }
+
+  public async removeInvalidUse(submissionId: string): Promise<void> {
+    const registration: DraftRegistration = await this.read(submissionId);
+
+    const registrationMinusInvalidUse = {
+      ...registration,
+      uses: registration?.uses.filter((use) => isValidUse(use)),
+    };
+
+    await this.update(submissionId, registrationMinusInvalidUse);
   }
 
   public async makeUseMain(submissionId: string, useId: number): Promise<void> {

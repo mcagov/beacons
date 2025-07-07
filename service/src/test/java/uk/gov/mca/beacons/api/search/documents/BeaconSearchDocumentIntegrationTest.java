@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +11,6 @@ import org.apache.commons.collections.IteratorUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.mca.beacons.api.BaseIntegrationTest;
-import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconOwner;
 import uk.gov.mca.beacons.api.search.documents.nested.NestedBeaconUse;
 import uk.gov.mca.beacons.api.search.repositories.BeaconSearchRepository;
@@ -56,9 +54,8 @@ public class BeaconSearchDocumentIntegrationTest extends BaseIntegrationTest {
       beaconSearchDocument
     );
 
-    BeaconSearchDocument retrievedDocument = beaconSearchRepository.findBeaconSearchDocumentByHexId(
-      hexId
-    );
+    BeaconSearchDocument retrievedDocument =
+      beaconSearchRepository.findBeaconSearchDocumentByHexId(hexId);
 
     // assert
     assertThat(retrievedDocument.getHexId(), equalTo(hexId));

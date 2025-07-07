@@ -25,7 +25,7 @@ type AuthenticatedRequestOptions =
     };
 
 export function makeAuthenticatedRequest<T>(
-  options: AuthenticatedRequestOptions
+  options: AuthenticatedRequestOptions,
 ): Chainable<Response<T>> {
   const tenant = Cypress.env("AAD_TENANT_ID");
   const authUrl = `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/token`;
@@ -65,6 +65,6 @@ export function makeAuthenticatedRequest<T>(
           body: options.method === "GET" ? null : options.body,
           failOnStatusCode: false,
         });
-      }
+      },
     );
 }

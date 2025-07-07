@@ -1,0 +1,119 @@
+name: "[reusable] Test Webapp"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  workflow_call:
+    inputs:
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy"
+    secrets:
+      test_azure_b2c_session_token:
+        description: The session token of a logged in user to allow Cypress to test behind auth
+        required: true
+      test_azure_b2c_jwt_secret:
+        description: Permits Cypress to authenticate with Azure B2C to perform logged-in tests
+        required: true
+
+defaults:
+  run:
+    working-directory: webapp
+
+jobs:
+  static_analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.git-reference}}
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.19.1"
+
+      - name: Install npm dependencies
+        run: npm install
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: Code linting
+        run: npm run lint
+
+      - name: Docker linting
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: webapp/Dockerfile
+
+  unit_tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.git-reference}}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.19.1"
+
+      - name: Install npm dependencies
+        run: npm install
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: Run tests
+        run: npm run test
+
+  ui_tests:
+    name: User interface tests
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+    env:
+      SESSION_TOKEN: ${{ secrets.test_azure_b2c_session_token }}
+      JWT_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}
+      AUTH_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}
+      NEXTAUTH_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.git-reference}}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.19.1"
+
+      - name: Install npm dependencies
+        run: npm install
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: Copy env vars
+        run: cp .env.example .env
+
+      - name: Run Cypress UI tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: webapp
+          spec: cypress/integration/**/*.spec.ts
+          browser: chrome
+          start: npm run start
+          build: npm run build
+          wait-on: "http://localhost:3000"
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: webapp/cypress/screenshots/

@@ -29,7 +29,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSh
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
         context as any,
         validationRules,
-        mapper
+        mapper,
       );
 
     const result = await rule.condition();
@@ -59,7 +59,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSh
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
         context as any,
         validationRules,
-        mapper
+        mapper,
       );
 
     const result = await rule.condition();
@@ -90,7 +90,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSh
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
         context as any,
         validationRules,
-        mapper
+        mapper,
       );
 
     const result = await rule.action();
@@ -127,11 +127,14 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSh
       new GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors(
         context as any,
         validationRules,
-        mapper
+        mapper,
       );
 
     const result = await rule.action();
 
-    expect(result.props.draftRegistration).toStrictEqual(registrationFixture);
+    expect("props" in result).toBe(true);
+    if ("props" in result) {
+      expect(result.props.draftRegistration).toStrictEqual(registrationFixture);
+    }
   });
 });

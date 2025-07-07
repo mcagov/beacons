@@ -1,3 +1,5 @@
+# Instead of using Docker Compose directly, w use make commands to run the application locally, see README.md#local-development
+
 version: "3.9"
 
 ##
@@ -68,6 +70,11 @@ services:
       MICROSOFT_GRAPH_B2C_TENANT_NAME: TESTB2CMCGA
     volumes:
       - /tmp/beacons:/var/export
+    depends_on:
+      opensearch:
+        condition: service_started
+      postgres:
+        condition: service_started
 
   backoffice:
     build:
@@ -81,7 +88,7 @@ services:
     environment:
       AZURE_AD_TENANT_ID: "513fb495-9a90-425b-a49a-bc6ebe2a429e"
       AZURE_AD_CLIENT_ID: "5cdcbb41-958a-43b6-baa1-bbafd80b4f70"
-      REACT_APP_FEEDBACK_EMAIL_ADDRESSES: "x@y.com,y@z.com"
+      VITE_APP_FEEDBACK_EMAIL_ADDRESSES: "x@y.com,y@z.com"
 
   redis:
     image: redis:6
@@ -114,8 +121,10 @@ services:
       - opensearch
       - postgres
     depends_on:
-      - opensearch
-      - postgres
+      opensearch:
+        condition: service_started
+      postgres:
+        condition: service_started
     healthcheck:
       test:
         [

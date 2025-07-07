@@ -87,9 +87,9 @@ public class DataSeeder implements CommandLineRunner {
 
         int secondaryOwnerCount = faker.random().nextInt(4);
 
-        IntStream
-          .range(0, secondaryOwnerCount)
-          .forEach(j -> seedBeaconOwner(beacon.getId(), false));
+        IntStream.range(0, secondaryOwnerCount).forEach(j ->
+          seedBeaconOwner(beacon.getId(), false)
+        );
 
         seedEmergencyContact(beacon.getId());
       }
@@ -97,6 +97,7 @@ public class DataSeeder implements CommandLineRunner {
   }
 
   AccountHolder seedAccountHolder() {
+    log.error("WJKG seedAccountHolder");
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setFullName(faker.name().fullName());
     accountHolder.setAuthId(UUID.randomUUID().toString());
@@ -104,7 +105,19 @@ public class DataSeeder implements CommandLineRunner {
     accountHolder.setEmail(faker.internet().emailAddress());
     accountHolder.setAddress(fakeAddress());
 
-    return accountHolderRepository.save(accountHolder);
+    AccountHolder savedAccountHolder = accountHolderRepository.save(
+      accountHolder
+    );
+    //    log.error(savedAccountHolder.getId());
+    log.error("WJKG Account Holder Email: " + savedAccountHolder.getEmail());
+    if (savedAccountHolder.getId() != null) {
+      log.error(
+        "WJKG Account Holder ID: " + savedAccountHolder.getId().toString()
+      );
+    } else {
+      log.error("WJKG Account Holder ID is unset");
+    }
+    return savedAccountHolder;
   }
 
   Beacon seedBeacon(AccountHolderId accountHolderId) {
@@ -182,8 +195,7 @@ public class DataSeeder implements CommandLineRunner {
   }
 
   Address fakeAddress() {
-    return Address
-      .builder()
+    return Address.builder()
       .addressLine1(faker.address().streetAddressNumber())
       .addressLine2(faker.address().streetAddress())
       .townOrCity(faker.address().city())

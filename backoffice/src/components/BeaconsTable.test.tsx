@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
+import { IBeaconsGateway } from "../gateways/beacons/IBeaconsGateway";
 import { BrowserRouter } from "react-router-dom";
 import { beaconSearchResultFixture } from "../fixtures/beaconSearchResult.fixture";
 import { BeaconsTable } from "./BeaconsTable";
@@ -16,13 +16,13 @@ describe("<BeaconsTable>", () => {
     };
   });
 
-  const numberOfMockedBeacons = beaconSearchResultFixture.page.totalElements;
+  const numberOfMockedBeacons = beaconSearchResultFixture.totalElements;
 
   it("queries the injected gateway for beacon data", async () => {
     render(
       <BrowserRouter>
         <BeaconsTable beaconsGateway={beaconsGatewayDouble} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {
@@ -34,7 +34,7 @@ describe("<BeaconsTable>", () => {
     render(
       <BrowserRouter>
         <BeaconsTable beaconsGateway={beaconsGatewayDouble} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(await screen.findByText("Hex me difficultly")).toBeVisible();
@@ -44,11 +44,11 @@ describe("<BeaconsTable>", () => {
     render(
       <BrowserRouter>
         <BeaconsTable beaconsGateway={beaconsGatewayDouble} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(await screen.findAllByTestId("beacons-table-row")).toHaveLength(
-      numberOfMockedBeacons
+      numberOfMockedBeacons,
     );
   });
 });
