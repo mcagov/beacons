@@ -1,4 +1,4 @@
-name: Publish Service image
+name: "[reusable] Publish Service image"
 
 permissions:
   contents: read

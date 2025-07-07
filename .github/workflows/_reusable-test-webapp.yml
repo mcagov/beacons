@@ -1,4 +1,4 @@
-name: Test Webapp
+name: "[reusable] Test Webapp"
 
 permissions:
   contents: read

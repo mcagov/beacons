@@ -1,4 +1,4 @@
-name: Publish OpenSearch proxy image
+name: "[reusable] Publish OpenSearch proxy image"
 
 permissions:
   contents: read

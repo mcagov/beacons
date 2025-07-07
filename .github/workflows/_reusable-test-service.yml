@@ -1,4 +1,4 @@
-name: Test Service
+name: "[reusable] Test Service"
 
 permissions:
   contents: read

@@ -1,4 +1,4 @@
-name: Publish Backoffice image
+name: "[reusable] Publish Backoffice image"
 
 permissions:
   contents: read

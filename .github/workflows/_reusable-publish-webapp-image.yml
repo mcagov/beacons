@@ -1,4 +1,4 @@
-name: Publish Webapp image
+name: "[reusable] Publish Webapp image"
 
 permissions:
   contents: read

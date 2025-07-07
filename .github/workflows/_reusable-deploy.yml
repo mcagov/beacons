@@ -1,4 +1,4 @@
-name: Deploy
+name: "[reusable] Deploy"
 
 permissions:
   contents: read

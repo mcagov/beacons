@@ -1,4 +1,4 @@
-name: E2E tests
+name: "[reusable] E2E tests"
 
 permissions:
   contents: read
