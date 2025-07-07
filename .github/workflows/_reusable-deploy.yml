@@ -18,6 +18,9 @@ on:
           and must match the terraform_workspace input.
         type: string
         required: true
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy"
       terraform_workspace:
         description: >
           The Terraform workspace to which infrastructure should be deployed.  Must be one of dev/staging/production and
@@ -113,6 +116,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # Todo: Same thing?
+          git-reference: ${{ inputs.git-reference }}
           ref: ${{ inputs.version }}
       - uses: hashicorp/setup-terraform@v3
         with:

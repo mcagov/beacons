@@ -17,6 +17,9 @@ on:
         description: The tag of the release to test
         required: true
         type: string
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy"
       test_gov_notify_feedback_email_address:
         description: The email address to use to test email alerts against
         required: true

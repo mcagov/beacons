@@ -7,6 +7,9 @@ permissions:
 on:
   workflow_call:
     inputs:
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy"
       tag:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
         required: true
