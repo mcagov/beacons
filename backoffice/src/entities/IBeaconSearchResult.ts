@@ -1,12 +1,9 @@
 export interface IBeaconSearchResult {
-  page: {
-    size: number;
-    totalElements: number;
-    totalPages: number;
-    number: number;
-  };
-
-  _embedded: { beaconSearch: IBeaconSearchResultData[] };
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  content: IBeaconSearchResultData[];
 }
 
 export interface IBeaconSearchResultData {

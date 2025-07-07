@@ -1,4 +1,4 @@
-package uk.gov.mca.beacons.api.search.beacons.repositories;
+package uk.gov.mca.beacons.api.beaconsearch.repositories;
 
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

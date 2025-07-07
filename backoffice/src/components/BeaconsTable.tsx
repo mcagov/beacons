@@ -216,6 +216,7 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
       <MaterialTable
         icons={tableIcons}
         columns={columns}
+        /*eslint no-async-promise-executor: "warn"*/
         data={(query) =>
           new Promise(async (resolve, _reject) => {
             try {
@@ -223,7 +224,7 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
                 ...buildTableQuery(query),
               );
               const beacons =
-                response._embedded?.beaconSearch?.map(
+                response.content?.map(
                   (item: IBeaconSearchResultData): BeaconRowData => ({
                     createdDate: item.createdDate,
                     lastModifiedDate: item.lastModifiedDate,
@@ -240,8 +241,8 @@ export const BeaconsTable: FunctionComponent<IBeaconsTableProps> = React.memo(
                 ) ?? [];
               resolve({
                 data: beacons,
-                page: response.page.number,
-                totalCount: response.page.totalElements,
+                page: response.number,
+                totalCount: response.totalElements,
               });
             } catch (error) {
               logToServer.error(
@@ -283,7 +284,7 @@ function buildTableQuery(
     }
   });
 
-  let sort: GetAllBeaconsSort = null;
+  let sort: GetAllBeaconsSort = ["createdDate", "desc"];
   if (query.orderBy && query.orderBy.field && query.orderDirection) {
     sort = [query.orderBy.field as keyof BeaconRowData, query.orderDirection];
   }

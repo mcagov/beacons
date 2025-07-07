@@ -71,13 +71,13 @@ describe("NotesPanel", () => {
     expect(notesGateway.getNotes).toHaveBeenCalledTimes(1);
 
     const addNoteButton = await screen.findByText(/add a new note/i);
-    userEvent.click(addNoteButton);
+    await userEvent.click(addNoteButton);
     expect(notesGateway.getNotes).toHaveBeenCalledTimes(2);
 
     const cancelButton = await screen.findByRole("button", {
       name: "Cancel",
     });
-    userEvent.click(cancelButton);
+    await userEvent.click(cancelButton);
     expect(notesGateway.getNotes).toHaveBeenCalledTimes(3);
   });
 });

@@ -1,5 +1,7 @@
-package uk.gov.mca.beacons.api.search.beacons.rest;
+package uk.gov.mca.beacons.api.beaconsearch.rest;
 
+import java.util.Arrays;
+import java.util.UUID;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
@@ -14,7 +16,10 @@ public class BeaconSearchSpecification {
   public static @Nullable Specification<BeaconSearchEntity> hasStatus(
     String status
   ) {
-    return hasFuzzySearchCriteria(status, "beaconStatus");
+    if (StringUtils.hasText(status)) {
+      return (root, query, cb) -> cb.equal(root.get("beaconStatus"), status);
+    }
+    return null;
   }
 
   public static @Nullable Specification<BeaconSearchEntity> hasUses(
@@ -48,6 +53,29 @@ public class BeaconSearchSpecification {
       manufacturerSerialNumber,
       "manufacturerSerialNumber"
     );
+  }
+
+  public static @Nullable Specification<
+    BeaconSearchEntity
+  > hasEmailOrRecoveryEmail(String email) {
+    return (root, query, cb) ->
+      cb.and(
+        cb.or(
+          cb.equal(root.get("ownerEmail"), email),
+          cb.equal(root.get("legacyBeaconRecoveryEmail"), email)
+        ),
+        cb.equal(root.get("beaconStatus"), "MIGRATED")
+      );
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> hasAccountHolder(
+    UUID accountHolderId
+  ) {
+    return (root, query, cb) ->
+      cb.and(
+        cb.equal(root.get("accountHolderId"), accountHolderId),
+        root.get("beaconStatus").in(Arrays.asList("NEW", "CHANGE"))
+      );
   }
 
   private static @Nullable Specification<
