@@ -1,4 +1,3 @@
-import { stringContaining } from "expect/build/asymmetricMatchers";
 import { v4 } from "uuid";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { formSubmissionCookieId } from "../../../src/lib/types";
@@ -202,7 +201,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
 
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
-        stringContaining(`submissionId=${registration.id};`),
+        expect.stringContaining(`submissionId=${registration.id};`),
       );
     });
 
