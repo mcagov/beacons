@@ -1,3 +1,5 @@
+# Instead of using Docker Compose directly, w use make commands to run the application locally, see README.md#local-development
+
 version: "3.9"
 
 ##

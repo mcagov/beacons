@@ -1,4 +1,3 @@
-import { stringContaining } from "expect/build/asymmetricMatchers";
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { formSubmissionCookieId } from "../../../src/lib/types";
 import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../src/router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
@@ -167,7 +166,7 @@ describe("GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndR
 
       expect(context.res.setHeader).toHaveBeenCalledWith(
         "Set-Cookie",
-        stringContaining("submissionId=;"),
+        expect.stringContaining("submissionId=;"),
       );
     });
 
