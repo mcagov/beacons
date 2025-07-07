@@ -1,4 +1,4 @@
-import { DraftRegistrationGateway } from "../../src/gateways/DraftRegistrationGateway";
+import { DraftRegistrationGateway } from "../../src/gateways/interfaces/DraftRegistrationGateway";
 import { deleteCachedUse } from "../../src/useCases/deleteCachedUse";
 
 describe("deleteCachedUse", () => {

@@ -33,7 +33,7 @@ export class BeaconsGateway implements IBeaconsGateway {
     filters: GetAllBeaconsFilters = {},
     page: number = 0,
     size: number = 20,
-    sort: GetAllBeaconsSort = null,
+    sort: GetAllBeaconsSort = ["createdDate", "desc"],
   ): Promise<IBeaconSearchResult> {
     try {
       const response = await this._makeGetRequest(

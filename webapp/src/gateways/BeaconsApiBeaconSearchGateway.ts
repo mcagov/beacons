@@ -12,9 +12,9 @@ import {
 
 export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
   private readonly apiUrl: string;
-  private readonly beaconSearchControllerRoute = "beacon-search";
+  private readonly beaconSearchControllerRoute = "search";
   private readonly beaconsByAccountHolderAndEmailEndpoint =
-    "search/find-all-by-account-holder-and-email";
+    "beacons/find-all-by-account-holder-and-email";
 
   private readonly authGateway: AuthGateway;
 
@@ -43,7 +43,7 @@ export class BeaconsApiBeaconSearchGateway implements BeaconSearchGateway {
       });
 
       logger.info("Beacons retrieved by account holder id & email address");
-      return response.data._embedded.beaconSearch;
+      return response.data;
     } catch (error) {
       logger.error("getBeaconsForAccountHolder:", error);
       throw error;

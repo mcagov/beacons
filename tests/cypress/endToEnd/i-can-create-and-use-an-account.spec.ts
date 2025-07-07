@@ -47,7 +47,7 @@ describe("As user with an account", () => {
     givenIHaveSelected("#signIn");
     givenIHaveClickedContinue();
     thenTheUrlShouldContain(
-      "testb2cmcga.b2clogin.com/TESTB2CMCGA.onmicrosoft.com/B2C_1_login_beacons",
+      "testb2cmcga.b2clogin.com/testb2cmcga.onmicrosoft.com/b2c_1_login_beacons",
     );
     givenIHaveWaitedForAzureB2C();
     iCanSeeAPageHeadingThatContains("Sign In using my Beacon Registry Account");
