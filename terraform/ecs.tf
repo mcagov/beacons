@@ -104,6 +104,10 @@ resource "aws_ecs_task_definition" "webapp" {
       {
         name : "JWT_SECRET",
         valueFrom : aws_secretsmanager_secret.webapp_next_auth_jwt_secret.arn
+      },
+      {
+        name : "AUTH_SECRET",
+        valueFrom : aws_secretsmanager_secret.webapp_next_auth_jwt_secret.arn
       }
     ],
     healthCheck : {
