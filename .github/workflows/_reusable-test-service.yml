@@ -1,4 +1,8 @@
-name: Test Service
+name: "[reusable] Test Service"
+
+permissions:
+  contents: read
+  pull-requests: write
 
 on:
   workflow_call:
@@ -9,6 +13,9 @@ on:
           and must match the terraform_workspace input.
         type: string
         required: true
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy"
     secrets:
       microsoft_graph_client_id:
         description: The Azure AD B2C client id required for the beacons service API to call Microsoft Graph
@@ -34,16 +41,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.git-reference}}
+
       - uses: actions/setup-node@v4
         with:
           node-version: "16.17.0"
+
       - name: Install npm dependencies
         run: npm ci
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
       - name: Docker lint
         uses: hadolint/hadolint-action@v3.1.0
         with:
@@ -55,10 +68,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.git-reference}}
+
       - uses: actions/setup-java@v4
         with:
           distribution: "adopt"
           java-version: 17
+
       - name: Unit tests
         run: ./gradlew clean test
 
@@ -79,10 +96,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.git-reference}}
+
       - uses: actions/setup-java@v4
         with:
           distribution: "adopt"
           java-version: 17
+
       - name: Integration tests
         env:
           MICROSOFT_GRAPH_CLIENT_ID: ${{ secrets.microsoft_graph_client_id }}

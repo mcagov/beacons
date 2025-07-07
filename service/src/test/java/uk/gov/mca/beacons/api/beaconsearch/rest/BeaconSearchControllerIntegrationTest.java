@@ -17,7 +17,7 @@ import uk.gov.mca.beacons.api.WebIntegrationTest;
 class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
 
   @Nested
-  class GetFindAllBeaconsResults {
+  class GetBeaconSearchResults {
 
     @Test
     void shouldFindTheLegacyBeaconByHexIdStatusAndUses() throws Throwable {
@@ -30,7 +30,7 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
           .uri(uriBuilder ->
             uriBuilder
               .path(Endpoints.BeaconSearch.value + "/find-all")
-              .queryParam("status", "migrated")
+              .queryParam("status", "MIGRATED")
               .queryParam("uses", "maritime")
               .queryParam("hexId", randomHexId)
               .queryParam("ownerName", "")
@@ -61,7 +61,7 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
           .uri(uriBuilder ->
             uriBuilder
               .path(Endpoints.BeaconSearch.value + "/find-all")
-              .queryParam("status", "new")
+              .queryParam("status", "NEW")
               .queryParam("uses", "fishing vessel")
               .queryParam("hexId", randomHexId)
               .queryParam("ownerName", "")
@@ -143,6 +143,94 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
     }
   }
 
+  @Nested
+  class GetBeaconSearchResultsForAccountHolder {
+
+    @Test
+    void shouldNotFindAnyBeaconsIfEmptyQueryParamsSubmitted() {
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(
+              Endpoints.BeaconSearch.value +
+              "/find-all-by-account-holder-and-email"
+            )
+            .queryParam("email", "")
+            .queryParam("accountHolderId", "")
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("length()")
+        .isEqualTo(0);
+    }
+
+    @Test
+    void shouldFindTheLegacyBeaconByEmail() throws Exception {
+      final var randomEmailAddress = UUID.randomUUID().toString();
+      createLegacyBeacon(request ->
+        request.replace("ownerbeacon@beacons.com", randomEmailAddress)
+      );
+
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(
+              Endpoints.BeaconSearch.value +
+              "/find-all-by-account-holder-and-email"
+            )
+            .queryParam("email", randomEmailAddress)
+            .queryParam("accountHolderId", "")
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("length()")
+        .isEqualTo(1)
+        .jsonPath("[0].ownerEmail")
+        .isEqualTo(randomEmailAddress);
+    }
+
+    @Test
+    void shouldFindTheBeaconByAccountHolderId() throws Exception {
+      String testAuthId = UUID.randomUUID().toString();
+      final var accountHolderId = createAccountHolder(testAuthId);
+
+      createBeacon(request ->
+        request.replace("account-holder-id-placeholder", accountHolderId)
+      );
+
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(
+              Endpoints.BeaconSearch.value +
+              "/find-all-by-account-holder-and-email"
+            )
+            .queryParam("email", "")
+            .queryParam("accountHolderId", accountHolderId)
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("length()")
+        .isEqualTo(1)
+        .jsonPath("[0].accountHolderId")
+        .isEqualTo(accountHolderId)
+        .jsonPath("[0].ownerEmail")
+        .isEqualTo("nelson@royalnavy.mod.uk");
+    }
+  }
+
   private String readFile(String filePath) throws Exception {
     return Files.readString(Paths.get(filePath));
   }
@@ -190,5 +278,24 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
       .exchange()
       .expectStatus()
       .isCreated();
+  }
+
+  private String createAccountHolder(String testAuthId) throws Exception {
+    final String newAccountHolderRequest = readFile(
+      "src/test/resources/fixtures/createAccountHolderRequest.json"
+    ).replace("replace-with-test-auth-id", testAuthId);
+
+    return webTestClient
+      .post()
+      .uri("/spring-api/account-holder")
+      .body(BodyInserters.fromValue(newAccountHolderRequest))
+      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+      .exchange()
+      .expectBody(ObjectNode.class)
+      .returnResult()
+      .getResponseBody()
+      .get("data")
+      .get("id")
+      .textValue();
   }
 }
